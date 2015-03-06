@@ -1,11 +1,11 @@
 <nav class="tab-bar text-right hide-for-large-up">
-  <span ng-click="cancel()" class="p10 text-white">Close</span>
+  <span ng-click="cancel()" class="p10 text-white" translate>Close</span>
 </nav>
 <div class="modal-mobile" ng-init="setWallets()">
 
-  <h1 class="line-b"> Select a wallet to make the payment</h1>
+  <h1 class="line-b" translate>Select a wallet to make the payment</h1>
 
-  <div class="m20v" ng-show="!wallets[0]">Loading...</div>
+  <div class="m20v" ng-show="!wallets[0]" translate>Loading...</div>
   <ul class="wallet-selection wallets" ng-show="wallets[0]">
     <li ng-repeat="item in wallets track by $index" class="nav-item" ng-show="+item.balanceInfo.totalBalanceBTC > 0"  ng-click="ok(item)">
       <div class="col1">

@@ -1,7 +1,7 @@
 <div class="addresses" ng-controller="ReceiveController" ng-init="init()">
   <div class="row">
     <div class="large-12 medium-12 small-12 columns">
-      <h1 class="show-for-large-up">{{$root.title}}</h1> 
+      <h1 class="show-for-large-up">{{$root.title|translate}}</h1> 
     </div>
   </div>
 
@@ -19,10 +19,11 @@
         <div class="m10t text-center" ng-show="isCordova">
           <span class="button outline dark-gray tiny" 
             ng-click="shareAddress(addr)">
-            <i class="fi-share"></i> Share address
+            <i class="fi-share"></i> 
+            <span translate>Share address</span>
           </span>
         </div>
-        <div class="line-t size-12">
+        <div class="line-t size-12" translate>
           Share this with anyone to have them send you payments. To protect your privacy, new addresses are generated automatically once you use them.
         </div>
       </div>
@@ -58,7 +59,7 @@
           </a>
         </div>
         <div class="large-6 medium-6 small-6 columns text-right">
-          <a class="button secondary tiny" ng-click="newAddr()" ng-disabled="loading">
+          <a class="button secondary tiny" ng-click="newAddr()" ng-disabled="loading" translate>
             Generate new address
           </a>
         </div>

@@ -3,7 +3,7 @@
       <a ng-click="$root.go(item.link)" ng-class="{active: isActive(item)}"> 
         <i class="size-36 {{item.icon}} db"></i> 
         <div class="size-10 tu">
-          {{item.title}} 
+          {{item.title|translate}} 
           <span class="label alert round" ng-if="item.link=='homeWallet' && $root.wallet.pendingTxProposalsCountForUs > 0">{{$root.wallet.pendingTxProposalsCountForUs}}</span>
         </div>
       </a>

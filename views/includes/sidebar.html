@@ -1,7 +1,7 @@
 <div ng-init="init()">
   <header>
     <div class="left p15" ng-show="!$root.wallet">
-      <span class="db m5t text-italic">You have no wallets</span>
+      <span class="db m5t text-italic" translate>You have no wallets</span>
     </div>
     <div ng-show="$root.wallet">
       <div class="col1">
@@ -43,7 +43,9 @@
         <div class="col2">
           <a href class="size-12 wallet-item">
             <span class="ellipsis name-wallet">{{item.name || item.id}}</span>
-            <span class="size-12 type-wallet">  {{item.requiredCopayers}} of {{item.totalCopayers}}  </span> 
+            <span class="size-12 type-wallet">{{item.requiredCopayers}} 
+              <span translate>of</span> {{item.totalCopayers}}
+            </span> 
           </a>
         </div>
       </li>
@@ -53,8 +55,8 @@
             <i class="fi-plus size-21"></i> 
           </div>
           <div class="col2">
-            <span class="tu text-bold">Add wallet</span> <br>
-            <span class="text-light">Create, join or import</span>
+            <span class="tu text-bold" translate>Add wallet</span> <br>
+            <span class="text-light" translate>Create, join or import</span>
           </div>
         </div>
       </li>

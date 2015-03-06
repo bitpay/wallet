@@ -1,5 +1,5 @@
 <div class="settings row" ng-controller="SettingsController">
-  <h1 class="hide-for-small-only">{{$root.title}}</h1>
+  <h1 class="hide-for-small-only">{{$root.title|translate}}</h1>
   <div class="large-5 large-centered medium-7 medium-centered columns">
     <div class="logo-setup show-for-large-up" id="top">
       <img src="img/logo-negative-beta.svg" alt="Copay" width="100">
@@ -19,9 +19,9 @@
           <legend translate>Insight API server</legend>
           <div class="row collapse">
             <label class="left" for="insightLivenet">Livenet</label>
-            <div translate class="has-error right size-12" ng-show="settingsForm.insightLivenet.$invalid">
+            <div class="has-error right size-12" ng-show="settingsForm.insightLivenet.$invalid">
               <span class="icon-input"><i class="fi-x"></i></span>
-              Not valid
+              <span translate>Not valid</span>
             </div>
           </div>
           <div class="input">
@@ -30,37 +30,32 @@
           
           <div class="row collapse">
             <label class="left" for="insightTestnet">Testnet</label>
-            <div translate class="has-error right size-12" ng-show="settingsForm.insightTestnet.$invalid">
+            <div class="has-error right size-12" ng-show="settingsForm.insightTestnet.$invalid">
               <span class="icon-input"><i class="fi-x"></i></span>
-              Not valid
+              <span translate>Not valid</span>
             </div>
           </div>
           <div class="input">
             <input type="text" ng-model="insightTestnet" class="form-control" name="insightTestnet" valid-url required>
           </div>
 
-          <small translate class="text-gray">
-          Insight API server is open-source software. You can run your own instances, check 
-          <a href 
-            ng-click="$root.openExternalLink('https://insight.is')">Insight API Homepage</a>
+          <small class="text-gray">
+            <span translate>Insight API server is open-source software. You can run your own instances, check</span> 
+            <a href 
+              ng-click="$root.openExternalLink('https://insight.is')">Insight API Homepage</a>
           </small>
         </fieldset>
         <fieldset>
           <legend translate>Storage</legend>
-          <label for="insightTestnet">Read and Store Profiles:</label>
+          <label for="insightTestnet" translate>Read and Store Profiles:</label>
           <select class="form-control" ng-model="selectedStorage" ng-options="o.name for o in availableStorages" required>
           </select>
-          <small translate class="text-gray">
-          Wallets and profiles are stored encrypted using your password as a key. You can store the encrypted data locally, on this device, or remotely on the cloud (Insight Server). 
-          <a href 
-            ng-click="$root.openExternalLink('https://github.com/bitpay/copay/tree/master/js/plugins')">
-            More pluggins are welcomed!</a>
+          <small class="text-gray">
+            <span translate>Wallets and profiles are stored encrypted using your password as a key. You can store the encrypted data locally, on this device, or remotely on the cloud (Insight Server).</span> 
+            <a translate href 
+              ng-click="$root.openExternalLink('https://github.com/bitpay/copay/tree/master/js/plugins')">
+              More pluggins are welcomed!</a>
           </small>
-        </fieldset>
-        <fieldset>
-          <legend translate>Language</legend>
-          <select class="form-control" ng-model="selectedLanguage" ng-options="o.name for o in availableLanguages" required>
-          </select>
         </fieldset>
         <fieldset>
           <legend translate>Log level</legend>

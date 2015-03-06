@@ -6,7 +6,7 @@
   <div ng-show="!$root.starting">
     <div class="row hide-for-large-up">
       <div class="large-12 medium-12 small-12 columns">
-        <h1>{{$root.title}}</h1>
+        <h1>{{$root.title|translate}}</h1>
       </div>
     </div>
       <div class="row">
@@ -18,10 +18,10 @@
                 <small translate data-options="disable_for_touch:true" ng-show="joinForm.connectionId.$pristine" class="has-tip
                   text-gray" tooltip="Paste wallet secret here">Required</small>
               </label>
-              <span translate class="has-error right size-12" ng-show="joinForm.connectionId.$invalid
+              <span class="has-error right size-12" ng-show="joinForm.connectionId.$invalid
                   && !joinForm.connectionId.$pristine">
                 <span class="icon-input"><i class="fi-x"></i></span>
-                Wallet Secret is not valid!
+                <span translate>Wallet Secret is not valid!</span>
               </span>
               <small class="icon-input right" ng-show="joinForm.connectionId.$valid
                     && !joinForm.connectionId.$pristine"><i class="fi-check"></i></small>
@@ -60,7 +60,8 @@
                 <label for="ext-master">Master extended private key
                   <input id="ext-master" 
                   type="text" 
-                  placeholder="BIP32 master extended private key (hex)" name="private" ng-model="$parent.private">
+                  placeholder="{{'BIP32 master extended private key (hex)'|translate}}" 
+                  name="private" ng-model="$parent.private">
                 </label>
               </div>
             </div>
