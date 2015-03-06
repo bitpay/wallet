@@ -1,0 +1,26 @@
+<nav class="tab-bar">
+  <section class="right-small">
+    <a ng-click="cancel()">
+      <span class="text-close" translate>Close</span>
+    </a>
+  </section>
+  <section class="middle tab-bar-section">
+    <h1 class="title ellipsis" translate>
+      Address
+    </h1>
+  </section>
+</nav>
+
+<div class="p60t text-center" ng-init="addr = address.address">
+  <qrcode size="220" data="{{addr}}"></qrcode>
+
+  <div class="size-12" ng-class="{'enable_text_select': !isCordova}">
+    {{addr}}
+  </div> 
+  <div class="m5t size-10 text-secondary" ng-show="address.isChange" translate>change</div>
+  <div class="text-center m10t" ng-if="isCordova">
+    <button class="secondary" ng-click="copyAddress(addr)">
+      <i class="fi-clipboard-pencil"></i> <span translate>Copy to clipboard</span>
+    </button>
+  </div>
+</div>

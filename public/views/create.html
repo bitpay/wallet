@@ -1,0 +1,80 @@
+<div class="create m20t" ng-controller="createController as create">
+  <div ng-show="create.loading" class="text-center text-gray animated infinite flash" translate>Creating wallet...</div>
+  <form name="setupForm" ng-submit="create.create(setupForm)" ng-show="!create.loading" novalidate>
+    <div class="row">
+      <div class="large-12 columns">
+        <div class="box-notification" ng-show="create.error">
+          <div class="box-icon error">
+            <i class="fi-x size-24"></i>
+          </div> 
+          <span class="text-warning size-14">
+            {{create.error|translate}}
+          </span>
+        </div>
+
+        <div class="row">
+          <div class="large-12 columns">
+            <label><span translate>Wallet name</span>
+              <div class="input">
+                <input type="text" placeholder="{{'Family vacation funds'|translate}}" class="form-control" name="walletName" ng-model="walletName" ng-required="true">
+              </div>
+            </label>
+            </div>
+          <div class="large-12 columns" ng-show="totalCopayers != 1" >
+            <label><span translate>Your nickname</span>
+              <div class="input">
+                <input type="text" placeholder="{{'John'|translate}}" class="form-control" name="myName" ng-model="myName" ng-required="totalCopayers != 1" ng-disabled="totalCopayers == 1">
+              </div>
+            </label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="large-6 medium-6 columns">
+            <label><span translate>Select total number of copayers</span>
+              <select class="m10t" ng-model="totalCopayers" ng-options="totalCopayers as totalCopayers for totalCopayers in create.TCValues">
+              </select>
+            </label>
+          </div>
+          <div class="large-6 medium-6 columns">
+            <label><span translate>Select required signatures</span>
+              <select class="m10t" ng-model="requiredCopayers" ng-options="requiredCopayers as requiredCopayers for requiredCopayers in create.RCValues" ng-disabled="totalCopayers == 1">
+              </select>
+            </label>
+          </div>
+        </div>
+
+        <div class="m10t oh" ng-init="hideAdv=true">
+          <a class="button outline light-gray expand tiny" ng-click="hideAdv=!hideAdv">
+            <i class="fi-widget m3r"></i>
+            <span translate ng-hide="!hideAdv">Show</span> 
+            <span translate ng-hide="hideAdv">Hide</span> 
+            <span translate>advanced options</span>
+            <i ng-if="hideAdv" class="icon-arrow-down4"></i>
+            <i ng-if="!hideAdv" class="icon-arrow-up4"></i>
+          </a>
+        </div>
+        <div ng-hide="hideAdv" class="row">
+          <div class="large-12 columns">
+            <label for="network-name" class="line-b oh">
+              <span translate>Use test network</span>
+              <switch id="network-name" name="isTestnet" ng-model="isTestnet" class="green right m5t m10b"></switch>
+            </label>
+            <label for="ext-master" class="m10t">
+              <span translate>Master extended private key</span>
+              <input id="ext-master" 
+              type="text" 
+              placeholder="{{'BIP32 master extended private key'|translate}}" 
+              name="privateKey" ng-model="privateKey">
+          </div>
+        </div>
+
+
+        <button type="submit" class="button black expand radius m0" ng-disabled="setupForm.$invalid">
+          <span translate>Create</span> 
+          {{requiredCopayers}}-<span translate>of</span>-{{totalCopayers}} <span translate>wallet</span>
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
+<div class="extra-margin-bottom"></div>

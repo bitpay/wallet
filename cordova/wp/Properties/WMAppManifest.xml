@@ -4,12 +4,13 @@
   <Languages xmlns="">
     <Language code="en-US" />
   </Languages>
-  <App Author="Bitpay Inc." BitsPerPixel="32" Description="A multisignature Bitcoin Wallet" Genre="apps.normal" ProductID="{5381aa50-9069-11e4-84cc-293caf9cbdc8}" Publisher="Copay Wallet" PublisherID="{31cdd08b-457c-413d-b440-f6665eec847d}" RuntimeType="Silverlight" Title="Copay Wallet" Version="0.9.4.0" xmlns="" SDOptOut="false" NotificationService="MPN">
+  <App Author="Bitpay Inc." BitsPerPixel="32" Description="A multisignature Bitcoin Wallet" Genre="apps.normal" ProductID="{5381aa50-9069-11e4-84cc-293caf9cbdc8}" Publisher="Copay Wallet" PublisherID="{31cdd08b-457c-413d-b440-f6665eec847d}" RuntimeType="Silverlight" Title="Copay Wallet" Version="0.10.0.0" xmlns="" SDOptOut="false" NotificationService="MPN">
     <IconPath IsRelative="true" IsResource="false">Assets/icon@2.png</IconPath>
     <Capabilities>
       <Capability Name="ID_CAP_WEBBROWSERCOMPONENT" />
       <Capability Name="ID_CAP_NETWORKING" />
       <Capability Name="ID_CAP_ISV_CAMERA" />
+      <Capability Name="ID_CAP_IDENTITY_DEVICE" />
     </Capabilities>
     <Tasks>
       <DefaultTask Name="_default" NavigationPage="MainPage.xaml" />

@@ -1,0 +1,25 @@
+<nav class="tab-bar">
+  <section class="right-small">
+    <a ng-click="cancel()">
+      <span class="text-close" translate>Close</span>
+    </a>
+  </section>
+
+  <section class="middle tab-bar-section">
+    <h1 class="title ellipsis" translate>
+      Copayers
+    </h1>
+  </section>
+</nav>
+
+<ul class="no-bullet p60t">
+  <li class="line-b p10" ng-repeat="copayer in copayers">
+  <span class="size-12" ng-show="copayer.id == copayerId">
+     <i class="icon-contact size-24 m10r"></i> {{copayer.name}} ({{'Me'|translate}}) <i class="fi-check m5r right"></i>
+  </span>
+  <span class="size-12 text-gray" ng-show="copayer.id != copayerId">
+    <i class="icon-contact size-24 m10r"></i> {{copayer.name}}<i class="fi-check m5r right"></i>
+  </span>
+  </li>
+</ul>
+

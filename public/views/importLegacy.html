@@ -1,0 +1,75 @@
+<div class="import-profile" ng-controller="importLegacyController as importLegacy">
+  <div class="row m20t">
+    <div class="large-5 large-centered medium-7 medium-centered columns">
+      <div class="logo-setup show-for-large-up">
+        <img src="img/logo-negative-beta.svg" alt="Copay" width="100">
+        <div ng-include="'views/includes/version.html'"></div>
+      </div>
+      <div>
+        <div ng-show="importLegacy.importing">
+          <h1 class="m20b animated infinite flash"> Importing...</h1>
+          <ul>
+            <li ng-repeat="m in importLegacy.messages"> 
+              <span  style="opacity: {{m.opacity}}"> {{m.message}} </span>
+          </ul>
+        </div>
+
+        <div class="box-notification" ng-show="importLegacy.error">
+          <div class="box-icon error">
+            <i class="fi-x size-24"></i>
+          </div> 
+          <span class="text-warning size-14">
+            {{importLegacy.error|translate}}
+          </span>
+        </div>
+
+        <div ng-show="!importLegacy.importing">
+        <form name="importForm" ng-submit="importLegacy.import(importForm)" novalidate>
+
+          <label for="fromCloud" class="line-b oh m20b">
+            <span translate>Import from the Cloud?</span>
+            <switch id="fromCloud" name="fromCloud" ng-model="importLegacy.fromCloud" class="green right m5t m10b"></switch>
+          </label>
+
+          <label for="username">
+            <span translate>{{importLegacy.fromCloud ? 'Email': 'Username'}}</span>
+            <input type="text" class="form-control" placeholder="{{importLegacy.fromCloud ? 'Email': 'Username'}}"
+            name="username" ng-model="importLegacy.username" required>
+          </label>
+
+          <label for="password">
+            <span translate>Password</span>
+            <input type="password" class="form-control" placeholder="{{'Your profile password'|translate}}"
+            name="password" ng-model="importLegacy.password" required>
+          </label>
+
+          <label for="server" ng-show="importLegacy.fromCloud">
+            <span translate>Server</span>
+            <input type="text" class="form-control" placeholder="{{'Server URL'}}"
+            name="server" ng-model="importLegacy.server" required>
+          </label>
+
+          <button translate type="submit" 
+            class="button black radius expand m0" 
+            ng-disabled="deviceForm.$invalid">
+            Import 
+          </button>
+        </form>
+
+        <form name="importLegacyForm" ng-submit="importLegacy.import(importLegacyForm)" novalidate>
+          <div class="box-notification" ng-show="error">
+            <div class="box-icon error">
+              <i class="fi-x size-24"></i>
+            </div> 
+            <span class="text-warning size-14">
+              {{error|translate}}
+            </span>
+          </div>
+        </form>
+      </div>
+    
+
+    </div>
+  </div>
+</div>
+

@@ -1,0 +1,16 @@
+<nav class="tab-bar">
+  <section class="right-small">
+    <a ng-click="cancel()">
+      <span class="text-close" translate>Close</span>
+    </a>
+  </section>
+  <section class="middle tab-bar-section">
+    <h1 class="title ellipsis" translate>
+      QR-Scanner
+    </h1>
+  </section>
+</nav>
+<div class="p60t text-center" ng-init="init()">
+  <canvas id="qr-canvas" width="200" height="150"></canvas>
+  <video id="qrcode-scanner-video" width="300" height="225"></video>
+</div>

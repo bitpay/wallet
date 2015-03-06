@@ -1,0 +1,54 @@
+<div ng-controller="pinController as pin" ng-init="pin.init(confirmPin, testPin)">
+  <h3 class="text-center text-white">
+    <span ng-show="pin.askForPin == 1">Setup a PIN</span>
+    <span ng-show="pin.askForPin == 2">Repeat PIN</span>
+  </h3>
+  <div class="text-center size-12 text-warning" ng-show="pin.error || cp.error">
+    {{(pin.error || cp.error)|translate}}
+  </div>
+  <div class="pin" ng-show="!pin.error && !cp.error">
+    <div class="pin-box">
+      <i class="icon-circle" ng-show="!pin.defined[0]"></i>
+      <i class="icon-circle-active" ng-show="pin.defined[0]"></i>
+    </div>
+      
+    <div class="pin-box">
+      <i class="icon-circle" ng-show="!pin.defined[1]"></i>
+      <i class="icon-circle-active" ng-show="pin.defined[1]"></i>
+    </div>
+
+    <div class="pin-box">
+      <i class="icon-circle" ng-show="!pin.defined[2]"></i>
+      <i class="icon-circle-active" ng-show="pin.defined[2]"></i>
+    </div>
+
+    <div class="pin-box">
+      <i class="icon-circle" ng-show="!pin.defined[3]"></i>
+      <i class="icon-circle-active" ng-show="pin.defined[3]"></i>
+    </div>
+  </div>
+  <div class="pin-numbers">
+    <div class="pin-button-bar">
+      <a class="pin-button" ng-click="pin.press(1)">1</a>
+      <a class="pin-button" ng-click="pin.press(2)">2</a>
+      <a class="pin-button" ng-click="pin.press(3)">3</a>
+    </div>
+    <div class="pin-button-bar">
+      <a class="pin-button" ng-click="pin.press(4)">4</a>
+      <a class="pin-button" ng-click="pin.press(5)">5</a>
+      <a class="pin-button" ng-click="pin.press(6)">6</a>
+    </div>
+    <div class="pin-button-bar">
+      <a class="pin-button" ng-click="pin.press(7)">7</a>
+      <a class="pin-button" ng-click="pin.press(8)">8</a>
+      <a class="pin-button" ng-click="pin.press(9)">9</a>
+    </div>
+    <div class="pin-button-bar">
+      <a class="pin-button" ng-click="pin.skip()">
+        <i class="text-primary size-16 vm" translate>Skip</i>
+      </a>
+      <a class="pin-button" ng-click="pin.press(0)">0</a>
+      <a class="pin-button" ng-click="pin.clear()"><i class="fi-arrow-left"></i></a>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,17 @@
+<div class="m20t" ng-controller="preferencesDeleteWalletController as preferences">
+  <h4 class="text-warning text-center m0" translate> Warning! </h4>
+  <div class="box-notification" ng-show="preferences.error" >
+    <div class="box-icon error">
+      <i class="fi-x size-24"></i>
+    </div>
+    <span class="text-warning size-14">
+      {{preferences.error|translate}}
+    </span>
+  </div>
+  <div class="columns text-center m10t">
+    <p translate class="size-12 text-gray">Permanently delete this wallet. WARNING: this action cannot be reversed.</p>
+    <button class="button expand warning" ng-click="preferences.deleteWallet()">
+      Delete wallet
+    </button>
+  </div>
+</div>
