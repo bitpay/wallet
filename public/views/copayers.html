@@ -1,0 +1,57 @@
+<div ng-controller="copayersController as copayers" ng-init="copayers.init()" 
+  ng-if="!index.isOffLine && !index.clientError">
+
+  <div ng-show="!index.notAuthorized">
+    <div class="row m10t text-center">
+      <div class="large-12 columns">
+        <h1 translate>Share this secret with your copayers</h1> 
+      </div>
+    </div>
+
+    <div ng-click="copayers.copySecret(index.walletSecret)" ng-class="{'enable_text_select': !index.isCordoba}">
+      <div class="text-center">
+        <qrcode size="220" error-correction-level="L" data="{{index.walletSecret}}"></qrcode>
+        <div class="secret columns m10t m20b">
+          {{index.walletSecret || ('Loading...'|translate)}}
+        </div>
+      </div>
+    </div>
+    <div class="text-center m10t" ng-if="index.isCordova">
+      <span class="button outline dark-gray tiny" 
+        ng-click="copayers.shareSecret(index.walletSecret)">
+        <i class="fi-share"></i> 
+        <span translate>Share secret</span>
+      </span>
+    </div>
+    <h4 class="title oh m0">
+      <span translate>Waiting for copayers</span>
+      <span class="text-gray right">
+        [ {{index.m}} <span translate>of</span> {{index.n}} ]
+      </span> 
+    </h4>
+    <div class="p10 line-b" ng-include="'views/includes/copayers.html'"></div>
+    <div ng-if="!index.isComplete" class="p10 line-b m20b">
+      <p class="size-12 m0">
+      <i class="fi-loop"></i>
+      <span translate>Waiting...</span>
+      </p>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="large-12 columns">
+      <div class="m20tp text-center" ng-show="index.notAuthorized">
+        <h1 translate>Wallet incomplete and broken</h1>
+        <h4>Delete it and create a new one</h4>
+      </div>
+      <button class="small warning expand" ng-click="copayers.deleteWallet()">
+        <i class="fi-trash"></i> <span translate>Cancel</span>
+      </button>
+    </div>
+  </div>
+
+</div>
+
+
+<div class="extra-margin-bottom"></div>
+

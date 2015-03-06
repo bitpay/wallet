@@ -1,0 +1,60 @@
+<div class="settings row" ng-controller="settingsController as settings" ng-init="settings.init()">
+  <h1 class="hide-for-small-only">{{$root.title|translate}}</h1>
+  <div class="large-5 large-centered medium-7 medium-centered columns">
+    <div class="logo-setup show-for-large-up" id="top">
+      <img src="img/logo-negative-beta.svg" alt="Copay" width="100">
+      <div ng-include="'views/includes/version.html'"></div>
+    </div>
+      <h2>Settings</h2>
+      <form name="settingsForm">
+        <div class="box-notification" ng-show="message">
+          <div class="box-icon">
+            <i class="fi-check size-24"></i>
+          </div> 
+          <span class="text-primary size-14">
+            {{message|translate}}
+          </span>
+        </div> 
+        <fieldset>
+          <legend translate>Bitcore wallet service</legend>
+          <div class="row collapse">
+            <label class="left" for="bws">URL</label>
+            <div class="has-error right size-12" ng-show="settingsForm.bws.$invalid">
+              <span class="icon-input"><i class="fi-x"></i></span>
+              <span translate>Not valid</span>
+            </div>
+          </div>
+          <div class="input">
+            <input type="text" class="form-control" name="bws" ng-model="settings.bws" valid-url required>
+          </div>
+          
+          <small class="text-gray">
+            <span translate>Bitcore wallet service is open-source software. You can run your own instances, check</span>
+            <a href 
+              ng-click="$root.openExternalLink('https://github.com/bitpay/bitcore-wallet-service')">Github repository</a>
+          </small>
+        </fieldset>
+        <button translate 
+          type="submit" 
+          class="button primary radius expand m0" 
+          ng-disabled="settingsForm.$invalid || loading" ng-click="settings.save()">
+          Save
+        </button>
+      </form>
+      <div class="box-setup-footer">
+        <div class="left">
+          <a class="button outline dark-gray tiny" ng-click="$root.go('signin')">
+            <i class="icon-arrow-left4 size-10"></i> 
+            <span translate>Back</span>
+          </a>
+        </div>
+        <div class="right">
+          <a class="button outline dark-gray tiny" href="" ng-click="settings.reset()">
+            <i class="fi-page-delete"></i> 
+            <span translate>Reset settings</span>
+          </a>
+        </div>
+ 
+      </div>
+  </div>
+</div>

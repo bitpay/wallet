@@ -1,0 +1,56 @@
+<div class="history" ng-controller="historyController as history">
+  <div class="row m20t" ng-show="!index.txHistory[0]">
+    <div class="large-12 columns">
+      <div class="oh text-center">
+        <span ng-if="index.updatingTxHistory" class="text-gray" translate>Getting transactions...</span>
+        <span ng-if="!index.updatingTxHistory">No transactions yet</span>
+      </div>
+    </div>
+  </div>
+  <div ng-show="index.txHistory[0]" class="scroll">
+    <div ng-repeat="btx in index.txHistory" 
+      ng-click="history.openTxModal(btx)" 
+      class="row last-transactions-content">
+      <div class="large-3 medium-3 small-3 columns">
+        <span class="label tu" ng-show="btx.action == 'received'"  style="background-color:{{index.backgroundColor}}">Received</span>
+        <span class="label tu gray" ng-show="btx.action == 'sent'">Sent</span>
+        <span class="label tu gray" ng-show="btx.action == 'moved'">Moved</span>
+      </div>
+
+      <div class="large-5 medium-5 small-5 columns">
+        <span class="size-18">
+          <span ng-if="btx.action == 'received'">+</span>
+          <span ng-if="btx.action == 'sent'">-</span>
+          {{history.formatAmount(btx.amount)}}
+          {{history.getUnitName()}}
+        </span>
+      </div>
+      <div class="large-4 medium-4 small-4 columns text-right">
+        <div class="m5t size-12 text-gray">
+          <time ng-if="btx.time">{{btx.time * 1000 | amTimeAgo}}</time>
+          <span translate class="text-warning" 
+            ng-show="!btx.time && (!btx.confirmations || btx.confirmations == 0)">
+            Unconfirmed
+          </span>
+        </div>
+      </div>
+      <div class="size-14 text-gray columns m5t" ng-if="btx.message || btx.addressTo">
+        {{btx.message || btx.addressTo}}
+      </div>
+    </div>
+    <div class="m20t row">
+      <div class="columns">
+        <button class="outline light-gray small expand" ng-disabled="index.updatingTxHistory"
+          ng-click="index.updateTxHistory(index.skipHistory)" ng-show="index.txHistoryPaging">
+          <span ng-show="!index.updatingTxHistory">
+            <span translate>More</span> <i class="icon-arrow-down4 ng-scope"></i>
+          </span>
+          <span ng-show="index.updatingTxHistory" translate>
+            Getting transactions...
+          </span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="extra-margin-bottom"></div>
