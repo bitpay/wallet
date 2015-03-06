@@ -1,0 +1,55 @@
+<div class="preferences" ng-controller="preferencesController as preferences">
+
+  <ul class="no-bullet m0 size-14">
+    <h4 class="title m0" translate>{{index.walletName}} settings</h4>
+    <li class="line-b p20" ng-click="$root.go('preferencesColor')">
+      <span translate>Color</span>
+      <span class="right text-gray">
+        <i class="icon-arrow-right3 size-24 right"></i>
+        <span  style="color:{{index.backgroundColor || '#1ABC9C'}}">&block;</span>
+      </span>      
+    </li>
+    <li class="line-b p20">
+      <span translate>Encrypt Private Key</span>
+      <switch id="network-name" name="encrypt" ng-model="encrypt" class="green right"></switch>
+  </li>
+ 
+ 
+    <h4 class="title m0" translate>&nbsp;</h4>
+    <li class="line-b p20" ng-click="$root.go('backup')">
+      <i class="icon-arrow-right3 size-24 right text-gray"></i>  
+      <span translate>Backup</span>
+    </li>
+    <li class="line-b p20" ng-click="$root.go('delete')">
+      <i class="icon-arrow-right3 size-24 right text-gray"></i>  
+      <span translate>Delete</span>
+    </li>
+
+    <h4 class="title m0" translate>Global settings</h4>
+    <li class="line-b p20" ng-click="$root.go('preferencesUnit')">
+      <span translate>Unit</span>
+      <span class="right text-gray">
+        <i class="icon-arrow-right3 size-24 right"></i>
+        {{preferences.unitName}}
+      </span>      
+    </li>
+      
+    <li class="line-b p20" ng-click="$root.go('preferencesAltCurrency')">
+      <span translate>Alternative Currency</span>
+      <span class="right text-gray">
+        <i class="icon-arrow-right3 size-24 right"></i>
+        {{preferences.selectedAlternative.name}}
+      </span>
+    </li>
+    
+    <li class="line-b p20" ng-click="$root.go('preferencesBwsUrl')">
+      <span translate>Bitcore Wallet Service</span>
+      <span class="text-gray db">
+          <i class="icon-arrow-right3 size-24 right"></i>
+          {{preferences.bwsurl}}
+        </span>
+    </li>
+  </ul>
+
+</div>
+<div class="extra-margin-bottom"></div>

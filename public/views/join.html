@@ -1,0 +1,66 @@
+<div class="join m20t" ng-controller="joinController as join">
+  <div ng-show="join.loading" class="text-center text-gray animated infinite flash" translate>Joining shared wallet...</div>
+  <div class="row" ng-show="!join.loading">
+    <div class="large-12 columns">
+      <form name="joinForm" ng-submit="join.join(joinForm)" novalidate>
+          <label><span translate>Your nickname</span>
+            <div class="input">
+              <input type="text" placeholder="{{'John'|translate}}" class="form-control" name="myName" ng-model="myName" ng-required="true">
+            </div>
+          </label>
+
+          <div class="row collapse">
+            <label for="secret" class="left"><span translate>Wallet Secret</span> 
+              <small translate ng-show="joinForm.secret.$pristine">Required</small>
+            </label>
+            <span class="has-error right size-12" ng-show="joinForm.secret.$invalid
+              && !joinForm.secret.$pristine">
+              <span class="icon-input"><i class="fi-x"></i></span>
+              <span translate>Wallet Secret is not valid!</span>
+            </span>
+            <small class="icon-input right" ng-show="joinForm.secret.$valid
+              && !joinForm.secret.$pristine"><i class="fi-check"></i></small>
+          </div>
+
+          <div class="input">
+            <input id="secret" type="text" placeholder="{{'Paste wallet secret here'|translate}}" name="secret" ng-model="secret" wallet-secret required>
+            <div ng-hide="showScanner || disableScanner">
+              <a class="postfix" ng-click="join.openScanner()"><i class="fi-camera size-24">&nbsp;</i></a>
+            </div>
+            <div ng-show="showScanner">
+              <a class="postfix button warning" ng-click="cancelScanner()"><i class="fi-x">&nbsp;</i></a>
+            </div>
+          </div>
+
+          <div id="scanner" 
+            class="row" 
+            ng-if="showScanner"
+            ng-include="'views/includes/scanner.html'">
+          </div>
+
+          <a class="button outline light-gray tiny expand" ng-click="join.hideAdv=!join.hideAdv">
+            <i class="fi-widget m3r"></i>
+            <span translate ng-show="!join.hideAdv">Show</span> 
+            <span translate ng-show="join.hideAdv">Hide</span> 
+            <span translate>advanced options</span>
+            <i ng-show="!join.hideAdv" class="icon-arrow-down4"></i>
+            <i ng-show="join.hideAdv" class="icon-arrow-up4"></i>
+          </a>
+          <div ng-show="join.hideAdv" class="row">
+            <div class="large-12 columns">
+              <label for="ext-master">Master extended private key
+                <input id="ext-master" 
+                type="text" 
+                placeholder="{{'BIP32 master extended private key'|translate}}" 
+                name="privateKey" ng-model="privateKey">
+              </label>
+            </div>
+          </div>
+          <button translate type="submit" class="button expand black m0 radius" ng-disabled="joinForm.$invalid">Join</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="extra-margin-bottom"></div>
+

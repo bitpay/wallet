@@ -1,0 +1,45 @@
+<div class="import m20t" ng-controller="importController as import">
+  <div ng-show="import.loading" class="text-center text-gray animated infinite flash" translate>Importing wallet...</div>
+    <div class="row" ng-show="!import.loading">
+      <div class="large-12 columns">
+          <form name="importForm" ng-submit="import.import(importForm)" novalidate>
+            <div class="box-notification" ng-show="import.error">
+              <div class="box-icon error">
+                <i class="fi-x size-24"></i>
+              </div>
+              <span class="text-warning size-14">
+                {{import.error|translate}}
+              </span>
+            </div>
+
+            <div ng-show="!import.isSafari && !import.isCordova" class="line-b m10b">
+              <label for="backupFile">
+                <span translate>Choose backup file from your computer</span>  <i class="fi-laptop"></i>
+              </label>
+              <input type="file" class="form-control" placeholder="{{'Select a backup file'|translate}}"
+              name="backupFile" ng-model="import.backupFile" ng-file-select>
+            </div>
+
+            <div ng-show="import.isSafari || import.isCordova">
+              <label for="backupText">
+                <span translate>Paste backup plain text code</span>  <i class="fi-clipboard"></i>
+              </label>
+              <textarea class="form-control" name="backupText" ng-model="import.backupText" rows="5"></textarea>
+            </div>
+
+            <label for="password"><span translate>Password</span>  <small translate>Required</small>
+            </label>
+            <div class="input">
+              <input type="password" class="form-control" placeholder="{{'Your backup password'|translate}}"
+              name="password" ng-model="import.password">
+            </div>
+            <button translate type="submit" class="button radius expand black m0" 
+              ng-disabled="importForm.$invalid || !import.password">
+              Import backup
+            </button>
+          </form>
+      </div>
+    </div>
+</div>
+
+<div class="extra-margin-bottom"></div>

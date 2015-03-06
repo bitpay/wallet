@@ -1,0 +1,8 @@
+<div class="preferences" ng-controller="preferencesAltCurrencyController as prefAltCurrency">
+  <div ng-repeat="altCurrency in prefAltCurrency.alternativeOpts" ng-click="prefAltCurrency.save(altCurrency)" class="line-b p20 size-14">
+    <span>{{altCurrency.name}}</span>
+    <i class="fi-check size-16 right" ng-show="altCurrency.name == prefAltCurrency.selectedAlternative.name"></i>
+  </div>
+</div>
+<div class="extra-margin-bottom"></div>
+

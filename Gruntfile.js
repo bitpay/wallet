@@ -1,9 +1,8 @@
 module.exports = function(grunt) {
 
-  require('load-grunt-tasks')(grunt);
-
   // Project Configuration
   grunt.initConfig({
+    pkg: grunt.file.readJSON('package.json'),
     release: {
       options: {
         bump: true,
@@ -26,11 +25,11 @@ module.exports = function(grunt) {
       }
     },
     exec: {
-      prod: {
-        command: 'node ./util/build.js'
+      version: {
+        command: 'node ./util/version.js'
       },
-      dev: {
-        command: 'node ./util/build.js -d'
+      clear: {
+        command: 'rm -Rf bower_components node_modules'
       }
     },
     watch: {
@@ -44,52 +43,22 @@ module.exports = function(grunt) {
         files: ['README.md'],
         tasks: ['markdown']
       },
-      scripts: {
-        files: [
-          'js/models/*.js',
-          'js/util/*.js',
-          'js/plugins/*.js',
-          'js/*.js',
-          '!js/copayBundle.js',
-          '!js/copayMain.js'
-        ],
-        tasks: ['exec:dev']
-      },
       css: {
-        files: ['css/src/*.css'],
-        tasks: ['cssmin:desktop']
+        files: ['src/css/*.css'],
+        tasks: ['concat:css']
       },
       main: {
         files: [
-          'js/init.js',
-          'js/app.js',
-          'js/directives.js',
-          'js/filters.js',
-          'js/routes.js',
-          'js/services/*.js',
-          'js/controllers/*.js'
+          'src/js/init.js',
+          'src/js/app.js',
+          'src/js/directives/*.js',
+          'src/js/filters/*.js',
+          'src/js/routes.js',
+          'src/js/services/*.js',
+          'src/js/models/*.js',
+          'src/js/controllers/*.js'
         ],
-        tasks: ['concat:main']
-      },
-      config: {
-        files: ['config.js'],
-        tasks: ['exec:dev', 'concat:main']
-      },
-      test: {
-        files: ['test/**/*.js'],
-        tasks: ['mochaTest']
-      }
-    },
-    mochaTest: {
-      tests: {
-        options: {
-          require: 'setup/node.js',
-          reporter: 'spec',
-          mocha: require('mocha')
-        },
-        src: [
-          'test/*.js',
-        ]
+        tasks: ['concat:js']
       }
     },
     markdown: {
@@ -97,72 +66,80 @@ module.exports = function(grunt) {
         files: [{
           expand: true,
           src: 'README.md',
-          dest: '.',
+          dest: './doc',
           ext: '.html'
         }]
       }
     },
     concat: {
-      vendors: {
-        src: [
-          'lib/moment/min/moment.min.js',
-          'lib/qrcode-generator/js/qrcode.js',
-          'lib/lodash/dist/lodash.js',
-          'lib/bitcore.js',
-          'lib/file-saver/FileSaver.js',
-          'lib/socket.io-client/socket.io.js',
-          'lib/sjcl.js',
-          'lib/qrcode-decoder-js/lib/qrcode-decoder.min.js',
-          'lib/moment/lang/*.js'
-        ],
-        dest: 'lib/vendors.js'
+      options: {
+        sourceMap: false,
+        sourceMapStyle: 'link' // embed, link, inline
       },
       angular: {
         src: [
-          'lib/angular/angular.min.js',
-          'lib/angular-route/angular-route.min.js',
-          'lib/angular-moment/angular-moment.js',
-          'lib/angular-qrcode/qrcode.js',
-          'lib/ng-idle/angular-idle.min.js',
-          'lib/angular-foundation/mm-foundation.min.js',
-          'lib/angular-foundation/mm-foundation-tpls.min.js',
-          'lib/angular-gettext/dist/angular-gettext.min.js',
-          'lib/angular-load/angular-load.min.js',
-          'lib/angular-gravatar/build/md5.min.js',
-          'lib/angular-gravatar/build/angular-gravatar.min.js',
-          'lib/angular-touch/angular-touch.min.js'
-          // If you add libs here, remember to add it too to karma.conf
+          'bower_components/fastclick/lib/fastclick.js',
+          'bower_components/qrcode-generator/js/qrcode.js',
+          'bower_components/qrcode-decoder-js/lib/qrcode-decoder.js',
+          'bower_components/moment/min/moment-with-locales.js',
+          'bower_components/angular/angular.js',
+          'bower_components/angular-ui-router/release/angular-ui-router.js',
+          'bower_components/angular-local-storage/dist/angular-local-storage.js',
+          'bower_components/angular-foundation/mm-foundation.js',
+          'bower_components/angular-foundation/mm-foundation-tpls.js',
+          'bower_components/angular-animate/angular-animate.js',
+          'bower_components/angular-moment/angular-moment.js',
+          'bower_components/ng-lodash/build/ng-lodash.js',
+          'bower_components/angular-qrcode/qrcode.js',
+          'bower_components/angular-gettext/dist/angular-gettext.js',
+          'bower_components/angular-touch/angular-touch.js',
+          'bower_components/angular-bitcore-wallet-client/angular-bitcore-wallet-client.js',
+          'bower_components/angular-ui-switch/angular-ui-switch.js'
         ],
-        dest: 'lib/angularjs-all.js'
+        dest: 'public/lib/angular.js'
       },
-      main: {
+      js: {
         src: [
-          'js/app.js',
-          'js/directives.js',
-          'js/filters.js',
-          'js/routes.js',
-          'js/services/*.js',
-          'js/controllers/*.js',
-          'js/translations.js',
-          'js/init.js',
+          'src/js/app.js',
+          'src/js/routes.js',
+          'src/js/directives/*.js',
+          'src/js/filters/*.js',
+          'src/js/models/*.js',
+          'src/js/services/*.js',
+          'src/js/controllers/*.js',
+          'src/js/translations.js',
+          'src/js/version.js',
+          'src/js/init.js'
         ],
-        dest: 'js/copayMain.js'
+        dest: 'public/js/copay.js'
+      },
+      css: {
+        src: ['src/css/*.css'],
+        dest: 'public/css/copay.css'
+      },
+      foundation: {
+        src: [
+          'bower_components/angular/angular-csp.css',
+          'bower_components/foundation/css/foundation.css',
+          'bower_components/animate.css/animate.css',
+          'bower_components/angular-ui-switch/angular-ui-switch.css'
+        ],
+        dest: 'public/css/foundation.css',
       }
     },
     cssmin: {
-      desktop: {
+      copay: {
         files: {
-          'css/copay.min.css': ['css/src/*.css'],
+          'public/css/copay.css': ['src/css/*.css'],
         }
       },
-      mobile: {
+      foundation: {
         files: {
-          'css/copay.min.css': ['css/src/*.css', '!css/src/desktop.css', '!css/src/animation.css'],
-        }
-      },
-      vendors: {
-        files: {
-          'css/vendors.min.css': ['css/foundation.min.css', 'css/foundation-icons.css']
+          'public/css/foundation.css': [
+            'bower_components/angular/angular-csp.css',
+            'bower_components/foundation/css/foundation.css',
+            'bower_components/animate.css/animate.css'
+          ]
         }
       }
     },
@@ -172,16 +149,15 @@ module.exports = function(grunt) {
       },
       prod: {
         files: {
-          'js/copayMain.js': ['js/copayMain.js'],
-          'lib/angularjs-all.js': ['lib/angularjs-all.js'],
-          'lib/vendors.js': ['lib/vendors.js']
+          'public/js/copay.js': ['public/js/copay.js'],
+          'public/lib/angular.js': ['public/lib/angular.js']
         }
       }
     },
     nggettext_extract: {
       pot: {
         files: {
-          'po/template.pot': ['index.html', 'views/*.html', 'views/**/*.html']
+          'po/template.pot': ['public/index.html', 'public/views/*.html', 'public/views/**/*.html']
         }
       },
     },
@@ -191,70 +167,58 @@ module.exports = function(grunt) {
           module: 'copayApp'
         },
         files: {
-          'js/translations.js': ['po/*.po']
+          'src/js/translations.js': ['po/*.po']
         }
       },
     },
     copy: {
-      dist: {
-        files: [
-          {
-            src: [
-              'index.html',
-              'init.js',
-              'config.js',
-              'popup.html',
-              'css/vendors.min.css',
-              'css/copay.min.css',
-              'js/copayBundle.js',
-              'js/copayMain.js',
-              'lib/vendors.js',
-              'lib/angularjs-all.js',
-              'font/**',
-              'img/**',
-              'sound/**',
-              'views/**'
-            ], 
-            dest: 'dist/web/'
-          }
-        ],
-      },
+      icons: {
+        expand: true,
+        flatten: true,
+        src: 'bower_components/foundation-icon-fonts/foundation-icons.*',
+        dest: 'public/icons/'
+      }
     },
-    jsdoc: {
-      dist: {
-        src: ['js/models/*.js', 'js/plugins/*.js'],
-        options: {
-          destination: 'doc',
-          configure: 'jsdoc.conf.json',
-          template: './node_modules/grunt-jsdoc/node_modules/ink-docstrap/template',
-          theme: 'flatly'
-        }
+    karma: {
+      unit: {
+        configFile: 'test/karma.conf.js'
+      },
+      prod: {
+        configFile: 'test/karma.conf.js',
+        singleRun: true
+      }
+    },
+    coveralls: {
+      options: {
+        debug: false,
+        coverageDir: 'coverage/report-lcov',
+        dryRun: true,
+        force: true,
+        recursive: false
       }
     }
   });
 
+  grunt.loadNpmTasks('grunt-contrib-concat');
+  grunt.loadNpmTasks('grunt-contrib-copy');
+  grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-contrib-uglify');
+  grunt.loadNpmTasks('grunt-contrib-cssmin');
+  grunt.loadNpmTasks('grunt-angular-gettext');
+  grunt.loadNpmTasks('grunt-markdown');
+  grunt.loadNpmTasks('grunt-release');
+  grunt.loadNpmTasks('grunt-exec');
+  grunt.loadNpmTasks('grunt-karma');
+  grunt.loadNpmTasks('grunt-karma-coveralls');
+
 
   grunt.registerTask('default', [
-    'exec:dev', 'nggettext_compile', 'concat', 'cssmin:desktop', 'cssmin:vendors'
-  ]);
-  grunt.registerTask('mobile', [
-    'exec:dev', 'nggettext_compile', 'concat', 'cssmin:mobile', 'cssmin:vendors'
-  ]);
-  grunt.registerTask('dist', [
-    'exec:prod', 'nggettext_compile', 'concat', 'cssmin:desktop', 'cssmin:vendors', 'uglify', 'copy:dist'
-  ]);
-  grunt.registerTask('dist-dbg', [
-    'exec:prod', 'nggettext_compile', 'concat', 'cssmin:desktop', 'cssmin:vendors', 'copy:dist'
-  ]);
-  grunt.registerTask('dist-mobile', [
-    'exec:prod', 'nggettext_compile', 'concat', 'cssmin:mobile', 'cssmin:vendors', 'uglify', 'copy:dist'
-  ]);
-  grunt.registerTask('dist-mobile-dbg', [
-    'exec:dev', 'nggettext_compile', 'concat', 'cssmin:mobile', 'cssmin:vendors', 'copy:dist'
+    'nggettext_compile', 'exec:version', 'concat', 'copy'
   ]);
   grunt.registerTask('prod', [
-    'exec:prod', 'nggettext_compile', 'concat', 'cssmin:desktop', 'cssmin:vendors', 'uglify'
+    'default', 'uglify'
   ]);
   grunt.registerTask('translate', ['nggettext_extract']);
-  grunt.registerTask('docs', ['jsdoc']);
+  grunt.registerTask('test', ['karma:unit']);
+  grunt.registerTask('test-coveralls', ['karma:prod', 'coveralls']);
 };

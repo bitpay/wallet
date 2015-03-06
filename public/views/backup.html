@@ -1,0 +1,62 @@
+
+<div class="backup" ng-controller="backupController as backup">
+  <div class="columns m20t" ng-show="!backup.backupWalletPlainText && !backup.error">
+
+    <div class="text-warning size-14 m10v" ng-show="backup.isEncrypted">
+      <i class="fi-alert size-12"></i>
+      <span translate> This wallet have its private key encrypted. Exporting a backup will keep the private key encrypted on the backup.</span>
+
+    </div>
+
+    <label for="password"><span translate>Set up a Password for your backup</span>
+    </label>
+    <div class="input">
+      <input type="password" class="form-control" placeholder="{{'Your backup password'|translate}}"
+      name="password" ng-model="backup.password">
+    </div>
+
+    <label for="password"><span translate>Repeat Password</span>
+    </label>
+    <div class="input">
+      <input type="password" class="form-control" placeholder="{{'Repeat password'|translate}}"
+      name="password" ng-model="backup.repeatpassword">
+    </div>
+
+    <button class="black radius expand" ng-click="backup.downloadWalletBackup()" ng-disabled="backup.loading || (!backup.password || backup.password != backup.repeatpassword)"    style="background-color:{{index.backgroundColor}}" 
+      ng-show="!backup.isSafari && !backup.isCordova"><i class="fi-download"></i>
+      <span translate>Download backup</span></button>
+    <button class="black radius expand" ng-click="backup.viewWalletBackup()" ng-disabled="backup.loading"    style="background-color:{{index.backgroundColor}}" 
+      ng-show="backup.isSafari && !backup.isCordova"><i class="fi-eye"></i>
+      <span translate>View backup</span></button>
+    <div ng-show="backup.isCordova">
+      <h4 translate>Backup options</h4>
+      <button class="black radius expand"  ng-disabled="backup.loading ||  (!backup.password || backup.password != backup.repeatpassword)"    style="background-color:{{index.backgroundColor}}" 
+        ng-click="backup.copyWalletBackup()"><i class="fi-clipboard-pencil"></i>
+        <span translate>Copy to clipboard</span></button>
+      <button class="black radius expand"  ng-disabled="backup.loading ||   (!backup.password || backup.password != backup.repeatpassword)"   style="background-color:{{index.backgroundColor}}" 
+        ng-click="backup.sendWalletBackup()"><i class="fi-mail"></i>
+        <span translate>Send by email</span></button>
+    </div>
+
+
+  <div class="row m20b" ng-show="backup.backupWalletPlainText">
+    <div class="large-12 columns">
+      <h3 translate>Copy backup in a safe place</h3>
+      <div class="input">
+        <textarea class="show-for-large-up" readonly rows="7">{{backup.backupWalletPlainText}}</textarea>
+        <textarea class="hide-for-large-up" rows="12">{{backup.backupWalletPlainText}}</textarea>
+      </div>
+      <div class="size-12 text-gray text-right">
+        <i class="icon-compose"></i> 
+        <span translate>Copy this text as it is in a safe place (notepad or email)</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="m10 size-14 text-gray">
+  * You can safely install your backup on other device and 
+    use your wallet from many devices at the same time.
+  </div>
+ 
+</div>
+

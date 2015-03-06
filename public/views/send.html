@@ -1,0 +1,165 @@
+<div class="send" ng-controller="sendController as send" ng-init="send.init()" ng-show="!index.isOffLine">
+  <div ng-show="index.lockedBalance">
+      <h4 class="title m0">
+        <div class="left">
+          <i class="fi-info size-36 m10r lh"></i>
+        </div>
+        <div class="size-12">
+          <span class="db text-bold">
+            <span translate>Available Balance</span>: 
+            {{index.availableBalanceStr }}
+          </span>
+          <span class="text-gray">
+            {{index.lockedBalanceStr}} 
+            <span translate>in pending transactions</span>
+          </span>
+        </div>
+      </h4>
+  </div>
+  <div class="row m20t">
+    <div class="large-12 large-centered columns"> 
+      <div class="box-notification" ng-show="send.fetchingURL">
+        <div class="box-icon secondary">
+          <i class="fi-bitcoin-circle size-24"></i>
+        </div>
+        <span class="text-secondary size-14" translate>
+          Fetching Payment Information...
+        </span>
+      </div>
+      <form ng-show="!send.fetchingURL" name="sendForm" ng-submit="send.submitForm(sendForm)" ng-disabled="send.blockUx" novalidate>
+          <div class="box-notification" ng-show="send.error  && !send.hideForWP ">
+            <div class="box-icon error">
+              <i class="fi-x size-24"></i>
+            </div>
+            <span class="text-warning size-14">
+              {{send.error|translate}}
+            </span>
+            <a class="close-notification  text-warning" ng-click="send.resetForm(sendForm)">&#215;</a>
+          </div>
+          <div class="box-notification" ng-show="success">
+            <div class="box-icon success">
+              <i class="fi-check size-24"></i>
+            </div>
+            <span class="text-success size-14">
+              {{success|translate}}
+            </span>
+            <a class="close-notification text-success" ng-click="success=null">&#215;</a>
+          </div>
+
+          <div ng-hide="send._paypro || send.hideAddress">
+            <div class="row collapse">
+
+              <label for="address" class="left" >
+                <span translate>To</span> 
+              </label>
+
+              <span ng-hide="sendForm.address.$pristine">
+                <span class="has-error right size-12" ng-show="sendForm.address.$invalid && _address">
+                  <span class="icon-input">
+                    <i class="fi-x"></i>
+                  </span>
+                  <span translate>Not valid</span>
+                </span>
+                <small class="icon-input right" ng-show="!sendForm.address.$invalid">
+                  <i class="fi-check"></i>
+                </small>
+              </span>
+            </div>
+
+            <div class="input">
+              <input type="text" id="address" name="address" ng-disabled="send.blockUx || send.lockAddress" placeholder="{{'Bitcoin address'|translate}}" ng-model="_address" valid-address required ng-focus="send.formFocus('address')" ng-blur="send.formFocus(false)">
+<!--
+              <a class="postfix" ng-click="openAddressBook()"><i class="fi-address-book size-24"></i></a>
+-->
+            </div>
+          </div>
+          <div ng-show="send._paypro && !send.hideAddress">
+            <div class="row collapse" ng-click="send.openPPModal(send._paypro)">
+
+              <label for="domain">
+                <span translate>Payment to</span> 
+              </label>
+
+              <div class="input block">
+                <input class="p45li" type="text" id="domain" name="domain" ng-model="send._paypro.domain" ng-disabled="1">
+                <i ng-show="send._paypro.verified" class="fi-lock color-greeni"></i>
+                <i ng-show="!send._paypro.verified" class="fi-unlock color-yellowi"></i> 
+              </div>
+            </div>
+          </div>
+
+          <div class="row" ng-init="showAlternative = false" ng-hide="send.hideAmount">
+            <div class="large-12 medium-12 columns">
+              <div class="m5b right" ng-hide="sendForm.amount.$pristine">
+                <span class="has-error right size-12" ng-show="sendForm.amount.$invalid">
+                  <span class="icon-input"><i class="fi-x"></i></span>
+                  <span translate>Not valid</span>
+                </span>
+                <small class="icon-input right" ng-show="!sendForm.amount.$invalid">
+                  <i class="fi-check"></i>
+                </small>
+              </div>
+              <div ng-show="!showAlternative">
+                <label for="amount">
+                  <span translate>Amount</span>
+                </label>
+
+                <div class="input">
+                  <input type="number" id="amount" ng-disabled="send.blockUx || send.lockAmount" name="amount" placeholder="{{'Amount'|translate}}" ng-minlength="0.00000001" ng-maxlength="10000000000" ng-model="_amount" valid-amount required autocomplete="off"  ng-focus="send.formFocus('amount')" ng-blur="send.formFocus(false)">
+                  <a class="postfix" ng-click="showAlternative = true">{{send.unitName}}</a>
+                </div>
+              </div>
+              <div ng-show="showAlternative">
+                <label for="alternative"><span translate>Amount in</span> {{ send.alternativeName }}
+                </label>
+                <div class="input">
+                  <input type="number" id="alternative" ng-disabled="send.blockUx || !send.isRateAvailable || send.lockAmount" name="alternative" placeholder="{{'Amount'|translate}}" ng-model="_alternative" requiredautocomplete="off"  ng-focus="send.formFocus('amount')" ng-blur="send.formFocus(false)">
+                  <a class="postfix" ng-click="showAlternative = false"> {{ send.alternativeIsoCode }}</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="large-12 columns">
+              <label for="comment"><span translate>Note</span>
+                <small translate ng-hide="!sendForm.comment.$pristine">optional</small>
+                <small translate class="has-error" ng-show="sendForm.comment.$invalid && !sendForm.comment.$pristine">too long!</small>
+              </label>
+              <div class="input">
+                <textarea id="comment" ng-disabled="send.blockUx" name="comment" ng-if="index.n > 1" 
+                  placeholder="{{'Leave a private message to your copayers'|translate}}" 
+                  ng-maxlength="100" ng-model="_comment"  ng-focus="send.formFocus('msg')" 
+                  ng-blur="send.formFocus(false)"></textarea>
+                <textarea id="comment" ng-disabled="send.blockUx" name="comment" ng-if="index.n == 1" 
+                  placeholder="{{'Add a private comment to identify the transaction'|translate}}" 
+                  ng-maxlength="100" ng-model="_comment"  ng-focus="send.formFocus('msg')" 
+                  ng-blur="send.formFocus(false)"></textarea>
+              </div>
+            </div>
+          </div>
+
+  <div class="text-gray text-center m10t animated infinite flash" ng-show="send.onGoingProcess" > 
+    <span translate>{{send.onGoingProcess}}...</span>
+  </div>
+
+
+
+          <div class="row" ng-show="!send.onGoingProcess">
+            <div class="large-6 medium-6 small-12 columns">
+              <button type="submit" class="button black radius expand" ng-disabled="sendForm.$invalid || send.blockUx"    style="background-color:{{index.backgroundColor}}"  translate>
+                Send
+              </button>
+            </div>
+            <div class="large-4 medium-4 small-12 columns text-right">
+              <a ng-click="send.resetForm(sendForm)" class="button expand warning" 
+                ng-show="(send._paypro || send.lockAddress) && !send.blockUx" translate>Cancel</a>
+            </div>
+          </div>
+      </form>
+    </div>
+  </div>
+  <!--  end of row -->
+</div>
+<div ng-if="index.isOffLine" class="m20tp text-center" translate>Checking your internet connection...</div>
+
+<div class="extra-margin-bottom"></div>

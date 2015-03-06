@@ -21,8 +21,8 @@ cordova-base:
 # release-android: cordova-base
 # 	make -C cordova release-android
 #
-wp8:
-	cordova/build.sh WP8
+wp8-prod:
+	cordova/build.sh WP8 --clear
 	cordova/wp/fix-svg.sh
 	echo -e "\a"
 
@@ -31,7 +31,7 @@ wp8-debug:
 	cordova/wp/fix-svg.sh
 	echo -e "\a"
 
-ios:
+ios-prod:
 	cordova/build.sh IOS --clear
 	cd cordova/project && cordova build ios
 	open cordova/project/platforms/ios/Copay.xcodeproj
@@ -41,10 +41,14 @@ ios-debug:
 	cd cordova/project && cordova build ios
 	open cordova/project/platforms/ios/Copay.xcodeproj
 
-android:
-	cordova/build.sh ANDROID --dbgjs  --clear
-	cd cordova/project && cordova run android
-
 android-prod:
 	cordova/build.sh ANDROID --clear
 	cd cordova/project && cordova build android --release
+
+android-debug:
+	cordova/build.sh ANDROID --dbgjs --clear
+	cd cordova/project && cordova run android
+
+android-debug-fast:
+	cordova/build.sh ANDROID --dbgjs
+	cd cordova/project && cordova run android	

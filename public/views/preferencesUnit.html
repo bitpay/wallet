@@ -1,0 +1,7 @@
+<div class="preferences" ng-controller="preferencesUnitController as prefUnit">
+  <div ng-repeat="unit in prefUnit.unitOpts" ng-click="prefUnit.save(unit)" class="line-b p20 size-14">
+    <span>{{unit.shortName}}</span>
+    <i class="fi-check size-16 right" ng-show="prefUnit.unitName == unit.shortName"></i>
+  </div>
+</div>
+<div class="extra-margin-bottom"></div>

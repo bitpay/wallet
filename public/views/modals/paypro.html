@@ -1,0 +1,50 @@
+<nav class="tab-bar">
+  <section class="right-small">
+    <a ng-click="cancel()">
+      <span class="text-close" translate>Close</span>
+    </a>
+  </section>
+  <section class="middle tab-bar-section">
+    <h1 class="title ellipsis" style="color:{{color}}" translate>
+      Payment protocol request
+    </h1>
+  </section>
+</nav>
+
+<div class="row p60t">
+  <div class="large-12 columns">
+    <div class="text-center">
+      <div class="size-48">
+        {{unitTotal}}  {{unitName}}
+      </div>
+      <div class="size-18 m5t text-gray">
+        {{ alternative }} {{ alternativeIsoCode }}
+      </div>
+    </div>
+    <div class="line-b m10v"></div>
+
+    <div class="ellipsis m10v">
+      <i translate>To:</i> {{paypro.domain}}
+    </div>
+
+    <div class="m10v">
+      <i translate>Certified by:</i>
+      <span ng-show="paypro.verified"><i class="fi-lock color-greeni"></i> {{paypro.verifyData.caName}}</span>
+      <span ng-show="!paypro.verified"><i class="fi-unlock color-yellowi"></i> <span translate>Untrusted</span></span>
+    </div>
+
+    <div ng-if="md.pr.pd.memo" class="m10v lh140">
+      <i translate>Merchant Message:</i>
+      <span class="text-gray">
+        {{paypro.memo}}
+      </span>
+    </div>
+
+    <div ng-if="md.expirationDate" class="m10v">
+      <i translate>Expires:</i> {{paypro.expires | amTimeAgo }}
+    </div>
+  </div>
+</div>
+
+<div class="extra-margin-bottom"></div>
+
