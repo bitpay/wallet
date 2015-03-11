@@ -1,0 +1,124 @@
+<div class="backup" ng-controller="ProfileController" ng-init="init()">
+  <div class="row">
+    <div class="large-12 columns">
+      <div class="panel">
+        <div class="row collapse">
+          <div class="large-2 medium-2 columns text-center">
+            <a class="photo-container profile" 
+              ng-click="$root.openExternalLink('https://gravatar.com/')"
+              ng-init="isHover=0" 
+              ng-mouseenter="isHover=1" 
+              ng-mouseleave="isHover=0">
+              <img ng-show="!isHover" gravatar-src="'{{username}}'" gravatar-size="80">
+              <img ng-show="isHover" src="img/change-avatar.png" with="80">
+            </a>
+          </div>
+          <div class="large-10 medium-10 columns">
+            <h2>
+              <span translate>Profile</span> 
+              <span class="size-12 text-warning" ng-if="$root.iden.backupNeeded"> 
+                [ <span translate>Needs Backup</span> ]
+              </span>
+            </h2>
+            <span translate class="text-gray">It's important to backup your profile so that you can recover it in case of disaster. The backup will include all your profile's wallets</span>
+          </div> 
+        </div> 
+      </div>
+    </div>
+  </div>
+
+  <div class="row" ng-show="!backupProfilePlainText">
+    <div class="large-12 columns">
+      <button class="primary expand" ng-click="downloadProfileBackup()" ng-disabled="loading"
+        ng-show="!isSafari && !isCordova"><i class="fi-download"></i> 
+        <span translate>Download backup</span></button>
+      <button class="primary expand" ng-click="viewProfileBackup()" ng-disabled="loading"
+        ng-show="isSafari && !isCordova"><i class="fi-eye"></i> 
+        <span translate>View backup</span></button>
+      <div ng-show="isCordova">
+        <h4 translate>Backup options</h4>
+        <button class="primary expand" 
+          ng-click="copyProfileBackup()"><i class="fi-clipboard-pencil"></i> 
+          <span translate>Copy to clipboard</span></button>
+        <button class="primary expand" 
+          ng-click="sendProfileBackup()"><i class="fi-mail"></i> 
+          <span translate>Send by email</span></button>
+      </div>
+    </div>
+  </div>
+
+  <div class="row m20b" ng-show="backupProfilePlainText">
+    <div class="large-12 columns">
+      <h3 translate>Copy backup in a safe place</h3>
+      <div class="input">
+        <textarea class="show-for-large-up" readonly rows="5">{{backupProfilePlainText}}</textarea>
+        <textarea class="hide-for-large-up" rows="5">{{backupProfilePlainText}}</textarea>
+      </div>
+      <div class="size-12 text-gray text-right">
+        <i class="icon-compose"></i> 
+        <span translate>Copy this text as it is in a safe place (notepad or email)</span>
+      </div>
+    </div>
+  </div>
+
+  <div ng-show="$root.quotaPerItem">
+    <div class="line-dashed-h m20b"></div>
+
+    <div class="row size-12 m20b">
+      <div class="large-12 columns">
+        <div ng-if="perItem" translate>
+          Your current server usage quotas are: <b>{{perItem}}kB</b> per wallet and up to <b>{{nrWallets}}</b> wallets.
+        </div>
+        <div ng-if="$root.needsEmailConfirmation" class="m10t">
+          <i class="fi-alert"></i> 
+          <span translate>Confirm your email address to increase storage usage limits.</span>
+        </div>
+      </div>
+    </div> 
+  </div>
+
+  <div class="line-dashed-h m20b"></div>
+  
+  <div class="row oh m20b">
+    <div class="large-12 columns">
+      <a class="button outline light-gray tiny" ng-click="hideAdv=!hideAdv">
+        <i class="fi-widget m3r"></i>
+        <span translate ng-hide="!hideAdv">Show</span> 
+        <span translate ng-hide="hideAdv">Hide</span> 
+        <span translate>advanced options</span> 
+        <i ng-if="hideAdv" class="icon-arrow-down4"></i>
+        <i ng-if="!hideAdv" class="icon-arrow-up4"></i>
+      </a>
+    </div>
+  </div>
+
+  <div ng-hide="hideAdv" class="row">
+    <div class="large-12 columns">
+      <div class="panel">
+        <h2><i class="fi-minus-circle m10r"></i> 
+          <span translate>Delete Profile</span>
+        </h2>
+        <p translate class="text-gray">Permanently delete this profile and all its wallets. WARNING: this action cannot be reversed.</p>
+        <div ng-show="!confirmDelete">
+          <a translate class="button warning m0" ng-click="confirmDelete=!confirmDelete">Delete Profile
+          </a>
+        </div>
+        <div class="text-center" ng-show="confirmDelete">
+          <h2 translate>Are you sure you want to delete this profile?</h2>
+          <div class="row">
+            <div class="large-6 medium-6 small-6 columns">
+              <button class="gray" ng-disabled="loading" 
+                ng-click="confirmDelete=!confirmDelete" translate>Cancel</button>
+            </div>
+            <div class="large-6 medium-6 small-6 columns">
+              <button class="warning" ng-disabled="loading" ng-click="deleteProfile()">
+                <i class="fi-trash"></i> <span translate>Delete</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="extra-margin-bottom"></div>

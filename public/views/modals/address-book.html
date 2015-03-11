@@ -1,0 +1,88 @@
+<nav class="tab-bar text-right hide-for-large-up">
+  <span ng-click="close()" class="p10 text-white" translate>Close</span>
+</nav>
+<div class="modal-mobile">
+    <h1 ng-show="!showForm" translate>Address Book</h1>
+    <h1 ng-show="showForm" translate>Add a new entry</h1>
+    <p translate class="text-gray m15b" ng-show="!showForm && !hasEntry()" translate>
+      Empty. Create an alias for your addresses
+    </p>
+    <div class="box-notification" ng-show="success">
+      <div class="box-icon success">
+        <i class="size-24 fi-check"></i>
+      </div>
+      <span class="size-14 text-success">
+        {{success|translate}}
+      </span>
+    </div>
+    <table class="addressbook line-t" ng-show="!showForm && hasEntry()">
+      <thead class="show-for-large-up">
+        <tr>
+          <th translate>Entry</th>
+          <th class="show-for-large-up" ng-class="{'hide-for-small-only' : $root.wallet.isShared()}" ng-show="$root.wallet.isShared()" translate>Creator</th>
+          <th class="show-for-large-up" translate>Date</th>
+          <th class="show-for-large-up" translate>Visible</th>
+        </tr>
+      </thead>
+      <tbody>
+      <tr
+        ng-repeat="(addr, info) in addressBook"
+        ng-class="{'addressbook-disabled': info.hidden}">
+        <td ng-click="copyToSend(addr)">
+          <b>{{info.label}}</b><br>
+          <small class="address-size">{{::addr}}</small>
+        </td>
+        <td class="show-for-large-up" ng-click="copyToSend(addr)" ng-show="$root.wallet.isShared()">{{$root.wallet.publicKeyRing.nicknameForCopayer(info.copayerId)}}</td>
+        <td ng-click="copyToSend(addr)" class="show-for-large-up"><time>{{::info.createdTs | amCalendar}}</time></td>
+        <td class="show-for-large-up text-center">
+          <a ng-click="toggleAddressBookEntry(addr)" title="{{ info.hidden ? 'Enable' : 'Disable'}} address">
+            <i class="fi-checkbox size-21" 
+              ng-class="{'text-success':!info.hidden, 'text-gray':info.hidden}"></i>
+          </a>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+    <form ng-show="showForm" class="m0" name="addressBookForm" 
+      ng-disabled="loading"
+      ng-submit="submitAddressBook(addressBookForm)" novalidate>
+      <div class="box-notification" ng-show="error">
+        <div class="box-icon error">
+          <i class="size-24 fi-x"></i>
+        </div>
+        <span class="size-14 text-warning">
+          {{error|translate}}
+        </span>
+      </div>
+      <div class="row collapse">
+        <label for="newaddress" class="left"><span translate>Address</span>
+          <small translate ng-hide="!addressBookForm.newaddress.$pristine || newaddress">Required</small>
+        </label>
+        <span class="has-error right size-12" ng-show="addressBookForm.newaddress.$invalid && newaddress">
+          <span class="icon-input"><i class="fi-x"></i></span>
+          <span translate>Not valid</span>
+        </span>
+        <small class="icon-input right" ng-show="!addressBookForm.newaddress.$invalid && newaddress"><i class="fi-check"></i></small>
+      </div>
+      <div class="input">
+        <input type="text" name="newaddress"
+        placeholder="{{'Address'|translate}}" ng-model="newaddress" valid-address required>
+      </div>
+
+      <label for="newlabel"><span translate>Label</span>
+        <small translate ng-hide="!addressBookForm.newlabel.$pristine || newlabel">Required</small>
+        <div class="input">
+          <input type="text" name="newlabel"
+          placeholder="{{'Label'|translate}}" ng-model="newlabel" required>
+        </div>
+      </label>
+      <a translate class="button secondary default" ng-show="!loading" ng-click="cancel(addressBookForm)">Cancel</a>
+      <button class="primary right" 
+        ng-disabled="addressBookForm.$invalid || loading" 
+        ng-click="submitAddressBook(addressBookForm)">{{'Add'|translate}}</button>
+    </form>
+    <a ng-show="!showForm" class="button primary expand" ng-disabled="loading" ng-click="toggleForm()">
+      <i class="fi-plus"></i> <span translate>Add entry</span>
+    </a>
+  <a class="close-reveal-modal show-for-large-up" ng-click="close()"><i class="fi-x size-18"></i></a>
+</div>

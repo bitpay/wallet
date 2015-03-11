@@ -1,0 +1,30 @@
+<nav class="tab-bar text-right hide-for-large-up">
+  <span ng-click="cancel()" class="p10 text-white" translate>Close</span>
+</nav>
+<div class="modal-mobile" ng-init="setWallets()">
+
+  <h1 class="line-b" translate>Select a wallet to make the payment</h1>
+
+  <div class="m20v" ng-show="!wallets[0]" translate>Loading...</div>
+  <ul class="wallet-selection wallets" ng-show="wallets[0]">
+    <li ng-repeat="item in wallets track by $index" class="nav-item" ng-show="+item.balanceInfo.totalBalanceBTC > 0"  ng-click="ok(item)">
+      <div class="col1">
+        <div class="avatar-wallet">{{item.getName() | limitTo: 1}}</div>
+      </div>
+      <div class="col2">
+        <a class="size-12 wallet-item">
+          <div class="oh">
+            <div class="right size-10 type-wallet">
+              [ {{item.requiredCopayers}} of {{item.totalCopayers}} ]</div>
+            <div class="ellipsis name-wallet">{{item.getName()}}</div>
+          </div>
+          <div class="oh">
+            <b class="m5r size-12">{{item.balanceInfo.totalBalance || 0}} {{item.settings.unitName}}</b>
+            <span class="alt-currency size-10">{{item.balanceInfo.totalBalanceAlternative}} {{item.balanceInfo.alternativeIsoCode}}</span>
+          </div>
+        </a>
+      </div>
+    </li>
+  </ul>
+  <a class="close-reveal-modal show-for-large-up" ng-click="cancel()"><i class="fi-x size-18"></i></a>
+</div>
