@@ -25,123 +25,119 @@ angular
     $urlRouterProvider.otherwise('/');
 
     $stateProvider
-      .state('signin', {
+      .state('walletHome', {
         url: '/',
-        templateUrl: 'views/signin.html',
-        authenticate: false
+        controller: 'homeController',
+        templateUrl: 'views/home.html',
+        walletShouldBeComplete: true,
+        needProfile: true
       })
       .state('createProfile', {
         url: '/createProfile',
         templateUrl: 'views/createProfile.html',
-        authenticate: false
+        needProfile: false
       })
       .state('unsupported', {
         url: '/unsupported',
         templateUrl: 'views/unsupported.html',
-        authenticate: false
+        needProfile: false
       })
       .state('uri-payment', {
         url: '/uri-payment/:data',
         controller: 'paymentUriController',
-        authenticate: false
+        needProfile: false
       })
       .state('selectWalletForPayment', {
         url: '/selectWalletForPayment',
         controller: 'walletForPaymentController',
-        authenticate: false
+        needProfile: false
       })
       .state('join', {
         url: '/join',
         controller: 'joinController',
         templateUrl: 'views/join.html',
-        authenticate: true
+        needProfile: true
       })
       .state('import', {
         url: '/import',
         controller: 'importController',
         templateUrl: 'views/import.html',
-        authenticate: true
+        needProfile: true
       })
       .state('importProfile', {
         url: '/importProfile',
         templateUrl: 'views/importProfile.html',
-        authenticate: false
+        needProfile: false
       })
       .state('create', {
         url: '/create',
         controller: 'createController',
         templateUrl: 'views/create.html',
-        authenticate: true
+        needProfile: true
       })
       .state('copayers', {
         url: '/copayers',
         controller: 'copayersController',
         templateUrl: 'views/copayers.html',
-        authenticate: true
+        needProfile: true
       })
       .state('profile', {
         url: '/profile',
         controller: 'profileController',
         templateUrl: 'views/profile.html',
-        authenticate: true
+        needProfile: true
       })
-      .state('home', {
-        url: '/home',
-        controller: 'homeController',
-        templateUrl: 'views/home.html',
-        walletShouldBeComplete: true,
-        authenticate: true
-      })
-      .state('receive', {
+
+    .state('receive', {
         url: '/receive',
         controller: 'receiveController',
         templateUrl: 'views/receive.html',
         walletShouldBeComplete: true,
-        authenticate: true
+        needProfile: true
       })
       .state('history', {
         url: '/history',
         controller: 'historyController',
         templateUrl: 'views/history.html',
         walletShouldBeComplete: true,
-        authenticate: true
+        needProfile: true
       })
       .state('send', {
         url: '/send',
         controller: 'sendController',
         templateUrl: 'views/send.html',
         walletShouldBeComplete: true,
-        authenticate: true
+        needProfile: true
       })
       .state('preferences', {
         url: '/preferences',
         controller: 'preferencesController',
         templateUrl: 'views/preferences.html',
         walletShouldBeComplete: true,
-        authenticate: true
+        needProfile: true
       })
       .state('settings', {
         url: '/settings',
         controller: 'settingsController',
         templateUrl: 'views/settings.html',
-        authenticate: false
+        needProfile: false
       })
       .state('warning', {
         url: '/warning',
         controller: 'warningController',
         templateUrl: 'views/warning.html',
-        authenticate: false
+        needProfile: false
       })
       .state('add', {
         url: '/add',
         controller: 'addController',
         templateUrl: 'views/add.html',
-        authenticate: true
+        needProfile: true
       })
       .state('signout', {
         url: '/signout',
         controller: 'signoutController',
-        authenticate: true
+        needProfile: true
       });
   })
   .run(function($rootScope, $state, gettextCatalog, uriHandler, isCordova) {
@@ -163,19 +159,20 @@ angular
       uriHandler.register();
     }
 
-    $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams){
+    $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
+
       if (unsupported) {
         $state.transitionTo('unsupported');
-        event.preventDefault(); 
+        event.preventDefault();
       }
 
-      if (!$rootScope.iden && toState.authenticate) {
-        $state.transitionTo('signin');
-        event.preventDefault(); 
+      if (!$rootScope.iden && toState.needProfile) {
+        $state.transitionTo('createProfile');
+        event.preventDefault();
       }
       if ($rootScope.wallet && !$rootScope.wallet.isComplete() && toState.walletShouldBeComplete) {
         $state.transitionTo('copayers');
-        event.preventDefault(); 
+        event.preventDefault();
       }
     });
   });

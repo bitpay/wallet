@@ -1,6 +1,6 @@
 'use strict';
 angular.module('copayApp.services')
-  .factory('identityService', function($rootScope, $location, $state, $timeout, $filter, pluginManager, notification, pendingTxsService, balanceService, applicationService, go, localStorageService) {
+  .factory('profileService', function($rootScope, $location, $state, $timeout, $filter, pluginManager, notification, pendingTxsService, balanceService, applicationService, go, localStorageService) {
 
     // TODO:
     // * remove iden from rootScope
@@ -19,22 +19,21 @@ angular.module('copayApp.services')
 
     root.open = function(username, password, cb) {
       var localUser = checkIfExist(username);
-      if (localUser && password === localUser.password ) {
+      if (localUser && password === localUser.password) {
         $rootScope.iden = localUser;
         $state.go('home');
-      }
-      else {
+      } else {
         return cb('Username or password are incorrects');
       }
     };
-    
+
     root.create = function(username, password, cb) {
       var newUser = {
         username: username,
         password: password,
         wallets: {}
       };
-      
+
       if (checkIfExist(newUser)) {
         return cb('The user already exists');
       }
@@ -42,8 +41,7 @@ angular.module('copayApp.services')
       if (localStorageService.set(username, newUser)) {
         $rootScope.iden = newUser;
         $state.go('home');
-      }
-      else {
+      } else {
         return cb('Can not save on localStorage');
       }
     };
@@ -53,8 +51,7 @@ angular.module('copayApp.services')
         var name = $rootScope.iden.name;
         if (localStorageService.remove(name)) {
           root.signout();
-        }
-        else {
+        } else {
           return cb('Error when trying to delete profile');
         }
       }
@@ -85,7 +82,7 @@ angular.module('copayApp.services')
         return cb(err);
       });
     };
-    
+
     root.setFocusedWallet = function(w, dontUpdateIt) {
       if (!_.isObject(w))
         w = $rootScope.iden.getWalletById(w);

@@ -109,7 +109,7 @@ module.exports = function(grunt) {
         dest: 'public/js/copay.js'
       },
       css: {
-        src: ['src/css/*.css', '!src/css/mobile.css'],
+        src: ['src/css/*.css'],
         dest: 'public/css/copay.css'
       },
       foundation: {
@@ -172,9 +172,9 @@ module.exports = function(grunt) {
     },
     copy: {
       icons: {
-        expand: true, 
+        expand: true,
         flatten: true,
-        src: 'bower_components/foundation-icon-fonts/foundation-icons.*', 
+        src: 'bower_components/foundation-icon-fonts/foundation-icons.*',
         dest: 'public/icons/'
       }
     }

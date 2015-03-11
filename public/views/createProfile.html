@@ -3,101 +3,30 @@
   ng-controller="createProfileController as cp" 
   ng-init="cp.init()">
 
-  <div ng-if="!$root.starting && cp.askForPin">
-    <div ng-include="'views/includes/pin-number.html'"></div>
-  </div>
-
   <div ng-show="$root.starting">
     <div ng-include="'views/includes/loading.html'" ng-init="title = 'Creating profile'"></div>
   </div>
 
-  <div class="row m20b" ng-show="!$root.starting && !cp.askForPin">
+  <div class="row m20b" ng-show="!$root.starting">
     <div class="large-5 large-centered medium-7 medium-centered columns">
-      <div class="logo-setup" ng-show="!$root.iden && !cp.hideForWP && !$root.hasPin">
+      <div class="logo-setup" ng-show="!$root.iden">
         <img src="img/logo-negative-beta.svg" alt="Copay" width="100">
         <div ng-include="'views/includes/version.html'"></div>
       </div>
 
       <h2 translate>Create profile</h2>
-      <form name="createForm" ng-submit="cp.createProfile(createForm)" novalidate>
-        <div class="input">
-          <input type="text" ng-model="username" class="form-control fi-user" name="username"
-          placeholder="{{'Username'|translate}}" required  auto-focus="!isMobile" ng-focus="formFocus()">
-          <i class="icon-person"></i>
-        </div>
+(TODO): Enter a PIN to encrypt your wallet private keys...
 
-        <div class="box-notification" ng-show="passwordStrength">
-          <!-- if you change this, check it on WP...-->
-          <div class="box-icon" ng-if="passwordStrength.strength< minPasswordStrength" style="background-color:#dd514c">
-            <i class="fi-x size-24"></i>
-          </div>
-          <div class="box-icon" ng-if="passwordStrength.strength >= minPasswordStrength" style="background-color:#16A085">
-            <i class="fi-check size-24"></i>
-          </div>
-          <span class="size-14" >
-            Password Strength: {{passwordStrength.message}}
-          </span>
-        </div>
-
-
-        <div class="input">
-          <input id="password" type="password" ng-model="$parent.password" class="form-control" name="password" placeholder="{{'Choose a password'|translate}}" check-strength="passwordStrength"  ng-focus="formFocus()" >
-          <i class="icon-locked"></i>
-        </div>
-
-
-        <div class="input">
-          <input type="password" ng-model="repeatpassword" class="input form-control" name="repeatpassword" placeholder="{{'Repeat password'|translate}}" match="password" required  ng-focus="formFocus()">
-          <i class="icon-locked"></i>
-          <div class="icon-input">
-            <span class="has-error size-12" ng-show="passForm.repeatpassword.$dirty &&
-              passForm.repeatpassword.$invalid">
-              <i class="fi-x"></i>
-              {{'Passwords must match'|translate}}
-            </span>
-            <span ng-show="passForm.repeatpassword.$dirty &&
-              !passForm.repeatpassword.$invalid"><i class="fi-check"></i>
-            </span>
-          </div>
-        </div>
-
-        <button translate type="submit" 
-          class="button primary radius expand m0" 
-          ng-disabled="createForm.$invalid ||  minPasswordStrength > passwordStrength.strength">
-          Create Profile  
-        </button>
-
-        <div class="box-setup-footer">
-          <div class="left">
-            <a class="button outline dark-gray tiny" ng-click="$root.go('signin')">
-              <i class="icon-arrow-left4 size-10"></i> 
-              <span translate>Back</span>
-            </a>
-          </div>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <div class="row m20b" ng-show="!$root.starting && askForPin">
-    <div class="large-4 large-centered medium-6 medium-centered columns">
-      <div class="clipo">
-        <img src="img/clipo-pin.png" alt="clipo" width="380">
-      </div>
-
-      <div class="text-white text-center" ng-show="askForPin == 2" translate>Repeat PIN</div>
-      <div class="box-notification" ng-show="error">
+      <div class="box-notification" ng-show="cp.error">
         <div class="box-icon error">
           <i class="fi-x size-24"></i>
         </div>
         <span class="text-warning size-14">
-          {{error|translate}}
+          {{cp.error|translate}}
         </span>
       </div>
-      <div ng-include="'views/includes/pin.html'"></div>
+      <div ng-include="'views/includes/pin.html'" ng-init="confirmPin=true"></div>
     </div>
   </div>
-</div>
-
-<div class="extra-margin-bottom"></div>
+  <div class="extra-margin-bottom"></div>
 
