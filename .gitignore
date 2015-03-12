@@ -1,6 +1,10 @@
 # translation
 po/*
 !po/*.po
+src/js/translate.js
+
+# version
+src/js/version.js
 
 # cordova
 cordova/project/*
