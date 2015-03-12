@@ -1,7 +1,7 @@
 # translation
 po/*
 !po/*.po
-src/js/translate.js
+src/js/translations.js
 
 # version
 src/js/version.js

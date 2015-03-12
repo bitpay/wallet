@@ -1,4 +1,4 @@
-<div class="bottom-bar row collapse" ng-controller="menuController as menu" ng-init="menu.init()">
+<div class="bottom-bar row collapse" ng-controller="menuController as menu">
     <div class="medium-3 small-3 columns text-center bottombar-item" ng-repeat="item in menu.menu">
       <a ng-click="go(item.link)" ui-sref-active="active"> 
         <i class="size-36 {{item.icon}} db"></i> 
