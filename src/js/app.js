@@ -10,7 +10,6 @@ var modules = [
   'ngTouch',
   'ngLodash',
   'bwcModule',
-  'LocalStorageModule',
   'copayApp.filters',
   'copayApp.services',
   'copayApp.controllers',

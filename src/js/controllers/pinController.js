@@ -1,10 +1,14 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('pinController', function($scope, $timeout) {
-  this.init = function(confirmPin) {
+  this.init = function(confirmPin, testPin) {
     this._firstpin = null;
     this.confirmPin = confirmPin;
     this.clear();
+    if (testPin) {
+      console.log('WARN: using test pin:', testPin);
+      $scope.$emit('pin', testPin);
+    }
   };
 
   this.clear = function() {
@@ -18,7 +22,6 @@ angular.module('copayApp.controllers').controller('pinController', function($sco
     this.digits.push(digit);
     this.defined.push(true);
 
-    console.log('[pinController.js.19]', this.digits); //TODO
     if (this.digits.length == 4) {
       var pin = this.digits.join('');
 

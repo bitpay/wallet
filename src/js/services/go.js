@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.services').factory('go', function($window, $rootScope, $location, $state) {
+angular.module('copayApp.services').factory('go', function($window, $rootScope, $location, $state, profileService) {
   var root = {};
 
   var hideSidebars = function() {
@@ -20,11 +20,12 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
 
     var elem = angular.element(document.querySelector('#off-canvas-wrap'));
     var leftbarActive = angular.element(document.getElementsByClassName('move-right')).length;
-    
+
     if (invert) {
-      elem.addClass('move-right');
-    }
-    else { 
+      if (profileService.profile && !$rootScope.hideNavigation) {
+        elem.addClass('move-right');
+      }
+    } else {
       if (leftbarActive) {
         hideSidebars();
       }
@@ -45,13 +46,17 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
   };
 
   root.walletHome = function() {
-    var w = $rootScope.wallet;
-    preconditions.checkState(w);
+
+
+    var wc = profileService.focusedClient;
+    console.log('[go.js.51:wc:]', wc); //TODO
+
     $rootScope.starting = false;
 
-    if (!w.isComplete()) {
+    if (!profileService.focusedComplete) {
       root.path('copayers');
     } else {
+      // TODO
       if ($rootScope.pendingPayment) {
         if ($rootScope.walletForPaymentSet) {
           root.path('send');
@@ -59,7 +64,7 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
           root.path('selectWalletForPayment');
         }
       } else {
-        root.path('home');
+        root.path('walletHome');
       }
     }
   };
@@ -79,11 +84,11 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
 
   // Global go. This should be in a better place TODO
   // We dont do a 'go' directive, to use the benefits of ng-touch with ng-click
-  $rootScope.go = function (path) {
+  $rootScope.go = function(path) {
     root.path(path);
   };
 
-  $rootScope.openExternalLink = function (url) {
+  $rootScope.openExternalLink = function(url) {
     root.openExternalLink(url);
   };
 

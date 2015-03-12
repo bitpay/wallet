@@ -15,11 +15,6 @@ angular
   .module('copayApp')
   .config(function(localStorageServiceProvider, bwcServiceProvider, $stateProvider, $urlRouterProvider) {
 
-    localStorageServiceProvider
-      .setPrefix('copayApp')
-      .setStorageType('localStorage')
-      .setNotify(true, true);
-
     bwcServiceProvider.setBaseUrl('http://localhost:3001/copay/api');
 
     $urlRouterProvider.otherwise('/');
@@ -27,8 +22,7 @@ angular
     $stateProvider
       .state('walletHome', {
         url: '/',
-        controller: 'homeController',
-        templateUrl: 'views/home.html',
+        templateUrl: 'views/walletHome.html',
         walletShouldBeComplete: true,
         needProfile: true
       })
@@ -140,7 +134,7 @@ angular
         needProfile: true
       });
   })
-  .run(function($rootScope, $state, gettextCatalog, uriHandler, isCordova) {
+  .run(function($rootScope, $state, $log, gettextCatalog, uriHandler, isCordova, profileService) {
 
     var userLang, androidLang;
 
@@ -166,11 +160,12 @@ angular
         event.preventDefault();
       }
 
-      if (!$rootScope.iden && toState.needProfile) {
+      if (!profileService.profile && toState.needProfile) {
+        $log.debug('No profile... redirecting');
         $state.transitionTo('createProfile');
         event.preventDefault();
       }
-      if ($rootScope.wallet && !$rootScope.wallet.isComplete() && toState.walletShouldBeComplete) {
+      if (profileService.focusedClient && !profileService.focusedComplete && toState.walletShouldBeComplete) {
         $state.transitionTo('copayers');
         event.preventDefault();
       }

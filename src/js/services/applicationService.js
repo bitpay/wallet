@@ -1,16 +1,16 @@
 'use strict';
 angular.module('copayApp.services')
-  .factory('applicationService', function($rootScope, $timeout, go, isCordova) {
+  .factory('applicationService', function($rootScope, $timeout, isCordova) {
     var root = {};
 
     root.restart = function() {
       if (isCordova) {
         $rootScope.iden = $rootScope.wallet = undefined;
-        go.path('/');
-        $timeout(function(){
+        // TODO        go.path('/');
+        $timeout(function() {
           $rootScope.$digest();
-        },1);
-      
+        }, 1);
+
       } else {
         // Go home reloading the application
         var hashIndex = window.location.href.indexOf('#!/');

@@ -42,26 +42,22 @@ angular.module('copayApp.services').factory('configService', function(localStora
     },
   };
 
-  root.get = function() {
-    var localConfig = localStorageService.get('config');
-    if (!localConfig) {
-      return defaultConfig;
-    }
-    else {
-      return localConfig;
-    }
+  root.get = function(cb) {
+    localStorageService.get('config', function(err, localConfig) {
+      return cb(err, localConfig || defaultConfig);
+    });
   };
 
-  root.set = function(newOpts) {
+  root.set = function(newOpts, cb) {
     var config = defaultConfig;
-    var oldOpts = {};
-    oldOpts = localStorageService.get('config');
-    lodash.assign(newOpts, config, oldOpts);
-    return localStorageService.set('config', JSON.stringify(newOpts));
+    localStorageService.get('config', function(err, oldOpts) {
+      lodash.assign(newOpts, config, oldOpts);
+      localStorageService.set('config', JSON.stringify(newOpts), cb);
+    });
   };
 
-  root.reset = function() {
-    return localStorageService.remove('config');
+  root.reset = function(cb) {
+    localStorageService.remove('config', cb);
   };
 
   return root;

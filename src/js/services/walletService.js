@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.services').factory('walletService', 
+angular.module('copayApp.services').factory('walletService',
   function($rootScope, $http, localStorageService, bwcService) {
     var root = {};
 
@@ -28,10 +28,11 @@ angular.module('copayApp.services').factory('walletService',
       $rootScope.offline = false;
       bwcService.getStatus(wallet, function(err, res) {
         if (err) {
-          $rootScope.currentWallet = {wallet: JSON.parse(wallet)};
+          $rootScope.currentWallet = {
+            wallet: JSON.parse(wallet)
+          };
           $rootScope.offline = true;
-        }
-        else {
+        } else {
           $rootScope.currentWallet = res;
           $rootScope.offline = false;
         }
@@ -55,19 +56,18 @@ angular.module('copayApp.services').factory('walletService',
 
     root.create = function(wallet, cb) {
       var w = {
-        walletName : wallet.name,
-        copayerName : $rootScope.iden.name,
-        mn : [wallet.m, wallet.n],
-        network : wallet.network
+        walletName: wallet.name,
+        copayerName: $rootScope.iden.name,
+        mn: [wallet.m, wallet.n],
+        network: wallet.network
       };
-      
+
       bwcService.create(w, function(err, secret, w) {
         if (!secret) {
           updateWallet(w, function(e, r) {
             return cb(err, secret);
           });
-        }
-        else {
+        } else {
           set(w);
           return cb(null, secret);
         }
@@ -81,13 +81,13 @@ angular.module('copayApp.services').factory('walletService',
         updateStatus(w, function(e, r) {
           return cb(e, r);
         });
-      }); 
+      });
     };
 
     root.join = function(wallet, cb) {
       var wallet = {
-        walletSecret : wallet.secret,
-        copayerName : $rootScope.iden.name
+        walletSecret: wallet.secret,
+        copayerName: $rootScope.iden.name
       };
 
       bwcService.join(wallet, function(err, res, w) {
@@ -104,11 +104,13 @@ angular.module('copayApp.services').factory('walletService',
       var walletData = get(wId);
       if (!walletData) return cb();
 
-      $rootScope.currentWallet = {wallet: JSON.parse(walletData)};
+      $rootScope.currentWallet = {
+        wallet: JSON.parse(walletData)
+      };
       updateWallet(walletData, function(err, res) {
         return cb(err, res);
       });
-    }; 
+    };
 
     root.getAddress = function(cb) {
       var walletData = $rootScope.iden.wallets[$rootScope.currentWallet.wallet.id];

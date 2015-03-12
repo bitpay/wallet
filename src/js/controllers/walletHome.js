@@ -1,6 +1,8 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('homeController', function($scope, $rootScope, $timeout, $filter, $modal, rateService, notification, txStatus, identityService, isCordova) {
+
+// TODO rateService
+angular.module('copayApp.controllers').controller('walletHomeController', function($scope, $rootScope, $timeout, $filter, $modal, notification, txStatus, isCordova) {
 
   $scope.openTxModal = function(tx) {
     var ModalInstanceCtrl = function($scope, $modalInstance) {
@@ -30,8 +32,7 @@ angular.module('copayApp.controllers').controller('homeController', function($sc
             if (err) {
               $scope.error = 'Transaction could not send. Please try again.';
               $scope.$digest();
-            }
-            else {
+            } else {
               $modalInstance.close(status);
             }
           });
@@ -53,8 +54,7 @@ angular.module('copayApp.controllers').controller('homeController', function($sc
             if (err) {
               $scope.error = err;
               $scope.$digest();
-            }
-            else {
+            } else {
               $modalInstance.close(status);
             }
           });
@@ -76,8 +76,7 @@ angular.module('copayApp.controllers').controller('homeController', function($sc
             if (err) {
               $scope.error = 'Transaction could not send. Please try again.';
               $scope.$digest();
-            }
-            else {
+            } else {
               $modalInstance.close(status);
             }
           });

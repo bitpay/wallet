@@ -1,6 +1,6 @@
 'use strict';
 angular.module('copayApp.services')
-  .factory('profileService', function($rootScope, $location, $state, $timeout, $filter, pluginManager, notification, pendingTxsService, balanceService, applicationService, go, localStorageService) {
+  .factory('profileService', function($rootScope, $location, $timeout, $filter, $log, pluginManager, notification, pendingTxsService, balanceService, applicationService, storageService, bwcService, configService) {
 
     // TODO:
     // * remove iden from rootScope
@@ -9,52 +9,36 @@ angular.module('copayApp.services')
 
     var root = {};
 
-    var checkIfExist = function(username) {
-      return localStorageService.get(username);
-    };
+    root.profile = null;
+    root.focusedClient = null;
 
     root.isAuthenticated = function() {
       return $rootScope.iden;
     };
 
-    root.open = function(username, password, cb) {
-      var localUser = checkIfExist(username);
-      if (localUser && password === localUser.password) {
-        $rootScope.iden = localUser;
-        $state.go('home');
-      } else {
-        return cb('Username or password are incorrects');
-      }
+    root.createDefaultWallet = function(pin, cb) {
+      var walletClient = bwcService.getClient();
+
+      walletClient.createWallet('Personal Wallet', 'me', 1, 1, 'livenet', function(err) {
+        return cb(err, walletClient);
+      });
     };
 
-    root.create = function(username, password, cb) {
-      var newUser = {
-        username: username,
-        password: password,
-        wallets: {}
-      };
+    root.create = function(pin, cb) {
+      root.createDefaultWallet(pin, function(err, walletClient) {
+        if (err) return cb('Error creating wallet');
 
-      if (checkIfExist(newUser)) {
-        return cb('The user already exists');
-      }
+        var p = Profile.create({
+          credentials: [walletClient.export()],
+        });
 
-      if (localStorageService.set(username, newUser)) {
-        $rootScope.iden = newUser;
-        $state.go('home');
-      } else {
-        return cb('Can not save on localStorage');
-      }
-    };
-
-    root.delete = function(cb) {
-      if ($rootScope.iden) {
-        var name = $rootScope.iden.name;
-        if (localStorageService.remove(name)) {
-          root.signout();
-        } else {
-          return cb('Error when trying to delete profile');
-        }
-      }
+        root.profile = p;
+        root.setFocusedWallet(walletClient, function(err) {
+          storageService.createProfile(p, function(err) {
+            return cb(err);
+          });
+        });
+      });
     };
 
     root.signout = function() {
@@ -63,41 +47,23 @@ angular.module('copayApp.services')
         $rootScope.wallets = null;
         $rootScope.currentWallet = null;
         $rootScope.offline = null;
-        $state.go('signin');
+        // TODO //        $state.go('signin');
       }
     };
 
-    root.createDefaultWallet = function(cb) {
-      var iden = $rootScope.iden;
+    root.setFocusedWallet = function(walletClient, cb) {
+      var walletId = walletClient.credentials.walletId;
 
-      var walletOptions = {
-        nickname: iden.fullName,
-        networkName: config.networkName,
-        requiredCopayers: 1,
-        totalCopayers: 1,
-        password: iden.password,
-        name: 'My wallet',
-      };
-      iden.createWallet(walletOptions, function(err, wallet) {
-        return cb(err);
-      });
-    };
+      $log.debug('Set focus:', walletId);
+      root.profile.lastFocusedWalletId = walletId;
 
-    root.setFocusedWallet = function(w, dontUpdateIt) {
-      if (!_.isObject(w))
-        w = $rootScope.iden.getWalletById(w);
-      preconditions.checkState(w && _.isObject(w));
+      root.focusedClient = walletClient;
 
-      copay.logger.debug('Set focus:', w.getName());
-      $rootScope.wallet = w;
-
-      if (!dontUpdateIt)
-        $rootScope.iden.updateFocusedTimestamp(w.getId());
-
-      pendingTxsService.update();
-      $timeout(function() {
-        $rootScope.$digest();
-      }, 1);
+      // TODO cache
+      walletClient.getStatus(function(err, ret) {
+        root.focusedComplete = ret.wallet.status == 'complete';
+        return cb();
+      })
     };
 
     root.notifyTxProposalEvent = function(w, e) {
@@ -237,7 +203,7 @@ angular.module('copayApp.services')
         if (wid == iden.getLastFocusedWalletId()) {
           copay.logger.debug('GOT Focused wallet:', w.getName());
           root.setFocusedWallet(w, true);
-          go.walletHome();
+          // TODO          go.walletHome();
         }
 
         // At the end (after all handlers are in place)...start the wallet.
