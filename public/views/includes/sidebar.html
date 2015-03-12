@@ -1,4 +1,4 @@
-<div ng-init="sidebar.init()">
+<nav class="left-off-canvas-menu" ng-controller="sidebarController as sidebar" ng-init="sidebar.init()">
   <header ng-click="$root.go('profile')" class="text-center">
     <div class="photo-container">
       <img gravatar-src="'{{sidebar.username}}'" gravatar-size="45">
@@ -61,5 +61,4 @@
       <div ng-include="'views/includes/version.html'"></div>
     </div>
   </div>
-</div>
-
+</nav>

@@ -22,9 +22,7 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
     var leftbarActive = angular.element(document.getElementsByClassName('move-right')).length;
     
     if (invert) {
-      if ($rootScope.iden && !$rootScope.hideNavigation) {
-        elem.addClass('move-right');
-      }
+      elem.addClass('move-right');
     }
     else { 
       if (leftbarActive) {

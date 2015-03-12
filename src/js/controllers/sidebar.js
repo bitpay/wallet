@@ -1,37 +1,19 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('sidebarController', 
-  function($rootScope, $timeout, identityService, isMobile, isCordova, go) {
+  function($rootScope, $timeout, profileService, isMobile, isCordova, go) {
 
   this.isMobile = isMobile.any();
   this.isCordova = isCordova;
-  this.username = $rootScope.iden ? $rootScope.iden.username : '';
-
-  this.menu = [{
-    'title': 'Home',
-    'icon': 'icon-home',
-    'link': 'homeWallet'
-  }, {
-    'title': 'Receive',
-    'icon': 'icon-receive',
-    'link': 'receive'
-  }, {
-    'title': 'Send',
-    'icon': 'icon-paperplane',
-    'link': 'send'
-  }, {
-    'title': 'History',
-    'icon': 'icon-history',
-    'link': 'history'
-  }];
+  this.username = $rootScope.iden ? $rootScope.iden.username : 'Undefined';
 
   this.signout = function() {
-    identityService.signout();
+    profileService.signout();
   };
 
   this.switchWallet = function(wid) {
     this.walletSelection = false;
-    identityService.setFocusedWallet(wid);
+    profileService.setFocusedWallet(wid);
     go.walletHome();
   };
 
@@ -39,33 +21,7 @@ angular.module('copayApp.controllers').controller('sidebarController',
     this.walletSelection = !this.walletSelection;
     if (!this.walletSelection) return;
     this.setWallets();
-  };
-
-  this.openScanner = function() {
-    window.ignoreMobilePause = true;
-    cordova.plugins.barcodeScanner.scan(
-      function onSuccess(result) {
-        $timeout(function() {
-          window.ignoreMobilePause = false;
-        }, 100);
-        if (result.cancelled) return;
-
-        $timeout(function() {
-          var data = result.text;
-          this.$apply(function() {
-            $rootScope.$emit('dataScanned', data); 
-          });
-        }, 1000);
-      },
-      function onError(error) {
-        $timeout(function() {
-          window.ignoreMobilePause = false;
-        }, 100);
-        alert('Scanning error');
-      }
-    );
-    go.send();
-  };
+  }; 
 
   this.init = function() {
     // This should be called only once.
@@ -92,10 +48,10 @@ angular.module('copayApp.controllers').controller('sidebarController',
           // new focus
           var newWid = $rootScope.iden.getLastFocusedWalletId();
           if (newWid && $rootScope.iden.getWalletById(newWid)) {
-            identityService.setFocusedWallet(newWid);
+            profileService.setFocusedWallet(newWid);
           } else {
             copay.logger.debug('No wallets');
-            identityService.noFocusedWallet(newWid);
+            profileService.noFocusedWallet(newWid);
           }
         }
         this.walletSelection = false;
