@@ -122,14 +122,9 @@ module.exports = function(grunt) {
       }
     },
     cssmin: {
-      desktop: {
+      copay: {
         files: {
-          'public/css/copay.css': ['src/css/*.css', '!src/css/mobile.css'],
-        }
-      },
-      mobile: {
-        files: {
-          'public/css/copay.css': ['src/css/*.css', '!src/css/desktop.css'],
+          'public/css/copay.css': ['src/css/*.css'],
         }
       },
       foundation: {
