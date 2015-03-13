@@ -161,10 +161,22 @@ angular
       }
 
       if (!profileService.profile && toState.needProfile) {
-        $log.debug('No profile... redirecting');
-        $state.transitionTo('createProfile');
-        event.preventDefault();
+
+        profileService.loadAndSetProfile(function(err) {
+          if (err) {
+            if (err.message.match('NOPROFILE')) {
+              $log.debug('No profile... redirecting');
+              $state.transitionTo('createProfile');
+              event.preventDefault();
+            } else {
+              throw new Error(err); // TODO
+            }
+          } else {
+            // Profile was loaded
+          }
+        });
       }
+
       if (profileService.focusedClient && !profileService.isFocusedComplete() && toState.walletShouldBeComplete) {
         $state.transitionTo('copayers');
         event.preventDefault();

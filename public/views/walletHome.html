@@ -9,7 +9,7 @@
         <div class="amount">
           <span class="size-36">
             <strong>
-              <span >{{index.status.balance.totalAmount || 0}}</span>
+              <span >{{index.walletStatus.balance.totalAmount || 0}}</span>
           </strong>
           </span>
           <span class="size-14 db m5t text-gray">
@@ -19,10 +19,10 @@
           </span>
         </div>
         <div class="pr">
-          <div class="avatar-wallet left">{{index.status.wallet.walletName | limitTo: 1}}</div>      
+          <div class="avatar-wallet left">{{index.walletStatus.wallet.walletName | limitTo: 1}}</div>      
           <div class="wallet-info">
               <p class="m0">
-              {{index.status.wallet.m}} <span translate>of</span>  {{index.status.wallet.n}}  
+              {{index.walletStatus.wallet.m}} <span translate>of</span>  {{index.walletStatus.wallet.n}}  
               </p>
             <div class="size-12 text-gray">
               <span ng-if="$root.wallet.isShared() && !$root.wallet.isTestnet()" translate>Multisignature wallet </span>

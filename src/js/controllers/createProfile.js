@@ -10,12 +10,12 @@ angular.module('copayApp.controllers').controller('createProfileController', fun
       go.walletHome();
 
     $rootScope.$on('pin', function(event, pin) {
+
       profileService.create(pin, function(err) {
         if (err) {
           console.log('[createProfile.js.16:err:]', err); //TODO
           // TODO -> mostrar error o algo...
         } else {
-          $scope.$emit('newProfile');
           go.walletHome();
         }
       });

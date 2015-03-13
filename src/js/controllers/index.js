@@ -1,13 +1,16 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('indexController', function($rootScope, $log, go, profileService) {
+angular.module('copayApp.controllers').controller('indexController', function($rootScope, $log, go) {
 
   var self = this;
 
-  $rootScope.$on('newProfile', function() {
-    self.hasProfile = !!profileService.profile;
-    self.status = profileService.focusedStatus;
-    $log.debug('Setting profile:', self.status);
+  $rootScope.$on('newFocusedWallet', function(event, walletStatus) {
+    self.hasProfile = true;
+    self.walletStatus = walletStatus;
+
+    $log.debug('Setting new wallet:', walletStatus);
+
+    $rootScope.$digest();
   });
 
   this.openMenu = function() {

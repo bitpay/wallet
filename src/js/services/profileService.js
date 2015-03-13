@@ -1,42 +1,89 @@
 'use strict';
 angular.module('copayApp.services')
-  .factory('profileService', function($rootScope, $location, $timeout, $filter, $log, pluginManager, notification, pendingTxsService, balanceService, applicationService, storageService, bwcService, configService) {
-
-    // TODO:
-    // * remove iden from rootScope
-    // * remove wallet from rootScope
-    // * create walletService
+  .factory('profileService', function($rootScope, $location, $timeout, $filter, $log, lodash, pluginManager, notification, pendingTxsService, balanceService, applicationService, storageService, bwcService, configService) {
 
     var root = {};
 
     root.profile = null;
     root.focusedClient = null;
-    root.focusedStatus = null;
+    root.walletClients = {};
 
-    root.createDefaultWallet = function(pin, cb) {
-      var walletClient = bwcService.getClient();
+    root._setFocus = function(walletId, cb) {
+      $log.debug('Set focus:', walletId);
 
-      walletClient.createWallet('Personal Wallet', 'me', 1, 1, 'livenet', function(err) {
-        return cb(err, walletClient);
+      // Set local object
+      root.focusedClient = root.walletClients[walletId];
+
+      if (!root.focusedClient)
+        root.focusedClient = root.walletClients[lodash.keys(root.walletClients)[0]];
+
+      // TODO
+      if (!root.focusedClient)
+        throw new Error('Profile has not wallets!');
+
+      root.focusedClient.getStatus(function(err, walletStatus) {
+        $rootScope.$emit('newFocusedWallet', walletStatus);
+        return cb();
       });
     };
 
-    root.create = function(pin, cb) {
-      root.createDefaultWallet(pin, function(err, walletClient) {
-        if (err) return cb('Error creating wallet');
+    root.setAndStoreFocus = function(walletId, cb) {
+      root.setFocus(walletId, function(err) {
+        storageService.setFocusedWalletId(walletId, cb);
+      });
+    };
 
+    root.setProfile = function(p, cb) {
+      root.walletClients = {};
+
+      lodash.each(p.credentials, function(c) {
+        root.walletClients[c.walletId] = bwcService.getClient(c);
+      });
+      root.profile = p;
+
+      storageService.getFocusedWalletId(function(err, focusedWalletId) {
+        root._setFocus(focusedWalletId, function(err) {
+          return cb(err);
+        });
+      });
+    };
+
+
+    root.loadAndSetProfile = function(cb) {
+      storageService.getProfile(function(err, profile) {
+        if (err) return cb(err);
+        if (!profile) return cb(new Error('NOPROFILE: No profile'));
+
+        return root.setProfile(profile, cb);
+      });
+    };
+
+    root._createNewProfile = function(pin, cb) {
+      var walletClient = bwcService.getClient();
+      walletClient.createWallet('Personal Wallet', 'me', 1, 1, 'livenet', function(err) {
+        if (err) return cb('Error creating wallet');
         var p = Profile.create({
           credentials: [walletClient.export()],
         });
+        return cb(null, p);
+      })
+    };
 
-        root.profile = p;
-        root.setFocusedWallet(walletClient, function(err) {
-          storageService.createProfile(p, function(err) {
+    root.create = function(pin, cb) {
+      root._createNewProfile(pin, function(err, p) {
+        root.setProfile(p, function(err) {
+          storageService.storeNewProfile(p, function(err) {
             return cb(err);
           });
         });
       });
     };
+
+    root.isFocusedComplete = function() {
+      return root.focusedClient.credentials.isComplete();
+    };
+
+    // -===============================================================================
 
     root.signout = function() {
       root.profile = null;
@@ -44,23 +91,6 @@ angular.module('copayApp.services')
       // TODO //        $state.go('signin');
     };
 
-    root.setFocusedWallet = function(walletClient, cb) {
-      var walletId = walletClient.credentials.walletId;
-
-      $log.debug('Set focus:', walletId);
-      root.profile.lastFocusedWalletId = walletId;
-
-      root.focusedClient = walletClient;
-
-      walletClient.getStatus(function(err, ret) {
-        root.focusedStatus = ret;
-        return cb();
-      })
-    };
-
-    root.isFocusedComplete = function() {
-      return root.focusedStatus.wallet.status == 'complete';
-    };
 
     root.notifyTxProposalEvent = function(w, e) {
       if (e.cId == w.getMyCopayerId())

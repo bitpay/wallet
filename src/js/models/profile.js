@@ -10,20 +10,23 @@ Profile.create = function(opts) {
 
   var x = new Profile();
   x.createdOn = Date.now();
-  x.lastFocusedWalletId = opts.lastFocusedWalletId;
   x.credentials = opts.credentials;
   return x;
 };
 
 
-Profile.prototype.toObj = function() {
-  return JSON.stringify(this);
-};
-
-Profile.prototype.fromObj = function(obj) {
+Profile.fromObj = function(obj) {
   var x = new Profile();
   x.createdOn = obj.createdOn;
-  x.lastFocusedWalletId = obj.lastFocusedWalletId;
   x.credentials = obj.credentials;
   return x;
+};
+
+
+Profile.fromString = function(str) {
+  return Profile.fromObj(JSON.parse(str));
+};
+
+Profile.prototype.toObj = function() {
+  return JSON.stringify(this);
 };
