@@ -5,10 +5,6 @@
 angular.module('copayApp.controllers').controller('walletHomeController', function($scope, $rootScope, $timeout, $filter, $modal, notification, txStatus, isCordova, profileService) {
 
 
-  this.init = function() {
-    this.status = profileService.focusedStatus;
-    console.log('[walletHome.js.9:status:]', this.status); //TODO
-  };
 
   $scope.openTxModal = function(tx) {
     var ModalInstanceCtrl = function($scope, $modalInstance) {

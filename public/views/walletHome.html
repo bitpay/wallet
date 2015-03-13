@@ -19,10 +19,10 @@
           </span>
         </div>
         <div class="pr">
-          <div class="avatar-wallet left">{{$root.wallet.getName() | limitTo: 1}}</div>      
+          <div class="avatar-wallet left">{{index.status.wallet.walletName | limitTo: 1}}</div>      
           <div class="wallet-info">
               <p class="m0">
-              {{$root.wallet.requiredCopayers}} <span translate>of</span> {{$root.wallet.totalCopayers}} 
+              {{index.status.wallet.m}} <span translate>of</span>  {{index.status.wallet.n}}  
               </p>
             <div class="size-12 text-gray">
               <span ng-if="$root.wallet.isShared() && !$root.wallet.isTestnet()" translate>Multisignature wallet </span>
