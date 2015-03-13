@@ -10,6 +10,7 @@ angular.module('copayApp.controllers').controller('receiveController',
       var self = this;
       walletService.createAddress(function(err, addr) {
         self.addr = addr.address;
+        $scope.$digest();
       });
     };
 
@@ -31,14 +32,14 @@ angular.module('copayApp.controllers').controller('receiveController',
 
     this.openAddressModal = function(address) {
       var self = this;
-      var ModalInstanceCtrl = function(self, $modalInstance, address) {
-        self.address = address;
-        self.isCordova = isCordova;
-        self.copyAddress = function(addr) {
+      var ModalInstanceCtrl = function($scope, $modalInstance, address) {
+        $scope.address = address;
+        $scope.isCordova = self.isCordova;
+        $scope.copyAddress = function(addr) {
           scope.copyAddress(addr);
         };
 
-        self.cancel = function() {
+        $scope.cancel = function() {
           $modalInstance.dismiss('cancel');
         };
       };
@@ -58,6 +59,18 @@ angular.module('copayApp.controllers').controller('receiveController',
     this.toggleShowAll = function() {
       this.showAll = !this.showAll;
       this.setAddressList();
+    };
+
+    this.setAddressList = function() {
+      if (this.showAll) {
+        var self = this;
+        walletService.getMainAddresses(function(err, addrs) {
+          self.addresses = addrs;
+          $scope.$digest();
+        });
+      } else {
+        this.addresses = [];
+      }
     };
 
   }

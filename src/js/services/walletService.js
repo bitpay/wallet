@@ -17,8 +17,8 @@ angular.module('copayApp.services').factory('walletService',
       });
     };
 
-    root.getAddresses = function(cb) {
-      profileService.focusedClient.getAddresses(function(err, res) {
+    root.getMainAddresses = function(cb) {
+      profileService.focusedClient.getMainAddresses({}, function(err, res) {
         return cb(err, res);
       });
     };
