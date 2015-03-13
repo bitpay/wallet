@@ -1,21 +1,21 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('createProfileController', function($rootScope, profileService, go) {
+angular.module('copayApp.controllers').controller('createProfileController', function($rootScope, $scope, profileService, go) {
 
   var _credentials;
 
   this.init = function() {
-    // TODO
-    if ($rootScope.wallet)
+
+    if (profileService.profile)
       go.walletHome();
 
     $rootScope.$on('pin', function(event, pin) {
       profileService.create(pin, function(err) {
-        console.log('[createProfile.js.14]'); //TODO
         if (err) {
           console.log('[createProfile.js.16:err:]', err); //TODO
           // TODO -> mostrar error o algo...
         } else {
+          $scope.$emit('newProfile');
           go.walletHome();
         }
       });

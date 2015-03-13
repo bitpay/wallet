@@ -49,11 +49,9 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
 
 
     var wc = profileService.focusedClient;
-    console.log('[go.js.51:wc:]', wc); //TODO
-
     $rootScope.starting = false;
 
-    if (!profileService.focusedComplete) {
+    if (!profileService.isFocusedComplete()) {
       root.path('copayers');
     } else {
       // TODO

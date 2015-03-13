@@ -165,7 +165,7 @@ angular
         $state.transitionTo('createProfile');
         event.preventDefault();
       }
-      if (profileService.focusedClient && !profileService.focusedComplete && toState.walletShouldBeComplete) {
+      if (profileService.focusedClient && !profileService.isFocusedComplete() && toState.walletShouldBeComplete) {
         $state.transitionTo('copayers');
         event.preventDefault();
       }

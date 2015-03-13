@@ -1,20 +1,15 @@
-<div class="home-wallet" ng-controller="walletHomeController">
-  <div class="row show-for-large-up">
-    <div class="large-12 columns">
-      <h1 translate>Home</h1>
-    </div>
-  </div>
+<div class="home-wallet" ng-controller="walletHomeController as home" ng-init="home.init()">
+
+  <h1 translate>Home</h1>
   
   
   <div class="row">
     <div class="columns">
       <div class="panel oh">
-        <div class="amount hide-for-large-up">
+        <div class="amount">
           <span class="size-36">
             <strong>
-              <span ng-if="!$root.updatingBalance">{{$root.wallet.balanceInfo.totalBalance || 0}}</span>
-          <span ng-if="$root.updatingBalance"><i class="fi-bitcoin-circle icon-rotate spinner"></i></span>
-          {{$root.wallet.settings.unitName}}
+              <span >{{index.status.balance.totalAmount || 0}}</span>
           </strong>
           </span>
           <span class="size-14 db m5t text-gray">

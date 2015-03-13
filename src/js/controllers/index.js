@@ -1,6 +1,12 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('indexController', function($timeout, go, isCordova, profileService, notification) {
+angular.module('copayApp.controllers').controller('indexController', function($rootScope, go, profileService) {
+
+  var self = this;
+
+  $rootScope.$on('newProfile', function() {
+    self.hasProfile = !!profileService.profile;
+  });
 
   this.openMenu = function() {
     go.swipe(true);
@@ -9,5 +15,4 @@ angular.module('copayApp.controllers').controller('indexController', function($t
   this.closeMenu = function() {
     go.swipe();
   };
-
 });

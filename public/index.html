@@ -22,15 +22,15 @@
     <div class="off-canvas-wrap" id="off-canvas-wrap">
       <div class="inner-wrap">
 
-        <div ng-include="'views/includes/topbar.html'"></div>
+        <div ng-include="'views/includes/topbar.html'" ng-if="index.hasProfile"></div>
 
-        <div ng-include="'views/includes/sidebar.html'"></div>
+        <div ng-include="'views/includes/sidebar.html'" ng-if="index.hasProfile"></div>
 
         <div notifications="right top"></div> 
 
-        <section class="main" ui-view></section>
+        <section ng-class="{'main': index.hasProfile}" ui-view></section>
 
-        <div ng-include="'views/includes/menu.html'"></div>
+        <div ng-include="'views/includes/menu.html'" ng-if="index.hasProfile"></div>
 
         <a class="close-menu" ng-click="index.closeMenu()"></a>
 

@@ -11,10 +11,7 @@ angular.module('copayApp.services')
 
     root.profile = null;
     root.focusedClient = null;
-
-    root.isAuthenticated = function() {
-      return $rootScope.iden;
-    };
+    root.focusedStatus = null;
 
     root.createDefaultWallet = function(pin, cb) {
       var walletClient = bwcService.getClient();
@@ -42,13 +39,9 @@ angular.module('copayApp.services')
     };
 
     root.signout = function() {
-      if ($rootScope.iden) {
-        $rootScope.iden = null;
-        $rootScope.wallets = null;
-        $rootScope.currentWallet = null;
-        $rootScope.offline = null;
-        // TODO //        $state.go('signin');
-      }
+      root.profile = null;
+      root.lastFocusedWallet = null;
+      // TODO //        $state.go('signin');
     };
 
     root.setFocusedWallet = function(walletClient, cb) {
@@ -59,11 +52,14 @@ angular.module('copayApp.services')
 
       root.focusedClient = walletClient;
 
-      // TODO cache
       walletClient.getStatus(function(err, ret) {
-        root.focusedComplete = ret.wallet.status == 'complete';
+        root.focusedStatus = ret;
         return cb();
       })
+    };
+
+    root.isFocusedComplete = function() {
+      return root.focusedStatus.wallet.status == 'complete';
     };
 
     root.notifyTxProposalEvent = function(w, e) {

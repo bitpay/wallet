@@ -7,7 +7,9 @@ angular.module('copayApp.controllers').controller('pinController', function($sco
     this.clear();
     if (testPin) {
       console.log('WARN: using test pin:', testPin);
-      $scope.$emit('pin', testPin);
+      $timeout(function() {
+        $scope.$emit('pin', testPin);
+      }, 100);
     }
   };
 
