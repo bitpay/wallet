@@ -172,6 +172,20 @@ module.exports = function(grunt) {
         src: 'bower_components/foundation-icon-fonts/foundation-icons.*',
         dest: 'public/icons/'
       }
+    },
+    karma: {
+      unit: {
+        configFile: 'test/karma.conf.js'
+      }
+    },
+    coveralls: {
+      options: {
+        debug: false,
+        coverageDir: 'coverage/report-lcov',
+        dryRun: true,
+        force: true,
+        recursive: false
+      }
     }
   });
 
@@ -184,6 +198,8 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-markdown');
   grunt.loadNpmTasks('grunt-release');
   grunt.loadNpmTasks('grunt-exec');
+  grunt.loadNpmTasks('grunt-karma');
+  grunt.loadNpmTasks('grunt-karma-coveralls');
 
 
   grunt.registerTask('default', [
@@ -199,4 +215,6 @@ module.exports = function(grunt) {
     'nggettext_compile', 'exec:version', 'concat', '!concat:css', 'cssmin:mobile', 'cssmin:foundation', 'uglify'
   ]);
   grunt.registerTask('translate', ['nggettext_extract']);
+  grunt.registerTask('test', ['karma']);
+  grunt.registerTask('test-coveralls', ['karma', 'coveralls']);
 };
