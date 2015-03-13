@@ -178,6 +178,10 @@ module.exports = function(grunt) {
     karma: {
       unit: {
         configFile: 'test/karma.conf.js'
+      },
+      prod: {
+        configFile: 'test/karma.conf.js',
+        singleRun: true
       }
     },
     coveralls: {
@@ -217,6 +221,6 @@ module.exports = function(grunt) {
     'nggettext_compile', 'exec:version', 'concat', '!concat:css', 'cssmin:mobile', 'cssmin:foundation', 'uglify'
   ]);
   grunt.registerTask('translate', ['nggettext_extract']);
-  grunt.registerTask('test', ['karma']);
-  grunt.registerTask('test-coveralls', ['karma', 'coveralls']);
+  grunt.registerTask('test', ['karma:unit']);
+  grunt.registerTask('test-coveralls', ['karma:prod', 'coveralls']);
 };
