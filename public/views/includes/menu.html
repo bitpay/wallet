@@ -1,6 +1,6 @@
 <div class="bottom-bar row collapse" ng-controller="menuController as menu">
     <div class="medium-3 small-3 columns text-center bottombar-item" ng-repeat="item in menu.menu">
-      <a ng-click="go(item.link)" ui-sref-active="active"> 
+      <a ng-click="go(item.link)" ng-class="{active: menu.isActive(item)}"> 
         <i class="size-36 {{item.icon}} db"></i> 
         <div class="size-10 tu">
           {{item.title|translate}} 

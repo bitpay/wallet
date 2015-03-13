@@ -1,28 +1,13 @@
 <div 
-  ng-controller="createProfileController as cp" 
-  ng-init="cp.init()">
+  ng-controller="createProfileController as cp"
+  ng-init="index.pageLoaded = true;">
 
-  <div class="row">
-    <div class="large-5 large-centered medium-7 medium-centered columns">
-      <div class="logo-setup" ng-show="!$root.iden">
-        <img src="img/logo-negative-beta.svg" alt="Copay" width="100">
-        <div ng-include="'views/includes/version.html'"></div>
-      </div>
-
-      <h1 class="text-center" translate>Setup PIN</h1>
-
-      <div class="box-notification" ng-show="cp.error">
-        <div class="box-icon error">
-          <i class="fi-x size-24"></i>
-        </div>
-        <span class="text-warning size-14">
-          {{cp.error|translate}}
-        </span>
-      </div>
-    </div>
+  <div class="text-center logo-setup" ng-show="!$root.iden">
+    <img src="img/logo-negative-beta.svg" alt="Copay" width="100">
+    <div ng-include="'views/includes/version.html'"></div>
   </div>
-    <!-- <div ng&#45;include="'views/includes/pin.html'" ng&#45;init="confirmPin=true"></div> -->
-    <div ng-include="'views/includes/pin.html'" ng-init="testPin=1234"></div>
+  <div ng-include="'views/includes/pin.html'" ng-init="confirmPin=true"></div>
+  <!-- <div ng-include="'views/includes/pin.html'" ng-init="testPin=1234"></div> -->
 </div>
 <div class="extra-margin-bottom"></div>
 

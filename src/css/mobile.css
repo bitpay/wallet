@@ -39,10 +39,6 @@
     -ms-content-zooming: none; 
   } 
 
-  .loading-screen {
-    background-color: #2C3E50;
-  }
-
   .logo-setup {
     margin: 0 0 1rem 0;
   }
@@ -390,7 +386,7 @@
 
   .pin {
     margin: 0 auto;
-    width: 35%;
+    width: 25%;
     text-align: center;
     overflow: hidden;
   }
@@ -408,7 +404,6 @@
     width: 100%;
     text-align: center;
     height: 72%;
-    margin-bottom: 1.5%;
   }
 
   .pin-button-bar {
