@@ -1,24 +1,19 @@
-<div class="addresses" ng-controller="ReceiveController" ng-init="init()">
-  <div class="row">
-    <div class="large-12 medium-12 small-12 columns">
-      <h1 class="show-for-large-up">{{$root.title|translate}}</h1> 
-    </div>
-  </div>
+<div class="addresses" ng-controller="receiveController as receive" ng-init="receive.newAddr()" ng-show="receive.addr">
 
-  <div class="row" ng-if="addr">
+  <div class="row" ng-if="receive.addr">
     <!-- Address-->
     <div class="large-12 columns">
       <div class="panel">
         <h2 class="line-b" translate>My Bitcoin address:</h2>
-        <div class="text-center" ng-click="copyAddress(addr)">
-          <qrcode size="220" data="bitcoin:{{addr}}"></qrcode>
+        <div class="text-center" ng-click="copyAddress(receive.addr)">
+          <qrcode size="220" data="bitcoin:{{receive.addr}}"></qrcode>
           <div class="m10t">
-            <h4 class="size-12">{{addr}}</h4>
+            <h4 class="size-12">{{receive.addr}}</h4>
           </div>
         </div>
         <div class="m10t text-center" ng-show="isCordova">
           <span class="button outline dark-gray tiny" 
-            ng-click="shareAddress(addr)">
+            ng-click="shareAddress(receive.addr)">
             <i class="fi-share"></i> 
             <span translate>Share address</span>
           </span>
@@ -30,12 +25,12 @@
     </div>
   </div>
   <div class="row">
-    <div class="large-12 columns" ng-if="showAll">
-      <div ng-repeat="addr in addresses" ng-click="openAddressModal(addr)" class="pointer">
+    <div class="large-12 columns" ng-if="receive.showAll">
+      <div ng-repeat="addr in receive.addresses" ng-click="receive.openAddressModal(addr)" class="pointer">
         <div class="panel">
           <div class="row">
             <div class="large-3 medium-4 small-5 columns">
-              <contact class="size-12 ellipsis" address="{{::addr.address}}"></contact>
+              <div class="size-12 ellipsis">{{::addr.address}}"</div>
             </div>
             <div class="large-1 medium-1 small-2 columns">
               <span translate class="text-secondary size-10" ng-show="::addr.isChange">change</span>
@@ -53,13 +48,13 @@
     <div class="large-12 columns">
       <div class="row">
         <div class="large-6 medium-6 small-6 columns text-left">
-          <a class="button secondary tiny" ng-click="toggleShowAll()">
-            <span ng-show="!showAll" translate>Show all my addresses</span>
-            <span ng-show="showAll" translate>Hide them</span>
+          <a class="button secondary tiny" ng-click="receive.toggleShowAll()">
+            <span ng-show="!receive.showAll" translate>Show all my addresses</span>
+            <span ng-show="receive.showAll" translate>Hide them</span>
           </a>
         </div>
         <div class="large-6 medium-6 small-6 columns text-right">
-          <a class="button secondary tiny" ng-click="newAddr()" ng-disabled="loading" translate>
+          <a class="button secondary tiny" ng-click="receive.newAddr()" translate>
             Generate new address
           </a>
         </div>

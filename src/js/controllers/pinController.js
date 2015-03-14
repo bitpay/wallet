@@ -3,6 +3,7 @@
 angular.module('copayApp.controllers').controller('pinController', function($scope, $timeout) {
   this.init = function(confirmPin, testPin) {
     this._firstpin = null;
+    this.askForPin = 1;
     this.confirmPin = confirmPin;
     this.clear();
     if (testPin) {
@@ -19,6 +20,13 @@ angular.module('copayApp.controllers').controller('pinController', function($sco
   };
 
   this.press = function(digit) {
+    var self = this;
+    $timeout(function() {
+      self._press(digit);
+    }, 1);
+  };
+
+  this._press = function(digit) {
     var self = this;
     this.error = null;
     this.digits.push(digit);
@@ -43,10 +51,11 @@ angular.module('copayApp.controllers').controller('pinController', function($sco
             this._firstpin = null;
             this.askForPin = 1;
             $timeout(function() {
-              this.clear();
-              this.error = 'Entered PINs were not equal. Try again';
+              self.clear();
+              self.error = 'Entered PINs were not equal. Try again';
+              var _self = self;
               $timeout(function() {
-                this.error = null;
+                _self.error = null;
               }, 2000);
             }, 100);
             return;

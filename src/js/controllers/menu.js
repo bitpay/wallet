@@ -1,11 +1,11 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('menuController', function() {
+angular.module('copayApp.controllers').controller('menuController', function($state) {
 
   this.menu = [{
     'title': 'Home',
     'icon': 'icon-home',
-    'link': 'homeWallet'
+    'link': 'walletHome'
   }, {
     'title': 'Receive',
     'icon': 'icon-receive',
@@ -19,5 +19,9 @@ angular.module('copayApp.controllers').controller('menuController', function() {
     'icon': 'icon-history',
     'link': 'history'
   }];
+
+  this.isActive = function(item) {
+    return item.link == $state.current.name;
+  };
 
 });

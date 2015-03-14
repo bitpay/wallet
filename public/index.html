@@ -19,7 +19,11 @@
     ng-swipe-left="index.closeMenu()"
     ng-swipe-right="index.openMenu()">
 
-    <div class="off-canvas-wrap" id="off-canvas-wrap">
+    <div ng-show="!index.pageLoaded">
+      <div ng-include="'views/includes/loading.html'" ng-init="title = 'Loading'"></div>
+    </div>
+
+    <div class="off-canvas-wrap" id="off-canvas-wrap" ng-show="index.pageLoaded">
       <div class="inner-wrap">
 
         <div ng-include="'views/includes/topbar.html'" ng-if="index.hasProfile"></div>

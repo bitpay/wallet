@@ -84,7 +84,6 @@ angular
 
     .state('receive', {
         url: '/receive',
-        controller: 'receiveController',
         templateUrl: 'views/receive.html',
         walletShouldBeComplete: true,
         needProfile: true

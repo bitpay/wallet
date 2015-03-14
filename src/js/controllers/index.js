@@ -2,15 +2,15 @@
 
 angular.module('copayApp.controllers').controller('indexController', function($rootScope, $log, go) {
 
+  this.pageLoaded = false;
   var self = this;
 
   $rootScope.$on('newFocusedWallet', function(event, walletStatus) {
+    $log.debug('Setting new wallet:', walletStatus);
+    self.pageLoaded = true;
     self.hasProfile = true;
     self.walletStatus = walletStatus;
-
-    $log.debug('Setting new wallet:', walletStatus);
-
-    $rootScope.$digest();
+    $rootScope.$apply();
   });
 
   this.openMenu = function() {

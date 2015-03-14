@@ -21,9 +21,10 @@ angular.module('copayApp.services')
       if (!root.focusedClient)
         throw new Error('Profile has not wallets!');
 
+      // TODO open from cache if exist
       root.focusedClient.getStatus(function(err, walletStatus) {
         $rootScope.$emit('newFocusedWallet', walletStatus);
-        return cb();
+        return cb(err);
       });
     };
 
