@@ -1,14 +1,14 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('receiveController',
-  function($rootScope, $scope, $timeout, $modal, isCordova, isMobile, walletService, profileService) {
+  function($rootScope, $scope, $timeout, $modal, isCordova, isMobile, profileService) {
 
     this.showAll = false;
     this.isCordova = isCordova;
 
     this.newAddr = function() {
       var self = this;
-      walletService.createAddress(function(err, addr) {
+      profileService.focusedClient.createAddress(function(err, addr) {
         self.addr = addr.address;
         $scope.$digest();
       });
@@ -64,7 +64,7 @@ angular.module('copayApp.controllers').controller('receiveController',
     this.setAddressList = function() {
       if (this.showAll) {
         var self = this;
-        walletService.getMainAddresses(function(err, addrs) {
+        profileService.focusedClient.getMainAddresses({}, function(err, addrs) {
           self.addresses = addrs;
           $scope.$digest();
         });
