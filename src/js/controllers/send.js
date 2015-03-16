@@ -418,7 +418,7 @@ angular.module('copayApp.controllers').controller('sendController',
       };
       $modal.open({
         templateUrl: 'views/modals/paypro.html',
-        windowClass: 'medium',
+        windowClass: 'full',
         controller: ModalInstanceCtrl,
       });
     };
@@ -516,7 +516,7 @@ angular.module('copayApp.controllers').controller('sendController',
       var w = $rootScope.wallet;
       var modalInstance = $modal.open({
         templateUrl: 'views/modals/address-book.html',
-        windowClass: 'large',
+        windowClass: 'full',
         controller: function($scope, $modalInstance) {
 
           $scope.showForm = null;

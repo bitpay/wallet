@@ -90,7 +90,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
     var modalInstance = $modal.open({
       templateUrl: 'views/modals/txp-details.html',
-      windowClass: 'medium',
+      windowClass: 'full',
       controller: ModalInstanceCtrl,
     });
 

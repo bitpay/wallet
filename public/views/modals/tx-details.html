@@ -1,7 +1,19 @@
-<nav class="tab-bar text-right hide-for-large-up">
-  <span ng-click="cancel()" class="p10 text-white" translate>Close</span>
+<nav class="tab-bar">
+  <section class="left-small">
+    <a class="p10" 
+      ng-click="cancel()"><i class="fi-arrow-left size-24"></i> 
+    </a>
+  </section>
+
+  <section class="middle tab-bar-section">
+    <h1 class="title ellipsis">
+      Transaction
+    </h1>
+  </section>
 </nav>
-<div class="modal-mobile">
+
+<div class="m60t">
+
 <div class="header-modal text-center">
   <div ng-if="btx.addressTo" class="m10v">
     <span class="ellipsis">
@@ -26,7 +38,6 @@
   <div class="size-18 m5t text-gray" ng-show="btx.alternativeAmount">
     {{btx.alternativeAmount}} {{$root.wallet.settings.alternativeIsoCode}}
   </div>
-  <a class="close-reveal-modal show-for-large-up" ng-click="cancel()"><i class="fi-x size-18"></i></a>
 </div>
 
 <table>

@@ -29,20 +29,20 @@
       <table>
         <tr>
           <td><strong translate>Name:</strong></td>
-          <td>{{index.walletStatus.wallet.name || index.walletStatus.wallet.id}}</td>
+          <td>{{index.walletName}}</td>
         </tr>
         <tr>
           <td><strong translate>Status:</strong></td>
-          <td>{{index.walletStatus.wallet.status == 'complete' ? 'Complete' : 'Waiting for copayers...'}}</td>
+          <td>{{index.walletStatus == 'complete' ? 'Complete' : 'Waiting for copayers...'}}</td>
         </tr>
         <tr>
           <td><strong translate>Type:</strong></td>
-          <td>{{index.walletStatus.wallet.m}} of {{index.walletStatus.wallet.n}} - {{index.walletStatus.wallet.network}}</td>
+          <td>{{index.m}} of {{index.n}} - {{index.network}}</td>
         </tr>
         <tr>
           <td><strong translate>Balance:</strong></td>
-          <td><span ng-if="index.walletStatus.wallet.status == 'complete'">
-              {{index.walletStatus.balance.totalAmount || 0}} {{preferences.unitName}}
+          <td><span ng-if="index.walletStatus == 'complete'">
+              {{index.totalBalanceStr}}
           </span></td>
         </tr>
       </table> 
