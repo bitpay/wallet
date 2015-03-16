@@ -1,6 +1,6 @@
 'use strict';
 angular.module('copayApp.services')
-  .factory('profileService', function($rootScope, $location, $timeout, $filter, $log, lodash, pluginManager, notification, pendingTxsService, balanceService, applicationService, storageService, bwcService, configService) {
+  .factory('profileService', function profileServiceFactory($rootScope, $location, $timeout, $filter, $log, lodash, pluginManager, notification, pendingTxsService, balanceService, applicationService, storageService, bwcService, configService) {
 
     var root = {};
 
@@ -29,7 +29,7 @@ angular.module('copayApp.services')
     };
 
     root.setAndStoreFocus = function(walletId, cb) {
-      root.setFocus(walletId, function(err) {
+      root._setFocus(walletId, function(err) {
         storageService.setFocusedWalletId(walletId, cb);
       });
     };
@@ -43,9 +43,11 @@ angular.module('copayApp.services')
       root.profile = p;
 
       storageService.getFocusedWalletId(function(err, focusedWalletId) {
-        root._setFocus(focusedWalletId, function(err) {
-          return cb(err);
-        });
+        configService.get(function(err) {
+          root._setFocus(focusedWalletId, function(err) {
+            return cb(err);
+          });
+        })
       });
     };
 

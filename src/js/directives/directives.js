@@ -1,64 +1,69 @@
 'use strict';
 
 function selectText(element) {
-    var doc = document;
-    if (doc.body.createTextRange) { // ms
-        var range = doc.body.createTextRange();
-        range.moveToElementText(element);
-        range.select();
-    } else if (window.getSelection) {
-        var selection = window.getSelection();
-        var range = doc.createRange();
-        range.selectNodeContents(element);
-        selection.removeAllRanges();
-        selection.addRange(range);
+  var doc = document;
+  if (doc.body.createTextRange) { // ms
+    var range = doc.body.createTextRange();
+    range.moveToElementText(element);
+    range.select();
+  } else if (window.getSelection) {
+    var selection = window.getSelection();
+    var range = doc.createRange();
+    range.selectNodeContents(element);
+    selection.removeAllRanges();
+    selection.addRange(range);
 
-    }
+  }
 }
 
 
 angular.module('copayApp.directives')
 
-.directive('validAddress', ['$rootScope',
-  function($rootScope, bwcService) {
-    return {
-      require: 'ngModel',
-      link: function(scope, elem, attrs, ctrl) {
-        var validator = function(value) {
+.directive('validAddress', ['$rootScope', 'bitcore',
+    function($rootScope, bitcore) {
+      return {
+        // $rootScope.wallet.getNetworkName()
+        require: 'ngModel',
+        link: function(scope, elem, attrs, ctrl) {
+          var validator = function(value) {
+            // Regular url
+            if (/^https?:\/\//.test(value)) {
+              ctrl.$setValidity('validAddress', true);
+              return value;
+            }
 
-          // Regular url
-          if (/^https?:\/\//.test(value)) {
-            ctrl.$setValidity('validAddress', true);
+
+            // Bip21 uri
+            if (/^bitcoin:/.test(value)) {
+
+              // TODO 
+              var networkName = 'testnet';
+
+              throw ('TODO: bip21 checking on new bitcore');
+
+              var uri = new bitcore.BIP21(value);
+              var hasAddress = uri.address && uri.isValid() && uri.address.network().name === networkName;
+              ctrl.$setValidity('validAddress', uri.data.merchant || hasAddress);
+              return value;
+            }
+
+            if (typeof value == 'undefined') {
+              ctrl.$pristine = true;
+              return;
+            }
+
+            // Regular Address
+            ctrl.$setValidity('validAddress', bitcore.Address.isValid(value, networkName));
             return value;
-          }
+          };
 
 
-          // Bip21 uri
-          if (/^bitcoin:/.test(value)) {
-            var uri = new bwcService.Bitcore.BIP21(value);
-            var hasAddress = uri.address && uri.isValid() && uri.address.network().name === $rootScope.wallet.getNetworkName();
-            ctrl.$setValidity('validAddress', uri.data.merchant || hasAddress);
-            return value;
-          }
-
-          if (typeof value == 'undefined') {
-            ctrl.$pristine = true;
-            return;
-          }
-
-          // Regular Address
-          var a = new bwcService.Bitcore.Address(value);
-          ctrl.$setValidity('validAddress', a.isValid() && a.network().name === $rootScope.wallet.getNetworkName());
-          return value;
-        };
-
-
-        ctrl.$parsers.unshift(validator);
-        ctrl.$formatters.unshift(validator);
-      }
-    };
-  }
-])
+          ctrl.$parsers.unshift(validator);
+          ctrl.$formatters.unshift(validator);
+        }
+      };
+    }
+  ])
   .directive('validUrl', [
 
     function() {
@@ -82,23 +87,23 @@ angular.module('copayApp.directives')
       };
     }
   ])
-  .directive('validAmount', ['$rootScope', '$locale',
-    function($rootScope, locale) {
+  .directive('validAmount', ['configService', '$locale',
+    function(configService, locale) {
       var formats = locale.NUMBER_FORMATS;
 
       return {
         require: 'ngModel',
         link: function(scope, element, attrs, ctrl) {
           var val = function(value) {
-            var w = $rootScope.wallet;
-            var vNum = Number((value * w.settings.unitToSatoshi).toFixed(0));
+            var settings = configService.getSync().wallet.settings;
+            var vNum = Number((value * settings.unitToSatoshi).toFixed(0));
 
             if (typeof value == 'undefined') {
               ctrl.$pristine = true;
             }
 
             if (typeof vNum == "number" && vNum > 0) {
-              var decimals = Number(w.settings.unitDecimals);
+              var decimals = Number(settings.unitDecimals);
               var sep_index = ('' + value).indexOf(formats.DECIMAL_SEP);
               var str_value = ('' + value).substring(sep_index + 1);
               if (sep_index > 0 && str_value.length > decimals) {
@@ -117,12 +122,12 @@ angular.module('copayApp.directives')
       };
     }
   ])
-  .directive('walletSecret', function(bwcService) {
+  .directive('walletSecret', function(bitcore) {
     return {
       require: 'ngModel',
       link: function(scope, elem, attrs, ctrl) {
         var validator = function(value) {
-          var a = new bwcService.Bitcore.Address(value);
+          var a = new bitcore.Address(value);
           ctrl.$setValidity('walletSecret', !a.isValid() && Boolean(copay.Wallet.decodeSecret(value)));
           return value;
         };
@@ -168,7 +173,7 @@ angular.module('copayApp.directives')
         var contact = scope.wallet.addressBook[address];
         if (contact && !contact.hidden) {
           element.append(contact.label);
-          element.attr('tooltip',attrs.address);
+          element.attr('tooltip', attrs.address);
         } else {
           element.append(address);
         }
@@ -251,13 +256,13 @@ angular.module('copayApp.directives')
   })
   .directive('showFocus', function($timeout) {
     return function(scope, element, attrs) {
-      scope.$watch(attrs.showFocus, 
-        function (newValue) { 
+      scope.$watch(attrs.showFocus,
+        function(newValue) {
           $timeout(function() {
-              newValue && element[0].focus();
+            newValue && element[0].focus();
           });
-        },true);
-    };    
+        }, true);
+    };
   })
   .directive('match', function() {
     return {
@@ -283,8 +288,8 @@ angular.module('copayApp.directives')
       },
       link: function(scope, elm) {
         // TODO this does not work (FIXME)
-        elm.attr('tooltip','Press Ctrl+C to Copy');
-        elm.attr('tooltip-placement','top');
+        elm.attr('tooltip', 'Press Ctrl+C to Copy');
+        elm.attr('tooltip-placement', 'top');
 
         elm.bind('click', function() {
           selectText(elm[0]);

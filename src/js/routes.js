@@ -81,10 +81,15 @@ angular
         templateUrl: 'views/profile.html',
         needProfile: true
       })
-
-    .state('receive', {
+      .state('receive', {
         url: '/receive',
         templateUrl: 'views/receive.html',
+        walletShouldBeComplete: true,
+        needProfile: true
+      })
+      .state('send', {
+        url: '/send',
+        templateUrl: 'views/send.html',
         walletShouldBeComplete: true,
         needProfile: true
       })
@@ -95,14 +100,8 @@ angular
         walletShouldBeComplete: true,
         needProfile: true
       })
-      .state('send', {
-        url: '/send',
-        controller: 'sendController',
-        templateUrl: 'views/send.html',
-        walletShouldBeComplete: true,
-        needProfile: true
-      })
-      .state('preferences', {
+
+    .state('preferences', {
         url: '/preferences',
         controller: 'preferencesController',
         templateUrl: 'views/preferences.html',

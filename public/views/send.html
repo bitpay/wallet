@@ -1,4 +1,4 @@
-<div class="send" ng-controller="SendController" ng-init="init()">
+<div class="send" ng-init="init()"  ng-controller="sendController as send">
   <div class="row" ng-show="$root.wallet.balanceInfo.lockedBalance">
     <div class="large-12 columns">
       <div class="panel">
@@ -142,11 +142,11 @@
                 <small translate class="has-error" ng-show="sendForm.comment.$invalid && !sendForm.comment.$pristine">too long!</small>
               </label>
               <div class="input">
-                <textarea id="comment" ng-disabled="loading" name="comment" ng-if="isShared" 
+                <textarea id="comment" ng-disabled="loading" name="comment" ng-if="index.walletStatus.wallet.n > 1" 
                   placeholder="{{'Leave a private message to your copayers'|translate}}" 
                   ng-maxlength="100" ng-model="_comment"  ng-focus="formFocus('msg')" 
                   ng-blur="formFocus(false)"></textarea>
-                <textarea id="comment" ng-disabled="loading" name="comment" ng-if="!isShared" 
+                <textarea id="comment" ng-disabled="loading" name="comment" ng-if="index.walletStatus.wallet.n == 1" 
                   placeholder="{{'Add a private comment to identify the transaction'|translate}}" 
                   ng-maxlength="100" ng-model="_comment"  ng-focus="formFocus('msg')" 
                   ng-blur="formFocus(false)"></textarea>

@@ -42,9 +42,19 @@ angular.module('copayApp.services').factory('configService', function(localStora
     },
   };
 
+  var configCache = null;
+
+  root.getSync = function() {
+    if (!configCache)
+      throw new Error('configService#getSync called when cache is not initialized');
+
+    return configCache;
+  };
+
   root.get = function(cb) {
     localStorageService.get('config', function(err, localConfig) {
-      return cb(err, localConfig || defaultConfig);
+      configCache = localConfig || defaultConfig;
+      return cb(err, configCache);
     });
   };
 
@@ -52,6 +62,7 @@ angular.module('copayApp.services').factory('configService', function(localStora
     var config = defaultConfig;
     localStorageService.get('config', function(err, oldOpts) {
       lodash.assign(newOpts, config, oldOpts);
+      configCache = newOpts;
       localStorageService.set('config', JSON.stringify(newOpts), cb);
     });
   };

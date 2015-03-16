@@ -1,81 +1,83 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('SendController',
-  function($scope, $rootScope, $window, $timeout, $modal, $filter, notification, isMobile, rateService, txStatus, isCordova, bwcService) {
+angular.module('copayApp.controllers').controller('sendController',
+  function($rootScope, $window, $timeout, $modal, $filter, notification, isMobile, txStatus, isCordova, bitcore, profileService, configService) {
+    //TODO rate service
 
-    $scope.init = function() {
-      var w = $rootScope.wallet;
+    this.init = function() {
+      var self = this;
+      var fc = profileService.focusedClient;
 
-      $scope.isMobile = isMobile.any();
-      $scope.isWindowsPhoneApp = isMobile.Windows() && isCordova;
+      this.isMobile = isMobile.any();
+      this.isWindowsPhoneApp = isMobile.Windows() && isCordova;
       $rootScope.wpInputFocused = false;
 
-      $scope.isShared = w.isShared();
-      $scope.requiresMultipleSignatures = w.requiresMultipleSignatures();
-      $rootScope.title = $scope.requiresMultipleSignatures ? 'Send Proposal' : 'Send';
-      $scope.loading = false;
-      $scope.error = $scope.success = null;
+      $rootScope.title = fc.credentials.m > 1 ? 'Send Proposal' : 'Send';
+      this.loading = false;
+      this.error = this.success = null;
 
-      $scope.alternativeName = w.settings.alternativeName;
-      $scope.alternativeIsoCode = w.settings.alternativeIsoCode;
-
-      $scope.isRateAvailable = false;
-      $scope.rateService = rateService;
-      $scope.showScanner = false;
-      $scope.myId = w.getMyCopayerId();
-      $scope.isMobile = isMobile.any();
+      this.isRateAvailable = false;
+      this.rateService = rateService;
+      this.showScanner = false;
+      this.myId = w.getMyCopayerId();
+      this.isMobile = isMobile.any();
 
       if ($rootScope.pendingPayment) {
         $timeout(function() {
-          $scope.setFromUri($rootScope.pendingPayment)
+          self.setFromUri($rootScope.pendingPayment)
           $rootScope.pendingPayment = null;
         }, 100);
       }
 
-      $scope.setInputs();
-      $scope.setScanner();
+      this.setInputs();
+      this.setScanner();
+
+      configService.get(function(err, config) {
+        self.alternativeName = config.wallet.alternativeName;
+        self.alternativeIsoCode = config.wallet.alternativeIsoCode;
+      });
 
       rateService.whenAvailable(function() {
-        $scope.isRateAvailable = true;
-        $scope.$digest();
+        self.isRateAvailable = true;
+        self.$digest();
       });
     };
 
     if (isCordova) {
       var openScannerCordova = $rootScope.$on('dataScanned', function(event, data) {
-        $scope.sendForm.address.$setViewValue(data);
-        $scope.sendForm.address.$render();
+        self.sendForm.address.$setViewValue(data);
+        self.sendForm.address.$render();
       });
 
-      $scope.$on('$destroy', function() {
+      this.$on('$destroy', function() {
         openScannerCordova();
       });
     }
 
-    $scope.formFocus = function(what) {
-      if (!$scope.isWindowsPhoneApp) return
+    this.formFocus = function(what) {
+      if (!this.isWindowsPhoneApp) return
 
       if (!what) {
         $rootScope.wpInputFocused = false;
-        $scope.hideAddress = false;
-        $scope.hideAmount = false;
+        this.hideAddress = false;
+        this.hideAmount = false;
 
       } else {
         $rootScope.wpInputFocused = true;
         if (what == 'amount') {
-          $scope.hideAddress = true;
+          this.hideAddress = true;
         } else if (what == 'msg') {
-          $scope.hideAddress = true;
-          $scope.hideAmount = true;
+          this.hideAddress = true;
+          this.hideAmount = true;
         }
-
       }
       $timeout(function() {
         $rootScope.$digest();
       }, 1);
     };
 
-    $scope.setInputs = function() {
+    this.setInputs = function() {
+      var self = this;
       var w = $rootScope.wallet;
       var unitToSat = w.settings.unitToSatoshi;
       var satToUnit = 1 / unitToSat;
@@ -84,16 +86,16 @@ angular.module('copayApp.controllers').controller('SendController',
        * recursion for watches while preserving the original angular updates
        *
        */
-      Object.defineProperty($scope,
+      Object.defineProperty(self,
         "_alternative", {
           get: function() {
             return this.__alternative;
           },
           set: function(newValue) {
             this.__alternative = newValue;
-            if (typeof(newValue) === 'number' && $scope.isRateAvailable) {
+            if (typeof(newValue) === 'number' && self.isRateAvailable) {
               this._amount = parseFloat(
-                (rateService.fromFiat(newValue, $scope.alternativeIsoCode) * satToUnit).toFixed(w.settings.unitDecimals), 10);
+                (rateService.fromFiat(newValue, self.alternativeIsoCode) * satToUnit).toFixed(w.settings.unitDecimals), 10);
             } else {
               this._amount = 0;
             }
@@ -101,16 +103,16 @@ angular.module('copayApp.controllers').controller('SendController',
           enumerable: true,
           configurable: true
         });
-      Object.defineProperty($scope,
+      Object.defineProperty(self,
         "_amount", {
           get: function() {
             return this.__amount;
           },
           set: function(newValue) {
             this.__amount = newValue;
-            if (typeof(newValue) === 'number' && $scope.isRateAvailable) {
+            if (typeof(newValue) === 'number' && self.isRateAvailable) {
               this.__alternative = parseFloat(
-                (rateService.toFiat(newValue * unitToSat, $scope.alternativeIsoCode)).toFixed(2), 10);
+                (rateService.toFiat(newValue * unitToSat, self.alternativeIsoCode)).toFixed(2), 10);
             } else {
               this.__alternative = 0;
             }
@@ -119,20 +121,20 @@ angular.module('copayApp.controllers').controller('SendController',
           configurable: true
         });
 
-      Object.defineProperty($scope,
+      Object.defineProperty(self,
         "_address", {
           get: function() {
             return this.__address;
           },
           set: function(newValue) {
-            this.__address = $scope.onAddressChange(newValue);
+            this.__address = self.onAddressChange(newValue);
           },
           enumerable: true,
           configurable: true
         });
     };
 
-    $scope.setScanner = function() {
+    this.setScanner = function() {
       navigator.getUserMedia = navigator.getUserMedia ||
         navigator.webkitGetUserMedia || navigator.mozGetUserMedia ||
         navigator.msGetUserMedia;
@@ -140,12 +142,14 @@ angular.module('copayApp.controllers').controller('SendController',
         window.mozURL || window.msURL;
 
       if (!window.cordova && !navigator.getUserMedia)
-        $scope.disableScanner = 1;
+        this.disableScanner = 1;
     };
 
 
-    $scope.setError = function(err) {
-      var w = $rootScope.wallet;
+    this.setError = function(err) {
+      var self = this;
+      var fc = profileService.focusedClient;
+
       copay.logger.warn(err);
 
       var msg = err.toString();
@@ -161,22 +165,24 @@ angular.module('copayApp.controllers').controller('SendController',
       if (msg.match('XMLHttpRequest'))
         msg = 'Error when sending to the blockchain. Resend it from Home';
 
-      var message = 'The transaction' + ($scope.requiresMultipleSignatures ? ' proposal' : '') +
+      var message = 'The transaction' + (fc.credentials.m > 1 ? ' proposal' : '') +
+
         ' could not be created: ' + msg;
 
-      $scope.error = message;
+      this.error = message;
 
       $timeout(function() {
-        $scope.$digest();
+        self.$digest();
       }, 1);
     };
 
-    $scope.submitForm = function(form) {
-      var w = $rootScope.wallet;
+    this.submitForm = function(form) {
+      var self = this;
+      var fc = profileService.focusedClient;
       var unitToSat = w.settings.unitToSatoshi;
 
       if (form.$invalid) {
-        $scope.error = 'Unable to send transaction proposal';
+        this.error = 'Unable to send transaction proposal';
         return;
       }
 
@@ -184,13 +190,13 @@ angular.module('copayApp.controllers').controller('SendController',
         window.plugins.spinnerDialog.show(null, 'Creating transaction...', true);
       }
 
-      $scope.loading = true;
-      if ($scope.isWindowsPhoneApp)
+      this.loading = true;
+      if (this.isWindowsPhoneApp)
         $rootScope.wpInputFocused = true;
 
-      $timeout(function () {
+      $timeout(function() {
         var comment = form.comment.$modelValue;
-        var merchantData = $scope._merchantData;
+        var merchantData = self._merchantData;
         var address, amount;
         if (!merchantData) {
           address = form.address.$modelValue;
@@ -202,20 +208,19 @@ angular.module('copayApp.controllers').controller('SendController',
           toAddress: address,
           amountSat: amount,
           comment: comment,
-        }, function (err, txid, status) {
+        }, function(err, txid, status) {
           if (isCordova) {
             window.plugins.spinnerDialog.hide();
           }
-          $scope.loading = false;
-          if ($scope.isWindowsPhoneApp)
+          self.loading = false;
+          if (self.isWindowsPhoneApp)
             $rootScope.wpInputFocused = false;
 
           if (err) {
-            $scope.setError(err);
-          }
-          else {
+            self.setError(err);
+          } else {
             txStatus.notify(status);
-            $scope.resetForm();
+            self.resetForm();
           }
         });
       }, 100);
@@ -230,8 +235,8 @@ angular.module('copayApp.controllers').controller('SendController',
     var localMediaStream;
 
     var _scan = function(evt) {
-      if ($scope.isMobile) {
-        $scope.scannerLoading = true;
+      if (this.isMobile) {
+        this.scannerLoading = true;
         var files = evt.target.files;
 
         if (files.length === 1 && files[0].type.indexOf('image/') === 0) {
@@ -287,9 +292,9 @@ angular.module('copayApp.controllers').controller('SendController',
     };
 
     var _scanStop = function() {
-      $scope.scannerLoading = false;
-      $scope.showScanner = false;
-      if (!$scope.isMobile) {
+      this.scannerLoading = false;
+      this.showScanner = false;
+      if (!this.isMobile) {
         if (localMediaStream && localMediaStream.stop) localMediaStream.stop();
         localMediaStream = null;
         video.src = '';
@@ -302,25 +307,25 @@ angular.module('copayApp.controllers').controller('SendController',
 
     qrcode.callback = function(data) {
       _scanStop();
-      $scope.$apply(function() {
-        $scope.sendForm.address.$setViewValue(data);
-        $scope.sendForm.address.$render();
+      this.$apply(function() {
+        self.sendForm.address.$setViewValue(data);
+        self.sendForm.address.$render();
       });
     };
 
-    $scope.cancelScanner = function() {
+    this.cancelScanner = function() {
       _scanStop();
     };
 
-    $scope.openScanner = function() {
-      $scope.showScanner = true;
+    this.openScanner = function() {
+      this.showScanner = true;
 
       // Wait a moment until the canvas shows
       $timeout(function() {
         canvas = document.getElementById('qr-canvas');
         context = canvas.getContext('2d');
 
-        if ($scope.isMobile) {
+        if (this.isMobile) {
           cameraInput = document.getElementById('qrcode-camera');
           cameraInput.addEventListener('change', _scan, false);
         } else {
@@ -337,9 +342,9 @@ angular.module('copayApp.controllers').controller('SendController',
       }, 500);
     };
 
-    $scope.setTopAmount = function() {
+    this.setTopAmount = function() {
       var w = $rootScope.wallet;
-      var form = $scope.sendForm;
+      var form = this.sendForm;
       if (form) {
         form.amount.$setViewValue(w.balanceInfo.topAmount);
         form.amount.$render();
@@ -347,20 +352,20 @@ angular.module('copayApp.controllers').controller('SendController',
       }
     };
 
-    $scope.setForm = function(to, amount, comment) {
-      var form = $scope.sendForm;
+    this.setForm = function(to, amount, comment) {
+      var form = this.sendForm;
       if (to) {
         form.address.$setViewValue(to);
         form.address.$isValid = true;
         form.address.$render();
-        $scope.lockAddress = true;
+        this.lockAddress = true;
       }
 
       if (amount) {
         form.amount.$setViewValue("" + amount);
         form.amount.$isValid = true;
         form.amount.$render();
-        $scope.lockAmount = true;
+        this.lockAmount = true;
       }
 
       if (comment) {
@@ -370,16 +375,16 @@ angular.module('copayApp.controllers').controller('SendController',
       }
     };
 
-    $scope.resetForm = function() {
-      var form = $scope.sendForm;
+    this.resetForm = function() {
+      var form = this.sendForm;
 
-      $scope.fetchingURL = null;
-      $scope._merchantData = $scope._domain = null;
+      this.fetchingURL = null;
+      this._merchantData = this._domain = null;
 
-      $scope.lockAddress = false;
-      $scope.lockAmount = false;
+      this.lockAddress = false;
+      this.lockAmount = false;
 
-      $scope._amount = $scope._address = null;
+      this._amount = this._address = null;
 
       form.amount.$pristine = true;
       form.amount.$setViewValue('');
@@ -399,8 +404,8 @@ angular.module('copayApp.controllers').controller('SendController',
       }, 1);
     };
 
-    var $oscope = $scope;
-    $scope.openPPModal = function(merchantData) {
+    var $oscope = this;
+    this.openPPModal = function(merchantData) {
       var ModalInstanceCtrl = function($scope, $modalInstance) {
         var w = $rootScope.wallet;
         var satToUnit = 1 / w.settings.unitToSatoshi;
@@ -422,44 +427,45 @@ angular.module('copayApp.controllers').controller('SendController',
     };
 
 
-    $scope.setFromPayPro = function(uri) {
+    this.setFromPayPro = function(uri) {
 
       var isChromeApp = window.chrome && chrome.runtime && chrome.runtime.id;
       if (isChromeApp) {
-        $scope.error = 'Payment Protocol not yet supported on ChromeApp';
+        this.error = 'Payment Protocol not yet supported on ChromeApp';
         return;
       }
 
       var w = $rootScope.wallet;
       var satToUnit = 1 / w.settings.unitToSatoshi;
-      $scope.fetchingURL = uri;
-      $scope.loading = true;
+      this.fetchingURL = uri;
+      this.loading = true;
+      var self = this;
 
 
       // Payment Protocol URI (BIP-72)
       w.fetchPaymentRequest({
         url: uri
       }, function(err, merchantData) {
-        $scope.loading = false;
-        $scope.fetchingURL = null;
+        self.loading = false;
+        self.fetchingURL = null;
 
         if (err) {
           copay.logger.warn(err);
-          $scope.resetForm();
+          self.resetForm();
           var msg = err.toString();
           if (msg.match('HTTP')) {
             msg = 'Could not fetch payment information';
           }
-          $scope.error = msg;
+          self.error = msg;
         } else {
-          $scope._merchantData = merchantData;
-          $scope._domain = merchantData.domain;
-          $scope.setForm(null, (merchantData.total * satToUnit).toFixed(w.settings.unitDecimals));
+          self._merchantData = merchantData;
+          self._domain = merchantData.domain;
+          self.setForm(null, (merchantData.total * satToUnit).toFixed(w.settings.unitDecimals));
         }
       });
     };
 
-    $scope.setFromUri = function(uri) {
+    this.setFromUri = function(uri) {
       function sanitizeUri(uri) {
         // Fixes when a region uses comma to separate decimals
         var regex = /[\?\&]amount=(\d+([\,\.]\d+)?)/i;
@@ -474,42 +480,42 @@ angular.module('copayApp.controllers').controller('SendController',
 
       var w = $rootScope.wallet;
       var satToUnit = 1 / w.settings.unitToSatoshi;
-      var form = $scope.sendForm;
+      var form = this.sendForm;
 
       uri = sanitizeUri(uri);
 
-      var parsed = new bwcService.Bitcore.BIP21(uri);
+      var parsed = new bitcore.BIP21(uri);
       if (!parsed.isValid() || !parsed.address.isValid()) {
-        $scope.error = 'Invalid bitcoin URL';
+        this.error = 'Invalid bitcoin URL';
         form.address.$isValid = false;
         return uri;
       };
 
       var addr = parsed.address.toString();
       if (parsed.data.merchant)
-        return $scope.setFromPayPro(parsed.data.merchant);
+        return this.setFromPayPro(parsed.data.merchant);
 
       var amount = (parsed.data && parsed.data.amount) ?
         ((parsed.data.amount * 100000000).toFixed(0) * satToUnit).toFixed(w.settings.unitDecimals) : 0;
 
-      $scope.setForm(addr, amount, parsed.data.message, true);
+      this.setForm(addr, amount, parsed.data.message, true);
       return addr;
     };
 
-    $scope.onAddressChange = function(value) {
-      $scope.error = $scope.success = null;
+    this.onAddressChange = function(value) {
+      this.error = this.success = null;
       if (!value) return '';
 
       if (value.indexOf('bitcoin:') === 0) {
-        return $scope.setFromUri(value);
+        return this.setFromUri(value);
       } else if (/^https?:\/\//.test(value)) {
-        return $scope.setFromPayPro(value);
+        return this.setFromPayPro(value);
       }
 
       return value;
     };
 
-    $scope.openAddressBook = function() {
+    this.openAddressBook = function() {
       var w = $rootScope.wallet;
       var modalInstance = $modal.open({
         templateUrl: 'views/modals/address-book.html',
