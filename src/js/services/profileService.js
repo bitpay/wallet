@@ -63,7 +63,9 @@ angular.module('copayApp.services')
 
     root._createNewProfile = function(pin, cb) {
       var walletClient = bwcService.getClient();
-      walletClient.createWallet('Personal Wallet', 'me', 1, 1, 'livenet', function(err) {
+
+      // TODO livenet
+      walletClient.createWallet('Personal Wallet', 'me', 1, 1, 'testnet', function(err) {
         if (err) return cb('Error creating wallet');
         var p = Profile.create({
           credentials: [walletClient.export()],

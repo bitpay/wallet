@@ -1,13 +1,11 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('sendController',
-  function($rootScope, $window, $timeout, $modal, $filter, notification, isMobile, txStatus, isCordova, bitcore, profileService, configService) {
-    //TODO rate service
+  function($rootScope, $window, $timeout, $modal, $filter, $log, notification, isMobile, txStatus, isCordova, bitcore, profileService, configService) {
+    var fc = profileService.focusedClient;
 
     this.init = function() {
       var self = this;
-      var fc = profileService.focusedClient;
-
       this.isMobile = isMobile.any();
       this.isWindowsPhoneApp = isMobile.Windows() && isCordova;
       $rootScope.wpInputFocused = false;
@@ -17,10 +15,9 @@ angular.module('copayApp.controllers').controller('sendController',
       this.error = this.success = null;
 
       this.isRateAvailable = false;
-      this.rateService = rateService;
       this.showScanner = false;
-      this.myId = w.getMyCopayerId();
       this.isMobile = isMobile.any();
+
 
       if ($rootScope.pendingPayment) {
         $timeout(function() {
@@ -32,27 +29,28 @@ angular.module('copayApp.controllers').controller('sendController',
       this.setInputs();
       this.setScanner();
 
-      configService.get(function(err, config) {
-        self.alternativeName = config.wallet.alternativeName;
-        self.alternativeIsoCode = config.wallet.alternativeIsoCode;
-      });
+      var config = configService.getSync().wallet.settings;
+      this.alternativeName = config.alternativeName;
+      this.alternativeIsoCode = config.alternativeIsoCode;
+      this.unitToSatoshi = config.unitToSatoshi;
 
-      rateService.whenAvailable(function() {
-        self.isRateAvailable = true;
-        self.$digest();
-      });
+      // TODO : rateService
+      // rateService.whenAvailable(function() {
+      //   self.isRateAvailable = true;
+      //   self.$digest();
+      // });
+      //
+      if (isCordova) {
+        var openScannerCordova = $rootScope.$on('dataScanned', function(event, data) {
+          self.sendForm.address.$setViewValue(data);
+          self.sendForm.address.$render();
+        });
+
+        this.$on('$destroy', function() {
+          openScannerCordova();
+        });
+      };
     };
-
-    if (isCordova) {
-      var openScannerCordova = $rootScope.$on('dataScanned', function(event, data) {
-        self.sendForm.address.$setViewValue(data);
-        self.sendForm.address.$render();
-      });
-
-      this.$on('$destroy', function() {
-        openScannerCordova();
-      });
-    }
 
     this.formFocus = function(what) {
       if (!this.isWindowsPhoneApp) return
@@ -78,8 +76,7 @@ angular.module('copayApp.controllers').controller('sendController',
 
     this.setInputs = function() {
       var self = this;
-      var w = $rootScope.wallet;
-      var unitToSat = w.settings.unitToSatoshi;
+      var unitToSat = this.unitToSatoshi;
       var satToUnit = 1 / unitToSat;
       /**
        * Setting the two related amounts as properties prevents an infinite
@@ -148,9 +145,8 @@ angular.module('copayApp.controllers').controller('sendController',
 
     this.setError = function(err) {
       var self = this;
-      var fc = profileService.focusedClient;
 
-      copay.logger.warn(err);
+      $log.warn(err);
 
       var msg = err.toString();
       if (msg.match('BIG'))
@@ -178,8 +174,7 @@ angular.module('copayApp.controllers').controller('sendController',
 
     this.submitForm = function(form) {
       var self = this;
-      var fc = profileService.focusedClient;
-      var unitToSat = w.settings.unitToSatoshi;
+      var unitToSat = this.unitToSatoshi;
 
       if (form.$invalid) {
         this.error = 'Unable to send transaction proposal';
@@ -203,11 +198,12 @@ angular.module('copayApp.controllers').controller('sendController',
           amount = parseInt((form.amount.$modelValue * unitToSat).toFixed(0));
         }
 
-        w.spend({
-          merchantData: merchantData,
+        fc.sendTxProposal({
+          // TODO
+          //          merchantData: merchantData,
           toAddress: address,
-          amountSat: amount,
-          comment: comment,
+          amount: amount,
+          message: comment,
         }, function(err, txid, status) {
           if (isCordova) {
             window.plugins.spinnerDialog.hide();
@@ -235,8 +231,9 @@ angular.module('copayApp.controllers').controller('sendController',
     var localMediaStream;
 
     var _scan = function(evt) {
-      if (this.isMobile) {
-        this.scannerLoading = true;
+      console.log('[send.js.233:evt:]', evt); //TODO
+      if (self.isMobile) {
+        self.scannerLoading = true;
         var files = evt.target.files;
 
         if (files.length === 1 && files[0].type.indexOf('image/') === 0) {
@@ -270,6 +267,8 @@ angular.module('copayApp.controllers').controller('sendController',
           reader.readAsDataURL(file);
         }
       } else {
+
+        console.log('[send.js.270]'); //TODO
         if (localMediaStream) {
           context.drawImage(video, 0, 0, 300, 225);
 
@@ -318,6 +317,7 @@ angular.module('copayApp.controllers').controller('sendController',
     };
 
     this.openScanner = function() {
+      var self = this;
       this.showScanner = true;
 
       // Wait a moment until the canvas shows
@@ -325,7 +325,7 @@ angular.module('copayApp.controllers').controller('sendController',
         canvas = document.getElementById('qr-canvas');
         context = canvas.getContext('2d');
 
-        if (this.isMobile) {
+        if (self.isMobile) {
           cameraInput = document.getElementById('qrcode-camera');
           cameraInput.addEventListener('change', _scan, false);
         } else {
@@ -343,7 +343,7 @@ angular.module('copayApp.controllers').controller('sendController',
     };
 
     this.setTopAmount = function() {
-      var w = $rootScope.wallet;
+      throw new Error('todo: setTopAmount');
       var form = this.sendForm;
       if (form) {
         form.amount.$setViewValue(w.balanceInfo.topAmount);
@@ -407,12 +407,11 @@ angular.module('copayApp.controllers').controller('sendController',
     var $oscope = this;
     this.openPPModal = function(merchantData) {
       var ModalInstanceCtrl = function($scope, $modalInstance) {
-        var w = $rootScope.wallet;
-        var satToUnit = 1 / w.settings.unitToSatoshi;
+        var satToUnit = 1 / this.unitToSatoshi;
         $scope.md = merchantData;
         $scope.alternative = $oscope._alternative;
-        $scope.alternativeIsoCode = $oscope.alternativeIsoCode;
-        $scope.isRateAvailable = $oscope.isRateAvailable;
+        $scope.alternativeIsoCode = this.alternativeIsoCode;
+        $scope.isRateAvailable = this.isRateAvailable;
         $scope.unitTotal = (merchantData.total * satToUnit).toFixed(w.settings.unitDecimals);
 
         $scope.cancel = function() {
@@ -435,8 +434,7 @@ angular.module('copayApp.controllers').controller('sendController',
         return;
       }
 
-      var w = $rootScope.wallet;
-      var satToUnit = 1 / w.settings.unitToSatoshi;
+      var satToUnit = 1 / this.unitToSatoshi;
       this.fetchingURL = uri;
       this.loading = true;
       var self = this;
@@ -450,7 +448,7 @@ angular.module('copayApp.controllers').controller('sendController',
         self.fetchingURL = null;
 
         if (err) {
-          copay.logger.warn(err);
+          $log.warn(err);
           self.resetForm();
           var msg = err.toString();
           if (msg.match('HTTP')) {
@@ -478,8 +476,7 @@ angular.module('copayApp.controllers').controller('sendController',
         return newUri;
       };
 
-      var w = $rootScope.wallet;
-      var satToUnit = 1 / w.settings.unitToSatoshi;
+      var satToUnit = 1 / this.unitToSatoshi;
       var form = this.sendForm;
 
       uri = sanitizeUri(uri);
@@ -573,7 +570,7 @@ angular.module('copayApp.controllers').controller('sendController',
               try {
                 w.setAddressBook(entry.address, entry.label);
               } catch (e) {
-                copay.logger.warn(e);
+                $log.warn(e);
                 errorMsg = e.message;
               }
 

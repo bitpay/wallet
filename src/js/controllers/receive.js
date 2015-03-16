@@ -2,13 +2,14 @@
 
 angular.module('copayApp.controllers').controller('receiveController',
   function($rootScope, $scope, $timeout, $modal, isCordova, isMobile, profileService) {
+    var fc = profileService.focusedClient;
 
     this.showAll = false;
     this.isCordova = isCordova;
 
     this.newAddr = function() {
       var self = this;
-      profileService.focusedClient.createAddress(function(err, addr) {
+      fc.createAddress(function(err, addr) {
         self.addr = addr.address;
         $scope.$digest();
       });
@@ -64,7 +65,7 @@ angular.module('copayApp.controllers').controller('receiveController',
     this.setAddressList = function() {
       if (this.showAll) {
         var self = this;
-        profileService.focusedClient.getMainAddresses({}, function(err, addrs) {
+        fc.getMainAddresses({}, function(err, addrs) {
           self.addresses = addrs;
           $scope.$digest();
         });
