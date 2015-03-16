@@ -1,26 +1,41 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('indexController', function($rootScope, $log, lodash, go, configService) {
+angular.module('copayApp.controllers').controller('indexController', function($rootScope, $log, lodash, go, profileService, configService) {
+
+  var self = this;
 
   function strip(number) {
     return (parseFloat(number.toPrecision(12)));
   }
 
-  this.pageLoaded = false;
-  var self = this;
-  $rootScope.$on('newFocusedWallet', function(event, walletStatus) {
-    $log.debug('Setting new wallet:', walletStatus);
-    self.pageLoaded = true;
+  self.pageLoaded = false;
+
+
+  $rootScope.$on('updateStatus', function(event) {
+    var fc = profileService.focusedClient;
+    self.pageLoaded = true; // TODO?
     self.hasProfile = true;
-    self.walletStatus = walletStatus;
 
-    // Shortcuts
-    self.requiresMultipleSignatures = walletStatus.wallet.m > 1;
-    self.isShared = walletStatus.wallet.n > 1;
+    console.log('[index.js.17]'); //TODO
 
-    self.updateBalance(walletStatus.balance);
-    self.updateTxps(walletStatus.pendingTxps);
-    $rootScope.$apply();
+    // Credentials Shortcuts
+    self.m = fc.m;
+    self.n = fc.n;
+    self.network = fc.network;
+    self.requiresMultipleSignatures = fc.m > 1;
+    self.isShared = fc.n > 1;
+
+    $log.debug('Updating Status:', fc);
+    fc.getStatus(function(err, walletStatus) {
+      console.log('[index.js.27:walletStatus:]', walletStatus); //TODO
+      self.updateBalance(walletStatus.balance);
+      self.updateTxps(walletStatus.pendingTxps);
+
+      // Status Shortcuts
+      self.walletName = walletStatus.wallet.name;
+
+      $rootScope.$apply();
+    });
   });
 
   $rootScope.$on('updateBalance', function(event) {
@@ -38,48 +53,56 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   });
 
 
-  this.updateTxps = function(txps) {
-    // TODO
+  self.updateTxps = function(txps) {
     self.txps = txps;
 
     lodash.each(txps, function(tx) {
       var amount = tx.amount * self.satToUnit;
       tx.amountStr = amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + ' ' + self.unitName;
+      tx.alternativeAmountStr = 'fiat TODO';
+
+      var action = lodash.find(tx.actions, {
+        copayerId: self.copayerId
+      });
+      if (!action && tx.status == 'pending')
+        tx.pendingForUs = true;
+
       console.log('[index.js.47:tx:]', tx); //TODO
     });
-    // TODO
-    // pendingForUs = !tx.signedBy[$root.wallet.getMyCopayerId()] && !tx.rejectedBy[$root.wallet.getMyCopayerId()]
   };
 
 
-  this.updateBalance = function(balance) {
+  self.updateBalance = function(balance) {
     console.log('[index.js.48:balance:]', balance); //TODO
     var config = configService.getSync().wallet.settings;
     var COIN = 1e8;
     // SAT
     self.totalBalanceSat = balance.totalAmount;
     self.lockedBalanceSat = balance.lockedAmount;
+    self.availableBalanceSat = self.totalBalanceSat - self.lockedBalanceSat;
 
     // Selected unit
     self.unitToSatoshi = config.unitToSatoshi;
     self.satToUnit = 1 / self.unitToSatoshi;
     self.unitName = config.unitName;
+
     self.totalBalance = strip(self.totalBalanceSat * self.satToUnit);
     self.lockedBalance = strip(self.lockedBalanceSat * self.satToUnit);
+    self.availableBalance = strip(self.availableBalanceSat * self.satToUnit);
 
     // BTC
     self.totalBalanceBTC = strip(self.totalBalanceSat / COIN);
     self.lockedBalanceBTC = strip(self.lockedBalanceSat / COIN);
+    self.availableBalanceBTC = strip(self.availableBalanceBTC / COIN);
 
     //STR
     self.totalBalanceStr = self.totalBalance.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + ' ' + self.unitName;
     self.lockedBalanceStr = self.lockedBalance.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + ' ' + self.unitName;
+    self.availableBalanceStr = self.availableBalance.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + ' ' + self.unitName;
 
 
 
     // var availableBalanceNr = safeBalanceSat * satToUnit;
-    // r.availableBalance = $filter('noFractionNumber')(safeBalanceSat * satToUnit);
-    // r.availableBalanceBTC = (safeBalanceSat / COIN);
     // r.safeUnspentCount = safeUnspentCount;
 
 
@@ -114,11 +137,11 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   };
 
 
-  this.openMenu = function() {
+  self.openMenu = function() {
     go.swipe(true);
   };
 
-  this.closeMenu = function() {
+  self.closeMenu = function() {
     go.swipe();
   };
 });

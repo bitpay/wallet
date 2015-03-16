@@ -202,7 +202,7 @@ angular.module('copayApp.controllers').controller('sendController',
           toAddress: address,
           amount: amount,
           message: comment,
-        }, function(err, txid, status) {
+        }, function(err, txp) {
           if (isCordova) {
             window.plugins.spinnerDialog.hide();
           }
@@ -213,8 +213,9 @@ angular.module('copayApp.controllers').controller('sendController',
           if (err) {
             self.setError(err);
           } else {
-            txStatus.notify(status);
-            self.resetForm();
+            txStatus.notify(txp);
+            $rootScope.$emit('updateStatus');
+            self.resetForm(form);
           }
         });
       }, 100);
@@ -373,8 +374,7 @@ angular.module('copayApp.controllers').controller('sendController',
       }
     };
 
-    this.resetForm = function() {
-      var form = this.sendForm;
+    this.resetForm = function(form) {
 
       this.fetchingURL = null;
       this._merchantData = this._domain = null;
@@ -424,7 +424,8 @@ angular.module('copayApp.controllers').controller('sendController',
     };
 
 
-    this.setFromPayPro = function(uri) {
+    // TODO form
+    this.setFromPayPro = function(uri, form) {
 
       var isChromeApp = window.chrome && chrome.runtime && chrome.runtime.id;
       if (isChromeApp) {
@@ -447,7 +448,8 @@ angular.module('copayApp.controllers').controller('sendController',
 
         if (err) {
           $log.warn(err);
-          self.resetForm();
+          self.resetForm(form);
+          $rootScope.$emit('updateStatus');
           var msg = err.toString();
           if (msg.match('HTTP')) {
             msg = 'Could not fetch payment information';

@@ -1,5 +1,5 @@
 <div class="send" ng-controller="sendController as send" ng-init="send.init()">
-  <div class="row" ng-show="index.walletStatus.balance.lockedBalance">
+  <div class="row" ng-show="index.lockedBalance">
     <div class="large-12 columns">
       <div class="panel">
         <div class="left">
@@ -8,10 +8,10 @@
         <div>
           <p class="m0 size-14 text-bold">
             <span translate>Available Balance</span>: 
-            {{index.totalBalance}} {{index.unitName}}
+            {{index.availableBalanceStr }}
           </p>
           <span class="size-12 text-gray">
-            {{index.lockedBalance}} {{index.unitName}} 
+            {{index.lockedBalanceStr}}
             <span translate>in pending transactions</span>
           </span>
         </div>
@@ -142,11 +142,11 @@
                 <small translate class="has-error" ng-show="sendForm.comment.$invalid && !sendForm.comment.$pristine">too long!</small>
               </label>
               <div class="input">
-                <textarea id="comment" ng-disabled="loading" name="comment" ng-if="index.walletStatus.wallet.n > 1" 
+                <textarea id="comment" ng-disabled="loading" name="comment" ng-if="index.n > 1" 
                   placeholder="{{'Leave a private message to your copayers'|translate}}" 
                   ng-maxlength="100" ng-model="_comment"  ng-focus="send.formFocus('msg')" 
                   ng-blur="send.formFocus(false)"></textarea>
-                <textarea id="comment" ng-disabled="loading" name="comment" ng-if="index.walletStatus.wallet.n == 1" 
+                <textarea id="comment" ng-disabled="loading" name="comment" ng-if="index.n == 1" 
                   placeholder="{{'Add a private comment to identify the transaction'|translate}}" 
                   ng-maxlength="100" ng-model="_comment"  ng-focus="send.formFocus('msg')" 
                   ng-blur="send.formFocus(false)"></textarea>

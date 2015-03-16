@@ -3,42 +3,41 @@
 </nav>
 <div class="modal-mobile">
 <div class="header-modal">
-  <div class="row collapse" ng-repeat="out in tx.outs">
     <div class="small-10 columns">
     <div class="ellipsis p10b size-16 m20r">
-      <span class="tx-proposal size-12 m5r"> <i ng-class="{'active':pendingForUs}" class="fi-arrow-right"></i> </span>
+      <span class="tx-proposal size-12 m5r"> <i ng-class="{'active':tx.pendingForUs}" class="fi-arrow-right"></i> </span>
       <span class="text-gray">
         <span translate>To:</span>
         <span ng-if="tx.merchant">
           <span ng-show="tx.merchant.pr.ca"><i class="fi-lock"></i> {{tx.merchant.domain}}</span>
           <span ng-show="!tx.merchant.pr.ca"><i class="fi-unlock"></i> {{tx.merchant.domain}}</span>
         </span>
-        <contact address="{{out.address}}" ng-hide="tx.merchant"></contact>
+        <contact address="{{tx.toAddress}}" ng-hide="tx.merchant"></contact>
+{{tx.toAddress}}
       </span>
     </div>
 
-    <div class="p25l" ng-class="{'text-gray':!pendingForUs}">
+    <div class="p25l" ng-class="{'text-gray':!tx.pendingForUs}">
       <div class="size-21 text-bold m5b">
-        {{out.value}} {{$root.wallet.settings.unitName}}
+        {{tx.amountStr}}
       </div>
-      <span class="alt-currency black size-12" ng-class="{'gray':!pendingForUs}">
-        {{out.alternativeAmount}} {{out.alternativeIsoCode}}
+      <span class="alt-currency black size-12" ng-class="{'gray':!tx.pendingForUs}">
+        {{tx.alternativeAmountStr}}
       </span>
     </div>
     </div>
-  </div>
   <a class="close-reveal-modal show-for-large-up" ng-click="cancel()"><i class="fi-x size-18"></i></a>
 </div>
 
-<div class="m10v line-b size-14" ng-show="tx.comment">
-  <div class="oh" ng-if="tx.ts || tx.createdTs ">
+<div class="m10v line-b size-14" ng-show="tx.message">
+  <div class="oh" ng-if="tx.ts || tx.createdOn ">
     <p class="left m5b">{{$root.iden.getName()}}</p>
     <div class="text-gray text-right m5t size-12">
-      <time>{{ (tx.ts || tx.createdTs ) | amTimeAgo}}</time>
+      <time>{{ (tx.ts || tx.createdOn ) | amTimeAgo}}</time>
     </div>
   </div>
   <div class="text-gray m10b">
-    {{tx.comment}}
+    {{tx.message}}
   </div>
 </div>
 
@@ -56,7 +55,7 @@
 
 <div ng-if="tx.actionList[0]" class="m10v">
   <i translate>Signatures:</i>
-  <ul class="tx-copayers m10t" ng-if="tx.actionList[0]">
+  <ul class="tx-copayers m10t" ng-if="tx.actions[0]">
     <li ng-repeat="cId in registeredCopayerIds" 
     ng-class="{'bottom-line-copayers':!$last}">
     <span>
@@ -85,17 +84,16 @@
 
 <div class="row collapse m10t" 
   ng-init="hideSign = false; hideReject = false"
-  ng-show="!tx.signedBy[$root.wallet.getMyCopayerId()] && !tx.rejectedBy[$root.wallet.getMyCopayerId()] &&
-  $root.wallet.txProposals.txps[tx.ntxid].builder.build().countInputMissingSignatures(0) != 0">
+  ng-show="tx.pendingForUs">
   <div class="large-5 medium-5 small-5 columns">
-    <button class="button warning m0 expand" ng-click="hideTxInfo = true; hideSign = true; reject(tx.ntxid);" 
+    <button class="button warning m0 expand" ng-click="hideTxInfo = true; hideSign = true; reject(tx);" 
       ng-disabled="loading" ng-show="!hideReject">
       <i class="fi-x icon-sign x"></i>  
       <span translate>Reject</span>
     </button>
   </div>
   <div class="large-5 medium-5 small-5 columns text-right">
-    <button class="button primary m0 expand" ng-click="hideTxInfo = true; hideReject = true; sign(tx.ntxid)" 
+    <button class="button primary m0 expand" ng-click="hideTxInfo = true; hideReject = true; sign(tx)" 
       ng-disabled="loading" ng-show="!hideSign">
       <i class="fi-check icon-sign check"></i>  
       <span translate>Sign</span>
@@ -105,10 +103,9 @@
 
 <div ng-show="!hideTxInfo">
   <div class="row collapse m10t" 
-    ng-show="!$root.wallet.txProposals.txps[tx.ntxid].sentTs 
-    && $root.wallet.txProposals.txps[tx.ntxid].builder.build().countInputMissingSignatures(0) == 0">
+    ng-show="tx.status=='accepted'">
     <button class="primary tiny m0 expand"
-      ng-click="broadcast(tx.ntxid)"
+      ng-click="broadcast(tx)"
       ng-disabled="loading"> <i class="fi-upload-cloud"></i>
       <span translate>Broadcast Transaction</span>
     </button>

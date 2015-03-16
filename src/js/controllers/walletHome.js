@@ -7,26 +7,24 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
 
   $scope.openTxModal = function(tx) {
+    var fc = profileService.focusedClient;
     var ModalInstanceCtrl = function($scope, $modalInstance) {
-      var w = $rootScope.wallet;
       $scope.error = null;
       $scope.tx = tx;
-      $scope.registeredCopayerIds = w.getRegisteredCopayerIds();
       $scope.loading = null;
 
       $scope.getShortNetworkName = function() {
-        var w = $rootScope.wallet;
-        return w.getNetworkName().substring(0, 4);
+        return fc.networkName.substring(0, 4);
       };
 
-      $scope.sign = function(ntxid) {
+      $scope.sign = function(txp) {
         if (isCordova) {
           window.plugins.spinnerDialog.show(null, 'Signing transaction...', true);
         }
         $scope.loading = true;
         $scope.error = null;
         $timeout(function() {
-          w.signAndSend(ntxid, function(err, id, status) {
+          fc.signTxProposal(txp, function(err, txp) {
             if (isCordova) {
               window.plugins.spinnerDialog.hide();
             }
@@ -35,20 +33,20 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
               $scope.error = 'Transaction could not send. Please try again.';
               $scope.$digest();
             } else {
-              $modalInstance.close(status);
+              $modalInstance.close(txp);
             }
           });
         }, 100);
       };
 
-      $scope.reject = function(ntxid) {
+      $scope.reject = function(txp) {
         if (isCordova) {
           window.plugins.spinnerDialog.show(null, 'Rejecting transaction...', true);
         }
         $scope.loading = true;
         $scope.error = null;
         $timeout(function() {
-          w.reject(ntxid, function(err, status) {
+          fc.rejectTxProposal(txp, null, function(err, txp) {
             if (isCordova) {
               window.plugins.spinnerDialog.hide();
             }
@@ -57,20 +55,20 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
               $scope.error = err;
               $scope.$digest();
             } else {
-              $modalInstance.close(status);
+              $modalInstance.close(txp);
             }
           });
         }, 100);
       };
 
-      $scope.broadcast = function(ntxid) {
+      $scope.broadcast = function(txp) {
         if (isCordova) {
           window.plugins.spinnerDialog.show(null, 'Sending transaction...', true);
         }
         $scope.loading = true;
         $scope.error = null;
         $timeout(function() {
-          w.issueTx(ntxid, function(err, txid, status) {
+          fc.broadcastTxProposal(txp, function(err, txp) {
             if (isCordova) {
               window.plugins.spinnerDialog.hide();
             }
@@ -79,7 +77,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
               $scope.error = 'Transaction could not send. Please try again.';
               $scope.$digest();
             } else {
-              $modalInstance.close(status);
+              $modalInstance.close(txp);
             }
           });
         }, 100);
@@ -96,8 +94,9 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       controller: ModalInstanceCtrl,
     });
 
-    modalInstance.result.then(function(status) {
-      txStatus.notify(status);
+    modalInstance.result.then(function(txp) {
+      txStatus.notify(txp);
+      $rootScope.$emit('updateStatus');
     });
 
   };

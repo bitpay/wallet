@@ -15,15 +15,15 @@
           </span>
         </div>
         <div class="pr">
-          <div class="avatar-wallet left">{{index.walletStatus.wallet.name | limitTo: 1}}</div>      
+          <div class="avatar-wallet left">{{index.walletName | limitTo: 1}}</div>      
           <div class="wallet-info">
               <p class="m0">
-              {{index.walletStatus.wallet.m}} <span translate>of</span>  {{index.walletStatus.wallet.n}}  
+              {{index.m}} <span translate>of</span>  {{index.n}}  
               </p>
             <div class="size-12 text-gray">
-              <span ng-if="index.walletStatus.wallet.n > 1" translate>Multisignature wallet </span>
-              <span ng-if="index.walletStatus.wallet.n == 1" translate>Personal Wallet</span> 
-              <span ng-if="index.walletStatus.wallet.network != 'livenet'" translate> - Testnet</span>
+              <span ng-if="index.n > 1" translate>Multisignature wallet </span>
+              <span ng-if="index.n == 1" translate>Personal Wallet</span> 
+              <span ng-if="index.network != 'livenet'" translate> - Testnet</span>
             </div>
           </div>
           <div class="right">

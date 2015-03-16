@@ -8,6 +8,18 @@ angular.module('copayApp.services')
     root.focusedClient = null;
     root.walletClients = {};
 
+
+    // Add some convenience shortcuts
+    root.setupFocusedClient = function() {
+      var fc = root.focusedClient;
+      fc.networkName = fc.credentials.network;
+      fc.m = fc.credentials.m;
+      fc.n = fc.credentials.n;
+      fc.network = fc.credentials.network;
+      fc.copayerId = fc.credentials.copayerId;
+      $log.debug('Focused Client:', fc); //TODO
+    };
+
     root._setFocus = function(walletId, cb) {
       $log.debug('Set focus:', walletId);
 
@@ -17,21 +29,16 @@ angular.module('copayApp.services')
       if (!root.focusedClient)
         root.focusedClient = root.walletClients[lodash.keys(root.walletClients)[0]];
 
-      // TODO
       if (!root.focusedClient)
         throw new Error('Profile has not wallets!');
 
-      // TODO open from cache if exist
-      root.focusedClient.getStatus(function(err, walletStatus) {
-        $rootScope.$emit('newFocusedWallet', walletStatus);
-        return cb(err);
-      });
+      root.setupFocusedClient();
+      $rootScope.$emit('updateStatus');
     };
 
     root.setAndStoreFocus = function(walletId, cb) {
-      root._setFocus(walletId, function(err) {
-        storageService.setFocusedWalletId(walletId, cb);
-      });
+      root._setFocus(walletId);
+      storageService.setFocusedWalletId(walletId, cb);
     };
 
     root.setProfile = function(p, cb) {
@@ -44,9 +51,8 @@ angular.module('copayApp.services')
 
       storageService.getFocusedWalletId(function(err, focusedWalletId) {
         configService.get(function(err) {
-          root._setFocus(focusedWalletId, function(err) {
-            return cb(err);
-          });
+          root._setFocus(focusedWalletId);
+          return cb(err);
         })
       });
     };

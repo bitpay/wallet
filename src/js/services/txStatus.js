@@ -1,20 +1,33 @@
 'use strict';
 
-angular.module('copayApp.services').factory('txStatus', function($modal) {
+angular.module('copayApp.services').factory('txStatus', function($modal, lodash, profileService) {
   var root = {};
 
-  root.notify = function(status) {
+  root.notify = function(txp) {
+    var fc = profileService.focusedClient;
     var msg;
-    if (status == copay.Wallet.TX_BROADCASTED)
-      msg = 'Transaction broadcasted';
-    else if (status == copay.Wallet.TX_PROPOSAL_SENT)
-      msg = 'Transaction proposal created';
-    else if (status == copay.Wallet.TX_SIGNED)
-      msg = 'Transaction proposal signed';
-    else if (status == copay.Wallet.TX_REJECTED)
-      msg = 'Transaction was rejected';
+    console.log('[txStatus.js.10:txp:]', txp); //TODO
 
-    if (msg) 
+    var status = txp.status;
+    if (status == 'broadcasted')
+      msg = 'Transaction broadcasted';
+    else if (status == 'pending') {
+      console.log('[txStatus.js.13:status:]', status); //TODO
+
+      var action = lodash.find(txp.actions, {
+        copayerId: fc.copayerId
+      });
+      console.log('[txStatus.js.16:action:]', action); //TODO
+      if (!action) {
+        msg = 'Transaction proposal created';
+      } else if (action.type == 'accept') {
+        msg = 'Transaction proposal signed';
+      } else if (action.type == 'reject') {
+        msg = 'Transaction was rejected';
+      }
+    }
+
+    if (msg)
       root.openModal(msg);
   };
 
