@@ -1,24 +1,19 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('MoreController',
-  function($scope, $rootScope, $location, $filter, $timeout, balanceService, notification, rateService, backupService, identityService, isMobile, isCordova, go, pendingTxsService) {
-    var w = $rootScope.wallet;
-    var max = $rootScope.quotaPerItem;
-    $scope.isSafari = isMobile.Safari();
-    $scope.isCordova = isCordova;
-    $scope.wallet = w;
-    $scope.error = null;
-    $scope.success = null;
+angular.module('copayApp.controllers').controller('preferencesController',
+  function($scope, $rootScope, $filter, $timeout, $modal, balanceService, notification, backupService, profileService, isMobile, isCordova, go) {
+    this.isSafari = isMobile.Safari();
+    this.isCordova = isCordova;
+    this.hideAdv = true;
+    this.hidePriv = true;
+    this.hideSecret = true;
+    this.error = null;
+    this.success = null;
 
-    var bits = w.sizes().total;
-    w.kb = $filter('noFractionNumber')(bits / 1000, 1);
-    if (max) {
-      w.usage = $filter('noFractionNumber')(bits / max * 100, 0);
-    }
+    // TODO read config
+    this.unitName = 'bits';
 
-    $rootScope.title = 'Settings';
-
-    $scope.unitOpts = [{
+    this.unitOpts = [{
       name: 'Satoshis (100,000,000 satoshis = 1BTC)',
       shortName: 'SAT',
       value: 1,
@@ -40,97 +35,67 @@ angular.module('copayApp.controllers').controller('MoreController',
       decimals: 8
     }];
 
-    $scope.selectedAlternative = {
-      name: w.settings.alternativeName,
-      isoCode: w.settings.alternativeIsoCode
-    };
-    $scope.alternativeOpts = rateService.isAvailable() ?
-      rateService.listAlternatives() : [$scope.selectedAlternative];
-
-    rateService.whenAvailable(function() {
-      $scope.alternativeOpts = rateService.listAlternatives();
-      for (var ii in $scope.alternativeOpts) {
-        if (w.settings.alternativeIsoCode === $scope.alternativeOpts[ii].isoCode) {
-          $scope.selectedAlternative = $scope.alternativeOpts[ii];
-        }
-      }
-    });
-
-
-    for (var ii in $scope.unitOpts) {
-      if (w.settings.unitName === $scope.unitOpts[ii].shortName) {
-        $scope.selectedUnit = $scope.unitOpts[ii];
+    for (var ii in this.unitOpts) {
+      if (this.unitName === this.unitOpts[ii].shortName) {
+        this.selectedUnit = this.unitOpts[ii];
         break;
       }
     }
 
-    $scope.hideAdv = true;
-    $scope.hidePriv = true;
-    $scope.hideSecret = true;
-    if (w) {
-      $scope.priv = w.privateKey.toObj().extendedPrivateKeyString;
-      $scope.secret = w.getSecret();
-    }
+    this.rateService = function() {
+      $scope.selectedAlternative = {
+        name: w.settings.alternativeName,
+        isoCode: w.settings.alternativeIsoCode
+      };
+      $scope.alternativeOpts = rateService.isAvailable() ?
+        rateService.listAlternatives() : [$scope.selectedAlternative];
 
-    setTimeout(function() {
-      $scope.$digest();
-    }, 1);
-
-    $scope.save = function() {
-      var w = $rootScope.wallet;
-      w.changeSettings({
-        unitName: $scope.selectedUnit.shortName,
-        unitToSatoshi: $scope.selectedUnit.value,
-        unitDecimals: $scope.selectedUnit.decimals,
-        alternativeName: $scope.selectedAlternative.name,
-        alternativeIsoCode: $scope.selectedAlternative.isoCode,
-      });
-      notification.success('Success', $filter('translate')('settings successfully updated'));
-      balanceService.update(w, function() {
-        pendingTxsService.update();
-        $rootScope.$digest();
-      });
-    }; 
-
-    $scope.purge = function(deleteAll) {
-      var removed = w.purgeTxProposals(deleteAll);
-      if (removed) {
-        balanceService.update(w, function() {
-          $rootScope.$digest();
-        }, true);
-      }
-      notification.info('Transactions Proposals Purged', removed + ' ' + $filter('translate')('transaction proposal purged'));
-    };
-
-    $scope.updateIndexes = function() {
-      var w = $rootScope.wallet;
-      notification.info('Scaning for transactions', 'Using derived addresses from your wallet');
-      w.updateIndexes(function(err) {
-        notification.info('Scan Ended', 'Updating balance');
-        if (err) {
-          notification.error('Error', $filter('translate')('Error updating indexes: ') + err);
+      rateService.whenAvailable(function() {
+        $scope.alternativeOpts = rateService.listAlternatives();
+        for (var ii in $scope.alternativeOpts) {
+          if (w.settings.alternativeIsoCode === $scope.alternativeOpts[ii].isoCode) {
+            $scope.selectedAlternative = $scope.alternativeOpts[ii];
+          }
         }
-        balanceService.update(w, function() {
-          notification.info('Finished', 'The balance is updated using the derived addresses');
-          w.sendIndexes();
-          $rootScope.$digest();
-        }, true);
+      }); 
+    };  
+
+    var _modalDeleteWallet = function() {
+      var ModalInstanceCtrl = function($scope, $modalInstance) {
+        $scope.title = 'Are you sure you want to delete this wallet?';
+        $scope.loading = false;
+
+        $scope.ok = function() {
+          $scope.loading = true;
+          $modalInstance.close('ok');
+          
+        };
+        $scope.cancel = function() {
+          $modalInstance.dismiss('cancel');
+        };
+      };
+
+      var modalInstance = $modal.open({
+        templateUrl: 'views/modals/confirmation.html',
+        windowClass: 'full',
+        controller: ModalInstanceCtrl
+      });
+      modalInstance.result.then(function(ok) {
+console.log('[preferences.js:82]',ok); //TODO
       });
     };
 
-    $scope.deleteWallet = function() {
-      $scope.loading = true;
+    var _deleteWallet = function() {
+      this.loading = true;
       $timeout(function() {
-        identityService.deleteWallet(w, function(err) {
-          $scope.loading = false;
+        profileService.deleteWallet(w, function(err) {
+          this.loading = false;
           if (err) {
-            $scope.error = err.message || err;
+            this.error = err.message || err;
             copay.logger.warn(err);
             $timeout(function () { $scope.$digest(); });
           } else {
-            if ($rootScope.wallet) {
-              go.walletHome();
-            }
+            go.walletHome();
             $timeout(function() {
               notification.success('Success', 'The wallet "' + (w.name || w.id) + '" was deleted');
             });
@@ -139,31 +104,50 @@ angular.module('copayApp.controllers').controller('MoreController',
       }, 100);
     };
 
-    $scope.copyText = function(text) {
+    this.deleteWallet = function() {
+      if (isCordova) {
+        navigator.notification.confirm(
+          'Are you sure you want to delete this wallet?',
+          function(buttonIndex) {
+console.log('[preferences.js:67]',buttonIndex); //TODO
+            if (buttonIndex == 2) {
+              _deleteWallet();
+            }
+          },
+          'Confirm',
+          ['Cancel','OK']
+        );
+      }
+      else {
+        _modalDeleteWallet();
+      }
+    };
+
+    this.copyText = function(text) {
       if (isCordova) {
         window.cordova.plugins.clipboard.copy(text);
         window.plugins.toast.showShortCenter('Copied to clipboard');
       }
     };
 
-    $scope.downloadWalletBackup = function() {
+    this.downloadWalletBackup = function() {
       backupService.walletDownload(w);
     };
 
-    $scope.viewWalletBackup = function() {
-      $scope.loading = true;
+    this.viewWalletBackup = function() {
+      this.loading = true;
       $timeout(function() {
-        $scope.backupWalletPlainText = backupService.walletEncrypted(w);
+        this.backupWalletPlainText = backupService.walletEncrypted(w);
       }, 100);
     };
 
-    $scope.copyWalletBackup = function() {
+    this.copyWalletBackup = function() {
       var ew = backupService.walletEncrypted(w);
       window.cordova.plugins.clipboard.copy(ew);
       window.plugins.toast.showShortCenter('Copied to clipboard');
     };
 
-    $scope.sendWalletBackup = function() {
+    this.sendWalletBackup = function() {
       if (isMobile.Android() || isMobile.Windows()) {
         window.ignoreMobilePause = true;
       }

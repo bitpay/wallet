@@ -37,7 +37,7 @@ angular.module('copayApp.controllers').controller('receiveController',
         $scope.address = address;
         $scope.isCordova = self.isCordova;
         $scope.copyAddress = function(addr) {
-          scope.copyAddress(addr);
+          $scope.copyAddress(addr);
         };
 
         $scope.cancel = function() {
@@ -47,7 +47,7 @@ angular.module('copayApp.controllers').controller('receiveController',
 
       $modal.open({
         templateUrl: 'views/modals/qr-address.html',
-        windowClass: 'small',
+        windowClass: 'full',
         controller: ModalInstanceCtrl,
         resolve: {
           address: function() {
