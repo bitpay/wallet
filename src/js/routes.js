@@ -103,7 +103,6 @@ angular
 
     .state('preferences', {
         url: '/preferences',
-        controller: 'preferencesController',
         templateUrl: 'views/preferences.html',
         walletShouldBeComplete: true,
         needProfile: true
