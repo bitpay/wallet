@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('sendController',
-  function($rootScope, $window, $timeout, $modal, $filter, $log, notification, isMobile, txStatus, isCordova, bitcore, profileService, configService) {
+  function($rootScope, $scope, $window, $timeout, $modal, $filter, $log, notification, isMobile, txStatus, isCordova, bitcore, profileService, configService) {
     var fc = profileService.focusedClient;
 
     this.init = function() {
@@ -144,31 +144,29 @@ angular.module('copayApp.controllers').controller('sendController',
 
 
     this.setError = function(err) {
-      var self = this;
-
       $log.warn(err);
 
-      var msg = err.toString();
-      if (msg.match('BIG'))
-        msg = 'The transaction have too many inputs. Try creating many transactions  for smaller amounts'
+      // TODO
+      // if (err.code('BIG'))
+      //   msg = 'The transaction have too many inputs. Try creating many transactions  for smaller amounts'
+      //
+      // if (msg.code('totalNeededAmount') || msg.code('unspent not set'))
+      //   msg = 'Insufficient funds'
+      //
+      // if (msg.code('expired'))
+      //   msg = 'The payment request has expired';
+      //
+      // if (msg.code('XMLHttpRequest'))
+      //   msg = 'Error when sending to the blockchain. Resend it from Home';
+      //
+      var errMessage = 'The transaction' + (fc.credentials.m > 1 ? ' proposal' : '') +
 
-      if (msg.match('totalNeededAmount') || msg.match('unspent not set'))
-        msg = 'Insufficient funds'
+        ' could not be created: ' + (err.message ? err.message : err);
 
-      if (msg.match('expired'))
-        msg = 'The payment request has expired';
-
-      if (msg.match('XMLHttpRequest'))
-        msg = 'Error when sending to the blockchain. Resend it from Home';
-
-      var message = 'The transaction' + (fc.credentials.m > 1 ? ' proposal' : '') +
-
-        ' could not be created: ' + msg;
-
-      this.error = message;
+      this.error = errMessage;
 
       $timeout(function() {
-        self.$digest();
+        $scope.$digest();
       }, 1);
     };
 

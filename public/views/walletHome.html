@@ -5,11 +5,11 @@
         <div class="amount">
           <span class="size-36">
             <strong>
-              <span >{{index.walletStatus.balance.totalAmount || 0}}</span>
+              <span >{{index.totalBalanceStr || 0}} </span>
           </strong>
           </span>
           <span class="size-14 db m5t text-gray">
-            <span ng-if="!$root.wallet.balanceInfo.updatingBalance && $root.wallet.balanceInfo.alternativeBalanceAvailable">{{$root.wallet.balanceInfo.totalBalanceAlternative}} {{$root.wallet.balanceInfo.alternativeIsoCode}}</span>
+            <span ng-if="!index.updatingBalance && $root.wallet.balanceInfo.alternativeBalanceAvailable">{{index.totalBalanceAlternative}} {{index.alternativeIsoCode}}</span>
           <span ng-if="!$root.wallet.balanceInfo.updatingBalance && !$root.wallet.balanceInfo.alternativeBalanceAvailable">N/A</span>
           <span ng-if="$root.wallet.balanceInfo.updatingBalance"><i class="fi-bitcoin-circle icon-rotate spinner"></i></span>
           </span>
@@ -38,7 +38,7 @@
   </div>
 
 
-  <div ng-show="$root.wallet.requiresMultipleSignatures()">
+  <div ng-show="index.requiresMultipleSignatures  && index.txps[0]">
     <div class="row">
       <div class="large-12 columns">
         <div class="panel oh">
@@ -48,14 +48,14 @@
           </div>
 
           <div class="text-right size-12 line-t p10t" 
-            ng-show="$root.wallet.balanceInfo.lockedBalance && !$root.wallet.balanceInfo.updatingBalance">
+            ng-show="index.lockedBalance && !index.updatingBalance">
             <span translate>Total Locked Balance</span>:
-            <b>{{$root.wallet.balanceInfo.lockedBalance}} {{$root.wallet.settings.unitName}} </b> 
-            <span class="text-gray"> {{$root.wallet.balanceInfo.lockedBalanceAlternative}} 
-              {{$root.wallet.balanceInfo.alternativeIsoCode}} </span>
+            <b>{{index.lockedBalance}} {{index.unitName}} </b> 
+            <span class="text-gray"> {{index.lockedBalanceAlternative}} 
+              {{index.alternativeIsoCode}} </span>
           </div>
 
-          <div class="pr" ng-if="!$root.wallet.pendingTxProposals[0]">
+          <div class="pr" ng-if="!index.txps[0]">
             <p translate>No pending spend proposals at the moment.</p>
           </div>
         </div>
@@ -63,12 +63,12 @@
     </div>
   </div>
 
-  <div ng-if="!$root.wallet.requiresMultipleSignatures() && $root.wallet.pendingTxProposals[0]">
+  <div ng-if="!index.requiresMultipleSignatures && index.txps[0]">
     <div class="row">
       <div class="large-12 columns">
         <div class="panel oh">
           <h2 class="line-b" translate>Unsent transactions</h2>
-          <div class="last-transactions pr" ng-repeat="tx in $root.wallet.pendingTxProposals  | orderBy:'-createdTs'"
+          <div class="last-transactions pr" ng-repeat="tx in index.txps  | orderBy:'-createdTs'"
             ng-include="'views/includes/transaction.html'">
           </div>
         </div>
