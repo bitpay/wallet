@@ -58,11 +58,9 @@ angular.module('copayApp.services')
           $log.debug('Wallet completed');
           client.isComplete = true;
 
-          console.log('[profileService.js.60]', root.profile.credentials); //TODO
-          var newCredentials = lodash.without(root.profile.credentials, {
+          var newCredentials = lodash.reject(root.profile.credentials, {
             walletId: client.credentials.walletId
           });
-          console.log('[profileService.js.61:newCredentials:]', newCredentials); //TODO
           newCredentials.push(JSON.parse(client.export()));
           root.profile.credentials = newCredentials;
 
