@@ -1,9 +1,18 @@
-<nav class="tab-bar text-right hide-for-large-up">
-  <span ng-click="cancel()" class="p10 text-white" translate>Close</span>
+<nav class="tab-bar">
+  <section class="left-small">
+    <a class="p10" 
+      ng-click="cancel()"><i class="fi-arrow-left size-24"></i> 
+    </a>
+  </section>
+
+  <section class="middle tab-bar-section">
+    <h1 class="title ellipsis">
+      Transaction
+    </h1>
+  </section>
 </nav>
-<div class="modal-mobile">
-<div class="header-modal">
-    <div class="small-10 columns">
+<div class="p60t">
+  <div class="header-modal">
     <div class="ellipsis p10b size-16 m20r">
       <span class="tx-proposal size-12 m5r"> <i ng-class="{'active':tx.pendingForUs}" class="fi-arrow-right"></i> </span>
       <span class="text-gray">
@@ -13,7 +22,7 @@
           <span ng-show="!tx.merchant.pr.ca"><i class="fi-unlock"></i> {{tx.merchant.domain}}</span>
         </span>
         <contact address="{{tx.toAddress}}" ng-hide="tx.merchant"></contact>
-{{tx.toAddress}}
+        {{tx.toAddress}}
       </span>
     </div>
 
@@ -25,105 +34,103 @@
         {{tx.alternativeAmountStr}}
       </span>
     </div>
-    </div>
-  <a class="close-reveal-modal show-for-large-up" ng-click="cancel()"><i class="fi-x size-18"></i></a>
-</div>
-
-<div class="m10v line-b size-14" ng-show="tx.message">
-  <div class="oh" ng-if="tx.ts || tx.createdOn ">
-    <p class="left m5b">{{$root.iden.getName()}}</p>
-    <div class="text-gray text-right m5t size-12">
-      <time>{{ (tx.ts || tx.createdOn ) | amTimeAgo}}</time>
-    </div>
   </div>
-  <div class="text-gray m10b">
-    {{tx.message}}
-  </div>
-</div>
 
-<div class="m10v line-b size-14" ng-if="tx.merchant">
-  <div class="oh">
-    <p class="left m5b" translate>Merchant Message:</p>
-    <div class="text-gray text-right m5t size-12" ng-if="tx.merchant && tx.merchant.expirationDate">
-      <span><i>Expires</i>: {{tx.merchant.expirationDate | amTimeAgo }}</span>
+  <div class="m10v line-b size-14" ng-show="tx.message">
+    <div class="oh" ng-if="tx.ts || tx.createdOn ">
+      <p class="left m5b">{{tx.creatorName}}</p>
+      <div class="text-gray text-right m5t size-12">
+        <time>{{ (tx.ts || tx.createdOn ) | amTimeAgo}}</time>
+      </div>
+    </div>
+    <div class="text-gray m10b">
+      {{tx.message}}
     </div>
   </div>
-  <div class="text-gray m10b">
-    {{tx.merchant.pr.pd.memo}}
-  </div>
-</div>
 
-<div ng-if="tx.actionList[0]" class="m10v">
-  <i translate>Signatures:</i>
-  <ul class="tx-copayers m10t" ng-if="tx.actions[0]">
-    <li ng-repeat="cId in registeredCopayerIds" 
-    ng-class="{'bottom-line-copayers':!$last}">
-    <span>
-      <i ng-if="$root.wallet.txProposals.txps[tx.ntxid].rejectedBy[cId]" class="fi-x icon-sign x"></i>
-      <i ng-if="$root.wallet.txProposals.txps[tx.ntxid].signedBy[cId]" class="fi-check icon-sign check"></i>
-      <i ng-if="!$root.wallet.txProposals.txps[tx.ntxid].rejectedBy[cId] 
-        && !$root.wallet.txProposals.txps[tx.ntxid].signedBy[cId]" class="m10r fi-loop icon-rotate"></i>
+  <div class="m10v line-b size-14" ng-if="tx.merchant">
+    <div class="oh">
+      <p class="left m5b" translate>Merchant Message:</p>
+      <div class="text-gray text-right m5t size-12" ng-if="tx.merchant && tx.merchant.expirationDate">
+        <span><i>Expires</i>: {{tx.merchant.expirationDate | amTimeAgo }}</span>
+      </div>
+    </div>
+    <div class="text-gray m10b">
+      {{tx.merchant.pr.pd.memo}}
+    </div>
+  </div>
+
+  <div ng-if="tx.action[0]" class="m10v">
+    <i translate>Signatures:</i>
+    <ul class="tx-copayers m10t">
+      <li ng-repeat="cId in registeredCopayerIds" 
+      ng-class="{'bottom-line-copayers':!$last}">
+      <span>
+        <i ng-if="$root.wallet.txProposals.txps[tx.ntxid].rejectedBy[cId]" class="fi-x icon-sign x"></i>
+        <i ng-if="$root.wallet.txProposals.txps[tx.ntxid].signedBy[cId]" class="fi-check icon-sign check"></i>
+        <i ng-if="!$root.wallet.txProposals.txps[tx.ntxid].rejectedBy[cId] 
+          && !$root.wallet.txProposals.txps[tx.ntxid].signedBy[cId]" class="m10r fi-loop icon-rotate"></i>
+      </span>
+      <span>
+        <i ng-if="$root.wallet.txProposals.txps[tx.ntxid].creator == cId" 
+          class="fi-crown icon-status icon-active m10r"></i>
+      </span>
+      <span>{{cId === $root.wallet.getMyCopayerId() ? 'Me' : $root.wallet.publicKeyRing.nicknameForCopayer(cId)}}</span>
+      </li>
+    </ul>
+  </div>
+
+  <div class="box-notification" ng-show="error">
+    <div class="box-icon error">
+      <i class="fi-x size-24"></i>
+    </div>
+    <span class="text-warning size-14">
+      {{error|translate}}
     </span>
-    <span>
-      <i ng-if="$root.wallet.txProposals.txps[tx.ntxid].creator == cId" 
-        class="fi-crown icon-status icon-active m10r"></i>
-    </span>
-    <span>{{cId === $root.wallet.getMyCopayerId() ? 'Me' : $root.wallet.publicKeyRing.nicknameForCopayer(cId)}}</span>
-    </li>
-  </ul>
-</div>
-
-<div class="box-notification" ng-show="error">
-  <div class="box-icon error">
-    <i class="fi-x size-24"></i>
   </div>
-  <span class="text-warning size-14">
-    {{error|translate}}
-  </span>
-</div>
 
-<div class="row collapse m10t" 
-  ng-init="hideSign = false; hideReject = false"
-  ng-show="tx.pendingForUs">
-  <div class="large-5 medium-5 small-5 columns">
-    <button class="button warning m0 expand" ng-click="hideTxInfo = true; hideSign = true; reject(tx);" 
-      ng-disabled="loading" ng-show="!hideReject">
-      <i class="fi-x icon-sign x"></i>  
-      <span translate>Reject</span>
-    </button>
-  </div>
-  <div class="large-5 medium-5 small-5 columns text-right">
-    <button class="button primary m0 expand" ng-click="hideTxInfo = true; hideReject = true; sign(tx)" 
-      ng-disabled="loading" ng-show="!hideSign">
-      <i class="fi-check icon-sign check"></i>  
-      <span translate>Sign</span>
-    </button>
-  </div>
-</div>
-
-<div ng-show="!hideTxInfo">
   <div class="row collapse m10t" 
-    ng-show="tx.status=='accepted'">
-    <button class="primary tiny m0 expand"
-      ng-click="broadcast(tx)"
-      ng-disabled="loading"> <i class="fi-upload-cloud"></i>
-      <span translate>Broadcast Transaction</span>
-    </button>
+    ng-init="hideSign = false; hideReject = false"
+    ng-show="tx.pendingForUs">
+    <div class="large-5 medium-5 small-5 columns">
+      <button class="button warning m0 expand" ng-click="hideTxInfo = true; hideSign = true; reject(tx);" 
+        ng-disabled="loading" ng-show="!hideReject">
+        <i class="fi-x icon-sign x"></i>  
+        <span translate>Reject</span>
+      </button>
+    </div>
+    <div class="large-5 medium-5 small-5 columns text-right">
+      <button class="button primary m0 expand" ng-click="hideTxInfo = true; hideReject = true; sign(tx)" 
+        ng-disabled="loading" ng-show="!hideSign">
+        <i class="fi-check icon-sign check"></i>  
+        <span translate>Sign</span>
+      </button>
+    </div>
   </div>
-  <div class="text-success m10t oh" 
-    ng-show="$root.wallet.txProposals.txps[tx.ntxid].sentTs 
-    && $root.wallet.txProposals.txps[tx.ntxid].isFullySigned()">
-    <a class="button outline light-gray tiny right" 
-      ng-click="$root.openExternalLink('http://' + getShortNetworkName() + '.insight.is/tx/' +
-      $root.wallet.txProposals.txps[tx.ntxid].sentTxid)">
-      <span translate>See it on the blockchain</span> <i class="icon-arrow-right2 vm"></i>
-    </a>
-    <div class="m10t" translate>Transaction sent!</div>
+
+  <div ng-show="!hideTxInfo">
+    <div class="row collapse m10t" 
+      ng-show="tx.status=='accepted'">
+      <button class="primary tiny m0 expand"
+        ng-click="broadcast(tx)"
+        ng-disabled="loading"> <i class="fi-upload-cloud"></i>
+        <span translate>Broadcast Transaction</span>
+      </button>
+    </div>
+    <div class="text-success m10t oh" 
+      ng-show="$root.wallet.txProposals.txps[tx.ntxid].sentTs 
+      && $root.wallet.txProposals.txps[tx.ntxid].isFullySigned()">
+      <a class="button outline light-gray tiny right" 
+        ng-click="$root.openExternalLink('http://' + getShortNetworkName() + '.insight.is/tx/' +
+        $root.wallet.txProposals.txps[tx.ntxid].sentTxid)">
+        <span translate>See it on the blockchain</span> <i class="icon-arrow-right2 vm"></i>
+      </a>
+      <div class="m10t" translate>Transaction sent!</div>
+    </div>
+    <div class="text-center text-warning"
+      ng-show="!$root.wallet.txProposals.txps[tx.ntxid].sentTs && 
+      $root.wallet.txProposals.txps[tx.ntxid].isFinallyRejected($root.wallet.maxRejectCount())" translate>
+      Transaction finally rejected
+    </div>
   </div>
-  <div class="text-center text-warning"
-    ng-show="!$root.wallet.txProposals.txps[tx.ntxid].sentTs && 
-    $root.wallet.txProposals.txps[tx.ntxid].isFinallyRejected($root.wallet.maxRejectCount())" translate>
-    Transaction finally rejected
-  </div>
-</div>
 </div>

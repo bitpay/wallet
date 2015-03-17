@@ -27,7 +27,6 @@ angular.module('copayApp.controllers').controller('sendController',
       }
 
       this.setInputs();
-      this.setScanner();
 
       var config = configService.getSync().wallet.settings;
       this.alternativeName = config.alternativeName;
@@ -40,16 +39,15 @@ angular.module('copayApp.controllers').controller('sendController',
       //   self.$digest();
       // });
       //
-      if (isCordova) {
-        var openScannerCordova = $rootScope.$on('dataScanned', function(event, data) {
-          self.sendForm.address.$setViewValue(data);
-          self.sendForm.address.$render();
-        });
+      
+      var openScannerCordova = $rootScope.$on('dataScanned', function(event, data) {
+console.log('[send.js:43]',data); //TODO
+        self.setForm(data);
+      });
 
-        this.$on('$destroy', function() {
-          openScannerCordova();
-        });
-      };
+      $scope.$on('$destroy', function() {
+        openScannerCordova();
+      });
     };
 
     this.formFocus = function(what) {
@@ -131,18 +129,6 @@ angular.module('copayApp.controllers').controller('sendController',
         });
     };
 
-    this.setScanner = function() {
-      navigator.getUserMedia = navigator.getUserMedia ||
-        navigator.webkitGetUserMedia || navigator.mozGetUserMedia ||
-        navigator.msGetUserMedia;
-      window.URL = window.URL || window.webkitURL ||
-        window.mozURL || window.msURL;
-
-      if (!window.cordova && !navigator.getUserMedia)
-        this.disableScanner = 1;
-    };
-
-
     this.setError = function(err) {
       $log.warn(err);
 
@@ -219,126 +205,6 @@ angular.module('copayApp.controllers').controller('sendController',
           }
         });
       }, 100);
-    };
-
-    // QR code Scanner
-    var cameraInput;
-    var video;
-    var canvas;
-    var $video;
-    var context;
-    var localMediaStream;
-
-    var _scan = function(evt) {
-      console.log('[send.js.233:evt:]', evt); //TODO
-      if (self.isMobile) {
-        self.scannerLoading = true;
-        var files = evt.target.files;
-
-        if (files.length === 1 && files[0].type.indexOf('image/') === 0) {
-          var file = files[0];
-
-          var reader = new FileReader();
-          reader.onload = (function(theFile) {
-            return function(e) {
-              var mpImg = new MegaPixImage(file);
-              mpImg.render(canvas, {
-                maxWidth: 200,
-                maxHeight: 200,
-                orientation: 6
-              });
-
-              $timeout(function() {
-                qrcode.width = canvas.width;
-                qrcode.height = canvas.height;
-                qrcode.imagedata = context.getImageData(0, 0, qrcode.width, qrcode.height);
-
-                try {
-                  qrcode.decode();
-                } catch (e) {
-                  // error decoding QR
-                }
-              }, 1500);
-            };
-          })(file);
-
-          // Read  in the file as a data URL
-          reader.readAsDataURL(file);
-        }
-      } else {
-
-        console.log('[send.js.270]'); //TODO
-        if (localMediaStream) {
-          context.drawImage(video, 0, 0, 300, 225);
-
-          try {
-            qrcode.decode();
-          } catch (e) {
-            //qrcodeError(e);
-          }
-        }
-
-        $timeout(_scan, 500);
-      }
-    };
-
-    var _successCallback = function(stream) {
-      video.src = (window.URL && window.URL.createObjectURL(stream)) || stream;
-      localMediaStream = stream;
-      video.play();
-      $timeout(_scan, 1000);
-    };
-
-    var _scanStop = function() {
-      this.scannerLoading = false;
-      this.showScanner = false;
-      if (!this.isMobile) {
-        if (localMediaStream && localMediaStream.stop) localMediaStream.stop();
-        localMediaStream = null;
-        video.src = '';
-      }
-    };
-
-    var _videoError = function(err) {
-      _scanStop();
-    };
-
-    qrcode.callback = function(data) {
-      _scanStop();
-      this.$apply(function() {
-        self.sendForm.address.$setViewValue(data);
-        self.sendForm.address.$render();
-      });
-    };
-
-    this.cancelScanner = function() {
-      _scanStop();
-    };
-
-    this.openScanner = function() {
-      var self = this;
-      this.showScanner = true;
-
-      // Wait a moment until the canvas shows
-      $timeout(function() {
-        canvas = document.getElementById('qr-canvas');
-        context = canvas.getContext('2d');
-
-        if (self.isMobile) {
-          cameraInput = document.getElementById('qrcode-camera');
-          cameraInput.addEventListener('change', _scan, false);
-        } else {
-          video = document.getElementById('qrcode-scanner-video');
-          $video = angular.element(video);
-          canvas.width = 300;
-          canvas.height = 225;
-          context.clearRect(0, 0, 300, 225);
-
-          navigator.getUserMedia({
-            video: true
-          }, _successCallback, _videoError);
-        }
-      }, 500);
     };
 
     this.setTopAmount = function() {
@@ -418,7 +284,7 @@ angular.module('copayApp.controllers').controller('sendController',
       };
       $modal.open({
         templateUrl: 'views/modals/paypro.html',
-        windowClass: 'medium',
+        windowClass: 'full',
         controller: ModalInstanceCtrl,
       });
     };
@@ -516,7 +382,7 @@ angular.module('copayApp.controllers').controller('sendController',
       var w = $rootScope.wallet;
       var modalInstance = $modal.open({
         templateUrl: 'views/modals/address-book.html',
-        windowClass: 'large',
+        windowClass: 'full',
         controller: function($scope, $modalInstance) {
 
           $scope.showForm = null;

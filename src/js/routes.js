@@ -15,7 +15,7 @@ angular
   .module('copayApp')
   .config(function(localStorageServiceProvider, bwcServiceProvider, $stateProvider, $urlRouterProvider) {
 
-    bwcServiceProvider.setBaseUrl('http://localhost:3001/copay/api');
+    bwcServiceProvider.setBaseUrl('http://localhost:3001/bws/api');
 
     $urlRouterProvider.otherwise('/');
 
@@ -95,7 +95,6 @@ angular
       })
       .state('history', {
         url: '/history',
-        controller: 'historyController',
         templateUrl: 'views/history.html',
         walletShouldBeComplete: true,
         needProfile: true
