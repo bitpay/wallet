@@ -19,12 +19,14 @@ function selectText(element) {
 
 angular.module('copayApp.directives')
 
-.directive('validAddress', ['$rootScope', 'bitcore',
-    function($rootScope, bitcore) {
+.directive('validAddress', ['$rootScope', 'bitcore', 'profileService',
+    function($rootScope, bitcore, profileService) {
       return {
-        // $rootScope.wallet.getNetworkName()
         require: 'ngModel',
         link: function(scope, elem, attrs, ctrl) {
+          var networkName = profileService.focusedClient.network;
+          var URI = bitcore.URI;
+          var Address = bitcore.Address
           var validator = function(value) {
             // Regular url
             if (/^https?:\/\//.test(value)) {
@@ -32,18 +34,12 @@ angular.module('copayApp.directives')
               return value;
             }
 
-
             // Bip21 uri
             if (/^bitcoin:/.test(value)) {
-
-              // TODO 
-              var networkName = 'testnet';
-
-              throw ('TODO: bip21 checking on new bitcore');
-
-              var uri = new bitcore.BIP21(value);
-              var hasAddress = uri.address && uri.isValid() && uri.address.network().name === networkName;
-              ctrl.$setValidity('validAddress', uri.data.merchant || hasAddress);
+              var isUriValid = URI.isValid(value);
+              var uri = new URI(value);
+              var isAddressValid = Address.isValid(uri.address.toString(), networkName)
+              ctrl.$setValidity('validAddress', isUriValid && isAddressValid);
               return value;
             }
 
@@ -53,7 +49,7 @@ angular.module('copayApp.directives')
             }
 
             // Regular Address
-            ctrl.$setValidity('validAddress', bitcore.Address.isValid(value, networkName));
+            ctrl.$setValidity('validAddress', Address.isValid(value, networkName));
             return value;
           };
 
