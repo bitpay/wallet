@@ -158,7 +158,8 @@ angular
 
       if (!profileService.profile && toState.needProfile) {
 
-        profileService.loadAndSetProfile(function(err) {
+        // Try to open local profile
+        profileService.loadAndBindProfile(function(err) {
           if (err) {
             if (err.message.match('NOPROFILE')) {
               $log.debug('No profile... redirecting');
@@ -173,7 +174,7 @@ angular
         });
       }
 
-      if (profileService.focusedClient && !profileService.isFocusedComplete() && toState.walletShouldBeComplete) {
+      if (profileService.focusedClient && !profileService.focusedClient.isComplete && toState.walletShouldBeComplete) {
         $state.transitionTo('copayers');
         event.preventDefault();
       }

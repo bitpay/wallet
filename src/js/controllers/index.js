@@ -1,7 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('indexController', function($rootScope, $log, lodash, go, profileService, configService) {
-
+angular.module('copayApp.controllers').controller('indexController', function($rootScope, $log, lodash, go, profileService, configService, isCordova) {
   var self = this;
 
   function strip(number) {
@@ -9,6 +8,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   }
 
   self.pageLoaded = false;
+  self.isCordova = isCordova;
 
 
   $rootScope.$on('updateStatus', function(event) {
@@ -16,9 +16,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.pageLoaded = true; // TODO?
     self.hasProfile = true;
 
-    console.log('[index.js.17]'); //TODO
-
-    // Credentials Shortcuts
+    // Credentials Shortcuts 
     self.m = fc.m;
     self.n = fc.n;
     self.network = fc.network;
@@ -38,6 +36,10 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       $log.debug('Index: ', self);
       $rootScope.$apply();
     });
+  });
+
+  $rootScope.$on('walletWasCompleted', function(event) {
+    go.walletHome();
   });
 
   $rootScope.$on('updateBalance', function(event) {

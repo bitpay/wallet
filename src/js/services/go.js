@@ -48,10 +48,10 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
   root.walletHome = function() {
 
 
-    var wc = profileService.focusedClient;
+    var fc = profileService.focusedClient;
     $rootScope.starting = false;
 
-    if (!profileService.isFocusedComplete()) {
+    if (!fc.isComplete) {
       root.path('copayers');
     } else {
       // TODO

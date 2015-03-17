@@ -14,21 +14,12 @@
       <div class="large-8 columns">
         <div ng-if="index.walletStatus != 'complete'">
           <div class="panel oh">
-            <div class="box-notification">
-              <div class="box-icon error">
-                <i class="fi-alert size-24"></i>
-              </div>
-              <span class="text-warning size-14" translate>
-                Please note the wallet creator <b>must be online</b> until all copayers have joined.
-              </span>
-            </div>
-
-            <div ng-click="copySecret(index.walletSecret)">
+            <div ng-click="copySecret(index.walletSecret)" ng-class="{'enable_text_select': !index.isCordoba}">
               <div class="secret m10b">
                 {{index.walletSecret}}
               </div>
               <div class="text-center">
-                <qrcode size="250" data="{{index.walletSecret}}"></qrcode>
+                <qrcode size="250" error-correction-level="L" data="{{index.walletSecret}}"></qrcode>
               </div>
             </div>
             <div class="text-center m10t" ng-if="isCordova">

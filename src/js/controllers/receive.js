@@ -5,7 +5,6 @@ angular.module('copayApp.controllers').controller('receiveController',
     var fc = profileService.focusedClient;
 
     this.showAll = false;
-    this.isCordova = isCordova;
 
     this.newAddr = function() {
       var self = this;

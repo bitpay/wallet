@@ -83,8 +83,6 @@ angular.module('copayApp.controllers').controller('createController',
           self.error = 'Could not create wallet: ' + err;
         }
         go.walletHome();
-        // TODO secret
-
         $timeout(function() {
           $rootScope.$apply();
         }, 1);

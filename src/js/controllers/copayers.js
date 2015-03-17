@@ -1,12 +1,20 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('copayersController',
-  function($scope, $rootScope, $timeout, profileService, go, notification, isCordova) {
+  function($scope, $rootScope, $timeout, $log, profileService, go, notification, isCordova) {
     var self = this;
     var fc = profileService.focusedClient;
 
 
     self.init = function() {
+
+      console.log('[copayers.js.10]', fc.isComplete); //TODO
+      if (fc.isComplete) {
+        $log.debug('Wallet Complete...redirecting')
+        go.walletHome();
+        return;
+      }
+
       $rootScope.title = 'Share this secret with your copayers';
       self.loading = false;
       self.isCordova = isCordova;
@@ -24,7 +32,7 @@ angular.module('copayApp.controllers').controller('copayersController',
       var w = $rootScope.wallet;
 
       self.copayers = $rootScope.wallet.getRegisteredPeerIds();
-      if (w.isComplete()) {
+      if (fc.isComplete) {
 
         w.removeListener('publicKeyRingUpdated', self.updateList);
         w.removeListener('ready', self.updateList);

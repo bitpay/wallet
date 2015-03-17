@@ -8,7 +8,6 @@ angular.module('copayApp.controllers').controller('createProfileController', fun
     go.walletHome();
 
   $rootScope.$on('pin', function(event, pin) {
-
     profileService.create(pin, function(err) {
       if (err) {
         $log.warn(err);

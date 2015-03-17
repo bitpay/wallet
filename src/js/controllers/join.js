@@ -1,11 +1,14 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('JoinController',
-  function($scope, $rootScope, $timeout, isMobile, notification, identityService) {
+angular.module('copayApp.controllers').controller('joinController',
+  function($scope, $rootScope, $timeout, go, isMobile, notification, profileService) {
+    var self = this;
+
     $rootScope.fromSetup = false;
-    $scope.loading = false;
-    $scope.isMobile = isMobile.any();
+    self.loading = false;
+    self.isMobile = isMobile.any();
     $rootScope.title = 'Join shared wallet';
+
     $rootScope.hideWalletNavigation = true;
 
 
@@ -17,13 +20,13 @@ angular.module('copayApp.controllers').controller('JoinController',
     var context;
     var localMediaStream;
 
-    $scope.hideAdv = true;
+    self.hideAdv = true;
 
 
     navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
 
     if (!window.cordova && !navigator.getUserMedia)
-      $scope.disableScanner = 1;
+      self.disableScanner = 1;
 
     var _scan = function(evt) {
       if (localMediaStream) {
@@ -47,8 +50,8 @@ angular.module('copayApp.controllers').controller('JoinController',
     };
 
     var _scanStop = function() {
-      $scope.showScanner = false;
-      if (!$scope.isMobile) {
+      self.showScanner = false;
+      if (!self.isMobile) {
         if (localMediaStream && localMediaStream.stop) localMediaStream.stop();
         localMediaStream = null;
         video.src = '';
@@ -63,27 +66,27 @@ angular.module('copayApp.controllers').controller('JoinController',
       _scanStop();
 
       $scope.$apply(function() {
-        $scope.connectionId = data;
-        $scope.joinForm.connectionId.$setViewValue(data);
-        $scope.joinForm.connectionId.$render();
+        self.secret = data;
+        self.joinForm.secret.$setViewValue(data);
+        self.joinForm.secret.$render();
       });
     };
 
-    $scope.cancelScanner = function() {
+    self.cancelScanner = function() {
       _scanStop();
     };
 
-    $scope.openScanner = function() {
-      if (window.cordova) return $scope.scannerIntent();
+    self.openScanner = function() {
+      if (window.cordova) return self.scannerIntent();
 
-      $scope.showScanner = true;
+      self.showScanner = true;
 
       // Wait a moment until the canvas shows
       $timeout(function() {
         canvas = document.getElementById('qr-canvas');
         context = canvas.getContext('2d');
 
-        if ($scope.isMobile) {
+        if (self.isMobile) {
           cameraInput = document.getElementById('qrcode-camera');
           cameraInput.addEventListener('change', _scan, false);
         } else {
@@ -100,20 +103,20 @@ angular.module('copayApp.controllers').controller('JoinController',
       }, 500);
     };
 
-    $scope.scannerIntent = function() {
+    self.scannerIntent = function() {
       window.ignoreMobilePause = true;
       cordova.plugins.barcodeScanner.scan(
         function onSuccess(result) {
-          $timeout(function(){
+          $timeout(function() {
             window.ignoreMobilePause = false;
           }, 100);
           if (result.cancelled) return;
 
-          $scope.connectionId = result.text;
+          self.secret = result.text;
           $rootScope.$digest();
         },
         function onError(error) {
-          $timeout(function(){
+          $timeout(function() {
             window.ignoreMobilePause = false;
           }, 100);
           alert('Scanning error');
@@ -121,20 +124,23 @@ angular.module('copayApp.controllers').controller('JoinController',
     }
 
 
-    $scope.join = function(form) {
+    self.join = function(form) {
       if (form && form.$invalid) {
         notification.error('Error', 'Please enter the required fields');
         return;
       }
 
+      // TODO Priv key, nickname
       $rootScope.starting = true;
-      identityService.joinWallet({
-        secret: $scope.connectionId,
-        nickname: $scope.nickname,
-        privateHex: $scope.private,
+      profileService.joinWallet({
+        secret: form.secret.$modelValue,
+        //        nickname: form.nickname.$modelValue,
+        privateHex: form.privateKey.$modelValue,
       }, function(err) {
         $rootScope.starting = false;
         if (err) {
+
+          // TODO -> parse errors
           if (err === 'joinError')
             notification.error('Fatal error connecting to Insight server');
           else if (err === 'walletFull')
@@ -148,13 +154,18 @@ angular.module('copayApp.controllers').controller('JoinController',
           else {
             notification.error('Error', err.message || err);
           }
+        } else {
+          go.walletHome();
         }
-        $timeout(function () { $scope.$digest(); }, 1);
+
+
+        $timeout(function() {
+          $rootScope.$apply();
+        }, 1);
       });
     }
 
-
-    $scope.$on("$destroy", function () {
+    $scope.$on("$destroy", function() {
       $rootScope.hideWalletNavigation = false;
     });
   });
