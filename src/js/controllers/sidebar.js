@@ -1,47 +1,23 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('sidebarController', 
-  function($rootScope, $timeout, profileService, isMobile, isCordova, go) {
+angular.module('copayApp.controllers').controller('sidebarController',
+  function($rootScope, $timeout, lodash, profileService, isMobile, isCordova, go) {
+    var self = this;
 
-  this.isMobile = isMobile.any();
-  this.isCordova = isCordova;
-  this.username = $rootScope.iden ? $rootScope.iden.username : 'Undefined';
+    self.isMobile = isMobile.any();
+    self.isCordova = isCordova;
+    self.username = 'TODO: username';
 
-  this.signout = function() {
-    profileService.signout();
-  };
-
-  this.switchWallet = function(wid) {
-    this.walletSelection = false;
-    profileService.setFocusedWallet(wid);
-    go.walletHome();
-  };
-
-  this.toggleWalletSelection = function() {
-    this.walletSelection = !this.walletSelection;
-    if (!this.walletSelection) return;
-    this.setWallets();
-  }; 
-
-  this.init = function() {
-    // This should be called only once.
-
-    // focused wallet change
-    if ($rootScope.wallet) {
-      $rootScope.$watch('wallet', function() {
-        this.walletSelection = false;
-        this.setWallets();
+    self.init = function() {
+      // wallet list change
+      $rootScope.$on('updateWalletList', function(event) {
+        console.log('E: updateWalletList'); //TODO
+        self.walletSelection = false;
+        self.setWallets();
       });
-    }
 
-    // wallet list change
-    if ($rootScope.iden) {
-      var iden = $rootScope.iden;
-      iden.on('newWallet', function() {
-        this.walletSelection = false;
-        this.setWallets();
-      });
-      iden.on('walletDeleted', function(wid) {
+      $rootScope.$on('walletDelete', function(event, wid) {
+        // TODO
         if (wid == $rootScope.wallet.id) {
           copay.logger.debug('Deleted focused wallet:', wid);
 
@@ -54,17 +30,41 @@ angular.module('copayApp.controllers').controller('sidebarController',
             profileService.noFocusedWallet(newWid);
           }
         }
-        this.walletSelection = false;
-        this.setWallets();
+        self.walletSelection = false;
+        self.setWallets();
       });
-    }
-  };
 
-  this.setWallets = function() {
-    if (!$rootScope.iden) return;
-    var ret = _.filter($rootScope.iden.getWallets(), function(w) {
-      return w;
-    });
-    this.wallets = _.sortBy(ret, 'name');
-  };
-});
+      // Fire up update on init
+      $rootScope.$emit('updateWalletList');
+    };
+
+    self.signout = function() {
+      profileService.signout();
+    };
+
+    self.switchWallet = function(wid) {
+      self.walletSelection = false;
+      profileService.setAndStoreFocus(wid, function() {});
+      go.walletHome();
+    };
+
+    self.toggleWalletSelection = function() {
+      self.walletSelection = !self.walletSelection;
+      if (!self.walletSelection) return;
+      self.setWallets();
+    };
+
+    self.setWallets = function() {
+      if (!profileService.profile) return;
+      var ret = lodash.map(profileService.profile.credentials, function(c) {
+        return {
+          m: c.m,
+          n: c.n,
+          name: c.walletName,
+          id: c.walletId,
+        };
+      });
+      console.log('[sidebar.js.73:wallets]', ret); //TODO
+      self.wallets = lodash.sortBy(ret, 'walletName');
+    };
+  });

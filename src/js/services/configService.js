@@ -15,6 +15,18 @@ angular.module('copayApp.services').factory('configService', function(localStora
       url: 'http://localhost:3001/copay/api',
     },
 
+    // insight
+    insight: {
+      testnet: {
+        url: 'https://test-insight.bitpay.com:443',
+        transports: ['polling'],
+      },
+      livenet: {
+        url: 'https://insight.bitpay.com:443',
+        transports: ['polling'],
+      },
+    },
+
     // wallet default config
     wallet: {
       requiredCopayers: 2,
@@ -69,6 +81,10 @@ angular.module('copayApp.services').factory('configService', function(localStora
 
   root.reset = function(cb) {
     localStorageService.remove('config', cb);
+  };
+
+  root.getDefaults = function() {
+    return defaultConfig;
   };
 
   return root;

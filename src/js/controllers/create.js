@@ -1,78 +1,97 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('CreateController',
-  function($scope, $rootScope, $location, $timeout,  identityService, backupService, notification, defaults, isMobile, isCordova) {
+angular.module('copayApp.controllers').controller('createController',
+  function($scope, $rootScope, $location, $timeout, $log, lodash, go, profileService, configService, notification, isMobile, isCordova) {
 
+    var self = this;
+
+    var defaults = configService.getDefaults();
     $rootScope.fromSetup = true;
-    $scope.loading = false;
-    $scope.walletPassword = $rootScope.walletPassword;
-    $scope.isMobile = isMobile.any();
-    $scope.hideAdv = true;
-    $scope.networkName = config.networkName;
+
+    this.loading = false;
+    this.walletPassword = $rootScope.walletPassword;
+    this.isMobile = isMobile.any();
+    this.hideAdv = true;
+    this.networkName = 'livenet';
     $rootScope.title = 'Create new wallet';
     $rootScope.hideWalletNavigation = true;
-    $scope.isWindowsPhoneApp = isMobile.Windows() && isCordova;
+    this.isWindowsPhoneApp = isMobile.Windows() && isCordova;
+
+    /* For compressed keys, m*73 + n*34 <= 496 */
+    var COPAYER_PAIR_LIMITS = {
+      1: 1,
+      2: 2,
+      3: 3,
+      4: 4,
+      5: 4,
+      6: 4,
+      7: 3,
+      8: 3,
+      9: 2,
+      10: 2,
+      11: 1,
+      12: 1,
+    };
 
     // ng-repeat defined number of times instead of repeating over array?
-    $scope.getNumber = function(num) {
+    this.getNumber = function(num) {
       return new Array(num);
     }
 
-    $scope.totalCopayers = config.wallet.totalCopayers;
-    $scope.TCValues = _.range(1, config.limits.totalCopayers + 1);
 
     var updateRCSelect = function(n) {
-      var maxReq = copay.Wallet.getMaxRequiredCopayers(n);
-      $scope.RCValues = _.range(1, maxReq + 1);
+      var maxReq = COPAYER_PAIR_LIMITS[n];
+      self.RCValues = lodash.range(1, maxReq + 1);
       $scope.requiredCopayers = Math.min(parseInt(n / 2 + 1), maxReq);
     };
-
-    updateRCSelect($scope.totalCopayers);
 
     $scope.$watch('totalCopayers', function(tc) {
       updateRCSelect(tc);
     });
 
+    this.TCValues = lodash.range(1, defaults.limits.totalCopayers + 1);
+
+    $scope.totalCopayers = defaults.wallet.totalCopayers;
     $scope.$watch('networkName', function(tc) {
-      $scope.networkUrl = config.network[$scope.networkName].url;
+      self.networkUrl = defaults.insight[self.networkName].url;
     });
 
-    $scope.showNetwork = function() {
-      return $scope.networkUrl != defaults.network.livenet.url && $scope.networkUrl != defaults.network.testnet.url;
+    this.shouldShowNetwork = function() {
+      return self.networkUrl != defaults.insight[self.networkName].url;
     };
 
 
-    $scope.create = function(form) {
+    this.create = function(form) {
       if (form && form.$invalid) {
-        $scope.error = 'Please enter the required fields';
+        this.error = 'Please enter the required fields';
         return;
       }
+      console.log('[create.js.72:form:]', form); //TODO
       var opts = {
-        requiredCopayers: $scope.requiredCopayers,
-        totalCopayers: $scope.totalCopayers,
-        name: $scope.walletName,
-        privateKeyHex: $scope.private,
-        networkName: $scope.networkName,
+        m: $scope.requiredCopayers,
+        n: $scope.totalCopayers,
+        name: form.walletName.$modelValue,
+        privateKeyHex: form.privateKey.$modelValue,
+        networkName: form.networkName.$modelValue,
       };
       $rootScope.starting = true;
-      identityService.createWallet(opts, function(err, wallet){
+
+      profileService.createWallet(opts, function(err, secret) {
         $rootScope.starting = false;
-        if (err || !wallet) {
-          copay.logger.debug(err);
-          if (err.match('OVERQUOTA')){
-            $scope.error = 'Could not create wallet: storage limits on remove server exceeded';
-          } else {
-            $scope.error = 'Could not create wallet: ' + err;
-          }
+        if (err) {
+          $log.debug(err);
+          self.error = 'Could not create wallet: ' + err;
         }
-        
-        $timeout(function(){
-          $rootScope.$digest();
-        },1);
+        go.walletHome();
+        // TODO secret
+
+        $timeout(function() {
+          $rootScope.$apply();
+        }, 1);
       });
     };
 
-    $scope.$on("$destroy", function () {
+    $scope.$on("$destroy", function() {
       $rootScope.hideWalletNavigation = false;
     });
   });

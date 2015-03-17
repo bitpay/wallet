@@ -121,7 +121,6 @@ angular
       })
       .state('add', {
         url: '/add',
-        controller: 'addController',
         templateUrl: 'views/add.html',
         needProfile: true
       })

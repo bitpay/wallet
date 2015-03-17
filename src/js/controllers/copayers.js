@@ -1,30 +1,33 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('CopayersController',
-  function($scope, $rootScope, $timeout, go, identityService, notification, isCordova) {
-    var w = $rootScope.wallet;
+angular.module('copayApp.controllers').controller('copayersController',
+  function($scope, $rootScope, $timeout, profileService, go, notification, isCordova) {
+    var self = this;
+    var fc = profileService.focusedClient;
 
 
-    $scope.init = function() {
+    self.init = function() {
       $rootScope.title = 'Share this secret with your copayers';
-      $scope.loading = false;
-      $scope.secret = $rootScope.wallet.getSecret();
-      $scope.isCordova = isCordova;
-
-      w.on('publicKeyRingUpdated', $scope.updateList);
-      w.on('ready', $scope.updateList);
-
-      $scope.updateList();
+      self.loading = false;
+      self.isCordova = isCordova;
+      // TODO
+      // w.on('publicKeyRingUpdated', self.updateList);
+      // w.on('ready', self.updateList);
+      //
+      self.updateList();
     };
 
-    $scope.updateList = function() {
+    self.updateList = function() {
+      return;
+
+      // TODO
       var w = $rootScope.wallet;
 
-      $scope.copayers = $rootScope.wallet.getRegisteredPeerIds();
+      self.copayers = $rootScope.wallet.getRegisteredPeerIds();
       if (w.isComplete()) {
 
-        w.removeListener('publicKeyRingUpdated', $scope.updateList);
-        w.removeListener('ready', $scope.updateList);
+        w.removeListener('publicKeyRingUpdated', self.updateList);
+        w.removeListener('ready', self.updateList);
         go.walletHome();
       }
       $timeout(function() {
@@ -32,15 +35,17 @@ angular.module('copayApp.controllers').controller('CopayersController',
       }, 1);
     };
 
-    $scope.deleteWallet = function() {
+    self.deleteWallet = function() {
       $rootScope.starting = true;
       $timeout(function() {
         identityService.deleteWallet(w, function(err) {
           $rootScope.starting = false;
           if (err) {
-            $scope.error = err.message || err;
+            self.error = err.message || err;
             copay.logger.warn(err);
-            $timeout(function () { $scope.$digest(); });
+            $timeout(function() {
+              self.$digest();
+            });
           } else {
             if ($rootScope.wallet) {
               go.walletHome();
@@ -53,14 +58,14 @@ angular.module('copayApp.controllers').controller('CopayersController',
       }, 100);
     };
 
-    $scope.copySecret = function(secret) {
+    self.copySecret = function(secret) {
       if (isCordova) {
         window.cordova.plugins.clipboard.copy(secret);
         window.plugins.toast.showShortCenter('Copied to clipboard');
       }
     };
 
-    $scope.shareSecret = function(secret) {
+    self.shareSecret = function(secret) {
       if (isCordova) {
         if (isMobile.Android() || isMobile.Windows()) {
           window.ignoreMobilePause = true;

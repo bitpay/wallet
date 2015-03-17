@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('createProfileController', function($rootScope, profileService, go) {
+angular.module('copayApp.controllers').controller('createProfileController', function($rootScope, $log, profileService, go) {
 
   var _credentials;
 
@@ -11,8 +11,8 @@ angular.module('copayApp.controllers').controller('createProfileController', fun
 
     profileService.create(pin, function(err) {
       if (err) {
+        $log.warn(err);
         this.error = err;
-        console.log('[createProfile.js.16:err:]', err); //TODO
         // TODO -> mostrar error o algo...
       } else {
         go.walletHome();

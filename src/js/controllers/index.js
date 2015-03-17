@@ -33,7 +33,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
       // Status Shortcuts
       self.walletName = walletStatus.wallet.name;
-
+      self.walletSecret = walletStatus.wallet.secret;
+      self.walletStatus = walletStatus.wallet.status;
+      $log.debug('Index: ', self);
       $rootScope.$apply();
     });
   });

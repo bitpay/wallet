@@ -38,21 +38,28 @@ angular.module('copayApp.services')
 
     root.setAndStoreFocus = function(walletId, cb) {
       root._setFocus(walletId);
-      storageService.setFocusedWalletId(walletId, cb);
+      storageService.storeFocusedWalletId(walletId, cb);
     };
 
-    root.setProfile = function(p, cb) {
+    root._setWalletClients = function() {
       root.walletClients = {};
 
-      lodash.each(p.credentials, function(c) {
-        root.walletClients[c.walletId] = bwcService.getClient(c);
+      lodash.each(root.profile.credentials, function(c) {
+        root.walletClients[c.walletId] = bwcService.getClient(JSON.stringify(c));
       });
+      console.log('[profileService.js.50:updateWalletList:]'); //TODO
+      $rootScope.$emit('updateWalletList');
+    }
+
+    root.setProfile = function(p, cb) {
+      console.log('[profileService.js.54] SET Profile', p); //TODO
       root.profile = p;
+      root._setWalletClients();
 
       storageService.getFocusedWalletId(function(err, focusedWalletId) {
         configService.get(function(err) {
           root._setFocus(focusedWalletId);
-          return cb(err);
+          return cb();
         })
       });
     };
@@ -74,14 +81,32 @@ angular.module('copayApp.services')
       walletClient.createWallet('Personal Wallet', 'me', 1, 1, 'testnet', function(err) {
         if (err) return cb('Error creating wallet');
         var p = Profile.create({
-          credentials: [walletClient.export()],
+          credentials: [JSON.parse(walletClient.export())],
         });
         return cb(null, p);
       })
     };
 
+    root.createWallet = function(opts, cb) {
+      var walletClient = bwcService.getClient();
+      $log.debug('Creating Wallet:', opts);
+
+      // TODO name
+      walletClient.createWallet(opts.name, 'me', opts.m, opts.n, opts.networkName, function(err, secret) {
+        if (err) return cb('Error creating wallet');
+
+        root.profile.credentials.push(JSON.parse(walletClient.export()));
+        root._setWalletClients();
+
+        storageService.storeProfile(root.profile, function(err) {
+          return cb(null, secret);
+        });
+      })
+    };
+
     root.create = function(pin, cb) {
       root._createNewProfile(pin, function(err, p) {
+
         root.setProfile(p, function(err) {
           storageService.storeNewProfile(p, function(err) {
             return cb(err);
@@ -226,27 +251,13 @@ angular.module('copayApp.services')
       // w.on('locked',);
     };
 
+    // TODO TODO
     root.bind = function(iden) {
       preconditions.checkArgument(_.isObject(iden));
       copay.logger.debug('Binding profile...');
 
       var self = this;
       root.setupGlobalVariables(iden);
-      iden.on('newWallet', function(wid) {
-        var w = iden.getWalletById(wid);
-        copay.logger.debug('newWallet:',
-          w.getName(), wid, iden.getLastFocusedWalletId());
-        root.installWalletHandlers(w);
-        if (wid == iden.getLastFocusedWalletId()) {
-          copay.logger.debug('GOT Focused wallet:', w.getName());
-          root.setFocusedWallet(w, true);
-          // TODO          go.walletHome();
-        }
-
-        // At the end (after all handlers are in place)...start the wallet.
-        w.netStart();
-      });
-
       iden.on('noWallets', function() {
         notification.warning('No Wallets', 'Your profile has no wallets. Create one here');
         $rootScope.starting = false;
