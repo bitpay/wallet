@@ -115,6 +115,9 @@ if [ ! -d $PROJECT ]; then
   cordova plugin add hu.dpal.phonegap.plugins.spinnerdialog
   checkOK
 
+  cordova plugin add cordova-plugin-dialogs
+  checkOK
+
 fi
 
 if $DBGJS

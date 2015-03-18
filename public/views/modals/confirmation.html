@@ -1,0 +1,31 @@
+<nav class="tab-bar">
+  <section class="left-small">
+    <a class="p10" 
+      ng-click="cancel()"><i class="fi-arrow-left size-24"></i> 
+    </a>
+  </section>
+
+  <section class="middle tab-bar-section">
+    <h1 class="title ellipsis">
+      Confirm
+    </h1>
+  </section>
+</nav>
+
+<div class="p60t text-center">
+
+  <h1>{{title|translate}}</h1>
+  <div class="row">
+    <div class="large-6 medium-6 small-6 columns">
+      <button class="gray expand" ng-disabled="loading" 
+        ng-click="cancel()">
+        <i class="fi-x"></i> <span translate>Cancel</span>
+      </button>
+    </div>
+    <div class="large-6 medium-6 small-6 columns">
+      <button class="warning expand" ng-disabled="loading" ng-click="ok()">
+        <i class="fi-trash"></i> <span translate>OK</span>
+      </button>
+    </div>
+  </div>
+</div>

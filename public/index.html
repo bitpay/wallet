@@ -1,0 +1,51 @@
+﻿<!doctype html>
+<html lang="en" ng-app="copayApp">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+  <meta name="msapplication-tap-highlight" content="no">
+  <link rel="stylesheet" type="text/css" href="css/foundation.css">
+  <link rel="stylesheet" type="text/css" href="icons/foundation-icons.css">
+  <link rel="stylesheet" type="text/css" href="css/copay.css">
+  <title>Copay - Multisignature Wallet</title>
+  <link rel="shortcut icon" href="img/favicon.ico">
+</head>
+<body ng-cloak class="ng-cloak">
+
+  <div class="page" 
+    ng-controller="indexController as index" 
+    ng-swipe-disable-mouse 
+    ng-swipe-left="index.closeMenu()"
+    ng-swipe-right="index.openMenu()">
+
+    <div ng-show="!index.pageLoaded">
+      <div ng-include="'views/includes/loading.html'" ng-init="title = 'Loading'"></div>
+    </div>
+
+    <div class="off-canvas-wrap" id="off-canvas-wrap" ng-show="index.pageLoaded">
+      <div class="inner-wrap">
+
+        <div ng-include="'views/includes/topbar.html'" ng-if="index.hasProfile"></div>
+
+        <div ng-include="'views/includes/sidebar.html'" ng-if="index.hasProfile"></div>
+
+        <div notifications="right top"></div> 
+
+        <section ng-class="{'main': index.hasProfile}" ui-view></section>
+
+        <a class="close-menu" ng-click="index.closeMenu()"></a>
+
+      </div>
+    </div>
+  </div>
+  
+  <script src="lib/angular.js"></script>
+
+  <!-- DO NOT DELETE THIS COMMET  -->
+  <!-- PLACEHOLDER: CORDOVA SRIPT -->
+
+  <script src="js/copay.js"></script>
+
+</body>
+</html>

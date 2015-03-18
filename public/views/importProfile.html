@@ -1,0 +1,67 @@
+
+<div class="import-profile" ng-controller="importProfileController as importProfile">
+  <div ng-show="$root.starting">
+    <div ng-include="'views/includes/loading.html'" ng-init="title = importStatus"></div>
+  </div>
+
+  <div class="row" ng-show="!$root.starting">
+    <div class="large-5 large-centered medium-7 medium-centered columns">
+      <div class="logo-setup show-for-large-up">
+        <img src="img/logo-negative-beta.svg" alt="Copay" width="100">
+        <div ng-include="'views/includes/version.html'"></div>
+      </div>
+      <div>
+        <h2 translate>Import a profile</h2>
+        <form name="importProfileForm" ng-submit="importProfile.import(importProfileForm)" novalidate>
+          <div class="box-notification" ng-show="error">
+            <div class="box-icon error">
+              <i class="fi-x size-24"></i>
+            </div> 
+            <span class="text-warning size-14">
+              {{error|translate}}
+            </span>
+          </div>
+
+          <div ng-show="!isSafari && !isCordova">
+            <div class="input">
+              <input type="file" class="db form-control" 
+            placeholder="{{'Select a backup file'|translate}}" name="backupFile" ng-model="importProfile.backupFile" ng-file-select>
+            </div>
+          </div>
+
+          <div ng-show="importProfile.isSafari || importProfile.isCordova">
+            <div class="input"> 
+            <textarea 
+              placeholder="{{'Paste backup plain text code'|translate}}" 
+              class="form-control" 
+              name="backupText" 
+              ng-model="importProfile.backupText" 
+              rows="5"></textarea>
+            <i class="icon-compose"></i>
+            </div>
+          </div>
+          <div class="input">
+            <input type="password" class="form-control" placeholder="{{'Your profile password'|translate}}"
+            name="password" ng-model="importProfile.password" required>
+            <i class="icon-locked"></i>
+          </div>
+
+          <button translate type="submit" 
+            class="button primary radius expand m0" 
+            ng-disabled="importProfileForm.$invalid">
+            Import backup
+          </button>
+        </form>
+        <div class="box-setup-footer">
+          <div class="left">
+            <a class="button outline dark-gray tiny" ng-click="$root.go('signin')">
+              <i class="icon-arrow-left4 size-10"></i> 
+              <span translate>Back</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

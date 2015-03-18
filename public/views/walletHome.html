@@ -1,0 +1,82 @@
+<div class="home-wallet" ng-controller="walletHomeController as home" ng-init="home.init()">
+  <div class="row">
+    <div class="columns">
+      <div class="panel oh">
+        <div class="amount">
+          <span class="size-36">
+            <strong>
+              <span >{{index.totalBalanceStr || 0}} </span>
+          </strong>
+          </span>
+          <span class="size-14 db m5t text-gray">
+            <span ng-if="!index.updatingBalance && $root.wallet.balanceInfo.alternativeBalanceAvailable">{{index.totalBalanceAlternative}} {{index.alternativeIsoCode}}</span>
+          <span ng-if="!$root.wallet.balanceInfo.updatingBalance && !$root.wallet.balanceInfo.alternativeBalanceAvailable">N/A</span>
+          <span ng-if="$root.wallet.balanceInfo.updatingBalance"><i class="fi-bitcoin-circle icon-rotate spinner"></i></span>
+          </span>
+        </div>
+        <div class="pr">
+          <div class="avatar-wallet left">{{index.walletName | limitTo: 1}}</div>      
+          <div class="wallet-info">
+              <p class="m0">
+              {{index.m}} <span translate>of</span>  {{index.n}}  
+              </p>
+            <div class="size-12 text-gray">
+              <span ng-if="index.n > 1" translate>Multisignature wallet </span>
+              <span ng-if="index.n == 1" translate>Personal Wallet</span> 
+              <span ng-if="index.network != 'livenet'" translate> - Testnet</span>
+            </div>
+          </div>
+          <div class="right">
+            <a ng-click="$root.go('preferences')" class="button outline light-gray tiny m0">
+              <i class="fi-widget size-18 vm"></i>
+              <span class="show-for-medium-up" translate>Preferences</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div ng-show="index.requiresMultipleSignatures  && index.txps[0]">
+    <div class="row">
+      <div class="large-12 columns">
+        <div class="panel oh">
+          <h2 class="line-b" translate>Spend proposals</h2>
+          <div class="last-transactions pr" ng-repeat="tx in $root.wallet.pendingTxProposals  | orderBy:'-createdTs'" 
+            ng-include="'views/includes/transaction.html'" ng-if="$root.wallet.pendingTxProposals[0]">
+          </div>
+
+          <div class="text-right size-12 line-t p10t" 
+            ng-show="index.lockedBalance && !index.updatingBalance">
+            <span translate>Total Locked Balance</span>:
+            <b>{{index.lockedBalance}} {{index.unitName}} </b> 
+            <span class="text-gray"> {{index.lockedBalanceAlternative}} 
+              {{index.alternativeIsoCode}} </span>
+          </div>
+
+          <div class="pr" ng-if="!index.txps[0]">
+            <p translate>No pending spend proposals at the moment.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div ng-if="!index.requiresMultipleSignatures && index.txps[0]">
+    <div class="row">
+      <div class="large-12 columns">
+        <div class="panel oh">
+          <h2 class="line-b" translate>Unsent transactions</h2>
+          <div class="last-transactions pr" ng-repeat="tx in index.txps  | orderBy:'-createdTs'"
+            ng-include="'views/includes/transaction.html'">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<div class="extra-margin-bottom"></div>
+<div ng-include="'views/includes/menu.html'"></div>
+

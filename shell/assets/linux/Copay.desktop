@@ -1,7 +1,0 @@
-[Desktop Entry]
-Encoding=UTF-8
-Name=Copay
-Exec=/opt/Copay/Copay
-Icon=/opt/Copay/resources/app/android/icon.png
-Type=Application
-Categories=Bitcoin;
