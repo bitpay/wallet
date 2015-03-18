@@ -32,6 +32,8 @@ angular.module('copayApp.controllers').controller('sendController',
       this.alternativeName = config.alternativeName;
       this.alternativeIsoCode = config.alternativeIsoCode;
       this.unitToSatoshi = config.unitToSatoshi;
+      this.unitDecimals = config.unitDecimals;
+      this.unitName = config.unitName;
 
       // TODO : rateService
       // rateService.whenAvailable(function() {
@@ -41,7 +43,6 @@ angular.module('copayApp.controllers').controller('sendController',
       //
       
       var openScannerCordova = $rootScope.$on('dataScanned', function(event, data) {
-console.log('[send.js:43]',data); //TODO
         self.setForm(data);
       });
 
@@ -81,7 +82,7 @@ console.log('[send.js:43]',data); //TODO
        * recursion for watches while preserving the original angular updates
        *
        */
-      Object.defineProperty(self,
+      Object.defineProperty($scope,
         "_alternative", {
           get: function() {
             return this.__alternative;
@@ -98,7 +99,7 @@ console.log('[send.js:43]',data); //TODO
           enumerable: true,
           configurable: true
         });
-      Object.defineProperty(self,
+      Object.defineProperty($scope,
         "_amount", {
           get: function() {
             return this.__amount;
@@ -116,7 +117,7 @@ console.log('[send.js:43]',data); //TODO
           configurable: true
         });
 
-      Object.defineProperty(self,
+      Object.defineProperty($scope,
         "_address", {
           get: function() {
             return this.__address;
@@ -164,14 +165,11 @@ console.log('[send.js:43]',data); //TODO
         this.error = 'Unable to send transaction proposal';
         return;
       }
+      self.loading = true;
 
       if (isCordova) {
         window.plugins.spinnerDialog.show(null, 'Creating transaction...', true);
       }
-
-      this.loading = true;
-      if (this.isWindowsPhoneApp)
-        $rootScope.wpInputFocused = true;
 
       $timeout(function() {
         var comment = form.comment.$modelValue;
@@ -193,14 +191,12 @@ console.log('[send.js:43]',data); //TODO
             window.plugins.spinnerDialog.hide();
           }
           self.loading = false;
-          if (self.isWindowsPhoneApp)
-            $rootScope.wpInputFocused = false;
 
           if (err) {
             self.setError(err);
           } else {
             txStatus.notify(txp);
-            $rootScope.$emit('updateStatus');
+            $scope.$emit('updateStatus');
             self.resetForm(form);
           }
         });
@@ -209,7 +205,7 @@ console.log('[send.js:43]',data); //TODO
 
     this.setTopAmount = function() {
       throw new Error('todo: setTopAmount');
-      var form = this.sendForm;
+      var form = $scope.sendForm;
       if (form) {
         form.amount.$setViewValue(w.balanceInfo.topAmount);
         form.amount.$render();
@@ -218,7 +214,7 @@ console.log('[send.js:43]',data); //TODO
     };
 
     this.setForm = function(to, amount, comment) {
-      var form = this.sendForm;
+      var form = $scope.sendForm;
       if (to) {
         form.address.$setViewValue(to);
         form.address.$isValid = true;
@@ -241,7 +237,6 @@ console.log('[send.js:43]',data); //TODO
     };
 
     this.resetForm = function(form) {
-
       this.fetchingURL = null;
       this._merchantData = this._domain = null;
 
@@ -343,25 +338,19 @@ console.log('[send.js:43]',data); //TODO
       };
 
       var satToUnit = 1 / this.unitToSatoshi;
-      var form = this.sendForm;
 
       uri = sanitizeUri(uri);
 
-      var parsed = new bitcore.BIP21(uri);
-      if (!parsed.isValid() || !parsed.address.isValid()) {
-        this.error = 'Invalid bitcoin URL';
-        form.address.$isValid = false;
-        return uri;
-      };
-
+      var parsed = new bitcore.URI(uri);
       var addr = parsed.address.toString();
-      if (parsed.data.merchant)
+      var message = parsed.message;
+      if (parsed.data && parsed.data.merchant)
         return this.setFromPayPro(parsed.data.merchant);
 
-      var amount = (parsed.data && parsed.data.amount) ?
-        ((parsed.data.amount * 100000000).toFixed(0) * satToUnit).toFixed(w.settings.unitDecimals) : 0;
+      var amount = parsed.amount ?
+        (parsed.amount.toFixed(0) * satToUnit).toFixed(this.unitDecimals) : 0;
 
-      this.setForm(addr, amount, parsed.data.message, true);
+      this.setForm(addr, amount, message);
       return addr;
     };
 
@@ -373,9 +362,10 @@ console.log('[send.js:43]',data); //TODO
         return this.setFromUri(value);
       } else if (/^https?:\/\//.test(value)) {
         return this.setFromPayPro(value);
+      } else {
+        this.setForm(value, null, null);
+        return value;
       }
-
-      return value;
     };
 
     this.openAddressBook = function() {

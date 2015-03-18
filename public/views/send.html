@@ -28,7 +28,7 @@
           Fetching Payment Information...
         </span>
       </div>
-      <form ng-show="!fetchingURL" name="sendForm" ng-submit="send.submitForm(sendForm)" ng-disabled="loading" novalidate>
+      <form ng-show="!fetchingURL" name="sendForm" ng-submit="send.submitForm(sendForm)" ng-disabled="send.loading" novalidate>
         <div class="panel">
           <div class="box-notification" ng-show="send.error  && !send.hideForWP ">
             <div class="box-icon error">
@@ -105,16 +105,16 @@
                 </label>
 
                 <div class="input">
-                  <input type="number" id="amount" ng-disabled="loading || lockAmount" name="amount" placeholder="{{'Amount'|translate}}" ng-minlength="0.00000001" ng-maxlength="10000000000" ng-model="_amount" valid-amount required autocomplete="off"  ng-focus="send.formFocus('amount')" ng-blur="send.formFocus(false)">
-                  <a class="postfix" ng-click="showAlternative = true">{{$root.wallet.settings.unitName}}</a>
+                  <input type="number" id="amount" ng-disabled="send.loading || send.lockAmount" name="amount" placeholder="{{'Amount'|translate}}" ng-minlength="0.00000001" ng-maxlength="10000000000" ng-model="_amount" valid-amount required autocomplete="off"  ng-focus="send.formFocus('amount')" ng-blur="send.formFocus(false)">
+                  <a class="postfix" ng-click="showAlternative = true">{{send.unitName}}</a>
                 </div>
               </div>
               <div ng-show="showAlternative">
-                <label for="alternative"><span translate>Amount in</span> {{ alternativeName }}
+                <label for="alternative"><span translate>Amount in</span> {{ send.alternativeName }}
                 </label>
                 <div class="input">
-                  <input type="number" id="alternative" ng-disabled="loading || !isRateAvailable || lockAmount" name="alternative" placeholder="{{'Amount'|translate}}" ng-model="_alternative" requiredautocomplete="off"  ng-focus="send.formFocus('amount')" ng-blur="send.formFocus(false)">
-                  <a class="postfix" ng-click="showAlternative = false"> {{ alternativeName }}</a>
+                  <input type="number" id="alternative" ng-disabled="send.loading || !isRateAvailable || send.lockAmount" name="alternative" placeholder="{{'Amount'|translate}}" ng-model="_alternative" requiredautocomplete="off"  ng-focus="send.formFocus('amount')" ng-blur="send.formFocus(false)">
+                  <a class="postfix" ng-click="showAlternative = false"> {{ send.alternativeName }}</a>
                 </div>
               </div>
             </div>
@@ -126,11 +126,11 @@
                 <small translate class="has-error" ng-show="sendForm.comment.$invalid && !sendForm.comment.$pristine">too long!</small>
               </label>
               <div class="input">
-                <textarea id="comment" ng-disabled="loading" name="comment" ng-if="index.n > 1" 
+                <textarea id="comment" ng-disabled="send.loading" name="comment" ng-if="index.n > 1" 
                   placeholder="{{'Leave a private message to your copayers'|translate}}" 
                   ng-maxlength="100" ng-model="_comment"  ng-focus="send.formFocus('msg')" 
                   ng-blur="send.formFocus(false)"></textarea>
-                <textarea id="comment" ng-disabled="loading" name="comment" ng-if="index.n == 1" 
+                <textarea id="comment" ng-disabled="send.loading" name="comment" ng-if="index.n == 1" 
                   placeholder="{{'Add a private comment to identify the transaction'|translate}}" 
                   ng-maxlength="100" ng-model="_comment"  ng-focus="send.formFocus('msg')" 
                   ng-blur="send.formFocus(false)"></textarea>
@@ -140,13 +140,13 @@
 
           <div class="row">
             <div class="large-6 medium-6 small-12 columns">
-              <button type="submit" class="button primary expand" ng-disabled="sendForm.$invalid || loading" translate>
+              <button type="submit" class="button primary expand" ng-disabled="sendForm.$invalid || send.loading" translate>
                 Send
               </button>
             </div>
             <div class="large-4 medium-4 small-12 columns text-right">
-              <a ng-click="send.resetForm()" class="button expand warning" 
-                ng-show="(send._merchantData || send.lockAddress) && !loading" translate>Cancel</a>
+              <a ng-click="send.resetForm(sendForm)" class="button expand warning" 
+                ng-show="(send._merchantData || send.lockAddress) && !send.loading" translate>Cancel</a>
             </div>
           </div>
         </div>

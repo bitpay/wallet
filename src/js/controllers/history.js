@@ -3,7 +3,6 @@
 angular.module('copayApp.controllers').controller('historyController',
   function($scope, $rootScope, $filter, $timeout, $modal, profileService, notification, go) {
     var fc = profileService.focusedClient;
-console.log('[history.js:5]',fc); //TODO
     this.loading = false;
     this.generating = false;
     this.lastShowed = false;
