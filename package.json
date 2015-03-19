@@ -2,7 +2,7 @@
   "name": "copay",
   "description": "A multisignature wallet",
   "author": "BitPay",
-  "version": "0.9.7",
+  "version": "0.9.9",
   "keywords": [
     "wallet",
     "copay",
