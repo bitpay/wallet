@@ -4,14 +4,22 @@ angular.module('copayApp.controllers').controller('receiveController',
   function($rootScope, $scope, $timeout, $modal, isCordova, isMobile, profileService) {
     var fc = profileService.focusedClient;
 
-    this.showAll = false;
+    this.showAll = false; 
 
-    this.newAddr = function() {
+    this.newAddr = function(addr) {
       var self = this;
-      fc.createAddress(function(err, addr) {
-        self.addr = addr.address;
-        $scope.$digest();
-      });
+      self.loading = addr ? false : true;
+      if (!addr) {
+        fc.createAddress(function(err, addr) {
+          if (err) {
+            self.error = err;
+            return;
+          }
+          $scope.$emit('newAddress', addr.address);
+          self.loading = false;
+          $scope.$digest();
+        });
+      }
     };
 
     this.copyAddress = function(addr) {

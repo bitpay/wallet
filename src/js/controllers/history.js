@@ -188,9 +188,7 @@ angular.module('copayApp.controllers').controller('historyController',
 
     this.getTransactions = function() {
       var self = this;
-      this.blockchain_txs = []; // w.cached_txs || [];
       this.loading = true;
-
       fc.getTxHistory({
         currentPage: this.currentPage,
         itemsPerPage: this.itemsPerPage,
@@ -209,15 +207,13 @@ angular.module('copayApp.controllers').controller('historyController',
           }, 1);
         })
 
-        self.blockchain_txs = res; //w.cached_txs =
         self.nbPages = res.nbPages;
         self.totalItems = res.nbItems;
-
-        self.loading = false;
         self.paging = false;
-        setTimeout(function() {
-          $scope.$digest();
-        }, 1);
+        
+        $scope.$emit('updateTransactionHistory', res);
+        self.loading = false;
+        $scope.$digest();
       });
     };
 
