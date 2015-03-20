@@ -50,16 +50,14 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   });
 
   $rootScope.$on('updatePendingTxs', function(event) {
-    profileService.focusedClient.getTxProposals(function(err, txps) {
+    profileService.focusedClient.getTxProposals({}, function(err, txps) {
       self.updateTxps(txps);
       $rootScope.$apply();
     });
   });
 
-
   self.updateTxps = function(txps) {
     self.txps = txps;
-
     lodash.each(txps, function(tx) {
       var amount = tx.amount * self.satToUnit;
       tx.amountStr = amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + ' ' + self.unitName;
@@ -70,11 +68,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       });
       if (!action && tx.status == 'pending')
         tx.pendingForUs = true;
-
-      console.log('[index.js.47:tx:]', tx); //TODO
     });
   };
-
 
   self.updateBalance = function(balance) {
     console.log('[index.js.48:balance:]', balance); //TODO

@@ -30,9 +30,7 @@ angular.module('copayApp.services')
      * @param w wallet
      */
     root.update = function(w) {
-      var w = $rootScope.wallet;
       if (!w) return;
-
       //pendingTxCount
       var ret = w.getPendingTxProposalsCount();
       w.pendingTxProposalsCountForUs = ret.pendingForUs;
