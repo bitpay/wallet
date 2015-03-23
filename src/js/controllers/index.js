@@ -46,8 +46,13 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.addr = addr;
   });
 
-  $rootScope.$on('updateTransactionHistory', function(event, h) {
-    self.blockchain_txs = h;
+  $rootScope.$on('updateTxHistory', function(event) {
+    self.updatingTxHistory = true;
+    profileService.focusedClient.getTxHistory({}, function(err, txs) {
+      self.txHistory = txs;
+      self.updatingTxHistory = false;
+      $rootScope.$apply();
+    });
   });
 
   $rootScope.$on('updateBalance', function(event) {
