@@ -22,6 +22,10 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.walletName = fc.credentials.walletName;
     self.isComplete = fc.isComplete;
 
+    // Clear
+    self.addr = null;
+    self.txHistory = null;
+
     self.updatingStatus = true;
     $log.debug('Updating Status:', fc);
     fc.getStatus(function(err, walletStatus) {
