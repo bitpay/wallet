@@ -1,6 +1,6 @@
 <div ng-include="'views/includes/topbar.html'"></div>
 
-<div class="receive m60t" ng-controller="receiveController as receive" ng-init="receive.newAddr(index.addr)">
+<div class="receive m60t" ng-controller="receiveController as receive" ng-init="receive.update(index.addr)">
   <div class="row" ng-show="receive.loading || !index.addr">
     <div class="large-12 columns">
       <div class="panel oh text-center">
@@ -38,7 +38,7 @@
         <div class="panel">
           <div class="row">
             <div class="large-3 medium-4 small-5 columns">
-              <div class="size-12 ellipsis">{{::addr.address}}"</div>
+              <div class="size-12 ellipsis">{{::addr.address}}</div>
             </div>
             <div class="large-1 medium-1 small-2 columns">
               <span translate class="text-secondary size-10" ng-show="::addr.isChange">change</span>
@@ -62,7 +62,7 @@
           </a>
         </div>
         <div class="large-6 medium-6 small-6 columns text-right">
-          <a class="button secondary tiny" ng-click="receive.newAddr()" translate>
+          <a class="button secondary tiny" ng-click="receive.newAddress()" translate>
             Generate new address
           </a>
         </div>

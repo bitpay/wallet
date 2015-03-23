@@ -42,8 +42,13 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     go.walletHome();
   });
 
-  $rootScope.$on('newAddress', function(event, addr) {
-    self.addr = addr;
+  $rootScope.$on('newAddress', function(event) {
+    self.updatingNewAddress = true;
+    profileService.focusedClient.createAddress(function(err, addr) {
+      self.addr = addr.address;
+      self.updatingNewAddress = false;
+      $rootScope.$apply();
+    });
   });
 
   $rootScope.$on('updateTxHistory', function(event) {

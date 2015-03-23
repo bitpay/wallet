@@ -6,20 +6,14 @@ angular.module('copayApp.controllers').controller('receiveController',
 
     this.showAll = false; 
 
-    this.newAddr = function(addr) {
-      var self = this;
-      self.loading = addr ? false : true;
+    this.update = function(addr) {
       if (!addr) {
-        fc.createAddress(function(err, addr) {
-          if (err) {
-            self.error = err;
-            return;
-          }
-          $scope.$emit('newAddress', addr.address);
-          self.loading = false;
-          $scope.$digest();
-        });
+        this.newAddress();
       }
+    };
+
+    this.newAddress = function() {
+      $scope.$emit('newAddress');
     };
 
     this.copyAddress = function(addr) {
