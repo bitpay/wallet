@@ -1,4 +1,6 @@
-<div ng-controller="copayersController as copayers" ng-init="copayers.init()">
+<div ng-include="'views/includes/topbar.html'"></div>
+
+<div class="m60t" ng-controller="copayersController as copayers" ng-init="copayers.init()">
   <div ng-show="$root.starting">
     <div ng-include="'views/includes/loading.html'" ng-init="title = 'Deleting'"></div>
   </div>
