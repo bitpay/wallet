@@ -1,8 +1,18 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('historyController',
-  function($scope, $rootScope, $filter, $timeout, $modal, profileService, notification, go) {
+  function($scope, $rootScope, $filter, $timeout, $modal, profileService, notification, go, configService) {
+
+    function strip(number) {
+      return (parseFloat(number.toPrecision(12)));
+    }
+
     var fc = profileService.focusedClient;
+    var config = configService.getSync().wallet.settings;
+    this.unitToSatoshi = config.unitToSatoshi;
+    this.satToUnit = 1 / this.unitToSatoshi;
+    this.unitName = config.unitName;
+
     this.loading = false;
     this.generating = false;
     this.lastShowed = false;
@@ -91,6 +101,15 @@ angular.module('copayApp.controllers').controller('historyController',
     };
 
 
+    this.getAmount = function(amount) {
+      var newAmount = strip(amount * this.satToUnit);
+      return newAmount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    };
+
+    this.getUnitName = function() {
+      return this.unitName;
+    };
+
     this.update = function() {
       this.getTransactions();
     };
@@ -126,7 +145,7 @@ angular.module('copayApp.controllers').controller('historyController',
       rateService.getHistoricRates(w.settings.alternativeIsoCode, _.keys(index), function(err, res) {
         if (err || !res) return cb(err);
         _.each(res, function(r) {
-          _.each(index[r.ts], function (tx) {
+          _.each(index[r.ts], function(tx) {
             var alternativeAmount = (r.rate != null ? tx.amountSat * rateService.SAT_TO_BTC * r.rate : null);
             tx.alternativeAmount = alternativeAmount ? $filter('noFractionNumber')(alternativeAmount, 2) : null;
           });
@@ -161,10 +180,10 @@ angular.module('copayApp.controllers').controller('historyController',
       this.blockchain_txs = [];
       this.loading = true;
       fc.getTxHistory({
-        currentPage: this.currentPage, 
+        currentPage: this.currentPage,
         itemsPerPage: this.itemsPerPage
       }, function(err, res) {
-        
+
         self.blockchain_txs = res;
         self.loading = false;
         setTimeout(function() {
