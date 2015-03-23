@@ -41,7 +41,7 @@ angular.module('copayApp.controllers').controller('sendController',
       //   self.$digest();
       // });
       //
-      
+
       var openScannerCordova = $rootScope.$on('dataScanned', function(event, data) {
         self.setForm(data);
       });
@@ -195,9 +195,15 @@ angular.module('copayApp.controllers').controller('sendController',
           if (err) {
             self.setError(err);
           } else {
-            txStatus.notify(txp);
-            $scope.$emit('updateStatus');
-            self.resetForm(form);
+            fc.signTxProposal(txp, function(err, signedTx) {
+              if (err) {
+                self.setError(err);
+              } else {
+                txStatus.notify(signedTx);
+                $scope.$emit('updateStatus');
+                self.resetForm(form);
+              }
+            });
           }
         });
       }, 100);
