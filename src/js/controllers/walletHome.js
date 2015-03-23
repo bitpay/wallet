@@ -18,6 +18,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       };
 
       $scope.sign = function(txp) {
+
         if (isCordova) {
           window.plugins.spinnerDialog.show(null, 'Signing transaction...', true);
         }
@@ -30,10 +31,23 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
             }
             $scope.loading = false;
             if (err) {
-              $scope.error = 'Transaction could not send. Please try again.';
+              $scope.error = 'Transaction not sent. Please try again.';
               $scope.$digest();
             } else {
-              $modalInstance.close(txp);
+              //if txp has required signatures then broadcast it
+              var txpHasRequiredSignatures = txp.status == 'accepted';
+              if (txpHasRequiredSignatures) {
+                fc.broadcastTxProposal(txp, function(err) {
+                  if (err) {
+                    $scope.error = 'Transaction not broadcasted. Please try again.';
+                    $scope.$digest();
+                  } else {
+                    $modalInstance.close(txp);
+                  }
+                });
+              } else {
+                $modalInstance.close(txp);
+              }
             }
           });
         }, 100);
@@ -100,10 +114,5 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     });
 
   };
-
-
-
-
-
 
 });

@@ -35,8 +35,8 @@
               'text-warning': btx.action == 'sent', 
               'text-gray': btx.action == 'moved'}">
               <span class="size-18">
-                <span ng-if="btx.action == 'received'">+</span><span ng-if="btx.action == 'sent'">-</span>{{btx.amount}}
-                {{$root.wallet.settings.unitName}}
+                <span ng-if="btx.action == 'received'">+</span><span ng-if="btx.action == 'sent'">-</span>{{history.getAmount(btx.amount)}}
+                {{history.getUnitName()}}
               </span>
               <span class="size-14 db m5t text-gray" ng-show="btx.alternativeAmount">
                 {{btx.alternativeAmount}} {{$root.wallet.settings.alternativeIsoCode}}
