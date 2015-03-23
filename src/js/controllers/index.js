@@ -19,6 +19,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.network = fc.network;
     self.requiresMultipleSignatures = fc.m > 1;
     self.isShared = fc.n > 1;
+    self.walletName = fc.credentials.walletName;
 
     self.updatingStatus = true;
     $log.debug('Updating Status:', fc);

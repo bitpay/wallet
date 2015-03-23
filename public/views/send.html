@@ -1,4 +1,6 @@
-<div class="send" ng-controller="sendController as send" ng-init="send.init()">
+<div ng-include="'views/includes/topbar.html'"></div>
+
+<div class="send m60t" ng-controller="sendController as send" ng-init="send.init()">
   <div class="row" ng-show="index.lockedBalance">
     <div class="large-12 columns">
       <div class="panel">

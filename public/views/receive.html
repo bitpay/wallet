@@ -1,4 +1,6 @@
-<div class="addresses" ng-controller="receiveController as receive" ng-init="receive.newAddr(index.addr)">
+<div ng-include="'views/includes/topbar.html'"></div>
+
+<div class="receive m60t" ng-controller="receiveController as receive" ng-init="receive.newAddr(index.addr)">
   <div class="row" ng-show="receive.loading || !index.addr">
     <div class="large-12 columns">
       <div class="panel oh text-center">

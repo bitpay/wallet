@@ -1,7 +1,6 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('topbarController', function($rootScope, $scope, $timeout, $modal, isCordova, isMobile, go) {   
-
   var cordovaOpenScanner = function() {
     window.ignoreMobilePause = true;
     cordova.plugins.barcodeScanner.scan(
