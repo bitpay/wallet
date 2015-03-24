@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('preferencesController',
-  function($scope, $rootScope, $filter, $timeout, $modal, balanceService, notification, backupService, profileService, isMobile, isCordova, go) {
+  function($scope, $rootScope, $filter, $timeout, $modal, balanceService, notification, backupService, profileService, configService, isMobile, isCordova, go) {
     this.isSafari = isMobile.Safari();
     this.isCordova = isCordova;
     this.hideAdv = true;
@@ -10,8 +10,9 @@ angular.module('copayApp.controllers').controller('preferencesController',
     this.error = null;
     this.success = null;
 
-    // TODO read config
-    this.unitName = 'bits';
+    var config = configService.getSync();
+
+    this.unitName = config.wallet.settings.unitName;
 
     this.unitOpts = [{
       name: 'Satoshis (100,000,000 satoshis = 1BTC)',
@@ -57,8 +58,32 @@ angular.module('copayApp.controllers').controller('preferencesController',
             $scope.selectedAlternative = $scope.alternativeOpts[ii];
           }
         }
-      }); 
-    };  
+      });
+    };
+
+    this.save = function() {
+      var opts = {
+        wallet: {
+          settings: {
+            unitName: this.selectedUnit.shortName,
+            unitToSatoshi: this.selectedUnit.value,
+            unitDecimals: this.selectedUnit.decimals,
+            // alternativeName: this.selectedAlternative.name,
+            // alternativeIsoCode: this.selectedAlternative.isoCode,
+          }
+        }
+      };
+
+      configService.set(opts, function(err) {
+        if (err) console.log(err);
+      });
+
+      // notification.success('Success', $filter('translate')('settings successfully updated'));
+      // balanceService.update(w, function() {
+      //   pendingTxsService.update();
+      //   $rootScope.$digest();
+      // });
+    };
 
     var _modalDeleteWallet = function() {
       var ModalInstanceCtrl = function($scope, $modalInstance) {
@@ -68,7 +93,7 @@ angular.module('copayApp.controllers').controller('preferencesController',
         $scope.ok = function() {
           $scope.loading = true;
           $modalInstance.close('ok');
-          
+
         };
         $scope.cancel = function() {
           $modalInstance.dismiss('cancel');
@@ -81,7 +106,7 @@ angular.module('copayApp.controllers').controller('preferencesController',
         controller: ModalInstanceCtrl
       });
       modalInstance.result.then(function(ok) {
-console.log('[preferences.js:82]',ok); //TODO
+        console.log('[preferences.js:82]', ok); //TODO
       });
     };
 
@@ -93,7 +118,9 @@ console.log('[preferences.js:82]',ok); //TODO
           if (err) {
             this.error = err.message || err;
             copay.logger.warn(err);
-            $timeout(function () { $scope.$digest(); });
+            $timeout(function() {
+              $scope.$digest();
+            });
           } else {
             go.walletHome();
             $timeout(function() {
@@ -109,16 +136,14 @@ console.log('[preferences.js:82]',ok); //TODO
         navigator.notification.confirm(
           'Are you sure you want to delete this wallet?',
           function(buttonIndex) {
-console.log('[preferences.js:67]',buttonIndex); //TODO
+            console.log('[preferences.js:67]', buttonIndex); //TODO
             if (buttonIndex == 2) {
               _deleteWallet();
             }
           },
-          'Confirm',
-          ['Cancel','OK']
+          'Confirm', ['Cancel', 'OK']
         );
-      }
-      else {
+      } else {
         _modalDeleteWallet();
       }
     };
@@ -156,10 +181,8 @@ console.log('[preferences.js:67]',buttonIndex); //TODO
       var ew = backupService.walletEncrypted(w);
       var properties = {
         subject: 'Copay Wallet Backup: ' + name,
-        body: 'Here is the encrypted backup of the wallet ' 
-          + name + ': \n\n' + ew 
-          + '\n\n To import this backup, copy all text between {...}, including the symbols {}',
-        isHtml:  false
+        body: 'Here is the encrypted backup of the wallet ' + name + ': \n\n' + ew + '\n\n To import this backup, copy all text between {...}, including the symbols {}',
+        isHtml: false
       };
       window.plugin.email.open(properties);
     };

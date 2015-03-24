@@ -7,7 +7,7 @@
           <select class="form-control" 
             ng-model="preferences.selectedUnit" 
             ng-options="o.name for o in preferences.unitOpts" 
-            ng-change="preferencessave()">
+            ng-change="preferences.save()">
           </select>
         </div>
       </div>
