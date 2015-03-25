@@ -47,14 +47,6 @@ body {
   -ms-content-zooming: none; 
 } 
 
-.logo-setup {
-  margin: 0 0 1rem 0;
-}
-
-.page, .main, .setup-page {
-  height: 100%;
-}
-
 /* Fix IE 10 */
 .extra-margin-bottom {
   display: block
@@ -97,6 +89,13 @@ _:-ms-fullscreen, :root .main {
   width: 100%;
   z-index: 5;
   background: #2C3E50;
+}
+
+.tab-bar h1 {
+  font-weight: 700;
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 14px;
 }
 
 .bottom-bar {
@@ -195,17 +194,6 @@ header h1 {
 ul.copayer-list img {
   width: 30px;
   height: 30px;
-}
-
-.hide-tab-bar {
-  display: none;
-}
-
-.tab-bar h1 {
-  font-weight: 700;
-  text-align: center;
-  text-transform: uppercase;
-  font-size: 14px;
 }
 
 ul.off-canvas-list li a {
@@ -403,16 +391,6 @@ a.pin-button:active {
 
 .icon-circle, .icon-circle-active {
   color:  #1ABC9C;
-}
-
-.tab-bar {
-  position: relative;
-}
-
-
-
-.tab-bar {
-  position: absolute;
 }
 
 .tx-comment {
