@@ -64,14 +64,14 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     });
   });
 
-  $rootScope.$on('updatePendingTxs', function(event) {
-    self.updatingPendingTxs = true;
-    profileService.focusedClient.getTxProposals({}, function(err, txps) {
-      self.updateTxps(txps);
-      self.updatingPendingTxs = false;
-      $rootScope.$apply();
-    });
-  });
+//  $rootScope.$on('updatePendingTxs', function(event) {
+//    self.updatingPendingTxs = true;
+//    profileService.focusedClient.getTxProposals({}, function(err, txps) {
+//      self.updateTxps(txps);
+//      self.updatingPendingTxs = false;
+//      $rootScope.$apply();
+//    });
+//  });
 
   self.updateTxps = function(txps) {
     self.txps = txps;
