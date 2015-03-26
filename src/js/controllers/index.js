@@ -116,8 +116,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       self.alternativeName = config.alternativeName;
       self.alternativeIsoCode = config.alternativeIsoCode;
 
-      var totalBalanceAlternative = rateService.toFiat(self.totalBalance, config.alternativeIsoCode);
-      var lockedBalanceAlternative = rateService.toFiat(self.lockedBalance, config.alternativeIsoCode);
+      var totalBalanceAlternative = rateService.toFiat(self.totalBalance * self.unitToSatoshi, config.alternativeIsoCode);
+      var lockedBalanceAlternative = rateService.toFiat(self.lockedBalance * self.unitToSatoshi, config.alternativeIsoCode);
       var alternativeConversionRate = rateService.toFiat(100000000, config.alternativeIsoCode);
 
       self.totalBalanceAlternative = $filter('noFractionNumber')(totalBalanceAlternative, 2);
