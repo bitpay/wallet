@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('preferencesController',
-  function($scope, $rootScope, $filter, $timeout, $modal, balanceService, notification, backupService, profileService, configService, isMobile, isCordova, go) {
+  function($scope, $rootScope, $filter, $timeout, $modal, balanceService, notification, backupService, profileService, configService, isMobile, isCordova, go, rateService) {
     this.isSafari = isMobile.Safari();
     this.isCordova = isCordova;
     this.hideAdv = true;
@@ -43,23 +43,26 @@ angular.module('copayApp.controllers').controller('preferencesController',
       }
     }
 
-    this.rateService = function() {
-      $scope.selectedAlternative = {
-        name: w.settings.alternativeName,
-        isoCode: w.settings.alternativeIsoCode
-      };
-      $scope.alternativeOpts = rateService.isAvailable() ?
-        rateService.listAlternatives() : [$scope.selectedAlternative];
-
-      rateService.whenAvailable(function() {
-        $scope.alternativeOpts = rateService.listAlternatives();
-        for (var ii in $scope.alternativeOpts) {
-          if (w.settings.alternativeIsoCode === $scope.alternativeOpts[ii].isoCode) {
-            $scope.selectedAlternative = $scope.alternativeOpts[ii];
-          }
-        }
-      });
+    this.selectedAlternative = {
+      name: config.wallet.settings.alternativeName,
+      isoCode: config.wallet.settings.alternativeIsoCode
     };
+    this.alternativeOpts = rateService.isAvailable() ?
+      rateService.listAlternatives() : [this.selectedAlternative];
+
+
+    var self = this;
+    rateService.whenAvailable(function() {
+      self.alternativeOpts = rateService.listAlternatives();
+      for (var ii in self.alternativeOpts) {
+        if (config.wallet.settings.alternativeIsoCode === self.alternativeOpts[ii].isoCode) {
+          self.selectedAlternative = self.alternativeOpts[ii];
+        }
+      }
+      $scope.$digest();
+    });
+
+
 
     this.save = function() {
       var opts = {
@@ -68,8 +71,8 @@ angular.module('copayApp.controllers').controller('preferencesController',
             unitName: this.selectedUnit.shortName,
             unitToSatoshi: this.selectedUnit.value,
             unitDecimals: this.selectedUnit.decimals,
-            // alternativeName: this.selectedAlternative.name,
-            // alternativeIsoCode: this.selectedAlternative.isoCode,
+            alternativeName: this.selectedAlternative.name,
+            alternativeIsoCode: this.selectedAlternative.isoCode,
           }
         }
       };

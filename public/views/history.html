@@ -39,7 +39,7 @@
                 {{history.getUnitName()}}
               </span>
               <span class="size-14 db m5t text-gray" ng-show="btx.alternativeAmount">
-                {{btx.alternativeAmount}} {{$root.wallet.settings.alternativeIsoCode}}
+                {{btx.alternativeAmount}} {{history.getAlternativeIsoCode()}}
               </span>
             </div>
           </div>
@@ -62,7 +62,7 @@
           <span translate>Generating file...</span>
         </div>
         <div ng-if="!history.generating">
-          <a class="text-gray" href="#!/history" ng-click="history.downloadHistory();">
+          <a class="text-gray" href="#/history" ng-click="history.downloadHistory();">
             <i class="fi-page-export-csv"></i> 
             <span translate>Download CSV file</span>
           </a>

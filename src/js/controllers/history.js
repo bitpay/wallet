@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('historyController',
-  function($scope, $rootScope, $filter, $timeout, $modal, profileService, notification, go, configService) {
+  function($scope, $rootScope, $filter, $timeout, $modal, profileService, notification, go, configService, rateService, lodash) {
 
     function strip(number) {
       return (parseFloat(number.toPrecision(12)));
@@ -12,6 +12,9 @@ angular.module('copayApp.controllers').controller('historyController',
     this.unitToSatoshi = config.unitToSatoshi;
     this.satToUnit = 1 / this.unitToSatoshi;
     this.unitName = config.unitName;
+    this.alternativeIsoCode = config.alternativeIsoCode;
+
+    this.isShared = fc.n > 1;
 
     this.loading = false;
     this.generating = false;
@@ -31,9 +34,7 @@ angular.module('copayApp.controllers').controller('historyController',
     };
 
     this.downloadHistory = function() {
-      var w = $rootScope.wallet;
-      if (!w) return;
-
+      var self = this;
       var filename = "copay_history.csv";
       var descriptor = {
         columns: [{
@@ -41,11 +42,11 @@ angular.module('copayApp.controllers').controller('historyController',
           property: 'ts',
           type: 'date'
         }, {
-          label: 'Amount (' + w.settings.unitName + ')',
+          label: 'Amount (' + config.unitName + ')',
           property: 'amount',
           type: 'number'
         }, {
-          label: 'Amount (' + w.settings.alternativeIsoCode + ')',
+          label: 'Amount (' + config.alternativeIsoCode + ')',
           property: 'alternativeAmount'
         }, {
           label: 'Action',
@@ -58,29 +59,31 @@ angular.module('copayApp.controllers').controller('historyController',
           property: 'comment'
         }, ],
       };
-      if (w.isShared()) {
-        descriptor.columns.push({
-          label: 'Signers',
-          property: function(obj) {
-            if (!obj.actionList) return '';
-            return _.map(obj.actionList, function(action) {
-              return w.publicKeyRing.nicknameForCopayer(action.cId);
-            }).join('|');
-          }
-        });
-      }
 
-      this.generating = true;
+      // if (this.isShared) {
+      //   descriptor.columns.push({
+      //     label: 'Signers',
+      //     property: function(obj) {
+      //       if (!obj.actionList) return '';
+      //       return lodash.map(obj.actionList, function(action) {
+      //         console.log('action.......', action);
+      //         //return w.publicKeyRing.nicknameForCopayer(action.cId);
+      //       }).join('|');
+      //     }
+      //   });
+      // }
 
-      this._getTransactions(w, null, function(err, res) {
+      //this.generating = true;
+
+      this._getTransactions(null, function(err, items) {
         if (err) {
           this.generating = false;
           logger.error(err);
           notification.error('Could not get transaction history');
           return;
         }
-        this._addRates(w, res.items, function(err) {
-          copay.csv.toCsv(res.items, descriptor, function(err, res) {
+        self._addRates(items, function(err) {
+          copay.csv.toCsv(items, descriptor, function(err, res) {
             if (err) {
               this.generating = false;
               logger.error(err);
@@ -110,6 +113,10 @@ angular.module('copayApp.controllers').controller('historyController',
       return this.unitName;
     };
 
+    this.getAlternativeIsoCode = function() {
+      return this.alternativeIsoCode;
+    };
+
     this.update = function() {
       this.getTransactions();
     };
@@ -122,14 +129,18 @@ angular.module('copayApp.controllers').controller('historyController',
       }, 1);
     };
 
-    this._getTransactions = function(w, opts, cb) {
-      w.getTransactionHistory(opts, function(err, res) {
-        if (err) return cb(err);
-        if (!res) return cb();
+    this._getTransactions = function(opts, cb) {
+      var self = this;
+      fc.getTxHistory(null, function(err, res) {
+        if (err) throw err;
+
+        if (!res) {
+          return;
+        }
 
         var now = new Date();
-        var items = res.items;
-        _.each(items, function(tx) {
+        var items = res;
+        lodash.each(items, function(tx) {
           tx.ts = tx.minedTs || tx.sentTs;
           tx.rateTs = Math.floor((tx.ts || now) / 1000);
           tx.amount = $filter('noFractionNumber')(tx.amount);
@@ -138,15 +149,15 @@ angular.module('copayApp.controllers').controller('historyController',
       });
     };
 
-    this._addRates = function(w, txs, cb) {
+    this._addRates = function(txs, cb) {
       if (!txs || txs.length == 0) return cb();
-      var index = _.groupBy(txs, 'rateTs');
-      return cb();
-      rateService.getHistoricRates(w.settings.alternativeIsoCode, _.keys(index), function(err, res) {
+      var index = lodash.groupBy(txs, 'rateTs');
+
+      rateService.getHistoricRates(config.alternativeIsoCode, lodash.keys(index), function(err, res) {
         if (err || !res) return cb(err);
-        _.each(res, function(r) {
-          _.each(index[r.ts], function(tx) {
-            var alternativeAmount = (r.rate != null ? tx.amountSat * rateService.SAT_TO_BTC * r.rate : null);
+        lodash.each(res, function(r) {
+          lodash.each(index[r.ts], function(tx) {
+            var alternativeAmount = (r.rate != null ? tx.amount * rateService.SAT_TO_BTC * r.rate : null);
             tx.alternativeAmount = alternativeAmount ? $filter('noFractionNumber')(alternativeAmount, 2) : null;
           });
         });
@@ -177,27 +188,10 @@ angular.module('copayApp.controllers').controller('historyController',
 
     this.getTransactions = function() {
       var self = this;
-      this.blockchain_txs = [];
+      this.blockchain_txs = []; // w.cached_txs || [];
       this.loading = true;
+
       fc.getTxHistory({
-        currentPage: this.currentPage,
-        itemsPerPage: this.itemsPerPage
-      }, function(err, res) {
-
-        self.blockchain_txs = res;
-        self.loading = false;
-        setTimeout(function() {
-          $scope.$digest();
-        }, 1);
-      });
-    };
-
-    this.__getTransactions = function() {
-      var self = this;
-      this.blockchain_txs = w.cached_txs || [];
-      this.loading = true;
-
-      this._getTransactions(w, {
         currentPage: this.currentPage,
         itemsPerPage: this.itemsPerPage,
       }, function(err, res) {
@@ -209,14 +203,13 @@ angular.module('copayApp.controllers').controller('historyController',
           return;
         }
 
-        var items = res.items;
-        self._addRates(w, items, function(err) {
+        self._addRates(res, function(err) {
           $timeout(function() {
             $scope.$digest();
           }, 1);
         })
 
-        self.blockchain_txs = w.cached_txs = items;
+        self.blockchain_txs = res; //w.cached_txs =
         self.nbPages = res.nbPages;
         self.totalItems = res.nbItems;
 
