@@ -4,8 +4,6 @@
 // TODO rateService
 angular.module('copayApp.controllers').controller('walletHomeController', function($scope, $rootScope, $timeout, $filter, $modal, notification, txStatus, isCordova, profileService) {
 
-  $rootScope.$emit('updatePendingTxs');
-
   $scope.openTxModal = function(tx) {
     var fc = profileService.focusedClient;
     var ModalInstanceCtrl = function($scope, $modalInstance) {

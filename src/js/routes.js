@@ -22,19 +22,40 @@ angular
     $stateProvider
       .state('walletHome', {
         url: '/',
-        templateUrl: 'views/walletHome.html',
         walletShouldBeComplete: true,
-        needProfile: true
+        needProfile: true,
+        views: {
+          'main': {
+            templateUrl: 'views/walletHome.html'
+          },
+          'topbar': {
+            templateUrl: 'views/includes/topbar.html'
+          },
+          'menu': {
+            templateUrl: 'views/includes/menu.html',
+            controller: function($scope) {
+              $scope.activeMenu = 'walletHome';
+            }
+          }
+        }
       })
       .state('createProfile', {
         url: '/createProfile',
-        templateUrl: 'views/createProfile.html',
-        needProfile: false
+        needProfile: false,
+        views: {
+          'main': {
+            templateUrl: 'views/createProfile.html'
+          }
+        }
       })
       .state('unsupported', {
         url: '/unsupported',
-        templateUrl: 'views/unsupported.html',
-        needProfile: false
+        needProfile: false,
+        views: {
+          'main': {
+            templateUrl: 'views/unsupported.html'
+          }
+        }
       })
       .state('uri-payment', {
         url: '/uri-payment/:data',
@@ -48,15 +69,33 @@ angular
       })
       .state('join', {
         url: '/join',
-        controller: 'joinController',
-        templateUrl: 'views/join.html',
-        needProfile: true
+        needProfile: true,
+        views: {
+          'main': {
+            templateUrl: 'views/join.html'
+          },
+          'topbar': {
+            templateUrl: 'views/includes/topbar.html',
+            controller: function($scope) {
+              $scope.goBackToState = 'add';
+            }
+          }
+        } 
       })
       .state('import', {
         url: '/import',
-        controller: 'importController',
-        templateUrl: 'views/import.html',
-        needProfile: true
+        needProfile: true,
+        views: {
+          'main': {
+            templateUrl: 'views/import.html'
+          },
+          'topbar': {
+            templateUrl: 'views/includes/topbar.html',
+            controller: function($scope) {
+              $scope.goBackToState = 'add';
+            }
+          }
+        }
       })
       .state('importProfile', {
         url: '/importProfile',
@@ -65,15 +104,31 @@ angular
       })
       .state('create', {
         url: '/create',
-        controller: 'createController',
         templateUrl: 'views/create.html',
-        needProfile: true
+        needProfile: true,
+        views: {
+          'main': {
+            templateUrl: 'views/create.html'
+          },
+          'topbar': {
+            templateUrl: 'views/includes/topbar.html',
+            controller: function($scope) {
+              $scope.goBackToState = 'add';
+            }
+          }
+        }
       })
       .state('copayers', {
         url: '/copayers',
-        controller: 'copayersController',
-        templateUrl: 'views/copayers.html',
-        needProfile: true
+        needProfile: true,
+        views: {
+          'main': {
+            templateUrl: 'views/copayers.html'
+          },
+          'topbar': {
+            templateUrl: 'views/includes/topbar.html'
+          }
+        }
       })
       .state('profile', {
         url: '/profile',
@@ -83,28 +138,78 @@ angular
       })
       .state('receive', {
         url: '/receive',
-        templateUrl: 'views/receive.html',
         walletShouldBeComplete: true,
-        needProfile: true
+        needProfile: true,
+        views: {
+          'main': {
+            templateUrl: 'views/receive.html'
+          },
+          'topbar': {
+            templateUrl: 'views/includes/topbar.html'
+          },
+          'menu': {
+            templateUrl: 'views/includes/menu.html',
+            controller: function($scope) {
+              $scope.activeMenu = 'receive';
+            }
+          }
+        }
       })
       .state('send', {
         url: '/send',
-        templateUrl: 'views/send.html',
         walletShouldBeComplete: true,
-        needProfile: true
+        needProfile: true,
+        views: {
+          'main': {
+            templateUrl: 'views/send.html'
+          },
+          'topbar': {
+            templateUrl: 'views/includes/topbar.html'
+          },
+          'menu': {
+            templateUrl: 'views/includes/menu.html',
+            controller: function($scope) {
+              $scope.activeMenu = 'send';
+            }
+          }
+        }
       })
       .state('history', {
         url: '/history',
-        templateUrl: 'views/history.html',
         walletShouldBeComplete: true,
-        needProfile: true
+        needProfile: true,
+        views: {
+          'main': {
+            templateUrl: 'views/history.html'
+          },
+          'topbar': {
+            templateUrl: 'views/includes/topbar.html'
+          },
+          'menu': {
+            templateUrl: 'views/includes/menu.html',
+            controller: function($scope) {
+              $scope.activeMenu = 'history';
+            }
+          }
+        }
       })
 
     .state('preferences', {
         url: '/preferences',
         templateUrl: 'views/preferences.html',
         walletShouldBeComplete: true,
-        needProfile: true
+        needProfile: true,
+        views: {
+          'main': {
+            templateUrl: 'views/preferences.html'
+          },
+          'topbar': {
+            templateUrl: 'views/includes/topbar.html',
+            controller: function($scope) {
+              $scope.goBackToState = 'walletHome';
+            }
+          }
+        }
       })
       .state('settings', {
         url: '/settings',
@@ -120,8 +225,18 @@ angular
       })
       .state('add', {
         url: '/add',
-        templateUrl: 'views/add.html',
-        needProfile: true
+        needProfile: true,
+        views: {
+          'main': {
+            templateUrl: 'views/add.html'
+          },
+          'topbar': {
+            templateUrl: 'views/includes/topbar.html',
+            controller: function($scope) {
+              $scope.goBackToState = 'walletHome';
+            }
+          }
+        }
       })
       .state('signout', {
         url: '/signout',

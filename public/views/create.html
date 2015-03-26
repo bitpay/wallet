@@ -1,12 +1,4 @@
-<nav class="tab-bar">
-  <section class="left-small">
-    <a class="p10" 
-      ng-click="$root.go('add')"><i class="fi-arrow-left size-24"></i>
-    </a>
-  </section>
-</nav>
-
-<div class="create m60t" ng-controller="createController as create">
+<div class="create" ng-controller="createController as create">
   <div ng-show="$root.starting">
     <div ng-include="'views/includes/loading.html'" ng-init="title = 'Creating wallet'"></div>
   </div>

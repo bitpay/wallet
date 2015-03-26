@@ -1,15 +1,19 @@
 <nav ng-controller="topbarController as topbar" class="tab-bar">
   <section class="left-small">
-    <a class="p10" 
-      ng-click="index.openMenu()"><i class="fi-list size-24"></i></a>
+    <a class="p10" ng-show="!goBackToState" 
+      ng-click="index.openMenu()"><i class="fi-list size-24"></i>
+    </a>
+    <a class="p10" ng-show="goBackToState"
+      ng-click="$root.go(goBackToState); goBackToState = null"><i class="fi-arrow-left size-24"></i>
+    </a>
   </section>
 
-  <section class="right-small" ng-show="index.isComplete">
+  <section class="right-small" ng-show="index.isComplete && !goBackToState">
     <a class="p10" 
       ng-click="topbar.openScanner()"><i class="fi-camera size-24"></i></a>
   </section>
 
-  <section class="middle tab-bar-section">
+  <section class="middle tab-bar-section" ng-show="!goBackToState">
     <h1 class="title ellipsis" ng-class="{'animated infinite flash':index.updatingStatus}">
       {{index.walletName}}
     </h1>

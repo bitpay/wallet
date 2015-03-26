@@ -1,12 +1,4 @@
-<nav class="tab-bar">
-  <section class="left-small">
-    <a class="p10" 
-      ng-click="$root.go('add')"><i class="fi-arrow-left size-24"></i>
-    </a>
-  </section>
-</nav>
-
-<div class="join m60t" ng-controller="joinController as join">
+<div class="join" ng-controller="joinController as join">
   <div ng-show="$root.starting">
     <div ng-include="'views/includes/loading.html'" ng-init="title = 'Connecting to Insight Wallet Server'"></div>
   </div>

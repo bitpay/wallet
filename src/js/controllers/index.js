@@ -163,7 +163,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     });
   };
 
-
   self.openMenu = function() {
     go.swipe(true);
   }
