@@ -311,6 +311,7 @@ angular.module('copayApp.controllers').controller('sendController',
     // TODO form
     this.setFromPayPro = function(uri, form) {
 
+      $log.debug('PayPro URI:', uri);
       var isChromeApp = window.chrome && chrome.runtime && chrome.runtime.id;
       if (isChromeApp) {
         this.error = 'Payment Protocol not yet supported on ChromeApp';
@@ -365,10 +366,11 @@ angular.module('copayApp.controllers').controller('sendController',
       uri = sanitizeUri(uri);
 
       var parsed = new bitcore.URI(uri);
+      console.log('[send.js.351:parsed:]', parsed); //TODO
       var addr = parsed.address.toString();
       var message = parsed.message;
-      if (parsed.data && parsed.data.merchant)
-        return this.setFromPayPro(parsed.data.merchant);
+      if (parsed.r)
+        return this.setFromPayPro(parsed.r);
 
       var amount = parsed.amount ?
         (parsed.amount.toFixed(0) * satToUnit).toFixed(this.unitDecimals) : 0;
