@@ -60,22 +60,13 @@
     </div>
   </div>
 
-  <div ng-if="tx.action[0]" class="m10v">
+  <div ng-if="tx.actions[0]" class="m10v">
     <i translate>Signatures:</i>
-    <ul class="tx-copayers m10t">
-      <li ng-repeat="cId in registeredCopayerIds" 
-      ng-class="{'bottom-line-copayers':!$last}">
-      <span>
-        <i ng-if="$root.wallet.txProposals.txps[tx.ntxid].rejectedBy[cId]" class="fi-x icon-sign x"></i>
-        <i ng-if="$root.wallet.txProposals.txps[tx.ntxid].signedBy[cId]" class="fi-check icon-sign check"></i>
-        <i ng-if="!$root.wallet.txProposals.txps[tx.ntxid].rejectedBy[cId] 
-          && !$root.wallet.txProposals.txps[tx.ntxid].signedBy[cId]" class="m10r fi-loop icon-rotate"></i>
-      </span>
-      <span>
-        <i ng-if="$root.wallet.txProposals.txps[tx.ntxid].creator == cId" 
-          class="fi-crown icon-status icon-active m10r"></i>
-      </span>
-      <span>{{cId === $root.wallet.getMyCopayerId() ? 'Me' : $root.wallet.publicKeyRing.nicknameForCopayer(cId)}}</span>
+    <ul class="no-bullet size-10 m0">
+      <li ng-repeat="tc in tx.actions">
+        <i ng-if="tc.type == 'reject'" class="fi-x icon-sign x"></i>
+        <i ng-if="tc.type == 'accept'" class="fi-check icon-sign check"></i> 
+        <span>{{tc.copayerId}} - {{tc.copayerName}}</span>
       </li>
     </ul>
   </div>

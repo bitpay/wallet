@@ -29,7 +29,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
             }
             $scope.loading = false;
             if (err) {
-              $scope.error = 'Transaction not sent. Please try again.';
+              $scope.error = err.message || 'Transaction not signed. Please try again.';
               $scope.$digest();
             } else {
               //if txp has required signatures then broadcast it
@@ -64,7 +64,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
             }
             $scope.loading = false;
             if (err) {
-              $scope.error = err;
+              $scope.error = err.message || 'Transaction not rejected. Please try again.';
               $scope.$digest();
             } else {
               $modalInstance.close(txp);
@@ -86,7 +86,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
             }
             $scope.loading = false;
             if (err) {
-              $scope.error = 'Transaction could not send. Please try again.';
+              $scope.error = err.message || 'Transaction not sent. Please try again.';
               $scope.$digest();
             } else {
               $modalInstance.close(txp);
