@@ -113,8 +113,8 @@
                 <label for="alternative"><span translate>Amount in</span> {{ send.alternativeName }}
                 </label>
                 <div class="input">
-                  <input type="number" id="alternative" ng-disabled="send.loading || !isRateAvailable || send.lockAmount" name="alternative" placeholder="{{'Amount'|translate}}" ng-model="_alternative" requiredautocomplete="off"  ng-focus="send.formFocus('amount')" ng-blur="send.formFocus(false)">
-                  <a class="postfix" ng-click="showAlternative = false"> {{ send.alternativeName }}</a>
+                  <input type="number" id="alternative" ng-disabled="send.loading || !isRateAvailable || send.lockAmount" name="alternative" placeholder="{{'AmountAlteXXX'|translate}}" ng-model="_alternative" requiredautocomplete="off"  ng-focus="send.formFocus('amount')" ng-blur="send.formFocus(false)">
+                  <a class="postfix" ng-click="showAlternative = false"> {{ send.alternativeIsoCode }}</a>
                 </div>
               </div>
             </div>

@@ -135,6 +135,7 @@ RateService.prototype.toFiat = function(satoshis, code) {
   if (!this.isAvailable()) {
     throw new Error(this.UNAVAILABLE_ERROR);
   }
+
   return satoshis * this.SAT_TO_BTC * this.getRate(code);
 };
 
@@ -172,6 +173,7 @@ angular.module('copayApp.services').factory('rateService', function($http, lodas
   // var cfg = _.extend(config.rates, {
   //   httprequest: $http
   // });
+
   var cfg = {
     httprequest: $http,
     lodash: lodash

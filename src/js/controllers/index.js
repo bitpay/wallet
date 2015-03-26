@@ -1,11 +1,11 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('indexController', function($rootScope, $log, lodash, go, profileService, configService, isCordova) {
+angular.module('copayApp.controllers').controller('indexController', function($rootScope, $log, $filter, lodash, go, profileService, configService, isCordova, rateService) {
   var self = this;
 
   function strip(number) {
     return (parseFloat(number.toPrecision(12)));
-  }
+  };
 
   self.pageLoaded = false;
   self.isCordova = isCordova;
@@ -49,12 +49,12 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     });
   });
 
-  $rootScope.$on('updatePendingTxs', function(event) {
-    profileService.focusedClient.getTxProposals({}, function(err, txps) {
-      self.updateTxps(txps);
-      $rootScope.$apply();
-    });
-  });
+  // $rootScope.$on('updatePendingTxs', function(event) {
+  //   profileService.focusedClient.getTxProposals({}, function(err, txps) {
+  //     self.updateTxps(txps);
+  //     $rootScope.$apply();
+  //   });
+  // });
 
   self.updateTxps = function(txps) {
     self.txps = txps;
@@ -99,8 +99,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.lockedBalanceStr = self.lockedBalance.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + ' ' + self.unitName;
     self.availableBalanceStr = self.availableBalance.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + ' ' + self.unitName;
 
-
-
     // var availableBalanceNr = safeBalanceSat * satToUnit;
     // r.safeUnspentCount = safeUnspentCount;
 
@@ -111,36 +109,42 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     //   r.topAmount = (((availableBalanceNr * w.settings.unitToSatoshi).toFixed(0) - estimatedFee) / w.settings.unitToSatoshi);
     // }
     //
-    // TODO : rateService
-    /* rateService.whenAvailable(function() {
-    var config = configService.getSync().wallet.settings;
-    self.alternativeName = config.alternativeName;
-    self.alternativeIsoCode = config.alternativeIsoCode;
-    r.totalBalanceAlternative = $filter('noFractionNumber')(totalBalanceAlternative, 2);
-    r.lockedBalanceAlternative = $filter('noFractionNumber')(lockedBalanceAlternative, 2);
-    r.alternativeConversionRate = $filter('noFractionNumber')(alternativeConversionRate, 2);
 
-    r.alternativeBalanceAvailable = true;
-    r.alternativeIsoCode = w.settings.alternativeIsoCode;
-*/
+    rateService.whenAvailable(function() {
 
-    //SET index.alternativeBalanceAvailable
-    //         totalBalanceAlternative
-    //
-    //   self.isRateAvailable = true;
-    //   self.$digest();
-    // });
-    //
+      var config = configService.getSync().wallet.settings;
+      self.alternativeName = config.alternativeName;
+      self.alternativeIsoCode = config.alternativeIsoCode;
 
-    self.updatingBalance = false;
+      var totalBalanceAlternative = rateService.toFiat(self.totalBalance, config.alternativeIsoCode);
+      var lockedBalanceAlternative = rateService.toFiat(self.lockedBalance, config.alternativeIsoCode);
+      var alternativeConversionRate = rateService.toFiat(100000000, config.alternativeIsoCode);
+
+      self.totalBalanceAlternative = $filter('noFractionNumber')(totalBalanceAlternative, 2);
+      self.lockedBalanceAlternative = $filter('noFractionNumber')(lockedBalanceAlternative, 2);
+      self.alternativeConversionRate = $filter('noFractionNumber')(alternativeConversionRate, 2);
+
+      self.alternativeBalanceAvailable = true;
+      self.alternativeIsoCode = config.alternativeIsoCode;
+
+      self.alternativeBalanceAvailable = true;
+      self.updatingBalance = false;
+
+      self.isRateAvailable = true;
+      $rootScope.$apply();
+
+    });
+
   };
 
 
   self.openMenu = function() {
     go.swipe(true);
-  };
+  }
 
   self.closeMenu = function() {
     go.swipe();
-  };
+  }
+
+
 });

@@ -9,9 +9,9 @@
           </strong>
           </span>
           <span class="size-14 db m5t text-gray">
-            <span ng-if="!index.updatingBalance && $root.wallet.balanceInfo.alternativeBalanceAvailable">{{index.totalBalanceAlternative}} {{index.alternativeIsoCode}}</span>
-          <span ng-if="!$root.wallet.balanceInfo.updatingBalance && !$root.wallet.balanceInfo.alternativeBalanceAvailable">N/A</span>
-          <span ng-if="$root.wallet.balanceInfo.updatingBalance"><i class="fi-bitcoin-circle icon-rotate spinner"></i></span>
+            <span ng-if="!index.updatingBalance && index.alternativeBalanceAvailable">{{index.totalBalanceAlternative}} {{index.alternativeIsoCode}}</span>
+          <span ng-if="!index.updatingBalance && !index.alternativeBalanceAvailable">N/A</span>
+          <span ng-if="index.updatingBalance"><i class="fi-bitcoin-circle icon-rotate spinner"></i></span>
           </span>
         </div>
         <div class="pr">
