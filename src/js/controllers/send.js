@@ -199,9 +199,20 @@ angular.module('copayApp.controllers').controller('sendController',
               if (err) {
                 self.setError(err);
               } else {
-                txStatus.notify(signedTx);
-                $scope.$emit('updateStatus');
-                self.resetForm(form);
+                //if txp has required signatures then broadcast it
+                var txpHasRequiredSignatures = signedTx.status == 'accepted';
+                if (txpHasRequiredSignatures) {
+                  fc.broadcastTxProposal(signedTx, function(err, btx) {
+                    if (err) {
+                      $scope.error = 'Transaction not broadcasted. Please try again.';
+                      $scope.$digest();
+                    } else {
+                      txStatus.notify(btx);
+                      $scope.$emit('updateStatus');
+                      self.resetForm(form);
+                    }
+                  });
+                }
               }
             });
           }
