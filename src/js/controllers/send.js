@@ -122,7 +122,7 @@ angular.module('copayApp.controllers').controller('sendController',
             return $scope.__address;
           },
           set: function(newValue) {
-            $scope.__address = $scope.onAddressChange(newValue);
+            $scope.__address = self.onAddressChange(newValue);
           },
           enumerable: true,
           configurable: true
