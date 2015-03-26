@@ -25,6 +25,7 @@ angular.module('copayApp.directives')
         require: 'ngModel',
         link: function(scope, elem, attrs, ctrl) {
           var networkName = profileService.focusedClient.network;
+          console.log('[directives.js.27:networkName:]', networkName); //TODO
           var URI = bitcore.URI;
           var Address = bitcore.Address
           var validator = function(value) {

@@ -49,7 +49,7 @@
             <a class="close-notification text-success" ng-click="success=null">&#215;</a>
           </div>
 
-          <div ng-if="!_merchantData"  ng-hide="hideAddress">
+          <div ng-hide="send._paypro || send.hideAddress">
             <div class="row collapse">
 
               <label for="address" class="left" >
@@ -74,16 +74,17 @@
               <a class="postfix" ng-click="openAddressBook()"><i class="fi-address-book size-24"></i></a>
             </div>
           </div>
-          <div ng-show="send._merchantData && !send.hideAddress">
-            <div class="row collapse" ng-click="send.openPPModal(_merchantData)">
+          <div ng-show="send._paypro && !send.hideAddress">
+            <div class="row collapse" ng-click="send.openPPModal(send._paypro)">
 
               <label for="domain">
                 <span translate>Payment to</span> 
               </label>
 
               <div class="input block">
-                <input class="p45li" type="text" id="domain" name="domain" ng-model="_domain" ng-disabled="1">
-                <i class="fi-lock color-greeni"></i> 
+                <input class="p45li" type="text" id="domain" name="domain" ng-model="send._paypro.domain" ng-disabled="1">
+  <i ng-show="send._paypro.verified" class="fi-lock color-greeni"></i>
+  <i ng-show="!send._paypro.verified" class="fi-unlock color-yellowi"></i> 
               </div>
             </div>
           </div>
@@ -146,7 +147,7 @@
             </div>
             <div class="large-4 medium-4 small-12 columns text-right">
               <a ng-click="send.resetForm(sendForm)" class="button expand warning" 
-                ng-show="(send._merchantData || send.lockAddress) && !send.loading" translate>Cancel</a>
+                ng-show="(send._paypro || send.lockAddress) && !send.loading" translate>Cancel</a>
             </div>
           </div>
         </div>

@@ -3,9 +3,9 @@
 angular.module('copayApp.controllers').controller('sendController',
   function($rootScope, $scope, $window, $timeout, $modal, $filter, $log, notification, isMobile, txStatus, isCordova, bitcore, profileService, configService, rateService) {
     var fc = profileService.focusedClient;
+    var self = this;
 
     this.init = function() {
-      var self = this;
       this.isMobile = isMobile.any();
       this.isWindowsPhoneApp = isMobile.Windows() && isCordova;
       $rootScope.wpInputFocused = false;
@@ -75,8 +75,7 @@ angular.module('copayApp.controllers').controller('sendController',
     };
 
     this.setInputs = function() {
-      var self = this;
-      var unitToSat = self.unitToSatoshi;
+      var unitToSat = this.unitToSatoshi;
       var satToUnit = 1 / unitToSat;
       /**
        * Setting the two related amounts as properties prevents an infinite
@@ -157,7 +156,6 @@ angular.module('copayApp.controllers').controller('sendController',
     };
 
     this.submitForm = function(form) {
-      var self = this;
       var unitToSat = this.unitToSatoshi;
 
       if (form.$invalid) {
@@ -172,19 +170,18 @@ angular.module('copayApp.controllers').controller('sendController',
 
       $timeout(function() {
         var comment = form.comment.$modelValue;
-        var merchantData = self._merchantData;
+        var paypro = self._paypro;
         var address, amount;
-        if (!merchantData) {
-          address = form.address.$modelValue;
-          amount = parseInt((form.amount.$modelValue * unitToSat).toFixed(0));
-        }
+        console.log('[send.js.159:form:]', form); //TODO
+
+        address = form.address.$modelValue;
+        amount = parseInt((form.amount.$modelValue * unitToSat).toFixed(0));
 
         fc.sendTxProposal({
-          // TODO
-          //          merchantData: merchantData,
           toAddress: address,
           amount: amount,
           message: comment,
+          payProUrl: paypro ? paypro.url : null,
         }, function(err, txp) {
           if (isCordova) {
             window.plugins.spinnerDialog.hide();
@@ -261,7 +258,7 @@ angular.module('copayApp.controllers').controller('sendController',
     this.resetForm = function(form) {
       this.error = this.success = null;
       this.fetchingURL = null;
-      this._merchantData = this._domain = null;
+      this._paypro = null;
 
       this.lockAddress = false;
       this.lockAmount = false;
@@ -287,14 +284,15 @@ angular.module('copayApp.controllers').controller('sendController',
     };
 
     var $oscope = this;
-    this.openPPModal = function(merchantData) {
+    this.openPPModal = function(paypro) {
       var ModalInstanceCtrl = function($scope, $modalInstance) {
-        var satToUnit = 1 / this.unitToSatoshi;
-        $scope.md = merchantData;
+        var satToUnit = 1 / self.unitToSatoshi;
+        $scope.paypro = paypro;
         $scope.alternative = $oscope._alternative;
-        $scope.alternativeIsoCode = this.alternativeIsoCode;
-        $scope.isRateAvailable = this.isRateAvailable;
-        $scope.unitTotal = (merchantData.total * satToUnit).toFixed(w.settings.unitDecimals);
+        $scope.alternativeIsoCode = self.alternativeIsoCode;
+        $scope.isRateAvailable = self.isRateAvailable;
+        $scope.unitTotal = (paypro.amount * satToUnit).toFixed(self.unitDecimals);
+        $scope.unitName = self.unitName;
 
         $scope.cancel = function() {
           $modalInstance.dismiss('cancel');
@@ -307,11 +305,7 @@ angular.module('copayApp.controllers').controller('sendController',
       });
     };
 
-
-    // TODO form
     this.setFromPayPro = function(uri, form) {
-
-      $log.debug('PayPro URI:', uri);
       var isChromeApp = window.chrome && chrome.runtime && chrome.runtime.id;
       if (isChromeApp) {
         this.error = 'Payment Protocol not yet supported on ChromeApp';
@@ -323,11 +317,11 @@ angular.module('copayApp.controllers').controller('sendController',
       this.loading = true;
       var self = this;
 
-
-      // Payment Protocol URI (BIP-72)
-      w.fetchPaymentRequest({
-        url: uri
-      }, function(err, merchantData) {
+      $log.debug('Fetch PayPro Request...', uri);
+      fc.fetchPayPro({
+        payProUrl: uri,
+      }, function(err, paypro) {
+        $log.debug(paypro);
         self.loading = false;
         self.fetchingURL = null;
 
@@ -341,9 +335,11 @@ angular.module('copayApp.controllers').controller('sendController',
           }
           self.error = msg;
         } else {
-          self._merchantData = merchantData;
-          self._domain = merchantData.domain;
-          self.setForm(null, (merchantData.total * satToUnit).toFixed(w.settings.unitDecimals));
+          self._paypro = paypro;
+
+          console.log('[send.js.323]'); //TODO
+          self.setForm(paypro.toAddress, (paypro.amount * satToUnit).toFixed(self.unitDecimals),
+            paypro.memo);
         }
       });
     };
@@ -366,7 +362,6 @@ angular.module('copayApp.controllers').controller('sendController',
       uri = sanitizeUri(uri);
 
       var parsed = new bitcore.URI(uri);
-      console.log('[send.js.351:parsed:]', parsed); //TODO
       var addr = parsed.address.toString();
       var message = parsed.message;
       if (parsed.r)
@@ -375,6 +370,7 @@ angular.module('copayApp.controllers').controller('sendController',
       var amount = parsed.amount ?
         (parsed.amount.toFixed(0) * satToUnit).toFixed(this.unitDecimals) : 0;
 
+      console.log('[send.js.356]'); //TODO
       this.setForm(addr, amount, message);
       return addr;
     };
@@ -383,12 +379,14 @@ angular.module('copayApp.controllers').controller('sendController',
       this.error = this.success = null;
       if (!value) return '';
 
+      if (this._paypro)
+        return value;
+
       if (value.indexOf('bitcoin:') === 0) {
         return this.setFromUri(value);
       } else if (/^https?:\/\//.test(value)) {
         return this.setFromPayPro(value);
       } else {
-        this.setForm(value, null, null);
         return value;
       }
     };
