@@ -48,11 +48,18 @@ angular.module('copayApp.services')
 
     root._setWalletClients = function() {
       root.walletClients = {};
-
       lodash.each(root.profile.credentials, function(credentials) {
         var client = bwcService.getClient(JSON.stringify(credentials));
 
         client.removeAllListeners();
+
+        client.initNotifications(function(err) {
+          if (err) console.log('*** [profileService.js ln58] Could not init notifications err:', err); // TODO
+        });
+
+        client.on('notification', function(notification) {
+          console.log('*** [profileService.js ln56] notification:', notification); // TODO
+        });
 
         client.on('walletCompleted', function() {
           $log.debug('Wallet completed');
