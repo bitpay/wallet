@@ -28,6 +28,7 @@ angular.module('copayApp.controllers').controller('sendController',
 
       this.setInputs();
 
+
       var config = configService.getSync().wallet.settings;
       this.alternativeName = config.alternativeName;
       this.alternativeIsoCode = config.alternativeIsoCode;
@@ -35,12 +36,12 @@ angular.module('copayApp.controllers').controller('sendController',
       this.unitDecimals = config.unitDecimals;
       this.unitName = config.unitName;
 
-      // TODO : rateService
-      // rateService.whenAvailable(function() {
-      //   self.isRateAvailable = true;
-      //   self.$digest();
-      // });
-      //
+
+      rateService.whenAvailable(function() {
+        self.isRateAvailable = true;
+        $rootScope.$digest();
+      });
+
 
       var openScannerCordova = $rootScope.$on('dataScanned', function(event, data) {
         self.setForm(data);
@@ -75,7 +76,7 @@ angular.module('copayApp.controllers').controller('sendController',
 
     this.setInputs = function() {
       var self = this;
-      var unitToSat = this.unitToSatoshi;
+      var unitToSat = self.unitToSatoshi;
       var satToUnit = 1 / unitToSat;
       /**
        * Setting the two related amounts as properties prevents an infinite
@@ -85,15 +86,14 @@ angular.module('copayApp.controllers').controller('sendController',
       Object.defineProperty($scope,
         "_alternative", {
           get: function() {
-            return this.__alternative;
+            return $scope.__alternative;
           },
           set: function(newValue) {
-            this.__alternative = newValue;
+            $scope.__alternative = newValue;
             if (typeof(newValue) === 'number' && self.isRateAvailable) {
-              this._amount = parseFloat(
-                (rateService.fromFiat(newValue, self.alternativeIsoCode) * satToUnit).toFixed(w.settings.unitDecimals), 10);
+              $scope._amount = parseFloat((rateService.fromFiat(newValue, self.alternativeIsoCode) * satToUnit).toFixed(self.unitDecimals), 10);
             } else {
-              this._amount = 0;
+              $scope._amount = 0;
             }
           },
           enumerable: true,
@@ -102,15 +102,14 @@ angular.module('copayApp.controllers').controller('sendController',
       Object.defineProperty($scope,
         "_amount", {
           get: function() {
-            return this.__amount;
+            return $scope.__amount;
           },
           set: function(newValue) {
-            this.__amount = newValue;
+            $scope.__amount = newValue;
             if (typeof(newValue) === 'number' && self.isRateAvailable) {
-              this.__alternative = parseFloat(
-                (rateService.toFiat(newValue * unitToSat, self.alternativeIsoCode)).toFixed(2), 10);
+              $scope.__alternative = parseFloat((rateService.toFiat(newValue * self.unitToSatoshi, self.alternativeIsoCode)).toFixed(2), 10);
             } else {
-              this.__alternative = 0;
+              $scope.__alternative = 0;
             }
           },
           enumerable: true,
@@ -120,10 +119,10 @@ angular.module('copayApp.controllers').controller('sendController',
       Object.defineProperty($scope,
         "_address", {
           get: function() {
-            return this.__address;
+            return $scope.__address;
           },
           set: function(newValue) {
-            this.__address = self.onAddressChange(newValue);
+            $scope.__address = $scope.onAddressChange(newValue);
           },
           enumerable: true,
           configurable: true
