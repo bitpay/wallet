@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('sendController',
-  function($rootScope, $scope, $window, $timeout, $modal, $filter, $log, notification, isMobile, txStatus, isCordova, bitcore, profileService, configService) {
+  function($rootScope, $scope, $window, $timeout, $modal, $filter, $log, notification, isMobile, txStatus, isCordova, bitcore, profileService, configService, rateService) {
     var fc = profileService.focusedClient;
 
     this.init = function() {
