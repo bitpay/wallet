@@ -22,8 +22,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.walletName = fc.credentials.walletName;
     self.isComplete = fc.isComplete;
 
-    // Clear
-    self.addr = null;
+    // Clear history
     self.txHistory = null;
 
     self.updatingStatus = true;
@@ -45,15 +44,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
   $rootScope.$on('walletWasCompleted', function(event) {
     go.walletHome();
-  });
-
-  $rootScope.$on('newAddress', function(event) {
-    self.updatingNewAddress = true;
-    profileService.focusedClient.createAddress(function(err, addr) {
-      self.addr = addr.address;
-      self.updatingNewAddress = false;
-      $rootScope.$apply();
-    });
   });
 
   $rootScope.$on('updateTxHistory', function(event) {
@@ -102,6 +92,10 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     console.log('[index.js.48:balance:]', balance); //TODO
     var config = configService.getSync().wallet.settings;
     var COIN = 1e8;
+
+    // Address with Balance
+    self.balanceByAddress = balance.byAddress;
+
     // SAT
     self.totalBalanceSat = balance.totalAmount;
     self.lockedBalanceSat = balance.lockedAmount;

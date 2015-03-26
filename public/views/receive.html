@@ -1,25 +1,25 @@
-<div class="receive" ng-controller="receiveController as receive" ng-init="receive.update(index.addr)">
-  <div class="row" ng-show="receive.loading || !index.addr">
+<div class="receive" ng-controller="receiveController as receive" ng-init="receive.newAddress()">
+  <div class="row" ng-show="receive.loading || !receive.addr">
     <div class="large-12 columns">
       <div class="panel oh text-center">
         <span class="text-gray" translate>Generating a new address...</span>
       </div>
     </div>
   </div>
-  <div class="row" ng-if="index.addr">
+  <div class="row" ng-if="receive.addr">
     <!-- Address-->
     <div class="large-12 columns">
       <div class="panel">
         <h2 class="line-b" translate>My Bitcoin address:</h2>
-        <div class="text-center" ng-click="copyAddress(index.addr)">
-          <qrcode size="220" data="bitcoin:{{index.addr}}"></qrcode>
+        <div class="text-center" ng-click="receive.copyAddress(receive.addr)">
+          <qrcode size="220" data="bitcoin:{{receive.addr}}"></qrcode>
           <div class="m10t">
-            <h4 ng-class="{'enable_text_select': !index.isCordoba}" class="size-12">{{index.addr}}</h4>
+            <h4 ng-class="{'enable_text_select': !index.isCordova}" class="size-12">{{receive.addr}}</h4>
           </div>
         </div>
-        <div class="m10t text-center" ng-show="isCordova">
+        <div class="m10t text-center" ng-show="index.isCordova">
           <span class="button outline dark-gray tiny" 
-            ng-click="shareAddress(index.addr)">
+            ng-click="receive.shareAddress(receive.addr)">
             <i class="fi-share"></i> 
             <span translate>Share address</span>
           </span>
@@ -30,7 +30,7 @@
       </div>
     </div>
   </div>
-  <div class="row" ng-show="!receive.loading && index.addr">
+  <div class="row" ng-show="!receive.loading && receive.addr">
     <div class="large-12 columns" ng-if="receive.showAll">
       <div ng-repeat="addr in receive.addresses" ng-click="receive.openAddressModal(addr)" class="pointer">
         <div class="panel">
