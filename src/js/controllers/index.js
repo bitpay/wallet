@@ -67,10 +67,13 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
   self.updateTxps = function(txps) {
     self.txps = txps;
+    var config = configService.getSync().wallet.settings;
     lodash.each(txps, function(tx) {
       var amount = tx.amount * self.satToUnit;
-      tx.amountStr = amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + ' ' + self.unitName;
-      tx.alternativeAmountStr = 'fiat TODO';
+      tx.amountStr = amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + ' ' + config.unitName;
+      tx.alternativeAmount = rateService.toFiat(tx.amount, config.alternativeIsoCode).toFixed(2);
+      tx.alternativeAmountStr = tx.alternativeAmount + " " + config.alternativeIsoCode;
+      tx.alternativeIsoCode = config.alternativeIsoCode;
 
       var action = lodash.find(tx.actions, {
         copayerId: self.copayerId

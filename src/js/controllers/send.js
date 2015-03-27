@@ -211,6 +211,10 @@ angular.module('copayApp.controllers').controller('sendController',
                       self.resetForm(form);
                     }
                   });
+                } else {
+                  txStatus.notify(signedTx);
+                  $scope.$emit('updateStatus');
+                  self.resetForm(form);
                 }
               }
             });
