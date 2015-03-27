@@ -64,6 +64,7 @@ angular.module('copayApp.controllers').controller('historyController',
       var self = this;
       var ModalInstanceCtrl = function($scope, $modalInstance) {
         $scope.btx = btx;
+        $scope.settings = config;
 
         $scope.getAmount = function(amount) {
           return self.getAmount(amount);
