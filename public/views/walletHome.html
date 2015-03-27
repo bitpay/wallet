@@ -17,6 +17,12 @@
         </div>
         <div class="pr">
           <div class="avatar-wallet left">{{index.walletName | limitTo: 1}}</div>      
+          <div class="right">
+            <a ng-click="$root.go('preferences')" class="button outline light-gray tiny m0">
+              <i class="fi-widget size-18 vm"></i>
+              <span class="show-for-medium-up" translate>Preferences</span>
+            </a>
+          </div>
           <div class="wallet-info">
               <p class="m0">
               {{index.m}} <span translate>of</span>  {{index.n}}  
@@ -26,13 +32,7 @@
               <span ng-if="index.n == 1" translate>Personal Wallet</span> 
               <span ng-if="index.network != 'livenet'" translate> - Testnet</span>
             </div>
-          </div>
-          <div class="right">
-            <a ng-click="$root.go('preferences')" class="button outline light-gray tiny m0">
-              <i class="fi-widget size-18 vm"></i>
-              <span class="show-for-medium-up" translate>Preferences</span>
-            </a>
-          </div>
+          </div> 
         </div>
       </div>
     </div>

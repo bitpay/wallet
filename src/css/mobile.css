@@ -107,25 +107,6 @@ _:-ms-fullscreen, :root .main {
   background: #2C3E50;
 }
 
-header {
-  background-color: #2C3E50;
-  height: 120px;
-  width: 100%;
-  line-height: 110%;
-  padding: 1rem;
-}
-
-header .photo-container {
-  width: 45px;
-  height: 45px;
-  margin-bottom: 5px;
-}
-
-header h1 {
-  color: #fff;
-  text-align: center;
-}
-
 .amount {
   background-color:  #F1F3F5;
   width: 100%;
@@ -138,19 +119,6 @@ header h1 {
   position: absolute;
   top: 120px;
   overflow-y: auto;
-}
-
-.col2 {
-  width: 180px;
-}
-
-.col2 a.wallet-item {
-  padding: 0.15rem 0 0.3rem;
-}
-
-.col3 a {
-  height: 45px;
-  padding: 12px 5px;
 }
 
 .status {
@@ -179,10 +147,18 @@ header h1 {
   top: -43px;
   font-size: 35px;
   border: 3px solid #fff;
+  background: #1ABC9C;
+  margin: 0;
+  color: #FFF;
+  font-weight: 700;
+  line-height: 24px;
+  text-align: center;
 }
 
 .home-wallet .wallet-info {
   margin-left: 100px;
+  line-height: 110%;
+  float: left;
 }
 
 .copayers {
@@ -194,32 +170,6 @@ header h1 {
 ul.copayer-list img {
   width: 30px;
   height: 30px;
-}
-
-ul.off-canvas-list li a {
-  font-size: 12px;
-  vertical-align: middle;
-  font-weight: 100;
-  border-bottom: transparent;
-  padding: 0.66667rem 1rem;
-  color: #7A8C9E;
-  border-top: 1px solid rgba(255,255,255,0.25);
-  -moz-box-shadow: none;
-  box-shadow: none;
-}
-
-ul.off-canvas-list li a i {
-  vertical-align: middle;
-}
-
-ul.off-canvas-list li a.wallet-item {
-  border: none;
-  -moz-box-shadow:    none;
-  box-shadow:         none;
-}
-
-ul.off-canvas-list li a i {
-  opacity: 0.6;
 }
 
 .bottombar-item a {
@@ -284,23 +234,67 @@ a.missing-copayers {
   padding: 0.15rem 0.2rem;
 }
 
-.sidebar-mobile-wallets {
+.sidebar {
   background: #E4E8EC;
 }
 
-.sidebar-mobile-wallets .avatar-wallet {
-  margin-top: 5px;
-}
-
-.sidebar-mobile-wallets li {
+.sidebar li {
   overflow: hidden;
   padding:.6rem 0.4rem;
   border-bottom: 1px solid #DDE2E7;
 }
 
-.sidebar-mobile-wallets li.nav-item.selected {
+.sidebar li.nav-item.selected {
   background-color: #fff;
 } 
+
+.sidebar .avatar-wallet {
+  background-color: #1ABC9C;
+  color: #fff;
+  font-size: 20px;
+  font-weight: 700;
+  margin-right: 8px;
+  padding: 0.5rem 0.65rem;
+  line-height: 24px;
+  text-align: center;
+  float: left;
+}
+
+.sidebar header {
+  background-color: #2C3E50;
+  width: 100%;
+  line-height: 110%;
+  height: 2.8125rem;
+}
+
+.sidebar header h1 {
+  color: #fff;
+  margin: 0;
+  padding: 5px;
+}
+
+.sidebar header small {
+  color: #fff;
+}
+
+.sidebar ul.off-canvas-list li a {
+  font-size: 12px;
+  vertical-align: middle;
+  font-weight: 100;
+  border-bottom: transparent;
+  padding: 0;
+  color: #7A8C9E;
+  -moz-box-shadow: none;
+  box-shadow: none;
+}
+
+.sidebar ul.off-canvas-list li a i {
+  vertical-align: middle;
+}
+
+.sidebar ul.off-canvas-list li a i {
+  opacity: 0.6;
+}
 
 /* 
  * Remove all vendors hover / shadow / fade 
@@ -317,10 +311,6 @@ a.missing-copayers {
 
 ul.off-canvas-list li a:hover {
   background: none;
-}
-
-.side-nav li a:not(.button) {
-  padding: 0;
 }
 
 a, button, .button, input, textarea, select, .reveal-modal {

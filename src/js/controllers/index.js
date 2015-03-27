@@ -20,6 +20,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.requiresMultipleSignatures = fc.m > 1;
     self.isShared = fc.n > 1;
     self.walletName = fc.credentials.walletName;
+    self.walletId = fc.credentials.walletId;
     self.isComplete = fc.isComplete;
 
     // Clear history

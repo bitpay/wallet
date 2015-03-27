@@ -67,23 +67,6 @@ body, html{
   background-color: #2C3E50;
 }
 
-header {
-  background-color: #1ABC9C;
-  overflow: hidden;
-  height: 62px;
-}
-
-header .creation {
-  color: white;
-  background: red;
-  font-weight: bold;
-}
-
-header .alt-currency {
-  background: #16A085;
-  color: #fff;
-}
-
 .panel h3 {
   font-weight: 700;
   font-size: 16px;
@@ -139,49 +122,6 @@ input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill, inpu
   -webkit-box-shadow: 0 0 0px 1000px white inset;
 }
 
-.home-wallet .avatar-wallet {
-  background: #1ABC9C;
-  margin: 0;
-  width: 45px;
-  height: 45px;
-  font-size: 30px;
-  padding-top: 10px;
-  margin-right: 15px;
-  color: #FFF;
-}
-
-.home-wallet .wallet-info {
-    margin-left: 0;
-    line-height: 110%;
-    float: left;
-  }
-
-.side-nav.wallets .avatar-wallet {
-  padding: 0.35rem 0.5rem;
-  text-align: center;
-  margin-top: 5px;
-  width: 35px;
-}
-
-header .avatar-wallet {
-  background-color: #fff;
-  color: #1ABC9C;
-}
-
-
-.avatar-wallet {
-  background-color: #1ABC9C;
-  color: #fff;
-  font-size: 20px;
-  font-weight: 700;
-  margin-top: 10px;
-  margin-left: 10px;
-  margin-right: 8px;
-  padding: 0.5rem 0.65rem;
-  line-height: 24px;
-  text-align: center;
-}
-
 .status {
   color: #FFFFFF;
   background-color: #A02F23;
@@ -211,40 +151,6 @@ header .avatar-wallet {
   overflow-y: auto;
   overflow-x: none;
   background-color: #2C3E50;
-}
-
-.sidebar {
-  height:100%;
-  overflow-x: none;
-}
-
-.sidebar {
-  position: fixed;
-  width: 250px;
-  background-color: #2C3E50;
-  color: #fff;
-  line-height: 24px;
-}
-
-.buttons-sidebar {
-  color: #4B6178;
-  font-weight: 700;
-  font-size: 12px;
-  display: block;
-  padding: 0.5rem 0;
-  line-height: 16px;
-}
-
-.buttons-sidebar .col1 {
-  margin-top: 2px;
-}
-
-.buttons-sidebar .col1 i {
-  background-color: #fff;
-  color: #4B6178;
-  border-radius: 100%;
-  padding: .3rem 0.55rem;
-  margin: 0 7px;
 }
 
 .button.small.side-bar {
@@ -885,45 +791,6 @@ ul.wallet-selection.wallets {
   display: block;
 }
 
-.side-nav.wallets li {
-  margin: 0.8rem 0;
-  padding: 0.3rem 0.1rem;
-}
-
-.side-nav.wallets {
-  z-index: 100;
-  background-color: #213140 ;
-  border-bottom: 1px solid #3A4E61;
-  overflow-y: auto;
-  position: absolute;
-  height: 0%;
-  width: 100%;
-  padding: 0;
-}
-
-.side-nav.wallets.pullDown {
-  height: 100%;
-}
-
-.wallet-selection.wallets a.wallet-item, 
-.side-nav.wallets a.wallet-item {
-  color: #7A8C9E;
-  line-height: 20px;
-}
-
-.wallet-selection.wallets .type-wallet,
-.side-nav.wallets .type-wallet {
-  color: #AAB1B9;
-}
-
-.side-nav .wallet-item {
-  padding: 4px 0;
-}
-
-.side-nav li.nav-item {
-  overflow: hidden;
-}
-
 .postfix.button, .prefix.button {
   position: absolute;
   width: 38px;
@@ -991,43 +858,6 @@ label.postfix, a.postfix {
   font-size: 9px;
   padding-top: 2px;
   color: #fff;
-}
-
-.side-nav li {
-  font-size: 16px;
-  line-height: 40px;
-  font-weight: 100;
-  margin-bottom: 10px;
-}
-
-.side-nav li>a:first-child:not(.button) {
-  padding-left: 40px;
-}
-
-.side-nav li.active>a:first-child:not(.button) {
-  color: #2C3E50;
-  background-color: #E8ECEF;
-}
-
-.side-nav li>a:first-child:not(.button), .side-nav li a:not(.button) {
-  color: #fff;
-}
-
-.side-nav li>a:first-child:not(.button) i {
-  opacity: 0.6;
-}
-
-.side-nav li.active>a:first-child:not(.button) i {
-  opacity: 1;
-}
-
-.sidebar-footer {
-  width: 100%;
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  padding-bottom: 10px;
-  overflow-y: hidden;
 }
 
 .addresses ul {
