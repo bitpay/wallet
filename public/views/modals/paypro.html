@@ -1,7 +1,12 @@
-<nav class="tab-bar text-right hide-for-large-up">
-  <span ng-click="cancel()" class="p10 text-white">Close</span>
+<nav class="tab-bar">
+  <section class="left-small">
+    <a class="p10" 
+      ng-click="cancel()"><i class="fi-arrow-left size-24"></i> 
+    </a>
+  </section>
 </nav>
-<div class="modal-mobile">
+
+<div class="p60t">
 <div class="text-center">
   <div class="size-48">
   {{unitTotal}} {{$root.wallet.settings.unitName}}

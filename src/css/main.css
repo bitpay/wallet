@@ -680,7 +680,11 @@ input[type=date], input[type=datetime-local], input[type=datetime], input[type=e
 
 /* SECONDARY */
 button.secondary, 
-.button.secondary { 
+button.secondary:hover, 
+button.secondary:focus, 
+.button.secondary, 
+.button.secondary:hover,
+.button.secondary:focus { 
   background-color: #008CC1;
   color: #fff;
   border-radius: 3px;
@@ -696,7 +700,11 @@ button[disabled].secondary,
 
 /* PRIMARY */
 button.primary, 
-.button.primary { 
+button.primary:hover, 
+button.primary:focus, 
+.button.primary,
+.button.primary:hover,
+.button.primary:focus { 
   background-color: #1ABC9C;
   color: #fff;
   border-radius: 3px;
@@ -712,7 +720,11 @@ button[disabled].primary,
 
 /* WARNING */
 button.warning, 
-.button.warning { 
+.button.warning,
+button.warning:hover, 
+button.warning:focus, 
+.button.warning:hover, 
+.button.warning:focus { 
   background-color: #C0392A;
   color: #fff;
   border-radius: 3px;
