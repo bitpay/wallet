@@ -8,7 +8,7 @@
           {{item.title|translate}} 
           <span 
             class="label alert round" 
-            ng-if="item.link=='homeWallet' && $root.wallet.pendingTxProposalsCountForUs > 0">{{$root.wallet.pendingTxProposalsCountForUs}}</span>
+            ng-if="item.link=='walletHome' && index.pendingTxProposalsCountForUs > 0">{{index.pendingTxProposalsCountForUs}}</span>
         </div>
       </a>
     </div> 

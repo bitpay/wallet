@@ -17,6 +17,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.m = fc.m;
     self.n = fc.n;
     self.network = fc.network;
+    self.myCopayerId = fc.copayerId;
     self.requiresMultipleSignatures = fc.m > 1;
     self.isShared = fc.n > 1;
     self.walletName = fc.credentials.walletName;
@@ -56,18 +57,19 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     });
   });
 
-//  $rootScope.$on('updatePendingTxs', function(event) {
-//    self.updatingPendingTxs = true;
-//    profileService.focusedClient.getTxProposals({}, function(err, txps) {
-//      self.updateTxps(txps);
-//      self.updatingPendingTxs = false;
-//      $rootScope.$apply();
-//    });
-//  });
+  $rootScope.$on('updatePendingTxps', function(event) {
+    self.updatingPendingTxps = true;
+    profileService.focusedClient.getTxProposals({}, function(err, txps) {
+      self.updateTxps(txps);
+      self.updatingPendingTxps = false;
+      $rootScope.$apply();
+    });
+  });
 
   self.updateTxps = function(txps) {
     self.txps = txps;
     var config = configService.getSync().wallet.settings;
+    self.pendingTxProposalsCountForUs = 0;
     lodash.each(txps, function(tx) {
       var amount = tx.amount * self.satToUnit;
       tx.amountStr = amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + ' ' + config.unitName;
@@ -80,6 +82,10 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       });
       if (!action && tx.status == 'pending')
         tx.pendingForUs = true;
+
+      if (tx.creatorId != self.myCopayerId) {
+        self.pendingTxProposalsCountForUs = self.pendingTxProposalsCountForUs + 1;
+      }
     });
   };
 

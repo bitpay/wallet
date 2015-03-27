@@ -8,6 +8,57 @@ angular.module('copayApp.services')
     root.focusedClient = null;
     root.walletClients = {};
 
+    var notificationEvents = function(e, obj) {
+      var noEmitUpdate;
+      if (root.focusedClient.credentials.walletId != obj.walletId) {
+        noEmitUpdate = true;
+      }
+      switch (e.type) {
+        case 'NewTxProposal':
+          notification.info('[' + obj.walletName + '] New Transaction',
+            $filter('translate')('You received a transaction proposal from') + ' ' + e.creatorId);
+          if (!noEmitUpdate) {
+            $rootScope.$emit('updatePendingTxps');
+            $rootScope.$emit('updateBalance');
+          }
+          else {
+            $rootScope.$apply();
+          }
+          break;
+        case 'TxProposalAcceptedBy':
+          notification.success('[' + obj.walletName + '] Transaction Signed',
+            $filter('translate')('A transaction was signed by') + ' ' + e.creatorId);
+          $rootScope.$apply();
+          break; 
+        case 'TxProposalRejectedBy':
+          notification.warning('[' + obj.walletName + '] Transaction Rejected',
+            $filter('translate')('A transaction was rejected by') + ' ' + e.creatorId);
+          $rootScope.$apply();
+          break;
+        case 'txProposalFinallyRejected':
+          notification.success('[' + obj.walletName + '] Transaction Rejected',
+            $filter('translate')('A transaction was finally rejected'));
+          if (!noEmitUpdate) {
+            $rootScope.$emit('updatePendingTxps');
+            $rootScope.$emit('updateBalance');
+          }
+          else {
+            $rootScope.$apply();
+          }
+          break;
+        case 'NewOutgoingTx':
+          notification.success('[' + obj.walletName + '] Transaction Sent',
+            $filter('translate')('A transaction was broadcasted by') + ' ' + e.creatorId);
+          if (!noEmitUpdate) {
+            $rootScope.$emit('updatePendingTxps');
+            $rootScope.$emit('updateBalance');
+          }
+          else {
+            $rootScope.$apply();
+          }
+          break;
+      }
+    };
 
     // Add some convenience shortcuts
     root.setupFocusedClient = function() {
@@ -59,6 +110,10 @@ angular.module('copayApp.services')
 
         client.on('notification', function(notification) {
           console.log('*** [profileService.js ln56] notification:', notification); // TODO
+          notificationEvents(notification, { 
+            walletId: client.credentials.walletId,
+            walletName: client.credentials.walletName
+          });
         });
 
         client.on('walletCompleted', function() {
