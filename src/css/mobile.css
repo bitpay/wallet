@@ -366,7 +366,7 @@ a.pin-button {
   border: 1px solid #4B6178;
   border-radius: 100%;
   width: 70px;
-  padding-top: 1rem;
+  padding-top: 0.5rem;
   height: 70px;
 }
 
