@@ -16,7 +16,7 @@
           class="row last-transactions-content">
 
           <div class="large-6 medium-6 small-5 columns">
-            <div class="ellipsis">
+            <div class="ellipsis" ng-if="btx.message || btx.addressTo">
               {{btx.message || btx.addressTo}}
             </div>
             <div class="m5t size-14 text-gray">

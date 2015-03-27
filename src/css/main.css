@@ -234,12 +234,6 @@ a.close-notification {
   padding: 10px;
 }
 
-.panel.last-transactions {
-  padding: 0;
-  margin-bottom: 2.25rem;
-  border-radius: 3px 3px 0 3px;
-}
-
 ul.tx-copayers {
   background: #E4E8EC;  
   padding: 0.3rem 0.8rem;
@@ -946,9 +940,9 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
 }
 
 .panel {
-  background-color: #2C3E50;
+  background: #FFFFFF;
+  border-radius: 3px;
   padding: 1rem;
-  border: 0;
 }
 
 .panel qrcode {
@@ -964,12 +958,6 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
   overflow-wrap: break-word;
   word-wrap: break-word;
   text-align: center;
-}
-
-.panel {
-  border-radius: 3px;
-  background: #FFFFFF;
-  border: none;
 }
 
 .copayer-list-small-height {
