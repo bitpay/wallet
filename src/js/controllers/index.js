@@ -47,15 +47,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     go.walletHome();
   });
 
-  $rootScope.$on('updateTxHistory', function(event) {
-    self.updatingTxHistory = true;
-    profileService.focusedClient.getTxHistory({}, function(err, txs) {
-      self.txHistory = txs;
-      self.updatingTxHistory = false;
-      $rootScope.$apply();
-    });
-  });
-
   $rootScope.$on('updateBalance', function(event) {
     self.updatingBalance = true;
     profileService.focusedClient.getBalance(function(err, balance) {

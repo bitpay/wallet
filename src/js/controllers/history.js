@@ -15,6 +15,8 @@ angular.module('copayApp.controllers').controller('historyController',
     this.alternativeIsoCode = config.alternativeIsoCode;
 
     this.isShared = fc.n > 1;
+    this.skip = 0;
+    this.limit = 10;
 
     this.getAmount = function(amount) {
       var newAmount = strip(amount * this.satToUnit);
@@ -29,8 +31,17 @@ angular.module('copayApp.controllers').controller('historyController',
       return this.alternativeIsoCode;
     };
 
-    this.update = function() {
-      $scope.$emit('updateTxHistory');
+    this.getTxHistory = function() {
+      var self = this;
+      self.updatingTxHistory = true;
+      profileService.focusedClient.getTxHistory({
+        skip: self.skip,
+        limit: self.limit + 1
+      }, function(err, txs) {
+        self.txHistory = txs;
+        self.updatingTxHistory = false;
+        $scope.$digest();
+      });
     };
 
     this._addRates = function(txs, cb) {
