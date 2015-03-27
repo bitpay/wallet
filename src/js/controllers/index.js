@@ -7,13 +7,10 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     return (parseFloat(number.toPrecision(12)));
   };
 
-  self.pageLoaded = false;
   self.isCordova = isCordova;
-
 
   $rootScope.$on('updateStatus', function(event) {
     var fc = profileService.focusedClient;
-    self.pageLoaded = true; // TODO?
     self.hasProfile = true;
 
     // Credentials Shortcuts 
@@ -22,7 +19,14 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.network = fc.network;
     self.requiresMultipleSignatures = fc.m > 1;
     self.isShared = fc.n > 1;
+    self.walletName = fc.credentials.walletName;
+    self.walletId = fc.credentials.walletId;
+    self.isComplete = fc.isComplete;
 
+    // Clear history
+    self.txHistory = null;
+
+    self.updatingStatus = true;
     $log.debug('Updating Status:', fc);
     fc.getStatus(function(err, walletStatus) {
       console.log('[index.js.27:walletStatus:]', walletStatus); //TODO
@@ -34,6 +38,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       self.walletSecret = walletStatus.wallet.secret;
       self.walletStatus = walletStatus.wallet.status;
       $log.debug('Index: ', self);
+      self.updatingStatus = false;
       $rootScope.$apply();
     });
   });
@@ -43,18 +48,22 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   });
 
   $rootScope.$on('updateBalance', function(event) {
+    self.updatingBalance = true;
     profileService.focusedClient.getBalance(function(err, balance) {
       self.updateBalance(balance);
+      self.updatingBalance = false;
       $rootScope.$apply();
     });
   });
 
-  // $rootScope.$on('updatePendingTxs', function(event) {
-  //   profileService.focusedClient.getTxProposals({}, function(err, txps) {
-  //     self.updateTxps(txps);
-  //     $rootScope.$apply();
-  //   });
-  // });
+//  $rootScope.$on('updatePendingTxs', function(event) {
+//    self.updatingPendingTxs = true;
+//    profileService.focusedClient.getTxProposals({}, function(err, txps) {
+//      self.updateTxps(txps);
+//      self.updatingPendingTxs = false;
+//      $rootScope.$apply();
+//    });
+//  });
 
   self.updateTxps = function(txps) {
     self.txps = txps;
@@ -75,6 +84,10 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     console.log('[index.js.48:balance:]', balance); //TODO
     var config = configService.getSync().wallet.settings;
     var COIN = 1e8;
+
+    // Address with Balance
+    self.balanceByAddress = balance.byAddress;
+
     // SAT
     self.totalBalanceSat = balance.totalAmount;
     self.lockedBalanceSat = balance.lockedAmount;
@@ -134,9 +147,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       $rootScope.$apply();
 
     });
-
   };
-
 
   self.openMenu = function() {
     go.swipe(true);

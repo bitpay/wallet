@@ -19,21 +19,17 @@
     ng-swipe-left="index.closeMenu()"
     ng-swipe-right="index.openMenu()">
 
-    <div ng-show="!index.pageLoaded">
-      <div ng-include="'views/includes/loading.html'" ng-init="title = 'Loading'"></div>
-    </div>
-
-    <div class="off-canvas-wrap" id="off-canvas-wrap" ng-show="index.pageLoaded">
+    <div class="off-canvas-wrap" id="off-canvas-wrap">
       <div class="inner-wrap">
 
-        <div ng-include="'views/includes/topbar.html'" ng-if="index.hasProfile"></div>
-
+        <div ui-view="topbar"></div>
         <div ng-include="'views/includes/sidebar.html'" ng-if="index.hasProfile"></div>
 
         <div notifications="right top"></div> 
 
-        <section ng-class="{'main': index.hasProfile}" ui-view></section>
+        <section ng-class="{'main': index.hasProfile}" ui-view="main"></section>
 
+        <div ui-view="menu"></div>
         <a class="close-menu" ng-click="index.closeMenu()"></a>
 
       </div>

@@ -47,19 +47,6 @@ body {
   -ms-content-zooming: none; 
 } 
 
-.logo-setup {
-  margin: 0 0 1rem 0;
-}
-
-.page, .main, .setup-page {
-  height: 100%;
-}
-
-.main {
-  margin-left: 0;
-  padding: 60px 0 80px 0;
-}
-
 /* Fix IE 10 */
 .extra-margin-bottom {
   display: block
@@ -104,6 +91,13 @@ _:-ms-fullscreen, :root .main {
   background: #2C3E50;
 }
 
+.tab-bar h1 {
+  font-weight: 700;
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 14px;
+}
+
 .bottom-bar {
   display: block;
   position: fixed;
@@ -111,25 +105,6 @@ _:-ms-fullscreen, :root .main {
   width: 100%;
   z-index: 5;
   background: #2C3E50;
-}
-
-header {
-  background-color: #2C3E50;
-  height: 120px;
-  width: 100%;
-  line-height: 110%;
-  padding: 1rem;
-}
-
-header .photo-container {
-  width: 45px;
-  height: 45px;
-  margin-bottom: 5px;
-}
-
-header h1 {
-  color: #fff;
-  text-align: center;
 }
 
 .amount {
@@ -144,19 +119,6 @@ header h1 {
   position: absolute;
   top: 120px;
   overflow-y: auto;
-}
-
-.col2 {
-  width: 180px;
-}
-
-.col2 a.wallet-item {
-  padding: 0.15rem 0 0.3rem;
-}
-
-.col3 a {
-  height: 45px;
-  padding: 12px 5px;
 }
 
 .status {
@@ -185,10 +147,18 @@ header h1 {
   top: -43px;
   font-size: 35px;
   border: 3px solid #fff;
+  background: #1ABC9C;
+  margin: 0;
+  color: #FFF;
+  font-weight: 700;
+  line-height: 24px;
+  text-align: center;
 }
 
 .home-wallet .wallet-info {
   margin-left: 100px;
+  line-height: 110%;
+  float: left;
 }
 
 .copayers {
@@ -200,43 +170,6 @@ header h1 {
 ul.copayer-list img {
   width: 30px;
   height: 30px;
-}
-
-.hide-tab-bar {
-  display: none;
-}
-
-.tab-bar h1 {
-  font-weight: 700;
-  text-align: center;
-  text-transform: uppercase;
-  font-size: 14px;
-}
-
-ul.off-canvas-list li a {
-  font-size: 12px;
-  vertical-align: middle;
-  font-weight: 100;
-  border-bottom: transparent;
-  padding: 0.66667rem 1rem;
-  color: #7A8C9E;
-  border-top: 1px solid rgba(255,255,255,0.25);
-  -moz-box-shadow: none;
-  box-shadow: none;
-}
-
-ul.off-canvas-list li a i {
-  vertical-align: middle;
-}
-
-ul.off-canvas-list li a.wallet-item {
-  border: none;
-  -moz-box-shadow:    none;
-  box-shadow:         none;
-}
-
-ul.off-canvas-list li a i {
-  opacity: 0.6;
 }
 
 .bottombar-item a {
@@ -268,10 +201,6 @@ ul.off-canvas-list li a i {
   color: white;
 }
 
-.panel.last-transactions {
-  margin-bottom: 3.25rem;
-}
-
 .addresses .list-addr contact {
   margin-left: 0;
   font-size: 14px;
@@ -301,23 +230,67 @@ a.missing-copayers {
   padding: 0.15rem 0.2rem;
 }
 
-.sidebar-mobile-wallets {
+.sidebar {
   background: #E4E8EC;
 }
 
-.sidebar-mobile-wallets .avatar-wallet {
-  margin-top: 5px;
-}
-
-.sidebar-mobile-wallets li {
+.sidebar li {
   overflow: hidden;
   padding:.6rem 0.4rem;
   border-bottom: 1px solid #DDE2E7;
 }
 
-.sidebar-mobile-wallets li.nav-item.selected {
+.sidebar li.nav-item.selected {
   background-color: #fff;
 } 
+
+.sidebar .avatar-wallet {
+  background-color: #1ABC9C;
+  color: #fff;
+  font-size: 20px;
+  font-weight: 700;
+  margin-right: 8px;
+  padding: 0.5rem 0.65rem;
+  line-height: 24px;
+  text-align: center;
+  float: left;
+}
+
+.sidebar header {
+  background-color: #2C3E50;
+  width: 100%;
+  line-height: 110%;
+  height: 2.8125rem;
+}
+
+.sidebar header h1 {
+  color: #fff;
+  margin: 0;
+  padding: 5px;
+}
+
+.sidebar header small {
+  color: #fff;
+}
+
+.sidebar ul.off-canvas-list li a {
+  font-size: 12px;
+  vertical-align: middle;
+  font-weight: 100;
+  border-bottom: transparent;
+  padding: 0;
+  color: #7A8C9E;
+  -moz-box-shadow: none;
+  box-shadow: none;
+}
+
+.sidebar ul.off-canvas-list li a i {
+  vertical-align: middle;
+}
+
+.sidebar ul.off-canvas-list li a i {
+  opacity: 0.6;
+}
 
 /* 
  * Remove all vendors hover / shadow / fade 
@@ -334,10 +307,6 @@ a.missing-copayers {
 
 ul.off-canvas-list li a:hover {
   background: none;
-}
-
-.side-nav li a:not(.button) {
-  padding: 0;
 }
 
 a, button, .button, input, textarea, select, .reveal-modal {
@@ -397,7 +366,7 @@ a.pin-button {
   border: 1px solid #4B6178;
   border-radius: 100%;
   width: 70px;
-  padding-top: 1rem;
+  padding-top: 0.5rem;
   height: 70px;
 }
 
@@ -408,16 +377,6 @@ a.pin-button:active {
 
 .icon-circle, .icon-circle-active {
   color:  #1ABC9C;
-}
-
-.tab-bar {
-  position: relative;
-}
-
-
-
-.tab-bar {
-  position: absolute;
 }
 
 .tx-comment {

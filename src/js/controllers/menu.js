@@ -20,8 +20,4 @@ angular.module('copayApp.controllers').controller('menuController', function($st
     'link': 'history'
   }];
 
-  this.isActive = function(item) {
-    return item.link == $state.current.name;
-  };
-
 });

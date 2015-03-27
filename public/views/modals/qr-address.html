@@ -4,12 +4,6 @@
       ng-click="cancel()"><i class="fi-arrow-left size-24"></i> 
     </a>
   </section>
-
-  <section class="middle tab-bar-section">
-    <h1 class="title ellipsis">
-      Address
-    </h1>
-  </section>
 </nav>
 
 <div class="p60t text-center" ng-init="addr = address.address">
@@ -20,7 +14,7 @@
   </div> 
   <div class="m5t size-10 text-secondary" ng-show="address.isChange" translate>change</div>
   <div class="text-center m10t" ng-if="isCordova">
-    <button class="primary expand" ng-click="copyAddress(addr)">
+    <button class="secondary" ng-click="copyAddress(addr)">
       <i class="fi-clipboard-pencil"></i> <span translate>Copy to clipboard</span>
     </button>
   </div>

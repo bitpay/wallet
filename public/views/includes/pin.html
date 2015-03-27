@@ -1,9 +1,9 @@
 <div ng-controller="pinController as pin" ng-init="pin.init(confirmPin, testPin)">
-  <h1 class="text-center text-white">
+  <h3 class="text-center text-white">
     <span ng-show="pin.askForPin == 1">Setup a PIN</span>
     <span ng-show="pin.askForPin == 2">Repeat PIN</span>
-  </h1>
-  <div class="pin text-warning" ng-show="pin.error">
+  </h3>
+  <div class="text-center size-12 text-warning" ng-show="pin.error">
     {{pin.error|translate}}
   </div>
   <div class="pin" ng-show="!pin.error">

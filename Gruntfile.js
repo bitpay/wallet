@@ -214,14 +214,8 @@ module.exports = function(grunt) {
   grunt.registerTask('default', [
     'nggettext_compile', 'exec:version', 'concat', 'copy'
   ]);
-  grunt.registerTask('mobile', [
-    'nggettext_compile', 'exec:version', 'concat', '!concat:css', 'cssmin:mobile', 'cssmin:vendors'
-  ]);
-  grunt.registerTask('desktop-prod', [
-    'nggettext_compile', 'exec:version', 'concat', 'cssmin:desktop', 'cssmin:foundation', 'uglify'
-  ]);
-  grunt.registerTask('mobile-prod', [
-    'nggettext_compile', 'exec:version', 'concat', '!concat:css', 'cssmin:mobile', 'cssmin:foundation', 'uglify'
+  grunt.registerTask('prod', [
+    'default', 'uglify'
   ]);
   grunt.registerTask('translate', ['nggettext_extract']);
   grunt.registerTask('test', ['karma:unit']);

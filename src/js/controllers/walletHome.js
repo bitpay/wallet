@@ -4,8 +4,6 @@
 // TODO rateService
 angular.module('copayApp.controllers').controller('walletHomeController', function($scope, $rootScope, $timeout, $filter, $modal, notification, txStatus, isCordova, profileService) {
 
-  $rootScope.$emit('updatePendingTxs');
-
   $scope.openTxModal = function(tx) {
     var fc = profileService.focusedClient;
     var ModalInstanceCtrl = function($scope, $modalInstance) {
@@ -31,7 +29,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
             }
             $scope.loading = false;
             if (err) {
-              $scope.error = 'Transaction not sent. Please try again.';
+              $scope.error = err.message || 'Transaction not signed. Please try again.';
               $scope.$digest();
             } else {
               //if txp has required signatures then broadcast it
@@ -66,7 +64,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
             }
             $scope.loading = false;
             if (err) {
-              $scope.error = err;
+              $scope.error = err.message || 'Transaction not rejected. Please try again.';
               $scope.$digest();
             } else {
               $modalInstance.close(txp);
@@ -88,7 +86,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
             }
             $scope.loading = false;
             if (err) {
-              $scope.error = 'Transaction could not send. Please try again.';
+              $scope.error = err.message || 'Transaction not sent. Please try again.';
               $scope.$digest();
             } else {
               $modalInstance.close(txp);

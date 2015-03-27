@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('ImportController',
+angular.module('copayApp.controllers').controller('importController',
   function($scope, $rootScope, $location, $timeout, identityService, notification, isMobile, isCordova, Compatibility) {
 
     $rootScope.title = 'Import wallet';
