@@ -28,16 +28,27 @@ angular.module('copayApp.services')
         case 'TxProposalAcceptedBy':
           notification.success('[' + obj.walletName + '] Transaction Signed',
             $filter('translate')('A transaction was signed by') + ' ' + e.creatorId);
-          $rootScope.$apply();
+          if (!noEmitUpdate) {
+            $rootScope.$emit('updatePendingTxps');
+          }
+          else {
+            $rootScope.$apply();
+          }
           break; 
         case 'TxProposalRejectedBy':
           notification.warning('[' + obj.walletName + '] Transaction Rejected',
             $filter('translate')('A transaction was rejected by') + ' ' + e.creatorId);
-          $rootScope.$apply();
+          if (!noEmitUpdate) {
+            $rootScope.$emit('updatePendingTxps');
+          }
+          else {
+            $rootScope.$apply();
+          }
           break;
-        case 'txProposalFinallyRejected':
+        case 'TxProposalFinallyRejected':
           notification.success('[' + obj.walletName + '] Transaction Rejected',
             $filter('translate')('A transaction was finally rejected'));
+          $rootScope.$emit('transactionFinallyRejected');
           if (!noEmitUpdate) {
             $rootScope.$emit('updatePendingTxps');
             $rootScope.$emit('updateBalance');
@@ -49,6 +60,7 @@ angular.module('copayApp.services')
         case 'NewOutgoingTx':
           notification.success('[' + obj.walletName + '] Transaction Sent',
             $filter('translate')('A transaction was broadcasted by') + ' ' + e.creatorId);
+          $rootScope.$emit('transactionBroadcasted');
           if (!noEmitUpdate) {
             $rootScope.$emit('updatePendingTxps');
             $rootScope.$emit('updateBalance');

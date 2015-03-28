@@ -1,10 +1,10 @@
 
 <div class="m20tp">
   <div class="text-center size-72 m10v">
-    <div ng-show="statusStr !== 'Transaction was rejected'" class="text-primary">
+    <div ng-if="statusStr && statusStr != 'Transaction was rejected'" class="text-primary">
       <i class="fi-check"></i>
     </div>
-    <div ng-show="statusStr === 'Transaction was rejected'" class="text-warning">
+    <div ng-if="statusStr && statusStr == 'Transaction was rejected'" class="text-warning">
       <i class="fi-x"></i>
     </div>
   </div>

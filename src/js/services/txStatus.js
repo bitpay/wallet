@@ -6,18 +6,16 @@ angular.module('copayApp.services').factory('txStatus', function($modal, lodash,
   root.notify = function(txp) {
     var fc = profileService.focusedClient;
     var msg;
-    console.log('[txStatus.js.10:txp:]', txp); //TODO
 
     var status = txp.status;
-    if (status == 'broadcasted')
+    
+    if (status == 'broadcasted') {
       msg = 'Transaction broadcasted';
-    else if (status == 'pending') {
-      console.log('[txStatus.js.13:status:]', status); //TODO
-
+    }
+    else {
       var action = lodash.find(txp.actions, {
         copayerId: fc.copayerId
       });
-      console.log('[txStatus.js.16:action:]', action); //TODO
       if (!action) {
         msg = 'Transaction proposal created';
       } else if (action.type == 'accept') {
