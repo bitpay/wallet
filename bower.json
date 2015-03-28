@@ -19,7 +19,7 @@
     "angular-local-storage": "~0.1.5",
     "ng-lodash": "~0.2.0",
     "angular-moment": "~0.9.0",
-    "angular-bitcore-wallet-client": "~0.0.2",
+    "angular-bitcore-wallet-client": "~0.0.4",
     "angular-ui-router": "~0.2.13",
     "qrcode-decoder-js": "*"
   }
