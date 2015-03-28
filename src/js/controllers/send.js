@@ -207,13 +207,15 @@ angular.module('copayApp.controllers').controller('sendController',
                       $scope.$digest();
                     } else {
                       txStatus.notify(btx);
-                      $scope.$emit('updateStatus');
+                      $scope.$emit('updatePendingTxps');
+                      $scope.$emit('updateBalance');
                       self.resetForm(form);
                     }
                   });
                 } else {
                   txStatus.notify(signedTx);
-                  $scope.$emit('updateStatus');
+                  $scope.$emit('updatePendingTxps');
+                  $scope.$emit('updateBalance');
                   self.resetForm(form);
                 }
               }
@@ -257,6 +259,7 @@ angular.module('copayApp.controllers').controller('sendController',
     };
 
     this.resetForm = function(form) {
+      this.error = this.success = null;
       this.fetchingURL = null;
       this._merchantData = this._domain = null;
 

@@ -17,7 +17,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.m = fc.m;
     self.n = fc.n;
     self.network = fc.network;
-    self.myCopayerId = fc.copayerId;
+    self.copayerId = fc.copayerId;
     self.requiresMultipleSignatures = fc.m > 1;
     self.isShared = fc.n > 1;
     self.walletName = fc.credentials.walletName;
@@ -38,6 +38,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       self.walletName = walletStatus.wallet.name;
       self.walletSecret = walletStatus.wallet.secret;
       self.walletStatus = walletStatus.wallet.status;
+      self.copayers = walletStatus.wallet.copayers;
       $log.debug('Index: ', self);
       self.updatingStatus = false;
       $rootScope.$apply();
@@ -83,7 +84,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       if (!action && tx.status == 'pending')
         tx.pendingForUs = true;
 
-      if (tx.creatorId != self.myCopayerId) {
+      if (tx.creatorId != self.copayerId) {
         self.pendingTxProposalsCountForUs = self.pendingTxProposalsCountForUs + 1;
       }
     });

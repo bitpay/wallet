@@ -37,7 +37,7 @@
             <span class="text-warning size-14">
               {{send.error|translate}}
             </span>
-            <a class="close-notification  text-warning" ng-click="send.error=null">&#215;</a>
+            <a class="close-notification  text-warning" ng-click="send.resetForm(sendForm)">&#215;</a>
           </div>
           <div class="box-notification" ng-show="success">
             <div class="box-icon success">

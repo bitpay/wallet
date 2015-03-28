@@ -2,17 +2,54 @@
 
 
 // TODO rateService
-angular.module('copayApp.controllers').controller('walletHomeController', function($scope, $rootScope, $timeout, $filter, $modal, notification, txStatus, isCordova, profileService) {
+angular.module('copayApp.controllers').controller('walletHomeController', function($scope, $rootScope, $timeout, $filter, $modal, notification, txStatus, isCordova, profileService, lodash) {
 
-  $scope.openTxModal = function(tx) {
+  $scope.openTxModal = function(tx, copayers) {
+console.log('[walletHome.js:7]',tx); //TODO
     var fc = profileService.focusedClient;
     var ModalInstanceCtrl = function($scope, $modalInstance) {
       $scope.error = null;
+      $scope._cache = tx;
       $scope.tx = tx;
+      $scope.copayers = copayers
       $scope.loading = null;
 
       $scope.getShortNetworkName = function() {
         return fc.networkName.substring(0, 4);
+      };
+
+      $rootScope.$on('updatePendingTxps', function(event) {
+        fc.getTxProposals({}, function(err, txps) {
+          var tx = lodash.find(txps, {'id' : $scope._cache.id});
+          if (tx) {
+            var action = lodash.find(tx.actions, {
+              copayerId: fc.copayerId
+            });
+            $scope.tx = tx;
+            if (!action && tx.status == 'pending')
+             $scope.tx.pendingForUs = true;
+            $scope.updateCopayerList();
+            $scope.$apply();
+          }
+        });
+      });
+
+      $rootScope.$on('transactionFinallyRejected', function(e) {
+        $scope.txRejected = true;
+      });
+
+      $rootScope.$on('transactionBroadcasted', function(e) {
+        $scope.txBroadcasted = true;
+      });
+
+      $scope.updateCopayerList = function() {
+        lodash.map($scope.copayers, function(cp) {
+          lodash.each($scope.tx.actions, function(ac) {
+            if (cp.id == ac.copayerId) {
+              cp.action = ac.type;
+            }
+          });
+        });
       };
 
       $scope.sign = function(txp) {
@@ -108,7 +145,8 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
     modalInstance.result.then(function(txp) {
       txStatus.notify(txp);
-      $rootScope.$emit('updateStatus');
+      $scope.$emit('updatePendingTxps');
+      $scope.$emit('updateBalance');
     });
 
   };

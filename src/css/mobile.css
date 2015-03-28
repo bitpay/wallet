@@ -491,6 +491,8 @@ a.pin-button:active {
   border: none;
   border-radius: 0;
   top: 0;
+  height: 100%;
+  overflow: auto;
 }
 
 .modal.fade, 
