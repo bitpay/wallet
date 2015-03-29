@@ -1,20 +1,35 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('receiveController',
-  function($rootScope, $scope, $timeout, $modal, isCordova, isMobile, profileService) {
+  function($rootScope, $scope, $timeout, $modal, isCordova, isMobile, profileService, storageService) {
+    var self = this;
     var fc = profileService.focusedClient;
 
-    this.showAll = false; 
+    this.showAll = false;
     this.isCordova = isCordova;
 
     this.newAddress = function() {
-      var self = this;
-      self.updatingNewAddress = true;
+      self.generatingAddress = true;
       profileService.focusedClient.createAddress(function(err, addr) {
         self.addr = addr.address;
-        self.updatingNewAddress = false;
+        self.generatingAddress = false;
         $scope.$digest();
+
+        storageService.storeLastAddress(addr.address, function() {});
       });
+    };
+
+    this.getAddress = function() {
+      storageService.getLastAddress(function(err, addr) {
+        if (addr) {
+          self.addr = addr;
+          $timeout(function() {
+            $scope.$digest();
+          });
+        } else {
+          self.newAddress();
+        }
+      })
     };
 
     this.copyAddress = function(addr) {

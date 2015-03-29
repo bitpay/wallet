@@ -1,12 +1,12 @@
-<div class="receive" ng-controller="receiveController as receive" ng-init="receive.newAddress()">
-  <div class="row" ng-show="receive.loading || !receive.addr">
+<div class="receive" ng-controller="receiveController as receive" ng-init="receive.getAddress()">
+  <div class="row" ng-show="receive.generatingAddress">
     <div class="large-12 columns">
       <div class="panel oh text-center">
         <span class="text-gray" translate>Generating a new address...</span>
       </div>
     </div>
   </div>
-  <div class="row" ng-if="receive.addr">
+  <div class="row" ng-show="receive.addr">
     <!-- Address-->
     <div class="large-12 columns">
       <div class="panel">
@@ -30,8 +30,8 @@
       </div>
     </div>
   </div>
-  <div class="row" ng-show="!receive.loading && receive.addr">
-    <div class="large-12 columns" ng-if="receive.showAll">
+  <div class="row" ng-show="receive.addr">
+    <div class="large-12 columns" ng-if="receive.addresses[0]">
       <div ng-repeat="addr in receive.addresses" ng-click="receive.openAddressModal(addr)" class="pointer">
         <div class="panel">
           <div class="row">

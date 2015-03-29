@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('indexController', function($rootScope, $log, $filter, lodash, go, profileService, configService, isCordova, rateService) {
+angular.module('copayApp.controllers').controller('indexController', function($rootScope, $log, $filter, lodash, go, profileService, configService, isCordova, rateService, storageService) {
   var self = this;
 
   function strip(number) {
@@ -30,9 +30,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.updatingStatus = true;
     $log.debug('Updating Status:', fc);
     fc.getStatus(function(err, walletStatus) {
-      console.log('[index.js.27:walletStatus:]', walletStatus); //TODO
-      self.updateBalance(walletStatus.balance);
-      self.updateTxps(walletStatus.pendingTxps);
+      $log.debug('Wallet Status:', walletStatus);
+      self.setBalance(walletStatus.balance);
+      self.setTxps(walletStatus.pendingTxps);
 
       // Status Shortcuts
       self.walletName = walletStatus.wallet.name;
@@ -52,7 +52,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   $rootScope.$on('updateBalance', function(event) {
     self.updatingBalance = true;
     profileService.focusedClient.getBalance(function(err, balance) {
-      self.updateBalance(balance);
+      self.setBalance(balance);
       self.updatingBalance = false;
       $rootScope.$apply();
     });
@@ -61,13 +61,13 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   $rootScope.$on('updatePendingTxps', function(event) {
     self.updatingPendingTxps = true;
     profileService.focusedClient.getTxProposals({}, function(err, txps) {
-      self.updateTxps(txps);
+      self.setTxps(txps);
       self.updatingPendingTxps = false;
       $rootScope.$apply();
     });
   });
 
-  self.updateTxps = function(txps) {
+  self.setTxps = function(txps) {
     self.txps = txps;
     var config = configService.getSync().wallet.settings;
     self.pendingTxProposalsCountForUs = 0;
@@ -90,7 +90,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     });
   };
 
-  self.updateBalance = function(balance) {
+  self.setBalance = function(balance) {
     var config = configService.getSync().wallet.settings;
     var COIN = 1e8;
 
@@ -116,15 +116,13 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.lockedBalanceBTC = strip(self.lockedBalanceSat / COIN);
     self.availableBalanceBTC = strip(self.availableBalanceBTC / COIN);
 
-    //STR
+    // Balance as String
     self.totalBalanceStr = self.totalBalance.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + ' ' + self.unitName;
     self.lockedBalanceStr = self.lockedBalance.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + ' ' + self.unitName;
     self.availableBalanceStr = self.availableBalance.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + ' ' + self.unitName;
 
     // var availableBalanceNr = safeBalanceSat * satToUnit;
     // r.safeUnspentCount = safeUnspentCount;
-
-
 
     // if (r.safeUnspentCount) {
     //   var estimatedFee = copay.Wallet.estimatedFee(r.safeUnspentCount);
@@ -154,7 +152,26 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
       self.isRateAvailable = true;
       $rootScope.$apply();
+    });
 
+    // Check address
+    self.checkLastAddress(balance.byAddress);
+  };
+
+  self.checkLastAddress = function(byAddress, cb) {
+    console.log('[index.js.161:byAddress:]', byAddress); //TODO
+
+    storageService.getLastAddress(function(err, addr) {
+      console.log('[index.js.164:addr:]', addr); //TODO
+      var used = lodash.find(byAddress, {
+        address: addr
+      });
+      if (used) {
+        $log.debug('Address ' + addr + ' was used. Cleaning Cache.')
+        storageService.clearLastAddress(function(err, addr) {
+          if (cb) return cb();
+        });
+      };
     });
   };
 

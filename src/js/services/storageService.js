@@ -21,10 +21,7 @@ angular.module('copayApp.services')
     };
 
     root.deleteProfile = function(cb) {
-      localStorageService.remove('profile',
-        function(err) {
-          return cb(err);
-        });
+      localStorageService.remove('profile', cb);
     };
 
     root.storeFocusedWalletId = function(id, cb) {
@@ -33,6 +30,18 @@ angular.module('copayApp.services')
 
     root.getFocusedWalletId = function(cb) {
       localStorageService.get('focusedWalletId', cb);
+    };
+
+    root.getLastAddress = function(cb) {
+      localStorageService.get('lastAddress', cb);
+    };
+
+    root.storeLastAddress = function(address, cb) {
+      localStorageService.set('lastAddress', address, cb);
+    };
+
+    root.clearLastAddress = function(cb) {
+      localStorageService.remove('lastAddress', cb);
     };
 
     return root;

@@ -64,7 +64,6 @@ angular.module('copayApp.controllers').controller('sidebarController',
           id: c.walletId,
         };
       });
-      console.log('[sidebar.js.73:wallets]', ret); //TODO
       self.wallets = lodash.sortBy(ret, 'walletName');
     };
   });
