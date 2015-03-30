@@ -8,13 +8,10 @@ angular.module('copayApp.services')
     root.focusedClient = null;
     root.walletClients = {};
 
-    configService.get(function(err, config) {
-      if (err) {
-        throw new Error(err);
-      }
-      var bwsurl = config.bws.url;
-      bwcService.setBaseUrl(bwsurl);
-    });
+
+    root.getUtils = function() {
+      return bwcService.getUtils();
+    };
 
 
     // Add some convenience shortcuts
@@ -28,6 +25,15 @@ angular.module('copayApp.services')
       fc.walletId = fc.credentials.walletId;
       fc.isComplete = fc.credentials.isComplete();
       $log.debug('Focused Client:', fc); //TODO
+    };
+
+
+    root.formatAmount = function(amount) {
+      var config = configService.getSync().wallet.settings;
+      if (config.unitCode == 'sat') return amount;
+
+      //TODO : now only works for english, specify opts to change thousand separator and decimal separator
+      return this.getUtils().formatAmount(amount, config.unitCode);
     };
 
     root._setFocus = function(walletId, cb) {
@@ -189,10 +195,12 @@ angular.module('copayApp.services')
       var walletId = walletClient.credentials.walletId;
 
       // check if exist
-      if (lodash.find(root.profile.credentials, {'walletId' : walletId})) {
+      if (lodash.find(root.profile.credentials, {
+        'walletId': walletId
+      })) {
         return cb('Wallet already exists');
       }
-      
+
       root.profile.credentials.push(JSON.parse(walletClient.export()));
       root._setWalletClients();
 

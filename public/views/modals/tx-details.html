@@ -26,8 +26,7 @@
       'text-primary' : btx.action == 'received',
       'text-warning': btx.action == 'sent', 
       'text-gray': btx.action == 'moved'}">
-      <span ng-if="btx.action == 'received'">+</span><span ng-if="btx.action == 'sent'">-</span>{{getAmount(btx.amount)}}
-      {{settings.unitName}}
+      <span ng-if="btx.action == 'received'">+</span><span ng-if="btx.action == 'sent'">-</span>{{btx.amountStr}} {{settings.unitName}}
     </div>
     <div class="size-18 m5t text-gray" ng-show="btx.alternativeAmount">
       {{btx.alternativeAmount}} {{settings.alternativeIsoCode}}

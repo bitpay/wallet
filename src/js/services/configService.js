@@ -63,6 +63,8 @@ angular.module('copayApp.services').factory('configService', function(localStora
     return configCache;
   };
 
+
+
   root.get = function(cb) {
     localStorageService.get('config', function(err, localConfig) {
 

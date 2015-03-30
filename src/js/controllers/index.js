@@ -72,11 +72,12 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
   self.setPendingTxps = function(txps) {
     self.txps = txps;
+    var fc = profileService.focusedClient;
     var config = configService.getSync().wallet.settings;
     self.pendingTxProposalsCountForUs = 0;
     lodash.each(txps, function(tx) {
       var amount = tx.amount * self.satToUnit;
-      tx.amountStr = amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + ' ' + config.unitName;
+      tx.amountStr = profileService.formatAmount(tx.amount) + ' ' + config.unitName;
       tx.alternativeAmount = rateService.toFiat(tx.amount, config.alternativeIsoCode).toFixed(2);
       tx.alternativeAmountStr = tx.alternativeAmount + " " + config.alternativeIsoCode;
       tx.alternativeIsoCode = config.alternativeIsoCode;
@@ -93,7 +94,11 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     });
   };
 
-  self.setBalance = function(balance) {
+
+  self.updateBalance = function(balance) {
+    var fc = profileService.focusedClient;
+    console.log('[index.js.48:balance:]', balance); //TODO
+
     var config = configService.getSync().wallet.settings;
     var COIN = 1e8;
 
@@ -119,10 +124,11 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.lockedBalanceBTC = strip(self.lockedBalanceSat / COIN);
     self.availableBalanceBTC = strip(self.availableBalanceBTC / COIN);
 
-    // Balance as String
-    self.totalBalanceStr = self.totalBalance.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + ' ' + self.unitName;
-    self.lockedBalanceStr = self.lockedBalance.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + ' ' + self.unitName;
-    self.availableBalanceStr = self.availableBalance.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + ' ' + self.unitName;
+
+    //STR
+    self.totalBalanceStr = profileService.formatAmount(self.totalBalanceSat) + ' ' + self.unitName;
+    self.lockedBalanceStr = profileService.formatAmount(self.lockedBalanceSat) + ' ' + self.unitName;
+    self.availableBalanceStr = profileService.formatAmount(self.availableBalanceSat) + ' ' + self.unitName;
 
     self.alternativeName = config.alternativeName;
     self.alternativeIsoCode = config.alternativeIsoCode;

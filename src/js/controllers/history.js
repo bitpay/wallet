@@ -9,6 +9,7 @@ angular.module('copayApp.controllers').controller('historyController',
 
     var fc = profileService.focusedClient;
     var config = configService.getSync().wallet.settings;
+    var formatAmount = profileService.formatAmount;
     this.unitToSatoshi = config.unitToSatoshi;
     this.satToUnit = 1 / this.unitToSatoshi;
     this.unitName = config.unitName;
@@ -17,11 +18,6 @@ angular.module('copayApp.controllers').controller('historyController',
     this.isShared = fc.n > 1;
     this.skip = 0;
     this.limit = 10;
-
-    this.getAmount = function(amount) {
-      var newAmount = strip(amount * this.satToUnit);
-      return newAmount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    };
 
     this.getUnitName = function() {
       return this.unitName;
@@ -33,14 +29,21 @@ angular.module('copayApp.controllers').controller('historyController',
 
     this.getTxHistory = function() {
       var self = this;
-      self.updatingTxHistory = true;
-      profileService.focusedClient.getTxHistory({
-        skip: self.skip,
-        limit: self.limit + 1
-      }, function(err, txs) {
-        self.txHistory = txs;
-        self.updatingTxHistory = false;
-        $scope.$digest();
+      fc.getTxHistory(null, function(err, res) {
+        if (err) throw err;
+
+        if (!res) {
+          return;
+        }
+
+        var now = new Date();
+        var items = res;
+        lodash.each(items, function(tx) {
+          tx.ts = tx.minedTs || tx.sentTs;
+          tx.rateTs = Math.floor((tx.ts || now) / 1000);
+          tx.amount = profileService.formatAmount(tx.amount); //$filter('noFractionNumber')(
+        });
+        return cb(null, res);
       });
     };
 
@@ -62,9 +65,10 @@ angular.module('copayApp.controllers').controller('historyController',
 
     this.openTxModal = function(btx) {
       var self = this;
-      var ModalInstanceCtrl = function($scope, $modalInstance) {
+      var ModalInstanceCtrl = function($scope, $modalInstance, profileService) {
         $scope.btx = btx;
         $scope.settings = config;
+        $scope.btx.amountStr = profileService.formatAmount(btx.amount);
 
         $scope.getAmount = function(amount) {
           return self.getAmount(amount);
@@ -90,4 +94,48 @@ angular.module('copayApp.controllers').controller('historyController',
         controller: ModalInstanceCtrl,
       });
     };
+
+    this.getTransactions = function() {
+      var self = this;
+      this.blockchain_txs = []; // w.cached_txs || [];
+      this.loading = true;
+
+      fc.getTxHistory({
+        currentPage: this.currentPage,
+        itemsPerPage: this.itemsPerPage,
+      }, function(err, res) {
+        if (err) throw err;
+
+        if (!res) {
+          self.loading = false;
+          self.lastShowed = false;
+          return;
+        }
+
+        self._addRates(res, function(err) {
+          $timeout(function() {
+            $scope.$digest();
+          }, 1);
+        })
+
+        self.blockchain_txs = res; //w.cached_txs =
+        self.nbPages = res.nbPages;
+        self.totalItems = res.nbItems;
+
+        self.loading = false;
+        self.paging = false;
+        setTimeout(function() {
+          $scope.$digest();
+        }, 1);
+      });
+    };
+
+    this.formatAmount = function(amount) {
+      return profileService.formatAmount(amount);
+    };
+
+    this.hasAction = function(actions, action) {
+      return actions.hasOwnProperty('create');
+    };
+
   });

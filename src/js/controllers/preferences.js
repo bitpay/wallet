@@ -15,27 +15,38 @@ angular.module('copayApp.controllers').controller('preferencesController',
     this.unitName = config.wallet.settings.unitName;
   this.bwsurl = config.bws.url;
 
-    this.unitOpts = [{
-      name: 'Satoshis (100,000,000 satoshis = 1BTC)',
-      shortName: 'SAT',
-      value: 1,
-      decimals: 0
-    }, {
-      name: 'bits (1,000,000 bits = 1BTC)',
-      shortName: 'bits',
-      value: 100,
-      decimals: 2
-    }, {
-      name: 'mBTC (1,000 mBTC = 1BTC)',
-      shortName: 'mBTC',
-      value: 100000,
-      decimals: 5
-    }, {
-      name: 'BTC',
-      shortName: 'BTC',
-      value: 100000000,
-      decimals: 8
-    }];
+    this.unitOpts = [
+      // TODO : add Satoshis to bitcore-wallet-client formatAmount()
+      // {
+      //     name: 'Satoshis (100,000,000 satoshis = 1BTC)',
+      //     shortName: 'SAT',
+      //     value: 1,
+      //     decimals: 0,
+      //     code: 'sat',
+      //   }, 
+      {
+        name: 'bits (1,000,000 bits = 1BTC)',
+        shortName: 'bits',
+        value: 100,
+        decimals: 2,
+        code: 'bit',
+      }
+      // TODO : add mBTC to bitcore-wallet-client formatAmount()
+      // ,{
+      //   name: 'mBTC (1,000 mBTC = 1BTC)',
+      //   shortName: 'mBTC',
+      //   value: 100000,
+      //   decimals: 5,
+      //   code: 'mbtc',
+      // }
+      , {
+        name: 'BTC',
+        shortName: 'BTC',
+        value: 100000000,
+        decimals: 8,
+        code: 'btc',
+      }
+    ];
 
     for (var ii in this.unitOpts) {
       if (this.unitName === this.unitOpts[ii].shortName) {
@@ -72,6 +83,7 @@ angular.module('copayApp.controllers').controller('preferencesController',
             unitName: this.selectedUnit.shortName,
             unitToSatoshi: this.selectedUnit.value,
             unitDecimals: this.selectedUnit.decimals,
+            unitCode: this.selectedUnit.code,
             alternativeName: this.selectedAlternative.name,
             alternativeIsoCode: this.selectedAlternative.isoCode,
           }
