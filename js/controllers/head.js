@@ -45,22 +45,23 @@ angular.module('copayApp.controllers').controller('HeadController', function($sc
   $scope.init = function() {
     if (!$rootScope.wallet) return;
 
-    $scope.$on('$idleStart', function() {});
-    $scope.$on('$idleWarn', function(a, countdown) {
+    $scope.$on('IdleStart', function() {});
+    $scope.$on('IdleWarn', function(a, countdown) {
       $rootScope.countdown = countdown;
       $rootScope.sessionExpired = true;
+      $rootScope.$apply();
     });
-    $scope.$on('$idleEnd', function() {
+    $scope.$on('IdleEnd', function() {
       $timeout(function() {
         $rootScope.sessionExpired = null;
       }, 500);
     });
-    $scope.$on('$idleTimeout', function() {
+    $scope.$on('IdleTimeout', function() {
       $rootScope.sessionExpired = null;
       $scope.signout();
       notification.warning('Session closed', 'Session closed because a long time of inactivity');
     });
-    $scope.$on('$keepalive', function() {
+    $scope.$on('Keepalive', function() {
       if ($rootScope.wallet) {
         $rootScope.wallet.keepAlive();
       }
