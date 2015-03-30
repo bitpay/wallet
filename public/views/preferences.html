@@ -1,13 +1,12 @@
 <div class="preferences" ng-controller="preferencesController as preferences">
-  <form name="settingsForm">
+  <form name="settingsForm" ng-submit="preferences.save()">
     <div class="row">
       <div class="large-6 medium-6 columns">
         <div class="panel">
           <label translate>Wallet Unit</label>
           <select class="form-control" 
             ng-model="preferences.selectedUnit" 
-            ng-options="o.name for o in preferences.unitOpts" 
-            ng-change="preferences.save()">
+            ng-options="o.name for o in preferences.unitOpts">
           </select>
         </div>
       </div>
@@ -16,10 +15,14 @@
           <label translate>Alternative Currency</label>
           <select class="form-control" 
             ng-model="preferences.selectedAlternative" 
-            ng-options="alternative.name for alternative in preferences.alternativeOpts" 
-            ng-change="preferences.save()">
+            ng-options="alternative.name for alternative in preferences.alternativeOpts">
           </select>
         </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="large-12 columns">
+        <input type="submit" class="button expand" value="{{'Save'|translate}}">
       </div>
     </div>
   </form>

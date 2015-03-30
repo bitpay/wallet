@@ -27,15 +27,16 @@ angular.module('copayApp.filters', [])
     }
   })
 
-.filter('noFractionNumber', ['$filter', '$locale', '$rootScope',
-  function(filter, locale, $rootScope) {
+.filter('noFractionNumber', ['$filter', '$locale', 'configService',
+  function(filter, locale, configService) {
     var numberFilter = filter('number');
     var formats = locale.NUMBER_FORMATS;
+    var config = configService.getSync().wallet.settings;
     return function(amount, n) {
-      if (typeof(n) === 'undefined' && !$rootScope.wallet) return amount;
+      if (typeof(n) === 'undefined' && !config) return amount;
 
       var fractionSize = (typeof(n) !== 'undefined') ?
-        n : $rootScope.wallet.settings.unitToSatoshi.toString().length - 1;
+        n : config.unitToSatoshi.toString().length - 1;
       var value = numberFilter(amount, fractionSize);
       var sep = value.indexOf(formats.DECIMAL_SEP);
       var group = value.indexOf(formats.GROUP_SEP);
