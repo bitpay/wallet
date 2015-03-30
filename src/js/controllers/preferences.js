@@ -79,6 +79,9 @@ angular.module('copayApp.controllers').controller('preferencesController',
 
       configService.set(opts, function(err) {
         if (err) console.log(err);
+        go.walletHome();
+        $scope.$emit('updateStatus');
+        notification.success('Success', $filter('translate')('settings successfully updated'));
       });
 
       // notification.success('Success', $filter('translate')('settings successfully updated'));
