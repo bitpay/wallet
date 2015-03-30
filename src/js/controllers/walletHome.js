@@ -38,11 +38,11 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
         });
       });
 
-      $rootScope.$on('transactionFinallyRejected', function(e) {
+      $rootScope.$on('TxProposalFinallyRejected', function(e) {
         $scope.txRejected = true;
       });
 
-      $rootScope.$on('transactionBroadcasted', function(e) {
+      $rootScope.$on('NewOutgoingTx', function(e) {
         $scope.txBroadcasted = true;
       });
 

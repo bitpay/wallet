@@ -141,11 +141,6 @@ input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill, inpu
   font-size: 16px;
 }
 
-.setup .comment {
-  font-size: 0.875rem;
-  color: #7A8C9E !important;
-}
-
 .page, .main {
   height:100%;
   overflow-y: auto;
@@ -214,7 +209,7 @@ input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill, inpu
 
 .box-notification .box-icon i {
   position: relative;
-  top: 20%;
+  top: 10%;
   display: block
 }
 
@@ -883,6 +878,19 @@ label.postfix, a.postfix {
   text-align: center;
   margin-right: 10px;
   float: left;
+}
+
+.input.block i {
+  position: absolute;
+  top: 5px;
+  left: 10px;
+  font-size: 20px;
+  color: #7A8C9E;
+  border-right: 1px solid #ccc;
+  padding-right: 8px;
+  border-right: 1px solid #E5E8EB;
+  display: block;
+  cursor: pointer;
 }
 
 .input { position: relative;}

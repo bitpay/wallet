@@ -185,7 +185,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   // UX event handlers
 
   $rootScope.$on('Local/ConfigurationUpdated', function(event) {
-    self.updateStatus();
+    self.updateAll();
   });
 
   $rootScope.$on('Local/WalletCompleted', function(event) {
@@ -212,6 +212,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
   $rootScope.$on('NewCopayer', function() {
     var fc = profileService.focusedClient;
-    fc.openWallet(function() {});
+    fc.openWallet(function() {
+      self.updateAll();
+    });
   });
 });

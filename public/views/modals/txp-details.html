@@ -5,32 +5,32 @@
     </a>
   </section>
 </nav>
-<div class="p60t" ng-init="updateCopayerList()">
-  <div class="header-modal">
-    <div class="ellipsis p10b size-16 m20r">
-      <span class="tx-proposal size-12 m5r"> <i ng-class="{'active':_cache.pendingForUs}" class="fi-arrow-right"></i> </span>
-      <span class="text-gray">
-        <span translate>To:</span>
-        <span ng-if="_cache.merchant">
-          <span ng-show="_cache.merchant.pr.ca"><i class="fi-lock"></i> {{_cache.merchant.domain}}</span>
-          <span ng-show="!_cache.merchant.pr.ca"><i class="fi-unlock"></i> {{_cache.merchant.domain}}</span>
+<div class="row p60t" ng-init="updateCopayerList()">
+  <div class="large-12 columns">
+    <div class="header-modal">
+      <div class="ellipsis p10b size-16 m20r">
+        <span class="tx-proposal size-12 m5r"> <i ng-class="{'active':_cache.pendingForUs}" class="fi-arrow-right"></i> </span>
+        <span class="text-gray">
+          <span translate>To:</span>
+          <span ng-if="_cache.merchant">
+            <span ng-show="_cache.merchant.pr.ca"><i class="fi-lock"></i> {{_cache.merchant.domain}}</span>
+            <span ng-show="!_cache.merchant.pr.ca"><i class="fi-unlock"></i> {{_cache.merchant.domain}}</span>
+          </span>
+          <contact address="{{_cache.toAddress}}" ng-hide="_cache.merchant"></contact>
+          {{_cache.toAddress}}
         </span>
-        <contact address="{{_cache.toAddress}}" ng-hide="_cache.merchant"></contact>
-        {{_cache.toAddress}}
-      </span>
-    </div>
-
-    <div class="p25l" ng-class="{'text-gray':!_cache.pendingForUs}">
-      <div class="size-21 text-bold m5b">
-        {{_cache.amountStr}}
       </div>
-      <span class="alt-currency black size-12" ng-class="{'gray':!_cache.pendingForUs}">
-        {{_cache.alternativeAmountStr}}
-      </span>
-    </div>
-  </div>
 
-  <div class="row columns">
+      <div class="p25l" ng-class="{'text-gray':!_cache.pendingForUs}">
+        <div class="size-21 text-bold m5b">
+          {{_cache.amountStr}}
+        </div>
+        <span class="alt-currency black size-12" ng-class="{'gray':!_cache.pendingForUs}">
+          {{_cache.alternativeAmountStr}}
+        </span>
+      </div>
+    </div>
+
     <div class="m10v line-b size-14" ng-show="_cache.message">
       <div class="oh" ng-if="_cache.ts || _cache.createdOn ">
         <p class="left m5b">{{_cache.creatorName}}</p>
@@ -59,10 +59,10 @@
       <h3 translate>Signatures:</h3>
       <ul class="no-bullet size-10 m0">
         <li ng-repeat="ac in tx.actions">
-          <i ng-if="ac.type == 'reject'" class="fi-x icon-sign x"></i>
-          <i ng-if="ac.type == 'accept'" class="fi-check icon-sign check"></i>
-          <i ng-if="!ac.type" class="fi-loop"></i> 
-          {{ac.copayerId}} -- {{ac.copayerName}}
+        <i ng-if="ac.type == 'reject'" class="fi-x icon-sign x"></i>
+        <i ng-if="ac.type == 'accept'" class="fi-check icon-sign check"></i>
+        <i ng-if="!ac.type" class="fi-loop"></i> 
+        {{ac.copayerId}} -- {{ac.copayerName}}
         </li>
       </ul>
     </div>

@@ -1,77 +1,68 @@
 <div ng-controller="copayersController as copayers" ng-init="copayers.init()">
-  <div ng-show="$root.starting">
-    <div ng-include="'views/includes/loading.html'" ng-init="title = 'Deleting'"></div>
+  <div class="row">
+    <div class="large-12 columns">
+      <h1 translate>Share this secret with your copayers</h1> 
+    </div>
   </div>
-  
-  <div class="!$root.starting">
-    <div class="row">
-      <div class="large-12 medium-12 small-12 columns">
-        <h1 translate>Share this secret with your copayers</h1> 
+
+  <div class="row">
+    <div class="large-8 columns">
+      <div class="panel oh">
+        <div ng-click="copySecret(index.walletSecret)" ng-class="{'enable_text_select': !index.isCordoba}">
+          <div class="secret m10b">
+            {{index.walletSecret}}
+          </div>
+          <div class="text-center">
+            <qrcode size="250" error-correction-level="L" data="{{index.walletSecret}}"></qrcode>
+          </div>
+        </div>
+        <div class="text-center m10t" ng-if="isCordova">
+          <span class="button outline dark-gray tiny" 
+            ng-click="shareSecret(index.walletSecret)">
+            <i class="fi-share"></i> 
+            <span translate>Share secret</span>
+          </span>
+        </div>
+        <div class="size-10 line-t text-center">
+          <h2 class="m10t">{{index.walletName}}</h2>
+          <span class="text-gray">
+            [{{index.m}} <span translate>of</span> {{index.n}} ]
+          </span> 
+          <span ng-if="wallet.network == 'testnet'" translate>in TESTNET</span>
+        </div> 
+      </div>
+    </div>
+    <div class="large-4 columns">
+      <div class="panel oh">
+        <h3 translate>Waiting for copayers</h3>
+        <div ng-include="'views/includes/copayers.html'"></div>
+        <div ng-if="index.walletStatus != 'complete'" class="m10t">
+          <p class="size-12">
+          <i class="fi-loop"></i>
+          <span translate>Waiting...</span>
+          </p>
+        </div>
       </div>
     </div>
 
-    <div class="row">
-      <div class="large-8 columns">
-        <div ng-if="index.walletStatus != 'complete'">
-          <div class="panel oh">
-            <div ng-click="copySecret(index.walletSecret)" ng-class="{'enable_text_select': !index.isCordoba}">
-              <div class="secret m10b">
-                {{index.walletSecret}}
-              </div>
-              <div class="text-center">
-                <qrcode size="250" error-correction-level="L" data="{{index.walletSecret}}"></qrcode>
-              </div>
-            </div>
-            <div class="text-center m10t" ng-if="isCordova">
-              <span class="button outline dark-gray tiny" 
-                ng-click="shareSecret(index.walletSecret)">
-                <i class="fi-share"></i> 
-                <span translate>Share secret</span>
-              </span>
-            </div>
-            <div class="size-10 line-t text-center">
-              <h2 class="m10t">{{index.walletName}}</h2>
-              <span class="text-gray">
-                [{{index.m}} <span translate>of</span> {{index.n}} ]
-              </span> 
-              <span ng-if="wallet.network == 'testnet'" translate>in TESTNET</span>
-            </div> 
+  </div>
+  <!-- end of row -->
+  <div class="row">
+    <div class="large-12 columns">
+      <button class="small warning" ng-show="!confirmDelete" ng-click="confirmDelete=!confirmDelete">
+        <i class="fi-trash"></i> <span translate>Cancel</span>
+      </button>
+      <div class="text-center" ng-show="confirmDelete">
+        <h2 translate>Are you sure you want to cancel and delete this wallet</h2>
+        <div class="row">
+          <div class="large-6 medium-6 small-6 columns">
+            <button class="gray" ng-disabled="loading" 
+              ng-click="confirmDelete=!confirmDelete" translate>No</button>
           </div>
-        </div>
-      </div>
-      <div class="large-4 columns">
-        <div class="panel oh">
-          <h3 translate>Waiting for copayers</h3>
-          <div ng-include="'views/includes/copayers.html'"></div>
-          <div ng-if="index.walletStatus != 'complete'" class="m15t">
-            <div class="left m10r" ng-include="'views/includes/photo.html'"></div>
-            <p class="size-12 m0 m5t left mv">
-            <i class="fi-loop icon-rotate spinner"></i>
-            <span translate>Waiting...</span>
-            </p>
-          </div>
-        </div>
-      </div>
-
-    </div>
-    <!-- end of row -->
-    <div class="row">
-      <div class="large-12 columns">
-        <button class="small warning" ng-show="!confirmDelete" ng-click="confirmDelete=!confirmDelete">
-          <i class="fi-trash"></i> <span translate>Cancel</span>
-        </button>
-        <div class="text-center" ng-show="confirmDelete">
-          <h2 translate>Are you sure you want to cancel and delete this wallet</h2>
-          <div class="row">
-            <div class="large-6 medium-6 small-6 columns">
-              <button class="gray" ng-disabled="loading" 
-                ng-click="confirmDelete=!confirmDelete" translate>No</button>
-            </div>
-            <div class="large-6 medium-6 small-6 columns">
-              <button class="warning" ng-disabled="loading" ng-click="deleteWallet(); confirmDelete = !confirmDelete">
-                <i class="fi-trash"></i> <span translate>Yes</span>
-              </button>
-            </div>
+          <div class="large-6 medium-6 small-6 columns">
+            <button class="warning" ng-disabled="loading" ng-click="deleteWallet(); confirmDelete = !confirmDelete">
+              <i class="fi-trash"></i> <span translate>Yes</span>
+            </button>
           </div>
         </div>
       </div>

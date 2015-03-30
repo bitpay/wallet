@@ -20,7 +20,7 @@
   </div>
   <div class="row">
     <div class="large-12 large-centered columns"> 
-      <div class="box-notification" ng-show="fetchingURL">
+      <div class="box-notification" ng-show="send.fetchingURL">
         <div class="box-icon secondary">
           <i class="fi-bitcoin-circle size-24"></i>
         </div>
@@ -28,7 +28,7 @@
           Fetching Payment Information...
         </span>
       </div>
-      <form ng-show="!fetchingURL" name="sendForm" ng-submit="send.submitForm(sendForm)" ng-disabled="send.loading" novalidate>
+      <form ng-show="!send.fetchingURL" name="sendForm" ng-submit="send.submitForm(sendForm)" ng-disabled="send.loading" novalidate>
         <div class="panel">
           <div class="box-notification" ng-show="send.error  && !send.hideForWP ">
             <div class="box-icon error">
@@ -83,8 +83,8 @@
 
               <div class="input block">
                 <input class="p45li" type="text" id="domain" name="domain" ng-model="send._paypro.domain" ng-disabled="1">
-  <i ng-show="send._paypro.verified" class="fi-lock color-greeni"></i>
-  <i ng-show="!send._paypro.verified" class="fi-unlock color-yellowi"></i> 
+                <i ng-show="send._paypro.verified" class="fi-lock color-greeni"></i>
+                <i ng-show="!send._paypro.verified" class="fi-unlock color-yellowi"></i> 
               </div>
             </div>
           </div>

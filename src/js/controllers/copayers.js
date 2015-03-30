@@ -44,10 +44,8 @@ angular.module('copayApp.controllers').controller('copayersController',
     };
 
     self.deleteWallet = function() {
-      $rootScope.starting = true;
       $timeout(function() {
         identityService.deleteWallet(w, function(err) {
-          $rootScope.starting = false;
           if (err) {
             self.error = err.message || err;
             copay.logger.warn(err);
