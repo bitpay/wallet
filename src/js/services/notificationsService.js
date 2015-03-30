@@ -27,7 +27,7 @@ angular.module('copayApp.services')
           break;
         case 'NewIncomingTx':
           notification.success('[' + walletData.walletName + '] Funds Received',
-            $filter('translate')('TODO TODO TODO ') + ' ' + notificationData.creatorId);
+            $filter('translate')('Received funds on address ') + notificationData.address);
           break;
         case 'NewCopayer':
           // No UX notification
