@@ -6,43 +6,43 @@
   </section>
 </nav>
 
-<div class="p60t">
-<div class="text-center">
-  <div class="size-48">
-&nbsp;
-</div>
-  <div class="size-12">
-Payment Protocol Request
-</div>
-  <div class="size-48">
-  {{unitTotal}}  {{unitName}}
+<div class="row p60t">
+  <div class="large-12 columns">
+    <div class="text-center">
+      <div class="size-12">
+        Payment Protocol Request
+      </div>
+      <div class="size-48">
+        {{unitTotal}}  {{unitName}}
+      </div>
+      <div class="size-18 m5t text-gray">
+        {{ alternative }} {{ alternativeIsoCode }}
+      </div>
+    </div>
+    <div class="line-b m10v"></div>
+
+    <div class="ellipsis m10v">
+      <i translate>To:</i> {{paypro.domain}}
+    </div>
+
+    <div class="m10v">
+      <i translate>Certified by:</i>
+      <span ng-show="paypro.verified"><i class="fi-lock color-greeni"></i> {{paypro.verifyData.caName}}</span>
+      <span ng-show="!paypro.verified"><i class="fi-unlock color-yellowi"></i> <span translate>Untrusted</span></span>
+    </div>
+
+    <div ng-if="md.pr.pd.memo" class="m10v lh140">
+      <i translate>Merchant Message:</i>
+      <span class="text-gray">
+        {{paypro.memo}}
+      </span>
+    </div>
+
+    <div ng-if="md.expirationDate" class="m10v">
+      <i translate>Expires:</i> {{paypro.expires | amTimeAgo }}
+    </div>
   </div>
-  <div class="size-18 m5t text-gray">
-    {{ alternative }} {{ alternativeIsoCode }}
-  </div>
-  <a class="close-reveal-modal show-for-large-up" ng-click="cancel()"><i class="fi-x size-18"></i></a>
-</div>
-<div class="line-b m10v"></div>
-
-<div class="ellipsis m10v">
-  <i translate>To:</i> {{paypro.domain}}
 </div>
 
-<div class="m10v">
-  <i translate>Certified by:</i>
-  <span ng-show="paypro.verified"><i class="fi-lock color-greeni"></i> {{paypro.verifyData.caName}}</span>
-  <span ng-show="!paypro.verified"><i class="fi-unlock color-yellowi"></i> <span translate>Untrusted</span></span>
-</div>
-
-<div ng-if="md.pr.pd.memo" class="m10v lh140">
-  <i translate>Merchant Message:</i>  <span class="text-gray">
-  {{paypro.memo}}
-</div>
-
-
-<div ng-if="md.expirationDate" class="m10v">
-  <i translate>Expires:</i> {{paypro.expires | amTimeAgo }}
-</div>
-</div>
-
+<div class="extra-margin-bottom"></div>
 
