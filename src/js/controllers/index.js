@@ -32,7 +32,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     fc.getStatus(function(err, walletStatus) {
       $log.debug('Wallet Status:', walletStatus);
       self.setBalance(walletStatus.balance);
-      self.setTxps(walletStatus.pendingTxps);
+      self.setPendingTxps(walletStatus.pendingTxps);
 
       // Status Shortcuts
       self.walletName = walletStatus.wallet.name;
@@ -51,6 +51,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
   $rootScope.$on('updateBalance', function(event) {
     self.updatingBalance = true;
+    $log.debug('Updating Balance');
     profileService.focusedClient.getBalance(function(err, balance) {
       self.setBalance(balance);
       self.updatingBalance = false;
@@ -60,14 +61,15 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
   $rootScope.$on('updatePendingTxps', function(event) {
     self.updatingPendingTxps = true;
+    $log.debug('Updating PendingTxps');
     profileService.focusedClient.getTxProposals({}, function(err, txps) {
-      self.setTxps(txps);
+      self.setPendingTxps(txps);
       self.updatingPendingTxps = false;
       $rootScope.$apply();
     });
   });
 
-  self.setTxps = function(txps) {
+  self.setPendingTxps = function(txps) {
     self.txps = txps;
     var config = configService.getSync().wallet.settings;
     self.pendingTxProposalsCountForUs = 0;
@@ -155,20 +157,17 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     });
 
     // Check address
-    self.checkLastAddress(balance.byAddress);
+    self.checkLastAddress(self.walletId, balance.byAddress);
   };
 
   self.checkLastAddress = function(byAddress, cb) {
-    console.log('[index.js.161:byAddress:]', byAddress); //TODO
-
-    storageService.getLastAddress(function(err, addr) {
-      console.log('[index.js.164:addr:]', addr); //TODO
+    storageService.getLastAddress(self.walletId, function(err, addr) {
       var used = lodash.find(byAddress, {
         address: addr
       });
       if (used) {
         $log.debug('Address ' + addr + ' was used. Cleaning Cache.')
-        storageService.clearLastAddress(function(err, addr) {
+        storageService.clearLastAddress(self.walletId, function(err, addr) {
           if (cb) return cb();
         });
       };

@@ -15,12 +15,12 @@ angular.module('copayApp.controllers').controller('receiveController',
         self.generatingAddress = false;
         $scope.$digest();
 
-        storageService.storeLastAddress(addr.address, function() {});
+        storageService.storeLastAddress(fc.walletId, addr.address, function() {});
       });
     };
 
     this.getAddress = function() {
-      storageService.getLastAddress(function(err, addr) {
+      storageService.getLastAddress(fc.walletId, function(err, addr) {
         if (addr) {
           self.addr = addr;
           $timeout(function() {

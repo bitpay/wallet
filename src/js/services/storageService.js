@@ -32,17 +32,18 @@ angular.module('copayApp.services')
       localStorageService.get('focusedWalletId', cb);
     };
 
-    root.getLastAddress = function(cb) {
-      localStorageService.get('lastAddress', cb);
+    root.getLastAddress = function(walletId, cb) {
+      localStorageService.get('lastAddress-' + walletId, cb);
     };
 
-    root.storeLastAddress = function(address, cb) {
-      localStorageService.set('lastAddress', address, cb);
+    root.storeLastAddress = function(walletId, address, cb) {
+      localStorageService.set('lastAddress-' + walletId, address, cb);
     };
 
-    root.clearLastAddress = function(cb) {
-      localStorageService.remove('lastAddress', cb);
+    root.clearLastAddress = function(walletId, cb) {
+      localStorageService.remove('lastAddress-' + walletId, cb);
     };
+
 
     return root;
   });

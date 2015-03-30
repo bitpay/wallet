@@ -20,8 +20,7 @@ angular.module('copayApp.services')
           if (!noEmitUpdate) {
             $rootScope.$emit('updatePendingTxps');
             $rootScope.$emit('updateBalance');
-          }
-          else {
+          } else {
             $rootScope.$apply();
           }
           break;
@@ -30,18 +29,16 @@ angular.module('copayApp.services')
             $filter('translate')('A transaction was signed by') + ' ' + e.creatorId);
           if (!noEmitUpdate) {
             $rootScope.$emit('updatePendingTxps');
-          }
-          else {
+          } else {
             $rootScope.$apply();
           }
-          break; 
+          break;
         case 'TxProposalRejectedBy':
           notification.warning('[' + obj.walletName + '] Transaction Rejected',
             $filter('translate')('A transaction was rejected by') + ' ' + e.creatorId);
           if (!noEmitUpdate) {
             $rootScope.$emit('updatePendingTxps');
-          }
-          else {
+          } else {
             $rootScope.$apply();
           }
           break;
@@ -52,8 +49,7 @@ angular.module('copayApp.services')
           if (!noEmitUpdate) {
             $rootScope.$emit('updatePendingTxps');
             $rootScope.$emit('updateBalance');
-          }
-          else {
+          } else {
             $rootScope.$apply();
           }
           break;
@@ -64,8 +60,7 @@ angular.module('copayApp.services')
           if (!noEmitUpdate) {
             $rootScope.$emit('updatePendingTxps');
             $rootScope.$emit('updateBalance');
-          }
-          else {
+          } else {
             $rootScope.$apply();
           }
           break;
@@ -80,6 +75,7 @@ angular.module('copayApp.services')
       fc.n = fc.credentials.n;
       fc.network = fc.credentials.network;
       fc.copayerId = fc.credentials.copayerId;
+      fc.walletId = fc.credentials.walletId;
       fc.isComplete = fc.credentials.isComplete();
       $log.debug('Focused Client:', fc); //TODO
     };
@@ -122,7 +118,7 @@ angular.module('copayApp.services')
 
         client.on('notification', function(notification) {
           console.log('*** [profileService.js ln56] notification:', notification); // TODO
-          notificationEvents(notification, { 
+          notificationEvents(notification, {
             walletId: client.credentials.walletId,
             walletName: client.credentials.walletName
           });
