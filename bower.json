@@ -19,7 +19,7 @@
     "qrcode-decoder-js": "*",
     "angular-moment": "~0.7.1",
     "socket.io-client": ">=1.0.0",
-    "ng-idle": "*",
+    "ng-idle": "~1.0.2",
     "inherits": "~0.0.1",
     "lodash": "~2.4.1",
     "angular-gravatar": "*",
