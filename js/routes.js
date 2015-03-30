@@ -129,17 +129,17 @@ angular
 //Setting HTML5 Location Mode
 angular
   .module('copayApp')
-  .config(function($locationProvider, $idleProvider, $keepaliveProvider) {
+  .config(function($locationProvider, IdleProvider, KeepaliveProvider) {
     $locationProvider
       .html5Mode(false)
       .hashPrefix('!');
     // IDLE timeout
     var timeout = config.wallet.idleDurationMin * 60 || 300;
-    $idleProvider.idleDuration(timeout); // in seconds
-    $idleProvider.warningDuration(40); // in seconds
-    $keepaliveProvider.interval(30); // in seconds
+    IdleProvider.idle(timeout); // in seconds
+    IdleProvider.timeout(40); // in seconds
+    KeepaliveProvider.interval(30); // in seconds
   })
-  .run(function($rootScope, $location, $idle, gettextCatalog, uriHandler, isCordova, amMoment) {
+  .run(function($rootScope, $location, Idle, gettextCatalog, uriHandler, isCordova, amMoment) {
 
     var userLang, androidLang;
 
@@ -156,7 +156,7 @@ angular
 
     // Register URI handler, not for mobileApp
     if (!isCordova) {
-      $idle.watch();
+      Idle.watch();
       uriHandler.register();
     }
 
@@ -167,7 +167,7 @@ angular
       }
 
       if (!$rootScope.iden && next.logged) {
-        $idle.unwatch();
+        Idle.unwatch();
         $location.path('/');
       }
       if ($rootScope.wallet && !$rootScope.wallet.isComplete() && next.walletShouldBeComplete) {
