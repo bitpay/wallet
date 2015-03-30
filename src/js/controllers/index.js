@@ -185,7 +185,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   // UX event handlers
 
   $rootScope.$on('Local/ConfigurationUpdated', function(event) {
-    self.updateStatus();
+    self.updateAll();
   });
 
   $rootScope.$on('Local/WalletCompleted', function(event) {

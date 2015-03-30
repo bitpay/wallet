@@ -4,13 +4,8 @@ angular.module('copayApp.controllers').controller('joinController',
   function($scope, $rootScope, $timeout, go, isMobile, notification, profileService) {
     var self = this;
 
-    $rootScope.fromSetup = false;
-    self.loading = false;
     self.isMobile = isMobile.any();
     $rootScope.title = 'Join shared wallet';
-
-    $rootScope.hideWalletNavigation = true;
-
 
     // QR code Scanner
     var cameraInput;
@@ -21,7 +16,6 @@ angular.module('copayApp.controllers').controller('joinController',
     var localMediaStream;
 
     self.hideAdv = true;
-
 
     navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
 
@@ -131,13 +125,11 @@ angular.module('copayApp.controllers').controller('joinController',
       }
 
       // TODO Priv key, nickname
-      $rootScope.starting = true;
       profileService.joinWallet({
         secret: form.secret.$modelValue,
         //        nickname: form.nickname.$modelValue,
         privateHex: form.privateKey.$modelValue,
       }, function(err) {
-        $rootScope.starting = false;
         if (err) {
 
           // TODO -> parse errors
@@ -164,8 +156,4 @@ angular.module('copayApp.controllers').controller('joinController',
         }, 1);
       });
     }
-
-    $scope.$on("$destroy", function() {
-      $rootScope.hideWalletNavigation = false;
-    });
   });
