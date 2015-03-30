@@ -205,10 +205,13 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     });
   });
 
-  lodash.each(['Local/NewFocusedWallet', 'NewCopayer'], function(eventName) {
-    $rootScope.$on(eventName, function() {
-      self.setFocusedWallet();
-      self.updateAll();
-    });
+  $rootScope.$on('Local/NewFocusedWallet', function() {
+    self.setFocusedWallet();
+    self.updateAll();
+  });
+
+  $rootScope.$on('NewCopayer', function() {
+    var fc = profileService.focusedClient;
+    fc.openWallet(function() {});
   });
 });
