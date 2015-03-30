@@ -162,29 +162,31 @@ angular.module('copayApp.controllers').controller('preferencesController',
     };
 
     this.downloadWalletBackup = function() {
-      backupService.walletDownload(w);
+      backupService.walletDownload();
     };
 
     this.viewWalletBackup = function() {
+      var self = this;
       this.loading = true;
       $timeout(function() {
-        this.backupWalletPlainText = backupService.walletEncrypted(w);
+        self.backupWalletPlainText = backupService.walletExport();
       }, 100);
     };
 
     this.copyWalletBackup = function() {
-      var ew = backupService.walletEncrypted(w);
+      var ew = backupService.walletExport();
       window.cordova.plugins.clipboard.copy(ew);
       window.plugins.toast.showShortCenter('Copied to clipboard');
     };
 
     this.sendWalletBackup = function() {
+      var fc = profileService.focusedClient;
       if (isMobile.Android() || isMobile.Windows()) {
         window.ignoreMobilePause = true;
       }
       window.plugins.toast.showShortCenter('Preparing backup...');
-      var name = (w.name || w.id);
-      var ew = backupService.walletEncrypted(w);
+      var name = (fc.walletName || fc.walletId);
+      var ew = backupService.walletExport();
       var properties = {
         subject: 'Copay Wallet Backup: ' + name,
         body: 'Here is the encrypted backup of the wallet ' + name + ': \n\n' + ew + '\n\n To import this backup, copy all text between {...}, including the symbols {}',
