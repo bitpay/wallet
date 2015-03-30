@@ -8,62 +8,58 @@ angular.module('copayApp.services')
     root.focusedClient = null;
     root.walletClients = {};
 
-    var notificationEvents = function(e, obj) {
-      var noEmitUpdate;
-      if (root.focusedClient.credentials.walletId != obj.walletId) {
-        noEmitUpdate = true;
+    var notificatyEvents = function(e, obj) {
+      var walletIsFocused;
+      if (root.focusedClient.credentials.walletId == obj.walletId) {
+        walletIsFocused = true;
       }
       switch (e.type) {
         case 'NewTxProposal':
           notification.info('[' + obj.walletName + '] New Transaction',
             $filter('translate')('You received a transaction proposal from') + ' ' + e.creatorId);
-          if (!noEmitUpdate) {
-            $rootScope.$emit('updatePendingTxps');
-            $rootScope.$emit('updateBalance');
-          } else {
-            $rootScope.$apply();
+          if (walletIsFocused) {
+            $rootScope.$emit('updateStatus');
           }
           break;
         case 'TxProposalAcceptedBy':
           notification.success('[' + obj.walletName + '] Transaction Signed',
             $filter('translate')('A transaction was signed by') + ' ' + e.creatorId);
-          if (!noEmitUpdate) {
+          if (walletIsFocused) {
             $rootScope.$emit('updatePendingTxps');
-          } else {
-            $rootScope.$apply();
           }
           break;
         case 'TxProposalRejectedBy':
           notification.warning('[' + obj.walletName + '] Transaction Rejected',
             $filter('translate')('A transaction was rejected by') + ' ' + e.creatorId);
-          if (!noEmitUpdate) {
+          if (walletIsFocused) {
             $rootScope.$emit('updatePendingTxps');
-          } else {
-            $rootScope.$apply();
           }
           break;
         case 'TxProposalFinallyRejected':
           notification.success('[' + obj.walletName + '] Transaction Rejected',
             $filter('translate')('A transaction was finally rejected'));
           $rootScope.$emit('transactionFinallyRejected');
-          if (!noEmitUpdate) {
-            $rootScope.$emit('updatePendingTxps');
-            $rootScope.$emit('updateBalance');
-          } else {
-            $rootScope.$apply();
+          if (walletIsFocused) {
+            $rootScope.$emit('updateStatus');
           }
           break;
         case 'NewOutgoingTx':
           notification.success('[' + obj.walletName + '] Transaction Sent',
             $filter('translate')('A transaction was broadcasted by') + ' ' + e.creatorId);
           $rootScope.$emit('transactionBroadcasted');
-          if (!noEmitUpdate) {
-            $rootScope.$emit('updatePendingTxps');
-            $rootScope.$emit('updateBalance');
-          } else {
-            $rootScope.$apply();
+          if (walletIsFocused) {
+            $rootScope.$emit('updateStatus');
           }
           break;
+        case 'NewCopayer':
+          console.log('[profileService.js.65:walletIsFocused:]', walletIsFocused); //TODO
+          if (walletIsFocused) {
+            $rootScope.$emit('updateStatus');
+          }
+          break;
+      }
+      if (!walletIsFocused) {
+        $rootScope.$apply();
       }
     };
 
@@ -117,8 +113,8 @@ angular.module('copayApp.services')
         });
 
         client.on('notification', function(notification) {
-          console.log('*** [profileService.js ln56] notification:', notification); // TODO
-          notificationEvents(notification, {
+          $log.debug('BWC Notification:', notification);
+          notificatyEvents(notification, {
             walletId: client.credentials.walletId,
             walletName: client.credentials.walletName
           });

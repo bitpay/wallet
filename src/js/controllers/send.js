@@ -336,8 +336,6 @@ angular.module('copayApp.controllers').controller('sendController',
           self.error = msg;
         } else {
           self._paypro = paypro;
-
-          console.log('[send.js.323]'); //TODO
           self.setForm(paypro.toAddress, (paypro.amount * satToUnit).toFixed(self.unitDecimals),
             paypro.memo);
         }

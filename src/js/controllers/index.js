@@ -10,6 +10,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   self.isCordova = isCordova;
 
   $rootScope.$on('updateStatus', function(event) {
+
+    console.log('[index.js.13] update status'); //TODO
     var fc = profileService.focusedClient;
     self.hasProfile = true;
 
