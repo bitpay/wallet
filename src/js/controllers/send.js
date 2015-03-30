@@ -172,7 +172,6 @@ angular.module('copayApp.controllers').controller('sendController',
         var comment = form.comment.$modelValue;
         var paypro = self._paypro;
         var address, amount;
-        console.log('[send.js.159:form:]', form); //TODO
 
         address = form.address.$modelValue;
         amount = parseInt((form.amount.$modelValue * unitToSat).toFixed(0));
@@ -204,15 +203,13 @@ angular.module('copayApp.controllers').controller('sendController',
                       $scope.$digest();
                     } else {
                       txStatus.notify(btx);
-                      $scope.$emit('updatePendingTxps');
-                      $scope.$emit('updateBalance');
+                      $scope.$emit('Local/NewTxProposal');
                       self.resetForm(form);
                     }
                   });
                 } else {
                   txStatus.notify(signedTx);
-                  $scope.$emit('updatePendingTxps');
-                  $scope.$emit('updateBalance');
+                  $scope.$emit('Local/NewTxProposal');
                   self.resetForm(form);
                 }
               }
@@ -328,7 +325,6 @@ angular.module('copayApp.controllers').controller('sendController',
         if (err) {
           $log.warn(err);
           self.resetForm(form);
-          $rootScope.$emit('updateStatus');
           var msg = err.toString();
           if (msg.match('HTTP')) {
             msg = 'Could not fetch payment information';

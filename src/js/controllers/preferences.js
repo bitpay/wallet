@@ -80,7 +80,7 @@ angular.module('copayApp.controllers').controller('preferencesController',
       configService.set(opts, function(err) {
         if (err) console.log(err);
         go.walletHome();
-        $scope.$emit('updateStatus');
+        $scope.$emit('Local/ConfigurationUpdated');
         notification.success('Success', $filter('translate')('settings successfully updated'));
       });
 

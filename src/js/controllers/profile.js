@@ -16,7 +16,7 @@ angular.module('copayApp.controllers').controller('ProfileController', function(
     $timeout(function() {
       $scope.backupProfilePlainText = backupService.profileEncrypted($rootScope.iden);
     }, 100);
-  }; 
+  };
 
   $scope.copyProfileBackup = function() {
     var ep = backupService.profileEncrypted($rootScope.iden);
@@ -33,10 +33,8 @@ angular.module('copayApp.controllers').controller('ProfileController', function(
     var ep = backupService.profileEncrypted($rootScope.iden);
     var properties = {
       subject: 'Copay Profile Backup: ' + name,
-      body: 'Here is the encrypted backup of the profile ' 
-        + name + ': \n\n' + ep 
-        + '\n\n To import this backup, copy all text between {...}, including the symbols {}',
-      isHtml:  false
+      body: 'Here is the encrypted backup of the profile ' + name + ': \n\n' + ep + '\n\n To import this backup, copy all text between {...}, including the symbols {}',
+      isHtml: false
     };
     window.plugin.email.open(properties);
   };
@@ -56,9 +54,10 @@ angular.module('copayApp.controllers').controller('ProfileController', function(
       if (err) {
         log.warn(err);
         notification.error('Error', 'Could not delete profile');
-        $timeout(function () { $scope.$digest(); });
-      }
-      else {
+        $timeout(function() {
+          $scope.$digest();
+        });
+      } else {
         $location.path('/');
         $timeout(function() {
           notification.success('Success', 'Profile successfully deleted');

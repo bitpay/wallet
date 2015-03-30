@@ -5,7 +5,7 @@
 angular.module('copayApp.controllers').controller('walletHomeController', function($scope, $rootScope, $timeout, $filter, $modal, notification, txStatus, isCordova, profileService, lodash) {
 
   $scope.openTxModal = function(tx, copayers) {
-console.log('[walletHome.js:7]',tx); //TODO
+    console.log('[walletHome.js:7]', tx); //TODO
     var fc = profileService.focusedClient;
     var ModalInstanceCtrl = function($scope, $modalInstance) {
       $scope.error = null;
@@ -18,19 +18,23 @@ console.log('[walletHome.js:7]',tx); //TODO
         return fc.networkName.substring(0, 4);
       };
 
-      $rootScope.$on('updatePendingTxps', function(event) {
-        fc.getTxProposals({}, function(err, txps) {
-          var tx = lodash.find(txps, {'id' : $scope._cache.id});
-          if (tx) {
-            var action = lodash.find(tx.actions, {
-              copayerId: fc.copayerId
+      lodash.each(['TxProposalRejectedBy', 'TxProposalAcceptedBy'], function(eventName) {
+        $rootScope.$on(eventName, function() {
+          fc.getTxProposals({}, function(err, txps) {
+            var tx = lodash.find(txps, {
+              'id': $scope._cache.id
             });
-            $scope.tx = tx;
-            if (!action && tx.status == 'pending')
-             $scope.tx.pendingForUs = true;
-            $scope.updateCopayerList();
-            $scope.$apply();
-          }
+            if (tx) {
+              var action = lodash.find(tx.actions, {
+                copayerId: fc.copayerId
+              });
+              $scope.tx = tx;
+              if (!action && tx.status == 'pending')
+                $scope.tx.pendingForUs = true;
+              $scope.updateCopayerList();
+              $scope.$apply();
+            }
+          });
         });
       });
 
@@ -145,8 +149,7 @@ console.log('[walletHome.js:7]',tx); //TODO
 
     modalInstance.result.then(function(txp) {
       txStatus.notify(txp);
-      $scope.$emit('updatePendingTxps');
-      $scope.$emit('updateBalance');
+      $scope.$emit('Local/TxProposalAction');
     });
 
   };
