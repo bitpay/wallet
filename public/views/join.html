@@ -5,8 +5,7 @@
         <div class="panel">
           <div class="row collapse">
             <label for="secret" class="left"><span translate>Wallet Secret</span> 
-              <small translate data-options="disable_for_touch:true" ng-show="joinForm.secret.$pristine" class="has-tip
-                text-gray" tooltip="Paste wallet secret here">Required</small>
+              <small translate ng-show="joinForm.secret.$pristine">Required</small>
             </label>
             <span class="has-error right size-12" ng-show="joinForm.secret.$invalid
               && !joinForm.secret.$pristine">

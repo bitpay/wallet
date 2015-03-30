@@ -212,6 +212,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
   $rootScope.$on('NewCopayer', function() {
     var fc = profileService.focusedClient;
-    fc.openWallet(function() {});
+    fc.openWallet(function() {
+      self.updateAll();
+    });
   });
 });
