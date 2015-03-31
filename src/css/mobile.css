@@ -130,11 +130,6 @@ _:-ms-fullscreen, :root .main {
   background-color: #213140 ;
 }
 
-.left-off-canvas-menu {
-  background: #E4E8EC;
-  line-height: 24px;
-}
-
 .off-canvas-wrap,.inner-wrap{
   height:100%;   
 }
@@ -273,6 +268,10 @@ a.missing-copayers {
   color: #fff;
 }
 
+.sidebar ul.off-canvas-list {
+  margin-bottom: 30px;
+}
+
 .sidebar ul.off-canvas-list li a {
   font-size: 12px;
   vertical-align: middle;
@@ -290,6 +289,11 @@ a.missing-copayers {
 
 .sidebar ul.off-canvas-list li a i {
   opacity: 0.6;
+}
+
+.sidebar .left-off-canvas-menu {
+  background: #E4E8EC;
+  line-height: 24px;
 }
 
 /* 

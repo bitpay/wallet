@@ -37,7 +37,7 @@ angular.element(document).ready(function() {
 
       function handleBitcoinURI(url) {
         if (!url) return;
-        window.location = '#!/uri-payment/' + url;
+        window.location = '#/uri-payment/' + url;
       }
 
       window.plugins.webintent.getUri(handleBitcoinURI);

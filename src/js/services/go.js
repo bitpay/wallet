@@ -54,16 +54,7 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
     if (!fc.isComplete) {
       root.path('copayers');
     } else {
-      // TODO
-      if ($rootScope.pendingPayment) {
-        if ($rootScope.walletForPaymentSet) {
-          root.path('send');
-        } else {
-          root.path('selectWalletForPayment');
-        }
-      } else {
-        root.path('walletHome');
-      }
+      root.path('walletHome');
     }
   };
 

@@ -13,7 +13,7 @@ if (window && window.navigator) {
 //Setting up route
 angular
   .module('copayApp')
-  .config(function(localStorageServiceProvider, bwcServiceProvider, $stateProvider, $urlRouterProvider) {
+  .config(function(bwcServiceProvider, $stateProvider, $urlRouterProvider) {
 
     bwcServiceProvider.setBaseUrl('http://localhost:3001/bws/api');
 
@@ -59,13 +59,24 @@ angular
       })
       .state('uri-payment', {
         url: '/uri-payment/:data',
-        controller: 'paymentUriController',
-        needProfile: false
+        templateUrl: 'views/paymentUri.html',
+        views: {
+          'main': {
+            templateUrl: 'views/paymentUri.html',
+          },
+          'topbar': {
+            templateUrl: 'views/includes/topbar.html',
+            controller: function($scope) {
+              $scope.goBackToState = 'walletHome';
+            }
+          }
+        },
+        needProfile: true
       })
       .state('selectWalletForPayment', {
         url: '/selectWalletForPayment',
         controller: 'walletForPaymentController',
-        needProfile: false
+        needProfile: true
       })
       .state('join', {
         url: '/join',
@@ -244,7 +255,7 @@ angular
         needProfile: true
       });
   })
-  .run(function($rootScope, $state, $log, gettextCatalog, uriHandler, isCordova, profileService) {
+  .run(function($rootScope, $state, $log, gettextCatalog, uriHandler, isCordova, amMoment, profileService) {
 
     var userLang, androidLang;
 
@@ -257,6 +268,7 @@ angular
 
     userLang = userLang ? (userLang.split('-', 1)[0] || 'en') : 'en';
     gettextCatalog.setCurrentLanguage(userLang);
+    amMoment.changeLocale(userLang);
 
     // Register URI handler, not for mobileApp
     if (!isCordova) {

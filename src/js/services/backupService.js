@@ -1,86 +1,73 @@
 'use strict';
+angular.module('copayApp.services')
+  .factory('backupService', function backupServiceFactory($log, $timeout, notification, profileService) {
 
-var BackupService = function($rootScope, notification) {
-  this.$rootScope = $rootScope;
-  this.notifications = notification;
-};
+    var root = {};
 
-BackupService.prototype.getCopayer = function(wallet) {
-  return wallet.totalCopayers > 1 ? wallet.getMyCopayerNickname() : '';
-};
+    var _download = function(ew, filename) {
+      var NewBlob = function(data, datatype) {
+        var out;
 
+        try {
+          out = new Blob([data], {
+            type: datatype
+          });
+          $log.debug("case 1");
+        } catch (e) {
+          window.BlobBuilder = window.BlobBuilder ||
+            window.WebKitBlobBuilder ||
+            window.MozBlobBuilder ||
+            window.MSBlobBuilder;
 
+          if (e.name == 'TypeError' && window.BlobBuilder) {
+            var bb = new BlobBuilder();
+            bb.append(data);
+            out = bb.getBlob(datatype);
+            $log.debug("case 2");
+          } else if (e.name == "InvalidStateError") {
+            // InvalidStateError (tested on FF13 WinXP)
+            out = new Blob([data], {
+              type: datatype
+            });
+            $log.debug("case 3");
+          } else {
+            // We're screwed, blob constructor unsupported entirely   
+            $log.debug("Errore");
+          }
+        }
+        return out;
+      };
 
+      var a = document.createElement("a");
+      document.body.appendChild(a);
+      a.style = "display: none";
 
+      var blob = new NewBlob(ew, 'text/plain;charset=utf-8');
+      var url = window.URL.createObjectURL(blob);
+      a.href = url;
+      a.download = filename;
+      a.click();
+      $timeout(function() {
+        window.URL.revokeObjectURL(url);
+      }, 250);
+      notification.success('Backup created', 'Encrypted backup file saved');
+    };
 
-BackupService.prototype._download = function(ew, walletName, filename) {
+    root.walletExport = function() {
+      var fc = profileService.focusedClient;
+      try {
+        return fc.export({});
+      } catch(err) {
+        $log.debug('Error exporting wallet: ', err);
+      };
+    };
 
-  var NewBlob = function(data, datatype) {
-    var out;
-
-    try {
-      out = new Blob([data], {
-        type: datatype
-      });
-      console.debug("case 1");
-    } catch (e) {
-      window.BlobBuilder = window.BlobBuilder ||
-        window.WebKitBlobBuilder ||
-        window.MozBlobBuilder ||
-        window.MSBlobBuilder;
-
-      if (e.name == 'TypeError' && window.BlobBuilder) {
-        var bb = new BlobBuilder();
-        bb.append(data);
-        out = bb.getBlob(datatype);
-        console.debug("case 2");
-      } else if (e.name == "InvalidStateError") {
-        // InvalidStateError (tested on FF13 WinXP)
-        out = new Blob([data], {
-          type: datatype
-        });
-        console.debug("case 3");
-      } else {
-        // We're screwed, blob constructor unsupported entirely   
-        console.debug("Errore");
-      }
-    }
-    return out;
-  };
-
-  var blob;
-
-  blob = new NewBlob(ew, 'text/plain;charset=utf-8');
-
-
-  this.notifications.success('Backup created', 'Encrypted backup file saved');
-
-  // otherwise lean on the browser implementation
-  saveAs(blob, filename);
-};
-
-BackupService.prototype.walletEncrypted = function(wallet) {
-  return wallet.exportEncrypted(this.$rootScope.iden.password);
-}
-
-BackupService.prototype.walletDownload = function(wallet) {
-  var ew = this.walletEncrypted(wallet);
-  var walletName = wallet.getName();
-  var copayerName = this.getCopayer(wallet);
-  var filename = (copayerName ? copayerName + '-' : '') + walletName + '-keybackup.json.aes';
-  this._download(ew, walletName, filename)
-};
-
-BackupService.prototype.profileEncrypted = function(iden) {
-  iden.setBackupNeeded(false);
-  return iden.exportEncryptedWithWalletInfo(iden.password);
-}
-
-BackupService.prototype.profileDownload = function(iden) {
-  var ew = this.profileEncrypted(iden);
-  var name = iden.fullName;
-  var filename = name + '-profile.json';
-  this._download(ew, name, filename)
-};
-
-angular.module('copayApp.services').service('backupService', BackupService);
+    root.walletDownload = function() {
+      var fc = profileService.focusedClient;
+      var ew = root.walletExport();
+      var walletName = fc.credentials.walletName;
+      var filename = walletName + '-Copaybackup.json';
+      _download(ew, filename)
+    };
+    return root;
+  });

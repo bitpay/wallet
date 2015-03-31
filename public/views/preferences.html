@@ -52,7 +52,7 @@
     </div>
   </div>
   <div class="row">
-    <div class="large-12 columns" ng-if="$root.wallet.isShared()">
+    <div class="large-12 columns" ng-if="index.isShared">
       <h4 translate>Copayers</h4>
       <div class="panel oh">
         <div ng-include="'views/includes/copayers.html'"></div>
@@ -60,32 +60,32 @@
     </div>
   </div>
 
-  <div class="row" ng-show="!backupWalletPlainText && !error">
+  <div class="row" ng-show="!preferences.backupWalletPlainText && !preferences.error">
     <div class="large-12 columns">
-      <button class="primary expand" ng-click="downloadWalletBackup()" ng-disabled="loading"
-        ng-show="!isSafari && !isCordova"><i class="fi-download"></i> 
+      <button class="primary expand" ng-click="preferences.downloadWalletBackup()" ng-disabled="preferences.loading"
+        ng-show="!preferences.isSafari && !preferences.isCordova"><i class="fi-download"></i> 
         <span translate>Download backup</span></button>
-      <button class="primary expand" ng-click="viewWalletBackup()" ng-disabled="loading"
-        ng-show="isSafari && !isCordova"><i class="fi-eye"></i> 
+      <button class="primary expand" ng-click="preferences.viewWalletBackup()" ng-disabled="preferences.loading"
+        ng-show="preferences.isSafari && !preferences.isCordova"><i class="fi-eye"></i> 
         <span translate>View backup</span></button> 
-      <div ng-show="isCordova">
+      <div ng-show="preferences.isCordova">
         <h4 translate>Backup options</h4>
         <button class="primary expand" 
-          ng-click="copyWalletBackup()"><i class="fi-clipboard-pencil"></i> 
+          ng-click="preferences.copyWalletBackup()"><i class="fi-clipboard-pencil"></i> 
           <span translate>Copy to clipboard</span></button>
         <button class="primary expand" 
-          ng-click="sendWalletBackup()"><i class="fi-mail"></i> 
+          ng-click="preferences.sendWalletBackup()"><i class="fi-mail"></i> 
           <span translate>Send by email</span></button>
       </div>
     </div>
   </div>
 
-  <div class="row m20b" ng-show="backupWalletPlainText">
+  <div class="row m20b" ng-show="preferences.backupWalletPlainText">
     <div class="large-12 columns">
       <h3 translate>Copy backup in a safe place</h3>
       <div class="input">
-        <textarea class="show-for-large-up" readonly rows="7">{{backupWalletPlainText}}</textarea>
-        <textarea class="hide-for-large-up" rows="12">{{backupWalletPlainText}}</textarea>
+        <textarea class="show-for-large-up" readonly rows="7">{{preferences.backupWalletPlainText}}</textarea>
+        <textarea class="hide-for-large-up" rows="12">{{preferences.backupWalletPlainText}}</textarea>
       </div>
       <div class="size-12 text-gray text-right">
         <i class="icon-compose"></i> 
@@ -113,12 +113,12 @@
         <h2><i class="fi-minus-circle m10r"></i> 
           <span translate>Delete wallet</span>
         </h2>
-        <div class="box-notification" ng-show="error">
+        <div class="box-notification" ng-show="preferences.error">
           <div class="box-icon error">
             <i class="fi-x size-24"></i>
           </div>
           <span class="text-warning size-14">
-            {{error|translate}}
+            {{preferences.error|translate}}
           </span>
         </div>
         <p translate class="text-gray">Permanently delete this wallet. WARNING: this action cannot be reversed.</p>
