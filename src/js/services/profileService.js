@@ -164,6 +164,35 @@ angular.module('copayApp.services')
       })
     };
 
+    root.importWallet = function(str, opts, cb) {
+      var walletClient = bwcService.getClient();
+      $log.debug('Importing Wallet:', opts);
+      try {
+        walletClient.import(str, {
+          compressed: opts.compressed,
+          password: opts.password
+        });
+      } catch (err) {
+        return cb('Could not import. Check input file and password');
+      }
+
+      var walletId = walletClient.credentials.walletId;
+
+      // check if exist
+      if (lodash.find(root.profile.credentials, {'walletId' : walletId})) {
+        return cb('Wallet already exists');
+      }
+      
+      root.profile.credentials.push(JSON.parse(walletClient.export()));
+      root._setWalletClients();
+
+      root.setAndStoreFocus(walletId, function() {
+        storageService.storeProfile(root.profile, function(err) {
+          return cb(null);
+        });
+      });
+    };
+
     root.create = function(pin, cb) {
       root._createNewProfile(pin, function(err, p) {
 
