@@ -1,19 +1,60 @@
 'use strict';
-angular.module('copayApp.controllers').controller('paymentUriController', function($rootScope, $scope, $routeParams, $location, bwcService, go) {
+angular.module('copayApp.controllers').controller('paymentUriController', 
+    function($rootScope, $stateParams, $location, $timeout, profileService, configService, lodash, bitcore, go) {
 
-  // Build bitcoinURI with querystring
-  var query = [];
-  angular.forEach($location.search(), function(value, key) {
-    query.push(key + "=" + value);
-  });
-  var queryString = query ? query.join("&") : null;
-  var bitcoinURI = $routeParams.data + ( queryString ? '?' + queryString : '');
-  var uri = new bwcService.Bitcore.BIP21(bitcoinURI);
+      function strip(number) {
+        return (parseFloat(number.toPrecision(12)));
+      };
 
-  if (uri && uri.address && (_.isString(uri.address) || uri.address.isValid()) ) {
-    copay.logger.debug('Payment Intent:', bitcoinURI);
-    $rootScope.pendingPayment = bitcoinURI;
-  }
+      // Build bitcoinURI with querystring
+      this.checkBitcoinUri = function() {
+        var query = [];
+        angular.forEach($location.search(), function(value, key) {
+          query.push(key + "=" + value);
+        });
+        var queryString = query ? query.join("&") : null;
+        this.bitcoinURI = $stateParams.data + ( queryString ? '?' + queryString : '');
 
-  go.home();
-});
+        var URI = bitcore.URI;
+        var isUriValid = URI.isValid(this.bitcoinURI);
+        if (!URI.isValid(this.bitcoinURI)) {
+          this.error = true;
+          return;
+        }
+        var uri = new URI(this.bitcoinURI);
+
+        if (uri && uri.address) {
+          var config = configService.getSync().wallet.settings;
+          var unitToSatoshi = config.unitToSatoshi;
+          var satToUnit = 1 / unitToSatoshi;
+          var unitName = config.unitName;
+
+          uri.amount = strip(uri.amount * satToUnit) + ' ' + unitName;
+          return uri;
+        }
+      };
+
+      this.getWallets = function() {
+        if (!profileService.profile) return;
+        var ret = lodash.map(profileService.profile.credentials, function(c) {
+          return {
+            m: c.m,
+            n: c.n,
+            name: c.walletName,
+            id: c.walletId,
+          };
+        });
+        return lodash.sortBy(ret, 'walletName');
+      };
+
+      this.selectWallet = function(wid) {
+        var self = this;
+        if (wid != profileService.focusedClient.credentials.walletId) {
+          profileService.setAndStoreFocus(wid, function() {});
+        }
+        go.send();
+        $timeout(function() {
+          $rootScope.$emit('paymentUri', self.bitcoinURI);
+        }, 100);
+      };
+    });

@@ -80,7 +80,7 @@ module.exports = function(grunt) {
         src: [
           'bower_components/qrcode-generator/js/qrcode.js',
           'bower_components/qrcode-decoder-js/lib/qrcode-decoder.js',
-          'bower_components/moment/moment.js',
+          'bower_components/moment/min/moment-with-locales.js',
           'bower_components/angular/angular.js',
           'bower_components/angular-ui-router/release/angular-ui-router.js',
           'bower_components/angular-local-storage/dist/angular-local-storage.js',

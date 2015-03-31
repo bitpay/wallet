@@ -18,16 +18,13 @@ angular.module('copayApp.controllers').controller('sendController',
       this.showScanner = false;
       this.isMobile = isMobile.any();
 
-
-      if ($rootScope.pendingPayment) {
-        $timeout(function() {
-          self.setFromUri($rootScope.pendingPayment)
-          $rootScope.pendingPayment = null;
-        }, 100);
-      }
-
       this.setInputs();
 
+      var paymentUri = $rootScope.$on('paymentUri', function(event, uri) {
+        $timeout(function() {
+          self.setForm(uri);
+        }, 100);
+      });
 
       var config = configService.getSync().wallet.settings;
       this.alternativeName = config.alternativeName;
@@ -49,6 +46,7 @@ angular.module('copayApp.controllers').controller('sendController',
 
       $scope.$on('$destroy', function() {
         openScannerCordova();
+        paymentUri();
       });
     };
 
@@ -355,6 +353,9 @@ angular.module('copayApp.controllers').controller('sendController',
 
       uri = sanitizeUri(uri);
 
+      if (!bitcore.URI.isValid(uri)) {
+        return uri;
+      }
       var parsed = new bitcore.URI(uri);
       var addr = parsed.address.toString();
       var message = parsed.message;
@@ -364,7 +365,6 @@ angular.module('copayApp.controllers').controller('sendController',
       var amount = parsed.amount ?
         (parsed.amount.toFixed(0) * satToUnit).toFixed(this.unitDecimals) : 0;
 
-      console.log('[send.js.356]'); //TODO
       this.setForm(addr, amount, message);
       return addr;
     };
