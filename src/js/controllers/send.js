@@ -28,6 +28,7 @@ angular.module('copayApp.controllers').controller('sendController',
 
       var config = configService.getSync().wallet.settings;
       this.alternativeName = config.alternativeName;
+      this.alternativeAmount = 0;
       this.alternativeIsoCode = config.alternativeIsoCode;
       this.unitToSatoshi = config.unitToSatoshi;
       this.unitDecimals = config.unitDecimals;
@@ -108,6 +109,7 @@ angular.module('copayApp.controllers').controller('sendController',
             } else {
               $scope.__alternative = 0;
             }
+            self.alternativeAmount = $scope.__alternative;
           },
           enumerable: true,
           configurable: true
@@ -278,12 +280,11 @@ angular.module('copayApp.controllers').controller('sendController',
       }, 1);
     };
 
-    var $oscope = this;
     this.openPPModal = function(paypro) {
       var ModalInstanceCtrl = function($scope, $modalInstance) {
         var satToUnit = 1 / self.unitToSatoshi;
         $scope.paypro = paypro;
-        $scope.alternative = $oscope._alternative;
+        $scope.alternative = self.alternativeAmount;
         $scope.alternativeIsoCode = self.alternativeIsoCode;
         $scope.isRateAvailable = self.isRateAvailable;
         $scope.unitTotal = (paypro.amount * satToUnit).toFixed(self.unitDecimals);
