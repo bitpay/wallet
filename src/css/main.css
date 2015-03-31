@@ -447,9 +447,9 @@ ul.tx-copayers {
 }
 
 .name-wallet {
+  color: #7A8C9E;
   font-size: 14px;
-  color: #fff;
-  font-weight: 700;
+  font-weight: 300;
 }
 
 .name-wallet i {
