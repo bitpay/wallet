@@ -48,7 +48,9 @@ angular.module('copayApp.services')
       a.href = url;
       a.download = filename;
       a.click();
-      window.URL.revokeObjectURL(url);
+      $timeout(function() {
+        window.URL.revokeObjectURL(url);
+      }, 250);
       notification.success('Backup created', 'Encrypted backup file saved');
     };
 
