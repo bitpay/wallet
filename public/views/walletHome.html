@@ -1,7 +1,5 @@
 <div class="home-wallet" ng-controller="walletHomeController as home" ng-init="home.init()">
   <div class="row">
-    <div class="columns">
-      <div class="panel oh">
         <div class="amount">
           <div class="size-36">
             <strong>
@@ -9,13 +7,13 @@
               <span ng-show="index.updatingStatus">...</span>
             </strong>
           </div>
-          <div class="size-14 text-gray" ng-show="!index.updatingStatus">
+          <div class="size-14" ng-show="!index.updatingStatus">
             <span ng-if="!index.updatingStatus && index.alternativeBalanceAvailable">{{index.totalBalanceAlternative}} {{index.alternativeIsoCode}}</span>
             <span ng-if="!index.updatingBalance && !index.alternativeBalanceAvailable">N/A</span>
             <span ng-if="index.updatingBalance"><i class="fi-bitcoin-circle icon-rotate spinner"></i></span>
           </div>
         </div>
-        <div class="pr">
+        <div class="pr columns line-b">
           <div class="avatar-wallet left">{{index.walletName | limitTo: 1}}</div>      
           <div class="right">
             <a ng-click="$root.go('preferences')" class="button outline light-gray tiny m0">
@@ -23,7 +21,7 @@
               <span class="show-for-medium-up" translate>Preferences</span>
             </a>
           </div>
-          <div class="wallet-info">
+          <div class="wallet-info m20b">
               <p class="m0">
               {{index.m}} <span translate>of</span>  {{index.n}}  
               </p>
@@ -34,8 +32,6 @@
             </div>
           </div> 
         </div>
-      </div>
-    </div>
   </div>
 
   <div ng-show="index.requiresMultipleSignatures  && index.txps[0]">

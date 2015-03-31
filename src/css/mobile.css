@@ -108,11 +108,12 @@ _:-ms-fullscreen, :root .main {
 }
 
 .amount {
-  background-color:  #F1F3F5;
+  background-color:  #1ABC9C;
   width: 100%;
   text-align: center;
-  padding: 2.4rem 1rem;
+  padding: 3rem 1rem;
   margin-bottom: 15px;
+  color: #fff;
 }
 
 .scroll-section {
