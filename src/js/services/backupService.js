@@ -1,9 +1,8 @@
 'use strict';
 angular.module('copayApp.services')
-  .factory('backupService', function backupServiceFactory($log, notification, profileService) {
+  .factory('backupService', function backupServiceFactory($log, $timeout, notification, profileService) {
 
     var root = {};
-    var fc = profileService.focusedClient;
 
     var _download = function(ew, filename) {
       var NewBlob = function(data, datatype) {
@@ -55,6 +54,7 @@ angular.module('copayApp.services')
     };
 
     root.walletExport = function() {
+      var fc = profileService.focusedClient;
       try {
         return fc.export({});
       } catch(err) {
@@ -63,6 +63,7 @@ angular.module('copayApp.services')
     };
 
     root.walletDownload = function() {
+      var fc = profileService.focusedClient;
       var ew = root.walletExport();
       var walletName = fc.credentials.walletName;
       var filename = walletName + '-Copaybackup.json';
