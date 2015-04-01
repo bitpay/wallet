@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('preferencesController',
-  function($scope, $rootScope, $filter, $timeout, $modal, balanceService, notification, backupService, profileService, configService, isMobile, isCordova, go, rateService) {
+  function($scope, $rootScope, $filter, $timeout, $modal, balanceService, notification, backupService, profileService, configService, isMobile, isCordova, go, rateService, applicationService, bwcService) {
     this.isSafari = isMobile.Safari();
     this.isCordova = isCordova;
     this.hideAdv = true;
@@ -13,6 +13,7 @@ angular.module('copayApp.controllers').controller('preferencesController',
     var config = configService.getSync();
 
     this.unitName = config.wallet.settings.unitName;
+  this.bwsurl = config.bws.url;
 
     this.unitOpts = [{
       name: 'Satoshis (100,000,000 satoshis = 1BTC)',
@@ -74,15 +75,21 @@ angular.module('copayApp.controllers').controller('preferencesController',
             alternativeName: this.selectedAlternative.name,
             alternativeIsoCode: this.selectedAlternative.isoCode,
           }
+        },
+        bws: {
+          url: this.bwsurl,
         }
       };
 
       configService.set(opts, function(err) {
         if (err) console.log(err);
+        applicationService.restart();
         go.walletHome();
         $scope.$emit('Local/ConfigurationUpdated');
         notification.success('Success', $filter('translate')('settings successfully updated'));
       });
+
+
 
       // notification.success('Success', $filter('translate')('settings successfully updated'));
       // balanceService.update(w, function() {

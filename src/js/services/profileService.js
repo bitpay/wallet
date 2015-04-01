@@ -8,6 +8,15 @@ angular.module('copayApp.services')
     root.focusedClient = null;
     root.walletClients = {};
 
+    configService.get(function(err, config) {
+      if (err) {
+        throw new Error(err);
+      }
+      var bwsurl = config.bws.url;
+      bwcService.setBaseUrl(bwsurl);
+    });
+
+
     // Add some convenience shortcuts
     root.setupFocusedClient = function() {
       var fc = root.focusedClient;
@@ -49,6 +58,7 @@ angular.module('copayApp.services')
     root._setWalletClients = function() {
       root.walletClients = {};
       lodash.each(root.profile.credentials, function(credentials) {
+
         var client = bwcService.getClient(JSON.stringify(credentials));
 
         client.removeAllListeners();
