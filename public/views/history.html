@@ -1,7 +1,7 @@
 <div class="history" ng-controller="historyController as history" ng-init="history.getTxHistory()">
   <div class="row" ng-show="history.updatingTxHistory || !history.txHistory[0]">
     <div class="large-12 columns">
-      <div class="panel oh text-center">
+      <div class="oh text-center">
         <span ng-if="history.updatingTxHistory" class="text-gray" translate>Getting transactions...</span>
         <span ng-if="!history.txHistory[0] && !history.updatingTxHistory">No transactions yet</span>
       </div>
@@ -24,7 +24,7 @@
               'text-warning': btx.action == 'sent', 
               'text-black': btx.action == 'moved'}">
             <span class="size-18">
-              <span ng-if="btx.action == 'received'">+</span><span ng-if="btx.action == 'sent'">-</span>{{history.getAmount(btx.amount)}}
+              <span ng-if="btx.action == 'received'">+</span><span ng-if="btx.action == 'sent'">-</span>{{history.formatAmount(btx.amount)}}
               {{history.getUnitName()}}
             </span>
           </div>
