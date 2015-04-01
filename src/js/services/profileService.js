@@ -132,7 +132,9 @@ angular.module('copayApp.services')
       var walletClient = bwcService.getClient();
 
       // TODO livenet
-      walletClient.createWallet('Personal Wallet', 'me', 1, 1, 'testnet', function(err) {
+      walletClient.createWallet('Personal Wallet', 'me', 1, 1, {
+        network: 'testnet'
+      }, function(err) {
         if (err) return cb('Error creating wallet');
         var p = Profile.create({
           credentials: [JSON.parse(walletClient.export())],
@@ -141,12 +143,14 @@ angular.module('copayApp.services')
       })
     };
 
-    // TODO name
+    // TODO copayer name
     root.createWallet = function(opts, cb) {
       var walletClient = bwcService.getClient();
       $log.debug('Creating Wallet:', opts);
 
-      walletClient.createWallet(opts.name, opts.myName || 'me', opts.m, opts.n, opts.networkName, function(err, secret) {
+      walletClient.createWallet(opts.name, opts.myName || 'me', opts.m, opts.n, {
+        network: opts.networkName
+      }, function(err, secret) {
         if (err) return cb('Error creating wallet');
 
         root.profile.credentials.push(JSON.parse(walletClient.export()));
@@ -222,6 +226,23 @@ angular.module('copayApp.services')
       });
     };
 
+    root.importLegacyWallet = function(username, password, blob, cb) {
+      var walletClient = bwcService.getClient();
+
+      walletClient.createWalletFromOldCopay(username, password, blob, function(err) {
+        if (err) return cb('Error creating wallet');
+
+        $log.debug('Creating Wallet:', walletClient.credentials);
+        root.profile.credentials.push(JSON.parse(walletClient.export()));
+        root._setWalletClients();
+        root.setAndStoreFocus(walletClient.credentials.walletId, function() {
+          storageService.storeProfile(root.profile, function(err) {
+            return cb();
+          });
+        });
+      });
+    };
+
     //
     // Up to here was refectored.
     // ===============================================================================
@@ -230,52 +251,6 @@ angular.module('copayApp.services')
     root.signout = function() {
       root.profile = null;
       root.lastFocusedWallet = null;
-    };
-
-    // TODO TODO
-    root.bind = function(iden) {
-      preconditions.checkArgument(_.isObject(iden));
-      copay.logger.debug('Binding profile...');
-
-      var self = this;
-      root.setupGlobalVariables(iden);
-      iden.on('noWallets', function() {
-        notification.warning('No Wallets', 'Your profile has no wallets. Create one here');
-        $rootScope.starting = false;
-        $location.path('/add');
-        $timeout(function() {
-          $rootScope.$digest();
-        }, 1);
-      });
-
-      iden.on('walletDeleted', function(wid) {
-        // do nothing. this is handled 'on sync' on controller.
-      });
-
-      iden.on('walletStorageError', function(wid, message) {
-        notification.error('Error storing wallet', message);
-      });
-
-      iden.on('closed', function() {
-        delete $rootScope['wallet'];
-        delete $rootScope['iden'];
-        applicationService.restart();
-      });
-    };
-
-    root.importProfile = function(str, password, cb) {
-      copay.Identity.importFromEncryptedFullJson(str, password, {
-        pluginManager: pluginManager.getInstance(config),
-        network: config.network,
-        networkName: config.networkName,
-        walletDefaults: config.wallet,
-        passphraseConfig: config.passphraseConfig,
-      }, function(err, iden, walletObjs) {
-        if (err) return cb(err);
-        root.bind(iden);
-        iden.importMultipleWalletsFromObj(walletObjs);
-        return cb();
-      });
     };
 
     return root;

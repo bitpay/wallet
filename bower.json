@@ -18,11 +18,11 @@
     "foundation-icon-fonts": "*",
     "ng-lodash": "~0.2.0",
     "angular-moment": "~0.9.0",
-    "angular-bitcore-wallet-client": "~0.0.5",
-    "angular-ui-router": "~0.2.13",
-    "qrcode-decoder-js": "*",
     "angular-bitcore-wallet-client": "^0.0.5",
-    "sjcl": "~1.0.2",
-    "buffer": "*"
+    "angular-ui-router": "~0.2.13",
+    "qrcode-decoder-js": "*"
+  },
+  "resolutions": {
+    "qrcode-generator": "0.0.1"
   }
 }
