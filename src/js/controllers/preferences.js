@@ -104,10 +104,6 @@ angular.module('copayApp.controllers').controller('preferencesController',
 
 
       // notification.success('Success', $filter('translate')('settings successfully updated'));
-      // balanceService.update(w, function() {
-      //   pendingTxsService.update();
-      //   $rootScope.$digest();
-      // });
     };
 
     var _modalDeleteWallet = function() {

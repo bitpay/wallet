@@ -1,3 +1,8 @@
+
+# Warning
+
+This NEEDS to be updated.
+
 ## Running in the Native Shell
 
 Copay can be executed from within a "native" application shell, providing some

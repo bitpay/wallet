@@ -27,6 +27,7 @@ module.exports = function(config) {
       'bower_components/angular-qrcode/qrcode.js',
       'bower_components/angular-gettext/dist/angular-gettext.js',
       'bower_components/angular-touch/angular-touch.js',
+      'bower_components/buffer/buffer.js',
       'node_modules/angular-mocks/angular-mocks.js',
       'src/js/**/*.js',
       'test/**/*.js'
@@ -57,11 +58,15 @@ module.exports = function(config) {
     // optionally, configure the reporter
     coverageReporter: {
       dir: 'coverage/',
-      reporters: [
-        { type: 'html', subdir: 'report-html' },
-        { type: 'lcov', subdir: 'report-lcov' },
-        { type: 'text-summary' }
-      ]
+      reporters: [{
+        type: 'html',
+        subdir: 'report-html'
+      }, {
+        type: 'lcov',
+        subdir: 'report-lcov'
+      }, {
+        type: 'text-summary'
+      }]
     },
 
     // web server port

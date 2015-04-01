@@ -111,6 +111,22 @@ angular
         templateUrl: 'views/importProfile.html',
         needProfile: false
       })
+      .state('importLegacy', {
+        url: '/importLegacy',
+        needProfile: true,
+        views: {
+          'main': {
+            templateUrl: 'views/importLegacy.html',
+          },
+          'topbar': {
+            templateUrl: 'views/includes/topbar.html',
+            controller: function($scope) {
+              $scope.goBackToState = 'add';
+            }
+          }
+        }
+
+      })
       .state('create', {
         url: '/create',
         templateUrl: 'views/create.html',

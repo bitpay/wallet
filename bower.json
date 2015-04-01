@@ -21,6 +21,8 @@
     "angular-bitcore-wallet-client": "~0.0.5",
     "angular-ui-router": "~0.2.13",
     "qrcode-decoder-js": "*",
-    "angular-bitcore-wallet-client": "^0.0.5"
+    "angular-bitcore-wallet-client": "^0.0.5",
+    "sjcl": "~1.0.2",
+    "buffer": "*"
   }
 }

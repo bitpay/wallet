@@ -92,7 +92,10 @@ module.exports = function(grunt) {
           'bower_components/angular-qrcode/qrcode.js',
           'bower_components/angular-gettext/dist/angular-gettext.js',
           'bower_components/angular-touch/angular-touch.js',
-          'bower_components/angular-bitcore-wallet-client/angular-bitcore-wallet-client.js'
+          'bower_components/angular-bitcore-wallet-client/angular-bitcore-wallet-client.js',
+          // This is ONLY for backwards compat... used at importLegacy
+          'bower_components/buffer/buffer.js',
+          'bower_components/sjcl/sjcl.js',
           // If you add libs here, remember to add it too to karma.conf
         ],
         dest: 'public/lib/angular.js'

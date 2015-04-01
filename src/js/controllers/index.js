@@ -218,6 +218,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   });
 
   $rootScope.$on('NewCopayer', function() {
+    // Re try to open wallet (will triggers) 
     var fc = profileService.focusedClient;
     fc.openWallet(function() {
       self.updateAll();
