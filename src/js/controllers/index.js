@@ -9,7 +9,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   };
 
 
+
   self.setFocusedWallet = function() {
+
     var fc = profileService.focusedClient;
     if (!fc) return;
 
@@ -70,11 +72,12 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
   self.setPendingTxps = function(txps) {
     self.txps = txps;
+    var fc = profileService.focusedClient;
     var config = configService.getSync().wallet.settings;
     self.pendingTxProposalsCountForUs = 0;
     lodash.each(txps, function(tx) {
       var amount = tx.amount * self.satToUnit;
-      tx.amountStr = amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + ' ' + config.unitName;
+      tx.amountStr = profileService.formatAmount(tx.amount) + ' ' + config.unitName;
       tx.alternativeAmount = rateService.toFiat(tx.amount, config.alternativeIsoCode).toFixed(2);
       tx.alternativeAmountStr = tx.alternativeAmount + " " + config.alternativeIsoCode;
       tx.alternativeIsoCode = config.alternativeIsoCode;
@@ -91,7 +94,11 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     });
   };
 
+
   self.setBalance = function(balance) {
+    var fc = profileService.focusedClient;
+    console.log('[index.js.48:balance:]', balance); //TODO
+
     var config = configService.getSync().wallet.settings;
     var COIN = 1e8;
 
@@ -117,10 +124,14 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.lockedBalanceBTC = strip(self.lockedBalanceSat / COIN);
     self.availableBalanceBTC = strip(self.availableBalanceBTC / COIN);
 
-    // Balance as String
-    self.totalBalanceStr = self.totalBalance.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + ' ' + self.unitName;
-    self.lockedBalanceStr = self.lockedBalance.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + ' ' + self.unitName;
-    self.availableBalanceStr = self.availableBalance.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + ' ' + self.unitName;
+
+    //STR
+    self.totalBalanceStr = profileService.formatAmount(self.totalBalanceSat) + ' ' + self.unitName;
+    self.lockedBalanceStr = profileService.formatAmount(self.lockedBalanceSat) + ' ' + self.unitName;
+    self.availableBalanceStr = profileService.formatAmount(self.availableBalanceSat) + ' ' + self.unitName;
+
+    self.alternativeName = config.alternativeName;
+    self.alternativeIsoCode = config.alternativeIsoCode;
 
     // var availableBalanceNr = safeBalanceSat * satToUnit;
     // r.safeUnspentCount = safeUnspentCount;
@@ -133,20 +144,16 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
     rateService.whenAvailable(function() {
 
-      var config = configService.getSync().wallet.settings;
-      self.alternativeName = config.alternativeName;
-      self.alternativeIsoCode = config.alternativeIsoCode;
 
-      var totalBalanceAlternative = rateService.toFiat(self.totalBalance * self.unitToSatoshi, config.alternativeIsoCode);
-      var lockedBalanceAlternative = rateService.toFiat(self.lockedBalance * self.unitToSatoshi, config.alternativeIsoCode);
-      var alternativeConversionRate = rateService.toFiat(100000000, config.alternativeIsoCode);
+      var totalBalanceAlternative = rateService.toFiat(self.totalBalance * self.unitToSatoshi, self.alternativeIsoCode);
+      var lockedBalanceAlternative = rateService.toFiat(self.lockedBalance * self.unitToSatoshi, self.alternativeIsoCode);
+      var alternativeConversionRate = rateService.toFiat(100000000, self.alternativeIsoCode);
 
       self.totalBalanceAlternative = $filter('noFractionNumber')(totalBalanceAlternative, 2);
       self.lockedBalanceAlternative = $filter('noFractionNumber')(lockedBalanceAlternative, 2);
       self.alternativeConversionRate = $filter('noFractionNumber')(alternativeConversionRate, 2);
 
       self.alternativeBalanceAvailable = true;
-      self.alternativeIsoCode = config.alternativeIsoCode;
 
       self.alternativeBalanceAvailable = true;
       self.updatingBalance = false;

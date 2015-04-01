@@ -38,6 +38,7 @@ angular.module('copayApp.services').factory('configService', function(localStora
         unitName: 'bits',
         unitToSatoshi: 100,
         unitDecimals: 2,
+        unitCode: 'bit',
         alternativeName: 'US Dollar',
         alternativeIsoCode: 'USD',
       }
@@ -62,6 +63,8 @@ angular.module('copayApp.services').factory('configService', function(localStora
 
     return configCache;
   };
+
+
 
   root.get = function(cb) {
     localStorageService.get('config', function(err, localConfig) {
