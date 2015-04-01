@@ -262,11 +262,6 @@ angular
             }
           }
         }
-      })
-      .state('signout', {
-        url: '/signout',
-        controller: 'signoutController',
-        needProfile: true
       });
   })
   .run(function($rootScope, $state, $log, gettextCatalog, uriHandler, isCordova, amMoment, profileService) {
