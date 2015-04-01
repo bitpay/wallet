@@ -230,14 +230,14 @@ angular.module('copayApp.services')
       var walletClient = bwcService.getClient();
 
       walletClient.createWalletFromOldCopay(username, password, blob, function(err) {
-        if (err) return cb('Error creating wallet');
+        if (err) return cb('Error importing wallet: ' + err);
 
         $log.debug('Creating Wallet:', walletClient.credentials);
         root.profile.credentials.push(JSON.parse(walletClient.export()));
         root._setWalletClients();
         root.setAndStoreFocus(walletClient.credentials.walletId, function() {
           storageService.storeProfile(root.profile, function(err) {
-            return cb();
+            return cb(null, walletClient.credentials.walletName);
           });
         });
       });
