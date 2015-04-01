@@ -1,6 +1,7 @@
 <nav class="sidebar left-off-canvas-menu" ng-controller="sidebarController as sidebar" ng-init="sidebar.init()">
   <header>
-    <h1>Copay <small ng-include="'views/includes/version.html'"></small></h1>
+    <img src="img/logo-negative-beta.svg" alt="Copay" width="80">
+    <div ng-include="'views/includes/version.html'"></div>
   </header>
   <ul class="off-canvas-list">
     <li ng-show="sidebar.wallets[0]"
@@ -9,18 +10,18 @@
     class="nav-item">
     <a ng-click="sidebar.switchWallet(item.id)">
       <div class="avatar-wallet">{{(item.name || item.id) | limitTo: 1}}</div>
-      <div class="ellipsis name-wallet text-black">{{item.name || item.id}}</div>
+      <div class="ellipsis name-wallet">{{item.name || item.id}}</div>
       <div class="size-12">{{item.m}} of {{item.n}}</div> 
     </a>
     </li> 
     <li>
       <a ng-click="$root.go('add')">
         <i class="icon-arrow-right3 size-18 right m10t"></i>
-        <i class="fi-plus size-18 db left m10r"></i>
+        <i class="fi-plus size-24 db left m10r m5t"></i>
         <div class="tu text-bold"> 
           <span class="size-16" translate>Add wallet</span>
         </div>
-        <div class="text-light" translate>Create, join or import</div>
+        <div translate>Create, join or import</div>
       </a>
     </li>
   </ul>

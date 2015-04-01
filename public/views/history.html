@@ -1,25 +1,35 @@
 <div class="history" ng-controller="historyController as history" ng-init="history.getTxHistory()">
   <div class="row" ng-show="history.updatingTxHistory || !history.txHistory[0]">
     <div class="large-12 columns">
-      <div class="panel oh text-center">
+      <div class="oh text-center">
         <span ng-if="history.updatingTxHistory" class="text-gray" translate>Getting transactions...</span>
         <span ng-if="!history.txHistory[0] && !history.updatingTxHistory">No transactions yet</span>
       </div>
     </div>
   </div>
   <div ng-show="history.txHistory[0]" class="row">
-    <div class="large-12 columns">
-      <div class="panel oh" ng-show="!history.updatingTxHistory">
+      <div class="oh" ng-show="!history.updatingTxHistory">
         <div ng-repeat="btx in history.txHistory | limitTo:history.limit" 
           ng-click="history.openTxModal(btx)" 
           ng-class="{'line-b':!$last}" 
           class="row last-transactions-content">
+          <div class="large-3 medium-3 small-3 columns">
+            <span class="label tu success" ng-show="btx.action == 'received'">Received</span>
+            <span class="label tu alert" ng-show="btx.action == 'sent'">Sent</span>
+            <span class="label tu gray" ng-show="btx.action == 'moved'">Moved</span>
+          </div>
 
-          <div class="large-6 medium-6 small-5 columns">
-            <div class="ellipsis" ng-if="btx.message || btx.addressTo">
-              {{btx.message || btx.addressTo}}
-            </div>
-            <div class="m5t size-14 text-gray">
+          <div class="large-5 medium-5 small-5 columns" ng-class="{
+              'text-primary' : btx.action == 'received',
+              'text-warning': btx.action == 'sent', 
+              'text-black': btx.action == 'moved'}">
+            <span class="size-18">
+              <span ng-if="btx.action == 'received'">+</span><span ng-if="btx.action == 'sent'">-</span>{{history.formatAmount(btx.amount)}}
+              {{history.getUnitName()}}
+            </span>
+          </div>
+          <div class="large-4 medium-4 small-4 columns text-right">
+            <div class="m5t size-12 text-gray">
               <time ng-if="btx.time">{{btx.time * 1000 | amTimeAgo}}</time>
               <span translate class="text-warning" 
                 ng-show="!btx.time && (!btx.confirmations || btx.confirmations == 0)">
@@ -27,23 +37,10 @@
               </span>
             </div>
           </div>
-
-          <div class="large-6 medium-6 small-7 columns">
-            <div class="text-right" 
-              ng-class="{
-              'text-primary' : btx.action == 'received',
-              'text-warning': btx.action == 'sent', 
-              'text-gray': btx.action == 'moved'}">
-              <span class="size-18">
-                <span ng-if="btx.action == 'received'">+</span><span ng-if="btx.action == 'sent'">-</span>{{history.formatAmount(btx.amount)}}
-                {{history.getUnitName()}}
-              </span>
-              <span class="size-14 db m5t text-gray" ng-show="btx.alternativeAmount">
-                {{btx.alternativeAmount}} {{history.getAlternativeIsoCode()}}
-              </span>
-            </div>
+          <div class="size-14 text-gray columns m5t" ng-if="btx.message || btx.addressTo">
+            {{btx.message || btx.addressTo}}
           </div>
-        </div> 
+        </div>
       </div>
       <div class="row">
         <div class="large-6 medium-6 small-6 columns">
@@ -57,7 +54,6 @@
             ng-show="history.txHistory[history.limit]">Next</button>
         </div>
       </div>
-    </div>
   </div>
 </div>
 <div class="extra-margin-bottom"></div>
