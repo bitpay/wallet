@@ -95,7 +95,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   };
 
 
-  self.updateBalance = function(balance) {
+  self.setBalance = function(balance) {
     var fc = profileService.focusedClient;
     console.log('[index.js.48:balance:]', balance); //TODO
 

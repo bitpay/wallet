@@ -29,21 +29,22 @@ angular.module('copayApp.controllers').controller('historyController',
 
     this.getTxHistory = function() {
       var self = this;
-      fc.getTxHistory(null, function(err, res) {
-        if (err) throw err;
-
-        if (!res) {
-          return;
-        }
+      self.updatingTxHistory = true;
+      profileService.focusedClient.getTxHistory({
+        skip: self.skip,
+        limit: self.limit + 1
+      }, function(err, txs) {
 
         var now = new Date();
-        var items = res;
-        lodash.each(items, function(tx) {
+        lodash.each(txs, function(tx) {
           tx.ts = tx.minedTs || tx.sentTs;
           tx.rateTs = Math.floor((tx.ts || now) / 1000);
-          tx.amount = profileService.formatAmount(tx.amount); //$filter('noFractionNumber')(
+          tx.amountStr = profileService.formatAmount(tx.amount); //$filter('noFractionNumber')(
         });
-        return cb(null, res);
+
+        self.txHistory = txs;
+        self.updatingTxHistory = false;
+        $scope.$digest();
       });
     };
 
