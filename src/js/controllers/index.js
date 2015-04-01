@@ -31,6 +31,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
   self.updateAll = function() {
     var fc = profileService.focusedClient;
+    if (!fc) return;
     self.updatingStatus = true;
     $log.debug('Updating Status:', fc);
     fc.getStatus(function(err, walletStatus) {
@@ -197,6 +198,15 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
   $rootScope.$on('Local/WalletCompleted', function(event) {
     go.walletHome();
+  });
+
+  $rootScope.$on('Local/OnLine', function(event) {
+    self.isOffLine = false;
+    self.updateAll();
+  });
+
+  $rootScope.$on('Local/OffLine', function(event) {
+    self.isOffLine = true;
   });
 
   lodash.each(['NewTxProposal', 'TxProposalFinallyRejected', 'NewOutgoingTx', 'NewIncomingTx', 'Local/NewTxProposal', 'Local/TxProposalAction'], function(eventName) {

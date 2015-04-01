@@ -32,11 +32,11 @@ angular.element(document).ready(function() {
       }, false);
 
       document.addEventListener('offline', function() {
-        alert('No internet conection');
+        window.location = '#/network/offline';
       }, false);
 
       document.addEventListener("online", function() {
-        alert('Internet conection back');
+        window.location = '#/network/online';
       }, false);
 
       setTimeout(function() {

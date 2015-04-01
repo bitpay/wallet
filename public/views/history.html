@@ -1,4 +1,5 @@
-<div class="history" ng-controller="historyController as history" ng-init="history.getTxHistory()">
+<div class="history" ng-controller="historyController as history" ng-init="history.getTxHistory()"
+  ng-show="!index.isOffLine">
   <div class="row" ng-show="history.updatingTxHistory || !history.txHistory[0]">
     <div class="large-12 columns">
       <div class="oh text-center">
@@ -56,4 +57,5 @@
       </div>
   </div>
 </div>
+<div ng-if="index.isOffLine" class="m20tp text-center" translate>Checking your internet connection...</div>
 <div class="extra-margin-bottom"></div>

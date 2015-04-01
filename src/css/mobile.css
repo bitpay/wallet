@@ -431,6 +431,12 @@ a.pin-button:active {
   margin: 0;
 }
 
+.dr-notification-wrapper.offline {
+  position: absolute;
+  top: 45px;
+  z-index: 11;
+}
+
 .dr-notification-close-btn {
   color: #A5B2BF;
   border: 1px solid #CED5DC;

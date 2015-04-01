@@ -26,6 +26,7 @@
         <div ng-include="'views/includes/sidebar.html'" ng-if="index.hasProfile"></div>
 
         <div notifications="right top"></div> 
+        <div ng-include="'views/includes/offline.html'" ng-if="index.hasProfile && index.isOffLine"></div>
 
         <section ng-class="{'main': index.hasProfile}" ui-view="main"></section>
 

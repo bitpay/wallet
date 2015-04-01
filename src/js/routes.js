@@ -262,6 +262,25 @@ angular
             }
           }
         }
+      })
+      .state('network', {
+        url: '/network/:status',
+        views: {
+          'main': {
+            controller: function($scope, $stateParams, go) {
+              switch($stateParams.status) {
+                case 'online':
+                  $scope.$emit('Local/OnLine');
+                  break;
+                case 'offline':
+                  $scope.$emit('Local/OffLine');
+                  break;
+              };
+              go.walletHome();
+            }
+          }
+        },
+        needProfile: false
       });
   })
   .run(function($rootScope, $state, $log, gettextCatalog, uriHandler, isCordova, amMoment, profileService) {

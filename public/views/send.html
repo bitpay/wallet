@@ -1,4 +1,4 @@
-<div class="send" ng-controller="sendController as send" ng-init="send.init()">
+<div class="send" ng-controller="sendController as send" ng-init="send.init()" ng-show="!index.isOffLine">
   <div class="row" ng-show="index.lockedBalance">
     <div class="large-12 columns">
       <div class="panel">
@@ -154,5 +154,6 @@
   </div>
   <!--  end of row -->
 </div>
+<div ng-if="index.isOffLine" class="m20tp text-center" translate>Checking your internet connection...</div>
 
 <div class="extra-margin-bottom"></div>

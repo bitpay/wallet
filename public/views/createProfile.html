@@ -5,8 +5,15 @@
     <img src="img/logo-negative-beta.svg" alt="Copay" width="100">
     <div ng-include="'views/includes/version.html'"></div>
   </div>
-  <div ng-include="'views/includes/pin.html'" ng-init="confirmPin=true"></div>
-  <!-- <div ng-include="'views/includes/pin.html'" ng-init="testPin=1234"></div> -->
+  <div ng-if="index.isOffLine" class="row">
+    <div class="large-12 columns">
+      <h1 class="text-center text-warning" translate>Warning</h1>
+      <div class="panel">
+        <p translate>You don’t have an internet connection active. Copay needs connection to create a wallet</p>
+      </div>
+    </div>
+  </div>
+  <div ng-if="!index.isOffLine" ng-include="'views/includes/pin.html'" ng-init="confirmPin=true"></div>
 </div>
 <div class="extra-margin-bottom"></div>
 

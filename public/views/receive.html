@@ -28,7 +28,7 @@
         </div>
     </div>
   </div>
-  <div class="row" ng-show="receive.addr">
+  <div class="row" ng-show="receive.addr && !index.isOffLine">
     <div class="large-12 columns" ng-if="receive.addresses[0]">
       <div ng-repeat="addr in receive.addresses" ng-click="receive.openAddressModal(addr)" class="pointer">
         <div class="panel">
