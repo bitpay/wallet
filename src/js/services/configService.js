@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.services').factory('configService', function(localStorageService, lodash, bwcService) {
+angular.module('copayApp.services').factory('configService', function(localStorageService, lodash) {
   var root = {};
 
   var defaultConfig = {
