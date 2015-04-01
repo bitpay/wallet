@@ -149,6 +149,7 @@ _:-ms-fullscreen, :root .main {
   font-weight: 700;
   line-height: 24px;
   text-align: center;
+  border-radius: 5px;
 }
 
 .home-wallet .wallet-info {

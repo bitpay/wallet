@@ -452,6 +452,10 @@ ul.tx-copayers {
   font-weight: 300;
 }
 
+.sidebar li.nav-item.selected .name-wallet {
+  font-weight: 700;
+}
+
 .name-wallet i {
   color: #B6E9DF;
 }
