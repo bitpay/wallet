@@ -96,9 +96,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
 
   self.setBalance = function(balance) {
-    var fc = profileService.focusedClient;
-    console.log('[index.js.48:balance:]', balance); //TODO
-
     var config = configService.getSync().wallet.settings;
     var COIN = 1e8;
 

@@ -15,6 +15,8 @@ angular
   .module('copayApp')
   .config(function(bwcServiceProvider, $stateProvider, $urlRouterProvider) {
 
+    bwcServiceProvider.setBaseUrl('http://localhost:3001/bws/api');
+
     $urlRouterProvider.otherwise('/');
 
     $stateProvider
