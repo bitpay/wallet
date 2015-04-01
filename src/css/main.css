@@ -304,41 +304,37 @@ ul.tx-copayers {
 }
 
 .manage a {
-  text-align: center;
   text-transform: uppercase;
   font-weight: 700;
-  color: #1ABC9C;
+  color: #4B6178;
+  padding: 1.5rem 1rem;
+  display: block;
+  overflow: hidden;
 }
 
-.manage a.join {
-  color: #2980B9;
+.manage a span {
+  display: block;
+  margin-top: 8px;
+  float: left;
 }
 
-.manage a.import {
-  color: #213140;
+ul.manage li {
+  border-bottom: 1px solid #f1f3f5;
 }
 
-
-
-.manage a i {
-  background-color: #1ABC9C;
+.manage a i.circle {
+  background-color: #4B6178;
   width: 60px;
   height: 60px;
   padding: 0.85rem;
   border-radius: 100%;
   display: block;
   font-size: 30px;
-  margin: 0 auto 20px;
   color: #fff;
+  float: left;
+  margin-right: 20px;
 }
 
-.manage a.join i {
-  background-color: #2980B9;
-}
-
-.manage a.import i {
-  background-color: #213140;
-}
 
 .dn {display: none;}
 .dni {display: none !important;}
