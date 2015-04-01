@@ -84,17 +84,19 @@ _:-ms-fullscreen, :root .main {
 }
 
 .tab-bar {
+  background: #FFFFFF;
+  box-shadow: 0px 1px 1px 0px rgba(0,0,0,0.10);
   display: block;
   position: fixed;
   width: 100%;
   z-index: 5;
-  background: #2C3E50;
+  height: 3.2rem;
+  line-height: 3.2rem;
 }
 
 .tab-bar h1 {
-  font-weight: 700;
-  text-align: center;
-  text-transform: uppercase;
+  color: #1ABC9C;
+  font-weight: 500;
   font-size: 14px;
 }
 
@@ -195,7 +197,7 @@ ul.copayer-list img {
 }
 
 .right-small a, .left-small a {
-  color: white;
+  color: #A5B2BF;
 }
 
 .addresses .list-addr contact {
@@ -415,7 +417,7 @@ a.pin-button:active {
 }
 
 .dr-notification-container.top {
-  top: 2.813rem;
+  top: 3.2rem;
 }
 
 .dr-notification-container.center {
