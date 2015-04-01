@@ -11,14 +11,14 @@
             {{index.availableBalanceStr }}
           </p>
           <span class="size-12 text-gray">
-            {{index.lockedBalanceStr}}
+            {{index.lockedBalanceStr}} 
             <span translate>in pending transactions</span>
           </span>
         </div>
       </div>
     </div>
   </div>
-  <div class="row">
+  <div class="row m20t">
     <div class="large-12 large-centered columns"> 
       <div class="box-notification" ng-show="send.fetchingURL">
         <div class="box-icon secondary">
@@ -29,7 +29,6 @@
         </span>
       </div>
       <form ng-show="!send.fetchingURL" name="sendForm" ng-submit="send.submitForm(sendForm)" ng-disabled="send.loading" novalidate>
-        <div class="panel">
           <div class="box-notification" ng-show="send.error  && !send.hideForWP ">
             <div class="box-icon error">
               <i class="fi-x size-24"></i>
@@ -150,7 +149,6 @@
                 ng-show="(send._paypro || send.lockAddress) && !send.loading" translate>Cancel</a>
             </div>
           </div>
-        </div>
       </form>
     </div>
   </div>
