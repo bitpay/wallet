@@ -12,7 +12,7 @@ angular.module('copayApp.services').factory('configService', function(localStora
 
     // Bitcore wallet service URL
     bws: {
-      url: 'http://localhost:3001/copay/api',
+      url: 'http://localhost:3001/bws/api',
     },
 
     // insight
