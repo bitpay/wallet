@@ -15,6 +15,7 @@ angular
   .module('copayApp')
   .config(function(bwcServiceProvider, $stateProvider, $urlRouterProvider) {
 
+    bwcServiceProvider.setBaseUrl('http://192.168.1.102:3001/bws/api');
     $urlRouterProvider.otherwise('/');
 
     $stateProvider
@@ -263,10 +264,24 @@ angular
           }
         }
       })
-      .state('signout', {
-        url: '/signout',
-        controller: 'signoutController',
-        needProfile: true
+      .state('network', {
+        url: '/network/:status',
+        views: {
+          'main': {
+            controller: function($scope, $stateParams, go) {
+              switch($stateParams.status) {
+                case 'online':
+                  $scope.$emit('Local/OnLine');
+                  break;
+                case 'offline':
+                  $scope.$emit('Local/OffLine');
+                  break;
+              };
+              go.walletHome();
+            }
+          }
+        },
+        needProfile: false
       });
   })
   .run(function($rootScope, $state, $log, gettextCatalog, uriHandler, isCordova, amMoment, profileService) {

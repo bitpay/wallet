@@ -14,7 +14,7 @@
       <div class="size-12">{{item.m}} of {{item.n}}</div> 
     </a>
     </li> 
-    <li>
+    <li ng-if="!index.isOffLine">
       <a ng-click="$root.go('add')">
         <i class="icon-arrow-right3 size-18 right m10t"></i>
         <i class="fi-plus size-24 db left m10r m5t"></i>

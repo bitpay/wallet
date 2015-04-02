@@ -3,10 +3,10 @@
     <span ng-show="pin.askForPin == 1">Setup a PIN</span>
     <span ng-show="pin.askForPin == 2">Repeat PIN</span>
   </h3>
-  <div class="text-center size-12 text-warning" ng-show="pin.error">
-    {{pin.error|translate}}
+  <div class="text-center size-12 text-warning" ng-show="pin.error || cp.error">
+    {{(pin.error || cp.error)|translate}}
   </div>
-  <div class="pin" ng-show="!pin.error">
+  <div class="pin" ng-show="!pin.error && !cp.error">
     <div class="pin-box">
       <i class="icon-circle" ng-show="!pin.defined[0]"></i>
       <i class="icon-circle-active" ng-show="pin.defined[0]"></i>

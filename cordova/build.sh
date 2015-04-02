@@ -117,6 +117,9 @@ if [ ! -d $PROJECT ]; then
   cordova plugin add org.apache.cordova.dialogs
   checkOK
 
+  cordova plugin add org.apache.cordova.network-information
+  checkOK
+
   cordova plugin add org.apache.cordova.console
   checkOK
 fi

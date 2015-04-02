@@ -170,11 +170,6 @@ input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill, inpu
   border: 2px solid #1ABC9C;
 }
 
-.offline {
-  border: 2px solid gray;
-  opacity: 0.4;
-}
-
 .main {
   background-color: #fff;
   padding: 51px 0 80px 0;

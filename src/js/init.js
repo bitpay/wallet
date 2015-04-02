@@ -13,7 +13,7 @@ angular.element(document).ready(function() {
 
       document.addEventListener('pause', function() {
         if (!window.ignoreMobilePause) {
-          window.location = '#!/signout';
+          window.location = '#/';
         }
       }, false);
       
@@ -24,11 +24,19 @@ angular.element(document).ready(function() {
       }, false);
 
       document.addEventListener('backbutton', function() {
-        window.location = '#!/homeWallet';
+        window.location = '#/walletHome';
       }, false);
 
-      document.addEventListener("menubutton", function() {
-        window.location = '#!/more';
+      document.addEventListener('menubutton', function() {
+        window.location = '#/preferences';
+      }, false);
+
+      document.addEventListener('offline', function() {
+        window.location = '#/network/offline';
+      }, false);
+
+      document.addEventListener("online", function() {
+        window.location = '#/network/online';
       }, false);
 
       setTimeout(function() {

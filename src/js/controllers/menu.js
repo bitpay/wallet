@@ -20,4 +20,8 @@ angular.module('copayApp.controllers').controller('menuController', function($st
     'link': 'history'
   }];
 
+  this.go = function(state) {
+    $state.go(state);
+  };
+
 });
