@@ -8,14 +8,6 @@ angular.module('copayApp.services')
     root.focusedClient = null;
     root.walletClients = {};
 
-    configService.get(function(err, config) {
-      if (err) {
-        throw new Error(err);
-      }
-      var bwsurl = config.bws.url;
-      bwcService.setBaseUrl(bwsurl);
-    });
-
 
     root.getUtils = function() {
       return bwcService.getUtils();
