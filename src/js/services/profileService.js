@@ -36,6 +36,15 @@ angular.module('copayApp.services')
       return this.getUtils().formatAmount(amount, config.unitCode);
     };
 
+
+    root.scan = function(walletId, cb) {
+      // TODO
+      $log.warn('Wallet scanning not YET implemented...');
+      $timeout(cb, 500 * lodash.random(1, 20));
+
+      //      root.walletClients[walletId].scan(cb);
+    };
+
     root._setFocus = function(walletId, cb) {
       $log.debug('Set focus:', walletId);
 

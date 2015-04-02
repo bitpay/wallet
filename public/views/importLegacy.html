@@ -6,26 +6,47 @@
         <div ng-include="'views/includes/version.html'"></div>
       </div>
       <div>
-        <h2 translate>Import a Copay Beta profile</h2>
+        <h1 translate>Import from Copay Beta 0.9</h1>
 
-        <h3> From this device storage </h3>
-        <form name="deviceForm" ng-submit="importLegacy.importFromDevice(deviceForm)" novalidate>
-          <div class="box-notification" ng-show="importLegacy.error">
-            <div class="box-icon error">
-              <i class="fi-x size-24"></i>
-            </div> 
-            <span class="text-warning size-14">
-              {{importLegacy.error|translate}}
-            </span>
+        <div ng-show="importLegacy.importing">
+          <h3> Importing...</h3>
+          <ul>
+            <li ng-repeat="m in importLegacy.messages"> 
+              <span  style="opacity: {{m.opacity}}"> {{m.message}} </span>
+          </ul>
+        </div>
+
+        <div class="box-notification" ng-show="importLegacy.error">
+          <div class="box-icon error">
+            <i class="fi-x size-24"></i>
+          </div> 
+          <span class="text-warning size-14">
+            {{importLegacy.error|translate}}
+          </span>
+        </div>
+
+        <div ng-show="!importLegacy.importing">
+        <form name="importForm" ng-submit="importLegacy.import(importForm)" novalidate>
+
+
+          <div class="input">
+          Import from the Cloud?
+          <switch id="fromCloud" name="fromCloud" ng-model="importLegacy.fromCloud" class="green"></switch>
           </div>
           <div class="input">
-            <input type="username" class="form-control" placeholder="{{'Your profile username'|translate}}"
-            name="username" ng-model="importProfile.username" required>
+            <input type="text" class="form-control" placeholder="{{importLegacy.fromCloud ? 'Email': 'Username'}}"
+            name="username" ng-model="importLegacy.username" required>
           </div>
 
           <div class="input">
             <input type="password" class="form-control" placeholder="{{'Your profile password'|translate}}"
-            name="password" ng-model="importProfile.password" required>
+            name="password" ng-model="importLegacy.password" required>
+          </div>
+
+
+          <div class="input" ng-show="importLegacy.fromCloud">
+            <input type="text" class="form-control" placeholder="{{'Server URL'}}"
+            name="server" ng-model="importLegacy.server" required>
           </div>
 
           <button translate type="submit" 
@@ -34,10 +55,8 @@
             Import from this device
           </button>
         </form>
-        <h3> From Insight's cloud storage </h3>
 
-        <h3> From a File </h3>
-        <form name="importProfileForm" ng-submit="importProfile.import(importProfileForm)" novalidate>
+        <form name="importLegacyForm" ng-submit="importLegacy.import(importLegacyForm)" novalidate>
           <div class="box-notification" ng-show="error">
             <div class="box-icon error">
               <i class="fi-x size-24"></i>
@@ -48,6 +67,8 @@
           </div>
         </form>
       </div>
+    
+
     </div>
   </div>
 </div>

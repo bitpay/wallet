@@ -20,7 +20,8 @@
     "angular-moment": "~0.9.0",
     "angular-bitcore-wallet-client": "^0.0.5",
     "angular-ui-router": "~0.2.13",
-    "qrcode-decoder-js": "*"
+    "qrcode-decoder-js": "*",
+    "angular-ui-switch": "~0.1.0"
   },
   "resolutions": {
     "qrcode-generator": "0.0.1"

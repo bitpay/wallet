@@ -93,10 +93,7 @@ module.exports = function(grunt) {
           'bower_components/angular-gettext/dist/angular-gettext.js',
           'bower_components/angular-touch/angular-touch.js',
           'bower_components/angular-bitcore-wallet-client/angular-bitcore-wallet-client.js',
-          // This is ONLY for backwards compat... used at importLegacy
-          'bower_components/buffer/buffer.js',
-          'bower_components/sjcl/sjcl.js',
-          // If you add libs here, remember to add it too to karma.conf
+          'bower_components/angular-ui-switch/angular-ui-switch.js'
         ],
         dest: 'public/lib/angular.js'
       },
@@ -123,7 +120,8 @@ module.exports = function(grunt) {
         src: [
           'bower_components/angular/angular-csp.css',
           'bower_components/foundation/css/foundation.css',
-          'bower_components/animate.css/animate.css'
+          'bower_components/animate.css/animate.css',
+          'bower_components/angular-ui-switch/angular-ui-switch.css'
         ],
         dest: 'public/css/foundation.css',
       }

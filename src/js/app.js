@@ -9,6 +9,7 @@ var modules = [
   'ngAnimate',
   'ngTouch',
   'ngLodash',
+  'uiSwitch',
   'bwcModule',
   'copayApp.filters',
   'copayApp.services',
