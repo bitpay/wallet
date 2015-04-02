@@ -59,6 +59,15 @@ h4 {
   font-size: 0.875rem;
 }
 
+h4.title {
+  background: #F1F3F5;
+  padding: 0.8rem;
+  text-transform: uppercase;
+  color: #2C3E50;
+  font-weight: 700;
+  font-size: 0.8rem;
+}
+
 body, html{
   height:100%;
   width:100%;
@@ -637,6 +646,10 @@ table tr td, table tr th {
   padding: 15px; 
 }
 
+table tr.even, table tr.alt, table tr:nth-of-type(even) {
+  background: #fff;
+}
+
 table tfoot tr td, table tfoot tr th, table thead tr td, table thead tr th {
   background-color: #F5F5F8; 
   color:#949BAD; 
@@ -644,7 +657,7 @@ table tfoot tr td, table tfoot tr th, table thead tr td, table thead tr th {
 }
 
 table tbody td {
-  color: #666; 
+  color: #7A8C9E;
   border-bottom: 1px solid #F1F1F3; 
 }
 

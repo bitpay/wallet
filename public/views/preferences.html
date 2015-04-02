@@ -1,23 +1,19 @@
 <div class="preferences" ng-controller="preferencesController as preferences">
   <form name="settingsForm" ng-submit="preferences.save()">
-    <div class="row">
+    <div class="row m20t">
       <div class="large-6 medium-6 columns">
-        <div class="panel">
           <label translate>Wallet Unit</label>
-          <select class="form-control" 
-            ng-model="preferences.selectedUnit" 
+          <select class="form-control"
+            ng-model="preferences.selectedUnit"
             ng-options="o.name for o in preferences.unitOpts">
           </select>
-        </div>
       </div>
       <div class="large-6 medium-6 columns">
-        <div class="panel">
           <label translate>Alternative Currency</label>
-          <select class="form-control" 
-            ng-model="preferences.selectedAlternative" 
+          <select class="form-control"
+            ng-model="preferences.selectedAlternative"
             ng-options="alternative.name for alternative in preferences.alternativeOpts">
           </select>
-        </div>
       </div>
     </div>
     <div class="row">
@@ -28,35 +24,31 @@
     </div>
     <div class="row">
       <div class="large-12 columns">
-        <input type="submit" class="button expand" value="{{'Save'|translate}}">
+        <input type="submit" class="button expand black radius" value="{{'Save'|translate}}">
       </div>
     </div>
   </form>
-  <div class="row">
-    <div class="large-12 columns">
-      <h4 translate>Wallet info</h4>
-      <table>
-        <tr>
-          <td><strong translate>Name:</strong></td>
-          <td>{{index.walletName}}</td>
-        </tr>
-        <tr>
-          <td><strong translate>Status:</strong></td>
-          <td>{{index.walletStatus == 'complete' ? 'Complete' : 'Waiting for copayers...'}}</td>
-        </tr>
-        <tr>
-          <td><strong translate>Type:</strong></td>
-          <td>{{index.m}} of {{index.n}} - {{index.network}}</td>
-        </tr>
-        <tr>
-          <td><strong translate>Balance:</strong></td>
-          <td><span ng-if="index.walletStatus == 'complete'">
-              {{index.totalBalanceStr}}
-          </span></td>
-        </tr>
-      </table> 
-    </div>
-  </div>
+  <h4 class="title" translate>Wallet info</h4>
+  <table>
+    <tr>
+      <td translate>Name:</td>
+      <td class="text-right text-black">{{index.walletName}}</td>
+    </tr>
+    <tr>
+      <td translate> Status:</td>
+      <td class="text-right text-black">{{index.walletStatus == 'complete' ? 'Complete' : 'Waiting for copayers...'}}</td>
+    </tr>
+    <tr>
+      <td translate>Type:</td>
+      <td class="text-right text-black">{{index.m}} of {{index.n}} - {{index.network}}</td>
+    </tr>
+    <tr>
+      <td translate>Balance:</td>
+      <td class="text-right text-black"><span ng-if="index.walletStatus == 'complete'">
+          {{index.totalBalanceStr}}
+      </span></td>
+    </tr>
+  </table>
   <div class="row">
     <div class="large-12 columns" ng-if="index.isShared">
       <h4 translate>Copayers</h4>
@@ -68,19 +60,19 @@
 
   <div class="row" ng-show="!preferences.backupWalletPlainText && !preferences.error">
     <div class="large-12 columns">
-      <button class="primary expand" ng-click="preferences.downloadWalletBackup()" ng-disabled="preferences.loading"
-        ng-show="!preferences.isSafari && !preferences.isCordova"><i class="fi-download"></i> 
+      <button class="black radius expand" ng-click="preferences.downloadWalletBackup()" ng-disabled="preferences.loading"
+        ng-show="!preferences.isSafari && !preferences.isCordova"><i class="fi-download"></i>
         <span translate>Download backup</span></button>
-      <button class="primary expand" ng-click="preferences.viewWalletBackup()" ng-disabled="preferences.loading"
-        ng-show="preferences.isSafari && !preferences.isCordova"><i class="fi-eye"></i> 
-        <span translate>View backup</span></button> 
+      <button class="black radius expand" ng-click="preferences.viewWalletBackup()" ng-disabled="preferences.loading"
+        ng-show="preferences.isSafari && !preferences.isCordova"><i class="fi-eye"></i>
+        <span translate>View backup</span></button>
       <div ng-show="preferences.isCordova">
         <h4 translate>Backup options</h4>
-        <button class="primary expand" 
-          ng-click="preferences.copyWalletBackup()"><i class="fi-clipboard-pencil"></i> 
+        <button class="black radius expand"
+          ng-click="preferences.copyWalletBackup()"><i class="fi-clipboard-pencil"></i>
           <span translate>Copy to clipboard</span></button>
-        <button class="primary expand" 
-          ng-click="preferences.sendWalletBackup()"><i class="fi-mail"></i> 
+        <button class="black radius expand"
+          ng-click="preferences.sendWalletBackup()"><i class="fi-mail"></i>
           <span translate>Send by email</span></button>
       </div>
     </div>
@@ -94,31 +86,15 @@
         <textarea class="hide-for-large-up" rows="12">{{preferences.backupWalletPlainText}}</textarea>
       </div>
       <div class="size-12 text-gray text-right">
-        <i class="icon-compose"></i> 
+        <i class="icon-compose"></i>
         <span translate>Copy this text as it is in a safe place (notepad or email)</span>
       </div>
     </div>
   </div>
 
   <div class="row">
-    <div class="large-12 columns">
-      <a class="button outline light-gray tiny" ng-click="preferences.hideAdv=!preferences.hideAdv">
-        <i class="fi-widget m3r"></i>
-        <span translate ng-hide="!preferences.hideAdv">Show</span> 
-        <span translate ng-hide="preferences.hideAdv">Hide</span> 
-        <span translate>advanced options</span> 
-        <i ng-if="preferences.hideAdv" class="icon-arrow-down4"></i>
-        <i ng-if="!preferences.hideAdv" class="icon-arrow-up4"></i>
-      </a>
-    </div>
-  </div>
-
-  <div ng-hide="preferences.hideAdv" class="row">
-    <div class="large-12 columns">
-      <div class="panel">
-        <h2><i class="fi-minus-circle m10r"></i> 
-          <span translate>Delete wallet</span>
-        </h2>
+    <div class="columns text-center">
+        <h3 class="text-warning"> <strong translate> Warning! </strong></h3>
         <div class="box-notification" ng-show="preferences.error">
           <div class="box-icon error">
             <i class="fi-x size-24"></i>
@@ -127,26 +103,9 @@
             {{preferences.error|translate}}
           </span>
         </div>
-        <p translate class="text-gray">Permanently delete this wallet. WARNING: this action cannot be reversed.</p>
-        <div class="text-right">
-          <a translate class="button warning m0" ng-click="preferences.deleteWallet()">Delete wallet
-          </a>
-        </div>
-        <div class="text-center" ng-show="confirmDelete">
-          <h2 translate>Are you sure you want to delete this wallet?</h2>
-          <div class="row">
-            <div class="large-6 medium-6 small-6 columns">
-              <button class="gray" ng-disabled="loading" 
-                ng-click="confirmDelete=!confirmDelete" translate>Cancel</button>
-            </div>
-            <div class="large-6 medium-6 small-6 columns">
-              <button class="warning" ng-disabled="loading" ng-click="deleteWallet()">
-                <i class="fi-trash"></i> <span translate>Delete</span>
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
+        <p translate class="size-12 text-gray">Permanently delete this wallet. WARNING: this action cannot be reversed.</p>
+        <a translate class="button expand warning m0" ng-click="preferences.deleteWallet()">Delete wallet
+        </a>
     </div>
   </div>
 
