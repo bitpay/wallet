@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('historyController',
-  function($scope, $rootScope, $filter, $timeout, $modal, profileService, notification, go, configService, rateService, lodash) {
+  function($scope, $rootScope, $filter, $timeout, $modal, $log, profileService, notification, go, configService, rateService, lodash) {
 
     function strip(number) {
       return (parseFloat(number.toPrecision(12)));
@@ -30,22 +30,28 @@ angular.module('copayApp.controllers').controller('historyController',
     this.getTxHistory = function() {
       var self = this;
       self.updatingTxHistory = true;
-      profileService.focusedClient.getTxHistory({
-        skip: self.skip,
-        limit: self.limit + 1
-      }, function(err, txs) {
+      $timeout(function() {
+        fc.getTxHistory({
+          skip: self.skip,
+          limit: self.limit + 1
+        }, function(err, txs) {
+          if (err) {
+            $log.debug('Creating address ERROR:', err);
+          }
+          else {
+            var now = new Date();
+            lodash.each(txs, function(tx) {
+              tx.ts = tx.minedTs || tx.sentTs;
+              tx.rateTs = Math.floor((tx.ts || now) / 1000);
+              tx.amountStr = profileService.formatAmount(tx.amount); //$filter('noFractionNumber')(
+            });
 
-        var now = new Date();
-        lodash.each(txs, function(tx) {
-          tx.ts = tx.minedTs || tx.sentTs;
-          tx.rateTs = Math.floor((tx.ts || now) / 1000);
-          tx.amountStr = profileService.formatAmount(tx.amount); //$filter('noFractionNumber')(
+            self.txHistory = txs;
+            self.updatingTxHistory = false;
+          }
+          $scope.$emit('Local/ClientError', err);
         });
-
-        self.txHistory = txs;
-        self.updatingTxHistory = false;
-        $scope.$digest();
-      });
+      }, 10);
     };
 
     this._addRates = function(txs, cb) {

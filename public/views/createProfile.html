@@ -13,7 +13,10 @@
       </div>
     </div>
   </div>
-  <div ng-if="!index.isOffLine" ng-include="'views/includes/pin.html'" ng-init="confirmPin=true"></div>
+  <div ng-if="!index.isOffLine && !cp.creatingProfile" ng-include="'views/includes/pin.html'" ng-init="confirmPin=true"></div>
+  <div class="m20t text-white text-center" ng-if="!index.isOffLine && cp.creatingProfile">
+    <span translate>Creating wallet...</span>
+  </div>
 </div>
 <div class="extra-margin-bottom"></div>
 

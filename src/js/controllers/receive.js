@@ -1,35 +1,39 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('receiveController',
-  function($rootScope, $scope, $timeout, $modal, isCordova, isMobile, profileService, storageService) {
+  function($rootScope, $scope, $timeout, $modal, $log, isCordova, isMobile, profileService, storageService) {
     var self = this;
     var fc = profileService.focusedClient;
 
     this.showAll = false;
     this.isCordova = isCordova;
+    self.addresses = [];
 
     this.newAddress = function() {
       self.generatingAddress = true;
-      profileService.focusedClient.createAddress(function(err, addr) {
-        self.addr = addr.address;
+      fc.createAddress(function(err, addr) {
+        if (err) {
+          $log.debug('Creating address ERROR:', err);
+        }
+        else {
+          self.addr = addr.address;
+          storageService.storeLastAddress(fc.walletId, addr.address, function() {});
+        }
         self.generatingAddress = false;
-        $scope.$digest();
-
-        storageService.storeLastAddress(fc.walletId, addr.address, function() {});
+        $scope.$emit('Local/ClientError', err);
       });
     };
 
     this.getAddress = function() {
-      storageService.getLastAddress(fc.walletId, function(err, addr) {
-        if (addr) {
-          self.addr = addr;
-          $timeout(function() {
-            $scope.$digest();
-          });
-        } else {
-          self.newAddress();
-        }
-      })
+      $timeout(function() {
+        storageService.getLastAddress(fc.walletId, function(err, addr) {
+          if (addr) {
+            self.addr = addr;
+          } else {
+            self.newAddress();
+          }
+        });
+      });
     };
 
     this.copyAddress = function(addr) {
@@ -75,20 +79,29 @@ angular.module('copayApp.controllers').controller('receiveController',
     };
 
     this.toggleShowAll = function() {
-      this.showAll = !this.showAll;
       this.setAddressList();
     };
 
     this.setAddressList = function() {
-      if (this.showAll) {
-        var self = this;
-        fc.getMainAddresses({}, function(err, addrs) {
-          self.addresses = addrs;
-          $scope.$digest();
-        });
-      } else {
-        this.addresses = [];
-      }
+      var self = this;
+      self.loadingAddresses = true;
+      $timeout(function() {
+        if (!self.addresses[0]) {
+          fc.getMainAddresses({}, function(err, addrs) {
+            if (err) {
+              $log.debug('Getting addresses ERROR:', err);
+            }
+            else {
+              self.addresses = addrs;
+            }
+            self.loadingAddresses = false;
+            $scope.$emit('Local/ClientError', err);
+          });
+        } else {
+          self.loadingAddresses = false;
+          self.addresses = [];
+        }
+      }, 10);
     };
 
   }

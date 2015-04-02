@@ -144,7 +144,7 @@ angular.module('copayApp.services')
       walletClient.createWallet('Personal Wallet', 'me', 1, 1, {
         network: 'testnet'
       }, function(err) {
-        if (err) return cb('Error creating wallet');
+        if (err) return cb('Error creating wallet. Check your internet connection');
         var p = Profile.create({
           credentials: [JSON.parse(walletClient.export())],
         });
@@ -226,7 +226,7 @@ angular.module('copayApp.services')
 
     root.create = function(pin, cb) {
       root._createNewProfile(pin, function(err, p) {
-
+        if (err) return cb(err);
         root.bindProfile(p, function(err) {
           storageService.storeNewProfile(p, function(err) {
             return cb(err);

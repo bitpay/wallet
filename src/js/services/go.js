@@ -67,6 +67,10 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
     $state.go('send');
   };
 
+  root.reload = function() {
+    $state.reload();
+  };
+
 
   // Global go. This should be in a better place TODO
   // We dont do a 'go' directive, to use the benefits of ng-touch with ng-click

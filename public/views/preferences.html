@@ -29,36 +29,72 @@
     </div>
   </form>
 
-  <div class="row" ng-show="!preferences.backupWalletPlainText && !preferences.error">
-    <div class="large-12 columns">
-      <button class="black radius expand" ng-click="preferences.downloadWalletBackup()" ng-disabled="preferences.loading"
-        ng-show="!preferences.isSafari && !preferences.isCordova"><i class="fi-download"></i>
-        <span translate>Download backup</span></button>
-      <button class="black radius expand" ng-click="preferences.viewWalletBackup()" ng-disabled="preferences.loading"
-        ng-show="preferences.isSafari && !preferences.isCordova"><i class="fi-eye"></i>
-        <span translate>View backup</span></button>
-      <div ng-show="preferences.isCordova">
-        <h4 translate>Backup options</h4>
-        <button class="black radius expand"
-          ng-click="preferences.copyWalletBackup()"><i class="fi-clipboard-pencil"></i>
-          <span translate>Copy to clipboard</span></button>
-        <button class="black radius expand"
-          ng-click="preferences.sendWalletBackup()"><i class="fi-mail"></i>
-          <span translate>Send by email</span></button>
+  <div ng-if="!index.isOffLine && !index.clientError">
+    <div class="row">
+      <div class="large-12 columns">
+        <h4 translate>Wallet info</h4>
+        <table>
+          <tr>
+            <td><strong translate>Name:</strong></td>
+            <td>{{index.walletName}}</td>
+          </tr>
+          <tr>
+            <td><strong translate>Status:</strong></td>
+            <td>{{index.walletStatus == 'complete' ? 'Complete' : 'Waiting for copayers...'}}</td>
+          </tr>
+          <tr>
+            <td><strong translate>Type:</strong></td>
+            <td>{{index.m}} of {{index.n}} - {{index.network}}</td>
+          </tr>
+          <tr>
+            <td><strong translate>Balance:</strong></td>
+            <td><span ng-if="index.walletStatus == 'complete'">
+                {{index.totalBalanceStr}}
+            </span></td>
+          </tr>
+        </table> 
       </div>
     </div>
-  </div>
-
-  <div class="row m20b" ng-show="preferences.backupWalletPlainText">
-    <div class="large-12 columns">
-      <h3 translate>Copy backup in a safe place</h3>
-      <div class="input">
-        <textarea class="show-for-large-up" readonly rows="7">{{preferences.backupWalletPlainText}}</textarea>
-        <textarea class="hide-for-large-up" rows="12">{{preferences.backupWalletPlainText}}</textarea>
+    <div class="row">
+      <div class="large-12 columns" ng-if="index.isShared">
+        <h4 translate>Copayers</h4>
+        <div class="panel oh">
+          <div ng-include="'views/includes/copayers.html'"></div>
+        </div>
       </div>
-      <div class="size-12 text-gray text-right">
-        <i class="icon-compose"></i>
-        <span translate>Copy this text as it is in a safe place (notepad or email)</span>
+    </div>
+
+    <div class="row" ng-show="!preferences.backupWalletPlainText && !preferences.error">
+      <div class="large-12 columns">
+        <button class="black radius expand" ng-click="preferences.downloadWalletBackup()" ng-disabled="preferences.loading"
+          ng-show="!preferences.isSafari && !preferences.isCordova"><i class="fi-download"></i>
+          <span translate>Download backup</span></button>
+        <button class="black radius expand" ng-click="preferences.viewWalletBackup()" ng-disabled="preferences.loading"
+          ng-show="preferences.isSafari && !preferences.isCordova"><i class="fi-eye"></i>
+          <span translate>View backup</span></button>
+        <div ng-show="preferences.isCordova">
+          <h4 translate>Backup options</h4>
+          <button class="black radius expand"
+            ng-click="preferences.copyWalletBackup()"><i class="fi-clipboard-pencil"></i>
+            <span translate>Copy to clipboard</span></button>
+          <button class="black radius expand"
+            ng-click="preferences.sendWalletBackup()"><i class="fi-mail"></i>
+            <span translate>Send by email</span></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="row m20b" ng-show="preferences.backupWalletPlainText">
+      <div class="large-12 columns">
+        <h3 translate>Copy backup in a safe place</h3>
+        <div class="input">
+          <textarea class="show-for-large-up" readonly rows="7">{{preferences.backupWalletPlainText}}</textarea>
+          <textarea class="hide-for-large-up" rows="12">{{preferences.backupWalletPlainText}}</textarea>
+        </div>
+        <div class="size-12 text-gray text-right">
+          <i class="icon-compose"></i> 
+          <span translate>Copy this text as it is in a safe place (notepad or email)</span>
+        </div>
       </div>
     </div>
   </div>

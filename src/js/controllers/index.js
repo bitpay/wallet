@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('indexController', function($rootScope, $log, $filter, lodash, go, profileService, configService, isCordova, rateService, storageService) {
+angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, lodash, go, profileService, configService, isCordova, rateService, storageService) {
   var self = this;
   self.isCordova = isCordova;
 
@@ -15,18 +15,22 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     var fc = profileService.focusedClient;
     if (!fc) return;
 
-    self.hasProfile = true;
+    $timeout(function() {
+      self.hasProfile = true;
 
-    // Credentials Shortcuts 
-    self.m = fc.m;
-    self.n = fc.n;
-    self.network = fc.network;
-    self.copayerId = fc.copayerId;
-    self.requiresMultipleSignatures = fc.m > 1;
-    self.isShared = fc.n > 1;
-    self.walletName = fc.credentials.walletName;
-    self.walletId = fc.credentials.walletId;
-    self.isComplete = fc.isComplete;
+      // Credentials Shortcuts 
+      self.m = fc.m;
+      self.n = fc.n;
+      self.network = fc.network;
+      self.copayerId = fc.copayerId;
+      self.copayerName = fc.credentials.copayerName;
+      self.requiresMultipleSignatures = fc.m > 1;
+      self.isShared = fc.n > 1;
+      self.walletName = fc.credentials.walletName;
+      self.walletId = fc.credentials.walletId;
+      self.isComplete = fc.isComplete;
+      $rootScope.$apply();
+    });
   };
 
   self.updateAll = function() {
@@ -35,15 +39,21 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.updatingStatus = true;
     $log.debug('Updating Status:', fc);
     fc.getStatus(function(err, walletStatus) {
-      $log.debug('Wallet Status:', walletStatus);
-      self.setBalance(walletStatus.balance);
-      self.setPendingTxps(walletStatus.pendingTxps);
+      if (err) {
+        $log.debug('Wallet Status ERROR:', err);
+        $scope.$emit('Local/ClientError', err);
+      }
+      else {
+        $log.debug('Wallet Status:', walletStatus);
+        self.setBalance(walletStatus.balance);
+        self.setPendingTxps(walletStatus.pendingTxps);
 
-      // Status Shortcuts
-      self.walletName = walletStatus.wallet.name;
-      self.walletSecret = walletStatus.wallet.secret;
-      self.walletStatus = walletStatus.wallet.status;
-      self.copayers = walletStatus.wallet.copayers;
+        // Status Shortcuts
+        self.walletName = walletStatus.wallet.name;
+        self.walletSecret = walletStatus.wallet.secret;
+        self.walletStatus = walletStatus.wallet.status;
+        self.copayers = walletStatus.wallet.copayers;
+      }
       self.updatingStatus = false;
       $rootScope.$apply();
     });
@@ -54,7 +64,14 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.updatingBalance = true;
     $log.debug('Updating Balance');
     fc.getBalance(function(err, balance) {
-      self.setBalance(balance);
+      if (err) {
+        $log.debug('Wallet Balance ERROR:', err);
+        $scope.$emit('Local/ClientError', err);
+      }
+      else {
+        $log.debug('Wallet Balance:', balance);
+        self.setBalance(balance);
+      }
       self.updatingBalance = false;
       $rootScope.$apply();
     });
@@ -65,15 +82,20 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.updatingPendingTxps = true;
     $log.debug('Updating PendingTxps');
     fc.getTxProposals({}, function(err, txps) {
-      self.setPendingTxps(txps);
+      if (err) {
+        $log.debug('Wallet PendingTxps ERROR:', err);
+        $scope.$emit('Local/ClientError', err);
+      }
+      else {
+        $log.debug('Wallet PendingTxps:', txps);
+        self.setPendingTxps(txps);
+      }
       self.updatingPendingTxps = false;
       $rootScope.$apply();
     });
   };
 
   self.setPendingTxps = function(txps) {
-    self.txps = txps;
-    var fc = profileService.focusedClient;
     var config = configService.getSync().wallet.settings;
     self.pendingTxProposalsCountForUs = 0;
     lodash.each(txps, function(tx) {
@@ -95,11 +117,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     });
   };
 
-
   self.setBalance = function(balance) {
-    var fc = profileService.focusedClient;
-    console.log('[index.js.48:balance:]', balance); //TODO
-
     var config = configService.getSync().wallet.settings;
     var COIN = 1e8;
 
@@ -209,6 +227,11 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.isOffLine = true;
   });
 
+  $rootScope.$on('Local/ClientError', function(event, err) {
+    self.clientError = err;
+    $rootScope.$apply();
+  });
+
   lodash.each(['NewTxProposal', 'TxProposalFinallyRejected', 'NewOutgoingTx', 'NewIncomingTx', 'Local/NewTxProposal', 'Local/TxProposalAction'], function(eventName) {
     $rootScope.$on(eventName, function() {
       self.updateAll();
@@ -231,8 +254,15 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     $rootScope.$on(eventName, function() {
       // Re try to open wallet (will triggers) 
       var fc = profileService.focusedClient;
-      fc.openWallet(function() {
-        self.updateAll();
+      fc.openWallet(function(err) {
+        if (err) {
+          $log.debug('OpenWallet ERROR:', err);
+          $scope.$emit('Local/ClientError', err);
+        }
+        else {
+          self.setFocusedWallet();
+          self.updateAll();
+        }
       });
     });
   });
