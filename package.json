@@ -43,7 +43,7 @@
   "devDependencies": {
     "angular-gravatar": "*",
     "async": "^0.9.0",
-    "bitcore": "git://github.com/startcoin-project/bitcore.git#56d395e238c8011a1ca458c5cfbc99980e1e386c",
+    "bitcore": "git://github.com/startcoin-project/bitcore.git#c068fdf38f2ffc22488521403d7cb723968d6b04",
     "blanket": "^1.1.6",
     "browser-pack": "^2.0.1",
     "browserify": "^3.32.1",
