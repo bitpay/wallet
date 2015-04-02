@@ -13,7 +13,7 @@ if (window && window.navigator) {
 //Setting up route
 angular
   .module('copayApp')
-  .config(function(bwcServiceProvider, $stateProvider, $urlRouterProvider) {
+  .config(function($stateProvider, $urlRouterProvider) {
 
     bwcServiceProvider.setBaseUrl('http://192.168.1.102:3001/bws/api');
     $urlRouterProvider.otherwise('/');
@@ -219,24 +219,23 @@ angular
           }
         }
       })
-
-    .state('preferences', {
-      url: '/preferences',
-      templateUrl: 'views/preferences.html',
-      walletShouldBeComplete: true,
-      needProfile: true,
-      views: {
-        'main': {
-          templateUrl: 'views/preferences.html'
-        },
-        'topbar': {
-          templateUrl: 'views/includes/topbar.html',
-          controller: function($scope) {
-            $scope.goBackToState = 'walletHome';
+      .state('preferences', {
+        url: '/preferences',
+        templateUrl: 'views/preferences.html',
+        walletShouldBeComplete: true,
+        needProfile: true,
+        views: {
+          'main': {
+            templateUrl: 'views/preferences.html'
+          },
+          'topbar': {
+            templateUrl: 'views/includes/topbar.html',
+            controller: function($scope) {
+              $scope.goBackToState = 'walletHome';
+            }
           }
         }
-      }
-    })
+      })
       .state('settings', {
         url: '/settings',
         controller: 'settingsController',

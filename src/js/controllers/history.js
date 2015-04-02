@@ -102,40 +102,6 @@ angular.module('copayApp.controllers').controller('historyController',
       });
     };
 
-    this.getTransactions = function() {
-      var self = this;
-      this.blockchain_txs = []; // w.cached_txs || [];
-      this.loading = true;
-
-      fc.getTxHistory({
-        currentPage: this.currentPage,
-        itemsPerPage: this.itemsPerPage,
-      }, function(err, res) {
-        if (err) throw err;
-
-        if (!res) {
-          self.loading = false;
-          self.lastShowed = false;
-          return;
-        }
-
-        self._addRates(res, function(err) {
-          $timeout(function() {
-            $scope.$digest();
-          }, 1);
-        })
-
-        self.blockchain_txs = res; //w.cached_txs =
-        self.nbPages = res.nbPages;
-        self.totalItems = res.nbItems;
-
-        self.loading = false;
-        self.paging = false;
-        setTimeout(function() {
-          $scope.$digest();
-        }, 1);
-      });
-    };
 
     this.formatAmount = function(amount) {
       return profileService.formatAmount(amount);

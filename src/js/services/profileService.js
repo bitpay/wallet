@@ -115,15 +115,17 @@ angular.module('copayApp.services')
       $rootScope.$emit('updateWalletList');
     };
 
+
     root.bindProfile = function(profile, cb) {
       console.log('[profileService.js.54] SET Profile', profile); //TODO
       root.profile = profile;
 
-      root._setWalletClients();
-      storageService.getFocusedWalletId(function(err, focusedWalletId) {
-        configService.get(function(err) {
+      configService.get(function(err) {
+        if (err) return cb(err);
+        root._setWalletClients();
+        storageService.getFocusedWalletId(function(err, focusedWalletId) {
           root._setFocus(focusedWalletId, cb);
-        })
+        });
       });
     };
 

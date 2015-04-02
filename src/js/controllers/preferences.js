@@ -13,7 +13,7 @@ angular.module('copayApp.controllers').controller('preferencesController',
     var config = configService.getSync();
 
     this.unitName = config.wallet.settings.unitName;
-  this.bwsurl = config.bws.url;
+    this.bwsurl = config.bws.url;
 
     this.unitOpts = [
       // TODO : add Satoshis to bitcore-wallet-client formatAmount()

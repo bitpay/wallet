@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.services').factory('configService', function(localStorageService, lodash) {
+angular.module('copayApp.services').factory('configService', function(localStorageService, lodash, bwcService) {
   var root = {};
 
   var defaultConfig = {
@@ -57,6 +57,9 @@ angular.module('copayApp.services').factory('configService', function(localStora
 
   var configCache = null;
 
+
+
+
   root.getSync = function() {
     if (!configCache)
       throw new Error('configService#getSync called when cache is not initialized');
@@ -64,16 +67,24 @@ angular.module('copayApp.services').factory('configService', function(localStora
     return configCache;
   };
 
-
-
   root.get = function(cb) {
     localStorageService.get('config', function(err, localConfig) {
 
       if (localConfig) {
         configCache = JSON.parse(localConfig);
+
+        //these ifs are to avoid migration problems
+        if (!configCache.bws) {
+          configCache.bws = defaultConfig.bws;
+        }
+        if (!configCache.wallet.settings.unitCode) {
+          configCache.wallet.settings.unitCode = defaultConfig.wallet.settings.unitCode;
+        }
+
       } else {
         configCache = defaultConfig;
       };
+      bwcService.setBaseUrl(configCache.bws.url);
       return cb(err, configCache);
     });
   };
