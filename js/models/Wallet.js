@@ -2361,7 +2361,7 @@ Wallet.prototype.spend = function(opts, cb) {
  */
 
 Wallet._getAddress = function(address) {
-  if (/ ^ bitcoin: /g.test(address)) {
+  if (/ ^ startcoin: /g.test(address)) {
     return new BIP21(address).address;
   }
   return new Address(address);

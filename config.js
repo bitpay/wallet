@@ -14,11 +14,11 @@ var defaultConfig = {
   // network layer config
   network: {
     testnet: {
-      url: 'https://test-insight.bitpay.com:443',
+      url: 'http://testnet.explorer.startcoin.org',
       transports: ['polling'],
     },
     livenet: {
-      url: 'https://insight.bitpay.com:443',
+      url: 'http://explorer.startcoin.org',
       transports: ['polling'],
     },
   },
@@ -31,9 +31,9 @@ var defaultConfig = {
     reconnectDelay: 5000,
     idleDurationMin: 4,
     settings: {
-      unitName: 'bits',
-      unitToSatoshi: 100,
-      unitDecimals: 2,
+      unitName: 'START',
+      unitToSatoshi: 100000000,
+      unitDecimals: 8,
       alternativeName: 'US Dollar',
       alternativeIsoCode: 'USD',
     }
@@ -42,7 +42,7 @@ var defaultConfig = {
   // local encryption/security config
   passphraseConfig: {
     iterations: 5000,
-    storageSalt: 'mjuBtGybi/4=',
+    storageSalt: 'yfRXuHmeakCvvx',
   },
 
   rates: {
@@ -69,7 +69,7 @@ var defaultConfig = {
     //
     // WARN: Changing this parameters would prevent accesing previously created profiles.
     iterations: 1000,
-    salt: 'jBbYTj8zTrOt6V',
+    salt: 'PNhuTZ6Bjg2gD7',
   },
 
   minPasswordStrength: 4,

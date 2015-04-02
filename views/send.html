@@ -84,7 +84,7 @@
             </div>
 
             <div class="input">
-              <input type="text" id="address" name="address" ng-disabled="loading || lockAddress" placeholder="{{'Bitcoin address'|translate}}" ng-model="_address" valid-address required ng-focus="formFocus('address')" ng-blur="formFocus(false)">
+              <input type="text" id="address" name="address" ng-disabled="loading || lockAddress" placeholder="{{'StartCOIN address'|translate}}" ng-model="_address" valid-address required ng-focus="formFocus('address')" ng-blur="formFocus(false)">
               <a class="postfix" ng-click="openAddressBook()"><i class="fi-address-book size-24"></i></a>
             </div>
             <div id="scanner" class="row" ng-if="showScanner" ng-include="'views/includes/scanner.html'">

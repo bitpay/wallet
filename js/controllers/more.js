@@ -19,23 +19,23 @@ angular.module('copayApp.controllers').controller('MoreController',
     $rootScope.title = 'Settings';
 
     $scope.unitOpts = [{
-      name: 'Satoshis (100,000,000 satoshis = 1BTC)',
+      name: 'Satoshis (100,000,000 satoshis = 1START)',
       shortName: 'SAT',
       value: 1,
       decimals: 0
     }, {
-      name: 'bits (1,000,000 bits = 1BTC)',
-      shortName: 'bits',
+      name: 'uSTART (1,000,000 uSTART = 1START)',
+      shortName: 'uSTART',
       value: 100,
       decimals: 2
     }, {
-      name: 'mBTC (1,000 mBTC = 1BTC)',
-      shortName: 'mBTC',
+      name: 'mSTART (1,000 mSTART = 1START)',
+      shortName: 'mSTART',
       value: 100000,
       decimals: 5
     }, {
-      name: 'BTC',
-      shortName: 'BTC',
+      name: 'START',
+      shortName: 'START',
       value: 100000000,
       decimals: 8
     }];

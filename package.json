@@ -11,14 +11,14 @@
   ],
   "main": "app.js",
   "id": "jid1-x7bV5evAaI1P9Q",
-  "homepage": "https://github.com/bitpay/copay",
+  "homepage": "https://github.com/startcoin-project/copay",
   "license": "MIT",
   "repository": {
-    "url": "git://github.com/bitpay/copay.git",
+    "url": "git://github.com/startcoin-project/copay.git",
     "type": "git"
   },
   "bugs": {
-    "url": "https://github.com/bitpay/copay/issues"
+    "url": "https://github.com/startcoin-project/copay/issues"
   },
   "dependencies": {
     "browser-request": "git://github.com/matiu/browser-request.git#67200dd4ec133457fb7dc69f005540f92b543f0a",
@@ -43,7 +43,7 @@
   "devDependencies": {
     "angular-gravatar": "*",
     "async": "^0.9.0",
-    "bitcore": "git://github.com/bitpay/bitcore.git#e20df2144926dbc20bd468d671e73f8e52bb70c1",
+    "bitcore": "git://github.com/startcoin-project/bitcore.git#dbf15436c2c968c75e1b1eec7d4464964f39a225",
     "blanket": "^1.1.6",
     "browser-pack": "^2.0.1",
     "browserify": "^3.32.1",

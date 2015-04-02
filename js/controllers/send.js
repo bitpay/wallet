@@ -485,7 +485,7 @@ angular.module('copayApp.controllers').controller('SendController',
 
       var parsed = new bitcore.BIP21(uri);
       if (!parsed.isValid() || !parsed.address.isValid()) {
-        $scope.error = 'Invalid bitcoin URL';
+        $scope.error = 'Invalid StartCOIN URL';
         form.address.$isValid = false;
         return uri;
       };
@@ -505,7 +505,7 @@ angular.module('copayApp.controllers').controller('SendController',
       $scope.error = $scope.success = null;
       if (!value) return '';
 
-      if (value.indexOf('bitcoin:') === 0) {
+      if (value.indexOf('startcoin:') === 0) {
         return $scope.setFromUri(value);
       } else if (/^https?:\/\//.test(value)) {
         return $scope.setFromPayPro(value);

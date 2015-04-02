@@ -7,7 +7,7 @@ UriHandler.prototype.register = function() {
   var url = base + '#!/uri-payment/%s';
 
   if(navigator.registerProtocolHandler) {
-    navigator.registerProtocolHandler('bitcoin', url, 'Copay');
+    navigator.registerProtocolHandler('web+startcoin', url, 'Copay');
   }
 };
 
