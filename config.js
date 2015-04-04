@@ -7,7 +7,7 @@ var defaultConfig = {
 
   // wallet limits
   limits: {
-    totalCopayers: 6,
+    totalCopayers: 1,
     mPlusN: 100,
   },
 
@@ -25,8 +25,8 @@ var defaultConfig = {
 
   // wallet default config
   wallet: {
-    requiredCopayers: 2,
-    totalCopayers: 3,
+    requiredCopayers: 1,
+    totalCopayers: 1,
     spendUnconfirmed: true,
     reconnectDelay: 5000,
     idleDurationMin: 4,
@@ -34,8 +34,8 @@ var defaultConfig = {
       unitName: 'START',
       unitToSatoshi: 100000000,
       unitDecimals: 8,
-      alternativeName: 'US Dollar',
-      alternativeIsoCode: 'USD',
+      alternativeName: 'Pound Sterling',
+      alternativeIsoCode: 'GBP',
     }
   },
 
