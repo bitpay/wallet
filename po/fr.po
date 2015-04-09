@@ -90,7 +90,7 @@ msgstr "Montant"
 
 #: views/send.html
 msgid "Amount in"
-msgstr ""
+msgstr "Montant en"
 
 #: index.html
 msgid "An email was sent to"
@@ -514,7 +514,7 @@ msgstr ""
 
 #: views/dummy-translations.html
 msgid "Login Required"
-msgstr ""
+msgstr "Connexion requise"
 
 #: views/more.html
 msgid "Master Private Key"
@@ -808,7 +808,7 @@ msgstr "Numériser des adresses de portefeuille"
 
 #: views/dummy-translations.html
 msgid "Scaning for transactions"
-msgstr ""
+msgstr "Recherche de transactions"
 
 #: views/modals/tx-details.html views/modals/txp-details.html
 msgid "See it on the blockchain"
@@ -918,7 +918,7 @@ msgstr "Passer la proposition de transaction"
 
 #: views/import.html
 msgid "Skipping fields: {{skipFields}}"
-msgstr ""
+msgstr "Ignorer les champs : {{skipFields}}"
 
 #: views/homeWallet.html
 msgid "Spend proposals"
@@ -1156,7 +1156,7 @@ msgstr "Utilisation des adresses dérivées de votre portefeuille"
 
 #: views/create.html
 msgid "Using network:"
-msgstr ""
+msgstr "Utiliser le réseau :"
 
 #: views/includes/sidebar-mobile.html
 msgid "View My Profile"
