@@ -918,7 +918,7 @@ msgstr "Passer la proposition de transaction"
 
 #: views/import.html
 msgid "Skipping fields: {{skipFields}}"
-msgstr "Ignorer les champs : {{skipFields}}"
+msgstr "Ignore les champs : {{skipFields}}"
 
 #: views/homeWallet.html
 msgid "Spend proposals"
@@ -1156,7 +1156,7 @@ msgstr "Utilisation des adresses dérivées de votre portefeuille"
 
 #: views/create.html
 msgid "Using network:"
-msgstr "Utiliser le réseau :"
+msgstr "Utilise le réseau :"
 
 #: views/includes/sidebar-mobile.html
 msgid "View My Profile"
