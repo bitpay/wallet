@@ -70,6 +70,21 @@ describe("Unit: Testing Directives", function() {
       form.address.$setViewValue('thisisaninvalidaddress');
       expect(form.address.$invalid).to.equal(true);
     });
+    it('should validate a Wallet Name when enabled', function() {
+      config.walletNameLookup.enabled = true;
+      form.address.$setViewValue('wallet.testdomain.com');
+      expect(form.address.$invalid).to.equal(false);
+    });
+    it('should not validate an invalid Wallet Name', function() {
+      config.walletNameLookup.enabled = true;
+      form.address.$setViewValue('wall%t.test*omain.com');
+      expect(form.address.$invalid).to.equal(true);
+    });
+    it('should not validate a Wallet Name when disabled', function() {
+      config.walletNameLookup.enabled = false;
+      form.address.$setViewValue('wallet.testdomain.com');
+      expect(form.address.$invalid).to.equal(true);
+    });
   });
 
   describe('Validate Amount', function() {

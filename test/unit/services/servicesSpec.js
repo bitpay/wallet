@@ -212,4 +212,90 @@ describe("Angular services", function() {
       }
     );
   });
+
+  describe('Unit: Wallet Name Lookup Service', function () {
+    var httpBackend, walletName, walletAddress;
+
+    beforeEach(inject(function ($httpBackend) {
+      httpBackend = $httpBackend;
+
+      config.walletNameLookup.url = 'https://api.domain.com/api/';
+
+      walletName = 'wallet.testdomain.com';
+      walletAddress = 'mkfTyEk7tfgV611Z4ESwDDSZwhsZdbMpVy'
+    }));
+
+    it('should be possible to lookup a Wallet Name', function(done) {
+      httpBackend.expectGET('https://api.domain.com/api/' + walletName + '/btc')
+        .respond(200, {success: true, wallet_address: walletAddress});
+
+      inject(function(walletNameLookupService) {
+        var promise = walletNameLookupService.getWalletName(walletName);
+        promise.then(function(results) {
+
+          expect(results.isError).to.equal(false);
+          expect(results.walletAddress).to.equal(walletAddress);
+          expect(results.message).to.equal(undefined);
+
+          done();
+        });
+        httpBackend.flush();
+      })
+    });
+
+    it('should return error not found if status code is not 200', function(done) {
+      httpBackend.expectGET('https://api.domain.com/api/' + walletName + '/btc')
+        .respond(201, {success: true, wallet_address: walletAddress});
+
+      inject(function(walletNameLookupService) {
+        var promise = walletNameLookupService.getWalletName(walletName);
+        promise.then(function(results) {
+
+          expect(results.isError).to.equal(true);
+          expect(results.walletAddress).to.equal(undefined);
+          expect(results.message).to.equal('Wallet Name not found');
+
+          done();
+        });
+        httpBackend.flush();
+      })
+    });
+
+    it('should return error not found if success flag is false', function(done) {
+      httpBackend.expectGET('https://api.domain.com/api/' + walletName + '/btc')
+        .respond(200, {success: false, wallet_address: walletAddress});
+
+      inject(function(walletNameLookupService) {
+        var promise = walletNameLookupService.getWalletName(walletName);
+        promise.then(function(results) {
+
+          expect(results.isError).to.equal(true);
+          expect(results.walletAddress).to.equal(undefined);
+          expect(results.message).to.equal('Wallet Name not found');
+
+          done();
+        });
+        httpBackend.flush();
+      })
+    });
+
+    it('should return error lookup failed via the error callback', function(done) {
+      httpBackend.expectGET('https://api.domain.com/api/' + walletName + '/btc')
+        .respond(500, {});
+
+      inject(function(walletNameLookupService) {
+        var promise = walletNameLookupService.getWalletName(walletName);
+        promise.then(function(results) {
+
+          expect(results.isError).to.equal(true);
+          expect(results.walletAddress).to.equal(undefined);
+          expect(results.message).to.equal('Wallet Name lookup failed');
+
+          done();
+        });
+        httpBackend.flush();
+      })
+    });
+  });
+
 });

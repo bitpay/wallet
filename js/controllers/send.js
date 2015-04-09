@@ -3,7 +3,7 @@ var bitcore = require('bitcore');
 var preconditions = require('preconditions').singleton();
 
 angular.module('copayApp.controllers').controller('SendController',
-  function($scope, $rootScope, $window, $timeout, $modal, $filter, notification, isMobile, rateService, txStatus, isCordova) {
+  function($scope, $rootScope, $window, $timeout, $modal, $filter, notification, isMobile, rateService, txStatus, isCordova, walletNameLookupService) {
 
     $scope.init = function() {
       var w = $rootScope.wallet;
@@ -501,6 +501,27 @@ angular.module('copayApp.controllers').controller('SendController',
       return addr;
     };
 
+    $scope.fetchWalletName = function(walletName) {
+      var form = $scope.sendForm;
+
+      walletNameLookupService.getWalletName(walletName).then(function (response) {
+        if (response.isError) {
+          $scope.error = response.message;
+          form.address.$isValid = false;
+          return walletName;
+        }
+
+        $scope.setForm(response.walletAddress, null, 'Wallet Name: ' + walletName);
+        return walletName;
+
+      }, function(err) {
+        copay.logger.warn(err.message);
+        $scope.error = err.message;
+        form.address.$isValid = false;
+        return walletName;
+      });
+    };
+
     $scope.onAddressChange = function(value) {
       $scope.error = $scope.success = null;
       if (!value) return '';
@@ -509,6 +530,10 @@ angular.module('copayApp.controllers').controller('SendController',
         return $scope.setFromUri(value);
       } else if (/^https?:\/\//.test(value)) {
         return $scope.setFromPayPro(value);
+      } else if (config.walletNameLookup.enabled && /^([a-z\d][a-z\d\-]*\.)+[a-z]{2,}$/i.test(value)) {
+        $timeout(function () {
+          return $scope.fetchWalletName(value.toLowerCase());
+        }, 20)
       }
 
       return value;

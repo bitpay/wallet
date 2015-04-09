@@ -91,6 +91,11 @@ var defaultConfig = {
     // clientId: '1036948132229-biqm3b8sirik9lt5rtvjo9kjjpotn4ac.apps.googleusercontent.com',
   },
   */
+
+  walletNameLookup: {
+    enabled: true,
+    url: 'https://pubapi.netki.com/api/wallet_lookup/'
+  }
 };
 if (typeof module !== 'undefined')
   module.exports = defaultConfig;
