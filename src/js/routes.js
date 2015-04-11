@@ -484,8 +484,11 @@ angular
       importLegacy: 12
     };
 
-    $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
+    $rootScope.$on('$stateChangeSuccess', function() {
       $rootScope.$emit('Animation/Disable');
+    });
+
+    $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
 
       if (pageWeight[fromState.name] > pageWeight[toState.name]) {
         $rootScope.$emit('Animation/SwipeRight');
