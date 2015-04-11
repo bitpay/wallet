@@ -1,10 +1,12 @@
 'use strict';
  
 describe('menuController', function(){
-    var scope, controller;
+    var state, scope, controller;
  
     beforeEach(angular.mock.module('copayApp.controllers'));
-    beforeEach(angular.mock.inject(function($rootScope, $controller){
+    beforeEach(angular.mock.module('stateMock'));
+    beforeEach(angular.mock.inject(function($rootScope, $controller, $state){
+      state = $state;
       scope = $rootScope.$new();
       controller = $controller('menuController', {$scope: scope});
     }));
