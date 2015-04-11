@@ -10,7 +10,7 @@
           <h1 class="m20b animated infinite flash"> Importing...</h1>
           <ul>
             <li ng-repeat="m in importLegacy.messages"> 
-              <span  style="opacity: {{m.opacity}}"> {{m.message}} </span>
+            <span ng-style="{'opacity':m.opacity}"> {{m.message}} </span>
           </ul>
         </div>
 

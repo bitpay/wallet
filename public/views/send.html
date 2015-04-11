@@ -146,7 +146,8 @@
 
           <div class="row" ng-show="!send.onGoingProcess">
             <div class="large-6 medium-6 small-12 columns">
-              <button type="submit" class="button black radius expand" ng-disabled="sendForm.$invalid || send.blockUx"    style="background-color:{{index.backgroundColor}}"  translate>
+              <button type="submit" class="button black radius expand" ng-disabled="sendForm.$invalid || send.blockUx" 
+                ng-style="{'background-color':index.backgroundColor}"  translate>
                 Send
               </button>
             </div>

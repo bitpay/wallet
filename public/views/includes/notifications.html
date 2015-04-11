@@ -6,7 +6,8 @@
     </div>
     <div class="dr-notification-content">
       <h3 class="dr-notification-title">{{noti.title|translate}}</h3>
-      <div class="dr-notification-text label" style="background-color:{{noti.userData.color}}">{{noti.content|translate}}</div>
+      <div class="dr-notification-text label" 
+        ng-style="{'background-color':noti.userData.color}">{{noti.content|translate}}</div>
     </div>
   </div>
 </div>
