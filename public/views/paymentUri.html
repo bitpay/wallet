@@ -1,0 +1,23 @@
+<div class="row m20t" ng-controller="paymentUriController as payment">
+  <div class="large-12 columns" ng-init="uri = payment.checkBitcoinUri()">
+    <div class="panel text-center" ng-show="!uri">
+      <h1 translate>Bitcoin URI is NOT valid!</h1>
+    </div>
+    <div ng-show="uri">
+      <div class="panel size-14">
+        <div class="ellipsis"><b translate>Address</b>: {{uri.address.toString()}}</div>
+        <div ng-show="uri.amount"><b translate>Amount</b>: {{uri.amount}}</div>
+        <div ng-show="uri.message"><b translate>Message</b>: {{uri.message}}</div>
+      </div>
+      <h1 translate>Select a wallet</h1>
+      <ul class="no-bullet" ng-init="wallets = payment.getWallets()">
+        <li class="panel" ng-repeat="w in wallets">
+        <a ng-click="payment.selectWallet(w.id)">
+          <div class="ellipsis">{{w.name || w.id}}</div>
+          <div class="size-12">{{w.m}} of {{w.n}}</div> 
+        </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

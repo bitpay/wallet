@@ -1,0 +1,7 @@
+<div class="preferences" ng-controller="preferencesColorController as p">
+  <div ng-repeat="c in p.colorOpts" ng-click="p.save(c)" class="line-b p20 size-14">
+    <span  style="color:{{c}}">&block;</span>
+    <i class="fi-check size-16 right" ng-show="p.color == c"></i>
+  </div>
+</div>
+<div class="extra-margin-bottom"></div>

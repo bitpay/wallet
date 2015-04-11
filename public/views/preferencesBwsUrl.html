@@ -1,0 +1,9 @@
+<div class="preferences m20t columns" ng-controller="preferencesBwsUrlController as prefBwsUrl">
+  <form name="settingsBwsUrlForm" ng-submit="prefBwsUrl.save()" class="m20t">
+    <label translate>Bitcore Wallet Service URL</label>
+    <input type="text" id="bwsurl" type="text" name="bwsurl" ng-model="prefBwsUrl.bwsurl">
+    <input type="submit" class="button expand black radius" value="{{'Save'|translate}}" 
+    style="background-color:{{index.backgroundColor}}">
+  </form>
+</div>
+<div class="extra-margin-bottom"></div>
