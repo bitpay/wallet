@@ -1,0 +1,25 @@
+<div class="last-transactions-content" 
+  ng-class="{'text-gray':!tx.pendingForUs}" 
+  ng-click="openTxModal(tx, index.copayers)">
+  <div class="m5b size-12 text-gray">
+    <time>{{ (tx.ts || tx.createdTs ) | amTimeAgo}}</time>
+  </div>
+  <div class="row collapse">
+    <div class="ellipsis small-8 columns size-14">
+        
+        <span translate>To</span>:
+        <span ng-if="tx.merchant">
+          <span ng-show="tx.merchant.pr.ca"><i class="fi-lock"></i> {{tx.merchant.domain}}</span>
+          <span ng-show="!tx.merchant.pr.ca"><i class="fi-unlock"></i> {{tx.merchant.domain}}</span>
+        </span>
+        <contact address="{{tx.toAddress}}" ng-hide="tx.merchant"> </contact>
+        {{tx.toAddress}}
+    </div>
+
+    <div class="small-4 columns text-right">
+      <span class="text-bold size-14" ng-if="!$root.updatingBalance">
+        {{tx.amountStr}}
+      </span>
+    </div>
+  </div>
+</div>

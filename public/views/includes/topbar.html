@@ -1,0 +1,22 @@
+<nav ng-controller="topbarController as topbar" class="tab-bar">
+  <section class="left-small">
+    <a class="p10" ng-show="!goBackToState && !index.noFocusedWallet" 
+      ng-click="index.openMenu()"><i class="fi-list size-24"></i>
+    </a>
+    <a ng-show="goBackToState"
+      ng-click="$root.go(goBackToState); goBackToState = null"><i class="icon-arrow-left3 icon-back"></i>
+      <span class="text-back" translate>Back</span>
+    </a>
+  </section>
+
+  <section class="right-small" ng-show="index.isComplete && !goBackToState">
+    <a class="p10" 
+      ng-click="topbar.openScanner()"><i class="fi-camera size-24"></i></a>
+  </section>
+
+  <section class="middle tab-bar-section">
+    <h1 class="title ellipsis"  style="color:{{index.backgroundColor}}">
+      {{(titleSection|translate) || index.walletName}}
+    </h1>
+  </section>
+</nav>
