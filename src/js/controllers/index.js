@@ -433,7 +433,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     $timeout(function() {
       self.swipeLeft = false;
       self.swipeRight = false;
-    }, 350);
+    }, 370);
   });
 
   $rootScope.$on('Animation/SwipeLeft', function(event) {
