@@ -22,18 +22,23 @@
       name="password" ng-model="backup.repeatpassword">
     </div>
 
-    <button class="black radius expand" ng-click="backup.downloadWalletBackup()" ng-disabled="backup.loading || (!backup.password || backup.password != backup.repeatpassword)"    style="background-color:{{index.backgroundColor}}" 
+    <button class="black radius expand" ng-click="backup.downloadWalletBackup()" 
+      ng-disabled="backup.loading || (!backup.password || backup.password != backup.repeatpassword)" 
+      ng-style="{'background-color':index.backgroundColor}" 
       ng-show="!backup.isSafari && !backup.isCordova"><i class="fi-download"></i>
       <span translate>Download backup</span></button>
-    <button class="black radius expand" ng-click="backup.viewWalletBackup()" ng-disabled="backup.loading"    style="background-color:{{index.backgroundColor}}" 
+    <button class="black radius expand" ng-click="backup.viewWalletBackup()" ng-disabled="backup.loading"
+      ng-style="{'background-color':index.backgroundColor}" 
       ng-show="backup.isSafari && !backup.isCordova"><i class="fi-eye"></i>
       <span translate>View backup</span></button>
     <div ng-show="backup.isCordova">
       <h4 translate>Backup options</h4>
-      <button class="black radius expand"  ng-disabled="backup.loading ||  (!backup.password || backup.password != backup.repeatpassword)"    style="background-color:{{index.backgroundColor}}" 
+      <button class="black radius expand"  ng-disabled="backup.loading ||  (!backup.password || backup.password != backup.repeatpassword)" 
+        ng-style="{'background-color':index.backgroundColor}" 
         ng-click="backup.copyWalletBackup()"><i class="fi-clipboard-pencil"></i>
         <span translate>Copy to clipboard</span></button>
-      <button class="black radius expand"  ng-disabled="backup.loading ||   (!backup.password || backup.password != backup.repeatpassword)"   style="background-color:{{index.backgroundColor}}" 
+      <button class="black radius expand"  ng-disabled="backup.loading ||   (!backup.password || backup.password != backup.repeatpassword)" 
+        ng-style="{'background-color':index.backgroundColor}" 
         ng-click="backup.sendWalletBackup()"><i class="fi-mail"></i>
         <span translate>Send by email</span></button>
     </div>

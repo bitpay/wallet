@@ -1,6 +1,6 @@
 <div class="home-wallet" ng-controller="walletHomeController as home" ng-init="home.init()">
   <div class="row" ng-show="!index.noFocusedWallet">
-        <div class="amount" style="background-color:{{index.backgroundColor}}">
+    <div class="amount" ng-style="{'background-color':index.backgroundColor}">
           <div class="size-36">
             <strong>
               <span ng-show="!index.hideBalance">
@@ -18,7 +18,8 @@
           </div>
         </div>
         <div class="pr columns line-b">
-          <div class="avatar-wallet left"  style="background-color:{{index.backgroundColor}}">{{index.walletName | limitTo: 1}}</div>      
+          <div class="avatar-wallet left" 
+            ng-style="{'background-color':index.backgroundColor}">{{index.walletName | limitTo: 1}}</div>      
           <div class="right">
             <a ng-click="$root.go('preferences')" class="button outline light-gray tiny m0">
               <i class="fi-widget size-18 vm"></i>

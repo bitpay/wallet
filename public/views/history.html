@@ -12,7 +12,8 @@
       ng-click="history.openTxModal(btx)" 
       class="row last-transactions-content">
       <div class="large-3 medium-3 small-3 columns">
-        <span class="label tu" ng-show="btx.action == 'received'"  style="background-color:{{index.backgroundColor}}">Received</span>
+        <span class="label tu" ng-show="btx.action == 'received'" 
+          ng-style="{'background-color':index.backgroundColor}">Received</span>
         <span class="label tu gray" ng-show="btx.action == 'sent'">Sent</span>
         <span class="label tu gray" ng-show="btx.action == 'moved'">Moved</span>
       </div>
