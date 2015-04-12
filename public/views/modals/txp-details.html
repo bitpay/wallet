@@ -5,7 +5,7 @@
     </a>
   </section>
   <section class="middle tab-bar-section">
-    <h1 class="title ellipsis"   style="color:{{color}}" translate>
+    <h1 class="title ellipsis" ng-style="{'color':color}" translate>
       Transaction proposal
     </h1>
   </section>
@@ -113,7 +113,8 @@
       </button>
     </div>
     <div class="large-5 medium-5 small-6 columns text-right">
-      <button class="button primary m0 expand" ng-click="hideTxInfo = true; sign(tx)"  style="background-color:{{color}}"  
+      <button class="button primary m0 expand" ng-click="hideTxInfo = true; sign(tx)" 
+        ng-style="{'background-color':color}"  
         ng-disabled="loading">
         <i class="fi-check icon-sign check"></i>  
         <span translate>Sign</span>

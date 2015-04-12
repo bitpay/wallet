@@ -129,7 +129,7 @@ _:-ms-fullscreen, :root .main {
 }
 
 .tab-bar .text-close {
-  margin-right: 5px;
+  margin-right: 10px;
   font-size: 1rem;
   font-weight: 400;
 }

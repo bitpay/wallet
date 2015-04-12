@@ -19,7 +19,7 @@
   </div>
   <div class="small-6 columns m20t">
   <span class="button black expand radius tiny" 
-    ng-click="$root.go('backup')"    style="background-color:{{index.backgroundColor}}" >
+    ng-click="$root.go('backup')" ng-style="{'background-color':index.backgroundColor}" >
     <span translate>Backup now</span>
   </span>
 </div>
@@ -58,7 +58,8 @@
     </div>
     <div class="row m20t" ng-show="receive.addr && !index.isOffLine && !index.clientError">
           <div class="large-12 columns">
-            <a class="button black expand radius" ng-click="receive.newAddress()"    style="background-color:{{index.backgroundColor}}" translate>
+            <a class="button black expand radius" ng-click="receive.newAddress()" 
+              ng-style="{'background-color':index.backgroundColor}" translate>
               Generate new address
             </a>
           </div>

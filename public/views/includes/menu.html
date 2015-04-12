@@ -4,7 +4,7 @@
   ng-controller="menuController as menu">
     <div class="medium-3 small-3 columns text-center bottombar-item" ng-repeat="item in menu.menu">
       <a ng-click="menu.go(item.link)" ng-class="{'active': activeMenu == item.link}" 
-        style="border-top-color:{{activeMenu==item.link ? index.backgroundColor : ''}}"> 
+        ng-style="{'border-top-color':activeMenu==item.link ? index.backgroundColor : ''}"> 
         <i class="size-36 {{item.icon}} db"></i> 
         <div class="size-10 tu">
           {{item.title|translate}} 
