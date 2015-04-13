@@ -436,9 +436,9 @@ angular
                 // case 'online':
                 //   //   $scope.$emit('Local/Online');
                 //   break;
-                // case 'offline':
-                //   //   $scope.$emit('Local/Offline');
-                //   break;
+                case 'offline':
+                  $scope.$emit('Local/Offline');
+                  break;
               };
               go.walletHome();
             }
