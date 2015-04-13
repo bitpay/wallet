@@ -421,7 +421,12 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   });
 
   $rootScope.$on('Local/ClientError', function(event, err) {
-    self.clientError = err;
+    if (err.code && err.code === 'NOTAUTHORIZED') {
+      // Show not error, just redirect to home (where the recreate option is shown)
+      go.walletHome();
+    } else {
+      self.clientError = err;
+    }
     $rootScope.$apply();
   });
 
