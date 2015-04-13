@@ -33,9 +33,9 @@ angular.element(document).ready(function() {
 
       // We are not emitting here, since when the BWS socket reconnects,
       // update will be triggered  
-      // document.addEventListener('offline', function() {
-      //    window.location = '#/cordova/offline';
-      // }, false);
+      document.addEventListener('offline', function() {
+         window.location = '#/cordova/offline';
+      }, false);
       //
       // document.addEventListener("online", function() {
       //    window.location = '#/cordoba/online';
