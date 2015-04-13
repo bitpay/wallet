@@ -157,7 +157,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         self.setOngoingProcess('updatingTxHistory', false);
         if (err) {
           $log.debug('TxHistory ERROR:', err);
-          $scope.$emit('Local/ClientError', err);
+          self.handleError(err);
           self.txHistoryError = true;
         } else {
           $log.debug('Wallet Transaction History:', txs);
@@ -175,8 +175,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       $scope.$emit('Local/NotAuthorized');
     } else if (err.code === 'NOTFOUND') {
       $scope.$emit('Local/BWSNotFound');
-    } else if (err.code === 'ETIMEDOUT') {
-      $scope.$emit('Local/BWSTimeOut');
     } else {
       $scope.$emit('Local/ClientError', err);
     }
@@ -400,6 +398,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     $rootScope.$on(eventName, function(event) {
       $log.debug('### Online event');
       self.isOffline = false;
+      self.clientError = null;
       self.updateAll();
       self.updateTxHistory();
     });
@@ -426,17 +425,14 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     $rootScope.$apply();
   });
 
-  $rootScope.$on('Local/BWSTimeOut', function(event) {
-    self.clientError = 'Could not access to Bitcore Wallet Service: Timed out';
-    $rootScope.$apply();
-  });
-
   $rootScope.$on('Local/ClientError', function(event, err) {
     if (err.code && err.code === 'NOTAUTHORIZED') {
       // Show not error, just redirect to home (where the recreate option is shown)
       go.walletHome();
     } else if (err && err.cors == 'rejected') {
       $log.debug('CORS error:', err);
+    } else if (err.code === 'ETIMEDOUT') {
+      $log.debug('Time out:', err);
     } else {
       self.clientError = err;
     }
