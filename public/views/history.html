@@ -3,7 +3,15 @@
     <div class="large-12 columns">
       <div class="oh text-center">
         <span ng-if="index.updatingTxHistory" class="text-gray" translate>Getting transactions...</span>
-        <span ng-if="!index.updatingTxHistory">No transactions yet</span>
+
+          <div class="box-notification" ng-show="index.txHistoryError">
+            <div class="box-icon error">
+              <i class="fi-x size-24"></i>
+            </div>
+            <span class="text-warning size-14" translate> Could not fetch transaction history
+            </span>
+          </div>
+        <span ng-if="!index.updatingTxHistory && !index.txHistoryError">No transactions yet</span>
       </div>
     </div>
   </div>

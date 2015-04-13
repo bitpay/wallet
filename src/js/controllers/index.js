@@ -69,8 +69,13 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     var get = function(cb) {
       if (walletStatus)
         return cb(null, walletStatus);
-      else
-        return fc.getStatus(cb);
+      else {
+        self.updateError = false;
+        return fc.getStatus(function(err, ret) {
+          if (err) self.updateError = true;
+          return cb(err, ret);
+        });
+      }
     };
 
     var fc = profileService.focusedClient;
@@ -144,6 +149,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     $timeout(function() {
       self.setOngoingProcess('updatingTxHistory', true);
       $log.debug('Updating Transaction History');
+      self.txHistoryError = false;
       fc.getTxHistory({
         skip: self.skipHistory,
         limit: self.limitHistory + 1
@@ -152,8 +158,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         if (err) {
           $log.debug('TxHistory ERROR:', err);
           $scope.$emit('Local/ClientError', err);
-        }
-        else {
+          self.txHistoryError = true;
+        } else {
           $log.debug('Wallet Transaction History:', txs);
           self.skipHistory = self.skipHistory + self.limitHistory;
           self.setTxHistory(txs);
@@ -390,14 +396,19 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     go.walletHome();
   });
 
-  $rootScope.$on('Local/OnLine', function(event) {
-    self.isOffLine = false;
-    self.updateAll();
-    self.updateTxHistory();
+  lodash.each(['Local/Online', 'Local/Resume'], function(eventName) {
+    $rootScope.$on(eventName, function(event) {
+      $log.debug('### Online event');
+      self.isOffline = false;
+      self.updateAll();
+      self.updateTxHistory();
+    });
   });
 
-  $rootScope.$on('Local/OffLine', function(event) {
-    self.isOffLine = true;
+  $rootScope.$on('Local/Offline', function(event) {
+    $log.debug('========== Offline event');
+    self.isOffline = true;
+    $rootScope.$apply();
   });
 
   $rootScope.$on('Local/BackupDone', function(event) {
@@ -424,6 +435,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     if (err.code && err.code === 'NOTAUTHORIZED') {
       // Show not error, just redirect to home (where the recreate option is shown)
       go.walletHome();
+    } else if (err && err.cors == 'rejected') {
+      $log.debug('CORS error:', err);
     } else {
       self.clientError = err;
     }
@@ -506,7 +519,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   $rootScope.$on('Local/NeedsPassword', function(event, isSetup, cb) {
     self.askPassword = {
       isSetup: isSetup,
-      callback: function (err, pass) {
+      callback: function(err, pass) {
         self.askPassword = null;
         return cb(err, pass);
       },

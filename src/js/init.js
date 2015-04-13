@@ -23,12 +23,23 @@ angular.element(document).ready(function() {
           window.location = '#/';
         }
       }, false);
-      
+
       document.addEventListener('resume', function() {
+        window.location = '#/cordova/resume';
         setTimeout(function() {
           window.ignoreMobilePause = false;
         }, 100);
       }, false);
+
+      // We are not emitting here, since when the BWS socket reconnects,
+      // update will be triggered  
+      // document.addEventListener('offline', function() {
+      //    window.location = '#/cordova/offline';
+      // }, false);
+      //
+      // document.addEventListener("online", function() {
+      //    window.location = '#/cordoba/online';
+      // }, false);
 
       document.addEventListener('backbutton', function() {
         window.location = '#/walletHome';
@@ -38,13 +49,7 @@ angular.element(document).ready(function() {
         window.location = '#/preferences';
       }, false);
 
-      document.addEventListener('offline', function() {
-        window.location = '#/network/offline';
-      }, false);
 
-      document.addEventListener("online", function() {
-        window.location = '#/network/online';
-      }, false);
 
       setTimeout(function() {
         navigator.splashscreen.hide();

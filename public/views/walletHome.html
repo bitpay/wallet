@@ -1,6 +1,7 @@
 <div class="home-wallet" ng-controller="walletHomeController as home" ng-init="home.init()">
   <div class="row" ng-show="!index.noFocusedWallet">
     <div class="amount" ng-style="{'background-color':index.backgroundColor}">
+
           <div class="size-36">
             <strong>
               <span ng-show="!index.hideBalance">
@@ -39,6 +40,15 @@
         </div>
   </div>
 
+  <div ng-show="index.updateError"> 
+  <div class="text-center text-warning m10t"> 
+      <i class="fi-alert"></i>
+<span translate>
+        Could not update Wallet
+</span>
+  </div>
+    </div>
+  </div>
 
   <div ng-show="index.notAuthorized"> 
   <div class="text-center text-warning"> 
