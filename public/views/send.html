@@ -27,7 +27,7 @@
         </span>
       </div>
       <form ng-show="!send.fetchingURL" name="sendForm" ng-submit="send.submitForm(sendForm)" ng-disabled="send.blockUx" novalidate>
-          <div class="box-notification" ng-show="send.error  && !send.hideForWP ">
+          <div class="box-notification" ng-show="send.error">
             <div class="box-icon error">
               <i class="fi-x size-24"></i>
             </div>
@@ -67,10 +67,7 @@
             </div>
 
             <div class="input">
-              <input type="text" id="address" name="address" ng-disabled="send.blockUx || send.lockAddress" placeholder="{{'Bitcoin address'|translate}}" ng-model="_address" valid-address required ng-focus="send.formFocus('address')" ng-blur="send.formFocus(false)">
-<!--
-              <a class="postfix" ng-click="openAddressBook()"><i class="fi-address-book size-24"></i></a>
--->
+              <input type="text" id="address" name="address" ng-disabled="send.blockUx || send.lockAddress" ng-attr-placeholder="{{'Bitcoin address'|translate}}" ng-model="_address" valid-address required ng-blur="send.formFocus(false)">
             </div>
           </div>
           <div ng-show="send._paypro && !send.hideAddress">
@@ -105,7 +102,7 @@
                 </label>
 
                 <div class="input">
-                  <input type="number" id="amount" ng-disabled="send.blockUx || send.lockAmount" name="amount" placeholder="{{'Amount'|translate}}" ng-minlength="0.00000001" ng-maxlength="10000000000" ng-model="_amount" valid-amount required autocomplete="off"  ng-focus="send.formFocus('amount')" ng-blur="send.formFocus(false)">
+                  <input type="number" id="amount" ng-disabled="send.blockUx || send.lockAmount" name="amount" ng-attr-placeholder="{{'Amount'|translate}}" ng-minlength="0.00000001" ng-maxlength="10000000000" ng-model="_amount" valid-amount required autocomplete="off" ng-blur="send.formFocus(false)">
                   <a class="postfix" ng-click="showAlternative = true">{{send.unitName}}</a>
                 </div>
               </div>
@@ -113,7 +110,7 @@
                 <label for="alternative"><span translate>Amount in</span> {{ send.alternativeName }}
                 </label>
                 <div class="input">
-                  <input type="number" id="alternative" ng-disabled="send.blockUx || !send.isRateAvailable || send.lockAmount" name="alternative" placeholder="{{'Amount'|translate}}" ng-model="_alternative" requiredautocomplete="off"  ng-focus="send.formFocus('amount')" ng-blur="send.formFocus(false)">
+                  <input type="number" id="alternative" ng-disabled="send.blockUx || !send.isRateAvailable || send.lockAmount" name="alternative" ng-attr-placeholder="{{'Amount'|translate}}" ng-model="_alternative" requiredautocomplete="off" ng-blur="send.formFocus(false)">
                   <a class="postfix" ng-click="showAlternative = false"> {{ send.alternativeIsoCode }}</a>
                 </div>
               </div>
@@ -127,12 +124,12 @@
               </label>
               <div class="input">
                 <textarea id="comment" ng-disabled="send.blockUx" name="comment" ng-if="index.n > 1" 
-                  placeholder="{{'Leave a private message to your copayers'|translate}}" 
-                  ng-maxlength="100" ng-model="_comment"  ng-focus="send.formFocus('msg')" 
+                  ng-attr-placeholder="{{'Leave a private message to your copayers'|translate}}" 
+                  ng-maxlength="100" ng-model="_comment" 
                   ng-blur="send.formFocus(false)"></textarea>
                 <textarea id="comment" ng-disabled="send.blockUx" name="comment" ng-if="index.n == 1" 
-                  placeholder="{{'Add a private comment to identify the transaction'|translate}}" 
-                  ng-maxlength="100" ng-model="_comment"  ng-focus="send.formFocus('msg')" 
+                  ng-attr-placeholder="{{'Add a private comment to identify the transaction'|translate}}" 
+                  ng-maxlength="100" ng-model="_comment" 
                   ng-blur="send.formFocus(false)"></textarea>
               </div>
             </div>
