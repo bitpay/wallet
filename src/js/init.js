@@ -2,10 +2,10 @@
 
 angular.element(document).ready(function() {
 
-  // this is now in HTML tab, witch is compatible with Windows Phone
-  // var startAngular = function() {
-  //   angular.bootstrap(document, ['copayApp']);
-  // };
+  // Run copayApp after device is ready.
+  var startAngular = function() {
+   angular.bootstrap(document, ['copayApp']);
+  };
   /* Cordova specific Init */
   if (window.cordova !== undefined) {
 
@@ -59,10 +59,10 @@ angular.element(document).ready(function() {
       window.plugins.webintent.onNewIntent(handleBitcoinURI);
       window.handleOpenURL = handleBitcoinURI;
 
-      // startAngular();
+      startAngular();
     }, false);
   } else {
-    // startAngular();
+    startAngular();
   }
 
 });
