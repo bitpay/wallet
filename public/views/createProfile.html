@@ -5,16 +5,11 @@
     <img src="img/logo-negative-beta.svg" alt="Copay" width="100">
     <div ng-include="'views/includes/version.html'"></div>
   </div>
-  <div ng-if="index.isOffLine" class="row">
-    <div class="large-12 columns">
-      <h1 class="text-center text-warning" translate>Warning</h1>
-      <div class="panel">
-        <p translate>You don’t have an internet connection active. Copay needs connection to create a wallet</p>
-      </div>
-    </div>
+  <div class="text-center size-12 text-warning" ng-show="cp.error">
+    {{(cp.error)|translate}}. Retrying...
   </div>
-  <!-- <div ng&#45;if="!index.isOffLine &#38;&#38; !cp.creatingProfile" ng&#45;include="'views/includes/pin.html'" ng&#45;init="confirmPin=true"></div> -->
-  <div class="m20tp text-white text-center  animated infinite flash" ng-if="!index.isOffLine && cp.creatingProfile">
+ 
+  <div class="m20tp text-white text-center  animated infinite flash" ng-if="cp.creatingProfile">
     <span translate>Creating wallet...</span>
   </div>
 </div>

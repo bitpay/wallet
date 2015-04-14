@@ -34,6 +34,15 @@
     </div>
   </div>
   <div ng-show="!receive.generatingAddress">
+          <div class="box-notification" ng-show="receive.error ">
+            <div class="box-icon error">
+              <i class="fi-x size-24"></i>
+            </div>
+            <span class="text-warning size-14">
+              {{receive.error|translate}}
+            </span>
+          </div>
+ 
     <div class="row" ng-show="receive.addr">
       <!-- Address-->
       <div class="large-12 columns">
@@ -56,7 +65,7 @@
           </div>
       </div>
     </div>
-    <div class="row m20t" ng-show="receive.addr && !index.isOffLine && !index.clientError">
+    <div class="row m20t" ng-show="receive.addr">
           <div class="large-12 columns">
             <a class="button black expand radius" ng-click="receive.newAddress()" 
               ng-style="{'background-color':index.backgroundColor}" translate>

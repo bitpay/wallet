@@ -60,6 +60,20 @@ angular.module('copayApp.services')
         root.walletClients[credentials.walletId] = client;
         client.removeAllListeners();
 
+
+        client.on('reconnect', function() {
+          if (root.focusedClient.credentials.walletId == client.credentials.walletId) {
+            $rootScope.$emit('Local/Online');
+          }
+        });
+
+
+        client.on('reconnecting', function() {
+          if (root.focusedClient.credentials.walletId == client.credentials.walletId) {
+            $rootScope.$emit('Local/Offline');
+          }
+        });
+
         client.on('notification', function(n) {
           $log.debug('BWC Notification:', n);
           notificationService.newBWCNotification(n,

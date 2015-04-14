@@ -16,15 +16,17 @@ angular.module('copayApp.controllers').controller('receiveController',
 
     this.newAddress = function() {
       self.generatingAddress = true;
+      self.error = null;
       fc.createAddress(function(err, addr) {
+        self.generatingAddress = false;
         if (err) {
           $log.debug('Creating address ERROR:', err);
           $scope.$emit('Local/ClientError', err);
+          self.error='Could not generate address';
         } else {
           self.addr = addr.address;
           storageService.storeLastAddress(fc.credentials.walletId, addr.address, function() {});
         }
-        self.generatingAddress = false;
         $scope.$digest();
       });
     };
