@@ -28,6 +28,10 @@ input {
   user-drag: none;
 }
 
+body, div, .row {
+  -webkit-overflow-scrolling: touch;
+}
+
 .enable_text_select {
   -webkit-user-select: text;
   -khtml-user-select: text;
@@ -44,7 +48,7 @@ input {
 
 body {
   overflow: hidden;
-  -ms-content-zooming: none; 
+  -ms-content-zooming: none;
 } 
 
 /* Fix IE 10 */
@@ -169,6 +173,11 @@ _:-ms-fullscreen, :root .main {
 
 .off-canvas-wrap,.inner-wrap{
   height:100%;   
+}
+
+.home-wallet {
+  height: 100%;
+  background-color: #fff;
 }
 
 .home-wallet .avatar-wallet {
@@ -615,17 +624,20 @@ a.pin-button:active {
   padding-top: 1rem;
 }
 
-.animation { 
-  position: absolute; 
-  background: #fff; 
-  display: block; 
-  width: 100%; 
-  height: 100%;
-  top: 0;
-  left: 0;
-  -webkit-backface-visibility: hidden;
-  -webkit-transform: translate3d(0, 0, 0);
-  transform: translate3d(0, 0, 0);
+::-webkit-input-placeholder {
+  color: #B7C2CD;
+}
+
+:-moz-placeholder { /* Firefox 18- */
+  color: #B7C2CD;
+}
+
+::-moz-placeholder {  /* Firefox 19+ */
+  color: #B7C2CD;
+}
+
+:-ms-input-placeholder {  
+  color: #B7C2CD;
 }
 
 .animation-left.ng-enter, .animation-left.ng-leave, 
