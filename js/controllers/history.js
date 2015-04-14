@@ -111,12 +111,13 @@ angular.module('copayApp.controllers').controller('HistoryController',
         if (!res) return cb();
 
         var now = new Date();
-        var items = res.items;
+        var items = res.items.filter(function(e){return e}); 
         _.each(items, function(tx) {
           tx.ts = tx.minedTs || tx.sentTs;
           tx.rateTs = Math.floor((tx.ts || now) / 1000);
           tx.amount = $filter('noFractionNumber')(tx.amount);
         });
+        res.items = items;
         return cb(null, res);
       });
     };
