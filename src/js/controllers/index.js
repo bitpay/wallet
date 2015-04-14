@@ -184,9 +184,11 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.updateColor();
     $timeout(function() {
       self.setOngoingProcess('openingWallet', true);
+      self.updateError = false;
       fc.openWallet(function(err, walletStatus) {
         self.setOngoingProcess('openingWallet', false);
         if (err) {
+          self.updateError = true;
           self.handleError(err);
           return;
         }

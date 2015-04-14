@@ -2,6 +2,13 @@
   <div class="row" ng-show="!index.noFocusedWallet">
     <div class="amount" ng-style="{'background-color':index.backgroundColor}">
 
+          <div ng-show="index.updateError && !index.notAuthorized" ng-click='index.openWallet()'> 
+              Could not update Wallet
+              <br> [Tap to retry]
+          </div>
+
+
+
           <div class="size-36" ng-show="!index.anyOnGoingProcess">
             <strong>
               <span>
@@ -41,10 +48,6 @@
             </div>
           </div> 
         </div>
-  </div>
-
-  <div ng-show="index.updateError && !index.notAuthorized"> 
-        Could not update Wallet
   </div>
 
   <div ng-show="index.notAuthorized"> 
