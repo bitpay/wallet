@@ -123,12 +123,7 @@
                 <small translate class="has-error" ng-show="sendForm.comment.$invalid && !sendForm.comment.$pristine">too long!</small>
               </label>
               <div class="input">
-                <textarea id="comment" ng-disabled="send.blockUx" name="comment" ng-if="index.n > 1" 
-                  ng-attr-placeholder="{{'Leave a private message to your copayers'|translate}}" 
-                  ng-maxlength="100" ng-model="_comment" 
-                  ng-blur="send.formFocus(false)"></textarea>
-                <textarea id="comment" ng-disabled="send.blockUx" name="comment" ng-if="index.n == 1" 
-                  ng-attr-placeholder="{{'Add a private comment to identify the transaction'|translate}}" 
+                <textarea id="comment" ng-disabled="send.blockUx" name="comment" 
                   ng-maxlength="100" ng-model="_comment" 
                   ng-blur="send.formFocus(false)"></textarea>
               </div>
@@ -142,13 +137,13 @@
 
 
           <div class="row" ng-show="!send.onGoingProcess">
-            <div class="large-6 medium-6 small-12 columns">
+            <div class="large-6 medium-6 small-6 columns">
               <button type="submit" class="button black radius expand" ng-disabled="sendForm.$invalid || send.blockUx" 
                 ng-style="{'background-color':index.backgroundColor}"  translate>
                 Send
               </button>
             </div>
-            <div class="large-4 medium-4 small-12 columns text-right">
+            <div class="large-6 medium-6 small-6 columns">
               <a ng-click="send.resetForm(sendForm)" class="button expand warning" 
                 ng-show="(send._paypro || send.lockAddress) && !send.blockUx" translate>Cancel</a>
             </div>
