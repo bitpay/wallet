@@ -7,27 +7,6 @@
   color: #2C3E50;
 }
 
-body, div, .row {
-  -webkit-overflow-scrolling: touch;
-};
-
-::-webkit-input-placeholder {
-  color: #B7C2CD;
-}
-
-:-moz-placeholder { /* Firefox 18- */
-  color: #B7C2CD;
-}
-
-::-moz-placeholder {  /* Firefox 19+ */
-  color: #B7C2CD;
-}
-
-:-ms-input-placeholder {  
-  color: #B7C2CD;
-}
-
-
 #qr-canvas { display: none; }
 #qrcode-scanner-video {
   display: block;
@@ -526,7 +505,7 @@ input {
 }
 
 input[type=date], input[type=datetime-local], input[type=datetime], input[type=email], input[type=month], input[type=number], input[type=password], input[type=search], input[type=tel], input[type=text], input[type=time], input[type=url], input[type=week], textarea {
-  color: #2C3E50;
+  color: #B7C2CD;
   margin-bottom: 1.5rem;
   height: 35px;
   background: transparent;

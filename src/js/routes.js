@@ -466,10 +466,10 @@ angular
     }
 
     var pageWeight = {
-      walletHome: 10,
-      receive: 20,
-      send: 30,
-      history: 40,
+      walletHome: 0,
+      receive: 0,
+      send: 0,
+      history: 0,
       preferences: 11,
       preferencesColor: 12,
       backup: 12,
@@ -477,7 +477,7 @@ angular
       preferencesUnit: 12,
       preferencesAltCurrency: 12,
       preferencesBwsUrl: 12,
-      add: 11,
+      add: 0,
       create: 12,
       join: 12,
       import: 12,

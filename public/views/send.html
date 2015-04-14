@@ -27,7 +27,7 @@
         </span>
       </div>
       <form ng-show="!send.fetchingURL" name="sendForm" ng-submit="send.submitForm(sendForm)" ng-disabled="send.blockUx" novalidate>
-          <div class="box-notification" ng-show="send.error  && !send.hideForWP ">
+          <div class="box-notification" ng-show="send.error">
             <div class="box-icon error">
               <i class="fi-x size-24"></i>
             </div>
@@ -67,10 +67,7 @@
             </div>
 
             <div class="input">
-              <input type="text" id="address" name="address" ng-disabled="send.blockUx || send.lockAddress" placeholder="{{'Bitcoin address'|translate}}" ng-model="_address" valid-address required ng-focus="send.formFocus('address')" ng-blur="send.formFocus(false)">
-<!--
-              <a class="postfix" ng-click="openAddressBook()"><i class="fi-address-book size-24"></i></a>
--->
+              <input type="text" id="address" name="address" ng-disabled="send.blockUx || send.lockAddress" ng-attr-placeholder="{{'Bitcoin address'|translate}}" ng-model="_address" valid-address required ng-blur="send.formFocus(false)">
             </div>
           </div>
           <div ng-show="send._paypro && !send.hideAddress">
@@ -105,7 +102,7 @@
                 </label>
 
                 <div class="input">
-                  <input type="number" id="amount" ng-disabled="send.blockUx || send.lockAmount" name="amount" placeholder="{{'Amount'|translate}}" ng-minlength="0.00000001" ng-maxlength="10000000000" ng-model="_amount" valid-amount required autocomplete="off"  ng-focus="send.formFocus('amount')" ng-blur="send.formFocus(false)">
+                  <input type="number" id="amount" ng-disabled="send.blockUx || send.lockAmount" name="amount" ng-attr-placeholder="{{'Amount'|translate}}" ng-minlength="0.00000001" ng-maxlength="10000000000" ng-model="_amount" valid-amount required autocomplete="off" ng-blur="send.formFocus(false)">
                   <a class="postfix" ng-click="showAlternative = true">{{send.unitName}}</a>
                 </div>
               </div>
@@ -113,7 +110,7 @@
                 <label for="alternative"><span translate>Amount in</span> {{ send.alternativeName }}
                 </label>
                 <div class="input">
-                  <input type="number" id="alternative" ng-disabled="send.blockUx || !send.isRateAvailable || send.lockAmount" name="alternative" placeholder="{{'Amount'|translate}}" ng-model="_alternative" requiredautocomplete="off"  ng-focus="send.formFocus('amount')" ng-blur="send.formFocus(false)">
+                  <input type="number" id="alternative" ng-disabled="send.blockUx || !send.isRateAvailable || send.lockAmount" name="alternative" ng-attr-placeholder="{{'Amount'|translate}}" ng-model="_alternative" requiredautocomplete="off" ng-blur="send.formFocus(false)">
                   <a class="postfix" ng-click="showAlternative = false"> {{ send.alternativeIsoCode }}</a>
                 </div>
               </div>
@@ -126,13 +123,8 @@
                 <small translate class="has-error" ng-show="sendForm.comment.$invalid && !sendForm.comment.$pristine">too long!</small>
               </label>
               <div class="input">
-                <textarea id="comment" ng-disabled="send.blockUx" name="comment" ng-if="index.n > 1" 
-                  placeholder="{{'Leave a private message to your copayers'|translate}}" 
-                  ng-maxlength="100" ng-model="_comment"  ng-focus="send.formFocus('msg')" 
-                  ng-blur="send.formFocus(false)"></textarea>
-                <textarea id="comment" ng-disabled="send.blockUx" name="comment" ng-if="index.n == 1" 
-                  placeholder="{{'Add a private comment to identify the transaction'|translate}}" 
-                  ng-maxlength="100" ng-model="_comment"  ng-focus="send.formFocus('msg')" 
+                <textarea id="comment" ng-disabled="send.blockUx" name="comment" 
+                  ng-maxlength="100" ng-model="_comment" 
                   ng-blur="send.formFocus(false)"></textarea>
               </div>
             </div>
@@ -145,15 +137,14 @@
 
 
           <div class="row" ng-show="!send.onGoingProcess">
-            <div class="large-6 medium-6 small-12 columns">
+            <div class="columns" ng-class="{'small-6 medium-6 large-6':(send._paypro || send.lockAddress)}">
               <button type="submit" class="button black radius expand" ng-disabled="sendForm.$invalid || send.blockUx" 
                 ng-style="{'background-color':index.backgroundColor}"  translate>
                 Send
               </button>
             </div>
-            <div class="large-4 medium-4 small-12 columns text-right">
-              <a ng-click="send.resetForm(sendForm)" class="button expand warning" 
-                ng-show="(send._paypro || send.lockAddress) && !send.blockUx" translate>Cancel</a>
+            <div class="large-6 medium-6 small-6 columns" ng-show="!send.blockUx && (send._paypro || send.lockAddress)">
+              <a ng-click="send.resetForm(sendForm)" class="button expand warning" translate>Cancel</a>
             </div>
           </div>
       </form>
