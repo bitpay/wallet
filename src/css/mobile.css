@@ -28,6 +28,10 @@ input {
   user-drag: none;
 }
 
+body, div, .row {
+  -webkit-overflow-scrolling: touch;
+}
+
 .enable_text_select {
   -webkit-user-select: text;
   -khtml-user-select: text;
@@ -44,7 +48,7 @@ input {
 
 body {
   overflow: hidden;
-  -ms-content-zooming: none; 
+  -ms-content-zooming: none;
 } 
 
 /* Fix IE 10 */
@@ -613,6 +617,22 @@ a.pin-button:active {
   display: block;
   text-align: center;
   padding-top: 1rem;
+}
+
+::-webkit-input-placeholder {
+  color: #B7C2CD;
+}
+
+:-moz-placeholder { /* Firefox 18- */
+  color: #B7C2CD;
+}
+
+::-moz-placeholder {  /* Firefox 19+ */
+  color: #B7C2CD;
+}
+
+:-ms-input-placeholder {  
+  color: #B7C2CD;
 }
 
 .animation-left.ng-enter, .animation-left.ng-leave, 
