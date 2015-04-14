@@ -15,9 +15,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self[processName] = isOn;
     self.onGoingProcess[processName] = isOn;
 
-    // derived rules
-    self.hideBalance = self.updatingBalance || self.updatingStatus || self.openingWallet;
-
     var name;
     self.anyOnGoingProcess = lodash.any(self.onGoingProcess, function(isOn, processName) {
       if (isOn)
@@ -26,6 +23,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     });
     // The first one
     self.onGoingProcessName = name;
+    $timeout(function() {
+      $rootScope.$apply();
+    });
   };
 
   self.setFocusedWallet = function() {
@@ -147,14 +147,14 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     }
     self.skipHistory = skip || 0;
     $timeout(function() {
-      self.setOngoingProcess('updatingTxHistory', true);
       $log.debug('Updating Transaction History');
       self.txHistoryError = false;
+      self.updatingTxHistory = true;
       fc.getTxHistory({
         skip: self.skipHistory,
         limit: self.limitHistory + 1
       }, function(err, txs) {
-        self.setOngoingProcess('updatingTxHistory', false);
+        self.updatingTxHistory = false;
         if (err) {
           $log.debug('TxHistory ERROR:', err);
           self.handleError(err);
@@ -346,6 +346,12 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       self.notAuthorized = false;
       self.setOngoingProcess('recreating', false);
 
+      if (err) {
+        self.clientError = 'Could not recreate wallet:' + err;
+        $rootScope.$apply();
+        return;
+      }
+
       profileService.setWalletClients();
       $timeout(function() {
         $rootScope.$emit('Local/WalletImported', self.walletId);
@@ -375,6 +381,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         c.scanning = false;
         if (self.walletId == walletId)
           self.setOngoingProcess('scanning', false);
+        self.clientError = 'Could not scan wallet:' + err;
+        $rootScope.$apply();
       }
     });
   };

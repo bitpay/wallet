@@ -9,7 +9,6 @@ angular.module('copayApp.controllers').controller('historyController',
 
     var fc = profileService.focusedClient;
     var config = configService.getSync().wallet.settings;
-    var formatAmount = profileService.formatAmount;
     this.unitToSatoshi = config.unitToSatoshi;
     this.satToUnit = 1 / this.unitToSatoshi;
     this.unitName = config.unitName;
@@ -42,10 +41,9 @@ angular.module('copayApp.controllers').controller('historyController',
     this.openTxModal = function(btx) {
       var self = this;
       var fc = profileService.focusedClient;
-      var ModalInstanceCtrl = function($scope, $modalInstance, profileService) {
+      var ModalInstanceCtrl = function($scope, $modalInstance) {
         $scope.btx = btx;
         $scope.settings = config;
-        $scope.btx.amountStr = profileService.formatAmount(btx.amount);
         $scope.color = fc.backgroundColor;
 
         $scope.getAmount = function(amount) {
@@ -71,11 +69,6 @@ angular.module('copayApp.controllers').controller('historyController',
         windowClass: 'full',
         controller: ModalInstanceCtrl,
       });
-    };
-
-
-    this.formatAmount = function(amount) {
-      return profileService.formatAmount(amount);
     };
 
     this.hasAction = function(actions, action) {
