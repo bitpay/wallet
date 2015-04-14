@@ -2,8 +2,16 @@
   <div class="row m20t" ng-show="!index.txHistory[0]">
     <div class="large-12 columns">
       <div class="oh text-center">
-        <span ng-if="index.updatingTxHistory" class="text-gray" translate>Getting transactions...</span>
-        <span ng-if="!index.updatingTxHistory">No transactions yet</span>
+        <span ng-if="index.updatingTxHistory" class="text-gray animated flash infinite" translate>Getting transactions...</span>
+        <span ng-if="!index.updatingTxHistory">
+          <div ng-show="index.txHistoryError && !index.notAuthorized" ng-click='index.openWallet()'> 
+              Could not fetch transaction history
+              <br> [Tap to retry]
+          </span>
+          <span ng-if="!index.txHistoryError">
+              No transactions yet
+          </span>
+        </span>
       </div>
     </div>
   </div>
@@ -22,7 +30,7 @@
         <span class="size-18">
           <span ng-if="btx.action == 'received'">+</span>
           <span ng-if="btx.action == 'sent'">-</span>
-          {{history.formatAmount(btx.amount)}}
+          {{btx.amountStr}}
           {{history.getUnitName()}}
         </span>
       </div>

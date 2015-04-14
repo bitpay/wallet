@@ -15,9 +15,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self[processName] = isOn;
     self.onGoingProcess[processName] = isOn;
 
-    // derived rules
-    self.hideBalance = self.updatingBalance || self.updatingStatus || self.openingWallet;
-
     var name;
     self.anyOnGoingProcess = lodash.any(self.onGoingProcess, function(isOn, processName) {
       if (isOn)
@@ -26,6 +23,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     });
     // The first one
     self.onGoingProcessName = name;
+    $timeout(function() {
+      $rootScope.$apply();
+    });
   };
 
   self.setFocusedWallet = function() {
@@ -69,8 +69,13 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     var get = function(cb) {
       if (walletStatus)
         return cb(null, walletStatus);
-      else
-        return fc.getStatus(cb);
+      else {
+        self.updateError = false;
+        return fc.getStatus(function(err, ret) {
+          if (err) self.updateError = true;
+          return cb(err, ret);
+        });
+      }
     };
 
     var fc = profileService.focusedClient;
@@ -142,18 +147,19 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     }
     self.skipHistory = skip || 0;
     $timeout(function() {
-      self.setOngoingProcess('updatingTxHistory', true);
       $log.debug('Updating Transaction History');
+      self.txHistoryError = false;
+      self.updatingTxHistory = true;
       fc.getTxHistory({
         skip: self.skipHistory,
         limit: self.limitHistory + 1
       }, function(err, txs) {
-        self.setOngoingProcess('updatingTxHistory', false);
+        self.updatingTxHistory = false;
         if (err) {
           $log.debug('TxHistory ERROR:', err);
-          $scope.$emit('Local/ClientError', err);
-        }
-        else {
+          self.handleError(err);
+          self.txHistoryError = true;
+        } else {
           $log.debug('Wallet Transaction History:', txs);
           self.skipHistory = self.skipHistory + self.limitHistory;
           self.setTxHistory(txs);
@@ -169,8 +175,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       $scope.$emit('Local/NotAuthorized');
     } else if (err.code === 'NOTFOUND') {
       $scope.$emit('Local/BWSNotFound');
-    } else if (err.code === 'ETIMEDOUT') {
-      $scope.$emit('Local/BWSTimeOut');
     } else {
       $scope.$emit('Local/ClientError', err);
     }
@@ -180,9 +184,11 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.updateColor();
     $timeout(function() {
       self.setOngoingProcess('openingWallet', true);
+      self.updateError = false;
       fc.openWallet(function(err, walletStatus) {
         self.setOngoingProcess('openingWallet', false);
         if (err) {
+          self.updateError = true;
           self.handleError(err);
           return;
         }
@@ -342,6 +348,12 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       self.notAuthorized = false;
       self.setOngoingProcess('recreating', false);
 
+      if (err) {
+        self.clientError = 'Could not recreate wallet:' + err;
+        $rootScope.$apply();
+        return;
+      }
+
       profileService.setWalletClients();
       $timeout(function() {
         $rootScope.$emit('Local/WalletImported', self.walletId);
@@ -371,6 +383,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         c.scanning = false;
         if (self.walletId == walletId)
           self.setOngoingProcess('scanning', false);
+        self.clientError = 'Could not scan wallet:' + err;
+        $rootScope.$apply();
       }
     });
   };
@@ -390,14 +404,19 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     go.walletHome();
   });
 
-  $rootScope.$on('Local/OnLine', function(event) {
-    self.isOffLine = false;
-    self.updateAll();
-    self.updateTxHistory();
+  lodash.each(['Local/Online', 'Local/Resume'], function(eventName) {
+    $rootScope.$on(eventName, function(event) {
+      $log.debug('### Online event');
+      self.isOffline = false;
+      self.clientError = null;
+      self.updateAll();
+      self.updateTxHistory();
+    });
   });
 
-  $rootScope.$on('Local/OffLine', function(event) {
-    self.isOffLine = true;
+  $rootScope.$on('Local/Offline', function(event) {
+    $log.debug('========== Offline event');
+    self.isOffline = true;
   });
 
   $rootScope.$on('Local/BackupDone', function(event) {
@@ -415,13 +434,17 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     $rootScope.$apply();
   });
 
-  $rootScope.$on('Local/BWSTimeOut', function(event) {
-    self.clientError = 'Could not access to Bitcore Wallet Service: Timed out';
-    $rootScope.$apply();
-  });
-
   $rootScope.$on('Local/ClientError', function(event, err) {
-    self.clientError = err;
+    if (err.code && err.code === 'NOTAUTHORIZED') {
+      // Show not error, just redirect to home (where the recreate option is shown)
+      go.walletHome();
+    } else if (err && err.cors == 'rejected') {
+      $log.debug('CORS error:', err);
+    } else if (err.code === 'ETIMEDOUT') {
+      $log.debug('Time out:', err);
+    } else {
+      self.clientError = err;
+    }
     $rootScope.$apply();
   });
 
@@ -501,7 +524,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   $rootScope.$on('Local/NeedsPassword', function(event, isSetup, cb) {
     self.askPassword = {
       isSetup: isSetup,
-      callback: function (err, pass) {
+      callback: function(err, pass) {
         self.askPassword = null;
         return cb(err, pass);
       },

@@ -14,7 +14,6 @@ if (window && window.navigator) {
 angular
   .module('copayApp')
   .config(function(bwcServiceProvider, $stateProvider, $urlRouterProvider) {
-    bwcServiceProvider.setBaseUrl('http://192.168.1.102:3001/bws/api');
     $urlRouterProvider.otherwise('/');
 
     $stateProvider
@@ -323,8 +322,8 @@ angular
           }
         }
       })
- 
-      .state('preferencesAltCurrency', {
+
+    .state('preferencesAltCurrency', {
         url: '/preferencesAltCurrency',
         templateUrl: 'views/preferencesAltCurrency.html',
         walletShouldBeComplete: true,
@@ -410,32 +409,35 @@ angular
       })
 
     .state('add', {
-      url: '/add',
-      needProfile: true,
-      views: {
-        'main': {
-          templateUrl: 'views/add.html'
-        },
-        'topbar': {
-          templateUrl: 'views/includes/topbar.html',
-          controller: function($scope) {
-            $scope.titleSection = 'Add wallet';
-            $scope.goBackToState = 'walletHome';
+        url: '/add',
+        needProfile: true,
+        views: {
+          'main': {
+            templateUrl: 'views/add.html'
+          },
+          'topbar': {
+            templateUrl: 'views/includes/topbar.html',
+            controller: function($scope) {
+              $scope.titleSection = 'Add wallet';
+              $scope.goBackToState = 'walletHome';
+            }
           }
         }
-      }
-    })
-      .state('network', {
-        url: '/network/:status',
+      })
+      .state('cordova', {
+        url: '/cordova/:status',
         views: {
           'main': {
             controller: function($scope, $stateParams, go) {
               switch ($stateParams.status) {
-                case 'online':
-                  $scope.$emit('Local/OnLine');
+                case 'resume':
+                  $scope.$emit('Local/Resume');
                   break;
+                // case 'online':
+                //   //   $scope.$emit('Local/Online');
+                //   break;
                 case 'offline':
-                  $scope.$emit('Local/OffLine');
+                  $scope.$emit('Local/Offline');
                   break;
               };
               go.walletHome();
@@ -492,8 +494,7 @@ angular
 
       if (pageWeight[fromState.name] > pageWeight[toState.name]) {
         $rootScope.$emit('Animation/SwipeRight');
-      }
-      else if (pageWeight[fromState.name] < pageWeight[toState.name]) {
+      } else if (pageWeight[fromState.name] < pageWeight[toState.name]) {
         $rootScope.$emit('Animation/SwipeLeft');
       }
 
