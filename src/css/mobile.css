@@ -175,6 +175,11 @@ _:-ms-fullscreen, :root .main {
   height:100%;   
 }
 
+.home-wallet {
+  height: 100%;
+  background-color: #fff;
+}
+
 .home-wallet .avatar-wallet {
   padding: 1.7rem 1rem;
   width: 75px;
