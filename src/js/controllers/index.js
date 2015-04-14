@@ -417,7 +417,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   $rootScope.$on('Local/Offline', function(event) {
     $log.debug('========== Offline event');
     self.isOffline = true;
-    $rootScope.$apply();
   });
 
   $rootScope.$on('Local/BackupDone', function(event) {
