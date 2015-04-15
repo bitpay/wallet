@@ -37,6 +37,8 @@ angular.module('copayApp.controllers').controller('HomeController', function($sc
     });
     $scope.usingLocalStorage = config.plugins.EncryptedLocalStorage;
 
+
+    $scope.showDisclaimer = true;
     if (isCordova) {
       ls.getItem(KEY, function(err, value) {
         $scope.showDisclaimer = value ? null : true;
