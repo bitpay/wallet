@@ -79,11 +79,6 @@ angular.module('copayApp.services')
           notificationService.newBWCNotification(n,
             client.credentials.walletId, client.credentials.walletName);
 
-          // Actions for both focuses and unfocuses wallets...
-          if (n.type == 'ScanFinished') {
-            client.scanning = false;
-          }
-
           if (root.focusedClient.credentials.walletId == client.credentials.walletId) {
             $rootScope.$emit(n.type);
           } else {
@@ -359,11 +354,11 @@ angular.module('copayApp.services')
           return cb('Wrong password');
         }
         $timeout(function() {
-          if( fc.isPrivKeyEncrypted()) {
+          if (fc.isPrivKeyEncrypted()) {
             $log.debug('Locking wallet automatically');
             root.lockFC();
           };
-        },2000);
+        }, 2000);
         return cb();
       });
     };
