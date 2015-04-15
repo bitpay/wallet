@@ -6,7 +6,7 @@
 
 
 .panel h1, .panel h2, .panel h3, .panel h4, .panel h5, .panel h6, .panel p {
-  color: #2C3E50;
+  color: #404041;
 }
 
 body, div, .row {
@@ -41,7 +41,7 @@ body, div, .row {
 }
 
 h1, h2, h3, h4, h5, h6, .panel h2 {
-  color: #2C3E50;
+  color: #404041;
 }
 
 h1 {
@@ -67,13 +67,13 @@ h4 {
 body, html{
   height:100%;
   width:100%;
-  color: #2C3E50;
+  color: #404041;
   -webkit-user-select: text;
-  background-color: #2C3E50;
+  background-color: #404041;
 }
 
 header {
-  background-color: #1ABC9C;
+  background-color: #01AEF0;
   overflow: hidden;
   height: 62px;
 }
@@ -92,7 +92,7 @@ header .alt-currency {
 .panel h3 {
   font-weight: 700;
   font-size: 16px;
-  color: #2C3E50;
+  color: #404041;
   text-transform: uppercase;
   border-bottom: 1px solid #E5E7EA;
   margin-bottom: 1.5rem;
@@ -207,14 +207,14 @@ header .alt-currency {
   height: 62px;
   width: 30px;
   float: right;
-  background-color: #23C9A9;
+  background-color: #63c8ef;
   padding: 16px 6px;
-  color: #B6E9DF;
+  color: #c5e4f0;
 }
 
 .col3 a.selected {
   background-color: #213140;
-  color: #3C4E60;
+  color: ##213140;
 }
 
 .off-canvas-wrap, .inner-wrap{
@@ -239,7 +239,7 @@ input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill, inpu
 }
 
 .home-wallet .avatar-wallet {
-  background: #1ABC9C;
+  background: #01AEF0;
   margin: 0;
   width: 45px;
   height: 45px;
@@ -265,12 +265,12 @@ input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill, inpu
 
 header .avatar-wallet {
   background-color: #fff;
-  color: #1ABC9C;
+  color: #01AEF0;
 }
 
 
 .avatar-wallet {
-  background-color: #1ABC9C;
+  background-color: #01AEF0;
   color: #fff;
   font-size: 20px;
   font-weight: 700;
@@ -310,7 +310,7 @@ header .avatar-wallet {
   height:100%;
   overflow-y: auto;
   overflow-x: none;
-  background-color: #2C3E50;
+  background-color: #404041;
 }
 
 .sidebar {
@@ -321,7 +321,7 @@ header .avatar-wallet {
 .sidebar {
   position: fixed;
   width: 250px;
-  background-color: #2C3E50;
+  background-color: #404041;
   color: #fff;
   line-height: 24px;
 }
@@ -340,7 +340,7 @@ header .avatar-wallet {
 }
 
 .buttons-sidebar .col1 i {
-  background-color: #2C3E50;
+  background-color: #404041;
   color: #A5B2BF;
   border-radius: 100%;
   padding: .3rem 0.55rem;
@@ -357,7 +357,7 @@ header .avatar-wallet {
 
 
 .online {
-  border: 2px solid #1ABC9C;
+  border: 2px solid #01AEF0;
 }
 
 .offline {
@@ -400,7 +400,7 @@ header .avatar-wallet {
   top: 0;
   left: 0;
   color: white;
-  background-color: #1ABC9C;
+  background-color: #01AEF0;
   padding:0 0.5rem;
   border-top-left-radius: 4px;
   border-bottom-left-radius: 4px;
@@ -509,14 +509,14 @@ ul.tx-copayers {
 .send-note span {
   margin-bottom: 5px;
   font-size: 12px;
-  color: #2C3E50;
+  color: #404041;
 }
 
 .manage a {
   text-align: center;
   text-transform: uppercase;
   font-weight: 700;
-  color: #1ABC9C;
+  color: #01AEF0;
 }
 
 .manage a.join {
@@ -530,7 +530,7 @@ ul.tx-copayers {
 
 
 .manage a i {
-  background-color: #1ABC9C;
+  background-color: #01AEF0;
   width: 60px;
   height: 60px;
   padding: 0.85rem;
@@ -786,11 +786,11 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 .success { 
-  color: #1ABC9C;
+  color: #01AEF0;
 }
 
 .bg-success { 
-  background-color: #1ABC9C;
+  background-color: #01AEF0;
 }
 
 .tx-proposal i { 
@@ -818,7 +818,7 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 .label.success { 
-  background-color: #1ABC9C;
+  background-color: #01AEF0;
 }
 
 .label {
@@ -850,11 +850,11 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 ul.pagination li.current a {
-  background: #1ABC9C;
+  background: #01AEF0;
 }
 
 .tooltip { 
-  background-color: #1ABC9C; 
+  background-color: #01AEF0; 
   color: #fff; 
   font-size: 12px; 
   border-color: #16A085;
@@ -994,7 +994,7 @@ button[disabled].secondary,
 /* PRIMARY */
 button.primary, 
 .button.primary { 
-  background-color: #1ABC9C;
+  background-color: #01AEF0;
   color: #fff;
   border-radius: 3px;
 }
@@ -1027,7 +1027,7 @@ button[disabled].warning,
 button.white, 
 .button.white { 
   background-color: #fff;
-  color: #2C3E50;
+  color: #404041;
 }
 
 button.disabled.white, 
@@ -1041,7 +1041,7 @@ button[disabled].white,
 /* BLACK */
 button.black, 
 .button.black { 
-  background-color: #2C3E50;
+  background-color: #404041;
   color: #fff;
 }
 
@@ -1057,7 +1057,7 @@ button[disabled].black,
 button.gray, 
 .button.gray { 
   background-color: #A9B2B8;
-  color: #2C3E50;
+  color: #404041;
 }
 
 .button, button {
@@ -1202,7 +1202,7 @@ label.postfix, a.postfix {
 }
 
 .side-nav li.active>a:first-child:not(.button) {
-  color: #2C3E50;
+  color: #404041;
   background-color: #E8ECEF;
 }
 
@@ -1288,7 +1288,7 @@ label.postfix, a.postfix {
 
 .icon-input .fi-check {
   padding: .2rem .3rem;
-  background-color: #1ABC9C;
+  background-color: #01AEF0;
   border-radius: 100%;
   display: block;
 }
@@ -1308,7 +1308,7 @@ label.postfix, a.postfix {
 }
 
 .is-valid {
-  color: #1ABC9C;
+  color: #01AEF0;
 }
 
 input.ng-invalid-match, input.ng-invalid-match:focus {
@@ -1316,18 +1316,18 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
 }
 
 .black {
-  background-color: #2C3E50;
+  background-color: #404041;
 }
 .text-italic {font-style: italic;}
 .text-light {font-weight: 100;}
 .text-bold {font-weight: 700;}
 .text-gray {color: #8597A7;}
-.text-black {color: #2C3E50;}
-.text-primary {color: #1ABC9C;}
+.text-black {color: #404041;}
+.text-primary {color: #01AEF0;}
 .text-secondary {color: #3498DB;}
 .text-white {color: #fff;}
 .text-warning {color: #CA5649;}
-.text-success {color: #1ABC9C;}
+.text-success {color: #01AEF0;}
 
 .box-setup-copayers {
   background: #F8F8FB;
@@ -1335,11 +1335,11 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
 }
 
 .box-setup-copay-required .photo-container {
-  background-color: #1ABC9C;
+  background-color: #01AEF0;
 }
 
 .panel {
-  background-color: #2C3E50;
+  background-color: #404041;
   padding: 1rem;
   border: 0;
 }
@@ -1397,7 +1397,7 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
 }
 
 .wide-page {
-  background-color: #2C3E50;
+  background-color: #404041;
   margin: 5% 0;
   padding: 50px;
 }
@@ -1505,7 +1505,7 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
 }
 
 .ball_4 {
-  background-color:#2C3E50;
+  background-color:#404041;
   top:24px; left:24px;
 }
 
@@ -1610,7 +1610,7 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
 }
 
 .bg-circle {
-  background: #253547;
+  background: #213140;
   border-radius: 100%;
   margin: 0 0.5rem 0.3rem 0;
   padding: .45rem 0.5rem;

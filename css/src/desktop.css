@@ -9,7 +9,7 @@
 
 .head .menu ul li a:hover {
   background-color: #F8F8FB;
-  color: #2C3E50;
+  color: #404041;
 }
 
 .col3 a.selected:hover {
@@ -18,7 +18,7 @@
 }
 
 .col3 a:hover {
-  background-color: #16A085;
+  background-color: #79cdec;
   color: #fff;
 }
 
@@ -86,7 +86,7 @@ button.white:focus,
 .button.white:hover, 
 .button.white:focus {
   background-color: #E0E0E0;
-  color: #2C3E50;
+  color: #404041;
 }
 
 button.black:hover, 
@@ -102,7 +102,7 @@ button.gray:focus,
 .button.gray:hover, 
 .button.gray:focus {
   background-color: #E0E5E5;
-  color: #2C3E50;
+  color: #404041;
 }
 
 .wallet-selection.wallets li:hover {
@@ -137,7 +137,7 @@ a:hover .photo-container  {
   background-color: #3C4E60;
 }
 
-a.text-gray:hover {color: #2C3E50;}
+a.text-gray:hover {color: #404041;}
 a.text-black:hover {color: #213140;}
 a.text-primary:hover {color: #50E3C2;}
 a.text-secondary:hover {color: #4A90E2;}

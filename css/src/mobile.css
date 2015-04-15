@@ -42,7 +42,7 @@
   } 
 
   .loading-screen {
-    background-color: #2C3E50;
+    background-color: #404041;
   }
 
   .logo-setup {
@@ -103,7 +103,7 @@
     position: fixed;
     width: 100%;
     z-index: 5;
-    background: #2C3E50;
+    background: #404041;
   }
 
   .bottom-bar {
@@ -112,7 +112,7 @@
     bottom: 0;
     width: 100%;
     z-index: 5;
-    background: #2C3E50;
+    background: #404041;
   }
 
   .home, .settings, .createProfile, .import-profile {
@@ -140,7 +140,7 @@
   }
 
   header {
-    background-color: #2C3E50;
+    background-color: #404041;
     height: 120px;
     width: 100%;
     line-height: 110%;
@@ -284,7 +284,7 @@
   .bottombar-item a.active {
     color: #E4E8EC;
     background-color: #213140;
-    border-bottom: 3px solid #1ABC9C;
+    border-bottom: 3px solid #01AEF0;
   }
 
   .box-founds {
@@ -454,7 +454,7 @@
   }
 
   .icon-circle, .icon-circle-active {
-    color:  #1ABC9C;
+    color:  #01AEF0;
   }
 
   .tab-bar {
