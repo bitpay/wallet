@@ -13,14 +13,14 @@
           <span class="size-36">
             <strong>
               <span ng-if="!$root.updatingBalance">{{$root.wallet.balanceInfo.totalBalance || 0}}</span>
-          <span ng-if="$root.updatingBalance"><i class="fi-bitcoin-circle icon-rotate spinner"></i></span>
+          <span ng-if="$root.updatingBalance"><i class="icon-rotate spinner"></i></span>
           {{$root.wallet.settings.unitName}}
           </strong>
           </span>
           <span class="size-14 db m5t text-gray">
             <span ng-if="!$root.wallet.balanceInfo.updatingBalance && $root.wallet.balanceInfo.alternativeBalanceAvailable">{{$root.wallet.balanceInfo.totalBalanceAlternative}} {{$root.wallet.balanceInfo.alternativeIsoCode}}</span>
           <span ng-if="!$root.wallet.balanceInfo.updatingBalance && !$root.wallet.balanceInfo.alternativeBalanceAvailable">N/A</span>
-          <span ng-if="$root.wallet.balanceInfo.updatingBalance"><i class="fi-bitcoin-circle icon-rotate spinner"></i></span>
+          <span ng-if="$root.wallet.balanceInfo.updatingBalance"><i class="icon-rotate spinner"></i></span>
           </span>
         </div>
         <div class="pr">
