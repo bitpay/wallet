@@ -44,7 +44,7 @@ a.button-setup:hover {
 }
 
 ul.pagination li.current a:hover, ul.pagination li.current a:focus {
-  background: #16A085;
+  background: #1790c3;
 }
 
 .button.outline.light-gray:hover {
@@ -69,7 +69,7 @@ button.primary:hover,
 button.primary:focus, 
 .button.primary:hover, 
 .button.primary:focus {
-  background-color: #16A085;
+  background-color: #1790c3;
   color: #fff;
 }
 

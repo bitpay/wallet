@@ -85,7 +85,7 @@ header .creation {
 }
 
 header .alt-currency {
-  background: #16A085;
+  background: #1790c3;
   color: #fff;
 }
 
@@ -857,23 +857,23 @@ ul.pagination li.current a {
   background-color: #01AEF0; 
   color: #fff; 
   font-size: 12px; 
-  border-color: #16A085;
+  border-color: #1790c3;
 }
 
 .tooltip>.nub {
-  border-color:transparent transparent #16A085 transparent;
+  border-color:transparent transparent #1790c3 transparent;
 }
 .tooltip.tip-top>.nub {
-  border-color:#16A085 transparent transparent transparent;
+  border-color:#1790c3 transparent transparent transparent;
 }
 .tooltip.tip-right>.nub {
-  border-color:transparent #16A085 transparent transparent;
+  border-color:transparent #1790c3 transparent transparent;
 }
 .tooltip.tip-left>.nub {
-  border-color:transparent transparent transparent #16A085;
+  border-color:transparent transparent transparent #1790c3;
 }
 .tooltip.tip-bottom>.nub {
-  border-color:transparent transparent #16A085 transparent;
+  border-color:transparent transparent #1790c3 transparent;
 }
 
 .has-tip {
