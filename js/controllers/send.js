@@ -245,12 +245,19 @@ angular.module('copayApp.controllers').controller('SendController',
           var reader = new FileReader();
           reader.onload = (function(theFile) {
             return function(e) {
-              var mpImg = new MegaPixImage(file);
-              mpImg.render(canvas, {
-                maxWidth: 200,
-                maxHeight: 200,
-                orientation: 6
-              });
+              try {
+                // https://github.com/stomita/ios-imagefile-megapixel
+                var mpImg = new MegaPixImage(file);
+
+                mpImg.render(canvas, {
+                  maxWidth: 200,
+                  maxHeight: 200,
+                  orientation: 6
+                });
+              }
+              catch (e) {
+                // error with megapix-image
+              }
 
               $timeout(function() {
                 qrcode.width = canvas.width;
