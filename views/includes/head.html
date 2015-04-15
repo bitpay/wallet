@@ -1,5 +1,5 @@
 <div class="founds" ng-if="$root.wallet.isComplete()">
-  <span ng-if="$root.wallet.balanceInfo.updatingBalance"><i class="fi-bitcoin-circle icon-rotate spinner"></i></span>
+  <span ng-if="$root.wallet.balanceInfo.updatingBalance"><i class="icon-rotate spinner"></i></span>
   <div ng-if="$root.wallet && !$root.wallet.balanceInfo.updatingBalance" data-options="disable_for_touch:true">
     <small class="db text-light" translate>Balance:</small>
     <b class="m5r">{{$root.wallet.balanceInfo.totalBalance || 0}} {{$root.wallet.settings.unitName}}</b>
@@ -10,7 +10,7 @@
         <i class="fi-refresh"></i>
       </a>
       <span ng-if="$root.updatingBalance">
-        <i class="fi-bitcoin-circle icon-rotate spinner"></i>
+        <i class="icon-rotate spinner"></i>
       </span>
     </small>
   </div> 
@@ -40,7 +40,7 @@
       </a></li>
 
     <li class="divider"></li>
-    <li><a ng-click="$root.openExternalLink('https://github.com/bitpay/copay/issues/new')">
+    <li><a ng-click="$root.openExternalLink('https://github.com/startcoin-project/copay/issues/new')">
         <i class="fi-comment-quotes size-18 m10r"></i> {{'Leave feedback'|translate}}
       </a>
       </li> 
