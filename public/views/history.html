@@ -4,7 +4,7 @@
       <div class="oh text-center">
         <span ng-if="index.updatingTxHistory" class="text-gray animated flash infinite" translate>Getting transactions...</span>
         <span ng-if="!index.updatingTxHistory">
-          <div ng-show="index.txHistoryError && !index.notAuthorized" ng-click='index.openWallet()'> 
+          <span ng-show="index.txHistoryError && !index.notAuthorized" ng-click='index.openWallet()'> 
               Could not fetch transaction history
               <br> [Tap to retry]
           </span>
