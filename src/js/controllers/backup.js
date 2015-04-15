@@ -11,13 +11,6 @@ angular.module('copayApp.controllers').controller('backupController',
     var fc = profileService.focusedClient;
     this.isEncrypted = fc.isPrivKeyEncrypted();
 
-    this.copyText = function(text) {
-      if (isCordova) {
-        window.cordova.plugins.clipboard.copy(text);
-        window.plugins.toast.showShortCenter('Copied to clipboard');
-      }
-    };
-
     this.downloadWalletBackup = function() {
       backupService.walletDownload(this.password, function() {
         $rootScope.$emit('Local/BackupDone');
@@ -32,7 +25,6 @@ angular.module('copayApp.controllers').controller('backupController',
 
     this.viewWalletBackup = function() {
       var self = this;
-      this.loading = true;
       $timeout(function() {
         self.backupWalletPlainText = self.getBackup();
         $rootScope.$emit('Local/BackupDone');
