@@ -8,6 +8,12 @@
           </div>
 
 
+          <div ng-show="index.walletScanStatus == 'error'" ng-click='index.retryScan()'> 
+              Scan status finished with error
+              <br> [Tap to retry]
+          </div>
+
+
 
           <div class="size-36" ng-show="!index.anyOnGoingProcess">
             <strong>
