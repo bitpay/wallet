@@ -50,7 +50,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       self.isComplete = fc.isComplete();
       self.txps = [];
       self.copayers = [];
-      self.setOngoingProcess('scanning', fc.scanning);
       self.lockedBalance = null;
       self.totalBalanceStr = null;
       self.notAuthorized = false;
@@ -72,7 +71,11 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       else {
         self.updateError = false;
         return fc.getStatus(function(err, ret) {
-          if (err) self.updateError = true;
+          if (err) {
+            self.updateError = true;
+          } else {
+            self.setOngoingProcess('scanning', ret.wallet.scanning);
+          }
           return cb(err, ret);
         });
       }
@@ -97,6 +100,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         self.walletName = walletStatus.wallet.name;
         self.walletSecret = walletStatus.wallet.secret;
         self.walletStatus = walletStatus.wallet.status;
+        self.walletScanStatus = walletStatus.wallet.scanStatus;
         self.copayers = walletStatus.wallet.copayers;
         self.setBalance(walletStatus.balance);
       });
@@ -369,9 +373,13 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     go.swipe();
   };
 
+  self.retryScan = function() {
+    var self = this;
+    self.startScan(self.walletId);
+  }
+
   self.startScan = function(walletId) {
     var c = profileService.walletClients[walletId];
-    c.scanning = true;
 
     if (self.walletId == walletId)
       self.setOngoingProcess('scanning', true);
@@ -380,7 +388,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       includeCopayerBranches: true,
     }, function(err) {
       if (err) {
-        c.scanning = false;
         if (self.walletId == walletId)
           self.setOngoingProcess('scanning', false);
         self.clientError = 'Could not scan wallet:' + err;
@@ -467,22 +474,19 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.swipeRight = true;
   });
 
-  lodash.each(['NewIncomingTx', 'ScanFinished'], function(eventName) {
-    $rootScope.$on(eventName, function() {
-      if (eventName == 'ScanFinished') {
-        self.setOngoingProcess('scanning', false);
-      }
-      self.updateBalance();
-      $timeout(function() {
-        self.updateTxHistory();
-      }, 5000);
-    });
+
+  $rootScope.$on('NewIncomingTx', function() {
+    self.updateBalance();
+    $timeout(function() {
+      self.updateTxHistory();
+    }, 5000);
   });
+
 
   // remove transactionProposalRemoved (only for compat)
 
   lodash.each(['NewOutgoingTx', 'NewTxProposal', 'TxProposalFinallyRejected', 'transactionProposalRemoved', 'TxProposalRemoved',
-    'Local/NewTxProposal', 'Local/TxProposalAction'
+    'Local/NewTxProposal', 'Local/TxProposalAction', 'ScanFinished'
   ], function(eventName) {
     $rootScope.$on(eventName, function() {
       self.updateAll();
