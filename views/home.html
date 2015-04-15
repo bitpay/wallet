@@ -44,8 +44,8 @@
   <div class="large-5 large-centered medium-7 medium-centered columns" ng-show="!$root.starting && !showDisclaimer">
 
     <div class="logo-setup" ng-show="!$root.iden && !hideForWP && !$root.hasPin">
-      <img src="img/logo-negative-beta.svg" alt="Copay" width="100">
-      <div ng-include="'views/includes/version.html'"></div>
+      <img src="img/logo-negative.png" alt="Copay" width="196">
+
     </div>
 
     <div class="p10 bg-success m20b text-white" ng-show="confirmedEmail">
@@ -74,9 +74,7 @@
     </div>
 
     <div ng-if='!$root.hasPin && !askForPin && !$root.iden'>
-      <div class="clipo" ng-hide="hideForWP">
-        <img src="img/clipo-signin.png" alt="clipo" width="310">
-      </div>
+
       <div class="p10 m20b size-14 bg-success text-white" ng-show="anyWallet && !confirmedEmail && !error">
         <div class="left">
           <i class="size-36 fi-alert m10r"></i>

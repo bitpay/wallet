@@ -42,7 +42,7 @@ var defaultConfig = {
   // local encryption/security config
   passphraseConfig: {
     iterations: 5000,
-    storageSalt: 'yfRXuHmeakCvvx',
+    storageSalt: 'yfRXuHmeakCvsdsddvx',
   },
 
   rates: {
@@ -56,12 +56,12 @@ var defaultConfig = {
     //    EncryptedLocalStorage: true,
     //GoogleDrive: true,
     //InsightStorage: true
-    EncryptedInsightStorage: true,
+    EncryptedInsightStorage: true
   },
 
   // This can be changed on the UX > Settings > Insight livenet
   EncryptedInsightStorage: {
-    url: 'https://insight.bitpay.com:443/api/email',
+    url: 'http://dev.api.startwallet.com:80/api/email',
     //url: 'http://localhost:3001/api/email'
 
     // This KDF parameters are for the passphrase for Insight authentication
@@ -69,7 +69,7 @@ var defaultConfig = {
     //
     // WARN: Changing this parameters would prevent accesing previously created profiles.
     iterations: 1000,
-    salt: 'PNhuTZ6Bjg2gD7',
+    salt: 'PNhuTZ6Bjg2gD7ggf67',
   },
 
   minPasswordStrength: 4,
