@@ -13,17 +13,17 @@
         </div>
 
         <div class="row">
-          <div class="large-12 columns">
+          <div class="large-12 columns" ng-hide="create.hideWalletName">
             <label><span translate>Wallet name</span>
               <div class="input">
-                <input type="text" placeholder="{{'Family vacation funds'|translate}}" class="form-control" name="walletName" ng-model="walletName" ng-required="true">
+                <input type="text" placeholder="{{'Family vacation funds'|translate}}" class="form-control" name="walletName" ng-model="walletName" ng-required="true" ng-blur="create.formFocus(false)">
               </div>
             </label>
-            </div>
-          <div class="large-12 columns" ng-show="totalCopayers != 1" >
+          </div>
+          <div class="large-12 columns" ng-show="totalCopayers != 1">
             <label><span translate>Your nickname</span>
               <div class="input">
-                <input type="text" placeholder="{{'John'|translate}}" class="form-control" name="myName" ng-model="myName" ng-required="totalCopayers != 1" ng-disabled="totalCopayers == 1">
+                <input type="text" placeholder="{{'John'|translate}}" class="form-control" name="myName" ng-model="myName" ng-required="totalCopayers != 1" ng-disabled="totalCopayers == 1" ng-focus="create.formFocus('my-name')" ng-blur="create.formFocus(false)">
               </div>
             </label>
           </div>

@@ -67,7 +67,7 @@
             </div>
 
             <div class="input">
-              <input type="text" id="address" name="address" ng-disabled="send.blockUx || send.lockAddress" ng-attr-placeholder="{{'Bitcoin address'|translate}}" ng-model="_address" valid-address required ng-blur="send.formFocus(false)">
+              <input type="text" id="address" name="address" ng-disabled="send.blockUx || send.lockAddress" ng-attr-placeholder="{{'Bitcoin address'|translate}}" ng-model="_address" valid-address required ng-focus="send.formFocus('address')" ng-blur="send.formFocus(false)">
             </div>
           </div>
           <div ng-show="send._paypro && !send.hideAddress">
@@ -102,7 +102,7 @@
                 </label>
 
                 <div class="input">
-                  <input type="number" id="amount" ng-disabled="send.blockUx || send.lockAmount" name="amount" ng-attr-placeholder="{{'Amount'|translate}}" ng-minlength="0.00000001" ng-maxlength="10000000000" ng-model="_amount" valid-amount required autocomplete="off" ng-blur="send.formFocus(false)">
+                  <input type="number" id="amount" ng-disabled="send.blockUx || send.lockAmount" name="amount" ng-attr-placeholder="{{'Amount'|translate}}" ng-minlength="0.00000001" ng-maxlength="10000000000" ng-model="_amount" valid-amount required autocomplete="off" ng-focus="send.formFocus('amount')" ng-blur="send.formFocus(false)">
                   <a class="postfix" ng-click="showAlternative = true">{{send.unitName}}</a>
                 </div>
               </div>
@@ -110,7 +110,7 @@
                 <label for="alternative"><span translate>Amount in</span> {{ send.alternativeName }}
                 </label>
                 <div class="input">
-                  <input type="number" id="alternative" ng-disabled="send.blockUx || !send.isRateAvailable || send.lockAmount" name="alternative" ng-attr-placeholder="{{'Amount'|translate}}" ng-model="_alternative" requiredautocomplete="off" ng-blur="send.formFocus(false)">
+                  <input type="number" id="alternative" ng-disabled="send.blockUx || !send.isRateAvailable || send.lockAmount" name="alternative" ng-attr-placeholder="{{'Amount'|translate}}" ng-model="_alternative" requiredautocomplete="off" ng-focus="send.formFocus('amount')" ng-blur="send.formFocus(false)">
                   <a class="postfix" ng-click="showAlternative = false"> {{ send.alternativeIsoCode }}</a>
                 </div>
               </div>
@@ -124,7 +124,7 @@
               </label>
               <div class="input">
                 <textarea id="comment" ng-disabled="send.blockUx" name="comment" 
-                  ng-maxlength="100" ng-model="_comment" 
+                  ng-maxlength="100" ng-model="_comment" ng-focus="send.formFocus('msg')" 
                   ng-blur="send.formFocus(false)"></textarea>
               </div>
             </div>
