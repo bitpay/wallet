@@ -1,10 +1,11 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('createController',
-  function($scope, $rootScope, $location, $timeout, $log, lodash, go, profileService, configService, isCordova) {
+  function($scope, $rootScope, $location, $timeout, $log, lodash, go, profileService, configService, isMobile, isCordova) {
 
     var self = this;
     var defaults = configService.getDefaults();
+    this.isWindowsPhoneApp = isMobile.Windows() && isCordova;
 
     /* For compressed keys, m*73 + n*34 <= 496 */
     var COPAYER_PAIR_LIMITS = {
@@ -67,6 +68,20 @@ angular.module('copayApp.controllers').controller('createController',
           }
         });
       }, 100);
+    };
+    
+    this.formFocus = function(what) {
+      if (!this.isWindowsPhoneApp) return
+
+      if (what && what == 'my-name') {
+        this.hideWalletName = true;
+      }
+      else {
+        this.hideWalletName = false;
+      }
+      $timeout(function() {
+        $rootScope.$digest();
+      }, 1);
     };
 
     $scope.$on("$destroy", function() {

@@ -55,12 +55,10 @@ angular.module('copayApp.controllers').controller('sendController',
       if (!this.isWindowsPhoneApp) return
 
       if (!what) {
-        $rootScope.wpInputFocused = false;
         this.hideAddress = false;
         this.hideAmount = false;
 
       } else {
-        $rootScope.wpInputFocused = true;
         if (what == 'amount') {
           this.hideAddress = true;
         } else if (what == 'msg') {
