@@ -80,8 +80,14 @@ angular.module('copayApp.services')
             walletName, {color: color} );
           break;
         case 'ScanFinished':
-          notification.success('Scan Finished',
-            walletName, {color: color} );;
+          if (notificationData.data && notificationData.data.result && notificationData.data.result == 'error') {
+            notification.error('Error scanning addresses',
+              walletName, {color: color} );
+          }
+          else {
+            notification.success('Scan Finished',
+              walletName, {color: color} );
+          }
           break;
 
         case 'NewCopayer':
