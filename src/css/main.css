@@ -468,8 +468,9 @@ input[type=number]::-webkit-outer-spin-button {
 .label.gray {background-color: #4B6178;}
 
 .history .label  {
-  width: 69px;
+  width: 57px;
   text-align: center;
+  font-size: 65%;
 }
 
 .bg-alert {
@@ -639,14 +640,6 @@ button.secondary:focus,
   border-radius: 3px;
 }
 
-button.disabled.secondary, 
-button[disabled].secondary, 
-.button.disabled.secondary, 
-.button[disabled].secondary {
-  background-color: #E4E8EC;
-  color: #A5B2BF;
-}
-
 /* PRIMARY */
 button.primary, 
 button.primary:hover, 
@@ -657,14 +650,6 @@ button.primary:focus,
   background-color: #1ABC9C;
   color: #fff;
   border-radius: 3px;
-}
-
-button.disabled.primary, 
-button[disabled].primary, 
-.button.disabled.primary, 
-.button[disabled].primary {
-  background-color: #95a5a6;
-  color: #E6E6E6;
 }
 
 /* WARNING */
@@ -679,27 +664,11 @@ button.warning:focus,
   border-radius: 3px;
 }
 
-button.disabled.warning, 
-button[disabled].warning, 
-.button.disabled.warning, 
-.button[disabled].warning {
-  background-color: #95a5a6;
-  color: #E6E6E6;
-}
-
 /* WHITE */
 button.white, 
 .button.white { 
   background-color: #fff;
   color: #2C3E50;
-}
-
-button.disabled.white, 
-button[disabled].white, 
-.button.disabled.white, 
-.button[disabled].white {
-  background-color: #95a5a6;
-  color: #E6E6E6;
 }
 
 /* BLACK */
@@ -709,20 +678,37 @@ button.black,
   color: #fff;
 }
 
-button.disabled.black, 
-button[disabled].black, 
-.button.disabled.black, 
-.button[disabled].black {
-  background-color: #95a5a6;
-  color: #E6E6E6;
-}
-
 /* GRAY */
 button.gray, 
 .button.gray { 
   background-color: #A9B2B8;
   color: #2C3E50;
 }
+
+button.disabled.black, 
+button[disabled].black, 
+.button.disabled.black, 
+.button[disabled].black,
+button.disabled.white, 
+button[disabled].white, 
+.button.disabled.white, 
+.button[disabled].white,
+button.disabled.warning, 
+button[disabled].warning, 
+.button.disabled.warning, 
+.button[disabled].warning,
+button.disabled.primary, 
+button[disabled].primary, 
+.button.disabled.primary, 
+.button[disabled].primary,
+button.disabled.secondary, 
+button[disabled].secondary, 
+.button.disabled.secondary, 
+.button[disabled].secondary {
+  background-color: #A5B2BF !important;
+  color: #fff;
+}
+
 
 .button, button {
   text-transform: uppercase;
