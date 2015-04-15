@@ -2,7 +2,7 @@
   <div class="row" ng-show="!index.noFocusedWallet">
     <div class="amount" ng-style="{'background-color':index.backgroundColor}">
 
-          <div ng-show="index.updateError && !index.notAuthorized" ng-click='index.openWallet()'> 
+          <div ng-show="index.updateError && !index.notAuthorized && !index.anyOnGoingProcess" ng-click='index.openWallet()'> 
               Could not update Wallet
               <br> [Tap to retry]
           </div>
@@ -30,8 +30,8 @@
             <span translate ng-show="index.onGoingProcessName == 'scanning'">Scanning Wallet funds...</span>
             <span translate ng-show="index.onGoingProcessName == 'recreating'">Recreating Wallet on BWS...</span>
           </div>
-          <div class="size-14" ng-show="!index.anyOnGoingProcess">
-            <span ng-if="index.alternativeBalanceAvailable" ng-class="{'animated fadeIn':!index.hideBalance}">{{index.totalBalanceAlternative}} {{index.alternativeIsoCode}}</span>
+          <div class="size-14" ng-show="!index.anyOnGoingProcess && index.alternativeBalanceAvailable">
+            <span ng-class="{'animated fadeIn':!index.hideBalance}">{{index.totalBalanceAlternative}} {{index.alternativeIsoCode}}</span>
           </div>
         </div>
         <div class="pr columns line-b">

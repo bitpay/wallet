@@ -32,6 +32,16 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     var fc = profileService.focusedClient;
     if (!fc) return;
 
+    // Clean status
+    self.lockedBalance = null;
+    self.totalBalanceStr = null;
+    self.alternativeBalanceAvailable = false;
+    self.totalBalanceAlternative = null;
+    self.notAuthorized = false;
+    self.clientError = null;
+    self.txHistory = [];
+    self.txHistoryPaging = false;
+
     $timeout(function() {
       self.hasProfile = true;
       self.noFocusedWallet = false;
@@ -50,12 +60,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       self.isComplete = fc.isComplete();
       self.txps = [];
       self.copayers = [];
-      self.lockedBalance = null;
-      self.totalBalanceStr = null;
-      self.notAuthorized = false;
-      self.clientError = null;
-      self.txHistory = [];
-      self.txHistoryPaging = false;
 
       storageService.getBackupFlag(self.walletId, function(err, val) {
         self.needsBackup = !val;
@@ -315,8 +319,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       self.alternativeConversionRate = $filter('noFractionNumber')(alternativeConversionRate, 2);
 
       self.alternativeBalanceAvailable = true;
-
-      self.alternativeBalanceAvailable = true;
       self.updatingBalance = false;
 
       self.isRateAvailable = true;
@@ -422,7 +424,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   });
 
   $rootScope.$on('Local/Offline', function(event) {
-    $log.debug('========== Offline event');
+    $log.debug('Offline event');
     self.isOffline = true;
   });
 
