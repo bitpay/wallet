@@ -19,8 +19,8 @@
     </li>
     <li class="line-b p10">
       <span class="text-gray">Amount:</span>
-      <span class="right">{{tx.amountStr}} 
-        <span class="label gray radius">{{tx.alternativeAmountStr}}</span>
+      <span class="right">{{amountStr}} 
+        <span class="label gray radius">{{alternativeAmountStr}}</span>
       </span>
     </li>
     <li class="line-b p10">
@@ -122,21 +122,13 @@
     </div>
   </div>
 
-  <div ng-show="!hideTxInfo">
-    <div class="row collapse m10t" 
-      ng-show="tx.status=='accepted' && !txBroadcasted && !txRejected">
-      <button class="primary expand"
-        ng-click="broadcast(tx)"
-        ng-disabled="loading"> <i class="fi-upload-cloud"></i>
-        <span translate>Broadcast Transaction</span>
-      </button>
-    </div>
-    <div class="text-success m10t oh" 
-      ng-show="txBroadcasted">
-      <span translate>Transaction sent!</span>
+  <div class="text-center" ng-show="tx.status != 'pending'">
+    <div class="text-success m10t" 
+      ng-show="tx.status=='accepted'" translate>
+      Transaction sent!
     </div>
     <div class="text-center text-warning"
-      ng-show="txRejected" translate>
+      ng-show="tx.status=='rejected'" translate>
       Transaction finally rejected
     </div>
   </div>
