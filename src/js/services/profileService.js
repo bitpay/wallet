@@ -1,6 +1,6 @@
 'use strict';
 angular.module('copayApp.services')
-  .factory('profileService', function profileServiceFactory($rootScope, $location, $timeout, $filter, $log, lodash, pluginManager, balanceService, applicationService, storageService, bwcService, configService, notificationService, notification) {
+  .factory('profileService', function profileServiceFactory($rootScope, $location, $timeout, $filter, $log, lodash, pluginManager, balanceService, applicationService, storageService, bwcService, configService, notificationService, notification, isChromeApp) {
 
     var root = {};
 
@@ -96,6 +96,8 @@ angular.module('copayApp.services')
         });
 
         root.walletClients[credentials.walletId].started = true;
+        root.walletClients[credentials.walletId].doNotVerifyPayPro = isChromeApp;
+
         client.initNotifications(function(err) {
           if (err) {
             $log.error('Could not init notifications err:', err);
