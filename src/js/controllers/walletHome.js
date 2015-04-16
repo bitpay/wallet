@@ -6,9 +6,11 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
 
   $scope.openCopayersModal = function(copayers, copayerId) {
+    var fc = profileService.focusedClient;
     var ModalInstanceCtrl = function($scope, $modalInstance) {
       $scope.copayers = copayers;
       $scope.copayerId = copayerId;
+      $scope.color = fc.backgroundColor;
       $scope.cancel = function() {
         $modalInstance.dismiss('cancel');
       };
