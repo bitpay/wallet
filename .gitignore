@@ -10,6 +10,10 @@ src/js/version.js
 cordova/project/*
 cordova/*.keystore
 
+# chrome extensions
+browser-extensions/chrome/copay-chrome-extension
+browser-extensions/chrome/copay-chrome-extension.zip
+
 # Logs
 logs
 *.log
