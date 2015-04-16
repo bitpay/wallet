@@ -127,7 +127,7 @@ angular.module('copayApp.directives')
       link: function(scope, elem, attrs, ctrl) {
         var validator = function(value) {
           if (value.length > 0) {
-            var m = value.match(/^[1-9A-HJ-NP-Za-km-z]{70,80}$/);
+            var m = value.match(/^[0-9A-HJ-NP-Za-km-z]{70,80}$/);
             ctrl.$setValidity('walletSecret', m ? true : false);
           }
           return value;
