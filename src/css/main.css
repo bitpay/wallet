@@ -1105,7 +1105,6 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
   border-radius: 5px;
   position: absolute;
   width: 90%;
-  height: 40%;
   left: 5%;
   top: 15%;
   z-index: 1100;
