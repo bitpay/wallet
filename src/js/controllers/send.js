@@ -337,27 +337,29 @@ angular.module('copayApp.controllers').controller('sendController',
       var self = this;
 
       $log.debug('Fetch PayPro Request...', uri);
-      fc.fetchPayPro({
-        payProUrl: uri,
-      }, function(err, paypro) {
-        $log.debug(paypro);
-        self.blockUx = false;
-        self.fetchingURL = null;
+      $timeout(function() {
+        fc.fetchPayPro({
+          payProUrl: uri,
+        }, function(err, paypro) {
+          $log.debug(paypro);
+          self.blockUx = false;
+          self.fetchingURL = null;
 
-        if (err) {
-          $log.warn(err);
-          self.resetForm(form);
-          var msg = err.toString();
-          if (msg.match('HTTP')) {
-            msg = 'Could not fetch payment information';
+          if (err) {
+            $log.warn(err);
+            self.resetForm(form);
+            var msg = err.toString();
+            if (msg.match('HTTP')) {
+              msg = 'Could not fetch payment information';
+            }
+            self.error = msg;
+          } else {
+            self._paypro = paypro;
+            self.setForm(paypro.toAddress, (paypro.amount * satToUnit).toFixed(self.unitDecimals),
+              paypro.memo);
           }
-          self.error = msg;
-        } else {
-          self._paypro = paypro;
-          self.setForm(paypro.toAddress, (paypro.amount * satToUnit).toFixed(self.unitDecimals),
-            paypro.memo);
-        }
-      });
+        });
+      }, 1);
     };
 
     this.setFromUri = function(uri) {
