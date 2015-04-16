@@ -264,7 +264,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   self.updateColor = function() {
     var config = configService.getSync();
     config.colorFor = config.colorFor || {};
-    self.backgroundColor = config.colorFor[self.walletId] || '#1ABC9C';
+    self.backgroundColor = config.colorFor[self.walletId] || '#2C3E50';
     var fc = profileService.focusedClient;
     fc.backgroundColor = self.backgroundColor;
   };
