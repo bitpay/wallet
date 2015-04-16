@@ -45,7 +45,7 @@ RateService.prototype._fetchCurrencies = function() {
 
   var backoffSeconds = 5;
   var updateFrequencySeconds = 3600;
-  var rateServiceUrl = 'https://bitpay.com/api/rates';
+  var rateServiceUrl = 'https://rates.startwallet.com/all';
 
   var retrieve = function() {
     log.info('Fetching exchange rates');

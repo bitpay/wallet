@@ -46,7 +46,7 @@ var defaultConfig = {
   },
 
   rates: {
-    url: 'https://insight.bitpay.com:443/api/rates',
+    url: 'https://rates.startwallet.com/all',
   },
 
   verbose: 1,
