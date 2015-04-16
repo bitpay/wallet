@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('sendController',
-  function($rootScope, $scope, $window, $timeout, $modal, $filter, $log, notification, isMobile, txStatus, isCordova, bitcore, profileService, configService, rateService) {
+  function($rootScope, $scope, $window, $timeout, $modal, $filter, $log, notification, isMobile, txStatus, isCordova, bitcore, profileService, configService, rateService, isChromeApp) {
     var fc = profileService.focusedClient;
     var self = this;
 
@@ -325,9 +325,8 @@ angular.module('copayApp.controllers').controller('sendController',
     };
 
     this.setFromPayPro = function(uri, form) {
-      var isChromeApp = window.chrome && chrome.runtime && chrome.runtime.id;
       if (isChromeApp) {
-        this.error = 'Payment Protocol not yet supported on ChromeApp';
+        this.error = 'Payment Protocol not supported on Chrome App';
         return;
       }
 
