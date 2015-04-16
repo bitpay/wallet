@@ -81,7 +81,7 @@ if [ ! -d $PROJECT ]; then
 
   echo "${OpenColor}${Green}* Installing plugins... ${CloseColor}"
 
-  cordova plugin add https://github.com/Initsogar/cordova-webintent.git
+  cordova plugin add https://github.com/florentvaldelievre/virtualartifacts-webIntent.git
   checkOK
 
   cordova plugin add https://github.com/wildabeast/BarcodeScanner.git
