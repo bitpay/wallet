@@ -149,7 +149,6 @@ _:-ms-fullscreen, :root .main {
 }
 
 .amount {
-  background-color:  #1ABC9C;
   width: 100%;
   text-align: center;
   padding: 3rem 1rem;
@@ -269,7 +268,7 @@ a.missing-copayers {
 } 
 
 .label {
-  font-size: 80%;
+  font-size: 70%;
   padding: 0.2rem 0.2rem;
 }
 
@@ -523,12 +522,12 @@ a.pin-button:active {
 
 .dr-notification-content {
   line-height: 100%;
-  padding: 4px 50px 5px 60px;
+  padding: 7px 50px 5px 60px;
 }
 
 .dr-notification-title {
   color: #fff;
-  font-size: 15px;
+  font-size: 14px;
   margin-bottom: 0;
   font-weight: 500;
 }

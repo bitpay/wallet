@@ -52,7 +52,7 @@ angular.module('copayApp.services')
 
       var config = configService.getSync();
       config.colorFor = config.colorFor || {};
-      var color = config.colorFor[walletId] || '#1ABC9C';
+      var color = config.colorFor[walletId] || '#2C3E50';
 
       switch (notificationData.type) {
         case 'NewTxProposal':

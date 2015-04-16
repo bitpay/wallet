@@ -70,7 +70,7 @@ body, html{
 
 
 .color-alert {
-  color: #C0392A;
+  color: #ED4A43;
 }
 
 .alt-currency.green {
@@ -189,7 +189,7 @@ input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill, inpu
 }
 
 .box-notification .box-icon.error {
-  background-color: #C0392A;
+  background-color: #ED4A43;
 }
 
 .box-notification .box-icon.secondary {
@@ -464,7 +464,7 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 .label.success {background-color: #1ABC9C;}
-.label.alert {background-color: #C0392A;}
+.label.alert {background-color: #ED4A43;}
 .label.gray {background-color: #4B6178;}
 
 .history .label  {
@@ -474,7 +474,7 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 .bg-alert {
-  background-color: #C0392A;
+  background-color: #ED4A43;
 }
 
 .ellipsis {
@@ -659,7 +659,7 @@ button.warning:hover,
 button.warning:focus, 
 .button.warning:hover, 
 .button.warning:focus { 
-  background-color: #C0392A;
+  background-color: #ED4A43;
   color: #fff;
   border-radius: 3px;
 }
@@ -786,7 +786,7 @@ label.postfix, a.postfix {
 }
 
 .need-backup {
-  background: #C0392A;
+  background: #ED4A43;
   -moz-box-shadow:    1px 1px 0px 0px #A02F23;
   box-shadow:         1px 1px 0px 0px #A02F23;
   position: absolute;
@@ -840,12 +840,12 @@ label.postfix, a.postfix {
 
 .icon-input .fi-x {
   padding: .1rem .3rem;
-  background-color: #C0392A;
+  background-color: #ED4A43;
   border-radius: 100%;
 }
 
 .has-error {
-  color: #C0392A;
+  color: #ED4A43;
 }
 
 .is-valid {
@@ -1105,7 +1105,6 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
   border-radius: 5px;
   position: absolute;
   width: 90%;
-  height: 40%;
   left: 5%;
   top: 15%;
   z-index: 1100;
