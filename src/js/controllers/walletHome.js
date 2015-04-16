@@ -29,6 +29,8 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     var ModalInstanceCtrl = function($scope, $modalInstance) {
       $scope.error = null;
       $scope.tx = tx;
+      $scope.amountStr = tx.amountStr;
+      $scope.alternativeAmountStr = tx.alternativeAmountStr;
       $scope.copayers = copayers
       $scope.loading = null;
       $scope.color = fc.backgroundColor;
@@ -193,7 +195,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       };
 
       $scope.cancel = function() {
-        $modalInstance.dismiss('cancel');
+        $modalInstance.close();
       };
     };
 
