@@ -288,8 +288,8 @@ a.missing-copayers {
   box-shadow: inset -1px 0px 1px 0px rgba(0,0,0,0.20);
 } 
 
-.sidebar .avatar-wallet {
-  background-color: #1ABC9C;
+.sidebar .avatar-wallet, .payment-uri .avatar-wallet {
+  background-color: #2C3E50;
   color: #fff;
   font-size: 20px;
   font-weight: 700;
