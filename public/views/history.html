@@ -18,7 +18,7 @@
   <div ng-show="index.txHistory[0]" class="scroll">
     <div ng-repeat="btx in index.txHistory" 
       ng-click="history.openTxModal(btx)" 
-      class="row last-transactions-content">
+      class="row collapse last-transactions-content">
       <div class="large-3 medium-3 small-3 columns">
         <span class="label tu" ng-show="btx.action == 'received'" 
           ng-style="{'background-color':index.backgroundColor}">Received</span>
@@ -27,7 +27,7 @@
       </div>
 
       <div class="large-5 medium-5 small-5 columns">
-        <span class="size-18">
+        <span class="size-16">
           <span ng-if="btx.action == 'received'">+</span>
           <span ng-if="btx.action == 'sent'">-</span>
           {{btx.amountStr}}
