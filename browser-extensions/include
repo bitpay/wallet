@@ -1,0 +1,10 @@
+./index.html 
+./css/*.css
+./font/*
+./icons/*
+./img/*
+./img/**/*
+./js/*.js
+./lib/*.js
+./views/*.html
+./views/**/*.html
