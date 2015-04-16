@@ -1,7 +1,5 @@
 'use strict';
 
-
-// TODO rateService
 angular.module('copayApp.controllers').controller('walletHomeController', function($scope, $rootScope, $timeout, $filter, $modal, notification, txStatus, isCordova, profileService, lodash) {
 
 

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, lodash, go, profileService, configService, isCordova, rateService, storageService) {
+angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, lodash, go, profileService, configService, isCordova, rateService, storageService, isChromeApp) {
   var self = this;
   self.isCordova = isCordova;
   self.onGoingProcess = {};
@@ -134,7 +134,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     $timeout(function() {
       self.setOngoingProcess('updatingPendingTxps', true);
       $log.debug('Updating PendingTxps');
-      fc.getTxProposals({}, function(err, txps) {
+      fc.getTxProposals({
+        ignorePayPro: isChromeApp
+      }, function(err, txps) {
         self.setOngoingProcess('updatingPendingTxps', false);
         if (err) {
           $log.debug('Wallet PendingTxps ERROR:', err);
