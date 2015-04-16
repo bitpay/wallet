@@ -1,0 +1,19 @@
+{
+  "manifest_version": 2,
+  "name": "Copay",
+  "description": "A secure Bitcoin wallet for friends and companies",
+  "version": "APP_VERSION",
+  "permissions": [
+    "storage",
+    "notifications",
+    "videoCapture"
+  ],
+  "app": {
+    "background": {
+      "scripts": ["initial.js"]
+    }
+  },
+  "icons": {
+    "128": "img/icons/icon.png"
+  }
+}
