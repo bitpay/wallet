@@ -137,15 +137,16 @@
 
 
           <div class="row" ng-show="!send.onGoingProcess">
+            <div class="large-6 medium-6 small-6 columns" ng-show="!send.blockUx && (send._paypro || send.lockAddress)">
+              <a ng-click="send.resetForm(sendForm)" class="button expand outline dark-gray" translate>Cancel</a>
+            </div>
             <div class="columns" ng-class="{'small-6 medium-6 large-6':(send._paypro || send.lockAddress)}">
               <button type="submit" class="button black radius expand" ng-disabled="sendForm.$invalid || send.blockUx" 
                 ng-style="{'background-color':index.backgroundColor}"  translate>
                 Send
               </button>
             </div>
-            <div class="large-6 medium-6 small-6 columns" ng-show="!send.blockUx && (send._paypro || send.lockAddress)">
-              <a ng-click="send.resetForm(sendForm)" class="button expand warning" translate>Cancel</a>
-            </div>
+            
           </div>
       </form>
     </div>

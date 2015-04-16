@@ -1,3 +1,4 @@
+
 /*
  *
  * Copay mobile CSS
@@ -616,7 +617,7 @@ a.pin-button:active {
 
 .popup-txrejected i {
   font-size: 5rem;
-  background-color: #CA5649;
+  background-color: #ED4A43;
   color: #fff;
   border-radius: 100%;
   width: 150px;
