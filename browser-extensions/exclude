@@ -1,0 +1,11 @@
+../cordova
+../covergae
+../bower_components
+../browser_extensions
+../node_modules
+../po
+../src
+../util
+../.git
+../test
+../.*
