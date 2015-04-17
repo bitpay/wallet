@@ -42,6 +42,15 @@
           Fetching Payment Information...
         </span>
       </div>
+      <div class="box-notification" ng-show="qrError">
+        <div class="box-icon error">
+          <i class="size-24"></i>
+        </div>
+        <span class="text-warning size-14" translate>
+          {{qrError}}
+        </span>
+        <a class="close-notification  text-warning" ng-click="qrError=null">&#215;</a>
+      </div>
       <form ng-show="!fetchingURL" name="sendForm" ng-submit="submitForm(sendForm)" ng-disabled="loading" novalidate>
         <div class="panel">
           <div class="box-notification" ng-show="error  && !hideForWP ">

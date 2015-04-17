@@ -20,6 +20,7 @@ angular.module('copayApp.controllers').controller('SendController',
       $rootScope.title = $scope.requiresMultipleSignatures ? 'Send Proposal' : 'Send';
       $scope.loading = false;
       $scope.error = $scope.success = null;
+      $scope.qrError = null;
 
       $scope.alternativeName = w.settings.alternativeName;
       $scope.alternativeIsoCode = w.settings.alternativeIsoCode;
@@ -233,6 +234,7 @@ angular.module('copayApp.controllers').controller('SendController',
     var $video;
     var context;
     var localMediaStream;
+    var qrErrorText = 'We couldn\'t read the QR code. Make sure your image is clear, the code is central and straight and that there aren\'t scan-lines.';
 
     var _scan = function(evt) {
       if ($scope.isMobile) {
@@ -268,6 +270,7 @@ angular.module('copayApp.controllers').controller('SendController',
                   qrcode.decode();
                 } catch (e) {
                   // error decoding QR
+                  $scope.qrError = qrErrorText;
                 }
               }, 1500);
             };
@@ -284,6 +287,7 @@ angular.module('copayApp.controllers').controller('SendController',
             qrcode.decode();
           } catch (e) {
             //qrcodeError(e);
+            $scope.qrError = qrErrorText;
           }
         }
 
@@ -301,6 +305,7 @@ angular.module('copayApp.controllers').controller('SendController',
     var _scanStop = function() {
       $scope.scannerLoading = false;
       $scope.showScanner = false;
+      $scope.qrError = null;
       if (!$scope.isMobile) {
         if (localMediaStream && localMediaStream.stop) localMediaStream.stop();
         localMediaStream = null;
