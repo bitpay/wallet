@@ -4,7 +4,7 @@ angular.element(document).ready(function() {
 
   // Run copayApp after device is ready.
   var startAngular = function() {
-   angular.bootstrap(document, ['copayApp']);
+    angular.bootstrap(document, ['copayApp']);
   };
   /* Cordova specific Init */
   if (window.cordova !== undefined) {
@@ -25,7 +25,9 @@ angular.element(document).ready(function() {
       }, false);
 
       document.addEventListener('resume', function() {
-        window.location = '#/cordova/resume';
+        if (!window.ignoreMobilePause) {
+          window.location = '#/cordova/resume';
+        }
         setTimeout(function() {
           window.ignoreMobilePause = false;
         }, 100);
@@ -34,7 +36,7 @@ angular.element(document).ready(function() {
       // We are not emitting here, since when the BWS socket reconnects,
       // update will be triggered  
       document.addEventListener('offline', function() {
-         window.location = '#/cordova/offline';
+        window.location = '#/cordova/offline';
       }, false);
       //
       // document.addEventListener("online", function() {
