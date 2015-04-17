@@ -5,6 +5,10 @@ angular.module('copayApp.controllers').controller('sendController',
     var fc = profileService.focusedClient;
     var self = this;
 
+    this.resetError = function() {
+      this.error = this.success = null;
+    };
+
     this.init = function() {
       this.isMobile = isMobile.any();
       this.isWindowsPhoneApp = isMobile.Windows() && isCordova;
@@ -12,7 +16,7 @@ angular.module('copayApp.controllers').controller('sendController',
 
       $rootScope.title = fc.credentials.m > 1 ? 'Send Proposal' : 'Send';
       this.blockUx = false;
-      this.error = this.success = null;
+      this.resetError();
 
       this.isRateAvailable = false;
       this.showScanner = false;
@@ -106,6 +110,7 @@ angular.module('copayApp.controllers').controller('sendController',
               $scope.__alternative = 0;
             }
             self.alternativeAmount = $scope.__alternative;
+            self.resetError();
           },
           enumerable: true,
           configurable: true
@@ -272,8 +277,10 @@ angular.module('copayApp.controllers').controller('sendController',
       }
     };
 
+    
+
     this.resetForm = function(form) {
-      this.error = this.success = null;
+      this.resetError();
       this.fetchingURL = null;
       this._paypro = null;
 
@@ -395,7 +402,7 @@ angular.module('copayApp.controllers').controller('sendController',
     };
 
     this.onAddressChange = function(value) {
-      this.error = this.success = null;
+      this.resetError();
       if (!value) return '';
 
       if (this._paypro)

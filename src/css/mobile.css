@@ -521,15 +521,15 @@ a.pin-button:active {
 }
 
 .dr-notification-content {
-  line-height: 100%;
-  padding: 7px 50px 5px 60px;
+  line-height: 90%;
+  padding: 10px 50px 5px 60px;
 }
 
 .dr-notification-title {
   color: #fff;
-  font-size: 14px;
+  font-size: 12px;
   margin-bottom: 0;
-  font-weight: 500;
+  font-weight: 700;
 }
 
 .dr-notification {
@@ -545,7 +545,7 @@ a.pin-button:active {
 }
 
 .dr-notification-text {
-  font-size: 12px;
+  font-size: 11px;
   color: #fff;
 }
 
