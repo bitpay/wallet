@@ -84,7 +84,7 @@ if [ ! -d $PROJECT ]; then
   cordova plugin add https://github.com/florentvaldelievre/virtualartifacts-webIntent.git
   checkOK
 
-  cordova plugin add https://github.com/wildabeast/BarcodeScanner.git
+  cordova plugin add https://github.com/phonegap/phonegap-plugin-barcodescanner.git
   checkOK
 
   cordova plugin add org.apache.cordova.splashscreen
@@ -121,10 +121,10 @@ if [ ! -d $PROJECT ]; then
   checkOK
 
   cordova plugin add org.apache.cordova.console
-  checkok
+  checkOK
 
   cordova plugin add hu.dpal.phonegap.plugins.uniquedeviceid
-  checkok
+  checkOK
 
 fi
 
