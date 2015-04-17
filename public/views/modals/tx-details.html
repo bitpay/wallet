@@ -55,11 +55,11 @@
     </li>
     <li ng-if="btx.time" class="line-b p10">
     <span class="text-gray" translate>Confirmations:</span>
-    <span class="right">
+    <span class="right" >
       <span class="text-warning" ng-show="!btx.confirmations || btx.confirmations == 0" translate>
         Unconfirmed
       </span>
-      <span class="text-secondary" ng-show="btx.confirmations>0">
+      <span class="label gray radius" ng-show="btx.confirmations>0">
         {{btx.confirmations}}
       </span>
     </span>
