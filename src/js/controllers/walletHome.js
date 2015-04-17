@@ -37,7 +37,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
         return fc.credentials.networkName.substring(0, 4);
       };
 
-      lodash.each(['TxProposalRejectedBy', 'TxProposalAcceptedBy', 'transactionProposalRemoved', 'TxProposalRemoved'], function(eventName) {
+      lodash.each(['TxProposalRejectedBy', 'TxProposalAcceptedBy', 'transactionProposalRemoved', 'TxProposalRemoved', 'NewOutgoingTx'], function(eventName) {
         $rootScope.$on(eventName, function() {
           fc.getTx($scope.tx.id, function(err, tx) {
             if (err) {
