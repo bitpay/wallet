@@ -23,7 +23,6 @@ angular.module('copayApp.controllers').controller('importController',
       } catch (e) {
         self.error = 'Could not decrypt file, check your password';
         $log.warn(e);
-        $scope.$apply();
         return;
       };
 
