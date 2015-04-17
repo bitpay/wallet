@@ -20,10 +20,10 @@
       ng-click="history.openTxModal(btx)" 
       class="row collapse last-transactions-content">
       <div class="large-3 medium-3 small-3 columns">
-        <span class="label tu" ng-show="btx.action == 'received'" 
+        <span class="label tu radius" ng-show="btx.action == 'received'" 
           ng-style="{'background-color':index.backgroundColor}">Received</span>
-        <span class="label tu gray" ng-show="btx.action == 'sent'">Sent</span>
-        <span class="label tu gray" ng-show="btx.action == 'moved'">Moved</span>
+        <span class="label tu gray radius" ng-show="btx.action == 'sent'">Sent</span>
+        <span class="label tu gray radius" ng-show="btx.action == 'moved'">Moved</span>
       </div>
 
       <div class="large-5 medium-5 small-5 columns">

@@ -27,23 +27,11 @@
         </span>
       </div>
       <form ng-show="!send.fetchingURL" name="sendForm" ng-submit="send.submitForm(sendForm)" ng-disabled="send.blockUx" novalidate>
-          <div class="box-notification" ng-show="send.error">
-            <div class="box-icon error">
-              <i class="fi-x size-24"></i>
-            </div>
-            <span class="text-warning size-14">
+          <div class="box-notification" ng-show="send.error" ng-click="send.resetError()">
+            <span class="text-warning">
               {{send.error|translate}}
             </span>
-            <a class="close-notification  text-warning" ng-click="send.resetForm(sendForm)">&#215;</a>
-          </div>
-          <div class="box-notification" ng-show="success">
-            <div class="box-icon success">
-              <i class="fi-check size-24"></i>
-            </div>
-            <span class="text-success size-14">
-              {{success|translate}}
-            </span>
-            <a class="close-notification text-success" ng-click="success=null">&#215;</a>
+            <a class="close-notification text-warning">&#215;</a>
           </div>
 
           <div ng-hide="send._paypro || send.hideAddress">
