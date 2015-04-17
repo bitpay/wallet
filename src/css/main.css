@@ -597,7 +597,6 @@ button.outline:hover,
 button.outline:focus {
   border-radius: 3px;
   background: transparent;
-  text-transform: none;
 }
 
 .button.outline.dark-gray,
