@@ -134,8 +134,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     $timeout(function() {
       self.setOngoingProcess('updatingPendingTxps', true);
       $log.debug('Updating PendingTxps');
-      fc.getTxProposals({
-      }, function(err, txps) {
+      fc.getTxProposals({}, function(err, txps) {
         self.setOngoingProcess('updatingPendingTxps', false);
         if (err) {
           $log.debug('Wallet PendingTxps ERROR:', err);
@@ -362,9 +361,11 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       }
 
       profileService.setWalletClients();
-      $timeout(function() {
-        $rootScope.$emit('Local/WalletImported', self.walletId);
-      }, 100);
+      storageService.clearLastAddress(self.walletId, function(err, addr) {
+        $timeout(function() {
+          $rootScope.$emit('Local/WalletImported', self.walletId);
+        }, 100);
+      });
     });
   };
 
