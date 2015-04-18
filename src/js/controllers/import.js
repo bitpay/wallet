@@ -38,6 +38,7 @@ angular.module('copayApp.controllers').controller('importController',
             self.error = err;
           }
           else {
+            $rootScope.$emit('Local/WalletImported', walletId);
             go.walletHome();
             notification.success('Success', 'Your wallet has been imported correctly');
           }

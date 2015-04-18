@@ -253,7 +253,6 @@ angular.module('copayApp.services')
 
       root.setAndStoreFocus(walletId, function() {
         storageService.storeProfile(root.profile, function(err) {
-          $rootScope.$emit('Local/WalletImported', walletId);
           return cb(null, walletId);
         });
       });
