@@ -338,7 +338,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       if (used) {
         $log.debug('Address ' + addr + ' was used. Cleaning Cache.')
         $rootScope.$emit('Local/NeedNewAddress', err);
-        storageService.clearLastAddress(self.walletId, function(err, addr) {
+        storageService.clearLastAddress(self.walletId, function(err) {
           if (cb) return cb();
         });
       };
@@ -350,6 +350,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   self.recreate = function(cb) {
     var fc = profileService.focusedClient;
     self.setOngoingProcess('recreating', true);
+    self.clientError = null;
     fc.recreateWallet(function(err) {
       self.notAuthorized = false;
       self.setOngoingProcess('recreating', false);
@@ -361,11 +362,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       }
 
       profileService.setWalletClients();
-      storageService.clearLastAddress(self.walletId, function(err, addr) {
-        $timeout(function() {
-          $rootScope.$emit('Local/WalletImported', self.walletId);
-        }, 100);
-      });
+      $timeout(function() {
+        $rootScope.$emit('Local/WalletImported', self.walletId);
+      }, 100);
     });
   };
 
@@ -460,7 +459,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   });
 
   $rootScope.$on('Local/WalletImported', function(event, walletId) {
-    self.startScan(walletId);
+    storageService.clearLastAddress(walletId, function(err) {
+      self.startScan(walletId);
+    });
   });
 
   $rootScope.$on('Animation/Disable', function(event) {
