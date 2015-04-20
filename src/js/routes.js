@@ -21,46 +21,8 @@ angular
         url: '/splash',
         needProfile: false,
         views: {
-          'splash': {
-            template: '<div ui-view="steps"></div>',
-            controller: function($state) {
-              $state.transitionTo('splash.one');
-            }
-          }
-        }
-      })
-      .state('splash.one', {
-        views: {
-          'steps': {
+          'main': {
             templateUrl: 'views/splash/1.html'
-          }
-        }
-      })
-      .state('splash.two', {
-        views: {
-          'steps': {
-            templateUrl: 'views/splash/2.html'
-          }
-        }
-      })
-      .state('splash.three', {
-        views: {
-          'steps': {
-            templateUrl: 'views/splash/3.html'
-          }
-        }
-      })
-      .state('splash.four', {
-        views: {
-          'steps': {
-            templateUrl: 'views/splash/4.html'
-          }
-        }
-      })
-      .state('splash.five', {
-        views: {
-          'steps': {
-            templateUrl: 'views/splash/5.html'
           }
         }
       })
@@ -88,7 +50,10 @@ angular
         needProfile: false,
         views: {
           'main': {
-            templateUrl: 'views/createProfile.html'
+            templateUrl: 'views/createProfile.html',
+            controller: function($scope) {
+              $scope.mainDark = true;
+            }
           }
         }
       })
