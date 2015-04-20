@@ -43,11 +43,15 @@ angular.element(document).ready(function() {
       //    window.location = '#/cordoba/online';
       // }, false);
 
-      // Removes handler for backbutton event.
-      // All apps use a natural flow for back button
-      //document.addEventListener('backbutton', function() {
-      //  window.location = '#/walletHome';
-      //}, false);
+      // Back button event
+      document.addEventListener('backbutton', function() {
+        if (window.location == 'x-wmapp0:www/index.html#/') {
+          navigator.app.exitApp();
+        }
+        else {
+          window.location = '#/walletHome';
+        }
+      }, false);
 
       document.addEventListener('menubutton', function() {
         window.location = '#/preferences';
