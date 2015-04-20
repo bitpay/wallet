@@ -1079,18 +1079,9 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
   font-weight: normal;
 }
 
-.panel.splash {
+.splash .start-button {
   position: absolute;
-  height: 93.8%;
-  z-index: 10;
-}
-
-.panel.splash button {
-  position: absolute;
-  bottom: 1rem;
-  left: 1rem;
-  width: 90.5%;
-  z-index: 9999;
+  bottom: 0;
 }
 
 .preferences li {
