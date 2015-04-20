@@ -43,8 +43,15 @@ angular.element(document).ready(function() {
       //    window.location = '#/cordoba/online';
       // }, false);
 
+      // Back button event
       document.addEventListener('backbutton', function() {
-        window.location = '#/walletHome';
+        var loc = window.location;
+        if (loc.toString().match(/index\.html#\/$/)) {
+          navigator.app.exitApp();
+        }
+        else {
+          window.location = '#/walletHome';
+        }
       }, false);
 
       document.addEventListener('menubutton', function() {
