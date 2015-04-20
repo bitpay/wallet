@@ -1,6 +1,5 @@
 # translation
-po/*
-!po/*.po
+po/*.mo
 src/js/translations.js
 
 # version
