@@ -45,7 +45,8 @@ angular.element(document).ready(function() {
 
       // Back button event
       document.addEventListener('backbutton', function() {
-        if (window.location == 'x-wmapp0:www/index.html#/') {
+        var loc = window.location;
+        if (loc.toString().match(/index\.html#\/$/)) {
           navigator.app.exitApp();
         }
         else {
