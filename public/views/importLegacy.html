@@ -32,7 +32,7 @@
           </label>
 
           <label for="username">
-            <span translate>{{importLegacy.fromCloud ? 'Email': 'Username'}}</span>
+            {{importLegacy.fromCloud ? 'Email': 'Username'}}
             <input type="text" class="form-control" placeholder="{{importLegacy.fromCloud ? 'Email': 'Username'}}"
             name="username" ng-model="importLegacy.username" required>
           </label>
