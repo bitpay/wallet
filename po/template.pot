@@ -1,0 +1,749 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Project-Id-Version: \n"
+
+#: public/views/splash/1.html
+msgid "* In case you need to import wallets from previous Copay versions go to <b>Menu</b>"
+msgstr ""
+
+#: public/views/modals/txp-details.html
+msgid "* Only transactions created by yourself with no peer signatures can be removed"
+msgstr ""
+
+#: public/views/backup.html
+msgid "* You can safely install your backup on other device and use your wallet from many devices at the same time."
+msgstr ""
+
+#: public/views/modals/address-book.html
+msgid "Add"
+msgstr ""
+
+#: public/views/modals/address-book.html
+msgid "Add a new entry"
+msgstr ""
+
+#: public/views/modals/address-book.html
+msgid "Add entry"
+msgstr ""
+
+#: public/views/includes/sidebar.html
+msgid "Add wallet"
+msgstr ""
+
+#: public/views/paymentUri.html
+#: public/views/modals/address-book.html
+#: public/views/modals/qr-address.html
+msgid "Address"
+msgstr ""
+
+#: public/views/modals/address-book.html
+msgid "Address Book"
+msgstr ""
+
+#: public/views/preferences.html
+msgid "Alternative Currency"
+msgstr ""
+
+#: public/views/paymentUri.html
+#: public/views/send.html
+msgid "Amount"
+msgstr ""
+
+#: public/views/send.html
+msgid "Amount in"
+msgstr ""
+
+#: public/views/send.html
+msgid "Available Balance"
+msgstr ""
+
+#: public/views/create.html
+#: public/views/join.html
+msgid "BIP32 master extended private key"
+msgstr ""
+
+#: public/views/includes/topbar.html
+msgid "Back"
+msgstr ""
+
+#: public/views/preferences.html
+msgid "Backup"
+msgstr ""
+
+#: public/views/receive.html
+msgid "Backup now"
+msgstr ""
+
+#: public/views/backup.html
+msgid "Backup options"
+msgstr ""
+
+#: public/views/receive.html
+msgid "Before receiving funds, it is highly recommended you backup your wallet keys."
+msgstr ""
+
+#: public/views/paymentUri.html
+msgid "Bitcoin URI is NOT valid!"
+msgstr ""
+
+#: public/views/send.html
+msgid "Bitcoin address"
+msgstr ""
+
+#: public/views/preferences.html
+msgid "Bitcore Wallet Service"
+msgstr ""
+
+#: public/views/preferencesBwsUrl.html
+msgid "Bitcore Wallet Service URL"
+msgstr ""
+
+#: public/views/modals/tx-details.html
+msgid "Blockchain"
+msgstr ""
+
+#: public/views/modals/txp-details.html
+msgid "Broadcast Transaction"
+msgstr ""
+
+#: public/views/unsupported.html
+msgid "Browser unsupported"
+msgstr ""
+
+#: public/views/modals/txp-details.html
+msgid "But not broadcasted. Try to send manually"
+msgstr ""
+
+#: public/views/includes/password.html
+msgid "CANCEL"
+msgstr ""
+
+#: public/views/copayers.html
+#: public/views/send.html
+#: public/views/modals/address-book.html
+#: public/views/modals/confirmation.html
+msgid "Cancel"
+msgstr ""
+
+#: public/views/modals/paypro.html
+msgid "Certified by:"
+msgstr ""
+
+#: public/views/import.html
+msgid "Choose backup file from your computer"
+msgstr ""
+
+#: public/views/modals/address-book.html
+#: public/views/modals/copayers.html
+#: public/views/modals/paypro.html
+#: public/views/modals/qr-address.html
+#: public/views/modals/scanner.html
+#: public/views/modals/tx-details.html
+#: public/views/modals/txp-details.html
+#: public/views/modals/walletSelection.html
+msgid "Close"
+msgstr ""
+
+#: public/views/preferences.html
+msgid "Color"
+msgstr ""
+
+#: public/views/modals/tx-details.html
+msgid "Confirmations:"
+msgstr ""
+
+#: public/views/modals/copayers.html
+msgid "Copayers"
+msgstr ""
+
+#: public/views/backup.html
+msgid "Copy backup in a safe place"
+msgstr ""
+
+#: public/views/backup.html
+msgid "Copy this text as it is in a safe place (notepad or email)"
+msgstr ""
+
+#: public/views/backup.html
+#: public/views/modals/qr-address.html
+msgid "Copy to clipboard"
+msgstr ""
+
+#: public/views/includes/offline.html
+msgid "Could not connect to Wallet Service"
+msgstr ""
+
+#: public/views/create.html
+#: public/views/walletHome.html
+msgid "Create"
+msgstr ""
+
+#: public/views/add.html
+msgid "Create new wallet"
+msgstr ""
+
+#: public/views/includes/sidebar.html
+msgid "Create, join or import"
+msgstr ""
+
+#: public/views/create.html
+#: public/views/createProfile.html
+msgid "Creating wallet..."
+msgstr ""
+
+#: public/views/modals/address-book.html
+msgid "Creator"
+msgstr ""
+
+#: public/views/modals/address-book.html
+msgid "Date"
+msgstr ""
+
+#: public/views/modals/tx-details.html
+msgid "Date:"
+msgstr ""
+
+#: public/views/preferences.html
+msgid "Delete"
+msgstr ""
+
+#: public/views/backup.html
+msgid "Download backup"
+msgstr ""
+
+#: public/views/includes/password.html
+msgid "ENTER"
+msgstr ""
+
+#: public/views/modals/address-book.html
+msgid "Empty. Create an alias for your addresses"
+msgstr ""
+
+#: public/views/preferences.html
+msgid "Encrypt Private Key"
+msgstr ""
+
+#: public/views/includes/password.html
+msgid "Enter your password"
+msgstr ""
+
+#: public/views/modals/address-book.html
+msgid "Entry"
+msgstr ""
+
+#: public/views/modals/paypro.html
+msgid "Expires:"
+msgstr ""
+
+#: public/views/create.html
+msgid "Family vacation funds"
+msgstr ""
+
+#: public/views/send.html
+msgid "Fetching Payment Information..."
+msgstr ""
+
+#: public/views/receive.html
+msgid "Generate new address"
+msgstr ""
+
+#: public/views/receive.html
+msgid "Generating a new address..."
+msgstr ""
+
+#: public/views/history.html
+msgid "Getting transactions..."
+msgstr ""
+
+#: public/views/preferences.html
+msgid "Global settings"
+msgstr ""
+
+#: public/views/create.html
+#: public/views/join.html
+msgid "Hide"
+msgstr ""
+
+#: public/views/importLegacy.html
+msgid "Import"
+msgstr ""
+
+#: public/views/import.html
+msgid "Import backup"
+msgstr ""
+
+#: public/views/add.html
+msgid "Import from Copay Beta 0.9"
+msgstr ""
+
+#: public/views/importLegacy.html
+msgid "Import from the Cloud?"
+msgstr ""
+
+#: public/views/add.html
+msgid "Import wallet"
+msgstr ""
+
+#: public/views/import.html
+msgid "Importing wallet..."
+msgstr ""
+
+#: public/views/modals/tx-details.html
+#: public/views/modals/txp-details.html
+msgid "Information"
+msgstr ""
+
+#: public/views/create.html
+#: public/views/join.html
+msgid "John"
+msgstr ""
+
+#: public/views/join.html
+msgid "Join"
+msgstr ""
+
+#: public/views/add.html
+msgid "Join shared wallet"
+msgstr ""
+
+#: public/views/join.html
+msgid "Joining shared wallet..."
+msgstr ""
+
+#: public/views/modals/address-book.html
+msgid "Label"
+msgstr ""
+
+#: public/views/importLegacy.html
+msgid "Learn more about Wallet Migration"
+msgstr ""
+
+#: public/views/modals/walletSelection.html
+msgid "Loading..."
+msgstr ""
+
+#: public/views/paymentUri.html
+msgid "Make a payment to"
+msgstr ""
+
+#: public/views/create.html
+msgid "Master extended private key"
+msgstr ""
+
+#: public/views/includes/copayers.html
+#: public/views/modals/copayers.html
+msgid "Me"
+msgstr ""
+
+#: public/views/modals/paypro.html
+#: public/views/modals/tx-details.html
+msgid "Merchant Message:"
+msgstr ""
+
+#: public/views/paymentUri.html
+msgid "Message"
+msgstr ""
+
+#: public/views/history.html
+msgid "More"
+msgstr ""
+
+#: public/views/walletHome.html
+msgid "Multisignature wallet"
+msgstr ""
+
+#: public/views/receive.html
+msgid "My Bitcoin address:"
+msgstr ""
+
+#: public/views/walletHome.html
+msgid "No pending spend proposals at the moment."
+msgstr ""
+
+#: public/views/send.html
+#: public/views/modals/address-book.html
+msgid "Not valid"
+msgstr ""
+
+#: public/views/send.html
+msgid "Note"
+msgstr ""
+
+#: public/views/modals/tx-details.html
+msgid "Note:"
+msgstr ""
+
+#: public/views/modals/confirmation.html
+msgid "OK"
+msgstr ""
+
+#: public/views/modals/tx-status.html
+msgid "OKAY"
+msgstr ""
+
+#: public/views/walletHome.html
+msgid "Opening Wallet..."
+msgstr ""
+
+#: public/views/import.html
+#: public/views/importLegacy.html
+msgid "Password"
+msgstr ""
+
+#: public/views/includes/password.html
+msgid "Password cannot be recovered. Be sure to write it down"
+msgstr ""
+
+#: public/views/import.html
+msgid "Paste backup plain text code"
+msgstr ""
+
+#: public/views/join.html
+msgid "Paste wallet secret here"
+msgstr ""
+
+#: public/views/modals/tx-status.html
+msgid "Payment Sent"
+msgstr ""
+
+#: public/views/modals/paypro.html
+msgid "Payment protocol request"
+msgstr ""
+
+#: public/views/send.html
+msgid "Payment to"
+msgstr ""
+
+#: public/views/preferencesDeleteWallet.html
+msgid "Permanently delete this wallet. WARNING: this action cannot be reversed."
+msgstr ""
+
+#: public/views/walletHome.html
+msgid "Personal Wallet"
+msgstr ""
+
+#: public/views/walletHome.html
+msgid "Preferences"
+msgstr ""
+
+#: public/views/modals/scanner.html
+msgid "QR-Scanner"
+msgstr ""
+
+#: public/views/walletHome.html
+msgid "Recreate"
+msgstr ""
+
+#: public/views/walletHome.html
+msgid "Recreating Wallet on BWS..."
+msgstr ""
+
+#: public/views/modals/txp-details.html
+msgid "Reject"
+msgstr ""
+
+#: public/views/modals/txp-details.html
+msgid "Remove"
+msgstr ""
+
+#: public/views/backup.html
+#: public/views/includes/password.html
+msgid "Repeat Password"
+msgstr ""
+
+#: public/views/backup.html
+msgid "Repeat password"
+msgstr ""
+
+#: public/views/import.html
+#: public/views/join.html
+#: public/views/modals/address-book.html
+msgid "Required"
+msgstr ""
+
+#: public/views/includes/password.html
+msgid "SET"
+msgstr ""
+
+#: public/views/receive.html
+msgid "SKIP BACKUP"
+msgstr ""
+
+#: public/views/splash/1.html
+msgid "START"
+msgstr ""
+
+#: public/views/preferencesBwsUrl.html
+msgid "Save"
+msgstr ""
+
+#: public/views/walletHome.html
+msgid "Scanning Wallet funds..."
+msgstr ""
+
+#: public/views/modals/tx-details.html
+msgid "See it on the blockchain"
+msgstr ""
+
+#: public/views/import.html
+msgid "Select a backup file"
+msgstr ""
+
+#: public/views/paymentUri.html
+msgid "Select a wallet"
+msgstr ""
+
+#: public/views/modals/walletSelection.html
+msgid "Select a wallet to make the payment"
+msgstr ""
+
+#: public/views/create.html
+msgid "Select required signatures"
+msgstr ""
+
+#: public/views/create.html
+msgid "Select total number of copayers"
+msgstr ""
+
+#: public/views/send.html
+msgid "Send"
+msgstr ""
+
+#: public/views/backup.html
+msgid "Send by email"
+msgstr ""
+
+#: public/views/importLegacy.html
+msgid "Server"
+msgstr ""
+
+#: public/views/includes/password.html
+msgid "Set up a Password"
+msgstr ""
+
+#: public/views/backup.html
+msgid "Set up a Password for your backup"
+msgstr ""
+
+#: public/views/receive.html
+msgid "Share address"
+msgstr ""
+
+#: public/views/copayers.html
+msgid "Share secret"
+msgstr ""
+
+#: public/views/copayers.html
+msgid "Share this secret with your copayers"
+msgstr ""
+
+#: public/views/receive.html
+msgid "Share this with anyone to have them send you payments. To protect your privacy, new addresses are generated automatically once you use them."
+msgstr ""
+
+#: public/views/create.html
+#: public/views/join.html
+msgid "Show"
+msgstr ""
+
+#: public/views/modals/txp-details.html
+msgid "Sign"
+msgstr ""
+
+#: public/views/modals/tx-details.html
+msgid "Signatures"
+msgstr ""
+
+#: public/views/includes/pin.html
+msgid "Skip"
+msgstr ""
+
+#: public/views/walletHome.html
+msgid "Spend proposals"
+msgstr ""
+
+#: public/views/backup.html
+msgid "This wallet have its private key encrypted. Exporting a backup will keep the private key encrypted on the backup."
+msgstr ""
+
+#: public/views/walletHome.html
+msgid "This wallet is not registered at the given Bitcore Wallet Service (BWS). You can recreate it from the local information."
+msgstr ""
+
+#: public/views/send.html
+#: public/views/includes/transaction.html
+msgid "To"
+msgstr ""
+
+#: public/views/modals/paypro.html
+#: public/views/modals/tx-details.html
+msgid "To:"
+msgstr ""
+
+#: public/views/walletHome.html
+msgid "Total Locked Balance"
+msgstr ""
+
+#: public/views/modals/tx-details.html
+msgid "Transaction"
+msgstr ""
+
+#: public/views/modals/txp-details.html
+msgid "Transaction accepted..."
+msgstr ""
+
+#: public/views/modals/txp-details.html
+msgid "Transaction finally rejected"
+msgstr ""
+
+#: public/views/modals/txp-details.html
+msgid "Transaction proposal"
+msgstr ""
+
+#: public/views/modals/txp-details.html
+msgid "Transaction sent!"
+msgstr ""
+
+#: public/views/includes/offline.html
+msgid "Trying to reconnnect..."
+msgstr ""
+
+#: public/views/history.html
+#: public/views/modals/tx-details.html
+msgid "Unconfirmed"
+msgstr ""
+
+#: public/views/preferences.html
+msgid "Unit"
+msgstr ""
+
+#: public/views/walletHome.html
+msgid "Unsent transactions"
+msgstr ""
+
+#: public/views/modals/paypro.html
+msgid "Untrusted"
+msgstr ""
+
+#: public/views/walletHome.html
+msgid "Updating Balance..."
+msgstr ""
+
+#: public/views/walletHome.html
+msgid "Updating Pending Transactions..."
+msgstr ""
+
+#: public/views/walletHome.html
+msgid "Updating Status..."
+msgstr ""
+
+#: public/views/create.html
+msgid "Use test network"
+msgstr ""
+
+#: public/views/backup.html
+msgid "View backup"
+msgstr ""
+
+#: public/views/modals/address-book.html
+msgid "Visible"
+msgstr ""
+
+#: public/views/receive.html
+msgid "WARNING: Backup needed"
+msgstr ""
+
+#: public/views/walletHome.html
+msgid "WARNING: Wallet not registered"
+msgstr ""
+
+#: public/views/splash/1.html
+msgid "WELCOME TO"
+msgstr ""
+
+#: public/views/copayers.html
+msgid "Waiting for copayers"
+msgstr ""
+
+#: public/views/copayers.html
+msgid "Waiting..."
+msgstr ""
+
+#: public/views/join.html
+msgid "Wallet Secret"
+msgstr ""
+
+#: public/views/join.html
+msgid "Wallet Secret is not valid!"
+msgstr ""
+
+#: public/views/copayers.html
+msgid "Wallet incomplete and broken"
+msgstr ""
+
+#: public/views/create.html
+msgid "Wallet name"
+msgstr ""
+
+#: public/views/preferencesDeleteWallet.html
+msgid "Warning!"
+msgstr ""
+
+#: public/views/walletHome.html
+msgid "You do not have any wallet"
+msgstr ""
+
+#: public/views/backup.html
+#: public/views/import.html
+msgid "Your backup password"
+msgstr ""
+
+#: public/views/create.html
+#: public/views/join.html
+msgid "Your nickname"
+msgstr ""
+
+#: public/views/includes/password.html
+msgid "Your password"
+msgstr ""
+
+#: public/views/importLegacy.html
+msgid "Your profile password"
+msgstr ""
+
+#: public/views/create.html
+#: public/views/join.html
+msgid "advanced options"
+msgstr ""
+
+#: public/views/modals/qr-address.html
+msgid "change"
+msgstr ""
+
+#: public/views/send.html
+msgid "in pending transactions"
+msgstr ""
+
+#: public/views/copayers.html
+#: public/views/create.html
+#: public/views/walletHome.html
+msgid "of"
+msgstr ""
+
+#: public/views/send.html
+msgid "optional"
+msgstr ""
+
+#: public/views/send.html
+msgid "too long!"
+msgstr ""
+
+#: public/views/create.html
+msgid "wallet"
+msgstr ""
+
+#: public/views/preferences.html
+msgid "{{index.walletName}} settings"
+msgstr ""
