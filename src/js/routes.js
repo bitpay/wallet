@@ -7,6 +7,11 @@ if (window && window.navigator) {
   var isaosp = (rxaosp && rxaosp[1] < 537);
   if (!window.cordova && isaosp)
     unsupported = true;
+  if (!Modernizr.localstorage)
+    unsupported = true;
+  if (unsupported) {
+    window.location = '#/unsupported';
+  }
 }
 
 
@@ -461,11 +466,6 @@ angular
         $rootScope.$emit('Animation/SwipeRight');
       } else if (pageWeight[fromState.name] < pageWeight[toState.name]) {
         $rootScope.$emit('Animation/SwipeLeft');
-      }
-
-      if (unsupported) {
-        $state.transitionTo('unsupported');
-        event.preventDefault();
       }
 
       if (!profileService.profile && toState.needProfile) {
