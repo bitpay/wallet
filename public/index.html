@@ -13,8 +13,6 @@
 </head>
 <body ng-cloak class="ng-cloak">
 
-  <div ui-view="splash"></div>
-
   <div class="page" 
     ng-controller="indexController as index" 
     ng-swipe-disable-mouse 
@@ -37,7 +35,7 @@
 
 
         <section 
-          ng-class="{'main': index.hasProfile, 'main-dark': !index.hasProfile, 'animation-left': index.swipeLeft, 
+          ng-class="{'main': index.hasProfile, 'main-dark': mainDark, 'animation-left': index.swipeLeft, 
           'animation-right': index.swipeRight}" 
           ui-view="main"></section>
         <div ui-view="menu"></div>
