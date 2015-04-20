@@ -459,6 +459,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   });
 
   $rootScope.$on('Local/WalletImported', function(event, walletId) {
+    storageService.setBackupFlag(walletId, function() {});
     storageService.clearLastAddress(walletId, function(err) {
       self.startScan(walletId);
     });
