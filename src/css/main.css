@@ -903,12 +903,6 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
   font-size: 14px;
 }
 
-.wide-page {
-  background-color: #2C3E50;
-  margin: 5% 0;
-  padding: 50px;
-}
-
 .collapse {
   margin: auto;
   max-width: 100%;
