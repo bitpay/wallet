@@ -4,9 +4,6 @@
       <div class="large-12 columns">
           <form name="importForm" ng-submit="import.import(importForm)" novalidate>
             <div class="box-notification" ng-show="import.error">
-              <div class="box-icon error">
-                <i class="fi-x size-24"></i>
-              </div>
               <span class="text-warning size-14">
                 {{import.error|translate}}
               </span>

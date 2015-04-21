@@ -15,9 +15,6 @@
         </div>
 
         <div class="box-notification" ng-show="importLegacy.error">
-          <div class="box-icon error">
-            <i class="fi-x size-24"></i>
-          </div> 
           <span class="text-warning size-14">
             {{importLegacy.error|translate}}
           </span>
@@ -58,9 +55,6 @@
 
         <form name="importLegacyForm" ng-submit="importLegacy.import(importLegacyForm)" novalidate>
           <div class="box-notification" ng-show="error">
-            <div class="box-icon error">
-              <i class="fi-x size-24"></i>
-            </div> 
             <span class="text-warning size-14">
               {{error|translate}}
             </span>
