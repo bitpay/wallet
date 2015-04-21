@@ -80,20 +80,11 @@
   </div>
 
   <div ng-show="btx.txid" class="tx-details-blockchain">
-    <h4 class="title m0" translate>Blockchain</h4>
-    <ul class="no-bullet size-14 m0">
-      <li class="line-b p10 oh">
-      <span class="text-gray">ID:</span>
-      <span class="right">
-        <small class="ellipsis text-gray enable_text_select m5t">{{btx.txid}}</small>
-      </span>
-      </li>
-      <li class="line-b p10" 
-        ng-click="$root.openExternalLink('http://' + getShortNetworkName() + '.insight.is/tx/' + btx.txid)">
+    <div class="text-center m20t">
+      <button class="button outline dark-gray tiny" ng-click="$root.openExternalLink('http://' + getShortNetworkName() + '.insight.is/tx/' + btx.txid)">
         <span class="text-gray" translate>See it on the blockchain</span>
-        <i class="icon-arrow-right3 size-24 right text-gray"></i>
-      </li>
-    </ul>
+      </button>
+    </div>
   </div>
 
 </div>
