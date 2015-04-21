@@ -15,8 +15,6 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-      'bower_components/fastclick/lib/fastclick.js',
-      'bower_components/modernizr/modernizr.js',
       'bower_components/qrcode-generator/js/qrcode.js',
       'bower_components/qrcode-decoder-js/lib/qrcode-decoder.js',
       'bower_components/moment/min/moment-with-locales.js',
