@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('sendController',
-  function($rootScope, $scope, $window, $timeout, $modal, $filter, $log, notification, isMobile, txStatus, isCordova, bitcore, profileService, configService, rateService, isChromeApp) {
+  function($rootScope, $scope, $window, $timeout, $modal, $filter, $log, notification, isMobile, txStatus, isCordova, bitcore, profileService, configService, rateService, isChromeApp, lodash) {
     var fc = profileService.focusedClient;
     var self = this;
 
@@ -48,6 +48,7 @@ angular.module('copayApp.controllers').controller('sendController',
       });
 
       $scope.$on('$destroy', function() {
+        $rootScope.hideMenuBar = false;
         openScannerCordova();
         paymentUri();
       });
@@ -55,7 +56,18 @@ angular.module('copayApp.controllers').controller('sendController',
       this.setInputs();
     };
 
+    var hideMenuBar = lodash.debounce(function(hide) {
+      if (hide) {
+        $rootScope.hideMenuBar = true;
+      } else {
+        $rootScope.hideMenuBar = false;
+      }
+      $rootScope.$digest();
+    }, 100);
+
+
     this.formFocus = function(what) {
+      hideMenuBar(what);
       if (!this.isWindowsPhoneApp) return
 
       if (!what) {
@@ -277,7 +289,7 @@ angular.module('copayApp.controllers').controller('sendController',
       }
     };
 
-    
+
 
     this.resetForm = function(form) {
       this.resetError();

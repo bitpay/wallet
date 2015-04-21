@@ -6,6 +6,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   self.onGoingProcess = {};
   self.limitHistory = 5;
 
+  self.hideMenuBar = false;
+
   function strip(number) {
     return (parseFloat(number.toPrecision(12)));
   };

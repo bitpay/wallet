@@ -2,6 +2,7 @@
 
 angular.module('copayApp.controllers').controller('walletHomeController', function($scope, $rootScope, $timeout, $filter, $modal, notification, txStatus, isCordova, profileService, lodash) {
 
+  $rootScope.hideMenuBar = false;
 
   $scope.openCopayersModal = function(copayers, copayerId) {
     var fc = profileService.focusedClient;
@@ -160,11 +161,11 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
             $scope.loading = false;
 
             // Hacky: request tries to parse an empty response
-            if (err && !(err.message && err.message.match(/Unexpected/)) ) {
+            if (err && !(err.message && err.message.match(/Unexpected/))) {
               $scope.error = err.message || 'Transaction could not be deleted. Please try again.';
               $scope.$digest();
               return;
-            } 
+            }
             $modalInstance.close();
           });
         }, 100);
