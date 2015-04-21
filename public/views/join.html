@@ -10,20 +10,20 @@
           </label>
 
           <div class="row collapse">
-            <label for="secret" class="left"><span translate>Wallet Secret</span> 
+            <label for="secret" class="left"><span translate>Wallet Invitation</span> 
               <small translate ng-show="joinForm.secret.$pristine">Required</small>
             </label>
             <span class="has-error right size-12" ng-show="joinForm.secret.$invalid
               && !joinForm.secret.$pristine">
               <span class="icon-input"><i class="fi-x"></i></span>
-              <span translate>Wallet Secret is not valid!</span>
+              <span translate>Wallet Invitation is not valid!</span>
             </span>
             <small class="icon-input right" ng-show="joinForm.secret.$valid
               && !joinForm.secret.$pristine"><i class="fi-check"></i></small>
           </div>
 
           <div class="input">
-            <input id="secret" type="text" placeholder="{{'Paste wallet secret here'|translate}}" name="secret" ng-model="secret" wallet-secret required>
+            <input id="secret" type="text" placeholder="{{'Paste invitation here'|translate}}" name="secret" ng-model="secret" wallet-secret required>
             <div ng-hide="showScanner || disableScanner">
               <a class="postfix" ng-click="join.openScanner()"><i class="fi-camera size-24">&nbsp;</i></a>
             </div>
@@ -48,7 +48,8 @@
           </a>
           <div ng-show="join.hideAdv" class="row">
             <div class="large-12 columns">
-              <label for="ext-master">Master extended private key
+              <label for="ext-master">Master extended private key 
+              <small translate>If not given, a secure key will be generated</small>
                 <input id="ext-master" 
                 type="text" 
                 placeholder="{{'BIP32 master extended private key'|translate}}" 
