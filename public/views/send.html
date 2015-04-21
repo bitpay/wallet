@@ -115,8 +115,8 @@
             </div>
           </div>
 
-  <div class="text-gray text-center m10t animated infinite flash" ng-show="send.onGoingProcess" > 
-    <span>{{send.onGoingProcess|translate}}...</span>
+  <div ng-if="send.onGoingProcess" class="text-gray text-center m10t"> 
+    <span class="animated infinite flash">{{send.onGoingProcess|translate}}...</span>
   </div>
 
 
