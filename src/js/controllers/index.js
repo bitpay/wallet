@@ -109,6 +109,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         self.walletScanStatus = walletStatus.wallet.scanStatus;
         self.copayers = walletStatus.wallet.copayers;
         self.setBalance(walletStatus.balance);
+        $rootScope.$apply();
       });
     });
   };
