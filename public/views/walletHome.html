@@ -15,14 +15,12 @@
 
 
 
-          <div class="size-36" ng-show="!index.anyOnGoingProcess">
-            <strong>
-              <span>
-                <span ng-class="{'animated pulse':!index.anyOnGoingProcess}">{{index.totalBalanceStr }}</span> 
-              </span>
+          <div class="size-36 animated pulse">
+            <strong ng-show="!index.anyOnGoingProcess">
+                {{index.totalBalanceStr }} 
             </strong>
           </div>
-          <div class="text-white text-center animated infinite flash" ng-show="index.anyOnGoingProcess" > 
+          <div class="text-white text-center animated infinite flash"> 
             <span translate ng-show="index.onGoingProcessName == 'openingWallet'">Opening Wallet...</span>
             <span translate ng-show="index.onGoingProcessName == 'updatingStatus'">Updating Status...</span>
             <span translate ng-show="index.onGoingProcessName == 'updatingBalance'">Updating Balance...</span>
@@ -30,8 +28,10 @@
             <span translate ng-show="index.onGoingProcessName == 'scanning'">Scanning Wallet funds...</span>
             <span translate ng-show="index.onGoingProcessName == 'recreating'">Recreating Wallet on BWS...</span>
           </div>
-          <div class="size-14" ng-show="!index.anyOnGoingProcess && index.alternativeBalanceAvailable">
-            <span ng-class="{'animated fadeIn':!index.hideBalance}">{{index.totalBalanceAlternative}} {{index.alternativeIsoCode}}</span>
+          <div class="size-14" 
+            ng-class="{'animated fadeIn':!index.hideBalance}" 
+            ng-show="!index.anyOnGoingProcess && index.alternativeBalanceAvailable">
+            {{index.totalBalanceAlternative}} {{index.alternativeIsoCode}}
           </div>
         </div>
         <div class="pr columns line-b">
