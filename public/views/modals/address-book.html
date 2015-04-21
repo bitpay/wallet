@@ -8,9 +8,6 @@
       Empty. Create an alias for your addresses
     </p>
     <div class="box-notification" ng-show="success">
-      <div class="box-icon success">
-        <i class="size-24 fi-check"></i>
-      </div>
       <span class="size-14 text-success">
         {{success|translate}}
       </span>
@@ -47,9 +44,6 @@
       ng-disabled="loading"
       ng-submit="submitAddressBook(addressBookForm)" novalidate>
       <div class="box-notification" ng-show="error">
-        <div class="box-icon error">
-          <i class="size-24 fi-x"></i>
-        </div>
         <span class="size-14 text-warning">
           {{error|translate}}
         </span>
