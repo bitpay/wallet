@@ -409,6 +409,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
   $rootScope.$on('Local/ConfigurationUpdated', function(event) {
     self.updateAll();
+    self.updateTxHistory();
   });
 
   $rootScope.$on('Local/WalletCompleted', function(event) {
