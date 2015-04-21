@@ -99,15 +99,9 @@
   </div>
 
   <div ng-if="!index.requiresMultipleSignatures && index.txps[0]">
-    <div class="row">
-      <div class="large-12 columns">
-        <div class="panel oh">
-          <h2 class="line-b" translate>Unsent transactions</h2>
-          <div class="last-transactions pr" ng-repeat="tx in index.txps"
-            ng-include="'views/includes/transaction.html'">
-          </div>
-        </div>
-      </div>
+    <h4 class="title m0" translate>Unsent transactions</h4>
+    <div class="last-transactions pr" ng-repeat="tx in index.txps"
+      ng-include="'views/includes/transaction.html'">
     </div>
   </div>
 
