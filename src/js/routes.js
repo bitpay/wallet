@@ -7,8 +7,6 @@ if (window && window.navigator) {
   var isaosp = (rxaosp && rxaosp[1] < 537);
   if (!window.cordova && isaosp)
     unsupported = true;
-  if (!Modernizr.localstorage)
-    unsupported = true;
   if (unsupported) {
     window.location = '#/unsupported';
   }

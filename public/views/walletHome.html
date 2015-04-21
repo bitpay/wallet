@@ -17,10 +17,11 @@
           <div class="size-36 animated pulse">
             <strong>{{index.totalBalanceStr}}</strong>
           </div>
-          <div class="size-14" 
-            ng-class="{'animated fadeIn':!index.hideBalance && index.alternativeBalanceAvailable}" 
-            ng-show="index.alternativeBalanceAvailable">
-            {{index.totalBalanceAlternative}} {{index.alternativeIsoCode}}
+          <div class="size-14"  
+            ng-if="index.totalBalanceAlternative">
+            <span ng-class="{'animated fadeIn':!index.hideBalance}">
+              {{index.totalBalanceAlternative}} {{index.alternativeIsoCode}}
+            </span>
           </div>
         </div>
       </div>
