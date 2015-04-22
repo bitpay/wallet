@@ -5,16 +5,16 @@
       <div ng-if="!index.anyOnGoingProcess && !index.notAuthorized">
         <div ng-show="index.updateError" ng-click='index.openWallet()'> 
           <span translate>Could not update Wallet</span>
-          <br>[<span translate>Tap to retry</span>]
+          <br><span translate>Tap to retry</span>
         </div>
         
         <div ng-show="index.walletScanStatus == 'error'" ng-click='index.retryScan()'> 
           <span translate>Scan status finished with error</span>
-          <br>[<span translate>Tap to retry</span>]
+          <br><span translate>Tap to retry</span>
         </div>
         
         <div ng-show="!index.updateError && index.walletScanStatus != 'error'">
-          <div class="size-36 animated pulse">
+          <div class="size-36 animated fadeIn">
             <strong>{{index.totalBalanceStr}}</strong>
           </div>
           <div class="size-14"  
@@ -25,7 +25,13 @@
           </div>
         </div>
       </div>
+
+      <div ng-if="index.anyOnGoingProcess">
+        <div class="size-36">
+          <strong>...</strong>
         </div>
+      </div>
+    </div>
           
         <div class="pr columns line-b">
           <div class="avatar-wallet left" 
