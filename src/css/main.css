@@ -1205,14 +1205,18 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
 }
 
 .onGoingProcess {
-  bottom: 70px;
-  height: 24px;
+  text-align: center;
+  max-width: 14.5rem;
+  max-height: 2rem;
+  top:auto;
+  left:0;
+  right:0;
+  bottom:90px;
+  margin: auto;
+  border-radius: 3px;     
+  color: #fff;
+  padding: 0.3rem 0.5rem;
   font-size: 14px;
-  line-height: 24px;
-  left:0px;
-  width:100%;
   position: absolute;
   background:#DDD;
-  border-top:1px solid;
-  text-transform: uppercase;
 }
