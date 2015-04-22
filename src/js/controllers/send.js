@@ -67,7 +67,9 @@ angular.module('copayApp.controllers').controller('sendController',
 
 
     this.formFocus = function(what) {
-      hideMenuBar(what);
+      if (isCordova) {
+        hideMenuBar(what);
+      }
       if (!this.isWindowsPhoneApp) return
 
       if (!what) {
