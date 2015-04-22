@@ -652,13 +652,13 @@ a.pin-button:active {
 .animation-left.ng-enter {
   -webkit-transform: translate3d(100%, 0, 0);
   transform: translate3d(100%, 0, 0);
-  -webkit-transition-delay: 0.1s;
+  -webkit-transition-delay: 0.05s;
   opacity: 0;
 }
 .animation-right.ng-enter {
   -webkit-transform: translate3d(-100%, 0, 0);
   transform: translate3d(-100%, 0, 0);
-  -webkit-transition-delay: 0.1s;
+  -webkit-transition-delay: 0.05s;
   opacity: 0;
 }
 .animation-left.ng-enter.ng-enter-active,
@@ -672,15 +672,18 @@ a.pin-button:active {
 .animation-right.ng-leave {
   -webkit-transform: translate3d(0, 0, 0);
   transform: translate3d(0, 0, 0);
+  opacity: 0;
 }
 .animation-left.ng-leave.animation-left.ng-leave-active {
   -webkit-transform: translate3d(-100%, 0, 0);
   transform: translate3d(-100%, 0, 0);
+  -webkit-transition-delay: 0.05s;
   opacity: 0;
 }
 .animation-right.ng-leave.animation-right.ng-leave-active {
   -webkit-transform: translate3d(100%, 0, 0);
   transform: translate3d(100%, 0, 0);
+  -webkit-transition-delay: 0.05s;
   opacity: 0;
 }
 

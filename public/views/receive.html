@@ -1,77 +1,69 @@
 <div class="receive" ng-controller="receiveController as receive" ng-init="receive.getAddress()">
 
-<div ng-show="index.needsBackup && !receive.skipBackup" class="p60t row text-center"> 
-  <div class="text-warning text-bold m15b"> 
-    <i class="fi-alert"></i>
-    <span translate>
-          WARNING: Backup needed
-    </span>
-  </div>
-  <div class="text-gray m15h" translate>
-    Before receiving funds, it is highly recommended you backup your wallet keys.
-  </div>
- 
-  <div class="small-6 columns m20t">
-    <span class="button expand outline dark-gray tiny" 
-      ng-click="receive.skipBackup = true">
-      <span translate>SKIP BACKUP</span>
-    </span>
-  </div>
-  <div class="small-6 columns m20t">
-  <span class="button black expand radius tiny" 
-    ng-click="$root.go('backup')" ng-style="{'background-color':index.backgroundColor}" >
-    <span translate>Backup now</span>
-  </span>
-</div>
-</div>
+  <div ng-show="index.needsBackup && !receive.skipBackup" class="p60t row text-center"> 
+    <div class="text-warning text-bold m15b"> 
+      <i class="fi-alert"></i>
+      <span translate>
+        WARNING: Backup needed
+      </span>
+    </div>
+    <div class="text-gray m15h" translate>
+      Before receiving funds, it is highly recommended you backup your wallet keys.
+    </div>
 
-<div ng-show="!index.needsBackup || receive.skipBackup">
-  <div class="row m20t" ng-show="receive.generatingAddress">
-    <div class="large-12 columns">
-      <div class="oh text-center">
-        <span class="text-gray" translate>Generating a new address...</span>
-      </div>
+    <div class="small-6 columns m20t">
+      <span class="button expand outline dark-gray tiny" 
+        ng-click="receive.skipBackup = true">
+        <span translate>SKIP BACKUP</span>
+      </span>
+    </div>
+    <div class="small-6 columns m20t">
+      <span class="button black expand radius tiny" 
+        ng-click="$root.go('backup')" ng-style="{'background-color':index.backgroundColor}" >
+        <span translate>Backup now</span>
+      </span>
     </div>
   </div>
-  <div ng-show="!receive.generatingAddress">
-          <div class="box-notification" ng-show="receive.error ">
-            <span class="text-warning size-14">
-              {{receive.error|translate}}
-            </span>
-          </div>
- 
-    <div class="row" ng-show="receive.addr">
+
+  <div ng-show="!index.needsBackup || receive.skipBackup">
+
+    <div class="box-notification" ng-show="receive.error ">
+      <span class="text-warning size-14">
+        {{receive.error|translate}}
+      </span>
+    </div>
+
+    <div class="row" ng-if="receive.addr">
       <!-- Address-->
       <div class="large-12 columns">
-          <h2 class="text-center m10t" translate>My Bitcoin address:</h2>
-          <div class="text-center" ng-click="receive.copyAddress(receive.addr)">
-            <qrcode size="220" data="bitcoin:{{receive.addr}}"></qrcode>
-            <div class="m10t">
-              <h4 ng-class="{'enable_text_select': !index.isCordova}" class="size-12">{{receive.addr}}</h4>
-            </div>
+        <h2 class="text-center m10t" translate>My Bitcoin address</h2>
+        <div class="text-center animated fadeIn" ng-click="receive.copyAddress(receive.addr)">
+          <qrcode size="220" data="bitcoin:{{receive.addr}}"></qrcode>
+          <div class="m10t">
+            <h4 ng-class="{'enable_text_select': !index.isCordova}" class="size-12">{{receive.addr}}</h4>
           </div>
-          <div class="m10t text-center" ng-show="index.isCordova">
-            <span class="button outline dark-gray tiny" 
-              ng-click="receive.shareAddress(receive.addr)">
-              <i class="fi-share"></i> 
-              <span translate>Share address</span>
-            </span>
-          </div>
-          <div class="line-t size-12" translate>
-            Share this with anyone to have them send you payments. To protect your privacy, new addresses are generated automatically once you use them.
-          </div>
+        </div>
+        <div class="m10t text-center" ng-show="index.isCordova">
+          <span class="button outline dark-gray tiny" 
+            ng-click="receive.shareAddress(receive.addr)">
+            <i class="fi-share"></i> 
+            <span translate>Share address</span>
+          </span>
+        </div>
+        <div class="line-t size-12" translate>
+          Share this with anyone to have them send you payments. To protect your privacy, new addresses are generated automatically once you use them.
+        </div>
       </div>
     </div>
-    <div class="row m20t" ng-show="receive.addr">
-          <div class="large-12 columns">
-            <a class="button black expand radius" ng-click="receive.newAddress()" 
-              ng-style="{'background-color':index.backgroundColor}" translate>
-              Generate new address
-            </a>
-          </div>
+    <div class="row m20t" ng-if="receive.addr">
+      <div class="large-12 columns">
+        <button class="button black expand radius" ng-click="receive.newAddress()" 
+          ng-style="{'background-color':index.backgroundColor}" ng-disabled="receive.generatingAddress" translate>
+          Generate new address
+        </button>
+      </div>
     </div>
   </div>
-</div>
 
 </div>
 
