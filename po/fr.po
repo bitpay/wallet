@@ -65,10 +65,6 @@ msgstr "Montant en"
 msgid "Available Balance"
 msgstr "Solde disponible"
 
-#: public/views/create.html public/views/join.html
-msgid "BIP32 master extended private key"
-msgstr "Clé privée étendue maîtresse BIP32"
-
 #: public/views/includes/topbar.html
 msgid "Back"
 msgstr "Retour"
@@ -96,18 +92,6 @@ msgstr "L'URI Bitcoin n'est pas valide !"
 #: public/views/send.html
 msgid "Bitcoin address"
 msgstr "Adresse Bitcoin"
-
-#: public/views/preferences.html
-msgid "Bitcore Wallet Service"
-msgstr "Bitcore Wallet Service"
-
-#: public/views/preferencesBwsUrl.html
-msgid "Bitcore Wallet Service URL"
-msgstr "Bitcore Wallet Service URL"
-
-#: public/views/modals/tx-details.html
-msgid "Blockchain"
-msgstr "Chaîne de blocs"
 
 #: public/views/modals/txp-details.html
 msgid "Broadcast Transaction"
@@ -173,6 +157,14 @@ msgstr "Copier dans le presse-papier"
 #: public/views/includes/offline.html
 msgid "Could not connect to Wallet Service"
 msgstr "Impossible de se connecter à Wallet Service"
+
+#: public/views/history.html
+msgid "Could not fetch transaction history"
+msgstr "Impossible de récupérer l'historique des transactions"
+
+#: public/views/walletHome.html
+msgid "Could not update Wallet"
+msgstr "Impossible de mettre à jour le portefeuille"
 
 #: public/views/create.html public/views/walletHome.html
 msgid "Create"
@@ -246,10 +238,6 @@ msgstr "Importation des informations de paiement..."
 msgid "Generate new address"
 msgstr "Générer une nouvelle adresse"
 
-#: public/views/receive.html
-msgid "Generating a new address..."
-msgstr "Génération d'une nouvelle adresse..."
-
 #: public/views/history.html
 msgid "Getting transactions..."
 msgstr "Acquisition des transactions..."
@@ -261,6 +249,14 @@ msgstr "Paramètres globaux"
 #: public/views/create.html public/views/join.html
 msgid "Hide"
 msgstr "Masquer"
+
+#: public/views/create.html
+msgid "If not given, a random key will be generated"
+msgstr "Si non spécifié, une clé aléatoire sera générée"
+
+#: public/views/join.html
+msgid "If not given, a secure key will be generated"
+msgstr "Si non spécifié, une clé sécurisée sera générée"
 
 #: public/views/importLegacy.html
 msgid "Import"
@@ -342,17 +338,25 @@ msgstr "Message"
 msgid "More"
 msgstr "Plus"
 
+#: public/views/history.html
+msgid "Moved"
+msgstr "Déplacé"
+
 #: public/views/walletHome.html
 msgid "Multisignature wallet"
 msgstr "Portefeuille multi-signatures"
 
 #: public/views/receive.html
-msgid "My Bitcoin address:"
-msgstr "Mon adresse Bitcoin :"
+msgid "My Bitcoin address"
+msgstr "Mon adresse Bitcoin"
 
 #: public/views/walletHome.html
 msgid "No pending spend proposals at the moment."
 msgstr "Aucune propositions de dépense en attente à ce moment."
+
+#: public/views/history.html
+msgid "No transactions yet"
+msgstr "Aucune transaction"
 
 #: public/views/send.html public/views/modals/address-book.html
 msgid "Not valid"
@@ -391,8 +395,8 @@ msgid "Paste backup plain text code"
 msgstr "Coller le code texte de sauvegarde"
 
 #: public/views/join.html
-msgid "Paste wallet secret here"
-msgstr "Coller le secret du portefeuille ici"
+msgid "Paste invitation here"
+msgstr "Coller l'invitation ici"
 
 #: public/views/modals/tx-status.html
 msgid "Payment Sent"
@@ -422,6 +426,10 @@ msgstr "Préférences"
 msgid "QR-Scanner"
 msgstr "QR-Scanner"
 
+#: public/views/history.html
+msgid "Received"
+msgstr "Reçu"
+
 #: public/views/walletHome.html
 msgid "Recreate"
 msgstr "Recréer"
@@ -435,14 +443,10 @@ msgid "Reject"
 msgstr "Rejeter"
 
 #: public/views/modals/txp-details.html
-msgid "Remove"
-msgstr "Supprimer"
+msgid "Remove transaction"
+msgstr "Supprimer la transaction"
 
 #: public/views/backup.html public/views/includes/password.html
-msgid "Repeat Password"
-msgstr "Répétez le mot de passe"
-
-#: public/views/backup.html
 msgid "Repeat password"
 msgstr "Répéter le mot de passe"
 
@@ -466,6 +470,10 @@ msgstr "COMMENCER"
 #: public/views/preferencesBwsUrl.html
 msgid "Save"
 msgstr "Sauvegarder"
+
+#: public/views/walletHome.html
+msgid "Scan status finished with error"
+msgstr "Analyse terminée avec des erreurs"
 
 #: public/views/walletHome.html
 msgid "Scanning Wallet funds..."
@@ -503,25 +511,29 @@ msgstr "Envoyer"
 msgid "Send by email"
 msgstr "Envoyer par e-mail"
 
+#: public/views/history.html
+msgid "Sent"
+msgstr "Envoyé"
+
 #: public/views/importLegacy.html
 msgid "Server"
 msgstr "Serveur"
 
-#: public/views/includes/password.html
-msgid "Set up a Password"
-msgstr "Définir un mot de passe"
-
 #: public/views/backup.html
 msgid "Set up a Password for your backup"
 msgstr "Définissez un mot de passe pour votre sauvegarde"
+
+#: public/views/includes/password.html
+msgid "Set up a Password"
+msgstr "Définir un mot de passe"
 
 #: public/views/receive.html
 msgid "Share address"
 msgstr "Partager l'adresse"
 
 #: public/views/copayers.html
-msgid "Share secret"
-msgstr "Partager le secret"
+msgid "Share invitation"
+msgstr "Partager l'invitation"
 
 #: public/views/copayers.html
 msgid "Share this secret with your copayers"
@@ -550,6 +562,14 @@ msgstr "Passer"
 #: public/views/walletHome.html
 msgid "Spend proposals"
 msgstr "Propositions de dépense"
+
+#: public/views/history.html public/views/walletHome.html
+msgid "Tap to retry"
+msgstr ""
+
+#: public/views/modals/txp-details.html
+msgid "The transaction was removed by creator"
+msgstr "La transaction a été supprimée par le créateur"
 
 #: public/views/backup.html
 msgid "This wallet have its private key encrypted. Exporting a backup will keep the private key encrypted on the backup."
@@ -656,12 +676,12 @@ msgid "Waiting..."
 msgstr "Attente..."
 
 #: public/views/join.html
-msgid "Wallet Secret"
-msgstr "Secret de portefeuille"
+msgid "Wallet Invitation"
+msgstr "Invitation de portefeuille"
 
 #: public/views/join.html
-msgid "Wallet Secret is not valid!"
-msgstr "Le secret de portefeuille n'est pas valide !"
+msgid "Wallet Invitation is not valid!"
+msgstr "L'invitation de portefeuille n'est pas valide !"
 
 #: public/views/copayers.html
 msgid "Wallet incomplete and broken"
