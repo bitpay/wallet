@@ -42,9 +42,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     isoCode: 'ja',
   }];
 
-  self.defaultLanguage = configService.getSync().wallet.settings.defaultLanguage || 'en';
-  self.defaultLanguageName = lodash.result(lodash.find(this.availableLanguages, { 'isoCode': self.defaultLanguage }), 'name');
-
   self.setOngoingProcess = function(processName, isOn) {
     $log.debug('onGoingProcess', processName, isOn);
     self[processName] = isOn;
