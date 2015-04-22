@@ -59,11 +59,6 @@ msgstr ""
 msgid "Available Balance"
 msgstr ""
 
-#: public/views/create.html
-#: public/views/join.html
-msgid "BIP32 master extended private key"
-msgstr ""
-
 #: public/views/includes/topbar.html
 msgid "Back"
 msgstr ""
@@ -90,18 +85,6 @@ msgstr ""
 
 #: public/views/send.html
 msgid "Bitcoin address"
-msgstr ""
-
-#: public/views/preferences.html
-msgid "Bitcore Wallet Service"
-msgstr ""
-
-#: public/views/preferencesBwsUrl.html
-msgid "Bitcore Wallet Service URL"
-msgstr ""
-
-#: public/views/modals/tx-details.html
-msgid "Blockchain"
 msgstr ""
 
 #: public/views/modals/txp-details.html
@@ -173,6 +156,14 @@ msgstr ""
 
 #: public/views/includes/offline.html
 msgid "Could not connect to Wallet Service"
+msgstr ""
+
+#: public/views/history.html
+msgid "Could not fetch transaction history"
+msgstr ""
+
+#: public/views/walletHome.html
+msgid "Could not update Wallet"
 msgstr ""
 
 #: public/views/create.html
@@ -249,10 +240,6 @@ msgstr ""
 msgid "Generate new address"
 msgstr ""
 
-#: public/views/receive.html
-msgid "Generating a new address..."
-msgstr ""
-
 #: public/views/history.html
 msgid "Getting transactions..."
 msgstr ""
@@ -264,6 +251,14 @@ msgstr ""
 #: public/views/create.html
 #: public/views/join.html
 msgid "Hide"
+msgstr ""
+
+#: public/views/create.html
+msgid "If not given, a random key will be generated"
+msgstr ""
+
+#: public/views/join.html
+msgid "If not given, a secure key will be generated"
 msgstr ""
 
 #: public/views/importLegacy.html
@@ -350,16 +345,24 @@ msgstr ""
 msgid "More"
 msgstr ""
 
+#: public/views/history.html
+msgid "Moved"
+msgstr ""
+
 #: public/views/walletHome.html
 msgid "Multisignature wallet"
 msgstr ""
 
 #: public/views/receive.html
-msgid "My Bitcoin address:"
+msgid "My Bitcoin address"
 msgstr ""
 
 #: public/views/walletHome.html
 msgid "No pending spend proposals at the moment."
+msgstr ""
+
+#: public/views/history.html
+msgid "No transactions yet"
 msgstr ""
 
 #: public/views/send.html
@@ -401,7 +404,7 @@ msgid "Paste backup plain text code"
 msgstr ""
 
 #: public/views/join.html
-msgid "Paste wallet secret here"
+msgid "Paste invitation here"
 msgstr ""
 
 #: public/views/modals/tx-status.html
@@ -432,6 +435,10 @@ msgstr ""
 msgid "QR-Scanner"
 msgstr ""
 
+#: public/views/history.html
+msgid "Received"
+msgstr ""
+
 #: public/views/walletHome.html
 msgid "Recreate"
 msgstr ""
@@ -445,15 +452,11 @@ msgid "Reject"
 msgstr ""
 
 #: public/views/modals/txp-details.html
-msgid "Remove"
+msgid "Remove transaction"
 msgstr ""
 
 #: public/views/backup.html
 #: public/views/includes/password.html
-msgid "Repeat Password"
-msgstr ""
-
-#: public/views/backup.html
 msgid "Repeat password"
 msgstr ""
 
@@ -477,6 +480,10 @@ msgstr ""
 
 #: public/views/preferencesBwsUrl.html
 msgid "Save"
+msgstr ""
+
+#: public/views/walletHome.html
+msgid "Scan status finished with error"
 msgstr ""
 
 #: public/views/walletHome.html
@@ -515,16 +522,20 @@ msgstr ""
 msgid "Send by email"
 msgstr ""
 
+#: public/views/history.html
+msgid "Sent"
+msgstr ""
+
 #: public/views/importLegacy.html
 msgid "Server"
 msgstr ""
 
-#: public/views/includes/password.html
-msgid "Set up a Password"
-msgstr ""
-
 #: public/views/backup.html
 msgid "Set up a Password for your backup"
+msgstr ""
+
+#: public/views/includes/password.html
+msgid "Set up a password"
 msgstr ""
 
 #: public/views/receive.html
@@ -532,11 +543,11 @@ msgid "Share address"
 msgstr ""
 
 #: public/views/copayers.html
-msgid "Share secret"
+msgid "Share invitation"
 msgstr ""
 
 #: public/views/copayers.html
-msgid "Share this secret with your copayers"
+msgid "Share this invitation with your copayers"
 msgstr ""
 
 #: public/views/receive.html
@@ -562,6 +573,15 @@ msgstr ""
 
 #: public/views/walletHome.html
 msgid "Spend proposals"
+msgstr ""
+
+#: public/views/history.html
+#: public/views/walletHome.html
+msgid "Tap to retry"
+msgstr ""
+
+#: public/views/modals/txp-details.html
+msgid "The transaction was removed by creator"
 msgstr ""
 
 #: public/views/backup.html
@@ -672,11 +692,11 @@ msgid "Waiting..."
 msgstr ""
 
 #: public/views/join.html
-msgid "Wallet Secret"
+msgid "Wallet Invitation"
 msgstr ""
 
 #: public/views/join.html
-msgid "Wallet Secret is not valid!"
+msgid "Wallet Invitation is not valid!"
 msgstr ""
 
 #: public/views/copayers.html
