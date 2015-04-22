@@ -432,32 +432,21 @@ angular
         needProfile: false
       });
   })
-  .run(function($rootScope, $state, $log, gettextCatalog, uriHandler, isCordova, amMoment, profileService, configService) {
+  .run(function($rootScope, $state, $log, gettextCatalog, uriHandler, isCordova, amMoment, profileService) {
 
-    var userLang = configService.getSync().wallet.settings.defaultLanguage;
-    if (!userLang) {
-      // Auto-detect browser language
-      var androidLang;
+    // Auto-detect browser language
+    var userLang, androidLang;
 
-      if (navigator && navigator.userAgent && (androidLang = navigator.userAgent.match(/android.*\W(\w\w)-(\w\w)\W/i))) {
-        userLang = androidLang[1];
-      } else {
-        // works for iOS and Android 4.x
-        userLang = navigator.userLanguage || navigator.language;
-      }
-      userLang = userLang ? (userLang.split('-', 1)[0] || 'en') : 'en';
+    if (navigator && navigator.userAgent && (androidLang = navigator.userAgent.match(/android.*\W(\w\w)-(\w\w)\W/i))) {
+      userLang = androidLang[1];
+    } else {
+      // works for iOS and Android 4.x
+      userLang = navigator.userLanguage || navigator.language;
     }
 
-    configService.set({
-      wallet: {
-        settings: {
-          defaultLanguage: userLang
-        }
-      }
-    }, function() {
-      gettextCatalog.setCurrentLanguage(userLang);
-      amMoment.changeLocale(userLang);
-    });
+    userLang = userLang ? (userLang.split('-', 1)[0] || 'en') : 'en';
+    gettextCatalog.setCurrentLanguage(userLang);
+    amMoment.changeLocale(userLang);
 
     // Register URI handler, not for mobileApp
     if (!isCordova) {
