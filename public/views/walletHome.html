@@ -25,22 +25,15 @@
           </div>
         </div>
       </div>
-
-      <div ng-if="index.anyOnGoingProcess" class="text-white text-center">
-        <div class="animated infinite flash">
-          <span translate ng-show="index.onGoingProcessName == 'openingWallet'">Opening Wallet...</span>
-          <span translate ng-show="index.onGoingProcessName == 'updatingStatus'">Updating Status...</span>
-          <span translate ng-show="index.onGoingProcessName == 'updatingBalance'">Updating Balance...</span>
-          <span translate ng-show="index.onGoingProcessName == 'updatingPendingTxps'">Updating Pending Transactions...</span>
-          <span translate ng-show="index.onGoingProcessName == 'scanning'">Scanning Wallet funds...</span>
-          <span translate ng-show="index.onGoingProcessName == 'recreating'">Recreating Wallet on BWS...</span>
         </div>
-      </div>
           
-    </div>
         <div class="pr columns line-b">
           <div class="avatar-wallet left" 
-            ng-style="{'background-color':index.backgroundColor}">{{index.walletName | limitTo: 1}}</div>      
+            ng-class="{'updating':index.anyOnGoingProcess}"
+            ng-style="{'background-color':index.backgroundColor}"
+>
+<div class="">{{index.walletName | limitTo: 1}}</div>
+</div>      
           <div class="right">
             <a ng-click="$root.go('preferences')" class="button outline light-gray tiny m0">
               <i class="fi-widget size-18 vm"></i>
@@ -59,6 +52,23 @@
           </div> 
         </div>
   </div>
+
+
+  <div class="text-white text-center  onGoingProcess" 
+      ng-show="index.anyOnGoingProcess" 
+      ng-style="{'color':index.backgroundColor}"
+      ng-class="{'opacityCycle':index.anyOnGoingProcess}"
+  > 
+    <span translate ng-show="index.onGoingProcessName == 'openingWallet'">Opening Wallet...</span>
+    <span translate ng-show="index.onGoingProcessName == 'updatingStatus'">Updating Status</span>
+    <span translate ng-show="index.onGoingProcessName == 'updatingBalance'">Updating Balance...</span>
+    <span translate ng-show="index.onGoingProcessName == 'updatingPendingTxps'">Updating Pending Transactions...</span>
+    <span translate ng-show="index.onGoingProcessName == 'scanning'">Scanning Wallet funds...</span>
+    <span translate ng-show="index.onGoingProcessName == 'recreating'">Recreating Wallet on BWS...</span>
+  </div>
+
+
+
 
   <div ng-show="index.notAuthorized"> 
   <div class="text-center text-warning"> 
