@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('preferencesController',
-  function($scope, $rootScope, $filter, $timeout, $modal, $log, configService, profileService) {
+  function($scope, $rootScope, $filter, $timeout, $modal, $log, lodash, configService, profileService) {
     this.error = null;
     this.success = null;
 
@@ -12,7 +12,7 @@ angular.module('copayApp.controllers').controller('preferencesController',
     this.selectedAlternative = {
       name: config.wallet.settings.alternativeName,
       isoCode: config.wallet.settings.alternativeIsoCode
-    };
+    }; 
     var fc = profileService.focusedClient;
     $scope.encrypt = fc.hasPrivKeyEncrypted();
 
@@ -47,6 +47,11 @@ angular.module('copayApp.controllers').controller('preferencesController',
         }
       }
     });
+
+    this.getDefaultLanguageName = function(availableLanguages) {
+      var defaultLanguage = config.wallet.settings.defaultLanguage || 'en';
+      return lodash.result(lodash.find(availableLanguages, { 'isoCode': defaultLanguage }), 'name');
+    };
 
     $scope.$on('$destroy', function() {
       unwatch();

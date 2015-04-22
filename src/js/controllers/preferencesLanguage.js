@@ -2,6 +2,7 @@
 
 angular.module('copayApp.controllers').controller('preferencesLanguageController',
   function($scope, $timeout, configService, applicationService) {
+    this.defaultLanguage = configService.getSync().wallet.settings.defaultLanguage || 'en';
 
     this.save = function(newLang) {
       var opts = {
