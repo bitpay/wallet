@@ -79,7 +79,7 @@ msgstr "Sauvegarder"
 
 #: public/views/receive.html
 msgid "Backup now"
-msgstr "Sauvegarder maintenant"
+msgstr "Sauvegarder"
 
 #: public/views/backup.html
 msgid "Backup options"
@@ -220,7 +220,7 @@ msgstr "Vide. Créez un alias pour vos adresses"
 
 #: public/views/preferences.html
 msgid "Encrypt Private Key"
-msgstr "Clé privée chiffrée"
+msgstr "Chiffrer la clé privée"
 
 #: public/views/includes/password.html
 msgid "Enter your password"
@@ -444,7 +444,7 @@ msgstr "Répétez le mot de passe"
 
 #: public/views/backup.html
 msgid "Repeat password"
-msgstr "Répétez le mot de passe"
+msgstr "Répéter le mot de passe"
 
 #: public/views/import.html public/views/join.html
 #: public/views/modals/address-book.html
@@ -513,7 +513,7 @@ msgstr "Définir un mot de passe"
 
 #: public/views/backup.html
 msgid "Set up a Password for your backup"
-msgstr "Définir un mot de passe pour votre sauvegarde"
+msgstr "Définissez un mot de passe pour votre sauvegarde"
 
 #: public/views/receive.html
 msgid "Share address"
