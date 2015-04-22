@@ -299,7 +299,9 @@ a.missing-copayers {
 }
 
 .sidebar header {
-  background-color: #2C3E50;
+  background-image: -webkit-linear-gradient(bottom, #213140 0%, #2C3E50 100%);
+  background-image: -o-linear-gradient(bottom, #213140 0%, #2C3E50 100%);
+  background-image: linear-gradient(to top, #213140 0%, #2C3E50 100%);
   width: 100%;
   text-align: center;
   height: 7rem;
