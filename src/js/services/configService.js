@@ -58,8 +58,6 @@ angular.module('copayApp.services').factory('configService', function(localStora
   var configCache = null;
 
 
-
-
   root.getSync = function() {
     if (!configCache)
       throw new Error('configService#getSync called when cache is not initialized');

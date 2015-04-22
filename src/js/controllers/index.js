@@ -28,6 +28,23 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     'link': 'history'
   }]; 
 
+  self.availableLanguages = [{
+    name: 'English',
+    isoCode: 'en',
+  }, {
+    name: 'Spanish',
+    isoCode: 'es',
+  }, {
+    name: 'Français',
+    isoCode: 'fr',
+  }, {
+    name: '日本人',
+    isoCode: 'ja',
+  }];
+
+  self.defaultLanguage = configService.getSync().wallet.settings.defaultLanguage || 'en';
+  self.defaultLanguageName = lodash.result(lodash.find(this.availableLanguages, { 'isoCode': self.defaultLanguage }), 'name');
+
   self.setOngoingProcess = function(processName, isOn) {
     $log.debug('onGoingProcess', processName, isOn);
     self[processName] = isOn;
@@ -418,7 +435,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       }
     });
   };
-
 
   // UX event handlers
   $rootScope.$on('Local/ColorUpdated', function(event) {

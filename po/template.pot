@@ -16,30 +16,12 @@ msgstr ""
 msgid "* You can safely install your backup on other device and use your wallet from many devices at the same time."
 msgstr ""
 
-#: public/views/modals/address-book.html
-msgid "Add"
-msgstr ""
-
-#: public/views/modals/address-book.html
-msgid "Add a new entry"
-msgstr ""
-
-#: public/views/modals/address-book.html
-msgid "Add entry"
-msgstr ""
-
 #: public/views/includes/sidebar.html
 msgid "Add wallet"
 msgstr ""
 
 #: public/views/paymentUri.html
-#: public/views/modals/address-book.html
-#: public/views/modals/qr-address.html
 msgid "Address"
-msgstr ""
-
-#: public/views/modals/address-book.html
-msgid "Address Book"
 msgstr ""
 
 #: public/views/preferences.html
@@ -48,11 +30,16 @@ msgstr ""
 
 #: public/views/paymentUri.html
 #: public/views/send.html
+#: public/views/modals/txp-details.html
 msgid "Amount"
 msgstr ""
 
 #: public/views/send.html
 msgid "Amount in"
+msgstr ""
+
+#: public/views/preferencesLanguage.html
+msgid "Applying changes"
 msgstr ""
 
 #: public/views/send.html
@@ -105,27 +92,23 @@ msgstr ""
 
 #: public/views/copayers.html
 #: public/views/send.html
-#: public/views/modals/address-book.html
 #: public/views/modals/confirmation.html
 msgid "Cancel"
 msgstr ""
 
 #: public/views/modals/paypro.html
-msgid "Certified by:"
+msgid "Certified by"
 msgstr ""
 
 #: public/views/import.html
 msgid "Choose backup file from your computer"
 msgstr ""
 
-#: public/views/modals/address-book.html
 #: public/views/modals/copayers.html
 #: public/views/modals/paypro.html
-#: public/views/modals/qr-address.html
 #: public/views/modals/scanner.html
 #: public/views/modals/tx-details.html
 #: public/views/modals/txp-details.html
-#: public/views/modals/walletSelection.html
 msgid "Close"
 msgstr ""
 
@@ -134,7 +117,7 @@ msgid "Color"
 msgstr ""
 
 #: public/views/modals/tx-details.html
-msgid "Confirmations:"
+msgid "Confirmations"
 msgstr ""
 
 #: public/views/modals/copayers.html
@@ -150,7 +133,6 @@ msgid "Copy this text as it is in a safe place (notepad or email)"
 msgstr ""
 
 #: public/views/backup.html
-#: public/views/modals/qr-address.html
 msgid "Copy to clipboard"
 msgstr ""
 
@@ -179,21 +161,17 @@ msgstr ""
 msgid "Create, join or import"
 msgstr ""
 
+#: public/views/modals/txp-details.html
+msgid "Created by"
+msgstr ""
+
 #: public/views/create.html
 #: public/views/createProfile.html
 msgid "Creating wallet..."
 msgstr ""
 
-#: public/views/modals/address-book.html
-msgid "Creator"
-msgstr ""
-
-#: public/views/modals/address-book.html
-msgid "Date"
-msgstr ""
-
 #: public/views/modals/tx-details.html
-msgid "Date:"
+msgid "Date"
 msgstr ""
 
 #: public/views/preferences.html
@@ -208,10 +186,6 @@ msgstr ""
 msgid "ENTER"
 msgstr ""
 
-#: public/views/modals/address-book.html
-msgid "Empty. Create an alias for your addresses"
-msgstr ""
-
 #: public/views/preferences.html
 msgid "Encrypt Private Key"
 msgstr ""
@@ -220,12 +194,9 @@ msgstr ""
 msgid "Enter your password"
 msgstr ""
 
-#: public/views/modals/address-book.html
-msgid "Entry"
-msgstr ""
-
 #: public/views/modals/paypro.html
-msgid "Expires:"
+#: public/views/modals/txp-details.html
+msgid "Expires"
 msgstr ""
 
 #: public/views/create.html
@@ -307,16 +278,12 @@ msgstr ""
 msgid "Joining shared wallet..."
 msgstr ""
 
-#: public/views/modals/address-book.html
-msgid "Label"
+#: public/views/preferences.html
+msgid "Language"
 msgstr ""
 
 #: public/views/importLegacy.html
 msgid "Learn more about Wallet Migration"
-msgstr ""
-
-#: public/views/modals/walletSelection.html
-msgid "Loading..."
 msgstr ""
 
 #: public/views/paymentUri.html
@@ -334,7 +301,7 @@ msgstr ""
 
 #: public/views/modals/paypro.html
 #: public/views/modals/tx-details.html
-msgid "Merchant Message:"
+msgid "Merchant message"
 msgstr ""
 
 #: public/views/paymentUri.html
@@ -366,16 +333,13 @@ msgid "No transactions yet"
 msgstr ""
 
 #: public/views/send.html
-#: public/views/modals/address-book.html
 msgid "Not valid"
 msgstr ""
 
 #: public/views/send.html
-msgid "Note"
-msgstr ""
-
 #: public/views/modals/tx-details.html
-msgid "Note:"
+#: public/views/modals/txp-details.html
+msgid "Note"
 msgstr ""
 
 #: public/views/modals/confirmation.html
@@ -411,6 +375,10 @@ msgstr ""
 msgid "Payment Sent"
 msgstr ""
 
+#: public/views/modals/txp-details.html
+msgid "Payment details"
+msgstr ""
+
 #: public/views/modals/paypro.html
 msgid "Payment protocol request"
 msgstr ""
@@ -429,10 +397,6 @@ msgstr ""
 
 #: public/views/walletHome.html
 msgid "Preferences"
-msgstr ""
-
-#: public/views/modals/scanner.html
-msgid "QR-Scanner"
 msgstr ""
 
 #: public/views/history.html
@@ -462,7 +426,6 @@ msgstr ""
 
 #: public/views/import.html
 #: public/views/join.html
-#: public/views/modals/address-book.html
 msgid "Required"
 msgstr ""
 
@@ -500,10 +463,6 @@ msgstr ""
 
 #: public/views/paymentUri.html
 msgid "Select a wallet"
-msgstr ""
-
-#: public/views/modals/walletSelection.html
-msgid "Select a wallet to make the payment"
 msgstr ""
 
 #: public/views/create.html
@@ -564,11 +523,8 @@ msgid "Sign"
 msgstr ""
 
 #: public/views/modals/tx-details.html
+#: public/views/modals/txp-details.html
 msgid "Signatures"
-msgstr ""
-
-#: public/views/includes/pin.html
-msgid "Skip"
 msgstr ""
 
 #: public/views/walletHome.html
@@ -592,14 +548,16 @@ msgstr ""
 msgid "This wallet is not registered at the given Bitcore Wallet Service (BWS). You can recreate it from the local information."
 msgstr ""
 
-#: public/views/send.html
-#: public/views/includes/transaction.html
-msgid "To"
+#: public/views/modals/txp-details.html
+msgid "Time"
 msgstr ""
 
+#: public/views/send.html
+#: public/views/includes/transaction.html
 #: public/views/modals/paypro.html
 #: public/views/modals/tx-details.html
-msgid "To:"
+#: public/views/modals/txp-details.html
+msgid "To"
 msgstr ""
 
 #: public/views/walletHome.html
@@ -667,10 +625,6 @@ msgstr ""
 msgid "View backup"
 msgstr ""
 
-#: public/views/modals/address-book.html
-msgid "Visible"
-msgstr ""
-
 #: public/views/receive.html
 msgid "WARNING: Backup needed"
 msgstr ""
@@ -697,6 +651,10 @@ msgstr ""
 
 #: public/views/join.html
 msgid "Wallet Invitation is not valid!"
+msgstr ""
+
+#: public/views/includes/clientError.html
+msgid "Wallet Service Error"
 msgstr ""
 
 #: public/views/copayers.html
@@ -738,10 +696,6 @@ msgstr ""
 msgid "advanced options"
 msgstr ""
 
-#: public/views/modals/qr-address.html
-msgid "change"
-msgstr ""
-
 #: public/views/send.html
 msgid "in pending transactions"
 msgstr ""
@@ -749,6 +703,7 @@ msgstr ""
 #: public/views/copayers.html
 #: public/views/create.html
 #: public/views/walletHome.html
+#: public/views/includes/sidebar.html
 msgid "of"
 msgstr ""
 
