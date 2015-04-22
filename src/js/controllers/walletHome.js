@@ -194,7 +194,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       };
 
       $scope.cancel = function() {
-        $modalInstance.close();
+        $modalInstance.dismiss('cancel');
       };
     };
 

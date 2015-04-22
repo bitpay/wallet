@@ -6,11 +6,27 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   self.onGoingProcess = {};
   self.limitHistory = 5;
 
-  self.hideMenuBar = false;
-
   function strip(number) {
     return (parseFloat(number.toPrecision(12)));
   };
+
+  self.menu = [{
+    'title': 'Home',
+    'icon': 'icon-home',
+    'link': 'walletHome'
+  }, {
+    'title': 'Receive',
+    'icon': 'icon-receive',
+    'link': 'receive'
+  }, {
+    'title': 'Send',
+    'icon': 'icon-paperplane',
+    'link': 'send'
+  }, {
+    'title': 'History',
+    'icon': 'icon-history',
+    'link': 'history'
+  }]; 
 
   self.setOngoingProcess = function(processName, isOn) {
     $log.debug('onGoingProcess', processName, isOn);
@@ -193,6 +209,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   self.openWallet = function() {
     var fc = profileService.focusedClient;
     self.updateColor();
+    $rootScope.$apply();
     $timeout(function() {
       self.setOngoingProcess('openingWallet', true);
       self.updateError = false;
