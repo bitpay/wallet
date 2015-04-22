@@ -2,7 +2,7 @@
   ng-class="{'text-gray':!tx.pendingForUs}" 
   ng-click="openTxModal(tx, index.copayers)">
   <div class="m5b size-12 text-gray">
-    <time>{{ (tx.ts || tx.createdTs ) | amTimeAgo}}</time>
+    <time>{{ (tx.ts || tx.createdOn ) * 1000 | amTimeAgo}}</time>
   </div>
   <div class="row collapse">
     <div class="ellipsis small-8 columns size-14">

@@ -88,7 +88,7 @@
 
   <div ng-show="index.requiresMultipleSignatures  && index.txps[0]">
     <h4 class="title m0" translate>Spend proposals</h4>
-    <div class="last-transactions pr" ng-repeat="tx in index.txps  | orderBy:'-createdTs'" 
+    <div class="last-transactions pr" ng-repeat="tx in index.txps" 
       ng-include="'views/includes/transaction.html'">
     </div>
 

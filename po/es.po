@@ -36,42 +36,30 @@ msgstr ""
 "* Usted puede instalar la copia de seguridad en otro dispositivo y usar el "
 "monedero al mismo tiempo en varios dispositivos."
 
-#: public/views/modals/address-book.html
-msgid "Add"
-msgstr "Agregar"
-
-#: public/views/modals/address-book.html
-msgid "Add a new entry"
-msgstr "Nueva Entrada"
-
-#: public/views/modals/address-book.html
-msgid "Add entry"
-msgstr "Nueva Entrada"
-
 #: public/views/includes/sidebar.html
 msgid "Add wallet"
 msgstr "Agregar monedero"
 
-#: public/views/paymentUri.html public/views/modals/address-book.html
-#: public/views/modals/qr-address.html
+#: public/views/paymentUri.html
 msgid "Address"
 msgstr "Dirección"
-
-#: public/views/modals/address-book.html
-msgid "Address Book"
-msgstr "Libreta de Direcciones"
 
 #: public/views/preferences.html
 msgid "Alternative Currency"
 msgstr "Moneda Alternativa"
 
 #: public/views/paymentUri.html public/views/send.html
+#: public/views/modals/txp-details.html
 msgid "Amount"
 msgstr "Importe"
 
 #: public/views/send.html
 msgid "Amount in"
 msgstr "Importe en"
+
+#: public/views/preferencesLanguage.html
+msgid "Applying changes"
+msgstr "Aplicando los cambios"
 
 #: public/views/send.html
 msgid "Available Balance"
@@ -125,23 +113,21 @@ msgid "CANCEL"
 msgstr "CANCELAR"
 
 #: public/views/copayers.html public/views/send.html
-#: public/views/modals/address-book.html public/views/modals/confirmation.html
+#: public/views/modals/confirmation.html
 msgid "Cancel"
 msgstr "Cancelar"
 
 #: public/views/modals/paypro.html
-msgid "Certified by:"
-msgstr "Certificado por:"
+msgid "Certified by"
+msgstr "Certificado por"
 
 #: public/views/import.html
 msgid "Choose backup file from your computer"
 msgstr "Seleccione el archivo backup de su computadora"
 
-#: public/views/modals/address-book.html public/views/modals/copayers.html
-#: public/views/modals/paypro.html public/views/modals/qr-address.html
+#: public/views/modals/copayers.html public/views/modals/paypro.html
 #: public/views/modals/scanner.html public/views/modals/tx-details.html
 #: public/views/modals/txp-details.html
-#: public/views/modals/walletSelection.html
 msgid "Close"
 msgstr "Cerrar"
 
@@ -150,8 +136,8 @@ msgid "Color"
 msgstr "Color"
 
 #: public/views/modals/tx-details.html
-msgid "Confirmations:"
-msgstr "Confirmaciones:"
+msgid "Confirmations"
+msgstr "Confirmaciones"
 
 #: public/views/modals/copayers.html
 msgid "Copayers"
@@ -166,7 +152,7 @@ msgid "Copy this text as it is in a safe place (notepad or email)"
 msgstr ""
 "Copiar el texto como esta en un lugar seguro (notepad o correo electrónico)"
 
-#: public/views/backup.html public/views/modals/qr-address.html
+#: public/views/backup.html
 msgid "Copy to clipboard"
 msgstr "Copiar al portapapeles"
 
@@ -194,21 +180,17 @@ msgstr "Crear nuevo monedero"
 msgid "Create, join or import"
 msgstr "Crear, unirse o importar"
 
+#: public/views/modals/txp-details.html
+msgid "Created by"
+msgstr "Creado por"
+
 #: public/views/create.html public/views/createProfile.html
 msgid "Creating wallet..."
 msgstr "Creando monedero..."
 
-#: public/views/modals/address-book.html
-msgid "Creator"
-msgstr "Creador"
-
-#: public/views/modals/address-book.html
+#: public/views/modals/tx-details.html
 msgid "Date"
 msgstr "Fecha"
-
-#: public/views/modals/tx-details.html
-msgid "Date:"
-msgstr "Fecha:"
 
 #: public/views/preferences.html
 msgid "Delete"
@@ -222,26 +204,17 @@ msgstr "Descargar copia de seguridad"
 msgid "ENTER"
 msgstr "ENTRAR"
 
-#: public/views/modals/address-book.html
-msgid "Empty. Create an alias for your addresses"
-msgstr "Vacío. Crea una etiqueta para tus direcciones"
-
 #: public/views/preferences.html
 msgid "Encrypt Private Key"
 msgstr "Encriptar Clave Privada"
 
 #: public/views/includes/password.html
-#, fuzzy
 msgid "Enter your password"
 msgstr "Escribe tu contraseña"
 
-#: public/views/modals/address-book.html
-msgid "Entry"
-msgstr "Entrada"
-
-#: public/views/modals/paypro.html
-msgid "Expires:"
-msgstr "Expira:"
+#: public/views/modals/paypro.html public/views/modals/txp-details.html
+msgid "Expires"
+msgstr "Expira"
 
 #: public/views/create.html
 msgid "Family vacation funds"
@@ -319,17 +292,13 @@ msgstr "Unirse a un monedero"
 msgid "Joining shared wallet..."
 msgstr "Unirse a un monedero..."
 
-#: public/views/modals/address-book.html
-msgid "Label"
-msgstr "Etiqueta"
+#: public/views/preferences.html
+msgid "Language"
+msgstr "Idioma"
 
 #: public/views/importLegacy.html
 msgid "Learn more about Wallet Migration"
 msgstr "Más detalles para migrar Monedero"
-
-#: public/views/modals/walletSelection.html
-msgid "Loading..."
-msgstr "Cargando..."
 
 #: public/views/paymentUri.html
 msgid "Make a payment to"
@@ -344,8 +313,8 @@ msgid "Me"
 msgstr "Yo"
 
 #: public/views/modals/paypro.html public/views/modals/tx-details.html
-msgid "Merchant Message:"
-msgstr "Mensaje del negocio:"
+msgid "Merchant message"
+msgstr "Mensaje del negocio"
 
 #: public/views/paymentUri.html
 msgid "Message"
@@ -375,20 +344,16 @@ msgstr "No hay gastos pendientes en este momento."
 msgid "No transactions yet"
 msgstr "Sin transacciones todavía"
 
-#: public/views/send.html public/views/modals/address-book.html
+#: public/views/send.html
 msgid "Not valid"
 msgstr "No válido"
 
-#: public/views/send.html
+#: public/views/send.html public/views/modals/tx-details.html
+#: public/views/modals/txp-details.html
 msgid "Note"
 msgstr "Nota"
 
-#: public/views/modals/tx-details.html
-msgid "Note:"
-msgstr "Nota:"
-
 #: public/views/modals/confirmation.html
-#, fuzzy
 msgid "OK"
 msgstr "LISTO"
 
@@ -422,6 +387,10 @@ msgstr "Pegar invitación aquí"
 msgid "Payment Sent"
 msgstr "Pago Enviado"
 
+#: public/views/modals/txp-details.html
+msgid "Payment details"
+msgstr "Detalles del pago"
+
 #: public/views/modals/paypro.html
 msgid "Payment protocol request"
 msgstr "Solicitud de pago"
@@ -444,10 +413,6 @@ msgstr "Monedero Personal"
 #: public/views/walletHome.html
 msgid "Preferences"
 msgstr "Preferencias"
-
-#: public/views/modals/scanner.html
-msgid "QR-Scanner"
-msgstr "Escáner QR"
 
 #: public/views/history.html
 msgid "Received"
@@ -474,7 +439,6 @@ msgid "Repeat password"
 msgstr "Repite la contraseña"
 
 #: public/views/import.html public/views/join.html
-#: public/views/modals/address-book.html
 msgid "Required"
 msgstr "Requerido"
 
@@ -513,10 +477,6 @@ msgstr "Seleccionar el archivo de copia de seguridad"
 #: public/views/paymentUri.html
 msgid "Select a wallet"
 msgstr "Seleccione un monedero"
-
-#: public/views/modals/walletSelection.html
-msgid "Select a wallet to make the payment"
-msgstr "Seleccione monedero para realizar el pago"
 
 #: public/views/create.html
 msgid "Select required signatures"
@@ -578,13 +538,9 @@ msgstr "Mostrar"
 msgid "Sign"
 msgstr "Firmar"
 
-#: public/views/modals/tx-details.html
+#: public/views/modals/tx-details.html public/views/modals/txp-details.html
 msgid "Signatures"
 msgstr "Firmas"
-
-#: public/views/includes/pin.html
-msgid "Skip"
-msgstr "Omitir"
 
 #: public/views/walletHome.html
 msgid "Spend proposals"
@@ -614,13 +570,15 @@ msgstr ""
 "Este monedero no esta registrado en el servidor Bitcore Wallet Service "
 "(BWS). Debe recrearlo con la información local disponible."
 
-#: public/views/send.html public/views/includes/transaction.html
-msgid "To"
-msgstr "A"
+#: public/views/modals/txp-details.html
+msgid "Time"
+msgstr "Hora"
 
+#: public/views/send.html public/views/includes/transaction.html
 #: public/views/modals/paypro.html public/views/modals/tx-details.html
-msgid "To:"
-msgstr "Para:"
+#: public/views/modals/txp-details.html
+msgid "To"
+msgstr "Para"
 
 #: public/views/walletHome.html
 msgid "Total Locked Balance"
@@ -647,7 +605,6 @@ msgid "Transaction sent!"
 msgstr "¡Transacción enviada!"
 
 #: public/views/includes/offline.html
-#, fuzzy
 msgid "Trying to reconnnect..."
 msgstr "Intentando reconectar..."
 
@@ -687,10 +644,6 @@ msgstr "Red de prueba"
 msgid "View backup"
 msgstr "Ver Copia de Seguridad"
 
-#: public/views/modals/address-book.html
-msgid "Visible"
-msgstr "Visible"
-
 #: public/views/receive.html
 msgid "WARNING: Backup needed"
 msgstr "ADVERTENCIA: Se requiere hacer copia de seguridad"
@@ -719,6 +672,10 @@ msgstr "Invitación para unirse al monedero"
 msgid "Wallet Invitation is not valid!"
 msgstr "¡Invitación no válida!"
 
+#: public/views/includes/clientError.html
+msgid "Wallet Service Error"
+msgstr "Error en Wallet Service"
+
 #: public/views/copayers.html
 msgid "Wallet incomplete and broken"
 msgstr "Monedero incompleto y roto"
@@ -736,7 +693,6 @@ msgid "You do not have any wallet"
 msgstr "No tienes ningún monedero"
 
 #: public/views/backup.html public/views/import.html
-#, fuzzy
 msgid "Your backup password"
 msgstr "Tu contraseña"
 
@@ -756,16 +712,12 @@ msgstr "Contraseña de tu perfil"
 msgid "advanced options"
 msgstr "opciones avanzadas"
 
-#: public/views/modals/qr-address.html
-msgid "change"
-msgstr "vuelto"
-
 #: public/views/send.html
 msgid "in pending transactions"
 msgstr "en transacciones pendientes"
 
 #: public/views/copayers.html public/views/create.html
-#: public/views/walletHome.html
+#: public/views/walletHome.html public/views/includes/sidebar.html
 msgid "of"
 msgstr "de"
 
@@ -785,11 +737,59 @@ msgstr "monedero"
 msgid "{{index.walletName}} settings"
 msgstr "Opciones de {{index.walletName}}"
 
+#~ msgid "To:"
+#~ msgstr "Para:"
+
+#~ msgid "Add"
+#~ msgstr "Agregar"
+
+#~ msgid "Add a new entry"
+#~ msgstr "Nueva Entrada"
+
+#~ msgid "Add entry"
+#~ msgstr "Nueva Entrada"
+
+#~ msgid "Address Book"
+#~ msgstr "Libreta de Direcciones"
+
+#~ msgid "Creator"
+#~ msgstr "Creador"
+
+#~ msgid "Date:"
+#~ msgstr "Fecha:"
+
+#~ msgid "Empty. Create an alias for your addresses"
+#~ msgstr "Vacío. Crea una etiqueta para tus direcciones"
+
+#~ msgid "Entry"
+#~ msgstr "Entrada"
+
+#~ msgid "Label"
+#~ msgstr "Etiqueta"
+
+#~ msgid "Loading..."
+#~ msgstr "Cargando..."
+
+#~ msgid "Note:"
+#~ msgstr "Nota:"
+
+#~ msgid "QR-Scanner"
+#~ msgstr "Escáner QR"
+
+#~ msgid "Select a wallet to make the payment"
+#~ msgstr "Seleccione monedero para realizar el pago"
+
+#~ msgid "Skip"
+#~ msgstr "Omitir"
+
+#~ msgid "Visible"
+#~ msgstr "Visible"
+
+#~ msgid "change"
+#~ msgstr "vuelto"
+
 #~ msgid "BIP32 master extended private key"
 #~ msgstr "BIP32 master extended private key"
-
-#~ msgid "Bitcore Wallet Service"
-#~ msgstr "Bitcore Wallet Service"
 
 #~ msgid "Bitcore Wallet Service URL"
 #~ msgstr "Bitcore Wallet Service URL"
@@ -1447,9 +1447,6 @@ msgstr "Opciones de {{index.walletName}}"
 
 #~ msgid "transaction proposal purged"
 #~ msgstr "propuestas de transacciones purgadas"
-
-#~ msgid "Language"
-#~ msgstr "Idioma"
 
 #~ msgid "Create {{requiredCopayers}}-of-{{totalCopayers}} wallet"
 #~ msgstr "Crea monedero {{requiredCopayers}}-de-{{totalCopayers}}"
