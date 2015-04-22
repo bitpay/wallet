@@ -40,7 +40,8 @@ msgstr "Ajouter une entrée"
 msgid "Add wallet"
 msgstr "Ajouter un portefeuille"
 
-#: public/views/paymentUri.html public/views/modals/address-book.html
+#: public/views/paymentUri.html
+#: public/views/modals/address-book.html
 #: public/views/modals/qr-address.html
 msgid "Address"
 msgstr "Adresse"
@@ -53,7 +54,8 @@ msgstr "Carnet d'adresses"
 msgid "Alternative Currency"
 msgstr "Devise alternative"
 
-#: public/views/paymentUri.html public/views/send.html
+#: public/views/paymentUri.html
+#: public/views/send.html
 msgid "Amount"
 msgstr "Montant"
 
@@ -64,6 +66,11 @@ msgstr "Montant en"
 #: public/views/send.html
 msgid "Available Balance"
 msgstr "Solde disponible"
+
+#: public/views/create.html
+#: public/views/join.html
+msgid "BIP32 master extended private key"
+msgstr "Clé privée étendue maîtresse BIP32"
 
 #: public/views/includes/topbar.html
 msgid "Back"
@@ -109,8 +116,10 @@ msgstr "Mais non diffusée. Essayez de l'envoyer manuellement"
 msgid "CANCEL"
 msgstr "ANNULER"
 
-#: public/views/copayers.html public/views/send.html
-#: public/views/modals/address-book.html public/views/modals/confirmation.html
+#: public/views/copayers.html
+#: public/views/send.html
+#: public/views/modals/address-book.html
+#: public/views/modals/confirmation.html
 msgid "Cancel"
 msgstr "Annuler"
 
@@ -122,9 +131,12 @@ msgstr "Certifié par :"
 msgid "Choose backup file from your computer"
 msgstr "Choisissez un fichier de sauvegarde depuis votre ordinateur"
 
-#: public/views/modals/address-book.html public/views/modals/copayers.html
-#: public/views/modals/paypro.html public/views/modals/qr-address.html
-#: public/views/modals/scanner.html public/views/modals/tx-details.html
+#: public/views/modals/address-book.html
+#: public/views/modals/copayers.html
+#: public/views/modals/paypro.html
+#: public/views/modals/qr-address.html
+#: public/views/modals/scanner.html
+#: public/views/modals/tx-details.html
 #: public/views/modals/txp-details.html
 #: public/views/modals/walletSelection.html
 msgid "Close"
@@ -150,7 +162,8 @@ msgstr "Copiez la sauvegarde dans un endroit sûr"
 msgid "Copy this text as it is in a safe place (notepad or email)"
 msgstr "Copiez le texte dans un endroit sûr (bloc-notes ou e-mail)"
 
-#: public/views/backup.html public/views/modals/qr-address.html
+#: public/views/backup.html
+#: public/views/modals/qr-address.html
 msgid "Copy to clipboard"
 msgstr "Copier dans le presse-papier"
 
@@ -166,7 +179,8 @@ msgstr "Impossible de récupérer l'historique des transactions"
 msgid "Could not update Wallet"
 msgstr "Impossible de mettre à jour le portefeuille"
 
-#: public/views/create.html public/views/walletHome.html
+#: public/views/create.html
+#: public/views/walletHome.html
 msgid "Create"
 msgstr "Créer"
 
@@ -178,7 +192,8 @@ msgstr "Créer un nouveau portefeuille"
 msgid "Create, join or import"
 msgstr "Créer, joindre ou importer"
 
-#: public/views/create.html public/views/createProfile.html
+#: public/views/create.html
+#: public/views/createProfile.html
 msgid "Creating wallet..."
 msgstr "Création du portefeuille..."
 
@@ -246,7 +261,8 @@ msgstr "Acquisition des transactions..."
 msgid "Global settings"
 msgstr "Paramètres globaux"
 
-#: public/views/create.html public/views/join.html
+#: public/views/create.html
+#: public/views/join.html
 msgid "Hide"
 msgstr "Masquer"
 
@@ -282,11 +298,13 @@ msgstr "Importer un portefeuille"
 msgid "Importing wallet..."
 msgstr "Importation du portefeuille..."
 
-#: public/views/modals/tx-details.html public/views/modals/txp-details.html
+#: public/views/modals/tx-details.html
+#: public/views/modals/txp-details.html
 msgid "Information"
 msgstr "Information"
 
-#: public/views/create.html public/views/join.html
+#: public/views/create.html
+#: public/views/join.html
 msgid "John"
 msgstr "John"
 
@@ -322,11 +340,13 @@ msgstr "Faire un paiement à"
 msgid "Master extended private key"
 msgstr "Clé privée étendue maîtresse"
 
-#: public/views/includes/copayers.html public/views/modals/copayers.html
+#: public/views/includes/copayers.html
+#: public/views/modals/copayers.html
 msgid "Me"
 msgstr "Moi"
 
-#: public/views/modals/paypro.html public/views/modals/tx-details.html
+#: public/views/modals/paypro.html
+#: public/views/modals/tx-details.html
 msgid "Merchant Message:"
 msgstr "Message marchand :"
 
@@ -358,7 +378,8 @@ msgstr "Aucune propositions de dépense en attente à ce moment."
 msgid "No transactions yet"
 msgstr "Aucune transaction"
 
-#: public/views/send.html public/views/modals/address-book.html
+#: public/views/send.html
+#: public/views/modals/address-book.html
 msgid "Not valid"
 msgstr "Non valide"
 
@@ -382,7 +403,8 @@ msgstr "Ok"
 msgid "Opening Wallet..."
 msgstr "Ouverture du portefeuille..."
 
-#: public/views/import.html public/views/importLegacy.html
+#: public/views/import.html
+#: public/views/importLegacy.html
 msgid "Password"
 msgstr "Mot de passe"
 
@@ -446,11 +468,13 @@ msgstr "Rejeter"
 msgid "Remove transaction"
 msgstr "Supprimer la transaction"
 
-#: public/views/backup.html public/views/includes/password.html
+#: public/views/backup.html
+#: public/views/includes/password.html
 msgid "Repeat password"
 msgstr "Répéter le mot de passe"
 
-#: public/views/import.html public/views/join.html
+#: public/views/import.html
+#: public/views/join.html
 #: public/views/modals/address-book.html
 msgid "Required"
 msgstr "Requis"
@@ -543,7 +567,8 @@ msgstr "Partagez ce secret avec vos copayers"
 msgid "Share this with anyone to have them send you payments. To protect your privacy, new addresses are generated automatically once you use them."
 msgstr "Partagez ceci avec quiconque pour recevoir des paiements. Pour protéger votre anonymat, de nouvelles adresses sont générées automatiquement une fois que vous les utilisez."
 
-#: public/views/create.html public/views/join.html
+#: public/views/create.html
+#: public/views/join.html
 msgid "Show"
 msgstr "Montrer"
 
@@ -565,7 +590,7 @@ msgstr "Propositions de dépense"
 
 #: public/views/history.html public/views/walletHome.html
 msgid "Tap to retry"
-msgstr ""
+msgstr "Tapez pour réessayer"
 
 #: public/views/modals/txp-details.html
 msgid "The transaction was removed by creator"
@@ -579,11 +604,13 @@ msgstr "Ce portefeuille a sa clé privée chiffrée. Exporter une sauvegarde gar
 msgid "This wallet is not registered at the given Bitcore Wallet Service (BWS). You can recreate it from the local information."
 msgstr "Ce portefeuille n'est pas enregistré dans le Bitcore Wallet Service (BWS). Vous pouvez le recréer depuis l'information locale."
 
-#: public/views/send.html public/views/includes/transaction.html
+#: public/views/send.html
+#: public/views/includes/transaction.html
 msgid "To"
 msgstr "À"
 
-#: public/views/modals/paypro.html public/views/modals/tx-details.html
+#: public/views/modals/paypro.html
+#: public/views/modals/tx-details.html
 msgid "To:"
 msgstr "À :"
 
@@ -615,7 +642,8 @@ msgstr "Transaction envoyée !"
 msgid "Trying to reconnnect..."
 msgstr "Tentative de reconnexion..."
 
-#: public/views/history.html public/views/modals/tx-details.html
+#: public/views/history.html
+#: public/views/modals/tx-details.html
 msgid "Unconfirmed"
 msgstr "Non confirmée"
 
@@ -699,11 +727,13 @@ msgstr "Attention !"
 msgid "You do not have any wallet"
 msgstr "Vous n'avez aucun portefeuille"
 
-#: public/views/backup.html public/views/import.html
+#: public/views/backup.html
+#: public/views/import.html
 msgid "Your backup password"
 msgstr "Votre mot de passe de sauvegarde"
 
-#: public/views/create.html public/views/join.html
+#: public/views/create.html
+#: public/views/join.html
 msgid "Your nickname"
 msgstr "Votre surnom"
 
@@ -715,7 +745,8 @@ msgstr "Votre mot de passe"
 msgid "Your profile password"
 msgstr "Votre mot de passe de profil"
 
-#: public/views/create.html public/views/join.html
+#: public/views/create.html
+#: public/views/join.html
 msgid "advanced options"
 msgstr "options avancées"
 
@@ -727,7 +758,8 @@ msgstr "change"
 msgid "in pending transactions"
 msgstr "dans les transactions en attente"
 
-#: public/views/copayers.html public/views/create.html
+#: public/views/copayers.html
+#: public/views/create.html
 #: public/views/walletHome.html
 msgid "of"
 msgstr "de"
