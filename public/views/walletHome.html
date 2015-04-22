@@ -60,13 +60,13 @@
   </div>
 
 
-  <div class="text-white text-center  onGoingProcess" 
+  <div class="onGoingProcess" 
       ng-show="index.anyOnGoingProcess" 
-      ng-style="{'color':index.backgroundColor}"
+      ng-style="{'background-color':index.backgroundColor}"
       ng-class="{'opacityCycle':index.anyOnGoingProcess}"
   > 
     <span translate ng-show="index.onGoingProcessName == 'openingWallet'">Opening Wallet...</span>
-    <span translate ng-show="index.onGoingProcessName == 'updatingStatus'">Updating Status</span>
+    <span translate ng-show="index.onGoingProcessName == 'updatingStatus'">Updating Status...</span>
     <span translate ng-show="index.onGoingProcessName == 'updatingBalance'">Updating Balance...</span>
     <span translate ng-show="index.onGoingProcessName == 'updatingPendingTxps'">Updating Pending Transactions...</span>
     <span translate ng-show="index.onGoingProcessName == 'scanning'">Scanning Wallet funds...</span>
