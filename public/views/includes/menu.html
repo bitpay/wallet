@@ -1,9 +1,7 @@
-<div 
-  ng-show="!index.noFocusedWallet && !hideMenuBar"
-  class="bottom-bar row collapse" 
-  ng-controller="menuController as menu">
-    <div class="medium-3 small-3 columns text-center bottombar-item" ng-repeat="item in menu.menu">
-      <a ng-click="menu.go(item.link)" ng-class="{'active': activeMenu == item.link}" 
+<div  
+  class="bottom-bar row collapse">
+    <div class="medium-3 small-3 columns text-center bottombar-item" ng-repeat="item in index.menu">
+      <a ng-click="$root.go(item.link)" ng-class="{'active': activeMenu == item.link}" 
         ng-style="{'border-top-color':activeMenu==item.link ? index.backgroundColor : ''}"> 
         <i class="size-36 {{item.icon}} db"></i> 
         <div class="size-10 tu">
