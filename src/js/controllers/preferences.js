@@ -48,11 +48,6 @@ angular.module('copayApp.controllers').controller('preferencesController',
       }
     });
 
-    this.getDefaultLanguageName = function(availableLanguages) {
-      var defaultLanguage = config.wallet.settings.defaultLanguage || 'en';
-      return lodash.result(lodash.find(availableLanguages, { 'isoCode': defaultLanguage }), 'name');
-    };
-
     $scope.$on('$destroy', function() {
       unwatch();
     });

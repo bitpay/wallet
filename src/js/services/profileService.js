@@ -115,6 +115,7 @@ angular.module('copayApp.services')
 
       configService.get(function(err) {
         if (err) return cb(err);
+        $rootScope.$emit('Local/DefaultLanguage');
         root.setWalletClients();
         storageService.getFocusedWalletId(function(err, focusedWalletId) {
           if (err) return cb(err);
