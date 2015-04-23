@@ -27,7 +27,7 @@ angular.module('copayApp.controllers').controller('SendController',
 
       $scope.isRateAvailable = false;
       $scope.rateService = rateService;
-      $scope.showScanner = false;
+      $scope.showScanner = true;
       $scope.myId = w.getMyCopayerId();
       $scope.isMobile = isMobile.any();
 
