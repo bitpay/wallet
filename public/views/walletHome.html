@@ -58,10 +58,11 @@
         <div class="rect4"></div>
         <div class="rect5"></div>
       </div>
-      <span translate ng-show="index.onGoingProcessName == 'openingWallet'"> Updating Wallet... </span>
-      <span translate ng-show="index.onGoingProcessName == 'updatingStatus'"> Updating Status...</span>
-      <span translate ng-show="index.onGoingProcessName == 'updatingBalance'">Updating Wallet... </span>
-      <span translate ng-show="index.onGoingProcessName == 'updatingPendingTxps'">Updating Wallet...</span>
+      <span translate ng-show="
+index.onGoingProcessName == 'openingWallet'
+|| index.onGoingProcessName == 'updatingStatus'
+|| index.onGoingProcessName == 'updatingBalance'
+"> Updating Wallet... </span>
       <span translate ng-show="index.onGoingProcessName == 'scanning'">Scanning Wallet funds...</span>
       <span translate ng-show="index.onGoingProcessName == 'recreating'">Recreating Wallet...</span>
     </div>
@@ -343,7 +344,7 @@ history
         <span ng-if="!index.updatingTxHistory">
           <span ng-show="index.txHistoryError && !index.notAuthorized" ng-click='index.openWallet()'>
             <span translate>Could not fetch transaction history</span>
-            <br> [<span translate>Tap to retry</span>]
+            <br> <span translate>Tap to retry</span>
           </span>
           <span ng-if="!index.txHistoryError" translate>
             No transactions yet
