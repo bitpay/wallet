@@ -5,11 +5,11 @@
         <span ng-if="index.updatingTxHistory" class="text-gray animated flash infinite" translate>Getting transactions...</span>
         <span ng-if="!index.updatingTxHistory">
           <span ng-show="index.txHistoryError && !index.notAuthorized" ng-click='index.openWallet()'> 
-              Could not fetch transaction history
-              <br> [Tap to retry]
+            <span translate>Could not fetch transaction history</span>
+            <br> [<span translate>Tap to retry</span>]
           </span>
-          <span ng-if="!index.txHistoryError">
-              No transactions yet
+          <span ng-if="!index.txHistoryError" translate>
+            No transactions yet
           </span>
         </span>
       </div>
@@ -21,9 +21,9 @@
       class="row collapse last-transactions-content">
       <div class="large-3 medium-3 small-3 columns">
         <span class="label tu radius" ng-show="btx.action == 'received'" 
-          ng-style="{'background-color':index.backgroundColor}">Received</span>
-        <span class="label tu gray radius" ng-show="btx.action == 'sent'">Sent</span>
-        <span class="label tu gray radius" ng-show="btx.action == 'moved'">Moved</span>
+          ng-style="{'background-color':index.backgroundColor}" translate>Received</span>
+        <span class="label tu gray radius" ng-show="btx.action == 'sent'" translate>Sent</span>
+        <span class="label tu gray radius" ng-show="btx.action == 'moved'" translate>Moved</span>
       </div>
 
       <div class="large-5 medium-5 small-5 columns">

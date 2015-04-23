@@ -6,24 +6,21 @@ angular.module('copayApp.controllers').controller('createProfileController', fun
   if (profileService.profile)
     go.walletHome();
 
-  var pin='';
-  // $rootScope.$on('pin', function(event, pin) {
-    self.creatingProfile = true;
+  self.creatingProfile = true;
 
-    $timeout(function() {
-      profileService.create(pin, function(err) {
-        if (err) {
-          self.creatingProfile = false;
-          $log.warn(err);
-          self.error = err;
-          $scope.$apply();
-          $timeout(function() {
-            go.reload();
-          }, 3000);
-        } else {
-          go.walletHome();
-        }
-      });
-     }, 100);
-  // });
+  $timeout(function() {
+    profileService.create(function(err) {
+      if (err) {
+        self.creatingProfile = false;
+        $log.warn(err);
+        self.error = err;
+        $scope.$apply();
+        $timeout(function() {
+          go.reload();
+        }, 3000);
+      } else {
+        go.walletHome();
+      }
+    });
+  }, 100);
 });

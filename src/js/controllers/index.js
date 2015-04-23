@@ -1,16 +1,46 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, lodash, go, profileService, configService, isCordova, rateService, storageService) {
+angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, lodash, go, profileService, configService, isCordova, rateService, storageService, gettextCatalog, amMoment) {
   var self = this;
   self.isCordova = isCordova;
   self.onGoingProcess = {};
-  self.limitHistory = 5;
-
-  self.hideMenuBar = false;
+  self.limitHistory = 5; 
 
   function strip(number) {
     return (parseFloat(number.toPrecision(12)));
   };
+
+  self.menu = [{
+    'title': 'Home',
+    'icon': 'icon-home',
+    'link': 'walletHome'
+  }, {
+    'title': 'Receive',
+    'icon': 'icon-receive',
+    'link': 'receive'
+  }, {
+    'title': 'Send',
+    'icon': 'icon-paperplane',
+    'link': 'send'
+  }, {
+    'title': 'History',
+    'icon': 'icon-history',
+    'link': 'history'
+  }]; 
+
+  self.availableLanguages = [{
+    name: 'English',
+    isoCode: 'en',
+  }, {
+    name: 'Spanish',
+    isoCode: 'es',
+  }, {
+    name: 'Français',
+    isoCode: 'fr',
+  }, {
+    name: '日本人',
+    isoCode: 'ja',
+  }];
 
   self.setOngoingProcess = function(processName, isOn) {
     $log.debug('onGoingProcess', processName, isOn);
@@ -193,6 +223,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   self.openWallet = function() {
     var fc = profileService.focusedClient;
     self.updateColor();
+    $rootScope.$apply();
     $timeout(function() {
       self.setOngoingProcess('openingWallet', true);
       self.updateError = false;
@@ -402,6 +433,43 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     });
   };
 
+  self.setDefaultLanguage = function(setLang) {
+    var userLang
+    if (!setLang) {
+      userLang = configService.getSync().wallet.settings.defaultLanguage;
+      if (!userLang) {
+        // Auto-detect browser language
+        var androidLang;
+
+        if (navigator && navigator.userAgent && (androidLang = navigator.userAgent.match(/android.*\W(\w\w)-(\w\w)\W/i))) {
+          userLang = androidLang[1];
+        } else {
+          // works for iOS and Android 4.x
+          userLang = navigator.userLanguage || navigator.language;
+        }
+        userLang = userLang ? (userLang.split('-', 1)[0] || 'en') : 'en';
+      }
+      if (userLang != gettextCatalog.getCurrentLanguage()) {
+        $log.debug('Setting default language: ' + userLang);
+        gettextCatalog.setCurrentLanguage(userLang);
+        amMoment.changeLocale(userLang);
+      }
+    }
+    else {
+      configService.set({
+        wallet: {
+          settings: {
+            defaultLanguage: setLang
+          }
+        }
+      }, function() {
+        gettextCatalog.setCurrentLanguage(setLang);
+        amMoment.changeLocale(setLang);
+      });
+    }
+    self.defaultLanguageIsoCode = setLang || userLang;
+    self.defaultLanguageName = lodash.result(lodash.find(self.availableLanguages, { 'isoCode': self.defaultLanguageIsoCode }), 'name');
+  };
 
   // UX event handlers
   $rootScope.$on('Local/ColorUpdated', function(event) {
@@ -467,6 +535,10 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     storageService.clearLastAddress(walletId, function(err) {
       self.startScan(walletId);
     });
+  });
+
+  $rootScope.$on('Local/DefaultLanguage', function(event, setLang) {
+    self.setDefaultLanguage(setLang);
   });
 
   $rootScope.$on('Animation/Disable', function(event) {

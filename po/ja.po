@@ -9,8 +9,8 @@ msgstr ""
 "Last-Translator: \n"
 "Language-Team: dabura667\n"
 "MIME-Version: 1.0\n"
-"Language: ja_JP\n"
-"X-Generator: Poedit 1.6.4\n"
+"Language: ja\n"
+"X-Generator: Poedit 1.6.10\n"
 
 #: public/views/splash/1.html
 msgid ""
