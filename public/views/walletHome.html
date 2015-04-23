@@ -1,7 +1,7 @@
 <div class="home-wallet" ng-controller="walletHomeController as home">
   <div class="oh" ng-show="!index.noFocusedWallet">
 
-    <div ng-show="index.tab=='walletHome'">
+    <div class="walletHome tab-view" ng-class="{'tab-in' : index.tab=='walletHome', 'tab-out': index.tab!='walletHome' }">
     <div class="amount" ng-style="{'background-color':index.backgroundColor}">
       <div ng-if="!index.anyOnGoingProcess && !index.notAuthorized">
         <div ng-show="index.updateError" ng-click='index.openWallet()'> 
@@ -114,8 +114,12 @@
   </div>
   </div>
 
-<!-- receive -->
-<div class="receive" ng-show="index.tab=='receive'">
+<!--
+
+ receive 
+
+-->
+<div class="receive tab-view" ng-class="{'tab-in' : index.tab=='receive', 'tab-out': index.tab!='receive' }">
 
   <div ng-show="index.needsBackup && !home.skipBackup" class="p60t row text-center"> 
     <div class="text-warning text-bold m15b"> 
@@ -187,7 +191,7 @@
  send
 
  -->
-<div class="send" ng-show="index.tab=='send'">
+<div class="send tab-view" ng-class="{'tab-in' : index.tab=='send', 'tab-out': index.tab!='send' }">
   <div ng-show="index.lockedBalance">
       <h4 class="title m0">
         <div class="left">
@@ -328,8 +332,12 @@
   <!--  end of row -->
 </div>
 
-<!-- history -->
-<div class="history" ng-show="index.tab=='history'">
+<!-- 
+
+history 
+
+-->
+<div class="history tab-view" ng-class="{'tab-in' : index.tab=='history', 'tab-out': index.tab!='history' }">
   <div class="row m20t" ng-show="!index.txHistory[0]">
     <div class="large-12 columns">
       <div class="oh text-center">
