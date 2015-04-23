@@ -28,6 +28,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     'link': 'history'
   }]; 
 
+  self.tab = 'walletHome';
+
   self.availableLanguages = [{
     name: 'English',
     isoCode: 'en',

@@ -179,63 +179,6 @@ angular
         templateUrl: 'views/profile.html',
         needProfile: true
       })
-      .state('receive', {
-        url: '/receive',
-        walletShouldBeComplete: true,
-        needProfile: true,
-        views: {
-          'main': {
-            templateUrl: 'views/receive.html'
-          },
-          'topbar': {
-            templateUrl: 'views/includes/topbar.html'
-          },
-          'menu': {
-            templateUrl: 'views/includes/menu.html',
-            controller: function($scope) {
-              $scope.activeMenu = 'receive';
-            }
-          }
-        }
-      })
-      .state('send', {
-        url: '/send',
-        walletShouldBeComplete: true,
-        needProfile: true,
-        views: {
-          'main': {
-            templateUrl: 'views/send.html'
-          },
-          'topbar': {
-            templateUrl: 'views/includes/topbar.html'
-          },
-          'menu': {
-            templateUrl: 'views/includes/menu.html',
-            controller: function($scope) {
-              $scope.activeMenu = 'send';
-            }
-          }
-        }
-      })
-      .state('history', {
-        url: '/history',
-        walletShouldBeComplete: true,
-        needProfile: true,
-        views: {
-          'main': {
-            templateUrl: 'views/history.html'
-          },
-          'topbar': {
-            templateUrl: 'views/includes/topbar.html'
-          },
-          'menu': {
-            templateUrl: 'views/includes/menu.html',
-            controller: function($scope) {
-              $scope.activeMenu = 'history';
-            }
-          }
-        }
-      })
       .state('preferences', {
         url: '/preferences',
         templateUrl: 'views/preferences.html',
