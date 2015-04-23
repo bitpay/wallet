@@ -38,7 +38,10 @@ angular.module('copayApp.controllers').controller('HomeController', function($sc
     $scope.usingLocalStorage = config.plugins.EncryptedLocalStorage;
 
 
-    $scope.showDisclaimer = true;
+    if(!$rootScope.hasPin){
+        $scope.showDisclaimer = true;
+    }
+
     if (isCordova) {
       ls.getItem(KEY, function(err, value) {
         $scope.showDisclaimer = value ? null : true;
@@ -179,6 +182,8 @@ angular.module('copayApp.controllers').controller('HomeController', function($sc
       if (iden) {
         $scope.error = null;
         $scope.confirmedEmail = false;
+
+
 
         // mobile
         if ($scope.isMobile && !$rootScope.hasPin) {
