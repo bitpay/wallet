@@ -104,11 +104,20 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   };
 
   self.setTab = function(tab) {
-    if (self.tab && document.getElementById(self.tab)) {
+
+    if (self.tab === tab)
+      return;
+
+    if (!self.tab)
+      self.tab = 'walletHome';
+
+    if (document.getElementById(self.tab)) {
       document.getElementById(self.tab).className = 'tab-out tab-view ' + self.tab;
       var old = document.getElementById('menu-' + self.tab);
-      old.className = '';
-      old.style.borderTopColor = '';
+      if (old) {
+        old.className = '';
+        old.style.borderTopColor = '';
+      }
     }
 
     if (document.getElementById(tab)) {
