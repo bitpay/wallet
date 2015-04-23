@@ -27,7 +27,7 @@ angular.module('copayApp.controllers').controller('SendController',
 
       $scope.isRateAvailable = false;
       $scope.rateService = rateService;
-      $scope.showScanner = true;
+      $scope.showScanner = false;
       $scope.myId = w.getMyCopayerId();
       $scope.isMobile = isMobile.any();
 
@@ -146,7 +146,7 @@ angular.module('copayApp.controllers').controller('SendController',
         window.mozURL || window.msURL;
 
       if (!window.cordova && !navigator.getUserMedia)
-        $scope.disableScanner = 1;
+        $scope.disableScanner = false;
     };
 
 
