@@ -625,6 +625,12 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.updateTxHistory();
   });
 
+  $rootScope.$on('Local/SetTab', function(event, tab) {
+    self.setTab(tab);
+  });
+
+
+
   $rootScope.$on('Local/NeedsPassword', function(event, isSetup, cb) {
     self.askPassword = {
       isSetup: isSetup,
