@@ -40,10 +40,23 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     self.getAddress();
   });
 
+
+  var disableTabListener = $rootScope.$on('Local/TabChanged', function(e,tab){
+    switch(tab) {
+      case 'send':
+        self.resetError();
+        self.setInputs();
+      case 'receive':
+        self.getAddress();
+        break;
+    };
+  });
+
   $scope.$on('$destroy', function() {
     disableAddrListener();
     disableScannerListener();
     disablePaymentUriListener();
+    disableTabListener();
     $rootScope.hideMenuBar = false;
   });
 
@@ -764,12 +777,5 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   this.hasAction = function(actions, action) {
     return actions.hasOwnProperty('create');
   };
-
-  // ToDo a send...
-  this.resetError();
-  this.setInputs();
-  // Todo Receive
-  this.getAddress();
-
 
 });

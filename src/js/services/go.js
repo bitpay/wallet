@@ -52,7 +52,14 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
       root.path('copayers');
     } else {
       root.path('walletHome');
+      $rootScope.$emit('Local/SetTab', 'walletHome');
     }
+  };
+
+
+  root.send = function() {
+    root.path('walletHome');
+    $rootScope.$emit('Local/SetTab', 'walletHome');
   };
 
   root.home = function() {

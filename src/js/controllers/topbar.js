@@ -21,7 +21,7 @@ angular.module('copayApp.controllers').controller('topbarController', function($
         }, 100);
         alert('Scanning error');
       });
-    $scope.$emit('Local/SetTab', 'send');
+    go.send();  
   }; 
 
   var modalOpenScanner = function() { 
@@ -79,7 +79,7 @@ angular.module('copayApp.controllers').controller('topbarController', function($
       $scope.init = function() {
         setScanner();
         $timeout(function() {
-          $scope.$emit('Local/SetTab', 'send');
+          go.send();
           canvas = document.getElementById('qr-canvas');
           context = canvas.getContext('2d');
 
