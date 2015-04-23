@@ -192,7 +192,7 @@ angular
             templateUrl: 'views/includes/topbar.html',
             controller: function($scope) {
               $scope.titleSection = 'Preferences';
-              $scope.goBackToState = 'walletHome';
+              $scope.closeToState = 'walletHome';
             }
           }
         }
@@ -405,7 +405,7 @@ angular
       receive: 0,
       send: 0,
       history: 0,
-      preferences: 11,
+      preferences: 0,
       preferencesColor: 12,
       backup: 12,
       delete: 12,
