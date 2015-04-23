@@ -245,8 +245,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   self.openWallet = function() {
     var fc = profileService.focusedClient;
     self.updateColor();
-    $rootScope.$apply();
     $timeout(function() {
+      $rootScope.$apply();
       self.setOngoingProcess('openingWallet', true);
       self.updateError = false;
       fc.openWallet(function(err, walletStatus) {
