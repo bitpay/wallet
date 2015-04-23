@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('walletHomeController', function($scope, $rootScope, $timeout, $filter, $modal, notification, txStatus, isCordova, profileService, lodash, configService, rateService, storageService) {
+angular.module('copayApp.controllers').controller('walletHomeController', function($scope, $rootScope, $timeout, $filter, $modal, $log, notification, txStatus, isCordova, profileService, lodash, configService, rateService, storageService, bitcore, isChromeApp) {
 
   var self = this;
   $rootScope.hideMenuBar = false;
@@ -25,11 +25,13 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   this.isMobile = isMobile.any();
 
   var disableScannerListener = $rootScope.$on('dataScanned', function(event, data) {
+    $scope.$emit('Local/SetTab', 'send');
     self.setForm(data);
   });
 
   var disablePaymentUriListener = $rootScope.$on('paymentUri', function(event, uri) {
     $timeout(function() {
+      $scope.$emit('Local/SetTab', 'send');
       self.setForm(uri);
     }, 100);
   });
