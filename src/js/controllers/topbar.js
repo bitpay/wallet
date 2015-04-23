@@ -21,7 +21,7 @@ angular.module('copayApp.controllers').controller('topbarController', function($
         }, 100);
         alert('Scanning error');
       });
-    go.send();
+    go.send();  
   }; 
 
   var modalOpenScanner = function() { 

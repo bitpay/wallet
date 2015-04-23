@@ -1,117 +1,405 @@
-<div class="home-wallet" ng-controller="walletHomeController as home">
-  <div class="oh" ng-show="!index.noFocusedWallet">
-    <div class="amount" ng-style="{'background-color':index.backgroundColor}">
-      <div ng-if="!index.anyOnGoingProcess && !index.notAuthorized">
-        <div ng-show="index.updateError" ng-click='index.openWallet()'> 
-          <span translate>Could not update Wallet</span>
-          <br><span translate>Tap to retry</span>
-        </div>
-
-        <div ng-show="index.walletScanStatus == 'error'" ng-click='index.retryScan()'> 
-          <span translate>Scan status finished with error</span>
-          <br><span translate>Tap to retry</span>
-        </div>
-
-        <div ng-show="!index.updateError && index.walletScanStatus != 'error'">
-          <div class="size-36 animated fadeIn">
-            <strong>{{index.totalBalanceStr}}</strong>
+<div ng-controller="walletHomeController as home">
+  <div id="walletHome" class="walletHome tab-view tab-in">
+    <div class="oh" ng-show="!index.noFocusedWallet">
+      <div class="amount" ng-style="{'background-color':index.backgroundColor}">
+        <div ng-if="!index.anyOnGoingProcess && !index.notAuthorized">
+          <div ng-show="index.updateError" ng-click='index.openWallet()'> 
+            <span translate>Could not update Wallet</span>
+            <br><span translate>Tap to retry</span>
           </div>
-          <div class="size-14"  
-            ng-if="index.totalBalanceAlternative">
-            <span ng-class="{'animated fadeIn':!index.hideBalance}">
+
+          <div ng-show="index.walletScanStatus == 'error'" ng-click='index.retryScan()'> 
+            <span translate>Scan status finished with error</span>
+            <br><span translate>Tap to retry</span>
+          </div>
+
+          <div ng-show="!index.updateError && index.walletScanStatus != 'error'">
+            <strong class="size-36">{{index.totalBalanceStr}}</strong>
+            <div class="size-14"  
+              ng-if="index.totalBalanceAlternative">
               {{index.totalBalanceAlternative}} {{index.alternativeIsoCode}}
-            </span>
+            </div>
+          </div>
+        </div>
+
+        <div ng-if="index.anyOnGoingProcess">
+          <div class="size-36">
+            <strong>...</strong>
           </div>
         </div>
       </div>
-
-      <div ng-if="index.anyOnGoingProcess">
-        <div class="size-36">
-          <strong>...</strong>
+      <div class="pr columns line-b">
+        <div class="avatar-wallet left" 
+          ng-style="{'background-color':index.backgroundColor}">{{index.walletName | limitTo: 1}}</div>      
+        <div class="right">
+          <a ng-click="$root.go('preferences')" class="button outline light-gray tiny m0">
+            <i class="fi-widget size-18 vm"></i>
+            <span class="show-for-medium-up" translate>Preferences</span>
+          </a>
         </div>
+        <div class="wallet-info" ng-click="openCopayersModal(index.copayers, index.copayerId)">
+          <p class="m0">
+          {{index.m}} <span translate>of</span>  {{index.n}}  
+          </p>
+          <div class="size-12 text-gray">
+            <span ng-if="index.n > 1" translate>Multisignature wallet </span>
+            <span ng-if="index.n == 1" translate>Personal Wallet</span> 
+            <span ng-if="index.network != 'livenet'"> - Testnet</span>
+          </div>
+        </div> 
       </div>
     </div>
-    <div class="pr columns line-b">
-      <div class="avatar-wallet left" 
-        ng-class="{'updating':index.anyOnGoingProcess}"
-        ng-style="{'background-color':index.backgroundColor}">{{index.walletName | limitTo: 1}}</div>      
-      <div class="right">
-        <a ng-click="$root.go('preferences')" class="button outline light-gray tiny m0">
-          <i class="fi-widget size-18 vm"></i>
-          <span class="show-for-medium-up" translate>Preferences</span>
-        </a>
+
+    <div class="onGoingProcess" 
+        ng-show="index.anyOnGoingProcess" 
+        ng-style="{'background-color':index.backgroundColor}"
+        ng-class="{'opacityCycle':index.anyOnGoingProcess}"
+    > 
+      <span translate ng-show="index.onGoingProcessName == 'openingWallet'">Opening Wallet...</span>
+      <span translate ng-show="index.onGoingProcessName == 'updatingStatus'">Updating Status...</span>
+      <span translate ng-show="index.onGoingProcessName == 'updatingBalance'">Updating Balance...</span>
+      <span translate ng-show="index.onGoingProcessName == 'updatingPendingTxps'">Updating Pending Transactions...</span>
+      <span translate ng-show="index.onGoingProcessName == 'scanning'">Scanning Wallet funds...</span>
+      <span translate ng-show="index.onGoingProcessName == 'recreating'">Recreating Wallet on BWS...</span>
+    </div>
+
+    <div class="m20t" ng-show="index.notAuthorized"> 
+      <div class="text-center text-warning"> 
+        <i class="fi-alert"></i>
+        <span translate>
+          WARNING: Wallet not registered
+        </span>
       </div>
-      <div class="wallet-info" ng-click="openCopayersModal(index.copayers, index.copayerId)">
-        <p class="m0">
-        {{index.m}} <span translate>of</span>  {{index.n}}  
-        </p>
-        <div class="size-12 text-gray">
-          <span ng-if="index.n > 1" translate>Multisignature wallet </span>
-          <span ng-if="index.n == 1" translate>Personal Wallet</span> 
-          <span ng-if="index.network != 'livenet'"> - Testnet</span>
-        </div>
-      </div> 
+      <div class="text-center text-gray m15r m15l" translate>
+        This wallet is not registered at the given Bitcore Wallet Service (BWS). You can recreate it from the local information.
+      </div>
+      <div class="text-center m10t ">
+        <span class="button outline dark-gray tiny" 
+          ng-click="index.recreate()">
+          <span translate>Recreate</span>
+        </span>
+      </div>
+    </div>
+
+
+    <div ng-show="index.requiresMultipleSignatures  && index.txps[0]">
+      <h4 class="title m0" translate>Spend proposals</h4>
+      <div class="last-transactions pr" ng-repeat="tx in index.txps" 
+        ng-include="'views/includes/transaction.html'">
+      </div>
+
+      <div class="text-gray text-center size-12 p10t" 
+        ng-show="index.lockedBalance && !index.updatingStatus">
+        <span translate>Total Locked Balance</span>:
+        <b>{{index.lockedBalance}} {{index.unitName}} </b> 
+        <span> {{index.lockedBalanceAlternative}} 
+          {{index.alternativeIsoCode}} </span>
+      </div>
+
+      <div class="pr" ng-if="!index.txps[0]">
+        <p translate>No pending spend proposals at the moment.</p>
+      </div>
+    </div>
+
+    <div ng-if="!index.requiresMultipleSignatures && index.txps[0]">
+      <h4 class="title m0" translate>Unsent transactions</h4>
+      <div class="last-transactions pr" ng-repeat="tx in index.txps"
+        ng-include="'views/includes/transaction.html'">
+      </div>
     </div>
   </div>
 
-  <div class="onGoingProcess" 
-      ng-show="index.anyOnGoingProcess" 
-      ng-style="{'background-color':index.backgroundColor}"
-      ng-class="{'opacityCycle':index.anyOnGoingProcess}"
-  > 
-    <span translate ng-show="index.onGoingProcessName == 'openingWallet'">Opening Wallet...</span>
-    <span translate ng-show="index.onGoingProcessName == 'updatingStatus'">Updating Status...</span>
-    <span translate ng-show="index.onGoingProcessName == 'updatingBalance'">Updating Balance...</span>
-    <span translate ng-show="index.onGoingProcessName == 'updatingPendingTxps'">Updating Pending Transactions...</span>
-    <span translate ng-show="index.onGoingProcessName == 'scanning'">Scanning Wallet funds...</span>
-    <span translate ng-show="index.onGoingProcessName == 'recreating'">Recreating Wallet on BWS...</span>
-  </div>
+<!--
 
-  <div class="m20t" ng-show="index.notAuthorized"> 
-    <div class="text-center text-warning"> 
+ receive 
+
+-->
+<div id="receive" class="receive tab-view">
+
+  <div ng-show="index.needsBackup && !home.skipBackup" class="p60t row text-center"> 
+    <div class="text-warning text-bold m15b"> 
       <i class="fi-alert"></i>
       <span translate>
-        WARNING: Wallet not registered
+        WARNING: Backup needed
       </span>
     </div>
-    <div class="text-center text-gray m15r m15l" translate>
-      This wallet is not registered at the given Bitcore Wallet Service (BWS). You can recreate it from the local information.
+    <div class="text-gray m15h" translate>
+      Before receiving funds, it is highly recommended you backup your wallet keys.
     </div>
-    <div class="text-center m10t ">
-      <span class="button outline dark-gray tiny" 
-        ng-click="index.recreate()">
-        <span translate>Recreate</span>
+
+    <div class="small-6 columns m20t">
+      <span class="button expand outline dark-gray tiny" 
+        ng-click="home.skipBackup = true">
+        <span translate>SKIP BACKUP</span>
+      </span>
+    </div>
+    <div class="small-6 columns m20t">
+      <span class="button black expand radius tiny" 
+        ng-click="$root.go('backup')" ng-style="{'background-color':index.backgroundColor}" >
+        <span translate>Backup now</span>
       </span>
     </div>
   </div>
-
-
-  <div ng-show="index.requiresMultipleSignatures  && index.txps[0]">
-    <h4 class="title m0" translate>Spend proposals</h4>
-    <div class="last-transactions pr" ng-repeat="tx in index.txps" 
-      ng-include="'views/includes/transaction.html'">
+  <div ng-show="!index.needsBackup || home.skipBackup">
+    <div class="box-notification" ng-show="home.error ">
+      <span class="text-warning size-14">
+        {{home.error|translate}}
+      </span>
     </div>
-
-    <div class="text-gray text-center size-12 p10t" 
-      ng-show="index.lockedBalance && !index.updatingStatus">
-      <span translate>Total Locked Balance</span>:
-      <b>{{index.lockedBalance}} {{index.unitName}} </b> 
-      <span> {{index.lockedBalanceAlternative}} 
-        {{index.alternativeIsoCode}} </span>
+    <div class="row" ng-if="home.addr">
+      <!-- Address-->
+      <div class="large-12 columns">
+        <h2 class="text-center m10t" translate>My Bitcoin address</h2>
+        <div class="text-center" ng-click="home.copyAddress(home.addr)">
+          <qrcode size="220" data="bitcoin:{{home.addr}}"></qrcode>
+          <div class="m10t">
+            <h4 ng-class="{'enable_text_select': !index.isCordova}" class="size-12">{{home.addr}}</h4>
+          </div>
+        </div>
+        <div class="m10t text-center" ng-show="index.isCordova">
+          <span class="button outline dark-gray tiny" 
+            ng-click="home.shareAddress(home.addr)">
+            <i class="fi-share"></i> 
+            <span translate>Share address</span>
+          </span>
+        </div>
+        <div class="line-t size-12" translate>
+          Share this with anyone to have them send you payments. To protect your privacy, new addresses are generated automatically once you use them.
+        </div>
+      </div>
     </div>
-
-    <div class="pr" ng-if="!index.txps[0]">
-      <p translate>No pending spend proposals at the moment.</p>
+    <div class="row m20t" ng-if="home.addr">
+      <div class="large-12 columns">
+        <button class="button black expand radius" ng-click="home.newAddress()" 
+          ng-style="{'background-color':index.backgroundColor}" ng-disabled="home.generatingAddress" translate>
+          Generate new address
+        </button>
+      </div>
     </div>
   </div>
 
-  <div ng-if="!index.requiresMultipleSignatures && index.txps[0]">
-    <h4 class="title m0" translate>Unsent transactions</h4>
-    <div class="last-transactions pr" ng-repeat="tx in index.txps"
-      ng-include="'views/includes/transaction.html'">
-    </div>
+</div>
+
+
+<!-- 
+
+ send
+
+ -->
+<div id="send" class="send tab-view">
+  <div ng-show="index.lockedBalance">
+      <h4 class="title m0">
+        <div class="left">
+          <i class="fi-info size-36 m10r lh"></i>
+        </div>
+        <div class="size-12">
+          <span class="db text-bold">
+            <span translate>Available Balance</span>: 
+            {{index.availableBalanceStr }}
+          </span>
+          <span class="text-gray">
+            {{index.lockedBalanceStr}} 
+            <span translate>in pending transactions</span>
+          </span>
+        </div>
+      </h4>
+  </div>
+  <div class="row m20t">
+    <div class="large-12 large-centered columns"> 
+      <div class="box-notification" ng-show="home.fetchingURL">
+        <span class="text-secondary size-14" translate>
+          Fetching Payment Information...
+        </span>
+      </div>
+      <form ng-show="!home.fetchingURL" name="sendForm" ng-submit="home.submitForm(sendForm)" ng-disabled="home.blockUx" novalidate>
+          <div class="box-notification" ng-show="home.error" ng-click="home.resetError()">
+            <span class="text-warning">
+              {{home.error|translate}}
+            </span>
+            <a class="close-notification text-warning">&#215;</a>
+          </div>
+
+          <div ng-hide="home._paypro || home.hideAddress">
+            <div class="row collapse">
+
+              <label for="address" class="left" >
+                <span translate>To</span> 
+              </label>
+
+              <span ng-hide="sendForm.address.$pristine">
+                <span class="has-error right size-12" ng-show="sendForm.address.$invalid && _address">
+                  <span class="icon-input">
+                    <i class="fi-x"></i>
+                  </span>
+                  <span translate>Not valid</span>
+                </span>
+                <small class="icon-input right" ng-show="!sendForm.address.$invalid">
+                  <i class="fi-check"></i>
+                </small>
+              </span>
+            </div>
+
+            <div class="input">
+              <input type="text" id="address" name="address" ng-disabled="home.blockUx || home.lockAddress" ng-attr-placeholder="{{'Bitcoin address'|translate}}" ng-model="_address" valid-address required ng-focus="home.formFocus('address')" ng-blur="home.formFocus(false)">
+            </div>
+          </div>
+          <div ng-show="home._paypro && !home.hideAddress">
+            <div class="row collapse" ng-click="home.openPPModal(home._paypro)">
+
+              <label for="domain">
+                <span translate>Payment to</span> 
+              </label>
+
+              <div class="input block">
+                <input class="p45li" type="text" id="domain" name="domain" ng-model="home._paypro.domain" ng-disabled="1">
+                <i ng-show="home._paypro.verified" class="fi-lock color-greeni"></i>
+                <i ng-show="!home._paypro.verified" class="fi-unlock color-yellowi"></i> 
+              </div>
+            </div>
+          </div>
+
+          <div class="row" ng-init="showAlternative = false" ng-hide="home.hideAmount">
+            <div class="large-12 medium-12 columns">
+              <div class="m5b right" ng-hide="sendForm.amount.$pristine">
+                <span class="has-error right size-12" ng-show="sendForm.amount.$invalid">
+                  <span class="icon-input"><i class="fi-x"></i></span>
+                  <span translate>Not valid</span>
+                </span>
+                <small class="icon-input right" ng-show="!sendForm.amount.$invalid">
+                  <i class="fi-check"></i>
+                </small>
+              </div>
+              <div ng-show="!showAlternative">
+                <label for="amount">
+                  <span translate>Amount</span>
+                </label>
+
+                <div class="input">
+                  <input type="number" id="amount" ng-disabled="home.blockUx || home.lockAmount" name="amount" ng-attr-placeholder="{{'Amount'|translate}}" ng-minlength="0.00000001" ng-maxlength="10000000000" ng-model="_amount" valid-amount required autocomplete="off" ng-focus="home.formFocus('amount')" ng-blur="home.formFocus(false)">
+                  <a class="postfix" ng-click="showAlternative = true">{{home.unitName}}</a>
+                </div>
+              </div>
+              <div ng-show="showAlternative">
+                <label for="alternative"><span translate>Amount in</span> {{ home.alternativeName }}
+                </label>
+                <div class="input">
+                  <input type="number" id="alternative" ng-disabled="home.blockUx || !home.isRateAvailable || home.lockAmount" name="alternative" ng-attr-placeholder="{{'Amount'|translate}}" ng-model="_alternative" requiredautocomplete="off" ng-focus="home.formFocus('amount')" ng-blur="home.formFocus(false)">
+                  <a class="postfix" ng-click="showAlternative = false"> {{ home.alternativeIsoCode }}</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="large-12 columns">
+              <label for="comment"><span translate>Note</span>
+                <small translate ng-hide="!sendForm.comment.$pristine">optional</small>
+                <small translate class="has-error" ng-show="sendForm.comment.$invalid && !sendForm.comment.$pristine">too long!</small>
+              </label>
+              <div class="input">
+                <textarea id="comment" ng-disabled="home.blockUx" name="comment" 
+                  ng-maxlength="100" ng-model="_comment" ng-focus="home.formFocus('msg')" 
+                  ng-blur="home.formFocus(false)"></textarea>
+              </div>
+            </div>
+          </div>
+
+  <div ng-if="home.onGoingProcess" class="text-gray text-center m10t"> 
+    <span class="animated infinite flash">{{home.onGoingProcess|translate}}...</span>
   </div>
 
+
+
+          <div class="row" ng-show="!home.onGoingProcess">
+            <div class="large-6 medium-6 small-6 columns" ng-show="!home.blockUx && (home._paypro || home.lockAddress)">
+              <a ng-click="home.resetForm(sendForm)" class="button expand outline dark-gray" translate>Cancel</a>
+            </div>
+            <div class="columns" ng-class="{'small-6 medium-6 large-6':(home._paypro || home.lockAddress)}">
+              <button type="submit" class="button black radius expand" ng-disabled="sendForm.$invalid || home.blockUx" 
+                ng-style="{'background-color':index.backgroundColor}"  translate>
+                Send
+              </button>
+            </div>
+            
+          </div>
+      </form>
+    </div>
+  </div>
+  <!--  end of row -->
+</div>
+
+<!-- 
+
+history 
+
+-->
+<div id="history" class="history tab-view">
+  <div class="row m20t" ng-show="!index.txHistory[0]">
+    <div class="large-12 columns">
+      <div class="oh text-center">
+        <span ng-if="index.updatingTxHistory" class="text-gray animated flash infinite" translate>Getting transactions...</span>
+        <span ng-if="!index.updatingTxHistory">
+          <span ng-show="index.txHistoryError && !index.notAuthorized" ng-click='index.openWallet()'> 
+            <span translate>Could not fetch transaction history</span>
+            <br> [<span translate>Tap to retry</span>]
+          </span>
+          <span ng-if="!index.txHistoryError" translate>
+            No transactions yet
+          </span>
+        </span>
+      </div>
+    </div>
+  </div>
+  <div ng-show="index.txHistory[0]" class="scroll">
+    <div ng-repeat="btx in index.txHistory" 
+      ng-click="home.openTxModal(btx)" 
+      class="row collapse last-transactions-content">
+      <div class="large-3 medium-3 small-3 columns">
+        <span class="label tu radius" ng-show="btx.action == 'received'" 
+          ng-style="{'background-color':index.backgroundColor}" translate>Received</span>
+        <span class="label tu gray radius" ng-show="btx.action == 'sent'" translate>Sent</span>
+        <span class="label tu gray radius" ng-show="btx.action == 'moved'" translate>Moved</span>
+      </div>
+
+      <div class="large-5 medium-5 small-5 columns">
+        <span class="size-16">
+          <span ng-if="btx.action == 'received'">+</span>
+          <span ng-if="btx.action == 'sent'">-</span>
+          {{btx.amountStr}}
+          {{home.getUnitName()}}
+        </span>
+      </div>
+      <div class="large-4 medium-4 small-4 columns text-right">
+        <div class="m5t size-12 text-gray">
+          <time ng-if="btx.time">{{btx.time * 1000 | amTimeAgo}}</time>
+          <span translate class="text-warning" 
+            ng-show="!btx.time && (!btx.confirmations || btx.confirmations == 0)">
+            Unconfirmed
+          </span>
+        </div>
+      </div>
+      <div class="size-14 text-gray columns m5t" ng-if="btx.message || btx.addressTo">
+        {{btx.message || btx.addressTo}}
+      </div>
+    </div>
+    <div class="m20t row">
+      <div class="columns">
+        <button class="outline light-gray small expand" ng-disabled="index.updatingTxHistory"
+          ng-click="index.updateTxHistory(index.skipHistory)" ng-show="index.txHistoryPaging">
+          <span ng-show="!index.updatingTxHistory">
+            <span translate>More</span> <i class="icon-arrow-down4 ng-scope"></i>
+          </span>
+          <span ng-show="index.updatingTxHistory" translate>
+            Getting transactions...
+          </span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- END -->
   <div class="row columns m20tp" ng-show="index.noFocusedWallet">
     <div class="text-center text-warning m20b">
       <i class="fi-alert"></i> <span translate>You do not have any wallet</span>
