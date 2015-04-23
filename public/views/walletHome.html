@@ -1,4 +1,21 @@
 <div ng-controller="walletHomeController as home">
+
+  <div class="onGoingProcess" ng-show="index.anyOnGoingProcess" ng-style="{'background-color':index.backgroundColor}">
+    <div class="spinner">
+      <div class="rect1"></div>
+      <div class="rect2"></div>
+      <div class="rect3"></div>
+      <div class="rect4"></div>
+      <div class="rect5"></div>
+    </div>
+    <span translate ng-show="index.onGoingProcessName == 'openingWallet'"> Updating Wallet... </span>
+    <span translate ng-show="index.onGoingProcessName == 'updatingStatus'"> Updating Status...</span>
+    <span translate ng-show="index.onGoingProcessName == 'updatingBalance'">Updating Wallet... </span>
+    <span translate ng-show="index.onGoingProcessName == 'updatingPendingTxps'">Updating Wallet...</span>
+    <span translate ng-show="index.onGoingProcessName == 'scanning'">Scanning Wallet funds...</span>
+    <span translate ng-show="index.onGoingProcessName == 'recreating'">Recreating Wallet...</span>
+  </div>
+
   <div id="walletHome" class="walletHome tab-view tab-in">
     <div class="oh" ng-show="!index.noFocusedWallet">
       <div class="amount" ng-style="{'background-color':index.backgroundColor}">
@@ -48,23 +65,7 @@
           </div>
         </div>
       </div>
-    </div>
-
-    <div class="onGoingProcess" ng-show="index.anyOnGoingProcess" ng-style="{'background-color':index.backgroundColor}">
-      <div class="spinner">
-        <div class="rect1"></div>
-        <div class="rect2"></div>
-        <div class="rect3"></div>
-        <div class="rect4"></div>
-        <div class="rect5"></div>
-      </div>
-      <span translate ng-show="index.onGoingProcessName == 'openingWallet'"> Updating Wallet... </span>
-      <span translate ng-show="index.onGoingProcessName == 'updatingStatus'"> Updating Status...</span>
-      <span translate ng-show="index.onGoingProcessName == 'updatingBalance'">Updating Wallet... </span>
-      <span translate ng-show="index.onGoingProcessName == 'updatingPendingTxps'">Updating Wallet...</span>
-      <span translate ng-show="index.onGoingProcessName == 'scanning'">Scanning Wallet funds...</span>
-      <span translate ng-show="index.onGoingProcessName == 'recreating'">Recreating Wallet...</span>
-    </div>
+    </div> 
 
     <div class="m20t" ng-show="index.notAuthorized">
       <div class="text-center text-warning">
