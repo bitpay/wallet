@@ -3,8 +3,6 @@
 angular.module('copayApp.controllers').controller('receiveController',
   function($rootScope, $scope, $timeout, $modal, $log, isCordova, isMobile, profileService, storageService) {
     var self = this;
-    var fc = profileService.focusedClient;
-
 
     this.isCordova = isCordova;
     self.addresses = [];
@@ -15,6 +13,7 @@ angular.module('copayApp.controllers').controller('receiveController',
     $scope.$on('$destroy', newAddrListener);
 
     this.newAddress = function() {
+      var fc = profileService.focusedClient;
       self.generatingAddress = true;
       self.error = null;
       fc.createAddress(function(err, addr) {
@@ -32,6 +31,7 @@ angular.module('copayApp.controllers').controller('receiveController',
     };
 
     this.getAddress = function() {
+      var fc = profileService.focusedClient;
       $timeout(function() {
         storageService.getLastAddress(fc.credentials.walletId, function(err, addr) {
           if (addr) {
