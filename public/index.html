@@ -38,7 +38,7 @@
           ng-class="{'main': index.hasProfile, 'main-dark': mainDark, 'animation-left': index.swipeLeft, 
           'animation-right': index.swipeRight}" 
           ui-view="main"></section>
-        <div ui-view="menu"></div>
+        <div ui-view="menu" ng-if="!index.noFocusedWallet && !$root.hideMenuBar"></div>
         <a class="close-menu" ng-click="index.closeMenu()"></a>
 
       </div>

@@ -59,31 +59,5 @@ angular.module('copayApp.controllers').controller('receiveController',
       }
     };
 
-    this.openAddressModal = function(address) {
-      var self = this;
-      var ModalInstanceCtrl = function($scope, $modalInstance, address) {
-        $scope.address = address;
-        $scope.isCordova = self.isCordova;
-        $scope.copyAddress = function(addr) {
-          self.copyAddress(addr);
-        };
-
-        $scope.cancel = function() {
-          $modalInstance.dismiss('cancel');
-        };
-      };
-
-      $modal.open({
-        templateUrl: 'views/modals/qr-address.html',
-        windowClass: 'full',
-        controller: ModalInstanceCtrl,
-        resolve: {
-          address: function() {
-            return address;
-          }
-        }
-      });
-    };
-
   }
 );

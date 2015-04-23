@@ -115,6 +115,7 @@ angular.module('copayApp.services')
 
       configService.get(function(err) {
         if (err) return cb(err);
+        $rootScope.$emit('Local/DefaultLanguage');
         root.setWalletClients();
         storageService.getFocusedWalletId(function(err, focusedWalletId) {
           if (err) return cb(err);
@@ -136,7 +137,7 @@ angular.module('copayApp.services')
       });
     };
 
-    root._createNewProfile = function(pin, cb) {
+    root._createNewProfile = function(cb) {
       var walletClient = bwcService.getClient();
 
       walletClient.createWallet('Personal Wallet', 'me', 1, 1, {
@@ -260,8 +261,8 @@ angular.module('copayApp.services')
 
 
 
-    root.create = function(pin, cb) {
-      root._createNewProfile(pin, function(err, p) {
+    root.create = function(cb) {
+      root._createNewProfile(function(err, p) {
         if (err) return cb(err);
         root.bindProfile(p, function(err) {
           storageService.storeNewProfile(p, function(err) {

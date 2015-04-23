@@ -254,6 +254,23 @@ angular
           }
         }
       })
+      .state('preferencesLanguage', {
+        url: '/preferencesLanguage',
+        walletShouldBeComplete: true,
+        needProfile: true,
+        views: {
+          'main': {
+            templateUrl: 'views/preferencesLanguage.html'
+          },
+          'topbar': {
+            templateUrl: 'views/includes/topbar.html',
+            controller: function($scope) {
+              $scope.titleSection = 'Language';
+              $scope.goBackToState = 'preferences';
+            }
+          }
+        }
+      })
       .state('preferencesUnit', {
         url: '/preferencesUnit',
         templateUrl: 'views/preferencesUnit.html',
@@ -418,19 +435,18 @@ angular
   .run(function($rootScope, $state, $log, gettextCatalog, uriHandler, isCordova, amMoment, profileService) {
 
     // Auto-detect browser language
-    // Commented for now (default: English)
-    //var userLang, androidLang;
-    //
-    //if (navigator && navigator.userAgent && (androidLang = navigator.userAgent.match(/android.*\W(\w\w)-(\w\w)\W/i))) {
-    //  userLang = androidLang[1];
-    //} else {
-    //  // works for iOS and Android 4.x
-    //  userLang = navigator.userLanguage || navigator.language;
-    //}
+    var userLang, androidLang;
 
-    //userLang = userLang ? (userLang.split('-', 1)[0] || 'en') : 'en';
-    //gettextCatalog.setCurrentLanguage(userLang);
-    //amMoment.changeLocale(userLang);
+    if (navigator && navigator.userAgent && (androidLang = navigator.userAgent.match(/android.*\W(\w\w)-(\w\w)\W/i))) {
+      userLang = androidLang[1];
+    } else {
+      // works for iOS and Android 4.x
+      userLang = navigator.userLanguage || navigator.language;
+    }
+
+    userLang = userLang ? (userLang.split('-', 1)[0] || 'en') : 'en';
+    gettextCatalog.setCurrentLanguage(userLang);
+    amMoment.changeLocale(userLang);
 
     // Register URI handler, not for mobileApp
     if (!isCordova) {
@@ -446,6 +462,7 @@ angular
       preferencesColor: 12,
       backup: 12,
       delete: 12,
+      preferencesLanguage: 12,
       preferencesUnit: 12,
       preferencesAltCurrency: 12,
       preferencesBwsUrl: 12,
