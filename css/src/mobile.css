@@ -528,5 +528,9 @@
     line-height: 120%;
   }
 
+    .scanner-button-row{
+        margin-bottom:10px;
+    }
+    
 }
 
