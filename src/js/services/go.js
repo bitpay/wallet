@@ -36,8 +36,11 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
     var ref = window.open(url, '_blank', 'location=no');
   };
 
-  root.path = function(path) {
-    $state.transitionTo(path);
+  root.path = function(path, cb) {
+    $state.transitionTo(path)
+      .then(function() {
+        if (cb) return cb();
+      });
     hideSidebars();
   };
 
@@ -51,15 +54,17 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
     if (fc && !fc.isComplete()) {
       root.path('copayers');
     } else {
-      root.path('walletHome');
-      $rootScope.$emit('Local/SetTab', 'walletHome');
+      root.path('walletHome', function() {
+        $rootScope.$emit('Local/SetTab', 'walletHome');
+      });
     }
   };
 
 
   root.send = function() {
-    root.path('walletHome');
-    $rootScope.$emit('Local/SetTab', 'walletHome');
+    root.path('walletHome', function() {
+      $rootScope.$emit('Local/SetTab', 'send');
+    });
   };
 
   root.home = function() {
