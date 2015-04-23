@@ -102,6 +102,12 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     });
   };
 
+  self.setTab = function(tab) {
+    document.getElementById(self.tab).className='tab-out tab-view ' + self.tab;
+    document.getElementById(tab).className='tab-in  tab-view ' + tab;
+    self.tab = tab;
+  };
+
   self.updateAll = function(walletStatus) {
     var get = function(cb) {
       if (walletStatus)
