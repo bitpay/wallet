@@ -117,6 +117,7 @@ angular.module('copayApp.services').factory('configService', function(localStora
   root.get(function(err, c) {
     if (err) throw Error(err);
     bwcService.setBaseUrl(c.bws.url);
+    bwcService.setTransports(['polling']);
   });
 
   return root;
