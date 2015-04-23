@@ -1,6 +1,6 @@
 <nav ng-controller="topbarController as topbar" class="tab-bar animated fadeIn">
   <section class="left-small">
-    <a class="p10" ng-show="!goBackToState && !index.noFocusedWallet" 
+    <a class="p10" ng-show="!goBackToState && !closeToState  && !index.noFocusedWallet" 
       ng-click="index.openMenu()"><i class="fi-list size-24"></i>
     </a>
     <a ng-show="goBackToState"
@@ -10,8 +10,12 @@
   </section>
 
   <section class="right-small" ng-show="index.isComplete && !goBackToState">
-    <a class="p10" 
+    <a ng-show="!closeToState" class="p10" 
       ng-click="topbar.openScanner()"><i class="fi-camera size-24"></i></a>
+    <a ng-show="closeToState" class="p10"
+      ng-click="$root.go(closeToState); closeToState = null">
+      {{'Done'|translate}}
+    </a>
   </section>
 
   <section class="middle tab-bar-section">
