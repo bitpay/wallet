@@ -13,7 +13,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   self.menu = [{
     'title': 'Home',
     'icon': 'icon-home',
-    'link': 'walletHome'
+    'link': 'walletHome',
+    'active': true,
   }, {
     'title': 'Receive',
     'icon': 'icon-receive',
@@ -105,6 +106,15 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   self.setTab = function(tab) {
     document.getElementById(self.tab).className='tab-out tab-view ' + self.tab;
     document.getElementById(tab).className='tab-in  tab-view ' + tab;
+
+    var old =document.getElementById('menu-'+self.tab);
+    old.className='';
+    old.style.borderTopColor = '';
+
+    var newe = document.getElementById('menu-'+tab);
+    newe.className='active';
+    newe.style.borderTopColor = self.backgroundColor;
+
     self.tab = tab;
   };
 

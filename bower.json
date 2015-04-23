@@ -21,7 +21,6 @@
     "angular-bitcore-wallet-client": "^0.0.18",
     "angular-ui-router": "~0.2.13",
     "qrcode-decoder-js": "*",
-    "fastclick": "*",
     "angular-ui-switch": "~0.1.0"
   },
   "resolutions": {
