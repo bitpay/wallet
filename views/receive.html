@@ -13,7 +13,7 @@
         <div class="text-center" ng-click="copyAddress(addr)">
           <qrcode size="220" data="startcoin:{{addr}}"></qrcode>
           <div class="m10t">
-            <input class="size-12 receiveAddress" value="{{addr}}" />
+              <textarea class="size-12 receiveAddress" readonly="readonly">{{addr}}</textarea>
           </div>
         </div>
         <div class="m10t text-center" ng-show="isCordova">

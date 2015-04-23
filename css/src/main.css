@@ -1671,10 +1671,7 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
   border-radius: 3px;
 }
 
-input.size-12.receiveAddress {
-    min-width:300px;
+textarea.size-12.receiveAddress {
     text-align:center;
     background-color:white;
-    border: 1px solid #efefef;
 }
-
