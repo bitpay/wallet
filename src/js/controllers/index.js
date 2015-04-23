@@ -121,8 +121,10 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     if (document.getElementById(tab)) {
       document.getElementById(tab).className = 'tab-in  tab-view ' + tab;
       var newe = document.getElementById('menu-' + tab);
-      newe.className = 'active';
-      newe.style.borderTopColor = self.backgroundColor;
+      if (newe) {
+        newe.className = 'active';
+        newe.style.borderTopColor = self.backgroundColor;
+      }
     }
 
     self.tab = tab;
