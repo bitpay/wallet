@@ -403,6 +403,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   };
 
   this.setError = function(err) {
+    var fc = profileService.focusedClient;
     $log.warn(err);
     var errMessage = 'The transaction' + (fc.credentials.m > 1 ? ' proposal' : '') +
 
@@ -425,6 +426,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   };
 
   this.submitForm = function(form) {
+    var fc = profileService.focusedClient;
     var unitToSat = this.unitToSatoshi;
 
     if (form.$invalid) {
@@ -489,6 +491,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
 
   this.signAndBroadcast = function(txp, cb) {
+    var fc = profileService.focusedClient;
     self.setOngoingProcess('Signing');
     fc.signTxProposal(txp, function(err, signedTx) {
       profileService.lockFC();
@@ -584,6 +587,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
   this.openPPModal = function(paypro) {
     var ModalInstanceCtrl = function($scope, $modalInstance) {
+      var fc = profileService.focusedClient;
       var satToUnit = 1 / self.unitToSatoshi;
       $scope.paypro = paypro;
       $scope.alternative = self.alternativeAmount;
@@ -605,6 +609,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   };
 
   this.setFromPayPro = function(uri, form) {
+    var fc = profileService.focusedClient;
     if (isChromeApp) {
       this.error = 'Payment Protocol not supported on Chrome App';
       return;

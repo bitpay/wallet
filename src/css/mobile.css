@@ -642,24 +642,22 @@ a.pin-button:active {
 
 .animation-left.ng-enter, .animation-left.ng-leave, 
 .animation-right.ng-enter, .animation-right.ng-leave { 
-  -webkit-transition: all cubic-bezier(0.250, 0.460, 0.450, 0.940) 250ms;
-  -moz-transition: all cubic-bezier(0.250, 0.460, 0.450, 0.940) 250ms;
-  -ms-transition: all cubic-bezier(0.250, 0.460, 0.450, 0.940) 250ms;
-  -o-transition: all cubic-bezier(0.250, 0.460, 0.450, 0.940) 250ms;
-  transition: all cubic-bezier(0.250, 0.460, 0.450, 0.940) 250ms;
+  -webkit-transition: all cubic-bezier(0.250, 0.460, 0.450, 0.940) 300ms;
+  -moz-transition: all cubic-bezier(0.250, 0.460, 0.450, 0.940) 300ms;
+  -ms-transition: all cubic-bezier(0.250, 0.460, 0.450, 0.940) 300ms;
+  -o-transition: all cubic-bezier(0.250, 0.460, 0.450, 0.940) 300ms;
+  transition: all cubic-bezier(0.250, 0.460, 0.450, 0.940) 300ms;
 }
 
 .animation-left.ng-enter {
   -webkit-transform: translate3d(100%, 0, 0);
   transform: translate3d(100%, 0, 0);
-  -webkit-transition-delay: 0.05s;
-  opacity: 0;
+  opacity: 0.6;
 }
 .animation-right.ng-enter {
   -webkit-transform: translate3d(-100%, 0, 0);
   transform: translate3d(-100%, 0, 0);
-  -webkit-transition-delay: 0.05s;
-  opacity: 0;
+  opacity: 0.6;
 }
 .animation-left.ng-enter.ng-enter-active,
 .animation-right.ng-enter.ng-enter-active {
@@ -672,19 +670,17 @@ a.pin-button:active {
 .animation-right.ng-leave {
   -webkit-transform: translate3d(0, 0, 0);
   transform: translate3d(0, 0, 0);
-  opacity: 0;
+  opacity: 0.6;
 }
 .animation-left.ng-leave.animation-left.ng-leave-active {
   -webkit-transform: translate3d(-100%, 0, 0);
   transform: translate3d(-100%, 0, 0);
-  -webkit-transition-delay: 0.05s;
-  opacity: 0;
+  opacity: 0.6;
 }
 .animation-right.ng-leave.animation-right.ng-leave-active {
   -webkit-transform: translate3d(100%, 0, 0);
   transform: translate3d(100%, 0, 0);
-  -webkit-transition-delay: 0.05s;
-  opacity: 0;
+  opacity: 0.6;
 }
 
 .tab-view {
@@ -692,6 +688,8 @@ a.pin-button:active {
   transform: translate3d(-100%, 0, 0);
   width:100%;
   position: absolute;
+  margin-bottom: 50px;
+  height: 100%;
 }
 
 .tab-in {
