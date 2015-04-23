@@ -9,7 +9,7 @@
     <div ng-include="'views/includes/loading.html'" ng-init="title = 'Accessing your profile'"></div>
   </div>
 
-  <div class="row" ng-show="showDisclaimer">
+  <div class="row" ng-show="showDisclaimer && !$root.hasPin">
     <div class="large-8 medium-10 small-12 large-centered medium-centered columns">
       <h1 class="text-white text-center" translate>Disclaimer</h1>
       <p class="text-white" translate>
@@ -125,9 +125,8 @@
           {{'Sign in'|translate}}
         </button>
       </form>
-        <div ng-if="usingLocalStorage" class="text-gray size-12 m10v" translate>
-          * Using this device storage. Change to cloud storage on 'settings'.
-        </div>
+
+
 
 
 

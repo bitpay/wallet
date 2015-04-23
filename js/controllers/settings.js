@@ -17,13 +17,10 @@ angular.module('copayApp.controllers').controller('SettingsController', function
   }
 
   $scope.availableStorages = [{
-      name: 'In the cloud (Insight server)',
-      pluginName: 'EncryptedInsightStorage',
-    }, {
       name: 'On this device (localstorage)',
       pluginName: 'EncryptedLocalStorage',
     },
-    // {
+    // {ß
     //   name: 'GoogleDrive',
     //   pluginName: 'GoogleDrive',
     // }

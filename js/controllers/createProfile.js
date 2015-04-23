@@ -17,7 +17,7 @@ angular.module('copayApp.controllers').controller('CreateProfileController', fun
     $scope.askForPin = 0;
 
     $scope.createStep = 'storage';
-    $scope.useLocalstorage = false;
+    $scope.useLocalstorage = true;
     $scope.minPasswordStrength = _.isUndefined(config.minPasswordStrength) ?
       4 : config.minPasswordStrength;
 

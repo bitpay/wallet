@@ -11,13 +11,11 @@
   <div class="row m20b" ng-show="!$root.starting && !askForPin">
   <div class="large-5 large-centered medium-7 medium-centered columns">
     <div class="logo-setup hide-for-small-only" ng-hide="hideForWP">
-      <img src="img/logo-negative-beta.svg" alt="Copay" width="100">
+      <img src="img/logo-negative.png" alt="Copay" width="243">
     </div>
     <div>
 
-      <div class="clipo" ng-show="createStep == 'storage' && !hideForWP ">
-        <img src="img/clipo-signup1.png" alt="clipo" width="311">
-      </div>
+
 
       <div ng-show="createStep == 'email'">
         <div class="clipo" ng-if="useLocalstorage  && !hideForWP" >
@@ -52,48 +50,21 @@
 
       <form ng-show="createStep == 'storage' " novalidate>
         <tabset>
-          <tab style="width: 50%;" select="selectStorage('remote')">
-            <tab-heading>
-              <span translate>In the Cloud</span>
-              <br>
-              <span class="size-10 text-gray">
-                (<span translate>Recommended</span>)
-              </span>
-            </tab-heading>
-            <div class="content-item">
-              <div class="bg-circle"><i class="icon-wallet"></i>
-              </div>
-              <span class="text-gray" translate>Access your wallets anywhere</span>
-            </div>
-            <div class="content-item">
-              <div class="bg-circle"><i class="icon-download"></i>
-              </div>
-              <span class="text-gray" translate>Backups managed by the server</span>
-            </div>
-            <div class="content-item line-none">
-              <div class="bg-circle"><i class="icon-email"></i>
-              </div>
-              <span class="text-gray" translate>Email address confirmation needed</span>
-            </div>
-          </tab>
+
           <tab style="width: 50%;" select="selectStorage('local')">
             <tab-heading>
-              <div class="m5t" translate>On this Device</div>
+              <div class="m5t" translate>Please note that</div>
             </tab-heading>
             <div class="content-item">
               <div class="bg-circle"><i class="icon-locked"></i>
               </div>
               <span class="text-gray" translate>Your private keys never leave this device</span>
             </div>
-            <div class="content-item">
-              <div class="bg-circle"><i class="icon-person"></i>
-              </div>
-              <span class="text-gray" translate>No email required</span>
-            </div>
+
             <div class="content-item line-none">
               <div class="bg-circle"><i class="icon-download"></i>
               </div>
-              <span class="text-gray" translate>Need to be careful with backups</span>
+              <span class="text-gray" translate>Backups are managed by you</span>
             </div>
           </tab>
         </tabset>
@@ -106,16 +77,11 @@
         <div class="box-setup-footer">
           <div class="left">
             <a class="button outline dark-gray tiny" ng-click="$root.go('/')">
-              <i class="icon-arrow-left4 size-10"></i> 
+              <i class="icon-arrow-left4 size-10"></i>
               <span translate>Back</span>
             </a>
           </div>
-          <div class="right">
-            <a class="button outline dark-gray tiny" 
-              ng-click="$root.openExternalLink('https://copay.io/profile-storage.html')" translate> 
-              Learn more about this option
-            </a>
-          </div>
+
         </div>
       </form>
 

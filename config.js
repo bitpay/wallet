@@ -18,7 +18,7 @@ var defaultConfig = {
       transports: ['polling'],
     },
     livenet: {
-      url: 'http://explorer.startcoin.org',
+      url: 'https://api.startwallet.com',
       transports: ['polling'],
     },
   },
@@ -53,14 +53,14 @@ var defaultConfig = {
 
   plugins: {
     //LocalStorage: true,
-    //    EncryptedLocalStorage: true,
+    EncryptedLocalStorage: true
     //GoogleDrive: true,
     //InsightStorage: true
-    EncryptedInsightStorage: true
+   // EncryptedInsightStorage: false
   },
 
   // This can be changed on the UX > Settings > Insight livenet
-  EncryptedInsightStorage: {
+  /*EncryptedInsightStorage: {
     url: 'http://dev.api.startwallet.com:80/api/email',
     //url: 'http://localhost:3001/api/email'
 
@@ -71,6 +71,7 @@ var defaultConfig = {
     iterations: 1000,
     salt: 'PNhuTZ6Bjg2gD7ggf67',
   },
+  */
 
   minPasswordStrength: 4,
 
