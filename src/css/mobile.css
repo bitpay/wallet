@@ -687,3 +687,22 @@ a.pin-button:active {
   opacity: 0;
 }
 
+.tab-view {
+  -webkit-transform: translate3d(-100%, 0, 0);
+  transform: translate3d(-100%, 0, 0);
+  width:100%;
+  position: absolute;
+}
+
+.tab-in {
+  -webkit-transform: translate3d(0, 0, 0) !important;
+  transform: translate3d(0, 0, 0) !important;
+}
+
+.tab-out {
+  -webkit-transform: translate3d(-100%, 0, 0) !important;
+  transform: translate3d(-100%, 0, 0) !important;
+}
+
+
+
