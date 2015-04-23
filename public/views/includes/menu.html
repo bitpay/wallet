@@ -1,8 +1,7 @@
 <div  
   class="bottom-bar row collapse">
     <div class="medium-3 small-3 columns text-center bottombar-item" ng-repeat="item in index.menu">
-      <a ng-click="$root.go(item.link)" ng-class="{'active': activeMenu == item.link}" 
-        ng-style="{'border-top-color':activeMenu==item.link ? index.backgroundColor : ''}"> 
+      <a id="menu-{{item.link}}" ng-click="index.setTab(item.link)" class="{{item.active? 'active': ''}}"  style="border-top-color:{{item.active? index.backgroundColor: ''}}" > 
         <i class="size-36 {{item.icon}} db"></i> 
         <div class="size-10 tu">
           {{item.title|translate}} 

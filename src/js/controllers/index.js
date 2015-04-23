@@ -4,7 +4,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   var self = this;
   self.isCordova = isCordova;
   self.onGoingProcess = {};
-  self.limitHistory = 5; 
+  self.limitHistory = 5;
 
   function strip(number) {
     return (parseFloat(number.toPrecision(12)));
@@ -13,7 +13,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   self.menu = [{
     'title': 'Home',
     'icon': 'icon-home',
-    'link': 'walletHome'
+    'link': 'walletHome',
+    'active': true,
   }, {
     'title': 'Receive',
     'icon': 'icon-receive',
@@ -26,7 +27,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     'title': 'History',
     'icon': 'icon-history',
     'link': 'history'
-  }]; 
+  }];
+
+  self.tab = 'walletHome';
 
   self.availableLanguages = [{
     name: 'English',
@@ -98,6 +101,34 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         self.openWallet();
       });
     });
+  };
+
+  self.setTab = function(tab) {
+
+    if (self.tab === tab)
+      return;
+
+    if (!self.tab)
+      self.tab = 'walletHome';
+
+    if (document.getElementById(self.tab)) {
+      document.getElementById(self.tab).className = 'tab-out tab-view ' + self.tab;
+      var old = document.getElementById('menu-' + self.tab);
+      if (old) {
+        old.className = '';
+        old.style.borderTopColor = '';
+      }
+    }
+
+    if (document.getElementById(tab)) {
+      document.getElementById(tab).className = 'tab-in  tab-view ' + tab;
+      var newe = document.getElementById('menu-' + tab);
+      newe.className = 'active';
+      newe.style.borderTopColor = self.backgroundColor;
+    }
+
+    self.tab = tab;
+    $rootScope.$emit('Local/TabChanged', tab);
   };
 
   self.updateAll = function(walletStatus) {
@@ -223,8 +254,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   self.openWallet = function() {
     var fc = profileService.focusedClient;
     self.updateColor();
-    $rootScope.$apply();
     $timeout(function() {
+      $rootScope.$apply();
       self.setOngoingProcess('openingWallet', true);
       self.updateError = false;
       fc.openWallet(function(err, walletStatus) {
@@ -454,8 +485,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         gettextCatalog.setCurrentLanguage(userLang);
         amMoment.changeLocale(userLang);
       }
-    }
-    else {
+    } else {
       configService.set({
         wallet: {
           settings: {
@@ -468,7 +498,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       });
     }
     self.defaultLanguageIsoCode = setLang || userLang;
-    self.defaultLanguageName = lodash.result(lodash.find(self.availableLanguages, { 'isoCode': self.defaultLanguageIsoCode }), 'name');
+    self.defaultLanguageName = lodash.result(lodash.find(self.availableLanguages, {
+      'isoCode': self.defaultLanguageIsoCode
+    }), 'name');
   };
 
   // UX event handlers
@@ -605,6 +637,10 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   $rootScope.$on('Local/NewFocusedWallet', function() {
     self.setFocusedWallet();
     self.updateTxHistory();
+  });
+
+  $rootScope.$on('Local/SetTab', function(event, tab) {
+    self.setTab(tab);
   });
 
   $rootScope.$on('Local/NeedsPassword', function(event, isSetup, cb) {

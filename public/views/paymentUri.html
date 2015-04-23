@@ -9,15 +9,18 @@
         <div class="ellipsis"><b translate>Address</b>: {{uri.address.toString()}}</div>
         <div ng-show="uri.amount"><b translate>Amount</b>: {{uri.amount}}</div>
         <div ng-show="uri.message"><b translate>Message</b>: {{uri.message}}</div>
+        <div ng-show="uri.network == 'testnet'"><b translate>Network</b>: {{uri.network}}</div>
       </div>
       <h2 translate>Select a wallet</h2>
-      <ul class="no-bullet" ng-init="wallets = payment.getWallets()">
+      <ul class="no-bullet" ng-init="wallets = payment.getWallets(uri.network)">
         <li class="panel" ng-repeat="w in wallets">
         <a ng-click="payment.selectWallet(w.id)">
           <div class="avatar-wallet" 
             ng-style="{'background-color':w.color}">{{(w.name || w.id) | limitTo: 1}}</div>
           <div class="ellipsis">{{w.name || w.id}}</div>
-          <div class="size-12">{{w.m}} of {{w.n}}</div> 
+          <div class="size-12">{{w.m}} of {{w.n}} 
+            <span ng-show="w.network=='testnet'">[Testnet]</span>
+          </div> 
         </a>
         </li>
       </ul>
