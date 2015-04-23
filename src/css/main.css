@@ -1115,7 +1115,7 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
   top:auto;
   left:0;
   right:0;
-  bottom:90px;
+  bottom:200px;
   margin: auto;
   border-radius: 3px;
   color: #fff;
