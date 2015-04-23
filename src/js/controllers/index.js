@@ -13,8 +13,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   self.menu = [{
     'title': 'Home',
     'icon': 'icon-home',
-    'link': 'walletHome',
-    'active': true,
+    'link': 'walletHome'
   }, {
     'title': 'Receive',
     'icon': 'icon-receive',
@@ -104,7 +103,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   };
 
   self.setTab = function(tab) {
-
     if (self.tab === tab)
       return;
 
