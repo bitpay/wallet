@@ -1670,3 +1670,7 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
   color: #7A8C9E;
   border-radius: 3px;
 }
+input.receivedAddress {
+    text-align:center;
+    background-color: white !important;
+}
