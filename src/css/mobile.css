@@ -172,11 +172,11 @@ _:-ms-fullscreen, :root .main {
   height:100%;   
 }
 
-.home-wallet {
+.walletHome {
   background-color: #fff;
 }
 
-.home-wallet .avatar-wallet {
+.walletHome .avatar-wallet {
   padding: 1.7rem 1rem;
   width: 75px;
   height: 75px;
@@ -193,7 +193,7 @@ _:-ms-fullscreen, :root .main {
   border-radius: 5px;
 }
 
-.home-wallet .wallet-info {
+.walletHome .wallet-info {
   margin-left: 85px;
   line-height: 110%;
   float: left;
