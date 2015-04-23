@@ -2,12 +2,12 @@
   <div class="oh" ng-show="!index.noFocusedWallet">
     <div class="amount" ng-style="{'background-color':index.backgroundColor}">
       <div ng-if="!index.anyOnGoingProcess && !index.notAuthorized">
-        <div ng-show="index.updateError" ng-click='index.openWallet()'>
+        <div ng-show="index.updateError" ng-click='index.openWallet()'> 
           <span translate>Could not update Wallet</span>
           <br><span translate>Tap to retry</span>
         </div>
 
-        <div ng-show="index.walletScanStatus == 'error'" ng-click='index.retryScan()'>
+        <div ng-show="index.walletScanStatus == 'error'" ng-click='index.retryScan()'> 
           <span translate>Scan status finished with error</span>
           <br><span translate>Tap to retry</span>
         </div>
@@ -16,7 +16,7 @@
           <div class="size-36 animated fadeIn">
             <strong>{{index.totalBalanceStr}}</strong>
           </div>
-          <div class="size-14"
+          <div class="size-14"  
             ng-if="index.totalBalanceAlternative">
             <span ng-class="{'animated fadeIn':!index.hideBalance}">
               {{index.totalBalanceAlternative}} {{index.alternativeIsoCode}}
@@ -32,9 +32,9 @@
       </div>
     </div>
     <div class="pr columns line-b">
-      <div class="avatar-wallet left"
+      <div class="avatar-wallet left" 
         ng-class="{'updating':index.anyOnGoingProcess}"
-        ng-style="{'background-color':index.backgroundColor}">{{index.walletName | limitTo: 1}}</div>
+        ng-style="{'background-color':index.backgroundColor}">{{index.walletName | limitTo: 1}}</div>      
       <div class="right">
         <a ng-click="$root.go('preferences')" class="button outline light-gray tiny m0">
           <i class="fi-widget size-18 vm"></i>
@@ -43,35 +43,32 @@
       </div>
       <div class="wallet-info" ng-click="openCopayersModal(index.copayers, index.copayerId)">
         <p class="m0">
-        {{index.m}} <span translate>of</span>  {{index.n}}
+        {{index.m}} <span translate>of</span>  {{index.n}}  
         </p>
         <div class="size-12 text-gray">
           <span ng-if="index.n > 1" translate>Multisignature wallet </span>
-          <span ng-if="index.n == 1" translate>Personal Wallet</span>
+          <span ng-if="index.n == 1" translate>Personal Wallet</span> 
           <span ng-if="index.network != 'livenet'"> - Testnet</span>
         </div>
-      </div>
+      </div> 
     </div>
   </div>
 
-  <div class="onGoingProcess" ng-show="index.anyOnGoingProcess" ng-style="{'background-color':index.backgroundColor}">
-    <div class="spinner">
-      <div class="rect1"></div>
-      <div class="rect2"></div>
-      <div class="rect3"></div>
-      <div class="rect4"></div>
-      <div class="rect5"></div>
-    </div>
-    <span translate ng-show="index.onGoingProcessName == 'openingWallet'"> Updating Wallet... </span>
-    <span translate ng-show="index.onGoingProcessName == 'updatingStatus'"> Updating Status...</span>
-    <span translate ng-show="index.onGoingProcessName == 'updatingBalance'">Updating Wallet... </span>
-    <span translate ng-show="index.onGoingProcessName == 'updatingPendingTxps'">Updating Wallet...</span>
+  <div class="onGoingProcess" 
+      ng-show="index.anyOnGoingProcess" 
+      ng-style="{'background-color':index.backgroundColor}"
+      ng-class="{'opacityCycle':index.anyOnGoingProcess}"
+  > 
+    <span translate ng-show="index.onGoingProcessName == 'openingWallet'">Opening Wallet...</span>
+    <span translate ng-show="index.onGoingProcessName == 'updatingStatus'">Updating Status...</span>
+    <span translate ng-show="index.onGoingProcessName == 'updatingBalance'">Updating Balance...</span>
+    <span translate ng-show="index.onGoingProcessName == 'updatingPendingTxps'">Updating Pending Transactions...</span>
     <span translate ng-show="index.onGoingProcessName == 'scanning'">Scanning Wallet funds...</span>
-    <span translate ng-show="index.onGoingProcessName == 'recreating'">Recreating Wallet...</span>
+    <span translate ng-show="index.onGoingProcessName == 'recreating'">Recreating Wallet on BWS...</span>
   </div>
 
-  <div class="m20t" ng-show="index.notAuthorized">
-    <div class="text-center text-warning">
+  <div class="m20t" ng-show="index.notAuthorized"> 
+    <div class="text-center text-warning"> 
       <i class="fi-alert"></i>
       <span translate>
         WARNING: Wallet not registered
@@ -81,7 +78,7 @@
       This wallet is not registered at the given Bitcore Wallet Service (BWS). You can recreate it from the local information.
     </div>
     <div class="text-center m10t ">
-      <span class="button outline dark-gray tiny"
+      <span class="button outline dark-gray tiny" 
         ng-click="index.recreate()">
         <span translate>Recreate</span>
       </span>
@@ -91,15 +88,15 @@
 
   <div ng-show="index.requiresMultipleSignatures  && index.txps[0]">
     <h4 class="title m0" translate>Spend proposals</h4>
-    <div class="last-transactions pr" ng-repeat="tx in index.txps"
+    <div class="last-transactions pr" ng-repeat="tx in index.txps" 
       ng-include="'views/includes/transaction.html'">
     </div>
 
-    <div class="text-gray text-center size-12 p10t"
+    <div class="text-gray text-center size-12 p10t" 
       ng-show="index.lockedBalance && !index.updatingStatus">
       <span translate>Total Locked Balance</span>:
-      <b>{{index.lockedBalance}} {{index.unitName}} </b>
-      <span> {{index.lockedBalanceAlternative}}
+      <b>{{index.lockedBalance}} {{index.unitName}} </b> 
+      <span> {{index.lockedBalanceAlternative}} 
         {{index.alternativeIsoCode}} </span>
     </div>
 
@@ -122,6 +119,7 @@
     <button class="button black expand" ng-click="$root.go('add')" translate>Create</button>
   </div>
 
-
+ 
 </div>
 <div class="extra-margin-bottom"></div>
+
