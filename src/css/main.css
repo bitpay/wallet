@@ -26,7 +26,6 @@ h2 {
   font-size: 20px;
   font-weight: 100;
 }
-
 h3 {
   font-weight: 300;
   font-size: 16px;
@@ -147,7 +146,7 @@ input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill, inpu
 
 .content {
   width:100%;
-  position: absolute; 
+  position: absolute;
   top: 46px;
   bottom: 0;
   overflow: auto;
@@ -1152,6 +1151,10 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
   vertical-align: middle;
 }
 
+#history .spinner > div {
+  background-color: #7A8C9E;
+}
+
 .spinner > div {
   background-color: #fff;
   height: 100%;
@@ -1196,4 +1199,3 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
     -webkit-transform: scaleY(1.0);
   }
 }
-

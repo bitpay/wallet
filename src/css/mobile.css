@@ -39,14 +39,14 @@ body, div, .row {
 /* END disabling text selection */
 
 .inner-wrap {
-  -webkit-transition-duration: 250ms; 
-  transition-duration: 250ms; 
+  -webkit-transition-duration: 250ms;
+  transition-duration: 250ms;
 }
 
 body {
   overflow: hidden;
   -ms-content-zooming: none;
-} 
+}
 
 /* Fix IE 10 */
 .extra-margin-bottom {
@@ -121,7 +121,7 @@ _:-ms-fullscreen, :root .main {
   left: -5px;
   height: 45px;
   top: 0px;
-} 
+}
 
 .tab-bar .text-back {
   margin-left: 26px;
@@ -169,7 +169,7 @@ _:-ms-fullscreen, :root .main {
 }
 
 .off-canvas-wrap,.inner-wrap{
-  height:100%;   
+  height:100%;
 }
 
 .walletHome {
@@ -212,15 +212,15 @@ ul.copayer-list img {
 }
 
 .bottombar-item a {
-  color: #7A8C9E;
+  color: #9EA9B3;
   padding: 0.5rem 0;
   display: block;
-  border-top: 3px solid #213140;
+  border-top: 3px solid #122232;
 }
 
 .bottombar-item a.active {
   color: #E4E8EC;
-  background-color: #213140;
+  background-color: #122232;
 }
 
 .box-founds {
@@ -261,7 +261,7 @@ a.missing-copayers {
 
 .footer-setup {
   margin-bottom: 50px;
-} 
+}
 
 .label {
   font-size: 70%;
@@ -282,7 +282,7 @@ a.missing-copayers {
 .sidebar li.nav-item.selected {
   background-color: #f1f3f5;
   box-shadow: inset -1px 0px 1px 0px rgba(0,0,0,0.20);
-} 
+}
 
 .sidebar .avatar-wallet, .payment-uri .avatar-wallet {
   background-color: #2C3E50;
@@ -344,8 +344,8 @@ a.missing-copayers {
   line-height: 24px;
 }
 
-/* 
- * Remove all vendors hover / shadow / fade 
+/*
+ * Remove all vendors hover / shadow / fade
  */
 
 .tooltip {
@@ -432,7 +432,7 @@ a.pin-button:active {
 }
 
 .tx-comment {
-  border-top: 1px solid #eee;    
+  border-top: 1px solid #eee;
   padding-top: 10px;
   margin-top: 10px;
 }
@@ -563,17 +563,17 @@ a.pin-button:active {
   padding-bottom: 20px;
 }
 
-.modal.fade, 
+.modal.fade,
 .reveal-modal.fade {
   opacity: 1;
 }
 
-.modal.fade .modal-dialog, 
-.modal.in .modal-dialog, 
-.reveal-modal-bg, 
-.reveal-modal-bg .fade .in, 
-.reveal-modal, 
-.reveal-modal .fade, 
+.modal.fade .modal-dialog,
+.modal.in .modal-dialog,
+.reveal-modal-bg,
+.reveal-modal-bg .fade .in,
+.reveal-modal,
+.reveal-modal .fade,
 .reveal-modal .fade .out,
 .reveal-modal .fade .in {
   -webkit-transition: none !important;
@@ -641,12 +641,12 @@ a.pin-button:active {
   color: #B7C2CD;
 }
 
-:-ms-input-placeholder {  
+:-ms-input-placeholder {
   color: #B7C2CD;
 }
 
-.animation-left.ng-enter, .animation-left.ng-leave, 
-.animation-right.ng-enter, .animation-right.ng-leave { 
+.animation-left.ng-enter, .animation-left.ng-leave,
+.animation-right.ng-enter, .animation-right.ng-leave {
   -webkit-transition: all ease-in-out 250ms;
   transition: all ease-in-out 250ms;
 }
@@ -668,7 +668,7 @@ a.pin-button:active {
   -webkit-transform: translate3d(0, 0, 0);
   transform: translate3d(0, 0, 0);
 }
- 
+
 .animation-left.ng-leave,
 .animation-right.ng-leave {
   -webkit-transform: translate3d(0, 0, 0);
@@ -691,7 +691,7 @@ a.pin-button:active {
   -webkit-transform: translate3d(-100%, 0, 0);
   transform: translate3d(-100%, 0, 0);
   width:100%;
-  position: absolute; 
+  position: absolute;
   top: 46px;
   bottom: 70px;
   overflow: auto;
@@ -707,6 +707,3 @@ a.pin-button:active {
   -webkit-transform: translate3d(-100%, 0, 0) !important;
   transform: translate3d(-100%, 0, 0) !important;
 }
-
-
-

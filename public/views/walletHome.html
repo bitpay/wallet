@@ -407,19 +407,18 @@ history
         {{btx.message || btx.addressTo}}
       </div>
     </div>
-    <div class="m20t row">
-      <div class="columns">
-
-        <button class="outline light-gray small expand" 
-          ng-disabled="index.updatingTxHistory"
-          ng-click="index.updateTxHistory(index.skipHistory)" 
-          ng-show="index.txHistoryPaging || index.updatingTxHistory"
-        >
-          <span  ng-show="!index.updatingTxHistory">
-            <span translate>More</span> <i class="icon-arrow-down4 ng-scope"></i> 
-          </span>
-          <span translate ng-show="index.updatingTxHistory">Loading...</span>
-        </button>
+    <div class="m20t columns text-center" ng-show="index.txHistoryPaging || index.updatingTxHistory">
+      <button class="outline light-gray small expand"
+        ng-click="index.updateTxHistory(index.skipHistory)"
+        ng-if="!index.updatingTxHistory">
+          <span translate>More</span> <i class="icon-arrow-down4 ng-scope"></i>
+      </button>
+      <div class="spinner" ng-if="index.updatingTxHistory">
+        <div class="rect1"></div>
+        <div class="rect2"></div>
+        <div class="rect3"></div>
+        <div class="rect4"></div>
+        <div class="rect5"></div>
       </div>
     </div>
   </div>
