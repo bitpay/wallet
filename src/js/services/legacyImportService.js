@@ -1,6 +1,6 @@
 'use strict';
 angular.module('copayApp.services')
-  .factory('legacyImportService', function($rootScope, $log, $timeout, $http, lodash, bitcore, bwcService, sjcl, profileService) {
+  .factory('legacyImportService', function($rootScope, $log, $timeout, $http, lodash, bitcore, bwcService, sjcl, profileService, isChromeApp) {
 
     var root = {};
     var wc = bwcService.getClient();
@@ -126,8 +126,15 @@ angular.module('copayApp.services')
       };
 
       var localStorageGet = function(key, cb) {
-        var v = localStorage.getItem(key);
-        return cb(null, v);
+        if (isChromeApp) {
+          chrome.storage.local.get(key,
+            function(data) {
+              return cb(null, data[key]);
+            });
+        } else {
+          var v = localStorage.getItem(key);
+          return cb(null, v);
+        }
       };
 
       var get = fromCloud ? insightGet : localStorageGet;
