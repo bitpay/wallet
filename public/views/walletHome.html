@@ -1,6 +1,43 @@
 <div ng-controller="walletHomeController as home">
+
+  <div class="row columns m20tp" ng-show="index.noFocusedWallet">
+    <div class="text-center text-warning m20b">
+      <i class="fi-alert"></i> <span translate>You do not have any wallet</span>
+    </div>
+    <button class="button black expand" ng-click="$root.go('add')" translate>Create</button>
+  </div>
+
+  <div class="onGoingProcess" ng-show="index.isOffline" style="background-color:#222">
+    <div class="spinner">
+      <div class="rect1"></div>
+      <div class="rect2"></div>
+      <div class="rect3"></div>
+      <div class="rect4"></div>
+      <div class="rect5"></div>
+    </div>
+    <span translate>Reconnecting to Wallet Server...</span>
+  </div>
+
+  <div class="onGoingProcess" ng-show="index.anyOnGoingProcess && !index.isOffline" ng-style="{'background-color':index.backgroundColor}">
+    <div class="spinner">
+      <div class="rect1"></div>
+      <div class="rect2"></div>
+      <div class="rect3"></div>
+      <div class="rect4"></div>
+      <div class="rect5"></div>
+    </div>
+    <span translate ng-show="
+index.onGoingProcessName == 'openingWallet'
+|| index.onGoingProcessName == 'updatingStatus'
+|| index.onGoingProcessName == 'updatingBalance'
+"> Updating Wallet... </span>
+    <span translate ng-show="index.onGoingProcessName == 'scanning'">Scanning Wallet funds...</span>
+    <span translate ng-show="index.onGoingProcessName == 'recreating'">Recreating Wallet...</span>
+  </div>
+
+  <div class="oh" ng-show="!index.noFocusedWallet">
+
   <div id="walletHome" class="walletHome tab-view tab-in">
-    <div class="oh" ng-show="!index.noFocusedWallet">
       <div class="amount" ng-style="{'background-color':index.backgroundColor}">
         <div ng-if="!index.anyOnGoingProcess && !index.notAuthorized">
           <div ng-show="index.updateError" ng-click='index.openWallet()'>
@@ -27,7 +64,7 @@
             <strong>...</strong>
           </div>
         </div>
-      </div>
+      </div> <!-- amount -->
       <div class="pr columns line-b">
         <div class="avatar-wallet left"
           ng-style="{'background-color':index.backgroundColor}">{{index.walletName | limitTo: 1}}</div>
@@ -50,23 +87,8 @@
       </div>
     </div>
 
-    <div class="onGoingProcess" ng-show="index.anyOnGoingProcess" ng-style="{'background-color':index.backgroundColor}">
-      <div class="spinner">
-        <div class="rect1"></div>
-        <div class="rect2"></div>
-        <div class="rect3"></div>
-        <div class="rect4"></div>
-        <div class="rect5"></div>
-      </div>
-      <span translate ng-show="index.onGoingProcessName == 'openingWallet'"> Updating Wallet... </span>
-      <span translate ng-show="index.onGoingProcessName == 'updatingStatus'"> Updating Status...</span>
-      <span translate ng-show="index.onGoingProcessName == 'updatingBalance'">Updating Wallet... </span>
-      <span translate ng-show="index.onGoingProcessName == 'updatingPendingTxps'">Updating Wallet...</span>
-      <span translate ng-show="index.onGoingProcessName == 'scanning'">Scanning Wallet funds...</span>
-      <span translate ng-show="index.onGoingProcessName == 'recreating'">Recreating Wallet...</span>
-    </div>
 
-    <div class="m20t" ng-show="index.notAuthorized">
+    <div class="m20t" ng-show="index.notAuthorized && ! index.anyOnGoingProcess">
       <div class="text-center text-warning">
         <i class="fi-alert"></i>
         <span translate>
@@ -174,7 +196,7 @@
     <div class="row m20t" ng-if="home.addr">
       <div class="large-12 columns">
         <button class="button black expand radius" ng-click="home.newAddress()"
-          ng-style="{'background-color':index.backgroundColor}" ng-disabled="home.generatingAddress" translate>
+          ng-style="{'background-color':index.backgroundColor}" ng-disabled="home.generatingAddress || index.isOffline" translate>
           Generate new address
         </button>
       </div>
@@ -317,7 +339,7 @@
               <a ng-click="home.resetForm(sendForm)" class="button expand outline dark-gray" translate>Cancel</a>
             </div>
             <div class="columns" ng-class="{'small-6 medium-6 large-6':(home._paypro || home.lockAddress)}">
-              <button type="submit" class="button black radius expand" ng-disabled="sendForm.$invalid || home.blockUx"
+              <button type="submit" class="button black radius expand" ng-disabled="sendForm.$invalid || home.blockUx ||  index.isOffline"
                 ng-style="{'background-color':index.backgroundColor}"  translate>
                 Send
               </button>
@@ -343,7 +365,7 @@ history
         <span ng-if="!index.updatingTxHistory">
           <span ng-show="index.txHistoryError && !index.notAuthorized" ng-click='index.openWallet()'>
             <span translate>Could not fetch transaction history</span>
-            <br> [<span translate>Tap to retry</span>]
+            <br> <span translate>Tap to retry</span>
           </span>
           <span ng-if="!index.txHistoryError" translate>
             No transactions yet
@@ -399,16 +421,6 @@ history
     </div>
   </div>
 </div>
-
-
-
-<!-- END -->
-  <div class="row columns m20tp" ng-show="index.noFocusedWallet">
-    <div class="text-center text-warning m20b">
-      <i class="fi-alert"></i> <span translate>You do not have any wallet</span>
-    </div>
-    <button class="button black expand" ng-click="$root.go('add')" translate>Create</button>
-  </div>
 
 
 </div>
