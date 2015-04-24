@@ -8,7 +8,8 @@
   <div class="text-center size-12 text-warning" ng-show="cp.error">
     {{(cp.error)|translate}}. Retrying...
   </div>
-  <div class="onGoingProcess" ng-show="cp.creatingProfile" style="background-color:#222">
+  <div class="onGoingProcess" ng-show="cp.creatingProfile">
+    <div class="onGoingProcess-content" ng-style="{'background-color':'#222'}">
     <div class="spinner">
       <div class="rect1"></div>
       <div class="rect2"></div>
@@ -17,6 +18,7 @@
       <div class="rect5"></div>
     </div>
     <span translate>Creating Wallet...</span>
+    </div>
   </div>
 </div>
 <div class="extra-margin-bottom"></div>
