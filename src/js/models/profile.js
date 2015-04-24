@@ -34,7 +34,6 @@ Profile.fromString = function(str) {
 };
 
 Profile.prototype.toObj = function() {
-console.log('[profile.js.37:this:]',this); //TODO
   return JSON.stringify(this);
 };
 

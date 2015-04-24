@@ -192,7 +192,7 @@ angular
             templateUrl: 'views/includes/topbar.html',
             controller: function($scope) {
               $scope.titleSection = 'Preferences';
-              $scope.closeToState = 'walletHome';
+              $scope.closeToHome = true;
             }
           }
         }
@@ -347,7 +347,7 @@ angular
             templateUrl: 'views/includes/topbar.html',
             controller: function($scope) {
               $scope.titleSection = 'Add wallet';
-              $scope.goBackToState = 'walletHome';
+              $scope.closeToHome = true;
             }
           }
         }

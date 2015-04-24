@@ -40,9 +40,12 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     self.getAddress();
   });
 
+  var disableFocusListener = $rootScope.$on('Local/NewFocusedWallet', function() {
+    self.resetForm();
+  });
 
-  var disableTabListener = $rootScope.$on('Local/TabChanged', function(e,tab){
-    switch(tab) {
+  var disableTabListener = $rootScope.$on('Local/TabChanged', function(e, tab) {
+    switch (tab) {
       case 'send':
         self.resetError();
         self.setInputs();
@@ -57,6 +60,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     disableScannerListener();
     disablePaymentUriListener();
     disableTabListener();
+    disableFocusListener();
     $rootScope.hideMenuBar = false;
   });
 
@@ -279,14 +283,12 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
   this.newAddress = function() {
     var fc = profileService.focusedClient;
-    self.generatingAddress = true;
-    self.error = null;
+    self.setOngoingProcess('Generating Address');
     fc.createAddress(function(err, addr) {
-      self.generatingAddress = false;
+      self.setOngoingProcess();
       if (err) {
         $log.debug('Creating address ERROR:', err);
         $scope.$emit('Local/ClientError', err);
-        self.error = 'Could not generate address';
       } else {
         self.addr = addr.address;
         storageService.storeLastAddress(fc.credentials.walletId, addr.address, function() {});
@@ -434,16 +436,27 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
   this.setOngoingProcess = function(name) {
     var self = this;
-    $timeout(function() {
-      self.onGoingProcess = name;
-      $rootScope.$apply();
-    })
+    self.blockUx = !!name;
+
+    if (isCordova) {
+      if (name) {
+        window.plugins.spinnerDialog.show(null, name + '...', true);
+      } else {
+        window.plugins.spinnerDialog.hide();
+      }
+    } else {
+      $timeout(function() {
+        self.onGoingProcess = name;
+        $rootScope.$apply();
+      })
+    }
   };
 
-  this.submitForm = function(form) {
+  this.submitForm = function() {
     var fc = profileService.focusedClient;
     var unitToSat = this.unitToSatoshi;
 
+    var form = $scope.sendForm;
     if (form.$invalid) {
       this.error = 'Unable to send transaction proposal';
       return;
@@ -452,18 +465,12 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     if (fc.isPrivKeyEncrypted()) {
       profileService.unlockFC(function(err) {
         if (err) return self.setError(err);
-        return self.submitForm(form);
+        return self.submitForm();
       });
       return;
     };
 
-    self.blockUx = true;
-    self.setOngoingProcess('Sending');
-
-    if (isCordova) {
-      window.plugins.spinnerDialog.show(null, 'Creating transaction...', true);
-    }
-
+    self.setOngoingProcess('Sending transaction');
     $timeout(function() {
       var comment = form.comment.$modelValue;
       var paypro = self._paypro;
@@ -481,24 +488,16 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
         self.setOngoingProcess();
         if (err) {
           profileService.lockFC();
-          if (isCordova) {
-            window.plugins.spinnerDialog.hide();
-          }
-          self.blockUx = false;
           return self.setError(err);
         }
 
         self.signAndBroadcast(txp, function(err) {
           self.setOngoingProcess();
-          if (isCordova) {
-            window.plugins.spinnerDialog.hide();
-          }
-          self.blockUx = false;
+          profileService.lockFC();
           if (err) {
-            profileService.lockFC();
             return self.setError(err);
           }
-          self.resetForm(form);
+          self.resetForm();
         });
       });
     }, 100);
@@ -507,7 +506,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
   this.signAndBroadcast = function(txp, cb) {
     var fc = profileService.focusedClient;
-    self.setOngoingProcess('Signing');
+    self.setOngoingProcess('Signing transaction');
     fc.signTxProposal(txp, function(err, signedTx) {
       profileService.lockFC();
       self.setOngoingProcess();
@@ -515,7 +514,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       if (err) return cb(err);
 
       if (signedTx.status == 'accepted') {
-        self.setOngoingProcess('Broadcasting');
+        self.setOngoingProcess('Broadcasting transaction');
         fc.broadcastTxProposal(signedTx, function(err, btx) {
           self.setOngoingProcess();
           if (err) {
@@ -570,9 +569,8 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
 
 
-  this.resetForm = function(form) {
+  this.resetForm = function() {
     this.resetError();
-    this.fetchingURL = null;
     this._paypro = null;
 
     this.lockAddress = false;
@@ -580,6 +578,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
     this._amount = this._address = null;
 
+    var form = $scope.sendForm;
     if (form && form.amount) {
       form.amount.$pristine = true;
       form.amount.$setViewValue('');
@@ -623,7 +622,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     });
   };
 
-  this.setFromPayPro = function(uri, form) {
+  this.setFromPayPro = function(uri) {
     var fc = profileService.focusedClient;
     if (isChromeApp) {
       this.error = 'Payment Protocol not supported on Chrome App';
@@ -631,22 +630,19 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     }
 
     var satToUnit = 1 / this.unitToSatoshi;
-    this.fetchingURL = uri;
-    this.blockUx = true;
     var self = this;
+    self.setOngoingProcess('Fetching Payment Informantion');
 
     $log.debug('Fetch PayPro Request...', uri);
     $timeout(function() {
       fc.fetchPayPro({
         payProUrl: uri,
       }, function(err, paypro) {
-        $log.debug(paypro);
-        self.blockUx = false;
-        self.fetchingURL = null;
+        self.setOngoingProcess();
 
         if (err) {
           $log.warn(err);
-          self.resetForm(form);
+          self.resetForm();
           var msg = err.toString();
           if (msg.match('HTTP')) {
             msg = 'Could not fetch payment information';

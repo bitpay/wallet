@@ -145,6 +145,15 @@ input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill, inpu
   position: relative;
 }
 
+.content {
+  width:100%;
+  position: absolute; 
+  top: 46px;
+  bottom: 0;
+  overflow: auto;
+}
+
+
 .logo-setup {
   text-align: center;
   margin: 0 0 0.1rem 0;
@@ -355,6 +364,7 @@ ul.manage li {
 .p70l {padding-left: 70px;}
 .p5h {padding: 0 5px;}
 .p20h {padding: 0 20px;}
+.p20v {padding: 20px 0;}
 .p25l {padding-left: 25px;}
 .p15 {padding:15px;}
 .p20 {padding:20px;}
@@ -1108,12 +1118,12 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
 .onGoingProcess {
   background: #213140;
   text-align: center;
-  max-width: 14.5rem;
+  max-width: 16.5rem;
   max-height: 3.5rem;
   top:auto;
   left:0;
   right:0;
-  bottom:90px;
+  bottom:170px;
   margin: auto;
   border-radius: 3px;
   color: #fff;
@@ -1180,3 +1190,4 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
     -webkit-transform: scaleY(1.0);
   }
 }
+

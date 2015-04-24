@@ -124,4 +124,8 @@ angular.module('copayApp.controllers').controller('topbarController', function($
     }
   };
 
+  this.goHome = function() {
+    go.walletHome();
+  };
+
 });
