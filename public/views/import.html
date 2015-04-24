@@ -1,5 +1,6 @@
 <div class="content p20v" ng-controller="importController as import">
-  <div class="onGoingProcess" ng-show="import.loading" style="background-color:#222">
+  <div class="onGoingProcess" ng-show="import.loading">
+    <div class="onGoingProcess-content" ng-style="{'background-color':'#222'}">
     <div class="spinner">
       <div class="rect1"></div>
       <div class="rect2"></div>
@@ -8,6 +9,7 @@
       <div class="rect5"></div>
     </div>
     <span translate>Importing wallet...</span>
+    </div>
   </div>
 
 
