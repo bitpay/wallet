@@ -220,6 +220,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     $log.debug('Updating Transaction History');
     self.txHistoryError = false;
     self.updatingTxHistory = true;
+    self.txHistoryPaging = false;
     $timeout(function() {
       $rootScope.$apply();
       fc.getTxHistory({
