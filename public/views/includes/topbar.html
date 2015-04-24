@@ -9,8 +9,8 @@
     </a>
   </section>
 
-  <section class="right-small" ng-show="index.isComplete && !goBackToState">
-    <a ng-show="!closeToHome" class="p10" 
+  <section class="right-small" ng-show="!goBackToState">
+    <a ng-show="!closeToHome && index.isComplete" class="p10" 
       ng-click="topbar.openScanner()"><i class="fi-camera size-24"></i></a>
     <a ng-show="closeToHome"
       ng-click="topbar.goHome(); closeToHome = null">
