@@ -560,6 +560,7 @@ a.pin-button:active {
   top: 0;
   height: 100%;
   overflow: auto;
+  padding-bottom: 20px;
 }
 
 .modal.fade, 
@@ -688,8 +689,9 @@ a.pin-button:active {
   width:100%;
   position: absolute; 
   top: 46px;
-  bottom: 80px;
+  bottom: 70px;
   overflow: auto;
+  padding-bottom: 20px;
 }
 
 .tab-in {
