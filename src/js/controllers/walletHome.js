@@ -155,26 +155,26 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
           return;
         };
 
-        if (isCordova) {
-          window.plugins.spinnerDialog.show(null, 'Signing transaction...', true);
-        }
+        self.setOngoingProcess('Signing transaction');
         $scope.loading = true;
         $scope.error = null;
         $timeout(function() {
           fc.signTxProposal(txp, function(err, txpsi) {
             profileService.lockFC();
-            if (isCordova) {
-              window.plugins.spinnerDialog.hide();
-            }
-            $scope.loading = false;
+            self.setOngoingProcess();
             if (err) {
+              $scope.loading = false;
               $scope.error = err.message || 'Transaction not signed. Please try again.';
               $scope.$digest();
             } else {
               //if txp has required signatures then broadcast it
               var txpHasRequiredSignatures = txpsi.status == 'accepted';
               if (txpHasRequiredSignatures) {
+                self.setOngoingProcess('Broadcasting transaction');
+                $scope.loading = true;
                 fc.broadcastTxProposal(txpsi, function(err, txpsb) {
+                  self.setOngoingProcess();
+                  $scope.loading = false;
                   if (err) {
                     $scope.error = 'Transaction not broadcasted. Please try again.';
                     $scope.$digest();
@@ -183,6 +183,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
                   }
                 });
               } else {
+                $scope.loading = false;
                 $modalInstance.close(txpsi);
               }
             }
@@ -191,16 +192,12 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       };
 
       $scope.reject = function(txp) {
-        if (isCordova) {
-          window.plugins.spinnerDialog.show(null, 'Rejecting transaction...', true);
-        }
+        self.setOngoingProcess('Rejecting transaction');
         $scope.loading = true;
         $scope.error = null;
         $timeout(function() {
           fc.rejectTxProposal(txp, null, function(err, txpr) {
-            if (isCordova) {
-              window.plugins.spinnerDialog.hide();
-            }
+            self.setOngoingProcess();
             $scope.loading = false;
             if (err) {
               $scope.error = err.message || 'Transaction not rejected. Please try again.';
@@ -214,16 +211,12 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
 
       $scope.remove = function(txp) {
-        if (isCordova) {
-          window.plugins.spinnerDialog.show(null, 'Deleting transaction...', true);
-        }
+        self.setOngoingProcess('Deleting transaction');
         $scope.loading = true;
         $scope.error = null;
         $timeout(function() {
           fc.removeTxProposal(txp, function(err, txpb) {
-            if (isCordova) {
-              window.plugins.spinnerDialog.hide();
-            }
+            self.setOngoingProcess();
             $scope.loading = false;
 
             // Hacky: request tries to parse an empty response
@@ -238,16 +231,12 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       };
 
       $scope.broadcast = function(txp) {
-        if (isCordova) {
-          window.plugins.spinnerDialog.show(null, 'Sending transaction...', true);
-        }
+        self.setOngoingProcess('Broadcasting transaction');
         $scope.loading = true;
         $scope.error = null;
         $timeout(function() {
           fc.broadcastTxProposal(txp, function(err, txpb) {
-            if (isCordova) {
-              window.plugins.spinnerDialog.hide();
-            }
+            self.setOngoingProcess();
             $scope.loading = false;
             if (err) {
               $scope.error = err.message || 'Transaction not sent. Please try again.';
@@ -449,7 +438,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       $timeout(function() {
         self.onGoingProcess = name;
         $rootScope.$apply();
-      })
+      });
     }
   };
 
@@ -471,7 +460,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       return;
     };
 
-    self.setOngoingProcess('Sending transaction');
+    self.setOngoingProcess('Creating transaction');
     $timeout(function() {
       var comment = form.comment.$modelValue;
       var paypro = self._paypro;
@@ -493,7 +482,6 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
         }
 
         self.signAndBroadcast(txp, function(err) {
-          self.setOngoingProcess();
           profileService.lockFC();
           if (err) {
             return self.setError(err);
@@ -512,7 +500,9 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       profileService.lockFC();
       self.setOngoingProcess();
 
-      if (err) return cb(err);
+      if (err) { 
+        return cb(err);
+      }
 
       if (signedTx.status == 'accepted') {
         self.setOngoingProcess('Broadcasting transaction');
