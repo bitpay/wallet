@@ -217,10 +217,11 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       self.txHistory = [];
     }
     self.skipHistory = skip || 0;
+    $log.debug('Updating Transaction History');
+    self.txHistoryError = false;
+    self.updatingTxHistory = true;
     $timeout(function() {
-      $log.debug('Updating Transaction History');
-      self.txHistoryError = false;
-      self.updatingTxHistory = true;
+      $rootScope.$apply();
       fc.getTxHistory({
         skip: self.skipHistory,
         limit: self.limitHistory + 1

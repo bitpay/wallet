@@ -15,7 +15,7 @@
       <div class="rect4"></div>
       <div class="rect5"></div>
     </div>
-    <span translate>Reconnecting to Wallet Server...</span>
+    <span translate>Reconnecting to Wallet Service...</span>
   </div>
 
   <div class="onGoingProcess" ng-show="index.anyOnGoingProcess && !index.isOffline" ng-style="{'background-color':index.backgroundColor}">
@@ -33,6 +33,17 @@ index.onGoingProcessName == 'openingWallet'
 "> Updating Wallet... </span>
     <span translate ng-show="index.onGoingProcessName == 'scanning'">Scanning Wallet funds...</span>
     <span translate ng-show="index.onGoingProcessName == 'recreating'">Recreating Wallet...</span>
+  </div>
+
+  <div class="onGoingProcess" ng-show="home.onGoingProcess && !index.anyOnGoingProcess">
+    <div class="spinner">
+      <div class="rect1"></div>
+      <div class="rect2"></div>
+      <div class="rect3"></div>
+      <div class="rect4"></div>
+      <div class="rect5"></div>
+    </div>
+    {{home.onGoingProcess|translate}}...
   </div>
 
   <div class="oh" ng-show="!index.noFocusedWallet">
@@ -198,7 +209,7 @@ index.onGoingProcessName == 'openingWallet'
     <div class="row m20t" ng-if="home.addr">
       <div class="large-12 columns">
         <button class="button black expand radius" ng-click="home.newAddress()"
-          ng-style="{'background-color':index.backgroundColor}" ng-disabled="home.generatingAddress || index.isOffline" translate>
+          ng-style="{'background-color':index.backgroundColor}" ng-disabled="home.blockUx || index.isOffline" translate>
           Generate new address
         </button>
       </div>
@@ -233,12 +244,7 @@ index.onGoingProcessName == 'openingWallet'
   </div>
   <div class="row m20t">
     <div class="large-12 large-centered columns">
-      <div class="box-notification" ng-show="home.fetchingURL">
-        <span class="text-secondary size-14" translate>
-          Fetching Payment Information...
-        </span>
-      </div>
-      <form ng-show="!home.fetchingURL" name="sendForm" ng-submit="home.submitForm(sendForm)" ng-disabled="home.blockUx" novalidate>
+      <form ng-show="!home.onGoingProcess" name="sendForm" ng-submit="home.submitForm()" ng-disabled="home.blockUx" novalidate>
           <div class="box-notification" ng-show="home.error" ng-click="home.resetError()">
             <span class="text-warning">
               {{home.error|translate}}
@@ -330,12 +336,6 @@ index.onGoingProcessName == 'openingWallet'
             </div>
           </div>
 
-  <div ng-if="home.onGoingProcess" class="text-gray text-center m10t">
-    <span class="animated infinite flash">{{home.onGoingProcess|translate}}...</span>
-  </div>
-
-
-
           <div class="row" ng-show="!home.onGoingProcess">
             <div class="large-6 medium-6 small-6 columns" ng-show="!home.blockUx && (home._paypro || home.lockAddress)">
               <a ng-click="home.resetForm(sendForm)" class="button expand outline dark-gray" translate>Cancel</a>
@@ -360,11 +360,9 @@ history
 
 -->
 <div id="history" class="history tab-view">
-  <div class="row m20t" ng-show="!index.txHistory[0]">
+  <div class="row m20t" ng-show="!index.txHistory[0] && !index.updatingTxHistory">
     <div class="large-12 columns">
       <div class="oh text-center">
-        <span ng-if="index.updatingTxHistory" class="text-gray animated flash infinite" translate>Getting transactions...</span>
-        <span ng-if="!index.updatingTxHistory">
           <span ng-show="index.txHistoryError && !index.notAuthorized" ng-click='index.updateTxHistory()'>
             <span translate>Could not fetch transaction history</span>
             <br> <span translate>Tap to retry</span>
@@ -410,18 +408,14 @@ history
     </div>
     <div class="m20t row">
       <div class="columns">
-        <button class="outline light-gray small expand" ng-disabled="index.updatingTxHistory"
-          ng-click="index.updateTxHistory(index.skipHistory)" ng-show="index.txHistoryPaging">
-          <span ng-show="!index.updatingTxHistory">
-            <span translate>More</span> <i class="icon-arrow-down4 ng-scope"></i>
-          </span>
-          <span ng-show="index.updatingTxHistory" translate>
-            Getting transactions...
-          </span>
+        <button class="outline light-gray small expand" 
+          ng-click="index.updateTxHistory(index.skipHistory)" ng-show="index.txHistoryPaging && !index.updatingTxHistory">
+          <span translate>More</span> <i class="icon-arrow-down4 ng-scope"></i>
         </button>
       </div>
     </div>
   </div>
+
 </div>
 
 
