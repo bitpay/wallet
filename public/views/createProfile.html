@@ -8,9 +8,15 @@
   <div class="text-center size-12 text-warning" ng-show="cp.error">
     {{(cp.error)|translate}}. Retrying...
   </div>
- 
-  <div class="m20tp text-white text-center  animated infinite flash" ng-if="cp.creatingProfile">
-    <span translate>Creating wallet...</span>
+  <div class="onGoingProcess" ng-show="cp.creatingProfile" style="background-color:#222">
+    <div class="spinner">
+      <div class="rect1"></div>
+      <div class="rect2"></div>
+      <div class="rect3"></div>
+      <div class="rect4"></div>
+      <div class="rect5"></div>
+    </div>
+    <span translate>Creating Wallet...</span>
   </div>
 </div>
 <div class="extra-margin-bottom"></div>
