@@ -1,6 +1,7 @@
 <div class="content p20v" ng-controller="createController as create">
 
-  <div class="onGoingProcess" ng-show="create.loading" style="background-color:#222">
+  <div class="onGoingProcess" ng-show="create.loading">
+    <div class="onGoingProcess-content" ng-style="{'background-color':'#222'}">
     <div class="spinner">
       <div class="rect1"></div>
       <div class="rect2"></div>
@@ -9,6 +10,7 @@
       <div class="rect5"></div>
     </div>
     <span translate>Creating Wallet...</span>
+    </div>
   </div>
 
 
