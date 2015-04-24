@@ -225,7 +225,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.updatingTxHistory = true;
     self.txHistoryPaging = false;
     $timeout(function() {
-      $rootScope.$apply();
       fc.getTxHistory({
         skip: self.skipHistory,
         limit: self.limitHistory + 1
