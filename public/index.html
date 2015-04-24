@@ -26,6 +26,9 @@
         <div ng-include="'views/includes/sidebar.html'" ng-if="index.hasProfile"></div>
 
         <div notifications="right top"></div> 
+        <div ng-include="'views/includes/offline.html'" ng-if="index.isOffline"></div>
+        <div ng-include="'views/includes/clientError.html'" ng-if="index.clientError"></div>
+
         <div ng-include="'views/includes/password.html'" ng-if="index.askPassword"
 ></div>
 
