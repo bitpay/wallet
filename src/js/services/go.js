@@ -67,13 +67,6 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
     });
   };
 
-  root.home = function() {
-    if ($rootScope.iden)
-      root.walletHome();
-    else
-      root.path('signin');
-  };
-
   root.addWallet = function() {
     $state.go('add');
   };

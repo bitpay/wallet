@@ -24,10 +24,10 @@ angular.module('copayApp.directives')
       return {
         require: 'ngModel',
         link: function(scope, elem, attrs, ctrl) {
-          var networkName = profileService.focusedClient.credentials.network;
           var URI = bitcore.URI;
           var Address = bitcore.Address
           var validator = function(value) {
+            var networkName = profileService.focusedClient.credentials.network;
             // Regular url
             if (/^https?:\/\//.test(value)) {
               ctrl.$setValidity('validAddress', true);
@@ -51,6 +51,7 @@ angular.module('copayApp.directives')
               return;
             }
 
+console.log('[directives.js.53]', value, networkName); //TODO
             // Regular Address
             ctrl.$setValidity('validAddress', Address.isValid(value, networkName));
             return value;
