@@ -21,13 +21,7 @@ angular.module('copayApp.services')
             return cb(null, data[k]);
           });
       } else {
-console.log('[localStorage.js.24]',k); //TODO
-console.log('[localStorage.js.25:TODO:]'); //TODO
-console.log('[localStorage.js.26:TODO:]'); //TODO
-console.log('[localStorage.js.27:TODO:]'); //TODO
-        $timeout(function() {
         return cb(null, ls.getItem(k));
-        }, 1000);
       }
     };
 

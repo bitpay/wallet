@@ -61,7 +61,10 @@ angular.module('copayApp.services')
 
     root.getProfile = function(cb) {
       storage.get('profile', function(err, str) {
-        if (err || !str) return cb(err);
+
+        if (err || !str) 
+          // Migrate ?
+          return cb(err);
 
         decryptOnMobile(str, function(err, str) {
           if (err) return cb(err);
