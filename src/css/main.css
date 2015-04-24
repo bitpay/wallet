@@ -719,6 +719,11 @@ button[disabled].secondary,
 
 .button, button {
   text-transform: uppercase;
+  transition: none !important;
+}
+
+.button:focus, button:focus {
+  outline:0;
 }
 
 .wallet-selection.wallets {
