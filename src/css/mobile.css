@@ -101,16 +101,16 @@ _:-ms-fullscreen, :root .main {
 }
 
 .tab-bar-section.middle {
-  left: 3.8125rem;
-  right: 3.8125rem;
+  left: 4.7rem;
+  right: 4.7rem;
 }
 
 .left-small {
-  width: 3.8125rem;
+  width: 4.7rem;
 }
 
 .right-small {
-  width: 3.8125rem;
+  width: 4.7rem;
   text-align: right;
 }
 
