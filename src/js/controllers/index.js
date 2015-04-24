@@ -573,7 +573,11 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     } else if (err.code === 'ETIMEDOUT') {
       $log.debug('Time out:', err);
     } else {
-      self.clientError(err && err.message ? 'Error at Wallet Service:' + err.message : err);
+      var msg = 'Error at Wallet Service: ';
+      if (err.message) msg = msg + err.message;
+      else if (err.error) msg = msg + err.error;
+      else msg = msg +  err;
+      self.clientError(msg);
     }
     $rootScope.$apply();
   });
