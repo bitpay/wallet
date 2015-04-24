@@ -333,7 +333,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
 
   this.formFocus = function(what) {
-    if (isCordova) {
+    if (isCordova && !this.isWindowsPhoneApp) {
       hideMenuBar(what);
     }
     if (!this.isWindowsPhoneApp) return
