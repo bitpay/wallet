@@ -1,8 +1,9 @@
 'use strict';
 angular.module('copayApp.services')
-  .factory('storageService', function(localStorageService, sjcl, $log, lodash) {
+  .factory('storageService', function(fileStorageService, localStorageService, sjcl, $log, lodash, isCordova) {
 
     var root = {};
+    var storage = isCordova ? fileStorageService : localStorageService;
 
     var getUUID = function(cb) {
       // TO SIMULATE MOBILE
@@ -48,18 +49,18 @@ angular.module('copayApp.services')
 
     root.storeNewProfile = function(profile, cb) {
       encryptOnMobile(profile.toObj(), function(err, x) {
-        localStorageService.create('profile', x, cb);
+        storage.create('profile', x, cb);
       });
     };
 
     root.storeProfile = function(profile, cb) {
       encryptOnMobile(profile.toObj(), function(err, x) {
-        localStorageService.set('profile', x, cb);
+        storage.set('profile', x, cb);
       });
     };
 
     root.getProfile = function(cb) {
-      localStorageService.get('profile', function(err, str) {
+      storage.get('profile', function(err, str) {
         if (err || !str) return cb(err);
 
         decryptOnMobile(str, function(err, str) {
@@ -76,35 +77,35 @@ angular.module('copayApp.services')
     };
 
     root.deleteProfile = function(cb) {
-      localStorageService.remove('profile', cb);
+      storage.remove('profile', cb);
     };
 
     root.storeFocusedWalletId = function(id, cb) {
-      localStorageService.set('focusedWalletId', id, cb);
+      storage.set('focusedWalletId', id, cb);
     };
 
     root.getFocusedWalletId = function(cb) {
-      localStorageService.get('focusedWalletId', cb);
+      storage.get('focusedWalletId', cb);
     };
 
     root.getLastAddress = function(walletId, cb) {
-      localStorageService.get('lastAddress-' + walletId, cb);
+      storage.get('lastAddress-' + walletId, cb);
     };
 
     root.storeLastAddress = function(walletId, address, cb) {
-      localStorageService.set('lastAddress-' + walletId, address, cb);
+      storage.set('lastAddress-' + walletId, address, cb);
     };
 
     root.clearLastAddress = function(walletId, cb) {
-      localStorageService.remove('lastAddress-' + walletId, cb);
+      storage.remove('lastAddress-' + walletId, cb);
     };
 
     root.setBackupFlag = function(walletId, cb) {
-      localStorageService.set('backup-' + walletId, Date.now(), cb);
+      storage.set('backup-' + walletId, Date.now(), cb);
     };
 
     root.getBackupFlag = function(walletId, cb) {
-      localStorageService.get('backup-' + walletId, cb);
+      storage.get('backup-' + walletId, cb);
     };
 
     return root;

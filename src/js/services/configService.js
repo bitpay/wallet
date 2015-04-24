@@ -1,7 +1,9 @@
 'use strict';
 
-angular.module('copayApp.services').factory('configService', function(localStorageService, lodash, bwcService) {
+angular.module('copayApp.services').factory('configService', function(localStorageService, fileStorageService, isCordova, lodash, bwcService) {
   var root = {};
+
+  var storage = isCordova ? fileStorageService : localStorageService;
 
   var defaultConfig = {
     // wallet limits
@@ -66,8 +68,7 @@ angular.module('copayApp.services').factory('configService', function(localStora
   };
 
   root.get = function(cb) {
-    localStorageService.get('config', function(err, localConfig) {
-
+    storage.get('config', function(err, localConfig) {
       if (localConfig) {
         configCache = JSON.parse(localConfig);
 
@@ -89,7 +90,7 @@ angular.module('copayApp.services').factory('configService', function(localStora
 
   root.set = function(newOpts, cb) {
     var config = defaultConfig;
-    localStorageService.get('config', function(err, oldOpts) {
+    storage.get('config', function(err, oldOpts) {
       if (lodash.isString(oldOpts)) {
         oldOpts = JSON.parse(oldOpts);
       }
@@ -102,12 +103,12 @@ angular.module('copayApp.services').factory('configService', function(localStora
       lodash.merge(config, oldOpts, newOpts);
       configCache = config;
 
-      localStorageService.set('config', JSON.stringify(config), cb);
+      storage.set('config', JSON.stringify(config), cb);
     });
   };
 
   root.reset = function(cb) {
-    localStorageService.remove('config', cb);
+    storage.remove('config', cb);
   };
 
   root.getDefaults = function() {

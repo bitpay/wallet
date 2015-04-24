@@ -434,18 +434,21 @@ angular
 
       if (!profileService.profile && toState.needProfile) {
 
+        // Give us time to open / create the profile
+        event.preventDefault(); 
+
         // Try to open local profile
         profileService.loadAndBindProfile(function(err) {
           if (err) {
             if (err.message.match('NOPROFILE')) {
               $log.debug('No profile... redirecting');
               $state.transitionTo('splash');
-              event.preventDefault();
             } else {
               throw new Error(err); // TODO
             }
           } else {
-            // Profile was loaded
+            console.log('Profile loaded ... resuming transition');
+            $state.transitionTo('walletHome');
           }
         });
       }

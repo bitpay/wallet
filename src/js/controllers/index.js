@@ -426,6 +426,19 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     }
   };
 
+  self.deviceError = function (err) {
+    if (isCordova) {
+      navigator.notification.confirm(
+        err,
+        function() {},
+        'Device Error', ['OK']
+      );
+    } else {
+      alert(err);
+    }
+  };
+
+
   self.recreate = function(cb) {
     var fc = profileService.focusedClient;
     self.setOngoingProcess('recreating', true);
@@ -560,6 +573,11 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
   $rootScope.$on('Local/BWSNotFound', function(event) {
     self.clientError('Could not access Wallet Service: Not found');
+    $rootScope.$apply();
+  });
+
+  $rootScope.$on('Local/DeviceError', function(event, err) {
+    self.deviceError(err);
     $rootScope.$apply();
   });
 
