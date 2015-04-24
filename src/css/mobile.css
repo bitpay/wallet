@@ -127,10 +127,10 @@ _:-ms-fullscreen, :root .main {
   margin-left: 26px;
   font-size: 1rem;
   font-weight: 400;
+  padding: 10px 0;
 }
 
 .tab-bar .text-close {
-  margin-right: 10px;
   font-size: 1rem;
   font-weight: 400;
 }
@@ -580,6 +580,10 @@ a.pin-button:active {
   transition: none !important;
   -webkit-transform: none !important;
   transform: none !important;
+}
+
+.popup-tx-status {
+  z-index: 1030;
 }
 
 .popup-txsent {

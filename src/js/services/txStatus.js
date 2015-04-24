@@ -38,7 +38,7 @@ angular.module('copayApp.services').factory('txStatus', function($modal, lodash,
     };
     $modal.open({
       templateUrl: 'views/modals/tx-status.html',
-      windowClass: 'full',
+      windowClass: 'full popup-tx-status',
       controller: ModalInstanceCtrl,
     });
   };
