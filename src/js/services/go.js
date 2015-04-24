@@ -39,6 +39,7 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
   root.path = function(path, cb) {
     $state.transitionTo(path)
       .then(function() {
+        $rootScope.$emit('Local/SetTab', path);
         if (cb) return cb();
       });
     hideSidebars();
