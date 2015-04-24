@@ -373,7 +373,7 @@ a, button, .button, input, textarea, select, .reveal-modal {
   box-shadow: none;
   display: block;
   position: absolute;
-  background: rgba(255,255,255,.2);
+  background: none;
   top: 0;
   bottom: 0;
   left: 0;
