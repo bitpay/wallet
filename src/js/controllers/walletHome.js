@@ -306,6 +306,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
         } else {
           self.newAddress();
         }
+        $scope.$digest();
       });
     });
   };
