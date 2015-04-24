@@ -13,13 +13,13 @@
 <div class="p45t" ng-init="updateCopayerList()">
   <h4 class="title m0" translate>Information</h4>
   <ul class="no-bullet size-14 m0">
-    <li class="line-b p10">
+    <li class="line-b p10 oh">
       <span class="text-gray" translate>To</span>:
       <span class="right">{{tx.toAddress}}</span>
     </li>
     <li class="line-b p10">
       <span class="text-gray" translate>Amount</span>:
-      <span class="right">{{amountStr}} 
+      <span class="right">{{amountStr}}
         <span class="label gray radius">{{alternativeAmountStr}}</span>
       </span>
     </li>
@@ -44,7 +44,7 @@
       <li class="line-b p10">
         <span class="text-gray" translate>To</span>:
         <span class="right">
-          <span> 
+          <span>
             <span ng-show="tx.merchant.pr.ca"><i class="fi-lock"></i> {{tx.paypro.domain}}</span>
             <span ng-show="!tx.merchant.pr.ca"><i class="fi-unlock"></i> {{tx.paypro.domain}}</span>
           </span>
@@ -87,32 +87,32 @@
 
   <div class="row column m20t text-center text-warning" ng-if="tx.removed" translate>
     The transaction was removed by creator
-  </div> 
+  </div>
 
   <div class="row m20t" ng-if="tx.pendingForUs">
     <div class="large-5 medium-5 small-6 columns">
-      <button class="button outline dark-gray m0 expand" ng-click="reject(tx);" 
+      <button class="button outline dark-gray m0 expand" ng-click="reject(tx);"
         ng-disabled="loading">
-        <i class="fi-x"></i>  
+        <i class="fi-x"></i>
         <span translate>Reject</span>
       </button>
     </div>
     <div class="large-5 medium-5 small-6 columns text-right">
-      <button class="button primary m0 expand" ng-click="sign(tx)" 
-        ng-style="{'background-color':color}"  
+      <button class="button primary m0 expand" ng-click="sign(tx)"
+        ng-style="{'background-color':color}"
         ng-disabled="loading">
-        <i class="fi-check"></i>  
+        <i class="fi-check"></i>
         <span translate>Sign</span>
       </button>
     </div>
   </div>
 
   <div class="text-center text-gray" ng-show="tx.status != 'pending'">
-    <div class="m10t" 
+    <div class="m10t"
       ng-show="tx.status=='accepted'" translate>
       Transaction accepted...
     </div>
-    <div class="m10t" 
+    <div class="m10t"
       ng-show="!loading && tx.status!='broadcasted' && tx.status=='accepted' && tx.status!='rejected'">
       <div translate>But not broadcasted. Try to send manually</div>
       <button class="primary"
@@ -121,7 +121,7 @@
         <span translate>Broadcast Transaction</span>
       </button>
     </div>
-    <div class="text-success m10t" 
+    <div class="text-success m10t"
       ng-show="tx.status=='broadcasted'" translate>
       Transaction sent!
     </div>
@@ -132,9 +132,9 @@
   </div>
 
   <div class="row column m20t" ng-if="tx.couldRemove">
-    <button class="tiny expand outline dark-gray" ng-click="remove(tx)" 
+    <button class="tiny expand outline dark-gray" ng-click="remove(tx)"
       ng-disabled="loading" ng-show="tx.couldRemove">
-      <i class="fi-x icon-sign x"></i>  
+      <i class="fi-x icon-sign x"></i>
       <span translate>Remove transaction</span>
     </button>
     <div class="text-gray size-12 text-center" show="tx.couldRemove" translate>
