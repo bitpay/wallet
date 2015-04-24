@@ -575,7 +575,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     } else {
       var msg = 'Error at Wallet Service: ';
       if (err.message) msg = msg + err.message;
-      else (err.error) msg = msg + err.error;
+      else if (err.error) msg = msg + err.error;
       else msg = msg +  err;
       self.clientError(msg);
     }
