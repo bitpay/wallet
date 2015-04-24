@@ -134,7 +134,7 @@ angular.module('copayApp.controllers').controller('joinController',
 
     this.join = function(form) {
       if (form && form.$invalid) {
-        notification.error('Error', 'Please enter the required fields');
+        self.error = 'Please enter the required fields';
         return;
       }
       self.loading = true;
@@ -147,7 +147,8 @@ angular.module('copayApp.controllers').controller('joinController',
         }, function(err) {
           self.loading = false;
           if (err) {
-            notification.error(err);
+            self.error = 'Could not join wallet: ' +  (err.message ? err.message : err);
+            $rootScope.$apply();
           }
           else {
             go.walletHome();

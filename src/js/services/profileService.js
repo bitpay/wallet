@@ -151,7 +151,6 @@ angular.module('copayApp.services')
       })
     };
 
-    // TODO copayer name
     root.createWallet = function(opts, cb) {
       var walletClient = bwcService.getClient();
       $log.debug('Creating Wallet:', opts);
@@ -191,8 +190,7 @@ angular.module('copayApp.services')
       }
       // TODO name
       walletClient.joinWallet(opts.secret, opts.myName || 'me', function(err) {
-        // TODO: err
-        if (err) return cb('Error joining wallet' + err);
+        if (err) return cb(err);
 
         root.profile.credentials.push(JSON.parse(walletClient.export()));
         root.setWalletClients();

@@ -12,6 +12,13 @@
 
   <div class="row" ng-show="!join.loading">
     <div class="large-12 columns">
+
+      <div class="box-notification" ng-show="join.error ">
+        <span class="text-warning size-14">
+          {{join.error|translate}}
+        </span>
+      </div>
+  
       <form name="joinForm" ng-submit="join.join(joinForm)" novalidate>
           <label><span translate>Your nickname</span>
             <div class="input">
