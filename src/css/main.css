@@ -1144,6 +1144,14 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
 
 /*/////////////////// SPINNER ////////////////////*/
 
+#history .spinner {
+  height: 46px;
+}
+
+#history .spinner > div {
+  background-color: #7A8C9E;
+}
+
 .spinner {
   margin: 0 auto;
   width: 35px;
@@ -1151,10 +1159,6 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
   text-align: center;
   font-size: 10px;
   vertical-align: middle;
-}
-
-#history .spinner > div {
-  background-color: #7A8C9E;
 }
 
 .spinner > div {
