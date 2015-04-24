@@ -111,8 +111,6 @@ angular.module('copayApp.services')
 
 
     root.bindProfile = function(profile, cb) {
-
-console.log('[profileService.js.114] Bind profile', profile); //TODO
       root.profile = profile;
 
       configService.get(function(err) {
@@ -129,14 +127,12 @@ console.log('[profileService.js.114] Bind profile', profile); //TODO
 
     root.loadAndBindProfile = function(cb) {
       storageService.getProfile(function(err, profile) {
-console.log('[profileService.js.129:err:]',err); //TODO
         if (err) {
           $rootScope.$emit('Local/DeviceError', err);
           return cb(err);
         }
         if (!profile) return cb(new Error('NOPROFILE: No profile'));
 
-console.log('[profileService.js.135] BIND'); //TODO
         return root.bindProfile(profile, cb);
       });
     };
@@ -192,7 +188,6 @@ console.log('[profileService.js.135] BIND'); //TODO
           return cb('Could not join using the specified extended private key');
         }
       }
-      // TODO name
       walletClient.joinWallet(opts.secret, opts.myName || 'me', function(err) {
         if (err) return cb(err);
 
