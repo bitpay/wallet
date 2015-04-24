@@ -1,5 +1,17 @@
 <div class="content p20v" ng-controller="createController as create">
-  <div ng-show="create.loading" class="text-center text-gray animated infinite flash" translate>Creating wallet...</div>
+
+  <div class="onGoingProcess" ng-show="create.loading" style="background-color:#222">
+    <div class="spinner">
+      <div class="rect1"></div>
+      <div class="rect2"></div>
+      <div class="rect3"></div>
+      <div class="rect4"></div>
+      <div class="rect5"></div>
+    </div>
+    <span translate>Creating Wallet...</span>
+  </div>
+
+
   <form name="setupForm" ng-submit="create.create(setupForm)" ng-show="!create.loading" novalidate>
     <div class="row">
       <div class="large-12 columns">
