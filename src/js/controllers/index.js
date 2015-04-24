@@ -214,6 +214,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
   self.updateTxHistory = function(skip) {
     var fc = profileService.focusedClient;
+    if (!fc.isComplete()) return;
+
     if (!skip) {
       self.txHistory = [];
     }
@@ -470,7 +472,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       if (err) {
         if (self.walletId == walletId)
           self.setOngoingProcess('scanning', false);
-        self.clientError = ('Could not scan wallet:' + err);
+        self.clientError('Could not scan wallet:' + err);
         $rootScope.$apply();
       }
     });
@@ -558,7 +560,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   });
 
   $rootScope.$on('Local/BWSNotFound', function(event) {
-    self.clientError('Could not access to Bitcore Wallet Service: Service not found');
+    self.clientError('Could not access Wallet Service: Not found');
     $rootScope.$apply();
   });
 
@@ -571,7 +573,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     } else if (err.code === 'ETIMEDOUT') {
       $log.debug('Time out:', err);
     } else {
-      self.clientError(err && err.message ? 'Error at Bitcore Wallet Service:' + err.message : err);
+      self.clientError(err && err.message ? 'Error at Wallet Service:' + err.message : err);
     }
     $rootScope.$apply();
   });
