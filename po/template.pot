@@ -29,12 +29,12 @@ msgid "Alternative Currency"
 msgstr ""
 
 #: public/views/paymentUri.html
-#: public/views/send.html
+#: public/views/walletHome.html
 #: public/views/modals/txp-details.html
 msgid "Amount"
 msgstr ""
 
-#: public/views/send.html
+#: public/views/walletHome.html
 msgid "Amount in"
 msgstr ""
 
@@ -42,7 +42,7 @@ msgstr ""
 msgid "Applying changes"
 msgstr ""
 
-#: public/views/send.html
+#: public/views/walletHome.html
 msgid "Available Balance"
 msgstr ""
 
@@ -54,7 +54,7 @@ msgstr ""
 msgid "Backup"
 msgstr ""
 
-#: public/views/receive.html
+#: public/views/walletHome.html
 msgid "Backup now"
 msgstr ""
 
@@ -62,7 +62,7 @@ msgstr ""
 msgid "Backup options"
 msgstr ""
 
-#: public/views/receive.html
+#: public/views/walletHome.html
 msgid "Before receiving funds, it is highly recommended you backup your wallet keys."
 msgstr ""
 
@@ -70,7 +70,7 @@ msgstr ""
 msgid "Bitcoin URI is NOT valid!"
 msgstr ""
 
-#: public/views/send.html
+#: public/views/walletHome.html
 msgid "Bitcoin address"
 msgstr ""
 
@@ -91,7 +91,7 @@ msgid "CANCEL"
 msgstr ""
 
 #: public/views/copayers.html
-#: public/views/send.html
+#: public/views/walletHome.html
 #: public/views/modals/confirmation.html
 msgid "Cancel"
 msgstr ""
@@ -104,6 +104,7 @@ msgstr ""
 msgid "Choose backup file from your computer"
 msgstr ""
 
+#: public/views/includes/topbar.html
 #: public/views/modals/copayers.html
 #: public/views/modals/paypro.html
 #: public/views/modals/scanner.html
@@ -136,11 +137,7 @@ msgstr ""
 msgid "Copy to clipboard"
 msgstr ""
 
-#: public/views/includes/offline.html
-msgid "Could not connect to Wallet Service"
-msgstr ""
-
-#: public/views/history.html
+#: public/views/walletHome.html
 msgid "Could not fetch transaction history"
 msgstr ""
 
@@ -167,7 +164,7 @@ msgstr ""
 
 #: public/views/create.html
 #: public/views/createProfile.html
-msgid "Creating wallet..."
+msgid "Creating Wallet..."
 msgstr ""
 
 #: public/views/modals/tx-details.html
@@ -203,16 +200,8 @@ msgstr ""
 msgid "Family vacation funds"
 msgstr ""
 
-#: public/views/send.html
-msgid "Fetching Payment Information..."
-msgstr ""
-
-#: public/views/receive.html
+#: public/views/walletHome.html
 msgid "Generate new address"
-msgstr ""
-
-#: public/views/history.html
-msgid "Getting transactions..."
 msgstr ""
 
 #: public/views/preferences.html
@@ -275,7 +264,7 @@ msgid "Join shared wallet"
 msgstr ""
 
 #: public/views/join.html
-msgid "Joining shared wallet..."
+msgid "Joining Wallet..."
 msgstr ""
 
 #: public/views/preferences.html
@@ -284,6 +273,10 @@ msgstr ""
 
 #: public/views/importLegacy.html
 msgid "Learn more about Wallet Migration"
+msgstr ""
+
+#: public/views/walletHome.html
+msgid "Loading..."
 msgstr ""
 
 #: public/views/paymentUri.html
@@ -308,11 +301,11 @@ msgstr ""
 msgid "Message"
 msgstr ""
 
-#: public/views/history.html
+#: public/views/walletHome.html
 msgid "More"
 msgstr ""
 
-#: public/views/history.html
+#: public/views/walletHome.html
 msgid "Moved"
 msgstr ""
 
@@ -320,23 +313,27 @@ msgstr ""
 msgid "Multisignature wallet"
 msgstr ""
 
-#: public/views/receive.html
+#: public/views/walletHome.html
 msgid "My Bitcoin address"
+msgstr ""
+
+#: public/views/paymentUri.html
+msgid "Network"
 msgstr ""
 
 #: public/views/walletHome.html
 msgid "No pending spend proposals at the moment."
 msgstr ""
 
-#: public/views/history.html
+#: public/views/walletHome.html
 msgid "No transactions yet"
 msgstr ""
 
-#: public/views/send.html
+#: public/views/walletHome.html
 msgid "Not valid"
 msgstr ""
 
-#: public/views/send.html
+#: public/views/walletHome.html
 #: public/views/modals/tx-details.html
 #: public/views/modals/txp-details.html
 msgid "Note"
@@ -348,10 +345,6 @@ msgstr ""
 
 #: public/views/modals/tx-status.html
 msgid "OKAY"
-msgstr ""
-
-#: public/views/walletHome.html
-msgid "Opening Wallet..."
 msgstr ""
 
 #: public/views/import.html
@@ -383,7 +376,7 @@ msgstr ""
 msgid "Payment protocol request"
 msgstr ""
 
-#: public/views/send.html
+#: public/views/walletHome.html
 msgid "Payment to"
 msgstr ""
 
@@ -399,8 +392,12 @@ msgstr ""
 msgid "Preferences"
 msgstr ""
 
-#: public/views/history.html
+#: public/views/walletHome.html
 msgid "Received"
+msgstr ""
+
+#: public/views/walletHome.html
+msgid "Reconnecting to Wallet Service..."
 msgstr ""
 
 #: public/views/walletHome.html
@@ -408,7 +405,7 @@ msgid "Recreate"
 msgstr ""
 
 #: public/views/walletHome.html
-msgid "Recreating Wallet on BWS..."
+msgid "Recreating Wallet..."
 msgstr ""
 
 #: public/views/modals/txp-details.html
@@ -433,7 +430,7 @@ msgstr ""
 msgid "SET"
 msgstr ""
 
-#: public/views/receive.html
+#: public/views/walletHome.html
 msgid "SKIP BACKUP"
 msgstr ""
 
@@ -473,7 +470,7 @@ msgstr ""
 msgid "Select total number of copayers"
 msgstr ""
 
-#: public/views/send.html
+#: public/views/walletHome.html
 msgid "Send"
 msgstr ""
 
@@ -481,7 +478,7 @@ msgstr ""
 msgid "Send by email"
 msgstr ""
 
-#: public/views/history.html
+#: public/views/walletHome.html
 msgid "Sent"
 msgstr ""
 
@@ -497,7 +494,7 @@ msgstr ""
 msgid "Set up a password"
 msgstr ""
 
-#: public/views/receive.html
+#: public/views/walletHome.html
 msgid "Share address"
 msgstr ""
 
@@ -509,7 +506,7 @@ msgstr ""
 msgid "Share this invitation with your copayers"
 msgstr ""
 
-#: public/views/receive.html
+#: public/views/walletHome.html
 msgid "Share this with anyone to have them send you payments. To protect your privacy, new addresses are generated automatically once you use them."
 msgstr ""
 
@@ -531,7 +528,6 @@ msgstr ""
 msgid "Spend proposals"
 msgstr ""
 
-#: public/views/history.html
 #: public/views/walletHome.html
 msgid "Tap to retry"
 msgstr ""
@@ -552,7 +548,7 @@ msgstr ""
 msgid "Time"
 msgstr ""
 
-#: public/views/send.html
+#: public/views/walletHome.html
 #: public/views/includes/transaction.html
 #: public/views/modals/paypro.html
 #: public/views/modals/tx-details.html
@@ -584,11 +580,7 @@ msgstr ""
 msgid "Transaction sent!"
 msgstr ""
 
-#: public/views/includes/offline.html
-msgid "Trying to reconnnect..."
-msgstr ""
-
-#: public/views/history.html
+#: public/views/walletHome.html
 #: public/views/modals/tx-details.html
 msgid "Unconfirmed"
 msgstr ""
@@ -606,15 +598,7 @@ msgid "Untrusted"
 msgstr ""
 
 #: public/views/walletHome.html
-msgid "Updating Balance..."
-msgstr ""
-
-#: public/views/walletHome.html
-msgid "Updating Pending Transactions..."
-msgstr ""
-
-#: public/views/walletHome.html
-msgid "Updating Status..."
+msgid "Updating Wallet..."
 msgstr ""
 
 #: public/views/create.html
@@ -625,7 +609,7 @@ msgstr ""
 msgid "View backup"
 msgstr ""
 
-#: public/views/receive.html
+#: public/views/walletHome.html
 msgid "WARNING: Backup needed"
 msgstr ""
 
@@ -651,10 +635,6 @@ msgstr ""
 
 #: public/views/join.html
 msgid "Wallet Invitation is not valid!"
-msgstr ""
-
-#: public/views/includes/clientError.html
-msgid "Wallet Service Error"
 msgstr ""
 
 #: public/views/copayers.html
@@ -696,7 +676,7 @@ msgstr ""
 msgid "advanced options"
 msgstr ""
 
-#: public/views/send.html
+#: public/views/walletHome.html
 msgid "in pending transactions"
 msgstr ""
 
@@ -707,11 +687,11 @@ msgstr ""
 msgid "of"
 msgstr ""
 
-#: public/views/send.html
+#: public/views/walletHome.html
 msgid "optional"
 msgstr ""
 
-#: public/views/send.html
+#: public/views/walletHome.html
 msgid "too long!"
 msgstr ""
 
