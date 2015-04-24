@@ -74,6 +74,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.notAuthorized = false;
     self.txHistory = [];
     self.txHistoryPaging = false;
+    self.pendingTxProposalsCountForUs = null;
 
     $timeout(function() {
       self.hasProfile = true;
