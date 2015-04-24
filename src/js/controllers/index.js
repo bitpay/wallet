@@ -72,6 +72,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.alternativeBalanceAvailable = false;
     self.totalBalanceAlternative = null;
     self.notAuthorized = false;
+    self.clientError = null;
     self.txHistory = [];
     self.txHistoryPaging = false;
 
@@ -410,27 +411,17 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   };
 
 
-  self.clientError = function (err) {
-    if (isCordova) {
-      navigator.notification.confirm(
-        err,
-        function() {},
-        'Wallet Server Error', ['OK']
-      );
-    } else {
-      alert(err);
-    }
-  };
 
   self.recreate = function(cb) {
     var fc = profileService.focusedClient;
     self.setOngoingProcess('recreating', true);
+    self.clientError = null;
     fc.recreateWallet(function(err) {
       self.notAuthorized = false;
       self.setOngoingProcess('recreating', false);
 
       if (err) {
-        self.clientError('Could not recreate wallet:' + err);
+        self.clientError = 'Could not recreate wallet:' + err;
         $rootScope.$apply();
         return;
       }
@@ -467,7 +458,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       if (err) {
         if (self.walletId == walletId)
           self.setOngoingProcess('scanning', false);
-        self.clientError = ('Could not scan wallet:' + err);
+        self.clientError = 'Could not scan wallet:' + err;
         $rootScope.$apply();
       }
     });
@@ -531,6 +522,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     $rootScope.$on(eventName, function(event) {
       $log.debug('### Online event');
       self.isOffline = false;
+      self.clientError = null;
       self.updateAll();
       self.updateTxHistory();
     });
@@ -539,9 +531,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   $rootScope.$on('Local/Offline', function(event) {
     $log.debug('Offline event');
     self.isOffline = true;
-    $timeout(function(){
-      $rootScope.$apply();
-    });
   });
 
   $rootScope.$on('Local/BackupDone', function(event) {
@@ -555,7 +544,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   });
 
   $rootScope.$on('Local/BWSNotFound', function(event) {
-    self.clientError('Could not access to Bitcore Wallet Service: Service not found');
+    self.clientError = 'Could not access to Bitcore Wallet Service: Service not found';
     $rootScope.$apply();
   });
 
@@ -568,7 +557,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     } else if (err.code === 'ETIMEDOUT') {
       $log.debug('Time out:', err);
     } else {
-      self.clientError(err && err.message ? 'Error at Bitcore Wallet Service:' + err.message : err);
+      self.clientError = err;
     }
     $rootScope.$apply();
   });
@@ -638,6 +627,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     $timeout(function() {
       self.hasProfile = true;
       self.noFocusedWallet = true;
+      self.clientError = null;
       self.isComplete = null;
       self.walletName = null;
       go.addWallet();
