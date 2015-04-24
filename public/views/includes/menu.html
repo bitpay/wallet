@@ -1,17 +1,15 @@
-<div  
+<div
   class="bottom-bar row collapse">
     <div class="medium-3 small-3 columns text-center bottombar-item" ng-repeat="item in index.menu">
-      <a ng-click="index.setTab(item.link)" ng-class="{'active': index.tab == item.link}" 
-        ng-style="{'border-top-color':index.tab==item.link ? index.backgroundColor : ''}"> 
-        <i class="size-36 {{item.icon}} db"></i> 
+      <a ng-click="index.setTab(item.link)" ng-class="{'active': index.tab == item.link}"> 
+        <i class="size-36 {{item.icon}} db"></i>
         <div class="size-10 tu">
-          {{item.title|translate}} 
-          <span 
-            class="label alert round" 
+          {{item.title|translate}}
+          <span
+            class="label alert round"
             ng-if="item.link=='walletHome' && index.pendingTxProposalsCountForUs > 0">{{index.pendingTxProposalsCountForUs}}</span>
         </div>
       </a>
-    </div> 
+    </div>
 
 </div>
-
