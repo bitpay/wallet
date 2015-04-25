@@ -139,10 +139,21 @@ angular.module('copayApp.services')
           $rootScope.$emit('Local/DeviceError', err);
           return cb(err);
         }
-        if (!profile) return cb(new Error('NOPROFILE: No profile'));
-        $log.debug('Profile read');
+        if (!profile) {
+          // Migration??
+          storageService.tryToMigrate(function(err, migratedProfile) {
+            if (err) return cb(err);
+            if (!migratedProfile)
+              return cb(new Error('NOPROFILE: No profile'));
 
-        return root.bindProfile(profile, cb);
+            profile = migratedProfile;
+            return root.bindProfile(profile, cb);
+          })
+        } else {
+          $log.debug('Profile read');
+          return root.bindProfile(profile, cb);
+        }
+
       });
     };
 
@@ -268,11 +279,17 @@ angular.module('copayApp.services')
 
 
     root.create = function(cb) {
-      root._createNewProfile(function(err, p) {
-        if (err) return cb(err);
-        root.bindProfile(p, function(err) {
-          storageService.storeNewProfile(p, function(err) {
-            return cb(err);
+      $log.info('Creating profile');
+      configService.get(function(err) {
+        root.applyConfig();
+        root._createNewProfile(function(err, p) {
+          if (err) return cb(err);
+
+console.log('[profileService.js.287]'); //TODO
+          root.bindProfile(p, function(err) {
+            storageService.storeNewProfile(p, function(err) {
+              return cb(err);
+            });
           });
         });
       });

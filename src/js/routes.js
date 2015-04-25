@@ -27,9 +27,14 @@ angular
         ['debug', 'info', 'warn', 'error', 'log'].forEach(function(level) {
           var orig = $delegate[level];
           $delegate[level] = function() {
-            var args = [].slice.call(arguments).map(function(v){
-              if (typeof v == 'undefined') return 'undefined';
-              if (typeof v == 'object') return JSON.stringify(v).substr(0,200)+'...';
+            var args = [].slice.call(arguments);
+            args = args.map(function(v) {
+              if (typeof v == 'undefined') v = 'undefined';
+              if (typeof v == 'object') {
+                v = JSON.stringify(v);
+                if (v.length > 200) 
+                  v = v.substr(0, 197) + '...';
+              }
               return v;
             });
             historicLog.add(level, args.join(' '));

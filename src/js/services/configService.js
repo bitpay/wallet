@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.services').factory('configService', function(storageService, lodash) {
+angular.module('copayApp.services').factory('configService', function(storageService, lodash, $log) {
   var root = {};
 
   var defaultConfig = {
@@ -48,6 +48,7 @@ angular.module('copayApp.services').factory('configService', function(storageSer
   };
 
   root.get = function(cb) {
+
     storageService.getConfig(function(err, localConfig) {
       if (localConfig) {
         configCache = JSON.parse(localConfig);
@@ -61,9 +62,9 @@ angular.module('copayApp.services').factory('configService', function(storageSer
         }
 
       } else {
-        configCache = defaultConfig;
+        configCache = lodash.clone(defaultConfig);
       };
-
+      $log.debug('Preferences read:', configCache)
       return cb(err, configCache);
     });
   };
