@@ -881,6 +881,7 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
 .text-secondary {color: #3498DB;}
 .text-white {color: #fff;}
 .text-warning {color: #ED4A43;}
+.text-alert {color: red;}
 .text-success {color: #1ABC9C;}
 
 .panel {

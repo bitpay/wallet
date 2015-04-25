@@ -110,11 +110,20 @@ angular.module('copayApp.services')
     };
 
 
+    root.applyConfig = function() {
+      var config = configService.getSync();
+      $log.debug('Applying preferences');
+      bwcService.setBaseUrl(config.bws.url);
+      bwcService.setTransports(['polling']);
+    };
+
     root.bindProfile = function(profile, cb) {
       root.profile = profile;
 
       configService.get(function(err) {
+        $log.debug('Preferences read');
         if (err) return cb(err);
+        root.applyConfig();
         $rootScope.$emit('Local/DefaultLanguage');
         root.setWalletClients();
         storageService.getFocusedWalletId(function(err, focusedWalletId) {
@@ -124,7 +133,6 @@ angular.module('copayApp.services')
       });
     };
 
-
     root.loadAndBindProfile = function(cb) {
       storageService.getProfile(function(err, profile) {
         if (err) {
@@ -132,6 +140,7 @@ angular.module('copayApp.services')
           return cb(err);
         }
         if (!profile) return cb(new Error('NOPROFILE: No profile'));
+        $log.debug('Profile read');
 
         return root.bindProfile(profile, cb);
       });

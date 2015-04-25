@@ -1,0 +1,10 @@
+<div class="content p20v" ng-controller="preferencesLogs as logs">
+  <ul class="no-bullet m0 size-14">
+    <li class="line-b" ng-repeat="l in logs.logs">
+
+      <span ng-class="{'text-warning': l.level=='warn', 'text-secondary': l.level=='debug', 'text-primary': l.level=='info', 'text-alert': l.level=='error' }"> 
+      {{l.msg}}
+      </span>
+    </li>
+  </ul>
+</div>

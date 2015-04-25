@@ -16,8 +16,29 @@ if (window && window.navigator) {
 //Setting up route
 angular
   .module('copayApp')
-  .config(function(bwcServiceProvider, $stateProvider, $urlRouterProvider) {
+  .config(function(historicLogProvider, $provide, $logProvider, $stateProvider, $urlRouterProvider) {
     $urlRouterProvider.otherwise('/');
+
+    $logProvider.debugEnabled(true);
+    $provide.decorator('$log', ['$delegate',
+      function($delegate) {
+        var historicLog = historicLogProvider.$get();
+
+        ['debug', 'info', 'warn', 'error', 'log'].forEach(function(level) {
+          var orig = $delegate[level];
+          $delegate[level] = function() {
+            var args = [].slice.call(arguments).map(function(v){
+              if (typeof v == 'undefined') return 'undefined';
+              if (typeof v == 'object') return JSON.stringify(v).substr(0,200)+'...';
+              return v;
+            });
+            historicLog.add(level, args.join(' '));
+            orig.apply(null, args)
+          };
+        });
+        return $delegate;
+      }
+    ]);
 
     $stateProvider
       .state('splash', {
@@ -305,6 +326,42 @@ angular
           }
         }
       })
+      .state('about', {
+        url: '/about',
+        templateUrl: 'views/preferencesAbout.html',
+        walletShouldBeComplete: true,
+        needProfile: true,
+        views: {
+          'main': {
+            templateUrl: 'views/preferencesAbout.html'
+          },
+          'topbar': {
+            templateUrl: 'views/includes/topbar.html',
+            controller: function($scope) {
+              $scope.titleSection = 'About';
+              $scope.goBackToState = 'preferences';
+            }
+          }
+        }
+      })
+      .state('logs', {
+        url: '/logs',
+        templateUrl: 'views/preferencesLogs.html',
+        walletShouldBeComplete: true,
+        needProfile: true,
+        views: {
+          'main': {
+            templateUrl: 'views/preferencesLogs.html'
+          },
+          'topbar': {
+            templateUrl: 'views/includes/topbar.html',
+            controller: function($scope) {
+              $scope.titleSection = 'Logs';
+              $scope.goBackToState = 'about';
+            }
+          }
+        }
+      })
       .state('backup', {
         url: '/backup',
         templateUrl: 'views/backup.html',
@@ -361,9 +418,9 @@ angular
                 case 'resume':
                   $scope.$emit('Local/Resume');
                   break;
-                // case 'online':
-                //   //   $scope.$emit('Local/Online');
-                //   break;
+                  // case 'online':
+                  //   //   $scope.$emit('Local/Online');
+                  //   break;
                 case 'offline':
                   $scope.$emit('Local/Offline');
                   break;
@@ -376,10 +433,10 @@ angular
       });
   })
   .run(function($rootScope, $state, $log, gettextCatalog, uriHandler, isCordova, amMoment, profileService) {
-    
-    console.log('Attaching FastClick');
+
+    $log.debug('Attaching FastClick');
     FastClick.attach(document.body);
-    
+
 
     // Auto-detect browser language
     var userLang, androidLang;
@@ -413,6 +470,8 @@ angular
       preferencesUnit: 12,
       preferencesAltCurrency: 12,
       preferencesBwsUrl: 12,
+      about: 12,
+      logs: 13,
       add: 0,
       create: 12,
       join: 12,
@@ -435,7 +494,7 @@ angular
       if (!profileService.profile && toState.needProfile) {
 
         // Give us time to open / create the profile
-        event.preventDefault(); 
+        event.preventDefault();
 
         // Try to open local profile
         profileService.loadAndBindProfile(function(err) {
@@ -447,8 +506,8 @@ angular
               throw new Error(err); // TODO
             }
           } else {
-            console.log('Profile loaded ... resuming transition');
-            $state.transitionTo('walletHome');
+            $log.debug('Profile loaded ... Starting UX.');
+            $state.transitionTo(toState, toParams);
           }
         });
       }

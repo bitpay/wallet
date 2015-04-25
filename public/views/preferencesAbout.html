@@ -1,0 +1,34 @@
+<div class="content p20v" ng-controller="preferencesAbout as about">
+  <ul class="no-bullet m0 size-14">
+    <div class="m20t m20b text-center">
+      <img src="img/logo.svg" alt="Copay" width="120">
+    </div>
+    <h4 class="title m0" translate>Release Information</h4>
+
+    <div  ng-controller="versionController as v">
+      <li class="line-b p20" ng-conf>
+        <span translate>Version</span>
+        <span class="right text-gray">
+          v{{v.version}} 
+        </span>      
+      </li>
+      <li class="line-b p20" ng-conf ng-click="$root.openExternalLink('https://github.com/bitpay/copay/tree/'+v.commitHash)">
+        <span translate>Commit hash</span>
+        <span class="right text-gray">
+          #{{v.commitHash}}
+          <i class="icon-arrow-right3 size-24 right text-gray"></i>  
+        </span>      
+      </li>
+    </div>
+ 
+    <h4 class="title m0" translate>&nbsp;</h4>
+    <li class="line-b p20" ng-conf ng-click="$root.go('logs')">
+      <span translate>View session logs</span>
+      <span class="right text-gray">
+        <i class="icon-arrow-right3 size-24 right text-gray"></i>  
+      </span>      
+    </li>
+
+  </ul>
+
+</div>
