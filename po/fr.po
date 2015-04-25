@@ -276,8 +276,8 @@ msgid "Joining Wallet..."
 msgstr "Connexion au portefeuille..."
 
 #: public/views/preferences.html
-msgid "Langue"
-msgstr ""
+msgid "Language"
+msgstr "Langue"
 
 #: public/views/importLegacy.html
 msgid "Learn more about Wallet Migration"
@@ -427,7 +427,7 @@ msgstr "Supprimer la transaction"
 #: public/views/backup.html 
 #: public/views/includes/password.html
 msgid "Repeat password"
-msgstr "Répéter le mot de passe"
+msgstr "Répétez le mot de passe"
 
 #: public/views/import.html 
 #: public/views/join.html
