@@ -52,21 +52,28 @@ angular.module('copayApp.services')
     root.tryToMigrate = function(cb) {
       if (!isCordova) return cb();
 
-      localStorageService.get('profile', function(err, p) {
-        if (err) cb(err);
-        if (!p) return cb();
+      localStorageService.get('profile', function(err, str) {
+        if (err) return cb(err);
+        if (!str) return cb();
+
         $log.info('Starting Migration profile to File storage...')
-        fileStorageService.create('profile', p, function(err) {
+
+        fileStorageService.create('profile', str, function(err) {
           if (err) cb(err);
           $log.info('Profile Migrated successfully');
 
           localStorageService.get('config', function(err, c) {
-            if (err) cb(err);
-            if (!c) return cb(null, p);
+            if (err) return cb(err);
+            if (!c) return root.getProfile(cb);
+
             fileStorageService.create('config', c, function(err) {
-              if (err) cb(err);
+
+              if (err) {
+                $log.info('Error migrating config: ignoring', err);
+                return root.getProfile(cb);
+              }
               $log.info('Config Migrated successfully');
-              return cb(null, p)
+              return root.getProfile(cb);
             });
           });
         });
