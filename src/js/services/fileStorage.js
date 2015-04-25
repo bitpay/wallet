@@ -2,7 +2,8 @@
 
 angular.module('copayApp.services')
   .factory('fileStorageService', function(lodash, $log) {
-    var root = {}, fs;
+    var root = {},
+      fs;
 
 
     root.init = function(cb) {
@@ -27,24 +28,28 @@ angular.module('copayApp.services')
     root.get = function(k, cb) {
       root.init(function(err, fs) {
         if (err) return cb(err);
-        fs.root.getFile(k, {
-          create: false,
-        }, function(fileEntry) {
-          if (!fileEntry) return cb();
-          fileEntry.file(function(file) {
-            var reader = new FileReader();
+        window.resolveLocalFileSystemURL(cordova.file.dataDirectory, function(dir) {
+          $log.debug(".get: Got main dir:", dir.nativeURL);
+          dir.getFile(k, {
+            create: false,
+          }, function(fileEntry) {
+            if (!fileEntry) return cb();
+            fileEntry.file(function(file) {
+              var reader = new FileReader();
 
-            reader.onloadend = function(e) {
-              console.log("Read: " + this.result);
-              return cb(null, this.result)
-            }
+              reader.onloadend = function(e) {
+                if (this.result)
+                  $log.debug("Read: ", this.result);
+                return cb(null, this.result)
+              }
 
-            reader.readAsText(file);
+              reader.readAsText(file);
+            });
+          }, function(err) {
+            // Not found
+            if (err.code == 1) return cb();
+            else return cb(err);
           });
-        }, function(err) {
-          // Not found
-          if (err.code==1) return cb();
-          else return cb(err);
         });
       })
     };
@@ -52,48 +57,52 @@ angular.module('copayApp.services')
     root.set = function(k, v, cb) {
       root.init(function(err, fs) {
         if (err) return cb(err);
-        fs.root.getFile(k, {
-          create: true,
-        }, function(fileEntry) {
-          // Create a FileWriter object for our FileEntry (log.txt).
-          fileEntry.createWriter(function(fileWriter) {
+        window.resolveLocalFileSystemURL(cordova.file.dataDirectory, function(dir) {
+          $log.debug(".set: Got main dir:", dir.nativeURL);
+          dir.getFile(k, {
+            create: true,
+          }, function(fileEntry) {
+            // Create a FileWriter object for our FileEntry (log.txt).
+            fileEntry.createWriter(function(fileWriter) {
 
-            fileWriter.onwriteend = function(e) {
-              console.log('Write completed.');
-              return cb();
-            };
+              fileWriter.onwriteend = function(e) {
+                console.log('Write completed.');
+                return cb();
+              };
 
-            fileWriter.onerror = function(e) {
-              console.log('Write failed: ' + e.toString());
-              return cb('Fail to write:', e.toString());
-            };
+              fileWriter.onerror = function(e) {
+                console.log('Write failed: ' + e.toString());
+                return cb('Fail to write:', e.toString());
+              };
 
-            if (lodash.isObject(v))
-              v = JSON.stringify(v);
+              if (lodash.isObject(v))
+                v = JSON.stringify(v);
 
-            var blob = new Blob([v], {
-              type: "application/json"
-            });
+              $log.debug('Writing:', k, v);
+              var blob = new Blob([v], {
+                type: "text/plain"
+              });
+              fileWriter.write(blob);
 
-            fileWriter.write(blob);
-
-          }, cb);
+            }, cb);
+          });
         });
-
       });
     };
 
     root.remove = function(k, cb) {
       root.init(function(err, fs) {
         if (err) return cb(err);
-        fs.root.getFile(k, {
-          create: false,
-        }, function(fileEntry) {
-          // Create a FileWriter object for our FileEntry (log.txt).
-          fileEntry.remove(function() {
-            console.log('File removed.');
-            return cb();
-          }, cb, cb);
+        window.resolveLocalFileSystemURL(cordova.file.dataDirectory, function(dir) {
+          dir.getFile(k, {
+            create: false,
+          }, function(fileEntry) {
+            // Create a FileWriter object for our FileEntry (log.txt).
+            fileEntry.remove(function() {
+              console.log('File removed.');
+              return cb();
+            }, cb, cb);
+          });
         });
       });
     };
