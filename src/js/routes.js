@@ -29,11 +29,17 @@ angular
           $delegate[level] = function() {
             var args = [].slice.call(arguments);
             args = args.map(function(v) {
-              if (typeof v == 'undefined') v = 'undefined';
-              if (typeof v == 'object') {
-                v = JSON.stringify(v);
-                if (v.length > 200) 
+              try {
+                if (typeof v == 'undefined') v = 'undefined';
+                if (typeof v == 'object') {
+                  v = JSON.stringify(v);
+                }
+                v = v.toString();
+                if (v.length > 200)
                   v = v.substr(0, 197) + '...';
+              } catch (e) {
+                console.log('Error at log decorator:', e);
+                v = 'undefined';
               }
               return v;
             });
