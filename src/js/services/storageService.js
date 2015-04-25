@@ -111,5 +111,17 @@ angular.module('copayApp.services')
       storage.get('backup-' + walletId, cb);
     };
 
+    root.getConfig = function(cb) {
+      storage.get('config', cb);
+    };
+
+    root.storeConfig = function(val, cb) {
+      storage.set('config', val, cb);
+    };
+
+    root.clearConfig = function(cb) {
+      storage.remove('config', cb);
+    };
+
     return root;
   });

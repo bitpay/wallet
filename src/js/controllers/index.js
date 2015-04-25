@@ -534,9 +534,14 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.updateColor();
   });
 
-  $rootScope.$on('Local/ConfigurationUpdated', function(event) {
+  $rootScope.$on('Local/UnitSettingUpdated', function(event) {
     self.updateAll();
     self.updateTxHistory();
+  });
+
+
+  $rootScope.$on('Local/BWSUpdated', function(event) {
+    profileService.applyConfig();
   });
 
   $rootScope.$on('Local/WalletCompleted', function(event) {

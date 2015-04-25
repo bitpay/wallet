@@ -1,9 +1,7 @@
 'use strict';
 
-angular.module('copayApp.services').factory('configService', function(localStorageService, fileStorageService, isCordova, lodash, bwcService) {
+angular.module('copayApp.services').factory('configService', function(storageService, lodash) {
   var root = {};
-
-  var storage = isCordova ? fileStorageService : localStorageService;
 
   var defaultConfig = {
     // wallet limits
@@ -15,18 +13,6 @@ angular.module('copayApp.services').factory('configService', function(localStora
     // Bitcore wallet service URL
     bws: {
       url: 'https://bws.bitpay.com/bws/api',
-    },
-
-    // insight
-    insight: {
-      testnet: {
-        url: 'https://test-insight.bitpay.com:443',
-        transports: ['polling'],
-      },
-      livenet: {
-        url: 'https://insight.bitpay.com:443',
-        transports: ['polling'],
-      },
     },
 
     // wallet default config
@@ -46,12 +32,6 @@ angular.module('copayApp.services').factory('configService', function(localStora
       }
     },
 
-    // local encryption/security config
-    passphraseConfig: {
-      iterations: 5000,
-      storageSalt: 'mjuBtGybi/4=',
-    },
-
     rates: {
       url: 'https://insight.bitpay.com:443/api/rates',
     },
@@ -68,7 +48,7 @@ angular.module('copayApp.services').factory('configService', function(localStora
   };
 
   root.get = function(cb) {
-    storage.get('config', function(err, localConfig) {
+    storageService.getConfig(function(err, localConfig) {
       if (localConfig) {
         configCache = JSON.parse(localConfig);
 
@@ -90,7 +70,7 @@ angular.module('copayApp.services').factory('configService', function(localStora
 
   root.set = function(newOpts, cb) {
     var config = defaultConfig;
-    storage.get('config', function(err, oldOpts) {
+    storageService.getConfig(function(err, oldOpts) {
       if (lodash.isString(oldOpts)) {
         oldOpts = JSON.parse(oldOpts);
       }
@@ -103,23 +83,19 @@ angular.module('copayApp.services').factory('configService', function(localStora
       lodash.merge(config, oldOpts, newOpts);
       configCache = config;
 
-      storage.set('config', JSON.stringify(config), cb);
+      storageService.setConfig(JSON.stringify(config), cb);
     });
   };
 
   root.reset = function(cb) {
-    storage.remove('config', cb);
+    configCache = lodash.clone(defaultConfig);
+    storageService.removeConfig(cb);
   };
 
   root.getDefaults = function() {
-    return defaultConfig;
+    return lodash.clone(defaultConfig);
   };
 
-  root.get(function(err, c) {
-    if (err) throw Error(err);
-    bwcService.setBaseUrl(c.bws.url);
-    bwcService.setTransports(['polling']);
-  });
 
   return root;
 });
