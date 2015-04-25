@@ -285,7 +285,7 @@ angular.module('copayApp.services')
         root._createNewProfile(function(err, p) {
           if (err) return cb(err);
 
-console.log('[profileService.js.287]'); //TODO
+          console.log('[profileService.js.287]'); //TODO
           root.bindProfile(p, function(err) {
             storageService.storeNewProfile(p, function(err) {
               return cb(err);

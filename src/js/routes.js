@@ -38,6 +38,9 @@ angular
               return v;
             });
             historicLog.add(level, args.join(' '));
+            if (window.cordova)
+              console.log(args.join(' '));
+
             orig.apply(null, args)
           };
         });
