@@ -97,7 +97,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       self.copayers = [];
 
       storageService.getBackupFlag(self.walletId, function(err, val) {
-        self.needsBackup = !val;
+        self.needsBackup = self.network == 'testnet' ? false : !val;
         self.openWallet();
       });
     });
@@ -415,7 +415,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   };
 
 
-  self.clientError = function (err) {
+  self.clientError = function(err) {
     if (isCordova) {
       navigator.notification.confirm(
         err,
@@ -427,7 +427,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     }
   };
 
-  self.deviceError = function (err) {
+  self.deviceError = function(err) {
     if (isCordova) {
       navigator.notification.confirm(
         err,
@@ -562,7 +562,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   $rootScope.$on('Local/Offline', function(event) {
     $log.debug('Offline event');
     self.isOffline = true;
-    $timeout(function(){
+    $timeout(function() {
       $rootScope.$apply();
     });
   });
@@ -599,7 +599,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       var msg = 'Error at Wallet Service: ';
       if (err.message) msg = msg + err.message;
       else if (err.error) msg = msg + err.error;
-      else msg = msg +  err;
+      else msg = msg + err;
       self.clientError(msg);
     }
     $rootScope.$apply();
