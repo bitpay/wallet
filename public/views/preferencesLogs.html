@@ -1,4 +1,10 @@
 <div class="content p20v" ng-controller="preferencesLogs as logs">
+
+  <button class="black radius expand" ng-show="logs.isCordova" ng-style="{'background-color':index.backgroundColor}" ng-click="logs.sendLogs()" ><i class="fi-mail"></i>
+      
+  <span translate>Send by email</span>
+</button>
+
   <ul class="no-bullet m0 size-14">
     <li class="line-b" ng-repeat="l in logs.logs">
 
