@@ -294,8 +294,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     var fc = profileService.focusedClient;
     $timeout(function() {
       storageService.getLastAddress(fc.credentials.walletId, function(err, addr) {
-        // TODO
-        if (addr && 0) {
+        if (addr) {
           self.addr = addr;
         } else {
           self.newAddress();
