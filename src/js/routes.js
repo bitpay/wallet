@@ -447,10 +447,7 @@ angular
       });
   })
   .run(function($rootScope, $state, $log, gettextCatalog, uriHandler, isCordova, amMoment, profileService) {
-
-    $log.debug('Attaching FastClick');
     FastClick.attach(document.body);
-
 
     // Auto-detect browser language
     var userLang, androidLang;
