@@ -43,11 +43,14 @@ angular
               }
               return v;
             });
-            historicLog.add(level, args.join(' '));
-            if (window.cordova)
-              console.log(args.join(' '));
-
-            orig.apply(null, args)
+            try {
+              if (window.cordova)
+                console.log(args.join(' '));
+              orig.apply(null, args)
+              historicLog.add(level, args.join(' '));
+            } catch (e) {
+              console.log('Error at log decorator:', e);
+            }
           };
         });
         return $delegate;
