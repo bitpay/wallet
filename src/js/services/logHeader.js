@@ -4,6 +4,5 @@ angular.module('copayApp.services')
     $log.info('Starting Copay v' + window.version + ' #' + window.commitHash);
     $log.info('Client: isCordova:', isCordova, 'isChromeApp:', isChromeApp);
     $log.info('Navigator:', navigator.userAgent);
-
     return {};
   });

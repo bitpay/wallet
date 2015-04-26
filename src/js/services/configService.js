@@ -84,7 +84,7 @@ angular.module('copayApp.services').factory('configService', function(storageSer
       lodash.merge(config, oldOpts, newOpts);
       configCache = config;
 
-      storageService.setConfig(JSON.stringify(config), cb);
+      storageService.storeConfig(JSON.stringify(config), cb);
     });
   };
 
