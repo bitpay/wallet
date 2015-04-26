@@ -95,8 +95,8 @@ angular.module('copayApp.controllers').controller('copayersController',
         if (isMobile.Android() || isMobile.Windows()) {
           window.ignoreMobilePause = true;
         }
-        var message = 'Join my Copay wallet. Here is the invitation code ' + secret + '  You can download Copay for your phone or desktop at https://copay.io';
-        window.plugins.socialsharing.share(message, null, null, null);
+        var message = 'Join my Copay wallet. Here is the invitation code: ' + secret + '  You can download Copay for your phone or desktop at https://copay.io';
+        window.plugins.socialsharing.share(message, 'Invitation to share a Copay Wallet', null, null);
       }
     };
 

@@ -55,7 +55,7 @@ angular.module('copayApp.controllers').controller('receiveController',
         if (isMobile.Android() || isMobile.Windows()) {
           window.ignoreMobilePause = true;
         }
-        window.plugins.socialsharing.share('bitcoin:' + addr, null, null, null);
+        window.plugins.socialsharing.share('bitcoin:' + addr, 'Here is my bitcoin address', null, null);
       }
     };
 
