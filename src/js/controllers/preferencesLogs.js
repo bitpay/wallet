@@ -6,8 +6,8 @@ function(historicLog, isCordova) {
   this.isCordova = isCordova;
 
   this.sendLogs = function() {
-    var body = 'Copay Session Logs\n Be careful, this could contain sensitive private data\n\n Copay v' + window.version + ' #' + window.commitHash;
-    body += '\n\n'
+    var body = 'Copay Session Logs\n Be careful, this could contain sensitive private data\n\n';
+    body += '\n\n';
     body += this.logs.map(function(v) {
       return v.msg;
     }).join('\n');

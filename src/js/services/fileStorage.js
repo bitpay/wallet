@@ -28,7 +28,8 @@ angular.module('copayApp.services')
     root.get = function(k, cb) {
       root.init(function(err, fs) {
         if (err) return cb(err);
-        window.resolveLocalFileSystemURL(cordova.file.dataDirectory, function(dir) {
+        root.getDir(function(err, dir) {
+          if (err) return cb(err);
           $log.debug(".get: Got main dir:", dir.nativeURL);
           dir.getFile(k, {
             create: false,
@@ -57,7 +58,8 @@ angular.module('copayApp.services')
     root.set = function(k, v, cb) {
       root.init(function(err, fs) {
         if (err) return cb(err);
-        window.resolveLocalFileSystemURL(cordova.file.dataDirectory, function(dir) {
+        root.getDir(function(err, dir) {
+          if (err) return cb(err);
           $log.debug(".set: Got main dir:", dir.nativeURL);
           dir.getFile(k, {
             create: true,
@@ -90,10 +92,27 @@ angular.module('copayApp.services')
       });
     };
 
+
+    // See https://github.com/apache/cordova-plugin-file/#where-to-store-files
+    root.getDir = function(cb) {
+      if (!cordova.file) {
+        return cb('Could not write on device storage');
+      }
+
+      var url = cordova.file.dataDirectory;
+      // This could be needed for windows
+      // if (cordova.file === undefined) {
+      //   url = 'ms-appdata:///local/';
+      window.resolveLocalFileSystemURL(url, function(dir) {
+        return cb(null, dir);
+      });
+    };
+
     root.remove = function(k, cb) {
       root.init(function(err, fs) {
         if (err) return cb(err);
-        window.resolveLocalFileSystemURL(cordova.file.dataDirectory, function(dir) {
+        root.getDir(function(err, dir) {
+          if (err) return cb(err);
           dir.getFile(k, {
             create: false,
           }, function(fileEntry) {

@@ -1,9 +1,16 @@
 'use strict';
 angular.module('copayApp.services')
-  .factory('storageService', function(fileStorageService, localStorageService, sjcl, $log, lodash, isCordova) {
+  .factory('storageService', function(logHeader, fileStorageService, localStorageService, sjcl, $log, lodash, isCordova) {
 
     var root = {};
-    var storage = isCordova ? fileStorageService : localStorageService;
+
+    // File storage is not supported for writting according to 
+    // https://github.com/apache/cordova-plugin-file/#supported-platforms
+    var shouldUseFileStorage = isCordova && !isMobile.Windows();
+    $log.debug('Using file storage:', shouldUseFileStorage);
+
+
+    var storage = shouldUseFileStorage ? fileStorageService : localStorageService;
 
     var getUUID = function(cb) {
       // TO SIMULATE MOBILE
@@ -50,7 +57,7 @@ angular.module('copayApp.services')
 
 
     root.tryToMigrate = function(cb) {
-      if (!isCordova) return cb();
+      if (!shouldUseFileStorage) return cb();
 
       localStorageService.get('profile', function(err, str) {
         if (err) return cb(err);
