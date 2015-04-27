@@ -102,6 +102,9 @@ angular.module('copayApp.services')
       //   url = 'ms-appdata:///local/';
       window.resolveLocalFileSystemURL(url, function(dir) {
         return cb(null, dir);
+      }, function(err) {
+        $log.warn(err);
+        return cb(err || 'Could not resolve filesystem:' +  url);
       });
     };
 
