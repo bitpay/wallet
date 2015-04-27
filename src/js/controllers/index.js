@@ -569,7 +569,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
   $rootScope.$on('Local/BackupDone', function(event) {
     self.needsBackup = false;
-    storageService.setBackupFlag(self.walletId, function() {});
+    storageService.setBackupFlag(self.walletId, function(err) {
+      if (err) $rootScope.$emit('Local/DeviceError', err)
+    });
   });
 
   $rootScope.$on('Local/NotAuthorized', function(event) {
