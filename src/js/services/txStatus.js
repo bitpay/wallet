@@ -1,18 +1,17 @@
 'use strict';
 
-angular.module('copayApp.services').factory('txStatus', function($modal, lodash, profileService) {
+angular.module('copayApp.services').factory('txStatus', function($modal, lodash, profileService, $timeout) {
   var root = {};
 
-  root.notify = function(txp) {
+  root.notify = function(txp, cb) {
     var fc = profileService.focusedClient;
     var msg;
 
     var status = txp.status;
-    
+
     if (status == 'broadcasted') {
       msg = 'Transaction broadcasted';
-    }
-    else {
+    } else {
       var action = lodash.find(txp.actions, {
         copayerId: fc.credentials.copayerId
       });
@@ -25,16 +24,16 @@ angular.module('copayApp.services').factory('txStatus', function($modal, lodash,
       }
     }
 
-    if (msg)
-      root.openModal(msg);
+    root.openModal(msg, cb);
   };
 
-  root.openModal = function(statusStr) {
+  root.openModal = function(statusStr, cb) {
     var ModalInstanceCtrl = function($scope, $modalInstance) {
       $scope.statusStr = statusStr;
       $scope.cancel = function() {
         $modalInstance.dismiss('cancel');
       };
+      if (cb) $timeout(cb, 100);
     };
     $modal.open({
       templateUrl: 'views/modals/tx-status.html',
