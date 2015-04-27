@@ -486,10 +486,9 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
         }
 
         self.signAndBroadcast(txp, function(err) {
-          profileService.lockFC();
-          if (err) {
+          if (err) 
             return self.setError(err);
-          }
+
           self.resetForm();
         });
       });
@@ -504,9 +503,8 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       profileService.lockFC();
       self.setOngoingProcess();
 
-      if (err) {
+      if (err) 
         return cb(err);
-      }
 
       if (signedTx.status == 'accepted') {
         self.setOngoingProcess('Broadcasting transaction');
@@ -515,16 +513,14 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
           if (err) {
             $scope.error = 'Transaction not broadcasted. Please try again.';
             $scope.$digest();
-          } else {
-            txStatus.notify(btx);
-            $scope.$emit('Local/TxProposalAction');
-          }
-          return cb();
+            return;
+          } 
+          $scope.$emit('Local/TxProposalAction');
+          txStatus.notify(btx, cb);
         });
       } else {
-        txStatus.notify(signedTx);
         $scope.$emit('Local/TxProposalAction');
-        return cb();
+        txStatus.notify(signedTx, cb);
       }
     });
   };

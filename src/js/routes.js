@@ -28,11 +28,15 @@ angular
           var orig = $delegate[level];
           $delegate[level] = function() {
             var args = [].slice.call(arguments);
+            if (!Array.isArray(args)) args = [args];
             args = args.map(function(v) {
               try {
                 if (typeof v == 'undefined') v = 'undefined';
                 if (typeof v == 'object') {
-                  v = JSON.stringify(v);
+                  if (v.message)
+                    v = v.message;
+                  else
+                    v = JSON.stringify(v);
                 }
                 v = v.toString();
                 if (v.length > 200)
@@ -46,7 +50,7 @@ angular
             try {
               if (window.cordova)
                 console.log(args.join(' '));
-              orig.apply(null, args)
+              orig.apply(null, args);
               historicLog.add(level, args.join(' '));
             } catch (e) {
               console.log('Error at log decorator:', e);
