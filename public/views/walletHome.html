@@ -265,7 +265,7 @@
   </div>
   <div class="row m20t">
     <div class="large-12 large-centered columns">
-      <form ng-show="!home.onGoingProcess" name="sendForm" ng-submit="home.submitForm()" ng-disabled="home.blockUx" novalidate>
+      <form  name="sendForm" ng-submit="home.submitForm()" ng-disabled="home.blockUx || home.onGoingProcess" novalidate>
           <div class="box-notification" ng-show="home.error" ng-click="home.resetError()">
             <span class="text-warning">
               {{home.error|translate}}
