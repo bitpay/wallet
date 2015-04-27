@@ -189,32 +189,29 @@
       <!-- Address-->
       <div class="large-12 columns">
         <h2 class="text-center m10t" translate>My Bitcoin address</h2>
-        <div  ng-show="!home.generatingAddress">
+        <div >
         <div class="text-center" ng-click="home.copyAddress(home.addr)">
           <qrcode size="220" data="bitcoin:{{home.addr}}"></qrcode>
-          <div class="m10t">
-            <h4 ng-class="{'enable_text_select': !index.isCordova}" class="size-12">{{home.addr}}</h4>
-          </div>
-        </div>
-        </div>
-        <div  ng-show="home.generatingAddress">
-        <div class="text-center"  style="margin-bottom:14px;">
-          <div style="height:220px; width:220px; margin:auto; background: url(img/qr.png) white">
-            <div class="spinner" style="margin-top:80px">
-              <div class="rect1"></div>
-              <div class="rect2"></div>
-              <div class="rect3"></div>
-              <div class="rect4"></div>
-              <div class="rect5"></div>
+          <div  ng-show="home.generatingAddress" style="position:relative; top:-226px; height:0px">
+            <div style="height:220px; width:220px; margin:auto; background: url(img/qr.png) white">
+              <div class="spinner" style="margin-top:80px">
+                <div class="rect1"></div>
+                <div class="rect2"></div>
+                <div class="rect3"></div>
+                <div class="rect4"></div>
+                <div class="rect5"></div>
+              </div>
             </div>
           </div>
-  
-          <div class="m10t">
-            <h4 class="size-12">...</h4>
+          <div class="m10t" >
+            <h4 ng-class="{'enable_text_select': !index.isCordova}" class="size-12">
+  {{home.generatingAddress ? '...' : home.addr}}
+
+</h4>
           </div>
         </div>
         </div>
- 
+
         <div class="m10t text-center" ng-show="index.isCordova">
           <span class="button outline dark-gray tiny"
             ng-click="home.shareAddress(home.addr)">
