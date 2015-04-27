@@ -23,7 +23,7 @@
 
   <h4 class="title m0" translate>Information</h4>
   <ul class="no-bullet size-14 m0">
-    <li ng-if="btx.addressTo" class="line-b p10 oh">
+    <li ng-if="btx.addressTo" class="line-b p10 oh" ng-click="copyAddress(btx.addressTo)">
     <span class="text-gray" translate>To</span>:
     <span class="right">
       <span ng-if="btx.merchant">

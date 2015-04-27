@@ -248,6 +248,11 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
         }, 100);
       };
 
+      $scope.copyAddress = function(addr) {
+        if (!addr) return;
+        self.copyAddress(addr);
+      };
+
       $scope.cancel = function() {
         $modalInstance.dismiss('cancel');
       };
@@ -751,6 +756,11 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       $scope.getShortNetworkName = function() {
         var n = fc.credentials.network;
         return n.substring(0, 4);
+      };
+
+      $scope.copyAddress = function(addr) {
+        if (!addr) return;
+        self.copyAddress(addr);
       };
 
       $scope.cancel = function() {
