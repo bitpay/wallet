@@ -272,17 +272,21 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
   this.newAddress = function() {
     var fc = profileService.focusedClient;
-    self.setOngoingProcess('Generating Address');
+    self.generatingAddress = true;
     fc.createAddress(function(err, addr) {
-      self.setOngoingProcess();
       if (err) {
         $log.debug('Creating address ERROR:', err);
         $scope.$emit('Local/ClientError', err);
-      } else {
-        self.addr = addr.address;
-        storageService.storeLastAddress(fc.credentials.walletId, addr.address, function() {});
+        self.generatingAddress = false;
+        $scope.$digest();
+        return;
       }
-      $scope.$digest();
+      self.addr = addr.address;
+      storageService.storeLastAddress(fc.credentials.walletId, addr.address, function() {
+
+        self.generatingAddress = false;
+        $scope.$digest();
+      });
     });
   };
 
@@ -500,7 +504,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       profileService.lockFC();
       self.setOngoingProcess();
 
-      if (err) { 
+      if (err) {
         return cb(err);
       }
 
