@@ -63,11 +63,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     });
   };
 
-  self.setFocusedWallet = function() {
-    var fc = profileService.focusedClient;
-    if (!fc) return;
-
-    // Clean status
+  self.clearStatus = function() {
     self.lockedBalance = null;
     self.totalBalanceStr = null;
     self.alternativeBalanceAvailable = false;
@@ -76,11 +72,21 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.txHistory = [];
     self.txHistoryPaging = false;
     self.pendingTxProposalsCountForUs = null;
+    self.txps = [];
+    self.copayers = [];
+    self.onGoingProcess = {};
+  };
+
+  self.setFocusedWallet = function() {
+    var fc = profileService.focusedClient;
+    if (!fc) return;
+
+    // Clean status
+    self.clearStatus();
 
     $timeout(function() {
       self.hasProfile = true;
       self.noFocusedWallet = false;
-      self.onGoingProcess = {};
 
       // Credentials Shortcuts 
       self.m = fc.credentials.m;
@@ -93,8 +99,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       self.walletName = fc.credentials.walletName;
       self.walletId = fc.credentials.walletId;
       self.isComplete = fc.isComplete();
-      self.txps = [];
-      self.copayers = [];
 
       storageService.getBackupFlag(self.walletId, function(err, val) {
         self.needsBackup = self.network == 'testnet' ? false : !val;
@@ -619,6 +623,10 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
   $rootScope.$on('Local/DefaultLanguage', function(event, setLang) {
     self.setDefaultLanguage(setLang);
+  });
+
+  $rootScope.$on('Local/SwitchWallet', function(event) {
+    self.clearStatus();
   });
 
   $rootScope.$on('Animation/Disable', function(event) {
