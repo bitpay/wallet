@@ -52,7 +52,7 @@ angular.module('copayApp.controllers').controller('preferencesUnitController',
 
       configService.set(opts, function(err) {
         if (err) console.log(err);
-        $scope.$emit('Local/ConfigurationUpdated');
+        $scope.$emit('Local/UnitSettingUpdated');
       });
 
     };

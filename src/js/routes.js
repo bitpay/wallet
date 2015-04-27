@@ -16,8 +16,46 @@ if (window && window.navigator) {
 //Setting up route
 angular
   .module('copayApp')
-  .config(function(bwcServiceProvider, $stateProvider, $urlRouterProvider) {
+  .config(function(historicLogProvider, $provide, $logProvider, $stateProvider, $urlRouterProvider) {
     $urlRouterProvider.otherwise('/');
+
+    $logProvider.debugEnabled(true);
+    $provide.decorator('$log', ['$delegate',
+      function($delegate) {
+        var historicLog = historicLogProvider.$get();
+
+        ['debug', 'info', 'warn', 'error', 'log'].forEach(function(level) {
+          var orig = $delegate[level];
+          $delegate[level] = function() {
+            var args = [].slice.call(arguments);
+            args = args.map(function(v) {
+              try {
+                if (typeof v == 'undefined') v = 'undefined';
+                if (typeof v == 'object') {
+                  v = JSON.stringify(v);
+                }
+                v = v.toString();
+                if (v.length > 200)
+                  v = v.substr(0, 197) + '...';
+              } catch (e) {
+                console.log('Error at log decorator:', e);
+                v = 'undefined';
+              }
+              return v;
+            });
+            try {
+              if (window.cordova)
+                console.log(args.join(' '));
+              orig.apply(null, args)
+              historicLog.add(level, args.join(' '));
+            } catch (e) {
+              console.log('Error at log decorator:', e);
+            }
+          };
+        });
+        return $delegate;
+      }
+    ]);
 
     $stateProvider
       .state('splash', {
@@ -305,6 +343,42 @@ angular
           }
         }
       })
+      .state('about', {
+        url: '/about',
+        templateUrl: 'views/preferencesAbout.html',
+        walletShouldBeComplete: true,
+        needProfile: true,
+        views: {
+          'main': {
+            templateUrl: 'views/preferencesAbout.html'
+          },
+          'topbar': {
+            templateUrl: 'views/includes/topbar.html',
+            controller: function($scope) {
+              $scope.titleSection = 'About';
+              $scope.goBackToState = 'preferences';
+            }
+          }
+        }
+      })
+      .state('logs', {
+        url: '/logs',
+        templateUrl: 'views/preferencesLogs.html',
+        walletShouldBeComplete: true,
+        needProfile: true,
+        views: {
+          'main': {
+            templateUrl: 'views/preferencesLogs.html'
+          },
+          'topbar': {
+            templateUrl: 'views/includes/topbar.html',
+            controller: function($scope) {
+              $scope.titleSection = 'Logs';
+              $scope.goBackToState = 'about';
+            }
+          }
+        }
+      })
       .state('backup', {
         url: '/backup',
         templateUrl: 'views/backup.html',
@@ -361,9 +435,9 @@ angular
                 case 'resume':
                   $scope.$emit('Local/Resume');
                   break;
-                // case 'online':
-                //   //   $scope.$emit('Local/Online');
-                //   break;
+                  // case 'online':
+                  //   //   $scope.$emit('Local/Online');
+                  //   break;
                 case 'offline':
                   $scope.$emit('Local/Offline');
                   break;
@@ -376,10 +450,7 @@ angular
       });
   })
   .run(function($rootScope, $state, $log, gettextCatalog, uriHandler, isCordova, amMoment, profileService) {
-    
-    console.log('Attaching FastClick');
     FastClick.attach(document.body);
-    
 
     // Auto-detect browser language
     var userLang, androidLang;
@@ -413,6 +484,8 @@ angular
       preferencesUnit: 12,
       preferencesAltCurrency: 12,
       preferencesBwsUrl: 12,
+      about: 12,
+      logs: 13,
       add: 0,
       create: 12,
       join: 12,
@@ -434,18 +507,21 @@ angular
 
       if (!profileService.profile && toState.needProfile) {
 
+        // Give us time to open / create the profile
+        event.preventDefault();
+
         // Try to open local profile
         profileService.loadAndBindProfile(function(err) {
           if (err) {
             if (err.message.match('NOPROFILE')) {
               $log.debug('No profile... redirecting');
               $state.transitionTo('splash');
-              event.preventDefault();
             } else {
               throw new Error(err); // TODO
             }
           } else {
-            // Profile was loaded
+            $log.debug('Profile loaded ... Starting UX.');
+            $state.transitionTo(toState, toParams);
           }
         });
       }

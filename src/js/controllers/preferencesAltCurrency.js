@@ -49,7 +49,7 @@ angular.module('copayApp.controllers').controller('preferencesAltCurrencyControl
 
       configService.set(opts, function(err) {
         if (err) console.log(err);
-        $scope.$emit('Local/ConfigurationUpdated');
+        $scope.$emit('Local/UnitSettingUpdated');
       });
     };
 

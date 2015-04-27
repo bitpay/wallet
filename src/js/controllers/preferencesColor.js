@@ -29,7 +29,10 @@ angular.module('copayApp.controllers').controller('preferencesColorController',
       opts.colorFor[walletId] = color;
 
       configService.set(opts, function(err) {
-        if (err) console.log(err);
+        if (err) {
+          $scope.$emit('Local/DeviceError', err);
+          return;
+        }
         self.color = color;
         $scope.$emit('Local/ColorUpdated');
       });
