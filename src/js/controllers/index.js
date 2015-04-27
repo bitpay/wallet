@@ -252,7 +252,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     } else if (err.code === 'NOTFOUND') {
       $scope.$emit('Local/BWSNotFound');
     } else {
-      $scope.$emit('Local/ClientError', (err.error ? err.error : err);
+      $scope.$emit('Local/ClientError', (err.error ? err.error : err));
     }
   };
   self.openWallet = function() {
