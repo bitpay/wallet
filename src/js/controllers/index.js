@@ -533,6 +533,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   // UX event handlers
   $rootScope.$on('Local/ColorUpdated', function(event) {
     self.updateColor();
+    $timeout(function() {
+      $rootScope.$apply();
+    });
   });
 
   $rootScope.$on('Local/UnitSettingUpdated', function(event) {
