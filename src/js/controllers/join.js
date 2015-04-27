@@ -151,7 +151,9 @@ angular.module('copayApp.controllers').controller('joinController',
             $rootScope.$apply();
             return
           }
-          go.walletHome();
+          $timeout(function() {
+            go.walletHome();
+          }, 2000);
         });
       }, 100);
     }
