@@ -98,6 +98,7 @@ angular
             templateUrl: 'views/createProfile.html',
             controller: function($scope) {
               $scope.mainDark = true;
+              $scope.noColor = true;
             }
           }
         }
@@ -122,6 +123,7 @@ angular
             templateUrl: 'views/includes/topbar.html',
             controller: function($scope) {
               $scope.goBackToState = 'walletHome';
+              $scope.noColor = true;
             }
           }
         },
@@ -144,6 +146,7 @@ angular
             controller: function($scope) {
               $scope.titleSection = 'Join shared wallet';
               $scope.goBackToState = 'add';
+              $scope.noColor = true;
             }
           }
         }
@@ -160,6 +163,7 @@ angular
             controller: function($scope) {
               $scope.titleSection = 'Import wallet';
               $scope.goBackToState = 'add';
+              $scope.noColor = true;
             }
           }
         }
@@ -181,6 +185,7 @@ angular
             controller: function($scope) {
               $scope.titleSection = 'Import legacy wallet';
               $scope.goBackToState = 'add';
+              $scope.noColor = true;
             }
           }
         }
@@ -199,6 +204,7 @@ angular
             controller: function($scope) {
               $scope.titleSection = 'Create new wallet';
               $scope.goBackToState = 'add';
+              $scope.noColor = true;
             }
           }
         }
@@ -214,12 +220,6 @@ angular
             templateUrl: 'views/includes/topbar.html'
           }
         }
-      })
-      .state('profile', {
-        url: '/profile',
-        controller: 'profileController',
-        templateUrl: 'views/profile.html',
-        needProfile: true
       })
       .state('preferences', {
         url: '/preferences',
@@ -252,6 +252,7 @@ angular
             controller: function($scope) {
               $scope.titleSection = 'Language';
               $scope.goBackToState = 'preferences';
+              $scope.noColor = true;
             }
           }
         }
@@ -270,6 +271,7 @@ angular
             controller: function($scope) {
               $scope.titleSection = 'Unit';
               $scope.goBackToState = 'preferences';
+              $scope.noColor = true;
             }
           }
         }
@@ -307,6 +309,7 @@ angular
             controller: function($scope) {
               $scope.titleSection = 'Alternative Currency';
               $scope.goBackToState = 'preferences';
+              $scope.noColor = true;
             }
           }
         }
@@ -325,6 +328,7 @@ angular
             controller: function($scope) {
               $scope.titleSection = 'Bitcore Wallet Service';
               $scope.goBackToState = 'preferences';
+              $scope.noColor = true;
             }
           }
         }
@@ -361,6 +365,7 @@ angular
             controller: function($scope) {
               $scope.titleSection = 'About';
               $scope.goBackToState = 'preferences';
+              $scope.noColor = true;
             }
           }
         }
@@ -379,6 +384,7 @@ angular
             controller: function($scope) {
               $scope.titleSection = 'Logs';
               $scope.goBackToState = 'about';
+              $scope.noColor = true;
             }
           }
         }
@@ -426,6 +432,7 @@ angular
             controller: function($scope) {
               $scope.titleSection = 'Add wallet';
               $scope.closeToHome = true;
+              $scope.noColor = true;
             }
           }
         }
