@@ -81,10 +81,7 @@ angular.module('copayApp.services')
                 v = JSON.stringify(v);
 
               $log.debug('Writing:', k, v);
-              var blob = new Blob([v], {
-                type: "text/plain"
-              });
-              fileWriter.write(blob);
+              fileWriter.write(v);
 
             }, cb);
           });
