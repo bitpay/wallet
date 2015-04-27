@@ -246,13 +246,13 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   };
 
   self.handleError = function(err) {
-    $log.debug('ERROR:', err);
+    $log.warn('Client ERROR:', err);
     if (err.code === 'NOTAUTHORIZED') {
       $scope.$emit('Local/NotAuthorized');
     } else if (err.code === 'NOTFOUND') {
       $scope.$emit('Local/BWSNotFound');
     } else {
-      $scope.$emit('Local/ClientError', err);
+      $scope.$emit('Local/ClientError', (err.error ? err.error : err));
     }
   };
   self.openWallet = function() {
@@ -448,7 +448,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       self.setOngoingProcess('recreating', false);
 
       if (err) {
-        self.clientError('Could not recreate wallet:' + err);
+        self.handleError(err);
         $rootScope.$apply();
         return;
       }
@@ -485,7 +485,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       if (err) {
         if (self.walletId == walletId)
           self.setOngoingProcess('scanning', false);
-        self.clientError('Could not scan wallet:' + err);
+        self.handleError(err);
         $rootScope.$apply();
       }
     });
@@ -533,6 +533,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   // UX event handlers
   $rootScope.$on('Local/ColorUpdated', function(event) {
     self.updateColor();
+    $timeout(function() {
+      $rootScope.$apply();
+    });
   });
 
   $rootScope.$on('Local/UnitSettingUpdated', function(event) {
@@ -569,7 +572,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
   $rootScope.$on('Local/BackupDone', function(event) {
     self.needsBackup = false;
-    storageService.setBackupFlag(self.walletId, function() {});
+    storageService.setBackupFlag(self.walletId, function(err) {
+      if (err) $rootScope.$emit('Local/DeviceError', err)
+    });
   });
 
   $rootScope.$on('Local/NotAuthorized', function(event) {
