@@ -123,7 +123,6 @@ input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill, inpu
 .page, .main {
   height:100%;
   background-color: #fff;
-  -webkit-backface-visibility: hidden;
 }
 
 .button.small.side-bar {
@@ -505,21 +504,17 @@ ul.pagination li.current a {
 input {
   border-radius: 2px;
   background: #EDEDED;
-  -moz-box-shadow: 0px 0px 0px 0px rgba(255,255,255,0.09), inset 1px 1px 0px 0px rgba(0,0,0,0.05);
-  box-shadow: 0px 0px 0px 0px rgba(255,255,255,0.09), inset 1px 1px 0px 0px rgba(0,0,0,0.05);
   color: #2C3E42;
   padding: 1.2rem 0.7rem;
   margin-bottom: 1.5rem;
   border: 0;
 }
 
-input[type=date], input[type=datetime-local], input[type=datetime], input[type=email], input[type=month], input[type=number], input[type=password], input[type=search], input[type=tel], input[type=text], input[type=time], input[type=url], input[type=week], textarea {
+input[type="color"], input[type="date"], input[type="datetime-local"], input[type="datetime"], input[type="email"], input[type="month"], input[type="number"], input[type="password"], input[type="search"], input[type="tel"], input[type="text"], input[type="time"], input[type="url"], input[type="week"], textarea {
   color: #B7C2CD;
   margin-bottom: 1.5rem;
   height: 35px;
   background: transparent;
-  -moz-box-shadow: none;
-  box-shadow: none;
   border: none;
   padding-left: 0.1rem;
   font-size: 13px;
@@ -530,14 +525,13 @@ input[type="text"]:focus, input[type="password"]:focus, input[type="date"]:focus
   color: #4B6178;
   border-color: #CED5DC;
   background: transparent;
-  transition: none !important;
-  -webkit-transition: none !important;
 }
 
 input[type="text"][disabled], input[type="text"][readonly], fieldset[disabled] input[type="text"], input[type="password"][disabled], input[type="password"][readonly], fieldset[disabled] input[type="password"], input[type="date"][disabled], input[type="date"][readonly], fieldset[disabled] input[type="date"], input[type="datetime"][disabled], input[type="datetime"][readonly], fieldset[disabled] input[type="datetime"], input[type="datetime-local"][disabled], input[type="datetime-local"][readonly], fieldset[disabled] input[type="datetime-local"], input[type="month"][disabled], input[type="month"][readonly], fieldset[disabled] input[type="month"], input[type="week"][disabled], input[type="week"][readonly], fieldset[disabled] input[type="week"], input[type="email"][disabled], input[type="email"][readonly], fieldset[disabled] input[type="email"], input[type="number"][disabled], input[type="number"][readonly], fieldset[disabled] input[type="number"], input[type="search"][disabled], input[type="search"][readonly], fieldset[disabled] input[type="search"], input[type="tel"][disabled], input[type="tel"][readonly], fieldset[disabled] input[type="tel"], input[type="time"][disabled], input[type="time"][readonly], fieldset[disabled] input[type="time"], input[type="url"][disabled], input[type="url"][readonly], fieldset[disabled] input[type="url"], input[type="color"][disabled], input[type="color"][readonly], fieldset[disabled] input[type="color"], textarea[disabled], textarea[readonly], fieldset[disabled] textarea {
   background-color: #E4E8EC;
   color: #2C3E50;
   padding-left: 0.5rem;
+  opacity: 1;
 }
 
 select {
