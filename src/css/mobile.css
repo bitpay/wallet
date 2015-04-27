@@ -573,26 +573,61 @@ a.pin-button:active {
 .reveal-modal .fade .in, 
 .reveal-modal.fade.full.in,
 .reveal-modal.fade.full.out,
-.reveal-modal.fade.full {
-/*CSS transitions*/
- -o-transition-property: none !important;
- -moz-transition-property: none !important;
- -ms-transition-property: none !important;
- -webkit-transition-property: none !important;
- transition-property: none !important;
- /*CSS transforms*/
- -o-transform: none !important;
- -moz-transform: none !important;
- -ms-transform: none !important;
- -webkit-transform: none !important;
- transform: none !important;
- /*CSS animations*/
- -webkit-animation: none !important;
- -moz-animation: none !important;
- -o-animation: none !important;
- -ms-animation: none !important;
- animation: none !important;
-  
+.reveal-modal.fade.full,
+input[type="color"], 
+input[type="date"], 
+input[type="datetime-local"], 
+input[type="datetime"], 
+input[type="email"], 
+input[type="month"], 
+input[type="number"], 
+input[type="password"], 
+input[type="search"], 
+input[type="tel"], 
+input[type="text"], 
+input[type="time"], 
+input[type="url"], 
+input[type="week"], 
+textarea,
+input[type="text"]:focus, 
+input[type="password"]:focus, 
+input[type="date"]:focus, 
+input[type="datetime"]:focus, 
+input[type="datetime-local"]:focus, 
+input[type="month"]:focus, 
+input[type="week"]:focus, 
+input[type="email"]:focus, 
+input[type="number"]:focus, 
+input[type="search"]:focus, 
+input[type="tel"]:focus, 
+input[type="time"]:focus, 
+input[type="url"]:focus, 
+input[type="color"]:focus, 
+textarea:focus
+{
+  opacity: 1;
+  /*CSS transitions*/
+  -o-transition-property: none !important;
+  -moz-transition-property: none !important;
+  -ms-transition-property: none !important;
+  -webkit-transition-property: none !important;
+  transition-property: none !important;
+  /*CSS transforms*/
+  -o-transform: none !important;
+  -moz-transform: none !important;
+  -ms-transform: none !important;
+  -webkit-transform: none !important;
+  transform: none !important;
+  /*CSS animations*/
+  -webkit-animation: none !important;
+  -moz-animation: none !important;
+  -o-animation: none !important;
+  -ms-animation: none !important;
+  animation: none !important;
+  /*CSS box-shadow*/
+  -webkit-box-shadow: none !important;
+  -moz-box-shadow: none !important;
+  box-shadow: none !important;
 }
 
 .popup-tx-status {
@@ -658,46 +693,65 @@ a.pin-button:active {
   color: #B7C2CD;
 }
 
+.animation-left, .animation-right {
+  position: absolute; 
+  background: #fff; 
+  display: block; 
+  width: 100%; 
+  height: 100%;
+  top: 0;
+  left: 0;
+  -webkit-backface-visibility: hidden;
+  -webkit-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
+}
+
 .animation-left.ng-enter, .animation-left.ng-leave,
 .animation-right.ng-enter, .animation-right.ng-leave {
-  -webkit-transition: all ease-in-out 250ms;
-  transition: all ease-in-out 250ms;
+  -webkit-transition: all ease 300ms;
+  transition: all ease 300ms;
 }
 
 .animation-left.ng-enter {
   -webkit-transform: translate3d(100%, 0, 0);
   transform: translate3d(100%, 0, 0);
-  -webkit-transition-delay: 0.001s;
-  transition-delay: 0.001s;
+  -webkit-transition-delay: 0.01s;
+  transition-delay: 0.01s;
+  opacity: 0;
 }
 .animation-right.ng-enter {
   -webkit-transform: translate3d(-100%, 0, 0);
   transform: translate3d(-100%, 0, 0);
-  -webkit-transition-delay: 0.001s;
-  transition-delay: 0.001s;
+  -webkit-transition-delay: 0.01s;
+  transition-delay: 0.01s;
+  opacity: 0;
 }
 .animation-left.ng-enter.ng-enter-active,
 .animation-right.ng-enter.ng-enter-active {
   -webkit-transform: translate3d(0, 0, 0);
   transform: translate3d(0, 0, 0);
+  opacity: 1;
 }
 
 .animation-left.ng-leave,
 .animation-right.ng-leave {
   -webkit-transform: translate3d(0, 0, 0);
   transform: translate3d(0, 0, 0);
+  opacity: 0;
 }
 .animation-left.ng-leave.animation-left.ng-leave-active {
   -webkit-transform: translate3d(-100%, 0, 0);
   transform: translate3d(-100%, 0, 0);
-  -webkit-transition-delay: 0.001s;
-  transition-delay: 0.001s;
+  -webkit-transition-delay: 0.01s;
+  transition-delay: 0.01s;
+  opacity: 0;
 }
 .animation-right.ng-leave.animation-right.ng-leave-active {
   -webkit-transform: translate3d(100%, 0, 0);
   transform: translate3d(100%, 0, 0);
-  -webkit-transition-delay: 0.001s;
-  transition-delay: 0.001s;
+  -webkit-transition-delay: 0.01s;
+  transition-delay: 0.01s;
+  opacity: 0;
 }
 
 .tab-view {
