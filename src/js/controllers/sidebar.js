@@ -21,8 +21,12 @@ angular.module('copayApp.controllers').controller('sidebarController',
 
     self.switchWallet = function(wid) {
       self.walletSelection = false;
-      profileService.setAndStoreFocus(wid, function() {});
-      go.walletHome();
+      $rootScope.$emit('Local/SwitchWallet');
+      $timeout(function() {
+        profileService.setAndStoreFocus(wid, function() {
+          go.walletHome();
+        });
+      }, 100);
     };
 
     self.toggleWalletSelection = function() {
