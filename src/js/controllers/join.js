@@ -145,14 +145,15 @@ angular.module('copayApp.controllers').controller('joinController',
           extendedPrivateKey: form.privateKey.$modelValue,
           myName: form.myName.$modelValue
         }, function(err) {
-          self.loading = false;
           if (err) {
+            self.loading = false;
             self.error = 'Could not join wallet: ' +  (err.message ? err.message : err);
             $rootScope.$apply();
+            return
           }
-          else {
+          $timeout(function() {
             go.walletHome();
-          }
+          }, 2000);
         });
       }, 100);
     }
