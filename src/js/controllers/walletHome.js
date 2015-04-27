@@ -479,15 +479,17 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
         message: comment,
         payProUrl: paypro ? paypro.url : null,
       }, function(err, txp) {
-        self.setOngoingProcess();
         if (err) {
+          self.setOngoingProcess();
           profileService.lockFC();
           return self.setError(err);
         }
 
         self.signAndBroadcast(txp, function(err) {
-          if (err) 
+          if (err) {
+            self.setOngoingProcess();
             return self.setError(err);
+          }
 
           self.resetForm();
         });
@@ -501,38 +503,35 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     self.setOngoingProcess('Signing transaction');
     fc.signTxProposal(txp, function(err, signedTx) {
       profileService.lockFC();
-      self.setOngoingProcess();
 
-      if (err) 
+      if (err) {
+        self.setOngoingProcess();
         return cb(err);
+      }
 
       if (signedTx.status == 'accepted') {
         self.setOngoingProcess('Broadcasting transaction');
         fc.broadcastTxProposal(signedTx, function(err, btx) {
-          self.setOngoingProcess();
           if (err) {
+            self.setOngoingProcess();
             $scope.error = 'Transaction not broadcasted. Please try again.';
             $scope.$digest();
             return;
-          } 
+          }
           $scope.$emit('Local/TxProposalAction');
-          txStatus.notify(btx, cb);
+          txStatus.notify(btx, function() {
+            self.setOngoingProcess();
+            return cb();
+          });
         });
       } else {
         $scope.$emit('Local/TxProposalAction');
-        txStatus.notify(signedTx, cb);
+        txStatus.notify(signedTx, function() {
+          self.setOngoingProcess();
+          return cb();
+        });
       }
     });
-  };
-
-  this.setTopAmount = function() {
-    throw new Error('todo: setTopAmount');
-    var form = $scope.sendForm;
-    if (form) {
-      form.amount.$setViewValue(w.balanceInfo.topAmount);
-      form.amount.$render();
-      form.amount.$isValid = true;
-    }
   };
 
   this.setForm = function(to, amount, comment) {
