@@ -649,7 +649,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       self.updateAll();
       $timeout(function() {
         self.updateTxHistory();
-      }, 5000);
+      }, 3000);
     });
   });
 
