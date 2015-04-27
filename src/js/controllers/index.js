@@ -448,7 +448,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       self.setOngoingProcess('recreating', false);
 
       if (err) {
-        self.clientError('Could not recreate wallet:' + err);
+        $log.error(err);
+        self.clientError('Could not recreate wallet:' + (err.error ? err.error : err));
         $rootScope.$apply();
         return;
       }
