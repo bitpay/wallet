@@ -1,4 +1,4 @@
 'use strict';
 
-angular.module('copayApp.services').value('isChromeApp',  window.chrome && chrome.runtime && chrome.runtime.id);
+angular.module('copayApp.services').value('isChromeApp',  !!(window.chrome && chrome.runtime && chrome.runtime.id));
 

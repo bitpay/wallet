@@ -1,8 +1,16 @@
 'use strict';
 angular.module('copayApp.services')
-  .factory('storageService', function(localStorageService, sjcl, $log, lodash) {
+  .factory('storageService', function(logHeader, fileStorageService, localStorageService, sjcl, $log, lodash, isCordova) {
 
     var root = {};
+
+    // File storage is not supported for writting according to 
+    // https://github.com/apache/cordova-plugin-file/#supported-platforms
+    var shouldUseFileStorage = isCordova && !isMobile.Windows();
+    $log.debug('Using file storage:', shouldUseFileStorage);
+
+
+    var storage = shouldUseFileStorage ? fileStorageService : localStorageService;
 
     var getUUID = function(cb) {
       // TO SIMULATE MOBILE
@@ -46,21 +54,57 @@ angular.module('copayApp.services')
       });
     };
 
+
+
+    root.tryToMigrate = function(cb) {
+      if (!shouldUseFileStorage) return cb();
+
+      localStorageService.get('profile', function(err, str) {
+        if (err) return cb(err);
+        if (!str) return cb();
+
+        $log.info('Starting Migration profile to File storage...')
+
+        fileStorageService.create('profile', str, function(err) {
+          if (err) cb(err);
+          $log.info('Profile Migrated successfully');
+
+          localStorageService.get('config', function(err, c) {
+            if (err) return cb(err);
+            if (!c) return root.getProfile(cb);
+
+            fileStorageService.create('config', c, function(err) {
+
+              if (err) {
+                $log.info('Error migrating config: ignoring', err);
+                return root.getProfile(cb);
+              }
+              $log.info('Config Migrated successfully');
+              return root.getProfile(cb);
+            });
+          });
+        });
+      });
+    };
+
     root.storeNewProfile = function(profile, cb) {
       encryptOnMobile(profile.toObj(), function(err, x) {
-        localStorageService.create('profile', x, cb);
+        storage.create('profile', x, cb);
       });
     };
 
     root.storeProfile = function(profile, cb) {
       encryptOnMobile(profile.toObj(), function(err, x) {
-        localStorageService.set('profile', x, cb);
+        storage.set('profile', x, cb);
       });
     };
 
     root.getProfile = function(cb) {
-      localStorageService.get('profile', function(err, str) {
-        if (err || !str) return cb(err);
+      storage.get('profile', function(err, str) {
+
+        if (err || !str)
+        // Migrate ?
+          return cb(err);
 
         decryptOnMobile(str, function(err, str) {
           if (err) return cb(err);
@@ -76,35 +120,48 @@ angular.module('copayApp.services')
     };
 
     root.deleteProfile = function(cb) {
-      localStorageService.remove('profile', cb);
+      storage.remove('profile', cb);
     };
 
     root.storeFocusedWalletId = function(id, cb) {
-      localStorageService.set('focusedWalletId', id, cb);
+      storage.set('focusedWalletId', id, cb);
     };
 
     root.getFocusedWalletId = function(cb) {
-      localStorageService.get('focusedWalletId', cb);
+      storage.get('focusedWalletId', cb);
     };
 
     root.getLastAddress = function(walletId, cb) {
-      localStorageService.get('lastAddress-' + walletId, cb);
+      storage.get('lastAddress-' + walletId, cb);
     };
 
     root.storeLastAddress = function(walletId, address, cb) {
-      localStorageService.set('lastAddress-' + walletId, address, cb);
+      storage.set('lastAddress-' + walletId, address, cb);
     };
 
     root.clearLastAddress = function(walletId, cb) {
-      localStorageService.remove('lastAddress-' + walletId, cb);
+      storage.remove('lastAddress-' + walletId, cb);
     };
 
     root.setBackupFlag = function(walletId, cb) {
-      localStorageService.set('backup-' + walletId, Date.now(), cb);
+      storage.set('backup-' + walletId, Date.now(), cb);
     };
 
     root.getBackupFlag = function(walletId, cb) {
-      localStorageService.get('backup-' + walletId, cb);
+      storage.get('backup-' + walletId, cb);
+    };
+
+    root.getConfig = function(cb) {
+      storage.get('config', cb);
+    };
+
+    root.storeConfig = function(val, cb) {
+      $log.debug('Storing Preferences', val);
+      storage.set('config', val, cb);
+    };
+
+    root.clearConfig = function(cb) {
+      storage.remove('config', cb);
     };
 
     return root;

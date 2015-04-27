@@ -1,6 +1,6 @@
 'use strict';
 angular.module('copayApp.services')
-  .factory('profileService', function profileServiceFactory($rootScope, $location, $timeout, $filter, $log, lodash, pluginManager, balanceService, applicationService, storageService, bwcService, configService, notificationService, notification, isChromeApp) {
+  .factory('profileService', function profileServiceFactory($rootScope, $location, $timeout, $filter, $log, lodash, storageService, bwcService, configService, notificationService, isChromeApp, isCordova) {
 
     var root = {};
 
@@ -110,11 +110,20 @@ angular.module('copayApp.services')
     };
 
 
+    root.applyConfig = function() {
+      var config = configService.getSync();
+      $log.debug('Applying preferences');
+      bwcService.setBaseUrl(config.bws.url);
+      bwcService.setTransports(['polling']);
+    };
+
     root.bindProfile = function(profile, cb) {
       root.profile = profile;
 
       configService.get(function(err) {
+        $log.debug('Preferences read');
         if (err) return cb(err);
+        root.applyConfig();
         $rootScope.$emit('Local/DefaultLanguage');
         root.setWalletClients();
         storageService.getFocusedWalletId(function(err, focusedWalletId) {
@@ -124,16 +133,27 @@ angular.module('copayApp.services')
       });
     };
 
-
     root.loadAndBindProfile = function(cb) {
       storageService.getProfile(function(err, profile) {
         if (err) {
-          notification.error('CRITICAL ERROR: ' + err);
+          $rootScope.$emit('Local/DeviceError', err);
           return cb(err);
         }
-        if (!profile) return cb(new Error('NOPROFILE: No profile'));
+        if (!profile) {
+          // Migration??
+          storageService.tryToMigrate(function(err, migratedProfile) {
+            if (err) return cb(err);
+            if (!migratedProfile)
+              return cb(new Error('NOPROFILE: No profile'));
 
-        return root.bindProfile(profile, cb);
+            profile = migratedProfile;
+            return root.bindProfile(profile, cb);
+          })
+        } else {
+          $log.debug('Profile read');
+          return root.bindProfile(profile, cb);
+        }
+
       });
     };
 
@@ -188,7 +208,6 @@ angular.module('copayApp.services')
           return cb('Could not join using the specified extended private key');
         }
       }
-      // TODO name
       walletClient.joinWallet(opts.secret, opts.myName || 'me', function(err) {
         if (err) return cb(err);
 
@@ -260,11 +279,17 @@ angular.module('copayApp.services')
 
 
     root.create = function(cb) {
-      root._createNewProfile(function(err, p) {
-        if (err) return cb(err);
-        root.bindProfile(p, function(err) {
-          storageService.storeNewProfile(p, function(err) {
-            return cb(err);
+      $log.info('Creating profile');
+      configService.get(function(err) {
+        root.applyConfig();
+        root._createNewProfile(function(err, p) {
+          if (err) return cb(err);
+
+          console.log('[profileService.js.287]'); //TODO
+          root.bindProfile(p, function(err) {
+            storageService.storeNewProfile(p, function(err) {
+              return cb(err);
+            });
           });
         });
       });

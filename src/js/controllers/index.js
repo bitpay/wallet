@@ -1,6 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, lodash, go, profileService, configService, isCordova, rateService, storageService, gettextCatalog, amMoment) {
+
   var self = this;
   self.isCordova = isCordova;
   self.onGoingProcess = {};
@@ -96,7 +97,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       self.copayers = [];
 
       storageService.getBackupFlag(self.walletId, function(err, val) {
-        self.needsBackup = !val;
+        self.needsBackup = self.network == 'testnet' ? false : !val;
         self.openWallet();
       });
     });
@@ -414,7 +415,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   };
 
 
-  self.clientError = function (err) {
+  self.clientError = function(err) {
     if (isCordova) {
       navigator.notification.confirm(
         err,
@@ -425,6 +426,19 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       alert(err);
     }
   };
+
+  self.deviceError = function(err) {
+    if (isCordova) {
+      navigator.notification.confirm(
+        err,
+        function() {},
+        'Device Error', ['OK']
+      );
+    } else {
+      alert(err);
+    }
+  };
+
 
   self.recreate = function(cb) {
     var fc = profileService.focusedClient;
@@ -521,9 +535,14 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.updateColor();
   });
 
-  $rootScope.$on('Local/ConfigurationUpdated', function(event) {
+  $rootScope.$on('Local/UnitSettingUpdated', function(event) {
     self.updateAll();
     self.updateTxHistory();
+  });
+
+
+  $rootScope.$on('Local/BWSUpdated', function(event) {
+    profileService.applyConfig();
   });
 
   $rootScope.$on('Local/WalletCompleted', function(event) {
@@ -543,7 +562,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   $rootScope.$on('Local/Offline', function(event) {
     $log.debug('Offline event');
     self.isOffline = true;
-    $timeout(function(){
+    $timeout(function() {
       $rootScope.$apply();
     });
   });
@@ -563,6 +582,11 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     $rootScope.$apply();
   });
 
+  $rootScope.$on('Local/DeviceError', function(event, err) {
+    self.deviceError(err);
+    $rootScope.$apply();
+  });
+
   $rootScope.$on('Local/ClientError', function(event, err) {
     if (err.code && err.code === 'NOTAUTHORIZED') {
       // Show not error, just redirect to home (where the recreate option is shown)
@@ -575,7 +599,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       var msg = 'Error at Wallet Service: ';
       if (err.message) msg = msg + err.message;
       else if (err.error) msg = msg + err.error;
-      else msg = msg +  err;
+      else msg = msg + err;
       self.clientError(msg);
     }
     $rootScope.$apply();

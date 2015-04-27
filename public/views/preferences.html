@@ -2,6 +2,7 @@
 
   <ul class="no-bullet m0 size-14">
     <h4 class="title m0" translate>{{index.walletName}} settings</h4>
+
     <li class="line-b p20" ng-click="$root.go('preferencesColor')">
       <span translate>Color</span>
       <span class="right text-gray">
@@ -58,6 +59,11 @@
           {{preferences.bwsurl}}
         </span>
     </li>
+    <li class="line-b p20" ng-click="$root.go('about')">
+      <i class="icon-arrow-right3 size-24 right text-gray"></i>  
+      <span translate>About Copay</span>
+    </li>
+ 
   </ul>
 
 </div>
