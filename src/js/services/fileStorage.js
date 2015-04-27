@@ -57,7 +57,6 @@ angular.module('copayApp.services')
     root.set = function(k, v, cb) {
       root.init(function(err, fs, dir) {
         if (err) return cb(err);
-console.log('[fileStorage.js.58:dir:]',dir.nativeURL); //TODO
         dir.getFile(k, {
           create: true,
         }, function(fileEntry) {
