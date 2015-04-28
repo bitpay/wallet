@@ -484,10 +484,10 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       }
     } else {
       self.onGoingProcess = name;
+      $timeout(function() {
+        $rootScope.$apply();
+      });
     };
-    $timeout(function() {
-      $rootScope.$apply();
-    });
   };
 
   this.submitForm = function() {
@@ -556,13 +556,12 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       if (signedTx.status == 'accepted') {
         self.setOngoingProcess('Broadcasting transaction');
         fc.broadcastTxProposal(signedTx, function(err, btx) {
+          self.setOngoingProcess();
           if (err) {
-            self.setOngoingProcess();
             $scope.error = 'Transaction not broadcasted. Please try again.';
             $scope.$digest();
-            return;
+            return cb(err);
           }
-          self.setOngoingProcess();
           $scope.$emit('Local/TxProposalAction');
           txStatus.notify(btx, function() {
             return cb();
