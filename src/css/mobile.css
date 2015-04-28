@@ -774,3 +774,9 @@ textarea:focus
   -webkit-transform: translate3d(-100%, 0, 0) !important;
   transform: translate3d(-100%, 0, 0) !important;
 }
+
+/* removes 300ms in IE */
+-ms-touch-action: manipulation; /* IE10 /
+touch-action: manipulation; /* IE11+ */
+
+
