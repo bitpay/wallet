@@ -373,7 +373,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     tries = tries || 0;
     if (tries > 5) return;
     var e = document.getElementById('menu-walletHome');
-    if (!e) $timeout(function() {
+    if (!e) return $timeout(function() {
       self.bindTouchDown(++tries);
     }, 500);
 
