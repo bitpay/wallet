@@ -328,6 +328,19 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   };
 
   // Send
+
+  this.canShowAlternative = function() {
+    return $scope.showAlternative;
+  };
+
+  this.showAlternative = function() {
+    $scope.showAlternative = true;
+  };
+
+  this.hideAlternative = function() {
+    $scope.showAlternative = false;
+  };
+
   this.resetError = function() {
     this.error = this.success = null;
   };
