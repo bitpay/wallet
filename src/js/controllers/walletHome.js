@@ -483,11 +483,11 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
         window.plugins.spinnerDialog.hide();
       }
     } else {
-      $timeout(function() {
-        self.onGoingProcess = name;
-        $rootScope.$apply();
-      });
-    }
+      self.onGoingProcess = name;
+    };
+    $timeout(function() {
+      $rootScope.$apply();
+    });
   };
 
   this.submitForm = function() {
@@ -562,15 +562,15 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
             $scope.$digest();
             return;
           }
-          $scope.$emit('Local/TxProposalAction');
           self.setOngoingProcess();
+          $scope.$emit('Local/TxProposalAction');
           txStatus.notify(btx, function() {
             return cb();
           });
         });
       } else {
-        $scope.$emit('Local/TxProposalAction');
         self.setOngoingProcess();
+        $scope.$emit('Local/TxProposalAction');
         txStatus.notify(signedTx, function() {
           return cb();
         });
