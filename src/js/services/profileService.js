@@ -74,7 +74,6 @@ angular.module('copayApp.services')
           }
         });
 
-console.log('[profileService.js.76] BIND'); //TODO
         client.on('notification', function(n) {
           $log.debug('BWC Notification:', n);
           notificationService.newBWCNotification(n,
