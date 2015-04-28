@@ -346,10 +346,29 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     this.error = this.success = null;
   };
 
+  this.bindTouchDown = function(tries) {
+    var self = this;
+    tries = tries || 0;
+    if (tries > 5) return;
+    var e = document.getElementById('menu-walletHome');
+    if (!e) $timeout(function() {
+      self.bindTouchDown(++tries);
+    }, 500);
 
-  var hideMenuBar = lodash.debounce(function(hide) {
+    // on touchdown elements
+    $log.debug('Binding touchstart elements...');
+    ['menu-walletHome', 'menu-send', 'menu-receive', 'menu-history'].forEach(function(id) {
+      var e = document.getElementById(id);
+      if (e) e.addEventListener('touchstart', function() {
+        angular.element(e).triggerHandler('click');
+      });
+    });
+  }
+
+  this.hideMenuBar = lodash.debounce(function(hide) {
     if (hide) {
       $rootScope.hideMenuBar = true;
+      this.bindTouchDown();
     } else {
       $rootScope.hideMenuBar = false;
     }
@@ -359,7 +378,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
   this.formFocus = function(what) {
     if (isCordova && !this.isWindowsPhoneApp) {
-      hideMenuBar(what);
+      this.hideMenuBar(what);
     }
     if (!this.isWindowsPhoneApp) return
 
@@ -790,5 +809,8 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   this.hasAction = function(actions, action) {
     return actions.hasOwnProperty('create');
   };
+
+  // Startup events
+  this.bindTouchDown();
 
 });

@@ -506,19 +506,6 @@ angular
       importLegacy: 12
     };
 
-    // on touchdown elements
-    if (document) {
-      setTimeout(function() {
-        $log.debug('Binding touchstart elements...');
-        ['menu-walletHome', 'menu-send', 'menu-receive', 'menu-history'].forEach(function(id) {
-          var e = document.getElementById(id);
-
-          if (e) e.addEventListener('touchstart', function() {
-            angular.element(e).triggerHandler('click');
-          });
-        })
-      }, 1000);
-    }
 
     $rootScope.$on('$stateChangeSuccess', function() {
       $rootScope.$emit('Animation/Disable');
