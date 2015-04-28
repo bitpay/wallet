@@ -37,21 +37,23 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   });
 
   var disableAddrListener = $rootScope.$on('Local/NeedNewAddress', function() {
-    self.getAddress();
+    self.setNewAddress();
   });
 
   var disableFocusListener = $rootScope.$on('Local/NewFocusedWallet', function() {
+    self.addr = null;
     self.resetForm();
   });
 
   var disableTabListener = $rootScope.$on('Local/TabChanged', function(e, tab) {
+    // This will slow down switch, do not add things here!
     switch (tab) {
+      case 'receive':
+        // just to be sure we have an address
+        self.setAddress();
+        break;
       case 'send':
         self.resetError();
-        self.setInputs();
-      case 'receive':
-        self.getAddress();
-        break;
     };
   });
 
@@ -277,8 +279,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   };
 
   // Receive
-
-  this.newAddress = function() {
+  this.setNewAddress = function() {
     var fc = profileService.focusedClient;
     self.generatingAddress = true;
     fc.createAddress(function(err, addr) {
@@ -298,16 +299,19 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     });
   };
 
-  this.getAddress = function() {
+  this.setAddress = function() {
+    if (self.addr)
+      return;
+
     var fc = profileService.focusedClient;
     $timeout(function() {
       storageService.getLastAddress(fc.credentials.walletId, function(err, addr) {
         if (addr) {
           self.addr = addr;
+          $scope.$digest();
         } else {
-          self.newAddress();
+          self.setNewAddress();
         }
-        $scope.$digest();
       });
     });
   };
@@ -399,7 +403,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     }, 1);
   };
 
-  this.setInputs = function() {
+  this.setSendFormInputs = function() {
     var unitToSat = this.unitToSatoshi;
     var satToUnit = 1 / unitToSat;
     /**
@@ -812,5 +816,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
   // Startup events
   this.bindTouchDown();
+  this.setAddress();
+  this.setSendFormInputs();
 
 });
