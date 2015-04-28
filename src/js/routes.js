@@ -443,16 +443,16 @@ angular
         url: '/cordova/:status',
         views: {
           'main': {
-            controller: function($scope, $stateParams, go) {
+            controller: function($rootScope, $stateParams, go) {
               switch ($stateParams.status) {
                 case 'resume':
-                  $scope.$emit('Local/Resume');
+                  $rootScope.$emit('Local/Resume');
                   break;
                   // case 'online':
                   //   //   $scope.$emit('Local/Online');
                   //   break;
                 case 'offline':
-                  $scope.$emit('Local/Offline');
+                  $rootScope.$emit('Local/Offline');
                   break;
               };
               go.walletHome();
