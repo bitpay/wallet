@@ -25,13 +25,13 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   this.isMobile = isMobile.any();
 
   var disableScannerListener = $rootScope.$on('dataScanned', function(event, data) {
-    $scope.$emit('Local/SetTab', 'send');
     self.setForm(data);
+    $rootScope.$emit('Local/SetTab', 'send');
   });
 
   var disablePaymentUriListener = $rootScope.$on('paymentUri', function(event, uri) {
     $timeout(function() {
-      $scope.$emit('Local/SetTab', 'send');
+      $rootScope.$emit('Local/SetTab', 'send');
       self.setForm(uri);
     }, 100);
   });
