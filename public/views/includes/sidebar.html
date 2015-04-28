@@ -7,21 +7,23 @@
     <li ng-show="sidebar.wallets[0]"
     ng-repeat="item in sidebar.wallets track by $index"
     ng-class="{'selected': item.id == index.walletId}"
-    class="nav-item"
-    ng-click="sidebar.switchWallet(item.id)"
-    >
+    class="nav-item">
+    <a ng-click="sidebar.switchWallet(item.id)">
       <div class="avatar-wallet" 
         ng-style="{'background-color':item.color}">{{(item.name || item.id) | limitTo: 1}}</div>
       <div class="ellipsis name-wallet">{{item.name || item.id}}</div>
       <div class="size-12">{{item.m}} <span translate>of</span> {{item.n}}</div> 
+    </a>
     </li> 
-    <li ng-click="$root.go('add')">
+    <li>
+      <a ng-click="$root.go('add')">
         <i class="icon-arrow-right3 size-18 right m10t"></i>
         <i class="fi-plus size-24 db left m10r"></i>
         <div class="tu text-bold"> 
           <span class="size-12" translate>Add wallet</span>
         </div>
         <div translate>Create, join or import</div>
+      </a>
     </li>
   </ul>
 </nav>
