@@ -307,33 +307,34 @@
             </div>
           </div>
 
-          <div class="row" ng-init="showAlternative = false" ng-hide="home.hideAmount">
+         <div class="row" ng-init="home.hideAlternative()" ng-hide="home.hideAmount">
             <div class="large-12 medium-12 columns">
-              <div class="m5b right" ng-hide="sendForm.amount.$pristine">
-                <span class="has-error right size-12" ng-show="sendForm.amount.$invalid">
+              <div class="right" ng-hide="sendForm.amount.$pristine && !sendForm.amount.$modelValue ">
+                <span class="has-error right size-12" ng-if="sendForm.amount.$invalid">
                   <span class="icon-input"><i class="fi-x"></i></span>
                   <span translate>Not valid</span>
                 </span>
-                <small class="icon-input right" ng-show="!sendForm.amount.$invalid">
-                  <i class="fi-check"></i>
+                <small class="icon-input right" ng-if="!sendForm.amount.$invalid">
+                    <i class="fi-check"></i>
                 </small>
               </div>
-              <div ng-show="!showAlternative">
+              <div ng-if="!home.canShowAlternative()">
                 <label for="amount">
                   <span translate>Amount</span>
                 </label>
-
                 <div class="input">
                   <input type="number" id="amount" ng-disabled="home.blockUx || home.lockAmount" name="amount" ng-attr-placeholder="{{'Amount'|translate}}" ng-minlength="0.00000001" ng-maxlength="10000000000" ng-model="_amount" valid-amount required autocomplete="off" ng-focus="home.formFocus('amount')" ng-blur="home.formFocus(false)">
-                  <a class="postfix" ng-click="showAlternative = true">{{home.unitName}}</a>
+                  <input type="number" id="alternative"  name="alternative"  ng-model="_alternative" style="display:none">
+                  <a class="postfix" ng-click="home.showAlternative()">{{home.unitName}}</a>
                 </div>
               </div>
-              <div ng-show="showAlternative">
+              <div ng-if="home.canShowAlternative()">
                 <label for="alternative"><span translate>Amount in</span> {{ home.alternativeName }}
                 </label>
                 <div class="input">
                   <input type="number" id="alternative" ng-disabled="home.blockUx || !home.isRateAvailable || home.lockAmount" name="alternative" ng-attr-placeholder="{{'Amount'|translate}}" ng-model="_alternative" requiredautocomplete="off" ng-focus="home.formFocus('amount')" ng-blur="home.formFocus(false)">
-                  <a class="postfix" ng-click="showAlternative = false"> {{ home.alternativeIsoCode }}</a>
+                  <input type="number" id="amount" name="amount" ng-model="_amount" style="display:none">
+                  <a class="postfix" ng-click="home.hideAlternative()"> {{ home.alternativeIsoCode }}</a>
                 </div>
               </div>
             </div>
