@@ -95,6 +95,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       self.isComplete = fc.isComplete();
       self.txps = [];
       self.copayers = [];
+      self.updateColor();
+      self.setTab('walletHome', true);
 
       storageService.getBackupFlag(self.walletId, function(err, val) {
         self.needsBackup = self.network == 'testnet' ? false : !val;
@@ -103,9 +105,16 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     });
   };
 
-  self.setTab = function(tab) {
-    if (self.tab === tab)
+  self.setTab = function(tab, reset, tries) {
+    tries = tries || 0;
+    if (self.tab === tab && !reset)
       return;
+
+    if (! document.getElementById('menu-' + tab) && ++tries<5) {
+      return $timeout(function() {
+        self.setTab(tab,reset);
+      }, 300);
+    }
 
     if (!self.tab)
       self.tab = 'walletHome';
@@ -257,7 +266,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   };
   self.openWallet = function() {
     var fc = profileService.focusedClient;
-    self.updateColor();
     $timeout(function() {
       $rootScope.$apply();
       self.setOngoingProcess('openingWallet', true);
@@ -696,8 +704,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.updateTxHistory();
   });
 
-  $rootScope.$on('Local/SetTab', function(event, tab) {
-    self.setTab(tab);
+  $rootScope.$on('Local/SetTab', function(event, tab, reset) {
+    self.setTab(tab, reset);
   });
 
   $rootScope.$on('Local/NeedsPassword', function(event, isSetup, cb) {

@@ -322,20 +322,16 @@ a.missing-copayers {
   margin-bottom: 30px;
 }
 
-.sidebar ul.off-canvas-list li a {
+.sidebar ul.off-canvas-list li{
   font-size: 12px;
   vertical-align: middle;
   font-weight: 300;
   border-bottom: transparent;
-  padding: 0;
   color: #A5B2BF;
 }
 
-.sidebar ul.off-canvas-list li a i {
+.sidebar ul.off-canvas-list li i {
   vertical-align: middle;
-}
-
-.sidebar ul.off-canvas-list li a i {
   opacity: 0.6;
 }
 
