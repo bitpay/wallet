@@ -8,26 +8,32 @@ angular.module('copayApp.controllers').controller('joinController',
     //TODO : make one function - this was copied from topbar.js
     var cordovaOpenScanner = function() {
       window.ignoreMobilePause = true;
-      cordova.plugins.barcodeScanner.scan(
-        function onSuccess(result) {
-          $timeout(function() {
-            window.ignoreMobilePause = false;
-          }, 100);
-          if (result.cancelled) return;
+      window.plugins.spinnerDialog.show(null, 'Preparing camera...', true);
+      $timeout(function() {
+        cordova.plugins.barcodeScanner.scan(
+          function onSuccess(result) {
+            $timeout(function() {
+              window.plugins.spinnerDialog.hide();
+              window.ignoreMobilePause = false;
+            }, 100);
+            if (result.cancelled) return;
 
-          $timeout(function() {
-            var data = result.text;
-            $scope.secret = data;
-            $scope.joinForm.secret.$setViewValue(data);
-            $scope.joinForm.secret.$render();
-          }, 1000);
-        },
-        function onError(error) {
-          $timeout(function() {
-            window.ignoreMobilePause = false;
-          }, 100);
-          alert('Scanning error');
-        });
+            $timeout(function() {
+              var data = result.text;
+              $scope.secret = data;
+              $scope.joinForm.secret.$setViewValue(data);
+              $scope.joinForm.secret.$render();
+            }, 1000);
+          },
+          function onError(error) {
+            $timeout(function() {
+              window.ignoreMobilePause = false;
+              window.plugins.spinnerDialog.hide();
+            }, 100);
+            alert('Scanning error');
+          }
+        );
+      }, 100);
     };
 
     var modalOpenScanner = function() {
