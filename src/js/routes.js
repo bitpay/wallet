@@ -510,7 +510,7 @@ angular
     if (document) {
       setTimeout(function() {
         $log.debug('Binding touchstart elements...');
-        ['menu-walletHome', 'menu-send', 'menu-receive', 'menu-history', 'camera-icon'].forEach(function(id) {
+        ['menu-walletHome', 'menu-send', 'menu-receive', 'menu-history'].forEach(function(id) {
           var e = document.getElementById(id);
 
           if (e) e.addEventListener('touchstart', function() {
