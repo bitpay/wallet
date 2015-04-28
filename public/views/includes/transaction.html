@@ -1,12 +1,16 @@
-<div class="last-transactions-content ng-animate-disabled" 
-  ng-class="{'text-gray':!tx.pendingForUs}" 
+<div class="ng-animate-disabled row collapse last-transactions-content line-b"
+  ng-class="{'text-gray':!tx.pendingForUs}"
   ng-click="openTxModal(tx, index.copayers)">
-  <div class="m5b size-12 text-gray">
-    <time>{{ (tx.ts || tx.createdOn ) * 1000 | amTimeAgo}}</time>
+  <div class="small-1 columns text-center" >
+    <i class="icon-circle-active size-10" ng-show="tx.pendingForUs" ng-style="{'color':index.backgroundColor}" style="margin-top:8px;"></i>
+    &nbsp;
   </div>
-  <div class="row collapse">
-    <div class="ellipsis small-8 columns size-14">
-        
+  <div class="small-10 columns">
+      <div ng-if="!$root.updatingBalance">
+        <span class="text-bold size-16">Send {{tx.amountStr}}</span>
+        <time class="right size-12 text-gray m5t">{{ (tx.ts || tx.createdOn ) * 1000 | amTimeAgo}}</time>
+      </div>
+      <div class="ellipsis size-14">
         <span translate>To</span>:
         <span ng-if="tx.merchant">
           <span ng-show="tx.merchant.pr.ca"><i class="fi-lock"></i> {{tx.merchant.domain}}</span>
@@ -14,12 +18,13 @@
         </span>
         <contact address="{{tx.toAddress}}" ng-hide="tx.merchant"> </contact>
         {{tx.toAddress}}
-    </div>
-
-    <div class="small-4 columns text-right">
-      <span class="text-bold size-14" ng-if="!$root.updatingBalance">
-        {{tx.amountStr}}
-      </span>
-    </div>
+      </div>
+      <div class="ellipsis text-gray size-14">
+        {{tx.message}}
+      </div>
+  </div>
+  <div class="small-1 columns text-right">
+    <br>
+    <i class="icon-arrow-right3 size-18"></i>
   </div>
 </div>

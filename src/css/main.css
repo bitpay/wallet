@@ -470,6 +470,11 @@ input[type=number]::-webkit-outer-spin-button {
   padding: 0.3rem 0.4rem;
 }
 
+.label.outline {
+  background: transparent;
+  border: 1px solid #4B6178;
+}
+
 .label.success {background-color: #1ABC9C;}
 .label.alert {background-color: #ED4A43;}
 .label.gray {background-color: #4B6178;}
@@ -545,6 +550,7 @@ label {
   font-weight: 700;
   font-size: 11px;
   color: #34495E;
+  margin-bottom: 2px;
 }
 
 button.radius, .button.radius {
