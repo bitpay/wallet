@@ -126,29 +126,27 @@
     </div>
   </div>
 
-  <div ng-show="index.requiresMultipleSignatures  && index.txps[0]">
-    <h4 class="title m0" translate>Spend proposals</h4>
-    <div class="last-transactions pr" ng-repeat="tx in index.txps"
-      ng-include="'views/includes/transaction.html'">
+  <div ng-if="index.txps[0]">
+    <div ng-show="index.requiresMultipleSignatures">
+      <h4 class="title m0" translate>Spend proposals</h4>
+      <div class="last-transactions pr" ng-repeat="tx in index.txps"
+        ng-include="'views/includes/transaction.html'">
+      </div>
+
+      <div class="text-gray text-center size-12 p10t"
+        ng-show="index.lockedBalance && !index.updatingStatus">
+        <span translate>Total Locked Balance</span>:
+        <b>{{index.lockedBalance}} {{index.unitName}} </b>
+        <span> {{index.lockedBalanceAlternative}}
+          {{index.alternativeIsoCode}} </span>
+      </div>
     </div>
 
-    <div class="text-gray text-center size-12 p10t"
-      ng-show="index.lockedBalance && !index.updatingStatus">
-      <span translate>Total Locked Balance</span>:
-      <b>{{index.lockedBalance}} {{index.unitName}} </b>
-      <span> {{index.lockedBalanceAlternative}}
-        {{index.alternativeIsoCode}} </span>
-    </div>
-
-    <div class="pr" ng-if="!index.txps[0]">
-      <p translate>No pending spend proposals at the moment.</p>
-    </div>
-  </div>
-
-  <div ng-if="!index.requiresMultipleSignatures && index.txps[0]">
-    <h4 class="title m0" translate>Unsent transactions</h4>
-    <div class="last-transactions pr" ng-repeat="tx in index.txps"
-      ng-include="'views/includes/transaction.html'">
+    <div ng-show="!index.requiresMultipleSignatures">
+      <h4 class="title m0" translate>Unsent transactions</h4>
+      <div class="last-transactions pr" ng-repeat="tx in index.txps"
+        ng-include="'views/includes/transaction.html'">
+      </div>
     </div>
   </div>
 </div>
