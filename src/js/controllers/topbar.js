@@ -3,9 +3,11 @@
 angular.module('copayApp.controllers').controller('topbarController', function($rootScope, $scope, $timeout, $modal, isCordova, isMobile, go) {   
   var cordovaOpenScanner = function() {
     window.ignoreMobilePause = true;
+    window.plugins.spinnerDialog.show(null, 'Preparing camera...', true);
     cordova.plugins.barcodeScanner.scan(
       function onSuccess(result) {
         $timeout(function() {
+          window.plugins.spinnerDialog.hide();
           window.ignoreMobilePause = false;
         }, 100);
         if (result.cancelled) return;
@@ -18,10 +20,12 @@ angular.module('copayApp.controllers').controller('topbarController', function($
       function onError(error) {
         $timeout(function() {
           window.ignoreMobilePause = false;
+          window.plugins.spinnerDialog.hide();
         }, 100);
         alert('Scanning error');
-      });
-    go.send();  
+      }
+    );
+    go.send(); 
   }; 
 
   var modalOpenScanner = function() { 
