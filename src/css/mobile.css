@@ -275,7 +275,6 @@ a.missing-copayers {
 
 .sidebar li {
   overflow: hidden;
-  padding: 1rem 0.7rem;
   border-bottom: 1px solid #f1f3f5;
 }
 
@@ -322,15 +321,16 @@ a.missing-copayers {
   margin-bottom: 30px;
 }
 
-.sidebar ul.off-canvas-list li{
+.sidebar ul.off-canvas-list li a {
   font-size: 12px;
   vertical-align: middle;
   font-weight: 300;
   border-bottom: transparent;
   color: #A5B2BF;
+  padding: 1rem 0.7rem;
 }
 
-.sidebar ul.off-canvas-list li i {
+.sidebar ul.off-canvas-list li a i {
   vertical-align: middle;
   opacity: 0.6;
 }

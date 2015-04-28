@@ -96,7 +96,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       self.txps = [];
       self.copayers = [];
       self.updateColor();
-      self.setTab('walletHome', true);
+      go.walletHome();
 
       storageService.getBackupFlag(self.walletId, function(err, val) {
         self.needsBackup = self.network == 'testnet' ? false : !val;
