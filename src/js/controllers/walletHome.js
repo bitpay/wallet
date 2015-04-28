@@ -478,6 +478,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
     if (isCordova) {
       if (name) {
+        window.plugins.spinnerDialog.hide();
         window.plugins.spinnerDialog.show(null, name + '...', true);
       } else {
         window.plugins.spinnerDialog.hide();
