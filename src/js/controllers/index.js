@@ -553,17 +553,27 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     go.walletHome();
   });
 
+  self.debouncedUpdate = lodash.throttle(function() {
+    self.updateAll();
+    self.updateTxHistory();
+  }, 4000, {leading: false, trailing: true});
+
+
+  // No need ot listing to Local/Resume since 
+  // reconnection and Local/Online will be triggered
   lodash.each(['Local/Online', 'Local/Resume'], function(eventName) {
     $rootScope.$on(eventName, function(event) {
-      $log.debug('### Online event');
-      self.isOffline = false;
-      self.updateAll();
-      self.updateTxHistory();
+      $log.debug('### ' + eventName + ' event');
+      self.debouncedUpdate();
     });
   });
 
+  $rootScope.$on('Local/Online', function(event) {
+    self.isOffline = false;
+  });
+
   $rootScope.$on('Local/Offline', function(event) {
-    $log.debug('Offline event');
+    $log.debug('### Offline event');
     self.isOffline = true;
     $timeout(function() {
       $rootScope.$apply();
