@@ -267,10 +267,11 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     });
 
     modalInstance.result.then(function(txp) {
+      $scope.$emit('Local/TxProposalAction');
       if (txp) {
+        self.setOngoingProcess();
         txStatus.notify(txp);
       }
-      $scope.$emit('Local/TxProposalAction');
     });
 
   };
@@ -539,15 +540,15 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
             return;
           }
           $scope.$emit('Local/TxProposalAction');
+          self.setOngoingProcess();
           txStatus.notify(btx, function() {
-            self.setOngoingProcess();
             return cb();
           });
         });
       } else {
         $scope.$emit('Local/TxProposalAction');
+        self.setOngoingProcess();
         txStatus.notify(signedTx, function() {
-          self.setOngoingProcess();
           return cb();
         });
       }
