@@ -406,8 +406,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       });
       if (used) {
         $log.debug('Address ' + addr + ' was used. Cleaning Cache.')
-        $rootScope.$emit('Local/NeedNewAddress', err);
         storageService.clearLastAddress(self.walletId, function(err) {
+          $rootScope.$emit('Local/NeedNewAddress', err);
           if (cb) return cb();
         });
       };
