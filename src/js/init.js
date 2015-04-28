@@ -18,6 +18,8 @@ angular.element(document).ready(function() {
       }, false);
 
       document.addEventListener('resume', function() {
+
+console.log('[init.js.21] RESUME'); //TODO
         if (!window.ignoreMobilePause) {
           window.location = '#/cordova/resume';
         }
@@ -31,10 +33,6 @@ angular.element(document).ready(function() {
       document.addEventListener('offline', function() {
         window.location = '#/cordova/offline';
       }, false);
-      //
-      // document.addEventListener("online", function() {
-      //    window.location = '#/cordoba/online';
-      // }, false);
 
       // Back button event
       document.addEventListener('backbutton', function() {

@@ -448,9 +448,6 @@ angular
                 case 'resume':
                   $rootScope.$emit('Local/Resume');
                   break;
-                  // case 'online':
-                  //   //   $scope.$emit('Local/Online');
-                  //   break;
                 case 'offline':
                   $rootScope.$emit('Local/Offline');
                   break;
