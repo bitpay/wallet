@@ -4,28 +4,30 @@ angular.module('copayApp.controllers').controller('topbarController', function($
   var cordovaOpenScanner = function() {
     window.ignoreMobilePause = true;
     window.plugins.spinnerDialog.show(null, 'Preparing camera...', true);
-    cordova.plugins.barcodeScanner.scan(
-      function onSuccess(result) {
-        $timeout(function() {
-          window.plugins.spinnerDialog.hide();
-          window.ignoreMobilePause = false;
-        }, 100);
-        if (result.cancelled) return;
+    $timeout(function() {
+      cordova.plugins.barcodeScanner.scan(
+        function onSuccess(result) {
+          $timeout(function() {
+            window.plugins.spinnerDialog.hide();
+            window.ignoreMobilePause = false;
+          }, 100);
+          if (result.cancelled) return;
 
-        $timeout(function() {
-          var data = result.text;
-          $rootScope.$emit('dataScanned', data); 
-        }, 1000);
-      },
-      function onError(error) {
-        $timeout(function() {
-          window.ignoreMobilePause = false;
-          window.plugins.spinnerDialog.hide();
-        }, 100);
-        alert('Scanning error');
-      }
-    );
-    go.send(); 
+          $timeout(function() {
+            var data = result.text;
+            $rootScope.$emit('dataScanned', data); 
+          }, 1000);
+        },
+        function onError(error) {
+          $timeout(function() {
+            window.ignoreMobilePause = false;
+            window.plugins.spinnerDialog.hide();
+          }, 100);
+          alert('Scanning error');
+        }
+      );
+      go.send(); 
+    }, 100);
   }; 
 
   var modalOpenScanner = function() { 
