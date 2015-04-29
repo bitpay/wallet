@@ -41,6 +41,8 @@ body, div, .row {
 .inner-wrap {
    -webkit-transition-duration: 200ms;
    transition-duration: 200ms; 
+  -webkit-transition-delay: 0;
+  transition-delay: 0;
 } 
 
 body {
