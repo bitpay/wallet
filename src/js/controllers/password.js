@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('passwordController',
-  function($rootScope, $scope, $timeout,  profileService, notification, go) {
+  function($rootScope, $scope, $timeout,  profileService, notification, go, gettext) {
 
     var self = this;
 
@@ -27,7 +27,7 @@ angular.module('copayApp.controllers').controller('passwordController',
       }
       if (isSetup) {
         if (pass1 != self.password) {
-          self.error = 'Passwords do not match';
+          self.error = gettext('Passwords do not match');
           self.isVerification = false;
           self.password = null;
           pass1 =null;

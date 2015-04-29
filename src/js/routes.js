@@ -145,8 +145,8 @@ angular
           },
           'topbar': {
             templateUrl: 'views/includes/topbar.html',
-            controller: function($scope) {
-              $scope.titleSection = 'Join shared wallet';
+            controller: function($scope, gettext) {
+              $scope.titleSection = gettext('Join shared wallet');
               $scope.goBackToState = 'add';
               $scope.noColor = true;
             }
@@ -162,8 +162,8 @@ angular
           },
           'topbar': {
             templateUrl: 'views/includes/topbar.html',
-            controller: function($scope) {
-              $scope.titleSection = 'Import wallet';
+            controller: function($scope, gettext) {
+              $scope.titleSection = gettext('Import wallet');
               $scope.goBackToState = 'add';
               $scope.noColor = true;
             }
@@ -184,8 +184,8 @@ angular
           },
           'topbar': {
             templateUrl: 'views/includes/topbar.html',
-            controller: function($scope) {
-              $scope.titleSection = 'Import legacy wallet';
+            controller: function($scope, gettext) {
+              $scope.titleSection = gettext('Import legacy wallet');
               $scope.goBackToState = 'add';
               $scope.noColor = true;
             }
@@ -203,8 +203,8 @@ angular
           },
           'topbar': {
             templateUrl: 'views/includes/topbar.html',
-            controller: function($scope) {
-              $scope.titleSection = 'Create new wallet';
+            controller: function($scope, gettext) {
+              $scope.titleSection = gettext('Create new wallet');
               $scope.goBackToState = 'add';
               $scope.noColor = true;
             }
@@ -251,8 +251,8 @@ angular
           },
           'topbar': {
             templateUrl: 'views/includes/topbar.html',
-            controller: function($scope) {
-              $scope.titleSection = 'Language';
+            controller: function($scope, gettext) {
+              $scope.titleSection = gettext('Language');
               $scope.goBackToState = 'preferences';
               $scope.noColor = true;
             }
@@ -270,8 +270,8 @@ angular
           },
           'topbar': {
             templateUrl: 'views/includes/topbar.html',
-            controller: function($scope) {
-              $scope.titleSection = 'Unit';
+            controller: function($scope, gettext) {
+              $scope.titleSection = gettext('Unit');
               $scope.goBackToState = 'preferences';
               $scope.noColor = true;
             }
@@ -289,8 +289,8 @@ angular
           },
           'topbar': {
             templateUrl: 'views/includes/topbar.html',
-            controller: function($scope) {
-              $scope.titleSection = 'Color';
+            controller: function($scope, gettext) {
+              $scope.titleSection = gettext('Color');
               $scope.goBackToState = 'preferences';
             }
           }
@@ -308,8 +308,8 @@ angular
           },
           'topbar': {
             templateUrl: 'views/includes/topbar.html',
-            controller: function($scope) {
-              $scope.titleSection = 'Alternative Currency';
+            controller: function($scope, gettext) {
+              $scope.titleSection = gettext('Alternative Currency');
               $scope.goBackToState = 'preferences';
               $scope.noColor = true;
             }
@@ -346,8 +346,8 @@ angular
           },
           'topbar': {
             templateUrl: 'views/includes/topbar.html',
-            controller: function($scope) {
-              $scope.titleSection = 'Delete';
+            controller: function($scope, gettext) {
+              $scope.titleSection = gettext('Delete');
               $scope.goBackToState = 'preferences';
             }
           }
@@ -364,8 +364,8 @@ angular
           },
           'topbar': {
             templateUrl: 'views/includes/topbar.html',
-            controller: function($scope) {
-              $scope.titleSection = 'About';
+            controller: function($scope, gettext) {
+              $scope.titleSection = gettext('About');
               $scope.goBackToState = 'preferences';
               $scope.noColor = true;
             }
@@ -383,8 +383,8 @@ angular
           },
           'topbar': {
             templateUrl: 'views/includes/topbar.html',
-            controller: function($scope) {
-              $scope.titleSection = 'Logs';
+            controller: function($scope, gettext) {
+              $scope.titleSection = gettext('Logs');
               $scope.goBackToState = 'about';
               $scope.noColor = true;
             }
@@ -402,8 +402,8 @@ angular
           },
           'topbar': {
             templateUrl: 'views/includes/topbar.html',
-            controller: function($scope) {
-              $scope.titleSection = 'Backup';
+            controller: function($scope, gettext) {
+              $scope.titleSection = gettext('Backup');
               $scope.goBackToState = 'preferences';
             }
           }
@@ -431,8 +431,8 @@ angular
           },
           'topbar': {
             templateUrl: 'views/includes/topbar.html',
-            controller: function($scope) {
-              $scope.titleSection = 'Add wallet';
+            controller: function($scope, gettext) {
+              $scope.titleSection = gettext('Add wallet');
               $scope.closeToHome = true;
               $scope.noColor = true;
             }
