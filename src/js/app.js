@@ -7,7 +7,6 @@ var modules = [
   'monospaced.qrcode',
   'gettext',
   'ngAnimate',
-  'ngTouch',
   'ngLodash',
   'uiSwitch',
   'bwcModule',

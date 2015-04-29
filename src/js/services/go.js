@@ -7,23 +7,20 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
     if (typeof document === 'undefined')
       return;
 
-    // hack to hide sidebars and use ng-click (no href=)
-    var win = angular.element($window);
-    var elem = angular.element(document.querySelector('#off-canvas-wrap'))
-    elem.removeClass('move-right');
-    elem.removeClass('move-left');
+    var elem = document.getElementById('off-canvas-wrap');
+    elem.className = 'off-canvas-wrap';
   };
 
   var toggleSidebar = function(invert) {
     if (typeof document === 'undefined')
       return;
 
-    var elem = angular.element(document.querySelector('#off-canvas-wrap'));
-    var leftbarActive = angular.element(document.getElementsByClassName('move-right')).length;
+    var elem = document.getElementById('off-canvas-wrap');
+    var leftbarActive = elem.className.indexOf('move-right') >= 0;
 
     if (invert) {
       if (profileService.profile && !$rootScope.hideNavigation) {
-        elem.addClass('move-right');
+        elem.className = 'off-canvas-wrap move-right';
       }
     } else {
       if (leftbarActive) {

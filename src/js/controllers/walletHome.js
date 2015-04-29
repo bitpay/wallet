@@ -379,7 +379,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
     // on touchdown elements
     $log.debug('Binding touchstart elements...');
-    ['menu-walletHome', 'menu-send', 'menu-receive', 'menu-history'].forEach(function(id) {
+    ['hamburger', 'menu-walletHome', 'menu-send', 'menu-receive', 'menu-history'].forEach(function(id) {
       var e = document.getElementById(id);
       if (e) e.addEventListener('touchstart', function() {
         angular.element(e).triggerHandler('click');
