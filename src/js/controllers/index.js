@@ -651,17 +651,17 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
   $rootScope.$on('Animation/Disable', function(event) {
     $timeout(function() {
-      self.swipeLeft = false;
-      self.swipeRight = false;
+      self.slideLeft = false;
+      self.slideRight = false;
     }, 370);
   });
 
-  $rootScope.$on('Animation/SwipeLeft', function(event) {
-    self.swipeLeft = true;
+  $rootScope.$on('Animation/SlideLeft', function(event) {
+    self.slideLeft = true;
   });
 
-  $rootScope.$on('Animation/SwipeRight', function(event) {
-    self.swipeRight = true;
+  $rootScope.$on('Animation/SlideRight', function(event) {
+    self.slideRight = true;
   });
 
 
