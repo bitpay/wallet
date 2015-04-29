@@ -55,7 +55,7 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
       root.path('copayers');
     } else {
       root.path('walletHome', function() {
-        $rootScope.$emit('Local/SetTab', 'walletHome');
+        $rootScope.$emit('Local/SetTab', 'walletHome', true);
       });
     }
   };

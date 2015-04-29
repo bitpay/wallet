@@ -25,33 +25,51 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   this.isMobile = isMobile.any();
 
   var disableScannerListener = $rootScope.$on('dataScanned', function(event, data) {
-    $scope.$emit('Local/SetTab', 'send');
     self.setForm(data);
+    $rootScope.$emit('Local/SetTab', 'send');
   });
 
   var disablePaymentUriListener = $rootScope.$on('paymentUri', function(event, uri) {
     $timeout(function() {
-      $scope.$emit('Local/SetTab', 'send');
+      $rootScope.$emit('Local/SetTab', 'send');
       self.setForm(uri);
     }, 100);
   });
 
   var disableAddrListener = $rootScope.$on('Local/NeedNewAddress', function() {
-    self.getAddress();
+    self.setNewAddress();
   });
 
   var disableFocusListener = $rootScope.$on('Local/NewFocusedWallet', function() {
+    self.addr = null;
     self.resetForm();
   });
 
+  var disableOnlineListener = $rootScope.$on('Local/Online', function() {
+    // This is needed then the apps go to sleep
+    $timeout(function() {
+      self.bindTouchDown();
+    }, 2000);
+  });
+
+  var disableResumeListener = $rootScope.$on('Local/Resume', function() {
+    // This is needed then the apps go to sleep
+    $timeout(function() {
+      self.bindTouchDown();
+    }, 2000);
+  });
+
+
+
   var disableTabListener = $rootScope.$on('Local/TabChanged', function(e, tab) {
+    // This will slow down switch, do not add things here!
     switch (tab) {
+      case 'receive':
+        // just to be sure we have an address
+        self.setAddress();
+        break;
       case 'send':
         self.resetError();
-        self.setInputs();
-      case 'receive':
-        self.getAddress();
-        break;
     };
   });
 
@@ -61,6 +79,8 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     disablePaymentUriListener();
     disableTabListener();
     disableFocusListener();
+    disableResumeListener();
+    disableOnlineListener();
     $rootScope.hideMenuBar = false;
   });
 
@@ -267,17 +287,17 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     });
 
     modalInstance.result.then(function(txp) {
+      $scope.$emit('Local/TxProposalAction');
       if (txp) {
+        self.setOngoingProcess();
         txStatus.notify(txp);
       }
-      $scope.$emit('Local/TxProposalAction');
     });
 
   };
 
   // Receive
-
-  this.newAddress = function() {
+  this.setNewAddress = function() {
     var fc = profileService.focusedClient;
     self.generatingAddress = true;
     fc.createAddress(function(err, addr) {
@@ -297,16 +317,19 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     });
   };
 
-  this.getAddress = function() {
+  this.setAddress = function() {
+    if (self.addr)
+      return;
+
     var fc = profileService.focusedClient;
     $timeout(function() {
       storageService.getLastAddress(fc.credentials.walletId, function(err, addr) {
         if (addr) {
           self.addr = addr;
+          $scope.$digest();
         } else {
-          self.newAddress();
+          self.setNewAddress();
         }
-        $scope.$digest();
       });
     });
   };
@@ -345,10 +368,29 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     this.error = this.success = null;
   };
 
+  this.bindTouchDown = function(tries) {
+    var self = this;
+    tries = tries || 0;
+    if (tries > 5) return;
+    var e = document.getElementById('menu-walletHome');
+    if (!e) return $timeout(function() {
+      self.bindTouchDown(++tries);
+    }, 500);
 
-  var hideMenuBar = lodash.debounce(function(hide) {
+    // on touchdown elements
+    $log.debug('Binding touchstart elements...');
+    ['menu-walletHome', 'menu-send', 'menu-receive', 'menu-history'].forEach(function(id) {
+      var e = document.getElementById(id);
+      if (e) e.addEventListener('touchstart', function() {
+        angular.element(e).triggerHandler('click');
+      });
+    });
+  }
+
+  this.hideMenuBar = lodash.debounce(function(hide) {
     if (hide) {
       $rootScope.hideMenuBar = true;
+      this.bindTouchDown();
     } else {
       $rootScope.hideMenuBar = false;
     }
@@ -358,7 +400,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
   this.formFocus = function(what) {
     if (isCordova && !this.isWindowsPhoneApp) {
-      hideMenuBar(what);
+      this.hideMenuBar(what);
     }
     if (!this.isWindowsPhoneApp) return
 
@@ -379,7 +421,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     }, 1);
   };
 
-  this.setInputs = function() {
+  this.setSendFormInputs = function() {
     var unitToSat = this.unitToSatoshi;
     var satToUnit = 1 / unitToSat;
     /**
@@ -454,16 +496,17 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
     if (isCordova) {
       if (name) {
+        window.plugins.spinnerDialog.hide();
         window.plugins.spinnerDialog.show(null, name + '...', true);
       } else {
         window.plugins.spinnerDialog.hide();
       }
     } else {
+      self.onGoingProcess = name;
       $timeout(function() {
-        self.onGoingProcess = name;
         $rootScope.$apply();
       });
-    }
+    };
   };
 
   this.submitForm = function() {
@@ -532,22 +575,21 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       if (signedTx.status == 'accepted') {
         self.setOngoingProcess('Broadcasting transaction');
         fc.broadcastTxProposal(signedTx, function(err, btx) {
+          self.setOngoingProcess();
           if (err) {
-            self.setOngoingProcess();
             $scope.error = 'Transaction not broadcasted. Please try again.';
             $scope.$digest();
-            return;
+            return cb(err);
           }
           $scope.$emit('Local/TxProposalAction');
           txStatus.notify(btx, function() {
-            self.setOngoingProcess();
             return cb();
           });
         });
       } else {
+        self.setOngoingProcess();
         $scope.$emit('Local/TxProposalAction');
         txStatus.notify(signedTx, function() {
-          self.setOngoingProcess();
           return cb();
         });
       }
@@ -789,5 +831,10 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   this.hasAction = function(actions, action) {
     return actions.hasOwnProperty('create');
   };
+
+  // Startup events
+  this.bindTouchDown();
+  this.setAddress();
+  this.setSendFormInputs();
 
 });
