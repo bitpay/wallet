@@ -275,7 +275,6 @@ a.missing-copayers {
 
 .sidebar li {
   overflow: hidden;
-  padding: 1rem 0.7rem;
   border-bottom: 1px solid #f1f3f5;
 }
 
@@ -327,15 +326,12 @@ a.missing-copayers {
   vertical-align: middle;
   font-weight: 300;
   border-bottom: transparent;
-  padding: 0;
   color: #A5B2BF;
+  padding: 1rem 0.7rem;
 }
 
 .sidebar ul.off-canvas-list li a i {
   vertical-align: middle;
-}
-
-.sidebar ul.off-canvas-list li a i {
   opacity: 0.6;
 }
 
@@ -774,3 +770,9 @@ textarea:focus
   -webkit-transform: translate3d(-100%, 0, 0) !important;
   transform: translate3d(-100%, 0, 0) !important;
 }
+
+/* removes 300ms in IE */
+-ms-touch-action: manipulation; /* IE10 /
+touch-action: manipulation; /* IE11+ */
+
+

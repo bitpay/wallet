@@ -95,6 +95,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       self.isComplete = fc.isComplete();
       self.txps = [];
       self.copayers = [];
+      self.updateColor();
+      go.walletHome();
 
       storageService.getBackupFlag(self.walletId, function(err, val) {
         self.needsBackup = self.network == 'testnet' ? false : !val;
@@ -103,9 +105,16 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     });
   };
 
-  self.setTab = function(tab) {
-    if (self.tab === tab)
+  self.setTab = function(tab, reset, tries) {
+    tries = tries || 0;
+    if (self.tab === tab && !reset)
       return;
+
+    if (! document.getElementById('menu-' + tab) && ++tries<5) {
+      return $timeout(function() {
+        self.setTab(tab,reset);
+      }, 300);
+    }
 
     if (!self.tab)
       self.tab = 'walletHome';
@@ -257,7 +266,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   };
   self.openWallet = function() {
     var fc = profileService.focusedClient;
-    self.updateColor();
     $timeout(function() {
       $rootScope.$apply();
       self.setOngoingProcess('openingWallet', true);
@@ -406,8 +414,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       });
       if (used) {
         $log.debug('Address ' + addr + ' was used. Cleaning Cache.')
-        $rootScope.$emit('Local/NeedNewAddress', err);
         storageService.clearLastAddress(self.walletId, function(err) {
+          $rootScope.$emit('Local/NeedNewAddress', err);
           if (cb) return cb();
         });
       };
@@ -553,17 +561,27 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     go.walletHome();
   });
 
+  self.debouncedUpdate = lodash.throttle(function() {
+    self.updateAll();
+    self.updateTxHistory();
+  }, 4000, {leading: false, trailing: true});
+
+
+  // No need ot listing to Local/Resume since 
+  // reconnection and Local/Online will be triggered
   lodash.each(['Local/Online', 'Local/Resume'], function(eventName) {
     $rootScope.$on(eventName, function(event) {
-      $log.debug('### Online event');
-      self.isOffline = false;
-      self.updateAll();
-      self.updateTxHistory();
+      $log.debug('### ' + eventName + ' event');
+      self.debouncedUpdate();
     });
   });
 
+  $rootScope.$on('Local/Online', function(event) {
+    self.isOffline = false;
+  });
+
   $rootScope.$on('Local/Offline', function(event) {
-    $log.debug('Offline event');
+    $log.debug('### Offline event');
     self.isOffline = true;
     $timeout(function() {
       $rootScope.$apply();
@@ -686,8 +704,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.updateTxHistory();
   });
 
-  $rootScope.$on('Local/SetTab', function(event, tab) {
-    self.setTab(tab);
+  $rootScope.$on('Local/SetTab', function(event, tab, reset) {
+    self.setTab(tab, reset);
   });
 
   $rootScope.$on('Local/NeedsPassword', function(event, isSetup, cb) {
