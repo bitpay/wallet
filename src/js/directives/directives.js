@@ -15,10 +15,7 @@ function selectText(element) {
 
   }
 }
-
-
 angular.module('copayApp.directives')
-
 .directive('validAddress', ['$rootScope', 'bitcore', 'profileService',
     function($rootScope, bitcore, profileService) {
       return {
