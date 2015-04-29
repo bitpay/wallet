@@ -506,7 +506,7 @@ angular
       receive: 0,
       send: 0,
       history: 0,
-      preferences: 0,
+      preferences: 11,
       preferencesColor: 12,
       backup: 12,
       preferencesAdvanced: 12,
@@ -531,9 +531,9 @@ angular
 
     $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
       if (pageWeight[fromState.name] > pageWeight[toState.name]) {
-        $rootScope.$emit('Animation/SwipeRight');
+        $rootScope.$emit('Animation/SlideRight');
       } else if (pageWeight[fromState.name] < pageWeight[toState.name]) {
-        $rootScope.$emit('Animation/SwipeLeft');
+        $rootScope.$emit('Animation/SlideLeft');
       }
 
       if (!profileService.profile && toState.needProfile) {
