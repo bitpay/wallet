@@ -39,9 +39,11 @@ body, div, .row {
 /* END disabling text selection */
 
 .inner-wrap {
-  -webkit-transition-duration: 250ms;
-  transition-duration: 250ms;
-}
+   -webkit-transition-duration: 200ms;
+   transition-duration: 200ms; 
+  -webkit-transition-delay: 0;
+  transition-delay: 0;
+} 
 
 body {
   overflow: hidden;
