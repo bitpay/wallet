@@ -18,8 +18,6 @@ angular.element(document).ready(function() {
       }, false);
 
       document.addEventListener('resume', function() {
-
-console.log('[init.js.21] RESUME'); //TODO
         if (!window.ignoreMobilePause) {
           window.location = '#/cordova/resume';
         }

@@ -112,7 +112,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
     if (! document.getElementById('menu-' + tab) && ++tries<5) {
       return $timeout(function() {
-        self.setTab(tab,reset);
+        self.setTab(tab,reset, tries);
       }, 300);
     }
 
