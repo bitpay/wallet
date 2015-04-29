@@ -24,6 +24,26 @@
 	-moz-osx-font-smoothing: grayscale;
 }
 
+.icon-minus-circle:before {
+	content: "\e62c";
+}
+
+.icon-plus-circle:before {
+	content: "\e62d";
+}
+
+.icon-close-circle:before {
+	content: "\e62e";
+}
+
+.icon-checkmark-circle:before {
+	content: "\e62b";
+}
+
+.icon-scan:before {
+	content: "\e62a";
+}
+
 .icon-circle:before {
 	content: "\e629";
 }
@@ -130,6 +150,10 @@
 
 .icon-erase:before {
 	content: "\e628";
+}
+
+.icon-receive2:before {
+	content: "\e62f";
 }
 
 .icon-arrow-left:before {

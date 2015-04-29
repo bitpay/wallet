@@ -20,7 +20,7 @@
           {{join.error|translate}}
         </span>
       </div>
-  
+
       <form name="joinForm" ng-submit="join.join(joinForm)" novalidate>
           <label><span translate>Your nickname</span>
             <div class="input">
@@ -29,7 +29,7 @@
           </label>
 
           <div class="row collapse">
-            <label for="secret" class="left"><span translate>Wallet Invitation</span> 
+            <label for="secret" class="left"><span translate>Wallet Invitation</span>
               <small translate ng-show="joinForm.secret.$pristine">Required</small>
             </label>
             <span class="has-error right size-12" ng-show="joinForm.secret.$invalid
@@ -44,34 +44,34 @@
           <div class="input">
             <input id="secret" type="text" placeholder="{{'Paste invitation here'|translate}}" name="secret" ng-model="secret" wallet-secret required>
             <div ng-hide="showScanner || disableScanner">
-              <a class="postfix" ng-click="join.openScanner()"><i class="fi-camera size-24">&nbsp;</i></a>
+              <a class="postfix text-right" ng-click="join.openScanner()"><i class="icon-scan size-18">&nbsp;</i></a>
             </div>
             <div ng-show="showScanner">
               <a class="postfix button warning" ng-click="cancelScanner()"><i class="fi-x">&nbsp;</i></a>
             </div>
           </div>
 
-          <div id="scanner" 
-            class="row" 
+          <div id="scanner"
+            class="row"
             ng-if="showScanner"
             ng-include="'views/includes/scanner.html'">
           </div>
 
           <a class="button outline light-gray tiny expand" ng-click="join.hideAdv=!join.hideAdv">
             <i class="fi-widget m3r"></i>
-            <span translate ng-show="!join.hideAdv">Show</span> 
-            <span translate ng-show="join.hideAdv">Hide</span> 
+            <span translate ng-show="!join.hideAdv">Show</span>
+            <span translate ng-show="join.hideAdv">Hide</span>
             <span translate>advanced options</span>
             <i ng-show="!join.hideAdv" class="icon-arrow-down4"></i>
             <i ng-show="join.hideAdv" class="icon-arrow-up4"></i>
           </a>
           <div ng-show="join.hideAdv" class="row">
             <div class="large-12 columns">
-              <label for="ext-master">Master extended private key 
+              <label for="ext-master">Master extended private key
               <small translate>If not given, a secure key will be generated</small>
-                <input id="ext-master" 
-                type="text" 
-                placeholder="BIP32 master extended private key" 
+                <input id="ext-master"
+                type="text"
+                placeholder="BIP32 master extended private key"
                 name="privateKey" ng-model="privateKey">
               </label>
             </div>
@@ -83,4 +83,3 @@
 </div>
 
 <div class="extra-margin-bottom"></div>
-
