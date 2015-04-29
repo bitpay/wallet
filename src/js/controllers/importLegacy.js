@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('importLegacyController',
-  function($rootScope, $scope, $log, $timeout, notification, legacyImportService, profileService, go, lodash, bitcore) {
+  function($rootScope, $scope, $log, $timeout, notification, legacyImportService, profileService, go, lodash, bitcore, gettext, gettextCatalog) {
 
     var self = this;
     self.messages = [];
@@ -50,11 +50,11 @@ angular.module('copayApp.controllers').controller('importLegacyController',
         legacyImportService.import(username, password, serverURL, fromCloud, function(err, ids, toScanIds) {
           if (err || !ids || !ids.length) {
             self.importing = false;
-            self.error = err || 'Failed to import wallets';
+            self.error = err || gettext('Failed to import wallets');
             return;
           }
 
-          notification.success( ids.length + ' wallets imported. Funds scanning in progress. Hold on to see updated balance.');
+          notification.success( gettextCatalog.getString('{{len}} wallets imported. Funds scanning in progress. Hold on to see updated balance', {len: ids.length}));
           self.scan(toScanIds);
         });
       }, 100);

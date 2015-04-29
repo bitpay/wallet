@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.services').factory('txStatus', function($modal, lodash, profileService, $timeout) {
+angular.module('copayApp.services').factory('txStatus', function($modal, lodash, profileService, $timeout, gettext) {
   var root = {};
 
   root.notify = function(txp, cb) {
@@ -10,17 +10,17 @@ angular.module('copayApp.services').factory('txStatus', function($modal, lodash,
     var status = txp.status;
 
     if (status == 'broadcasted') {
-      msg = 'Transaction broadcasted';
+      msg = gettext('Transaction broadcasted');
     } else {
       var action = lodash.find(txp.actions, {
         copayerId: fc.credentials.copayerId
       });
       if (!action) {
-        msg = 'Transaction proposal created';
+        msg = gettext('Transaction proposal created');
       } else if (action.type == 'accept') {
-        msg = 'Transaction proposal signed';
+        msg = gettext('Transaction proposal signed');
       } else if (action.type == 'reject') {
-        msg = 'Transaction was rejected';
+        msg = gettext('Transaction was rejected');
       }
     }
 

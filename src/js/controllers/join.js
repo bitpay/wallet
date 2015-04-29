@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('joinController',
-  function($scope, $rootScope, $timeout, go, isMobile, notification, profileService, isCordova, $modal) {
+  function($scope, $rootScope, $timeout, go, isMobile, notification, profileService, isCordova, $modal, gettext) {
 
     var self = this;
 
@@ -140,7 +140,7 @@ angular.module('copayApp.controllers').controller('joinController',
 
     this.join = function(form) {
       if (form && form.$invalid) {
-        self.error = 'Please enter the required fields';
+        self.error = gettext('Please enter the required fields');
         return;
       }
       self.loading = true;
@@ -153,7 +153,7 @@ angular.module('copayApp.controllers').controller('joinController',
         }, function(err) {
           if (err) {
             self.loading = false;
-            self.error = 'Could not join wallet: ' +  (err.message ? err.message : err);
+            self.error = gettext('Could not join wallet: ') +  (err.message ? err.message : err);
             $rootScope.$apply();
             return
           }
