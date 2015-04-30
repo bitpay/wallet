@@ -7,7 +7,7 @@
   </div>
   <div class="small-10 columns">
       <div ng-if="!$root.updatingBalance">
-        <span class="text-bold size-16">Send {{tx.amountStr}}</span>
+        <span class="text-bold size-16"><span translate>Send</span> {{tx.amountStr}}</span>
         <time class="right size-12 text-gray m5t">{{ (tx.ts || tx.createdOn ) * 1000 | amTimeAgo}}</time>
       </div>
       <div class="ellipsis size-14">

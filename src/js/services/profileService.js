@@ -1,6 +1,6 @@
 'use strict';
 angular.module('copayApp.services')
-  .factory('profileService', function profileServiceFactory($rootScope, $location, $timeout, $filter, $log, lodash, storageService, bwcService, configService, notificationService, isChromeApp, isCordova) {
+  .factory('profileService', function profileServiceFactory($rootScope, $location, $timeout, $filter, $log, lodash, storageService, bwcService, configService, notificationService, isChromeApp, isCordova, gettext) {
 
     var root = {};
 
@@ -163,7 +163,7 @@ angular.module('copayApp.services')
       walletClient.createWallet('Personal Wallet', 'me', 1, 1, {
         network: 'livenet'
       }, function(err) {
-        if (err) return cb('Error creating wallet. Check your internet connection');
+        if (err) return cb(gettext('Error creating wallet. Check your internet connection'));
         var p = Profile.create({
           credentials: [JSON.parse(walletClient.export())],
         });
@@ -179,13 +179,13 @@ angular.module('copayApp.services')
         try {
           walletClient.seedFromExtendedPrivateKey(opts.extendedPrivateKey);
         } catch (ex) {
-          return cb('Could not create using the specified extended private key');
+          return cb(gettext('Could not create using the specified extended private key'));
         }
       }
       walletClient.createWallet(opts.name, opts.myName || 'me', opts.m, opts.n, {
         network: opts.networkName
       }, function(err, secret) {
-        if (err) return cb('Error creating wallet');
+        if (err) return cb(gettext('Error creating wallet'));
 
         root.profile.credentials.push(JSON.parse(walletClient.export()));
         root.setWalletClients();
@@ -205,7 +205,7 @@ angular.module('copayApp.services')
         try {
           walletClient.seedFromExtendedPrivateKey(opts.extendedPrivateKey);
         } catch (ex) {
-          return cb('Could not join using the specified extended private key');
+          return cb(gettext('Could not join using the specified extended private key'));
         }
       }
       walletClient.joinWallet(opts.secret, opts.myName || 'me', function(err) {
@@ -254,7 +254,7 @@ angular.module('copayApp.services')
           password: opts.password
         });
       } catch (err) {
-        return cb('Could not import. Check input file and password');
+        return cb(gettext('Could not import. Check input file and password'));
       }
 
       var walletId = walletClient.credentials.walletId;
@@ -263,7 +263,7 @@ angular.module('copayApp.services')
       if (lodash.find(root.profile.credentials, {
         'walletId': walletId
       })) {
-        return cb('Wallet already exists');
+        return cb(gettext('Wallet already exists'));
       }
 
       root.profile.credentials.push(JSON.parse(walletClient.export()));
@@ -285,7 +285,6 @@ angular.module('copayApp.services')
         root._createNewProfile(function(err, p) {
           if (err) return cb(err);
 
-          console.log('[profileService.js.287]'); //TODO
           root.bindProfile(p, function(err) {
             storageService.storeNewProfile(p, function(err) {
               return cb(err);
@@ -299,11 +298,11 @@ angular.module('copayApp.services')
       var walletClient = bwcService.getClient();
 
       walletClient.createWalletFromOldCopay(username, password, blob, function(err, existed) {
-        if (err) return cb('Error importing wallet: ' + err);
+        if (err) return cb(gettext('Error importing wallet: ') + err);
 
         if (root.walletClients[walletClient.credentials.walletId]) {
           $log.debug('Wallet:' + walletClient.credentials.walletName + ' already imported');
-          return cb('Wallet Already Imported: ' + walletClient.credentials.walletName);
+          return cb(gettext('Wallet Already Imported: ') + walletClient.credentials.walletName);
         };
 
         $log.debug('Creating Wallet:', walletClient.credentials.walletName);
@@ -370,13 +369,13 @@ angular.module('copayApp.services')
       $log.debug('Wallet is encrypted');
       $rootScope.$emit('Local/NeedsPassword', false, function(err2, password) {
         if (err2 || !password) {
-          return cb(err2 || 'Password needed');
+          return cb(err2 || gettext('Password needed'));
         }
         try {
           fc.unlock(password);
         } catch (e) {
           $log.debug(e);
-          return cb('Wrong password');
+          return cb(gettext('Wrong password'));
         }
         $timeout(function() {
           if (fc.isPrivKeyEncrypted()) {

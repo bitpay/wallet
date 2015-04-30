@@ -2,7 +2,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('backupController',
-  function($rootScope, $scope, $timeout, backupService, profileService, isMobile, isCordova, notification, go) {
+  function($rootScope, $scope, $timeout, backupService, profileService, isMobile, isCordova, notification, go, gettext) {
     this.isSafari = isMobile.Safari();
     this.isCordova = isCordova;
     this.error = null;
@@ -14,7 +14,7 @@ angular.module('copayApp.controllers').controller('backupController',
     this.downloadWalletBackup = function() {
       backupService.walletDownload(this.password, function() {
         $rootScope.$emit('Local/BackupDone');
-        notification.success('Backup created', 'Encrypted backup file saved');
+        notification.success(gettext('Backup created'), gettext('Encrypted backup file saved'));
         go.walletHome();
       });
     };

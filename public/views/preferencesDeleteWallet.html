@@ -1,5 +1,5 @@
 <div class="content p20v" ng-controller="preferencesDeleteWalletController as preferences">
-  <h4 class="text-warning text-center m0" translate> Warning! </h4>
+  <h4 class="text-warning text-center m0" translate>Warning!</h4>
   <div class="box-notification" ng-show="preferences.error" >
     <span class="text-warning size-14">
       {{preferences.error|translate}}
@@ -7,7 +7,7 @@
   </div>
   <div class="columns text-center m10t">
     <p translate class="size-12 text-gray">Permanently delete this wallet. WARNING: this action cannot be reversed.</p>
-    <button class="button expand warning" ng-click="preferences.deleteWallet()">
+    <button class="button expand warning" ng-click="preferences.deleteWallet()" translate>
       Delete wallet
     </button>
   </div>
