@@ -384,6 +384,7 @@ ul.manage li {
 .lh140 {line-height: 140%;}
 .oh {overflow:hidden;}
 .vm {vertical-align: middle;}
+.vt {vertical-align: top;}
 .ma { margin: 0 auto;}
 .tu {text-transform: uppercase;}
 
@@ -410,6 +411,10 @@ ul.manage li {
   color: #7A8C9E;
   font-size: 14px;
   font-weight: 300;
+}
+
+.tab-bar h1, .tab-bar h2, .tab-bar h3, .tab-bar h4, .tab-bar h5, .tab-bar h6 {
+  line-height: 2.5rem;
 }
 
 .sidebar li.nav-item.selected .name-wallet {

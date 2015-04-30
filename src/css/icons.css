@@ -40,16 +40,36 @@
 	content: "\e62b";
 }
 
-.icon-scan:before {
-	content: "\e62a";
-}
-
 .icon-circle:before {
 	content: "\e629";
 }
 
 .icon-circle-active:before {
 	content: "\e627";
+}
+
+.icon-scan:before {
+	content: "\e62a";
+}
+
+.icon-trash:before {
+	content: "\e626";
+}
+
+.icon-wallet:before {
+	content: "\e622";
+}
+
+.icon-history:before {
+	content: "\e623";
+}
+
+.icon-reference:before {
+	content: "\e621";
+}
+
+.icon-bell:before {
+	content: "\e61c";
 }
 
 .icon-trash:before {
