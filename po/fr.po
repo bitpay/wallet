@@ -24,6 +24,10 @@ msgstr "Seules les transactions créées par vous-même sans signatures de pairs
 msgid "* You can safely install your backup on other device and use your wallet from many devices at the same time."
 msgstr "Vous pouvez installer en toute sécurité votre sauvegarde sur un autre appareil et utiliser votre portefeuille depuis plusieurs appareils en même temps"
 
+#: src/js/services/notificationsService.js
+msgid "A transaction was finally rejected"
+msgstr "Une transaction a été finalement rejetée"
+
 #: src/js/routes.js
 msgid "About"
 msgstr "À propos"
@@ -173,9 +177,9 @@ msgstr "Copiez le texte dans un endroit sûr (bloc-notes ou e-mail)"
 msgid "Copy to clipboard"
 msgstr "Copier dans le presse-papier"
 
-#: src/js/controllers/create.js
-msgid "Could not create wallet:"
-msgstr "Impossible de créer le portefeuille"
+#: src/js/services/profileService.js
+msgid "Could not create using the specified extended private key"
+msgstr "Impossible de créer en utilisant la clé privée étendue spécifiée"
 
 #: src/js/controllers/import.js
 msgid "Could not decrypt file, check your password"
@@ -188,6 +192,14 @@ msgstr "Impossible de récupérer les informations de paiement"
 #: public/views/walletHome.html
 msgid "Could not fetch transaction history"
 msgstr "Impossible de récupérer l'historique des transactions"
+
+#: src/js/services/profileService.js
+msgid "Could not import. Check input file and password"
+msgstr "Impossible d'importer. Vérifiez le fichier d'entrée et le mot de passe"
+
+#: src/js/services/profileService.js
+msgid "Could not join using the specified extended private key"
+msgstr ""
 
 #: src/js/controllers/join.js
 msgid "Could not join wallet:"
@@ -269,10 +281,22 @@ msgstr "Anglais"
 msgid "Enter your password"
 msgstr "Entrer votre mot de passe"
 
+#: src/js/services/profileService.js
+msgid "Error creating wallet"
+msgstr "Erreur de création du portefeuille"
+
+#: src/js/services/profileService.js
+msgid "Error creating wallet. Check your internet connection"
+msgstr "Erreur de création du portefeuille. Vérifiez votre connexion internet"
+
+#: src/js/services/profileService.js
+msgid "Error importing wallet:"
+msgstr "Erreur d'importation du portefeuille :"
+
 #: public/views/modals/paypro.html
 #: public/views/modals/txp-details.html
-msgid "Expires:"
-msgstr "Expire :"
+msgid "Expires"
+msgstr "Expire"
 
 #: src/js/controllers/importLegacy.js
 msgid "Failed to import wallets"
@@ -282,6 +306,7 @@ msgstr "Impossible d'importer les portefeuilles"
 msgid "Family vacation funds"
 msgstr "Fonds de vacance familiale"
 
+#. Get information of payment if using Payment Protocol
 #: src/js/controllers/walletHome.js
 msgid "Fetching Payment Information"
 msgstr "Récupération des informations de paiement"
@@ -289,6 +314,10 @@ msgstr "Récupération des informations de paiement"
 #: src/js/controllers/index.js
 msgid "French"
 msgstr "Français"
+
+#: src/js/services/notificationsService.js
+msgid "Funds received"
+msgstr "Fonds reçus"
 
 #: public/views/walletHome.html
 msgid "Generate new address"
@@ -347,6 +376,10 @@ msgstr "Importer un portefeuille"
 #: public/views/import.html
 msgid "Importing wallet..."
 msgstr "Importation du portefeuille..."
+
+#: public/views/importLegacy.html
+msgid "Importing..."
+msgstr "Importation..."
 
 #: public/views/modals/tx-details.html
 #: public/views/modals/txp-details.html
@@ -430,6 +463,10 @@ msgstr "Mon adresse Bitcoin"
 msgid "Network"
 msgstr "Réseau"
 
+#: src/js/services/notificationsService.js
+msgid "New Transaction"
+msgstr "Nouvelle transaction"
+
 #: public/views/modals/confirmation.html
 msgid "No"
 msgstr "Non"
@@ -460,6 +497,10 @@ msgstr "Mot de passe"
 #: public/views/includes/password.html
 msgid "Password cannot be recovered. Be sure to write it down"
 msgstr "Le mot de passe ne peut pas être récupéré. Assurez-vous de l'écrire sur papier"
+
+#: src/js/services/profileService.js
+msgid "Password needed"
+msgstr "Mot de passe nécessaire"
 
 #: src/js/controllers/password.js
 msgid "Passwords do not match"
@@ -560,6 +601,10 @@ msgstr "Répétez le mot de passe"
 msgid "Required"
 msgstr "Requis"
 
+#: public/views/createProfile.html
+msgid "Retrying..."
+msgstr "Nouvelle tentative"
+
 #: public/views/includes/password.html
 msgid "SET"
 msgstr "DEFINIR"
@@ -575,6 +620,10 @@ msgstr "COMMENCER"
 #: public/views/preferencesBwsUrl.html
 msgid "Save"
 msgstr "Sauvegarder"
+
+#: src/js/services/notificationsService.js
+msgid "Scan Finished"
+msgstr "Analyse terminée"
 
 #: public/views/walletHome.html
 msgid "Scan status finished with error"
@@ -724,6 +773,18 @@ msgstr "Solde verrouillé total"
 msgid "Transaction"
 msgstr "Transaction"
 
+#: src/js/services/notificationsService.js
+msgid "Transaction Rejected"
+msgstr "Transaction rejetée"
+
+#: src/js/services/notificationsService.js
+msgid "Transaction Sent"
+msgstr "Transaction envoyée"
+
+#: src/js/services/notificationsService.js
+msgid "Transaction Signed"
+msgstr "Transaction signée"
+
 #: public/views/modals/txp-details.html
 msgid "Transaction accepted..."
 msgstr "Transaction acceptée..."
@@ -838,6 +899,10 @@ msgstr "Attente des copayers"
 msgid "Waiting..."
 msgstr "Attente..."
 
+#: src/js/services/profileService.js
+msgid "Wallet Already Imported:"
+msgstr "Portefeuille déjà importé :"
+
 #: public/views/join.html
 msgid "Wallet Invitation"
 msgstr "Invitation de portefeuille"
@@ -845,6 +910,10 @@ msgstr "Invitation de portefeuille"
 #: public/views/join.html
 msgid "Wallet Invitation is not valid!"
 msgstr "L'invitation de portefeuille n'est pas valide !"
+
+#: src/js/services/profileService.js
+msgid "Wallet already exists"
+msgstr "Le portefeuille existe déjà"
 
 #: public/views/copayers.html
 msgid "Wallet incomplete and broken"
@@ -857,6 +926,10 @@ msgstr "Nom du portefeuille"
 #: public/views/preferencesDeleteWallet.html
 msgid "Warning!"
 msgstr "Attention !"
+
+#: src/js/services/profileService.js
+msgid "Wrong password"
+msgstr "Mauvais mot de passe"
 
 #: public/views/modals/confirmation.html
 msgid "Yes"
