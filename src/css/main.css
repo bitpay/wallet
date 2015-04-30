@@ -41,7 +41,7 @@ h4.title {
   text-transform: uppercase;
   color: #2C3E50;
   font-weight: 700;
-  font-size: 0.8rem;
+  font-size: 0.7rem;
 }
 
 body, html{
@@ -140,7 +140,7 @@ input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill, inpu
 
 .main {
   background-color: #fff;
-  padding: 45px 0 80px 0;
+  padding: 45px 0 58px 0;
   position: relative;
 }
 
@@ -384,6 +384,7 @@ ul.manage li {
 .lh140 {line-height: 140%;}
 .oh {overflow:hidden;}
 .vm {vertical-align: middle;}
+.vt {vertical-align: top;}
 .ma { margin: 0 auto;}
 .tu {text-transform: uppercase;}
 
@@ -410,6 +411,10 @@ ul.manage li {
   color: #7A8C9E;
   font-size: 14px;
   font-weight: 300;
+}
+
+.tab-bar h1, .tab-bar h2, .tab-bar h3, .tab-bar h4, .tab-bar h5, .tab-bar h6 {
+  line-height: 2.7rem;
 }
 
 .sidebar li.nav-item.selected .name-wallet {
@@ -550,7 +555,7 @@ label {
   font-weight: 700;
   font-size: 11px;
   color: #34495E;
-  margin-bottom: 2px;
+  margin-bottom: 3px;
 }
 
 button.radius, .button.radius {
