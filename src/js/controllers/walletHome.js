@@ -301,11 +301,19 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     var fc = profileService.focusedClient;
     self.generatingAddress = true;
     fc.createAddress(function(err, addr) {
+      self.generatingAddress = false;
       if (err) {
-        $log.debug('Creating address ERROR:', err);
-        $scope.$emit('Local/ClientError', err);
-        self.generatingAddress = false;
-        $scope.$digest();
+        if (err.error.match(/locked/gi)) {
+          $log.debug(err.error);
+          $timeout(function() {
+            self.setNewAddress();
+          }, 5000);
+        }
+        else {
+          $log.debug('Creating address ERROR:', err);
+          $scope.$emit('Local/ClientError', err);
+          $scope.$digest();
+        }
         return;
       }
       self.addr = addr.address;
