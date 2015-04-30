@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('preferencesDeleteWalletController',
-  function($scope, $rootScope, $filter, $timeout, $modal, notification, profileService, isCordova, go, gettext) {
+  function($scope, $rootScope, $filter, $timeout, $modal, $log, notification, profileService, isCordova, go, gettext, gettextCatalog) {
     this.isCordova = isCordova;
     this.error = null;
 
@@ -33,25 +33,17 @@ angular.module('copayApp.controllers').controller('preferencesDeleteWalletContro
     };
 
     var _deleteWallet = function() {
-      $timeout(function() {
-        var fc = profileService.focusedClient;
-        var walletName = fc.credentials.walletName;
+      var fc = profileService.focusedClient;
+      var walletName = fc.credentials.walletName;
+      var self = this;
 
-        profileService.deleteWalletFC({}, function(err) {
-          if (err) {
-            this.error = err.message || err;
-            console.log(err);
-            $timeout(function() {
-              $scope.$digest();
-            });
-          } else {
-            go.walletHome();
-            $timeout(function() {
-              notification.success(gettext('Success'), gettextCatalog.getString('The wallet "{{walletName}}" was deleted', {walletName: walletName}));
-            });
-          }
-        });
-      }, 100);
+      profileService.deleteWalletFC({}, function(err) {
+        if (err) {
+          self.error = err.message || err;
+        } else {
+          notification.success(gettext('Success'), gettextCatalog.getString('The wallet "{{walletName}}" was deleted', {walletName: walletName}));
+        }
+      });
     };
 
     this.deleteWallet = function() {

@@ -683,7 +683,8 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
     var satToUnit = 1 / this.unitToSatoshi;
     var self = this;
-    self.setOngoingProcess(gettext('Fetching Payment Informantion'));
+    /// Get information of payment if using Payment Protocol
+    self.setOngoingProcess(gettext('Fetching Payment Information'));
 
     $log.debug('Fetch PayPro Request...', uri);
     $timeout(function() {

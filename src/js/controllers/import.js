@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('importController',
-  function($scope, $rootScope, $location, $timeout, $log, profileService, notification, go, isMobile, isCordova, sjcl) {
+  function($scope, $rootScope, $location, $timeout, $log, profileService, notification, go, isMobile, isCordova, sjcl, gettext) {
 
     var self = this;
 
@@ -17,14 +17,19 @@ angular.module('copayApp.controllers').controller('importController',
     });
 
     var _import = function(str, opts) {
-      var str2;
+      var str2, err;
       try {
        str2 = sjcl.decrypt(self.password, str);
       } catch (e) {
-        self.error = gettext('Could not decrypt file, check your password');
+        err = gettext('Could not decrypt file, check your password');
         $log.warn(e);
-        return;
       };
+
+      if (err) {
+        self.error = err;
+        $rootScope.$apply();
+        return;
+      }
 
       self.loading = true;
 

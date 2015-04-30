@@ -34,6 +34,7 @@ angular
             args = args.map(function(v) {
               try {
                 if (typeof v == 'undefined') v = 'undefined';
+                if (!v) v = 'null';
                 if (typeof v == 'object') {
                   if (v.message)
                     v = v.message;
