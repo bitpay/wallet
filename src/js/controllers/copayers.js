@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('copayersController',
-  function($scope, $rootScope, $timeout, $log, $modal, profileService, go, notification, isCordova) {
+  function($scope, $rootScope, $timeout, $log, $modal, profileService, go, notification, isCordova, gettext, gettextCatalog) {
     var self = this;
 
 
@@ -17,8 +17,8 @@ angular.module('copayApp.controllers').controller('copayersController',
     };
 
     var _modalDeleteWallet = function() {
-      var ModalInstanceCtrl = function($scope, $modalInstance) {
-        $scope.title = 'Are you sure you want to delete this wallet?';
+      var ModalInstanceCtrl = function($scope, $modalInstance, gettext) {
+        $scope.title = gettext('Are you sure you want to delete this wallet?');
         $scope.loading = false;
 
         $scope.ok = function() {
@@ -59,7 +59,7 @@ angular.module('copayApp.controllers').controller('copayersController',
           } else {
             go.walletHome();
             $timeout(function() {
-              notification.success('Success', 'The wallet "' + walletName + '" was deleted');
+              notification.success(gettext('Success'), gettextCatalog.getString('The wallet "{{walletName}}" was deleted', {walletName: walletName}));
             });
           }
         });

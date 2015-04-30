@@ -6,7 +6,7 @@
     <div ng-include="'views/includes/version.html'"></div>
   </div>
   <div class="text-center size-12 text-warning" ng-show="cp.error">
-    {{(cp.error)|translate}}. Retrying...
+    {{(cp.error)|translate}}. <span translate>Retrying...</span>
   </div>
   <div class="onGoingProcess" ng-show="cp.creatingProfile">
     <div class="onGoingProcess-content" ng-style="{'background-color':'#222'}">

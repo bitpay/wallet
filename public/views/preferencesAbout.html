@@ -1,6 +1,6 @@
 <div class="content p20v" ng-controller="preferencesAbout as about">
   <ul class="no-bullet m0 size-14">
-    <div class="text-center small-5 small-centered columns p20" >
+    <div class="text-center small-5 small-centered columns m20b" >
       <img src="img/logo.png" alt="Copay" width="100%">
     </div>
     <h4 class="title m0" translate>Release Information</h4>
@@ -16,12 +16,11 @@
         <span translate>Commit hash</span>
         <span class="right text-gray">
           #{{v.commitHash}}
-          <i class="icon-arrow-right3 size-24 right text-gray"></i>  
         </span>      
       </li>
     </div>
  
-    <h4 class="title m0" translate>&nbsp;</h4>
+    <h4 class="title m0">&nbsp;</h4>
     <li class="line-b p20" ng-conf ng-click="$root.go('logs')">
       <span translate>View session logs</span>
       <span class="right text-gray">

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, lodash, go, profileService, configService, isCordova, rateService, storageService, gettextCatalog, amMoment) {
+angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, lodash, go, profileService, configService, isCordova, rateService, storageService, gettextCatalog, gettext, amMoment) {
 
   var self = this;
   self.isCordova = isCordova;
@@ -12,19 +12,19 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   };
 
   self.menu = [{
-    'title': 'Home',
+    'title': gettext('Home'),
     'icon': 'icon-home',
     'link': 'walletHome'
   }, {
-    'title': 'Receive',
+    'title': gettext('Receive'),
     'icon': 'icon-receive',
     'link': 'receive'
   }, {
-    'title': 'Send',
+    'title': gettext('Send'),
     'icon': 'icon-paperplane',
     'link': 'send'
   }, {
-    'title': 'History',
+    'title': gettext('History'),
     'icon': 'icon-history',
     'link': 'history'
   }];
@@ -32,16 +32,16 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   self.tab = 'walletHome';
 
   self.availableLanguages = [{
-    name: 'English',
+    name: gettext('English'),
     isoCode: 'en',
   }, {
-    name: 'Spanish',
+    name: gettext('Spanish'),
     isoCode: 'es',
   }, {
-    name: 'Français',
+    name: gettext('French'),
     isoCode: 'fr',
   }, {
-    name: '日本人',
+    name: gettext('Japanese'),
     isoCode: 'ja',
   }];
 
@@ -500,7 +500,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   };
 
   self.setDefaultLanguage = function(setLang) {
-    var userLang
+    var userLang;
     if (!setLang) {
       userLang = configService.getSync().wallet.settings.defaultLanguage;
       if (!userLang) {

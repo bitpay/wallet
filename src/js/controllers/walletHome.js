@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('walletHomeController', function($scope, $rootScope, $timeout, $filter, $modal, $log, notification, txStatus, isCordova, profileService, lodash, configService, rateService, storageService, bitcore, isChromeApp) {
+angular.module('copayApp.controllers').controller('walletHomeController', function($scope, $rootScope, $timeout, $filter, $modal, $log, notification, txStatus, isCordova, profileService, lodash, configService, rateService, storageService, bitcore, isChromeApp, gettext, gettextCatalog) {
 
   var self = this;
   $rootScope.hideMenuBar = false;
@@ -176,7 +176,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
           return;
         };
 
-        self.setOngoingProcess('Signing transaction');
+        self.setOngoingProcess(gettext('Signing transaction'));
         $scope.loading = true;
         $scope.error = null;
         $timeout(function() {
@@ -185,19 +185,19 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
             self.setOngoingProcess();
             if (err) {
               $scope.loading = false;
-              $scope.error = err.message || 'Transaction not signed. Please try again.';
+              $scope.error = err.message || gettext('Transaction not signed. Please try again.');
               $scope.$digest();
             } else {
               //if txp has required signatures then broadcast it
               var txpHasRequiredSignatures = txpsi.status == 'accepted';
               if (txpHasRequiredSignatures) {
-                self.setOngoingProcess('Broadcasting transaction');
+                self.setOngoingProcess(gettext('Broadcasting transaction'));
                 $scope.loading = true;
                 fc.broadcastTxProposal(txpsi, function(err, txpsb) {
                   self.setOngoingProcess();
                   $scope.loading = false;
                   if (err) {
-                    $scope.error = 'Transaction not broadcasted. Please try again.';
+                    $scope.error = gettext('Transaction not broadcasted. Please try again.');
                     $scope.$digest();
                   } else {
                     $modalInstance.close(txpsb);
@@ -213,7 +213,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       };
 
       $scope.reject = function(txp) {
-        self.setOngoingProcess('Rejecting transaction');
+        self.setOngoingProcess(gettext('Rejecting transaction'));
         $scope.loading = true;
         $scope.error = null;
         $timeout(function() {
@@ -221,7 +221,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
             self.setOngoingProcess();
             $scope.loading = false;
             if (err) {
-              $scope.error = err.message || 'Transaction not rejected. Please try again.';
+              $scope.error = err.message || gettext('Transaction not rejected. Please try again.');
               $scope.$digest();
             } else {
               $modalInstance.close(txpr);
@@ -232,7 +232,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
 
       $scope.remove = function(txp) {
-        self.setOngoingProcess('Deleting transaction');
+        self.setOngoingProcess(gettext('Deleting transaction'));
         $scope.loading = true;
         $scope.error = null;
         $timeout(function() {
@@ -242,7 +242,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
             // Hacky: request tries to parse an empty response
             if (err && !(err.message && err.message.match(/Unexpected/))) {
-              $scope.error = err.message || 'Transaction could not be deleted. Please try again.';
+              $scope.error = err.message || gettext('Transaction could not be deleted. Please try again.');
               $scope.$digest();
               return;
             }
@@ -252,7 +252,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       };
 
       $scope.broadcast = function(txp) {
-        self.setOngoingProcess('Broadcasting transaction');
+        self.setOngoingProcess(gettext('Broadcasting transaction'));
         $scope.loading = true;
         $scope.error = null;
         $timeout(function() {
@@ -260,7 +260,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
             self.setOngoingProcess();
             $scope.loading = false;
             if (err) {
-              $scope.error = err.message || 'Transaction not sent. Please try again.';
+              $scope.error = err.message || gettext('Transaction not sent. Please try again.');
               $scope.$digest();
             } else {
               $modalInstance.close(txpb);
@@ -523,7 +523,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
     var form = $scope.sendForm;
     if (form.$invalid) {
-      this.error = 'Unable to send transaction proposal';
+      this.error = gettext('Unable to send transaction proposal');
       return;
     }
 
@@ -535,7 +535,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       return;
     };
 
-    self.setOngoingProcess('Creating transaction');
+    self.setOngoingProcess(gettext('Creating transaction'));
     $timeout(function() {
       var comment = form.comment.$modelValue;
       var paypro = self._paypro;
@@ -571,7 +571,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
   this.signAndBroadcast = function(txp, cb) {
     var fc = profileService.focusedClient;
-    self.setOngoingProcess('Signing transaction');
+    self.setOngoingProcess(gettext('Signing transaction'));
     fc.signTxProposal(txp, function(err, signedTx) {
       profileService.lockFC();
 
@@ -581,11 +581,11 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       }
 
       if (signedTx.status == 'accepted') {
-        self.setOngoingProcess('Broadcasting transaction');
+        self.setOngoingProcess(gettext('Broadcasting transaction'));
         fc.broadcastTxProposal(signedTx, function(err, btx) {
           self.setOngoingProcess();
           if (err) {
-            $scope.error = 'Transaction not broadcasted. Please try again.';
+            $scope.error = gettext('Transaction not broadcasted. Please try again.');
             $scope.$digest();
             return cb(err);
           }
@@ -685,13 +685,14 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   this.setFromPayPro = function(uri) {
     var fc = profileService.focusedClient;
     if (isChromeApp) {
-      this.error = 'Payment Protocol not supported on Chrome App';
+      this.error = gettext('Payment Protocol not supported on Chrome App');
       return;
     }
 
     var satToUnit = 1 / this.unitToSatoshi;
     var self = this;
-    self.setOngoingProcess('Fetching Payment Informantion');
+    /// Get information of payment if using Payment Protocol
+    self.setOngoingProcess(gettext('Fetching Payment Information'));
 
     $log.debug('Fetch PayPro Request...', uri);
     $timeout(function() {
@@ -705,7 +706,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
           self.resetForm();
           var msg = err.toString();
           if (msg.match('HTTP')) {
-            msg = 'Could not fetch payment information';
+            msg = gettext('Could not fetch payment information');
           }
           self.error = msg;
         } else {

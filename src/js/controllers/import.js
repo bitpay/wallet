@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('importController',
-  function($scope, $rootScope, $location, $timeout, $log, profileService, notification, go, isMobile, isCordova, sjcl) {
+  function($scope, $rootScope, $location, $timeout, $log, profileService, notification, go, isMobile, isCordova, sjcl, gettext) {
 
     var self = this;
 
@@ -17,14 +17,19 @@ angular.module('copayApp.controllers').controller('importController',
     });
 
     var _import = function(str, opts) {
-      var str2;
+      var str2, err;
       try {
        str2 = sjcl.decrypt(self.password, str);
       } catch (e) {
-        self.error = 'Could not decrypt file, check your password';
+        err = gettext('Could not decrypt file, check your password');
         $log.warn(e);
-        return;
       };
+
+      if (err) {
+        self.error = err;
+        $rootScope.$apply();
+        return;
+      }
 
       self.loading = true;
 
@@ -40,7 +45,7 @@ angular.module('copayApp.controllers').controller('importController',
           else {
             $rootScope.$emit('Local/WalletImported', walletId);
             go.walletHome();
-            notification.success('Success', 'Your wallet has been imported correctly');
+            notification.success(gettext('Success'), gettext('Your wallet has been imported correctly'));
           }
         });
       }, 100);
@@ -57,7 +62,7 @@ angular.module('copayApp.controllers').controller('importController',
 
     this.import = function(form) {
       if (form.$invalid) {
-        this.error = 'There is an error in the form';
+        this.error = gettext('There is an error in the form');
         $scope.$apply();
         return;
       }
@@ -67,7 +72,7 @@ angular.module('copayApp.controllers').controller('importController',
       var password = form.password.$modelValue;
 
       if (!backupFile && !backupText) {
-        this.error = 'Please, select your backup file';
+        this.error = gettext('Please, select your backup file');
         $scope.$apply();
         return;
       }

@@ -1,13 +1,13 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('preferencesDeleteWalletController',
-  function($scope, $rootScope, $filter, $timeout, $modal, notification, profileService, isCordova, go) {
+  function($scope, $rootScope, $filter, $timeout, $modal, $log, notification, profileService, isCordova, go, gettext, gettextCatalog) {
     this.isCordova = isCordova;
     this.error = null;
 
     var _modalDeleteWallet = function() {
-      var ModalInstanceCtrl = function($scope, $modalInstance) {
-        $scope.title = 'Are you sure you want to delete this wallet?';
+      var ModalInstanceCtrl = function($scope, $modalInstance, gettext) {
+        $scope.title = gettext('Are you sure you want to delete this wallet?');
         $scope.loading = false;
 
         $scope.ok = function() {
@@ -33,25 +33,17 @@ angular.module('copayApp.controllers').controller('preferencesDeleteWalletContro
     };
 
     var _deleteWallet = function() {
-      $timeout(function() {
-        var fc = profileService.focusedClient;
-        var walletName = fc.credentials.walletName;
+      var fc = profileService.focusedClient;
+      var walletName = fc.credentials.walletName;
+      var self = this;
 
-        profileService.deleteWalletFC({}, function(err) {
-          if (err) {
-            this.error = err.message || err;
-            console.log(err);
-            $timeout(function() {
-              $scope.$digest();
-            });
-          } else {
-            go.walletHome();
-            $timeout(function() {
-              notification.success('Success', 'The wallet "' + walletName + '" was deleted');
-            });
-          }
-        });
-      }, 100);
+      profileService.deleteWalletFC({}, function(err) {
+        if (err) {
+          self.error = err.message || err;
+        } else {
+          notification.success(gettext('Success'), gettextCatalog.getString('The wallet "{{walletName}}" was deleted', {walletName: walletName}));
+        }
+      });
     };
 
     this.deleteWallet = function() {

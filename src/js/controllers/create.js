@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('createController',
-  function($scope, $rootScope, $location, $timeout, $log, lodash, go, profileService, configService, isMobile, isCordova) {
+  function($scope, $rootScope, $location, $timeout, $log, lodash, go, profileService, configService, isMobile, isCordova, gettext) {
 
     var self = this;
     var defaults = configService.getDefaults();
@@ -43,7 +43,7 @@ angular.module('copayApp.controllers').controller('createController',
 
     this.create = function(form) {
       if (form && form.$invalid) {
-        this.error = 'Please enter the required fields';
+        this.error = gettext('Please enter the required fields');
         return;
       }
       var opts = {
@@ -61,7 +61,7 @@ angular.module('copayApp.controllers').controller('createController',
           self.loading = false;
           if (err) {
             $log.debug(err);
-            self.error = 'Could not create wallet: ' + err;
+            self.error = err;
           }
           else {
             go.walletHome();
