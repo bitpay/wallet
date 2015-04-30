@@ -36,6 +36,10 @@ msgstr ""
 "* Usted puede instalar la copia de seguridad en otro dispositivo y usar el "
 "monedero al mismo tiempo en varios dispositivos."
 
+#: src/js/services/notificationsService.js
+msgid "A transaction was finally rejected"
+msgstr "Transacción finalmente rechazada"
+
 #: src/js/routes.js
 msgid "About"
 msgstr "Acerca de"
@@ -179,9 +183,9 @@ msgstr ""
 msgid "Copy to clipboard"
 msgstr "Copiar al portapapeles"
 
-#: src/js/controllers/create.js
-msgid "Could not create wallet:"
-msgstr "No se puede crear el monedero"
+#: src/js/services/profileService.js
+msgid "Could not create using the specified extended private key"
+msgstr "No se pudo crear el monedero usando la clave privada ingresada"
 
 #: src/js/controllers/import.js
 msgid "Could not decrypt file, check your password"
@@ -194,6 +198,14 @@ msgstr "No se pudo obtener información del pago"
 #: public/views/walletHome.html
 msgid "Could not fetch transaction history"
 msgstr "No se pudo obtener el historial de transacciones"
+
+#: src/js/services/profileService.js
+msgid "Could not import. Check input file and password"
+msgstr "No se pudo importar. Verifique el archivo y su contraseña"
+
+#: src/js/services/profileService.js
+msgid "Could not join using the specified extended private key"
+msgstr "No se pudo unir al monedero usando la clave privada ingresada"
 
 #: src/js/controllers/join.js
 msgid "Could not join wallet:"
@@ -271,6 +283,18 @@ msgstr "Inglés"
 msgid "Enter your password"
 msgstr "Escribe tu contraseña"
 
+#: src/js/services/profileService.js
+msgid "Error creating wallet"
+msgstr "Error al crear monedero"
+
+#: src/js/services/profileService.js
+msgid "Error creating wallet. Check your internet connection"
+msgstr "Error al crear monedero. Verifique su conexión a internet"
+
+#: src/js/services/profileService.js
+msgid "Error importing wallet:"
+msgstr "Error al importar monedero: "
+
 #: public/views/modals/paypro.html public/views/modals/txp-details.html
 msgid "Expires"
 msgstr "Expira"
@@ -283,13 +307,18 @@ msgstr "Falló al importar monederos"
 msgid "Family vacation funds"
 msgstr "Fondos para vacaciones en familia"
 
+#. Get information of payment if using Payment Protocol
 #: src/js/controllers/walletHome.js
-msgid "Fetching Payment Informantion"
-msgstr "Buscando información del pago"
+msgid "Fetching Payment Information"
+msgstr "Obteniendo información del pago"
 
 #: src/js/controllers/index.js
 msgid "French"
 msgstr "Francés"
+
+#: src/js/services/notificationsService.js
+msgid "Funds received"
+msgstr "Fondos Recibidos"
 
 #: public/views/walletHome.html
 msgid "Generate new address"
@@ -346,6 +375,10 @@ msgstr "Importar monedero"
 #: public/views/import.html
 msgid "Importing wallet..."
 msgstr "Importando monedero..."
+
+#: public/views/importLegacy.html
+msgid "Importing..."
+msgstr "Importando..."
 
 #: public/views/modals/tx-details.html public/views/modals/txp-details.html
 msgid "Information"
@@ -423,6 +456,10 @@ msgstr "Mi dirección Bitcoin"
 msgid "Network"
 msgstr "Red"
 
+#: src/js/services/notificationsService.js
+msgid "New Transaction"
+msgstr "Nueva Transacción"
+
 #: public/views/modals/confirmation.html
 msgid "No"
 msgstr "No"
@@ -453,6 +490,10 @@ msgid "Password cannot be recovered. Be sure to write it down"
 msgstr ""
 "La contraseña no se puede recuperar. Asegúrese de escribirla en un lugar "
 "seguro"
+
+#: src/js/services/profileService.js
+msgid "Password needed"
+msgstr "Contraseña requerida"
 
 #: src/js/controllers/password.js
 msgid "Passwords do not match"
@@ -553,6 +594,10 @@ msgstr "Repite la contraseña"
 msgid "Required"
 msgstr "Requerido"
 
+#: public/views/createProfile.html
+msgid "Retrying..."
+msgstr "Reintentando..."
+
 #: public/views/includes/password.html
 msgid "SET"
 msgstr "ESTABLECER"
@@ -568,6 +613,10 @@ msgstr "COMENZAR"
 #: public/views/preferencesBwsUrl.html
 msgid "Save"
 msgstr "Guardar"
+
+#: src/js/services/notificationsService.js
+msgid "Scan Finished"
+msgstr "Escáner Finalizado"
 
 #: public/views/walletHome.html
 msgid "Scan status finished with error"
@@ -721,6 +770,18 @@ msgstr "Balance total bloqueado"
 msgid "Transaction"
 msgstr "Transacción"
 
+#: src/js/services/notificationsService.js
+msgid "Transaction Rejected"
+msgstr "Transacción Rechazada"
+
+#: src/js/services/notificationsService.js
+msgid "Transaction Sent"
+msgstr "Transacción Enviada"
+
+#: src/js/services/notificationsService.js
+msgid "Transaction Signed"
+msgstr "Transacción Firmada"
+
 #: public/views/modals/txp-details.html
 msgid "Transaction accepted..."
 msgstr "Transacción aceptada..."
@@ -833,6 +894,10 @@ msgstr "Esperando copayers"
 msgid "Waiting..."
 msgstr "Esperando..."
 
+#: src/js/services/profileService.js
+msgid "Wallet Already Imported:"
+msgstr "Este monedero ya fue importado: "
+
 #: public/views/join.html
 msgid "Wallet Invitation"
 msgstr "Invitación para unirse al monedero"
@@ -840,6 +905,10 @@ msgstr "Invitación para unirse al monedero"
 #: public/views/join.html
 msgid "Wallet Invitation is not valid!"
 msgstr "¡Invitación no válida!"
+
+#: src/js/services/profileService.js
+msgid "Wallet already exists"
+msgstr "El monedero ya existe"
 
 #: public/views/copayers.html
 msgid "Wallet incomplete and broken"
@@ -852,6 +921,10 @@ msgstr "Nombre del monedero"
 #: public/views/preferencesDeleteWallet.html
 msgid "Warning!"
 msgstr "¡Advertencia!"
+
+#: src/js/services/profileService.js
+msgid "Wrong password"
+msgstr "Contraseña incorrecta"
 
 #: public/views/modals/confirmation.html
 msgid "Yes"
@@ -917,6 +990,9 @@ msgid ""
 msgstr ""
 "{{len}} monederos importados. Escáner de fondos en progreso. Espere a ver el "
 "balance actualizado"
+
+#~ msgid "Could not create wallet:"
+#~ msgstr "No se puede crear el monedero"
 
 #~ msgid "OK"
 #~ msgstr "LISTO"
@@ -1123,14 +1199,8 @@ msgstr ""
 #~ msgid "Fatal error connecting to Insight server"
 #~ msgstr "Error fatal al conectar con el servidor Insight"
 
-#~ msgid "Finished"
-#~ msgstr "Finalizado"
-
 #~ msgid "Form Error"
 #~ msgstr "Error en formulario"
-
-#~ msgid "Funds received!"
-#~ msgstr "¡Fondos recibidos!"
 
 #~ msgid "Get QR code"
 #~ msgstr "Obtener código QR"
@@ -1532,9 +1602,6 @@ msgstr ""
 #~ "contraseña. Puedes guardar los datos encriptados en tu dispositivo o "
 #~ "remotamente en la nube (Servidor Insight)."
 
-#~ msgid "Wrong password"
-#~ msgstr "Contraseña incorrecta"
-
 #~ msgid "You can import your current wallets after"
 #~ msgstr "Puedes importar tus monederos después"
 
@@ -1650,9 +1717,6 @@ msgstr ""
 
 #~ msgid "Manual Update"
 #~ msgstr "Actualización Manual"
-
-#~ msgid "New Wallet Created"
-#~ msgstr "Nuevo Monedero Creado"
 
 #~ msgid "No transactions proposals yet."
 #~ msgstr "Sin propuestas de transacciones aún."

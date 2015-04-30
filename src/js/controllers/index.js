@@ -500,7 +500,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   };
 
   self.setDefaultLanguage = function(setLang) {
-    var userLang
+    var userLang;
     if (!setLang) {
       userLang = configService.getSync().wallet.settings.defaultLanguage;
       if (!userLang) {

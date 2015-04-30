@@ -63,7 +63,7 @@ angular.module('copayApp.services')
         if (err) return cb(err);
         if (!str) return cb();
 
-        $log.info('Starting Migration profile to File storage...')
+        $log.info('Starting Migration profile to File storage...');
 
         fileStorageService.create('profile', str, function(err) {
           if (err) cb(err);

@@ -16,6 +16,10 @@ msgstr ""
 msgid "* You can safely install your backup on other device and use your wallet from many devices at the same time."
 msgstr ""
 
+#: src/js/services/notificationsService.js
+msgid "A transaction was finally rejected"
+msgstr ""
+
 #: src/js/routes.js
 msgid "About"
 msgstr ""
@@ -165,8 +169,8 @@ msgstr ""
 msgid "Copy to clipboard"
 msgstr ""
 
-#: src/js/controllers/create.js
-msgid "Could not create wallet:"
+#: src/js/services/profileService.js
+msgid "Could not create using the specified extended private key"
 msgstr ""
 
 #: src/js/controllers/import.js
@@ -179,6 +183,14 @@ msgstr ""
 
 #: public/views/walletHome.html
 msgid "Could not fetch transaction history"
+msgstr ""
+
+#: src/js/services/profileService.js
+msgid "Could not import. Check input file and password"
+msgstr ""
+
+#: src/js/services/profileService.js
+msgid "Could not join using the specified extended private key"
 msgstr ""
 
 #: src/js/controllers/join.js
@@ -261,6 +273,18 @@ msgstr ""
 msgid "Enter your password"
 msgstr ""
 
+#: src/js/services/profileService.js
+msgid "Error creating wallet"
+msgstr ""
+
+#: src/js/services/profileService.js
+msgid "Error creating wallet. Check your internet connection"
+msgstr ""
+
+#: src/js/services/profileService.js
+msgid "Error importing wallet:"
+msgstr ""
+
 #: public/views/modals/paypro.html
 #: public/views/modals/txp-details.html
 msgid "Expires"
@@ -274,12 +298,17 @@ msgstr ""
 msgid "Family vacation funds"
 msgstr ""
 
+#. Get information of payment if using Payment Protocol
 #: src/js/controllers/walletHome.js
-msgid "Fetching Payment Informantion"
+msgid "Fetching Payment Information"
 msgstr ""
 
 #: src/js/controllers/index.js
 msgid "French"
+msgstr ""
+
+#: src/js/services/notificationsService.js
+msgid "Funds received"
 msgstr ""
 
 #: public/views/walletHome.html
@@ -338,6 +367,10 @@ msgstr ""
 
 #: public/views/import.html
 msgid "Importing wallet..."
+msgstr ""
+
+#: public/views/importLegacy.html
+msgid "Importing..."
 msgstr ""
 
 #: public/views/modals/tx-details.html
@@ -422,6 +455,10 @@ msgstr ""
 msgid "Network"
 msgstr ""
 
+#: src/js/services/notificationsService.js
+msgid "New Transaction"
+msgstr ""
+
 #: public/views/modals/confirmation.html
 msgid "No"
 msgstr ""
@@ -451,6 +488,10 @@ msgstr ""
 
 #: public/views/includes/password.html
 msgid "Password cannot be recovered. Be sure to write it down"
+msgstr ""
+
+#: src/js/services/profileService.js
+msgid "Password needed"
 msgstr ""
 
 #: src/js/controllers/password.js
@@ -552,6 +593,10 @@ msgstr ""
 msgid "Required"
 msgstr ""
 
+#: public/views/createProfile.html
+msgid "Retrying..."
+msgstr ""
+
 #: public/views/includes/password.html
 msgid "SET"
 msgstr ""
@@ -566,6 +611,10 @@ msgstr ""
 
 #: public/views/preferencesBwsUrl.html
 msgid "Save"
+msgstr ""
+
+#: src/js/services/notificationsService.js
+msgid "Scan Finished"
 msgstr ""
 
 #: public/views/walletHome.html
@@ -716,6 +765,18 @@ msgstr ""
 msgid "Transaction"
 msgstr ""
 
+#: src/js/services/notificationsService.js
+msgid "Transaction Rejected"
+msgstr ""
+
+#: src/js/services/notificationsService.js
+msgid "Transaction Sent"
+msgstr ""
+
+#: src/js/services/notificationsService.js
+msgid "Transaction Signed"
+msgstr ""
+
 #: public/views/modals/txp-details.html
 msgid "Transaction accepted..."
 msgstr ""
@@ -830,12 +891,20 @@ msgstr ""
 msgid "Waiting..."
 msgstr ""
 
+#: src/js/services/profileService.js
+msgid "Wallet Already Imported:"
+msgstr ""
+
 #: public/views/join.html
 msgid "Wallet Invitation"
 msgstr ""
 
 #: public/views/join.html
 msgid "Wallet Invitation is not valid!"
+msgstr ""
+
+#: src/js/services/profileService.js
+msgid "Wallet already exists"
 msgstr ""
 
 #: public/views/copayers.html
@@ -848,6 +917,10 @@ msgstr ""
 
 #: public/views/preferencesDeleteWallet.html
 msgid "Warning!"
+msgstr ""
+
+#: src/js/services/profileService.js
+msgid "Wrong password"
 msgstr ""
 
 #: public/views/modals/confirmation.html

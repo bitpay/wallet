@@ -61,7 +61,7 @@ angular.module('copayApp.controllers').controller('createController',
           self.loading = false;
           if (err) {
             $log.debug(err);
-            self.error = gettext('Could not create wallet: ') + err;
+            self.error = err;
           }
           else {
             go.walletHome();
