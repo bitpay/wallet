@@ -1,6 +1,6 @@
 <nav ng-controller="topbarController as topbar" class="tab-bar">
   <section class="left-small">
-    <a id="hamburger" class="p10 ng-animate-disabled" ng-show="!goBackToState && !closeToHome  && !index.noFocusedWallet" 
+    <a id="hamburger" class="p10 ng-animate-disabled" ng-show="!goBackToState && !closeToHome  && !index.noFocusedWallet"
       ng-click="index.openMenu()"><i class="fi-list size-24"></i>
     </a>
     <a ng-show="goBackToState" class="ng-animate-disabled"
@@ -10,8 +10,8 @@
   </section>
 
   <section class="right-small" ng-show="!goBackToState">
-    <a id="camera-icon" ng-show="!closeToHome && index.isComplete" class="p10" 
-      ng-click="topbar.openScanner()"><i class="fi-camera size-24"></i></a>
+    <a id="camera-icon" ng-show="!closeToHome && index.isComplete" class="p10"
+      ng-click="topbar.openScanner()"><i class="icon-scan size-21"></i></a>
     <a ng-show="closeToHome" class="p10 ng-animate-disabled"
       ng-click="topbar.goHome(); closeToHome = null">
       <span class="text-close">{{'Close'|translate}}</span>

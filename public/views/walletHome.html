@@ -277,13 +277,11 @@
 
               <span ng-hide="sendForm.address.$pristine">
                 <span class="has-error right size-12" ng-show="sendForm.address.$invalid && _address">
-                  <span class="icon-input">
-                    <i class="fi-x"></i>
-                  </span>
-                  <span translate>Not valid</span>
+                  <i class="icon-close-circle size-14"></i>
+                  <span class="vm" translate>Not valid</span>
                 </span>
-                <small class="icon-input right" ng-show="!sendForm.address.$invalid">
-                  <i class="fi-check"></i>
+                <small class="right text-primary" ng-show="!sendForm.address.$invalid">
+                  <i class="icon-checkmark-circle size-14"></i>
                 </small>
               </span>
             </div>
@@ -311,11 +309,11 @@
             <div class="large-12 medium-12 columns">
               <div class="right" ng-hide="sendForm.amount.$pristine && !sendForm.amount.$modelValue ">
                 <span class="has-error right size-12" ng-if="sendForm.amount.$invalid">
-                  <span class="icon-input"><i class="fi-x"></i></span>
-                  <span translate>Not valid</span>
+                  <i class="icon-close-circle size-14"></i>
+                  <span clas="vm" translate>Not valid</span>
                 </span>
-                <small class="icon-input right" ng-if="!sendForm.amount.$invalid">
-                    <i class="fi-check"></i>
+                <small class="text-primary right" ng-if="!sendForm.amount.$invalid">
+                  <i class="icon-checkmark-circle size-14"></i>
                 </small>
               </div>
               <div ng-if="!home.canShowAlternative()">

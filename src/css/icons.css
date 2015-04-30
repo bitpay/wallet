@@ -24,12 +24,52 @@
 	-moz-osx-font-smoothing: grayscale;
 }
 
+.icon-minus-circle:before {
+	content: "\e62c";
+}
+
+.icon-plus-circle:before {
+	content: "\e62d";
+}
+
+.icon-close-circle:before {
+	content: "\e62e";
+}
+
+.icon-checkmark-circle:before {
+	content: "\e62b";
+}
+
 .icon-circle:before {
 	content: "\e629";
 }
 
 .icon-circle-active:before {
 	content: "\e627";
+}
+
+.icon-scan:before {
+	content: "\e62a";
+}
+
+.icon-trash:before {
+	content: "\e626";
+}
+
+.icon-wallet:before {
+	content: "\e622";
+}
+
+.icon-history:before {
+	content: "\e623";
+}
+
+.icon-reference:before {
+	content: "\e621";
+}
+
+.icon-bell:before {
+	content: "\e61c";
 }
 
 .icon-trash:before {
@@ -130,6 +170,10 @@
 
 .icon-erase:before {
 	content: "\e628";
+}
+
+.icon-receive2:before {
+	content: "\e62f";
 }
 
 .icon-arrow-left:before {

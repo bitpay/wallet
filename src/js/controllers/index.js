@@ -17,7 +17,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     'link': 'walletHome'
   }, {
     'title': gettext('Receive'),
-    'icon': 'icon-receive',
+    'icon': 'icon-receive2',
     'link': 'receive'
   }, {
     'title': gettext('Send'),
@@ -82,7 +82,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       self.noFocusedWallet = false;
       self.onGoingProcess = {};
 
-      // Credentials Shortcuts 
+      // Credentials Shortcuts
       self.m = fc.credentials.m;
       self.n = fc.credentials.n;
       self.network = fc.credentials.network;
@@ -567,7 +567,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   }, 4000, {leading: false, trailing: true});
 
 
-  // No need ot listing to Local/Resume since 
+  // No need ot listing to Local/Resume since
   // reconnection and Local/Online will be triggered
   lodash.each(['Local/Online', 'Local/Resume'], function(eventName) {
     $rootScope.$on(eventName, function(event) {
@@ -720,7 +720,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
   lodash.each(['NewCopayer', 'CopayerUpdated'], function(eventName) {
     $rootScope.$on(eventName, function() {
-      // Re try to open wallet (will triggers) 
+      // Re try to open wallet (will triggers)
       self.setFocusedWallet();
     });
   });
