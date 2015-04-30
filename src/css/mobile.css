@@ -134,6 +134,7 @@ _:-ms-fullscreen, :root .main {
   font-size: 0.9rem;
   font-weight: 400;
   padding: 10px 0;
+  visibility: middle;
 }
 
 .tab-bar .text-close {
