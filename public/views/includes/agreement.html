@@ -1,0 +1,31 @@
+<div class="ng-animate-disabled row collapse last-transactions-content line-b"
+  ng-class="{'text-gray':!tx.pendingForUs}"
+  ng-click="openAxModal(tx, index.copayers)">
+  <div class="small-1 columns text-center" >
+    <i class="icon-circle-active size-10" ng-show="tx.pendingForUs" ng-style="{'color':index.backgroundColor}" style="margin-top:8px;"></i>
+    &nbsp;
+  </div>
+  <div class="small-10 columns">
+      <div ng-if="!$root.updatingBalance">
+        <span class="text-bold size-16"><span translate>Send</span> {{tx.amountStr}}</span>
+        <time class="right size-12 text-gray m5t">{{ (tx.ts || tx.createdOn ) * 1000 | amTimeAgo}}</time>
+      </div>
+      <div class="ellipsis size-14">
+        <span translate>To</span>:
+        <span ng-if="tx.merchant">
+          <span ng-show="tx.merchant.pr.ca"><i class="fi-lock"></i> {{tx.merchant.domain}}</span>
+          <span ng-show="!tx.merchant.pr.ca"><i class="fi-unlock"></i> {{tx.merchant.domain}}</span>
+        </span>
+        <span ng-if="!tx.merchant">
+          {{tx.creatorName}}
+        </span>
+      </div>
+      <div class="ellipsis text-gray size-14">
+        {{tx.scheduleStr}} {{tx.message}}
+      </div>
+  </div>
+  <div class="small-1 columns text-right">
+    <br>
+    <i class="icon-arrow-right3 size-18"></i>
+  </div>
+</div>

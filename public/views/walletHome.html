@@ -149,6 +149,13 @@
       </div>
     </div>
   </div>
+
+  <div ng-if="index.axs[0]">
+    <h4 class="title m0" translate>Agreements</h4>
+    <div class="last-transactions pr" ng-repeat="tx in index.axs"
+      ng-include="'views/includes/agreement.html'">
+    </div>
+  </div>
 </div>
 
 <!--
