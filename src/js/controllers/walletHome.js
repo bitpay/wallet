@@ -110,7 +110,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     });
   };
 
-  $scope.openTxModal = function(tx, copayers) {
+  $scope._openXModal = function(templateUrl, scopeData, tx, copayers) {
     var fc = profileService.focusedClient;
     var ModalInstanceCtrl = function($scope, $modalInstance) {
       $scope.error = null;
@@ -120,6 +120,9 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       $scope.copayers = copayers
       $scope.loading = null;
       $scope.color = fc.backgroundColor;
+      for (var key in scopeData) {
+        $scope[key] = scopeData[key];
+      }
 
       $scope.getShortNetworkName = function() {
         return fc.credentials.networkName.substring(0, 4);
@@ -281,7 +284,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
     var modalInstance = $modal.open({
       animation: false,
-      templateUrl: 'views/modals/txp-details.html',
+      templateUrl: templateUrl,
       windowClass: 'full',
       controller: ModalInstanceCtrl,
     });
@@ -294,6 +297,15 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       }
     });
 
+  };
+
+  $scope.openTxModal = function(tx, copayers) {
+    $scope._openXModal('views/modals/txp-details.html', {}, tx, copayers);
+  };
+
+  $scope.openAxModal = function(tx, copayers) {
+    var scopeData = { scheduleStr: tx.scheduleStr };
+    $scope._openXModal('views/modals/agreement.html', scopeData, tx, copayers);
   };
 
   // Receive

@@ -3,6 +3,70 @@
 angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, lodash, go, profileService, configService, isCordova, rateService, storageService, gettextCatalog, gettext, amMoment) {
 
   var self = this;
+
+  self.greggAxs = function() {
+    var now = new Date() / 1000;
+    var january1 = new Date('2015-01-01') / 1000;
+    var july4 = new Date('2014-07-04') / 1000;
+    var october18 = new Date('2013-10-18') / 1000;
+    var action = {
+      createdOn: Math.floor(Date.now() / 1000),
+      copayerId: 'greggId',
+      copayerName: 'gregg',
+      type: 'accept',
+      signatures: 'my signature',
+      xpub: 'xpubblahblahblah',
+      comment: 'action1 comment'
+    };
+    return [
+    {
+      ts: now,
+      createdTs: now,
+      scheduleStr: 'monthly',
+      amount: 0,
+      message: 'payment processing',
+      creatorName: 'BitPay',
+      merchant: { domain: 'bitpay.com', pr: { ca: 0 }},
+      actions: [],
+      status: 'pending'
+    },
+    {
+      ts: january1,
+      createdTs: january1,
+      scheduleStr: 'monthly',
+      amount: 350000,
+      message: 'gym membership',
+      creatorName: '24-Hour Fitness',
+      merchant: { domain: '24hour.com', pr: { ca: 0 }},
+      actions: [action],
+      status: 'accepted'
+    },
+    {
+      ts: july4,
+      createdTs: july4,
+      scheduleStr: 'every 6 months',
+      amount: 2500000,
+      message: 'auto insurance',
+      creatorName: 'State Farm',
+      merchant: { domain: 'statefarm.com', pr: { ca: 0 }},
+      actions: [action],
+      status: 'broadcasted'
+    },
+    {
+      ts: october18,
+      createdTs: october18,
+      scheduleStr: 'yearly',
+      amount: 190000,
+      message: 'email account',
+      creatorName: 'Yahoo!',
+      merchant: { domain: 'yahoo.com', pr: { ca: 0 }},
+      actions: [action],
+      status: 'broadcasted',
+      removed: true
+    }
+    ];
+  };
+
   self.isCordova = isCordova;
   self.onGoingProcess = {};
   self.limitHistory = 5;
@@ -75,7 +139,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.notAuthorized = false;
     self.txHistory = [];
     self.txHistoryPaging = false;
-    self.pendingTxProposalsCountForUs = null;
+    self.pendingCountForUs = null;
 
     $timeout(function() {
       self.hasProfile = true;
@@ -94,6 +158,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       self.walletId = fc.credentials.walletId;
       self.isComplete = fc.isComplete();
       self.txps = [];
+      self.axs = [];
       self.copayers = [];
       self.updateColor();
       go.walletHome();
@@ -171,7 +236,11 @@ angular.module('copayApp.controllers').controller('indexController', function($r
           return;
         }
         $log.debug('Wallet Status:', walletStatus);
-        self.setPendingTxps(walletStatus.pendingTxps);
+        self.txps = self.decoratePendingTxps(walletStatus.pendingTxps);
+        self.axs = self.decoratePendingTxps(self.greggAxs());
+        var txCount = self.countPendingTxps(self.txps);
+        var axCount = self.countPendingTxps(self.axs);
+        self.pendingCountForUs = txCount + axCount;
 
         // Status Shortcuts
         self.walletName = walletStatus.wallet.name;
@@ -215,7 +284,11 @@ angular.module('copayApp.controllers').controller('indexController', function($r
           $scope.$emit('Local/ClientError', err);
         } else {
           $log.debug('Wallet PendingTxps:', txps);
-          self.setPendingTxps(txps);
+          self.txps = self.decoratePendingTxps(txps);
+          self.axs = self.decoratePendingTxps(self.greggAxs());
+          var txCount = self.countPendingTxps(self.txps);
+          var axCount = self.countPendingTxps(self.axs);
+          self.pendingCountForUs = txCount + axCount;
         }
         $rootScope.$apply();
       });
@@ -284,9 +357,18 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     });
   };
 
-  self.setPendingTxps = function(txps) {
+  self.countPendingTxps = function(txps, target) {
+    var pendingCountForUs = 0;
+    lodash.each(txps, function(tx) {
+      if (tx.creatorId != self.copayerId) {
+        pendingCountForUs = pendingCountForUs + 1;
+      }
+    });
+    return pendingCountForUs;
+  };
+
+  self.decoratePendingTxps = function(txps) {
     var config = configService.getSync().wallet.settings;
-    self.pendingTxProposalsCountForUs = 0;
     lodash.each(txps, function(tx) {
       var amount = tx.amount * self.satToUnit;
       tx.amountStr = profileService.formatAmount(tx.amount) + ' ' + config.unitName;
@@ -315,12 +397,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       if (tx.creatorId == self.copayerId && tx.actions.length == 1) {
         tx.couldRemove = true;
       };
-
-      if (tx.creatorId != self.copayerId) {
-        self.pendingTxProposalsCountForUs = self.pendingTxProposalsCountForUs + 1;
-      }
     });
-    self.txps = txps;
+    return txps;
   };
 
   self.setTxHistory = function(txs) {

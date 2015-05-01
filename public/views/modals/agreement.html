@@ -1,0 +1,129 @@
+<nav class="tab-bar">
+  <section class="right-small">
+    <a ng-click="cancel()" class="p10 ng-animate-disabled">
+      <span class="text-close" translate>Close</span>
+    </a>
+  </section>
+  <section class="middle tab-bar-section">
+    <h1 class="title ellipsis" ng-style="{'color':color}" translate>
+      Agreement
+    </h1>
+  </section>
+</nav>
+<div class="p45t" ng-init="updateCopayerList()">
+  <h4 class="title m0" translate>Information</h4>
+  <ul class="no-bullet size-14 m0">
+    <li class="line-b p10">
+      <span class="text-gray" translate>Amount</span>:
+      <span class="right">{{amountStr}}
+        <span class="label gray radius">{{alternativeAmountStr}}</span>
+      </span>
+    </li>
+    <li class="line-b p10">
+      <span class="text-gray" translate>Schedule</span>:
+      <span class="right">{{scheduleStr}}
+        <span class="label gray radius">{{alternativeScheduleStr}}</span>
+      </span>
+    </li>
+    <li class="line-b p10">
+      <span class="text-gray" translate>Time</span>:
+      <span class="right">
+        <time>{{ (tx.ts || tx.createdOn ) * 1000 | amTimeAgo}}</time>
+      </span>
+    </li>
+    <li class="line-b p10 oh">
+      <span class="text-gray" translate>Created by</span>:
+      <span class="right">{{tx.creatorName}}</span>
+    </li>
+    <li class="line-b p10 oh">
+      <span class="text-gray" translate>Note</span>:
+      <span class="right">{{tx.message}}</span>
+    </li>
+  </ul>
+
+  <div ng-if="tx.actions[0]">
+    <h4 class="title m0" translate>Signatures</h4>
+    <ul class="no-bullet size-14 m0">
+      <li class="line-b p10 text-gray" ng-repeat="ac in tx.actions">
+        <i class="icon-contact size-24"></i>
+        <span>{{ac.copayerName}}</span>
+        <span class="right">
+          <i ng-if="ac.type == 'reject'" class="fi-x icon-sign x db"></i>
+          <i ng-if="ac.type == 'accept'" class="fi-check icon-sign check db"></i>
+          <i ng-if="!ac.type" class="fi-loop"></i>
+        </span>
+      </li>
+    </ul>
+  </div>
+  <div class="box-notification" ng-show="error">
+    <span class="text-warning size-14">
+      {{error|translate}}
+    </span>
+  </div>
+
+
+  <div class="row column m20t text-center text-warning" ng-if="tx.removed" translate>
+    Agreement removed
+  </div>
+
+  <div class="row m20t" ng-if="tx.pendingForUs">
+    <div class="large-5 medium-5 small-6 columns">
+      <button class="button outline dark-gray m0 expand" ng-click="reject(tx);"
+        ng-disabled="loading" ng-show="tx.status!='rejected'">
+        <i class="fi-x"></i>
+        <span translate>Reject</span>
+      </button>
+      <div class="button white m0 expand" ng-show="tx.status=='rejected'" translate>
+        Rejected
+      </div>
+    </div>
+    <div class="large-5 medium-5 small-6 columns text-right">
+      <button class="button primary m0 expand" ng-click="sign(tx)"
+        ng-style="{'background-color':color}"
+        ng-disabled="loading" ng-show="tx.status!='accepted'">
+        <i class="fi-check"></i>
+        <span translate>Sign</span>
+      </button>
+      <div class="button white m0 expand" ng-show="tx.status=='accepted'" translate>
+        Signed
+      </div>
+    </div>
+  </div>
+
+  <div class="text-center text-gray" ng-show="tx.status != 'pending'">
+    <div class="m10t"
+      ng-show="tx.status=='accepted'" translate>
+      Agreement accepted...
+    </div>
+    <div class="m10t"
+      ng-show="!loading && tx.status!='broadcasted' && tx.status=='accepted' && tx.status!='rejected'">
+      <div translate>But not shared with {{tx.creatorName}}. Try to send manually</div>
+      <button class="primary"
+        ng-click="broadcast(tx)"
+        ng-disabled="loading"> <i class="fi-upload-cloud"></i>
+        <span translate>Shared Agreement</span>
+      </button>
+    </div>
+    <div class="text-success m10t"
+      ng-show="tx.status=='broadcasted'" translate>
+      Agreement shared with {{tx.creatorName}}
+    </div>
+    <div class="text-center text-warning"
+      ng-show="tx.status=='rejected'" translate>
+      Agreement rejected
+    </div>
+  </div>
+
+  <div class="row column m20t" ng-if="tx.couldRemove">
+    <div class="text-gray size-12 text-center m20b" show="tx.couldRemove" translate>
+      Select REMOVE to notify {{tx.creatorName}}
+    </div>
+    <button class="tiny expand outline dark-gray" ng-click="remove(tx)"
+      ng-disabled="loading" ng-show="tx.couldRemove">
+      <i class="fi-trash size-14 m5r"></i>
+      <span translate>Remove agreement</span>
+    </button>
+  </div>
+
+</div>
+<div class="extra-margin-bottom"></div>
