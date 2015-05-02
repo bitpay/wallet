@@ -22,7 +22,7 @@ msgstr "Seules les transactions créées par vous-même sans signatures de pairs
 
 #: public/views/backup.html
 msgid "* You can safely install your backup on other device and use your wallet from many devices at the same time."
-msgstr "Vous pouvez installer en toute sécurité votre sauvegarde sur un autre appareil et utiliser votre portefeuille depuis plusieurs appareils en même temps"
+msgstr "Vous pouvez installer en toute sécurité votre sauvegarde sur un autre appareil et utiliser votre portefeuille depuis plusieurs appareils en même temps."
 
 #: src/js/services/notificationsService.js
 msgid "A transaction was finally rejected"
@@ -561,7 +561,7 @@ msgstr "Recevoir"
 
 #: public/views/walletHome.html
 msgid "Received"
-msgstr "Reçu"
+msgstr "Reçus"
 
 #: public/views/walletHome.html
 msgid "Reconnecting to Wallet Service..."
@@ -635,7 +635,7 @@ msgstr "Analyse des fonds du portefeuille..."
 
 #: public/views/modals/tx-details.html
 msgid "See it on the blockchain"
-msgstr "La voir sur la chaîne de blocs"
+msgstr "Voir sur la chaîne de blocs"
 
 #: public/views/import.html
 msgid "Select a backup file"
@@ -666,7 +666,7 @@ msgstr "Envoyer par e-mail"
 
 #: public/views/walletHome.html
 msgid "Sent"
-msgstr "Envoyé"
+msgstr "Envoyés"
 
 #: public/views/importLegacy.html
 msgid "Server"
@@ -763,7 +763,7 @@ msgstr "Temps"
 #: public/views/modals/tx-details.html
 #: public/views/modals/txp-details.html
 msgid "To"
-msgstr "À :"
+msgstr "À"
 
 #: public/views/walletHome.html
 msgid "Total Locked Balance"
