@@ -561,7 +561,7 @@ msgstr "Recevoir"
 
 #: public/views/walletHome.html
 msgid "Received"
-msgstr "Reçus"
+msgstr "Reçue"
 
 #: public/views/walletHome.html
 msgid "Reconnecting to Wallet Service..."
@@ -666,7 +666,7 @@ msgstr "Envoyer par e-mail"
 
 #: public/views/walletHome.html
 msgid "Sent"
-msgstr "Envoyés"
+msgstr "Envoyée"
 
 #: public/views/importLegacy.html
 msgid "Server"
