@@ -84,7 +84,6 @@ module.exports = function(grunt) {
           'bower_components/moment/min/moment-with-locales.js',
           'bower_components/angular/angular.js',
           'bower_components/angular-ui-router/release/angular-ui-router.js',
-          'bower_components/angular-foundation/mm-foundation.js',
           'bower_components/angular-foundation/mm-foundation-tpls.js',
           'bower_components/angular-animate/angular-animate.js',
           'bower_components/angular-moment/angular-moment.js',
