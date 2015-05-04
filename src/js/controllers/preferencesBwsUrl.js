@@ -1,12 +1,9 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('preferencesBwsUrlController',
-  function($scope, $rootScope, $filter, $timeout, $modal, balanceService, notification, backupService, profileService, configService, isMobile, isCordova, go, rateService, applicationService, bwcService) {
+  function($scope, configService, isMobile, isCordova, go,  applicationService ) {
     this.isSafari = isMobile.Safari();
     this.isCordova = isCordova;
-    this.hideAdv = true;
-    this.hidePriv = true;
-    this.hideSecret = true;
     this.error = null;
     this.success = null;
 

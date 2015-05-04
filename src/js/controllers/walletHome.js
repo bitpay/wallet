@@ -23,6 +23,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   this.isRateAvailable = false;
   this.showScanner = false;
   this.isMobile = isMobile.any();
+  this.addr = null;
 
   var disableScannerListener = $rootScope.$on('dataScanned', function(event, data) {
     self.setForm(data);
@@ -47,16 +48,12 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
   var disableOnlineListener = $rootScope.$on('Local/Online', function() {
     // This is needed then the apps go to sleep
-    $timeout(function() {
-      self.bindTouchDown();
-    }, 2000);
+    self.bindTouchDown();
   });
 
   var disableResumeListener = $rootScope.$on('Local/Resume', function() {
     // This is needed then the apps go to sleep
-    $timeout(function() {
-      self.bindTouchDown();
-    }, 2000);
+    self.bindTouchDown();
   });
 
 
@@ -390,8 +387,11 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     ['hamburger', 'menu-walletHome', 'menu-send', 'menu-receive', 'menu-history'].forEach(function(id) {
       var e = document.getElementById(id);
       if (e) e.addEventListener('touchstart', function() {
+        try {
+          event.preventDefault();
+        } catch (e) {};
         angular.element(e).triggerHandler('click');
-      });
+      }, true);
     });
   }
 
