@@ -517,7 +517,7 @@ angular
       preferencesBwsUrl: 12,
       about: 12,
       logs: 13,
-      add: 0,
+      add: 11,
       create: 12,
       join: 12,
       import: 12,
@@ -530,10 +530,21 @@ angular
     });
 
     $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
+
       if (pageWeight[fromState.name] > pageWeight[toState.name]) {
-        $rootScope.$emit('Animation/SlideRight');
+        if (pageWeight[fromState.name] == 11) {
+          $rootScope.$emit('Animation/SlideDown');
+        }
+        else {
+          $rootScope.$emit('Animation/SlideRight');
+        }
       } else if (pageWeight[fromState.name] < pageWeight[toState.name]) {
-        $rootScope.$emit('Animation/SlideLeft');
+        if (pageWeight[toState.name] < 12) {
+          $rootScope.$emit('Animation/SlideUp');
+        }
+        else {
+          $rootScope.$emit('Animation/SlideLeft');
+        }
       }
 
       if (!profileService.profile && toState.needProfile) {
