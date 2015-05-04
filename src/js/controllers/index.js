@@ -588,7 +588,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   $rootScope.$on('Local/Offline', function(event) {
     $log.debug('### Offline event');
     if (!self.offLineSince) self.offLineSince = Date.now();
-    if (Date.now() - sef.offLineSince > 1000) {
+
+    if (Date.now() - self.offLineSince > 10000) {
       self.isOffline = true;
       $timeout(function() {
         $rootScope.$apply();
