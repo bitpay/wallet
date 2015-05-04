@@ -2,9 +2,6 @@
 
 angular.module('copayApp.controllers').controller('preferencesController',
   function($scope, $rootScope, $filter, $timeout, $modal, $log, lodash, configService, profileService) {
-    this.error = null;
-    this.success = null;
-
     var config = configService.getSync();
 
     this.unitName = config.wallet.settings.unitName;

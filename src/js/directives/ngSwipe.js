@@ -12,9 +12,9 @@ function makeSwipeDirective(directiveName, direction, eventName) {
         // The maximum vertical delta for a swipe should be less than 75px.
         var MAX_VERTICAL_DISTANCE = 75;
         // Vertical distance should not be more than a fraction of the horizontal distance.
-        var MAX_VERTICAL_RATIO = 0.3;
+        var MAX_VERTICAL_RATIO = 0.4;
         // At least a 30px lateral motion is necessary for a swipe.
-        var MIN_HORIZONTAL_DISTANCE = 25;
+        var MIN_HORIZONTAL_DISTANCE = 30;
 
         return function(scope, element, attr) {
           var swipeHandler = $parse(attr[directiveName]);

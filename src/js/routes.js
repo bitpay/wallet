@@ -53,8 +53,8 @@ angular
             try {
               if (window.cordova)
                 console.log(args.join(' '));
-              orig.apply(null, args);
               historicLog.add(level, args.join(' '));
+              orig.apply(null, args);
             } catch (e) {
               console.log('Error at log decorator:', e);
             }
@@ -279,6 +279,24 @@ angular
           }
         }
       })
+      .state('preferencesAdvanced', {
+        url: '/preferencesAdvanced',
+        templateUrl: 'views/preferencesAdvanced.html',
+        walletShouldBeComplete: true,
+        needProfile: true,
+        views: {
+          'main': {
+            templateUrl: 'views/preferencesAdvanced.html'
+          },
+          'topbar': {
+            templateUrl: 'views/includes/topbar.html',
+            controller: function($scope) {
+              $scope.titleSection = 'Advanced';
+              $scope.goBackToState = 'preferences';
+            }
+          }
+        }
+      })
       .state('preferencesColor', {
         url: '/preferencesColor',
         templateUrl: 'views/preferencesColor.html',
@@ -348,8 +366,9 @@ angular
           'topbar': {
             templateUrl: 'views/includes/topbar.html',
             controller: function($scope, gettext) {
-              $scope.titleSection = gettext('Delete');
+              $scope.titleSection = gettext('Delete Wallet');
               $scope.goBackToState = 'preferences';
+              $scope.goBackToState = 'preferencesAdvanced';
             }
           }
         }
@@ -490,7 +509,8 @@ angular
       preferences: 0,
       preferencesColor: 12,
       backup: 12,
-      delete: 12,
+      preferencesAdvanced: 12,
+      delete: 13,
       preferencesLanguage: 12,
       preferencesUnit: 12,
       preferencesAltCurrency: 12,
@@ -510,7 +530,6 @@ angular
     });
 
     $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
-
       if (pageWeight[fromState.name] > pageWeight[toState.name]) {
         $rootScope.$emit('Animation/SwipeRight');
       } else if (pageWeight[fromState.name] < pageWeight[toState.name]) {
@@ -533,12 +552,13 @@ angular
             }
           } else {
             $log.debug('Profile loaded ... Starting UX.');
-            $state.transitionTo(toState, toParams);
+            $state.transitionTo(toState.name || toState, toParams);
           }
         });
       }
 
       if (profileService.focusedClient && !profileService.focusedClient.isComplete() && toState.walletShouldBeComplete) {
+
         $state.transitionTo('copayers');
         event.preventDefault();
       }
