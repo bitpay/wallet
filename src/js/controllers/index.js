@@ -110,9 +110,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     if (self.tab === tab && !reset)
       return;
 
-    if (! document.getElementById('menu-' + tab) && ++tries<5) {
+    if (!document.getElementById('menu-' + tab) && ++tries < 5) {
       return $timeout(function() {
-        self.setTab(tab,reset, tries);
+        self.setTab(tab, reset, tries);
       }, 300);
     }
 
@@ -564,7 +564,10 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   self.debouncedUpdate = lodash.throttle(function() {
     self.updateAll();
     self.updateTxHistory();
-  }, 4000, {leading: false, trailing: true});
+  }, 4000, {
+    leading: false,
+    trailing: true
+  });
 
 
   // No need ot listing to Local/Resume since
@@ -578,14 +581,19 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
   $rootScope.$on('Local/Online', function(event) {
     self.isOffline = false;
+    self.offLineSince = null;
   });
 
+  self.offLineSince = null;;
   $rootScope.$on('Local/Offline', function(event) {
     $log.debug('### Offline event');
-    self.isOffline = true;
-    $timeout(function() {
-      $rootScope.$apply();
-    });
+    if (!self.offLineSince) self.offLineSince = Date.now();
+    if (Date.now() - sef.offLineSince > 1000) {
+      self.isOffline = true;
+      $timeout(function() {
+        $rootScope.$apply();
+      });
+    }
   });
 
   $rootScope.$on('Local/BackupDone', function(event) {
@@ -629,9 +637,10 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   });
 
   $rootScope.$on('Local/WalletImported', function(event, walletId) {
-    storageService.setBackupFlag(walletId, function() {});
-    storageService.clearLastAddress(walletId, function(err) {
-      self.startScan(walletId);
+    storageService.setBackupFlag(walletId, function() {
+      storageService.clearLastAddress(walletId, function(err) {
+        self.startScan(walletId);
+      });
     });
   });
 
