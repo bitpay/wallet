@@ -23,6 +23,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   this.isRateAvailable = false;
   this.showScanner = false;
   this.isMobile = isMobile.any();
+  this.addr = null;
 
   var disableScannerListener = $rootScope.$on('dataScanned', function(event, data) {
     self.setForm(data);
