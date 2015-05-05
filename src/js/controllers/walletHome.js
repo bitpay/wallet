@@ -277,9 +277,8 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     };
 
     var modalInstance = $modal.open({
-      animation: true,
       templateUrl: 'views/modals/txp-details.html',
-      windowClass: 'full animated slideInUp',
+      windowClass: 'full',
       controller: ModalInstanceCtrl,
     });
 
