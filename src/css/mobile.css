@@ -552,12 +552,11 @@ a.pin-button:active {
 }
 
 .reveal-modal {
+  opacity: 0;
   padding: 0;
   border: none;
   border-radius: 0;
-  top: 0;
-  height: 100%;
-  overflow: auto;
+  overflow-y: auto;
   padding-bottom: 20px;
   -webkit-animation-duration: 0.3s;
   animation-duration: 0.3s;
@@ -591,9 +590,10 @@ a.pin-button:active {
   }
 }
 
-.reveal-modal.fade { 
+.reveal-modal.ng-animate.in-remove { 
   -webkit-animation-name: slideOutDown;
   animation-name: slideOutDown;
+  opacity: 1;
 }
 
 @-webkit-keyframes slideInUp {
@@ -622,9 +622,13 @@ a.pin-button:active {
   }
 }
 
-.reveal-modal.fade.in {
+.reveal-modal.ng-animate.in-add.in.in-add-active {
   -webkit-animation-name: slideInUp;
   animation-name: slideInUp;
+}
+
+.reveal-modal.fade.in {
+  opacity: 1;
 }
 
 input[type="color"],

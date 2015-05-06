@@ -106,7 +106,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     });
   };
 
-  $scope.openTxModal = function(tx, copayers) {
+  this.openTxpModal = function(tx, copayers) {
     var fc = profileService.focusedClient;
     var ModalInstanceCtrl = function($scope, $modalInstance) {
       $scope.error = null;
