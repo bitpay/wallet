@@ -552,7 +552,7 @@ a.pin-button:active {
 }
 
 .reveal-modal {
-  opacity: 0;
+  z-index: -1;
   padding: 0;
   border: none;
   border-radius: 0;
@@ -593,7 +593,7 @@ a.pin-button:active {
 .reveal-modal.ng-animate.in-remove { 
   -webkit-animation-name: slideOutDown;
   animation-name: slideOutDown;
-  opacity: 1;
+  z-index: 1003;
 }
 
 @-webkit-keyframes slideInUp {
@@ -628,7 +628,7 @@ a.pin-button:active {
 }
 
 .reveal-modal.fade.in {
-  opacity: 1;
+  z-index: 1003;
 }
 
 input[type="color"],
