@@ -101,7 +101,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     };
     $modal.open({
       templateUrl: 'views/modals/copayers.html',
-      windowClass: 'full',
+      windowClass: 'full openModalAnimation closeModalAnimation',
       controller: ModalInstanceCtrl,
     });
   };
@@ -277,7 +277,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
     var modalInstance = $modal.open({
       templateUrl: 'views/modals/txp-details.html',
-      windowClass: 'full',
+      windowClass: 'full openModalAnimation closeModalAnimation',
       controller: ModalInstanceCtrl,
     });
 
@@ -675,7 +675,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     };
     $modal.open({
       templateUrl: 'views/modals/paypro.html',
-      windowClass: 'full',
+      windowClass: 'full openModalAnimation closeModalAnimation',
       controller: ModalInstanceCtrl,
     });
   };
@@ -829,7 +829,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
     $modal.open({
       templateUrl: 'views/modals/tx-details.html',
-      windowClass: 'full',
+      windowClass: 'full openModalAnimation closeModalAnimation',
       controller: ModalInstanceCtrl,
     });
   };

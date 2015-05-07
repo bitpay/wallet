@@ -590,7 +590,7 @@ a.pin-button:active {
   }
 }
 
-.reveal-modal.ng-animate.in-remove { 
+.reveal-modal.ng-animate.in-remove.closeModalAnimation { 
   -webkit-animation-name: slideOutDown;
   animation-name: slideOutDown;
   z-index: 1003;
@@ -622,7 +622,7 @@ a.pin-button:active {
   }
 }
 
-.reveal-modal.ng-animate.in-add.in.in-add-active {
+.reveal-modal.ng-animate.in-add.in.in-add-active.openModalAnimation {
   -webkit-animation-name: slideInUp;
   animation-name: slideInUp;
 }
