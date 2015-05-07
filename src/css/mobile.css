@@ -80,7 +80,7 @@ _:-ms-fullscreen, :root .main {
 @-moz-document url-prefix() {
   .extra-margin-bottom {
     display: block;
-    height: 75px;
+    height: 45px;
     overflow: hidden;
     clear: both;
   }
@@ -847,7 +847,7 @@ textarea:focus
   top: 46px;
   bottom: 37px;
   overflow: auto;
-  padding-bottom: 20px;
+  padding-bottom: 40px;
 }
 
 .tab-in {
