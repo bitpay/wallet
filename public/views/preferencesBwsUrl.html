@@ -1,3 +1,11 @@
+<div 
+  class="topbar-container" 
+  ng-include="'views/includes/topbar.html'"
+  ng-init="titleSection='Bitcore Wallet Service'; goBackToState = 'preferences'">
+</div>
+
+
+
 <div class="content preferences p20v" ng-controller="preferencesBwsUrlController as prefBwsUrl">
   <form name="settingsBwsUrlForm" ng-submit="prefBwsUrl.save()" class="columns">
     <label>Bitcore Wallet Service URL</label>

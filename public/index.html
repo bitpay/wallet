@@ -21,27 +21,20 @@
 
     <div class="off-canvas-wrap" id="off-canvas-wrap">
       <div class="inner-wrap">
-
-        <div ui-view="topbar"></div>
         <div ng-include="'views/includes/sidebar.html'" ng-if="index.hasProfile"></div>
 
         <div notifications="right top"></div> 
         <div ng-include="'views/includes/password.html'" ng-if="index.askPassword"
 ></div>
-
-
-        <section 
-          class="animation-slide"
-          ng-class="{
-          'main': index.hasProfile, 
-          'main-dark': mainDark, 
-          'animation-left': index.slideLeft, 
-          'animation-right': index.slideRight,
-          'animation-up': index.slideUp,
-          'animation-down': index.slideDown
-          }" 
-          ui-view="main"></section>
-        <div ui-view="menu" ng-if="!index.noFocusedWallet && !$root.hideMenuBar"></div>
+        <div id="sectionContainer">
+          <div id="mainSection">
+            <section ui-view="main"
+              ng-class="{
+                'main': index.hasProfile, 
+                'main-dark': mainDark, 
+              }"></section>
+          </div>
+        </div>
         <a class="close-menu" ng-click="index.closeMenu()"></a>
 
       </div>

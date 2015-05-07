@@ -3,7 +3,6 @@
 angular.module('copayApp.controllers').controller('preferencesController',
   function($scope, $rootScope, $filter, $timeout, $modal, $log, lodash, configService, profileService) {
     var config = configService.getSync();
-
     this.unitName = config.wallet.settings.unitName;
     this.bwsurl = config.bws.url;
     this.selectedAlternative = {
