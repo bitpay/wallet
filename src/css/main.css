@@ -614,6 +614,18 @@ button.outline:focus {
   background: transparent;
 }
 
+.button.outline.tiny,
+.button.outline.tiny:hover,
+.button.outline.tiny:focus,
+button.outline.tiny,
+button.outline.tiny:hover,
+button.outline.tiny:focus {
+  border-radius: 3px;
+  background: transparent;
+  padding: 0.3rem;
+}
+
+
 .button.outline.dark-gray,
 .button.outline.dark-gray:hover,
 .button.outline.dark-gray:focus,
@@ -879,7 +891,7 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
   background-color: #2C3E50;
 }
 .text-italic {font-style: italic;}
-.text-light {font-weight: 100;}
+.text-light {font-weight: 200;}
 .text-bold {font-weight: 700;}
 .text-gray {color: #8597A7;}
 .text-black {color: #2C3E50;}
@@ -889,6 +901,7 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
 .text-warning {color: #ED4A43;}
 .text-alert {color: red;}
 .text-success {color: #1ABC9C;}
+.text-spacing {letter-spacing:2px;}
 
 .panel {
   background: #FFFFFF;
@@ -1095,9 +1108,31 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
   font-weight: normal;
 }
 
+.splash {
+  width: 100%;
+  height: 100%;
+  background: #2C3E50;
+  position: absolute;
+  background-image: -webkit-linear-gradient(#3D5672 0%, #223243 100%);
+  background-image: -o-linear-gradient(#3D5672 0%, #223243 100%);
+  background-image: linear-gradient(#3D5672 0%, #223243 100%);
+}
+
 .splash .start-button {
   position: absolute;
   bottom: 0;
+}
+
+.splash .start-button button.black {
+  background-color: #4B6178;
+}
+
+.splash .start-button button.outline.tiny {
+  font-size: 0.58rem;
+}
+
+.gif-splash {
+  padding: 2rem 0;
 }
 
 .preferences li {
