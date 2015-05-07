@@ -125,22 +125,6 @@ module.exports = function(grunt) {
         dest: 'public/css/foundation.css',
       }
     },
-    cssmin: {
-      copay: {
-        files: {
-          'public/css/copay.css': ['src/css/*.css'],
-        }
-      },
-      foundation: {
-        files: {
-          'public/css/foundation.css': [
-            'bower_components/angular/angular-csp.css',
-            'bower_components/foundation/css/foundation.css',
-            'bower_components/animate.css/animate.css'
-          ]
-        }
-      }
-    },
     uglify: {
       options: {
         mangle: false
@@ -208,7 +192,6 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-uglify');
-  grunt.loadNpmTasks('grunt-contrib-cssmin');
   grunt.loadNpmTasks('grunt-angular-gettext');
   grunt.loadNpmTasks('grunt-markdown');
   grunt.loadNpmTasks('grunt-release');
