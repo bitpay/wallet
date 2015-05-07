@@ -559,6 +559,13 @@ a.pin-button:active {
   padding-bottom: 20px;
 }
 
+.reveal-modal.animated.fadeOutUp, 
+.reveal-modal.animated.slideInUp, 
+.reveal-modal.animated.slideInDown {
+  -webkit-animation-duration: 0.3s;
+  animation-duration: 0.3s;
+}
+
 input[type="color"],
 input[type="date"],
 input[type="datetime-local"],
