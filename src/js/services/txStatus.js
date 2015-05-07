@@ -43,7 +43,7 @@ angular.module('copayApp.services').factory('txStatus', function($modal, lodash,
 
     modalInstance.result.finally(function() {
       var m = angular.element(document.getElementsByClassName('reveal-modal'));
-      m.addClass('animated slideOutDown');
+      m.addClass('animated fadeOutUp');
     });
   };
 
