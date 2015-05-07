@@ -404,9 +404,16 @@ to prevent collapsing during animation*/
   position: absolute;
   left: 0;
   right: 0;
-  transition:all 0.3s linear;
-  -webkit-animation-fill-mode: both;
+
+  animation-timing-function: ease-in-out;
+  animation-duration: 0.4s;
+  animation-iteration-count: 1;
   animation-fill-mode: both;
+  
+  -webkit-animation-timing-function: ease-in-out;
+  -webkit-animation-duration: 0.4s;
+  -webkit-animation-iteration-count: 1;
+  -webkit-animation-fill-mode: both;
 }
 
 @-webkit-keyframes CslideInUp {
@@ -436,8 +443,8 @@ to prevent collapsing during animation*/
 }
 
 .CslideInUp {
-  -webkit-animation: CslideInUp 0.3s 1;
-  animation: CslideInUp 0.3s 1;
+  -webkit-animation-name: CslideInUp;
+  animation-name: CslideInUp;
   z-index: 1003;
 }
 
@@ -468,8 +475,8 @@ to prevent collapsing during animation*/
 }
 
 .CslideOutDown {
-  -webkit-animation: CslideOutDown 0.3s 1;
-  animation: CslideOutDown 0.3s 1;
+  -webkit-animation-name: CslideOutDown;
+  animation-name: CslideOutDown;
   z-index: 1003;
 }
 
@@ -500,8 +507,8 @@ to prevent collapsing during animation*/
 }
 
 .CslideInLeft {
-  -webkit-animation: CslideInLeft 0.3s 1;
-  animation: CslideInLeft 0.3s 1;
+  -webkit-animation-name: CslideInLeft;
+  animation-name: CslideInLeft;
   z-index: 1003;
 }
 
@@ -532,56 +539,10 @@ to prevent collapsing during animation*/
 }
 
 .CslideInRight {
-  -webkit-animation: CslideInRight 0.3s 1;
-  animation: CslideInRight 0.3s 1;
+  -webkit-animation-name: CslideInRight;
+  animation-name: CslideInRight;
   z-index: 1003;
 }
-
-/*  */
-/* [ui-view].slideDown.ng-enter { */
-/*   -webkit-transform:translate3d(0, 0, 0); */
-/*   -moz-transform:translate3d(0, 0, 0); */
-/*   transform:translate3d(0, 0, 0); */
-/*   z-index:120; */
-/* } */
-/*  */
-/* [ui-view].slideDown.ng-enter-active { */
-/*   z-index:120; */
-/* } */
-/*  */
-/*  [ui-view].slideDown.ng-leave { */
-/*   -webkit-transform:translate3d(0, 0, 0); */
-/*   z-index:100; */
-/* } */
-/*  */
-/* [ui-view].slideDown.ng-leave-active { */
-/*   -webkit-transform:translate3d(0, 0, 0); */
-/*   z-index:101; */
-/* } */
-/*  */
-
-
-[ui-view].slideRight.ng-enter {
-  -webkit-transform:translate3d(100%, 0, 0);
-  z-index:100;
-}
-
-[ui-view].slideRight.ng-enter-active {
-  -webkit-transform:translate3d(0, 0, 0);
-  z-index:100;
-}
-
- [ui-view].slideRight.ng-leave {
-  -webkit-transform:translate3d(0, 0, 0);
-  z-index:120;
-}
-
-[ui-view].slideRight.ng-leave-active {
-  -webkit-transform:translate3d(100%,0, 0);
-  z-index:120;
-}
-
-
 
 /* == */
 
