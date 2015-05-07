@@ -6,7 +6,6 @@ var modules = [
   'mm.foundation',
   'monospaced.qrcode',
   'gettext',
-  'ngAnimate',
   'ngLodash',
   'uiSwitch',
   'bwcModule',
