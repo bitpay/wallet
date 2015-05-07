@@ -1,5 +1,10 @@
-<div ng-controller="walletHomeController as home">
 
+<div class="topbar-container" 
+  ng-include="'views/includes/topbar.html'"
+  ng-init="showCamera = true">
+</div>
+
+<div ng-controller="walletHomeController as home">
   <div class="row columns m20tp" ng-show="index.noFocusedWallet">
     <div class="text-center text-warning m20b">
       <i class="fi-alert"></i> <span translate>You do not have any wallet</span>
@@ -448,3 +453,5 @@
 
   </div>
 </div>
+<div class="extra-margin-bottom"></div>
+<div ng-include="'views/includes/menu.html'"></div>

@@ -379,51 +379,211 @@ a, button, .button, input, textarea, select {
   z-index: 1002;
 }
 
-/*******************************************/
+/* === */
 
-.pin {
-  margin: 0 auto;
-  width: 25%;
-  text-align: center;
-  overflow: hidden;
+
+/* Have to set height explicity on ui-view 
+to prevent collapsing during animation*/
+.main[ui-view]{
+ height: 100%; /* TODO */
 }
 
-.pin-box {
-  color: #fff;
-  font-size: 14px;
-  width: 25%;
-  float: left;
+.ui-view-container {
+  position: relative;
+  height: 100%;
 }
 
-.pin-numbers {
+[ui-view].slideDown,
+[ui-view].slideRight,
+[ui-view].slideLeft {
+  z-index:100;
+}
+
+#mainSection, #mainSectionDup {
+  height:100%;
   position: absolute;
-  bottom: 0;
-  width: 100%;
-  text-align: center;
-  height: 72%;
+  left: 0;
+  right: 0;
+  transition:all 0.3s linear;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
 }
 
-.pin-button-bar {
-  height: 25%;
+@-webkit-keyframes CslideInUp {
+  0% {
+    -webkit-transform: translate3d(0, 100%, 0);
+    transform: translate3d(0, 100%, 0);
+    visibility: visible;
+  }
+
+  100% {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
 }
 
-a.pin-button {
-  margin: 2.5%;
-  display: inline-block;
-  color: #CED5DC;
-  font-size: 210%;
-  font-weight: 100;
-  border: 1px solid #4B6178;
-  border-radius: 100%;
-  width: 70px;
-  padding-top: 0.5rem;
-  height: 70px;
+@keyframes CslideInUp {
+  0% {
+    -webkit-transform: translate3d(0, 100%, 0);
+    transform: translate3d(0, 100%, 0);
+    visibility: visible;
+  }
+
+  100% {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
 }
 
-a.pin-button:active {
-  color: #fff;
-  background-color: #3E5367;
+.CslideInUp {
+  -webkit-animation: CslideInUp 0.3s 1;
+  animation: CslideInUp 0.3s 1;
+  z-index: 1003;
 }
+
+@-webkit-keyframes CslideOutDown {
+  0% {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+    visibility: visible;
+  }
+
+  100% {
+    -webkit-transform: translate3d(0, 100%, 0);
+    transform: translate3d(0, 100%, 0);
+  }
+}
+
+@keyframes CslideOutDown {
+  0% {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+    visibility: visible;
+  }
+
+  100% {
+    -webkit-transform: translate3d(0, 100%, 0);
+    transform: translate3d(0, 100%, 0);
+  }
+}
+
+.CslideOutDown {
+  -webkit-animation: CslideOutDown 0.3s 1;
+  animation: CslideOutDown 0.3s 1;
+  z-index: 1003;
+}
+
+@-webkit-keyframes CslideInLeft {
+  0% {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+    visibility: visible;
+  }
+
+  100% {
+    -webkit-transform: translate3d(100%, 0, 0);
+    transform: translate3d(100%, 0, 0);
+  }
+}
+
+@keyframes CslideInLeft {
+  0% {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+    visibility: visible;
+  }
+
+  100% {
+    -webkit-transform: translate3d(100%,0, 0);
+    transform: translate3d(100%,0, 0);
+  }
+}
+
+.CslideInLeft {
+  -webkit-animation: CslideInLeft 0.3s 1;
+  animation: CslideInLeft 0.3s 1;
+  z-index: 1003;
+}
+
+@-webkit-keyframes CslideInRight {
+  0% {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+    visibility: visible;
+  }
+
+  100% {
+    -webkit-transform: translate3d(-100%,0, 0);
+    transform: translate3d(-100%,0, 0);
+  }
+}
+
+@keyframes CslideInRight {
+  0% {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+    visibility: visible;
+  }
+
+  100% {
+    -webkit-transform: translate3d(-100%, 0,0);
+    transform: translate3d(-100%, 0,0);
+  }
+}
+
+.CslideInRight {
+  -webkit-animation: CslideInRight 0.3s 1;
+  animation: CslideInRight 0.3s 1;
+  z-index: 1003;
+}
+
+/*  */
+/* [ui-view].slideDown.ng-enter { */
+/*   -webkit-transform:translate3d(0, 0, 0); */
+/*   -moz-transform:translate3d(0, 0, 0); */
+/*   transform:translate3d(0, 0, 0); */
+/*   z-index:120; */
+/* } */
+/*  */
+/* [ui-view].slideDown.ng-enter-active { */
+/*   z-index:120; */
+/* } */
+/*  */
+/*  [ui-view].slideDown.ng-leave { */
+/*   -webkit-transform:translate3d(0, 0, 0); */
+/*   z-index:100; */
+/* } */
+/*  */
+/* [ui-view].slideDown.ng-leave-active { */
+/*   -webkit-transform:translate3d(0, 0, 0); */
+/*   z-index:101; */
+/* } */
+/*  */
+
+
+[ui-view].slideRight.ng-enter {
+  -webkit-transform:translate3d(100%, 0, 0);
+  z-index:100;
+}
+
+[ui-view].slideRight.ng-enter-active {
+  -webkit-transform:translate3d(0, 0, 0);
+  z-index:100;
+}
+
+ [ui-view].slideRight.ng-leave {
+  -webkit-transform:translate3d(0, 0, 0);
+  z-index:120;
+}
+
+[ui-view].slideRight.ng-leave-active {
+  -webkit-transform:translate3d(100%,0, 0);
+  z-index:120;
+}
+
+
+
+/* == */
 
 .icon-circle, .icon-circle-active {
   color:  #1ABC9C;
@@ -685,95 +845,6 @@ textarea:focus
   color: #B7C2CD;
 }
 
-.animation-slide {
-  position: absolute;
-  background: #fff;
-  display: block;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  -webkit-backface-visibility: hidden;
-  -webkit-transform: translate3d(0, 0, 0);
-  transform: translate3d(0, 0, 0);
-}
-
-.animation-slide.ng-enter, 
-.animation-slide.ng-leave {
-  -webkit-transition: 0.25s ease all;
-  transition: 0.25s ease all;
-}
-
-.animation-slide.ng-enter.ng-enter-active {
-  -webkit-transform: translate3d(0, 0, 0);
-  transform: translate3d(0, 0, 0);
-  visibility: visible;
-}
-
-.animation-slide.ng-leave {
-  -webkit-transform: translate3d(0, 0, 0);
-  transform: translate3d(0, 0, 0);
-  visibility: hidden;
-}
-
-.animation-left.ng-enter {
-  -webkit-transform: translate3d(100%, 0, 0);
-  transform: translate3d(100%, 0, 0);
-  -webkit-transition-delay: 0.1s;
-  transition-delay: 0.1s;
-  visibility: hidden;
-}
-.animation-right.ng-enter {
-  -webkit-transform: translate3d(-100%, 0, 0);
-  transform: translate3d(-100%, 0, 0);
-  -webkit-transition-delay: 0.1s;
-  transition-delay: 0.1s;
-  visibility: hidden;
-}
-
-.animation-up.ng-enter {
-  -webkit-transform: translate3d(0, 100%, 0);
-  transform: translate3d(0, 100%, 0);
-  -webkit-transition-delay: 0.1s;
-  transition-delay: 0.1s;
-}
-.animation-down.ng-enter {
-  -webkit-transform: translate3d(0, -100%, 0);
-  transform: translate3d(0, -100%, 0);
-  -webkit-transition-delay: 0.1s;
-  transition-delay: 0.1s;
-}
-
-.animation-left.ng-leave.animation-left.ng-leave-active {
-  -webkit-transform: translate3d(-100%, 0, 0);
-  transform: translate3d(-100%, 0, 0);
-  -webkit-transition-delay: 0.1s;
-  transition-delay: 0.1s;
-  visibility: hidden;
-}
-.animation-right.ng-leave.animation-right.ng-leave-active {
-  -webkit-transform: translate3d(100%, 0, 0);
-  transform: translate3d(100%, 0, 0);
-  -webkit-transition-delay: 0.1s;
-  transition-delay: 0.1s;
-  visibility: hidden;
-}
-
-.animation-up.ng-leave.animation-up.ng-leave-active {
-  -webkit-transform: translate3d(0, -100%, 0);
-  transform: translate3d(0, -100%, 0);
-  -webkit-transition-delay: 0.1s;
-  transition-delay: 0.1s;
-  visibility: hidden;
-}
-.animation-down.ng-leave.animation-down.ng-leave-active {
-  -webkit-transform: translate3d(0, 100%, 0);
-  transform: translate3d(0, 100%, 0);
-  -webkit-transition-delay: 0.1s;
-  transition-delay: 0.1s;
-  visibility: hidden;
-}
-
 .tab-view {
   -webkit-transform: translate3d(-100%, 0, 0);
   transform: translate3d(-100%, 0, 0);
@@ -797,8 +868,8 @@ textarea:focus
 
 .animated.slideInRight, 
 .animated.slideInLeft, 
-.animated.slideInUp, 
-.animated.slideInDown {
+.animated.CslideInUp, 
+.animated.CslideOutDown {
   -webkit-animation-duration: 0.3s;
   animation-duration: 0.3s;
 }

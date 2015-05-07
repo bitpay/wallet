@@ -11,6 +11,12 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     return (parseFloat(number.toPrecision(12)));
   };
 
+
+  self.goHome = function() {
+    go.walletHome();
+  };
+
+
   self.menu = [{
     'title': gettext('Home'),
     'icon': 'icon-home',

@@ -1,3 +1,10 @@
+<div 
+  class="topbar-container" 
+  ng-include="'views/includes/topbar.html'"
+  ng-init="titleSection='Delete Wallet'; goBackToState = 'preferencesAdvanced'">
+</div>
+
+
 <div class="content p20v" ng-controller="preferencesDeleteWalletController as preferences">
   <h4 class="text-warning text-center m0" translate>Warning!</h4>
   <div class="box-notification" ng-show="preferences.error" >

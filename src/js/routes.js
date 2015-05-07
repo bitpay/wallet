@@ -78,17 +78,8 @@ angular
         needProfile: true,
         views: {
           'main': {
-            templateUrl: 'views/walletHome.html'
+            templateUrl: 'views/walletHome.html',
           },
-          'topbar': {
-            templateUrl: 'views/includes/topbar.html'
-          },
-          'menu': {
-            templateUrl: 'views/includes/menu.html',
-            controller: function($scope) {
-              $scope.activeMenu = 'walletHome';
-            }
-          }
         }
       })
       .state('createProfile', {
@@ -98,7 +89,8 @@ angular
           'main': {
             templateUrl: 'views/createProfile.html',
             controller: function($scope) {
-              $scope.mainDark = true;
+              // TODO
+              //              $scope.mainDark = true;
               $scope.noColor = true;
             }
           }
@@ -229,15 +221,8 @@ angular
         needProfile: true,
         views: {
           'main': {
-            templateUrl: 'views/preferences.html'
+            templateUrl: 'views/preferences.html',
           },
-          'topbar': {
-            templateUrl: 'views/includes/topbar.html',
-            controller: function($scope) {
-              $scope.titleSection = 'Preferences';
-              $scope.closeToHome = true;
-            }
-          }
         }
       })
       .state('preferencesLanguage', {
@@ -286,13 +271,6 @@ angular
           'main': {
             templateUrl: 'views/preferencesAdvanced.html'
           },
-          'topbar': {
-            templateUrl: 'views/includes/topbar.html',
-            controller: function($scope) {
-              $scope.titleSection = 'Advanced';
-              $scope.goBackToState = 'preferences';
-            }
-          }
         }
       })
       .state('preferencesColor', {
@@ -304,13 +282,6 @@ angular
           'main': {
             templateUrl: 'views/preferencesColor.html'
           },
-          'topbar': {
-            templateUrl: 'views/includes/topbar.html',
-            controller: function($scope, gettext) {
-              $scope.titleSection = gettext('Color');
-              $scope.goBackToState = 'preferences';
-            }
-          }
         }
       })
 
@@ -323,14 +294,6 @@ angular
           'main': {
             templateUrl: 'views/preferencesAltCurrency.html'
           },
-          'topbar': {
-            templateUrl: 'views/includes/topbar.html',
-            controller: function($scope, gettext) {
-              $scope.titleSection = gettext('Alternative Currency');
-              $scope.goBackToState = 'preferences';
-              $scope.noColor = true;
-            }
-          }
         }
       })
       .state('preferencesBwsUrl', {
@@ -342,14 +305,7 @@ angular
           'main': {
             templateUrl: 'views/preferencesBwsUrl.html'
           },
-          'topbar': {
-            templateUrl: 'views/includes/topbar.html',
-            controller: function($scope) {
-              $scope.titleSection = 'Bitcore Wallet Service';
-              $scope.goBackToState = 'preferences';
-              $scope.noColor = true;
-            }
-          }
+             
         }
       })
       .state('delete', {
@@ -361,14 +317,6 @@ angular
           'main': {
             templateUrl: 'views/preferencesDeleteWallet.html'
           },
-          'topbar': {
-            templateUrl: 'views/includes/topbar.html',
-            controller: function($scope, gettext) {
-              $scope.titleSection = gettext('Delete Wallet');
-              $scope.goBackToState = 'preferences';
-              $scope.goBackToState = 'preferencesAdvanced';
-            }
-          }
         }
       })
       .state('about', {
@@ -380,14 +328,6 @@ angular
           'main': {
             templateUrl: 'views/preferencesAbout.html'
           },
-          'topbar': {
-            templateUrl: 'views/includes/topbar.html',
-            controller: function($scope, gettext) {
-              $scope.titleSection = gettext('About');
-              $scope.goBackToState = 'preferences';
-              $scope.noColor = true;
-            }
-          }
         }
       })
       .state('logs', {
@@ -399,14 +339,6 @@ angular
           'main': {
             templateUrl: 'views/preferencesLogs.html'
           },
-          'topbar': {
-            templateUrl: 'views/includes/topbar.html',
-            controller: function($scope, gettext) {
-              $scope.titleSection = gettext('Logs');
-              $scope.goBackToState = 'about';
-              $scope.noColor = true;
-            }
-          }
         }
       })
       .state('backup', {
@@ -418,13 +350,6 @@ angular
           'main': {
             templateUrl: 'views/backup.html'
           },
-          'topbar': {
-            templateUrl: 'views/includes/topbar.html',
-            controller: function($scope, gettext) {
-              $scope.titleSection = gettext('Backup');
-              $scope.goBackToState = 'preferences';
-            }
-          }
         }
       })
       .state('settings', {
@@ -477,7 +402,7 @@ angular
         needProfile: false
       });
   })
-  .run(function($rootScope, $state, $log, gettextCatalog, uriHandler, isCordova, amMoment, profileService) {
+  .run(function($rootScope, $state, $log, gettextCatalog, uriHandler, isCordova, amMoment, profileService, $timeout) {
     FastClick.attach(document.body);
 
     // Auto-detect browser language
@@ -522,28 +447,8 @@ angular
       importLegacy: 12
     };
 
-
-    $rootScope.$on('$stateChangeSuccess', function() {
-      $rootScope.$emit('Animation/Disable');
-    });
-
     $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
 
-      if (pageWeight[fromState.name] > pageWeight[toState.name]) {
-        if (pageWeight[fromState.name] == 11) {
-          $rootScope.$emit('Animation/SlideDown');
-        }
-        else {
-          $rootScope.$emit('Animation/SlideRight');
-        }
-      } else if (pageWeight[fromState.name] < pageWeight[toState.name]) {
-        if (pageWeight[toState.name] < 12) {
-          $rootScope.$emit('Animation/SlideUp');
-        }
-        else {
-          $rootScope.$emit('Animation/SlideLeft');
-        }
-      }
 
       if (!profileService.profile && toState.needProfile) {
 
@@ -570,6 +475,49 @@ angular
 
         $state.transitionTo('copayers');
         event.preventDefault();
+      }
+
+      function animateTransition(entering, leaving) {
+        console.log('[routes.js.540:entering:]', entering, leaving); //TODO
+        var e = document.getElementById('mainSection');
+        if (entering) {
+          e.className = entering;
+        } else {
+          e.className = '';
+        }
+
+        var e2 = e.cloneNode(true);
+        if (leaving)
+          e2.className=  leaving;
+        else 
+          e2.className ='';
+
+        var c = document.getElementById('sectionContainer');
+        e2.id = 'mainSectionDup';
+        c.appendChild(e2);
+
+        // TODO  webkitTransitionEnd
+//el.addEventListener("transitionend", updateTransition, true);
+        setTimeout(function(){
+console.log('[routes.js.556] DELETING OLD'); //TODO
+          e2.parentNode.removeChild(e2);
+          e2.innerHTML = "";
+        }, 400);
+      }
+
+      console.log('[routes.js.540] =>', fromState.name, toState.name); //TODO
+      if (pageWeight[fromState.name] && pageWeight[toState.name]) {
+         if (pageWeight[fromState.name] > pageWeight[toState.name]) {
+          animateTransition(null, 'CslideInLeft');
+         } else {
+          animateTransition(null, 'CslideInRight');
+         }
+      } else if (fromState.name) {
+        if (pageWeight[toState.name]) {
+          animateTransition('CslideInUp', null);
+        } else {
+          animateTransition(null, 'CslideOutDown');
+        }
       }
     });
   });
