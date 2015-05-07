@@ -85,7 +85,6 @@ module.exports = function(grunt) {
           'bower_components/angular/angular.js',
           'bower_components/angular-ui-router/release/angular-ui-router.js',
           'bower_components/angular-foundation/mm-foundation-tpls.js',
-          'bower_components/angular-animate/angular-animate.js',
           'bower_components/angular-moment/angular-moment.js',
           'bower_components/ng-lodash/build/ng-lodash.js',
           'bower_components/angular-qrcode/qrcode.js',

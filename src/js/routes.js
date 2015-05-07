@@ -16,10 +16,8 @@ if (window && window.navigator) {
 //Setting up route
 angular
   .module('copayApp')
-  .config(function(historicLogProvider, $provide, $logProvider, $stateProvider, $urlRouterProvider, $animateProvider) {
+  .config(function(historicLogProvider, $provide, $logProvider, $stateProvider, $urlRouterProvider) {
     $urlRouterProvider.otherwise('/');
-
-    $animateProvider.classNameFilter(/^(?:(?!ng-animate-disabled).)*$/);
 
     $logProvider.debugEnabled(true);
     $provide.decorator('$log', ['$delegate',
