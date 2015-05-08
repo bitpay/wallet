@@ -1,3 +1,10 @@
+<div 
+  class="topbar-container" 
+  ng-include="'views/includes/topbar.html'"
+  ng-init="titleSection='Join shared wallet'; goBackToState = 'add'; noColor = true">
+</div>
+
+
 <div class="content p20v" ng-controller="joinController as join">
   <div class="onGoingProcess" ng-show="join.loading">
     <div class="onGoingProcess-content" ng-style="{'background-color':'#222'}">

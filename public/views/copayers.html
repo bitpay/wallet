@@ -1,3 +1,9 @@
+<div 
+  class="topbar-container" 
+  ng-include="'views/includes/topbar.html'"
+  ng-init="titleSection='Copayers'">
+</div>
+
 <div class="content p20v" ng-controller="copayersController as copayers" ng-init="copayers.init()">
   <div ng-show="!index.notAuthorized">
     <div class="row m10t text-center">
