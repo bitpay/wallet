@@ -80,7 +80,7 @@ _:-ms-fullscreen, :root .main {
 @-moz-document url-prefix() {
   .extra-margin-bottom {
     display: block;
-    height: 75px;
+    height: 45px;
     overflow: hidden;
     clear: both;
   }
@@ -359,7 +359,7 @@ ul.off-canvas-list li a:hover {
   background: none;
 }
 
-a, button, .button, input, textarea, select, .reveal-modal {
+a, button, .button, input, textarea, select {
   -webkit-box-shadow: none !important;
   -moz-box-shadow: none !important;
   box-shadow: none !important;
@@ -555,23 +555,17 @@ a.pin-button:active {
   padding: 0;
   border: none;
   border-radius: 0;
-  top: 0;
-  height: 100%;
-  overflow: auto;
+  overflow-y: auto;
   padding-bottom: 20px;
 }
 
-.modal.fade .modal-dialog,
-.modal.in .modal-dialog,
-.reveal-modal-bg,
-.reveal-modal-bg .fade .in,
-.reveal-modal,
-.reveal-modal .fade,
-.reveal-modal .fade .out,
-.reveal-modal .fade .in,
-.reveal-modal.fade.full.in,
-.reveal-modal.fade.full.out,
-.reveal-modal.fade.full,
+.reveal-modal.animated.fadeOutUp, 
+.reveal-modal.animated.slideInUp, 
+.reveal-modal.animated.slideInDown {
+  -webkit-animation-duration: 0.3s;
+  animation-duration: 0.3s;
+}
+
 input[type="color"],
 input[type="date"],
 input[type="datetime-local"],
@@ -691,7 +685,7 @@ textarea:focus
   color: #B7C2CD;
 }
 
-.animation-left, .animation-right {
+.animation-slide {
   position: absolute;
   background: #fff;
   display: block;
@@ -704,52 +698,80 @@ textarea:focus
   transform: translate3d(0, 0, 0);
 }
 
-.animation-left.ng-enter, .animation-left.ng-leave,
-.animation-right.ng-enter, .animation-right.ng-leave {
-  -webkit-transition: all ease 300ms;
-  transition: all ease 300ms;
+.animation-slide.ng-enter, 
+.animation-slide.ng-leave {
+  -webkit-transition: 0.25s ease all;
+  transition: 0.25s ease all;
+}
+
+.animation-slide.ng-enter.ng-enter-active {
+  -webkit-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
+  visibility: visible;
+}
+
+.animation-slide.ng-leave {
+  -webkit-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
+  visibility: hidden;
 }
 
 .animation-left.ng-enter {
   -webkit-transform: translate3d(100%, 0, 0);
   transform: translate3d(100%, 0, 0);
-  -webkit-transition-delay: 0.01s;
-  transition-delay: 0.01s;
-  opacity: 0;
+  -webkit-transition-delay: 0.1s;
+  transition-delay: 0.1s;
+  visibility: hidden;
 }
 .animation-right.ng-enter {
   -webkit-transform: translate3d(-100%, 0, 0);
   transform: translate3d(-100%, 0, 0);
-  -webkit-transition-delay: 0.01s;
-  transition-delay: 0.01s;
-  opacity: 0;
-}
-.animation-left.ng-enter.ng-enter-active,
-.animation-right.ng-enter.ng-enter-active {
-  -webkit-transform: translate3d(0, 0, 0);
-  transform: translate3d(0, 0, 0);
-  opacity: 1;
+  -webkit-transition-delay: 0.1s;
+  transition-delay: 0.1s;
+  visibility: hidden;
 }
 
-.animation-left.ng-leave,
-.animation-right.ng-leave {
-  -webkit-transform: translate3d(0, 0, 0);
-  transform: translate3d(0, 0, 0);
-  opacity: 0;
+.animation-up.ng-enter {
+  -webkit-transform: translate3d(0, 100%, 0);
+  transform: translate3d(0, 100%, 0);
+  -webkit-transition-delay: 0.1s;
+  transition-delay: 0.1s;
 }
+.animation-down.ng-enter {
+  -webkit-transform: translate3d(0, -100%, 0);
+  transform: translate3d(0, -100%, 0);
+  -webkit-transition-delay: 0.1s;
+  transition-delay: 0.1s;
+}
+
 .animation-left.ng-leave.animation-left.ng-leave-active {
   -webkit-transform: translate3d(-100%, 0, 0);
   transform: translate3d(-100%, 0, 0);
-  -webkit-transition-delay: 0.01s;
-  transition-delay: 0.01s;
-  opacity: 0;
+  -webkit-transition-delay: 0.1s;
+  transition-delay: 0.1s;
+  visibility: hidden;
 }
 .animation-right.ng-leave.animation-right.ng-leave-active {
   -webkit-transform: translate3d(100%, 0, 0);
   transform: translate3d(100%, 0, 0);
-  -webkit-transition-delay: 0.01s;
-  transition-delay: 0.01s;
-  opacity: 0;
+  -webkit-transition-delay: 0.1s;
+  transition-delay: 0.1s;
+  visibility: hidden;
+}
+
+.animation-up.ng-leave.animation-up.ng-leave-active {
+  -webkit-transform: translate3d(0, -100%, 0);
+  transform: translate3d(0, -100%, 0);
+  -webkit-transition-delay: 0.1s;
+  transition-delay: 0.1s;
+  visibility: hidden;
+}
+.animation-down.ng-leave.animation-down.ng-leave-active {
+  -webkit-transform: translate3d(0, 100%, 0);
+  transform: translate3d(0, 100%, 0);
+  -webkit-transition-delay: 0.1s;
+  transition-delay: 0.1s;
+  visibility: hidden;
 }
 
 .tab-view {
@@ -760,7 +782,7 @@ textarea:focus
   top: 46px;
   bottom: 37px;
   overflow: auto;
-  padding-bottom: 20px;
+  padding-bottom: 40px;
 }
 
 .tab-in {
@@ -771,6 +793,14 @@ textarea:focus
 .tab-out {
   -webkit-transform: translate3d(-100%, 0, 0) !important;
   transform: translate3d(-100%, 0, 0) !important;
+}
+
+.animated.slideInRight, 
+.animated.slideInLeft, 
+.animated.slideInUp, 
+.animated.slideInDown {
+  -webkit-animation-duration: 0.3s;
+  animation-duration: 0.3s;
 }
 
 /* removes 300ms in IE */

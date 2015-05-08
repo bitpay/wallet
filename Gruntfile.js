@@ -84,9 +84,7 @@ module.exports = function(grunt) {
           'bower_components/moment/min/moment-with-locales.js',
           'bower_components/angular/angular.js',
           'bower_components/angular-ui-router/release/angular-ui-router.js',
-          'bower_components/angular-foundation/mm-foundation.js',
           'bower_components/angular-foundation/mm-foundation-tpls.js',
-          'bower_components/angular-animate/angular-animate.js',
           'bower_components/angular-moment/angular-moment.js',
           'bower_components/ng-lodash/build/ng-lodash.js',
           'bower_components/angular-qrcode/qrcode.js',
@@ -124,22 +122,6 @@ module.exports = function(grunt) {
           'bower_components/angular-ui-switch/angular-ui-switch.css'
         ],
         dest: 'public/css/foundation.css',
-      }
-    },
-    cssmin: {
-      copay: {
-        files: {
-          'public/css/copay.css': ['src/css/*.css'],
-        }
-      },
-      foundation: {
-        files: {
-          'public/css/foundation.css': [
-            'bower_components/angular/angular-csp.css',
-            'bower_components/foundation/css/foundation.css',
-            'bower_components/animate.css/animate.css'
-          ]
-        }
       }
     },
     uglify: {
@@ -209,7 +191,6 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-uglify');
-  grunt.loadNpmTasks('grunt-contrib-cssmin');
   grunt.loadNpmTasks('grunt-angular-gettext');
   grunt.loadNpmTasks('grunt-markdown');
   grunt.loadNpmTasks('grunt-release');

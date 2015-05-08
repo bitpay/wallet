@@ -91,23 +91,28 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
   $scope.openCopayersModal = function(copayers, copayerId) {
     var fc = profileService.focusedClient;
+       
     var ModalInstanceCtrl = function($scope, $modalInstance) {
       $scope.copayers = copayers;
       $scope.copayerId = copayerId;
       $scope.color = fc.backgroundColor;
-      $scope.cancel = function() {
+      $scope.cancel = function() { 
         $modalInstance.dismiss('cancel');
       };
     };
-    $modal.open({
-      animation: false,
+    var modalInstance = $modal.open({
       templateUrl: 'views/modals/copayers.html',
-      windowClass: 'full',
+      windowClass: 'full animated slideInUp',
       controller: ModalInstanceCtrl,
+    });
+
+    modalInstance.result.finally(function() {
+      var m = angular.element(document.getElementsByClassName('reveal-modal'));
+      m.addClass('slideOutDown');
     });
   };
 
-  $scope.openTxModal = function(tx, copayers) {
+  this.openTxpModal = function(tx, copayers) {
     var fc = profileService.focusedClient;
     var ModalInstanceCtrl = function($scope, $modalInstance) {
       $scope.error = null;
@@ -277,10 +282,14 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     };
 
     var modalInstance = $modal.open({
-      animation: false,
       templateUrl: 'views/modals/txp-details.html',
-      windowClass: 'full',
+      windowClass: 'full animated slideInUp',
       controller: ModalInstanceCtrl,
+    });
+
+    modalInstance.result.finally(function() {
+      var m = angular.element(document.getElementsByClassName('reveal-modal'));
+      m.addClass('slideOutDown');
     });
 
     modalInstance.result.then(function(txp) {
@@ -675,10 +684,15 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
         $modalInstance.dismiss('cancel');
       };
     };
-    $modal.open({
+    var modalInstance = $modal.open({
       templateUrl: 'views/modals/paypro.html',
-      windowClass: 'full',
+      windowClass: 'full animated slideInUp',
       controller: ModalInstanceCtrl,
+    });
+
+    modalInstance.result.finally(function() {
+      var m = angular.element(document.getElementsByClassName('reveal-modal'));
+      m.addClass('slideOutDown');
     });
   };
 
@@ -829,11 +843,15 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       };
     };
 
-    $modal.open({
-      animation: false,
+    var modalInstance = $modal.open({
       templateUrl: 'views/modals/tx-details.html',
-      windowClass: 'full',
+      windowClass: 'full animated slideInUp',
       controller: ModalInstanceCtrl,
+    });
+
+    modalInstance.result.finally(function() {
+      var m = angular.element(document.getElementsByClassName('reveal-modal'));
+      m.addClass('slideOutDown');
     });
   };
 

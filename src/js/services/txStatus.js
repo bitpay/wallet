@@ -35,10 +35,15 @@ angular.module('copayApp.services').factory('txStatus', function($modal, lodash,
       };
       if (cb) $timeout(cb, 100);
     };
-    $modal.open({
+    var modalInstance = $modal.open({
       templateUrl: 'views/modals/tx-status.html',
-      windowClass: 'full popup-tx-status',
+      windowClass: 'full popup-tx-status closeModalAnimation',
       controller: ModalInstanceCtrl,
+    });
+
+    modalInstance.result.finally(function() {
+      var m = angular.element(document.getElementsByClassName('reveal-modal'));
+      m.addClass('animated fadeOutUp');
     });
   };
 
