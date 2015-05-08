@@ -652,19 +652,28 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
   $rootScope.$on('Animation/Disable', function(event) {
     $timeout(function() {
-      self.swipeLeft = false;
-      self.swipeRight = false;
-    }, 370);
+      self.slideLeft = false;
+      self.slideRight = false;
+      self.slideUp = false;
+      self.slideDown = false;
+    }, 400);
   });
 
-  $rootScope.$on('Animation/SwipeLeft', function(event) {
-    self.swipeLeft = true;
+  $rootScope.$on('Animation/SlideLeft', function(event) {
+    self.slideLeft = true;
   });
 
-  $rootScope.$on('Animation/SwipeRight', function(event) {
-    self.swipeRight = true;
+  $rootScope.$on('Animation/SlideRight', function(event) {
+    self.slideRight = true;
   });
 
+  $rootScope.$on('Animation/SlideUp', function(event) {
+    self.slideUp = true;
+  });
+
+  $rootScope.$on('Animation/SlideDown', function(event) {
+    self.slideDown = true;
+  });
 
   $rootScope.$on('NewIncomingTx', function() {
     self.updateBalance();

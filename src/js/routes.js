@@ -16,10 +16,8 @@ if (window && window.navigator) {
 //Setting up route
 angular
   .module('copayApp')
-  .config(function(historicLogProvider, $provide, $logProvider, $stateProvider, $urlRouterProvider, $animateProvider) {
+  .config(function(historicLogProvider, $provide, $logProvider, $stateProvider, $urlRouterProvider) {
     $urlRouterProvider.otherwise('/');
-
-    $animateProvider.classNameFilter(/^(?:(?!ng-animate-disabled).)*$/);
 
     $logProvider.debugEnabled(true);
     $provide.decorator('$log', ['$delegate',
@@ -506,7 +504,7 @@ angular
       receive: 0,
       send: 0,
       history: 0,
-      preferences: 0,
+      preferences: 11,
       preferencesColor: 12,
       backup: 12,
       preferencesAdvanced: 12,
@@ -517,7 +515,7 @@ angular
       preferencesBwsUrl: 12,
       about: 12,
       logs: 13,
-      add: 0,
+      add: 11,
       create: 12,
       join: 12,
       import: 12,
@@ -530,10 +528,21 @@ angular
     });
 
     $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
+
       if (pageWeight[fromState.name] > pageWeight[toState.name]) {
-        $rootScope.$emit('Animation/SwipeRight');
+        if (pageWeight[fromState.name] == 11) {
+          $rootScope.$emit('Animation/SlideDown');
+        }
+        else {
+          $rootScope.$emit('Animation/SlideRight');
+        }
       } else if (pageWeight[fromState.name] < pageWeight[toState.name]) {
-        $rootScope.$emit('Animation/SwipeLeft');
+        if (pageWeight[toState.name] < 12) {
+          $rootScope.$emit('Animation/SlideUp');
+        }
+        else {
+          $rootScope.$emit('Animation/SlideLeft');
+        }
       }
 
       if (!profileService.profile && toState.needProfile) {
