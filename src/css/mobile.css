@@ -406,17 +406,19 @@ to prevent collapsing during animation*/
   right: 0;
 
   animation-timing-function: linear;
-  animation-duration: 10s;
+  animation-duration: .3s;
   animation-iteration-count: 1;
   animation-fill-mode: both;
   
   -webkit-animation-timing-function: linear;
-  -webkit-animation-duration: 10s;
+  -webkit-animation-duration: .3s;
   -webkit-animation-iteration-count: 1;
   -webkit-animation-fill-mode: both;
 }
 
 .CslideInUp {
+  transform: translate3d(0, 100%, 0);
+  -webkit-transform: translate3d(0, 100%, 0);
   -webkit-animation-name: slideInUp;
   animation-name: slideInUp;
   z-index: 1003;
@@ -432,6 +434,8 @@ to prevent collapsing during animation*/
   z-index: 1003;
 }
 .CslideInRight {
+  -webkit-transform: translate3d(100%, 0, 0);
+  transform: translate3d(100%, 0, 0);
   -webkit-animation-name: slideInRight;
   animation-name: slideInRight;
   z-index: 1003;
