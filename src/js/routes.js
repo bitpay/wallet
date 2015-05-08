@@ -381,7 +381,7 @@ angular
     };
 
 
-    var transitionReady;
+    var cachedTransitionState, cachedBackPanel;
 
     $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
 
@@ -417,42 +417,51 @@ angular
        * --------------------
        */
 
-      function cleanUpLater (e, e2) {
-        var cleanedUp = false;
+      function cleanUpLater(e, e2) {
+        var cleanedUp = false, timeoutID;
         var cleanUp = function() {
           if (cleanedUp) return;
+console.log('[routes.js.423:cleanedUp:]',cleanedUp); //TODO
           cleanedUp = true;
           e2.parentNode.removeChild(e2);
           e2.innerHTML = "";
           e.className = '';
+          cachedBackPanel = null;
+          cachedTransitionState = '';
+          if (timeoutID) {
+            timeoutID=null;
+            window.clearTimeout(timeoutID);
+          }
         };
         e.addEventListener("animationend", cleanUp, true);
         e2.addEventListener("animationend", cleanUp, true);
         e.addEventListener("webkitAnimationEnd", cleanUp, true);
         e2.addEventListener("webkitAnimationEnd", cleanUp, true);
-        setTimeout(cleanUp, 11000);
+        // TODO
+        timeoutID = setTimeout(cleanUp, 500);
       };
 
       function animateTransition(fromState, toState, event) {
 
         // Animation in progress?
         var x = document.getElementById('mainSectionDup');
-        if (x) {
+        if (x && !cachedTransitionState) {
           console.log('Anim in progress');
-          event.preventDefault();
-          return;
+          return true;
         }
 
         var fromName = fromState.name;
         var toName = toState.name;
-console.log('[routes.js.446:fromName:]',fromName, toName); //TODO
+        console.log('[routes.js.446:from/toName:]', fromName, toName); //TODO
+        if (!fromName || !toName) 
+          return true;
 
         var fromWeight = pageWeight[fromName];
         var toWeight = pageWeight[toName];
 
-console.log('[routes.js.446:fromName:]',fromWeight, toWeight); //TODO
 
-        var entering = null, leaving = null;
+        var entering = null,
+          leaving = null;
 
         if (fromWeight && toWeight) {
           if (fromWeight > toWeight) {
@@ -461,27 +470,43 @@ console.log('[routes.js.446:fromName:]',fromWeight, toWeight); //TODO
             entering = 'CslideInRight';
           }
         } else if (fromName && fromWeight >= 0 && toWeight >= 0) {
-          if (toName) {
+          if (toWeight) {
             entering = 'CslideInUp';
           } else {
             leaving = 'CslideOutDown';
           }
         }
 
-console.log('[routes.js.467]', entering, leaving); //TODO
-
+        console.log('[routes.js.467]', entering, leaving); //TODO
         var e = document.getElementById('mainSection');
 
-        var e2 = e.cloneNode(true);
-        var c = document.getElementById('sectionContainer');
-        e2.id = 'mainSectionDup';
 
+        var desiredTransitionState = (fromName || '-') + ':' + (toName || '-');
 
-        c.appendChild(e2);
-        e.className = entering || '';
-        e2.className = leaving || '';
-        cleanUpLater(e,e2);
+        if (desiredTransitionState == cachedTransitionState) {
+          e.className = entering || '';
+          cachedBackPanel.className = leaving || '';
+          cleanUpLater(e, cachedBackPanel);
+          console.log('USing', cachedTransitionState); //TODO
+          return true;
+        } else {
+          cachedBackPanel = e.cloneNode(true);
+          cachedBackPanel.id = 'mainSectionDup';
+          var c = document.getElementById('sectionContainer');
+          c.appendChild(cachedBackPanel);
+
+          cachedTransitionState = desiredTransitionState;
+          console.log('CACHing', cachedTransitionState); //TODO
+          return false;
+        }
       }
-      animateTransition(fromState, toState, event);
+
+      if (!animateTransition(fromState, toState)) {
+        event.preventDefault();
+        // Time for the backpane to render
+        setTimeout(function() {
+          $state.transitionTo(toState);
+        }, 50);
+      }
     });
   });
