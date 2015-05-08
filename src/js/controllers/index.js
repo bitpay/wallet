@@ -96,7 +96,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       self.txps = [];
       self.copayers = [];
       self.updateColor();
-      go.walletHome();
 
       storageService.getBackupFlag(self.walletId, function(err, val) {
         self.needsBackup = self.network == 'testnet' ? false : !val;
@@ -722,6 +721,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   $rootScope.$on('Local/NewFocusedWallet', function() {
     self.setFocusedWallet();
     self.updateTxHistory();
+    go.walletHome();
   });
 
   $rootScope.$on('Local/SetTab', function(event, tab, reset) {
