@@ -112,13 +112,6 @@ angular
           'main': {
             templateUrl: 'views/paymentUri.html',
           },
-          'topbar': {
-            templateUrl: 'views/includes/topbar.html',
-            controller: function($scope) {
-              $scope.goBackToState = 'walletHome';
-              $scope.noColor = true;
-            }
-          }
         },
         needProfile: true
       })
@@ -134,14 +127,6 @@ angular
           'main': {
             templateUrl: 'views/join.html'
           },
-          'topbar': {
-            templateUrl: 'views/includes/topbar.html',
-            controller: function($scope, gettext) {
-              $scope.titleSection = gettext('Join shared wallet');
-              $scope.goBackToState = 'add';
-              $scope.noColor = true;
-            }
-          }
         }
       })
       .state('import', {
@@ -151,14 +136,6 @@ angular
           'main': {
             templateUrl: 'views/import.html'
           },
-          'topbar': {
-            templateUrl: 'views/includes/topbar.html',
-            controller: function($scope, gettext) {
-              $scope.titleSection = gettext('Import wallet');
-              $scope.goBackToState = 'add';
-              $scope.noColor = true;
-            }
-          }
         }
       })
       .state('importProfile', {
@@ -173,14 +150,6 @@ angular
           'main': {
             templateUrl: 'views/importLegacy.html',
           },
-          'topbar': {
-            templateUrl: 'views/includes/topbar.html',
-            controller: function($scope, gettext) {
-              $scope.titleSection = gettext('Import legacy wallet');
-              $scope.goBackToState = 'add';
-              $scope.noColor = true;
-            }
-          }
         }
 
       })
@@ -192,14 +161,6 @@ angular
           'main': {
             templateUrl: 'views/create.html'
           },
-          'topbar': {
-            templateUrl: 'views/includes/topbar.html',
-            controller: function($scope, gettext) {
-              $scope.titleSection = gettext('Create new wallet');
-              $scope.goBackToState = 'add';
-              $scope.noColor = true;
-            }
-          }
         }
       })
       .state('copayers', {
@@ -209,9 +170,6 @@ angular
           'main': {
             templateUrl: 'views/copayers.html'
           },
-          'topbar': {
-            templateUrl: 'views/includes/topbar.html'
-          }
         }
       })
       .state('preferences', {
@@ -233,14 +191,6 @@ angular
           'main': {
             templateUrl: 'views/preferencesLanguage.html'
           },
-          'topbar': {
-            templateUrl: 'views/includes/topbar.html',
-            controller: function($scope, gettext) {
-              $scope.titleSection = gettext('Language');
-              $scope.goBackToState = 'preferences';
-              $scope.noColor = true;
-            }
-          }
         }
       })
       .state('preferencesUnit', {
@@ -252,14 +202,6 @@ angular
           'main': {
             templateUrl: 'views/preferencesUnit.html'
           },
-          'topbar': {
-            templateUrl: 'views/includes/topbar.html',
-            controller: function($scope, gettext) {
-              $scope.titleSection = gettext('Unit');
-              $scope.goBackToState = 'preferences';
-              $scope.noColor = true;
-            }
-          }
         }
       })
       .state('preferencesAdvanced', {
@@ -372,14 +314,6 @@ angular
           'main': {
             templateUrl: 'views/add.html'
           },
-          'topbar': {
-            templateUrl: 'views/includes/topbar.html',
-            controller: function($scope, gettext) {
-              $scope.titleSection = gettext('Add wallet');
-              $scope.closeToHome = true;
-              $scope.noColor = true;
-            }
-          }
         }
       })
       .state('cordova', {
@@ -478,13 +412,15 @@ angular
       }
 
       function animateTransition(entering, leaving) {
-        console.log('[routes.js.540:entering:]', entering, leaving); //TODO
-        var e = document.getElementById('mainSection');
-        if (entering) {
-          e.className = entering;
-        } else {
-          e.className = '';
+        // Animation in progress?
+        var x = document.getElementById('mainSectionDup');
+        if (x) {
+          console.log('Anim in progress');
+          return;
         }
+
+ //       console.log('[routes.js.540:entering:]', entering, leaving); //TODO
+        var e = document.getElementById('mainSection');
 
         var e2 = e.cloneNode(true);
         if (leaving)
@@ -496,21 +432,33 @@ angular
         e2.id = 'mainSectionDup';
         c.appendChild(e2);
 
-        // TODO  webkitTransitionEnd
-//el.addEventListener("transitionend", updateTransition, true);
-        setTimeout(function(){
-console.log('[routes.js.556] DELETING OLD'); //TODO
+        if (entering) {
+          e.className = entering;
+        } else {
+          e.className = '';
+        }
+
+        var cleanedUp = false;
+        var cleanUp = function() {
+          if (cleanedUp) return;
+          cleanedUp=true;
           e2.parentNode.removeChild(e2);
           e2.innerHTML = "";
-        }, 400);
+          e.className = '';
+        };
+        e.addEventListener("animationend", cleanUp, true);
+        e2.addEventListener("animationend", cleanUp, true);
+        e.addEventListener("webkitAnimationEnd", cleanUp, true);
+        e2.addEventListener("webkitAnimationEnd", cleanUp, true);
+        setTimeout(cleanUp, 500);
       }
 
-      console.log('[routes.js.540] =>', fromState.name, toState.name); //TODO
+//      console.log('[routes.js.540] =>', fromState.name, toState.name); //TODO
       if (pageWeight[fromState.name] && pageWeight[toState.name]) {
          if (pageWeight[fromState.name] > pageWeight[toState.name]) {
-          animateTransition(null, 'CslideInLeft');
+          animateTransition(null,'CslideOutRight', event);
          } else {
-          animateTransition(null, 'CslideInRight');
+          animateTransition('CslideInRight', null, event);
          }
       } else if (fromState.name) {
         if (pageWeight[toState.name]) {
