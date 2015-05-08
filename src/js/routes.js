@@ -411,6 +411,10 @@ angular
         event.preventDefault();
       }
 
+      /* 
+       * --------------------
+       */
+
       function animateTransition(entering, leaving) {
         // Animation in progress?
         var x = document.getElementById('mainSectionDup');
