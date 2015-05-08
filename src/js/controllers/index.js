@@ -334,6 +334,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.txHistoryPaging = txs[self.limitHistory] ? true : false;
     lodash.each(txs, function(tx) {
       tx.ts = tx.minedTs || tx.sentTs;
+      // no future transaction...
+      if (tx.ts > now) 
+        ts.ts = now;
       tx.rateTs = Math.floor((tx.ts || now) / 1000);
       tx.amountStr = profileService.formatAmount(tx.amount); //$filter('noFractionNumber')(
       if (c < self.limitHistory) {
