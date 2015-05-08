@@ -124,7 +124,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       var old = document.getElementById('menu-' + self.tab);
       if (old) {
         old.className = '';
-        old.style.borderTopColor = '';
       }
     }
 
@@ -133,7 +132,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       var newe = document.getElementById('menu-' + tab);
       if (newe) {
         newe.className = 'active';
-        newe.style.borderTopColor = self.backgroundColor;
       }
     }
 

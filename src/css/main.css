@@ -379,7 +379,7 @@ ul.manage li {
 .m20v {margin:20px 0;}
 .m30a {margin: 30px auto;}
 .m-negative-l {margin-left: -0.9375rem;}
-.br100 {border-radius: 100%;}
+.br100 {border-radius: 100% !important;}
 .lh {line-height: 0;}
 .lh140 {line-height: 140%;}
 .oh {overflow:hidden;}
@@ -408,9 +408,9 @@ ul.manage li {
 }
 
 .name-wallet {
-  color: #7A8C9E;
   font-size: 14px;
-  font-weight: 300;
+  font-weight: 400;
+  padding-top: 0 !important;
 }
 
 .tab-bar h1, .tab-bar h2, .tab-bar h3, .tab-bar h4, .tab-bar h5, .tab-bar h6 {
@@ -418,7 +418,7 @@ ul.manage li {
 }
 
 .sidebar li.nav-item.selected .name-wallet {
-  font-weight: 700;
+  color: #fff;
 }
 
 .name-wallet i {
