@@ -247,7 +247,7 @@ angular
           'main': {
             templateUrl: 'views/preferencesBwsUrl.html'
           },
-             
+
         }
       })
       .state('delete', {
@@ -360,9 +360,8 @@ angular
 
     var pageWeight = {
       walletHome: 0,
-      receive: 0,
-      send: 0,
-      history: 0,
+      copayers: -1,
+
       preferences: 11,
       preferencesColor: 12,
       backup: 12,
@@ -380,6 +379,9 @@ angular
       import: 12,
       importLegacy: 12
     };
+
+
+    var transitionReady;
 
     $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
 
@@ -415,37 +417,11 @@ angular
        * --------------------
        */
 
-      function animateTransition(entering, leaving) {
-        // Animation in progress?
-        var x = document.getElementById('mainSectionDup');
-        if (x) {
-          console.log('Anim in progress');
-          return;
-        }
-
- //       console.log('[routes.js.540:entering:]', entering, leaving); //TODO
-        var e = document.getElementById('mainSection');
-
-        var e2 = e.cloneNode(true);
-        if (leaving)
-          e2.className=  leaving;
-        else 
-          e2.className ='';
-
-        var c = document.getElementById('sectionContainer');
-        e2.id = 'mainSectionDup';
-        c.appendChild(e2);
-
-        if (entering) {
-          e.className = entering;
-        } else {
-          e.className = '';
-        }
-
+      function cleanUpLater (e, e2) {
         var cleanedUp = false;
         var cleanUp = function() {
           if (cleanedUp) return;
-          cleanedUp=true;
+          cleanedUp = true;
           e2.parentNode.removeChild(e2);
           e2.innerHTML = "";
           e.className = '';
@@ -454,22 +430,58 @@ angular
         e2.addEventListener("animationend", cleanUp, true);
         e.addEventListener("webkitAnimationEnd", cleanUp, true);
         e2.addEventListener("webkitAnimationEnd", cleanUp, true);
-        setTimeout(cleanUp, 500);
-      }
+        setTimeout(cleanUp, 11000);
+      };
 
-//      console.log('[routes.js.540] =>', fromState.name, toState.name); //TODO
-      if (pageWeight[fromState.name] && pageWeight[toState.name]) {
-         if (pageWeight[fromState.name] > pageWeight[toState.name]) {
-          animateTransition(null,'CslideOutRight', event);
-         } else {
-          animateTransition('CslideInRight', null, event);
-         }
-      } else if (fromState.name) {
-        if (pageWeight[toState.name]) {
-          animateTransition('CslideInUp', null);
-        } else {
-          animateTransition(null, 'CslideOutDown');
+      function animateTransition(fromState, toState, event) {
+
+        // Animation in progress?
+        var x = document.getElementById('mainSectionDup');
+        if (x) {
+          console.log('Anim in progress');
+          event.preventDefault();
+          return;
         }
+
+        var fromName = fromState.name;
+        var toName = toState.name;
+console.log('[routes.js.446:fromName:]',fromName, toName); //TODO
+
+        var fromWeight = pageWeight[fromName];
+        var toWeight = pageWeight[toName];
+
+console.log('[routes.js.446:fromName:]',fromWeight, toWeight); //TODO
+
+        var entering = null, leaving = null;
+
+        if (fromWeight && toWeight) {
+          if (fromWeight > toWeight) {
+            leaving = 'CslideOutRight';
+          } else {
+            entering = 'CslideInRight';
+          }
+        } else if (fromName && fromWeight >= 0 && toWeight >= 0) {
+          if (toName) {
+            entering = 'CslideInUp';
+          } else {
+            leaving = 'CslideOutDown';
+          }
+        }
+
+console.log('[routes.js.467]', entering, leaving); //TODO
+
+        var e = document.getElementById('mainSection');
+
+        var e2 = e.cloneNode(true);
+        var c = document.getElementById('sectionContainer');
+        e2.id = 'mainSectionDup';
+
+
+        c.appendChild(e2);
+        e.className = entering || '';
+        e2.className = leaving || '';
+        cleanUpLater(e,e2);
       }
+      animateTransition(fromState, toState, event);
     });
   });

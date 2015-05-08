@@ -406,12 +406,12 @@ to prevent collapsing during animation*/
   right: 0;
 
   animation-timing-function: linear;
-  animation-duration: .4s;
+  animation-duration: 10s;
   animation-iteration-count: 1;
   animation-fill-mode: both;
   
   -webkit-animation-timing-function: linear;
-  -webkit-animation-duration: .4s;
+  -webkit-animation-duration: 10s;
   -webkit-animation-iteration-count: 1;
   -webkit-animation-fill-mode: both;
 }
