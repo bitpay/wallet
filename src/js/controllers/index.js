@@ -339,7 +339,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   self.updateColor = function() {
     var config = configService.getSync();
     config.colorFor = config.colorFor || {};
-    self.backgroundColor = config.colorFor[self.walletId] || '#2C3E50';
+    self.backgroundColor = config.colorFor[self.walletId] || '#7A8C9E';
     var fc = profileService.focusedClient;
     fc.backgroundColor = self.backgroundColor;
   };
