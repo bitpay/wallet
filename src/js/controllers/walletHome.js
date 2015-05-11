@@ -91,12 +91,12 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
   $scope.openCopayersModal = function(copayers, copayerId) {
     var fc = profileService.focusedClient;
-       
+
     var ModalInstanceCtrl = function($scope, $modalInstance) {
       $scope.copayers = copayers;
       $scope.copayerId = copayerId;
       $scope.color = fc.backgroundColor;
-      $scope.cancel = function() { 
+      $scope.cancel = function() {
         $modalInstance.dismiss('cancel');
       };
     };
@@ -315,8 +315,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
           $timeout(function() {
             self.setNewAddress();
           }, 5000);
-        }
-        else {
+        } else {
           $log.debug('Creating address ERROR:', err);
           $scope.$emit('Local/ClientError', err);
           $scope.$digest();
@@ -861,8 +860,9 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   };
 
   // Startup events
-  this.bindTouchDown();
-  this.setAddress();
-  this.setSendFormInputs();
-
+  $timeout(function() {
+    self.bindTouchDown();
+    self.setAddress();
+    self.setSendFormInputs();
+  }, 50);
 });

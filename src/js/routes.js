@@ -421,7 +421,6 @@ angular
         var cleanedUp = false, timeoutID;
         var cleanUp = function() {
           if (cleanedUp) return;
-console.log('[routes.js.423:cleanedUp:]',cleanedUp); //TODO
           cleanedUp = true;
           e2.parentNode.removeChild(e2);
           e2.innerHTML = "";
@@ -488,8 +487,9 @@ console.log('[routes.js.423:cleanedUp:]',cleanedUp); //TODO
           return true;
         } else {
           var sc;
-          var contentDiv = e.getElementsByClassName('content');
-          if (contentDiv) 
+          // Keep prefDiv scroll
+          var contentDiv  = e.getElementsByClassName('content');
+          if (contentDiv && contentDiv[0]) 
             sc = contentDiv[0].scrollTop;
 
           cachedBackPanel = e.cloneNode(true);
