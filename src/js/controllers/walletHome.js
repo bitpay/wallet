@@ -91,12 +91,12 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
   $scope.openCopayersModal = function(copayers, copayerId) {
     var fc = profileService.focusedClient;
-       
+
     var ModalInstanceCtrl = function($scope, $modalInstance) {
       $scope.copayers = copayers;
       $scope.copayerId = copayerId;
       $scope.color = fc.backgroundColor;
-      $scope.cancel = function() { 
+      $scope.cancel = function() {
         $modalInstance.dismiss('cancel');
       };
     };
@@ -293,10 +293,11 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     });
 
     modalInstance.result.then(function(txp) {
-      $scope.$emit('Local/TxProposalAction');
       if (txp) {
         self.setOngoingProcess();
-        txStatus.notify(txp);
+        txStatus.notify(txp, function() {
+          $scope.$emit('Local/TxProposalAction');
+        });
       }
     });
 
@@ -314,8 +315,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
           $timeout(function() {
             self.setNewAddress();
           }, 5000);
-        }
-        else {
+        } else {
           $log.debug('Creating address ERROR:', err);
           $scope.$emit('Local/ClientError', err);
           $scope.$digest();
@@ -598,15 +598,15 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
             $scope.$digest();
             return cb(err);
           }
-          $scope.$emit('Local/TxProposalAction');
           txStatus.notify(btx, function() {
+            $scope.$emit('Local/TxProposalAction');
             return cb();
           });
         });
       } else {
         self.setOngoingProcess();
-        $scope.$emit('Local/TxProposalAction');
         txStatus.notify(signedTx, function() {
+          $scope.$emit('Local/TxProposalAction');
           return cb();
         });
       }
@@ -859,9 +859,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     return actions.hasOwnProperty('create');
   };
 
-  // Startup events
   this.bindTouchDown();
   this.setAddress();
   this.setSendFormInputs();
-
 });

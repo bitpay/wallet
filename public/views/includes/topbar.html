@@ -3,19 +3,20 @@
     <a id="hamburger" class="p10" ng-show="!goBackToState && !closeToHome  && !index.noFocusedWallet"
       ng-click="index.openMenu()"><i class="fi-list size-24"></i>
     </a>
-    <a ng-show="goBackToState"
+    <a ng-show="goBackToState" 
       ng-click="$root.go(goBackToState); goBackToState = null"><i class="icon-arrow-left3 icon-back"></i>
       <span class="text-back">{{'Back'|translate}}</span>
     </a>
-  </section>
 
-  <section class="right-small" ng-show="!goBackToState">
-    <a id="camera-icon" ng-show="!closeToHome && index.isComplete" class="p10"
-      ng-click="topbar.openScanner()"><i class="icon-scan size-21"></i></a>
-    <a ng-show="closeToHome" class="p10"
+    <a ng-show="closeToHome" class="p10 "
       ng-click="topbar.goHome(); closeToHome = null">
       <span class="text-close">{{'Close'|translate}}</span>
     </a>
+  </section>
+
+  <section class="right-small" ng-show="showCamera">
+    <a id="camera-icon" ng-show="index.isComplete" class="p10"
+      ng-click="topbar.openScanner()"><i class="icon-scan size-21"></i></a>
   </section>
 
   <section class="middle tab-bar-section">

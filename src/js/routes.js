@@ -78,17 +78,8 @@ angular
         needProfile: true,
         views: {
           'main': {
-            templateUrl: 'views/walletHome.html'
+            templateUrl: 'views/walletHome.html',
           },
-          'topbar': {
-            templateUrl: 'views/includes/topbar.html'
-          },
-          'menu': {
-            templateUrl: 'views/includes/menu.html',
-            controller: function($scope) {
-              $scope.activeMenu = 'walletHome';
-            }
-          }
         }
       })
       .state('createProfile', {
@@ -98,7 +89,8 @@ angular
           'main': {
             templateUrl: 'views/createProfile.html',
             controller: function($scope) {
-              $scope.mainDark = true;
+              // TODO
+              //              $scope.mainDark = true;
               $scope.noColor = true;
             }
           }
@@ -120,13 +112,6 @@ angular
           'main': {
             templateUrl: 'views/paymentUri.html',
           },
-          'topbar': {
-            templateUrl: 'views/includes/topbar.html',
-            controller: function($scope) {
-              $scope.goBackToState = 'walletHome';
-              $scope.noColor = true;
-            }
-          }
         },
         needProfile: true
       })
@@ -142,14 +127,6 @@ angular
           'main': {
             templateUrl: 'views/join.html'
           },
-          'topbar': {
-            templateUrl: 'views/includes/topbar.html',
-            controller: function($scope, gettext) {
-              $scope.titleSection = gettext('Join shared wallet');
-              $scope.goBackToState = 'add';
-              $scope.noColor = true;
-            }
-          }
         }
       })
       .state('import', {
@@ -159,14 +136,6 @@ angular
           'main': {
             templateUrl: 'views/import.html'
           },
-          'topbar': {
-            templateUrl: 'views/includes/topbar.html',
-            controller: function($scope, gettext) {
-              $scope.titleSection = gettext('Import wallet');
-              $scope.goBackToState = 'add';
-              $scope.noColor = true;
-            }
-          }
         }
       })
       .state('importProfile', {
@@ -181,14 +150,6 @@ angular
           'main': {
             templateUrl: 'views/importLegacy.html',
           },
-          'topbar': {
-            templateUrl: 'views/includes/topbar.html',
-            controller: function($scope, gettext) {
-              $scope.titleSection = gettext('Import legacy wallet');
-              $scope.goBackToState = 'add';
-              $scope.noColor = true;
-            }
-          }
         }
 
       })
@@ -200,14 +161,6 @@ angular
           'main': {
             templateUrl: 'views/create.html'
           },
-          'topbar': {
-            templateUrl: 'views/includes/topbar.html',
-            controller: function($scope, gettext) {
-              $scope.titleSection = gettext('Create new wallet');
-              $scope.goBackToState = 'add';
-              $scope.noColor = true;
-            }
-          }
         }
       })
       .state('copayers', {
@@ -217,9 +170,6 @@ angular
           'main': {
             templateUrl: 'views/copayers.html'
           },
-          'topbar': {
-            templateUrl: 'views/includes/topbar.html'
-          }
         }
       })
       .state('preferences', {
@@ -229,15 +179,8 @@ angular
         needProfile: true,
         views: {
           'main': {
-            templateUrl: 'views/preferences.html'
+            templateUrl: 'views/preferences.html',
           },
-          'topbar': {
-            templateUrl: 'views/includes/topbar.html',
-            controller: function($scope) {
-              $scope.titleSection = 'Preferences';
-              $scope.closeToHome = true;
-            }
-          }
         }
       })
       .state('preferencesLanguage', {
@@ -248,14 +191,6 @@ angular
           'main': {
             templateUrl: 'views/preferencesLanguage.html'
           },
-          'topbar': {
-            templateUrl: 'views/includes/topbar.html',
-            controller: function($scope, gettext) {
-              $scope.titleSection = gettext('Language');
-              $scope.goBackToState = 'preferences';
-              $scope.noColor = true;
-            }
-          }
         }
       })
       .state('preferencesUnit', {
@@ -267,14 +202,6 @@ angular
           'main': {
             templateUrl: 'views/preferencesUnit.html'
           },
-          'topbar': {
-            templateUrl: 'views/includes/topbar.html',
-            controller: function($scope, gettext) {
-              $scope.titleSection = gettext('Unit');
-              $scope.goBackToState = 'preferences';
-              $scope.noColor = true;
-            }
-          }
         }
       })
       .state('preferencesAdvanced', {
@@ -286,13 +213,6 @@ angular
           'main': {
             templateUrl: 'views/preferencesAdvanced.html'
           },
-          'topbar': {
-            templateUrl: 'views/includes/topbar.html',
-            controller: function($scope) {
-              $scope.titleSection = 'Advanced';
-              $scope.goBackToState = 'preferences';
-            }
-          }
         }
       })
       .state('preferencesColor', {
@@ -304,13 +224,6 @@ angular
           'main': {
             templateUrl: 'views/preferencesColor.html'
           },
-          'topbar': {
-            templateUrl: 'views/includes/topbar.html',
-            controller: function($scope, gettext) {
-              $scope.titleSection = gettext('Color');
-              $scope.goBackToState = 'preferences';
-            }
-          }
         }
       })
 
@@ -323,14 +236,6 @@ angular
           'main': {
             templateUrl: 'views/preferencesAltCurrency.html'
           },
-          'topbar': {
-            templateUrl: 'views/includes/topbar.html',
-            controller: function($scope, gettext) {
-              $scope.titleSection = gettext('Alternative Currency');
-              $scope.goBackToState = 'preferences';
-              $scope.noColor = true;
-            }
-          }
         }
       })
       .state('preferencesBwsUrl', {
@@ -342,14 +247,7 @@ angular
           'main': {
             templateUrl: 'views/preferencesBwsUrl.html'
           },
-          'topbar': {
-            templateUrl: 'views/includes/topbar.html',
-            controller: function($scope) {
-              $scope.titleSection = 'Bitcore Wallet Service';
-              $scope.goBackToState = 'preferences';
-              $scope.noColor = true;
-            }
-          }
+
         }
       })
       .state('delete', {
@@ -361,14 +259,6 @@ angular
           'main': {
             templateUrl: 'views/preferencesDeleteWallet.html'
           },
-          'topbar': {
-            templateUrl: 'views/includes/topbar.html',
-            controller: function($scope, gettext) {
-              $scope.titleSection = gettext('Delete Wallet');
-              $scope.goBackToState = 'preferences';
-              $scope.goBackToState = 'preferencesAdvanced';
-            }
-          }
         }
       })
       .state('about', {
@@ -380,14 +270,6 @@ angular
           'main': {
             templateUrl: 'views/preferencesAbout.html'
           },
-          'topbar': {
-            templateUrl: 'views/includes/topbar.html',
-            controller: function($scope, gettext) {
-              $scope.titleSection = gettext('About');
-              $scope.goBackToState = 'preferences';
-              $scope.noColor = true;
-            }
-          }
         }
       })
       .state('logs', {
@@ -399,14 +281,6 @@ angular
           'main': {
             templateUrl: 'views/preferencesLogs.html'
           },
-          'topbar': {
-            templateUrl: 'views/includes/topbar.html',
-            controller: function($scope, gettext) {
-              $scope.titleSection = gettext('Logs');
-              $scope.goBackToState = 'about';
-              $scope.noColor = true;
-            }
-          }
         }
       })
       .state('backup', {
@@ -418,13 +292,6 @@ angular
           'main': {
             templateUrl: 'views/backup.html'
           },
-          'topbar': {
-            templateUrl: 'views/includes/topbar.html',
-            controller: function($scope, gettext) {
-              $scope.titleSection = gettext('Backup');
-              $scope.goBackToState = 'preferences';
-            }
-          }
         }
       })
       .state('settings', {
@@ -447,14 +314,6 @@ angular
           'main': {
             templateUrl: 'views/add.html'
           },
-          'topbar': {
-            templateUrl: 'views/includes/topbar.html',
-            controller: function($scope, gettext) {
-              $scope.titleSection = gettext('Add wallet');
-              $scope.closeToHome = true;
-              $scope.noColor = true;
-            }
-          }
         }
       })
       .state('cordova', {
@@ -477,7 +336,7 @@ angular
         needProfile: false
       });
   })
-  .run(function($rootScope, $state, $log, gettextCatalog, uriHandler, isCordova, amMoment, profileService) {
+  .run(function($rootScope, $state, $log, gettextCatalog, uriHandler, isCordova, amMoment, profileService, $timeout) {
     FastClick.attach(document.body);
 
     // Auto-detect browser language
@@ -501,9 +360,8 @@ angular
 
     var pageWeight = {
       walletHome: 0,
-      receive: 0,
-      send: 0,
-      history: 0,
+      copayers: -1,
+
       preferences: 11,
       preferencesColor: 12,
       backup: 12,
@@ -523,27 +381,10 @@ angular
     };
 
 
-    $rootScope.$on('$stateChangeSuccess', function() {
-      $rootScope.$emit('Animation/Disable');
-    });
+    var cachedTransitionState, cachedBackPanel;
 
     $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
 
-      if (pageWeight[fromState.name] > pageWeight[toState.name]) {
-        if (pageWeight[fromState.name] == 11) {
-          $rootScope.$emit('Animation/SlideDown');
-        }
-        else {
-          $rootScope.$emit('Animation/SlideRight');
-        }
-      } else if (pageWeight[fromState.name] < pageWeight[toState.name]) {
-        if (pageWeight[toState.name] < 12) {
-          $rootScope.$emit('Animation/SlideUp');
-        }
-        else {
-          $rootScope.$emit('Animation/SlideLeft');
-        }
-      }
 
       if (!profileService.profile && toState.needProfile) {
 
@@ -570,6 +411,107 @@ angular
 
         $state.transitionTo('copayers');
         event.preventDefault();
+      }
+
+      /* 
+       * --------------------
+       */
+
+      function cleanUpLater(e, e2) {
+        var cleanedUp = false, timeoutID;
+        var cleanUp = function() {
+          if (cleanedUp) return;
+          cleanedUp = true;
+          e2.parentNode.removeChild(e2);
+          e2.innerHTML = "";
+          e.className = '';
+          cachedBackPanel = null;
+          cachedTransitionState = '';
+          if (timeoutID) {
+            timeoutID=null;
+            window.clearTimeout(timeoutID);
+          }
+        };
+        e.addEventListener("animationend", cleanUp, true);
+        e2.addEventListener("animationend", cleanUp, true);
+        e.addEventListener("webkitAnimationEnd", cleanUp, true);
+        e2.addEventListener("webkitAnimationEnd", cleanUp, true);
+        // TODO
+        timeoutID = setTimeout(cleanUp, 500);
+      };
+
+      function animateTransition(fromState, toState, event) {
+
+        // Animation in progress?
+        var x = document.getElementById('mainSectionDup');
+        if (x && !cachedTransitionState) {
+          console.log('Anim in progress');
+          return true;
+        }
+
+        var fromName = fromState.name;
+        var toName = toState.name;
+        if (!fromName || !toName) 
+          return true;
+
+        var fromWeight = pageWeight[fromName];
+        var toWeight = pageWeight[toName];
+
+
+        var entering = null,
+          leaving = null;
+
+        if (fromWeight && toWeight) {
+          if (fromWeight > toWeight) {
+            leaving = 'CslideOutRight';
+          } else {
+            entering = 'CslideInRight';
+          }
+        } else if (fromName && fromWeight >= 0 && toWeight >= 0) {
+          if (toWeight) {
+            entering = 'CslideInUp';
+          } else {
+            leaving = 'CslideOutDown';
+          }
+        }
+        var e = document.getElementById('mainSection');
+
+
+        var desiredTransitionState = (fromName || '-') + ':' + (toName || '-');
+
+        if (desiredTransitionState == cachedTransitionState) {
+          e.className = entering || '';
+          cachedBackPanel.className = leaving || '';
+          cleanUpLater(e, cachedBackPanel);
+          console.log('USing', cachedTransitionState); //TODO
+          return true;
+        } else {
+          var sc;
+          // Keep prefDiv scroll
+          var contentDiv  = e.getElementsByClassName('content');
+          if (contentDiv && contentDiv[0]) 
+            sc = contentDiv[0].scrollTop;
+
+          cachedBackPanel = e.cloneNode(true);
+          cachedBackPanel.id = 'mainSectionDup';
+          var c = document.getElementById('sectionContainer');
+          c.appendChild(cachedBackPanel);
+
+          if (sc)
+            cachedBackPanel.getElementsByClassName('content')[0].scrollTop  = sc;
+
+          cachedTransitionState = desiredTransitionState;
+          console.log('CACHing', cachedTransitionState); //TODO
+          return false;
+        }
+      }
+
+      if (!animateTransition(fromState, toState)) {
+        event.preventDefault();
+        // Time for the backpane to render
+        setTimeout(function() {
+          $state.transitionTo(toState);
+        }, 50);
       }
     });
   });
