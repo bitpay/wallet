@@ -26,15 +26,15 @@ angular.module('copayApp.services')
       if (!last) return false;
 
       // rules...
-      if (last.type === 'NewTxProposal' 
+      if (last.type === 'NewTxProposal'
           && notificationData.type === 'TxProposalAcceptedBy')
         return true;
 
-      if (last.type === 'TxProposalFinallyAccepted' 
+      if (last.type === 'TxProposalFinallyAccepted'
           && notificationData.type === 'NewOutgoingTx')
         return true;
 
-      if (last.type === 'TxProposalRejectedBy' 
+      if (last.type === 'TxProposalRejectedBy'
           && notificationData.type === 'TxProposalFinallyRejected')
         return true;
 
