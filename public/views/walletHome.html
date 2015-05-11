@@ -407,7 +407,7 @@
             <span class="label tu gray radius" ng-show="btx.action == 'moved'" translate>Moved</span>
           </div>
 
-          <div class="large-5 medium-5 small-5 columns">
+          <div class="large-4 medium-4 small-4 columns">
             <span class="size-16">
               <span ng-if="btx.action == 'received'">+</span>
               <span ng-if="btx.action == 'sent'">-</span>
@@ -423,6 +423,9 @@
                 Unconfirmed
               </span>
             </div>
+          </div>
+          <div class="large-1 medium-1 small-1 columns text-right">
+            <i class="icon-arrow-right3 size-18"></i>
           </div>
           <div class="size-14 text-gray columns m5t" ng-if="btx.message || btx.addressTo">
             {{btx.message || btx.addressTo}}
