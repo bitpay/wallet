@@ -1,3 +1,11 @@
+<div 
+  class="topbar-container" 
+  ng-include="'views/includes/topbar.html'"
+  ng-init="titleSection='Create new wallet';  goBackToState = 'add'; noColor = true">
+</div>
+
+
+
 <div class="content p20v" ng-controller="createController as create">
 
   <div class="onGoingProcess" ng-show="create.loading">
