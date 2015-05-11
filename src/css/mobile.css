@@ -550,6 +550,10 @@ a.pin-button:active {
   display: none !important;
 }
 
+.reveal-modal.full {
+  top: 0 !important;
+}
+
 .reveal-modal {
   padding: 0;
   border: none;
