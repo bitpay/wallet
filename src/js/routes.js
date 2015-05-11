@@ -452,7 +452,6 @@ console.log('[routes.js.423:cleanedUp:]',cleanedUp); //TODO
 
         var fromName = fromState.name;
         var toName = toState.name;
-        console.log('[routes.js.446:from/toName:]', fromName, toName); //TODO
         if (!fromName || !toName) 
           return true;
 
@@ -476,8 +475,6 @@ console.log('[routes.js.423:cleanedUp:]',cleanedUp); //TODO
             leaving = 'CslideOutDown';
           }
         }
-
-        console.log('[routes.js.467]', entering, leaving); //TODO
         var e = document.getElementById('mainSection');
 
 
@@ -490,10 +487,18 @@ console.log('[routes.js.423:cleanedUp:]',cleanedUp); //TODO
           console.log('USing', cachedTransitionState); //TODO
           return true;
         } else {
+          var sc;
+          var contentDiv = e.getElementsByClassName('content');
+          if (contentDiv) 
+            sc = contentDiv[0].scrollTop;
+
           cachedBackPanel = e.cloneNode(true);
           cachedBackPanel.id = 'mainSectionDup';
           var c = document.getElementById('sectionContainer');
           c.appendChild(cachedBackPanel);
+
+          if (sc)
+            cachedBackPanel.getElementsByClassName('content')[0].scrollTop  = sc;
 
           cachedTransitionState = desiredTransitionState;
           console.log('CACHing', cachedTransitionState); //TODO
