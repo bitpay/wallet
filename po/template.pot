@@ -4,10 +4,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Project-Id-Version: \n"
 
-#: public/views/splash/1.html
-msgid "* In case you need to import wallets from previous Copay versions go to <b>Menu</b>"
-msgstr ""
-
 #: public/views/modals/txp-details.html
 msgid "* Only transactions created by yourself with no peer signatures can be removed"
 msgstr ""
@@ -16,12 +12,12 @@ msgstr ""
 msgid "* You can safely install your backup on other device and use your wallet from many devices at the same time."
 msgstr ""
 
-#: src/js/services/notificationsService.js
-msgid "A transaction was finally rejected"
+#: public/views/splash/1.html
+msgid "A multisignature bitcoin wallet"
 msgstr ""
 
-#: src/js/routes.js
-msgid "About"
+#: src/js/services/notificationsService.js
+msgid "A transaction was finally rejected"
 msgstr ""
 
 #: public/views/preferences.html
@@ -29,7 +25,6 @@ msgid "About Copay"
 msgstr ""
 
 #: public/views/includes/sidebar.html
-#: src/js/routes.js
 msgid "Add wallet"
 msgstr ""
 
@@ -38,7 +33,10 @@ msgid "Address"
 msgstr ""
 
 #: public/views/preferences.html
-#: src/js/routes.js
+msgid "Advanced"
+msgstr ""
+
+#: public/views/preferences.html
 msgid "Alternative Currency"
 msgstr ""
 
@@ -70,7 +68,6 @@ msgid "Back"
 msgstr ""
 
 #: public/views/preferences.html
-#: src/js/routes.js
 msgid "Backup"
 msgstr ""
 
@@ -141,7 +138,6 @@ msgid "Close"
 msgstr ""
 
 #: public/views/preferences.html
-#: src/js/routes.js
 msgid "Color"
 msgstr ""
 
@@ -207,7 +203,6 @@ msgid "Create"
 msgstr ""
 
 #: public/views/add.html
-#: src/js/routes.js
 msgid "Create new wallet"
 msgstr ""
 
@@ -232,9 +227,8 @@ msgstr ""
 msgid "Date"
 msgstr ""
 
-#: public/views/preferences.html
-#: src/js/routes.js
-msgid "Delete"
+#: public/views/preferencesAdvanced.html
+msgid "Delete Wallet"
 msgstr ""
 
 #: public/views/copayers.html
@@ -311,6 +305,10 @@ msgstr ""
 msgid "Funds received"
 msgstr ""
 
+#: public/views/splash/1.html
+msgid "GET STARTED"
+msgstr ""
+
 #: public/views/walletHome.html
 msgid "Generate new address"
 msgstr ""
@@ -356,12 +354,7 @@ msgstr ""
 msgid "Import from the Cloud?"
 msgstr ""
 
-#: src/js/routes.js
-msgid "Import legacy wallet"
-msgstr ""
-
 #: public/views/add.html
-#: src/js/routes.js
 msgid "Import wallet"
 msgstr ""
 
@@ -392,7 +385,6 @@ msgid "Join"
 msgstr ""
 
 #: public/views/add.html
-#: src/js/routes.js
 msgid "Join shared wallet"
 msgstr ""
 
@@ -401,16 +393,11 @@ msgid "Joining Wallet..."
 msgstr ""
 
 #: public/views/preferences.html
-#: src/js/routes.js
 msgid "Language"
 msgstr ""
 
 #: public/views/importLegacy.html
 msgid "Learn more about Wallet Migration"
-msgstr ""
-
-#: src/js/routes.js
-msgid "Logs"
 msgstr ""
 
 #: public/views/paymentUri.html
@@ -527,7 +514,7 @@ msgid "Payment to"
 msgstr ""
 
 #: public/views/preferencesDeleteWallet.html
-msgid "Permanently delete this wallet. WARNING: this action cannot be reversed."
+msgid "Permanently delete this wallet. THIS ACTION CANNONT BE REVERSED"
 msgstr ""
 
 #: public/views/walletHome.html
@@ -605,16 +592,16 @@ msgstr ""
 msgid "SKIP BACKUP"
 msgstr ""
 
-#: public/views/splash/1.html
-msgid "START"
-msgstr ""
-
 #: public/views/preferencesBwsUrl.html
 msgid "Save"
 msgstr ""
 
 #: src/js/services/notificationsService.js
 msgid "Scan Finished"
+msgstr ""
+
+#: public/views/preferencesAdvanced.html
+msgid "Scan addresses for funds"
 msgstr ""
 
 #: public/views/walletHome.html
@@ -839,7 +826,6 @@ msgid "Unconfirmed"
 msgstr ""
 
 #: public/views/preferences.html
-#: src/js/routes.js
 msgid "Unit"
 msgstr ""
 
@@ -880,7 +866,7 @@ msgid "WARNING: Wallet not registered"
 msgstr ""
 
 #: public/views/splash/1.html
-msgid "WELCOME TO"
+msgid "WELCOME TO COPAY"
 msgstr ""
 
 #: public/views/copayers.html

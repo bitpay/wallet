@@ -12,14 +12,6 @@ msgstr ""
 "X-Generator: Poedit 1.6.10\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: public/views/splash/1.html
-msgid ""
-"* In case you need to import wallets from previous Copay versions go to "
-"<b>Menu</b>"
-msgstr ""
-"* En caso que necesite importar monederos de una versión anterior de Copay, "
-"diríjase al <b>Menú</b>"
-
 #: public/views/modals/txp-details.html
 msgid ""
 "* Only transactions created by yourself with no peer signatures can be "
@@ -36,19 +28,19 @@ msgstr ""
 "* Usted puede instalar la copia de seguridad en otro dispositivo y usar el "
 "monedero al mismo tiempo en varios dispositivos."
 
+#: public/views/splash/1.html
+msgid "A multisignature bitcoin wallet"
+msgstr "Monedero multifirma de bitcoin"
+
 #: src/js/services/notificationsService.js
 msgid "A transaction was finally rejected"
 msgstr "Transacción finalmente rechazada"
-
-#: src/js/routes.js
-msgid "About"
-msgstr "Acerca de"
 
 #: public/views/preferences.html
 msgid "About Copay"
 msgstr "Acerca de Copay"
 
-#: public/views/includes/sidebar.html src/js/routes.js
+#: public/views/includes/sidebar.html
 msgid "Add wallet"
 msgstr "Agregar monedero"
 
@@ -56,7 +48,11 @@ msgstr "Agregar monedero"
 msgid "Address"
 msgstr "Dirección"
 
-#: public/views/preferences.html src/js/routes.js
+#: public/views/preferences.html
+msgid "Advanced"
+msgstr "Avanzado"
+
+#: public/views/preferences.html
 msgid "Alternative Currency"
 msgstr "Moneda Alternativa"
 
@@ -85,7 +81,7 @@ msgstr "Balance disponible"
 msgid "Back"
 msgstr "Volver"
 
-#: public/views/preferences.html src/js/routes.js
+#: public/views/preferences.html
 msgid "Backup"
 msgstr "Copia de seguridad"
 
@@ -154,7 +150,7 @@ msgstr "Seleccione el archivo backup de su computadora"
 msgid "Close"
 msgstr "Cerrar"
 
-#: public/views/preferences.html src/js/routes.js
+#: public/views/preferences.html
 msgid "Color"
 msgstr "Color"
 
@@ -219,7 +215,7 @@ msgstr "No se puede actualizar el monedero"
 msgid "Create"
 msgstr "Crear"
 
-#: public/views/add.html src/js/routes.js
+#: public/views/add.html
 msgid "Create new wallet"
 msgstr "Crear nuevo monedero"
 
@@ -243,9 +239,9 @@ msgstr "Creando transacción"
 msgid "Date"
 msgstr "Fecha"
 
-#: public/views/preferences.html src/js/routes.js
-msgid "Delete"
-msgstr "Eliminar"
+#: public/views/preferencesAdvanced.html
+msgid "Delete Wallet"
+msgstr "Eliminar monedero"
 
 #: public/views/copayers.html
 msgid "Delete it and create a new one"
@@ -320,6 +316,10 @@ msgstr "Francés"
 msgid "Funds received"
 msgstr "Fondos Recibidos"
 
+#: public/views/splash/1.html
+msgid "GET STARTED"
+msgstr "COMENZAR"
+
 #: public/views/walletHome.html
 msgid "Generate new address"
 msgstr "Generar nueva dirección"
@@ -364,11 +364,7 @@ msgstr "Importar de Copay Beta 0.9"
 msgid "Import from the Cloud?"
 msgstr "¿Importar de la Nube?"
 
-#: src/js/routes.js
-msgid "Import legacy wallet"
-msgstr "Importar monedero obsoleto"
-
-#: public/views/add.html src/js/routes.js
+#: public/views/add.html
 msgid "Import wallet"
 msgstr "Importar monedero"
 
@@ -396,7 +392,7 @@ msgstr "Juan"
 msgid "Join"
 msgstr "Unirse"
 
-#: public/views/add.html src/js/routes.js
+#: public/views/add.html
 msgid "Join shared wallet"
 msgstr "Unirse a un monedero"
 
@@ -404,17 +400,13 @@ msgstr "Unirse a un monedero"
 msgid "Joining Wallet..."
 msgstr "Uniéndose al Monedero..."
 
-#: public/views/preferences.html src/js/routes.js
+#: public/views/preferences.html
 msgid "Language"
 msgstr "Idioma"
 
 #: public/views/importLegacy.html
 msgid "Learn more about Wallet Migration"
 msgstr "Más detalles para migrar Monedero"
-
-#: src/js/routes.js
-msgid "Logs"
-msgstr "Registros"
 
 #: public/views/paymentUri.html
 msgid "Make a payment to"
@@ -528,11 +520,9 @@ msgid "Payment to"
 msgstr "Pago a"
 
 #: public/views/preferencesDeleteWallet.html
-msgid ""
-"Permanently delete this wallet. WARNING: this action cannot be reversed."
+msgid "Permanently delete this wallet. THIS ACTION CANNONT BE REVERSED"
 msgstr ""
-"Borrar permanentemente este monedero. ADVERTENCIA: esta acción no puede "
-"deshacerse."
+"Borrar permanentemente este monedero. ESTA ACCIÓN NO PUEDE SER REVERTIDA"
 
 #: public/views/walletHome.html
 msgid "Personal Wallet"
@@ -606,10 +596,6 @@ msgstr "ESTABLECER"
 msgid "SKIP BACKUP"
 msgstr "OMITIR"
 
-#: public/views/splash/1.html
-msgid "START"
-msgstr "COMENZAR"
-
 #: public/views/preferencesBwsUrl.html
 msgid "Save"
 msgstr "Guardar"
@@ -617,6 +603,10 @@ msgstr "Guardar"
 #: src/js/services/notificationsService.js
 msgid "Scan Finished"
 msgstr "Escáner Finalizado"
+
+#: public/views/preferencesAdvanced.html
+msgid "Scan addresses for funds"
+msgstr "Escanear direcciones con fondos"
 
 #: public/views/walletHome.html
 msgid "Scan status finished with error"
@@ -842,7 +832,7 @@ msgstr "No se puede enviar propuesta de transacción"
 msgid "Unconfirmed"
 msgstr "Sin confirmar"
 
-#: public/views/preferences.html src/js/routes.js
+#: public/views/preferences.html
 msgid "Unit"
 msgstr "Unidad"
 
@@ -883,8 +873,8 @@ msgid "WARNING: Wallet not registered"
 msgstr "ADVERTENCIA: Monedero no registrado"
 
 #: public/views/splash/1.html
-msgid "WELCOME TO"
-msgstr "BIENVENIDO A"
+msgid "WELCOME TO COPAY"
+msgstr "BIENVENIDO A COPAY"
 
 #: public/views/copayers.html
 msgid "Waiting for copayers"
@@ -990,6 +980,31 @@ msgid ""
 msgstr ""
 "{{len}} monederos importados. Escáner de fondos en progreso. Espere a ver el "
 "balance actualizado"
+
+#~ msgid ""
+#~ "* In case you need to import wallets from previous Copay versions go to "
+#~ "<b>Menu</b>"
+#~ msgstr ""
+#~ "* En caso que necesite importar monederos de una versión anterior de "
+#~ "Copay, diríjase al <b>Menú</b>"
+
+#~ msgid "About"
+#~ msgstr "Acerca de"
+
+#~ msgid "Delete"
+#~ msgstr "Eliminar"
+
+#~ msgid "Import legacy wallet"
+#~ msgstr "Importar monedero obsoleto"
+
+#~ msgid "Logs"
+#~ msgstr "Registros"
+
+#~ msgid ""
+#~ "Permanently delete this wallet. WARNING: this action cannot be reversed."
+#~ msgstr ""
+#~ "Borrar permanentemente este monedero. ADVERTENCIA: esta acción no puede "
+#~ "deshacerse."
 
 #~ msgid "Could not create wallet:"
 #~ msgstr "No se puede crear el monedero"
@@ -1403,9 +1418,6 @@ msgstr ""
 
 #~ msgid "Scan"
 #~ msgstr "Explorar"
-
-#~ msgid "Scan Wallet Addresses"
-#~ msgstr "Explorar Direcciones del Monedero"
 
 #~ msgid "Scaning for transactions"
 #~ msgstr "Explorando transacciones"
