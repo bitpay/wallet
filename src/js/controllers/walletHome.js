@@ -283,13 +283,13 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
     var modalInstance = $modal.open({
       templateUrl: 'views/modals/txp-details.html',
-      windowClass: 'full animated slideInUp',
+      windowClass: 'full animated slideInRight',
       controller: ModalInstanceCtrl,
     });
 
     modalInstance.result.finally(function() {
       var m = angular.element(document.getElementsByClassName('reveal-modal'));
-      m.addClass('slideOutDown');
+      m.addClass('slideOutRight');
     });
 
     modalInstance.result.then(function(txp) {
@@ -845,13 +845,13 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
     var modalInstance = $modal.open({
       templateUrl: 'views/modals/tx-details.html',
-      windowClass: 'full animated slideInUp',
+      windowClass: 'full animated slideInRight',
       controller: ModalInstanceCtrl,
     });
 
     modalInstance.result.finally(function() {
       var m = angular.element(document.getElementsByClassName('reveal-modal'));
-      m.addClass('slideOutDown');
+      m.addClass('slideOutRight');
     });
   };
 
