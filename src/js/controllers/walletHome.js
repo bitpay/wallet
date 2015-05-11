@@ -859,10 +859,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     return actions.hasOwnProperty('create');
   };
 
-  // Startup events
-  $timeout(function() {
-    self.bindTouchDown();
-    self.setAddress();
-    self.setSendFormInputs();
-  }, 50);
+  this.bindTouchDown();
+  this.setAddress();
+  this.setSendFormInputs();
 });
