@@ -298,7 +298,7 @@ msgstr "Impossible d'importer les portefeuilles"
 
 #: public/views/create.html
 msgid "Family vacation funds"
-msgstr "Fonds de vacance familiale"
+msgstr "Fonds pour les vacances familiales."
 
 #. Get information of payment if using Payment Protocol
 #: src/js/controllers/walletHome.js
@@ -499,7 +499,7 @@ msgstr "Coller le code texte de sauvegarde"
 
 #: public/views/join.html
 msgid "Paste invitation here"
-msgstr "Coller l'invitation ici"
+msgstr "Collez l'invitation ici"
 
 #: src/js/controllers/walletHome.js
 msgid "Payment Protocol not supported on Chrome App"
@@ -634,11 +634,11 @@ msgstr "Sélectionner un portefeuille"
 
 #: public/views/create.html
 msgid "Select required signatures"
-msgstr "Sélectionner les signatures requises"
+msgstr "Sélectionnez le nombre de signatures requises"
 
 #: public/views/create.html
 msgid "Select total number of copayers"
-msgstr "Sélectionner un nombre total de copayers"
+msgstr "Sélectionnez le nombre total de copayers"
 
 #: public/views/walletHome.html
 #: public/views/includes/transaction.html
