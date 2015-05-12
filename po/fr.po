@@ -950,7 +950,7 @@ msgstr "Votre portefeuille a été correctement importé"
 #: public/views/create.html
 #: public/views/join.html
 msgid "advanced options"
-msgstr "options avancées"
+msgstr "les options avancées"
 
 #: public/views/walletHome.html
 msgid "in pending transactions"
