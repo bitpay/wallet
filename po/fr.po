@@ -199,7 +199,7 @@ msgstr ""
 
 #: src/js/controllers/join.js
 msgid "Could not join wallet:"
-msgstr "Impossible de joindre le portefeuille"
+msgstr "Impossible de rejoindre le portefeuille"
 
 #: public/views/walletHome.html
 msgid "Could not update Wallet"
@@ -216,7 +216,7 @@ msgstr "Créer un nouveau portefeuille"
 
 #: public/views/includes/sidebar.html
 msgid "Create, join or import"
-msgstr "Créer, joindre ou importer"
+msgstr "Créer, rejoindre ou importer"
 
 #: public/views/modals/txp-details.html
 msgid "Created by"
@@ -390,11 +390,11 @@ msgstr "John"
 
 #: public/views/join.html
 msgid "Join"
-msgstr "Joindre"
+msgstr "Rejoindre"
 
 #: public/views/add.html
 msgid "Join shared wallet"
-msgstr "Joindre un portefeuille partagé"
+msgstr "Rejoindre un portefeuille partagé"
 
 #: public/views/join.html
 msgid "Joining Wallet..."
