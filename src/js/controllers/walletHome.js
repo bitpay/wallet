@@ -91,10 +91,10 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
   var parseError = function(err) {
     if (err.message) {
-      if (err.message.indexOf('CORS')) {
+      if (err.message.indexOf('CORS')>=0) {
         err.message = gettext('Could not connect wallet service. Check your Internet connexion and your wallet service configuration.');
       }
-      if (err.message.indexOf('TIMEDOUT')) {
+      if (err.message.indexOf('TIMEDOUT')>=0) {
         err.message = gettext('Wallet service timed out. Check your Internet connexion and your wallet service configuration.');
       }
     }
@@ -309,11 +309,15 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     });
 
     modalInstance.result.then(function(txp) {
+      self.setOngoingProcess();
       if (txp) {
-        self.setOngoingProcess();
         txStatus.notify(txp, function() {
           $scope.$emit('Local/TxProposalAction');
         });
+      } else {
+        $timeout(function() {
+          $scope.$emit('Local/TxProposalAction');
+        }, 100);
       }
     });
 
