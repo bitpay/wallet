@@ -1,24 +1,16 @@
 msgid ""
 msgstr ""
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
 "Project-Id-Version: Copay\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
 "POT-Creation-Date: \n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: dabura667\n"
-"MIME-Version: 1.0\n"
 "Language: ja\n"
-"X-Generator: Poedit 1.6.10\n"
-
-#: public/views/splash/1.html
-msgid ""
-"* In case you need to import wallets from previous Copay versions go to "
-"<b>Menu</b>"
-msgstr ""
-"* Copayの前バージョンのウォレットをインポートしたい場合 <b>メニュー</b> をご"
-"覧ください。"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Poedit 1.6.4\n"
 
 #: public/views/modals/txp-details.html
 msgid ""
@@ -35,50 +27,54 @@ msgstr ""
 "* 安全にバックアップを別のデバイスにインポートして、同じウォレットを複数の端"
 "末でご利用いただけます。"
 
-#: public/views/modals/address-book.html
-msgid "Add"
-msgstr "追加"
+#: public/views/splash/1.html
+msgid "A multisignature bitcoin wallet"
+msgstr "マルチシグネチャビットコインウォレット"
 
-#: public/views/modals/address-book.html
-msgid "Add a new entry"
-msgstr "新規エントリー"
+#: src/js/services/notificationsService.js
+msgid "A transaction was finally rejected"
+msgstr "取引がようやく却下されました"
 
-#: public/views/modals/address-book.html
-msgid "Add entry"
-msgstr "エントリーを追加"
+#: public/views/preferences.html
+msgid "About Copay"
+msgstr "Copayについて"
 
 #: public/views/includes/sidebar.html
 msgid "Add wallet"
 msgstr "ウォレットを追加"
 
-#: public/views/paymentUri.html public/views/modals/address-book.html
-#: public/views/modals/qr-address.html
+#: public/views/paymentUri.html
 msgid "Address"
 msgstr "アドレス"
 
-#: public/views/modals/address-book.html
-msgid "Address Book"
-msgstr "アドレス帳"
+#: public/views/preferences.html
+msgid "Advanced"
+msgstr "上級者向け"
 
 #: public/views/preferences.html
 msgid "Alternative Currency"
 msgstr "表示通貨"
 
-#: public/views/paymentUri.html public/views/send.html
+#: public/views/paymentUri.html public/views/walletHome.html
+#: public/views/modals/txp-details.html
 msgid "Amount"
 msgstr "金額"
 
-#: public/views/send.html
+#: public/views/walletHome.html
 msgid "Amount in"
 msgstr "換算済金額"
 
-#: public/views/send.html
+#: public/views/preferencesLanguage.html
+msgid "Applying changes"
+msgstr "変更を反映"
+
+#: src/js/controllers/copayers.js src/js/controllers/preferencesDelete.js
+msgid "Are you sure you want to delete this wallet?"
+msgstr "本当にこのウォレットを削除しても宜しいですか？"
+
+#: public/views/walletHome.html
 msgid "Available Balance"
 msgstr "送金可能残高"
-
-#: public/views/create.html public/views/join.html
-msgid "BIP32 master extended private key"
-msgstr "BIP32 マスタ拡張秘密鍵"
 
 #: public/views/includes/topbar.html
 msgid "Back"
@@ -88,7 +84,11 @@ msgstr "戻る"
 msgid "Backup"
 msgstr "バックアップ"
 
-#: public/views/receive.html
+#: src/js/controllers/backup.js
+msgid "Backup created"
+msgstr "バックアップ作成されました"
+
+#: public/views/walletHome.html
 msgid "Backup now"
 msgstr "今すぐバックアップ"
 
@@ -96,7 +96,7 @@ msgstr "今すぐバックアップ"
 msgid "Backup options"
 msgstr "バックアップ設定"
 
-#: public/views/receive.html
+#: public/views/walletHome.html
 msgid ""
 "Before receiving funds, it is highly recommended you backup your wallet keys."
 msgstr ""
@@ -107,25 +107,17 @@ msgstr ""
 msgid "Bitcoin URI is NOT valid!"
 msgstr "Bitcoin URI が無効です！"
 
-#: public/views/send.html
+#: public/views/walletHome.html
 msgid "Bitcoin address"
 msgstr "ビットコインアドレス"
-
-#: public/views/preferences.html
-msgid "Bitcore Wallet Service"
-msgstr "Bitcore Wallet Service"
-
-#: public/views/preferencesBwsUrl.html
-msgid "Bitcore Wallet Service URL"
-msgstr "BWS (ご利用のサーバー) URL 設定"
-
-#: public/views/modals/tx-details.html
-msgid "Blockchain"
-msgstr "ブロックチェーン"
 
 #: public/views/modals/txp-details.html
 msgid "Broadcast Transaction"
 msgstr "取引送信"
+
+#: src/js/controllers/walletHome.js
+msgid "Broadcasting transaction"
+msgstr "取引送信中"
 
 #: public/views/unsupported.html
 msgid "Browser unsupported"
@@ -139,24 +131,21 @@ msgstr "しかし未送信です。手動で送信してみて下さい。"
 msgid "CANCEL"
 msgstr "キャンセル"
 
-#: public/views/copayers.html public/views/send.html
-#: public/views/modals/address-book.html public/views/modals/confirmation.html
+#: public/views/copayers.html public/views/walletHome.html
 msgid "Cancel"
 msgstr "キャンセル"
 
 #: public/views/modals/paypro.html
-msgid "Certified by:"
+msgid "Certified by"
 msgstr "証明元："
 
 #: public/views/import.html
 msgid "Choose backup file from your computer"
 msgstr "パソコンからバックアップファイルを選択して下さい。"
 
-#: public/views/modals/address-book.html public/views/modals/copayers.html
-#: public/views/modals/paypro.html public/views/modals/qr-address.html
-#: public/views/modals/scanner.html public/views/modals/tx-details.html
-#: public/views/modals/txp-details.html
-#: public/views/modals/walletSelection.html
+#: public/views/includes/topbar.html public/views/modals/copayers.html
+#: public/views/modals/paypro.html public/views/modals/scanner.html
+#: public/views/modals/tx-details.html public/views/modals/txp-details.html
 msgid "Close"
 msgstr "閉じる"
 
@@ -164,8 +153,12 @@ msgstr "閉じる"
 msgid "Color"
 msgstr "色"
 
+#: public/views/preferencesAbout.html
+msgid "Commit hash"
+msgstr "ハッシュをコミット"
+
 #: public/views/modals/tx-details.html
-msgid "Confirmations:"
+msgid "Confirmations"
 msgstr "承認回数："
 
 #: public/views/modals/copayers.html
@@ -182,13 +175,42 @@ msgstr ""
 "このテキストを安全な場所に貼り付けて保管して下さい (メモ帳やメールの下書きな"
 "ど)"
 
-#: public/views/backup.html public/views/modals/qr-address.html
+#: public/views/backup.html
 msgid "Copy to clipboard"
 msgstr "クリップボードへコピー"
 
-#: public/views/includes/offline.html
-msgid "Could not connect to Wallet Service"
-msgstr "Wallet Serviceへ接続できませんでした"
+#: src/js/services/profileService.js
+msgid "Could not create using the specified extended private key"
+msgstr "指定された拡張秘密鍵で作成できませんでした。"
+
+#: src/js/controllers/import.js
+msgid "Could not decrypt file, check your password"
+msgstr "複合化できませんでした。パスワードが正しいかご確認下さい。"
+
+#: src/js/controllers/walletHome.js
+msgid "Could not fetch payment information"
+msgstr "支払い情報が取得できませんでした。"
+
+#: public/views/walletHome.html
+msgid "Could not fetch transaction history"
+msgstr "取引履歴を取得できませんでした。"
+
+#: src/js/services/profileService.js
+msgid "Could not import. Check input file and password"
+msgstr ""
+"インポートできませんでした。入力ファイルとパスワードが正しいかご確認下さい。"
+
+#: src/js/services/profileService.js
+msgid "Could not join using the specified extended private key"
+msgstr "指定された拡張秘密鍵で参加できませんでした。"
+
+#: src/js/controllers/join.js
+msgid "Could not join wallet:"
+msgstr "ウォレットに参加できませんでした。"
+
+#: public/views/walletHome.html
+msgid "Could not update Wallet"
+msgstr "ウォレットが更新できませんでした。"
 
 #: public/views/create.html public/views/walletHome.html
 msgid "Create"
@@ -202,25 +224,37 @@ msgstr "新規ウォレット作成"
 msgid "Create, join or import"
 msgstr "新規作成、既存参加、若しくはインポート"
 
+#: public/views/modals/txp-details.html
+msgid "Created by"
+msgstr "作成者："
+
 #: public/views/create.html public/views/createProfile.html
-msgid "Creating wallet..."
+msgid "Creating Wallet..."
 msgstr "ウォレット作成中…"
 
-#: public/views/modals/address-book.html
-msgid "Creator"
-msgstr "作成者"
+#: src/js/controllers/walletHome.js
+msgid "Creating transaction"
+msgstr "取引作成中…"
 
-#: public/views/modals/address-book.html
+#: public/views/modals/tx-details.html
 msgid "Date"
 msgstr "日付"
 
-#: public/views/modals/tx-details.html
-msgid "Date:"
-msgstr "日付："
+#: public/views/preferencesAdvanced.html
+msgid "Delete Wallet"
+msgstr "ウォレットを削除"
 
-#: public/views/preferences.html
-msgid "Delete"
-msgstr "削除"
+#: public/views/copayers.html
+msgid "Delete it and create a new one"
+msgstr "削除して新規作成"
+
+#: public/views/preferencesDeleteWallet.html
+msgid "Delete wallet"
+msgstr "ウォレットを削除"
+
+#: src/js/controllers/walletHome.js
+msgid "Deleting transaction"
+msgstr "取引削除中…"
 
 #: public/views/backup.html
 msgid "Download backup"
@@ -230,45 +264,66 @@ msgstr "バックアップをダウンロード"
 msgid "ENTER"
 msgstr "ENTER"
 
-#: public/views/modals/address-book.html
-msgid "Empty. Create an alias for your addresses"
-msgstr "空です。アドレス用にあだ名を決めて下さい。"
-
 #: public/views/preferences.html
 msgid "Encrypt Private Key"
 msgstr "秘密鍵を暗号化"
+
+#: src/js/controllers/backup.js
+msgid "Encrypted backup file saved"
+msgstr "暗号化されたバックアップ保存しました"
+
+#: src/js/controllers/index.js
+msgid "English"
+msgstr "英語"
 
 #: public/views/includes/password.html
 msgid "Enter your password"
 msgstr "パスワードを入力して下さい。"
 
-#: public/views/modals/address-book.html
-msgid "Entry"
-msgstr "エントリー"
+#: src/js/services/profileService.js
+msgid "Error creating wallet"
+msgstr "ウォレット作成時にエラー"
 
-#: public/views/modals/paypro.html
-msgid "Expires:"
+#: src/js/services/profileService.js
+msgid "Error creating wallet. Check your internet connection"
+msgstr "ウォレット作成時にエラー発生、インターネットの接続をご確認下さい。"
+
+#: src/js/services/profileService.js
+msgid "Error importing wallet:"
+msgstr "ウォレットインポート時にエラー"
+
+#: public/views/modals/paypro.html public/views/modals/txp-details.html
+msgid "Expires"
 msgstr "有効期限："
+
+#: src/js/controllers/importLegacy.js
+msgid "Failed to import wallets"
+msgstr "ウォレットのインポート失敗しました"
 
 #: public/views/create.html
 msgid "Family vacation funds"
 msgstr "家族旅行貯金"
 
-#: public/views/send.html
-msgid "Fetching Payment Information..."
+#. Get information of payment if using Payment Protocol
+#: src/js/controllers/walletHome.js
+msgid "Fetching Payment Information"
 msgstr "支払い情報要求しています…"
 
-#: public/views/receive.html
+#: src/js/controllers/index.js
+msgid "French"
+msgstr "フランス語"
+
+#: src/js/services/notificationsService.js
+msgid "Funds received"
+msgstr "着金あり"
+
+#: public/views/splash/1.html
+msgid "GET STARTED"
+msgstr "はじめよう"
+
+#: public/views/walletHome.html
 msgid "Generate new address"
 msgstr "新規アドレスを生成"
-
-#: public/views/receive.html
-msgid "Generating a new address..."
-msgstr "新規アドレス生成中です…"
-
-#: public/views/history.html
-msgid "Getting transactions..."
-msgstr "取引履歴要求中…"
 
 #: public/views/preferences.html
 msgid "Global settings"
@@ -277,6 +332,22 @@ msgstr "グローバル設定"
 #: public/views/create.html public/views/join.html
 msgid "Hide"
 msgstr "非表示"
+
+#: src/js/controllers/index.js
+msgid "History"
+msgstr "履歴"
+
+#: src/js/controllers/index.js
+msgid "Home"
+msgstr "ホーム"
+
+#: public/views/create.html
+msgid "If not given, a random key will be generated"
+msgstr "空欄の場合、乱数を使って鍵を生成します。"
+
+#: public/views/join.html
+msgid "If not given, a secure key will be generated"
+msgstr "空欄の場合、安全な鍵を生成します。"
 
 #: public/views/importLegacy.html
 msgid "Import"
@@ -302,9 +373,17 @@ msgstr "ウォレットをインポート"
 msgid "Importing wallet..."
 msgstr "ウォレットインポート中…"
 
+#: public/views/importLegacy.html
+msgid "Importing..."
+msgstr "インポート中…"
+
 #: public/views/modals/tx-details.html public/views/modals/txp-details.html
 msgid "Information"
 msgstr "情報"
+
+#: src/js/controllers/index.js
+msgid "Japanese"
+msgstr "日本語"
 
 #: public/views/create.html public/views/join.html
 msgid "John"
@@ -319,20 +398,16 @@ msgid "Join shared wallet"
 msgstr "共有ウォレットに参加"
 
 #: public/views/join.html
-msgid "Joining shared wallet..."
-msgstr "共有ウォレットに参加中…"
+msgid "Joining Wallet..."
+msgstr "ウォレット参加中…"
 
-#: public/views/modals/address-book.html
-msgid "Label"
-msgstr "ラベル"
+#: public/views/preferences.html
+msgid "Language"
+msgstr "言語設定"
 
 #: public/views/importLegacy.html
 msgid "Learn more about Wallet Migration"
 msgstr "ウォレット移行について詳しく"
-
-#: public/views/modals/walletSelection.html
-msgid "Loading..."
-msgstr "読み込み中…"
 
 #: public/views/paymentUri.html
 msgid "Make a payment to"
@@ -347,52 +422,57 @@ msgid "Me"
 msgstr "自分"
 
 #: public/views/modals/paypro.html public/views/modals/tx-details.html
-msgid "Merchant Message:"
+msgid "Merchant message"
 msgstr "お店からのメッセージ："
 
 #: public/views/paymentUri.html
 msgid "Message"
 msgstr "メッセージ"
 
-#: public/views/history.html
+#: public/views/walletHome.html
 msgid "More"
 msgstr "更に"
+
+#: public/views/walletHome.html
+msgid "Moved"
+msgstr "移動済"
 
 #: public/views/walletHome.html
 msgid "Multisignature wallet"
 msgstr "マルチシグネチャウォレット"
 
-#: public/views/receive.html
-msgid "My Bitcoin address:"
+#: public/views/walletHome.html
+msgid "My Bitcoin address"
 msgstr "私のビットコインアドレス："
 
-#: public/views/walletHome.html
-msgid "No pending spend proposals at the moment."
-msgstr "現在未対応の取引提案がありません"
+#: public/views/paymentUri.html
+msgid "Network"
+msgstr "ネットワーク"
 
-#: public/views/send.html public/views/modals/address-book.html
+#: src/js/services/notificationsService.js
+msgid "New Transaction"
+msgstr "新規取引"
+
+#: public/views/modals/confirmation.html
+msgid "No"
+msgstr "いいえ"
+
+#: public/views/walletHome.html
+msgid "No transactions yet"
+msgstr "取引がありません"
+
+#: public/views/walletHome.html
 msgid "Not valid"
 msgstr "無効です"
 
-#: public/views/send.html
+#: public/views/walletHome.html public/views/modals/tx-details.html
+#: public/views/modals/txp-details.html
 msgid "Note"
 msgstr "メモ"
-
-#: public/views/modals/tx-details.html
-msgid "Note:"
-msgstr "メモ："
-
-#: public/views/modals/confirmation.html
-msgid "OK"
-msgstr "OK"
 
 #: public/views/modals/tx-status.html
 msgid "OKAY"
 msgstr "OK"
-
-#: public/views/walletHome.html
-msgid "Opening Wallet..."
-msgstr "ウォレットを開いています…"
 
 #: public/views/import.html public/views/importLegacy.html
 msgid "Password"
@@ -404,89 +484,134 @@ msgstr ""
 "Copayではパスワードをリセットしてくれる機能がありませんので、パスワードを忘れ"
 "ないよう、控えておいて下さい。"
 
+#: src/js/services/profileService.js
+msgid "Password needed"
+msgstr "パスワードが必要"
+
+#: src/js/controllers/password.js
+msgid "Passwords do not match"
+msgstr "パスワードが一致しません"
+
 #: public/views/import.html
 msgid "Paste backup plain text code"
 msgstr "バックアップの文字をここに貼り付け"
 
 #: public/views/join.html
-msgid "Paste wallet secret here"
-msgstr "ウォレット招待コードをここに貼り付け"
+msgid "Paste invitation here"
+msgstr "招待コードをこちらへ貼り付けて下さい"
+
+#: src/js/controllers/walletHome.js
+msgid "Payment Protocol not supported on Chrome App"
+msgstr "クロームのアプリではペイメントプロトコールがサポートされていません。"
 
 #: public/views/modals/tx-status.html
 msgid "Payment Sent"
 msgstr "支払いが完了しました"
 
+#: public/views/modals/txp-details.html
+msgid "Payment details"
+msgstr "支払いの詳細"
+
 #: public/views/modals/paypro.html
 msgid "Payment protocol request"
 msgstr "ペイメントプロトコル要求"
 
-#: public/views/send.html
+#: public/views/walletHome.html
 msgid "Payment to"
 msgstr "支払い先"
 
 #: public/views/preferencesDeleteWallet.html
-msgid ""
-"Permanently delete this wallet. WARNING: this action cannot be reversed."
+msgid "Permanently delete this wallet. THIS ACTION CANNONT BE REVERSED"
 msgstr ""
-"永久的にこのウォレットを完全削除します。注意：バックアップが無ければ取り戻す"
-"ことが不可能になります。"
+"永久にこのウォレットを削除。二度と取り戻せない行為ですのどご注意下さい。"
 
 #: public/views/walletHome.html
 msgid "Personal Wallet"
 msgstr "個人用ウォレット"
 
+#: src/js/controllers/create.js src/js/controllers/join.js
+msgid "Please enter the required fields"
+msgstr "必須項目をご入力下さい"
+
+#: src/js/controllers/import.js
+msgid "Please, select your backup file"
+msgstr "バックアップファイルを選択"
+
 #: public/views/walletHome.html
 msgid "Preferences"
 msgstr "設定"
 
-#: public/views/modals/scanner.html
-msgid "QR-Scanner"
-msgstr "QRスキャナー"
+#: src/js/controllers/index.js
+msgid "Receive"
+msgstr "受取"
+
+#: public/views/walletHome.html
+msgid "Received"
+msgstr "受取済み"
+
+#: public/views/walletHome.html
+msgid "Reconnecting to Wallet Service..."
+msgstr "Wallet Serviceへ再接続しています…"
 
 #: public/views/walletHome.html
 msgid "Recreate"
 msgstr "再登録"
 
 #: public/views/walletHome.html
-msgid "Recreating Wallet on BWS..."
-msgstr "BWSにてウォレットを再登録…"
+msgid "Recreating Wallet..."
+msgstr "ウォレットを再作成中…"
 
 #: public/views/modals/txp-details.html
 msgid "Reject"
 msgstr "却下"
 
+#: src/js/controllers/walletHome.js
+msgid "Rejecting transaction"
+msgstr "取引却下中…"
+
+#: public/views/preferencesAbout.html
+msgid "Release Information"
+msgstr "リリース情報"
+
 #: public/views/modals/txp-details.html
-msgid "Remove"
-msgstr "削除"
+msgid "Remove transaction"
+msgstr "取引を削除"
 
 #: public/views/backup.html public/views/includes/password.html
-msgid "Repeat Password"
-msgstr "パスワードを再入力"
-
-#: public/views/backup.html
 msgid "Repeat password"
 msgstr "パスワードを再入力"
 
 #: public/views/import.html public/views/join.html
-#: public/views/modals/address-book.html
 msgid "Required"
 msgstr "必要署名"
+
+#: public/views/createProfile.html
+msgid "Retrying..."
+msgstr "再度試しています…"
 
 #: public/views/includes/password.html
 msgid "SET"
 msgstr "指定"
 
-#: public/views/receive.html
+#: public/views/walletHome.html
 msgid "SKIP BACKUP"
 msgstr "バックアップをスキップ"
-
-#: public/views/splash/1.html
-msgid "START"
-msgstr "開始"
 
 #: public/views/preferencesBwsUrl.html
 msgid "Save"
 msgstr "保存"
+
+#: src/js/services/notificationsService.js
+msgid "Scan Finished"
+msgstr "スキャン完了"
+
+#: public/views/preferencesAdvanced.html
+msgid "Scan addresses for funds"
+msgstr "アドレスの残高照会"
+
+#: public/views/walletHome.html
+msgid "Scan status finished with error"
+msgstr "スキャンがエラーに終わりました"
 
 #: public/views/walletHome.html
 msgid "Scanning Wallet funds..."
@@ -504,10 +629,6 @@ msgstr "バックアップファイルを選択"
 msgid "Select a wallet"
 msgstr "ウォレットを選択"
 
-#: public/views/modals/walletSelection.html
-msgid "Select a wallet to make the payment"
-msgstr "支払いを行うためにウォレットを選択して下さい"
-
 #: public/views/create.html
 msgid "Select required signatures"
 msgstr "必要な署名の数を選択"
@@ -516,39 +637,44 @@ msgstr "必要な署名の数を選択"
 msgid "Select total number of copayers"
 msgstr "参加人数を選択して下さい。"
 
-#: public/views/send.html
+#: public/views/walletHome.html public/views/includes/transaction.html
+#: src/js/controllers/index.js
 msgid "Send"
 msgstr "送信"
 
-#: public/views/backup.html
+#: public/views/backup.html public/views/preferencesLogs.html
 msgid "Send by email"
 msgstr "メールで送信"
+
+#: public/views/walletHome.html
+msgid "Sent"
+msgstr "送金済み"
 
 #: public/views/importLegacy.html
 msgid "Server"
 msgstr "サーバー"
 
-#: public/views/includes/password.html
-msgid "Set up a Password"
-msgstr "パスワードを設定"
-
 #: public/views/backup.html
 msgid "Set up a Password for your backup"
 msgstr "バックアップのパスワードを設定して下さい"
 
-#: public/views/receive.html
+#: public/views/includes/password.html
+msgid "Set up a password"
+msgstr "パスワードを設定"
+
+#: public/views/walletHome.html
 msgid "Share address"
 msgstr "アドレスを共有"
 
 #: public/views/copayers.html
-msgid "Share secret"
-msgstr "招待コード"
+msgid "Share invitation"
+msgstr "招待コードを共有"
 
 #: public/views/copayers.html
-msgid "Share this secret with your copayers"
+msgid "Share this invitation with your copayers"
 msgstr "ウォレット参加者にこの招待コードを送って下さい。"
 
-#: public/views/receive.html
+#: public/views/walletHome.html
 msgid ""
 "Share this with anyone to have them send you payments. To protect your "
 "privacy, new addresses are generated automatically once you use them."
@@ -565,17 +691,42 @@ msgstr "表示"
 msgid "Sign"
 msgstr "署名する"
 
-#: public/views/modals/tx-details.html
+#: public/views/modals/tx-details.html public/views/modals/txp-details.html
 msgid "Signatures"
 msgstr "署名"
 
-#: public/views/includes/pin.html
-msgid "Skip"
-msgstr "スキップ"
+#: src/js/controllers/walletHome.js
+msgid "Signing transaction"
+msgstr "取引署名中"
+
+#: src/js/controllers/index.js
+msgid "Spanish"
+msgstr "スペイン語"
 
 #: public/views/walletHome.html
 msgid "Spend proposals"
 msgstr "取引提案"
+
+#: src/js/controllers/copayers.js src/js/controllers/import.js
+#: src/js/controllers/preferencesDelete.js
+msgid "Success"
+msgstr "成功"
+
+#: public/views/walletHome.html
+msgid "Tap to retry"
+msgstr "タップしてやり直し"
+
+#: public/views/modals/txp-details.html
+msgid "The transaction was removed by creator"
+msgstr "取引が作成者により削除されました"
+
+#: src/js/controllers/copayers.js src/js/controllers/preferencesDelete.js
+msgid "The wallet \"{{walletName}}\" was deleted"
+msgstr "ウォレット \"{{walletName}}\" が削除されました"
+
+#: src/js/controllers/import.js
+msgid "There is an error in the form"
+msgstr "フォームにエラーがありました"
 
 #: public/views/backup.html
 msgid ""
@@ -593,13 +744,15 @@ msgstr ""
 "現在設定中のBitcore Wallet Service (BWS) サーバーにて、このウォレットの登録が"
 "ありません。再登録を行うこともできます。"
 
-#: public/views/send.html public/views/includes/transaction.html
+#: public/views/modals/txp-details.html
+msgid "Time"
+msgstr "時刻"
+
+#: public/views/walletHome.html public/views/includes/transaction.html
+#: public/views/modals/paypro.html public/views/modals/tx-details.html
+#: public/views/modals/txp-details.html
 msgid "To"
 msgstr "宛先"
-
-#: public/views/modals/paypro.html public/views/modals/tx-details.html
-msgid "To:"
-msgstr "宛先："
 
 #: public/views/walletHome.html
 msgid "Total Locked Balance"
@@ -609,27 +762,75 @@ msgstr "ロック中の残高"
 msgid "Transaction"
 msgstr "取引"
 
+#: src/js/services/notificationsService.js
+msgid "Transaction Rejected"
+msgstr "取引が却下されました"
+
+#: src/js/services/notificationsService.js
+msgid "Transaction Sent"
+msgstr "取引送信しました！"
+
+#: src/js/services/notificationsService.js
+msgid "Transaction Signed"
+msgstr "取引署名済み"
+
 #: public/views/modals/txp-details.html
 msgid "Transaction accepted..."
 msgstr "取引受理済み…"
+
+#: src/js/services/txStatus.js
+msgid "Transaction broadcasted"
+msgstr "取引送信済み"
+
+#: src/js/controllers/walletHome.js
+msgid "Transaction could not be deleted. Please try again."
+msgstr "取引が削除できませんでした。やり直して下さい。"
 
 #: public/views/modals/txp-details.html
 msgid "Transaction finally rejected"
 msgstr "取引が却下されました"
 
+#: src/js/controllers/walletHome.js
+msgid "Transaction not broadcasted. Please try again."
+msgstr "取引が送信できませんでした。やり直して下さい。"
+
+#: src/js/controllers/walletHome.js
+msgid "Transaction not rejected. Please try again."
+msgstr "取引が却下できませんでした、再度試して見て下さい。"
+
+#: src/js/controllers/walletHome.js
+msgid "Transaction not sent. Please try again."
+msgstr "取引が送信されませんでした。やり直して下さい。"
+
+#: src/js/controllers/walletHome.js
+msgid "Transaction not signed. Please try again."
+msgstr "取引が署名されていませんでした。やり直して下さい。"
+
 #: public/views/modals/txp-details.html
 msgid "Transaction proposal"
 msgstr "取引提案"
+
+#: src/js/services/txStatus.js
+msgid "Transaction proposal created"
+msgstr "取引提案が作成されました"
+
+#: src/js/services/txStatus.js
+msgid "Transaction proposal signed"
+msgstr "取引提案が署名されました"
 
 #: public/views/modals/txp-details.html
 msgid "Transaction sent!"
 msgstr "取引送信しました！"
 
-#: public/views/includes/offline.html
-msgid "Trying to reconnnect..."
-msgstr "再接続しています…"
+#: src/js/services/txStatus.js
+msgid "Transaction was rejected"
+msgstr "取引が却下されました"
 
-#: public/views/history.html public/views/modals/tx-details.html
+#: src/js/controllers/walletHome.js
+msgid "Unable to send transaction proposal"
+msgstr "取引提案を送れませんでした。"
+
+#: public/views/walletHome.html public/views/modals/tx-details.html
 msgid "Unconfirmed"
 msgstr "未承認"
 
@@ -646,30 +847,26 @@ msgid "Untrusted"
 msgstr "信用していない"
 
 #: public/views/walletHome.html
-msgid "Updating Balance..."
-msgstr "残高更新中…"
-
-#: public/views/walletHome.html
-msgid "Updating Pending Transactions..."
-msgstr "未対応取引を更新中…"
-
-#: public/views/walletHome.html
-msgid "Updating Status..."
-msgstr "ステータス更新中…"
+msgid "Updating Wallet..."
+msgstr "ウォレット更新中…"
 
 #: public/views/create.html
 msgid "Use test network"
 msgstr "テスト用ネットワークを利用"
 
+#: public/views/preferencesAbout.html
+msgid "Version"
+msgstr "バージョン"
+
 #: public/views/backup.html
 msgid "View backup"
 msgstr "バックアップ表示"
 
-#: public/views/modals/address-book.html
-msgid "Visible"
-msgstr "表示"
+#: public/views/preferencesAbout.html
+msgid "View session logs"
+msgstr "セッションのログを表示"
 
-#: public/views/receive.html
+#: public/views/walletHome.html
 msgid "WARNING: Backup needed"
 msgstr "注意：バックアップが必要です"
 
@@ -678,8 +875,8 @@ msgid "WARNING: Wallet not registered"
 msgstr "注意：ウォレットが未登録"
 
 #: public/views/splash/1.html
-msgid "WELCOME TO"
-msgstr "ようこそ"
+msgid "WELCOME TO COPAY"
+msgstr "ようこそ COPAY へ"
 
 #: public/views/copayers.html
 msgid "Waiting for copayers"
@@ -689,13 +886,21 @@ msgstr "ウォレット参加者を待っています"
 msgid "Waiting..."
 msgstr "少々お待ち下さい…"
 
-#: public/views/join.html
-msgid "Wallet Secret"
-msgstr "ウォレット招待コード"
+#: src/js/services/profileService.js
+msgid "Wallet Already Imported:"
+msgstr "ウォレットがすでにインポート済み："
 
 #: public/views/join.html
-msgid "Wallet Secret is not valid!"
+msgid "Wallet Invitation"
+msgstr "ウォレット招待"
+
+#: public/views/join.html
+msgid "Wallet Invitation is not valid!"
 msgstr "ウォレット招待コードが無効です！"
+
+#: src/js/services/profileService.js
+msgid "Wallet already exists"
+msgstr "既存のウォレットです"
 
 #: public/views/copayers.html
 msgid "Wallet incomplete and broken"
@@ -708,6 +913,14 @@ msgstr "ウォレット名"
 #: public/views/preferencesDeleteWallet.html
 msgid "Warning!"
 msgstr "注意！"
+
+#: src/js/services/profileService.js
+msgid "Wrong password"
+msgstr "不正なパスワード"
+
+#: public/views/modals/confirmation.html
+msgid "Yes"
+msgstr "はい"
 
 #: public/views/walletHome.html
 msgid "You do not have any wallet"
@@ -729,28 +942,28 @@ msgstr "パスワード"
 msgid "Your profile password"
 msgstr "プロフィールパスワード"
 
+#: src/js/controllers/import.js
+msgid "Your wallet has been imported correctly"
+msgstr "ウォレットが正常にインポートされました。"
+
 #: public/views/create.html public/views/join.html
 msgid "advanced options"
 msgstr "詳細設定"
 
-#: public/views/modals/qr-address.html
-msgid "change"
-msgstr "変更"
-
-#: public/views/send.html
+#: public/views/walletHome.html
 msgid "in pending transactions"
 msgstr "未対応取引"
 
 #: public/views/copayers.html public/views/create.html
-#: public/views/walletHome.html
+#: public/views/walletHome.html public/views/includes/sidebar.html
 msgid "of"
 msgstr "/"
 
-#: public/views/send.html
+#: public/views/walletHome.html
 msgid "optional"
 msgstr "任意"
 
-#: public/views/send.html
+#: public/views/walletHome.html
 msgid "too long!"
 msgstr "長すぎます！"
 
@@ -761,3 +974,126 @@ msgstr "ウォレット"
 #: public/views/preferences.html
 msgid "{{index.walletName}} settings"
 msgstr "{{index.walletName}} 設定"
+
+#: src/js/controllers/importLegacy.js
+msgid ""
+"{{len}} wallets imported. Funds scanning in progress. Hold on to see updated "
+"balance"
+msgstr ""
+"{{len}} 個のウォレットをインポートしました。残高照会中のため、少々お待ち下さ"
+"い。"
+
+#~ msgid ""
+#~ "* In case you need to import wallets from previous Copay versions go to "
+#~ "<b>Menu</b>"
+#~ msgstr ""
+#~ "* Copayの前バージョンのウォレットをインポートしたい場合 <b>メニュー</b> を"
+#~ "ご覧ください。"
+
+#~ msgid "Add"
+#~ msgstr "追加"
+
+#~ msgid "Add a new entry"
+#~ msgstr "新規エントリー"
+
+#~ msgid "Add entry"
+#~ msgstr "エントリーを追加"
+
+#~ msgid "Address Book"
+#~ msgstr "アドレス帳"
+
+#~ msgid "BIP32 master extended private key"
+#~ msgstr "BIP32 マスタ拡張秘密鍵"
+
+#~ msgid "Bitcore Wallet Service"
+#~ msgstr "Bitcore Wallet Service"
+
+#~ msgid "Bitcore Wallet Service URL"
+#~ msgstr "BWS (ご利用のサーバー) URL 設定"
+
+#~ msgid "Blockchain"
+#~ msgstr "ブロックチェーン"
+
+#~ msgid "Creator"
+#~ msgstr "作成者"
+
+#~ msgid "Date:"
+#~ msgstr "日付："
+
+#~ msgid "Delete"
+#~ msgstr "削除"
+
+#~ msgid "Empty. Create an alias for your addresses"
+#~ msgstr "空です。アドレス用にあだ名を決めて下さい。"
+
+#~ msgid "Entry"
+#~ msgstr "エントリー"
+
+#~ msgid "Generating a new address..."
+#~ msgstr "新規アドレス生成中です…"
+
+#~ msgid "Joining shared wallet..."
+#~ msgstr "共有ウォレットに参加中…"
+
+#~ msgid "Label"
+#~ msgstr "ラベル"
+
+#~ msgid "Loading..."
+#~ msgstr "読み込み中…"
+
+#~ msgid "No pending spend proposals at the moment."
+#~ msgstr "現在未対応の取引提案がありません"
+
+#~ msgid "Note:"
+#~ msgstr "メモ："
+
+#~ msgid "OK"
+#~ msgstr "OK"
+
+#~ msgid "Paste wallet secret here"
+#~ msgstr "ウォレット招待コードをここに貼り付け"
+
+#~ msgid ""
+#~ "Permanently delete this wallet. WARNING: this action cannot be reversed."
+#~ msgstr ""
+#~ "永久的にこのウォレットを完全削除します。注意：バックアップが無ければ取り戻"
+#~ "すことが不可能になります。"
+
+#~ msgid "QR-Scanner"
+#~ msgstr "QRスキャナー"
+
+#~ msgid "Remove"
+#~ msgstr "削除"
+
+#~ msgid "Repeat Password"
+#~ msgstr "パスワードを再入力"
+
+#~ msgid "Select a wallet to make the payment"
+#~ msgstr "支払いを行うためにウォレットを選択して下さい"
+
+#~ msgid "Share secret"
+#~ msgstr "招待コード"
+
+#~ msgid "Skip"
+#~ msgstr "スキップ"
+
+#~ msgid "To:"
+#~ msgstr "宛先："
+
+#~ msgid "Trying to reconnnect..."
+#~ msgstr "再接続しています…"
+
+#~ msgid "Updating Pending Transactions..."
+#~ msgstr "未対応取引を更新中…"
+
+#~ msgid "Updating Status..."
+#~ msgstr "ステータス更新中…"
+
+#~ msgid "Visible"
+#~ msgstr "表示"
+
+#~ msgid "Wallet Secret"
+#~ msgstr "ウォレット招待コード"
+
+#~ msgid "change"
+#~ msgstr "変更"
