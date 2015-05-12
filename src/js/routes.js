@@ -71,7 +71,6 @@ angular
             templateUrl: 'views/splash/1.html',
             controller: function($scope, $timeout, $log, profileService, go) {
               if (profileService.profile) {
-                $scope.hasProfile = true;
                 go.walletHome();
               }
 
@@ -87,10 +86,6 @@ angular
                     $timeout(function() {
                       $scope.create();
                     }, 3000);
-                  } else {
-                    $timeout(function(){
-                      go.walletHome();
-                    }, 100);
                   }
                 });
               };
