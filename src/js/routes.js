@@ -1,10 +1,10 @@
 'use strict';
 
-var unsupported;
+var unsupported, isaosp;
 
 if (window && window.navigator) {
   var rxaosp = window.navigator.userAgent.match(/Android.*AppleWebKit\/([\d.]+)/);
-  var isaosp = (rxaosp && rxaosp[1] < 537);
+  isaosp = (rxaosp && rxaosp[1] < 537);
   if (!window.cordova && isaosp)
     unsupported = true;
   if (unsupported) {
@@ -448,6 +448,9 @@ angular
       };
 
       function animateTransition(fromState, toState, event) {
+
+        if (isaosp)
+          return true;
 
         // Animation in progress?
         var x = document.getElementById('mainSectionDup');
