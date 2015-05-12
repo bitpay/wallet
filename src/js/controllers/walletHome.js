@@ -89,6 +89,17 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   // walletHome
 
 
+  var parseError = function(err) {
+    if (err.message) {
+      if (err.message.indexOf('CORS')) {
+        err.message = gettext('Could not connect wallet service. Check your Internet connexion and your wallet service configuration.');
+      }
+      if (err.message.indexOf('TIMEDOUT')) {
+        err.message = gettext('Wallet service timed out. Check your Internet connexion and your wallet service configuration.');
+      }
+    }
+  };
+
   $scope.openCopayersModal = function(copayers, copayerId) {
     var fc = profileService.focusedClient;
 
@@ -126,7 +137,6 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       $scope.getShortNetworkName = function() {
         return fc.credentials.networkName.substring(0, 4);
       };
-
       lodash.each(['TxProposalRejectedBy', 'TxProposalAcceptedBy', 'transactionProposalRemoved', 'TxProposalRemoved', 'NewOutgoingTx'], function(eventName) {
         $rootScope.$on(eventName, function() {
           fc.getTx($scope.tx.id, function(err, tx) {
@@ -170,6 +180,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
         if (fc.isPrivKeyEncrypted()) {
           profileService.unlockFC(function(err) {
             if (err) {
+              parseError(err);
               $scope.error = err;
               return;
             }
@@ -187,7 +198,8 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
             self.setOngoingProcess();
             if (err) {
               $scope.loading = false;
-              $scope.error = err.message || gettext('Transaction not signed. Please try again.');
+              parseError(err);
+              $scope.error = err.message || gettext('Could not sign transaction. Please try again.');
               $scope.$digest();
             } else {
               //if txp has required signatures then broadcast it
@@ -199,7 +211,8 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
                   self.setOngoingProcess();
                   $scope.loading = false;
                   if (err) {
-                    $scope.error = gettext('Transaction not broadcasted. Please try again.');
+                    parseError(err);
+                    $scope.error = gettext('Could not broadcast transaction. Please try again.');
                     $scope.$digest();
                   } else {
                     $modalInstance.close(txpsb);
@@ -223,7 +236,8 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
             self.setOngoingProcess();
             $scope.loading = false;
             if (err) {
-              $scope.error = err.message || gettext('Transaction not rejected. Please try again.');
+              parseError(err);
+              $scope.error = err.message || gettext('Could not reject transaction. Please try again.');
               $scope.$digest();
             } else {
               $modalInstance.close(txpr);
@@ -244,7 +258,8 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
             // Hacky: request tries to parse an empty response
             if (err && !(err.message && err.message.match(/Unexpected/))) {
-              $scope.error = err.message || gettext('Transaction could not be deleted. Please try again.');
+              parseError(err);
+              $scope.error = err.message || gettext('Could not delete transaction. Please try again.');
               $scope.$digest();
               return;
             }
@@ -262,7 +277,8 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
             self.setOngoingProcess();
             $scope.loading = false;
             if (err) {
-              $scope.error = err.message || gettext('Transaction not sent. Please try again.');
+              parseError(err);
+              $scope.error = err.message || gettext('Could not send transaction. Please try again.');
               $scope.$digest();
             } else {
               $modalInstance.close(txpb);
@@ -492,9 +508,10 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       });
   };
 
-  this.setError = function(err) {
+  this.setSendError = function(err) {
     var fc = profileService.focusedClient;
     $log.warn(err);
+    parseError(err);
     var errMessage = 'The transaction' + (fc.credentials.m > 1 ? ' proposal' : '') +
 
       ' could not be created: ' + (err.message ? err.message : err);
@@ -538,7 +555,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
     if (fc.isPrivKeyEncrypted()) {
       profileService.unlockFC(function(err) {
-        if (err) return self.setError(err);
+        if (err) return self.setSendError(err);
         return self.submitForm();
       });
       return;
@@ -562,13 +579,13 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
         if (err) {
           self.setOngoingProcess();
           profileService.lockFC();
-          return self.setError(err);
+          return self.setSendError(err);
         }
 
         self.signAndBroadcast(txp, function(err) {
           if (err) {
             self.setOngoingProcess();
-            return self.setError(err);
+            return self.setSendError(err);
           }
 
           self.resetForm();
