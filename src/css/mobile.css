@@ -580,6 +580,8 @@ to prevent collapsing during animation*/
   padding-bottom: 20px;
 }
 
+.reveal-modal.animated.slideInRight, 
+.reveal-modal.animated.slideOutRight, 
 .reveal-modal.animated.fadeOutUp, 
 .reveal-modal.animated.slideInUp, 
 .reveal-modal.animated.slideInDown {
