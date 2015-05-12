@@ -80,7 +80,7 @@
               <br><span translate>Tap to retry</span>
             </div>
 
-            <div ng-show="!index.updateError && index.walletScanStatus != 'error'">
+            <div   ng-click='index.updateAll()'  ng-show="!index.updateError && index.walletScanStatus != 'error'">
               <strong class="size-36">{{index.totalBalanceStr}}</strong>
               <div class="size-14"
                 ng-if="index.totalBalanceAlternative">
