@@ -68,7 +68,28 @@ angular
         needProfile: false,
         views: {
           'main': {
-            templateUrl: 'views/splash/1.html'
+            templateUrl: 'views/splash/1.html',
+            controller: function($scope, $timeout, $log, profileService, go) {
+              if (profileService.profile) {
+                go.walletHome();
+              }
+
+              $scope.create = function() {
+                $scope.creatingProfile = true;
+
+                profileService.create(function(err) {
+                  if (err) {
+                    $scope.creatingProfile = false;
+                    $log.warn(err);
+                    $scope.error = err;
+                    $scope.$apply();
+                    $timeout(function() {
+                      $scope.create();
+                    }, 3000);
+                  }
+                });
+              };
+            }
           }
         }
       })
@@ -80,20 +101,6 @@ angular
           'main': {
             templateUrl: 'views/walletHome.html',
           },
-        }
-      })
-      .state('createProfile', {
-        url: '/createProfile',
-        needProfile: false,
-        views: {
-          'main': {
-            templateUrl: 'views/createProfile.html',
-            controller: function($scope) {
-              // TODO
-              //              $scope.mainDark = true;
-              $scope.noColor = true;
-            }
-          }
         }
       })
       .state('unsupported', {

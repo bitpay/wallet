@@ -1,4 +1,4 @@
-<div class="text-center splash">
+<div class="text-center splash" ng-if="!index.hasProfile">
 	<div class="row">
 		<div class="medium-6 large-4 medium-centered small-centered large-centered columns">
 			<div class="p20">
@@ -10,7 +10,22 @@
 	<div class="gif-splash">
 		<img src="img/icon-splash.png" alt="icon" width="25%">
 	</div>
-  <div class="row columns start-button">
-    <button ng-click="$root.go('createProfile')" class="button black expand radius size-12 text-spacing" translate> GET STARTED </button>
+  <div class="text-center size-12 text-warning" ng-show="error && !creatingProfile">
+    {{(error)|translate}}. <span translate>Retrying...</span>
+  </div>
+  <div class="onGoingProcess" ng-show="creatingProfile">
+    <div class="onGoingProcess-content" ng-style="{'background-color':'#222'}">
+      <div class="spinner">
+        <div class="rect1"></div>
+        <div class="rect2"></div>
+        <div class="rect3"></div>
+        <div class="rect4"></div>
+        <div class="rect5"></div>
+      </div>
+      <span translate>Creating Wallet...</span>
+    </div>
+  </div>
+  <div class="row columns start-button" ng-show="!creatingProfile">
+    <button ng-click="create()" class="button black expand radius size-12 text-spacing" translate> GET STARTED </button>  
   </div>
 </div>
