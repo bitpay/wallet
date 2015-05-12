@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <link href="./css/nv.d3.css" rel="stylesheet" type="text/css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.2/d3.min.js" charset="utf-8"></script>
+        <script src="./js/nv.d3.js"></script>
+        <script src="./js/stats.js"></script>
+         <style>
+            text {
+                font: 12px sans-serif;
+            }
+            svg {
+                display: block;
+            }
+            html, body, #chart1, svg {
+                margin: 0px;
+                padding: 0px;
+                height: 100%;
+                width: 100%;
+            }
+        </style>
+    </head>
+    <body class='with-3d-shadow with-transitions'>
+        From:<input type="text" name="from" id="from" value="2015-04-01">
+        To:<input type="text" name="to" id="to" value="2015-06-01">
+        <select name="list" id="network">
+            <option value="testnet">Testnet</option>
+            <option value="livenet">Livenet</option>
+        </select>
+        <input type="button" onclick="refresh();" value="Refresh">
+        <div id="chart1"></div>
+    </body>
+</html>
