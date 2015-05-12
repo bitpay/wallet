@@ -27,21 +27,30 @@
       <i translate>To</i>: {{paypro.domain}}
     </div>
 
+
+    <div ng-if="paypro.toAddress" class="m10v lh140">
+      <i translate>Address</i>: 
+      <span class="text-gray">
+        {{paypro.toAddress}}
+      </span>
+    </div>
+
+
     <div class="m10v">
       <i translate>Certified by</i>: 
       <span ng-show="paypro.verified"><i class="fi-lock color-greeni"></i> {{paypro.verifyData.caName}}</span>
       <span ng-show="!paypro.verified"><i class="fi-unlock color-yellowi"></i> <span translate>Untrusted</span></span>
     </div>
 
-    <div ng-if="md.pr.pd.memo" class="m10v lh140">
+    <div ng-if="paypro.memo" class="m10v lh140">
       <i translate>Merchant message</i>: 
       <span class="text-gray">
         {{paypro.memo}}
       </span>
     </div>
 
-    <div ng-if="md.expirationDate" class="m10v">
-      <i translate>Expires</i>: {{paypro.expires | amTimeAgo }}
+    <div ng-if="paypro.expires" class="m10v">
+      <i translate>Expires</i>: {{paypro.expires * 1000 | amTimeAgo }}
     </div>
   </div>
 </div>
