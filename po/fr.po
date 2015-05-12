@@ -12,10 +12,6 @@ msgstr ""
 "Language: fr\n"
 "X-Generator: Poedit 1.6.10\n"
 
-#: public/views/splash/1.html
-msgid "* In case you need to import wallets from previous Copay versions go to <b>Menu</b>"
-msgstr "Si vous avez besoin d'importer des portefeuilles depuis les versions précédentes de Copay, allez au <b>Menu</b>"
-
 #: public/views/modals/txp-details.html
 msgid "* Only transactions created by yourself with no peer signatures can be removed"
 msgstr "Seules les transactions créées par vous-même sans signatures de pairs peuvent être supprimées"
@@ -24,20 +20,19 @@ msgstr "Seules les transactions créées par vous-même sans signatures de pairs
 msgid "* You can safely install your backup on other device and use your wallet from many devices at the same time."
 msgstr "Vous pouvez installer en toute sécurité votre sauvegarde sur un autre appareil et utiliser votre portefeuille depuis plusieurs appareils en même temps."
 
+#: public/views/splash/1.html
+msgid "A multisignature bitcoin wallet"
+msgstr "Un portefeuille bitcoin multi-signatures"
+
 #: src/js/services/notificationsService.js
 msgid "A transaction was finally rejected"
 msgstr "Une transaction a été finalement rejetée"
-
-#: src/js/routes.js
-msgid "About"
-msgstr "À propos"
 
 #: public/views/preferences.html
 msgid "About Copay"
 msgstr "À propos de Copay"
 
 #: public/views/includes/sidebar.html
-#: src/js/routes.js
 msgid "Add wallet"
 msgstr "Ajouter un portefeuille"
 
@@ -46,7 +41,10 @@ msgid "Address"
 msgstr "Adresse"
 
 #: public/views/preferences.html
-#: src/js/routes.js
+msgid "Advanced"
+msgstr "Avancés"
+
+#: public/views/preferences.html
 msgid "Alternative Currency"
 msgstr "Devise alternative"
 
@@ -78,7 +76,6 @@ msgid "Back"
 msgstr "Retour"
 
 #: public/views/preferences.html
-#: src/js/routes.js
 msgid "Backup"
 msgstr "Sauvegarder"
 
@@ -149,7 +146,6 @@ msgid "Close"
 msgstr "Fermer"
 
 #: public/views/preferences.html
-#: src/js/routes.js
 msgid "Color"
 msgstr "Couleur"
 
@@ -215,7 +211,6 @@ msgid "Create"
 msgstr "Créer"
 
 #: public/views/add.html
-#: src/js/routes.js
 msgid "Create new wallet"
 msgstr "Créer un nouveau portefeuille"
 
@@ -240,10 +235,9 @@ msgstr "Création de la transaction"
 msgid "Date"
 msgstr "Date"
 
-#: public/views/preferences.html
-#: src/js/routes.js
-msgid "Delete"
-msgstr "Supprimer"
+#: public/views/preferencesAdvanced.html
+msgid "Delete Wallet"
+msgstr "Supprimer le portefeuille"
 
 #: public/views/copayers.html
 msgid "Delete it and create a new one"
@@ -319,6 +313,10 @@ msgstr "Français"
 msgid "Funds received"
 msgstr "Fonds reçus"
 
+#: public/views/splash/1.html
+msgid "GET STARTED"
+msgstr "COMMENCER"
+
 #: public/views/walletHome.html
 msgid "Generate new address"
 msgstr "Générer une nouvelle adresse"
@@ -364,12 +362,7 @@ msgstr "Importer depuis Copay Beta 0.9"
 msgid "Import from the Cloud?"
 msgstr "Importer depuis le Cloud ?"
 
-#: src/js/routes.js
-msgid "Import legacy wallet"
-msgstr "Importer un portefeuille de l'ancienne version"
-
 #: public/views/add.html
-#: src/js/routes.js
 msgid "Import wallet"
 msgstr "Importer un portefeuille"
 
@@ -400,7 +393,6 @@ msgid "Join"
 msgstr "Joindre"
 
 #: public/views/add.html
-#: src/js/routes.js
 msgid "Join shared wallet"
 msgstr "Joindre un portefeuille partagé"
 
@@ -409,17 +401,12 @@ msgid "Joining Wallet..."
 msgstr "Connexion au portefeuille..."
 
 #: public/views/preferences.html
-#: src/js/routes.js
 msgid "Language"
 msgstr "Langue"
 
 #: public/views/importLegacy.html
 msgid "Learn more about Wallet Migration"
 msgstr "En savoir plus sur la migration de portefeuille"
-
-#: src/js/routes.js
-msgid "Logs"
-msgstr "Journaux"
 
 #: public/views/paymentUri.html
 msgid "Make a payment to"
@@ -535,8 +522,8 @@ msgid "Payment to"
 msgstr "Paiement à"
 
 #: public/views/preferencesDeleteWallet.html
-msgid "Permanently delete this wallet. WARNING: this action cannot be reversed."
-msgstr "Supprimer définitivement ce portefeuille. ATTENTION : cette action ne peut pas être annulée."
+msgid "Permanently delete this wallet. THIS ACTION CANNONT BE REVERSED"
+msgstr "Supprimer définitivement ce portefeuille. CETTE ACTION NE PEUT PAS ÊTRE ANNULÉE"
 
 #: public/views/walletHome.html
 msgid "Personal Wallet"
@@ -613,10 +600,6 @@ msgstr "DEFINIR"
 msgid "SKIP BACKUP"
 msgstr "IGNORER"
 
-#: public/views/splash/1.html
-msgid "START"
-msgstr "COMMENCER"
-
 #: public/views/preferencesBwsUrl.html
 msgid "Save"
 msgstr "Sauvegarder"
@@ -624,6 +607,10 @@ msgstr "Sauvegarder"
 #: src/js/services/notificationsService.js
 msgid "Scan Finished"
 msgstr "Analyse terminée"
+
+#: public/views/preferencesAdvanced.html
+msgid "Scan addresses for funds"
+msgstr "Analyser les adresses pour des fonds"
 
 #: public/views/walletHome.html
 msgid "Scan status finished with error"
@@ -847,7 +834,6 @@ msgid "Unconfirmed"
 msgstr "Non confirmée"
 
 #: public/views/preferences.html
-#: src/js/routes.js
 msgid "Unit"
 msgstr "Unité"
 
@@ -888,8 +874,8 @@ msgid "WARNING: Wallet not registered"
 msgstr "ATTENTION : Portefeuille non enregistré"
 
 #: public/views/splash/1.html
-msgid "WELCOME TO"
-msgstr "BIENVENUE À"
+msgid "WELCOME TO COPAY"
+msgstr "BIENVENUE SUR COPAY"
 
 #: public/views/copayers.html
 msgid "Waiting for copayers"
