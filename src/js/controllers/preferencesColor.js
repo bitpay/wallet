@@ -4,6 +4,7 @@ angular.module('copayApp.controllers').controller('preferencesColorController',
   function($scope, configService, profileService, go) {
     var config = configService.getSync();
     this.colorOpts = [
+      '#7A8C9E',
       '#F38F12',
       '#F4D03F',
       '#4A90E2',
@@ -11,7 +12,6 @@ angular.module('copayApp.controllers').controller('preferencesColorController',
       '#9B59B6',
       '#E856EF',
       '#F883B4',
-      '#7A8C9E',
     ];
 
     var fc = profileService.focusedClient;
