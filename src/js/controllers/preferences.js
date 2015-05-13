@@ -10,10 +10,13 @@ angular.module('copayApp.controllers').controller('preferencesController',
       isoCode: config.wallet.settings.alternativeIsoCode
     }; 
     var fc = profileService.focusedClient;
-    $scope.encrypt = fc.hasPrivKeyEncrypted();
+    if (fc)
+      $scope.encrypt = fc.hasPrivKeyEncrypted();
 
     var unwatch = $scope.$watch('encrypt', function(val) {
       var fc = profileService.focusedClient;
+      if (!fc) return;
+
       if (val && !fc.hasPrivKeyEncrypted()) {
         $rootScope.$emit('Local/NeedsPassword', true, function(err, password) {
           if (err || !password) {
