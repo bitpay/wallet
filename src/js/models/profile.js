@@ -14,17 +14,20 @@ Profile.create = function(opts) {
 
   var x = new Profile();
   x.createdOn = Date.now();
-  x.credentials = opts.credentials;
+  x.credentials = opts.credentials || [];
   return x;
 };
 
 
 Profile.fromObj = function(obj) {
   var x = new Profile();
+
   x.createdOn = obj.createdOn;
   x.credentials = obj.credentials;
+
   if (x.credentials[0] && typeof x.credentials[0] != 'object')
     throw ("credentials should be an object");
+
   return x;
 };
 

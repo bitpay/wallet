@@ -68,23 +68,23 @@ angular
         needProfile: false,
         views: {
           'main': {
-            templateUrl: 'views/splash/1.html',
+            templateUrl: 'views/splash.html',
             controller: function($scope, $timeout, $log, profileService, go) {
               if (profileService.profile) {
                 go.walletHome();
               }
 
-              $scope.create = function() {
+              $scope.create = function(noWallet) {
                 $scope.creatingProfile = true;
 
-                profileService.create(function(err) {
+                profileService.create({noWallet: noWallet}, function(err) {
                   if (err) {
                     $scope.creatingProfile = false;
                     $log.warn(err);
                     $scope.error = err;
                     $scope.$apply();
                     $timeout(function() {
-                      $scope.create();
+                      $scope.create(noWallet);
                     }, 3000);
                   }
                 });
@@ -384,7 +384,7 @@ angular
       create: 12,
       join: 12,
       import: 12,
-      importLegacy: 12
+      importLegacy: 13
     };
 
 

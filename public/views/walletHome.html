@@ -10,6 +10,10 @@
       <i class="fi-alert"></i> <span translate>You do not have any wallet</span>
     </div>
     <button class="button black expand" ng-click="$root.go('add')" translate>Create</button>
+
+    <div class="text-center text-gray p20v" ng-click="$root.go('preferences')">
+      <button class=" outline dark-gray tiny" translate> Preferences </button>
+    </div>
   </div>
 
   <div class="onGoingProcess" ng-show="index.isOffline">
@@ -465,4 +469,4 @@
   </div>
 </div>
 <div class="extra-margin-bottom"></div>
-<div ng-include="'views/includes/menu.html'"></div>
+<div ng-include="'views/includes/menu.html'" ng-show="!index.noFocusedWallet"></div>
