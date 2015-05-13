@@ -1,18 +1,13 @@
 <div 
   class="topbar-container" 
   ng-include="'views/includes/topbar.html'"
-  ng-init="titleSection='Import legacy wallet'; goBackToState = 'add'; noColor = true">
+  ng-init="titleSection='Import legacy wallet'; goBackToState = 'import'; noColor = true">
 </div>
 
 
 
 <div class="content p20v" ng-controller="importLegacyController as importLegacy">
   <div class="row m20t">
-    <div class="large-5 large-centered medium-7 medium-centered columns">
-      <div class="logo-setup show-for-large-up">
-        <img src="img/logo-negative.svg" alt="Copay" width="100">
-        <div ng-include="'views/includes/version.html'"></div>
-      </div>
       <div>
         <div ng-show="importLegacy.importing">
           <h1 class="m20b animated infinite flash" translate>Importing...</h1>
@@ -78,6 +73,5 @@
     
 
     </div>
-  </div>
 </div>
 

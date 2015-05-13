@@ -157,9 +157,13 @@ angular.module('copayApp.services')
       });
     };
 
-    root._createNewProfile = function(cb) {
-      var walletClient = bwcService.getClient();
+    root._createNewProfile = function(opts, cb) {
 
+      if (opts.noWallet) {
+        return cb(null, Profile.create());
+      }
+
+      var walletClient = bwcService.getClient();
       walletClient.createWallet('Personal Wallet', 'me', 1, 1, {
         network: 'livenet'
       }, function(err) {
@@ -276,13 +280,11 @@ angular.module('copayApp.services')
       });
     };
 
-
-
-    root.create = function(cb) {
+    root.create = function(opts, cb) {
       $log.info('Creating profile');
       configService.get(function(err) {
         root.applyConfig();
-        root._createNewProfile(function(err, p) {
+        root._createNewProfile(opts, function(err, p) {
           if (err) return cb(err);
 
           root.bindProfile(p, function(err) {
