@@ -44,7 +44,7 @@ msgstr "Acerca de Copay"
 msgid "Add wallet"
 msgstr "Agregar monedero"
 
-#: public/views/paymentUri.html
+#: public/views/paymentUri.html public/views/modals/paypro.html
 msgid "Address"
 msgstr "Dirección"
 
@@ -77,7 +77,8 @@ msgstr "¿Estas seguro de borrar este monedero?"
 msgid "Available Balance"
 msgstr "Balance disponible"
 
-#: public/views/includes/topbar.html
+#: public/views/includes/topbar.html public/views/modals/tx-details.html
+#: public/views/modals/txp-details.html
 msgid "Back"
 msgstr "Volver"
 
@@ -146,7 +147,6 @@ msgstr "Seleccione el archivo backup de su computadora"
 
 #: public/views/includes/topbar.html public/views/modals/copayers.html
 #: public/views/modals/paypro.html public/views/modals/scanner.html
-#: public/views/modals/tx-details.html public/views/modals/txp-details.html
 msgid "Close"
 msgstr "Cerrar"
 
@@ -179,6 +179,18 @@ msgstr ""
 msgid "Copy to clipboard"
 msgstr "Copiar al portapapeles"
 
+#: src/js/controllers/walletHome.js
+msgid "Could not broadcast transaction. Please try again."
+msgstr "No se pudo emitir la transacción. Por favor, intente nuevamente."
+
+#: src/js/controllers/walletHome.js
+msgid ""
+"Could not connect wallet service. Check your Internet connexion and your "
+"wallet service configuration."
+msgstr ""
+"No se pudo conectar con Wallet Service. Verifique la conexión a internet y "
+"la configuración a Wallet Service."
+
 #: src/js/services/profileService.js
 msgid "Could not create using the specified extended private key"
 msgstr "No se pudo crear el monedero usando la clave privada ingresada"
@@ -186,6 +198,10 @@ msgstr "No se pudo crear el monedero usando la clave privada ingresada"
 #: src/js/controllers/import.js
 msgid "Could not decrypt file, check your password"
 msgstr "No se pudo desencriptar el archivo, verifique su contraseña"
+
+#: src/js/controllers/walletHome.js
+msgid "Could not delete transaction. Please try again."
+msgstr "No se pudo borrar la transacción. Por favor, intente nuevamente."
 
 #: src/js/controllers/walletHome.js
 msgid "Could not fetch payment information"
@@ -207,6 +223,18 @@ msgstr "No se pudo unir al monedero usando la clave privada ingresada"
 msgid "Could not join wallet:"
 msgstr "No se pudo unir al monedero:"
 
+#: src/js/controllers/walletHome.js
+msgid "Could not reject transaction. Please try again."
+msgstr "No se pudo rechazar la transacción. Por favor, intente nuevamente."
+
+#: src/js/controllers/walletHome.js
+msgid "Could not send transaction. Please try again."
+msgstr "No se pudo enviar la transacción. Por favor, intente nuevamente."
+
+#: src/js/controllers/walletHome.js
+msgid "Could not sign transaction. Please try again."
+msgstr "No se pudo firmar la transacción. Por favor, intente nuevamente."
+
 #: public/views/walletHome.html
 msgid "Could not update Wallet"
 msgstr "No se puede actualizar el monedero"
@@ -227,7 +255,7 @@ msgstr "Crear, unirse o importar"
 msgid "Created by"
 msgstr "Creado por"
 
-#: public/views/create.html public/views/createProfile.html
+#: public/views/create.html public/views/splash/1.html
 msgid "Creating Wallet..."
 msgstr "Creando Monedero..."
 
@@ -417,6 +445,7 @@ msgid "Master extended private key"
 msgstr "Master extended private key"
 
 #: public/views/includes/copayers.html public/views/modals/copayers.html
+#: public/views/modals/tx-details.html public/views/modals/txp-details.html
 msgid "Me"
 msgstr "Yo"
 
@@ -584,7 +613,7 @@ msgstr "Repite la contraseña"
 msgid "Required"
 msgstr "Requerido"
 
-#: public/views/createProfile.html
+#: public/views/splash/1.html
 msgid "Retrying..."
 msgstr "Reintentando..."
 
@@ -652,6 +681,10 @@ msgstr "Enviado"
 #: public/views/importLegacy.html
 msgid "Server"
 msgstr "Servidor"
+
+#: public/views/preferencesAbout.html
+msgid "Session log"
+msgstr "Registro de sesión"
 
 #: public/views/backup.html
 msgid "Set up a Password for your backup"
@@ -780,10 +813,6 @@ msgstr "Transacción aceptada..."
 msgid "Transaction broadcasted"
 msgstr "Transacción enviada"
 
-#: src/js/controllers/walletHome.js
-msgid "Transaction could not be deleted. Please try again."
-msgstr "La transacción no se pudo eliminar. Por favor, intente nuevamente."
-
 #: public/views/modals/txp-details.html
 msgid "Transaction finally rejected"
 msgstr "Transacción finalmente rechazada"
@@ -791,18 +820,6 @@ msgstr "Transacción finalmente rechazada"
 #: src/js/controllers/walletHome.js
 msgid "Transaction not broadcasted. Please try again."
 msgstr "Transacción no emitida. Por favor, intente nuevamente."
-
-#: src/js/controllers/walletHome.js
-msgid "Transaction not rejected. Please try again."
-msgstr "Transacción no rechazada. Por favor, intente nuevamente."
-
-#: src/js/controllers/walletHome.js
-msgid "Transaction not sent. Please try again."
-msgstr "Transacción no enviada. Por favor, intente nuevamente."
-
-#: src/js/controllers/walletHome.js
-msgid "Transaction not signed. Please try again."
-msgstr "Transacción no firmada. Por favor, intente nuevamente."
 
 #: public/views/modals/txp-details.html
 msgid "Transaction proposal"
@@ -860,10 +877,6 @@ msgstr "Versión"
 msgid "View backup"
 msgstr "Ver Copia de Seguridad"
 
-#: public/views/preferencesAbout.html
-msgid "View session logs"
-msgstr "Ver registro de sesión"
-
 #: public/views/walletHome.html
 msgid "WARNING: Backup needed"
 msgstr "ADVERTENCIA: Se requiere hacer copia de seguridad"
@@ -907,6 +920,14 @@ msgstr "Monedero incompleto y roto"
 #: public/views/create.html
 msgid "Wallet name"
 msgstr "Nombre del monedero"
+
+#: src/js/controllers/walletHome.js
+msgid ""
+"Wallet service timed out. Check your Internet connexion and your wallet "
+"service configuration."
+msgstr ""
+"Tiempo de espera agotado. Verifique la conexión a internet y la "
+"configuración a Wallet Service."
 
 #: public/views/preferencesDeleteWallet.html
 msgid "Warning!"
@@ -980,6 +1001,15 @@ msgid ""
 msgstr ""
 "{{len}} monederos importados. Escáner de fondos en progreso. Espere a ver el "
 "balance actualizado"
+
+#~ msgid "Transaction could not be deleted. Please try again."
+#~ msgstr "La transacción no se pudo eliminar. Por favor, intente nuevamente."
+
+#~ msgid "Transaction not rejected. Please try again."
+#~ msgstr "Transacción no rechazada. Por favor, intente nuevamente."
+
+#~ msgid "Transaction not signed. Please try again."
+#~ msgstr "Transacción no firmada. Por favor, intente nuevamente."
 
 #~ msgid ""
 #~ "* In case you need to import wallets from previous Copay versions go to "
@@ -1161,13 +1191,6 @@ msgstr ""
 
 #~ msgid "Copay now needs a profile to access wallets."
 #~ msgstr "Copay ahora requiere un perfil para acceder a los monederos"
-
-#~ msgid ""
-#~ "Could not connect to the Insight server. Check your settings and network "
-#~ "configuration"
-#~ msgstr ""
-#~ "No se pudo conectar con el servidor Insight. Verifica la configuración de "
-#~ "red"
 
 #~ msgid "Create Profile"
 #~ msgstr "Crear Perfil"
