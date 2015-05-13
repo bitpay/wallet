@@ -404,12 +404,12 @@ to prevent collapsing during animation*/
   left: 0;
   right: 0;
 
-  animation-timing-function: linear;
+  animation-timing-function: ease-in-out;
   animation-duration: .3s;
   animation-iteration-count: 1;
   animation-fill-mode: both;
   
-  -webkit-animation-timing-function: linear;
+  -webkit-animation-timing-function:  ease-in-out;
   -webkit-animation-duration: .3s;
   -webkit-animation-iteration-count: 1;
   -webkit-animation-fill-mode: both;
