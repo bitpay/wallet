@@ -106,14 +106,22 @@
               <span class="show-for-medium-up" translate>Preferences</span>
             </a>
           </div>
-          <div class="wallet-info" ng-click="openCopayersModal(index.copayers, index.copayerId)">
-            <p class="m0">
-            {{index.m}} <span translate>of</span>  {{index.n}}
-            </p>
-            <div class="size-12 text-gray">
-              <span ng-if="index.n > 1" translate>Multisignature wallet </span>
-              <span ng-if="index.n == 1" translate>Personal Wallet</span>
-              <span ng-if="index.network != 'livenet'"> - Testnet</span>
+          <div class="wallet-info">
+            <div ng-show="index.isShared" ng-click="openCopayersModal(index.copayers, index.copayerId)">
+              <p class="m0">
+              {{index.m}} <span translate>of</span>  {{index.n}}
+              </p>
+              <div class="size-12 text-gray">
+                <span translate>Multisignature wallet</span> <span ng-if="index.network != 'livenet'">- Testnet</span>
+              </div>
+            </div>
+            <div ng-show="!index.isShared">
+              <p class="m0">
+              {{index.m}} <span translate>of</span>  {{index.n}}
+              </p>
+              <div class="size-12 text-gray">
+                <span translate>Personal Wallet</span> <span ng-if="index.network != 'livenet'">- Testnet</span>
+              </div>
             </div>
           </div>
         </div>
