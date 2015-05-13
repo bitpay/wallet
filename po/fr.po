@@ -199,7 +199,7 @@ msgstr ""
 
 #: src/js/controllers/join.js
 msgid "Could not join wallet:"
-msgstr "Impossible de joindre le portefeuille"
+msgstr "Impossible de rejoindre le portefeuille"
 
 #: public/views/walletHome.html
 msgid "Could not update Wallet"
@@ -216,7 +216,7 @@ msgstr "Créer un nouveau portefeuille"
 
 #: public/views/includes/sidebar.html
 msgid "Create, join or import"
-msgstr "Créer, joindre ou importer"
+msgstr "Créer, rejoindre ou importer"
 
 #: public/views/modals/txp-details.html
 msgid "Created by"
@@ -298,7 +298,7 @@ msgstr "Impossible d'importer les portefeuilles"
 
 #: public/views/create.html
 msgid "Family vacation funds"
-msgstr "Fonds de vacance familiale"
+msgstr "Fonds pour les vacances familiales."
 
 #. Get information of payment if using Payment Protocol
 #: src/js/controllers/walletHome.js
@@ -390,11 +390,11 @@ msgstr "John"
 
 #: public/views/join.html
 msgid "Join"
-msgstr "Joindre"
+msgstr "Rejoindre"
 
 #: public/views/add.html
 msgid "Join shared wallet"
-msgstr "Joindre un portefeuille partagé"
+msgstr "Rejoindre un portefeuille partagé"
 
 #: public/views/join.html
 msgid "Joining Wallet..."
@@ -499,7 +499,7 @@ msgstr "Coller le code texte de sauvegarde"
 
 #: public/views/join.html
 msgid "Paste invitation here"
-msgstr "Coller l'invitation ici"
+msgstr "Collez l'invitation ici"
 
 #: src/js/controllers/walletHome.js
 msgid "Payment Protocol not supported on Chrome App"
@@ -634,11 +634,11 @@ msgstr "Sélectionner un portefeuille"
 
 #: public/views/create.html
 msgid "Select required signatures"
-msgstr "Sélectionner les signatures requises"
+msgstr "Sélectionnez le nombre de signatures requises"
 
 #: public/views/create.html
 msgid "Select total number of copayers"
-msgstr "Sélectionner un nombre total de copayers"
+msgstr "Sélectionnez le nombre total de copayers"
 
 #: public/views/walletHome.html
 #: public/views/includes/transaction.html
@@ -950,7 +950,7 @@ msgstr "Votre portefeuille a été correctement importé"
 #: public/views/create.html
 #: public/views/join.html
 msgid "advanced options"
-msgstr "options avancées"
+msgstr "les options avancées"
 
 #: public/views/walletHome.html
 msgid "in pending transactions"
