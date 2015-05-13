@@ -29,6 +29,7 @@ msgid "Add wallet"
 msgstr ""
 
 #: public/views/paymentUri.html
+#: public/views/modals/paypro.html
 msgid "Address"
 msgstr ""
 
@@ -64,6 +65,8 @@ msgid "Available Balance"
 msgstr ""
 
 #: public/views/includes/topbar.html
+#: public/views/modals/tx-details.html
+#: public/views/modals/txp-details.html
 msgid "Back"
 msgstr ""
 
@@ -132,8 +135,6 @@ msgstr ""
 #: public/views/modals/copayers.html
 #: public/views/modals/paypro.html
 #: public/views/modals/scanner.html
-#: public/views/modals/tx-details.html
-#: public/views/modals/txp-details.html
 msgid "Close"
 msgstr ""
 
@@ -165,12 +166,24 @@ msgstr ""
 msgid "Copy to clipboard"
 msgstr ""
 
+#: src/js/controllers/walletHome.js
+msgid "Could not broadcast transaction. Please try again."
+msgstr ""
+
+#: src/js/controllers/walletHome.js
+msgid "Could not connect wallet service. Check your Internet connexion and your wallet service configuration."
+msgstr ""
+
 #: src/js/services/profileService.js
 msgid "Could not create using the specified extended private key"
 msgstr ""
 
 #: src/js/controllers/import.js
 msgid "Could not decrypt file, check your password"
+msgstr ""
+
+#: src/js/controllers/walletHome.js
+msgid "Could not delete transaction. Please try again."
 msgstr ""
 
 #: src/js/controllers/walletHome.js
@@ -191,6 +204,18 @@ msgstr ""
 
 #: src/js/controllers/join.js
 msgid "Could not join wallet:"
+msgstr ""
+
+#: src/js/controllers/walletHome.js
+msgid "Could not reject transaction. Please try again."
+msgstr ""
+
+#: src/js/controllers/walletHome.js
+msgid "Could not send transaction. Please try again."
+msgstr ""
+
+#: src/js/controllers/walletHome.js
+msgid "Could not sign transaction. Please try again."
 msgstr ""
 
 #: public/views/walletHome.html
@@ -215,7 +240,7 @@ msgid "Created by"
 msgstr ""
 
 #: public/views/create.html
-#: public/views/createProfile.html
+#: public/views/splash/1.html
 msgid "Creating Wallet..."
 msgstr ""
 
@@ -410,6 +435,8 @@ msgstr ""
 
 #: public/views/includes/copayers.html
 #: public/views/modals/copayers.html
+#: public/views/modals/tx-details.html
+#: public/views/modals/txp-details.html
 msgid "Me"
 msgstr ""
 
@@ -580,7 +607,7 @@ msgstr ""
 msgid "Required"
 msgstr ""
 
-#: public/views/createProfile.html
+#: public/views/splash/1.html
 msgid "Retrying..."
 msgstr ""
 
@@ -649,6 +676,10 @@ msgstr ""
 
 #: public/views/importLegacy.html
 msgid "Server"
+msgstr ""
+
+#: public/views/preferencesAbout.html
+msgid "Session log"
 msgstr ""
 
 #: public/views/backup.html
@@ -772,28 +803,12 @@ msgstr ""
 msgid "Transaction broadcasted"
 msgstr ""
 
-#: src/js/controllers/walletHome.js
-msgid "Transaction could not be deleted. Please try again."
-msgstr ""
-
 #: public/views/modals/txp-details.html
 msgid "Transaction finally rejected"
 msgstr ""
 
 #: src/js/controllers/walletHome.js
 msgid "Transaction not broadcasted. Please try again."
-msgstr ""
-
-#: src/js/controllers/walletHome.js
-msgid "Transaction not rejected. Please try again."
-msgstr ""
-
-#: src/js/controllers/walletHome.js
-msgid "Transaction not sent. Please try again."
-msgstr ""
-
-#: src/js/controllers/walletHome.js
-msgid "Transaction not signed. Please try again."
 msgstr ""
 
 #: public/views/modals/txp-details.html
@@ -853,10 +868,6 @@ msgstr ""
 msgid "View backup"
 msgstr ""
 
-#: public/views/preferencesAbout.html
-msgid "View session logs"
-msgstr ""
-
 #: public/views/walletHome.html
 msgid "WARNING: Backup needed"
 msgstr ""
@@ -899,6 +910,10 @@ msgstr ""
 
 #: public/views/create.html
 msgid "Wallet name"
+msgstr ""
+
+#: src/js/controllers/walletHome.js
+msgid "Wallet service timed out. Check your Internet connexion and your wallet service configuration."
 msgstr ""
 
 #: public/views/preferencesDeleteWallet.html
