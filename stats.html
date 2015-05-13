@@ -4,8 +4,10 @@
         <meta charset="utf-8">
         <link href="./css/nv.d3.css" rel="stylesheet" type="text/css">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.2/d3.min.js" charset="utf-8"></script>
+        <script src="http://momentjs.com/downloads/moment.min.js" charset="utf-8"></script>
         <script src="./js/nv.d3.js"></script>
         <script src="./js/stats.js"></script>
+
          <style>
             text {
                 font: 12px sans-serif;
@@ -22,13 +24,19 @@
         </style>
     </head>
     <body class='with-3d-shadow with-transitions'>
-        From:<input type="text" name="from" id="from" value="2015-04-01">
-        To:<input type="text" name="to" id="to" value="2015-06-01">
+        From:<input type="text" name="from" id="from">
+        To:<input type="text" name="to" id="to">
         <select name="list" id="network">
+            <option value="livenet" selected>Livenet</option>
             <option value="testnet">Testnet</option>
-            <option value="livenet">Livenet</option>
         </select>
         <input type="button" onclick="refresh();" value="Refresh">
         <div id="chart1"></div>
+        <script>initialize();</script>
+        <div>Total </div>
+            <span>Transactions</span><div id="totalTx"></div>
+            <span>New wallets</span><div id="totalNewWallets"></div>
+            <span>Amount</span><div id="totalAmount"></div>
+        
     </body>
 </html>
