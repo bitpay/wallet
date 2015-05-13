@@ -67,7 +67,7 @@
     </li>
   </ul>
 
-  <div ng-if="btx.actions[0]">
+  <div ng-if="btx.actions[0] && isShared">
     <h4 class="title m0" translate>Signatures</h4>
     <ul class="no-bullet size-14 m0">
       <li class="line-b p10 text-gray" ng-repeat="c in btx.actions">
@@ -75,7 +75,7 @@
         <i ng-if="c.type == 'reject'" class="fi-x icon-sign x db"></i>
         <i ng-if="c.type == 'accept'" class="fi-check icon-sign check db"></i>
       </span>
-      <span>{{c.copayerName}}</span>
+      {{c.copayerName}} <span ng-if="c.copayerId == copayerId">({{'Me'|translate}})</span>
       </li>
     </ul>
   </div>
