@@ -14,13 +14,29 @@
             }
             svg {
                 display: block;
+                width: 90%;
             }
-            html, body, #chart1, svg {
+            html, body {
                 margin: 0px;
                 padding: 0px;
                 height: 100%;
                 width: 100%;
+                font: 15px arial;
             }
+            #chart1 {
+                margin: 0px;
+                padding: 0px;
+                height: 80%;
+                width: 95%;
+            }
+            svg.nvd3-svg {
+                padding: 0 55px;
+                margin: 0 0px;
+            }
+            .left {
+                text-align: right;
+            }
+
         </style>
     </head>
     <body class='with-3d-shadow with-transitions'>
@@ -33,10 +49,11 @@
         <input type="button" onclick="refresh();" value="Refresh">
         <div id="chart1"></div>
         <script>initialize();</script>
-        <div>Total </div>
-            <span>Transactions</span><div id="totalTx"></div>
-            <span>New wallets</span><div id="totalNewWallets"></div>
-            <span>Amount</span><div id="totalAmount"></div>
-        
+        <table>
+            <tr><td>Totals between </td><td><span id="fromStr"></span> and <span id="toStr"></span></td></tr>
+            <tr><td>New wallets</td><td><div id="totalNewWallets"class="left"></div></td></tr>
+            <tr><td>Transactions</td><td><div id="totalTx" class="left"></div></td></tr>
+            <tr><td>Amount</td><td><div id="totalAmount"class="left"></div></td></tr>
+        </table>        
     </body>
 </html>

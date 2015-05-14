@@ -31,6 +31,10 @@
      return;
    }
 
+   document.getElementById('fromStr').innerHTML = moment(from).format('YYYY-MM-DD');
+   document.getElementById('toStr').innerHTML = moment(to).format('YYYY-MM-DD');
+
+
    var chart;
    processData(from, to, network, function(data, totals) {
      if (nv.graphs.length > 0) {
@@ -43,6 +47,7 @@
          .options({
            transitionDuration: 300,
          });
+
        chart.xAxis
          .axisLabel("Date ")
          .tickFormat(function(d) {
