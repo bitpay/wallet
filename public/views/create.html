@@ -55,7 +55,7 @@
             </label>
           </div>
           <div class="large-6 medium-6 columns">
-            <label><span translate>Select required signatures</span>
+            <label><span translate>Select required number of signatures</span>
               <select class="m10t" ng-model="requiredCopayers" ng-options="requiredCopayers as requiredCopayers for requiredCopayers in create.RCValues" ng-disabled="totalCopayers == 1">
               </select>
             </label>
@@ -67,7 +67,7 @@
             <i class="fi-widget m3r"></i>
             <span translate ng-hide="!hideAdv">Show</span> 
             <span translate ng-hide="hideAdv">Hide</span> 
-            <span translate>advanced options</span>
+            <span translate>Advanced options</span>
             <i ng-if="hideAdv" class="icon-arrow-down4"></i>
             <i ng-if="!hideAdv" class="icon-arrow-up4"></i>
           </a>

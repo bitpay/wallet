@@ -6,7 +6,7 @@
 
 *Copay* is an easy-to-use, open-source, multiplatform, multisignature, secure bitcoin wallet platform for both  individuals and companies. 
 
-*Copay* uses Bitcore-Wallet-Service (https://github.com/bitpay/bitcore-wallet-service) for peer syncronization and bitcore network interfacing. 
+*Copay* uses Bitcore-Wallet-Service (https://github.com/bitpay/bitcore-wallet-service) for peer synchronization and bitcore network interfacing. 
 
 ## Before you start
 
@@ -54,7 +54,7 @@ Then visit localhost:3000 in your browser.
 
 ## Bitcore Wallet Service
 
-Copay depends on  Bitcore Wallet Service (BWS) for blockchain information, networking and copayer syncronization. BWS can be run within minutes or you can use a public instance. Switch between BWS instances is very simple and can be done with a click from Copay. BWS also allows Copay to interoperate with others wallet like Bitcore-Wallet CLI https://github.com/bitpay/bitcore-wallet
+Copay depends on  Bitcore Wallet Service (BWS) for blockchain information, networking and copayer synchronization. BWS can be run within minutes or you can use a public instance. Switch between BWS instances is very simple and can be done with a click from Copay. BWS also allows Copay to interoperate with others wallet like Bitcore-Wallet CLI https://github.com/bitpay/bitcore-wallet
 
 
 ## Tests
@@ -109,7 +109,7 @@ On success, the chrome extension will be located at: `browser-extensions/chrome/
 To install it go to `chrome://extensions/` in your Chrome browser and ensure you have the 'developer mode' option enabled in the settings.  Then click on "Load unpacked chrome extension" and choose the directory mentioned above.
 
 ## Firefox Add-on
-The *CoPay* Firefox Extension has been deprecated and is no longer supported.
+The *Copay* Firefox Extension has been deprecated and is no longer supported.
 
 # QA and Bug Reporting
 
@@ -157,4 +157,4 @@ Copay uses the powerful and feature-rich [Bitcore](https://github.com/bitpay/bit
 Copay currently supports [BIP70 (Payment Protocol)](https://github.com/bitcoin/bips/blob/master/bip-0070.mediawiki), with the following limitations:
 * Only one output is allowed.  Payment requests that are more that one output are not supported.
 * Only standard Pay-to-pubkeyhash and Pay-to-scripthash scripts are supported (on payment requests).  Other script types will cause the entire payment request to be rejected.
-* Memos from the custormer to the server are not supported (i.e. there is no place to write messages to the server in the current UX)
+* Memos from the customer to the server are not supported (i.e. there is no place to write messages to the server in the current UX)
