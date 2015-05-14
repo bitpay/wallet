@@ -30,7 +30,7 @@
 
             <div ng-show="!import.isSafari && !import.isCordova" class="line-b m10b">
               <label for="backupFile">
-                <span translate>Choose backup file from your computer</span>  <i class="fi-laptop"></i>
+                <span translate>Choose a backup file from your computer</span>  <i class="fi-laptop"></i>
               </label>
               <input type="file" class="form-control" placeholder="{{'Select a backup file'|translate}}"
               name="backupFile" ng-model="import.backupFile" ng-file-select>
@@ -38,7 +38,7 @@
 
             <div ng-show="import.isSafari || import.isCordova">
               <label for="backupText">
-                <span translate>Paste backup plain text code</span>  <i class="fi-clipboard"></i>
+                <span translate>Paste the backup plain text code</span>  <i class="fi-clipboard"></i>
               </label>
               <textarea class="form-control" name="backupText" ng-model="import.backupText" rows="5"></textarea>
             </div>
