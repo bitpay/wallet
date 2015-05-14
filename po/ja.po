@@ -43,7 +43,7 @@ msgstr "Copayについて"
 msgid "Add wallet"
 msgstr "ウォレットを追加"
 
-#: public/views/paymentUri.html
+#: public/views/paymentUri.html public/views/modals/paypro.html
 msgid "Address"
 msgstr "アドレス"
 
@@ -76,7 +76,8 @@ msgstr "本当にこのウォレットを削除しても宜しいですか？"
 msgid "Available Balance"
 msgstr "送金可能残高"
 
-#: public/views/includes/topbar.html
+#: public/views/includes/topbar.html public/views/modals/tx-details.html
+#: public/views/modals/txp-details.html
 msgid "Back"
 msgstr "戻る"
 
@@ -145,7 +146,6 @@ msgstr "パソコンからバックアップファイルを選択して下さい
 
 #: public/views/includes/topbar.html public/views/modals/copayers.html
 #: public/views/modals/paypro.html public/views/modals/scanner.html
-#: public/views/modals/tx-details.html public/views/modals/txp-details.html
 msgid "Close"
 msgstr "閉じる"
 
@@ -179,6 +179,18 @@ msgstr ""
 msgid "Copy to clipboard"
 msgstr "クリップボードへコピー"
 
+#: src/js/controllers/walletHome.js
+msgid "Could not broadcast transaction. Please try again."
+msgstr "取引が送信できませんでした。やり直して下さい。"
+
+#: src/js/controllers/walletHome.js
+msgid ""
+"Could not connect wallet service. Check your Internet connexion and your "
+"wallet service configuration."
+msgstr ""
+"ウォレットサービスと接続できませんでした。インターネットの接続とウォレット"
+"サービスの設定を確認して下さい。"
+
 #: src/js/services/profileService.js
 msgid "Could not create using the specified extended private key"
 msgstr "指定された拡張秘密鍵で作成できませんでした。"
@@ -186,6 +198,10 @@ msgstr "指定された拡張秘密鍵で作成できませんでした。"
 #: src/js/controllers/import.js
 msgid "Could not decrypt file, check your password"
 msgstr "複合化できませんでした。パスワードが正しいかご確認下さい。"
+
+#: src/js/controllers/walletHome.js
+msgid "Could not delete transaction. Please try again."
+msgstr "取引が削除できませんでした。やり直して下さい。"
 
 #: src/js/controllers/walletHome.js
 msgid "Could not fetch payment information"
@@ -208,6 +224,18 @@ msgstr "指定された拡張秘密鍵で参加できませんでした。"
 msgid "Could not join wallet:"
 msgstr "ウォレットに参加できませんでした。"
 
+#: src/js/controllers/walletHome.js
+msgid "Could not reject transaction. Please try again."
+msgstr "取引を却下できませんでした。やり直して下さい。"
+
+#: src/js/controllers/walletHome.js
+msgid "Could not send transaction. Please try again."
+msgstr "取引が送信できませんでした。やり直して下さい。"
+
+#: src/js/controllers/walletHome.js
+msgid "Could not sign transaction. Please try again."
+msgstr "取引が署名できませんでした。やり直して下さい。"
+
 #: public/views/walletHome.html
 msgid "Could not update Wallet"
 msgstr "ウォレットが更新できませんでした。"
@@ -228,7 +256,7 @@ msgstr "新規作成、既存参加、若しくはインポート"
 msgid "Created by"
 msgstr "作成者："
 
-#: public/views/create.html public/views/createProfile.html
+#: public/views/create.html public/views/splash/1.html
 msgid "Creating Wallet..."
 msgstr "ウォレット作成中…"
 
@@ -418,6 +446,7 @@ msgid "Master extended private key"
 msgstr "マスタ拡張秘密鍵"
 
 #: public/views/includes/copayers.html public/views/modals/copayers.html
+#: public/views/modals/tx-details.html public/views/modals/txp-details.html
 msgid "Me"
 msgstr "自分"
 
@@ -585,7 +614,7 @@ msgstr "パスワードを再入力"
 msgid "Required"
 msgstr "必要署名"
 
-#: public/views/createProfile.html
+#: public/views/splash/1.html
 msgid "Retrying..."
 msgstr "再度試しています…"
 
@@ -653,6 +682,10 @@ msgstr "送金済み"
 #: public/views/importLegacy.html
 msgid "Server"
 msgstr "サーバー"
+
+#: public/views/preferencesAbout.html
+msgid "Session log"
+msgstr "セッションのログ"
 
 #: public/views/backup.html
 msgid "Set up a Password for your backup"
@@ -782,10 +815,6 @@ msgstr "取引受理済み…"
 msgid "Transaction broadcasted"
 msgstr "取引送信済み"
 
-#: src/js/controllers/walletHome.js
-msgid "Transaction could not be deleted. Please try again."
-msgstr "取引が削除できませんでした。やり直して下さい。"
-
 #: public/views/modals/txp-details.html
 msgid "Transaction finally rejected"
 msgstr "取引が却下されました"
@@ -793,18 +822,6 @@ msgstr "取引が却下されました"
 #: src/js/controllers/walletHome.js
 msgid "Transaction not broadcasted. Please try again."
 msgstr "取引が送信できませんでした。やり直して下さい。"
-
-#: src/js/controllers/walletHome.js
-msgid "Transaction not rejected. Please try again."
-msgstr "取引が却下できませんでした、再度試して見て下さい。"
-
-#: src/js/controllers/walletHome.js
-msgid "Transaction not sent. Please try again."
-msgstr "取引が送信されませんでした。やり直して下さい。"
-
-#: src/js/controllers/walletHome.js
-msgid "Transaction not signed. Please try again."
-msgstr "取引が署名されていませんでした。やり直して下さい。"
 
 #: public/views/modals/txp-details.html
 msgid "Transaction proposal"
@@ -862,10 +879,6 @@ msgstr "バージョン"
 msgid "View backup"
 msgstr "バックアップ表示"
 
-#: public/views/preferencesAbout.html
-msgid "View session logs"
-msgstr "セッションのログを表示"
-
 #: public/views/walletHome.html
 msgid "WARNING: Backup needed"
 msgstr "注意：バックアップが必要です"
@@ -909,6 +922,14 @@ msgstr "ウォレットが未完成で破損しています"
 #: public/views/create.html
 msgid "Wallet name"
 msgstr "ウォレット名"
+
+#: src/js/controllers/walletHome.js
+msgid ""
+"Wallet service timed out. Check your Internet connexion and your wallet "
+"service configuration."
+msgstr ""
+"ウォレットサービスがタイムアウトになりました。インターネットの接続とウォレッ"
+"トサービスの設定を確認して下さい。"
 
 #: public/views/preferencesDeleteWallet.html
 msgid "Warning!"
