@@ -257,7 +257,18 @@ angular
 
         }
       })
- 
+      .state('preferencesEmail', {
+        url: '/preferencesEmail',
+        templateUrl: 'views/preferencesEmail.html',
+        walletShouldBeComplete: true,
+        needProfile: true,
+        views: {
+          'main': {
+            templateUrl: 'views/preferencesEmail.html'
+          },
+
+        }
+      })
       .state('preferencesBwsUrl', {
         url: '/preferencesBwsUrl',
         templateUrl: 'views/preferencesBwsUrl.html',
@@ -397,6 +408,7 @@ angular
       preferencesAltCurrency: 12,
       preferencesBwsUrl: 12,
       preferencesAlias: 12,
+      preferencesEmail: 12,
       about: 12,
       logs: 13,
       add: 11,
