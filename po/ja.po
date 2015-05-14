@@ -155,11 +155,11 @@ msgstr "色"
 
 #: public/views/preferencesAbout.html
 msgid "Commit hash"
-msgstr "ハッシュをコミット"
+msgstr "コミットのハッシュ値"
 
 #: public/views/modals/tx-details.html
 msgid "Confirmations"
-msgstr "承認回数："
+msgstr "承認回数"
 
 #: public/views/modals/copayers.html
 msgid "Copayers"
@@ -250,7 +250,7 @@ msgstr "新規ウォレット作成"
 
 #: public/views/includes/sidebar.html
 msgid "Create, join or import"
-msgstr "新規作成、既存参加、若しくはインポート"
+msgstr "作成、参加、インポート"
 
 #: public/views/modals/txp-details.html
 msgid "Created by"
@@ -552,7 +552,8 @@ msgstr "支払い先"
 #: public/views/preferencesDeleteWallet.html
 msgid "Permanently delete this wallet. THIS ACTION CANNONT BE REVERSED"
 msgstr ""
-"永久にこのウォレットを削除。二度と取り戻せない行為ですのどご注意下さい。"
+"永久にこのウォレットを削除。\n"
+"二度と取り戻せない行為ですのどご注意下さい。"
 
 #: public/views/walletHome.html
 msgid "Personal Wallet"
@@ -612,7 +613,7 @@ msgstr "パスワードを再入力"
 
 #: public/views/import.html public/views/join.html
 msgid "Required"
-msgstr "必要署名"
+msgstr "入力必須"
 
 #: public/views/splash/1.html
 msgid "Retrying..."
@@ -648,7 +649,7 @@ msgstr "ウォレット残高照会中…"
 
 #: public/views/modals/tx-details.html
 msgid "See it on the blockchain"
-msgstr "ブロックチェーンで詳細閲覧"
+msgstr "ブロックチェーンで詳細を閲覧"
 
 #: public/views/import.html
 msgid "Select a backup file"
@@ -978,7 +979,7 @@ msgstr "未対応取引"
 #: public/views/copayers.html public/views/create.html
 #: public/views/walletHome.html public/views/includes/sidebar.html
 msgid "of"
-msgstr "/"
+msgstr "of"
 
 #: public/views/walletHome.html
 msgid "optional"
