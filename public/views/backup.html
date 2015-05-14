@@ -11,7 +11,7 @@
     <div class="columns" ng-show="!backup.backupWalletPlainText && !backup.error">
       <div class="text-warning size-14 m10v" ng-show="backup.isEncrypted">
         <i class="fi-alert size-12"></i>
-        <span translate> This wallet have its private key encrypted. Exporting a backup will keep the private key encrypted on the backup.</span>
+        <span translate> The private key for this wallet is encrypted. Exporting a backup will keep the private key encrypted in the backup archive.</span>
 
       </div>
 
@@ -54,19 +54,19 @@
   </div>
   <div class="row m20b" ng-show="backup.backupWalletPlainText">
     <div class="large-12 columns">
-      <h3 translate>Copy backup in a safe place</h3>
+      <h3 translate>Copy backup to a safe place</h3>
       <div class="input">
         <textarea rows="12">{{backup.backupWalletPlainText}}</textarea>
       </div>
       <div class="size-12 text-gray text-right">
         <i class="icon-compose"></i> 
-        <span translate>Copy this text as it is in a safe place (notepad or email)</span>
+        <span translate>Copy this text as it is to a safe place (notepad or email)</span>
       </div>
     </div>
   </div>
 
   <div class="m10 size-14 text-gray" translate>
-    * You can safely install your backup on other device and use your wallet from many devices at the same time.
+    * You can safely install your backup on another device and use your wallet from multiple devices at the same time.
   </div>
 
 </div>
