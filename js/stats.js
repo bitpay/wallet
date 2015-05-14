@@ -39,8 +39,17 @@
    processData(from, to, network, function(data, totals) {
      if (nv.graphs.length > 0) {
        d3.select('.nvd3-svg').remove();
+       d3.select('.nvd3-svg').remove();
      }
      updateTotals(totals);
+
+     var data1 = [];
+     data1.push(data[1]);
+     data1.push(data[2]);
+
+     var data2 = [];
+     data2.push(data[0]);
+
 
      nv.addGraph(function() {
        chart = nv.models.multiChart()
@@ -49,17 +58,44 @@
          });
 
        chart.xAxis
-         .axisLabel("Date ")
          .tickFormat(function(d) {
            return d3.time.format('%b %d')(new Date(d));
          })
-         .staggerLabels(true);
+         .rotateLabels(-45)
+         .staggerLabels(false);
+
+
        chart.yAxis1
          .axisLabel('Quantity')
        chart.yAxis2
          .axisLabel('Amount')
        d3.select('#chart1').append('svg')
-         .datum(data)
+         .datum(data1)
+         .call(chart);
+
+
+       nv.utils.windowResize(chart.update);
+       return chart;
+     })
+
+     nv.addGraph(function() {
+       chart = nv.models.lineChart()
+         .options({
+           transitionDuration: 300,
+         });
+
+       chart.xAxis
+         .tickFormat(function(d) {
+           return d3.time.format('%b %d')(new Date(d));
+         })
+         .rotateLabels(-45)
+         .staggerLabels(false);
+       // chart.yAxis1
+       //   .axisLabel('Quantity')
+       // chart.yAxis2
+       //   .axisLabel('Amount')
+       d3.select('#chart1').append('svg')
+         .datum(data2)
          .call(chart);
 
 
@@ -70,7 +106,22 @@
  };
 
 
+
  function retrieveData(from, to, cb) {
+   cb(null, '{"livenet":{"20150504":{"totalTx":0,"totalAmount":0,"totalNewWallets":1}},' +
+     '"testnet":' +
+     '{"20150421":{"totalTx":1,"totalAmount":4500,"totalNewWallets":1},' +
+     '"20150423":{"totalTx":4,"totalAmount":4500,"totalNewWallets":1},' +
+     '"20150424":{"totalTx":0,"totalAmount":0,"totalNewWallets":1},' +
+     '"20150425":{"totalTx":2,"totalAmount":3500,"totalNewWallets":1},' +
+     '"20150426":{"totalTx":2,"totalAmount":500,"totalNewWallets":1},' +
+     '"20150427":{"totalTx":4,"totalAmount":9500,"totalNewWallets":1},' +
+     '"20150428":{"totalTx":1,"totalAmount":7500,"totalNewWallets":1},' +
+     '"20150423":{"totalTx":4,"totalAmount":4500,"totalNewWallets":1},' +
+     '"20150504":{"totalTx":3,"totalAmount":1450,"totalNewWallets":2}}}');
+ }
+
+ function retrieveData2(from, to, cb) {
    var xmlhttp;
    if (window.XMLHttpRequest) { // code for IE7+, Firefox, Chrome, Opera, Safari
      xmlhttp = new XMLHttpRequest();
@@ -79,6 +130,7 @@
    }
    xmlhttp.onreadystatechange = function() {
      if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+       console.log(xmlhttp.responseText);
        cb(null, xmlhttp.responseText);
      } else if (xmlhttp.readyState == 4 && xmlhttp.status != 200) {
        console.log('http status ', xmlhttp.status);
@@ -109,7 +161,7 @@
    retrieveData(from, to, function(err, data) {
      if (err) {
        console.log('err on retrieveData', err);
-       cb([]);
+       return cb([]);
      }
      var serie1 = [];
      var serie2 = [];
@@ -143,19 +195,19 @@
        key: "New Wallets",
        color: "red",
        yAxis: 1,
-       type: "line"
+       type: "bar" //"area"  "bar"
      }, {
        values: serie2,
        key: "Transactions",
        color: "blue",
        yAxis: 1,
-       type: "line"
+       type: "bar" //"area"  "bar"
      }, {
        values: serie3,
        key: "Amount",
        color: "green",
        yAxis: 2,
-       type: "line"
+       type: "bar" //"area"  "bar"
      }], totals);
    });
  };
