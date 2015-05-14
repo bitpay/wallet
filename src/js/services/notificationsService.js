@@ -53,35 +53,36 @@ angular.module('copayApp.services')
       var config = configService.getSync();
       config.colorFor = config.colorFor || {};
       var color = config.colorFor[walletId] || '#2C3E50';
+      var name = config.aliasFor[walletId] || walletName;
 
       switch (notificationData.type) {
         case 'NewTxProposal':
           notification.new(gettext('New Transaction'),
-            walletName, {color: color} );
+            name, {color: color} );
           break;
         case 'TxProposalAcceptedBy':
           notification.success(gettext('Transaction Signed'),
-            walletName, {color: color} );
+            name, {color: color} );
           break;
         case 'TxProposalRejectedBy':
           notification.error(gettext('Transaction Rejected'),
-            walletName, {color: color} );
+            name, {color: color} );
           break;
         case 'TxProposalFinallyRejected':
           notification.error(gettext('A transaction was finally rejected'),
-            walletName, {color: color} );
+            name, {color: color} );
           break;
         case 'NewOutgoingTx':
           notification.sent(gettext('Transaction Sent'),
-            walletName, {color: color} );
+            name, {color: color} );
           break;
         case 'NewIncomingTx':
           notification.funds(gettext('Funds received'),
-            walletName, {color: color} );
+            name, {color: color} );
           break;
         case 'ScanFinished':
           notification.success(gettext('Scan Finished'),
-            walletName, {color: color} );
+            name, {color: color} );
           break;
 
         case 'NewCopayer':

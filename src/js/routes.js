@@ -245,6 +245,19 @@ angular
           },
         }
       })
+      .state('preferencesAlias', {
+        url: '/preferencesAlias',
+        templateUrl: 'views/preferencesAlias.html',
+        walletShouldBeComplete: true,
+        needProfile: true,
+        views: {
+          'main': {
+            templateUrl: 'views/preferencesAlias.html'
+          },
+
+        }
+      })
+ 
       .state('preferencesBwsUrl', {
         url: '/preferencesBwsUrl',
         templateUrl: 'views/preferencesBwsUrl.html',
@@ -378,6 +391,7 @@ angular
       preferencesUnit: 12,
       preferencesAltCurrency: 12,
       preferencesBwsUrl: 12,
+      preferencesAlias: 12,
       about: 12,
       logs: 13,
       add: 11,
