@@ -39,11 +39,12 @@ angular.module('copayApp.controllers').controller('paymentUriController',
       if (!profileService.profile) return;
       var config = configService.getSync();
       config.colorFor = config.colorFor || {};
+      config.aliasFor = config.aliasFor || {};
       var ret = lodash.map(profileService.profile.credentials, function(c) {
         return {
           m: c.m,
           n: c.n,
-          name: c.walletName,
+          name: config.aliasFor[c.walletId] || c.walletName,
           id: c.walletId,
           network: c.network,
           color: config.colorFor[c.walletId] || '#2C3E50'
@@ -52,7 +53,7 @@ angular.module('copayApp.controllers').controller('paymentUriController',
       ret = lodash.filter(ret, function(w) {
         return (w.network == network);
       });
-      return lodash.sortBy(ret, 'walletName');
+      return lodash.sortBy(ret, 'name');
     };
 
     this.selectWallet = function(wid) {

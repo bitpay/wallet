@@ -21,7 +21,7 @@
 
   <section class="middle tab-bar-section">
     <h1 class="title ellipsis" ng-style="{'color': noColor ? '#7A8C9E' : index.backgroundColor}">
-      {{(titleSection|translate) || index.walletName}}
+      {{(titleSection|translate) || (index.alias || index.walletName)}}
     </h1>
   </section>
 </nav>
