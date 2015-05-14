@@ -75,7 +75,7 @@ angular.module('copayApp.services')
       var ew = root.walletExport(password);
       if (!ew) return cb('Could not create backup');
 
-      var walletName = fc.credentials.walletName;
+      var walletName = (fc.alias || '') + (fc.alias ? '-' : '') + fc.credentials.walletName;
       var filename = walletName + '-Copaybackup.aes.json';
       _download(ew, filename, cb)
     };
