@@ -390,6 +390,5 @@ angular.module('copayApp.services')
       });
     };
 
-
     return root;
   });
