@@ -340,7 +340,7 @@ angular
         url: '/cordova/:status',
         views: {
           'main': {
-            controller: function($rootScope, $stateParams, go) {
+            controller: function($rootScope, $stateParams, $timeout, go) {
               switch ($stateParams.status) {
                 case 'resume':
                   $rootScope.$emit('Local/Resume');
@@ -349,6 +349,9 @@ angular
                   $rootScope.$emit('Local/Offline');
                   break;
               };
+              $timeout(function() {
+                $rootScope.$emit('Local/SetTab', 'walletHome', true);
+              }, 100);
               go.walletHome();
             }
           }
@@ -381,6 +384,8 @@ angular
     var pageWeight = {
       walletHome: 0,
       copayers: -1,
+      cordova: -1,
+      uri-payment: -1,
 
       preferences: 11,
       preferencesColor: 12,
@@ -485,19 +490,27 @@ angular
         var entering = null,
           leaving = null;
 
+        // Horizontal Slide Animation?
         if (fromWeight && toWeight) {
           if (fromWeight > toWeight) {
             leaving = 'CslideOutRight';
           } else {
             entering = 'CslideInRight';
           }
+
+        // Vertical Slide Animation?
         } else if (fromName && fromWeight >= 0 && toWeight >= 0) {
           if (toWeight) {
             entering = 'CslideInUp';
           } else {
             leaving = 'CslideOutDown';
           }
+
+        // no Animation  ?
+        } else {
+          return true;
         }
+
         var e = document.getElementById('mainSection');
 
 
