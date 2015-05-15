@@ -255,7 +255,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         self.updatingTxHistory = false;
         if (err) {
           $log.debug('TxHistory ERROR:', err);
-          self.handleError(err);
+          // We do not should errors here, since history is usually
+          // fetched AFTER others requests.
+          //self.handleError(err);
           self.txHistoryError = true;
         } else {
           $log.debug('Wallet Transaction History:', txs);
