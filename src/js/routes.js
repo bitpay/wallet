@@ -340,7 +340,7 @@ angular
         url: '/cordova/:status',
         views: {
           'main': {
-            controller: function($rootScope, $stateParams, go) {
+            controller: function($rootScope, $stateParams, $timeout, go) {
               switch ($stateParams.status) {
                 case 'resume':
                   $rootScope.$emit('Local/Resume');
@@ -349,6 +349,9 @@ angular
                   $rootScope.$emit('Local/Offline');
                   break;
               };
+              $timeout(function() {
+                $rootScope.$emit('Local/SetTab', 'walletHome', true);
+              }, 100);
               go.walletHome();
             }
           }
@@ -463,7 +466,7 @@ angular
 
       function animateTransition(fromState, toState, event) {
 
-        if (isaosp)
+        if (isaosp || toState.name == 'cordova' || toState.name == 'uri-payment')
           return true;
 
         // Animation in progress?
