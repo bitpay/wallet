@@ -112,8 +112,8 @@ angular
           }
         }
       })
-      .state('uri-payment', {
-        url: '/uri-payment/:data',
+      .state('payment', {
+        url: '/payment/:data',
         templateUrl: 'views/paymentUri.html',
         views: {
           'main': {
@@ -385,7 +385,7 @@ angular
       walletHome: 0,
       copayers: -1,
       cordova: -1,
-      uri-payment: -1,
+      payment: -1,
 
       preferences: 11,
       preferencesColor: 12,
