@@ -4,7 +4,7 @@ var UriHandler = function() {};
 
 UriHandler.prototype.register = function() {
   var base = window.location.origin + '/';
-  var url = base + '#/payment/%s';
+  var url = base + '#/uri-payment/%s';
 
   if(navigator.registerProtocolHandler) {
     navigator.registerProtocolHandler('bitcoin', url, 'Copay');

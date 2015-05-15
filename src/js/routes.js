@@ -113,7 +113,7 @@ angular
         }
       })
       .state('payment', {
-        url: '/payment/:data',
+        url: '/uri-payment/:data',
         templateUrl: 'views/paymentUri.html',
         views: {
           'main': {
