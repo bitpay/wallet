@@ -384,6 +384,8 @@ angular
     var pageWeight = {
       walletHome: 0,
       copayers: -1,
+      cordova: -1,
+      uri-payment: -1,
 
       preferences: 11,
       preferencesColor: 12,
@@ -466,7 +468,7 @@ angular
 
       function animateTransition(fromState, toState, event) {
 
-        if (isaosp || toState.name == 'cordova' || toState.name == 'uri-payment')
+        if (isaosp)
           return true;
 
         // Animation in progress?
@@ -488,19 +490,27 @@ angular
         var entering = null,
           leaving = null;
 
+        // Horizontal Slide Animation?
         if (fromWeight && toWeight) {
           if (fromWeight > toWeight) {
             leaving = 'CslideOutRight';
           } else {
             entering = 'CslideInRight';
           }
+
+        // Vertical Slide Animation?
         } else if (fromName && fromWeight >= 0 && toWeight >= 0) {
           if (toWeight) {
             entering = 'CslideInUp';
           } else {
             leaving = 'CslideOutDown';
           }
+
+        // no Animation  ?
+        } else {
+          return true;
         }
+
         var e = document.getElementById('mainSection');
 
 
