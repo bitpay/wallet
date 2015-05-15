@@ -56,7 +56,7 @@ angular.element(document).ready(function() {
       function handleBitcoinURI(url) {
         if (!url) return;
         setTimeout(function() {
-          window.location = '#/uri-payment/' + url;
+          window.location = '#/payment/' + url;
         }, 1000);
       }
 
