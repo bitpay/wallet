@@ -29,9 +29,11 @@ angular.module('copayApp.controllers').controller('paymentUriController',
         var satToUnit = 1 / unitToSatoshi;
         var unitName = config.unitName;
 
-        uri.amount = strip(uri.amount * satToUnit) + ' ' + unitName;
+        if (uri.amount) {
+          uri.amount = strip(uri.amount * satToUnit) + ' ' + unitName;
+        }
         uri.network = uri.address.network.name;
-        return uri;
+        this.uri = uri;
       }
     };
 
