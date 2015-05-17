@@ -1,5 +1,5 @@
-<div 
-  class="topbar-container" 
+<div
+  class="topbar-container"
   ng-include="'views/includes/topbar.html'"
   ng-init="titleSection='Create new wallet';  goBackToState = 'add'; noColor = true">
 </div>
@@ -65,8 +65,8 @@
         <div class="m10t oh" ng-init="hideAdv=true">
           <a class="button outline light-gray expand tiny" ng-click="hideAdv=!hideAdv">
             <i class="fi-widget m3r"></i>
-            <span translate ng-hide="!hideAdv">Show</span> 
-            <span translate ng-hide="hideAdv">Hide</span> 
+            <span translate ng-hide="!hideAdv">Show</span>
+            <span translate ng-hide="hideAdv">Hide</span>
             <span translate>Advanced options</span>
             <i ng-if="hideAdv" class="icon-arrow-down4"></i>
             <i ng-if="!hideAdv" class="icon-arrow-up4"></i>
@@ -81,16 +81,16 @@
             <label for="ext-master" class="m10t">
               <span translate>Master extended private key</span>
               <small translate>If not given, a random key will be generated</small>
-              <input id="ext-master" 
-              type="text" 
-              placeholder="BIP32 master extended private key" 
+              <input id="ext-master"
+              type="text"
+              placeholder="BIP32 master extended private key"
               name="privateKey" ng-model="privateKey">
           </div>
         </div>
 
 
-        <button type="submit" class="button black expand radius m0" ng-disabled="setupForm.$invalid">
-          <span translate>Create</span> 
+        <button type="submit" class="button round black expand m0" ng-disabled="setupForm.$invalid">
+          <span translate>Create</span>
           {{requiredCopayers}}-<span translate>of</span>-{{totalCopayers}} <span translate>wallet</span>
         </button>
       </div>

@@ -1,7 +1,7 @@
 <nav class="tab-bar">
   <section class="left-small">
     <a ng-click="cancel()">
-      <i class="icon-arrow-left3 icon-back"></i> 
+      <i class="icon-arrow-left3 icon-back"></i>
       <span class="text-back" translate>Back</span>
     </a>
   </section>
@@ -92,14 +92,14 @@
 
   <div class="row m20t" ng-if="tx.pendingForUs">
     <div class="large-5 medium-5 small-6 columns">
-      <button class="button outline dark-gray m0 expand" ng-click="reject(tx);"
+      <button class="button outline round dark-gray m0 expand" ng-click="reject(tx);"
         ng-disabled="loading">
         <i class="fi-x"></i>
         <span translate>Reject</span>
       </button>
     </div>
     <div class="large-5 medium-5 small-6 columns text-right">
-      <button class="button primary m0 expand" ng-click="sign(tx)"
+      <button class="button primary round m0 expand" ng-click="sign(tx)"
         ng-style="{'background-color':color}"
         ng-disabled="loading">
         <i class="fi-check"></i>
@@ -116,7 +116,7 @@
     <div class="m10t"
       ng-show="!loading && tx.status!='broadcasted' && tx.status=='accepted' && tx.status!='rejected'">
       <div translate>But not broadcasted. Try to send manually</div>
-      <button class="primary"
+      <button class="primary round"
         ng-click="broadcast(tx)"
         ng-disabled="loading"> <i class="fi-upload-cloud"></i>
         <span translate>Broadcast Transaction</span>
@@ -136,7 +136,7 @@
     <div class="text-gray size-12 text-center m20b" show="tx.couldRemove" translate>
       * Only transactions created by yourself with no peer signatures can be removed
     </div>
-    <button class="tiny expand outline dark-gray" ng-click="remove(tx)"
+    <button class="tiny expand round outline dark-gray" ng-click="remove(tx)"
       ng-disabled="loading" ng-show="tx.couldRemove">
       <i class="fi-trash size-14 m5r"></i>
       <span translate>Remove transaction</span>
