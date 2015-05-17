@@ -256,6 +256,7 @@ a.missing-copayers {
 
 .button, button {
   padding: 1rem 1.2rem 1.0625rem;
+  border: 1px solid transparent;
 }
 
 .box-setup {
@@ -375,7 +376,7 @@ ul.off-canvas-list li a:hover {
 /* === */
 
 
-/* Have to set height explicity on ui-view 
+/* Have to set height explicity on ui-view
 to prevent collapsing during animation*/
 .main[ui-view]{
  height: 100%; /* TODO */
@@ -402,7 +403,7 @@ to prevent collapsing during animation*/
   animation-duration: .3s;
   animation-iteration-count: 1;
   animation-fill-mode: both;
-  
+
   -webkit-animation-timing-function:  ease-in-out;
   -webkit-animation-duration: .3s;
   -webkit-animation-iteration-count: 1;
@@ -574,10 +575,10 @@ to prevent collapsing during animation*/
   padding-bottom: 20px;
 }
 
-.reveal-modal.animated.slideInRight, 
-.reveal-modal.animated.slideOutRight, 
-.reveal-modal.animated.fadeOutUp, 
-.reveal-modal.animated.slideInUp, 
+.reveal-modal.animated.slideInRight,
+.reveal-modal.animated.slideOutRight,
+.reveal-modal.animated.fadeOutUp,
+.reveal-modal.animated.slideInUp,
 .reveal-modal.animated.slideInDown {
   -webkit-animation-duration: 0.3s;
   animation-duration: 0.3s;
