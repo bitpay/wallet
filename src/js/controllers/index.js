@@ -145,7 +145,11 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     $rootScope.$emit('Local/TabChanged', tab);
   };
 
-  self.updateAll = function(walletStatus) {
+  self.updateAll = function(walletStatus, untilItChanges, initBalance, tries) {
+    tries = tries || 0;
+    if (untilItChanges && lodash.isUndefined(initBalance)) {
+      initBalance = self.totalBalanceSat;
+    }
     var get = function(cb) {
       if (walletStatus)
         return cb(null, walletStatus);
@@ -169,6 +173,11 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       self.setOngoingProcess('updatingStatus', true);
       $log.debug('Updating Status:', fc);
       get(function(err, walletStatus) {
+        if (!err && untilItChanges && initBalance == walletStatus.balance.totalAmount && tries < 10) {
+          return $timeout(function() {
+            return self.updateAll(null, true, initBalance, ++tries);
+          }, 1000);
+        }
         self.setOngoingProcess('updatingStatus', false);
         if (err) {
           self.handleError(err);
@@ -711,8 +720,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   lodash.each(['NewOutgoingTx', 'NewTxProposal', 'TxProposalFinallyRejected', 'transactionProposalRemoved', 'TxProposalRemoved',
     'Local/NewTxProposal', 'Local/TxProposalAction', 'ScanFinished'
   ], function(eventName) {
-    $rootScope.$on(eventName, function() {
-      self.updateAll();
+    $rootScope.$on(eventName, function(event, untilItChanges) {
+      self.updateAll(null, untilItChanges);
       $timeout(function() {
         self.updateTxHistory();
       }, 3000);

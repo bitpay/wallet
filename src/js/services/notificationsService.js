@@ -4,7 +4,7 @@ angular.module('copayApp.services')
 
     var root = {};
 
-    var groupingTime = 4000;
+    var groupingTime = 5000;
     var lastNotificationOnWallet = {};
 
     root.getLast = function(walletId) {
@@ -57,23 +57,23 @@ angular.module('copayApp.services')
 
       switch (notificationData.type) {
         case 'NewTxProposal':
-          notification.new(gettext('New Transaction'),
+          notification.new(gettext('New Payment Proposal'),
             name, {color: color} );
           break;
         case 'TxProposalAcceptedBy':
-          notification.success(gettext('Transaction Signed'),
+          notification.success(gettext('Payment Proposal Signed by Copayer'),
             name, {color: color} );
           break;
         case 'TxProposalRejectedBy':
-          notification.error(gettext('Transaction Rejected'),
+          notification.error(gettext('Payment Proposal Rejected by Copayer'),
             name, {color: color} );
           break;
         case 'TxProposalFinallyRejected':
-          notification.error(gettext('A transaction was finally rejected'),
+          notification.error(gettext('Payment Proposal Finally Rejected'),
             name, {color: color} );
           break;
         case 'NewOutgoingTx':
-          notification.sent(gettext('Transaction Sent'),
+          notification.sent(gettext('Payment Proposal Sent'),
             name, {color: color} );
           break;
         case 'NewIncomingTx':
