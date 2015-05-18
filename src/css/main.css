@@ -696,7 +696,6 @@ button.black,
 .button.black {
   background-color: #2C3E50;
   color: #fff;
-  border: 1px solid transparent;
 }
 
 /* GRAY */
@@ -704,6 +703,10 @@ button.gray,
 .button.gray {
   background-color: #A9B2B8;
   color: #2C3E50;
+}
+
+button.disabled, button[disabled], .button.disabled, .button[disabled] {
+  border-color: transparent;
 }
 
 button.disabled.black,
