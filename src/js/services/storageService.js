@@ -124,7 +124,7 @@ angular.module('copayApp.services')
     };
 
     root.storeFocusedWalletId = function(id, cb) {
-      storage.set('focusedWalletId', id, cb);
+      storage.set('focusedWalletId', id||'', cb);
     };
 
     root.getFocusedWalletId = function(cb) {
