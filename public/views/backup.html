@@ -1,5 +1,5 @@
-<div 
-  class="topbar-container" 
+<div
+  class="topbar-container"
   ng-include="'views/includes/topbar.html'"
   ng-init="titleSection='Backup'; goBackToState = 'preferences'">
 </div>
@@ -17,36 +17,36 @@
 
       <label for="password" translate>Set up a Password for your backup</label>
       <div class="input">
-        <input type="password" class="form-control" 
+        <input type="password" class="form-control"
         placeholder="{{'Your backup password'|translate}}"
         name="password" ng-model="backup.password">
       </div>
 
       <label for="password" translate>Repeat password</label>
       <div class="input">
-        <input type="password" class="form-control" 
+        <input type="password" class="form-control"
         placeholder="{{'Repeat password'|translate}}"
         name="password" ng-model="backup.repeatpassword">
       </div>
 
-      <button class="black radius expand" ng-click="backup.downloadWalletBackup()" 
-        ng-disabled="(!backup.password || backup.password != backup.repeatpassword)" 
-        ng-style="{'background-color':index.backgroundColor}" 
+      <button class="black round expand" ng-click="backup.downloadWalletBackup()"
+        ng-disabled="(!backup.password || backup.password != backup.repeatpassword)"
+        ng-style="{'background-color':index.backgroundColor}"
         ng-show="!backup.isSafari && !backup.isCordova"><i class="fi-download"></i>
         <span translate>Download backup</span></button>
-      <button class="black radius expand" ng-click="backup.viewWalletBackup()"
+      <button class="black round expand" ng-click="backup.viewWalletBackup()"
         ng-disabled="(!backup.password || backup.password != backup.repeatpassword)"
-        ng-style="{'background-color':index.backgroundColor}" 
+        ng-style="{'background-color':index.backgroundColor}"
         ng-show="backup.isSafari && !backup.isCordova"><i class="fi-eye"></i>
         <span translate>View backup</span></button>
       <div ng-show="backup.isCordova">
         <h4 translate>Backup options</h4>
-        <button class="black radius expand"  ng-disabled="(!backup.password || backup.password != backup.repeatpassword)" 
-          ng-style="{'background-color':index.backgroundColor}" 
+        <button class="black round expand"  ng-disabled="(!backup.password || backup.password != backup.repeatpassword)"
+          ng-style="{'background-color':index.backgroundColor}"
           ng-click="backup.copyWalletBackup()"><i class="fi-clipboard-pencil"></i>
           <span translate>Copy to clipboard</span></button>
-        <button class="black radius expand"  ng-disabled="(!backup.password || backup.password != backup.repeatpassword)" 
-          ng-style="{'background-color':index.backgroundColor}" 
+        <button class="black round expand"  ng-disabled="(!backup.password || backup.password != backup.repeatpassword)"
+          ng-style="{'background-color':index.backgroundColor}"
           ng-click="backup.sendWalletBackup()"><i class="fi-mail"></i>
           <span translate>Send by email</span></button>
       </div>
@@ -59,7 +59,7 @@
         <textarea rows="12">{{backup.backupWalletPlainText}}</textarea>
       </div>
       <div class="size-12 text-gray text-right">
-        <i class="icon-compose"></i> 
+        <i class="icon-compose"></i>
         <span translate>Copy this text as it is to a safe place (notepad or email)</span>
       </div>
     </div>
