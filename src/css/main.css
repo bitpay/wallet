@@ -610,7 +610,6 @@ table tbody tr:last-child td {
 button.outline,
 button.outline:hover,
 button.outline:focus {
-  border-radius: 3px;
   background: transparent;
 }
 
@@ -620,7 +619,6 @@ button.outline:focus {
 button.outline.tiny,
 button.outline.tiny:hover,
 button.outline.tiny:focus {
-  border-radius: 3px;
   background: transparent;
 }
 
@@ -662,7 +660,6 @@ button.secondary:focus,
 .button.secondary:focus {
   background-color: #008CC1;
   color: #fff;
-  border-radius: 3px;
 }
 
 /* PRIMARY */
@@ -674,7 +671,6 @@ button.primary:focus,
 .button.primary:focus {
   background-color: #1ABC9C;
   color: #fff;
-  border-radius: 3px;
 }
 
 /* WARNING */
@@ -686,7 +682,6 @@ button.warning:focus,
 .button.warning:focus {
   background-color: #ED4A43;
   color: #fff;
-  border-radius: 3px;
 }
 
 /* WHITE */
@@ -708,6 +703,10 @@ button.gray,
 .button.gray {
   background-color: #A9B2B8;
   color: #2C3E50;
+}
+
+button.disabled, button[disabled], .button.disabled, .button[disabled] {
+  border-color: transparent;
 }
 
 button.disabled.black,
@@ -1136,6 +1135,10 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
 
 .preferences li {
   cursor: pointer !important;
+}
+
+.preferences-icon {
+  padding: 0.6rem 0.8rem !important;
 }
 
 .passModal {

@@ -1,5 +1,5 @@
 
-<div class="topbar-container" 
+<div class="topbar-container"
   ng-include="'views/includes/topbar.html'"
   ng-init="showCamera = true">
 </div>
@@ -12,7 +12,7 @@
     <button class="button black expand" ng-click="$root.go('add')" translate>Create</button>
 
     <div class="text-center text-gray p20v" ng-click="$root.go('preferences')">
-      <button class=" outline dark-gray tiny" translate> Preferences </button>
+      <button class=" outline round dark-gray tiny" translate> Preferences </button>
     </div>
   </div>
 
@@ -105,7 +105,7 @@
             ng-style="{'background-color':index.backgroundColor}">{{index.walletName | limitTo: 1}}
           </div>
           <div class="right">
-            <a ng-click="$root.go('preferences')" class="button outline light-gray tiny m0">
+            <a ng-click="$root.go('preferences')" class="button outline round light-gray tiny preferences-icon m0">
               <i class="fi-widget size-18 vm"></i>
               <span class="show-for-medium-up" translate>Preferences</span>
             </a>
@@ -143,7 +143,7 @@
           This wallet is not registered at the given Bitcore Wallet Service (BWS). You can recreate it from the local information.
         </div>
         <div class="text-center m10t ">
-          <span class="button outline dark-gray tiny"
+          <span class="button outline round dark-gray tiny"
             ng-click="index.recreate()">
             <span translate>Recreate</span>
           </span>
@@ -195,13 +195,13 @@
         </div>
 
         <div class="small-6 columns m20t">
-          <span class="button expand outline dark-gray tiny"
+          <span class="button expand outline round dark-gray tiny"
             ng-click="home.skipBackup = true">
             <span translate>SKIP BACKUP</span>
           </span>
         </div>
         <div class="small-6 columns m20t">
-          <span class="button black expand radius tiny"
+          <span class="button black expand round tiny"
             ng-click="$root.go('backup')" ng-style="{'background-color':index.backgroundColor}" >
             <span translate>Backup now</span>
           </span>
@@ -236,7 +236,7 @@
             </div>
 
             <div class="m10t text-center" ng-show="index.isCordova">
-              <span class="button outline dark-gray tiny"
+              <span class="button outline dark-gray tiny round"
                 ng-click="home.shareAddress(home.addr)">
                 <i class="fi-share"></i>
                 <span translate>Share address</span>
@@ -249,7 +249,7 @@
         </div>
         <div class="row m20t">
           <div class="large-12 columns">
-            <button class="button black expand radius" ng-click="home.setNewAddress()"
+            <button class="button black expand round" ng-click="home.setNewAddress()"
               ng-style="{'background-color':index.backgroundColor}" ng-disabled="home.blockUx || index.isOffline ||home.generatingAddress" translate>
               Generate new address
             </button>
@@ -378,10 +378,10 @@
 
             <div class="row" ng-show="!home.onGoingProcess">
               <div class="large-6 medium-6 small-6 columns" ng-show="!home.blockUx && (home._paypro || home.lockAddress)">
-                <a ng-click="home.resetForm(sendForm)" class="button expand outline dark-gray" translate>Cancel</a>
+                <a ng-click="home.resetForm(sendForm)" class="button expand outline dark-gray round" translate>Cancel</a>
               </div>
               <div class="columns" ng-class="{'small-6 medium-6 large-6':(home._paypro || home.lockAddress)}">
-                <button type="submit" class="button black radius expand" ng-disabled="sendForm.$invalid || home.blockUx ||  index.isOffline"
+                <button type="submit" class="button black round expand" ng-disabled="sendForm.$invalid || home.blockUx ||  index.isOffline"
                   ng-style="{'background-color':index.backgroundColor}"  translate>
                   Send
                 </button>
@@ -449,7 +449,7 @@
           </div>
         </div>
         <div class="m20t columns text-center" ng-show="index.txHistoryPaging || index.updatingTxHistory">
-          <button class="outline light-gray small expand m0"
+          <button class="outline light-gray round small expand m0"
             ng-click="index.updateTxHistory(index.skipHistory)"
             ng-if="!index.updatingTxHistory">
             <span translate>More</span> <i class="icon-arrow-down4 ng-scope"></i>

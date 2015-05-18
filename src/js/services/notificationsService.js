@@ -52,7 +52,7 @@ angular.module('copayApp.services')
 
       var config = configService.getSync();
       config.colorFor = config.colorFor || {};
-      var color = config.colorFor[walletId] || '#2C3E50';
+      var color = config.colorFor[walletId] || '#7A8C9E';
       var name = config.aliasFor[walletId] || walletName;
 
       switch (notificationData.type) {
