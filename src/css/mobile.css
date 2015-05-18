@@ -24,6 +24,7 @@ input {
   -webkit-user-drag: none;
   -ms-user-drag: none;
   user-drag: none;
+  -webkit-tap-highlight-color:rgba(0,0,0,0);
 }
 
 body, div, .row {
@@ -358,13 +359,6 @@ ul.off-canvas-list li a:hover {
   background: none;
 }
 
-a, button, .button, input, textarea, select {
-  -webkit-box-shadow: none !important;
-  -moz-box-shadow: none !important;
-  box-shadow: none !important;
-  -webkit-tap-highlight-color:rgba(0,0,0,0);
-}
-
 .move-right .close-menu {
   cursor: pointer;
   box-shadow: none;
@@ -603,6 +597,8 @@ input[type="text"],
 input[type="time"],
 input[type="url"],
 input[type="week"],
+input,
+select,
 textarea,
 input[type="text"]:focus,
 input[type="password"]:focus,
@@ -618,6 +614,8 @@ input[type="tel"]:focus,
 input[type="time"]:focus,
 input[type="url"]:focus,
 input[type="color"]:focus,
+input:focus,
+select:focus,
 textarea:focus
 {
   opacity: 1;
