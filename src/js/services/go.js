@@ -37,6 +37,8 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
     $state.transitionTo(path)
       .then(function() {
         if (cb) return cb();
+      }, function() {
+        if (cb) return cb('animation in progress');
       });
     hideSidebars();
   };
