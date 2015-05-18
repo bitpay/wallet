@@ -24,18 +24,19 @@ angular.module('copayApp.services')
       $log.debug('Set focus:', walletId);
 
       // Set local object
-      root.focusedClient = root.walletClients[walletId];
+      if (walletId)
+        root.focusedClient = root.walletClients[walletId];
+      else 
+        root.focusedClient = [];
 
       if (lodash.isEmpty(root.focusedClient)) {
         root.focusedClient = root.walletClients[lodash.keys(root.walletClients)[0]];
       }
 
+      // Still nothing?
       if (lodash.isEmpty(root.focusedClient)) {
         $rootScope.$emit('Local/NoWallets');
-      }
-
-      // set if completed
-      if (!lodash.isEmpty(root.focusedClient)) {
+      } else {
         $rootScope.$emit('Local/NewFocusedWallet');
       }
 
