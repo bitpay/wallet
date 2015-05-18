@@ -462,7 +462,6 @@ angular
         e2.addEventListener("animationend", cleanUp, true);
         e.addEventListener("webkitAnimationEnd", cleanUp, true);
         e2.addEventListener("webkitAnimationEnd", cleanUp, true);
-        // TODO
         timeoutID = setTimeout(cleanUp, 500);
       };
 
@@ -520,7 +519,7 @@ angular
           e.className = entering || '';
           cachedBackPanel.className = leaving || '';
           cleanUpLater(e, cachedBackPanel);
-          console.log('USing', cachedTransitionState); //TODO
+          //console.log('USing animation', cachedTransitionState);
           return true;
         } else {
           var sc;
@@ -538,7 +537,7 @@ angular
             cachedBackPanel.getElementsByClassName('content')[0].scrollTop  = sc;
 
           cachedTransitionState = desiredTransitionState;
-          console.log('CACHing', cachedTransitionState); //TODO
+          //console.log('CACHing animation', cachedTransitionState); 
           return false;
         }
       }
