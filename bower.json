@@ -16,7 +16,7 @@
     "foundation-icon-fonts": "*",
     "ng-lodash": "~0.2.0",
     "angular-moment": "~0.9.0",
-    "angular-bitcore-wallet-client": "^0.0.21",
+    "angular-bitcore-wallet-client": "^0.0.22",
     "angular-ui-router": "~0.2.13",
     "qrcode-decoder-js": "*",
     "fastclick": "*",
