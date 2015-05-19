@@ -5,31 +5,35 @@ angular.module('copayApp.services').factory('txStatus', function($modal, lodash,
 
   root.notify = function(txp, cb) {
     var fc = profileService.focusedClient;
-    var msg;
-
     var status = txp.status;
+    var type;
 
     if (status == 'broadcasted') {
-      msg = gettext('Transaction broadcasted');
+      type = 'broadcasted';
     } else {
+
+      var n = txp.actions.length;
       var action = lodash.find(txp.actions, {
         copayerId: fc.credentials.copayerId
       });
-      if (!action) {
-        msg = gettext('Transaction proposal created');
+
+      if (!action || (action.type == 'accept' && n == 1)) {
+        type = 'created';
       } else if (action.type == 'accept') {
-        msg = gettext('Transaction proposal signed');
+        type = 'accepted';
       } else if (action.type == 'reject') {
-        msg = gettext('Transaction was rejected');
+        type = 'rejected';
+      } else {
+        throw new Error('Unknown type:' + type);
       }
     }
 
-    root.openModal(msg, cb);
+    root.openModal(type, cb);
   };
 
-  root.openModal = function(statusStr, cb) {
+  root.openModal = function(type, cb) {
     var ModalInstanceCtrl = function($scope, $modalInstance) {
-      $scope.statusStr = statusStr;
+      $scope.type = type;
       $scope.cancel = function() {
         $modalInstance.dismiss('cancel');
       };

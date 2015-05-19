@@ -152,7 +152,7 @@
 
       <div ng-if="index.txps[0]">
         <div ng-show="index.requiresMultipleSignatures">
-          <h4 class="title m0" translate>Spend proposals</h4>
+          <h4 class="title m0" translate>Payment Proposals</h4>
           <div class="last-transactions pr" ng-repeat="tx in index.txps"
             ng-include="'views/includes/transaction.html'">
           </div>
@@ -266,20 +266,31 @@
 
     -->
     <div id="send" class="send tab-view">
-      <div ng-show="index.lockedBalance">
+      <div>
         <h4 class="title m0">
-          <div class="left">
-            <i class="fi-info size-36 m10r lh"></i>
+
+          <div  ng-show="!index.lockedBalance">
+            <div class="size-12">
+              <span class="db text-bold">
+                <span translate>Available Balance</span>:
+                {{index.availableBalanceStr }}
+              </span>
+            </div>
           </div>
-          <div class="size-12">
-            <span class="db text-bold">
-              <span translate>Available Balance</span>:
-              {{index.availableBalanceStr }}
-            </span>
-            <span class="text-gray">
-              {{index.lockedBalanceStr}}
-              <span translate>in pending transactions</span>
-            </span>
+          <div  ng-show="index.lockedBalance">
+            <div class="left">
+              <i class="fi-info size-36 m10r lh"></i>
+            </div>
+            <div class="size-12">
+              <span class="db text-bold">
+                <span translate>Available Balance</span>:
+                {{index.availableBalanceStr }}
+              </span>
+              <span class="text-gray" >
+                {{index.lockedBalanceStr}}
+                <span translate>in pending payments</span>
+              </span>
+            </div>
           </div>
         </h4>
       </div>
