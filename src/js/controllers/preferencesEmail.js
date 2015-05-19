@@ -3,19 +3,15 @@
 angular.module('copayApp.controllers').controller('preferencesEmailController',
   function($scope, go, profileService, gettext, $log) {
     this.save = function(form) {
+      var self = this;
       this.error = null;
-
-      if (!form.$valid && this.email) {
-        this.error = gettext('Invalid email');
-        return;
-      }
 
       var fc = profileService.focusedClient;
       this.saving = true;
       fc.savePreferences({
         email: this.email
       }, function(err) {
-        fc.saving = false;
+        self.saving = false;
         if (err) {
           $log.warn(err);
           $scope.$emit('Local/ClientError', err);
