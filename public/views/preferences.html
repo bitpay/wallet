@@ -20,6 +20,15 @@
       </span>
     </li>
 
+    <li class="line-b p20" ng-click="$root.go('preferencesEmail')">
+      <span translate>Email Notifications</span>
+      <span class="right text-gray">
+        <i class="icon-arrow-right3 size-24 right"></i>
+         <span ng-if="!index.preferences.email" translate>Disabled</span>
+         <span ng-if="index.preferences.email">{{index.preferences.email}}</span>
+      </span>
+    </li>
+
     <li class="line-b p20" ng-click="$root.go('preferencesColor')">
       <span translate>Color</span>
       <span class="right text-gray">
@@ -31,16 +40,6 @@
       <span translate>Encrypt Private Key</span>
       <switch id="network-name" name="encrypt" ng-model="encrypt" class="green right"></switch>
   </li>
-    <li class="line-b p20" ng-click="$root.go('preferencesEmail')">
-      <span translate>email Notifications</span>
-      <span class="right text-gray">
-        <i class="icon-arrow-right3 size-24 right"></i>
-         <span ng-if="!index.preferences.email" translate>Disabled</span>
-         <span ng-if="index.preferences.email">{{index.preferences.email}}</span>
-      </span>
-    </li>
-
-
  
     <h4 class="title m0">&nbsp;</h4>
     <li class="line-b p20" ng-click="$root.go('backup')">
