@@ -69,7 +69,7 @@ angular.module('copayApp.services')
             name, {color: color} );
           break;
         case 'TxProposalFinallyRejected':
-          notification.error(gettext('Payment Proposal Finally Rejected'),
+          notification.error(gettext('Payment Proposal Rejected'),
             name, {color: color} );
           break;
         case 'NewOutgoingTx':
