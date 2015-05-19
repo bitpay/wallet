@@ -190,7 +190,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
           return;
         };
 
-        self.setOngoingProcess(gettext('Signing transaction'));
+        self.setOngoingProcess(gettext('Signing payment'));
         $scope.loading = true;
         $scope.error = null;
         $timeout(function() {
@@ -229,7 +229,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       };
 
       $scope.reject = function(txp) {
-        self.setOngoingProcess(gettext('Rejecting transaction'));
+        self.setOngoingProcess(gettext('Rejecting payment'));
         $scope.loading = true;
         $scope.error = null;
         $timeout(function() {
@@ -249,7 +249,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
 
       $scope.remove = function(txp) {
-        self.setOngoingProcess(gettext('Deleting transaction'));
+        self.setOngoingProcess(gettext('Deleting payment'));
         $scope.loading = true;
         $scope.error = null;
         $timeout(function() {
@@ -270,7 +270,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       };
 
       $scope.broadcast = function(txp) {
-        self.setOngoingProcess(gettext('Broadcasting transaction'));
+        self.setOngoingProcess(gettext('Broadcasting Payment'));
         $scope.loading = true;
         $scope.error = null;
         $timeout(function() {
@@ -313,7 +313,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       self.setOngoingProcess();
       if (txp) {
         txStatus.notify(txp, function() {
-          $scope.$emit('Local/TxProposalAction');
+          $scope.$emit('Local/TxProposalAction', true);
         });
       } else {
         $timeout(function() {
