@@ -835,8 +835,8 @@ label.postfix, a.postfix {
 
 .input.block i {
   position: absolute;
-  top: 5px;
-  left: 10px;
+  top: 2px;
+  left: 15px;
   font-size: 20px;
   color: #7A8C9E;
   border-right: 1px solid #ccc;
