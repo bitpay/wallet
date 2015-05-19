@@ -145,6 +145,20 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     $rootScope.$emit('Local/TabChanged', tab);
   };
 
+
+  self.updatePreferences = function(cb) {
+    var fc = profileService.focusedClient;
+    fc.getPreferences(function(err, preferences) {
+      if (err) {
+        self.handleError(err);
+        return cb(err);
+      }
+      self.preferences = preferences;
+      return cb(err, preferences);
+    });
+  };
+
+
   self.updateAll = function(walletStatus, untilItChanges, initBalance, tries) {
     tries = tries || 0;
     if (untilItChanges && lodash.isUndefined(initBalance)) {
@@ -192,6 +206,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         self.walletStatus = walletStatus.wallet.status;
         self.walletScanStatus = walletStatus.wallet.scanStatus;
         self.copayers = walletStatus.wallet.copayers;
+        self.preferences = walletStatus.preferences;
         self.setBalance(walletStatus.balance);
         $rootScope.$apply();
       });
@@ -255,7 +270,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         self.updatingTxHistory = false;
         if (err) {
           $log.debug('TxHistory ERROR:', err);
-          self.handleError(err);
+          // We do not should errors here, since history is usually
+          // fetched AFTER others requests.
+          //self.handleError(err);
           self.txHistoryError = true;
         } else {
           $log.debug('Wallet Transaction History:', txs);
@@ -343,7 +360,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     lodash.each(txs, function(tx) {
       tx.ts = tx.minedTs || tx.sentTs;
       // no future transaction...
-      if (tx.ts > now) 
+      if (tx.ts > now)
         ts.ts = now;
       tx.rateTs = Math.floor((tx.ts || now) / 1000);
       tx.amountStr = profileService.formatAmount(tx.amount); //$filter('noFractionNumber')(
@@ -577,12 +594,15 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     });
   });
 
-
   $rootScope.$on('Local/UnitSettingUpdated', function(event) {
     self.updateAll();
     self.updateTxHistory();
   });
 
+
+  $rootScope.$on('Local/EmailUpdated', function(event, cb) {
+    self.updatePreferences(cb);
+  });
 
   $rootScope.$on('Local/BWSUpdated', function(event) {
     profileService.applyConfig();
@@ -663,7 +683,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       var msg = 'Error at Wallet Service: ';
       if (err.message) msg = msg + err.message;
       else if (err.error) msg = msg + err.error;
-      else msg = msg + err;
+      else msg = msg + (lodash.isObject(err) ? JSON.stringify(err) : err);
       self.clientError(msg);
     }
     $rootScope.$apply();
@@ -682,31 +702,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.setDefaultLanguage(setLang);
   });
 
-  $rootScope.$on('Animation/Disable', function(event) {
-    $timeout(function() {
-      self.slideLeft = false;
-      self.slideRight = false;
-      self.slideUp = false;
-      self.slideDown = false;
-    }, 400);
-  });
-
-  $rootScope.$on('Animation/SlideLeft', function(event) {
-    self.slideLeft = true;
-  });
-
-  $rootScope.$on('Animation/SlideRight', function(event) {
-    self.slideRight = true;
-  });
-
-  $rootScope.$on('Animation/SlideUp', function(event) {
-    self.slideUp = true;
-  });
-
-  $rootScope.$on('Animation/SlideDown', function(event) {
-    self.slideDown = true;
-  });
-
   $rootScope.$on('NewIncomingTx', function() {
     self.updateBalance();
     $timeout(function() {
@@ -714,10 +709,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     }, 5000);
   });
 
-
-  // remove transactionProposalRemoved (only for compat)
-
-  lodash.each(['NewOutgoingTx', 'NewTxProposal', 'TxProposalFinallyRejected', 'transactionProposalRemoved', 'TxProposalRemoved',
+  lodash.each(['NewOutgoingTx', 'NewTxProposal', 'TxProposalFinallyRejected', 'TxProposalRemoved',
     'Local/NewTxProposal', 'Local/TxProposalAction', 'ScanFinished'
   ], function(eventName) {
     $rootScope.$on(eventName, function(event, untilItChanges) {

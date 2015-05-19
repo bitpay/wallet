@@ -1,0 +1,39 @@
+<div 
+  class="topbar-container" 
+  ng-include="'views/includes/topbar.html'"
+  ng-init="titleSection='Email Notifications'; goBackToState = 'preferences'">
+</div>
+
+
+
+<div class="content preferences p20v" ng-controller="preferencesEmailController as prefEmail">
+
+  <div class="onGoingProcess" ng-show="prefEmail.saving && !index.isOffline">
+    <div class="onGoingProcess-content" ng-style="{'background-color':index.backgroundColor}">
+      <div class="spinner">
+        <div class="rect1"></div>
+        <div class="rect2"></div>
+        <div class="rect3"></div>
+        <div class="rect4"></div>
+        <div class="rect5"></div>
+      </div>
+      <span translate>Saving preferences...</span>
+    </div>
+  </div>
+
+
+  <form name="emailForm" ng-submit="prefEmail.save(emailForm)" class="columns" novalidate ng-init="prefEmail.email = index.preferences.email">
+    <div class="box-notification" ng-show="prefEmail.error">
+      <span class="text-warning size-14">
+        {{prefEmail.error|translate}}
+      </span>
+    </div>
+
+    <label translate>email for wallet notifications</label>
+    <input type="email" id="email" name="email" ng-model="prefEmail.email" required>
+    <input type="submit" class="button expand black round" value="{{'Save'|translate}}"
+    ng-style="{'background-color':index.backgroundColor}" ng-disabled="emailForm.$invalid && !index.preferences.email">
+  </form>
+  <p class="text-gray text-center columns size-14" translate>Setting up email notifications could weaken your privacy, if the wallet service provider is compromised. Information available to an attacker would include your wallet addresses and its balance, but no more.</p>
+</div>
+<div class="extra-margin-bottom"></div>
