@@ -29,17 +29,18 @@ angular.module('copayApp.controllers').controller('createController',
     }
 
     var updateRCSelect = function(n) {
+      $scope.totalCopayers = n;
       var maxReq = COPAYER_PAIR_LIMITS[n];
       self.RCValues = lodash.range(1, maxReq + 1);
       $scope.requiredCopayers = Math.min(parseInt(n / 2 + 1), maxReq);
     };
 
-    $scope.$watch('totalCopayers', function(tc) {
-      updateRCSelect(tc);
-    });
-
-    this.TCValues = lodash.range(1, defaults.limits.totalCopayers + 1);
+    this.TCValues = lodash.range(2, defaults.limits.totalCopayers + 1);
     $scope.totalCopayers = defaults.wallet.totalCopayers;
+
+    this.setTotalCopayers = function(tc) {
+      updateRCSelect(tc);
+    };
 
     this.create = function(form) {
       if (form && form.$invalid) {
