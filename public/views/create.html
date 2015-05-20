@@ -21,15 +21,17 @@
     </div>
   </div>
 
-  <div class="row m20b">
+  <div class="create-tab">
+    <div class="tab-container">
     <a href 
-      class="small-6 medium-6 large-6 columns text-center" 
-      ng-class="{'text-gray': totalCopayers == 1}"
-      ng-click="create.setTotalCopayers(1)">Personal</a>
+      ng-class="{'selected': totalCopayers == 1}"
+      ng-click="create.setTotalCopayers(1)" translate>Personal Wallet</a>
+    </div>
+    <div class="tab-container">
     <a href 
-      class="small-6 medium-6 large-6 columns text-center" 
-      ng-class="{'text-gray': totalCopayers != 1}"
-      ng-click="create.setTotalCopayers(3)">Multisignature</a>
+      ng-class="{'selected': totalCopayers != 1}"
+      ng-click="create.setTotalCopayers(3)" translate>Shared Wallet</a>
+    </div>
   </div>
 
   <form name="setupForm" ng-submit="create.create(setupForm)" novalidate>
