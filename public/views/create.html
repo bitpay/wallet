@@ -21,7 +21,7 @@
     </div>
   </div>
 
-  <div class="create-tab">
+  <div class="create-tab" ng-hide="create.hideTabs">
     <div class="tab-container">
     <a href 
       ng-class="{'selected': totalCopayers == 1}"
@@ -47,7 +47,7 @@
           <div class="large-12 columns" ng-hide="create.hideWalletName">
             <label><span translate>Wallet name</span>
               <div class="input">
-                <input type="text" placeholder="{{'Family vacation funds'|translate}}" class="form-control" name="walletName" ng-model="walletName" ng-required="true" ng-blur="create.formFocus(false)">
+                <input type="text" placeholder="{{'Family vacation funds'|translate}}" class="form-control" name="walletName" ng-model="walletName" ng-required="true" ng-focus="create.formFocus('wallet-name')" ng-blur="create.formFocus(false)">
               </div>
             </label>
           </div>
