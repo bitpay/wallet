@@ -729,13 +729,17 @@ textarea:focus
 .create-tab {
   width: 100%;
   border-bottom: 1px solid #DEDFE1;
-  margin-bottom: 20px;
-  padding: 0 0 .5rem;
+  margin-bottom: 25px;
+  padding: 0 0 .5rem 1rem;
+  overflow: hidden;
+}
+
+.create-tab .tab-container {
+  float: left;
+  width: 50%;
 }
 
 .create-tab a {
-  margin-left: 1.075rem;
-  margin-right: 1.575rem;
   font-size: .7rem;
   padding: 0 0 .6rem;
   color: #929396;
