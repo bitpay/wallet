@@ -44,7 +44,7 @@ msgstr ""
 
 #: public/views/preferencesAlias.html
 msgid "Alias for"
-msgstr ""
+msgstr "Alias pour"
 
 #: public/views/splash.html
 msgid "Already have a wallet?"
@@ -572,7 +572,7 @@ msgstr ""
 
 #: public/views/modals/paypro.html
 msgid "Pay To"
-msgstr ""
+msgstr "Payer à"
 
 #: public/views/modals/tx-status.html
 msgid "Payment Accepted"
