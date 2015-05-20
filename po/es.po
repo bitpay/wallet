@@ -158,7 +158,7 @@ msgid "Certified by"
 msgstr "Certificado por"
 
 #: public/views/preferencesAlias.html
-msgid "Changing wallet alias only afects the local wallet name."
+msgid "Changing wallet alias only affects the local wallet name."
 msgstr ""
 "Cambiar el alias del monedero solo afecta al nombre del monedero local."
 
