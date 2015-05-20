@@ -726,6 +726,38 @@ textarea:focus
   transform: translate3d(-100%, 0, 0) !important;
 }
 
+.create-tab {
+  width: 100%;
+  border-bottom: 1px solid #DEDFE1;
+  margin-bottom: 25px;
+  padding: 0 0 .5rem 1rem;
+  overflow: hidden;
+}
+
+.create-tab .tab-container {
+  float: left;
+  width: 50%;
+}
+
+.create-tab a {
+  font-size: .7rem;
+  padding: 0 0 .6rem;
+  color: #929396;
+  text-transform: uppercase;
+}
+
+.create-tab a:hover,
+.create-tab a:focus {
+  color: #2C3E50;
+}
+
+.create-tab a.selected, 
+.create-tab a:active {
+  font-weight: 600;
+  color: #2C3E50;
+  border-bottom: 3px solid #2C3E50;
+}
+
 /* removes 300ms in IE */
 -ms-touch-action: manipulation; /* IE10 /
 touch-action: manipulation; /* IE11+ */
