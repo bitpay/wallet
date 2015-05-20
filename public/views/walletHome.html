@@ -113,18 +113,19 @@
           <div class="wallet-info">
             <div ng-show="index.isShared" ng-click="openCopayersModal(index.copayers, index.copayerId)">
               <p class="m0">
-              {{index.m}} <span translate>of</span>  {{index.n}}
+              {{(index.alias || index.walletName)}}
               </p>
               <div class="size-12 text-gray">
-                <span translate>Multisignature wallet</span> <span ng-if="index.network != 'livenet'">- Testnet</span>
+                <span translate>Multisignature wallet</span> ({{index.m}} <span translate>of</span> {{index.n}})
+                <span ng-if="index.network != 'livenet'">- Testnet</span>
               </div>
             </div>
             <div ng-show="!index.isShared">
               <p class="m0">
-              {{index.m}} <span translate>of</span>  {{index.n}}
+              {{(index.alias || index.walletName)}}
               </p>
-              <div class="size-12 text-gray">
-                <span translate>Personal Wallet</span> <span ng-if="index.network != 'livenet'">- Testnet</span>
+              <div class="size-12 text-gray" ng-if="index.network != 'livenet'">
+                Testnet
               </div>
             </div>
           </div>
