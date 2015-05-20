@@ -76,9 +76,14 @@ angular.module('copayApp.controllers').controller('createController',
 
       if (what && what == 'my-name') {
         this.hideWalletName = true;
+        this.hideTabs = true;
+      }
+      else if (what && what == 'wallet-name'){
+        this.hideTabs = true;
       }
       else {
         this.hideWalletName = false;
+        this.hideTabs = false;
       }
       $timeout(function() {
         $rootScope.$digest();
