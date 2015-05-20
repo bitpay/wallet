@@ -6,7 +6,7 @@
 
 
 
-<div class="content p20v" ng-controller="createController as create">
+<div class="content p20v" ng-controller="createController as create" ng-init="create.setTotalCopayers(1)">
 
   <div class="onGoingProcess" ng-show="create.loading">
     <div class="onGoingProcess-content" ng-style="{'background-color':'#222'}">
@@ -21,6 +21,16 @@
     </div>
   </div>
 
+  <div class="row m20b">
+    <a href 
+      class="small-6 medium-6 large-6 columns text-center" 
+      ng-class="{'text-gray': totalCopayers == 1}"
+      ng-click="create.setTotalCopayers(1)">Personal</a>
+    <a href 
+      class="small-6 medium-6 large-6 columns text-center" 
+      ng-class="{'text-gray': totalCopayers != 1}"
+      ng-click="create.setTotalCopayers(3)">Multisignature</a>
+  </div>
 
   <form name="setupForm" ng-submit="create.create(setupForm)" novalidate>
     <div class="row">
@@ -47,10 +57,12 @@
             </label>
           </div>
         </div>
-        <div class="row">
+        <div class="row" ng-show="totalCopayers != 1">
           <div class="large-6 medium-6 columns">
             <label><span translate>Select total number of copayers</span>
-              <select class="m10t" ng-model="totalCopayers" ng-options="totalCopayers as totalCopayers for totalCopayers in create.TCValues">
+              <select class="m10t" ng-model="totalCopayers" 
+                ng-options="totalCopayers as totalCopayers for totalCopayers in create.TCValues"
+                ng-change="create.setTotalCopayers(totalCopayers)">
               </select>
             </label>
           </div>
