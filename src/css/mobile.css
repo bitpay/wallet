@@ -729,8 +729,8 @@ textarea:focus
 .create-tab {
   width: 100%;
   border-bottom: 1px solid #DEDFE1;
-  margin-bottom: 25px;
-  padding: 0 0 .58rem;
+  margin-bottom: 20px;
+  padding: 0 0 .5rem;
 }
 
 .create-tab a {
@@ -744,14 +744,14 @@ textarea:focus
 
 .create-tab a:hover,
 .create-tab a:focus {
-  color: #206ae3;
+  color: #2C3E50;
 }
 
 .create-tab a.selected, 
 .create-tab a:active {
   font-weight: 600;
-  color: #4683E8;
-  border-bottom: 3px solid #4683E8;
+  color: #2C3E50;
+  border-bottom: 3px solid #2C3E50;
 }
 
 /* removes 300ms in IE */
