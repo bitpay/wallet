@@ -145,7 +145,7 @@ msgid "Certified by"
 msgstr ""
 
 #: public/views/preferencesAlias.html
-msgid "Changing wallet alias only afects the local wallet name."
+msgid "Changing wallet alias only affects the local wallet name."
 msgstr ""
 
 #: public/views/import.html
