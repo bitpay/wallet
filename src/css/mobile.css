@@ -11,6 +11,7 @@ body {
   -khtml-user-select: none;
   -ms-user-select: none;
   user-select: none;
+  -webkit-touch-callout: none !important;
 }
 
 input {
@@ -617,6 +618,7 @@ input:focus,
 select:focus,
 textarea:focus
 {
+  outline: 0;
   opacity: 1;
   /*CSS transitions*/
   -o-transition-property: none !important;
