@@ -646,7 +646,12 @@ button.outline.light-gray:focus {
   color: #7A8C9E;
 }
 
-.button.outline.white {
+.button.outline.white,
+.button.outline.white:hover,
+.button.outline.white:focus,
+button.outline.white,
+button.outline.white:hover,
+button.outline.white:focus {
   background-color: transparent;
   border: 1px solid #fff;
   color: #fff;
@@ -687,57 +692,51 @@ button.warning:focus,
 
 /* WHITE */
 button.white,
-.button.white {
+button.white:hover,
+button.white:focus,
+.button.white,
+.button.white:hover,
+.button.white:focus {
   background-color: #fff;
   color: #2C3E50;
 }
 
 /* BLACK */
 button.black,
-.button.black {
+button.black:hover,
+button.black:focus,
+.button.black,
+.button.black:hover,
+.button.black:focus {
   background-color: #2C3E50;
   color: #fff;
 }
 
 /* GRAY */
 button.gray,
-.button.gray {
+button.gray:hover,
+button.gray:focus,
+.button.gray,
+.button.gray:hover,
+.button.gray:focus {
   background-color: #A9B2B8;
   color: #2C3E50;
 }
 
 button.disabled, button[disabled], .button.disabled, .button[disabled] {
-  border-color: transparent;
-}
-
-button.disabled.black,
-button[disabled].black,
-.button.disabled.black,
-.button[disabled].black,
-button.disabled.white,
-button[disabled].white,
-.button.disabled.white,
-.button[disabled].white,
-button.disabled.warning,
-button[disabled].warning,
-.button.disabled.warning,
-.button[disabled].warning,
-button.disabled.primary,
-button[disabled].primary,
-.button.disabled.primary,
-.button[disabled].primary,
-button.disabled.secondary,
-button[disabled].secondary,
-.button.disabled.secondary,
-.button[disabled].secondary {
+  border-color: transparent !important;
   background-color: #A5B2BF !important;
-  color: #fff;
+  color: #fff !important;
 }
-
 
 .button, button {
   text-transform: uppercase;
   transition: none !important;
+}
+
+.button:active, button:active {
+  background: -webkit-linear-gradient(top, rgba(0,0,0,0.1) 100%,rgba(0,0,0,0) 0%);
+  background: linear-gradient(to bottom, rgba(0,0,0,0.1) 100%,rgba(0,0,0,0) 0%);
 }
 
 .button:focus, button:focus {
@@ -795,39 +794,6 @@ label.postfix, a.postfix {
   top: 0;
   right: 0;
   width: 40px;
-}
-
-.photo-container {
-  margin-right: 3px;
-  display: inline-block;
-  width: 35px;
-  height: 35px;
-  color: #fff;
-  background: #7A8C9E;
-  border-radius: 100%;
-  vertical-align: middle;
-  overflow: hidden;
-  text-align: center;
-}
-
-.photo-container.profile {
-  width: 80px;
-  height: 80px;
-}
-
-.need-backup {
-  background: #ED4A43;
-  -moz-box-shadow:    1px 1px 0px 0px #A02F23;
-  box-shadow:         1px 1px 0px 0px #A02F23;
-  position: absolute;
-  top: 22px;
-  left: 0px;
-  width: 14px;
-  height: 14px;
-  border-radius: 100%;
-  font-size: 9px;
-  padding-top: 2px;
-  color: #fff;
 }
 
 .pointer {
