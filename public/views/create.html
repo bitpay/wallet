@@ -103,7 +103,7 @@
         </div>
 
 
-        <button type="submit" class="button round black expand m0" ng-disabled="setupForm.$invalid">
+        <button type="submit" class="button round black expand m0" ng-disabled="setupForm.$invalid || create.loading">
           <span translate>Create</span>
           {{requiredCopayers}}-<span translate>of</span>-{{totalCopayers}} <span translate>wallet</span>
         </button>

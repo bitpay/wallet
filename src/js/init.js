@@ -39,7 +39,7 @@ angular.element(document).ready(function() {
           navigator.app.exitApp();
         }
         else {
-          window.location = '#/walletHome';
+          window.location = '#/cordova/walletHome';
         }
       }, false);
 
