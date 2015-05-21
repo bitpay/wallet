@@ -1,41 +1,16 @@
 html, body {
-    margin: 0px;
-    padding: 0px;
-    height: 100%;
-    width: 100%;
-    font: 15px arial;
+  margin: 0px;
+  padding: 0px;
+  height: 100%;
+  width: 100%;
+  font: 12px arial;
 }
 
-text {
-    font: 12px arial;
-}
 svg {
-    display: block;
-    width: 90%;
+  display: block;
+  font: 10px arial;
 }
 
-#chart {
-    margin: 0px;
-    padding: 0px;
-    height: 80%;
-    width: 95%;
-}
-svg.nvd3-svg {
-    padding: 0 55px;
-    margin: 0 0px;
-}
-.left {
-    text-align: right;
-}
-.nvd3.multiChart .axis .nv-axis line {
-    stroke: none;
-    fill: none;
-}
-
-
-body {
-  font: 10px sans-serif;
-}
 
 .axis path,
 .axis line {
@@ -48,13 +23,13 @@ body {
   display: none;
 }
 
-.line {
+.line.qty {
   fill: none;
-  stroke: steelblue;
-  stroke-width: 1.9px;
+  stroke: #A1DBB2;
+  stroke-width: 1.5px;
 }
-.line2 {
+.line.amount {
   fill: none;
-  stroke: #f00;
-  stroke-width: 1.9px;
+  stroke: #F7A541;
+  stroke-width: 1.5px;
 }
