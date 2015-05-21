@@ -12,6 +12,11 @@ svg {
 }
 
 
+.chart svg {
+  width: 600px;
+  height: 300px;
+}
+
 .axis path,
 .axis line {
   fill: none;

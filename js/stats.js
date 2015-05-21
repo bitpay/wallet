@@ -66,94 +66,78 @@ Stats.prototype.show = function(data) {
   this.showAmount(data);
 };
 
-Stats.prototype.lineChart = function(opts, data) {
-  var margin = opts.margin || {
-    top: 20,
-    right: 20,
-    bottom: 30,
-    left: 50
-  };
-
-  var width = (opts.width || 960) - margin.left - margin.right;
-  var height = (opts.height || 500) - margin.top - margin.bottom;
-
-  var x = d3.time.scale().range([0, width]);
-  x.domain(d3.extent(data, function(d) {
-    return d[opts.x];
-  }));
-
-  var y = d3.scale.linear().range([height, 0]);
-  y.domain(d3.extent(data, function(d) {
-    return d[opts.y];
-  }));
-
-  var xAxis = d3.svg.axis().scale(x).orient('bottom').ticks(5);
-  var yAxis = d3.svg.axis()
-    .scale(y)
-    .orient('left')
-    .ticks(5);
-
-  var line = d3.svg.line()
-    .x(function(d) {
-      return x(d[opts.x]);
-    })
-    .y(function(d) {
-      return y(d[opts.y]);
-    });
-
-  var placeholder = '#' + (opts.placeholder || 'chart');
-  d3.select(placeholder + ' svg').remove();
-  var svg = d3.select(placeholder)
-    .append('svg')
-    .attr('width', width + margin.left + margin.right)
-    .attr('height', height + margin.top + margin.bottom)
-    .append('g')
-    .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
-
-  svg.append('g')
-    .attr('class', 'x axis ' + opts.class)
-    .attr('transform', 'translate(0,' + height + ')')
-    .call(xAxis);
-
-  svg.append('g')
-    .attr('class', 'y axis ' + opts.class)
-    .attr('transform', 'translate(0,0)')
-    .call(yAxis);
-
-  svg.append('text')
-    .attr('transform', 'rotate(-90)')
-    .attr('y', 6)
-    .attr('dy', '.71em')
-    .style('text-anchor', 'end')
-    .text(opts.label);
-
-  svg.append('path')
-    .datum(data)
-    .attr('class', 'line ' + opts.class)
-    .attr('d', line);
-};
-
 Stats.prototype.showQty = function(data) {
-  this.lineChart({
-    x: 'date',
-    y: 'qty',
-    placeholder: 'chart-qty',
-    label: 'Qty',
-    class: 'qty',
-    width: 800,
-    height: 400,
-  }, data);
-};
+  data = [{
+    key: '# of Transactions',
+    values: _.map(data, function(d) {
+      return {
+        x: d.date,
+        y: d.qty
+      };
+    }),
+  }];
 
+  nv.addGraph(function() {
+    var chart = nv.models.lineChart()
+      .useInteractiveGuideline(true);
+
+    chart.xAxis
+      .tickFormat(function(d) {
+        return d3.time.format('%b %d')(new Date(d));
+      });
+
+    chart.yAxis
+      .axisLabel(data[0].key)
+      .tickFormat(d3.format(',f'));
+
+    d3.select('#chart-qty svg').remove();
+    d3.select('#chart-qty')
+      .append('svg')
+      .datum(data)
+      .transition().duration(500)
+      .call(chart);
+
+    nv.utils.windowResize(chart.update);
+
+    return chart;
+  });
+};
 
 Stats.prototype.showAmount = function(data) {
-  this.lineChart({
-    x: 'date',
-    y: 'amount',
-    placeholder: 'chart-amount',
-    label: 'Amount (BTC)',
-    class: 'amount',
-    width: 800,
-    height: 400,
-  }, data);
+  console.log('*** [stats.js ln107] data:', data); // TODO
+
+  data = [{
+    key: 'Amount (BTC)',
+    values: _.map(data, function(d) {
+      return {
+        x: d.date,
+        y: d.amount
+      };
+    }),
+  }];
+
+  nv.addGraph(function() {
+    var chart = nv.models.lineChart()
+      .useInteractiveGuideline(true);
+
+    chart.xAxis
+      .tickFormat(function(d) {
+        return d3.time.format('%b %d')(new Date(d));
+      });
+
+    chart.yAxis
+      .axisLabel(data[0].key)
+      .tickFormat(d3.format('.02f'));
+
+    d3.select('#chart-amount svg').remove();
+    d3.select('#chart-amount')
+      .append('svg')
+      .datum(data)
+      .transition().duration(500)
+      .call(chart);
+
+    nv.utils.windowResize(chart.update);
+
+    return chart;
+  });
 };
