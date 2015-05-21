@@ -157,7 +157,7 @@ msgid "Certified by"
 msgstr "証明元："
 
 #: public/views/preferencesAlias.html
-msgid "Changing wallet alias only afects the local wallet name."
+msgid "Changing wallet alias only affects the local wallet name."
 msgstr "ウォレット通称を変更しても、この端末でしか変わりません。"
 
 #: public/views/import.html
