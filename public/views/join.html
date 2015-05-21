@@ -83,7 +83,8 @@
               </label>
             </div>
           </div>
-          <button translate type="submit" class="button expand black m0 round" ng-disabled="joinForm.$invalid">Join</button>
+          <button translate type="submit" class="button expand black m0 round" 
+            ng-disabled="joinForm.$invalid || join.loading">Join</button>
       </form>
     </div>
   </div>
