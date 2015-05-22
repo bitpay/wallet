@@ -90,12 +90,12 @@ _:-ms-fullscreen, :root .main {
 
 .tab-bar {
   background: #FFFFFF;
-  box-shadow: 0px 1px 1px 0px rgba(0,0,0,0.10);
   display: block;
   position: fixed;
   width: 100%;
   z-index: 5;
   line-height: 3.2rem;
+  border-bottom: 1px solid #E9E9EC;
 }
 
 .tab-bar h1 {
@@ -410,8 +410,6 @@ to prevent collapsing during animation*/
 }
 
 .CslideInUp {
-  transform: translate3d(0, 100%, 0);
-  -webkit-transform: translate3d(0, 100%, 0);
   -webkit-animation-name: slideInUp;
   animation-name: slideInUp;
   z-index: 1003;
@@ -427,8 +425,6 @@ to prevent collapsing during animation*/
   z-index: 1003;
 }
 .CslideInRight {
-  -webkit-transform: translate3d(100%, 0, 0);
-  transform: translate3d(100%, 0, 0);
   -webkit-animation-name: slideInRight;
   animation-name: slideInRight;
   z-index: 1003;
@@ -572,6 +568,7 @@ to prevent collapsing during animation*/
   border-radius: 0;
   overflow-y: auto;
   padding-bottom: 20px;
+  outline: 0;
 }
 
 .reveal-modal.animated.slideInRight,
@@ -712,7 +709,7 @@ textarea:focus
   transform: translate3d(-100%, 0, 0);
   width:100%;
   position: absolute;
-  top: 46px;
+  top: 45px;
   bottom: 37px;
   overflow: auto;
   padding-bottom: 40px;
