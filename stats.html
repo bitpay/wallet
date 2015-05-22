@@ -12,8 +12,7 @@
       <script type="text/javascript" src="./js/stats.js"></script>
       <script>
         $(document).ready(function(){
-          var stats = new Stats();
-          stats.run();
+          (new Stats()).run();
         });
       </script>        
   </head>
@@ -22,7 +21,13 @@
           <option value="livenet" selected>Livenet</option>
           <option value="testnet">Testnet</option>
       </select>
+      <ul id="totals">
+        <li id="total-wallets"><span class="label">Wallets</span><span class="value"></span></li>
+        <li id="total-txps"><span class="label">Proposals</span><span class="value"></span></li>
+        <li id="total-amount"><span class="label">Amount (BTC)</span><span class="value"></span></li>
+      </ul>
+      <div id="chart-wallets" class="chart"></div>
+      <div id="chart-txps" class="chart"></div>
       <div id="chart-amount" class="chart"></div>
-      <div id="chart-qty" class="chart"></div>
   </body>
 </html>

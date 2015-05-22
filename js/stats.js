@@ -51,7 +51,8 @@ Stats.prototype.transform = function(data) {
     return {
       date: parseDate(k),
       amount: +v.totalAmount / 1e8,
-      qty: +v.totalTx,
+      txps: +v.totalTx,
+      wallets: +v.totalNewWallets,
     };
   });
   return data;
@@ -62,17 +63,48 @@ Stats.prototype.error = function(msg) {
 };
 
 Stats.prototype.show = function(data) {
-  this.showQty(data);
+  this.showTotals(data);
+  this.showWallets(data);
+  this.showTransactions(data);
   this.showAmount(data);
 };
 
-Stats.prototype.showQty = function(data) {
+Stats.prototype.showTotals = function(data) {
+  function addCommas(nStr) {
+    nStr += '';
+    var x = nStr.split('.');
+    var x1 = x[0];
+    var x2 = x.length > 1 ? '.' + x[1] : '';
+    var rgx = /(\d+)(\d{3})/;
+    while (rgx.test(x1)) {
+      x1 = x1.replace(rgx, '$1' + ',' + '$2');
+    }
+    return x1 + x2;
+  };
+
+  var total = _.reduce(data, function(memo, d) {
+    memo.wallets += d.wallets;
+    memo.txps += d.txps;
+    memo.amount += d.amount;
+    return memo;
+  }, {
+    wallets: 0,
+    txps: 0,
+    amount: 0
+  });
+
+  $('#total-wallets .value').html(addCommas(total.wallets));
+  $('#total-txps .value').html(addCommas(total.txps));
+  $('#total-amount .value').html(addCommas(total.amount.toFixed(2)));
+};
+
+Stats.prototype.showWallets = function(data) {
   data = [{
-    key: '# of Transactions',
+    key: 'New wallets',
     values: _.map(data, function(d) {
       return {
         x: d.date,
-        y: d.qty
+        y: d.wallets
       };
     }),
   }];
@@ -90,8 +122,45 @@ Stats.prototype.showQty = function(data) {
       .axisLabel(data[0].key)
       .tickFormat(d3.format(',f'));
 
-    d3.select('#chart-qty svg').remove();
-    d3.select('#chart-qty')
+    d3.select('#chart-wallets svg').remove();
+    d3.select('#chart-wallets')
+      .append('svg')
+      .datum(data)
+      .transition().duration(500)
+      .call(chart);
+
+    nv.utils.windowResize(chart.update);
+
+    return chart;
+  });
+};
+
+Stats.prototype.showTransactions = function(data) {
+  data = [{
+    key: '# of Transaction proposals',
+    values: _.map(data, function(d) {
+      return {
+        x: d.date,
+        y: d.txps
+      };
+    }),
+  }];
+
+  nv.addGraph(function() {
+    var chart = nv.models.lineChart()
+      .useInteractiveGuideline(true);
+
+    chart.xAxis
+      .tickFormat(function(d) {
+        return d3.time.format('%b %d')(new Date(d));
+      });
+
+    chart.yAxis
+      .axisLabel(data[0].key)
+      .tickFormat(d3.format(',f'));
+
+    d3.select('#chart-txps svg').remove();
+    d3.select('#chart-txps')
       .append('svg')
       .datum(data)
       .transition().duration(500)
@@ -104,10 +173,8 @@ Stats.prototype.showQty = function(data) {
 };
 
 Stats.prototype.showAmount = function(data) {
-  console.log('*** [stats.js ln107] data:', data); // TODO
-
   data = [{
-    key: 'Amount (BTC)',
+    key: 'Amount sent (BTC)',
     values: _.map(data, function(d) {
       return {
         x: d.date,

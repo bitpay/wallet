@@ -11,30 +11,34 @@ svg {
   font: 10px arial;
 }
 
-
 .chart svg {
-  width: 600px;
+  width: 640px;
   height: 300px;
 }
 
-.axis path,
-.axis line {
-  fill: none;
-  stroke: #000;
-  shape-rendering: crispEdges;
+ul#totals {
+  list-style:none;
 }
 
-.x.axis path {
-  display: none;
+#totals li {
+  display:inline-block;
+  text-align: center;
+  padding: 20px;
+  margin: 8px;
+  border: 1px lightgray solid;
+  height: 60px;
+  width: 140px;
 }
 
-.line.qty {
-  fill: none;
-  stroke: #A1DBB2;
-  stroke-width: 1.5px;
+#totals .label {
+  font-size: 12px;
+  color: #888;
 }
-.line.amount {
-  fill: none;
-  stroke: #F7A541;
-  stroke-width: 1.5px;
+
+#totals .value {
+  color: #555;
+  font-size: 30px;
+  font-weight: bold;
+  display: block;
+  padding: 10px 0 0 0;
 }
