@@ -1,13 +1,12 @@
 'use strict';
 
+var URL = 'https://bws.bitpay.com/bws/api';
+var FROM = '2015-01-01';
+
+
 function Stats() {
 
 };
-
-// var URL = 'http://localhost:3232/bws/api';
-var URL = 'https://bws-prodtest.bitpay.com/bws/api';
-var FROM = '2015-01-01';
-
 
 Stats.prototype.run = function() {
   var self = this;
@@ -38,7 +37,10 @@ Stats.prototype.fetch = function(network, cb) {
   var url = URL + '/v1/stats/' + from + '/' + to;
 
   d3.json(url)
-    .get(function(error, data) {
+    .get(function(err, data) {
+      if (err) return cb(err);
+      if (!data || _.isEmpty(data)) return cb('No data');
+
       var data = self.transform(data[network]);
       return cb(null, data);
     });
