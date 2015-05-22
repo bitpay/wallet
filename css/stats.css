@@ -1,0 +1,61 @@
+html, body {
+  margin: 0px;
+  padding: 0px;
+  height: 100%;
+  width: 100%;
+  font: 12px arial;
+}
+
+svg {
+  width: 640px;
+  height: 300px;
+  display: block;
+  font: 10px arial;
+}
+
+body {
+  padding-top: 20px;
+  width: 650px;
+  margin: auto;
+}
+
+select {
+  float:right;
+  margin: 0 28px 40px 0;
+}
+
+ul#totals {
+  list-style:none;
+  clear:both;
+}
+
+#totals li {
+  display:inline-block;
+  text-align: center;
+  padding: 20px;
+  margin: 6px;
+  border: 1px lightgray solid;
+  height: 60px;
+  width: 142px;
+}
+
+#totals li:first-child {
+  margin-left: 0;
+}
+
+#totals li:last-child {
+  margin-right: 0;
+}
+
+#totals .label {
+  font-size: 12px;
+  color: #888;
+}
+
+#totals .value {
+  color: #555;
+  font-size: 30px;
+  font-weight: bold;
+  display: block;
+  padding: 10px 0 10px 0;
+}

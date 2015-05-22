@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+    <head>
+      <meta charset="utf-8">
+      <link type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.7.0/nv.d3.css" rel="stylesheet">
+      <link type="text/css" href="./css/stats.css" rel="stylesheet">
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js" charset="utf-8"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.8.0/lodash.min.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.3/moment.min.js" charset="utf-8"></script>
+      <script type="text/javascript" src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.7.0/nv.d3.min.js"></script>
+      <script type="text/javascript" src="./js/stats.js"></script>
+      <script>
+        $(document).ready(function(){
+          (new Stats()).run();
+        });
+      </script>        
+  </head>
+  <body class='with-3d-shadow with-transitions'>
+      <select name="list" id="network">
+          <option value="livenet" selected>Livenet</option>
+          <option value="testnet">Testnet</option>
+      </select>
+      <ul id="totals">
+        <li id="total-wallets"><span class="label">Wallets</span><span class="value"></span></li>
+        <li id="total-txps"><span class="label">Proposals</span><span class="value"></span></li>
+        <li id="total-amount"><span class="label">Amount (BTC)</span><span class="value"></span></li>
+      </ul>
+      <div id="chart-wallets" class="chart"></div>
+      <div id="chart-txps" class="chart"></div>
+      <div id="chart-amount" class="chart"></div>
+  </body>
+</html>
