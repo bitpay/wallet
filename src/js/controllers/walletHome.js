@@ -91,10 +91,10 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
   var parseError = function(err) {
     if (err.message) {
-      if (err.message.indexOf('CORS')>=0) {
+      if (err.message.indexOf('CORS') >= 0) {
         err.message = gettext('Could not connect wallet service. Check your Internet connexion and your wallet service configuration.');
       }
-      if (err.message.indexOf('TIMEDOUT')>=0) {
+      if (err.message.indexOf('TIMEDOUT') >= 0) {
         err.message = gettext('Wallet service timed out. Check your Internet connexion and your wallet service configuration.');
       }
     }
@@ -208,7 +208,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
               if (txpHasRequiredSignatures) {
                 self.setOngoingProcess(gettext('Broadcasting transaction'));
                 $scope.loading = true;
-                fc.broadcastTxProposal(txpsi, function(err, txpsb) {
+                fc.broadcastTxProposal(txpsi, function(err, txpsb, memo) {
                   self.setOngoingProcess();
                   $scope.loading = false;
                   if (err) {
@@ -216,6 +216,8 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
                     $scope.error = gettext('Could not broadcast transaction. Please try again.');
                     $scope.$digest();
                   } else {
+                    if (memo)
+                      $log.info(memo);
                     $modalInstance.close(txpsb);
                   }
                 });
@@ -274,7 +276,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
         $scope.loading = true;
         $scope.error = null;
         $timeout(function() {
-          fc.broadcastTxProposal(txp, function(err, txpb) {
+          fc.broadcastTxProposal(txp, function(err, txpb, memo) {
             self.setOngoingProcess();
             $scope.loading = false;
             if (err) {
@@ -282,6 +284,9 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
               $scope.error = err.message || gettext('Could not send transaction. Please try again.');
               $scope.$digest();
             } else {
+
+              if (memo)
+                $log.info(memo);
               $modalInstance.close(txpb);
             }
           });
@@ -616,13 +621,17 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
       if (signedTx.status == 'accepted') {
         self.setOngoingProcess(gettext('Broadcasting transaction'));
-        fc.broadcastTxProposal(signedTx, function(err, btx) {
+
+        fc.broadcastTxProposal(signedTx, function(err, btx, memo) {
           self.setOngoingProcess();
           if (err) {
             $scope.error = gettext('Transaction not broadcasted. Please try again.');
             $scope.$digest();
             return cb(err);
           }
+          if (memo)
+            $log.info(memo);
+
           txStatus.notify(btx, function() {
             $scope.$emit('Local/TxProposalAction');
             return cb();
