@@ -10,7 +10,18 @@
     "bitcoin",
     "bitcore"
   ],
-  "main": "app.js",
+  "main": "public/index.html",
+  "window": {
+    "toolbar": false,
+    "resizable": false,
+    "width": 400,
+    "height": 600,
+    "min_width": 400,
+    "min_height": 600,
+    "max_width": 400,
+    "max_height": 600,
+    "position": "center"
+  },
   "id": "jid1-x7bV5evAaI1P9Q",
   "homepage": "https://github.com/bitpay/copay",
   "license": "MIT",
