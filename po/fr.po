@@ -365,7 +365,7 @@ msgstr "Impossible d'importer les portefeuilles"
 
 #: public/views/create.html
 msgid "Family vacation funds"
-msgstr "Fonds pour les vacances familiales."
+msgstr "Fonds pour les vacances familiales"
 
 #. Get information of payment if using Payment Protocol
 #: src/js/controllers/walletHome.js
