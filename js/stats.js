@@ -1,6 +1,7 @@
 'use strict';
 
 var URL = 'https://bws.bitpay.com/bws/api';
+// var URL = 'http://localhost:3232/bws/api';
 var FROM = '2015-01-01';
 
 
@@ -34,14 +35,14 @@ Stats.prototype.fetch = function(network, cb) {
 
   var from = FROM;
   var to = moment().subtract(1, 'days').format('YYYY-MM-DD');
-  var url = URL + '/v1/stats/' + from + '/' + to;
+  var url = URL + '/v1/stats/?network=' + network + '&from=' + from + '&to=' + to;
 
   d3.json(url)
     .get(function(err, data) {
       if (err) return cb(err);
       if (!data || _.isEmpty(data)) return cb('No data');
 
-      var data = self.transform(data[network]);
+      var data = self.transform(data);
       return cb(null, data);
     });
 };
@@ -49,15 +50,28 @@ Stats.prototype.fetch = function(network, cb) {
 Stats.prototype.transform = function(data) {
   var parseDate = d3.time.format('%Y%m%d').parse;
 
-  data = _.map(data, function(v, k) {
+  var result = {};
+  _.each(data.newWallets.byDay, function(d) {
+    if (!result[d.day]) result[d.day] = {};
+    result[d.day].walletCount = d.count;
+  });
+  _.each(data.txProposals.amountByDay, function(d) {
+    if (!result[d.day]) result[d.day] = {};
+    result[d.day].txAmount = d.amount / 1e8;
+  });
+  _.each(data.txProposals.nbByDay, function(d) {
+    if (!result[d.day]) result[d.day] = {};
+    result[d.day].txCount = d.count;
+  });
+
+  return _.map(result, function(v, k) {
     return {
       date: parseDate(k),
-      amount: +v.totalAmount / 1e8,
-      txps: +v.totalTx,
-      wallets: +v.totalNewWallets,
+      amount: v.txAmount,
+      txps: v.txCount,
+      wallets: v.walletCount,
     };
   });
-  return data;
 };
 
 Stats.prototype.error = function(msg) {
@@ -85,9 +99,9 @@ Stats.prototype.showTotals = function(data) {
   };
 
   var total = _.reduce(data, function(memo, d) {
-    memo.wallets += d.wallets;
-    memo.txps += d.txps;
-    memo.amount += d.amount;
+    memo.wallets += (d.wallets || 0);
+    memo.txps += (d.txps || 0);
+    memo.amount += (d.amount || 0);
     return memo;
   }, {
     wallets: 0,
@@ -106,7 +120,7 @@ Stats.prototype.showWallets = function(data) {
     values: _.map(data, function(d) {
       return {
         x: d.date,
-        y: d.wallets
+        y: d.wallets || 0,
       };
     }),
   }];
@@ -143,7 +157,7 @@ Stats.prototype.showTransactions = function(data) {
     values: _.map(data, function(d) {
       return {
         x: d.date,
-        y: d.txps
+        y: d.txps || 0,
       };
     }),
   }];
@@ -180,7 +194,7 @@ Stats.prototype.showAmount = function(data) {
     values: _.map(data, function(d) {
       return {
         x: d.date,
-        y: d.amount
+        y: d.amount || 0,
       };
     }),
   }];
