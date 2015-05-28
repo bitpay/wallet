@@ -3,6 +3,11 @@
  * Copay main CSS
  *
  */
+ body {
+  font-family: Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+
 .panel h1, .panel h2, .panel h3, .panel h4, .panel h5, .panel h6, .panel p, .panel li, .panel dl {
   color: #2C3E50;
 }
