@@ -258,6 +258,7 @@ a.missing-copayers {
 .button, button {
   padding: 1rem 1.2rem 1.0625rem;
   border: 1px solid transparent;
+  font-family: Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 .box-setup {
@@ -750,7 +751,7 @@ textarea:focus
   color: #2C3E50;
 }
 
-.create-tab a.selected, 
+.create-tab a.selected,
 .create-tab a:active {
   font-weight: 600;
   color: #2C3E50;
