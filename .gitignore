@@ -9,6 +9,11 @@ src/js/version.js
 cordova/project/*
 cordova/*.keystore
 
+# node-webkit
+cache
+webkitbuilds/*
+!webkitbuilds/README.md
+
 # chrome extensions
 browser-extensions/chrome/copay-chrome-extension
 browser-extensions/chrome/copay-chrome-extension.zip

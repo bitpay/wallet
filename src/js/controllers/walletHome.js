@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('walletHomeController', function($scope, $rootScope, $timeout, $filter, $modal, $log, notification, txStatus, isCordova, profileService, lodash, configService, rateService, storageService, bitcore, isChromeApp, gettext, gettextCatalog) {
+angular.module('copayApp.controllers').controller('walletHomeController', function($scope, $rootScope, $timeout, $filter, $modal, $log, notification, txStatus, isCordova, profileService, lodash, configService, rateService, storageService, bitcore, isChromeApp, gettext, gettextCatalog, nodeWebkit) {
 
   var self = this;
   $rootScope.hideMenuBar = false;
@@ -381,6 +381,8 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     if (isCordova) {
       window.cordova.plugins.clipboard.copy('bitcoin:' + addr);
       window.plugins.toast.showShortCenter('Copied to clipboard');
+    } else if (nodeWebkit.isDefined()) {
+      nodeWebkit.writeToClipboard(addr);
     }
   };
 

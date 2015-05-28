@@ -184,6 +184,17 @@ module.exports = function(grunt) {
         force: true,
         recursive: false
       }
+    },
+    nodewebkit: {
+      options: {
+          platforms: ['win','osx','linux'],
+          buildDir: './webkitbuilds',
+          version: '0.12.2',
+          macIcns: './public/img/icons/icon.icns',
+          winIco: './public/img/icons/icon.png',
+          exeIco: './public/img/icons/icon.ico'
+      },
+      src: ['./package.json', './public/**/*']
     }
   });
 
@@ -197,7 +208,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-exec');
   grunt.loadNpmTasks('grunt-karma');
   grunt.loadNpmTasks('grunt-karma-coveralls');
-
+  grunt.loadNpmTasks('grunt-node-webkit-builder');
 
   grunt.registerTask('default', [
     'nggettext_compile', 'exec:version', 'concat', 'copy'
@@ -208,4 +219,5 @@ module.exports = function(grunt) {
   grunt.registerTask('translate', ['nggettext_extract']);
   grunt.registerTask('test', ['karma:unit']);
   grunt.registerTask('test-coveralls', ['karma:prod', 'coveralls']);
+  grunt.registerTask('desktop', ['prod', 'nodewebkit']);
 };
