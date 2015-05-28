@@ -218,7 +218,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
                   } else {
                     if (memo)
                       $log.info(memo);
-                    $modalInstance.close(txpsb);
+                    $modalInstance.close(txpsb, true);
                   }
                 });
               } else {
@@ -287,7 +287,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
               if (memo)
                 $log.info(memo);
-              $modalInstance.close(txpb);
+              $modalInstance.close(txpb, true);
             }
           });
         }, 100);
@@ -314,11 +314,11 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       m.addClass('slideOutRight');
     });
 
-    modalInstance.result.then(function(txp) {
+    modalInstance.result.then(function(txp, refreshUntilItChanges) {
       self.setOngoingProcess();
       if (txp) {
         txStatus.notify(txp, function() {
-          $scope.$emit('Local/TxProposalAction', true);
+          $scope.$emit('Local/TxProposalAction', refreshUntilItChanges);
         });
       } else {
         $timeout(function() {
@@ -633,7 +633,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
             $log.info(memo);
 
           txStatus.notify(btx, function() {
-            $scope.$emit('Local/TxProposalAction');
+            $scope.$emit('Local/TxProposalAction', true);
             return cb();
           });
         });
