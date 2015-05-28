@@ -13,14 +13,19 @@
   "main": "public/index.html",
   "window": {
     "toolbar": false,
+    "show": true,
+    "visible": true,
     "resizable": false,
+    "frame": true,
     "width": 400,
     "height": 600,
-    "min_width": 400,
-    "min_height": 600,
-    "max_width": 400,
-    "max_height": 600,
-    "position": "center"
+    "position": "center",
+    "fullscreen": false
+  },
+  "webkit": {
+    "page-cache": false, 
+    "java": false, 
+    "plugin": false
   },
   "id": "jid1-x7bV5evAaI1P9Q",
   "homepage": "https://github.com/bitpay/copay",
@@ -56,6 +61,7 @@
     "angular-mocks": "^1.3.14",
     "grunt-karma": "^0.10.1",
     "grunt-karma-coveralls": "^2.5.3",
+    "grunt-node-webkit-builder": "^1.0.2",
     "karma": "^0.12.31",
     "karma-cli": "0.0.4",
     "karma-coverage": "^0.2.7",
