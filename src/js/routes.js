@@ -27,6 +27,10 @@ angular
         ['debug', 'info', 'warn', 'error', 'log'].forEach(function(level) {
           var orig = $delegate[level];
           $delegate[level] = function() {
+
+            if (level=='error')
+              console.log(arguments);
+
             var args = [].slice.call(arguments);
             if (!Array.isArray(args)) args = [args];
             args = args.map(function(v) {
