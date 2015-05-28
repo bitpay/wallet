@@ -191,7 +191,6 @@ module.exports = function(grunt) {
           buildDir: './webkitbuilds',
           version: '0.12.2',
           macIcns: './public/img/icons/icon.icns',
-          winIco: './public/img/icons/icon.png',
           exeIco: './public/img/icons/icon.ico'
       },
       src: ['./package.json', './public/**/*']
