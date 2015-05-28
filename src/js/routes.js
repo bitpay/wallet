@@ -374,7 +374,7 @@ angular
         needProfile: false
       });
   })
-  .run(function($rootScope, $state, $log, gettextCatalog, uriHandler, isCordova, amMoment, profileService, $timeout) {
+  .run(function($rootScope, $state, $log, gettextCatalog, uriHandler, isCordova, amMoment, profileService, $timeout, nodeWebkit) {
     FastClick.attach(document.body);
 
     // Auto-detect browser language
@@ -394,6 +394,18 @@ angular
     // Register URI handler, not for mobileApp
     if (!isCordova) {
       uriHandler.register();
+    }
+
+    if (nodeWebkit.isDefined()) {
+      var gui = require('nw.gui');
+      var win = gui.Window.get();
+      var nativeMenuBar = new gui.Menu({ type: "menubar" });
+      try {
+        nativeMenuBar.createMacBuiltin("Copay");
+      } catch(e) {
+        $log.debug('This is not OSX');
+      }
+      win.menu = nativeMenuBar;
     }
 
     var pageWeight = {
