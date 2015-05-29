@@ -91,9 +91,11 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
   var parseError = function(err) {
     if (err.message) {
+      // TODO : this is not used anymore?
       if (err.message.indexOf('CORS') >= 0) {
         err.message = gettext('Could not connect wallet service. Check your Internet connexion and your wallet service configuration.');
       }
+
       if (err.message.indexOf('TIMEDOUT') >= 0) {
         err.message = gettext('Wallet service timed out. Check your Internet connexion and your wallet service configuration.');
       }
@@ -200,7 +202,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
             if (err) {
               $scope.loading = false;
               parseError(err);
-              $scope.error = err.message || gettext('Could not sign transaction. Please try again.');
+              $scope.error = err.message || gettext('Could not accept payment. Check you connection and try again');
               $scope.$digest();
             } else {
               //if txp has required signatures then broadcast it
@@ -213,11 +215,15 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
                   $scope.loading = false;
                   if (err) {
                     parseError(err);
-                    $scope.error = gettext('Could not broadcast transaction. Please try again.');
+                    $scope.error = gettext('Could not broadcast payment. Check you connection and try again');
                     $scope.$digest();
                   } else {
+
+                    console.log('[walletHome.js.219]'); //TODO
                     if (memo)
                       $log.info(memo);
+
+                    console.log('[walletHome.js.223]'); //TODO
                     $modalInstance.close(txpsb, true);
                   }
                 });
@@ -240,7 +246,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
             $scope.loading = false;
             if (err) {
               parseError(err);
-              $scope.error = err.message || gettext('Could not reject transaction. Please try again.');
+              $scope.error = err.message || gettext('Could not reject payment. Check you connection and try again');
               $scope.$digest();
             } else {
               $modalInstance.close(txpr);
@@ -262,7 +268,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
             // Hacky: request tries to parse an empty response
             if (err && !(err.message && err.message.match(/Unexpected/))) {
               parseError(err);
-              $scope.error = err.message || gettext('Could not delete transaction. Please try again.');
+              $scope.error = err.message || gettext('Could not delete payment proposal. Check you connection and try again');
               $scope.$digest();
               return;
             }
@@ -281,7 +287,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
             $scope.loading = false;
             if (err) {
               parseError(err);
-              $scope.error = err.message || gettext('Could not send transaction. Please try again.');
+              $scope.error = err.message || gettext('Could not broadcast payment. Check you connection and try again');
               $scope.$digest();
             } else {
 
@@ -333,21 +339,24 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   this.setNewAddress = function() {
     var fc = profileService.focusedClient;
     self.generatingAddress = true;
+    self.addrError = null;
     fc.createAddress(function(err, addr) {
       self.generatingAddress = false;
       if (err) {
-        if (err.error.match(/locked/gi)) {
+        if (err.error && err.error.match(/locked/gi)) {
           $log.debug(err.error);
           $timeout(function() {
             self.setNewAddress();
           }, 5000);
         } else {
           $log.debug('Creating address ERROR:', err);
-          $scope.$emit('Local/ClientError', err);
+          parseError(err);
+          self.addrError = err.message || gettext('Could not create address. Check you connection and try again');
           $scope.$digest();
         }
         return;
       }
+      self.addrError = null;
       self.addr = addr.address;
       storageService.storeLastAddress(fc.credentials.walletId, addr.address, function() {
 
@@ -358,6 +367,8 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   };
 
   this.setAddress = function() {
+    self.addrError = null;
+
     if (self.addr)
       return;
 
@@ -410,7 +421,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   };
 
   this.resetError = function() {
-    this.error = this.success = null;
+    this.error = this.success  = null;
   };
 
   this.bindTouchDown = function(tries) {
@@ -527,9 +538,10 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     var fc = profileService.focusedClient;
     $log.warn(err);
     parseError(err);
-    var errMessage = 'The transaction' + (fc.credentials.m > 1 ? ' proposal' : '') +
+    var errMessage =
+      fc.credentials.m > 1 ? gettext('Could not create payment proposal') : gettext('Could not send payment');
 
-      ' could not be created: ' + (err.message ? err.message : err);
+    errMessage = errMessage + '. ' + (err.message ? err.message : gettext('Check you connection and try again'));
 
     this.error = errMessage;
 
