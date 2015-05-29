@@ -15,6 +15,10 @@ angular.module('copayApp.services')
     };
 
     root.storeLast = function(notificationData, walletId) {
+
+      if (notificationData.type == 'NewAddress')
+        return;
+
       lastNotificationOnWallet[walletId] = {
         creatorId: notificationData.creatorId,
         type: notificationData.type,
@@ -37,7 +41,6 @@ angular.module('copayApp.services')
       if (last.type === 'TxProposalRejectedBy'
           && notificationData.type === 'TxProposalFinallyRejected')
         return true;
-
 
       return false;
     };
@@ -73,7 +76,7 @@ angular.module('copayApp.services')
             name, {color: color} );
           break;
         case 'NewOutgoingTx':
-          notification.sent(gettext('Payment Proposal Sent'),
+          notification.sent(gettext('Payment Sent'),
             name, {color: color} );
           break;
         case 'NewIncomingTx':

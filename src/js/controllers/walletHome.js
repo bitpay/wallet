@@ -223,8 +223,8 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
                     if (memo)
                       $log.info(memo);
 
-                    console.log('[walletHome.js.223]'); //TODO
-                    $modalInstance.close(txpsb, true);
+                    txpsb.refreshUntilItChanges = true;
+                    $modalInstance.close(txpsb);
                   }
                 });
               } else {
@@ -293,7 +293,9 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
               if (memo)
                 $log.info(memo);
-              $modalInstance.close(txpb, true);
+
+              txpb.refreshUntilItChanges = true;
+              $modalInstance.close(txpb);
             }
           });
         }, 100);
@@ -320,7 +322,9 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       m.addClass('slideOutRight');
     });
 
-    modalInstance.result.then(function(txp, refreshUntilItChanges) {
+    modalInstance.result.then(function(txp) {
+      var refreshUntilItChanges = txp.refreshUntilItChanges;
+      console.log('[walletHome.js.323:refreshUntilItChanges:]', refreshUntilItChanges); //TODO
       self.setOngoingProcess();
       if (txp) {
         txStatus.notify(txp, function() {
@@ -421,7 +425,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   };
 
   this.resetError = function() {
-    this.error = this.success  = null;
+    this.error = this.success = null;
   };
 
   this.bindTouchDown = function(tries) {
