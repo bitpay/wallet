@@ -214,6 +214,14 @@
           <div class="large-12 columns">
             <h2 class="text-center m10t" translate>My Bitcoin address</h2>
             <div >
+
+            <div class="box-notification" ng-show="home.addrError">
+              <span class="text-warning">
+                {{home.addrError|translate}}
+              </span>
+            </div>
+
+
               <div class="text-center" ng-click="home.copyAddress(home.addr)">
                 <qrcode size="220" data="bitcoin:{{home.addr}}"></qrcode>
                 <div  ng-show="home.generatingAddress" style="position:relative; top:-226px; height:0px">
