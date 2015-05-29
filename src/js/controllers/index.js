@@ -677,7 +677,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       go.walletHome();
     } else if (err && err.cors == 'rejected') {
       $log.debug('CORS error:', err);
-    } else if (err.code === 'ETIMEDOUT') {
+    } else if (err.code === 'ETIMEDOUT' || err.code === 'CONNERROR') {
       $log.debug('Time out:', err);
     } else {
       var msg = 'Error at Wallet Service: ';
