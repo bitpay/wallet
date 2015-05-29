@@ -248,6 +248,7 @@ ul.copayer-list img {
   font-size: 14px;
 }
 
+
 a.missing-copayers {
   bottom: -34px;
   text-align: center;
@@ -736,19 +737,20 @@ textarea:focus
 
 .create-tab .tab-container {
   float: left;
-  width: 50%;
 }
+
 
 .create-tab a {
   font-size: .7rem;
   padding: 0 0 .6rem;
   color: #929396;
   text-transform: uppercase;
+  font-weight: 500;
 }
 
 .create-tab a:hover,
 .create-tab a:focus {
-  color: #2C3E50;
+  border-bottom: 3px solid #929396;
 }
 
 .create-tab a.selected,

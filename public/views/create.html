@@ -21,16 +21,18 @@
     </div>
   </div>
 
-  <div class="create-tab" ng-hide="create.hideTabs">
-    <div class="tab-container">
-    <a href 
+  <div class="create-tab small-only-text-center" ng-hide="create.hideTabs">
+    <div class="row">
+    <div class="tab-container small-6 medium-3 large-2">
+    <a href
       ng-class="{'selected': totalCopayers == 1}"
       ng-click="create.setTotalCopayers(1)" translate>Personal Wallet</a>
     </div>
-    <div class="tab-container">
-    <a href 
+    <div class="tab-container small-6 medium-3 large-2">
+    <a href
       ng-class="{'selected': totalCopayers != 1}"
       ng-click="create.setTotalCopayers(3)" translate>Shared Wallet</a>
+    </div>
     </div>
   </div>
 
@@ -62,7 +64,7 @@
         <div class="row" ng-show="totalCopayers != 1">
           <div class="large-6 medium-6 columns">
             <label><span translate>Select total number of copayers</span>
-              <select class="m10t" ng-model="totalCopayers" 
+              <select class="m10t" ng-model="totalCopayers"
                 ng-options="totalCopayers as totalCopayers for totalCopayers in create.TCValues"
                 ng-change="create.setTotalCopayers(totalCopayers)">
               </select>
