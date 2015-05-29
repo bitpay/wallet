@@ -22,7 +22,7 @@ angular.module('copayApp.controllers').controller('preferencesColorController',
 
     var config = configService.getSync();
     config.colorFor = config.colorFor || {};
-    this.color = config.colorFor[walletId] || '#7A8C9E';
+    this.color = config.colorFor[walletId] || '#4A90E2';
 
     this.save = function(color) {
       var self = this;
