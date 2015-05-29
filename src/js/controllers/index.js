@@ -185,12 +185,12 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
     $timeout(function() {
       self.setOngoingProcess('updatingStatus', true);
-      $log.debug('Updating Status:', fc);
+      $log.debug('Updating Status:', fc, tries);
       get(function(err, walletStatus) {
-        if (!err && untilItChanges && initBalance == walletStatus.balance.totalAmount && tries < 10) {
+        if (!err && untilItChanges && initBalance == walletStatus.balance.totalAmount && tries < 7) {
           return $timeout(function() {
             return self.updateAll(null, true, initBalance, ++tries);
-          }, 1000);
+          }, 1400 * tries);
         }
         self.setOngoingProcess('updatingStatus', false);
         if (err) {
@@ -677,7 +677,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       go.walletHome();
     } else if (err && err.cors == 'rejected') {
       $log.debug('CORS error:', err);
-    } else if (err.code === 'ETIMEDOUT') {
+    } else if (err.code === 'ETIMEDOUT' || err.code === 'CONNERROR') {
       $log.debug('Time out:', err);
     } else {
       var msg = 'Error at Wallet Service: ';
@@ -709,7 +709,11 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     }, 5000);
   });
 
-  lodash.each(['NewOutgoingTx', 'NewTxProposal', 'TxProposalFinallyRejected', 'TxProposalRemoved',
+  $rootScope.$on('NewOutgoingTx', function() {
+    self.updateAll(null, true);
+  });
+
+  lodash.each(['NewTxProposal', 'TxProposalFinallyRejected', 'TxProposalRemoved',
     'Local/NewTxProposal', 'Local/TxProposalAction', 'ScanFinished'
   ], function(eventName) {
     $rootScope.$on(eventName, function(event, untilItChanges) {
