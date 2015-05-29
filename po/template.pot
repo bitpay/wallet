@@ -148,6 +148,10 @@ msgstr ""
 msgid "Changing wallet alias only affects the local wallet name."
 msgstr ""
 
+#: src/js/controllers/walletHome.js
+msgid "Check you connection and try again"
+msgstr ""
+
 #: public/views/import.html
 msgid "Choose a backup file from your computer"
 msgstr ""
@@ -188,11 +192,23 @@ msgid "Copy to clipboard"
 msgstr ""
 
 #: src/js/controllers/walletHome.js
-msgid "Could not broadcast transaction. Please try again."
+msgid "Could not accept payment. Check you connection and try again"
+msgstr ""
+
+#: src/js/controllers/walletHome.js
+msgid "Could not broadcast payment. Check you connection and try again"
 msgstr ""
 
 #: src/js/controllers/walletHome.js
 msgid "Could not connect wallet service. Check your Internet connexion and your wallet service configuration."
+msgstr ""
+
+#: src/js/controllers/walletHome.js
+msgid "Could not create address. Check you connection and try again"
+msgstr ""
+
+#: src/js/controllers/walletHome.js
+msgid "Could not create payment proposal"
 msgstr ""
 
 #: src/js/services/profileService.js
@@ -204,7 +220,7 @@ msgid "Could not decrypt file, check your password"
 msgstr ""
 
 #: src/js/controllers/walletHome.js
-msgid "Could not delete transaction. Please try again."
+msgid "Could not delete payment proposal. Check you connection and try again"
 msgstr ""
 
 #: src/js/controllers/walletHome.js
@@ -228,15 +244,11 @@ msgid "Could not join wallet:"
 msgstr ""
 
 #: src/js/controllers/walletHome.js
-msgid "Could not reject transaction. Please try again."
+msgid "Could not reject payment. Check you connection and try again"
 msgstr ""
 
 #: src/js/controllers/walletHome.js
-msgid "Could not send transaction. Please try again."
-msgstr ""
-
-#: src/js/controllers/walletHome.js
-msgid "Could not sign transaction. Please try again."
+msgid "Could not send payment"
 msgstr ""
 
 #: public/views/walletHome.html
@@ -595,10 +607,6 @@ msgid "Payment Proposal Rejected by Copayer"
 msgstr ""
 
 #: src/js/services/notificationsService.js
-msgid "Payment Proposal Sent"
-msgstr ""
-
-#: src/js/services/notificationsService.js
 msgid "Payment Proposal Signed by Copayer"
 msgstr ""
 
@@ -615,6 +623,7 @@ msgid "Payment Rejected"
 msgstr ""
 
 #: public/views/modals/tx-status.html
+#: src/js/services/notificationsService.js
 msgid "Payment Sent"
 msgstr ""
 
@@ -912,10 +921,6 @@ msgstr ""
 
 #: public/views/walletHome.html
 msgid "Updating Wallet..."
-msgstr ""
-
-#: public/views/create.html
-msgid "Use test network"
 msgstr ""
 
 #: public/views/preferencesAbout.html
