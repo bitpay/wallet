@@ -28,7 +28,7 @@ input {
   -webkit-tap-highlight-color:rgba(0,0,0,0);
 }
 
-body, div, .row {
+.touch {
   -webkit-overflow-scrolling: touch;
 }
 
@@ -90,11 +90,7 @@ _:-ms-fullscreen, :root .main {
 
 .tab-bar {
   background: #FFFFFF;
-  display: block;
-  position: fixed;
-  width: 100%;
   z-index: 5;
-  line-height: 3.2rem;
   border-bottom: 1px solid #E9E9EC;
 }
 
@@ -564,12 +560,19 @@ to prevent collapsing during animation*/
   top: 0 !important;
 }
 
+.modal-content {
+  position: fixed;
+  overflow-y: auto;
+  height: 100%;
+  width: 100%;
+  top: 45px;
+  padding-bottom: 33px;
+}
+
 .reveal-modal {
   padding: 0;
   border: none;
   border-radius: 0;
-  overflow-y: auto;
-  padding-bottom: 20px;
   outline: 0;
 }
 
