@@ -47,7 +47,7 @@ angular.module('copayApp.controllers').controller('sidebarController',
           n: c.n,
           name: config.aliasFor[c.walletId] || c.walletName,
           id: c.walletId,
-          color: config.colorFor[c.walletId] || '#7A8C9E',
+          color: config.colorFor[c.walletId] || '#F38F12',
         };
       });
       self.wallets = lodash.sortBy(ret, 'name');
