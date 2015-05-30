@@ -136,6 +136,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       $scope.copayerId = fc.credentials.copayerId;
       $scope.loading = null;
       $scope.color = fc.backgroundColor;
+      $scope.refreshUntilItChanges = false;
 
       $scope.getShortNetworkName = function() {
         return fc.credentials.networkName.substring(0, 4);
@@ -223,7 +224,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
                     if (memo)
                       $log.info(memo);
 
-                    txpsb.refreshUntilItChanges = true;
+                    $scope.refreshUntilItChanges = true;
                     $modalInstance.close(txpsb);
                   }
                 });
@@ -249,6 +250,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
               $scope.error = err.message || gettext('Could not reject payment. Check you connection and try again');
               $scope.$digest();
             } else {
+              $scope.refreshUntilItChanges = true;
               $modalInstance.close(txpr);
             }
           });
@@ -272,6 +274,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
               $scope.$digest();
               return;
             }
+            $scope.refreshUntilItChanges = true;
             $modalInstance.close();
           });
         }, 100);
@@ -294,7 +297,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
               if (memo)
                 $log.info(memo);
 
-              txpb.refreshUntilItChanges = true;
+              $scope.refreshUntilItChanges = true;
               $modalInstance.close(txpb);
             }
           });
@@ -323,15 +326,14 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     });
 
     modalInstance.result.then(function(txp) {
-      var refreshUntilItChanges = txp ? txp.refreshUntilItChanges : null;
       self.setOngoingProcess();
       if (txp) {
         txStatus.notify(txp, function() {
-          $scope.$emit('Local/TxProposalAction', refreshUntilItChanges);
+          $scope.$emit('Local/TxProposalAction', $scope.refreshUntilItChanges);
         });
       } else {
         $timeout(function() {
-          $scope.$emit('Local/TxProposalAction');
+          $scope.$emit('Local/TxProposalAction', $scope.refreshUntilItChanges);
         }, 100);
       }
     });
