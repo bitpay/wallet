@@ -102,7 +102,7 @@
 
         <div class="pr columns line-b">
           <div class="avatar-wallet left"
-            ng-style="{'background-color':index.backgroundColor}">{{index.walletName | limitTo: 1}}
+            ng-style="{'background-color':index.backgroundColor}">{{ (index.alias || index.walletName) | limitTo: 1}}
           </div>
           <div class="right">
             <a ng-click="$root.go('preferences')" class="button outline round light-gray tiny preferences-icon m0">
