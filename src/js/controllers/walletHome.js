@@ -323,8 +323,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     });
 
     modalInstance.result.then(function(txp) {
-      var refreshUntilItChanges = txp.refreshUntilItChanges;
-      console.log('[walletHome.js.323:refreshUntilItChanges:]', refreshUntilItChanges); //TODO
+      var refreshUntilItChanges = txp ? txp.refreshUntilItChanges : null;
       self.setOngoingProcess();
       if (txp) {
         txStatus.notify(txp, function() {
@@ -614,12 +613,16 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
         }
 
         self.signAndBroadcast(txp, function(err) {
-          if (err) {
-            self.setOngoingProcess();
-            return self.setSendError(err);
-          }
-
+          self.setOngoingProcess();
+          profileService.lockFC();
           self.resetForm();
+          if (err) {
+            self.error = err.message ? err.message : gettext('The payment was created but could not be completed. Please try again from home screen');
+            $scope.$emit('Local/TxProposalAction');
+            $timeout(function() {
+              $scope.$digest();
+            }, 1);
+          }
         });
       });
     }, 100);
@@ -631,20 +634,18 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     self.setOngoingProcess(gettext('Signing transaction'));
     fc.signTxProposal(txp, function(err, signedTx) {
       profileService.lockFC();
-
+      self.setOngoingProcess();
       if (err) {
-        self.setOngoingProcess();
+        err.message = gettext('The payment was created but could not be signed. Please try again from home screen.') + (err.message ? ' ' + err.message : '');
         return cb(err);
       }
 
       if (signedTx.status == 'accepted') {
         self.setOngoingProcess(gettext('Broadcasting transaction'));
-
         fc.broadcastTxProposal(signedTx, function(err, btx, memo) {
           self.setOngoingProcess();
           if (err) {
-            $scope.error = gettext('Transaction not broadcasted. Please try again.');
-            $scope.$digest();
+            err.message = gettext('The payment was signed but could not be broadcasted. Please try again from home screen.') + (err.message ? ' ' + err.message : '');
             return cb(err);
           }
           if (memo)
