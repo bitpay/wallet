@@ -156,6 +156,10 @@ msgstr "Certifié par"
 msgid "Changing wallet alias only affects the local wallet name."
 msgstr "La modification d'un alias de portefeuille affecte uniquement le nom du portefeuille local."
 
+#: src/js/controllers/walletHome.js
+msgid "Check you connection and try again"
+msgstr "Vérifiez votre connexion internet et réessayez"
+
 #: public/views/import.html
 msgid "Choose a backup file from your computer"
 msgstr "Choisissez un fichier de sauvegarde depuis votre ordinateur"
@@ -196,12 +200,24 @@ msgid "Copy to clipboard"
 msgstr "Copier dans le presse-papier"
 
 #: src/js/controllers/walletHome.js
-msgid "Could not broadcast transaction. Please try again."
-msgstr "Impossible de diffuser la transaction. Veuillez réessayer."
+msgid "Could not accept payment. Check you connection and try again"
+msgstr "Impossible d'accepter le paiement. Vérifiez votre connexion internet et réessayez"
+
+#: src/js/controllers/walletHome.js
+msgid "Could not broadcast payment. Check you connection and try again"
+msgstr "Impossible de diffuser le paiement. Vérifiez votre connexion internet et réessayez"
 
 #: src/js/controllers/walletHome.js
 msgid "Could not connect wallet service. Check your Internet connexion and your wallet service configuration."
 msgstr "Impossible de se connecter au service de portefeuille. Vérifiez votre connexion Internet et la configuration de votre service de portefeuille."
+
+#: src/js/controllers/walletHome.js
+msgid "Could not create address. Check you connection and try again"
+msgstr "Impossible de créer l'adresse. Vérifiez votre connexion internet et réessayez"
+
+#: src/js/controllers/walletHome.js
+msgid "Could not create payment proposal"
+msgstr "Impossible de créer la proposition de paiement"
 
 #: src/js/services/profileService.js
 msgid "Could not create using the specified extended private key"
@@ -212,8 +228,8 @@ msgid "Could not decrypt file, check your password"
 msgstr "Impossible de déchiffrer le fichier, vérifiez votre mot de passe"
 
 #: src/js/controllers/walletHome.js
-msgid "Could not delete transaction. Please try again."
-msgstr "Impossible de supprimer la transaction. Veuillez réessayer."
+msgid "Could not delete payment proposal. Check you connection and try again"
+msgstr "Impossible de supprimer la proposition de paiement. Vérifiez votre connexion internet et réessayez"
 
 #: src/js/controllers/walletHome.js
 msgid "Could not fetch payment information"
@@ -236,16 +252,12 @@ msgid "Could not join wallet:"
 msgstr "Impossible de rejoindre le portefeuille"
 
 #: src/js/controllers/walletHome.js
-msgid "Could not reject transaction. Please try again."
-msgstr "Impossible de rejeter la transaction. Veuillez réessayer."
+msgid "Could not reject payment. Check you connection and try again"
+msgstr "Impossible de rejeter le paiement. Vérifiez votre connexion internet réessayez"
 
 #: src/js/controllers/walletHome.js
-msgid "Could not send transaction. Please try again."
-msgstr "Impossible d'envoyer la transaction. Veuillez réessayer."
-
-#: src/js/controllers/walletHome.js
-msgid "Could not sign transaction. Please try again."
-msgstr "Impossible de signer la transaction. Veuillez réessayer."
+msgid "Could not send payment"
+msgstr "Impossible d'envoyer le paiement"
 
 #: public/views/walletHome.html
 msgid "Could not update Wallet"
@@ -600,10 +612,6 @@ msgid "Payment Proposal Rejected by Copayer"
 msgstr "Proposition de paiement rejetée par les Copayer"
 
 #: src/js/services/notificationsService.js
-msgid "Payment Proposal Sent"
-msgstr "Proposition de paiement envoyée"
-
-#: src/js/services/notificationsService.js
 msgid "Payment Proposal Signed by Copayer"
 msgstr "Proposition de paiement signée par les Copayers"
 
@@ -620,6 +628,7 @@ msgid "Payment Rejected"
 msgstr "Paiement rejeté"
 
 #: public/views/modals/tx-status.html
+#: src/js/services/notificationsService.js
 msgid "Payment Sent"
 msgstr "Paiement envoyé"
 
@@ -922,10 +931,6 @@ msgstr "Non-approuvé"
 #: public/views/walletHome.html
 msgid "Updating Wallet..."
 msgstr "Mise à jour du portefeuille..."
-
-#: public/views/create.html
-msgid "Use test network"
-msgstr "Utiliser le réseau de test"
 
 #: public/views/preferencesAbout.html
 msgid "Version"
