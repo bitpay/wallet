@@ -127,15 +127,15 @@ msgstr "Dirección bitcoin"
 
 #: public/views/modals/txp-details.html
 msgid "Broadcast Payment"
-msgstr "Enviar el Pago"
+msgstr "Emitir Pago"
 
 #: src/js/controllers/walletHome.js
 msgid "Broadcasting Payment"
-msgstr "Enviando el Pago"
+msgstr "Emitiendo el Pago"
 
 #: src/js/controllers/walletHome.js
 msgid "Broadcasting transaction"
-msgstr "Emitiendo la transacción"
+msgstr "Emitiendo transacción"
 
 #: public/views/unsupported.html
 msgid "Browser unsupported"
@@ -161,6 +161,10 @@ msgstr "Certificado por"
 msgid "Changing wallet alias only affects the local wallet name."
 msgstr ""
 "Cambiar el alias del monedero solo afecta al nombre del monedero local."
+
+#: src/js/controllers/walletHome.js
+msgid "Check you connection and try again"
+msgstr "Verifique su conexión e inténtelo nuevamente"
 
 #: public/views/import.html
 msgid "Choose a backup file from your computer"
@@ -202,8 +206,14 @@ msgid "Copy to clipboard"
 msgstr "Copiar al portapapeles"
 
 #: src/js/controllers/walletHome.js
-msgid "Could not broadcast transaction. Please try again."
-msgstr "No se pudo emitir la transacción. Por favor, intente nuevamente."
+msgid "Could not accept payment. Check you connection and try again"
+msgstr ""
+"No se pudo aceptar el pago. Verifique su conexión e inténtelo nuevamente"
+
+#: src/js/controllers/walletHome.js
+msgid "Could not broadcast payment. Check you connection and try again"
+msgstr ""
+"No se pudo emitir el pago. Verifique su conexión e inténtelo nuevamente"
 
 #: src/js/controllers/walletHome.js
 msgid ""
@@ -212,6 +222,15 @@ msgid ""
 msgstr ""
 "No se pudo conectar con Wallet Service. Verifique la conexión a internet y "
 "la configuración a Wallet Service."
+
+#: src/js/controllers/walletHome.js
+msgid "Could not create address. Check you connection and try again"
+msgstr ""
+"No se pudo crear la dirección. Verifique su conexión e inténtelo nuevamente"
+
+#: src/js/controllers/walletHome.js
+msgid "Could not create payment proposal"
+msgstr "No se pudo crear la propuesta de pago"
 
 #: src/js/services/profileService.js
 msgid "Could not create using the specified extended private key"
@@ -222,8 +241,10 @@ msgid "Could not decrypt file, check your password"
 msgstr "No se pudo desencriptar el archivo, verifique su contraseña"
 
 #: src/js/controllers/walletHome.js
-msgid "Could not delete transaction. Please try again."
-msgstr "No se pudo borrar la transacción. Por favor, intente nuevamente."
+msgid "Could not delete payment proposal. Check you connection and try again"
+msgstr ""
+"No se pudo eliminar la propuesta de pago. Verifique su conexión e inténtelo "
+"nuevamente"
 
 #: src/js/controllers/walletHome.js
 msgid "Could not fetch payment information"
@@ -246,16 +267,13 @@ msgid "Could not join wallet:"
 msgstr "No se pudo unir al monedero:"
 
 #: src/js/controllers/walletHome.js
-msgid "Could not reject transaction. Please try again."
-msgstr "No se pudo rechazar la transacción. Por favor, intente nuevamente."
+msgid "Could not reject payment. Check you connection and try again"
+msgstr ""
+"No se pudo rechazar el pago. Verifique su conexión e inténtelo nuevamente"
 
 #: src/js/controllers/walletHome.js
-msgid "Could not send transaction. Please try again."
-msgstr "No se pudo enviar la transacción. Por favor, intente nuevamente."
-
-#: src/js/controllers/walletHome.js
-msgid "Could not sign transaction. Please try again."
-msgstr "No se pudo firmar la transacción. Por favor, intente nuevamente."
+msgid "Could not send payment"
+msgstr "No se pudo enviar el pago"
 
 #: public/views/walletHome.html
 msgid "Could not update Wallet"
@@ -604,10 +622,6 @@ msgid "Payment Proposal Rejected by Copayer"
 msgstr "Propuesta de Pago Rechazada por Copayer"
 
 #: src/js/services/notificationsService.js
-msgid "Payment Proposal Sent"
-msgstr "Propuesta de Pago Enviada"
-
-#: src/js/services/notificationsService.js
 msgid "Payment Proposal Signed by Copayer"
 msgstr "Propuesta de Pago Firmada por Copayer"
 
@@ -617,19 +631,19 @@ msgstr "Propuestas de Pago"
 
 #: src/js/controllers/walletHome.js
 msgid "Payment Protocol not supported on Chrome App"
-msgstr "El protocolo de pagos no está soportado en Chrome"
+msgstr "El protocolo de pago no está soportado en Chrome"
 
 #: public/views/modals/tx-status.html
 msgid "Payment Rejected"
 msgstr "El pago fue rechazado"
 
-#: public/views/modals/tx-status.html
+#: public/views/modals/tx-status.html src/js/services/notificationsService.js
 msgid "Payment Sent"
 msgstr "Pago Enviado"
 
 #: public/views/modals/txp-details.html
 msgid "Payment accepted..."
-msgstr "El pago fue aceptado..."
+msgstr "El pago aceptado..."
 
 #: public/views/modals/txp-details.html
 msgid "Payment details"
@@ -698,7 +712,7 @@ msgstr "Rechazar"
 
 #: src/js/controllers/walletHome.js
 msgid "Rejecting payment"
-msgstr "Rechazando el pago"
+msgstr "Rechazando pago"
 
 #: public/views/preferencesAbout.html
 msgid "Release Information"
@@ -860,7 +874,7 @@ msgstr "Toque para reintentar"
 
 #: public/views/modals/txp-details.html
 msgid "The payment was removed by creator"
-msgstr "El pago fue eliminado por el creado"
+msgstr "El pago fue eliminado por el creador"
 
 #: public/views/backup.html
 msgid ""
@@ -876,7 +890,7 @@ msgstr "El monedero \"{{walletName}}\" fue eliminado"
 
 #: src/js/controllers/import.js
 msgid "There is an error in the form"
-msgstr "Hubo un error en el formulario"
+msgstr "Hay un error en el formulario"
 
 #: public/views/walletHome.html
 msgid ""
@@ -930,10 +944,6 @@ msgstr "No es de confianza"
 #: public/views/walletHome.html
 msgid "Updating Wallet..."
 msgstr "Actualizando Monedero..."
-
-#: public/views/create.html
-msgid "Use test network"
-msgstr "Red de prueba"
 
 #: public/views/preferencesAbout.html
 msgid "Version"
@@ -1072,6 +1082,15 @@ msgstr ""
 "{{len}} monederos importados. Escáner de fondos en progreso. Espere a ver el "
 "balance actualizado"
 
+#~ msgid "Could not sign transaction. Please try again."
+#~ msgstr "No se pudo firmar la transacción. Por favor, intente nuevamente."
+
+#~ msgid "Payment Proposal Sent"
+#~ msgstr "Propuesta de Pago Enviada"
+
+#~ msgid "Use test network"
+#~ msgstr "Red de prueba"
+
 #~ msgid "A transaction was finally rejected"
 #~ msgstr "Transacción finalmente rechazada"
 
@@ -1156,9 +1175,6 @@ msgstr ""
 #~ msgstr ""
 #~ "Borrar permanentemente este monedero. ADVERTENCIA: esta acción no puede "
 #~ "deshacerse."
-
-#~ msgid "Could not create wallet:"
-#~ msgstr "No se puede crear el monedero"
 
 #~ msgid "OK"
 #~ msgstr "LISTO"
