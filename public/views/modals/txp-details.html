@@ -92,14 +92,14 @@
 
   <div class="row m20t" ng-if="tx.pendingForUs">
     <div class="large-5 medium-5 small-6 columns">
-      <button class="button outline round dark-gray m0 expand" ng-click="reject(tx);"
+      <button class="button outline round dark-gray expand" ng-click="reject(tx);"
         ng-disabled="loading">
         <i class="fi-x"></i>
         <span translate>Reject</span>
       </button>
     </div>
     <div class="large-5 medium-5 small-6 columns text-right">
-      <button class="button primary round m0 expand" ng-click="sign(tx)"
+      <button class="button primary round expand" ng-click="sign(tx)"
         ng-style="{'background-color':color}"
         ng-disabled="loading">
         <i class="fi-check"></i>
