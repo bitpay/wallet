@@ -75,6 +75,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
     // Clean status
     self.lockedBalance = null;
+    self.availableBalanceStr = null;
+    self.totalBalanceStr = null;
+    self.lockedBalanceStr = null;
     self.totalBalanceStr = null;
     self.alternativeBalanceAvailable = false;
     self.totalBalanceAlternative = null;
@@ -82,7 +85,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.txHistory = [];
     self.txHistoryPaging = false;
     self.pendingTxProposalsCountForUs = null;
-
     $timeout(function() {
       self.hasProfile = true;
       self.noFocusedWallet = false;
@@ -158,11 +160,21 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     });
   };
 
+  var _walletStatusHash = function(walletStatus) {
+    var bal;
+    if (walletStatus) {
+      bal = walletStatus.balance.totalAmount;
+    } else {
+      bal = self.totalBalanceSat;
+    }
+    return bal;
+  };
 
-  self.updateAll = function(walletStatus, untilItChanges, initBalance, tries) {
+  self.updateAll = function(walletStatus, untilItChanges, initStatusHash, tries) {
     tries = tries || 0;
-    if (untilItChanges && lodash.isUndefined(initBalance)) {
-      initBalance = self.totalBalanceSat;
+    if (untilItChanges && lodash.isUndefined(initStatusHash)) {
+      initStatusHash = _walletStatusHash();
+      $log.debug('Updating status until it changes. initStatusHash:' + initStatusHash)
     }
     var get = function(cb) {
       if (walletStatus)
@@ -187,9 +199,12 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       self.setOngoingProcess('updatingStatus', true);
       $log.debug('Updating Status:', fc, tries);
       get(function(err, walletStatus) {
-        if (!err && untilItChanges && initBalance == walletStatus.balance.totalAmount && tries < 7) {
+        var currentStatusHash = _walletStatusHash(walletStatus); 
+        $log.debug('Status update. hash:' + currentStatusHash + ' Try:'+ tries); 
+        if (!err && untilItChanges && initStatusHash == currentStatusHash && tries < 7) {
           return $timeout(function() {
-            return self.updateAll(null, true, initBalance, ++tries);
+            $log.debug('Retrying update... Try:' + tries)
+            return self.updateAll(null, true, initStatusHash, ++tries);
           }, 1400 * tries);
         }
         self.setOngoingProcess('updatingStatus', false);
