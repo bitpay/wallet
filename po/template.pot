@@ -854,8 +854,20 @@ msgstr ""
 msgid "Tap to retry"
 msgstr ""
 
+#: src/js/controllers/walletHome.js
+msgid "The payment was created but could not be completed. Please try again from home screen"
+msgstr ""
+
+#: src/js/controllers/walletHome.js
+msgid "The payment was created but could not be signed. Please try again from home screen."
+msgstr ""
+
 #: public/views/modals/txp-details.html
 msgid "The payment was removed by creator"
+msgstr ""
+
+#: src/js/controllers/walletHome.js
+msgid "The payment was signed but could not be broadcasted. Please try again from home screen."
 msgstr ""
 
 #: public/views/backup.html
@@ -892,10 +904,6 @@ msgstr ""
 
 #: public/views/modals/tx-details.html
 msgid "Transaction"
-msgstr ""
-
-#: src/js/controllers/walletHome.js
-msgid "Transaction not broadcasted. Please try again."
 msgstr ""
 
 #: src/js/controllers/walletHome.js
@@ -1026,7 +1034,7 @@ msgid "email for wallet notifications"
 msgstr ""
 
 #: public/views/walletHome.html
-msgid "in pending payments"
+msgid "locked by pending payments"
 msgstr ""
 
 #: public/views/copayers.html
