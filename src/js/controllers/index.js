@@ -159,29 +159,20 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   };
 
   var _walletStatusHash = function(walletStatus) {
-    var st = {};
-
+    var bal;
     if (walletStatus) {
-      st.bal = walletStatus.balance.totalAmount;
-      st.txs = walletStatus.pendingTxps;
+      bal = walletStatus.balance.totalAmount;
     } else {
-      st.bal = self.totalBalanceSat;
-      st.txs = self.txps;
+      bal = self.totalBalanceSat;
     }
-
-    var hash = st.bal + ':';
-    if (st.txs) {
-      hash += lodash.map(st.txs, function(t) {
-        return t.id + ':' + (t.actions ? t.actions.length : 0);
-      }).join(':');
-    }
-    return hash;
+    return bal;
   };
 
   self.updateAll = function(walletStatus, untilItChanges, initStatusHash, tries) {
     tries = tries || 0;
     if (untilItChanges && lodash.isUndefined(initStatusHash)) {
       initStatusHash = _walletStatusHash();
+      $log.debug('Updating status until it changes. initStatusHash:' + initStatusHash)
     }
     var get = function(cb) {
       if (walletStatus)
@@ -206,8 +197,11 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       self.setOngoingProcess('updatingStatus', true);
       $log.debug('Updating Status:', fc, tries);
       get(function(err, walletStatus) {
-        if (!err && untilItChanges && initStatusHash == _walletStatusHash(walletStatus) && tries < 7) {
+        var currentStatusHash = _walletStatusHash(walletStatus); 
+        $log.debug('Status update. hash:' + currentStatusHash + ' Try:'+ tries); 
+        if (!err && untilItChanges && initStatusHash == currentStatusHash && tries < 7) {
           return $timeout(function() {
+            $log.debug('Retrying update... Try:' + tries)
             return self.updateAll(null, true, initStatusHash, ++tries);
           }, 1400 * tries);
         }

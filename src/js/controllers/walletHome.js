@@ -127,6 +127,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
   this.openTxpModal = function(tx, copayers) {
     var fc = profileService.focusedClient;
+    var refreshUntilItChanges = false;
     var ModalInstanceCtrl = function($scope, $modalInstance) {
       $scope.error = null;
       $scope.tx = tx;
@@ -136,7 +137,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       $scope.copayerId = fc.credentials.copayerId;
       $scope.loading = null;
       $scope.color = fc.backgroundColor;
-      $scope.refreshUntilItChanges = false;
+      refreshUntilItChanges = false;
 
       $scope.getShortNetworkName = function() {
         return fc.credentials.networkName.substring(0, 4);
@@ -219,12 +220,11 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
                     $scope.error = gettext('Could not broadcast payment. Check you connection and try again');
                     $scope.$digest();
                   } else {
-
-                    console.log('[walletHome.js.219]'); //TODO
+                    $log.debug('Transaction signed and broadcasted')
                     if (memo)
                       $log.info(memo);
 
-                    $scope.refreshUntilItChanges = true;
+                    refreshUntilItChanges = true;
                     $modalInstance.close(txpsb);
                   }
                 });
@@ -250,7 +250,6 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
               $scope.error = err.message || gettext('Could not reject payment. Check you connection and try again');
               $scope.$digest();
             } else {
-              $scope.refreshUntilItChanges = true;
               $modalInstance.close(txpr);
             }
           });
@@ -274,7 +273,6 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
               $scope.$digest();
               return;
             }
-            $scope.refreshUntilItChanges = true;
             $modalInstance.close();
           });
         }, 100);
@@ -297,7 +295,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
               if (memo)
                 $log.info(memo);
 
-              $scope.refreshUntilItChanges = true;
+              refreshUntilItChanges = true;
               $modalInstance.close(txpb);
             }
           });
@@ -329,11 +327,11 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       self.setOngoingProcess();
       if (txp) {
         txStatus.notify(txp, function() {
-          $scope.$emit('Local/TxProposalAction', $scope.refreshUntilItChanges);
+          $scope.$emit('Local/TxProposalAction', refreshUntilItChanges);
         });
       } else {
         $timeout(function() {
-          $scope.$emit('Local/TxProposalAction', $scope.refreshUntilItChanges);
+          $scope.$emit('Local/TxProposalAction', refreshUntilItChanges);
         }, 100);
       }
     });
