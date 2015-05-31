@@ -75,6 +75,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
     // Clean status
     self.lockedBalance = null;
+    self.availableBalanceStr = null;
+    self.totalBalanceStr = null;
+    self.lockedBalanceStr = null;
     self.totalBalanceStr = null;
     self.alternativeBalanceAvailable = false;
     self.totalBalanceAlternative = null;
@@ -82,7 +85,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.txHistory = [];
     self.txHistoryPaging = false;
     self.pendingTxProposalsCountForUs = null;
-
     $timeout(function() {
       self.hasProfile = true;
       self.noFocusedWallet = false;
