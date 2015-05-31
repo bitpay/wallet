@@ -872,9 +872,33 @@ msgstr "Listo"
 msgid "Tap to retry"
 msgstr "Toque para reintentar"
 
+#: src/js/controllers/walletHome.js
+msgid ""
+"The payment was created but could not be completed. Please try again from "
+"home screen"
+msgstr ""
+"El pago fue creado pero no se pudo completar. Por favor intente nuevamente "
+"desde la pantalla de inicio."
+
+#: src/js/controllers/walletHome.js
+msgid ""
+"The payment was created but could not be signed. Please try again from home "
+"screen."
+msgstr ""
+"El pago fue creado pero no pudo ser firmado. Por favor intente nuevamente "
+"desde la pantalla de inicio."
+
 #: public/views/modals/txp-details.html
 msgid "The payment was removed by creator"
 msgstr "El pago fue eliminado por el creador"
+
+#: src/js/controllers/walletHome.js
+msgid ""
+"The payment was signed but could not be broadcasted. Please try again from "
+"home screen."
+msgstr ""
+"El pago fue firmado pero no pudo ser enviado. Por favor intente nuevamente "
+"desde la pantalla de inicio."
 
 #: public/views/backup.html
 msgid ""
@@ -916,10 +940,6 @@ msgstr "Balance total bloqueado"
 #: public/views/modals/tx-details.html
 msgid "Transaction"
 msgstr "Transacción"
-
-#: src/js/controllers/walletHome.js
-msgid "Transaction not broadcasted. Please try again."
-msgstr "Transacción no emitida. Por favor, intente nuevamente."
 
 #: src/js/controllers/walletHome.js
 msgid "Unable to send transaction proposal"
@@ -1050,8 +1070,8 @@ msgid "email for wallet notifications"
 msgstr "email para recibir notificaciones"
 
 #: public/views/walletHome.html
-msgid "in pending payments"
-msgstr "en pagos pendientes"
+msgid "locked by pending payments"
+msgstr "bloqueado por pagos pendientes"
 
 #: public/views/copayers.html public/views/create.html
 #: public/views/walletHome.html public/views/includes/sidebar.html
@@ -1081,6 +1101,9 @@ msgid ""
 msgstr ""
 "{{len}} monederos importados. Escáner de fondos en progreso. Espere a ver el "
 "balance actualizado"
+
+#~ msgid "Transaction not broadcasted. Please try again."
+#~ msgstr "Transacción no emitida. Por favor, intente nuevamente."
 
 #~ msgid "Could not sign transaction. Please try again."
 #~ msgstr "No se pudo firmar la transacción. Por favor, intente nuevamente."
@@ -1141,9 +1164,6 @@ msgstr ""
 
 #~ msgid "{{index.walletName}} settings"
 #~ msgstr "Opciones de {{index.walletName}}"
-
-#~ msgid "Transaction could not be deleted. Please try again."
-#~ msgstr "La transacción no se pudo eliminar. Por favor, intente nuevamente."
 
 #~ msgid "Transaction not rejected. Please try again."
 #~ msgstr "Transacción no rechazada. Por favor, intente nuevamente."
