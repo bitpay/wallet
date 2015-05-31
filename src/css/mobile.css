@@ -273,7 +273,6 @@ a.missing-copayers {
 
 .sidebar {
   background: #2C3E50;
-  box-shadow: inset -2px 0px 1px 0px rgba(0,0,0,0.40);
 }
 
 .sidebar li {
@@ -283,7 +282,6 @@ a.missing-copayers {
 
 .sidebar li.nav-item.selected {
   background-color: #122232;
-  box-shadow: inset -1px 0px 1px 0px rgba(0,0,0,0.20);
 }
 
 .sidebar .avatar-wallet, .payment-uri .avatar-wallet {
