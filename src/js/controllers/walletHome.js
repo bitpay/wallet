@@ -23,7 +23,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   this.isRateAvailable = false;
   this.showScanner = false;
   this.isMobile = isMobile.any();
-  this.addr = null;
+  this.addr = {};
 
   var disableScannerListener = $rootScope.$on('dataScanned', function(event, data) {
     self.setForm(data);
@@ -42,7 +42,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   });
 
   var disableFocusListener = $rootScope.$on('Local/NewFocusedWallet', function() {
-    self.addr = null;
+    self.addr = {};
     self.resetForm();
   });
 
@@ -360,7 +360,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
         return;
       }
       self.addrError = null;
-      self.addr = addr.address;
+      self.addr[fc.credentials.walletId] = addr.address;
       storageService.storeLastAddress(fc.credentials.walletId, addr.address, function() {
 
         self.generatingAddress = false;
@@ -371,18 +371,19 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
   this.setAddress = function() {
     self.addrError = null;
-
-    if (self.addr)
-      return;
-
     var fc = profileService.focusedClient;
     if (!fc)
       return;
 
+    if (self.addr[fc.credentials.walletId]) {
+      return;
+    }
+
+
     $timeout(function() {
       storageService.getLastAddress(fc.credentials.walletId, function(err, addr) {
         if (addr) {
-          self.addr = addr;
+          self.addr[fc.credentials.walletId] = addr;
           $scope.$digest();
         } else {
           self.setNewAddress();
