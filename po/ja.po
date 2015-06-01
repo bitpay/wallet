@@ -866,9 +866,33 @@ msgstr "成功"
 msgid "Tap to retry"
 msgstr "タップしてやり直し"
 
+#: src/js/controllers/walletHome.js
+msgid ""
+"The payment was created but could not be completed. Please try again from "
+"home screen"
+msgstr ""
+"ペイメントは作成されましたが完了できませんでした。ホーム画面からやり直して下"
+"さい。"
+
+#: src/js/controllers/walletHome.js
+msgid ""
+"The payment was created but could not be signed. Please try again from home "
+"screen."
+msgstr ""
+"ペイメントは作成されましたが署名できませんでした。ホーム画面からやり直して下"
+"さい。"
+
 #: public/views/modals/txp-details.html
 msgid "The payment was removed by creator"
 msgstr "ペイメントが作成者により削除されました"
+
+#: src/js/controllers/walletHome.js
+msgid ""
+"The payment was signed but could not be broadcasted. Please try again from "
+"home screen."
+msgstr ""
+"ペイメントは署名されましたが送信できませんでした。ホーム画面からやり直して下"
+"さい。"
 
 #: public/views/backup.html
 msgid ""
@@ -910,10 +934,6 @@ msgstr "ロック中の残高"
 #: public/views/modals/tx-details.html
 msgid "Transaction"
 msgstr "取引"
-
-#: src/js/controllers/walletHome.js
-msgid "Transaction not broadcasted. Please try again."
-msgstr "取引が送信できませんでした。やり直して下さい。"
 
 #: src/js/controllers/walletHome.js
 msgid "Unable to send transaction proposal"
@@ -1044,8 +1064,8 @@ msgid "email for wallet notifications"
 msgstr "メールによるウォレットのお知らせ"
 
 #: public/views/walletHome.html
-msgid "in pending payments"
-msgstr "未対応ペイメント"
+msgid "locked by pending payments"
+msgstr "未対応ペイメントによりロック中"
 
 #: public/views/copayers.html public/views/create.html
 #: public/views/walletHome.html public/views/includes/sidebar.html
