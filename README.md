@@ -93,7 +93,21 @@ One solution to this issue is to use *Copay* with a Python version manager and i
 pyenv install 2.6.9
 pyenv global 2.6.9
 ```
+# Desktop versions (Windows, OSX, Linux)
 
+Copay uses NW.js (also know as node-webkit) for its desktop version. NW.js an app runtime based on `Chromium` and `node.js`. 
+
+## Building Copay for OSX, Linux and Windows versions
+
+**Requirements**
+
+  - Install NW.js in your system from [nw.js](http://nwjs.io/)
+
+**Builder**
+
+  - Run `grunt desktop` (*)
+  
+  
 # Development
 
 ## Google Chrome App
@@ -158,3 +172,6 @@ Copay currently supports [BIP70 (Payment Protocol)](https://github.com/bitcoin/b
 * Only one output is allowed.  Payment requests that are more that one output are not supported.
 * Only standard Pay-to-pubkeyhash and Pay-to-scripthash scripts are supported (on payment requests).  Other script types will cause the entire payment request to be rejected.
 * Memos from the customer to the server are not supported (i.e. there is no place to write messages to the server in the current UX)
+
+
+
