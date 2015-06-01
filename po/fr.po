@@ -863,6 +863,14 @@ msgstr "Succès"
 msgid "Tap to retry"
 msgstr "Tapez pour réessayer"
 
+#: src/js/controllers/walletHome.js
+msgid "The payment was created but could not be completed. Please try again from home screen"
+msgstr "Le paiement a été créé mais n'a pas pu être achevé. Veuillez réessayer depuis l'écran d'accueil"
+
+#: src/js/controllers/walletHome.js
+msgid "The payment was created but could not be signed. Please try again from home screen."
+msgstr "Le paiement a été créé mais n'a pas pu être signé. Veuillez réessayer depuis l'écran d'accueil"
+
 #: public/views/modals/txp-details.html
 msgid "The payment was removed by creator"
 msgstr "Le paiement a été supprimé par le créateur"
@@ -902,10 +910,6 @@ msgstr "Solde verrouillé total"
 #: public/views/modals/tx-details.html
 msgid "Transaction"
 msgstr "Transaction"
-
-#: src/js/controllers/walletHome.js
-msgid "Transaction not broadcasted. Please try again."
-msgstr "Transaction non diffusée. Veuillez réessayer."
 
 #: src/js/controllers/walletHome.js
 msgid "Unable to send transaction proposal"
@@ -1035,8 +1039,8 @@ msgid "email for wallet notifications"
 msgstr "e-mail pour les notifications de portefeuille"
 
 #: public/views/walletHome.html
-msgid "in pending payments"
-msgstr "dans les paiements en attente"
+msgid "locked by pending payments"
+msgstr "vérrouillé par les paiements en attente"
 
 #: public/views/copayers.html
 #: public/views/create.html
