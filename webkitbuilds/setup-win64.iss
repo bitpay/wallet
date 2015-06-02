@@ -18,7 +18,7 @@ AppSupportURL={#MyAppURL}
 AppUpdatesURL={#MyAppURL}
 DefaultDirName={pf}\{#MyAppName}
 DefaultGroupName={#MyAppName}
-OutputBaseFilename=copay-installer
+OutputBaseFilename=copay-installer-64
 Compression=lzma
 SolidCompression=yes
 
