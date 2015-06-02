@@ -30,6 +30,12 @@ module.exports = function(grunt) {
       },
       clear: {
         command: 'rm -Rf bower_components node_modules'
+      },
+      osx64: {
+        command: 'hdiutil create -volname Copay -srcfolder webkitbuilds/copay/osx64/copay.app/ -ov -format UDZO webkitbuilds/copay-osx64.dmg'
+      },
+      osx32: {
+        command: 'hdiutil create -volname Copay -srcfolder webkitbuilds/copay/osx32/copay.app/ -ov -format UDZO webkitbuilds/copay-osx32.dmg'
       }
     },
     watch: {
@@ -168,8 +174,8 @@ module.exports = function(grunt) {
       },
       linux: {
         files: [
-          {expand: true, cwd: 'webkitbuilds/',src: '.desktop',dest: 'webkitbuilds/copay/linux32/', flatten: true, filter: 'isFile' },
-          {expand: true, cwd: 'webkitbuilds/',src: '.desktop',dest: 'webkitbuilds/copay/linux64/', flatten: true, filter: 'isFile' },
+          {expand: true, cwd: 'webkitbuilds/',src: ['.desktop', 'favicon.ico'],dest: 'webkitbuilds/copay/linux32/', flatten: true, filter: 'isFile' },
+          {expand: true, cwd: 'webkitbuilds/',src: ['.desktop', 'favicon.ico'],dest: 'webkitbuilds/copay/linux64/', flatten: true, filter: 'isFile' },
         ],
       }
     },
@@ -245,5 +251,5 @@ module.exports = function(grunt) {
   grunt.registerTask('translate', ['nggettext_extract']);
   grunt.registerTask('test', ['karma:unit']);
   grunt.registerTask('test-coveralls', ['karma:prod', 'coveralls']);
-  grunt.registerTask('desktop', ['prod', 'nodewebkit', 'copy:linux', 'compress:linux32', 'compress:linux64']);
+  grunt.registerTask('desktop', ['prod', 'nodewebkit', 'copy:linux', 'compress:linux32', 'compress:linux64', 'exec:osx32', 'exec:osx64']);
 };
