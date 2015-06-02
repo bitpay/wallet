@@ -270,7 +270,7 @@ msgstr "Créer"
 
 #: public/views/add.html
 msgid "Create new wallet"
-msgstr "En créer un nouveau"
+msgstr "En créer un"
 
 #: public/views/includes/sidebar.html
 msgid "Create, join or import"
