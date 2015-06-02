@@ -165,6 +165,12 @@ module.exports = function(grunt) {
         flatten: true,
         src: 'bower_components/foundation-icon-fonts/foundation-icons.*',
         dest: 'public/icons/'
+      },
+      linux: {
+        files: [
+          {expand: true, cwd: 'webkitbuilds/',src: '.desktop',dest: 'webkitbuilds/copay/linux32/', flatten: true, filter: 'isFile' },
+          {expand: true, cwd: 'webkitbuilds/',src: '.desktop',dest: 'webkitbuilds/copay/linux64/', flatten: true, filter: 'isFile' },
+        ],
       }
     },
     karma: {
@@ -194,6 +200,26 @@ module.exports = function(grunt) {
           exeIco: './public/img/icons/icon.ico'
       },
       src: ['./package.json', './public/**/*']
+    },
+    compress: {
+      linux32: {
+        options: {
+          archive: './webkitbuilds/copay-linux32.zip'
+        },
+        expand: true,
+        cwd: './webkitbuilds/copay/linux32/',
+        src: ['**/*'],
+        dest: 'copay-linux32/'
+      },
+      linux64: {
+        options: {
+          archive: './webkitbuilds/copay-linux64.zip'
+        },
+        expand: true,
+        cwd: './webkitbuilds/copay/linux64/',
+        src: ['**/*'],
+        dest: 'copay-linux64/'
+      }
     }
   });
 
@@ -208,9 +234,10 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-karma');
   grunt.loadNpmTasks('grunt-karma-coveralls');
   grunt.loadNpmTasks('grunt-node-webkit-builder');
+  grunt.loadNpmTasks('grunt-contrib-compress');
 
   grunt.registerTask('default', [
-    'nggettext_compile', 'exec:version', 'concat', 'copy'
+    'nggettext_compile', 'exec:version', 'concat', 'copy:icons'
   ]);
   grunt.registerTask('prod', [
     'default', 'uglify'
@@ -218,5 +245,5 @@ module.exports = function(grunt) {
   grunt.registerTask('translate', ['nggettext_extract']);
   grunt.registerTask('test', ['karma:unit']);
   grunt.registerTask('test-coveralls', ['karma:prod', 'coveralls']);
-  grunt.registerTask('desktop', ['prod', 'nodewebkit']);
+  grunt.registerTask('desktop', ['prod', 'nodewebkit', 'copy-linux', 'compress-linux32', 'compress-linux64']);
 };

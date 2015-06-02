@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Version=1.0.1
+Name=Copay
+Comment=A multisignature wallet
+Exec=copay
+Icon=favicon.ico
+Terminal=false
+Categories=Finance
