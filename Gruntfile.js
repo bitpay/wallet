@@ -245,5 +245,5 @@ module.exports = function(grunt) {
   grunt.registerTask('translate', ['nggettext_extract']);
   grunt.registerTask('test', ['karma:unit']);
   grunt.registerTask('test-coveralls', ['karma:prod', 'coveralls']);
-  grunt.registerTask('desktop', ['prod', 'nodewebkit', 'copy-linux', 'compress-linux32', 'compress-linux64']);
+  grunt.registerTask('desktop', ['prod', 'nodewebkit', 'copy:linux', 'compress:linux32', 'compress:linux64']);
 };
