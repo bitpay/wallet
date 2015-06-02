@@ -436,7 +436,7 @@ msgstr "Importer"
 #: public/views/import.html
 #: public/views/splash.html
 msgid "Import backup"
-msgstr "Importer une sauvegarde"
+msgstr "Importer la sauvegarde"
 
 #: public/views/importLegacy.html
 msgid "Import from the Cloud?"
