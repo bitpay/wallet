@@ -13,6 +13,9 @@ cordova/*.keystore
 cache
 webkitbuilds/*
 !webkitbuilds/README.md
+!webkitbuilds/windows-setup.iss
+!webkitbuilds/favicon.ico
+!webkitbuilds/.desktop
 
 # chrome extensions
 browser-extensions/chrome/copay-chrome-extension
