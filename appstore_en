@@ -1,0 +1,31 @@
+--------------------------------
+Google Play store description
+--------------------------------
+A secure Bitcoin wallet for friends and companies.
+Multi signature provides extra security:
+When friends or company executives create a Copay wallet, they decide how many members need to sign each transaction. Requiring multiple signatures prevent bitcoins to be stolen or lost if one computer is compromised or unavailable.
+Deterministic wallets ease backup needs:
+Copay is an Hierarchical Determinist wallet. This means that funds in the wallet can be restored using old backups, diminishing the risks of losing funds.
+Open-Source ensures transparency and continuity:
+Copay is open-source free software, it is not bound to companies or individuals. Anyone can copy, modify, verify or contribute to Copay.
+Features:
+* Multi signature wallet
+* Multi platform
+* Multi wallet
+* Device based security
+* Non proprietary servers
+* Open source
+* Support for Payment Protocol
+* HD address generation
+* Spending proposal flow
+* Livenet / Testnet support
+--------------------------------
+Google Play store Release Notes: "What's new"
+--------------------------------
+v1.0.1
+--------------------------------
+Better handling of network interruption errors
+Better refresh logic after accepting/rejecting payments
+Updates ES, JP and FR translations
+Fix scroll with in certain popups
+--------------------------------
