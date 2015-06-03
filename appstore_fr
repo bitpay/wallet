@@ -1,0 +1,30 @@
+Google Play store description
+--------------------------------
+Un portefeuille Bitcoin sécurisé pour les amis et pour les entreprises.
+La technologie de multi-signatures fournie une sécurité supplémentaire :
+Lorsque vos amis ou vos collègues créent un portefeuille Copay, ils peuvent décider du nombre de membres nécessaires à la signature d'une transaction. La nécessité de plusieurs signatures empêche le vol ou la perte de bitcoins si votre ordinateur est compromis ou indisponible.
+Les portefeuilles déterministes hiérarchiques facilitent la sauvegarde :
+Copay est un portefeuille déterministe hiérarchique (HD wallet). Cela signifie que les fonds de votre portefeuille peuvent être restaurés à partir d'anciennes sauvegardes, diminuant les risques de perte de fonds.
+L'open source garantit la transparence et la continuité :
+Copay est un logiciel gratuit et open source, il n'est pas lié à des entreprises ou à des particuliers. N'importe qui peut copier, modifier, vérifier ou contribuer à Copay.
+Fonctionnalités :
+* Portefeuille multi-signatures
+* Multi-plateformes
+* Portefeuilles multiples
+* Sécurité basée sur l'appareil
+* Serveurs non propriétaires
+* Open source
+* Support de Payment Protocol
+* Génération d'adresses HD
+* Dépense des flux de proposition
+* Support de Livenet / Testnet
+--------------------------------
+Google Play store Release Notes: "What's new"
+--------------------------------
+v1.0.1
+--------------------------------
+Meilleur traitement des erreurs d'interruption réseau
+Meilleure logique de rafraîchissement après l'acceptation/le rejet de paiements
+Mise à jour des traductions ES, JP et FR
+Corrige le défilement dans certaines pop-ups
+--------------------------------
