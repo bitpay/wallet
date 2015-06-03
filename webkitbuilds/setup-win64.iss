@@ -8,7 +8,7 @@
 #define MyAppExeName "copay.exe"
 
 [Setup]
-AppId={804636ee-b017-4cad-8719-e58ac97ffa5c}
+AppId={{804636ee-b017-4cad-8719-e58ac97ffa5c}
 AppName={#MyAppName}
 AppVersion={#MyAppVersion}
 ;AppVerName={#MyAppName} {#MyAppVersion}
@@ -18,7 +18,8 @@ AppSupportURL={#MyAppURL}
 AppUpdatesURL={#MyAppURL}
 DefaultDirName={pf}\{#MyAppName}
 DefaultGroupName={#MyAppName}
-OutputBaseFilename=copay-installer-64
+OutputBaseFilename=copay-win64
+OutputDir=./
 Compression=lzma
 SolidCompression=yes
 
