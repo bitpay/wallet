@@ -5,7 +5,7 @@ A secure Bitcoin wallet for friends and companies.
 Multi signature provides extra security:
 When friends or company executives create a Copay wallet, they decide how many members need to sign each transaction. Requiring multiple signatures prevent bitcoins to be stolen or lost if one computer is compromised or unavailable.
 Deterministic wallets ease backup needs:
-Copay is an Hierarchical Determinist wallet. This means that funds in the wallet can be restored using old backups, diminishing the risks of losing funds.
+Copay is an Hierarchical Deterministic wallet. This means that funds in the wallet can be restored using old backups, diminishing the risks of losing funds.
 Open-Source ensures transparency and continuity:
 Copay is open-source free software, it is not bound to companies or individuals. Anyone can copy, modify, verify or contribute to Copay.
 Features:
