@@ -270,7 +270,7 @@ msgstr "Créer"
 
 #: public/views/add.html
 msgid "Create new wallet"
-msgstr "Créer un nouveau portefeuille"
+msgstr "En créer un"
 
 #: public/views/includes/sidebar.html
 msgid "Create, join or import"
@@ -448,7 +448,7 @@ msgstr "Importer ici"
 
 #: public/views/add.html
 msgid "Import wallet"
-msgstr "Importer un portefeuille"
+msgstr "En importer un"
 
 #: public/views/import.html
 msgid "Importing wallet..."
@@ -473,7 +473,7 @@ msgstr "Rejoindre"
 
 #: public/views/add.html
 msgid "Join shared wallet"
-msgstr "Rejoindre un portefeuille partagé"
+msgstr "En rejoindre un"
 
 #: public/views/join.html
 msgid "Joining Wallet..."
