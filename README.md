@@ -1,4 +1,4 @@
-<img src="https://github.com/bitpay/copay/blob/master/public/img/logo.svg" alt="Copay" width="300">
+<img src="https://raw.githubusercontent.com/bitpay/copay/master/public/img/logo.svg" alt="Copay" width="300">
 
 [![Build Status](https://secure.travis-ci.org/bitpay/copay.svg)](http://travis-ci.org/bitpay/copay) 
 [![Coverage Status](https://img.shields.io/coveralls/bitpay/copay.svg)](https://coveralls.io/r/bitpay/copay?branch=master) 
