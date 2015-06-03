@@ -821,8 +821,8 @@ msgid "Share invitation"
 msgstr "Partager l'invitation"
 
 #: public/views/copayers.html
-msgid "Share this secret with your copayers"
-msgstr "Partagez ce secret avec vos copayers"
+msgid "Share this invitation with your copayers"
+msgstr "Partagez cette invitation avec vos copayers"
 
 #: public/views/walletHome.html
 msgid "Share this wallet address to receive payments. To protect your privacy, new addresses are generated automatically once you use them."
