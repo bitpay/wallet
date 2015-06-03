@@ -1,0 +1,31 @@
+--------------------------------
+Google Play store description
+--------------------------------
+Un monedero seguro de Bitcoin para amigos y empresas.
+Multi firma provee seguridad adicional:
+Cuando amigos o ejecutivos de empresas crean un monedero en Copay, elijen cuantos miembros son necesarios para firmar cada transacción. Requerir múltiples firmar previene que los bitcoins sean robados o perdidos si una computadora es comprometida o no esté disponible.
+Un monedero determinista facilita la copia de seguridad:
+Copay es un Monedero Determinístico y Jerárquico. Esto significa que los dondos en el monedero pueden ser recuperados utilizando viejas copias de seguridad, disminuyendo el riesgo de perderlos.
+Open-Source asegura transparencia y continuidad:
+Copay es un software gratis y open-source (código-abierto), que no esta asociado a empresas ni a individuos particulares. Cualquier persona puede copiar, modificar, verificar o contribuir a Copay.
+Características:
+* Monedero Multi Firma 
+* Multi plataforma
+* Multiples monederos en una misma aplicación
+* Seguridad basada en el dispositivo
+* Servidores no propietarios
+* Open Source (Código abierto)
+* Soporte Payment Protocol
+* Generación de direcciones HD (Hierarchical Deterministic)
+* Flujo de propuestas de gastos
+* Soporte a Livenet / Testnet
+--------------------------------
+Google Play store Release Notes: "What's new"
+--------------------------------
+v1.0.1
+--------------------------------
+Mejor manejo de errores en interrupciones de la red
+Mejor lógica de actualización luego de aceptar/rechazar pagos
+Actualiza traducciones en ES, JR y FR.
+Corrige el desplazamiento en algunas ventanas emergentes
+--------------------------------
