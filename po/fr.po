@@ -894,7 +894,7 @@ msgstr "Ce portefeuille n'est pas enregistré dans le Bitcore Wallet Service (BW
 
 #: public/views/modals/txp-details.html
 msgid "Time"
-msgstr "Temps"
+msgstr "Heure"
 
 #: public/views/walletHome.html
 #: public/views/includes/transaction.html
@@ -1040,7 +1040,7 @@ msgstr "e-mail pour les notifications de portefeuille"
 
 #: public/views/walletHome.html
 msgid "locked by pending payments"
-msgstr "vérrouillé par les paiements en attente"
+msgstr "verrouillés par les paiements en attente"
 
 #: public/views/copayers.html
 #: public/views/create.html
