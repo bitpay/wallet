@@ -49,6 +49,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   }, {
     name: gettext('Japanese'),
     isoCode: 'ja',
+  }, {
+    name: gettext('Portuguese'),
+    isoCode: 'pt',
   }];
 
   self.setOngoingProcess = function(processName, isOn) {
