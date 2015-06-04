@@ -85,6 +85,11 @@ msgstr "Êtes-vous certain de vouloir supprimer ce portefeuille ?"
 msgid "Available Balance"
 msgstr "Solde disponible"
 
+#: public/views/create.html
+#: public/views/join.html
+msgid "BIP32 master extended private key"
+msgstr "Clé privée étendue maîtresse BIP32"
+
 #: public/views/includes/topbar.html
 #: public/views/modals/tx-details.html
 #: public/views/modals/txp-details.html
@@ -263,7 +268,6 @@ msgstr "Impossible d'envoyer le paiement"
 msgid "Could not update Wallet"
 msgstr "Impossible de mettre à jour le portefeuille"
 
-#: public/views/create.html
 #: public/views/walletHome.html
 msgid "Create"
 msgstr "Créer"
@@ -271,6 +275,10 @@ msgstr "Créer"
 #: public/views/add.html
 msgid "Create new wallet"
 msgstr "Créer"
+
+#: public/views/create.html
+msgid "Create {{requiredCopayers}}-of-{{totalCopayers}} wallet"
+msgstr "Créer un portefeuille {{requiredCopayers}}-sur-{{totalCopayers}}"
 
 #: public/views/includes/sidebar.html
 msgid "Create, join or import"
@@ -333,6 +341,10 @@ msgstr "Télécharger la sauvegarde"
 #: public/views/includes/password.html
 msgid "ENTER"
 msgstr "ENTRER"
+
+#: public/views/importLegacy.html
+msgid "Email"
+msgstr "E-mail"
 
 #: public/views/preferences.html
 msgid "Email Notifications"
@@ -422,9 +434,6 @@ msgid "Home"
 msgstr "Accueil"
 
 #: public/views/create.html
-msgid "If not given, a random key will be generated"
-msgstr "Si non spécifié, une clé aléatoire sera générée"
-
 #: public/views/join.html
 msgid "If not given, a secure key will be generated"
 msgstr "Si non spécifié, une clé sécurisée sera générée"
@@ -492,6 +501,7 @@ msgid "Make a payment to"
 msgstr "Faire un paiement à"
 
 #: public/views/create.html
+#: public/views/join.html
 msgid "Master extended private key"
 msgstr "Clé privée étendue maîtresse"
 
@@ -585,7 +595,7 @@ msgstr "Collez l'invitation ici"
 
 #: public/views/import.html
 msgid "Paste the backup plain text code"
-msgstr "Coller le code texte de sauvegarde"
+msgstr "Collez le code texte de sauvegarde"
 
 #: public/views/modals/paypro.html
 msgid "Pay To"
@@ -657,10 +667,11 @@ msgid "Payment to"
 msgstr "Paiement à"
 
 #: public/views/preferencesDeleteWallet.html
-msgid "Permanently delete this wallet. THIS ACTION CANNONT BE REVERSED"
+msgid "Permanently delete this wallet. THIS ACTION CANNOT BE REVERSED"
 msgstr "Supprimer définitivement ce portefeuille. CETTE ACTION NE PEUT PAS ÊTRE ANNULÉE"
 
 #: public/views/create.html
+#: src/js/services/profileService.js
 msgid "Personal Wallet"
 msgstr "Portefeuille personnel"
 
@@ -676,6 +687,10 @@ msgstr "Veuillez sélectionner votre fichier de sauvegarde"
 #: public/views/walletHome.html
 msgid "Preferences"
 msgstr "Préférences"
+
+#: public/views/modals/scanner.html
+msgid "QR-Scanner"
+msgstr "QR-Scanner"
 
 #: src/js/controllers/index.js
 msgid "Receive"
@@ -863,6 +878,10 @@ msgstr "Succès"
 msgid "Tap to retry"
 msgstr "Tapez pour réessayer"
 
+#: public/views/create.html
+msgid "Testnet"
+msgstr "Testnet"
+
 #: src/js/controllers/walletHome.js
 msgid "The payment was created but could not be completed. Please try again from home screen"
 msgstr "Le paiement a été créé mais n'a pas pu être achevé. Veuillez réessayer depuis l'écran d'accueil"
@@ -935,6 +954,10 @@ msgstr "Non-approuvé"
 #: public/views/walletHome.html
 msgid "Updating Wallet..."
 msgstr "Mise à jour du portefeuille..."
+
+#: public/views/importLegacy.html
+msgid "Username"
+msgstr "Nom d'utilisateur"
 
 #: public/views/preferencesAbout.html
 msgid "Version"
@@ -1042,8 +1065,11 @@ msgstr "e-mail pour les notifications de portefeuille"
 msgid "locked by pending payments"
 msgstr "verrouillés par les paiements en attente"
 
+#: src/js/services/profileService.js
+msgid "me"
+msgstr "moi"
+
 #: public/views/copayers.html
-#: public/views/create.html
 #: public/views/walletHome.html
 #: public/views/includes/sidebar.html
 msgid "of"
@@ -1060,10 +1086,6 @@ msgstr "paramètres"
 #: public/views/walletHome.html
 msgid "too long!"
 msgstr "trop long !"
-
-#: public/views/create.html
-msgid "wallet"
-msgstr "portefeuille"
 
 #: src/js/controllers/importLegacy.js
 msgid "{{len}} wallets imported. Funds scanning in progress. Hold on to see updated balance"
