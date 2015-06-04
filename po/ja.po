@@ -272,13 +272,17 @@ msgstr "ペイメントを送ることができませんでした。"
 msgid "Could not update Wallet"
 msgstr "ウォレットが更新できませんでした。"
 
-#: public/views/create.html public/views/walletHome.html
+#: public/views/walletHome.html
 msgid "Create"
 msgstr "作成"
 
 #: public/views/add.html
 msgid "Create new wallet"
 msgstr "新規ウォレット作成"
+
+#: public/views/create.html
+msgid "Create {{requiredCopayers}}-of-{{totalCopayers}} wallet"
+msgstr "{{requiredCopayers}}-of-{{totalCopayers}} ウォレットを作成"
 
 #: public/views/includes/sidebar.html
 msgid "Create, join or import"
@@ -1067,8 +1071,8 @@ msgstr "メールによるウォレットのお知らせ"
 msgid "locked by pending payments"
 msgstr "未対応ペイメントによりロック中"
 
-#: public/views/copayers.html public/views/create.html
-#: public/views/walletHome.html public/views/includes/sidebar.html
+#: public/views/copayers.html public/views/walletHome.html
+#: public/views/includes/sidebar.html
 msgid "of"
 msgstr "of"
 
@@ -1083,10 +1087,6 @@ msgstr "設定"
 #: public/views/walletHome.html
 msgid "too long!"
 msgstr "長すぎます！"
-
-#: public/views/create.html
-msgid "wallet"
-msgstr "ウォレット"
 
 #: src/js/controllers/importLegacy.js
 msgid ""
