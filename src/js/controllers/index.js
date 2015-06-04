@@ -47,6 +47,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     name: gettext('French'),
     isoCode: 'fr',
   }, {
+    name: gettext('Portuguese Brazil'),
+    isoCode: 'pt-BR',
+  }, {
     name: gettext('Japanese'),
     isoCode: 'ja',
   }];
