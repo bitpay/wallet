@@ -255,13 +255,16 @@ msgstr ""
 msgid "Could not update Wallet"
 msgstr ""
 
-#: public/views/create.html
 #: public/views/walletHome.html
 msgid "Create"
 msgstr ""
 
 #: public/views/add.html
 msgid "Create new wallet"
+msgstr ""
+
+#: public/views/create.html
+msgid "Create {{requiredCopayers}}-of-{{totalCopayers}} wallet"
 msgstr ""
 
 #: public/views/includes/sidebar.html
@@ -1038,7 +1041,6 @@ msgid "locked by pending payments"
 msgstr ""
 
 #: public/views/copayers.html
-#: public/views/create.html
 #: public/views/walletHome.html
 #: public/views/includes/sidebar.html
 msgid "of"
@@ -1054,10 +1056,6 @@ msgstr ""
 
 #: public/views/walletHome.html
 msgid "too long!"
-msgstr ""
-
-#: public/views/create.html
-msgid "wallet"
 msgstr ""
 
 #: src/js/controllers/importLegacy.js
