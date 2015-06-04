@@ -77,6 +77,11 @@ msgstr ""
 msgid "Available Balance"
 msgstr ""
 
+#: public/views/create.html
+#: public/views/join.html
+msgid "BIP32 master extended private key"
+msgstr ""
+
 #: public/views/includes/topbar.html
 #: public/views/modals/tx-details.html
 #: public/views/modals/txp-details.html
@@ -329,6 +334,10 @@ msgstr ""
 msgid "ENTER"
 msgstr ""
 
+#: public/views/importLegacy.html
+msgid "Email"
+msgstr ""
+
 #: public/views/preferences.html
 msgid "Email Notifications"
 msgstr ""
@@ -417,9 +426,6 @@ msgid "Home"
 msgstr ""
 
 #: public/views/create.html
-msgid "If not given, a random key will be generated"
-msgstr ""
-
 #: public/views/join.html
 msgid "If not given, a secure key will be generated"
 msgstr ""
@@ -487,6 +493,7 @@ msgid "Make a payment to"
 msgstr ""
 
 #: public/views/create.html
+#: public/views/join.html
 msgid "Master extended private key"
 msgstr ""
 
@@ -675,6 +682,10 @@ msgstr ""
 msgid "Preferences"
 msgstr ""
 
+#: public/views/modals/scanner.html
+msgid "QR-Scanner"
+msgstr ""
+
 #: src/js/controllers/index.js
 msgid "Receive"
 msgstr ""
@@ -857,6 +868,10 @@ msgstr ""
 msgid "Tap to retry"
 msgstr ""
 
+#: public/views/create.html
+msgid "Testnet"
+msgstr ""
+
 #: src/js/controllers/walletHome.js
 msgid "The payment was created but could not be completed. Please try again from home screen"
 msgstr ""
@@ -932,6 +947,10 @@ msgstr ""
 
 #: public/views/walletHome.html
 msgid "Updating Wallet..."
+msgstr ""
+
+#: public/views/importLegacy.html
+msgid "Username"
 msgstr ""
 
 #: public/views/preferencesAbout.html
