@@ -666,6 +666,7 @@ msgid "Permanently delete this wallet. THIS ACTION CANNOT BE REVERSED"
 msgstr ""
 
 #: public/views/create.html
+#: src/js/services/profileService.js
 msgid "Personal Wallet"
 msgstr ""
 
@@ -1057,6 +1058,10 @@ msgstr ""
 
 #: public/views/walletHome.html
 msgid "locked by pending payments"
+msgstr ""
+
+#: src/js/services/profileService.js
+msgid "me"
 msgstr ""
 
 #: public/views/copayers.html
