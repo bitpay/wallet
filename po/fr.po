@@ -51,8 +51,8 @@ msgid "Advanced options"
 msgstr "Options avancées"
 
 #: public/views/preferencesAlias.html
-msgid "Alias for"
-msgstr "Alias pour"
+msgid "Alias for <i>{{index.walletName}}</i>"
+msgstr "Alias pour <i>{{index.walletName}}</i>"
 
 #: public/views/splash.html
 msgid "Already have a wallet?"
