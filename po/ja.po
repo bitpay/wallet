@@ -663,9 +663,9 @@ msgid "Payment to"
 msgstr "支払い先"
 
 #: public/views/preferencesDeleteWallet.html
-msgid "Permanently delete this wallet. THIS ACTION CANNONT BE REVERSED"
+msgid "Permanently delete this wallet. THIS ACTION CANNOT BE REVERSED"
 msgstr ""
-"永久にこのウォレットを削除。\n"
+"永久にこのウォレットを削除します。\n"
 "二度と取り戻せない行為ですのどご注意下さい。"
 
 #: public/views/create.html
