@@ -672,7 +672,7 @@ msgstr ""
 "永久にこのウォレットを削除します。\n"
 "二度と取り戻せない行為ですのどご注意下さい。"
 
-#: public/views/create.html
+#: public/views/create.html src/js/services/profileService.js
 msgid "Personal Wallet"
 msgstr "個人用ウォレット"
 
@@ -1086,6 +1086,10 @@ msgstr "メールによるウォレットのお知らせ"
 #: public/views/walletHome.html
 msgid "locked by pending payments"
 msgstr "未対応ペイメントによりロック中"
+
+#: src/js/services/profileService.js
+msgid "me"
+msgstr "自分"
 
 #: public/views/copayers.html public/views/walletHome.html
 #: public/views/includes/sidebar.html
