@@ -56,8 +56,8 @@ msgid "Advanced options"
 msgstr "詳細設定"
 
 #: public/views/preferencesAlias.html
-msgid "Alias for"
-msgstr "ウォレット通称"
+msgid "Alias for <i>{{index.walletName}}</i>"
+msgstr "<i>{{index.walletName}}</i> の通称設定"
 
 #: public/views/splash.html
 msgid "Already have a wallet?"
