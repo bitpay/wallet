@@ -334,10 +334,6 @@ msgstr ""
 msgid "ENTER"
 msgstr ""
 
-#: public/views/importLegacy.html
-msgid "Email"
-msgstr ""
-
 #: public/views/preferences.html
 msgid "Email Notifications"
 msgstr ""
@@ -666,7 +662,6 @@ msgid "Permanently delete this wallet. THIS ACTION CANNOT BE REVERSED"
 msgstr ""
 
 #: public/views/create.html
-#: src/js/services/profileService.js
 msgid "Personal Wallet"
 msgstr ""
 
@@ -948,10 +943,6 @@ msgstr ""
 
 #: public/views/walletHome.html
 msgid "Updating Wallet..."
-msgstr ""
-
-#: public/views/importLegacy.html
-msgid "Username"
 msgstr ""
 
 #: public/views/preferencesAbout.html
