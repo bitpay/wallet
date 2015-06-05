@@ -56,8 +56,8 @@ msgid "Advanced options"
 msgstr "詳細設定"
 
 #: public/views/preferencesAlias.html
-msgid "Alias for"
-msgstr "ウォレット通称"
+msgid "Alias for <i>{{index.walletName}}</i>"
+msgstr "<i>{{index.walletName}}</i> の通称設定"
 
 #: public/views/splash.html
 msgid "Already have a wallet?"
@@ -87,6 +87,10 @@ msgstr "本当にこのウォレットを削除しても宜しいですか？"
 #: public/views/walletHome.html
 msgid "Available Balance"
 msgstr "送金可能残高"
+
+#: public/views/create.html public/views/join.html
+msgid "BIP32 master extended private key"
+msgstr "マスタ拡張秘密鍵"
 
 #: public/views/includes/topbar.html public/views/modals/tx-details.html
 #: public/views/modals/txp-details.html
@@ -430,11 +434,7 @@ msgstr "履歴"
 msgid "Home"
 msgstr "ホーム"
 
-#: public/views/create.html
-msgid "If not given, a random key will be generated"
-msgstr "空欄の場合、乱数を使って鍵を生成します。"
-
-#: public/views/join.html
+#: public/views/create.html public/views/join.html
 msgid "If not given, a secure key will be generated"
 msgstr "空欄の場合、安全な鍵を生成します。"
 
@@ -498,7 +498,7 @@ msgstr "ウォレット移行について詳しく"
 msgid "Make a payment to"
 msgstr "支払いは次の宛先へ"
 
-#: public/views/create.html
+#: public/views/create.html public/views/join.html
 msgid "Master extended private key"
 msgstr "マスタ拡張秘密鍵"
 
@@ -663,9 +663,9 @@ msgid "Payment to"
 msgstr "支払い先"
 
 #: public/views/preferencesDeleteWallet.html
-msgid "Permanently delete this wallet. THIS ACTION CANNONT BE REVERSED"
+msgid "Permanently delete this wallet. THIS ACTION CANNOT BE REVERSED"
 msgstr ""
-"永久にこのウォレットを削除。\n"
+"永久にこのウォレットを削除します。\n"
 "二度と取り戻せない行為ですのどご注意下さい。"
 
 #: public/views/create.html
@@ -683,6 +683,10 @@ msgstr "バックアップファイルを選択"
 #: public/views/walletHome.html
 msgid "Preferences"
 msgstr "設定"
+
+#: public/views/modals/scanner.html
+msgid "QR-Scanner"
+msgstr "QRスキャンナー"
 
 #: src/js/controllers/index.js
 msgid "Receive"
@@ -869,6 +873,10 @@ msgstr "成功"
 #: public/views/walletHome.html
 msgid "Tap to retry"
 msgstr "タップしてやり直し"
+
+#: public/views/create.html
+msgid "Testnet"
+msgstr "テスト用ネットワーク"
 
 #: src/js/controllers/walletHome.js
 msgid ""
@@ -1070,6 +1078,10 @@ msgstr "メールによるウォレットのお知らせ"
 #: public/views/walletHome.html
 msgid "locked by pending payments"
 msgstr "未対応ペイメントによりロック中"
+
+#: src/js/services/profileService.js
+msgid "me"
+msgstr "自分"
 
 #: public/views/copayers.html public/views/walletHome.html
 #: public/views/includes/sidebar.html
