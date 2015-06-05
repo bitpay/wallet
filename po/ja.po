@@ -349,10 +349,6 @@ msgstr "バックアップをダウンロード"
 msgid "ENTER"
 msgstr "ENTER"
 
-#: public/views/importLegacy.html
-msgid "Email"
-msgstr "メールアドレス"
-
 #: public/views/preferences.html
 msgid "Email Notifications"
 msgstr "メールのお知らせ"
@@ -672,7 +668,7 @@ msgstr ""
 "永久にこのウォレットを削除します。\n"
 "二度と取り戻せない行為ですのどご注意下さい。"
 
-#: public/views/create.html src/js/services/profileService.js
+#: public/views/create.html
 msgid "Personal Wallet"
 msgstr "個人用ウォレット"
 
@@ -974,10 +970,6 @@ msgstr "信用していない"
 #: public/views/walletHome.html
 msgid "Updating Wallet..."
 msgstr "ウォレット更新中…"
-
-#: public/views/importLegacy.html
-msgid "Username"
-msgstr "ユーザ名"
 
 #: public/views/preferencesAbout.html
 msgid "Version"
