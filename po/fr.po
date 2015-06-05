@@ -45,11 +45,6 @@ msgstr "Adresse"
 msgid "Advanced"
 msgstr "Avancés"
 
-#: public/views/create.html
-#: public/views/join.html
-msgid "Advanced options"
-msgstr "Options avancées"
-
 #: public/views/preferencesAlias.html
 msgid "Alias for <i>{{index.walletName}}</i>"
 msgstr "Alias pour <i>{{index.walletName}}</i>"
@@ -342,10 +337,6 @@ msgstr "Télécharger la sauvegarde"
 msgid "ENTER"
 msgstr "ENTRER"
 
-#: public/views/importLegacy.html
-msgid "Email"
-msgstr "E-mail"
-
 #: public/views/preferences.html
 msgid "Email Notifications"
 msgstr "Notifications e-mail"
@@ -422,8 +413,8 @@ msgstr "Vous avez une sauvegarde de Copay v0.9 ?"
 
 #: public/views/create.html 
 #: public/views/join.html
-msgid "Hide"
-msgstr "Masquer"
+msgid "Hide Advanced options"
+msgstr "Masquer les options avancées"
 
 #: src/js/controllers/index.js
 msgid "History"
@@ -671,7 +662,6 @@ msgid "Permanently delete this wallet. THIS ACTION CANNOT BE REVERSED"
 msgstr "Supprimer définitivement ce portefeuille. CETTE ACTION NE PEUT PAS ÊTRE ANNULÉE"
 
 #: public/views/create.html
-#: src/js/services/profileService.js
 msgid "Personal Wallet"
 msgstr "Portefeuille personnel"
 
@@ -683,6 +673,10 @@ msgstr "Veuillez saisir les champs requis"
 #: src/js/controllers/import.js
 msgid "Please, select your backup file"
 msgstr "Veuillez sélectionner votre fichier de sauvegarde"
+
+#: src/js/controllers/index.js
+msgid "Portuguese"
+msgstr "Portugais"
 
 #: public/views/walletHome.html
 msgid "Preferences"
@@ -722,7 +716,7 @@ msgstr "Rejet du paiement"
 
 #: public/views/preferencesAbout.html
 msgid "Release Information"
-msgstr "Libérer l'information"
+msgstr "Informations de version"
 
 #: public/views/backup.html 
 #: public/views/includes/password.html
@@ -849,8 +843,8 @@ msgstr "Portefeuille partagé"
 
 #: public/views/create.html
 #: public/views/join.html
-msgid "Show"
-msgstr "Montrer"
+msgid "Show Advanced options"
+msgstr "Montrer les options avancées"
 
 #: src/js/controllers/walletHome.js
 msgid "Signing payment"
@@ -954,10 +948,6 @@ msgstr "Non-approuvé"
 #: public/views/walletHome.html
 msgid "Updating Wallet..."
 msgstr "Mise à jour du portefeuille..."
-
-#: public/views/importLegacy.html
-msgid "Username"
-msgstr "Nom d'utilisateur"
 
 #: public/views/preferencesAbout.html
 msgid "Version"
@@ -1064,10 +1054,6 @@ msgstr "e-mail pour les notifications de portefeuille"
 #: public/views/walletHome.html
 msgid "locked by pending payments"
 msgstr "verrouillés par les paiements en attente"
-
-#: src/js/services/profileService.js
-msgid "me"
-msgstr "moi"
 
 #: public/views/copayers.html
 #: public/views/walletHome.html
