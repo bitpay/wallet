@@ -165,7 +165,7 @@ angular.module('copayApp.services')
       }
 
       var walletClient = bwcService.getClient();
-      walletClient.createWallet(gettext('Personal Wallet'), gettext('me'), 1, 1, {
+      walletClient.createWallet('Personal Wallet', 'me', 1, 1, {
         network: 'livenet'
       }, function(err) {
         if (err) return cb(gettext('Error creating wallet. Check your internet connection'));

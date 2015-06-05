@@ -30,8 +30,8 @@
           </label>
 
           <label for="username">
-            {{importLegacy.fromCloud ? {{'Email'|translate}}: {{'Username'|translate}}}}
-            <input type="text" class="form-control" placeholder="{{importLegacy.fromCloud ? {{'Email'|translate}}: {{'Username'|translate}}}}"
+            {{importLegacy.fromCloud ? 'Email': 'Username'}}
+            <input type="text" class="form-control" placeholder="{{importLegacy.fromCloud ? 'Email': 'Username'}}"
             name="username" ng-model="importLegacy.username" autocapitalize="off" required>
           </label>
 
