@@ -43,7 +43,7 @@ msgid "Advanced options"
 msgstr ""
 
 #: public/views/preferencesAlias.html
-msgid "Alias for"
+msgid "Alias for <i>{{index.walletName}}</i>"
 msgstr ""
 
 #: public/views/splash.html
@@ -75,6 +75,11 @@ msgstr ""
 
 #: public/views/walletHome.html
 msgid "Available Balance"
+msgstr ""
+
+#: public/views/create.html
+#: public/views/join.html
+msgid "BIP32 master extended private key"
 msgstr ""
 
 #: public/views/includes/topbar.html
@@ -417,9 +422,6 @@ msgid "Home"
 msgstr ""
 
 #: public/views/create.html
-msgid "If not given, a random key will be generated"
-msgstr ""
-
 #: public/views/join.html
 msgid "If not given, a secure key will be generated"
 msgstr ""
@@ -487,6 +489,7 @@ msgid "Make a payment to"
 msgstr ""
 
 #: public/views/create.html
+#: public/views/join.html
 msgid "Master extended private key"
 msgstr ""
 
@@ -655,7 +658,7 @@ msgid "Payment to"
 msgstr ""
 
 #: public/views/preferencesDeleteWallet.html
-msgid "Permanently delete this wallet. THIS ACTION CANNONT BE REVERSED"
+msgid "Permanently delete this wallet. THIS ACTION CANNOT BE REVERSED"
 msgstr ""
 
 #: public/views/create.html
@@ -673,6 +676,10 @@ msgstr ""
 
 #: public/views/walletHome.html
 msgid "Preferences"
+msgstr ""
+
+#: public/views/modals/scanner.html
+msgid "QR-Scanner"
 msgstr ""
 
 #: src/js/controllers/index.js
@@ -857,6 +864,10 @@ msgstr ""
 msgid "Tap to retry"
 msgstr ""
 
+#: public/views/create.html
+msgid "Testnet"
+msgstr ""
+
 #: src/js/controllers/walletHome.js
 msgid "The payment was created but could not be completed. Please try again from home screen"
 msgstr ""
@@ -1038,6 +1049,10 @@ msgstr ""
 
 #: public/views/walletHome.html
 msgid "locked by pending payments"
+msgstr ""
+
+#: src/js/services/profileService.js
+msgid "me"
 msgstr ""
 
 #: public/views/copayers.html

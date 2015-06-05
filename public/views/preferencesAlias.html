@@ -6,7 +6,7 @@
 
 <div class="content preferences p20v" ng-controller="preferencesAliasController as prefAlias">
   <form name="settingsAliasForm" ng-submit="prefAlias.save()" class="columns">
-    <label><span translate>Alias for</span> <i>{{index.walletName}}</i></label>
+    <label><span translate>Alias for <i>{{index.walletName}}</i></span></label>
     <input type="text" id="alias2" type="text" name="alias2" ng-model="prefAlias.alias">
     <input type="submit" class="button expand black round" value="{{'Save'|translate}}"
     ng-style="{'background-color':index.backgroundColor}">
