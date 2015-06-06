@@ -4,7 +4,7 @@
 [![Coverage Status](https://img.shields.io/coveralls/bitpay/copay.svg)](https://coveralls.io/r/bitpay/copay?branch=master) 
 [![Stories in Ready](https://badge.waffle.io/bitpay/copay.svg?label=in progress&title=In progress)](https://waffle.io/bitpay/copay)
 
-*Copay* is an easy-to-use, open-source, multiplatform, multisignature, secure bitcoin wallet platform for both  individuals and companies. 
+*Copay* is an easy-to-use, open-source, multiplatform, multisignature, secure Bitcoin wallet platform for both  individuals and companies. 
 
 *Copay* uses Bitcore-Wallet-Service (https://github.com/bitpay/bitcore-wallet-service) for peer synchronization and bitcore network interfacing. 
 
@@ -132,7 +132,7 @@ In the interest of improving bug reporting, for each bug that you find and want 
 * Steps required to reproduce it
 * The platform in which you are testing
 * Any screenshots, if possible
-* The expected behaviour
+* The expected behavior
 
 For example, a really useful bug report should look like:
 
@@ -154,11 +154,11 @@ Platform: Android 4.3, Android 4.4, iOS
 
 ## General
 
-*Copay* implements a multisig wallet using [p2sh](https://en.bitcoin.it/wiki/Pay_to_script_hash) addresses. It supports multiple wallet, with with its own configuration, such as 3-of-5 (3 required signatures from 5 participant peers) or 2-of-3.  To create a multisig wallet shared between multiple participants, *Copay* requires the extended public keys of all the wallet participants.  Those public keys are then incorporated into the wallet configuration and combined to generate a payment address where funds can be sent into the wallet.  Conversely, each participant manages their own private key and that private key is never transmitted anywhere.
+*Copay* implements a multisig wallet using [p2sh](https://en.Bitcoin.it/wiki/Pay_to_script_hash) addresses. It supports multiple wallet, with with its own configuration, such as 3-of-5 (3 required signatures from 5 participant peers) or 2-of-3.  To create a multisig wallet shared between multiple participants, *Copay* requires the extended public keys of all the wallet participants.  Those public keys are then incorporated into the wallet configuration and combined to generate a payment address where funds can be sent into the wallet.  Conversely, each participant manages their own private key and that private key is never transmitted anywhere.
 
 To unlock a payment and spend the wallet's funds, a quorum of participant signatures must be collected and assembled in the transaction.  The funds cannot be spent without at least the minimum number of signatures required by the wallet configuration (2 of 3, 3 of 5, 6 of 6, etc).  Once a transaction proposal is created, the proposal is distributed among the wallet participants for each to sign the transaction locally.  Once the transaction is signed, the last signing participant will broadcast the transaction to the Bitcoin network.
 
-*Copay* also implements [BIP32](https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki) to generate new addresses for peers.  The public key that each participant contributes to the wallet is a BIP32 extended public key.  As additional public keys are needed for wallet operations (to produce new addresses to receive payments into the wallet, for example) new public keys can be derived from the participants' original extended public keys.  Once again, it's important to stress that each participant keeps their own private keys locally - private keys are not shared - and are used to sign transaction proposals to make payments from the shared wallet.
+*Copay* also implements [BIP32](https://github.com/Bitcoin/bips/blob/master/bip-0032.mediawiki) to generate new addresses for peers.  The public key that each participant contributes to the wallet is a BIP32 extended public key.  As additional public keys are needed for wallet operations (to produce new addresses to receive payments into the wallet, for example) new public keys can be derived from the participants' original extended public keys.  Once again, it's important to stress that each participant keeps their own private keys locally - private keys are not shared - and are used to sign transaction proposals to make payments from the shared wallet.
 
 For more information regarding how addresses are generated using this procedure, see: [Structure for Deterministic P2SH Multisignature Wallets](https://github.com/maraoz/bips/blob/master/bip-NNNN.mediawiki).
 
@@ -168,7 +168,7 @@ Copay uses the powerful and feature-rich [Bitcore](https://github.com/bitpay/bit
 
 ## Payment Protocol
 
-Copay currently supports [BIP70 (Payment Protocol)](https://github.com/bitcoin/bips/blob/master/bip-0070.mediawiki), with the following limitations:
+Copay currently supports [BIP70 (Payment Protocol)](https://github.com/Bitcoin/bips/blob/master/bip-0070.mediawiki), with the following limitations:
 * Only one output is allowed.  Payment requests that are more that one output are not supported.
 * Only standard Pay-to-pubkeyhash and Pay-to-scripthash scripts are supported (on payment requests).  Other script types will cause the entire payment request to be rejected.
 * Memos from the customer to the server are not supported (i.e. there is no place to write messages to the server in the current UX)
