@@ -37,11 +37,6 @@ msgstr ""
 msgid "Advanced"
 msgstr ""
 
-#: public/views/create.html
-#: public/views/join.html
-msgid "Advanced options"
-msgstr ""
-
 #: public/views/preferencesAlias.html
 msgid "Alias for <i>{{index.walletName}}</i>"
 msgstr ""
@@ -410,7 +405,7 @@ msgstr ""
 
 #: public/views/create.html
 #: public/views/join.html
-msgid "Hide"
+msgid "Hide Advanced options"
 msgstr ""
 
 #: src/js/controllers/index.js
@@ -674,6 +669,10 @@ msgstr ""
 msgid "Please, select your backup file"
 msgstr ""
 
+#: src/js/controllers/index.js
+msgid "Portuguese"
+msgstr ""
+
 #: public/views/walletHome.html
 msgid "Preferences"
 msgstr ""
@@ -839,7 +838,7 @@ msgstr ""
 
 #: public/views/create.html
 #: public/views/join.html
-msgid "Show"
+msgid "Show Advanced options"
 msgstr ""
 
 #: src/js/controllers/walletHome.js
@@ -1049,10 +1048,6 @@ msgstr ""
 
 #: public/views/walletHome.html
 msgid "locked by pending payments"
-msgstr ""
-
-#: src/js/services/profileService.js
-msgid "me"
 msgstr ""
 
 #: public/views/copayers.html
