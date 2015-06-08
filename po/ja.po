@@ -51,10 +51,6 @@ msgstr "アドレス"
 msgid "Advanced"
 msgstr "上級者向け"
 
-#: public/views/create.html public/views/join.html
-msgid "Advanced options"
-msgstr "詳細設定"
-
 #: public/views/preferencesAlias.html
 msgid "Alias for <i>{{index.walletName}}</i>"
 msgstr "<i>{{index.walletName}}</i> の通称設定"
@@ -82,7 +78,9 @@ msgstr "変更を反映"
 
 #: src/js/controllers/copayers.js src/js/controllers/preferencesDelete.js
 msgid "Are you sure you want to delete this wallet?"
-msgstr "本当にこのウォレットを削除しても宜しいですか？"
+msgstr ""
+"本当にこのウォレットを削除しても\n"
+"宜しいですか？"
 
 #: public/views/walletHome.html
 msgid "Available Balance"
@@ -209,11 +207,11 @@ msgstr "クリップボードへコピー"
 
 #: src/js/controllers/walletHome.js
 msgid "Could not accept payment. Check you connection and try again"
-msgstr "ペイメントが承諾できませんでした。接続を確認し、やり直して下さい。"
+msgstr "送金の提案が承諾できませんでした。接続を確認し、やり直して下さい。"
 
 #: src/js/controllers/walletHome.js
 msgid "Could not broadcast payment. Check you connection and try again"
-msgstr "ペイメントが送信できませんでした。接続を確認し、やり直して下さい。"
+msgstr "送金できませんでした。接続を確認し、やり直して下さい。"
 
 #: src/js/controllers/walletHome.js
 msgid ""
@@ -229,7 +227,7 @@ msgstr "アドレスが生成できませんでした。接続を確認し、や
 
 #: src/js/controllers/walletHome.js
 msgid "Could not create payment proposal"
-msgstr "ペイメント提案を作成できませんでした"
+msgstr "送金の提案を作成できませんでした"
 
 #: src/js/services/profileService.js
 msgid "Could not create using the specified extended private key"
@@ -241,7 +239,7 @@ msgstr "複合化できませんでした。パスワードが正しいかご確
 
 #: src/js/controllers/walletHome.js
 msgid "Could not delete payment proposal. Check you connection and try again"
-msgstr "ペイメント提案が削除できませんでした。接続を確認し、やり直して下さい。"
+msgstr "送金の提案が削除できませんでした。接続を確認し、やり直して下さい。"
 
 #: src/js/controllers/walletHome.js
 msgid "Could not fetch payment information"
@@ -266,11 +264,11 @@ msgstr "ウォレットに参加できませんでした。"
 
 #: src/js/controllers/walletHome.js
 msgid "Could not reject payment. Check you connection and try again"
-msgstr "ペイメントを却下できませんでした。接続を確認し、やり直して下さい。"
+msgstr "送金の提案を却下できませんでした。接続を確認し、やり直して下さい。"
 
 #: src/js/controllers/walletHome.js
 msgid "Could not send payment"
-msgstr "ペイメントを送ることができませんでした。"
+msgstr "送金できませんでした。"
 
 #: public/views/walletHome.html
 msgid "Could not update Wallet"
@@ -314,7 +312,7 @@ msgstr "日付"
 
 #: public/views/modals/txp-details.html
 msgid "Delete Payment Proposal"
-msgstr "ペイメント提案を削除"
+msgstr "送金の提案を削除"
 
 #: public/views/preferencesAdvanced.html
 msgid "Delete Wallet"
@@ -423,8 +421,8 @@ msgid "Have a Backup from Copay v0.9?"
 msgstr "Copay v0.9 のバックアップをお持ちですか？"
 
 #: public/views/create.html public/views/join.html
-msgid "Hide"
-msgstr "非表示"
+msgid "Hide Advanced options"
+msgstr "詳細設定　非表示"
 
 #: src/js/controllers/index.js
 msgid "History"
@@ -541,7 +539,7 @@ msgstr "ネットワーク"
 
 #: src/js/services/notificationsService.js
 msgid "New Payment Proposal"
-msgstr "新しいペイメント提案"
+msgstr "新しい送金の提案"
 
 #: public/views/modals/confirmation.html
 msgid "No"
@@ -604,27 +602,27 @@ msgstr "支払いが完了しました"
 
 #: public/views/modals/txp-details.html
 msgid "Payment Proposal"
-msgstr "ペイメント提案"
+msgstr "送金の提案"
 
 #: public/views/modals/tx-status.html
 msgid "Payment Proposal Created"
-msgstr "ペイメント提案が作成されました"
+msgstr "送金の提案が作成されました"
 
 #: src/js/services/notificationsService.js
 msgid "Payment Proposal Rejected"
-msgstr "ペイメント提案が却下されました"
+msgstr "送金の提案が却下されました"
 
 #: src/js/services/notificationsService.js
 msgid "Payment Proposal Rejected by Copayer"
-msgstr "ペイメント提案が参加者によって却下されました。"
+msgstr "送金の提案が他の参加者によって却下されました。"
 
 #: src/js/services/notificationsService.js
 msgid "Payment Proposal Signed by Copayer"
-msgstr "ペイメント提案が参加者によって署名されました。"
+msgstr "送金の提案が他の参加者によって署名されました。"
 
 #: public/views/walletHome.html
 msgid "Payment Proposals"
-msgstr "ペイメント提案"
+msgstr "送金の提案"
 
 #: src/js/controllers/walletHome.js
 msgid "Payment Protocol not supported on Chrome App"
@@ -632,15 +630,15 @@ msgstr "クロームのアプリではペイメントプロトコールがサポ
 
 #: public/views/modals/tx-status.html
 msgid "Payment Rejected"
-msgstr "ペイメントが却下されました"
+msgstr "送金が却下されました"
 
 #: public/views/modals/tx-status.html src/js/services/notificationsService.js
 msgid "Payment Sent"
-msgstr "支払いが完了しました"
+msgstr "送金が完了しました"
 
 #: public/views/modals/txp-details.html
 msgid "Payment accepted..."
-msgstr "ペイメント受領済み…"
+msgstr "支払いが受領されました…"
 
 #: public/views/modals/txp-details.html
 msgid "Payment details"
@@ -648,15 +646,15 @@ msgstr "支払いの詳細"
 
 #: public/views/modals/txp-details.html
 msgid "Payment finally rejected"
-msgstr "ペイメントが却下されました"
+msgstr "送金の提案が却下されました"
 
 #: public/views/modals/paypro.html
 msgid "Payment request"
-msgstr "ペイメントプロトコル要求"
+msgstr "支払い請求"
 
 #: public/views/modals/txp-details.html
 msgid "Payment sent!"
-msgstr "ペイメントを送信しました！"
+msgstr "支払いを送信しました！"
 
 #: public/views/walletHome.html
 msgid "Payment to"
@@ -680,13 +678,17 @@ msgstr "必須項目をご入力下さい"
 msgid "Please, select your backup file"
 msgstr "バックアップファイルを選択"
 
+#: src/js/controllers/index.js
+msgid "Portuguese"
+msgstr "ポルトガル語"
+
 #: public/views/walletHome.html
 msgid "Preferences"
 msgstr "設定"
 
 #: public/views/modals/scanner.html
 msgid "QR-Scanner"
-msgstr "QRスキャンナー"
+msgstr "QRコードを読み取って下さい"
 
 #: src/js/controllers/index.js
 msgid "Receive"
@@ -714,7 +716,7 @@ msgstr "却下"
 
 #: src/js/controllers/walletHome.js
 msgid "Rejecting payment"
-msgstr "ペイメント却下中"
+msgstr "送金の提案却下中"
 
 #: public/views/preferencesAbout.html
 msgid "Release Information"
@@ -834,7 +836,10 @@ msgstr "招待コードを共有"
 
 #: public/views/copayers.html
 msgid "Share this invitation with your copayers"
-msgstr "ウォレット参加者にこの招待コードを送って下さい。"
+msgstr ""
+"ウォレット参加者に\n"
+"この招待コードを\n"
+"送って下さい。"
 
 #: public/views/walletHome.html
 msgid ""
@@ -850,12 +855,12 @@ msgid "Shared Wallet"
 msgstr "共有ウォレットに参加"
 
 #: public/views/create.html public/views/join.html
-msgid "Show"
-msgstr "表示"
+msgid "Show Advanced options"
+msgstr "詳細設定　表示"
 
 #: src/js/controllers/walletHome.js
 msgid "Signing payment"
-msgstr "ペイメント署名中"
+msgstr "送金の提案署名中"
 
 #: src/js/controllers/walletHome.js
 msgid "Signing transaction"
@@ -883,7 +888,7 @@ msgid ""
 "The payment was created but could not be completed. Please try again from "
 "home screen"
 msgstr ""
-"ペイメントは作成されましたが完了できませんでした。ホーム画面からやり直して下"
+"送金の提案は作成されましたが完了できませんでした。ホーム画面からやり直して下"
 "さい。"
 
 #: src/js/controllers/walletHome.js
@@ -891,19 +896,19 @@ msgid ""
 "The payment was created but could not be signed. Please try again from home "
 "screen."
 msgstr ""
-"ペイメントは作成されましたが署名できませんでした。ホーム画面からやり直して下"
+"送金の提案は作成されましたが署名できませんでした。ホーム画面からやり直して下"
 "さい。"
 
 #: public/views/modals/txp-details.html
 msgid "The payment was removed by creator"
-msgstr "ペイメントが作成者により削除されました"
+msgstr "送金の提案が作成者により削除されました"
 
 #: src/js/controllers/walletHome.js
 msgid ""
 "The payment was signed but could not be broadcasted. Please try again from "
 "home screen."
 msgstr ""
-"ペイメントは署名されましたが送信できませんでした。ホーム画面からやり直して下"
+"送金の提案は署名されましたが送信できませんでした。ホーム画面からやり直して下"
 "さい。"
 
 #: public/views/backup.html
@@ -1057,7 +1062,7 @@ msgstr "バックアップパスワード"
 
 #: public/views/create.html public/views/join.html
 msgid "Your nickname"
-msgstr "ニックネーム"
+msgstr "自分のハンドルネーム"
 
 #: public/views/includes/password.html
 msgid "Your password"
@@ -1077,11 +1082,7 @@ msgstr "メールによるウォレットのお知らせ"
 
 #: public/views/walletHome.html
 msgid "locked by pending payments"
-msgstr "未対応ペイメントによりロック中"
-
-#: src/js/services/profileService.js
-msgid "me"
-msgstr "自分"
+msgstr "未対応送金の提案によりロック中"
 
 #: public/views/copayers.html public/views/walletHome.html
 #: public/views/includes/sidebar.html
