@@ -52,13 +52,9 @@ msgstr "Dirección"
 msgid "Advanced"
 msgstr "Avanzado"
 
-#: public/views/create.html public/views/join.html
-msgid "Advanced options"
-msgstr "Opciones avanzadas"
-
 #: public/views/preferencesAlias.html
-msgid "Alias for"
-msgstr "Alias para"
+msgid "Alias for <i>{{index.walletName}}</i>"
+msgstr "Alias de <i>{{index.walletName}}</i>"
 
 #: public/views/splash.html
 msgid "Already have a wallet?"
@@ -88,6 +84,10 @@ msgstr "¿Estas seguro de borrar este monedero?"
 #: public/views/walletHome.html
 msgid "Available Balance"
 msgstr "Balance disponible"
+
+#: public/views/create.html public/views/join.html
+msgid "BIP32 master extended private key"
+msgstr "BIP32 master extended private key"
 
 #: public/views/includes/topbar.html public/views/modals/tx-details.html
 #: public/views/modals/txp-details.html
@@ -279,13 +279,17 @@ msgstr "No se pudo enviar el pago"
 msgid "Could not update Wallet"
 msgstr "No se puede actualizar el monedero"
 
-#: public/views/create.html public/views/walletHome.html
+#: public/views/walletHome.html
 msgid "Create"
 msgstr "Crear"
 
 #: public/views/add.html
 msgid "Create new wallet"
 msgstr "Crear nuevo monedero"
+
+#: public/views/create.html
+msgid "Create {{requiredCopayers}}-of-{{totalCopayers}} wallet"
+msgstr "Crea monedero {{requiredCopayers}}-de-{{totalCopayers}}"
 
 #: public/views/includes/sidebar.html
 msgid "Create, join or import"
@@ -422,8 +426,8 @@ msgid "Have a Backup from Copay v0.9?"
 msgstr "¿Tiene una copia de seguridad de Copay v0.9?"
 
 #: public/views/create.html public/views/join.html
-msgid "Hide"
-msgstr "Ocultar"
+msgid "Hide Advanced options"
+msgstr "Ocultar opciones avanzadas"
 
 #: src/js/controllers/index.js
 msgid "History"
@@ -433,11 +437,7 @@ msgstr "Historial"
 msgid "Home"
 msgstr "Inicio"
 
-#: public/views/create.html
-msgid "If not given, a random key will be generated"
-msgstr "Si no se ingresa, una clave aleatoria será generada"
-
-#: public/views/join.html
+#: public/views/create.html public/views/join.html
 msgid "If not given, a secure key will be generated"
 msgstr "Si no se ingresa, una clave segura será generada"
 
@@ -501,7 +501,7 @@ msgstr "Más detalles para migrar Monedero"
 msgid "Make a payment to"
 msgstr "Hacer un pago a"
 
-#: public/views/create.html
+#: public/views/create.html public/views/join.html
 msgid "Master extended private key"
 msgstr "Master extended private key"
 
@@ -666,7 +666,7 @@ msgid "Payment to"
 msgstr "Pago a"
 
 #: public/views/preferencesDeleteWallet.html
-msgid "Permanently delete this wallet. THIS ACTION CANNONT BE REVERSED"
+msgid "Permanently delete this wallet. THIS ACTION CANNOT BE REVERSED"
 msgstr ""
 "Borrar permanentemente este monedero. ESTA ACCIÓN NO PUEDE SER REVERTIDA"
 
@@ -682,9 +682,17 @@ msgstr "Por favor ingrese los campos requeridos"
 msgid "Please, select your backup file"
 msgstr "Por favor, selecciona el archivo de copia de seguridad"
 
+#: src/js/controllers/index.js
+msgid "Portuguese"
+msgstr "Portugués"
+
 #: public/views/walletHome.html
 msgid "Preferences"
 msgstr "Preferencias"
+
+#: public/views/modals/scanner.html
+msgid "QR-Scanner"
+msgstr "Escáner QR"
 
 #: src/js/controllers/index.js
 msgid "Receive"
@@ -848,8 +856,8 @@ msgid "Shared Wallet"
 msgstr "Monedero Compartido"
 
 #: public/views/create.html public/views/join.html
-msgid "Show"
-msgstr "Mostrar"
+msgid "Show Advanced options"
+msgstr "Mostrar opciones avanzadas"
 
 #: src/js/controllers/walletHome.js
 msgid "Signing payment"
@@ -871,6 +879,10 @@ msgstr "Listo"
 #: public/views/walletHome.html
 msgid "Tap to retry"
 msgstr "Toque para reintentar"
+
+#: public/views/create.html
+msgid "Testnet"
+msgstr "Testnet"
 
 #: src/js/controllers/walletHome.js
 msgid ""
@@ -1073,8 +1085,8 @@ msgstr "email para recibir notificaciones"
 msgid "locked by pending payments"
 msgstr "bloqueado por pagos pendientes"
 
-#: public/views/copayers.html public/views/create.html
-#: public/views/walletHome.html public/views/includes/sidebar.html
+#: public/views/copayers.html public/views/walletHome.html
+#: public/views/includes/sidebar.html
 msgid "of"
 msgstr "de"
 
@@ -1090,10 +1102,6 @@ msgstr "configuración"
 msgid "too long!"
 msgstr "¡demasiado largo!"
 
-#: public/views/create.html
-msgid "wallet"
-msgstr "monedero"
-
 #: src/js/controllers/importLegacy.js
 msgid ""
 "{{len}} wallets imported. Funds scanning in progress. Hold on to see updated "
@@ -1101,6 +1109,21 @@ msgid ""
 msgstr ""
 "{{len}} monederos importados. Escáner de fondos en progreso. Espere a ver el "
 "balance actualizado"
+
+#~ msgid "Alias for"
+#~ msgstr "Alias para"
+
+#~ msgid "Hide"
+#~ msgstr "Ocultar"
+
+#~ msgid "If not given, a random key will be generated"
+#~ msgstr "Si no se ingresa, una clave aleatoria será generada"
+
+#~ msgid "Show"
+#~ msgstr "Mostrar"
+
+#~ msgid "wallet"
+#~ msgstr "monedero"
 
 #~ msgid "Transaction not broadcasted. Please try again."
 #~ msgstr "Transacción no emitida. Por favor, intente nuevamente."
@@ -1161,9 +1184,6 @@ msgstr ""
 
 #~ msgid "Transaction was rejected"
 #~ msgstr "Transacción rechazada"
-
-#~ msgid "{{index.walletName}} settings"
-#~ msgstr "Opciones de {{index.walletName}}"
 
 #~ msgid "Transaction not rejected. Please try again."
 #~ msgstr "Transacción no rechazada. Por favor, intente nuevamente."
@@ -1259,9 +1279,6 @@ msgstr ""
 #~ msgid "Note:"
 #~ msgstr "Nota:"
 
-#~ msgid "QR-Scanner"
-#~ msgstr "Escáner QR"
-
 #~ msgid "Select a wallet to make the payment"
 #~ msgstr "Seleccione monedero para realizar el pago"
 
@@ -1273,9 +1290,6 @@ msgstr ""
 
 #~ msgid "change"
 #~ msgstr "vuelto"
-
-#~ msgid "BIP32 master extended private key"
-#~ msgstr "BIP32 master extended private key"
 
 #~ msgid "Bitcore Wallet Service URL"
 #~ msgstr "Bitcore Wallet Service URL"
@@ -1626,9 +1640,6 @@ msgstr ""
 #~ msgid "Storage"
 #~ msgstr "Almacenamiento"
 
-#~ msgid "Testnet"
-#~ msgstr "Testnet"
-
 #~ msgid "The balance is updated using the derived addresses"
 #~ msgstr "El balance es actualizado utilizando direcciones derivadas"
 
@@ -1845,9 +1856,6 @@ msgstr ""
 
 #~ msgid "seconds"
 #~ msgstr "segundos"
-
-#~ msgid "Create {{requiredCopayers}}-of-{{totalCopayers}} wallet"
-#~ msgstr "Crea monedero {{requiredCopayers}}-de-{{totalCopayers}}"
 
 #, fuzzy
 #~ msgid ""
