@@ -394,7 +394,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
   this.copyAddress = function(addr) {
     if (isCordova) {
-      window.cordova.plugins.clipboard.copy('bitcoin:' + addr);
+      window.cordova.plugins.clipboard.copy(addr);
       window.plugins.toast.showShortCenter('Copied to clipboard');
     } else if (nodeWebkit.isDefined()) {
       nodeWebkit.writeToClipboard(addr);
