@@ -130,7 +130,6 @@ angular.module('copayApp.services')
         storageService.getFocusedWalletId(function(err, focusedWalletId) {
           if (err) return cb(err);
           root._setFocus(focusedWalletId, cb);
-          $rootScope.$emit('Local/CleanAndScanAddresses');
         });
       });
     };
