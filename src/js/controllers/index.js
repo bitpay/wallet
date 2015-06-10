@@ -481,7 +481,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     });
   };
 
-
   self.clientError = function(err) {
     if (isCordova) {
       navigator.notification.confirm(
@@ -549,9 +548,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     c.startScan({
       includeCopayerBranches: true,
     }, function(err) {
-      if (err) {
-        if (self.walletId == walletId)
-          self.setOngoingProcess('scanning', false);
+      if (err && self.walletId == walletId) {
+        self.setOngoingProcess('scanning', false);
         self.handleError(err);
         $rootScope.$apply();
       }
@@ -624,6 +622,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
   $rootScope.$on('Local/BWSUpdated', function(event) {
     profileService.applyConfig();
+    storageService.setCleanAndScanAddresses(function() {});
   });
 
   $rootScope.$on('Local/WalletCompleted', function(event) {
@@ -769,6 +768,19 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.setFocusedWallet();
     self.updateTxHistory();
     go.walletHome();
+    storageService.getCleanAndScanAddresses(function(err, val) {
+      if (val) {
+        $log.debug('Clear last address cache and Scan');
+        var wallets = profileService.walletClients;
+        for (var walletId in wallets) {
+          storageService.clearLastAddress(walletId, function(err) {
+            self.startScan(walletId);
+          });
+        }
+        storageService.removeCleanAndScanAddresses(function() {});
+      }
+    });
+    
   });
 
   $rootScope.$on('Local/SetTab', function(event, tab, reset) {
