@@ -151,6 +151,18 @@ angular.module('copayApp.services')
       storage.get('backup-' + walletId, cb);
     };
 
+    root.setCleanAndScanAddresses = function(cb) {
+      storage.set('CleanAndScanAddresses', Date.now(), cb);
+    };
+
+    root.getCleanAndScanAddresses = function(cb) {
+      storage.get('CleanAndScanAddresses', cb);
+    };
+
+    root.removeCleanAndScanAddresses = function(cb) {
+      storage.remove('CleanAndScanAddresses', cb);
+    };
+
     root.getConfig = function(cb) {
       storage.get('config', cb);
     };
