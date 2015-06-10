@@ -771,12 +771,11 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     storageService.getCleanAndScanAddresses(function(err, val) {
       if (val) {
         $log.debug('Clear last address cache and Scan');
-        var wallets = profileService.walletClients;
-        for (var walletId in wallets) {
+        lodash.each(lodash.keys(profileService.walletClients), function(walletId) {
           storageService.clearLastAddress(walletId, function(err) {
             self.startScan(walletId);
           });
-        }
+        });
         storageService.removeCleanAndScanAddresses(function() {});
       }
     });
