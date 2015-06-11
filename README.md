@@ -125,6 +125,12 @@ To install it go to `chrome://extensions/` in your Chrome browser and ensure you
 ## Firefox Add-on
 The *Copay* Firefox Extension has been deprecated and is no longer supported.
 
+## Translations
+*Copay* uses standart gettext PO files for tranlations. It is currently translated to spanish, japanese, french, german and portuguese thank to community contributions. See https://github.com/bitpay/copay/pull/2880 as an example pull request for adding translations.
+
+Translation Credits: Japanese: @dabura667, French: @kirvx, Portuguese: @pmichelazzo, Spanish: @cmgustavo, German: @saschad. Gracias totales!
+
+
 # QA and Bug Reporting
 
 In the interest of improving bug reporting, for each bug that you find and want to create a ticket about, please refer to a form that contains:
@@ -172,6 +178,8 @@ Copay currently supports [BIP70 (Payment Protocol)](https://github.com/bitcoin/b
 * Only one output is allowed.  Payment requests that are more that one output are not supported.
 * Only standard Pay-to-pubkeyhash and Pay-to-scripthash scripts are supported (on payment requests).  Other script types will cause the entire payment request to be rejected.
 * Memos from the customer to the server are not supported (i.e. there is no place to write messages to the server in the current UX)
+ 
+
 
 
 
