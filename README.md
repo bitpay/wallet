@@ -128,7 +128,7 @@ The *Copay* Firefox Extension has been deprecated and is no longer supported.
 ## Translations
 *Copay* uses standart gettext PO files for tranlations. It is currently translated to spanish, japanese, french, german and portuguese thank to community contributions. See https://github.com/bitpay/copay/pull/2880 as an example pull request for adding translations.
 
-Translation Credits: Japanese: @dabura667, French: @kirvx), Portuguese: @pmichelazzo, Spanish: @cmgustavo, German: @saschad. Gracias totales!
+Translation Credits: Japanese: @dabura667, French: @kirvx, Portuguese: @pmichelazzo, Spanish: @cmgustavo, German: @saschad. Gracias totales!
 
 
 # QA and Bug Reporting
