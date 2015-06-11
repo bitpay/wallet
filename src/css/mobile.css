@@ -565,6 +565,7 @@ to prevent collapsing during animation*/
   width: 100%;
   top: 45px;
   padding-bottom: 33px;
+  -webkit-transform: translate3d(0,0,0);
 }
 
 .reveal-modal {
