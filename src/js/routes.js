@@ -108,14 +108,19 @@ angular
         views: {
           'main': {
             templateUrl: 'views/disclaimer.html',
-            controller: function($scope, storageService, applicationService) {
+            controller: function($scope, $timeout, storageService, applicationService, go) {
               storageService.getCopayDisclaimer(function(err, val) {
                 $scope.agreed = val;
+                $timeout(function(){
+                  $scope.$digest();
+                }, 1);
               });
 
               $scope.agree = function() {
                 storageService.setCopayDisclaimer(function(err) {
-                  applicationService.restart();
+                  $timeout(function(){
+                    applicationService.restart();
+                  }, 1000);
                 });
               };
             }
