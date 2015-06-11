@@ -4,36 +4,39 @@
   ng-init="titleSection='About Copay'; goBackToState = 'preferences'">
 </div>
 
-<div class="content p20v" ng-controller="preferencesAbout as about">
-  <ul class="no-bullet m0 size-14">
+<div class="content preferences p20v" ng-controller="preferencesAbout as about">
     <div class="text-center small-5 small-centered columns m20b" >
       <img src="img/logo.png" alt="Copay" width="100%">
     </div>
     <h4 class="title m0" translate>Release Information</h4>
 
     <div  ng-controller="versionController as v">
-      <li class="line-b p20" ng-conf>
-        <span translate>Version</span>
-        <span class="right text-gray">
-          v{{v.version}} 
-        </span>      
-      </li>
-      <li class="line-b p20" ng-conf ng-click="$root.openExternalLink('https://github.com/bitpay/copay/tree/'+v.commitHash)">
-        <span translate>Commit hash</span>
-        <span class="right text-gray">
-          #{{v.commitHash}}
-        </span>      
-      </li>
+      <ul class="no-bullet m0 size-14">
+        <li class="line-b p20" ng-conf>
+          <span translate>Version</span>
+          <span class="right text-gray">
+            v{{v.version}} 
+          </span>      
+        </li>
+        <li class="line-b p20" ng-conf ng-click="$root.openExternalLink('https://github.com/bitpay/copay/tree/'+v.commitHash)">
+          <span translate>Commit hash</span>
+          <span class="right text-gray">
+            #{{v.commitHash}}
+          </span>      
+        </li>
+      </ul>
     </div>
  
     <h4 class="title m0">&nbsp;</h4>
-    <li class="line-b p20" ng-conf ng-click="$root.go('logs')">
-      <span translate>Session log</span>
-      <span class="right text-gray">
+    <ul class="no-bullet m0 size-14">
+      <li class="line-b p20" ng-click="$root.go('disclaimer')">
         <i class="icon-arrow-right3 size-24 right text-gray"></i>  
-      </span>      
-    </li>
-
-  </ul>
+        <span translate>Terms of Use</span>
+      </li>
+      <li class="line-b p20" ng-conf ng-click="$root.go('logs')">
+        <i class="icon-arrow-right3 size-24 right text-gray"></i>  
+        <span translate>Session log</span>
+      </li>
+    </ul>
 
 </div>
