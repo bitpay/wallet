@@ -74,7 +74,7 @@ msgstr "Betrag in"
 
 #: public/views/preferencesLanguage.html
 msgid "Applying changes"
-msgstr "Änerungen anwenden"
+msgstr "Änderungen anwenden"
 
 #: src/js/controllers/copayers.js src/js/controllers/preferencesDelete.js
 msgid "Are you sure you want to delete this wallet?"
@@ -270,7 +270,7 @@ msgstr "Beteiligung am Wallet nicht möglich"
 #: src/js/controllers/walletHome.js
 msgid "Could not reject payment. Check you connection and try again"
 msgstr ""
-"Zahlung konnte nicht abgelehnt werden. Bitte Verbindung prüfen und erneut "
+"Zahlung kann nicht abgelehnt werden. Bitte Verbindung prüfen und erneut "
 "versuchen"
 
 #: src/js/controllers/walletHome.js
@@ -686,7 +686,7 @@ msgstr "Bitte die Sicherungsdatei wählen"
 
 #: src/js/controllers/index.js
 msgid "Portuguese"
-msgstr "Portuguese"
+msgstr "Português"
 
 #: public/views/walletHome.html
 msgid "Preferences"
@@ -828,7 +828,7 @@ msgid ""
 "service provider is compromised. Information available to an attacker would "
 "include your wallet addresses and its balance, but no more."
 msgstr ""
-"Das einrichten einer E-Mail Benachrichtigung schwächt die Privatsphäre, wenn "
+"Das Einrichten einer E-Mail Benachrichtigung schwächt die Privatsphäre, wenn "
 "der Wallet Service Anbieter kompromittiert wurde. Der Angreifer  kann jedoch "
 "nur Wallet Adresse und Guthaben erfahren, mehr nicht."
 
