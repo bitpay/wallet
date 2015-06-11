@@ -176,5 +176,13 @@ angular.module('copayApp.services')
       storage.remove('config', cb);
     };
 
+    root.setCopayDisclaimer = function(cb) {
+      storage.set('agreeDisclaimer', true, cb);
+    };
+
+    root.getCopayDisclaimer = function(cb) {
+      storage.get('agreeDisclaimer', cb);
+    };
+
     return root;
   });

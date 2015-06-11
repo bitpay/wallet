@@ -73,10 +73,14 @@ angular
         views: {
           'main': {
             templateUrl: 'views/splash.html',
-            controller: function($scope, $timeout, $log, profileService, go) {
-              if (profileService.profile) {
-                go.walletHome();
-              }
+            controller: function($scope, $timeout, $log, profileService, storageService, go) {
+              storageService.getCopayDisclaimer(function(err, val) {
+                if (!val) go.path('disclaimer');
+
+                if (profileService.profile) {
+                  go.walletHome();
+                }
+              });
 
               $scope.create = function(noWallet) {
                 $scope.creatingProfile = true;
@@ -91,6 +95,32 @@ angular
                       $scope.create(noWallet);
                     }, 3000);
                   }
+                });
+              };
+            }
+          }
+        }
+      })
+      $stateProvider
+      .state('disclaimer', {
+        url: '/disclaimer',
+        needProfile: false,
+        views: {
+          'main': {
+            templateUrl: 'views/disclaimer.html',
+            controller: function($scope, $timeout, storageService, applicationService, go) {
+              storageService.getCopayDisclaimer(function(err, val) {
+                $scope.agreed = val;
+                $timeout(function(){
+                  $scope.$digest();
+                }, 1);
+              });
+
+              $scope.agree = function() {
+                storageService.setCopayDisclaimer(function(err) {
+                  $timeout(function(){
+                    applicationService.restart();
+                  }, 1000);
                 });
               };
             }
@@ -427,6 +457,7 @@ angular
       preferencesEmail: 12,
       about: 12,
       logs: 13,
+      disclaimer: 13,
       add: 11,
       create: 12,
       join: 12,
@@ -451,6 +482,9 @@ angular
             if (err.message.match('NOPROFILE')) {
               $log.debug('No profile... redirecting');
               $state.transitionTo('splash');
+            } else if (err.message.match('NONAGREEDDISCLAIMER')) {
+              $log.debug('Display disclaimer... redirecting');
+              $state.transitionTo('disclaimer');
             } else {
               throw new Error(err); // TODO
             }
