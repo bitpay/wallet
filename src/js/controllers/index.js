@@ -39,7 +39,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
   self.availableLanguages = [{
     name: gettext('Deutsch'),
-    isoCode: 'de_DE',
+    isoCode: 'de',
   }, {
     name: gettext('English'),
     isoCode: 'en',
