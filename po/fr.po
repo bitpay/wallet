@@ -268,6 +268,7 @@ msgid "Create"
 msgstr "Créer"
 
 #: public/views/add.html
+#: public/views/create.html
 msgid "Create new wallet"
 msgstr "Créer"
 
@@ -324,6 +325,10 @@ msgstr "Suppression du paiement"
 #: public/views/modals/txp-details.html
 msgid "Details"
 msgstr "Détails"
+
+#: src/js/controllers/index.js
+msgid "Deutsch"
+msgstr "Allemand"
 
 #: public/views/preferences.html
 msgid "Disabled"
@@ -407,6 +412,10 @@ msgstr "Générer une nouvelle adresse"
 msgid "Global settings"
 msgstr "Paramètres globaux"
 
+#: public/views/disclaimer.html
+msgid "Go back"
+msgstr "Retour"
+
 #: public/views/import.html
 msgid "Have a Backup from Copay v0.9?"
 msgstr "Vous avez une sauvegarde de Copay v0.9 ?"
@@ -423,6 +432,10 @@ msgstr "Historique"
 #: src/js/controllers/index.js
 msgid "Home"
 msgstr "Accueil"
+
+#: public/views/disclaimer.html
+msgid "I affirm that I have read, understood, and agree with these terms."
+msgstr "Je confirme que j'ai lu, compris et suis d'accord avec ces conditions."
 
 #: public/views/create.html
 #: public/views/join.html
@@ -872,6 +885,11 @@ msgstr "Succès"
 msgid "Tap to retry"
 msgstr "Tapez pour réessayer"
 
+#: public/views/disclaimer.html
+#: public/views/preferencesAbout.html
+msgid "Terms of Use"
+msgstr "Conditions d'utilisation"
+
 #: public/views/create.html
 msgid "Testnet"
 msgstr "Testnet"
@@ -891,6 +909,10 @@ msgstr "Le paiement a été supprimé par le créateur"
 #: public/views/backup.html
 msgid "The private key for this wallet is encrypted. Exporting a backup will keep the private key encrypted in the backup archive."
 msgstr "La clé privée pour ce portefeuille est chiffrée. Exporter une sauvegarde conservera le chiffrement de la clé dans l'archive de sauvegarde."
+
+#: public/views/disclaimer.html
+msgid "The software you are about to use functions as a free, open source, and multi-signature digital wallet. The software does not constitute an account where BitPay or other third parties serve as financial intermediaries or custodians of your bitcoin.  While the software has undergone beta testing and continues to be improved by feedback from the open-source user and developer community, we cannot guarantee that there will be no bugs in the software. You acknowledge that your use of this software is at your own discretion and in compliance with all applicable laws. You are responsible for safekeeping your passwords, private key pairs, PINs and any other codes you use to access the software. IF YOU LOSE ACCESS TO YOUR COPAY WALLET OR YOUR ENCRYPTED PRIVATE KEYS AND YOU HAVE NOT SEPARATELY STORED A BACKUP OF YOUR WALLET AND CORRESPONDING PASSWORD, YOU ACKNOWLEDGE AND AGREE THAT ANY BITCOIN YOU HAVE ASSOCIATED WITH THAT COPAY  WALLET WILL BECOME INACCESSIBLE. All transaction requests are irreversible.  The authors of the software, employees and affiliates of Bitpay, copyright holders, and BitPay, Inc. cannot retrieve your private keys or passwords if you lose or forget them and cannot guarantee transaction confirmation as they do not have control over the Bitcoin network. To the fullest extent permitted by law, this software is provided “as is” and no representations or warranties can be made of any kind, express or implied, including but not limited to the warranties of merchantability, fitness or a particular purpose and noninfringement. You assume any and all risks associated with the use of the software. In no event shall the authors of the software, employees and affiliates of Bitpay, copyright holders, or BitPay, Inc. be held liable for any claim, damages or other liability, whether in an action of contract, tort, or otherwise, arising from, out of or in connection with the software. We reserve the right to modify this disclaimer from time to time."
+msgstr "Le logiciel que vous êtes sur le point d'utiliser fonctionne comme un portefeuille numérique gratuit, open source et multi-signatures. Le logiciel ne constitue pas un compte où BitPay, ou des tiers , sert comme des intermédiaires financiers ou dépositaires de vos bitcoins. Bien que le logiciel a subi des tests bêta et continue d'être amélioré par les commentaires d'utilisateurs et de développeurs de la communauté open source, nous ne pouvons pas garantir qu'il n'y aura plus de bugs dans le logiciel. Vous reconnaissez que votre utilisation de ce logiciel est à votre propre discrétion et est en conformité avec toutes les lois applicables. Vous êtes responsable de la sauvegarde de vos mots de passe, des paires de clés privées, codes PIN et autres codes que vous utilisez pour accéder au logiciel. SI VOUS PERDEZ L'ACCÈS À VOTRE PORTEFEUILLE COPAY OU À VOS CLÉS PRIVÉES CHIFFRÉES ET QUE VOUS N'AVEZ PAS ENTREPOSÉ SÉPARÉMENT UNE SAUVEGARDE DE VOTRE PORTEFEUILLE ET LES MOTS DE PASSE CORRESPONDANT, VOUS RECONNAISSEZ ET ACCEPTEZ QUE LES BITCOINS QUE VOUS AVEZ ASSOCIÉ À CE PORTEFEUILLE COPAY DEVIENNENT INACCESSIBLES. Toutes les transactions sont irréversibles. Les auteurs de ce logiciel, employés et sociétés affiliés à BitPay, détenteurs de droits d'auteur, et BitPay, Inc. ne peuvent pas récupérer vos clés privées ou mots de passe si vous les perdez et ne peuvent pas garantir la confirmation des transactions étant donné qu'ils n'ont pas de contrôle sur le réseau Bitcoin. Dans toute la mesure permise par la loi, ce logiciel est fourni "tel quel" et aucune représentation ou garantie ne peuvent être faites de toute nature, expresse ou implicite, y compris, mais sans s'y limiter, les garanties de qualité marchande, la conformité ou un usage particulier et absent de contrefaçon. Vous assumez tous les risques associés à l'utilisation du logiciel. En aucun cas les auteurs des logiciels, employés et sociétés affiliés de Bitpay, détenteurs de droits d'auteur, ou BitPay, Inc. ne peuvent pas être tenus responsables de toute réclamation, dommages ou autre responsabilité, que ce soit dans une action contractuelle, délictuelle ou autre, découlant ou en étant en connexion avec le logiciel. Nous nous réservons le droit de modifier cette clause de temps à autre."
 
 #: src/js/controllers/copayers.js
 #: src/js/controllers/preferencesDelete.js
