@@ -8,7 +8,7 @@
     ng-repeat="item in sidebar.wallets track by $index"
     ng-class="{'selected': item.id == index.walletId}"
     class="nav-item">
-    <a ng-click="sidebar.switchWallet(item.id)" class="oh">
+    <a ng-click="sidebar.switchWallet(item.id, index.walletId)" class="oh">
       <div class="avatar-wallet"
         ng-style="{'background-color':item.color}">{{(item.name || item.id) | limitTo: 1}}</div>
       <div class="name-wallet" ng-class="{'m8t':item.n == 1}">{{item.name || item.id}}</div>

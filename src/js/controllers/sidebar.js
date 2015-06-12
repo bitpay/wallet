@@ -24,9 +24,10 @@ angular.module('copayApp.controllers').controller('sidebarController',
       profileService.signout();
     };
 
-    self.switchWallet = function(wid) {
+    self.switchWallet = function(selectedWalletId, currentWalletId) {
+      if (selectedWalletId == currentWalletId) return;
       self.walletSelection = false;
-      profileService.setAndStoreFocus(wid, function() {
+      profileService.setAndStoreFocus(selectedWalletId, function() {
       });
     };
 
