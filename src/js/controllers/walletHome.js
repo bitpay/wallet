@@ -545,7 +545,11 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     var errMessage =
       fc.credentials.m > 1 ? gettext('Could not create payment proposal') : gettext('Could not send payment');
 
-    errMessage = errMessage + '. ' + (err.message ? err.message : gettext('Check you connection and try again'));
+    if (typeof err == 'string') {
+      errMessage = errMessage + '. ' + (err ? err : gettext('Unknown error'));
+    } else {
+      errMessage = errMessage + '. ' + (err.message ? err.message : gettext('Check you connection and try again'));
+    }
 
     this.error = errMessage;
 
