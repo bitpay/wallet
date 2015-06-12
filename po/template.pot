@@ -260,6 +260,7 @@ msgid "Create"
 msgstr ""
 
 #: public/views/add.html
+#: public/views/create.html
 msgid "Create new wallet"
 msgstr ""
 
