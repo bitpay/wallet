@@ -177,16 +177,16 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     return bal;
   };
 
-  self.updateAll = function(obj, initStatusHash, tries) {
+  self.updateAll = function(opts, initStatusHash, tries) {
     tries = tries || 0;
-    var quiet = (obj && obj.quiet) ? true : null;
-    if (obj && obj.untilItChanges && lodash.isUndefined(initStatusHash)) {
+    var quiet = (opts && opts.quiet) ? true : null;
+    if (opts && opts.untilItChanges && lodash.isUndefined(initStatusHash)) {
       initStatusHash = _walletStatusHash();
       $log.debug('Updating status until it changes. initStatusHash:' + initStatusHash)
     }
     var get = function(cb) {
-      if (obj && obj.walletStatus)
-        return cb(null, obj.walletStatus);
+      if (opts && opts.walletStatus)
+        return cb(null, opts.walletStatus);
       else {
         self.updateError = false;
         return fc.getStatus(function(err, ret) {
@@ -209,7 +209,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       get(function(err, walletStatus) {
         var currentStatusHash = _walletStatusHash(walletStatus); 
         $log.debug('Status update. hash:' + currentStatusHash + ' Try:'+ tries); 
-        if (!err && (obj && obj.untilItChanges) && initStatusHash == currentStatusHash && tries < 7) {
+        if (!err && (opts && opts.untilItChanges) && initStatusHash == currentStatusHash && tries < 7) {
           return $timeout(function() {
             $log.debug('Retrying update... Try:' + tries)
             return self.updateAll({walletStatus: null, untilItChanges: true}, initStatusHash, ++tries);
