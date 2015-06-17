@@ -134,7 +134,7 @@
 
   <div class="row column m20t" ng-if="tx.couldRemove">
     <div class="text-gray size-12 text-center m20b" show="tx.couldRemove" translate>
-      * Only payment proposals created by yourself with no peer actions can be removed
+      * Payment proposals can be deleted: (1) after 24hr of been created or (2) by the creator as long as it has no other signatures.
     </div>
     <button class="tiny expand round outline dark-gray" ng-click="remove(tx)"
       ng-disabled="loading" ng-show="tx.couldRemove">
