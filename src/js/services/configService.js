@@ -57,6 +57,9 @@ angular.module('copayApp.services').factory('configService', function(storageSer
         if (!configCache.bws) {
           configCache.bws = defaultConfig.bws;
         }
+        if (!configCache.wallet) {
+          configCache.wallet = defaultConfig.wallet;
+        }
         if (!configCache.wallet.settings.unitCode) {
           configCache.wallet.settings.unitCode = defaultConfig.wallet.settings.unitCode;
         }
