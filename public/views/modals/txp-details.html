@@ -134,7 +134,7 @@
 
   <div class="row column m20t" ng-if="tx.couldRemove">
     <div class="text-gray size-12 text-center m20b" show="tx.couldRemove" translate>
-      * Payment proposals can be deleted: (1) after 24hr of been created or (2) by the creator as long as it has no other signatures.
+      * A payment proposal can be deleted if 1) you are the creator, and no other copayer has signed, or 2) 24 hours have passed since the proposal was created.
     </div>
     <button class="tiny expand round outline dark-gray" ng-click="remove(tx)"
       ng-disabled="loading" ng-show="tx.couldRemove">
