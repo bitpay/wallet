@@ -150,7 +150,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
               if (err.code && err.code == 'BADREQUEST' &&
                 (eventName == 'transactionProposalRemoved' || eventName == 'TxProposalRemoved')) {
                 $scope.tx.removed = true;
-                $scope.tx.couldRemove = false;
+                $scope.tx.canBeRemoved = false;
                 $scope.tx.pendingForUs = false;
                 $scope.$apply();
                 return;
@@ -545,6 +545,8 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     var errMessage =
       fc.credentials.m > 1 ? gettext('Could not create payment proposal') : gettext('Could not send payment');
 
+    //This are abnormal situations, but still err message will not be translated
+    //(the should) we should switch using err.code and use proper gettext messages
     errMessage = errMessage + '. ' + (err.message ? err.message : gettext('Check you connection and try again'));
 
     this.error = errMessage;
