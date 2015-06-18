@@ -150,7 +150,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
               if (err.code && err.code == 'BADREQUEST' &&
                 (eventName == 'transactionProposalRemoved' || eventName == 'TxProposalRemoved')) {
                 $scope.tx.removed = true;
-                $scope.tx.couldRemove = false;
+                $scope.tx.canBeRemoved = false;
                 $scope.tx.pendingForUs = false;
                 $scope.$apply();
                 return;

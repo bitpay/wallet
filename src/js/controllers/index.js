@@ -357,7 +357,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         tx.statusForUs = 'pending';
       }
 
-      tx.couldRemove =!tx.deleteLockTime;
+      if (!tx.deleteLockTime)
+        tx.canBeRemoved = true;
 
       if (tx.creatorId != self.copayerId) {
         self.pendingTxProposalsCountForUs = self.pendingTxProposalsCountForUs + 1;
