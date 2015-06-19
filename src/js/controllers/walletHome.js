@@ -608,6 +608,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
         amount: amount,
         message: comment,
         payProUrl: paypro ? paypro.url : null,
+        feePerKb: config.feeValue || 10000,
       }, function(err, txp) {
         if (err) {
           self.setOngoingProcess();
