@@ -917,6 +917,27 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     return actions.hasOwnProperty('create');
   };
 
+  this._doSendAll = function(amount) {
+    this.setForm(null, amount);
+  };
+
+  this.sendAll = function(amount, feeStr) {
+    var msg = gettextCatalog.getString("{{fee}} will be discounted for bitcoin networking fees", {
+      fee: feeStr
+    });
+    if (isCordova) {
+      navigator.notification.confirm(
+        msg,
+        this._doSendAll(amount),
+        'OK', 'Cancel'
+      );
+    } else {
+      if (confirm(msg))
+        this._doSendAll(amount);
+    }
+  }
+
+
   this.bindTouchDown();
   this.setAddress();
   this.setSendFormInputs();

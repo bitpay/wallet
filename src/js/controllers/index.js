@@ -436,6 +436,12 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.lockedBalanceBTC = strip(self.lockedBalanceSat / COIN);
     self.availableBalanceBTC = strip(self.availableBalanceBTC / COIN);
 
+    // KB to send max
+    self.feePerKbSat = config.feePerKbSat || 10000; 
+    var feeToSendMaxSat = balance.totalKbToSendMax * self.feePerKbSat;
+
+    self.availableMaxBalance = strip((self.availableBalanceSat - feeToSendMaxSat) * self.satToUnit);
+    self.feeToSendMaxStr = profileService.formatAmount(feeToSendMaxSat) + ' ' + self.unitName;
 
     //STR
     self.totalBalanceStr = profileService.formatAmount(self.totalBalanceSat) + ' ' + self.unitName;

@@ -58,7 +58,7 @@ angular
               historicLog.add(level, args.join(' '));
               orig.apply(null, args);
             } catch (e) {
-              console.log('Error at log decorator:', e);
+              console.log('ERROR (at log decorator):', e, args[0]);
             }
           };
         });
