@@ -278,6 +278,11 @@
       <div>
         <h4 class="title m0">
 
+          <button class="outline light-gray round tiny right m0 lh"
+            ng-click="home.sendAll(index.availableMaxBalance, index.feeToSendMaxStr)"
+            ng-if="index.availableBalance > 0 && !home.blockUx && !home.lockAmount" translate> Send All
+          </button>
+
           <div  ng-show="!index.lockedBalance && index.availableBalanceStr">
             <div class="size-12">
               <span class="db text-bold">
@@ -397,10 +402,10 @@
             </div>
 
             <div class="row" ng-show="!home.onGoingProcess">
-              <div class="large-6 medium-6 small-6 columns" ng-show="!home.blockUx && (home._paypro || home.lockAddress)">
+              <div class="large-6 medium-6 small-6 columns" ng-show="!home.blockUx && (home._paypro || home.lockAddress || home.lockAmount)">
                 <a ng-click="home.resetForm(sendForm)" class="button expand outline dark-gray round" translate>Cancel</a>
               </div>
-              <div class="columns" ng-class="{'small-6 medium-6 large-6':(home._paypro || home.lockAddress)}">
+              <div class="columns" ng-class="{'small-6 medium-6 large-6':(home._paypro || home.lockAddress || home.lockAmount)}">
                 <button type="submit" class="button black round expand" ng-disabled="sendForm.$invalid || home.blockUx ||  index.isOffline"
                   ng-style="{'background-color':index.backgroundColor}"  translate>
                   Send
