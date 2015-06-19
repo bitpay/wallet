@@ -443,7 +443,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.availableBalanceBTC = strip(self.availableBalanceBTC / COIN);
 
     // KB to send max
-    self.feePerKbSat = config.feePerKbSat || 10000;
+    self.feePerKbSat = config.feeValue || 10000;
     if (balance.totalKbToSendMax) {
       var feeToSendMaxSat = balance.totalKbToSendMax * self.feePerKbSat;
 

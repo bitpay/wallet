@@ -1,0 +1,14 @@
+<div 
+  class="topbar-container" 
+  ng-include="'views/includes/topbar.html'"
+  ng-init="titleSection='Fee Policy'; goBackToState = 'preferences'; noColor = true">
+</div>
+
+
+<div class="content preferences" ng-controller="preferencesFeeController as prefFee">
+  <div ng-repeat="fee in prefFee.feeOpts" ng-click="prefFee.save(fee)" class="line-b p20 size-14">
+    <span>{{fee.name}} ({{fee.value}} bits per kB)</span>
+    <i class="fi-check size-16 right" ng-show="prefFee.feeName == fee.name"></i>
+  </div>
+</div>
+<div class="extra-margin-bottom"></div>
