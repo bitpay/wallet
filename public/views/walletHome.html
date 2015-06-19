@@ -279,8 +279,9 @@
         <h4 class="title m0">
 
           <button class="outline light-gray round tiny right m0 lh"
+            ng-if="index.feeToSendMaxStr && index.availableBalance > 0 && !home.blockUx && !home.lockAmount"
             ng-click="home.sendAll(index.availableMaxBalance, index.feeToSendMaxStr)"
-            ng-if="index.availableBalance > 0 && !home.blockUx && !home.lockAmount" translate> Send All
+             translate> Send All
           </button>
 
           <div  ng-show="!index.lockedBalance && index.availableBalanceStr">
