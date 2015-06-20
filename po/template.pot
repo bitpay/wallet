@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: \n"
 
 #: public/views/modals/txp-details.html
-msgid "* Only payment proposals created by yourself with no peer actions can be removed"
+msgid "* A payment proposal can be deleted if 1) you are the creator, and no other copayer has signed, or 2) 24 hours have passed since the proposal was created."
 msgstr ""
 
 #: public/views/backup.html
