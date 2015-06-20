@@ -1,0 +1,31 @@
+<nav class="tab-bar">
+  <section class="left-small">
+    <a ng-click="cancel()" class="p10">
+      <span class="text-close" translate>Close</span>
+    </a>
+  </section>
+
+  <section class="middle tab-bar-section">
+    <h1 class="title ellipsis" ng-style="{'color':color}" translate>
+      Choose a wallet to send funds
+    </h1>
+  </section>
+</nav>
+
+<div class="modal-content">
+  <ul class="no-bullet">
+    <li class="panel" ng-repeat="w in wallets">
+    <a ng-click="payment.selectWallet(w.id)">
+      <div class="avatar-wallet" 
+        ng-style="{'background-color':w.color}">{{(w.name || w.id) | limitTo: 1}}</div>
+      <div class="ellipsis">{{w.name || w.id}}</div>
+      <div class="size-12">{{w.m}} of {{w.n}} 
+        <span ng-show="w.network=='testnet'">[Testnet]</span>
+      </div> 
+    </a>
+    </li>
+  </ul>
+
+  <div class="extra-margin-bottom"></div>
+</div>
+
