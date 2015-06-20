@@ -125,6 +125,28 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     });
   };
 
+
+  $scope.openWalletsModal = function(wallets) {
+    var fc = profileService.focusedClient;
+
+    var ModalInstanceCtrl = function($scope, $modalInstance) {
+      $scope.wallets = wallets;
+      $scope.cancel = function() {
+        $modalInstance.dismiss('cancel');
+      };
+    };
+    var modalInstance = $modal.open({
+      templateUrl: 'views/modals/wallets.html',
+      windowClass: 'full animated slideInUp',
+      controller: ModalInstanceCtrl,
+    });
+
+    modalInstance.result.finally(function() {
+      var m = angular.element(document.getElementsByClassName('reveal-modal'));
+      m.addClass('slideOutDown');
+    });
+  };
+
   this.openTxpModal = function(tx, copayers) {
     var fc = profileService.focusedClient;
     var refreshUntilItChanges = false;
