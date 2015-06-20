@@ -396,5 +396,29 @@ angular.module('copayApp.services')
       });
     };
 
+    root.getWallets = function(network) {
+      if (!root.profile) return [];
+
+      var config = configService.getSync();
+      config.colorFor = config.colorFor || {};
+      config.aliasFor = config.aliasFor || {};
+      var ret = lodash.map(root.profile.credentials, function(c) {
+        return {
+          m: c.m,
+          n: c.n,
+          name: config.aliasFor[c.walletId] || c.walletName,
+          id: c.walletId,
+          network: c.network,
+          color: config.colorFor[c.walletId] || '#2C3E50'
+        };
+      });
+      ret = lodash.filter(ret, function(w) {
+        return (w.network == network);
+      });
+      return lodash.sortBy(ret, 'name');
+    };
+
+
+
     return root;
   });
