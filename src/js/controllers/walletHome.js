@@ -132,6 +132,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       $scope.error = null;
       $scope.tx = tx;
       $scope.amountStr = tx.amountStr;
+      $scope.feeStr = tx.feeStr;
       $scope.alternativeAmountStr = tx.alternativeAmountStr;
       $scope.copayers = copayers
       $scope.copayerId = fc.credentials.copayerId;
