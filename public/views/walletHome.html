@@ -278,8 +278,14 @@
       <div>
         <h4 class="title m0">
 
+          <a class="right lh"
+            ng-if="index.feeToSendMaxStr && index.availableBalance > 0 && !home.blockUx && !home.lockAmount"
+            ng-click="home.sendAll(index.availableMaxBalance, index.feeToSendMaxStr)"
+             translate> Send All
+          </a>
+
           <div  ng-show="!index.lockedBalance && index.availableBalanceStr">
-            <div class="size-12">
+            <div class="size-10">
               <span class="db text-bold">
                 <span translate>Available Balance</span>:
                 {{index.availableBalanceStr }}
@@ -288,9 +294,9 @@
           </div>
           <div  ng-show="index.lockedBalance">
             <div class="left">
-              <i class="fi-info size-36 m10r lh"></i>
+              <i class="fi-info size-24 m10r"></i>
             </div>
-            <div class="size-12">
+            <div class="size-10">
               <span class="db text-bold">
                 <span translate>Available Balance</span>:
                 {{index.availableBalanceStr }}
@@ -397,10 +403,10 @@
             </div>
 
             <div class="row" ng-show="!home.onGoingProcess">
-              <div class="large-6 medium-6 small-6 columns" ng-show="!home.blockUx && (home._paypro || home.lockAddress)">
+              <div class="large-6 medium-6 small-6 columns" ng-show="!home.blockUx && (home._paypro || home.lockAddress || home.lockAmount)">
                 <a ng-click="home.resetForm(sendForm)" class="button expand outline dark-gray round" translate>Cancel</a>
               </div>
-              <div class="columns" ng-class="{'small-6 medium-6 large-6':(home._paypro || home.lockAddress)}">
+              <div class="columns" ng-class="{'small-6 medium-6 large-6':(home._paypro || home.lockAddress || home.lockAmount)}">
                 <button type="submit" class="button black round expand" ng-disabled="sendForm.$invalid || home.blockUx ||  index.isOffline"
                   ng-style="{'background-color':index.backgroundColor}"  translate>
                   Send

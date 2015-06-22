@@ -57,9 +57,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     isoCode: 'pt',
   }];
 
-  self.setOngoingProcess = function(processName, isOn, quiet) {
+  self.setOngoingProcess = function(processName, isOn) {
     $log.debug('onGoingProcess', processName, isOn);
-    if (quiet) return;
     self[processName] = isOn;
     self.onGoingProcess[processName] = isOn;
 
@@ -179,13 +178,14 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
   self.updateAll = function(opts, initStatusHash, tries) {
     tries = tries || 0;
-    var quiet = (opts && opts.quiet) ? true : null;
-    if (opts && opts.untilItChanges && lodash.isUndefined(initStatusHash)) {
+    opts = opts || {};
+
+    if (opts.untilItChanges && lodash.isUndefined(initStatusHash)) {
       initStatusHash = _walletStatusHash();
       $log.debug('Updating status until it changes. initStatusHash:' + initStatusHash)
     }
     var get = function(cb) {
-      if (opts && opts.walletStatus)
+      if (opts.walletStatus)
         return cb(null, opts.walletStatus);
       else {
         self.updateError = false;
@@ -193,7 +193,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
           if (err) {
             self.updateError = true;
           } else {
-            self.setOngoingProcess('scanning', ret.wallet.scanning, quiet);
+            if (!opts.quiet)
+              self.setOngoingProcess('scanning', ret.wallet.scanning);
           }
           return cb(err, ret);
         });
@@ -204,18 +205,23 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     if (!fc) return;
 
     $timeout(function() {
-      self.setOngoingProcess('updatingStatus', true, quiet);
+
+      if (!opts.quiet)
+        self.setOngoingProcess('updatingStatus', true);
+
       $log.debug('Updating Status:', fc, tries);
       get(function(err, walletStatus) {
         var currentStatusHash = _walletStatusHash(walletStatus); 
         $log.debug('Status update. hash:' + currentStatusHash + ' Try:'+ tries); 
-        if (!err && (opts && opts.untilItChanges) && initStatusHash == currentStatusHash && tries < 7) {
+        if (!err && opts.untilItChanges && initStatusHash == currentStatusHash && tries < 7) {
           return $timeout(function() {
             $log.debug('Retrying update... Try:' + tries)
             return self.updateAll({walletStatus: null, untilItChanges: true}, initStatusHash, ++tries);
           }, 1400 * tries);
         }
-        self.setOngoingProcess('updatingStatus', false, quiet);
+        if (!opts.quiet)
+          self.setOngoingProcess('updatingStatus', false);
+
         if (err) {
           self.handleError(err);
           return;
@@ -343,6 +349,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     lodash.each(txps, function(tx) {
       var amount = tx.amount * self.satToUnit;
       tx.amountStr = profileService.formatAmount(tx.amount) + ' ' + config.unitName;
+      tx.feeStr = profileService.formatAmount(tx.fee) + ' ' + config.unitName;
       tx.alternativeAmount = rateService.toFiat(tx.amount, config.alternativeIsoCode) ? rateService.toFiat(tx.amount, config.alternativeIsoCode).toFixed(2) : 'N/A';
       tx.alternativeAmountStr = tx.alternativeAmount + " " + config.alternativeIsoCode;
       tx.alternativeIsoCode = config.alternativeIsoCode;
@@ -436,6 +443,16 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.lockedBalanceBTC = strip(self.lockedBalanceSat / COIN);
     self.availableBalanceBTC = strip(self.availableBalanceBTC / COIN);
 
+    // KB to send max
+    self.feePerKbSat = config.feeValue || 10000;
+    if (balance.totalKbToSendMax) {
+      var feeToSendMaxSat = balance.totalKbToSendMax * self.feePerKbSat;
+
+      self.availableMaxBalance = strip((self.availableBalanceSat - feeToSendMaxSat) * self.satToUnit);
+      self.feeToSendMaxStr = profileService.formatAmount(feeToSendMaxSat) + ' ' + self.unitName;
+    } else {
+      self.feeToSendMaxStr = null;
+    }
 
     //STR
     self.totalBalanceStr = profileService.formatAmount(self.totalBalanceSat) + ' ' + self.unitName;
