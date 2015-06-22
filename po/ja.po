@@ -14,10 +14,13 @@ msgstr ""
 
 #: public/views/modals/txp-details.html
 msgid ""
-"* Only payment proposals created by yourself with no peer actions can be "
-"removed"
+"* A payment proposal can be deleted if 1) you are the creator, and no other "
+"copayer has signed, or 2) 24 hours have passed since the proposal was "
+"created."
 msgstr ""
-"* 自分が提案した取引で他の参加者が署名していない取引提案のみ破棄されます。"
+"* 送金の提案の取下げは①他のウォレット参加者に署名されていなかった場合、提案者"
+"に提案を取り下げることができます。②提案の起案から24時間が経っても解決しなかっ"
+"た場合、全員に取り下げることができます。"
 
 #: public/views/backup.html
 msgid ""
