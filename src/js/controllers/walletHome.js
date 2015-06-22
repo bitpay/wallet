@@ -132,6 +132,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       $scope.error = null;
       $scope.tx = tx;
       $scope.amountStr = tx.amountStr;
+      $scope.feeStr = tx.feeStr;
       $scope.alternativeAmountStr = tx.alternativeAmountStr;
       $scope.copayers = copayers
       $scope.copayerId = fc.credentials.copayerId;
@@ -608,6 +609,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
         amount: amount,
         message: comment,
         payProUrl: paypro ? paypro.url : null,
+        feePerKb: config.feeValue || 10000,
       }, function(err, txp) {
         if (err) {
           self.setOngoingProcess();
@@ -916,6 +918,32 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   this.hasAction = function(actions, action) {
     return actions.hasOwnProperty('create');
   };
+
+  this._doSendAll = function(amount) {
+    this.setForm(null, amount);
+  };
+
+  this.sendAll = function(amount, feeStr) {
+    var self = this;
+    var msg = gettextCatalog.getString("{{fee}} will be discounted for bitcoin networking fees", {
+      fee: feeStr
+    });
+    if (isCordova) {
+      navigator.notification.confirm(
+        msg,
+        function(buttonIndex) {
+          if (buttonIndex == 1)
+            $timeout(function() {
+              self._doSendAll(amount);
+            }, 1);
+        }
+      );
+    } else {
+      if (confirm(msg))
+        this._doSendAll(amount);
+    }
+  }
+
 
   this.bindTouchDown();
   this.setAddress();
