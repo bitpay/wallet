@@ -13,8 +13,8 @@ msgstr ""
 "X-Generator: Poedit 1.6.10\n"
 
 #: public/views/modals/txp-details.html
-msgid "* Only payment proposals created by yourself with no peer actions can be removed"
-msgstr "Seules les propositions de transactions créées par vous-même avec aucune action de pairs peuvent être supprimées"
+msgid "* A payment proposal can be deleted if 1) you are the creator, and no other copayer has signed, or 2) 24 hours have passed since the proposal was created."
+msgstr " Une proposition de transaction peut être supprimée  si 1) vous êtes le créateur, et aucun des autres copayers n'a signé, ou 2) 24 heures sont passées depuis la création de la proposition."
 
 #: public/views/backup.html
 msgid "* You can safely install your backup on another device and use your wallet from multiple devices at the same time."
@@ -110,6 +110,10 @@ msgstr "Options de sauvegarde"
 #: public/views/walletHome.html
 msgid "Before receiving funds, it is highly recommended you backup your wallet keys."
 msgstr "Avant de recevoir des fonds, il est fortement recommandé de sauvegarder les clés de votre portefeuille."
+
+#: public/views/preferences.html
+msgid "Bitcoin Network Fee Policy"
+msgstr "Politique des frais de réseau Bitcoin"
 
 #: public/views/paymentUri.html
 msgid "Bitcoin URI is NOT valid!"
@@ -342,6 +346,10 @@ msgstr "Télécharger la sauvegarde"
 msgid "ENTER"
 msgstr "ENTRER"
 
+#: src/js/controllers/preferencesFee.js
+msgid "Economy"
+msgstr "Économique"
+
 #: public/views/preferences.html
 msgid "Email Notifications"
 msgstr "Notifications e-mail"
@@ -386,6 +394,10 @@ msgstr "Impossible d'importer les portefeuilles"
 #: public/views/create.html
 msgid "Family vacation funds"
 msgstr "Fonds pour les vacances familiales"
+
+#: public/views/modals/txp-details.html
+msgid "Fee"
+msgstr "Frais"
 
 #. Get information of payment if using Payment Protocol
 #: src/js/controllers/walletHome.js
@@ -557,6 +569,10 @@ msgstr "Non"
 msgid "No transactions yet"
 msgstr "Aucune transaction"
 
+#: src/js/controllers/preferencesFee.js
+msgid "Normal"
+msgstr "Normale"
+
 #: public/views/walletHome.html 
 msgid "Not valid"
 msgstr "Non valide"
@@ -695,6 +711,10 @@ msgstr "Portugais"
 msgid "Preferences"
 msgstr "Préférences"
 
+#: src/js/controllers/preferencesFee.js
+msgid "Priority"
+msgstr "Prioritaire"
+
 #: public/views/modals/scanner.html
 msgid "QR-Scanner"
 msgstr "QR-Scanner"
@@ -804,6 +824,10 @@ msgstr "Sélectionnez le nombre total de copayers"
 #: src/js/controllers/index.js
 msgid "Send"
 msgstr "Envoyer"
+
+#: public/views/walletHome.html
+msgid "Send All"
+msgstr "Tout envoyer"
 
 #: public/views/backup.html
 #: public/views/preferencesLogs.html
@@ -1069,6 +1093,10 @@ msgstr "Votre mot de passe de profil"
 msgid "Your wallet has been imported correctly"
 msgstr "Votre portefeuille a été correctement importé"
 
+#: public/views/preferencesFee.html
+msgid "bits per kB"
+msgstr "bits par kB"
+
 #: public/views/preferencesEmail.html
 msgid "email for wallet notifications"
 msgstr "e-mail pour les notifications de portefeuille"
@@ -1094,6 +1122,10 @@ msgstr "paramètres"
 #: public/views/walletHome.html
 msgid "too long!"
 msgstr "trop long !"
+
+#: src/js/controllers/walletHome.js
+msgid "{{fee}} will be discounted for bitcoin networking fees"
+msgstr "{{fee}} seront déduits pour les frais de réseau Bitcoin"
 
 #: src/js/controllers/importLegacy.js
 msgid "{{len}} wallets imported. Funds scanning in progress. Hold on to see updated balance"
