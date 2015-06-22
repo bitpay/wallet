@@ -278,14 +278,14 @@
       <div>
         <h4 class="title m0">
 
-          <button class="outline light-gray round tiny right m0 lh"
+          <a class="right lh"
             ng-if="index.feeToSendMaxStr && index.availableBalance > 0 && !home.blockUx && !home.lockAmount"
             ng-click="home.sendAll(index.availableMaxBalance, index.feeToSendMaxStr)"
              translate> Send All
-          </button>
+          </a>
 
           <div  ng-show="!index.lockedBalance && index.availableBalanceStr">
-            <div class="size-12">
+            <div class="size-10">
               <span class="db text-bold">
                 <span translate>Available Balance</span>:
                 {{index.availableBalanceStr }}
@@ -294,9 +294,9 @@
           </div>
           <div  ng-show="index.lockedBalance">
             <div class="left">
-              <i class="fi-info size-36 m10r lh"></i>
+              <i class="fi-info size-24 m10r"></i>
             </div>
-            <div class="size-12">
+            <div class="size-10">
               <span class="db text-bold">
                 <span translate>Available Balance</span>:
                 {{index.availableBalanceStr }}
