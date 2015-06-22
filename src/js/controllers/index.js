@@ -349,6 +349,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     lodash.each(txps, function(tx) {
       var amount = tx.amount * self.satToUnit;
       tx.amountStr = profileService.formatAmount(tx.amount) + ' ' + config.unitName;
+      tx.feeStr = profileService.formatAmount(tx.fee) + ' ' + config.unitName;
       tx.alternativeAmount = rateService.toFiat(tx.amount, config.alternativeIsoCode) ? rateService.toFiat(tx.amount, config.alternativeIsoCode).toFixed(2) : 'N/A';
       tx.alternativeAmountStr = tx.alternativeAmount + " " + config.alternativeIsoCode;
       tx.alternativeIsoCode = config.alternativeIsoCode;
