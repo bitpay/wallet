@@ -924,14 +924,19 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   };
 
   this.sendAll = function(amount, feeStr) {
+    var self = this;
     var msg = gettextCatalog.getString("{{fee}} will be discounted for bitcoin networking fees", {
       fee: feeStr
     });
     if (isCordova) {
       navigator.notification.confirm(
         msg,
-        this._doSendAll(amount),
-        'OK', 'Cancel'
+        function(buttonIndex) {
+          if (buttonIndex == 1)
+            $timeout(function() {
+              self._doSendAll(amount);
+            }, 1);
+        }
       );
     } else {
       if (confirm(msg))
