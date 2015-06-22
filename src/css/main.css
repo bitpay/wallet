@@ -49,6 +49,13 @@ h4.title {
   font-size: 0.7rem;
 }
 
+h4.title a {
+  text-transform: none;
+  font-weight: 400;
+  margin-top: 7px;
+  font-size: 12px;
+}
+
 body, html{
   height:100%;
   width:100%;
