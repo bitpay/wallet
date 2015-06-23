@@ -103,6 +103,10 @@ msgstr ""
 msgid "Before receiving funds, it is highly recommended you backup your wallet keys."
 msgstr ""
 
+#: public/views/preferences.html
+msgid "Bitcoin Network Fee Policy"
+msgstr ""
+
 #: public/views/paymentUri.html
 msgid "Bitcoin URI is NOT valid!"
 msgstr ""
@@ -334,6 +338,10 @@ msgstr ""
 msgid "ENTER"
 msgstr ""
 
+#: src/js/controllers/preferencesFee.js
+msgid "Economy"
+msgstr ""
+
 #: public/views/preferences.html
 msgid "Email Notifications"
 msgstr ""
@@ -377,6 +385,10 @@ msgstr ""
 
 #: public/views/create.html
 msgid "Family vacation funds"
+msgstr ""
+
+#: public/views/modals/txp-details.html
+msgid "Fee"
 msgstr ""
 
 #. Get information of payment if using Payment Protocol
@@ -552,6 +564,10 @@ msgstr ""
 msgid "No transactions yet"
 msgstr ""
 
+#: src/js/controllers/preferencesFee.js
+msgid "Normal"
+msgstr ""
+
 #: public/views/walletHome.html
 msgid "Not valid"
 msgstr ""
@@ -690,6 +706,10 @@ msgstr ""
 msgid "Preferences"
 msgstr ""
 
+#: src/js/controllers/preferencesFee.js
+msgid "Priority"
+msgstr ""
+
 #: public/views/modals/scanner.html
 msgid "QR-Scanner"
 msgstr ""
@@ -798,6 +818,10 @@ msgstr ""
 #: public/views/includes/transaction.html
 #: src/js/controllers/index.js
 msgid "Send"
+msgstr ""
+
+#: public/views/walletHome.html
+msgid "Send All"
 msgstr ""
 
 #: public/views/backup.html
@@ -1064,6 +1088,10 @@ msgstr ""
 msgid "Your wallet has been imported correctly"
 msgstr ""
 
+#: public/views/preferencesFee.html
+msgid "bits per kB"
+msgstr ""
+
 #: public/views/preferencesEmail.html
 msgid "email for wallet notifications"
 msgstr ""
@@ -1088,6 +1116,10 @@ msgstr ""
 
 #: public/views/walletHome.html
 msgid "too long!"
+msgstr ""
+
+#: src/js/controllers/walletHome.js
+msgid "{{fee}} will be discounted for bitcoin networking fees"
 msgstr ""
 
 #: src/js/controllers/importLegacy.js
