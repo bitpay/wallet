@@ -19,7 +19,7 @@ msgid ""
 "created."
 msgstr ""
 "* Una propuesta de pago puede ser eliminada si 1) Ud. es el creador, y "
-"ningún otro copayer la ha firmado, o 2) hayan transcurrido 24 horas desde la "
+"ningún otro copayer la ha firmado, o 2) han transcurrido 24 horas desde la "
 "creación de la propuesta."
 
 #: public/views/backup.html
