@@ -14,11 +14,13 @@ msgstr ""
 
 #: public/views/modals/txp-details.html
 msgid ""
-"* Only payment proposals created by yourself with no peer actions can be "
-"removed"
+"* A payment proposal can be deleted if 1) you are the creator, and no other "
+"copayer has signed, or 2) 24 hours have passed since the proposal was "
+"created."
 msgstr ""
-"* Solo transacciones creadas por Usted mismo sin haber realizado acciones "
-"por otros usuarios, pueden ser eliminadas"
+"* Una propuesta de pago puede ser eliminada si 1) Ud. es el creador, y "
+"ningún otro copayer la ha firmado, o 2) han transcurrido 24 horas desde la "
+"creación de la propuesta."
 
 #: public/views/backup.html
 msgid ""
@@ -116,6 +118,10 @@ msgid ""
 msgstr ""
 "Antes de recibir fondos, es altamente recomendable realizar una copia de "
 "seguridad."
+
+#: public/views/preferences.html
+msgid "Bitcoin Network Fee Policy"
+msgstr "Política de Costo de la Red Bitcoin"
 
 #: public/views/paymentUri.html
 msgid "Bitcoin URI is NOT valid!"
@@ -283,7 +289,7 @@ msgstr "No se puede actualizar el monedero"
 msgid "Create"
 msgstr "Crear"
 
-#: public/views/add.html
+#: public/views/add.html public/views/create.html
 msgid "Create new wallet"
 msgstr "Crear nuevo monedero"
 
@@ -340,6 +346,10 @@ msgstr "Eliminando el Pago"
 msgid "Details"
 msgstr "Detalles"
 
+#: src/js/controllers/index.js
+msgid "Deutsch"
+msgstr "Alemán"
+
 #: public/views/preferences.html
 msgid "Disabled"
 msgstr "Deshabilitado"
@@ -351,6 +361,10 @@ msgstr "Descargar copia de seguridad"
 #: public/views/includes/password.html
 msgid "ENTER"
 msgstr "ENTRAR"
+
+#: src/js/controllers/preferencesFee.js
+msgid "Economy"
+msgstr "Económico"
 
 #: public/views/preferences.html
 msgid "Email Notifications"
@@ -396,6 +410,10 @@ msgstr "Falló al importar monederos"
 msgid "Family vacation funds"
 msgstr "Fondos para vacaciones en familia"
 
+#: public/views/modals/txp-details.html
+msgid "Fee"
+msgstr "Costo"
+
 #. Get information of payment if using Payment Protocol
 #: src/js/controllers/walletHome.js
 msgid "Fetching Payment Information"
@@ -421,6 +439,10 @@ msgstr "Generar nueva dirección"
 msgid "Global settings"
 msgstr "Opciones globales"
 
+#: public/views/disclaimer.html
+msgid "Go back"
+msgstr "Volver"
+
 #: public/views/import.html
 msgid "Have a Backup from Copay v0.9?"
 msgstr "¿Tiene una copia de seguridad de Copay v0.9?"
@@ -436,6 +458,10 @@ msgstr "Historial"
 #: src/js/controllers/index.js
 msgid "Home"
 msgstr "Inicio"
+
+#: public/views/disclaimer.html
+msgid "I affirm that I have read, understood, and agree with these terms."
+msgstr "Confirmo haber leído, entendido y aceptado estos términos."
 
 #: public/views/create.html public/views/join.html
 msgid "If not given, a secure key will be generated"
@@ -553,6 +579,10 @@ msgstr "No"
 #: public/views/walletHome.html
 msgid "No transactions yet"
 msgstr "Sin transacciones todavía"
+
+#: src/js/controllers/preferencesFee.js
+msgid "Normal"
+msgstr "Normal"
 
 #: public/views/walletHome.html
 msgid "Not valid"
@@ -690,6 +720,10 @@ msgstr "Portugués"
 msgid "Preferences"
 msgstr "Preferencias"
 
+#: src/js/controllers/preferencesFee.js
+msgid "Priority"
+msgstr "Prioritario"
+
 #: public/views/modals/scanner.html
 msgid "QR-Scanner"
 msgstr "Escáner QR"
@@ -796,6 +830,10 @@ msgstr "Seleccione el total de copayers"
 msgid "Send"
 msgstr "Enviar"
 
+#: public/views/walletHome.html
+msgid "Send All"
+msgstr "Enviar Todo"
+
 #: public/views/backup.html public/views/preferencesLogs.html
 msgid "Send by email"
 msgstr "Enviar por correo electrónico"
@@ -880,6 +918,10 @@ msgstr "Listo"
 msgid "Tap to retry"
 msgstr "Toque para reintentar"
 
+#: public/views/disclaimer.html public/views/preferencesAbout.html
+msgid "Terms of Use"
+msgstr "Términos de Uso"
+
 #: public/views/create.html
 msgid "Testnet"
 msgstr "Testnet"
@@ -919,6 +961,93 @@ msgid ""
 msgstr ""
 "Este monedero tiene sus claves privadas encriptadas. Exportar una copia de "
 "seguridad mantendrá la clave privada encriptada en la copia de seguridad."
+
+#: public/views/disclaimer.html
+msgid ""
+"The software you are about to use functions as a free, open source, and "
+"multi-signature digital wallet. The software does not constitute an account "
+"where BitPay or other third parties serve as financial intermediaries or "
+"custodians of your bitcoin.  While the software has undergone beta testing "
+"and continues to be improved by feedback from the open-source user and "
+"developer community, we cannot guarantee that there will be no bugs in the "
+"software. You acknowledge that your use of this software is at your own "
+"discretion and in compliance with all applicable laws. You are responsible "
+"for safekeeping your passwords, private key pairs, PINs and any other codes "
+"you use to access the software. IF YOU LOSE ACCESS TO YOUR COPAY WALLET OR "
+"YOUR ENCRYPTED PRIVATE KEYS AND YOU HAVE NOT SEPARATELY STORED A BACKUP OF "
+"YOUR WALLET AND CORRESPONDING PASSWORD, YOU ACKNOWLEDGE AND AGREE THAT ANY "
+"BITCOIN YOU HAVE ASSOCIATED WITH THAT COPAY  WALLET WILL BECOME "
+"INACCESSIBLE. All transaction requests are irreversible.  The authors of the "
+"software, employees and affiliates of Bitpay, copyright holders, and BitPay, "
+"Inc. cannot retrieve your private keys or passwords if you lose or forget "
+"them and cannot guarantee transaction confirmation as they do not have "
+"control over the Bitcoin network. To the fullest extent permitted by law, "
+"this software is provided “as is” and no representations or warranties can "
+"be made of any kind, express or implied, including but not limited to the "
+"warranties of merchantability, fitness or a particular purpose and "
+"noninfringement. You assume any and all risks associated with the use of the "
+"software. In no event shall the authors of the software, employees and "
+"affiliates of Bitpay, copyright holders, or BitPay, Inc. be held liable for "
+"any claim, damages or other liability, whether in an action of contract, "
+"tort, or otherwise, arising from, out of or in connection with the software. "
+"We reserve the right to modify this disclaimer from time to time."
+msgstr ""
+"El software que va a utilizar es un monedero digital de código abierto y "
+"multi-firmas. El software no constituye una cuenta donde BitPay u otras "
+"terceras partes sirven como intermediarios financieros o custodios de su "
+"bitcoin. Mientras que el software ha sido objeto de pruebas beta y continúa "
+"siendo mejorada por los comentarios de los usuarios de código abierto y la "
+"comunidad de desarrolladores, no podemos garantizar que no habrá errores en "
+"el software. Usted reconoce que el uso de este software es bajo tu propia "
+"responsabilidad y en cumplimiento con todas las leyes aplicables. Usted es "
+"responsable de la custodia de sus contraseñas, pares de claves privadas, PIN "
+"y cualquier otro código que se utiliza para acceder al software. SI UD. "
+"PIERDE ACCESO A SU MONEDERO COPAY O A SUS CLAVES PRIVADAS ENCRIPTADAS Y NO "
+"HA GUARDADO POR SEPARADO UNA COPIA DE SEGURIDAD DE SU MONEDERO Y CONTRASEÑA "
+"CORRESPONDIENTES, USTED RECONOCE Y ACEPTA QUE CUALQUIER BITCOIN QUE HA "
+"ASOCIADO CON ESE MONEDERO COPAY SERÁ INACCESIBLE. Todas las solicitudes de "
+"transacción son irreversibles. Los autores de los software, empleados y "
+"afiliados de Bitpay, los titulares de derechos de autor, y BitPay, Inc. no "
+"pueden recuperar sus claves privadas o contraseñas si se pierde o se olvida "
+"de ellos y no se puede garantizar la confirmación de la transacción, ya que "
+"no tienen control sobre la red Bitcoin. En la máxima medida permitida por la "
+"ley, este software se proporciona \"tal cual\" y no asume la responsabilidad "
+"ni ofrece garantías de ningún tipo, expresa o implícita, incluyendo, pero no "
+"limitado a las garantías comerciales, de conveniencia o a un propósito "
+"particular. Usted asume todos los riesgos asociados con el uso del software. "
+"En ningún caso los autores, empleados y afiliados de Bitpay, los titulares "
+"de derechos de autor, o BitPay, Inc. serán declarados responsables de los "
+"reclamos, daños o cualquier otra responsabilidad, ya sea en una acción de "
+"contrato, agravio o de otra manera, que surja fuera de la conexión con el "
+"software. Nos reservamos el derecho a modificar el presente aviso legal de "
+"vez en cuando.<br><br>The software you are about to use functions as a free, "
+"open source, and multi-signature digital wallet. The software does not "
+"constitute an account where BitPay or other third parties serve as financial "
+"intermediaries or custodians of your bitcoin.  While the software has "
+"undergone beta testing and continues to be improved by feedback from the "
+"open-source user and developer community, we cannot guarantee that there "
+"will be no bugs in the software. You acknowledge that your use of this "
+"software is at your own discretion and in compliance with all applicable "
+"laws. You are responsible for safekeeping your passwords, private key pairs, "
+"PINs and any other codes you use to access the software. IF YOU LOSE ACCESS "
+"TO YOUR COPAY WALLET OR YOUR ENCRYPTED PRIVATE KEYS AND YOU HAVE NOT "
+"SEPARATELY STORED A BACKUP OF YOUR WALLET AND CORRESPONDING PASSWORD, YOU "
+"ACKNOWLEDGE AND AGREE THAT ANY BITCOIN YOU HAVE ASSOCIATED WITH THAT COPAY  "
+"WALLET WILL BECOME INACCESSIBLE. All transaction requests are irreversible.  "
+"The authors of the software, employees and affiliates of Bitpay, copyright "
+"holders, and BitPay, Inc. cannot retrieve your private keys or passwords if "
+"you lose or forget them and cannot guarantee transaction confirmation as "
+"they do not have control over the Bitcoin network. To the fullest extent "
+"permitted by law, this software is provided “as is” and no representations "
+"or warranties can be made of any kind, express or implied, including but not "
+"limited to the warranties of merchantability, fitness or a particular "
+"purpose and noninfringement. You assume any and all risks associated with "
+"the use of the software. In no event shall the authors of the software, "
+"employees and affiliates of Bitpay, copyright holders, or BitPay, Inc. be "
+"held liable for any claim, damages or other liability, whether in an action "
+"of contract, tort, or otherwise, arising from, out of or in connection with "
+"the software. We reserve the right to modify this disclaimer from time to "
+"time."
 
 #: src/js/controllers/copayers.js src/js/controllers/preferencesDelete.js
 msgid "The wallet \"{{walletName}}\" was deleted"
@@ -1077,6 +1206,10 @@ msgstr "Contraseña de tu perfil"
 msgid "Your wallet has been imported correctly"
 msgstr "Su monedero se ha importado correctamente"
 
+#: public/views/preferencesFee.html
+msgid "bits per kB"
+msgstr "bits por kB"
+
 #: public/views/preferencesEmail.html
 msgid "email for wallet notifications"
 msgstr "email para recibir notificaciones"
@@ -1102,6 +1235,10 @@ msgstr "configuración"
 msgid "too long!"
 msgstr "¡demasiado largo!"
 
+#: src/js/controllers/walletHome.js
+msgid "{{fee}} will be discounted for bitcoin networking fees"
+msgstr "{{fee}} se descontarán de los costos de la red bitcoin"
+
 #: src/js/controllers/importLegacy.js
 msgid ""
 "{{len}} wallets imported. Funds scanning in progress. Hold on to see updated "
@@ -1109,6 +1246,13 @@ msgid ""
 msgstr ""
 "{{len}} monederos importados. Escáner de fondos en progreso. Espere a ver el "
 "balance actualizado"
+
+#~ msgid ""
+#~ "* Only payment proposals created by yourself with no peer actions can be "
+#~ "removed"
+#~ msgstr ""
+#~ "* Solo transacciones creadas por Usted mismo sin haber realizado acciones "
+#~ "por otros usuarios, pueden ser eliminadas"
 
 #~ msgid "Alias for"
 #~ msgstr "Alias para"
@@ -1414,9 +1558,6 @@ msgstr ""
 #~ msgid "Hide them"
 #~ msgstr "Ocultar"
 
-#~ msgid "I read and agree with these terms"
-#~ msgstr "He leído y aceptado estos términos"
-
 #~ msgid "Import a backup"
 #~ msgstr "Importar una copia de seguridad"
 
@@ -1646,80 +1787,6 @@ msgstr ""
 #~ msgid "The secret string you entered is invalid"
 #~ msgstr "La palabra secreta ingresada no es válida"
 
-#~ msgid ""
-#~ "The software you are about to use is free, open source, and unsupported "
-#~ "beta software. It is important to understand\n"
-#~ "      that beta software refers to software that is undergoing testing "
-#~ "and has not officially been released, could have\n"
-#~ "      bugs, and may not act in a reliable fashion. Because the software "
-#~ "is currently in beta, it is possible but not certain\n"
-#~ "      that you may lose bitcoin or the value of your bitcoin. It is "
-#~ "recommended that you store only nominal amounts of\n"
-#~ "      bitcoins. You acknowledge that your use of this software is at your "
-#~ "own discretion and in compliance with all\n"
-#~ "      applicable laws. You are responsible for safekeeping your login "
-#~ "IDs, passwords, private key pairs, PINs and any other\n"
-#~ "      codes you use to access the software. IF YOU HAVE NOT SEPARATELY "
-#~ "STORED A BACKUP OF ANY WALLET ADDRESSES AND PRIVATE\n"
-#~ "      KEY PAIRS MAINTAINED IN YOUR ACCOUNT, YOU ACKNOWLEDGE AND AGREE "
-#~ "THAT ANY BITCOINS YOU HAVE ASSOCIATED WITH SUCH WALLET\n"
-#~ "      ADDRESSES WILL BECOME INACCESSIBLE IF YOU DO NOT HAVE YOUR ACCOUNT "
-#~ "PASSWORD AND/OR PIN.  All transaction requests are\n"
-#~ "      irreversible.  The authors of the software, employees and "
-#~ "affiliates of Bitpay, copyright holders, and BitPay, Inc.\n"
-#~ "      cannot retrieve your private keys or passwords if you lose or "
-#~ "forget them and cannot guarantee transaction\n"
-#~ "      confirmation as they do not have control over the Bitcoin network. "
-#~ "You agree to provide accurate and complete\n"
-#~ "      information in connection with your use of the account. You assume "
-#~ "any and all risk associated with the use of the\n"
-#~ "      software. To the fullest extent permitted by law, this software is "
-#~ "provided “as is” and no representations or\n"
-#~ "      warranties can be made of any kind, express or implied, including "
-#~ "but not limited to the warranties of\n"
-#~ "      merchantability, fitness or a particular purpose and "
-#~ "noninfringement. In no event shall the authors of the software,\n"
-#~ "      employees and affiliates of Bitpay, copyright holders, or BitPay, "
-#~ "Inc. be held liable for any claim, damages or other\n"
-#~ "      liability, whether in an action of contract, tort, or otherwise, "
-#~ "arising from, out of or in connection with the\n"
-#~ "      software or the use or other dealings in the software. We reserve "
-#~ "the right to modify this disclaimer from time to\n"
-#~ "      time."
-#~ msgstr ""
-#~ "El software que van a utilizar es libre de código abierto y software beta "
-#~ "no admitido. Es importante entender que el software beta se refiere al "
-#~ "software que es someterse a la prueba no ha sido lanzado oficialmente, "
-#~ "puede tener errores y no puede actuar de una manera confiable. Porque el "
-#~ "software está actualmente en fase beta, es posible pero no seguro de que "
-#~ "puede perder bitcoin o el valor de tu bitcoin. Se recomienda que guarde "
-#~ "sólo nominales cantidades de bitcoins. Usted reconoce que el uso de este "
-#~ "software es bajo su propia discreción y cumple con todas las leyes "
-#~ "aplicables. Usted es responsable de la custodia su ID de inicio de "
-#~ "sesión, contraseñas, pares de claves privadas, pernos y cualquier otros "
-#~ "códigos que utilizas para acceder al software. SI NO HAS ALMACENADO POR "
-#~ "SEPARADO UNA COPIA DE SEGURIDAD DE CUALQUIER CARTERA DIRECCIONES Y PARES "
-#~ "DE CLAVES PRIVADAS MANTENIDAS EN SU CUENTA, USTED RECONOCE Y ACEPTA QUE "
-#~ "CUALQUIER BITCOINS SE HA ASOCIADO CON TALES DIRECCIONES CARTERA SERÁ "
-#~ "INACCESIBLES SI NO TIENES TU CONTRASEÑA O PIN. Todas las solicitudes de "
-#~ "transacción son irreversibles.  Los autores del software, empleados y "
-#~ "afiliados de Bitpay, los titulares del copyright y BitPay, Inc. no pueden "
-#~ "recuperar sus claves o contraseñas si pierde u olvida y no garantiza la "
-#~ "confirmación de la transacción como no tienen control sobre la red "
-#~ "Bitcoin. Usted acepta proporcionar información precisa y completa en "
-#~ "relación con su uso de la cuenta. Usted asume todo riesgo asociado con el "
-#~ "uso del software. En la medida permitida por la ley, este software se "
-#~ "proporciona \"tal cual\" y sin representaciones o garantías pueden ser "
-#~ "hechas de cualquier tipo, expresas o implícitas, incluyendo pero no "
-#~ "limitadas a, las garantías de comerciabilidad, idoneidad o un propósito "
-#~ "particular y no infracción. En ningún caso los autores del software, "
-#~ "empleados y afiliados de Bitpay, los titulares del copyright o BitPay, "
-#~ "Inc. responderá de cualquier reclamación, daños u otra responsabilidad, "
-#~ "ya sea en una acción de contrato, agravio o de lo contrario, que se "
-#~ "presentaba de, fuera de o en relación con el software o el uso u otras "
-#~ "reparticiones en el software. Nos reservamos el derecho de modificar este "
-#~ "aviso de vez en cuando."
-
 #~ msgid "The transaction proposal has been created"
 #~ msgstr "La propuesta de transacción fue creada"
 
@@ -1880,9 +1947,6 @@ msgstr ""
 #~ "Crear y guardar una copia de seguridad  le permitirá recuperar el dinero "
 #~ "de su monedero"
 
-#~ msgid "Fee"
-#~ msgstr "Tasa"
-
 #~ msgid ""
 #~ "If all funds have been removed from your wallet and you do not wish to "
 #~ "have the wallet data stored on your computer anymore, you can delete your "
@@ -1923,9 +1987,6 @@ msgstr ""
 
 #~ msgid "Ready"
 #~ msgstr "Listo"
-
-#~ msgid "Send to"
-#~ msgstr "Enviar a"
 
 #~ msgid "Show all"
 #~ msgstr "Ver todo"
@@ -2004,9 +2065,6 @@ msgstr ""
 #, fuzzy
 #~ msgid "Your Password"
 #~ msgstr "Tu contraseña"
-
-#~ msgid "Bitcoin Network"
-#~ msgstr "Red Bitcoin"
 
 #~ msgid "Download seed backup"
 #~ msgstr "Descargar copia de seguridad"

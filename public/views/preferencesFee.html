@@ -7,7 +7,7 @@
 
 <div class="content preferences" ng-controller="preferencesFeeController as prefFee">
   <div ng-repeat="fee in prefFee.feeOpts" ng-click="prefFee.save(fee)" class="line-b p20 size-14">
-    <span>{{fee.name}} ({{fee.value}} bits per kB)</span>
+    <span>{{fee.name|translate}} ({{fee.value}} <span translate>bits per kB</span>)</span>
     <i class="fi-check size-16 right" ng-show="prefFee.feeName == fee.name"></i>
   </div>
 </div>
