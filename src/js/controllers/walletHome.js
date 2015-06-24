@@ -411,6 +411,87 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     }
   };
 
+  this.openCustomizedAmountModal = function(addr) {
+    var self = this;
+    var fc = profileService.focusedClient;
+    var ModalInstanceCtrl = function($scope, $modalInstance) {
+      $scope.addr = addr;
+      $scope.color = fc.backgroundColor;
+      $scope.unitName = self.unitName;
+      $scope.alternativeAmount = self.alternativeAmount;
+      $scope.alternativeName = self.alternativeName;
+      $scope.alternativeIsoCode = self.alternativeIsoCode;
+      $scope.isRateAvailable = self.isRateAvailable;
+      $scope.unitToSatoshi = self.unitToSatoshi;
+      $scope.unitDecimals = self.unitDecimals;
+      var satToUnit = 1 / self.unitToSatoshi;
+      $scope.showAlternative = false;
+
+      Object.defineProperty($scope,
+        "_customAlternative", {
+          get: function() {
+            return $scope.customAlternative;
+          },
+          set: function(newValue) {
+            $scope.customAlternative = newValue;
+            if (typeof(newValue) === 'number' && $scope.isRateAvailable) {
+              $scope.customAmount = parseFloat((rateService.fromFiat(newValue, $scope.alternativeIsoCode) * satToUnit).toFixed($scope.unitDecimals), 10);
+            }
+          },
+          enumerable: true,
+          configurable: true
+        });
+
+      Object.defineProperty($scope,
+        "_customAmount", {
+          get: function() {
+            return $scope.customAmount;
+          },
+          set: function(newValue) {
+            $scope.customAmount = newValue;
+            if (typeof(newValue) === 'number' && $scope.isRateAvailable) {
+              $scope.customAlternative = parseFloat((rateService.toFiat(newValue * $scope.unitToSatoshi, $scope.alternativeIsoCode)).toFixed(2), 10);
+            } else {
+              $scope.customAlternative = 0;
+            }
+            $scope.alternativeAmount = $scope.customAlternative;
+          },
+          enumerable: true,
+          configurable: true
+        });
+
+      $scope.submitForm = function(form) {
+        var satToBtc = 1 / 100000000;
+        var amount = form.amount.$modelValue;
+        var alternative = form.alternative.$modelValue;
+        if ($scope.unitName == 'bits') {
+          amount = parseInt((amount * $scope.unitToSatoshi).toFixed(0)) * satToBtc;
+        }
+        $scope.customizedAmount = amount;
+        $scope.customizedAlternative = alternative;
+      };
+
+      $scope.toggleAlternative = function() {
+        $scope.showAlternative = !$scope.showAlternative;
+      };
+
+      $scope.cancel = function() {
+        $modalInstance.dismiss('cancel');
+      };
+    };
+
+    var modalInstance = $modal.open({
+      templateUrl: 'views/modals/customized-amount.html',
+      windowClass: 'full animated slideInUp',
+      controller: ModalInstanceCtrl,
+    });
+
+    modalInstance.result.finally(function() {
+      var m = angular.element(document.getElementsByClassName('reveal-modal'));
+      m.addClass('slideOutDown');
+    });
+  };
+
   // Send
 
   this.canShowAlternative = function() {
