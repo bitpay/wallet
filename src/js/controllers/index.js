@@ -660,18 +660,18 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   });
 
 
-  // No need ot listing to Local/Resume since
-  // reconnection and Local/Online will be triggered
-  lodash.each(['Local/Online', 'Local/Resume'], function(eventName) {
-    $rootScope.$on(eventName, function(event) {
-      $log.debug('### ' + eventName + ' event');
-      self.debouncedUpdate();
-    });
+  $rootScope.$on('Local/Resume', function(event) {
+    $log.debug('### Resume event');
+    self.debouncedUpdate();
   });
 
   $rootScope.$on('Local/Online', function(event) {
-    self.isOffline = false;
-    self.offLineSince = null;
+    $log.debug('### Online event');
+    if (self.isOffline) {
+      self.debouncedUpdate();
+      self.isOffline = false;
+      self.offLineSince = null;
+    }
   });
 
   self.offLineSince = null;;
@@ -679,7 +679,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     $log.debug('### Offline event');
     if (!self.offLineSince) self.offLineSince = Date.now();
 
-    if (Date.now() - self.offLineSince > 10000) {
+    if (Date.now() - self.offLineSince > 30000) {
       self.isOffline = true;
       $timeout(function() {
         $rootScope.$apply();
