@@ -667,10 +667,10 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
   $rootScope.$on('Local/Online', function(event) {
     $log.debug('### Online event');
+    self.isOffline = false;
+    self.offLineSince = null;
     if (self.isOffline) {
       self.debouncedUpdate();
-      self.isOffline = false;
-      self.offLineSince = null;
     }
   });
 
