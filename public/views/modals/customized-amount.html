@@ -12,11 +12,11 @@
 </nav>
 
 <div class="modal-content">
-  <div ng-show="customizedAmount">
+  <div ng-show="customizedAmountBtc">
   <h4 class="title m0" translate>QR Code</h4>
   <ul class="no-bullet size-14 m0">
     <li class="line-b p10 oh text-center">
-      <qrcode size="220" data="bitcoin:{{addr + '?amount=' + customizedAmount}}"></qrcode>
+      <qrcode size="220" data="bitcoin:{{addr + '?amount=' + customizedAmountBtc}}"></qrcode>
     </li>
   </ul>
   <h4 class="title m0" translate>Details</h4>
@@ -30,13 +30,13 @@
     <li class="line-b p10 oh">
     <span class="text-gray" translate>Amount</span>:
     <span class="right">
-      {{customizedAmount}}
-      <span class="label gray radius">{{customizedAlternative}}</span>
+      {{customizedAmountUnit}}
+      <span class="label gray radius">{{customizedAlternativeUnit}}</span>
     </span>
     </li>
   </ul>
   </div>
-  <div ng-show="!customizedAmount" class="row m20t">
+  <div ng-show="!customizedAmountBtc" class="row m20t">
     <div class="large-12 large-centered columns">
       <form name="amountForm" ng-submit="submitForm(amountForm)" novalidate>
         <div class="right" ng-hide="amountForm.amount.$pristine && !amountForm.amount.$modelValue ">
@@ -54,7 +54,7 @@
           </label>
           <div class="input">
             <input type="number" id="amount" name="amount" ng-attr-placeholder="{{'Amount'|translate}}"
-            ng-minlength="0.00000001" ng-maxlength="10000000000" ng-model="_customAmount" valid-amount required autocomplete="off">
+            ng-model="_customAmount" valid-amount required autocomplete="off">
             <input type="number" id="alternative"  name="alternative"  ng-model="_customAlternative" style="display:none">
             <a class="postfix" ng-click="toggleAlternative()">{{unitName}}</a>
           </div>

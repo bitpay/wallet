@@ -463,12 +463,15 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       $scope.submitForm = function(form) {
         var satToBtc = 1 / 100000000;
         var amount = form.amount.$modelValue;
-        var alternative = form.alternative.$modelValue;
-        if ($scope.unitName == 'bits') {
-          amount = parseInt((amount * $scope.unitToSatoshi).toFixed(0)) * satToBtc;
-        }
-        $scope.customizedAmount = amount;
-        $scope.customizedAlternative = alternative;
+        var amountSat = parseInt((amount * $scope.unitToSatoshi).toFixed(0));
+        $timeout(function() {
+          $scope.customizedAmountUnit = amount + ' ' + $scope.unitName;
+          $scope.customizedAlternativeUnit = $filter('noFractionNumber')(form.alternative.$modelValue, 2) + ' ' + $scope.alternativeIsoCode;
+          if ($scope.unitName == 'bits') {
+            amount = amountSat * satToBtc;
+          }
+          $scope.customizedAmountBtc = amount;
+        }, 1);
       };
 
       $scope.toggleAlternative = function() {
