@@ -1,6 +1,6 @@
 'use strict';
 angular.module('copayApp.services')
-  .factory('profileService', function profileServiceFactory($rootScope, $location, $timeout, $filter, $log, lodash, storageService, bwcService, configService, notificationService, isChromeApp, isCordova, gettext) {
+  .factory('profileService', function profileServiceFactory($rootScope, $location, $timeout, $filter, $log, lodash, storageService, bwcService, configService, notificationService, isChromeApp, isCordova, gettext, nodeWebkit) {
 
     var root = {};
 
@@ -62,18 +62,20 @@ angular.module('copayApp.services')
         client.removeAllListeners();
 
 
-        client.on('reconnect', function() {
-          if (root.focusedClient.credentials.walletId == client.credentials.walletId) {
-            $rootScope.$emit('Local/Online');
-          }
-        });
+        if (!nodeWebkit.isDefined() && !isCordova) {
+          client.on('reconnect', function() {
+            if (root.focusedClient.credentials.walletId == client.credentials.walletId) {
+              $rootScope.$emit('Local/Online');
+            }
+          });
 
 
-        client.on('reconnecting', function() {
-          if (root.focusedClient.credentials.walletId == client.credentials.walletId) {
-            $rootScope.$emit('Local/Offline');
-          }
-        });
+          client.on('reconnecting', function() {
+            if (root.focusedClient.credentials.walletId == client.credentials.walletId) {
+              $rootScope.$emit('Local/Offline');
+            }
+          });
+        }
 
         client.on('notification', function(n) {
           $log.debug('BWC Notification:', n);
