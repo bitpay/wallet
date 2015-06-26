@@ -402,9 +402,6 @@ angular
                 case 'resume':
                   $rootScope.$emit('Local/Resume');
                   break;
-                case 'offline':
-                  $rootScope.$emit('Local/Offline');
-                  break;
               };
               $timeout(function() {
                 $rootScope.$emit('Local/SetTab', 'walletHome', true);

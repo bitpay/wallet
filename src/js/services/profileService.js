@@ -62,20 +62,18 @@ angular.module('copayApp.services')
         client.removeAllListeners();
 
 
-        if (!nodeWebkit.isDefined() && !isCordova) {
-          client.on('reconnect', function() {
-            if (root.focusedClient.credentials.walletId == client.credentials.walletId) {
-              $rootScope.$emit('Local/Online');
-            }
-          });
+        client.on('reconnect', function() {
+          if (root.focusedClient.credentials.walletId == client.credentials.walletId) {
+            $log.debug('### Online');
+          }
+        });
 
 
-          client.on('reconnecting', function() {
-            if (root.focusedClient.credentials.walletId == client.credentials.walletId) {
-              $rootScope.$emit('Local/Offline');
-            }
-          });
-        }
+        client.on('reconnecting', function() {
+          if (root.focusedClient.credentials.walletId == client.credentials.walletId) {
+            $log.debug('### Offline');
+          }
+        });
 
         client.on('notification', function(n) {
           $log.debug('BWC Notification:', n);
