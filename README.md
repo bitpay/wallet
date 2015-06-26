@@ -106,6 +106,10 @@ Copay uses NW.js (also know as node-webkit) for its desktop version. NW.js an ap
 **Builder**
 
   - Run `grunt desktop` (*)
+  - 
+  
+## Using a custom hosted BWS and desktop version
+See https://github.com/nwjs/nw.js/issues/679 for SSL self-signed certificate support in desktop apps.
   
   
 # Development
