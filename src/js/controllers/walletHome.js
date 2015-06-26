@@ -468,7 +468,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
           $scope.customizedAmountUnit = amount + ' ' + $scope.unitName;
           $scope.customizedAlternativeUnit = $filter('noFractionNumber')(form.alternative.$modelValue, 2) + ' ' + $scope.alternativeIsoCode;
           if ($scope.unitName == 'bits') {
-            amount = amountSat * satToBtc;
+            amount = (amountSat * satToBtc).toFixed(8);
           }
           $scope.customizedAmountBtc = amount;
         }, 1);
