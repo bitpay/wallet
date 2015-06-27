@@ -29,6 +29,7 @@ msgid "Add wallet"
 msgstr ""
 
 #: public/views/paymentUri.html
+#: public/views/modals/customized-amount.html
 #: public/views/modals/paypro.html
 msgid "Address"
 msgstr ""
@@ -51,11 +52,13 @@ msgstr ""
 
 #: public/views/paymentUri.html
 #: public/views/walletHome.html
+#: public/views/modals/customized-amount.html
 #: public/views/modals/txp-details.html
 msgid "Amount"
 msgstr ""
 
 #: public/views/walletHome.html
+#: public/views/modals/customized-amount.html
 msgid "Amount in"
 msgstr ""
 
@@ -162,6 +165,7 @@ msgstr ""
 
 #: public/views/includes/topbar.html
 #: public/views/modals/copayers.html
+#: public/views/modals/customized-amount.html
 #: public/views/modals/paypro.html
 #: public/views/modals/scanner.html
 msgid "Close"
@@ -316,6 +320,7 @@ msgstr ""
 msgid "Deleting payment"
 msgstr ""
 
+#: public/views/modals/customized-amount.html
 #: public/views/modals/paypro.html
 #: public/views/modals/tx-details.html
 #: public/views/modals/txp-details.html
@@ -406,6 +411,10 @@ msgstr ""
 
 #: public/views/splash.html
 msgid "GET STARTED"
+msgstr ""
+
+#: public/views/modals/customized-amount.html
+msgid "Generate QR Code"
 msgstr ""
 
 #: public/views/walletHome.html
@@ -569,6 +578,7 @@ msgid "Normal"
 msgstr ""
 
 #: public/views/walletHome.html
+#: public/views/modals/customized-amount.html
 msgid "Not valid"
 msgstr ""
 
@@ -710,12 +720,21 @@ msgstr ""
 msgid "Priority"
 msgstr ""
 
+#: public/views/modals/customized-amount.html
+msgid "QR Code"
+msgstr ""
+
 #: public/views/modals/scanner.html
 msgid "QR-Scanner"
 msgstr ""
 
 #: src/js/controllers/index.js
 msgid "Receive"
+msgstr ""
+
+#: public/views/walletHome.html
+#: public/views/modals/customized-amount.html
+msgid "Receive a customized amount"
 msgstr ""
 
 #: public/views/walletHome.html
