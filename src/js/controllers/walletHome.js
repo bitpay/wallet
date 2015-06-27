@@ -142,7 +142,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
         $timeout(function(){
           $scope.$apply();
         });
-        addressService.getAddress(walletId,true, function(err,addr) {
+        addressService.getAddress(walletId, false, function(err,addr) {
           $scope.gettingAddress=false;
           if (!err || addr)
             $modalInstance.close(addr);
