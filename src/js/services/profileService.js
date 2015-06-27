@@ -233,6 +233,11 @@ angular.module('copayApp.services')
       })
     };
 
+
+    root.getClient = function(walletId) {
+      return root.walletClients[walletId];
+    };
+
     root.deleteWalletFC = function(opts, cb) {
       var fc = root.focusedClient;
       $log.debug('Deleting Wallet:', fc.credentials.walletName);
