@@ -129,14 +129,32 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
 
   $scope.openWalletsModal = function(wallets) {
-    var fc = profileService.focusedClient;
 
     var ModalInstanceCtrl = function($scope, $modalInstance) {
       $scope.wallets = wallets;
       $scope.cancel = function() {
         $modalInstance.dismiss('cancel');
       };
+
+      $scope.selectWallet = function(walletId, walletName) {
+        $scope.gettingAddress=true;
+        $scope.selectedWalletName=walletName;
+        $timeout(function(){
+          $scope.$apply();
+        });
+        addressService.getAddress(walletId,true, function(err,addr) {
+          $scope.gettingAddress=false;
+          if (!err || addr)
+            $modalInstance.close(addr);
+          else  {
+            parseError(err);
+            self.error = err;
+            $modalInstance.dismiss('cancel');
+          }
+        });
+      };
     };
+
     var modalInstance = $modal.open({
       templateUrl: 'views/modals/wallets.html',
       windowClass: 'full animated slideInUp',
@@ -146,6 +164,12 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     modalInstance.result.finally(function() {
       var m = angular.element(document.getElementsByClassName('reveal-modal'));
       m.addClass('slideOutDown');
+    });
+
+    modalInstance.result.then(function(addr) {
+      if (addr) {
+        self.setForm(addr);
+      }
     });
   };
 
