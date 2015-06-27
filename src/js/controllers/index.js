@@ -237,7 +237,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         self.copayers = walletStatus.wallet.copayers;
         self.preferences = walletStatus.preferences;
         self.setBalance(walletStatus.balance);
-        self.otherWallets = profileService.getWallets(self.network);
+        self.otherWallets = lodash.filter(profileService.getWallets(self.network), function(w) {
+          return w.id != self.walletId;
+        });;
         $rootScope.$apply();
       });
     });
