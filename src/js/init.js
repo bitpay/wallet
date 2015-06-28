@@ -35,12 +35,6 @@ angular.element(document).ready(function() {
         }, 100);
       }, false);
 
-      // We are not emitting here, since when the BWS socket reconnects,
-      // update will be triggered  
-      document.addEventListener('offline', function() {
-        window.location = '#/cordova/offline';
-      }, false);
-
       // Back button event
       document.addEventListener('backbutton', function() {
         var loc = window.location;

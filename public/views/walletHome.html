@@ -74,7 +74,7 @@
       <div class="oh">
         <div class="amount" ng-style="{'background-color':index.backgroundColor}">
           <div ng-if="!index.anyOnGoingProcess && !index.notAuthorized">
-            <div ng-show="index.updateError" ng-click='index.openWallet()'>
+            <div ng-show="index.updateError" ng-click='index.openWallet(); index.updateTxHistory()'>
               <span translate>Could not update Wallet</span>
               <br><span translate>Tap to retry</span>
             </div>
@@ -84,7 +84,7 @@
               <br><span translate>Tap to retry</span>
             </div>
 
-            <div   ng-click='index.updateAll(); index.updateTxHistory()'  ng-show="!index.updateError && index.walletScanStatus != 'error'">
+            <div ng-click='index.updateAll(); index.updateTxHistory()'  ng-show="!index.updateError && index.walletScanStatus != 'error'">
               <strong class="size-36">{{index.totalBalanceStr}}</strong>
               <div class="size-14"
                 ng-if="index.totalBalanceAlternative">
