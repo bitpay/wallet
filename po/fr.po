@@ -169,13 +169,18 @@ msgstr "Vérifiez votre connexion internet et réessayez"
 
 #: public/views/import.html
 msgid "Choose a backup file from your computer"
-msgstr "Choisissez un fichier de sauvegarde depuis votre ordinateur"
+msgstr "Choisir un fichier de sauvegarde depuis votre ordinateur"
+
+#: public/views/modals/wallets.html
+msgid "Choose a wallet to send funds"
+msgstr "Choisir un portefeuille pour envoyer des fonds"
 
 #: public/views/includes/topbar.html
 #: public/views/modals/copayers.html
 #: public/views/modals/customized-amount.html
 #: public/views/modals/paypro.html
 #: public/views/modals/scanner.html
+#: public/views/modals/wallets.html
 msgid "Close"
 msgstr "Fermer"
 
@@ -428,6 +433,10 @@ msgstr "Générer un code QR"
 #: public/views/walletHome.html
 msgid "Generate new address"
 msgstr "Générer une nouvelle adresse"
+
+#: public/views/modals/wallets.html
+msgid "Getting address for wallet {{selectedWalletName}} ..."
+msgstr "Obtention d'une adresse pour le portefeuille {{selectedWalletName}} ..."
 
 #: public/views/preferences.html
 msgid "Global settings"
@@ -737,11 +746,6 @@ msgstr "QR-Scanner"
 msgid "Receive"
 msgstr "Recevoir"
 
-#: public/views/walletHome.html 
-#: public/views/modals/customized-amount.html
-msgid "Receive a customized amount"
-msgstr "Recevoir un montant personnalisé"
-
 #: public/views/walletHome.html
 msgid "Received"
 msgstr "Reçue"
@@ -774,6 +778,11 @@ msgstr "Informations de version"
 #: public/views/includes/password.html
 msgid "Repeat password"
 msgstr "Répétez le mot de passe"
+
+#: public/views/walletHome.html
+#: public/views/modals/customized-amount.html
+msgid "Request a specific amount"
+msgstr "Demander un montant précis"
 
 #: public/views/import.html 
 #: public/views/join.html
@@ -962,6 +971,10 @@ msgstr "Le logiciel que vous êtes sur le point d'utiliser fonctionne comme un p
 msgid "The wallet \"{{walletName}}\" was deleted"
 msgstr "Le portefeuille \"{{walletName}}\" a été supprimé"
 
+#: public/views/paymentUri.html
+msgid "There are no wallets to make this payment"
+msgstr "Il n'y a pas de portefeuilles pour faire ce paiement"
+
 #: src/js/controllers/import.js
 msgid "There is an error in the form"
 msgstr "Il y a une erreur dans la forme"
@@ -1112,10 +1125,6 @@ msgstr "Votre mot de passe de profil"
 msgid "Your wallet has been imported correctly"
 msgstr "Votre portefeuille a été correctement importé"
 
-#: public/views/preferencesFee.html
-msgid "bits per kB"
-msgstr "bits par kB"
-
 #: public/views/preferencesEmail.html
 msgid "email for wallet notifications"
 msgstr "e-mail pour les notifications de portefeuille"
@@ -1141,6 +1150,10 @@ msgstr "paramètres"
 #: public/views/walletHome.html
 msgid "too long!"
 msgstr "trop long !"
+
+#: public/views/preferencesFee.html
+msgid "{{fee.value}} bits per kB"
+msgstr "{{fee.value}} bits par kB"
 
 #: src/js/controllers/walletHome.js
 msgid "{{fee}} will be discounted for bitcoin networking fees"
