@@ -46,17 +46,10 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     self.resetForm();
   });
 
-  var disableOnlineListener = $rootScope.$on('Local/Online', function() {
-    // This is needed then the apps go to sleep
-    self.bindTouchDown();
-  });
-
   var disableResumeListener = $rootScope.$on('Local/Resume', function() {
     // This is needed then the apps go to sleep
     self.bindTouchDown();
   });
-
-
 
   var disableTabListener = $rootScope.$on('Local/TabChanged', function(e, tab) {
     // This will slow down switch, do not add things here!
@@ -77,7 +70,6 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     disableTabListener();
     disableFocusListener();
     disableResumeListener();
-    disableOnlineListener();
     $rootScope.hideMenuBar = false;
   });
 

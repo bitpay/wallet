@@ -659,26 +659,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.debouncedUpdate();
   });
 
-  $rootScope.$on('Local/Online', function(event) {
-    $log.debug('### Online event');
-    if (self.isOffline) self.debouncedUpdate();
-    self.isOffline = false;
-    self.offLineSince = null;
-  });
-
-  self.offLineSince = null;;
-  $rootScope.$on('Local/Offline', function(event) {
-    $log.debug('### Offline event');
-    if (!self.offLineSince) self.offLineSince = Date.now();
-
-    if (Date.now() - self.offLineSince > 30000) {
-      self.isOffline = true;
-      $timeout(function() {
-        $rootScope.$apply();
-      });
-    }
-  });
-
   $rootScope.$on('Local/BackupDone', function(event) {
     self.needsBackup = false;
     storageService.setBackupFlag(self.walletId, function(err) {
