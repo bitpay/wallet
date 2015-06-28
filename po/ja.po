@@ -46,7 +46,8 @@ msgstr "承諾"
 msgid "Add wallet"
 msgstr "ウォレットを追加"
 
-#: public/views/paymentUri.html public/views/modals/paypro.html
+#: public/views/paymentUri.html public/views/modals/customized-amount.html
+#: public/views/modals/paypro.html
 msgid "Address"
 msgstr "アドレス"
 
@@ -67,11 +68,12 @@ msgid "Alternative Currency"
 msgstr "表示通貨"
 
 #: public/views/paymentUri.html public/views/walletHome.html
+#: public/views/modals/customized-amount.html
 #: public/views/modals/txp-details.html
 msgid "Amount"
 msgstr "金額"
 
-#: public/views/walletHome.html
+#: public/views/walletHome.html public/views/modals/customized-amount.html
 msgid "Amount in"
 msgstr "換算済金額"
 
@@ -120,6 +122,10 @@ msgid ""
 msgstr ""
 "ビットコインをもらう前に、このウォレットのバックアップすることを強くおすすめ"
 "します。"
+
+#: public/views/preferences.html
+msgid "Bitcoin Network Fee Policy"
+msgstr "ビットコインネットワークの手数料設定"
 
 #: public/views/paymentUri.html
 msgid "Bitcoin URI is NOT valid!"
@@ -173,8 +179,13 @@ msgstr "接続を確認し、やり直して下さい。"
 msgid "Choose a backup file from your computer"
 msgstr "パソコンからバックアップファイルを選択して下さい。"
 
+#: public/views/modals/wallets.html
+msgid "Choose a wallet to send funds"
+msgstr "送金元のウォレットを選択して下さい"
+
 #: public/views/includes/topbar.html public/views/modals/copayers.html
-#: public/views/modals/paypro.html public/views/modals/scanner.html
+#: public/views/modals/customized-amount.html public/views/modals/paypro.html
+#: public/views/modals/scanner.html public/views/modals/wallets.html
 msgid "Close"
 msgstr "閉じる"
 
@@ -333,8 +344,8 @@ msgstr "ウォレットを削除"
 msgid "Deleting payment"
 msgstr "取引削除中…"
 
-#: public/views/modals/paypro.html public/views/modals/tx-details.html
-#: public/views/modals/txp-details.html
+#: public/views/modals/customized-amount.html public/views/modals/paypro.html
+#: public/views/modals/tx-details.html public/views/modals/txp-details.html
 msgid "Details"
 msgstr "詳細"
 
@@ -353,6 +364,10 @@ msgstr "バックアップをダウンロード"
 #: public/views/includes/password.html
 msgid "ENTER"
 msgstr "ENTER"
+
+#: src/js/controllers/preferencesFee.js
+msgid "Economy"
+msgstr "節約"
 
 #: public/views/preferences.html
 msgid "Email Notifications"
@@ -398,6 +413,10 @@ msgstr "ウォレットのインポート失敗しました"
 msgid "Family vacation funds"
 msgstr "家族旅行貯金"
 
+#: public/views/modals/txp-details.html
+msgid "Fee"
+msgstr "手数料"
+
 #. Get information of payment if using Payment Protocol
 #: src/js/controllers/walletHome.js
 msgid "Fetching Payment Information"
@@ -415,9 +434,17 @@ msgstr "着金あり"
 msgid "GET STARTED"
 msgstr "はじめよう"
 
+#: public/views/modals/customized-amount.html
+msgid "Generate QR Code"
+msgstr "QRコードを生成"
+
 #: public/views/walletHome.html
 msgid "Generate new address"
 msgstr "新規アドレスを生成"
+
+#: public/views/modals/wallets.html
+msgid "Getting address for wallet {{selectedWalletName}} ..."
+msgstr "「{{selectedWalletName}}」のアドレスを取得中…"
 
 #: public/views/preferences.html
 msgid "Global settings"
@@ -564,7 +591,11 @@ msgstr "いいえ"
 msgid "No transactions yet"
 msgstr "取引がありません"
 
-#: public/views/walletHome.html
+#: src/js/controllers/preferencesFee.js
+msgid "Normal"
+msgstr "通常"
+
+#: public/views/walletHome.html public/views/modals/customized-amount.html
 msgid "Not valid"
 msgstr "無効です"
 
@@ -701,6 +732,14 @@ msgstr "ポルトガル語"
 msgid "Preferences"
 msgstr "設定"
 
+#: src/js/controllers/preferencesFee.js
+msgid "Priority"
+msgstr "優先"
+
+#: public/views/modals/customized-amount.html
+msgid "QR Code"
+msgstr "QRコード"
+
 #: public/views/modals/scanner.html
 msgid "QR-Scanner"
 msgstr "QRコードを読み取って下さい"
@@ -740,6 +779,10 @@ msgstr "リリース情報"
 #: public/views/backup.html public/views/includes/password.html
 msgid "Repeat password"
 msgstr "パスワードを再入力"
+
+#: public/views/walletHome.html public/views/modals/customized-amount.html
+msgid "Request a specific amount"
+msgstr "指定金額を要求"
 
 #: public/views/import.html public/views/join.html
 msgid "Required"
@@ -806,6 +849,10 @@ msgstr "参加人数を選択して下さい。"
 #: src/js/controllers/index.js
 msgid "Send"
 msgstr "送信"
+
+#: public/views/walletHome.html
+msgid "Send All"
+msgstr "全額を送金"
 
 #: public/views/backup.html public/views/preferencesLogs.html
 msgid "Send by email"
@@ -1023,6 +1070,10 @@ msgstr ""
 msgid "The wallet \"{{walletName}}\" was deleted"
 msgstr "ウォレット \"{{walletName}}\" が削除されました"
 
+#: public/views/paymentUri.html
+msgid "There are no wallets to make this payment"
+msgstr "送金可能なウォレットがありません"
+
 #: src/js/controllers/import.js
 msgid "There is an error in the form"
 msgstr "フォームにエラーがありました"
@@ -1200,6 +1251,14 @@ msgstr "設定"
 #: public/views/walletHome.html
 msgid "too long!"
 msgstr "長すぎます！"
+
+#: public/views/preferencesFee.html
+msgid "{{fee.value}} bits per kB"
+msgstr "1キロバイト当たり {{fee.value}} bits"
+
+#: src/js/controllers/walletHome.js
+msgid "{{fee}} will be discounted for bitcoin networking fees"
+msgstr "{{fee}} のビットコインネットワーク手数料が差し引かれます。"
 
 #: src/js/controllers/importLegacy.js
 msgid ""

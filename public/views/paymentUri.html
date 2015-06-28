@@ -19,8 +19,8 @@
       </div>
       <div ng-if="!wallets || !wallets.length">
         <div class="box-notification">
-          <span class="text-warning" translate>
-            There are not wallets to make this payment
+          <span class="text-warning">
+            <b translate>There are no wallets to make this payment</b>
             <span ng-show="payment.uri.network == 'testnet'">[testnet]</span>
           </span>
         </div>
