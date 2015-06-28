@@ -163,11 +163,16 @@ msgstr ""
 msgid "Choose a backup file from your computer"
 msgstr ""
 
+#: public/views/modals/wallets.html
+msgid "Choose a wallet to send funds"
+msgstr ""
+
 #: public/views/includes/topbar.html
 #: public/views/modals/copayers.html
 #: public/views/modals/customized-amount.html
 #: public/views/modals/paypro.html
 #: public/views/modals/scanner.html
+#: public/views/modals/wallets.html
 msgid "Close"
 msgstr ""
 
@@ -419,6 +424,10 @@ msgstr ""
 
 #: public/views/walletHome.html
 msgid "Generate new address"
+msgstr ""
+
+#: public/views/modals/wallets.html
+msgid "Getting address for wallet {{selectedWalletName}} ..."
 msgstr ""
 
 #: public/views/preferences.html
@@ -733,11 +742,6 @@ msgid "Receive"
 msgstr ""
 
 #: public/views/walletHome.html
-#: public/views/modals/customized-amount.html
-msgid "Receive a customized amount"
-msgstr ""
-
-#: public/views/walletHome.html
 msgid "Received"
 msgstr ""
 
@@ -768,6 +772,11 @@ msgstr ""
 #: public/views/backup.html
 #: public/views/includes/password.html
 msgid "Repeat password"
+msgstr ""
+
+#: public/views/walletHome.html
+#: public/views/modals/customized-amount.html
+msgid "Request a specific amount"
 msgstr ""
 
 #: public/views/import.html
@@ -957,6 +966,10 @@ msgstr ""
 msgid "The wallet \"{{walletName}}\" was deleted"
 msgstr ""
 
+#: public/views/paymentUri.html
+msgid "There are no wallets to make this payment"
+msgstr ""
+
 #: src/js/controllers/import.js
 msgid "There is an error in the form"
 msgstr ""
@@ -1107,10 +1120,6 @@ msgstr ""
 msgid "Your wallet has been imported correctly"
 msgstr ""
 
-#: public/views/preferencesFee.html
-msgid "bits per kB"
-msgstr ""
-
 #: public/views/preferencesEmail.html
 msgid "email for wallet notifications"
 msgstr ""
@@ -1135,6 +1144,10 @@ msgstr ""
 
 #: public/views/walletHome.html
 msgid "too long!"
+msgstr ""
+
+#: public/views/preferencesFee.html
+msgid "{{fee.value}} bits per kB"
 msgstr ""
 
 #: src/js/controllers/walletHome.js
