@@ -258,7 +258,7 @@
         </div>
         <div class="row m20t">
           <div class="large-12 columns">
-            <button class="button black expand round" ng-click="home.setNewAddress()"
+            <button class="button black expand round" ng-click="home.setAddress(true)"
               ng-style="{'background-color':index.backgroundColor}" ng-disabled="home.blockUx || index.isOffline ||home.generatingAddress" translate>
               Generate new address
             </button>
@@ -266,7 +266,7 @@
         </div>
         <div class="text-center" ng-show="!home.generatingAddress && home.addr[index.walletId]">
           <a class="size-12" ng-click="home.openCustomizedAmountModal(home.addr[index.walletId])" translate>
-            Request a specific amount
+            Receive a specific amount
           </a>
         </div>
       </div>
@@ -326,6 +326,11 @@
 
             <div ng-hide="home._paypro || home.hideAddress">
               <div class="row collapse">
+
+              <div class="right size-12 m0 text-gray" ng-click="openWalletsModal(index.otherWallets)" ng-if="index.otherWallets">
+                send to my wallets
+              </div>
+
 
                 <label for="address" class="left" >
                   <span translate>To</span>

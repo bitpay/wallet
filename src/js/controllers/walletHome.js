@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('walletHomeController', function($scope, $rootScope, $timeout, $filter, $modal, $log, notification, txStatus, isCordova, profileService, lodash, configService, rateService, storageService, bitcore, isChromeApp, gettext, gettextCatalog, nodeWebkit) {
+angular.module('copayApp.controllers').controller('walletHomeController', function($scope, $rootScope, $timeout, $filter, $modal, $log, notification, txStatus, isCordova, profileService, lodash, configService, rateService, storageService, bitcore, isChromeApp, gettext, gettextCatalog, nodeWebkit, addressService) {
 
   var self = this;
   $rootScope.hideMenuBar = false;
@@ -38,7 +38,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   });
 
   var disableAddrListener = $rootScope.$on('Local/NeedNewAddress', function() {
-    self.setNewAddress();
+    self.setAddress(true);
   });
 
   var disableFocusListener = $rootScope.$on('Local/NewFocusedWallet', function() {
@@ -90,6 +90,8 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
 
   var parseError = function(err) {
+    if (!err) return;
+
     if (err.message) {
       // TODO : this is not used anymore?
       if (err.message.indexOf('CORS') >= 0) {
@@ -122,6 +124,52 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     modalInstance.result.finally(function() {
       var m = angular.element(document.getElementsByClassName('reveal-modal'));
       m.addClass('slideOutDown');
+    });
+  };
+
+
+  $scope.openWalletsModal = function(wallets) {
+
+    var ModalInstanceCtrl = function($scope, $modalInstance) {
+      $scope.wallets = wallets;
+      $scope.cancel = function() {
+        $modalInstance.dismiss('cancel');
+      };
+
+      $scope.selectWallet = function(walletId, walletName) {
+        $scope.gettingAddress=true;
+        $scope.selectedWalletName=walletName;
+        $timeout(function(){
+          $scope.$apply();
+        });
+        addressService.getAddress(walletId, false, function(err,addr) {
+          $scope.gettingAddress=false;
+          if (!err || addr)
+            $modalInstance.close(addr);
+          else  {
+            parseError(err);
+            self.error = err;
+            $modalInstance.dismiss('cancel');
+          }
+        });
+      };
+    };
+
+    var modalInstance = $modal.open({
+      templateUrl: 'views/modals/wallets.html',
+      windowClass: 'full animated slideInUp',
+      controller: ModalInstanceCtrl,
+    });
+
+    modalInstance.result.finally(function() {
+      var m = angular.element(document.getElementsByClassName('reveal-modal'));
+      m.addClass('slideOutDown');
+    });
+
+    modalInstance.result.then(function(addr) {
+      if (addr) {
+        self.setForm(addr);
+      }
     });
   };
 
@@ -339,56 +387,31 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
   };
 
-  // Receive
-  this.setNewAddress = function() {
-    var fc = profileService.focusedClient;
-    self.generatingAddress = true;
-    self.addrError = null;
-    fc.createAddress(function(err, addr) {
-      self.generatingAddress = false;
-      if (err) {
-        if (err.error && err.error.match(/locked/gi)) {
-          $log.debug(err.error);
-          $timeout(function() {
-            self.setNewAddress();
-          }, 5000);
-        } else {
-          $log.debug('Creating address ERROR:', err);
-          parseError(err);
-          self.addrError = err.message || gettext('Could not create address. Check you connection and try again');
-          $scope.$digest();
-        }
-        return;
-      }
-      self.addrError = null;
-      self.addr[fc.credentials.walletId] = addr.address;
-      storageService.storeLastAddress(fc.credentials.walletId, addr.address, function() {
-
-        self.generatingAddress = false;
-        $scope.$digest();
-      });
-    });
-  };
-
-  this.setAddress = function() {
+  this.setAddress = function(forceNew) {
     self.addrError = null;
     var fc = profileService.focusedClient;
     if (!fc)
       return;
 
-    if (self.addr[fc.credentials.walletId]) {
+    // Address already set?
+    if (!forceNew && self.addr[fc.credentials.walletId]) {
       return;
     }
 
-
+    self.generatingAddress = true;
     $timeout(function() {
-      storageService.getLastAddress(fc.credentials.walletId, function(err, addr) {
-        if (addr) {
-          self.addr[fc.credentials.walletId] = addr;
-          $scope.$digest();
-        } else {
-          self.setNewAddress();
+      addressService.getAddress(fc.credentials.walletId, forceNew, function(err,addr){
+        self.generatingAddress = false;
+
+        if (err) {
+          parseError(err);
+          self.addrError = err.message || gettext('Could not create address. Check you connection and try again');
         }
+
+        if (addr)
+          self.addr[fc.credentials.walletId] = addr;
+
+        $scope.$digest();
       });
     });
   };
@@ -1028,6 +1051,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     }
   }
 
+  /* Start setup */
 
   this.bindTouchDown();
   this.setAddress();
