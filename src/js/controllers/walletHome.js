@@ -129,16 +129,16 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       };
 
       $scope.selectWallet = function(walletId, walletName) {
-        $scope.gettingAddress=true;
-        $scope.selectedWalletName=walletName;
-        $timeout(function(){
+        $scope.gettingAddress = true;
+        $scope.selectedWalletName = walletName;
+        $timeout(function() {
           $scope.$apply();
         });
-        addressService.getAddress(walletId, false, function(err,addr) {
-          $scope.gettingAddress=false;
+        addressService.getAddress(walletId, false, function(err, addr) {
+          $scope.gettingAddress = false;
           if (!err || addr)
             $modalInstance.close(addr);
-          else  {
+          else {
             parseError(err);
             self.error = err;
             $modalInstance.dismiss('cancel');
@@ -392,7 +392,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
     self.generatingAddress = true;
     $timeout(function() {
-      addressService.getAddress(fc.credentials.walletId, forceNew, function(err,addr){
+      addressService.getAddress(fc.credentials.walletId, forceNew, function(err, addr) {
         self.generatingAddress = false;
 
         if (err) {
@@ -1022,25 +1022,38 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     this.setForm(null, amount);
   };
 
+  this.confirmDialog = function(msg, cb) {
+    if (isCordova) {
+      navigator.notification.confirm(
+        msg,
+        function(buttonIndex) {
+          if (buttonIndex == 1) {
+            $timeout(function() {
+              return cb(true);
+            }, 1);
+          } else {
+            return cb(false);
+          }
+        }
+      );
+    } else if (isChromeApp) {
+      // No feedback, alert/confirm not supported.
+      return cb(true);
+    } else {
+      return cb(confirm(msg));
+    }
+  };
+
   this.sendAll = function(amount, feeStr) {
     var self = this;
     var msg = gettextCatalog.getString("{{fee}} will be discounted for bitcoin networking fees", {
       fee: feeStr
     });
-    if (isCordova) {
-      navigator.notification.confirm(
-        msg,
-        function(buttonIndex) {
-          if (buttonIndex == 1)
-            $timeout(function() {
-              self._doSendAll(amount);
-            }, 1);
-        }
-      );
-    } else {
-      if (confirm(msg))
-        this._doSendAll(amount);
-    }
+
+    this.confirmDialog(msg, function(confirmed){
+      if (confirmed) 
+        self._doSendAll(amount);
+    });
   }
 
   /* Start setup */
