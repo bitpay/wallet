@@ -285,7 +285,7 @@ a.missing-copayers {
   background-color: #122232;
 }
 
-.sidebar .avatar-wallet, .payment-uri .avatar-wallet {
+.sidebar .avatar-wallet, .payment-uri .avatar-wallet, .modal-content .avatar-wallet {
   background-color: #2C3E50;
   color: #fff;
   font-size: 20px;

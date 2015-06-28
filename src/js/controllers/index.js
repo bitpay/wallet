@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, lodash, go, profileService, configService, isCordova, rateService, storageService, gettextCatalog, gettext, amMoment) {
+angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, lodash, go, profileService, configService, isCordova, rateService, storageService, addressService, gettextCatalog, gettext, amMoment) {
 
   var self = this;
   self.isCordova = isCordova;
@@ -237,6 +237,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         self.copayers = walletStatus.wallet.copayers;
         self.preferences = walletStatus.preferences;
         self.setBalance(walletStatus.balance);
+        self.otherWallets = lodash.filter(profileService.getWallets(self.network), function(w) {
+          return w.id != self.walletId;
+        });;
         $rootScope.$apply();
       });
     });
@@ -463,7 +466,12 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.alternativeIsoCode = config.alternativeIsoCode;
 
     // Check address
-    self.checkLastAddress(balance.byAddress);
+    addressService.isUsed(self.walletId, balance.byAddress, function(err, used){
+      if (used)  {
+        $log.debug('Address used. Creating new');
+        $rootScope.$emit('Local/NeedNewAddress');
+      }
+    });
 
     rateService.whenAvailable(function() {
 
@@ -487,20 +495,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     }
   };
 
-  self.checkLastAddress = function(byAddress, cb) {
-    storageService.getLastAddress(self.walletId, function(err, addr) {
-      var used = lodash.find(byAddress, {
-        address: addr
-      });
-      if (used) {
-        $log.debug('Address ' + addr + ' was used. Cleaning Cache.')
-        storageService.clearLastAddress(self.walletId, function(err) {
-          $rootScope.$emit('Local/NeedNewAddress', err);
-          if (cb) return cb();
-        });
-      };
-    });
-  };
 
   self.clientError = function(err) {
     if (isCordova) {
@@ -728,7 +722,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   $rootScope.$on('Local/WalletImported', function(event, walletId) {
     self.needsBackup = false;
     storageService.setBackupFlag(walletId, function() {
-      storageService.clearLastAddress(walletId, function(err) {
+      addressService.expireAddress(walletId, function(err) {
         self.startScan(walletId);
       });
     });
@@ -791,7 +785,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       if (val) {
         $log.debug('Clear last address cache and Scan');
         lodash.each(lodash.keys(profileService.walletClients), function(walletId) {
-          storageService.clearLastAddress(walletId, function(err) {
+          addressService.expireAddress(walletId, function(err) {
             self.startScan(walletId);
           });
         });
