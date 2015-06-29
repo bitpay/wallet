@@ -27,14 +27,14 @@
   </div>
   <div ng-if="!gettingAddress">
     <ul class="no-bullet">
-      <li class="panel" ng-repeat="w in wallets">
-      <a ng-click="selectWallet(w.id, w.name)">
-        <div class="avatar-wallet" 
+      <li class="line-b" ng-repeat="w in wallets">
+      <a ng-click="selectWallet(w.id, w.name)" class="db oh">
+        <div class="avatar-wallet"
           ng-style="{'background-color':w.color}">{{(w.name || w.id) | limitTo: 1}}</div>
-        <div class="ellipsis">{{w.name || w.id}}</div>
-        <div class="size-12">{{w.m}} of {{w.n}} 
+        <div class="ellipsis name-wallet text-bold">{{w.name || w.id}}</div>
+        <div class="size-12">{{w.m}} of {{w.n}}
           <span ng-show="w.network=='testnet'">[Testnet]</span>
-        </div> 
+        </div>
       </a>
       </li>
     </ul>
@@ -42,4 +42,3 @@
 
   <div class="extra-margin-bottom"></div>
 </div>
-
