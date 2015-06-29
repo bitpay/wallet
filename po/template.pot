@@ -38,6 +38,10 @@ msgstr ""
 msgid "Advanced"
 msgstr ""
 
+#: public/views/disclaimer.html
+msgid "Agree"
+msgstr ""
+
 #: public/views/preferencesAlias.html
 msgid "Alias for <i>{{index.walletName}}</i>"
 msgstr ""
