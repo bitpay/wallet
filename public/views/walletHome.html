@@ -342,7 +342,7 @@
 
               <div class="input">
                 <input type="text" id="address" name="address" ng-disabled="home.blockUx || home.lockAddress" ng-attr-placeholder="{{'Bitcoin address'|translate}}" ng-model="_address" valid-address required ng-focus="home.formFocus('address')" ng-blur="home.formFocus(false)">
-                <a class="postfix size-12 m0 text-gray" ng-click="openWalletsModal(index.otherWallets)" ng-if="index.otherWallets">
+                <a class="postfix size-12 m0 text-gray" ng-click="openWalletsModal(index.otherWallets)" ng-if="index.otherWallets && index.otherWallets.length>0">
                   <i class="icon-wallet size-18"></i>
                 </a>
               </div>
