@@ -8,8 +8,8 @@
 
 
 <div class="content p20b" ng-class="{'disclaimer':!index.hasProfile}">
-  <h4 class="title m0" ng-show="!index.hasProfile" translate>
-    <span>Terms of Use</span>
+  <h4 class="title m0" ng-show="!index.hasProfile">
+    <span translate>Terms of Use</span>
     <img class="right" src="img/logo.svg" alt="Copay" width="40">
   </h4>
   <div class="p20h m10t">
@@ -18,9 +18,9 @@
     </p>
 
     <div ng-show="!agreed">
-      <p>I affirm that I have read, understood, and agree with these terms.</p>
+      <p translate>I affirm that I have read, understood, and agree with these terms.</p>
       <button class="black round expand" ng-click="agree()" translate>
-        Agree
+        <span translate> Agree </span>
       </button>
     </div>
     <button ng-show="agreed && !index.hasProfile" class="round" ng-click="agree()" translate>Go back</button>
