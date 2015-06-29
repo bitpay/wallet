@@ -320,7 +320,7 @@ a.missing-copayers {
   margin-bottom: 30px;
 }
 
-.sidebar ul.off-canvas-list li a {
+.sidebar ul.off-canvas-list li a,  .modal-content ul li a {
   font-size: 12px;
   font-weight: 300;
   border-bottom: transparent;
