@@ -1,12 +1,24 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('preferencesLanguageController',
-  function($scope, $timeout, go) {
+  function($scope, $log, $timeout, configService, go) {
 
     this.save = function(newLang) {
-      $scope.$emit('Local/DefaultLanguage', newLang);
-      $timeout(function() {
-        go.preferences();
-      }, 100);
+
+      var opts = {
+        wallet: {
+          settings: {
+            defaultLanguage: newLang
+          }
+        }
+      };
+
+      configService.set(opts, function(err) {
+        if (err) $log.warn(err);
+        $scope.$emit('Local/LanguageSettingUpdated');
+        $timeout(function() {
+          go.preferences();
+        }, 100);
+      });
     };
   });

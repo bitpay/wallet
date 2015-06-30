@@ -74,7 +74,7 @@ angular
           'main': {
             templateUrl: 'views/splash.html',
             controller: function($scope, $timeout, $log, profileService, storageService, go) {
-              storageService.getCopayDisclaimer(function(err, val) {
+              storageService.getCopayDisclaimerFlag(function(err, val) {
                 if (!val) go.path('disclaimer');
 
                 if (profileService.profile) {
@@ -109,7 +109,7 @@ angular
           'main': {
             templateUrl: 'views/disclaimer.html',
             controller: function($scope, $timeout, storageService, applicationService, go) {
-              storageService.getCopayDisclaimer(function(err, val) {
+              storageService.getCopayDisclaimerFlag(function(err, val) {
                 $scope.agreed = val;
                 $timeout(function(){
                   $scope.$digest();
@@ -117,7 +117,7 @@ angular
               });
 
               $scope.agree = function() {
-                storageService.setCopayDisclaimer(function(err) {
+                storageService.setCopayDisclaimerFlag(function(err) {
                   $timeout(function(){
                     applicationService.restart();
                   }, 1000);

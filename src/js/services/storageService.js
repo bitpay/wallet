@@ -176,12 +176,20 @@ angular.module('copayApp.services')
       storage.remove('config', cb);
     };
 
-    root.setCopayDisclaimer = function(cb) {
+    root.setCopayDisclaimerFlag = function(cb) {
       storage.set('agreeDisclaimer', true, cb);
     };
 
-    root.getCopayDisclaimer = function(cb) {
+    root.getCopayDisclaimerFlag = function(cb) {
       storage.get('agreeDisclaimer', cb);
+    };
+
+    root.setRemotePrefsStoredFlag = function(cb) {
+      storage.set('remotePrefStored', true, cb);
+    };
+
+    root.getRemotePrefsStoredFlag = function(cb) {
+      storage.get('remotePrefStored', cb);
     };
 
     return root;
