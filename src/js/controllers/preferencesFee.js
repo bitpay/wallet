@@ -13,7 +13,11 @@ angular.module('copayApp.controllers').controller('preferencesFeeController',
     }, {
       name: gettext('Economy'),
       value: 10,
-    }];
+    }, {
+      name: gettext('Emergency'),
+      red: true,
+      value: 500,
+    }, ];
 
     this.save = function(newFee) {
       var opts = {
