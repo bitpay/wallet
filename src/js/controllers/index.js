@@ -178,7 +178,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
     //prefs.email  (may come from arguments)
     prefs.language = self.defaultLanguageIsoCode;
-    prefs.unit = self.unitName;
+    prefs.unit = self.unitName.toLowerCase();
 
     var clients = [];
     if (opts.saveAll) {
