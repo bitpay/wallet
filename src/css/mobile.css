@@ -567,6 +567,12 @@ to prevent collapsing during animation*/
   top: 45px;
   padding-bottom: 33px;
   -webkit-transform: translate3d(0,0,0);
+  background: #fff;
+}
+
+body.modal-open {
+  position: fixed;
+  overflow: hidden;
 }
 
 .reveal-modal {
@@ -574,6 +580,7 @@ to prevent collapsing during animation*/
   border: none;
   border-radius: 0;
   outline: 0;
+  box-shadow: none;
 }
 
 .reveal-modal.animated.slideInRight,
