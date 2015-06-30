@@ -6,7 +6,7 @@ angular.module('copayApp.services')
 
 
     root.expireAddress = function(walletId,cb) {
-      $log.debug('Cleaning Address ' + addr );
+      $log.debug('Cleaning Address ' + walletId );
       storageService.clearLastAddress(walletId, function(err) {
         return cb(err);
       });
