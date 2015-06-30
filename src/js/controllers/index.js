@@ -161,7 +161,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
     $log.debug('Saving remote preferences', client.credentials.walletName, prefs);
     client.savePreferences(prefs, function(err) {
-      if (err) return cb(err);
+      // we ignore errors here
+      if (err) $log.warn(err);
 
       self._updateRemotePreferencesFor(clients, prefs, cb);
     });
@@ -188,15 +189,11 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     };
 
     self._updateRemotePreferencesFor(clients, prefs, function(err) {
-      if (err) {
-        self.handleError(err);
-        return cb(err);
-      }
+      if (err) return cb(err);
       if (!fc) return cb();
 
       fc.getPreferences(function(err, preferences) {
         if (err) {
-          self.handleError(err);
           return cb(err);
         }
         self.preferences = preferences;
