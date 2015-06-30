@@ -184,5 +184,13 @@ angular.module('copayApp.services')
       storage.get('agreeDisclaimer', cb);
     };
 
+    root.setRemotePreferencesStored = function(cb) {
+      storage.set('remotePrefStored', true, cb);
+    };
+
+    root.getRemovePreferencesStored = function(cb) {
+      storage.get('remotePrefStored', cb);
+    };
+
     return root;
   });

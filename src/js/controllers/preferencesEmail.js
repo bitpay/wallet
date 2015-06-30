@@ -8,20 +8,9 @@ angular.module('copayApp.controllers').controller('preferencesEmailController',
 
       var fc = profileService.focusedClient;
       this.saving = true;
-      fc.savePreferences({
-        email: this.email
-      }, function(err) {
+      $scope.$emit('Local/EmailSettingUpdated', self.email, function() {
         self.saving = false;
-        if (err) {
-          $log.warn(err);
-          $scope.$emit('Local/ClientError', err);
-          return;
-        }
-        $scope.$emit('Local/EmailUpdated', function(err){
-          go.path('preferences');
-        });
+        go.path('preferences');
       });
     };
-
-
   });
