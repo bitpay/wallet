@@ -128,13 +128,16 @@ angular.module('copayApp.services')
         root.setWalletClients();
         storageService.getFocusedWalletId(function(err, focusedWalletId) {
           if (err) return cb(err);
-          root._setFocus(focusedWalletId, cb);
+          root._setFocus(focusedWalletId, function() {
+            $rootScope.$emit('Local/ProfileBound');
+            return cb();
+          });
         });
       });
     };
 
     root.loadAndBindProfile = function(cb) {
-      storageService.getCopayDisclaimer(function(err, val) {
+      storageService.getCopayDisclaimerFlag(function(err, val) {
         if (!val) {
           return cb(new Error('NONAGREEDDISCLAIMER: Non agreed disclaimer'));
         } else {

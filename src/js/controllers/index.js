@@ -172,6 +172,10 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     var prefs = opts.preferences || {};
     var fc = profileService.focusedClient;
 
+    // Update this JIC.
+    var config = configService.getSync().wallet.settings;
+    self.unitName = config.unitName;
+
     //prefs.email  (may come from arguments)
     prefs.language = self.defaultLanguageIsoCode;
     prefs.unit = self.unitName;
@@ -188,6 +192,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         self.handleError(err);
         return cb(err);
       }
+      if (!fc) return cb();
 
       fc.getPreferences(function(err, preferences) {
         if (err) {
@@ -651,6 +656,17 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     });
   });
 
+  $rootScope.$on('Local/ProfileBound', function() {
+    storageService.getRemotePrefsStoredFlag(function(err, val) {
+      if (err || val) return;
+      self.updateRemotePreferences({
+        saveAll: true
+      }, function() {
+        $log.debug('Remote preferences saved')
+        storageService.setRemotePrefsStoredFlag(function() {});
+      });
+    });
+  });
 
   $rootScope.$on('Local/NewFocusedWallet', function() {
     self.setUxLanguage();
@@ -666,11 +682,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   });
 
   $rootScope.$on('Local/UnitSettingUpdated', function(event) {
-    // This need to be done first, to update unitName
-    // updateAll do it, but async, later.
-    var config = configService.getSync().wallet.settings;
-    self.unitName = config.unitName;
-
     self.updateAll();
     self.updateTxHistory();
     self.updateRemotePreferences({
