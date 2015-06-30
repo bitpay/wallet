@@ -1,7 +1,6 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, lodash, go, profileService, configService, isCordova, rateService, storageService, addressService, gettextCatalog, gettext, amMoment) {
-
   var self = this;
   self.isCordova = isCordova;
   self.onGoingProcess = {};
@@ -154,15 +153,55 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   };
 
 
-  self.updatePreferences = function(cb) {
+  self._updateRemotePreferencesFor = function(clients, prefs, cb) {
+    var client = clients.shift();
+
+    if (!client)
+      return cb();
+
+    $log.debug('Saving remote preferences', client.credentials.walletName, prefs);
+    client.savePreferences(prefs, function(err) {
+      if (err) return cb(err);
+
+      self._updateRemotePreferencesFor(clients, prefs, cb);
+    });
+  };
+
+
+  self.updateRemotePreferences = function(opts, cb) {
+    var prefs = opts.preferences || {};
     var fc = profileService.focusedClient;
-    fc.getPreferences(function(err, preferences) {
+
+    // Update this JIC.
+    var config = configService.getSync().wallet.settings;
+    self.unitName = config.unitName;
+
+    //prefs.email  (may come from arguments)
+    prefs.language = self.defaultLanguageIsoCode;
+    prefs.unit = self.unitName;
+
+    var clients = [];
+    if (opts.saveAll) {
+      clients = lodash.values(profileService.walletClients);
+    } else {
+      clients = [fc];
+    };
+
+    self._updateRemotePreferencesFor(clients, prefs, function(err) {
       if (err) {
         self.handleError(err);
         return cb(err);
       }
-      self.preferences = preferences;
-      return cb(err, preferences);
+      if (!fc) return cb();
+
+      fc.getPreferences(function(err, preferences) {
+        if (err) {
+          self.handleError(err);
+          return cb(err);
+        }
+        self.preferences = preferences;
+        return cb();
+      });
     });
   };
 
@@ -211,12 +250,15 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
       $log.debug('Updating Status:', fc, tries);
       get(function(err, walletStatus) {
-        var currentStatusHash = _walletStatusHash(walletStatus); 
-        $log.debug('Status update. hash:' + currentStatusHash + ' Try:'+ tries); 
+        var currentStatusHash = _walletStatusHash(walletStatus);
+        $log.debug('Status update. hash:' + currentStatusHash + ' Try:' + tries);
         if (!err && opts.untilItChanges && initStatusHash == currentStatusHash && tries < 7) {
           return $timeout(function() {
             $log.debug('Retrying update... Try:' + tries)
-            return self.updateAll({walletStatus: null, untilItChanges: true}, initStatusHash, ++tries);
+            return self.updateAll({
+              walletStatus: null,
+              untilItChanges: true
+            }, initStatusHash, ++tries);
           }, 1400 * tries);
         }
         if (!opts.quiet)
@@ -340,7 +382,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
           return;
         }
         $log.debug('Wallet Opened');
-        self.updateAll(lodash.isObject(walletStatus) ? {walletStatus: walletStatus} : null);
+        self.updateAll(lodash.isObject(walletStatus) ? {
+          walletStatus: walletStatus
+        } : null);
         $rootScope.$apply();
       });
     });
@@ -466,8 +510,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.alternativeIsoCode = config.alternativeIsoCode;
 
     // Check address
-    addressService.isUsed(self.walletId, balance.byAddress, function(err, used){
-      if (used)  {
+    addressService.isUsed(self.walletId, balance.byAddress, function(err, used) {
+      if (used) {
         $log.debug('Address used. Creating new');
         $rootScope.$emit('Local/NeedNewAddress');
       }
@@ -571,40 +615,27 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     });
   };
 
-  self.setDefaultLanguage = function(setLang) {
-    var userLang;
-    if (!setLang) {
-      userLang = configService.getSync().wallet.settings.defaultLanguage;
-      if (!userLang) {
-        // Auto-detect browser language
-        var androidLang;
+  self.setUxLanguage = function() {
+    var userLang = configService.getSync().wallet.settings.defaultLanguage;
+    if (!userLang) {
+      // Auto-detect browser language
+      var androidLang;
 
-        if (navigator && navigator.userAgent && (androidLang = navigator.userAgent.match(/android.*\W(\w\w)-(\w\w)\W/i))) {
-          userLang = androidLang[1];
-        } else {
-          // works for iOS and Android 4.x
-          userLang = navigator.userLanguage || navigator.language;
-        }
-        userLang = userLang ? (userLang.split('-', 1)[0] || 'en') : 'en';
+      if (navigator && navigator.userAgent && (androidLang = navigator.userAgent.match(/android.*\W(\w\w)-(\w\w)\W/i))) {
+        userLang = androidLang[1];
+      } else {
+        // works for iOS and Android 4.x
+        userLang = navigator.userLanguage || navigator.language;
       }
-      if (userLang != gettextCatalog.getCurrentLanguage()) {
-        $log.debug('Setting default language: ' + userLang);
-        gettextCatalog.setCurrentLanguage(userLang);
-        amMoment.changeLocale(userLang);
-      }
-    } else {
-      configService.set({
-        wallet: {
-          settings: {
-            defaultLanguage: setLang
-          }
-        }
-      }, function() {
-        gettextCatalog.setCurrentLanguage(setLang);
-        amMoment.changeLocale(setLang);
-      });
+      userLang = userLang ? (userLang.split('-', 1)[0] || 'en') : 'en';
     }
-    self.defaultLanguageIsoCode = setLang || userLang;
+    if (userLang != gettextCatalog.getCurrentLanguage()) {
+      $log.debug('Setting default language: ' + userLang);
+      gettextCatalog.setCurrentLanguage(userLang);
+      amMoment.changeLocale(userLang);
+    }
+
+    self.defaultLanguageIsoCode = userLang;
     self.defaultLanguageName = lodash.result(lodash.find(self.availableLanguages, {
       'isoCode': self.defaultLanguageIsoCode
     }), 'name');
@@ -625,14 +656,47 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     });
   });
 
+  $rootScope.$on('Local/ProfileBound', function() {
+    storageService.getRemotePrefsStoredFlag(function(err, val) {
+      if (err || val) return;
+      self.updateRemotePreferences({
+        saveAll: true
+      }, function() {
+        $log.debug('Remote preferences saved')
+        storageService.setRemotePrefsStoredFlag(function() {});
+      });
+    });
+  });
+
+  $rootScope.$on('Local/NewFocusedWallet', function() {
+    self.setUxLanguage();
+  });
+
+  $rootScope.$on('Local/LanguageSettingUpdated', function() {
+    self.setUxLanguage();
+    self.updateRemotePreferences({
+      saveAll: true
+    }, function() {
+      $log.debug('Remote preferences saved')
+    });
+  });
+
   $rootScope.$on('Local/UnitSettingUpdated', function(event) {
     self.updateAll();
     self.updateTxHistory();
+    self.updateRemotePreferences({
+      saveAll: true
+    }, function() {
+      $log.debug('Remote preferences saved')
+    });
   });
 
-
-  $rootScope.$on('Local/EmailUpdated', function(event, cb) {
-    self.updatePreferences(cb);
+  $rootScope.$on('Local/EmailSettingUpdated', function(event, email, cb) {
+    self.updateRemotePreferences({
+      preferences: {
+        email: email
+      },
+    }, cb);
   });
 
   $rootScope.$on('Local/BWSUpdated', function(event) {
@@ -646,7 +710,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   });
 
   self.debouncedUpdate = lodash.throttle(function() {
-    self.updateAll({quiet: true});
+    self.updateAll({
+      quiet: true
+    });
     self.updateTxHistory();
   }, 4000, {
     leading: false,
@@ -708,10 +774,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     });
   });
 
-  $rootScope.$on('Local/DefaultLanguage', function(event, setLang) {
-    self.setDefaultLanguage(setLang);
-  });
-
   $rootScope.$on('NewIncomingTx', function() {
     self.updateBalance();
     $timeout(function() {
@@ -720,14 +782,20 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   });
 
   $rootScope.$on('NewOutgoingTx', function() {
-    self.updateAll({walletStatus: null, untilItChanges: true});
+    self.updateAll({
+      walletStatus: null,
+      untilItChanges: true
+    });
   });
 
   lodash.each(['NewTxProposal', 'TxProposalFinallyRejected', 'TxProposalRemoved',
     'Local/NewTxProposal', 'Local/TxProposalAction', 'ScanFinished'
   ], function(eventName) {
     $rootScope.$on(eventName, function(event, untilItChanges) {
-      self.updateAll({walletStatus: null, untilItChanges: untilItChanges});
+      self.updateAll({
+        walletStatus: null,
+        untilItChanges: untilItChanges
+      });
       $timeout(function() {
         self.updateTxHistory();
       }, 3000);
@@ -772,7 +840,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         storageService.removeCleanAndScanAddresses(function() {});
       }
     });
-    
+
   });
 
   $rootScope.$on('Local/SetTab', function(event, tab, reset) {
