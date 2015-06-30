@@ -55,6 +55,10 @@ msgstr "Dirección"
 msgid "Advanced"
 msgstr "Avanzado"
 
+#: public/views/disclaimer.html
+msgid "Agree"
+msgstr "Aceptar"
+
 #: public/views/preferencesAlias.html
 msgid "Alias for <i>{{index.walletName}}</i>"
 msgstr "Alias de <i>{{index.walletName}}</i>"
@@ -178,9 +182,13 @@ msgstr "Verifique su conexión e inténtelo nuevamente"
 msgid "Choose a backup file from your computer"
 msgstr "Seleccione el archivo backup de su computadora"
 
+#: public/views/modals/wallets.html
+msgid "Choose a wallet to send funds"
+msgstr "Seleccione un monedero para enviar fondos"
+
 #: public/views/includes/topbar.html public/views/modals/copayers.html
 #: public/views/modals/customized-amount.html public/views/modals/paypro.html
-#: public/views/modals/scanner.html
+#: public/views/modals/scanner.html public/views/modals/wallets.html
 msgid "Close"
 msgstr "Cerrar"
 
@@ -441,6 +449,10 @@ msgstr "Generar código QR"
 #: public/views/walletHome.html
 msgid "Generate new address"
 msgstr "Generar nueva dirección"
+
+#: public/views/modals/wallets.html
+msgid "Getting address for wallet {{selectedWalletName}} ..."
+msgstr "Obteniendo direcciones para el monedero {{selectedWalletName}} ..."
 
 #: public/views/preferences.html
 msgid "Global settings"
@@ -743,10 +755,6 @@ msgstr "Escáner QR"
 msgid "Receive"
 msgstr "Recibir"
 
-#: public/views/walletHome.html public/views/modals/customized-amount.html
-msgid "Receive a customized amount"
-msgstr "Recibir un monto personalizado"
-
 #: public/views/walletHome.html
 msgid "Received"
 msgstr "Recibido"
@@ -778,6 +786,10 @@ msgstr "Información de la versión"
 #: public/views/backup.html public/views/includes/password.html
 msgid "Repeat password"
 msgstr "Repite la contraseña"
+
+#: public/views/walletHome.html public/views/modals/customized-amount.html
+msgid "Request a specific amount"
+msgstr "Solicitar una cantidad específica"
 
 #: public/views/import.html public/views/join.html
 msgid "Required"
@@ -1068,6 +1080,10 @@ msgstr ""
 msgid "The wallet \"{{walletName}}\" was deleted"
 msgstr "El monedero \"{{walletName}}\" fue eliminado"
 
+#: public/views/paymentUri.html
+msgid "There are no wallets to make this payment"
+msgstr "No dispone de monederos para realizar este pago"
+
 #: src/js/controllers/import.js
 msgid "There is an error in the form"
 msgstr "Hay un error en el formulario"
@@ -1221,10 +1237,6 @@ msgstr "Contraseña de tu perfil"
 msgid "Your wallet has been imported correctly"
 msgstr "Su monedero se ha importado correctamente"
 
-#: public/views/preferencesFee.html
-msgid "bits per kB"
-msgstr "bits por kB"
-
 #: public/views/preferencesEmail.html
 msgid "email for wallet notifications"
 msgstr "email para recibir notificaciones"
@@ -1250,6 +1262,10 @@ msgstr "configuración"
 msgid "too long!"
 msgstr "¡demasiado largo!"
 
+#: public/views/preferencesFee.html
+msgid "{{fee.value}} bits per kB"
+msgstr "{{fee.value}} bits por kB"
+
 #: src/js/controllers/walletHome.js
 msgid "{{fee}} will be discounted for bitcoin networking fees"
 msgstr "{{fee}} se descontarán de los costos de la red bitcoin"
@@ -1261,6 +1277,9 @@ msgid ""
 msgstr ""
 "{{len}} monederos importados. Escáner de fondos en progreso. Espere a ver el "
 "balance actualizado"
+
+#~ msgid "Receive a customized amount"
+#~ msgstr "Recibir un monto personalizado"
 
 #~ msgid ""
 #~ "* Only payment proposals created by yourself with no peer actions can be "
@@ -1437,9 +1456,6 @@ msgstr ""
 
 #~ msgid "Note:"
 #~ msgstr "Nota:"
-
-#~ msgid "Select a wallet to make the payment"
-#~ msgstr "Seleccione monedero para realizar el pago"
 
 #~ msgid "Skip"
 #~ msgstr "Omitir"
