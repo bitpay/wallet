@@ -429,14 +429,52 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     var config = configService.getSync().wallet.settings;
     self.pendingTxProposalsCountForUs = 0;
     lodash.each(txps, function(tx) {
-      var amount = tx.amount * self.satToUnit;
-      tx.amountStr = profileService.formatAmount(tx.amount) + ' ' + config.unitName;
+      // gregg hack test data
+      if (!tx.outputs) {
+        tx.outputs = [
+          { toAddress: '2MzCXF7QW4ArgiwDTh12qU3ymWNZzNsrbLo', amount: 123456, message: 'Bitography, Inc.' },
+          { toAddress: '2N9JWQkJxbpbW6M4sVaz2Yvn4yczTZgZZh6', amount:  76543, message: 'Chipotle @ Buckhead' },
+          { toAddress: '2NFvpdtduhJzQaJcsx3Hf1oJ1U4ouUfLiFG', amount: 543210, message: 'Grand Decentral' }
+        ];
+      }
+      // gregg hack test data
+
+      function formatAmount(obj) {
+        var amount = obj.amount * self.satToUnit;
+        obj.amountStr = profileService.formatAmount(obj.amount) + ' ' + config.unitName;
+        obj.alternativeAmount = rateService.toFiat(obj.amount, config.alternativeIsoCode) ? rateService.toFiat(obj.amount, config.alternativeIsoCode).toFixed(2) : 'N/A';
+        obj.alternativeAmountStr = obj.alternativeAmount + " " + config.alternativeIsoCode;
+      };
+
+      if (tx.outputs) {
+        if (tx.outputs.length === 1) {
+          tx.amount = tx.outputs[0].amount;
+          tx.toAddress = tx.outputs[0].toAddress;
+          tx.message += (' ' + tx.outputs[0].message);
+          delete tx.outputs;
+        } else {
+          tx.amount = lodash.reduce(tx.outputs, function(total, o) {
+            return total + o.amount;
+          }, 0);
+          var cumAmount = 0;
+          var cumPercent = 0;
+          var sorted = lodash.sortBy(tx.outputs, function(o) {
+            return -1 * o.amount; // descending order
+          });
+          tx.outputs = lodash.transform(sorted, function(outputs, o) {
+            cumAmount += o.amount;
+            cumPercent += 100 * (o.amount / tx.amount);
+            o.cumAmount = cumAmount;
+            o.cumPercent = cumPercent;
+            formatAmount(o);
+            outputs.push(o);
+          }, []);
+        }
+      }
+      formatAmount(tx);
+
       tx.feeStr = profileService.formatAmount(tx.fee) + ' ' + config.unitName;
-      tx.alternativeAmount = rateService.toFiat(tx.amount, config.alternativeIsoCode) ? rateService.toFiat(tx.amount, config.alternativeIsoCode).toFixed(2) : 'N/A';
-      tx.alternativeAmountStr = tx.alternativeAmount + " " + config.alternativeIsoCode;
       tx.alternativeIsoCode = config.alternativeIsoCode;
-
-
 
       var action = lodash.find(tx.actions, {
         copayerId: self.copayerId
