@@ -16,7 +16,8 @@
   <ul class="no-bullet size-14 m0">
     <li class="line-b p10 oh" ng-click="copyAddress(tx.toAddress)">
       <span class="text-gray" translate>To</span>:
-      <span class="right enable_text_select">{{tx.toAddress}}</span>
+      <span class="right" translate ng-if="tx.outputs">See details below</span>
+      <span class="right enable_text_select" ng-if="!tx.outputs">{{tx.toAddress}}</span>
     </li>
     <li class="line-b p10">
       <span class="text-gray" translate>Amount</span>:
@@ -145,6 +146,12 @@
       <i class="fi-trash size-14 m5r"></i>
       <span translate>Delete Payment Proposal</span>
     </button>
+  </div>
+
+  <div ng-if="tx.outputs">
+    <div ng-repeat="output in tx.outputs"
+      ng-include="'views/includes/output.html'">
+    </div>
   </div>
 
   <div class="extra-margin-bottom"></div>

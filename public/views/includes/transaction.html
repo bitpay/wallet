@@ -16,8 +16,16 @@
           <span ng-show="tx.merchant.pr.ca"><i class="fi-lock"></i> {{tx.merchant.domain}}</span>
           <span ng-show="!tx.merchant.pr.ca"><i class="fi-unlock"></i> {{tx.merchant.domain}}</span>
         </span>
-        <contact address="{{tx.toAddress}}" ng-hide="tx.merchant"> </contact>
-        {{tx.toAddress}}
+        <span ng-if="tx.outputs">
+          {{tx.outputs[0].toAddress.substring(0, 16)+'...'}}
+          <span translate>and </span>
+          {{tx.outputs.length - 1}}
+          <span translate> more</span>
+        </span>
+        <span ng-if="!tx.outputs">
+          <contact address="{{tx.toAddress}}" ng-hide="tx.merchant"> </contact>
+          {{tx.toAddress}}
+        </span>
       </div>
       <div class="ellipsis text-gray size-14">
         {{tx.message}}
