@@ -175,11 +175,10 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
     // Update this JIC.
     var config = configService.getSync().wallet.settings;
-    self.unitName = config.unitName;
 
     //prefs.email  (may come from arguments)
     prefs.language = self.defaultLanguageIsoCode;
-    prefs.unit = self.unitName.toLowerCase();
+    prefs.unit = config.unitCode;
 
     var clients = [];
     if (opts.saveAll) {
