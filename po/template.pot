@@ -122,6 +122,10 @@ msgstr ""
 msgid "Bitcoin address"
 msgstr ""
 
+#: public/views/preferencesFee.html
+msgid "Bitcoin transactions may include a fee collected by miners on the network. The higher the fee, the greater the incentive a miner has to include that transaction in a block. The ‘Emergency’ level should only be used when there is a network congestion."
+msgstr ""
+
 #: public/views/modals/txp-details.html
 msgid "Broadcast Payment"
 msgstr ""
@@ -358,6 +362,10 @@ msgstr ""
 
 #: public/views/preferences.html
 msgid "Email Notifications"
+msgstr ""
+
+#: src/js/controllers/preferencesFee.js
+msgid "Emergency"
 msgstr ""
 
 #: public/views/preferences.html
