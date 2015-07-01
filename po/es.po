@@ -137,6 +137,18 @@ msgstr "¡Bitcoin URI no es válida!"
 msgid "Bitcoin address"
 msgstr "Dirección bitcoin"
 
+#: public/views/preferencesFee.html
+msgid ""
+"Bitcoin transactions may include a fee collected by miners on the network. "
+"The higher the fee, the greater the incentive a miner has to include that "
+"transaction in a block. The ‘Emergency’ level should only be used when there "
+"is a network congestion."
+msgstr ""
+"Las transacciones de Bitcoin pueden incluir una tasa que es recaudada por "
+"los mineros de la red. Cuanto mayor sea la tasa, mayor será el incentivo de "
+"los mineros para incluir esa transacción en un bloque. El nivel 'Emergencia' "
+"debe ser utilizado solo cuando hay una congestión en la red."
+
 #: public/views/modals/txp-details.html
 msgid "Broadcast Payment"
 msgstr "Emitir Pago"
@@ -380,6 +392,10 @@ msgstr "Económico"
 #: public/views/preferences.html
 msgid "Email Notifications"
 msgstr "Notificaciones por Email"
+
+#: src/js/controllers/preferencesFee.js
+msgid "Emergency"
+msgstr "Emergencia"
 
 #: public/views/preferences.html
 msgid "Encrypt Private Key"
