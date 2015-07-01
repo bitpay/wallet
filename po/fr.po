@@ -130,6 +130,10 @@ msgstr "L'URI Bitcoin n'est pas valide !"
 msgid "Bitcoin address"
 msgstr "Adresse Bitcoin"
 
+#: public/views/preferencesFee.html
+msgid "Bitcoin transactions may include a fee collected by miners on the network. The higher the fee, the greater the incentive a miner has to include that transaction in a block. The ‘Emergency’ level should only be used when there is a network congestion."
+msgstr "Les transactions Bitcoin peuvent inclure des frais collectés par les mineurs du réseau. Plus les frais sont élevés, et plus l'incitation à inclure une transaction dans un bloc est importante pour les mineurs. La priorité "Urgente" ne devrait être utilisée que lorsque le réseau présente une congestion."
+
 #: public/views/modals/txp-details.html
 msgid "Broadcast Payment"
 msgstr "Diffuser le paiement"
@@ -367,6 +371,10 @@ msgstr "Économique"
 #: public/views/preferences.html
 msgid "Email Notifications"
 msgstr "Notifications e-mail"
+
+#: src/js/controllers/preferencesFee.js
+msgid "Emergency"
+msgstr "Urgente"
 
 #: public/views/preferences.html
 msgid "Encrypt Private Key"
