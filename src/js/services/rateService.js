@@ -45,7 +45,7 @@ RateService.prototype._fetchCurrencies = function() {
   var self = this;
 
   var backoffSeconds = 5;
-  var updateFrequencySeconds = 3600;
+  var updateFrequencySeconds = 5 * 60;
   var rateServiceUrl = 'https://bitpay.com/api/rates';
 
   var retrieve = function() {
