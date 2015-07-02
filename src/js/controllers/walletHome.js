@@ -364,6 +364,20 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
         self.copyAddress(addr);
       };
 
+      $scope.expand = function(list) {
+        if (list && list.length && list[list.length - 1].summary) {
+          var lastItem = list.pop();
+          if (lastItem.summary.length === 0) return;
+          var nextItem = lastItem.summary.shift();
+          lastItem[list.accumulator] -= nextItem[list.accumulator];
+          list.push(nextItem);
+          if (lastItem.summary.length) {
+            list.transform(lastItem, lastItem[list.accumulator]);
+            list.push(lastItem);
+          }
+        }
+      };
+
       $scope.cancel = function() {
         $modalInstance.dismiss('cancel');
       };

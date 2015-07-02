@@ -431,16 +431,21 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     lodash.each(txps, function(tx) {
       // gregg hack test data
       if (!tx.outputs) {
-        tx.outputs = [
-          { toAddress: '2MzCXF7QW4ArgiwDTh12qU3ymWNZzNsrbLo', amount: 123456, message: 'Bitography, Inc.' },
-          { toAddress: '2N9JWQkJxbpbW6M4sVaz2Yvn4yczTZgZZh6', amount:  76543, message: 'Chipotle @ Buckhead' },
-          { toAddress: '2NFvpdtduhJzQaJcsx3Hf1oJ1U4ouUfLiFG', amount: 543210, message: 'Grand Decentral' }
-        ];
+        var maxCount = 5;
+        var notes = [ 'bitography.co', 'Chipotle @ Buckhead', 'Decentralus Maximus', 'Everyday Deals', 'FinTech Solutions'];
+        var addrs = [ '2MzCXF7QW4ArgiwDTh12qU3ymWNZzNsrbLo', '2N9JWQkJxbpbW6M4sVaz2Yvn4yczTZgZZh6', '2NFvpdtduhJzQaJcsx3Hf1oJ1U4ouUfLiFG'];
+        tx.outputs = [];
+        for (var i = 0; i < maxCount; i++) {
+          tx.outputs.push({
+            toAddress: addrs[Math.round(Math.random() * addrs.length) % addrs.length],
+            amount: 100 * Math.round(Math.random() * Math.pow(10, (i % 5) + 2)) + 1,
+            message: notes[Math.round(Math.random() * notes.length) % notes.length]
+          });
+        }
       }
       // gregg hack test data
 
-      function formatAmount(obj) {
-        var amount = obj.amount * self.satToUnit;
+      function formatAmount(obj, amount) {
         obj.amountStr = profileService.formatAmount(obj.amount) + ' ' + config.unitName;
         obj.alternativeAmount = rateService.toFiat(obj.amount, config.alternativeIsoCode) ? rateService.toFiat(obj.amount, config.alternativeIsoCode).toFixed(2) : 'N/A';
         obj.alternativeAmountStr = obj.alternativeAmount + " " + config.alternativeIsoCode;
@@ -454,24 +459,24 @@ angular.module('copayApp.controllers').controller('indexController', function($r
           delete tx.outputs;
         } else {
           tx.amount = lodash.reduce(tx.outputs, function(total, o) {
+            formatAmount(o, o.amount * self.satToUnit);
             return total + o.amount;
           }, 0);
-          var cumAmount = 0;
-          var cumPercent = 0;
-          var sorted = lodash.sortBy(tx.outputs, function(o) {
+          var summary = lodash.sortBy(tx.outputs, function(o) {
             return -1 * o.amount; // descending order
           });
-          tx.outputs = lodash.transform(sorted, function(outputs, o) {
-            cumAmount += o.amount;
-            cumPercent += 100 * (o.amount / tx.amount);
-            o.cumAmount = cumAmount;
-            o.cumPercent = cumPercent;
-            formatAmount(o);
-            outputs.push(o);
-          }, []);
+          tx.outputs = [{
+            amount: tx.amount,
+            message: tx.message,
+            summary: summary
+          }];
+          tx.outputs[0].parent = tx.outputs;
+          tx.outputs.transform = formatAmount;
+          tx.outputs.accumulator = 'amount';
+          formatAmount(tx.outputs[0], tx.amount * self.satToUnit);
         }
       }
-      formatAmount(tx);
+      formatAmount(tx, tx.amount * self.satToUnit);
 
       tx.feeStr = profileService.formatAmount(tx.fee) + ' ' + config.unitName;
       tx.alternativeIsoCode = config.alternativeIsoCode;
