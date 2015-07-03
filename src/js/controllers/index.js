@@ -535,6 +535,76 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     }
   };
 
+  this.csvHistory = function() {
+
+    function formatDate(date) {
+      var dateObj = new Date(date);
+      if (!dateObj) {
+        log.error('Error formating a date');
+        return 'DateError'
+      }
+      if (!dateObj.toJSON()) {
+        return '';
+      }
+
+      return dateObj.toJSON().substring(0, 10);
+    }
+
+    function formatString(str) {
+      if (!str) return '';
+
+      if (str.indexOf('"') !== -1) {
+        //replace all
+        str = str.replace(new RegExp('"', 'g'), '\'');
+      }
+
+      //escaping commas
+      str = '\"' + str + '\"';
+
+      return str;
+    }
+
+    if (isCordova) {
+      log.info('Not available on mobile');
+      return;
+    }
+    var fc = profileService.focusedClient;
+    if (!fc.isComplete()) return;
+    var self = this;
+    $log.debug('Generating CSV from History');
+    self.setOngoingProcess('generatingCSV', true);
+    $timeout(function() {
+      fc.getTxHistory({
+        skip: 0,
+        limit: 1000000000
+      }, function(err, txs) {
+        self.setOngoingProcess('generatingCSV', false);
+        if (err) {
+          $log.debug('TxHistory ERROR:', err);
+        } else {
+          $log.debug('Wallet Transaction History:', txs);
+
+          self.satToUnit = 1 / self.unitToSatoshi;
+          var data = txs;
+          var filename = "copay_history.csv";
+          var csvContent = "data:text/csv;charset=utf-8,";
+          csvContent += "Date,Amount (" + self.unitName + "),Action,AddressTo,Comment\n";
+
+          data.forEach(function(it, index) {
+            var dataString = formatDate(it.time * 1000) + ',' + strip(it.amount * self.satToUnit) + ',' + it.action + ',' + formatString(it.addressTo) + ',' + formatString(it.message);
+            csvContent += index < data.length ? dataString + "\n" : dataString;
+          });
+
+          var encodedUri = encodeURI(csvContent);
+          var link = document.createElement("a");
+          link.setAttribute("href", encodedUri);
+          link.setAttribute("download", filename);
+          link.click();
+        }
+        $rootScope.$apply();
+      });
+    });
+  };
 
   self.clientError = function(err) {
     if (isCordova) {

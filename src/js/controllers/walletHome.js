@@ -1054,7 +1054,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       if (confirmed) 
         self._doSendAll(amount);
     });
-  }
+  }; 
 
   /* Start setup */
 
