@@ -445,7 +445,7 @@
           </div>
         </div>
       </div>
-      <div ng-show="index.txHistory[0]" class="scroll">
+      <div ng-show="index.txHistory[0]" class="scroll oh">
         <div ng-repeat="btx in index.txHistory"
           ng-click="home.openTxModal(btx)"
           class="row collapse last-transactions-content">
@@ -494,6 +494,12 @@
             <div class="rect5"></div>
           </div>
         </div>
+      </div>
+      <div class="m20t text-center">
+        <a class="text-gray" ng-click="index.csvHistory();">
+          <i class="fi-page-export-csv"></i> 
+          <span translate>Download CSV file</span>
+        </a>
       </div>
       <div class="extra-margin-bottom"></div>
     </div> <!-- END History -->
