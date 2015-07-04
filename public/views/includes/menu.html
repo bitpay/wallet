@@ -1,5 +1,21 @@
-<div  class="bottom-bar row collapse">
-    <div class="medium-3 small-3 columns text-center bottombar-item" ng-repeat="item in index.menu">
+<div class="bottom-bar second-bottom-bar row collapse animated slideInRight" ng-class="{ 'slideOutRight': !showPlugins }" ng-show="index.menu.length > 6">
+    <div class="medium-{{index.menuItemSize}} small-{{index.menuItemSize}} columns text-center bottombar-item" ng-repeat="item in index.menu | limitTo: 5 - index.menu.length">
+        <a  ng-click="index.setTab(item.link)" ng-class="{'active': index.tab == item.link}" id="menu-{{item.link}}">
+            <i class="size-24 {{item.icon}} db"></i>
+            <div class="size-10 tu">
+                {{item.title|translate}}
+            </div>
+        </a>
+    </div>
+    <div class="medium-{{index.menuItemSize}} small-{{index.menuItemSize}} columns text-center bottombar-item" ng-repeat="n in index.menu | limitTo: 4 - index.menu.length % 6">
+        <a></a>
+    </div>
+
+    <menu-toggle ng-show="index.menu.length > 6"/>
+</div>
+
+<div class="bottom-bar row collapse">
+    <div class="medium-{{index.menuItemSize}} small-{{index.menuItemSize}} columns text-center bottombar-item" ng-repeat="item in index.menu | limitTo: (index.menu.length > 6 ? 5 : 6)">
       <a  ng-click="index.setTab(item.link)" ng-class="{'active': index.tab == item.link}" id="menu-{{item.link}}">
         <i class="size-24 {{item.icon}} db"></i>
         <div class="size-10 tu">
@@ -10,4 +26,12 @@
         </div>
       </a>
     </div>
+
+    <div class="medium-2 small-2 columns text-center bottombar-item" ng-show="index.menu.length == 5">
+        <a></a>
+    </div>
+
+    <menu-toggle ng-show="index.menu.length > 6"/>
 </div>
+
+
