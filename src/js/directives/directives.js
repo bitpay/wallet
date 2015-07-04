@@ -296,4 +296,11 @@ angular.module('copayApp.directives')
         });
       }
     };
+  })
+  .directive('menuToggle', function() {
+    return {
+      restrict: 'E',
+      replace: true,
+      templateUrl: 'views/includes/menu-toggle.html'
+    }
   });
