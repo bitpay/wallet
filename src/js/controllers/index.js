@@ -279,6 +279,12 @@ angular.module('copayApp.controllers').controller('indexController', function($r
           return w.id != self.walletId;
         });;
         $rootScope.$apply();
+
+        if (opts.triggerTxUpdate) {
+          $timeout(function() {
+            self.updateTxHistory();
+          }, 1);
+        }
       });
     });
   };
@@ -771,10 +777,11 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   });
 
   $rootScope.$on('NewIncomingTx', function() {
-    self.updateBalance();
-    $timeout(function() {
-      self.updateTxHistory();
-    }, 5000);
+    self.updateAll({
+      walletStatus: null,
+      untilItChanges: true,
+      triggerTxUpdate: true,
+    });
   });
 
   $rootScope.$on('NewOutgoingTx', function() {
@@ -790,11 +797,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     $rootScope.$on(eventName, function(event, untilItChanges) {
       self.updateAll({
         walletStatus: null,
-        untilItChanges: untilItChanges
+        untilItChanges: untilItChanges,
+        triggerTxUpdate: true,
       });
-      $timeout(function() {
-        self.updateTxHistory();
-      }, 3000);
     });
   });
 
