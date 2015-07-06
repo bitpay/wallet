@@ -787,7 +787,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   $rootScope.$on('NewOutgoingTx', function() {
     self.updateAll({
       walletStatus: null,
-      untilItChanges: true
+      untilItChanges: true,
+      triggerTxUpdate: true,
     });
   });
 
