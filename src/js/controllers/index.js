@@ -547,7 +547,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         return '';
       }
 
-      return dateObj.toJSON().substring(0, 10);
+      return dateObj.toJSON();
     }
 
     function formatString(str) {
@@ -586,12 +586,14 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
           self.satToUnit = 1 / self.unitToSatoshi;
           var data = txs;
+          var satToBtc = 1 / 100000000;
           var filename = "copay_history.csv";
           var csvContent = "data:text/csv;charset=utf-8,";
-          csvContent += "Date,Amount (" + self.unitName + "),Action,AddressTo,Comment\n";
+          csvContent += "Date,Destination,Note,Amount,Currency,Spot Value,Total Value,Tax Type,Category\n";
 
           data.forEach(function(it, index) {
-            var dataString = formatDate(it.time * 1000) + ',' + strip(it.amount * self.satToUnit) + ',' + it.action + ',' + formatString(it.addressTo) + ',' + formatString(it.message);
+            var _amount = (it.action == 'sent' ? '-' : '') + (it.amount * satToBtc).toFixed(8);
+            var dataString = formatDate(it.time * 1000) + ',' + formatString(it.addressTo) + ',' + formatString(it.message) + ',' + _amount + ',BTC,,,,';
             csvContent += index < data.length ? dataString + "\n" : dataString;
           });
 
