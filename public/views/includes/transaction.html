@@ -17,7 +17,7 @@
           <span ng-show="!tx.merchant.pr.ca"><i class="fi-unlock"></i> {{tx.merchant.domain}}</span>
         </span>
         <span ng-if="tx.outputs">
-          <span>{{tx.outputs[0].summary.length}}</span>
+          <span>{{tx.outputs.recipientCount}}</span>
           <span translate>recipients</span>
         </span>
         <span ng-if="!tx.outputs">
