@@ -601,7 +601,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
           self.satToUnit = 1 / self.unitToSatoshi;
           var data = txs;
           var satToBtc = 1 / 100000000;
-          var filename = "copay_history.csv";
+          var filename = 'Copay-' + (self.alias || self.walletName ) + '.csv';
           var csvContent = "data:text/csv;charset=utf-8,";
           csvContent += "Date,Destination,Note,Amount,Currency,Spot Value,Total Value,Tax Type,Category\n";
 
