@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, lodash, go, profileService, configService, isCordova, rateService, storageService, addressService, gettextCatalog, gettext, amMoment) {
+angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, lodash, go, profileService, configService, isCordova, rateService, storageService, addressService, gettextCatalog, gettext, amMoment, nodeWebkit) {
   var self = this;
   self.isCordova = isCordova;
   self.onGoingProcess = {};
@@ -535,6 +535,97 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     }
   };
 
+  this.csvHistory = function() {
+
+    function saveFile(name,data) {
+      var chooser = document.querySelector(name);
+      chooser.addEventListener("change", function(evt) {
+        console.log(this.value); // get your file name
+        var fs = require('fs'); // save it now
+        fs.writeFile(this.value, data, function(err) {
+          if(err) {
+            alert("error"+err);
+          }
+        });
+      }, false);
+      chooser.click();  
+    }
+
+    function formatDate(date) {
+      var dateObj = new Date(date);
+      if (!dateObj) {
+        log.error('Error formating a date');
+        return 'DateError'
+      }
+      if (!dateObj.toJSON()) {
+        return '';
+      }
+
+      return dateObj.toJSON();
+    }
+
+    function formatString(str) {
+      if (!str) return '';
+
+      if (str.indexOf('"') !== -1) {
+        //replace all
+        str = str.replace(new RegExp('"', 'g'), '\'');
+      }
+
+      //escaping commas
+      str = '\"' + str + '\"';
+
+      return str;
+    }
+
+    if (isCordova) {
+      log.info('Not available on mobile');
+      return;
+    }
+    var fc = profileService.focusedClient;
+    if (!fc.isComplete()) return;
+    var self = this;
+    $log.debug('Generating CSV from History');
+    self.setOngoingProcess('generatingCSV', true);
+    $timeout(function() {
+      fc.getTxHistory({
+        skip: 0,
+        limit: 1000000000
+      }, function(err, txs) {
+        self.setOngoingProcess('generatingCSV', false);
+        if (err) {
+          $log.debug('TxHistory ERROR:', err);
+        } else {
+          $log.debug('Wallet Transaction History:', txs);
+
+          self.satToUnit = 1 / self.unitToSatoshi;
+          var data = txs;
+          var satToBtc = 1 / 100000000;
+          var filename = 'Copay-' + (self.alias || self.walletName ) + '.csv';
+          var csvContent = "data:text/csv;charset=utf-8,";
+          csvContent += "Date,Destination,Note,Amount,Currency,Spot Value,Total Value,Tax Type,Category\n";
+
+          data.forEach(function(it, index) {
+            var _amount = (it.action == 'sent' ? '-' : '') + (it.amount * satToBtc).toFixed(8);
+            var dataString = formatDate(it.time * 1000) + ',' + formatString(it.addressTo) + ',' + formatString(it.message) + ',' + _amount + ',BTC,,,,';
+            csvContent += index < data.length ? dataString + "\n" : dataString;
+          });
+
+          if (nodeWebkit.isDefined()) {
+            saveFile('#export_file',csvContent);
+          }
+          else {
+            var encodedUri = encodeURI(csvContent);
+            var link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", filename);
+            link.click();
+          }
+        }
+        $rootScope.$apply();
+      });
+    });
+  };
 
   self.clientError = function(err) {
     if (isCordova) {
