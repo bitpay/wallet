@@ -1,22 +1,23 @@
 <img src="https://raw.githubusercontent.com/bitpay/copay/master/public/img/logo.png" alt="Copay" width="300">
 
 [![Build Status](https://secure.travis-ci.org/bitpay/copay.svg)](http://travis-ci.org/bitpay/copay) 
-[![Coverage Status](https://img.shields.io/coveralls/bitpay/copay.svg)](https://coveralls.io/r/bitpay/copay?branch=master) 
-[![Stories in Ready](https://badge.waffle.io/bitpay/copay.svg?label=in progress&title=In progress)](https://waffle.io/bitpay/copay)
 
 *Copay* is an easy-to-use, open-source, multiplatform, multisignature, secure bitcoin wallet platform for both  individuals and companies. 
 
 *Copay* uses Bitcore-Wallet-Service (https://github.com/bitpay/bitcore-wallet-service) for peer synchronization and bitcore network interfacing. 
 
-## Before you start
+Binary versions of Copay are available for download at [Copay.io](https://copay.io)
 
-Current Copay version is meant to be run on *mobile devices OR desktop application*, NOT browsers.
 
-When running Copay as a web page, and a browser extension is enabled, the browser extension
-could have access to Copay internal data, and compromise the user's private key
-and more.
+# Installation
 
-## Installation
+## Bitcore Wallet Service
+
+Copay depends on  Bitcore Wallet Service (BWS) for blockchain information, networking and copayer synchronization. BWS can be run within minutes or you can use a public instance. Switch between BWS instances is very simple and can be done with a click from Copay. BWS also allows Copay to interoperate with others wallet like Bitcore-Wallet CLI https://github.com/bitpay/bitcore-wallet.  
+
+Alternativelly,  public BWS instances (like `https://bws.bitpay.com`) can be used.
+
+## Copay installation
 
 ```sh
 git clone https://github.com/bitpay/copay.git
@@ -36,85 +37,40 @@ Build *Copay*:
 bower install
 npm install
 grunt
-```
-
-For production environments:
-
-```sh
-grunt prod
-```
-
-Open *Copay*:
-
-```sh
 npm start
 ```
 
 Then visit localhost:3000 in your browser.
 
-## Bitcore Wallet Service
+When running Copay as a web page, and a browser extension is enabled, the browser extension
+could have access to Copay internal data, and compromise the user's private key
+and more.
 
-Copay depends on  Bitcore Wallet Service (BWS) for blockchain information, networking and copayer synchronization. BWS can be run within minutes or you can use a public instance. Switch between BWS instances is very simple and can be done with a click from Copay. BWS also allows Copay to interoperate with others wallet like Bitcore-Wallet CLI https://github.com/bitpay/bitcore-wallet
+## Build Copay App Bundles
 
+## Android
 
-## Tests
+ - Install Android SDK
+ - Run `make android`
 
-Open test/index.html in your browser to test models. Install [mocha](https://www.npmjs.com/package/mocha) and [karma](https://www.npmjs.com/package/karma-cli) to test the services and controllers.
+### iOS
 
-```sh
-npm install mocha
-npm install karma-cli
-```
+ - Install XCode
+ - Run `make ios-prod`
 
-Run all tests:
+### Windows Phone
 
-```sh
-mocha
-karma start
-```
+  - Install Visual Studio 2013 (or newer)
+  - Run `make wp8-prod`
 
-## Troubleshooting
-
-### Building on Ubuntu 14.04, gyp, Python
-
-If you are using Ubuntu and encounter this error (or one similar):
-
-```sh
-gyp_main.py: error: no such option: --no-parallel
-gyp ERR! configure error 
-gyp ERR! stack Error: `gyp` failed with exit code: 2
-```
-
-This is because Ubuntu 14.04 and 14.10 have Python 2.7 installed by default but **gyp** requires Python 2.6. See: (http://stackoverflow.com/questions/21155922/error-installing-node-gyp-on-ubuntu)
-
-One solution to this issue is to use *Copay* with a Python version manager and install 2.6.  For example, if you have pyenv installed:
-
-```sh
-pyenv install 2.6.9
-pyenv global 2.6.9
-```
-# Desktop versions (Windows, OSX, Linux)
+### Desktop versions (Windows, OSX, Linux)
 
 Copay uses NW.js (also know as node-webkit) for its desktop version. NW.js an app runtime based on `Chromium` and `node.js`. 
 
-## Building Copay for OSX, Linux and Windows versions
-
-**Requirements**
-
   - Install NW.js in your system from [nw.js](http://nwjs.io/)
-
-**Builder**
-
   - Run `grunt desktop` (*)
-  - 
   
-## Using a custom hosted BWS and desktop version
-See https://github.com/nwjs/nw.js/issues/679 for SSL self-signed certificate support in desktop apps.
-  
-  
-# Development
-
-## Google Chrome App
+### Google Chrome App
 
 To build *Copay*'s Chrome App, run:
 
@@ -126,39 +82,14 @@ On success, the chrome extension will be located at: `browser-extensions/chrome/
 
 To install it go to `chrome://extensions/` in your Chrome browser and ensure you have the 'developer mode' option enabled in the settings.  Then click on "Load unpacked chrome extension" and choose the directory mentioned above.
 
-## Firefox Add-on
+### Firefox Add-on
 The *Copay* Firefox Extension has been deprecated and is no longer supported.
 
-## Translations
+# Translations
+
 *Copay* uses standart gettext PO files for tranlations. It is currently translated to spanish, japanese, french, german and portuguese thank to community contributions. See https://github.com/bitpay/copay/pull/2880 as an example pull request for adding translations.
 
 Translation Credits: Japanese: @dabura667, French: @kirvx, Portuguese: @pmichelazzo, Spanish: @cmgustavo, German: @saschad. Gracias totales!
-
-
-# QA and Bug Reporting
-
-In the interest of improving bug reporting, for each bug that you find and want to create a ticket about, please refer to a form that contains:
-* A brief description of the bug
-* Steps required to reproduce it
-* The platform in which you are testing
-* Any screenshots, if possible
-* The expected behaviour
-
-For example, a really useful bug report should look like:
-
-```
-Problem: The application fails at login.
-
-To reproduce:
-1. Launch the app with `npm run start`
-2. Click on "Join a Wallet"
-3. Type an nonexistent username
-4. The app stops working and throws an "Unhandled exception" error.
-
-Expected: The app should login to the home screen after clicking login and show no errors.
-
-Platform: Android 4.3, Android 4.4, iOS
-```
 
 # About *Copay*
 
