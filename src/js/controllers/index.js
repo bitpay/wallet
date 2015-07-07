@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, lodash, go, profileService, configService, isCordova, rateService, storageService, addressService, gettextCatalog, gettext, amMoment) {
+angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, lodash, go, profileService, configService, isCordova, rateService, storageService, addressService, gettextCatalog, gettext, amMoment, nodeWebkit) {
   var self = this;
   self.isCordova = isCordova;
   self.onGoingProcess = {};
@@ -537,6 +537,20 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
   this.csvHistory = function() {
 
+    function saveFile(name,data) {
+      var chooser = document.querySelector(name);
+      chooser.addEventListener("change", function(evt) {
+        console.log(this.value); // get your file name
+        var fs = require('fs'); // save it now
+        fs.writeFile(this.value, data, function(err) {
+          if(err) {
+            alert("error"+err);
+          }
+        });
+      }, false);
+      chooser.click();  
+    }
+
     function formatDate(date) {
       var dateObj = new Date(date);
       if (!dateObj) {
@@ -597,11 +611,16 @@ angular.module('copayApp.controllers').controller('indexController', function($r
             csvContent += index < data.length ? dataString + "\n" : dataString;
           });
 
-          var encodedUri = encodeURI(csvContent);
-          var link = document.createElement("a");
-          link.setAttribute("href", encodedUri);
-          link.setAttribute("download", filename);
-          link.click();
+          if (nodeWebkit.isDefined()) {
+            saveFile('#export_file',csvContent);
+          }
+          else {
+            var encodedUri = encodeURI(csvContent);
+            var link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", filename);
+            link.click();
+          }
         }
         $rootScope.$apply();
       });
