@@ -372,8 +372,12 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
           lastItem[list.accumulator] -= nextItem[list.accumulator];
           list.push(nextItem);
           if (lastItem.summary.length) {
-            list.transform(lastItem, lastItem[list.accumulator]);
-            list.push(lastItem);
+            if (lastItem.summary.length === 1) {
+              list.push(lastItem.summary.pop());
+            } else {
+              list.transform(lastItem, lastItem[list.accumulator]);
+              list.push(lastItem);
+            }
           }
         }
       };

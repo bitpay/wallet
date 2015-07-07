@@ -429,22 +429,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     var config = configService.getSync().wallet.settings;
     self.pendingTxProposalsCountForUs = 0;
     lodash.each(txps, function(tx) {
-      // gregg hack test data
-      if (!tx.outputs) {
-        var maxCount = 5;
-        var notes = [ 'bitography.co', 'Chipotle @ Buckhead', 'Decentralus Maximus', 'Everyday Deals', 'FinTech Solutions'];
-        var addrs = [ '2MzCXF7QW4ArgiwDTh12qU3ymWNZzNsrbLo', '2N9JWQkJxbpbW6M4sVaz2Yvn4yczTZgZZh6', '2NFvpdtduhJzQaJcsx3Hf1oJ1U4ouUfLiFG'];
-        tx.outputs = [];
-        for (var i = 0; i < maxCount; i++) {
-          tx.outputs.push({
-            toAddress: addrs[Math.round(Math.random() * addrs.length) % addrs.length],
-            amount: 100 * Math.round(Math.random() * Math.pow(10, (i % 5) + 2)) + 1,
-            message: notes[Math.round(Math.random() * notes.length) % notes.length]
-          });
-        }
-      }
-      // gregg hack test data
-
       function formatAmount(obj, amount) {
         obj.amountStr = profileService.formatAmount(obj.amount) + ' ' + config.unitName;
         obj.alternativeAmount = rateService.toFiat(obj.amount, config.alternativeIsoCode) ? rateService.toFiat(obj.amount, config.alternativeIsoCode).toFixed(2) : 'N/A';
@@ -462,9 +446,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
             formatAmount(o, o.amount * self.satToUnit);
             return total + o.amount;
           }, 0);
-          var summary = lodash.sortBy(tx.outputs, function(o) {
-            return -1 * o.amount; // descending order
-          });
+          var summary = lodash.sortBy(tx.outputs, 'amount').reverse();
           tx.outputs = [{
             amount: tx.amount,
             message: tx.message,
@@ -473,6 +455,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
           tx.outputs[0].parent = tx.outputs;
           tx.outputs.transform = formatAmount;
           tx.outputs.accumulator = 'amount';
+          tx.outputs.recipientCount = summary.length;
           formatAmount(tx.outputs[0], tx.amount * self.satToUnit);
         }
       }
