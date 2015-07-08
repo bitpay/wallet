@@ -30,13 +30,13 @@ Google Play store Release Notes: "What's new"
 --------------------------------
 v1.1.0
 --------------------------------
-QR Code for receiving payments of a specific amount.
-Transfer funds between wallets.
-HTML e-mail notifications.
-Adjustable transaction fees.
-Ability to send all available funds with one button.
-New rules for purging spending proposals.
-Bug fixes for offline functionality.
+QR Codes with specified amount for Receiving Payments
+Fund Transfer Between Wallets
+HTML Email Notifications
+Custom Transaction Fee Settings
+Send Maximum Amount of Funds
+New Spending Proposal Deletion Rules
+Bugs Fixes for Offline Functionality
 --------------------------------
 v1.0.2
 --------------------------------
