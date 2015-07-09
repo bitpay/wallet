@@ -446,7 +446,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
             formatAmount(o, o.amount * self.satToUnit);
             return total + o.amount;
           }, 0);
-          var summary = lodash.sortBy(tx.outputs, 'amount').reverse();
+          var summary = tx.outputs;
           tx.outputs = [{
             amount: tx.amount,
             message: tx.message,

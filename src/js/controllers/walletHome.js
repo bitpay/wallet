@@ -255,6 +255,10 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
         $scope.loading = true;
         $scope.error = null;
         $timeout(function() {
+          lodash.times(
+            txp.outputs ? txp.outputs.recipientCount : 0,
+            function(n) { $scope.expand(txp.outputs); }
+          );
           fc.signTxProposal(txp, function(err, txpsi) {
             profileService.lockFC();
             self.setOngoingProcess();
