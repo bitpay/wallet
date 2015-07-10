@@ -28,6 +28,16 @@ Copay is free and open source software run on non-proprietary servers, so there'
 --------------------------------
 Google Play store Release Notes: "What's new"
 --------------------------------
+v1.1.0
+--------------------------------
+QR Codes with specified amount for Receiving Payments
+Fund Transfer Between Wallets
+HTML Email Notifications
+Custom Transaction Fee Settings
+Send Maximum Amount of Funds
+New Spending Proposal Deletion Rules
+Bugs Fixes for Offline Functionality
+--------------------------------
 v1.0.2
 --------------------------------
 Copay is now out of beta! We've spent eight months testing Copay, and we're production-ready.
