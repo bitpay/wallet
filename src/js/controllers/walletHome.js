@@ -679,6 +679,11 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   this.submitForm = function() {
     var fc = profileService.focusedClient;
     var unitToSat = this.unitToSatoshi;
+    
+    if (isCordova && this.isWindowsPhoneApp) {
+      this.hideAddress = false;
+      this.hideAmount = false;
+    }
 
     var form = $scope.sendForm;
     if (form.$invalid) {
