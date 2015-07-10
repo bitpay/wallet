@@ -543,14 +543,13 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
   this.csvHistory = function() {
 
-    function saveFile(name,data) {
+    function saveFile(name, data) {
       var chooser = document.querySelector(name);
       chooser.addEventListener("change", function(evt) {
-        console.log(this.value); // get your file name
-        var fs = require('fs'); // save it now
+        var fs = require('fs');
         fs.writeFile(this.value, data, function(err) {
-          if(err) {
-            alert("error"+err);
+          if (err) {
+            console.log(err);
           }
         });
       }, false);
@@ -588,6 +587,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       log.info('Not available on mobile');
       return;
     }
+    var isNode = nodeWebkit.isDefined();
     var fc = profileService.focusedClient;
     if (!fc.isComplete()) return;
     var self = this;
@@ -608,17 +608,20 @@ angular.module('copayApp.controllers').controller('indexController', function($r
           var data = txs;
           var satToBtc = 1 / 100000000;
           var filename = 'Copay-' + (self.alias || self.walletName ) + '.csv';
-          var csvContent = "data:text/csv;charset=utf-8,";
-          csvContent += "Date,Destination,Note,Amount,Currency,Spot Value,Total Value,Tax Type,Category\n";
+          var csvContent = '';
+          if (!isNode) csvContent = 'data:text/csv;charset=utf-8,';
+          csvContent += 'Date,Destination,Note,Amount,Currency,Spot Value,Total Value,Tax Type,Category\n';
 
+          var _amount;
+          var dataString;
           data.forEach(function(it, index) {
-            var _amount = (it.action == 'sent' ? '-' : '') + (it.amount * satToBtc).toFixed(8);
-            var dataString = formatDate(it.time * 1000) + ',' + formatString(it.addressTo) + ',' + formatString(it.message) + ',' + _amount + ',BTC,,,,';
+            _amount = (it.action == 'sent' ? '-' : '') + (it.amount * satToBtc).toFixed(8);
+            dataString = formatDate(it.time * 1000) + ',' + formatString(it.addressTo) + ',' + formatString(it.message) + ',' + _amount + ',BTC,,,,';
             csvContent += index < data.length ? dataString + "\n" : dataString;
           });
 
-          if (nodeWebkit.isDefined()) {
-            saveFile('#export_file',csvContent);
+          if (isNode) {
+            saveFile('#export_file', csvContent);
           }
           else {
             var encodedUri = encodeURI(csvContent);
