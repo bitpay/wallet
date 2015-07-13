@@ -745,6 +745,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       profileService.lockFC();
       self.setOngoingProcess();
       if (err) {
+        $log.debug('Sign error:', err);
         err.message = gettext('The payment was created but could not be signed. Please try again from home screen.') + (err.message ? ' ' + err.message : '');
         return cb(err);
       }
@@ -956,22 +957,6 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
   this.getAlternativeIsoCode = function() {
     return this.alternativeIsoCode;
-  };
-
-  this._addRates = function(txs, cb) {
-    if (!txs || txs.length == 0) return cb();
-    var index = lodash.groupBy(txs, 'rateTs');
-
-    rateService.getHistoricRates(config.alternativeIsoCode, lodash.keys(index), function(err, res) {
-      if (err || !res) return cb(err);
-      lodash.each(res, function(r) {
-        lodash.each(index[r.ts], function(tx) {
-          var alternativeAmount = (r.rate != null ? tx.amount * rateService.SAT_TO_BTC * r.rate : null);
-          tx.alternativeAmount = alternativeAmount ? $filter('noFractionNumber')(alternativeAmount, 2) : null;
-        });
-      });
-      return cb();
-    });
   };
 
   this.openTxModal = function(btx) {
