@@ -278,11 +278,14 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         self.walletScanStatus = walletStatus.wallet.scanStatus;
         self.copayers = walletStatus.wallet.copayers;
         self.preferences = walletStatus.preferences;
-        $rootScope.$emit('Local/BalanceUpdated', walletStatus.balance);
         self.setBalance(walletStatus.balance);
         self.otherWallets = lodash.filter(profileService.getWallets(self.network), function(w) {
           return w.id != self.walletId;
         });;
+
+        // Notify external addons or plugins
+        $rootScope.$emit('Local/BalanceUpdated', walletStatus.balance);
+
         $rootScope.$apply();
       });
     });
