@@ -745,6 +745,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       profileService.lockFC();
       self.setOngoingProcess();
       if (err) {
+        $log.debug('Sign error:', err);
         err.message = gettext('The payment was created but could not be signed. Please try again from home screen.') + (err.message ? ' ' + err.message : '');
         return cb(err);
       }
