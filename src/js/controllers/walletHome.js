@@ -959,22 +959,6 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     return this.alternativeIsoCode;
   };
 
-  this._addRates = function(txs, cb) {
-    if (!txs || txs.length == 0) return cb();
-    var index = lodash.groupBy(txs, 'rateTs');
-
-    rateService.getHistoricRates(config.alternativeIsoCode, lodash.keys(index), function(err, res) {
-      if (err || !res) return cb(err);
-      lodash.each(res, function(r) {
-        lodash.each(index[r.ts], function(tx) {
-          var alternativeAmount = (r.rate != null ? tx.amount * rateService.SAT_TO_BTC * r.rate : null);
-          tx.alternativeAmount = alternativeAmount ? $filter('noFractionNumber')(alternativeAmount, 2) : null;
-        });
-      });
-      return cb();
-    });
-  };
-
   this.openTxModal = function(btx) {
     var self = this;
     var fc = profileService.focusedClient;
