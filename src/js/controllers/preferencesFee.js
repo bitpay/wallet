@@ -32,7 +32,6 @@ angular.module('copayApp.controllers').controller('preferencesFeeController',
 
       configService.set(opts, function(err) {
         if (err) console.log(err);
-        $scope.$emit('Local/UnitSettingUpdated');
       });
 
     };

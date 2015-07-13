@@ -253,7 +253,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
             $log.debug('Retrying update... Try:' + tries)
             return self.updateAll({
               walletStatus: null,
-              untilItChanges: true
+              untilItChanges: true,
+              triggerTxUpdate: opts.triggerTxUpdate,
             }, initStatusHash, ++tries);
           }, 1400 * tries);
         }
