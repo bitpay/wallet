@@ -258,15 +258,16 @@
         </div>
         <div class="row m20t">
           <div class="large-12 columns">
-            <button class="button black expand round" ng-click="home.setAddress(true)"
+            <button class="button black expand round m0" ng-click="home.setAddress(true)"
               ng-style="{'background-color':index.backgroundColor}" ng-disabled="home.blockUx || index.isOffline ||home.generatingAddress" translate>
               Generate new address
             </button>
           </div>
         </div>
-        <div class="text-center" ng-show="!home.generatingAddress && home.addr[index.walletId]">
-          <a class="size-12" ng-click="home.openCustomizedAmountModal(home.addr[index.walletId])" translate>
-            Request a specific amount
+        <div class="m20t text-center" ng-show="!home.generatingAddress && home.addr[index.walletId]">
+          <a class="size-12 text-gray" ng-click="home.openCustomizedAmountModal(home.addr[index.walletId])">
+            <i class="fi-bitcoin"></i> 
+            <span translate>Request a specific amount</span>
           </a>
         </div>
       </div>
@@ -445,7 +446,7 @@
           </div>
         </div>
       </div>
-      <div ng-show="index.txHistory[0]" class="scroll oh">
+      <div ng-show="index.txHistory[0]">
         <div ng-repeat="btx in index.txHistory"
           ng-click="home.openTxModal(btx)"
           class="row collapse last-transactions-content">
@@ -480,7 +481,8 @@
             {{btx.message || btx.addressTo}}
           </div>
         </div>
-        <div class="m20t columns text-center" ng-show="index.txHistoryPaging || index.updatingTxHistory">
+        <div class="row m20t text-center" ng-show="index.txHistoryPaging || index.updatingTxHistory">
+          <div class="columns large-12 medium-12 small-12">
           <button class="outline light-gray round small expand m0"
             ng-click="index.updateTxHistory(index.skipHistory)"
             ng-if="!index.updatingTxHistory">
@@ -493,11 +495,12 @@
             <div class="rect4"></div>
             <div class="rect5"></div>
           </div>
+          </div>
         </div>
       </div>
       <div ng-if="!index.isCordova && index.txHistory[0] && !index.updatingTxHistory" class="m20t text-center">
         <input id="export_file" type="file" nwsaveas="Copay-{{index.alias || index.walletName}}.csv" accept=".csv" style="display:none">
-        <a class="text-gray" ng-click="index.csvHistory();">
+        <a class="text-gray size-12" ng-click="index.csvHistory();">
           <i class="fi-page-export-csv"></i> 
           <span translate>Download CSV file</span>
         </a>
