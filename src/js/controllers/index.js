@@ -253,7 +253,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
             $log.debug('Retrying update... Try:' + tries)
             return self.updateAll({
               walletStatus: null,
-              untilItChanges: true
+              untilItChanges: true,
+              triggerTxUpdate: opts.triggerTxUpdate,
             }, initStatusHash, ++tries);
           }, 1400 * tries);
         }
@@ -432,14 +433,15 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   };
 
   self.setTxHistory = function(txs) {
-    var now = new Date();
+    var now = Math.floor(Date.now() / 1000);
     var c = 0;
     self.txHistoryPaging = txs[self.limitHistory] ? true : false;
     lodash.each(txs, function(tx) {
-      tx.ts = tx.minedTs || tx.sentTs;
-      // no future transaction...
-      if (tx.ts > now)
-        ts.ts = now;
+
+      // no future transactions...
+      if (tx.time > now)
+        tx.time = now;
+
       tx.rateTs = Math.floor((tx.ts || now) / 1000);
       tx.amountStr = profileService.formatAmount(tx.amount); //$filter('noFractionNumber')(
       if (c < self.limitHistory) {
