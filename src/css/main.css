@@ -50,9 +50,10 @@ h4.title {
 }
 
 h4.title a {
+  display: block;
   text-transform: none;
   font-weight: 400;
-  padding: 7px;
+  margin: 7px;
   font-size: 12px;
 }
 
