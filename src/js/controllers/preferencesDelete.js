@@ -35,7 +35,7 @@ angular.module('copayApp.controllers').controller('preferencesDeleteWalletContro
     var _deleteWallet = function() {
       var fc = profileService.focusedClient;
       var name = fc.credentials.walletName;
-      var walletName = name + (fc.alias ? ' (' + fc.alias + ')' : '' );
+      var walletName = (fc.alias||'') + ' [' + name + ']';
       var self = this;
 
       profileService.deleteWalletFC({}, function(err) {
