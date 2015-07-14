@@ -1,14 +1,14 @@
-<div 
-  class="topbar-container" 
+<div
+  class="topbar-container"
   ng-include="'views/includes/topbar.html'"
-  ng-init="titleSection='Copayers'">
+  ng-init="">
 </div>
 
 <div class="content p20v" ng-controller="copayersController as copayers" ng-init="copayers.init()">
   <div ng-show="!index.notAuthorized">
     <div class="row m10t text-center">
       <div class="large-12 columns">
-        <h1 translate>Share this invitation with your copayers</h1> 
+        <h1 translate>Share this invitation with your copayers</h1>
       </div>
     </div>
 
@@ -21,9 +21,9 @@
       </div>
     </div>
     <div class="text-center m10t" ng-if="index.isCordova">
-      <span class="button outline dark-gray tiny" 
+      <span class="button outline round dark-gray tiny"
         ng-click="copayers.shareSecret(index.walletSecret)">
-        <i class="fi-share"></i> 
+        <i class="fi-share"></i>
         <span translate>Share invitation</span>
       </span>
     </div>
@@ -31,7 +31,7 @@
       <span translate>Waiting for copayers</span>
       <span class="text-gray right">
         [ {{index.m}} <span translate>of</span> {{index.n}} ]
-      </span> 
+      </span>
     </h4>
     <div class="p10 line-b" ng-include="'views/includes/copayers.html'"></div>
     <div ng-if="!index.isComplete" class="p10 line-b m20b">
@@ -48,7 +48,7 @@
         <h1 translate>Wallet incomplete and broken</h1>
         <h4 translate>Delete it and create a new one</h4>
       </div>
-      <button class="small warning expand" ng-click="copayers.deleteWallet()">
+      <button class="small warning expand round" ng-click="copayers.deleteWallet()">
         <i class="fi-trash"></i> <span translate>Cancel</span>
       </button>
     </div>
@@ -58,4 +58,3 @@
 
 
 <div class="extra-margin-bottom"></div>
-

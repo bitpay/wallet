@@ -14,37 +14,40 @@ msgstr ""
 
 #: public/views/modals/txp-details.html
 msgid ""
-"* Only transactions created by yourself with no peer signatures can be "
-"removed"
+"* A payment proposal can be deleted if 1) you are the creator, and no other "
+"copayer has signed, or 2) 24 hours have passed since the proposal was "
+"created."
 msgstr ""
-"* Solo transacciones creadas por Usted mismo y sin firmar, pueden ser "
-"eliminadas"
+"* Una propuesta de pago puede ser eliminada si 1) Ud. es el creador, y "
+"ningún otro copayer la ha firmado, o 2) han transcurrido 24 horas desde la "
+"creación de la propuesta."
 
 #: public/views/backup.html
 msgid ""
-"* You can safely install your backup on other device and use your wallet "
-"from many devices at the same time."
+"* You can safely install your backup on another device and use your wallet "
+"from multiple devices at the same time."
 msgstr ""
 "* Usted puede instalar la copia de seguridad en otro dispositivo y usar el "
 "monedero al mismo tiempo en varios dispositivos."
 
-#: public/views/splash/1.html
+#: public/views/splash.html
 msgid "A multisignature bitcoin wallet"
 msgstr "Monedero multifirma de bitcoin"
-
-#: src/js/services/notificationsService.js
-msgid "A transaction was finally rejected"
-msgstr "Transacción finalmente rechazada"
 
 #: public/views/preferences.html
 msgid "About Copay"
 msgstr "Acerca de Copay"
 
+#: public/views/modals/txp-details.html
+msgid "Accept"
+msgstr "Aceptar"
+
 #: public/views/includes/sidebar.html
 msgid "Add wallet"
 msgstr "Agregar monedero"
 
-#: public/views/paymentUri.html public/views/modals/paypro.html
+#: public/views/paymentUri.html public/views/modals/customized-amount.html
+#: public/views/modals/paypro.html
 msgid "Address"
 msgstr "Dirección"
 
@@ -52,16 +55,29 @@ msgstr "Dirección"
 msgid "Advanced"
 msgstr "Avanzado"
 
+#: public/views/disclaimer.html
+msgid "Agree"
+msgstr "Aceptar"
+
+#: public/views/preferencesAlias.html
+msgid "Alias for <i>{{index.walletName}}</i>"
+msgstr "Alias de <i>{{index.walletName}}</i>"
+
+#: public/views/splash.html
+msgid "Already have a wallet?"
+msgstr "¿Ya dispone de un monedero?"
+
 #: public/views/preferences.html
 msgid "Alternative Currency"
 msgstr "Moneda Alternativa"
 
 #: public/views/paymentUri.html public/views/walletHome.html
+#: public/views/modals/customized-amount.html
 #: public/views/modals/txp-details.html
 msgid "Amount"
 msgstr "Importe"
 
-#: public/views/walletHome.html
+#: public/views/walletHome.html public/views/modals/customized-amount.html
 msgid "Amount in"
 msgstr "Importe en"
 
@@ -76,6 +92,10 @@ msgstr "¿Estas seguro de borrar este monedero?"
 #: public/views/walletHome.html
 msgid "Available Balance"
 msgstr "Balance disponible"
+
+#: public/views/create.html public/views/join.html
+msgid "BIP32 master extended private key"
+msgstr "BIP32 master extended private key"
 
 #: public/views/includes/topbar.html public/views/modals/tx-details.html
 #: public/views/modals/txp-details.html
@@ -105,6 +125,10 @@ msgstr ""
 "Antes de recibir fondos, es altamente recomendable realizar una copia de "
 "seguridad."
 
+#: public/views/preferences.html
+msgid "Bitcoin Network Fee Policy"
+msgstr "Política de Costo de la Red Bitcoin"
+
 #: public/views/paymentUri.html
 msgid "Bitcoin URI is NOT valid!"
 msgstr "¡Bitcoin URI no es válida!"
@@ -113,13 +137,29 @@ msgstr "¡Bitcoin URI no es válida!"
 msgid "Bitcoin address"
 msgstr "Dirección bitcoin"
 
+#: public/views/preferencesFee.html
+msgid ""
+"Bitcoin transactions may include a fee collected by miners on the network. "
+"The higher the fee, the greater the incentive a miner has to include that "
+"transaction in a block. The ‘Emergency’ level should only be used when there "
+"is a network congestion."
+msgstr ""
+"Las transacciones de Bitcoin pueden incluir una tasa que es recaudada por "
+"los mineros de la red. Cuanto mayor sea la tasa, mayor será el incentivo de "
+"los mineros para incluir esa transacción en un bloque. El nivel 'Emergencia' "
+"debe ser utilizado solo cuando hay una congestión en la red."
+
 #: public/views/modals/txp-details.html
-msgid "Broadcast Transaction"
-msgstr "Emitir Transacción"
+msgid "Broadcast Payment"
+msgstr "Emitir Pago"
+
+#: src/js/controllers/walletHome.js
+msgid "Broadcasting Payment"
+msgstr "Emitiendo el Pago"
 
 #: src/js/controllers/walletHome.js
 msgid "Broadcasting transaction"
-msgstr "Emitiendo la transacción"
+msgstr "Emitiendo transacción"
 
 #: public/views/unsupported.html
 msgid "Browser unsupported"
@@ -141,12 +181,26 @@ msgstr "Cancelar"
 msgid "Certified by"
 msgstr "Certificado por"
 
+#: public/views/preferencesAlias.html
+msgid "Changing wallet alias only affects the local wallet name."
+msgstr ""
+"Cambiar el alias del monedero solo afecta al nombre del monedero local."
+
+#: src/js/controllers/walletHome.js
+msgid "Check you connection and try again"
+msgstr "Verifique su conexión e inténtelo nuevamente"
+
 #: public/views/import.html
-msgid "Choose backup file from your computer"
+msgid "Choose a backup file from your computer"
 msgstr "Seleccione el archivo backup de su computadora"
 
+#: public/views/modals/wallets.html
+msgid "Choose a wallet to send funds"
+msgstr "Seleccione un monedero para enviar fondos"
+
 #: public/views/includes/topbar.html public/views/modals/copayers.html
-#: public/views/modals/paypro.html public/views/modals/scanner.html
+#: public/views/modals/customized-amount.html public/views/modals/paypro.html
+#: public/views/modals/scanner.html public/views/modals/wallets.html
 msgid "Close"
 msgstr "Cerrar"
 
@@ -167,21 +221,28 @@ msgid "Copayers"
 msgstr "Copayers"
 
 #: public/views/backup.html
-msgid "Copy backup in a safe place"
+msgid "Copy backup to a safe place"
 msgstr "Guardar copia de seguridad en un lugar seguro"
 
 #: public/views/backup.html
-msgid "Copy this text as it is in a safe place (notepad or email)"
+msgid "Copy this text as it is to a safe place (notepad or email)"
 msgstr ""
-"Copiar el texto como esta en un lugar seguro (notepad o correo electrónico)"
+"Copiar el texto como esta en un lugar seguro (bloc de notas o correo "
+"electrónico)"
 
 #: public/views/backup.html
 msgid "Copy to clipboard"
 msgstr "Copiar al portapapeles"
 
 #: src/js/controllers/walletHome.js
-msgid "Could not broadcast transaction. Please try again."
-msgstr "No se pudo emitir la transacción. Por favor, intente nuevamente."
+msgid "Could not accept payment. Check you connection and try again"
+msgstr ""
+"No se pudo aceptar el pago. Verifique su conexión e inténtelo nuevamente"
+
+#: src/js/controllers/walletHome.js
+msgid "Could not broadcast payment. Check you connection and try again"
+msgstr ""
+"No se pudo emitir el pago. Verifique su conexión e inténtelo nuevamente"
 
 #: src/js/controllers/walletHome.js
 msgid ""
@@ -190,6 +251,15 @@ msgid ""
 msgstr ""
 "No se pudo conectar con Wallet Service. Verifique la conexión a internet y "
 "la configuración a Wallet Service."
+
+#: src/js/controllers/walletHome.js
+msgid "Could not create address. Check you connection and try again"
+msgstr ""
+"No se pudo crear la dirección. Verifique su conexión e inténtelo nuevamente"
+
+#: src/js/controllers/walletHome.js
+msgid "Could not create payment proposal"
+msgstr "No se pudo crear la propuesta de pago"
 
 #: src/js/services/profileService.js
 msgid "Could not create using the specified extended private key"
@@ -200,8 +270,10 @@ msgid "Could not decrypt file, check your password"
 msgstr "No se pudo desencriptar el archivo, verifique su contraseña"
 
 #: src/js/controllers/walletHome.js
-msgid "Could not delete transaction. Please try again."
-msgstr "No se pudo borrar la transacción. Por favor, intente nuevamente."
+msgid "Could not delete payment proposal. Check you connection and try again"
+msgstr ""
+"No se pudo eliminar la propuesta de pago. Verifique su conexión e inténtelo "
+"nuevamente"
 
 #: src/js/controllers/walletHome.js
 msgid "Could not fetch payment information"
@@ -224,28 +296,29 @@ msgid "Could not join wallet:"
 msgstr "No se pudo unir al monedero:"
 
 #: src/js/controllers/walletHome.js
-msgid "Could not reject transaction. Please try again."
-msgstr "No se pudo rechazar la transacción. Por favor, intente nuevamente."
+msgid "Could not reject payment. Check you connection and try again"
+msgstr ""
+"No se pudo rechazar el pago. Verifique su conexión e inténtelo nuevamente"
 
 #: src/js/controllers/walletHome.js
-msgid "Could not send transaction. Please try again."
-msgstr "No se pudo enviar la transacción. Por favor, intente nuevamente."
-
-#: src/js/controllers/walletHome.js
-msgid "Could not sign transaction. Please try again."
-msgstr "No se pudo firmar la transacción. Por favor, intente nuevamente."
+msgid "Could not send payment"
+msgstr "No se pudo enviar el pago"
 
 #: public/views/walletHome.html
 msgid "Could not update Wallet"
 msgstr "No se puede actualizar el monedero"
 
-#: public/views/create.html public/views/walletHome.html
+#: public/views/walletHome.html
 msgid "Create"
 msgstr "Crear"
 
-#: public/views/add.html
+#: public/views/add.html public/views/create.html
 msgid "Create new wallet"
 msgstr "Crear nuevo monedero"
+
+#: public/views/create.html
+msgid "Create {{requiredCopayers}}-of-{{totalCopayers}} wallet"
+msgstr "Crea monedero {{requiredCopayers}}-de-{{totalCopayers}}"
 
 #: public/views/includes/sidebar.html
 msgid "Create, join or import"
@@ -255,7 +328,11 @@ msgstr "Crear, unirse o importar"
 msgid "Created by"
 msgstr "Creado por"
 
-#: public/views/create.html public/views/splash/1.html
+#: public/views/splash.html
+msgid "Creating Profile..."
+msgstr "Creando el Perfil..."
+
+#: public/views/create.html
 msgid "Creating Wallet..."
 msgstr "Creando Monedero..."
 
@@ -266,6 +343,10 @@ msgstr "Creando transacción"
 #: public/views/modals/tx-details.html
 msgid "Date"
 msgstr "Fecha"
+
+#: public/views/modals/txp-details.html
+msgid "Delete Payment Proposal"
+msgstr "Eliminar Propuesta de Pago"
 
 #: public/views/preferencesAdvanced.html
 msgid "Delete Wallet"
@@ -280,8 +361,21 @@ msgid "Delete wallet"
 msgstr "Eliminar monedero"
 
 #: src/js/controllers/walletHome.js
-msgid "Deleting transaction"
-msgstr "Eliminando transacción"
+msgid "Deleting payment"
+msgstr "Eliminando el Pago"
+
+#: public/views/modals/customized-amount.html public/views/modals/paypro.html
+#: public/views/modals/tx-details.html public/views/modals/txp-details.html
+msgid "Details"
+msgstr "Detalles"
+
+#: src/js/controllers/index.js
+msgid "Deutsch"
+msgstr "Alemán"
+
+#: public/views/preferences.html
+msgid "Disabled"
+msgstr "Deshabilitado"
 
 #: public/views/backup.html
 msgid "Download backup"
@@ -290,6 +384,18 @@ msgstr "Descargar copia de seguridad"
 #: public/views/includes/password.html
 msgid "ENTER"
 msgstr "ENTRAR"
+
+#: src/js/controllers/preferencesFee.js
+msgid "Economy"
+msgstr "Económico"
+
+#: public/views/preferences.html
+msgid "Email Notifications"
+msgstr "Notificaciones por Email"
+
+#: src/js/controllers/preferencesFee.js
+msgid "Emergency"
+msgstr "Emergencia"
 
 #: public/views/preferences.html
 msgid "Encrypt Private Key"
@@ -331,6 +437,10 @@ msgstr "Falló al importar monederos"
 msgid "Family vacation funds"
 msgstr "Fondos para vacaciones en familia"
 
+#: public/views/modals/txp-details.html
+msgid "Fee"
+msgstr "Costo"
+
 #. Get information of payment if using Payment Protocol
 #: src/js/controllers/walletHome.js
 msgid "Fetching Payment Information"
@@ -344,21 +454,37 @@ msgstr "Francés"
 msgid "Funds received"
 msgstr "Fondos Recibidos"
 
-#: public/views/splash/1.html
+#: public/views/splash.html
 msgid "GET STARTED"
 msgstr "COMENZAR"
+
+#: public/views/modals/customized-amount.html
+msgid "Generate QR Code"
+msgstr "Generar código QR"
 
 #: public/views/walletHome.html
 msgid "Generate new address"
 msgstr "Generar nueva dirección"
 
+#: public/views/modals/wallets.html
+msgid "Getting address for wallet {{selectedWalletName}} ..."
+msgstr "Obteniendo direcciones para el monedero {{selectedWalletName}} ..."
+
 #: public/views/preferences.html
 msgid "Global settings"
 msgstr "Opciones globales"
 
+#: public/views/disclaimer.html
+msgid "Go back"
+msgstr "Volver"
+
+#: public/views/import.html
+msgid "Have a Backup from Copay v0.9?"
+msgstr "¿Tiene una copia de seguridad de Copay v0.9?"
+
 #: public/views/create.html public/views/join.html
-msgid "Hide"
-msgstr "Ocultar"
+msgid "Hide Advanced options"
+msgstr "Ocultar opciones avanzadas"
 
 #: src/js/controllers/index.js
 msgid "History"
@@ -368,11 +494,11 @@ msgstr "Historial"
 msgid "Home"
 msgstr "Inicio"
 
-#: public/views/create.html
-msgid "If not given, a random key will be generated"
-msgstr "Si no se ingresa, una clave aleatoria será generada"
+#: public/views/disclaimer.html
+msgid "I affirm that I have read, understood, and agree with these terms."
+msgstr "Confirmo haber leído, entendido y aceptado estos términos."
 
-#: public/views/join.html
+#: public/views/create.html public/views/join.html
 msgid "If not given, a secure key will be generated"
 msgstr "Si no se ingresa, una clave segura será generada"
 
@@ -380,17 +506,17 @@ msgstr "Si no se ingresa, una clave segura será generada"
 msgid "Import"
 msgstr "Importar"
 
-#: public/views/import.html
+#: public/views/import.html public/views/splash.html
 msgid "Import backup"
 msgstr "Importar copia de seguridad"
-
-#: public/views/add.html
-msgid "Import from Copay Beta 0.9"
-msgstr "Importar de Copay Beta 0.9"
 
 #: public/views/importLegacy.html
 msgid "Import from the Cloud?"
 msgstr "¿Importar de la Nube?"
+
+#: public/views/import.html
+msgid "Import here"
+msgstr "Importar aquí"
 
 #: public/views/add.html
 msgid "Import wallet"
@@ -403,10 +529,6 @@ msgstr "Importando monedero..."
 #: public/views/importLegacy.html
 msgid "Importing..."
 msgstr "Importando..."
-
-#: public/views/modals/tx-details.html public/views/modals/txp-details.html
-msgid "Information"
-msgstr "Información"
 
 #: src/js/controllers/index.js
 msgid "Japanese"
@@ -440,7 +562,7 @@ msgstr "Más detalles para migrar Monedero"
 msgid "Make a payment to"
 msgstr "Hacer un pago a"
 
-#: public/views/create.html
+#: public/views/create.html public/views/join.html
 msgid "Master extended private key"
 msgstr "Master extended private key"
 
@@ -449,7 +571,11 @@ msgstr "Master extended private key"
 msgid "Me"
 msgstr "Yo"
 
-#: public/views/modals/paypro.html public/views/modals/tx-details.html
+#: public/views/modals/paypro.html
+msgid "Memo"
+msgstr "Nota"
+
+#: public/views/modals/tx-details.html
 msgid "Merchant message"
 msgstr "Mensaje del negocio"
 
@@ -478,8 +604,8 @@ msgid "Network"
 msgstr "Red"
 
 #: src/js/services/notificationsService.js
-msgid "New Transaction"
-msgstr "Nueva Transacción"
+msgid "New Payment Proposal"
+msgstr "Nueva Propuesta de Pago"
 
 #: public/views/modals/confirmation.html
 msgid "No"
@@ -489,7 +615,11 @@ msgstr "No"
 msgid "No transactions yet"
 msgstr "Sin transacciones todavía"
 
-#: public/views/walletHome.html
+#: src/js/controllers/preferencesFee.js
+msgid "Normal"
+msgstr "Normal"
+
+#: public/views/walletHome.html public/views/modals/customized-amount.html
 msgid "Not valid"
 msgstr "No válido"
 
@@ -501,6 +631,10 @@ msgstr "Nota"
 #: public/views/modals/tx-status.html
 msgid "OKAY"
 msgstr "LISTO"
+
+#: public/views/modals/tx-details.html public/views/modals/txp-details.html
+msgid "Participants"
+msgstr "Participantes"
 
 #: public/views/import.html public/views/importLegacy.html
 msgid "Password"
@@ -520,40 +654,88 @@ msgstr "Contraseña requerida"
 msgid "Passwords do not match"
 msgstr "Las contraseñas no coinciden"
 
-#: public/views/import.html
-msgid "Paste backup plain text code"
-msgstr "Pegar copia de seguridad en texto plano"
-
 #: public/views/join.html
 msgid "Paste invitation here"
 msgstr "Pegar invitación aquí"
 
-#: src/js/controllers/walletHome.js
-msgid "Payment Protocol not supported on Chrome App"
-msgstr "El protocolo de pagos no está soportado en Chrome"
+#: public/views/import.html
+msgid "Paste the backup plain text code"
+msgstr "Pegar copia de seguridad en texto plano"
+
+#: public/views/modals/paypro.html
+msgid "Pay To"
+msgstr "Pagar A"
 
 #: public/views/modals/tx-status.html
+msgid "Payment Accepted"
+msgstr "El Pago fue Aceptado"
+
+#: public/views/modals/txp-details.html
+msgid "Payment Proposal"
+msgstr "Propuesta de Pago"
+
+#: public/views/modals/tx-status.html
+msgid "Payment Proposal Created"
+msgstr "Propuesta de Pago Creada"
+
+#: src/js/services/notificationsService.js
+msgid "Payment Proposal Rejected"
+msgstr "Propuesta de Pago Rechazada"
+
+#: src/js/services/notificationsService.js
+msgid "Payment Proposal Rejected by Copayer"
+msgstr "Propuesta de Pago Rechazada por Copayer"
+
+#: src/js/services/notificationsService.js
+msgid "Payment Proposal Signed by Copayer"
+msgstr "Propuesta de Pago Firmada por Copayer"
+
+#: public/views/walletHome.html
+msgid "Payment Proposals"
+msgstr "Propuestas de Pago"
+
+#: src/js/controllers/walletHome.js
+msgid "Payment Protocol not supported on Chrome App"
+msgstr "El protocolo de pago no está soportado en Chrome"
+
+#: public/views/modals/tx-status.html
+msgid "Payment Rejected"
+msgstr "El pago fue rechazado"
+
+#: public/views/modals/tx-status.html src/js/services/notificationsService.js
 msgid "Payment Sent"
 msgstr "Pago Enviado"
+
+#: public/views/modals/txp-details.html
+msgid "Payment accepted..."
+msgstr "El pago aceptado..."
 
 #: public/views/modals/txp-details.html
 msgid "Payment details"
 msgstr "Detalles del pago"
 
+#: public/views/modals/txp-details.html
+msgid "Payment finally rejected"
+msgstr "El pago fue finalmente rechazado"
+
 #: public/views/modals/paypro.html
-msgid "Payment protocol request"
+msgid "Payment request"
 msgstr "Solicitud de pago"
+
+#: public/views/modals/txp-details.html
+msgid "Payment sent!"
+msgstr "¡Pago enviado!"
 
 #: public/views/walletHome.html
 msgid "Payment to"
 msgstr "Pago a"
 
 #: public/views/preferencesDeleteWallet.html
-msgid "Permanently delete this wallet. THIS ACTION CANNONT BE REVERSED"
+msgid "Permanently delete this wallet. THIS ACTION CANNOT BE REVERSED"
 msgstr ""
 "Borrar permanentemente este monedero. ESTA ACCIÓN NO PUEDE SER REVERTIDA"
 
-#: public/views/walletHome.html
+#: public/views/create.html
 msgid "Personal Wallet"
 msgstr "Monedero Personal"
 
@@ -565,9 +747,25 @@ msgstr "Por favor ingrese los campos requeridos"
 msgid "Please, select your backup file"
 msgstr "Por favor, selecciona el archivo de copia de seguridad"
 
+#: src/js/controllers/index.js
+msgid "Portuguese"
+msgstr "Portugués"
+
 #: public/views/walletHome.html
 msgid "Preferences"
 msgstr "Preferencias"
+
+#: src/js/controllers/preferencesFee.js
+msgid "Priority"
+msgstr "Prioritario"
+
+#: public/views/modals/customized-amount.html
+msgid "QR Code"
+msgstr "Código QR"
+
+#: public/views/modals/scanner.html
+msgid "QR-Scanner"
+msgstr "Escáner QR"
 
 #: src/js/controllers/index.js
 msgid "Receive"
@@ -594,26 +792,26 @@ msgid "Reject"
 msgstr "Rechazar"
 
 #: src/js/controllers/walletHome.js
-msgid "Rejecting transaction"
-msgstr "Rechazando transacción"
+msgid "Rejecting payment"
+msgstr "Rechazando pago"
 
 #: public/views/preferencesAbout.html
 msgid "Release Information"
 msgstr "Información de la versión"
 
-#: public/views/modals/txp-details.html
-msgid "Remove transaction"
-msgstr "Elimine la transacción"
-
 #: public/views/backup.html public/views/includes/password.html
 msgid "Repeat password"
 msgstr "Repite la contraseña"
+
+#: public/views/walletHome.html public/views/modals/customized-amount.html
+msgid "Request a specific amount"
+msgstr "Solicitar una cantidad específica"
 
 #: public/views/import.html public/views/join.html
 msgid "Required"
 msgstr "Requerido"
 
-#: public/views/splash/1.html
+#: public/views/splash.html
 msgid "Retrying..."
 msgstr "Reintentando..."
 
@@ -625,9 +823,14 @@ msgstr "ESTABLECER"
 msgid "SKIP BACKUP"
 msgstr "OMITIR"
 
-#: public/views/preferencesBwsUrl.html
+#: public/views/preferencesAlias.html public/views/preferencesBwsUrl.html
+#: public/views/preferencesEmail.html
 msgid "Save"
 msgstr "Guardar"
+
+#: public/views/preferencesEmail.html
+msgid "Saving preferences..."
+msgstr "Guardando preferencias..."
 
 #: src/js/services/notificationsService.js
 msgid "Scan Finished"
@@ -658,8 +861,8 @@ msgid "Select a wallet"
 msgstr "Seleccione un monedero"
 
 #: public/views/create.html
-msgid "Select required signatures"
-msgstr "Seleccione las firmas requeridas"
+msgid "Select required number of signatures"
+msgstr "Seleccione el número de firmas requeridas"
 
 #: public/views/create.html
 msgid "Select total number of copayers"
@@ -669,6 +872,10 @@ msgstr "Seleccione el total de copayers"
 #: src/js/controllers/index.js
 msgid "Send"
 msgstr "Enviar"
+
+#: public/views/walletHome.html
+msgid "Send All"
+msgstr "Enviar Todo"
 
 #: public/views/backup.html public/views/preferencesLogs.html
 msgid "Send by email"
@@ -694,6 +901,17 @@ msgstr "Establecer contraseña para tu copia de seguridad"
 msgid "Set up a password"
 msgstr "Configure una contraseña"
 
+#: public/views/preferencesEmail.html
+msgid ""
+"Setting up email notifications could weaken your privacy, if the wallet "
+"service provider is compromised. Information available to an attacker would "
+"include your wallet addresses and its balance, but no more."
+msgstr ""
+"Configurar notificaciones por correo electrónico podría debilitar su "
+"privacidad, si el proveedor de servicio se ve comprometido. Información "
+"disponible para un atacante incluiría sus direcciones de cartera y su "
+"balance, pero no más."
+
 #: public/views/walletHome.html
 msgid "Share address"
 msgstr "Compartir dirección"
@@ -708,23 +926,23 @@ msgstr "Comparta esta invitación con sus copayers"
 
 #: public/views/walletHome.html
 msgid ""
-"Share this with anyone to have them send you payments. To protect your "
-"privacy, new addresses are generated automatically once you use them."
+"Share this wallet address to receive payments. To protect your privacy, new "
+"addresses are generated automatically once you use them."
 msgstr ""
-"Compartir esto para que le envíen los pagos. Para proteger tu privacidad, "
-"nuevas direcciones se generan automáticamente una vez que los usas."
+"Compartir esta dirección para recibir pagos. Para proteger su privacidad, se "
+"generan nuevas direcciones automáticamente luego de recibir un pago."
+
+#: public/views/create.html
+msgid "Shared Wallet"
+msgstr "Monedero Compartido"
 
 #: public/views/create.html public/views/join.html
-msgid "Show"
-msgstr "Mostrar"
+msgid "Show Advanced options"
+msgstr "Mostrar opciones avanzadas"
 
-#: public/views/modals/txp-details.html
-msgid "Sign"
-msgstr "Firmar"
-
-#: public/views/modals/tx-details.html public/views/modals/txp-details.html
-msgid "Signatures"
-msgstr "Firmas"
+#: src/js/controllers/walletHome.js
+msgid "Signing payment"
+msgstr "Firmando el pago"
 
 #: src/js/controllers/walletHome.js
 msgid "Signing transaction"
@@ -733,10 +951,6 @@ msgstr "Firmando transacción"
 #: src/js/controllers/index.js
 msgid "Spanish"
 msgstr "Español"
-
-#: public/views/walletHome.html
-msgid "Spend proposals"
-msgstr "Propuestas de gastos"
 
 #: src/js/controllers/copayers.js src/js/controllers/import.js
 #: src/js/controllers/preferencesDelete.js
@@ -747,25 +961,148 @@ msgstr "Listo"
 msgid "Tap to retry"
 msgstr "Toque para reintentar"
 
+#: public/views/disclaimer.html public/views/preferencesAbout.html
+msgid "Terms of Use"
+msgstr "Términos de Uso"
+
+#: public/views/create.html
+msgid "Testnet"
+msgstr "Testnet"
+
+#: src/js/controllers/walletHome.js
+msgid ""
+"The payment was created but could not be completed. Please try again from "
+"home screen"
+msgstr ""
+"El pago fue creado pero no se pudo completar. Por favor intente nuevamente "
+"desde la pantalla de inicio."
+
+#: src/js/controllers/walletHome.js
+msgid ""
+"The payment was created but could not be signed. Please try again from home "
+"screen."
+msgstr ""
+"El pago fue creado pero no pudo ser firmado. Por favor intente nuevamente "
+"desde la pantalla de inicio."
+
 #: public/views/modals/txp-details.html
-msgid "The transaction was removed by creator"
-msgstr "La transacción fue eliminada por el creado"
+msgid "The payment was removed by creator"
+msgstr "El pago fue eliminado por el creador"
+
+#: src/js/controllers/walletHome.js
+msgid ""
+"The payment was signed but could not be broadcasted. Please try again from "
+"home screen."
+msgstr ""
+"El pago fue firmado pero no pudo ser enviado. Por favor intente nuevamente "
+"desde la pantalla de inicio."
+
+#: public/views/backup.html
+msgid ""
+"The private key for this wallet is encrypted. Exporting a backup will keep "
+"the private key encrypted in the backup archive."
+msgstr ""
+"Este monedero tiene sus claves privadas encriptadas. Exportar una copia de "
+"seguridad mantendrá la clave privada encriptada en la copia de seguridad."
+
+#: public/views/disclaimer.html
+msgid ""
+"The software you are about to use functions as a free, open source, and "
+"multi-signature digital wallet. The software does not constitute an account "
+"where BitPay or other third parties serve as financial intermediaries or "
+"custodians of your bitcoin.  While the software has undergone beta testing "
+"and continues to be improved by feedback from the open-source user and "
+"developer community, we cannot guarantee that there will be no bugs in the "
+"software. You acknowledge that your use of this software is at your own "
+"discretion and in compliance with all applicable laws. You are responsible "
+"for safekeeping your passwords, private key pairs, PINs and any other codes "
+"you use to access the software. IF YOU LOSE ACCESS TO YOUR COPAY WALLET OR "
+"YOUR ENCRYPTED PRIVATE KEYS AND YOU HAVE NOT SEPARATELY STORED A BACKUP OF "
+"YOUR WALLET AND CORRESPONDING PASSWORD, YOU ACKNOWLEDGE AND AGREE THAT ANY "
+"BITCOIN YOU HAVE ASSOCIATED WITH THAT COPAY  WALLET WILL BECOME "
+"INACCESSIBLE. All transaction requests are irreversible.  The authors of the "
+"software, employees and affiliates of Bitpay, copyright holders, and BitPay, "
+"Inc. cannot retrieve your private keys or passwords if you lose or forget "
+"them and cannot guarantee transaction confirmation as they do not have "
+"control over the Bitcoin network. To the fullest extent permitted by law, "
+"this software is provided “as is” and no representations or warranties can "
+"be made of any kind, express or implied, including but not limited to the "
+"warranties of merchantability, fitness or a particular purpose and "
+"noninfringement. You assume any and all risks associated with the use of the "
+"software. In no event shall the authors of the software, employees and "
+"affiliates of Bitpay, copyright holders, or BitPay, Inc. be held liable for "
+"any claim, damages or other liability, whether in an action of contract, "
+"tort, or otherwise, arising from, out of or in connection with the software. "
+"We reserve the right to modify this disclaimer from time to time."
+msgstr ""
+"El software que va a utilizar es un monedero digital de código abierto y "
+"multi-firmas. El software no constituye una cuenta donde BitPay u otras "
+"terceras partes sirven como intermediarios financieros o custodios de su "
+"bitcoin. Mientras que el software ha sido objeto de pruebas beta y continúa "
+"siendo mejorada por los comentarios de los usuarios de código abierto y la "
+"comunidad de desarrolladores, no podemos garantizar que no habrá errores en "
+"el software. Usted reconoce que el uso de este software es bajo tu propia "
+"responsabilidad y en cumplimiento con todas las leyes aplicables. Usted es "
+"responsable de la custodia de sus contraseñas, pares de claves privadas, PIN "
+"y cualquier otro código que se utiliza para acceder al software. SI UD. "
+"PIERDE ACCESO A SU MONEDERO COPAY O A SUS CLAVES PRIVADAS ENCRIPTADAS Y NO "
+"HA GUARDADO POR SEPARADO UNA COPIA DE SEGURIDAD DE SU MONEDERO Y CONTRASEÑA "
+"CORRESPONDIENTES, USTED RECONOCE Y ACEPTA QUE CUALQUIER BITCOIN QUE HA "
+"ASOCIADO CON ESE MONEDERO COPAY SERÁ INACCESIBLE. Todas las solicitudes de "
+"transacción son irreversibles. Los autores de los software, empleados y "
+"afiliados de Bitpay, los titulares de derechos de autor, y BitPay, Inc. no "
+"pueden recuperar sus claves privadas o contraseñas si se pierde o se olvida "
+"de ellos y no se puede garantizar la confirmación de la transacción, ya que "
+"no tienen control sobre la red Bitcoin. En la máxima medida permitida por la "
+"ley, este software se proporciona \"tal cual\" y no asume la responsabilidad "
+"ni ofrece garantías de ningún tipo, expresa o implícita, incluyendo, pero no "
+"limitado a las garantías comerciales, de conveniencia o a un propósito "
+"particular. Usted asume todos los riesgos asociados con el uso del software. "
+"En ningún caso los autores, empleados y afiliados de Bitpay, los titulares "
+"de derechos de autor, o BitPay, Inc. serán declarados responsables de los "
+"reclamos, daños o cualquier otra responsabilidad, ya sea en una acción de "
+"contrato, agravio o de otra manera, que surja fuera de la conexión con el "
+"software. Nos reservamos el derecho a modificar el presente aviso legal de "
+"vez en cuando.<br><br>The software you are about to use functions as a free, "
+"open source, and multi-signature digital wallet. The software does not "
+"constitute an account where BitPay or other third parties serve as financial "
+"intermediaries or custodians of your bitcoin.  While the software has "
+"undergone beta testing and continues to be improved by feedback from the "
+"open-source user and developer community, we cannot guarantee that there "
+"will be no bugs in the software. You acknowledge that your use of this "
+"software is at your own discretion and in compliance with all applicable "
+"laws. You are responsible for safekeeping your passwords, private key pairs, "
+"PINs and any other codes you use to access the software. IF YOU LOSE ACCESS "
+"TO YOUR COPAY WALLET OR YOUR ENCRYPTED PRIVATE KEYS AND YOU HAVE NOT "
+"SEPARATELY STORED A BACKUP OF YOUR WALLET AND CORRESPONDING PASSWORD, YOU "
+"ACKNOWLEDGE AND AGREE THAT ANY BITCOIN YOU HAVE ASSOCIATED WITH THAT COPAY  "
+"WALLET WILL BECOME INACCESSIBLE. All transaction requests are irreversible.  "
+"The authors of the software, employees and affiliates of Bitpay, copyright "
+"holders, and BitPay, Inc. cannot retrieve your private keys or passwords if "
+"you lose or forget them and cannot guarantee transaction confirmation as "
+"they do not have control over the Bitcoin network. To the fullest extent "
+"permitted by law, this software is provided “as is” and no representations "
+"or warranties can be made of any kind, express or implied, including but not "
+"limited to the warranties of merchantability, fitness or a particular "
+"purpose and noninfringement. You assume any and all risks associated with "
+"the use of the software. In no event shall the authors of the software, "
+"employees and affiliates of Bitpay, copyright holders, or BitPay, Inc. be "
+"held liable for any claim, damages or other liability, whether in an action "
+"of contract, tort, or otherwise, arising from, out of or in connection with "
+"the software. We reserve the right to modify this disclaimer from time to "
+"time."
 
 #: src/js/controllers/copayers.js src/js/controllers/preferencesDelete.js
 msgid "The wallet \"{{walletName}}\" was deleted"
 msgstr "El monedero \"{{walletName}}\" fue eliminado"
 
+#: public/views/paymentUri.html
+msgid "There are no wallets to make this payment"
+msgstr "No dispone de monederos para realizar este pago"
+
 #: src/js/controllers/import.js
 msgid "There is an error in the form"
-msgstr "Hubo un error en el formulario"
-
-#: public/views/backup.html
-msgid ""
-"This wallet have its private key encrypted. Exporting a backup will keep the "
-"private key encrypted on the backup."
-msgstr ""
-"Este monedero tiene sus claves privadas encriptadas. Exportar una copia de "
-"seguridad mantendrá la clave privada encriptada en la misma."
+msgstr "Hay un error en el formulario"
 
 #: public/views/walletHome.html
 msgid ""
@@ -780,8 +1117,7 @@ msgid "Time"
 msgstr "Hora"
 
 #: public/views/walletHome.html public/views/includes/transaction.html
-#: public/views/modals/paypro.html public/views/modals/tx-details.html
-#: public/views/modals/txp-details.html
+#: public/views/modals/tx-details.html public/views/modals/txp-details.html
 msgid "To"
 msgstr "Para"
 
@@ -792,54 +1128,6 @@ msgstr "Balance total bloqueado"
 #: public/views/modals/tx-details.html
 msgid "Transaction"
 msgstr "Transacción"
-
-#: src/js/services/notificationsService.js
-msgid "Transaction Rejected"
-msgstr "Transacción Rechazada"
-
-#: src/js/services/notificationsService.js
-msgid "Transaction Sent"
-msgstr "Transacción Enviada"
-
-#: src/js/services/notificationsService.js
-msgid "Transaction Signed"
-msgstr "Transacción Firmada"
-
-#: public/views/modals/txp-details.html
-msgid "Transaction accepted..."
-msgstr "Transacción aceptada..."
-
-#: src/js/services/txStatus.js
-msgid "Transaction broadcasted"
-msgstr "Transacción enviada"
-
-#: public/views/modals/txp-details.html
-msgid "Transaction finally rejected"
-msgstr "Transacción finalmente rechazada"
-
-#: src/js/controllers/walletHome.js
-msgid "Transaction not broadcasted. Please try again."
-msgstr "Transacción no emitida. Por favor, intente nuevamente."
-
-#: public/views/modals/txp-details.html
-msgid "Transaction proposal"
-msgstr "Propuestas de transacción"
-
-#: src/js/services/txStatus.js
-msgid "Transaction proposal created"
-msgstr "Propuesta de transacción creada"
-
-#: src/js/services/txStatus.js
-msgid "Transaction proposal signed"
-msgstr "Propuesta de transacción firmada"
-
-#: public/views/modals/txp-details.html
-msgid "Transaction sent!"
-msgstr "¡Transacción enviada!"
-
-#: src/js/services/txStatus.js
-msgid "Transaction was rejected"
-msgstr "Transacción rechazada"
 
 #: src/js/controllers/walletHome.js
 msgid "Unable to send transaction proposal"
@@ -865,10 +1153,6 @@ msgstr "No es de confianza"
 msgid "Updating Wallet..."
 msgstr "Actualizando Monedero..."
 
-#: public/views/create.html
-msgid "Use test network"
-msgstr "Red de prueba"
-
 #: public/views/preferencesAbout.html
 msgid "Version"
 msgstr "Versión"
@@ -885,7 +1169,7 @@ msgstr "ADVERTENCIA: Se requiere hacer copia de seguridad"
 msgid "WARNING: Wallet not registered"
 msgstr "ADVERTENCIA: Monedero no registrado"
 
-#: public/views/splash/1.html
+#: public/views/splash.html
 msgid "WELCOME TO COPAY"
 msgstr "BIENVENIDO A COPAY"
 
@@ -896,6 +1180,10 @@ msgstr "Esperando copayers"
 #: public/views/copayers.html
 msgid "Waiting..."
 msgstr "Esperando..."
+
+#: public/views/preferences.html
+msgid "Wallet Alias"
+msgstr "Alias del monedero"
 
 #: src/js/services/profileService.js
 msgid "Wallet Already Imported:"
@@ -942,7 +1230,7 @@ msgid "Yes"
 msgstr "Si"
 
 #: public/views/walletHome.html
-msgid "You do not have any wallet"
+msgid "You do not have a wallet"
 msgstr "No tienes ningún monedero"
 
 #: public/views/backup.html public/views/import.html
@@ -965,16 +1253,16 @@ msgstr "Contraseña de tu perfil"
 msgid "Your wallet has been imported correctly"
 msgstr "Su monedero se ha importado correctamente"
 
-#: public/views/create.html public/views/join.html
-msgid "advanced options"
-msgstr "opciones avanzadas"
+#: public/views/preferencesEmail.html
+msgid "email for wallet notifications"
+msgstr "email para recibir notificaciones"
 
 #: public/views/walletHome.html
-msgid "in pending transactions"
-msgstr "en transacciones pendientes"
+msgid "locked by pending payments"
+msgstr "bloqueado por pagos pendientes"
 
-#: public/views/copayers.html public/views/create.html
-#: public/views/walletHome.html public/views/includes/sidebar.html
+#: public/views/copayers.html public/views/walletHome.html
+#: public/views/includes/sidebar.html
 msgid "of"
 msgstr "de"
 
@@ -982,17 +1270,21 @@ msgstr "de"
 msgid "optional"
 msgstr "opcional"
 
+#: public/views/preferences.html
+msgid "settings"
+msgstr "configuración"
+
 #: public/views/walletHome.html
 msgid "too long!"
 msgstr "¡demasiado largo!"
 
-#: public/views/create.html
-msgid "wallet"
-msgstr "monedero"
+#: public/views/preferencesFee.html
+msgid "{{fee.value}} bits per kB"
+msgstr "{{fee.value}} bits por kB"
 
-#: public/views/preferences.html
-msgid "{{index.walletName}} settings"
-msgstr "Opciones de {{index.walletName}}"
+#: src/js/controllers/walletHome.js
+msgid "{{fee}} will be discounted for bitcoin networking fees"
+msgstr "{{fee}} se descontarán de los costos de la red bitcoin"
 
 #: src/js/controllers/importLegacy.js
 msgid ""
@@ -1002,8 +1294,90 @@ msgstr ""
 "{{len}} monederos importados. Escáner de fondos en progreso. Espere a ver el "
 "balance actualizado"
 
-#~ msgid "Transaction could not be deleted. Please try again."
-#~ msgstr "La transacción no se pudo eliminar. Por favor, intente nuevamente."
+#~ msgid "Receive a customized amount"
+#~ msgstr "Recibir un monto personalizado"
+
+#~ msgid ""
+#~ "* Only payment proposals created by yourself with no peer actions can be "
+#~ "removed"
+#~ msgstr ""
+#~ "* Solo transacciones creadas por Usted mismo sin haber realizado acciones "
+#~ "por otros usuarios, pueden ser eliminadas"
+
+#~ msgid "Alias for"
+#~ msgstr "Alias para"
+
+#~ msgid "Hide"
+#~ msgstr "Ocultar"
+
+#~ msgid "If not given, a random key will be generated"
+#~ msgstr "Si no se ingresa, una clave aleatoria será generada"
+
+#~ msgid "Show"
+#~ msgstr "Mostrar"
+
+#~ msgid "wallet"
+#~ msgstr "monedero"
+
+#~ msgid "Transaction not broadcasted. Please try again."
+#~ msgstr "Transacción no emitida. Por favor, intente nuevamente."
+
+#~ msgid "Could not sign transaction. Please try again."
+#~ msgstr "No se pudo firmar la transacción. Por favor, intente nuevamente."
+
+#~ msgid "Payment Proposal Sent"
+#~ msgstr "Propuesta de Pago Enviada"
+
+#~ msgid "Use test network"
+#~ msgstr "Red de prueba"
+
+#~ msgid "A transaction was finally rejected"
+#~ msgstr "Transacción finalmente rechazada"
+
+#~ msgid "Import from Copay Beta 0.9"
+#~ msgstr "Importar de Copay Beta 0.9"
+
+#~ msgid "Information"
+#~ msgstr "Información"
+
+#~ msgid "New Transaction"
+#~ msgstr "Nueva Transacción"
+
+#~ msgid "Remove transaction"
+#~ msgstr "Elimine la transacción"
+
+#~ msgid "Sign"
+#~ msgstr "Firmar"
+
+#~ msgid "Signatures"
+#~ msgstr "Firmas"
+
+#~ msgid "Spend proposals"
+#~ msgstr "Propuestas de gastos"
+
+#~ msgid "Transaction Rejected"
+#~ msgstr "Transacción Rechazada"
+
+#~ msgid "Transaction Sent"
+#~ msgstr "Transacción Enviada"
+
+#~ msgid "Transaction Signed"
+#~ msgstr "Transacción Firmada"
+
+#~ msgid "Transaction broadcasted"
+#~ msgstr "Transacción enviada"
+
+#~ msgid "Transaction proposal"
+#~ msgstr "Propuestas de transacción"
+
+#~ msgid "Transaction proposal signed"
+#~ msgstr "Propuesta de transacción firmada"
+
+#~ msgid "Transaction sent!"
+#~ msgstr "¡Transacción enviada!"
+
+#~ msgid "Transaction was rejected"
+#~ msgstr "Transacción rechazada"
 
 #~ msgid "Transaction not rejected. Please try again."
 #~ msgstr "Transacción no rechazada. Por favor, intente nuevamente."
@@ -1035,9 +1409,6 @@ msgstr ""
 #~ msgstr ""
 #~ "Borrar permanentemente este monedero. ADVERTENCIA: esta acción no puede "
 #~ "deshacerse."
-
-#~ msgid "Could not create wallet:"
-#~ msgstr "No se puede crear el monedero"
 
 #~ msgid "OK"
 #~ msgstr "LISTO"
@@ -1102,12 +1473,6 @@ msgstr ""
 #~ msgid "Note:"
 #~ msgstr "Nota:"
 
-#~ msgid "QR-Scanner"
-#~ msgstr "Escáner QR"
-
-#~ msgid "Select a wallet to make the payment"
-#~ msgstr "Seleccione monedero para realizar el pago"
-
 #~ msgid "Skip"
 #~ msgstr "Omitir"
 
@@ -1116,9 +1481,6 @@ msgstr ""
 
 #~ msgid "change"
 #~ msgstr "vuelto"
-
-#~ msgid "BIP32 master extended private key"
-#~ msgstr "BIP32 master extended private key"
 
 #~ msgid "Bitcore Wallet Service URL"
 #~ msgstr "Bitcore Wallet Service URL"
@@ -1192,9 +1554,6 @@ msgstr ""
 #~ msgid "Copay now needs a profile to access wallets."
 #~ msgstr "Copay ahora requiere un perfil para acceder a los monederos"
 
-#~ msgid "Create Profile"
-#~ msgstr "Crear Perfil"
-
 #~ msgid "Create in the cloud"
 #~ msgstr "Crear en la nube"
 
@@ -1240,17 +1599,8 @@ msgstr ""
 #~ msgid "Form Error"
 #~ msgstr "Error en formulario"
 
-#~ msgid "Get QR code"
-#~ msgstr "Obtener código QR"
-
 #~ msgid "Hide them"
 #~ msgstr "Ocultar"
-
-#~ msgid "I read and agree with these terms"
-#~ msgstr "He leído y aceptado estos términos"
-
-#~ msgid "Import Profile"
-#~ msgstr "Importar Perfil"
 
 #~ msgid "Import a backup"
 #~ msgstr "Importar una copia de seguridad"
@@ -1451,9 +1801,6 @@ msgstr ""
 #~ msgid "Session will be closed"
 #~ msgstr "La sesión se cerrará"
 
-#~ msgid "Settings"
-#~ msgstr "Configuración"
-
 #~ msgid "Share secret"
 #~ msgstr "Compartir código secreto"
 
@@ -1462,9 +1809,6 @@ msgstr ""
 
 #~ msgid "Sign in"
 #~ msgstr "Ingresar"
-
-#~ msgid "Signing out"
-#~ msgstr "Saliendo"
 
 #~ msgid "Skip public keys"
 #~ msgstr "Ignorar claves pública"
@@ -1481,88 +1825,11 @@ msgstr ""
 #~ msgid "Storage"
 #~ msgstr "Almacenamiento"
 
-#~ msgid "Testnet"
-#~ msgstr "Testnet"
-
 #~ msgid "The balance is updated using the derived addresses"
 #~ msgstr "El balance es actualizado utilizando direcciones derivadas"
 
 #~ msgid "The secret string you entered is invalid"
 #~ msgstr "La palabra secreta ingresada no es válida"
-
-#~ msgid ""
-#~ "The software you are about to use is free, open source, and unsupported "
-#~ "beta software. It is important to understand\n"
-#~ "      that beta software refers to software that is undergoing testing "
-#~ "and has not officially been released, could have\n"
-#~ "      bugs, and may not act in a reliable fashion. Because the software "
-#~ "is currently in beta, it is possible but not certain\n"
-#~ "      that you may lose bitcoin or the value of your bitcoin. It is "
-#~ "recommended that you store only nominal amounts of\n"
-#~ "      bitcoins. You acknowledge that your use of this software is at your "
-#~ "own discretion and in compliance with all\n"
-#~ "      applicable laws. You are responsible for safekeeping your login "
-#~ "IDs, passwords, private key pairs, PINs and any other\n"
-#~ "      codes you use to access the software. IF YOU HAVE NOT SEPARATELY "
-#~ "STORED A BACKUP OF ANY WALLET ADDRESSES AND PRIVATE\n"
-#~ "      KEY PAIRS MAINTAINED IN YOUR ACCOUNT, YOU ACKNOWLEDGE AND AGREE "
-#~ "THAT ANY BITCOINS YOU HAVE ASSOCIATED WITH SUCH WALLET\n"
-#~ "      ADDRESSES WILL BECOME INACCESSIBLE IF YOU DO NOT HAVE YOUR ACCOUNT "
-#~ "PASSWORD AND/OR PIN.  All transaction requests are\n"
-#~ "      irreversible.  The authors of the software, employees and "
-#~ "affiliates of Bitpay, copyright holders, and BitPay, Inc.\n"
-#~ "      cannot retrieve your private keys or passwords if you lose or "
-#~ "forget them and cannot guarantee transaction\n"
-#~ "      confirmation as they do not have control over the Bitcoin network. "
-#~ "You agree to provide accurate and complete\n"
-#~ "      information in connection with your use of the account. You assume "
-#~ "any and all risk associated with the use of the\n"
-#~ "      software. To the fullest extent permitted by law, this software is "
-#~ "provided “as is” and no representations or\n"
-#~ "      warranties can be made of any kind, express or implied, including "
-#~ "but not limited to the warranties of\n"
-#~ "      merchantability, fitness or a particular purpose and "
-#~ "noninfringement. In no event shall the authors of the software,\n"
-#~ "      employees and affiliates of Bitpay, copyright holders, or BitPay, "
-#~ "Inc. be held liable for any claim, damages or other\n"
-#~ "      liability, whether in an action of contract, tort, or otherwise, "
-#~ "arising from, out of or in connection with the\n"
-#~ "      software or the use or other dealings in the software. We reserve "
-#~ "the right to modify this disclaimer from time to\n"
-#~ "      time."
-#~ msgstr ""
-#~ "El software que van a utilizar es libre de código abierto y software beta "
-#~ "no admitido. Es importante entender que el software beta se refiere al "
-#~ "software que es someterse a la prueba no ha sido lanzado oficialmente, "
-#~ "puede tener errores y no puede actuar de una manera confiable. Porque el "
-#~ "software está actualmente en fase beta, es posible pero no seguro de que "
-#~ "puede perder bitcoin o el valor de tu bitcoin. Se recomienda que guarde "
-#~ "sólo nominales cantidades de bitcoins. Usted reconoce que el uso de este "
-#~ "software es bajo su propia discreción y cumple con todas las leyes "
-#~ "aplicables. Usted es responsable de la custodia su ID de inicio de "
-#~ "sesión, contraseñas, pares de claves privadas, pernos y cualquier otros "
-#~ "códigos que utilizas para acceder al software. SI NO HAS ALMACENADO POR "
-#~ "SEPARADO UNA COPIA DE SEGURIDAD DE CUALQUIER CARTERA DIRECCIONES Y PARES "
-#~ "DE CLAVES PRIVADAS MANTENIDAS EN SU CUENTA, USTED RECONOCE Y ACEPTA QUE "
-#~ "CUALQUIER BITCOINS SE HA ASOCIADO CON TALES DIRECCIONES CARTERA SERÁ "
-#~ "INACCESIBLES SI NO TIENES TU CONTRASEÑA O PIN. Todas las solicitudes de "
-#~ "transacción son irreversibles.  Los autores del software, empleados y "
-#~ "afiliados de Bitpay, los titulares del copyright y BitPay, Inc. no pueden "
-#~ "recuperar sus claves o contraseñas si pierde u olvida y no garantiza la "
-#~ "confirmación de la transacción como no tienen control sobre la red "
-#~ "Bitcoin. Usted acepta proporcionar información precisa y completa en "
-#~ "relación con su uso de la cuenta. Usted asume todo riesgo asociado con el "
-#~ "uso del software. En la medida permitida por la ley, este software se "
-#~ "proporciona \"tal cual\" y sin representaciones o garantías pueden ser "
-#~ "hechas de cualquier tipo, expresas o implícitas, incluyendo pero no "
-#~ "limitadas a, las garantías de comerciabilidad, idoneidad o un propósito "
-#~ "particular y no infracción. En ningún caso los autores del software, "
-#~ "empleados y afiliados de Bitpay, los titulares del copyright o BitPay, "
-#~ "Inc. responderá de cualquier reclamación, daños u otra responsabilidad, "
-#~ "ya sea en una acción de contrato, agravio o de lo contrario, que se "
-#~ "presentaba de, fuera de o en relación con el software o el uso u otras "
-#~ "reparticiones en el software. Nos reservamos el derecho de modificar este "
-#~ "aviso de vez en cuando."
 
 #~ msgid "The transaction proposal has been created"
 #~ msgstr "La propuesta de transacción fue creada"
@@ -1701,9 +1968,6 @@ msgstr ""
 #~ msgid "seconds"
 #~ msgstr "segundos"
 
-#~ msgid "Create {{requiredCopayers}}-of-{{totalCopayers}} wallet"
-#~ msgstr "Crea monedero {{requiredCopayers}}-de-{{totalCopayers}}"
-
 #, fuzzy
 #~ msgid ""
 #~ "<strong class=\"size-16\">Network Error</strong>.<br> Attempting to "
@@ -1722,16 +1986,10 @@ msgstr ""
 #~ msgid "Connecting..."
 #~ msgstr "Conectando..."
 
-#~ msgid "Create a new wallet"
-#~ msgstr "Crear un nuevo monedero"
-
 #~ msgid "Creating and storing a backup will allow you to recover wallet funds"
 #~ msgstr ""
 #~ "Crear y guardar una copia de seguridad  le permitirá recuperar el dinero "
 #~ "de su monedero"
-
-#~ msgid "Fee"
-#~ msgstr "Tasa"
 
 #~ msgid ""
 #~ "If all funds have been removed from your wallet and you do not wish to "
@@ -1773,9 +2031,6 @@ msgstr ""
 
 #~ msgid "Ready"
 #~ msgstr "Listo"
-
-#~ msgid "Send to"
-#~ msgstr "Enviar a"
 
 #~ msgid "Show all"
 #~ msgstr "Ver todo"
@@ -1854,9 +2109,6 @@ msgstr ""
 #, fuzzy
 #~ msgid "Your Password"
 #~ msgstr "Tu contraseña"
-
-#~ msgid "Bitcoin Network"
-#~ msgstr "Red Bitcoin"
 
 #~ msgid "Download seed backup"
 #~ msgstr "Descargar copia de seguridad"

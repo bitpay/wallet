@@ -1,4 +1,3 @@
-
 'use strict';
 
 angular.module('copayApp.controllers').controller('backupController',
@@ -45,6 +44,9 @@ angular.module('copayApp.controllers').controller('backupController',
       }
       window.plugins.toast.showShortCenter('Preparing backup...');
       var name = (fc.credentials.walletName || fc.credentials.walletId);
+      if (fc.alias) {
+        name = fc.alias + ' [' + name + ']';
+      }
       var ew = this.getBackup();
       var properties = {
         subject: 'Copay Wallet Backup: ' + name,

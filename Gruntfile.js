@@ -30,6 +30,12 @@ module.exports = function(grunt) {
       },
       clear: {
         command: 'rm -Rf bower_components node_modules'
+      },
+      osx64: {
+        command: 'hdiutil create  -megabytes 150 -volname Copay -srcfolder webkitbuilds/copay/osx64/copay.app/ -ov -format UDZO webkitbuilds/copay-osx64.dmg'
+      },
+      osx32: {
+        command: 'hdiutil create  -megabytes 150 -volname Copay -srcfolder webkitbuilds/copay/osx32/copay.app/ -ov -format UDZO webkitbuilds/copay-osx32.dmg'
       }
     },
     watch: {
@@ -165,6 +171,12 @@ module.exports = function(grunt) {
         flatten: true,
         src: 'bower_components/foundation-icon-fonts/foundation-icons.*',
         dest: 'public/icons/'
+      },
+      linux: {
+        files: [
+          {expand: true, cwd: 'webkitbuilds/',src: ['.desktop', 'favicon.ico'],dest: 'webkitbuilds/copay/linux32/', flatten: true, filter: 'isFile' },
+          {expand: true, cwd: 'webkitbuilds/',src: ['.desktop', 'favicon.ico'],dest: 'webkitbuilds/copay/linux64/', flatten: true, filter: 'isFile' },
+        ],
       }
     },
     karma: {
@@ -184,6 +196,36 @@ module.exports = function(grunt) {
         force: true,
         recursive: false
       }
+    },
+    nodewebkit: {
+      options: {
+          platforms: ['win','osx','linux'],
+          buildDir: './webkitbuilds',
+          version: '0.12.2',
+          macIcns: './public/img/icons/icon.icns',
+          exeIco: './public/img/icons/icon.ico'
+      },
+      src: ['./package.json', './public/**/*']
+    },
+    compress: {
+      linux32: {
+        options: {
+          archive: './webkitbuilds/copay-linux32.zip'
+        },
+        expand: true,
+        cwd: './webkitbuilds/copay/linux32/',
+        src: ['**/*'],
+        dest: 'copay-linux32/'
+      },
+      linux64: {
+        options: {
+          archive: './webkitbuilds/copay-linux64.zip'
+        },
+        expand: true,
+        cwd: './webkitbuilds/copay/linux64/',
+        src: ['**/*'],
+        dest: 'copay-linux64/'
+      }
     }
   });
 
@@ -197,10 +239,11 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-exec');
   grunt.loadNpmTasks('grunt-karma');
   grunt.loadNpmTasks('grunt-karma-coveralls');
-
+  grunt.loadNpmTasks('grunt-node-webkit-builder');
+  grunt.loadNpmTasks('grunt-contrib-compress');
 
   grunt.registerTask('default', [
-    'nggettext_compile', 'exec:version', 'concat', 'copy'
+    'nggettext_compile', 'exec:version', 'concat', 'copy:icons'
   ]);
   grunt.registerTask('prod', [
     'default', 'uglify'
@@ -208,4 +251,5 @@ module.exports = function(grunt) {
   grunt.registerTask('translate', ['nggettext_extract']);
   grunt.registerTask('test', ['karma:unit']);
   grunt.registerTask('test-coveralls', ['karma:prod', 'coveralls']);
+  grunt.registerTask('desktop', ['prod', 'nodewebkit', 'copy:linux', 'compress:linux32', 'compress:linux64', 'exec:osx32', 'exec:osx64']);
 };

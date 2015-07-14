@@ -11,6 +11,8 @@ body {
   -khtml-user-select: none;
   -ms-user-select: none;
   user-select: none;
+  -webkit-touch-callout: none !important;
+  -webkit-overflow-scrolling: touch;
 }
 
 input {
@@ -24,10 +26,11 @@ input {
   -webkit-user-drag: none;
   -ms-user-drag: none;
   user-drag: none;
+  -webkit-tap-highlight-color:rgba(0,0,0,0);
 }
 
-body, div, .row {
-  -webkit-overflow-scrolling: touch;
+.fix-modals-touch {
+  -webkit-overflow-scrolling: auto;
 }
 
 .enable_text_select {
@@ -88,12 +91,8 @@ _:-ms-fullscreen, :root .main {
 
 .tab-bar {
   background: #FFFFFF;
-  box-shadow: 0px 1px 1px 0px rgba(0,0,0,0.10);
-  display: block;
-  position: fixed;
-  width: 100%;
   z-index: 5;
-  line-height: 3.2rem;
+  border-bottom: 1px solid #E9E9EC;
 }
 
 .tab-bar h1 {
@@ -204,8 +203,8 @@ _:-ms-fullscreen, :root .main {
 .walletHome .wallet-info {
   margin-left: 85px;
   line-height: 110%;
-  float: left;
-  margin-bottom: 20px;
+  height: 60px;
+  overflow: hidden;
 }
 
 .copayers {
@@ -246,6 +245,7 @@ ul.copayer-list img {
   font-size: 14px;
 }
 
+
 a.missing-copayers {
   bottom: -34px;
   text-align: center;
@@ -255,6 +255,8 @@ a.missing-copayers {
 
 .button, button {
   padding: 1rem 1.2rem 1.0625rem;
+  border: 1px solid transparent;
+  font-family: Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 .box-setup {
@@ -272,7 +274,6 @@ a.missing-copayers {
 
 .sidebar {
   background: #2C3E50;
-  box-shadow: inset -2px 0px 1px 0px rgba(0,0,0,0.40);
 }
 
 .sidebar li {
@@ -282,10 +283,9 @@ a.missing-copayers {
 
 .sidebar li.nav-item.selected {
   background-color: #122232;
-  box-shadow: inset -1px 0px 1px 0px rgba(0,0,0,0.20);
 }
 
-.sidebar .avatar-wallet, .payment-uri .avatar-wallet {
+.sidebar .avatar-wallet, .payment-uri .avatar-wallet, .modal-content .avatar-wallet {
   background-color: #2C3E50;
   color: #fff;
   font-size: 20px;
@@ -301,9 +301,7 @@ a.missing-copayers {
 }
 
 .sidebar header {
-  width: 100%;
   text-align: center;
-  height: 7rem;
   padding: 1.7rem;
   border-bottom: 1px solid #384B5F;
 }
@@ -322,7 +320,7 @@ a.missing-copayers {
   margin-bottom: 30px;
 }
 
-.sidebar ul.off-canvas-list li a {
+.sidebar ul.off-canvas-list li a,  .modal-content ul li a {
   font-size: 12px;
   font-weight: 300;
   border-bottom: transparent;
@@ -358,13 +356,6 @@ ul.off-canvas-list li a:hover {
   background: none;
 }
 
-a, button, .button, input, textarea, select {
-  -webkit-box-shadow: none !important;
-  -moz-box-shadow: none !important;
-  box-shadow: none !important;
-  -webkit-tap-highlight-color:rgba(0,0,0,0);
-}
-
 .move-right .close-menu {
   cursor: pointer;
   box-shadow: none;
@@ -381,7 +372,7 @@ a, button, .button, input, textarea, select {
 /* === */
 
 
-/* Have to set height explicity on ui-view 
+/* Have to set height explicity on ui-view
 to prevent collapsing during animation*/
 .main[ui-view]{
  height: 100%; /* TODO */
@@ -408,7 +399,7 @@ to prevent collapsing during animation*/
   animation-duration: .3s;
   animation-iteration-count: 1;
   animation-fill-mode: both;
-  
+
   -webkit-animation-timing-function:  ease-in-out;
   -webkit-animation-duration: .3s;
   -webkit-animation-iteration-count: 1;
@@ -416,8 +407,6 @@ to prevent collapsing during animation*/
 }
 
 .CslideInUp {
-  transform: translate3d(0, 100%, 0);
-  -webkit-transform: translate3d(0, 100%, 0);
   -webkit-animation-name: slideInUp;
   animation-name: slideInUp;
   z-index: 1003;
@@ -433,8 +422,6 @@ to prevent collapsing during animation*/
   z-index: 1003;
 }
 .CslideInRight {
-  -webkit-transform: translate3d(100%, 0, 0);
-  transform: translate3d(100%, 0, 0);
   -webkit-animation-name: slideInRight;
   animation-name: slideInRight;
   z-index: 1003;
@@ -572,18 +559,34 @@ to prevent collapsing during animation*/
   top: 0 !important;
 }
 
+.modal-content {
+  position: fixed;
+  overflow-y: auto;
+  height: 100%;
+  width: 100%;
+  top: 45px;
+  padding-bottom: 33px;
+  -webkit-transform: translate3d(0,0,0);
+  background: #fff;
+}
+
+body.modal-open {
+  position: fixed;
+  overflow: hidden;
+}
+
 .reveal-modal {
   padding: 0;
   border: none;
   border-radius: 0;
-  overflow-y: auto;
-  padding-bottom: 20px;
+  outline: 0;
+  box-shadow: none;
 }
 
-.reveal-modal.animated.slideInRight, 
-.reveal-modal.animated.slideOutRight, 
-.reveal-modal.animated.fadeOutUp, 
-.reveal-modal.animated.slideInUp, 
+.reveal-modal.animated.slideInRight,
+.reveal-modal.animated.slideOutRight,
+.reveal-modal.animated.fadeOutUp,
+.reveal-modal.animated.slideInUp,
 .reveal-modal.animated.slideInDown {
   -webkit-animation-duration: 0.3s;
   animation-duration: 0.3s;
@@ -603,6 +606,8 @@ input[type="text"],
 input[type="time"],
 input[type="url"],
 input[type="week"],
+input,
+select,
 textarea,
 input[type="text"]:focus,
 input[type="password"]:focus,
@@ -618,8 +623,11 @@ input[type="tel"]:focus,
 input[type="time"]:focus,
 input[type="url"]:focus,
 input[type="color"]:focus,
+input:focus,
+select:focus,
 textarea:focus
 {
+  outline: 0;
   opacity: 1;
   /*CSS transitions*/
   -o-transition-property: none !important;
@@ -713,7 +721,7 @@ textarea:focus
   transform: translate3d(-100%, 0, 0);
   width:100%;
   position: absolute;
-  top: 46px;
+  top: 45px;
   bottom: 37px;
   overflow: auto;
   padding-bottom: 40px;
@@ -727,6 +735,39 @@ textarea:focus
 .tab-out {
   -webkit-transform: translate3d(-100%, 0, 0) !important;
   transform: translate3d(-100%, 0, 0) !important;
+}
+
+.create-tab {
+  width: 100%;
+  border-bottom: 1px solid #DEDFE1;
+  margin-bottom: 25px;
+  padding: 0 0 .5rem 1rem;
+  overflow: hidden;
+}
+
+.create-tab .tab-container {
+  float: left;
+}
+
+
+.create-tab a {
+  font-size: .7rem;
+  padding: 0 0 .6rem;
+  color: #929396;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.create-tab a:hover,
+.create-tab a:focus {
+  border-bottom: 3px solid #929396;
+}
+
+.create-tab a.selected,
+.create-tab a:active {
+  font-weight: 600;
+  color: #2C3E50;
+  border-bottom: 3px solid #2C3E50;
 }
 
 /* removes 300ms in IE */

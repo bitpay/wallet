@@ -1,0 +1,44 @@
+<nav class="tab-bar">
+  <section class="left-small">
+    <a ng-click="cancel()" class="p10">
+      <span class="text-close" translate>Close</span>
+    </a>
+  </section>
+
+  <section class="middle tab-bar-section">
+    <h1 class="title ellipsis" ng-style="{'color':color}" translate>
+      Choose a wallet to send funds
+    </h1>
+  </section>
+</nav>
+
+<div class="modal-content">
+  <div class="onGoingProcess" ng-if="gettingAddress">
+    <div class="onGoingProcess-content" ng-style="{'background-color':'#222'}">
+      <div class="spinner">
+        <div class="rect1"></div>
+        <div class="rect2"></div>
+        <div class="rect3"></div>
+        <div class="rect4"></div>
+        <div class="rect5"></div>
+      </div>
+      <span translate> Getting address for wallet {{selectedWalletName}} ...</span>
+    </div>
+  </div>
+  <div ng-if="!gettingAddress">
+    <ul class="no-bullet">
+      <li class="line-b" ng-repeat="w in wallets">
+      <a ng-click="selectWallet(w.id, w.name)" class="db oh">
+        <div class="avatar-wallet"
+          ng-style="{'background-color':w.color}">{{(w.name || w.id) | limitTo: 1}}</div>
+        <div class="ellipsis name-wallet text-bold">{{w.name || w.id}}</div>
+        <div class="size-12">{{w.m}} of {{w.n}}
+          <span ng-show="w.network=='testnet'">[Testnet]</span>
+        </div>
+      </a>
+      </li>
+    </ul>
+  </div>
+
+  <div class="extra-margin-bottom"></div>
+</div>

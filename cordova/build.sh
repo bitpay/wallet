@@ -163,8 +163,8 @@ if [ $CURRENT_OS == "ANDROID" ]; then
   mkdir -p $PROJECT/platforms/android/res/xml/
   checkOK
 
-  cp android/AndroidManifest.xml $PROJECT/platforms/android/AndroidManifest.xml
-  checkOK
+#  cp android/AndroidManifest.xml $PROJECT/platforms/android/AndroidManifest.xml
+#  checkOK
 
   cp android/project.properties $PROJECT/platforms/android/project.properties
   checkOK

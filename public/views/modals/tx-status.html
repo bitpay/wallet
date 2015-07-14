@@ -1,30 +1,43 @@
 
-<div ng-if="statusStr && statusStr == 'Transaction broadcasted'" class="popup-txsent">
+<div ng-if="type == 'broadcasted'" class="popup-txsent">
   <i class="small-centered columns fi-check m20tp"></i>
   <div class="text-center size-18 text-white text-bold tu p20">
     <span translate>Payment Sent</span>
   </div>
   <div class="text-center">
-    <a class="button outline white small-5" ng-click="cancel()" translate>OKAY</a>
+    <a class="button outline round white tiny small-4" ng-click="cancel()" translate>OKAY</a>
   </div>
 </div>
 
-<div ng-if="statusStr && statusStr == 'Transaction proposal signed'" class="popup-txsigned">
+
+<div ng-if="type == 'created'" class="popup-txsigned">
   <i class="small-centered columns fi-check m20tp"></i>
   <div class="text-center size-18 text-primary tu text-bold p20">
-    {{statusStr|translate}}
+    <span translate>Payment Proposal Created</span>
   </div>
   <div class="text-center">
-    <a class="button outline light-gray small-5" ng-click="cancel()" translate>OKAY</a>
+    <a class="button outline round light-gray tiny small-4" ng-click="cancel()" translate>OKAY</a>
   </div>
 </div>
 
-<div ng-if="statusStr && statusStr == 'Transaction was rejected'" class="popup-txrejected">
-  <i class="fi-x small-centered columns m20tp"></i>
-  <div class="text-center size-18 tu text-warning text-bold p20">
-    {{statusStr|translate}}
+
+
+<div ng-if="type == 'accepted'" class="popup-txsigned">
+  <i class="small-centered columns fi-check m20tp"></i>
+  <div class="text-center size-18 text-primary tu text-bold p20">
+    <span translate>Payment Accepted</span>
   </div>
   <div class="text-center">
-    <a class="button outline light-gray small-5" ng-click="cancel()" translate>OKAY</a>
+    <a class="button outline round light-gray tiny small-4" ng-click="cancel()" translate>OKAY</a>
+  </div>
+</div>
+
+<div ng-if="type=='rejected'" class="popup-txrejected">
+  <i class="fi-x small-centered columns m20tp"></i>
+  <div class="text-center size-18 tu text-warning text-bold p20">
+    <span translate>Payment Rejected</span>
+  </div>
+  <div class="text-center">
+    <a class="button outline light-gray round tiny small-4" ng-click="cancel()" translate>OKAY</a>
   </div>
 </div>

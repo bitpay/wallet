@@ -1,5 +1,5 @@
-<div 
-  class="topbar-container" 
+<div
+  class="topbar-container"
   ng-include="'views/includes/topbar.html'"
   ng-init="titleSection='Import wallet';  goBackToState = 'add'; noColor = true">
 </div>
@@ -19,7 +19,7 @@
   </div>
 
 
-    <div class="row" ng-show="!import.loading">
+    <div class="row">
       <div class="large-12 columns">
           <form name="importForm" ng-submit="import.import(importForm)" novalidate>
             <div class="box-notification" ng-show="import.error">
@@ -49,20 +49,18 @@
               <input type="password" class="form-control" placeholder="{{'Your backup password'|translate}}"
               name="password" ng-model="import.password">
             </div>
-            <button translate type="submit" class="button radius expand black" 
-              ng-disabled="importForm.$invalid || !import.password">
+            <button translate type="submit" class="button round expand black"
+              ng-disabled="importForm.$invalid || !import.password || import.loading">
               Import backup
             </button>
           </form>
 
-    <div class="text-center text-gray p20v" ng-click="$root.go('importLegacy')">
-      <p class="text-gray m5b size-14" translate> Have a Backup from Copay v0.9?</p>
-      <button class=" outline dark-gray tiny" translate> Import here
-        <i class="icon-arrow-right3 size-14"></i>
-      </button>
-
-
-   </div> 
+          <div class="text-center text-gray p20v" ng-click="$root.go('importLegacy')">
+            <p class="text-gray m5b size-14" translate> Have a Backup from Copay v0.9?</p>
+            <button class=" outline dark-gray tiny round"> <span translate>Import here</span>
+              <i class="icon-arrow-right3 size-14"></i>
+            </button>
+          </div>
 
       </div>
     </div>

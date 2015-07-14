@@ -1,12 +1,12 @@
-<div 
-  class="topbar-container" 
+<div
+  class="topbar-container"
   ng-include="'views/includes/topbar.html'"
   ng-init="titleSection='Create new wallet';  goBackToState = 'add'; noColor = true">
 </div>
 
 
 
-<div class="content p20v" ng-controller="createController as create">
+<div class="content p20v" ng-controller="createController as create" ng-init="create.setTotalCopayers(1)">
 
   <div class="onGoingProcess" ng-show="create.loading">
     <div class="onGoingProcess-content" ng-style="{'background-color':'#222'}">
@@ -21,6 +21,20 @@
     </div>
   </div>
 
+  <div class="create-tab small-only-text-center" ng-hide="create.hideTabs">
+    <div class="row">
+    <div class="tab-container small-6 medium-3 large-2">
+    <a href
+      ng-class="{'selected': totalCopayers == 1}"
+      ng-click="create.setTotalCopayers(1)" translate>Personal Wallet</a>
+    </div>
+    <div class="tab-container small-6 medium-3 large-2">
+    <a href
+      ng-class="{'selected': totalCopayers != 1}"
+      ng-click="create.setTotalCopayers(3)" translate>Shared Wallet</a>
+    </div>
+    </div>
+  </div>
 
   <form name="setupForm" ng-submit="create.create(setupForm)" novalidate>
     <div class="row">
@@ -35,7 +49,7 @@
           <div class="large-12 columns" ng-hide="create.hideWalletName">
             <label><span translate>Wallet name</span>
               <div class="input">
-                <input type="text" placeholder="{{'Family vacation funds'|translate}}" class="form-control" name="walletName" ng-model="walletName" ng-required="true" ng-blur="create.formFocus(false)">
+                <input type="text" placeholder="{{'Family vacation funds'|translate}}" class="form-control" name="walletName" ng-model="walletName" ng-required="true" ng-focus="create.formFocus('wallet-name')" ng-blur="create.formFocus(false)">
               </div>
             </label>
           </div>
@@ -47,10 +61,12 @@
             </label>
           </div>
         </div>
-        <div class="row">
+        <div class="row" ng-show="totalCopayers != 1">
           <div class="large-6 medium-6 columns">
             <label><span translate>Select total number of copayers</span>
-              <select class="m10t" ng-model="totalCopayers" ng-options="totalCopayers as totalCopayers for totalCopayers in create.TCValues">
+              <select class="m10t" ng-model="totalCopayers"
+                ng-options="totalCopayers as totalCopayers for totalCopayers in create.TCValues"
+                ng-change="create.setTotalCopayers(totalCopayers)">
               </select>
             </label>
           </div>
@@ -65,9 +81,8 @@
         <div class="m10t oh" ng-init="hideAdv=true">
           <a class="button outline light-gray expand tiny" ng-click="hideAdv=!hideAdv">
             <i class="fi-widget m3r"></i>
-            <span translate ng-hide="!hideAdv">Show</span> 
-            <span translate ng-hide="hideAdv">Hide</span> 
-            <span translate>Advanced options</span>
+            <span translate ng-hide="!hideAdv">Show Advanced options</span>
+            <span translate ng-hide="hideAdv">Hide Advanced options</span>
             <i ng-if="hideAdv" class="icon-arrow-down4"></i>
             <i ng-if="!hideAdv" class="icon-arrow-up4"></i>
           </a>
@@ -75,23 +90,27 @@
         <div ng-hide="hideAdv" class="row">
           <div class="large-12 columns">
             <label for="network-name" class="line-b oh">
-              <span translate>Use test network</span>
+              <span translate>Testnet</span>
               <switch id="network-name" name="isTestnet" ng-model="isTestnet" class="green right m5t m10b"></switch>
             </label>
             <label for="ext-master" class="m10t">
               <span translate>Master extended private key</span>
-              <small translate>If not given, a random key will be generated</small>
-              <input id="ext-master" 
-              type="text" 
-              placeholder="BIP32 master extended private key" 
+              <small translate>If not given, a secure key will be generated</small>
+              <input id="ext-master"
+              type="text"
+              placeholder="{{'BIP32 master extended private key'|translate}}"
               name="privateKey" ng-model="privateKey">
           </div>
         </div>
 
 
-        <button type="submit" class="button black expand radius m0" ng-disabled="setupForm.$invalid">
-          <span translate>Create</span> 
-          {{requiredCopayers}}-<span translate>of</span>-{{totalCopayers}} <span translate>wallet</span>
+
+        <button type="submit" class="button round black expand m0" ng-show="totalCopayers != 1" ng-disabled="setupForm.$invalid || create.loading">
+          <span translate>Create {{requiredCopayers}}-of-{{totalCopayers}} wallet</span>
+        </button>
+        
+	<button type="submit" class="button round black expand m0" ng-show="totalCopayers == 1" ng-disabled="setupForm.$invalid || create.loading">
+          <span translate>Create new wallet</span>
         </button>
       </div>
     </div>

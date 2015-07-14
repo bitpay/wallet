@@ -1,0 +1,29 @@
+<div
+  ng-if="agreed && index.hasProfile"
+  class="topbar-container"
+  ng-include="'views/includes/topbar.html'"
+  ng-init="titleSection='Terms of Use';  goBackToState = 'about'; noColor = true">
+</div>
+
+
+
+<div class="content p20b" ng-class="{'disclaimer':!index.hasProfile}">
+  <h4 class="title m0" ng-show="!index.hasProfile">
+    <span translate>Terms of Use</span>
+    <img class="right" src="img/logo.svg" alt="Copay" width="40">
+  </h4>
+  <div class="p20h m10t">
+    <p class="enable_text_select text-light size-14 text-gray" translate>
+      The software you are about to use functions as a free, open source, and multi-signature digital wallet. The software does not constitute an account where BitPay or other third parties serve as financial intermediaries or custodians of your bitcoin.  While the software has undergone beta testing and continues to be improved by feedback from the open-source user and developer community, we cannot guarantee that there will be no bugs in the software. You acknowledge that your use of this software is at your own discretion and in compliance with all applicable laws. You are responsible for safekeeping your passwords, private key pairs, PINs and any other codes you use to access the software. IF YOU LOSE ACCESS TO YOUR COPAY WALLET OR YOUR ENCRYPTED PRIVATE KEYS AND YOU HAVE NOT SEPARATELY STORED A BACKUP OF YOUR WALLET AND CORRESPONDING PASSWORD, YOU ACKNOWLEDGE AND AGREE THAT ANY BITCOIN YOU HAVE ASSOCIATED WITH THAT COPAY  WALLET WILL BECOME INACCESSIBLE. All transaction requests are irreversible.  The authors of the software, employees and affiliates of Bitpay, copyright holders, and BitPay, Inc. cannot retrieve your private keys or passwords if you lose or forget them and cannot guarantee transaction confirmation as they do not have control over the Bitcoin network. To the fullest extent permitted by law, this software is provided “as is” and no representations or warranties can be made of any kind, express or implied, including but not limited to the warranties of merchantability, fitness or a particular purpose and noninfringement. You assume any and all risks associated with the use of the software. In no event shall the authors of the software, employees and affiliates of Bitpay, copyright holders, or BitPay, Inc. be held liable for any claim, damages or other liability, whether in an action of contract, tort, or otherwise, arising from, out of or in connection with the software. We reserve the right to modify this disclaimer from time to time.
+    </p>
+
+    <div ng-show="!agreed">
+      <p translate>I affirm that I have read, understood, and agree with these terms.</p>
+      <button class="black round expand" ng-click="agree()">
+        <span translate> Agree </span>
+      </button>
+    </div>
+    <button ng-show="agreed && !index.hasProfile" class="round" ng-click="agree()" translate>Go back</button>
+  </div>
+  <div class="extra-margin-bottom"></div>
+</div>
