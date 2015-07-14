@@ -551,7 +551,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         var fs = require('fs');
         fs.writeFile(this.value, data, function(err) {
           if (err) {
-            console.log(err);
+            $log.debug(err);
           }
         });
       }, false);
@@ -561,7 +561,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     function formatDate(date) {
       var dateObj = new Date(date);
       if (!dateObj) {
-        log.error('Error formating a date');
+        $log.debug('Error formating a date');
         return 'DateError'
       }
       if (!dateObj.toJSON()) {
@@ -585,21 +585,36 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       return str;
     }
 
+    function getHistory(skip, cb) {
+      skip = skip || 0;
+      fc.getTxHistory({
+        skip: skip,
+        limit: 100
+      }, function(err, txs) {
+        if (err) return cb(err);
+        if (txs && txs.length > 0) {
+          allTxs.push(txs);
+          getHistory(skip + 100, cb);
+        }
+        else {
+          return cb(null, lodash.flatten(allTxs));
+        }
+      });
+    };
+
     if (isCordova) {
-      log.info('Not available on mobile');
+      $log.info('Not available on mobile');
       return;
     }
     var isNode = nodeWebkit.isDefined();
     var fc = profileService.focusedClient;
     if (!fc.isComplete()) return;
     var self = this;
+    var allTxs = [];
     $log.debug('Generating CSV from History');
     self.setOngoingProcess('generatingCSV', true);
     $timeout(function() {
-      fc.getTxHistory({
-        skip: 0,
-        limit: 1000000000
-      }, function(err, txs) {
+      getHistory(null, function(err, txs) {
         self.setOngoingProcess('generatingCSV', false);
         if (err) {
           $log.debug('TxHistory ERROR:', err);
