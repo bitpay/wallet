@@ -1,29 +1,27 @@
-<div 
-  class="topbar-container" 
+<div
+  class="topbar-container"
   ng-include="'views/includes/topbar.html'"
   ng-init="titleSection='Import legacy wallet'; goBackToState = 'import'; noColor = true">
 </div>
 
-
-
 <div class="content p20v" ng-controller="importLegacyController as importLegacy">
   <div class="row m20t">
-      <div class="large-12 columns">
-        <div ng-show="importLegacy.importing">
-          <h1 class="m20b animated infinite flash" translate>Importing...</h1>
-          <ul>
-            <li ng-repeat="m in importLegacy.messages"> 
-            <span ng-style="{'opacity':m.opacity}">{{m.message|translate}}</span>
-          </ul>
-        </div>
+    <div class="large-12 columns">
+      <div ng-show="importLegacy.importing">
+        <h1 class="m20b animated infinite flash" translate>Importing...</h1>
+        <ul>
+          <li ng-repeat="m in importLegacy.messages">
+          <span ng-style="{'opacity':m.opacity}">{{m.message|translate}}</span>
+        </ul>
+      </div>
 
-        <div class="box-notification" ng-show="importLegacy.error">
-          <span class="text-warning size-14">
-            {{importLegacy.error|translate}}
-          </span>
-        </div>
+      <div class="box-notification" ng-show="importLegacy.error">
+        <span class="text-warning size-14">
+          {{importLegacy.error|translate}}
+        </span>
+      </div>
 
-        <div ng-show="!importLegacy.importing">
+      <div ng-show="!importLegacy.importing">
         <form name="importForm" ng-submit="importLegacy.import(importForm)" novalidate>
 
           <label for="fromCloud" class="line-b oh m20b">
@@ -49,31 +47,20 @@
             name="server" ng-model="importLegacy.server" required>
           </label>
 
-          <button translate type="submit" 
-            class="button black radius expand m0" 
-            ng-disabled="deviceForm.$invalid">
-            Import 
+          <button translate type="submit"
+            class="button black round expand m0"
+            ng-disabled="importForm.$invalid">
+            Import
           </button>
         </form>
 
-        <form name="importLegacyForm" ng-submit="importLegacy.import(importLegacyForm)" novalidate>
-          <div class="box-notification" ng-show="error">
-            <span class="text-warning size-14">
-              {{error|translate}}
-            </span>
-          </div>
-        </form>
-
-    <div class="text-center p20v">
-      <a class="m20t  tiny button outline light-gray " ng-click="$root.openExternalLink('https://github.com/bitpay/copay/releases/tag/v0.10.0')" translate>
-         Learn more about Wallet Migration
-      </a>
-    </div>
- 
+        <div class="text-center p20v">
+          <a class="m20t tiny button outline round light-gray " ng-click="$root.openExternalLink('https://github.com/bitpay/copay/releases/tag/v0.10.0')" translate>
+            Learn more about Wallet Migration
+          </a>
+        </div>
 
       </div>
-    
-
     </div>
+  </div>
 </div>
-

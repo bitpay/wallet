@@ -2,17 +2,19 @@
 
 'use strict';
 
+console.log('Swipe wallet is outdated, and it does not work with Copay 0.10.x');
+process.exit(1);
 
-var copay = require('../copay');
 var _ = require('lodash');
+var program = require('commander');
 var config = require('../config');
 var version = require('../version').version;
 var sinon = require('sinon');
 var bitcore = require('bitcore');
 var readline = require('readline');
 var async = require('async');
-var program = require('commander');
 
+var copay = require('../copay');
 function list(val) {
   return val.split(',');
 }

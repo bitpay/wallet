@@ -1,8 +1,8 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="com.bitpay.copay" 
-  version="0.10.7"
-  android-versionCode="33"
-  ios-CFBundleVersion="0.10.7">
+  version="1.1.1"
+  android-versionCode="38"
+  ios-CFBundleVersion="1.1.1">
     <name>Copay</name>
     <description>
       A secure bitcoin wallet for friends and companies.
@@ -14,7 +14,6 @@
     <access origin="*" />
     <preference name="AndroidPersistentFileLocation" value="Internal" />
     <preference name="iosPersistentFileLocation" value="Library" />
-
     <preference name="DisallowOverscroll" value="true"/>
     <preference name="HideKeyboardFormAccessoryBar" value="true"/>
     <preference name="SplashScreen" value="copayscreen" />
@@ -26,19 +25,4 @@
     <preference name="BackupWebStorage" value="none"/>
     <preference name="windows-target-version" value="8.1"/>
     <preference name="Orientation" value="portrait" />
-    <feature name="App">
-      <param name="android-package" value="com.bitpay.copay" />
-    </feature>
-    <feature name="WebIntent">
-      <param name="android-package" value="com.borismus.webintent.WebIntent" />
-    </feature>
-    <feature name="BarcodeScanner">
-      <param name="android-package" value="com.phonegap.plugins.barcodescanner.BarcodeScanner" />
-    </feature>
-    <feature name="SplashScreen">
-      <param name="android-package" value="org.apache.cordova.splashscreen.SplashScreen" />
-    </feature>
-    <feature name="StatusBar">
-      <param name="android-package" onload="true" value="org.apache.cordova.statusbar.StatusBar" />
-    </feature>
 </widget>

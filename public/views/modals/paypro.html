@@ -6,54 +6,48 @@
   </section>
   <section class="middle tab-bar-section">
     <h1 class="title ellipsis" ng-style="{'color':color}" translate>
-      Payment protocol request
+      Payment request
     </h1>
   </section>
 </nav>
 
-<div class="row p60t">
-  <div class="large-12 columns">
-    <div class="text-center">
-      <div class="size-48">
-        {{unitTotal}}  {{unitName}}
-      </div>
-      <div class="size-18 m5t text-gray">
-        {{ alternative }} {{ alternativeIsoCode }}
-      </div>
+<div class="modal-content fix-modals-touch">
+  <div class="header-modal text-center">
+    <div class="size-42">
+      {{unitTotal}}  {{unitName}}
     </div>
-    <div class="line-b m10v"></div>
-
-    <div class="ellipsis m10v">
-      <i translate>To</i>: {{paypro.domain}}
-    </div>
-
-
-    <div ng-if="paypro.toAddress" class="m10v lh140">
-      <i translate>Address</i>: 
-      <span class="text-gray">
-        {{paypro.toAddress}}
-      </span>
-    </div>
-
-
-    <div class="m10v">
-      <i translate>Certified by</i>: 
-      <span ng-show="paypro.verified"><i class="fi-lock color-greeni"></i> {{paypro.verifyData.caName}}</span>
-      <span ng-show="!paypro.verified"><i class="fi-unlock color-yellowi"></i> <span translate>Untrusted</span></span>
-    </div>
-
-    <div ng-if="paypro.memo" class="m10v lh140">
-      <i translate>Merchant message</i>: 
-      <span class="text-gray">
-        {{paypro.memo}}
-      </span>
-    </div>
-
-    <div ng-if="paypro.expires" class="m10v">
-      <i translate>Expires</i>: {{paypro.expires * 1000 | amTimeAgo }}
+    <div class="size-18 m5t text-gray" ng-show="alternative">
+      {{ alternative }} {{ alternativeIsoCode }}
     </div>
   </div>
-</div>
 
-<div class="extra-margin-bottom"></div>
+  <h4 class="title m0" translate>Details</h4>
+  <ul class="no-bullet size-14 m0">
+    <li class="line-b p10 oh">
+    <span class="text-gray" translate>Pay To</span>:
+    <span class="right enable_text_select">{{paypro.domain}}</span>
+    </li>
+    <li class="line-b p10 oh" ng-if="paypro.toAddress">
+    <span class="text-gray" translate>Address</span>:
+    <span class="right enable_text_select">{{paypro.toAddress}}</span>
+    </li>
+    <li class="line-b p10 oh">
+    <span class="text-gray" translate>Certified by</span>:
+    <span class="right">
+      <span ng-show="paypro.verified"><i class="fi-lock color-greeni"></i> 
+        {{paypro.verifyData.caName || paypro.verifyData}}</span>
+      <span ng-show="!paypro.verified"><i class="fi-unlock color-yellowi"></i> <span translate>Untrusted</span></span>
+    </span>
+    </li>
+    <li class="line-b p10 oh" ng-if="paypro.memo">
+    <span class="text-gray" translate>Memo</span>:
+    <span class="right">{{paypro.memo}}</span>
+    </li>
+    <li class="line-b p10 oh" ng-if="paypro.expires">
+    <span class="text-gray" translate>Expires</span>:
+    <span class="right">{{paypro.expires * 1000 | amTimeAgo }}</span>
+    </li>
+  </ul>
+  <div class="extra-margin-bottom"></div>
+</div>
 

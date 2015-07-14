@@ -1,0 +1,41 @@
+--------------------------------
+Google Play store description
+--------------------------------
+Armazene bitcoin com seus próprios termos com uma carteira de multi-assinaturas, open source, do BitPay. 
+Usuários Copay podem manter fundos individualmente ou compartilhar finanças seguramente com outros usuários por meio de carteiras multi-assinadas, que previnem pagamentos não autorizados por meio de múltiplas aprovações. Algumas formas que a Copay pode ser usada com outros:
+
+Para economizar para férias ou juntar compras com amigos
+Para rastrear despesas familiares e To track family spending and descontos
+Para gerenciar negócios, clube ou organizar saldos e despesas
+
+Nós construímos as seguintes funcionalidades nesta versão da Copay para uma carteira bitcoin que não comprometa segurança ou acessibilidade:
+
+Criação de múltiplas carteiras com gerenciamento no aplicativo
+Segurança de multi-assinaturas intuitiva para carteiras pessoais ou compartilhadas
+Fácil fluxo de propostas de gastos para carteiras compartilhadas e pagamentos agrupados
+Geração de endereço Hierarchical deterministic (HD) e backups de carteiras
+Segurança baseada em dispositivo: todas as chaves privadas são armazenadas localmente e não na nuvem
+Suporte para carteiras de testes na Bitcoin testnet
+Acesso síncrono entre todas as principais plataformas móveis e desktops
+Suporte a protocolo de pagamento (BIP70-BIP73): solicitações de pagamento facilmente identificadas e pagamentos seguros em bitcoins verificáveis
+Suporte para mais de 150 opções de moedas e denominação de unidades em BTC ou bits
+Notificações por e-mail para pagamentos e transferências
+Nomes e cores de fundo customizáveis para carteiras
+5 idiomas suportados (EN, JP, FR, ES, PT-BR)
+
+Copay é gratuito e um software livre rodando em servidores não-proprietários, que não precisa de nenhuma empresa para o suporte contínuo. Qualquer um pode revisar ou contribuir para o código-fonte da Copay no GitHub (https://github.com/bitpay/copay).
+
+--------------------------------
+Google Play store Release Notes: "What's new"
+--------------------------------
+v1.0.2
+--------------------------------
+Copay agora está fora do beta! Nós gastamos oito meses testando a Copay e estamos prontos para entrar em produção.
+--------------------------------
+v1.0.1
+--------------------------------
+Melhoria no tratamento de erros de interrupção de rede
+Melhoria no lógica de renovação após aceitar/rejeitar pagamentos
+Atualização das traduções para ES, JP e FR
+Resolvida rolagem de certos popups
+--------------------------------

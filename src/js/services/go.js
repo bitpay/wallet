@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.services').factory('go', function($window, $rootScope, $location, $state, profileService) {
+angular.module('copayApp.services').factory('go', function($window, $rootScope, $location, $state, profileService, nodeWebkit) {
   var root = {};
 
   var hideSidebars = function() {
@@ -30,13 +30,20 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
   };
 
   root.openExternalLink = function(url) {
-    var ref = window.open(url, '_blank', 'location=no');
+    if (nodeWebkit.isDefined()) {
+      nodeWebkit.openExternalLink(url);
+    }
+    else {
+      var ref = window.open(url, '_blank', 'location=no');
+    }
   };
 
   root.path = function(path, cb) {
     $state.transitionTo(path)
       .then(function() {
         if (cb) return cb();
+      }, function() {
+        if (cb) return cb('animation in progress');
       });
     hideSidebars();
   };

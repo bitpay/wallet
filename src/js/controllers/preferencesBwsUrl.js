@@ -21,8 +21,7 @@ angular.module('copayApp.controllers').controller('preferencesBwsUrlController',
       configService.set(opts, function(err) {
         if (err) console.log(err);
         $scope.$emit('Local/BWSUpdated');
-        applicationService.restart(true);
-        go.walletHome();
+        applicationService.restart();
       });
     };
 

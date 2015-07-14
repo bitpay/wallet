@@ -1,0 +1,22 @@
+<div 
+  class="topbar-container" 
+  ng-include="'views/includes/topbar.html'"
+  ng-init="titleSection='Bitcoin Network Fee Policy'; goBackToState = 'preferences'; noColor = true">
+</div>
+
+
+<div class="content preferences" ng-controller="preferencesFeeController as prefFee">
+  <div ng-repeat="fee in prefFee.feeOpts" ng-click="prefFee.save(fee)" class="line-b p20 size-14">
+    <span ng-if="fee.red" style="color:red">{{fee.name|translate}} (<span translate>{{fee.value}} bits per kB</span>)</span>
+    <span ng-if="!fee.red">{{fee.name|translate}} (<span translate>{{fee.value}} bits per kB</span>)</span>
+    <i class="fi-check size-16 right" ng-show="prefFee.feeName == fee.name"></i>
+  </div>
+  <div class="row column m20t">
+    <div class="text-gray size-12 text-center m20b"  translate>
+Bitcoin transactions may include a fee collected by miners on the network. The higher the fee, the greater the incentive a miner has to include that transaction in a block. The ‘Emergency’ level should only be used when there is a network congestion.
+    </div>
+  </div>
+
+</div>
+
+<div class="extra-margin-bottom"></div>

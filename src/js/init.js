@@ -6,6 +6,15 @@ angular.element(document).ready(function() {
   var startAngular = function() {
     angular.bootstrap(document, ['copayApp']);
   };
+
+  var handleBitcoinURI = function(url) {
+    if (!url) return;
+    setTimeout(function() {
+      window.location = '#/uri-payment/' + url;
+    }, 1000);
+  };
+
+
   /* Cordova specific Init */
   if (window.cordova !== undefined) {
 
@@ -26,20 +35,13 @@ angular.element(document).ready(function() {
         }, 100);
       }, false);
 
-      // We are not emitting here, since when the BWS socket reconnects,
-      // update will be triggered  
-      document.addEventListener('offline', function() {
-        window.location = '#/cordova/offline';
-      }, false);
-
       // Back button event
       document.addEventListener('backbutton', function() {
         var loc = window.location;
         if (loc.toString().match(/index\.html#\/$/)) {
           navigator.app.exitApp();
-        }
-        else {
-          window.location = '#/walletHome';
+        } else {
+          window.location = '#/cordova/walletHome';
         }
       }, false);
 
@@ -53,13 +55,6 @@ angular.element(document).ready(function() {
         navigator.splashscreen.hide();
       }, 2000);
 
-      function handleBitcoinURI(url) {
-        if (!url) return;
-        setTimeout(function() {
-          window.location = '#/uri-payment/' + url;
-        }, 1000);
-      }
-
       window.plugins.webintent.getUri(handleBitcoinURI);
       window.plugins.webintent.onNewIntent(handleBitcoinURI);
       window.handleOpenURL = handleBitcoinURI;
@@ -67,6 +62,13 @@ angular.element(document).ready(function() {
       startAngular();
     }, false);
   } else {
+
+    try {
+      window.handleOpenURL = handleBitcoinURI;
+      window.plugins.webintent.getUri(handleBitcoinURI);
+      window.plugins.webintent.onNewIntent(handleBitcoinURI);
+    } catch (e) {}
+
     startAngular();
   }
 

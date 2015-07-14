@@ -1,5 +1,5 @@
-<div 
-  class="topbar-container" 
+<div
+  class="topbar-container"
   ng-include="'views/includes/topbar.html'"
   ng-init="titleSection='Join shared wallet'; goBackToState = 'add'; noColor = true">
 </div>
@@ -66,24 +66,24 @@
 
           <a class="button outline light-gray tiny expand" ng-click="join.hideAdv=!join.hideAdv">
             <i class="fi-widget m3r"></i>
-            <span translate ng-show="!join.hideAdv">Show</span>
-            <span translate ng-show="join.hideAdv">Hide</span>
-            <span translate>Advanced options</span>
+            <span translate ng-show="!join.hideAdv">Show Advanced options</span>
+            <span translate ng-show="join.hideAdv">Hide Advanced options</span>
             <i ng-show="!join.hideAdv" class="icon-arrow-down4"></i>
             <i ng-show="join.hideAdv" class="icon-arrow-up4"></i>
           </a>
           <div ng-show="join.hideAdv" class="row">
             <div class="large-12 columns">
-              <label for="ext-master">Master extended private key
+              <label for="ext-master">{{'Master extended private key'|translate}}
               <small translate>If not given, a secure key will be generated</small>
                 <input id="ext-master"
                 type="text"
-                placeholder="BIP32 master extended private key"
+                placeholder="{{'BIP32 master extended private key'|translate}}"
                 name="privateKey" ng-model="privateKey">
               </label>
             </div>
           </div>
-          <button translate type="submit" class="button expand black m0 radius" ng-disabled="joinForm.$invalid">Join</button>
+          <button translate type="submit" class="button expand black m0 round" 
+            ng-disabled="joinForm.$invalid || join.loading">Join</button>
       </form>
     </div>
   </div>

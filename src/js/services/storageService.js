@@ -124,7 +124,7 @@ angular.module('copayApp.services')
     };
 
     root.storeFocusedWalletId = function(id, cb) {
-      storage.set('focusedWalletId', id, cb);
+      storage.set('focusedWalletId', id||'', cb);
     };
 
     root.getFocusedWalletId = function(cb) {
@@ -151,6 +151,18 @@ angular.module('copayApp.services')
       storage.get('backup-' + walletId, cb);
     };
 
+    root.setCleanAndScanAddresses = function(cb) {
+      storage.set('CleanAndScanAddresses', Date.now(), cb);
+    };
+
+    root.getCleanAndScanAddresses = function(cb) {
+      storage.get('CleanAndScanAddresses', cb);
+    };
+
+    root.removeCleanAndScanAddresses = function(cb) {
+      storage.remove('CleanAndScanAddresses', cb);
+    };
+
     root.getConfig = function(cb) {
       storage.get('config', cb);
     };
@@ -162,6 +174,22 @@ angular.module('copayApp.services')
 
     root.clearConfig = function(cb) {
       storage.remove('config', cb);
+    };
+
+    root.setCopayDisclaimerFlag = function(cb) {
+      storage.set('agreeDisclaimer', true, cb);
+    };
+
+    root.getCopayDisclaimerFlag = function(cb) {
+      storage.get('agreeDisclaimer', cb);
+    };
+
+    root.setRemotePrefsStoredFlag = function(cb) {
+      storage.set('remotePrefStored', true, cb);
+    };
+
+    root.getRemotePrefsStoredFlag = function(cb) {
+      storage.get('remotePrefStored', cb);
     };
 
     return root;

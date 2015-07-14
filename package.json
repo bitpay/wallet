@@ -2,7 +2,7 @@
   "name": "copay",
   "description": "A multisignature wallet",
   "author": "BitPay",
-  "version": "0.10.7",
+  "version": "1.1.1",
   "keywords": [
     "wallet",
     "copay",
@@ -10,7 +10,23 @@
     "bitcoin",
     "bitcore"
   ],
-  "main": "app.js",
+  "main": "public/index.html",
+  "window": {
+    "toolbar": false,
+    "show": true,
+    "visible": true,
+    "resizable": false,
+    "frame": true,
+    "width": 400,
+    "height": 600,
+    "position": "center",
+    "fullscreen": false
+  },
+  "webkit": {
+    "page-cache": false,
+    "java": false,
+    "plugin": false
+  },
   "id": "jid1-x7bV5evAaI1P9Q",
   "homepage": "https://github.com/bitpay/copay",
   "license": "MIT",
@@ -43,8 +59,11 @@
   "devDependencies": {
     "angular": "^1.3.14",
     "angular-mocks": "^1.3.14",
+    "grunt-contrib-compress": "^0.13.0",
+    "grunt-contrib-copy": "^0.8.0",
     "grunt-karma": "^0.10.1",
     "grunt-karma-coveralls": "^2.5.3",
+    "grunt-node-webkit-builder": "^1.0.2",
     "karma": "^0.12.31",
     "karma-cli": "0.0.4",
     "karma-coverage": "^0.2.7",

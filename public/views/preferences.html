@@ -9,7 +9,25 @@
 <div class="content preferences" ng-controller="preferencesController as preferences">
 
   <ul class="no-bullet m0 size-14"  ng-show="!index.noFocusedWallet">
-    <h4 class="title m0" translate>{{index.walletName}} settings</h4>
+    <h4 class="title m0">{{index.alias}} [{{index.walletName}}] <span translate>settings</span></h4>
+
+
+    <li class="line-b p20" ng-click="$root.go('preferencesAlias')">
+      <span translate>Wallet Alias</span>
+      <span class="right text-gray">
+        <i class="icon-arrow-right3 size-24 right"></i>
+        {{index.alias||index.walletName}}
+      </span>
+    </li>
+
+    <li class="line-b p20" ng-click="$root.go('preferencesEmail')">
+      <span translate>Email Notifications</span>
+      <span class="right text-gray">
+        <i class="icon-arrow-right3 size-24 right"></i>
+         <span ng-if="!index.preferences.email" translate>Disabled</span>
+         <span ng-if="index.preferences.email">{{index.preferences.email}}</span>
+      </span>
+    </li>
 
     <li class="line-b p20" ng-click="$root.go('preferencesColor')">
       <span translate>Color</span>
@@ -59,6 +77,14 @@
         {{preferences.selectedAlternative.name}}
       </span>
     </li>
+    <li class="line-b p20" ng-click="$root.go('preferencesFee')">
+      <span translate>Bitcoin Network Fee Policy</span>
+      <span class="right text-gray">
+        <i class="icon-arrow-right3 size-24 right"></i>
+        {{preferences.feeName|translate}}
+      </span>
+    </li>
+ 
     
     <li class="line-b p20" ng-click="$root.go('preferencesBwsUrl')">
       <span>Bitcore Wallet Service</span>

@@ -4,7 +4,7 @@ angular.module('copayApp.services')
 
     var root = {};
 
-    var groupingTime = 4000;
+    var groupingTime = 5000;
     var lastNotificationOnWallet = {};
 
     root.getLast = function(walletId) {
@@ -15,6 +15,10 @@ angular.module('copayApp.services')
     };
 
     root.storeLast = function(notificationData, walletId) {
+
+      if (notificationData.type == 'NewAddress')
+        return;
+
       lastNotificationOnWallet[walletId] = {
         creatorId: notificationData.creatorId,
         type: notificationData.type,
@@ -38,7 +42,6 @@ angular.module('copayApp.services')
           && notificationData.type === 'TxProposalFinallyRejected')
         return true;
 
-
       return false;
     };
 
@@ -52,36 +55,37 @@ angular.module('copayApp.services')
 
       var config = configService.getSync();
       config.colorFor = config.colorFor || {};
-      var color = config.colorFor[walletId] || '#2C3E50';
+      var color = config.colorFor[walletId] || '#7A8C9E';
+      var name = config.aliasFor[walletId] || walletName;
 
       switch (notificationData.type) {
         case 'NewTxProposal':
-          notification.new(gettext('New Transaction'),
-            walletName, {color: color} );
+          notification.new(gettext('New Payment Proposal'),
+            name, {color: color} );
           break;
         case 'TxProposalAcceptedBy':
-          notification.success(gettext('Transaction Signed'),
-            walletName, {color: color} );
+          notification.success(gettext('Payment Proposal Signed by Copayer'),
+            name, {color: color} );
           break;
         case 'TxProposalRejectedBy':
-          notification.error(gettext('Transaction Rejected'),
-            walletName, {color: color} );
+          notification.error(gettext('Payment Proposal Rejected by Copayer'),
+            name, {color: color} );
           break;
         case 'TxProposalFinallyRejected':
-          notification.error(gettext('A transaction was finally rejected'),
-            walletName, {color: color} );
+          notification.error(gettext('Payment Proposal Rejected'),
+            name, {color: color} );
           break;
         case 'NewOutgoingTx':
-          notification.sent(gettext('Transaction Sent'),
-            walletName, {color: color} );
+          notification.sent(gettext('Payment Sent'),
+            name, {color: color} );
           break;
         case 'NewIncomingTx':
           notification.funds(gettext('Funds received'),
-            walletName, {color: color} );
+            name, {color: color} );
           break;
         case 'ScanFinished':
           notification.success(gettext('Scan Finished'),
-            walletName, {color: color} );
+            name, {color: color} );
           break;
 
         case 'NewCopayer':

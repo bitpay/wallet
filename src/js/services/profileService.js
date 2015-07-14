@@ -1,6 +1,6 @@
 'use strict';
 angular.module('copayApp.services')
-  .factory('profileService', function profileServiceFactory($rootScope, $location, $timeout, $filter, $log, lodash, storageService, bwcService, configService, notificationService, isChromeApp, isCordova, gettext) {
+  .factory('profileService', function profileServiceFactory($rootScope, $location, $timeout, $filter, $log, lodash, storageService, bwcService, configService, notificationService, isChromeApp, isCordova, gettext, nodeWebkit) {
 
     var root = {};
 
@@ -24,18 +24,19 @@ angular.module('copayApp.services')
       $log.debug('Set focus:', walletId);
 
       // Set local object
-      root.focusedClient = root.walletClients[walletId];
+      if (walletId)
+        root.focusedClient = root.walletClients[walletId];
+      else 
+        root.focusedClient = [];
 
       if (lodash.isEmpty(root.focusedClient)) {
         root.focusedClient = root.walletClients[lodash.keys(root.walletClients)[0]];
       }
 
+      // Still nothing?
       if (lodash.isEmpty(root.focusedClient)) {
         $rootScope.$emit('Local/NoWallets');
-      }
-
-      // set if completed
-      if (!lodash.isEmpty(root.focusedClient)) {
+      } else {
         $rootScope.$emit('Local/NewFocusedWallet');
       }
 
@@ -63,14 +64,14 @@ angular.module('copayApp.services')
 
         client.on('reconnect', function() {
           if (root.focusedClient.credentials.walletId == client.credentials.walletId) {
-            $rootScope.$emit('Local/Online');
+            $log.debug('### Online');
           }
         });
 
 
         client.on('reconnecting', function() {
           if (root.focusedClient.credentials.walletId == client.credentials.walletId) {
-            $rootScope.$emit('Local/Offline');
+            $log.debug('### Offline');
           }
         });
 
@@ -124,36 +125,44 @@ angular.module('copayApp.services')
         $log.debug('Preferences read');
         if (err) return cb(err);
         root.applyConfig();
-        $rootScope.$emit('Local/DefaultLanguage');
         root.setWalletClients();
         storageService.getFocusedWalletId(function(err, focusedWalletId) {
           if (err) return cb(err);
-          root._setFocus(focusedWalletId, cb);
+          root._setFocus(focusedWalletId, function() {
+            $rootScope.$emit('Local/ProfileBound');
+            return cb();
+          });
         });
       });
     };
 
     root.loadAndBindProfile = function(cb) {
-      storageService.getProfile(function(err, profile) {
-        if (err) {
-          $rootScope.$emit('Local/DeviceError', err);
-          return cb(err);
-        }
-        if (!profile) {
-          // Migration??
-          storageService.tryToMigrate(function(err, migratedProfile) {
-            if (err) return cb(err);
-            if (!migratedProfile)
-              return cb(new Error('NOPROFILE: No profile'));
-
-            profile = migratedProfile;
-            return root.bindProfile(profile, cb);
-          })
+      storageService.getCopayDisclaimerFlag(function(err, val) {
+        if (!val) {
+          return cb(new Error('NONAGREEDDISCLAIMER: Non agreed disclaimer'));
         } else {
-          $log.debug('Profile read');
-          return root.bindProfile(profile, cb);
-        }
+          storageService.getProfile(function(err, profile) {
+            if (err) {
+              $rootScope.$emit('Local/DeviceError', err);
+              return cb(err);
+            }
+            if (!profile) {
+              // Migration??
+              storageService.tryToMigrate(function(err, migratedProfile) {
+                if (err) return cb(err);
+                if (!migratedProfile)
+                  return cb(new Error('NOPROFILE: No profile'));
 
+                profile = migratedProfile;
+                return root.bindProfile(profile, cb);
+              })
+            } else {
+              $log.debug('Profile read');
+              return root.bindProfile(profile, cb);
+            }
+
+          });
+        }
       });
     };
 
@@ -224,6 +233,11 @@ angular.module('copayApp.services')
           });
         });
       })
+    };
+
+
+    root.getClient = function(walletId) {
+      return root.walletClients[walletId];
     };
 
     root.deleteWalletFC = function(opts, cb) {
@@ -371,13 +385,13 @@ angular.module('copayApp.services')
       $log.debug('Wallet is encrypted');
       $rootScope.$emit('Local/NeedsPassword', false, function(err2, password) {
         if (err2 || !password) {
-          return cb(err2 || gettext('Password needed'));
+          return cb({message: (err2 || gettext('Password needed'))});
         }
         try {
           fc.unlock(password);
         } catch (e) {
           $log.debug(e);
-          return cb(gettext('Wrong password'));
+          return cb({message: gettext('Wrong password')});
         }
         $timeout(function() {
           if (fc.isPrivKeyEncrypted()) {
@@ -388,6 +402,29 @@ angular.module('copayApp.services')
         return cb();
       });
     };
+
+    root.getWallets = function(network) {
+      if (!root.profile) return [];
+
+      var config = configService.getSync();
+      config.colorFor = config.colorFor || {};
+      config.aliasFor = config.aliasFor || {};
+      var ret = lodash.map(root.profile.credentials, function(c) {
+        return {
+          m: c.m,
+          n: c.n,
+          name: config.aliasFor[c.walletId] || c.walletName,
+          id: c.walletId,
+          network: c.network,
+          color: config.colorFor[c.walletId] || '#2C3E50'
+        };
+      });
+      ret = lodash.filter(ret, function(w) {
+        return (w.network == network);
+      });
+      return lodash.sortBy(ret, 'name');
+    };
+
 
 
     return root;
