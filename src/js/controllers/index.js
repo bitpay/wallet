@@ -629,11 +629,12 @@ angular.module('copayApp.controllers').controller('indexController', function($r
           if (!isNode) csvContent = 'data:text/csv;charset=utf-8,';
           csvContent += 'Date,Destination,Note,Amount,Currency,Spot Value,Total Value,Tax Type,Category\n';
 
-          var _amount;
+          var _amount, _note;
           var dataString;
           data.forEach(function(it, index) {
             _amount = (it.action == 'sent' ? '-' : '') + (it.amount * satToBtc).toFixed(8);
-            dataString = formatDate(it.time * 1000) + ',' + formatString(it.addressTo) + ',' + formatString(it.message) + ',' + _amount + ',BTC,,,,';
+            _note = formatString((it.message ? 'Note: ' + it.message + ' - ' : '') + 'TxId: ' + it.txid);
+            dataString = formatDate(it.time * 1000) + ',' + formatString(it.addressTo) + ',' + _note + ',' + _amount + ',BTC,,,,';
             csvContent += index < data.length ? dataString + "\n" : dataString;
           });
 
