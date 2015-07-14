@@ -594,7 +594,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         if (err) return cb(err);
         if (txs && txs.length > 0) {
           allTxs.push(txs);
-          getHistory(skip + 100, cb);
+          return getHistory(skip + 100, cb);
         }
         else {
           return cb(null, lodash.flatten(allTxs));
