@@ -42,7 +42,7 @@ angular.module('copayApp.controllers').controller('preferencesDeleteWalletContro
         if (err) {
           self.error = err.message || err;
         } else {
-          notification.success(gettext('Success'), gettextCatalog.getString('The wallet "{{walletName}}" was deleted', {walletName: name}));
+          notification.success(gettext('Success'), gettextCatalog.getString('The wallet "{{walletName}}" was deleted', {walletName: walletName}));
         }
       });
     };
