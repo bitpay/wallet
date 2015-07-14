@@ -808,7 +808,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   $rootScope.$on('Local/EmailSettingUpdated', function(event, email, cb) {
     self.updateRemotePreferences({
       preferences: {
-        email: email
+        email: email || null
       },
     }, cb);
   });
