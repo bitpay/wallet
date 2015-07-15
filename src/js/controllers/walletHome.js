@@ -28,6 +28,12 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   var disableScannerListener = $rootScope.$on('dataScanned', function(event, data) {
     self.setForm(data);
     $rootScope.$emit('Local/SetTab', 'send');
+
+    var form = $scope.sendForm;
+    if (form.address.$invalid) {
+      self.resetForm();
+      self.error = gettext('Could not recognize a valid Bitcoin QR Code');
+    }
   });
 
   var disablePaymentUriListener = $rootScope.$on('paymentUri', function(event, uri) {
