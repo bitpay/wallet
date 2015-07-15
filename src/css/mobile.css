@@ -573,6 +573,7 @@ to prevent collapsing during animation*/
 body.modal-open {
   position: fixed;
   overflow: hidden;
+  z-index: 1;
 }
 
 .reveal-modal {
