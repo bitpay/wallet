@@ -454,14 +454,20 @@
               ng-style="{'background-color':index.backgroundColor}" translate>Received</span>
             <span class="label tu gray radius" ng-show="btx.action == 'sent'" translate>Sent</span>
             <span class="label tu gray radius" ng-show="btx.action == 'moved'" translate>Moved</span>
+            <span class="label tu warning radius" ng-show="btx.action == 'invalid'" translate>Invalid</span>
           </div>
 
           <div class="large-4 medium-4 small-4 columns">
             <span class="size-16">
               <span ng-if="btx.action == 'received'">+</span>
               <span ng-if="btx.action == 'sent'">-</span>
+              <span  class="size-12" ng-if="btx.action == 'invalid'" translate>
+              (possible double spend)
+              </span>
+              <span  ng-if="btx.action != 'invalid'">
               {{btx.amountStr}}
               {{home.getUnitName()}}
+              </span>
             </span>
           </div>
           <div class="large-4 medium-4 small-4 columns text-right">
