@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, lodash, go, profileService, configService, isCordova, rateService, storageService, addressService, gettextCatalog, gettext, amMoment, nodeWebkit) {
+angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, lodash, go, profileService, configService, isCordova, rateService, storageService, addressService, gettextCatalog, gettext, amMoment, nodeWebkit, addonManager) {
   var self = this;
   self.isCordova = isCordova;
   self.onGoingProcess = {};
@@ -33,6 +33,10 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     'icon': 'icon-history',
     'link': 'history'
   }];
+
+  self.addonViews = addonManager.addonViews();
+  self.menu = self.menu.concat(addonManager.addonMenuItems());
+  self.menuItemSize = self.menu.length > 4 ? 2 : 3;
 
   self.tab = 'walletHome';
 
@@ -279,6 +283,10 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         self.otherWallets = lodash.filter(profileService.getWallets(self.network), function(w) {
           return w.id != self.walletId;
         });;
+
+        // Notify external addons or plugins
+        $rootScope.$emit('Local/BalanceUpdated', walletStatus.balance);
+
         $rootScope.$apply();
 
         if (opts.triggerTxUpdate) {
@@ -555,7 +563,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
           }
         });
       }, false);
-      chooser.click();  
+      chooser.click();
     }
 
     function formatDate(date) {

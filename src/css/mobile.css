@@ -151,6 +151,20 @@ _:-ms-fullscreen, :root .main {
   background: #2C3E50;
 }
 
+.second-bottom-bar {
+  z-index: 6;
+}
+
+.second-bottom-bar.animated.slideInRight,
+.second-bottom-bar.animated.slideInLeft {
+  -webkit-animation-duration: 0.3s;
+  animation-duration: 0.3s;
+}
+
+.menu-toggle {
+    padding-top: 1rem !important;
+}
+
 .amount {
   width: 100%;
   text-align: center;
