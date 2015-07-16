@@ -1,10 +1,11 @@
 <div class="ng-animate-disabled row collapse line-b" ng-class="text-gray">
   <li ng-if="output.summary" class="line-b p10 oh" ng-click="expand(output.parent)">
     <span class="text-gray" translate>To</span>:
-    <span class="right enable_text_select">{{output.summary.length}}
+    <span class="right enable_text_select" ng-if="output.summary.length>1">{{output.summary.length}}
         <span class="enable_text_select" translate>recipients</span>
         <i class="icon-arrow-down size-24"></i>
     </span>
+    <span class="right enable_text_select" ng-if="output.summary.length==1">{{output.summary[0].toAddress}}</span>
   </li>
   <li ng-if="!output.summary" class="line-b p10 oh" ng-click="copyAddress(output.toAddress)">
     <span class="text-gray" translate>To</span>:
@@ -15,6 +16,10 @@
     <span class="right">{{output.amountStr}}
       <span class="label gray radius enable_text_select">{{output.alternativeAmountStr}}</span>
     </span>
+  </li>
+  <li class="line-b p10 oh" ng-if="output.summary && output.summary.length==1 && output.summary[0].message" ng-click="expand(output.parent)">
+    <span class="text-gray" translate>Note</span>:
+    <span class="right enable_text_select">{{output.summary[0].message}}</span>
   </li>
   <li class="line-b p10 oh" ng-click="expand(output.parent)">
     <span class="text-gray" translate>Note</span>:
