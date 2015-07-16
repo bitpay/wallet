@@ -4,12 +4,20 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Project-Id-Version: \n"
 
+#: public/views/walletHome.html
+msgid "(possible double spend)"
+msgstr ""
+
 #: public/views/modals/txp-details.html
 msgid "* A payment proposal can be deleted if 1) you are the creator, and no other copayer has signed, or 2) 24 hours have passed since the proposal was created."
 msgstr ""
 
 #: public/views/backup.html
 msgid "* You can safely install your backup on another device and use your wallet from multiple devices at the same time."
+msgstr ""
+
+#: public/views/backup.html
+msgid "A backup without the private key will allow to see wallet balance, transaction, create spend proposals, but will not be able to approve (sign) proposals."
 msgstr ""
 
 #: public/views/splash.html
@@ -265,6 +273,10 @@ msgid "Could not join wallet:"
 msgstr ""
 
 #: src/js/controllers/walletHome.js
+msgid "Could not recognize a valid Bitcoin QR Code"
+msgstr ""
+
+#: src/js/controllers/walletHome.js
 msgid "Could not reject payment. Check you connection and try again"
 msgstr ""
 
@@ -349,6 +361,14 @@ msgid "Disabled"
 msgstr ""
 
 #: public/views/backup.html
+msgid "Do not include private key on backup"
+msgstr ""
+
+#: public/views/walletHome.html
+msgid "Download CSV file"
+msgstr ""
+
+#: public/views/backup.html
 msgid "Download backup"
 msgstr ""
 
@@ -401,6 +421,10 @@ msgstr ""
 msgid "Expires"
 msgstr ""
 
+#: public/views/backup.html
+msgid "Failed to create backup"
+msgstr ""
+
 #: src/js/controllers/importLegacy.js
 msgid "Failed to import wallets"
 msgstr ""
@@ -438,6 +462,10 @@ msgstr ""
 msgid "Generate new address"
 msgstr ""
 
+#: public/views/walletHome.html
+msgid "Generating .csv file..."
+msgstr ""
+
 #: public/views/modals/wallets.html
 msgid "Getting address for wallet {{selectedWalletName}} ..."
 msgstr ""
@@ -454,6 +482,7 @@ msgstr ""
 msgid "Have a Backup from Copay v0.9?"
 msgstr ""
 
+#: public/views/backup.html
 #: public/views/create.html
 #: public/views/join.html
 msgid "Hide Advanced options"
@@ -503,6 +532,10 @@ msgstr ""
 
 #: public/views/importLegacy.html
 msgid "Importing..."
+msgstr ""
+
+#: public/views/walletHome.html
+msgid "Invalid"
 msgstr ""
 
 #: src/js/controllers/index.js
@@ -588,6 +621,10 @@ msgstr ""
 
 #: public/views/modals/confirmation.html
 msgid "No"
+msgstr ""
+
+#: public/views/walletHome.html
+msgid "No Private key"
 msgstr ""
 
 #: public/views/walletHome.html
@@ -913,6 +950,7 @@ msgstr ""
 msgid "Shared Wallet"
 msgstr ""
 
+#: public/views/backup.html
 #: public/views/create.html
 #: public/views/join.html
 msgid "Show Advanced options"
@@ -984,6 +1022,10 @@ msgstr ""
 
 #: src/js/controllers/import.js
 msgid "There is an error in the form"
+msgstr ""
+
+#: public/views/modals/tx-details.html
+msgid "This transaction becomed invalid. Possible due to a double spend attempt."
 msgstr ""
 
 #: public/views/walletHome.html
