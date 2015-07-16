@@ -1,5 +1,5 @@
 --------------------------------
-Google Play store description
+Descripción
 --------------------------------
 Asegura tus bitcoin con tus propias reglas con el monedero de código abierto, multifirma de BitPay.
 
@@ -27,7 +27,17 @@ Monederos con nombres y colores de fondo personalizables
 Copay es un software gratuito y de código abierto que funciona en servidores no-propietarios, por lo que no es necesario confiar en una empresa para soporte continuo. Cualquier persona puede revisar y contribuir al código fuente de Copay en GitHub (https://github.com/bitpay/copay).
 
 --------------------------------
-Google Play store Release Notes: "What's new"
+Notas de lanzamiento: "Qué hay de nuevo"
+--------------------------------
+v1.1.2
+--------------------------------
+* Copias de seguridad sin capacidad de firmar transacciones (más información https://github.com/bitpay/copay/pull/2998)
+* Mejor reglas de orden y actualización en la historia de transacción
+* Maneja mejor las transacciones no válidas
+* Soporta Historial de TX en monederos con gran cantidad de transacciones
+* Exporta archivos .csv con el ID de transacción
+* Mejor política de selección de UTXOs
+* Corrección de errores menores
 --------------------------------
 v1.0.2
 --------------------------------
