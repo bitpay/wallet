@@ -7,6 +7,7 @@ angular.module('copayApp.services').factory('txStatus', function($modal, lodash,
     var fc = profileService.focusedClient;
     var status = txp.status;
     var type;
+    var INMEDIATE_SECS = 10;
 
     if (status == 'broadcasted') {
       type = 'broadcasted';
@@ -17,10 +18,15 @@ angular.module('copayApp.services').factory('txStatus', function($modal, lodash,
         copayerId: fc.credentials.copayerId
       });
 
-      if (!action || (action.type == 'accept' && n == 1)) {
+      if (!action)  {
         type = 'created';
       } else if (action.type == 'accept') {
-        type = 'accepted';
+        // created and accepted at the same time?
+        if ( n == 1 && action.createdOn - txp.createdOn < INMEDIATE_SECS ) {
+          type = 'created';
+        } else {
+          type = 'accepted';
+        }
       } else if (action.type == 'reject') {
         type = 'rejected';
       } else {

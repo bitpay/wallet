@@ -110,6 +110,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       self.walletName = fc.credentials.walletName;
       self.walletId = fc.credentials.walletId;
       self.isComplete = fc.isComplete();
+      self.canSign = fc.canSign();
       self.txps = [];
       self.copayers = [];
       self.updateColor();
