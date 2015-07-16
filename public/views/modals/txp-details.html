@@ -102,7 +102,7 @@
         <span translate>Reject</span>
       </button>
     </div>
-    <div class="large-5 medium-5 small-6 columns text-right">
+    <div class="large-5 medium-5 small-6 columns text-right" ng-show="canSign">
       <button class="button primary round expand" ng-click="sign(tx)"
         ng-style="{'background-color':color}"
         ng-disabled="loading">

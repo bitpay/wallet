@@ -8,7 +8,12 @@
 
 <div class="content p20v" ng-controller="backupController as backup">
   <div class="row m20t">
-    <div class="columns" ng-show="!backup.backupWalletPlainText && !backup.error">
+    <div class="columns" ng-show="!backup.backupWalletPlainText">
+      <div class="text-warning size-14 m10v" ng-show="backup.error">
+        <i class="fi-alert size-12"></i>
+        <span translate> Failed to create backup </span>
+      </div>
+
       <div class="text-warning size-14 m10v" ng-show="backup.isEncrypted">
         <i class="fi-alert size-12"></i>
         <span translate> The private key for this wallet is encrypted. Exporting a backup will keep the private key encrypted in the backup archive.</span>
@@ -28,6 +33,31 @@
         placeholder="{{'Repeat password'|translate}}"
         name="password" ng-model="backup.repeatpassword">
       </div>
+
+
+      <div class="m10t oh" ng-init="hideAdv=true">
+        <a class="button outline light-gray expand tiny" ng-click="hideAdv=!hideAdv">
+          <i class="fi-widget m3r"></i>
+          <span translate ng-hide="!hideAdv">Show Advanced options</span>
+          <span translate ng-hide="hideAdv">Hide Advanced options</span>
+          <i ng-if="hideAdv" class="icon-arrow-down4"></i>
+          <i ng-if="!hideAdv" class="icon-arrow-up4"></i>
+        </a>
+      </div>
+      <div ng-hide="hideAdv" class="row">
+        <div class="large-12 columns">
+          <label for="no-sign" class="line-b oh">
+            <span translate>Do not include private key on backup</span>
+            <switch id="no-sign" name="noSign" ng-model="noSign" class="green right m5t m10b"></switch>
+          </label>
+        </div>
+
+        <div class="m10 size-14 text-gray" translate>
+          A backup without the private key will allow to see wallet balance, transaction, create spend proposals, but will not be able to approve (sign) proposals. 
+
+        </div>
+      </div>
+
 
       <button class="black round expand" ng-click="backup.downloadWalletBackup()"
         ng-disabled="(!backup.password || backup.password != backup.repeatpassword)"
@@ -52,6 +82,9 @@
       </div>
     </div>
   </div>
+
+
+
   <div class="row m20b" ng-show="backup.backupWalletPlainText">
     <div class="large-12 columns">
       <h3 translate>Copy backup to a safe place</h3>
