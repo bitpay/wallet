@@ -34,7 +34,7 @@ v1.1.2
 * Copias de seguridad sin capacidad de firmar transacciones (más información https://github.com/bitpay/copay/pull/2998)
 * Mejor reglas de orden y actualización en la historia de transacción
 * Maneja mejor las transacciones no válidas
-* Soporta Historial de TX en monederos con gran cantidad de transacciones
+* Soporta Historial de TX en monederos con gran número de transacciones
 * Exporta archivos .csv con el ID de transacción
 * Mejor política de selección de UTXOs
 * Corrección de errores menores
