@@ -12,6 +12,10 @@ msgstr ""
 "X-Generator: Poedit 1.6.10\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
+#: public/views/walletHome.html
+msgid "(possible double spend)"
+msgstr "(Posible doble gasto)"
+
 #: public/views/modals/txp-details.html
 msgid ""
 "* A payment proposal can be deleted if 1) you are the creator, and no other "
@@ -29,6 +33,16 @@ msgid ""
 msgstr ""
 "* Usted puede instalar la copia de seguridad en otro dispositivo y usar el "
 "monedero al mismo tiempo en varios dispositivos."
+
+#: public/views/backup.html
+msgid ""
+"A backup without the private key will allow to see wallet balance, "
+"transaction, create spend proposals, but will not be able to approve (sign) "
+"proposals."
+msgstr ""
+"Una copia de seguridad sin la clave privada permitirá ver el balance del "
+"monedero, las transacciones, crear propuestas de gasto, pero no podrá "
+"aprobar (firmar) propuestas."
 
 #: public/views/splash.html
 msgid "A multisignature bitcoin wallet"
@@ -296,6 +310,10 @@ msgid "Could not join wallet:"
 msgstr "No se pudo unir al monedero:"
 
 #: src/js/controllers/walletHome.js
+msgid "Could not recognize a valid Bitcoin QR Code"
+msgstr "No se reconoció un código QR de Bitcoin válido"
+
+#: src/js/controllers/walletHome.js
 msgid "Could not reject payment. Check you connection and try again"
 msgstr ""
 "No se pudo rechazar el pago. Verifique su conexión e inténtelo nuevamente"
@@ -378,6 +396,14 @@ msgid "Disabled"
 msgstr "Deshabilitado"
 
 #: public/views/backup.html
+msgid "Do not include private key on backup"
+msgstr "No incluir la clave privada en la copia de seguridad"
+
+#: public/views/walletHome.html
+msgid "Download CSV file"
+msgstr "Descargar archivo CSV"
+
+#: public/views/backup.html
 msgid "Download backup"
 msgstr "Descargar copia de seguridad"
 
@@ -429,6 +455,10 @@ msgstr "Error al importar monedero: "
 msgid "Expires"
 msgstr "Expira"
 
+#: public/views/backup.html
+msgid "Failed to create backup"
+msgstr "Falló al crear copia de seguridad"
+
 #: src/js/controllers/importLegacy.js
 msgid "Failed to import wallets"
 msgstr "Falló al importar monederos"
@@ -466,6 +496,10 @@ msgstr "Generar código QR"
 msgid "Generate new address"
 msgstr "Generar nueva dirección"
 
+#: public/views/walletHome.html
+msgid "Generating .csv file..."
+msgstr "Generando archivo .csv..."
+
 #: public/views/modals/wallets.html
 msgid "Getting address for wallet {{selectedWalletName}} ..."
 msgstr "Obteniendo direcciones para el monedero {{selectedWalletName}} ..."
@@ -482,7 +516,7 @@ msgstr "Volver"
 msgid "Have a Backup from Copay v0.9?"
 msgstr "¿Tiene una copia de seguridad de Copay v0.9?"
 
-#: public/views/create.html public/views/join.html
+#: public/views/backup.html public/views/create.html public/views/join.html
 msgid "Hide Advanced options"
 msgstr "Ocultar opciones avanzadas"
 
@@ -529,6 +563,10 @@ msgstr "Importando monedero..."
 #: public/views/importLegacy.html
 msgid "Importing..."
 msgstr "Importando..."
+
+#: public/views/walletHome.html
+msgid "Invalid"
+msgstr "Inválido"
 
 #: src/js/controllers/index.js
 msgid "Japanese"
@@ -610,6 +648,10 @@ msgstr "Nueva Propuesta de Pago"
 #: public/views/modals/confirmation.html
 msgid "No"
 msgstr "No"
+
+#: public/views/walletHome.html
+msgid "No Private key"
+msgstr "Sin clave privada"
 
 #: public/views/walletHome.html
 msgid "No transactions yet"
@@ -936,7 +978,7 @@ msgstr ""
 msgid "Shared Wallet"
 msgstr "Monedero Compartido"
 
-#: public/views/create.html public/views/join.html
+#: public/views/backup.html public/views/create.html public/views/join.html
 msgid "Show Advanced options"
 msgstr "Mostrar opciones avanzadas"
 
@@ -1103,6 +1145,13 @@ msgstr "No dispone de monederos para realizar este pago"
 #: src/js/controllers/import.js
 msgid "There is an error in the form"
 msgstr "Hay un error en el formulario"
+
+#: public/views/modals/tx-details.html
+msgid ""
+"This transaction becomed invalid. Possible due to a double spend attempt."
+msgstr ""
+"Esta transacción se ha invalidado. Posiblemente debido a un intento de doble "
+"gasto."
 
 #: public/views/walletHome.html
 msgid ""
@@ -1575,9 +1624,6 @@ msgstr ""
 #~ msgid "Disclaimer"
 #~ msgstr "Renuncia"
 
-#~ msgid "Download CSV file"
-#~ msgstr "Descargar archivo CSV"
-
 #~ msgid "Email"
 #~ msgstr "Correo electrónico"
 
@@ -1670,9 +1716,6 @@ msgstr ""
 
 #~ msgid "Name:"
 #~ msgstr "Nombre:"
-
-#~ msgid "Need to be careful with backups"
-#~ msgstr "Necesita ser cuidadoso con las copias de seguridad"
 
 #~ msgid "Needs Backup"
 #~ msgstr "Copia de Seguridad necesaria"
@@ -2073,9 +2116,6 @@ msgstr ""
 
 #~ msgid "required"
 #~ msgstr "requerido"
-
-#~ msgid "valid!"
-#~ msgstr "¡válido!"
 
 #~ msgid "yet to backup the wallet."
 #~ msgstr "deben hacer su copia de seguridad"
