@@ -436,28 +436,21 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       };
 
       if (tx.outputs) {
-        if (tx.outputs.length === 1) {
-          tx.amount = tx.outputs[0].amount;
-          tx.toAddress = tx.outputs[0].toAddress;
-          tx.message += (' ' + tx.outputs[0].message);
-          delete tx.outputs;
-        } else {
-          tx.amount = lodash.reduce(tx.outputs, function(total, o) {
-            formatAmount(o, o.amount * self.satToUnit);
-            return total + o.amount;
-          }, 0);
-          var summary = tx.outputs;
-          tx.outputs = [{
-            amount: tx.amount,
-            message: tx.message,
-            summary: summary
-          }];
-          tx.outputs[0].parent = tx.outputs;
-          tx.outputs.transform = formatAmount;
-          tx.outputs.accumulator = 'amount';
-          tx.outputs.recipientCount = summary.length;
-          formatAmount(tx.outputs[0], tx.amount * self.satToUnit);
-        }
+        tx.amount = lodash.reduce(tx.outputs, function(total, o) {
+          formatAmount(o, o.amount * self.satToUnit);
+          return total + o.amount;
+        }, 0);
+        var summary = tx.outputs;
+        tx.outputs = [{
+          amount: tx.amount,
+          message: tx.message,
+          summary: summary
+        }];
+        tx.outputs[0].parent = tx.outputs;
+        tx.outputs.transform = formatAmount;
+        tx.outputs.accumulator = 'amount';
+        tx.outputs.recipientCount = summary.length;
+        formatAmount(tx.outputs[0], tx.amount * self.satToUnit);
       }
       formatAmount(tx, tx.amount * self.satToUnit);
 
