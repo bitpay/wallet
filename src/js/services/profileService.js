@@ -1,6 +1,6 @@
 'use strict';
 angular.module('copayApp.services')
-  .factory('profileService', function profileServiceFactory($rootScope, $location, $timeout, $filter, $log, lodash, storageService, bwcService, configService, notificationService, isChromeApp, isCordova, gettext, nodeWebkit, bwsError) {
+  .factory('profileService', function profileServiceFactory($rootScope, $location, $timeout, $filter, $log, lodash, storageService, bwcService, configService, notificationService, isChromeApp, isCordova, gettext, nodeWebkit, bwsError, ledger) {
 
     var root = {};
 
@@ -193,6 +193,12 @@ angular.module('copayApp.services')
         } catch (ex) {
           return cb(gettext('Could not create using the specified extended private key'));
         }
+      } else if (opts.extendedPublicKey) {
+        try {
+          walletClient.seedFromExternalWalletPublicKey(opts.extendedPublicKey, opts.externalSource, opts.externalIndex);
+        } catch (ex) {
+          return cb(gettext('Could not create using the specified extended public key'));
+        }
       }
       walletClient.createWallet(opts.name, opts.myName || 'me', opts.m, opts.n, {
         network: opts.networkName
@@ -219,8 +225,13 @@ angular.module('copayApp.services')
         } catch (ex) {
           return cb(gettext('Could not join using the specified extended private key'));
         }
-      }
-
+      } else if (opts.extendedPublicKey) {
+        try {
+          walletClient.seedFromExternalWalletPublicKey(opts.extendedPublicKey, opts.externalSource, opts.externalIndex);
+        } catch (ex) {
+          return cb(gettext('Could not create using the specified extended public key'));
+        }
+      }      
 
       try {
         var walletData = this.getUtils().fromSecret(opts.secret);
