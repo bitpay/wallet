@@ -57,6 +57,7 @@
     "test": "./node_modules/.bin/grunt test-coveralls"
   },
   "devDependencies": {
+    "adm-zip": "git://github.com/cthackers/adm-zip.git",
     "angular": "^1.3.14",
     "angular-mocks": "^1.3.14",
     "grunt-contrib-compress": "^0.13.0",
