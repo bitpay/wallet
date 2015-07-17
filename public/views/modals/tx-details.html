@@ -50,6 +50,10 @@
       <time>{{ btx.time * 1000 | amCalendar}}</time>
     </span>
     </li>
+    <li class="line-b p10">
+      <span class="text-gray" translate>Fee</span>:
+      <span class="right">{{feeStr}}</span>
+    </li>
     <li ng-if="btx.message" class="line-b p10 oh">
     <span class="text-gray" translate>Note</span>:
     <span class="right">

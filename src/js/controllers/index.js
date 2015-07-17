@@ -442,6 +442,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   };
 
   self.setTxHistory = function(txs) {
+    var config = configService.getSync().wallet.settings;
     var now = Math.floor(Date.now() / 1000);
     var c = 0;
     self.txHistoryPaging = txs[self.limitHistory] ? true : false;
@@ -453,6 +454,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
       tx.rateTs = Math.floor((tx.ts || now) / 1000);
       tx.amountStr = profileService.formatAmount(tx.amount); //$filter('noFractionNumber')(
+      if (tx.fees)
+        tx.feeStr = profileService.formatAmount(tx.fees) + ' ' + config.unitName;
+
       if (c < self.limitHistory) {
         self.txHistory.push(tx);
         c++;
@@ -604,8 +608,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         if (txs && txs.length > 0) {
           allTxs.push(txs);
           return getHistory(skip + 100, cb);
-        }
-        else {
+        } else {
           return cb(null, lodash.flatten(allTxs));
         }
       });
@@ -633,7 +636,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
           self.satToUnit = 1 / self.unitToSatoshi;
           var data = txs;
           var satToBtc = 1 / 100000000;
-          var filename = 'Copay-' + (self.alias || self.walletName ) + '.csv';
+          var filename = 'Copay-' + (self.alias || self.walletName) + '.csv';
           var csvContent = '';
           if (!isNode) csvContent = 'data:text/csv;charset=utf-8,';
           csvContent += 'Date,Destination,Note,Amount,Currency,Spot Value,Total Value,Tax Type,Category\n';
@@ -641,16 +644,29 @@ angular.module('copayApp.controllers').controller('indexController', function($r
           var _amount, _note;
           var dataString;
           data.forEach(function(it, index) {
-            _amount = (it.action == 'sent' ? '-' : '') + (it.amount * satToBtc).toFixed(8);
-            _note = formatString((it.message ? 'Note: ' + it.message + ' - ' : '') + 'TxId: ' + it.txid);
+            var amount = it.amount;
+
+            if (it.action == 'moved')
+              amount = 0;
+
+            _amount = (it.action == 'sent' ? '-' : '') + (amount * satToBtc).toFixed(8);
+            _note = formatString((it.message ? it.message : '') + ' TxId: ' + it.txid + ' Fee:' + (it.fees * satToBtc).toFixed(8));
+
+            if (it.action == 'moved')
+              _note += ' Moved:' + (it.amount * satToBtc).toFixed(8)
+
             dataString = formatDate(it.time * 1000) + ',' + formatString(it.addressTo) + ',' + _note + ',' + _amount + ',BTC,,,,';
-            csvContent += index < data.length ? dataString + "\n" : dataString;
+            csvContent += dataString + "\n"; 
+
+            if (it.fees && (it.action == 'moved' || it.action == 'sent')) {
+              var _fee = (it.fees * satToBtc).toFixed(8)
+               csvContent += formatDate(it.time * 1000) + ',Bitcoin Network Fees,, -' + _fee + ',BTC,,,,' + "\n";
+            }
           });
 
           if (isNode) {
             saveFile('#export_file', csvContent);
-          }
-          else {
+          } else {
             var encodedUri = encodeURI(csvContent);
             var link = document.createElement("a");
             link.setAttribute("href", encodedUri);
