@@ -11,20 +11,16 @@
         <time class="right size-12 text-gray m5t">{{ (tx.ts || tx.createdOn ) * 1000 | amTimeAgo}}</time>
       </div>
       <div class="ellipsis size-14">
-        <span translate>To</span>:
-        <span ng-if="tx.merchant">
-          <span ng-show="tx.merchant.pr.ca"><i class="fi-lock"></i> {{tx.merchant.domain}}</span>
-          <span ng-show="!tx.merchant.pr.ca"><i class="fi-unlock"></i> {{tx.merchant.domain}}</span>
-        </span>
-        <span ng-if="tx.outputs && tx.outputs.recipientCount>1">
+        <span ng-if="tx.outputs">
+          <span translate>Recipients</span>:
           <span>{{tx.outputs.recipientCount}}</span>
-          <span translate>recipients</span>
-        </span>
-        <span ng-if="tx.outputs && tx.outputs.recipientCount==1">
-          <contact address="{{tx.outputs[0].summary[0].toAddress}}" ng-hide="tx.merchant"> </contact>
-          {{tx.outputs[0].summary[0].toAddress}}
         </span>
         <span ng-if="!tx.outputs">
+          <span translate>To</span>:
+          <span ng-if="tx.merchant">
+            <span ng-show="tx.merchant.pr.ca"><i class="fi-lock"></i> {{tx.merchant.domain}}</span>
+            <span ng-show="!tx.merchant.pr.ca"><i class="fi-unlock"></i> {{tx.merchant.domain}}</span>
+          </span>
           <contact address="{{tx.toAddress}}" ng-hide="tx.merchant"> </contact>
           {{tx.toAddress}}
         </span>
