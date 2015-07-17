@@ -994,6 +994,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       $scope.color = fc.backgroundColor;
       $scope.copayerId = fc.credentials.copayerId;
       $scope.isShared = fc.credentials.n > 1;
+      $scope.feeStr = btx.feeStr;
 
       $scope.getAmount = function(amount) {
         return self.getAmount(amount);
