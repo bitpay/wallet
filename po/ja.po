@@ -12,6 +12,10 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Poedit 1.6.4\n"
 
+#: public/views/walletHome.html
+msgid "(possible double spend)"
+msgstr "(二重払い可能性あり)"
+
 #: public/views/modals/txp-details.html
 msgid ""
 "* A payment proposal can be deleted if 1) you are the creator, and no other "
@@ -29,6 +33,15 @@ msgid ""
 msgstr ""
 "* 安全にバックアップを別のデバイスにインポートして、同じウォレットを複数の端"
 "末でご利用いただけます。"
+
+#: public/views/backup.html
+msgid ""
+"A backup without its private key will allow the user to see the wallet "
+"balance, transactions, and create spend proposals. However, it will not be "
+"able to approve (sign) proposals."
+msgstr ""
+"秘密鍵なしのバックアップでは、残高の確認、取引履歴の確認、送金の提案ができま"
+"す。しかし、送金の提案を承諾 (署名) できません。"
 
 #: public/views/splash.html
 msgid "A multisignature bitcoin wallet"
@@ -293,6 +306,10 @@ msgid "Could not join wallet:"
 msgstr "ウォレットに参加できませんでした。"
 
 #: src/js/controllers/walletHome.js
+msgid "Could not recognize a valid Bitcoin QR Code"
+msgstr "有効なビットコインQRコードが認識できませんでした。"
+
+#: src/js/controllers/walletHome.js
 msgid "Could not reject payment. Check you connection and try again"
 msgstr "送金の提案を却下できませんでした。接続を確認し、やり直して下さい。"
 
@@ -374,6 +391,14 @@ msgid "Disabled"
 msgstr "無効"
 
 #: public/views/backup.html
+msgid "Do not include private key in backup"
+msgstr "バックアップに秘密鍵を含めない"
+
+#: public/views/walletHome.html
+msgid "Download CSV file"
+msgstr "CSVファイルをダウンロード"
+
+#: public/views/backup.html
 msgid "Download backup"
 msgstr "バックアップをダウンロード"
 
@@ -425,6 +450,10 @@ msgstr "ウォレットインポート時にエラー"
 msgid "Expires"
 msgstr "有効期限："
 
+#: public/views/backup.html
+msgid "Failed to create backup"
+msgstr "バックアップに失敗しました。"
+
 #: src/js/controllers/importLegacy.js
 msgid "Failed to import wallets"
 msgstr "ウォレットのインポート失敗しました"
@@ -462,6 +491,10 @@ msgstr "QRコードを生成"
 msgid "Generate new address"
 msgstr "新規アドレスを生成"
 
+#: public/views/walletHome.html
+msgid "Generating .csv file..."
+msgstr "CSVファイル作成中…"
+
 #: public/views/modals/wallets.html
 msgid "Getting address for wallet {{selectedWalletName}} ..."
 msgstr "「{{selectedWalletName}}」のアドレスを取得中…"
@@ -478,7 +511,7 @@ msgstr "前に戻る"
 msgid "Have a Backup from Copay v0.9?"
 msgstr "Copay v0.9 のバックアップをお持ちですか？"
 
-#: public/views/create.html public/views/join.html
+#: public/views/backup.html public/views/create.html public/views/join.html
 msgid "Hide Advanced options"
 msgstr "詳細設定　非表示"
 
@@ -525,6 +558,10 @@ msgstr "ウォレットインポート中…"
 #: public/views/importLegacy.html
 msgid "Importing..."
 msgstr "インポート中…"
+
+#: public/views/walletHome.html
+msgid "Invalid"
+msgstr "無効"
 
 #: src/js/controllers/index.js
 msgid "Japanese"
@@ -606,6 +643,10 @@ msgstr "新しい送金の提案"
 #: public/views/modals/confirmation.html
 msgid "No"
 msgstr "いいえ"
+
+#: public/views/walletHome.html
+msgid "No Private key"
+msgstr "秘密鍵なし"
 
 #: public/views/walletHome.html
 msgid "No transactions yet"
@@ -936,7 +977,7 @@ msgstr ""
 msgid "Shared Wallet"
 msgstr "共有ウォレットに参加"
 
-#: public/views/create.html public/views/join.html
+#: public/views/backup.html public/views/create.html public/views/join.html
 msgid "Show Advanced options"
 msgstr "詳細設定　表示"
 
@@ -1097,6 +1138,11 @@ msgstr "送金可能なウォレットがありません"
 #: src/js/controllers/import.js
 msgid "There is an error in the form"
 msgstr "フォームにエラーがありました"
+
+#: public/views/modals/tx-details.html
+msgid ""
+"This transaction has become invalid; possibly due to a double spend attempt."
+msgstr "この取引が無効になりました。二重払いの可能性があります。"
 
 #: public/views/walletHome.html
 msgid ""

@@ -17,7 +17,7 @@ msgid "* You can safely install your backup on another device and use your walle
 msgstr ""
 
 #: public/views/backup.html
-msgid "A backup without the private key will allow to see wallet balance, transaction, create spend proposals, but will not be able to approve (sign) proposals."
+msgid "A backup without its private key will allow the user to see the wallet balance, transactions, and create spend proposals. However, it will not be able to approve (sign) proposals."
 msgstr ""
 
 #: public/views/splash.html
@@ -361,7 +361,7 @@ msgid "Disabled"
 msgstr ""
 
 #: public/views/backup.html
-msgid "Do not include private key on backup"
+msgid "Do not include private key in backup"
 msgstr ""
 
 #: public/views/walletHome.html
@@ -1025,7 +1025,7 @@ msgid "There is an error in the form"
 msgstr ""
 
 #: public/views/modals/tx-details.html
-msgid "This transaction becomed invalid. Possible due to a double spend attempt."
+msgid "This transaction has become invalid; possibly due to a double spend attempt."
 msgstr ""
 
 #: public/views/walletHome.html
