@@ -442,6 +442,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   };
 
   self.setTxHistory = function(txs) {
+    var config = configService.getSync().wallet.settings;
     var now = Math.floor(Date.now() / 1000);
     var c = 0;
     self.txHistoryPaging = txs[self.limitHistory] ? true : false;
@@ -453,6 +454,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
       tx.rateTs = Math.floor((tx.ts || now) / 1000);
       tx.amountStr = profileService.formatAmount(tx.amount); //$filter('noFractionNumber')(
+      if (tx.fees)
+        tx.feeStr = profileService.formatAmount(tx.fees) + ' ' + config.unitName;
+
       if (c < self.limitHistory) {
         self.txHistory.push(tx);
         c++;
