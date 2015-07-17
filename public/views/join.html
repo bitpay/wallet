@@ -84,14 +84,14 @@
             <i ng-show="!join.hideAdv" class="icon-arrow-down4"></i>
             <i ng-show="join.hideAdv" class="icon-arrow-up4"></i>
           </a>
-          <div ng-show="join.hideAdv" class="row" ng-init="hideSlots=true">
+          <div ng-show="join.hideAdv" class="row">
             <div class="large-12 columns" ng-show="join.isChromeApp()">
               <label for="hw-ledger" class="line-b oh">
                 <span translate>Use Ledger hardware wallet</span>
-                <switch id="hw-ledger" name="hwLedger" ng-model="hwLedger" class="green right m5t m10b" ng-change="hideSlots=false"></switch>
+                <switch id="hw-ledger" name="hwLedger" ng-model="hwLedger" class="green right m5t m10b"></switch>
               </label>
             </div>
-            <div class="large-12 columns" ng-hide="hideSlots">
+            <div class="large-12 columns" ng-hide="!hwLedger">
               <label class="line-b oh">
                 <span translate>Select slot number for Ledger key</span>
                 <select class="m10t" ng-model="externalIndex" ng-options="externalIndex as externalIndex for externalIndex in join.externalIndexValues">
