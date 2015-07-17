@@ -12,6 +12,10 @@ msgstr ""
 "Language: fr\n"
 "X-Generator: Poedit 1.6.10\n"
 
+#: public/views/walletHome.html
+msgid "(possible double spend)"
+msgstr "(double dépense éventuelle)"
+
 #: public/views/modals/txp-details.html
 msgid "* A payment proposal can be deleted if 1) you are the creator, and no other copayer has signed, or 2) 24 hours have passed since the proposal was created."
 msgstr " Une proposition de transaction peut être supprimée  si 1) vous êtes le créateur, et aucun des autres copayers n'a signé, ou 2) 24 heures sont passées depuis la création de la proposition."
@@ -19,6 +23,10 @@ msgstr " Une proposition de transaction peut être supprimée  si 1) vous êtes 
 #: public/views/backup.html
 msgid "* You can safely install your backup on another device and use your wallet from multiple devices at the same time."
 msgstr "Vous pouvez installer en toute sécurité votre sauvegarde sur un autre appareil et utiliser votre portefeuille depuis plusieurs appareils en même temps."
+
+#: public/views/backup.html
+msgid "A backup without its private key will allow the user to see the wallet balance, transactions, and create spend proposals. However, it will not be able to approve (sign) proposals."
+msgstr "Une sauvegarde ne disposant pas de sa clé privée autorisera l'utilisateur à voir le solde du portefeuille, les transactions, et à créer des propositions de dépense. Cependant, il ne pourra pas approuver (signer) les propositions."
 
 #: public/views/splash.html
 msgid "A multisignature bitcoin wallet"
@@ -273,6 +281,10 @@ msgid "Could not join wallet:"
 msgstr "Impossible de rejoindre le portefeuille"
 
 #: src/js/controllers/walletHome.js
+msgid "Could not recognize a valid Bitcoin QR Code"
+msgstr "Impossible de reconnaître un code QR Bitcoin valide"
+
+#: src/js/controllers/walletHome.js
 msgid "Could not reject payment. Check you connection and try again"
 msgstr "Impossible de rejeter le paiement. Vérifiez votre connexion internet réessayez"
 
@@ -357,6 +369,14 @@ msgid "Disabled"
 msgstr "Désactivé"
 
 #: public/views/backup.html
+msgid "Do not include private key in backup"
+msgstr "Ne pas inclure la clé privée dans la sauvegarde"
+
+#: public/views/walletHome.html
+msgid "Download CSV file"
+msgstr "Télécharger le fichier CSV"
+
+#: public/views/backup.html
 msgid "Download backup"
 msgstr "Télécharger la sauvegarde"
 
@@ -409,6 +429,10 @@ msgstr "Erreur d'importation du portefeuille :"
 msgid "Expires"
 msgstr "Expire"
 
+#: public/views/backup.html
+msgid "Failed to create backup"
+msgstr "Impossible de créer la sauvegarde"
+
 #: src/js/controllers/importLegacy.js
 msgid "Failed to import wallets"
 msgstr "Impossible d'importer les portefeuilles"
@@ -446,6 +470,10 @@ msgstr "Générer un code QR"
 msgid "Generate new address"
 msgstr "Générer une nouvelle adresse"
 
+#: public/views/walletHome.html
+msgid "Generating .csv file..."
+msgstr "Génération du fichier .csv..."
+
 #: public/views/modals/wallets.html
 msgid "Getting address for wallet {{selectedWalletName}} ..."
 msgstr "Obtention d'une adresse pour le portefeuille {{selectedWalletName}} ..."
@@ -464,6 +492,7 @@ msgstr "Vous avez une sauvegarde de Copay v0.9 ?"
 
 #: public/views/create.html 
 #: public/views/join.html
+#: public/views/backup.html
 msgid "Hide Advanced options"
 msgstr "Masquer les options avancées"
 
@@ -512,6 +541,10 @@ msgstr "Importation du portefeuille..."
 #: public/views/importLegacy.html
 msgid "Importing..."
 msgstr "Importation..."
+
+#: public/views/walletHome.html
+msgid "Invalid"
+msgstr "Invalide"
 
 #: src/js/controllers/index.js
 msgid "Japanese"
@@ -594,6 +627,10 @@ msgstr "Nouvelle proposition de paiement"
 #: public/views/modals/confirmation.html
 msgid "No"
 msgstr "Non"
+
+#: public/views/walletHome.html
+msgid "No Private key"
+msgstr "Aucune clé privée"
 
 #: public/views/walletHome.html
 msgid "No transactions yet"
@@ -918,6 +955,7 @@ msgstr "Partagez cette adresse de portefeuille pour recevoir des paiements. Pour
 msgid "Shared Wallet"
 msgstr "Portefeuille partagé"
 
+#: public/views/backup.html
 #: public/views/create.html
 #: public/views/join.html
 msgid "Show Advanced options"
@@ -990,6 +1028,10 @@ msgstr "Il n'y a pas de portefeuilles pour faire ce paiement"
 #: src/js/controllers/import.js
 msgid "There is an error in the form"
 msgstr "Il y a une erreur dans la forme"
+
+#: public/views/modals/tx-details.html
+msgid "This transaction has become invalid; possibly due to a double spend attempt."
+msgstr "Cette transaction est devenue invalide ; il s'agit peut-être d'une tentative de double dépense."
 
 #: public/views/walletHome.html
 msgid "This wallet is not registered at the given Bitcore Wallet Service (BWS). You can recreate it from the local information."
