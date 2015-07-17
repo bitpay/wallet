@@ -645,8 +645,20 @@ angular.module('copayApp.controllers').controller('indexController', function($r
           var _amount, _note;
           var dataString;
           data.forEach(function(it, index) {
-            _amount = (it.action == 'sent' ? '-' : '') + (it.amount * satToBtc).toFixed(8);
-            _note = formatString((it.message ? 'Note: ' + it.message + ' - ' : '') + 'TxId: ' + it.txid);
+            var amount = it.amount;
+
+            if (it.action == 'moved')
+              amount = 0;
+
+            if (it.action == 'sent' || it.action=='moved')
+              amount += it.fees;
+
+            _amount = (it.action == 'sent' ? '-' : '') + (amount  * satToBtc).toFixed(8);
+            _note = formatString((it.message ? 'Note: ' + it.message + ' - ' : '') + 'TxId: ' + it.txid + ' Fee'+ (it.fees * satToBtc).toFixed(8)) ;
+
+            if (it.action == 'moved')
+              _note += ' Moved:' +  (it.amount  * satToBtc).toFixed(8)
+
             dataString = formatDate(it.time * 1000) + ',' + formatString(it.addressTo) + ',' + _note + ',' + _amount + ',BTC,,,,';
             csvContent += index < data.length ? dataString + "\n" : dataString;
           });
