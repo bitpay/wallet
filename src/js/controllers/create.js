@@ -35,7 +35,7 @@ angular.module('copayApp.controllers').controller('createController',
       $scope.requiredCopayers = Math.min(parseInt(n / 2 + 1), maxReq);
     };
 
-    this.externatIndexValues = lodash.range(0,20);
+    this.externalIndexValues = lodash.range(0,20);
     $scope.externalIndex = 0;
     this.TCValues = lodash.range(2, defaults.limits.totalCopayers + 1);
     $scope.totalCopayers = defaults.wallet.totalCopayers;
