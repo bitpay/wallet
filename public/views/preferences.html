@@ -36,10 +36,17 @@
         <span ng-style="{'color':index.backgroundColor}">&block;</span>
       </span>      
     </li>
-    <li class="line-b p20">
+    <li class="line-b p20" ng-hide="preferences.externalIndex >= 0">
       <span translate>Encrypt Private Key</span>
       <switch id="network-name" name="encrypt" ng-model="encrypt" class="green right"></switch>
-  </li>
+    </li>
+    <li class="line-b p20" ng-show="preferences.externalIndex >= 0">
+      <span translate>Hardware wallet</span>
+      <span class="right text-gray">
+        {{preferences.externalSource}} 
+        (index {{preferences.externalIndex}})
+      </span>
+    </li>
  
     <h4 class="title m0">&nbsp;</h4>
     <li class="line-b p20" ng-click="$root.go('backup')">

@@ -11,8 +11,11 @@ angular.module('copayApp.controllers').controller('preferencesController',
       isoCode: config.wallet.settings.alternativeIsoCode
     }; 
     var fc = profileService.focusedClient;
-    if (fc)
+    if (fc) {
       $scope.encrypt = fc.hasPrivKeyEncrypted();
+      this.externalSource = fc.getPrivKeyExternalSourceName() == 'ledger' ? "Ledger" : null;
+      this.externalIndex = fc.getExternalIndex();
+    }
 
     var unwatch = $scope.$watch('encrypt', function(val) {
       var fc = profileService.focusedClient;
