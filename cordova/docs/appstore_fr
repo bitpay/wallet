@@ -1,5 +1,5 @@
 --------------------------------
-Google Play store description
+Description
 --------------------------------
 Sécurisez vos bitcoins selon vos conditions avec un portefeuille open source et multi-signatures par BitPay. 
 Les utilisateurs de Copay peuvent détenir leurs fonds de manière individuelle, ou partager leurs finances de manière sécurisée avec les autres utilisateurs en utilisant des portefeuilles multi-signatures, ce qui empêche les paiements non autorisés en exigeant des approbations multiples. 
@@ -27,7 +27,17 @@ Nous avons développé les fonctionnalités suivantes dans cette version de Copa
 Copay est un logiciel gratuit et open source qui tourne sur des serveurs non-propriétaires, il n'y a donc pas besoin de compter sur une entreprise pour un support continuel. N'importe qui peut examiner ou contribuer au code source de Copay sur GitHub (https://github.com/bitpay/copay). 
 
 --------------------------------
-Google Play store Release Notes: "What's new"
+Release Notes: "What's new"
+--------------------------------
+v1.1.2
+--------------------------------
+• Il est maintenant possible de faire des sauvegardes sans les capacités de signature (plus d'informations sur https://github.com/bitpay/copay/pull/2998)
+• Meilleures règles d'actualisation et de tri dans l'historique des transactions
+• Meilleure prise en charge des transactions 'invalides' dans l'historique
+• Meilleure prise en charge des portefeuilles avec plus de 1000 transactions dans l'historique
+• Exportez les fichiers .csv avec un ID de transaction
+• Meilleures politiques de sélection des UTXO
+• Corrections de bugs mineurs
 --------------------------------
 v1.1.0
 --------------------------------
