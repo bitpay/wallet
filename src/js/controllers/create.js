@@ -91,7 +91,7 @@ angular.module('copayApp.controllers').controller('createController',
           self.loading = false;
           if (err) {
             if (err == "Error creating wallet" && opts.extendedPublicKey) {
-              err = "This xpub index is already used by another wallet. Please select another index."
+              err = gettext("This xpub index is already used by another wallet. Please select another index.");
             }
             $log.debug(err);
             self.error = err;
