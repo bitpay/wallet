@@ -751,9 +751,6 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       address = form.address.$modelValue;
       amount = parseInt((form.amount.$modelValue * unitToSat).toFixed(0));
 
-      console.log(fc);
-      console.log(fc.export({}));
-
       fc.sendTxProposal({
         toAddress: address,
         amount: amount,
@@ -761,7 +758,6 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
         payProUrl: paypro ? paypro.url : null,
         feePerKb: config.feeValue || 10000,
       }, function(err, txp) {
-        console.log(txp);
         if (err) {
           self.setOngoingProcess();
           profileService.lockFC();
