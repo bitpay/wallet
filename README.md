@@ -1,6 +1,7 @@
 <img src="https://raw.githubusercontent.com/bitpay/copay/master/public/img/logo.png" alt="Copay" width="300">
 
 [![Build Status](https://secure.travis-ci.org/bitpay/copay.svg)](http://travis-ci.org/bitpay/copay) 
+[![Crowdin](https://d322cqt584bo4o.cloudfront.net/copay/localized.png)](https://crowdin.com/project/copay)
 
 Copay is an easy-to-use, open-source, multiplatform, multisignature, secure bitcoin wallet platform for both  individuals and companies.  Copay uses [Bitcore Wallet Service](https://github.com/bitpay/bitcore-wallet-service) (BWS) for peer synchronization and bitcore network interfacing. 
 
@@ -100,7 +101,9 @@ For more information regarding how addresses are generated using this procedure,
 Copay depends on [Bitcore Wallet Service](https://github.com/bitpay/bitcore-wallet-service) (BWS) for blockchain information, networking and copayer synchronization.  A BWS instance can be setup and operational within minutes or you can use a public instance like `https://bws.bitpay.com`.  Switching between BWS instances is very simple and can be done with a click from within Copay.  BWS also allows Copay to interoperate with others wallet like [Bitcore Wallet CLI] (https://github.com/bitpay/bitcore-wallet).
 
 ## Translations
-Copay uses standard gettext PO files for translations and is currently translated to Spanish, Japanese, French, German and Portuguese thanks to community contributions.  See https://github.com/bitpay/copay/pull/2880 as an example pull request for adding translations.
+Copay uses standard gettext PO files for translations and [Crowdin](https://crowdin.com/project/copay) as front-end for translators.
+
+To join our team of translators, please create an account at [Crowdin](https://crowdin.com) and sends the request to the language that you want to translate.
 
 **Translation Credits:**
 - Japanese: @dabura667
