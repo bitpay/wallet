@@ -6,7 +6,7 @@
 
 
 <div class="content p20v" ng-controller="joinController as join">
-  <div class="onGoingProcess" ng-show="join.loading">
+  <div class="onGoingProcess" ng-show="join.loading && !join.ledger">
     <div class="onGoingProcess-content" ng-style="{'background-color':'#222'}">
     <div class="spinner">
       <div class="rect1"></div>
@@ -16,6 +16,19 @@
       <div class="rect5"></div>
     </div>
     <span translate>Joining Wallet...</span>
+    </div>
+  </div>
+
+  <div class="onGoingProcess" ng-show="join.ledger">
+    <div class="onGoingProcess-content" ng-style="{'background-color':'#222'}">
+    <div class="spinner">
+      <div class="rect1"></div>
+      <div class="rect2"></div>
+      <div class="rect3"></div>
+      <div class="rect4"></div>
+      <div class="rect5"></div>
+    </div>
+    <span translate>Connecting to Ledger Wallet...</span>
     </div>
   </div>
 
@@ -71,7 +84,20 @@
             <i ng-show="!join.hideAdv" class="icon-arrow-down4"></i>
             <i ng-show="join.hideAdv" class="icon-arrow-up4"></i>
           </a>
-          <div ng-show="join.hideAdv" class="row">
+          <div ng-show="join.hideAdv" class="row" ng-init="hideSlots=true">
+            <div class="large-12 columns" ng-show="join.isChromeApp()">
+              <label for="hw-ledger" class="line-b oh">
+                <span translate>Use Ledger hardware wallet</span>
+                <switch id="hw-ledger" name="hwLedger" ng-model="hwLedger" class="green right m5t m10b" ng-change="hideSlots=false"></switch>
+              </label>
+            </div>
+            <div class="large-12 columns" ng-hide="hideSlots">
+              <label class="line-b oh">
+                <span translate>Select slot number for Ledger key</span>
+                <select class="m10t" ng-model="externalIndex" ng-options="externalIndex as externalIndex for externalIndex in join.externatIndexValues">
+                </select>
+              </label>
+            </div>         
             <div class="large-12 columns">
               <label for="ext-master">{{'Master extended private key'|translate}}
               <small translate>If not given, a secure key will be generated</small>

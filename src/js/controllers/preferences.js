@@ -13,8 +13,11 @@ angular.module('copayApp.controllers').controller('preferencesController',
     $scope.glideraEnabled = config.glidera.enabled;
     $scope.glideraTestnet = config.glidera.testnet;
     var fc = profileService.focusedClient;
-    if (fc)
+    if (fc) {
       $scope.encrypt = fc.hasPrivKeyEncrypted();
+      this.externalSource = fc.getPrivKeyExternalSourceName() == 'ledger' ? "Ledger" : null;
+      this.externalIndex = fc.getExternalIndex();
+    }
 
     var unwatchSpendUnconfirmed = $scope.$watch('spendUnconfirmed', function(newVal, oldVal) {
       if (newVal == oldVal) return;

@@ -8,7 +8,7 @@
 
 <div class="content p20v" ng-controller="createController as create" ng-init="create.setTotalCopayers(1)">
 
-  <div class="onGoingProcess" ng-show="create.loading">
+  <div class="onGoingProcess" ng-show="create.loading && !create.ledger">
     <div class="onGoingProcess-content" ng-style="{'background-color':'#222'}">
     <div class="spinner">
       <div class="rect1"></div>
@@ -18,6 +18,19 @@
       <div class="rect5"></div>
     </div>
     <span translate>Creating Wallet...</span>
+    </div>
+  </div>
+
+  <div class="onGoingProcess" ng-show="create.ledger">
+    <div class="onGoingProcess-content" ng-style="{'background-color':'#222'}">
+    <div class="spinner">
+      <div class="rect1"></div>
+      <div class="rect2"></div>
+      <div class="rect3"></div>
+      <div class="rect4"></div>
+      <div class="rect5"></div>
+    </div>
+    <span translate>Connecting to Ledger Wallet...</span>
     </div>
   </div>
 
@@ -87,12 +100,22 @@
             <i ng-if="!hideAdv" class="icon-arrow-up4"></i>
           </a>
         </div>
-        <div ng-hide="hideAdv" class="row">
+        <div ng-hide="hideAdv" class="row" ng-init="hideSlots=true">
           <div class="large-12 columns">
             <label for="network-name" class="line-b oh">
               <span translate>Testnet</span>
               <switch id="network-name" name="isTestnet" ng-model="isTestnet" class="green right m5t m10b"></switch>
             </label>
+            <label ng-show="create.isChromeApp()" for="hw-ledger" class="line-b oh">
+              <span translate>Use Ledger hardware wallet</span>
+              <switch id="hw-ledger" name="hwLedger" ng-model="hwLedger" class="green right m5t m10b" ng-change="hideSlots=false"></switch>
+            </label>
+            <div ng-hide="hideSlots">
+              <label class="line-b oh"><span translate>Select slot number for Ledger key</span>
+                <select class="m10t" ng-model="externalIndex" ng-options="externalIndex as externalIndex for externalIndex in create.externatIndexValues">
+                </select>
+              </label>
+            </div>         
             <label for="ext-master" class="m10t">
               <span translate>Master extended private key</span>
               <small translate>If not given, a secure key will be generated</small>
