@@ -36,13 +36,13 @@ msgstr ""
 
 #: public/views/backup.html
 msgid ""
-"A backup without the private key will allow to see wallet balance, "
-"transaction, create spend proposals, but will not be able to approve (sign) "
-"proposals."
+"A backup without its private key will allow the user to see the wallet "
+"balance, transactions, and create spend proposals. However, it will not be "
+"able to approve (sign) proposals."
 msgstr ""
-"Una copia de seguridad sin la clave privada permitirá ver el balance del "
-"monedero, las transacciones, crear propuestas de gasto, pero no podrá "
-"aprobar (firmar) propuestas."
+"Una copia de seguridad sin la clave privada permitirá al usuario ver el "
+"balance del monedero, las transacciones y crear propuestas de gasto. Sin "
+"embargo, no podrá aprobar (firmar) propuestas."
 
 #: public/views/splash.html
 msgid "A multisignature bitcoin wallet"
@@ -396,7 +396,7 @@ msgid "Disabled"
 msgstr "Deshabilitado"
 
 #: public/views/backup.html
-msgid "Do not include private key on backup"
+msgid "Do not include private key in backup"
 msgstr "No incluir la clave privada en la copia de seguridad"
 
 #: public/views/walletHome.html
@@ -1148,9 +1148,9 @@ msgstr "Hay un error en el formulario"
 
 #: public/views/modals/tx-details.html
 msgid ""
-"This transaction becomed invalid. Possible due to a double spend attempt."
+"This transaction has become invalid; possibly due to a double spend attempt."
 msgstr ""
-"Esta transacción se ha invalidado. Posiblemente debido a un intento de doble "
+"Esta transacción se ha invalidado; posiblemente debido a un intento de doble "
 "gasto."
 
 #: public/views/walletHome.html
