@@ -229,7 +229,7 @@ msgid "Could not broadcast payment. Check you connection and try again"
 msgstr ""
 
 #: src/js/controllers/walletHome.js
-msgid "Could not connect wallet service. Check your Internet connexion and your wallet service configuration."
+msgid "Could not connect wallet service. Check your Internet connection and your wallet service configuration."
 msgstr ""
 
 #: src/js/controllers/walletHome.js
@@ -433,6 +433,7 @@ msgstr ""
 msgid "Family vacation funds"
 msgstr ""
 
+#: public/views/modals/tx-details.html
 #: public/views/modals/txp-details.html
 msgid "Fee"
 msgstr ""
@@ -1133,7 +1134,7 @@ msgid "Wallet name"
 msgstr ""
 
 #: src/js/controllers/walletHome.js
-msgid "Wallet service timed out. Check your Internet connexion and your wallet service configuration."
+msgid "Wallet service timed out. Check your Internet connection and your wallet service configuration."
 msgstr ""
 
 #: public/views/preferencesDeleteWallet.html
