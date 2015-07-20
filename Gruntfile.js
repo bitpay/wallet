@@ -3,27 +3,6 @@ module.exports = function(grunt) {
   // Project Configuration
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
-    release: {
-      options: {
-        bump: true,
-        file: 'package.json',
-        add: true,
-        commit: true,
-        tag: true,
-        push: true,
-        pushTags: true,
-        npm: false,
-        npmtag: true,
-        tagName: 'v<%= version %>',
-        commitMessage: 'New release v<%= version %>',
-        tagMessage: 'Version <%= version %>',
-        github: {
-          repo: 'bitpay/copay',
-          usernameVar: 'GITHUB_USERNAME', //ENVIRONMENT VARIABLE that contains Github username
-          passwordVar: 'GITHUB_PASSWORD' //ENVIRONMENT VARIABLE that contains Github password
-        }
-      }
-    },
     exec: {
       version: {
         command: 'node ./util/version.js'
@@ -45,10 +24,6 @@ module.exports = function(grunt) {
           grunt.log.writeln('Waiting for more changes...');
         },
       },
-      readme: {
-        files: ['README.md'],
-        tasks: ['markdown']
-      },
       css: {
         files: ['src/css/*.css'],
         tasks: ['concat:css']
@@ -65,16 +40,6 @@ module.exports = function(grunt) {
           'src/js/controllers/*.js'
         ],
         tasks: ['concat:js']
-      }
-    },
-    markdown: {
-      all: {
-        files: [{
-          expand: true,
-          src: 'README.md',
-          dest: './doc',
-          ext: '.html'
-        }]
       }
     },
     concat: {
@@ -234,20 +199,14 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-angular-gettext');
-  grunt.loadNpmTasks('grunt-markdown');
-  grunt.loadNpmTasks('grunt-release');
   grunt.loadNpmTasks('grunt-exec');
   grunt.loadNpmTasks('grunt-karma');
   grunt.loadNpmTasks('grunt-karma-coveralls');
   grunt.loadNpmTasks('grunt-node-webkit-builder');
   grunt.loadNpmTasks('grunt-contrib-compress');
 
-  grunt.registerTask('default', [
-    'nggettext_compile', 'exec:version', 'concat', 'copy:icons'
-  ]);
-  grunt.registerTask('prod', [
-    'default', 'uglify'
-  ]);
+  grunt.registerTask('default', ['nggettext_compile', 'exec:version', 'concat', 'copy:icons']);
+  grunt.registerTask('prod', ['default', 'uglify']);
   grunt.registerTask('translate', ['nggettext_extract']);
   grunt.registerTask('test', ['karma:unit']);
   grunt.registerTask('test-coveralls', ['karma:prod', 'coveralls']);
