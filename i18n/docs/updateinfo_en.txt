@@ -1,0 +1,7 @@
+* Now is possible to make backups without signing capabilities (more info https://github.com/bitpay/copay/pull/2998)
+* Better refresh and sorting rules in transaction history
+* Better handling of `invalid` transactions in history
+* Better handling of wallets with 1K+ transactions in history
+* Exports .csv files with transaction ID
+* Better UTXOs selection polices
+* Minor bug fixes

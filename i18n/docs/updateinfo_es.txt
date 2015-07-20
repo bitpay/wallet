@@ -1,0 +1,7 @@
+* Copias de seguridad sin capacidad de firmar transacciones (más información https://github.com/bitpay/copay/pull/2998)
+* Mejor reglas de orden y actualización en la historia de transacción
+* Mejor manejo de transacciones no válidas
+* Mejor manejo de monederos con 1K+ transacciones
+* Exporta archivos .csv con el ID de transacción
+* Mejor política de selección de UTXOs
+* Corrección de errores menores
