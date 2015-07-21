@@ -12,11 +12,11 @@ msgstr ""
 "Last-Translator: cmgustavo83 <cmgustavo83@gmail.com>\n"
 "Language-Team: German\n"
 "Language: de_DE\n"
-"PO-Revision-Date: 2015-07-20 12:17-0400\n"
+"PO-Revision-Date: 2015-07-21 11:53-0400\n"
 
 #: public/views/walletHome.html
 msgid "(possible double spend)"
-msgstr "(possible double spend)"
+msgstr "(mögliche Doppelausgabe)"
 
 #: public/views/modals/txp-details.html
 msgid "* A payment proposal can be deleted if 1) you are the creator, and no other copayer has signed, or 2) 24 hours have passed since the proposal was created."
@@ -58,7 +58,7 @@ msgstr "Erweitert"
 
 #: public/views/disclaimer.html
 msgid "Agree"
-msgstr "Agree"
+msgstr "Zustimmen"
 
 #: public/views/preferencesAlias.html
 msgid "Alias for <i>{{index.walletName}}</i>"
@@ -284,7 +284,7 @@ msgstr "Beteiligung am Wallet nicht möglich"
 
 #: src/js/controllers/walletHome.js
 msgid "Could not recognize a valid Bitcoin QR Code"
-msgstr "Could not recognize a valid Bitcoin QR Code"
+msgstr "Es konnte kein gültiger Bitcoin-QR-Code erkannt werden,"
 
 #: src/js/controllers/walletHome.js
 msgid "Could not reject payment. Check you connection and try again"
@@ -372,11 +372,11 @@ msgstr "Deaktiviert"
 
 #: public/views/backup.html
 msgid "Do not include private key in backup"
-msgstr "Do not include private key in backup"
+msgstr "Keine privaten Schlüssel zur Sicherung hinzufügen"
 
 #: public/views/walletHome.html
 msgid "Download CSV file"
-msgstr "Download CSV file"
+msgstr "CSV-Datei herunterladen"
 
 #: public/views/backup.html
 msgid "Download backup"
@@ -408,7 +408,7 @@ msgstr "Verschlüsselte Sicherungsdatei wurde gespeichert"
 
 #: src/js/controllers/index.js
 msgid "English"
-msgstr "English"
+msgstr "Englisch"
 
 #: public/views/includes/password.html
 msgid "Enter your password"
@@ -446,7 +446,7 @@ msgstr "Familienurlaub"
 #: public/views/modals/tx-details.html
 #: public/views/modals/txp-details.html
 msgid "Fee"
-msgstr "Fee"
+msgstr "Gebühr"
 
 #. Get information of payment if using Payment Protocol
 #: src/js/controllers/walletHome.js
@@ -475,7 +475,7 @@ msgstr "Neue Adresse erzeugen"
 
 #: public/views/walletHome.html
 msgid "Generating .csv file..."
-msgstr "Generating .csv file..."
+msgstr "CSV-Datei erzeugen..."
 
 #: public/views/modals/wallets.html
 msgid "Getting address for wallet {{selectedWalletName}} ..."
@@ -487,7 +487,7 @@ msgstr "Globale Einstellungen"
 
 #: public/views/disclaimer.html
 msgid "Go back"
-msgstr "Go back"
+msgstr "Zurück"
 
 #: public/views/import.html
 msgid "Have a Backup from Copay v0.9?"
@@ -636,7 +636,7 @@ msgstr "Nein"
 
 #: public/views/walletHome.html
 msgid "No Private key"
-msgstr "No Private key"
+msgstr "Kein privater Schlüssel"
 
 #: public/views/walletHome.html
 msgid "No transactions yet"
@@ -659,7 +659,7 @@ msgstr "Notiz"
 
 #: public/views/modals/tx-status.html
 msgid "OKAY"
-msgstr "OKAY"
+msgstr "Okay"
 
 #: public/views/modals/tx-details.html
 #: public/views/modals/txp-details.html
@@ -791,7 +791,7 @@ msgstr "Priority"
 
 #: public/views/modals/customized-amount.html
 msgid "QR Code"
-msgstr "QR Code"
+msgstr "QR-Code"
 
 #: public/views/modals/scanner.html
 msgid "QR-Scanner"
@@ -837,7 +837,7 @@ msgstr "Passwort wiederholen"
 #: public/views/walletHome.html
 #: public/views/modals/customized-amount.html
 msgid "Request a specific amount"
-msgstr "Request a specific amount"
+msgstr "Einen bestimmten Betrag anfordern"
 
 #: public/views/import.html
 #: public/views/join.html
@@ -910,7 +910,7 @@ msgstr "Senden"
 
 #: public/views/walletHome.html
 msgid "Send All"
-msgstr "Send All"
+msgstr "Alle senden"
 
 #: public/views/backup.html
 #: public/views/preferencesLogs.html
@@ -992,7 +992,7 @@ msgstr "Zum Wiederholen antippen"
 #: public/views/disclaimer.html
 #: public/views/preferencesAbout.html
 msgid "Terms of Use"
-msgstr "Terms of Use"
+msgstr "Nutzungsbedingungen"
 
 #: public/views/create.html
 msgid "Testnet"
@@ -1213,7 +1213,7 @@ msgstr "zu lang!"
 
 #: public/views/preferencesFee.html
 msgid "{{fee.value}} bits per kB"
-msgstr "{{fee.value}} bits per kB"
+msgstr "{{fee.value}} Bits pro kB"
 
 #: src/js/controllers/walletHome.js
 msgid "{{fee}} will be discounted for bitcoin networking fees"
