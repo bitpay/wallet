@@ -103,7 +103,16 @@ Copay depends on [Bitcore Wallet Service](https://github.com/bitpay/bitcore-wall
 ## Translations
 Copay uses standard gettext PO files for translations and [Crowdin](https://crowdin.com/project/copay) as front-end for translators.
 
-To join our team of translators, please create an account at [Crowdin](https://crowdin.com) and sends the request to the language that you want to translate.
+To join our team of translators, please create an account at [Crowdin](https://crowdin.com) and translate into your native language to help spread Multisig.
+
+To download and build using the latest translations from crowdin, please use the following commands.
+
+```sh
+cd i18n
+node crowdin_download.js
+```
+
+This will download all partially/completely translated languages and clean out any un-translated ones.
 
 **Translation Credits:**
 - Japanese: @dabura667
