@@ -9,10 +9,10 @@ msgstr ""
 "X-Crowdin-Language: it\n"
 "X-Crowdin-File: template.pot\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Last-Translator: cmgustavo83 <cmgustavo83@gmail.com>\n"
+"Last-Translator: cmgustavo83\n"
 "Language-Team: Italian\n"
-"Language: it_IT\n"
-"PO-Revision-Date: 2015-07-21 11:53-0400\n"
+"Language: it\n"
+"PO-Revision-Date: 2015-07-21 13:31-0400\n"
 
 #: public/views/walletHome.html
 msgid "(possible double spend)"
