@@ -31,7 +31,9 @@ angular.module('copayApp.directives')
                     alert('Scanning error');
                   }
               );
-              $scope.beforeScan();
+              if ($scope.beforeScan) {
+                $scope.beforeScan();
+              }
             }, 100);
           };
 
@@ -90,7 +92,9 @@ angular.module('copayApp.directives')
               $scope.init = function() {
                 setScanner();
                 $timeout(function() {
-                  parentScope.beforeScan();
+                  if (parentScope.beforeScan) {
+                    parentScope.beforeScan();
+                  }
                   canvas = document.getElementById('qr-canvas');
                   context = canvas.getContext('2d');
 
