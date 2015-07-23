@@ -55,6 +55,18 @@ https.get('https://crowdin.com/download/project/' + crowdin_identifier + '.zip',
       for (var i in files) {
         if (files[i] != 'template.pot') {
           var po_file = fs.readFileSync(path.join(__dirname, 'po/' + files[i]), 'utf8');
+          var lang_pos = po_file.search('"Language: ') + 11;
+          var po_start = po_file.slice(0,lang_pos);
+          var po_locale = po_file.slice(lang_pos,lang_pos + 5);
+          var po_end = po_file.slice(lang_pos + 5);
+          
+          if (po_locale.search('_') > 0) {
+            fs.writeFileSync(path.join(__dirname, 'po/' + files[i]), po_start + po_locale.slice(0,2) + po_end);
+            po_start = '';
+            po_locale = '';
+            po_end = '';
+          };
+          
           var po_array = po_file.split('\n');
           for (var j in po_array) {
             if (po_array[j].slice(0,5) == 'msgid') {
@@ -76,4 +88,3 @@ https.get('https://crowdin.com/download/project/' + crowdin_identifier + '.zip',
       
     });
 });
-
