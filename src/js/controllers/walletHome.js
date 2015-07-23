@@ -98,11 +98,11 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     if (err.message) {
       // TODO : this is not used anymore?
       if (err.message.indexOf('CORS') >= 0) {
-        err.message = gettext('Could not connect wallet service. Check your Internet connexion and your wallet service configuration.');
+        err.message = gettext('Could not connect wallet service. Check your Internet connection and your wallet service configuration.');
       }
 
       if (err.message.indexOf('TIMEDOUT') >= 0) {
-        err.message = gettext('Wallet service timed out. Check your Internet connexion and your wallet service configuration.');
+        err.message = gettext('Wallet service timed out. Check your Internet connection and your wallet service configuration.');
       }
     }
   };
@@ -1045,6 +1045,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       $scope.color = fc.backgroundColor;
       $scope.copayerId = fc.credentials.copayerId;
       $scope.isShared = fc.credentials.n > 1;
+      $scope.feeStr = btx.feeStr;
 
       $scope.getAmount = function(amount) {
         return self.getAmount(amount);

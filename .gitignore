@@ -26,9 +26,6 @@ browser-extensions/chrome/copay-chrome-extension.zip
 logs
 *.log
 
-# readme
-README.html
-
 # Runtime data
 pids
 *.pid

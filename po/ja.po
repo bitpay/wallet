@@ -258,7 +258,7 @@ msgstr "送金できませんでした。接続を確認し、やり直して下
 
 #: src/js/controllers/walletHome.js
 msgid ""
-"Could not connect wallet service. Check your Internet connexion and your "
+"Could not connect wallet service. Check your Internet connection and your "
 "wallet service configuration."
 msgstr ""
 "ウォレットサービスと接続できませんでした。インターネットの接続とウォレット"
@@ -303,7 +303,7 @@ msgstr "指定された拡張秘密鍵で参加できませんでした。"
 
 #: src/js/controllers/join.js
 msgid "Could not join wallet:"
-msgstr "ウォレットに参加できませんでした。"
+msgstr "ウォレットに参加できませんでした："
 
 #: src/js/controllers/walletHome.js
 msgid "Could not recognize a valid Bitcoin QR Code"
@@ -444,7 +444,7 @@ msgstr "ウォレット作成時にエラー発生、インターネットの接
 
 #: src/js/services/profileService.js
 msgid "Error importing wallet:"
-msgstr "ウォレットインポート時にエラー"
+msgstr "ウォレットインポート時にエラー："
 
 #: public/views/modals/paypro.html public/views/modals/txp-details.html
 msgid "Expires"
@@ -462,7 +462,7 @@ msgstr "ウォレットのインポート失敗しました"
 msgid "Family vacation funds"
 msgstr "家族旅行貯金"
 
-#: public/views/modals/txp-details.html
+#: public/views/modals/tx-details.html public/views/modals/txp-details.html
 msgid "Fee"
 msgstr "手数料"
 
@@ -1251,7 +1251,7 @@ msgstr "ウォレット名"
 
 #: src/js/controllers/walletHome.js
 msgid ""
-"Wallet service timed out. Check your Internet connexion and your wallet "
+"Wallet service timed out. Check your Internet connection and your wallet "
 "service configuration."
 msgstr ""
 "ウォレットサービスがタイムアウトになりました。インターネットの接続とウォレッ"
