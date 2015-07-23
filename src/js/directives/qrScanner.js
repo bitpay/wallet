@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('copayApp.directives')
-    .directive('qrScanner', ['$rootScope', '$timeout', '$modal', 'isCordova', 'isMobile', 'go',
-      function($rootScope, $timeout, $modal, isCordova, isMobile, go) {
+    .directive('qrScanner', ['$rootScope', '$timeout', '$modal', 'isCordova',
+      function($rootScope, $timeout, $modal, isCordova) {
 
         var controller = function($scope) {
 
@@ -20,7 +20,7 @@ angular.module('copayApp.directives')
 
                     $timeout(function() {
                       var data = result.text;
-                      $rootScope.$emit('dataScanned', data);
+                      $scope.onScan({ data: data });
                     }, 1000);
                   },
                   function onError(error) {
@@ -31,11 +31,12 @@ angular.module('copayApp.directives')
                     alert('Scanning error');
                   }
               );
-              go.send();
+              $scope.beforeScan();
             }, 100);
           };
 
           $scope.modalOpenScanner = function() {
+            var parentScope = $scope;
             var ModalInstanceCtrl = function($scope, $rootScope, $modalInstance) {
               // QR code Scanner
               var video;
@@ -89,7 +90,7 @@ angular.module('copayApp.directives')
               $scope.init = function() {
                 setScanner();
                 $timeout(function() {
-                  go.send();
+                  parentScope.beforeScan();
                   canvas = document.getElementById('qr-canvas');
                   context = canvas.getContext('2d');
 
@@ -120,7 +121,7 @@ angular.module('copayApp.directives')
               keyboard: false
             });
             modalInstance.result.then(function(data) {
-              $rootScope.$emit('dataScanned', data);
+              parentScope.onScan({ data: data });
             });
 
           };
@@ -137,6 +138,10 @@ angular.module('copayApp.directives')
 
         return {
           restrict: 'E',
+          scope: {
+            onScan: "&",
+            beforeScan: "&"
+          },
           controller: controller,
           replace: true,
           template: '<a id="camera-icon" class="p10" ng-click="openScanner()"><i class="icon-scan size-21"></i></a>'
