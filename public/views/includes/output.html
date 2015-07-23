@@ -1,21 +1,23 @@
 <div class="ng-animate-disabled row collapse line-b" ng-class="text-gray">
-  <li ng-if="output.summary" class="line-b p10 oh" ng-click="expand(output.parent)">
+  <li ng-if="output.parent.isSummarized" class="line-b p10 oh" ng-click="toggleOutputSummary(output)">
     <span class="text-gray" translate>Recipients</span>:
-    <span class="right enable_text_select">{{output.summary.length}}
+    <span class="right enable_text_select">{{output.parent.length}}
         <i class="icon-arrow-down size-24"></i>
     </span>
   </li>
-  <li ng-if="!output.summary" class="line-b p10 oh" ng-click="copyAddress(output.toAddress)">
+  <li ng-if="!output.parent.isSummarized" class="line-b p10 oh" ng-click="toggleOutputSummary(output)">
     <span class="text-gray" translate>To</span>:
-    <span class="right enable_text_select">{{output.toAddress}}</span>
+    <span class="right enable_text_select">{{output.toAddress}}
+        <i class="icon-arrow-up size-24"></i>
+    </span>
   </li>
-  <li class="line-b p10" ng-click="expand(output.parent)">
+  <li class="line-b p10" ng-click="toggleOutputSummary(output)">
     <span class="text-gray" translate>Amount</span>:
     <span class="right">{{output.amountStr}}
       <span class="label gray radius enable_text_select">{{output.alternativeAmountStr}}</span>
     </span>
   </li>
-  <li class="line-b p10 oh" ng-click="expand(output.parent)">
+  <li class="line-b p10 oh" ng-click="toggleOutputSummary(output)">
     <span class="text-gray" translate>Note</span>:
     <span class="right enable_text_select">{{output.message}}</span>
   </li>

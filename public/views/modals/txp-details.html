@@ -15,7 +15,7 @@
   <h4 class="title m0" translate>Details</h4>
   <ul class="no-bullet size-14 m0">
     <div ng-if="tx.outputs"
-      ng-repeat="output in tx.outputs"
+      ng-repeat="output in tx.outputs.list"
       ng-include="'views/includes/output.html'">
     </div>
     <li ng-if="!tx.outputs" class="line-b p10 oh" ng-click="copyAddress(tx.toAddress)">
