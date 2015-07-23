@@ -41,23 +41,29 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   self.tab = 'walletHome';
 
   self.availableLanguages = [{
-    name: gettext('Deutsch'),
-    isoCode: 'de',
-  }, {
     name: gettext('English'),
     isoCode: 'en',
-  }, {
-    name: gettext('Spanish'),
-    isoCode: 'es',
   }, {
     name: gettext('French'),
     isoCode: 'fr',
   }, {
-    name: gettext('Japanese'),
-    isoCode: 'ja',
+    name: gettext('Italian'),
+    isoCode: 'it',
+  }, {
+    name: gettext('German'),
+    isoCode: 'de',
+  }, {
+    name: gettext('Spanish'),
+    isoCode: 'es',
   }, {
     name: gettext('Portuguese'),
     isoCode: 'pt',
+  }, {
+    name: gettext('Greek'),
+    isoCode: 'el',
+  }, {
+    name: gettext('Japanese'),
+    isoCode: 'ja',
   }];
 
   self.setOngoingProcess = function(processName, isOn) {
