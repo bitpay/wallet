@@ -55,25 +55,31 @@ https.get('https://crowdin.com/download/project/' + crowdin_identifier + '.zip',
       for (var i in files) {
         if (files[i] != 'template.pot') {
           var po_file = fs.readFileSync(path.join(__dirname, 'po/' + files[i]), 'utf8');
-          var lang_pos = po_file.search('"Language: ') + 11;
-          var po_start = po_file.slice(0,lang_pos);
-          var po_locale = po_file.slice(lang_pos,lang_pos + 5);
-          var po_end = po_file.slice(lang_pos + 5);
-          
-          if (po_locale.search('_') > 0) {
-            fs.writeFileSync(path.join(__dirname, 'po/' + files[i]), po_start + po_locale.slice(0,2) + po_end);
-            po_start = '';
-            po_locale = '';
-            po_end = '';
-          };
-          
           var po_array = po_file.split('\n');
           for (var j in po_array) {
             if (po_array[j].slice(0,5) == 'msgid') {
               var source_text = po_array[j].slice(5);
             } else if (po_array[j].slice(0,6) == 'msgstr') {
               var translate_text = po_array[j].slice(6);
+              // if a line is not == English, it means there is translation. Keep this file.
               if (source_text != translate_text) {
+                // erase email addresses of last translator for privacy
+                po_file = po_file.replace(/ <[a-zA-Z0-9@.]*>/, '')
+                fs.writeFileSync(path.join(__dirname, 'po/' + files[i]), po_file);
+                
+                // split the file into 3 parts, before locale, locale, and after locale.
+                var lang_pos = po_file.search('"Language: ') + 11;
+                var po_start = po_file.slice(0,lang_pos);
+                var po_locale = po_file.slice(lang_pos,lang_pos + 5);
+                var po_end = po_file.slice(lang_pos + 5);
+                
+                // check for underscore, if it's there, only take the first 2 letters and reconstruct the po file.
+                if (po_locale.search('_') > 0) {
+                  fs.writeFileSync(path.join(__dirname, 'po/' + files[i]), po_start + po_locale.slice(0,2) + po_end);
+                  po_start = '';
+                  po_locale = '';
+                  po_end = '';
+                };
                 break;
               };
             };
