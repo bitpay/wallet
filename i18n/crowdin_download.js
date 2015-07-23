@@ -64,7 +64,7 @@ https.get('https://crowdin.com/download/project/' + crowdin_identifier + '.zip',
               // if a line is not == English, it means there is translation. Keep this file.
               if (source_text != translate_text) {
                 // erase email addresses of last translator for privacy
-                po_file = po_file.replace(/ <[a-zA-Z0-9@.]*>/, '')
+                po_file = po_file.replace(/ <.+@.+\..+>/, '')
                 fs.writeFileSync(path.join(__dirname, 'po/' + files[i]), po_file);
                 
                 // split the file into 3 parts, before locale, locale, and after locale.
