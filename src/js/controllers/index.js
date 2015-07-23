@@ -436,21 +436,20 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       };
 
       if (tx.outputs) {
-        tx.amount = lodash.reduce(tx.outputs, function(total, o) {
+        tx.outputs.details = JSON.parse(JSON.stringify(tx.outputs));
+        tx.amount = lodash.reduce(tx.outputs.details, function(total, o) {
+          o.parent = tx.outputs;
           formatAmount(o, o.amount * self.satToUnit);
           return total + o.amount;
         }, 0);
-        var summary = tx.outputs;
-        tx.outputs = [{
+        tx.outputs.summary = [{
           amount: tx.amount,
           message: tx.message,
-          summary: summary
+          parent: tx.outputs
         }];
-        tx.outputs[0].parent = tx.outputs;
-        tx.outputs.transform = formatAmount;
-        tx.outputs.accumulator = 'amount';
-        tx.outputs.recipientCount = summary.length;
-        formatAmount(tx.outputs[0], tx.amount * self.satToUnit);
+        formatAmount(tx.outputs.summary[0], tx.amount * self.satToUnit);
+        tx.outputs.isSummarized = true;
+        tx.outputs.list = tx.outputs.summary;
       }
       formatAmount(tx, tx.amount * self.satToUnit);
 

@@ -255,10 +255,6 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
         $scope.loading = true;
         $scope.error = null;
         $timeout(function() {
-          lodash.times(
-            txp.outputs ? txp.outputs.recipientCount : 0,
-            function(n) { $scope.expand(txp.outputs); }
-          );
           fc.signTxProposal(txp, function(err, txpsi) {
             profileService.lockFC();
             self.setOngoingProcess();
@@ -368,21 +364,13 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
         self.copyAddress(addr);
       };
 
-      $scope.expand = function(list) {
-        if (list && list.length && list[list.length - 1].summary) {
-          var lastItem = list.pop();
-          if (lastItem.summary.length === 0) return;
-          var nextItem = lastItem.summary.shift();
-          lastItem[list.accumulator] -= nextItem[list.accumulator];
-          list.push(nextItem);
-          if (lastItem.summary.length) {
-            if (lastItem.summary.length === 1) {
-              list.push(lastItem.summary.pop());
-            } else {
-              list.transform(lastItem, lastItem[list.accumulator]);
-              list.push(lastItem);
-            }
-          }
+      $scope.toggleOutputSummary = function(output) {
+        if (output.parent.isSummarized) {
+          output.parent.isSummarized = false;
+          output.parent.list = output.parent.details;
+        } else {
+          output.parent.isSummarized = true;
+          output.parent.list = output.parent.summary;
         }
       };
 
