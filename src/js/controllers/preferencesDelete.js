@@ -12,11 +12,11 @@ angular.module('copayApp.controllers').controller('preferencesDeleteWalletContro
 
         $scope.ok = function() {
           $scope.loading = true;
-          $modalInstance.close('ok');
+          $modalInstance.close(gettext('OK'));
 
         };
         $scope.cancel = function() {
-          $modalInstance.dismiss('cancel');
+          $modalInstance.dismiss(gettext('Cancel'));
         };
       };
 
@@ -50,13 +50,13 @@ angular.module('copayApp.controllers').controller('preferencesDeleteWalletContro
     this.deleteWallet = function() {
       if (isCordova) {
         navigator.notification.confirm(
-          'Are you sure you want to delete this wallet?',
+          gettext('Are you sure you want to delete this wallet?'),
           function(buttonIndex) {
             if (buttonIndex == 2) {
               _deleteWallet();
             }
           },
-          'Confirm', ['Cancel', 'OK']
+          gettext('Confirm'), [gettext('Cancel'), gettext('OK')]
         );
       } else {
         _modalDeleteWallet();

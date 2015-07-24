@@ -160,6 +160,8 @@ msgstr ""
 
 #: public/views/copayers.html
 #: public/views/walletHome.html
+#: src/js/controllers/copayers.js
+#: src/js/controllers/preferencesDelete.js
 msgid "Cancel"
 msgstr ""
 
@@ -200,12 +202,21 @@ msgstr ""
 msgid "Commit hash"
 msgstr ""
 
+#: src/js/controllers/copayers.js
+#: src/js/controllers/preferencesDelete.js
+msgid "Confirm"
+msgstr ""
+
 #: public/views/modals/tx-details.html
 msgid "Confirmations"
 msgstr ""
 
 #: public/views/modals/copayers.html
 msgid "Copayers"
+msgstr ""
+
+#: src/js/controllers/copayers.js
+msgid "Copied to clipboard"
 msgstr ""
 
 #: public/views/backup.html
@@ -543,6 +554,10 @@ msgstr ""
 msgid "Invalid"
 msgstr ""
 
+#: src/js/controllers/copayers.js
+msgid "Invitation to share a Copay Wallet"
+msgstr ""
+
 #: src/js/controllers/index.js
 msgid "Italian"
 msgstr ""
@@ -558,6 +573,10 @@ msgstr ""
 
 #: public/views/join.html
 msgid "Join"
+msgstr ""
+
+#: src/js/controllers/copayers.js
+msgid "Join my Copay wallet. Here is the invitation code: {{secret}}  You can download Copay for your phone or desktop at https://copay.io"
 msgstr ""
 
 #: public/views/add.html
@@ -653,6 +672,11 @@ msgstr ""
 #: public/views/modals/tx-details.html
 #: public/views/modals/txp-details.html
 msgid "Note"
+msgstr ""
+
+#: src/js/controllers/copayers.js
+#: src/js/controllers/preferencesDelete.js
+msgid "OK"
 msgstr ""
 
 #: public/views/modals/tx-status.html

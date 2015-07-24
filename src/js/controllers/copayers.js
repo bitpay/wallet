@@ -70,13 +70,13 @@ angular.module('copayApp.controllers').controller('copayersController',
       var fc = profileService.focusedClient;
       if (isCordova) {
         navigator.notification.confirm(
-          'Are you sure you want to delete this wallet?',
+          gettext('Are you sure you want to delete this wallet?'),
           function(buttonIndex) {
             if (buttonIndex == 2) {
               _deleteWallet();
             }
           },
-          'Confirm', ['Cancel', 'OK']
+          gettext('Confirm'), [gettext('Cancel'), gettext('OK')]
         );
       } else {
         _modalDeleteWallet();
@@ -86,7 +86,7 @@ angular.module('copayApp.controllers').controller('copayersController',
     self.copySecret = function(secret) {
       if (isCordova) {
         window.cordova.plugins.clipboard.copy(secret);
-        window.plugins.toast.showShortCenter('Copied to clipboard');
+        window.plugins.toast.showShortCenter(gettext('Copied to clipboard'));
       }
     };
 
@@ -95,8 +95,8 @@ angular.module('copayApp.controllers').controller('copayersController',
         if (isMobile.Android() || isMobile.Windows()) {
           window.ignoreMobilePause = true;
         }
-        var message = 'Join my Copay wallet. Here is the invitation code: ' + secret + '  You can download Copay for your phone or desktop at https://copay.io';
-        window.plugins.socialsharing.share(message, 'Invitation to share a Copay Wallet', null, null);
+        var message = gettextCatalog.getString('Join my Copay wallet. Here is the invitation code: {{secret}}  You can download Copay for your phone or desktop at https://copay.io', {secret: secret});
+        window.plugins.socialsharing.share(message, gettext('Invitation to share a Copay Wallet'), null, null);
       }
     };
 
