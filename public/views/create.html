@@ -102,13 +102,9 @@
         </div>
         <div ng-hide="hideAdv" class="row">
           <div class="large-12 columns">
-            <label for="network-name" class="line-b oh">
-              <span translate>Testnet</span>
-              <switch id="network-name" name="isTestnet" ng-model="isTestnet" class="green right m5t m10b"></switch>
-            </label>
             <label ng-show="create.isChromeApp()" for="hw-ledger" class="line-b oh">
               <span translate>Use Ledger hardware wallet</span>
-              <switch id="hw-ledger" name="hwLedger" ng-model="hwLedger" class="green right m5t m10b"></switch>
+              <switch id="hw-ledger" name="hwLedger" ng-model="hwLedger" ng-change="isTestnet=false" class="green right m5t m10b"></switch>
             </label>
             <div ng-hide="!hwLedger">
               <label class="line-b oh"><span translate>Select slot number for Ledger key</span>
@@ -116,6 +112,10 @@
                 </select>
               </label>
             </div>         
+            <label ng-hide="hwLedger" for="network-name" class="line-b oh">
+              <span translate>Testnet</span>
+              <switch id="network-name" name="isTestnet" ng-model="isTestnet" class="green right m5t m10b"></switch>
+            </label>
             <label for="ext-master" class="m10t">
               <span translate>Master extended private key</span>
               <small translate>If not given, a secure key will be generated</small>
