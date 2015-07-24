@@ -398,6 +398,17 @@
                 </div>
               </div>
             </div>
+
+            <div class="text-right size-12 m10b"> 
+              <span ng-repeat="fee in (index.network == 'livenet' ? index.feeLevels.livenet : index.feeLevels.testnet)"
+                ng-show="index.currentFeeLevel == fee.level">
+                <span translate>Fee</span>: 
+                <span class="text-light" translate>{{fee.feePerKBUnit}} per kB</span> 
+                (<span translate>Average confirmation time: {{fee.nbBlocks * 10}} minutes</span>)
+              </span>
+              <a href ng-click="home.openFeeModal(index.feeLevels, index.currentFeeLevel)" translate>Change</a>
+            </div>
+
             <div class="row">
               <div class="large-12 columns">
                 <label for="comment"><span translate>Note</span>

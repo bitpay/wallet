@@ -252,17 +252,6 @@ angular
           },
         }
       })
-      .state('preferencesFee', {
-        url: '/preferencesFee',
-        templateUrl: 'views/preferencesFee.html',
-        walletShouldBeComplete: true,
-        needProfile: true,
-        views: {
-          'main': {
-            templateUrl: 'views/preferencesFee.html'
-          },
-        }
-      })
 
     .state('preferencesAdvanced', {
         url: '/preferencesAdvanced',
@@ -469,7 +458,6 @@ angular
       delete: 13,
       preferencesLanguage: 12,
       preferencesUnit: 12,
-      preferencesFee: 12,
       preferencesAltCurrency: 12,
       preferencesBwsUrl: 12,
       preferencesAlias: 12,
