@@ -3,23 +3,6 @@
 angular.module('copayApp.services').factory('feeService', function($log, lodash, profileService, configService, gettext) {
   var root = {};
 
-  root.feeStaticOpts = [{
-    name: gettext('Priority'),
-    level: 'priority',
-    feePerKB: 10000,
-    nbBlocks: 1
-  }, {
-    name: gettext('Normal'),
-    level: 'normal',
-    feePerKB: 5000,
-    nbBlocks: 4
-  }, {
-    name: gettext('Economy'),
-    level: 'economy',
-    feePerKB: 1000,
-    nbBlocks: 12
-  }];
-
   root.getCurrentFeeValue = function(cb) { 
     var fc = profileService.focusedClient;
     var config = configService.getSync().wallet.settings;
@@ -69,17 +52,17 @@ angular.module('copayApp.services').factory('feeService', function($log, lodash,
 
     fc.getFeeLevels('livenet', function(errLivenet, levelsLivenet) {
       fc.getFeeLevels('testnet', function(errTestnet, levelsTestnet) {
-      if (errLivenet || errTestnet) $log.error('Error getting dynamic fee');
+        if (errLivenet || errTestnet) $log.error('Error getting dynamic fee');
 
-      for (var i = 0; i < 3; i++) {
-        levelsLivenet[i]['feePerKBUnit'] = profileService.formatAmount(levelsLivenet[i].feePerKB) + ' ' + unitName;
-        levelsTestnet[i]['feePerKBUnit'] = profileService.formatAmount(levelsTestnet[i].feePerKB) + ' ' + unitName;
-      }
+        for (var i = 0; i < 3; i++) {
+          levelsLivenet[i]['feePerKBUnit'] = profileService.formatAmount(levelsLivenet[i].feePerKB) + ' ' + unitName;
+          levelsTestnet[i]['feePerKBUnit'] = profileService.formatAmount(levelsTestnet[i].feePerKB) + ' ' + unitName;
+        }
 
-      return cb({
-        'livenet': levelsLivenet,
-        'testnet': levelsTestnet
-      });
+        return cb({
+          'livenet': levelsLivenet,
+          'testnet': levelsTestnet
+        });
       });
     });
   };

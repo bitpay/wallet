@@ -977,7 +977,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     }
   };
 
-  this.openFeeModal = function(feeLevels, currentFeeLevel) {
+  this.openFeeLevelsModal = function(feeLevels, currentFeeLevel) {
     var fc = profileService.focusedClient;
 
     var ModalInstanceCtrl = function($scope, $modalInstance) {
