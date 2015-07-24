@@ -12,7 +12,7 @@
 </nav>
 
 
-<div class="modal-content fix-modals-touch" ng-controller="preferencesFeeController as prefFee">
+<div class="modal-content fix-modals-touch">
   <ul class="no-bullet m0 size-14"> 
     <h4 class="title m0" translate>Fee level</h4>
     <li ng-repeat="fee in (network == 'livenet' ? feeLevels.livenet : feeLevels.testnet)" ng-click="save(fee.level)" class="line-b p20">
