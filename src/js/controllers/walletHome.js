@@ -725,11 +725,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       amount = parseInt((form.amount.$modelValue * unitToSat).toFixed(0));
 
       feeService.getCurrentFeeValue(function(err, feePerKb) {
-        if (err) {
-          self.setOngoingProcess();
-          profileService.lockFC();
-          return self.setSendError(err);
-        }
+        if (err) $log.debug(err);
         fc.sendTxProposal({
           toAddress: address,
           amount: amount,

@@ -11,7 +11,7 @@ angular.module('copayApp.services').factory('feeService', function($log, lodash,
     var fee = 10000;
     fc.getFeeLevels(fc.credentials.network, function(err, levels) {
       if (err) {
-        return cb({message: 'Error getting dynamic fee'})
+        return cb({message: 'Error getting dynamic fee'}, fee);
       }
       else {
         for (var i = 0; i < 3; i++) {
@@ -52,7 +52,7 @@ angular.module('copayApp.services').factory('feeService', function($log, lodash,
 
     fc.getFeeLevels('livenet', function(errLivenet, levelsLivenet) {
       fc.getFeeLevels('testnet', function(errTestnet, levelsTestnet) {
-        if (errLivenet || errTestnet) $log.error('Error getting dynamic fee');
+        if (errLivenet || errTestnet) $log.debug('Error getting dynamic fee');
 
         for (var i = 0; i < 3; i++) {
           levelsLivenet[i]['feePerKBUnit'] = profileService.formatAmount(levelsLivenet[i].feePerKB) + ' ' + unitName;
