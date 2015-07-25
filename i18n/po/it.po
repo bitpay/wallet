@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Italian\n"
 "Language: it\n"
-"PO-Revision-Date: 2015-07-21 13:31-0400\n"
+"PO-Revision-Date: 2015-07-23 11:32-0400\n"
 
 #: public/views/walletHome.html
 msgid "(possible double spend)"
@@ -362,10 +362,6 @@ msgstr "Eliminazione portafoglio"
 msgid "Details"
 msgstr "Dettagli"
 
-#: src/js/controllers/index.js
-msgid "Deutsch"
-msgstr "Deutsch"
-
 #: public/views/preferences.html
 msgid "Disabled"
 msgstr "Disabilitato"
@@ -477,6 +473,10 @@ msgstr "Genera un nuovo indirizzo"
 msgid "Generating .csv file..."
 msgstr "Genera un file .csv..."
 
+#: src/js/controllers/index.js
+msgid "German"
+msgstr "Tedesco"
+
 #: public/views/modals/wallets.html
 msgid "Getting address for wallet {{selectedWalletName}} ..."
 msgstr "Ottengo l'indirizzo per il portafoglio {{selectedWalletName}}..."
@@ -488,6 +488,10 @@ msgstr "Impostazioni Globali"
 #: public/views/disclaimer.html
 msgid "Go back"
 msgstr "Indietro"
+
+#: src/js/controllers/index.js
+msgid "Greek"
+msgstr "Greco"
 
 #: public/views/import.html
 msgid "Have a Backup from Copay v0.9?"
@@ -548,6 +552,10 @@ msgstr "Importando..."
 #: public/views/walletHome.html
 msgid "Invalid"
 msgstr "Invalido"
+
+#: src/js/controllers/index.js
+msgid "Italian"
+msgstr "Italiano"
 
 #: src/js/controllers/index.js
 msgid "Japanese"

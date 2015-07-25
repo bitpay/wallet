@@ -1,0 +1,7 @@
+*Artık imza özelliği olmadan yedek almak mümkün (daha fazla bilgi için https://github.com/bitpay/copay/pull/2998)
+*İşlem geçmişinde daha iyi yenileme ve sıralama kuralları
+*Geçmişteki `geçersiz` işlemleri daha iyi kullanma
+*Geçmişte 1K+ fazla işlemlerin olduğu cüzdanlara daha iyi kullanım
+*İşlem kimliği ile .csv dosyalarını çıkarma
+*Daha iyi UTXO seçim ilkeleri
+*Küçük hata düzeltmeleri

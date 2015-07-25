@@ -12,6 +12,15 @@ var crowdin_identifier = 'copay'
 var local_file_name2 = path.join(__dirname, 'docs/appstore_en.txt')
 var local_file_name3 = path.join(__dirname, 'docs/updateinfo_en.txt')
 
+try {
+    fs.statSync(local_file_name2);
+    fs.statSync(local_file_name3);
+}
+catch (e) {
+    console.log('\n### ABORTING ### One of the following files does not exist:\n' + local_file_name2 + '\n' + local_file_name3);
+    process.exit(1);
+}
+
 // Download most recent translations for all languages.
 https.get('https://crowdin.com/download/project/' + crowdin_identifier + '.zip', function(res) {
   var data = [], dataLen = 0; 

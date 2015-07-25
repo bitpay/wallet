@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Greek\n"
 "Language: el\n"
-"PO-Revision-Date: 2015-07-21 13:31-0400\n"
+"PO-Revision-Date: 2015-07-23 11:32-0400\n"
 
 #: public/views/walletHome.html
 msgid "(possible double spend)"
@@ -362,10 +362,6 @@ msgstr "Διαγραφή πληρωμής"
 msgid "Details"
 msgstr "Λεπτομέρειες"
 
-#: src/js/controllers/index.js
-msgid "Deutsch"
-msgstr "Γερμανικά"
-
 #: public/views/preferences.html
 msgid "Disabled"
 msgstr "Απενεργοποιημένο"
@@ -477,6 +473,10 @@ msgstr "Δημιουργία νέας διεύθυνσης"
 msgid "Generating .csv file..."
 msgstr "Δημιουργία .csv αρχείου..."
 
+#: src/js/controllers/index.js
+msgid "German"
+msgstr "Γερμανικά"
+
 #: public/views/modals/wallets.html
 msgid "Getting address for wallet {{selectedWalletName}} ..."
 msgstr "Λήψη διεύθυνσης για το πορτοφόλι {{selectedWalletName}} ..."
@@ -488,6 +488,10 @@ msgstr "Καθολικές ρυθμίσεις"
 #: public/views/disclaimer.html
 msgid "Go back"
 msgstr "Πάμε πίσω"
+
+#: src/js/controllers/index.js
+msgid "Greek"
+msgstr "Ελληνικά"
 
 #: public/views/import.html
 msgid "Have a Backup from Copay v0.9?"
@@ -548,6 +552,10 @@ msgstr "Εισαγωγή ..."
 #: public/views/walletHome.html
 msgid "Invalid"
 msgstr "Μη έγκυρο"
+
+#: src/js/controllers/index.js
+msgid "Italian"
+msgstr "Ιταλικά"
 
 #: src/js/controllers/index.js
 msgid "Japanese"
