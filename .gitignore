@@ -1,5 +1,6 @@
 # translation
-po/*.mo
+i18n/po/*.mo
+i18n/crowdin_api_key.txt
 src/js/translations.js
 
 # version
