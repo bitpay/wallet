@@ -5,18 +5,23 @@ angular.module('copayApp.controllers').controller('preferencesDeleteWalletContro
     this.isCordova = isCordova;
     this.error = null;
 
+    var delete_msg = gettext('Are you sure you want to delete this wallet?');
+    var ok_msg = gettext('OK');
+    var cancel_msg = gettext('Cancel');
+    var confirm_msg = gettext('Confirm');
+
     var _modalDeleteWallet = function() {
       var ModalInstanceCtrl = function($scope, $modalInstance, gettext) {
-        $scope.title = gettext('Are you sure you want to delete this wallet?');
+        $scope.title = delete_msg;
         $scope.loading = false;
 
         $scope.ok = function() {
           $scope.loading = true;
-          $modalInstance.close(gettext('OK'));
+          $modalInstance.close(ok_msg);
 
         };
         $scope.cancel = function() {
-          $modalInstance.dismiss(gettext('Cancel'));
+          $modalInstance.dismiss(cancel_msg);
         };
       };
 
@@ -50,13 +55,13 @@ angular.module('copayApp.controllers').controller('preferencesDeleteWalletContro
     this.deleteWallet = function() {
       if (isCordova) {
         navigator.notification.confirm(
-          gettext('Are you sure you want to delete this wallet?'),
+          delete_msg,
           function(buttonIndex) {
             if (buttonIndex == 2) {
               _deleteWallet();
             }
           },
-          gettext('Confirm'), [gettext('Cancel'), gettext('OK')]
+          confirm_msg, [cancel_msg, ok_msg]
         );
       } else {
         _modalDeleteWallet();
