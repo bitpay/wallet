@@ -352,10 +352,6 @@ msgstr ""
 msgid "Details"
 msgstr ""
 
-#: src/js/controllers/index.js
-msgid "Deutsch"
-msgstr ""
-
 #: public/views/preferences.html
 msgid "Disabled"
 msgstr ""
@@ -467,6 +463,10 @@ msgstr ""
 msgid "Generating .csv file..."
 msgstr ""
 
+#: src/js/controllers/index.js
+msgid "German"
+msgstr ""
+
 #: public/views/modals/wallets.html
 msgid "Getting address for wallet {{selectedWalletName}} ..."
 msgstr ""
@@ -477,6 +477,10 @@ msgstr ""
 
 #: public/views/disclaimer.html
 msgid "Go back"
+msgstr ""
+
+#: src/js/controllers/index.js
+msgid "Greek"
 msgstr ""
 
 #: public/views/import.html
@@ -537,6 +541,10 @@ msgstr ""
 
 #: public/views/walletHome.html
 msgid "Invalid"
+msgstr ""
+
+#: src/js/controllers/index.js
+msgid "Italian"
 msgstr ""
 
 #: src/js/controllers/index.js
