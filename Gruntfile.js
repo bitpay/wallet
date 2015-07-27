@@ -139,8 +139,8 @@ module.exports = function(grunt) {
       },
       linux: {
         files: [
-          {expand: true, cwd: 'webkitbuilds/',src: ['.desktop', 'favicon.ico'],dest: 'webkitbuilds/copay/linux32/', flatten: true, filter: 'isFile' },
-          {expand: true, cwd: 'webkitbuilds/',src: ['.desktop', 'favicon.ico'],dest: 'webkitbuilds/copay/linux64/', flatten: true, filter: 'isFile' },
+          {expand: true, cwd: 'webkitbuilds/',src: ['.desktop', '../public/img/icons/favicon.ico', '../public/img/icons/icon-256.png'],dest: 'webkitbuilds/copay/linux32/', flatten: true, filter: 'isFile' },
+          {expand: true, cwd: 'webkitbuilds/',src: ['.desktop', '../public/img/icons/favicon.ico', '../public/img/icons/icon-256.png'],dest: 'webkitbuilds/copay/linux64/', flatten: true, filter: 'isFile' },
         ],
       }
     },
