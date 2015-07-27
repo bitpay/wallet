@@ -269,7 +269,7 @@
         </div>
         <div class="m20t text-center" ng-show="!home.generatingAddress && home.addr[index.walletId]">
           <a class="size-12 text-gray" ng-click="home.openCustomizedAmountModal(home.addr[index.walletId])">
-            <i class="fi-bitcoin"></i> 
+            <i class="fi-bitcoin"></i>
             <span translate>Request a specific amount</span>
           </a>
         </div>
@@ -293,7 +293,7 @@
              translate> Send All
           </a>
 
-          <div  ng-show="!index.lockedBalance && index.availableBalanceStr">
+          <div class="oh"  ng-show="!index.lockedBalance && index.availableBalanceStr">
             <div class="size-10">
               <span class="db text-bold">
                 <span translate>Available Balance</span>:
@@ -301,7 +301,7 @@
               </span>
             </div>
           </div>
-          <div  ng-show="index.lockedBalance">
+          <div class="oh"  ng-show="index.lockedBalance">
             <div class="left">
               <i class="fi-info size-24 m10r"></i>
             </div>
@@ -510,7 +510,7 @@
       <div ng-if="!index.isCordova && index.txHistory[0] && !index.updatingTxHistory" class="m20t text-center">
         <input id="export_file" type="file" nwsaveas="Copay-{{index.alias || index.walletName}}.csv" accept=".csv" style="display:none">
         <a class="text-gray size-12" ng-click="index.csvHistory();">
-          <i class="fi-page-export-csv"></i> 
+          <i class="fi-page-export-csv"></i>
           <span translate>Download CSV file</span>
         </a>
       </div>
