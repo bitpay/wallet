@@ -14,24 +14,18 @@
 <div class="modal-content fix-modals-touch" ng-init="updateCopayerList()">
   <h4 class="title m0" translate>Details</h4>
   <ul class="no-bullet size-14 m0">
-    <div ng-if="tx.outputs"
-      ng-repeat="output in tx.outputs.list"
+    <div ng-if="!tx.showSingle"
+      ng-repeat="output in [ tx.outputs.summary ]"
       ng-include="'views/includes/output.html'">
     </div>
-    <li ng-if="!tx.outputs" class="line-b p10 oh" ng-click="copyAddress(tx.toAddress)">
-      <span class="text-gray" translate>To</span>:
-      <span class="right enable_text_select">{{tx.toAddress}}</span>
-    </li>
-    <li ng-if="!tx.outputs" class="line-b p10">
-      <span class="text-gray" translate>Amount</span>:
-      <span class="right">{{amountStr}}
-        <span class="label gray radius">{{alternativeAmountStr}}</span>
-      </span>
-    </li>
-    <li ng-if="!tx.outputs" class="line-b p10 oh">
-      <span class="text-gray" translate>Note</span>:
-      <span class="right">{{tx.message}}</span>
-    </li>
+    <div ng-if="!tx.showSingle && tx.outputs.summary.showDetails"
+      ng-repeat="output in tx.outputs.details"
+      ng-include="'views/includes/output.html'">
+    </div>
+    <div ng-if="tx.showSingle"
+      ng-repeat="output in [ tx ]"
+      ng-include="'views/includes/output.html'">
+    </div>
     <li class="line-b p10">
       <span class="text-gray" translate>Fee</span>:
       <span class="right">{{feeStr}}</span>
