@@ -364,14 +364,8 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
         self.copyAddress(addr);
       };
 
-      $scope.toggleOutputSummary = function(output) {
-        if (output.parent.isSummarized) {
-          output.parent.isSummarized = false;
-          output.parent.list = output.parent.details;
-        } else {
-          output.parent.isSummarized = true;
-          output.parent.list = output.parent.summary;
-        }
+      $scope.toggleOutputDetails = function(summary) {
+        summary.showDetails = !summary.showDetails;
       };
 
       $scope.cancel = function() {
@@ -1058,6 +1052,10 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
       $scope.cancel = function() {
         $modalInstance.dismiss('cancel');
+      };
+
+      $scope.toggleOutputDetails = function(summary) {
+        summary.showDetails = !summary.showDetails;
       };
     };
 
