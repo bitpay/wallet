@@ -1,6 +1,3 @@
---------------------------------
-Description
---------------------------------
 Secure bitcoin on your own terms with an open source, multisignature wallet from BitPay. 
 Copay users can hold funds individually or share finances securely with other users with multisignature wallets, which prevent unauthorized payments by requiring multiple approvals. Here are some ways Copay can be used with others:
 
@@ -24,38 +21,3 @@ Customizable wallet naming and background colors
 4 supported languages (EN, JP, FR, ES)
 
 Copay is free and open source software run on non-proprietary servers, so there's no need to rely on any company for continuous support. Anyone can review or contribute to Copay's source code on GitHub (https://github.com/bitpay/copay). 
-
---------------------------------
-Release Notes: "What's new"
---------------------------------
-v1.1.2
---------------------------------
-* Now is possible to make backups without signing capabilities (more info https://github.com/bitpay/copay/pull/2998)
-* Better refresh and sorting rules in transaction history
-* Better handling of `invalid` transactions in history
-* Better handling of wallets with 1K+ transactions in history
-* Exports .csv files with transaction ID
-* Better UTXOs selection polices
-* Minor bug fixes
---------------------------------
-v1.1.0
---------------------------------
-QR Codes with specified amount for Receiving Payments
-Fund Transfer Between Wallets
-HTML Email Notifications
-Custom Transaction Fee Settings
-Send Maximum Amount of Funds
-New Spending Proposal Deletion Rules
-Bugs Fixes for Offline Functionality
---------------------------------
-v1.0.2
---------------------------------
-Copay is now out of beta! We've spent eight months testing Copay, and we're production-ready.
---------------------------------
-v1.0.1
---------------------------------
-Better handling of network interruption errors
-Better refresh logic after accepting/rejecting payments
-Updates ES, JP and FR translations
-Fix scroll with in certain popups
---------------------------------

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('walletHomeController', function($scope, $rootScope, $timeout, $filter, $modal, $log, notification, txStatus, isCordova, profileService, lodash, configService, rateService, storageService, bitcore, isChromeApp, gettext, gettextCatalog, nodeWebkit, addressService, ledger) {
+angular.module('copayApp.controllers').controller('walletHomeController', function($scope, $rootScope, $timeout, $filter, $modal, $log, notification, txStatus, isCordova, profileService, lodash, configService, rateService, storageService, bitcore, isChromeApp, gettext, gettextCatalog, nodeWebkit, addressService, feeService, ledger) {
 
   var self = this;
   $rootScope.hideMenuBar = false;
@@ -553,7 +553,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     });
   };
 
-  // Send
+  // Send 
 
   this.canShowAlternative = function() {
     return $scope.showAlternative;
@@ -751,40 +751,43 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       address = form.address.$modelValue;
       amount = parseInt((form.amount.$modelValue * unitToSat).toFixed(0));
 
-      fc.sendTxProposal({
-        toAddress: address,
-        amount: amount,
-        message: comment,
-        payProUrl: paypro ? paypro.url : null,
-        feePerKb: config.feeValue || 10000,
-      }, function(err, txp) {
-        if (err) {
-          self.setOngoingProcess();
-          profileService.lockFC();
-          return self.setSendError(err);
-        }
-
-        if (!fc.canSign()) {
-          $log.info('No signing proposal: No private key')
-          self.setOngoingProcess();
-          self.resetForm();
-          txStatus.notify(txp, function() {
-            return $scope.$emit('Local/TxProposalAction');
-          });
-          return;
-        }
-
-        self.signAndBroadcast(txp, function(err) {
-          self.setOngoingProcess();
-          profileService.lockFC();
-          self.resetForm();
+      feeService.getCurrentFeeValue(function(err, feePerKb) {
+        if (err) $log.debug(err);
+        fc.sendTxProposal({
+          toAddress: address,
+          amount: amount,
+          message: comment,
+          payProUrl: paypro ? paypro.url : null,
+          feePerKb: feePerKb,
+        }, function(err, txp) {
           if (err) {
-            self.error = err.message ? err.message : gettext('The payment was created but could not be completed. Please try again from home screen');
-            $scope.$emit('Local/TxProposalAction');
-            $timeout(function() {
-              $scope.$digest();
-            }, 1);
+            self.setOngoingProcess();
+            profileService.lockFC();
+            return self.setSendError(err);
           }
+
+          if (!fc.canSign()) {
+            $log.info('No signing proposal: No private key')
+            self.setOngoingProcess();
+            self.resetForm();
+            txStatus.notify(txp, function() {
+              return $scope.$emit('Local/TxProposalAction');
+            });
+            return;
+          }
+
+          self.signAndBroadcast(txp, function(err) {
+            self.setOngoingProcess();
+            profileService.lockFC();
+            self.resetForm();
+            if (err) {
+              self.error = err.message ? err.message : gettext('The payment was created but could not be completed. Please try again from home screen');
+              $scope.$emit('Local/TxProposalAction');
+              $timeout(function() {
+                $scope.$digest();
+              }, 1);
+            }
+          });
         });
       });
     }, 100);
@@ -1019,6 +1022,35 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     } else {
       return value;
     }
+  };
+
+  // Advanced SEND: set temporary fee policy for each transaction
+  this.openAdvancedSendModal = function(feeLevels, currentFeeLevel) {
+    var fc = profileService.focusedClient;
+
+    var ModalInstanceCtrl = function($scope, $modalInstance) {
+      $scope.feeLevels = feeLevels;
+      $scope.currentFeeLevel = currentFeeLevel
+      $scope.network = fc.credentials.network;
+      $scope.color = fc.backgroundColor;
+      $scope.save = function(level) {
+        $scope.currentFeeLevel = level;
+      };
+
+      $scope.cancel = function() {
+        $modalInstance.dismiss('cancel');
+      };
+    };
+    var modalInstance = $modal.open({
+      templateUrl: 'views/modals/advancedSend.html',
+      windowClass: 'full animated slideInUp',
+      controller: ModalInstanceCtrl
+    });
+
+    modalInstance.result.finally(function() {
+      var m = angular.element(document.getElementsByClassName('reveal-modal'));
+      m.addClass('slideOutDown');
+    });
   };
 
 

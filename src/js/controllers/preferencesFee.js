@@ -1,37 +1,20 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('preferencesFeeController',
-  function($rootScope, $scope, configService, go, gettext) {
-    var config = configService.getSync();
-    this.feeName = config.wallet.settings.feeName || 'Priority';
-    this.feeOpts = [{
-      name: gettext('Priority'),
-      value: 100,
-    }, {
-      name: gettext('Normal'),
-      value: 50,
-    }, {
-      name: gettext('Economy'),
-      value: 10,
-    }, {
-      name: gettext('Emergency'),
-      red: true,
-      value: 500,
-    }, ];
+  function($rootScope, configService) {
 
     this.save = function(newFee) {
       var opts = {
         wallet: {
           settings: {
-            feeName: newFee.name,
-            feeValue: newFee.value * 100,
+            feeLevel: newFee
           }
         }
       };
-      this.feeName = newFee.name;
+      $rootScope.$emit('Local/FeeLevelUpdated', newFee);
 
       configService.set(opts, function(err) {
-        if (err) console.log(err);
+        if (err) $log.debug(err);
       });
 
     };

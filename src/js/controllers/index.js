@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, lodash, go, profileService, configService, isCordova, rateService, storageService, addressService, gettextCatalog, gettext, amMoment, nodeWebkit, addonManager) {
+angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, lodash, go, profileService, configService, isCordova, rateService, storageService, addressService, gettextCatalog, gettext, amMoment, nodeWebkit, addonManager, feeService) {
   var self = this;
   self.isCordova = isCordova;
   self.onGoingProcess = {};
@@ -41,23 +41,29 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   self.tab = 'walletHome';
 
   self.availableLanguages = [{
-    name: gettext('Deutsch'),
-    isoCode: 'de',
-  }, {
     name: gettext('English'),
     isoCode: 'en',
-  }, {
-    name: gettext('Spanish'),
-    isoCode: 'es',
   }, {
     name: gettext('French'),
     isoCode: 'fr',
   }, {
-    name: gettext('Japanese'),
-    isoCode: 'ja',
+    name: gettext('Italian'),
+    isoCode: 'it',
+  }, {
+    name: gettext('German'),
+    isoCode: 'de',
+  }, {
+    name: gettext('Spanish'),
+    isoCode: 'es',
   }, {
     name: gettext('Portuguese'),
     isoCode: 'pt',
+  }, {
+    name: gettext('Greek'),
+    isoCode: 'el',
+  }, {
+    name: gettext('Japanese'),
+    isoCode: 'ja',
   }];
 
   self.setOngoingProcess = function(processName, isOn) {
@@ -272,6 +278,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         }
         $log.debug('Wallet Status:', walletStatus);
         self.setPendingTxps(walletStatus.pendingTxps);
+        self.setFees();
 
         // Status Shortcuts
         self.walletName = walletStatus.wallet.name;
@@ -295,6 +302,22 @@ angular.module('copayApp.controllers').controller('indexController', function($r
             self.updateTxHistory();
           }, 1);
         }
+      });
+    });
+  };
+
+  self.setCurrentFeeLevel = function(level) {
+    self.currentFeeLevel = level || configService.getSync().wallet.settings.feeLevel || 'priority';
+  };
+
+  self.setFees = function() {
+    var fc = profileService.focusedClient;
+    if (!fc) return;
+    $timeout(function() {
+      feeService.getFeeLevels(function(levels) {
+        self.feeLevels = levels;
+        self.setCurrentFeeLevel();
+        $rootScope.$apply();
       });
     });
   };
@@ -793,6 +816,10 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     $timeout(function() {
       $rootScope.$apply();
     });
+  });
+
+  $rootScope.$on('Local/FeeLevelUpdated', function(event, level) {
+    self.setCurrentFeeLevel(level);
   });
 
   $rootScope.$on('Local/ProfileBound', function() {

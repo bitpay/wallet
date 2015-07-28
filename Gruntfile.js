@@ -109,7 +109,7 @@ module.exports = function(grunt) {
     nggettext_extract: {
       pot: {
         files: {
-          'po/template.pot': [
+          'i18n/po/template.pot': [
             'public/index.html', 
             'public/views/*.html', 
             'public/views/**/*.html',
@@ -126,7 +126,7 @@ module.exports = function(grunt) {
           module: 'copayApp'
         },
         files: {
-          'src/js/translations.js': ['po/*.po']
+          'src/js/translations.js': ['i18n/po/*.po']
         }
       },
     },
@@ -139,8 +139,8 @@ module.exports = function(grunt) {
       },
       linux: {
         files: [
-          {expand: true, cwd: 'webkitbuilds/',src: ['.desktop', 'favicon.ico'],dest: 'webkitbuilds/copay/linux32/', flatten: true, filter: 'isFile' },
-          {expand: true, cwd: 'webkitbuilds/',src: ['.desktop', 'favicon.ico'],dest: 'webkitbuilds/copay/linux64/', flatten: true, filter: 'isFile' },
+          {expand: true, cwd: 'webkitbuilds/',src: ['.desktop', '../public/img/icons/favicon.ico', '../public/img/icons/icon-256.png'],dest: 'webkitbuilds/copay/linux32/', flatten: true, filter: 'isFile' },
+          {expand: true, cwd: 'webkitbuilds/',src: ['.desktop', '../public/img/icons/favicon.ico', '../public/img/icons/icon-256.png'],dest: 'webkitbuilds/copay/linux64/', flatten: true, filter: 'isFile' },
         ],
       }
     },
