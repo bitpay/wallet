@@ -877,6 +877,7 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
 .text-alert {color: red;}
 .text-success {color: #1ABC9C;}
 .text-spacing {letter-spacing:2px;}
+.text-capitalize {text-transform: capitalize;}
 
 .panel {
   background: #FFFFFF;

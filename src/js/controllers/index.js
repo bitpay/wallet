@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, lodash, go, profileService, configService, isCordova, rateService, storageService, addressService, gettextCatalog, gettext, amMoment, nodeWebkit, addonManager) {
+angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, lodash, go, profileService, configService, isCordova, rateService, storageService, addressService, gettextCatalog, gettext, amMoment, nodeWebkit, addonManager, feeService) {
   var self = this;
   self.isCordova = isCordova;
   self.onGoingProcess = {};
@@ -278,6 +278,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         }
         $log.debug('Wallet Status:', walletStatus);
         self.setPendingTxps(walletStatus.pendingTxps);
+        self.setFees();
 
         // Status Shortcuts
         self.walletName = walletStatus.wallet.name;
@@ -301,6 +302,22 @@ angular.module('copayApp.controllers').controller('indexController', function($r
             self.updateTxHistory();
           }, 1);
         }
+      });
+    });
+  };
+
+  self.setCurrentFeeLevel = function(level) {
+    self.currentFeeLevel = level || configService.getSync().wallet.settings.feeLevel || 'priority';
+  };
+
+  self.setFees = function() {
+    var fc = profileService.focusedClient;
+    if (!fc) return;
+    $timeout(function() {
+      feeService.getFeeLevels(function(levels) {
+        self.feeLevels = levels;
+        self.setCurrentFeeLevel();
+        $rootScope.$apply();
       });
     });
   };
@@ -799,6 +816,10 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     $timeout(function() {
       $rootScope.$apply();
     });
+  });
+
+  $rootScope.$on('Local/FeeLevelUpdated', function(event, level) {
+    self.setCurrentFeeLevel(level);
   });
 
   $rootScope.$on('Local/ProfileBound', function() {
