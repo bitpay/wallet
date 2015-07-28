@@ -1,0 +1,30 @@
+<div 
+  class="topbar-container" 
+  ng-include="'views/includes/topbar.html'"
+  ng-init="titleSection='Bitcoin Network Fee Policy'; goBackToState = 'preferences'; noColor = true">
+</div>
+<div class="content preferences" ng-controller="preferencesFeeController as prefFee">
+  <ul class="no-bullet m0 size-14"> 
+    <li ng-repeat="fee in (index.network == 'livenet' ? index.feeLevels.livenet : index.feeLevels.testnet)"
+      ng-click="prefFee.save(fee.level)" class="line-b p20">
+      <span class="text-capitalize">{{fee.level}}</span>
+      <i class="fi-check size-16 right" ng-show="index.currentFeeLevel == fee.level"></i>
+    </li>
+  </ul>
+
+  <div class="row column m20t">
+    <div class="text-gray size-12 text-center" ng-repeat="fee in (index.network == 'livenet' ? index.feeLevels.livenet :
+      index.feeLevels.testnet)" ng-if="fee.level == index.currentFeeLevel">
+      <span translate>Average confirmation time: {{fee.nbBlocks * 10}} minutes</span>. 
+      <span class="size-12 text-light" translate>Current fee rate for this policy: {{fee.feePerKBUnit}}/kiB</span>
+    </div>
+  </div>
+
+  <div class="row column m20t">
+    <div class="text-gray size-12 text-center" translate>
+      Bitcoin transactions may include a fee collected by miners on the network. The higher the fee, the greater the incentive a miner has to include that transaction in a block. Actual fees are determined based on network load and the selected policy.
+    </div>
+  </div>
+</div>
+
+<div class="extra-margin-bottom"></div>

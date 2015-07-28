@@ -6,7 +6,7 @@
   </section>
   <section class="middle tab-bar-section">
     <h1 class="title ellipsis" ng-style="{'color':color}" translate>
-      Bitcoin Network Fee Policy
+      Advanced Send
     </h1>
   </section>
 </nav>
@@ -14,12 +14,9 @@
 
 <div class="modal-content fix-modals-touch">
   <ul class="no-bullet m0 size-14"> 
-    <h4 class="title m0" translate>Fee level</h4>
+    <h4 class="title m0" translate>Fee Policy</h4>
     <li ng-repeat="fee in (network == 'livenet' ? feeLevels.livenet : feeLevels.testnet)" ng-click="save(fee.level)" class="line-b p20">
-      <span ng-show="fee.level == 'priority'" translate>Priority</span>
-      <span ng-show="fee.level == 'normal'" translate>Normal</span>
-      <span ng-show="fee.level == 'economy'" translate>Economy</span>
-      <span class="size-12 text-light" translate>{{fee.feePerKBUnit}} per kB</span>
+      <span class="text-capitalize">{{fee.level|translate}}</span>
       <i class="fi-check size-16 right" ng-show="currentFeeLevel == fee.level"></i>
     </li>
   </ul>
@@ -27,13 +24,8 @@
   <div class="row column m20t">
     <div class="text-gray size-12 text-center" ng-repeat="fee in (network == 'livenet' ? feeLevels.livenet :
       feeLevels.testnet)" ng-if="fee.level == currentFeeLevel">
-      <span translate>Average confirmation time: {{fee.nbBlocks * 10}} minutes</span>
-    </div>
-  </div>
-
-  <div class="row column m20t">
-    <div class="text-gray size-12 text-center" translate>
-Bitcoin transactions may include a fee collected by miners on the network. The higher the fee, the greater the incentive a miner has to include that transaction in a block.
+      <span translate>Average confirmation time: {{fee.nbBlocks * 10}} minutes</span>. 
+      <span class="size-12 text-light" translate>Current fee rate for this policy: {{fee.feePerKBUnit}}/kiB</span>
     </div>
   </div>
 
