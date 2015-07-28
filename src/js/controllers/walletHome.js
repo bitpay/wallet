@@ -973,7 +973,8 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     }
   };
 
-  this.openFeeLevelsModal = function(feeLevels, currentFeeLevel) {
+  // Advanced SEND: set temporary fee policy for each transaction
+  this.openAdvancedSendModal = function(feeLevels, currentFeeLevel) {
     var fc = profileService.focusedClient;
 
     var ModalInstanceCtrl = function($scope, $modalInstance) {
@@ -981,21 +982,8 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       $scope.currentFeeLevel = currentFeeLevel
       $scope.network = fc.credentials.network;
       $scope.color = fc.backgroundColor;
-
       $scope.save = function(level) {
-        var opts = {
-          wallet: {
-            settings: {
-              feeLevel: level
-            }
-          }
-        };
         $scope.currentFeeLevel = level;
-        $rootScope.$emit('Local/FeeLevelUpdated', level);
-
-        configService.set(opts, function(err) {
-          if (err) $log.debug(err);
-        });
       };
 
       $scope.cancel = function() {
@@ -1003,7 +991,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       };
     };
     var modalInstance = $modal.open({
-      templateUrl: 'views/modals/fee.html',
+      templateUrl: 'views/modals/advancedSend.html',
       windowClass: 'full animated slideInUp',
       controller: ModalInstanceCtrl
     });

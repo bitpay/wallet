@@ -1,17 +1,17 @@
 'use strict';
 
-angular.module('copayApp.services').factory('feeService', function($log, lodash, profileService, configService, gettext) {
+angular.module('copayApp.services').factory('feeService', function($log, profileService, configService) {
   var root = {};
 
   root.getCurrentFeeValue = function(cb) { 
     var fc = profileService.focusedClient;
     var config = configService.getSync().wallet.settings;
-    var feeLevel = config.feeLevel || 'priority';
+    var feeLevel = config.feeLevel || 'normal';
     // static fee
     var fee = 10000;
     fc.getFeeLevels(fc.credentials.network, function(err, levels) {
       if (err) {
-        return cb({message: 'Could not get dynamic fee'}, fee);
+        return cb({message: 'Could not get dynamic fee. Using static 10000sat'}, fee);
       }
       else {
         for (var i = 0; i < 3; i++) {
@@ -25,30 +25,10 @@ angular.module('copayApp.services').factory('feeService', function($log, lodash,
     });
   }; 
 
-  var checkCompatibility = function(config) {
-    if (config.feeName && !config.feeLevel) {
-      // Migrate to new dynamic fee values
-      var level = config.feeName.toLowerCase();
-      if (level == 'emergency') level = 'priority';
-
-      var opts = {
-        wallet: {
-          settings: {
-            feeLevel: level
-          }
-        }
-      };
-      configService.set(opts, function(err) {
-        if (err) $log.debug(err);
-      });
-    }
-  };
-
   root.getFeeLevels = function(cb) { 
     var fc = profileService.focusedClient;
     var config = configService.getSync().wallet.settings;
     var unitName = config.unitName;
-    checkCompatibility(config);
 
     fc.getFeeLevels('livenet', function(errLivenet, levelsLivenet) {
       fc.getFeeLevels('testnet', function(errTestnet, levelsTestnet) {

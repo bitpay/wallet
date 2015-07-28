@@ -398,16 +398,6 @@
                 </div>
               </div>
             </div>
-
-            <div class="text-right size-12 m20b" ng-if="index.feeLevels.livenet && index.feeLevels.testnet"> 
-              <span ng-repeat="fee in (index.network == 'livenet' ? index.feeLevels.livenet : index.feeLevels.testnet)"
-                ng-show="index.currentFeeLevel == fee.level" class="pointer" ng-click="home.openFeeLevelsModal(index.feeLevels, index.currentFeeLevel)">
-                <span translate>Fee level: {{fee.level}}</span> 
-                <span class="text-gray">({{fee.feePerKBUnit}}/KB)</span> 
-                <i class="fi-pencil"></i>
-              </span>
-            </div>
-
             <div class="row">
               <div class="large-12 columns">
                 <label for="comment"><span translate>Note</span>
