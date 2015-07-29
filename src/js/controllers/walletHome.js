@@ -89,6 +89,10 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     $rootScope.$digest();
   });
 
+  var accept_msg = gettextCatalog.getString('Accept');
+  var cancel_msg = gettextCatalog.getString('Cancel');
+  var confirm_msg = gettextCatalog.getString('Confirm');
+
   // walletHome
 
 
@@ -1072,7 +1076,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   };
 
   this.confirmDialog = function(msg, cb) {
-    if (isCordova) {
+    if (isCordova) { 
       navigator.notification.confirm(
         msg,
         function(buttonIndex) {
@@ -1083,7 +1087,8 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
           } else {
             return cb(false);
           }
-        }
+        },
+        confirm_msg, [accept_msg, cancel_msg]
       );
     } else if (isChromeApp) {
       // No feedback, alert/confirm not supported.

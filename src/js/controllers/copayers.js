@@ -5,7 +5,7 @@ angular.module('copayApp.controllers').controller('copayersController',
     var self = this;
 
     var delete_msg = gettextCatalog.getString('Are you sure you want to delete this wallet?');
-    var ok_msg = gettextCatalog.getString('OK');
+    var accept_msg = gettextCatalog.getString('Accept');
     var cancel_msg = gettextCatalog.getString('Cancel');
     var confirm_msg = gettextCatalog.getString('Confirm');
 
@@ -27,7 +27,7 @@ angular.module('copayApp.controllers').controller('copayersController',
 
         $scope.ok = function() {
           $scope.loading = true;
-          $modalInstance.close(ok_msg);
+          $modalInstance.close(accept_msg);
 
         };
         $scope.cancel = function() {
@@ -76,11 +76,11 @@ angular.module('copayApp.controllers').controller('copayersController',
         navigator.notification.confirm(
           delete_msg,
           function(buttonIndex) {
-            if (buttonIndex == 2) {
+            if (buttonIndex == 1) {
               _deleteWallet();
             }
           },
-          confirm_msg, [cancel_msg, ok_msg]
+          confirm_msg, [accept_msg, cancel_msg]
         );
       } else {
         _modalDeleteWallet();
