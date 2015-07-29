@@ -29,6 +29,9 @@ msgid "About Copay"
 msgstr ""
 
 #: public/views/modals/txp-details.html
+#: src/js/controllers/copayers.js
+#: src/js/controllers/preferencesDelete.js
+#: src/js/controllers/walletHome.js
 msgid "Accept"
 msgstr ""
 
@@ -169,8 +172,10 @@ msgstr ""
 
 #: public/views/copayers.html
 #: public/views/walletHome.html
+#: public/views/modals/confirmation.html
 #: src/js/controllers/copayers.js
 #: src/js/controllers/preferencesDelete.js
+#: src/js/controllers/walletHome.js
 msgid "Cancel"
 msgstr ""
 
@@ -214,6 +219,7 @@ msgstr ""
 
 #: src/js/controllers/copayers.js
 #: src/js/controllers/preferencesDelete.js
+#: src/js/controllers/walletHome.js
 msgid "Confirm"
 msgstr ""
 
@@ -225,7 +231,9 @@ msgstr ""
 msgid "Copayers"
 msgstr ""
 
+#: src/js/controllers/backup.js
 #: src/js/controllers/copayers.js
+#: src/js/controllers/walletHome.js
 msgid "Copied to clipboard"
 msgstr ""
 
@@ -658,10 +666,6 @@ msgstr ""
 msgid "New Payment Proposal"
 msgstr ""
 
-#: public/views/modals/confirmation.html
-msgid "No"
-msgstr ""
-
 #: public/views/walletHome.html
 msgid "No Private key"
 msgstr ""
@@ -678,11 +682,6 @@ msgstr ""
 #: public/views/walletHome.html
 #: public/views/includes/output.html
 msgid "Note"
-msgstr ""
-
-#: src/js/controllers/copayers.js
-#: src/js/controllers/preferencesDelete.js
-msgid "OK"
 msgstr ""
 
 #: public/views/modals/tx-status.html
@@ -811,6 +810,10 @@ msgstr ""
 
 #: public/views/walletHome.html
 msgid "Preferences"
+msgstr ""
+
+#: src/js/controllers/backup.js
+msgid "Preparing backup..."
 msgstr ""
 
 #: public/views/modals/customized-amount.html
@@ -1219,12 +1222,20 @@ msgstr ""
 msgid "Your wallet has been imported correctly"
 msgstr ""
 
+#: src/js/services/feeService.js
+msgid "economy"
+msgstr ""
+
 #: public/views/preferencesEmail.html
 msgid "email for wallet notifications"
 msgstr ""
 
 #: public/views/walletHome.html
 msgid "locked by pending payments"
+msgstr ""
+
+#: src/js/services/feeService.js
+msgid "normal"
 msgstr ""
 
 #: public/views/copayers.html
@@ -1235,6 +1246,10 @@ msgstr ""
 
 #: public/views/walletHome.html
 msgid "optional"
+msgstr ""
+
+#: src/js/services/feeService.js
+msgid "priority"
 msgstr ""
 
 #: public/views/preferences.html
