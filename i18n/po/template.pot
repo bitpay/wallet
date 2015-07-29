@@ -46,6 +46,10 @@ msgstr ""
 msgid "Advanced"
 msgstr ""
 
+#: public/views/modals/advancedSend.html
+msgid "Advanced Send"
+msgstr ""
+
 #: public/views/disclaimer.html
 msgid "Agree"
 msgstr ""
@@ -85,6 +89,11 @@ msgstr ""
 
 #: public/views/walletHome.html
 msgid "Available Balance"
+msgstr ""
+
+#: public/views/preferencesFee.html
+#: public/views/modals/advancedSend.html
+msgid "Average confirmation time: {{fee.nbBlocks * 10}} minutes"
 msgstr ""
 
 #: public/views/create.html
@@ -131,7 +140,7 @@ msgid "Bitcoin address"
 msgstr ""
 
 #: public/views/preferencesFee.html
-msgid "Bitcoin transactions may include a fee collected by miners on the network. The higher the fee, the greater the incentive a miner has to include that transaction in a block. The ‘Emergency’ level should only be used when there is a network congestion."
+msgid "Bitcoin transactions may include a fee collected by miners on the network. The higher the fee, the greater the incentive a miner has to include that transaction in a block. Actual fees are determined based on network load and the selected policy."
 msgstr ""
 
 #: public/views/modals/txp-details.html
@@ -160,6 +169,8 @@ msgstr ""
 
 #: public/views/copayers.html
 #: public/views/walletHome.html
+#: src/js/controllers/copayers.js
+#: src/js/controllers/preferencesDelete.js
 msgid "Cancel"
 msgstr ""
 
@@ -184,6 +195,7 @@ msgid "Choose a wallet to send funds"
 msgstr ""
 
 #: public/views/includes/topbar.html
+#: public/views/modals/advancedSend.html
 #: public/views/modals/copayers.html
 #: public/views/modals/customized-amount.html
 #: public/views/modals/paypro.html
@@ -200,12 +212,21 @@ msgstr ""
 msgid "Commit hash"
 msgstr ""
 
+#: src/js/controllers/copayers.js
+#: src/js/controllers/preferencesDelete.js
+msgid "Confirm"
+msgstr ""
+
 #: public/views/modals/tx-details.html
 msgid "Confirmations"
 msgstr ""
 
 #: public/views/modals/copayers.html
 msgid "Copayers"
+msgstr ""
+
+#: src/js/controllers/copayers.js
+msgid "Copied to clipboard"
 msgstr ""
 
 #: public/views/backup.html
@@ -321,6 +342,11 @@ msgstr ""
 msgid "Creating transaction"
 msgstr ""
 
+#: public/views/preferencesFee.html
+#: public/views/modals/advancedSend.html
+msgid "Current fee rate for this policy: {{fee.feePerKBUnit}}/kiB"
+msgstr ""
+
 #: public/views/modals/tx-details.html
 msgid "Date"
 msgstr ""
@@ -372,16 +398,8 @@ msgstr ""
 msgid "ENTER"
 msgstr ""
 
-#: src/js/controllers/preferencesFee.js
-msgid "Economy"
-msgstr ""
-
 #: public/views/preferences.html
 msgid "Email Notifications"
-msgstr ""
-
-#: src/js/controllers/preferencesFee.js
-msgid "Emergency"
 msgstr ""
 
 #: public/views/preferences.html
@@ -432,6 +450,10 @@ msgstr ""
 #: public/views/modals/tx-details.html
 #: public/views/modals/txp-details.html
 msgid "Fee"
+msgstr ""
+
+#: public/views/modals/advancedSend.html
+msgid "Fee Policy"
 msgstr ""
 
 #. Get information of payment if using Payment Protocol
@@ -543,6 +565,10 @@ msgstr ""
 msgid "Invalid"
 msgstr ""
 
+#: src/js/controllers/copayers.js
+msgid "Invitation to share a Copay Wallet"
+msgstr ""
+
 #: src/js/controllers/index.js
 msgid "Italian"
 msgstr ""
@@ -558,6 +584,10 @@ msgstr ""
 
 #: public/views/join.html
 msgid "Join"
+msgstr ""
+
+#: src/js/controllers/copayers.js
+msgid "Join my Copay wallet. Here is the invitation code: {{secret}}  You can download Copay for your phone or desktop at https://copay.io"
 msgstr ""
 
 #: public/views/add.html
@@ -640,10 +670,6 @@ msgstr ""
 msgid "No transactions yet"
 msgstr ""
 
-#: src/js/controllers/preferencesFee.js
-msgid "Normal"
-msgstr ""
-
 #: public/views/walletHome.html
 #: public/views/modals/customized-amount.html
 msgid "Not valid"
@@ -653,6 +679,11 @@ msgstr ""
 #: public/views/modals/tx-details.html
 #: public/views/modals/txp-details.html
 msgid "Note"
+msgstr ""
+
+#: src/js/controllers/copayers.js
+#: src/js/controllers/preferencesDelete.js
+msgid "OK"
 msgstr ""
 
 #: public/views/modals/tx-status.html
@@ -781,10 +812,6 @@ msgstr ""
 
 #: public/views/walletHome.html
 msgid "Preferences"
-msgstr ""
-
-#: src/js/controllers/preferencesFee.js
-msgid "Priority"
 msgstr ""
 
 #: public/views/modals/customized-amount.html
@@ -1207,10 +1234,6 @@ msgstr ""
 
 #: public/views/walletHome.html
 msgid "too long!"
-msgstr ""
-
-#: public/views/preferencesFee.html
-msgid "{{fee.value}} bits per kB"
 msgstr ""
 
 #: src/js/controllers/walletHome.js
