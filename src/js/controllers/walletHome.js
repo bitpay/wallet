@@ -364,6 +364,10 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
         self.copyAddress(addr);
       };
 
+      $scope.toggleOutputDetails = function(summary) {
+        summary.showDetails = !summary.showDetails;
+      };
+
       $scope.cancel = function() {
         $modalInstance.dismiss('cancel');
       };
@@ -1048,6 +1052,10 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
       $scope.cancel = function() {
         $modalInstance.dismiss('cancel');
+      };
+
+      $scope.toggleOutputDetails = function(summary) {
+        summary.showDetails = !summary.showDetails;
       };
     };
 
