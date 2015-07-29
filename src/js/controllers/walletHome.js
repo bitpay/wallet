@@ -431,7 +431,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   this.copyAddress = function(addr) {
     if (isCordova) {
       window.cordova.plugins.clipboard.copy(addr);
-      window.plugins.toast.showShortCenter('Copied to clipboard');
+      window.plugins.toast.showShortCenter(gettextCatalog.getString('Copied to clipboard'));
     } else if (nodeWebkit.isDefined()) {
       nodeWebkit.writeToClipboard(addr);
     }

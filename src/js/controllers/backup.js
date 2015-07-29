@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('backupController',
-  function($rootScope, $scope, $timeout, backupService, profileService, isMobile, isCordova, notification, go, gettext) {
+  function($rootScope, $scope, $timeout, backupService, profileService, isMobile, isCordova, notification, go, gettext, gettextCatalog) {
     this.isSafari = isMobile.Safari();
     this.isCordova = isCordova;
     this.error = null;
@@ -54,7 +54,7 @@ angular.module('copayApp.controllers').controller('backupController',
       var ew = this.getBackup();
       if (!ew) return;
       window.cordova.plugins.clipboard.copy(ew);
-      window.plugins.toast.showShortCenter('Copied to clipboard');
+      window.plugins.toast.showShortCenter(gettextCatalog.getString('Copied to clipboard'));
       $rootScope.$emit('Local/BackupDone');
     };
 
@@ -63,7 +63,7 @@ angular.module('copayApp.controllers').controller('backupController',
       if (isMobile.Android() || isMobile.Windows()) {
         window.ignoreMobilePause = true;
       }
-      window.plugins.toast.showShortCenter('Preparing backup...');
+      window.plugins.toast.showShortCenter(gettextCatalog.getString('Preparing backup...'));
       var name = (fc.credentials.walletName || fc.credentials.walletId);
       if (fc.alias) {
         name = fc.alias + ' [' + name + ']';
