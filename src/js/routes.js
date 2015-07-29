@@ -109,6 +109,16 @@ angular
       });
       
       $stateProvider
+      .state('translators', {
+        url: '/translators',
+        walletShouldBeComplete: true,
+        needProfile: true,
+        views: {
+          'main': {
+            templateUrl: 'views/translators.html'
+          }
+        }
+      })
       .state('disclaimer', {
         url: '/disclaimer',
         needProfile: false,
@@ -476,6 +486,7 @@ angular
       preferencesEmail: 12,
       about: 12,
       logs: 13,
+      translators: 13,
       disclaimer: 13,
       add: 11,
       create: 12,
