@@ -68,8 +68,8 @@ msgstr ""
 
 #: public/views/paymentUri.html
 #: public/views/walletHome.html
+#: public/views/includes/output.html
 #: public/views/modals/customized-amount.html
-#: public/views/modals/txp-details.html
 msgid "Amount"
 msgstr ""
 
@@ -676,8 +676,7 @@ msgid "Not valid"
 msgstr ""
 
 #: public/views/walletHome.html
-#: public/views/modals/tx-details.html
-#: public/views/modals/txp-details.html
+#: public/views/includes/output.html
 msgid "Note"
 msgstr ""
 
@@ -828,6 +827,11 @@ msgstr ""
 
 #: public/views/walletHome.html
 msgid "Received"
+msgstr ""
+
+#: public/views/includes/output.html
+#: public/views/includes/transaction.html
+msgid "Recipients"
 msgstr ""
 
 #: public/views/walletHome.html
@@ -1073,10 +1077,15 @@ msgid "Time"
 msgstr ""
 
 #: public/views/walletHome.html
+#: public/views/includes/output.html
 #: public/views/includes/transaction.html
 #: public/views/modals/tx-details.html
 #: public/views/modals/txp-details.html
 msgid "To"
+msgstr ""
+
+#: public/views/includes/output.html
+msgid "Total"
 msgstr ""
 
 #: public/views/walletHome.html
