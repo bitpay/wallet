@@ -425,18 +425,46 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     });
   };
 
+  self.summarizeOutputs = function(tx, formatAmount) {
+    tx.showSingle = true;
+    if (tx.outputs) {
+      tx.showSingle = false;
+      tx.outputs.details = lodash.clone(tx.outputs);
+      tx.amount = lodash.reduce(tx.outputs.details, function(total, o) {
+        formatAmount(o);
+        return total + o.amount;
+      }, 0);
+      tx.outputs.summary = {
+        amount: tx.amount,
+        message: tx.message,
+        isSummary: true,
+        showDetails: false,
+        recipientCount: tx.outputs.details.length
+      };
+      formatAmount(tx.outputs.summary);
+      if (tx.outputs.length === 1 && !tx.outputs[0].message) {
+        tx.showSingle = true;
+        tx.toAddress = tx.outputs[0].toAddress; // txproposal
+        tx.address = tx.outputs[0].address;     // txhistory
+      }
+    }
+  };
+
   self.setPendingTxps = function(txps) {
     var config = configService.getSync().wallet.settings;
     self.pendingTxProposalsCountForUs = 0;
     lodash.each(txps, function(tx) {
-      var amount = tx.amount * self.satToUnit;
-      tx.amountStr = profileService.formatAmount(tx.amount) + ' ' + config.unitName;
+      function formatAmount(tx) {
+        tx.amountStr = profileService.formatAmount(tx.amount) + ' ' + config.unitName;
+        tx.alternativeAmount = rateService.toFiat(tx.amount, config.alternativeIsoCode) ? rateService.toFiat(tx.amount, config.alternativeIsoCode).toFixed(2) : 'N/A';
+        tx.alternativeAmountStr = tx.alternativeAmount + " " + config.alternativeIsoCode;
+      };
+
+      self.summarizeOutputs(tx, formatAmount);
+      formatAmount(tx);
+
       tx.feeStr = profileService.formatAmount(tx.fee) + ' ' + config.unitName;
-      tx.alternativeAmount = rateService.toFiat(tx.amount, config.alternativeIsoCode) ? rateService.toFiat(tx.amount, config.alternativeIsoCode).toFixed(2) : 'N/A';
-      tx.alternativeAmountStr = tx.alternativeAmount + " " + config.alternativeIsoCode;
       tx.alternativeIsoCode = config.alternativeIsoCode;
-
-
 
       var action = lodash.find(tx.actions, {
         copayerId: self.copayerId
@@ -476,10 +504,15 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         tx.time = now;
 
       tx.rateTs = Math.floor((tx.ts || now) / 1000);
-      tx.amountStr = profileService.formatAmount(tx.amount); //$filter('noFractionNumber')(
       if (tx.fees)
         tx.feeStr = profileService.formatAmount(tx.fees) + ' ' + config.unitName;
 
+      function formatAmount(tx) {
+        tx.amountStr = profileService.formatAmount(tx.amount); //$filter('noFractionNumber')(
+      };
+
+      self.summarizeOutputs(tx, formatAmount);
+      formatAmount(tx);
       if (c < self.limitHistory) {
         self.txHistory.push(tx);
         c++;
