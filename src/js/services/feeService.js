@@ -4,11 +4,11 @@ angular.module('copayApp.services').factory('feeService', function($log, profile
   var root = {};
 
   // Constant fee options to translate
-  var feeOpts = [
-    gettextCatalog.getString('priority'),
-    gettextCatalog.getString('normal'),
-    gettextCatalog.getString('economy')
-  ];
+  root.feeOpts = {
+    priority: gettextCatalog.getString('Priority'),
+    normal: gettextCatalog.getString('Normal'),
+    economy: gettextCatalog.getString('Economy')
+  };
 
   root.getCurrentFeeValue = function(cb) { 
     var fc = profileService.focusedClient;
