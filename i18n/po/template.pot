@@ -406,6 +406,10 @@ msgstr ""
 msgid "ENTER"
 msgstr ""
 
+#: src/js/services/feeService.js
+msgid "Economy"
+msgstr ""
+
 #: public/views/preferences.html
 msgid "Email Notifications"
 msgstr ""
@@ -674,6 +678,10 @@ msgstr ""
 msgid "No transactions yet"
 msgstr ""
 
+#: src/js/services/feeService.js
+msgid "Normal"
+msgstr ""
+
 #: public/views/walletHome.html
 #: public/views/modals/customized-amount.html
 msgid "Not valid"
@@ -814,6 +822,10 @@ msgstr ""
 
 #: src/js/controllers/backup.js
 msgid "Preparing backup..."
+msgstr ""
+
+#: src/js/services/feeService.js
+msgid "Priority"
 msgstr ""
 
 #: public/views/modals/customized-amount.html
@@ -1222,20 +1234,12 @@ msgstr ""
 msgid "Your wallet has been imported correctly"
 msgstr ""
 
-#: src/js/services/feeService.js
-msgid "economy"
-msgstr ""
-
 #: public/views/preferencesEmail.html
 msgid "email for wallet notifications"
 msgstr ""
 
 #: public/views/walletHome.html
 msgid "locked by pending payments"
-msgstr ""
-
-#: src/js/services/feeService.js
-msgid "normal"
 msgstr ""
 
 #: public/views/copayers.html
@@ -1246,10 +1250,6 @@ msgstr ""
 
 #: public/views/walletHome.html
 msgid "optional"
-msgstr ""
-
-#: src/js/services/feeService.js
-msgid "priority"
 msgstr ""
 
 #: public/views/preferences.html
