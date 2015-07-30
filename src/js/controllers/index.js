@@ -41,28 +41,28 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   self.tab = 'walletHome';
 
   self.availableLanguages = [{
-    name: gettext('English'),
+    name: 'English',
     isoCode: 'en',
   }, {
-    name: gettext('French'),
+    name: 'Français',
     isoCode: 'fr',
   }, {
-    name: gettext('Italian'),
+    name: 'Italiano',
     isoCode: 'it',
   }, {
-    name: gettext('German'),
+    name: 'Deutsch',
     isoCode: 'de',
   }, {
-    name: gettext('Spanish'),
+    name: 'Español',
     isoCode: 'es',
   }, {
-    name: gettext('Portuguese'),
+    name: 'Português',
     isoCode: 'pt',
   }, {
-    name: gettext('Greek'),
+    name: 'Ελληνικά',
     isoCode: 'el',
   }, {
-    name: gettext('Japanese'),
+    name: '日本語',
     isoCode: 'ja',
   }];
 
