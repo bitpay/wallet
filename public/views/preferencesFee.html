@@ -7,7 +7,7 @@
   <ul class="no-bullet m0 size-14"> 
     <li ng-repeat="fee in (index.network == 'livenet' ? index.feeLevels.livenet : index.feeLevels.testnet)"
       ng-click="prefFee.save(fee.level)" class="line-b p20">
-      <span class="text-capitalize">{{fee.level|translate}}</span>
+      <span class="text-capitalize">{{index.feeOpts[fee.level]|translate}}</span>
       <i class="fi-check size-16 right" ng-show="index.currentFeeLevel == fee.level"></i>
     </li>
   </ul>
