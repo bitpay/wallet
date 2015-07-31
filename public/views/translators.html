@@ -1,0 +1,37 @@
+<div 
+  class="topbar-container" 
+  ng-include="'views/includes/topbar.html'"
+  ng-init="titleSection='Translators'; goBackToState = 'about'">
+</div>
+
+<div class="content p20v">
+  <div class="text-center m20b">
+    <img src="img/copay_crowdin.png" alt="Copay and Crowdin" width="340" height="70">
+  </div>
+  <h4 class="title m0" translate>Translation Credits</h4>
+  <ul class="no-bullet m0 size-14">
+    <li class="line-b p10">kinoshitajona<span class="right text-gray size-12" translate>Japanese</span></li>
+    <li class="line-b p10">Kirvx<span class="right text-gray size-12" translate>French</span></li>
+    <li class="line-b p10">HostFat<span class="right text-gray size-12" translate>Italian</span></li>
+    <li class="line-b p10">koalalorenzo<span class="right text-gray size-12" translate>Italian</span></li>
+    <li class="line-b p10">nicolazza<span class="right text-gray size-12" translate>Italian</span></li>
+    <li class="line-b p10">saschad<span class="right text-gray size-12" translate>German</span></li>
+    <li class="line-b p10">8597fde7<span class="right text-gray size-12" translate>German</span></li>
+    <li class="line-b p10">pmichelazzo<span class="right text-gray size-12" translate>Portuguese</span></li>
+    <li class="line-b p10">johnblazakis<span class="right text-gray size-12" translate>Greek</span></li>
+    <li class="line-b p10">chek2fire1<span class="right text-gray size-12" translate>Greek</span></li>
+    <li class="line-b p10">cmgustavo83<span class="right text-gray size-12" translate>Spanish</span></li>
+  </ul>
+  <div class="row column m20t">
+    <div class="size-12 text-gray text-center">
+      <p class="size-12 text-black">
+        <span translate>All contributions to Copay's translation are welcome. Sign up at crowdin.com and join the Copay project at</span> 
+        <a href ng-click="$root.openExternalLink('https://crowdin.com/project/copay')">https://crowdin.com/project/copay</a>.
+      </p>
+      <span translate>
+        Don't see your language on Crowdin? Contact the Owner on Crowdin! We'd love to support your language.
+      </span>
+    </div>
+  </div>
+</div>
+<div class="extra-margin-bottom"></div>
