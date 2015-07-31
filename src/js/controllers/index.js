@@ -10,11 +10,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     return (parseFloat(number.toPrecision(12)));
   };
 
-
   self.goHome = function() {
     go.walletHome();
   };
-
 
   self.menu = [{
     'title': gettext('Home'),
@@ -65,6 +63,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     name: '日本語',
     isoCode: 'ja',
   }];
+
+  self.feeOpts = feeService.feeOpts;
 
   self.setOngoingProcess = function(processName, isOn) {
     $log.debug('onGoingProcess', processName, isOn);

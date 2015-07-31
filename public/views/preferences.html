@@ -81,7 +81,7 @@
       <span translate>Bitcoin Network Fee Policy</span>
       <span class="right text-gray">
         <i class="icon-arrow-right3 size-24 right"></i>
-        <span class="text-capitalize">{{index.currentFeeLevel}}</span>
+        <span class="text-capitalize">{{index.feeOpts[index.currentFeeLevel]|translate}}</span>
       </span>
     </li> 
     <li class="line-b p20" ng-click="$root.go('preferencesBwsUrl')">
