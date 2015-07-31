@@ -29,6 +29,9 @@ msgid "About Copay"
 msgstr ""
 
 #: public/views/modals/txp-details.html
+#: src/js/controllers/copayers.js
+#: src/js/controllers/preferencesDelete.js
+#: src/js/controllers/walletHome.js
 msgid "Accept"
 msgstr ""
 
@@ -169,8 +172,10 @@ msgstr ""
 
 #: public/views/copayers.html
 #: public/views/walletHome.html
+#: public/views/modals/confirmation.html
 #: src/js/controllers/copayers.js
 #: src/js/controllers/preferencesDelete.js
+#: src/js/controllers/walletHome.js
 msgid "Cancel"
 msgstr ""
 
@@ -214,6 +219,7 @@ msgstr ""
 
 #: src/js/controllers/copayers.js
 #: src/js/controllers/preferencesDelete.js
+#: src/js/controllers/walletHome.js
 msgid "Confirm"
 msgstr ""
 
@@ -225,7 +231,9 @@ msgstr ""
 msgid "Copayers"
 msgstr ""
 
+#: src/js/controllers/backup.js
 #: src/js/controllers/copayers.js
+#: src/js/controllers/walletHome.js
 msgid "Copied to clipboard"
 msgstr ""
 
@@ -396,6 +404,10 @@ msgstr ""
 
 #: public/views/includes/password.html
 msgid "ENTER"
+msgstr ""
+
+#: src/js/services/feeService.js
+msgid "Economy"
 msgstr ""
 
 #: public/views/preferences.html
@@ -658,16 +670,16 @@ msgstr ""
 msgid "New Payment Proposal"
 msgstr ""
 
-#: public/views/modals/confirmation.html
-msgid "No"
-msgstr ""
-
 #: public/views/walletHome.html
 msgid "No Private key"
 msgstr ""
 
 #: public/views/walletHome.html
 msgid "No transactions yet"
+msgstr ""
+
+#: src/js/services/feeService.js
+msgid "Normal"
 msgstr ""
 
 #: public/views/walletHome.html
@@ -678,11 +690,6 @@ msgstr ""
 #: public/views/walletHome.html
 #: public/views/includes/output.html
 msgid "Note"
-msgstr ""
-
-#: src/js/controllers/copayers.js
-#: src/js/controllers/preferencesDelete.js
-msgid "OK"
 msgstr ""
 
 #: public/views/modals/tx-status.html
@@ -811,6 +818,14 @@ msgstr ""
 
 #: public/views/walletHome.html
 msgid "Preferences"
+msgstr ""
+
+#: src/js/controllers/backup.js
+msgid "Preparing backup..."
+msgstr ""
+
+#: src/js/services/feeService.js
+msgid "Priority"
 msgstr ""
 
 #: public/views/modals/customized-amount.html
