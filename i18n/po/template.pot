@@ -61,6 +61,10 @@ msgstr ""
 msgid "Alias for <i>{{index.walletName}}</i>"
 msgstr ""
 
+#: public/views/translators.html
+msgid "All contributions to Copay's translation are welcome. Sign up at crowdin.com and join the Copay project at"
+msgstr ""
+
 #: public/views/splash.html
 msgid "Already have a wallet?"
 msgstr ""
@@ -394,16 +398,16 @@ msgstr ""
 msgid "Do not include private key in backup"
 msgstr ""
 
+#: public/views/translators.html
+msgid "Don't see your language on Crowdin? Contact the Owner on Crowdin! We'd love to support your language."
+msgstr ""
+
 #: public/views/walletHome.html
 msgid "Download CSV file"
 msgstr ""
 
 #: public/views/backup.html
 msgid "Download backup"
-msgstr ""
-
-#: public/views/includes/password.html
-msgid "ENTER"
 msgstr ""
 
 #: src/js/services/feeService.js
@@ -420,10 +424,6 @@ msgstr ""
 
 #: src/js/controllers/backup.js
 msgid "Encrypted backup file saved"
-msgstr ""
-
-#: src/js/controllers/index.js
-msgid "English"
 msgstr ""
 
 #: public/views/includes/password.html
@@ -473,7 +473,7 @@ msgstr ""
 msgid "Fetching Payment Information"
 msgstr ""
 
-#: src/js/controllers/index.js
+#: public/views/translators.html
 msgid "French"
 msgstr ""
 
@@ -497,7 +497,7 @@ msgstr ""
 msgid "Generating .csv file..."
 msgstr ""
 
-#: src/js/controllers/index.js
+#: public/views/translators.html
 msgid "German"
 msgstr ""
 
@@ -513,7 +513,7 @@ msgstr ""
 msgid "Go back"
 msgstr ""
 
-#: src/js/controllers/index.js
+#: public/views/translators.html
 msgid "Greek"
 msgstr ""
 
@@ -581,11 +581,11 @@ msgstr ""
 msgid "Invitation to share a Copay Wallet"
 msgstr ""
 
-#: src/js/controllers/index.js
+#: public/views/translators.html
 msgid "Italian"
 msgstr ""
 
-#: src/js/controllers/index.js
+#: public/views/translators.html
 msgid "Japanese"
 msgstr ""
 
@@ -690,6 +690,10 @@ msgstr ""
 #: public/views/walletHome.html
 #: public/views/includes/output.html
 msgid "Note"
+msgstr ""
+
+#: public/views/includes/password.html
+msgid "OK"
 msgstr ""
 
 #: public/views/modals/tx-status.html
@@ -812,7 +816,7 @@ msgstr ""
 msgid "Please, select your backup file"
 msgstr ""
 
-#: src/js/controllers/index.js
+#: public/views/translators.html
 msgid "Portuguese"
 msgstr ""
 
@@ -1019,7 +1023,7 @@ msgstr ""
 msgid "Signing transaction"
 msgstr ""
 
-#: src/js/controllers/index.js
+#: public/views/translators.html
 msgid "Spanish"
 msgstr ""
 
@@ -1109,6 +1113,14 @@ msgstr ""
 
 #: public/views/modals/tx-details.html
 msgid "Transaction"
+msgstr ""
+
+#: public/views/translators.html
+msgid "Translation Credits"
+msgstr ""
+
+#: public/views/preferencesAbout.html
+msgid "Translators"
 msgstr ""
 
 #: src/js/controllers/walletHome.js
