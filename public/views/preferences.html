@@ -84,6 +84,10 @@
         <span class="text-capitalize">{{index.feeOpts[index.currentFeeLevel]|translate}}</span>
       </span>
     </li> 
+    <li class="line-b p20">
+      <span translate>Spend Unconfirmed Transaction</span>
+      <switch id="spend-unconfirmed" name="spendUnconfirmed" ng-model="spendUnconfirmed" class="green right"></switch>
+    </li>
     <li class="line-b p20" ng-click="$root.go('preferencesBwsUrl')">
       <span>Bitcore Wallet Service</span>
       <span class="text-gray db">

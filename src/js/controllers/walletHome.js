@@ -5,6 +5,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   var self = this;
   $rootScope.hideMenuBar = false;
   $rootScope.wpInputFocused = false;
+  $scope.currentSpendUnconfirmed = configService.getSync().wallet.spendUnconfirmed;
 
   // INIT
   var config = configService.getSync().wallet.settings;
@@ -538,6 +539,15 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
   // Send 
 
+  var unwatchSpendUnconfirmed = $scope.$watch('currentSpendUnconfirmed', function(newVal, oldVal) {
+    if (newVal == oldVal) return;
+    $scope.currentSpendUnconfirmed = newVal;
+  });
+
+  $scope.$on('$destroy', function() {
+    unwatchSpendUnconfirmed();
+  });
+
   this.canShowAlternative = function() {
     return $scope.showAlternative;
   };
@@ -736,7 +746,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       address = form.address.$modelValue;
       amount = parseInt((form.amount.$modelValue * unitToSat).toFixed(0));
 
-      feeService.getCurrentFeeValue(function(err, feePerKb) {
+      feeService.getCurrentFeeValue(self.currentSendFeeLevel, function(err, feePerKb) {
         if (err) $log.debug(err);
         fc.sendTxProposal({
           toAddress: address,
@@ -744,6 +754,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
           message: comment,
           payProUrl: paypro ? paypro.url : null,
           feePerKb: feePerKb,
+          excludeUnconfirmedUtxos: $scope.currentSpendUnconfirmed ? false : true
         }, function(err, txp) {
           if (err) {
             self.setOngoingProcess();
@@ -848,6 +859,9 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
     this.lockAddress = false;
     this.lockAmount = false;
+    this.currentSendFeeLevel = null;
+    this.hideAdvSend = true;
+    $scope.currentSpendUnconfirmed = configService.getSync().wallet.spendUnconfirmed;
 
     this._amount = this._address = null;
 
@@ -984,36 +998,6 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       return value;
     }
   };
-
-  // Advanced SEND: set temporary fee policy for each transaction
-  this.openAdvancedSendModal = function(feeLevels, currentFeeLevel) {
-    var fc = profileService.focusedClient;
-
-    var ModalInstanceCtrl = function($scope, $modalInstance) {
-      $scope.feeLevels = feeLevels;
-      $scope.currentFeeLevel = currentFeeLevel
-      $scope.network = fc.credentials.network;
-      $scope.color = fc.backgroundColor;
-      $scope.save = function(level) {
-        $scope.currentFeeLevel = level;
-      };
-
-      $scope.cancel = function() {
-        $modalInstance.dismiss('cancel');
-      };
-    };
-    var modalInstance = $modal.open({
-      templateUrl: 'views/modals/advancedSend.html',
-      windowClass: 'full animated slideInUp',
-      controller: ModalInstanceCtrl
-    });
-
-    modalInstance.result.finally(function() {
-      var m = angular.element(document.getElementsByClassName('reveal-modal'));
-      m.addClass('slideOutDown');
-    });
-  };
-
 
   // History 
 
