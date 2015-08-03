@@ -10,10 +10,10 @@ angular.module('copayApp.services').factory('feeService', function($log, profile
     economy: gettextCatalog.getString('Economy')
   };
 
-  root.getCurrentFeeValue = function(cb) { 
+  root.getCurrentFeeValue = function(currentSendFeeLevel, cb) { 
     var fc = profileService.focusedClient;
     var config = configService.getSync().wallet.settings;
-    var feeLevel = config.feeLevel || 'normal';
+    var feeLevel = currentSendFeeLevel || config.feeLevel || 'normal';
     // static fee
     var fee = 10000;
     fc.getFeeLevels(fc.credentials.network, function(err, levels) {

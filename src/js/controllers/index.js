@@ -279,6 +279,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         $log.debug('Wallet Status:', walletStatus);
         self.setPendingTxps(walletStatus.pendingTxps);
         self.setFees();
+        self.setSpendUnconfirmed();
 
         // Status Shortcuts
         self.walletName = walletStatus.wallet.name;
@@ -304,6 +305,10 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         }
       });
     });
+  };
+
+  self.setSpendUnconfirmed = function() {
+    self.spendUnconfirmed = configService.getSync().wallet.spendUnconfirmed;
   };
 
   self.setCurrentFeeLevel = function(level) {
@@ -853,6 +858,10 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     $timeout(function() {
       $rootScope.$apply();
     });
+  });
+
+  $rootScope.$on('Local/SpendUnconfirmedUpdated', function(event) {
+    self.setSpendUnconfirmed();
   });
 
   $rootScope.$on('Local/FeeLevelUpdated', function(event, level) {
