@@ -15,7 +15,9 @@
   <div class="row column m20t">
     <div class="text-gray size-12 text-center" ng-repeat="fee in (index.network == 'livenet' ? index.feeLevels.livenet :
       index.feeLevels.testnet)" ng-if="fee.level == index.currentFeeLevel">
-      <span translate>Average confirmation time: {{fee.nbBlocks * 10}} minutes</span>. <br>
+      <div ng-show="fee.nbBlocks">
+        <span translate>Average confirmation time: {{fee.nbBlocks * 10}} minutes</span>.
+      </div>
       <span class="size-12 text-light" translate>Current fee rate for this policy: {{fee.feePerKBUnit}}/kiB</span>
     </div>
   </div>
