@@ -19,4 +19,12 @@ angular.module('copayApp.services').service('addonManager', function (lodash) {
     });
   };
 
+  this.formatPendingTxp = function (txp) {
+    lodash.each(addons, function (addon) {
+      if (addon.formatPendingTxp) {
+        addon.formatPendingTxp(txp);
+      }
+    });
+  };
+
 });
