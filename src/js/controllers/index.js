@@ -400,9 +400,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
   self.handleError = function(err) {
     $log.warn('Client ERROR:', err);
-    if (err.code === 'NOTAUTHORIZED') {
+    if (err.code === 'NOT_AUTHORIZED') {
       $scope.$emit('Local/NotAuthorized');
-    } else if (err.code === 'NOTFOUND') {
+    } else if (err.code === 'NOT_FOUND') {
       $scope.$emit('Local/BWSNotFound');
     } else {
       $scope.$emit('Local/ClientError', (err.error ? err.error : err));
@@ -960,12 +960,12 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   });
 
   $rootScope.$on('Local/ClientError', function(event, err) {
-    if (err.code && err.code === 'NOTAUTHORIZED') {
+    if (err.code && err.code === 'NOT_AUTHORIZED') {
       // Show not error, just redirect to home (where the recreate option is shown)
       go.walletHome();
     } else if (err && err.cors == 'rejected') {
       $log.debug('CORS error:', err);
-    } else if (err.code === 'ETIMEDOUT' || err.code === 'CONNERROR') {
+    } else if (err.code === 'ETIMEDOUT' || err.code === 'CONNECTION_ERROR') {
       $log.debug('Time out:', err);
     } else {
       var msg = 'Error at Wallet Service: ';
