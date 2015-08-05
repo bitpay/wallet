@@ -77,11 +77,12 @@
         {{preferences.selectedAlternative.name}}
       </span>
     </li>
-    <li class="line-b p20" ng-click="$root.go('preferencesFee')">
+    <li class="line-b p20" ng-click="$root.go('preferencesFee')"
+      ng-show="(index.network == 'livenet' ? index.feeLevels.livenet : index.feeLevels.testnet)">
       <span translate>Bitcoin Network Fee Policy</span>
       <span class="right text-gray">
         <i class="icon-arrow-right3 size-24 right"></i>
-        <span class="text-capitalize">{{index.feeOpts[index.currentFeeLevel]|translate}}</span>
+        {{index.feeOpts[index.currentFeeLevel]|translate}}
       </span>
     </li> 
     <li class="line-b p20">
