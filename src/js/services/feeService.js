@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.services').factory('feeService', function($log, profileService, configService, gettextCatalog) {
+angular.module('copayApp.services').factory('feeService', function($log, profileService, configService, gettextCatalog, lodash) {
   var root = {};
 
   // Constant fee options to translate
@@ -21,11 +21,7 @@ angular.module('copayApp.services').factory('feeService', function($log, profile
         return cb({message: 'Could not get dynamic fee. Using static 10000sat'}, fee);
       }
       else {
-        for (var i = 0; i < 3; i++) {
-          if (levels[i].level == feeLevel) {
-            fee = levels[i].feePerKB;
-          }
-        }
+        fee = lodash.find(levels, { level: feeLevel }).feePerKB;
         $log.debug('Dynamic fee for ' + feeLevel + ': ' + fee);
         return cb(null, fee); 
       }
