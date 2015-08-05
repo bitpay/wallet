@@ -29,11 +29,17 @@
   <h4 class="title m0" translate>Details</h4>
 
   <ul class="no-bullet size-14 m0">
-    <div ng-if="!btx.showSingle"
+    <div ng-if="btx.action == 'received'">
+      <li class="line-b p10 oh">
+        <span class="text-gray" translate>Note</span>:
+        <span class="right">{{btx.message}}</span>
+      </li>
+    </div>
+    <div ng-if="!btx.showSingle && btx.action != 'received'"
       ng-repeat="output in [ btx.outputs.summary ]"
       ng-include="'views/includes/output.html'">
     </div>
-    <div ng-if="!btx.showSingle && btx.outputs.summary.showDetails"
+    <div ng-if="!btx.showSingle && btx.outputs.summary.showDetails && btx.action != 'received'"
       ng-repeat="output in btx.outputs.details"
       ng-include="'views/includes/output.html'">
     </div>
