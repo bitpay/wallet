@@ -30,18 +30,20 @@
 
   <ul class="no-bullet size-14 m0">
     <div ng-if="btx.action == 'received'">
-      <li class="line-b p10 oh">
+      <li class="line-b p10 oh" ng-if="btx.message">
         <span class="text-gray" translate>Note</span>:
         <span class="right">{{btx.message}}</span>
       </li>
     </div>
-    <div ng-if="!btx.showSingle && btx.action != 'received'"
-      ng-repeat="output in [ btx.outputs.summary ]"
-      ng-include="'views/includes/output.html'">
-    </div>
-    <div ng-if="!btx.showSingle && btx.outputs.summary.showDetails && btx.action != 'received'"
-      ng-repeat="output in btx.outputs.details"
-      ng-include="'views/includes/output.html'">
+    <div ng-if="btx.action != 'received'">
+      <div ng-if="!btx.showSingle"
+        ng-repeat="output in [ btx.outputs.summary ]"
+        ng-include="'views/includes/output.html'">
+      </div>
+      <div ng-if="!btx.showSingle && btx.outputs.summary.showDetails"
+        ng-repeat="output in btx.outputs.details"
+        ng-include="'views/includes/output.html'">
+      </div>
     </div>
     <li ng-if="btx.showSingle && btx.addressTo && btx.addressTo != 'N/A'" class="line-b p10 oh" ng-click="copyAddress(btx.addressTo)">
     <span class="text-gray" translate>To</span>:

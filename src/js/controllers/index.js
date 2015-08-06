@@ -430,11 +430,12 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     if (tx.outputs) {
       tx.showSingle = false;
       tx.outputs.details = lodash.clone(tx.outputs);
+      var total = lodash.reduce(tx.outputs.details, function(total, o) {
+        formatAmount(o);
+        return total + o.amount;
+      }, 0);
       if (tx.action != 'received') {
-        tx.amount = lodash.reduce(tx.outputs.details, function(total, o) {
-          formatAmount(o);
-          return total + o.amount;
-        }, 0);
+        tx.amount = total;
       }
       tx.outputs.summary = {
         amount: tx.amount,
