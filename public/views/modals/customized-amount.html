@@ -55,7 +55,7 @@
           <div class="input">
             <input type="text" id="amount" name="amount" ng-attr-placeholder="{{'Amount'|translate}}"
             ng-model="_customAmount" valid-amount required autocomplete="off" pattern="[0-9]+([\.,][0-9]+)*">
-            <input type="number" id="alternative"  name="alternative"  ng-model="_customAlternative" style="display:none">
+            <input type="text" id="alternative"  name="alternative"  ng-model="_customAlternative" style="display:none">
             <a class="postfix" ng-click="toggleAlternative()">{{unitName}}</a>
           </div>
         </div>
@@ -64,8 +64,8 @@
           </label>
           <div class="input">
             <input type="text" id="alternative" name="alternative" ng-attr-placeholder="{{'Amount'|translate}}"
-            ng-model="_customAlternative" requiredautocomplete="off" pattern="[0-9]+([\.,][0-9]+)*" required>
-            <input type="number" id="amount" name="amount" ng-model="_customAmount" style="display:none">
+            ng-model="_customAlternative" valid-alternative required autocomplete="off" pattern="[0-9]+([\.,][0-9]+)*" required>
+            <input type="text" id="amount" name="amount" ng-model="_customAmount" style="display:none">
             <a class="postfix" ng-click="toggleAlternative()"> {{ alternativeIsoCode }}</a>
           </div>
         </div>

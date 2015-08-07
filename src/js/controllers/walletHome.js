@@ -475,6 +475,8 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
             $scope.customAlternative = newValue;
             if (typeof(newValue) === 'number' && $scope.isRateAvailable) {
               $scope.customAmount = parseFloat((rateService.fromFiat(newValue, $scope.alternativeIsoCode) * satToUnit).toFixed($scope.unitDecimals), 10);
+            } else {
+              $scope.customAmount = null;
             }
           },
           enumerable: true,
@@ -491,7 +493,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
             if (typeof(newValue) === 'number' && $scope.isRateAvailable) {
               $scope.customAlternative = parseFloat((rateService.toFiat(newValue * $scope.unitToSatoshi, $scope.alternativeIsoCode)).toFixed(2), 10);
             } else {
-              $scope.customAlternative = 0;
+              $scope.customAlternative = null;
             }
             $scope.alternativeAmount = $scope.customAlternative;
           },
@@ -625,6 +627,8 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
           $scope.__alternative = newValue;
           if (typeof(newValue) === 'number' && self.isRateAvailable) {
             $scope._amount = parseFloat((rateService.fromFiat(newValue, self.alternativeIsoCode) * satToUnit).toFixed(self.unitDecimals), 10);
+          } else {
+            $scope.__amount = null;
           }
         },
         enumerable: true,
@@ -640,7 +644,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
           if (typeof(newValue) === 'number' && self.isRateAvailable) {
             $scope.__alternative = parseFloat((rateService.toFiat(newValue * self.unitToSatoshi, self.alternativeIsoCode)).toFixed(2), 10);
           } else {
-            $scope.__alternative = 0;
+            $scope.__alternative = null;
           }
           self.alternativeAmount = $scope.__alternative;
           self.resetError();
