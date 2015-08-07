@@ -87,22 +87,22 @@ angular.module('copayApp.directives')
   ])
   .directive('validAmount', ['configService', '$locale',
     function(configService, locale) {
-      var formats = locale.NUMBER_FORMATS;
 
       return {
         require: 'ngModel',
         link: function(scope, element, attrs, ctrl) {
           var val = function(value) {
+            if (value) value = value.replace(/,/g, '.');
             var settings = configService.getSync().wallet.settings;
             var vNum = Number((value * settings.unitToSatoshi).toFixed(0));
 
-            if (typeof value == 'undefined') {
+            if (typeof value == 'undefined' || value == 0) {
               ctrl.$pristine = true;
             }
 
             if (typeof vNum == "number" && vNum > 0) {
               var decimals = Number(settings.unitDecimals);
-              var sep_index = ('' + value).indexOf(formats.DECIMAL_SEP);
+              var sep_index = ('' + value).indexOf('.');
               var str_value = ('' + value).substring(sep_index + 1);
               if (sep_index > 0 && str_value.length > decimals) {
                 ctrl.$setValidity('validAmount', false);
