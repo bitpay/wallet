@@ -373,7 +373,7 @@
                     <i class="icon-close-circle size-14"></i>
                     <span clas="vm" translate>Not valid</span>
                   </span>
-                  <small class="text-primary right" ng-if="!sendForm.amount.$invalid">
+                  <small class="text-primary right" ng-if="!sendForm.amount.$invalid && !sendForm.alternative.$invalid">
                     <i class="icon-checkmark-circle size-14"></i>
                   </small>
                 </div>
@@ -382,8 +382,11 @@
                     <span translate>Amount</span>
                   </label>
                   <div class="input">
-                    <input type="number" id="amount" ng-disabled="home.blockUx || home.lockAmount" name="amount" ng-attr-placeholder="{{'Amount'|translate}}" ng-minlength="0.00000001" ng-maxlength="10000000000" ng-model="_amount" valid-amount required autocomplete="off" ng-focus="home.formFocus('amount')" ng-blur="home.formFocus(false)">
-                    <input type="number" id="alternative"  name="alternative"  ng-model="_alternative" style="display:none">
+                    <input type="text" id="amount" ng-disabled="home.blockUx || home.lockAmount" name="amount"
+                    ng-attr-placeholder="{{'Amount'|translate}}" 
+                    ng-model="_amount" valid-amount required autocomplete="off" ng-focus="home.formFocus('amount')"
+                    ng-blur="home.formFocus(false)">
+                    <input type="text" id="alternative" name="alternative"  ng-model="_alternative" style="display:none">
                     <a class="postfix" ng-click="home.showAlternative()">{{home.unitName}}</a>
                   </div>
                 </div>
@@ -391,8 +394,11 @@
                   <label for="alternative"><span translate>Amount in</span> {{ home.alternativeName }}
                   </label>
                   <div class="input">
-                    <input type="number" id="alternative" ng-disabled="home.blockUx || !home.isRateAvailable || home.lockAmount" name="alternative" ng-attr-placeholder="{{'Amount'|translate}}" ng-model="_alternative" requiredautocomplete="off" ng-focus="home.formFocus('amount')" ng-blur="home.formFocus(false)">
-                    <input type="number" id="amount" name="amount" ng-model="_amount" style="display:none">
+                    <input type="text" id="alternative" ng-disabled="home.blockUx || !home.isRateAvailable ||
+                    home.lockAmount" name="alternative" ng-attr-placeholder="{{'Amount'|translate}}"
+                    ng-model="_alternative" valid-alternative required autocomplete="off" ng-focus="home.formFocus('amount')"
+                    ng-blur="home.formFocus(false)">
+                    <input type="text" id="amount" name="amount" ng-model="_amount" style="display:none">
                     <a class="postfix" ng-click="home.hideAlternative()"> {{ home.alternativeIsoCode }}</a>
                   </div>
                 </div>

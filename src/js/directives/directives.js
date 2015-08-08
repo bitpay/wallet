@@ -85,24 +85,24 @@ angular.module('copayApp.directives')
       };
     }
   ])
-  .directive('validAmount', ['configService', '$locale',
-    function(configService, locale) {
-      var formats = locale.NUMBER_FORMATS;
+  .directive('validAmount', ['configService',
+    function(configService) {
 
       return {
         require: 'ngModel',
         link: function(scope, element, attrs, ctrl) {
           var val = function(value) {
+            if (value) value = Number(String(value).replace(/,/g, '.'));
             var settings = configService.getSync().wallet.settings;
             var vNum = Number((value * settings.unitToSatoshi).toFixed(0));
 
-            if (typeof value == 'undefined') {
+            if (typeof value == 'undefined' || value == 0) {
               ctrl.$pristine = true;
             }
 
             if (typeof vNum == "number" && vNum > 0) {
               var decimals = Number(settings.unitDecimals);
-              var sep_index = ('' + value).indexOf(formats.DECIMAL_SEP);
+              var sep_index = ('' + value).indexOf('.');
               var str_value = ('' + value).substring(sep_index + 1);
               if (sep_index > 0 && str_value.length > decimals) {
                 ctrl.$setValidity('validAmount', false);
@@ -111,6 +111,33 @@ angular.module('copayApp.directives')
               }
             } else {
               ctrl.$setValidity('validAmount', false);
+            }
+            return value;
+          }
+          ctrl.$parsers.unshift(val);
+          ctrl.$formatters.unshift(val);
+        }
+      };
+    }
+  ])
+  .directive('validAlternative', [
+    function() {
+
+      return {
+        require: 'ngModel',
+        link: function(scope, element, attrs, ctrl) {
+          var val = function(value) {
+            if (value) value = Number(String(value).replace(/,/g, '.'));
+            var vNum = Number(value);
+
+            if (typeof value == 'undefined' || value == 0) {
+              ctrl.$pristine = true;
+            }
+
+            if (typeof vNum == "number" && vNum > 0) {
+                ctrl.$setValidity('validAlternative', true);
+            } else {
+              ctrl.$setValidity('validAlternative', false);
             }
             return value;
           }
