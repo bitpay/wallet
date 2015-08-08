@@ -21,7 +21,7 @@ angular.module('copayApp.controllers').controller('backupController',
           return ;
         }
         $rootScope.$emit('Local/BackupDone');
-        notification.success(gettext('Backup created'), gettext('Encrypted backup file saved'));
+        notification.success(gettext('Success'), gettext('Encrypted export file saved'));
         go.walletHome();
       });
     };
