@@ -6,101 +6,48 @@
 
 
 
-<div class="content p20v" ng-controller="backupController as backup">
+<div class="content p20v" ng-controller="wordsController as wordsC">
   <div class="row">
-    <div class="columns" ng-show="!backup.backupWalletPlainText">
-      <div class="text-warning size-14 m20b" ng-show="backup.error">
-        <i class="fi-alert size-12"></i>
-        <span translate> Failed to create backup </span>
-      </div>
-
-      <div class="text-warning size-14 m20b" ng-show="backup.isEncrypted">
-        <i class="fi-alert size-12"></i>
-        <span translate> The private key for this wallet is encrypted. Exporting a backup will keep the private key encrypted in the backup archive.</span>
-
-      </div>
-
-      <label for="password" translate>Set up a Password for your backup</label>
-      <div class="input">
-        <input type="password" class="form-control"
-        placeholder="{{'Your backup password'|translate}}"
-        name="password" ng-model="backup.password">
-      </div>
-
-      <label for="password" translate>Repeat password</label>
-      <div class="input">
-        <input type="password" class="form-control"
-        placeholder="{{'Repeat password'|translate}}"
-        name="password" ng-model="backup.repeatpassword">
-      </div>
-
-
-      <div class="m10t oh" ng-init="hideAdv=true">
-        <a class="button outline light-gray expand tiny" ng-click="hideAdv=!hideAdv">
+    <div class="m10 size-14 text-gray" translate>
+      <span translate>
+        In order to restore your Copay wallet you will need these 12 backup words. 
+      </span>
+      <span translate class="text-bold">
+        Write them down and keep them somethere safe
+      </span>
+    </div>
+  </div>
+ 
+  <div class="row">
+      <div class="m10t oh" ng-init="show=false">
+        <a class="button outline light-gray expand tiny" ng-click="show=!show">
           <i class="fi-widget m3r"></i>
-          <span translate ng-hide="!hideAdv">Show advanced options</span>
-          <span translate ng-hide="hideAdv">Hide advanced options</span>
-          <i ng-if="hideAdv" class="icon-arrow-down4"></i>
-          <i ng-if="!hideAdv" class="icon-arrow-up4"></i>
+          <span translate ng-hide="show">Show Backup Words</span>
+          <span translate ng-hide="!show">Hide Backup Words</span>
+          <i ng-if="!show" class="icon-arrow-down4"></i>
+          <i ng-if="show" class="icon-arrow-up4"></i>
         </a>
       </div>
-      <div ng-hide="hideAdv" class="row">
-        <div class="large-12 columns">
-          <label for="no-sign" class="line-b oh">
-            <span translate>Do not include private key in backup</span>
-            <switch id="no-sign" name="noSign" ng-model="noSign" class="green right m5t m10b"></switch>
-          </label>
-        </div>
+  </div>
 
+  <div class="row" ng-show="show" ng-init="words = wordsC.getMnemonic()">
+      <span class="m10" ng-repeat="word in words">
+        {{word}}
+      </span>
+      <div class="m10 text-center">
         <div class="m10 size-14 text-gray" translate>
-          A backup without its private key will allow the user to see the wallet balance, transactions, and create spend proposals. However, it will not be able to approve (sign) proposals.
-
+          <span translate>
+            Once you have wrote your backup words, it is recommended to delete them from Copay.
+          </span>
         </div>
+        <button class="button outline round dark-gray tiny" translate>DELETE WORDS</button>
       </div>
-
-
-      <button class="black round expand m0" ng-click="backup.downloadWalletBackup()"
-        ng-disabled="(!backup.password || backup.password != backup.repeatpassword)"
-        ng-style="{'background-color':index.backgroundColor}"
-        ng-show="!backup.isSafari && !backup.isCordova"><i class="fi-download"></i>
-        <span translate>Download backup</span></button>
-      <button class="black round expand m0" ng-click="backup.viewWalletBackup()"
-        ng-disabled="(!backup.password || backup.password != backup.repeatpassword)"
-        ng-style="{'background-color':index.backgroundColor}"
-        ng-show="backup.isSafari && !backup.isCordova"><i class="fi-eye"></i>
-        <span translate>View backup</span></button>
-      <div ng-show="backup.isCordova">
-        <h4 translate>Backup options</h4>
-        <button class="black round expand" ng-disabled="(!backup.password || backup.password != backup.repeatpassword)"
-          ng-style="{'background-color':index.backgroundColor}"
-          ng-click="backup.copyWalletBackup()"><i class="fi-clipboard-pencil"></i>
-          <span translate>Copy to clipboard</span></button>
-        <button class="black round expand m0" ng-disabled="(!backup.password || backup.password != backup.repeatpassword)"
-          ng-style="{'background-color':index.backgroundColor}"
-          ng-click="backup.sendWalletBackup()"><i class="fi-mail"></i>
-          <span translate>Send by email</span></button>
-      </div>
-    </div>
   </div>
-
-  <div class="row" ng-show="backup.backupWalletPlainText">
-    <div class="large-12 columns">
-      <h3 translate>Copy backup to a safe place</h3>
-      <div class="input">
-        <textarea rows="12">{{backup.backupWalletPlainText}}</textarea>
-      </div>
-      <div class="size-12 text-gray text-right">
-        <i class="icon-compose"></i>
-        <span translate>Copy this text as it is to a safe place (notepad or email)</span>
-      </div>
-    </div>
+  <div class="row text-center m20t" >
+      <button class="button outline round dark-gray tiny" ng-click="$root.openExternalLink('https://github.com/bitpay/copay#backups')">
+        <span class="text-gray" translate>Learn more about Copay backups</span>
+      </button>
+ 
   </div>
-
-  <div class="row m10t">
-    <div class="columns size-14 text-gray" translate>
-      * You can safely install your backup on another device and use your wallet from multiple devices at the same time.
-    </div>
-  </div>
-
 </div>
 <div class="extra-margin-bottom"></div>
