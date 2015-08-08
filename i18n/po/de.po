@@ -182,7 +182,7 @@ msgid "Changing wallet alias only affects the local wallet name."
 msgstr "Änderung der Aliases hat nur Auswirkungen auf den lokalen Namen des Wallets"
 
 #: src/js/controllers/walletHome.js
-msgid "Check your Internet connection and try again"
+msgid "Check you connection and try again"
 msgstr "Bitte die Verbindung prüfen und erneut probieren"
 
 #: public/views/import.html
@@ -231,11 +231,11 @@ msgid "Copy to clipboard"
 msgstr "In die Zwischenablage kopieren"
 
 #: src/js/controllers/walletHome.js
-msgid "Could not accept payment. Check your Internet connection and try again"
+msgid "Could not accept payment. Check you connection and try again"
 msgstr "Zahlung konnte nicht angenommen werden. Bitte die Verbindung  überprüfen und erneut versuchen"
 
 #: src/js/controllers/walletHome.js
-msgid "Could not broadcast payment. Check your Internet connection and try again"
+msgid "Could not broadcast payment. Check you connection and try again"
 msgstr "Zahlung kann nicht übermittelt werden. Bitte die Verbindung prüfen und erneut probieren"
 
 #: src/js/controllers/walletHome.js
@@ -243,7 +243,7 @@ msgid "Could not connect wallet service. Check your Internet connection and your
 msgstr "Could not connect wallet service. Check your Internet connection and your wallet service configuration."
 
 #: src/js/controllers/walletHome.js
-msgid "Could not create address. Check your Internet connection and try again"
+msgid "Could not create address. Check you connection and try again"
 msgstr "Es kann keine Adresse erzeugt werden. Bitte Verbindung prüfen und erneut versuchen"
 
 #: src/js/controllers/walletHome.js
@@ -259,7 +259,7 @@ msgid "Could not decrypt file, check your password"
 msgstr "Datei kann nicht entschlüsselt werden, bitte das Passwort überprüfen"
 
 #: src/js/controllers/walletHome.js
-msgid "Could not delete payment proposal. Check your Internet connection and try again"
+msgid "Could not delete payment proposal. Check you connection and try again"
 msgstr "Die Zahlungsanweisung kann nicht gelöscht werden. Bitte Verbindung prüfen und erneut probieren"
 
 #: src/js/controllers/walletHome.js
@@ -287,7 +287,7 @@ msgid "Could not recognize a valid Bitcoin QR Code"
 msgstr "Es konnte kein gültiger Bitcoin-QR-Code erkannt werden,"
 
 #: src/js/controllers/walletHome.js
-msgid "Could not reject payment. Check your Internet connection and try again"
+msgid "Could not reject payment. Check you connection and try again"
 msgstr "Zahlung kann nicht abgelehnt werden. Bitte Verbindung prüfen und erneut versuchen"
 
 #: src/js/controllers/walletHome.js

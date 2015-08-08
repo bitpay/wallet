@@ -183,7 +183,7 @@ msgid "Changing wallet alias only affects the local wallet name."
 msgstr "ウォレット通称を変更しても、この端末でしか変わりません。"
 
 #: src/js/controllers/walletHome.js
-msgid "Check your Internet connection and try again"
+msgid "Check you connection and try again"
 msgstr "接続を確認し、やり直して下さい。"
 
 #: public/views/import.html
@@ -232,11 +232,11 @@ msgid "Copy to clipboard"
 msgstr "クリップボードへコピー"
 
 #: src/js/controllers/walletHome.js
-msgid "Could not accept payment. Check your Internet connection and try again"
+msgid "Could not accept payment. Check you connection and try again"
 msgstr "送金の提案が承諾できませんでした。接続を確認し、やり直して下さい。"
 
 #: src/js/controllers/walletHome.js
-msgid "Could not broadcast payment. Check your Internet connection and try again"
+msgid "Could not broadcast payment. Check you connection and try again"
 msgstr "送金できませんでした。接続を確認し、やり直して下さい。"
 
 #: src/js/controllers/walletHome.js
@@ -244,7 +244,7 @@ msgid "Could not connect wallet service. Check your Internet connection and your
 msgstr "ウォレットサービスと接続できませんでした。インターネットの接続とウォレットサービスの設定を確認して下さい。"
 
 #: src/js/controllers/walletHome.js
-msgid "Could not create address. Check your Internet connection and try again"
+msgid "Could not create address. Check you connection and try again"
 msgstr "アドレスが生成できませんでした。接続を確認し、やり直して下さい。"
 
 #: src/js/controllers/walletHome.js
@@ -260,7 +260,7 @@ msgid "Could not decrypt file, check your password"
 msgstr "複合化できませんでした。パスワードが正しいかご確認下さい。"
 
 #: src/js/controllers/walletHome.js
-msgid "Could not delete payment proposal. Check your Internet connection and try again"
+msgid "Could not delete payment proposal. Check you connection and try again"
 msgstr "送金の提案が削除できませんでした。接続を確認し、やり直して下さい。"
 
 #: src/js/controllers/walletHome.js
@@ -288,7 +288,7 @@ msgid "Could not recognize a valid Bitcoin QR Code"
 msgstr "有効なビットコインQRコードが認識できませんでした。"
 
 #: src/js/controllers/walletHome.js
-msgid "Could not reject payment. Check your Internet connection and try again"
+msgid "Could not reject payment. Check you connection and try again"
 msgstr "送金の提案を却下できませんでした。接続を確認し、やり直して下さい。"
 
 #: src/js/controllers/walletHome.js

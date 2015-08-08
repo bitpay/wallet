@@ -182,7 +182,7 @@ msgid "Changing wallet alias only affects the local wallet name."
 msgstr "Αλλάζοντας το ψευδώνυμο του πορτοφολιού επηρεάζει μόνο το τοπικό όνομα πορτοφολιού."
 
 #: src/js/controllers/walletHome.js
-msgid "Check your Internet connection and try again"
+msgid "Check you connection and try again"
 msgstr "Ελέγξτε την συνδεσή σας και προσπαθήστε ξανά"
 
 #: public/views/import.html
@@ -231,11 +231,11 @@ msgid "Copy to clipboard"
 msgstr "Αντιγραφή στο πρόχειρο"
 
 #: src/js/controllers/walletHome.js
-msgid "Could not accept payment. Check your Internet connection and try again"
+msgid "Could not accept payment. Check you connection and try again"
 msgstr "Η πληρωμή δεν έγινε αποδεκτή. Ελέγξτε τη σύνδεσή σας και προσπαθήστε ξανά"
 
 #: src/js/controllers/walletHome.js
-msgid "Could not broadcast payment. Check your Internet connection and try again"
+msgid "Could not broadcast payment. Check you connection and try again"
 msgstr "Δεν μπορεί να αποσταλεί η πληρωμή. Ελέγξτε τη σύνδεσή σας και προσπαθήστε ξανά"
 
 #: src/js/controllers/walletHome.js
@@ -243,7 +243,7 @@ msgid "Could not connect wallet service. Check your Internet connection and your
 msgstr "Δεν είναι δυνατή η σύνδεση στην υπηρεσία του πορτοφολιού. Ελέγξτε τη σύνδεσή σας και τη ρύθμιση παραμέτρων της υπηρεσίας του πορτοφολίου."
 
 #: src/js/controllers/walletHome.js
-msgid "Could not create address. Check your Internet connection and try again"
+msgid "Could not create address. Check you connection and try again"
 msgstr "Δεν είναι δυνατή η δημιουργία διεύθυνσης. Ελέγξτε τη σύνδεσή σας και προσπαθήστε ξανά"
 
 #: src/js/controllers/walletHome.js
@@ -259,7 +259,7 @@ msgid "Could not decrypt file, check your password"
 msgstr "Δεν ήταν δυνατή η αποκρυπτογράφηση του αρχείου, ελέγξτε τον κωδικό σας"
 
 #: src/js/controllers/walletHome.js
-msgid "Could not delete payment proposal. Check your Internet connection and try again"
+msgid "Could not delete payment proposal. Check you connection and try again"
 msgstr "Δεν ήταν δυνατή η διαγραφή της πρότασης πληρωμής. Ελέγξτε τη σύνδεση σας και προσπαθήστε ξανά"
 
 #: src/js/controllers/walletHome.js
@@ -287,7 +287,7 @@ msgid "Could not recognize a valid Bitcoin QR Code"
 msgstr "Δεν ήταν δυνατή η αναγνώριση ενός έγκυρου κωδικού QR για Βitcoin"
 
 #: src/js/controllers/walletHome.js
-msgid "Could not reject payment. Check your Internet connection and try again"
+msgid "Could not reject payment. Check you connection and try again"
 msgstr "Δεν είναι δυνατή η απόρριψη της πληρωμής. Ελέγξτε τη σύνδεση σας και προσπαθήστε ξανά"
 
 #: src/js/controllers/walletHome.js
