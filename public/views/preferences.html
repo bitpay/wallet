@@ -36,8 +36,9 @@
         <span ng-style="{'color':index.backgroundColor}">&block;</span>
       </span>      
     </li>
-    <li class="line-b p20" ng-hide="preferences.externalIndex >= 0">
-      <span translate>Encrypt Private Key</span>
+
+    <li class="line-b p20"  ng-hide="preferences.externalIndex >= 0">
+      <span translate>Request Password for Spending Funds</span>
       <switch id="network-name" name="encrypt" ng-model="encrypt" class="green right"></switch>
     </li>
     <li class="line-b p20" ng-show="preferences.externalIndex >= 0">
@@ -49,9 +50,9 @@
     </li>
  
     <h4 class="title m0">&nbsp;</h4>
-    <li class="line-b p20" ng-click="$root.go('backup')">
+    <li class="line-b p20" ng-click="$root.go('export')">
       <i class="icon-arrow-right3 size-24 right text-gray"></i>  
-      <span translate>Backup</span>
+      <span translate>Export</span>
     </li>
     <li class="line-b p20" ng-click="$root.go('preferencesAdvanced')">
       <i class="icon-arrow-right3 size-24 right text-gray"></i>  

@@ -172,6 +172,17 @@ angular.module('copayApp.services')
       }
 
       var walletClient = bwcService.getClient();
+      // TODO LANG...
+      // TODO...
+      walletClient.seedFromRandomWithMnemonic('livenet');
+console.log('[profileService.js.200:walletClient:]',walletClient); //TODO
+
+console.log('[profileService.js.180]'); //TODO
+console.log('[profileService.js.180]'); //TODO
+console.log('[profileService.js.180]'); //TODO
+console.log('[profileService.js.180]'); //TODO
+console.log('[profileService.js.180]'); //TODO
+
       walletClient.createWallet('Personal Wallet', 'me', 1, 1, {
         network: 'livenet'
       }, function(err) {
@@ -200,6 +211,11 @@ angular.module('copayApp.services')
           return cb(gettext('Could not create using the specified extended public key'));
         }
       }
+      // TODO LANG...
+      // TODO...
+      walletClient.seedFromRandomWithMnemonic(opts.networkName);
+console.log('[profileService.js.200:walletClient:]',walletClient); //TODO
+
       walletClient.createWallet(opts.name, opts.myName || 'me', opts.m, opts.n, {
         network: opts.networkName
       }, function(err, secret) {
