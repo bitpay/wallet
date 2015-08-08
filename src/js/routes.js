@@ -506,6 +506,7 @@ angular
       preferencesBwsUrl: 12,
       preferencesAlias: 12,
       preferencesEmail: 12,
+      export: 13,
       about: 12,
       logs: 13,
       translators: 13,

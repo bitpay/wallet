@@ -747,7 +747,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     $timeout(function() {
       $rootScope.$apply();
     });
-
   };
 
   self.recreate = function(cb) {
