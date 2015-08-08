@@ -192,7 +192,7 @@ msgid "Changing wallet alias only affects the local wallet name."
 msgstr ""
 
 #: src/js/controllers/walletHome.js
-msgid "Check you connection and try again"
+msgid "Check your Internet connection and try again"
 msgstr ""
 
 #: public/views/import.html
@@ -254,11 +254,11 @@ msgid "Copy to clipboard"
 msgstr ""
 
 #: src/js/controllers/walletHome.js
-msgid "Could not accept payment. Check you connection and try again"
+msgid "Could not accept payment. Check your Internet connection and try again"
 msgstr ""
 
 #: src/js/controllers/walletHome.js
-msgid "Could not broadcast payment. Check you connection and try again"
+msgid "Could not broadcast payment. Check your Internet connection and try again"
 msgstr ""
 
 #: src/js/controllers/walletHome.js
@@ -266,7 +266,7 @@ msgid "Could not connect wallet service. Check your Internet connection and your
 msgstr ""
 
 #: src/js/controllers/walletHome.js
-msgid "Could not create address. Check you connection and try again"
+msgid "Could not create address. Check your Internet connection and try again"
 msgstr ""
 
 #: src/js/controllers/walletHome.js
@@ -282,7 +282,7 @@ msgid "Could not decrypt file, check your password"
 msgstr ""
 
 #: src/js/controllers/walletHome.js
-msgid "Could not delete payment proposal. Check you connection and try again"
+msgid "Could not delete payment proposal. Check your Internet connection and try again"
 msgstr ""
 
 #: src/js/controllers/walletHome.js
@@ -310,7 +310,7 @@ msgid "Could not recognize a valid Bitcoin QR Code"
 msgstr ""
 
 #: src/js/controllers/walletHome.js
-msgid "Could not reject payment. Check you connection and try again"
+msgid "Could not reject payment. Check your Internet connection and try again"
 msgstr ""
 
 #: src/js/controllers/walletHome.js

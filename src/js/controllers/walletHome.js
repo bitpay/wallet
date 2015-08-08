@@ -265,7 +265,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
             if (err) {
               $scope.loading = false;
               parseError(err);
-              $scope.error = err.message || gettext('Could not accept payment. Check you connection and try again');
+              $scope.error = err.message || gettext('Could not accept payment. Check your Internet connection and try again');
               $scope.$digest();
             } else {
               //if txp has required signatures then broadcast it
@@ -278,7 +278,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
                   $scope.loading = false;
                   if (err) {
                     parseError(err);
-                    $scope.error = gettext('Could not broadcast payment. Check you connection and try again');
+                    $scope.error = gettext('Could not broadcast payment. Check your Internet connection and try again');
                     $scope.$digest();
                   } else {
                     $log.debug('Transaction signed and broadcasted')
@@ -308,7 +308,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
             $scope.loading = false;
             if (err) {
               parseError(err);
-              $scope.error = err.message || gettext('Could not reject payment. Check you connection and try again');
+              $scope.error = err.message || gettext('Could not reject payment. Check your Internet connection and try again');
               $scope.$digest();
             } else {
               $modalInstance.close(txpr);
@@ -330,7 +330,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
             // Hacky: request tries to parse an empty response
             if (err && !(err.message && err.message.match(/Unexpected/))) {
               parseError(err);
-              $scope.error = err.message || gettext('Could not delete payment proposal. Check you connection and try again');
+              $scope.error = err.message || gettext('Could not delete payment proposal. Check your Internet connection and try again');
               $scope.$digest();
               return;
             }
@@ -349,7 +349,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
             $scope.loading = false;
             if (err) {
               parseError(err);
-              $scope.error = err.message || gettext('Could not broadcast payment. Check you connection and try again');
+              $scope.error = err.message || gettext('Could not broadcast payment. Check your Internet connection and try again');
               $scope.$digest();
             } else {
 
@@ -421,7 +421,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
         if (err) {
           parseError(err);
-          self.addrError = err.message || gettext('Could not create address. Check you connection and try again');
+          self.addrError = err.message || gettext('Could not create address. Check your Internet connection and try again');
         }
 
         if (addr)
@@ -675,7 +675,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
     //This are abnormal situations, but still err message will not be translated
     //(the should) we should switch using err.code and use proper gettext messages
-    errMessage = errMessage + '. ' + (err.message ? err.message : gettext('Check you connection and try again'));
+    errMessage = errMessage + '. ' + (err.message ? err.message : gettext('Check your Internet connection and try again'));
 
     this.error = errMessage;
 
