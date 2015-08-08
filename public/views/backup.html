@@ -8,7 +8,7 @@
 
 <div class="content p20v" ng-controller="wordsController as wordsC">
   <div class="row">
-    <div class="m10 size-14 text-gray" translate>
+    <div class="m10t columns size-14 text-gray" translate>
       <span translate>
         In order to restore your Copay wallet you will need these 12 backup words. 
       </span>
@@ -17,37 +17,53 @@
       </span>
     </div>
   </div>
+  <div class="row m20t" ng-show="!wordsC.mywords">
+    <div class="columns size-14 text-gray" translate>
+        The backup words had been deleted from this device
+    </div>
+  </div>
  
-  <div class="row">
-      <div class="m10t oh" ng-init="show=false">
-        <a class="button outline light-gray expand tiny" ng-click="show=!show">
-          <i class="fi-widget m3r"></i>
-          <span translate ng-hide="show" ng-click="wordsC.done()">Show Backup Words</span>
-          <span translate ng-hide="!show">Hide Backup Words</span>
-          <i ng-if="!show" class="icon-arrow-down4"></i>
-          <i ng-if="show" class="icon-arrow-up4"></i>
+  <div ng-show="wordsC.mywords">
+    <div class="row">
+        <div class="m10t oh" ng-init="show=false">
+          <a class="button outline light-gray expand tiny" ng-click="show=!show">
+            <i class="fi-widget m3r"></i>
+            <span translate ng-hide="show" ng-click="wordsC.done()">Show Backup Words</span>
+            <span translate ng-hide="!show">Hide Backup Words</span>
+            <i ng-if="!show" class="icon-arrow-down4"></i>
+            <i ng-if="show" class="icon-arrow-up4"></i>
+          </a>
+        </div>
+    </div>
+
+    <div class="row" ng-show="show" >
+        <span class="m10" ng-repeat="word in wordsC.mywords">
+          {{word}}
+        </span>
+        <div class="m10 text-center">
+          <div class="m10 size-14 text-gray" translate>
+            <span translate>
+              Once you have wrote your backup words, it is recommended to delete them from this device.
+            </span>
+          </div>
+          <button class="button outline round dark-gray tiny" ng-click="wordsC.delete()">
+            <i class="fi-trash"></i> 
+            <span translate>
+              DELETE WORDS
+            </span>
+          </button>
+        </div>
+    </div>
+    <div class="row m20t">
+      <div class="columns size-14 text-gray" translate>
+        You can safely install your backup on another device and use your wallet from multiple devices at the same time.  <a href="#" ng-click="$root.openExternalLink('https://github.com/bitpay/copay#backups')">
+            <span translate>Learn more about Copay backups</span>
         </a>
+  
       </div>
+    </div>
+
   </div>
 
-  <div class="row" ng-show="show" ng-init="words = wordsC.getMnemonic()">
-      <span class="m10" ng-repeat="word in words">
-        {{word}}
-      </span>
-      <div class="m10 text-center">
-        <div class="m10 size-14 text-gray" translate>
-          <span translate>
-            Once you have wrote your backup words, it is recommended to delete them from Copay.
-          </span>
-        </div>
-        <button class="button outline round dark-gray tiny" translate>DELETE WORDS</button>
-      </div>
-  </div>
-  <div class="row text-center m20t" >
-      <button class="button outline round dark-gray tiny" ng-click="$root.openExternalLink('https://github.com/bitpay/copay#backups')">
-        <span class="text-gray" translate>Learn more about Copay backups</span>
-      </button>
- 
-  </div>
 </div>
 <div class="extra-margin-bottom"></div>

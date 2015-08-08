@@ -1,7 +1,7 @@
 <div
   class="topbar-container"
   ng-include="'views/includes/topbar.html'"
-  ng-init="titleSection='Export'; goBackToState = 'preferences'">
+  ng-init="titleSection='Export'; goBackToState = 'preferencesAdvanced'">
 </div>
 
 
@@ -35,16 +35,7 @@
       </div>
 
 
-      <div class="m10t oh" ng-init="hideAdv=true">
-        <a class="button outline light-gray expand tiny" ng-click="hideAdv=!hideAdv">
-          <i class="fi-widget m3r"></i>
-          <span translate ng-hide="!hideAdv">Show Advanced options</span>
-          <span translate ng-hide="hideAdv">Hide Advanced options</span>
-          <i ng-if="hideAdv" class="icon-arrow-down4"></i>
-          <i ng-if="!hideAdv" class="icon-arrow-up4"></i>
-        </a>
-      </div>
-      <div ng-hide="hideAdv" class="row">
+      <div class="row">
         <div class="large-12 columns">
           <label for="no-sign" class="line-b oh">
             <span translate>Do not include private key</span>
@@ -93,12 +84,6 @@
         <i class="icon-compose"></i>
         <span translate>Copy this text as it is to a safe place (notepad or email)</span>
       </div>
-    </div>
-  </div>
-
-  <div class="row m10t">
-    <div class="columns size-14 text-gray" translate>
-      * You can safely install your backup on another device and use your wallet from multiple devices at the same time.
     </div>
   </div>
 
