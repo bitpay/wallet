@@ -48,6 +48,13 @@
         (index {{preferences.externalIndex}})
       </span>
     </li>
+    <li class="line-b p20" ng-click="$root.go('backup')"  ng-show="preferences.externalIndex >= 0">
+      <i class="icon-arrow-right3 size-24 right text-gray"></i>  
+      <span class="text-warning right" ng-show="index.needsBackup">
+        <i class="fi-alert"></i> <span translate> Still not done</span>
+      </span>
+      <span translate>Backup</span>
+    </li>
  
     <h4 class="title m0">&nbsp;</h4>
     <li class="line-b p20" ng-click="$root.go('export')">

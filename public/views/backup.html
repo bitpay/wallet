@@ -22,7 +22,7 @@
       <div class="m10t oh" ng-init="show=false">
         <a class="button outline light-gray expand tiny" ng-click="show=!show">
           <i class="fi-widget m3r"></i>
-          <span translate ng-hide="show">Show Backup Words</span>
+          <span translate ng-hide="show" ng-click="wordsC.done()">Show Backup Words</span>
           <span translate ng-hide="!show">Hide Backup Words</span>
           <i ng-if="!show" class="icon-arrow-down4"></i>
           <i ng-if="show" class="icon-arrow-up4"></i>
