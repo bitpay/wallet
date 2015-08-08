@@ -388,6 +388,17 @@ angular
           },
         }
       })
+      .state('export', {
+        url: '/export',
+        templateUrl: 'views/export.html',
+        walletShouldBeComplete: true,
+        needProfile: true,
+        views: {
+          'main': {
+            templateUrl: 'views/export.html'
+          },
+        }
+      })
       .state('backup', {
         url: '/backup',
         templateUrl: 'views/backup.html',
