@@ -488,6 +488,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       if (tx.creatorId != self.copayerId) {
         self.pendingTxProposalsCountForUs = self.pendingTxProposalsCountForUs + 1;
       }
+      addonManager.formatPendingTxp(tx);
     });
     self.txps = txps;
   };
