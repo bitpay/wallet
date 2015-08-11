@@ -431,7 +431,7 @@
                   <h4 class="title m0" translate>Fee policy for this transaction</h4>
                   <ul class="no-bullet m0 size-14">
                     <li ng-repeat="fee in (index.network == 'livenet' ? index.feeLevels.livenet : index.feeLevels.testnet)"
-                      ng-click="home.currentSendFeeLevel = fee.level" class="line-b p20">
+                      ng-click="home.setFee(fee.level)" class="line-b p20">
                       {{index.feeOpts[fee.level]|translate}}
                       <i class="fi-check size-16 right" 
                         ng-show="(home.currentSendFeeLevel || index.currentFeeLevel) == fee.level"></i>

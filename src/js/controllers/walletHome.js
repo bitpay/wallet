@@ -714,6 +714,10 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     };
   };
 
+  this.setFee = function(level) {
+    this.currentSendFeeLevel = level;
+  };
+
   this.submitForm = function() {
     var fc = profileService.focusedClient;
     var unitToSat = this.unitToSatoshi;
@@ -748,6 +752,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
       feeService.getCurrentFeeValue(self.currentSendFeeLevel, function(err, feePerKb) {
         if (err) $log.debug(err);
+console.log('[walletHome.js.757:amount:]',amount, feePerKb); //TODO
         fc.sendTxProposal({
           toAddress: address,
           amount: amount,
