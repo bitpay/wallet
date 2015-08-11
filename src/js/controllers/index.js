@@ -89,17 +89,23 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     if (!fc) return;
 
     // Clean status
-    self.lockedBalance = null;
+    self.totalBalanceSat = null;
+    self.lockedBalanceSat = null;
+    self.availableBalanceSat = null;
+
+    self.totalBalanceStr = null;
     self.availableBalanceStr = null;
-    self.totalBalanceStr = null;
     self.lockedBalanceStr = null;
-    self.totalBalanceStr = null;
+
     self.alternativeBalanceAvailable = false;
     self.totalBalanceAlternative = null;
+
     self.notAuthorized = false;
     self.txHistory = [];
     self.txHistoryPaging = false;
     self.pendingTxProposalsCountForUs = null;
+    self.setSpendUnconfirmed();
+
     $timeout(function() {
       self.hasProfile = true;
       self.noFocusedWallet = false;
@@ -279,7 +285,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         $log.debug('Wallet Status:', walletStatus);
         self.setPendingTxps(walletStatus.pendingTxps);
         self.setFeesOpts();
-        self.setSpendUnconfirmed();
 
         // Status Shortcuts
         self.walletName = walletStatus.wallet.name;
@@ -322,9 +327,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
           var feeToSendMaxSat = parseInt(((self.totalBytesToSendMax * feePerKb ) / 1000.).toFixed(0));
           self.availableMaxBalance = strip((self.availableBalanceSat - feeToSendMaxSat) * self.satToUnit);
           self.feeToSendMaxStr = profileService.formatAmount(feeToSendMaxSat) + ' ' + self.unitName;
-
-console.log('[index.js.595]', self.currentFeeLevel, feePerKb, self.totalBytesToSendMax, feeToSendMaxSat, self.feeToSendMaxStr,  "AVAIL",  self.availableBalanceSat,self.availableMaxBalance); //TODO
-
         } else {
           self.feeToSendMaxStr = null;
         }
@@ -578,35 +580,39 @@ console.log('[index.js.595]', self.currentFeeLevel, feePerKb, self.totalBytesToS
     self.balanceByAddress = balance.byAddress;
 
     // SAT
-    self.totalBalanceSat = balance.totalAmount;
-    self.lockedBalanceSat = balance.lockedAmount;
-    self.availableBalanceSat = self.totalBalanceSat - self.lockedBalanceSat;
+    if (self.spendUnconfirmed) {
+      self.totalBalanceSat = balance.totalAmount;
+      self.lockedBalanceSat = balance.lockedAmount;
+      self.availableBalanceSat = balance.availableAmount;
+      self.pendingAmount = null;
+    } else {
+      self.totalBalanceSat = balance.totalConfirmedAmount;
+      self.lockedBalanceSat = balance.lockedConfirmedAmount;
+      self.availableBalanceSat = balance.availableConfirmedAmount;
+      self.pendingAmount = balance.totalAmount - balance.totalConfirmedAmount;
+    }
 
     // Selected unit
     self.unitToSatoshi = config.unitToSatoshi;
     self.satToUnit = 1 / self.unitToSatoshi;
     self.unitName = config.unitName;
 
-    self.totalBalance = strip(self.totalBalanceSat * self.satToUnit);
-    self.lockedBalance = strip(self.lockedBalanceSat * self.satToUnit);
-    self.availableBalance = strip(self.availableBalanceSat * self.satToUnit);
-
-    // BTC
-    self.totalBalanceBTC = strip(self.totalBalanceSat / COIN);
-    self.lockedBalanceBTC = strip(self.lockedBalanceSat / COIN);
-    self.availableBalanceBTC = strip(self.availableBalanceBTC / COIN);
-
     //STR
     self.totalBalanceStr = profileService.formatAmount(self.totalBalanceSat) + ' ' + self.unitName;
     self.lockedBalanceStr = profileService.formatAmount(self.lockedBalanceSat) + ' ' + self.unitName;
     self.availableBalanceStr = profileService.formatAmount(self.availableBalanceSat) + ' ' + self.unitName;
+
+    if (self.pendingAmount) {
+      self.pendingAmountStr = profileService.formatAmount(self.pendingAmount) + ' ' + self.unitName;
+    } else {
+      self.pendingAmountStr = null;
+    }
 
     self.alternativeName = config.alternativeName;
     self.alternativeIsoCode = config.alternativeIsoCode;
 
     // Other
     self.totalBytesToSendMax = balance.totalBytesToSendMax;
-
     self.setCurrentFeeLevel();
 
     // Check address
@@ -619,8 +625,8 @@ console.log('[index.js.595]', self.currentFeeLevel, feePerKb, self.totalBytesToS
 
     rateService.whenAvailable(function() {
 
-      var totalBalanceAlternative = rateService.toFiat(self.totalBalance * self.unitToSatoshi, self.alternativeIsoCode);
-      var lockedBalanceAlternative = rateService.toFiat(self.lockedBalance * self.unitToSatoshi, self.alternativeIsoCode);
+      var totalBalanceAlternative = rateService.toFiat(self.totalBalanceSat, self.alternativeIsoCode);
+      var lockedBalanceAlternative = rateService.toFiat(self.lockedBalanceSat, self.alternativeIsoCode);
       var alternativeConversionRate = rateService.toFiat(100000000, self.alternativeIsoCode);
 
       self.totalBalanceAlternative = $filter('noFractionNumber')(totalBalanceAlternative, 2);
@@ -884,6 +890,7 @@ console.log('[index.js.595]', self.currentFeeLevel, feePerKb, self.totalBytesToS
 
   $rootScope.$on('Local/SpendUnconfirmedUpdated', function(event) {
     self.setSpendUnconfirmed();
+    self.updateAll();
   });
 
   $rootScope.$on('Local/FeeLevelUpdated', function(event, level) {

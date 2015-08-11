@@ -21,9 +21,8 @@ angular.module('copayApp.controllers').controller('preferencesController',
           spendUnconfirmed: newVal
         }
       };
-      $rootScope.$emit('Local/SpendUnconfirmedUpdated');
-
       configService.set(opts, function(err) {
+        $rootScope.$emit('Local/SpendUnconfirmedUpdated');
         if (err) $log.debug(err);
       });
     });
