@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, lodash, go, profileService, configService, isCordova, rateService, storageService, addressService, gettextCatalog, gettext, amMoment, nodeWebkit, addonManager, feeService) {
+angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, lodash, go, profileService, configService, isCordova, rateService, storageService, addressService, gettextCatalog, gettext, amMoment, nodeWebkit, addonManager, feeService, isChromeApp) {
   var self = this;
   self.isCordova = isCordova;
   self.onGoingProcess = {};
@@ -752,7 +752,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         'Wallet Server Error', ['OK']
       );
     } else {
-      alert(err);
+      if (!isChromeApp) {
+        alert(err);
+      }
     }
   };
 
@@ -764,7 +766,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         'Device Error', ['OK']
       );
     } else {
-      alert(err);
+      if (!isChromeApp) {
+        alert(err);
+      }
     }
   };
 
