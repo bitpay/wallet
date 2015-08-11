@@ -184,6 +184,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   this.openTxpModal = function(tx, copayers) {
     var fc = profileService.focusedClient;
     var refreshUntilItChanges = false;
+    var currentSpendUnconfirmed = $scope.currentSpendUnconfirmed;
     var ModalInstanceCtrl = function($scope, $modalInstance) {
       $scope.error = null;
       $scope.tx = tx;
@@ -196,6 +197,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       $scope.loading = null;
       $scope.color = fc.backgroundColor;
       refreshUntilItChanges = false;
+      $scope.currentSpendUnconfirmed = currentSpendUnconfirmed;
 
       $scope.getShortNetworkName = function() {
         return fc.credentials.networkName.substring(0, 4);

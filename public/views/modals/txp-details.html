@@ -30,9 +30,9 @@
       <span class="text-gray" translate>Fee</span>:
       <span class="right">{{feeStr}}</span>
     </li>
-    <li class="line-b p10">
+    <li class="line-b p10" ng-show="!currentSpendUnconfirmed">
       <span class="text-gray" translate>Uses unconfirmed funds</span>:
-      <span class="right">{{(tx.excludeUnconfirmedUtxos ? 'No' : 'Yes')|translate}}</span>
+      <span class="right">{{(tx.hasUnconfirmedInputs ? 'Yes' : 'No')|translate}}</span>
     </li>
     <li class="line-b p10">
       <span class="text-gray" translate>Time</span>:
