@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, lodash, go, profileService, configService, isCordova, rateService, storageService, addressService, gettextCatalog, gettext, amMoment, nodeWebkit, addonManager, feeService) {
+angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, lodash, go, profileService, configService, isCordova, rateService, storageService, addressService, gettextCatalog, gettext, amMoment, nodeWebkit, addonManager, feeService, isChromeApp) {
   var self = this;
   self.isCordova = isCordova;
   self.onGoingProcess = {};
@@ -279,6 +279,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         $log.debug('Wallet Status:', walletStatus);
         self.setPendingTxps(walletStatus.pendingTxps);
         self.setFees();
+        self.setSpendUnconfirmed();
 
         // Status Shortcuts
         self.walletName = walletStatus.wallet.name;
@@ -304,6 +305,10 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         }
       });
     });
+  };
+
+  self.setSpendUnconfirmed = function() {
+    self.spendUnconfirmed = configService.getSync().wallet.spendUnconfirmed;
   };
 
   self.setCurrentFeeLevel = function(level) {
@@ -395,9 +400,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
   self.handleError = function(err) {
     $log.warn('Client ERROR:', err);
-    if (err.code === 'NOTAUTHORIZED') {
+    if (err.code === 'NOT_AUTHORIZED') {
       $scope.$emit('Local/NotAuthorized');
-    } else if (err.code === 'NOTFOUND') {
+    } else if (err.code === 'NOT_FOUND') {
       $scope.$emit('Local/BWSNotFound');
     } else {
       $scope.$emit('Local/ClientError', (err.error ? err.error : err));
@@ -747,7 +752,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         'Wallet Server Error', ['OK']
       );
     } else {
-      alert(err);
+      if (!isChromeApp) {
+        alert(err);
+      }
     }
   };
 
@@ -759,7 +766,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         'Device Error', ['OK']
       );
     } else {
-      alert(err);
+      if (!isChromeApp) {
+        alert(err);
+      }
     }
   };
 
@@ -853,6 +862,10 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     $timeout(function() {
       $rootScope.$apply();
     });
+  });
+
+  $rootScope.$on('Local/SpendUnconfirmedUpdated', function(event) {
+    self.setSpendUnconfirmed();
   });
 
   $rootScope.$on('Local/FeeLevelUpdated', function(event, level) {
@@ -951,12 +964,12 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   });
 
   $rootScope.$on('Local/ClientError', function(event, err) {
-    if (err.code && err.code === 'NOTAUTHORIZED') {
+    if (err.code && err.code === 'NOT_AUTHORIZED') {
       // Show not error, just redirect to home (where the recreate option is shown)
       go.walletHome();
     } else if (err && err.cors == 'rejected') {
       $log.debug('CORS error:', err);
-    } else if (err.code === 'ETIMEDOUT' || err.code === 'CONNERROR') {
+    } else if (err.code === 'ETIMEDOUT' || err.code === 'CONNECTION_ERROR') {
       $log.debug('Time out:', err);
     } else {
       var msg = 'Error at Wallet Service: ';

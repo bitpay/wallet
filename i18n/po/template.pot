@@ -468,6 +468,10 @@ msgstr ""
 msgid "Fee Policy"
 msgstr ""
 
+#: public/views/walletHome.html
+msgid "Fee policy for this transaction"
+msgstr ""
+
 #. Get information of payment if using Payment Protocol
 #: src/js/controllers/walletHome.js
 msgid "Fetching Payment Information"
@@ -524,7 +528,8 @@ msgstr ""
 #: public/views/backup.html
 #: public/views/create.html
 #: public/views/join.html
-msgid "Hide Advanced options"
+#: public/views/walletHome.html
+msgid "Hide advanced options"
 msgstr ""
 
 #: src/js/controllers/index.js
@@ -689,6 +694,7 @@ msgstr ""
 
 #: public/views/walletHome.html
 #: public/views/includes/output.html
+#: public/views/modals/tx-details.html
 msgid "Note"
 msgstr ""
 
@@ -1012,7 +1018,8 @@ msgstr ""
 #: public/views/backup.html
 #: public/views/create.html
 #: public/views/join.html
-msgid "Show Advanced options"
+#: public/views/walletHome.html
+msgid "Show advanced options"
 msgstr ""
 
 #: src/js/controllers/walletHome.js
@@ -1146,6 +1153,15 @@ msgstr ""
 
 #: public/views/walletHome.html
 msgid "Updating Wallet..."
+msgstr ""
+
+#: public/views/preferences.html
+#: public/views/walletHome.html
+msgid "Use Unconfirmed Funds"
+msgstr ""
+
+#: public/views/modals/txp-details.html
+msgid "Uses unconfirmed funds"
 msgstr ""
 
 #: public/views/preferencesAbout.html
