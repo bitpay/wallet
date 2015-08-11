@@ -91,6 +91,12 @@
                 ng-if="index.totalBalanceAlternative">
                 {{index.totalBalanceAlternative}} {{index.alternativeIsoCode}}
               </div>
+              <div class="size-14"
+                ng-if="index.pendingAmount">
+                <span translate>Pending Confirmation</span>:
+                {{index.pendingAmountStr}}
+              </div>
+ 
             </div>
           </div>
 
@@ -162,9 +168,9 @@
           </div>
 
           <div class="text-gray text-center size-12 p10t"
-            ng-show="index.lockedBalance && !index.updatingStatus">
+            ng-show="index.lockedBalanceSat && !index.updatingStatus">
             <span translate>Total Locked Balance</span>:
-            <b>{{index.lockedBalance}} {{index.unitName}} </b>
+            <b>{{index.lockedBalanceStr}} </b>
             <span> {{index.lockedBalanceAlternative}}
               {{index.alternativeIsoCode}} </span>
           </div>
@@ -288,12 +294,12 @@
         <h4 class="title m0">
 
           <a class="right lh"
-            ng-if="index.feeToSendMaxStr && index.availableBalance > 0 && !home.blockUx && !home.lockAmount"
+            ng-if="index.feeToSendMaxStr && index.availableBalanceSat > 0 && !home.blockUx && !home.lockAmount"
             ng-click="home.sendAll(index.availableMaxBalance, index.feeToSendMaxStr)"
              translate> Send All
           </a>
 
-          <div  ng-show="!index.lockedBalance && index.availableBalanceStr">
+          <div  ng-show="!index.lockedBalanceSat && index.availableBalanceStr">
             <div class="size-10">
               <span class="db text-bold">
                 <span translate>Available Balance</span>:
@@ -301,7 +307,7 @@
               </span>
             </div>
           </div>
-          <div  ng-show="index.lockedBalance">
+          <div  ng-show="index.lockedBalanceSat">
             <div class="left">
               <i class="fi-info size-24 m10r"></i>
             </div>
@@ -431,7 +437,7 @@
                   <h4 class="title m0" translate>Fee policy for this transaction</h4>
                   <ul class="no-bullet m0 size-14">
                     <li ng-repeat="fee in (index.network == 'livenet' ? index.feeLevels.livenet : index.feeLevels.testnet)"
-                      ng-click="home.currentSendFeeLevel = fee.level" class="line-b p20">
+                      ng-click="home.setFee(fee.level)" class="line-b p20">
                       {{index.feeOpts[fee.level]|translate}}
                       <i class="fi-check size-16 right" 
                         ng-show="(home.currentSendFeeLevel || index.currentFeeLevel) == fee.level"></i>
