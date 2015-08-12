@@ -62,6 +62,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   }, {
     name: '日本語',
     isoCode: 'ja',
+  }, {
+    name: 'Pусский',
+    isoCode: 'ru',
   }];
 
   self.feeOpts = feeService.feeOpts;
