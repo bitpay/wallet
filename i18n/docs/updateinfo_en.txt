@@ -1,5 +1,4 @@
 * Improved fee handling and fee notifications
 * Added advanced sending options
-* Create transaction proposals with multiple destinations
-* Added Italian and Greek language options
+* Added Italian, Russian, and Greek language options
 * Minor bug fixes
