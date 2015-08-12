@@ -76,7 +76,7 @@
         <div class="amount" ng-style="{'background-color':index.backgroundColor}">
           <div ng-if="!index.anyOnGoingProcess && !index.notAuthorized">
             <div ng-show="index.updateError" ng-click='index.openWallet(); index.updateTxHistory()'>
-              <span class="size-12 db m10b">{{index.updateError}}</span>
+              <span class="size-12 db m10b">{{index.updateError|translate}}</span>
               <button class="outline white tiny round" translate>Tap to retry</button>
             </div>
 
@@ -481,7 +481,7 @@
         <div class="large-12 columns">
           <div class="oh text-center">
             <span ng-show="index.txHistoryError && !index.notAuthorized" ng-click='index.updateTxHistory()'>
-              <p class="size-12 m10b db text-gray" translate>Could not fetch transaction history</p>
+              <p class="size-12 m10b db text-gray">Could not fetch transaction history</p>
               <button class="outline round light-gray tiny" translate>Tap to retry</button>
             </span>
             <span ng-if="!index.txHistoryError" translate>
