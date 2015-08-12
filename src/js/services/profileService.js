@@ -1,6 +1,6 @@
 'use strict';
 angular.module('copayApp.services')
-  .factory('profileService', function profileServiceFactory($rootScope, $location, $timeout, $filter, $log, lodash, storageService, bwcService, configService, notificationService, isChromeApp, isCordova, gettext, nodeWebkit) {
+  .factory('profileService', function profileServiceFactory($rootScope, $location, $timeout, $filter, $log, lodash, storageService, bwcService, configService, notificationService, isChromeApp, isCordova, gettext, nodeWebkit, bwsError) {
 
     var root = {};
 
@@ -11,22 +11,6 @@ angular.module('copayApp.services')
     root.getUtils = function() {
       return bwcService.getUtils();
     };
-
-    root.errorCb = function(err, prefix, cb) {
-      var body = '';
-
-      prefix = gettext(prefix);
-      if  (!err || !err.code) return cb(prefix);
-
-      switch(err.code) {
-        case 'CONNECTION_ERROR':
-          body = gettext('Network connection error');
-          ;;
-      }
-
-      return cb(prefix + ( body ? ': ' + body  : ''));
-    };
-
     root.formatAmount = function(amount) {
       var config = configService.getSync().wallet.settings;
       if (config.unitCode == 'sat') return amount;
@@ -191,7 +175,7 @@ angular.module('copayApp.services')
       walletClient.createWallet('Personal Wallet', 'me', 1, 1, {
         network: 'livenet'
       }, function(err) {
-        if (err) return root.errorCb(err, 'Error creating wallet', cb);
+        if (err) return bwsError.cb(err, gettext('Error creating wallet'), cb);
         var p = Profile.create({
           credentials: [JSON.parse(walletClient.export())],
         });
@@ -213,7 +197,7 @@ angular.module('copayApp.services')
       walletClient.createWallet(opts.name, opts.myName || 'me', opts.m, opts.n, {
         network: opts.networkName
       }, function(err, secret) {
-        if (err) return root.errorCb(err, 'Error creating wallet', cb);
+        if (err) return bwsError.cb(err, gettext('Error creating wallet'), cb);
 
         root.profile.credentials.push(JSON.parse(walletClient.export()));
         root.setWalletClients();
@@ -236,8 +220,19 @@ angular.module('copayApp.services')
           return cb(gettext('Could not join using the specified extended private key'));
         }
       }
+
+
+      try {
+        var walletData = this.getUtils().fromSecret(opts.secret);
+        if (root.walletClients[walletData.walletId])
+          return cb(gettext('Cannot join the same wallet more that once'));
+
+      } catch (ex) {
+        return cb(gettext('Bad wallet invitation'));
+      }
+
       walletClient.joinWallet(opts.secret, opts.myName || 'me', function(err) {
-        if (err) return cb(err);
+        if (err) return bwsError.cb(err, gettext('Could not join wallet'), cb);
 
         root.profile.credentials.push(JSON.parse(walletClient.export()));
         root.setWalletClients();
