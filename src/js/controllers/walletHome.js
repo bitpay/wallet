@@ -724,7 +724,6 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
       feeService.getCurrentFeeValue(self.currentSendFeeLevel, function(err, feePerKb) {
         if (err) $log.debug(err);
-        console.log('[walletHome.js.757:amount:]', amount, feePerKb); //TODO
         fc.sendTxProposal({
           toAddress: address,
           amount: amount,
