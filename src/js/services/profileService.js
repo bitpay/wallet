@@ -12,6 +12,21 @@ angular.module('copayApp.services')
       return bwcService.getUtils();
     };
 
+    root.errorCb = function(err, prefix, cb) {
+      var body = '';
+
+      prefix = gettext(prefix);
+      if  (!err || !err.code) return cb(prefix);
+
+      switch(err.code) {
+        case 'CONNECTION_ERROR':
+          body = gettext('Network connection error');
+          ;;
+      }
+
+      return cb(prefix + ( body ? ': ' + body  : ''));
+    };
+
     root.formatAmount = function(amount) {
       var config = configService.getSync().wallet.settings;
       if (config.unitCode == 'sat') return amount;
@@ -176,7 +191,7 @@ angular.module('copayApp.services')
       walletClient.createWallet('Personal Wallet', 'me', 1, 1, {
         network: 'livenet'
       }, function(err) {
-        if (err) return cb(gettext('Error creating wallet. Check your internet connection'));
+        if (err) return root.errorCb(err, 'Error creating wallet', cb);
         var p = Profile.create({
           credentials: [JSON.parse(walletClient.export())],
         });
@@ -198,7 +213,7 @@ angular.module('copayApp.services')
       walletClient.createWallet(opts.name, opts.myName || 'me', opts.m, opts.n, {
         network: opts.networkName
       }, function(err, secret) {
-        if (err) return cb(gettext('Error creating wallet'));
+        if (err) return root.errorCb(err, 'Error creating wallet', cb);
 
         root.profile.credentials.push(JSON.parse(walletClient.export()));
         root.setWalletClients();

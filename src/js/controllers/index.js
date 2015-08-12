@@ -960,6 +960,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     trailing: true
   });
 
+  self.debouncedUpdateHistory = lodash.throttle(function() {
+    self.updateTxHistory();
+  }, 60000);
 
   $rootScope.$on('Local/Resume', function(event) {
     $log.debug('### Resume event');
@@ -1022,6 +1025,20 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       triggerTxUpdate: true,
     });
   });
+
+
+  $rootScope.$on('NewBlock', function() {
+    if (self.pendingAmount) {
+      self.updateAll();
+    }
+
+    if (self.network =='testnet') {
+      self.debouncedUpdateHistory();
+    } else {
+      self.updateTxHistory();
+    }
+  });
+
 
   $rootScope.$on('NewOutgoingTx', function() {
     self.updateAll({
