@@ -175,7 +175,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       $scope.alternativeAmountStr = tx.alternativeAmountStr;
       $scope.copayers = copayers
       $scope.copayerId = fc.credentials.copayerId;
-      $scope.canSign= fc.canSign();
+      $scope.canSign = fc.canSign();
       $scope.loading = null;
       $scope.color = fc.backgroundColor;
       refreshUntilItChanges = false;
@@ -259,7 +259,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
                   self.setOngoingProcess();
                   $scope.loading = false;
                   if (err) {
-                    $scope.error = bwsError.msg('Could not broadcast payment');
+                    $scope.error = bwsError.msg(err, gettext('Could not broadcast payment'));
                     $scope.$digest();
                   } else {
                     $log.debug('Transaction signed and broadcasted')
@@ -288,7 +288,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
             self.setOngoingProcess();
             $scope.loading = false;
             if (err) {
-              $scope.error = bwsError.msg(err,gettext('Could not reject payment'));
+              $scope.error = bwsError.msg(err, gettext('Could not reject payment'));
               $scope.$digest();
             } else {
               $modalInstance.close(txpr);
@@ -327,7 +327,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
             self.setOngoingProcess();
             $scope.loading = false;
             if (err) {
-              $scope.error = bwsError.msg(gettext('Could not broadcast payment'));
+              $scope.error = bwsError.msg(err, gettext('Could not broadcast payment'));
               $scope.$digest();
             } else {
 
@@ -397,9 +397,9 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       addressService.getAddress(fc.credentials.walletId, forceNew, function(err, addr) {
         self.generatingAddress = false;
 
-        if (err)  {
+        if (err) {
           self.addrError = err;
-        }  else {
+        } else {
           if (addr)
             self.addr[fc.credentials.walletId] = addr;
         }
@@ -657,7 +657,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     var prefix =
       fc.credentials.m > 1 ? gettext('Could not create payment proposal') : gettext('Could not send payment');
 
-    this.error = bwsError.msg(err, prefix); 
+    this.error = bwsError.msg(err, prefix);
 
     $timeout(function() {
       $scope.$digest();
@@ -691,7 +691,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   this.submitForm = function() {
     var fc = profileService.focusedClient;
     var unitToSat = this.unitToSatoshi;
-    
+
     if (isCordova && this.isWindowsPhoneApp) {
       this.hideAddress = false;
       this.hideAmount = false;
@@ -722,7 +722,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
       feeService.getCurrentFeeValue(self.currentSendFeeLevel, function(err, feePerKb) {
         if (err) $log.debug(err);
-console.log('[walletHome.js.757:amount:]',amount, feePerKb); //TODO
+        console.log('[walletHome.js.757:amount:]', amount, feePerKb); //TODO
         fc.sendTxProposal({
           toAddress: address,
           amount: amount,
@@ -1046,7 +1046,7 @@ console.log('[walletHome.js.757:amount:]',amount, feePerKb); //TODO
   };
 
   this.confirmDialog = function(msg, cb) {
-    if (isCordova) { 
+    if (isCordova) {
       navigator.notification.confirm(
         msg,
         function(buttonIndex) {
@@ -1074,11 +1074,11 @@ console.log('[walletHome.js.757:amount:]',amount, feePerKb); //TODO
       fee: feeStr
     });
 
-    this.confirmDialog(msg, function(confirmed){
-      if (confirmed) 
+    this.confirmDialog(msg, function(confirmed) {
+      if (confirmed)
         self._doSendAll(amount);
     });
-  }; 
+  };
 
   /* Start setup */
 
