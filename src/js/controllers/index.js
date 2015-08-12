@@ -243,7 +243,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         self.updateError = false;
         return fc.getStatus(function(err, ret) {
           if (err) {
-            self.updateError = bwsError.msg(err, 'Could not update Wallet');
+            self.updateError = bwsError.msg(err, gettext('Could not update Wallet'));
           } else {
             if (!opts.quiet)
               self.setOngoingProcess('scanning', ret.wallet.scanning);
