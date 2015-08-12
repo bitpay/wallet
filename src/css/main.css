@@ -1119,6 +1119,17 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
   padding: 0.6rem 0.8rem !important;
 }
 
+.alertModal {
+  background: #FFFFFF;
+  box-shadow: 0px 0px 6px 0px rgba(0,0,0,0.50);
+  border-radius: 5px;
+  position: absolute;
+  width: 90%;
+  left: 5%;
+  top: 15%;
+  z-index: 1100;
+}
+
 .passModal {
   background: #FFFFFF;
   box-shadow: 0px 0px 6px 0px rgba(0,0,0,0.50);

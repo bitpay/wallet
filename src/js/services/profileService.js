@@ -1,6 +1,6 @@
 'use strict';
 angular.module('copayApp.services')
-  .factory('profileService', function profileServiceFactory($rootScope, $location, $timeout, $filter, $log, lodash, storageService, bwcService, configService, notificationService, isChromeApp, isCordova, gettext, nodeWebkit) {
+  .factory('profileService', function profileServiceFactory($rootScope, $location, $timeout, $filter, $log, lodash, storageService, bwcService, configService, notificationService, isChromeApp, isCordova, gettext, nodeWebkit, bwsError) {
 
     var root = {};
 
@@ -11,7 +11,6 @@ angular.module('copayApp.services')
     root.getUtils = function() {
       return bwcService.getUtils();
     };
-
     root.formatAmount = function(amount) {
       var config = configService.getSync().wallet.settings;
       if (config.unitCode == 'sat') return amount;
@@ -176,7 +175,7 @@ angular.module('copayApp.services')
       walletClient.createWallet('Personal Wallet', 'me', 1, 1, {
         network: 'livenet'
       }, function(err) {
-        if (err) return cb(gettext('Error creating wallet. Check your internet connection'));
+        if (err) return bwsError.cb(err, gettext('Error creating wallet'), cb);
         var p = Profile.create({
           credentials: [JSON.parse(walletClient.export())],
         });
@@ -198,7 +197,7 @@ angular.module('copayApp.services')
       walletClient.createWallet(opts.name, opts.myName || 'me', opts.m, opts.n, {
         network: opts.networkName
       }, function(err, secret) {
-        if (err) return cb(gettext('Error creating wallet'));
+        if (err) return bwsError.cb(err, gettext('Error creating wallet'), cb);
 
         root.profile.credentials.push(JSON.parse(walletClient.export()));
         root.setWalletClients();
@@ -221,8 +220,23 @@ angular.module('copayApp.services')
           return cb(gettext('Could not join using the specified extended private key'));
         }
       }
+
+
+      try {
+        var walletData = this.getUtils().fromSecret(opts.secret);
+
+        // check if exist
+        if (lodash.find(root.profile.credentials, {
+          'walletId': walletData.walletId
+        })) {
+            return cb(gettext('Cannot join the same wallet more that once'));
+        }
+      } catch (ex) {
+        return cb(gettext('Bad wallet invitation'));
+      }
+
       walletClient.joinWallet(opts.secret, opts.myName || 'me', function(err) {
-        if (err) return cb(err);
+        if (err) return bwsError.cb(err, gettext('Could not join wallet'), cb);
 
         root.profile.credentials.push(JSON.parse(walletClient.export()));
         root.setWalletClients();

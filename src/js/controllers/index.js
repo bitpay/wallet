@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, lodash, go, profileService, configService, isCordova, rateService, storageService, addressService, gettextCatalog, gettext, amMoment, nodeWebkit, addonManager, feeService, isChromeApp) {
+angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, lodash, go, profileService, configService, isCordova, rateService, storageService, addressService, gettextCatalog, gettext, amMoment, nodeWebkit, addonManager, feeService, isChromeApp, bwsError) {
   var self = this;
   self.isCordova = isCordova;
   self.onGoingProcess = {};
@@ -243,7 +243,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         self.updateError = false;
         return fc.getStatus(function(err, ret) {
           if (err) {
-            self.updateError = true;
+            self.updateError = bwsError.msg(err, gettext('Could not update Wallet'));
           } else {
             if (!opts.quiet)
               self.setOngoingProcess('scanning', ret.wallet.scanning);
@@ -319,12 +319,12 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   self.setSendMax = function() {
 
     // Set Send max
-    if (self.currentFeeLevel && self.totalBytesToSendMax) { 
+    if (self.currentFeeLevel && self.totalBytesToSendMax) {
       feeService.getCurrentFeeValue(self.currentFeeLevel, function(err, feePerKb) {
 
         // KB to send max
         if (self.totalBytesToSendMax) {
-          var feeToSendMaxSat = parseInt(((self.totalBytesToSendMax * feePerKb ) / 1000.).toFixed(0));
+          var feeToSendMaxSat = parseInt(((self.totalBytesToSendMax * feePerKb) / 1000.).toFixed(0));
           self.availableMaxBalance = strip((self.availableBalanceSat - feeToSendMaxSat) * self.satToUnit);
           self.feeToSendMaxStr = profileService.formatAmount(feeToSendMaxSat) + ' ' + self.unitName;
         } else {
@@ -360,8 +360,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       fc.getBalance(function(err, balance) {
         self.setOngoingProcess('updatingBalance', false);
         if (err) {
-          $log.debug('Wallet Balance ERROR:', err);
-          $scope.$emit('Local/ClientError', err);
+          self.handleError(err);
           return;
         }
         $log.debug('Wallet Balance:', balance);
@@ -378,8 +377,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       fc.getTxProposals({}, function(err, txps) {
         self.setOngoingProcess('updatingPendingTxps', false);
         if (err) {
-          $log.debug('Wallet PendingTxps ERROR:', err);
-          $scope.$emit('Local/ClientError', err);
+          self.handleError(err);
         } else {
           $log.debug('Wallet PendingTxps:', txps);
           self.setPendingTxps(txps);
@@ -392,7 +390,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   self.updateTxHistory = function(skip) {
     var fc = profileService.focusedClient;
     if (!fc.isComplete()) return;
-
     if (!skip) {
       self.txHistory = [];
     }
@@ -401,6 +398,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.txHistoryError = false;
     self.updatingTxHistory = true;
     self.txHistoryPaging = false;
+
     $timeout(function() {
       fc.getTxHistory({
         skip: self.skipHistory,
@@ -410,8 +408,10 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         if (err) {
           $log.debug('TxHistory ERROR:', err);
           // We do not should errors here, since history is usually
-          // fetched AFTER others requests.
-          //self.handleError(err);
+          // fetched AFTER others requests (if skip=0)
+          if (skip)
+            self.handleError(err);
+
           self.txHistoryError = true;
         } else {
           $log.debug('Wallet Transaction History:', txs);
@@ -423,14 +423,20 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     });
   };
 
+  // This handles errors from BWS/index with are nomally
+  // trigger from async events (like updates)
   self.handleError = function(err) {
     $log.warn('Client ERROR:', err);
     if (err.code === 'NOT_AUTHORIZED') {
-      $scope.$emit('Local/NotAuthorized');
+      self.notAuthorized = true;
+      go.walletHome();
     } else if (err.code === 'NOT_FOUND') {
-      $scope.$emit('Local/BWSNotFound');
+      self.showErrorPopup(gettext('Could not access Wallet Service: Not found'));
     } else {
+      var msg = ""
       $scope.$emit('Local/ClientError', (err.error ? err.error : err));
+      var msg = bwsError.msg(err, gettext('Error at Wallet Service'));
+      self.showErrorPopup(msg);
     }
   };
   self.openWallet = function() {
@@ -478,7 +484,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       if (tx.outputs.length === 1 && !tx.outputs[0].message) {
         tx.showSingle = true;
         tx.toAddress = tx.outputs[0].toAddress; // txproposal
-        tx.address = tx.outputs[0].address;     // txhistory
+        tx.address = tx.outputs[0].address; // txhistory
       }
     }
   };
@@ -718,7 +724,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       getHistory(null, function(err, txs) {
         self.setOngoingProcess('generatingCSV', false);
         if (err) {
-          $log.debug('TxHistory ERROR:', err);
+          self.handleError(err);
         } else {
           $log.debug('Wallet Transaction History:', txs);
 
@@ -745,11 +751,11 @@ angular.module('copayApp.controllers').controller('indexController', function($r
               _note += ' Moved:' + (it.amount * satToBtc).toFixed(8)
 
             dataString = formatDate(it.time * 1000) + ',' + formatString(it.addressTo) + ',' + _note + ',' + _amount + ',BTC,,,,';
-            csvContent += dataString + "\n"; 
+            csvContent += dataString + "\n";
 
             if (it.fees && (it.action == 'moved' || it.action == 'sent')) {
               var _fee = (it.fees * satToBtc).toFixed(8)
-               csvContent += formatDate(it.time * 1000) + ',Bitcoin Network Fees,, -' + _fee + ',BTC,,,,' + "\n";
+              csvContent += formatDate(it.time * 1000) + ',Bitcoin Network Fees,, -' + _fee + ',BTC,,,,' + "\n";
             }
           });
 
@@ -768,34 +774,20 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     });
   };
 
-  self.clientError = function(err) {
-    if (isCordova) {
-      navigator.notification.confirm(
-        err,
-        function() {},
-        'Wallet Server Error', ['OK']
-      );
-    } else {
-      if (!isChromeApp) {
-        alert(err);
-      }
-    }
+  self.showErrorPopup = function (msg, cb) {
+    $log.warn('Showing err popup:' + msg);
+    self.showAlert = {
+      msg: msg,
+      close: function(err) {
+        self.showAlert = null;
+        if (cb) return cb(err);
+      },
+    };
+    $timeout(function() {
+      $rootScope.$apply();
+    });
+ 
   };
-
-  self.deviceError = function(err) {
-    if (isCordova) {
-      navigator.notification.confirm(
-        err,
-        function() {},
-        'Device Error', ['OK']
-      );
-    } else {
-      if (!isChromeApp) {
-        alert(err);
-      }
-    }
-  };
-
 
   self.recreate = function(cb) {
     var fc = profileService.focusedClient;
@@ -960,6 +952,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     trailing: true
   });
 
+  self.debouncedUpdateHistory = lodash.throttle(function() {
+    self.updateTxHistory();
+  }, 60000);
 
   $rootScope.$on('Local/Resume', function(event) {
     $log.debug('### Resume event');
@@ -969,41 +964,12 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   $rootScope.$on('Local/BackupDone', function(event) {
     self.needsBackup = false;
     storageService.setBackupFlag(self.walletId, function(err) {
-      if (err) $rootScope.$emit('Local/DeviceError', err)
+      if (err) root.showErrorPopup(err);
     });
   });
 
-  $rootScope.$on('Local/NotAuthorized', function(event) {
-    self.notAuthorized = true;
-    $rootScope.$apply();
-  });
-
-  $rootScope.$on('Local/BWSNotFound', function(event) {
-    self.clientError('Could not access Wallet Service: Not found');
-    $rootScope.$apply();
-  });
-
   $rootScope.$on('Local/DeviceError', function(event, err) {
-    self.deviceError(err);
-    $rootScope.$apply();
-  });
-
-  $rootScope.$on('Local/ClientError', function(event, err) {
-    if (err.code && err.code === 'NOT_AUTHORIZED') {
-      // Show not error, just redirect to home (where the recreate option is shown)
-      go.walletHome();
-    } else if (err && err.cors == 'rejected') {
-      $log.debug('CORS error:', err);
-    } else if (err.code === 'ETIMEDOUT' || err.code === 'CONNECTION_ERROR') {
-      $log.debug('Time out:', err);
-    } else {
-      var msg = 'Error at Wallet Service: ';
-      if (err.message) msg = msg + err.message;
-      else if (err.error) msg = msg + err.error;
-      else msg = msg + (lodash.isObject(err) ? JSON.stringify(err) : err);
-      self.clientError(msg);
-    }
-    $rootScope.$apply();
+    root.showErrorPopup(err);
   });
 
   $rootScope.$on('Local/WalletImported', function(event, walletId) {
@@ -1022,6 +988,20 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       triggerTxUpdate: true,
     });
   });
+
+
+  $rootScope.$on('NewBlock', function() {
+    if (self.pendingAmount) {
+      self.updateAll();
+    }
+
+    if (self.network == 'testnet') {
+      self.debouncedUpdateHistory();
+    } else {
+      self.updateTxHistory();
+    }
+  });
+
 
   $rootScope.$on('NewOutgoingTx', function() {
     self.updateAll({
@@ -1086,6 +1066,10 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
   $rootScope.$on('Local/SetTab', function(event, tab, reset) {
     self.setTab(tab, reset);
+  });
+
+  $rootScope.$on('Local/ShowAlert', function(event, msg, cb) {
+    self.showErrorPopup(msg,cb);
   });
 
   $rootScope.$on('Local/NeedsPassword', function(event, isSetup, cb) {
