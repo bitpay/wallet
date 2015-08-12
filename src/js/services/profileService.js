@@ -224,9 +224,13 @@ angular.module('copayApp.services')
 
       try {
         var walletData = this.getUtils().fromSecret(opts.secret);
-        if (root.walletClients[walletData.walletId])
-          return cb(gettext('Cannot join the same wallet more that once'));
 
+        // check if exist
+        if (lodash.find(root.profile.credentials, {
+          'walletId': walletData.walletId
+        })) {
+            return cb(gettext('Cannot join the same wallet more that once'));
+        }
       } catch (ex) {
         return cb(gettext('Bad wallet invitation'));
       }
