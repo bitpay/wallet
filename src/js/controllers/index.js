@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, lodash, go, profileService, configService, isCordova, rateService, storageService, addressService, gettextCatalog, gettext, amMoment, nodeWebkit, addonManager, feeService, isChromeApp) {
+angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, lodash, go, profileService, configService, isCordova, rateService, storageService, addressService, gettextCatalog, gettext, amMoment, nodeWebkit, addonManager, feeService, isChromeApp, bwsError) {
   var self = this;
   self.isCordova = isCordova;
   self.onGoingProcess = {};
@@ -243,7 +243,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         self.updateError = false;
         return fc.getStatus(function(err, ret) {
           if (err) {
-            self.updateError = true;
+            self.updateError = bwsError.msg(err, 'Could not update Wallet');
           } else {
             if (!opts.quiet)
               self.setOngoingProcess('scanning', ret.wallet.scanning);
