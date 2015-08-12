@@ -805,6 +805,10 @@ msgstr ""
 msgid "Payment to"
 msgstr ""
 
+#: public/views/walletHome.html
+msgid "Pending Confirmation"
+msgstr ""
+
 #: public/views/preferencesDeleteWallet.html
 msgid "Permanently delete this wallet. THIS ACTION CANNOT BE REVERSED"
 msgstr ""
