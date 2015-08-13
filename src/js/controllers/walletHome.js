@@ -722,7 +722,15 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       address = form.address.$modelValue;
       amount = parseInt((form.amount.$modelValue * unitToSat).toFixed(0));
 
-      feeService.getCurrentFeeValue(self.currentSendFeeLevel, function(err, feePerKb) {
+      var getFee = function(cb) {
+        if (form.feePerKb) {
+          cb(null, form.feePerKb);
+        } else {
+          feeService.getCurrentFeeValue(self.currentSendFeeLevel, cb);
+        }
+      };
+
+      getFee(function(err, feePerKb) {
         if (err) $log.debug(err);
         fc.sendTxProposal({
           toAddress: address,
@@ -803,7 +811,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     });
   };
 
-  this.setForm = function(to, amount, comment) {
+  this.setForm = function(to, amount, comment, feeRate) {
     var form = $scope.sendForm;
     if (to) {
       form.address.$setViewValue(to);
@@ -824,6 +832,10 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       form.comment.$isValid = true;
       form.comment.$render();
     }
+
+    if (feeRate) {
+      form.feeRate = feeRate;
+    }
   };
 
 
@@ -841,6 +853,11 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     this._amount = this._address = null;
 
     var form = $scope.sendForm;
+
+    if (form && form.feeRate) {
+      form.feeRate = null;
+    }
+
     if (form && form.amount) {
       form.amount.$pristine = true;
       form.amount.$setViewValue('');
@@ -1042,8 +1059,8 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     return actions.hasOwnProperty('create');
   };
 
-  this._doSendAll = function(amount) {
-    this.setForm(null, amount);
+  this._doSendAll = function(amount, feeRate) {
+    this.setForm(null, amount, null, feeRate);
   };
 
   this.confirmDialog = function(msg, cb) {
@@ -1069,7 +1086,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     }
   };
 
-  this.sendAll = function(amount, feeStr) {
+  this.sendAll = function(amount, feeStr, feeRate) {
     var self = this;
     var msg = gettextCatalog.getString("{{fee}} will be discounted for bitcoin networking fees", {
       fee: feeStr
@@ -1077,7 +1094,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
     this.confirmDialog(msg, function(confirmed) {
       if (confirmed)
-        self._doSendAll(amount);
+        self._doSendAll(amount, feeRate);
     });
   };
 
