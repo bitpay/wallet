@@ -1,7 +1,5 @@
-• Il est maintenant possible de faire des sauvegardes sans les capacités de signature (plus d'informations sur https://github.com/bitpay/copay/pull/2998)
-• Meilleures règles d'actualisation et de tri dans l'historique des transactions
-• Meilleure prise en charge des transactions 'invalides' dans l'historique
-• Meilleure prise en charge des portefeuilles avec plus de 1000 transactions dans l'historique
-• Exportez les fichiers .csv avec un ID de transaction
-• Meilleures politiques de sélection des UTXO
-• Corrections de bugs mineurs
+* Adaptive fee levels based on bitcoin network load
+* Option to prevent creating transactions with unconfirmed inputs
+* Ajout d'options d'envois avancés
+* Ajout de langues : Italien, Russe et Grec
+* Corrections de bugs mineurs

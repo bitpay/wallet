@@ -1,7 +1,5 @@
-*Artık imza özelliği olmadan yedek almak mümkün (daha fazla bilgi için https://github.com/bitpay/copay/pull/2998)
-*İşlem geçmişinde daha iyi yenileme ve sıralama kuralları
-*Geçmişteki `geçersiz` işlemleri daha iyi kullanma
-*Geçmişte 1K+ fazla işlemlerin olduğu cüzdanlara daha iyi kullanım
-*İşlem kimliği ile .csv dosyalarını çıkarma
-*Daha iyi UTXO seçim ilkeleri
+* Adaptive fee levels based on bitcoin network load
+* Option to prevent creating transactions with unconfirmed inputs
+* Added advanced sending options
+* Added Italian, Russian, and Greek language options
 *Küçük hata düzeltmeleri
