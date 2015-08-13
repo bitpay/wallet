@@ -1,7 +1,5 @@
-* Τώρα είναι δυνατό να κάνετε αντίγραφα ασφαλείας, χωρίς δυνατότητες ψηφιακής υπογραφής (για περισσότερες πληροφορίες δείτε εδώ https://github.com/bitpay/copay/pull/2998)
-* Βελτίωση των κανόνων ανανέωσης και της διαλογής στο ιστορικό συναλλαγών
-* Καλύτερη διαχείριση των `λανθασμένων` συναλλαγών στο ιστορικό
-* Καλύτερη διαχείριση των πορτοφολιών με 1000+ συναλλαγές στο ιστορικό τους
-* Εξάγει τα αρχεία .csv με αναγνωριστικό συναλλαγής
-* Καλύτερη πολιτική επιλογής αξόδευτων συναλλαγών
+* Adaptive fee levels based on bitcoin network load
+* Option to prevent creating transactions with unconfirmed inputs
+* Added advanced sending options
+* Added Italian, Russian, and Greek language options
 * Μικρές διορθώσεις σφαλμάτων

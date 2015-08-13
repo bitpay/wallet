@@ -249,7 +249,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
             self.setOngoingProcess();
             if (err) {
               $scope.loading = false;
-              $scope.error = bwsError.msg(err, gettext('Could not accept payment'));
+              $scope.error = bwsError.msg(err, gettextCatalog.getString('Could not accept payment'));
               $scope.$digest();
             } else {
               //if txp has required signatures then broadcast it
@@ -261,7 +261,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
                   self.setOngoingProcess();
                   $scope.loading = false;
                   if (err) {
-                    $scope.error = bwsError.msg(err, gettext('Could not broadcast payment'));
+                    $scope.error = bwsError.msg(err, gettextCatalog.getString('Could not broadcast payment'));
                     $scope.$digest();
                   } else {
                     $log.debug('Transaction signed and broadcasted')
@@ -290,7 +290,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
             self.setOngoingProcess();
             $scope.loading = false;
             if (err) {
-              $scope.error = bwsError.msg(err, gettext('Could not reject payment'));
+              $scope.error = bwsError.msg(err, gettextCatalog.getString('Could not reject payment'));
               $scope.$digest();
             } else {
               $modalInstance.close(txpr);
@@ -311,7 +311,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
             // Hacky: request tries to parse an empty response
             if (err && !(err.message && err.message.match(/Unexpected/))) {
-              $scope.error = bwsError.msg(err, gettext('Could not delete payment proposal'));
+              $scope.error = bwsError.msg(err, gettextCatalog.getString('Could not delete payment proposal'));
               $scope.$digest();
               return;
             }
@@ -329,7 +329,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
             self.setOngoingProcess();
             $scope.loading = false;
             if (err) {
-              $scope.error = bwsError.msg(err, gettext('Could not broadcast payment'));
+              $scope.error = bwsError.msg(err, gettextCatalog.getString('Could not broadcast payment'));
               $scope.$digest();
             } else {
 
@@ -657,7 +657,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   this.setSendError = function(err) {
     var fc = profileService.focusedClient;
     var prefix =
-      fc.credentials.m > 1 ? gettext('Could not create payment proposal') : gettext('Could not send payment');
+      fc.credentials.m > 1 ? gettextCatalog.getString('Could not create payment proposal') : gettextCatalog.getString('Could not send payment');
 
     this.error = bwsError.msg(err, prefix);
 
@@ -781,7 +781,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       profileService.lockFC();
       self.setOngoingProcess();
       if (err) {
-        err.message = bwsError.msg(err, gettext('The payment was created but could not be signed. Please try again from home screen'));
+        err.message = bwsError.msg(err, gettextCatalog.getString('The payment was created but could not be signed. Please try again from home screen'));
         return cb(err);
       }
 
@@ -790,7 +790,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
         fc.broadcastTxProposal(signedTx, function(err, btx, memo) {
           self.setOngoingProcess();
           if (err) {
-            err.message = bwsError.msg(err, gettext('The payment was signed but could not be broadcasted. Please try again from home screen'));
+            err.message = bwsError.msg(err, gettextCatalog.getString('The payment was signed but could not be broadcasted. Please try again from home screen'));
             return cb(err);
           }
           if (memo)
