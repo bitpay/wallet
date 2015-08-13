@@ -328,10 +328,12 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         // KB to send max
         if (self.totalBytesToSendMax) {
           var feeToSendMaxSat = parseInt(((self.totalBytesToSendMax * feePerKb) / 1000.).toFixed(0));
+          self.feeRateToSendMax = feePerKb;
           self.availableMaxBalance = strip((self.availableBalanceSat - feeToSendMaxSat) * self.satToUnit);
           self.feeToSendMaxStr = profileService.formatAmount(feeToSendMaxSat) + ' ' + self.unitName;
         } else {
           self.feeToSendMaxStr = null;
+          self.feeRateToSendMax = null;
         }
       });
     }
