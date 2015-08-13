@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Russian\n"
 "Language: ru\n"
-"PO-Revision-Date: 2015-08-12 06:59-0400\n"
+"PO-Revision-Date: 2015-08-13 09:15-0400\n"
 
 #: public/views/walletHome.html
 msgid "(possible double spend)"
@@ -90,6 +90,10 @@ msgstr "Альтернативная валюта"
 msgid "Amount"
 msgstr "Сумма"
 
+#: src/js/services/bwsError.js
+msgid "Amount  below dust threshold"
+msgstr "Сумма ниже возможного порога"
+
 #: public/views/walletHome.html
 #: public/views/modals/customized-amount.html
 msgid "Amount in"
@@ -139,6 +143,10 @@ msgstr "Создать резервную копию"
 #: public/views/backup.html
 msgid "Backup options"
 msgstr "Параметры резервной копии"
+
+#: src/js/services/profileService.js
+msgid "Bad wallet invitation"
+msgstr "Недействительное приглашение присоединиться к кошельку"
 
 #: public/views/walletHome.html
 msgid "Before receiving funds, it is highly recommended you backup your wallet keys."
@@ -193,6 +201,10 @@ msgstr "ОТМЕНА"
 msgid "Cancel"
 msgstr "Отмена"
 
+#: src/js/services/profileService.js
+msgid "Cannot join the same wallet more that once"
+msgstr "Нельзя присоединиться к одному и тому же кошельку более одного раза"
+
 #: public/views/modals/paypro.html
 msgid "Certified by"
 msgstr "Сертифицирован"
@@ -200,10 +212,6 @@ msgstr "Сертифицирован"
 #: public/views/preferencesAlias.html
 msgid "Changing wallet alias only affects the local wallet name."
 msgstr "Изменение псевдонима кошелька влияет только на название локального кошелька."
-
-#: src/js/controllers/walletHome.js
-msgid "Check your Internet connection and try again"
-msgstr "Check your Internet connection and try again"
 
 #: public/views/import.html
 msgid "Choose a backup file from your computer"
@@ -241,6 +249,22 @@ msgstr "Подтвердить"
 msgid "Confirmations"
 msgstr "Подтверждения"
 
+#: src/js/services/bwsError.js
+msgid "Copayer already in this wallet"
+msgstr "Совладелец кошелька уже присоединился"
+
+#: src/js/services/bwsError.js
+msgid "Copayer already registered"
+msgstr "Совладелец кошелька уже зарегистрирован"
+
+#: src/js/services/bwsError.js
+msgid "Copayer already voted on this spend proposal"
+msgstr "Совладелец кошелька уже проголосовал по этому предложению платежа"
+
+#: src/js/services/bwsError.js
+msgid "Copayer data mismatch"
+msgstr "Несоответствие данных совладельца кошелька"
+
 #: public/views/modals/copayers.html
 msgid "Copayers"
 msgstr "Совладельцы кошелька"
@@ -264,20 +288,20 @@ msgid "Copy to clipboard"
 msgstr "Скопировать в буфер обмена"
 
 #: src/js/controllers/walletHome.js
-msgid "Could not accept payment. Check your Internet connection and try again"
-msgstr "Could not accept payment. Check your Internet connection and try again"
+msgid "Could not accept payment"
+msgstr "Не удалось принять платёж"
+
+#: src/js/controllers/index.js
+msgid "Could not access Wallet Service: Not found"
+msgstr "Не удалось получить доступ к службе кошелька: не найдена"
 
 #: src/js/controllers/walletHome.js
-msgid "Could not broadcast payment. Check your Internet connection and try again"
-msgstr "Could not broadcast payment. Check your Internet connection and try again"
+msgid "Could not broadcast payment"
+msgstr "Не удалось отправить платёж"
 
-#: src/js/controllers/walletHome.js
-msgid "Could not connect wallet service. Check your Internet connection and your wallet service configuration."
-msgstr "Не удалось подключиться к службе кошелька. Проверьте своё Интернет-подключение и конфигурацию службы кошелька."
-
-#: src/js/controllers/walletHome.js
-msgid "Could not create address. Check your Internet connection and try again"
-msgstr "Could not create address. Check your Internet connection and try again"
+#: src/js/services/addressService.js
+msgid "Could not create address"
+msgstr "Не удалось создать адрес"
 
 #: src/js/controllers/walletHome.js
 msgid "Could not create payment proposal"
@@ -292,8 +316,8 @@ msgid "Could not decrypt file, check your password"
 msgstr "Не удалось расшифровать файл, проверьте ваш пароль"
 
 #: src/js/controllers/walletHome.js
-msgid "Could not delete payment proposal. Check your Internet connection and try again"
-msgstr "Could not delete payment proposal. Check your Internet connection and try again"
+msgid "Could not delete payment proposal"
+msgstr "Не удалось удалить предложение платежа"
 
 #: src/js/controllers/walletHome.js
 msgid "Could not fetch payment information"
@@ -311,23 +335,23 @@ msgstr "Не удалось импортировать. Проверьте вх�
 msgid "Could not join using the specified extended private key"
 msgstr "Не удалось присоединиться используя указанный расширенный закрытый ключ"
 
-#: src/js/controllers/join.js
-msgid "Could not join wallet:"
-msgstr "Не удалось присоединиться к кошельку:"
+#: src/js/services/profileService.js
+msgid "Could not join wallet"
+msgstr "Не удалось присоединиться к кошельку"
 
 #: src/js/controllers/walletHome.js
 msgid "Could not recognize a valid Bitcoin QR Code"
 msgstr "Не удалось распознать действительный Bitcoin QR-код"
 
 #: src/js/controllers/walletHome.js
-msgid "Could not reject payment. Check your Internet connection and try again"
-msgstr "Could not reject payment. Check your Internet connection and try again"
+msgid "Could not reject payment"
+msgstr "Не удалось отклонить платёж"
 
 #: src/js/controllers/walletHome.js
 msgid "Could not send payment"
 msgstr "Не удалось отправить платёж"
 
-#: public/views/walletHome.html
+#: src/js/controllers/index.js
 msgid "Could not update Wallet"
 msgstr "Не удалось обновить кошелёк"
 
@@ -440,13 +464,13 @@ msgstr "Зашифрованный файл резервной копии сох
 msgid "Enter your password"
 msgstr "Введите свой пароль"
 
+#: src/js/controllers/index.js
+msgid "Error at Wallet Service"
+msgstr "Ошибка в службе кошелька"
+
 #: src/js/services/profileService.js
 msgid "Error creating wallet"
 msgstr "Ошибка создания кошелька"
-
-#: src/js/services/profileService.js
-msgid "Error creating wallet. Check your internet connection"
-msgstr "Ошибка создания кошелька. Проверьте своё Интернет-подключение"
 
 #: src/js/services/profileService.js
 msgid "Error importing wallet:"
@@ -480,7 +504,7 @@ msgstr "Политика комиссии"
 
 #: public/views/walletHome.html
 msgid "Fee policy for this transaction"
-msgstr "Fee policy for this transaction"
+msgstr "Политика комиссий для этой транзакции"
 
 #. Get information of payment if using Payment Protocol
 #: src/js/controllers/walletHome.js
@@ -490,6 +514,10 @@ msgstr "Извлечение информации платежа"
 #: public/views/translators.html
 msgid "French"
 msgstr "французский"
+
+#: src/js/services/bwsError.js
+msgid "Funds are locked by pending spend proposals"
+msgstr "Средства заблокированы ожидающим предложением платежа"
 
 #: src/js/services/notificationsService.js
 msgid "Funds received"
@@ -540,7 +568,7 @@ msgstr "Есть резервная копия из Copay v0.9?"
 #: public/views/join.html
 #: public/views/walletHome.html
 msgid "Hide advanced options"
-msgstr "Hide advanced options"
+msgstr "Скрыть дополнительные настройки"
 
 #: src/js/controllers/index.js
 msgid "History"
@@ -588,9 +616,25 @@ msgstr "Импорт кошелька..."
 msgid "Importing..."
 msgstr "Импорт..."
 
+#: src/js/services/bwsError.js
+msgid "Incorrect address network"
+msgstr "Неверный адрес"
+
+#: src/js/services/bwsError.js
+msgid "Insufficient funds"
+msgstr "Недостаточно средств"
+
+#: src/js/services/bwsError.js
+msgid "Insufficient funds for fee"
+msgstr "Недостаточно средств на комиссию"
+
 #: public/views/walletHome.html
 msgid "Invalid"
 msgstr "Недействительно"
+
+#: src/js/services/bwsError.js
+msgid "Invalid address"
+msgstr "Неверный адрес"
 
 #: src/js/controllers/copayers.js
 msgid "Invitation to share a Copay Wallet"
@@ -632,6 +676,14 @@ msgstr "Язык"
 #: public/views/importLegacy.html
 msgid "Learn more about Wallet Migration"
 msgstr "Узнайте больше о переносе кошелька"
+
+#: src/js/services/bwsError.js
+msgid "Locktime in effect. Please wait to create a new spend proposal"
+msgstr "Действует блокировка. Пожалуйста, подождите, чтобы создать новое предложение платежа"
+
+#: src/js/services/bwsError.js
+msgid "Locktime in effect. Please wait to remove this spend proposal"
+msgstr "Действует блокировка. Пожалуйста, подождите, чтобы удалить это предложение платежа"
 
 #: public/views/paymentUri.html
 msgid "Make a payment to"
@@ -681,6 +733,10 @@ msgstr "Мой адрес Bitcoin"
 msgid "Network"
 msgstr "Сеть"
 
+#: src/js/services/bwsError.js
+msgid "Network connection error"
+msgstr "Ошибка сетевого подключения"
+
 #: src/js/services/notificationsService.js
 msgid "New Payment Proposal"
 msgstr "Новое предложение платежа"
@@ -697,6 +753,10 @@ msgstr "Транзакций пока не было"
 msgid "Normal"
 msgstr "Обычный"
 
+#: src/js/services/bwsError.js
+msgid "Not authorized"
+msgstr "Не авторизован"
+
 #: public/views/walletHome.html
 #: public/views/modals/customized-amount.html
 msgid "Not valid"
@@ -708,6 +768,7 @@ msgstr "Не действительно"
 msgid "Note"
 msgstr "Примечание"
 
+#: public/views/includes/alert.html
 #: public/views/includes/password.html
 msgid "OK"
 msgstr "Хорошо"
@@ -817,7 +878,7 @@ msgstr "Платёж"
 
 #: public/views/walletHome.html
 msgid "Pending Confirmation"
-msgstr "Pending Confirmation"
+msgstr "Ожидание подтверждения"
 
 #: public/views/preferencesDeleteWallet.html
 msgid "Permanently delete this wallet. THIS ACTION CANNOT BE REVERSED"
@@ -831,6 +892,10 @@ msgstr "Личный кошелёк"
 #: src/js/controllers/join.js
 msgid "Please enter the required fields"
 msgstr "Пожалуйста, заполните необходимые поля"
+
+#: src/js/services/bwsError.js
+msgid "Please upgrade Copay to perform this action"
+msgstr "Пожалуйста, обновите Copay для выполнения этого действия"
 
 #: src/js/controllers/import.js
 msgid "Please, select your backup file"
@@ -915,6 +980,10 @@ msgstr "Необходимо"
 #: public/views/splash.html
 msgid "Retrying..."
 msgstr "Повторная попытка..."
+
+#: public/views/translators.html
+msgid "Russian"
+msgstr "русский"
 
 #: public/views/includes/password.html
 msgid "SET"
@@ -1034,7 +1103,11 @@ msgstr "Общий бумажник"
 #: public/views/join.html
 #: public/views/walletHome.html
 msgid "Show advanced options"
-msgstr "Show advanced options"
+msgstr "Показать дополнительные настройки"
+
+#: src/js/services/bwsError.js
+msgid "Signatures rejected by server"
+msgstr "Подписи отклонены сервером"
 
 #: src/js/controllers/walletHome.js
 msgid "Signing payment"
@@ -1047,6 +1120,14 @@ msgstr "Подписание транзакции"
 #: public/views/translators.html
 msgid "Spanish"
 msgstr "испанский"
+
+#: src/js/services/bwsError.js
+msgid "Spend proposal is not accepted"
+msgstr "Предложение платежа не принято"
+
+#: src/js/services/bwsError.js
+msgid "Spend proposal not found"
+msgstr "Предложение платежа не найдено"
 
 #: src/js/controllers/copayers.js
 #: src/js/controllers/import.js
@@ -1072,16 +1153,16 @@ msgid "The payment was created but could not be completed. Please try again from
 msgstr "Платёж был создан, но не может быть завершен. Пожалуйста, попробуйте снова с главной страницы"
 
 #: src/js/controllers/walletHome.js
-msgid "The payment was created but could not be signed. Please try again from home screen."
-msgstr "Платёж был создан, но не может быть подписан. Пожалуйста, попробуйте снова с главной страницы."
+msgid "The payment was created but could not be signed. Please try again from home screen"
+msgstr "Платёж был создан, но не может быть завершен. Пожалуйста, попробуйте снова с главной страницы"
 
 #: public/views/modals/txp-details.html
 msgid "The payment was removed by creator"
 msgstr "Платёж был удалён его создателем"
 
 #: src/js/controllers/walletHome.js
-msgid "The payment was signed but could not be broadcasted. Please try again from home screen."
-msgstr "Платёж был подписан, но не может быть отправлен. Пожалуйста, попробуйте снова с главной страницы."
+msgid "The payment was signed but could not be broadcasted. Please try again from home screen"
+msgstr "Платёж был подписан, но не может быть отправлен. Пожалуйста, попробуйте снова с главной страницы"
 
 #: public/views/backup.html
 msgid "The private key for this wallet is encrypted. Exporting a backup will keep the private key encrypted in the backup archive."
@@ -1090,6 +1171,10 @@ msgstr "Закрытый ключ для этого кошелька зашиф�
 #: public/views/disclaimer.html
 msgid "The software you are about to use functions as a free, open source, and multi-signature digital wallet. The software does not constitute an account where BitPay or other third parties serve as financial intermediaries or custodians of your bitcoin.  While the software has undergone beta testing and continues to be improved by feedback from the open-source user and developer community, we cannot guarantee that there will be no bugs in the software. You acknowledge that your use of this software is at your own discretion and in compliance with all applicable laws. You are responsible for safekeeping your passwords, private key pairs, PINs and any other codes you use to access the software. IF YOU LOSE ACCESS TO YOUR COPAY WALLET OR YOUR ENCRYPTED PRIVATE KEYS AND YOU HAVE NOT SEPARATELY STORED A BACKUP OF YOUR WALLET AND CORRESPONDING PASSWORD, YOU ACKNOWLEDGE AND AGREE THAT ANY BITCOIN YOU HAVE ASSOCIATED WITH THAT COPAY  WALLET WILL BECOME INACCESSIBLE. All transaction requests are irreversible.  The authors of the software, employees and affiliates of Bitpay, copyright holders, and BitPay, Inc. cannot retrieve your private keys or passwords if you lose or forget them and cannot guarantee transaction confirmation as they do not have control over the Bitcoin network. To the fullest extent permitted by law, this software is provided “as is” and no representations or warranties can be made of any kind, express or implied, including but not limited to the warranties of merchantability, fitness or a particular purpose and noninfringement. You assume any and all risks associated with the use of the software. In no event shall the authors of the software, employees and affiliates of Bitpay, copyright holders, or BitPay, Inc. be held liable for any claim, damages or other liability, whether in an action of contract, tort, or otherwise, arising from, out of or in connection with the software. We reserve the right to modify this disclaimer from time to time."
 msgstr "Программное обеспечение, которое вы собираетесь использовать, функционирует как цифровой кошелёк - бесплатный, с открытым исходным кодом и мультиподписью. Программное обеспечение не является счетом, где BitPay или других третьих сторон выступают в качестве финансовых посредников или хранителей ваших биткойнов. Хотя программное обеспечение прошло бета-тестирования и продолжает улучшаться путем обратной связи с пользователями открытого исходного кода и сообществом разработчиков, мы не можем гарантировать, что не будет никаких ошибок в программном обеспечении. Вы признаете, что используете это программное обеспечение по вашему собственному усмотрению и в соответствии со всеми применимыми законами. Вы ответственны за хранение ваших паролей, пары закрытых ключей, ПИН-кодов и любых других кодов, которые вы используете для доступа к программному обеспечению. ЕСЛИ ВЫ ПОТЕРЯЕТЕ ДОСТУП К ВАШЕМУ КОШЕЛЬКУ COPAY ИЛИ ВАШИМ ЗАШИФРОВАННЫМ ЗАКРЫТЫМ КЛЮЧАМ, И У ВАС НЕ ХРАНИЛАСЬ ОТДЕЛЬНО РЕЗЕРВНАЯ КОПИЯ ВАШЕГО БУМАЖНИКА И СООТВЕТСТВУЮЩИЙ ПАРОЛЬ, ВЫ ПРИЗНАЕТЕ И СОГЛАШАЕТЕСЬ, ЧТО ЛЮБЫЕ БИТКОЙНЫ, КОТОРЫЕ СВЯЗАННЫ С ЭТИМ КОШЕЛЬКОМ COPAY СТАНУТ НЕДОСТУПНЫМИ. Все транзакции являются необратимыми.  Авторы программного обеспечения, работников и связанные лица Bitpay, владельцы авторских прав и BitPay, Inc. не могут восстановить ваши закрытые ключи или пароли, если вы потеряете или забудете их и не могут гарантировать подтверждение транзакций, поскольку они не имеют контроля над сетью Bitcoin. В максимальной степени, разрешенной законом это программное обеспечение предоставляется «как есть», и никаких заверений или гарантий не может быть дано - любого рода, явных или подразумеваемых, включая, но не ограничиваясь гарантии товарности, пригодности или конкретной цели и ненарушения. Вы принимаете на себя любые и все виды рисков, связанные с использованием программного обеспечения. Ни при каком случае авторы программного обеспечения, работников и связанные лица Bitpay, владельцы авторских прав, или BitPay, Inc. не несут ответственности за любые претензии, убытки или иной ответственности, будь то в действие контракта, правонарушения, или иным образом, проистекающей из, вне или в связи с программным обеспечением. Мы оставляем за собой право время от времени изменять этот отказ."
+
+#: src/js/services/bwsError.js
+msgid "The spend proposal is not pending"
+msgstr "Предложение платежа не в ожидании"
 
 #: src/js/controllers/copayers.js
 #: src/js/controllers/preferencesDelete.js
@@ -1136,6 +1221,10 @@ msgstr "Всего заблокировано средств"
 msgid "Transaction"
 msgstr "Транзакция"
 
+#: src/js/services/bwsError.js
+msgid "Transaction already broadcasted"
+msgstr "Транзакция уже отправлена"
+
 #: public/views/translators.html
 msgid "Translation Credits"
 msgstr "Благодарность за перевод"
@@ -1172,11 +1261,7 @@ msgstr "Обновление кошелька..."
 #: public/views/preferences.html
 #: public/views/walletHome.html
 msgid "Use Unconfirmed Funds"
-msgstr "Use Unconfirmed Funds"
-
-#: public/views/modals/txp-details.html
-msgid "Uses unconfirmed funds"
-msgstr "Uses unconfirmed funds"
+msgstr "Использовать неподтверждённые средства"
 
 #: public/views/preferencesAbout.html
 msgid "Version"
@@ -1222,6 +1307,7 @@ msgstr "Приглашение присоединиться к кошельку"
 msgid "Wallet Invitation is not valid!"
 msgstr "Приглашение присоединиться к кошельку не действительно!"
 
+#: src/js/services/bwsError.js
 #: src/js/services/profileService.js
 msgid "Wallet already exists"
 msgstr "Кошелёк уже существует"
@@ -1230,17 +1316,33 @@ msgstr "Кошелёк уже существует"
 msgid "Wallet incomplete and broken"
 msgstr "Сбой: кошелёк не работает"
 
+#: src/js/services/bwsError.js
+msgid "Wallet is full"
+msgstr "Все уже присоединены"
+
+#: src/js/services/bwsError.js
+msgid "Wallet is not complete"
+msgstr "Не все ещё присоединились"
+
 #: public/views/create.html
 msgid "Wallet name"
 msgstr "Имя кошелька"
 
-#: src/js/controllers/walletHome.js
-msgid "Wallet service timed out. Check your Internet connection and your wallet service configuration."
-msgstr "Истекло время ожидания службы кошелька. Проверьте своё Интернет-подключение и конфигурацию службы кошелька."
+#: src/js/services/bwsError.js
+msgid "Wallet not found"
+msgstr "Кошелёк не найден"
+
+#: src/js/services/bwsError.js
+msgid "Wallet service not found"
+msgstr "Служба кошелька не найдена"
 
 #: public/views/preferencesDeleteWallet.html
 msgid "Warning!"
 msgstr "Предупреждение!"
+
+#: public/views/modals/txp-details.html
+msgid "Warning: this transaction has unconfirmed inputs"
+msgstr "Предупреждение: эта транзакция имеет неподтвержденные входы"
 
 #: src/js/services/profileService.js
 msgid "Wrong password"
@@ -1304,7 +1406,7 @@ msgstr "слишком долго!"
 
 #: src/js/controllers/walletHome.js
 msgid "{{fee}} will be discounted for bitcoin networking fees"
-msgstr "{{fee}} будет снижена до уровня комиссий сети"
+msgstr "{{fee}} будет использовано для оплаты комиссии"
 
 #: src/js/controllers/importLegacy.js
 msgid "{{len}} wallets imported. Funds scanning in progress. Hold on to see updated balance"
