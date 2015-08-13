@@ -22,7 +22,7 @@ angular.module('copayApp.services').factory('feeService', function($log, profile
       }
       else {
         fee = lodash.find(levels, { level: feeLevel }).feePerKB;
-        $log.debug('Dynamic fee for:' + feeLevel + ': ' + fee +  ' SAT');
+        $log.debug('Dynamic fee: ' + feeLevel + ' ' + fee +  ' SAT');
         return cb(null, fee); 
       }
     });

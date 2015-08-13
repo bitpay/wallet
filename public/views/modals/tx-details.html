@@ -20,21 +20,11 @@
     <div class="size-42" ng-show="btx.action == 'invalid'">
       -
     </div>
- 
-    <div class="size-18 m5t text-gray" ng-show="btx.alternativeAmount">
-      {{btx.alternativeAmount}} {{settings.alternativeIsoCode}}
-    </div>
   </div>
 
   <h4 class="title m0" translate>Details</h4>
 
-  <ul class="no-bullet size-14 m0">
-    <div ng-if="btx.action == 'received'">
-      <li class="line-b p10 oh" ng-if="btx.message">
-        <span class="text-gray" translate>Note</span>:
-        <span class="right">{{btx.message}}</span>
-      </li>
-    </div>
+  <ul class="no-bullet size-14 m0"> 
     <div ng-if="btx.action != 'received'">
       <div ng-if="!btx.showSingle"
         ng-repeat="output in [ btx.outputs.summary ]"
@@ -53,7 +43,7 @@
         <span ng-show="!btx.merchant.pr.ca"><i class="fi-unlock color-yellowi"></i> {{btx.merchant.domain}}</span>
       </span>
       <span ng-if="!btx.merchant">
-        <span class="text-gray enable_text_select"> {{btx.labelTo || btx.addressTo}}</span>
+        <span class="enable_text_select"> {{btx.labelTo || btx.addressTo}}</span>
       </span>
     </span>
     </li>
@@ -67,9 +57,13 @@
       <time>{{ btx.time * 1000 | amCalendar}}</time>
     </span>
     </li>
-    <li class="line-b p10">
+    <li class="line-b p10" ng-show="btx.action != 'received'">
       <span class="text-gray" translate>Fee</span>:
       <span class="right">{{feeStr}}</span>
+    </li>
+    <li class="line-b p10 oh" ng-if="btx.message && btx.action != 'received'">
+      <span class="text-gray" translate>Note</span>:
+      <span class="right">{{btx.message}}</span>
     </li>
     <li ng-if="btx.merchant" class="line-b p10 oh">
     <span class="text-gray" translate>Merchant message</span>:
