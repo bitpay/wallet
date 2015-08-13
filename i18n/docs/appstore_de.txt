@@ -1,4 +1,4 @@
-Sichere Bitcoins zu eigenen Bedingungen, mit einem quelloffenen Gemeinschaftswallet(elektronische Brieftasche mit Mehrfachunterschriften) von BitPay. 
+Sichere Bitcoins zu eigenen Bedingungen, mit einem quelloffenen Gemeinschaftswallet (elektronische Brieftasche mit Mehrfachunterschriften) von BitPay. 
 Copay Nutzer können ihre Beträge individuell speichern oder ihre Finanzen mit anderen Nutzern in Gemeinschaftswallets teilen, die je nach Einstellung mehrere Bestätigungen (elektronische Unterschriften) benötigen und so nichtautorisierte Zahlungen verhindern. Ein paar Einsatzmöglichkeiten, wie ein solches Wallet mit anderen Copayern genutzt werden kann:
 
 Ansparen von Beträgen für Urlaub oder gemeinsame Anschaffungen (z.B. mit Freunden) 

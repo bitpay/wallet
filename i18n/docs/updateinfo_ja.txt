@@ -1,7 +1,5 @@
-■ 署名のできない、送金の提案のみできる閲覧専用のバックアップが作成できます。(詳細 https://github.com/bitpay/copay/pull/2998)
-■ 取引履歴のソートとページ更新の品質向上
-■ 「無効」な取引の処理改善
-■ 1000個以上の取引履歴のあるウォレットの処理改善
-■ 取引のCSV出力可能
-■ 未使用出力(utxo)の選択ロジックの改善
+* Adaptive fee levels based on bitcoin network load
+* Option to prevent creating transactions with unconfirmed inputs
+■ 詳細な送金設定の追加
+■ イタリア語、ロシア語、ギリシャ語の言語選択を追加
 ■ バグの修正

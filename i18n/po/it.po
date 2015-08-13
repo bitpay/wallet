@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Italian\n"
 "Language: it\n"
-"PO-Revision-Date: 2015-07-23 11:32-0400\n"
+"PO-Revision-Date: 2015-08-13 09:15-0400\n"
 
 #: public/views/walletHome.html
 msgid "(possible double spend)"
@@ -39,6 +39,9 @@ msgid "About Copay"
 msgstr "Circa Copay"
 
 #: public/views/modals/txp-details.html
+#: src/js/controllers/copayers.js
+#: src/js/controllers/preferencesDelete.js
+#: src/js/controllers/walletHome.js
 msgid "Accept"
 msgstr "Accetta"
 
@@ -56,6 +59,10 @@ msgstr "Indirizzo"
 msgid "Advanced"
 msgstr "Avanzato"
 
+#: public/views/modals/advancedSend.html
+msgid "Advanced Send"
+msgstr "Invio Avanzato"
+
 #: public/views/disclaimer.html
 msgid "Agree"
 msgstr "Acconsento"
@@ -63,6 +70,10 @@ msgstr "Acconsento"
 #: public/views/preferencesAlias.html
 msgid "Alias for <i>{{index.walletName}}</i>"
 msgstr "Alias per <i>{{index.walletName}}</i>"
+
+#: public/views/translators.html
+msgid "All contributions to Copay's translation are welcome. Sign up at crowdin.com and join the Copay project at"
+msgstr "Tutti i contributori alla traduzione di Copay sono i benvenuti. Iscriviti a crowdin e unisciti al progetto Copay presso"
 
 #: public/views/splash.html
 msgid "Already have a wallet?"
@@ -74,10 +85,14 @@ msgstr "Valuta alternativa"
 
 #: public/views/paymentUri.html
 #: public/views/walletHome.html
+#: public/views/includes/output.html
 #: public/views/modals/customized-amount.html
-#: public/views/modals/txp-details.html
 msgid "Amount"
 msgstr "Ammontare"
+
+#: src/js/services/bwsError.js
+msgid "Amount  below dust threshold"
+msgstr "Importo sotto soglia"
 
 #: public/views/walletHome.html
 #: public/views/modals/customized-amount.html
@@ -96,6 +111,11 @@ msgstr "Sei sicuro di voler eliminare questo portafoglio?"
 #: public/views/walletHome.html
 msgid "Available Balance"
 msgstr "Saldo disponibile"
+
+#: public/views/preferencesFee.html
+#: public/views/modals/advancedSend.html
+msgid "Average confirmation time: {{fee.nbBlocks * 10}} minutes"
+msgstr "Tempo medio di conferma: {{fee.nbBlocks * 10}} minuti"
 
 #: public/views/create.html
 #: public/views/join.html
@@ -124,6 +144,10 @@ msgstr "Esegui backup ora"
 msgid "Backup options"
 msgstr "Opzioni di backup"
 
+#: src/js/services/profileService.js
+msgid "Bad wallet invitation"
+msgstr "Invito al wallet non corretto"
+
 #: public/views/walletHome.html
 msgid "Before receiving funds, it is highly recommended you backup your wallet keys."
 msgstr "Prima di ricevere fondi, è altamente raccomandato eseguire il backup delle chiavi del portafoglio."
@@ -141,8 +165,8 @@ msgid "Bitcoin address"
 msgstr "Indirizzo Bitcoin"
 
 #: public/views/preferencesFee.html
-msgid "Bitcoin transactions may include a fee collected by miners on the network. The higher the fee, the greater the incentive a miner has to include that transaction in a block. The ‘Emergency’ level should only be used when there is a network congestion."
-msgstr "Le transazioni in bitcoin possono includere una tassa raccolta dai minatori sulla rete. Più alto il costo, maggiore sarà l'incentivo di un minatore per includere tale transazione in un blocco. Il livello 'Emergenza' dovrebbe essere usato solo quando c'è una congestione di rete."
+msgid "Bitcoin transactions may include a fee collected by miners on the network. The higher the fee, the greater the incentive a miner has to include that transaction in a block. Actual fees are determined based on network load and the selected policy."
+msgstr "Le transazioni bitcoin possono includere una tassa raccolta dai minatori della rete. Più alto è il costo, maggiore sarà la possibilità di includere tale transazione in un blocco. Le tasse effettive sono determinate in base al carico della rete ed ai criteri selezionati."
 
 #: public/views/modals/txp-details.html
 msgid "Broadcast Payment"
@@ -170,8 +194,16 @@ msgstr "Annulla"
 
 #: public/views/copayers.html
 #: public/views/walletHome.html
+#: public/views/modals/confirmation.html
+#: src/js/controllers/copayers.js
+#: src/js/controllers/preferencesDelete.js
+#: src/js/controllers/walletHome.js
 msgid "Cancel"
 msgstr "Annulla"
+
+#: src/js/services/profileService.js
+msgid "Cannot join the same wallet more that once"
+msgstr "Non è possibile aggiungere un portafoglio più di una volta"
 
 #: public/views/modals/paypro.html
 msgid "Certified by"
@@ -180,10 +212,6 @@ msgstr "Certificato da"
 #: public/views/preferencesAlias.html
 msgid "Changing wallet alias only affects the local wallet name."
 msgstr "Il cambiamento degli alias dei portafogli influenza solo il nome del portafoglio locale."
-
-#: src/js/controllers/walletHome.js
-msgid "Check you connection and try again"
-msgstr "Verifica la connessione e riprova"
 
 #: public/views/import.html
 msgid "Choose a backup file from your computer"
@@ -194,6 +222,7 @@ msgid "Choose a wallet to send funds"
 msgstr "Seleziona un portafoglio per inviare fondi"
 
 #: public/views/includes/topbar.html
+#: public/views/modals/advancedSend.html
 #: public/views/modals/copayers.html
 #: public/views/modals/customized-amount.html
 #: public/views/modals/paypro.html
@@ -210,13 +239,41 @@ msgstr "Colore"
 msgid "Commit hash"
 msgstr "Commit hash"
 
+#: src/js/controllers/copayers.js
+#: src/js/controllers/preferencesDelete.js
+#: src/js/controllers/walletHome.js
+msgid "Confirm"
+msgstr "Conferma"
+
 #: public/views/modals/tx-details.html
 msgid "Confirmations"
 msgstr "Conferme"
 
+#: src/js/services/bwsError.js
+msgid "Copayer already in this wallet"
+msgstr "Copayer già in questo portafoglio"
+
+#: src/js/services/bwsError.js
+msgid "Copayer already registered"
+msgstr "Copayer già registrato"
+
+#: src/js/services/bwsError.js
+msgid "Copayer already voted on this spend proposal"
+msgstr "Copayer già votato su questa proposta"
+
+#: src/js/services/bwsError.js
+msgid "Copayer data mismatch"
+msgstr "Mancata corrispondenza dei dati del copayer"
+
 #: public/views/modals/copayers.html
 msgid "Copayers"
 msgstr "Copayers"
+
+#: src/js/controllers/backup.js
+#: src/js/controllers/copayers.js
+#: src/js/controllers/walletHome.js
+msgid "Copied to clipboard"
+msgstr "Copiato negli appunti"
 
 #: public/views/backup.html
 msgid "Copy backup to a safe place"
@@ -231,20 +288,20 @@ msgid "Copy to clipboard"
 msgstr "Copia negli appunti"
 
 #: src/js/controllers/walletHome.js
-msgid "Could not accept payment. Check you connection and try again"
-msgstr "Impossibile accettare il pagamento. Controlla la connessione e riprova di nuovo"
+msgid "Could not accept payment"
+msgstr "Could not accept payment"
+
+#: src/js/controllers/index.js
+msgid "Could not access Wallet Service: Not found"
+msgstr "Could not access Wallet Service: Not found"
 
 #: src/js/controllers/walletHome.js
-msgid "Could not broadcast payment. Check you connection and try again"
-msgstr "Impossibile trasmettere il pagamento. Controlla la connessione e riprova"
+msgid "Could not broadcast payment"
+msgstr "Could not broadcast payment"
 
-#: src/js/controllers/walletHome.js
-msgid "Could not connect wallet service. Check your Internet connection and your wallet service configuration."
-msgstr "Impossibile connettersi al servizio portafoglio. Verifica la tua connessione Internet e la configurazione del servizio portafoglio."
-
-#: src/js/controllers/walletHome.js
-msgid "Could not create address. Check you connection and try again"
-msgstr "Impossibile creare l'indirizzo. Verifica la tua connessione e prova di nuovo"
+#: src/js/services/addressService.js
+msgid "Could not create address"
+msgstr "Could not create address"
 
 #: src/js/controllers/walletHome.js
 msgid "Could not create payment proposal"
@@ -259,8 +316,8 @@ msgid "Could not decrypt file, check your password"
 msgstr "Impossibile decrittografare il file, controlla la tua password"
 
 #: src/js/controllers/walletHome.js
-msgid "Could not delete payment proposal. Check you connection and try again"
-msgstr "Impossibile eliminare la proposta di pagamento. Verifica la tua connessione e prova di nuovo"
+msgid "Could not delete payment proposal"
+msgstr "Could not delete payment proposal"
 
 #: src/js/controllers/walletHome.js
 msgid "Could not fetch payment information"
@@ -278,23 +335,23 @@ msgstr "Impossibile importare. Verifica file importato e password"
 msgid "Could not join using the specified extended private key"
 msgstr "Impossibile partecipare utilizzando la chiave privata estesa specificata"
 
-#: src/js/controllers/join.js
-msgid "Could not join wallet:"
-msgstr "Impossibile partecipare al portafoglio:"
+#: src/js/services/profileService.js
+msgid "Could not join wallet"
+msgstr "Impossibile partecipare al portafoglio"
 
 #: src/js/controllers/walletHome.js
 msgid "Could not recognize a valid Bitcoin QR Code"
 msgstr "Impossibile riconoscere un Codice QR Bitcoin valido"
 
 #: src/js/controllers/walletHome.js
-msgid "Could not reject payment. Check you connection and try again"
-msgstr "Impossibile rifiutare il pagamento. Verifica la tua connessione e prova di nuovo"
+msgid "Could not reject payment"
+msgstr "Impossibile rifiutare il pagamento"
 
 #: src/js/controllers/walletHome.js
 msgid "Could not send payment"
 msgstr "Impossibile inviare il pagamento"
 
-#: public/views/walletHome.html
+#: src/js/controllers/index.js
 msgid "Could not update Wallet"
 msgstr "Impossibile aggiornare il Portafoglio"
 
@@ -330,6 +387,11 @@ msgstr "Creazione Portafoglio..."
 #: src/js/controllers/walletHome.js
 msgid "Creating transaction"
 msgstr "Creazione transazione"
+
+#: public/views/preferencesFee.html
+#: public/views/modals/advancedSend.html
+msgid "Current fee rate for this policy: {{fee.feePerKBUnit}}/kiB"
+msgstr "Tassa corrente per questa policy: {{fee.feePerKBUnit}}/kiB"
 
 #: public/views/modals/tx-details.html
 msgid "Date"
@@ -370,6 +432,10 @@ msgstr "Disabilitato"
 msgid "Do not include private key in backup"
 msgstr "Non includere la chiave privata nel backup"
 
+#: public/views/translators.html
+msgid "Don't see your language on Crowdin? Contact the Owner on Crowdin! We'd love to support your language."
+msgstr "Don't see your language on Crowdin? Contact the Owner on Crowdin! We'd love to support your language."
+
 #: public/views/walletHome.html
 msgid "Download CSV file"
 msgstr "Scarica in formato CSV"
@@ -378,21 +444,13 @@ msgstr "Scarica in formato CSV"
 msgid "Download backup"
 msgstr "Scarica il backup"
 
-#: public/views/includes/password.html
-msgid "ENTER"
-msgstr "IMMETTERE"
-
-#: src/js/controllers/preferencesFee.js
+#: src/js/services/feeService.js
 msgid "Economy"
-msgstr "Economia"
+msgstr "Economy"
 
 #: public/views/preferences.html
 msgid "Email Notifications"
 msgstr "Notifiche Email"
-
-#: src/js/controllers/preferencesFee.js
-msgid "Emergency"
-msgstr "Emergenza"
 
 #: public/views/preferences.html
 msgid "Encrypt Private Key"
@@ -402,21 +460,17 @@ msgstr "Cripta la chiave privata"
 msgid "Encrypted backup file saved"
 msgstr "Backup criptato salvato"
 
-#: src/js/controllers/index.js
-msgid "English"
-msgstr "Inglese"
-
 #: public/views/includes/password.html
 msgid "Enter your password"
 msgstr "Inserisci la tua password"
 
+#: src/js/controllers/index.js
+msgid "Error at Wallet Service"
+msgstr "Error at Wallet Service"
+
 #: src/js/services/profileService.js
 msgid "Error creating wallet"
 msgstr "Errore creazione portafoglio"
-
-#: src/js/services/profileService.js
-msgid "Error creating wallet. Check your internet connection"
-msgstr "Errore creazione portafoglio. Verifica la tua connessione internet"
 
 #: src/js/services/profileService.js
 msgid "Error importing wallet:"
@@ -444,14 +498,26 @@ msgstr "Fondi vacanza di famiglia"
 msgid "Fee"
 msgstr "Tassa"
 
+#: public/views/modals/advancedSend.html
+msgid "Fee Policy"
+msgstr "Politica delle tasse"
+
+#: public/views/walletHome.html
+msgid "Fee policy for this transaction"
+msgstr "Fee policy for this transaction"
+
 #. Get information of payment if using Payment Protocol
 #: src/js/controllers/walletHome.js
 msgid "Fetching Payment Information"
 msgstr "Recuperando le informazioni del pagamento"
 
-#: src/js/controllers/index.js
+#: public/views/translators.html
 msgid "French"
 msgstr "Francese"
+
+#: src/js/services/bwsError.js
+msgid "Funds are locked by pending spend proposals"
+msgstr "Funds are locked by pending spend proposals"
 
 #: src/js/services/notificationsService.js
 msgid "Funds received"
@@ -473,7 +539,7 @@ msgstr "Genera un nuovo indirizzo"
 msgid "Generating .csv file..."
 msgstr "Genera un file .csv..."
 
-#: src/js/controllers/index.js
+#: public/views/translators.html
 msgid "German"
 msgstr "Tedesco"
 
@@ -489,7 +555,7 @@ msgstr "Impostazioni Globali"
 msgid "Go back"
 msgstr "Indietro"
 
-#: src/js/controllers/index.js
+#: public/views/translators.html
 msgid "Greek"
 msgstr "Greco"
 
@@ -500,8 +566,9 @@ msgstr "Hai un Backup da Copay v0.9?"
 #: public/views/backup.html
 #: public/views/create.html
 #: public/views/join.html
-msgid "Hide Advanced options"
-msgstr "Nascondi opzioni avanzate"
+#: public/views/walletHome.html
+msgid "Hide advanced options"
+msgstr "Hide advanced options"
 
 #: src/js/controllers/index.js
 msgid "History"
@@ -549,15 +616,35 @@ msgstr "Importando il portafoglio..."
 msgid "Importing..."
 msgstr "Importando..."
 
+#: src/js/services/bwsError.js
+msgid "Incorrect address network"
+msgstr "Incorrect address network"
+
+#: src/js/services/bwsError.js
+msgid "Insufficient funds"
+msgstr "Insufficient funds"
+
+#: src/js/services/bwsError.js
+msgid "Insufficient funds for fee"
+msgstr "Insufficient funds for fee"
+
 #: public/views/walletHome.html
 msgid "Invalid"
 msgstr "Invalido"
 
-#: src/js/controllers/index.js
+#: src/js/services/bwsError.js
+msgid "Invalid address"
+msgstr "Invalid address"
+
+#: src/js/controllers/copayers.js
+msgid "Invitation to share a Copay Wallet"
+msgstr "Invito a condividere un portafoglio Copay"
+
+#: public/views/translators.html
 msgid "Italian"
 msgstr "Italiano"
 
-#: src/js/controllers/index.js
+#: public/views/translators.html
 msgid "Japanese"
 msgstr "Giapponese"
 
@@ -569,6 +656,10 @@ msgstr "John"
 #: public/views/join.html
 msgid "Join"
 msgstr "Unisciti"
+
+#: src/js/controllers/copayers.js
+msgid "Join my Copay wallet. Here is the invitation code: {{secret}}  You can download Copay for your phone or desktop at https://copay.io"
+msgstr "Unisciti al mio portafoglio Copay. Ecco il codice di invito: {{secret}} Puoi scaricare Copay dal tuo telefono o computer da https://copay.io"
 
 #: public/views/add.html
 msgid "Join shared wallet"
@@ -585,6 +676,14 @@ msgstr "Lingua"
 #: public/views/importLegacy.html
 msgid "Learn more about Wallet Migration"
 msgstr "Ulteriori informazioni sulla migrazione di portafoglio"
+
+#: src/js/services/bwsError.js
+msgid "Locktime in effect. Please wait to create a new spend proposal"
+msgstr "Locktime in effect. Please wait to create a new spend proposal"
+
+#: src/js/services/bwsError.js
+msgid "Locktime in effect. Please wait to remove this spend proposal"
+msgstr "Locktime in effect. Please wait to remove this spend proposal"
 
 #: public/views/paymentUri.html
 msgid "Make a payment to"
@@ -634,13 +733,13 @@ msgstr "Il mio indirizzo Bitcoin"
 msgid "Network"
 msgstr "Network"
 
+#: src/js/services/bwsError.js
+msgid "Network connection error"
+msgstr "Network connection error"
+
 #: src/js/services/notificationsService.js
 msgid "New Payment Proposal"
 msgstr "Nuova proposta di pagamento"
-
-#: public/views/modals/confirmation.html
-msgid "No"
-msgstr "No"
 
 #: public/views/walletHome.html
 msgid "No Private key"
@@ -650,9 +749,13 @@ msgstr "Nessuna chiave privata"
 msgid "No transactions yet"
 msgstr "Ancora nessuna transazione"
 
-#: src/js/controllers/preferencesFee.js
+#: src/js/services/feeService.js
 msgid "Normal"
-msgstr "Normale"
+msgstr "Normal"
+
+#: src/js/services/bwsError.js
+msgid "Not authorized"
+msgstr "Not authorized"
 
 #: public/views/walletHome.html
 #: public/views/modals/customized-amount.html
@@ -660,10 +763,15 @@ msgid "Not valid"
 msgstr "Non valido"
 
 #: public/views/walletHome.html
+#: public/views/includes/output.html
 #: public/views/modals/tx-details.html
-#: public/views/modals/txp-details.html
 msgid "Note"
 msgstr "Nota"
+
+#: public/views/includes/alert.html
+#: public/views/includes/password.html
+msgid "OK"
+msgstr "Ok"
 
 #: public/views/modals/tx-status.html
 msgid "OKAY"
@@ -768,6 +876,10 @@ msgstr "Pagamento inviato!"
 msgid "Payment to"
 msgstr "Pagamento a"
 
+#: public/views/walletHome.html
+msgid "Pending Confirmation"
+msgstr "Pending Confirmation"
+
 #: public/views/preferencesDeleteWallet.html
 msgid "Permanently delete this wallet. THIS ACTION CANNOT BE REVERSED"
 msgstr "Elimina definitivamente questo portafoglio. QUESTA AZIONE NON PUO' ESSERE INVERTITA"
@@ -781,11 +893,15 @@ msgstr "Portafoglio Personale"
 msgid "Please enter the required fields"
 msgstr "Per favore completa i campi richiesti"
 
+#: src/js/services/bwsError.js
+msgid "Please upgrade Copay to perform this action"
+msgstr "Please upgrade Copay to perform this action"
+
 #: src/js/controllers/import.js
 msgid "Please, select your backup file"
 msgstr "Per favore, selezione il tuo file di backup"
 
-#: src/js/controllers/index.js
+#: public/views/translators.html
 msgid "Portuguese"
 msgstr "Portoghese"
 
@@ -793,9 +909,13 @@ msgstr "Portoghese"
 msgid "Preferences"
 msgstr "Preferenze"
 
-#: src/js/controllers/preferencesFee.js
+#: src/js/controllers/backup.js
+msgid "Preparing backup..."
+msgstr "Preparing backup..."
+
+#: src/js/services/feeService.js
 msgid "Priority"
-msgstr "Priorità"
+msgstr "Priority"
 
 #: public/views/modals/customized-amount.html
 msgid "QR Code"
@@ -812,6 +932,11 @@ msgstr "Ricevi"
 #: public/views/walletHome.html
 msgid "Received"
 msgstr "Ricevuti"
+
+#: public/views/includes/output.html
+#: public/views/includes/transaction.html
+msgid "Recipients"
+msgstr "Destinatari"
 
 #: public/views/walletHome.html
 msgid "Reconnecting to Wallet Service..."
@@ -855,6 +980,10 @@ msgstr "Richiesto"
 #: public/views/splash.html
 msgid "Retrying..."
 msgstr "Sto riprovando..."
+
+#: public/views/translators.html
+msgid "Russian"
+msgstr "Russian"
 
 #: public/views/includes/password.html
 msgid "SET"
@@ -972,8 +1101,13 @@ msgstr "Portafoglio Condiviso"
 #: public/views/backup.html
 #: public/views/create.html
 #: public/views/join.html
-msgid "Show Advanced options"
-msgstr "Mostra opzioni avanzate"
+#: public/views/walletHome.html
+msgid "Show advanced options"
+msgstr "Show advanced options"
+
+#: src/js/services/bwsError.js
+msgid "Signatures rejected by server"
+msgstr "Signatures rejected by server"
 
 #: src/js/controllers/walletHome.js
 msgid "Signing payment"
@@ -983,9 +1117,17 @@ msgstr "Sto firmando il pagamento"
 msgid "Signing transaction"
 msgstr "Sto firmando la transazione"
 
-#: src/js/controllers/index.js
+#: public/views/translators.html
 msgid "Spanish"
 msgstr "Spagnolo"
+
+#: src/js/services/bwsError.js
+msgid "Spend proposal is not accepted"
+msgstr "Spend proposal is not accepted"
+
+#: src/js/services/bwsError.js
+msgid "Spend proposal not found"
+msgstr "Spend proposal not found"
 
 #: src/js/controllers/copayers.js
 #: src/js/controllers/import.js
@@ -1011,16 +1153,16 @@ msgid "The payment was created but could not be completed. Please try again from
 msgstr "Il pagamento è stato creato ma è stato impossibile completarlo. Per favore prova di nuovo dalla schermata iniziale"
 
 #: src/js/controllers/walletHome.js
-msgid "The payment was created but could not be signed. Please try again from home screen."
-msgstr "Il pagamento è stato creato ma è stato impossibile firmarlo. Per favore prova di nuovo dalla schermata iniziale."
+msgid "The payment was created but could not be signed. Please try again from home screen"
+msgstr "The payment was created but could not be signed. Please try again from home screen"
 
 #: public/views/modals/txp-details.html
 msgid "The payment was removed by creator"
 msgstr "Il pagamento è stato rimosso dal creatore"
 
 #: src/js/controllers/walletHome.js
-msgid "The payment was signed but could not be broadcasted. Please try again from home screen."
-msgstr "Il pagamento è stato firmato ma non è stato possibile trasmetterlo. Per favore prova di nuovo dalla schermata principale."
+msgid "The payment was signed but could not be broadcasted. Please try again from home screen"
+msgstr "The payment was signed but could not be broadcasted. Please try again from home screen"
 
 #: public/views/backup.html
 msgid "The private key for this wallet is encrypted. Exporting a backup will keep the private key encrypted in the backup archive."
@@ -1029,6 +1171,10 @@ msgstr "La chiave privata di questo portafoglio è criptata. L'esportazione del 
 #: public/views/disclaimer.html
 msgid "The software you are about to use functions as a free, open source, and multi-signature digital wallet. The software does not constitute an account where BitPay or other third parties serve as financial intermediaries or custodians of your bitcoin.  While the software has undergone beta testing and continues to be improved by feedback from the open-source user and developer community, we cannot guarantee that there will be no bugs in the software. You acknowledge that your use of this software is at your own discretion and in compliance with all applicable laws. You are responsible for safekeeping your passwords, private key pairs, PINs and any other codes you use to access the software. IF YOU LOSE ACCESS TO YOUR COPAY WALLET OR YOUR ENCRYPTED PRIVATE KEYS AND YOU HAVE NOT SEPARATELY STORED A BACKUP OF YOUR WALLET AND CORRESPONDING PASSWORD, YOU ACKNOWLEDGE AND AGREE THAT ANY BITCOIN YOU HAVE ASSOCIATED WITH THAT COPAY  WALLET WILL BECOME INACCESSIBLE. All transaction requests are irreversible.  The authors of the software, employees and affiliates of Bitpay, copyright holders, and BitPay, Inc. cannot retrieve your private keys or passwords if you lose or forget them and cannot guarantee transaction confirmation as they do not have control over the Bitcoin network. To the fullest extent permitted by law, this software is provided “as is” and no representations or warranties can be made of any kind, express or implied, including but not limited to the warranties of merchantability, fitness or a particular purpose and noninfringement. You assume any and all risks associated with the use of the software. In no event shall the authors of the software, employees and affiliates of Bitpay, copyright holders, or BitPay, Inc. be held liable for any claim, damages or other liability, whether in an action of contract, tort, or otherwise, arising from, out of or in connection with the software. We reserve the right to modify this disclaimer from time to time."
 msgstr "Il software che stai per utilizzare è un portafoglio digitale gratis, open source, e multi-firma. Il software non costituisce un account in cui BitPay o altre terze parti servono come intermediari finanziari o custodi dei tuoi bitcoins. Anche se il software beta è stato testato e continua ad essere migliorato dai feedback dalla comunità open source e dai programmatori, non possiamo garantire la completa assenza di errori nel software. Sei consapevole che l'utilizzo di questo software avviene a tua discrezione e in accordo con tutte le leggi applicabili. Sei responsabile della gestione della tua password, chiavi private, PIN e tutti gli altri codici che utilizzi per accedere a questo portafoglio. SE PERDI L'ACCESSO AL TUO PORTAFOGLIO O ALLE TUE CHIAVI PRIVATE CRIPTATE, E NON POSSIEDI UN BACKUP DEL PORTAFOGLIO O DELLE PASSWORD CORRISPONDENTI, SEI CONSAPEVOLE DEL FATTO CHE OGNI BITCOIN ASSOCIATO AL TUO PORTAFOGLIO COPAY SARA' INACCESSIBILE. Tutte le richieste di transazione sono irreversibili. Gli autori del software, dipendenti e affiliati di BitPay, possessori del copyright, e BitPay, Inc., non possono recuperare le tue chiavi private o le tue passwords se le dimentichi o le perdi, e non possono garantire la conferma delle transazioni poichè non sono in controllo del Network Bitcoin. Nella misura massima consentita dalla legge, il software è reso disponibile \"così com'è\" e nessuna rappresentazione o richiesta di garanzia può essere inoltrata, espressa o implicita, comprese ma non limitato alle garanzie di commerciabilità, idoneità o a particolare scopo e non-infrazione. Ti assumi tutti i rischi relativi all'utilizzo del software. In nessuno caso gli autori del software, dipendenti o affiliati BitPay, possessori del Copyright, o BitPay, inc, sono responsabili di qualsiasi rivendicazioni, danni o responsabili di terzi, sia in un'azione di contratto, torto, o derivanti da, o i connessione con questo software. Ci riserviamo il diritto di modificare questi termini di volta in volta."
+
+#: src/js/services/bwsError.js
+msgid "The spend proposal is not pending"
+msgstr "The spend proposal is not pending"
 
 #: src/js/controllers/copayers.js
 #: src/js/controllers/preferencesDelete.js
@@ -1056,11 +1202,16 @@ msgid "Time"
 msgstr "Tempo"
 
 #: public/views/walletHome.html
+#: public/views/includes/output.html
 #: public/views/includes/transaction.html
 #: public/views/modals/tx-details.html
 #: public/views/modals/txp-details.html
 msgid "To"
 msgstr "A"
+
+#: public/views/includes/output.html
+msgid "Total"
+msgstr "Totale"
 
 #: public/views/walletHome.html
 msgid "Total Locked Balance"
@@ -1069,6 +1220,18 @@ msgstr "Totale Importo Bloccato"
 #: public/views/modals/tx-details.html
 msgid "Transaction"
 msgstr "Transazione"
+
+#: src/js/services/bwsError.js
+msgid "Transaction already broadcasted"
+msgstr "Transaction already broadcasted"
+
+#: public/views/translators.html
+msgid "Translation Credits"
+msgstr "Translation Credits"
+
+#: public/views/preferencesAbout.html
+msgid "Translators"
+msgstr "Translators"
 
 #: src/js/controllers/walletHome.js
 msgid "Unable to send transaction proposal"
@@ -1094,6 +1257,11 @@ msgstr "Non attendibile"
 #: public/views/walletHome.html
 msgid "Updating Wallet..."
 msgstr "Aggiornamento portafoglio..."
+
+#: public/views/preferences.html
+#: public/views/walletHome.html
+msgid "Use Unconfirmed Funds"
+msgstr "Use Unconfirmed Funds"
 
 #: public/views/preferencesAbout.html
 msgid "Version"
@@ -1139,6 +1307,7 @@ msgstr "Invito Portafoglio"
 msgid "Wallet Invitation is not valid!"
 msgstr "Invito Portafoglio non valido!"
 
+#: src/js/services/bwsError.js
 #: src/js/services/profileService.js
 msgid "Wallet already exists"
 msgstr "Il portafoglio esiste già"
@@ -1147,17 +1316,33 @@ msgstr "Il portafoglio esiste già"
 msgid "Wallet incomplete and broken"
 msgstr "Portafoglio incompleto e danneggiato"
 
+#: src/js/services/bwsError.js
+msgid "Wallet is full"
+msgstr "Wallet is full"
+
+#: src/js/services/bwsError.js
+msgid "Wallet is not complete"
+msgstr "Wallet is not complete"
+
 #: public/views/create.html
 msgid "Wallet name"
 msgstr "Nome Portafoglio"
 
-#: src/js/controllers/walletHome.js
-msgid "Wallet service timed out. Check your Internet connection and your wallet service configuration."
-msgstr "Servizio portafoglio scaduto. Verifica la tua connessione internet e la configurazione del tuo servizio portafoglio."
+#: src/js/services/bwsError.js
+msgid "Wallet not found"
+msgstr "Wallet not found"
+
+#: src/js/services/bwsError.js
+msgid "Wallet service not found"
+msgstr "Wallet service not found"
 
 #: public/views/preferencesDeleteWallet.html
 msgid "Warning!"
 msgstr "Attenzione!"
+
+#: public/views/modals/txp-details.html
+msgid "Warning: this transaction has unconfirmed inputs"
+msgstr "Warning: this transaction has unconfirmed inputs"
 
 #: src/js/services/profileService.js
 msgid "Wrong password"
@@ -1218,10 +1403,6 @@ msgstr "impostazioni"
 #: public/views/walletHome.html
 msgid "too long!"
 msgstr "troppo lungo!"
-
-#: public/views/preferencesFee.html
-msgid "{{fee.value}} bits per kB"
-msgstr "{{fee.value}} bits per kB"
 
 #: src/js/controllers/walletHome.js
 msgid "{{fee}} will be discounted for bitcoin networking fees"

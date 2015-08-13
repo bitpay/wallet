@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Japanese\n"
 "Language: ja\n"
-"PO-Revision-Date: 2015-07-23 11:32-0400\n"
+"PO-Revision-Date: 2015-08-13 09:15-0400\n"
 
 #: public/views/walletHome.html
 msgid "(possible double spend)"
@@ -39,6 +39,9 @@ msgid "About Copay"
 msgstr "Copayについて"
 
 #: public/views/modals/txp-details.html
+#: src/js/controllers/copayers.js
+#: src/js/controllers/preferencesDelete.js
+#: src/js/controllers/walletHome.js
 msgid "Accept"
 msgstr "承諾"
 
@@ -56,6 +59,10 @@ msgstr "アドレス"
 msgid "Advanced"
 msgstr "上級者向け"
 
+#: public/views/modals/advancedSend.html
+msgid "Advanced Send"
+msgstr "上級者向け送金"
+
 #: public/views/disclaimer.html
 msgid "Agree"
 msgstr "同意します"
@@ -63,6 +70,10 @@ msgstr "同意します"
 #: public/views/preferencesAlias.html
 msgid "Alias for <i>{{index.walletName}}</i>"
 msgstr "<i>{{index.walletName}}</i> の通称設定"
+
+#: public/views/translators.html
+msgid "All contributions to Copay's translation are welcome. Sign up at crowdin.com and join the Copay project at"
+msgstr "Copayの翻訳は簡単に投稿することができます。crowdin.comのアカウント作成の後、自由にご参加いただけるプロジェクトページはこちら"
 
 #: public/views/splash.html
 msgid "Already have a wallet?"
@@ -74,10 +85,14 @@ msgstr "表示通貨"
 
 #: public/views/paymentUri.html
 #: public/views/walletHome.html
+#: public/views/includes/output.html
 #: public/views/modals/customized-amount.html
-#: public/views/modals/txp-details.html
 msgid "Amount"
 msgstr "金額"
+
+#: src/js/services/bwsError.js
+msgid "Amount  below dust threshold"
+msgstr "最小送金額を下回っています。"
 
 #: public/views/walletHome.html
 #: public/views/modals/customized-amount.html
@@ -97,6 +112,11 @@ msgstr "本当にこのウォレットを削除しても\n"
 #: public/views/walletHome.html
 msgid "Available Balance"
 msgstr "送金可能残高"
+
+#: public/views/preferencesFee.html
+#: public/views/modals/advancedSend.html
+msgid "Average confirmation time: {{fee.nbBlocks * 10}} minutes"
+msgstr "承認までの時間(平均)： {{fee.nbBlocks * 10}} 分"
 
 #: public/views/create.html
 #: public/views/join.html
@@ -125,6 +145,10 @@ msgstr "今すぐバックアップ"
 msgid "Backup options"
 msgstr "バックアップ設定"
 
+#: src/js/services/profileService.js
+msgid "Bad wallet invitation"
+msgstr "不正なウォレット招待コード"
+
 #: public/views/walletHome.html
 msgid "Before receiving funds, it is highly recommended you backup your wallet keys."
 msgstr "ビットコインをもらう前に、このウォレットのバックアップすることを強くおすすめします。"
@@ -142,8 +166,8 @@ msgid "Bitcoin address"
 msgstr "ビットコインアドレス"
 
 #: public/views/preferencesFee.html
-msgid "Bitcoin transactions may include a fee collected by miners on the network. The higher the fee, the greater the incentive a miner has to include that transaction in a block. The ‘Emergency’ level should only be used when there is a network congestion."
-msgstr "円滑な送金をしていただくために、ビットコインの送金には少量の手数料を付けることが義務付けられております。この手数料はビットコインのネットワークを運用する人たちに寄付され、より高い手数料であればより優先的にブロックに含まれ、承認されます。「緊急」の設定はネットワーク全体の混雑時にのみご利用下さい。"
+msgid "Bitcoin transactions may include a fee collected by miners on the network. The higher the fee, the greater the incentive a miner has to include that transaction in a block. Actual fees are determined based on network load and the selected policy."
+msgstr "円滑な送金をしていただくために、ビットコインの送金には少量の手数料を付けることが義務付けられております。この手数料はビットコインのネットワークを運用する人たちに寄付され、より高い手数料であればより優先的にブロックに含まれ、承認されます。選択された手数料基準やネットワークの混雑状況により、実際に払われる手数料が変動することがあります。"
 
 #: public/views/modals/txp-details.html
 msgid "Broadcast Payment"
@@ -171,8 +195,16 @@ msgstr "キャンセル"
 
 #: public/views/copayers.html
 #: public/views/walletHome.html
+#: public/views/modals/confirmation.html
+#: src/js/controllers/copayers.js
+#: src/js/controllers/preferencesDelete.js
+#: src/js/controllers/walletHome.js
 msgid "Cancel"
 msgstr "キャンセル"
+
+#: src/js/services/profileService.js
+msgid "Cannot join the same wallet more that once"
+msgstr "同じ端末で同じウォレットに複数回参加することができません。"
 
 #: public/views/modals/paypro.html
 msgid "Certified by"
@@ -181,10 +213,6 @@ msgstr "証明元："
 #: public/views/preferencesAlias.html
 msgid "Changing wallet alias only affects the local wallet name."
 msgstr "ウォレット通称を変更しても、この端末でしか変わりません。"
-
-#: src/js/controllers/walletHome.js
-msgid "Check you connection and try again"
-msgstr "接続を確認し、やり直して下さい。"
 
 #: public/views/import.html
 msgid "Choose a backup file from your computer"
@@ -195,6 +223,7 @@ msgid "Choose a wallet to send funds"
 msgstr "送金元のウォレットを選択して下さい"
 
 #: public/views/includes/topbar.html
+#: public/views/modals/advancedSend.html
 #: public/views/modals/copayers.html
 #: public/views/modals/customized-amount.html
 #: public/views/modals/paypro.html
@@ -211,13 +240,41 @@ msgstr "色"
 msgid "Commit hash"
 msgstr "コミットのハッシュ値"
 
+#: src/js/controllers/copayers.js
+#: src/js/controllers/preferencesDelete.js
+#: src/js/controllers/walletHome.js
+msgid "Confirm"
+msgstr "確認"
+
 #: public/views/modals/tx-details.html
 msgid "Confirmations"
 msgstr "承認回数"
 
+#: src/js/services/bwsError.js
+msgid "Copayer already in this wallet"
+msgstr "ウォレット参加者が既に存在しています。"
+
+#: src/js/services/bwsError.js
+msgid "Copayer already registered"
+msgstr "ウォレット参加者が既に登録されています。"
+
+#: src/js/services/bwsError.js
+msgid "Copayer already voted on this spend proposal"
+msgstr "ウォレット参加者が既に送金の提案の意思表明をしています。"
+
+#: src/js/services/bwsError.js
+msgid "Copayer data mismatch"
+msgstr "ウォレット参加者のデータ不整合"
+
 #: public/views/modals/copayers.html
 msgid "Copayers"
 msgstr "ウォレット参加者"
+
+#: src/js/controllers/backup.js
+#: src/js/controllers/copayers.js
+#: src/js/controllers/walletHome.js
+msgid "Copied to clipboard"
+msgstr "クリップボードにコピーしました"
 
 #: public/views/backup.html
 msgid "Copy backup to a safe place"
@@ -232,20 +289,20 @@ msgid "Copy to clipboard"
 msgstr "クリップボードへコピー"
 
 #: src/js/controllers/walletHome.js
-msgid "Could not accept payment. Check you connection and try again"
-msgstr "送金の提案が承諾できませんでした。接続を確認し、やり直して下さい。"
+msgid "Could not accept payment"
+msgstr "送金を承認できませんでした。"
+
+#: src/js/controllers/index.js
+msgid "Could not access Wallet Service: Not found"
+msgstr "Wallet Serviceにアクセスできませんでした: 見つかりません"
 
 #: src/js/controllers/walletHome.js
-msgid "Could not broadcast payment. Check you connection and try again"
-msgstr "送金できませんでした。接続を確認し、やり直して下さい。"
+msgid "Could not broadcast payment"
+msgstr "送金を配信できませんでした。"
 
-#: src/js/controllers/walletHome.js
-msgid "Could not connect wallet service. Check your Internet connection and your wallet service configuration."
-msgstr "ウォレットサービスと接続できませんでした。インターネットの接続とウォレットサービスの設定を確認して下さい。"
-
-#: src/js/controllers/walletHome.js
-msgid "Could not create address. Check you connection and try again"
-msgstr "アドレスが生成できませんでした。接続を確認し、やり直して下さい。"
+#: src/js/services/addressService.js
+msgid "Could not create address"
+msgstr "アドレスを生成できませんでした。"
 
 #: src/js/controllers/walletHome.js
 msgid "Could not create payment proposal"
@@ -260,8 +317,8 @@ msgid "Could not decrypt file, check your password"
 msgstr "複合化できませんでした。パスワードが正しいかご確認下さい。"
 
 #: src/js/controllers/walletHome.js
-msgid "Could not delete payment proposal. Check you connection and try again"
-msgstr "送金の提案が削除できませんでした。接続を確認し、やり直して下さい。"
+msgid "Could not delete payment proposal"
+msgstr "送金の提案を削除できませんでした"
 
 #: src/js/controllers/walletHome.js
 msgid "Could not fetch payment information"
@@ -279,23 +336,23 @@ msgstr "インポートできませんでした。入力ファイルとパスワ
 msgid "Could not join using the specified extended private key"
 msgstr "指定された拡張秘密鍵で参加できませんでした。"
 
-#: src/js/controllers/join.js
-msgid "Could not join wallet:"
-msgstr "ウォレットに参加できませんでした："
+#: src/js/services/profileService.js
+msgid "Could not join wallet"
+msgstr "ウォレットに参加できませんでした。"
 
 #: src/js/controllers/walletHome.js
 msgid "Could not recognize a valid Bitcoin QR Code"
 msgstr "有効なビットコインQRコードが認識できませんでした。"
 
 #: src/js/controllers/walletHome.js
-msgid "Could not reject payment. Check you connection and try again"
-msgstr "送金の提案を却下できませんでした。接続を確認し、やり直して下さい。"
+msgid "Could not reject payment"
+msgstr "送金を却下できませんでした。"
 
 #: src/js/controllers/walletHome.js
 msgid "Could not send payment"
 msgstr "送金できませんでした。"
 
-#: public/views/walletHome.html
+#: src/js/controllers/index.js
 msgid "Could not update Wallet"
 msgstr "ウォレットが更新できませんでした。"
 
@@ -331,6 +388,11 @@ msgstr "ウォレット作成中…"
 #: src/js/controllers/walletHome.js
 msgid "Creating transaction"
 msgstr "取引作成中…"
+
+#: public/views/preferencesFee.html
+#: public/views/modals/advancedSend.html
+msgid "Current fee rate for this policy: {{fee.feePerKBUnit}}/kiB"
+msgstr "この手数料基準の現レート： {{fee.feePerKBUnit}}/kiB"
 
 #: public/views/modals/tx-details.html
 msgid "Date"
@@ -371,6 +433,10 @@ msgstr "無効"
 msgid "Do not include private key in backup"
 msgstr "バックアップに秘密鍵を含めない"
 
+#: public/views/translators.html
+msgid "Don't see your language on Crowdin? Contact the Owner on Crowdin! We'd love to support your language."
+msgstr "ご自分の言語はCrowdinで見当たりませんか？Crowdinの管理者に連絡とってみてください。是非とも対応したく思っております。"
+
 #: public/views/walletHome.html
 msgid "Download CSV file"
 msgstr "CSVファイルをダウンロード"
@@ -379,21 +445,13 @@ msgstr "CSVファイルをダウンロード"
 msgid "Download backup"
 msgstr "バックアップをダウンロード"
 
-#: public/views/includes/password.html
-msgid "ENTER"
-msgstr "ENTER"
-
-#: src/js/controllers/preferencesFee.js
+#: src/js/services/feeService.js
 msgid "Economy"
 msgstr "節約"
 
 #: public/views/preferences.html
 msgid "Email Notifications"
 msgstr "メールのお知らせ"
-
-#: src/js/controllers/preferencesFee.js
-msgid "Emergency"
-msgstr "緊急"
 
 #: public/views/preferences.html
 msgid "Encrypt Private Key"
@@ -403,21 +461,17 @@ msgstr "秘密鍵を暗号化"
 msgid "Encrypted backup file saved"
 msgstr "暗号化されたバックアップ保存しました"
 
-#: src/js/controllers/index.js
-msgid "English"
-msgstr "英語"
-
 #: public/views/includes/password.html
 msgid "Enter your password"
 msgstr "パスワードを入力して下さい。"
 
+#: src/js/controllers/index.js
+msgid "Error at Wallet Service"
+msgstr "Wallet Serviceにてエラー"
+
 #: src/js/services/profileService.js
 msgid "Error creating wallet"
 msgstr "ウォレット作成時にエラー"
-
-#: src/js/services/profileService.js
-msgid "Error creating wallet. Check your internet connection"
-msgstr "ウォレット作成時にエラー発生、インターネットの接続をご確認下さい。"
 
 #: src/js/services/profileService.js
 msgid "Error importing wallet:"
@@ -445,14 +499,26 @@ msgstr "家族旅行貯金"
 msgid "Fee"
 msgstr "手数料"
 
+#: public/views/modals/advancedSend.html
+msgid "Fee Policy"
+msgstr "手数料基準"
+
+#: public/views/walletHome.html
+msgid "Fee policy for this transaction"
+msgstr "当取引の手数料基準"
+
 #. Get information of payment if using Payment Protocol
 #: src/js/controllers/walletHome.js
 msgid "Fetching Payment Information"
 msgstr "支払い情報要求しています…"
 
-#: src/js/controllers/index.js
+#: public/views/translators.html
 msgid "French"
 msgstr "フランス語"
+
+#: src/js/services/bwsError.js
+msgid "Funds are locked by pending spend proposals"
+msgstr "協議中の送金の提案により、資金がロックされています。"
 
 #: src/js/services/notificationsService.js
 msgid "Funds received"
@@ -474,7 +540,7 @@ msgstr "新規アドレスを生成"
 msgid "Generating .csv file..."
 msgstr "CSVファイル作成中…"
 
-#: src/js/controllers/index.js
+#: public/views/translators.html
 msgid "German"
 msgstr "ドイツ語"
 
@@ -490,7 +556,7 @@ msgstr "グローバル設定"
 msgid "Go back"
 msgstr "前に戻る"
 
-#: src/js/controllers/index.js
+#: public/views/translators.html
 msgid "Greek"
 msgstr "ギリシャ語"
 
@@ -501,8 +567,9 @@ msgstr "Copay v0.9 のバックアップをお持ちですか？"
 #: public/views/backup.html
 #: public/views/create.html
 #: public/views/join.html
-msgid "Hide Advanced options"
-msgstr "詳細設定　非表示"
+#: public/views/walletHome.html
+msgid "Hide advanced options"
+msgstr "詳細設定を非表示"
 
 #: src/js/controllers/index.js
 msgid "History"
@@ -550,15 +617,35 @@ msgstr "ウォレットインポート中…"
 msgid "Importing..."
 msgstr "インポート中…"
 
+#: src/js/services/bwsError.js
+msgid "Incorrect address network"
+msgstr "アドレスのネットワークが不正です。"
+
+#: src/js/services/bwsError.js
+msgid "Insufficient funds"
+msgstr "残高不足"
+
+#: src/js/services/bwsError.js
+msgid "Insufficient funds for fee"
+msgstr "手数料付けるには残高が足りません"
+
 #: public/views/walletHome.html
 msgid "Invalid"
 msgstr "無効"
 
-#: src/js/controllers/index.js
+#: src/js/services/bwsError.js
+msgid "Invalid address"
+msgstr "不正アドレス"
+
+#: src/js/controllers/copayers.js
+msgid "Invitation to share a Copay Wallet"
+msgstr "Copay共有ウォレットへの招待"
+
+#: public/views/translators.html
 msgid "Italian"
 msgstr "イタリア語"
 
-#: src/js/controllers/index.js
+#: public/views/translators.html
 msgid "Japanese"
 msgstr "日本語"
 
@@ -570,6 +657,10 @@ msgstr "山田太郎"
 #: public/views/join.html
 msgid "Join"
 msgstr "参加"
+
+#: src/js/controllers/copayers.js
+msgid "Join my Copay wallet. Here is the invitation code: {{secret}}  You can download Copay for your phone or desktop at https://copay.io"
+msgstr "Copayの共有ウォレット作りました： {{secret}}  この招待コードを入力して、ウォレットに参加して下さい。アプリのダウンロードは https://copay.io にてどうぞ！"
 
 #: public/views/add.html
 msgid "Join shared wallet"
@@ -586,6 +677,14 @@ msgstr "言語設定"
 #: public/views/importLegacy.html
 msgid "Learn more about Wallet Migration"
 msgstr "ウォレット移行について詳しく"
+
+#: src/js/services/bwsError.js
+msgid "Locktime in effect. Please wait to create a new spend proposal"
+msgstr "Locktime待ち中です。新しい送金の提案が作成できるまであとしばらくお待ち下さい。"
+
+#: src/js/services/bwsError.js
+msgid "Locktime in effect. Please wait to remove this spend proposal"
+msgstr "Locktime待ち中です。この送金の提案が削除できるまであとしばらくお待ち下さい。"
 
 #: public/views/paymentUri.html
 msgid "Make a payment to"
@@ -635,13 +734,13 @@ msgstr "私のビットコインアドレス："
 msgid "Network"
 msgstr "ネットワーク"
 
+#: src/js/services/bwsError.js
+msgid "Network connection error"
+msgstr "ネットワーク接続エラー"
+
 #: src/js/services/notificationsService.js
 msgid "New Payment Proposal"
 msgstr "新しい送金の提案"
-
-#: public/views/modals/confirmation.html
-msgid "No"
-msgstr "いいえ"
 
 #: public/views/walletHome.html
 msgid "No Private key"
@@ -651,9 +750,13 @@ msgstr "秘密鍵なし"
 msgid "No transactions yet"
 msgstr "取引がありません"
 
-#: src/js/controllers/preferencesFee.js
+#: src/js/services/feeService.js
 msgid "Normal"
 msgstr "通常"
+
+#: src/js/services/bwsError.js
+msgid "Not authorized"
+msgstr "権限がありません。"
 
 #: public/views/walletHome.html
 #: public/views/modals/customized-amount.html
@@ -661,10 +764,15 @@ msgid "Not valid"
 msgstr "無効です"
 
 #: public/views/walletHome.html
+#: public/views/includes/output.html
 #: public/views/modals/tx-details.html
-#: public/views/modals/txp-details.html
 msgid "Note"
 msgstr "メモ"
+
+#: public/views/includes/alert.html
+#: public/views/includes/password.html
+msgid "OK"
+msgstr "OK"
 
 #: public/views/modals/tx-status.html
 msgid "OKAY"
@@ -769,6 +877,10 @@ msgstr "支払いを送信しました！"
 msgid "Payment to"
 msgstr "支払い先"
 
+#: public/views/walletHome.html
+msgid "Pending Confirmation"
+msgstr "承認待ち"
+
 #: public/views/preferencesDeleteWallet.html
 msgid "Permanently delete this wallet. THIS ACTION CANNOT BE REVERSED"
 msgstr "永久にこのウォレットを削除します。\n"
@@ -783,11 +895,15 @@ msgstr "個人用ウォレット"
 msgid "Please enter the required fields"
 msgstr "必須項目をご入力下さい"
 
+#: src/js/services/bwsError.js
+msgid "Please upgrade Copay to perform this action"
+msgstr "この操作を実行するにはCopayを最新バージョンに更新してください"
+
 #: src/js/controllers/import.js
 msgid "Please, select your backup file"
 msgstr "バックアップファイルを選択"
 
-#: src/js/controllers/index.js
+#: public/views/translators.html
 msgid "Portuguese"
 msgstr "ポルトガル語"
 
@@ -795,7 +911,11 @@ msgstr "ポルトガル語"
 msgid "Preferences"
 msgstr "設定"
 
-#: src/js/controllers/preferencesFee.js
+#: src/js/controllers/backup.js
+msgid "Preparing backup..."
+msgstr "バックアップを準備中..."
+
+#: src/js/services/feeService.js
 msgid "Priority"
 msgstr "優先"
 
@@ -814,6 +934,11 @@ msgstr "受取"
 #: public/views/walletHome.html
 msgid "Received"
 msgstr "受取済み"
+
+#: public/views/includes/output.html
+#: public/views/includes/transaction.html
+msgid "Recipients"
+msgstr "受取人"
 
 #: public/views/walletHome.html
 msgid "Reconnecting to Wallet Service..."
@@ -857,6 +982,10 @@ msgstr "入力必須"
 #: public/views/splash.html
 msgid "Retrying..."
 msgstr "再度試しています…"
+
+#: public/views/translators.html
+msgid "Russian"
+msgstr "ロシア語"
 
 #: public/views/includes/password.html
 msgid "SET"
@@ -976,8 +1105,13 @@ msgstr "共有ウォレットに参加"
 #: public/views/backup.html
 #: public/views/create.html
 #: public/views/join.html
-msgid "Show Advanced options"
-msgstr "詳細設定　表示"
+#: public/views/walletHome.html
+msgid "Show advanced options"
+msgstr "詳細設定を表示"
+
+#: src/js/services/bwsError.js
+msgid "Signatures rejected by server"
+msgstr "サーバーより署名が却下されました。"
 
 #: src/js/controllers/walletHome.js
 msgid "Signing payment"
@@ -987,9 +1121,17 @@ msgstr "送金の提案署名中"
 msgid "Signing transaction"
 msgstr "取引署名中"
 
-#: src/js/controllers/index.js
+#: public/views/translators.html
 msgid "Spanish"
 msgstr "スペイン語"
+
+#: src/js/services/bwsError.js
+msgid "Spend proposal is not accepted"
+msgstr "送金の提案が受諾されませんでした。"
+
+#: src/js/services/bwsError.js
+msgid "Spend proposal not found"
+msgstr "送金の提案が見つかりませんでした。"
 
 #: src/js/controllers/copayers.js
 #: src/js/controllers/import.js
@@ -1015,7 +1157,7 @@ msgid "The payment was created but could not be completed. Please try again from
 msgstr "送金の提案は作成されましたが完了できませんでした。ホーム画面からやり直して下さい。"
 
 #: src/js/controllers/walletHome.js
-msgid "The payment was created but could not be signed. Please try again from home screen."
+msgid "The payment was created but could not be signed. Please try again from home screen"
 msgstr "送金の提案は作成されましたが署名できませんでした。ホーム画面からやり直して下さい。"
 
 #: public/views/modals/txp-details.html
@@ -1023,7 +1165,7 @@ msgid "The payment was removed by creator"
 msgstr "送金の提案が作成者により削除されました"
 
 #: src/js/controllers/walletHome.js
-msgid "The payment was signed but could not be broadcasted. Please try again from home screen."
+msgid "The payment was signed but could not be broadcasted. Please try again from home screen"
 msgstr "送金の提案は署名されましたが送信できませんでした。ホーム画面からやり直して下さい。"
 
 #: public/views/backup.html
@@ -1034,6 +1176,10 @@ msgstr "このウォレットの秘密鍵が暗号化されています。バッ
 msgid "The software you are about to use functions as a free, open source, and multi-signature digital wallet. The software does not constitute an account where BitPay or other third parties serve as financial intermediaries or custodians of your bitcoin.  While the software has undergone beta testing and continues to be improved by feedback from the open-source user and developer community, we cannot guarantee that there will be no bugs in the software. You acknowledge that your use of this software is at your own discretion and in compliance with all applicable laws. You are responsible for safekeeping your passwords, private key pairs, PINs and any other codes you use to access the software. IF YOU LOSE ACCESS TO YOUR COPAY WALLET OR YOUR ENCRYPTED PRIVATE KEYS AND YOU HAVE NOT SEPARATELY STORED A BACKUP OF YOUR WALLET AND CORRESPONDING PASSWORD, YOU ACKNOWLEDGE AND AGREE THAT ANY BITCOIN YOU HAVE ASSOCIATED WITH THAT COPAY  WALLET WILL BECOME INACCESSIBLE. All transaction requests are irreversible.  The authors of the software, employees and affiliates of Bitpay, copyright holders, and BitPay, Inc. cannot retrieve your private keys or passwords if you lose or forget them and cannot guarantee transaction confirmation as they do not have control over the Bitcoin network. To the fullest extent permitted by law, this software is provided “as is” and no representations or warranties can be made of any kind, express or implied, including but not limited to the warranties of merchantability, fitness or a particular purpose and noninfringement. You assume any and all risks associated with the use of the software. In no event shall the authors of the software, employees and affiliates of Bitpay, copyright holders, or BitPay, Inc. be held liable for any claim, damages or other liability, whether in an action of contract, tort, or otherwise, arising from, out of or in connection with the software. We reserve the right to modify this disclaimer from time to time."
 msgstr "当ソフトウェアは無料のオープンソースプロジェクトで、マルチシグネチャを用いるデジタルウォレットです。BitPay, Inc. 若しくはその他の第三者がアクセス権限を管理する、若しくはデジタル資産の代理保管を行うサービスではありません。このソフトは長いテスト期間を経てリリースしましたが、今後バグや不具合が見つからないという保障はございません。この規約に同意することで、自己責任で利用するものとし、このソフトを用いてお住まいの地域の法令の違反はしないことを意味します。このソフトを正常に利用するために必要なパスワード、秘密鍵、暗証番号などの秘密情報は自己責任で管理するものとします。＊＊＊Copayウォレットとその中にある秘密鍵の情報を紛失してしまい、尚且つバックアップが無い、若しくはそのバックアップを暗号化した際のパスワードが分からないなどの状況に陥ってしまえば、そのウォレットに含まれた全てのビットコインが永久送金不可能となってしまうことを認識し、同意するものとします。＊＊＊署名が完了してしまった取引は取り消しが不可能となります。このソフトの開発者、BitPayの従業員とその関係者、著作権所有者、BitPay, Inc.自体もパスワード・秘密鍵・パスワードなどへのアクセスが不可能なため、教えることがだきません、なお、ビットコインのネットワークへの影響が無いので、取引の取り消しや優先的な承認などはできません。このソフトはそのままの提供となり、このソフトの利用に関わるあらゆる責任とリスクを自己責任で被り、利用するものとし、いかなる損害が発生しても、このソフトの開発者、BitPayの従業員とその関係者、著作権所有者、BitPay, Inc.自体も責任を求めることは無いと誓います。この規約の言葉や表現のニュアンスによる解釈が必要となった場合、規約の元である英語のものを正とします。和訳は簡単な要約と考えて下さい。下記に英語の規約がありますので、英語が理解できる方は是非熟読して下さい。\n\n"
 "The software you are about to use functions as a free, open source, and multi-signature digital wallet. The software does not constitute an account where BitPay or other third parties serve as financial intermediaries or custodians of your bitcoin.  While the software has undergone beta testing and continues to be improved by feedback from the open-source user and developer community, we cannot guarantee that there will be no bugs in the software. You acknowledge that your use of this software is at your own discretion and in compliance with all applicable laws. You are responsible for safekeeping your passwords, private key pairs, PINs and any other codes you use to access the software. IF YOU LOSE ACCESS TO YOUR COPAY WALLET OR YOUR ENCRYPTED PRIVATE KEYS AND YOU HAVE NOT SEPARATELY STORED A BACKUP OF YOUR WALLET AND CORRESPONDING PASSWORD, YOU ACKNOWLEDGE AND AGREE THAT ANY BITCOIN YOU HAVE ASSOCIATED WITH THAT COPAY  WALLET WILL BECOME INACCESSIBLE. All transaction requests are irreversible.  The authors of the software, employees and affiliates of Bitpay, copyright holders, and BitPay, Inc. cannot retrieve your private keys or passwords if you lose or forget them and cannot guarantee transaction confirmation as they do not have control over the Bitcoin network. To the fullest extent permitted by law, this software is provided “as is” and no representations or warranties can be made of any kind, express or implied, including but not limited to the warranties of merchantability, fitness or a particular purpose and noninfringement. You assume any and all risks associated with the use of the software. In no event shall the authors of the software, employees and affiliates of Bitpay, copyright holders, or BitPay, Inc. be held liable for any claim, damages or other liability, whether in an action of contract, tort, or otherwise, arising from, out of or in connection with the software. We reserve the right to modify this disclaimer from time to time."
+
+#: src/js/services/bwsError.js
+msgid "The spend proposal is not pending"
+msgstr "送金の提案が協議中ではありません。"
 
 #: src/js/controllers/copayers.js
 #: src/js/controllers/preferencesDelete.js
@@ -1061,11 +1207,16 @@ msgid "Time"
 msgstr "時刻"
 
 #: public/views/walletHome.html
+#: public/views/includes/output.html
 #: public/views/includes/transaction.html
 #: public/views/modals/tx-details.html
 #: public/views/modals/txp-details.html
 msgid "To"
 msgstr "宛先"
+
+#: public/views/includes/output.html
+msgid "Total"
+msgstr "合計"
 
 #: public/views/walletHome.html
 msgid "Total Locked Balance"
@@ -1074,6 +1225,18 @@ msgstr "ロック中の残高"
 #: public/views/modals/tx-details.html
 msgid "Transaction"
 msgstr "取引"
+
+#: src/js/services/bwsError.js
+msgid "Transaction already broadcasted"
+msgstr "取引は既に配信されました。"
+
+#: public/views/translators.html
+msgid "Translation Credits"
+msgstr "翻訳ボランティアの皆さん"
+
+#: public/views/preferencesAbout.html
+msgid "Translators"
+msgstr "翻訳者"
 
 #: src/js/controllers/walletHome.js
 msgid "Unable to send transaction proposal"
@@ -1099,6 +1262,11 @@ msgstr "信頼されていません。"
 #: public/views/walletHome.html
 msgid "Updating Wallet..."
 msgstr "ウォレット更新中…"
+
+#: public/views/preferences.html
+#: public/views/walletHome.html
+msgid "Use Unconfirmed Funds"
+msgstr "未承認ビットコインを使用"
 
 #: public/views/preferencesAbout.html
 msgid "Version"
@@ -1144,6 +1312,7 @@ msgstr "ウォレット招待"
 msgid "Wallet Invitation is not valid!"
 msgstr "ウォレット招待コードが無効です！"
 
+#: src/js/services/bwsError.js
 #: src/js/services/profileService.js
 msgid "Wallet already exists"
 msgstr "既存のウォレットです"
@@ -1152,17 +1321,33 @@ msgstr "既存のウォレットです"
 msgid "Wallet incomplete and broken"
 msgstr "ウォレットが未完成で破損しています"
 
+#: src/js/services/bwsError.js
+msgid "Wallet is full"
+msgstr "ウォレットがいっぱいです。"
+
+#: src/js/services/bwsError.js
+msgid "Wallet is not complete"
+msgstr "ウォレットが未完成です。"
+
 #: public/views/create.html
 msgid "Wallet name"
 msgstr "ウォレット名"
 
-#: src/js/controllers/walletHome.js
-msgid "Wallet service timed out. Check your Internet connection and your wallet service configuration."
-msgstr "ウォレットサービスがタイムアウトになりました。インターネットの接続とウォレットサービスの設定を確認して下さい。"
+#: src/js/services/bwsError.js
+msgid "Wallet not found"
+msgstr "ウォレットが見つかりません。"
+
+#: src/js/services/bwsError.js
+msgid "Wallet service not found"
+msgstr "Wallet serviceが見つかりません。"
 
 #: public/views/preferencesDeleteWallet.html
 msgid "Warning!"
 msgstr "注意！"
+
+#: public/views/modals/txp-details.html
+msgid "Warning: this transaction has unconfirmed inputs"
+msgstr "注意: この取引は未承認資金が含まれており、承認されるまで商品等をお渡しするのを待つことをお勧めします。"
 
 #: src/js/services/profileService.js
 msgid "Wrong password"
@@ -1223,10 +1408,6 @@ msgstr "設定"
 #: public/views/walletHome.html
 msgid "too long!"
 msgstr "長すぎます！"
-
-#: public/views/preferencesFee.html
-msgid "{{fee.value}} bits per kB"
-msgstr "1キロバイト当たり {{fee.value}} bits"
 
 #: src/js/controllers/walletHome.js
 msgid "{{fee}} will be discounted for bitcoin networking fees"
