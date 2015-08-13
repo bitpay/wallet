@@ -92,7 +92,6 @@ angular.module('copayApp.directives')
         require: 'ngModel',
         link: function(scope, element, attrs, ctrl) {
           var val = function(value) {
-            if (value) value = Number(String(value).replace(/,/g, '.'));
             var settings = configService.getSync().wallet.settings;
             var vNum = Number((value * settings.unitToSatoshi).toFixed(0));
 
@@ -111,33 +110,6 @@ angular.module('copayApp.directives')
               }
             } else {
               ctrl.$setValidity('validAmount', false);
-            }
-            return value;
-          }
-          ctrl.$parsers.unshift(val);
-          ctrl.$formatters.unshift(val);
-        }
-      };
-    }
-  ])
-  .directive('validAlternative', [
-    function() {
-
-      return {
-        require: 'ngModel',
-        link: function(scope, element, attrs, ctrl) {
-          var val = function(value) {
-            if (value) value = Number(String(value).replace(/,/g, '.'));
-            var vNum = Number(value);
-
-            if (typeof value == 'undefined' || value == 0) {
-              ctrl.$pristine = true;
-            }
-
-            if (typeof vNum == "number" && vNum > 0) {
-                ctrl.$setValidity('validAlternative', true);
-            } else {
-              ctrl.$setValidity('validAlternative', false);
             }
             return value;
           }
