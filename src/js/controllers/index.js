@@ -784,6 +784,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
   self.startScan = function(walletId) {
     var c = profileService.walletClients[walletId];
+    if (!c.isComplete()) return;
 
     if (self.walletId == walletId)
       self.setOngoingProcess('scanning', true);
