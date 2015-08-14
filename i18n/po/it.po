@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Italian\n"
 "Language: it\n"
-"PO-Revision-Date: 2015-08-13 09:15-0400\n"
+"PO-Revision-Date: 2015-08-14 02:34-0400\n"
 
 #: public/views/walletHome.html
 msgid "(possible double spend)"
@@ -289,19 +289,19 @@ msgstr "Copia negli appunti"
 
 #: src/js/controllers/walletHome.js
 msgid "Could not accept payment"
-msgstr "Could not accept payment"
+msgstr "Impossibile accettare il pagamento"
 
 #: src/js/controllers/index.js
 msgid "Could not access Wallet Service: Not found"
-msgstr "Could not access Wallet Service: Not found"
+msgstr "Impossibile accedere al Wallet Service: non trovato"
 
 #: src/js/controllers/walletHome.js
 msgid "Could not broadcast payment"
-msgstr "Could not broadcast payment"
+msgstr "Impossibile trasmettere il pagamento"
 
 #: src/js/services/addressService.js
 msgid "Could not create address"
-msgstr "Could not create address"
+msgstr "Impossibile creare un indirizzo"
 
 #: src/js/controllers/walletHome.js
 msgid "Could not create payment proposal"
@@ -317,7 +317,7 @@ msgstr "Impossibile decrittografare il file, controlla la tua password"
 
 #: src/js/controllers/walletHome.js
 msgid "Could not delete payment proposal"
-msgstr "Could not delete payment proposal"
+msgstr "Impossibile eliminare la proposta di pagamento"
 
 #: src/js/controllers/walletHome.js
 msgid "Could not fetch payment information"
@@ -434,7 +434,7 @@ msgstr "Non includere la chiave privata nel backup"
 
 #: public/views/translators.html
 msgid "Don't see your language on Crowdin? Contact the Owner on Crowdin! We'd love to support your language."
-msgstr "Don't see your language on Crowdin? Contact the Owner on Crowdin! We'd love to support your language."
+msgstr "Non vedi la tua lingua su Crowdin? Contatta il proprietario su Crowdin! Ci piacerebbe supportare la lingua."
 
 #: public/views/walletHome.html
 msgid "Download CSV file"
@@ -446,7 +446,7 @@ msgstr "Scarica il backup"
 
 #: src/js/services/feeService.js
 msgid "Economy"
-msgstr "Economy"
+msgstr "Economia"
 
 #: public/views/preferences.html
 msgid "Email Notifications"
@@ -466,7 +466,7 @@ msgstr "Inserisci la tua password"
 
 #: src/js/controllers/index.js
 msgid "Error at Wallet Service"
-msgstr "Error at Wallet Service"
+msgstr "Errore del Wallet Service"
 
 #: src/js/services/profileService.js
 msgid "Error creating wallet"
@@ -504,7 +504,7 @@ msgstr "Politica delle tasse"
 
 #: public/views/walletHome.html
 msgid "Fee policy for this transaction"
-msgstr "Fee policy for this transaction"
+msgstr "Commissioni per questa transazione"
 
 #. Get information of payment if using Payment Protocol
 #: src/js/controllers/walletHome.js
@@ -517,7 +517,7 @@ msgstr "Francese"
 
 #: src/js/services/bwsError.js
 msgid "Funds are locked by pending spend proposals"
-msgstr "Funds are locked by pending spend proposals"
+msgstr "I fondi sono bloccati in attesa della proposta di pagamento"
 
 #: src/js/services/notificationsService.js
 msgid "Funds received"
@@ -568,7 +568,7 @@ msgstr "Hai un Backup da Copay v0.9?"
 #: public/views/join.html
 #: public/views/walletHome.html
 msgid "Hide advanced options"
-msgstr "Hide advanced options"
+msgstr "Nascondi opzioni avanzate"
 
 #: src/js/controllers/index.js
 msgid "History"
@@ -618,15 +618,15 @@ msgstr "Importando..."
 
 #: src/js/services/bwsError.js
 msgid "Incorrect address network"
-msgstr "Incorrect address network"
+msgstr "Indirizzo della rete incorretto"
 
 #: src/js/services/bwsError.js
 msgid "Insufficient funds"
-msgstr "Insufficient funds"
+msgstr "Fondi insufficienti"
 
 #: src/js/services/bwsError.js
 msgid "Insufficient funds for fee"
-msgstr "Insufficient funds for fee"
+msgstr "Fondi insufficienti per la commissione"
 
 #: public/views/walletHome.html
 msgid "Invalid"
@@ -634,7 +634,7 @@ msgstr "Invalido"
 
 #: src/js/services/bwsError.js
 msgid "Invalid address"
-msgstr "Invalid address"
+msgstr "Indirizzo non valido"
 
 #: src/js/controllers/copayers.js
 msgid "Invitation to share a Copay Wallet"
@@ -679,11 +679,11 @@ msgstr "Ulteriori informazioni sulla migrazione di portafoglio"
 
 #: src/js/services/bwsError.js
 msgid "Locktime in effect. Please wait to create a new spend proposal"
-msgstr "Locktime in effect. Please wait to create a new spend proposal"
+msgstr "Locktime in effetto. Si prega di attendere per creare una nuova proposta di pagamento"
 
 #: src/js/services/bwsError.js
 msgid "Locktime in effect. Please wait to remove this spend proposal"
-msgstr "Locktime in effect. Please wait to remove this spend proposal"
+msgstr "Locktime in effetto. Si prega di attendere per rimuovere questa proposta di pagamento"
 
 #: public/views/paymentUri.html
 msgid "Make a payment to"
@@ -735,7 +735,7 @@ msgstr "Network"
 
 #: src/js/services/bwsError.js
 msgid "Network connection error"
-msgstr "Network connection error"
+msgstr "Errore di connessione alla rete"
 
 #: src/js/services/notificationsService.js
 msgid "New Payment Proposal"
@@ -751,11 +751,11 @@ msgstr "Ancora nessuna transazione"
 
 #: src/js/services/feeService.js
 msgid "Normal"
-msgstr "Normal"
+msgstr "Normale"
 
 #: src/js/services/bwsError.js
 msgid "Not authorized"
-msgstr "Not authorized"
+msgstr "Non autorizzato"
 
 #: public/views/walletHome.html
 #: public/views/modals/customized-amount.html
@@ -878,7 +878,7 @@ msgstr "Pagamento a"
 
 #: public/views/walletHome.html
 msgid "Pending Confirmation"
-msgstr "Pending Confirmation"
+msgstr "In attesa di conferma"
 
 #: public/views/preferencesDeleteWallet.html
 msgid "Permanently delete this wallet. THIS ACTION CANNOT BE REVERSED"
@@ -895,7 +895,7 @@ msgstr "Per favore completa i campi richiesti"
 
 #: src/js/services/bwsError.js
 msgid "Please upgrade Copay to perform this action"
-msgstr "Please upgrade Copay to perform this action"
+msgstr "Si prega di aggiornare Copay per eseguire questa azione"
 
 #: src/js/controllers/import.js
 msgid "Please, select your backup file"
@@ -911,11 +911,11 @@ msgstr "Preferenze"
 
 #: src/js/controllers/backup.js
 msgid "Preparing backup..."
-msgstr "Preparing backup..."
+msgstr "Preparando il backup..."
 
 #: src/js/services/feeService.js
 msgid "Priority"
-msgstr "Priority"
+msgstr "Priorità"
 
 #: public/views/modals/customized-amount.html
 msgid "QR Code"
@@ -983,7 +983,7 @@ msgstr "Sto riprovando..."
 
 #: public/views/translators.html
 msgid "Russian"
-msgstr "Russian"
+msgstr "Russo"
 
 #: public/views/includes/password.html
 msgid "SET"
@@ -1103,11 +1103,11 @@ msgstr "Portafoglio Condiviso"
 #: public/views/join.html
 #: public/views/walletHome.html
 msgid "Show advanced options"
-msgstr "Show advanced options"
+msgstr "Mostra opzioni avanzate"
 
 #: src/js/services/bwsError.js
 msgid "Signatures rejected by server"
-msgstr "Signatures rejected by server"
+msgstr "Firme rifiutate dal server"
 
 #: src/js/controllers/walletHome.js
 msgid "Signing payment"
@@ -1123,11 +1123,11 @@ msgstr "Spagnolo"
 
 #: src/js/services/bwsError.js
 msgid "Spend proposal is not accepted"
-msgstr "Spend proposal is not accepted"
+msgstr "La proposta di pagamento non è accettata"
 
 #: src/js/services/bwsError.js
 msgid "Spend proposal not found"
-msgstr "Spend proposal not found"
+msgstr "Proposta di pagamento non trovata"
 
 #: src/js/controllers/copayers.js
 #: src/js/controllers/import.js
@@ -1154,7 +1154,7 @@ msgstr "Il pagamento è stato creato ma è stato impossibile completarlo. Per fa
 
 #: src/js/controllers/walletHome.js
 msgid "The payment was created but could not be signed. Please try again from home screen"
-msgstr "The payment was created but could not be signed. Please try again from home screen"
+msgstr "Il pagamento è stato creato ma è stato impossibile firmarlo. Per favore prova di nuovo dalla schermata iniziale"
 
 #: public/views/modals/txp-details.html
 msgid "The payment was removed by creator"
@@ -1162,7 +1162,7 @@ msgstr "Il pagamento è stato rimosso dal creatore"
 
 #: src/js/controllers/walletHome.js
 msgid "The payment was signed but could not be broadcasted. Please try again from home screen"
-msgstr "The payment was signed but could not be broadcasted. Please try again from home screen"
+msgstr "Il pagamento è stato firmato ma non è stato possibile trasmetterlo. Per favore prova di nuovo dalla schermata principale"
 
 #: public/views/backup.html
 msgid "The private key for this wallet is encrypted. Exporting a backup will keep the private key encrypted in the backup archive."
@@ -1174,7 +1174,7 @@ msgstr "Il software che stai per utilizzare è un portafoglio digitale gratis, o
 
 #: src/js/services/bwsError.js
 msgid "The spend proposal is not pending"
-msgstr "The spend proposal is not pending"
+msgstr "La proposta di pagamento non è in sospeso"
 
 #: src/js/controllers/copayers.js
 #: src/js/controllers/preferencesDelete.js
@@ -1223,15 +1223,15 @@ msgstr "Transazione"
 
 #: src/js/services/bwsError.js
 msgid "Transaction already broadcasted"
-msgstr "Transaction already broadcasted"
+msgstr "Transazione già trasmessa"
 
 #: public/views/translators.html
 msgid "Translation Credits"
-msgstr "Translation Credits"
+msgstr "Ringraziamenti per la traduzione"
 
 #: public/views/preferencesAbout.html
 msgid "Translators"
-msgstr "Translators"
+msgstr "Traduttori"
 
 #: src/js/controllers/walletHome.js
 msgid "Unable to send transaction proposal"
@@ -1261,7 +1261,7 @@ msgstr "Aggiornamento portafoglio..."
 #: public/views/preferences.html
 #: public/views/walletHome.html
 msgid "Use Unconfirmed Funds"
-msgstr "Use Unconfirmed Funds"
+msgstr "Usa i fondi non confermati"
 
 #: public/views/preferencesAbout.html
 msgid "Version"
@@ -1318,11 +1318,11 @@ msgstr "Portafoglio incompleto e danneggiato"
 
 #: src/js/services/bwsError.js
 msgid "Wallet is full"
-msgstr "Wallet is full"
+msgstr "Portafoglio è pieno"
 
 #: src/js/services/bwsError.js
 msgid "Wallet is not complete"
-msgstr "Wallet is not complete"
+msgstr "Portafoglio non è completo"
 
 #: public/views/create.html
 msgid "Wallet name"
@@ -1330,11 +1330,11 @@ msgstr "Nome Portafoglio"
 
 #: src/js/services/bwsError.js
 msgid "Wallet not found"
-msgstr "Wallet not found"
+msgstr "Portafoglio non trovato"
 
 #: src/js/services/bwsError.js
 msgid "Wallet service not found"
-msgstr "Wallet service not found"
+msgstr "Wallet service non trovato"
 
 #: public/views/preferencesDeleteWallet.html
 msgid "Warning!"
@@ -1342,7 +1342,7 @@ msgstr "Attenzione!"
 
 #: public/views/modals/txp-details.html
 msgid "Warning: this transaction has unconfirmed inputs"
-msgstr "Warning: this transaction has unconfirmed inputs"
+msgstr "Attenzione: questa transazione ha inputs non confermati"
 
 #: src/js/services/profileService.js
 msgid "Wrong password"

@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Spanish\n"
 "Language: es\n"
-"PO-Revision-Date: 2015-08-13 09:15-0400\n"
+"PO-Revision-Date: 2015-08-14 02:33-0400\n"
 
 #: public/views/walletHome.html
 msgid "(possible double spend)"
