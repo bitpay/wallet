@@ -14,15 +14,15 @@
 <div class="modal-content fix-modals-touch" ng-init="updateCopayerList()">
   <h4 class="title m0" translate>Details</h4>
   <ul class="no-bullet size-14 m0">
-    <div ng-if="!tx.showSingle"
+    <div ng-if="!tx.showSingle && tx.outputs"
       ng-repeat="output in [ tx.outputs.summary ]"
       ng-include="'views/includes/output.html'">
     </div>
-    <div ng-if="!tx.showSingle && tx.outputs.summary.showDetails"
+    <div ng-if="!tx.showSingle && tx.outputs && tx.outputs.summary.showDetails"
       ng-repeat="output in tx.outputs.details"
       ng-include="'views/includes/output.html'">
     </div>
-    <div ng-if="tx.showSingle"
+    <div ng-if="tx.showSingle || !tx.outputs"
       ng-repeat="output in [ tx ]"
       ng-include="'views/includes/output.html'">
     </div>
@@ -131,7 +131,7 @@
       ng-show="tx.status=='broadcasted'" translate>
       Payment sent!
     </div>
-    <div class="text-center text-warning"
+    <div class="text-center text-warning m10t"
       ng-show="tx.status=='rejected'" translate>
       Payment finally rejected
     </div>

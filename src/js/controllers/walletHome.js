@@ -204,6 +204,9 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
             var action = lodash.find(tx.actions, {
               copayerId: fc.credentials.copayerId
             });
+            tx.amountStr = profileService.formatAmount(tx.amount) + ' ' + config.unitName;
+            tx.alternativeAmount = rateService.toFiat(tx.amount, config.alternativeIsoCode) ? rateService.toFiat(tx.amount, config.alternativeIsoCode).toFixed(2) : 'N/A';
+            tx.alternativeAmountStr = tx.alternativeAmount + " " + config.alternativeIsoCode;
             $scope.tx = tx;
             if (!action && tx.status == 'pending')
               $scope.tx.pendingForUs = true;
