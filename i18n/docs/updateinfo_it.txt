@@ -1,0 +1,5 @@
+* Livello della commissione basata sul carico del network bitcoin
+* Opzione per impedire la creazione di transazioni con input non confermati
+* Aggiunte le opzioni avanzate di invio
+* Aggiunto il supporto alla lingua italiana, russa e greca
+* Correzione bug minori
