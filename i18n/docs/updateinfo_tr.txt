@@ -1,5 +1,5 @@
-* Adaptive fee levels based on bitcoin network load
-* Option to prevent creating transactions with unconfirmed inputs
-* Added advanced sending options
-* Added Italian, Russian, and Greek language options
-*Küçük hata düzeltmeleri
+* Bitcoin ağ yüküne göre daha uygun ücret düzeyleri
+* Onaylanmamış girişler ile işlem oluşturmayı önlemek için tercih
+* Gelişmiş gönderme seçenekleri eklendi
+* İtalyanca, Rusça ve Yunanca dil seçenekleri eklendi
+* Ufak hata düzeltmeleri
