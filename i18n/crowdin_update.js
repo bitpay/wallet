@@ -14,8 +14,8 @@ var local_file_name1 = path.join(__dirname, 'po/template.pot')
 // Similar to Github, normalize all line breaks to CRLF so that different people
 // using different OSes to update does not constantly swith format back and forth.
 var local_file1_text = fs.readFileSync(local_file_name1, 'utf8');
-local_file1_text = local_file1_text.replace('\r\n', '\n');
-local_file1_text = local_file1_text.replace('\n', '\r\n');
+local_file1_text = local_file1_text.replace(/\r\n/g, '\n');
+local_file1_text = local_file1_text.replace(/\n/g, '\r\n');
 fs.writeFileSync(local_file_name1, local_file1_text);
 
 var local_file1 = fs.createReadStream(local_file_name1)
@@ -23,8 +23,8 @@ var local_file1 = fs.createReadStream(local_file_name1)
 var local_file_name2 = path.join(__dirname, 'docs/appstore_en.txt')
 
 var local_file2_text = fs.readFileSync(local_file_name2, 'utf8');
-local_file2_text = local_file2_text.replace('\r\n', '\n');
-local_file2_text = local_file2_text.replace('\n', '\r\n');
+local_file2_text = local_file2_text.replace(/\r\n/g, '\n');
+local_file2_text = local_file2_text.replace(/\n/g, '\r\n');
 fs.writeFileSync(local_file_name2, local_file2_text);
 
 var local_file2 = fs.createReadStream(local_file_name2)
@@ -32,8 +32,8 @@ var local_file2 = fs.createReadStream(local_file_name2)
 var local_file_name3 = path.join(__dirname, 'docs/updateinfo_en.txt')
 
 var local_file3_text = fs.readFileSync(local_file_name3, 'utf8');
-local_file3_text = local_file3_text.replace('\r\n', '\n');
-local_file3_text = local_file3_text.replace('\n', '\r\n');
+local_file3_text = local_file3_text.replace(/\r\n/g, '\n');
+local_file3_text = local_file3_text.replace(/\n/g, '\r\n');
 fs.writeFileSync(local_file_name3, local_file3_text);
 
 var local_file3 = fs.createReadStream(local_file_name3)
@@ -64,4 +64,3 @@ if (crowdin_api_key != '') {
     });
   })
 };
-
