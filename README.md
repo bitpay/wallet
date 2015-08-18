@@ -120,6 +120,7 @@ This will download all partially/completely translated languages and clean out a
 - Portuguese: @pmichelazzo
 - Spanish: @cmgustavo
 - German: @saschad
+- Russian: @vadim0
 
 *Gracias totales!​*
 
