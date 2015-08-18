@@ -122,3 +122,22 @@ This will download all partially/completely translated languages and clean out a
 - German: @saschad
 
 *Gracias totales!​*
+
+## Release schedules
+Copay uses following convention for versioning: 
+```
+  MAJOR.MINOR.BATCH, eg: 1.1.3
+```
+Any release that adds features should modify the MINOR or MAJOR number.
+
+### Bug Fixing Releases 
+
+We release it ASAP in all platforms. As soon as the bug is fixed, we release the new version to all platforms.   A week later we can send a new release with translation update (like 1.1.4 and then 1.1.5). There is no coordination so all platforms are updated at the same time.
+
+###  Minor and Major releases 
+  - t+0: tag the release 1.2 and "text lock" (meaning, only non-text related bug fixes. Though this rule is sometimes broken, it's good to make a rule.)
+  - t+7: testing for 1.2 is finished, translation is also finished, and 1.2.1 is tagged with all translations and bug fixes made in the last week.
+  - t+7: iOS is submitted for 1.2.1. All other platforms submitted with auto-release off.
+  - t + (~17): All platforms 1.2.1 is released when iOS approves.
+
+
