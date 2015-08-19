@@ -96,6 +96,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.lockedBalanceSat = null;
     self.availableBalanceSat = null;
     self.pendingAmount = null;
+    self.spendUnconfirmed = null;
 
     self.totalBalanceStr = null;
     self.availableBalanceStr = null;
@@ -104,6 +105,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.alternativeBalanceAvailable = false;
     self.totalBalanceAlternative = null;
 
+    self.currentFeeLevel = null;
     self.notAuthorized = false;
     self.txHistory = [];
     self.txHistoryPaging = false;
