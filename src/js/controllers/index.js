@@ -95,6 +95,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.totalBalanceSat = null;
     self.lockedBalanceSat = null;
     self.availableBalanceSat = null;
+    self.pendingAmount = null;
 
     self.totalBalanceStr = null;
     self.availableBalanceStr = null;
