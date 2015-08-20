@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('walletHomeController', function($scope, $rootScope, $timeout, $filter, $modal, $log, notification, txStatus, isCordova, profileService, lodash, configService, rateService, storageService, bitcore, isChromeApp, gettext, gettextCatalog, nodeWebkit, addressService, feeService, bwsError) {
+angular.module('copayApp.controllers').controller('walletHomeController', function($scope, $rootScope, $timeout, $filter, $modal, $log, notification, txStatus, isCordova, profileService, lodash, configService, rateService, storageService, bitcore, isChromeApp, gettext, gettextCatalog, nodeWebkit, addressService, feeService, bwsError, utilService) {
 
   var self = this;
   $rootScope.hideMenuBar = false;
@@ -171,9 +171,6 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     var ModalInstanceCtrl = function($scope, $modalInstance) {
       $scope.error = null;
       $scope.tx = tx;
-      $scope.amountStr = tx.amountStr;
-      $scope.feeStr = tx.feeStr;
-      $scope.alternativeAmountStr = tx.alternativeAmountStr;
       $scope.copayers = copayers
       $scope.copayerId = fc.credentials.copayerId;
       $scope.canSign = fc.canSign();
@@ -204,10 +201,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
             var action = lodash.find(tx.actions, {
               copayerId: fc.credentials.copayerId
             });
-            tx.amountStr = profileService.formatAmount(tx.amount) + ' ' + config.unitName;
-            tx.alternativeAmount = rateService.toFiat(tx.amount, config.alternativeIsoCode) ? rateService.toFiat(tx.amount, config.alternativeIsoCode).toFixed(2) : 'N/A';
-            tx.alternativeAmountStr = tx.alternativeAmount + " " + config.alternativeIsoCode;
-            $scope.tx = tx;
+            $scope.tx = utilService.processTx(tx);
             if (!action && tx.status == 'pending')
               $scope.tx.pendingForUs = true;
             $scope.updateCopayerList();
@@ -349,10 +343,6 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       $scope.copyAddress = function(addr) {
         if (!addr) return;
         self.copyAddress(addr);
-      };
-
-      $scope.toggleOutputDetails = function(summary) {
-        summary.showDetails = !summary.showDetails;
       };
 
       $scope.cancel = function() {
@@ -1017,7 +1007,6 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       $scope.color = fc.backgroundColor;
       $scope.copayerId = fc.credentials.copayerId;
       $scope.isShared = fc.credentials.n > 1;
-      $scope.feeStr = btx.feeStr;
 
       $scope.getAmount = function(amount) {
         return self.getAmount(amount);
@@ -1041,9 +1030,6 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
         $modalInstance.dismiss('cancel');
       };
 
-      $scope.toggleOutputDetails = function(summary) {
-        summary.showDetails = !summary.showDetails;
-      };
     };
 
     var modalInstance = $modal.open({
