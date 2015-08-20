@@ -1,24 +1,14 @@
-<div class="ng-animate-disabled row collapse">
-  <li ng-if="output.isSummary" class="line-b p10 oh" ng-click="toggleOutputDetails(output)">
-    <span class="text-gray" translate>Recipients</span>:
-    <span class="right enable_text_select">{{output.recipientCount}}
-        <i ng-show="output.showDetails" class="icon-arrow-up3 size-24"></i>
-        <i ng-show="!output.showDetails" class="icon-arrow-down3 size-24"></i>
-    </span>
-  </li>
-  <li ng-if="!output.isSummary" class="line-b p10 oh" ng-click="copyAddress(output.toAddress)">
-    <span class="text-gray" translate>To</span>:
-    <span class="right enable_text_select">{{output.toAddress || output.address}}</span>
-  </li>
-  <li class="line-b p10">
-    <span ng-show="output.isSummary" class="text-gray" translate>Total</span>
-    <span ng-show="!output.isSummary" class="text-gray" translate>Amount</span>:
-    <span class="right">{{output.amountStr}}
-      <span ng-show="output.alternativeAmountStr" class="label gray radius">{{output.alternativeAmountStr}}</span>
-    </span>
-  </li>
-  <li class="line-b p10 oh">
-    <span class="text-gray" translate>Note</span>:
-    <span class="right">{{output.message}}</span>
-  </li>
-</div>
+<li class="p10 oh" ng-click="copyAddress(output.toAddress)">
+  <span class="text-gray" translate>To</span>:
+  <span class="right enable_text_select">{{output.toAddress || output.address}}</span>
+</li>
+<li class="p10">
+  <span class="text-gray" translate>Amount</span>:
+  <span class="right">{{output.amountStr}}
+    <span ng-show="output.alternativeAmountStr" class="label gray radius">{{output.alternativeAmountStr}}</span>
+  </span>
+</li>
+<li class="p10 oh">
+  <span class="text-gray" translate>Note</span>:
+  <span class="right">{{output.message}}</span>
+</li>
