@@ -89,25 +89,27 @@ angular
               $scope.create = function(noWallet) {
                 $scope.creatingProfile = true;
 
-                profileService.create({
-                  noWallet: noWallet
-                }, function(err) {
-                  if (err) {
-                    $scope.creatingProfile = false;
-                    $log.warn(err);
-                    $scope.error = err;
-                    $scope.$apply();
-                    $timeout(function() {
-                      $scope.create(noWallet);
-                    }, 3000);
-                  }
-                });
+                $timeout(function() {
+                  profileService.create({
+                    noWallet: noWallet
+                  }, function(err) {
+                    if (err) {
+                      $scope.creatingProfile = false;
+                      $log.warn(err);
+                      $scope.error = err;
+                      $scope.$apply();
+                      $timeout(function() {
+                        $scope.create(noWallet);
+                      }, 3000);
+                    }
+                  });
+                }, 100);
               };
             }
           }
         }
       });
-      
+
       $stateProvider
       .state('translators', {
         url: '/translators',
@@ -125,7 +127,7 @@ angular
         views: {
           'main': {
             templateUrl: 'views/disclaimer.html',
-            controller: function($scope, $timeout, storageService, applicationService, go) {
+            controller: function($scope, $timeout, storageService, applicationService, go, gettextCatalog, isCordova) {
               storageService.getCopayDisclaimerFlag(function(err, val) {
                 $scope.agreed = val;
                 $timeout(function() {
@@ -134,11 +136,20 @@ angular
               });
 
               $scope.agree = function() {
-                storageService.setCopayDisclaimerFlag(function(err) {
-                  $timeout(function() {
-                    applicationService.restart();
-                  }, 1000);
-                });
+                if (isCordova) {
+                  window.plugins.spinnerDialog.show(null, gettextCatalog.getString('Loading...'), true);
+                }
+                $scope.loading = true;
+                $timeout(function() {
+                  storageService.setCopayDisclaimerFlag(function(err) {
+                    $timeout(function() {
+                      if (isCordova) {
+                        window.plugins.spinnerDialog.hide();
+                      }
+                      applicationService.restart();
+                    }, 1000);
+                  });
+                }, 100);
               };
             }
           }
@@ -531,7 +542,7 @@ angular
         event.preventDefault();
       }
 
-      /* 
+      /*
        * --------------------
        */
 
@@ -630,7 +641,6 @@ angular
             cachedBackPanel.getElementsByClassName('content')[0].scrollTop = sc;
 
           cachedTransitionState = desiredTransitionState;
-          //console.log('CACHing animation', cachedTransitionState); 
           return false;
         }
       }
