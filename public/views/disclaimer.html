@@ -19,11 +19,13 @@
 
     <div ng-show="!agreed">
       <p translate>I affirm that I have read, understood, and agree with these terms.</p>
-      <button class="black round expand" ng-click="agree()">
-        <span translate> Agree </span>
+      <button class="black round expand" ng-click="agree()" ng-disabled="loading" translate>
+        Agree
       </button>
     </div>
-    <button ng-show="agreed && !index.hasProfile" class="round" ng-click="agree()" translate>Go back</button>
+    <button ng-show="agreed && !index.hasProfile" class="round expand" ng-click="agree()" translate>
+      Go back
+    </button>
   </div>
   <div class="extra-margin-bottom"></div>
 </div>
