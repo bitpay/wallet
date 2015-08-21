@@ -302,4 +302,18 @@ angular.module('copayApp.directives')
       replace: true,
       templateUrl: 'views/includes/menu-toggle.html'
     }
+  })
+  .directive('logo', function() {
+    return {
+      restrict: 'E',
+      scope: {
+        width: "@",
+        negative: "="
+      },
+      controller: function($scope) {
+        $scope.logo_url = $scope.negative ? 'img/logo-negative.png' : 'img/logo.png';
+      },
+      replace: true,
+      template: '<img ng-src="{{ logo_url }}" alt="Copay">'
+    }
   });
