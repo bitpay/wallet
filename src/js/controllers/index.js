@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, lodash, go, profileService, configService, isCordova, rateService, storageService, addressService, gettextCatalog, gettext, amMoment, nodeWebkit, addonManager, feeService, isChromeApp, bwsError) {
+angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, lodash, go, profileService, configService, isCordova, rateService, storageService, addressService, gettextCatalog, gettext, amMoment, nodeWebkit, addonManager, feeService, isChromeApp, bwsError, utilService) {
   var self = this;
   self.isCordova = isCordova;
   self.onGoingProcess = {};
@@ -469,49 +469,11 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     });
   };
 
-  self.summarizeOutputs = function(tx, formatAmount) {
-    tx.showSingle = true;
-    if (tx.outputs) {
-      tx.showSingle = false;
-      tx.outputs.details = lodash.clone(tx.outputs);
-      var total = lodash.reduce(tx.outputs.details, function(total, o) {
-        formatAmount(o);
-        return total + o.amount;
-      }, 0);
-      if (tx.action != 'received') {
-        tx.amount = total;
-      }
-      tx.outputs.summary = {
-        amount: tx.amount,
-        message: tx.message,
-        isSummary: true,
-        showDetails: false,
-        recipientCount: tx.outputs.details.length
-      };
-      formatAmount(tx.outputs.summary);
-      if (tx.outputs.length === 1 && !tx.outputs[0].message) {
-        tx.showSingle = true;
-        tx.toAddress = tx.outputs[0].toAddress; // txproposal
-        tx.address = tx.outputs[0].address; // txhistory
-      }
-    }
-  };
-
   self.setPendingTxps = function(txps) {
-    var config = configService.getSync().wallet.settings;
     self.pendingTxProposalsCountForUs = 0;
     lodash.each(txps, function(tx) {
-      function formatAmount(tx) {
-        tx.amountStr = profileService.formatAmount(tx.amount) + ' ' + config.unitName;
-        tx.alternativeAmount = rateService.toFiat(tx.amount, config.alternativeIsoCode) ? rateService.toFiat(tx.amount, config.alternativeIsoCode).toFixed(2) : 'N/A';
-        tx.alternativeAmountStr = tx.alternativeAmount + " " + config.alternativeIsoCode;
-      };
-
-      self.summarizeOutputs(tx, formatAmount);
-      formatAmount(tx);
-
-      tx.feeStr = profileService.formatAmount(tx.fee) + ' ' + config.unitName;
-      tx.alternativeIsoCode = config.alternativeIsoCode;
+      
+      tx = utilService.processTx(tx);
 
       var action = lodash.find(tx.actions, {
         copayerId: self.copayerId
@@ -546,21 +508,12 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     var c = 0;
     self.txHistoryPaging = txs[self.limitHistory] ? true : false;
     lodash.each(txs, function(tx) {
+      tx = utilService.processTx(tx);
 
       // no future transactions...
       if (tx.time > now)
         tx.time = now;
 
-      tx.rateTs = Math.floor((tx.ts || now) / 1000);
-      if (tx.fees)
-        tx.feeStr = profileService.formatAmount(tx.fees) + ' ' + config.unitName;
-
-      function formatAmount(tx) {
-        tx.amountStr = profileService.formatAmount(tx.amount); //$filter('noFractionNumber')(
-      };
-
-      self.summarizeOutputs(tx, formatAmount);
-      formatAmount(tx);
       if (c < self.limitHistory) {
         self.txHistory.push(tx);
         c++;
