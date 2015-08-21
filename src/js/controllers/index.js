@@ -344,7 +344,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   };
 
   self.setCurrentFeeLevel = function(level) {
-    self.currentFeeLevel = level || configService.getSync().wallet.settings.feeLevel || 'priority';
+    self.currentFeeLevel = level || configService.getSync().wallet.settings.feeLevel || 'normal';
     self.setSendMax();
   };
 
@@ -747,7 +747,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     $timeout(function() {
       $rootScope.$apply();
     });
- 
+
   };
 
   self.recreate = function(cb) {
