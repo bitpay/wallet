@@ -14,21 +14,41 @@
 <div class="modal-content fix-modals-touch" ng-init="updateCopayerList()">
   <h4 class="title m0" translate>Details</h4>
   <ul class="no-bullet size-14 m0">
-    <div ng-if="!tx.showSingle"
-      ng-repeat="output in [ tx.outputs.summary ]"
+    <li ng-if="!tx.hasMultiplesOutputs" 
+      class="line-b p10 oh" 
+      ng-click="copyAddress(tx.toAddress)">
+      <span class="text-gray" translate>To</span>:
+      <span class="right enable_text_select">{{tx.toAddress}}</span>
+    </li>
+    <li class="line-b p10">
+      <span ng-show="tx.hasMultiplesOutputs" class="text-gray" translate>Total</span>
+      <span ng-show="!tx.hasMultiplesOutputs" class="text-gray" translate>Amount</span>:
+      <span class="right">{{tx.amountStr}}
+        <span ng-show="tx.alternativeAmountStr" class="label gray radius">{{tx.alternativeAmountStr}}</span>
+      </span>
+    </li>
+    <li class="line-b p10 oh">
+      <span class="text-gray" translate>Note</span>:
+      <span class="right">{{tx.message}}</span>
+    </li>
+    
+    <li ng-show="tx.hasMultiplesOutputs" class="line-b p10 oh" 
+      ng-click="showMultiplesOutputs = !showMultiplesOutputs">
+      <span class="text-gray" translate>Recipients</span>:
+      <span class="right">{{tx.recipientCount}}
+        <i ng-show="showMultiplesOutputs" class="icon-arrow-up3 size-24"></i>
+        <i ng-show="!showMultiplesOutputs" class="icon-arrow-down3 size-24"></i>
+      </span>
+    </li>
+
+    <div class="line-b" ng-show="tx.hasMultiplesOutputs && showMultiplesOutputs"
+      ng-repeat="output in tx.outputs"
       ng-include="'views/includes/output.html'">
     </div>
-    <div ng-if="!tx.showSingle && tx.outputs.summary.showDetails"
-      ng-repeat="output in tx.outputs.details"
-      ng-include="'views/includes/output.html'">
-    </div>
-    <div ng-if="tx.showSingle"
-      ng-repeat="output in [ tx ]"
-      ng-include="'views/includes/output.html'">
-    </div>
+
     <li class="line-b p10">
       <span class="text-gray" translate>Fee</span>:
-      <span class="right">{{feeStr}}</span>
+      <span class="right">{{tx.feeStr}}</span>
     </li> 
     <li class="line-b p10">
       <span class="text-gray" translate>Time</span>:
@@ -131,7 +151,7 @@
       ng-show="tx.status=='broadcasted'" translate>
       Payment sent!
     </div>
-    <div class="text-center text-warning"
+    <div class="text-center text-warning m10t"
       ng-show="tx.status=='rejected'" translate>
       Payment finally rejected
     </div>
