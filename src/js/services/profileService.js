@@ -25,7 +25,7 @@ angular.module('copayApp.services')
       // Set local object
       if (walletId)
         root.focusedClient = root.walletClients[walletId];
-      else 
+      else
         root.focusedClient = [];
 
       if (lodash.isEmpty(root.focusedClient)) {
@@ -174,7 +174,7 @@ angular.module('copayApp.services')
       var walletClient = bwcService.getClient();
       // TODO LANG...
       // TODO...
-log.warn("TODO LANG!")
+      $log.warn("TODO LANG!")
       walletClient.seedFromRandomWithMnemonic('livenet');
 
       walletClient.createWallet('Personal Wallet', 'me', 1, 1, {
@@ -201,7 +201,7 @@ log.warn("TODO LANG!")
       }
       // TODO LANG...
       // TODO...
-log.warn("TODO LANG!")
+      $log.warn("TODO LANG!")
       walletClient.seedFromRandomWithMnemonic(opts.networkName);
 
       walletClient.createWallet(opts.name, opts.myName || 'me', opts.m, opts.n, {
@@ -239,7 +239,7 @@ log.warn("TODO LANG!")
         if (lodash.find(root.profile.credentials, {
           'walletId': walletData.walletId
         })) {
-            return cb(gettext('Cannot join the same wallet more that once'));
+          return cb(gettext('Cannot join the same wallet more that once'));
         }
       } catch (ex) {
         return cb(gettext('Bad wallet invitation'));
@@ -287,18 +287,7 @@ log.warn("TODO LANG!")
       });
     };
 
-    root.importWallet = function(str, opts, cb) {
-      var walletClient = bwcService.getClient();
-      $log.debug('Importing Wallet:', opts);
-      try {
-        walletClient.import(str, {
-          compressed: opts.compressed,
-          password: opts.password
-        });
-      } catch (err) {
-        return cb(gettext('Could not import. Check input file and password'));
-      }
-
+    root._addWalletClient = function(walletClient, cb) {
       var walletId = walletClient.credentials.walletId;
 
       // check if exist
@@ -316,7 +305,51 @@ log.warn("TODO LANG!")
           return cb(null, walletId);
         });
       });
+
     };
+
+    root.importWallet = function(str, opts, cb) {
+      var walletClient = bwcService.getClient();
+      $log.debug('Importing Wallet:', opts);
+      try {
+        walletClient.import(str, {
+          compressed: opts.compressed,
+          password: opts.password
+        });
+      } catch (err) {
+        return cb(gettext('Could not import. Check input file and password'));
+      }
+      root._addWalletClient(walletClient, cb);
+    };
+
+    root.importWalletMnemonic = function(words, opts, cb) {
+      var walletClient = bwcService.getClient();
+      $log.debug('Importing Wallet Mnemonic');
+
+      walletClient.importFromMnemonic(words, {
+        passphrase: opts.passphrase,
+      }, function(err) {
+        if (err)
+          return bwsError.cb(err, gettext('Could not import'), cb);
+
+        root._addWalletClient(walletClient, cb);
+      });
+    };
+
+
+    root.importWalletMnemonicEx = function(words, opts, cb) {
+      var walletClient = bwcService.getClient();
+      $log.debug('Importing Wallet Mnemonic EX', opts);
+
+      walletClient.importFromMnemonic(words, opts,
+        function(err) {
+          if (err)
+            return bwsError.cb(err, gettext('Could not import'), cb);
+
+          root._addWalletClient(walletClient, cb);
+        });
+    };
+
 
     root.create = function(opts, cb) {
       $log.info('Creating profile');
@@ -409,13 +442,17 @@ log.warn("TODO LANG!")
       $log.debug('Wallet is encrypted');
       $rootScope.$emit('Local/NeedsPassword', false, function(err2, password) {
         if (err2 || !password) {
-          return cb({message: (err2 || gettext('Password needed'))});
+          return cb({
+            message: (err2 || gettext('Password needed'))
+          });
         }
         try {
           fc.unlock(password);
         } catch (e) {
           $log.debug(e);
-          return cb({message: gettext('Wrong password')});
+          return cb({
+            message: gettext('Wrong password')
+          });
         }
         $timeout(function() {
           if (fc.isPrivKeyEncrypted()) {
