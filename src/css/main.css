@@ -168,12 +168,6 @@ input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill, inpu
   top: 0;
 }
 
-.logo-setup {
-  text-align: center;
-  margin: 0 0 0.1rem 0;
-  color: #8597A7;
-}
-
 .box-setup-footer {
   overflow: hidden;
   margin-top: 1rem;
@@ -520,11 +514,6 @@ input[type=number]::-webkit-outer-spin-button {
 
 ul.pagination li.current a {
   background: #1ABC9C;
-}
-
-.logo {
-  background: transparent url('../img/logo-negative-beta.svg') no-repeat;
-  background-size: 130px 51px;
 }
 
 input {
