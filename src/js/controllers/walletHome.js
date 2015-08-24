@@ -1164,7 +1164,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
   this.sendAll = function(amount, feeStr, feeRate) {
     var self = this;
-    var msg = gettextCatalog.getString("{{fee}} will be discounted for bitcoin networking fees", {
+    var msg = gettextCatalog.getString("{{fee}} will be deducted for bitcoin networking fees", {
       fee: feeStr
     });
 
