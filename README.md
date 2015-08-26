@@ -98,11 +98,11 @@ For more information regarding how addresses are generated using this procedure,
 
 ## Backup format
 
-Copay encrypts the backup with the Stanford JS Cryto Library (https://crypto.stanford.edu/sjcl/). To extract the private keys you can use https://bitwiseshiftleft.github.io/sjcl/demo/ , copy the backup to 'ciphertext' and enter your password. The resulting JSON will have a key named: `xPrivKey`, that is the extended private key of your wallet. That information is enought to sign any transaction of your wallet, so be careful handling it. 
+Copay encrypts the backup with the Stanford JS Cryto Library (https://crypto.stanford.edu/sjcl/). To extract the private key of your wallet you can use https://bitwiseshiftleft.github.io/sjcl/demo/, copy the backup to 'ciphertext' and enter your password. The resulting JSON will have a key named: `xPrivKey`, that is the extended private key of your wallet. That information is enought to sign any transaction of your wallet, so be careful handling it. 
 
 Also in the backup there is also key `publicKeyRing`. That hold the extended public keys of the Copayers. Using a tool like [Bitcore PlayGround](http://bitcore.io/playground/#/multisig), and following [BIP45](https://github.com/bitcoin/bips/blob/master/bip-0045.mediawiki)  it is possible to generate all wallet address. Note that addresses generated at BWS use the 'shared cosigner index' (2147483647) so Copay address index look like:
 `m/45'/2147483647/0/x` for main addresses and
-`m/45'/2147483647/1/y` for change addresses, where `x` and `y` and integers starting from `0`. To generate the wallet addresses it is also needed to specify the required number of signatures. That is present in the backup also with the key `n`.
+`m/45'/2147483647/1/y` for change addresses, where `x` and `y` are integers starting from `0`. The maximun values of `x` and `y` depend on the wallet usage, and in a restore procedure, the generated addresses are scanned on the blockchain looking for transactions (this is the 'scan' procedure what you can see on Settings at Copay App). To generate the wallet addresses it is also needed to specify the required number of signatures. That is present in the backup also with the key `n`.
 
 
 
