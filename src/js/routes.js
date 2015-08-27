@@ -463,22 +463,10 @@ angular
         needProfile: false
       });
   })
-  .run(function($rootScope, $state, $log, gettextCatalog, uriHandler, isCordova, amMoment, profileService, $timeout, nodeWebkit) {
+  .run(function($rootScope, $state, $log, uriHandler, isCordova, profileService, $timeout, nodeWebkit, uxLanguage) {
     FastClick.attach(document.body);
 
-    // Auto-detect browser language
-    var userLang, androidLang;
-
-    if (navigator && navigator.userAgent && (androidLang = navigator.userAgent.match(/android.*\W(\w\w)-(\w\w)\W/i))) {
-      userLang = androidLang[1];
-    } else {
-      // works for iOS and Android 4.x
-      userLang = navigator.userLanguage || navigator.language;
-    }
-
-    userLang = userLang ? (userLang.split('-', 1)[0] || 'en') : 'en';
-    gettextCatalog.setCurrentLanguage(userLang);
-    amMoment.changeLocale(userLang);
+    uxLanguage.init();
 
     // Register URI handler, not for mobileApp
     if (!isCordova) {
