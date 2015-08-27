@@ -1,6 +1,6 @@
 'use strict';
 angular.module('copayApp.services')
-  .factory('profileService', function profileServiceFactory($rootScope, $location, $timeout, $filter, $log, lodash, storageService, bwcService, configService, notificationService, isChromeApp, isCordova, gettext, nodeWebkit, bwsError) {
+  .factory('profileService', function profileServiceFactory($rootScope, $location, $timeout, $filter, $log, lodash, storageService, bwcService, configService, notificationService, isChromeApp, isCordova, gettext, nodeWebkit, bwsError, uxLanguage) {
 
     var root = {};
 
@@ -165,11 +165,20 @@ angular.module('copayApp.services')
       });
     };
 
-    root._seedWallet = function(walletClient) {
-      var config = configService.getSync().wallet.settings;
-console.log('[profileService.js.169:config:]',config); //TODO
-asdd;
-      walletClient.seedFromRandomWithMnemonic('livenet',null, mnemonicLang);
+    root._seedWallet = function(walletClient, network) {
+      var lang = uxLanguage.getCurrentLanguage();
+
+      try {
+        walletClient.seedFromRandomWithMnemonic(network, null, lang);
+      } catch (e) {
+        $log.info('Error creating seed: ' + e.message);
+        if (e.message.indexOf('language') > 0) {
+          $log.info('Using default language for mnemonic');
+          walletClient.seedFromRandomWithMnemonic(network);
+        } else {
+          throw (e);
+        }
+      }
     };
 
     root._createNewProfile = function(opts, cb) {
@@ -179,7 +188,7 @@ asdd;
       }
 
       var walletClient = bwcService.getClient();
-      this._seedWallet(walletClient);
+      root._seedWallet(walletClient, 'livenet');
 
       walletClient.createWallet('Personal Wallet', 'me', 1, 1, {
         network: 'livenet'
@@ -203,10 +212,7 @@ asdd;
           return cb(gettext('Could not create using the specified extended private key'));
         }
       }
-      // TODO LANG...
-      // TODO...
-      $log.warn("TODO LANG!")
-      walletClient.seedFromRandomWithMnemonic(opts.networkName);
+      root._seedWallet(walletClient, opts.networkName);
 
       walletClient.createWallet(opts.name, opts.myName || 'me', opts.m, opts.n, {
         network: opts.networkName
