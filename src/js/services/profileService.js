@@ -165,6 +165,13 @@ angular.module('copayApp.services')
       });
     };
 
+    root._seedWallet = function(walletClient) {
+      var config = configService.getSync().wallet.settings;
+console.log('[profileService.js.169:config:]',config); //TODO
+asdd;
+      walletClient.seedFromRandomWithMnemonic('livenet',null, mnemonicLang);
+    };
+
     root._createNewProfile = function(opts, cb) {
 
       if (opts.noWallet) {
@@ -172,10 +179,7 @@ angular.module('copayApp.services')
       }
 
       var walletClient = bwcService.getClient();
-      // TODO LANG...
-      // TODO...
-      $log.warn("TODO LANG!")
-      walletClient.seedFromRandomWithMnemonic('livenet');
+      this._seedWallet(walletClient);
 
       walletClient.createWallet('Personal Wallet', 'me', 1, 1, {
         network: 'livenet'

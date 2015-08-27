@@ -81,35 +81,6 @@ angular
         views: {
           'main': {
             templateUrl: 'views/splash.html',
-            controller: function($scope, $timeout, $log, profileService, storageService, go) {
-              storageService.getCopayDisclaimerFlag(function(err, val) {
-                if (!val) go.path('disclaimer');
-
-                if (profileService.profile) {
-                  go.walletHome();
-                }
-              });
-
-              $scope.create = function(noWallet) {
-                $scope.creatingProfile = true;
-
-                $timeout(function() {
-                  profileService.create({
-                    noWallet: noWallet
-                  }, function(err) {
-                    if (err) {
-                      $scope.creatingProfile = false;
-                      $log.warn(err);
-                      $scope.error = err;
-                      $scope.$apply();
-                      $timeout(function() {
-                        $scope.create(noWallet);
-                      }, 3000);
-                    }
-                  });
-                }, 100);
-              };
-            }
           }
         }
       });
@@ -131,31 +102,6 @@ angular
         views: {
           'main': {
             templateUrl: 'views/disclaimer.html',
-            controller: function($scope, $timeout, storageService, applicationService, go, gettextCatalog, isCordova) {
-              storageService.getCopayDisclaimerFlag(function(err, val) {
-                $scope.agreed = val;
-                $timeout(function() {
-                  $scope.$digest();
-                }, 1);
-              });
-
-              $scope.agree = function() {
-                if (isCordova) {
-                  window.plugins.spinnerDialog.show(null, gettextCatalog.getString('Loading...'), true);
-                }
-                $scope.loading = true;
-                $timeout(function() {
-                  storageService.setCopayDisclaimerFlag(function(err) {
-                    $timeout(function() {
-                      if (isCordova) {
-                        window.plugins.spinnerDialog.hide();
-                      }
-                      applicationService.restart();
-                    }, 1000);
-                  });
-                }, 100);
-              };
-            }
           }
         }
       })
