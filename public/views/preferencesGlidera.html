@@ -1,0 +1,94 @@
+<div 
+  class="topbar-container" 
+  ng-include="'views/includes/topbar.html'"
+  ng-init="titleSection='Glidera'; goBackToState = 'preferences'">
+</div>
+
+<div class="content preferences p20v" ng-controller="preferencesGlideraController as glidera">
+
+  <div class="row" ng-init="glidera.init(index.glideraToken)">
+    <div class="large-12 columns">
+      <a  
+        class="button outline dark-gray" 
+        ng-click="$root.openExternalLink(glidera.authenticateUrl)">
+        Get OAuth Code
+      </a>
+
+      <form name="form" ng-submit="glidera.submit(code)" novalidate>
+        <label>OAuth Code
+          <input type="text" ng-model="code">
+        </label>
+        <input type="submit" value="Get Access Token">
+      </form>
+
+      <div ng-show="index.glideraToken">
+        <a  
+          class="button warning" 
+          ng-click="glidera.revokeToken()">
+          Revoke Token
+        </a>
+
+        <h2>Permissions</h2>
+        <ul>
+          <li>personal_info: {{glidera.permission.personal_info}}
+          <li>transact: {{glidera.permission.transact}}
+          <li>transaction_history: {{glidera.permission.transaction_history}}
+          <li>view_email_address: {{glidera.permission.view_email_address}}
+        </ul>
+
+        <h2>Email</h2>
+        <ul>
+          <li>Email: {{glidera.email.email}}
+          <li>userEmailIsSetup: {{glidera.email.userEmailIsSetup}}
+        </ul>
+
+        <h2>Personal Info</h2>
+        <ul>
+          <li>first name: {{glidera.personalInfo.firstName}}
+          <li>middleName: {{glidera.personalInfo.middleName}}
+          <li>last name: {{glidera.personalInfo.lastName}}
+          <li>birthDate: {{glidera.personalInfo.birthDate}}
+          <li>address1: {{glidera.personalInfo.address1}}
+          <li>address2: {{glidera.personalInfo.address2}}
+          <li>city: {{glidera.personalInfo.city}}
+          <li>state: {{glidera.personalInfo.state}}
+          <li>zipCode: {{glidera.personalInfo.zipCode}}
+          <li>countryCode: {{glidera.personalInfo.countryCode}}
+          <li>occupation: {{glidera.personalInfo.occupation}}
+          <li>basicInfoState: {{glidera.personalInfo.basicInfoState}}
+        </ul>
+
+        <h2>Status</h2>
+        <ul>
+          <li>userCanTransact: {{glidera.status.userCanTransact}}
+          <li>userCanBuy: {{glidera.status.userCanBuy}}
+          <li>userCanSell: {{glidera.status.userCanSell}}
+          <li>userEmailIsSetup: {{glidera.status.userEmailIsSetup}}
+          <li>userPhoneIsSetup: {{glidera.status.userPhoneIsSetup}}
+          <li>userBankAccountIsSetup: {{glidera.status.userBankAccountIsSetup}}
+          <li>personalInfoState: {{glidera.status.personalInfoState}}
+          <li>bankAccountState: {{glidera.status.bankAccountState}}
+          <li>country: {{glidera.status.country}}
+        </ul>
+
+        <h2>Limits</h2>
+        <ul>
+          <li>dailyBuy: {{glidera.limits.dailyBuy}}
+          <li>dailySell: {{glidera.limits.dailySell}}
+          <li>monthlyBuy: {{glidera.limits.monthlyBuy}}
+          <li>monthlySell: {{glidera.limits.monthlySell}}
+          <li>dailyBuyRemaining: {{glidera.limits.dailyBuyRemaining}}
+          <li>dailySellRemaining: {{glidera.limits.dailySellRemaining}}
+          <li>monthlyBuyRemaining: {{glidera.limits.monthlyBuyRemaining}}
+          <li>monthlySellRemaining: {{glidera.limits.monthlySellRemaining}}
+          <li>currency: {{glidera.limits.currency}}
+          <li>transactDisabledPendingFirstTransaction: {{glidera.limits.transactDisabledPendingFirstTransaction}}
+        </ul>
+      </div>
+
+    </div>
+  </div>
+  
+</div>
+<div class="extra-margin-bottom"></div>
+
