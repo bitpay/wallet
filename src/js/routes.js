@@ -289,6 +289,18 @@ angular
         }
       })
 
+    .state('preferencesGlidera', {
+        url: '/preferencesGlidera',
+        templateUrl: 'views/preferencesGlidera.html',
+        walletShouldBeComplete: true,
+        needProfile: true,
+        views: {
+          'main': {
+            templateUrl: 'views/preferencesGlidera.html'
+          },
+        }
+      })
+
     .state('preferencesAdvanced', {
         url: '/preferencesAdvanced',
         templateUrl: 'views/preferencesAdvanced.html',
@@ -491,6 +503,7 @@ angular
       preferencesColor: 12,
       backup: 12,
       preferencesAdvanced: 12,
+      preferencesGlidera: 12,
       delete: 13,
       preferencesLanguage: 12,
       preferencesUnit: 12,
