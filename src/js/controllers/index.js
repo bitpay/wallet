@@ -112,6 +112,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.pendingTxProposalsCountForUs = null;
     self.setSpendUnconfirmed();
 
+    self.glideraToken = null;
+
     $timeout(function() {
       self.hasProfile = true;
       self.noFocusedWallet = false;
@@ -133,6 +135,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       self.copayers = [];
       self.updateColor();
       self.updateAlias();
+      self.initGlidera();
 
       storageService.getBackupFlag(self.walletId, function(err, val) {
         self.needsBackup = self.network == 'testnet' ? false : !val;
@@ -826,6 +829,13 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     }), 'name');
   };
 
+  self.initGlidera = function() {
+    storageService.getGlideraToken(self.network, function(err, val) {
+      if (err) return;
+      self.glideraToken = val;
+    });
+  };
+
   // UX event handlers
   $rootScope.$on('Local/ColorUpdated', function(event) {
     self.updateColor();
@@ -873,6 +883,10 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     }, function() {
       $log.debug('Remote preferences saved')
     });
+  });
+
+  $rootScope.$on('Local/GlideraTokenUpdated', function() {
+    self.initGlidera();
   });
 
   $rootScope.$on('Local/UnitSettingUpdated', function(event) {

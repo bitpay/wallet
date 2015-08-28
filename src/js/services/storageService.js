@@ -192,5 +192,17 @@ angular.module('copayApp.services')
       storage.get('remotePrefStored', cb);
     };
 
+    root.setGlideraToken = function(network, token, cb) {
+      storage.set('glideraToken-' + network, token, cb);
+    };
+
+    root.getGlideraToken = function(network, cb) {
+      storage.get('glideraToken-' + network, cb);
+    };
+
+    root.removeGlideraToken = function(network, cb) {
+      storage.remove('glideraToken-' + network, cb);
+    };
+
     return root;
   });
