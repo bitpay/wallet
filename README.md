@@ -102,7 +102,7 @@ Copay encrypts the backup with the Stanford JS Cryto Library (https://crypto.sta
 
 The backup also contains the key  `publicKeyRing` that hold the extended public keys of the Copayers. Using a tool like [Bitcore PlayGround](http://bitcore.io/playground/#/multisig), and following [BIP45](https://github.com/bitcoin/bips/blob/master/bip-0045.mediawiki)  it is possible to generate all wallet address. Note that addresses generated at BWS use the 'shared cosigner index' (2147483647) so Copay address index look like:
 `m/45'/2147483647/0/x` for main addresses and
-`m/45'/2147483647/1/y` for change addresses, where `x` and `y` are integers starting from `0`. The maximun values of `x` and `y` depend on the wallet usage, and in a restore procedure, the generated addresses are scanned on the blockchain looking for transactions (this is the 'scan' procedure that you can see on Settings at Copay App). To generate the wallet addresses the required number of copayers also need to be specified (backup key `n`).
+`m/45'/2147483647/1/y` for change addresses, where `x` and `y` are integers starting from `0`. The maximun values of `x` and `y` depend on the wallet usage, and in a restore procedure, the generated addresses are scanned on the blockchain looking for transactions (this is the 'scan' procedure that you can see on Settings at Copay App). To generate the wallet addresses the required number of copayers also need to be specified (backup key `m`).
 
 
 ## Bitcore Wallet Service
