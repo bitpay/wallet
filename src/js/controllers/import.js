@@ -68,7 +68,6 @@ angular.module('copayApp.controllers').controller('importController',
         profileService.importWalletMnemonic(words, {
           passphrase: passphrase,
         }, function(err, ret) {
-  console.log('[import.js.70:err:]',err, ret); //TODO
           self.loading = false;
           if (err) {
             self.error = err;

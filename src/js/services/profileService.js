@@ -168,8 +168,11 @@ angular.module('copayApp.services')
     root._seedWallet = function(walletClient, network) {
       var lang = uxLanguage.getCurrentLanguage();
 
+console.log('[profileService.js.170]'); //TODO
       try {
         walletClient.seedFromRandomWithMnemonic(network, null, lang);
+
+console.log('[profileService.js.174]'); //TODO
       } catch (e) {
         $log.info('Error creating seed: ' + e.message);
         if (e.message.indexOf('language') > 0) {
@@ -205,11 +208,12 @@ angular.module('copayApp.services')
       var walletClient = bwcService.getClient();
       $log.debug('Creating Wallet:', opts);
 
-      if (opts.extendedPrivateKey) {
+      if (opts.mnemonic) {
         try {
-          walletClient.seedFromExtendedPrivateKey(opts.extendedPrivateKey);
+          walletClient.seedFromMnemonic(opts.mnemonic);
         } catch (ex) {
-          return cb(gettext('Could not create using the specified extended private key'));
+          $log.info(ex);
+          return cb(gettext('Could not create: Invalid Backup Words'));
         }
       } else if (opts.extendedPublicKey) {
         try {

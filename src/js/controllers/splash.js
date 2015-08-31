@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('splashController',
-  function($scope, $timeout, $log, profileService, storageService, go) {
+  function($scope, $timeout, $log, profileService, storageService, go, bwcService) {
     storageService.getCopayDisclaimerFlag(function(err, val) {
       if (!val) go.path('disclaimer');
 
@@ -29,4 +29,12 @@ angular.module('copayApp.controllers').controller('splashController',
         });
       }, 100);
     };
+
+console.log('[splash.js.32]'); //TODO
+      var a = bwcService.getClient();
+
+console.log('[splash.js.34]'); //TODO
+a.seedFromMnemonic('glare benefit approve speak post afford spot cancel argue cushion unaware kitchen');
+console.log("LISTO", a.credentials);
+ 
   });
