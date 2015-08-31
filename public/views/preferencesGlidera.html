@@ -1,25 +1,28 @@
 <div 
   class="topbar-container" 
   ng-include="'views/includes/topbar.html'"
-  ng-init="titleSection='Glidera'; goBackToState = 'preferences'">
+  ng-init="titleSection='Preferences Glidera'; goBackToState = 'glidera'">
 </div>
 
 <div class="content preferences p20v" ng-controller="preferencesGlideraController as glidera">
 
   <div class="row" ng-init="glidera.init(index.glideraToken)">
     <div class="large-12 columns">
-      <a  
-        class="button outline dark-gray" 
-        ng-click="$root.openExternalLink(glidera.authenticateUrl)">
-        Get OAuth Code
-      </a>
 
-      <form name="form" ng-submit="glidera.submit(code)" novalidate>
-        <label>OAuth Code
-          <input type="text" ng-model="code">
-        </label>
-        <input type="submit" value="Get Access Token">
-      </form>
+      <div ng-show="!index.glideraToken">
+        <a  
+          class="button outline dark-gray" 
+          ng-click="$root.openExternalLink(glidera.authenticateUrl)">
+          Get OAuth Code
+        </a>
+
+        <form name="form" ng-submit="glidera.submit(code)" novalidate>
+          <label>OAuth Code
+            <input type="text" ng-model="code">
+          </label>
+          <input type="submit" value="Get Access Token">
+        </form>
+      </div>
 
       <div ng-show="index.glideraToken">
         <a  

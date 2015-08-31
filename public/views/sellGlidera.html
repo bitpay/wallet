@@ -1,0 +1,30 @@
+<div 
+  class="topbar-container" 
+  ng-include="'views/includes/topbar.html'"
+  ng-init="titleSection='Sell'; goBackToState = 'glidera'">
+</div>
+
+
+<div class="content glidera" ng-controller="sellGlideraController as sell">
+  <div class="row">
+    <div class="large-12 columns">
+
+      <h1>Sell Bitcoin</h1>
+
+      <form name="form" ng-submit="sell.getSellPrice(index.glideraToken, {'qty': qty, 'fiat': fiat})" novalidate>
+        <label>Price
+          <input type="number" ng-model="qty">
+          <input type="number" ng-model="fiat">
+        </label>
+        <input type="submit" value="Sell">
+      </form>
+
+      <div ng-show="sellPrice">
+        {{sellPrice}} --
+
+      </div>
+
+    </div>
+  </div>
+</div>
+<div class="extra-margin-bottom"></div>

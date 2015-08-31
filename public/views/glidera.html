@@ -1,0 +1,48 @@
+
+<div 
+  class="topbar-container" 
+  ng-include="'views/includes/topbar.html'"
+  ng-init="titleSection='Glidera'; closeToHome = true">
+</div>
+
+
+<div class="content glidera" ng-controller="glideraController as glidera">
+  <div class="row">
+    <div class="large-12 columns">
+
+      <a href ng-if="!index.glideraToken" ng-click="$root.go('preferencesGlidera')">
+        Connect to Glidera
+      </a>
+
+      <div ng-if="index.glideraToken" ng-init="glidera.init(index.glideraToken)">
+        Connected to Glidera - <a href ng-click="$root.go('preferencesGlidera')">Preferences</a>
+
+        <div>
+          <button class="" ng-click="$root.go('buyGlidera')">Buy</button>
+          <button class="" ng-click="$root.go('sellGlidera')">Sell</button>
+        </div>
+
+        <h2>Transactions</h2>
+        <ul>
+          <li ng-repeat="tx in txs">
+            {{tx.transactionUuid}} --
+            {{tx.transactionDate}} --
+            {{tx.type}} --
+            {{tx.price}} --
+            {{tx.subtotal}} --
+            {{tx.fees}} --
+            {{tx.total}} --
+            {{tx.currency}} --
+            {{tx.estimatedDeliveryDate}} --
+            {{tx.transactionHash}} --
+            {{tx.status}}<br><br>
+          </li>
+        </ul>
+
+
+      </div>
+
+    </div>
+  </div>
+</div>
+<div class="extra-margin-bottom"></div>
