@@ -133,9 +133,9 @@
               <p class="m0">
               {{(index.alias || index.walletName)}}
               </p>
-              <div class="size-12 text-gray" ng-if="index.network != 'livenet'">
-                Testnet
-                <span ng-if="!index.canSign"> - <span translate>No Private key</span></span>
+              <div class="size-12 text-gray">
+                <span ng-if="index.network != 'livenet'"> Testnet </span>
+                <span ng-if="!index.canSign" translate>No Private key</span>
               </div>
             </div>
           </div>
