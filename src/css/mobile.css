@@ -168,7 +168,7 @@ _:-ms-fullscreen, :root .main {
 .amount {
   width: 100%;
   text-align: center;
-  padding: 3rem 1rem;
+  padding: 2.5rem 1rem 1.5rem 1rem;
   margin-bottom: 11px;
   color: #fff;
   height: 175px;
@@ -198,7 +198,7 @@ _:-ms-fullscreen, :root .main {
 }
 
 .walletHome .avatar-wallet {
-  padding: 1.7rem 1rem;
+  padding: 0.5rem;
   width: 75px;
   height: 75px;
   position: absolute;
@@ -209,7 +209,6 @@ _:-ms-fullscreen, :root .main {
   margin: 0;
   color: #FFF;
   font-weight: 700;
-  line-height: 15px;
   text-align: center;
   border-radius: 5px;
 }
@@ -305,13 +304,12 @@ a.missing-copayers {
   font-size: 20px;
   font-weight: 700;
   margin-right: 15px;
-  padding: 0.33rem 0.65rem;
-  line-height: 24px;
   text-align: center;
   float: left;
   width: 35px;
   height: 35px;
   border-radius: 3px;
+  padding: 2px;
 }
 
 .sidebar header {
@@ -340,7 +338,6 @@ a.missing-copayers {
   border-bottom: transparent;
   color: #A5B2BF;
   padding: 1rem 0.7rem;
-  line-height: 155%;
 }
 
 .sidebar ul.off-canvas-list li a i {

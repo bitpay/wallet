@@ -1,0 +1,5 @@
+* Niveles de tasa adaptables en base a la carga de la red bitcoin
+* Opción para evitar la creación de transacciones con entradas sin confirmar
+* Opciones de envío avanzado
+* Nuevos idiomas: Italiano, Ruso, and Griego
+* Corrección de errores menores

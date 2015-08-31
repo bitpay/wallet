@@ -53,7 +53,7 @@
             <span translate>Amount</span>
           </label>
           <div class="input">
-            <input type="number" id="amount" name="amount" ng-attr-placeholder="{{'Amount'|translate}}"
+            <input type="number" id="amount" name="amount" ng-attr-placeholder="{{'Amount'|translate}}" 
             ng-model="_customAmount" valid-amount required autocomplete="off">
             <input type="number" id="alternative"  name="alternative"  ng-model="_customAlternative" style="display:none">
             <a class="postfix" ng-click="toggleAlternative()">{{unitName}}</a>
@@ -63,8 +63,8 @@
           <label for="alternative"><span translate>Amount in</span> {{ alternativeName }}
           </label>
           <div class="input">
-            <input type="number" id="alternative" name="alternative" ng-attr-placeholder="{{'Amount'|translate}}"
-            ng-model="_customAlternative" requiredautocomplete="off" required>
+            <input type="number" id="alternative" name="alternative" ng-attr-placeholder="{{'Amount'|translate}}" 
+            ng-model="_customAlternative" required autocomplete="off" required>
             <input type="number" id="amount" name="amount" ng-model="_customAmount" style="display:none">
             <a class="postfix" ng-click="toggleAlternative()"> {{ alternativeIsoCode }}</a>
           </div>

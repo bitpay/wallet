@@ -1,26 +1,30 @@
 'use strict';
 
-angular.module('copayApp.services').provider('addonManager', function () {
-  var addonMenuItems = [];
-  var addonViews = [];
+angular.module('copayApp.services').service('addonManager', function (lodash) {
+  var addons = [];
 
-  this.registerAddon = function(addonSpec) {
-    addonMenuItems.push(addonSpec.menuItem);
-    addonViews.push(addonSpec.view);
+  this.registerAddon = function (addonSpec) {
+    addons.push(addonSpec);
   };
 
-  this.$get = function() {
-    var manager = {};
+  this.addonMenuItems = function () {
+    return lodash.map(addons, function (addonSpec) {
+      return addonSpec.menuItem;
+    });
+  };
 
-    manager.addonMenuItems = function() {
-      return addonMenuItems;
-    };
+  this.addonViews = function () {
+    return lodash.map(addons, function (addonSpec) {
+      return addonSpec.view;
+    });
+  };
 
-    manager.addonViews = function() {
-      return addonViews;
-    };
-
-    return manager;
-  }
+  this.formatPendingTxp = function (txp) {
+    lodash.each(addons, function (addon) {
+      if (addon.formatPendingTxp) {
+        addon.formatPendingTxp(txp);
+      }
+    });
+  };
 
 });

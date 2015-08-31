@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Copay"
-#define MyAppVersion "1.1.1"
+#define MyAppVersion "1.1.3"
 #define MyAppPublisher "BitPay"
 #define MyAppURL "https://copay.io"
 #define MyAppExeName "copay.exe"
@@ -35,7 +35,7 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 [Files]
 Source: "copay\win64\copay.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "copay\win64\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "favicon.ico"; DestDir: "{app}"; DestName: "icon.ico"; Flags: ignoreversion
+Source: "../public/img/icons/favicon.ico"; DestDir: "{app}"; DestName: "icon.ico"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]

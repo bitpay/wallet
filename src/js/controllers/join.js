@@ -184,7 +184,7 @@ angular.module('copayApp.controllers').controller('joinController',
         profileService.joinWallet(opts, function(err) {
           if (err) {
             self.loading = false;
-            self.error = gettext('Could not join wallet: ') +  (err.message ? err.message : err);
+            self.error = err;
             $rootScope.$apply();
             return
           }

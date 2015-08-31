@@ -1,5 +1,6 @@
 # translation
-po/*.mo
+i18n/po/*.mo
+i18n/crowdin_api_key.txt
 src/js/translations.js
 
 # version
@@ -25,9 +26,6 @@ browser-extensions/chrome/copay-chrome-extension.zip
 # Logs
 logs
 *.log
-
-# readme
-README.html
 
 # Runtime data
 pids
