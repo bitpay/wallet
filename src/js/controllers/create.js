@@ -51,7 +51,7 @@ angular.module('copayApp.controllers').controller('createController',
         m: $scope.requiredCopayers,
         n: $scope.totalCopayers,
         name: form.walletName.$modelValue,
-        extendedPrivateKey: form.privateKey.$modelValue,
+        mnemonic: form.privateKey.$modelValue,
         myName: $scope.totalCopayers > 1 ? form.myName.$modelValue : null,
         networkName: form.isTestnet.$modelValue ? 'testnet' : 'livenet'
       };
