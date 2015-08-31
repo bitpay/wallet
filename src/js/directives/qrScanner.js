@@ -46,6 +46,7 @@ angular.module('copayApp.directives')
               var $video;
               var context;
               var localMediaStream;
+              var prevResult;
 
               var _scan = function(evt) {
                 if (localMediaStream) {
@@ -56,7 +57,7 @@ angular.module('copayApp.directives')
                     //qrcodeError(e);
                   }
                 }
-                $timeout(_scan, 500);
+                $timeout(_scan, 800);
               };
 
               var _scanStop = function() {
@@ -66,6 +67,10 @@ angular.module('copayApp.directives')
               };
 
               qrcode.callback = function(data) {
+                if (prevResult != data) {
+                  prevResult = data;
+                  return;
+                }
                 _scanStop();
                 $modalInstance.close(data);
               };
