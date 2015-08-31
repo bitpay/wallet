@@ -67,17 +67,17 @@ angular.module('copayApp.controllers').controller('createController',
         self.ledger = true;
         ledger.getXPubKey($scope.externalIndex, function(data) {
           self.ledger = false;
-          $scope.$apply();
           if (data.success) {
+            $scope.$apply();
             opts.extendedPublicKey = data.xpubkey;
             opts.externalSource = 'ledger';
             opts.externalIndex = $scope.externalIndex;
             self._create(opts);
           } else {
             self.loading = false;
-            $log.debug(data.message);
             self.error = data.message;
             $scope.$apply();
+            $log.debug(data.message);
           }
         });
       } else {
