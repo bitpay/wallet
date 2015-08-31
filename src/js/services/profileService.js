@@ -225,7 +225,6 @@ angular.module('copayApp.services')
         } catch (ex) {
           return cb(gettext('Could not join using the specified extended private key'));
         }
-<<<<<<< HEAD
       } else if (opts.extendedPublicKey) {
         try {
           walletClient.seedFromExternalWalletPublicKey(opts.extendedPublicKey, opts.externalSource, opts.externalIndex);
@@ -233,9 +232,6 @@ angular.module('copayApp.services')
           return cb(gettext('Could not create using the specified extended public key'));
         }
       }      
-=======
-      }
-
 
       try {
         var walletData = this.getUtils().fromSecret(opts.secret);
@@ -250,7 +246,6 @@ angular.module('copayApp.services')
         return cb(gettext('Bad wallet invitation'));
       }
 
->>>>>>> master
       walletClient.joinWallet(opts.secret, opts.myName || 'me', function(err) {
         if (err) return bwsError.cb(err, gettext('Could not join wallet'), cb);
 
