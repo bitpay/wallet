@@ -1,0 +1,9 @@
+<a  ng-click="index.setTab(item.link)" ng-class="{'active': index.tab == item.link}" id="menu-{{item.link}}">
+    <i class="size-24 {{item.icon}} db"></i>
+    <div class="size-10 tu">
+        {{ item.title|translate }}
+        <span class="label alert round" ng-if="item.link=='walletHome' && index.pendingTxProposalsCountForUs > 0">
+            {{ index.pendingTxProposalsCountForUs }}
+        </span>
+    </div>
+</a>
