@@ -112,7 +112,7 @@ angular.module('copayApp.services').factory('glideraService', function($http, $l
     if (!token) return cb('Invalid Token');
     $http(_get('/transaction', token)).then(function(data) {
       $log.info('Glidera Transaction: SUCCESS');
-      return cb(null, data.data);
+      return cb(null, data.data.transactions);
     }, function(data) {
       $log.error('Glidera Transaction: ERROR ' + data.statusText);
       return cb(data.statusText);
@@ -130,14 +130,26 @@ angular.module('copayApp.services').factory('glideraService', function($http, $l
     });
   };
 
-  var _post = function(endpoint, token, data) {
+  root.get2faCode = function(token, cb) {
+    if (!token) return cb('Invalid Token');
+    $http(_get('/authentication/get2faCode', token)).then(function(data) {
+      $log.info('Glidera Sent 2FA code by SMS: SUCCESS');
+      return cb(null, data.status == 200 ? true : false);
+    }, function(data) {
+      $log.error('Glidera Sent 2FA code by SMS: ERROR ' + data.statusText);
+      return cb(data.statusText);
+    });
+  };
+
+  var _post = function(endpoint, token, twoFaCode, data) {
     return {
       method: 'POST',
       url: HOST + '/api/v1' + endpoint,
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
-        'Authorization': 'Bearer ' + token
+        'Authorization': 'Bearer ' + token,
+        '2FA_CODE': twoFaCode
       },
       data: data
     };
@@ -148,16 +160,16 @@ angular.module('copayApp.services').factory('glideraService', function($http, $l
       qty: price.qty,
       fiat: price.fiat
     };
-    $http(_post('/prices/sell', token, data)).then(function(data) {
+    $http(_post('/prices/sell', token, null, data)).then(function(data) {
       $log.info('Glidera Sell Price: SUCCESS');
-      return cb(null, data); 
+      return cb(null, data.data); 
     }, function(data) {
       $log.error('Glidera Sell Price: ERROR ' + data.statusText);
       return cb(data.statusText);
     });
   }; 
 
-  root.sell = function(token, data, cb) {
+  root.sell = function(token, twoFaCode, data, cb) {
     var data = {
       refundAddress: data.refundAddress,
       signedTransaction: data.signedTransaction,
@@ -165,11 +177,13 @@ angular.module('copayApp.services').factory('glideraService', function($http, $l
       useCurrentPrice: data.useCurrentPrice,
       ip: data.ip
     };
-    $http(_post('/prices/buy', token, data)).then(function(data) {
-      $log.info('Glidera Buy: SUCCESS');
+console.log('[glideraService.js:161]',data); //TODO
+    $http(_post('/sell', token, twoFaCode, data)).then(function(data) {
+console.log('[glideraService.js:168]',data); //TODO
+      $log.info('Glidera Sell: SUCCESS');
       return cb(null, data); 
     }, function(data) {
-      $log.error('Glidera Buy: ERROR ' + data.statusText);
+      $log.error('Glidera Sell: ERROR ' + data.statusText);
       return cb(data.statusText);
     });
   };
@@ -179,16 +193,16 @@ angular.module('copayApp.services').factory('glideraService', function($http, $l
       qty: price.qty,
       fiat: price.fiat
     };
-    $http(_post('/prices/buy', token, data)).then(function(data) {
+    $http(_post('/prices/buy', token, null, data)).then(function(data) {
       $log.info('Glidera Buy Price: SUCCESS');
-      return cb(null, data); 
+      return cb(null, data.data); 
     }, function(data) {
       $log.error('Glidera Buy Price: ERROR ' + data.statusText);
       return cb(data.statusText);
     });
   };
 
-  root.buy = function(token, data, cb) {
+  root.buy = function(token, twoFaCode, data, cb) {
     var data = {
       destinationAddress: data.destinationAddress,
       qty: data.qty,
@@ -196,7 +210,7 @@ angular.module('copayApp.services').factory('glideraService', function($http, $l
       useCurrentPrice: data.useCurrentPrice,
       ip: data.ip
     };
-    $http(_post('/prices/buy', token, data)).then(function(data) {
+    $http(_post('/buy', token, twoFaCode, data)).then(function(data) {
       $log.info('Glidera Buy: SUCCESS');
       return cb(null, data); 
     }, function(data) {

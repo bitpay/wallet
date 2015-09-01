@@ -11,18 +11,41 @@
 
       <h1>Buy Bitcoin</h1>
 
-      <form name="form" ng-submit="buy.getSellPrice(index.glideraToken, {'qty': qty})" novalidate>
-        <label>Price
-          <input type="number" ng-model="qty">
-          <input type="number" ng-model="fiat">
-        </label>
-        <input type="submit" value="Buy">
+      <form name="form" ng-submit="buy.getBuyPrice(index.glideraToken, {'qty': qty, 'fiat': fiat})" novalidate>
+        <label>Amount BTC</label>
+        <input type="number" ng-model="qty">
+        <label>Amount USD</label>
+        <input type="number" ng-model="fiat">
+        <input class="button" type="submit" value="Get Buy Price">
       </form>
 
-      <div ng-show="buyPrice">
-        {{buyPrice}} --
+      <h2>Buy Price</h2>
+      <ul>
+        <li>qty: {{buy.buyPrice.qty}}
+        <li>price: {{buy.buyPrice.price}}
+        <li>subtotal: {{buy.buyPrice.subtotal}}
+        <li>fees: {{buy.buyPrice.fees}}
+        <li>total: {{buy.buyPrice.total}}
+        <li>currency: {{buy.buyPrice.currency}}
+        <li>expires: {{buy.buyPrice.expires}}
+        <li>priceUuid: {{buy.buyPrice.priceUuid}}
+      </ul>
 
+      <div class="m10b">
+        destinationAddress: {{buy.addr[index.walletId]}}<br>
       </div>
+
+      <h2>Send 2FA Code</h2>
+      <button ng-click="buy.get2faCode(index.glideraToken)">Send 2FA Code</button>
+
+      <h2>Buy</h2>
+      <form name="form2" ng-submit="buy.send(index.glideraToken, twoFaCode)" novalidate>
+        <label>2FA Code
+          <input type="number" ng-model="twoFaCode">
+        </label>
+        <input class="button" type="submit" value="Buy">
+      </form>
+
     </div>
   </div>
 </div>
