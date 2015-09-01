@@ -24,18 +24,18 @@
 
         <h2>Transactions</h2>
         <ul>
-          <li ng-repeat="tx in txs">
-            {{tx.transactionUuid}} --
-            {{tx.transactionDate}} --
-            {{tx.type}} --
-            {{tx.price}} --
-            {{tx.subtotal}} --
-            {{tx.fees}} --
-            {{tx.total}} --
-            {{tx.currency}} --
-            {{tx.estimatedDeliveryDate}} --
-            {{tx.transactionHash}} --
-            {{tx.status}}<br><br>
+          <li ng-repeat="tx in glidera.txs">
+            transactionUuid: {{tx.transactionUuid}} <br>
+            transactionDate: {{tx.transactionDate}} <br>
+            type: {{tx.type}} <br>
+            price: {{tx.price}} <br>
+            subtotal: {{tx.subtotal}} <br>
+            fees: {{tx.fees}} <br>
+            total: {{tx.total}} <br>
+            currency: {{tx.currency}} <br>
+            estimatedDeliveryDate: {{tx.estimatedDeliveryDate}} <br>
+            transactionHash: {{tx.transactionHash}} <br>
+            status: {{tx.status}}<br>
           </li>
         </ul>
 
