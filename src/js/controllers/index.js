@@ -368,7 +368,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
   self.updateTxHistory = function(skip) {
     var fc = profileService.focusedClient;
-    if (!fc.isComplete()) return;
+    if (!fc || !fc.isComplete()) return;
     if (!skip) {
       self.txHistory = [];
     }
