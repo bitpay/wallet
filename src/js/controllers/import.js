@@ -65,7 +65,7 @@ angular.module('copayApp.controllers').controller('importController',
       self.loading = true;
 
       $timeout(function() {
-        profileService.importWalletMnemonic(words, opts, function(err, ret) {
+        profileService.importWalletMnemonic(words, opts, function(err, walletId) {
           self.loading = false;
           if (err) {
             self.error = err;
@@ -73,7 +73,6 @@ angular.module('copayApp.controllers').controller('importController',
               $scope.$apply();
             });
           }
-          return
           $rootScope.$emit('Local/WalletImported', walletId);
           notification.success(gettext('Success'), gettext('Your wallet has been imported correctly'));
           go.walletHome();

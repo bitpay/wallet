@@ -153,6 +153,8 @@ angular.module('copayApp.controllers').controller('joinController',
 
       var opts = {
         secret: form.secret.$modelValue,
+        mnemonic: form.privateKey.$modelValue,
+        myName: form.myName.$modelValue
         extendedPrivateKey: form.privateKey.$modelValue,
         myName: form.myName.$modelValue
       }
@@ -189,7 +191,12 @@ angular.module('copayApp.controllers').controller('joinController',
             return
           }
           $timeout(function() {
-            go.walletHome();
+            var fc = profileService.focusedClient;
+            if (opts.mnemonic && fc.isComplete()) {
+              $rootScope.$emit('Local/WalletImported', fc.credentials.walletId);
+            } else {
+              go.walletHome();
+            }
           }, 2000);
         });
       }, 100);

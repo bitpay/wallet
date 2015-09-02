@@ -236,7 +236,7 @@ angular.module('copayApp.services')
 
           root.setAndStoreFocus(walletClient.credentials.walletId, function() {
             storageService.storeProfile(root.profile, function(err) {
-              return cb(null, secret);
+              return cb(null, secret, walletClient.credentials.walletId);
             });
           });
         })
@@ -347,13 +347,10 @@ angular.module('copayApp.services')
       var walletClient = bwcService.getClient();
       $log.debug('Importing Wallet Mnemonic');
 
-console.log('[profileService.js.340]', words, opts); //TODO
       walletClient.importFromMnemonic(words, {
         network: opts.networkName,
         passphrase: opts.passphrase,
       }, function(err) {
-console.log('[profileService.js.342:err:]',err); //TODO
-console.log('[profileService.js.341:walletClient:]',walletClient.credentials.credentials); //TODO
         if (err)
           return bwsError.cb(err, gettext('Could not import'), cb);
 
