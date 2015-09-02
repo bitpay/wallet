@@ -20,9 +20,9 @@
     <div class="size-42">
       {{tx.subtotal}} {{tx.currency}}
     </div>
-    <div>
+    <div class="size-12 text-gray">
       <span class="text-success" ng-if="tx.status == 'COMPLETE'">Completed</span>
-      <span class="text-info" ng-if="tx.status == 'PENDING'">Pending</span>
+      <span class="text-info" ng-if="tx.status == 'PROCESSING'">Processing</span>
       <span class="text-warning" ng-if="tx.status == 'ERROR'">Error</span>
     </div>
   </div>
@@ -38,22 +38,22 @@
 
     <li ng-show="tx.price" class="line-b p10 oh">
       <span class="text-gray" translate>Price</span>:
-      <span class="right">{{tx.price}}</span>
+      <span class="right">${{tx.price}} {{tx.currency}}</span>
     </li>
 
     <li ng-show="tx.subtotal" class="line-b p10 oh">
       <span class="text-gray" translate>Subtotal</span>:
-      <span class="right">{{tx.subtotal}}</span>
+      <span class="right">${{tx.subtotal}} {{tx.currency}}</span>
     </li>
 
     <li ng-show="tx.fees" class="line-b p10 oh">
       <span class="text-gray" translate>Fees</span>:
-      <span class="right">{{tx.fees}}</span>
+      <span class="right">${{tx.fees}} {{tx.currency}}</span>
     </li>
 
     <li ng-show="tx.total" class="line-b p10 oh">
       <span class="text-gray" translate>Total</span>:
-      <span class="right">{{tx.total}}</span>
+      <span class="right">${{tx.total}} {{tx.currency}}</span>
     </li>
   </ul>
   <div class="extra-margin-bottom"></div>
