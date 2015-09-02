@@ -84,6 +84,21 @@ angular.module('copayApp.services')
           case 'WALLET_NOT_FOUND': 
             body = gettextCatalog.getString('Wallet not found');
             break;
+          case 'SERVER_COMPROMISED': 
+            body = gettextCatalog.getString('Server response could not be verified');
+            break;
+          case 'WALLET_DOES_NOT_EXIST': 
+            body = gettextCatalog.getString('This wallet is not registed at the wallet service. Please create it from "Create Wallet" using adding for backup words');
+            break;
+          case 'INVALID_BACKUP': 
+            body = gettextCatalog.getString('Backup words are invalid');
+            break;
+ 
+ 
+          default:
+            $log.warn('Unknown error type:', err.code);
+            body = err.code + ':' + err.message;
+            break;
         }
       }
 

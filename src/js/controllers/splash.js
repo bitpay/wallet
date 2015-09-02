@@ -29,12 +29,4 @@ angular.module('copayApp.controllers').controller('splashController',
         });
       }, 100);
     };
-
-console.log('[splash.js.32]'); //TODO
-      var a = bwcService.getClient();
-
-console.log('[splash.js.34]'); //TODO
-a.seedFromMnemonic('glare benefit approve speak post afford spot cancel argue cushion unaware kitchen');
-console.log("LISTO", a.credentials);
- 
   });

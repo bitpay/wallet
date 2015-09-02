@@ -148,7 +148,7 @@ angular.module('copayApp.controllers').controller('joinController',
       $timeout(function() {
         profileService.joinWallet({
           secret: form.secret.$modelValue,
-          extendedPrivateKey: form.privateKey.$modelValue,
+          mnemonic: form.privateKey.$modelValue,
           myName: form.myName.$modelValue
         }, function(err) {
           if (err) {

@@ -146,7 +146,7 @@ angular.module('copayApp.services')
               return cb(err);
             }
             if (!profile) {
-              // Migration??
+              // Migration?? 
               storageService.tryToMigrate(function(err, migratedProfile) {
                 if (err) return cb(err);
                 if (!migratedProfile)
@@ -165,23 +165,33 @@ angular.module('copayApp.services')
       });
     };
 
-    root._seedWallet = function(walletClient, network) {
-      var lang = uxLanguage.getCurrentLanguage();
+    root._seedWallet = function(opts, cb) {
+      opts = opts || {};
+      var walletClient = bwcService.getClient();
+      var network = opts.networkName || 'livenet';
 
-console.log('[profileService.js.170]'); //TODO
-      try {
-        walletClient.seedFromRandomWithMnemonic(network, null, lang);
-
-console.log('[profileService.js.174]'); //TODO
-      } catch (e) {
-        $log.info('Error creating seed: ' + e.message);
-        if (e.message.indexOf('language') > 0) {
-          $log.info('Using default language for mnemonic');
-          walletClient.seedFromRandomWithMnemonic(network);
-        } else {
-          throw (e);
+      if (opts.mnemonic) {
+        try {
+          walletClient.seedFromMnemonic(opts.mnemonic, opts.passphrase, network);
+        } catch (ex) {
+          $log.info(ex);
+          return cb(gettext('Could not create: Invalid Backup Words'));
+        }
+      } else {
+        var lang = uxLanguage.getCurrentLanguage();
+        try {
+          walletClient.seedFromRandomWithMnemonic(network, opts.passphrase, lang);
+        } catch (e) {
+          $log.info('Error creating seed: ' + e.message);
+          if (e.message.indexOf('language') > 0) {
+            $log.info('Using default language for mnemonic');
+            walletClient.seedFromRandomWithMnemonic(network,  opts.passphrase);
+          } else {
+            return cb(e);
+          }
         }
       }
+      return cb(null, walletClient);
     };
 
     root._createNewProfile = function(opts, cb) {
@@ -190,62 +200,45 @@ console.log('[profileService.js.174]'); //TODO
         return cb(null, Profile.create());
       }
 
-      var walletClient = bwcService.getClient();
-      root._seedWallet(walletClient, 'livenet');
+      root._seedWallet({}, function(err, walletClient) {
+        if (err) return cb(err);
 
-      walletClient.createWallet('Personal Wallet', 'me', 1, 1, {
-        network: 'livenet'
-      }, function(err) {
-        if (err) return bwsError.cb(err, gettext('Error creating wallet'), cb);
-        var p = Profile.create({
-          credentials: [JSON.parse(walletClient.export())],
+        walletClient.createWallet('Personal Wallet', 'me', 1, 1, {
+          network: 'livenet'
+        }, function(err) {
+          if (err) return bwsError.cb(err, gettext('Error creating wallet'), cb);
+          var p = Profile.create({
+            credentials: [JSON.parse(walletClient.export())],
+          });
+          return cb(null, p);
         });
-        return cb(null, p);
       })
     };
 
     root.createWallet = function(opts, cb) {
-      var walletClient = bwcService.getClient();
       $log.debug('Creating Wallet:', opts);
 
-      if (opts.mnemonic) {
-        try {
-          walletClient.seedFromMnemonic(opts.mnemonic);
-        } catch (ex) {
-          $log.info(ex);
-          return cb(gettext('Could not create: Invalid Backup Words'));
-        }
-      }
-      root._seedWallet(walletClient, opts.networkName);
+      root._seedWallet(opts, function(err, walletClient) {
+        if (err) return cb(err);
 
-      walletClient.createWallet(opts.name, opts.myName || 'me', opts.m, opts.n, {
-        network: opts.networkName
-      }, function(err, secret) {
-        if (err) return bwsError.cb(err, gettext('Error creating wallet'), cb);
+        walletClient.createWallet(opts.name, opts.myName || 'me', opts.m, opts.n, {
+          network: opts.networkName
+        }, function(err, secret) {
+          if (err) return bwsError.cb(err, gettext('Error creating wallet'), cb);
 
-        root.profile.credentials.push(JSON.parse(walletClient.export()));
-        root.setWalletClients();
+          root.profile.credentials.push(JSON.parse(walletClient.export()));
+          root.setWalletClients();
 
-        root.setAndStoreFocus(walletClient.credentials.walletId, function() {
-          storageService.storeProfile(root.profile, function(err) {
-            return cb(null, secret);
+          root.setAndStoreFocus(walletClient.credentials.walletId, function() {
+            storageService.storeProfile(root.profile, function(err) {
+              return cb(null, secret);
+            });
           });
-        });
-      })
+        })
+      });
     };
 
-    root.joinWallet = function(opts, cb) {
-      var walletClient = bwcService.getClient();
-      $log.debug('Joining Wallet:', opts);
-      if (opts.extendedPrivateKey) {
-        try {
-          walletClient.seedFromExtendedPrivateKey(opts.extendedPrivateKey);
-        } catch (ex) {
-          return cb(gettext('Could not join using the specified extended private key'));
-        }
-      }
-
-
+   root.joinWallet = function(opts, cb) {
       try {
         var walletData = this.getUtils().fromSecret(opts.secret);
 
@@ -258,18 +251,23 @@ console.log('[profileService.js.174]'); //TODO
       } catch (ex) {
         return cb(gettext('Bad wallet invitation'));
       }
+      opts.networkName = walletData.network;
+      $log.debug('Joining Wallet:', opts);
 
-      walletClient.joinWallet(opts.secret, opts.myName || 'me', function(err) {
-        if (err) return bwsError.cb(err, gettext('Could not join wallet'), cb);
+      root._seedWallet(opts, function(err, walletClient) {
+        if (err) return cb(err);
+        walletClient.joinWallet(opts.secret, opts.myName || 'me', function(err) {
+          if (err) return bwsError.cb(err, gettext('Could not join wallet'), cb);
 
-        root.profile.credentials.push(JSON.parse(walletClient.export()));
-        root.setWalletClients();
+          root.profile.credentials.push(JSON.parse(walletClient.export()));
+          root.setWalletClients();
 
-        root.setAndStoreFocus(walletClient.credentials.walletId, function() {
-          storageService.storeProfile(root.profile, function(err) {
-            return cb(null, secret);
+          root.setAndStoreFocus(walletClient.credentials.walletId, function() {
+            storageService.storeProfile(root.profile, function(err) {
+              return cb(null, secret);
+            });
           });
-        });
+        })
       })
     };
 
@@ -340,30 +338,19 @@ console.log('[profileService.js.174]'); //TODO
       var walletClient = bwcService.getClient();
       $log.debug('Importing Wallet Mnemonic');
 
+console.log('[profileService.js.340]', words, opts); //TODO
       walletClient.importFromMnemonic(words, {
+        network: opts.networkName,
         passphrase: opts.passphrase,
       }, function(err) {
+console.log('[profileService.js.342:err:]',err); //TODO
+console.log('[profileService.js.341:walletClient:]',walletClient.credentials.credentials); //TODO
         if (err)
           return bwsError.cb(err, gettext('Could not import'), cb);
 
         root._addWalletClient(walletClient, cb);
       });
     };
-
-
-    root.importWalletMnemonicEx = function(words, opts, cb) {
-      var walletClient = bwcService.getClient();
-      $log.debug('Importing Wallet Mnemonic EX', opts);
-
-      walletClient.importFromMnemonic(words, opts,
-        function(err) {
-          if (err)
-            return bwsError.cb(err, gettext('Could not import'), cb);
-
-          root._addWalletClient(walletClient, cb);
-        });
-    };
-
 
     root.create = function(opts, cb) {
       $log.info('Creating profile');
