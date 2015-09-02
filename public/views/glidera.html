@@ -52,16 +52,15 @@
   </div>
   <div ng-if="index.glideraToken" ng-init="glidera.init(index.glideraToken)">
 
-    <div class="text-center m10b">
+    <div class="text-center m20b">
       {{index.glideraEmail}} <br>
       <a href class="text-gray" ng-click="$root.go('preferencesGlidera')">
         Preferences
       </a>
     </div>
 
-    <h4 class="title m0" translate>Connected</h4>
     <ul class="no-bullet m0 size-14">
-      <li class="line-b p20 pointer" ng-click="$root.go('buyGlidera')">
+      <li class="line-b line-t p20 pointer" ng-click="$root.go('buyGlidera')">
       <span translate>Buy</span>
       <span class="right text-gray">
         <i class="icon-arrow-right3 size-24 right"></i>
