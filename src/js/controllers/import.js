@@ -18,6 +18,7 @@ angular.module('copayApp.controllers').controller('importController',
 
     this.setType = function(type) {
       $scope.type = type;
+      this.error = null;
       $timeout(function() {
         $rootScope.$apply();
       });
@@ -63,11 +64,8 @@ angular.module('copayApp.controllers').controller('importController',
     var _importMnemonic = function(words, passphrase, opts) {
       self.loading = true;
 
-      console.log('[import.js.64:opts:]', opts); //TODO
       $timeout(function() {
-        profileService.importWalletMnemonic(words, {
-          passphrase: passphrase,
-        }, function(err, ret) {
+        profileService.importWalletMnemonic(words, opts, function(err, ret) {
           self.loading = false;
           if (err) {
             self.error = err;
@@ -83,13 +81,13 @@ angular.module('copayApp.controllers').controller('importController',
       }, 100);
     };
 
-// {
-//         network: opts.network,
-//         m: opts.m,
-//         n: opts.n,
-//         publicKeyRing: opts.publicKeyRing,
-//       },
-//
+    // {
+    //         network: opts.network,
+    //         m: opts.m,
+    //         n: opts.n,
+    //         publicKeyRing: opts.publicKeyRing,
+    //       },
+    //
     $scope.getFile = function() {
       // If we use onloadend, we need to check the readyState.
       reader.onloadend = function(evt) {
@@ -144,18 +142,28 @@ angular.module('copayApp.controllers').controller('importController',
 
       var passphrase = form.passphrase.$modelValue;
       var words = form.words.$modelValue;
+      this.error = null;
 
-      if (!words || words.split(' ').map(function(v) {
-        return lodash.trim(v);
-      }).length != 12) {
-        this.error = gettext('Please input 12 backup words');
+      if (!words) {
+        this.error = gettext('Please enter the backup words');
+      } else {
+        var wordList = words.split(/ /).filter(function(v){ return v.length>0; });
+        if (wordList.length != 12)
+          this.error = gettext('Please enter 12 backup words');
+        else 
+          words = wordList.join(' ');
+      }
+
+      if (this.error) {
         $timeout(function() {
           $scope.$apply();
         });
         return;
       }
 
+
       opts.passphrase = form.passphrase.$modelValue || null;
+      opts.networkName = form.isTestnet.$modelValue ? 'testnet' : 'livenet';
 
       _importMnemonic(words, passphrase, opts);
     };

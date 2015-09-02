@@ -7,16 +7,42 @@
 
 
 <div class="content p20v" ng-controller="wordsController as wordsC">
-  <div class="row">
+  <div class="row"  ng-show="index.n==1">
     <div class="m10t columns size-14 text-gray" translate>
       <span translate>
-        In order to restore your Copay wallet you will need these 12 backup words. 
+        You will need these backup words to restore this personal wallet.
       </span>
       <span translate class="text-bold">
-        Write them down and keep them somethere safe
+        Write them down and keep them somewhere safe.
       </span>
     </div>
   </div>
+  <div class="row" ng-show="(index.n>1 && index.m != index.n )">
+    <div class="m10t columns size-14 text-gray" translate>
+      <span translate>
+        To restore this {{index.m}}-{{index.n}} shared wallet you will need:
+      </span>:
+<ol class="m10t columns size-14 text-gray">
+  <li> Your backup words and access to the wallet service where your wallet is registered 
+  <li> <b>OR</b> the backup words of <b>all</b>  copayers in the wallet
+  <li> <b>OR</b> 1 wallet export file and the remaining quorum of backup words (e.g. in a 3-5 wallet: 1 wallet export file + 2 backup words of any of the other copayers).
+</ol>
+      </span>
+    </div>
+  </div>
+  <div class="row" ng-show="(index.n>1 && index.m == index.n )">
+    <div class="m10t columns size-14 text-gray" translate>
+      <span translate>
+        To restore this {{index.m}}-{{index.n}} <b>shared</b> wallet you will need
+      </span>:
+<ol class="m10t columns size-14 text-gray">
+  <li> Your backup words and access to the wallet service where wallet is registered 
+  <li> <b>OR</b> the backups words of <b>all</b> copayers in the wallet
+</ol>
+      </span>
+    </div>
+  </div>
+ 
   <div class="row m20t" ng-show="!wordsC.mywords">
     <div class="columns size-14 text-gray" translate>
         The backup words had been deleted from this device
@@ -37,10 +63,11 @@
     </div>
 
     <div class="row enable_text_select" ng-show="show"  >
-        <span class="m10" ng-repeat="word in wordsC.mywords">
-          {{word}}
-        </span>
-        <div class="m10 text-center">
+        <div class="small-centered p10t p10b large-centered medium-centered large-8 medium-8 small-10 columns enable_text_select" style="border:1px solid gray; background:#eee;
+">
+          <span class="m10r" ng-repeat="word in wordsC.mywords">{{word}} </span> 
+        </div>
+        <div class="m10 text-center columns">
           <div class="m10 size-14 text-gray" translate>
             <span translate>
               Once you have wrote your backup words, it is recommended to delete them from this device.
@@ -54,7 +81,9 @@
           </button>
         </div>
     </div>
-    <div class="row m20t">
+
+    <!-- hide this in multisig just to show less text -->
+    <div class="row m20t"  ng-show="index.n==1">
       <div class="columns size-14 text-gray" translate>
         You can safely install your backup on another device and use your wallet from multiple devices at the same time.  <a href="#" ng-click="$root.openExternalLink('https://github.com/bitpay/copay#backups')">
             <span translate>Learn more about Copay backups</span>
