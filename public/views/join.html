@@ -99,11 +99,12 @@
               </label>
             </div>         
             <div class="large-12 columns">
-              <label for="ext-master">{{'Master extended private key'|translate}}
-              <small translate>If not given, a secure key will be generated</small>
+              <label for="ext-master"> 
+              <span translate>Backup Words (BIP39 seed)</span>
+              <small translate>If not given, a random secure key will be generated</small>
                 <input id="ext-master"
                 type="text"
-                placeholder="{{'BIP32 master extended private key'|translate}}"
+                placeholder="{{'Backup words'|translate}}"
                 name="privateKey" ng-model="privateKey">
               </label>
             </div>
