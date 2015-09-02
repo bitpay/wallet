@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, lodash, go, profileService, configService, isCordova, rateService, storageService, addressService, gettextCatalog, gettext, amMoment, nodeWebkit, addonManager, feeService, isChromeApp, bwsError, utilService, $state) {
+angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, lodash, go, profileService, configService, isCordova, rateService, storageService, addressService, gettextCatalog, gettext, amMoment, nodeWebkit, addonManager, feeService, isChromeApp, bwsError, utilService, $state, glideraService) {
   var self = this;
   self.isCordova = isCordova;
   self.onGoingProcess = {};
@@ -114,6 +114,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.setSpendUnconfirmed();
 
     self.glideraToken = null;
+    self.glideraTxs = null;
+    self.glideraEmail = null;
 
     $timeout(function() {
       self.hasProfile = true;
@@ -847,9 +849,18 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   };
 
   self.initGlidera = function() {
+    if (self.isShared) return;
     storageService.getGlideraToken(self.network, function(err, val) {
       if (err) return;
-      self.glideraToken = val;
+      else {
+        self.glideraToken = val;
+        glideraService.getTransactions(val, function(error, txs) {
+          self.glideraTxs = txs;
+        });
+        glideraService.getEmail(val, function(error, data) {
+          self.glideraEmail = data.email;
+        });
+      }
     });
   };
 

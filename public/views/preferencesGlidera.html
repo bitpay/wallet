@@ -9,21 +9,6 @@
   <div class="row" ng-init="glidera.init(index.glideraToken)">
     <div class="large-12 columns">
 
-      <div ng-show="!index.glideraToken">
-        <a  
-          class="button outline dark-gray" 
-          ng-click="$root.openExternalLink(glidera.authenticateUrl)">
-          Get OAuth Code
-        </a>
-
-        <form name="form" ng-submit="glidera.submit(code)" novalidate>
-          <label>OAuth Code
-            <input type="text" ng-model="code">
-          </label>
-          <input type="submit" value="Get Access Token">
-        </form>
-      </div>
-
       <div ng-show="index.glideraToken">
         <a  
           class="button warning" 

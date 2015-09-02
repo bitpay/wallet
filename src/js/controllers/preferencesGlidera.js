@@ -3,8 +3,6 @@
 angular.module('copayApp.controllers').controller('preferencesGlideraController', 
   function($scope, $timeout, profileService, go, glideraService, storageService) {
 
-    this.authenticateUrl = glideraService.getOauthCodeUrl();
-
     this.init = function(token) {
       var self = this;
       glideraService.getPermissions(token, function(error, permission) {
@@ -26,21 +24,7 @@ angular.module('copayApp.controllers').controller('preferencesGlideraController'
       glideraService.getLimits(token, function(error, limits) {
         self.limits = limits;
       });
-    };
-
-    this.submit = function(code) {
-      var fc = profileService.focusedClient;
-      glideraService.getToken(code, function(error, data) {
-        if (data && data.status == 200) {
-          storageService.setGlideraToken(fc.credentials.network, data.data.access_token, function() {
-            $scope.$emit('Local/GlideraTokenUpdated');
-            $timeout(function() {
-              go.walletHome();
-            }, 100);
-          });
-        }
-      });
-    };
+    }; 
 
     this.revokeToken = function() {
       var fc = profileService.focusedClient;
