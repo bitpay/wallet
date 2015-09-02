@@ -113,9 +113,10 @@
           </div>
           <div class="right">
 
-            <a class="button outline round light-gray tiny m0"
+            <a ng-show="!index.isShared" class="button outline round light-gray tiny preferences-icon m0"
               ng-click="$root.go('glidera')">
-              Glidera
+              <i class="fi-credit-card size-18 vm"></i>
+              <span class="show-for-medium-up">Glidera</span>
             </a>
 
             <a ng-click="$root.go('preferences')" class="button outline round light-gray tiny preferences-icon m0">

@@ -34,7 +34,7 @@ angular.module('copayApp.services').factory('glideraService', function($http, $l
 
     $http(req).then(function(data) {
       $log.info('Glidera Authorization Access Token: SUCCESS');
-      return cb(null, data); 
+      return cb(null, data.data); 
     }, function(data) {
       $log.error('Glidera Authorization Access Token: ERROR ' + data.statusText);
       return cb(data.statusText);
@@ -111,8 +111,20 @@ angular.module('copayApp.services').factory('glideraService', function($http, $l
   root.getTransactions = function(token, cb) {
     if (!token) return cb('Invalid Token');
     $http(_get('/transaction', token)).then(function(data) {
-      $log.info('Glidera Transaction: SUCCESS');
+      $log.info('Glidera Transactions: SUCCESS');
       return cb(null, data.data.transactions);
+    }, function(data) {
+      $log.error('Glidera Transactions: ERROR ' + data.statusText);
+      return cb(data.statusText);
+    });
+  };
+
+  root.getTransaction = function(token, txid, cb) {
+    if (!token) return cb('Invalid Token');
+    if (!txid) return cb('TxId required');
+    $http(_get('/transaction/' + txid, token)).then(function(data) {
+      $log.info('Glidera Transaction: SUCCESS');
+      return cb(null, data.data);
     }, function(data) {
       $log.error('Glidera Transaction: ERROR ' + data.statusText);
       return cb(data.statusText);
