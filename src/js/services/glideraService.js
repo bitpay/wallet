@@ -224,7 +224,7 @@ console.log('[glideraService.js:168]',data); //TODO
     };
     $http(_post('/buy', token, twoFaCode, data)).then(function(data) {
       $log.info('Glidera Buy: SUCCESS');
-      return cb(null, data); 
+      return cb(null, data.data); 
     }, function(data) {
       $log.error('Glidera Buy: ERROR ' + data.statusText);
       return cb(data.statusText);
