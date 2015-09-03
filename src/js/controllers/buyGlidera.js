@@ -8,24 +8,6 @@ angular.module('copayApp.controllers').controller('buyGlideraController',
     this.error = null;
     this.success = null;
 
-    this.setDestinationAddress = function() {
-      var self = this;
-      this.addrError = null;
-      var fc = profileService.focusedClient;
-      if (!fc) return;
-
-      $timeout(function() {
-        addressService.getAddress(fc.credentials.walletId, null, function(err, addr) {
-          if (err) {
-            return;
-          } else {
-            if (addr) self.addr[fc.credentials.walletId] = addr;
-          }
-          $scope.$digest();
-        });
-      });
-    };
-
     this.getBuyPrice = function(token, price) {
       var self = this;
       if (!price || (price && !price.qty && !price.fiat)) {
@@ -60,9 +42,7 @@ angular.module('copayApp.controllers').controller('buyGlideraController',
             useCurrentPrice: false,
             ip: null 
           };
-console.log('[sellGlidera.js:128]',token, twoFaCode, addr, data); //TODO
           glideraService.buy(token, twoFaCode, data, function(error, data) {
-console.log('[sellGlidera.js:116]', error, data); //TODO
             self.loading = false;
             if (error) {
               self.error = error;
