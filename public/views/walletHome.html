@@ -299,16 +299,8 @@
              translate> Send All
           </a>
 
-          <div  ng-show="!index.lockedBalanceSat && index.availableBalanceStr">
-            <div class="size-10">
-              <span class="db text-bold">
-                <span translate>Available Balance</span>:
-                {{index.availableBalanceStr }}
-              </span>
-            </div>
-          </div>
-          <div  ng-show="index.lockedBalanceSat">
-            <div class="left">
+          <div>
+            <div class="left" ng-show="index.lockedBalanceSat">
               <i class="fi-info size-24 m10r"></i>
             </div>
             <div class="size-10">
@@ -316,7 +308,7 @@
                 <span translate>Available Balance</span>:
                 {{index.availableBalanceStr }}
               </span>
-              <span class="text-gray" >
+              <span class="text-gray" ng-show="index.lockedBalanceSat">
                 {{index.lockedBalanceStr}}
                 <span translate>locked by pending payments</span>
               </span>
