@@ -42,11 +42,15 @@
             <switch id="no-sign" name="noSign" ng-model="noSign" class="green right m5t m10b"></switch>
           </label>
         </div>
+      </div>
 
-        <div class="m10 size-14 text-gray" translate>
-          WARNING: Not including the private key will allows checking the wallet balance, transactions, and create spend proposals from the export. However, does not allow to approve (sign) proposals, so <b>funds can not be accesed from a export without the private key</b>.
-
-        </div>
+      <div class="box-notification" ng-show="noSign">
+        <span class="text-warning size-14">
+          <i class="fi-alert"></i>
+          <span translate>
+          WARNING: Not including the private key allows to check the wallet balance, transaction history, and create spend proposals from the export. However, does not allow to approve (sign) proposals, so <b>funds will not be accessable from the export</b>.
+          </span>
+        </span>
       </div>
 
 

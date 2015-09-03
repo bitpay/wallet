@@ -8,9 +8,6 @@
 
 <div class="content p20v" ng-controller="wordsController as wordsC">
 
-  <div class="row">
-    <h2> Wallet Seed </h2>
-  </div>
   <div ng-show="wordsC.mnemonicWords">
     <div class="row"  ng-show="index.n==1">
       <div class="m10t columns size-14 text-gray" translate>
@@ -51,7 +48,7 @@
  
   <div class="row m20t" ng-show="!wordsC.mnemonicWords">
     <div class="columns size-14 text-gray" translate>
-        The wallet seed for this wallet is not available on this device. You can still export the wallet to backup it.
+        The wallet seed not available on this device. You can still export the wallet to backup it.
     </div>
   </div>
  
