@@ -1,7 +1,7 @@
 'use strict';
 'use strict';
 angular.module('copayApp.services')
-  .factory('addressService', function(storageService, profileService, $log, $timeout, lodash) {
+  .factory('addressService', function(storageService, profileService, $log, $timeout, lodash, bwsError, gettext) {
     var root = {};
 
 
@@ -34,8 +34,7 @@ angular.module('copayApp.services')
               root._createAddress(walletId, cb);
             }, 5000);
           }
-          $log.debug('Creating address ERROR:', err);
-          return cb(err);
+          return bwsError.cb(err, gettext('Could not create address'), cb);
         }
         return cb(null, addr.address);
       });

@@ -85,9 +85,8 @@ angular.module('copayApp.directives')
       };
     }
   ])
-  .directive('validAmount', ['configService', '$locale',
-    function(configService, locale) {
-      var formats = locale.NUMBER_FORMATS;
+  .directive('validAmount', ['configService',
+    function(configService) {
 
       return {
         require: 'ngModel',
@@ -96,13 +95,13 @@ angular.module('copayApp.directives')
             var settings = configService.getSync().wallet.settings;
             var vNum = Number((value * settings.unitToSatoshi).toFixed(0));
 
-            if (typeof value == 'undefined') {
+            if (typeof value == 'undefined' || value == 0) {
               ctrl.$pristine = true;
             }
 
             if (typeof vNum == "number" && vNum > 0) {
               var decimals = Number(settings.unitDecimals);
-              var sep_index = ('' + value).indexOf(formats.DECIMAL_SEP);
+              var sep_index = ('' + value).indexOf('.');
               var str_value = ('' + value).substring(sep_index + 1);
               if (sep_index > 0 && str_value.length > decimals) {
                 ctrl.$setValidity('validAmount', false);
@@ -296,4 +295,25 @@ angular.module('copayApp.directives')
         });
       }
     };
+  })
+  .directive('menuToggle', function() {
+    return {
+      restrict: 'E',
+      replace: true,
+      templateUrl: 'views/includes/menu-toggle.html'
+    }
+  })
+  .directive('logo', function() {
+    return {
+      restrict: 'E',
+      scope: {
+        width: "@",
+        negative: "="
+      },
+      controller: function($scope) {
+        $scope.logo_url = $scope.negative ? 'img/logo-negative.png' : 'img/logo.png';
+      },
+      replace: true,
+      template: '<img ng-src="{{ logo_url }}" alt="Copay">'
+    }
   });

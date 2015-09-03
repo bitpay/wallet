@@ -24,8 +24,8 @@
         <div ng-include="'views/includes/sidebar.html'" ng-if="index.hasProfile"></div>
 
         <div notifications="right top"></div> 
-        <div ng-include="'views/includes/password.html'" ng-if="index.askPassword"
-></div>
+        <div ng-include="'views/includes/password.html'" ng-if="index.askPassword"></div>
+        <div ng-include="'views/includes/alert.html'" ng-if="index.showAlert"></div>
         <div id="sectionContainer">
           <div id="mainSection">
             <section ui-view="main"

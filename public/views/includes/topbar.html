@@ -15,8 +15,7 @@
   </section>
 
   <section class="right-small" ng-show="showCamera">
-    <a id="camera-icon" ng-show="index.isComplete" class="p10"
-      ng-click="topbar.openScanner()"><i class="icon-scan size-21"></i></a>
+    <qr-scanner ng-show="index.isComplete" on-scan="topbar.onQrCodeScanned(data)" before-scan="topbar.openSendScreen()" />
   </section>
 
   <section class="middle tab-bar-section">
