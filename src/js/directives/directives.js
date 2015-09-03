@@ -316,4 +316,11 @@ angular.module('copayApp.directives')
       replace: true,
       template: '<img ng-src="{{ logo_url }}" alt="Copay">'
     }
+  })
+  .directive('availableBalance', function() {
+    return {
+      restrict: 'E',
+      replace: true,
+      templateUrl: 'views/includes/available-balance.html'
+    }
   });
