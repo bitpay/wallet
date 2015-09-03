@@ -1,63 +1,70 @@
 <div 
   class="topbar-container" 
   ng-include="'views/includes/topbar.html'"
-  ng-init="titleSection='Sell'; goBackToState = 'glidera'">
+  ng-init="titleSection='Sell Bitcoin'; goBackToState = 'glidera'">
 </div>
 
 
-<div class="content glidera" 
+<div class="content glidera p20v" 
   ng-controller="sellGlideraController as sell">
   <div class="row">
-    <div class="large-12 columns">
+    <div class="columns">
 
-      <h1>Sell Bitcoin</h1>
+      <div ng-show="!sell.show2faCodeInput && !sell.success">
+        <form name="sellPriceForm" 
+          ng-submit="sell.get2faCode(index.glideraToken)" novalidate>
+          <label>Amount in {{showAlternative ? 'USD' : 'BTC'}}</label>
+          <div class="input">
+            <input ng-show="!showAlternative" type="number" id="qty" 
+            name="qty" ng-attr-placeholder="{{'Amount'|translate}}"
+            ng-minlength="0.00000001" ng-maxlength="10000000000" 
+            ng-model="qty" autocomplete="off" ng-change="sell.getSellPrice(index.glideraToken, {'qty': qty})">
 
-      <form name="form" ng-submit="sell.getSellPrice(index.glideraToken, {'qty': qty, 'fiat': fiat})" novalidate>
-        <label>Amount BTC</label>
-        <input type="number" ng-model="qty">
-        <label>Amount USD</label>
-        <input type="number" ng-model="fiat">
-        <input class="button" type="submit" value="Get Sell Price">
-      </form>
+            <input ng-show="showAlternative" type="number" id="fiat" 
+            name="fiat" ng-attr-placeholder="{{'Amount'|translate}}" 
+            ng-model="fiat" autocomplete="off" ng-change="sell.getSellPrice(index.glideraToken, {'fiat': fiat})">
 
-      <h2>Sell Price</h2>
-      <ul>
-        <li>qty: {{sell.sellPrice.qty}}
-        <li>price: {{sell.sellPrice.price}}
-        <li>subtotal: {{sell.sellPrice.subtotal}}
-        <li>fees: {{sell.sellPrice.fees}}
-        <li>total: {{sell.sellPrice.total}}
-        <li>currency: {{sell.sellPrice.currency}}
-        <li>expires: {{sell.sellPrice.expires}}
-        <li>priceUuid: {{sell.sellPrice.priceUuid}}
-      </ul>
-
-      <h2>Create Tx</h2>
-
-      <div class="m10b">
-        refundAddress: {{sell.addr[index.walletId]}}<br>
-        sellAddress: {{sell.sellAddress}}
+            <a ng-show="!showAlternative" class="postfix" 
+              ng-click="showAlternative = true; qty = null; sell.sellPrice = null">BTC</a>
+            <a ng-show="showAlternative" class="postfix" 
+              ng-click="showAlternative = false; fiat = null; sell.sellPrice = null">USD</a>
+            <input class="button dark-gray outline round" 
+            type="submit" value="Continue" ng-disabled="!sell.sellPrice.qty">
+          </div>
+        </form>
+        <div class="text-gray size-12 m10b" ng-show="sell.sellPrice.qty">
+          Sell 
+          <span ng-show="qty">${{sell.sellPrice.subtotal}} {{sell.sellPrice.currency}} in Bitcoin</span> 
+          <span ng-show="fiat">{{sell.sellPrice.qty}} BTC</span> 
+          at ${{sell.sellPrice.price}} {{sell.sellPrice.currency}} 
+        </div>
       </div>
-      
-      <button 
-        ng-click="raw = sell.createTx()">
-        Create
-      </button>
+      <div ng-show="sell.show2faCodeInput && !sell.success">
+        <p class="text-center text-gray">
+        The bitcoin amount of {{sell.sellPrice.qty}} will be immediately sent from your bitcoin
+        wallet ({{index.walletName}}) to Glidera.
+        </p>
+        <p class="text-center text-gray">
+        The total of ${{sell.sellPrice.subtotal}} {{sell.sellPrice.currency}} will be deposited 
+        in your bank account in 4-6 business days.
+        </p>
+        <form name="sellForm" 
+          ng-submit="sell.createTx(index.glideraToken, twoFaCode)" novalidate>
+          <label>Enter 2FA Code</label>
+            <input type="number" ng-model="twoFaCode" required>
+            <input class="button dark-gray outline round" 
+            type="submit" value="Sell Bitcoin">
+        </form>
+      </div>
+      <div class="text-center" ng-show="sell.success">
+        <h1>Sale complete</h1>
+        <p class="text-gray">
+        A transfer has been initiated to your bank account and should arrive in 4-6 business days.
+        </p>
 
-
-      <div class="m10b" ng-show="sell.raw">{{sell.raw}}</div>
-
-      <h2>Send 2FA Code</h2>
-      <button ng-click="sell.get2faCode(index.glideraToken)">Send 2FA Code</button>
-
-      <h2>Send TX to Glider</h2>
-      <form name="form2" ng-submit="sell.sendTx(index.glideraToken, twoFaCode)" novalidate>
-        <label>2FA Code
-          <input type="number" ng-model="twoFaCode">
-        </label>
-        <input class="button" type="submit" value="Sell">
-      </form>
-
+        <button class="outline dark-gray round expand"
+          ng-click="$root.go('glidera')">Finish</button>
+      </div>
     </div>
   </div>
 </div>

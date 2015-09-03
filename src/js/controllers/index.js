@@ -851,7 +851,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   self.initGlidera = function() {
     if (self.isShared) return;
     storageService.getGlideraToken(self.network, function(err, val) {
-      if (err) return;
+      if (err || !val) return;
       else {
         self.glideraToken = val;
         glideraService.getTransactions(val, function(error, txs) {

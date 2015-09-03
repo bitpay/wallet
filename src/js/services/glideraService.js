@@ -135,7 +135,7 @@ angular.module('copayApp.services').factory('glideraService', function($http, $l
     if (!token) return cb('Invalid Token');
     $http(_get('/user/create_sell_address', token)).then(function(data) {
       $log.info('Glidera Create Sell Address: SUCCESS');
-      return cb(null, data.data);
+      return cb(null, data.data.sellAddress);
     }, function(data) {
       $log.error('Glidera Create Sell Address: ERROR ' + data.statusText);
       return cb(data.statusText);
@@ -189,11 +189,9 @@ angular.module('copayApp.services').factory('glideraService', function($http, $l
       useCurrentPrice: data.useCurrentPrice,
       ip: data.ip
     };
-console.log('[glideraService.js:161]',data); //TODO
     $http(_post('/sell', token, twoFaCode, data)).then(function(data) {
-console.log('[glideraService.js:168]',data); //TODO
       $log.info('Glidera Sell: SUCCESS');
-      return cb(null, data); 
+      return cb(null, data.data); 
     }, function(data) {
       $log.error('Glidera Sell: ERROR ' + data.statusText);
       return cb(data.statusText);
