@@ -1,0 +1,5 @@
+* Bitcoin ağ yüküne göre daha uygun ücret düzeyleri
+* Onaylanmamış girişler ile işlem oluşturmayı önlemek için tercih
+* Gelişmiş gönderme seçenekleri eklendi
+* İtalyanca, Rusça ve Yunanca dil seçenekleri eklendi
+* Ufak hata düzeltmeleri

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, lodash, go, profileService, configService, isCordova, rateService, storageService, addressService, gettextCatalog, gettext, amMoment, nodeWebkit) {
+angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, lodash, go, profileService, configService, isCordova, rateService, storageService, addressService, gettextCatalog, gettext, amMoment, nodeWebkit, addonManager, feeService, isChromeApp, bwsError, utilService) {
   var self = this;
   self.isCordova = isCordova;
   self.onGoingProcess = {};
@@ -10,11 +10,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     return (parseFloat(number.toPrecision(12)));
   };
 
-
   self.goHome = function() {
     go.walletHome();
   };
-
 
   self.menu = [{
     'title': gettext('Home'),
@@ -34,27 +32,42 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     'link': 'history'
   }];
 
+  self.addonViews = addonManager.addonViews();
+  self.menu = self.menu.concat(addonManager.addonMenuItems());
+  self.menuItemSize = self.menu.length > 4 ? 2 : 3;
+
   self.tab = 'walletHome';
 
   self.availableLanguages = [{
-    name: gettext('Deutsch'),
-    isoCode: 'de',
-  }, {
-    name: gettext('English'),
+    name: 'English',
     isoCode: 'en',
   }, {
-    name: gettext('Spanish'),
-    isoCode: 'es',
-  }, {
-    name: gettext('French'),
+    name: 'Français',
     isoCode: 'fr',
   }, {
-    name: gettext('Japanese'),
+    name: 'Italiano',
+    isoCode: 'it',
+  }, {
+    name: 'Deutsch',
+    isoCode: 'de',
+  }, {
+    name: 'Español',
+    isoCode: 'es',
+  }, {
+    name: 'Português',
+    isoCode: 'pt',
+  }, {
+    name: 'Ελληνικά',
+    isoCode: 'el',
+  }, {
+    name: '日本語',
     isoCode: 'ja',
   }, {
-    name: gettext('Portuguese'),
-    isoCode: 'pt',
+    name: 'Pусский',
+    isoCode: 'ru',
   }];
+
+  self.feeOpts = feeService.feeOpts;
 
   self.setOngoingProcess = function(processName, isOn) {
     $log.debug('onGoingProcess', processName, isOn);
@@ -79,17 +92,26 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     if (!fc) return;
 
     // Clean status
-    self.lockedBalance = null;
+    self.totalBalanceSat = null;
+    self.lockedBalanceSat = null;
+    self.availableBalanceSat = null;
+    self.pendingAmount = null;
+    self.spendUnconfirmed = null;
+
+    self.totalBalanceStr = null;
     self.availableBalanceStr = null;
-    self.totalBalanceStr = null;
     self.lockedBalanceStr = null;
-    self.totalBalanceStr = null;
+
     self.alternativeBalanceAvailable = false;
     self.totalBalanceAlternative = null;
+
+    self.currentFeeLevel = null;
     self.notAuthorized = false;
     self.txHistory = [];
     self.txHistoryPaging = false;
     self.pendingTxProposalsCountForUs = null;
+    self.setSpendUnconfirmed();
+
     $timeout(function() {
       self.hasProfile = true;
       self.noFocusedWallet = false;
@@ -106,6 +128,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       self.walletName = fc.credentials.walletName;
       self.walletId = fc.credentials.walletId;
       self.isComplete = fc.isComplete();
+      self.canSign = fc.canSign();
       self.txps = [];
       self.copayers = [];
       self.updateColor();
@@ -226,7 +249,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         self.updateError = false;
         return fc.getStatus(function(err, ret) {
           if (err) {
-            self.updateError = true;
+            self.updateError = bwsError.msg(err, gettext('Could not update Wallet'));
           } else {
             if (!opts.quiet)
               self.setOngoingProcess('scanning', ret.wallet.scanning);
@@ -267,6 +290,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         }
         $log.debug('Wallet Status:', walletStatus);
         self.setPendingTxps(walletStatus.pendingTxps);
+        self.setFeesOpts();
 
         // Status Shortcuts
         self.walletName = walletStatus.wallet.name;
@@ -279,6 +303,10 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         self.otherWallets = lodash.filter(profileService.getWallets(self.network), function(w) {
           return w.id != self.walletId;
         });;
+
+        // Notify external addons or plugins
+        $rootScope.$emit('Local/BalanceUpdated', walletStatus.balance);
+
         $rootScope.$apply();
 
         if (opts.triggerTxUpdate) {
@@ -286,6 +314,48 @@ angular.module('copayApp.controllers').controller('indexController', function($r
             self.updateTxHistory();
           }, 1);
         }
+      });
+    });
+  };
+
+  self.setSpendUnconfirmed = function() {
+    self.spendUnconfirmed = configService.getSync().wallet.spendUnconfirmed;
+  };
+
+  self.setSendMax = function() {
+
+    // Set Send max
+    if (self.currentFeeLevel && self.totalBytesToSendMax) {
+      feeService.getCurrentFeeValue(self.currentFeeLevel, function(err, feePerKb) {
+
+        // KB to send max
+        if (self.totalBytesToSendMax) {
+          var feeToSendMaxSat = parseInt(((self.totalBytesToSendMax * feePerKb) / 1000.).toFixed(0));
+          self.feeRateToSendMax = feePerKb;
+          self.availableMaxBalance = strip((self.availableBalanceSat - feeToSendMaxSat) * self.satToUnit);
+          self.feeToSendMaxStr = profileService.formatAmount(feeToSendMaxSat) + ' ' + self.unitName;
+        } else {
+          self.feeToSendMaxStr = null;
+          self.feeRateToSendMax = null;
+        }
+      });
+    }
+
+  };
+
+  self.setCurrentFeeLevel = function(level) {
+    self.currentFeeLevel = level || configService.getSync().wallet.settings.feeLevel || 'normal';
+    self.setSendMax();
+  };
+
+
+  self.setFeesOpts = function() {
+    var fc = profileService.focusedClient;
+    if (!fc) return;
+    $timeout(function() {
+      feeService.getFeeLevels(function(levels) {
+        self.feeLevels = levels;
+        $rootScope.$apply();
       });
     });
   };
@@ -298,8 +368,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       fc.getBalance(function(err, balance) {
         self.setOngoingProcess('updatingBalance', false);
         if (err) {
-          $log.debug('Wallet Balance ERROR:', err);
-          $scope.$emit('Local/ClientError', err);
+          self.handleError(err);
           return;
         }
         $log.debug('Wallet Balance:', balance);
@@ -316,8 +385,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       fc.getTxProposals({}, function(err, txps) {
         self.setOngoingProcess('updatingPendingTxps', false);
         if (err) {
-          $log.debug('Wallet PendingTxps ERROR:', err);
-          $scope.$emit('Local/ClientError', err);
+          self.handleError(err);
         } else {
           $log.debug('Wallet PendingTxps:', txps);
           self.setPendingTxps(txps);
@@ -330,7 +398,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   self.updateTxHistory = function(skip) {
     var fc = profileService.focusedClient;
     if (!fc.isComplete()) return;
-
     if (!skip) {
       self.txHistory = [];
     }
@@ -339,6 +406,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.txHistoryError = false;
     self.updatingTxHistory = true;
     self.txHistoryPaging = false;
+
     $timeout(function() {
       fc.getTxHistory({
         skip: self.skipHistory,
@@ -348,8 +416,10 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         if (err) {
           $log.debug('TxHistory ERROR:', err);
           // We do not should errors here, since history is usually
-          // fetched AFTER others requests.
-          //self.handleError(err);
+          // fetched AFTER others requests (if skip=0)
+          if (skip)
+            self.handleError(err);
+
           self.txHistoryError = true;
         } else {
           $log.debug('Wallet Transaction History:', txs);
@@ -361,14 +431,20 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     });
   };
 
+  // This handles errors from BWS/index with are nomally
+  // trigger from async events (like updates)
   self.handleError = function(err) {
     $log.warn('Client ERROR:', err);
-    if (err.code === 'NOTAUTHORIZED') {
-      $scope.$emit('Local/NotAuthorized');
-    } else if (err.code === 'NOTFOUND') {
-      $scope.$emit('Local/BWSNotFound');
+    if (err.code === 'NOT_AUTHORIZED') {
+      self.notAuthorized = true;
+      go.walletHome();
+    } else if (err.code === 'NOT_FOUND') {
+      self.showErrorPopup(gettext('Could not access Wallet Service: Not found'));
     } else {
+      var msg = ""
       $scope.$emit('Local/ClientError', (err.error ? err.error : err));
+      var msg = bwsError.msg(err, gettext('Error at Wallet Service'));
+      self.showErrorPopup(msg);
     }
   };
   self.openWallet = function() {
@@ -394,17 +470,10 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   };
 
   self.setPendingTxps = function(txps) {
-    var config = configService.getSync().wallet.settings;
     self.pendingTxProposalsCountForUs = 0;
     lodash.each(txps, function(tx) {
-      var amount = tx.amount * self.satToUnit;
-      tx.amountStr = profileService.formatAmount(tx.amount) + ' ' + config.unitName;
-      tx.feeStr = profileService.formatAmount(tx.fee) + ' ' + config.unitName;
-      tx.alternativeAmount = rateService.toFiat(tx.amount, config.alternativeIsoCode) ? rateService.toFiat(tx.amount, config.alternativeIsoCode).toFixed(2) : 'N/A';
-      tx.alternativeAmountStr = tx.alternativeAmount + " " + config.alternativeIsoCode;
-      tx.alternativeIsoCode = config.alternativeIsoCode;
-
-
+      
+      tx = utilService.processTx(tx);
 
       var action = lodash.find(tx.actions, {
         copayerId: self.copayerId
@@ -428,22 +497,23 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       if (tx.creatorId != self.copayerId) {
         self.pendingTxProposalsCountForUs = self.pendingTxProposalsCountForUs + 1;
       }
+      addonManager.formatPendingTxp(tx);
     });
     self.txps = txps;
   };
 
   self.setTxHistory = function(txs) {
+    var config = configService.getSync().wallet.settings;
     var now = Math.floor(Date.now() / 1000);
     var c = 0;
     self.txHistoryPaging = txs[self.limitHistory] ? true : false;
     lodash.each(txs, function(tx) {
+      tx = utilService.processTx(tx);
 
       // no future transactions...
       if (tx.time > now)
         tx.time = now;
 
-      tx.rateTs = Math.floor((tx.ts || now) / 1000);
-      tx.amountStr = profileService.formatAmount(tx.amount); //$filter('noFractionNumber')(
       if (c < self.limitHistory) {
         self.txHistory.push(tx);
         c++;
@@ -472,46 +542,45 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     var config = configService.getSync().wallet.settings;
     var COIN = 1e8;
 
+
     // Address with Balance
     self.balanceByAddress = balance.byAddress;
 
     // SAT
-    self.totalBalanceSat = balance.totalAmount;
-    self.lockedBalanceSat = balance.lockedAmount;
-    self.availableBalanceSat = self.totalBalanceSat - self.lockedBalanceSat;
+    if (self.spendUnconfirmed) {
+      self.totalBalanceSat = balance.totalAmount;
+      self.lockedBalanceSat = balance.lockedAmount;
+      self.availableBalanceSat = balance.availableAmount;
+      self.pendingAmount = null;
+    } else {
+      self.totalBalanceSat = balance.totalConfirmedAmount;
+      self.lockedBalanceSat = balance.lockedConfirmedAmount;
+      self.availableBalanceSat = balance.availableConfirmedAmount;
+      self.pendingAmount = balance.totalAmount - balance.totalConfirmedAmount;
+    }
 
     // Selected unit
     self.unitToSatoshi = config.unitToSatoshi;
     self.satToUnit = 1 / self.unitToSatoshi;
     self.unitName = config.unitName;
 
-    self.totalBalance = strip(self.totalBalanceSat * self.satToUnit);
-    self.lockedBalance = strip(self.lockedBalanceSat * self.satToUnit);
-    self.availableBalance = strip(self.availableBalanceSat * self.satToUnit);
-
-    // BTC
-    self.totalBalanceBTC = strip(self.totalBalanceSat / COIN);
-    self.lockedBalanceBTC = strip(self.lockedBalanceSat / COIN);
-    self.availableBalanceBTC = strip(self.availableBalanceBTC / COIN);
-
-    // KB to send max
-    self.feePerKbSat = config.feeValue || 10000;
-    if (balance.totalKbToSendMax) {
-      var feeToSendMaxSat = balance.totalKbToSendMax * self.feePerKbSat;
-
-      self.availableMaxBalance = strip((self.availableBalanceSat - feeToSendMaxSat) * self.satToUnit);
-      self.feeToSendMaxStr = profileService.formatAmount(feeToSendMaxSat) + ' ' + self.unitName;
-    } else {
-      self.feeToSendMaxStr = null;
-    }
-
     //STR
     self.totalBalanceStr = profileService.formatAmount(self.totalBalanceSat) + ' ' + self.unitName;
     self.lockedBalanceStr = profileService.formatAmount(self.lockedBalanceSat) + ' ' + self.unitName;
     self.availableBalanceStr = profileService.formatAmount(self.availableBalanceSat) + ' ' + self.unitName;
 
+    if (self.pendingAmount) {
+      self.pendingAmountStr = profileService.formatAmount(self.pendingAmount) + ' ' + self.unitName;
+    } else {
+      self.pendingAmountStr = null;
+    }
+
     self.alternativeName = config.alternativeName;
     self.alternativeIsoCode = config.alternativeIsoCode;
+
+    // Other
+    self.totalBytesToSendMax = balance.totalBytesToSendMax;
+    self.setCurrentFeeLevel();
 
     // Check address
     addressService.isUsed(self.walletId, balance.byAddress, function(err, used) {
@@ -523,8 +592,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
     rateService.whenAvailable(function() {
 
-      var totalBalanceAlternative = rateService.toFiat(self.totalBalance * self.unitToSatoshi, self.alternativeIsoCode);
-      var lockedBalanceAlternative = rateService.toFiat(self.lockedBalance * self.unitToSatoshi, self.alternativeIsoCode);
+      var totalBalanceAlternative = rateService.toFiat(self.totalBalanceSat, self.alternativeIsoCode);
+      var lockedBalanceAlternative = rateService.toFiat(self.lockedBalanceSat, self.alternativeIsoCode);
       var alternativeConversionRate = rateService.toFiat(100000000, self.alternativeIsoCode);
 
       self.totalBalanceAlternative = $filter('noFractionNumber')(totalBalanceAlternative, 2);
@@ -555,7 +624,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
           }
         });
       }, false);
-      chooser.click();  
+      chooser.click();
     }
 
     function formatDate(date) {
@@ -595,8 +664,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         if (txs && txs.length > 0) {
           allTxs.push(txs);
           return getHistory(skip + 100, cb);
-        }
-        else {
+        } else {
           return cb(null, lodash.flatten(allTxs));
         }
       });
@@ -617,30 +685,44 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       getHistory(null, function(err, txs) {
         self.setOngoingProcess('generatingCSV', false);
         if (err) {
-          $log.debug('TxHistory ERROR:', err);
+          self.handleError(err);
         } else {
           $log.debug('Wallet Transaction History:', txs);
 
           self.satToUnit = 1 / self.unitToSatoshi;
           var data = txs;
           var satToBtc = 1 / 100000000;
-          var filename = 'Copay-' + (self.alias || self.walletName ) + '.csv';
+          var filename = 'Copay-' + (self.alias || self.walletName) + '.csv';
           var csvContent = '';
           if (!isNode) csvContent = 'data:text/csv;charset=utf-8,';
           csvContent += 'Date,Destination,Note,Amount,Currency,Spot Value,Total Value,Tax Type,Category\n';
 
-          var _amount;
+          var _amount, _note;
           var dataString;
           data.forEach(function(it, index) {
-            _amount = (it.action == 'sent' ? '-' : '') + (it.amount * satToBtc).toFixed(8);
-            dataString = formatDate(it.time * 1000) + ',' + formatString(it.addressTo) + ',' + formatString(it.message) + ',' + _amount + ',BTC,,,,';
-            csvContent += index < data.length ? dataString + "\n" : dataString;
+            var amount = it.amount;
+
+            if (it.action == 'moved')
+              amount = 0;
+
+            _amount = (it.action == 'sent' ? '-' : '') + (amount * satToBtc).toFixed(8);
+            _note = formatString((it.message ? it.message : '') + ' TxId: ' + it.txid + ' Fee:' + (it.fees * satToBtc).toFixed(8));
+
+            if (it.action == 'moved')
+              _note += ' Moved:' + (it.amount * satToBtc).toFixed(8)
+
+            dataString = formatDate(it.time * 1000) + ',' + formatString(it.addressTo) + ',' + _note + ',' + _amount + ',BTC,,,,';
+            csvContent += dataString + "\n";
+
+            if (it.fees && (it.action == 'moved' || it.action == 'sent')) {
+              var _fee = (it.fees * satToBtc).toFixed(8)
+              csvContent += formatDate(it.time * 1000) + ',Bitcoin Network Fees,, -' + _fee + ',BTC,,,,' + "\n";
+            }
           });
 
           if (isNode) {
             saveFile('#export_file', csvContent);
-          }
-          else {
+          } else {
             var encodedUri = encodeURI(csvContent);
             var link = document.createElement("a");
             link.setAttribute("href", encodedUri);
@@ -653,30 +735,20 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     });
   };
 
-  self.clientError = function(err) {
-    if (isCordova) {
-      navigator.notification.confirm(
-        err,
-        function() {},
-        'Wallet Server Error', ['OK']
-      );
-    } else {
-      alert(err);
-    }
-  };
+  self.showErrorPopup = function (msg, cb) {
+    $log.warn('Showing err popup:' + msg);
+    self.showAlert = {
+      msg: msg,
+      close: function(err) {
+        self.showAlert = null;
+        if (cb) return cb(err);
+      },
+    };
+    $timeout(function() {
+      $rootScope.$apply();
+    });
 
-  self.deviceError = function(err) {
-    if (isCordova) {
-      navigator.notification.confirm(
-        err,
-        function() {},
-        'Device Error', ['OK']
-      );
-    } else {
-      alert(err);
-    }
   };
-
 
   self.recreate = function(cb) {
     var fc = profileService.focusedClient;
@@ -769,6 +841,15 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     });
   });
 
+  $rootScope.$on('Local/SpendUnconfirmedUpdated', function(event) {
+    self.setSpendUnconfirmed();
+    self.updateAll();
+  });
+
+  $rootScope.$on('Local/FeeLevelUpdated', function(event, level) {
+    self.setCurrentFeeLevel(level);
+  });
+
   $rootScope.$on('Local/ProfileBound', function() {
     storageService.getRemotePrefsStoredFlag(function(err, val) {
       if (err || val) return;
@@ -807,7 +888,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   $rootScope.$on('Local/EmailSettingUpdated', function(event, email, cb) {
     self.updateRemotePreferences({
       preferences: {
-        email: email
+        email: email || null
       },
     }, cb);
   });
@@ -832,6 +913,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     trailing: true
   });
 
+  self.debouncedUpdateHistory = lodash.throttle(function() {
+    self.updateTxHistory();
+  }, 60000);
 
   $rootScope.$on('Local/Resume', function(event) {
     $log.debug('### Resume event');
@@ -841,41 +925,12 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   $rootScope.$on('Local/BackupDone', function(event) {
     self.needsBackup = false;
     storageService.setBackupFlag(self.walletId, function(err) {
-      if (err) $rootScope.$emit('Local/DeviceError', err)
+      if (err) root.showErrorPopup(err);
     });
   });
 
-  $rootScope.$on('Local/NotAuthorized', function(event) {
-    self.notAuthorized = true;
-    $rootScope.$apply();
-  });
-
-  $rootScope.$on('Local/BWSNotFound', function(event) {
-    self.clientError('Could not access Wallet Service: Not found');
-    $rootScope.$apply();
-  });
-
   $rootScope.$on('Local/DeviceError', function(event, err) {
-    self.deviceError(err);
-    $rootScope.$apply();
-  });
-
-  $rootScope.$on('Local/ClientError', function(event, err) {
-    if (err.code && err.code === 'NOTAUTHORIZED') {
-      // Show not error, just redirect to home (where the recreate option is shown)
-      go.walletHome();
-    } else if (err && err.cors == 'rejected') {
-      $log.debug('CORS error:', err);
-    } else if (err.code === 'ETIMEDOUT' || err.code === 'CONNERROR') {
-      $log.debug('Time out:', err);
-    } else {
-      var msg = 'Error at Wallet Service: ';
-      if (err.message) msg = msg + err.message;
-      else if (err.error) msg = msg + err.error;
-      else msg = msg + (lodash.isObject(err) ? JSON.stringify(err) : err);
-      self.clientError(msg);
-    }
-    $rootScope.$apply();
+    root.showErrorPopup(err);
   });
 
   $rootScope.$on('Local/WalletImported', function(event, walletId) {
@@ -894,6 +949,20 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       triggerTxUpdate: true,
     });
   });
+
+
+  $rootScope.$on('NewBlock', function() {
+    if (self.pendingAmount) {
+      self.updateAll();
+    }
+
+    if (self.network == 'testnet') {
+      self.debouncedUpdateHistory();
+    } else {
+      self.updateTxHistory();
+    }
+  });
+
 
   $rootScope.$on('NewOutgoingTx', function() {
     self.updateAll({
@@ -958,6 +1027,10 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
   $rootScope.$on('Local/SetTab', function(event, tab, reset) {
     self.setTab(tab, reset);
+  });
+
+  $rootScope.$on('Local/ShowAlert', function(event, msg, cb) {
+    self.showErrorPopup(msg,cb);
   });
 
   $rootScope.$on('Local/NeedsPassword', function(event, isSetup, cb) {

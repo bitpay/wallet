@@ -4,15 +4,28 @@ angular.module('copayApp.controllers').controller('preferencesController',
   function($scope, $rootScope, $filter, $timeout, $modal, $log, lodash, configService, profileService) {
     var config = configService.getSync();
     this.unitName = config.wallet.settings.unitName;
-    this.feeName = config.wallet.settings.feeName || 'Priority';
     this.bwsurl = config.bws.url;
     this.selectedAlternative = {
       name: config.wallet.settings.alternativeName,
       isoCode: config.wallet.settings.alternativeIsoCode
     }; 
+    $scope.spendUnconfirmed = config.wallet.spendUnconfirmed;
     var fc = profileService.focusedClient;
     if (fc)
       $scope.encrypt = fc.hasPrivKeyEncrypted();
+
+    var unwatchSpendUnconfirmed = $scope.$watch('spendUnconfirmed', function(newVal, oldVal) {
+      if (newVal == oldVal) return;
+      var opts = {
+        wallet: {
+          spendUnconfirmed: newVal
+        }
+      };
+      configService.set(opts, function(err) {
+        $rootScope.$emit('Local/SpendUnconfirmedUpdated');
+        if (err) $log.debug(err);
+      });
+    });
 
     var unwatch = $scope.$watch('encrypt', function(val) {
       var fc = profileService.focusedClient;
@@ -50,5 +63,6 @@ angular.module('copayApp.controllers').controller('preferencesController',
 
     $scope.$on('$destroy', function() {
       unwatch();
+      unwatchSpendUnconfirmed();
     });
   });

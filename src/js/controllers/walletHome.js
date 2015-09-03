@@ -1,10 +1,11 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('walletHomeController', function($scope, $rootScope, $timeout, $filter, $modal, $log, notification, txStatus, isCordova, profileService, lodash, configService, rateService, storageService, bitcore, isChromeApp, gettext, gettextCatalog, nodeWebkit, addressService) {
+angular.module('copayApp.controllers').controller('walletHomeController', function($scope, $rootScope, $timeout, $filter, $modal, $log, notification, txStatus, isCordova, profileService, lodash, configService, rateService, storageService, bitcore, isChromeApp, gettext, gettextCatalog, nodeWebkit, addressService, feeService, bwsError, utilService) {
 
   var self = this;
   $rootScope.hideMenuBar = false;
   $rootScope.wpInputFocused = false;
+  $scope.currentSpendUnconfirmed = configService.getSync().wallet.spendUnconfirmed;
 
   // INIT
   var config = configService.getSync().wallet.settings;
@@ -28,6 +29,12 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   var disableScannerListener = $rootScope.$on('dataScanned', function(event, data) {
     self.setForm(data);
     $rootScope.$emit('Local/SetTab', 'send');
+
+    var form = $scope.sendForm;
+    if (form.address.$invalid) {
+      self.resetForm();
+      self.error = gettext('Could not recognize a valid Bitcoin QR Code');
+    }
   });
 
   var disablePaymentUriListener = $rootScope.$on('paymentUri', function(event, uri) {
@@ -63,6 +70,10 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     };
   });
 
+  var disableOngoingProcessListener = $rootScope.$on('Addon/OngoingProcess', function(e, name) {
+    self.setOngoingProcess(name);
+  });
+
   $scope.$on('$destroy', function() {
     disableAddrListener();
     disableScannerListener();
@@ -70,6 +81,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     disableTabListener();
     disableFocusListener();
     disableResumeListener();
+    disableOngoingProcessListener();
     $rootScope.hideMenuBar = false;
   });
 
@@ -78,23 +90,9 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     $rootScope.$digest();
   });
 
-  // walletHome
-
-
-  var parseError = function(err) {
-    if (!err) return;
-
-    if (err.message) {
-      // TODO : this is not used anymore?
-      if (err.message.indexOf('CORS') >= 0) {
-        err.message = gettext('Could not connect wallet service. Check your Internet connexion and your wallet service configuration.');
-      }
-
-      if (err.message.indexOf('TIMEDOUT') >= 0) {
-        err.message = gettext('Wallet service timed out. Check your Internet connexion and your wallet service configuration.');
-      }
-    }
-  };
+  var accept_msg = gettextCatalog.getString('Accept');
+  var cancel_msg = gettextCatalog.getString('Cancel');
+  var confirm_msg = gettextCatalog.getString('Confirm');
 
   $scope.openCopayersModal = function(copayers, copayerId) {
     var fc = profileService.focusedClient;
@@ -136,13 +134,14 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
         });
         addressService.getAddress(walletId, false, function(err, addr) {
           $scope.gettingAddress = false;
-          if (!err || addr)
-            $modalInstance.close(addr);
-          else {
-            parseError(err);
+
+          if (err) {
             self.error = err;
             $modalInstance.dismiss('cancel');
+            return;
           }
+
+          $modalInstance.close(addr);
         });
       };
     };
@@ -168,17 +167,17 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   this.openTxpModal = function(tx, copayers) {
     var fc = profileService.focusedClient;
     var refreshUntilItChanges = false;
+    var currentSpendUnconfirmed = $scope.currentSpendUnconfirmed;
     var ModalInstanceCtrl = function($scope, $modalInstance) {
       $scope.error = null;
       $scope.tx = tx;
-      $scope.amountStr = tx.amountStr;
-      $scope.feeStr = tx.feeStr;
-      $scope.alternativeAmountStr = tx.alternativeAmountStr;
       $scope.copayers = copayers
       $scope.copayerId = fc.credentials.copayerId;
+      $scope.canSign = fc.canSign();
       $scope.loading = null;
       $scope.color = fc.backgroundColor;
       refreshUntilItChanges = false;
+      $scope.currentSpendUnconfirmed = currentSpendUnconfirmed;
 
       $scope.getShortNetworkName = function() {
         return fc.credentials.networkName.substring(0, 4);
@@ -202,7 +201,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
             var action = lodash.find(tx.actions, {
               copayerId: fc.credentials.copayerId
             });
-            $scope.tx = tx;
+            $scope.tx = utilService.processTx(tx);
             if (!action && tx.status == 'pending')
               $scope.tx.pendingForUs = true;
             $scope.updateCopayerList();
@@ -223,11 +222,14 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
       $scope.sign = function(txp) {
         var fc = profileService.focusedClient;
+
+        if (!fc.canSign())
+          return;
+
         if (fc.isPrivKeyEncrypted()) {
           profileService.unlockFC(function(err) {
             if (err) {
-              parseError(err);
-              $scope.error = err;
+              $scope.error = bwsError.msg(err);
               return;
             }
             return $scope.sign(txp);
@@ -244,8 +246,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
             self.setOngoingProcess();
             if (err) {
               $scope.loading = false;
-              parseError(err);
-              $scope.error = err.message || gettext('Could not accept payment. Check you connection and try again');
+              $scope.error = bwsError.msg(err, gettextCatalog.getString('Could not accept payment'));
               $scope.$digest();
             } else {
               //if txp has required signatures then broadcast it
@@ -257,8 +258,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
                   self.setOngoingProcess();
                   $scope.loading = false;
                   if (err) {
-                    parseError(err);
-                    $scope.error = gettext('Could not broadcast payment. Check you connection and try again');
+                    $scope.error = bwsError.msg(err, gettextCatalog.getString('Could not broadcast payment'));
                     $scope.$digest();
                   } else {
                     $log.debug('Transaction signed and broadcasted')
@@ -287,8 +287,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
             self.setOngoingProcess();
             $scope.loading = false;
             if (err) {
-              parseError(err);
-              $scope.error = err.message || gettext('Could not reject payment. Check you connection and try again');
+              $scope.error = bwsError.msg(err, gettextCatalog.getString('Could not reject payment'));
               $scope.$digest();
             } else {
               $modalInstance.close(txpr);
@@ -309,8 +308,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
             // Hacky: request tries to parse an empty response
             if (err && !(err.message && err.message.match(/Unexpected/))) {
-              parseError(err);
-              $scope.error = err.message || gettext('Could not delete payment proposal. Check you connection and try again');
+              $scope.error = bwsError.msg(err, gettextCatalog.getString('Could not delete payment proposal'));
               $scope.$digest();
               return;
             }
@@ -328,8 +326,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
             self.setOngoingProcess();
             $scope.loading = false;
             if (err) {
-              parseError(err);
-              $scope.error = err.message || gettext('Could not broadcast payment. Check you connection and try again');
+              $scope.error = bwsError.msg(err, gettextCatalog.getString('Could not broadcast payment'));
               $scope.$digest();
             } else {
 
@@ -396,12 +393,11 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
         self.generatingAddress = false;
 
         if (err) {
-          parseError(err);
-          self.addrError = err.message || gettext('Could not create address. Check you connection and try again');
+          self.addrError = err;
+        } else {
+          if (addr)
+            self.addr[fc.credentials.walletId] = addr;
         }
-
-        if (addr)
-          self.addr[fc.credentials.walletId] = addr;
 
         $scope.$digest();
       });
@@ -411,7 +407,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   this.copyAddress = function(addr) {
     if (isCordova) {
       window.cordova.plugins.clipboard.copy(addr);
-      window.plugins.toast.showShortCenter('Copied to clipboard');
+      window.plugins.toast.showShortCenter(gettextCatalog.getString('Copied to clipboard'));
     } else if (nodeWebkit.isDefined()) {
       nodeWebkit.writeToClipboard(addr);
     }
@@ -451,6 +447,8 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
             $scope.customAlternative = newValue;
             if (typeof(newValue) === 'number' && $scope.isRateAvailable) {
               $scope.customAmount = parseFloat((rateService.fromFiat(newValue, $scope.alternativeIsoCode) * satToUnit).toFixed($scope.unitDecimals), 10);
+            } else {
+              $scope.customAmount = null;
             }
           },
           enumerable: true,
@@ -467,7 +465,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
             if (typeof(newValue) === 'number' && $scope.isRateAvailable) {
               $scope.customAlternative = parseFloat((rateService.toFiat(newValue * $scope.unitToSatoshi, $scope.alternativeIsoCode)).toFixed(2), 10);
             } else {
-              $scope.customAlternative = 0;
+              $scope.customAlternative = null;
             }
             $scope.alternativeAmount = $scope.customAlternative;
           },
@@ -510,7 +508,16 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     });
   };
 
-  // Send
+  // Send 
+
+  var unwatchSpendUnconfirmed = $scope.$watch('currentSpendUnconfirmed', function(newVal, oldVal) {
+    if (newVal == oldVal) return;
+    $scope.currentSpendUnconfirmed = newVal;
+  });
+
+  $scope.$on('$destroy', function() {
+    unwatchSpendUnconfirmed();
+  });
 
   this.canShowAlternative = function() {
     return $scope.showAlternative;
@@ -601,6 +608,8 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
           $scope.__alternative = newValue;
           if (typeof(newValue) === 'number' && self.isRateAvailable) {
             $scope._amount = parseFloat((rateService.fromFiat(newValue, self.alternativeIsoCode) * satToUnit).toFixed(self.unitDecimals), 10);
+          } else {
+            $scope.__amount = null;
           }
         },
         enumerable: true,
@@ -616,7 +625,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
           if (typeof(newValue) === 'number' && self.isRateAvailable) {
             $scope.__alternative = parseFloat((rateService.toFiat(newValue * self.unitToSatoshi, self.alternativeIsoCode)).toFixed(2), 10);
           } else {
-            $scope.__alternative = 0;
+            $scope.__alternative = null;
           }
           self.alternativeAmount = $scope.__alternative;
           self.resetError();
@@ -640,16 +649,10 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
   this.setSendError = function(err) {
     var fc = profileService.focusedClient;
-    $log.warn(err);
-    parseError(err);
-    var errMessage =
-      fc.credentials.m > 1 ? gettext('Could not create payment proposal') : gettext('Could not send payment');
+    var prefix =
+      fc.credentials.m > 1 ? gettextCatalog.getString('Could not create payment proposal') : gettextCatalog.getString('Could not send payment');
 
-    //This are abnormal situations, but still err message will not be translated
-    //(the should) we should switch using err.code and use proper gettext messages
-    errMessage = errMessage + '. ' + (err.message ? err.message : gettext('Check you connection and try again'));
-
-    this.error = errMessage;
+    this.error = bwsError.msg(err, prefix);
 
     $timeout(function() {
       $scope.$digest();
@@ -676,10 +679,14 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     };
   };
 
+  this.setFee = function(level) {
+    this.currentSendFeeLevel = level;
+  };
+
   this.submitForm = function() {
     var fc = profileService.focusedClient;
     var unitToSat = this.unitToSatoshi;
-    
+
     if (isCordova && this.isWindowsPhoneApp) {
       this.hideAddress = false;
       this.hideAmount = false;
@@ -708,30 +715,52 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       address = form.address.$modelValue;
       amount = parseInt((form.amount.$modelValue * unitToSat).toFixed(0));
 
-      fc.sendTxProposal({
-        toAddress: address,
-        amount: amount,
-        message: comment,
-        payProUrl: paypro ? paypro.url : null,
-        feePerKb: config.feeValue || 10000,
-      }, function(err, txp) {
-        if (err) {
-          self.setOngoingProcess();
-          profileService.lockFC();
-          return self.setSendError(err);
+      var getFee = function(cb) {
+        if (form.feePerKb) {
+          cb(null, form.feePerKb);
+        } else {
+          feeService.getCurrentFeeValue(self.currentSendFeeLevel, cb);
         }
+      };
 
-        self.signAndBroadcast(txp, function(err) {
-          self.setOngoingProcess();
-          profileService.lockFC();
-          self.resetForm();
+      getFee(function(err, feePerKb) {
+        if (err) $log.debug(err);
+        fc.sendTxProposal({
+          toAddress: address,
+          amount: amount,
+          message: comment,
+          payProUrl: paypro ? paypro.url : null,
+          feePerKb: feePerKb,
+          excludeUnconfirmedUtxos: $scope.currentSpendUnconfirmed ? false : true
+        }, function(err, txp) {
           if (err) {
-            self.error = err.message ? err.message : gettext('The payment was created but could not be completed. Please try again from home screen');
-            $scope.$emit('Local/TxProposalAction');
-            $timeout(function() {
-              $scope.$digest();
-            }, 1);
+            self.setOngoingProcess();
+            profileService.lockFC();
+            return self.setSendError(err);
           }
+
+          if (!fc.canSign()) {
+            $log.info('No signing proposal: No private key')
+            self.setOngoingProcess();
+            self.resetForm();
+            txStatus.notify(txp, function() {
+              return $scope.$emit('Local/TxProposalAction');
+            });
+            return;
+          }
+
+          self.signAndBroadcast(txp, function(err) {
+            self.setOngoingProcess();
+            profileService.lockFC();
+            self.resetForm();
+            if (err) {
+              self.error = err.message ? err.message : gettext('The payment was created but could not be completed. Please try again from home screen');
+              $scope.$emit('Local/TxProposalAction');
+              $timeout(function() {
+                $scope.$digest();
+              }, 1);
+            }
+          });
         });
       });
     }, 100);
@@ -745,8 +774,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       profileService.lockFC();
       self.setOngoingProcess();
       if (err) {
-        $log.debug('Sign error:', err);
-        err.message = gettext('The payment was created but could not be signed. Please try again from home screen.') + (err.message ? ' ' + err.message : '');
+        err.message = bwsError.msg(err, gettextCatalog.getString('The payment was created but could not be signed. Please try again from home screen'));
         return cb(err);
       }
 
@@ -755,7 +783,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
         fc.broadcastTxProposal(signedTx, function(err, btx, memo) {
           self.setOngoingProcess();
           if (err) {
-            err.message = gettext('The payment was signed but could not be broadcasted. Please try again from home screen.') + (err.message ? ' ' + err.message : '');
+            err.message = bwsError.msg(err, gettextCatalog.getString('The payment was signed but could not be broadcasted. Please try again from home screen'));
             return cb(err);
           }
           if (memo)
@@ -776,7 +804,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     });
   };
 
-  this.setForm = function(to, amount, comment) {
+  this.setForm = function(to, amount, comment, feeRate) {
     var form = $scope.sendForm;
     if (to) {
       form.address.$setViewValue(to);
@@ -797,6 +825,10 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       form.comment.$isValid = true;
       form.comment.$render();
     }
+
+    if (feeRate) {
+      form.feeRate = feeRate;
+    }
   };
 
 
@@ -807,10 +839,18 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
     this.lockAddress = false;
     this.lockAmount = false;
+    this.currentSendFeeLevel = null;
+    this.hideAdvSend = true;
+    $scope.currentSpendUnconfirmed = configService.getSync().wallet.spendUnconfirmed;
 
     this._amount = this._address = null;
 
     var form = $scope.sendForm;
+
+    if (form && form.feeRate) {
+      form.feeRate = null;
+    }
+
     if (form && form.amount) {
       form.amount.$pristine = true;
       form.amount.$setViewValue('');
@@ -944,7 +984,6 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     }
   };
 
-
   // History 
 
   function strip(number) {
@@ -990,6 +1029,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       $scope.cancel = function() {
         $modalInstance.dismiss('cancel');
       };
+
     };
 
     var modalInstance = $modal.open({
@@ -1008,8 +1048,8 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     return actions.hasOwnProperty('create');
   };
 
-  this._doSendAll = function(amount) {
-    this.setForm(null, amount);
+  this._doSendAll = function(amount, feeRate) {
+    this.setForm(null, amount, null, feeRate);
   };
 
   this.confirmDialog = function(msg, cb) {
@@ -1024,7 +1064,8 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
           } else {
             return cb(false);
           }
-        }
+        },
+        confirm_msg, [accept_msg, cancel_msg]
       );
     } else if (isChromeApp) {
       // No feedback, alert/confirm not supported.
@@ -1034,17 +1075,17 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     }
   };
 
-  this.sendAll = function(amount, feeStr) {
+  this.sendAll = function(amount, feeStr, feeRate) {
     var self = this;
     var msg = gettextCatalog.getString("{{fee}} will be discounted for bitcoin networking fees", {
       fee: feeStr
     });
 
-    this.confirmDialog(msg, function(confirmed){
-      if (confirmed) 
-        self._doSendAll(amount);
+    this.confirmDialog(msg, function(confirmed) {
+      if (confirmed)
+        self._doSendAll(amount, feeRate);
     });
-  }; 
+  };
 
   /* Start setup */
 

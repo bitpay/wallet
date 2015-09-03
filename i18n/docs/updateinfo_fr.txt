@@ -1,0 +1,5 @@
+* Les frais sont maintenant calculés dynamiquement, en fonction de la charge du réseau Bitcoin
+* Ajout d'une option permettant d'éviter la création de transactions avec des entrées non confirmées
+* Ajout d'options d'envois avancés
+* Ajout de langues : Italien, Russe et Grec
+* Corrections de bugs mineurs

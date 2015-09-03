@@ -1,0 +1,5 @@
+* Adaptive fee levels based on bitcoin network load
+* Option to prevent creating transactions with unconfirmed inputs
+* Added advanced sending options
+* Added Italian, Russian, and Greek language options
+* Kleinere Bug-Fixes

@@ -1,9 +1,12 @@
 [Desktop Entry]
 Type=Application
-Version=1.0.1
+Version=1.1.3
 Name=Copay
 Comment=A multisignature wallet
 Exec=copay
-Icon=favicon.ico
+Icon=icon-256.png
 Terminal=false
 Categories=Finance
+X-Ubuntu-Touch=true
+X-Ubuntu-StageHint=SideStage
+

@@ -1,0 +1,1414 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Project-Id-Version: copay\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: crowdin.com\n"
+"X-Crowdin-Project: copay\n"
+"X-Crowdin-Language: de\n"
+"X-Crowdin-File: template.pot\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Last-Translator: cmgustavo83\n"
+"Language-Team: German\n"
+"Language: de\n"
+"PO-Revision-Date: 2015-08-13 09:15-0400\n"
+
+#: public/views/walletHome.html
+msgid "(possible double spend)"
+msgstr "(mögliche Doppelausgabe)"
+
+#: public/views/modals/txp-details.html
+msgid "* A payment proposal can be deleted if 1) you are the creator, and no other copayer has signed, or 2) 24 hours have passed since the proposal was created."
+msgstr "* A payment proposal can be deleted if 1) you are the creator, and no other copayer has signed, or 2) 24 hours have passed since the proposal was created."
+
+#: public/views/backup.html
+msgid "* You can safely install your backup on another device and use your wallet from multiple devices at the same time."
+msgstr "* Das Backup kann sicher auf anderen Geräten  installiert und das Wallet von mehreren Geräten gleichzeitig verwendet werden."
+
+#: public/views/backup.html
+msgid "A backup without its private key will allow the user to see the wallet balance, transactions, and create spend proposals. However, it will not be able to approve (sign) proposals."
+msgstr "A backup without its private key will allow the user to see the wallet balance, transactions, and create spend proposals. However, it will not be able to approve (sign) proposals."
+
+#: public/views/splash.html
+msgid "A multisignature bitcoin wallet"
+msgstr "Ein Bitcoin Wallet mit Mehrfachunterschriften"
+
+#: public/views/preferences.html
+msgid "About Copay"
+msgstr "Über Copay"
+
+#: public/views/modals/txp-details.html
+#: src/js/controllers/copayers.js
+#: src/js/controllers/preferencesDelete.js
+#: src/js/controllers/walletHome.js
+msgid "Accept"
+msgstr "Akzeptieren"
+
+#: public/views/includes/sidebar.html
+msgid "Add wallet"
+msgstr "Wallet hinzufügen"
+
+#: public/views/paymentUri.html
+#: public/views/modals/customized-amount.html
+#: public/views/modals/paypro.html
+msgid "Address"
+msgstr "Adresse"
+
+#: public/views/preferences.html
+msgid "Advanced"
+msgstr "Erweitert"
+
+#: public/views/modals/advancedSend.html
+msgid "Advanced Send"
+msgstr "Advanced Send"
+
+#: public/views/disclaimer.html
+msgid "Agree"
+msgstr "Zustimmen"
+
+#: public/views/preferencesAlias.html
+msgid "Alias for <i>{{index.walletName}}</i>"
+msgstr "Alias für <i>{{index.walletName}}</i>"
+
+#: public/views/translators.html
+msgid "All contributions to Copay's translation are welcome. Sign up at crowdin.com and join the Copay project at"
+msgstr "All contributions to Copay's translation are welcome. Sign up at crowdin.com and join the Copay project at"
+
+#: public/views/splash.html
+msgid "Already have a wallet?"
+msgstr "Existiert bereits ein Wallet?"
+
+#: public/views/preferences.html
+msgid "Alternative Currency"
+msgstr "Alternative Währung"
+
+#: public/views/paymentUri.html
+#: public/views/walletHome.html
+#: public/views/includes/output.html
+#: public/views/modals/customized-amount.html
+msgid "Amount"
+msgstr "Betrag"
+
+#: src/js/services/bwsError.js
+msgid "Amount  below dust threshold"
+msgstr "Amount  below dust threshold"
+
+#: public/views/walletHome.html
+#: public/views/modals/customized-amount.html
+msgid "Amount in"
+msgstr "Betrag in"
+
+#: public/views/preferencesLanguage.html
+msgid "Applying changes"
+msgstr "Änderungen anwenden"
+
+#: src/js/controllers/copayers.js
+#: src/js/controllers/preferencesDelete.js
+msgid "Are you sure you want to delete this wallet?"
+msgstr "Soll das Wallet wirklich gelöscht werden?"
+
+#: public/views/walletHome.html
+msgid "Available Balance"
+msgstr "Verfügbarer Gesamtbetrag"
+
+#: public/views/preferencesFee.html
+#: public/views/modals/advancedSend.html
+msgid "Average confirmation time: {{fee.nbBlocks * 10}} minutes"
+msgstr "Average confirmation time: {{fee.nbBlocks * 10}} minutes"
+
+#: public/views/create.html
+#: public/views/join.html
+msgid "BIP32 master extended private key"
+msgstr "BIP32 erweiterter privater Hauptschlüssel"
+
+#: public/views/includes/topbar.html
+#: public/views/modals/tx-details.html
+#: public/views/modals/txp-details.html
+msgid "Back"
+msgstr "Zurück"
+
+#: public/views/preferences.html
+msgid "Backup"
+msgstr "Sicherung"
+
+#: src/js/controllers/backup.js
+msgid "Backup created"
+msgstr "Sicherung erstellt"
+
+#: public/views/walletHome.html
+msgid "Backup now"
+msgstr "Jetzt sichern"
+
+#: public/views/backup.html
+msgid "Backup options"
+msgstr "Sicherungseinstellungen"
+
+#: src/js/services/profileService.js
+msgid "Bad wallet invitation"
+msgstr "Bad wallet invitation"
+
+#: public/views/walletHome.html
+msgid "Before receiving funds, it is highly recommended you backup your wallet keys."
+msgstr "Bevor Beträge empfangen werden, wird dringend empfohlen die Wallet Schlüssel zu sichern."
+
+#: public/views/preferences.html
+msgid "Bitcoin Network Fee Policy"
+msgstr "Bitcoin Network Fee Policy"
+
+#: public/views/paymentUri.html
+msgid "Bitcoin URI is NOT valid!"
+msgstr "Bitcoin URI ist NICHT gültig!"
+
+#: public/views/walletHome.html
+msgid "Bitcoin address"
+msgstr "Bitcoinadresse"
+
+#: public/views/preferencesFee.html
+msgid "Bitcoin transactions may include a fee collected by miners on the network. The higher the fee, the greater the incentive a miner has to include that transaction in a block. Actual fees are determined based on network load and the selected policy."
+msgstr "Bitcoin transactions may include a fee collected by miners on the network. The higher the fee, the greater the incentive a miner has to include that transaction in a block. Actual fees are determined based on network load and the selected policy."
+
+#: public/views/modals/txp-details.html
+msgid "Broadcast Payment"
+msgstr "Zahlung übermitteln"
+
+#: src/js/controllers/walletHome.js
+msgid "Broadcasting Payment"
+msgstr "Übermittlung der Zahlung"
+
+#: src/js/controllers/walletHome.js
+msgid "Broadcasting transaction"
+msgstr "Übermittlung der Transaktion"
+
+#: public/views/unsupported.html
+msgid "Browser unsupported"
+msgstr "Der eingesetzte Browser wird nicht unterstützt"
+
+#: public/views/modals/txp-details.html
+msgid "But not broadcasted. Try to send manually"
+msgstr "Aber nicht übermittelt. Bitte manuelle Übermittlung versuchen"
+
+#: public/views/includes/password.html
+msgid "CANCEL"
+msgstr "ABBRUCH"
+
+#: public/views/copayers.html
+#: public/views/walletHome.html
+#: public/views/modals/confirmation.html
+#: src/js/controllers/copayers.js
+#: src/js/controllers/preferencesDelete.js
+#: src/js/controllers/walletHome.js
+msgid "Cancel"
+msgstr "Abbruch"
+
+#: src/js/services/profileService.js
+msgid "Cannot join the same wallet more that once"
+msgstr "Cannot join the same wallet more that once"
+
+#: public/views/modals/paypro.html
+msgid "Certified by"
+msgstr "Zertifiziert von"
+
+#: public/views/preferencesAlias.html
+msgid "Changing wallet alias only affects the local wallet name."
+msgstr "Änderung der Aliases hat nur Auswirkungen auf den lokalen Namen des Wallets"
+
+#: public/views/import.html
+msgid "Choose a backup file from your computer"
+msgstr "Bitte eine Sicherungsdatei vom Computer wählen"
+
+#: public/views/modals/wallets.html
+msgid "Choose a wallet to send funds"
+msgstr "Wählen Sie eine Zahlungsmethode, um Geld zu senden"
+
+#: public/views/includes/topbar.html
+#: public/views/modals/advancedSend.html
+#: public/views/modals/copayers.html
+#: public/views/modals/customized-amount.html
+#: public/views/modals/paypro.html
+#: public/views/modals/scanner.html
+#: public/views/modals/wallets.html
+msgid "Close"
+msgstr "Schließen"
+
+#: public/views/preferences.html
+msgid "Color"
+msgstr "Farbe"
+
+#: public/views/preferencesAbout.html
+msgid "Commit hash"
+msgstr "Hash übertragen"
+
+#: src/js/controllers/copayers.js
+#: src/js/controllers/preferencesDelete.js
+#: src/js/controllers/walletHome.js
+msgid "Confirm"
+msgstr "Bestätigen"
+
+#: public/views/modals/tx-details.html
+msgid "Confirmations"
+msgstr "Bestätigungen"
+
+#: src/js/services/bwsError.js
+msgid "Copayer already in this wallet"
+msgstr "Copayer already in this wallet"
+
+#: src/js/services/bwsError.js
+msgid "Copayer already registered"
+msgstr "Copayer already registered"
+
+#: src/js/services/bwsError.js
+msgid "Copayer already voted on this spend proposal"
+msgstr "Copayer already voted on this spend proposal"
+
+#: src/js/services/bwsError.js
+msgid "Copayer data mismatch"
+msgstr "Copayer data mismatch"
+
+#: public/views/modals/copayers.html
+msgid "Copayers"
+msgstr "Copayers"
+
+#: src/js/controllers/backup.js
+#: src/js/controllers/copayers.js
+#: src/js/controllers/walletHome.js
+msgid "Copied to clipboard"
+msgstr "In Zwischenablage kopiert"
+
+#: public/views/backup.html
+msgid "Copy backup to a safe place"
+msgstr "Sicherung an einen sicheren Ort kopieren"
+
+#: public/views/backup.html
+msgid "Copy this text as it is to a safe place (notepad or email)"
+msgstr "Diesen Text an einem sichern Ort einfügen (Notepad oder E-Mail)"
+
+#: public/views/backup.html
+msgid "Copy to clipboard"
+msgstr "In die Zwischenablage kopieren"
+
+#: src/js/controllers/walletHome.js
+msgid "Could not accept payment"
+msgstr "Could not accept payment"
+
+#: src/js/controllers/index.js
+msgid "Could not access Wallet Service: Not found"
+msgstr "Could not access Wallet Service: Not found"
+
+#: src/js/controllers/walletHome.js
+msgid "Could not broadcast payment"
+msgstr "Could not broadcast payment"
+
+#: src/js/services/addressService.js
+msgid "Could not create address"
+msgstr "Could not create address"
+
+#: src/js/controllers/walletHome.js
+msgid "Could not create payment proposal"
+msgstr "Es kann kein Zahlungsvorschlag erzeugt werden"
+
+#: src/js/services/profileService.js
+msgid "Could not create using the specified extended private key"
+msgstr "Erzeugung mit erweiterten privaten Schlüssel nicht möglich"
+
+#: src/js/controllers/import.js
+msgid "Could not decrypt file, check your password"
+msgstr "Datei kann nicht entschlüsselt werden, bitte das Passwort überprüfen"
+
+#: src/js/controllers/walletHome.js
+msgid "Could not delete payment proposal"
+msgstr "Could not delete payment proposal"
+
+#: src/js/controllers/walletHome.js
+msgid "Could not fetch payment information"
+msgstr "Zahlungsinformationen können nicht abgerufen werden"
+
+#: public/views/walletHome.html
+msgid "Could not fetch transaction history"
+msgstr "Transaktionshistorie kann nicht abgerufen werden"
+
+#: src/js/services/profileService.js
+msgid "Could not import. Check input file and password"
+msgstr "Import nicht möglich. Bitte Datei und Passwort überprüfen"
+
+#: src/js/services/profileService.js
+msgid "Could not join using the specified extended private key"
+msgstr "Teilnahme mit spezifizierten erweiterten privaten Schlüssel nicht möglich"
+
+#: src/js/services/profileService.js
+msgid "Could not join wallet"
+msgstr "Could not join wallet"
+
+#: src/js/controllers/walletHome.js
+msgid "Could not recognize a valid Bitcoin QR Code"
+msgstr "Es konnte kein gültiger Bitcoin-QR-Code erkannt werden,"
+
+#: src/js/controllers/walletHome.js
+msgid "Could not reject payment"
+msgstr "Could not reject payment"
+
+#: src/js/controllers/walletHome.js
+msgid "Could not send payment"
+msgstr "Zahlung kann nicht gesendet werden"
+
+#: src/js/controllers/index.js
+msgid "Could not update Wallet"
+msgstr "Wallet kann nicht aktualisiert werden"
+
+#: public/views/walletHome.html
+msgid "Create"
+msgstr "Erzeugen"
+
+#: public/views/add.html
+#: public/views/create.html
+msgid "Create new wallet"
+msgstr "Neues Wallet erzeugen"
+
+#: public/views/create.html
+msgid "Create {{requiredCopayers}}-of-{{totalCopayers}} wallet"
+msgstr "Ein {{requiredCopayers}}-von-{{totalCopayers}} Wallet erzeugen"
+
+#: public/views/includes/sidebar.html
+msgid "Create, join or import"
+msgstr "NEU | TEILNAHME | IMPORT"
+
+#: public/views/modals/txp-details.html
+msgid "Created by"
+msgstr "Erstellt von"
+
+#: public/views/splash.html
+msgid "Creating Profile..."
+msgstr "Profil erstellen..."
+
+#: public/views/create.html
+msgid "Creating Wallet..."
+msgstr "Wallet erstellen..."
+
+#: src/js/controllers/walletHome.js
+msgid "Creating transaction"
+msgstr "Transaktion erstellen"
+
+#: public/views/preferencesFee.html
+#: public/views/modals/advancedSend.html
+msgid "Current fee rate for this policy: {{fee.feePerKBUnit}}/kiB"
+msgstr "Current fee rate for this policy: {{fee.feePerKBUnit}}/kiB"
+
+#: public/views/modals/tx-details.html
+msgid "Date"
+msgstr "Datum"
+
+#: public/views/modals/txp-details.html
+msgid "Delete Payment Proposal"
+msgstr "Zahlungsvorschlag löschen"
+
+#: public/views/preferencesAdvanced.html
+msgid "Delete Wallet"
+msgstr "Wallet löschen"
+
+#: public/views/copayers.html
+msgid "Delete it and create a new one"
+msgstr "Löschen und neues Wallet erzeugen"
+
+#: public/views/preferencesDeleteWallet.html
+msgid "Delete wallet"
+msgstr "Wallet löschen"
+
+#: src/js/controllers/walletHome.js
+msgid "Deleting payment"
+msgstr "Zahlung löschen"
+
+#: public/views/modals/customized-amount.html
+#: public/views/modals/paypro.html
+#: public/views/modals/tx-details.html
+#: public/views/modals/txp-details.html
+msgid "Details"
+msgstr "Details"
+
+#: public/views/preferences.html
+msgid "Disabled"
+msgstr "Deaktiviert"
+
+#: public/views/backup.html
+msgid "Do not include private key in backup"
+msgstr "Keine privaten Schlüssel zur Sicherung hinzufügen"
+
+#: public/views/translators.html
+msgid "Don't see your language on Crowdin? Contact the Owner on Crowdin! We'd love to support your language."
+msgstr "Wird deine Sprache auf Crowdin nicht angezeigt? Kontaktiere den Support von Crowdin, denn wir würden deine Sprache gerne hinzufügen."
+
+#: public/views/walletHome.html
+msgid "Download CSV file"
+msgstr "CSV-Datei herunterladen"
+
+#: public/views/backup.html
+msgid "Download backup"
+msgstr "Download der Sicherung "
+
+#: src/js/services/feeService.js
+msgid "Economy"
+msgstr "Wirtschaft"
+
+#: public/views/preferences.html
+msgid "Email Notifications"
+msgstr "Benachrichtigunen per E-Mail"
+
+#: public/views/preferences.html
+msgid "Encrypt Private Key"
+msgstr "Verschlüsselung des privaten Schlüssels"
+
+#: src/js/controllers/backup.js
+msgid "Encrypted backup file saved"
+msgstr "Verschlüsselte Sicherungsdatei wurde gespeichert"
+
+#: public/views/includes/password.html
+msgid "Enter your password"
+msgstr "Passwort eingeben"
+
+#: src/js/controllers/index.js
+msgid "Error at Wallet Service"
+msgstr "Error at Wallet Service"
+
+#: src/js/services/profileService.js
+msgid "Error creating wallet"
+msgstr "Fehler beim Erstellen des Wallets"
+
+#: src/js/services/profileService.js
+msgid "Error importing wallet:"
+msgstr "Fehler beim Import des Wallets"
+
+#: public/views/modals/paypro.html
+#: public/views/modals/txp-details.html
+msgid "Expires"
+msgstr "Gültig bis"
+
+#: public/views/backup.html
+msgid "Failed to create backup"
+msgstr "Fehler beim Erstellen der Sicherung"
+
+#: src/js/controllers/importLegacy.js
+msgid "Failed to import wallets"
+msgstr "Import des Wallets fehlgeschlagen"
+
+#: public/views/create.html
+msgid "Family vacation funds"
+msgstr "Familienurlaub"
+
+#: public/views/modals/tx-details.html
+#: public/views/modals/txp-details.html
+msgid "Fee"
+msgstr "Gebühr"
+
+#: public/views/modals/advancedSend.html
+msgid "Fee Policy"
+msgstr "Fee Policy"
+
+#: public/views/walletHome.html
+msgid "Fee policy for this transaction"
+msgstr "Fee policy for this transaction"
+
+#. Get information of payment if using Payment Protocol
+#: src/js/controllers/walletHome.js
+msgid "Fetching Payment Information"
+msgstr "Zahlungsinformationen abrufen"
+
+#: public/views/translators.html
+msgid "French"
+msgstr "Français"
+
+#: src/js/services/bwsError.js
+msgid "Funds are locked by pending spend proposals"
+msgstr "Funds are locked by pending spend proposals"
+
+#: src/js/services/notificationsService.js
+msgid "Funds received"
+msgstr "Beträge empfangen"
+
+#: public/views/splash.html
+msgid "GET STARTED"
+msgstr "JETZT STARTEN"
+
+#: public/views/modals/customized-amount.html
+msgid "Generate QR Code"
+msgstr "QR-Code generieren"
+
+#: public/views/walletHome.html
+msgid "Generate new address"
+msgstr "Neue Adresse erzeugen"
+
+#: public/views/walletHome.html
+msgid "Generating .csv file..."
+msgstr "CSV-Datei erzeugen..."
+
+#: public/views/translators.html
+msgid "German"
+msgstr "Deutsch"
+
+#: public/views/modals/wallets.html
+msgid "Getting address for wallet {{selectedWalletName}} ..."
+msgstr "Getting address for wallet {{selectedWalletName}} ..."
+
+#: public/views/preferences.html
+msgid "Global settings"
+msgstr "Globale Einstellungen"
+
+#: public/views/disclaimer.html
+msgid "Go back"
+msgstr "Zurück"
+
+#: public/views/translators.html
+msgid "Greek"
+msgstr "Griechisch"
+
+#: public/views/import.html
+msgid "Have a Backup from Copay v0.9?"
+msgstr "Ist eine Copay v0.9 Sicherung vorhanden"
+
+#: public/views/backup.html
+#: public/views/create.html
+#: public/views/join.html
+#: public/views/walletHome.html
+msgid "Hide advanced options"
+msgstr "Hide advanced options"
+
+#: src/js/controllers/index.js
+msgid "History"
+msgstr "Historie"
+
+#: src/js/controllers/index.js
+msgid "Home"
+msgstr "Start"
+
+#: public/views/disclaimer.html
+msgid "I affirm that I have read, understood, and agree with these terms."
+msgstr "I affirm that I have read, understood, and agree with these terms."
+
+#: public/views/create.html
+#: public/views/join.html
+msgid "If not given, a secure key will be generated"
+msgstr "Sofern nicht angegeben, wird ein sicherer Schlüssel erzeugt "
+
+#: public/views/importLegacy.html
+msgid "Import"
+msgstr "Importien"
+
+#: public/views/import.html
+#: public/views/splash.html
+msgid "Import backup"
+msgstr "Importiere Sicherung"
+
+#: public/views/importLegacy.html
+msgid "Import from the Cloud?"
+msgstr "Aus der Cloud importieren"
+
+#: public/views/import.html
+msgid "Import here"
+msgstr "Hier importieren"
+
+#: public/views/add.html
+msgid "Import wallet"
+msgstr "Wallet importieren"
+
+#: public/views/import.html
+msgid "Importing wallet..."
+msgstr "Wallet wird importiert..."
+
+#: public/views/importLegacy.html
+msgid "Importing..."
+msgstr "Importiere..."
+
+#: src/js/services/bwsError.js
+msgid "Incorrect address network"
+msgstr "Incorrect address network"
+
+#: src/js/services/bwsError.js
+msgid "Insufficient funds"
+msgstr "Insufficient funds"
+
+#: src/js/services/bwsError.js
+msgid "Insufficient funds for fee"
+msgstr "Insufficient funds for fee"
+
+#: public/views/walletHome.html
+msgid "Invalid"
+msgstr "Ungültig"
+
+#: src/js/services/bwsError.js
+msgid "Invalid address"
+msgstr "Invalid address"
+
+#: src/js/controllers/copayers.js
+msgid "Invitation to share a Copay Wallet"
+msgstr "Invitation to share a Copay Wallet"
+
+#: public/views/translators.html
+msgid "Italian"
+msgstr "Italienisch"
+
+#: public/views/translators.html
+msgid "Japanese"
+msgstr "日本語"
+
+#: public/views/create.html
+#: public/views/join.html
+msgid "John"
+msgstr "Sascha"
+
+#: public/views/join.html
+msgid "Join"
+msgstr "Teilnehmen"
+
+#: src/js/controllers/copayers.js
+msgid "Join my Copay wallet. Here is the invitation code: {{secret}}  You can download Copay for your phone or desktop at https://copay.io"
+msgstr "Join my Copay wallet. Here is the invitation code: {{secret}}  You can download Copay for your phone or desktop at https://copay.io"
+
+#: public/views/add.html
+msgid "Join shared wallet"
+msgstr "Gemeinschaftliches Wallet"
+
+#: public/views/join.html
+msgid "Joining Wallet..."
+msgstr "Teilnahme am Wallet einrichten..."
+
+#: public/views/preferences.html
+msgid "Language"
+msgstr "Sprache"
+
+#: public/views/importLegacy.html
+msgid "Learn more about Wallet Migration"
+msgstr "Mehr über die Migration von Wallets erfahren"
+
+#: src/js/services/bwsError.js
+msgid "Locktime in effect. Please wait to create a new spend proposal"
+msgstr "Locktime in effect. Please wait to create a new spend proposal"
+
+#: src/js/services/bwsError.js
+msgid "Locktime in effect. Please wait to remove this spend proposal"
+msgstr "Locktime in effect. Please wait to remove this spend proposal"
+
+#: public/views/paymentUri.html
+msgid "Make a payment to"
+msgstr "Sende eine Zahlung an"
+
+#: public/views/create.html
+#: public/views/join.html
+msgid "Master extended private key"
+msgstr "Erweiterter privater Hauptschlüssel"
+
+#: public/views/includes/copayers.html
+#: public/views/modals/copayers.html
+#: public/views/modals/tx-details.html
+#: public/views/modals/txp-details.html
+msgid "Me"
+msgstr "Ich"
+
+#: public/views/modals/paypro.html
+msgid "Memo"
+msgstr "Memo"
+
+#: public/views/modals/tx-details.html
+msgid "Merchant message"
+msgstr "Händlernachricht"
+
+#: public/views/paymentUri.html
+msgid "Message"
+msgstr "Nachricht"
+
+#: public/views/walletHome.html
+msgid "More"
+msgstr "Mehr"
+
+#: public/views/walletHome.html
+msgid "Moved"
+msgstr "Verschoben"
+
+#: public/views/walletHome.html
+msgid "Multisignature wallet"
+msgstr "Gemeinschaftliches Wallet"
+
+#: public/views/walletHome.html
+msgid "My Bitcoin address"
+msgstr "Eigene Bitcoinadresse"
+
+#: public/views/paymentUri.html
+msgid "Network"
+msgstr "Netzwerk"
+
+#: src/js/services/bwsError.js
+msgid "Network connection error"
+msgstr "Network connection error"
+
+#: src/js/services/notificationsService.js
+msgid "New Payment Proposal"
+msgstr "Neue Zahlungsvorschlag"
+
+#: public/views/walletHome.html
+msgid "No Private key"
+msgstr "Kein privater Schlüssel"
+
+#: public/views/walletHome.html
+msgid "No transactions yet"
+msgstr "Noch keine Transaktionen"
+
+#: src/js/services/feeService.js
+msgid "Normal"
+msgstr "Normal"
+
+#: src/js/services/bwsError.js
+msgid "Not authorized"
+msgstr "Not authorized"
+
+#: public/views/walletHome.html
+#: public/views/modals/customized-amount.html
+msgid "Not valid"
+msgstr "Nicht gültig"
+
+#: public/views/walletHome.html
+#: public/views/includes/output.html
+#: public/views/modals/tx-details.html
+msgid "Note"
+msgstr "Notiz"
+
+#: public/views/includes/alert.html
+#: public/views/includes/password.html
+msgid "OK"
+msgstr "OK"
+
+#: public/views/modals/tx-status.html
+msgid "OKAY"
+msgstr "Okay"
+
+#: public/views/modals/tx-details.html
+#: public/views/modals/txp-details.html
+msgid "Participants"
+msgstr "Teilnehmer"
+
+#: public/views/import.html
+#: public/views/importLegacy.html
+msgid "Password"
+msgstr "Passwort"
+
+#: public/views/includes/password.html
+msgid "Password cannot be recovered. Be sure to write it down"
+msgstr "Passwort kann nicht wiederhergestellt werden. Bitte sicherheitshalber notieren"
+
+#: src/js/services/profileService.js
+msgid "Password needed"
+msgstr "Passwort benötigt"
+
+#: src/js/controllers/password.js
+msgid "Passwords do not match"
+msgstr "Passwörter stimmen nicht überein"
+
+#: public/views/join.html
+msgid "Paste invitation here"
+msgstr "Einladung hier einfügen"
+
+#: public/views/import.html
+msgid "Paste the backup plain text code"
+msgstr "Den Klartext des Backups einfügen"
+
+#: public/views/modals/paypro.html
+msgid "Pay To"
+msgstr "Zahle an"
+
+#: public/views/modals/tx-status.html
+msgid "Payment Accepted"
+msgstr "Zahlung angenommen"
+
+#: public/views/modals/txp-details.html
+msgid "Payment Proposal"
+msgstr "Zahlungsvorschlag"
+
+#: public/views/modals/tx-status.html
+msgid "Payment Proposal Created"
+msgstr "Zahlungsvorschlag erstellt"
+
+#: src/js/services/notificationsService.js
+msgid "Payment Proposal Rejected"
+msgstr "Zahlungsvorschlag abgelehnt"
+
+#: src/js/services/notificationsService.js
+msgid "Payment Proposal Rejected by Copayer"
+msgstr "Zahlungsvorschlag wurde vom Copayer abgelehnt"
+
+#: src/js/services/notificationsService.js
+msgid "Payment Proposal Signed by Copayer"
+msgstr "Zahlungsvorschlag wurde vom Copayer abgezeichnet"
+
+#: public/views/walletHome.html
+msgid "Payment Proposals"
+msgstr "Zahlungsvorschläge"
+
+#: src/js/controllers/walletHome.js
+msgid "Payment Protocol not supported on Chrome App"
+msgstr "Zahlungsprotokoll wird nicht von der Chrome App unterstützt"
+
+#: public/views/modals/tx-status.html
+msgid "Payment Rejected"
+msgstr "Zahlung abgelehnt"
+
+#: public/views/modals/tx-status.html
+#: src/js/services/notificationsService.js
+msgid "Payment Sent"
+msgstr "Zahlung gesendet"
+
+#: public/views/modals/txp-details.html
+msgid "Payment accepted..."
+msgstr "Zahlung angenommen..."
+
+#: public/views/modals/txp-details.html
+msgid "Payment details"
+msgstr "Zahlungsdetails"
+
+#: public/views/modals/txp-details.html
+msgid "Payment finally rejected"
+msgstr "Zahlung endgültig abgelehnt"
+
+#: public/views/modals/paypro.html
+msgid "Payment request"
+msgstr "Zahlungsanforderung"
+
+#: public/views/modals/txp-details.html
+msgid "Payment sent!"
+msgstr "Zahlung gesendet!"
+
+#: public/views/walletHome.html
+msgid "Payment to"
+msgstr "Zahlung an"
+
+#: public/views/walletHome.html
+msgid "Pending Confirmation"
+msgstr "Pending Confirmation"
+
+#: public/views/preferencesDeleteWallet.html
+msgid "Permanently delete this wallet. THIS ACTION CANNOT BE REVERSED"
+msgstr "Wallet dauerhaft löschen. DIESE AKTION KANN NICHT RÜCKGÄNGIG GEMACHT WERDEN"
+
+#: public/views/create.html
+msgid "Personal Wallet"
+msgstr "Persönliches Wallet"
+
+#: src/js/controllers/create.js
+#: src/js/controllers/join.js
+msgid "Please enter the required fields"
+msgstr "Bitte die benötigten Felder ausfüllen"
+
+#: src/js/services/bwsError.js
+msgid "Please upgrade Copay to perform this action"
+msgstr "Please upgrade Copay to perform this action"
+
+#: src/js/controllers/import.js
+msgid "Please, select your backup file"
+msgstr "Bitte die Sicherungsdatei wählen"
+
+#: public/views/translators.html
+msgid "Portuguese"
+msgstr "Português"
+
+#: public/views/walletHome.html
+msgid "Preferences"
+msgstr "Einstellungen"
+
+#: src/js/controllers/backup.js
+msgid "Preparing backup..."
+msgstr "Backup wird vorbereitet..."
+
+#: src/js/services/feeService.js
+msgid "Priority"
+msgstr "Priorität"
+
+#: public/views/modals/customized-amount.html
+msgid "QR Code"
+msgstr "QR-Code"
+
+#: public/views/modals/scanner.html
+msgid "QR-Scanner"
+msgstr "QR-Scanner"
+
+#: src/js/controllers/index.js
+msgid "Receive"
+msgstr "Empfangen"
+
+#: public/views/walletHome.html
+msgid "Received"
+msgstr "Empfangen"
+
+#: public/views/includes/output.html
+#: public/views/includes/transaction.html
+msgid "Recipients"
+msgstr "Empfänger"
+
+#: public/views/walletHome.html
+msgid "Reconnecting to Wallet Service..."
+msgstr "Neuverbindung zum Wallet Service... "
+
+#: public/views/walletHome.html
+msgid "Recreate"
+msgstr "Wiederherstellen"
+
+#: public/views/walletHome.html
+msgid "Recreating Wallet..."
+msgstr "Wallet wiederherstellen..."
+
+#: public/views/modals/txp-details.html
+msgid "Reject"
+msgstr "Ablehnen"
+
+#: src/js/controllers/walletHome.js
+msgid "Rejecting payment"
+msgstr "Zahlung ablehenen"
+
+#: public/views/preferencesAbout.html
+msgid "Release Information"
+msgstr "Information zur Veröffentlichung"
+
+#: public/views/backup.html
+#: public/views/includes/password.html
+msgid "Repeat password"
+msgstr "Passwort wiederholen"
+
+#: public/views/walletHome.html
+#: public/views/modals/customized-amount.html
+msgid "Request a specific amount"
+msgstr "Einen bestimmten Betrag anfordern"
+
+#: public/views/import.html
+#: public/views/join.html
+msgid "Required"
+msgstr "Benötigt"
+
+#: public/views/splash.html
+msgid "Retrying..."
+msgstr "Neuer Versuch..."
+
+#: public/views/translators.html
+msgid "Russian"
+msgstr "Russian"
+
+#: public/views/includes/password.html
+msgid "SET"
+msgstr "EINRICHTEN"
+
+#: public/views/walletHome.html
+msgid "SKIP BACKUP"
+msgstr "SICHERUNG ÜBERSPRINGEN"
+
+#: public/views/preferencesAlias.html
+#: public/views/preferencesBwsUrl.html
+#: public/views/preferencesEmail.html
+msgid "Save"
+msgstr "Speichern"
+
+#: public/views/preferencesEmail.html
+msgid "Saving preferences..."
+msgstr "Speichere Einstellungen"
+
+#: src/js/services/notificationsService.js
+msgid "Scan Finished"
+msgstr "Überprüfung abgeschlossen"
+
+#: public/views/preferencesAdvanced.html
+msgid "Scan addresses for funds"
+msgstr "Adresse auf neue Beträge überprüfen"
+
+#: public/views/walletHome.html
+msgid "Scan status finished with error"
+msgstr "Überprüfung wurde mit Fehlern beendet"
+
+#: public/views/walletHome.html
+msgid "Scanning Wallet funds..."
+msgstr "Prüfe Wallet auf neue Beträge..."
+
+#: public/views/modals/tx-details.html
+msgid "See it on the blockchain"
+msgstr "Im Blockchain anzeigen"
+
+#: public/views/import.html
+msgid "Select a backup file"
+msgstr "Eine Sicherungsdatei auswählen"
+
+#: public/views/paymentUri.html
+msgid "Select a wallet"
+msgstr "Wallet wählen"
+
+#: public/views/create.html
+msgid "Select required number of signatures"
+msgstr "Bitte die benötigte Anzahl der Unterschriften wählen"
+
+#: public/views/create.html
+msgid "Select total number of copayers"
+msgstr "Bitte die Gesamtanzahl der Copayer wählen"
+
+#: public/views/walletHome.html
+#: public/views/includes/transaction.html
+#: src/js/controllers/index.js
+msgid "Send"
+msgstr "Senden"
+
+#: public/views/walletHome.html
+msgid "Send All"
+msgstr "Alle senden"
+
+#: public/views/backup.html
+#: public/views/preferencesLogs.html
+msgid "Send by email"
+msgstr "Per E-Mail versenden"
+
+#: public/views/walletHome.html
+msgid "Sent"
+msgstr "Gesendet"
+
+#: public/views/importLegacy.html
+msgid "Server"
+msgstr "Server"
+
+#: public/views/preferencesAbout.html
+msgid "Session log"
+msgstr "Sitzungsprotokoll"
+
+#: public/views/backup.html
+msgid "Set up a Password for your backup"
+msgstr "Passwort für die Sicherung einrichten"
+
+#: public/views/includes/password.html
+msgid "Set up a password"
+msgstr "Passwort einrichten"
+
+#: public/views/preferencesEmail.html
+msgid "Setting up email notifications could weaken your privacy, if the wallet service provider is compromised. Information available to an attacker would include your wallet addresses and its balance, but no more."
+msgstr "Das Einrichten einer E-Mail Benachrichtigung schwächt die Privatsphäre, wenn der Wallet Service Anbieter kompromittiert wurde. Der Angreifer  kann jedoch nur Wallet Adresse und Guthaben erfahren, mehr nicht."
+
+#: public/views/walletHome.html
+msgid "Share address"
+msgstr "Adresse teilen"
+
+#: public/views/copayers.html
+msgid "Share invitation"
+msgstr "Einladung teilen"
+
+#: public/views/copayers.html
+msgid "Share this invitation with your copayers"
+msgstr "Einladung mit Copayern teilen"
+
+#: public/views/walletHome.html
+msgid "Share this wallet address to receive payments. To protect your privacy, new addresses are generated automatically once you use them."
+msgstr "Um Zahlungen zu empfangen, die hier angegebene Adresse teilen. Um die Privatsphäre zu schützen wird nach jeder Nutzung eine neue Adresse erzeugt."
+
+#: public/views/create.html
+msgid "Shared Wallet"
+msgstr "Wallet teilen"
+
+#: public/views/backup.html
+#: public/views/create.html
+#: public/views/join.html
+#: public/views/walletHome.html
+msgid "Show advanced options"
+msgstr "Show advanced options"
+
+#: src/js/services/bwsError.js
+msgid "Signatures rejected by server"
+msgstr "Signatures rejected by server"
+
+#: src/js/controllers/walletHome.js
+msgid "Signing payment"
+msgstr "Zahlung unterschreiben"
+
+#: src/js/controllers/walletHome.js
+msgid "Signing transaction"
+msgstr "Transaktion unterschreiben"
+
+#: public/views/translators.html
+msgid "Spanish"
+msgstr "Español"
+
+#: src/js/services/bwsError.js
+msgid "Spend proposal is not accepted"
+msgstr "Spend proposal is not accepted"
+
+#: src/js/services/bwsError.js
+msgid "Spend proposal not found"
+msgstr "Spend proposal not found"
+
+#: src/js/controllers/copayers.js
+#: src/js/controllers/import.js
+#: src/js/controllers/preferencesDelete.js
+msgid "Success"
+msgstr "Erfolgreich"
+
+#: public/views/walletHome.html
+msgid "Tap to retry"
+msgstr "Zum Wiederholen antippen"
+
+#: public/views/disclaimer.html
+#: public/views/preferencesAbout.html
+msgid "Terms of Use"
+msgstr "Nutzungsbedingungen"
+
+#: public/views/create.html
+msgid "Testnet"
+msgstr "Testnet"
+
+#: src/js/controllers/walletHome.js
+msgid "The payment was created but could not be completed. Please try again from home screen"
+msgstr "Die Zahlung wurde erzeugt, kann aber nicht abgeschlossen werden. Bitte erneut über die Startseite versuchen"
+
+#: src/js/controllers/walletHome.js
+msgid "The payment was created but could not be signed. Please try again from home screen"
+msgstr "The payment was created but could not be signed. Please try again from home screen"
+
+#: public/views/modals/txp-details.html
+msgid "The payment was removed by creator"
+msgstr "Die Zahlung wurde vom Ersteller entfernt"
+
+#: src/js/controllers/walletHome.js
+msgid "The payment was signed but could not be broadcasted. Please try again from home screen"
+msgstr "The payment was signed but could not be broadcasted. Please try again from home screen"
+
+#: public/views/backup.html
+msgid "The private key for this wallet is encrypted. Exporting a backup will keep the private key encrypted in the backup archive."
+msgstr "Der private Schlüssel für dieses Wallet ist verschlüsselt. Ein Export der Sicherung behält diesen verschlüsselt im Sicherungsarchiv"
+
+#: public/views/disclaimer.html
+msgid "The software you are about to use functions as a free, open source, and multi-signature digital wallet. The software does not constitute an account where BitPay or other third parties serve as financial intermediaries or custodians of your bitcoin.  While the software has undergone beta testing and continues to be improved by feedback from the open-source user and developer community, we cannot guarantee that there will be no bugs in the software. You acknowledge that your use of this software is at your own discretion and in compliance with all applicable laws. You are responsible for safekeeping your passwords, private key pairs, PINs and any other codes you use to access the software. IF YOU LOSE ACCESS TO YOUR COPAY WALLET OR YOUR ENCRYPTED PRIVATE KEYS AND YOU HAVE NOT SEPARATELY STORED A BACKUP OF YOUR WALLET AND CORRESPONDING PASSWORD, YOU ACKNOWLEDGE AND AGREE THAT ANY BITCOIN YOU HAVE ASSOCIATED WITH THAT COPAY  WALLET WILL BECOME INACCESSIBLE. All transaction requests are irreversible.  The authors of the software, employees and affiliates of Bitpay, copyright holders, and BitPay, Inc. cannot retrieve your private keys or passwords if you lose or forget them and cannot guarantee transaction confirmation as they do not have control over the Bitcoin network. To the fullest extent permitted by law, this software is provided “as is” and no representations or warranties can be made of any kind, express or implied, including but not limited to the warranties of merchantability, fitness or a particular purpose and noninfringement. You assume any and all risks associated with the use of the software. In no event shall the authors of the software, employees and affiliates of Bitpay, copyright holders, or BitPay, Inc. be held liable for any claim, damages or other liability, whether in an action of contract, tort, or otherwise, arising from, out of or in connection with the software. We reserve the right to modify this disclaimer from time to time."
+msgstr "The software you are about to use functions as a free, open source, and multi-signature digital wallet. The software does not constitute an account where BitPay or other third parties serve as financial intermediaries or custodians of your bitcoin.  While the software has undergone beta testing and continues to be improved by feedback from the open-source user and developer community, we cannot guarantee that there will be no bugs in the software. You acknowledge that your use of this software is at your own discretion and in compliance with all applicable laws. You are responsible for safekeeping your passwords, private key pairs, PINs and any other codes you use to access the software. IF YOU LOSE ACCESS TO YOUR COPAY WALLET OR YOUR ENCRYPTED PRIVATE KEYS AND YOU HAVE NOT SEPARATELY STORED A BACKUP OF YOUR WALLET AND CORRESPONDING PASSWORD, YOU ACKNOWLEDGE AND AGREE THAT ANY BITCOIN YOU HAVE ASSOCIATED WITH THAT COPAY  WALLET WILL BECOME INACCESSIBLE. All transaction requests are irreversible.  The authors of the software, employees and affiliates of Bitpay, copyright holders, and BitPay, Inc. cannot retrieve your private keys or passwords if you lose or forget them and cannot guarantee transaction confirmation as they do not have control over the Bitcoin network. To the fullest extent permitted by law, this software is provided “as is” and no representations or warranties can be made of any kind, express or implied, including but not limited to the warranties of merchantability, fitness or a particular purpose and noninfringement. You assume any and all risks associated with the use of the software. In no event shall the authors of the software, employees and affiliates of Bitpay, copyright holders, or BitPay, Inc. be held liable for any claim, damages or other liability, whether in an action of contract, tort, or otherwise, arising from, out of or in connection with the software. We reserve the right to modify this disclaimer from time to time."
+
+#: src/js/services/bwsError.js
+msgid "The spend proposal is not pending"
+msgstr "The spend proposal is not pending"
+
+#: src/js/controllers/copayers.js
+#: src/js/controllers/preferencesDelete.js
+msgid "The wallet \"{{walletName}}\" was deleted"
+msgstr "Wallet \"{{walletName}}\" wurde gelöscht"
+
+#: public/views/paymentUri.html
+msgid "There are no wallets to make this payment"
+msgstr "There are no wallets to make this payment"
+
+#: src/js/controllers/import.js
+msgid "There is an error in the form"
+msgstr "Es ist ein Fehler im Formular aufgetreten"
+
+#: public/views/modals/tx-details.html
+msgid "This transaction has become invalid; possibly due to a double spend attempt."
+msgstr "This transaction has become invalid; possibly due to a double spend attempt."
+
+#: public/views/walletHome.html
+msgid "This wallet is not registered at the given Bitcore Wallet Service (BWS). You can recreate it from the local information."
+msgstr "Dieses Wallet ist nicht beim angegebenen Bitcore Wallet Service (BWS) registriert. Bitte aus den lokalen Informationen wiederherstellen"
+
+#: public/views/modals/txp-details.html
+msgid "Time"
+msgstr "Zeit"
+
+#: public/views/walletHome.html
+#: public/views/includes/output.html
+#: public/views/includes/transaction.html
+#: public/views/modals/tx-details.html
+#: public/views/modals/txp-details.html
+msgid "To"
+msgstr "Zu"
+
+#: public/views/includes/output.html
+msgid "Total"
+msgstr "Gesamtsumme"
+
+#: public/views/walletHome.html
+msgid "Total Locked Balance"
+msgstr "Ingesamt gesperrter Gesamtsaldo"
+
+#: public/views/modals/tx-details.html
+msgid "Transaction"
+msgstr "Transaktion"
+
+#: src/js/services/bwsError.js
+msgid "Transaction already broadcasted"
+msgstr "Transaction already broadcasted"
+
+#: public/views/translators.html
+msgid "Translation Credits"
+msgstr "Danksagung an die Übersetzer"
+
+#: public/views/preferencesAbout.html
+msgid "Translators"
+msgstr "Übersetzer"
+
+#: src/js/controllers/walletHome.js
+msgid "Unable to send transaction proposal"
+msgstr "Transaktionsvorschlag kann nicht gesendet werden"
+
+#: public/views/walletHome.html
+#: public/views/modals/tx-details.html
+msgid "Unconfirmed"
+msgstr "Unbestätigt"
+
+#: public/views/preferences.html
+msgid "Unit"
+msgstr "Währungseinheit"
+
+#: public/views/walletHome.html
+msgid "Unsent transactions"
+msgstr "Nicht vesendete Transaktionen"
+
+#: public/views/modals/paypro.html
+msgid "Untrusted"
+msgstr "Nicht Vertrauenswürdig"
+
+#: public/views/walletHome.html
+msgid "Updating Wallet..."
+msgstr "Wallet aktualisieren..."
+
+#: public/views/preferences.html
+#: public/views/walletHome.html
+msgid "Use Unconfirmed Funds"
+msgstr "Use Unconfirmed Funds"
+
+#: public/views/preferencesAbout.html
+msgid "Version"
+msgstr "Version"
+
+#: public/views/backup.html
+msgid "View backup"
+msgstr "Sicherung anzeigen"
+
+#: public/views/walletHome.html
+msgid "WARNING: Backup needed"
+msgstr "WARNUNG: Sicherung notwendig"
+
+#: public/views/walletHome.html
+msgid "WARNING: Wallet not registered"
+msgstr "WARNUNG: Wallet nicht registriert"
+
+#: public/views/splash.html
+msgid "WELCOME TO COPAY"
+msgstr "Willkommen bei COPAY"
+
+#: public/views/copayers.html
+msgid "Waiting for copayers"
+msgstr "Warte auf copayer"
+
+#: public/views/copayers.html
+msgid "Waiting..."
+msgstr "Warte..."
+
+#: public/views/preferences.html
+msgid "Wallet Alias"
+msgstr "Alias"
+
+#: src/js/services/profileService.js
+msgid "Wallet Already Imported:"
+msgstr "Wallet bereits importiert:"
+
+#: public/views/join.html
+msgid "Wallet Invitation"
+msgstr "Wallet Einladung"
+
+#: public/views/join.html
+msgid "Wallet Invitation is not valid!"
+msgstr "Wallet Einladung nicht gültig!"
+
+#: src/js/services/bwsError.js
+#: src/js/services/profileService.js
+msgid "Wallet already exists"
+msgstr "Wallet exstiert bereits"
+
+#: public/views/copayers.html
+msgid "Wallet incomplete and broken"
+msgstr "Wallet unvollständig oder defekt"
+
+#: src/js/services/bwsError.js
+msgid "Wallet is full"
+msgstr "Wallet is full"
+
+#: src/js/services/bwsError.js
+msgid "Wallet is not complete"
+msgstr "Wallet is not complete"
+
+#: public/views/create.html
+msgid "Wallet name"
+msgstr "Name des Wallets"
+
+#: src/js/services/bwsError.js
+msgid "Wallet not found"
+msgstr "Wallet not found"
+
+#: src/js/services/bwsError.js
+msgid "Wallet service not found"
+msgstr "Wallet service not found"
+
+#: public/views/preferencesDeleteWallet.html
+msgid "Warning!"
+msgstr "Warnung!"
+
+#: public/views/modals/txp-details.html
+msgid "Warning: this transaction has unconfirmed inputs"
+msgstr "Warning: this transaction has unconfirmed inputs"
+
+#: src/js/services/profileService.js
+msgid "Wrong password"
+msgstr "Falsches Passwort"
+
+#: public/views/modals/confirmation.html
+msgid "Yes"
+msgstr "Ja"
+
+#: public/views/walletHome.html
+msgid "You do not have a wallet"
+msgstr "Kein Wallet vorhanden"
+
+#: public/views/backup.html
+#: public/views/import.html
+msgid "Your backup password"
+msgstr "Passwort zur Sicherung"
+
+#: public/views/create.html
+#: public/views/join.html
+msgid "Your nickname"
+msgstr "Name des Teilnehmers"
+
+#: public/views/includes/password.html
+msgid "Your password"
+msgstr "Passwort"
+
+#: public/views/importLegacy.html
+msgid "Your profile password"
+msgstr "Profilpasswort"
+
+#: src/js/controllers/import.js
+msgid "Your wallet has been imported correctly"
+msgstr "Das Wallet wurde korrekt importiert"
+
+#: public/views/preferencesEmail.html
+msgid "email for wallet notifications"
+msgstr "E-Mail für Wallet Benachrichtigungen"
+
+#: public/views/walletHome.html
+msgid "locked by pending payments"
+msgstr "durch ausstehende Zahlungen gesperrt"
+
+#: public/views/copayers.html
+#: public/views/walletHome.html
+#: public/views/includes/sidebar.html
+msgid "of"
+msgstr "von"
+
+#: public/views/walletHome.html
+msgid "optional"
+msgstr "zusätzlich"
+
+#: public/views/preferences.html
+msgid "settings"
+msgstr "Einstellungen"
+
+#: public/views/walletHome.html
+msgid "too long!"
+msgstr "zu lang!"
+
+#: src/js/controllers/walletHome.js
+msgid "{{fee}} will be discounted for bitcoin networking fees"
+msgstr "{{fee}} will be discounted for bitcoin networking fees"
+
+#: src/js/controllers/importLegacy.js
+msgid "{{len}} wallets imported. Funds scanning in progress. Hold on to see updated balance"
+msgstr "{{len}} Wallets importiert. Beträge werden gescannt. Bitte auf die Aktualisierung des Gesamtsaldos warten"
+

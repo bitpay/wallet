@@ -63,6 +63,9 @@ angular.module('copayApp.controllers').controller('createController',
           if (err) {
             $log.debug(err);
             self.error = err;
+            $timeout(function() {
+              $rootScope.$apply();
+            });
           }
           else {
             go.walletHome();
