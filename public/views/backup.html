@@ -7,45 +7,51 @@
 
 
 <div class="content p20v" ng-controller="wordsController as wordsC">
-  <div class="row"  ng-show="index.n==1">
-    <div class="m10t columns size-14 text-gray" translate>
-      <span translate>
-        You will need these backup words to restore this personal wallet.
-      </span>
-      <span translate class="text-bold">
-        Write them down and keep them somewhere safe.
-      </span>
-    </div>
+
+  <div class="row">
+    <h2> Wallet Seed </h2>
   </div>
-  <div class="row" ng-show="(index.n>1 && index.m != index.n )">
-    <div class="m10t columns size-14 text-gray" translate>
-      <span translate>
-        To restore this {{index.m}}-{{index.n}} shared wallet you will need:
-      </span>:
-<ol class="m10t columns size-14 text-gray">
-  <li> Your backup words and access to the wallet service where your wallet is registered 
-  <li> <b>OR</b> the backup words of <b>all</b>  copayers in the wallet
-  <li> <b>OR</b> 1 wallet export file and the remaining quorum of backup words (e.g. in a 3-5 wallet: 1 wallet export file + 2 backup words of any of the other copayers).
-</ol>
-      </span>
+  <div ng-show="wordsC.mywords">
+    <div class="row"  ng-show="index.n==1">
+      <div class="m10t columns size-14 text-gray" translate>
+        <span translate>
+          You need the wallet seed to restore this personal wallet.
+        </span>
+        <span translate class="text-bold">
+          Write it down and keep them somewhere safe.
+        </span>
+      </div>
     </div>
-  </div>
-  <div class="row" ng-show="(index.n>1 && index.m == index.n )">
-    <div class="m10t columns size-14 text-gray" translate>
-      <span translate>
-        To restore this {{index.m}}-{{index.n}} <b>shared</b> wallet you will need
-      </span>:
-<ol class="m10t columns size-14 text-gray">
-  <li> Your backup words and access to the wallet service where wallet is registered 
-  <li> <b>OR</b> the backups words of <b>all</b> copayers in the wallet
-</ol>
-      </span>
+    <div class="row" ng-show="(index.n>1 && index.m != index.n )">
+      <div class="m10t columns size-14 text-gray" translate>
+        <span translate>
+          To restore this {{index.m}}-{{index.n}} shared wallet you will need:
+        </span>:
+  <ol class="m10t columns size-14 text-gray">
+    <li> Your wallet seed and access to the wallet service where your wallet is registered 
+    <li> <b>OR</b> the wallet seed of <b>all</b>  copayers in the wallet
+    <li> <b>OR</b> 1 wallet export file and the remaining quorum of wallet seeds (e.g. in a 3-5 wallet: 1 wallet export file + 2 wallet seeds of any of the other copayers).
+  </ol>
+        </span>
+      </div>
+    </div>
+    <div class="row" ng-show="(index.n>1 && index.m == index.n )">
+      <div class="m10t columns size-14 text-gray" translate>
+        <span translate>
+          To restore this {{index.m}}-{{index.n}} <b>shared</b> wallet you will need
+        </span>:
+  <ol class="m10t columns size-14 text-gray">
+    <li> Your wallet seed and access to the wallet service where wallet is registered 
+    <li> <b>OR</b> the wallet seeds of <b>all</b> copayers in the wallet
+  </ol>
+        </span>
+      </div>
     </div>
   </div>
  
   <div class="row m20t" ng-show="!wordsC.mywords">
     <div class="columns size-14 text-gray" translate>
-        The backup words had been deleted from this device
+        The wallet seed for this wallet is not available on this device. You can still export the wallet to backup it.
     </div>
   </div>
  
@@ -54,8 +60,8 @@
         <div class="m10t oh" ng-init="show=false">
           <a class="button outline light-gray expand tiny" ng-click="show=!show">
             <i class="fi-widget m3r"></i>
-            <span translate ng-hide="show" ng-click="wordsC.done()">Show Backup Words</span>
-            <span translate ng-hide="!show">Hide Backup Words</span>
+            <span translate ng-hide="show" ng-click="wordsC.done()">Show Wallet Seed</span>
+            <span translate ng-hide="!show">Hide Wallet Seed</span>
             <i ng-if="!show" class="icon-arrow-down4"></i>
             <i ng-if="show" class="icon-arrow-up4"></i>
           </a>
@@ -70,7 +76,7 @@
         <div class="m10 text-center columns">
           <div class="m10 size-14 text-gray" translate>
             <span translate>
-              Once you have wrote your backup words, it is recommended to delete them from this device.
+              Once you have copy your wallet seed, it is recommended to delete it from this device.
             </span>
           </div>
           <button class="button outline round dark-gray tiny" ng-click="wordsC.delete()">
@@ -85,7 +91,7 @@
     <!-- hide this in multisig just to show less text -->
     <div class="row m20t"  ng-show="index.n==1">
       <div class="columns size-14 text-gray" translate>
-        You can safely install your backup on another device and use your wallet from multiple devices at the same time.  <a href="#" ng-click="$root.openExternalLink('https://github.com/bitpay/copay#backups')">
+        You can safely install your wallet on another device and use it from multiple devices at the same time.  <a href="#" ng-click="$root.openExternalLink('https://github.com/bitpay/copay#backups')">
             <span translate>Learn more about Copay backups</span>
         </a>
   
