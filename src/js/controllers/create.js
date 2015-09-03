@@ -51,10 +51,22 @@ angular.module('copayApp.controllers').controller('createController',
         m: $scope.requiredCopayers,
         n: $scope.totalCopayers,
         name: form.walletName.$modelValue,
-        mnemonic: form.privateKey.$modelValue,
         myName: $scope.totalCopayers > 1 ? form.myName.$modelValue : null,
         networkName: form.isTestnet.$modelValue ? 'testnet' : 'livenet'
       };
+      var setSeed = form.setSeed.$modelValue;
+      if  (setSeed) {
+        opts.mnemonic = form.privateKey.$modelValue;
+        opts.passphrase = form.passphrase.$modelValue;
+      } else {
+        opts.passphrase = form.createPassphrase.$modelValue;
+      }
+
+      if (setSeed && !opts.mnemonic) {
+        this.error = gettext('Please enter the wallet seed');
+        return;
+      }
+ 
       self.loading = true;
 
       $timeout(function() {

@@ -89,19 +89,48 @@
         </div>
         <div ng-hide="hideAdv" class="row">
           <div class="large-12 columns">
-            <label for="network-name" class="line-b oh">
+
+            <label for="network-name" class="oh">
               <span translate>Testnet</span>
               <switch id="network-name" name="isTestnet" ng-model="isTestnet" class="green right m5t m10b"></switch>
             </label>
-            <label for="ext-master" class="m10t">
-              <span translate>Backup Words (BIP39 seed)</span>
-              <small translate>If not given, a random secure key will be generated</small>
+
+
+            <label for="seed" class="oh">
+              <span translate>Specify the wallet seed</span>
+              <switch id="seed" name="setSeed" ng-model="setSeed" class="green right m5t m10b"></switch>
+            </label>
+
+            <label for="createPassphrase" class="line-b oh" ng-show="!setSeed" ><span translate>Seed Passphrase</span>  <small translate>Add an optional passphrase to secure the wallet seed</small>
+              <div class="input">
+                <input type="text" class="form-control" 
+                name="createPassphrase" ng-model="createPassphrase">
+              </div>
+            </label>
+ 
+            <label for="ext-master" class="m10t" ng-show="setSeed">
+              <span translate>Wallet Seed</span>
+              <small translate>Enter the 12 words to seed the wallet (BIP39)</small>
               <input id="ext-master"
               type="text"
-              placeholder="{{'Backup words'|translate}}"
+              placeholder="{{'Wallet seed'|translate}}"
               name="privateKey" ng-model="privateKey">
             </label>
+              <label for="passphrase" class="line-b oh" ng-show="setSeed"><span translate>Seed Passphrase</span>  <small translate>Seed could require a passphrase to be imported</small>
+                <div class="input">
+                  <input type="text" class="form-control" name="passphrase" ng-model="passphrase">
+                </div>
+                </label>
           </div>
+        </div>
+
+        <div class="box-notification" ng-show="!setSeed && createPassphrase">
+          <span class="text-warning size-14">
+            <i class="fi-alert"></i>
+            <span translate>
+            WARNING: Passphrase cannot be recovered. <b>Be sure to write it down</b>. The wallet can not be restored without the passphrase.
+            </span>
+          </span>
         </div>
 
 

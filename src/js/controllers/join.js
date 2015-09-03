@@ -147,9 +147,22 @@ angular.module('copayApp.controllers').controller('joinController',
 
       var opts = {
         secret: form.secret.$modelValue,
-        mnemonic: form.privateKey.$modelValue,
-        myName: form.myName.$modelValue
+        myName: form.myName.$modelValue,
       };
+
+      var setSeed = form.setSeed.$modelValue;
+      if  (setSeed) {
+        opts.mnemonic = form.privateKey.$modelValue;
+        opts.passphrase = form.passphrase.$modelValue;
+      } else {
+        opts.passphrase = form.createPassphrase.$modelValue;
+      }
+
+      if (setSeed && !opts.mnemonic) {
+        this.error = gettext('Please enter the wallet seed');
+        return;
+      }
+ 
 
       $timeout(function() {
         profileService.joinWallet(opts, function(err) {
