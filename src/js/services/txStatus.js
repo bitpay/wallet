@@ -3,10 +3,7 @@
 angular.module('copayApp.services').factory('txStatus', function($modal, lodash, profileService, $timeout) {
   var root = {};
 
-  root.notify = function(txp, opts, cb) {
-    if (typeof opts == "function") { // we have no options
-      cb = opts;
-    }
+  root.notify = function(txp, cb) {
     var fc = profileService.focusedClient;
     var status = txp.status;
     var type;
@@ -37,10 +34,14 @@ angular.module('copayApp.services').factory('txStatus', function($modal, lodash,
       }
     }
 
-    openModal(type, opts, cb);
+    openModal(type, txp, cb);
   };
 
-  var openModal = function(type, opts, cb) {
+  root._templateUrl = function(type, txp) {
+    return 'views/modals/tx-status.html';
+  };
+
+  var openModal = function(type, txp, cb) {
     var ModalInstanceCtrl = function($scope, $modalInstance) {
       $scope.type = type;
       $scope.cancel = function() {
@@ -49,7 +50,7 @@ angular.module('copayApp.services').factory('txStatus', function($modal, lodash,
       if (cb) $timeout(cb, 100);
     };
     var modalInstance = $modal.open({
-      templateUrl: opts && opts.templateUrl ? opts.templateUrl : 'views/modals/tx-status.html',
+      templateUrl: root._templateUrl(type, txp),
       windowClass: 'full popup-tx-status closeModalAnimation',
       controller: ModalInstanceCtrl,
     });
