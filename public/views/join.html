@@ -75,11 +75,11 @@
             <div class="large-12 columns">
 
             <label for="seed" class="oh">
-              <span translate>Specify the wallet seed</span>
+              <span translate>Specify your wallet's key seed</span>
               <switch id="seed" name="setSeed" ng-model="setSeed" class="green right m5t m10b"></switch>
             </label>
 
-            <label for="createPassphrase" class="line-b oh" ng-show="!setSeed" ><span translate>Seed Passphrase</span>  <small translate>Add an optional passphrase to secure the wallet seed</small>
+            <label for="createPassphrase" class="line-b oh" ng-show="!setSeed" ><span translate>Seed Passphrase</span>  <small translate>Add an optional passphrase to secure the seed</small>
               <div class="input">
                 <input type="text" class="form-control" 
                 name="createPassphrase" ng-model="createPassphrase">
@@ -87,14 +87,13 @@
             </label>
  
             <label for="ext-master" class="m10t" ng-show="setSeed">
-              <span translate>Wallet Seed</span>
-              <small translate>Enter the 12 words to seed the wallet (BIP39)</small>
+              <span translate>Wallet Key Seed</span>
+              <small translate>Enter the 12 words seed (BIP39)</small>
               <input id="ext-master"
               type="text"
-              placeholder="{{'Wallet seed'|translate}}"
               name="privateKey" ng-model="privateKey">
             </label>
-              <label for="passphrase" class="line-b oh" ng-show="setSeed"><span translate>Seed Passphrase</span>  <small translate>Seed could require a passphrase to be imported</small>
+              <label for="passphrase" class="line-b oh" ng-show="setSeed"><span translate>Seed Passphrase</span>  <small translate>The seed could require a passphrase to be imported</small>
                 <div class="input">
                   <input type="text" class="form-control" name="passphrase" ng-model="passphrase">
                 </div>
@@ -102,14 +101,19 @@
           </div>
         </div>
 
-          <div class="box-notification" ng-show="!setSeed && createPassphrase">
-            <span class="text-warning size-14">
-              <i class="fi-alert"></i>
-              <span translate>
-              WARNING: Passphrase cannot be recovered. <b>Be sure to write it down</b>. The wallet can not be restored without the passphrase.
-              </span>
+        <div class="box-notification" ng-show="!setSeed && createPassphrase">
+          <span class="text-warning size-14">
+            <i class="fi-alert"></i>
+            <span translate>
+            WARNING: Passphrase cannot be recovered. <b>Be sure to write it down</b>. The wallet can not be restored without the passphrase.
             </span>
-          </div>
+          </span>
+        </div>
+
+
+
+
+
           <button translate type="submit" class="button expand black m0 round" 
             ng-disabled="joinForm.$invalid || join.loading">Join</button>
       </form>
