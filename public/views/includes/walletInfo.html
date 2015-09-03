@@ -1,0 +1,6 @@
+<span ng-show="index.network != 'livenet'"> Testnet </span>
+<span ng-show="!index.canSign && !index.isPrivKeyExternal" translate>No Private key</span>
+<span ng-show="index.isPrivKeyExternal" style="text-transform: capitalize">
+  <span translate>External Private Key:</span>
+  {{index.externalSource}}
+</span>

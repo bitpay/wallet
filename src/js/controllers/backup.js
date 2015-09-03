@@ -6,13 +6,6 @@ angular.module('copayApp.controllers').controller('wordsController',
     var msg = gettext('Are you to delete the backup words?');
     var successMsg = gettext('Backup words deleted');
 
-    this.getMnemonic = function() {
-      var fc = profileService.focusedClient;
-      var words = fc.getMnemonic();
-      if (!words) return;
-      return words.split(' ');
-    };
-
     this.done = function() {
         $rootScope.$emit('Local/BackupDone');
     };
@@ -30,5 +23,11 @@ angular.module('copayApp.controllers').controller('wordsController',
       });
     };
 
-    this.mywords = this.getMnemonic();
+    var fc = profileService.focusedClient;
+    var words = fc.getMnemonic();
+
+    if (words)
+      this.mnemonicWords = words.split(' ');
+
+    this.mnemonicHasPassphrase = fc.mnemonicHasPassphrase();
   });
