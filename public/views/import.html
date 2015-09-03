@@ -23,7 +23,7 @@
       <div class="tab-container small-6 medium-6 large-6">
       <a href
         ng-class="{'selected': type =='12'}"
-        ng-click="import.setType('12')" translate>12 Words Backup</a>
+        ng-click="import.setType('12')" translate>Walled Seed</a>
       </div>
       <div class="tab-container small-6 medium-6 large-6">
       <a href
@@ -53,7 +53,7 @@
 
             <div >
               <label for="words">
-                <span translate>Type the 12 backup words here</span>:
+                <span translate>Type the Wallet Seed (12 words)</span>:
               </label>
               <textarea class="form-control" name="words" ng-model="import.words" rows="2"></textarea>
             </div>
@@ -69,22 +69,21 @@
           </div>
           <div ng-hide="hideAdv" class="row">
             <div class="large-12 columns">
-             <label for="passphrase" class="line-b oh"><span translate>Passphrase</span>  <small translate>Mnemonics could required a passphrase to be imported</small>
-              <div class="input">
-                <input type="password" class="form-control" placeholder="{{'Your backup passhrase'|translate}}"
-                name="passphrase" ng-model="import.passphrase">
-              </div>
-              </label>
-              <label for="network-name" class="line-b oh">
+              <label for="network-name" class=" oh">
                 <span translate>Testnet</span>
                 <switch id="network-name" name="isTestnet" ng-model="isTestnet" class="green right m5t m10b"></switch>
               </label>
-  
- 
+
+             <label for="passphrase" class="oh line-b"><span translate>Passphrase</span>  <small translate>Wallet Seed could require a passphrase to be imported</small>
+              <div class="input">
+                <input type="password" class="form-control" placeholder="{{'Seed passphrase'|translate}}"
+                name="passphrase" ng-model="import.passphrase">
+              </div>
+              </label>
             </div>
           </div>
 
-            <button translate type="submit" class="button round expand black"
+            <button translate type="submit" class="button round expand black m10t"
               ng-disabled="importForm12.$invalid || import.loading">
               Import
             </button>
@@ -118,7 +117,7 @@
               <textarea class="form-control" name="backupText" ng-model="import.backupText" rows="5"></textarea>
             </div>
 
-            <label for="password"><span translate>Password</span>  <small translate>Required</small>
+            <label for="password"><span translate>Password</span> 
             </label>
             <div class="input">
               <input type="password" class="form-control" placeholder="{{'Your backup password'|translate}}"

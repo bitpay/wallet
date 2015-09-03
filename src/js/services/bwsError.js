@@ -91,7 +91,7 @@ angular.module('copayApp.services')
             body = gettextCatalog.getString('This wallet is not registed at the wallet service. Please create it from "Create Wallet" using adding for backup words');
             break;
           case 'INVALID_BACKUP': 
-            body = gettextCatalog.getString('Backup words are invalid');
+            body = gettextCatalog.getString('Wallet seed is invalid');
             break;
  
  
