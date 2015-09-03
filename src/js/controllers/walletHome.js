@@ -182,7 +182,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       $scope.getShortNetworkName = function() {
         return fc.credentials.networkName.substring(0, 4);
       };
-      lodash.each(['TxProposalRejectedBy', 'TxProposalAcceptedBy', 'transactionProposalRemoved', 'TxProposalRemoved', 'NewOutgoingTx'], function(eventName) {
+      lodash.each(['TxProposalRejectedBy', 'TxProposalAcceptedBy', 'transactionProposalRemoved', 'TxProposalRemoved', 'NewOutgoingTx', 'UpdateTx'], function(eventName) {
         $rootScope.$on(eventName, function() {
           fc.getTx($scope.tx.id, function(err, tx) {
             if (err) {
@@ -245,6 +245,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
             profileService.lockFC();
             self.setOngoingProcess();
             if (err) {
+              $scope.$emit('UpdateTx');
               $scope.loading = false;
               $scope.error = bwsError.msg(err, gettextCatalog.getString('Could not accept payment'));
               $scope.$digest();
@@ -258,6 +259,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
                   self.setOngoingProcess();
                   $scope.loading = false;
                   if (err) {
+                    $scope.$emit('UpdateTx');
                     $scope.error = bwsError.msg(err, gettextCatalog.getString('Could not broadcast payment'));
                     $scope.$digest();
                   } else {
@@ -287,6 +289,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
             self.setOngoingProcess();
             $scope.loading = false;
             if (err) {
+              $scope.$emit('UpdateTx');
               $scope.error = bwsError.msg(err, gettextCatalog.getString('Could not reject payment'));
               $scope.$digest();
             } else {
@@ -308,6 +311,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
             // Hacky: request tries to parse an empty response
             if (err && !(err.message && err.message.match(/Unexpected/))) {
+              $scope.$emit('UpdateTx');
               $scope.error = bwsError.msg(err, gettextCatalog.getString('Could not delete payment proposal'));
               $scope.$digest();
               return;
