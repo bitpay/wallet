@@ -187,7 +187,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
           fc.getTx($scope.tx.id, function(err, tx) {
             if (err) {
 
-              if (err.code && err.code == 'BADREQUEST' &&
+              if (err.code && err.code == 'TX_NOT_FOUND' &&
                 (eventName == 'transactionProposalRemoved' || eventName == 'TxProposalRemoved')) {
                 $scope.tx.removed = true;
                 $scope.tx.canBeRemoved = false;
