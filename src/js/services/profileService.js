@@ -175,7 +175,7 @@ angular.module('copayApp.services')
           walletClient.seedFromMnemonic(opts.mnemonic, opts.passphrase, network);
         } catch (ex) {
           $log.info(ex);
-          return cb(gettext('Could not create: Invalid Backup Words'));
+          return cb(gettext('Could not create: Invalid wallet seed'));
         }
       } else if (opts.extendedPublicKey) {
         try {

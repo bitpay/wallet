@@ -61,7 +61,7 @@ angular.module('copayApp.controllers').controller('importController',
     };
 
 
-    var _importMnemonic = function(words, passphrase, opts) {
+    var _importMnemonic = function(words, opts) {
       self.loading = true;
 
       $timeout(function() {
@@ -164,6 +164,6 @@ angular.module('copayApp.controllers').controller('importController',
       opts.passphrase = form.passphrase.$modelValue || null;
       opts.networkName = form.isTestnet.$modelValue ? 'testnet' : 'livenet';
 
-      _importMnemonic(words, passphrase, opts);
+      _importMnemonic(words, opts);
     };
   });
