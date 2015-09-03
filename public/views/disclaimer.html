@@ -2,12 +2,14 @@
   ng-if="agreed && index.hasProfile"
   class="topbar-container"
   ng-include="'views/includes/topbar.html'"
-  ng-init="titleSection='Terms of Use';  goBackToState = 'about'; noColor = true">
+  ng-init="titleSection='Terms of Use';  goBackToState = 'about'; noColor = true"
+>
+
 </div>
 
 
 
-<div class="content p20b" ng-class="{'disclaimer':!index.hasProfile}">
+<div class="content p20b" ng-class="{'disclaimer':!index.hasProfile}" ng-controller="disclaimerController">
   <h4 class="title m0" ng-show="!index.hasProfile">
     <span translate>Terms of Use</span>
     <logo class="right" width="40"></logo>

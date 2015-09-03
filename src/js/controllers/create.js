@@ -57,10 +57,22 @@ angular.module('copayApp.controllers').controller('createController',
         m: $scope.requiredCopayers,
         n: $scope.totalCopayers,
         name: form.walletName.$modelValue,
-        extendedPrivateKey: form.privateKey.$modelValue,
         myName: $scope.totalCopayers > 1 ? form.myName.$modelValue : null,
         networkName: form.isTestnet.$modelValue ? 'testnet' : 'livenet',
       };
+      var setSeed = form.setSeed.$modelValue;
+      if  (setSeed) {
+        opts.mnemonic = form.privateKey.$modelValue;
+        opts.passphrase = form.passphrase.$modelValue;
+      } else {
+        opts.passphrase = form.createPassphrase.$modelValue;
+      }
+
+      if (setSeed && !opts.mnemonic) {
+        this.error = gettext('Please enter the wallet seed');
+        return;
+      }
+ 
       self.loading = true;
 
       if (form.hwLedger.$modelValue) {
@@ -87,7 +99,7 @@ angular.module('copayApp.controllers').controller('createController',
 
     this._create = function (opts) {
       $timeout(function() {
-        profileService.createWallet(opts, function(err, secret) {
+        profileService.createWallet(opts, function(err, secret, walletId) {
           self.loading = false;
           if (err) {
             if (err == "Error creating wallet" && opts.extendedPublicKey) {
@@ -101,7 +113,11 @@ angular.module('copayApp.controllers').controller('createController',
             });
           }
           else {
-            go.walletHome();
+            if (opts.mnemonic && opts.n==1) {
+              $rootScope.$emit('Local/WalletImported', walletId);
+            } else {
+              go.walletHome();
+            }
           }
         });
       }, 100);

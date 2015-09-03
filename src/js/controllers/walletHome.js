@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('walletHomeController', function($scope, $rootScope, $timeout, $filter, $modal, $log, notification, txStatus, isCordova, profileService, lodash, configService, rateService, storageService, bitcore, isChromeApp, gettext, gettextCatalog, nodeWebkit, addressService, feeService, bwsError, utilService, ledger) {
+angular.module('copayApp.controllers').controller('walletHomeController', function($scope, $rootScope, $timeout, $filter, $modal, $log, notification, txStatus, isCordova, profileService, lodash, configService, rateService, storageService, bitcore, isChromeApp, gettext, gettextCatalog, nodeWebkit, addressService, feeService, bwsError, utilService, confirmDialog, ledger) {
 
   var self = this;
   $rootScope.hideMenuBar = false;
@@ -1103,6 +1103,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     this.setForm(null, amount, null, feeRate);
   };
 
+  // TODO: showPopup alike
   this.confirmDialog = function(msg, cb) {
     if (isCordova) {
       navigator.notification.confirm(
@@ -1128,7 +1129,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
   this.sendAll = function(amount, feeStr, feeRate) {
     var self = this;
-    var msg = gettextCatalog.getString("{{fee}} will be discounted for bitcoin networking fees", {
+    var msg = gettextCatalog.getString("{{fee}} will be deducted for bitcoin networking fees", {
       fee: feeStr
     });
 

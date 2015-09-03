@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('importController',
-  function($scope, $rootScope, $location, $timeout, $log, profileService, notification, go, isMobile, isCordova, sjcl, gettext) {
+  function($scope, $rootScope, $location, $timeout, $log, profileService, notification, go, isMobile, isCordova, sjcl, gettext, lodash) {
 
     var self = this;
 
@@ -11,15 +11,23 @@ angular.module('copayApp.controllers').controller('importController',
 
     window.ignoreMobilePause = true;
     $scope.$on('$destroy', function() {
-      $timeout(function(){
+      $timeout(function() {
         window.ignoreMobilePause = false;
       }, 100);
     });
 
-    var _import = function(str, opts) {
+    this.setType = function(type) {
+      $scope.type = type;
+      this.error = null;
+      $timeout(function() {
+        $rootScope.$apply();
+      });
+    };
+
+    var _importBlob = function(str, opts) {
       var str2, err;
       try {
-       str2 = sjcl.decrypt(self.password, str);
+        str2 = sjcl.decrypt(self.password, str);
       } catch (e) {
         err = gettext('Could not decrypt file, check your password');
         $log.warn(e);
@@ -27,7 +35,9 @@ angular.module('copayApp.controllers').controller('importController',
 
       if (err) {
         self.error = err;
-        $rootScope.$apply();
+        $timeout(function() {
+          $rootScope.$apply();
+        });
         return;
       }
 
@@ -41,8 +51,7 @@ angular.module('copayApp.controllers').controller('importController',
           self.loading = false;
           if (err) {
             self.error = err;
-          }
-          else {
+          } else {
             $rootScope.$emit('Local/WalletImported', walletId);
             go.walletHome();
             notification.success(gettext('Success'), gettext('Your wallet has been imported correctly'));
@@ -51,19 +60,49 @@ angular.module('copayApp.controllers').controller('importController',
       }, 100);
     };
 
+
+    var _importMnemonic = function(words, opts) {
+      self.loading = true;
+
+      $timeout(function() {
+        profileService.importWalletMnemonic(words, opts, function(err, walletId) {
+          self.loading = false;
+          if (err) {
+            self.error = err;
+            return $timeout(function() {
+              $scope.$apply();
+            });
+          }
+          $rootScope.$emit('Local/WalletImported', walletId);
+          notification.success(gettext('Success'), gettext('Your wallet has been imported correctly'));
+          go.walletHome();
+        });
+      }, 100);
+    };
+
+    // {
+    //         network: opts.network,
+    //         m: opts.m,
+    //         n: opts.n,
+    //         publicKeyRing: opts.publicKeyRing,
+    //       },
+    //
     $scope.getFile = function() {
       // If we use onloadend, we need to check the readyState.
       reader.onloadend = function(evt) {
         if (evt.target.readyState == FileReader.DONE) { // DONE == 2
-          _import(evt.target.result);
+          _importBlob(evt.target.result);
         }
       }
     };
 
-    this.import = function(form) {
+    this.importBlob = function(form) {
       if (form.$invalid) {
         this.error = gettext('There is an error in the form');
-        $scope.$apply();
+
+        $timeout(function() {
+          $scope.$apply();
+        });
         return;
       }
 
@@ -73,14 +112,58 @@ angular.module('copayApp.controllers').controller('importController',
 
       if (!backupFile && !backupText) {
         this.error = gettext('Please, select your backup file');
-        $scope.$apply();
+        $timeout(function() {
+          $scope.$apply();
+        });
+
         return;
       }
 
       if (backupFile) {
         reader.readAsBinaryString(backupFile);
       } else {
-        _import(backupText);
+        _importBlob(backupText);
       }
+    };
+
+
+    this.importMnemonic = function(form) {
+      if (form.$invalid) {
+        this.error = gettext('There is an error in the form');
+
+        $timeout(function() {
+          $scope.$apply();
+        });
+        return;
+      }
+
+      var opts = {};
+
+      var passphrase = form.passphrase.$modelValue;
+      var words = form.words.$modelValue;
+      this.error = null;
+
+      if (!words) {
+        this.error = gettext('Please enter the backup words');
+      } else {
+        var wordList = words.split(/ /).filter(function(v){ return v.length>0; });
+        if (wordList.length != 12)
+          this.error = gettext('Please enter 12 backup words');
+        else 
+          words = wordList.join(' ');
+      }
+
+      if (this.error) {
+        $timeout(function() {
+          $scope.$apply();
+        });
+        return;
+      }
+
+
+      opts.passphrase = form.passphrase.$modelValue || null;
+      opts.networkName = form.isTestnet.$modelValue ? 'testnet' : 'livenet';
+
+      _importMnemonic(words, opts);
     };
   });

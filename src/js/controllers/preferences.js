@@ -1,10 +1,11 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('preferencesController',
-  function($scope, $rootScope, $filter, $timeout, $modal, $log, lodash, configService, profileService) {
+  function($scope, $rootScope, $filter, $timeout, $modal, $log, lodash, configService, profileService, uxLanguage) {
     var config = configService.getSync();
     this.unitName = config.wallet.settings.unitName;
     this.bwsurl = config.bws.url;
+    this.currentLanguageName = uxLanguage.getCurrentLanguageName();
     this.selectedAlternative = {
       name: config.wallet.settings.alternativeName,
       isoCode: config.wallet.settings.alternativeIsoCode

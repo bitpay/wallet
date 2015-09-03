@@ -153,8 +153,20 @@ angular.module('copayApp.controllers').controller('joinController',
 
       var opts = {
         secret: form.secret.$modelValue,
-        extendedPrivateKey: form.privateKey.$modelValue,
         myName: form.myName.$modelValue
+      }
+
+      var setSeed = form.setSeed.$modelValue;
+      if  (setSeed) {
+        opts.mnemonic = form.privateKey.$modelValue;
+        opts.passphrase = form.passphrase.$modelValue;
+      } else {
+        opts.passphrase = form.createPassphrase.$modelValue;
+      }
+
+      if (setSeed && !opts.mnemonic) {
+        this.error = gettext('Please enter the wallet seed');
+        return;
       }
 
       if (form.hwLedger.$modelValue) {
@@ -166,6 +178,7 @@ angular.module('copayApp.controllers').controller('joinController',
             opts.extendedPublicKey = data.xpubkey;
             opts.externalSource = 'ledger';
             opts.externalIndex = $scope.externalIndex;
+            opts.externalEntropySource = data.xpubkey
             self._join(opts);
           } else {
             self.loading = false;
@@ -189,7 +202,12 @@ angular.module('copayApp.controllers').controller('joinController',
             return
           }
           $timeout(function() {
-            go.walletHome();
+            var fc = profileService.focusedClient;
+            if (opts.mnemonic && fc.isComplete()) {
+              $rootScope.$emit('Local/WalletImported', fc.credentials.walletId);
+            } else {
+              go.walletHome();
+            }
           }, 2000);
         });
       }, 100);
