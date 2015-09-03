@@ -11,7 +11,7 @@
   <div class="row">
     <h2> Wallet Seed </h2>
   </div>
-  <div ng-show="wordsC.mywords">
+  <div ng-show="wordsC.mnemonicWords">
     <div class="row"  ng-show="index.n==1">
       <div class="m10t columns size-14 text-gray" translate>
         <span translate>
@@ -49,13 +49,13 @@
     </div>
   </div>
  
-  <div class="row m20t" ng-show="!wordsC.mywords">
+  <div class="row m20t" ng-show="!wordsC.mnemonicWords">
     <div class="columns size-14 text-gray" translate>
         The wallet seed for this wallet is not available on this device. You can still export the wallet to backup it.
     </div>
   </div>
  
-  <div ng-show="wordsC.mywords">
+  <div ng-show="wordsC.mnemonicWords">
     <div class="row">
         <div class="m10t oh" ng-init="show=false">
           <a class="button outline light-gray expand tiny" ng-click="show=!show">
@@ -68,11 +68,27 @@
         </div>
     </div>
 
-    <div class="row enable_text_select" ng-show="show"  >
+    <div class="row enable_text_select" ng-show="show">
+
+
         <div class="small-centered p10t p10b large-centered medium-centered large-8 medium-8 small-10 columns enable_text_select" style="border:1px solid gray; background:#eee;
 ">
-          <span class="m10r" ng-repeat="word in wordsC.mywords">{{word}} </span> 
+          <span class="m10r" ng-repeat="word in wordsC.mnemonicWords">{{word}} </span> 
         </div>
+
+        <div class="box-notification large-centered medium-centered small-centered large-8 medium-8 small-10 columns m10t" ng-show="wordsC.mnemonicHasPassphrase">
+          <span class="text-warning size-14">
+            <i class="fi-alert"></i>
+            <span translate>
+            WARNING: This seed was created with a passphrase. To recover this wallet both the mnemonic and passphrase are needed.
+            </span>
+          </span>
+        </div>
+
+
+
+
+
         <div class="m10 text-center columns">
           <div class="m10 size-14 text-gray" translate>
             <span translate>
