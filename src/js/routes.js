@@ -16,7 +16,7 @@ if (window && window.navigator) {
 //Setting up route
 angular
   .module('copayApp')
-  .config(function(historicLogProvider, $provide, $logProvider, $stateProvider, $urlRouterProvider) {
+  .config(function(historicLogProvider, $provide, $logProvider, $stateProvider, $urlRouterProvider, $compileProvider) {
     $urlRouterProvider.otherwise('/');
 
     $logProvider.debugEnabled(true);
@@ -69,6 +69,10 @@ angular
         return $delegate;
       }
     ]);
+
+    // whitelist 'chrome-extension:' for chromeApp to work with image URLs processed by Angular
+    // link: http://stackoverflow.com/questions/15606751/angular-changes-urls-to-unsafe-in-extension-page?lq=1
+    $compileProvider.imgSrcSanitizationWhitelist(/^\s*((https?|ftp|file|blob|chrome-extension):|data:image\/)/);
 
     $stateProvider
       .state('splash', {
