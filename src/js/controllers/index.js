@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, lodash, go, profileService, configService, isCordova, rateService, storageService, addressService, gettextCatalog, gettext, amMoment, nodeWebkit, addonManager, feeService, isChromeApp, bwsError, utilService) {
+angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, lodash, go, profileService, configService, isCordova, rateService, storageService, addressService, gettext, amMoment, nodeWebkit, addonManager, feeService, isChromeApp, bwsError, utilService, uxLanguage) {
   var self = this;
   self.isCordova = isCordova;
   self.onGoingProcess = {};
@@ -38,35 +38,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   self.txTemplateUrl = addonManager.txTemplateUrl() || 'views/includes/transaction.html';
 
   self.tab = 'walletHome';
-
-  self.availableLanguages = [{
-    name: 'English',
-    isoCode: 'en',
-  }, {
-    name: 'Français',
-    isoCode: 'fr',
-  }, {
-    name: 'Italiano',
-    isoCode: 'it',
-  }, {
-    name: 'Deutsch',
-    isoCode: 'de',
-  }, {
-    name: 'Español',
-    isoCode: 'es',
-  }, {
-    name: 'Português',
-    isoCode: 'pt',
-  }, {
-    name: 'Ελληνικά',
-    isoCode: 'el',
-  }, {
-    name: '日本語',
-    isoCode: 'ja',
-  }, {
-    name: 'Pусский',
-    isoCode: 'ru',
-  }];
 
   self.feeOpts = feeService.feeOpts;
 
@@ -248,7 +219,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         return cb(null, opts.walletStatus);
       else {
         self.updateError = false;
-        return fc.getStatus(function(err, ret) {
+        return fc.getStatus({}, function(err, ret) {
           if (err) {
             self.updateError = bwsError.msg(err, gettext('Could not update Wallet'));
           } else {
@@ -398,7 +369,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
   self.updateTxHistory = function(skip) {
     var fc = profileService.focusedClient;
-    if (!fc.isComplete()) return;
+    if (!fc || !fc.isComplete()) return;
     if (!skip) {
       self.txHistory = [];
     }
@@ -748,7 +719,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     $timeout(function() {
       $rootScope.$apply();
     });
-
   };
 
   self.recreate = function(cb) {
@@ -786,6 +756,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
   self.startScan = function(walletId) {
     var c = profileService.walletClients[walletId];
+    if (!c.isComplete()) return;
 
     if (self.walletId == walletId)
       self.setOngoingProcess('scanning', true);
@@ -802,29 +773,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   };
 
   self.setUxLanguage = function() {
-    var userLang = configService.getSync().wallet.settings.defaultLanguage;
-    if (!userLang) {
-      // Auto-detect browser language
-      var androidLang;
-
-      if (navigator && navigator.userAgent && (androidLang = navigator.userAgent.match(/android.*\W(\w\w)-(\w\w)\W/i))) {
-        userLang = androidLang[1];
-      } else {
-        // works for iOS and Android 4.x
-        userLang = navigator.userLanguage || navigator.language;
-      }
-      userLang = userLang ? (userLang.split('-', 1)[0] || 'en') : 'en';
-    }
-    if (userLang != gettextCatalog.getCurrentLanguage()) {
-      $log.debug('Setting default language: ' + userLang);
-      gettextCatalog.setCurrentLanguage(userLang);
-      amMoment.changeLocale(userLang);
-    }
-
+    var userLang = uxLanguage.update();
     self.defaultLanguageIsoCode = userLang;
-    self.defaultLanguageName = lodash.result(lodash.find(self.availableLanguages, {
-      'isoCode': self.defaultLanguageIsoCode
-    }), 'name');
+    self.defaultLanguageName = uxLanguage.getName(userLang);
   };
 
   // UX event handlers

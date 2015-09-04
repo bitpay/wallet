@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('walletHomeController', function($scope, $rootScope, $timeout, $filter, $modal, $log, notification, txStatus, isCordova, profileService, lodash, configService, rateService, storageService, bitcore, isChromeApp, gettext, gettextCatalog, nodeWebkit, addressService, feeService, bwsError, utilService) {
+angular.module('copayApp.controllers').controller('walletHomeController', function($scope, $rootScope, $timeout, $filter, $modal, $log, notification, txStatus, isCordova, profileService, lodash, configService, rateService, storageService, bitcore, isChromeApp, gettext, gettextCatalog, nodeWebkit, addressService, feeService, bwsError, utilService, confirmDialog, ledger) {
 
   var self = this;
   $rootScope.hideMenuBar = false;
@@ -247,6 +247,33 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
           return;
         };
 
+        if (fc.isPrivKeyExternal()) {
+          if (fc.getPrivKeyExternalSourceName() == 'ledger') {
+            $log.debug('Requesting Ledger Chrome app to sign the transaction');
+            self.setOngoingProcess(gettext('Requesting Ledger Wallet to sign'));
+            $scope.loading = true;
+            $scope.error = null;
+            ledger.signTx(txp, fc.getExternalIndex(), function(result) {
+              if (result.success) {
+                txp.signatures = [];
+                for (var i=0; i<result.signatures.length; i++) {
+                  txp.signatures.push(result.signatures[i].substring(0, result.signatures[i].length - 2));
+                }
+                $scope._doSign(txp);
+              } else {
+                $scope.loading = false;
+                $scope.error = result.message;
+                self.setOngoingProcess();
+                $scope.$digest();
+              }
+            });
+          }
+        } else {
+          $scope._doSign(txp);
+        }
+      };
+
+      $scope._doSign = function(txp) {
         self.setOngoingProcess(gettext('Signing payment'));
         $scope.loading = true;
         $scope.error = null;
@@ -779,6 +806,30 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
   this.signAndBroadcast = function(txp, cb) {
     var fc = profileService.focusedClient;
+
+    if (fc.isPrivKeyExternal()) {
+      if (fc.getPrivKeyExternalSourceName() == 'ledger') {
+        $log.debug('Requesting Ledger Chrome app to sign the transaction');
+        self.setOngoingProcess(gettext('Requesting Ledger Wallet to sign'));
+        ledger.signTx(txp, fc.getExternalIndex(), function(result) {
+          if (result.success) {
+            txp.signatures = [];
+            for (var i=0; i<result.signatures.length; i++) {
+              txp.signatures.push(result.signatures[i].substring(0, result.signatures[i].length - 2));
+            }
+            self._doSignAndBroadcast(txp, cb);
+          } else {
+            return cb(result);
+          }
+        });
+      }
+    } else {
+      self._doSignAndBroadcast(txp, cb);
+    }
+  };
+
+  this._doSignAndBroadcast = function(txp, cb) {
+    var fc = profileService.focusedClient;
     self.setOngoingProcess(gettext('Signing transaction'));
     fc.signTxProposal(txp, function(err, signedTx) {
       profileService.lockFC();
@@ -1062,6 +1113,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     this.setForm(null, amount, null, feeRate);
   };
 
+  // TODO: showPopup alike
   this.confirmDialog = function(msg, cb) {
     if (isCordova) {
       navigator.notification.confirm(
@@ -1087,7 +1139,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
   this.sendAll = function(amount, feeStr, feeRate) {
     var self = this;
-    var msg = gettextCatalog.getString("{{fee}} will be discounted for bitcoin networking fees", {
+    var msg = gettextCatalog.getString("{{fee}} will be deducted for bitcoin networking fees", {
       fee: feeStr
     });
 

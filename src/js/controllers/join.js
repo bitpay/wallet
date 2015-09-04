@@ -1,9 +1,15 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('joinController',
-  function($scope, $rootScope, $timeout, go, isMobile, notification, profileService, isCordova, $modal, gettext) {
+  function($scope, $rootScope, $timeout, go, isMobile, notification, profileService, isCordova, isChromeApp, $modal, gettext, lodash, ledger) {
 
     var self = this;
+    this.externalIndexValues = lodash.range(0,20);
+    $scope.externalIndex = 0;
+
+    this.isChromeApp = function() {
+      return isChromeApp;
+    };
 
     //TODO : make one function - this was copied from topbar.js
     var cordovaOpenScanner = function() {
@@ -145,12 +151,50 @@ angular.module('copayApp.controllers').controller('joinController',
       }
       self.loading = true;
 
+      var opts = {
+        secret: form.secret.$modelValue,
+        myName: form.myName.$modelValue
+      }
+
+      var setSeed = form.setSeed.$modelValue;
+      if  (setSeed) {
+        opts.mnemonic = form.privateKey.$modelValue;
+        opts.passphrase = form.passphrase.$modelValue;
+      } else {
+        opts.passphrase = form.createPassphrase.$modelValue;
+      }
+
+      if (setSeed && !opts.mnemonic) {
+        this.error = gettext('Please enter the wallet seed');
+        return;
+      }
+
+      if (form.hwLedger.$modelValue) {
+        self.ledger = true;
+        ledger.getXPubKey($scope.externalIndex, function(data) {
+          self.ledger = false;
+          $scope.$apply();
+          if (data.success) {
+            opts.extendedPublicKey = data.xpubkey;
+            opts.externalSource = 'ledger';
+            opts.externalIndex = $scope.externalIndex;
+            opts.externalEntropySource = data.xpubkey
+            self._join(opts);
+          } else {
+            self.loading = false;
+            $log.debug(data.message);
+            self.error = data.message;
+            $scope.$apply();
+          }
+        });
+      } else {
+        self._join(opts);
+      }
+    };
+
+    this._join = function(opts) {
       $timeout(function() {
-        profileService.joinWallet({
-          secret: form.secret.$modelValue,
-          extendedPrivateKey: form.privateKey.$modelValue,
-          myName: form.myName.$modelValue
-        }, function(err) {
+        profileService.joinWallet(opts, function(err) {
           if (err) {
             self.loading = false;
             self.error = err;
@@ -158,9 +202,14 @@ angular.module('copayApp.controllers').controller('joinController',
             return
           }
           $timeout(function() {
-            go.walletHome();
+            var fc = profileService.focusedClient;
+            if (opts.mnemonic && fc.isComplete()) {
+              $rootScope.$emit('Local/WalletImported', fc.credentials.walletId);
+            } else {
+              go.walletHome();
+            }
           }, 2000);
         });
       }, 100);
-    }
+    };
   });
