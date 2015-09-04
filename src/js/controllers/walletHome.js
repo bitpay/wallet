@@ -26,6 +26,16 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   this.isMobile = isMobile.any();
   this.addr = {};
 
+  // DISABLE ANIMATION ON CHROMEAPP
+  if (isChromeApp) {
+    var animatedSlideUp = 'full';
+    var animatedSlideRight = 'full';
+  }
+  else {
+    var animatedSlideUp = 'full animated slideInUp';
+    var animatedSlideRight = 'full animated slideInRight';
+  }
+
   var disableScannerListener = $rootScope.$on('dataScanned', function(event, data) {
     self.setForm(data);
     $rootScope.$emit('Local/SetTab', 'send');
@@ -107,7 +117,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     };
     var modalInstance = $modal.open({
       templateUrl: 'views/modals/copayers.html',
-      windowClass: 'full animated slideInUp',
+      windowClass: animatedSlideUp,
       controller: ModalInstanceCtrl,
     });
 
@@ -148,7 +158,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
     var modalInstance = $modal.open({
       templateUrl: 'views/modals/wallets.html',
-      windowClass: 'full animated slideInUp',
+      windowClass: animatedSlideUp,
       controller: ModalInstanceCtrl,
     });
 
@@ -352,7 +362,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
     var modalInstance = $modal.open({
       templateUrl: 'views/modals/txp-details.html',
-      windowClass: 'full animated slideInRight',
+      windowClass: animatedSlideRight,
       controller: ModalInstanceCtrl,
     });
 
@@ -498,7 +508,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
     var modalInstance = $modal.open({
       templateUrl: 'views/modals/customized-amount.html',
-      windowClass: 'full animated slideInUp',
+      windowClass: animatedSlideUp,
       controller: ModalInstanceCtrl,
     });
 
@@ -889,7 +899,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     };
     var modalInstance = $modal.open({
       templateUrl: 'views/modals/paypro.html',
-      windowClass: 'full animated slideInUp',
+      windowClass: animatedSlideUp,
       controller: ModalInstanceCtrl,
     });
 
@@ -1034,7 +1044,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
     var modalInstance = $modal.open({
       templateUrl: 'views/modals/tx-details.html',
-      windowClass: 'full animated slideInRight',
+      windowClass: animatedSlideRight,
       controller: ModalInstanceCtrl,
     });
 
