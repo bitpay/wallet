@@ -5,7 +5,9 @@ angular.module('copayApp.services')
     var root = {};
     var LEDGER_CHROME_ID = "kkdpmhnladdopljabkgpacgpliggeeaf";
     root.MAX_SLOT = 20;
-    root.ENTROPY_INDEX_START = 1000;
+
+    // Ledger magic number to get xPub without user confirmation
+    root.ENTROPY_INDEX_PATH = "m/0xb11e'/";
 
     root.callbacks = {};
 
@@ -16,8 +18,8 @@ angular.module('copayApp.services')
     }
 
     root.getEntropySource = function(index, callback) {
-      index = index + root.ENTROPY_INDEX_START;
-      var xpub = root.getXPubKey("m/" + index + "'", function(data) {
+      var path = root.ENTROPY_INDEX_PATH + index + "'";
+      var xpub = root.getXPubKey(path, function(data) {
         if (!data.success) {
           $log.warn(data.message);
           return callback(data);
