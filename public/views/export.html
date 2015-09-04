@@ -35,7 +35,7 @@
       </div>
 
 
-      <div class="row">
+      <div class="row" ng-hide="index.isPrivKeyExternal">
         <div class="large-12 columns">
           <label for="no-sign" class="line-b oh">
             <span translate>Do not include private key</span>
@@ -44,11 +44,22 @@
         </div>
       </div>
 
+
+      <div class="box-notification"  ng-show="index.isPrivKeyExternal">
+        <span class="text-warning size-14">
+          <i class="fi-alert"></i>
+          <span translate>
+          WARNING: The private key of this wallet is not available.  The export allows to check the wallet balance, transaction history, and create spend proposals from the export. However, does not allow to approve (sign) proposals, so <b>funds will not be accessible from the export</b>.
+          </span>
+        </span>
+      </div>
+
+
       <div class="box-notification" ng-show="noSign">
         <span class="text-warning size-14">
           <i class="fi-alert"></i>
           <span translate>
-          WARNING: Not including the private key allows to check the wallet balance, transaction history, and create spend proposals from the export. However, does not allow to approve (sign) proposals, so <b>funds will not be accessable from the export</b>.
+          WARNING: Not including the private key allows to check the wallet balance, transaction history, and create spend proposals from the export. However, does not allow to approve (sign) proposals, so <b>funds will not be accessible from the export</b>.
           </span>
         </span>
       </div>

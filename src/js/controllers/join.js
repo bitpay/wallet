@@ -153,10 +153,9 @@ angular.module('copayApp.controllers').controller('joinController',
 
       var opts = {
         secret: form.secret.$modelValue,
-        myName: form.myName.$modelValue
-        extendedPrivateKey: form.privateKey.$modelValue,
-        myName: form.myName.$modelValue
+        myName: form.myName.$modelValue,
       }
+
       var setSeed = form.setSeed.$modelValue;
       if  (setSeed) {
         opts.mnemonic = form.privateKey.$modelValue;
@@ -170,23 +169,17 @@ angular.module('copayApp.controllers').controller('joinController',
         return;
       }
  
-
       if (form.hwLedger.$modelValue) {
         self.ledger = true;
-        ledger.getXPubKey($scope.externalIndex, function(data) {
+        ledger.getInfoForNewWallet($scope.externalIndex, function(err, lopts) {
           self.ledger = false;
-          $scope.$apply();
-          if (data.success) {
-            opts.extendedPublicKey = data.xpubkey;
-            opts.externalSource = 'ledger';
-            opts.externalIndex = $scope.externalIndex;
-            self._join(opts);
-          } else {
-            self.loading = false;
-            $log.debug(data.message);
-            self.error = data.message;
+          if (err) {
+            self.error = err;
             $scope.$apply();
+            return;
           }
+          opts = lodash.assign(lopts, opts);
+          self._join(opts);
         });
       } else {
         self._join(opts);
