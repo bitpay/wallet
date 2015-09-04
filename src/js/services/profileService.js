@@ -1,6 +1,6 @@
 'use strict';
 angular.module('copayApp.services')
-  .factory('profileService', function profileServiceFactory($rootScope, $location, $timeout, $filter, $log, lodash, storageService, bwcService, configService, notificationService, isChromeApp, isCordova, gettext, nodeWebkit, bwsError, ledger, uxLanguage) {
+  .factory('profileService', function profileServiceFactory($rootScope, $location, $timeout, $filter, $log, lodash, storageService, bwcService, configService, notificationService, isChromeApp, isCordova, gettext, nodeWebkit, bwsError, uxLanguage, ledger) {
 
     var root = {};
 
@@ -179,7 +179,7 @@ angular.module('copayApp.services')
         }
       } else if (opts.extendedPublicKey) {
         try {
-          walletClient.seedFromExternalWalletPublicKey(opts.extendedPublicKey, opts.externalSource, opts.externalIndex);
+          walletClient.seedFromExternalWalletPublicKey(opts.extendedPublicKey, opts.externalSource, opts.externalIndex, opts.entropySource);
         } catch (ex) {
           return cb(gettext('Could not create using the specified extended public key'));
         }

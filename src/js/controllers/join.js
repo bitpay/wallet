@@ -204,7 +204,7 @@ angular.module('copayApp.controllers').controller('joinController',
           }
           $timeout(function() {
             var fc = profileService.focusedClient;
-            if (opts.mnemonic && fc.isComplete()) {
+            if ( ( opts.mnemonic || opts.externalSource )  && fc.isComplete()) {
               $rootScope.$emit('Local/WalletImported', fc.credentials.walletId);
             } else {
               go.walletHome();

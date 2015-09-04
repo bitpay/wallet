@@ -117,7 +117,7 @@
               <switch id="network-name" name="isTestnet" ng-model="isTestnet" class="green right m5t m10b"></switch>
             </label>
 
-            <label for="seed" class="oh">
+            <label  ng-hide="hwLedger" for="seed" class="oh">
               <span translate>Specify your wallet seed</span>
               <switch id="seed" name="setSeed" ng-model="setSeed" class="green right m5t m10b"></switch>
             </label>
@@ -129,14 +129,14 @@
               </div>
             </label>
  
-            <label for="ext-master" class="m10t" ng-show="setSeed">
+            <label for="ext-master" class="m10t" ng-show="setSeed && !hwLedger">
               <span translate>Wallet Seed</span>
               <small translate>Enter the 12 words seed (BIP39)</small>
               <input id="ext-master"
               type="text"
               name="privateKey" ng-model="privateKey">
             </label>
-              <label for="passphrase" class="line-b oh" ng-show="setSeed"><span translate>Seed Passphrase</span>  <small translate>The seed could require a passphrase to be imported</small>
+              <label for="passphrase" class="line-b oh" ng-show="setSeed && !hwLedger"><span translate>Seed Passphrase</span>  <small translate>The seed could require a passphrase to be imported</small>
                 <div class="input">
                   <input type="text" class="form-control" name="passphrase" ng-model="passphrase">
                 </div>
@@ -155,11 +155,11 @@
 
 
 
-        <button type="submit" class="button round black expand m0" ng-show="totalCopayers != 1" ng-disabled="setupForm.$invalid || create.loading">
+        <button type="submit" class="button round black expand m0" ng-show="totalCopayers != 1" ng-disabled="setupForm.$invalid || create.loading || create.ledger">
           <span translate>Create {{requiredCopayers}}-of-{{totalCopayers}} wallet</span>
         </button>
         
-	<button type="submit" class="button round black expand m0" ng-show="totalCopayers == 1" ng-disabled="setupForm.$invalid || create.loading">
+	<button type="submit" class="button round black expand m0" ng-show="totalCopayers == 1" ng-disabled="setupForm.$invalid || create.loading || create.ledger">
           <span translate>Create new wallet</span>
         </button>
       </div>

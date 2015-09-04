@@ -35,7 +35,7 @@ angular.module('copayApp.controllers').controller('createController',
       $scope.requiredCopayers = Math.min(parseInt(n / 2 + 1), maxReq);
     };
 
-    this.externalIndexValues = lodash.range(0,20);
+    this.externalIndexValues = lodash.range(0,ledger.MAX_SLOT);
     $scope.externalIndex = 0;
     this.TCValues = lodash.range(2, defaults.limits.totalCopayers + 1);
     $scope.totalCopayers = defaults.wallet.totalCopayers;
@@ -73,24 +73,17 @@ angular.module('copayApp.controllers').controller('createController',
         return;
       }
  
-      self.loading = true;
-
       if (form.hwLedger.$modelValue) {
         self.ledger = true;
-        ledger.getXPubKey($scope.externalIndex, function(data) {
+        ledger.getInfoForNewWallet($scope.externalIndex, function(err, lopts) {
           self.ledger = false;
-          if (data.success) {
+          if (err) {
+            self.error = err;
             $scope.$apply();
-            opts.extendedPublicKey = data.xpubkey;
-            opts.externalSource = 'ledger';
-            opts.externalIndex = $scope.externalIndex;
-            self._create(opts);
-          } else {
-            self.loading = false;
-            self.error = data.message;
-            $scope.$apply();
-            $log.debug(data.message);
+            return;
           }
+          opts = lodash.assign(lopts, opts);
+          self._create(opts);
         });
       } else {
         self._create(opts);
@@ -98,6 +91,7 @@ angular.module('copayApp.controllers').controller('createController',
     };
 
     this._create = function (opts) {
+      self.loading = true;
       $timeout(function() {
         profileService.createWallet(opts, function(err, secret, walletId) {
           self.loading = false;
@@ -105,14 +99,14 @@ angular.module('copayApp.controllers').controller('createController',
             if (err == "Error creating wallet" && opts.extendedPublicKey) {
               err = gettext("This xpub index is already used by another wallet. Please select another index.");
             }
-            $log.debug(err);
+            $log.warn(err);
             self.error = err;
             $timeout(function() {
               $rootScope.$apply();
             });
           }
           else {
-            if (opts.mnemonic && opts.n==1) {
+            if ( ( opts.mnemonic && opts.n==1) || otps.externalSource  ) {
               $rootScope.$emit('Local/WalletImported', walletId);
             } else {
               go.walletHome();
