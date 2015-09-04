@@ -7,7 +7,7 @@ angular.module('copayApp.services')
     root.MAX_SLOT = 20;
 
     // Ledger magic number to get xPub without user confirmation
-    root.ENTROPY_INDEX_PATH = "m/0xb11e'/";
+    root.ENTROPY_INDEX_PATH = "m/0xb11e/";
 
     root.callbacks = {};
 
