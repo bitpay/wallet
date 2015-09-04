@@ -184,7 +184,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       $scope.error = null;
       $scope.copayers = copayers
       $scope.copayerId = fc.credentials.copayerId;
-      $scope.canSign = fc.canSign();
+      $scope.canSign = fc.canSign() || fc.isPrivKeyExternal();
       $scope.loading = null;
       $scope.color = fc.backgroundColor;
 
@@ -244,7 +244,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       $scope.sign = function(txp) {
         var fc = profileService.focusedClient;
 
-        if (!fc.canSign())
+        if (!fc.canSign() && !fc.isPrivKeyExternal())
           return;
 
         if (fc.isPrivKeyEncrypted()) {
@@ -801,7 +801,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
             return self.setSendError(err);
           }
 
-          if (!fc.canSign()) {
+          if (!fc.canSign() &&  !fc.isPrivKeyExternal()) {
             $log.info('No signing proposal: No private key')
             self.setOngoingProcess();
             self.resetForm();

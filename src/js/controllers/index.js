@@ -101,6 +101,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       self.walletId = fc.credentials.walletId;
       self.isComplete = fc.isComplete();
       self.canSign = fc.canSign();
+      self.isPrivKeyExternal = fc.isPrivKeyExternal();
+      self.externalSource = fc.getPrivKeyExternalSourceName();
       self.txps = [];
       self.copayers = [];
       self.updateColor();
