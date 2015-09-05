@@ -1,11 +1,11 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('preferencesGlideraController', 
-  function($scope, $timeout, profileService, go, glideraService, storageService) {
+  function($scope, $timeout, profileService, applicationService, glideraService, storageService) {
 
     this.init = function(token) {
       var self = this;
-      glideraService.getPermissions(token, function(error, permission) {
+      glideraService.getAccessTokenPermissions(token, function(error, permission) {
         self.permission = permission;
       });
 
@@ -29,9 +29,8 @@ angular.module('copayApp.controllers').controller('preferencesGlideraController'
     this.revokeToken = function() {
       var fc = profileService.focusedClient;
       storageService.removeGlideraToken(fc.credentials.network, function() {
-        $scope.$emit('Local/GlideraTokenUpdated');
         $timeout(function() {
-          go.walletHome();
+          applicationService.restart();
         }, 100);
       });
     };

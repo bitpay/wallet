@@ -114,8 +114,10 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.setSpendUnconfirmed();
 
     self.glideraToken = null;
-    self.glideraTxs = null;
+    self.glideraPermissions = null;
     self.glideraEmail = null;
+    self.glideraPersonalInfo = null;
+    self.glideraTxs = null;
 
     $timeout(function() {
       self.hasProfile = true;
@@ -848,20 +850,53 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     }), 'name');
   };
 
-  self.initGlidera = function() {
+  self.initGlidera = function(accessToken) {
     if (self.isShared) return;
-    storageService.getGlideraToken(self.network, function(err, val) {
-      if (err || !val) return;
+
+    var getToken = function(cb) {
+      if (accessToken) {
+        cb(null, accessToken);
+      } else {
+        storageService.getGlideraToken(self.network, cb);
+      }
+    };
+
+    getToken(function(err, accessToken) {
+      if (err || !accessToken) return;
       else {
-        self.glideraToken = val;
-        glideraService.getTransactions(val, function(error, txs) {
-          self.glideraTxs = txs;
-        });
-        glideraService.getEmail(val, function(error, data) {
-          self.glideraEmail = data.email;
+        self.glideraToken = accessToken;
+        glideraService.getAccessTokenPermissions(self.glideraToken, function(err, p) {
+          if (err) {
+            self.glideraError = err;
+            $log.error(err);
+          }
+          else {
+            self.glideraPermissions = p;
+            self.updateGlidera(accessToken, p);
+          }
         });
       }
     });
+  };
+
+  self.updateGlidera = function(accessToken, permissions) {
+    if (!accessToken || !permissions) return;
+    
+    if (permissions.view_email_address) {
+      glideraService.getEmail(accessToken, function(err, data) {
+        self.glideraEmail = data.email;
+      });
+    }
+    if (permissions.personal_info) {
+      glideraService.getPersonalInfo(accessToken, function(err, data) {
+        self.glideraPersonalInfo = data;
+      });
+    }
+    if (permissions.transaction_history) {
+      glideraService.getTransactions(accessToken, function(err, data) {
+        self.glideraTxs = data;
+      });
+    }
   };
 
   // UX event handlers
@@ -913,8 +948,12 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     });
   });
 
-  $rootScope.$on('Local/GlideraTokenUpdated', function() {
-    self.initGlidera();
+  $rootScope.$on('Local/GlideraTokenUpdated', function(event, accessToken) {
+    self.initGlidera(accessToken);
+  });
+
+  $rootScope.$on('Local/GlideraUpdated', function(event, accessToken, permissions) {
+    self.updateGlidera(accessToken, permissions);
   });
 
   $rootScope.$on('Local/UnitSettingUpdated', function(event) {
