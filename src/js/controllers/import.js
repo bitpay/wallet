@@ -139,13 +139,13 @@ angular.module('copayApp.controllers').controller('importController',
       this.error = null;
 
       if (!words) {
-        this.error = gettext('Please enter the backup words');
+        this.error = gettext('Please enter the seed words');
       } else {
         var wordList = words.split(/ /).filter(function(v) {
           return v.length > 0;
         });
-        if (wordList.length != 12)
-          this.error = gettext('Please enter 12 backup words');
+        if ((wordList.length % 3) != 0)
+          this.error = gettext('Wrong number of seed words:') + wordList.length;
         else
           words = wordList.join(' ');
       }

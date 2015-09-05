@@ -143,7 +143,7 @@ angular.module('copayApp.services')
     }
 
     root._getPath = function(index) {
-      return bwcService.getUtils().PATHS.BASE_ADDRESS_DERIVATION + "/" + index;
+      return "m/" + index + "'/45'";
     }
 
     root._splitTransaction = function(transaction) {
