@@ -6,7 +6,7 @@ angular.module('copayApp.controllers').controller('createController',
     var self = this;
     var defaults = configService.getDefaults();
     this.isWindowsPhoneApp = isMobile.Windows() && isCordova;
-   
+
     /* For compressed keys, m*73 + n*34 <= 496 */
     var COPAYER_PAIR_LIMITS = {
       1: 1,
@@ -35,7 +35,7 @@ angular.module('copayApp.controllers').controller('createController',
       $scope.requiredCopayers = Math.min(parseInt(n / 2 + 1), maxReq);
     };
 
-    this.externalIndexValues = lodash.range(0,ledger.MAX_SLOT);
+    this.externalIndexValues = lodash.range(0, ledger.MAX_SLOT);
     $scope.externalIndex = 0;
     this.TCValues = lodash.range(2, defaults.limits.totalCopayers + 1);
     $scope.totalCopayers = defaults.wallet.totalCopayers;
@@ -61,18 +61,23 @@ angular.module('copayApp.controllers').controller('createController',
         networkName: form.isTestnet.$modelValue ? 'testnet' : 'livenet',
       };
       var setSeed = form.setSeed.$modelValue;
-      if  (setSeed) {
-        opts.mnemonic = form.privateKey.$modelValue;
+      if (setSeed) {
+        var words = form.privateKey.$modelValue;
+        if (words.indexOf(' ') == -1 && words.indexOf('prv') == 1 && words.length > 108) {
+          opts.extendedPrivateKey = words;
+        } else {
+          opts.mnemonic = words;
+        }
         opts.passphrase = form.passphrase.$modelValue;
       } else {
         opts.passphrase = form.createPassphrase.$modelValue;
       }
 
-      if (setSeed && !opts.mnemonic) {
+      if (setSeed && !opts.mnemonic && !opts.extendedPrivateKey) {
         this.error = gettext('Please enter the wallet seed');
         return;
       }
- 
+
       if (form.hwLedger.$modelValue) {
         self.ledger = true;
         ledger.getInfoForNewWallet($scope.externalIndex, function(err, lopts) {
@@ -90,7 +95,7 @@ angular.module('copayApp.controllers').controller('createController',
       }
     };
 
-    this._create = function (opts) {
+    this._create = function(opts) {
       self.loading = true;
       $timeout(function() {
         profileService.createWallet(opts, function(err, secret, walletId) {
@@ -104,9 +109,8 @@ angular.module('copayApp.controllers').controller('createController',
             $timeout(function() {
               $rootScope.$apply();
             });
-          }
-          else {
-            if ( ( opts.mnemonic && opts.n==1) || opts.externalSource  ) {
+          } else {
+            if (opts.n == 1 && (opts.mnemonic || opts.externalSource || opts.extendedPrivateKey)) {
               $rootScope.$emit('Local/WalletImported', walletId);
             } else {
               go.walletHome();
@@ -115,18 +119,16 @@ angular.module('copayApp.controllers').controller('createController',
         });
       }, 100);
     }
-    
+
     this.formFocus = function(what) {
       if (!this.isWindowsPhoneApp) return
 
       if (what && what == 'my-name') {
         this.hideWalletName = true;
         this.hideTabs = true;
-      }
-      else if (what && what == 'wallet-name'){
+      } else if (what && what == 'wallet-name') {
         this.hideTabs = true;
-      }
-      else {
+      } else {
         this.hideWalletName = false;
         this.hideTabs = false;
       }

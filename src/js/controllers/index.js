@@ -660,7 +660,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       skip = skip || 0;
       fc.getTxHistory({
         skip: skip,
-        limit: step, 
+        limit: step,
       }, function(err, txs) {
         if (err) return cb(err);
         if (txs && txs.length > 0) {
@@ -737,7 +737,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     });
   };
 
-  self.showErrorPopup = function (msg, cb) {
+  self.showErrorPopup = function(msg, cb) {
     $log.warn('Showing err popup:' + msg);
     self.showAlert = {
       msg: msg,
@@ -1015,7 +1015,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.needsBackup = false;
     storageService.setBackupFlag(walletId, function() {
       addressService.expireAddress(walletId, function(err) {
-        self.startScan(walletId);
+        $timeout(function() {
+          self.startScan(walletId);
+        }, 500);
       });
     });
   });
@@ -1108,7 +1110,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   });
 
   $rootScope.$on('Local/ShowAlert', function(event, msg, cb) {
-    self.showErrorPopup(msg,cb);
+    self.showErrorPopup(msg, cb);
   });
 
   $rootScope.$on('Local/NeedsPassword', function(event, isSetup, cb) {

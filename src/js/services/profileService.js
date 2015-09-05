@@ -177,6 +177,13 @@ angular.module('copayApp.services')
           $log.info(ex);
           return cb(gettext('Could not create: Invalid wallet seed'));
         }
+      } else if (opts.extendedPrivateKey) {
+        try {
+          walletClient.seedFromExtendedPrivateKey(opts.extendedPrivateKey);
+        } catch (ex) {
+          $log.warn(ex);
+          return cb(gettext('Could not create using the specified extended private key'));
+        }
       } else if (opts.extendedPublicKey) {
         try {
           walletClient.seedFromExtendedPublicKey(opts.extendedPublicKey, opts.externalSource, opts.externalIndex, opts.entropySource);
@@ -344,7 +351,21 @@ angular.module('copayApp.services')
       root._addWalletClient(walletClient, cb);
     };
 
-    root.importWalletMnemonic = function(words, opts, cb) {
+    root.importExtendedPrivateKey = function(xPrivKey, cb) {
+      var walletClient = bwcService.getClient();
+      $log.debug('Importing Wallet xPrivKey');
+
+      walletClient.importFromExtendedPrivateKey(xPrivKey, function(err) {
+        if (err)
+          return bwsError.cb(err, gettext('Could not import'), cb);
+
+        root._addWalletClient(walletClient, cb);
+      });
+    };
+
+
+
+    root.importMnemonic = function(words, opts, cb) {
       var walletClient = bwcService.getClient();
       $log.debug('Importing Wallet Mnemonic');
 

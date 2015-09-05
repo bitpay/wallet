@@ -63,11 +63,32 @@ angular.module('copayApp.controllers').controller('importController',
     };
 
 
+    var _importExtendedPrivateKey = function(xPrivKey) {
+      self.loading = true;
+
+      $timeout(function() {
+        profileService.importExtendedPrivateKey(xPrivKey, function(err, walletId) {
+          self.loading = false;
+          if (err) {
+            self.error = err;
+            return $timeout(function() {
+              $scope.$apply();
+            });
+          }
+          $rootScope.$emit('Local/WalletImported', walletId);
+          notification.success(gettext('Success'), gettext('Your wallet has been imported correctly'));
+          go.walletHome();
+        });
+      }, 100);
+    };
+
+
+
     var _importMnemonic = function(words, opts) {
       self.loading = true;
 
       $timeout(function() {
-        profileService.importWalletMnemonic(words, opts, function(err, walletId) {
+        profileService.importMnemonic(words, opts, function(err, walletId) {
           self.loading = false;
           if (err) {
             self.error = err;
@@ -140,7 +161,11 @@ angular.module('copayApp.controllers').controller('importController',
 
       if (!words) {
         this.error = gettext('Please enter the seed words');
+      } else if (words.indexOf(' ') == -1 && words.indexOf('prv') == 1 && words.length > 108) {
+        return _importExtendedPrivateKey(words)
       } else {
+
+        console.log('[import.js.167]', words.indexOf(' '), words.indexOf('prv')); //TODO
         var wordList = words.split(/ /).filter(function(v) {
           return v.length > 0;
         });
