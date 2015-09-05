@@ -22,44 +22,72 @@
   </div>
 
   <div class="text-center m10b">
-    <img src="img/glidera-logo.png" ng-click="glidera.update(index.glideraToken)">
+    <img src="img/glidera-logo.png">
   </div>
   <div ng-if="!index.glideraToken" class="row">
     <div class="columns" ng-init="showOauthForm = false">
       <div class="text-center" ng-show="!showOauthForm">
-        <p translate>You can buy and sell Bitcoin with a US bank account directly in Copay</p>
-        <p class="text-gray size-12">Connect your Glidera account to get started</p>
+        <p translate>You can buy and sell Bitcoin with a US bank account directly in Copay.</p>
+        <div class="m10b text-gray size-12" translate>Connect your Glidera account to get started</div>
         <button 
           class="dark-gray outline round tiny" 
           ng-click="$root.openExternalLink(glidera.authenticateUrl); showOauthForm = true" translate>
           Connect to Glidera
         </button>
-        <a href ng-click="showOauthForm = true" class="db text-gray size-12">
-          Do you already have the Oauth Code?
-        </a>
+        <div>
+          <a href ng-click="showOauthForm = true" class="text-gray size-12">
+            Do you already have the Oauth Code?
+          </a>
+        </div>
       </div>
       <div class="text-center" ng-show="showOauthForm">
         <p class="text-gray size-12">Paste the authorization code here</p>
-        <form name="oauthCode" ng-submit="glidera.submitOauthCode(code)" novalidate>
-          <label>OAuth Code<label>
-            <input type="text" ng-model="code" ng-disabled="glidera.loading">
+        <form name="oauthCodeForm" ng-submit="glidera.submitOauthCode(code)" novalidate>
+          <label>OAuth Code</label>
+          <input type="text" ng-model="code" ng-disabled="glidera.loading" required>
           <input 
-            class="button dark-gray outline round" 
-            type="submit" value="Get started" ng-disabled="glidera.loading">
+            class="button expand round" 
+            ng-style="{'background-color':index.backgroundColor}"
+            type="submit" value="Get started" ng-disabled="oauthCodeForm.$invalid || glidera.loading">
         </form>
+        <div>
+          <a href class="size-12 text-gray" ng-click="showOauthForm = false" translate>Go back</a>
+        </div>
       </div>
     </div>
   </div>
-  <div ng-if="index.glideraToken" ng-init="glidera.init(index.glideraToken)">
+  
+  <div class="m20t text-center" ng-if="index.glideraToken && index.glideraError">
+    <div class="text-warning">
+      <span ng-show="index.glideraError == 'Unauthorized'" translate>Could not connect with Glidera: Unauthorized</span>
+      <span ng-show="index.glideraError == 'Forbidden'" translate>Could not connect with Glidera: Forbidden</span>
+      <span ng-show="index.glideraError != ('Forbidden' && 'Unauthorized')" translate>Could not connect with Glidera</span>
+    </div>
+    <div class="m10t">
+      <button class="round tiny" ng-click="index.glideraToken = null; index.glideraError = null">
+        Request a new token
+      </button>
+    </div>
+  </div>
+
+  <div ng-if="index.glideraToken && index.glideraPermissions" 
+    ng-init="glidera.update(index.glideraToken, index.glideraPermissions)">
+
+    <div class="text-center m10b">
+      <div class="size-12" ng-show="index.glideraEmail">{{index.glideraEmail}}</div>
+
+      <div ng-show="index.glideraPersonalInfo" class="size-12">
+        {{index.glideraPersonalInfo.firstName}} {{index.glideraPersonalInfo.lastName}} {{index.glideraPersonalInfo.personalInfoState}}
+      </div>
+    </div>
 
     <div class="text-center m20b">
-      {{index.glideraEmail}} <br>
       <a href class="text-gray" ng-click="$root.go('preferencesGlidera')">
         Preferences
       </a>
     </div>
 
-    <ul class="no-bullet m0 size-14">
+    <ul class="no-bullet m0 size-14" ng-show="index.glideraPermissions.transact">
       <li class="line-b line-t p20 pointer" ng-click="$root.go('buyGlidera')">
       <span translate>Buy</span>
       <span class="right text-gray">
@@ -74,33 +102,39 @@
       </li>
     </ul>
 
-    <h4 class="title m0" translate>Activity</h4> 
-    <div ng-repeat="tx in index.glideraTxs"
-      ng-click="glidera.openTxModal(index.glideraToken, tx)"
-      class="row collapse last-transactions-content">
-      <div class="large-3 medium-3 small-3 columns">
-        <span class="label tu radius" ng-show="tx.type == 'BUY'"
-          ng-style="{'background-color':index.backgroundColor}" translate>Bought</span>
-        <span class="label tu gray radius" ng-show="tx.type == 'SELL'" translate>Sold</span>
+    <div ng-show="index.glideraPermissions.transaction_history">
+      <h4 class="title m0" translate>Activity</h4> 
+      <div ng-show="!index.glideraTxs" 
+        class="size-12 p10 text-center text-gray" translate>
+        No activity in your account
       </div>
-
-      <div class="large-4 medium-4 small-4 columns">
-        <span class="size-16">
-          {{tx.subtotal}} {{tx.currency}}
-        </span>
-      </div>
-      <div class="large-4 medium-4 small-4 columns text-right">
-        <div class="m5t size-12 text-gray">
-          <time ng-if="tx.transactionDate">{{tx.transactionDate | amTimeAgo}}</time>
+      <div ng-repeat="tx in index.glideraTxs"
+        ng-click="glidera.openTxModal(index.glideraToken, tx)"
+        class="row collapse last-transactions-content">
+        <div class="large-3 medium-3 small-3 columns">
+          <span class="label tu radius" ng-show="tx.type == 'BUY'"
+            ng-style="{'background-color':index.backgroundColor}" translate>Bought</span>
+          <span class="label tu gray radius" ng-show="tx.type == 'SELL'" translate>Sold</span>
         </div>
-      </div>
-      <div class="large-1 medium-1 small-1 columns text-right">
-        <i class="icon-arrow-right3 size-18"></i>
-      </div>
-      <div class="size-12 text-gray columns m5t">
-        <span class="text-success" ng-if="tx.status == 'COMPLETE'">Completed</span>
-        <span class="text-info" ng-if="tx.status == 'PROCESSING'">Processing</span>
-        <span class="text-warning" ng-if="tx.status == 'ERROR'">Error</span>
+
+        <div class="large-4 medium-4 small-4 columns">
+          <span class="size-16">
+            {{tx.subtotal}} {{tx.currency}}
+          </span>
+        </div>
+        <div class="large-4 medium-4 small-4 columns text-right">
+          <div class="m5t size-12 text-gray">
+            <time ng-if="tx.transactionDate">{{tx.transactionDate | amTimeAgo}}</time>
+          </div>
+        </div>
+        <div class="large-1 medium-1 small-1 columns text-right">
+          <i class="icon-arrow-right3 size-18"></i>
+        </div>
+        <div class="size-12 text-gray columns m5t">
+          <span class="text-success" ng-if="tx.status == 'COMPLETE'">Completed</span>
+          <span class="text-info" ng-if="tx.status == 'PROCESSING'">Processing</span>
+          <span class="text-warning" ng-if="tx.status == 'ERROR'">Error</span>
+        </div>
       </div>
     </div>
 

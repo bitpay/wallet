@@ -1,20 +1,10 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('glideraController', 
-  function($scope, $timeout, $modal, profileService, configService, storageService, glideraService) {
+  function($scope, $timeout, $modal, applicationService, profileService, configService, storageService, glideraService) {
       
     var config = configService.getSync().wallet.settings;
     this.authenticateUrl = glideraService.getOauthCodeUrl();
-
-    this.update = function(token) {
-      var self = this;
-      glideraService.getTransactions(token, function(error, txs) {
-        self.txs = txs;
-      });
-      glideraService.getEmail(token, function(error, data) {
-        self.email = data.email;
-      });
-    };
 
     this.submitOauthCode = function(code) {
       var fc = profileService.focusedClient;
@@ -24,9 +14,9 @@ angular.module('copayApp.controllers').controller('glideraController',
         glideraService.getToken(code, function(error, data) {
           if (data && data.access_token) {
             storageService.setGlideraToken(fc.credentials.network, data.access_token, function() {
-              $scope.$emit('Local/GlideraTokenUpdated');
+              $scope.$emit('Local/GlideraTokenUpdated', data.access_token);
               $timeout(function() {
-                self.loading = false;
+                self.loading = null;
                 $scope.$apply();
               }, 100);
             });

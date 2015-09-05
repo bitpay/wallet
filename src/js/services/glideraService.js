@@ -53,7 +53,7 @@ angular.module('copayApp.services').factory('glideraService', function($http, $l
     };
   };
 
-  root.getPermissions = function(token, cb) {
+  root.getAccessTokenPermissions = function(token, cb) {
     if (!token) return cb('Invalid Token');
     $http(_get('/oauth/token', token)).then(function(data) {
       $log.info('Glidera Access Token Permissions: SUCCESS');
