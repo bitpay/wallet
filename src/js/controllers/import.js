@@ -164,12 +164,12 @@ angular.module('copayApp.controllers').controller('importController',
       } else if (words.indexOf(' ') == -1 && words.indexOf('prv') == 1 && words.length > 108) {
         return _importExtendedPrivateKey(words)
       } else {
-
-        console.log('[import.js.167]', words.indexOf(' '), words.indexOf('prv')); //TODO
         var wordList = words.split(/ /).filter(function(v) {
           return v.length > 0;
         });
-        if ((wordList.length % 3) != 0)
+
+        // m/ allows to enter a custom derivation 
+        if ((wordList.length % 3) != 0 && wordList[0].indexOf('m/') != 0)
           this.error = gettext('Wrong number of seed words:') + wordList.length;
         else
           words = wordList.join(' ');

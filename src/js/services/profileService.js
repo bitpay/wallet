@@ -1,6 +1,6 @@
 'use strict';
 angular.module('copayApp.services')
-  .factory('profileService', function profileServiceFactory($rootScope, $location, $timeout, $filter, $log, lodash, storageService, bwcService, configService, notificationService, isChromeApp, isCordova, gettext, nodeWebkit, bwsError, uxLanguage, ledger) {
+  .factory('profileService', function profileServiceFactory($rootScope, $location, $timeout, $filter, $log, lodash, storageService, bwcService, configService, notificationService, isChromeApp, isCordova, gettext, nodeWebkit, bwsError, uxLanguage, ledger, bitcore) {
 
     var root = {};
 
@@ -170,6 +170,13 @@ angular.module('copayApp.services')
       var walletClient = bwcService.getClient();
       var network = opts.networkName || 'livenet';
 
+      if (opts.mnemonic && opts.mnemonic.indexOf('m/' != 0)) {
+        var xPrivKey = root._processDerivation(opts.mnemonic, network);
+        if (!xPrivKey) 
+          return bwsError.cb('Bad derivation', gettext('Could not import'), cb);
+        opts.mnemonic = null;
+        opts.extendedPrivateKey = xPrivKey;
+      }
       if (opts.mnemonic) {
         try {
           walletClient.seedFromMnemonic(opts.mnemonic, opts.passphrase, network);
@@ -364,9 +371,28 @@ angular.module('copayApp.services')
     };
 
 
+    root._processDerivation = function(words, network) {
+      var wordList = words.split(/ /).filter(function(v) {
+        return v.length > 0;
+      });
+      var path = wordList.shift();
+      var walletClient = bwcService.getClient();
+      $log.debug('processDerivation', path);
+      walletClient.seedFromMnemonic(wordList.join(' '), null, network);
+      var k = new bitcore.HDPrivateKey(walletClient.credentials.xPrivKey);
+      return k.toString();
+    };
 
     root.importMnemonic = function(words, opts, cb) {
       var walletClient = bwcService.getClient();
+
+      if (words.indexOf('m/') == 0) {
+        var xPrivKey = root._processDerivation(words, opts.networkName);
+        if (!xPrivKey) 
+          return bwsError.cb('Bad derivation', gettext('Could not import'), cb);
+        return root.importExtendedPrivateKey(xPrivKey, cb);
+      }
+
       $log.debug('Importing Wallet Mnemonic');
 
       walletClient.importFromMnemonic(words, {
