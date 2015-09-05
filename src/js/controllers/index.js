@@ -3,6 +3,7 @@
 angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, lodash, go, profileService, configService, isCordova, rateService, storageService, addressService, gettext, amMoment, nodeWebkit, addonManager, feeService, isChromeApp, bwsError, txFormatService, uxLanguage, $state, glideraService) {
   var self = this;
   self.isCordova = isCordova;
+  self.isChromeApp = isChromeApp;
   self.onGoingProcess = {};
   self.limitHistory = 5;
 
@@ -653,16 +654,18 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       return str;
     }
 
+    var step = 6;
+
     function getHistory(skip, cb) {
       skip = skip || 0;
       fc.getTxHistory({
         skip: skip,
-        limit: 100
+        limit: step, 
       }, function(err, txs) {
         if (err) return cb(err);
         if (txs && txs.length > 0) {
           allTxs.push(txs);
-          return getHistory(skip + 100, cb);
+          return getHistory(skip + step, cb);
         } else {
           return cb(null, lodash.flatten(allTxs));
         }

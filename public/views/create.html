@@ -102,27 +102,27 @@
         </div>
         <div ng-hide="hideAdv" class="row">
           <div class="large-12 columns">
-            <label ng-show="create.isChromeApp()" for="hw-ledger" class="line-b oh">
+            <label ng-show="create.isChromeApp()" for="hw-ledger" class="oh">
               <span translate>Use Ledger hardware wallet</span>
               <switch id="hw-ledger" name="hwLedger" ng-model="hwLedger" ng-change="isTestnet=false" class="green right m5t m10b"></switch>
             </label>
-            <div ng-hide="!hwLedger">
-              <label class="line-b oh"><span translate>Select slot number for Ledger key</span>
+            <div ng-show="hwLedger">
+              <label class="oh line-b "><span translate>Select slot number for Ledger key</span>
                 <select class="m10t" ng-model="externalIndex" ng-options="externalIndex as externalIndex for externalIndex in create.externalIndexValues">
                 </select>
               </label>
             </div>         
-            <label for="network-name" class="oh">
+            <label for="network-name" class="oh" ng-show="!hwLedger">
               <span translate>Testnet</span>
               <switch id="network-name" name="isTestnet" ng-model="isTestnet" class="green right m5t m10b"></switch>
             </label>
 
-            <label  ng-hide="hwLedger" for="seed" class="oh">
+            <label  ng-show="!hwLedger" for="seed" class="oh">
               <span translate>Specify your wallet seed</span>
               <switch id="seed" name="setSeed" ng-model="setSeed" class="green right m5t m10b"></switch>
             </label>
 
-            <label for="createPassphrase" class="line-b oh" ng-show="!setSeed" ><span translate>Seed Passphrase</span>  <small translate>Add an optional passphrase to secure the seed</small>
+            <label for="createPassphrase" class="line-b oh" ng-show="!setSeed && !hwLedger" ><span translate>Seed Passphrase</span>  <small translate>Add an optional passphrase to secure the seed</small>
               <div class="input">
                 <input type="text" class="form-control" 
                 name="createPassphrase" ng-model="createPassphrase">
@@ -136,11 +136,11 @@
               type="text"
               name="privateKey" ng-model="privateKey">
             </label>
-              <label for="passphrase" class="line-b oh" ng-show="setSeed && !hwLedger"><span translate>Seed Passphrase</span>  <small translate>The seed could require a passphrase to be imported</small>
-                <div class="input">
-                  <input type="text" class="form-control" name="passphrase" ng-model="passphrase">
-                </div>
-                </label>
+            <label for="passphrase" class="line-b oh" ng-show="setSeed && !hwLedger"><span translate>Seed Passphrase</span>  <small translate>The seed could require a passphrase to be imported</small>
+              <div class="input">
+                <input type="text" class="form-control" name="passphrase" ng-model="passphrase">
+              </div>
+            </label>
           </div>
         </div>
 

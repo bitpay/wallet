@@ -106,7 +106,7 @@ angular.module('copayApp.controllers').controller('createController',
             });
           }
           else {
-            if ( ( opts.mnemonic && opts.n==1) || otps.externalSource  ) {
+            if ( ( opts.mnemonic && opts.n==1) || opts.externalSource  ) {
               $rootScope.$emit('Local/WalletImported', walletId);
             } else {
               go.walletHome();

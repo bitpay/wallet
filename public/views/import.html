@@ -5,7 +5,7 @@
 </div>
 
 <div class="content p20v" ng-controller="importController as import" ng-init="type='12'">
-  <div class="onGoingProcess" ng-show="import.loading">
+  <div class="onGoingProcess" ng-show="import.loading  && !import.ledger">
     <div class="onGoingProcess-content" ng-style="{'background-color':'#222'}">
     <div class="spinner">
       <div class="rect1"></div>
@@ -17,9 +17,23 @@
     <span translate>Importing wallet...</span>
     </div>
   </div>
+  <div class="onGoingProcess" ng-show="import.ledger">
+    <div class="onGoingProcess-content" ng-style="{'background-color':'#222'}">
+    <div class="spinner">
+      <div class="rect1"></div>
+      <div class="rect2"></div>
+      <div class="rect3"></div>
+      <div class="rect4"></div>
+      <div class="rect5"></div>
+    </div>
+    <span translate>Connecting to Ledger Wallet...</span>
+    </div>
+  </div>
+
+
 
   <div class="create-tab small-only-text-center" ng-hide="create.hideTabs">
-    <div class="row">
+    <div class="row" ng-show="!index.isChromeApp">
       <div class="tab-container small-6 medium-6 large-6">
       <a href
         ng-class="{'selected': type =='12'}"
@@ -30,13 +44,26 @@
         ng-class="{'selected': type=='file'}"
         ng-click="import.setType('file')" translate>File/Text Backup</a>
       </div>
-      <!-- <div class="tab&#45;container small&#45;4 medium&#45;4 large&#45;4"> -->
-      <!-- <a href -->
-      <!--   ng&#45;class="{'selected': type=='qr'}" -->
-      <!--   ng&#45;click="import.setType('qr')" translate>QR Code</a> -->
-      <!-- </div> -->
+    </div>
+    <div class="row" ng-show="index.isChromeApp">
+      <div class="tab-container small-4 medium-4 large-4">
+      <a href
+        ng-class="{'selected': type =='12'}"
+        ng-click="import.setType('12')" translate>Walled Seed</a>
+      </div>
+      <div class="tab-container small-4 medium-4 large-4">
+      <a href
+        ng-class="{'selected': type=='file'}"
+        ng-click="import.setType('file')" translate>File/Text Backup</a>
+      </div>
+      <div class="tab-container small-4 medium-4 large-4">
+      <a href
+        ng-class="{'selected': type=='ledger'}"
+        ng-click="import.setType('ledger')" translate>Ledger</a>
+      </div>
  
     </div>
+ 
  
   </div>
 
@@ -139,9 +166,29 @@
       </div>
     </div>
 
-    <div class="row" ng-show="type == 'qr'">
+    <div class="row" ng-show="type == 'ledger'">
       <div class="large-12 columns">
-TODO
+          <form name="importForm3" ng-submit="import.importLedger(importForm3)" novalidate>
+            <div class="box-notification" ng-show="import.error">
+              <span class="text-warning size-14">
+                {{import.error|translate}}
+              </span>
+            </div>
+
+          <div class="large-12 columns">
+            <label class="line-b oh">
+              <span translate>Select slot number for Ledger key</span>
+              <select class="m10t" ng-model="externalIndex" ng-options="externalIndex as externalIndex for externalIndex in import.externalIndexValues">
+              </select>
+            </label>
+            <button translate type="submit" class="button round expand black"
+              ng-disabled="import.loading || import.ledger">
+              Import backup
+            </button>
+          </div>         
+
+          </form>
+ 
       </div>
     </div>
  

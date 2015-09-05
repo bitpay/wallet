@@ -179,8 +179,9 @@ angular.module('copayApp.services')
         }
       } else if (opts.extendedPublicKey) {
         try {
-          walletClient.seedFromExternalWalletPublicKey(opts.extendedPublicKey, opts.externalSource, opts.externalIndex, opts.entropySource);
+          walletClient.seedFromExtendedPublicKey(opts.extendedPublicKey, opts.externalSource, opts.externalIndex, opts.entropySource);
         } catch (ex) {
+          $log.warn(ex);
           return cb(gettext('Could not create using the specified extended public key'));
         }
       } else {
@@ -191,7 +192,7 @@ angular.module('copayApp.services')
           $log.info('Error creating seed: ' + e.message);
           if (e.message.indexOf('language') > 0) {
             $log.info('Using default language for mnemonic');
-            walletClient.seedFromRandomWithMnemonic(network,  opts.passphrase);
+            walletClient.seedFromRandomWithMnemonic(network, opts.passphrase);
           } else {
             return cb(e);
           }
@@ -357,6 +358,26 @@ angular.module('copayApp.services')
         root._addWalletClient(walletClient, cb);
       });
     };
+
+    root.importExtendedPublicKey = function(opts, cb) {
+      var walletClient = bwcService.getClient();
+      $log.debug('Importing Wallet XPubKey');
+
+      walletClient.importFromExtendedPublicKey(opts.extendedPublicKey, opts.externalSource, opts.externalIndex, opts.entropySource, function(err) {
+        if (err) {
+
+          // in HW wallets, req key is always the same. They can't addAccess.
+          if (err.code == 'NOT_AUTHORIZED')
+            err.code = 'WALLET_DOES_NOT_EXIST';
+
+          return bwsError.cb(err, gettext('Could not import'), cb);
+        }
+
+        root._addWalletClient(walletClient, cb);
+      });
+    };
+
+
 
     root.create = function(opts, cb) {
       $log.info('Creating profile');
