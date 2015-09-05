@@ -1,12 +1,14 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('importController',
-  function($scope, $rootScope, $location, $timeout, $log, profileService, notification, go, isMobile, isCordova, sjcl, gettext, lodash) {
+  function($scope, $rootScope, $location, $timeout, $log, profileService, notification, go, isMobile, isCordova, sjcl, gettext, lodash, ledger) {
 
     var self = this;
 
     this.isSafari = isMobile.Safari();
     this.isCordova = isCordova;
+    this.externalIndexValues = lodash.range(0, ledger.MAX_SLOT);
+    $scope.externalIndex = 0;
     var reader = new FileReader();
 
     window.ignoreMobilePause = true;
@@ -80,13 +82,6 @@ angular.module('copayApp.controllers').controller('importController',
       }, 100);
     };
 
-    // {
-    //         network: opts.network,
-    //         m: opts.m,
-    //         n: opts.n,
-    //         publicKeyRing: opts.publicKeyRing,
-    //       },
-    //
     $scope.getFile = function() {
       // If we use onloadend, we need to check the readyState.
       reader.onloadend = function(evt) {
@@ -146,10 +141,12 @@ angular.module('copayApp.controllers').controller('importController',
       if (!words) {
         this.error = gettext('Please enter the backup words');
       } else {
-        var wordList = words.split(/ /).filter(function(v){ return v.length>0; });
+        var wordList = words.split(/ /).filter(function(v) {
+          return v.length > 0;
+        });
         if (wordList.length != 12)
           this.error = gettext('Please enter 12 backup words');
-        else 
+        else
           words = wordList.join(' ');
       }
 
@@ -166,4 +163,41 @@ angular.module('copayApp.controllers').controller('importController',
 
       _importMnemonic(words, opts);
     };
+
+    this.importLedger = function(form) {
+      var self = this;
+      if (form.$invalid) {
+        this.error = gettext('There is an error in the form');
+        $timeout(function() {
+          $scope.$apply();
+        });
+        return;
+      }
+      self.ledger = true;
+      ledger.getInfoForNewWallet($scope.externalIndex, function(err, lopts) {
+        self.ledger = false;
+        if (err) {
+          self.error = err;
+          $scope.$apply();
+          return;
+        }
+        lopts.externalIndex = $scope.externalIndex;
+        lopts.externalSource = 'ledger';
+        self.loading = true;
+        $log.debug('Import opts', lopts);
+        profileService.importExtendedPublicKey(lopts, function(err, walletId) {
+          self.loading = false;
+          if (err) {
+            self.error = err;
+            return $timeout(function() {
+              $scope.$apply();
+            });
+          }
+          $rootScope.$emit('Local/WalletImported', walletId);
+          notification.success(gettext('Success'), gettext('Your wallet has been imported correctly'));
+          go.walletHome();
+        });
+      }, 100);
+    };
+
   });

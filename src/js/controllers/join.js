@@ -4,7 +4,7 @@ angular.module('copayApp.controllers').controller('joinController',
   function($scope, $rootScope, $timeout, go, isMobile, notification, profileService, isCordova, isChromeApp, $modal, gettext, lodash, ledger) {
 
     var self = this;
-    this.externalIndexValues = lodash.range(0,20);
+    this.externalIndexValues = lodash.range(0,ledger.MAX_SLOT);
     $scope.externalIndex = 0;
 
     this.isChromeApp = function() {

@@ -25,7 +25,7 @@ angular.module('copayApp.services')
             body = gettextCatalog.getString('Copayer already in this wallet');
             break;
           case 'COPAYER_REGISTERED': 
-            body = gettextCatalog.getString('Copayer already registered');
+            body = gettextCatalog.getString('Wallet already registered');
             break;
           case 'COPAYER_VOTED': 
             body = gettextCatalog.getString('Copayer already voted on this spend proposal');
