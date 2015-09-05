@@ -176,11 +176,12 @@
             </div>
 
           <div class="large-12 columns">
-            <label class="line-b oh">
-              <span translate>Select slot number for Ledger key</span>
+            <label class=" oh">
+              <span translate>Ledger Slot</span>
               <select class="m10t" ng-model="externalIndex" ng-options="externalIndex as externalIndex for externalIndex in import.externalIndexValues">
               </select>
             </label>
+            <div class="oh text-gray line-b  size-12 p10b m20b"><span translate>Ledger supports up to 20 Copay wallets simultaneously. Select which slot to import</div>
             <button translate type="submit" class="button round expand black"
               ng-disabled="import.loading || import.ledger">
               Import backup
