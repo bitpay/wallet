@@ -171,7 +171,7 @@ angular.module('copayApp.services')
       var network = opts.networkName || 'livenet';
 
       if (opts.mnemonic && opts.mnemonic.indexOf('m/' != 0)) {
-        var xPrivKey = root._processDerivation(opts.mnemonic, network);
+        var xPrivKey = root._preDerivation(opts.mnemonic, network);
         if (!xPrivKey) 
           return bwsError.cb('Bad derivation', gettext('Could not import'), cb);
         opts.mnemonic = null;
@@ -371,23 +371,24 @@ angular.module('copayApp.services')
     };
 
 
-    root._processDerivation = function(words, network) {
+    root._preDerivation = function(words, network) {
       var wordList = words.split(/ /).filter(function(v) {
         return v.length > 0;
       });
       var path = wordList.shift();
       var walletClient = bwcService.getClient();
-      $log.debug('processDerivation', path);
+      $log.info('preDerivation:', path);
       walletClient.seedFromMnemonic(wordList.join(' '), null, network);
       var k = new bitcore.HDPrivateKey(walletClient.credentials.xPrivKey);
-      return k.toString();
+      var k2 = k.derive(path);
+      return k2.toString();
     };
 
     root.importMnemonic = function(words, opts, cb) {
       var walletClient = bwcService.getClient();
 
       if (words.indexOf('m/') == 0) {
-        var xPrivKey = root._processDerivation(words, opts.networkName);
+        var xPrivKey = root._preDerivation(words, opts.networkName);
         if (!xPrivKey) 
           return bwsError.cb('Bad derivation', gettext('Could not import'), cb);
         return root.importExtendedPrivateKey(xPrivKey, cb);

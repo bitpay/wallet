@@ -7,7 +7,7 @@ angular.module('copayApp.services')
     root.MAX_SLOT = 20;
 
     // Ledger magic number to get xPub without user confirmation
-    root.ENTROPY_INDEX_PATH = "m/0xb11e/";
+    root.ENTROPY_INDEX_PATH = "0xb11e/";
 
     root.callbacks = {};
 
@@ -26,6 +26,7 @@ angular.module('copayApp.services')
         }
 
         var b = bwcService.getBitcore();
+
         var x = b.HDPublicKey(data.xpubkey);
         data.entropySource = x.publicKey.toString();
         return callback(data);
@@ -37,6 +38,8 @@ angular.module('copayApp.services')
     };
 
     root.getXPubKey = function(path, callback) {
+
+      $log.debug('Ledger deriving xPub path:', path);
       root.callbacks["get_xpubkey"] = callback;
       root._messageAfterSession({
         command: "get_xpubkey",
@@ -85,6 +88,7 @@ angular.module('copayApp.services')
           root._reverseBytestring(input.prevout.bytes(32)).toString()
         ]);
       }
+      $log.debug('Ledger signing  paths:', paths);
       root._messageAfterSession({
         command: "sign_p2sh",
         inputs: inputs,
@@ -143,7 +147,7 @@ angular.module('copayApp.services')
     }
 
     root._getPath = function(index) {
-      return "m/" + index + "'/45'";
+      return index + "'/45'";
     }
 
     root._splitTransaction = function(transaction) {
