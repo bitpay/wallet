@@ -92,11 +92,12 @@
               </label>
             </div>
             <div class="large-12 columns" ng-hide="!hwLedger">
-              <label class="line-b oh">
-                <span translate>Select slot number for Ledger key</span>
+              <label class="oh">
+                <span translate>Ledger Slot</span>
                 <select class="m10t" ng-model="externalIndex" ng-options="externalIndex as externalIndex for externalIndex in join.externalIndexValues">
                 </select>
               </label>
+              <div class="oh text-gray line-b  size-12  p10b m20b"><span translate>Ledger supports up to 20 Copay wallets simultaneously. Select which slot should be used to host this wallet</div>
             </div>         
             <div class="large-12 columns">
 
