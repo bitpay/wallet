@@ -852,11 +852,11 @@ console.log('[index.js:395]',txps); //TODO
       if (err || !accessToken) return;
       else {
         self.glideraLoading = gettext('Connecting to Glidera...');
+        glideraService.init(self.network);
         glideraService.getAccessTokenPermissions(accessToken, function(err, p) {
           self.glideraLoading = null;
           if (err) {
             self.glideraError = err;
-            $log.error(err);
           }
           else {
             self.glideraToken = accessToken;

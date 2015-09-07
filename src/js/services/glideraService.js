@@ -2,10 +2,26 @@
 
 angular.module('copayApp.services').factory('glideraService', function($http, $log) {
   var root = {};
-  var HOST = 'https://sandbox.glidera.io';
-  var REDIRECT_URI = 'urn:ietf:wg:oauth:2.0:oob';
-  var CLIENT_ID = '9915b6ffa6dc3baffb87135ed3873d49';
-  var CLIENT_SECRET = 'd74eda05b9c6a228fd5c85cfbd0eb7eb';
+
+  var HOST;
+  var REDIRECT_URI;
+  var CLIENT_ID;
+  var CLIENT_SECRET;
+
+  root.init = function(network) {
+    if (network == 'testnet') {
+      HOST = 'https://sandbox.glidera.io';
+      REDIRECT_URI = 'urn:ietf:wg:oauth:2.0:oob';
+      CLIENT_ID = '9915b6ffa6dc3baffb87135ed3873d49';
+      CLIENT_SECRET = 'd74eda05b9c6a228fd5c85cfbd0eb7eb'; 
+    }
+    else {
+      HOST = 'https://glidera.io';
+      REDIRECT_URI = 'urn:ietf:wg:oauth:2.0:oob';
+      CLIENT_ID = '';
+      CLIENT_SECRET = ''; 
+    }
+  };
 
   root.getOauthCodeUrl = function() {
     return HOST 
@@ -60,7 +76,7 @@ angular.module('copayApp.services').factory('glideraService', function($http, $l
       return cb(null, data.data);
     }, function(data) {
       $log.error('Glidera Access Token Permissions: ERROR ' + data.statusText);
-      return cb(data.statusText);
+      return cb('Glidera Access Token Permissions: ERROR');
     });
   };
 
