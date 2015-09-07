@@ -114,6 +114,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.setSpendUnconfirmed();
 
     self.glideraToken = null;
+    self.glideraError = null;
     self.glideraPermissions = null;
     self.glideraEmail = null;
     self.glideraPersonalInfo = null;
@@ -152,18 +153,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   self.setTab = function(tab, reset, tries) {
     tries = tries || 0;
 
-    // check if the whole menu item passed
-    if (typeof tab == 'object') {
-      if (tab.open) {
-        if (tab.link) {
-          self.tab = tab.link;
-        }
-        tab.open();
-        return;
-      } else {
-        return self.setTab(tab.link);
-      }
-    }
     if (self.tab === tab && !reset)
       return;
 
@@ -173,30 +162,27 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       }, 300);
     }
 
-    if (!self.tab || !$state.is('walletHome'))
+    if (!self.tab)
       self.tab = 'walletHome';
 
-    go.path('walletHome', function() {
-
-      if (document.getElementById(self.tab)) {
-        document.getElementById(self.tab).className = 'tab-out tab-view ' + self.tab;
-        var old = document.getElementById('menu-' + self.tab);
-        if (old) {
-          old.className = '';
-        }
+    if (document.getElementById(self.tab)) {
+      document.getElementById(self.tab).className = 'tab-out tab-view ' + self.tab;
+      var old = document.getElementById('menu-' + self.tab);
+      if (old) {
+        old.className = '';
       }
+    }
 
-      if (document.getElementById(tab)) {
-        document.getElementById(tab).className = 'tab-in  tab-view ' + tab;
-        var newe = document.getElementById('menu-' + tab);
-        if (newe) {
-          newe.className = 'active';
-        }
+    if (document.getElementById(tab)) {
+      document.getElementById(tab).className = 'tab-in  tab-view ' + tab;
+      var newe = document.getElementById('menu-' + tab);
+      if (newe) {
+        newe.className = 'active';
       }
+    }
 
-      self.tab = tab;
-      $rootScope.$emit('Local/TabChanged', tab);
-    });
+    self.tab = tab;
+    $rootScope.$emit('Local/TabChanged', tab);
   };
 
 
@@ -864,13 +850,15 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     getToken(function(err, accessToken) {
       if (err || !accessToken) return;
       else {
-        self.glideraToken = accessToken;
-        glideraService.getAccessTokenPermissions(self.glideraToken, function(err, p) {
+        self.glideraLoading = gettext('Connecting to Glidera...');
+        glideraService.getAccessTokenPermissions(accessToken, function(err, p) {
+          self.glideraLoading = null;
           if (err) {
             self.glideraError = err;
             $log.error(err);
           }
           else {
+            self.glideraToken = accessToken;
             self.glideraPermissions = p;
             self.updateGlidera(accessToken, p);
           }
@@ -883,17 +871,23 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     if (!accessToken || !permissions) return;
     
     if (permissions.view_email_address) {
+      self.glideraLoadingEmail = gettext('Getting Glidera Email...');
       glideraService.getEmail(accessToken, function(err, data) {
+        self.glideraLoadingEmail = null;
         self.glideraEmail = data.email;
       });
     }
     if (permissions.personal_info) {
+      self.glideraLoadingPersonalInfo = gettext('Getting Glidera Personal Information...');
       glideraService.getPersonalInfo(accessToken, function(err, data) {
+        self.glideraLoadingPersonalInfo = null;
         self.glideraPersonalInfo = data;
       });
     }
     if (permissions.transaction_history) {
+      self.glideraLoadingHistory = gettext('Getting Glidera transactions...');
       glideraService.getTransactions(accessToken, function(err, data) {
+        self.glideraLoadingHistory = null;
         self.glideraTxs = data;
       });
     }

@@ -321,7 +321,6 @@ angular
 
     .state('preferencesGlidera', {
         url: '/preferencesGlidera',
-        templateUrl: 'views/preferencesGlidera.html',
         walletShouldBeComplete: true,
         needProfile: true,
         views: {
