@@ -393,6 +393,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       self.setOngoingProcess('updatingPendingTxps', true);
       $log.debug('Updating PendingTxps');
       fc.getTxProposals({}, function(err, txps) {
+console.log('[index.js:395]',txps); //TODO
         self.setOngoingProcess('updatingPendingTxps', false);
         if (err) {
           self.handleError(err);
@@ -948,6 +949,10 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
   $rootScope.$on('Local/GlideraUpdated', function(event, accessToken, permissions) {
     self.updateGlidera(accessToken, permissions);
+  });
+
+  $rootScope.$on('Local/GlideraError', function(event) {
+    self.debouncedUpdate();
   });
 
   $rootScope.$on('Local/UnitSettingUpdated', function(event) {

@@ -168,26 +168,18 @@
       </div>
 
       <div ng-if="index.txps[0]">
-        <div ng-show="index.requiresMultipleSignatures">
-          <h4 class="title m0" translate>Payment Proposals</h4>
-          <div class="last-transactions pr" ng-repeat="tx in index.txps"
-            ng-include="index.txTemplateUrl">
-          </div>
-
-          <div class="text-gray text-center size-12 p10t"
-            ng-show="index.lockedBalanceSat && !index.updatingStatus">
-            <span translate>Total Locked Balance</span>:
-            <b>{{index.lockedBalanceStr}} </b>
-            <span> {{index.lockedBalanceAlternative}}
-              {{index.alternativeIsoCode}} </span>
-          </div>
+        <h4 ng-show="index.requiresMultipleSignatures" class="title m0" translate>Payment Proposals</h4>
+        <h4 ng-show="!index.requiresMultipleSignatures" class="title m0" translate>Unsent transactions</h4>
+        <div class="last-transactions pr" ng-repeat="tx in index.txps"
+          ng-include="index.txTemplateUrl">
         </div>
 
-        <div ng-show="!index.requiresMultipleSignatures">
-          <h4 class="title m0" translate>Unsent transactions</h4>
-          <div class="last-transactions pr" ng-repeat="tx in index.txps"
-            ng-include="index.txTemplateUrl">
-          </div>
+        <div class="text-gray text-center size-12 p10t"
+          ng-show="index.lockedBalanceSat && !index.updatingStatus">
+          <span translate>Total Locked Balance</span>:
+          <b>{{index.lockedBalanceStr}} </b>
+          <span> {{index.lockedBalanceAlternative}}
+            {{index.alternativeIsoCode}} </span>
         </div>
       </div>
       <div class="extra-margin-bottom"></div>

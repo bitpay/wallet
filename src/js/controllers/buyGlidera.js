@@ -7,6 +7,7 @@ angular.module('copayApp.controllers').controller('buyGlideraController',
     this.show2faCodeInput = null;
     this.error = null;
     this.success = null;
+    this.loading = null;
 
     this.getBuyPrice = function(token, price) {
       var self = this;
@@ -26,14 +27,15 @@ angular.module('copayApp.controllers').controller('buyGlideraController',
 
     this.get2faCode = function(token) {
       var self = this;
-      this.loading = true;
+      this.loading = gettext('Sending 2FA code...');
       $timeout(function() {
         glideraService.get2faCode(token, function(err, sent) {
-          self.loading = false;
+          self.loading = null;
           if (err) {
-            self.error = gettext('Glidera could not the 2FA code to your phone');
+            self.error = gettext('Glidera could not send the 2FA code to your phone');
           }
           else {
+            self.error = null;
             self.show2faCodeInput = sent;
           }
         });
@@ -51,7 +53,7 @@ angular.module('copayApp.controllers').controller('buyGlideraController',
           $scope.$apply();
         }
         else {
-          self.loading = true;
+          self.loading = gettext('Buying bitcoin...');
           var data = {
             destinationAddress: addr,
             qty: self.buyPrice.qty,
@@ -61,7 +63,7 @@ angular.module('copayApp.controllers').controller('buyGlideraController',
           };
           $timeout(function() {
             glideraService.buy(token, twoFaCode, data, function(err, data) {
-              self.loading = false;
+              self.loading = null;
               if (err) {
                 self.error = gettext('Could not buy bitcoin');
               }
