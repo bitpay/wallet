@@ -26,7 +26,7 @@
     <img src="img/glidera-logo.png">
   </div>
 
-  <div ng-if="!index.glideraToken && !index.glideraLoading" class="row">
+  <div ng-if="!index.glideraToken && !index.glideraLoading && !index.glideraError" class="row">
     <div class="columns" ng-init="showOauthForm = false">
       <div class="text-center" ng-show="!showOauthForm">
         <p translate>You can buy and sell Bitcoin with a US bank account directly in Copay.</p>
@@ -59,11 +59,11 @@
     </div>
   </div>
   
-  <div class="m20t text-center" ng-if="index.glideraToken && index.glideraError">
+  <div class="m20t text-center" ng-if="index.glideraError">
     <div class="text-warning">
       <span ng-show="index.glideraError == 'Unauthorized'" translate>Could not connect with Glidera: Unauthorized</span>
       <span ng-show="index.glideraError == 'Forbidden'" translate>Could not connect with Glidera: Forbidden</span>
-      <span ng-show="index.glideraError != ('Forbidden' && 'Unauthorized')" translate>Could not connect with Glidera</span>
+      <span ng-show="index.glideraError != ('Forbidden' && 'Unauthorized')">{{index.glideraError}}</span>
     </div>
     <div class="m10t">
       <button class="round tiny" ng-click="index.glideraToken = null; index.glideraError = null">
