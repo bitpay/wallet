@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('buyGlideraController', 
-  function($scope, $timeout, profileService, addressService, glideraService) {
+  function($scope, $timeout, profileService, addressService, glideraService, gettext) {
     
     this.addr = {};
     this.show2faCodeInput = null;
@@ -14,27 +14,44 @@ angular.module('copayApp.controllers').controller('buyGlideraController',
         this.buyPrice = null;
         return;
       }
-      glideraService.buyPrice(token, price, function(error, buyPrice) {
-        self.buyPrice = buyPrice;
+      glideraService.buyPrice(token, price, function(err, buyPrice) {
+        if (err) {
+          self.error = gettext('Glidera could not get pricing to buy bitcoin');
+        }
+        else {
+          self.buyPrice = buyPrice;
+        }
       });     
     };
 
     this.get2faCode = function(token) {
       var self = this;
+      this.loading = true;
       $timeout(function() {
-        glideraService.get2faCode(token, function(error, sent) {
-          self.show2faCodeInput = sent;
+        glideraService.get2faCode(token, function(err, sent) {
+          self.loading = false;
+          if (err) {
+            self.error = gettext('Glidera could not the 2FA code to your phone');
+          }
+          else {
+            self.show2faCodeInput = sent;
+          }
         });
       }, 100);
     };
 
-    this.sendRequest = function(token, twoFaCode) {
+    this.sendRequest = function(token, permissions, twoFaCode) {
       var fc = profileService.focusedClient;
       if (!fc) return;
-      this.loading = true;
       var self = this;
+      self.error = null;
       addressService.getAddress(fc.credentials.walletId, null, function(err, addr) {
-        if (addr) {
+        if (!addr) {
+          self.error = gettext('Could not get the bitcoin address');
+          $scope.$apply();
+        }
+        else {
+          self.loading = true;
           var data = {
             destinationAddress: addr,
             qty: self.buyPrice.qty,
@@ -42,15 +59,18 @@ angular.module('copayApp.controllers').controller('buyGlideraController',
             useCurrentPrice: false,
             ip: null 
           };
-          glideraService.buy(token, twoFaCode, data, function(error, data) {
-            self.loading = false;
-            if (error) {
-              self.error = error;
-            }
-            else {
-              self.success = data
-            }
-          });
+          $timeout(function() {
+            glideraService.buy(token, twoFaCode, data, function(err, data) {
+              self.loading = false;
+              if (err) {
+                self.error = gettext('Could not buy bitcoin');
+              }
+              else {
+                self.success = data;
+                $scope.$emit('Local/GlideraUpdated', token, permissions);
+              }
+            });
+          }, 100);
         }
       });
     };

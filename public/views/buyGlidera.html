@@ -6,6 +6,20 @@
 
 
 <div class="content glidera p20v" ng-controller="buyGlideraController as buy">
+
+  <div class="onGoingProcess" ng-show="buy.loading">
+    <div class="onGoingProcess-content" ng-style="{'background-color':index.backgroundColor}">
+    <div class="spinner">
+      <div class="rect1"></div>
+      <div class="rect2"></div>
+      <div class="rect3"></div>
+      <div class="rect4"></div>
+      <div class="rect5"></div>
+    </div>
+    <span translate>Sending request to Glidera...</span>
+    </div>
+  </div>
+
   <div class="row">
     <div class="columns">
       <div ng-show="!buy.show2faCodeInput && !buy.success">
@@ -26,42 +40,49 @@
               ng-click="showAlternative = true; qty = null; buy.buyPrice = null">BTC</a>
             <a ng-show="showAlternative" class="postfix" 
               ng-click="showAlternative = false; fiat = null; buy.buyPrice = null">USD</a>
-            <input class="button dark-gray outline round" 
-            type="submit" value="Continue" ng-disabled="!buy.buyPrice.qty">
+
+            <div class="text-center text-gray size-12 m20b" ng-show="buy.buyPrice.qty">
+              Buy 
+              <span ng-show="qty">${{buy.buyPrice.subtotal}} {{buy.buyPrice.currency}} in Bitcoin</span> 
+              <span ng-show="fiat">{{buy.buyPrice.qty}} BTC</span> 
+              at ${{buy.buyPrice.price}} {{buy.buyPrice.currency}} 
+            </div>
+
+            <input class="button dark-gray outline round expand" 
+            type="submit" value="Continue" ng-disabled="!buy.buyPrice.qty || buy.loading">
           </div>
-        </form>
-        <div class="text-gray size-12 m10b" ng-show="buy.buyPrice.qty">
-          Buy 
-          <span ng-show="qty">${{buy.buyPrice.subtotal}} {{buy.buyPrice.currency}} in Bitcoin</span> 
-          <span ng-show="fiat">{{buy.buyPrice.qty}} BTC</span> 
-          at ${{buy.buyPrice.price}} {{buy.buyPrice.currency}} 
-        </div>
+        </form> 
       </div>
       <div ng-show="buy.show2faCodeInput && !buy.success">
-        <p class="text-center text-gray">
-        The purchase price of ${{buy.buyPrice.price}} USD will be immediately withdrawn from your bank account.
+        <p class="text-center text-gray" translate>
+        The purchase price of ${{buy.buyPrice.price}} {{buy.buyPrice.currency}} will be immediately withdrawn from your bank account.
         </p>
-        <p class="text-center text-gray">
+        <p class="text-center text-gray" translate>
         The total of {{buy.buyPrice.qty}} BTC will be purchased and deposited in your bitcoin wallet ({{index.walletName}}) in 2-4 business days.
         </p>
-        <p class="text-center text-gray">
         <form name="buyForm" 
-          ng-submit="buy.sendRequest(index.glideraToken, twoFaCode)" novalidate>
+          ng-submit="buy.sendRequest(index.glideraToken, index.glideraPermissions, twoFaCode)" novalidate>
           <label>Enter 2FA Code</label>
             <input type="number" ng-model="twoFaCode" required>
-            <input class="button dark-gray outline round" 
-            type="submit" value="Buy Bitcoin">
+            <input class="button dark-gray outline round expand" 
+            type="submit" value="Buy Bitcoin" ng-disabled="buyForm.$invalid || buy.loading">
         </form>
       </div>
-      <div ng-show="buy.error && !buy.success" class="text-warning m10b">{{buy.error}}</div>
+      <div class="box-notification" ng-show="buy.error && !buy.success">
+        <span class="text-warning size-14">
+          {{buy.error|translate}}
+        </span>
+      </div>
       <div class="text-center" ng-show="buy.success">
         <h1>Purchase complete</h1>
-        <p class="text-gray">
+        <p class="text-gray" translate>
         A transfer has been initiated from your bank account. Your bitcoin should arrive in your wallet in 4-6 business days.
         </p>
 
         <button class="outline dark-gray round expand"
-          ng-click="$root.go('glidera')">Finish</button>
+          ng-click="$root.go('glidera')">
+          Finish
+        </button>
       </div>
     </div>
   </div> 
