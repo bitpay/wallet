@@ -4,14 +4,17 @@ angular.module('copayApp.controllers').controller('glideraController',
   function($scope, $timeout, $modal, applicationService, profileService, configService, storageService, glideraService) {
       
     var config = configService.getSync().wallet.settings;
-    this.authenticateUrl = glideraService.getOauthCodeUrl();
 
-    this.submitOauthCode = function(code) {
+    this.getAuthenticateUrl = function() {
+      return glideraService.getOauthCodeUrl();
+    };
+
+    this.submitOauthCode = function(code, glideraCredentials) {
       var fc = profileService.focusedClient;
       var self = this;
       this.loading = true;
       $timeout(function() {
-        glideraService.getToken(code, function(error, data) {
+        glideraService.getToken(code, glideraCredentials, function(error, data) {
           if (data && data.access_token) {
             storageService.setGlideraToken(fc.credentials.network, data.access_token, function() {
               $scope.$emit('Local/GlideraTokenUpdated', data.access_token);
