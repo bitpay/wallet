@@ -1,37 +1,60 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('preferencesGlideraController', 
-  function($scope, $timeout, profileService, applicationService, glideraService, storageService) {
+  function($scope, $modal, $timeout, profileService, applicationService, glideraService, storageService) {
 
-    this.init = function(token) {
+    this.getEmail = function(token) {
       var self = this;
-      glideraService.getAccessTokenPermissions(token, function(error, permission) {
-        self.permission = permission;
+      glideraService.getEmail(token, function(error, data) {
+        self.email = data;
       });
+    };
 
-      glideraService.getEmail(token, function(error, email) {
-        self.email = email;
-      });
-
+    this.getPersonalInfo = function(token) {
+      var self = this;
       glideraService.getPersonalInfo(token, function(error, info) {
         self.personalInfo = info;
       });
+    };
 
-      glideraService.getStatus(token, function(error, status) {
-        self.status = status;
+    this.getStatus = function(token) {
+      var self = this;
+      glideraService.getStatus(token, function(error, data) {
+        self.status = data;
       });
+    };
 
+    this.getLimits = function(token) {
+      var self = this;
       glideraService.getLimits(token, function(error, limits) {
         self.limits = limits;
       });
-    }; 
+    };
 
     this.revokeToken = function() {
       var fc = profileService.focusedClient;
-      storageService.removeGlideraToken(fc.credentials.network, function() {
-        $timeout(function() {
-          applicationService.restart();
-        }, 100);
+      var ModalInstanceCtrl = function($scope, $modalInstance) {
+        $scope.ok = function() {
+          $modalInstance.close(true);
+        };
+        $scope.cancel = function() {
+          $modalInstance.dismiss();
+        };
+      };
+
+      var modalInstance = $modal.open({
+        templateUrl: 'views/modals/glidera-confirmation.html',
+        windowClass: 'full',
+        controller: ModalInstanceCtrl
+      });
+      modalInstance.result.then(function(ok) {
+        if (ok) {
+          storageService.removeGlideraToken(fc.credentials.network, function() {
+            $timeout(function() {
+              applicationService.restart();
+            }, 100);
+          });
+        }
       });
     };
 
