@@ -26,14 +26,15 @@
     <img src="img/glidera-logo.png">
   </div>
 
-  <div ng-if="!index.glideraToken && !index.glideraLoading && !index.glideraError" class="row">
+  <div ng-if="index.glideraCredentials && !index.glideraToken && !index.glideraLoading && !index.glideraError" 
+    class="row">
     <div class="columns" ng-init="showOauthForm = false">
       <div class="text-center" ng-show="!showOauthForm">
         <p translate>You can buy and sell Bitcoin with a US bank account directly in Copay.</p>
         <div class="m10b text-gray size-12" translate>Connect your Glidera account to get started</div>
-        <button 
+        <button
           class="dark-gray outline round tiny" 
-          ng-click="$root.openExternalLink(glidera.authenticateUrl); showOauthForm = true" translate>
+          ng-click="$root.openExternalLink(glidera.getAuthenticateUrl()); showOauthForm = true" translate>
           Connect to Glidera
         </button>
         <div>

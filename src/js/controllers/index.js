@@ -113,6 +113,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.pendingTxProposalsCountForUs = null;
     self.setSpendUnconfirmed();
 
+    self.glideraCredentials = null;
     self.glideraToken = null;
     self.glideraError = null;
     self.glideraPermissions = null;
@@ -839,6 +840,7 @@ console.log('[index.js:395]',txps); //TODO
 
   self.initGlidera = function(accessToken) {
     if (self.isShared) return;
+    self.glideraCredentials = glideraService.init(self.network);
 
     var getToken = function(cb) {
       if (accessToken) {
@@ -852,7 +854,6 @@ console.log('[index.js:395]',txps); //TODO
       if (err || !accessToken) return;
       else {
         self.glideraLoading = gettext('Connecting to Glidera...');
-        glideraService.init(self.network);
         glideraService.getAccessTokenPermissions(accessToken, function(err, p) {
           self.glideraLoading = null;
           if (err) {

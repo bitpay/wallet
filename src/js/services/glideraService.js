@@ -2,39 +2,36 @@
 
 angular.module('copayApp.services').factory('glideraService', function($http, $log) {
   var root = {};
-
-  var HOST;
-  var REDIRECT_URI;
-  var CLIENT_ID;
-  var CLIENT_SECRET;
+  var credentials = {};
 
   root.init = function(network) {
     if (network == 'testnet') {
-      HOST = 'https://sandbox.glidera.io';
-      REDIRECT_URI = 'urn:ietf:wg:oauth:2.0:oob';
-      CLIENT_ID = '9915b6ffa6dc3baffb87135ed3873d49';
-      CLIENT_SECRET = 'd74eda05b9c6a228fd5c85cfbd0eb7eb'; 
+      credentials.HOST = 'https://sandbox.glidera.io';
+      credentials.REDIRECT_URI = 'urn:ietf:wg:oauth:2.0:oob';
+      credentials.CLIENT_ID = '9915b6ffa6dc3baffb87135ed3873d49';
+      credentials.CLIENT_SECRET = 'd74eda05b9c6a228fd5c85cfbd0eb7eb';
     }
     else {
-      HOST = 'https://glidera.io';
-      REDIRECT_URI = 'urn:ietf:wg:oauth:2.0:oob';
-      CLIENT_ID = '';
-      CLIENT_SECRET = ''; 
-    }
+      credentials.HOST = 'https://glidera.io';
+      credentials.REDIRECT_URI = 'urn:ietf:wg:oauth:2.0:oob';
+      credentials.CLIENT_ID = '';
+      credentials.CLIENT_SECRET = '';
+    };
+    return credentials;
   };
 
   root.getOauthCodeUrl = function() {
-    return HOST 
+    return credentials.HOST 
       + '/oauth2/auth?response_type=code&client_id=' 
-      + CLIENT_ID 
+      + credentials.CLIENT_ID 
       + '&redirect_uri='
-      + REDIRECT_URI;
+      + credentials.REDIRECT_URI;
   };
 
   root.getToken = function(code, cb) {
     var req = {
       method: 'POST',
-      url: HOST + '/api/v1/oauth/token',
+      url: credentials.HOST + '/api/v1/oauth/token',
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json'
@@ -42,9 +39,9 @@ angular.module('copayApp.services').factory('glideraService', function($http, $l
       data: { 
         grant_type : 'authorization_code',
         code: code,
-        client_id : CLIENT_ID,
-        client_secret: CLIENT_SECRET,
-        redirect_uri: REDIRECT_URI
+        client_id : credentials.CLIENT_ID,
+        client_secret: credentials.CLIENT_SECRET,
+        redirect_uri: credentials.REDIRECT_URI
       }
     };
 
@@ -60,7 +57,7 @@ angular.module('copayApp.services').factory('glideraService', function($http, $l
   var _get = function(endpoint, token) {
     return {
       method: 'GET',
-      url: HOST + '/api/v1' + endpoint,
+      url: credentials.HOST + '/api/v1' + endpoint,
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
@@ -172,7 +169,7 @@ angular.module('copayApp.services').factory('glideraService', function($http, $l
   var _post = function(endpoint, token, twoFaCode, data) {
     return {
       method: 'POST',
-      url: HOST + '/api/v1' + endpoint,
+      url: credentials.HOST + '/api/v1' + endpoint,
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
