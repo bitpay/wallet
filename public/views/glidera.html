@@ -20,12 +20,7 @@
     <span ng-show="glidera.loading" translate>Connecting to Glidera...</span>
     <span ng-show="index.glideraLoading">{{index.glideraLoading|translate}}</span>
     </div>
-  </div>
-
-  <div class="box-notification size-12 text-warning" ng-show="index.network == 'testnet'">
-    <i class="fi-info"></i> 
-    Testnet wallets only work with Glidera Sandbox Accounts
-  </div>
+  </div> 
 
   <div class="row m20t">
     <div class="columns">
@@ -54,6 +49,12 @@
       <div class="text-center" ng-show="!showOauthForm">
         <p translate>You can buy and sell Bitcoin with a US bank account directly in Copay.</p>
         <div class="m10b text-gray size-12" translate>Connect your Glidera account to get started</div>
+
+        <div class="box-notification size-12 text-warning" ng-show="index.network == 'testnet'">
+          <i class="fi-info"></i> 
+          Testnet wallets only work with Glidera Sandbox Accounts
+        </div>
+
         <button
           class="dark-gray outline round tiny" 
           ng-click="$root.openExternalLink(glidera.getAuthenticateUrl()); showOauthForm = true" translate>
