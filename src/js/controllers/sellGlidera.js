@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('sellGlideraController', 
-  function($scope, $timeout, $log, gettext, configService, profileService, addressService, feeService, glideraService) {
+  function($scope, $timeout, $log, gettext, gettextCatalog, configService, profileService, addressService, feeService, glideraService, bwsError) {
 
     var config = configService.getSync();
     this.data = {};
@@ -21,7 +21,7 @@ angular.module('copayApp.controllers').controller('sellGlideraController',
       }
       glideraService.sellPrice(token, price, function(err, sellPrice) {
         if (err) {
-          self.error = gettext('Glidera could not get pricing to sell bitcoin');
+          self.error = gettext('Could not get exchange information. Please, try again.');
         }
         else {
           self.error = null;
@@ -37,7 +37,7 @@ angular.module('copayApp.controllers').controller('sellGlideraController',
         glideraService.get2faCode(token, function(err, sent) {
           self.loading = null;
           if (err) {
-            self.error = gettext('Glidera could not send the 2FA code to your phone');
+            self.error = gettext('Could not send confirmation code to your phone');
           }
           else {
             self.show2faCodeInput = sent;
@@ -56,7 +56,7 @@ angular.module('copayApp.controllers').controller('sellGlideraController',
         addressService.getAddress(fc.credentials.walletId, null, function(err, refundAddress) {
           if (!refundAddress) {
             self.loading = null;
-            self.error = gettext('Could not get the bitcoin address');
+            self.error = bwsError.msg(err);
             return;
           }
           glideraService.getSellAddress(token, function(error, sellAddress) {
@@ -83,7 +83,7 @@ angular.module('copayApp.controllers').controller('sellGlideraController',
                   $log.error(err);
                   $timeout(function() {
                     self.loading = null;
-                    self.error = gettext('Could not create transaction');
+                    self.error = bwsError.msg(err, gettextCatalog.getString('Error'));
                   }, 1);
                   return;
                 }
@@ -141,7 +141,7 @@ angular.module('copayApp.controllers').controller('sellGlideraController',
       fc.signTxProposal(txp, function(err, signedTx) {
         profileService.lockFC();
         if (err) {
-          err = gettext('The payment was created but could not be signed');
+          err = bwsError.msg(err, gettextCatalog.getString('Could not accept payment'));
           return cb(err);
         }
         else {

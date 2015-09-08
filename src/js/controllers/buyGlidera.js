@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('buyGlideraController', 
-  function($scope, $timeout, profileService, addressService, glideraService, gettext) {
+  function($scope, $timeout, profileService, addressService, glideraService, gettext, gettextCatalog, bwsError) {
     
     this.addr = {};
     this.show2faCodeInput = null;
@@ -17,7 +17,7 @@ angular.module('copayApp.controllers').controller('buyGlideraController',
       }
       glideraService.buyPrice(token, price, function(err, buyPrice) {
         if (err) {
-          self.error = gettext('Glidera could not get pricing to buy bitcoin');
+          self.error = gettext('Could not get exchange information. Please, try again.');
         }
         else {
           self.buyPrice = buyPrice;
@@ -32,7 +32,7 @@ angular.module('copayApp.controllers').controller('buyGlideraController',
         glideraService.get2faCode(token, function(err, sent) {
           self.loading = null;
           if (err) {
-            self.error = gettext('Glidera could not send the 2FA code to your phone');
+            self.error = gettext('Could not send confirmation code to your phone');
           }
           else {
             self.error = null;
@@ -49,7 +49,7 @@ angular.module('copayApp.controllers').controller('buyGlideraController',
       self.error = null;
       addressService.getAddress(fc.credentials.walletId, null, function(err, addr) {
         if (!addr) {
-          self.error = gettext('Could not get the bitcoin address');
+          self.error = bwsError.msg(err);
           $scope.$apply();
         }
         else {
