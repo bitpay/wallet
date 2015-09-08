@@ -267,7 +267,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       if (!opts.quiet)
         self.setOngoingProcess('updatingStatus', true);
 
-      $log.debug('Updating Status:', fc, tries);
+      $log.debug('Updating Status:', fc.credentials.walletName, tries);
       get(function(err, walletStatus) {
         var currentStatusHash = _walletStatusHash(walletStatus);
         $log.debug('Status update. hash:' + currentStatusHash + ' Try:' + tries);
