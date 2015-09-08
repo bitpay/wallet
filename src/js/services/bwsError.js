@@ -93,11 +93,14 @@ angular.module('copayApp.services')
           case 'INVALID_BACKUP': 
             body = gettextCatalog.getString('Wallet seed is invalid');
             break;
- 
- 
+  
+          case 'ERROR':
+            body = (err.message || err.error);
+            break;
+
           default:
             $log.warn('Unknown error type:', err.code);
-            body = err.code + ':' + err.message;
+            body = err.code + ':' + err.message ;
             break;
         }
       }
