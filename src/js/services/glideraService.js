@@ -4,7 +4,7 @@ angular.module('copayApp.services').factory('glideraService', function($http, $l
   var root = {};
   var credentials = {};
 
-  root.init = function(network) {
+  root.setCredentials = function(network) {
     if (network == 'testnet') {
       credentials.HOST = 'https://sandbox.glidera.io';
       credentials.REDIRECT_URI = 'urn:ietf:wg:oauth:2.0:oob';
@@ -17,7 +17,6 @@ angular.module('copayApp.services').factory('glideraService', function($http, $l
       credentials.CLIENT_ID = '';
       credentials.CLIENT_SECRET = '';
     };
-    return credentials;
   };
 
   root.getOauthCodeUrl = function() {

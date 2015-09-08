@@ -25,7 +25,7 @@
   <div class="row">
     <div class="columns">
       <div class="text-center m20b">
-        <img src="img/glidera-logo.png">
+        <img src="img/glidera-logo.png" ng-click="index.updateGlidera(index.glideraToken, index.glideraPermissions)">
       </div>
 
       <div class="m20b box-notification" ng-if="index.glideraError || glidera.error">
@@ -43,7 +43,7 @@
     </div>
   </div>
 
-  <div ng-if="index.glideraCredentials && !index.glideraToken && !index.glideraLoading && !index.glideraError" 
+  <div ng-if="!index.glideraToken && !index.glideraLoading && !index.glideraError" 
     class="row">
     <div class="columns" ng-init="showOauthForm = false">
       <div class="text-center" ng-show="!showOauthForm">
@@ -78,32 +78,52 @@
     </div>
   </div> 
 
-  <div ng-if="index.glideraToken && index.glideraPermissions" 
-    ng-init="glidera.update(index.glideraToken, index.glideraPermissions)">
+  <div ng-if="index.glideraStatusLoaded && index.glideraToken && index.glideraPermissions">
 
     <div class="text-center m10b">
-      <div class="size-12" ng-show="index.glideraEmail">{{index.glideraEmail}}</div>
+      <div class="size-12" ng-show="index.glideraEmail">
+        {{index.glideraEmail}} 
+        <span ng-show="!index.glideraStatus.userEmailIsSetup">(<span translate>Unconfirmed</span>)</span>
+      </div>
 
       <div ng-show="index.glideraPersonalInfo" class="size-12">
         {{index.glideraPersonalInfo.firstName}} {{index.glideraPersonalInfo.lastName}}
+        <span ng-show="index.glideraStatus.personalInfoState != 'VERIFIED'">({{index.glideraStatus.personalInfoState}})</span>
+      </div>
+
+      <div class="text-warning size-12" ng-show="!index.glideraStatus.userPhoneIsSetup" translate>
+        You need to setup a phone number
+      </div>
+      <div class="text-warning size-12" ng-show="!index.glideraStatus.userBankAccountIsSetup" translate>
+        You need to setup a bank account
+      </div>
+      <div class="text-gray size-12" 
+        ng-show="index.glideraStatus.userBankAccountIsSetup && index.glideraStatus.bankAccountState != 'VERIFIED'" translate>
+        Bank account state: {{index.glideraStatus.bankAccountState}}
       </div>
     </div>
 
-    <div class="text-center m20b">
-      <a href class="text-gray" ng-click="$root.go('preferencesGlidera')">
-        Preferences
-      </a>
-    </div>
-
-    <ul class="no-bullet m0 size-14" ng-show="index.glideraPermissions.transact">
-      <li class="line-b line-t p20 pointer" ng-click="$root.go('buyGlidera')">
+    <ul class="no-bullet m0 size-14">
+      <li class="line-b line-t p20 pointer" 
+      ng-show="index.glideraPermissions.transact && 
+      (index.glideraStatus.userCanBuy || index.glideraStatus.userCanTransact)" 
+      ng-click="$root.go('buyGlidera')">
       <span translate>Buy</span>
       <span class="right text-gray">
         <i class="icon-arrow-right3 size-24 right"></i>
       </span>
       </li>
-      <li class="line-b p20 pointer" ng-click="$root.go('sellGlidera')">
+      <li class="line-b p20 pointer" 
+      ng-show="index.glideraPermissions.transact && 
+      (index.glideraStatus.userCanSell || index.glideraStatus.userCanTransact)" 
+      ng-click="$root.go('sellGlidera')">
       <span translate>Sell</span>
+      <span class="right text-gray">
+        <i class="icon-arrow-right3 size-24 right"></i>
+      </span>
+      </li>
+      <li class="line-b p20 pointer" ng-click="$root.go('preferencesGlidera')">
+      <span translate>Preferences</span>
       <span class="right text-gray">
         <i class="icon-arrow-right3 size-24 right"></i>
       </span>
@@ -112,7 +132,7 @@
 
     <div ng-show="index.glideraPermissions.transaction_history">
       <h4 class="title m0" translate>Activity</h4> 
-      <div ng-show="!index.glideraTxs" 
+      <div ng-show="index.glideraTxs.length == 0 && !index.glideraLoadingHistory" 
         class="size-12 p10 text-center text-gray" translate>
         No activity in your account
       </div>
