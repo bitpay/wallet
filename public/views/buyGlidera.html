@@ -5,7 +5,7 @@
 </div>
 
 
-<div class="content glidera p20v" ng-controller="buyGlideraController as buy">
+<div class="content glidera" ng-controller="buyGlideraController as buy">
 
   <div class="onGoingProcess" ng-show="buy.loading">
     <div class="onGoingProcess-content" ng-style="{'background-color':index.backgroundColor}">
@@ -20,8 +20,32 @@
     </div>
   </div>
 
-  <div class="row">
+  <div ng-show="index.glideraLimits">
+    <h4 class="title m0">
+      <div class="left">
+        <i class="fi-info size-24 m10r"></i>
+      </div>
+      <div class="size-10">
+        <span class="text-light" translate>Daily buy limit</span>:
+        ${{index.glideraLimits.dailyBuy}} 
+        (remaining ${{index.glideraLimits.dailyBuyRemaining}}) 
+        <br>
+        <span class="text-light" translate>Monthly buy limit</span>:
+        ${{index.glideraLimits.monthlyBuy}} 
+        (remaining ${{index.glideraLimits.monthlyBuyRemaining}})
+      </div>
+    </h4>
+  </div>
+
+  <div class="row m20t">
     <div class="columns">
+
+      <div class="box-notification" ng-show="index.glideraLimits.transactDisabledPendingFirstTransaction">
+        <span class="text-warning size-14" translate>
+          This operation was disabled because you have a pending first transaction
+        </span>
+      </div>
+
       <div ng-show="!buy.show2faCodeInput && !buy.success">
         <form name="buyPriceForm" 
           ng-submit="buy.get2faCode(index.glideraToken)" novalidate>
@@ -50,7 +74,8 @@
 
             <input class="button black expand round" 
             ng-style="{'background-color':index.backgroundColor}"
-            type="submit" value="{{'Continue'|translate}}" ng-disabled="!buy.buyPrice.qty || buy.loading">
+            type="submit" value="{{'Continue'|translate}}" 
+            ng-disabled="index.glideraLimits.transactDisabledPendingFirstTransaction || !buy.buyPrice.qty || buy.loading">
           </div>
         </form> 
       </div>
