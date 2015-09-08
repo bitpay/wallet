@@ -57,7 +57,7 @@
       <div ng-show="buy.show2faCodeInput && !buy.success">
         <p class="text-gray" translate>
         ${{buy.buyPrice.price}} {{buy.buyPrice.currency}} will be immediately withdrawn from your
-        bank account. The total of {{buy.buyPrice.qty}} BTC will be purchased and deposited in your bitcoin wallet ({{index.walletName}}) in 2-4 business days.
+        bank account. The total of {{buy.buyPrice.qty}} BTC will be purchased and deposited to your bitcoin wallet ({{index.walletName}}) in 2-4 business days.
         </p>
         <p class="text-gray" translate>
           A SMS containing a confirmation code was sent to your phone. Please, enter code below
@@ -77,14 +77,14 @@
         </span>
       </div>
       <div class="text-center" ng-show="buy.success">
-        <h1 translate>Purchase complete</h1>
+        <h1 translate>Purchase initiated</h1>
         <p class="text-gray" translate>
-        A transfer has been initiated from your bank account. Your bitcoin should arrive in your wallet in 4-6 business days.
+        A transfer has been initiated from your bank account. Your bitcoins should arrive to your wallet in 4-6 business days.
         </p>
 
         <button class="outline dark-gray round expand"
-          ng-click="$root.go('glidera')" translate>
-          Finish
+          ng-click="$root.go('glidera')">
+          OK
         </button>
       </div>
     </div>

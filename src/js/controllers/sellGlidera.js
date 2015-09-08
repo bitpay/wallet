@@ -72,7 +72,7 @@ angular.module('copayApp.controllers').controller('sellGlideraController',
               fc.sendTxProposal({
                 toAddress: sellAddress,
                 amount: amount,
-                message: 'Glidera',
+                message: 'Glidera transaction',
                 customData: {'glideraToken': token},
                 payProUrl: null,
                 feePerKb: feePerKb,

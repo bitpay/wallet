@@ -88,18 +88,16 @@
 
       <div ng-show="index.glideraPersonalInfo" class="size-12">
         {{index.glideraPersonalInfo.firstName}} {{index.glideraPersonalInfo.lastName}}
-        <span ng-show="index.glideraStatus.personalInfoState != 'VERIFIED'">({{index.glideraStatus.personalInfoState}})</span>
       </div>
 
-      <div class="text-warning size-12" ng-show="!index.glideraStatus.userPhoneIsSetup" translate>
-        You need to setup a phone number
-      </div>
-      <div class="text-warning size-12" ng-show="!index.glideraStatus.userBankAccountIsSetup" translate>
-        You need to setup a bank account
-      </div>
-      <div class="text-gray size-12" 
-        ng-show="index.glideraStatus.userBankAccountIsSetup && index.glideraStatus.bankAccountState != 'VERIFIED'" translate>
-        Bank account state: {{index.glideraStatus.bankAccountState}}
+      <div class="text-warning size-12 m20t" 
+        ng-show="!index.glideraStatus.userPhoneIsSetup || (!index.glideraStatus.userBankAccountIsSetup &&
+        index.glideraStatus.bankAccountState != 'VERIFIED')" translate>
+        Your Glidera account is not ready to transact. Please, verify it at 
+        <a href 
+          ng-init="glideraUrl = index.network == 'testnet' ? 'https://sandbox.glidera.io/login' :
+          'https://glidera.io/login'"
+          ng-click="$root.openExternalLink(glideraUrl)">Glidera.io</a>
       </div>
     </div>
 
