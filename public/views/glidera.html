@@ -6,7 +6,7 @@
 </div>
 
 
-<div class="content glidera p20v" ng-controller="glideraController as glidera">
+<div class="content glidera" ng-controller="glideraController as glidera">
 
   <div class="onGoingProcess" ng-show="glidera.loading || index.glideraLoading">
     <div class="onGoingProcess-content" ng-style="{'background-color':index.backgroundColor}">
@@ -22,7 +22,12 @@
     </div>
   </div>
 
-  <div class="row">
+  <div class="box-notification size-12 text-warning" ng-show="index.network == 'testnet'">
+    <i class="fi-info"></i> 
+    Testnet wallets only work with Glidera Sandbox Accounts
+  </div>
+
+  <div class="row m20t">
     <div class="columns">
       <div class="text-center m20b">
         <img src="img/glidera-logo.png" ng-click="index.updateGlidera(index.glideraToken, index.glideraPermissions)">
