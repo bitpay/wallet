@@ -7,7 +7,7 @@ angular.module('copayApp.controllers').controller('buyGlideraController',
     this.show2faCodeInput = null;
     this.error = null;
     this.success = null;
-    this.loading = null;
+    this.loading = null; 
 
     this.getBuyPrice = function(token, price) {
       var self = this;

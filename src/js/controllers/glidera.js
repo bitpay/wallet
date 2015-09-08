@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('glideraController', 
-  function($scope, $timeout, $modal, applicationService, profileService, configService, storageService, glideraService) {
+  function($scope, $timeout, $modal, applicationService, profileService, configService, storageService, glideraService, isChromeApp) {
       
     var config = configService.getSync().wallet.settings;
 
@@ -34,6 +34,14 @@ angular.module('copayApp.controllers').controller('glideraController',
       }, 100);
     };
 
+    // DISABLE ANIMATION ON CHROMEAPP
+    if (isChromeApp) {
+      var animatedSlideRight = 'full';
+    }
+    else {
+      var animatedSlideRight = 'full animated slideInRight';
+    }
+
     this.openTxModal = function(token, tx) {
       var self = this;
       var fc = profileService.focusedClient;
@@ -54,7 +62,7 @@ angular.module('copayApp.controllers').controller('glideraController',
 
       var modalInstance = $modal.open({
         templateUrl: 'views/modals/glidera-tx-details.html',
-          windowClass: 'full animated slideInRight',
+          windowClass: animatedSlideRight,
           controller: ModalInstanceCtrl,
       });
 
