@@ -243,7 +243,7 @@ angular.module('copayApp.services')
 
         root.setAndStoreFocus(walletClient.credentials.walletId, function() {
           storageService.storeProfile(root.profile, function(err) {
-            return cb(null, secret);
+            return cb(null, opts.secret);
           });
         });
       })
