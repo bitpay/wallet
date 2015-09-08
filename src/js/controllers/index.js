@@ -871,10 +871,12 @@ console.log('[index.js:395]',txps); //TODO
   self.updateGlidera = function(accessToken, permissions) {
     if (!accessToken || !permissions) return;
 
-    self.glideraStatusLoaded = false;
     glideraService.getStatus(accessToken, function(err, data) {
-      self.glideraStatusLoaded = true;
       self.glideraStatus = data;
+    });
+
+    glideraService.getLimits(accessToken, function(err, limits) {
+      self.glideraLimits = limits;
     });
     
     if (permissions.view_email_address) {

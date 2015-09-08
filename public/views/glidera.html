@@ -78,12 +78,11 @@
     </div>
   </div> 
 
-  <div ng-if="index.glideraStatusLoaded && index.glideraToken && index.glideraPermissions">
+  <div ng-if="index.glideraToken && index.glideraPermissions">
 
     <div class="text-center m10b">
       <div class="size-12" ng-show="index.glideraEmail">
-        {{index.glideraEmail}} 
-        <span ng-show="!index.glideraStatus.userEmailIsSetup">(<span translate>Unconfirmed</span>)</span>
+        {{index.glideraEmail}}
       </div>
 
       <div ng-show="index.glideraPersonalInfo" class="size-12">
@@ -91,9 +90,9 @@
       </div>
 
       <div class="text-warning size-12 m20t" 
-        ng-show="!index.glideraStatus.userPhoneIsSetup || (!index.glideraStatus.userBankAccountIsSetup &&
-        index.glideraStatus.bankAccountState != 'VERIFIED')" translate>
-        Your Glidera account is not ready to transact. Please, verify it at 
+        ng-show="index.glideraStatus && (!index.glideraStatus.userEmailIsSetup || !index.glideraStatus.userPhoneIsSetup
+        || (!index.glideraStatus.userBankAccountIsSetup && index.glideraStatus.bankAccountState != 'VERIFIED'))">
+        <span translate>Your Glidera account is not ready to transact. Please, verify it at</span> 
         <a href 
           ng-init="glideraUrl = index.network == 'testnet' ? 'https://sandbox.glidera.io/login' :
           'https://glidera.io/login'"
