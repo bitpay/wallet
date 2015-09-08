@@ -9,17 +9,23 @@ angular.module('copayApp.controllers').controller('glideraController',
       return glideraService.getOauthCodeUrl();
     };
 
-    this.submitOauthCode = function(code, glideraCredentials) {
+    this.submitOauthCode = function(code) {
       var fc = profileService.focusedClient;
       var self = this;
       this.loading = true;
       $timeout(function() {
-        glideraService.getToken(code, glideraCredentials, function(error, data) {
-          if (data && data.access_token) {
+        glideraService.getToken(code, function(err, data) {
+          self.loading = null;
+          if (err) {
+            self.error = err;
+            $timeout(function() {
+                $scope.$apply();
+              }, 100);
+          }
+          else if (data && data.access_token) {
             storageService.setGlideraToken(fc.credentials.network, data.access_token, function() {
               $scope.$emit('Local/GlideraTokenUpdated', data.access_token);
               $timeout(function() {
-                self.loading = null;
                 $scope.$apply();
               }, 100);
             });

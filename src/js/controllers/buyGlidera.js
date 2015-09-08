@@ -65,7 +65,7 @@ angular.module('copayApp.controllers').controller('buyGlideraController',
             glideraService.buy(token, twoFaCode, data, function(err, data) {
               self.loading = null;
               if (err) {
-                self.error = gettext('Could not buy bitcoin');
+                self.error = err;
               }
               else {
                 self.success = data;

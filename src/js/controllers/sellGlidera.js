@@ -112,7 +112,7 @@ angular.module('copayApp.controllers').controller('sellGlideraController',
                     glideraService.sell(token, twoFaCode, data, function(err, data) {
                       self.loading = null;
                       if (err) {
-                        self.error = gettext('Could not sell bitcoin');
+                        self.error = err;
                         fc.removeTxProposal(txp, function(err, txpb) {
                           $timeout(function() {
                             $scope.$emit('Local/GlideraError');

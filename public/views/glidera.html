@@ -17,13 +17,30 @@
       <div class="rect4"></div>
       <div class="rect5"></div>
     </div>
-    <span ng-show="glidera.loading" translate>Linking to Glidera...</span>
+    <span ng-show="glidera.loading" translate>Connecting to Glidera...</span>
     <span ng-show="index.glideraLoading">{{index.glideraLoading|translate}}</span>
     </div>
   </div>
 
-  <div class="text-center m10b">
-    <img src="img/glidera-logo.png">
+  <div class="row">
+    <div class="columns">
+      <div class="text-center m20b">
+        <img src="img/glidera-logo.png">
+      </div>
+
+      <div class="m20b box-notification" ng-if="index.glideraError || glidera.error">
+        <div class="text-warning">
+          <span ng-show="index.glideraError == 'Unauthorized'" translate>Could not connect to Glidera: Unauthorized</span>
+          <span ng-show="index.glideraError == 'Forbidden'" translate>Could not connect to Glidera: Forbidden</span>
+          <span ng-show="index.glideraError != ('Forbidden' && 'Unauthorized')">{{index.glideraError || glidera.error}}</span>
+        </div>
+        <div class="m10t" ng-show="index.glideraToken && index.glideraError == 'Forbidden'">
+          <button class="round tiny" ng-click="index.glideraToken = null; index.glideraError = null">
+            Request a new token
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 
   <div ng-if="index.glideraCredentials && !index.glideraToken && !index.glideraLoading && !index.glideraError" 
@@ -44,34 +61,22 @@
         </div>
       </div>
       <div class="text-center" ng-show="showOauthForm">
-        <p class="text-gray size-12">Paste the authorization code here</p>
         <form name="oauthCodeForm" ng-submit="glidera.submitOauthCode(code)" novalidate>
           <label>OAuth Code</label>
-          <input type="text" ng-model="code" ng-disabled="glidera.loading" required>
+          <input type="text" ng-model="code" ng-disabled="glidera.loading" 
+          ng-attr-placeholder="{{'Paste the authorization code here'|translate}}" required>
           <input 
             class="button expand round" 
             ng-style="{'background-color':index.backgroundColor}"
             type="submit" value="Get started" ng-disabled="oauthCodeForm.$invalid || glidera.loading">
         </form>
         <div>
-          <a href class="size-12 text-gray" ng-click="showOauthForm = false" translate>Go back</a>
+          <a href class="size-12 text-gray" 
+            ng-click="showOauthForm = false; index.glideraError = null; glidera.error = null" translate>Go back</a>
         </div>
       </div>
     </div>
-  </div>
-  
-  <div class="m20t text-center" ng-if="index.glideraError">
-    <div class="text-warning">
-      <span ng-show="index.glideraError == 'Unauthorized'" translate>Could not connect with Glidera: Unauthorized</span>
-      <span ng-show="index.glideraError == 'Forbidden'" translate>Could not connect with Glidera: Forbidden</span>
-      <span ng-show="index.glideraError != ('Forbidden' && 'Unauthorized')">{{index.glideraError}}</span>
-    </div>
-    <div class="m10t">
-      <button class="round tiny" ng-click="index.glideraToken = null; index.glideraError = null">
-        Request a new token
-      </button>
-    </div>
-  </div>
+  </div> 
 
   <div ng-if="index.glideraToken && index.glideraPermissions" 
     ng-init="glidera.update(index.glideraToken, index.glideraPermissions)">
