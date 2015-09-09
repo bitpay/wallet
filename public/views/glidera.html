@@ -1,6 +1,6 @@
 
-<div 
-  class="topbar-container" 
+<div
+  class="topbar-container"
   ng-include="'views/includes/topbar.html'"
   ng-init="titleSection='Glidera'; closeToHome = true">
 </div>
@@ -20,12 +20,12 @@
     <span ng-show="glidera.loading" translate>Connecting to Glidera...</span>
     <span ng-show="index.glideraLoading">{{index.glideraLoading|translate}}</span>
     </div>
-  </div> 
+  </div>
 
   <div class="row m20t">
     <div class="columns">
-      <div class="text-center m20b">
-        <img src="img/glidera-logo.png" ng-click="index.updateGlidera(index.glideraToken, index.glideraPermissions)">
+      <div class="text-center m5b">
+        <img src="img/glidera-logo.png" ng-click="index.updateGlidera(index.glideraToken, index.glideraPermissions)" width="100">
       </div>
 
       <div class="m20b box-notification" ng-if="index.glideraError || glidera.error">
@@ -43,7 +43,7 @@
     </div>
   </div>
 
-  <div ng-if="!index.glideraToken && !index.glideraLoading && !index.glideraError" 
+  <div ng-if="!index.glideraToken && !index.glideraLoading && !index.glideraError"
     class="row">
     <div class="columns" ng-init="showOauthForm = false">
       <div class="text-center" ng-show="!showOauthForm">
@@ -51,12 +51,12 @@
         <div class="m10b text-gray size-12" translate>Connect your Glidera account to get started</div>
 
         <div class="box-notification size-12 text-warning" ng-show="index.network == 'testnet'">
-          <i class="fi-info"></i> 
+          <i class="fi-info"></i>
           Testnet wallets only work with Glidera Sandbox Accounts
         </div>
 
         <button
-          class="dark-gray outline round tiny" 
+          class="dark-gray outline round tiny"
           ng-click="$root.openExternalLink(glidera.getAuthenticateUrl()); showOauthForm = true" translate>
           Connect to Glidera
         </button>
@@ -69,20 +69,20 @@
       <div class="text-center" ng-show="showOauthForm">
         <form name="oauthCodeForm" ng-submit="glidera.submitOauthCode(code)" novalidate>
           <label>OAuth Code</label>
-          <input type="text" ng-model="code" ng-disabled="glidera.loading" 
+          <input type="text" ng-model="code" ng-disabled="glidera.loading"
           ng-attr-placeholder="{{'Paste the authorization code here'|translate}}" required>
-          <input 
-            class="button expand round" 
+          <input
+            class="button expand round"
             ng-style="{'background-color':index.backgroundColor}"
             type="submit" value="Get started" ng-disabled="oauthCodeForm.$invalid || glidera.loading">
         </form>
         <div>
-          <a href class="size-12 text-gray" 
+          <a href class="size-12 text-gray"
             ng-click="showOauthForm = false; index.glideraError = null; glidera.error = null" translate>Go back</a>
         </div>
       </div>
     </div>
-  </div> 
+  </div>
 
   <div ng-if="index.glideraToken && index.glideraPermissions">
 
@@ -95,11 +95,11 @@
         {{index.glideraPersonalInfo.firstName}} {{index.glideraPersonalInfo.lastName}}
       </div>
 
-      <div class="text-warning size-12 m20t" 
+      <div class="columns text-warning size-12 m20t m20b"
         ng-show="index.glideraStatus && (!index.glideraStatus.userEmailIsSetup || !index.glideraStatus.userPhoneIsSetup
         || (!index.glideraStatus.userBankAccountIsSetup && index.glideraStatus.bankAccountState != 'VERIFIED'))">
-        <span translate>Your Glidera account is not ready to transact. Please, verify it at</span> 
-        <a href 
+        <span translate>Your Glidera account is not ready to transact. Please, verify it at</span>
+        <a href
           ng-init="glideraUrl = index.network == 'testnet' ? 'https://sandbox.glidera.io/login' :
           'https://glidera.io/login'"
           ng-click="$root.openExternalLink(glideraUrl)">Glidera.io</a>
@@ -107,20 +107,22 @@
     </div>
 
     <ul class="no-bullet m0 size-14">
-      <li class="line-b line-t p20 pointer" 
-      ng-show="index.glideraPermissions.transact && 
-      (index.glideraStatus.userCanBuy || index.glideraStatus.userCanTransact)" 
+      <li class="line-b line-t p20 pointer"
+      ng-show="index.glideraPermissions.transact &&
+      (index.glideraStatus.userCanBuy || index.glideraStatus.userCanTransact)"
       ng-click="$root.go('buyGlidera')">
-      <span translate>Buy</span>
-      <span class="right text-gray">
-        <i class="icon-arrow-right3 size-24 right"></i>
-      </span>
+        <i class="icon-buy-btc size-24 m5r"></i>
+        <span translate>Buy Bitcoin</span>
+        <span class="right text-gray">
+          <i class="icon-arrow-right3 size-24 right"></i>
+        </span>
       </li>
-      <li class="line-b p20 pointer" 
-      ng-show="index.glideraPermissions.transact && 
-      (index.glideraStatus.userCanSell || index.glideraStatus.userCanTransact)" 
+      <li class="line-b p20 pointer"
+      ng-show="index.glideraPermissions.transact &&
+      (index.glideraStatus.userCanSell || index.glideraStatus.userCanTransact)"
       ng-click="$root.go('sellGlidera')">
-      <span translate>Sell</span>
+      <i class="icon-sell-btc size-24 m5r"></i>
+      <span translate>Sell Bitcoin</span>
       <span class="right text-gray">
         <i class="icon-arrow-right3 size-24 right"></i>
       </span>
@@ -134,8 +136,8 @@
     </ul>
 
     <div ng-show="index.glideraPermissions.transaction_history">
-      <h4 class="title m0" translate>Activity</h4> 
-      <div ng-show="index.glideraTxs.length == 0 && !index.glideraLoadingHistory" 
+      <h4 class="title m0" translate>Activity</h4>
+      <div ng-show="index.glideraTxs.length == 0 && !index.glideraLoadingHistory"
         class="size-12 p10 text-center text-gray" translate>
         No activity in your account
       </div>
