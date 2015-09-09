@@ -30,8 +30,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   if (isChromeApp) {
     var animatedSlideUp = 'full';
     var animatedSlideRight = 'full';
-  }
-  else {
+  } else {
     var animatedSlideUp = 'full animated slideInUp';
     var animatedSlideRight = 'full animated slideInRight';
   }
@@ -174,18 +173,30 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     });
   };
 
-  this.openTxpModal = function(tx, copayers) {
+  var GLIDERA_LOCK_TIME = 6 * 60 * 60 ;
+  // isGlidera flag is a security mesure so glidera status is not
+  // only determined by the tx.message
+  this.openTxpModal = function(tx, copayers, isGlidera) {
     var fc = profileService.focusedClient;
     var refreshUntilItChanges = false;
     var currentSpendUnconfirmed = $scope.currentSpendUnconfirmed;
     var ModalInstanceCtrl = function($scope, $modalInstance) {
       $scope.error = null;
-      $scope.tx = tx;
       $scope.copayers = copayers
       $scope.copayerId = fc.credentials.copayerId;
       $scope.canSign = fc.canSign();
       $scope.loading = null;
       $scope.color = fc.backgroundColor;
+
+      // ToDo: use tx.customData instead of tx.message
+      if (tx.message === 'Glidera transaction' && isGlidera) {
+        tx.isGlidera = true;
+        if (tx.canBeRemoved) {
+          tx.canBeRemoved = (Date.now()/1000 - (tx.ts || tx.createdOn)) > GLIDERA_LOCK_TIME;
+        }
+      }
+      $scope.tx = tx;
+
       refreshUntilItChanges = false;
       $scope.currentSpendUnconfirmed = currentSpendUnconfirmed;
 

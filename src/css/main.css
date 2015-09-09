@@ -410,7 +410,6 @@ ul.manage li {
 
 .line-t {
   border-top: 1px solid #E9E9EC;
-  padding-top: 0.5rem;
 }
 
 .line-b {
@@ -1098,7 +1097,16 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
 }
 
 .preferences-icon {
-  padding: 0.6rem 0.8rem !important;
+  width: auto;
+  height: 40px;
+}
+
+@media only screen and (max-width: 40em) {
+  .preferences-icon {
+    width: 40px;
+    height: 40px;
+    padding: 0.55rem !important;
+  }
 }
 
 .alertModal {

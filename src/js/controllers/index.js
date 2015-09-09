@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, lodash, go, profileService, configService, isCordova, rateService, storageService, addressService, gettextCatalog, gettext, amMoment, nodeWebkit, addonManager, feeService, isChromeApp, bwsError, utilService, $state) {
+angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, lodash, go, profileService, configService, isCordova, rateService, storageService, addressService, gettextCatalog, gettext, amMoment, nodeWebkit, addonManager, feeService, isChromeApp, bwsError, utilService, $state, glideraService) {
   var self = this;
   self.isCordova = isCordova;
   self.onGoingProcess = {};
@@ -113,6 +113,13 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.pendingTxProposalsCountForUs = null;
     self.setSpendUnconfirmed();
 
+    self.glideraToken = null;
+    self.glideraError = null;
+    self.glideraPermissions = null;
+    self.glideraEmail = null;
+    self.glideraPersonalInfo = null;
+    self.glideraTxs = null;
+
     $timeout(function() {
       self.hasProfile = true;
       self.noFocusedWallet = false;
@@ -134,6 +141,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       self.copayers = [];
       self.updateColor();
       self.updateAlias();
+      self.initGlidera();
 
       storageService.getBackupFlag(self.walletId, function(err, val) {
         self.needsBackup = self.network == 'testnet' ? false : !val;
@@ -145,18 +153,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   self.setTab = function(tab, reset, tries) {
     tries = tries || 0;
 
-    // check if the whole menu item passed
-    if (typeof tab == 'object') {
-      if (tab.open) {
-        if (tab.link) {
-          self.tab = tab.link;
-        }
-        tab.open();
-        return;
-      } else {
-        return self.setTab(tab.link);
-      }
-    }
     if (self.tab === tab && !reset)
       return;
 
@@ -166,30 +162,27 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       }, 300);
     }
 
-    if (!self.tab || !$state.is('walletHome'))
+    if (!self.tab)
       self.tab = 'walletHome';
 
-    go.path('walletHome', function() {
-
-      if (document.getElementById(self.tab)) {
-        document.getElementById(self.tab).className = 'tab-out tab-view ' + self.tab;
-        var old = document.getElementById('menu-' + self.tab);
-        if (old) {
-          old.className = '';
-        }
+    if (document.getElementById(self.tab)) {
+      document.getElementById(self.tab).className = 'tab-out tab-view ' + self.tab;
+      var old = document.getElementById('menu-' + self.tab);
+      if (old) {
+        old.className = '';
       }
+    }
 
-      if (document.getElementById(tab)) {
-        document.getElementById(tab).className = 'tab-in  tab-view ' + tab;
-        var newe = document.getElementById('menu-' + tab);
-        if (newe) {
-          newe.className = 'active';
-        }
+    if (document.getElementById(tab)) {
+      document.getElementById(tab).className = 'tab-in  tab-view ' + tab;
+      var newe = document.getElementById('menu-' + tab);
+      if (newe) {
+        newe.className = 'active';
       }
+    }
 
-      self.tab = tab;
-      $rootScope.$emit('Local/TabChanged', tab);
-    });
+    self.tab = tab;
+    $rootScope.$emit('Local/TabChanged', tab);
   };
 
 
@@ -400,6 +393,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       self.setOngoingProcess('updatingPendingTxps', true);
       $log.debug('Updating PendingTxps');
       fc.getTxProposals({}, function(err, txps) {
+console.log('[index.js:395]',txps); //TODO
         self.setOngoingProcess('updatingPendingTxps', false);
         if (err) {
           self.handleError(err);
@@ -843,6 +837,79 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     }), 'name');
   };
 
+  self.initGlidera = function(accessToken) {
+    if (self.isShared) return;
+    self.glideraStatus = null;
+
+    glideraService.setCredentials(self.network);
+
+    var getToken = function(cb) {
+      if (accessToken) {
+        cb(null, accessToken);
+      } else {
+        storageService.getGlideraToken(self.network, cb);
+      }
+    };
+
+    getToken(function(err, accessToken) {
+      if (err || !accessToken) return;
+      else {
+        self.glideraLoading = gettext('Connecting to Glidera...');
+        glideraService.getAccessTokenPermissions(accessToken, function(err, p) {
+          self.glideraLoading = null;
+          if (err) {
+            self.glideraError = err;
+          }
+          else {
+            self.glideraToken = accessToken;
+            self.glideraPermissions = p;
+            self.updateGlidera({ fullUpdate: true});
+          }
+        });
+      }
+    });
+  };
+
+  self.updateGlidera = function(opts) {
+    if (!self.glideraToken || !self.glideraPermissions) return;
+    var accessToken = self.glideraToken;
+    var permissions = self.glideraPermissions;
+
+    opts = opts || {};
+
+    glideraService.getStatus(accessToken, function(err, data) {
+      self.glideraStatus = data;
+    });
+
+    glideraService.getLimits(accessToken, function(err, limits) {
+      self.glideraLimits = limits;
+    });
+
+    if (permissions.transaction_history) {
+      self.glideraLoadingHistory = gettext('Getting Glidera transactions...');
+      glideraService.getTransactions(accessToken, function(err, data) {
+        self.glideraLoadingHistory = null;
+        self.glideraTxs = data;
+      });
+    }
+    
+    if (permissions.view_email_address && opts.fullUpdate) {
+      self.glideraLoadingEmail = gettext('Getting Glidera Email...');
+      glideraService.getEmail(accessToken, function(err, data) {
+        self.glideraLoadingEmail = null;
+        self.glideraEmail = data.email;
+      });
+    }
+    if (permissions.personal_info && opts.fullUpdate) {
+      self.glideraLoadingPersonalInfo = gettext('Getting Glidera Personal Information...');
+      glideraService.getPersonalInfo(accessToken, function(err, data) {
+        self.glideraLoadingPersonalInfo = null;
+        self.glideraPersonalInfo = data;
+      });
+    }
+
+  };
+
   // UX event handlers
   $rootScope.$on('Local/ColorUpdated', function(event) {
     self.updateColor();
@@ -890,6 +957,18 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     }, function() {
       $log.debug('Remote preferences saved')
     });
+  });
+
+  $rootScope.$on('Local/GlideraTokenUpdated', function(event, accessToken) {
+    self.initGlidera(accessToken);
+  });
+
+  $rootScope.$on('Local/GlideraTx', function(event, accessToken, permissions) {
+    self.updateGlidera();
+  });
+
+  $rootScope.$on('Local/GlideraError', function(event) {
+    self.debouncedUpdate();
   });
 
   $rootScope.$on('Local/UnitSettingUpdated', function(event) {
@@ -989,8 +1068,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     });
   });
 
-  lodash.each(['NewTxProposal', 'TxProposalFinallyRejected', 'TxProposalRemoved',
-    'Local/NewTxProposal', 'Local/TxProposalAction', 'ScanFinished'
+  lodash.each(['NewTxProposal', 'TxProposalFinallyRejected', 'TxProposalRemoved', 'NewOutgoingTxByThirdParty',
+    'Local/NewTxProposal', 'Local/TxProposalAction', 'ScanFinished', 'Local/GlideraTx'
   ], function(eventName) {
     $rootScope.$on(eventName, function(event, untilItChanges) {
       self.updateAll({

@@ -288,6 +288,56 @@ angular
           },
         }
       })
+      .state('uriglidera', {
+        url: '/uri-glidera?code',
+        needProfile: true,
+        views: {
+          'main': {
+            templateUrl: 'views/glideraUri.html'
+          },
+        }
+      })
+      .state('glidera', {
+        url: '/glidera',
+        walletShouldBeComplete: true,
+        needProfile: true,
+        views: {
+          'main': {
+            templateUrl: 'views/glidera.html'
+          },
+        }
+      })
+      .state('buyGlidera', {
+        url: '/buy',
+        walletShouldBeComplete: true,
+        needProfile: true,
+        views: {
+          'main': {
+            templateUrl: 'views/buyGlidera.html'
+          },
+        }
+      })
+      .state('sellGlidera', {
+        url: '/sell',
+        walletShouldBeComplete: true,
+        needProfile: true,
+        views: {
+          'main': {
+            templateUrl: 'views/sellGlidera.html'
+          },
+        }
+      })
+
+    .state('preferencesGlidera', {
+        url: '/preferencesGlidera',
+        walletShouldBeComplete: true,
+        needProfile: true,
+        views: {
+          'main': {
+            templateUrl: 'views/preferencesGlidera.html'
+          },
+        }
+      })
 
     .state('preferencesAdvanced', {
         url: '/preferencesAdvanced',
@@ -486,11 +536,16 @@ angular
       copayers: -1,
       cordova: -1,
       payment: -1,
+      uriglidera: -1,
 
       preferences: 11,
+      glidera: 11,
       preferencesColor: 12,
       backup: 12,
       preferencesAdvanced: 12,
+      buyGlidera: 12,
+      sellGlidera: 12,
+      preferencesGlidera: 12,
       delete: 13,
       preferencesLanguage: 12,
       preferencesUnit: 12,
