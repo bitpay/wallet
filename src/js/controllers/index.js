@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, lodash, go, profileService, configService, isCordova, rateService, storageService, addressService, gettextCatalog, gettext, amMoment, nodeWebkit, addonManager, feeService, isChromeApp, bwsError, utilService, $state, glideraService) {
+angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, lodash, go, profileService, configService, isCordova, rateService, storageService, addressService, gettextCatalog, gettext, amMoment, nodeWebkit, addonManager, feeService, isChromeApp, bwsError, txFormatService, glideraService) {
   var self = this;
   self.isCordova = isCordova;
   self.onGoingProcess = {};
@@ -484,7 +484,7 @@ console.log('[index.js:395]',txps); //TODO
     self.pendingTxProposalsCountForUs = 0;
     lodash.each(txps, function(tx) {
       
-      tx = utilService.processTx(tx);
+      tx = txFormatService.processTx(tx);
 
       var action = lodash.find(tx.actions, {
         copayerId: self.copayerId
@@ -519,7 +519,7 @@ console.log('[index.js:395]',txps); //TODO
     var c = 0;
     self.txHistoryPaging = txs[self.limitHistory] ? true : false;
     lodash.each(txs, function(tx) {
-      tx = utilService.processTx(tx);
+      tx = txFormatService.processTx(tx);
 
       // no future transactions...
       if (tx.time > now)

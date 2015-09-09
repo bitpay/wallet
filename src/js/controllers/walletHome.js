@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('walletHomeController', function($scope, $rootScope, $timeout, $filter, $modal, $log, notification, txStatus, isCordova, profileService, lodash, configService, rateService, storageService, bitcore, isChromeApp, gettext, gettextCatalog, nodeWebkit, addressService, feeService, bwsError, utilService) {
+angular.module('copayApp.controllers').controller('walletHomeController', function($scope, $rootScope, $timeout, $filter, $modal, $log, notification, txStatus, isCordova, profileService, lodash, configService, rateService, storageService, bitcore, isChromeApp, gettext, gettextCatalog, nodeWebkit, addressService, feeService, bwsError, txFormatService) {
 
   var self = this;
   $rootScope.hideMenuBar = false;
@@ -222,7 +222,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
             var action = lodash.find(tx.actions, {
               copayerId: fc.credentials.copayerId
             });
-            $scope.tx = utilService.processTx(tx);
+            $scope.tx = txFormatService.processTx(tx);
             if (!action && tx.status == 'pending')
               $scope.tx.pendingForUs = true;
             $scope.updateCopayerList();
