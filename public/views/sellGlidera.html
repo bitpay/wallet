@@ -20,7 +20,7 @@
     </div>
   </div>
 
-  <div ng-show="index.glideraLimits">
+  <div ng-show="index.glideraLimits && !sell.show2faCodeInput && !sell.success">
     <h4 class="title m0">
       <div class="left">
         <i class="fi-info size-24 m10r"></i>
@@ -28,11 +28,11 @@
       <div class="size-10">
         <span class="text-light" translate>Daily sell limit</span>:
         ${{index.glideraLimits.dailySell}} 
-        (remaining ${{index.glideraLimits.dailySellRemaining}}) 
+        (${{index.glideraLimits.dailySellRemaining}} remaining) 
         <br>
         <span class="text-light" translate>Monthly sell limit</span>:
         ${{index.glideraLimits.monthlySell}} 
-        (remaining ${{index.glideraLimits.monthlySellRemaining}})
+        (${{index.glideraLimits.monthlySellRemaining}} remaining)
       </div>
     </h4>
   </div>
@@ -67,11 +67,14 @@
             
             <div class="text-center text-gray size-12 m20b" ng-show="sell.sellPrice.qty">
               Sell 
-              <span ng-show="qty">${{sell.sellPrice.subtotal}} {{sell.sellPrice.currency}} in Bitcoin</span> 
+              <span ng-show="qty"> {{sell.sellPrice.currency}} {{sell.sellPrice.subtotal}}  in Bitcoin</span> 
               <span ng-show="fiat">{{sell.sellPrice.qty}} BTC</span> 
-              at ${{sell.sellPrice.price}} {{sell.sellPrice.currency}} 
+              at {{sell.sellPrice.price}} {{sell.sellPrice.currency}}/BTC
+
             </div>
-            
+            <div class="text-center text-gray size-12 m20b" ng-show="!sell.sellPrice.qty" translate>
+              (Enter the amount to get the exchange rate)
+            </div>
             <input class="button black expand round" 
             ng-style="{'background-color':index.backgroundColor}"
             type="submit" value="{{'Continue'|translate}}" 
@@ -80,20 +83,23 @@
         </form> 
       </div>
       <div ng-show="sell.show2faCodeInput && !sell.success">
-        <p class="text-gray" translate>
-        {{sell.sellPrice.qty}} BTC will be immediately sent from your wallet to Glidera. The total of ${{sell.sellPrice.subtotal}} {{sell.sellPrice.currency}} will be deposited in your bank account in 4-6 business days.
-        </p>
-        <p class="text-gray" translate>
-          A SMS containing a confirmation code was sent to your phone. Please, enter code below
-        </p>
-        <form name="sellForm" 
-          ng-submit="sell.createTx(index.glideraToken, index.glideraPermissions, twoFaCode)" novalidate>
-          <label translate>Glidera 2FA Code</label>
-            <input type="number" ng-model="twoFaCode" required>
-            <input class="button black expand round" 
-            ng-style="{'background-color':index.backgroundColor}"
-            type="submit" value="{{'Sell'|translate}}" ng-disabled="sellForm.$invalid || sell.loading">
-        </form>
+        <div class="m10t text-center" translate>
+{{sell.sellPrice.qty}} BTC &rarr; {{sell.sellPrice.currency}} {{sell.sellPrice.subtotal}}
+          <p class="m20t" translate>
+            A SMS containing a confirmation code was sent to your phone. <br>
+            Please, enter the code below
+          </p>
+          <form name="sellForm" 
+            ng-submit="sell.createTx(index.glideraToken, index.glideraPermissions, twoFaCode)" novalidate>
+              <input type="number" ng-model="twoFaCode" required>
+              <input class="button black expand round" 
+              ng-style="{'background-color':index.backgroundColor}"
+              type="submit" value="{{'Sell'|translate}}" ng-disabled="sellForm.$invalid || sell.loading">
+          </form>
+          <p class="m10t size-12 text-gray" translate>
+          Bitcoins will be immediately sent from your wallet to Glidera. Fiat will be deposited in your bank account in 4-6 business days.
+          </p>
+        </div>
       </div>
       <div class="box-notification" ng-show="sell.error && !sell.success">
         <span class="text-warning size-14">
@@ -109,7 +115,6 @@
         <button class="outline dark-gray round expand"
           ng-click="$root.go('glidera')">OK</button>
       </div>
-    </div>
   </div>
 </div>
 <div class="extra-margin-bottom"></div>

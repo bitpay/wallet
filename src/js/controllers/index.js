@@ -863,15 +863,19 @@ console.log('[index.js:395]',txps); //TODO
           else {
             self.glideraToken = accessToken;
             self.glideraPermissions = p;
-            self.updateGlidera(accessToken, p);
+            self.updateGlidera({ fullUpdate: true});
           }
         });
       }
     });
   };
 
-  self.updateGlidera = function(accessToken, permissions) {
-    if (!accessToken || !permissions) return;
+  self.updateGlidera = function(opts) {
+    if (!self.glideraToken || !self.glideraPermissions) return;
+    var accessToken = self.glideraToken;
+    var permissions = self.glideraPermissions;
+
+    opts = opts || {};
 
     glideraService.getStatus(accessToken, function(err, data) {
       self.glideraStatus = data;
@@ -880,21 +884,7 @@ console.log('[index.js:395]',txps); //TODO
     glideraService.getLimits(accessToken, function(err, limits) {
       self.glideraLimits = limits;
     });
-    
-    if (permissions.view_email_address) {
-      self.glideraLoadingEmail = gettext('Getting Glidera Email...');
-      glideraService.getEmail(accessToken, function(err, data) {
-        self.glideraLoadingEmail = null;
-        self.glideraEmail = data.email;
-      });
-    }
-    if (permissions.personal_info) {
-      self.glideraLoadingPersonalInfo = gettext('Getting Glidera Personal Information...');
-      glideraService.getPersonalInfo(accessToken, function(err, data) {
-        self.glideraLoadingPersonalInfo = null;
-        self.glideraPersonalInfo = data;
-      });
-    }
+
     if (permissions.transaction_history) {
       self.glideraLoadingHistory = gettext('Getting Glidera transactions...');
       glideraService.getTransactions(accessToken, function(err, data) {
@@ -902,6 +892,22 @@ console.log('[index.js:395]',txps); //TODO
         self.glideraTxs = data;
       });
     }
+    
+    if (permissions.view_email_address && opts.fullUpdate) {
+      self.glideraLoadingEmail = gettext('Getting Glidera Email...');
+      glideraService.getEmail(accessToken, function(err, data) {
+        self.glideraLoadingEmail = null;
+        self.glideraEmail = data.email;
+      });
+    }
+    if (permissions.personal_info && opts.fullUpdate) {
+      self.glideraLoadingPersonalInfo = gettext('Getting Glidera Personal Information...');
+      glideraService.getPersonalInfo(accessToken, function(err, data) {
+        self.glideraLoadingPersonalInfo = null;
+        self.glideraPersonalInfo = data;
+      });
+    }
+
   };
 
   // UX event handlers
@@ -957,8 +963,8 @@ console.log('[index.js:395]',txps); //TODO
     self.initGlidera(accessToken);
   });
 
-  $rootScope.$on('Local/GlideraUpdated', function(event, accessToken, permissions) {
-    self.updateGlidera(accessToken, permissions);
+  $rootScope.$on('Local/GlideraTx', function(event, accessToken, permissions) {
+    self.updateGlidera();
   });
 
   $rootScope.$on('Local/GlideraError', function(event) {
@@ -1063,7 +1069,7 @@ console.log('[index.js:395]',txps); //TODO
   });
 
   lodash.each(['NewTxProposal', 'TxProposalFinallyRejected', 'TxProposalRemoved',
-    'Local/NewTxProposal', 'Local/TxProposalAction', 'ScanFinished'
+    'Local/NewTxProposal', 'Local/TxProposalAction', 'ScanFinished', 'Local/GlideraTx'
   ], function(eventName) {
     $rootScope.$on(eventName, function(event, untilItChanges) {
       self.updateAll({
