@@ -66,11 +66,10 @@
           Testnet wallets only work with Glidera Sandbox Accounts
         </div>
 
-        <button
-          class="dark-gray outline round tiny"
-          ng-click="$root.openExternalLink(glidera.getAuthenticateUrl()); showOauthForm = true" translate>
+        <a class="button dark-gray outline round tiny" 
+          ng-click="$root.openExternalLink(glidera.getAuthenticateUrl(), '_system'); showOauthForm = true" translate>
           Connect to Glidera
-        </button>
+        </a>
         <div>
           <a href ng-click="showOauthForm = true" class="text-gray size-12">
             Do you already have the Oauth Code?

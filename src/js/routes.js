@@ -288,6 +288,15 @@ angular
           },
         }
       })
+      .state('uriglidera', {
+        url: '/uri-glidera?code',
+        needProfile: true,
+        views: {
+          'main': {
+            templateUrl: 'views/glideraUri.html'
+          },
+        }
+      })
       .state('glidera', {
         url: '/glidera',
         walletShouldBeComplete: true,
@@ -527,6 +536,7 @@ angular
       copayers: -1,
       cordova: -1,
       payment: -1,
+      uriglidera: -1,
 
       preferences: 11,
       glidera: 11,
