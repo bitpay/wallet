@@ -121,7 +121,7 @@ angular.module('copayApp.controllers').controller('sellGlideraController',
                       }
                       else {
                         self.success = data;
-                        $scope.$emit('Local/GlideraUpdated', token, permissions);
+                        $scope.$emit('Local/GlideraTx');
                       }
                     });
                   }
