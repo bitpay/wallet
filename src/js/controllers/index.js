@@ -1068,7 +1068,7 @@ console.log('[index.js:395]',txps); //TODO
     });
   });
 
-  lodash.each(['NewTxProposal', 'TxProposalFinallyRejected', 'TxProposalRemoved',
+  lodash.each(['NewTxProposal', 'TxProposalFinallyRejected', 'TxProposalRemoved', 'NewOutgoingTxByThirdParty',
     'Local/NewTxProposal', 'Local/TxProposalAction', 'ScanFinished', 'Local/GlideraTx'
   ], function(eventName) {
     $rootScope.$on(eventName, function(event, untilItChanges) {
