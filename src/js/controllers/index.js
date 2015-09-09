@@ -839,6 +839,8 @@ console.log('[index.js:395]',txps); //TODO
 
   self.initGlidera = function(accessToken) {
     if (self.isShared) return;
+    self.glideraStatus = null;
+
     glideraService.setCredentials(self.network);
 
     var getToken = function(cb) {
