@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.services').factory('utilService', function(profileService, rateService, configService, lodash) {
+angular.module('copayApp.services').factory('txFormatService', function(profileService, rateService, configService, lodash) {
   var root = {};
 
   var formatAmountStr = function(amount) {
