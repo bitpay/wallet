@@ -133,14 +133,18 @@
   </div>
 
   <div class="text-center text-gray m20t" ng-show="tx.status != 'pending'">
-    <div ng-show="tx.status=='accepted'">
+    <div ng-show="tx.status=='accepted' && !tx.isGlidera" >
       <div class="m10b size-12" translate>Payment accepted, but not yet broadcasted</div>
       
       <button class="primary round"
         ng-click="broadcast(tx)"
-        ng-disabled="loading"> <i class="fi-upload-cloud"></i>
+        ng-disabled="loading"
+        > <i class="fi-upload-cloud"></i>
         <span translate>Broadcast Payment</span>
       </button>
+    </div>
+    <div ng-show="tx.status=='accepted' && tx.isGlidera" >
+      <div class="m10 size-12" translate>Payment accepted. It will be broadcasted by Glidera. It case there is a problem, it can be deleted after 6 hours it was created.</div>
     </div>
     <div class="text-success m10t"
       ng-show="tx.status=='broadcasted'" translate>
@@ -153,7 +157,7 @@
   </div>
 
   <div class="row columns text-center m20t" ng-if="tx.canBeRemoved">
-    <div class="text-gray size-12 m20b" show="tx.canBeRemoved" translate>
+    <div class="text-gray size-12 m20b" ng-if="!tx.isGlidera" translate>
       * A payment proposal can be deleted if 1) you are the creator, and no other copayer has signed, or 2) 24 hours have passed since the proposal was created.
     </div>
     <button class="tiny round outline dark-gray warning" ng-click="remove(tx)"
