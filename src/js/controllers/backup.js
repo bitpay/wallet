@@ -3,7 +3,7 @@
 angular.module('copayApp.controllers').controller('wordsController',
   function($rootScope, $scope, $timeout, profileService, go, gettext, confirmDialog, notification) {
 
-    var msg = gettext('Are you to delete the backup words?');
+    var msg = gettext('Are you sure you want to delete the backup words?');
     var successMsg = gettext('Backup words deleted');
 
     this.done = function() {

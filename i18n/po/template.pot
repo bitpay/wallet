@@ -4,21 +4,17 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Project-Id-Version: \n"
 
+#: public/views/buyGlidera.html
+#: public/views/sellGlidera.html
+msgid "(Enter the amount to get the exchange rate)"
+msgstr ""
+
 #: public/views/walletHome.html
 msgid "(possible double spend)"
 msgstr ""
 
 #: src/js/controllers/walletHome.js
-msgid "{{fee}} will be discounted for bitcoin networking fees"
-msgstr ""
-
-#: public/views/copayers.html
-#: public/views/walletHome.html
-msgid "{{index.m}}-of-{{index.n}}"
-msgstr ""
-
-#: public/views/includes/sidebar.html
-msgid "{{item.m}}-of-{{item.n}}"
+msgid "{{fee}} will be deducted for bitcoin networking fees"
 msgstr ""
 
 #: src/js/controllers/importLegacy.js
@@ -30,15 +26,34 @@ msgid "* A payment proposal can be deleted if 1) you are the creator, and no oth
 msgstr ""
 
 #: public/views/backup.html
-msgid "* You can safely install your backup on another device and use your wallet from multiple devices at the same time."
+msgid "<b>OR</b> 1 wallet export file and the remaining quorum of wallet seeds (e.g. in a 3-5 wallet: 1 wallet export file + 2 wallet seeds of any of the other copayers)."
 msgstr ""
 
 #: public/views/backup.html
-msgid "A backup without its private key will allow the user to see the wallet balance, transactions, and create spend proposals. However, it will not be able to approve (sign) proposals."
+msgid "<b>OR</b> the wallet seed of <b>all</b>  copayers in the wallet"
+msgstr ""
+
+#: public/views/backup.html
+msgid "<b>OR</b> the wallet seeds of <b>all</b> copayers in the wallet"
 msgstr ""
 
 #: public/views/splash.html
 msgid "A multisignature bitcoin wallet"
+msgstr ""
+
+#: public/views/buyGlidera.html
+#: public/views/sellGlidera.html
+msgid ""
+"A SMS containing a confirmation code was sent to your phone. <br>\n"
+"            Please, enter the code below"
+msgstr ""
+
+#: public/views/buyGlidera.html
+msgid "A transfer has been initiated from your bank account. Your bitcoins should arrive to your wallet in 4-6 business days."
+msgstr ""
+
+#: public/views/sellGlidera.html
+msgid "A transfer has been initiated to your bank account and should arrive in 4-6 business days."
 msgstr ""
 
 #: public/views/preferences.html
@@ -46,10 +61,28 @@ msgid "About Copay"
 msgstr ""
 
 #: public/views/modals/txp-details.html
+#: src/js/services/confirmDialog.js
 #: src/js/controllers/copayers.js
 #: src/js/controllers/preferencesDelete.js
 #: src/js/controllers/walletHome.js
 msgid "Accept"
+msgstr ""
+
+#: public/views/preferencesGlidera.html
+msgid "Account"
+msgstr ""
+
+#: public/views/preferencesGlidera.html
+msgid "Active"
+msgstr ""
+
+#: public/views/glidera.html
+msgid "Activity"
+msgstr ""
+
+#: public/views/create.html
+#: public/views/join.html
+msgid "Add an optional passphrase to secure the seed"
 msgstr ""
 
 #: public/views/includes/sidebar.html
@@ -62,8 +95,12 @@ msgstr ""
 msgid "Address"
 msgstr ""
 
-#: public/views/preferencesInformation.html
-msgid "Address Type"
+#: public/views/preferencesGlidera.html
+msgid "Address 1"
+msgstr ""
+
+#: public/views/preferencesGlidera.html
+msgid "Address 2"
 msgstr ""
 
 #: public/views/preferences.html
@@ -94,7 +131,9 @@ msgstr ""
 msgid "Alternative Currency"
 msgstr ""
 
+#: public/views/buyGlidera.html
 #: public/views/paymentUri.html
+#: public/views/sellGlidera.html
 #: public/views/walletHome.html
 #: public/views/includes/output.html
 #: public/views/modals/customized-amount.html
@@ -106,6 +145,8 @@ msgstr ""
 msgid "Amount  below dust threshold"
 msgstr ""
 
+#: public/views/buyGlidera.html
+#: public/views/sellGlidera.html
 #: public/views/walletHome.html
 #: public/views/modals/customized-amount.html
 msgid "Amount in"
@@ -113,6 +154,10 @@ msgstr ""
 
 #: public/views/preferencesLanguage.html
 msgid "Applying changes"
+msgstr ""
+
+#: src/js/controllers/backup.js
+msgid "Are you sure you want to delete the backup words?"
 msgstr ""
 
 #: src/js/controllers/copayers.js
@@ -130,6 +175,7 @@ msgid "Average confirmation time: {{fee.nbBlocks * 10}} minutes"
 msgstr ""
 
 #: public/views/includes/topbar.html
+#: public/views/modals/glidera-tx-details.html
 #: public/views/modals/tx-details.html
 #: public/views/modals/txp-details.html
 msgid "Back"
@@ -139,33 +185,40 @@ msgstr ""
 msgid "Backup"
 msgstr ""
 
-#: src/js/controllers/backup.js
-msgid "Backup created"
-msgstr ""
-
 #: public/views/walletHome.html
 msgid "Backup now"
 msgstr ""
 
-#: public/views/backup.html
+#: public/views/export.html
 msgid "Backup options"
+msgstr ""
+
+#: src/js/controllers/backup.js
+msgid "Backup words deleted"
 msgstr ""
 
 #: src/js/services/profileService.js
 msgid "Bad wallet invitation"
 msgstr ""
 
-#: public/views/preferencesInformation.html
-msgid "Balance By Address"
+#: public/views/preferencesGlidera.html
+msgid "Bank Account Is Setup"
+msgstr ""
+
+#: public/views/preferencesGlidera.html
+msgid "Bank Account State"
+msgstr ""
+
+#: public/views/preferencesGlidera.html
+msgid "Basic Information State"
 msgstr ""
 
 #: public/views/walletHome.html
 msgid "Before receiving funds, it is highly recommended you backup your wallet keys."
 msgstr ""
 
-#: public/views/create.html
-#: public/views/join.html
-msgid "BIP32 master extended private key"
+#: public/views/preferencesGlidera.html
+msgid "Birth Date"
 msgstr ""
 
 #: public/views/walletHome.html
@@ -184,6 +237,15 @@ msgstr ""
 msgid "Bitcoin URI is NOT valid!"
 msgstr ""
 
+#: public/views/sellGlidera.html
+msgid "Bitcoins will be immediately sent from your wallet to Glidera. Fiat will be deposited in your bank account in 4-6 business days."
+msgstr ""
+
+#: public/views/glidera.html
+#: public/views/modals/glidera-tx-details.html
+msgid "Bought"
+msgstr ""
+
 #: public/views/modals/txp-details.html
 msgid "Broadcast Payment"
 msgstr ""
@@ -200,9 +262,32 @@ msgstr ""
 msgid "Browser unsupported"
 msgstr ""
 
+#: public/views/buyGlidera.html
+#: public/views/preferencesGlidera.html
+msgid "Buy"
+msgstr ""
+
+#: public/views/glidera.html
+msgid "Buy Bitcoin"
+msgstr ""
+
+#: public/views/preferencesGlidera.html
+msgid "Buy/Sell"
+msgstr ""
+
+#: public/views/preferencesGlidera.html
+msgid "Buy/Sell Disabled (pending first transaction)"
+msgstr ""
+
+#: src/js/controllers/buyGlidera.js
+msgid "Buying bitcoin..."
+msgstr ""
+
 #: public/views/copayers.html
 #: public/views/walletHome.html
 #: public/views/modals/confirmation.html
+#: public/views/modals/glidera-confirmation.html
+#: src/js/services/confirmDialog.js
 #: src/js/controllers/copayers.js
 #: src/js/controllers/preferencesDelete.js
 #: src/js/controllers/walletHome.js
@@ -233,6 +318,10 @@ msgstr ""
 msgid "Choose a wallet to send funds"
 msgstr ""
 
+#: public/views/preferencesGlidera.html
+msgid "City"
+msgstr ""
+
 #: public/views/includes/topbar.html
 #: public/views/modals/advancedSend.html
 #: public/views/modals/copayers.html
@@ -251,6 +340,7 @@ msgstr ""
 msgid "Commit hash"
 msgstr ""
 
+#: src/js/services/confirmDialog.js
 #: src/js/controllers/copayers.js
 #: src/js/controllers/preferencesDelete.js
 #: src/js/controllers/walletHome.js
@@ -261,12 +351,33 @@ msgstr ""
 msgid "Confirmations"
 msgstr ""
 
-#: src/js/services/bwsError.js
-msgid "Copayer already in this wallet"
+#: public/views/glidera.html
+msgid "Connect to Glidera"
+msgstr ""
+
+#: public/views/glidera.html
+msgid "Connect your Glidera account to get started"
+msgstr ""
+
+#: public/views/glidera.html
+#: public/views/glideraUri.html
+#: src/js/controllers/index.js
+msgid "Connecting to Glidera..."
+msgstr ""
+
+#: public/views/create.html
+#: public/views/import.html
+#: public/views/join.html
+msgid "Connecting to Ledger Wallet..."
+msgstr ""
+
+#: public/views/buyGlidera.html
+#: public/views/sellGlidera.html
+msgid "Continue"
 msgstr ""
 
 #: src/js/services/bwsError.js
-msgid "Copayer already registered"
+msgid "Copayer already in this wallet"
 msgstr ""
 
 #: src/js/services/bwsError.js
@@ -281,24 +392,25 @@ msgstr ""
 msgid "Copayers"
 msgstr ""
 
-#: src/js/controllers/backup.js
 #: src/js/controllers/copayers.js
+#: src/js/controllers/export.js
 #: src/js/controllers/walletHome.js
 msgid "Copied to clipboard"
 msgstr ""
 
-#: public/views/backup.html
+#: public/views/export.html
 msgid "Copy backup to a safe place"
 msgstr ""
 
-#: public/views/backup.html
+#: public/views/export.html
 msgid "Copy this text as it is to a safe place (notepad or email)"
 msgstr ""
 
-#: public/views/backup.html
+#: public/views/export.html
 msgid "Copy to clipboard"
 msgstr ""
 
+#: src/js/controllers/sellGlidera.js
 #: src/js/controllers/walletHome.js
 msgid "Could not accept payment"
 msgstr ""
@@ -323,6 +435,14 @@ msgstr ""
 msgid "Could not create using the specified extended private key"
 msgstr ""
 
+#: src/js/services/profileService.js
+msgid "Could not create using the specified extended public key"
+msgstr ""
+
+#: src/js/services/profileService.js
+msgid "Could not create: Invalid wallet seed"
+msgstr ""
+
 #: src/js/controllers/import.js
 msgid "Could not decrypt file, check your password"
 msgstr ""
@@ -339,12 +459,21 @@ msgstr ""
 msgid "Could not fetch transaction history"
 msgstr ""
 
-#: src/js/services/profileService.js
-msgid "Could not import. Check input file and password"
+#: src/js/controllers/buyGlidera.js
+#: src/js/controllers/sellGlidera.js
+msgid "Could not get exchange information. Please, try again."
+msgstr ""
+
+#: src/js/controllers/sellGlidera.js
+msgid "Could not get the destination bitcoin address"
 msgstr ""
 
 #: src/js/services/profileService.js
-msgid "Could not join using the specified extended private key"
+msgid "Could not import"
+msgstr ""
+
+#: src/js/services/profileService.js
+msgid "Could not import. Check input file and password"
 msgstr ""
 
 #: src/js/services/profileService.js
@@ -359,12 +488,21 @@ msgstr ""
 msgid "Could not reject payment"
 msgstr ""
 
+#: src/js/controllers/buyGlidera.js
+#: src/js/controllers/sellGlidera.js
+msgid "Could not send confirmation code to your phone"
+msgstr ""
+
 #: src/js/controllers/walletHome.js
 msgid "Could not send payment"
 msgstr ""
 
 #: src/js/controllers/index.js
 msgid "Could not update Wallet"
+msgstr ""
+
+#: public/views/preferencesGlidera.html
+msgid "Country"
 msgstr ""
 
 #: public/views/walletHome.html
@@ -405,6 +543,31 @@ msgstr ""
 msgid "Current fee rate for this policy: {{fee.feePerKBUnit}}/kiB"
 msgstr ""
 
+#: public/views/preferencesGlidera.html
+msgid "Daily Buy"
+msgstr ""
+
+#: public/views/buyGlidera.html
+msgid "Daily buy limit"
+msgstr ""
+
+#: public/views/preferencesGlidera.html
+msgid "Daily Buy Remaining"
+msgstr ""
+
+#: public/views/preferencesGlidera.html
+msgid "Daily Sell"
+msgstr ""
+
+#: public/views/sellGlidera.html
+msgid "Daily sell limit"
+msgstr ""
+
+#: public/views/preferencesGlidera.html
+msgid "Daily Sell Remaining"
+msgstr ""
+
+#: public/views/modals/glidera-tx-details.html
 #: public/views/modals/tx-details.html
 msgid "Date"
 msgstr ""
@@ -425,15 +588,16 @@ msgstr ""
 msgid "Delete Wallet"
 msgstr ""
 
+#: public/views/backup.html
+msgid "DELETE WORDS"
+msgstr ""
+
 #: src/js/controllers/walletHome.js
 msgid "Deleting payment"
 msgstr ""
 
-#: public/views/preferencesInformation.html
-msgid "Derivation Strategy"
-msgstr ""
-
 #: public/views/modals/customized-amount.html
+#: public/views/modals/glidera-tx-details.html
 #: public/views/modals/paypro.html
 #: public/views/modals/tx-details.html
 #: public/views/modals/txp-details.html
@@ -444,15 +608,15 @@ msgstr ""
 msgid "Disabled"
 msgstr ""
 
-#: public/views/backup.html
-msgid "Do not include private key in backup"
+#: public/views/export.html
+msgid "Do not include private key"
 msgstr ""
 
 #: public/views/translators.html
 msgid "Don't see your language on Crowdin? Contact the Owner on Crowdin! We'd love to support your language."
 msgstr ""
 
-#: public/views/backup.html
+#: public/views/export.html
 msgid "Download backup"
 msgstr ""
 
@@ -464,24 +628,37 @@ msgstr ""
 msgid "Economy"
 msgstr ""
 
+#: public/views/preferencesGlidera.html
+msgid "Email"
+msgstr ""
+
 #: public/views/preferencesEmail.html
-msgid "Email for wallet notifications"
+msgid "email for wallet notifications"
+msgstr ""
+
+#: public/views/preferencesGlidera.html
+msgid "Email Is Setup"
 msgstr ""
 
 #: public/views/preferences.html
 msgid "Email Notifications"
 msgstr ""
 
-#: public/views/preferences.html
-msgid "Encrypt Private Key"
+#: src/js/controllers/export.js
+msgid "Encrypted export file saved"
 msgstr ""
 
-#: src/js/controllers/backup.js
-msgid "Encrypted backup file saved"
+#: public/views/create.html
+#: public/views/join.html
+msgid "Enter the seed words (BIP39)"
 msgstr ""
 
 #: public/views/includes/password.html
 msgid "Enter your password"
+msgstr ""
+
+#: src/js/controllers/sellGlidera.js
+msgid "Error"
 msgstr ""
 
 #: src/js/controllers/index.js
@@ -501,12 +678,17 @@ msgstr ""
 msgid "Expires"
 msgstr ""
 
-#: public/views/preferencesInformation.html
-msgid "Extended Public Keys"
+#: public/views/preferences.html
+#: public/views/preferencesAdvanced.html
+msgid "Export"
 msgstr ""
 
-#: public/views/backup.html
-msgid "Failed to create backup"
+#: public/views/includes/walletInfo.html
+msgid "External Private Key:"
+msgstr ""
+
+#: public/views/export.html
+msgid "Failed to export"
 msgstr ""
 
 #: src/js/controllers/importLegacy.js
@@ -530,9 +712,25 @@ msgstr ""
 msgid "Fee policy for this transaction"
 msgstr ""
 
+#: public/views/modals/glidera-tx-details.html
+msgid "Fees"
+msgstr ""
+
 #. Get information of payment if using Payment Protocol
 #: src/js/controllers/walletHome.js
 msgid "Fetching Payment Information"
+msgstr ""
+
+#: public/views/buyGlidera.html
+msgid "Fiat will be immediately withdrawn from your bank account. The bitcoins will be purchased and deposited to your wallet ({{index.walletName}}) in 2-4 business days."
+msgstr ""
+
+#: public/views/import.html
+msgid "File/Text Backup"
+msgstr ""
+
+#: public/views/preferencesGlidera.html
+msgid "First Name"
 msgstr ""
 
 #: public/views/translators.html
@@ -571,11 +769,24 @@ msgstr ""
 msgid "Getting address for wallet {{selectedWalletName}} ..."
 msgstr ""
 
+#: src/js/controllers/index.js
+msgid "Getting Glidera Email..."
+msgstr ""
+
+#: src/js/controllers/index.js
+msgid "Getting Glidera Personal Information..."
+msgstr ""
+
+#: src/js/controllers/index.js
+msgid "Getting Glidera transactions..."
+msgstr ""
+
 #: public/views/preferences.html
 msgid "Global settings"
 msgstr ""
 
 #: public/views/disclaimer.html
+#: public/views/glidera.html
 msgid "Go back"
 msgstr ""
 
@@ -583,15 +794,23 @@ msgstr ""
 msgid "Greek"
 msgstr ""
 
+#: public/views/preferences.html
+msgid "Hardware wallet"
+msgstr ""
+
 #: public/views/import.html
 msgid "Have a Backup from Copay v0.9?"
 msgstr ""
 
-#: public/views/backup.html
 #: public/views/create.html
+#: public/views/import.html
 #: public/views/join.html
 #: public/views/walletHome.html
 msgid "Hide advanced options"
+msgstr ""
+
+#: public/views/backup.html
+msgid "Hide Wallet Seed"
 msgstr ""
 
 #: src/js/controllers/index.js
@@ -606,11 +825,7 @@ msgstr ""
 msgid "I affirm that I have read, understood, and agree with these terms."
 msgstr ""
 
-#: public/views/create.html
-#: public/views/join.html
-msgid "If not given, a secure key will be generated"
-msgstr ""
-
+#: public/views/import.html
 #: public/views/importLegacy.html
 msgid "Import"
 msgstr ""
@@ -697,15 +912,42 @@ msgstr ""
 msgid "Language"
 msgstr ""
 
-#: public/views/preferencesInformation.html
-msgid "Last Wallet Addresses"
+#: public/views/preferencesGlidera.html
+msgid "Last Name"
+msgstr ""
+
+#: public/views/backup.html
+msgid "Learn more about Copay backups"
 msgstr ""
 
 #: public/views/importLegacy.html
 msgid "Learn more about Wallet Migration"
 msgstr ""
 
-#: src/js/routes.js
+#: public/views/import.html
+msgid "Ledger"
+msgstr ""
+
+#: public/views/create.html
+#: public/views/import.html
+#: public/views/join.html
+msgid "Ledger Slot"
+msgstr ""
+
+#: public/views/create.html
+#: public/views/join.html
+msgid "Ledger supports up to 20 Copay wallets simultaneously. Select which slot should be used to host this wallet"
+msgstr ""
+
+#: public/views/import.html
+msgid "Ledger supports up to 20 Copay wallets simultaneously. Select which slot to import"
+msgstr ""
+
+#: public/views/preferencesGlidera.html
+msgid "Limits"
+msgstr ""
+
+#: src/js/controllers/disclaimer.js
 msgid "Loading..."
 msgstr ""
 
@@ -725,11 +967,6 @@ msgstr ""
 msgid "Make a payment to"
 msgstr ""
 
-#: public/views/create.html
-#: public/views/join.html
-msgid "Master extended private key"
-msgstr ""
-
 #: public/views/includes/copayers.html
 #: public/views/modals/copayers.html
 #: public/views/modals/tx-details.html
@@ -747,6 +984,34 @@ msgstr ""
 
 #: public/views/paymentUri.html
 msgid "Message"
+msgstr ""
+
+#: public/views/preferencesGlidera.html
+msgid "Middle Name"
+msgstr ""
+
+#: public/views/preferencesGlidera.html
+msgid "Monthly Buy"
+msgstr ""
+
+#: public/views/buyGlidera.html
+msgid "Monthly buy limit"
+msgstr ""
+
+#: public/views/preferencesGlidera.html
+msgid "Monthly Buy Remaining"
+msgstr ""
+
+#: public/views/preferencesGlidera.html
+msgid "Monthly Sell"
+msgstr ""
+
+#: public/views/sellGlidera.html
+msgid "Monthly sell limit"
+msgstr ""
+
+#: public/views/preferencesGlidera.html
+msgid "Monthly Sell Remaining"
 msgstr ""
 
 #: public/views/walletHome.html
@@ -777,7 +1042,11 @@ msgstr ""
 msgid "New Payment Proposal"
 msgstr ""
 
-#: public/views/walletHome.html
+#: public/views/glidera.html
+msgid "No activity in your account"
+msgstr ""
+
+#: public/views/includes/walletInfo.html
 msgid "No Private key"
 msgstr ""
 
@@ -805,8 +1074,27 @@ msgstr ""
 msgid "Note"
 msgstr ""
 
-#: public/views/preferencesInformation.html
-msgid "Only Main (not change) addresses are shown. The addresses on this list were not verified locally at this time."
+#: public/views/preferencesGlidera.html
+msgid "Occupation"
+msgstr ""
+
+#: public/views/copayers.html
+#: public/views/walletHome.html
+#: public/views/includes/sidebar.html
+msgid "of"
+msgstr ""
+
+#: public/views/includes/alert.html
+#: public/views/includes/password.html
+msgid "OK"
+msgstr ""
+
+#: public/views/modals/tx-status.html
+msgid "OKAY"
+msgstr ""
+
+#: public/views/backup.html
+msgid "Once you have copy your wallet seed, it is recommended to delete it from this device."
 msgstr ""
 
 #: public/views/walletHome.html
@@ -819,12 +1107,12 @@ msgid "Participants"
 msgstr ""
 
 #: public/views/import.html
-#: public/views/importLegacy.html
-msgid "Password"
+msgid "Passphrase"
 msgstr ""
 
-#: public/views/includes/password.html
-msgid "Password cannot be recovered. Be sure to write it down"
+#: public/views/import.html
+#: public/views/importLegacy.html
+msgid "Password"
 msgstr ""
 
 #: src/js/services/profileService.js
@@ -837,6 +1125,10 @@ msgstr ""
 
 #: public/views/join.html
 msgid "Paste invitation here"
+msgstr ""
+
+#: public/views/glidera.html
+msgid "Paste the authorization code here"
 msgstr ""
 
 #: public/views/import.html
@@ -924,13 +1216,38 @@ msgstr ""
 msgid "Permanently delete this wallet. THIS ACTION CANNOT BE REVERSED"
 msgstr ""
 
+#: public/views/preferencesGlidera.html
+msgid "Permissions"
+msgstr ""
+
+#: public/views/preferencesGlidera.html
+msgid "Personal Information"
+msgstr ""
+
+#: public/views/preferencesGlidera.html
+msgid "Personal Information State"
+msgstr ""
+
 #: public/views/create.html
 msgid "Personal Wallet"
+msgstr ""
+
+#: public/views/preferencesGlidera.html
+msgid "Phone Is Setup"
 msgstr ""
 
 #: src/js/controllers/create.js
 #: src/js/controllers/join.js
 msgid "Please enter the required fields"
+msgstr ""
+
+#: src/js/controllers/import.js
+msgid "Please enter the seed words"
+msgstr ""
+
+#: src/js/controllers/create.js
+#: src/js/controllers/join.js
+msgid "Please enter the wallet seed"
 msgstr ""
 
 #: src/js/services/bwsError.js
@@ -945,16 +1262,25 @@ msgstr ""
 msgid "Portuguese"
 msgstr ""
 
+#: public/views/glidera.html
 #: public/views/walletHome.html
 msgid "Preferences"
 msgstr ""
 
-#: src/js/controllers/backup.js
+#: src/js/controllers/export.js
 msgid "Preparing backup..."
+msgstr ""
+
+#: public/views/modals/glidera-tx-details.html
+msgid "Price"
 msgstr ""
 
 #: src/js/services/feeService.js
 msgid "Priority"
+msgstr ""
+
+#: public/views/buyGlidera.html
+msgid "Purchase initiated"
 msgstr ""
 
 #: public/views/modals/customized-amount.html
@@ -1003,7 +1329,7 @@ msgstr ""
 msgid "Release Information"
 msgstr ""
 
-#: public/views/backup.html
+#: public/views/export.html
 #: public/views/includes/password.html
 msgid "Repeat password"
 msgstr ""
@@ -1013,17 +1339,40 @@ msgstr ""
 msgid "Request a specific amount"
 msgstr ""
 
-#: public/views/import.html
+#: public/views/preferences.html
+msgid "Request Password for Spending Funds"
+msgstr ""
+
+#: src/js/controllers/walletHome.js
+msgid "Requesting Ledger Wallet to sign"
+msgstr ""
+
 #: public/views/join.html
 msgid "Required"
+msgstr ""
+
+#: public/views/create.html
+msgid "Required number of signatures"
 msgstr ""
 
 #: public/views/splash.html
 msgid "Retrying..."
 msgstr ""
 
+#: public/views/modals/glidera-confirmation.html
+msgid "Revoke Glidera Token"
+msgstr ""
+
+#: public/views/preferencesGlidera.html
+msgid "Revoke Token"
+msgstr ""
+
 #: public/views/translators.html
 msgid "Russian"
+msgstr ""
+
+#: public/views/sellGlidera.html
+msgid "Sale initiated"
 msgstr ""
 
 #: public/views/preferencesAlias.html
@@ -1057,6 +1406,15 @@ msgid "See it on the blockchain"
 msgstr ""
 
 #: public/views/import.html
+msgid "Seed passphrase"
+msgstr ""
+
+#: public/views/create.html
+#: public/views/join.html
+msgid "Seed Passphrase"
+msgstr ""
+
+#: public/views/import.html
 msgid "Select a backup file"
 msgstr ""
 
@@ -1064,12 +1422,17 @@ msgstr ""
 msgid "Select a wallet"
 msgstr ""
 
-#: public/views/create.html
-msgid "Select required number of signatures"
+#: public/views/preferencesGlidera.html
+#: public/views/sellGlidera.html
+msgid "Sell"
 msgstr ""
 
-#: public/views/create.html
-msgid "Select total number of copayers"
+#: public/views/glidera.html
+msgid "Sell Bitcoin"
+msgstr ""
+
+#: src/js/controllers/sellGlidera.js
+msgid "Selling Bitcoin..."
 msgstr ""
 
 #: public/views/walletHome.html
@@ -1082,13 +1445,14 @@ msgstr ""
 msgid "Send All"
 msgstr ""
 
-#: public/views/preferencesInformation.html
-msgid "Send all by email"
-msgstr ""
-
-#: public/views/backup.html
+#: public/views/export.html
 #: public/views/preferencesLogs.html
 msgid "Send by email"
+msgstr ""
+
+#: src/js/controllers/buyGlidera.js
+#: src/js/controllers/sellGlidera.js
+msgid "Sending 2FA code..."
 msgstr ""
 
 #: public/views/walletHome.html
@@ -1099,6 +1463,10 @@ msgstr ""
 msgid "Server"
 msgstr ""
 
+#: src/js/services/bwsError.js
+msgid "Server response could not be verified"
+msgstr ""
+
 #: public/views/preferencesAbout.html
 msgid "Session log"
 msgstr ""
@@ -1107,12 +1475,12 @@ msgstr ""
 msgid "SET"
 msgstr ""
 
-#: public/views/includes/password.html
-msgid "Set up a password"
+#: public/views/export.html
+msgid "Set up a Export Password"
 msgstr ""
 
-#: public/views/backup.html
-msgid "Set up a Password for your backup"
+#: public/views/includes/password.html
+msgid "Set up a password"
 msgstr ""
 
 #: public/views/preferencesEmail.html
@@ -1124,7 +1492,6 @@ msgid "settings"
 msgstr ""
 
 #: public/views/walletHome.html
-#: public/views/modals/customized-amount.html
 msgid "Share address"
 msgstr ""
 
@@ -1144,11 +1511,15 @@ msgstr ""
 msgid "Shared Wallet"
 msgstr ""
 
-#: public/views/backup.html
 #: public/views/create.html
+#: public/views/import.html
 #: public/views/join.html
 #: public/views/walletHome.html
 msgid "Show advanced options"
+msgstr ""
+
+#: public/views/backup.html
+msgid "Show Wallet Seed"
 msgstr ""
 
 #: src/js/services/bwsError.js
@@ -1167,8 +1538,18 @@ msgstr ""
 msgid "SKIP BACKUP"
 msgstr ""
 
+#: public/views/glidera.html
+#: public/views/modals/glidera-tx-details.html
+msgid "Sold"
+msgstr ""
+
 #: public/views/translators.html
 msgid "Spanish"
+msgstr ""
+
+#: public/views/create.html
+#: public/views/join.html
+msgid "Specify your wallet seed"
 msgstr ""
 
 #: src/js/services/bwsError.js
@@ -1179,7 +1560,24 @@ msgstr ""
 msgid "Spend proposal not found"
 msgstr ""
 
+#: public/views/preferencesGlidera.html
+msgid "State"
+msgstr ""
+
+#: public/views/preferencesGlidera.html
+msgid "Status"
+msgstr ""
+
+#: public/views/preferences.html
+msgid "Still not done"
+msgstr ""
+
+#: public/views/modals/glidera-tx-details.html
+msgid "Subtotal"
+msgstr ""
+
 #: src/js/controllers/copayers.js
+#: src/js/controllers/export.js
 #: src/js/controllers/import.js
 #: src/js/controllers/preferencesDelete.js
 msgid "Success"
@@ -1195,7 +1593,12 @@ msgid "Terms of Use"
 msgstr ""
 
 #: public/views/create.html
+#: public/views/import.html
 msgid "Testnet"
+msgstr ""
+
+#: src/js/services/ledger.js
+msgid "The Ledger Chrome application is not installed"
 msgstr ""
 
 #: src/js/controllers/walletHome.js
@@ -1214,8 +1617,13 @@ msgstr ""
 msgid "The payment was signed but could not be broadcasted. Please try again from home screen"
 msgstr ""
 
-#: public/views/backup.html
-msgid "The private key for this wallet is encrypted. Exporting a backup will keep the private key encrypted in the backup archive."
+#: public/views/export.html
+msgid "The private key for this wallet is encrypted. Exporting  keep the private key encrypted in the export archive."
+msgstr ""
+
+#: public/views/create.html
+#: public/views/join.html
+msgid "The seed could require a passphrase to be imported"
 msgstr ""
 
 #: public/views/disclaimer.html
@@ -1224,6 +1632,10 @@ msgstr ""
 
 #: src/js/services/bwsError.js
 msgid "The spend proposal is not pending"
+msgstr ""
+
+#: src/js/controllers/sellGlidera.js
+msgid "The transaction could not be signed"
 msgstr ""
 
 #: src/js/controllers/copayers.js
@@ -1239,12 +1651,21 @@ msgstr ""
 msgid "There is an error in the form"
 msgstr ""
 
+#: public/views/buyGlidera.html
+#: public/views/sellGlidera.html
+msgid "This operation was disabled because you have a pending first transaction"
+msgstr ""
+
 #: public/views/modals/tx-details.html
 msgid "This transaction has become invalid; possibly due to a double spend attempt."
 msgstr ""
 
 #: public/views/walletHome.html
 msgid "This wallet is not registered at the given Bitcore Wallet Service (BWS). You can recreate it from the local information."
+msgstr ""
+
+#: src/js/controllers/create.js
+msgid "This xpub index is already used by another wallet. Please select another index."
 msgstr ""
 
 #: public/views/modals/txp-details.html
@@ -1259,10 +1680,19 @@ msgstr ""
 msgid "To"
 msgstr ""
 
+#: public/views/backup.html
+msgid "To restore this {{index.m}}-{{index.n}} <b>shared</b> wallet you will need"
+msgstr ""
+
+#: public/views/backup.html
+msgid "To restore this {{index.m}}-{{index.n}} shared wallet you will need"
+msgstr ""
+
 #: public/views/walletHome.html
 msgid "too long!"
 msgstr ""
 
+#: public/views/modals/glidera-tx-details.html
 #: public/views/modals/txp-details.html
 msgid "Total"
 msgstr ""
@@ -1271,6 +1701,11 @@ msgstr ""
 msgid "Total Locked Balance"
 msgstr ""
 
+#: public/views/create.html
+msgid "Total number of copayers"
+msgstr ""
+
+#: public/views/modals/glidera-tx-details.html
 #: public/views/modals/tx-details.html
 msgid "Transaction"
 msgstr ""
@@ -1279,12 +1714,20 @@ msgstr ""
 msgid "Transaction already broadcasted"
 msgstr ""
 
+#: public/views/preferencesGlidera.html
+msgid "Transaction History"
+msgstr ""
+
 #: public/views/translators.html
 msgid "Translation Credits"
 msgstr ""
 
 #: public/views/preferencesAbout.html
 msgid "Translators"
+msgstr ""
+
+#: public/views/import.html
+msgid "Type the Seed Word (usually 12 words)"
 msgstr ""
 
 #: src/js/controllers/walletHome.js
@@ -1312,6 +1755,11 @@ msgstr ""
 msgid "Updating Wallet..."
 msgstr ""
 
+#: public/views/create.html
+#: public/views/join.html
+msgid "Use Ledger hardware wallet"
+msgstr ""
+
 #: public/views/preferences.html
 #: public/views/walletHome.html
 msgid "Use Unconfirmed Funds"
@@ -1321,7 +1769,7 @@ msgstr ""
 msgid "Version"
 msgstr ""
 
-#: public/views/backup.html
+#: public/views/export.html
 msgid "View backup"
 msgstr ""
 
@@ -1331,6 +1779,10 @@ msgstr ""
 
 #: public/views/copayers.html
 msgid "Waiting..."
+msgstr ""
+
+#: public/views/import.html
+msgid "Walled Seed"
 msgstr ""
 
 #: public/views/preferences.html
@@ -1346,21 +1798,12 @@ msgstr ""
 msgid "Wallet Already Imported:"
 msgstr ""
 
-#: public/views/preferencesInformation.html
-msgid "Wallet Configuration (m-n)"
-msgstr ""
-
-#: public/views/preferencesInformation.html
-msgid "Wallet Id"
+#: src/js/services/bwsError.js
+msgid "Wallet already registered"
 msgstr ""
 
 #: public/views/copayers.html
 msgid "Wallet incomplete and broken"
-msgstr ""
-
-#: public/views/preferencesAdvanced.html
-#: public/views/preferencesInformation.html
-msgid "Wallet Information"
 msgstr ""
 
 #: public/views/join.html
@@ -1383,16 +1826,29 @@ msgstr ""
 msgid "Wallet name"
 msgstr ""
 
-#: public/views/preferencesInformation.html
-msgid "Wallet Name (at creation)"
-msgstr ""
-
-#: public/views/preferencesInformation.html
-msgid "Wallet Network"
+#: src/js/services/bwsError.js
+msgid "Wallet not found"
 msgstr ""
 
 #: src/js/services/bwsError.js
-msgid "Wallet not found"
+msgid "Wallet not registed at the Wallet Service. Recreate it from \"Create Wallet\" using \"Advanced Options\" to set your seed"
+msgstr ""
+
+#: public/views/create.html
+#: public/views/join.html
+msgid "Wallet Seed"
+msgstr ""
+
+#: public/views/import.html
+msgid "Wallet Seed could require a passphrase to be imported"
+msgstr ""
+
+#: src/js/services/bwsError.js
+msgid "Wallet seed is invalid"
+msgstr ""
+
+#: public/views/backup.html
+msgid "Wallet seed not available. You can still export it from Advanced &gt; Export."
 msgstr ""
 
 #: src/js/services/bwsError.js
@@ -1401,6 +1857,23 @@ msgstr ""
 
 #: public/views/walletHome.html
 msgid "WARNING: Backup needed"
+msgstr ""
+
+#: public/views/export.html
+msgid "WARNING: Not including the private key allows to check the wallet balance, transaction history, and create spend proposals from the export. However, does not allow to approve (sign) proposals, so <b>funds will not be accessible from the export</b>."
+msgstr ""
+
+#: public/views/create.html
+#: public/views/join.html
+msgid "WARNING: Passphrase cannot be recovered. <b>Be sure to write it down</b>. The wallet can not be restored without the passphrase."
+msgstr ""
+
+#: public/views/export.html
+msgid "WARNING: The private key of this wallet is not available.  The export allows to check the wallet balance, transaction history, and create spend proposals from the export. However, does not allow to approve (sign) proposals, so <b>funds will not be accessible from the export</b>."
+msgstr ""
+
+#: public/views/backup.html
+msgid "WARNING: This seed was created with a passphrase. To recover this wallet both the mnemonic and passphrase are needed."
 msgstr ""
 
 #: public/views/modals/txp-details.html
@@ -1419,12 +1892,29 @@ msgstr ""
 msgid "WELCOME TO COPAY"
 msgstr ""
 
+#: public/views/backup.html
+msgid "Write it down and keep them somewhere safe."
+msgstr ""
+
+#: src/js/controllers/import.js
+msgid "Wrong number of seed words:"
+msgstr ""
+
 #: src/js/services/profileService.js
 msgid "Wrong password"
 msgstr ""
 
 #: public/views/modals/confirmation.html
+#: public/views/modals/glidera-confirmation.html
 msgid "Yes"
+msgstr ""
+
+#: public/views/glidera.html
+msgid "You can buy and sell Bitcoin with a US bank account directly in Copay."
+msgstr ""
+
+#: public/views/backup.html
+msgid "You can safely install your wallet on another device and use it from multiple devices at the same time."
 msgstr ""
 
 #: public/views/walletHome.html
@@ -1432,8 +1922,19 @@ msgid "You do not have a wallet"
 msgstr ""
 
 #: public/views/backup.html
+msgid "You need the wallet seed to restore this personal wallet."
+msgstr ""
+
 #: public/views/import.html
 msgid "Your backup password"
+msgstr ""
+
+#: public/views/export.html
+msgid "Your export password"
+msgstr ""
+
+#: public/views/glidera.html
+msgid "Your Glidera account is not ready to transact. Please, verify it at"
 msgstr ""
 
 #: public/views/create.html
@@ -1451,4 +1952,20 @@ msgstr ""
 
 #: src/js/controllers/import.js
 msgid "Your wallet has been imported correctly"
+msgstr ""
+
+#: public/views/includes/password.html
+msgid "Your wallet key will be encrypted. Password cannot be recovered. Be sure to write it down"
+msgstr ""
+
+#: public/views/backup.html
+msgid "Your wallet seed and access to the wallet service where wallet is registered"
+msgstr ""
+
+#: public/views/backup.html
+msgid "Your wallet seed and access to the wallet service where your wallet is registered"
+msgstr ""
+
+#: public/views/preferencesGlidera.html
+msgid "ZIP Code"
 msgstr ""

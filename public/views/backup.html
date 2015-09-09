@@ -10,7 +10,7 @@
 
   <div ng-show="wordsC.mnemonicWords">
     <div class="row"  ng-show="index.n==1">
-      <div class="m10t columns size-14 text-gray" translate>
+      <div class="m10t columns size-14 text-gray">
         <span translate>
           You need the wallet seed to restore this personal wallet.
         </span>
@@ -20,26 +20,26 @@
       </div>
     </div>
     <div class="row" ng-show="(index.n>1 && index.m != index.n )">
-      <div class="m10t columns size-14 text-gray" translate>
+      <div class="m10t columns size-14 text-gray">
         <span translate>
-          To restore this {{index.m}}-{{index.n}} shared wallet you will need:
+          To restore this {{index.m}}-{{index.n}} shared wallet you will need
         </span>:
   <ol class="m10t columns size-14 text-gray">
-    <li> Your wallet seed and access to the wallet service where your wallet is registered 
-    <li> <b>OR</b> the wallet seed of <b>all</b>  copayers in the wallet
-    <li> <b>OR</b> 1 wallet export file and the remaining quorum of wallet seeds (e.g. in a 3-5 wallet: 1 wallet export file + 2 wallet seeds of any of the other copayers).
+    <li translate>Your wallet seed and access to the wallet service where your wallet is registered</li>
+    <li translate><b>OR</b> the wallet seed of <b>all</b>  copayers in the wallet</li>
+    <li translate><b>OR</b> 1 wallet export file and the remaining quorum of wallet seeds (e.g. in a 3-5 wallet: 1 wallet export file + 2 wallet seeds of any of the other copayers).</li>
   </ol>
         </span>
       </div>
     </div>
     <div class="row" ng-show="(index.n>1 && index.m == index.n )">
-      <div class="m10t columns size-14 text-gray" translate>
+      <div class="m10t columns size-14 text-gray">
         <span translate>
           To restore this {{index.m}}-{{index.n}} <b>shared</b> wallet you will need
         </span>:
   <ol class="m10t columns size-14 text-gray">
-    <li> Your wallet seed and access to the wallet service where wallet is registered 
-    <li> <b>OR</b> the wallet seeds of <b>all</b> copayers in the wallet
+    <li translate> Your wallet seed and access to the wallet service where wallet is registered</li>
+    <li translate><b>OR</b> the wallet seeds of <b>all</b> copayers in the wallet</li>
   </ol>
         </span>
       </div>
@@ -48,7 +48,7 @@
  
   <div class="row m20t" ng-show="!wordsC.mnemonicWords">
     <div class="columns size-14 text-gray text-center" translate>
-        Wallet seed not available. You can still export it from Advanced &gt; Export .
+        Wallet seed not available. You can still export it from Advanced &gt; Export.
     </div>
   </div>
  
@@ -87,7 +87,7 @@
 
 
         <div class="m10 text-center columns">
-          <div class="m10 size-14 text-gray" translate>
+          <div class="m10 size-14 text-gray">
             <span translate>
               Once you have copy your wallet seed, it is recommended to delete it from this device.
             </span>
@@ -103,11 +103,11 @@
 
     <!-- hide this in multisig just to show less text -->
     <div class="row m20t"  ng-show="index.n==1">
-      <div class="columns size-14 text-gray" translate>
-        You can safely install your wallet on another device and use it from multiple devices at the same time.  <a href="#" ng-click="$root.openExternalLink('https://github.com/bitpay/copay#backups')">
-            <span translate>Learn more about Copay backups</span>
+      <div class="columns size-14 text-gray">
+        <span translate>You can safely install your wallet on another device and use it from multiple devices at the same time.</span> 
+        <a href="#" ng-click="$root.openExternalLink('https://github.com/bitpay/copay#backups')" translate>
+          Learn more about Copay backups
         </a>
-  
       </div>
     </div>
 
