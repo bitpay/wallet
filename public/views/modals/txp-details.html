@@ -133,13 +133,9 @@
   </div>
 
   <div class="text-center text-gray m20t" ng-show="tx.status != 'pending'">
-    <div class="m10t size-12"
-      ng-show="tx.status=='accepted'" translate>
-      Payment accepted...
-    </div>
-    <div 
-      ng-show="!loading && tx.status!='broadcasted' && tx.status=='accepted' && tx.status!='rejected'">
-      <div class="m10b size-12" translate>But not broadcasted. Try to send manually</div>
+    <div ng-show="tx.status=='accepted'">
+      <div class="m10b size-12" translate>Payment accepted, but not yet broadcasted</div>
+      
       <button class="primary round"
         ng-click="broadcast(tx)"
         ng-disabled="loading"> <i class="fi-upload-cloud"></i>
@@ -148,11 +144,11 @@
     </div>
     <div class="text-success m10t"
       ng-show="tx.status=='broadcasted'" translate>
-      Payment sent!
+      Payment sent
     </div>
     <div class="text-center text-warning m10t"
       ng-show="tx.status=='rejected'" translate>
-      Payment finally rejected
+      Payment rejected
     </div>
   </div>
 

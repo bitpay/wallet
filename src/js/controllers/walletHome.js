@@ -30,8 +30,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   if (isChromeApp) {
     var animatedSlideUp = 'full';
     var animatedSlideRight = 'full';
-  }
-  else {
+  } else {
     var animatedSlideUp = 'full animated slideInUp';
     var animatedSlideRight = 'full animated slideInRight';
   }
@@ -174,6 +173,8 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     });
   };
 
+  var GLIDERA_LOCK_TIME = 6 * 60 * 60 * 1000;
+
   this.openTxpModal = function(tx, copayers) {
     var fc = profileService.focusedClient;
     var refreshUntilItChanges = false;
@@ -186,6 +187,14 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       $scope.canSign = fc.canSign();
       $scope.loading = null;
       $scope.color = fc.backgroundColor;
+      // ToDo: use custom data
+      $scope.isGlidera = false;
+
+      if (tx.message === 'Glidera transaction') {
+        $scope.isGlidera = true;
+        if ($scope.tx.canBeRemoved)
+          $scope.tx.canBeRemoved = (Date.now() - (tx.ts || tx.createdOn)) > GLIDERA_LOCK_TIME;
+      }
       refreshUntilItChanges = false;
       $scope.currentSpendUnconfirmed = currentSpendUnconfirmed;
 
