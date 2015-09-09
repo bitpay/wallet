@@ -13,6 +13,7 @@ angular.module('copayApp.controllers').controller('glideraController',
       var fc = profileService.focusedClient;
       var self = this;
       this.loading = true;
+      this.error = null;
       $timeout(function() {
         glideraService.getToken(code, function(err, data) {
           self.loading = null;
@@ -69,6 +70,15 @@ angular.module('copayApp.controllers').controller('glideraController',
       modalInstance.result.finally(function() {
         var m = angular.element(document.getElementsByClassName('reveal-modal'));
         m.addClass('slideOutRight');
+      });
+    };
+
+    this.revokeToken = function() {
+      var fc = profileService.focusedClient;
+      storageService.removeGlideraToken(fc.credentials.network, function() {
+        $timeout(function() {
+          applicationService.restart();
+        }, 100);
       });
     };
 
