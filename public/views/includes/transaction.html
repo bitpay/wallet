@@ -1,6 +1,6 @@
 <div class="ng-animate-disabled row collapse last-transactions-content line-b"
   ng-class="{'text-gray':!tx.pendingForUs}"
-  ng-click="home.openTxpModal(tx, index.copayers)">
+  ng-click="home.openTxpModal(tx, index.copayers, !!index.glideraStatus)">
   <div class="small-1 columns text-center" >
     <i class="icon-circle-active size-10" ng-show="tx.pendingForUs" ng-style="{'color':index.backgroundColor}" style="margin-top:8px;"></i>
     &nbsp;

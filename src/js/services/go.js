@@ -29,12 +29,13 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
     }
   };
 
-  root.openExternalLink = function(url) {
+  root.openExternalLink = function(url, target) {
     if (nodeWebkit.isDefined()) {
       nodeWebkit.openExternalLink(url);
     }
     else {
-      var ref = window.open(url, '_blank', 'location=no');
+      target = target || '_blank';
+      var ref = window.open(url, target, 'location=no');
     }
   };
 
@@ -89,8 +90,8 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
     root.path(path);
   };
 
-  $rootScope.openExternalLink = function(url) {
-    root.openExternalLink(url);
+  $rootScope.openExternalLink = function(url, target) {
+    root.openExternalLink(url, target);
   };
 
 

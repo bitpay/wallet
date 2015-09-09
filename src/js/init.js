@@ -9,8 +9,14 @@ angular.element(document).ready(function() {
 
   var handleBitcoinURI = function(url) {
     if (!url) return;
+    if (url.indexOf('glidera') != -1) {
+      url = '#/uri-glidera' + url.replace('bitcoin://glidera', '');
+    }
+    else {
+      url = '#/uri-payment/' + url;
+    }
     setTimeout(function() {
-      window.location = '#/uri-payment/' + url;
+      window.location = url;
     }, 1000);
   };
 

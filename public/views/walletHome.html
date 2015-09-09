@@ -96,7 +96,7 @@
                 <span translate>Pending Confirmation</span>:
                 {{index.pendingAmountStr}}
               </div>
- 
+
             </div>
           </div>
 
@@ -112,6 +112,13 @@
             ng-style="{'background-color':index.backgroundColor}">{{ (index.alias || index.walletName) | limitTo: 1}}
           </div>
           <div class="right">
+
+            <a ng-show="!index.isShared" class="button outline round light-gray tiny preferences-icon m10r"
+              ng-click="$root.go('glidera')">
+              <i class="icon-bank size-18 vm"></i>
+              <span class="show-for-medium-up">Glidera</span>
+            </a>
+
             <a ng-click="$root.go('preferences')" class="button outline round light-gray tiny preferences-icon m0">
               <i class="fi-widget size-18 vm"></i>
               <span class="show-for-medium-up" translate>Preferences</span>
@@ -161,26 +168,18 @@
       </div>
 
       <div ng-if="index.txps[0]">
-        <div ng-show="index.requiresMultipleSignatures">
-          <h4 class="title m0" translate>Payment Proposals</h4>
-          <div class="last-transactions pr" ng-repeat="tx in index.txps"
-            ng-include="index.txTemplateUrl">
-          </div>
-
-          <div class="text-gray text-center size-12 p10t"
-            ng-show="index.lockedBalanceSat && !index.updatingStatus">
-            <span translate>Total Locked Balance</span>:
-            <b>{{index.lockedBalanceStr}} </b>
-            <span> {{index.lockedBalanceAlternative}}
-              {{index.alternativeIsoCode}} </span>
-          </div>
+        <h4 ng-show="index.requiresMultipleSignatures" class="title m0" translate>Payment Proposals</h4>
+        <h4 ng-show="!index.requiresMultipleSignatures" class="title m0" translate>Unsent transactions</h4>
+        <div class="last-transactions pr" ng-repeat="tx in index.txps"
+          ng-include="index.txTemplateUrl">
         </div>
 
-        <div ng-show="!index.requiresMultipleSignatures">
-          <h4 class="title m0" translate>Unsent transactions</h4>
-          <div class="last-transactions pr" ng-repeat="tx in index.txps"
-            ng-include="index.txTemplateUrl">
-          </div>
+        <div class="text-gray text-center size-12 p10t"
+          ng-show="index.lockedBalanceSat && !index.updatingStatus">
+          <span translate>Total Locked Balance</span>:
+          <b>{{index.lockedBalanceStr}} </b>
+          <span> {{index.lockedBalanceAlternative}}
+            {{index.alternativeIsoCode}} </span>
         </div>
       </div>
       <div class="extra-margin-bottom"></div>
@@ -275,7 +274,7 @@
         </div>
         <div class="m20t text-center" ng-show="!home.generatingAddress && home.addr[index.walletId]">
           <a class="size-12 text-gray" ng-click="home.openCustomizedAmountModal(home.addr[index.walletId])">
-            <i class="fi-bitcoin"></i> 
+            <i class="fi-bitcoin"></i>
             <span translate>Request a specific amount</span>
           </a>
         </div>
@@ -411,7 +410,7 @@
                     <li ng-repeat="fee in (index.network == 'livenet' ? index.feeLevels.livenet : index.feeLevels.testnet)"
                       ng-click="home.setFee(fee.level)" class="line-b p20">
                       {{index.feeOpts[fee.level]|translate}}
-                      <i class="fi-check size-16 right" 
+                      <i class="fi-check size-16 right"
                         ng-show="(home.currentSendFeeLevel || index.currentFeeLevel) == fee.level"></i>
                     </li>
                   </ul>
@@ -522,7 +521,7 @@
       <div ng-if="!index.isCordova && index.txHistory[0] && !index.updatingTxHistory" class="m20t text-center">
         <input id="export_file" type="file" nwsaveas="Copay-{{index.alias || index.walletName}}.csv" accept=".csv" style="display:none">
         <a class="text-gray size-12" ng-click="index.csvHistory();">
-          <i class="fi-page-export-csv"></i> 
+          <i class="fi-page-export-csv"></i>
           <span translate>Download CSV file</span>
         </a>
       </div>
