@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('glideraController', 
-  function($scope, $timeout, $modal, applicationService, profileService, configService, storageService, glideraService, isChromeApp) {
+  function($scope, $timeout, $modal, profileService, configService, storageService, glideraService, isChromeApp) {
       
     var config = configService.getSync().wallet.settings;
 
@@ -70,15 +70,6 @@ angular.module('copayApp.controllers').controller('glideraController',
       modalInstance.result.finally(function() {
         var m = angular.element(document.getElementsByClassName('reveal-modal'));
         m.addClass('slideOutRight');
-      });
-    };
-
-    this.revokeToken = function() {
-      var fc = profileService.focusedClient;
-      storageService.removeGlideraToken(fc.credentials.network, function() {
-        $timeout(function() {
-          applicationService.restart();
-        }, 100);
       });
     };
 
