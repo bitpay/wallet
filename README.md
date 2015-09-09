@@ -5,7 +5,7 @@
 
 Copay is an easy-to-use, open-source, multiplatform, multisignature, secure bitcoin wallet platform for both individuals and companies.  Copay uses [Bitcore Wallet Service](https://github.com/bitpay/bitcore-wallet-service) (BWS) for peer synchronization and network interfacing.
 
-Binary versions of Copay are available for download at [Copay.io](https://copay.io/#download). Copay Binaries are signed with the key copay@bitpay.com [See here for details](#How-to-verify-Copay-signatures)
+Binary versions of Copay are available for download at [Copay.io](https://copay.io/#download). Copay Binaries are signed with the key copay@bitpay.com [See here for details](https://github.com/bitpay/copay#how-to-verify-copay-signatures)
 
 ## Main Features
 
