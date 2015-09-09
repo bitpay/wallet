@@ -15,7 +15,9 @@ angular.module('copayApp.controllers').controller('buyGlideraController',
         this.buyPrice = null;
         return;
       }
+      this.gettingBuyPrice = true;
       glideraService.buyPrice(token, price, function(err, buyPrice) {
+        self.gettingBuyPrice = false;
         if (err) {
           self.error = gettext('Could not get exchange information. Please, try again.');
         }

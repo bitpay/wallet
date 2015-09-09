@@ -65,16 +65,21 @@
             <a ng-show="showAlternative" class="postfix" 
               ng-click="showAlternative = false; fiat = null; sell.sellPrice = null">USD</a>
             
-            <div class="text-center text-gray size-12 m20b" ng-show="sell.sellPrice.qty">
+            <div class="text-center text-gray size-12 m20b" ng-show="!sell.gettingSellPrice && sell.sellPrice.qty">
               Sell 
               <span ng-show="qty"> {{sell.sellPrice.currency}} {{sell.sellPrice.subtotal}}  in Bitcoin</span> 
               <span ng-show="fiat">{{sell.sellPrice.qty}} BTC</span> 
               at {{sell.sellPrice.price}} {{sell.sellPrice.currency}}/BTC
 
             </div>
-            <div class="text-center text-gray size-12 m20b" ng-show="!sell.sellPrice.qty" translate>
+            <div class="text-center text-gray size-12 m20b" ng-show="!sell.gettingSellPrice && !sell.sellPrice.qty" translate>
               (Enter the amount to get the exchange rate)
             </div>
+
+            <div class="text-center text-gray size-12 m20b" ng-show="sell.gettingSellPrice">
+              ...
+            </div>
+
             <input class="button black expand round" 
             ng-style="{'background-color':index.backgroundColor}"
             type="submit" value="{{'Continue'|translate}}" 
