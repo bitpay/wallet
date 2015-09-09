@@ -1,15 +1,22 @@
 'use strict';
 
-angular.module('copayApp.services').factory('glideraService', function($http, $log) {
+angular.module('copayApp.services').factory('glideraService', function($http, $log, isCordova) {
   var root = {};
   var credentials = {};
 
   root.setCredentials = function(network) {
     if (network == 'testnet') {
       credentials.HOST = 'https://sandbox.glidera.io';
-      credentials.REDIRECT_URI = 'urn:ietf:wg:oauth:2.0:oob';
-      credentials.CLIENT_ID = '9915b6ffa6dc3baffb87135ed3873d49';
-      credentials.CLIENT_SECRET = 'd74eda05b9c6a228fd5c85cfbd0eb7eb';
+      if (isCordova) {
+        credentials.REDIRECT_URI = 'bitcoin://glidera';
+        credentials.CLIENT_ID = 'dfc56e4336e32bb8ba46dde34f3d7d6d';
+        credentials.CLIENT_SECRET = '5eb679058f6c7eb81123162323d4fba5';
+      }
+      else {
+        credentials.REDIRECT_URI = 'urn:ietf:wg:oauth:2.0:oob';
+        credentials.CLIENT_ID = '9915b6ffa6dc3baffb87135ed3873d49';
+        credentials.CLIENT_SECRET = 'd74eda05b9c6a228fd5c85cfbd0eb7eb';
+      }
     }
     else {
       credentials.HOST = 'https://glidera.io';
