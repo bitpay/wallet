@@ -22,27 +22,23 @@
     </div>
   </div>
 
-  <div class="row m20t">
-    <div class="columns">
-      <div class="text-center m5b">
-        <img src="img/glidera-logo.png" ng-click="index.updateGlidera(index.glideraToken, index.glideraPermissions)" width="100">
-      </div>
-
+  <div class="row">
+    <div class="">
       <div class="m20b box-notification" ng-if="index.glideraError">
         <div class="text-warning">
           <span>{{index.glideraError}}</span>
         </div>
       </div>
       <div class="m10t text-center" ng-show="index.glideraError">
-        <button 
-          class="dark-gray outline round tiny" 
+        <button
+          class="dark-gray outline round tiny"
           ng-show="index.glideraError.indexOf('Forbidden') == 40"
           ng-click="index.glideraToken = null; index.glideraError = null">
           Request a new token
         </button>
         <div ng-show="index.glideraError.indexOf('Forbidden') != 40">
-          <button 
-            class="dark-gray outline round tiny"  
+          <button
+            class="dark-gray outline round tiny"
             ng-click="index.initGlidera(index.glideraToken)">
             Retry
           </button>
@@ -56,17 +52,19 @@
 
   <div ng-if="!index.glideraToken && !index.glideraLoading && !index.glideraError"
     class="row">
+    <div class="box-notification text-center size-12 text-warning" ng-show="index.glideraTestnet">
+      <i class="fi-info"></i>
+      Testnet wallets only work with Glidera Sandbox Accounts
+    </div>
     <div class="columns" ng-init="showOauthForm = false">
-      <div class="text-center" ng-show="!showOauthForm">
-        <p translate>You can buy and sell Bitcoin with a US bank account directly in Copay.</p>
-        <div class="m10b text-gray size-12" translate>Connect your Glidera account to get started</div>
+      <div class="text-center m20v">
+        <img src="img/glidera-logo.png" ng-click="index.updateGlidera(index.glideraToken, index.glideraPermissions)" width="200">
+      </div>
+      <div class="text-center small-10 small-centered columns" ng-show="!showOauthForm">
+        <p class="m10b" translate>You can buy and sell Bitcoin with a US bank account directly in Copay.</p>
+        <p class="text-gray size-12" translate>Connect your Glidera account to get started</p>
 
-        <div class="box-notification size-12 text-warning" ng-show="index.glideraTestnet">
-          <i class="fi-info"></i>
-          Testnet wallets only work with Glidera Sandbox Accounts
-        </div>
-
-        <a class="button dark-gray outline round tiny" 
+        <a class="button m20t light-gray outline round small"
           ng-click="$root.openExternalLink(glidera.getAuthenticateUrl(), '_system'); showOauthForm = true" translate>
           Connect to Glidera
         </a>
@@ -98,57 +96,74 @@
   </div>
 
   <div ng-if="index.glideraToken && index.glideraPermissions">
-
-    <div class="text-center m10b">
-      <div class="size-12" ng-show="index.glideraEmail">
-        {{index.glideraEmail}}
+    <div class="m20v text-center">
+      <img src="img/glidera-logo.png" ng-click="index.updateGlidera(index.glideraToken, index.glideraPermissions)" width="100">
+    </div>
+    <div class="sub-header">
+      <div class="left">
+        <div ng-show="index.glideraPersonalInfo" class="size-12">
+          <b>
+          {{index.glideraPersonalInfo.firstName}} {{index.glideraPersonalInfo.lastName}}
+          </b>
+        </div>
+        <div class="size-12" ng-show="index.glideraEmail">
+          {{index.glideraEmail}}
+        </div>
       </div>
-
-      <div ng-show="index.glideraPersonalInfo" class="size-12">
-        {{index.glideraPersonalInfo.firstName}} {{index.glideraPersonalInfo.lastName}}
+      <div class="right">
+        <div class="pointer m5t" ng-click="$root.go('preferencesGlidera')">
+          <i class="fi-widget size-16 text-gray"></i>
+          <span class="right text-gray">
+            <i class="icon-arrow-right3 size-24 right"></i>
+          </span>
+        </div>
       </div>
-
-      <div class="columns text-warning size-12 m20t m20b"
+    </div>
+    <div class="row">
+      <div class="text-center columns small-8 small-centered m30v size-12"
         ng-show="index.glideraStatus && (!index.glideraStatus.userEmailIsSetup || !index.glideraStatus.userPhoneIsSetup
         || (!index.glideraStatus.userBankAccountIsSetup && index.glideraStatus.bankAccountState != 'VERIFIED'))">
+        <h4 class="text-bold" translate> Complete Setup</h4>
         <span translate>Your Glidera account is not ready to transact. Please, verify it at</span>
         <a href
           ng-init="glideraUrl = index.glideraTestnet ? 'https://sandbox.glidera.io/login' :
           'https://glidera.io/login'"
           ng-click="$root.openExternalLink(glideraUrl)">Glidera.io</a>
+        <div>
+          <a class="button m20t light-gray outline round tiny"
+            ng-init="glideraUrl = index.network == 'testnet' ? 'https://sandbox.glidera.io/login' :
+            'https://glidera.io/login'"
+            ng-click="$root.openExternalLink(glideraUrl)"
+            translate>
+            Go to Glidera
+          </a>
+        </div>
       </div>
     </div>
 
-    <ul class="no-bullet m0 size-14">
-      <li class="line-b line-t p20 pointer"
-      ng-show="index.glideraPermissions.transact &&
-      (index.glideraStatus.userCanBuy || index.glideraStatus.userCanTransact)"
-      ng-click="$root.go('buyGlidera')">
-        <i class="icon-buy-btc size-24 m5r"></i>
-        <span translate>Buy Bitcoin</span>
+    <div ng-show="index.glideraPermissions.transact &&
+    (index.glideraStatus.userCanBuy || index.glideraStatus.userCanTransact)">
+      <ul class="no-bullet m0 size-14">
+        <li class="line-b line-t p20 pointer"
+        ng-click="$root.go('buyGlidera')">
+          <i class="icon-buy-btc size-24 m5r"></i>
+          <span translate>Buy Bitcoin</span>
+          <span class="right text-gray">
+            <i class="icon-arrow-right3 size-24 right"></i>
+          </span>
+        </li>
+        <li class="line-b p20 pointer"
+        ng-show="index.glideraPermissions.transact &&
+        (index.glideraStatus.userCanSell || index.glideraStatus.userCanTransact)"
+        ng-click="$root.go('sellGlidera')">
+        <i class="icon-sell-btc size-24 m5r"></i>
+        <span translate>Sell Bitcoin</span>
         <span class="right text-gray">
           <i class="icon-arrow-right3 size-24 right"></i>
         </span>
-      </li>
-      <li class="line-b p20 pointer"
-      ng-show="index.glideraPermissions.transact &&
-      (index.glideraStatus.userCanSell || index.glideraStatus.userCanTransact)"
-      ng-click="$root.go('sellGlidera')">
-      <i class="icon-sell-btc size-24 m5r"></i>
-      <span translate>Sell Bitcoin</span>
-      <span class="right text-gray">
-        <i class="icon-arrow-right3 size-24 right"></i>
-      </span>
-      </li>
-      <li class="line-b p20 pointer" ng-click="$root.go('preferencesGlidera')">
-      <span translate>Preferences</span>
-      <span class="right text-gray">
-        <i class="icon-arrow-right3 size-24 right"></i>
-      </span>
-      </li>
-    </ul>
+        </li>
+      </ul>
 
-    <div ng-show="index.glideraPermissions.transaction_history">
       <h4 class="title m0" translate>Activity</h4>
       <div ng-show="index.glideraTxs.length == 0 && !index.glideraLoadingHistory"
         class="size-12 p10 text-center text-gray" translate>

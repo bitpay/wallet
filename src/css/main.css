@@ -108,6 +108,12 @@ input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill, inpu
   -webkit-box-shadow: 0 0 0px 1000px white inset;
 }
 
+.sub-header {
+  background: #F1f3F5;
+  padding: 0.8rem;
+  overflow: hidden;
+}
+
 .status {
   color: #FFFFFF;
   background-color: #A02F23;
