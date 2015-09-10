@@ -27,12 +27,12 @@
       </div>
       <div class="size-10">
         <span class="text-light" translate>Daily buy limit</span>:
-        ${{index.glideraLimits.dailyBuy}} 
-        (remaining ${{index.glideraLimits.dailyBuyRemaining}}) 
+        {{index.glideraLimits.dailyBuy|currency:'':2}} {{index.glideraLimits.currency}}
+        (remaining {{index.glideraLimits.dailyBuyRemaining|currency:'':2}} {{index.glideraLimits.currency}}) 
         <br>
         <span class="text-light" translate>Monthly buy limit</span>:
-        ${{index.glideraLimits.monthlyBuy}} 
-        (remaining ${{index.glideraLimits.monthlyBuyRemaining}})
+        {{index.glideraLimits.monthlyBuy|currency:'':2}} {{index.glideraLimits.currency}}
+        (remaining {{index.glideraLimits.monthlyBuyRemaining|currency:'':2}} {{index.glideraLimits.currency}})
       </div>
     </h4>
   </div>
@@ -67,7 +67,7 @@
 
             <div class="text-center text-gray size-12 m20b" ng-show="!buy.gettingBuyPrice && buy.buyPrice.qty">
               Buy 
-              <span ng-show="qty">{{buy.buyPrice.currency}} {{buy.buyPrice.subtotal}} in Bitcoin</span> 
+              <span ng-show="qty">{{buy.buyPrice.subtotal|currency:'':2}} {{buy.buyPrice.currency}} in Bitcoin</span> 
               <span ng-show="fiat">{{buy.buyPrice.qty}} BTC</span> 
               at  {{buy.buyPrice.price}} {{buy.buyPrice.currency}}/BTC
             </div>
@@ -88,7 +88,7 @@
       </div>
       <div ng-show="buy.show2faCodeInput && !buy.success">
         <div class="m10t text-center" translate>
- {{buy.buyPrice.currency}} {{buy.buyPrice.subtotal}} &rarr; {{buy.buyPrice.qty}} BTC
+ {{buy.buyPrice.subtotal|currency:'':2}} {{buy.buyPrice.currency}} &rarr; {{buy.buyPrice.qty}} BTC
           <p class="m20t" translate>
             A SMS containing a confirmation code was sent to your phone. <br>
             Please, enter the code below

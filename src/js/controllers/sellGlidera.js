@@ -14,8 +14,8 @@ angular.module('copayApp.controllers').controller('sellGlideraController',
 
     this.getSellPrice = function(token, price) {
       var self = this;
+      this.error = null;
       if (!price || (price && !price.qty && !price.fiat)) {
-        this.error = null;
         this.sellPrice = null;
         return;
       }
