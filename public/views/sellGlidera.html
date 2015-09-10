@@ -27,12 +27,12 @@
       </div>
       <div class="size-10">
         <span class="text-light" translate>Daily sell limit</span>:
-        ${{index.glideraLimits.dailySell}} 
-        (${{index.glideraLimits.dailySellRemaining}} remaining) 
+        {{index.glideraLimits.dailySell|currency:'':2}} {{index.glideraLimits.currency}}
+        (remaining {{index.glideraLimits.dailySellRemaining|currency:'':2}} {{index.glideraLimits.currency}}) 
         <br>
         <span class="text-light" translate>Monthly sell limit</span>:
-        ${{index.glideraLimits.monthlySell}} 
-        (${{index.glideraLimits.monthlySellRemaining}} remaining)
+        {{index.glideraLimits.monthlySell|currency:'':2}} {{index.glideraLimits.currency}}
+        (remaining {{index.glideraLimits.monthlySellRemaining|currency:'':2}} {{index.glideraLimits.currency}})
       </div>
     </h4>
   </div>
@@ -67,9 +67,9 @@
             
             <div class="text-center text-gray size-12 m20b" ng-show="!sell.gettingSellPrice && sell.sellPrice.qty">
               Sell 
-              <span ng-show="qty"> {{sell.sellPrice.currency}} {{sell.sellPrice.subtotal}}  in Bitcoin</span> 
+              <span ng-show="qty">{{sell.sellPrice.subtotal|currency:'':2}} {{sell.sellPrice.currency}} in Bitcoin</span> 
               <span ng-show="fiat">{{sell.sellPrice.qty}} BTC</span> 
-              at {{sell.sellPrice.price}} {{sell.sellPrice.currency}}/BTC
+              at {{sell.sellPrice.price|currency:'':2}} {{sell.sellPrice.currency}}/BTC
 
             </div>
             <div class="text-center text-gray size-12 m20b" ng-show="!sell.gettingSellPrice && !sell.sellPrice.qty" translate>
@@ -89,7 +89,7 @@
       </div>
       <div ng-show="sell.show2faCodeInput && !sell.success">
         <div class="m10t text-center" translate>
-{{sell.sellPrice.qty}} BTC &rarr; {{sell.sellPrice.currency}} {{sell.sellPrice.subtotal}}
+{{sell.sellPrice.qty}} BTC &rarr; {{sell.sellPrice.subtotal|currency:'':2}} {{sell.sellPrice.currency}}
           <p class="m20t" translate>
             A SMS containing a confirmation code was sent to your phone. <br>
             Please, enter the code below
