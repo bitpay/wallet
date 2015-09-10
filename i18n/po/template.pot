@@ -1618,7 +1618,7 @@ msgid "The payment was signed but could not be broadcasted. Please try again fro
 msgstr ""
 
 #: public/views/export.html
-msgid "The private key for this wallet is encrypted. Exporting  keep the private key encrypted in the export archive."
+msgid "The private key for this wallet is encrypted. Exporting keep the private key encrypted in the export archive."
 msgstr ""
 
 #: public/views/create.html
