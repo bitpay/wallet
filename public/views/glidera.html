@@ -129,7 +129,7 @@
           ng-click="$root.openExternalLink(glideraUrl)">Glidera.io</a>
         <div>
           <a class="button m20t light-gray outline round tiny"
-            ng-init="glideraUrl = index.network == 'testnet' ? 'https://sandbox.glidera.io/login' :
+            ng-init="glideraUrl = index.glideraTestnet ? 'https://sandbox.glidera.io/login' :
             'https://glidera.io/login'"
             ng-click="$root.openExternalLink(glideraUrl)"
             translate>
