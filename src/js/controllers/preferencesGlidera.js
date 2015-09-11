@@ -39,8 +39,8 @@ angular.module('copayApp.controllers').controller('preferencesGlideraController'
       var animatedSlideRight = 'full animated slideInRight';
     }
 
-    this.revokeToken = function() {
-      var fc = profileService.focusedClient;
+    this.revokeToken = function(testnet) {
+      var network = testnet ? 'testnet' : 'livenet';
       var ModalInstanceCtrl = function($scope, $modalInstance) {
         $scope.ok = function() {
           $modalInstance.close(true);
@@ -58,7 +58,7 @@ angular.module('copayApp.controllers').controller('preferencesGlideraController'
 
       modalInstance.result.then(function(ok) {
         if (ok) {
-          storageService.removeGlideraToken(fc.credentials.network, function() {
+          storageService.removeGlideraToken(network, function() {
             $timeout(function() {
               applicationService.restart();
             }, 100);
