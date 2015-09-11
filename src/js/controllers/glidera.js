@@ -25,7 +25,7 @@ angular.module('copayApp.controllers').controller('glideraController',
           }
           else if (data && data.access_token) {
             storageService.setGlideraToken(fc.credentials.network, data.access_token, function() {
-              $scope.$emit('Local/GlideraTokenUpdated', data.access_token);
+              $scope.$emit('Local/GlideraUpdated', data.access_token);
               $timeout(function() {
                 $scope.$apply();
               }, 100);
