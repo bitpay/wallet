@@ -23,28 +23,26 @@
   </div>
 
   <div class="row">
-    <div class="">
-      <div class="m20b box-notification" ng-if="index.glideraError">
-        <div class="text-warning">
-          <span>{{index.glideraError}}</span>
-        </div>
+    <div class="m20b box-notification" ng-if="index.glideraError">
+      <div class="text-warning">
+        <span>{{index.glideraError}}</span>
       </div>
-      <div class="m10t text-center" ng-show="index.glideraError">
+    </div>
+    <div class="m10t text-center" ng-show="index.glideraError">
+      <button
+        class="dark-gray outline round tiny"
+        ng-show="index.glideraError.indexOf('Forbidden') == 40"
+        ng-click="index.glideraToken = null; index.glideraError = null">
+        Request a new token
+      </button>
+      <div ng-show="index.glideraError.indexOf('Forbidden') != 40">
         <button
           class="dark-gray outline round tiny"
-          ng-show="index.glideraError.indexOf('Forbidden') == 40"
-          ng-click="index.glideraToken = null; index.glideraError = null">
-          Request a new token
+          ng-click="index.initGlidera(index.glideraToken)">
+          Retry
         </button>
-        <div ng-show="index.glideraError.indexOf('Forbidden') != 40">
-          <button
-            class="dark-gray outline round tiny"
-            ng-click="index.initGlidera(index.glideraToken)">
-            Retry
-          </button>
-          <div class="m20t size-12">
-            <a class="text-gray" ng-click="$root.go('preferencesGlidera')" translate>Preferences</a>
-          </div>
+        <div class="m20t size-12">
+          <a class="text-gray" ng-click="$root.go('preferencesGlidera')" translate>Preferences</a>
         </div>
       </div>
     </div>
