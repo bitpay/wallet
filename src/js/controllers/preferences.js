@@ -17,7 +17,8 @@ angular.module('copayApp.controllers').controller('preferencesController',
     if (fc) {
       $scope.encrypt = fc.hasPrivKeyEncrypted();
       this.externalSource = fc.getPrivKeyExternalSourceName() == 'ledger' ? "Ledger" : null;
-      this.externalIndex = fc.getExternalIndex();
+      // TODO externalAccount
+      //this.externalIndex = fc.getExternalIndex();
     }
 
     var unwatchSpendUnconfirmed = $scope.$watch('spendUnconfirmed', function(newVal, oldVal) {

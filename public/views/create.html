@@ -106,13 +106,15 @@
               <span translate>Use Ledger hardware wallet</span>
               <switch id="hw-ledger" name="hwLedger" ng-model="hwLedger" ng-change="isTestnet=false" class="green right m5t m10b"></switch>
             </label>
+<!-- account
             <div ng-show="hwLedger">
               <label class="oh"><span translate>Ledger Slot</span>
                 <select class="m10t" ng-model="externalIndex" ng-options="externalIndex as externalIndex for externalIndex in create.externalIndexValues">
                 </select>
               </label>
               <div class="oh text-gray line-b  size-12   p10b m20b"><span translate>Ledger supports up to 20 Copay wallets simultaneously. Select which slot should be used to host this wallet</div>
-            </div>         
+            </div> 
+-->        
             <label for="network-name" class="oh" ng-show="!hwLedger">
               <span translate>Testnet</span>
               <switch id="network-name" name="isTestnet" ng-model="isTestnet" class="green right m5t m10b"></switch>

@@ -7,8 +7,6 @@ angular.module('copayApp.controllers').controller('importController',
 
     this.isSafari = isMobile.Safari();
     this.isCordova = isCordova;
-    this.externalIndexValues = lodash.range(0, ledger.MAX_SLOT);
-    $scope.externalIndex = 0;
     var reader = new FileReader();
 
     window.ignoreMobilePause = true;
@@ -199,7 +197,8 @@ angular.module('copayApp.controllers').controller('importController',
         return;
       }
       self.ledger = true;
-      ledger.getInfoForNewWallet($scope.externalIndex, function(err, lopts) {
+      // TODO account
+      ledger.getInfoForNewWallet(0, function(err, lopts) {
         self.ledger = false;
         if (err) {
           self.error = err;
