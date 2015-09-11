@@ -113,13 +113,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.pendingTxProposalsCountForUs = null;
     self.setSpendUnconfirmed();
 
-    self.glideraToken = null;
-    self.glideraError = null;
-    self.glideraPermissions = null;
-    self.glideraEmail = null;
-    self.glideraPersonalInfo = null;
-    self.glideraTxs = null;
-
     $timeout(function() {
       self.hasProfile = true;
       self.noFocusedWallet = false;
@@ -312,7 +305,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         self.setBalance(walletStatus.balance);
         self.otherWallets = lodash.filter(profileService.getWallets(self.network), function(w) {
           return w.id != self.walletId;
-        });;
+        });
 
         // Notify external addons or plugins
         $rootScope.$emit('Local/BalanceUpdated', walletStatus.balance);
@@ -393,7 +386,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       self.setOngoingProcess('updatingPendingTxps', true);
       $log.debug('Updating PendingTxps');
       fc.getTxProposals({}, function(err, txps) {
-console.log('[index.js:395]',txps); //TODO
         self.setOngoingProcess('updatingPendingTxps', false);
         if (err) {
           self.handleError(err);
@@ -838,16 +830,27 @@ console.log('[index.js:395]',txps); //TODO
   };
 
   self.initGlidera = function(accessToken) {
-    if (self.isShared) return;
+    self.glideraEnabled = configService.getSync().glidera.enabled;
+    self.glideraTestnet = configService.getSync().glidera.testnet;
+    var network = self.glideraTestnet ? 'testnet' : 'livenet';
+
+    self.glideraToken = null;
+    self.glideraError = null;
+    self.glideraPermissions = null;
+    self.glideraEmail = null;
+    self.glideraPersonalInfo = null;
+    self.glideraTxs = null;
     self.glideraStatus = null;
 
-    glideraService.setCredentials(self.network);
+    if (!self.glideraEnabled || self.isShared) return;
+
+    glideraService.setCredentials(network);
 
     var getToken = function(cb) {
       if (accessToken) {
         cb(null, accessToken);
       } else {
-        storageService.getGlideraToken(self.network, cb);
+        storageService.getGlideraToken(network, cb);
       }
     };
 
@@ -959,7 +962,7 @@ console.log('[index.js:395]',txps); //TODO
     });
   });
 
-  $rootScope.$on('Local/GlideraTokenUpdated', function(event, accessToken) {
+  $rootScope.$on('Local/GlideraUpdated', function(event, accessToken) {
     self.initGlidera(accessToken);
   });
 
