@@ -462,6 +462,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       $scope.unitDecimals = self.unitDecimals;
       var satToUnit = 1 / self.unitToSatoshi;
       $scope.showAlternative = false;
+      $scope.isCordova = isCordova;
 
       Object.defineProperty($scope,
         "_customAlternative", {
@@ -514,6 +515,15 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
       $scope.toggleAlternative = function() {
         $scope.showAlternative = !$scope.showAlternative;
+      };
+
+      $scope.shareAddress = function(uri) {
+        if (isCordova) {
+          if (isMobile.Android() || isMobile.Windows()) {
+            window.ignoreMobilePause = true;
+          }
+          window.plugins.socialsharing.share(uri, null, null, null);
+        }
       };
 
       $scope.cancel = function() {
