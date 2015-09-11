@@ -170,7 +170,7 @@ angular.module('copayApp.services')
       var walletClient = bwcService.getClient();
       var network = opts.networkName || 'livenet';
 
-      if (opts.mnemonic && opts.mnemonic.indexOf('m/' != 0)) {
+      if (opts.mnemonic && opts.mnemonic.indexOf('m/') == 0) {
         var xPrivKey = root._preDerivation(opts.mnemonic, network);
         if (!xPrivKey) 
           return bwsError.cb('Bad derivation', gettext('Could not import'), cb);

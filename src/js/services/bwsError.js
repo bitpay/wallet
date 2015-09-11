@@ -100,7 +100,7 @@ angular.module('copayApp.services')
 
           default:
             $log.warn('Unknown error type:', err.code);
-            body = err.code + ':' + err.message ;
+            body =  err.message  || err.code;
             break;
         }
       }
