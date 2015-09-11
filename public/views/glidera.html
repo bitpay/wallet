@@ -122,12 +122,7 @@
         ng-show="index.glideraStatus && (!index.glideraStatus.userEmailIsSetup || !index.glideraStatus.userPhoneIsSetup
         || (!index.glideraStatus.userBankAccountIsSetup && index.glideraStatus.bankAccountState != 'VERIFIED'))">
         <h4 class="text-bold" translate> Complete Setup</h4>
-        <span translate>Your Glidera account is not ready to transact. Please, verify it at</span>
-        <a href
-          ng-init="glideraUrl = index.glideraTestnet ? 'https://sandbox.glidera.io/login' :
-          'https://glidera.io/login'"
-          ng-click="$root.openExternalLink(glideraUrl)">Glidera.io</a>
-        <div>
+        <span translate>Your Glidera account is not ready to transact. Please, verify it at <b>Glidera.io</b> </span>
           <a class="button m20t light-gray outline round tiny"
             ng-init="glideraUrl = index.glideraTestnet ? 'https://sandbox.glidera.io/login' :
             'https://glidera.io/login'"
