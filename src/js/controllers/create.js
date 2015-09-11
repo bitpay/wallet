@@ -35,8 +35,6 @@ angular.module('copayApp.controllers').controller('createController',
       $scope.requiredCopayers = Math.min(parseInt(n / 2 + 1), maxReq);
     };
 
-    this.externalIndexValues = lodash.range(0, ledger.MAX_SLOT);
-    $scope.externalIndex = 0;
     this.TCValues = lodash.range(2, defaults.limits.totalCopayers + 1);
     $scope.totalCopayers = defaults.wallet.totalCopayers;
 
@@ -80,7 +78,8 @@ angular.module('copayApp.controllers').controller('createController',
 
       if (form.hwLedger.$modelValue) {
         self.ledger = true;
-        ledger.getInfoForNewWallet($scope.externalIndex, function(err, lopts) {
+        // TODO : account 
+        ledger.getInfoForNewWallet(0, function(err, lopts) {
           self.ledger = false;
           if (err) {
             self.error = err;

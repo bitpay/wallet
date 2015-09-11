@@ -4,8 +4,6 @@ angular.module('copayApp.controllers').controller('joinController',
   function($scope, $rootScope, $timeout, go, isMobile, notification, profileService, isCordova, isChromeApp, $modal, gettext, lodash, ledger) {
 
     var self = this;
-    this.externalIndexValues = lodash.range(0,ledger.MAX_SLOT);
-    $scope.externalIndex = 0;
 
     this.isChromeApp = function() {
       return isChromeApp;
@@ -176,7 +174,8 @@ angular.module('copayApp.controllers').controller('joinController',
  
       if (form.hwLedger.$modelValue) {
         self.ledger = true;
-        ledger.getInfoForNewWallet($scope.externalIndex, function(err, lopts) {
+        // TODO account
+        ledger.getInfoForNewWallet(0, function(err, lopts) {
           self.ledger = false;
           if (err) {
             self.error = err;

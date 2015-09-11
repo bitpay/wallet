@@ -193,7 +193,7 @@ angular.module('copayApp.services')
         }
       } else if (opts.extendedPublicKey) {
         try {
-          walletClient.seedFromExtendedPublicKey(opts.extendedPublicKey, opts.externalSource, opts.externalIndex, opts.entropySource);
+          walletClient.seedFromExtendedPublicKey(opts.extendedPublicKey, opts.externalSource, opts.entropySource);
         } catch (ex) {
           $log.warn(ex);
           return cb(gettext('Could not create using the specified extended public key'));
@@ -411,7 +411,7 @@ angular.module('copayApp.services')
       var walletClient = bwcService.getClient();
       $log.debug('Importing Wallet XPubKey');
 
-      walletClient.importFromExtendedPublicKey(opts.extendedPublicKey, opts.externalSource, opts.externalIndex, opts.entropySource, function(err) {
+      walletClient.importFromExtendedPublicKey(opts.extendedPublicKey, opts.externalSource, opts.entropySource, function(err) {
         if (err) {
 
           // in HW wallets, req key is always the same. They can't addAccess.

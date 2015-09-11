@@ -264,7 +264,8 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
             self.setOngoingProcess(gettext('Requesting Ledger Wallet to sign'));
             $scope.loading = true;
             $scope.error = null;
-            ledger.signTx(txp, fc.getExternalIndex(), function(result) {
+            // TODO account
+            ledger.signTx(txp, 0, function(result) {
               if (result.success) {
                 txp.signatures = [];
                 for (var i=0; i<result.signatures.length; i++) {
@@ -836,7 +837,8 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       if (fc.getPrivKeyExternalSourceName() == 'ledger') {
         $log.debug('Requesting Ledger Chrome app to sign the transaction');
         self.setOngoingProcess(gettext('Requesting Ledger Wallet to sign'));
-        ledger.signTx(txp, fc.getExternalIndex(), function(result) {
+        // TODO account
+        ledger.signTx(txp, 0, function(result) {
           if (result.success) {
             txp.signatures = [];
             for (var i=0; i<result.signatures.length; i++) {

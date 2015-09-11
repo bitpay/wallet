@@ -4,7 +4,6 @@ angular.module('copayApp.services')
   .factory('ledger', function($log, bwcService, gettext) {
     var root = {};
     var LEDGER_CHROME_ID = "kkdpmhnladdopljabkgpacgpliggeeaf";
-    root.MAX_SLOT = 20;
 
     // Ledger magic number to get xPub without user confirmation
     root.ENTROPY_INDEX_PATH = "0xb11e/";
@@ -17,8 +16,8 @@ angular.module('copayApp.services')
       });
     }
 
-    root.getEntropySource = function(index, callback) {
-      var path = root.ENTROPY_INDEX_PATH + index + "'";
+    root.getEntropySource = function(account, callback) {
+      var path = root.ENTROPY_INDEX_PATH + account + "'";
       var xpub = root.getXPubKey(path, function(data) {
         if (!data.success) {
           $log.warn(data.message);
@@ -33,8 +32,8 @@ angular.module('copayApp.services')
       });
     };
 
-    root.getXPubKeyForAddresses = function(index, callback) {
-      return root.getXPubKey(root._getPath(index), callback);
+    root.getXPubKeyForAddresses = function(account, callback) {
+      return root.getXPubKey(root._getPath(account), callback);
     };
 
     root.getXPubKey = function(path, callback) {
@@ -48,36 +47,37 @@ angular.module('copayApp.services')
     };
 
 
-    root.getInfoForNewWallet = function(slot, callback) {
+    root.getInfoForNewWallet = function(account, callback) {
       var opts = {};
-      root.getEntropySource(slot, function(data) {
+      root.getEntropySource(account, function(data) {
         if (!data.success) {
           $log.warn(data.message);
           return callback(data.message);
         }
         opts.entropySource = data.entropySource;
-        root.getXPubKeyForAddresses(slot, function(data) {
+        root.getXPubKeyForAddresses(account, function(data) {
           if (!data.success) {
             $log.warn(data.message);
             return callback(data);
           }
           opts.extendedPublicKey = data.xpubkey;
           opts.externalSource = 'ledger';
-          opts.externalIndex = slot;
+          opts.externalIndex = account;
           return callback(null, opts);
         });
       });
     };
 
 
-    root.signTx = function(txp, index, callback) {
+
+    root._signP2PKH = function(txp, account, callback) {
       root.callbacks["sign_p2sh"] = callback;
       var redeemScripts = [];
       var paths = [];
       var tx = bwcService.getUtils().buildTx(txp);
       for (var i = 0; i < tx.inputs.length; i++) {
         redeemScripts.push(new ByteString(tx.inputs[i].redeemScript.toBuffer().toString('hex'), GP.HEX).toString());
-        paths.push(root._getPath(index) + txp.inputs[i].path.substring(1));
+        paths.push(root._getPath(account) + txp.inputs[i].path.substring(1));
       }
       var splitTransaction = root._splitTransaction(new ByteString(tx.toString(), GP.HEX));
       var inputs = [];
@@ -97,6 +97,44 @@ angular.module('copayApp.services')
         outputs_script: splitTransaction.outputScript.toString(),
         paths: paths
       });
+    };
+
+    root._signP2SH = function(txp, account, callback) {
+      root.callbacks["sign_p2sh"] = callback;
+      var redeemScripts = [];
+      var paths = [];
+      var tx = bwcService.getUtils().buildTx(txp);
+      for (var i = 0; i < tx.inputs.length; i++) {
+        redeemScripts.push(new ByteString(tx.inputs[i].redeemScript.toBuffer().toString('hex'), GP.HEX).toString());
+        paths.push(root._getPath(account) + txp.inputs[i].path.substring(1));
+      }
+      var splitTransaction = root._splitTransaction(new ByteString(tx.toString(), GP.HEX));
+      var inputs = [];
+      for (var i = 0; i < splitTransaction.inputs.length; i++) {
+        var input = splitTransaction.inputs[i];
+        inputs.push([
+          root._reverseBytestring(input.prevout.bytes(0, 32)).toString(),
+          root._reverseBytestring(input.prevout.bytes(32)).toString()
+        ]);
+      }
+      $log.debug('Ledger signing  paths:', paths);
+      root._messageAfterSession({
+        command: "sign_p2sh",
+        inputs: inputs,
+        scripts: redeemScripts,
+        outputs_number: splitTransaction.outputs.length,
+        outputs_script: splitTransaction.outputScript.toString(),
+        paths: paths
+      });
+    };
+
+    root.signTx = function(txp, account, callback) {
+      console.log('[ledger.js.72:txp:]', txp, account); //TODO
+      if (txp.addressType == 'P2PKH') {
+        root._signP2PKH(txp, account, callback);
+      } else {
+        root._signP2SH(txp, account, callback);
+      }
     }
 
     root._message = function(data) {
@@ -146,8 +184,8 @@ angular.module('copayApp.services')
       }
     }
 
-    root._getPath = function(index) {
-      return index + "'/45'";
+    root._getPath = function(account) {
+      return "44'/0'/" + account + "'";
     }
 
     root._splitTransaction = function(transaction) {
