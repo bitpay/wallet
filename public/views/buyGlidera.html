@@ -47,8 +47,24 @@
       </div>
 
       <div ng-show="!buy.show2faCodeInput && !buy.success">
+
         <form name="buyPriceForm" 
           ng-submit="buy.get2faCode(index.glideraToken)" novalidate>
+
+          <div ng-if="index.glideraToken" 
+            ng-init="otherWallets = buy.otherWallets(index.glideraTestnet)"
+            ng-click="openWalletsModal(otherWallets)">
+            <label translate>Wallet</label>
+            <div class="input">
+              <input type="text" id="address" name="address" ng-disabled="buy.selectedWalletId" 
+              ng-attr-placeholder="{{'Choose your destination wallet'|translate}}" 
+              ng-model="buy.selectedWalletName" required>
+              <a class="postfix size-12 m0 text-gray">
+                <i class="icon-wallet size-18"></i>
+              </a>
+            </div>
+          </div>
+
           <label><span translate>Amount in</span> {{showAlternative ? 'USD' : 'BTC'}}</label>
           <div class="input">
             <input ng-show="!showAlternative" type="number" id="qty" 
@@ -82,7 +98,8 @@
             <input class="button black expand round" 
             ng-style="{'background-color':index.backgroundColor}"
             type="submit" value="{{'Continue'|translate}}" 
-            ng-disabled="index.glideraLimits.transactDisabledPendingFirstTransaction || !buy.buyPrice.qty || buy.loading">
+            ng-disabled="index.glideraLimits.transactDisabledPendingFirstTransaction || !buy.buyPrice.qty ||
+            !buy.selectedWalletAddr || buy.loading">
           </div>
         </form> 
       </div>

@@ -61,7 +61,7 @@
         <p translate>You can buy and sell Bitcoin with a US bank account directly in Copay.</p>
         <div class="m10b text-gray size-12" translate>Connect your Glidera account to get started</div>
 
-        <div class="box-notification size-12 text-warning" ng-show="index.network == 'testnet'">
+        <div class="box-notification size-12 text-warning" ng-show="index.glideraTestnet">
           <i class="fi-info"></i>
           Testnet wallets only work with Glidera Sandbox Accounts
         </div>
@@ -113,7 +113,7 @@
         || (!index.glideraStatus.userBankAccountIsSetup && index.glideraStatus.bankAccountState != 'VERIFIED'))">
         <span translate>Your Glidera account is not ready to transact. Please, verify it at</span>
         <a href
-          ng-init="glideraUrl = index.network == 'testnet' ? 'https://sandbox.glidera.io/login' :
+          ng-init="glideraUrl = index.glideraTestnet ? 'https://sandbox.glidera.io/login' :
           'https://glidera.io/login'"
           ng-click="$root.openExternalLink(glideraUrl)">Glidera.io</a>
       </div>

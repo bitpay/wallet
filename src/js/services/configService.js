@@ -32,6 +32,12 @@ angular.module('copayApp.services').factory('configService', function(storageSer
       }
     },
 
+    // External services
+    glidera: {
+      enabled: true,
+      testnet: false
+    },
+
     rates: {
       url: 'https://insight.bitpay.com:443/api/rates',
     },
@@ -62,6 +68,9 @@ angular.module('copayApp.services').factory('configService', function(storageSer
         }
         if (!configCache.wallet.settings.unitCode) {
           configCache.wallet.settings.unitCode = defaultConfig.wallet.settings.unitCode;
+        }
+        if (!configCache.glidera) {
+          configCache.glidera = defaultConfig.glidera;
         }
 
       } else {
