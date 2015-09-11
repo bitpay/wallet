@@ -97,7 +97,7 @@
     <div class="m20v text-center">
       <img src="img/glidera-logo.png" ng-click="index.updateGlidera(index.glideraToken, index.glideraPermissions)" width="100">
     </div>
-    <div class="sub-header">
+    <div class="sub-header"  ng-click="$root.go('preferencesGlidera')">
       <div class="left">
         <div ng-show="index.glideraPersonalInfo" class="size-12">
           <b>
@@ -109,7 +109,7 @@
         </div>
       </div>
       <div class="right">
-        <div class="pointer m5t" ng-click="$root.go('preferencesGlidera')">
+        <div class="pointer m5t">
           <i class="fi-widget size-16 text-gray"></i>
           <span class="right text-gray">
             <i class="icon-arrow-right3 size-24 right"></i>
