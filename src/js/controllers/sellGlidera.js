@@ -1,8 +1,9 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('sellGlideraController', 
-  function($scope, $timeout, $log, gettext, gettextCatalog, configService, profileService, addressService, feeService, glideraService, bwsError) {
+  function($scope, $timeout, $log, $modal, gettext, gettextCatalog, configService, profileService, addressService, feeService, glideraService, bwsError, lodash, isChromeApp) {
 
+    var self = this;
     var config = configService.getSync();
     this.data = {};
     this.show2faCodeInput = null;
@@ -11,6 +12,65 @@ angular.module('copayApp.controllers').controller('sellGlideraController',
     this.loading = null;
     this.currentSpendUnconfirmed = config.wallet.spendUnconfirmed;
     this.currentFeeLevel = config.wallet.settings.feeLevel || 'normal';
+    var fc;
+
+    // DISABLE ANIMATION ON CHROMEAPP
+    if (isChromeApp) {
+      var animatedSlideUp = 'full';
+    } else {
+      var animatedSlideUp = 'full animated slideInUp';
+    }
+
+    this.otherWallets = function(testnet) {
+      var network = testnet ? 'testnet' : 'livenet';
+      return lodash.filter(profileService.getWallets(network), function(w) {
+        return w.network == network && w.m == 1;
+      });
+    };
+
+    $scope.openWalletsModal = function(wallets) {
+      self.error = null;
+      self.selectedWalletId = null;
+      self.selectedWalletName = null;
+      var ModalInstanceCtrl = function($scope, $modalInstance) {
+        $scope.wallets = wallets;
+        $scope.cancel = function() {
+          $modalInstance.dismiss('cancel');
+        };
+
+        $scope.selectWallet = function(walletId, walletName) {
+          if (!profileService.getClient(walletId).isComplete()) {
+            self.error = bwsError.msg({'code': 'WALLET_NOT_COMPLETE'}, gettextCatalog.getString('Could not choose the wallet'));
+            $modalInstance.dismiss('cancel');
+            return;
+          }
+          $modalInstance.close({
+            'walletId': walletId, 
+            'walletName': walletName,
+          });
+        };
+      };
+
+      var modalInstance = $modal.open({
+        templateUrl: 'views/modals/wallets.html',
+          windowClass: animatedSlideUp,
+          controller: ModalInstanceCtrl,
+      });
+
+      modalInstance.result.finally(function() {
+        var m = angular.element(document.getElementsByClassName('reveal-modal'));
+        m.addClass('slideOutDown');
+      });
+
+      modalInstance.result.then(function(obj) {
+        $timeout(function() {
+          self.selectedWalletId = obj.walletId;
+          self.selectedWalletName = obj.walletName;
+          fc = profileService.getClient(obj.walletId);
+          $scope.$apply();
+        }, 100);
+      });
+    };
 
     this.getSellPrice = function(token, price) {
       var self = this;
@@ -50,7 +110,6 @@ angular.module('copayApp.controllers').controller('sellGlideraController',
 
     this.createTx = function(token, permissions, twoFaCode) {
       var self = this;
-      var fc = profileService.focusedClient;
       self.error = null;
 
       this.loading = gettext('Selling Bitcoin...');
@@ -58,7 +117,7 @@ angular.module('copayApp.controllers').controller('sellGlideraController',
         addressService.getAddress(fc.credentials.walletId, null, function(err, refundAddress) {
           if (!refundAddress) {
             self.loading = null;
-            self.error = bwsError.msg(err);
+            self.error = bwsError.msg(err, gettext('Could not create address'));
             return;
           }
           glideraService.getSellAddress(token, function(error, sellAddress) {
@@ -139,7 +198,6 @@ angular.module('copayApp.controllers').controller('sellGlideraController',
 
     var _signTx = function(txp, cb) {
       var self = this;
-      var fc = profileService.focusedClient;
       fc.signTxProposal(txp, function(err, signedTx) {
         profileService.lockFC();
         if (err) {
