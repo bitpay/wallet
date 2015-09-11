@@ -99,6 +99,9 @@
     </div>
     <div class="sub-header"  ng-click="$root.go('preferencesGlidera')">
       <div class="left">
+        <div ng-show="!index.glideraPersonalInfo && !index.glideraEmail">
+          <h4 class="title p0i m10t m0" translate>Preferences</h4>
+        </div>
         <div ng-show="index.glideraPersonalInfo" class="size-12">
           <b>
           {{index.glideraPersonalInfo.firstName}} {{index.glideraPersonalInfo.lastName}}
@@ -134,29 +137,29 @@
       </div>
     </div>
 
-    <div ng-show="index.glideraPermissions.transact &&
-    (index.glideraStatus.userCanBuy || index.glideraStatus.userCanTransact)">
-      <ul class="no-bullet m0 size-14">
-        <li class="line-b line-t p20 pointer"
-        ng-click="$root.go('buyGlidera')">
-          <i class="icon-buy-btc size-24 m5r"></i>
-          <span translate>Buy Bitcoin</span>
-          <span class="right text-gray">
-            <i class="icon-arrow-right3 size-24 right"></i>
-          </span>
-        </li>
-        <li class="line-b p20 pointer"
-        ng-show="index.glideraPermissions.transact &&
-        (index.glideraStatus.userCanSell || index.glideraStatus.userCanTransact)"
-        ng-click="$root.go('sellGlidera')">
-        <i class="icon-sell-btc size-24 m5r"></i>
-        <span translate>Sell Bitcoin</span>
+    <ul class="no-bullet m0 size-14">
+      <li ng-show="index.glideraPermissions.transact &&
+      (index.glideraStatus.userCanBuy || index.glideraStatus.userCanTransact)" class="line-b line-t p20 pointer"
+      ng-click="$root.go('buyGlidera')">
+        <i class="icon-buy-btc size-24 m5r"></i>
+        <span translate>Buy Bitcoin</span>
         <span class="right text-gray">
           <i class="icon-arrow-right3 size-24 right"></i>
         </span>
-        </li>
-      </ul>
+      </li>
+      <li class="line-b p20 pointer"
+      ng-show="index.glideraPermissions.transact &&
+      (index.glideraStatus.userCanSell || index.glideraStatus.userCanTransact)"
+      ng-click="$root.go('sellGlidera')">
+      <i class="icon-sell-btc size-24 m5r"></i>
+      <span translate>Sell Bitcoin</span>
+      <span class="right text-gray">
+        <i class="icon-arrow-right3 size-24 right"></i>
+      </span>
+      </li>
+    </ul>
 
+    <div ng-show="index.glideraPermissions.transaction_history">
       <h4 class="title m0" translate>Activity</h4>
       <div ng-show="index.glideraTxs.length == 0 && !index.glideraLoadingHistory"
         class="size-12 p10 text-center text-gray" translate>
