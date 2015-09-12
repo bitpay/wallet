@@ -1,5 +1,5 @@
-<div 
-  class="topbar-container" 
+<div
+  class="topbar-container"
   ng-include="'views/includes/topbar.html'"
   ng-init="titleSection='Preferences'; goBackToState = 'glidera'">
 </div>
@@ -34,7 +34,7 @@
     </li>
   </ul>
 
-  <ul ng-if="index.glideraPermissions.view_email_address" 
+  <ul ng-if="index.glideraPermissions.view_email_address"
     ng-init="glidera.getEmail(index.glideraToken)"
     class="no-bullet m0 size-14">
     <h4 class="title m0" translate>Email</h4>
@@ -52,7 +52,7 @@
     </li>
   </ul>
 
-  <ul ng-if="index.glideraPermissions.personal_info" 
+  <ul ng-if="index.glideraPermissions.personal_info"
     ng-init="glidera.getPersonalInfo(index.glideraToken)"
     class="no-bullet m0 size-14">
     <h4 class="title m0" translate>Personal Information</h4>
@@ -260,7 +260,6 @@
     <span class="text-warning" translate>Log out</span>
     </li>
   </ul>
-  
+
 </div>
 <div class="extra-margin-bottom"></div>
-
