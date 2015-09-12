@@ -420,6 +420,17 @@ angular
           },
         }
       })
+      .state('information', {
+        url: '/information',
+        walletShouldBeComplete: true,
+        needProfile: true,
+        views: {
+          'main': {
+            templateUrl: 'views/preferencesInformation.html'
+          },
+        }
+      })
+ 
       .state('about', {
         url: '/about',
         templateUrl: 'views/preferencesAbout.html',
@@ -546,6 +557,7 @@ angular
       buyGlidera: 12,
       sellGlidera: 12,
       preferencesGlidera: 12,
+      about: 12,
       delete: 13,
       preferencesLanguage: 12,
       preferencesUnit: 12,
@@ -554,8 +566,8 @@ angular
       preferencesBwsUrl: 12,
       preferencesAlias: 12,
       preferencesEmail: 12,
-      about: 12,
       logs: 13,
+      information: 13,
       translators: 13,
       disclaimer: 13,
       add: 11,
