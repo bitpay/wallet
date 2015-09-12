@@ -7,6 +7,12 @@
 <div class="content preferences" ng-controller="preferencesAdvancedController as preferences">
 
   <ul class="no-bullet m0 size-14">
+
+    <li class="line-b p20" ng-click="$root.go('information')">
+      <i class="icon-arrow-right3 size-24 right text-gray"></i>  
+      <span translate>Wallet Information</span>
+    </li>
+
     <li class="line-b p20" ng-click="index.retryScan(); $root.go('walletHome'); ">
       <span translate>Scan addresses for funds</span>
     </li>
