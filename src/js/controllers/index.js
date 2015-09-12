@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, lodash, go, profileService, configService, isCordova, rateService, storageService, addressService, gettextCatalog, gettext, amMoment, nodeWebkit, addonManager, feeService, isChromeApp, bwsError, txFormatService, glideraService) {
+angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, lodash, go, profileService, configService, isCordova, rateService, storageService, addressService, gettextCatalog, gettext, amMoment, nodeWebkit, addonManager, feeService, isChromeApp, bwsError, txFormatService, glideraService, $state) {
   var self = this;
   self.isCordova = isCordova;
   self.onGoingProcess = {};
@@ -143,39 +143,62 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     });
   };
 
-  self.setTab = function(tab, reset, tries) {
+  self.setTab = function(tab, reset, tries, switchState) {
     tries = tries || 0;
 
+    // check if the whole menu item passed
+    if (typeof tab == 'object') {
+      if (tab.open) {
+        if (tab.link) {
+          self.tab = tab.link;
+        }
+        tab.open();
+        return;
+      } else {
+        return self.setTab(tab.link, reset, tries, switchState);
+      }
+    }
     if (self.tab === tab && !reset)
       return;
 
     if (!document.getElementById('menu-' + tab) && ++tries < 5) {
       return $timeout(function() {
-        self.setTab(tab, reset, tries);
+        self.setTab(tab, reset, tries, switchState);
       }, 300);
     }
 
-    if (!self.tab)
+    if (!self.tab || !$state.is('walletHome'))
       self.tab = 'walletHome';
 
-    if (document.getElementById(self.tab)) {
-      document.getElementById(self.tab).className = 'tab-out tab-view ' + self.tab;
-      var old = document.getElementById('menu-' + self.tab);
-      if (old) {
-        old.className = '';
+    var changeTab = function() {
+      if (document.getElementById(self.tab)) {
+        document.getElementById(self.tab).className = 'tab-out tab-view ' + self.tab;
+        var old = document.getElementById('menu-' + self.tab);
+        if (old) {
+          old.className = '';
+        }
       }
+
+      if (document.getElementById(tab)) {
+        document.getElementById(tab).className = 'tab-in  tab-view ' + tab;
+        var newe = document.getElementById('menu-' + tab);
+        if (newe) {
+          newe.className = 'active';
+        }
+      }
+
+      self.tab = tab;
+      $rootScope.$emit('Local/TabChanged', tab);
+    };
+
+    if (switchState && !$state.is('walletHome')) {
+      go.path('walletHome', function() {
+        changeTab();
+      });
+      return;
     }
 
-    if (document.getElementById(tab)) {
-      document.getElementById(tab).className = 'tab-in  tab-view ' + tab;
-      var newe = document.getElementById('menu-' + tab);
-      if (newe) {
-        newe.className = 'active';
-      }
-    }
-
-    self.tab = tab;
-    $rootScope.$emit('Local/TabChanged', tab);
+    changeTab();
   };
 
 
