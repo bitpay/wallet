@@ -16,7 +16,7 @@
       <div class="rect4"></div>
       <div class="rect5"></div>
     </div>
-    <span>{{sell.loading|translate}}</span>
+    <span>{{sell.loading}}</span>
     </div>
   </div>
 
@@ -26,11 +26,11 @@
         <i class="fi-info size-24 m10r"></i>
       </div>
       <div class="size-10">
-        <span class="text-light" translate>Daily sell limit</span>:
+        <span class="text-light">Daily sell limit</span>:
         {{index.glideraLimits.dailySell|currency:'':2}} {{index.glideraLimits.currency}}
         (remaining {{index.glideraLimits.dailySellRemaining|currency:'':2}} {{index.glideraLimits.currency}}) 
         <br>
-        <span class="text-light" translate>Monthly sell limit</span>:
+        <span class="text-light">Monthly sell limit</span>:
         {{index.glideraLimits.monthlySell|currency:'':2}} {{index.glideraLimits.currency}}
         (remaining {{index.glideraLimits.monthlySellRemaining|currency:'':2}} {{index.glideraLimits.currency}})
       </div>
@@ -41,7 +41,7 @@
     <div class="columns">
 
       <div class="box-notification" ng-show="index.glideraLimits.transactDisabledPendingFirstTransaction">
-        <span class="text-warning size-14" translate>
+        <span class="text-warning size-14">
           This operation was disabled because you have a pending first transaction
         </span>
       </div>
@@ -53,10 +53,10 @@
           <div ng-if="index.glideraToken" 
             ng-init="otherWallets = sell.otherWallets(index.glideraTestnet)"
             ng-click="openWalletsModal(otherWallets)">
-            <label translate>Wallet</label>
+            <label>Wallet</label>
             <div class="input">
               <input type="text" id="address" name="address" ng-disabled="sell.selectedWalletId" 
-              ng-attr-placeholder="{{'Choose your destination wallet'|translate}}" 
+              ng-attr-placeholder="{{'Choose your destination wallet'}}" 
               ng-model="sell.selectedWalletName" required>
               <a class="postfix size-12 m0 text-gray">
                 <i class="icon-wallet size-18"></i>
@@ -64,15 +64,15 @@
             </div>
           </div>
 
-          <label><span translate>Amount in</span> {{showAlternative ? 'USD' : 'BTC'}}</label>
+          <label><span>Amount in</span> {{showAlternative ? 'USD' : 'BTC'}}</label>
           <div class="input">
             <input ng-show="!showAlternative" type="number" id="qty" 
-            name="qty" ng-attr-placeholder="{{'Amount'|translate}}"
+            name="qty" ng-attr-placeholder="{{'Amount'}}"
             ng-minlength="0.00000001" ng-maxlength="10000000000" 
             ng-model="qty" autocomplete="off" ng-change="sell.getSellPrice(index.glideraToken, {'qty': qty})">
 
             <input ng-show="showAlternative" type="number" id="fiat" 
-            name="fiat" ng-attr-placeholder="{{'Amount'|translate}}" 
+            name="fiat" ng-attr-placeholder="{{'Amount'}}" 
             ng-model="fiat" autocomplete="off" ng-change="sell.getSellPrice(index.glideraToken, {'fiat': fiat})">
 
             <a ng-show="!showAlternative" class="postfix" 
@@ -87,7 +87,7 @@
               at {{sell.sellPrice.price|currency:'':2}} {{sell.sellPrice.currency}}/BTC
 
             </div>
-            <div class="text-center text-gray size-12 m20b" ng-show="!sell.gettingSellPrice && !sell.sellPrice.qty" translate>
+            <div class="text-center text-gray size-12 m20b" ng-show="!sell.gettingSellPrice && !sell.sellPrice.qty">
               (Enter the amount to get the exchange rate)
             </div>
 
@@ -97,16 +97,16 @@
 
             <input class="button black expand round" 
             ng-style="{'background-color':index.backgroundColor}"
-            type="submit" value="{{'Continue'|translate}}" 
+            type="submit" value="{{'Continue'}}" 
             ng-disabled="index.glideraLimits.transactDisabledPendingFirstTransaction || !sell.sellPrice.qty ||
             !sell.selectedWalletId || sell.loading">
           </div>
         </form> 
       </div>
       <div ng-show="sell.show2faCodeInput && !sell.success">
-        <div class="m10t text-center" translate>
+        <div class="m10t text-center">
 {{sell.sellPrice.qty}} BTC &rarr; {{sell.sellPrice.subtotal|currency:'':2}} {{sell.sellPrice.currency}}
-          <p class="m20t" translate>
+          <p class="m20t">
             A SMS containing a confirmation code was sent to your phone. <br>
             Please, enter the code below
           </p>
@@ -115,21 +115,21 @@
               <input type="number" ng-model="twoFaCode" required>
               <input class="button black expand round" 
               ng-style="{'background-color':index.backgroundColor}"
-              type="submit" value="{{'Sell'|translate}}" ng-disabled="sellForm.$invalid || sell.loading">
+              type="submit" value="{{'Sell'}}" ng-disabled="sellForm.$invalid || sell.loading">
           </form>
-          <p class="m10t size-12 text-gray" translate>
+          <p class="m10t size-12 text-gray">
           Bitcoins will be immediately sent from your wallet to Glidera. Fiat will be deposited in your bank account in 4-6 business days.
           </p>
         </div>
       </div>
       <div class="box-notification" ng-show="sell.error && !sell.success">
         <span class="text-warning size-14">
-          {{sell.error|translate}}
+          {{sell.error}}
         </span>
       </div>
       <div class="text-center" ng-show="sell.success">
-        <h1 translate>Sale initiated</h1>
-        <p class="text-gray" translate>
+        <h1>Sale initiated</h1>
+        <p class="text-gray">
         A transfer has been initiated to your bank account and should arrive in 4-6 business days.
         </p>
 
