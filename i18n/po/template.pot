@@ -12,6 +12,15 @@ msgstr ""
 msgid "{{fee}} will be discounted for bitcoin networking fees"
 msgstr ""
 
+#: public/views/copayers.html
+#: public/views/walletHome.html
+msgid "{{index.m}}-of-{{index.n}}"
+msgstr ""
+
+#: public/views/includes/sidebar.html
+msgid "{{item.m}}-of-{{item.n}}"
+msgstr ""
+
 #: src/js/controllers/importLegacy.js
 msgid "{{len}} wallets imported. Funds scanning in progress. Hold on to see updated balance"
 msgstr ""
@@ -252,10 +261,6 @@ msgstr ""
 msgid "Confirmations"
 msgstr ""
 
-#: public/views/preferencesInformation.html
-msgid "Copayer {{$index}}"
-msgstr ""
-
 #: src/js/services/bwsError.js
 msgid "Copayer already in this wallet"
 msgstr ""
@@ -460,7 +465,7 @@ msgid "Economy"
 msgstr ""
 
 #: public/views/preferencesEmail.html
-msgid "email for wallet notifications"
+msgid "Email for wallet notifications"
 msgstr ""
 
 #: public/views/preferences.html
@@ -798,21 +803,6 @@ msgstr ""
 #: public/views/modals/tx-details.html
 #: public/views/modals/txp-details.html
 msgid "Note"
-msgstr ""
-
-#: public/views/copayers.html
-#: public/views/walletHome.html
-#: public/views/includes/sidebar.html
-msgid "of"
-msgstr ""
-
-#: public/views/includes/alert.html
-#: public/views/includes/password.html
-msgid "OK"
-msgstr ""
-
-#: public/views/modals/tx-status.html
-msgid "OKAY"
 msgstr ""
 
 #: public/views/preferencesInformation.html
