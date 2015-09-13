@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('buyGlideraController', 
-  function($scope, $timeout, $modal, profileService, addressService, glideraService, gettext, gettextCatalog, bwsError, lodash, isChromeApp) {
+  function($scope, $timeout, $modal, profileService, addressService, glideraService, bwsError, lodash, isChromeApp) {
     
     var self = this;
     this.show2faCodeInput = null;
@@ -36,13 +36,13 @@ angular.module('copayApp.controllers').controller('buyGlideraController',
 
         $scope.selectWallet = function(walletId, walletName) {
           if (!profileService.getClient(walletId).isComplete()) {
-            self.error = bwsError.msg({'code': 'WALLET_NOT_COMPLETE'}, gettextCatalog.getString('Could not choose the wallet'));
+            self.error = bwsError.msg({'code': 'WALLET_NOT_COMPLETE'}, 'Could not choose the wallet');
             $modalInstance.dismiss('cancel');
             return;
           }
           addressService.getAddress(walletId, false, function(err, walletAddr) {
             if (err) {
-              self.error = bwsError.cb(err, gettext('Could not create address'));
+              self.error = bwsError.cb(err, 'Could not create address');
               $modalInstance.dismiss('cancel');
               return;
             }
@@ -87,7 +87,7 @@ angular.module('copayApp.controllers').controller('buyGlideraController',
       glideraService.buyPrice(token, price, function(err, buyPrice) {
         self.gettingBuyPrice = false;
         if (err) {
-          self.error = gettext('Could not get exchange information. Please, try again.');
+          self.error = 'Could not get exchange information. Please, try again.';
         }
         else {
           self.buyPrice = buyPrice;
@@ -97,12 +97,12 @@ angular.module('copayApp.controllers').controller('buyGlideraController',
 
     this.get2faCode = function(token) {
       var self = this;
-      this.loading = gettext('Sending 2FA code...');
+      this.loading = 'Sending 2FA code...';
       $timeout(function() {
         glideraService.get2faCode(token, function(err, sent) {
           self.loading = null;
           if (err) {
-            self.error = gettext('Could not send confirmation code to your phone');
+            self.error = 'Could not send confirmation code to your phone';
           }
           else {
             self.error = null;
@@ -115,7 +115,7 @@ angular.module('copayApp.controllers').controller('buyGlideraController',
     this.sendRequest = function(token, permissions, twoFaCode) {
       var self = this;
       self.error = null;
-      self.loading = gettext('Buying bitcoin...');
+      self.loading = 'Buying bitcoin...';
       var data = {
         destinationAddress: self.selectedWalletAddr,
         qty: self.buyPrice.qty,

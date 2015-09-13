@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('sellGlideraController', 
-  function($scope, $timeout, $log, $modal, gettext, gettextCatalog, configService, profileService, addressService, feeService, glideraService, bwsError, lodash, isChromeApp) {
+  function($scope, $timeout, $log, $modal, configService, profileService, addressService, feeService, glideraService, bwsError, lodash, isChromeApp) {
 
     var self = this;
     var config = configService.getSync();
@@ -40,7 +40,7 @@ angular.module('copayApp.controllers').controller('sellGlideraController',
 
         $scope.selectWallet = function(walletId, walletName) {
           if (!profileService.getClient(walletId).isComplete()) {
-            self.error = bwsError.msg({'code': 'WALLET_NOT_COMPLETE'}, gettextCatalog.getString('Could not choose the wallet'));
+            self.error = bwsError.msg({'code': 'WALLET_NOT_COMPLETE'}, 'Could not choose the wallet');
             $modalInstance.dismiss('cancel');
             return;
           }
@@ -83,7 +83,7 @@ angular.module('copayApp.controllers').controller('sellGlideraController',
       glideraService.sellPrice(token, price, function(err, sellPrice) {
         self.gettingSellPrice = false;
         if (err) {
-          self.error = gettext('Could not get exchange information. Please, try again.');
+          self.error = 'Could not get exchange information. Please, try again.';
         }
         else {
           self.error = null;
@@ -94,12 +94,12 @@ angular.module('copayApp.controllers').controller('sellGlideraController',
 
     this.get2faCode = function(token) {
       var self = this;
-      this.loading = gettext('Sending 2FA code...');
+      this.loading = 'Sending 2FA code...';
       $timeout(function() {
         glideraService.get2faCode(token, function(err, sent) {
           self.loading = null;
           if (err) {
-            self.error = gettext('Could not send confirmation code to your phone');
+            self.error = 'Could not send confirmation code to your phone';
           }
           else {
             self.show2faCodeInput = sent;
@@ -112,18 +112,18 @@ angular.module('copayApp.controllers').controller('sellGlideraController',
       var self = this;
       self.error = null;
 
-      this.loading = gettext('Selling Bitcoin...');
+      this.loading = 'Selling Bitcoin...';
       $timeout(function() {
         addressService.getAddress(fc.credentials.walletId, null, function(err, refundAddress) {
           if (!refundAddress) {
             self.loading = null;
-            self.error = bwsError.msg(err, gettext('Could not create address'));
+            self.error = bwsError.msg(err, 'Could not create address');
             return;
           }
           glideraService.getSellAddress(token, function(error, sellAddress) {
             if (!sellAddress) {
               self.loading = null;
-              self.error = gettext('Could not get the destination bitcoin address');
+              self.error = 'Could not get the destination bitcoin address';
               return;
             }
             var amount = parseInt((self.sellPrice.qty * 100000000).toFixed(0));
@@ -144,7 +144,7 @@ angular.module('copayApp.controllers').controller('sellGlideraController',
                   $log.error(err);
                   $timeout(function() {
                     self.loading = null;
-                    self.error = bwsError.msg(err, gettextCatalog.getString('Error'));
+                    self.error = bwsError.msg(err, 'Error');
                   }, 1);
                   return;
                 }
@@ -201,7 +201,7 @@ angular.module('copayApp.controllers').controller('sellGlideraController',
       fc.signTxProposal(txp, function(err, signedTx) {
         profileService.lockFC();
         if (err) {
-          err = bwsError.msg(err, gettextCatalog.getString('Could not accept payment'));
+          err = bwsError.msg(err, 'Could not accept payment');
           return cb(err);
         }
         else {
@@ -209,7 +209,7 @@ angular.module('copayApp.controllers').controller('sellGlideraController',
             return cb(null, txp, signedTx.raw);
 
           } else {
-            return cb(gettext('The transaction could not be signed'));
+            return cb('The transaction could not be signed');
           }
         }
       });
