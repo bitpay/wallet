@@ -96,11 +96,11 @@
         </span>
     </li>
     <li class="line-b p20" ng-show="!index.noFocusedWallet">
-      <span translate>Enable Glidera Service</span>
+      <span>Enable Glidera Service</span>
       <switch id="glidera-enabled" name="glideraEnabled" ng-model="glideraEnabled" class="green right"></switch>
     </li>
     <li class="line-b p20" ng-show="!index.noFocusedWallet && glideraEnabled">
-      <span translate>Glidera Sandbox</span>
+      <span>Glidera Sandbox</span>
       <switch id="glidera-testnet" name="glideraTestnet" ng-model="glideraTestnet" class="green right"></switch>
     </li>
     <li class="line-b p20" ng-click="$root.go('about')">
