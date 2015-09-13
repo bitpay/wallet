@@ -123,7 +123,8 @@
               {{(index.alias || index.walletName)}}
               </p>
               <div class="size-12 text-gray">
-                <span translate>Multisignature wallet</span> ({{index.m}} <span translate>of</span> {{index.n}})
+                <span translate>Multisignature wallet</span> 
+                (<span translate>{{index.m}}-of-{{index.n}}</span>)
                 <span ng-if="index.network != 'livenet'">- Testnet</span>
                 <span ng-if="!index.canSign"> - <span translate>No Private key</span></span>
               </div>

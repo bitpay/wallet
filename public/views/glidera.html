@@ -17,8 +17,8 @@
       <div class="rect4"></div>
       <div class="rect5"></div>
     </div>
-    <span ng-show="glidera.loading" translate>Connecting to Glidera...</span>
-    <span ng-show="index.glideraLoading">{{index.glideraLoading|translate}}</span>
+    <span ng-show="glidera.loading">Connecting to Glidera...</span>
+    <span ng-show="index.glideraLoading">{{index.glideraLoading}}</span>
     </div>
   </div>
 
@@ -42,7 +42,7 @@
           Retry
         </button>
         <div class="m20t size-12">
-          <a class="text-gray" ng-click="$root.go('preferencesGlidera')" translate>Preferences</a>
+          <a class="text-gray" ng-click="$root.go('preferencesGlidera')">Preferences</a>
         </div>
       </div>
     </div>
@@ -59,11 +59,11 @@
         <img src="img/glidera-logo.png" ng-click="index.updateGlidera(index.glideraToken, index.glideraPermissions)" width="200">
       </div>
       <div class="text-center small-10 small-centered columns" ng-show="!showOauthForm">
-        <p class="m10b" translate>You can buy and sell Bitcoin with a US bank account directly in Copay.</p>
-        <p class="text-gray size-12" translate>Connect your Glidera account to get started</p>
+        <p class="m10b">You can buy and sell Bitcoin with a US bank account directly in Copay.</p>
+        <p class="text-gray size-12">Connect your Glidera account to get started</p>
 
         <a class="button m20t light-gray outline round small"
-          ng-click="$root.openExternalLink(glidera.getAuthenticateUrl(), '_system'); showOauthForm = true" translate>
+          ng-click="$root.openExternalLink(glidera.getAuthenticateUrl(), '_system'); showOauthForm = true">
           Connect to Glidera
         </a>
         <div>
@@ -79,16 +79,16 @@
         <form name="oauthCodeForm" ng-submit="glidera.submitOauthCode(code)" novalidate>
           <label>OAuth Code</label>
           <input type="text" ng-model="code" ng-disabled="glidera.loading"
-          ng-attr-placeholder="{{'Paste the authorization code here'|translate}}" required>
+          ng-attr-placeholder="{{'Paste the authorization code here'}}" required>
           <input
             class="button expand round"
             ng-style="{'background-color':index.backgroundColor}"
             type="submit" value="Get started" ng-disabled="oauthCodeForm.$invalid || glidera.loading">
         </form>
-        <div>
-          <a href class="size-12 text-gray"
-            ng-click="showOauthForm = false; index.glideraError = null; glidera.error = null" translate>Go back</a>
-        </div>
+        <button class="button light-gray expand outline round" 
+          ng-click="showOauthForm = false; index.glideraError = null; glidera.error = null">
+          <i class="fi-arrow-left"></i> <span class="tu">Back</span>
+        </button>
       </div>
     </div>
   </div>
@@ -100,7 +100,7 @@
     <div class="sub-header"  ng-click="$root.go('preferencesGlidera')">
       <div class="left">
         <div ng-show="!index.glideraPersonalInfo && !index.glideraEmail">
-          <h4 class="title p0i m10t m0" translate>Preferences</h4>
+          <h4 class="title p0i m10t m0">Preferences</h4>
         </div>
         <div ng-show="index.glideraPersonalInfo" class="size-12">
           <b>
@@ -124,13 +124,12 @@
       <div class="text-center columns small-8 small-centered m30v size-12"
         ng-show="index.glideraStatus && (!index.glideraStatus.userEmailIsSetup || !index.glideraStatus.userPhoneIsSetup
         || (!index.glideraStatus.userBankAccountIsSetup && index.glideraStatus.bankAccountState != 'VERIFIED'))">
-        <h4 class="text-bold" translate> Complete Setup</h4>
-        <span translate>Your Glidera account is not ready to transact. Please, verify it at <b>Glidera.io</b> </span>
+        <h4 class="text-bold"> Complete Setup</h4>
+        Your Glidera account is not ready to transact. Please, verify it at <b>Glidera.io</b>
           <a class="button m20t light-gray outline round tiny"
             ng-init="glideraUrl = index.glideraTestnet ? 'https://sandbox.glidera.io/login' :
             'https://glidera.io/login'"
-            ng-click="$root.openExternalLink(glideraUrl)"
-            translate>
+            ng-click="$root.openExternalLink(glideraUrl)">
             Go to Glidera
           </a>
         </div>
@@ -142,7 +141,7 @@
       (index.glideraStatus.userCanBuy || index.glideraStatus.userCanTransact)" class="line-b line-t p20 pointer"
       ng-click="$root.go('buyGlidera')">
         <i class="icon-buy-btc size-24 m5r"></i>
-        <span translate>Buy Bitcoin</span>
+        <span>Buy Bitcoin</span>
         <span class="right text-gray">
           <i class="icon-arrow-right3 size-24 right"></i>
         </span>
@@ -152,7 +151,7 @@
       (index.glideraStatus.userCanSell || index.glideraStatus.userCanTransact)"
       ng-click="$root.go('sellGlidera')">
       <i class="icon-sell-btc size-24 m5r"></i>
-      <span translate>Sell Bitcoin</span>
+      <span>Sell Bitcoin</span>
       <span class="right text-gray">
         <i class="icon-arrow-right3 size-24 right"></i>
       </span>
@@ -160,9 +159,9 @@
     </ul>
 
     <div ng-show="index.glideraPermissions.transaction_history">
-      <h4 class="title m0" translate>Activity</h4>
+      <h4 class="title m0">Activity</h4>
       <div ng-show="index.glideraTxs.length == 0 && !index.glideraLoadingHistory"
-        class="size-12 p10 text-center text-gray" translate>
+        class="size-12 p10 text-center text-gray">
         No activity in your account
       </div>
       <div ng-repeat="tx in index.glideraTxs"
@@ -170,8 +169,8 @@
         class="row collapse last-transactions-content">
         <div class="large-3 medium-3 small-3 columns">
           <span class="label tu radius" ng-show="tx.type == 'BUY'"
-            ng-style="{'background-color':index.backgroundColor}" translate>Bought</span>
-          <span class="label tu gray radius" ng-show="tx.type == 'SELL'" translate>Sold</span>
+            ng-style="{'background-color':index.backgroundColor}">Bought</span>
+          <span class="label tu gray radius" ng-show="tx.type == 'SELL'">Sold</span>
         </div>
 
         <div class="large-4 medium-4 small-4 columns">
