@@ -880,7 +880,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     getToken(function(err, accessToken) {
       if (err || !accessToken) return;
       else {
-        self.glideraLoading = gettext('Connecting to Glidera...');
+        self.glideraLoading = 'Connecting to Glidera...';
         glideraService.getAccessTokenPermissions(accessToken, function(err, p) {
           self.glideraLoading = null;
           if (err) {
@@ -912,7 +912,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     });
 
     if (permissions.transaction_history) {
-      self.glideraLoadingHistory = gettext('Getting Glidera transactions...');
+      self.glideraLoadingHistory = 'Getting Glidera transactions...';
       glideraService.getTransactions(accessToken, function(err, data) {
         self.glideraLoadingHistory = null;
         self.glideraTxs = data;
@@ -920,14 +920,14 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     }
     
     if (permissions.view_email_address && opts.fullUpdate) {
-      self.glideraLoadingEmail = gettext('Getting Glidera Email...');
+      self.glideraLoadingEmail = 'Getting Glidera Email...';
       glideraService.getEmail(accessToken, function(err, data) {
         self.glideraLoadingEmail = null;
         self.glideraEmail = data.email;
       });
     }
     if (permissions.personal_info && opts.fullUpdate) {
-      self.glideraLoadingPersonalInfo = gettext('Getting Glidera Personal Information...');
+      self.glideraLoadingPersonalInfo = 'Getting Glidera Personal Information...';
       glideraService.getPersonalInfo(accessToken, function(err, data) {
         self.glideraLoadingPersonalInfo = null;
         self.glideraPersonalInfo = data;

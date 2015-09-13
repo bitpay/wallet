@@ -191,10 +191,6 @@ msgstr ""
 msgid "Browser unsupported"
 msgstr ""
 
-#: public/views/includes/sidebar.html
-msgid "Buy &amp; Sell Bitcoin"
-msgstr ""
-
 #: public/views/copayers.html
 #: public/views/walletHome.html
 #: public/views/modals/confirmation.html
@@ -254,10 +250,6 @@ msgstr ""
 
 #: public/views/modals/tx-details.html
 msgid "Confirmations"
-msgstr ""
-
-#: src/js/controllers/index.js
-msgid "Connecting to Glidera..."
 msgstr ""
 
 #: public/views/preferencesInformation.html
@@ -572,22 +564,6 @@ msgstr ""
 
 #: public/views/modals/wallets.html
 msgid "Getting address for wallet {{selectedWalletName}} ..."
-msgstr ""
-
-#: src/js/controllers/index.js
-msgid "Getting Glidera Email..."
-msgstr ""
-
-#: src/js/controllers/index.js
-msgid "Getting Glidera Personal Information..."
-msgstr ""
-
-#: src/js/controllers/index.js
-msgid "Getting Glidera transactions..."
-msgstr ""
-
-#: public/views/includes/sidebar.html
-msgid "Glidera"
 msgstr ""
 
 #: public/views/preferences.html
