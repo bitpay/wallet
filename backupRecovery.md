@@ -4,72 +4,71 @@
 
 ## Description
 
-Copay is a Multisig HD Wallet. Copay apps hold the extended private keys for the wallet. The private key never leave the device, so for accessing a wallet funds it is necesary to have the device or the backup of the wallet. 
+Copay is a Multisig HD Wallet. Copay app holds the extended private keys for the wallet. The private key never leaves the device, so for accessing a wallet funds it is necesary to have the device or a backup of the wallet. 
 
 ## Definitions
 
 ### Backup Formats:
- * Wallet Seed (WS): 12 words mnemonic backup (available from Copay v1.2+). The 12 words are used as wallet seed, following BIP39 specification. The wallet seed may require a passphrase to recreate the wallet (if that was specified at creation time).
- * Wallet Backup (WB): Exported data from Copay, containing an AES encrypted JSON with many wallet parameters (like extended Private Key, wallet Name, extended public keys of Copayers, etc. See #export-format). This data can be created from Copay v1.2+ (Settings->Export) and it was the default backup format on previous Copay versions. WB can be a file (standart format for Copay desktop versions) or a text (standart from Copay mobile versions).
+ * Wallet Seed (WS): 12 words mnemonic backup (available from Copay v1.2+). The 12 words are used as wallet seed, following BIP39 specification. The wallet seed may require a passphrase to recreate the wallet (if one was specified at creation time).
+ * Wallet Backup (WB): Exported data from Copay, containing an AES encrypted JSON with many wallet parameters (like extended private key, wallet name, extended public keys of copayers, etc. See #export-format). This data can be created from Copay v1.2+ (Settings -> Export) and it was the default backup format on previous Copay versions. WB can be a file (standard format for Copay desktop versions) or a text (standard for Copay mobile versions).
 
 ### Backup recovery cases
- * Case 1: Lost of device holding the wallet
+ * Case 1: Loss of device holding the wallet
  * Case 2: Change to a new Bitcore Wallet Service (BWS)
  * Case 3: Lost device + new Bitcore Wallet Service
 
 ### Wallet Recovery Scope
- * Basic Recovery: Wallet access is restored. It is possible to see wallet balance and past transactions. It is possible to send and receive coins.
- * Full Recovery: All the features of Basic Recovery + Wallet Name, Copayer Names are recovered, Past Spend proposal metadata (who signed, and notes) are recoved.
+* Basic Recovery: Wallet access is restored. It is possible to see wallet balance and past transactions. It is possible to send and receive payments.
+ * Full Recovery: All the features of Partial Recovery + wallet name, copayer names are recovered, past payment proposal metadata (who signed, and notes) are recoved.
       
 ## Wallet Restore Scenarios
 
-### Non multisig wallets
+### Non-multisig wallets
 
   Case 1: From both WS and WB, full recovery is possible.
     - Enter the WS or the WB at 'Import wallet' in a new device.
-    - Wallet access should be restored
+    - Wallet access should be restored.
     
-  Case 2: Basic recovery is possible using the device where the wallet is installed, pointing the the new server (Recreate Wallet feature).
-    - Point to the new server
-    - If the wallet is not registered at the new Wallet service, a "Recreate" buttom will appear at wallet's home. Click it to recreate the wallet.
-    - Wallet should be recreated and funds can be acceded
-    - If the wallet existed, it could be needed to rescan Wallet's addresses for fund (from Settings -> Advanced -> Scan Addresses for Funds)
+  Case 2: Basic recovery is possible using the device where the wallet is installed, pointing to the new server (Recreate wallet feature).
+    - Point to the new server (Settings -> Bitcore Wallet Service).
+    - If the wallet is not registered at the new Wallet service, a 'Recreate' button will appear at wallet's home. Click it to recreate the wallet.
+    - Wallet should be recreated and access to funds should be restored.
+    - If the wallet existed, it may be necessary to rescan Wallet's addresses for funds (from Settings -> Advanced -> Scan Addresses for Funds)
     
   Case 3: From both Backup Words and Backup file, basic recovery is possible.
     (Using WS)
     - Enter the WS at 'Import Wallet'
-      If the error "This wallet is not registered at the wallet service" will appear:
+      If the error "This wallet is not registered at the wallet service" appears:
       - Go to 'Create Wallet', and enter the WS at 'Advanced Options'. Select a new name for the restored wallet. Total and required number of copayers should be set to 1.
-      - Wallet should be recreated and funds can be acceded
+      - Wallet should be recreated and access to funds should be restored.
       
     (Using WD)
     - Enter the WD at 'Import Wallet'
-    - Wallet should be recreated and funds should be accesable 
+    - Wallet should be recreated and access to funds should be restored.
  
 
 ### Multisig wallets
 
   Case 1: From both WS and WD, full recovery is possible.
     - Enter WS or WD at 'Import wallet' in a new device.
-    - Wallet access should be restored
+    - Wallet access should be restored.
    
   Case 2: Basic recovery is possible using the device where the wallet is installed, pointing the the new server (Recreate Wallet feature).
-    - Point to the new server
-    - If the wallet is not registered at the new Wallet service, a "Recreate" buttom will appear at wallet's home. Click it to recreate the wallet.
-    - Wallet should be recreated and funds should be accesable 
-    
-    - If the wallet existed, it could be needed to rescan Wallet's addresses for fund (from Settings -> Advanced -> Scan Addresses for Funds)
+    - Point to the new server (Settings -> Bitcore Wallet Service).
+    - If the wallet is not registered at the new Wallet service, a 'Recreate' button will appear at wallet's home. Click it to recreate the wallet.
+    - Wallet should be recreated and access to funds should be restored.
+    - If the wallet existed, it may be necessary to rescan Wallet's addresses for funds (from Settings -> Advanced -> Scan Addresses for Funds)
     
   Case 3: Basic recovery is possible using:
 
-    A) All WS's of the copayers of the wallet 
-      - Enter one WS at Create ( at the Advanced option section). Note that the wallet's configuration (M-N and network paramenters) need to be entered and need to match the parameters that where enterered when the wallet was created. Name and Nickname of Copayers need to be entered also, but there is no need for them to match the original wallet setup.
+    A) WS of all copayers in the wallet 
+      - Enter one WS at Create (at the Advanced option section). Note that the wallet configuration (M-of-N and network paramenters) needs to match the parameters that where entered when the wallet was first created. Wallet name and copayer nicknames need to be entered also, but there is no need for them to match the original wallet setup.
       - Ask other copayers to join the wallet using the given invitation code. All copayers need to enter their WS at Join (at -> Advanced Options -> Wallet Seed).
-      - Wallet should be recreated and funds should be accesable 
+      - Wallet should be recreated and access to funds should be restored.
     
     B) One WD and a quorum of WS of the other members.
       - Using the WD, import the wallet.
-      - Ask other copayers to import the wallet using the their WS.
+      - Ask other copayers to import the wallet using their WS.
       - Wallet should be recreated and funds should be accesable 
       
       In this case, Copayers will not be able to decrypt the 'notes' field on the new Spend Proposals, because the shared secret stored at the WD is not longer known by other copayers.
