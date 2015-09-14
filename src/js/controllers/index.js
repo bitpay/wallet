@@ -1,8 +1,9 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, lodash, go, profileService, configService, isCordova, rateService, storageService, addressService, gettextCatalog, gettext, amMoment, nodeWebkit, addonManager, feeService, isChromeApp, bwsError, txFormatService, glideraService, $state) {
+angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, lodash, go, profileService, configService, isCordova, rateService, storageService, addressService, gettext, amMoment, nodeWebkit, addonManager, feeService, isChromeApp, bwsError, txFormatService, uxLanguage, $state, glideraService) {
   var self = this;
   self.isCordova = isCordova;
+  self.isChromeApp = isChromeApp;
   self.onGoingProcess = {};
   self.limitHistory = 5;
 
@@ -38,35 +39,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   self.txTemplateUrl = addonManager.txTemplateUrl() || 'views/includes/transaction.html';
 
   self.tab = 'walletHome';
-
-  self.availableLanguages = [{
-    name: 'English',
-    isoCode: 'en',
-  }, {
-    name: 'Français',
-    isoCode: 'fr',
-  }, {
-    name: 'Italiano',
-    isoCode: 'it',
-  }, {
-    name: 'Deutsch',
-    isoCode: 'de',
-  }, {
-    name: 'Español',
-    isoCode: 'es',
-  }, {
-    name: 'Português',
-    isoCode: 'pt',
-  }, {
-    name: 'Ελληνικά',
-    isoCode: 'el',
-  }, {
-    name: '日本語',
-    isoCode: 'ja',
-  }, {
-    name: 'Pусский',
-    isoCode: 'ru',
-  }];
 
   self.feeOpts = feeService.feeOpts;
 
@@ -130,16 +102,23 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       self.walletId = fc.credentials.walletId;
       self.isComplete = fc.isComplete();
       self.canSign = fc.canSign();
+      self.isPrivKeyExternal = fc.isPrivKeyExternal();
+      self.externalSource = fc.getPrivKeyExternalSourceName();
       self.txps = [];
       self.copayers = [];
       self.updateColor();
       self.updateAlias();
       self.initGlidera();
 
-      storageService.getBackupFlag(self.walletId, function(err, val) {
-        self.needsBackup = self.network == 'testnet' ? false : !val;
+      if (fc.isPrivKeyExternal()) {
+        self.needsBackup = false;
         self.openWallet();
-      });
+      } else {
+        storageService.getBackupFlag(self.walletId, function(err, val) {
+          self.needsBackup = self.network == 'testnet' ? false : !val;
+          self.openWallet();
+        });
+      }
     });
   };
 
@@ -273,7 +252,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         return cb(null, opts.walletStatus);
       else {
         self.updateError = false;
-        return fc.getStatus(function(err, ret) {
+        return fc.getStatus({}, function(err, ret) {
           if (err) {
             self.updateError = bwsError.msg(err, gettext('Could not update Wallet'));
           } else {
@@ -293,7 +272,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       if (!opts.quiet)
         self.setOngoingProcess('updatingStatus', true);
 
-      $log.debug('Updating Status:', fc, tries);
+      $log.debug('Updating Status:', fc.credentials.walletName, tries);
       get(function(err, walletStatus) {
         var currentStatusHash = _walletStatusHash(walletStatus);
         $log.debug('Status update. hash:' + currentStatusHash + ' Try:' + tries);
@@ -423,7 +402,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
   self.updateTxHistory = function(skip) {
     var fc = profileService.focusedClient;
-    if (!fc.isComplete()) return;
+    if (!fc || !fc.isComplete()) return;
     if (!skip) {
       self.txHistory = [];
     }
@@ -680,16 +659,18 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       return str;
     }
 
+    var step = 6;
+
     function getHistory(skip, cb) {
       skip = skip || 0;
       fc.getTxHistory({
         skip: skip,
-        limit: 100
+        limit: step,
       }, function(err, txs) {
         if (err) return cb(err);
         if (txs && txs.length > 0) {
           allTxs.push(txs);
-          return getHistory(skip + 100, cb);
+          return getHistory(skip + step, cb);
         } else {
           return cb(null, lodash.flatten(allTxs));
         }
@@ -761,7 +742,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     });
   };
 
-  self.showErrorPopup = function (msg, cb) {
+  self.showErrorPopup = function(msg, cb) {
     $log.warn('Showing err popup:' + msg);
     self.showAlert = {
       msg: msg,
@@ -773,7 +754,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     $timeout(function() {
       $rootScope.$apply();
     });
-
   };
 
   self.recreate = function(cb) {
@@ -811,6 +791,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
   self.startScan = function(walletId) {
     var c = profileService.walletClients[walletId];
+    if (!c.isComplete()) return;
 
     if (self.walletId == walletId)
       self.setOngoingProcess('scanning', true);
@@ -827,29 +808,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   };
 
   self.setUxLanguage = function() {
-    var userLang = configService.getSync().wallet.settings.defaultLanguage;
-    if (!userLang) {
-      // Auto-detect browser language
-      var androidLang;
-
-      if (navigator && navigator.userAgent && (androidLang = navigator.userAgent.match(/android.*\W(\w\w)-(\w\w)\W/i))) {
-        userLang = androidLang[1];
-      } else {
-        // works for iOS and Android 4.x
-        userLang = navigator.userLanguage || navigator.language;
-      }
-      userLang = userLang ? (userLang.split('-', 1)[0] || 'en') : 'en';
-    }
-    if (userLang != gettextCatalog.getCurrentLanguage()) {
-      $log.debug('Setting default language: ' + userLang);
-      gettextCatalog.setCurrentLanguage(userLang);
-      amMoment.changeLocale(userLang);
-    }
-
+    var userLang = uxLanguage.update();
     self.defaultLanguageIsoCode = userLang;
-    self.defaultLanguageName = lodash.result(lodash.find(self.availableLanguages, {
-      'isoCode': self.defaultLanguageIsoCode
-    }), 'name');
+    self.defaultLanguageName = uxLanguage.getName(userLang);
   };
 
   self.initGlidera = function(accessToken) {
@@ -1059,7 +1020,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.needsBackup = false;
     storageService.setBackupFlag(walletId, function() {
       addressService.expireAddress(walletId, function(err) {
-        self.startScan(walletId);
+        $timeout(function() {
+          self.startScan(walletId);
+        }, 500);
       });
     });
   });
@@ -1152,7 +1115,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   });
 
   $rootScope.$on('Local/ShowAlert', function(event, msg, cb) {
-    self.showErrorPopup(msg,cb);
+    self.showErrorPopup(msg, cb);
   });
 
   $rootScope.$on('Local/NeedsPassword', function(event, isSetup, cb) {

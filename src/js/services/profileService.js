@@ -1,6 +1,6 @@
 'use strict';
 angular.module('copayApp.services')
-  .factory('profileService', function profileServiceFactory($rootScope, $location, $timeout, $filter, $log, lodash, storageService, bwcService, configService, notificationService, isChromeApp, isCordova, gettext, nodeWebkit, bwsError) {
+  .factory('profileService', function profileServiceFactory($rootScope, $location, $timeout, $filter, $log, lodash, storageService, bwcService, configService, notificationService, isChromeApp, isCordova, gettext, nodeWebkit, bwsError, uxLanguage, ledger, bitcore) {
 
     var root = {};
 
@@ -25,7 +25,7 @@ angular.module('copayApp.services')
       // Set local object
       if (walletId)
         root.focusedClient = root.walletClients[walletId];
-      else 
+      else
         root.focusedClient = [];
 
       if (lodash.isEmpty(root.focusedClient)) {
@@ -146,7 +146,7 @@ angular.module('copayApp.services')
               return cb(err);
             }
             if (!profile) {
-              // Migration??
+              // Migration?? 
               storageService.tryToMigrate(function(err, migratedProfile) {
                 if (err) return cb(err);
                 if (!migratedProfile)
@@ -165,62 +165,102 @@ angular.module('copayApp.services')
       });
     };
 
+    root._seedWallet = function(opts, cb) {
+      opts = opts || {};
+      var walletClient = bwcService.getClient();
+      var network = opts.networkName || 'livenet';
+
+      if (opts.mnemonic && opts.mnemonic.indexOf('m/') == 0) {
+        var xPrivKey = root._preDerivation(opts.mnemonic, network);
+        if (!xPrivKey)
+          return bwsError.cb('Bad derivation', gettext('Could not import'), cb);
+        opts.mnemonic = null;
+        opts.extendedPrivateKey = xPrivKey;
+      }
+      if (opts.mnemonic) {
+        try {
+          walletClient.seedFromMnemonic(opts.mnemonic, opts.passphrase, network);
+        } catch (ex) {
+          $log.info(ex);
+          return cb(gettext('Could not create: Invalid wallet seed'));
+        }
+      } else if (opts.extendedPrivateKey) {
+        try {
+          walletClient.seedFromExtendedPrivateKey(opts.extendedPrivateKey);
+        } catch (ex) {
+          $log.warn(ex);
+          return cb(gettext('Could not create using the specified extended private key'));
+        }
+      } else if (opts.extendedPublicKey) {
+        try {
+          walletClient.seedFromExtendedPublicKey(opts.extendedPublicKey, opts.externalSource, opts.entropySource);
+        } catch (ex) {
+          $log.warn("Creating wallet from Extended Public Key Arg:", ex, opts);
+          return cb(gettext('Could not create using the specified extended public key'));
+        }
+      } else {
+        var lang = uxLanguage.getCurrentLanguage();
+        try {
+          walletClient.seedFromRandomWithMnemonic(network, opts.passphrase, lang);
+        } catch (e) {
+          $log.info('Error creating seed: ' + e.message);
+          if (e.message.indexOf('language') > 0) {
+            $log.info('Using default language for mnemonic');
+            walletClient.seedFromRandomWithMnemonic(network, opts.passphrase);
+          } else {
+            return cb(e);
+          }
+        }
+      }
+      return cb(null, walletClient);
+    };
+
     root._createNewProfile = function(opts, cb) {
 
       if (opts.noWallet) {
         return cb(null, Profile.create());
       }
 
-      var walletClient = bwcService.getClient();
-      walletClient.createWallet('Personal Wallet', 'me', 1, 1, {
-        network: 'livenet'
-      }, function(err) {
-        if (err) return bwsError.cb(err, gettext('Error creating wallet'), cb);
-        var p = Profile.create({
-          credentials: [JSON.parse(walletClient.export())],
+      root._seedWallet({}, function(err, walletClient) {
+        if (err) return cb(err);
+
+        walletClient.createWallet('Personal Wallet', 'me', 1, 1, {
+          network: 'livenet'
+        }, function(err) {
+          if (err) return bwsError.cb(err, gettext('Error creating wallet'), cb);
+          var p = Profile.create({
+            credentials: [JSON.parse(walletClient.export())],
+          });
+          return cb(null, p);
         });
-        return cb(null, p);
       })
     };
 
     root.createWallet = function(opts, cb) {
-      var walletClient = bwcService.getClient();
       $log.debug('Creating Wallet:', opts);
+      root._seedWallet(opts, function(err, walletClient) {
+        if (err) return cb(err);
 
-      if (opts.extendedPrivateKey) {
-        try {
-          walletClient.seedFromExtendedPrivateKey(opts.extendedPrivateKey);
-        } catch (ex) {
-          return cb(gettext('Could not create using the specified extended private key'));
-        }
-      }
-      walletClient.createWallet(opts.name, opts.myName || 'me', opts.m, opts.n, {
-        network: opts.networkName
-      }, function(err, secret) {
-        if (err) return bwsError.cb(err, gettext('Error creating wallet'), cb);
+        walletClient.createWallet(opts.name, opts.myName || 'me', opts.m, opts.n, {
+          network: opts.networkName
+        }, function(err, secret) {
+          if (err) return bwsError.cb(err, gettext('Error creating wallet'), cb);
 
-        root.profile.credentials.push(JSON.parse(walletClient.export()));
-        root.setWalletClients();
+          root.profile.credentials.push(JSON.parse(walletClient.export()));
+          root.setWalletClients();
 
-        root.setAndStoreFocus(walletClient.credentials.walletId, function() {
-          storageService.storeProfile(root.profile, function(err) {
-            return cb(null, secret);
+          root.setAndStoreFocus(walletClient.credentials.walletId, function() {
+            storageService.storeProfile(root.profile, function(err) {
+              return cb(null, secret, walletClient.credentials.walletId);
+            });
           });
-        });
-      })
+        })
+      });
     };
 
     root.joinWallet = function(opts, cb) {
       var walletClient = bwcService.getClient();
       $log.debug('Joining Wallet:', opts);
-      if (opts.extendedPrivateKey) {
-        try {
-          walletClient.seedFromExtendedPrivateKey(opts.extendedPrivateKey);
-        } catch (ex) {
-          return cb(gettext('Could not join using the specified extended private key'));
-        }
-      }
-
 
       try {
         var walletData = this.getUtils().fromSecret(opts.secret);
@@ -229,23 +269,29 @@ angular.module('copayApp.services')
         if (lodash.find(root.profile.credentials, {
           'walletId': walletData.walletId
         })) {
-            return cb(gettext('Cannot join the same wallet more that once'));
+          return cb(gettext('Cannot join the same wallet more that once'));
         }
       } catch (ex) {
         return cb(gettext('Bad wallet invitation'));
       }
+      opts.networkName = walletData.network;
+      $log.debug('Joining Wallet:', opts);
 
-      walletClient.joinWallet(opts.secret, opts.myName || 'me', function(err) {
-        if (err) return bwsError.cb(err, gettext('Could not join wallet'), cb);
+      root._seedWallet(opts, function(err, walletClient) {
+        if (err) return cb(err);
 
-        root.profile.credentials.push(JSON.parse(walletClient.export()));
-        root.setWalletClients();
+        walletClient.joinWallet(opts.secret, opts.myName || 'me', function(err) {
+          if (err) return bwsError.cb(err, gettext('Could not join wallet'), cb);
 
-        root.setAndStoreFocus(walletClient.credentials.walletId, function() {
-          storageService.storeProfile(root.profile, function(err) {
-            return cb(null, opts.secret);
+          root.profile.credentials.push(JSON.parse(walletClient.export()));
+          root.setWalletClients();
+
+          root.setAndStoreFocus(walletClient.credentials.walletId, function() {
+            storageService.storeProfile(root.profile, function(err) {
+              return cb();
+            });
           });
-        });
+        })
       })
     };
 
@@ -277,18 +323,7 @@ angular.module('copayApp.services')
       });
     };
 
-    root.importWallet = function(str, opts, cb) {
-      var walletClient = bwcService.getClient();
-      $log.debug('Importing Wallet:', opts);
-      try {
-        walletClient.import(str, {
-          compressed: opts.compressed,
-          password: opts.password
-        });
-      } catch (err) {
-        return cb(gettext('Could not import. Check input file and password'));
-      }
-
+    root._addWalletClient = function(walletClient, cb) {
       var walletId = walletClient.credentials.walletId;
 
       // check if exist
@@ -306,7 +341,91 @@ angular.module('copayApp.services')
           return cb(null, walletId);
         });
       });
+
     };
+
+    root.importWallet = function(str, opts, cb) {
+      var walletClient = bwcService.getClient();
+      $log.debug('Importing Wallet:', opts);
+      try {
+        walletClient.import(str, {
+          compressed: opts.compressed,
+          password: opts.password
+        });
+      } catch (err) {
+        return cb(gettext('Could not import. Check input file and password'));
+      }
+      root._addWalletClient(walletClient, cb);
+    };
+
+    root.importExtendedPrivateKey = function(xPrivKey, cb) {
+      var walletClient = bwcService.getClient();
+      $log.debug('Importing Wallet xPrivKey');
+
+      walletClient.importFromExtendedPrivateKey(xPrivKey, function(err) {
+        if (err)
+          return bwsError.cb(err, gettext('Could not import'), cb);
+
+        root._addWalletClient(walletClient, cb);
+      });
+    };
+
+
+    root._preDerivation = function(words, network) {
+      var wordList = words.split(/ /).filter(function(v) {
+        return v.length > 0;
+      });
+      var path = wordList.shift();
+      var walletClient = bwcService.getClient();
+      $log.info('preDerivation:', path);
+      walletClient.seedFromMnemonic(wordList.join(' '), null, network);
+      var k = new bitcore.HDPrivateKey(walletClient.credentials.xPrivKey);
+      var k2 = k.derive(path);
+      return k2.toString();
+    };
+
+    root.importMnemonic = function(words, opts, cb) {
+      var walletClient = bwcService.getClient();
+
+      if (words.indexOf('m/') == 0) {
+        var xPrivKey = root._preDerivation(words, opts.networkName);
+        if (!xPrivKey)
+          return bwsError.cb('Bad derivation', gettext('Could not import'), cb);
+        return root.importExtendedPrivateKey(xPrivKey, cb);
+      }
+
+      $log.debug('Importing Wallet Mnemonic');
+
+      walletClient.importFromMnemonic(words, {
+        network: opts.networkName,
+        passphrase: opts.passphrase,
+      }, function(err) {
+        if (err)
+          return bwsError.cb(err, gettext('Could not import'), cb);
+
+        root._addWalletClient(walletClient, cb);
+      });
+    };
+
+    root.importExtendedPublicKey = function(opts, cb) {
+      var walletClient = bwcService.getClient();
+      $log.debug('Importing Wallet XPubKey');
+
+      walletClient.importFromExtendedPublicKey(opts.extendedPublicKey, opts.externalSource, opts.entropySource, function(err) {
+        if (err) {
+
+          // in HW wallets, req key is always the same. They can't addAccess.
+          if (err.code == 'NOT_AUTHORIZED')
+            err.code = 'WALLET_DOES_NOT_EXIST';
+
+          return bwsError.cb(err, gettext('Could not import'), cb);
+        }
+
+        root._addWalletClient(walletClient, cb);
+      });
+    };
+
+
 
     root.create = function(opts, cb) {
       $log.info('Creating profile');
@@ -364,7 +483,7 @@ angular.module('copayApp.services')
       $log.debug('Encrypting private key for', fc.credentials.walletName);
 
       fc.setPrivateKeyEncryption(password);
-      fc.lock();
+      root.lockFC();
       root.updateCredentialsFC(function() {
         $log.debug('Wallet encrypted');
         return cb();
@@ -399,13 +518,17 @@ angular.module('copayApp.services')
       $log.debug('Wallet is encrypted');
       $rootScope.$emit('Local/NeedsPassword', false, function(err2, password) {
         if (err2 || !password) {
-          return cb({message: (err2 || gettext('Password needed'))});
+          return cb({
+            message: (err2 || gettext('Password needed'))
+          });
         }
         try {
           fc.unlock(password);
         } catch (e) {
           $log.debug(e);
-          return cb({message: gettext('Wrong password')});
+          return cb({
+            message: gettext('Wrong password')
+          });
         }
         $timeout(function() {
           if (fc.isPrivKeyEncrypted()) {
@@ -439,7 +562,38 @@ angular.module('copayApp.services')
       return lodash.sortBy(ret, 'name');
     };
 
+    root._signWithLedger = function(txp, cb) {
+      var fc = root.focusedClient;
+      $log.info('Requesting Ledger Chrome app to sign the transaction');
 
+      ledger.signTx(txp, 0, function(result) {
+        if (!result.success)
+          return cb(result);
+
+        txp.signatures = lodash.map(result.signatures, function(s) {
+          return s.substring(0, s.length - 2);
+        });
+        return fc.signTxProposal(txp, cb);
+      });
+    };
+
+    root.signTxProposal = function(txp, cb) {
+      var fc = root.focusedClient;
+
+      if (fc.isPrivKeyExternal()) {
+        if (fc.getPrivKeyExternalSourceName() != 'ledger') {
+          var msg = 'Unsupported External Key:' + fc.getPrivKeyExternalSourceName();
+          $log.error(msg);
+          return cb(msg);
+        }
+        return root._signWithLedger(txp, cb);
+      } else {
+        return fc.signTxProposal(txp, function(err, signedTxp) {
+          root.lockFC();
+          return cb(err, signedTxp);
+        });
+      }
+    };
 
     return root;
   });

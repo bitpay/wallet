@@ -25,7 +25,7 @@ angular.module('copayApp.services')
             body = gettextCatalog.getString('Copayer already in this wallet');
             break;
           case 'COPAYER_REGISTERED': 
-            body = gettextCatalog.getString('Copayer already registered');
+            body = gettextCatalog.getString('Wallet already registered');
             break;
           case 'COPAYER_VOTED': 
             body = gettextCatalog.getString('Copayer already voted on this spend proposal');
@@ -84,7 +84,27 @@ angular.module('copayApp.services')
           case 'WALLET_NOT_FOUND': 
             body = gettextCatalog.getString('Wallet not found');
             break;
+          case 'SERVER_COMPROMISED': 
+            body = gettextCatalog.getString('Server response could not be verified');
+            break;
+          case 'WALLET_DOES_NOT_EXIST': 
+            body = gettextCatalog.getString('Wallet not registed at the Wallet Service. Recreate it from "Create Wallet" using "Advanced Options" to set your seed');
+            break;
+          case 'INVALID_BACKUP': 
+            body = gettextCatalog.getString('Wallet seed is invalid');
+            break;
+  
+          case 'ERROR':
+            body = (err.message || err.error);
+            break;
+
+          default:
+            $log.warn('Unknown error type:', err.code);
+            body =  err.message  || err.code;
+            break;
         }
+      } else {
+        body = gettextCatalog.getString(err);
       }
 
       var msg = prefix + ( body ? ': ' + body  : '');
