@@ -103,6 +103,8 @@ angular.module('copayApp.services')
             body =  err.message  || err.code;
             break;
         }
+      } else {
+        body = gettextCatalog.getString(err);
       }
 
       var msg = prefix + ( body ? ': ' + body  : '');

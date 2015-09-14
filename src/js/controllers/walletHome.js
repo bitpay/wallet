@@ -740,9 +740,17 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       return;
     };
 
+    var comment = form.comment.$modelValue;
+
+    // ToDo: use a credential's (or fc's) function for this
+    if (comment && !fc.credentials.sharedEncryptingKey) {
+      var msg = 'Could not add message to imported wallet without shared encrypting key';
+      $log.warn(msg);
+      return self.setSendError(gettext(msg));
+    }
+
     self.setOngoingProcess(gettext('Creating transaction'));
     $timeout(function() {
-      var comment = form.comment.$modelValue;
       var paypro = self._paypro;
       var address, amount;
 

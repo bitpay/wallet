@@ -172,7 +172,7 @@ angular.module('copayApp.services')
 
       if (opts.mnemonic && opts.mnemonic.indexOf('m/') == 0) {
         var xPrivKey = root._preDerivation(opts.mnemonic, network);
-        if (!xPrivKey) 
+        if (!xPrivKey)
           return bwsError.cb('Bad derivation', gettext('Could not import'), cb);
         opts.mnemonic = null;
         opts.extendedPrivateKey = xPrivKey;
@@ -389,7 +389,7 @@ angular.module('copayApp.services')
 
       if (words.indexOf('m/') == 0) {
         var xPrivKey = root._preDerivation(words, opts.networkName);
-        if (!xPrivKey) 
+        if (!xPrivKey)
           return bwsError.cb('Bad derivation', gettext('Could not import'), cb);
         return root.importExtendedPrivateKey(xPrivKey, cb);
       }
@@ -562,19 +562,18 @@ angular.module('copayApp.services')
       return lodash.sortBy(ret, 'name');
     };
 
-    root._signWithLedger = function(txp,cb) {
+    root._signWithLedger = function(txp, cb) {
       var fc = root.focusedClient;
       $log.info('Requesting Ledger Chrome app to sign the transaction');
 
       ledger.signTx(txp, 0, function(result) {
-        if (!result.success) 
+        if (!result.success)
           return cb(result);
 
-        txp.signatures = [];
-        for (var i=0; i<result.signatures.length; i++) {
-          txp.signatures.push(result.signatures[i].substring(0, result.signatures[i].length - 2));
+        txp.signatures = lodash.map(result.signatures, function(s) {
+          return s.substring(0, s.length - 2);
+        });
         return fc.signTxProposal(txp, cb);
-        }
       });
     };
 
@@ -587,7 +586,7 @@ angular.module('copayApp.services')
           $log.error(msg);
           return cb(msg);
         }
-        return root._signWithLedger(txp,cb);
+        return root._signWithLedger(txp, cb);
       } else {
         return fc.signTxProposal(txp, function(err, signedTxp) {
           root.lockFC();
