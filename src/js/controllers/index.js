@@ -110,10 +110,15 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       self.updateAlias();
       self.initGlidera();
 
-      storageService.getBackupFlag(self.walletId, function(err, val) {
-        self.needsBackup = self.network == 'testnet' ? false : !val;
+      if (fc.isPrivKeyExternal()) {
+        self.needsBackup = false;
         self.openWallet();
-      });
+      } else {
+        storageService.getBackupFlag(self.walletId, function(err, val) {
+          self.needsBackup = self.network == 'testnet' ? false : !val;
+          self.openWallet();
+        });
+      }
     });
   };
 

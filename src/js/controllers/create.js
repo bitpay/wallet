@@ -110,8 +110,6 @@ angular.module('copayApp.controllers').controller('createController',
           if (opts.mnemonic || opts.externalSource || opts.extendedPrivateKey) {
             if (opts.n == 1) {
               $rootScope.$emit('Local/WalletImported', walletId);
-            } else {
-              $rootScope.$emit('Local/BackupDone', walletId);
             }
           }
           go.walletHome();
