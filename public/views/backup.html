@@ -70,7 +70,10 @@
 
         <div class="small-centered p10t p10b large-centered medium-centered large-8 medium-8 small-10 columns enable_text_select" style="border:1px solid gray; background:#eee;
 ">
-          <span class="m10r" ng-repeat="word in wordsC.mnemonicWords">{{word}} </span> 
+          <span class="m10r" ng-repeat="word in wordsC.mnemonicWords">
+            <b>{{$index}}.</b>
+            {{word}} 
+          </span> 
         </div>
 
         <div class="box-notification large-centered medium-centered small-centered large-8 medium-8 small-10 columns m10t" ng-show="wordsC.mnemonicHasPassphrase">
@@ -105,7 +108,7 @@
     <div class="row m20t"  ng-show="index.n==1">
       <div class="columns size-14 text-gray">
         <span translate>You can safely install your wallet on another device and use it from multiple devices at the same time.</span> 
-        <a href="#" ng-click="$root.openExternalLink('https://github.com/bitpay/copay#backups')" translate>
+        <a href="#" ng-click="$root.openExternalLink('https://github.com/bitpay/copay/blob/master/README.md#copay-backups-and-recovery')" translate>
           Learn more about Copay backups
         </a>
       </div>

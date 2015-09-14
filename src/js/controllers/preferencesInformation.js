@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('preferencesInformation',
-  function($scope, $log, lodash, profileService) {
+  function($scope, $log, $timeout, lodash, profileService) {
 
     var fc = profileService.focusedClient;
     var c = fc.credentials;
@@ -14,6 +14,7 @@ angular.module('copayApp.controllers').controller('preferencesInformation',
     $scope.M = c.m;
     $scope.N = c.n;
     $scope.pubKeys = lodash.pluck(c.publicKeyRing, 'xPubKey');
+    $scope.addrs = null;
 
     fc.getMainAddresses({
       doNotVerify: true
@@ -22,7 +23,6 @@ angular.module('copayApp.controllers').controller('preferencesInformation',
         $log.warn(err);
         return;
       };
-
       var last10 = [],
         i = 0,
         e = addrs.pop();
@@ -31,6 +31,10 @@ angular.module('copayApp.controllers').controller('preferencesInformation',
         e = addrs.pop();
       }
       $scope.addrs = last10;
+      $timeout(function() {
+        $scope.$apply();
+      });
+
     });
 
     this.sendAddrs = function() {
