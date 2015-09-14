@@ -18,8 +18,8 @@ Copay is a Multisig HD Wallet. Copay apps hold the extended private keys for the
  * Case 3: Lost device + new Bitcore Wallet Service
 
 ### Wallet Recovery Scope
- * Partial Recovery: Wallet access is restored. It is possible to see wallet balance and past transactions. It is possible to send and receive coins.
- * Full Recovery: All the features of Partial Recovery + Wallet Name, Copayer Names are recovered, Past Spend proposal metadata (who signed, and notes) are recoved.
+ * Basic Recovery: Wallet access is restored. It is possible to see wallet balance and past transactions. It is possible to send and receive coins.
+ * Full Recovery: All the features of Basic Recovery + Wallet Name, Copayer Names are recovered, Past Spend proposal metadata (who signed, and notes) are recoved.
       
 ## Wallet Restore Scenarios
 
@@ -29,13 +29,13 @@ Copay is a Multisig HD Wallet. Copay apps hold the extended private keys for the
     - Enter the WS or the WB at 'Import wallet' in a new device.
     - Wallet access should be restored
     
-  Case 2: Partial recovery is possible using the device where the wallet is installed, pointing the the new server (Recreate Wallet feature).
+  Case 2: Basic recovery is possible using the device where the wallet is installed, pointing the the new server (Recreate Wallet feature).
     - Point to the new server
     - If the wallet is not registered at the new Wallet service, a "Recreate" buttom will appear at wallet's home. Click it to recreate the wallet.
     - Wallet should be recreated and funds can be acceded
     - If the wallet existed, it could be needed to rescan Wallet's addresses for fund (from Settings -> Advanced -> Scan Addresses for Funds)
     
-  Case 3: From both Backup Words and Backup file, partial recovery is possible.
+  Case 3: From both Backup Words and Backup file, basic recovery is possible.
     (Using WS)
     - Enter the WS at 'Import Wallet'
       If the error "This wallet is not registered at the wallet service" will appear:
@@ -53,14 +53,14 @@ Copay is a Multisig HD Wallet. Copay apps hold the extended private keys for the
     - Enter WS or WD at 'Import wallet' in a new device.
     - Wallet access should be restored
    
-  Case 2: Partial recovery is possible using the device where the wallet is installed, pointing the the new server (Recreate Wallet feature).
+  Case 2: Basic recovery is possible using the device where the wallet is installed, pointing the the new server (Recreate Wallet feature).
     - Point to the new server
     - If the wallet is not registered at the new Wallet service, a "Recreate" buttom will appear at wallet's home. Click it to recreate the wallet.
     - Wallet should be recreated and funds should be accesable 
     
     - If the wallet existed, it could be needed to rescan Wallet's addresses for fund (from Settings -> Advanced -> Scan Addresses for Funds)
     
-  Case 3: Partial recovery is possible using:
+  Case 3: Basic recovery is possible using:
 
     A) All WS's of the copayers of the wallet 
       - Enter one WS at Create ( at the Advanced option section). Note that the wallet's configuration (M-N and network paramenters) need to be entered and need to match the parameters that where enterered when the wallet was created. Name and Nickname of Copayers need to be entered also, but there is no need for them to match the original wallet setup.
