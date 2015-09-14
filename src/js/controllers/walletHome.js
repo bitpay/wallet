@@ -681,6 +681,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       });
 
     var fc = profileService.focusedClient;
+    if (!fc) return;
     // ToDo: use a credential's (or fc's) function for this
     this.hideNote = !fc.credentials.sharedEncryptingKey;
   };
