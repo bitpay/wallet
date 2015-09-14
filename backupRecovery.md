@@ -63,11 +63,13 @@ Copay is a Multisig HD Wallet. Copay apps hold the extended private keys for the
   Case 3: Partial recovery is possible using:
 
     A) All WS's of the copayers of the wallet 
-    - Enter one WS at Create ( at the Advanced option section). Note that the wallet's configuration (M-N and network paramenters) need to be entered and need to match the parameters that where enterered when the wallet was created. Name and Nickname of Copayers need to be entered also, but there is no need for them to match the original wallet setup.
-    - Ask other copayers to join the wallet using the given invitation code. All copayers need to enter their WS at Join (at -> Advanced Options -> Wallet Seed).
-    - Wallet should be recreated and funds should be accesable 
+      - Enter one WS at Create ( at the Advanced option section). Note that the wallet's configuration (M-N and network paramenters) need to be entered and need to match the parameters that where enterered when the wallet was created. Name and Nickname of Copayers need to be entered also, but there is no need for them to match the original wallet setup.
+      - Ask other copayers to join the wallet using the given invitation code. All copayers need to enter their WS at Join (at -> Advanced Options -> Wallet Seed).
+      - Wallet should be recreated and funds should be accesable 
     
     B) One WD and a quorum of WS of the other members.
       - Using the WD, import the wallet.
       - Ask other copayers to import the wallet using the their WS.
       - Wallet should be recreated and funds should be accesable 
+      
+      In this case, Copayers will not be able to decrypt the 'notes' field on the new Spend Proposals, because the shared secret stored at the WD is not longer known by other copayers.
