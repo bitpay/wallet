@@ -102,11 +102,11 @@
         </div>
         <div ng-hide="hideAdv" class="row">
           <div class="large-12 columns">
-            <label ng-show="create.isChromeApp()" for="hw-ledger" class="oh">
+            <label ng-show="create.isChromeApp() && totalCopayers > 1 " for="hw-ledger" class="oh">
               <span translate>Use Ledger hardware wallet</span>
               <switch id="hw-ledger" name="hwLedger" ng-model="hwLedger" ng-change="isTestnet=false" class="green right m5t m10b"></switch>
             </label>
-<!-- account
+<!-- TODO account
             <div ng-show="hwLedger">
               <label class="oh"><span translate>Ledger Slot</span>
                 <select class="m10t" ng-model="externalIndex" ng-options="externalIndex as externalIndex for externalIndex in create.externalIndexValues">

@@ -195,7 +195,7 @@ angular.module('copayApp.services')
         try {
           walletClient.seedFromExtendedPublicKey(opts.extendedPublicKey, opts.externalSource, opts.entropySource);
         } catch (ex) {
-          $log.warn(ex);
+          $log.warn("Creating wallet from Extended Public Key Arg:", ex, opts);
           return cb(gettext('Could not create using the specified extended public key'));
         }
       } else {
@@ -483,7 +483,7 @@ angular.module('copayApp.services')
       $log.debug('Encrypting private key for', fc.credentials.walletName);
 
       fc.setPrivateKeyEncryption(password);
-      fc.lock();
+      root.lockFC();
       root.updateCredentialsFC(function() {
         $log.debug('Wallet encrypted');
         return cb();
@@ -562,7 +562,39 @@ angular.module('copayApp.services')
       return lodash.sortBy(ret, 'name');
     };
 
+    root._signWithLedger = function(txp,cb) {
+      var fc = root.focusedClient;
+      $log.info('Requesting Ledger Chrome app to sign the transaction');
 
+      ledger.signTx(txp, 0, function(result) {
+        if (!result.success) 
+          return cb(result);
+
+        txp.signatures = [];
+        for (var i=0; i<result.signatures.length; i++) {
+          txp.signatures.push(result.signatures[i].substring(0, result.signatures[i].length - 2));
+        return fc.signTxProposal(txp, cb);
+        }
+      });
+    };
+
+    root.signTxProposal = function(txp, cb) {
+      var fc = root.focusedClient;
+
+      if (fc.isPrivKeyExternal()) {
+        if (fc.getPrivKeyExternalSourceName() != 'ledger') {
+          var msg = 'Unsupported External Key:' + fc.getPrivKeyExternalSourceName();
+          $log.error(msg);
+          return cb(msg);
+        }
+        return root._signWithLedger(txp,cb);
+      } else {
+        return fc.signTxProposal(txp, function(err, signedTxp) {
+          root.lockFC();
+          return cb(err, signedTxp);
+        });
+      }
+    };
 
     return root;
   });

@@ -100,21 +100,21 @@ angular.module('copayApp.controllers').controller('createController',
         profileService.createWallet(opts, function(err, secret, walletId) {
           self.loading = false;
           if (err) {
-            if (err == "Error creating wallet" && opts.extendedPublicKey) {
-              err = gettext("This xpub index is already used by another wallet. Please select another index.");
-            }
             $log.warn(err);
             self.error = err;
             $timeout(function() {
               $rootScope.$apply();
             });
-          } else {
-            if (opts.n == 1 && (opts.mnemonic || opts.externalSource || opts.extendedPrivateKey)) {
+            return;
+          } 
+          if (opts.mnemonic || opts.externalSource || opts.extendedPrivateKey) {
+            if (opts.n == 1) {
               $rootScope.$emit('Local/WalletImported', walletId);
             } else {
-              go.walletHome();
+              $rootScope.$emit('Local/BackupDone', walletId);
             }
           }
+          go.walletHome();
         });
       }, 100);
     }

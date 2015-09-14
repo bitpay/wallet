@@ -68,37 +68,6 @@ angular.module('copayApp.services')
       });
     };
 
-
-
-    root._signP2PKH = function(txp, account, callback) {
-      root.callbacks["sign_p2sh"] = callback;
-      var redeemScripts = [];
-      var paths = [];
-      var tx = bwcService.getUtils().buildTx(txp);
-      for (var i = 0; i < tx.inputs.length; i++) {
-        redeemScripts.push(new ByteString(tx.inputs[i].redeemScript.toBuffer().toString('hex'), GP.HEX).toString());
-        paths.push(root._getPath(account) + txp.inputs[i].path.substring(1));
-      }
-      var splitTransaction = root._splitTransaction(new ByteString(tx.toString(), GP.HEX));
-      var inputs = [];
-      for (var i = 0; i < splitTransaction.inputs.length; i++) {
-        var input = splitTransaction.inputs[i];
-        inputs.push([
-          root._reverseBytestring(input.prevout.bytes(0, 32)).toString(),
-          root._reverseBytestring(input.prevout.bytes(32)).toString()
-        ]);
-      }
-      $log.debug('Ledger signing  paths:', paths);
-      root._messageAfterSession({
-        command: "sign_p2sh",
-        inputs: inputs,
-        scripts: redeemScripts,
-        outputs_number: splitTransaction.outputs.length,
-        outputs_script: splitTransaction.outputScript.toString(),
-        paths: paths
-      });
-    };
-
     root._signP2SH = function(txp, account, callback) {
       root.callbacks["sign_p2sh"] = callback;
       var redeemScripts = [];
@@ -129,9 +98,10 @@ angular.module('copayApp.services')
     };
 
     root.signTx = function(txp, account, callback) {
-      console.log('[ledger.js.72:txp:]', txp, account); //TODO
       if (txp.addressType == 'P2PKH') {
-        root._signP2PKH(txp, account, callback);
+        var msg = 'P2PKH wallets are not supported with ledger';
+        $log.error(msg);
+        return callback(msg);
       } else {
         root._signP2SH(txp, account, callback);
       }
