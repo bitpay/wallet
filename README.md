@@ -98,7 +98,15 @@ Copay also implements [BIP32](https://github.com/bitcoin/bips/blob/master/bip-00
 
 For more information regarding how addresses are generated using this procedure, see: [Structure for Deterministic P2SH Multisignature Wallets](https://github.com/bitcoin/bips/blob/master/bip-0045.mediawiki).
 
-## Backup format
+## Copay Backups and Recovery
+
+Copay v1.2 use BIP39 mnemonics for backing up wallets.  The standard BIP44 is used for wallet address derivation. Multisig wallets uses P2SH address, while non multisig wallets use P2PKH. 
+
+Information about Backup and recovery procedures is available at https://github.com/bitpay/copay/blob/master/backupRecovery.md
+
+Previous versions of Copay use files as backups. See the following section.
+
+## Wallet Export format
 
 Copay encrypts the backup with the [Stanford JS Crypto Library](http://bitwiseshiftleft.github.io/sjcl/).  To extract the private key of your wallet you can use https://bitwiseshiftleft.github.io/sjcl/demo/, copy the backup to 'ciphertext' and enter your password.  The resulting JSON will have a key named: `xPrivKey`, that is the extended private key of your wallet.  That information is enough to sign any transaction from your wallet, so be careful when handling it!
 
