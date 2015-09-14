@@ -1,10 +1,11 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('preferencesController',
-  function($scope, $rootScope, $filter, $timeout, $modal, $log, lodash, configService, profileService) {
+  function($scope, $rootScope, $filter, $timeout, $modal, $log, lodash, configService, profileService, uxLanguage) {
     var config = configService.getSync();
     this.unitName = config.wallet.settings.unitName;
     this.bwsurl = config.bws.url;
+    this.currentLanguageName = uxLanguage.getCurrentLanguageName();
     this.selectedAlternative = {
       name: config.wallet.settings.alternativeName,
       isoCode: config.wallet.settings.alternativeIsoCode
@@ -13,8 +14,12 @@ angular.module('copayApp.controllers').controller('preferencesController',
     $scope.glideraEnabled = config.glidera.enabled;
     $scope.glideraTestnet = config.glidera.testnet;
     var fc = profileService.focusedClient;
-    if (fc)
+    if (fc) {
       $scope.encrypt = fc.hasPrivKeyEncrypted();
+      this.externalSource = fc.getPrivKeyExternalSourceName() == 'ledger' ? "Ledger" : null;
+      // TODO externalAccount
+      //this.externalIndex = fc.getExternalIndex();
+    }
 
     var unwatchSpendUnconfirmed = $scope.$watch('spendUnconfirmed', function(newVal, oldVal) {
       if (newVal == oldVal) return;

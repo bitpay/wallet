@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('walletHomeController', function($scope, $rootScope, $timeout, $filter, $modal, $log, notification, txStatus, isCordova, profileService, lodash, configService, rateService, storageService, bitcore, isChromeApp, gettext, gettextCatalog, nodeWebkit, addressService, feeService, bwsError, txFormatService) {
+angular.module('copayApp.controllers').controller('walletHomeController', function($scope, $rootScope, $timeout, $filter, $modal, $log, notification, txStatus, isCordova, profileService, lodash, configService, rateService, storageService, bitcore, isChromeApp, gettext, gettextCatalog, nodeWebkit, addressService, ledger, feeService, bwsError, confirmDialog, txFormatService) {
 
   var self = this;
   $rootScope.hideMenuBar = false;
@@ -173,7 +173,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     });
   };
 
-  var GLIDERA_LOCK_TIME = 6 * 60 * 60 ;
+  var GLIDERA_LOCK_TIME = 6 * 60 * 60;
   // isGlidera flag is a security mesure so glidera status is not
   // only determined by the tx.message
   this.openTxpModal = function(tx, copayers, isGlidera) {
@@ -184,7 +184,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       $scope.error = null;
       $scope.copayers = copayers
       $scope.copayerId = fc.credentials.copayerId;
-      $scope.canSign = fc.canSign();
+      $scope.canSign = fc.canSign() || fc.isPrivKeyExternal();
       $scope.loading = null;
       $scope.color = fc.backgroundColor;
 
@@ -192,7 +192,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       if (tx.message === 'Glidera transaction' && isGlidera) {
         tx.isGlidera = true;
         if (tx.canBeRemoved) {
-          tx.canBeRemoved = (Date.now()/1000 - (tx.ts || tx.createdOn)) > GLIDERA_LOCK_TIME;
+          tx.canBeRemoved = (Date.now() / 1000 - (tx.ts || tx.createdOn)) > GLIDERA_LOCK_TIME;
         }
       }
       $scope.tx = tx;
@@ -244,7 +244,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       $scope.sign = function(txp) {
         var fc = profileService.focusedClient;
 
-        if (!fc.canSign())
+        if (!fc.canSign() && !fc.isPrivKeyExternal())
           return;
 
         if (fc.isPrivKeyEncrypted()) {
@@ -257,13 +257,12 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
           });
           return;
         };
+        self._setOngoingForSigning();
 
-        self.setOngoingProcess(gettext('Signing payment'));
         $scope.loading = true;
         $scope.error = null;
         $timeout(function() {
-          fc.signTxProposal(txp, function(err, txpsi) {
-            profileService.lockFC();
+          profileService.signTxProposal(txp, function(err, txpsi) {
             self.setOngoingProcess();
             if (err) {
               $scope.$emit('UpdateTx');
@@ -680,6 +679,10 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
         enumerable: true,
         configurable: true
       });
+
+    var fc = profileService.focusedClient;
+    // ToDo: use a credential's (or fc's) function for this
+    this.hideNote = !fc.credentials.sharedEncryptingKey;
   };
 
   this.setSendError = function(err) {
@@ -741,9 +744,17 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       return;
     };
 
+    var comment = form.comment.$modelValue;
+
+    // ToDo: use a credential's (or fc's) function for this
+    if (comment && !fc.credentials.sharedEncryptingKey) {
+      var msg = 'Could not add message to imported wallet without shared encrypting key';
+      $log.warn(msg);
+      return self.setSendError(gettext(msg));
+    }
+
     self.setOngoingProcess(gettext('Creating transaction'));
     $timeout(function() {
-      var comment = form.comment.$modelValue;
       var paypro = self._paypro;
       var address, amount;
 
@@ -774,7 +785,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
             return self.setSendError(err);
           }
 
-          if (!fc.canSign()) {
+          if (!fc.canSign() && !fc.isPrivKeyExternal()) {
             $log.info('No signing proposal: No private key')
             self.setOngoingProcess();
             self.resetForm();
@@ -786,7 +797,6 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
           self.signAndBroadcast(txp, function(err) {
             self.setOngoingProcess();
-            profileService.lockFC();
             self.resetForm();
             if (err) {
               self.error = err.message ? err.message : gettext('The payment was created but could not be completed. Please try again from home screen');
@@ -801,12 +811,21 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     }, 100);
   };
 
+  this._setOngoingForSigning = function() {
+    var fc = profileService.focusedClient;
+
+    if (fc.isPrivKeyExternal() && fc.getPrivKeyExternalSourceName() == 'ledger') {
+      self.setOngoingProcess(gettext('Requesting Ledger Wallet to sign'));
+    } else {
+      self.setOngoingProcess(gettext('Signing payment'));
+    }
+  };
 
   this.signAndBroadcast = function(txp, cb) {
     var fc = profileService.focusedClient;
-    self.setOngoingProcess(gettext('Signing transaction'));
-    fc.signTxProposal(txp, function(err, signedTx) {
-      profileService.lockFC();
+
+    this._setOngoingForSigning();
+    profileService.signTxProposal(txp, function(err, signedTx) {
       self.setOngoingProcess();
       if (err) {
         err.message = bwsError.msg(err, gettextCatalog.getString('The payment was created but could not be signed. Please try again from home screen'));
@@ -1087,6 +1106,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     this.setForm(null, amount, null, feeRate);
   };
 
+  // TODO: showPopup alike
   this.confirmDialog = function(msg, cb) {
     if (isCordova) {
       navigator.notification.confirm(
@@ -1112,7 +1132,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
   this.sendAll = function(amount, feeStr, feeRate) {
     var self = this;
-    var msg = gettextCatalog.getString("{{fee}} will be discounted for bitcoin networking fees", {
+    var msg = gettextCatalog.getString("{{fee}} will be deducted for bitcoin networking fees", {
       fee: feeStr
     });
 

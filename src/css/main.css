@@ -573,6 +573,13 @@ button.radius, .button.radius {
   border-radius: 3px;
 }
 
+
+label small {
+  font-size: 10px;
+  color: #999;
+}
+
+
 label small.has-error {
   font-size: 11px;
 }

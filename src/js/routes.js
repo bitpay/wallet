@@ -81,35 +81,6 @@ angular
         views: {
           'main': {
             templateUrl: 'views/splash.html',
-            controller: function($scope, $timeout, $log, profileService, storageService, go) {
-              storageService.getCopayDisclaimerFlag(function(err, val) {
-                if (!val) go.path('disclaimer');
-
-                if (profileService.profile) {
-                  go.walletHome();
-                }
-              });
-
-              $scope.create = function(noWallet) {
-                $scope.creatingProfile = true;
-
-                $timeout(function() {
-                  profileService.create({
-                    noWallet: noWallet
-                  }, function(err) {
-                    if (err) {
-                      $scope.creatingProfile = false;
-                      $log.warn(err);
-                      $scope.error = err;
-                      $scope.$apply();
-                      $timeout(function() {
-                        $scope.create(noWallet);
-                      }, 3000);
-                    }
-                  });
-                }, 100);
-              };
-            }
           }
         }
       });
@@ -131,31 +102,6 @@ angular
         views: {
           'main': {
             templateUrl: 'views/disclaimer.html',
-            controller: function($scope, $timeout, storageService, applicationService, go, gettextCatalog, isCordova) {
-              storageService.getCopayDisclaimerFlag(function(err, val) {
-                $scope.agreed = val;
-                $timeout(function() {
-                  $scope.$digest();
-                }, 1);
-              });
-
-              $scope.agree = function() {
-                if (isCordova) {
-                  window.plugins.spinnerDialog.show(null, gettextCatalog.getString('Loading...'), true);
-                }
-                $scope.loading = true;
-                $timeout(function() {
-                  storageService.setCopayDisclaimerFlag(function(err) {
-                    $timeout(function() {
-                      if (isCordova) {
-                        window.plugins.spinnerDialog.hide();
-                      }
-                      applicationService.restart();
-                    }, 1000);
-                  });
-                }, 100);
-              };
-            }
           }
         }
       })
@@ -453,6 +399,17 @@ angular
           },
         }
       })
+      .state('export', {
+        url: '/export',
+        templateUrl: 'views/export.html',
+        walletShouldBeComplete: true,
+        needProfile: true,
+        views: {
+          'main': {
+            templateUrl: 'views/export.html'
+          },
+        }
+      })
       .state('backup', {
         url: '/backup',
         templateUrl: 'views/backup.html',
@@ -506,22 +463,10 @@ angular
         needProfile: false
       });
   })
-  .run(function($rootScope, $state, $log, gettextCatalog, uriHandler, isCordova, amMoment, profileService, $timeout, nodeWebkit) {
+  .run(function($rootScope, $state, $log, uriHandler, isCordova, profileService, $timeout, nodeWebkit, uxLanguage) {
     FastClick.attach(document.body);
 
-    // Auto-detect browser language
-    var userLang, androidLang;
-
-    if (navigator && navigator.userAgent && (androidLang = navigator.userAgent.match(/android.*\W(\w\w)-(\w\w)\W/i))) {
-      userLang = androidLang[1];
-    } else {
-      // works for iOS and Android 4.x
-      userLang = navigator.userLanguage || navigator.language;
-    }
-
-    userLang = userLang ? (userLang.split('-', 1)[0] || 'en') : 'en';
-    gettextCatalog.setCurrentLanguage(userLang);
-    amMoment.changeLocale(userLang);
+    uxLanguage.init();
 
     // Register URI handler, not for mobileApp
     if (!isCordova) {
@@ -566,6 +511,7 @@ angular
       preferencesBwsUrl: 12,
       preferencesAlias: 12,
       preferencesEmail: 12,
+      export: 13,
       logs: 13,
       information: 13,
       translators: 13,

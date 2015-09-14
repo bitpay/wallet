@@ -36,16 +36,31 @@
         <span ng-style="{'color':index.backgroundColor}">&block;</span>
       </span>      
     </li>
-    <li class="line-b p20">
-      <span translate>Encrypt Private Key</span>
+    <li class="line-b p20" ng-hide="index.isPrivKeyExternal">
+      <span translate>Request Password for Spending Funds</span>
       <switch id="network-name" name="encrypt" ng-model="encrypt" class="green right"></switch>
-  </li>
- 
-    <h4 class="title m0">&nbsp;</h4>
-    <li class="line-b p20" ng-click="$root.go('backup')">
+    </li>
+    <li class="line-b p20" ng-show="index.isPrivKeyExternal">
+      <span translate>Hardware wallet</span>
+      <span class="right text-gray">
+        {{preferences.externalSource}} 
+        <!-- (Accont {{preferences.externalAccount}}) -->
+      </span>
+    </li>
+    <li class="line-b p20" ng-click="$root.go('backup')"  ng-hide="index.isPrivKeyExternal">
       <i class="icon-arrow-right3 size-24 right text-gray"></i>  
+      <span class="text-warning right" ng-show="index.needsBackup">
+        <i class="fi-alert"></i> <span translate> Still not done</span>
+      </span>
       <span translate>Backup</span>
     </li>
+ 
+    <h4 class="title m0">&nbsp;</h4>
+    <li class="line-b p20" ng-click="$root.go('export')" ng-hide="preferences.externalIndex >= 0">
+      <i class="icon-arrow-right3 size-24 right text-gray"></i>  
+      <span translate>Export</span>
+    </li>
+ 
     <li class="line-b p20" ng-click="$root.go('preferencesAdvanced')">
       <i class="icon-arrow-right3 size-24 right text-gray"></i>  
       <span translate>Advanced</span>
@@ -59,7 +74,7 @@
       <span translate>Language</span>
       <span class="right text-gray">
         <i class="icon-arrow-right3 size-24 right"></i>
-        {{index.defaultLanguageName|translate}}
+        {{preferences.currentLanguageName|translate}}
       </span>
     </li>
     <li class="line-b p20" ng-show="!index.noFocusedWallet" ng-click="$root.go('preferencesUnit')">

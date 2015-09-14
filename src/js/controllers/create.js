@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('createController',
-  function($scope, $rootScope, $location, $timeout, $log, lodash, go, profileService, configService, isMobile, isCordova, gettext) {
+  function($scope, $rootScope, $location, $timeout, $log, lodash, go, profileService, configService, isMobile, isCordova, gettext, isChromeApp, ledger) {
 
     var self = this;
     var defaults = configService.getDefaults();
@@ -42,6 +42,10 @@ angular.module('copayApp.controllers').controller('createController',
       updateRCSelect(tc);
     };
 
+    this.isChromeApp = function() {
+      return isChromeApp;
+    };
+
     this.create = function(form) {
       if (form && form.$invalid) {
         this.error = gettext('Please enter the required fields');
@@ -51,40 +55,77 @@ angular.module('copayApp.controllers').controller('createController',
         m: $scope.requiredCopayers,
         n: $scope.totalCopayers,
         name: form.walletName.$modelValue,
-        extendedPrivateKey: form.privateKey.$modelValue,
         myName: $scope.totalCopayers > 1 ? form.myName.$modelValue : null,
-        networkName: form.isTestnet.$modelValue ? 'testnet' : 'livenet'
+        networkName: form.isTestnet.$modelValue ? 'testnet' : 'livenet',
       };
-      self.loading = true;
+      var setSeed = form.setSeed.$modelValue;
+      if (setSeed) {
+        var words = form.privateKey.$modelValue;
+        if (words.indexOf(' ') == -1 && words.indexOf('prv') == 1 && words.length > 108) {
+          opts.extendedPrivateKey = words;
+        } else {
+          opts.mnemonic = words;
+        }
+        opts.passphrase = form.passphrase.$modelValue;
+      } else {
+        opts.passphrase = form.createPassphrase.$modelValue;
+      }
 
+      if (setSeed && !opts.mnemonic && !opts.extendedPrivateKey) {
+        this.error = gettext('Please enter the wallet seed');
+        return;
+      }
+
+      if (form.hwLedger.$modelValue) {
+        self.ledger = true;
+        // TODO : account 
+        ledger.getInfoForNewWallet(0, function(err, lopts) {
+          self.ledger = false;
+          if (err) {
+            self.error = err;
+            $scope.$apply();
+            return;
+          }
+          opts = lodash.assign(lopts, opts);
+          self._create(opts);
+        });
+      } else {
+        self._create(opts);
+      }
+    };
+
+    this._create = function(opts) {
+      self.loading = true;
       $timeout(function() {
-        profileService.createWallet(opts, function(err, secret) {
+        profileService.createWallet(opts, function(err, secret, walletId) {
           self.loading = false;
           if (err) {
-            $log.debug(err);
+            $log.warn(err);
             self.error = err;
             $timeout(function() {
               $rootScope.$apply();
             });
+            return;
+          } 
+          if (opts.mnemonic || opts.externalSource || opts.extendedPrivateKey) {
+            if (opts.n == 1) {
+              $rootScope.$emit('Local/WalletImported', walletId);
+            }
           }
-          else {
-            go.walletHome();
-          }
+          go.walletHome();
         });
       }, 100);
-    };
-    
+    }
+
     this.formFocus = function(what) {
       if (!this.isWindowsPhoneApp) return
 
       if (what && what == 'my-name') {
         this.hideWalletName = true;
         this.hideTabs = true;
-      }
-      else if (what && what == 'wallet-name'){
+      } else if (what && what == 'wallet-name') {
         this.hideTabs = true;
-      }
-      else {
+      } else {
         this.hideWalletName = false;
         this.hideTabs = false;
       }
