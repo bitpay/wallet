@@ -173,7 +173,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     });
   };
 
-  var GLIDERA_LOCK_TIME = 6 * 60 * 60 ;
+  var GLIDERA_LOCK_TIME = 6 * 60 * 60;
   // isGlidera flag is a security mesure so glidera status is not
   // only determined by the tx.message
   this.openTxpModal = function(tx, copayers, isGlidera) {
@@ -192,7 +192,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       if (tx.message === 'Glidera transaction' && isGlidera) {
         tx.isGlidera = true;
         if (tx.canBeRemoved) {
-          tx.canBeRemoved = (Date.now()/1000 - (tx.ts || tx.createdOn)) > GLIDERA_LOCK_TIME;
+          tx.canBeRemoved = (Date.now() / 1000 - (tx.ts || tx.createdOn)) > GLIDERA_LOCK_TIME;
         }
       }
       $scope.tx = tx;
@@ -257,41 +257,12 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
           });
           return;
         };
+        self._setOngoingForSigning();
 
-        if (fc.isPrivKeyExternal()) {
-          if (fc.getPrivKeyExternalSourceName() == 'ledger') {
-            $log.debug('Requesting Ledger Chrome app to sign the transaction');
-            self.setOngoingProcess(gettext('Requesting Ledger Wallet to sign'));
-            $scope.loading = true;
-            $scope.error = null;
-            // TODO account
-            ledger.signTx(txp, 0, function(result) {
-              if (result.success) {
-                txp.signatures = [];
-                for (var i=0; i<result.signatures.length; i++) {
-                  txp.signatures.push(result.signatures[i].substring(0, result.signatures[i].length - 2));
-                }
-                $scope._doSign(txp);
-              } else {
-                $scope.loading = false;
-                $scope.error = result.message;
-                self.setOngoingProcess();
-                $scope.$digest();
-              }
-            });
-          }
-        } else {
-          $scope._doSign(txp);
-        }
-      };
-
-      $scope._doSign = function(txp) {
-        self.setOngoingProcess(gettext('Signing payment'));
         $scope.loading = true;
         $scope.error = null;
         $timeout(function() {
-          fc.signTxProposal(txp, function(err, txpsi) {
-            profileService.lockFC();
+          profileService.signTxProposal(txp, function(err, txpsi) {
             self.setOngoingProcess();
             if (err) {
               $scope.$emit('UpdateTx');
@@ -802,7 +773,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
             return self.setSendError(err);
           }
 
-          if (!fc.canSign() &&  !fc.isPrivKeyExternal()) {
+          if (!fc.canSign() && !fc.isPrivKeyExternal()) {
             $log.info('No signing proposal: No private key')
             self.setOngoingProcess();
             self.resetForm();
@@ -814,7 +785,6 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
           self.signAndBroadcast(txp, function(err) {
             self.setOngoingProcess();
-            profileService.lockFC();
             self.resetForm();
             if (err) {
               self.error = err.message ? err.message : gettext('The payment was created but could not be completed. Please try again from home screen');
@@ -829,37 +799,21 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     }, 100);
   };
 
+  this._setOngoingForSigning = function() {
+    var fc = profileService.focusedClient;
+
+    if (fc.isPrivKeyExternal() && fc.getPrivKeyExternalSourceName() == 'ledger') {
+      self.setOngoingProcess(gettext('Requesting Ledger Wallet to sign'));
+    } else {
+      self.setOngoingProcess(gettext('Signing payment'));
+    }
+  };
 
   this.signAndBroadcast = function(txp, cb) {
     var fc = profileService.focusedClient;
 
-    if (fc.isPrivKeyExternal()) {
-      if (fc.getPrivKeyExternalSourceName() == 'ledger') {
-        $log.debug('Requesting Ledger Chrome app to sign the transaction');
-        self.setOngoingProcess(gettext('Requesting Ledger Wallet to sign'));
-        // TODO account
-        ledger.signTx(txp, 0, function(result) {
-          if (result.success) {
-            txp.signatures = [];
-            for (var i=0; i<result.signatures.length; i++) {
-              txp.signatures.push(result.signatures[i].substring(0, result.signatures[i].length - 2));
-            }
-            self._doSignAndBroadcast(txp, cb);
-          } else {
-            return cb(result);
-          }
-        });
-      }
-    } else {
-      self._doSignAndBroadcast(txp, cb);
-    }
-  };
-
-  this._doSignAndBroadcast = function(txp, cb) {
-    var fc = profileService.focusedClient;
-    self.setOngoingProcess(gettext('Signing transaction'));
-    fc.signTxProposal(txp, function(err, signedTx) {
-      profileService.lockFC();
+    this._setOngoingForSigning();
+    profileService.signTxProposal(txp, function(err, signedTx) {
       self.setOngoingProcess();
       if (err) {
         err.message = bwsError.msg(err, gettextCatalog.getString('The payment was created but could not be signed. Please try again from home screen'));
