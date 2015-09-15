@@ -109,7 +109,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       self.copayers = [];
       self.updateColor();
       self.updateAlias();
-      self.initGlidera();
+
+      // DISABLED
+      //self.initGlidera();
 
       if (fc.isPrivKeyExternal()) {
         self.needsBackup = false;
