@@ -81,6 +81,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.currentFeeLevel = null;
     self.notAuthorized = false;
     self.txHistory = [];
+    self.balanceByAddress = null;
     self.txHistoryPaging = false;
     self.pendingTxProposalsCountForUs = null;
     self.setSpendUnconfirmed();

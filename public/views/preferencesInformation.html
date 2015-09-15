@@ -55,7 +55,7 @@
     <h4 class="title m0" translate>Extended Public Keys</h4>
       <li class="line-b p10"  ng-repeat="pk in pubKeys">
         <div class="row">
-          <div class="small-3 columns">Copayer {{$index}}
+          <div class="small-3 columns" translate>Copayer</span> {{$index}}
           </div>
           
           <div class="small-9 columns oh enable_text_select text-gray" style="text-overflow:ellipsis">
@@ -63,8 +63,11 @@
           </div>
         </div>
       </li>
+    </ul>
 
 
+    
+    <ul class="no-bullet m0 size-14" ng-show="addrs">
     <h4 class="title m0" translate>Last Wallet Addresses</h4>
       <li class="line-b p20"  ng-repeat="a in addrs">
           <div class="enable_text_select" style="text-overflow:ellipsis">
@@ -76,9 +79,6 @@
             </span>
           </div>
       </li>
-
-
-    
       <li class="line-b p10 text-centered text-gray size-12">
         <span translate>Only Main (not change) addresses are shown. The addresses on this list were not verified locally at this time.</span>
       </li>
@@ -89,9 +89,10 @@
       <span translate>Send all by email</span>
       </button>
       </li>
+    </ul>
 
 
-
+    <ul class="no-bullet m0 size-14" ng-show="index.balanceByAddress">
     <h4 class="title m0" translate>Balance By Address</h4>
       <li class="line-b p20 enable_text_select"  ng-repeat="a in index.balanceByAddress">
         {{a.address}} 
