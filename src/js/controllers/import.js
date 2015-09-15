@@ -164,8 +164,7 @@ angular.module('copayApp.controllers').controller('importController',
       } else {
         var wordList = words.split(/[\u3000\s]+/);
 
-        // m/ allows to enter a custom derivation 
-        if ((wordList.length % 3) != 0 && wordList[0].indexOf('m/') != 0)
+        if ((wordList.length % 3) != 0)
           this.error = gettext('Wrong number of seed words:') + wordList.length;
       }
 
