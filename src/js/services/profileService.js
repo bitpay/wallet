@@ -170,15 +170,9 @@ angular.module('copayApp.services')
       var walletClient = bwcService.getClient();
       var network = opts.networkName || 'livenet';
 
-      if (opts.mnemonic && opts.mnemonic.indexOf('m/') == 0) {
-        var xPrivKey = root._preDerivation(opts.mnemonic, network);
-        if (!xPrivKey)
-          return bwsError.cb('Bad derivation', gettext('Could not import'), cb);
-        opts.mnemonic = null;
-        opts.extendedPrivateKey = xPrivKey;
-      }
       if (opts.mnemonic) {
         try {
+          opts.mnemonic = root._normalizeMnemonic(opts.mnemonic);
           walletClient.seedFromMnemonic(opts.mnemonic, opts.passphrase, network);
         } catch (ex) {
           $log.info(ex);
@@ -327,10 +321,11 @@ angular.module('copayApp.services')
       var walletId = walletClient.credentials.walletId;
 
       // check if exist
-      if (lodash.find(root.profile.credentials, {
+      var w = lodash.find(root.profile.credentials, {
         'walletId': walletId
-      })) {
-        return cb(gettext('Wallet already exists'));
+      });
+      if (w) {
+        return cb(gettext('Wallet already in Copay' + ": ") + w.walletName );
       }
 
       root.profile.credentials.push(JSON.parse(walletClient.export()));
@@ -371,31 +366,19 @@ angular.module('copayApp.services')
     };
 
 
-    root._preDerivation = function(words, network) {
-      var wordList = words.split(/ /).filter(function(v) {
-        return v.length > 0;
-      });
-      var path = wordList.shift();
-      var walletClient = bwcService.getClient();
-      $log.info('preDerivation:', path);
-      walletClient.seedFromMnemonic(wordList.join(' '), null, network);
-      var k = new bitcore.HDPrivateKey(walletClient.credentials.xPrivKey);
-      var k2 = k.derive(path);
-      return k2.toString();
+    root._normalizeMnemonic = function(words) {
+      var isJA = words.indexOf('\u3000') > -1; 
+      var wordList = words.split(/[\u3000\s]+/);
+
+      return wordList.join(isJA ? '\u3000' : ' ');
     };
 
     root.importMnemonic = function(words, opts, cb) {
       var walletClient = bwcService.getClient();
 
-      if (words.indexOf('m/') == 0) {
-        var xPrivKey = root._preDerivation(words, opts.networkName);
-        if (!xPrivKey)
-          return bwsError.cb('Bad derivation', gettext('Could not import'), cb);
-        return root.importExtendedPrivateKey(xPrivKey, cb);
-      }
-
       $log.debug('Importing Wallet Mnemonic');
 
+      words = root._normalizeMnemonic(words);
       walletClient.importFromMnemonic(words, {
         network: opts.networkName,
         passphrase: opts.passphrase,

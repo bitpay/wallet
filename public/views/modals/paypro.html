@@ -34,9 +34,9 @@
     <li class="line-b p10 oh">
     <span class="text-gray" translate>Certified by</span>:
     <span class="right">
-      <span ng-show="paypro.verified"><i class="fi-lock color-greeni"></i> 
+      <span ng-show="paypro.verified && paypro.chainVerified"><i class="fi-lock color-greeni"></i> 
         {{paypro.verifyData.caName || paypro.verifyData}}</span>
-      <span ng-show="!paypro.verified"><i class="fi-unlock color-yellowi"></i> <span translate>Untrusted</span></span>
+      <span ng-show="!paypro.verified || !paypro.chainVerified"><i class="fi-unlock color-yellowi"></i> <span translate>Unknown Root  or Selfsigned Certificate</span></span>
     </span>
     </li>
     <li class="line-b p10 oh" ng-if="paypro.memo">
