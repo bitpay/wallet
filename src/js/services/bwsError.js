@@ -31,7 +31,7 @@ angular.module('copayApp.services')
             body = gettextCatalog.getString('Copayer already voted on this spend proposal');
             break;
           case 'DUST_AMOUNT': 
-            body = gettextCatalog.getString('Amount  below dust threshold');
+            body = gettextCatalog.getString('Amount below dust threshold');
             break;
           case 'INCORRECT_ADDRESS_NETWORK': 
             body = gettextCatalog.getString('Incorrect address network');

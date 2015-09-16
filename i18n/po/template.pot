@@ -17,7 +17,7 @@ msgid "<b>OR</b> 1 wallet export file and the remaining quorum of wallet seeds (
 msgstr ""
 
 #: public/views/backup.html
-msgid "<b>OR</b> the wallet seed of <b>all</b>  copayers in the wallet"
+msgid "<b>OR</b> the wallet seed of <b>all</b> copayers in the wallet"
 msgstr ""
 
 #: public/views/backup.html
@@ -100,7 +100,7 @@ msgid "Amount"
 msgstr ""
 
 #: src/js/services/bwsError.js
-msgid "Amount  below dust threshold"
+msgid "Amount below dust threshold"
 msgstr ""
 
 #: public/views/walletHome.html
@@ -715,7 +715,7 @@ msgid "Join"
 msgstr ""
 
 #: src/js/controllers/copayers.js
-msgid "Join my Copay wallet. Here is the invitation code: {{secret}}  You can download Copay for your phone or desktop at https://copay.io"
+msgid "Join my Copay wallet. Here is the invitation code: {{secret}} You can download Copay for your phone or desktop at https://copay.io"
 msgstr ""
 
 #: public/views/add.html
@@ -1382,7 +1382,7 @@ msgid "Unit"
 msgstr ""
 
 #: public/views/modals/paypro.html
-msgid "Unknown Root  or Selfsigned Certificate"
+msgid "Unknown Root or Selfsigned Certificate"
 msgstr ""
 
 #: public/views/walletHome.html
@@ -1425,7 +1425,7 @@ msgid "WARNING: Passphrase cannot be recovered. <b>Be sure to write it down</b>.
 msgstr ""
 
 #: public/views/export.html
-msgid "WARNING: The private key of this wallet is not available.  The export allows to check the wallet balance, transaction history, and create spend proposals from the export. However, does not allow to approve (sign) proposals, so <b>funds will not be accessible from the export</b>."
+msgid "WARNING: The private key of this wallet is not available. The export allows to check the wallet balance, transaction history, and create spend proposals from the export. However, does not allow to approve (sign) proposals, so <b>funds will not be accessible from the export</b>."
 msgstr ""
 
 #: public/views/backup.html
@@ -1449,7 +1449,7 @@ msgid "Waiting..."
 msgstr ""
 
 #: public/views/import.html
-msgid "Walled Seed"
+msgid "Wallet Seed"
 msgstr ""
 
 #: public/views/preferences.html
