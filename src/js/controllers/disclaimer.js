@@ -25,4 +25,12 @@ angular.module('copayApp.controllers').controller('disclaimerController',
         });
       }, 100);
     };
+    $scope.init = function() {
+      storageService.getCopayDisclaimerFlag(function(err, val) {
+        $scope.agreed = val;
+        $timeout(function() {
+          $scope.$digest();
+        }, 1);
+      });
+    };
   });
