@@ -1,15 +1,8 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('splashController',
-  function($scope, $timeout, $log, profileService, storageService, go, bwcService) {
-    storageService.getCopayDisclaimerFlag(function(err, val) {
-      if (!val) go.path('disclaimer');
-
-      if (profileService.profile) {
-        go.walletHome();
-      }
-    });
-
+  function($scope, $timeout, $log, profileService, storageService, go) {
+    
     $scope.create = function(noWallet) {
       $scope.creatingProfile = true;
 
@@ -28,5 +21,15 @@ angular.module('copayApp.controllers').controller('splashController',
           }
         });
       }, 100);
+    };
+
+    $scope.init = function() {
+      storageService.getCopayDisclaimerFlag(function(err, val) {
+        if (!val) go.path('disclaimer');
+        
+        if (profileService.profile) {
+          go.walletHome();
+        }
+      });
     };
   });
