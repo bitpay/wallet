@@ -1,7 +1,7 @@
 
 'use strict';
 
-angular.module('copayApp.services').factory('confirmDialog', function($log, profileService, configService, gettextCatalog, isCordova, isChromeApp) {
+angular.module('copayApp.services').factory('confirmDialog', function($log, $timeout, profileService, configService, gettextCatalog, isCordova, isChromeApp) {
   var root = {};
 
 
