@@ -1,13 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('disclaimerController',
-  function($scope, $timeout, storageService, applicationService, go, gettextCatalog, isCordova) {
-    storageService.getCopayDisclaimerFlag(function(err, val) {
-      $scope.agreed = val;
-      $timeout(function() {
-        $scope.$digest();
-      }, 1);
-    });
+  function($scope, $timeout, storageService, applicationService, gettextCatalog, isCordova) {
 
     $scope.agree = function() {
       if (isCordova) {
@@ -25,6 +19,7 @@ angular.module('copayApp.controllers').controller('disclaimerController',
         });
       }, 100);
     };
+    
     $scope.init = function() {
       storageService.getCopayDisclaimerFlag(function(err, val) {
         $scope.agreed = val;
