@@ -54,7 +54,7 @@
  
   <div ng-show="wordsC.mnemonicWords">
     <div class="row">
-        <div class="m10t oh" ng-init="show=false">
+        <div class="m10t columns" ng-init="show=false">
           <a class="button outline light-gray expand tiny" ng-click="show=!show">
             <i class="fi-widget m3r"></i>
             <span translate ng-hide="show" ng-click="wordsC.done()">Show Wallet Seed</span>
@@ -66,40 +66,39 @@
     </div>
 
 
-    <div class="row" ng-show="show">
-      <div class="small-centered  text-gray large-centered medium-centered large-8 medium-8 small-10 columns size-14" style="padding:0" translate>
-          Your wallet seed:
+    <div class="row m10t m10b" ng-show="show">
+      <div class="small-centered  text-gray columns size-14 text-center" translate>
+          Your Wallet Seed
       </div>
     </div>
 
-    <div class="row enable_text_select" ng-show="show">
-        <div class="small-centered p10t p10b large-centered medium-centered large-8 medium-8 small-10 columns enable_text_select" style="border:1px solid gray; background:#eee;
-">
-          <span ng-repeat="word in wordsC.mnemonicWords">
-            {{word}} 
-          </span> 
+    <div class="row" ng-show="show">
+        <div class="columns">
+        <div class="p10 enable_text_select" style="background:#eee">
+          <span ng-repeat="word in wordsC.mnemonicWords"><span style="white-space:nowrap">{{word}}</span><span ng-show="index.defaultLanguageIsoCode == 'ja'">&#x3000;</span> </span>  
         </div>
+        </div>
+    </div>
 
-        <div class="box-notification large-centered medium-centered small-centered large-8 medium-8 small-10 columns m10t" ng-show="wordsC.mnemonicHasPassphrase">
-          <span class="text-warning size-14">
+    <div class="row m10t m20b" ng-show="show">
+        <div class="columns" ng-show="wordsC.mnemonicHasPassphrase">
+          <span class="size-12">
             <i class="fi-alert"></i>
             <span translate>
             WARNING: This seed was created with a passphrase. To recover this wallet both the mnemonic and passphrase are needed.
             </span>
           </span>
         </div>
+    </div>
 
-
-
-
-
-        <div class="m10 text-center columns">
-          <div class="m10 size-14 text-gray">
+    <div class="row" ng-show="show">
+        <div class="m10t text-center columns">
+          <div class="size-12 text-gray">
             <span translate>
               Once you have copy your wallet seed, it is recommended to delete it from this device.
             </span>
           </div>
-          <button class="button outline round dark-gray tiny" ng-click="wordsC.delete()">
+          <button class="button outline m10t round dark-gray tiny" ng-click="wordsC.delete()">
             <i class="fi-trash"></i> 
             <span translate>
               DELETE WORDS
@@ -110,11 +109,13 @@
 
     <!-- hide this in multisig just to show less text -->
     <div class="row m20t"  ng-show="index.n==1">
-      <div class="columns size-14 text-gray">
-        <span translate>You can safely install your wallet on another device and use it from multiple devices at the same time.</span> 
-        <a href="#" ng-click="$root.openExternalLink('https://github.com/bitpay/copay/blob/master/README.md#copay-backups-and-recovery')" translate>
-          Learn more about Copay backups
-        </a>
+      <div class="columns size-12 text-gray">
+        <div class="p10t"  style="border-top:1px solid #ccc">
+          <span translate>You can safely install your wallet on another device and use it from multiple devices at the same time.</span> 
+          <a href="#" ng-click="$root.openExternalLink('https://github.com/bitpay/copay/blob/master/README.md#copay-backups-and-recovery')" translate>
+            Learn more about Copay backups
+          </a>
+        </div>
       </div>
     </div>
 
