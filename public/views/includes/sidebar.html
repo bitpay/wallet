@@ -1,6 +1,7 @@
 <nav class="sidebar left-off-canvas-menu" ng-controller="sidebarController as sidebar">
   <header>
-    <logo negative="true" width="80"></logo>
+    <logo ng-if="!sidebar.isWindowsPhoneApp" negative="true" width="80"></logo>
+    <img ng-if="sidebar.isWindowsPhoneApp" src="img/logo-negative.png" alt="Copay" width="80">
     <div ng-include="'views/includes/version.html'"></div>
   </header>
   <ul class="off-canvas-list">
