@@ -5,7 +5,6 @@ angular.module('copayApp.controllers').controller('preferencesLanguageController
 
     this.availableLanguages = uxLanguage.getLanguages();
 
-console.log('[preferencesLanguage.js.7]', this.availableLanguages); //TODO
     this.save = function(newLang) {
 
       var opts = {
