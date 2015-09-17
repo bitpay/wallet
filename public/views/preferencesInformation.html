@@ -55,8 +55,7 @@
     <h4 class="title m0" translate>Extended Public Keys</h4>
       <li class="line-b p10"  ng-repeat="pk in pubKeys">
         <div class="row">
-          <div class="small-3 columns" translate>Copayer</span> {{$index}}
-          </div>
+          <div class="small-3 columns">Copayer {{$index}}</div>
           
           <div class="small-9 columns oh enable_text_select text-gray" style="text-overflow:ellipsis">
             {{pk}} 
@@ -64,8 +63,6 @@
         </div>
       </li>
     </ul>
-
-
     
     <ul class="no-bullet m0 size-14" ng-show="addrs">
     <h4 class="title m0" translate>Last Wallet Addresses</h4>

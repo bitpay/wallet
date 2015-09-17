@@ -1,6 +1,6 @@
 'use strict';
 angular.module('copayApp.services')
-  .factory('profileService', function profileServiceFactory($rootScope, $location, $timeout, $filter, $log, lodash, storageService, bwcService, configService, notificationService, isChromeApp, isCordova, gettext, nodeWebkit, bwsError, uxLanguage, ledger, bitcore) {
+  .factory('profileService', function profileServiceFactory($rootScope, $location, $timeout, $filter, $log, lodash, storageService, bwcService, configService, notificationService, isChromeApp, isCordova, gettext, gettextCatalog, nodeWebkit, bwsError, uxLanguage, ledger, bitcore) {
 
     var root = {};
 
@@ -218,7 +218,9 @@ angular.module('copayApp.services')
       root._seedWallet({}, function(err, walletClient) {
         if (err) return cb(err);
 
-        walletClient.createWallet('Personal Wallet', 'me', 1, 1, {
+        var walletName = gettextCatalog.getString('Personal Wallet');
+        var me = gettextCatalog.getString('me');
+        walletClient.createWallet(walletName, me, 1, 1, {
           network: 'livenet'
         }, function(err) {
           if (err) return bwsError.cb(err, gettext('Error creating wallet'), cb);
