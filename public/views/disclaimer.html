@@ -28,6 +28,9 @@
 <li translate>We reserve the right to modify this disclaimer from time to time.</li>
 				</ul>
 			</p>
+			<p ng-show="lang != 'en'">
+			  <a class="center" ng-click="$root.openExternalLink('https://copay.io/disclaimer')" translate>Official English Disclaimer</a>
+			</p>
 
 			<div ng-show="!agreed">
 				<p translate>I affirm that I have read, understood, and agree with these terms.</p>

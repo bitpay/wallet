@@ -845,6 +845,10 @@ msgstr ""
 msgid "Note"
 msgstr ""
 
+#: public/views/disclaimer.html
+msgid "Official English Disclaimer"
+msgstr ""
+
 #: public/views/backup.html
 msgid "Once you have copy your wallet seed, it is recommended to delete it from this device."
 msgstr ""
