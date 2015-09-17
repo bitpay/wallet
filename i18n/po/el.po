@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Greek\n"
 "Language: el\n"
-"PO-Revision-Date: 2015-08-13 09:15-0400\n"
+"PO-Revision-Date: 2015-09-17 13:19-0400\n"
 
 #: public/views/walletHome.html
 msgid "(possible double spend)"
@@ -22,13 +22,21 @@ msgstr "(πιθανό διπλό ξόδεμα)"
 msgid "* A payment proposal can be deleted if 1) you are the creator, and no other copayer has signed, or 2) 24 hours have passed since the proposal was created."
 msgstr "Μια πρόταση πληρωμής μπορεί να διαγραφεί εάν 1) είστε ο δημιουργός, και κανένας άλλος χρήστης του copay δεν έχει υπογράψει, ή 2) έχουν περάσει 24 ώρες απο την ώρα που η πρόταση δημιουργήθηκε."
 
-#: public/views/backup.html
-msgid "* You can safely install your backup on another device and use your wallet from multiple devices at the same time."
-msgstr "Μπορείτε με ασφάλεια να εγκαταστήσετε το αντίγραφο ασφαλείας σας σε μια άλλη συσκευή και να χρησιμοποιήσετε το πορτοφόλι σας απο πολλαπλές συσκευές την ίδια στιγμή."
+#: public/views/disclaimer.html
+msgid "<b>IF YOU LOSE ACCESS TO YOUR COPAY WALLET OR YOUR ENCRYPTED PRIVATE KEYS AND YOU HAVE NOT SEPARATELY STORED A BACKUP OF YOUR WALLET AND CORRESPONDING PASSWORD, YOU ACKNOWLEDGE AND AGREE THAT ANY BITCOIN YOU HAVE ASSOCIATED WITH THAT COPAY WALLET WILL BECOME INACCESSIBLE.</b>"
+msgstr "<b>ΕΑΝ ΧΑΣΕΤΕ ΤΗΝ ΠΡΟΣΒΑΣΗ ΝΑ ΣΑΣ ΣΤΟ ΠΟΡΤΟΦΌΛΙ COPAY Ή ΣΤΑ ΚΡΥΠΤΟΓΡΑΦΗΜΕΝΑ ΙΔΙΩΤΙΚΑ ΣΑΣ ΚΛΕΙΔΙΑ ΚΑΙ ΔΕΝ ΑΠΟΘΗΚΕΥΣΑΤΕ ΧΩΡΙΣΤΆ ΕΝΑ ΑΝΤΙΓΡΑΦΟ ΑΣΦΑΛΕΙΑΣ ΤΟΥ ΠΟΡΤΟΦΟΛΙΟΥ ΚΑΙ ΤΟΥ ΑΝΤΙΣΤΟΙΧΟΥ ΚΩΔΙΚΟΥ ΠΡΌΣΒΑΣΗΣ, ΑΠΟΔΕΧΕΣΤΕ ΚΑΙ ΣΥΜΦΩΝΕΙΤΕ ΟΤΙ ΟΠΟΙΑΔΗΠΟΤΕ ΠΟΣΟΤΗΤΑ BITCOIN ΠΟΥ ΕΧΕΤΕ ΣΥΣΧΕΤΙΣΕΙ ΜΕ ΤΟ ΠΟΡΤΟΦΟΛΙ ΤΟΥ COPAY ΘΑ ΓΙΝΟΥΝ ΑΠΡΟΣΠΕΛΑΣΤΑ.</b>"
 
 #: public/views/backup.html
-msgid "A backup without its private key will allow the user to see the wallet balance, transactions, and create spend proposals. However, it will not be able to approve (sign) proposals."
-msgstr "Ένα αντίγραφο ασφαλείας χωρίς το ιδιωτικό κλειδί θα επιτρέψει στον χρήστη να δεί το υπόλοιπο του πορτοφολιού, τις συναλλαγές και να δημιουργήσει προτάσεις εξόδων. Μολονότι, δεν θα μπορεί να επιβεβαιώσει (υπογράψει) προτάσεις."
+msgid "<b>OR</b> 1 wallet export file and the remaining quorum of wallet seeds (e.g. in a 3-5 wallet: 1 wallet export file + 2 wallet seeds of any of the other copayers)."
+msgstr "<b>OR</b> 1 wallet export file and the remaining quorum of wallet seeds (e.g. in a 3-5 wallet: 1 wallet export file + 2 wallet seeds of any of the other copayers)."
+
+#: public/views/backup.html
+msgid "<b>OR</b> the wallet seed of <b>all</b> copayers in the wallet"
+msgstr "<b>OR</b> the wallet seed of <b>all</b> copayers in the wallet"
+
+#: public/views/backup.html
+msgid "<b>OR</b> the wallet seeds of <b>all</b> copayers in the wallet"
+msgstr "<b>OR</b> the wallet seeds of <b>all</b> copayers in the wallet"
 
 #: public/views/splash.html
 msgid "A multisignature bitcoin wallet"
@@ -39,11 +47,17 @@ msgid "About Copay"
 msgstr "Σχετικά με το Copay"
 
 #: public/views/modals/txp-details.html
+#: src/js/services/confirmDialog.js
 #: src/js/controllers/copayers.js
 #: src/js/controllers/preferencesDelete.js
 #: src/js/controllers/walletHome.js
 msgid "Accept"
 msgstr "Αποδοχή"
+
+#: public/views/create.html
+#: public/views/join.html
+msgid "Add an optional passphrase to secure the seed"
+msgstr "Add an optional passphrase to secure the seed"
 
 #: public/views/includes/sidebar.html
 msgid "Add wallet"
@@ -55,13 +69,17 @@ msgstr "Προσθήκη Πορτοφολιού"
 msgid "Address"
 msgstr "Διεύθυνση"
 
+#: public/views/preferencesInformation.html
+msgid "Address Type"
+msgstr "Τύπος Διεύθυνσης"
+
 #: public/views/preferences.html
 msgid "Advanced"
 msgstr "Για προχωρημένους"
 
 #: public/views/modals/advancedSend.html
 msgid "Advanced Send"
-msgstr "Advanced Send"
+msgstr "Προηγμένη αποστολή"
 
 #: public/views/disclaimer.html
 msgid "Agree"
@@ -73,7 +91,11 @@ msgstr "Ψευδώνυμο για <i>{{index.walletName}}</i>"
 
 #: public/views/translators.html
 msgid "All contributions to Copay's translation are welcome. Sign up at crowdin.com and join the Copay project at"
-msgstr "All contributions to Copay's translation are welcome. Sign up at crowdin.com and join the Copay project at"
+msgstr "Όλες οι εισηγήσεις στην μετάφραση του Copay είναι ευπρόσδεκτες. Εγγραφείτε στο crowdin.com για να συμμετάσχετε στο έργο Copay"
+
+#: public/views/disclaimer.html
+msgid "All transaction requests are irreversible."
+msgstr "Όλες οι αιτήσεις για συναλλαγές είναι αμετάκλητες."
 
 #: public/views/splash.html
 msgid "Already have a wallet?"
@@ -87,12 +109,13 @@ msgstr "Εναλλακτικό Νόμισμα"
 #: public/views/walletHome.html
 #: public/views/includes/output.html
 #: public/views/modals/customized-amount.html
+#: public/views/modals/txp-details.html
 msgid "Amount"
 msgstr "Ποσό"
 
 #: src/js/services/bwsError.js
-msgid "Amount  below dust threshold"
-msgstr "Amount  below dust threshold"
+msgid "Amount below dust threshold"
+msgstr "Ποσότητα κάτω από το όριο"
 
 #: public/views/walletHome.html
 #: public/views/modals/customized-amount.html
@@ -103,24 +126,23 @@ msgstr "Ποσό εισόδου"
 msgid "Applying changes"
 msgstr "Αποδοχή αλλαγών"
 
+#: src/js/controllers/backup.js
+msgid "Are you sure you want to delete the backup words?"
+msgstr "Are you sure you want to delete the backup words?"
+
 #: src/js/controllers/copayers.js
 #: src/js/controllers/preferencesDelete.js
 msgid "Are you sure you want to delete this wallet?"
 msgstr "Είσαι σίγουρος ότι θέλετε να διαγράψετε αυτό το πορτοφόλι?"
 
-#: public/views/walletHome.html
+#: public/views/includes/available-balance.html
 msgid "Available Balance"
 msgstr "Διαθέσιμο Υπόλοιπο"
 
 #: public/views/preferencesFee.html
 #: public/views/modals/advancedSend.html
 msgid "Average confirmation time: {{fee.nbBlocks * 10}} minutes"
-msgstr "Average confirmation time: {{fee.nbBlocks * 10}} minutes"
-
-#: public/views/create.html
-#: public/views/join.html
-msgid "BIP32 master extended private key"
-msgstr "Πρωτεύον ιδιωτικό κλειδί επέκτασης BIP32"
+msgstr "Μέσος χρόνος επιβεβαίωσης: {{fee.nbBlocks * 10}} λεπτά"
 
 #: public/views/includes/topbar.html
 #: public/views/modals/tx-details.html
@@ -132,21 +154,25 @@ msgstr "Πίσω"
 msgid "Backup"
 msgstr "Αντίγραφο Ασφαλείας"
 
-#: src/js/controllers/backup.js
-msgid "Backup created"
-msgstr "Αντίγραφο Ασφαλείας δημιουργήθηκε"
-
 #: public/views/walletHome.html
 msgid "Backup now"
 msgstr "Πάρτε Αντίγραφο Ασφαλείας τώρα"
 
-#: public/views/backup.html
+#: public/views/export.html
 msgid "Backup options"
 msgstr "Επιλογές Αντιγράφου Ασφαλείας"
 
+#: src/js/controllers/backup.js
+msgid "Backup words deleted"
+msgstr "Backup words deleted"
+
 #: src/js/services/profileService.js
 msgid "Bad wallet invitation"
-msgstr "Bad wallet invitation"
+msgstr "Κακή πρόσκληση πορτοφολιού"
+
+#: public/views/preferencesInformation.html
+msgid "Balance By Address"
+msgstr "Balance By Address"
 
 #: public/views/walletHome.html
 msgid "Before receiving funds, it is highly recommended you backup your wallet keys."
@@ -166,7 +192,7 @@ msgstr "Διεύθυνση Bitcoin"
 
 #: public/views/preferencesFee.html
 msgid "Bitcoin transactions may include a fee collected by miners on the network. The higher the fee, the greater the incentive a miner has to include that transaction in a block. Actual fees are determined based on network load and the selected policy."
-msgstr "Bitcoin transactions may include a fee collected by miners on the network. The higher the fee, the greater the incentive a miner has to include that transaction in a block. Actual fees are determined based on network load and the selected policy."
+msgstr "Οι Bitcoin συναλλαγές μπορεί να περιλαμβάνουν μια αμοιβή που εισπράτουν οι ανθρακωρύχοι στο δίκτυο. Όσο υψηλότερο το τέλος, τόσο μεγαλύτερο το κίνητρο ενός ανθρακωρύχου να συμπεριλάβει αυτή τη συναλλαγή σε ένα μπλοκ. Οι αμοιβές καθορίζονται με βάση το φορτίο του δικτύου και την επιλεγμένη πολιτική."
 
 #: public/views/modals/txp-details.html
 msgid "Broadcast Payment"
@@ -184,10 +210,6 @@ msgstr "Μεταδίδοντας την συναλλαγή"
 msgid "Browser unsupported"
 msgstr "Ο πλοηγός δέν υποστηρίζεται"
 
-#: public/views/modals/txp-details.html
-msgid "But not broadcasted. Try to send manually"
-msgstr "Αλλά δέν μεταδόθηκε. Προσπαθήστε να στείλετε χειροκίνητα"
-
 #: public/views/includes/password.html
 msgid "CANCEL"
 msgstr "ΑΚΥΡΟ"
@@ -195,6 +217,7 @@ msgstr "ΑΚΥΡΟ"
 #: public/views/copayers.html
 #: public/views/walletHome.html
 #: public/views/modals/confirmation.html
+#: src/js/services/confirmDialog.js
 #: src/js/controllers/copayers.js
 #: src/js/controllers/preferencesDelete.js
 #: src/js/controllers/walletHome.js
@@ -203,7 +226,7 @@ msgstr "Άκυρο"
 
 #: src/js/services/profileService.js
 msgid "Cannot join the same wallet more that once"
-msgstr "Cannot join the same wallet more that once"
+msgstr "Δεν μπορείτε να ενταχθείτε στο ίδιο πορτοφόλι περισσότερες απο μία φορές"
 
 #: public/views/modals/paypro.html
 msgid "Certified by"
@@ -239,69 +262,72 @@ msgstr "Χρώμα"
 msgid "Commit hash"
 msgstr "Δέσμευση λύσης"
 
+#: src/js/services/confirmDialog.js
 #: src/js/controllers/copayers.js
 #: src/js/controllers/preferencesDelete.js
 #: src/js/controllers/walletHome.js
 msgid "Confirm"
-msgstr "Confirm"
+msgstr "Επιβεβαίωση"
 
 #: public/views/modals/tx-details.html
 msgid "Confirmations"
 msgstr "Επιβεβαιώσεις"
 
-#: src/js/services/bwsError.js
-msgid "Copayer already in this wallet"
-msgstr "Copayer already in this wallet"
+#: public/views/create.html
+#: public/views/import.html
+#: public/views/join.html
+msgid "Connecting to Ledger Wallet..."
+msgstr "Connecting to Ledger Wallet..."
 
 #: src/js/services/bwsError.js
-msgid "Copayer already registered"
-msgstr "Copayer already registered"
+msgid "Copayer already in this wallet"
+msgstr "Copayers ήδη σε αυτό το πορτοφόλι"
 
 #: src/js/services/bwsError.js
 msgid "Copayer already voted on this spend proposal"
-msgstr "Copayer already voted on this spend proposal"
+msgstr "Copayer που έχουν ήδη ψηφίσει αυτή την πρόταση"
 
 #: src/js/services/bwsError.js
 msgid "Copayer data mismatch"
-msgstr "Copayer data mismatch"
+msgstr "Ασυμφωνία δεδομένων του copayer"
 
 #: public/views/modals/copayers.html
 msgid "Copayers"
 msgstr "Μέλη του πορτοφολιού Copay"
 
-#: src/js/controllers/backup.js
 #: src/js/controllers/copayers.js
+#: src/js/controllers/export.js
 #: src/js/controllers/walletHome.js
 msgid "Copied to clipboard"
-msgstr "Copied to clipboard"
+msgstr "Αντιγράφηκε στο πρόχειρο"
 
-#: public/views/backup.html
+#: public/views/export.html
 msgid "Copy backup to a safe place"
 msgstr "Αποθηκεύστε το αντίγραφο ασφαλείας σε ασφαλές μέρος"
 
-#: public/views/backup.html
+#: public/views/export.html
 msgid "Copy this text as it is to a safe place (notepad or email)"
 msgstr "Αντιγράψτε αυτο το κείμενο ώς έχει σε ασφαλές μέρος (σε εφαρμογή κειμένου ή ηλεκτρονικό ταχυδρομείο)"
 
-#: public/views/backup.html
+#: public/views/export.html
 msgid "Copy to clipboard"
 msgstr "Αντιγραφή στο πρόχειρο"
 
 #: src/js/controllers/walletHome.js
 msgid "Could not accept payment"
-msgstr "Could not accept payment"
+msgstr "Δεν μπορέσαμε να δεχθούμε την πληρωμή"
 
 #: src/js/controllers/index.js
 msgid "Could not access Wallet Service: Not found"
-msgstr "Could not access Wallet Service: Not found"
+msgstr "Δεν ήταν δυνατή η πρόσβαση στην υπηρεσία του πορτοφολιού: δεν βρέθηκε"
 
 #: src/js/controllers/walletHome.js
 msgid "Could not broadcast payment"
-msgstr "Could not broadcast payment"
+msgstr "Δεν μπορέσαμε να μεταδώσουμε την πληρωμή"
 
 #: src/js/services/addressService.js
 msgid "Could not create address"
-msgstr "Could not create address"
+msgstr "Δεν μπορέσαμε να δημιουργήσουμε την διεύθυνση"
 
 #: src/js/controllers/walletHome.js
 msgid "Could not create payment proposal"
@@ -311,13 +337,21 @@ msgstr "Δεν ήταν δυνατή η δημιουργία πρότασης π
 msgid "Could not create using the specified extended private key"
 msgstr "Δεν ήταν δυνατή η δημιουργία χρησιμοποιώντας το συγκεκριμένο ιδιωτικό κλειδί επέκτασης"
 
+#: src/js/services/profileService.js
+msgid "Could not create using the specified extended public key"
+msgstr "Could not create using the specified extended public key"
+
+#: src/js/services/profileService.js
+msgid "Could not create: Invalid wallet seed"
+msgstr "Could not create: Invalid wallet seed"
+
 #: src/js/controllers/import.js
 msgid "Could not decrypt file, check your password"
 msgstr "Δεν ήταν δυνατή η αποκρυπτογράφηση του αρχείου, ελέγξτε τον κωδικό σας"
 
 #: src/js/controllers/walletHome.js
 msgid "Could not delete payment proposal"
-msgstr "Could not delete payment proposal"
+msgstr "Δεν είναι δυνατή η διαγραφή της πρότασης πληρωμής"
 
 #: src/js/controllers/walletHome.js
 msgid "Could not fetch payment information"
@@ -328,16 +362,16 @@ msgid "Could not fetch transaction history"
 msgstr "Δεν ήταν δυνατή η λήψη του ιστορικού συναλλαγών"
 
 #: src/js/services/profileService.js
+msgid "Could not import"
+msgstr "Could not import"
+
+#: src/js/services/profileService.js
 msgid "Could not import. Check input file and password"
 msgstr "Δεν ήταν δυνατή η εισαγωγή. Ελέγξτε το αρχείο και τον κωδικό πρόσβασης"
 
 #: src/js/services/profileService.js
-msgid "Could not join using the specified extended private key"
-msgstr "Δεν μπορείτε να συμμετέχετε χρησιμοποιώντας το συγκεκριμένο ιδιωτικό κλειδί επέκτασης"
-
-#: src/js/services/profileService.js
 msgid "Could not join wallet"
-msgstr "Could not join wallet"
+msgstr "Δεν μπορείτε να συμμετάσχετε στο πορτοφόλι"
 
 #: src/js/controllers/walletHome.js
 msgid "Could not recognize a valid Bitcoin QR Code"
@@ -345,7 +379,7 @@ msgstr "Δεν ήταν δυνατή η αναγνώριση ενός έγκυρ
 
 #: src/js/controllers/walletHome.js
 msgid "Could not reject payment"
-msgstr "Could not reject payment"
+msgstr "Δεν μπορέσαμε να απορρίψουμε την πληρωμή"
 
 #: src/js/controllers/walletHome.js
 msgid "Could not send payment"
@@ -391,7 +425,11 @@ msgstr "Δημιουργία συναλλαγής"
 #: public/views/preferencesFee.html
 #: public/views/modals/advancedSend.html
 msgid "Current fee rate for this policy: {{fee.feePerKBUnit}}/kiB"
-msgstr "Current fee rate for this policy: {{fee.feePerKBUnit}}/kiB"
+msgstr "Σημερινό ποσοστό αμοιβής για αυτήν την πολιτική: {{fee.feePerKBUnit}}/kiB"
+
+#: public/views/backup.html
+msgid "DELETE WORDS"
+msgstr "DELETE WORDS"
 
 #: public/views/modals/tx-details.html
 msgid "Date"
@@ -417,6 +455,10 @@ msgstr "Διαγραφή Πορτοφολιού"
 msgid "Deleting payment"
 msgstr "Διαγραφή πληρωμής"
 
+#: public/views/preferencesInformation.html
+msgid "Derivation Strategy"
+msgstr "Derivation Strategy"
+
 #: public/views/modals/customized-amount.html
 #: public/views/modals/paypro.html
 #: public/views/modals/tx-details.html
@@ -428,37 +470,46 @@ msgstr "Λεπτομέρειες"
 msgid "Disabled"
 msgstr "Απενεργοποιημένο"
 
-#: public/views/backup.html
-msgid "Do not include private key in backup"
-msgstr "Μην συμπεριλάβετε το ιδιωτικό κλειδί στο αντίγραφο ασφαλείας"
+#: public/views/export.html
+msgid "Do not include private key"
+msgstr "Do not include private key"
 
 #: public/views/translators.html
 msgid "Don't see your language on Crowdin? Contact the Owner on Crowdin! We'd love to support your language."
-msgstr "Don't see your language on Crowdin? Contact the Owner on Crowdin! We'd love to support your language."
+msgstr "Δεν βλέπετε τη γλώσσα σας στο Crowdin; Επικοινωνήστε με τον ιδιοκτήτη στο Crowdin! Θα θέλαμε να υποστηρίξουμε τη γλώσσα σας."
 
 #: public/views/walletHome.html
 msgid "Download CSV file"
 msgstr "Κατεβάστε το αρχείο CSV"
 
-#: public/views/backup.html
+#: public/views/export.html
 msgid "Download backup"
 msgstr "Λήψη αντιγράφου ασφαλείας"
 
 #: src/js/services/feeService.js
 msgid "Economy"
-msgstr "Economy"
+msgstr "Οικονομία"
+
+#: public/views/importLegacy.html
+msgid "Email"
+msgstr "Email"
 
 #: public/views/preferences.html
 msgid "Email Notifications"
 msgstr "Ειδοποιήσεις Email"
 
-#: public/views/preferences.html
-msgid "Encrypt Private Key"
-msgstr "Κρυπτογράφηση ιδιωτικού κλειδιού"
+#: public/views/preferencesEmail.html
+msgid "Email for wallet notifications"
+msgstr "Το ηλεκτρονικό σας ταχυδρομείο για τις ειδοποιήσεις του πορτοφόλιού σας"
 
-#: src/js/controllers/backup.js
-msgid "Encrypted backup file saved"
-msgstr "Κρυπτογραφημένο αρχείο αντιγράφου ασφαλείας αποθηκεύτηκε"
+#: src/js/controllers/export.js
+msgid "Encrypted export file saved"
+msgstr "Encrypted export file saved"
+
+#: public/views/create.html
+#: public/views/join.html
+msgid "Enter the seed words (BIP39)"
+msgstr "Enter the seed words (BIP39)"
 
 #: public/views/includes/password.html
 msgid "Enter your password"
@@ -466,7 +517,7 @@ msgstr "Παρακαλώ εισάγετε τον κωδικό σας"
 
 #: src/js/controllers/index.js
 msgid "Error at Wallet Service"
-msgstr "Error at Wallet Service"
+msgstr "Σφάλμα στην υπηρεσία του πορτοφολιού"
 
 #: src/js/services/profileService.js
 msgid "Error creating wallet"
@@ -481,9 +532,21 @@ msgstr "Σφάλμα στην εισαγωγή πορτοφολίου:"
 msgid "Expires"
 msgstr "Λήγει"
 
-#: public/views/backup.html
-msgid "Failed to create backup"
-msgstr "Αδυναμία δημιουργίας αντιγράφου ασφαλείας"
+#: public/views/preferencesAdvanced.html
+msgid "Export"
+msgstr "Εξαγωγή"
+
+#: public/views/preferencesInformation.html
+msgid "Extended Public Keys"
+msgstr "Extended Public Keys"
+
+#: public/views/includes/walletInfo.html
+msgid "External Private Key:"
+msgstr "External Private Key:"
+
+#: public/views/export.html
+msgid "Failed to export"
+msgstr "Failed to export"
 
 #: src/js/controllers/importLegacy.js
 msgid "Failed to import wallets"
@@ -500,16 +563,20 @@ msgstr "Αμοιβή"
 
 #: public/views/modals/advancedSend.html
 msgid "Fee Policy"
-msgstr "Fee Policy"
+msgstr "Τέλος πολιτικής"
 
 #: public/views/walletHome.html
 msgid "Fee policy for this transaction"
-msgstr "Fee policy for this transaction"
+msgstr "Τέλος πολιτικής για τη συγκεκριμένη συναλλαγή"
 
 #. Get information of payment if using Payment Protocol
 #: src/js/controllers/walletHome.js
 msgid "Fetching Payment Information"
 msgstr "Λήψη Πληροφοριών Πληρωμής"
+
+#: public/views/import.html
+msgid "File/Text Backup"
+msgstr "File/Text Backup"
 
 #: public/views/translators.html
 msgid "French"
@@ -517,7 +584,7 @@ msgstr "Γαλλικά"
 
 #: src/js/services/bwsError.js
 msgid "Funds are locked by pending spend proposals"
-msgstr "Funds are locked by pending spend proposals"
+msgstr "Τα χρήματα είναι κλειδωμένα από εν αναμονή προτάσεις αποστολής"
 
 #: src/js/services/notificationsService.js
 msgid "Funds received"
@@ -559,16 +626,24 @@ msgstr "Πάμε πίσω"
 msgid "Greek"
 msgstr "Ελληνικά"
 
+#: public/views/preferences.html
+msgid "Hardware wallet"
+msgstr "Υλικό πορτοφόλι"
+
 #: public/views/import.html
 msgid "Have a Backup from Copay v0.9?"
 msgstr "Έχετε ένα αντίγραφο ασφαλείας από το Copay έκδοση 0.9?"
 
 #: public/views/backup.html
+msgid "Hide Wallet Seed"
+msgstr "Hide Wallet Seed"
+
 #: public/views/create.html
+#: public/views/import.html
 #: public/views/join.html
 #: public/views/walletHome.html
 msgid "Hide advanced options"
-msgstr "Hide advanced options"
+msgstr "Απόκρυψη Προχωρημένων επιλογών"
 
 #: src/js/controllers/index.js
 msgid "History"
@@ -582,11 +657,7 @@ msgstr "Αρχική Σελίδα"
 msgid "I affirm that I have read, understood, and agree with these terms."
 msgstr "Βεβαιώνω ότι έχω διαβάσει, κατανοήσει και συμφωνήσει με αυτούς τους όρους."
 
-#: public/views/create.html
-#: public/views/join.html
-msgid "If not given, a secure key will be generated"
-msgstr "Αν δεν σας έχει δοθεί, ένα ασφαλές κλειδί θα δημιουργηθεί"
-
+#: public/views/import.html
 #: public/views/importLegacy.html
 msgid "Import"
 msgstr "Εισαγωγή"
@@ -616,17 +687,21 @@ msgstr "Εισάγεται το πορτοφόλι ..."
 msgid "Importing..."
 msgstr "Εισαγωγή ..."
 
+#: public/views/disclaimer.html
+msgid "In no event shall the authors of the software, employees and affiliates of Bitpay, copyright holders, or BitPay, Inc. be held liable for any claim, damages or other liability, whether in an action of contract, tort, or otherwise, arising from, out of or in connection with the software."
+msgstr "Σε καμία περίπτωση οι συντάκτες του λογισμικού, οι συνεργάτες του Bitpay, οι κατόχοι πνευματικών δικαιωμάτων, ή η BitPay α.ε. ευθύνεται για οποιαδήποτε αξίωση, ζημία ή άλλη ευθύνη, είτε βαση κάποιας σύμβασης, αδικοπραξίας, ή άλλο, που προκύπτει από την σχέση σας με το λογισμικό."
+
 #: src/js/services/bwsError.js
 msgid "Incorrect address network"
-msgstr "Incorrect address network"
+msgstr "Εσφαλμένη διεύθυνση δικτύου"
 
 #: src/js/services/bwsError.js
 msgid "Insufficient funds"
-msgstr "Insufficient funds"
+msgstr "Ανεπαρκές χρηματικό υπόλοιπο"
 
 #: src/js/services/bwsError.js
 msgid "Insufficient funds for fee"
-msgstr "Insufficient funds for fee"
+msgstr "Ανεπαρκής χρηματοδότηση για την αμοιβή"
 
 #: public/views/walletHome.html
 msgid "Invalid"
@@ -634,11 +709,11 @@ msgstr "Μη έγκυρο"
 
 #: src/js/services/bwsError.js
 msgid "Invalid address"
-msgstr "Invalid address"
+msgstr "Μη έγκυρη διεύθυνση"
 
 #: src/js/controllers/copayers.js
 msgid "Invitation to share a Copay Wallet"
-msgstr "Invitation to share a Copay Wallet"
+msgstr "Πρόσκληση για τον διαμοιρασμό ενός πορτοφολιού Copay"
 
 #: public/views/translators.html
 msgid "Italian"
@@ -658,8 +733,8 @@ msgid "Join"
 msgstr "Συμμετοχή"
 
 #: src/js/controllers/copayers.js
-msgid "Join my Copay wallet. Here is the invitation code: {{secret}}  You can download Copay for your phone or desktop at https://copay.io"
-msgstr "Join my Copay wallet. Here is the invitation code: {{secret}}  You can download Copay for your phone or desktop at https://copay.io"
+msgid "Join my Copay wallet. Here is the invitation code: {{secret}} You can download Copay for your phone or desktop at https://copay.io"
+msgstr "Συμμετάσχετε στο πορτοφόλι μου Copay. Εδώ είναι ο κωδικός πρόσκλησης: {{secret}} μπορείτε να κατεβάσετε το Copay για το τηλέφωνο σας ή τον υπολογιστή σας στο https://copay.io"
 
 #: public/views/add.html
 msgid "Join shared wallet"
@@ -673,26 +748,37 @@ msgstr "Εισαγωγή στο Πορτοφόλι..."
 msgid "Language"
 msgstr "Γλώσσα"
 
+#: public/views/preferencesInformation.html
+msgid "Last Wallet Addresses"
+msgstr "Last Wallet Addresses"
+
+#: public/views/backup.html
+msgid "Learn more about Copay backups"
+msgstr "Learn more about Copay backups"
+
 #: public/views/importLegacy.html
 msgid "Learn more about Wallet Migration"
 msgstr "Μάθετε περισσότερα για τη Μετανάστευση Πορτοφολιού"
 
+#: public/views/import.html
+msgid "Ledger"
+msgstr "Ledger"
+
+#: src/js/controllers/disclaimer.js
+msgid "Loading..."
+msgstr "Φόρτωση…"
+
 #: src/js/services/bwsError.js
 msgid "Locktime in effect. Please wait to create a new spend proposal"
-msgstr "Locktime in effect. Please wait to create a new spend proposal"
+msgstr "Κλείδωμα σε ισχύ. Σας παρακαλώ περιμένετε για να δημιουργήσετε μια νέα πρόταση"
 
 #: src/js/services/bwsError.js
 msgid "Locktime in effect. Please wait to remove this spend proposal"
-msgstr "Locktime in effect. Please wait to remove this spend proposal"
+msgstr "Κλείδωμα σε ισχύ. Σας παρακαλώ περιμένετε για να αφαιρέσετε αυτή την πρόταση"
 
 #: public/views/paymentUri.html
 msgid "Make a payment to"
 msgstr "Κάντε μια πληρωμή σε"
-
-#: public/views/create.html
-#: public/views/join.html
-msgid "Master extended private key"
-msgstr "Πρωτεύον ιδιωτικό κλειδί επέκτασης"
 
 #: public/views/includes/copayers.html
 #: public/views/modals/copayers.html
@@ -735,13 +821,13 @@ msgstr "Δίκτυο"
 
 #: src/js/services/bwsError.js
 msgid "Network connection error"
-msgstr "Network connection error"
+msgstr "Σφάλμα σύνδεσης δικτύου"
 
 #: src/js/services/notificationsService.js
 msgid "New Payment Proposal"
 msgstr "Νέα Πρόταση Πληρωμής"
 
-#: public/views/walletHome.html
+#: public/views/includes/walletInfo.html
 msgid "No Private key"
 msgstr "Δεν υπάρχει ιδιωτικό κλειδί"
 
@@ -751,11 +837,11 @@ msgstr "Δεν υπάρχουν συναλλαγές ακόμα"
 
 #: src/js/services/feeService.js
 msgid "Normal"
-msgstr "Normal"
+msgstr "Κανονική"
 
 #: src/js/services/bwsError.js
 msgid "Not authorized"
-msgstr "Not authorized"
+msgstr "Δεν επιτρέπεται"
 
 #: public/views/walletHome.html
 #: public/views/modals/customized-amount.html
@@ -765,17 +851,21 @@ msgstr "Δεν είναι έγκυρη"
 #: public/views/walletHome.html
 #: public/views/includes/output.html
 #: public/views/modals/tx-details.html
+#: public/views/modals/txp-details.html
 msgid "Note"
 msgstr "Σημείωση"
 
-#: public/views/includes/alert.html
-#: public/views/includes/password.html
-msgid "OK"
-msgstr "OK"
+#: public/views/disclaimer.html
+msgid "Official English Disclaimer"
+msgstr "Official English Disclaimer"
 
-#: public/views/modals/tx-status.html
-msgid "OKAY"
-msgstr "ΕΝΤΑΞΕΙ"
+#: public/views/backup.html
+msgid "Once you have copy your wallet seed, it is recommended to delete it from this device."
+msgstr "Once you have copy your wallet seed, it is recommended to delete it from this device."
+
+#: public/views/preferencesInformation.html
+msgid "Only Main (not change) addresses are shown. The addresses on this list were not verified locally at this time."
+msgstr "Only Main (not change) addresses are shown. The addresses on this list were not verified locally at this time."
 
 #: public/views/modals/tx-details.html
 #: public/views/modals/txp-details.html
@@ -783,13 +873,13 @@ msgid "Participants"
 msgstr "Συμμετέχοντες"
 
 #: public/views/import.html
+msgid "Passphrase"
+msgstr "Passphrase"
+
+#: public/views/import.html
 #: public/views/importLegacy.html
 msgid "Password"
 msgstr "Κωδικός πρόσβασης"
-
-#: public/views/includes/password.html
-msgid "Password cannot be recovered. Be sure to write it down"
-msgstr "Ο Κωδικός πρόσβασης δεν μπορεί να ανακτηθεί. Να είστε βέβαιος οτι τον σημειώσατε"
 
 #: src/js/services/profileService.js
 msgid "Password needed"
@@ -853,24 +943,28 @@ msgid "Payment Sent"
 msgstr "Πληρωμή Εστάλη"
 
 #: public/views/modals/txp-details.html
-msgid "Payment accepted..."
-msgstr "Πληρωμή αποδεκτή..."
+msgid "Payment accepted, but not yet broadcasted"
+msgstr "Payment accepted, but not yet broadcasted"
+
+#: public/views/modals/txp-details.html
+msgid "Payment accepted. It will be broadcasted by Glidera. In case there is a problem, it can be deleted 6 hours after it was created."
+msgstr "Payment accepted. It will be broadcasted by Glidera. In case there is a problem, it can be deleted 6 hours after it was created."
 
 #: public/views/modals/txp-details.html
 msgid "Payment details"
 msgstr "Λεπτομέρειες πληρωμής"
 
 #: public/views/modals/txp-details.html
-msgid "Payment finally rejected"
-msgstr "Η πληρωμή τελικά απορρίφθηκε"
+msgid "Payment rejected"
+msgstr "Πληρωμή Απερρίφθη"
 
 #: public/views/modals/paypro.html
 msgid "Payment request"
 msgstr "Αίτηση πληρωμής"
 
 #: public/views/modals/txp-details.html
-msgid "Payment sent!"
-msgstr "Πληρωμή Εστάλη!"
+msgid "Payment sent"
+msgstr "Πληρωμή Εστάλη"
 
 #: public/views/walletHome.html
 msgid "Payment to"
@@ -878,13 +972,14 @@ msgstr "Πληρωμή σε"
 
 #: public/views/walletHome.html
 msgid "Pending Confirmation"
-msgstr "Pending Confirmation"
+msgstr "Υπό επιβεβαίωση"
 
 #: public/views/preferencesDeleteWallet.html
 msgid "Permanently delete this wallet. THIS ACTION CANNOT BE REVERSED"
 msgstr "Να διαγράφεί μόνιμα αυτό το πορτοφόλι? ΑΥΤΗ Η ΕΝΕΡΓΕΙΑ ΔΕΝ ΜΠΟΡΕΙ ΝΑ ΑΝΤΙΣΤΡΑΦΕΙ"
 
 #: public/views/create.html
+#: src/js/services/profileService.js
 msgid "Personal Wallet"
 msgstr "Προσωπικό πορτοφόλι"
 
@@ -893,9 +988,18 @@ msgstr "Προσωπικό πορτοφόλι"
 msgid "Please enter the required fields"
 msgstr "Παρακαλώ εισάγετε τα απαιτούμενα πεδία"
 
+#: src/js/controllers/import.js
+msgid "Please enter the seed words"
+msgstr "Please enter the seed words"
+
+#: src/js/controllers/create.js
+#: src/js/controllers/join.js
+msgid "Please enter the wallet seed"
+msgstr "Please enter the wallet seed"
+
 #: src/js/services/bwsError.js
 msgid "Please upgrade Copay to perform this action"
-msgstr "Please upgrade Copay to perform this action"
+msgstr "Παρακαλώ αναβαθμίστε το Copay για να εκτελέσετε αυτήν την ενέργεια"
 
 #: src/js/controllers/import.js
 msgid "Please, select your backup file"
@@ -909,13 +1013,13 @@ msgstr "Πορτογαλικά"
 msgid "Preferences"
 msgstr "Προτιμήσεις"
 
-#: src/js/controllers/backup.js
+#: src/js/controllers/export.js
 msgid "Preparing backup..."
-msgstr "Preparing backup..."
+msgstr "Προετοιμασία δημιουργίας αντιγράφων ασφαλείας..."
 
 #: src/js/services/feeService.js
 msgid "Priority"
-msgstr "Priority"
+msgstr "Προτεραιότητα"
 
 #: public/views/modals/customized-amount.html
 msgid "QR Code"
@@ -933,10 +1037,11 @@ msgstr "Λάβετε"
 msgid "Received"
 msgstr "Ληφθέντα"
 
-#: public/views/includes/output.html
 #: public/views/includes/transaction.html
+#: public/views/modals/tx-details.html
+#: public/views/modals/txp-details.html
 msgid "Recipients"
-msgstr "Recipients"
+msgstr "Παραλήπτες"
 
 #: public/views/walletHome.html
 msgid "Reconnecting to Wallet Service..."
@@ -962,20 +1067,31 @@ msgstr "Απόρριψη πληρωμής"
 msgid "Release Information"
 msgstr "Πληροφορίες Έκδοσης"
 
-#: public/views/backup.html
+#: public/views/export.html
 #: public/views/includes/password.html
 msgid "Repeat password"
 msgstr "Επανάληψη κωδικού"
+
+#: public/views/preferences.html
+msgid "Request Password for Spending Funds"
+msgstr "Request Password for Spending Funds"
 
 #: public/views/walletHome.html
 #: public/views/modals/customized-amount.html
 msgid "Request a specific amount"
 msgstr "Ζητήστε ένα συγκεκριμένο ποσό"
 
-#: public/views/import.html
+#: src/js/controllers/walletHome.js
+msgid "Requesting Ledger Wallet to sign"
+msgstr "Requesting Ledger Wallet to sign"
+
 #: public/views/join.html
 msgid "Required"
 msgstr "Απαιτείτε"
+
+#: public/views/create.html
+msgid "Required number of signatures"
+msgstr "Required number of signatures"
 
 #: public/views/splash.html
 msgid "Retrying..."
@@ -983,7 +1099,7 @@ msgstr "Επανάληψη..."
 
 #: public/views/translators.html
 msgid "Russian"
-msgstr "Russian"
+msgstr "Ρωσσικά"
 
 #: public/views/includes/password.html
 msgid "SET"
@@ -1023,6 +1139,15 @@ msgstr "Σάρωση χρημάτων Πορτοφολιού..."
 msgid "See it on the blockchain"
 msgstr "Δείτε τη συναλλαγή στην αλυσίδα συναλλαγών"
 
+#: public/views/create.html
+#: public/views/join.html
+msgid "Seed Passphrase"
+msgstr "Seed Passphrase"
+
+#: public/views/import.html
+msgid "Seed passphrase"
+msgstr "Seed passphrase"
+
 #: public/views/import.html
 msgid "Select a backup file"
 msgstr "Επιλέξτε ένα αρχείο αντιγράφου ασφαλείας"
@@ -1030,14 +1155,6 @@ msgstr "Επιλέξτε ένα αρχείο αντιγράφου ασφαλεί
 #: public/views/paymentUri.html
 msgid "Select a wallet"
 msgstr "Επιλέξτε ένα πορτοφόλι"
-
-#: public/views/create.html
-msgid "Select required number of signatures"
-msgstr "Επιλέξτε τον απαιτούμενο αριθμό υπογραφών"
-
-#: public/views/create.html
-msgid "Select total number of copayers"
-msgstr "Επιλέξτε το συνολικό αριθμό των copayers"
 
 #: public/views/walletHome.html
 #: public/views/includes/transaction.html
@@ -1049,7 +1166,11 @@ msgstr "Αποστολή"
 msgid "Send All"
 msgstr "Αποστολή Όλων"
 
-#: public/views/backup.html
+#: public/views/preferencesInformation.html
+msgid "Send all by email"
+msgstr "Send all by email"
+
+#: public/views/export.html
 #: public/views/preferencesLogs.html
 msgid "Send by email"
 msgstr "Αποστολή με email"
@@ -1062,13 +1183,17 @@ msgstr "Εξερχόμενα"
 msgid "Server"
 msgstr "Διακομιστής"
 
+#: src/js/services/bwsError.js
+msgid "Server response could not be verified"
+msgstr "Server response could not be verified"
+
 #: public/views/preferencesAbout.html
 msgid "Session log"
 msgstr "Ημερολόγιο συνεδριών"
 
-#: public/views/backup.html
-msgid "Set up a Password for your backup"
-msgstr "Ορίστε έναν Κωδικό Πρόσβασης για το αντίγραφο ασφαλείας"
+#: public/views/export.html
+msgid "Set up a Export Password"
+msgstr "Set up a Export Password"
 
 #: public/views/includes/password.html
 msgid "Set up a password"
@@ -1079,6 +1204,7 @@ msgid "Setting up email notifications could weaken your privacy, if the wallet s
 msgstr "Ενεργοποιώντας τις ενημερώσεις μέσω ηλεκτρονικού ταχυδρομείου μπορεί να μειωθεί η ιδιωτικότητα σας, εάν ο πάροχος του πορτοφολιού παραβιαστεί. Οι πληροφορίες που θα διαθέτει ένας εισβολέας θα περιλαμβάνουν τις διευθύνσεις του πορτοφόλιου σας και το ποσόν των χρημάτων σας, αλλά τίποτα περισσότερο."
 
 #: public/views/walletHome.html
+#: public/views/modals/customized-amount.html
 msgid "Share address"
 msgstr "Μοιραστείτε τη διεύθυνση"
 
@@ -1099,37 +1225,47 @@ msgid "Shared Wallet"
 msgstr "Κοινόχρηστο πορτοφόλι"
 
 #: public/views/backup.html
+msgid "Show Wallet Seed"
+msgstr "Show Wallet Seed"
+
 #: public/views/create.html
+#: public/views/import.html
 #: public/views/join.html
 #: public/views/walletHome.html
 msgid "Show advanced options"
-msgstr "Show advanced options"
+msgstr "Εμφάνιση προχωρημένων επιλογών"
 
 #: src/js/services/bwsError.js
 msgid "Signatures rejected by server"
-msgstr "Signatures rejected by server"
+msgstr "Οι υπογραφές απορρίφθηκαν από το διακομιστή"
 
 #: src/js/controllers/walletHome.js
 msgid "Signing payment"
 msgstr "Υπογραφή πληρωμής"
 
-#: src/js/controllers/walletHome.js
-msgid "Signing transaction"
-msgstr "Υπογραφή συναλλαγής"
-
 #: public/views/translators.html
 msgid "Spanish"
 msgstr "Ισπανικά"
 
+#: public/views/create.html
+#: public/views/join.html
+msgid "Specify your wallet seed"
+msgstr "Specify your wallet seed"
+
 #: src/js/services/bwsError.js
 msgid "Spend proposal is not accepted"
-msgstr "Spend proposal is not accepted"
+msgstr "Η πρόταση δεν έγινε αποδεκτή"
 
 #: src/js/services/bwsError.js
 msgid "Spend proposal not found"
-msgstr "Spend proposal not found"
+msgstr "Η πρόταση δεν βρέθηκε"
+
+#: public/views/preferences.html
+msgid "Still not done"
+msgstr "Still not done"
 
 #: src/js/controllers/copayers.js
+#: src/js/controllers/export.js
 #: src/js/controllers/import.js
 #: src/js/controllers/preferencesDelete.js
 msgid "Success"
@@ -1145,8 +1281,17 @@ msgid "Terms of Use"
 msgstr "Όροι Χρήσης"
 
 #: public/views/create.html
+#: public/views/import.html
 msgid "Testnet"
 msgstr "Δοκιμαστικό Δίκτυο"
+
+#: src/js/services/ledger.js
+msgid "The Ledger Chrome application is not installed"
+msgstr "The Ledger Chrome application is not installed"
+
+#: public/views/disclaimer.html
+msgid "The authors of the software, employees and affiliates of Bitpay, copyright holders, and BitPay, Inc. cannot retrieve your private keys or passwords if you lose or forget them and cannot guarantee transaction confirmation as they do not have control over the Bitcoin network."
+msgstr "Οι συγγραφείς του λογισμικού, οι εργαζόμενοι και οι συνεργάτες του Bitpay, οι κατόχοι πνευματικών δικαιωμάτων, και η BitPay α.ε., δεν μπορούν να ανακτήσουν ιδιωτικά κλειδιά ή τους κωδικούς πρόσβασης σας, εάν χάσετε ή ξεχασετε αυτούς και δεν μπορούν να εγγυηθούν την επιβεβαίωση της συναλλαγής, δεδομένου ότι δεν έχουν τον έλεγχο του δικτύου Bitcoin."
 
 #: src/js/controllers/walletHome.js
 msgid "The payment was created but could not be completed. Please try again from home screen"
@@ -1154,7 +1299,7 @@ msgstr "Η πληρωμή δημιουργήθηκε, αλλά δεν ήταν �
 
 #: src/js/controllers/walletHome.js
 msgid "The payment was created but could not be signed. Please try again from home screen"
-msgstr "The payment was created but could not be signed. Please try again from home screen"
+msgstr "Η πληρωμή δημιουργήθηκε, αλλά δεν μπορούσε να υπογραφεί. Παρακαλώ ξαναπροσπαθήστε από την αρχική οθόνη"
 
 #: public/views/modals/txp-details.html
 msgid "The payment was removed by creator"
@@ -1162,19 +1307,28 @@ msgstr "Η πληρωμή έχει αφαιρεθεί από τον δημιου
 
 #: src/js/controllers/walletHome.js
 msgid "The payment was signed but could not be broadcasted. Please try again from home screen"
-msgstr "The payment was signed but could not be broadcasted. Please try again from home screen"
+msgstr "Η πληρωμή έχει υπογραφεί αλλά δεν μπορούσε να μεταδοθεί. Παρακαλώ ξαναπροσπαθήστε από την αρχική οθόνη"
 
-#: public/views/backup.html
-msgid "The private key for this wallet is encrypted. Exporting a backup will keep the private key encrypted in the backup archive."
-msgstr "Το ιδιωτικό κλειδί για αυτό το πορτοφόλι είναι κρυπτογραφημένο. Εξάγωντας ένα αντίγραφο ασφαλείας θα κρατήθει το ιδιωτικό κλειδί που έχει κρυπτογραφηθεί στο εφεδρικό αρχείο."
+#: public/views/export.html
+msgid "The private key for this wallet is encrypted. Exporting keep the private key encrypted in the export archive."
+msgstr "The private key for this wallet is encrypted. Exporting keep the private key encrypted in the export archive."
+
+#: public/views/create.html
+#: public/views/join.html
+msgid "The seed could require a passphrase to be imported"
+msgstr "The seed could require a passphrase to be imported"
 
 #: public/views/disclaimer.html
-msgid "The software you are about to use functions as a free, open source, and multi-signature digital wallet. The software does not constitute an account where BitPay or other third parties serve as financial intermediaries or custodians of your bitcoin.  While the software has undergone beta testing and continues to be improved by feedback from the open-source user and developer community, we cannot guarantee that there will be no bugs in the software. You acknowledge that your use of this software is at your own discretion and in compliance with all applicable laws. You are responsible for safekeeping your passwords, private key pairs, PINs and any other codes you use to access the software. IF YOU LOSE ACCESS TO YOUR COPAY WALLET OR YOUR ENCRYPTED PRIVATE KEYS AND YOU HAVE NOT SEPARATELY STORED A BACKUP OF YOUR WALLET AND CORRESPONDING PASSWORD, YOU ACKNOWLEDGE AND AGREE THAT ANY BITCOIN YOU HAVE ASSOCIATED WITH THAT COPAY  WALLET WILL BECOME INACCESSIBLE. All transaction requests are irreversible.  The authors of the software, employees and affiliates of Bitpay, copyright holders, and BitPay, Inc. cannot retrieve your private keys or passwords if you lose or forget them and cannot guarantee transaction confirmation as they do not have control over the Bitcoin network. To the fullest extent permitted by law, this software is provided “as is” and no representations or warranties can be made of any kind, express or implied, including but not limited to the warranties of merchantability, fitness or a particular purpose and noninfringement. You assume any and all risks associated with the use of the software. In no event shall the authors of the software, employees and affiliates of Bitpay, copyright holders, or BitPay, Inc. be held liable for any claim, damages or other liability, whether in an action of contract, tort, or otherwise, arising from, out of or in connection with the software. We reserve the right to modify this disclaimer from time to time."
-msgstr "Το λογισμικό που πρόκειται να χρησιμοποιήσετε λειτουργεί ως ένα δωρεάν, ανοικτού κώδικα και πολλαπλών υπογραφών ψηφιακό πορτοφόλι. Το λογισμικό δεν αποτελεί ένα λογαριασμό όπου το BitPay ή άλλα τρίτα μέρη χρησιμεύουν ως ενδιάμεσοι χρηματοπιστωτικοί οργανισμοί ή θεματοφύλακες των bitcoin σας.  Ενώ το λογισμικό έχει υποβληθεί σε δοκιμή beta και συνεχίζει να βελτιώνεται από χρήστες ανοικτού κώδικα και την κοινότητα των προγραμματιστών, εμείς δεν μπορούμε να εγγυηθούμε ότι δεν θα υπάρξει κανένα σφάλμα στο λογισμικό. Αναγνωρίζετε ότι η χρήση αυτού του λογισμικού είναι στην κρίση σας και σε συμφωνία με όλους τους ισχύοντες νόμους. Είστε υπεύθυνος για τη διαφύλαξή των κωδικών πρόσβασής σας, το ιδιωτικό ζεύγος κλειδιών, τετραψήφιων κωδικών PIN και οποιουσδήποτε άλλους κωδικούς που χρησιμοποιείτε για να έχετε πρόσβαση στο λογισμικό. ΕΑΝ ΧΑΣΕΤΕ ΤΗΝ ΠΡΟΣΒΑΣΗ ΝΑ ΣΑΣ ΣΤΟ ΠΟΡΤΟΦΌΛΙ COPAY Ή ΣΤΑ ΚΡΥΠΤΟΓΡΑΦΗΜΕΝΑ ΙΔΙΩΤΙΚΑ ΣΑΣ ΚΛΕΙΔΙΑ ΚΑΙ ΔΕΝ ΑΠΟΘΗΚΕΥΣΑΤΕ ΧΩΡΙΣΤΆ ΕΝΑ ΑΝΤΙΓΡΑΦΟ ΑΣΦΑΛΕΙΑΣ ΤΟΥ ΠΟΡΤΟΦΟΛΙΟΥ ΚΑΙ ΤΟΥ ΑΝΤΙΣΤΟΙΧΟΥ ΚΩΔΙΚΟΥ ΠΡΌΣΒΑΣΗΣ, ΑΠΟΔΕΧΕΣΤΕ ΚΑΙ ΣΥΜΦΩΝΕΙΤΕ ΟΤΙ ΟΠΟΙΑΔΗΠΟΤΕ ΠΟΣΟΤΗΤΑ BITCOIN ΠΟΥ ΕΧΕΤΕ ΣΥΣΧΕΤΙΣΕΙ ΜΕ ΤΟ ΠΟΡΤΟΦΟΛΙ ΤΟΥ COPAY ΘΑ ΓΙΝΟΥΝ ΑΠΡΟΣΠΕΛΑΣΤΑ. Όλες οι αιτήσεις για συναλλαγές είναι αμετάκλητες. Οι συγγραφείς του λογισμικού, οι εργαζόμενοι και οι συνεργάτες του Bitpay, οι κατόχοι πνευματικών δικαιωμάτων, και η BitPay α.ε., δεν μπορούν να ανακτήσουν ιδιωτικά κλειδιά ή τους κωδικούς πρόσβασης σας, εάν χάσετε ή ξεχασετε αυτούς και δεν μπορούν να εγγυηθούν την επιβεβαίωση της συναλλαγής, δεδομένου ότι δεν έχουν τον έλεγχο του δικτύου Bitcoin. Στο μέγιστο βαθμό που επιτρέπει το δίκαιο, το λογισμικό παρέχεται \"ως έχει\" και καμία δήλωση ή εγγύηση μπορεί να γίνει του κάθε είδους, ρητή ή σιωπηρή, συμπεριλαμβανομένων, αλλά μη περιορισμένων, των εγγυήσεων εμπορευσιμότητας, καταλληλότητας ή συγκεκριμένου σκοπού και νομιμότητας. Αναλάμβανετε κάθε κινδύνο που συνδέεται με τη χρήση του λογισμικού. Σε καμία περίπτωση οι συντάκτες του λογισμικού, οι συνεργάτες του Bitpay, οι κατόχοι πνευματικών δικαιωμάτων, ή η BitPay α.ε. ευθύνεται για οποιαδήποτε αξίωση, ζημία ή άλλη ευθύνη, είτε βαση κάποιας σύμβασης, αδικοπραξίας, ή άλλο, που προκύπτει από την σχέση σας με το λογισμικό. Διατηρούμε το δικαίωμα να τροποποιήσουμε αυτή την αποποίηση ευθυνών από καιρό σε καιρό."
+msgid "The software does not constitute an account where BitPay or other third parties serve as financial intermediaries or custodians of your bitcoin."
+msgstr "Το λογισμικό δεν αποτελεί ένα λογαριασμό όπου το BitPay ή άλλα τρίτα μέρη χρησιμεύουν ως ενδιάμεσοι χρηματοπιστωτικοί οργανισμοί ή θεματοφύλακες των bitcoin σας."
+
+#: public/views/disclaimer.html
+msgid "The software you are about to use functions as a free, open source, and multi-signature digital wallet."
+msgstr "Το λογισμικό που πρόκειται να χρησιμοποιήσετε λειτουργεί ως ένα δωρεάν, ανοικτού κώδικα και πολλαπλών υπογραφών ψηφιακό πορτοφόλι."
 
 #: src/js/services/bwsError.js
 msgid "The spend proposal is not pending"
-msgstr "The spend proposal is not pending"
+msgstr "Δεν εκκρεμεί η πρόταση"
 
 #: src/js/controllers/copayers.js
 #: src/js/controllers/preferencesDelete.js
@@ -1209,13 +1363,29 @@ msgstr "Ώρα"
 msgid "To"
 msgstr "Προς"
 
-#: public/views/includes/output.html
+#: public/views/backup.html
+msgid "To restore this {{index.m}}-{{index.n}} <b>shared</b> wallet you will need"
+msgstr "To restore this {{index.m}}-{{index.n}} <b>shared</b> wallet you will need"
+
+#: public/views/backup.html
+msgid "To restore this {{index.m}}-{{index.n}} shared wallet you will need"
+msgstr "To restore this {{index.m}}-{{index.n}} shared wallet you will need"
+
+#: public/views/disclaimer.html
+msgid "To the fullest extent permitted by law, this software is provided “as is” and no representations or warranties can be made of any kind, express or implied, including but not limited to the warranties of merchantability, fitness or a particular purpose and noninfringement."
+msgstr "Στο μέγιστο βαθμό που επιτρέπει το δίκαιο, το λογισμικό παρέχεται \"ως έχει\" και καμία δήλωση ή εγγύηση μπορεί να γίνει του κάθε είδους, ρητή ή σιωπηρή, συμπεριλαμβανομένων, αλλά μη περιορισμένων, των εγγυήσεων εμπορευσιμότητας, καταλληλότητας ή συγκεκριμένου σκοπού και νομιμότητας."
+
+#: public/views/modals/txp-details.html
 msgid "Total"
-msgstr "Total"
+msgstr "Συνολικά"
 
 #: public/views/walletHome.html
 msgid "Total Locked Balance"
 msgstr "Συνολικό Κλειδωμένο Υπόλοιπο"
+
+#: public/views/create.html
+msgid "Total number of copayers"
+msgstr "Total number of copayers"
 
 #: public/views/modals/tx-details.html
 msgid "Transaction"
@@ -1223,15 +1393,19 @@ msgstr "Συναλλαγή"
 
 #: src/js/services/bwsError.js
 msgid "Transaction already broadcasted"
-msgstr "Transaction already broadcasted"
+msgstr "Συναλλαγή που έχει ήδη μεταδοθεί"
 
 #: public/views/translators.html
 msgid "Translation Credits"
-msgstr "Translation Credits"
+msgstr "Λεπτομέρειες Μετάφρασης"
 
 #: public/views/preferencesAbout.html
 msgid "Translators"
-msgstr "Translators"
+msgstr "Μεταφραστές"
+
+#: public/views/import.html
+msgid "Type the Seed Word (usually 12 words)"
+msgstr "Type the Seed Word (usually 12 words)"
 
 #: src/js/controllers/walletHome.js
 msgid "Unable to send transaction proposal"
@@ -1246,34 +1420,60 @@ msgstr "Ανεπιβεβαίωτες"
 msgid "Unit"
 msgstr "Μονάδα"
 
+#: public/views/modals/paypro.html
+msgid "Unknown Root or Selfsigned Certificate"
+msgstr "Unknown Root or Selfsigned Certificate"
+
 #: public/views/walletHome.html
 msgid "Unsent transactions"
 msgstr "Μη Απεσταλμένες συναλλαγές"
-
-#: public/views/modals/paypro.html
-msgid "Untrusted"
-msgstr "Μη αξιόπιστη"
 
 #: public/views/walletHome.html
 msgid "Updating Wallet..."
 msgstr "Ενημέρωση πορτοφολιού..."
 
+#: public/views/create.html
+#: public/views/join.html
+msgid "Use Ledger hardware wallet"
+msgstr "Use Ledger hardware wallet"
+
 #: public/views/preferences.html
 #: public/views/walletHome.html
 msgid "Use Unconfirmed Funds"
-msgstr "Use Unconfirmed Funds"
+msgstr "Χρήση Ανεπιβεβαίωτων Ποσών"
+
+#: public/views/importLegacy.html
+msgid "Username"
+msgstr "Username"
 
 #: public/views/preferencesAbout.html
 msgid "Version"
 msgstr "Έκδοση"
 
-#: public/views/backup.html
+#: public/views/export.html
 msgid "View backup"
 msgstr "Προβολή αντιγράφων ασφαλείας"
 
 #: public/views/walletHome.html
 msgid "WARNING: Backup needed"
 msgstr "Προειδοποίηση: Δημιουργία αντιγράφων ασφαλείας απαιτείται"
+
+#: public/views/export.html
+msgid "WARNING: Not including the private key allows to check the wallet balance, transaction history, and create spend proposals from the export. However, does not allow to approve (sign) proposals, so <b>funds will not be accessible from the export</b>."
+msgstr "WARNING: Not including the private key allows to check the wallet balance, transaction history, and create spend proposals from the export. However, does not allow to approve (sign) proposals, so <b>funds will not be accessible from the export</b>."
+
+#: public/views/create.html
+#: public/views/join.html
+msgid "WARNING: Passphrase cannot be recovered. <b>Be sure to write it down</b>. The wallet can not be restored without the passphrase."
+msgstr "WARNING: Passphrase cannot be recovered. <b>Be sure to write it down</b>. The wallet can not be restored without the passphrase."
+
+#: public/views/export.html
+msgid "WARNING: The private key of this wallet is not available. The export allows to check the wallet balance, transaction history, and create spend proposals from the export. However, does not allow to approve (sign) proposals, so <b>funds will not be accessible from the export</b>."
+msgstr "WARNING: The private key of this wallet is not available. The export allows to check the wallet balance, transaction history, and create spend proposals from the export. However, does not allow to approve (sign) proposals, so <b>funds will not be accessible from the export</b>."
+
+#: public/views/backup.html
+msgid "WARNING: This seed was created with a passphrase. To recover this wallet both the mnemonic and passphrase are needed."
+msgstr "WARNING: This seed was created with a passphrase. To recover this wallet both the mnemonic and passphrase are needed."
 
 #: public/views/walletHome.html
 msgid "WARNING: Wallet not registered"
@@ -1291,6 +1491,10 @@ msgstr "Αναμονή για copayers"
 msgid "Waiting..."
 msgstr "Σε αναμονή..."
 
+#: public/views/preferencesDeleteWallet.html
+msgid "Wallet"
+msgstr "Πορτοφόλι"
+
 #: public/views/preferences.html
 msgid "Wallet Alias"
 msgstr "Ψευδώνυμο Πορτοφολιού"
@@ -1298,6 +1502,19 @@ msgstr "Ψευδώνυμο Πορτοφολιού"
 #: src/js/services/profileService.js
 msgid "Wallet Already Imported:"
 msgstr "Το Πορτοφόλι έχει ήδη εισαχθεί:"
+
+#: public/views/preferencesInformation.html
+msgid "Wallet Configuration (m-n)"
+msgstr "Wallet Configuration (m-n)"
+
+#: public/views/preferencesInformation.html
+msgid "Wallet Id"
+msgstr "Wallet Id"
+
+#: public/views/preferencesAdvanced.html
+#: public/views/preferencesInformation.html
+msgid "Wallet Information"
+msgstr "Wallet Information"
 
 #: public/views/join.html
 msgid "Wallet Invitation"
@@ -1307,10 +1524,35 @@ msgstr "Πρόσκληση πορτοφολιού"
 msgid "Wallet Invitation is not valid!"
 msgstr "Η πρόσκληση πορτοφολιού δεν είναι έγκυρη!"
 
+#: public/views/preferencesInformation.html
+msgid "Wallet Name (at creation)"
+msgstr "Wallet Name (at creation)"
+
+#: public/views/preferencesInformation.html
+msgid "Wallet Network"
+msgstr "Wallet Network"
+
+#: public/views/create.html
+#: public/views/import.html
+#: public/views/join.html
+msgid "Wallet Seed"
+msgstr "Wallet Seed"
+
+#: public/views/import.html
+msgid "Wallet Seed could require a passphrase to be imported"
+msgstr "Wallet Seed could require a passphrase to be imported"
+
 #: src/js/services/bwsError.js
-#: src/js/services/profileService.js
 msgid "Wallet already exists"
 msgstr "Υπάρχει ήδη το πορτοφόλι"
+
+#: src/js/services/profileService.js
+msgid "Wallet already in Copay:"
+msgstr "Wallet already in Copay:"
+
+#: src/js/services/bwsError.js
+msgid "Wallet already registered"
+msgstr "Wallet already registered"
 
 #: public/views/copayers.html
 msgid "Wallet incomplete and broken"
@@ -1318,11 +1560,11 @@ msgstr "Πορτοφόλι ελλιπές και χαλασμένο"
 
 #: src/js/services/bwsError.js
 msgid "Wallet is full"
-msgstr "Wallet is full"
+msgstr "Το πορτοφόλι είναι γεμάτο"
 
 #: src/js/services/bwsError.js
 msgid "Wallet is not complete"
-msgstr "Wallet is not complete"
+msgstr "Το πορτοφόλι δεν είναι πλήρες"
 
 #: public/views/create.html
 msgid "Wallet name"
@@ -1330,11 +1572,23 @@ msgstr "Όνομα πορτοφολιού"
 
 #: src/js/services/bwsError.js
 msgid "Wallet not found"
-msgstr "Wallet not found"
+msgstr "Το πορτοφόλι δεν βρέθηκε"
+
+#: src/js/services/bwsError.js
+msgid "Wallet not registed at the Wallet Service. Recreate it from \"Create Wallet\" using \"Advanced Options\" to set your seed"
+msgstr "Wallet not registed at the Wallet Service. Recreate it from \"Create Wallet\" using \"Advanced Options\" to set your seed"
+
+#: src/js/services/bwsError.js
+msgid "Wallet seed is invalid"
+msgstr "Wallet seed is invalid"
+
+#: public/views/backup.html
+msgid "Wallet seed not available. You can still export it from Advanced &gt; Export."
+msgstr "Wallet seed not available. You can still export it from Advanced &gt; Export."
 
 #: src/js/services/bwsError.js
 msgid "Wallet service not found"
-msgstr "Wallet service not found"
+msgstr "Η υπηρεσία του πορτοφολιού δεν βρέθηκε"
 
 #: public/views/preferencesDeleteWallet.html
 msgid "Warning!"
@@ -1342,7 +1596,23 @@ msgstr "Προειδοποίηση!"
 
 #: public/views/modals/txp-details.html
 msgid "Warning: this transaction has unconfirmed inputs"
-msgstr "Warning: this transaction has unconfirmed inputs"
+msgstr "Προειδοποίηση: αυτή η συναλλαγή έχει ανεπιβεβαίωτες εισροές"
+
+#: public/views/disclaimer.html
+msgid "We reserve the right to modify this disclaimer from time to time."
+msgstr "Διατηρούμε το δικαίωμα να τροποποιήσουμε αυτή την αποποίηση ευθυνών από καιρό σε καιρό."
+
+#: public/views/disclaimer.html
+msgid "While the software has undergone beta testing and continues to be improved by feedback from the open-source user and developer community, we cannot guarantee that there will be no bugs in the software."
+msgstr "Ενώ το λογισμικό έχει υποβληθεί σε δοκιμή beta και συνεχίζει να βελτιώνεται από χρήστες ανοικτού κώδικα και την κοινότητα των προγραμματιστών, εμείς δεν μπορούμε να εγγυηθούμε ότι δεν θα υπάρξει κανένα σφάλμα στο λογισμικό."
+
+#: public/views/backup.html
+msgid "Write it down and keep them somewhere safe."
+msgstr "Write it down and keep them somewhere safe."
+
+#: src/js/controllers/import.js
+msgid "Wrong number of seed words:"
+msgstr "Wrong number of seed words:"
 
 #: src/js/services/profileService.js
 msgid "Wrong password"
@@ -1352,14 +1622,41 @@ msgstr "Λάθος κωδικός πρόσβασης"
 msgid "Yes"
 msgstr "Ναι"
 
+#: public/views/disclaimer.html
+msgid "You acknowledge that your use of this software is at your own discretion and in compliance with all applicable laws."
+msgstr "Αναγνωρίζετε ότι η χρήση αυτού του λογισμικού είναι στην κρίση σας και σε συμφωνία με όλους τους ισχύοντες νόμους."
+
+#: public/views/disclaimer.html
+msgid "You are responsible for safekeeping your passwords, private key pairs, PINs and any other codes you use to access the software."
+msgstr "Είστε υπεύθυνος για τη διαφύλαξή των κωδικών πρόσβασής σας, το ιδιωτικό ζεύγος κλειδιών, τετραψήφιων κωδικών PIN και οποιουσδήποτε άλλους κωδικούς που χρησιμοποιείτε για να έχετε πρόσβαση στο λογισμικό."
+
+#: public/views/disclaimer.html
+msgid "You assume any and all risks associated with the use of the software."
+msgstr "Αναλάμβανετε κάθε κινδύνο που συνδέεται με τη χρήση του λογισμικού."
+
+#: public/views/backup.html
+msgid "You can safely install your wallet on another device and use it from multiple devices at the same time."
+msgstr "You can safely install your wallet on another device and use it from multiple devices at the same time."
+
 #: public/views/walletHome.html
 msgid "You do not have a wallet"
 msgstr "Δεν έχετε πορτοφόλι"
 
 #: public/views/backup.html
+msgid "You need the wallet seed to restore this personal wallet."
+msgstr "You need the wallet seed to restore this personal wallet."
+
+#: public/views/backup.html
+msgid "Your Wallet Seed"
+msgstr "Your Wallet Seed"
+
 #: public/views/import.html
 msgid "Your backup password"
 msgstr "Ο  κωδικός πρόσβασης των αντιγράφων ασφαλείας σας"
+
+#: public/views/export.html
+msgid "Your export password"
+msgstr "Your export password"
 
 #: public/views/create.html
 #: public/views/join.html
@@ -1378,19 +1675,25 @@ msgstr "Ο κωδικός πρόσβασης του προφίλ σας"
 msgid "Your wallet has been imported correctly"
 msgstr "Το πορτοφόλι σας έχει εισαχθεί σωστά"
 
-#: public/views/preferencesEmail.html
-msgid "email for wallet notifications"
-msgstr "Το ηλεκτρονικό σας ταχυδρομείο για τις ειδοποιήσεις του πορτοφόλιού σας"
+#: public/views/includes/password.html
+msgid "Your wallet key will be encrypted. Password cannot be recovered. Be sure to write it down"
+msgstr "Your wallet key will be encrypted. Password cannot be recovered. Be sure to write it down"
 
-#: public/views/walletHome.html
+#: public/views/backup.html
+msgid "Your wallet seed and access to the wallet service where wallet is registered"
+msgstr "Your wallet seed and access to the wallet service where wallet is registered"
+
+#: public/views/backup.html
+msgid "Your wallet seed and access to the wallet service where your wallet is registered"
+msgstr "Your wallet seed and access to the wallet service where your wallet is registered"
+
+#: public/views/includes/available-balance.html
 msgid "locked by pending payments"
 msgstr "κλειδωμένο από εκκρεμούσες πληρωμές"
 
-#: public/views/copayers.html
-#: public/views/walletHome.html
-#: public/views/includes/sidebar.html
-msgid "of"
-msgstr "από"
+#: src/js/services/profileService.js
+msgid "me"
+msgstr "me"
 
 #: public/views/walletHome.html
 msgid "optional"
@@ -1405,8 +1708,17 @@ msgid "too long!"
 msgstr "πάρα πολύ μεγάλο μέγεθος!"
 
 #: src/js/controllers/walletHome.js
-msgid "{{fee}} will be discounted for bitcoin networking fees"
+msgid "{{fee}} will be deducted for bitcoin networking fees"
 msgstr "{{fee}}, θα προεξοφληθεί ώς τέλος του δικτύου bitcoin"
+
+#: public/views/copayers.html
+#: public/views/walletHome.html
+msgid "{{index.m}}-of-{{index.n}}"
+msgstr "{{index.m}}-of-{{index.n}}"
+
+#: public/views/includes/sidebar.html
+msgid "{{item.m}}-of-{{item.n}}"
+msgstr "{{item.m}}-of-{{item.n}}"
 
 #: src/js/controllers/importLegacy.js
 msgid "{{len}} wallets imported. Funds scanning in progress. Hold on to see updated balance"
