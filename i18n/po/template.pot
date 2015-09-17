@@ -12,6 +12,10 @@ msgstr ""
 msgid "* A payment proposal can be deleted if 1) you are the creator, and no other copayer has signed, or 2) 24 hours have passed since the proposal was created."
 msgstr ""
 
+#: public/views/disclaimer.html
+msgid "<b>IF YOU LOSE ACCESS TO YOUR COPAY WALLET OR YOUR ENCRYPTED PRIVATE KEYS AND YOU HAVE NOT SEPARATELY STORED A BACKUP OF YOUR WALLET AND CORRESPONDING PASSWORD, YOU ACKNOWLEDGE AND AGREE THAT ANY BITCOIN YOU HAVE ASSOCIATED WITH THAT COPAY WALLET WILL BECOME INACCESSIBLE.</b>"
+msgstr ""
+
 #: public/views/backup.html
 msgid "<b>OR</b> 1 wallet export file and the remaining quorum of wallet seeds (e.g. in a 3-5 wallet: 1 wallet export file + 2 wallet seeds of any of the other copayers)."
 msgstr ""
@@ -22,22 +26,6 @@ msgstr ""
 
 #: public/views/backup.html
 msgid "<b>OR</b> the wallet seeds of <b>all</b> copayers in the wallet"
-msgstr ""
-
-#: public/views/disclaimer.html
-msgid ""
-"<li>The software you are about to use functions as a free, open source, and multi-signature digital wallet.</li>\n"
-"<li>The software does not constitute an account where BitPay or other third parties serve as financial intermediaries or custodians of your bitcoin.</li>\n"
-"<li>While the software has undergone beta testing and continues to be improved by feedback from the open-source user and developer community, we cannot guarantee that there will be no bugs in the software.</li>\n"
-"<li>You acknowledge that your use of this software is at your own discretion and in compliance with all applicable laws.</li>\n"
-"<li>You are responsible for safekeeping your passwords, private key pairs, PINs and any other codes you use to access the software.</li>\n"
-"<li><b>IF YOU LOSE ACCESS TO YOUR COPAY WALLET OR YOUR ENCRYPTED PRIVATE KEYS AND YOU HAVE NOT SEPARATELY STORED A BACKUP OF YOUR WALLET AND CORRESPONDING PASSWORD, YOU ACKNOWLEDGE AND AGREE THAT ANY BITCOIN YOU HAVE ASSOCIATED WITH THAT COPAY WALLET WILL BECOME INACCESSIBLE.</b></li>\n"
-"<li>All transaction requests are irreversible.</li>\n"
-"<li>The authors of the software, employees and affiliates of Bitpay, copyright holders, and BitPay, Inc. cannot retrieve your private keys or passwords if you lose or forget them and cannot guarantee transaction confirmation as they do not have control over the Bitcoin network.</li>\n"
-"<li>To the fullest extent permitted by law, this software is provided “as is” and no representations or warranties can be made of any kind, express or implied, including but not limited to the warranties of merchantability, fitness or a particular purpose and noninfringement.</li>\n"
-"<li>You assume any and all risks associated with the use of the software.</li>\n"
-"<li>In no event shall the authors of the software, employees and affiliates of Bitpay, copyright holders, or BitPay, Inc. be held liable for any claim, damages or other liability, whether in an action of contract, tort, or otherwise, arising from, out of or in connection with the software.</li>\n"
-"<li>We reserve the right to modify this disclaimer from time to time.</li>"
 msgstr ""
 
 #: public/views/splash.html
@@ -93,6 +81,10 @@ msgstr ""
 
 #: public/views/translators.html
 msgid "All contributions to Copay's translation are welcome. Sign up at crowdin.com and join the Copay project at"
+msgstr ""
+
+#: public/views/disclaimer.html
+msgid "All transaction requests are irreversible."
 msgstr ""
 
 #: public/views/splash.html
@@ -683,6 +675,10 @@ msgstr ""
 
 #: public/views/importLegacy.html
 msgid "Importing..."
+msgstr ""
+
+#: public/views/disclaimer.html
+msgid "In no event shall the authors of the software, employees and affiliates of Bitpay, copyright holders, or BitPay, Inc. be held liable for any claim, damages or other liability, whether in an action of contract, tort, or otherwise, arising from, out of or in connection with the software."
 msgstr ""
 
 #: src/js/services/bwsError.js
@@ -1279,6 +1275,10 @@ msgstr ""
 msgid "The Ledger Chrome application is not installed"
 msgstr ""
 
+#: public/views/disclaimer.html
+msgid "The authors of the software, employees and affiliates of Bitpay, copyright holders, and BitPay, Inc. cannot retrieve your private keys or passwords if you lose or forget them and cannot guarantee transaction confirmation as they do not have control over the Bitcoin network."
+msgstr ""
+
 #: src/js/controllers/walletHome.js
 msgid "The payment was created but could not be completed. Please try again from home screen"
 msgstr ""
@@ -1302,6 +1302,14 @@ msgstr ""
 #: public/views/create.html
 #: public/views/join.html
 msgid "The seed could require a passphrase to be imported"
+msgstr ""
+
+#: public/views/disclaimer.html
+msgid "The software does not constitute an account where BitPay or other third parties serve as financial intermediaries or custodians of your bitcoin."
+msgstr ""
+
+#: public/views/disclaimer.html
+msgid "The software you are about to use functions as a free, open source, and multi-signature digital wallet."
 msgstr ""
 
 #: src/js/services/bwsError.js
@@ -1347,6 +1355,10 @@ msgstr ""
 
 #: public/views/backup.html
 msgid "To restore this {{index.m}}-{{index.n}} shared wallet you will need"
+msgstr ""
+
+#: public/views/disclaimer.html
+msgid "To the fullest extent permitted by law, this software is provided “as is” and no representations or warranties can be made of any kind, express or implied, including but not limited to the warranties of merchantability, fitness or a particular purpose and noninfringement."
 msgstr ""
 
 #: public/views/modals/txp-details.html
@@ -1572,6 +1584,14 @@ msgstr ""
 msgid "Warning: this transaction has unconfirmed inputs"
 msgstr ""
 
+#: public/views/disclaimer.html
+msgid "We reserve the right to modify this disclaimer from time to time."
+msgstr ""
+
+#: public/views/disclaimer.html
+msgid "While the software has undergone beta testing and continues to be improved by feedback from the open-source user and developer community, we cannot guarantee that there will be no bugs in the software."
+msgstr ""
+
 #: public/views/backup.html
 msgid "Write it down and keep them somewhere safe."
 msgstr ""
@@ -1586,6 +1606,18 @@ msgstr ""
 
 #: public/views/modals/confirmation.html
 msgid "Yes"
+msgstr ""
+
+#: public/views/disclaimer.html
+msgid "You acknowledge that your use of this software is at your own discretion and in compliance with all applicable laws."
+msgstr ""
+
+#: public/views/disclaimer.html
+msgid "You are responsible for safekeeping your passwords, private key pairs, PINs and any other codes you use to access the software."
+msgstr ""
+
+#: public/views/disclaimer.html
+msgid "You assume any and all risks associated with the use of the software."
 msgstr ""
 
 #: public/views/backup.html
