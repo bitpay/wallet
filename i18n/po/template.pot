@@ -289,10 +289,6 @@ msgstr ""
 msgid "Copayer data mismatch"
 msgstr ""
 
-#: public/views/preferencesInformation.html
-msgid "Copayer {{$index}}"
-msgstr ""
-
 #: public/views/modals/copayers.html
 msgid "Copayers"
 msgstr ""
@@ -490,6 +486,10 @@ msgstr ""
 
 #: src/js/services/feeService.js
 msgid "Economy"
+msgstr ""
+
+#: public/views/importLegacy.html
+msgid "Email"
 msgstr ""
 
 #: public/views/preferences.html
@@ -969,6 +969,7 @@ msgid "Permanently delete this wallet. THIS ACTION CANNOT BE REVERSED"
 msgstr ""
 
 #: public/views/create.html
+#: src/js/services/profileService.js
 msgid "Personal Wallet"
 msgstr ""
 
@@ -1415,6 +1416,10 @@ msgstr ""
 msgid "Use Unconfirmed Funds"
 msgstr ""
 
+#: public/views/importLegacy.html
+msgid "Username"
+msgstr ""
+
 #: public/views/preferencesAbout.html
 msgid "Version"
 msgstr ""
@@ -1638,6 +1643,10 @@ msgstr ""
 
 #: public/views/includes/available-balance.html
 msgid "locked by pending payments"
+msgstr ""
+
+#: src/js/services/profileService.js
+msgid "me"
 msgstr ""
 
 #: public/views/walletHome.html
