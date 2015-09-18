@@ -88,9 +88,13 @@
       <span class="text-warning" ng-show="!btx.confirmations || btx.confirmations == 0" translate>
         Unconfirmed
       </span>
-      <span class="label gray radius" ng-show="btx.confirmations>0">
+      <span class="label gray radius" ng-show="btx.confirmations>0 && !btx.safeConfirmed">
         {{btx.confirmations}}
       </span>
+      <span class="label gray radius" ng-show="btx.safeConfirmed">
+        {{btx.safeConfirmed}}
+      </span>
+ 
     </span>
     </li>
   </ul>
