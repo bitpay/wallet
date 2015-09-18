@@ -33,10 +33,21 @@
     </li>
     <li class="line-b p10 oh">
     <span class="text-gray" translate>Certified by</span>:
-    <span class="right">
-      <span ng-show="paypro.verified && paypro.chainVerified"><i class="fi-lock color-greeni"></i> 
-        {{paypro.verifyData.caName || paypro.verifyData}}</span>
-      <span ng-show="!paypro.verified || !paypro.chainVerified"><i class="fi-unlock color-yellowi"></i> <span translate>Unknown Root or Selfsigned Certificate</span></span>
+    <span class="right text-right">
+      <span ng-show="paypro.caTrusted">
+        <i class="fi-lock color-greeni"></i> 
+        {{paypro.caName}}<br>
+        <span translate>(Trusted)<span>
+      </span>
+      <span ng-show="!paypro.caTrusted">
+        <span ng-show="paypro.selfSigned">
+          <i class="fi-unlock color-yellowi"></i> <span translate>Self-signed Certificate</span>
+        </span>
+        <span ng-show="!paypro.selfSigned">
+          <i class="fi-unlock color-yellowi"></i> <span translate>{{paypro.caName}}</span><br>
+          <span translate>WARNING: UNTRUSTED CERTIFICATE<span>
+        </span>
+      </span>
     </span>
     </li>
     <li class="line-b p10 oh" ng-if="paypro.memo">
