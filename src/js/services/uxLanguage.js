@@ -27,6 +27,7 @@ angular.module('copayApp.services')
     }, {
       name: '日本語',
       isoCode: 'ja',
+      useIdeograms: true,
     }, {
       name: 'Pусский',
       isoCode: 'ru',
@@ -62,6 +63,12 @@ angular.module('copayApp.services')
 
     root.getCurrentLanguageName = function() {
       return root.getName(root.currentLanguage);
+    };
+
+    root.getCurrentLanguageInfo = function() {
+      return lodash.find(root.availableLanguages, {
+        'isoCode': root.currentLanguage
+      });
     };
 
     root.getLanguages = function() {

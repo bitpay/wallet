@@ -953,11 +953,13 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     });
   };
 
-  this.setFromPayPro = function(uri) {
+  this.setFromPayPro = function(uri, cb) {
+    if (!cb) cb = function() {};
+
     var fc = profileService.focusedClient;
     if (isChromeApp) {
       this.error = gettext('Payment Protocol not supported on Chrome App');
-      return;
+      return cb(true);
     }
 
     var satToUnit = 1 / this.unitToSatoshi;
@@ -973,23 +975,25 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
         self.setOngoingProcess();
 
         if (err) {
-          $log.warn(err);
+          $log.warn('Could not fetch payment request:', err);
           self.resetForm();
           var msg = err.toString();
           if (msg.match('HTTP')) {
             msg = gettext('Could not fetch payment information');
           }
           self.error = msg;
-        } else {
-          self._paypro = paypro;
-          self.setForm(paypro.toAddress, (paypro.amount * satToUnit).toFixed(self.unitDecimals),
-            paypro.memo);
+          return cb(true);
         }
+
+        self._paypro = paypro;
+        self.setForm(paypro.toAddress, (paypro.amount * satToUnit).toFixed(self.unitDecimals), paypro.memo);
+        return cb();
       });
     }, 1);
   };
 
   this.setFromUri = function(uri) {
+    var self = this;
     function sanitizeUri(uri) {
       // Fixes when a region uses comma to separate decimals
       var regex = /[\?\&]amount=(\d+([\,\.]\d+)?)/i;
@@ -1010,16 +1014,26 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       return uri;
     }
     var parsed = new bitcore.URI(uri);
-    var addr = parsed.address.toString();
+
+    var addr = parsed.address ? parsed.address.toString() : '';
     var message = parsed.message;
-    if (parsed.r)
-      return this.setFromPayPro(parsed.r);
 
     var amount = parsed.amount ?
       (parsed.amount.toFixed(0) * satToUnit).toFixed(this.unitDecimals) : 0;
 
-    this.setForm(addr, amount, message);
-    return addr;
+
+    if (parsed.r) {
+      this.setFromPayPro(parsed.r, function(err) {
+        if (err && addr && amount) {
+          self.setForm(addr, amount, message);
+          return addr;
+        }
+      });
+    } else {
+      this.setForm(addr, amount, message);
+      return addr;
+    }
+
   };
 
   this.onAddressChange = function(value) {
