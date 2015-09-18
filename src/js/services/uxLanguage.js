@@ -31,6 +31,9 @@ angular.module('copayApp.services')
     }, {
       name: 'Pусский',
       isoCode: 'ru',
+    }, {
+      name: 'Türk',
+      isoCode: 'tr',
     }];
 
     root.currentLanguage = null;
