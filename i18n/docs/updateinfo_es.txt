@@ -1,5 +1,6 @@
-* Niveles de tasa adaptables en base a la carga de la red bitcoin
-* Opción para evitar la creación de transacciones con entradas sin confirmar
-* Opciones de envío avanzado
-* Nuevos idiomas: Italiano, Ruso, and Griego
+* Soporte para copias de seguridad con palabras (BIP39)
+* Soporte para BIP44
+* Soporte de direcciones no multi-firmas para monederos personales (1 de 1)
+* Detalles avanzados del monedero
+* Soporte Ledger para monederos multi-firmas
 * Corrección de errores menores
