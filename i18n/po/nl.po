@@ -12,7 +12,11 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Dutch\n"
 "Language: nl\n"
-"PO-Revision-Date: 2015-09-17 12:36-0400\n"
+"PO-Revision-Date: 2015-09-18 13:52-0400\n"
+
+#: public/views/modals/paypro.html
+msgid "(Trusted)"
+msgstr "(Trusted)"
 
 #: public/views/walletHome.html
 msgid "(possible double spend)"
@@ -930,6 +934,10 @@ msgid "Payment Proposals"
 msgstr "Payment Proposals"
 
 #: src/js/controllers/walletHome.js
+msgid "Payment Protocol Invalid"
+msgstr "Payment Protocol Invalid"
+
+#: src/js/controllers/walletHome.js
 msgid "Payment Protocol not supported on Chrome App"
 msgstr "Payment Protocol not supported on Chrome App"
 
@@ -1155,6 +1163,10 @@ msgstr "Select a backup file"
 #: public/views/paymentUri.html
 msgid "Select a wallet"
 msgstr "Select a wallet"
+
+#: public/views/modals/paypro.html
+msgid "Self-signed Certificate"
+msgstr "Self-signed Certificate"
 
 #: public/views/walletHome.html
 #: public/views/includes/transaction.html
@@ -1420,10 +1432,6 @@ msgstr "Unconfirmed"
 msgid "Unit"
 msgstr "Unit"
 
-#: public/views/modals/paypro.html
-msgid "Unknown Root or Selfsigned Certificate"
-msgstr "Unknown Root or Selfsigned Certificate"
-
 #: public/views/walletHome.html
 msgid "Unsent transactions"
 msgstr "Unsent transactions"
@@ -1474,6 +1482,10 @@ msgstr "WARNING: The private key of this wallet is not available. The export all
 #: public/views/backup.html
 msgid "WARNING: This seed was created with a passphrase. To recover this wallet both the mnemonic and passphrase are needed."
 msgstr "WARNING: This seed was created with a passphrase. To recover this wallet both the mnemonic and passphrase are needed."
+
+#: public/views/modals/paypro.html
+msgid "WARNING: UNTRUSTED CERTIFICATE"
+msgstr "WARNING: UNTRUSTED CERTIFICATE"
 
 #: public/views/walletHome.html
 msgid "WARNING: Wallet not registered"

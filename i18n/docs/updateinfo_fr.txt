@@ -1,5 +1,6 @@
-* Les frais sont maintenant calculés dynamiquement, en fonction de la charge du réseau Bitcoin
-* Ajout d'une option permettant d'éviter la création de transactions avec des entrées non confirmées
-* Ajout d'options d'envois avancés
-* Ajout de langues : Italien, Russe et Grec
+* Prise en charge des phrases de sauvegarde (BIP39)
+* Prise en charge de BIP44
+* Prise en charge des adresses non-multisig pour les portefeuilles personnels (1-sur-1)
+* Détails avancés du portefeuille
+* Prise en charge de Ledger pour les portefeuilles multisig
 * Corrections de bugs mineurs
