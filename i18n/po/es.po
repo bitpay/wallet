@@ -12,7 +12,11 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Spanish\n"
 "Language: es\n"
-"PO-Revision-Date: 2015-09-17 15:17-0400\n"
+"PO-Revision-Date: 2015-09-18 13:52-0400\n"
+
+#: public/views/modals/paypro.html
+msgid "(Trusted)"
+msgstr "(De confianza)"
 
 #: public/views/walletHome.html
 msgid "(possible double spend)"
@@ -930,6 +934,10 @@ msgid "Payment Proposals"
 msgstr "Propuestas de Pago"
 
 #: src/js/controllers/walletHome.js
+msgid "Payment Protocol Invalid"
+msgstr "Protocolo de Pago Inválido"
+
+#: src/js/controllers/walletHome.js
 msgid "Payment Protocol not supported on Chrome App"
 msgstr "El protocolo de pago no está soportado en Chrome"
 
@@ -1155,6 +1163,10 @@ msgstr "Seleccionar el archivo de copia de seguridad"
 #: public/views/paymentUri.html
 msgid "Select a wallet"
 msgstr "Seleccione un monedero"
+
+#: public/views/modals/paypro.html
+msgid "Self-signed Certificate"
+msgstr "Certificado autofirmado"
 
 #: public/views/walletHome.html
 #: public/views/includes/transaction.html
@@ -1420,10 +1432,6 @@ msgstr "Sin confirmar"
 msgid "Unit"
 msgstr "Unidad"
 
-#: public/views/modals/paypro.html
-msgid "Unknown Root or Selfsigned Certificate"
-msgstr "Raiz o Certificado Selfsign desconocido"
-
 #: public/views/walletHome.html
 msgid "Unsent transactions"
 msgstr "Transacciones no enviadas"
@@ -1474,6 +1482,10 @@ msgstr "ADVERTENCIA: La clave privada de este monedero no está disponible. La e
 #: public/views/backup.html
 msgid "WARNING: This seed was created with a passphrase. To recover this wallet both the mnemonic and passphrase are needed."
 msgstr "ADVERTENCIA: Esta semilla fue creada con una contraseña. Para recuperar este mondero necesita las palabras y la contraseña."
+
+#: public/views/modals/paypro.html
+msgid "WARNING: UNTRUSTED CERTIFICATE"
+msgstr "ADVERTENCIA: NO ES DE CONFIANZA EL CERTIFICADO"
 
 #: public/views/walletHome.html
 msgid "WARNING: Wallet not registered"
