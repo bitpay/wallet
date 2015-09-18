@@ -112,6 +112,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
       // DISABLED
       //self.initGlidera();
+      self.initIdentity();
 
       if (fc.isPrivKeyExternal()) {
         self.needsBackup = false;
@@ -814,6 +815,55 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     var userLang = uxLanguage.update();
     self.defaultLanguageIsoCode = userLang;
     self.defaultLanguageName = uxLanguage.getName(userLang);
+  };
+
+  self.initIdentity = function() {
+    delete self.identityError;
+    self.identityEnabled = true;
+    storageService.getIdentityIDs(function(err, idlist) {
+      if (err) {
+        self.identityError = err;
+      } else {
+        self.identities = [];
+        lodash.forEach(idlist, function(id) {
+          storageService.getIdentity(id, function(err, identity) {
+            if (err) {
+              self.identityError = err;
+            } else if (!identity) {
+              // silently remove identity id if identity not found and no error
+              storageService.removeIdentityID(id, function(err) {
+                if (err) {
+                  self.identityError = err;
+                }
+              });
+            } else {
+              if (identity.claims) {
+                identity.description = lodash.keys(identity.claims).toString();
+                identity.description = identity.description.replace(/,/g, ', ');
+              }
+              self.identities.push(identity);
+            }
+          });
+        })
+      }
+    });
+  };
+
+  self.viewIdentity = function(id) {
+    $rootScope.identityId = id;
+    $rootScope.$root.go('identity');
+  };
+
+  self.removeIdentity = function(id) {
+    var self = this;
+    storageService.removeIdentity(id, function(err) {
+      if (err) {
+        self.identityError = err;
+      } else {
+        self.initIdentity();
+        $rootScope.$root.go('identities');
+      }
+    });
   };
 
   self.initGlidera = function(accessToken) {
