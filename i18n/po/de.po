@@ -12,7 +12,11 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: German\n"
 "Language: de\n"
-"PO-Revision-Date: 2015-09-17 12:36-0400\n"
+"PO-Revision-Date: 2015-09-18 13:52-0400\n"
+
+#: public/views/modals/paypro.html
+msgid "(Trusted)"
+msgstr "(Trusted)"
 
 #: public/views/walletHome.html
 msgid "(possible double spend)"
@@ -57,7 +61,7 @@ msgstr "Akzeptieren"
 #: public/views/create.html
 #: public/views/join.html
 msgid "Add an optional passphrase to secure the seed"
-msgstr "Add an optional passphrase to secure the seed"
+msgstr "Um den Seed zu sichern, geben Sie optional eine Passphrase ein"
 
 #: public/views/includes/sidebar.html
 msgid "Add wallet"
@@ -277,7 +281,7 @@ msgstr "Bestätigungen"
 #: public/views/import.html
 #: public/views/join.html
 msgid "Connecting to Ledger Wallet..."
-msgstr "Connecting to Ledger Wallet..."
+msgstr "Verbindung mit Ledger Wallet..."
 
 #: src/js/services/bwsError.js
 msgid "Copayer already in this wallet"
@@ -429,7 +433,7 @@ msgstr "Aktuelle Gebühr für dieses Regelwerk: {{fee.feePerKBUnit}}/KiB"
 
 #: public/views/backup.html
 msgid "DELETE WORDS"
-msgstr "DELETE WORDS"
+msgstr "WÖRTER LÖSCHEN"
 
 #: public/views/modals/tx-details.html
 msgid "Date"
@@ -509,7 +513,7 @@ msgstr "Encrypted export file saved"
 #: public/views/create.html
 #: public/views/join.html
 msgid "Enter the seed words (BIP39)"
-msgstr "Enter the seed words (BIP39)"
+msgstr "Geben Sie die Seed-Wörter gemäß BIP39 ein"
 
 #: public/views/includes/password.html
 msgid "Enter your password"
@@ -534,7 +538,7 @@ msgstr "Gültig bis"
 
 #: public/views/preferencesAdvanced.html
 msgid "Export"
-msgstr "Export"
+msgstr "Exportieren"
 
 #: public/views/preferencesInformation.html
 msgid "Extended Public Keys"
@@ -546,7 +550,7 @@ msgstr "External Private Key:"
 
 #: public/views/export.html
 msgid "Failed to export"
-msgstr "Failed to export"
+msgstr "Fehler beim Exportieren"
 
 #: src/js/controllers/importLegacy.js
 msgid "Failed to import wallets"
@@ -628,7 +632,7 @@ msgstr "Griechisch"
 
 #: public/views/preferences.html
 msgid "Hardware wallet"
-msgstr "Hardware wallet"
+msgstr "Hardware Wallet"
 
 #: public/views/import.html
 msgid "Have a Backup from Copay v0.9?"
@@ -636,7 +640,7 @@ msgstr "Ist eine Copay v0.9 Sicherung vorhanden"
 
 #: public/views/backup.html
 msgid "Hide Wallet Seed"
-msgstr "Hide Wallet Seed"
+msgstr "Wallet Seed ausblenden"
 
 #: public/views/create.html
 #: public/views/import.html
@@ -766,7 +770,7 @@ msgstr "Ledger"
 
 #: src/js/controllers/disclaimer.js
 msgid "Loading..."
-msgstr "Loading..."
+msgstr "Wird geladen..."
 
 #: src/js/services/bwsError.js
 msgid "Locktime in effect. Please wait to create a new spend proposal"
@@ -857,7 +861,7 @@ msgstr "Notiz"
 
 #: public/views/disclaimer.html
 msgid "Official English Disclaimer"
-msgstr "Official English Disclaimer"
+msgstr "Offizielle, englische Haftungsablehnung"
 
 #: public/views/backup.html
 msgid "Once you have copy your wallet seed, it is recommended to delete it from this device."
@@ -874,7 +878,7 @@ msgstr "Teilnehmer"
 
 #: public/views/import.html
 msgid "Passphrase"
-msgstr "Passphrase"
+msgstr "Passwort"
 
 #: public/views/import.html
 #: public/views/importLegacy.html
@@ -930,6 +934,10 @@ msgid "Payment Proposals"
 msgstr "Zahlungsvorschläge"
 
 #: src/js/controllers/walletHome.js
+msgid "Payment Protocol Invalid"
+msgstr "Payment Protocol Invalid"
+
+#: src/js/controllers/walletHome.js
 msgid "Payment Protocol not supported on Chrome App"
 msgstr "Zahlungsprotokoll wird nicht von der Chrome App unterstützt"
 
@@ -944,11 +952,11 @@ msgstr "Zahlung gesendet"
 
 #: public/views/modals/txp-details.html
 msgid "Payment accepted, but not yet broadcasted"
-msgstr "Payment accepted, but not yet broadcasted"
+msgstr "Zahlung akzeptiert, aber noch nicht übermittelt"
 
 #: public/views/modals/txp-details.html
 msgid "Payment accepted. It will be broadcasted by Glidera. In case there is a problem, it can be deleted 6 hours after it was created."
-msgstr "Payment accepted. It will be broadcasted by Glidera. In case there is a problem, it can be deleted 6 hours after it was created."
+msgstr "Zahlung akzeptiert. Sie wird durch Glidera übermittelt. Falls ein Problem auftritt, kann sie nach einer Wartezeit von 6 Stunden gelöscht werden."
 
 #: public/views/modals/txp-details.html
 msgid "Payment details"
@@ -956,7 +964,7 @@ msgstr "Zahlungsdetails"
 
 #: public/views/modals/txp-details.html
 msgid "Payment rejected"
-msgstr "Payment rejected"
+msgstr "Zahlung abgelehnt"
 
 #: public/views/modals/paypro.html
 msgid "Payment request"
@@ -964,7 +972,7 @@ msgstr "Zahlungsanforderung"
 
 #: public/views/modals/txp-details.html
 msgid "Payment sent"
-msgstr "Payment sent"
+msgstr "Zahlung gesendet"
 
 #: public/views/walletHome.html
 msgid "Payment to"
@@ -990,12 +998,12 @@ msgstr "Bitte die benötigten Felder ausfüllen"
 
 #: src/js/controllers/import.js
 msgid "Please enter the seed words"
-msgstr "Please enter the seed words"
+msgstr "Bitte geben Sie die Seed Wörter ein"
 
 #: src/js/controllers/create.js
 #: src/js/controllers/join.js
 msgid "Please enter the wallet seed"
-msgstr "Please enter the wallet seed"
+msgstr "Bitte geben Sie den Wallet Seed ein"
 
 #: src/js/services/bwsError.js
 msgid "Please upgrade Copay to perform this action"
@@ -1146,7 +1154,7 @@ msgstr "Seed Passphrase"
 
 #: public/views/import.html
 msgid "Seed passphrase"
-msgstr "Seed passphrase"
+msgstr "Seed Passphrase"
 
 #: public/views/import.html
 msgid "Select a backup file"
@@ -1155,6 +1163,10 @@ msgstr "Eine Sicherungsdatei auswählen"
 #: public/views/paymentUri.html
 msgid "Select a wallet"
 msgstr "Wallet wählen"
+
+#: public/views/modals/paypro.html
+msgid "Self-signed Certificate"
+msgstr "Self-signed Certificate"
 
 #: public/views/walletHome.html
 #: public/views/includes/transaction.html
@@ -1168,7 +1180,7 @@ msgstr "Alle senden"
 
 #: public/views/preferencesInformation.html
 msgid "Send all by email"
-msgstr "Send all by email"
+msgstr "Alle per E-Mail versenden"
 
 #: public/views/export.html
 #: public/views/preferencesLogs.html
@@ -1226,7 +1238,7 @@ msgstr "Wallet teilen"
 
 #: public/views/backup.html
 msgid "Show Wallet Seed"
-msgstr "Show Wallet Seed"
+msgstr "Show Wallet anzeigen"
 
 #: public/views/create.html
 #: public/views/import.html
@@ -1250,7 +1262,7 @@ msgstr "Español"
 #: public/views/create.html
 #: public/views/join.html
 msgid "Specify your wallet seed"
-msgstr "Specify your wallet seed"
+msgstr "Geben Sie Ihren Wallet Seed ein"
 
 #: src/js/services/bwsError.js
 msgid "Spend proposal is not accepted"
@@ -1262,7 +1274,7 @@ msgstr "Zahlungsvorschlag wurde nicht gefunden"
 
 #: public/views/preferences.html
 msgid "Still not done"
-msgstr "Still not done"
+msgstr "Noch nicht erledigt"
 
 #: src/js/controllers/copayers.js
 #: src/js/controllers/export.js
@@ -1361,7 +1373,7 @@ msgstr "Zeit"
 #: public/views/modals/tx-details.html
 #: public/views/modals/txp-details.html
 msgid "To"
-msgstr "Zu"
+msgstr "An"
 
 #: public/views/backup.html
 msgid "To restore this {{index.m}}-{{index.n}} <b>shared</b> wallet you will need"
@@ -1405,7 +1417,7 @@ msgstr "Übersetzer"
 
 #: public/views/import.html
 msgid "Type the Seed Word (usually 12 words)"
-msgstr "Type the Seed Word (usually 12 words)"
+msgstr "Geben Sie die Seed-Wörter ein (in der Regel 12)"
 
 #: src/js/controllers/walletHome.js
 msgid "Unable to send transaction proposal"
@@ -1419,10 +1431,6 @@ msgstr "Unbestätigt"
 #: public/views/preferences.html
 msgid "Unit"
 msgstr "Währungseinheit"
-
-#: public/views/modals/paypro.html
-msgid "Unknown Root or Selfsigned Certificate"
-msgstr "Unknown Root or Selfsigned Certificate"
 
 #: public/views/walletHome.html
 msgid "Unsent transactions"
@@ -1474,6 +1482,10 @@ msgstr "WARNING: The private key of this wallet is not available. The export all
 #: public/views/backup.html
 msgid "WARNING: This seed was created with a passphrase. To recover this wallet both the mnemonic and passphrase are needed."
 msgstr "WARNING: This seed was created with a passphrase. To recover this wallet both the mnemonic and passphrase are needed."
+
+#: public/views/modals/paypro.html
+msgid "WARNING: UNTRUSTED CERTIFICATE"
+msgstr "WARNING: UNTRUSTED CERTIFICATE"
 
 #: public/views/walletHome.html
 msgid "WARNING: Wallet not registered"
@@ -1580,7 +1592,7 @@ msgstr "Wallet not registed at the Wallet Service. Recreate it from \"Create Wal
 
 #: src/js/services/bwsError.js
 msgid "Wallet seed is invalid"
-msgstr "Wallet seed is invalid"
+msgstr "Ungültiger Wallet Seed"
 
 #: public/views/backup.html
 msgid "Wallet seed not available. You can still export it from Advanced &gt; Export."
@@ -1648,7 +1660,7 @@ msgstr "You need the wallet seed to restore this personal wallet."
 
 #: public/views/backup.html
 msgid "Your Wallet Seed"
-msgstr "Your Wallet Seed"
+msgstr "Ihr Wallet Seed"
 
 #: public/views/import.html
 msgid "Your backup password"

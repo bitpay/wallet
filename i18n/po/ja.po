@@ -12,7 +12,11 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Japanese\n"
 "Language: ja\n"
-"PO-Revision-Date: 2015-09-17 15:17-0400\n"
+"PO-Revision-Date: 2015-09-18 13:52-0400\n"
+
+#: public/views/modals/paypro.html
+msgid "(Trusted)"
+msgstr "(信頼済み)"
 
 #: public/views/walletHome.html
 msgid "(possible double spend)"
@@ -931,6 +935,10 @@ msgid "Payment Proposals"
 msgstr "送金の提案"
 
 #: src/js/controllers/walletHome.js
+msgid "Payment Protocol Invalid"
+msgstr "ペイメントプロトコルが不正です。"
+
+#: src/js/controllers/walletHome.js
 msgid "Payment Protocol not supported on Chrome App"
 msgstr "クロームのアプリではペイメントプロトコールがサポートされていません。"
 
@@ -1157,6 +1165,10 @@ msgstr "バックアップファイルを選択"
 #: public/views/paymentUri.html
 msgid "Select a wallet"
 msgstr "ウォレットを選択"
+
+#: public/views/modals/paypro.html
+msgid "Self-signed Certificate"
+msgstr "自己署名証明書"
 
 #: public/views/walletHome.html
 #: public/views/includes/transaction.html
@@ -1424,10 +1436,6 @@ msgstr "未承認"
 msgid "Unit"
 msgstr "単位"
 
-#: public/views/modals/paypro.html
-msgid "Unknown Root or Selfsigned Certificate"
-msgstr "不明なルートまたは自己署名証明書"
-
 #: public/views/walletHome.html
 msgid "Unsent transactions"
 msgstr "未送信取引"
@@ -1478,6 +1486,10 @@ msgstr "注意：このウォレットは秘密鍵がありません。残高の
 #: public/views/backup.html
 msgid "WARNING: This seed was created with a passphrase. To recover this wallet both the mnemonic and passphrase are needed."
 msgstr "注意：この復元フレーズにパスワードがかかっています。このウォレットを復元するためには、復元フレーズに加え、パスワードも必要です。"
+
+#: public/views/modals/paypro.html
+msgid "WARNING: UNTRUSTED CERTIFICATE"
+msgstr "警告: 信頼されていない証明書"
 
 #: public/views/walletHome.html
 msgid "WARNING: Wallet not registered"

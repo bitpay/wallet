@@ -1,5 +1,6 @@
-* Bitcoin ağ yüküne göre daha uygun ücret düzeyleri
-* Onaylanmamış girişler ile işlem oluşturmayı önlemek için tercih
-* Gelişmiş gönderme seçenekleri eklendi
-* İtalyanca, Rusça ve Yunanca dil seçenekleri eklendi
-* Ufak hata düzeltmeleri
+* Support for backup phrases (BIP39)
+* Support for BIP44
+* Support for non-multisig addresses for personal wallets (1-of-1)
+* Advanced wallet details
+* Ledger support for multisig wallets
+* Küçük hata düzeltmeleri

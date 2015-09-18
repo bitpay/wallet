@@ -18,6 +18,6 @@ Payment protocol (BIP70-BIP73)지원: 쉽게 확인 가능한 지불요청과 �
 150가지가 넘는 통화 지원과 BTC와 bits의 단위 지원
 지불, 송금의 이메일 알림
 바꿀 수 있는 지갑의 이름과 배경색
-4개국어 지원(영어, 일본어, 프랑스어, 스페인어)
+10 supported languages (EN, JP, FR, ES, IT, DE, PT, RU, EL, TR)
 
 Copay는 누구나 운영할 수 있는 서버에서 돌아가는 무료 오픈소스 소프트웨어입니다. 그러므로 어떤 한 회사의 지속적인 지원에 의지할 필요가 없습니다. 누구나 GitHub(https://github.com/bitpay/copay)에서 Copay의 소스코드를 검토하거나 참여할 수 있습니다 
