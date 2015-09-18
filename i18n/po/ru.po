@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Russian\n"
 "Language: ru\n"
-"PO-Revision-Date: 2015-08-14 22:46-0400\n"
+"PO-Revision-Date: 2015-09-17 12:36-0400\n"
 
 #: public/views/walletHome.html
 msgid "(possible double spend)"
@@ -22,13 +22,21 @@ msgstr "(возможна двойная трата)"
 msgid "* A payment proposal can be deleted if 1) you are the creator, and no other copayer has signed, or 2) 24 hours have passed since the proposal was created."
 msgstr "* Предложение платежа может быть удалено если 1) вы создали предложение, и никто его еще не подписал, или 2) прошло более 24 часов с момента создания предложения."
 
-#: public/views/backup.html
-msgid "* You can safely install your backup on another device and use your wallet from multiple devices at the same time."
-msgstr "* Вы можете безопасно восстановить свою резервную копию на другом устройстве и использовать ваш кошелек с нескольких устройств одновременно."
+#: public/views/disclaimer.html
+msgid "<b>IF YOU LOSE ACCESS TO YOUR COPAY WALLET OR YOUR ENCRYPTED PRIVATE KEYS AND YOU HAVE NOT SEPARATELY STORED A BACKUP OF YOUR WALLET AND CORRESPONDING PASSWORD, YOU ACKNOWLEDGE AND AGREE THAT ANY BITCOIN YOU HAVE ASSOCIATED WITH THAT COPAY WALLET WILL BECOME INACCESSIBLE.</b>"
+msgstr "<b>IF YOU LOSE ACCESS TO YOUR COPAY WALLET OR YOUR ENCRYPTED PRIVATE KEYS AND YOU HAVE NOT SEPARATELY STORED A BACKUP OF YOUR WALLET AND CORRESPONDING PASSWORD, YOU ACKNOWLEDGE AND AGREE THAT ANY BITCOIN YOU HAVE ASSOCIATED WITH THAT COPAY WALLET WILL BECOME INACCESSIBLE.</b>"
 
 #: public/views/backup.html
-msgid "A backup without its private key will allow the user to see the wallet balance, transactions, and create spend proposals. However, it will not be able to approve (sign) proposals."
-msgstr "Резервная копия без закрытого ключа позволит пользователю видеть баланс кошелька, транзакции, и создавать предложения платежей. Однако будет невозможно одобрить (подписать) предложения."
+msgid "<b>OR</b> 1 wallet export file and the remaining quorum of wallet seeds (e.g. in a 3-5 wallet: 1 wallet export file + 2 wallet seeds of any of the other copayers)."
+msgstr "<b>OR</b> 1 wallet export file and the remaining quorum of wallet seeds (e.g. in a 3-5 wallet: 1 wallet export file + 2 wallet seeds of any of the other copayers)."
+
+#: public/views/backup.html
+msgid "<b>OR</b> the wallet seed of <b>all</b> copayers in the wallet"
+msgstr "<b>OR</b> the wallet seed of <b>all</b> copayers in the wallet"
+
+#: public/views/backup.html
+msgid "<b>OR</b> the wallet seeds of <b>all</b> copayers in the wallet"
+msgstr "<b>OR</b> the wallet seeds of <b>all</b> copayers in the wallet"
 
 #: public/views/splash.html
 msgid "A multisignature bitcoin wallet"
@@ -39,11 +47,17 @@ msgid "About Copay"
 msgstr "О Copay"
 
 #: public/views/modals/txp-details.html
+#: src/js/services/confirmDialog.js
 #: src/js/controllers/copayers.js
 #: src/js/controllers/preferencesDelete.js
 #: src/js/controllers/walletHome.js
 msgid "Accept"
 msgstr "Принять"
+
+#: public/views/create.html
+#: public/views/join.html
+msgid "Add an optional passphrase to secure the seed"
+msgstr "Add an optional passphrase to secure the seed"
 
 #: public/views/includes/sidebar.html
 msgid "Add wallet"
@@ -54,6 +68,10 @@ msgstr "Добавить кошелёк"
 #: public/views/modals/paypro.html
 msgid "Address"
 msgstr "Адрес"
+
+#: public/views/preferencesInformation.html
+msgid "Address Type"
+msgstr "Address Type"
 
 #: public/views/preferences.html
 msgid "Advanced"
@@ -75,6 +93,10 @@ msgstr "Псевдоним для <i>{{index.walletName}}</i>"
 msgid "All contributions to Copay's translation are welcome. Sign up at crowdin.com and join the Copay project at"
 msgstr "Любой вклад в перевод Copay приветствуются. Регистрируйтесь на crowdin.com и присоединяйтесь к проекту Copay на"
 
+#: public/views/disclaimer.html
+msgid "All transaction requests are irreversible."
+msgstr "All transaction requests are irreversible."
+
 #: public/views/splash.html
 msgid "Already have a wallet?"
 msgstr "Уже есть кошелек?"
@@ -87,12 +109,13 @@ msgstr "Альтернативная валюта"
 #: public/views/walletHome.html
 #: public/views/includes/output.html
 #: public/views/modals/customized-amount.html
+#: public/views/modals/txp-details.html
 msgid "Amount"
 msgstr "Сумма"
 
 #: src/js/services/bwsError.js
-msgid "Amount  below dust threshold"
-msgstr "Сумма ниже возможного порога"
+msgid "Amount below dust threshold"
+msgstr "Amount below dust threshold"
 
 #: public/views/walletHome.html
 #: public/views/modals/customized-amount.html
@@ -103,12 +126,16 @@ msgstr "Сумма в"
 msgid "Applying changes"
 msgstr "Применение изменений"
 
+#: src/js/controllers/backup.js
+msgid "Are you sure you want to delete the backup words?"
+msgstr "Are you sure you want to delete the backup words?"
+
 #: src/js/controllers/copayers.js
 #: src/js/controllers/preferencesDelete.js
 msgid "Are you sure you want to delete this wallet?"
 msgstr "Вы уверены, что хотите удалить этот кошелек?"
 
-#: public/views/walletHome.html
+#: public/views/includes/available-balance.html
 msgid "Available Balance"
 msgstr "Доступный баланс"
 
@@ -116,11 +143,6 @@ msgstr "Доступный баланс"
 #: public/views/modals/advancedSend.html
 msgid "Average confirmation time: {{fee.nbBlocks * 10}} minutes"
 msgstr "Среднее время подтверждения: {{fee.nbBlocks * 10}} минут"
-
-#: public/views/create.html
-#: public/views/join.html
-msgid "BIP32 master extended private key"
-msgstr "BIP32-мастер расширенного закрытого ключа"
 
 #: public/views/includes/topbar.html
 #: public/views/modals/tx-details.html
@@ -132,21 +154,25 @@ msgstr "Назад"
 msgid "Backup"
 msgstr "Резервное копирование"
 
-#: src/js/controllers/backup.js
-msgid "Backup created"
-msgstr "Резервная копия создана"
-
 #: public/views/walletHome.html
 msgid "Backup now"
 msgstr "Создать резервную копию"
 
-#: public/views/backup.html
+#: public/views/export.html
 msgid "Backup options"
 msgstr "Параметры резервной копии"
+
+#: src/js/controllers/backup.js
+msgid "Backup words deleted"
+msgstr "Backup words deleted"
 
 #: src/js/services/profileService.js
 msgid "Bad wallet invitation"
 msgstr "Недействительное приглашение присоединиться к кошельку"
+
+#: public/views/preferencesInformation.html
+msgid "Balance By Address"
+msgstr "Balance By Address"
 
 #: public/views/walletHome.html
 msgid "Before receiving funds, it is highly recommended you backup your wallet keys."
@@ -184,10 +210,6 @@ msgstr "Создание транзакции"
 msgid "Browser unsupported"
 msgstr "Браузер не поддерживается"
 
-#: public/views/modals/txp-details.html
-msgid "But not broadcasted. Try to send manually"
-msgstr "Не отправлено. Попробуйте отправить вручную"
-
 #: public/views/includes/password.html
 msgid "CANCEL"
 msgstr "ОТМЕНА"
@@ -195,6 +217,7 @@ msgstr "ОТМЕНА"
 #: public/views/copayers.html
 #: public/views/walletHome.html
 #: public/views/modals/confirmation.html
+#: src/js/services/confirmDialog.js
 #: src/js/controllers/copayers.js
 #: src/js/controllers/preferencesDelete.js
 #: src/js/controllers/walletHome.js
@@ -239,6 +262,7 @@ msgstr "Цвет"
 msgid "Commit hash"
 msgstr "Хэш версии"
 
+#: src/js/services/confirmDialog.js
 #: src/js/controllers/copayers.js
 #: src/js/controllers/preferencesDelete.js
 #: src/js/controllers/walletHome.js
@@ -249,13 +273,15 @@ msgstr "Подтвердить"
 msgid "Confirmations"
 msgstr "Подтверждения"
 
+#: public/views/create.html
+#: public/views/import.html
+#: public/views/join.html
+msgid "Connecting to Ledger Wallet..."
+msgstr "Connecting to Ledger Wallet..."
+
 #: src/js/services/bwsError.js
 msgid "Copayer already in this wallet"
 msgstr "Совладелец кошелька уже присоединился"
-
-#: src/js/services/bwsError.js
-msgid "Copayer already registered"
-msgstr "Совладелец кошелька уже зарегистрирован"
 
 #: src/js/services/bwsError.js
 msgid "Copayer already voted on this spend proposal"
@@ -269,21 +295,21 @@ msgstr "Несоответствие данных совладельца кош�
 msgid "Copayers"
 msgstr "Совладельцы кошелька"
 
-#: src/js/controllers/backup.js
 #: src/js/controllers/copayers.js
+#: src/js/controllers/export.js
 #: src/js/controllers/walletHome.js
 msgid "Copied to clipboard"
 msgstr "Скопировано в буфер обмена"
 
-#: public/views/backup.html
+#: public/views/export.html
 msgid "Copy backup to a safe place"
 msgstr "Сохраните резервную копию в надежном месте"
 
-#: public/views/backup.html
+#: public/views/export.html
 msgid "Copy this text as it is to a safe place (notepad or email)"
 msgstr "Скопируйте этот текст как есть (в блокнот или отправьте по электронной почте)"
 
-#: public/views/backup.html
+#: public/views/export.html
 msgid "Copy to clipboard"
 msgstr "Скопировать в буфер обмена"
 
@@ -311,6 +337,14 @@ msgstr "Не удалось создать предложение платежа
 msgid "Could not create using the specified extended private key"
 msgstr "Не удалось создать используя указанный расширенный закрытый ключ"
 
+#: src/js/services/profileService.js
+msgid "Could not create using the specified extended public key"
+msgstr "Could not create using the specified extended public key"
+
+#: src/js/services/profileService.js
+msgid "Could not create: Invalid wallet seed"
+msgstr "Could not create: Invalid wallet seed"
+
 #: src/js/controllers/import.js
 msgid "Could not decrypt file, check your password"
 msgstr "Не удалось расшифровать файл, проверьте ваш пароль"
@@ -328,12 +362,12 @@ msgid "Could not fetch transaction history"
 msgstr "Не удалось получить историю транзакций"
 
 #: src/js/services/profileService.js
-msgid "Could not import. Check input file and password"
-msgstr "Не удалось импортировать. Проверьте входной файл и пароль"
+msgid "Could not import"
+msgstr "Could not import"
 
 #: src/js/services/profileService.js
-msgid "Could not join using the specified extended private key"
-msgstr "Не удалось присоединиться используя указанный расширенный закрытый ключ"
+msgid "Could not import. Check input file and password"
+msgstr "Не удалось импортировать. Проверьте входной файл и пароль"
 
 #: src/js/services/profileService.js
 msgid "Could not join wallet"
@@ -393,6 +427,10 @@ msgstr "Создание транзакции"
 msgid "Current fee rate for this policy: {{fee.feePerKBUnit}}/kiB"
 msgstr "Текущая ставка комиссии для этой политики: {{fee.feePerKBUnit}}/kiB"
 
+#: public/views/backup.html
+msgid "DELETE WORDS"
+msgstr "DELETE WORDS"
+
 #: public/views/modals/tx-details.html
 msgid "Date"
 msgstr "Дата"
@@ -417,6 +455,10 @@ msgstr "Удалить кошелёк"
 msgid "Deleting payment"
 msgstr "Удаление платежа"
 
+#: public/views/preferencesInformation.html
+msgid "Derivation Strategy"
+msgstr "Derivation Strategy"
+
 #: public/views/modals/customized-amount.html
 #: public/views/modals/paypro.html
 #: public/views/modals/tx-details.html
@@ -428,9 +470,9 @@ msgstr "Подробности"
 msgid "Disabled"
 msgstr "Выключено"
 
-#: public/views/backup.html
-msgid "Do not include private key in backup"
-msgstr "Не включать в резервную копию закрытый ключ"
+#: public/views/export.html
+msgid "Do not include private key"
+msgstr "Do not include private key"
 
 #: public/views/translators.html
 msgid "Don't see your language on Crowdin? Contact the Owner on Crowdin! We'd love to support your language."
@@ -440,25 +482,34 @@ msgstr "Не видите свой язык на Crowdin? Свяжитесь с 
 msgid "Download CSV file"
 msgstr "Скачать CSV-файл"
 
-#: public/views/backup.html
+#: public/views/export.html
 msgid "Download backup"
 msgstr "Скачать резервную копию"
 
 #: src/js/services/feeService.js
 msgid "Economy"
-msgstr "Экономичный"
+msgstr "Экономичная"
+
+#: public/views/importLegacy.html
+msgid "Email"
+msgstr "Email"
 
 #: public/views/preferences.html
 msgid "Email Notifications"
 msgstr "Email-уведомления"
 
-#: public/views/preferences.html
-msgid "Encrypt Private Key"
-msgstr "Зашифровать закрытый ключ"
+#: public/views/preferencesEmail.html
+msgid "Email for wallet notifications"
+msgstr "Email for wallet notifications"
 
-#: src/js/controllers/backup.js
-msgid "Encrypted backup file saved"
-msgstr "Зашифрованный файл резервной копии сохранен"
+#: src/js/controllers/export.js
+msgid "Encrypted export file saved"
+msgstr "Encrypted export file saved"
+
+#: public/views/create.html
+#: public/views/join.html
+msgid "Enter the seed words (BIP39)"
+msgstr "Enter the seed words (BIP39)"
 
 #: public/views/includes/password.html
 msgid "Enter your password"
@@ -481,9 +532,21 @@ msgstr "Ошибка импорта кошелька:"
 msgid "Expires"
 msgstr "Срок действия"
 
-#: public/views/backup.html
-msgid "Failed to create backup"
-msgstr "Не удалось создать резервную копию"
+#: public/views/preferencesAdvanced.html
+msgid "Export"
+msgstr "Export"
+
+#: public/views/preferencesInformation.html
+msgid "Extended Public Keys"
+msgstr "Extended Public Keys"
+
+#: public/views/includes/walletInfo.html
+msgid "External Private Key:"
+msgstr "External Private Key:"
+
+#: public/views/export.html
+msgid "Failed to export"
+msgstr "Failed to export"
 
 #: src/js/controllers/importLegacy.js
 msgid "Failed to import wallets"
@@ -510,6 +573,10 @@ msgstr "Политика комиссий для этой транзакции"
 #: src/js/controllers/walletHome.js
 msgid "Fetching Payment Information"
 msgstr "Извлечение информации платежа"
+
+#: public/views/import.html
+msgid "File/Text Backup"
+msgstr "File/Text Backup"
 
 #: public/views/translators.html
 msgid "French"
@@ -559,12 +626,20 @@ msgstr "Вернуться"
 msgid "Greek"
 msgstr "греческий"
 
+#: public/views/preferences.html
+msgid "Hardware wallet"
+msgstr "Hardware wallet"
+
 #: public/views/import.html
 msgid "Have a Backup from Copay v0.9?"
 msgstr "Есть резервная копия из Copay v0.9?"
 
 #: public/views/backup.html
+msgid "Hide Wallet Seed"
+msgstr "Hide Wallet Seed"
+
 #: public/views/create.html
+#: public/views/import.html
 #: public/views/join.html
 #: public/views/walletHome.html
 msgid "Hide advanced options"
@@ -582,11 +657,7 @@ msgstr "Главная"
 msgid "I affirm that I have read, understood, and agree with these terms."
 msgstr "Я подтверждаю, что я прочитал(а), понял(а) и согласен(а) с настоящими условиями."
 
-#: public/views/create.html
-#: public/views/join.html
-msgid "If not given, a secure key will be generated"
-msgstr "Если не указан, безопасный ключ будет создан"
-
+#: public/views/import.html
 #: public/views/importLegacy.html
 msgid "Import"
 msgstr "Импорт"
@@ -615,6 +686,10 @@ msgstr "Импорт кошелька..."
 #: public/views/importLegacy.html
 msgid "Importing..."
 msgstr "Импорт..."
+
+#: public/views/disclaimer.html
+msgid "In no event shall the authors of the software, employees and affiliates of Bitpay, copyright holders, or BitPay, Inc. be held liable for any claim, damages or other liability, whether in an action of contract, tort, or otherwise, arising from, out of or in connection with the software."
+msgstr "In no event shall the authors of the software, employees and affiliates of Bitpay, copyright holders, or BitPay, Inc. be held liable for any claim, damages or other liability, whether in an action of contract, tort, or otherwise, arising from, out of or in connection with the software."
 
 #: src/js/services/bwsError.js
 msgid "Incorrect address network"
@@ -658,8 +733,8 @@ msgid "Join"
 msgstr "Присоединиться"
 
 #: src/js/controllers/copayers.js
-msgid "Join my Copay wallet. Here is the invitation code: {{secret}}  You can download Copay for your phone or desktop at https://copay.io"
-msgstr "Присоединяйтесь к моему кошельку Copay. Вот код приглашения: {{secret}} Вы можете скачать Copay для своего телефона или настольного компьютера на https://copay.io"
+msgid "Join my Copay wallet. Here is the invitation code: {{secret}} You can download Copay for your phone or desktop at https://copay.io"
+msgstr "Join my Copay wallet. Here is the invitation code: {{secret}} You can download Copay for your phone or desktop at https://copay.io"
 
 #: public/views/add.html
 msgid "Join shared wallet"
@@ -673,9 +748,25 @@ msgstr "Присоединение к кошельку..."
 msgid "Language"
 msgstr "Язык"
 
+#: public/views/preferencesInformation.html
+msgid "Last Wallet Addresses"
+msgstr "Last Wallet Addresses"
+
+#: public/views/backup.html
+msgid "Learn more about Copay backups"
+msgstr "Learn more about Copay backups"
+
 #: public/views/importLegacy.html
 msgid "Learn more about Wallet Migration"
 msgstr "Узнайте больше о переносе кошелька"
+
+#: public/views/import.html
+msgid "Ledger"
+msgstr "Ledger"
+
+#: src/js/controllers/disclaimer.js
+msgid "Loading..."
+msgstr "Loading..."
 
 #: src/js/services/bwsError.js
 msgid "Locktime in effect. Please wait to create a new spend proposal"
@@ -688,11 +779,6 @@ msgstr "Действует блокировка. Пожалуйста, подо�
 #: public/views/paymentUri.html
 msgid "Make a payment to"
 msgstr "Сделать платёж"
-
-#: public/views/create.html
-#: public/views/join.html
-msgid "Master extended private key"
-msgstr "Мастер расширенного закрытого ключа"
 
 #: public/views/includes/copayers.html
 #: public/views/modals/copayers.html
@@ -741,7 +827,7 @@ msgstr "Ошибка сетевого подключения"
 msgid "New Payment Proposal"
 msgstr "Новое предложение платежа"
 
-#: public/views/walletHome.html
+#: public/views/includes/walletInfo.html
 msgid "No Private key"
 msgstr "Нет закрытого ключа"
 
@@ -751,7 +837,7 @@ msgstr "Транзакций пока не было"
 
 #: src/js/services/feeService.js
 msgid "Normal"
-msgstr "Обычный"
+msgstr "Обычная"
 
 #: src/js/services/bwsError.js
 msgid "Not authorized"
@@ -765,17 +851,21 @@ msgstr "Не действительно"
 #: public/views/walletHome.html
 #: public/views/includes/output.html
 #: public/views/modals/tx-details.html
+#: public/views/modals/txp-details.html
 msgid "Note"
 msgstr "Примечание"
 
-#: public/views/includes/alert.html
-#: public/views/includes/password.html
-msgid "OK"
-msgstr "Хорошо"
+#: public/views/disclaimer.html
+msgid "Official English Disclaimer"
+msgstr "Official English Disclaimer"
 
-#: public/views/modals/tx-status.html
-msgid "OKAY"
-msgstr "ХОРОШО"
+#: public/views/backup.html
+msgid "Once you have copy your wallet seed, it is recommended to delete it from this device."
+msgstr "Once you have copy your wallet seed, it is recommended to delete it from this device."
+
+#: public/views/preferencesInformation.html
+msgid "Only Main (not change) addresses are shown. The addresses on this list were not verified locally at this time."
+msgstr "Only Main (not change) addresses are shown. The addresses on this list were not verified locally at this time."
 
 #: public/views/modals/tx-details.html
 #: public/views/modals/txp-details.html
@@ -783,13 +873,13 @@ msgid "Participants"
 msgstr "Участники"
 
 #: public/views/import.html
+msgid "Passphrase"
+msgstr "Passphrase"
+
+#: public/views/import.html
 #: public/views/importLegacy.html
 msgid "Password"
 msgstr "Пароль"
-
-#: public/views/includes/password.html
-msgid "Password cannot be recovered. Be sure to write it down"
-msgstr "Пароль не может быть восстановлен. Обязательно запишите его"
 
 #: src/js/services/profileService.js
 msgid "Password needed"
@@ -853,24 +943,28 @@ msgid "Payment Sent"
 msgstr "Платёж отправлен"
 
 #: public/views/modals/txp-details.html
-msgid "Payment accepted..."
-msgstr "Платёж принят..."
+msgid "Payment accepted, but not yet broadcasted"
+msgstr "Payment accepted, but not yet broadcasted"
+
+#: public/views/modals/txp-details.html
+msgid "Payment accepted. It will be broadcasted by Glidera. In case there is a problem, it can be deleted 6 hours after it was created."
+msgstr "Payment accepted. It will be broadcasted by Glidera. In case there is a problem, it can be deleted 6 hours after it was created."
 
 #: public/views/modals/txp-details.html
 msgid "Payment details"
 msgstr "Детали платежа"
 
 #: public/views/modals/txp-details.html
-msgid "Payment finally rejected"
-msgstr "Платёж окончательно отклонён"
+msgid "Payment rejected"
+msgstr "Payment rejected"
 
 #: public/views/modals/paypro.html
 msgid "Payment request"
 msgstr "Запрос платежа"
 
 #: public/views/modals/txp-details.html
-msgid "Payment sent!"
-msgstr "Платёж отправлен!"
+msgid "Payment sent"
+msgstr "Payment sent"
 
 #: public/views/walletHome.html
 msgid "Payment to"
@@ -885,6 +979,7 @@ msgid "Permanently delete this wallet. THIS ACTION CANNOT BE REVERSED"
 msgstr "Окончательно удалить этот кошелёк. ЭТО ДЕЙСТВИЕ НЕ МОЖЕТ БЫТЬ ОТМЕНЕНО"
 
 #: public/views/create.html
+#: src/js/services/profileService.js
 msgid "Personal Wallet"
 msgstr "Личный кошелёк"
 
@@ -892,6 +987,15 @@ msgstr "Личный кошелёк"
 #: src/js/controllers/join.js
 msgid "Please enter the required fields"
 msgstr "Пожалуйста, заполните необходимые поля"
+
+#: src/js/controllers/import.js
+msgid "Please enter the seed words"
+msgstr "Please enter the seed words"
+
+#: src/js/controllers/create.js
+#: src/js/controllers/join.js
+msgid "Please enter the wallet seed"
+msgstr "Please enter the wallet seed"
 
 #: src/js/services/bwsError.js
 msgid "Please upgrade Copay to perform this action"
@@ -909,13 +1013,13 @@ msgstr "португальский"
 msgid "Preferences"
 msgstr "Предпочтения"
 
-#: src/js/controllers/backup.js
+#: src/js/controllers/export.js
 msgid "Preparing backup..."
 msgstr "Подготовка резервной копии..."
 
 #: src/js/services/feeService.js
 msgid "Priority"
-msgstr "Приоритетный"
+msgstr "Приоритетная"
 
 #: public/views/modals/customized-amount.html
 msgid "QR Code"
@@ -933,8 +1037,9 @@ msgstr "Получить"
 msgid "Received"
 msgstr "Получен"
 
-#: public/views/includes/output.html
 #: public/views/includes/transaction.html
+#: public/views/modals/tx-details.html
+#: public/views/modals/txp-details.html
 msgid "Recipients"
 msgstr "Получатели"
 
@@ -960,22 +1065,33 @@ msgstr "Отклонение платежа"
 
 #: public/views/preferencesAbout.html
 msgid "Release Information"
-msgstr "Расскрыть информацию"
+msgstr "Информация о выпуске"
 
-#: public/views/backup.html
+#: public/views/export.html
 #: public/views/includes/password.html
 msgid "Repeat password"
 msgstr "Повторите пароль"
+
+#: public/views/preferences.html
+msgid "Request Password for Spending Funds"
+msgstr "Request Password for Spending Funds"
 
 #: public/views/walletHome.html
 #: public/views/modals/customized-amount.html
 msgid "Request a specific amount"
 msgstr "Запросить определенную сумму"
 
-#: public/views/import.html
+#: src/js/controllers/walletHome.js
+msgid "Requesting Ledger Wallet to sign"
+msgstr "Requesting Ledger Wallet to sign"
+
 #: public/views/join.html
 msgid "Required"
 msgstr "Необходимо"
+
+#: public/views/create.html
+msgid "Required number of signatures"
+msgstr "Required number of signatures"
 
 #: public/views/splash.html
 msgid "Retrying..."
@@ -1023,6 +1139,15 @@ msgstr "Сканирование средств кошелька..."
 msgid "See it on the blockchain"
 msgstr "Посмотреть на blockchain"
 
+#: public/views/create.html
+#: public/views/join.html
+msgid "Seed Passphrase"
+msgstr "Seed Passphrase"
+
+#: public/views/import.html
+msgid "Seed passphrase"
+msgstr "Seed passphrase"
+
 #: public/views/import.html
 msgid "Select a backup file"
 msgstr "Выберите файл резервной копии"
@@ -1030,14 +1155,6 @@ msgstr "Выберите файл резервной копии"
 #: public/views/paymentUri.html
 msgid "Select a wallet"
 msgstr "Выберите кошелёк"
-
-#: public/views/create.html
-msgid "Select required number of signatures"
-msgstr "Выберите необходимое количество подписей"
-
-#: public/views/create.html
-msgid "Select total number of copayers"
-msgstr "Выберите общее количество совладельцев кошелька"
 
 #: public/views/walletHome.html
 #: public/views/includes/transaction.html
@@ -1049,10 +1166,14 @@ msgstr "Отправить"
 msgid "Send All"
 msgstr "Отправить все"
 
-#: public/views/backup.html
+#: public/views/preferencesInformation.html
+msgid "Send all by email"
+msgstr "Send all by email"
+
+#: public/views/export.html
 #: public/views/preferencesLogs.html
 msgid "Send by email"
-msgstr "Отправить по email"
+msgstr "Отправить на email"
 
 #: public/views/walletHome.html
 msgid "Sent"
@@ -1062,13 +1183,17 @@ msgstr "Отправлено"
 msgid "Server"
 msgstr "Сервер"
 
+#: src/js/services/bwsError.js
+msgid "Server response could not be verified"
+msgstr "Server response could not be verified"
+
 #: public/views/preferencesAbout.html
 msgid "Session log"
 msgstr "Журнал сеанса"
 
-#: public/views/backup.html
-msgid "Set up a Password for your backup"
-msgstr "Выберите пароль для вашей резервной копии"
+#: public/views/export.html
+msgid "Set up a Export Password"
+msgstr "Set up a Export Password"
 
 #: public/views/includes/password.html
 msgid "Set up a password"
@@ -1079,6 +1204,7 @@ msgid "Setting up email notifications could weaken your privacy, if the wallet s
 msgstr "Включение email-уведомлений может ослабить вашу конфиденциальность, если поставщик услуг кошелька будет скомпрометирован. Информация доступная злоумышленнику будет включать адреса вашего кошелька и его баланс, но больше ничего."
 
 #: public/views/walletHome.html
+#: public/views/modals/customized-amount.html
 msgid "Share address"
 msgstr "Отправить адрес"
 
@@ -1099,7 +1225,11 @@ msgid "Shared Wallet"
 msgstr "Общий бумажник"
 
 #: public/views/backup.html
+msgid "Show Wallet Seed"
+msgstr "Show Wallet Seed"
+
 #: public/views/create.html
+#: public/views/import.html
 #: public/views/join.html
 #: public/views/walletHome.html
 msgid "Show advanced options"
@@ -1113,13 +1243,14 @@ msgstr "Подписи отклонены сервером"
 msgid "Signing payment"
 msgstr "Подписание платежа"
 
-#: src/js/controllers/walletHome.js
-msgid "Signing transaction"
-msgstr "Подписание транзакции"
-
 #: public/views/translators.html
 msgid "Spanish"
 msgstr "испанский"
+
+#: public/views/create.html
+#: public/views/join.html
+msgid "Specify your wallet seed"
+msgstr "Specify your wallet seed"
 
 #: src/js/services/bwsError.js
 msgid "Spend proposal is not accepted"
@@ -1129,7 +1260,12 @@ msgstr "Предложение платежа не принято"
 msgid "Spend proposal not found"
 msgstr "Предложение платежа не найдено"
 
+#: public/views/preferences.html
+msgid "Still not done"
+msgstr "Still not done"
+
 #: src/js/controllers/copayers.js
+#: src/js/controllers/export.js
 #: src/js/controllers/import.js
 #: src/js/controllers/preferencesDelete.js
 msgid "Success"
@@ -1145,8 +1281,17 @@ msgid "Terms of Use"
 msgstr "Условия использования"
 
 #: public/views/create.html
+#: public/views/import.html
 msgid "Testnet"
 msgstr "Testnet"
+
+#: src/js/services/ledger.js
+msgid "The Ledger Chrome application is not installed"
+msgstr "The Ledger Chrome application is not installed"
+
+#: public/views/disclaimer.html
+msgid "The authors of the software, employees and affiliates of Bitpay, copyright holders, and BitPay, Inc. cannot retrieve your private keys or passwords if you lose or forget them and cannot guarantee transaction confirmation as they do not have control over the Bitcoin network."
+msgstr "The authors of the software, employees and affiliates of Bitpay, copyright holders, and BitPay, Inc. cannot retrieve your private keys or passwords if you lose or forget them and cannot guarantee transaction confirmation as they do not have control over the Bitcoin network."
 
 #: src/js/controllers/walletHome.js
 msgid "The payment was created but could not be completed. Please try again from home screen"
@@ -1164,13 +1309,22 @@ msgstr "Платёж был удалён его создателем"
 msgid "The payment was signed but could not be broadcasted. Please try again from home screen"
 msgstr "Платёж был подписан, но не может быть отправлен. Пожалуйста, попробуйте снова с главной страницы"
 
-#: public/views/backup.html
-msgid "The private key for this wallet is encrypted. Exporting a backup will keep the private key encrypted in the backup archive."
-msgstr "Закрытый ключ для этого кошелька зашифрован. Экспорт резервной копии будет содержать закрытый ключ в зашифрованном виде в архиве резервой копии."
+#: public/views/export.html
+msgid "The private key for this wallet is encrypted. Exporting keep the private key encrypted in the export archive."
+msgstr "The private key for this wallet is encrypted. Exporting keep the private key encrypted in the export archive."
+
+#: public/views/create.html
+#: public/views/join.html
+msgid "The seed could require a passphrase to be imported"
+msgstr "The seed could require a passphrase to be imported"
 
 #: public/views/disclaimer.html
-msgid "The software you are about to use functions as a free, open source, and multi-signature digital wallet. The software does not constitute an account where BitPay or other third parties serve as financial intermediaries or custodians of your bitcoin.  While the software has undergone beta testing and continues to be improved by feedback from the open-source user and developer community, we cannot guarantee that there will be no bugs in the software. You acknowledge that your use of this software is at your own discretion and in compliance with all applicable laws. You are responsible for safekeeping your passwords, private key pairs, PINs and any other codes you use to access the software. IF YOU LOSE ACCESS TO YOUR COPAY WALLET OR YOUR ENCRYPTED PRIVATE KEYS AND YOU HAVE NOT SEPARATELY STORED A BACKUP OF YOUR WALLET AND CORRESPONDING PASSWORD, YOU ACKNOWLEDGE AND AGREE THAT ANY BITCOIN YOU HAVE ASSOCIATED WITH THAT COPAY  WALLET WILL BECOME INACCESSIBLE. All transaction requests are irreversible.  The authors of the software, employees and affiliates of Bitpay, copyright holders, and BitPay, Inc. cannot retrieve your private keys or passwords if you lose or forget them and cannot guarantee transaction confirmation as they do not have control over the Bitcoin network. To the fullest extent permitted by law, this software is provided “as is” and no representations or warranties can be made of any kind, express or implied, including but not limited to the warranties of merchantability, fitness or a particular purpose and noninfringement. You assume any and all risks associated with the use of the software. In no event shall the authors of the software, employees and affiliates of Bitpay, copyright holders, or BitPay, Inc. be held liable for any claim, damages or other liability, whether in an action of contract, tort, or otherwise, arising from, out of or in connection with the software. We reserve the right to modify this disclaimer from time to time."
-msgstr "Программное обеспечение, которое вы собираетесь использовать, функционирует как цифровой кошелёк - бесплатный, с открытым исходным кодом и мультиподписью. Программное обеспечение не является счетом, где BitPay или других третьих сторон выступают в качестве финансовых посредников или хранителей ваших биткойнов. Хотя программное обеспечение прошло бета-тестирования и продолжает улучшаться путем обратной связи с пользователями открытого исходного кода и сообществом разработчиков, мы не можем гарантировать, что не будет никаких ошибок в программном обеспечении. Вы признаете, что используете это программное обеспечение по вашему собственному усмотрению и в соответствии со всеми применимыми законами. Вы ответственны за хранение ваших паролей, пары закрытых ключей, ПИН-кодов и любых других кодов, которые вы используете для доступа к программному обеспечению. ЕСЛИ ВЫ ПОТЕРЯЕТЕ ДОСТУП К ВАШЕМУ КОШЕЛЬКУ COPAY ИЛИ ВАШИМ ЗАШИФРОВАННЫМ ЗАКРЫТЫМ КЛЮЧАМ, И У ВАС НЕ ХРАНИЛАСЬ ОТДЕЛЬНО РЕЗЕРВНАЯ КОПИЯ ВАШЕГО БУМАЖНИКА И СООТВЕТСТВУЮЩИЙ ПАРОЛЬ, ВЫ ПРИЗНАЕТЕ И СОГЛАШАЕТЕСЬ, ЧТО ЛЮБЫЕ БИТКОЙНЫ, КОТОРЫЕ СВЯЗАННЫ С ЭТИМ КОШЕЛЬКОМ COPAY СТАНУТ НЕДОСТУПНЫМИ. Все транзакции являются необратимыми.  Авторы программного обеспечения, работников и связанные лица Bitpay, владельцы авторских прав и BitPay, Inc. не могут восстановить ваши закрытые ключи или пароли, если вы потеряете или забудете их и не могут гарантировать подтверждение транзакций, поскольку они не имеют контроля над сетью Bitcoin. В максимальной степени, разрешенной законом это программное обеспечение предоставляется «как есть», и никаких заверений или гарантий не может быть дано - любого рода, явных или подразумеваемых, включая, но не ограничиваясь гарантии товарности, пригодности или конкретной цели и ненарушения. Вы принимаете на себя любые и все виды рисков, связанные с использованием программного обеспечения. Ни при каком случае авторы программного обеспечения, работников и связанные лица Bitpay, владельцы авторских прав, или BitPay, Inc. не несут ответственности за любые претензии, убытки или иной ответственности, будь то в действие контракта, правонарушения, или иным образом, проистекающей из, вне или в связи с программным обеспечением. Мы оставляем за собой право время от времени изменять этот отказ."
+msgid "The software does not constitute an account where BitPay or other third parties serve as financial intermediaries or custodians of your bitcoin."
+msgstr "The software does not constitute an account where BitPay or other third parties serve as financial intermediaries or custodians of your bitcoin."
+
+#: public/views/disclaimer.html
+msgid "The software you are about to use functions as a free, open source, and multi-signature digital wallet."
+msgstr "The software you are about to use functions as a free, open source, and multi-signature digital wallet."
 
 #: src/js/services/bwsError.js
 msgid "The spend proposal is not pending"
@@ -1209,13 +1363,29 @@ msgstr "Время"
 msgid "To"
 msgstr "Кому"
 
-#: public/views/includes/output.html
+#: public/views/backup.html
+msgid "To restore this {{index.m}}-{{index.n}} <b>shared</b> wallet you will need"
+msgstr "To restore this {{index.m}}-{{index.n}} <b>shared</b> wallet you will need"
+
+#: public/views/backup.html
+msgid "To restore this {{index.m}}-{{index.n}} shared wallet you will need"
+msgstr "To restore this {{index.m}}-{{index.n}} shared wallet you will need"
+
+#: public/views/disclaimer.html
+msgid "To the fullest extent permitted by law, this software is provided “as is” and no representations or warranties can be made of any kind, express or implied, including but not limited to the warranties of merchantability, fitness or a particular purpose and noninfringement."
+msgstr "To the fullest extent permitted by law, this software is provided “as is” and no representations or warranties can be made of any kind, express or implied, including but not limited to the warranties of merchantability, fitness or a particular purpose and noninfringement."
+
+#: public/views/modals/txp-details.html
 msgid "Total"
 msgstr "Итого"
 
 #: public/views/walletHome.html
 msgid "Total Locked Balance"
 msgstr "Всего заблокировано средств"
+
+#: public/views/create.html
+msgid "Total number of copayers"
+msgstr "Total number of copayers"
 
 #: public/views/modals/tx-details.html
 msgid "Transaction"
@@ -1233,6 +1403,10 @@ msgstr "Благодарность за перевод"
 msgid "Translators"
 msgstr "Переводчики"
 
+#: public/views/import.html
+msgid "Type the Seed Word (usually 12 words)"
+msgstr "Type the Seed Word (usually 12 words)"
+
 #: src/js/controllers/walletHome.js
 msgid "Unable to send transaction proposal"
 msgstr "Не удается отправить предложение транзакции"
@@ -1246,34 +1420,60 @@ msgstr "Неподтверждено"
 msgid "Unit"
 msgstr "Единица измерения"
 
+#: public/views/modals/paypro.html
+msgid "Unknown Root or Selfsigned Certificate"
+msgstr "Unknown Root or Selfsigned Certificate"
+
 #: public/views/walletHome.html
 msgid "Unsent transactions"
 msgstr "Неотправленные транзакции"
 
-#: public/views/modals/paypro.html
-msgid "Untrusted"
-msgstr "Ненадежно"
-
 #: public/views/walletHome.html
 msgid "Updating Wallet..."
 msgstr "Обновление кошелька..."
+
+#: public/views/create.html
+#: public/views/join.html
+msgid "Use Ledger hardware wallet"
+msgstr "Use Ledger hardware wallet"
 
 #: public/views/preferences.html
 #: public/views/walletHome.html
 msgid "Use Unconfirmed Funds"
 msgstr "Использовать неподтверждённые средства"
 
+#: public/views/importLegacy.html
+msgid "Username"
+msgstr "Username"
+
 #: public/views/preferencesAbout.html
 msgid "Version"
 msgstr "Версия"
 
-#: public/views/backup.html
+#: public/views/export.html
 msgid "View backup"
 msgstr "Просмотр резервной копии"
 
 #: public/views/walletHome.html
 msgid "WARNING: Backup needed"
 msgstr "ПРЕДУПРЕЖДЕНИЕ: Необходимо резервное копирование"
+
+#: public/views/export.html
+msgid "WARNING: Not including the private key allows to check the wallet balance, transaction history, and create spend proposals from the export. However, does not allow to approve (sign) proposals, so <b>funds will not be accessible from the export</b>."
+msgstr "WARNING: Not including the private key allows to check the wallet balance, transaction history, and create spend proposals from the export. However, does not allow to approve (sign) proposals, so <b>funds will not be accessible from the export</b>."
+
+#: public/views/create.html
+#: public/views/join.html
+msgid "WARNING: Passphrase cannot be recovered. <b>Be sure to write it down</b>. The wallet can not be restored without the passphrase."
+msgstr "WARNING: Passphrase cannot be recovered. <b>Be sure to write it down</b>. The wallet can not be restored without the passphrase."
+
+#: public/views/export.html
+msgid "WARNING: The private key of this wallet is not available. The export allows to check the wallet balance, transaction history, and create spend proposals from the export. However, does not allow to approve (sign) proposals, so <b>funds will not be accessible from the export</b>."
+msgstr "WARNING: The private key of this wallet is not available. The export allows to check the wallet balance, transaction history, and create spend proposals from the export. However, does not allow to approve (sign) proposals, so <b>funds will not be accessible from the export</b>."
+
+#: public/views/backup.html
+msgid "WARNING: This seed was created with a passphrase. To recover this wallet both the mnemonic and passphrase are needed."
+msgstr "WARNING: This seed was created with a passphrase. To recover this wallet both the mnemonic and passphrase are needed."
 
 #: public/views/walletHome.html
 msgid "WARNING: Wallet not registered"
@@ -1291,6 +1491,10 @@ msgstr "Ожидание совладельцев кошелька"
 msgid "Waiting..."
 msgstr "Ожидание..."
 
+#: public/views/preferencesDeleteWallet.html
+msgid "Wallet"
+msgstr "Wallet"
+
 #: public/views/preferences.html
 msgid "Wallet Alias"
 msgstr "Псевдоним кошелька"
@@ -1298,6 +1502,19 @@ msgstr "Псевдоним кошелька"
 #: src/js/services/profileService.js
 msgid "Wallet Already Imported:"
 msgstr "Кошелек уже импортирован:"
+
+#: public/views/preferencesInformation.html
+msgid "Wallet Configuration (m-n)"
+msgstr "Wallet Configuration (m-n)"
+
+#: public/views/preferencesInformation.html
+msgid "Wallet Id"
+msgstr "Wallet Id"
+
+#: public/views/preferencesAdvanced.html
+#: public/views/preferencesInformation.html
+msgid "Wallet Information"
+msgstr "Wallet Information"
 
 #: public/views/join.html
 msgid "Wallet Invitation"
@@ -1307,10 +1524,35 @@ msgstr "Приглашение присоединиться к кошельку"
 msgid "Wallet Invitation is not valid!"
 msgstr "Приглашение присоединиться к кошельку не действительно!"
 
+#: public/views/preferencesInformation.html
+msgid "Wallet Name (at creation)"
+msgstr "Wallet Name (at creation)"
+
+#: public/views/preferencesInformation.html
+msgid "Wallet Network"
+msgstr "Wallet Network"
+
+#: public/views/create.html
+#: public/views/import.html
+#: public/views/join.html
+msgid "Wallet Seed"
+msgstr "Wallet Seed"
+
+#: public/views/import.html
+msgid "Wallet Seed could require a passphrase to be imported"
+msgstr "Wallet Seed could require a passphrase to be imported"
+
 #: src/js/services/bwsError.js
-#: src/js/services/profileService.js
 msgid "Wallet already exists"
 msgstr "Кошелёк уже существует"
+
+#: src/js/services/profileService.js
+msgid "Wallet already in Copay:"
+msgstr "Wallet already in Copay:"
+
+#: src/js/services/bwsError.js
+msgid "Wallet already registered"
+msgstr "Wallet already registered"
 
 #: public/views/copayers.html
 msgid "Wallet incomplete and broken"
@@ -1333,6 +1575,18 @@ msgid "Wallet not found"
 msgstr "Кошелёк не найден"
 
 #: src/js/services/bwsError.js
+msgid "Wallet not registed at the Wallet Service. Recreate it from \"Create Wallet\" using \"Advanced Options\" to set your seed"
+msgstr "Wallet not registed at the Wallet Service. Recreate it from \"Create Wallet\" using \"Advanced Options\" to set your seed"
+
+#: src/js/services/bwsError.js
+msgid "Wallet seed is invalid"
+msgstr "Wallet seed is invalid"
+
+#: public/views/backup.html
+msgid "Wallet seed not available. You can still export it from Advanced &gt; Export."
+msgstr "Wallet seed not available. You can still export it from Advanced &gt; Export."
+
+#: src/js/services/bwsError.js
 msgid "Wallet service not found"
 msgstr "Служба кошелька не найдена"
 
@@ -1344,6 +1598,22 @@ msgstr "Предупреждение!"
 msgid "Warning: this transaction has unconfirmed inputs"
 msgstr "Предупреждение: эта транзакция имеет неподтвержденные входы"
 
+#: public/views/disclaimer.html
+msgid "We reserve the right to modify this disclaimer from time to time."
+msgstr "We reserve the right to modify this disclaimer from time to time."
+
+#: public/views/disclaimer.html
+msgid "While the software has undergone beta testing and continues to be improved by feedback from the open-source user and developer community, we cannot guarantee that there will be no bugs in the software."
+msgstr "While the software has undergone beta testing and continues to be improved by feedback from the open-source user and developer community, we cannot guarantee that there will be no bugs in the software."
+
+#: public/views/backup.html
+msgid "Write it down and keep them somewhere safe."
+msgstr "Write it down and keep them somewhere safe."
+
+#: src/js/controllers/import.js
+msgid "Wrong number of seed words:"
+msgstr "Wrong number of seed words:"
+
 #: src/js/services/profileService.js
 msgid "Wrong password"
 msgstr "Неверный пароль"
@@ -1352,14 +1622,41 @@ msgstr "Неверный пароль"
 msgid "Yes"
 msgstr "Да"
 
+#: public/views/disclaimer.html
+msgid "You acknowledge that your use of this software is at your own discretion and in compliance with all applicable laws."
+msgstr "You acknowledge that your use of this software is at your own discretion and in compliance with all applicable laws."
+
+#: public/views/disclaimer.html
+msgid "You are responsible for safekeeping your passwords, private key pairs, PINs and any other codes you use to access the software."
+msgstr "You are responsible for safekeeping your passwords, private key pairs, PINs and any other codes you use to access the software."
+
+#: public/views/disclaimer.html
+msgid "You assume any and all risks associated with the use of the software."
+msgstr "You assume any and all risks associated with the use of the software."
+
+#: public/views/backup.html
+msgid "You can safely install your wallet on another device and use it from multiple devices at the same time."
+msgstr "You can safely install your wallet on another device and use it from multiple devices at the same time."
+
 #: public/views/walletHome.html
 msgid "You do not have a wallet"
 msgstr "У вас нет кошелька"
 
 #: public/views/backup.html
+msgid "You need the wallet seed to restore this personal wallet."
+msgstr "You need the wallet seed to restore this personal wallet."
+
+#: public/views/backup.html
+msgid "Your Wallet Seed"
+msgstr "Your Wallet Seed"
+
 #: public/views/import.html
 msgid "Your backup password"
 msgstr "Ваш пароль резервной копии"
+
+#: public/views/export.html
+msgid "Your export password"
+msgstr "Your export password"
 
 #: public/views/create.html
 #: public/views/join.html
@@ -1378,19 +1675,25 @@ msgstr "Пароль вашего профиля"
 msgid "Your wallet has been imported correctly"
 msgstr "Ваш кошелёк был импортирован правильно"
 
-#: public/views/preferencesEmail.html
-msgid "email for wallet notifications"
-msgstr "адрес email для уведомлений кошелька"
+#: public/views/includes/password.html
+msgid "Your wallet key will be encrypted. Password cannot be recovered. Be sure to write it down"
+msgstr "Your wallet key will be encrypted. Password cannot be recovered. Be sure to write it down"
 
-#: public/views/walletHome.html
+#: public/views/backup.html
+msgid "Your wallet seed and access to the wallet service where wallet is registered"
+msgstr "Your wallet seed and access to the wallet service where wallet is registered"
+
+#: public/views/backup.html
+msgid "Your wallet seed and access to the wallet service where your wallet is registered"
+msgstr "Your wallet seed and access to the wallet service where your wallet is registered"
+
+#: public/views/includes/available-balance.html
 msgid "locked by pending payments"
 msgstr "заблокировано в ожидании платежей"
 
-#: public/views/copayers.html
-#: public/views/walletHome.html
-#: public/views/includes/sidebar.html
-msgid "of"
-msgstr "из"
+#: src/js/services/profileService.js
+msgid "me"
+msgstr "me"
 
 #: public/views/walletHome.html
 msgid "optional"
@@ -1405,8 +1708,17 @@ msgid "too long!"
 msgstr "слишком долго!"
 
 #: src/js/controllers/walletHome.js
-msgid "{{fee}} will be discounted for bitcoin networking fees"
-msgstr "{{fee}} будет использовано для оплаты комиссии"
+msgid "{{fee}} will be deducted for bitcoin networking fees"
+msgstr "{{fee}} will be deducted for bitcoin networking fees"
+
+#: public/views/copayers.html
+#: public/views/walletHome.html
+msgid "{{index.m}}-of-{{index.n}}"
+msgstr "{{index.m}}-of-{{index.n}}"
+
+#: public/views/includes/sidebar.html
+msgid "{{item.m}}-of-{{item.n}}"
+msgstr "{{item.m}}-of-{{item.n}}"
 
 #: src/js/controllers/importLegacy.js
 msgid "{{len}} wallets imported. Funds scanning in progress. Hold on to see updated balance"
