@@ -6,6 +6,10 @@ angular.module('copayApp.controllers').controller('wordsController',
     var msg = gettext('Are you sure you want to delete the backup words?');
     var successMsg = gettext('Backup words deleted');
 
+    $scope.isja = function(word) {
+      return word.match(/[\u3041-\u308f]/) != null;
+    };
+
     this.done = function() {
       $rootScope.$emit('Local/BackupDone');
     };
