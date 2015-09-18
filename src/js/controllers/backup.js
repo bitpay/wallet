@@ -30,4 +30,5 @@ angular.module('copayApp.controllers').controller('wordsController',
       this.mnemonicWords = words.split(/[\u3000\s]+/);
 
     this.mnemonicHasPassphrase = fc.mnemonicHasPassphrase();
+    this.useIdeograms =  words.indexOf("\u3000") >= 0;
   });
