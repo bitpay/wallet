@@ -4,6 +4,10 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Project-Id-Version: \n"
 
+#: public/views/modals/paypro.html
+msgid "(Trusted)"
+msgstr ""
+
 #: public/views/walletHome.html
 msgid "(possible double spend)"
 msgstr ""
@@ -920,6 +924,10 @@ msgid "Payment Proposals"
 msgstr ""
 
 #: src/js/controllers/walletHome.js
+msgid "Payment Protocol Invalid"
+msgstr ""
+
+#: src/js/controllers/walletHome.js
 msgid "Payment Protocol not supported on Chrome App"
 msgstr ""
 
@@ -1144,6 +1152,10 @@ msgstr ""
 
 #: public/views/paymentUri.html
 msgid "Select a wallet"
+msgstr ""
+
+#: public/views/modals/paypro.html
+msgid "Self-signed Certificate"
 msgstr ""
 
 #: public/views/walletHome.html
@@ -1410,10 +1422,6 @@ msgstr ""
 msgid "Unit"
 msgstr ""
 
-#: public/views/modals/paypro.html
-msgid "Unknown Root or Selfsigned Certificate"
-msgstr ""
-
 #: public/views/walletHome.html
 msgid "Unsent transactions"
 msgstr ""
@@ -1463,6 +1471,10 @@ msgstr ""
 
 #: public/views/backup.html
 msgid "WARNING: This seed was created with a passphrase. To recover this wallet both the mnemonic and passphrase are needed."
+msgstr ""
+
+#: public/views/modals/paypro.html
+msgid "WARNING: UNTRUSTED CERTIFICATE"
 msgstr ""
 
 #: public/views/walletHome.html
