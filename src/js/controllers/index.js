@@ -439,6 +439,11 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     });
   };
 
+  self.debouncedUpdateHistory = lodash.throttle(function() {
+    self.updateTxHistory();
+  }, 5000);
+
+
   // This handles errors from BWS/index with are nomally
   // trigger from async events (like updates)
   self.handleError = function(err) {
@@ -480,7 +485,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   self.setPendingTxps = function(txps) {
     self.pendingTxProposalsCountForUs = 0;
     lodash.each(txps, function(tx) {
-      
+
       tx = txFormatService.processTx(tx);
 
       var action = lodash.find(tx.actions, {
@@ -510,17 +515,27 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.txps = txps;
   };
 
+  var SAFE_CONFIRMATIONS = 6;
+
   self.setTxHistory = function(txs) {
     var config = configService.getSync().wallet.settings;
     var now = Math.floor(Date.now() / 1000);
     var c = 0;
     self.txHistoryPaging = txs[self.limitHistory] ? true : false;
+    self.hasUnsafeConfirmed = false;
     lodash.each(txs, function(tx) {
       tx = txFormatService.processTx(tx);
 
       // no future transactions...
       if (tx.time > now)
         tx.time = now;
+
+      if (tx.confirmations >= SAFE_CONFIRMATIONS) {
+        tx.safeConfirmed = SAFE_CONFIRMATIONS + '+';
+      } else {
+        tx.safeConfirmed = false;
+        self.hasUnsafeConfirmed = true;
+      }
 
       if (c < self.limitHistory) {
         self.txHistory.push(tx);
@@ -849,11 +864,12 @@ angular.module('copayApp.controllers').controller('indexController', function($r
           self.glideraLoading = null;
           if (err) {
             self.glideraError = err;
-          }
-          else {
+          } else {
             self.glideraToken = accessToken;
             self.glideraPermissions = p;
-            self.updateGlidera({ fullUpdate: true});
+            self.updateGlidera({
+              fullUpdate: true
+            });
           }
         });
       }
@@ -882,7 +898,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         self.glideraTxs = data;
       });
     }
-    
+
     if (permissions.view_email_address && opts.fullUpdate) {
       self.glideraLoadingEmail = 'Getting Glidera Email...';
       glideraService.getEmail(accessToken, function(err, data) {
@@ -999,10 +1015,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     trailing: true
   });
 
-  self.debouncedUpdateHistory = lodash.throttle(function() {
-    self.updateTxHistory();
-  }, 60000);
-
   $rootScope.$on('Local/Resume', function(event) {
     $log.debug('### Resume event');
     self.debouncedUpdate();
@@ -1041,13 +1053,18 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
   $rootScope.$on('NewBlock', function() {
     if (self.pendingAmount) {
-      self.updateAll();
-    }
-
-    if (self.network == 'testnet') {
-      self.debouncedUpdateHistory();
-    } else {
-      self.updateTxHistory();
+      self.updateAll({
+        walletStatus: null,
+        untilItChanges: null,
+        triggerTxUpdate: true,
+      });
+    } else if (self.hasUnsafeConfirmed) {
+      $log.debug('Wallet has transactions with few confirmations. Updating.')
+      if (self.network == 'testnet') {
+        self.debouncedUpdateHistory();
+      } else {
+        self.updateTxHistory();
+      }
     }
   });
 
