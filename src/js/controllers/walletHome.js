@@ -982,6 +982,19 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
             msg = gettext('Could not fetch payment information');
           }
           self.error = msg;
+          $timeout(function() {
+            $rootScope.$digest();
+          }, 1);
+          return cb(true);
+        }
+
+        if (!paypro.verified) {
+          self.resetForm();
+          $log.warn('Failed to verified payment protocol signatured');
+          self.error = gettext('Payment Protocol Invalid');
+          $timeout(function() {
+            $rootScope.$digest();
+          }, 1);
           return cb(true);
         }
 
