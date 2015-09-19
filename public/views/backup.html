@@ -75,7 +75,7 @@
     <div class="row" ng-show="show">
         <div class="columns">
         <div class="p10" style="background:#eee" ng-class="{'enable_text_select': index.network == 'testnet'}">
-          <span ng-repeat="word in wordsC.mnemonicWords"><span style="white-space:nowrap">{{word}}</span><span ng-show="word.match(/[\u3041-\u308f]/)!=null">&#x3000;</span> </span>  
+          <span ng-repeat="word in wordsC.mnemonicWords"><span style="white-space:nowrap">{{word}}</span><span ng-show="wordsC.useIdeograms">&#x3000;</span> </span>  
         </div>
         </div>
     </div>
