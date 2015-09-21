@@ -54,25 +54,25 @@
  
   <div ng-show="wordsC.mnemonicWords">
     <div class="row">
-        <div class="m10t columns" ng-init="show=false">
-          <a class="button outline light-gray expand tiny" ng-click="show=!show">
+        <div class="m10t columns">
+          <a class="button outline light-gray expand tiny" ng-click="wordsC.toggle()">
             <i class="fi-widget m3r"></i>
-            <span translate ng-hide="show" ng-click="wordsC.done()">Show Wallet Seed</span>
-            <span translate ng-hide="!show">Hide Wallet Seed</span>
-            <i ng-if="!show" class="icon-arrow-down4"></i>
-            <i ng-if="show" class="icon-arrow-up4"></i>
+            <span translate ng-hide="wordsC.show">Show Wallet Seed</span>
+            <span translate ng-hide="!wordsC.show">Hide Wallet Seed</span>
+            <i ng-if="!wordsC.show" class="icon-arrow-down4"></i>
+            <i ng-if="wordsC.show" class="icon-arrow-up4"></i>
           </a>
         </div>
     </div>
 
 
-    <div class="row m10t m10b" ng-show="show">
+    <div class="row m10t m10b" ng-show="wordsC.show">
       <div class="small-centered  text-gray columns size-14 text-center" translate>
           Your Wallet Seed
       </div>
     </div>
 
-    <div class="row" ng-show="show">
+    <div class="row" ng-show="wordsC.show">
         <div class="columns">
         <div class="p10" style="background:#eee" ng-class="{'enable_text_select': index.network == 'testnet'}">
           <span ng-repeat="word in wordsC.mnemonicWords track by $index"><span style="white-space:nowrap">{{word}}</span><span ng-show="wordsC.useIdeograms">&#x3000;</span> </span>  
@@ -80,7 +80,7 @@
         </div>
     </div>
 
-    <div class="row m10t m20b" ng-show="show">
+    <div class="row m10t m20b" ng-show="wordsC.show">
         <div class="columns" ng-show="wordsC.mnemonicHasPassphrase">
           <span class="size-12">
             <i class="fi-alert"></i>
@@ -91,7 +91,7 @@
         </div>
     </div>
 
-    <div class="row" ng-show="show">
+    <div class="row" ng-show="wordsC.show">
         <div class="m10t text-center columns">
           <div class="size-12 text-gray">
             <span translate>

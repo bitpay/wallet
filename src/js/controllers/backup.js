@@ -6,8 +6,17 @@ angular.module('copayApp.controllers').controller('wordsController',
     var msg = gettext('Are you sure you want to delete the backup words?');
     var successMsg = gettext('Backup words deleted');
 
-    this.done = function() {
-      $rootScope.$emit('Local/BackupDone');
+    this.show = false;
+
+    this.toggle = function() {
+      this.show = !this.show;
+
+      if (this.show) 
+        $rootScope.$emit('Local/BackupDone');
+
+      $timeout(function(){
+        $scope.$apply();
+      }, 1);
     };
 
     this.delete = function() {
