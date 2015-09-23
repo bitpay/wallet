@@ -106,6 +106,9 @@ Information about Backup and recovery procedures is available at https://github.
 
 Previous versions of Copay use files as backups. See the following section.
 
+It is possible to recover funds from a Copay Wallet without using Copay or the Wallet Service, check the [Copay Recovery Tool](  https://github.com/bitpay/copay-recovery)
+
+
 ## Wallet Export format
 
 Copay encrypts the backup with the [Stanford JS Crypto Library](http://bitwiseshiftleft.github.io/sjcl/).  To extract the private key of your wallet you can use https://bitwiseshiftleft.github.io/sjcl/demo/, copy the backup to 'ciphertext' and enter your password.  The resulting JSON will have a key named: `xPrivKey`, that is the extended private key of your wallet.  That information is enough to sign any transaction from your wallet, so be careful when handling it!
