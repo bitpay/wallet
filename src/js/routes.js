@@ -433,6 +433,60 @@ angular
         templateUrl: 'views/warning.html',
         needProfile: false
       })
+      .state('identities', {
+        url: '/identities',
+        needProfile: true,
+        views: {
+          'main': {
+            templateUrl: 'views/identities.html'
+          },
+        }
+      })
+      .state('identity', {
+        url: '/identity',
+        needProfile: true,
+        views: {
+          'main': {
+            templateUrl: 'views/identity.html'
+          },
+        }
+      })
+      .state('identityClaim', {
+        url: '/identityClaim',
+        needProfile: true,
+        views: {
+          'main': {
+            templateUrl: 'views/identityClaim.html'
+          },
+        }
+      })
+      .state('createIdentity', {
+        url: '/createIdentity',
+        needProfile: true,
+        views: {
+          'main': {
+            templateUrl: 'views/createIdentity.html'
+          },
+        }
+      })
+      .state('linkIdentity', {
+        url: '/linkIdentity',
+        needProfile: true,
+        views: {
+          'main': {
+            templateUrl: 'views/linkIdentity.html'
+          },
+        }
+      })
+      .state('shareIdentity', {
+        url: '/shareIdentity',
+        needProfile: true,
+        views: {
+          'main': {
+            templateUrl: 'views/shareIdentity.html'
+          },
+        }
+      })
 
     .state('add', {
         url: '/add',
@@ -493,6 +547,7 @@ angular
       cordova: -1,
       payment: -1,
       uriglidera: -1,
+      identities: -1,
 
       preferences: 11,
       glidera: 11,
@@ -502,6 +557,7 @@ angular
       buyGlidera: 12,
       sellGlidera: 12,
       preferencesGlidera: 12,
+      identity: 12,
       about: 12,
       delete: 13,
       preferencesLanguage: 12,

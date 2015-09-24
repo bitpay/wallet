@@ -1,0 +1,66 @@
+<div
+  class="topbar-container"
+  ng-include="'views/includes/topbar.html'"
+  ng-init="titleSection='Identity'; goBackToState = 'identities'">
+</div>
+
+<div class="content" ng-controller="identityController as c">
+  <ul class="no-bullet m0 size-14">
+    <li class="line-b p20 text-center">
+      <span>{{c.id}}</span>
+    </li>
+    <div ng-repeat="claim in c.identity"
+      class="row collapse">
+      <h4 ng-if="claim.isObject" class="title m0">{{claim.label}}</h4>
+      <li ng-if="!claim.isObject" class="line-b p20"
+        ng-click="c.editIdentityClaim(c.id, claim)">
+        <span>{{claim.label}}</span>
+
+        <span ng-if="claim.isVerificationStatus">
+          <span ng-if="claim.isEditable">
+            <i class="icon-arrow-right3 size-24 right text-gray"></i>
+            <span ng-if="!claim.isUndefined" class="right text-gray">
+              <span ng-if="claim.value" translate>Verified</span>
+              <span ng-if="!claim.value" translate>Not verified</span>
+            </span>
+          </span>
+          <span ng-if="!claim.isEditable">
+            <i class="fi-check size-20 right text-gray">&nbsp;&nbsp;</i>
+            <span ng-if="!claim.isUndefined" class="right text-gray">
+              <span ng-if="claim.value" translate>Verified</span>&nbsp;&nbsp;
+              <span ng-if="!claim.value" translate>Not verified</span>&nbsp;&nbsp;
+            </span>
+          </span>
+        </span>
+
+        <span ng-if="!claim.isVerificationStatus">
+          <span ng-if="claim.isEditable">
+            <i class="icon-arrow-right3 size-24 right text-gray"></i>
+            <span class="right text-gray">{{claim.value}}</span>
+          </span>
+          <span ng-if="!claim.isEditable">
+            <span ng-if="!claim.isUndefined">
+              <i class="fi-check size-20 right text-gray">&nbsp;&nbsp;</i>
+              <span class="right text-gray">{{claim.value}}&nbsp;&nbsp;</span>
+            </span>
+          </span>
+        </span>
+
+      </li>
+    </div>
+  </ul>
+
+  <div class="m20b box-notification" ng-if="index.error">
+    <div class="text-warning">
+      <span>{{index.error}}</span>
+    </div>
+  </div>
+  <div class="text-center text-gray m20t">
+    <button class="tiny round outline dark-gray warning"
+      ng-click="c.removeIdentity(c.id)">
+      <i class="fi-trash size-14 m5r"></i>
+      <span translate>Remove identity from Copay</span>
+    </button>
+  </div>
+</div>
+<div class="extra-margin-bottom"></div>

@@ -1,0 +1,41 @@
+<div
+  class="topbar-container"
+  ng-include="'views/includes/topbar.html'"
+  ng-init="titleSection='Create new identity';
+    goBackToState = 'identities';
+    noColor = true">
+</div>
+
+<div class="content p20v"
+  ng-controller="createIdentityController as c"
+  ng-init="c.init()">
+
+  <form name="enterIDForm" ng-submit="c.create(enterIDForm)" novalidate>
+    <div class="row">
+      <div class="large-12 columns">
+
+        <div class="m20b box-notification" ng-if="c.error">
+          <div class="text-warning">
+            <span>{{c.error|translate}}</span>
+          </div>
+        </div>
+
+        <div class="row">
+          <label>
+            <span translate>Identity ID</span>
+            <div class="input">
+              <input type="text" placeholder="{{c.id}}"
+              class="form-control" name="identityID" ng-model="identityID"
+              ng-required="true"
+            </div>
+          </label>
+        </div>
+
+        <button type="submit" class="button round black expand m0">
+          <span translate>Create new identity</span>
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
+<div class="extra-margin-bottom"></div>

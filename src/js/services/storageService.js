@@ -41,7 +41,7 @@ angular.module('copayApp.services')
         json = JSON.parse(text);
       } catch (e) {};
 
-      if (!json.iter || !json.ct)
+      if (!json || !json.iter || !json.ct)
         return cb(null, text);
 
       $log.debug('Profile is encrypted');
@@ -202,6 +202,73 @@ angular.module('copayApp.services')
 
     root.removeGlideraToken = function(network, cb) {
       storage.remove('glideraToken-' + network, cb);
+    };
+
+    root.getIdentityIDs = function(cb) {
+      storage.get('identityIDs', function(err, data) {
+        if (err) return cb(err);
+        cb(null, data ? data.split(',') : []);
+      });
+    };
+
+    root.addIdentityID = function(id, cb) {
+      if (lodash.includes(id, ',')) {
+        return cb(new Error('ID cannot contain a comma'));
+      }
+      root.getIdentityIDs(function(err, idlist) {
+        if (!lodash.includes(idlist, id)) {
+          idlist.push(id);
+          storage.set('identityIDs', idlist.toString(), cb);
+        } else {
+          cb(null, idlist);
+        }
+      });
+    };
+
+    root.removeIdentityID = function(id, cb) {
+      if (lodash.includes(id, ',')) {
+        return cb(new Error('ID cannot contain a comma'));
+      }
+      root.getIdentityIDs(function(err, idlist) {
+        if (lodash.includes(idlist, id)) {
+          idlist = lodash.without(idlist, id);
+          storage.set('identityIDs', idlist.toString(), cb);
+        } else {
+          cb(null, idlist);
+        }
+      });
+    };
+
+    root.getIdentity = function(id, cb) {
+      storage.get('identity-' + id, function(err, str) {
+        if (err) return cb(err);
+        decryptOnMobile(str, function(err, text) {
+          if (err) return cb(err);
+          try {
+            var json = JSON.parse(text);
+            cb(null, json);
+          } catch (e) {
+            cb(new Error('Could not read identity: ' + e));
+          }
+        });
+      });
+    };
+
+    root.setIdentity = function(id, data, cb) {
+      encryptOnMobile(JSON.stringify(data), function(err, x) {
+        if (err) return cb(err);
+        storage.set('identity-' + id, x, function(err) {
+          if (err) return cb(err);
+          root.addIdentityID(id, cb);
+        });
+      });
+    };
+
+    root.removeIdentity = function(id, cb) {
+      storage.remove('identity-' + id, function(err, data) {
+        if (err) return cb(err);
+        root.removeIdentityID(id, cb);
+      });
     };
 
     return root;

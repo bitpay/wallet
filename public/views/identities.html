@@ -1,0 +1,48 @@
+<div 
+  class="topbar-container" 
+  ng-include="'views/includes/topbar.html'"
+  ng-init="titleSection='Manage identities'; closeToHome = true; noColor = true">
+</div>
+
+<div class="content">
+  <div class="m20b box-notification" ng-if="index.error">
+    <div class="text-warning">
+      <span>{{index.error}}</span>
+    </div>
+  </div>
+  <ul class="no-bullet manage size-12">
+    <li>
+      <a title="Create new identity" ng-click="$root.go('createIdentity')">
+        <i class="fi-plus circle plus-fixed"></i>
+        <i class="icon-arrow-right3 size-18 right m20t"></i>
+        <span translate>Create new identity</span>
+      </a>
+    </li>
+    <li>
+      <a title="Link existing identity" ng-click="$root.go('linkIdentity')">
+        <i class="icon-people circle"></i>
+        <i class="icon-arrow-right3 size-18 right m20t"></i>
+        <span translate>Link external identity</span>
+      </a>
+    </li>
+    <li>
+      <a title="Share identity" ng-click="$root.go('shareIdentity')">
+        <i class="icon-paperplane circle"></i>
+        <i class="icon-arrow-right3 size-18 right m20t"></i>
+        <span translate>Share identity</span>
+      </a>
+    </li>
+  </ul>
+
+  <h4 class="title m0" translate>Identities</h4>
+  <ul class="no-bullet manage size-12">
+    <li ng-repeat="identityID in index.identityIDs"
+      ng-click="index.viewIdentity(identityID)">
+      <a>
+        <i class="icon-person circle"></i>
+        <i class="icon-arrow-right3 size-18 right m20t"></i>
+        <span>{{identityID}}</span>
+      </a>
+    </li>
+  </ul>
+</div>

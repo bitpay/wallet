@@ -112,6 +112,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
       // DISABLED
       //self.initGlidera();
+      self.initIdentity();
 
       if (fc.isPrivKeyExternal()) {
         self.needsBackup = false;
@@ -830,6 +831,40 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     var userLang = uxLanguage.update();
     self.defaultLanguageIsoCode = userLang;
     self.defaultLanguageName = uxLanguage.getName(userLang);
+  };
+
+  self.initIdentity = function() {
+    delete self.error;
+    self.identityEnabled = true;
+    storageService.getIdentityIDs(function(err, idlist) {
+      if (err) {
+        self.error = err;
+      } else {
+        self.identities = {};
+        self.identityIDs = idlist;
+        lodash.forEach(idlist, function(id) {
+          storageService.getIdentity(id, function(err, identity) {
+            if (err) {
+              self.error = err;
+            } else if (!identity) {
+              // silently remove identity id if identity not found and no error
+              storageService.removeIdentityID(id, function(err) {
+                if (err) {
+                  self.error = err;
+                }
+              });
+            } else {
+              self.identities[id] = identity;
+            }
+          });
+        })
+      }
+    });
+  };
+
+  self.viewIdentity = function(id) {
+    $rootScope.identityID = id;
+    $rootScope.$root.go('identity');
   };
 
   self.initGlidera = function(accessToken) {
