@@ -818,30 +818,27 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   };
 
   self.initIdentity = function() {
-    delete self.identityError;
+    delete self.error;
     self.identityEnabled = true;
     storageService.getIdentityIDs(function(err, idlist) {
       if (err) {
-        self.identityError = err;
+        self.error = err;
       } else {
-        self.identities = [];
+        self.identities = {};
+        self.identityIDs = idlist;
         lodash.forEach(idlist, function(id) {
           storageService.getIdentity(id, function(err, identity) {
             if (err) {
-              self.identityError = err;
+              self.error = err;
             } else if (!identity) {
               // silently remove identity id if identity not found and no error
               storageService.removeIdentityID(id, function(err) {
                 if (err) {
-                  self.identityError = err;
+                  self.error = err;
                 }
               });
             } else {
-              if (identity.claims) {
-                identity.description = lodash.keys(identity.claims).toString();
-                identity.description = identity.description.replace(/,/g, ', ');
-              }
-              self.identities.push(identity);
+              self.identities[id] = identity;
             }
           });
         })
@@ -850,20 +847,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   };
 
   self.viewIdentity = function(id) {
-    $rootScope.identityId = id;
+    $rootScope.identityID = id;
     $rootScope.$root.go('identity');
-  };
-
-  self.removeIdentity = function(id) {
-    var self = this;
-    storageService.removeIdentity(id, function(err) {
-      if (err) {
-        self.identityError = err;
-      } else {
-        self.initIdentity();
-        $rootScope.$root.go('identities');
-      }
-    });
   };
 
   self.initGlidera = function(accessToken) {

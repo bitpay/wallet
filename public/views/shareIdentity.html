@@ -1,0 +1,79 @@
+<nav class="tab-bar" ng-controller="shareIdentityController as c">
+  <section class="left-small">
+    <a ng-click="$root.go('identities')">
+      <i class="icon-arrow-left3 icon-back"></i>
+      <span class="text-back">{{'Back'|translate}}</span>
+    </a>
+  </section>
+
+  <section class="right-small">
+    <qr-scanner
+      on-scan="c.onQrCodeScanned(data)"
+      before-scan="c.openScanScreen()">
+    </qr-scanner>
+  </section>
+
+  <section class="middle tab-bar-section">
+    <h1 class="title ellipsis" ng-style="{'color': index.backgroundColor}">
+      Share identity
+    </h1>
+  </section>
+</nav>
+
+<div class="content p20v" ng-controller="shareIdentityController as c">
+  <div class="row">
+    <div class="large-12 columns">
+
+      <div class="box-notification" ng-show="c.error">
+        <span class="text-warning size-14">
+          {{c.error|translate}}
+        </span>
+      </div>
+
+      <form name="shareForm" ng-submit="c.share(shareForm)" novalidate>
+          <div class="row collapse">
+            <label for="fields" class="left">
+              <span translate>Share Fields</span>
+            </label>
+          </div>
+          <div class="input">
+            <input id="fields" type="text"
+            placeholder="{{'Paste field list here'|translate}}"
+            name="fields" ng-model="fields" required>
+          </div>
+
+          <div class="row collapse">
+            <label for="id" class="left">
+              <span translate>From Identity</span>
+            </label>
+          </div>
+          <div class="input">
+            <input id="identityID" type="text"
+            placeholder="{{'Enter identity ID here'|translate}}"
+            name="identityID" ng-model="identityID" required>
+            <a class="postfix size-12 m0 text-gray"
+              ng-click="c.openIdentitiesModal()">
+              <i class="fi-results-demographics size-18"></i>
+            </a>
+          </div>
+
+          <div class="row collapse">
+            <label for="url" class="left">
+              <span translate>To URL</span>
+            </label>
+          </div>
+          <div class="input">
+            <input id="url" type="text"
+            placeholder="{{'Paste URL here'|translate}}"
+            name="url" ng-model="url" required>
+          </div>
+
+          <button translate type="submit" class="button expand black m0 round">
+            Share
+          </button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="extra-margin-bottom"></div>

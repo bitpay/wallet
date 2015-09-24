@@ -460,6 +460,33 @@ angular
           },
         }
       })
+      .state('createIdentity', {
+        url: '/createIdentity',
+        needProfile: true,
+        views: {
+          'main': {
+            templateUrl: 'views/createIdentity.html'
+          },
+        }
+      })
+      .state('linkIdentity', {
+        url: '/linkIdentity',
+        needProfile: true,
+        views: {
+          'main': {
+            templateUrl: 'views/linkIdentity.html'
+          },
+        }
+      })
+      .state('shareIdentity', {
+        url: '/shareIdentity',
+        needProfile: true,
+        views: {
+          'main': {
+            templateUrl: 'views/shareIdentity.html'
+          },
+        }
+      })
 
     .state('add', {
         url: '/add',

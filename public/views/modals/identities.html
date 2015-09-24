@@ -1,0 +1,27 @@
+<nav class="tab-bar">
+  <section class="left-small">
+    <a ng-click="cancel()" class="p10">
+      <span class="text-close" translate>Close</span>
+    </a>
+  </section>
+
+  <section class="middle tab-bar-section">
+    <h1 class="title ellipsis" ng-style="{'color':color}" translate>
+      Choose an identity
+    </h1>
+  </section>
+</nav>
+
+<div class="modal-content">
+  <ul class="no-bullet manage size-12">
+    <li ng-repeat="identityID in identityIDs"
+      ng-click="selectIdentity(identityID)">
+      <a>
+        <i class="icon-person circle"></i>
+        <span>{{identityID}}</span>
+      </a>
+    </li>
+  </ul>
+
+  <div class="extra-margin-bottom"></div>
+</div>

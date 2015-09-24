@@ -6,43 +6,42 @@
 
 <div class="content" ng-controller="identityClaimController as c">
   <form name="claimForm" ng-submit="c.updateClaim()">
-    <div class="row collapse">
-      <label for="claim">
-        <span>{{c.claim.label}}</span>
-      </label>
-      <div class="input">
-        <input
-          name="claimValue"
-          autocomplete="off"
-          type="text"
-          ng-model="_model"
-          ng-attr-placeholder="{{c.claim.value}}"
-          ng-focus="home.formFocus('claim')"
-          ng-blur="home.formFocus(false)"
-        >
+    <div class="large-2 medium-2 small-2 columns"></div>
+
+    <div class="large-16 medium-16 small-16 columns">
+      <span>{{c.claim.label}}</span>
+      <input
+        name="claimValue"
+        autofocus
+        autocomplete="off"
+        type="{{c.claim.type}}"
+        ng-model="_model"
+        ng-attr-placeholder="{{c.claim.value}}"
+      >
+      <span style="word-wrap: break-word;">{{c.claim.description}}</span>
+      <div class="m20b box-notification" ng-if="c.error">
+        <div class="text-warning">
+          <span>{{c.error}}</span>
+        </div>
       </div>
-      <div style="word-wrap: break-word;">{{c.claim.description}}</div>
-    </div>
-    <div class="m20b box-notification" ng-if="c.identityError">
-      <div class="text-warning">
-        <span>{{c.identityError}}</span>
+
+      <div class="left text-gray m20t">
+        <button class="tiny round outline dark-gray warning"
+          ng-click="c.removeClaim(controller.identity.id)">
+          <i class="fi-trash size-14 m5r"></i>
+          <span translate>Remove from identity</span>
+        </button>
+      </div>
+      <div class="right text-gray m20t">
+        <button type="submit" class="tiny round"
+          ng-style="{'background-color':index.backgroundColor}">
+          <i class="fi-save size-14 m5r"></i>
+          <span translate>Save to identity</span>
+        </button>
       </div>
     </div>
 
-    <div class="left text-gray m20t">
-      <button class="tiny round outline dark-gray warning"
-        ng-click="c.removeClaim(controller.identity.id)">
-        <i class="fi-trash size-14 m5r"></i>
-        <span translate>Remove from identity</span>
-      </button>
-    </div>
-    <div class="right text-gray m20t">
-      <button type="submit" class="tiny round"
-        ng-style="{'background-color':index.backgroundColor}">
-        <i class="fi-save size-14 m5r"></i>
-        <span translate>Save to identity</span>
-      </button>
-    </div>
+    <div class="large-1 medium-1 small-1 columns"></div>
   </form>
 </div>
 <div class="extra-margin-bottom"></div>
