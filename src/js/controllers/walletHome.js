@@ -1007,6 +1007,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
   this.setFromUri = function(uri) {
     var self = this;
+
     function sanitizeUri(uri) {
       // Fixes when a region uses comma to separate decimals
       var regex = /[\?\&]amount=(\d+([\,\.]\d+)?)/i;
@@ -1133,40 +1134,19 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     this.setForm(null, amount, null, feeRate);
   };
 
-  // TODO: showPopup alike
-  this.confirmDialog = function(msg, cb) {
-    if (isCordova) {
-      navigator.notification.confirm(
-        msg,
-        function(buttonIndex) {
-          if (buttonIndex == 1) {
-            $timeout(function() {
-              return cb(true);
-            }, 1);
-          } else {
-            return cb(false);
-          }
-        },
-        confirm_msg, [accept_msg, cancel_msg]
-      );
-    } else if (isChromeApp) {
-      // No feedback, alert/confirm not supported.
-      return cb(true);
-    } else {
-      return cb(confirm(msg));
-    }
-  };
-
   this.sendAll = function(amount, feeStr, feeRate) {
     var self = this;
     var msg = gettextCatalog.getString("{{fee}} will be deducted for bitcoin networking fees", {
       fee: feeStr
     });
 
-    this.confirmDialog(msg, function(confirmed) {
-      if (confirmed)
-        self._doSendAll(amount, feeRate);
-    });
+    if (amount - parseInt(feeStr) > 0) {
+      confirmDialog.show(msg, function(confirmed) {
+        if (confirmed)
+          self._doSendAll(amount, feeRate);
+      });
+    } else
+      $rootScope.$emit('Local/ShowAlert', gettextCatalog.getString('Not enough funds for network fees'));
   };
 
   /* Start setup */
