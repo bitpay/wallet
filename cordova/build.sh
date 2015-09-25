@@ -105,7 +105,7 @@ if [ ! -d $PROJECT ]; then
   cordova plugin add https://github.com/VersoSolutions/CordovaClipboard
   checkOK
 
-  cordova plugin add https://github.com/katzer/cordova-plugin-email-composer.git
+  cordova plugin add https://github.com/katzer/cordova-plugin-email-composer.git#f53df5c31c50d4f39d214a5cbe49abb0c5727a49
   checkOK
 
   cordova plugin add https://github.com/EddyVerbruggen/SocialSharing-PhoneGap-Plugin.git && cordova prepare
