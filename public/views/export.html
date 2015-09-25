@@ -69,14 +69,14 @@
         ng-disabled="(!backup.password || backup.password != backup.repeatpassword)"
         ng-style="{'background-color':index.backgroundColor}"
         ng-show="!backup.isSafari && !backup.isCordova"><i class="fi-download"></i>
-        <span translate>Download backup</span></button>
+        <span translate>Download</span></button>
       <button class="black round expand m0" ng-click="backup.viewWalletBackup()"
         ng-disabled="(!backup.password || backup.password != backup.repeatpassword)"
         ng-style="{'background-color':index.backgroundColor}"
         ng-show="backup.isSafari && !backup.isCordova"><i class="fi-eye"></i>
-        <span translate>View backup</span></button>
+        <span translate>View</span></button>
       <div ng-show="backup.isCordova">
-        <h4 translate>Backup options</h4>
+        <h4 translate>Export options</h4>
         <button class="black round expand" ng-disabled="(!backup.password || backup.password != backup.repeatpassword)"
           ng-style="{'background-color':index.backgroundColor}"
           ng-click="backup.copyWalletBackup()"><i class="fi-clipboard-pencil"></i>
@@ -91,7 +91,7 @@
 
   <div class="row" ng-show="backup.backupWalletPlainText">
     <div class="large-12 columns">
-      <h3 translate>Copy backup to a safe place</h3>
+      <h3 translate>Wallet Export</h3>
       <div class="input">
         <textarea rows="12">{{backup.backupWalletPlainText}}</textarea>
       </div>
