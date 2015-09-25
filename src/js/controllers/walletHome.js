@@ -1140,13 +1140,10 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       fee: feeStr
     });
 
-    if (amount - parseInt(feeStr) > 0) {
-      confirmDialog.show(msg, function(confirmed) {
-        if (confirmed)
-          self._doSendAll(amount, feeRate);
-      });
-    } else
-      $rootScope.$emit('Local/ShowAlert', gettextCatalog.getString('Not enough funds for network fees'));
+    confirmDialog.show(msg, function(confirmed) {
+      if (confirmed)
+        self._doSendAll(amount, feeRate);
+    });
   };
 
   /* Start setup */
