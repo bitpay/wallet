@@ -101,7 +101,6 @@ angular.module('copayApp.services')
         client.initNotifications(function(err) {
           if (err) {
             $log.error('Could not init notifications err:', err);
-            root.walletClients[credentials.walletId].started = false;
             return;
           }
         });
