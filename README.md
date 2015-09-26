@@ -113,10 +113,21 @@ It is possible to recover funds from a Copay Wallet without using Copay or the W
 
 Copay encrypts the backup with the [Stanford JS Crypto Library](http://bitwiseshiftleft.github.io/sjcl/).  To extract the private key of your wallet you can use https://bitwiseshiftleft.github.io/sjcl/demo/, copy the backup to 'ciphertext' and enter your password.  The resulting JSON will have a key named: `xPrivKey`, that is the extended private key of your wallet.  That information is enough to sign any transaction from your wallet, so be careful when handling it!
 
-The backup also contains the key `publicKeyRing` that holds the extended public keys of the Copayers.  Using a tool like [Bitcore PlayGround](http://bitcore.io/playground/#/multisig), and following [BIP44](https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki) or [BIP45](https://github.com/bitcoin/bips/blob/master/bip-0045.mediawiki) depending on the key `derivationStrategy` it is possible to generate all wallet address (Copay wallets since v1.2 use BIP44, previous wallets use BIP45).  Also note that since Copay version v1.2, non multisig wallet use address types pay-to-publicKeyHash (P2PKH) while multisig wallet still use pay-to-scriptHash (P2SH).
+The backup also contains the key `publicKeyRing` that holds the extended public keys of the Copayers.
+Depending on the key `derivationStrategy`, address are derived using 
+[BIP44](https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki) or [BIP45](https://github.com/bitcoin/bips/blob/master/bip-0045.mediawiki). Wallets created in Copay v1.2 and forward use always BIP44, all previous wallets use BIP45. Also note that since Copay version v1.2, non multisig wallet use address types pay-to-publicKeyHash (P2PKH) while multisig wallet still use pay-to-scriptHash (P2SH) (key `addressType` at the backup):
 
-### BIP45 notes
-Note that addresseses generated at BWS with BIP45 use the 'shared cosigner index' (2147483647) so Copay address indexes look like: `m/45'/2147483647/0/x` for main addresses and `m/45'/2147483647/1/y` for change addresses, where `x` and `y` are integers starting from `0`.  The maximum values of `x` and `y` depend on the wallet usage, and in a restore procedure, the generated addresses are scanned on the blockchain for transactions (this is the 'scan' procedure that you can see inside the Copay App settings). To generate the wallet addresses, the required number of Copayers also need to be specified (backup key `m`).
+| Copay Version  | Wallet Type   | Derivation Strategy   | Address Type  |
+|---|---|---|---|---|
+|  <1.2  | All  |  BIP45 | P2SH   |
+|  >=1.2 | Non-multisig  | BIP44  | P2PKH   |
+| >=1.2  | Multisig  |  BIP44 |  P2SH   |
+
+
+Using a tool like [Bitcore PlayGround](http://bitcore.io/playground) all wallet addresses can be generated. (TIP: Use the    `Address` section for P2PKH address type walelt and `Multisig Address` for P2SH address type wallets). For multisig addresses, the required number of signatures is also needed to recreate the addresses. That is stored on at key `m` on the export.
+
+BIP45 note: All addresses generated at BWS with BIP45 use the 'shared cosigner index' (2147483647) so Copay address indexes look like: `m/45'/2147483647/0/x` for main addresses and `m/45'/2147483647/1/y` for change addresses.
+
 
 ## Bitcore Wallet Service
 
