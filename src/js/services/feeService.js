@@ -7,7 +7,8 @@ angular.module('copayApp.services').factory('feeService', function($log, profile
   root.feeOpts = {
     priority: gettextCatalog.getString('Priority'),
     normal: gettextCatalog.getString('Normal'),
-    economy: gettextCatalog.getString('Economy')
+    economy: gettextCatalog.getString('Economy'),
+    custom: gettextCatalog.getString('Custom')
   };
 
   root.getCurrentFeeValue = function(currentSendFeeLevel, cb) { 
