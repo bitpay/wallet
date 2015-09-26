@@ -484,9 +484,15 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
   self.setPendingTxps = function(txps) {
     self.pendingTxProposalsCountForUs = 0;
+    var now = Math.floor(Date.now() / 1000);
+
     lodash.each(txps, function(tx) {
 
       tx = txFormatService.processTx(tx);
+
+      // no future transactions...
+      if (tx.createdOn > now)
+        tx.createdOn = now;
 
       var action = lodash.find(tx.actions, {
         copayerId: self.copayerId
