@@ -1176,4 +1176,5 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     this.setAddress();
     this.setSendFormInputs();
   }
+
 });

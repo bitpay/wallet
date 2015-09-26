@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('createController',
-  function($scope, $rootScope, $location, $timeout, $log, lodash, go, profileService, configService, isMobile, isCordova, gettext, isChromeApp, ledger) {
+  function($scope, $rootScope, $location, $timeout, $log, lodash, go, profileService, configService, isMobile, isCordova, gettext, isChromeApp, ledger, trezor) {
 
     var self = this;
     var defaults = configService.getDefaults();
@@ -76,11 +76,15 @@ angular.module('copayApp.controllers').controller('createController',
         return;
       }
 
-      if (form.hwLedger.$modelValue) {
-        self.ledger = true;
+      if (form.hwLedger.$modelValue || form.hwTrezor.$modelValue) {
+        self.hwWallet = form.hwLedger.$modelValue ? 'Leger'  : 'TREZOR';
+
+        var src= form.hwLedger.$modelValue ? leger  : trezor;
+
         // TODO : account 
-        ledger.getInfoForNewWallet(0, function(err, lopts) {
-          self.ledger = false;
+        var account = 0;
+        src.getInfoForNewWallet(account, function(err, lopts) {
+          self.hwWallet = false;
           if (err) {
             self.error = err;
             $scope.$apply();
