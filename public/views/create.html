@@ -8,7 +8,7 @@
 
 <div class="content p20v" ng-controller="createController as create" ng-init="create.setTotalCopayers(1)">
 
-  <div class="onGoingProcess" ng-show="create.loading && !create.ledger">
+  <div class="onGoingProcess" ng-show="create.loading && !create.hwWallet">
     <div class="onGoingProcess-content" ng-style="{'background-color':'#222'}">
     <div class="spinner">
       <div class="rect1"></div>
@@ -21,7 +21,7 @@
     </div>
   </div>
 
-  <div class="onGoingProcess" ng-show="create.ledger">
+  <div class="onGoingProcess" ng-show="create.hwWallet">
     <div class="onGoingProcess-content" ng-style="{'background-color':'#222'}">
     <div class="spinner">
       <div class="rect1"></div>
@@ -30,7 +30,7 @@
       <div class="rect4"></div>
       <div class="rect5"></div>
     </div>
-    <span translate>Connecting to Ledger Wallet...</span>
+    <span translate>Connecting to {{create.hwWallet}} Wallet...</span>
     </div>
   </div>
 
@@ -102,9 +102,15 @@
         </div>
         <div ng-hide="hideAdv" class="row">
           <div class="large-12 columns">
+
             <label ng-show="create.isChromeApp() && totalCopayers > 1 " for="hw-ledger" class="oh">
               <span translate>Use Ledger hardware wallet</span>
               <switch id="hw-ledger" name="hwLedger" ng-model="hwLedger" ng-change="isTestnet=false" class="green right m5t m10b"></switch>
+            </label>
+
+            <label ng-show="1" for="hw-trezor" class="oh">
+              <span translate>Use TREZOR hardware wallet</span>
+              <switch id="hw-trezor" name="hwTrezor" ng-model="hwTrezor" ng-change="isTestnet=false" class="green right m5t m10b"></switch>
             </label>
 <!-- TODO account
             <div ng-show="hwLedger">
@@ -115,17 +121,17 @@
               <div class="oh text-gray line-b  size-12   p10b m20b"><span translate>Ledger supports up to 20 Copay wallets simultaneously. Select which slot should be used to host this wallet</div>
             </div> 
 -->        
-            <label for="network-name" class="oh" ng-show="!hwLedger">
+            <label for="network-name" class="oh" ng-show="!hwLedger && !hwTrezor">
               <span translate>Testnet</span>
               <switch id="network-name" name="isTestnet" ng-model="isTestnet" class="green right m5t m10b"></switch>
             </label>
 
-            <label  ng-show="!hwLedger" for="seed" class="oh">
+            <label  ng-show="!hwLedger && !hwTrezor" for="seed" class="oh">
               <span translate>Specify your wallet seed</span>
               <switch id="seed" name="setSeed" ng-model="setSeed" class="green right m5t m10b"></switch>
             </label>
 
-            <label for="createPassphrase" class="line-b oh" ng-show="!setSeed && !hwLedger" ><span translate>Seed Passphrase</span>  <small translate>Add an optional passphrase to secure the seed</small>
+            <label for="createPassphrase" class="line-b oh" ng-show="!setSeed && !hwLedger && !hwTrezor" ><span translate>Seed Passphrase</span>  <small translate>Add an optional passphrase to secure the seed</small>
               <div class="input">
                 <input type="text" class="form-control" 
                 name="createPassphrase" ng-model="createPassphrase">
@@ -139,7 +145,7 @@
               type="text"
               name="privateKey" ng-model="privateKey">
             </label>
-            <label for="passphrase" class="line-b oh" ng-show="setSeed && !hwLedger"><span translate>Seed Passphrase</span>  <small translate>The seed could require a passphrase to be imported</small>
+            <label for="passphrase" class="line-b oh" ng-show="setSeed && !hwLedger && !hwTrezor"><span translate>Seed Passphrase</span>  <small translate>The seed could require a passphrase to be imported</small>
               <div class="input">
                 <input type="text" class="form-control" name="passphrase" ng-model="passphrase">
               </div>
@@ -158,11 +164,11 @@
 
 
 
-        <button type="submit" class="button round black expand m0" ng-show="totalCopayers != 1" ng-disabled="setupForm.$invalid || create.loading || create.ledger">
+        <button type="submit" class="button round black expand m0" ng-show="totalCopayers != 1" ng-disabled="setupForm.$invalid || create.loading || create.hwWallet">
           <span translate>Create {{requiredCopayers}}-of-{{totalCopayers}} wallet</span>
         </button>
         
-	<button type="submit" class="button round black expand m0" ng-show="totalCopayers == 1" ng-disabled="setupForm.$invalid || create.loading || create.ledger">
+	<button type="submit" class="button round black expand m0" ng-show="totalCopayers == 1" ng-disabled="setupForm.$invalid || create.loading || create.hwWallet">
           <span translate>Create new wallet</span>
         </button>
       </div>

@@ -1,6 +1,6 @@
 'use strict';
 angular.module('copayApp.services')
-  .factory('profileService', function profileServiceFactory($rootScope, $location, $timeout, $filter, $log, lodash, storageService, bwcService, configService, notificationService, isChromeApp, isCordova, gettext, gettextCatalog, nodeWebkit, bwsError, uxLanguage, ledger, bitcore) {
+  .factory('profileService', function profileServiceFactory($rootScope, $location, $timeout, $filter, $log, lodash, storageService, bwcService, configService, notificationService, isChromeApp, isCordova, gettext, gettextCatalog, nodeWebkit, bwsError, uxLanguage, ledger, bitcore, trezor) {
 
     var root = {};
 
@@ -236,6 +236,7 @@ angular.module('copayApp.services')
       root._seedWallet(opts, function(err, walletClient) {
         if (err) return cb(err);
 
+console.log('[profileService.js.239:walletClient:]',walletClient); //TODO
         walletClient.createWallet(opts.name, opts.myName || 'me', opts.m, opts.n, {
           network: opts.networkName
         }, function(err, secret) {
@@ -561,16 +562,38 @@ angular.module('copayApp.services')
       });
     };
 
+
+    root._signWithTrezor = function(txp, cb) {
+      var fc = root.focusedClient;
+      $log.info('Requesting Trezor  to sign the transaction');
+
+      trezor.signTx(txp, 0, function(result) {
+console.log('[profileService.js.570:result:]',result); //TODO
+        if (!result.success)
+          return cb(result);
+
+        txp.signatures = lodash.map(result.signatures, function(s) {
+          return s.substring(0, s.length - 2);
+        });
+        return fc.signTxProposal(txp, cb);
+      });
+    };
+
+
     root.signTxProposal = function(txp, cb) {
       var fc = root.focusedClient;
 
       if (fc.isPrivKeyExternal()) {
-        if (fc.getPrivKeyExternalSourceName() != 'ledger') {
-          var msg = 'Unsupported External Key:' + fc.getPrivKeyExternalSourceName();
-          $log.error(msg);
-          return cb(msg);
+        switch (fc.getPrivKeyExternalSourceName()) {
+          case 'ledger':
+            return root._signWithLedger(txp, cb);
+          case 'trezor':
+            return root._signWithTrezor(txp, cb);
+          default:
+            var msg = 'Unsupported External Key:' + fc.getPrivKeyExternalSourceName();
+            $log.error(msg);
+            return cb(msg);
         }
-        return root._signWithLedger(txp, cb);
       } else {
         return fc.signTxProposal(txp, function(err, signedTxp) {
           root.lockFC();

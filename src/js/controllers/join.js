@@ -47,8 +47,8 @@ angular.module('copayApp.controllers').controller('joinController',
  
       if (form.hwLedger.$modelValue) {
         self.ledger = true;
-        // TODO account
-        ledger.getInfoForNewWallet(0, function(err, lopts) {
+        // TODO account / network
+        ledger.getInfoForNewWallet(0, opts.networkName, function(err, lopts) {
           self.ledger = false;
           if (err) {
             self.error = err;
