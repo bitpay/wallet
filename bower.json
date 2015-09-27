@@ -7,23 +7,20 @@
     "bitcore"
   ],
   "dependencies": {
-    "angular": "~1.3.13",
-    "angular-foundation": "*",
-    "angular-qrcode": "~5.1.0",
-    "angular-gettext": "~2.0.5",
-    "animate.css": "3.4.0",
-    "foundation": "zurb/bower-foundation#~5.5.1",
-    "foundation-icon-fonts": "*",
-    "ng-lodash": "~0.2.0",
-    "angular-moment": "0.10.1",
-    "moment": "2.10.3",
+    "angular": "1.4.6",
     "angular-bitcore-wallet-client": "0.4.4",
-    "angular-ui-router": "~0.2.13",
-    "qrcode-decoder-js": "*",
-    "fastclick": "*",
-    "angular-ui-switch": "~0.1.0"
-  },
-  "resolutions": {
-    "qrcode-generator": "0.0.1"
+    "angular-foundation": "0.7.0",
+    "angular-gettext": "2.1.0",
+    "angular-moment": "0.10.3",
+    "angular-qrcode": "monospaced/angular-qrcode#~6.0.3",
+    "angular-ui-router": "0.2.15",
+    "angular-ui-switch": "0.1.1",
+    "animate.css": "3.4.0",
+    "fastclick": "1.0.6",
+    "foundation": "5.5.2",
+    "foundation-icon-fonts": "*",
+    "moment": "2.10.6",
+    "ng-lodash": "0.2.3",
+    "qrcode-decoder-js": "*"
   }
 }
