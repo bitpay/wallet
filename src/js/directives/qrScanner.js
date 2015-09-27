@@ -61,7 +61,12 @@ angular.module('copayApp.directives')
               };
 
               var _scanStop = function() {
-                if (localMediaStream && localMediaStream.stop) localMediaStream.stop();
+                if (localMediaStream && localMediaStream.active) {
+                  var localMediaStreamTrack = localMediaStream.getTracks();
+                  for (var i = 0; i < localMediaStreamTrack.length; i++) {
+                    localMediaStreamTrack[i].stop();
+                  }
+                }
                 localMediaStream = null;
                 video.src = '';
               };
