@@ -871,7 +871,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   this.signAndBroadcast = function(txp, cb) {
     self.confirmTx(txp, function() {
       var fc = profileService.focusedClient;
-      this._setOngoingForSigning();
+      self._setOngoingForSigning();
       profileService.signTxProposal(txp, function(err, signedTx) {
         self.setOngoingProcess();
         if (err) {
