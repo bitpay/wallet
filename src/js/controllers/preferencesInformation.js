@@ -5,6 +5,7 @@ angular.module('copayApp.controllers').controller('preferencesInformation',
 
     var fc = profileService.focusedClient;
     var c = fc.credentials;
+    var basePath = profileService.getUtils().PATHS.BASE_ADDRESS_DERIVATION[c.derivationStrategy][c.network];
 
     $scope.walletName = c.walletName;
     $scope.walletId = c.walletId;
@@ -27,6 +28,7 @@ angular.module('copayApp.controllers').controller('preferencesInformation',
         i = 0,
         e = addrs.pop();
       while (i++ < 10 && e) {
+        e.path = basePath + '/' + e.path;
         last10.push(e);
         e = addrs.pop();
       }
