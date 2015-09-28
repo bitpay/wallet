@@ -51,7 +51,6 @@ angular.module('copayApp.services')
             opts.extendedPublicKey = data.xpubkey;
             opts.externalSource = 'trezor';
             opts.externalIndex = account;
-            console.log('[trezor.js.51:opts:]', opts); //TODO
             return callback(null, opts);
           });
         }, 5000);
@@ -60,52 +59,77 @@ angular.module('copayApp.services')
 
 
     root.signTx = function(txp, account, callback) {
+      console.log('[trezor.js.66:txp:]', txp); //TODO
+
+      var inputs = [],
+        outputs = [];
+      var tmpOutputs = [];
+
       if (txp.type != 'simple')
-        return callback('Only simple TXs are supported in TREZOR');
+        return callback('Only TXPs type SIMPLE are supported in TREZOR');
 
-      console.log('[trezor.js.90:txp:]', txp); //TODO
+      var toScriptType = 'PAYTOADDRESS';
+      if (txp.toAddress.charAt(0) == '2' || txp.toAddress.charAt(0) == '3')
+        toScriptType = 'PAYTOSCRIPTHASH';
+
+
+      // Add to
+      tmpOutputs.push({
+        address: txp.toAddress,
+        amount: txp.amount,
+        script_type: toScriptType,
+      });
+
+
+
       if (txp.addressType == 'P2PKH') {
-        var tx = bwcService.getUtils().buildTx(txp);
 
-        // spend one change output
-        var inputs = lodash.map(txp.inputs, function(i){
+        var inAmount = 0;
+        inputs = lodash.map(txp.inputs, function(i) {
           var pathArr = i.path.split('/');
-console.log('[trezor.js.72:pathArr:]',pathArr); //TODO
-          var n = [44 | 0x80000000, 0 | 0x80000000, account | 0x80000000, parseInt(pathArr[1]) , parseInt(pathArr[2])];
-console.log('[trezor.js.74]', n); //TODO
+          var n = [44 | 0x80000000, 0 | 0x80000000, account | 0x80000000, parseInt(pathArr[1]), parseInt(pathArr[2])];
+          inAmount += i.satoshis;
           return {
             address_n: n,
             prev_index: i.vout,
             prev_hash: i.txid,
           };
         });
-console.log('[trezor.js.68:inputs:]',inputs); //TODO
 
-        var pathArr = txp.changeAddress.path.split('/');
-console.log('[trezor.js.82:pathArr:]',pathArr); //TODO
-        var n = [44 | 0x80000000, 0 | 0x80000000, account | 0x80000000, parseInt(pathArr[1]) , parseInt(pathArr[2])];
-        // send to 1 address output and one change output
-        var outputs = [{
-          address_n: n,
-          amount: txp.amount - txp.fee,
-          script_type: 'PAYTOADDRESS'
-        }, {
-          address: txp.toAddress, 
-          amount: txp.amount,
-          script_type: 'PAYTOADDRESS'
-        }];
-console.log('[trezor.js.84:outputs:]',outputs); //TODO
+        var change = inAmount - txp.fee - txp.amount;
+        if (change > 0) {
+          var pathArr = txp.changeAddress.path.split('/');
+          var n = [44 | 0x80000000, 0 | 0x80000000, account | 0x80000000, parseInt(pathArr[1]), parseInt(pathArr[2])];
 
-        TrezorConnect.signTx(inputs, outputs, function(result) {
-          console.log('[trezor.js.78:result:]', result); //TODO
-          callback(result);
-        });
+          tmpOutputs.push({
+            address_n: n,
+            amount: change,
+            script_type: 'PAYTOADDRESS'
+          });
+        }
+
       } else {
-        var msg = 'P2SH wallets are not supported with TREZOR';
-        $log.error(msg);
-        return callback(msg);
+        $log.error('TODO: multisig');
       }
-    }
+
+      // Shuffle outputs for improved privacy
+      if (tmpOutputs.length > 1) {
+        lodash.each(txp.outputOrder, function(order) {
+          outputs[order] = tmpOutputs.shift();
+        });
+
+        if (tmpOutputs.length) 
+          return cb("Error creating transaction: tmpOutput order");
+      } else {
+        outputs = tmpOutputs;
+      }
+
+
+      $log.debug('Signing with TREZOR', inputs, outputs);
+      TrezorConnect.signTx(inputs, outputs, function(result) {
+        callback(result);
+      });
+    };
 
     root._getPath = function(account) {
       return "44'/0'/" + account + "'";

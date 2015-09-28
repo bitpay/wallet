@@ -552,8 +552,9 @@ console.log('[profileService.js.239:walletClient:]',walletClient); //TODO
       $log.info('Requesting Ledger Chrome app to sign the transaction');
 
       ledger.signTx(txp, 0, function(result) {
+        $log.debug('Ledger response',result);
         if (!result.success)
-          return cb(result);
+          return cb(result.message || result.error);
 
         txp.signatures = lodash.map(result.signatures, function(s) {
           return s.substring(0, s.length - 2);
@@ -568,13 +569,11 @@ console.log('[profileService.js.239:walletClient:]',walletClient); //TODO
       $log.info('Requesting Trezor  to sign the transaction');
 
       trezor.signTx(txp, 0, function(result) {
-console.log('[profileService.js.570:result:]',result); //TODO
+        $log.debug('Trezor response',result);
         if (!result.success)
-          return cb(result);
+          return cb(result.error || result);
 
-        txp.signatures = lodash.map(result.signatures, function(s) {
-          return s.substring(0, s.length - 2);
-        });
+        txp.signatures = result.signatures;
         return fc.signTxProposal(txp, cb);
       });
     };
