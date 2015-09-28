@@ -28,7 +28,7 @@ angular.module('copayApp.controllers').controller('preferencesInformation',
         i = 0,
         e = addrs.pop();
       while (i++ < 10 && e) {
-        e.path = basePath + '/' + e.path;
+        e.path = basePath + '/' + e.path.substring(2);
         last10.push(e);
         e = addrs.pop();
       }
@@ -64,7 +64,7 @@ angular.module('copayApp.controllers').controller('preferencesInformation',
         var body = 'Copay Wallet' + fc.walletName + ' Addresses\n  Only Main Addresses are  shown.\n\n';
         body += '\n\n';
         body += addrs.map(function(v) {
-          return addrs.address, addrs.path, formatDate(addrs.createdOn);
+        return addrs.address, basePath + '/' + addrs.path.substring(2), formatDate(addrs.createdOn);
         }).join('\n');
 
         var properties = {
