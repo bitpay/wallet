@@ -72,6 +72,7 @@ angular.module('copayApp.services')
           var pathArr = i.path.split('/');
 console.log('[trezor.js.72:pathArr:]',pathArr); //TODO
           var n = [44 | 0x80000000, 0 | 0x80000000, account | 0x80000000, parseInt(pathArr[1]) , parseInt(pathArr[2])];
+console.log('[trezor.js.74]', n); //TODO
           return {
             address_n: n,
             prev_index: i.vout,
