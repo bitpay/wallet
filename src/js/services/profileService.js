@@ -276,7 +276,7 @@ console.log('[profileService.js.239:walletClient:]',walletClient); //TODO
       root._seedWallet(opts, function(err, walletClient) {
         if (err) return cb(err);
 
-        walletClient.joinWallet(opts.secret, opts.myName || 'me', function(err) {
+        walletClient.joinWallet(opts.secret, opts.myName || 'me', {}, function(err) {
           if (err) return bwsError.cb(err, gettext('Could not join wallet'), cb);
 
           root.profile.credentials.push(JSON.parse(walletClient.export()));
