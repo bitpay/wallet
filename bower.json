@@ -11,7 +11,7 @@
     "angular-bitcore-wallet-client": "0.4.4",
     "angular-foundation": "0.7.0",
     "angular-gettext": "2.1.0",
-    "angular-moment": "0.10.3",
+    "angular-moment": "0.10.1",
     "angular-qrcode": "monospaced/angular-qrcode#~6.0.3",
     "angular-ui-router": "0.2.15",
     "angular-ui-switch": "0.1.1",
@@ -19,7 +19,7 @@
     "fastclick": "1.0.6",
     "foundation": "5.5.2",
     "foundation-icon-fonts": "*",
-    "moment": "2.10.6",
+    "moment": "2.10.3",
     "ng-lodash": "0.2.3",
     "qrcode-decoder-js": "*"
   }
