@@ -1,14 +1,14 @@
 'use strict';
 
 angular.module('copayApp.directives')
-    .directive('qrScanner', ['$rootScope', '$timeout', '$modal', 'isCordova',
-      function($rootScope, $timeout, $modal, isCordova) {
+    .directive('qrScanner', ['$rootScope', '$timeout', '$modal', 'isCordova', 'gettextCatalog',
+      function($rootScope, $timeout, $modal, isCordova, gettextCatalog) {
 
         var controller = function($scope) {
 
           $scope.cordovaOpenScanner = function() {
             window.ignoreMobilePause = true;
-            window.plugins.spinnerDialog.show(null, 'Preparing camera...', true);
+            window.plugins.spinnerDialog.show(null, gettextCatalog.getString('Preparing camera...'), true);
             $timeout(function() {
               cordova.plugins.barcodeScanner.scan(
                   function onSuccess(result) {
@@ -61,7 +61,12 @@ angular.module('copayApp.directives')
               };
 
               var _scanStop = function() {
-                if (localMediaStream && localMediaStream.stop) localMediaStream.stop();
+                if (localMediaStream && localMediaStream.active) {
+                  var localMediaStreamTrack = localMediaStream.getTracks();
+                  for (var i = 0; i < localMediaStreamTrack.length; i++) {
+                    localMediaStreamTrack[i].stop();
+                  }
+                }
                 localMediaStream = null;
                 video.src = '';
               };
