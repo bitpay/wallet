@@ -5,8 +5,16 @@
 </div>
 
 
-
 <div class="content p20v" ng-controller="wordsController as wordsC">
+
+
+  <div class="box-notification" ng-show="wordsC.error">
+    <span class="text-warning">
+    {{wordsC.error|translate}}
+    </span>
+  </div>
+
+
 
   <div ng-show="wordsC.mnemonicWords">
     <div class="row"  ng-show="index.n==1">
@@ -46,7 +54,7 @@
     </div>
   </div>
  
-  <div class="row m20t" ng-show="!wordsC.mnemonicWords">
+  <div class="row m20t" ng-show="!wordsC.mnemonicWords && !wordsC.credentialsEncrypted">
     <div class="columns size-14 text-gray text-center" translate>
         Wallet seed not available. You can still export it from Advanced &gt; Export.
     </div>

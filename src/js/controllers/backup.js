@@ -1,12 +1,13 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('wordsController',
-  function($rootScope, $scope, $timeout, profileService, go, gettext, confirmDialog, notification) {
+  function($rootScope, $scope, $timeout, profileService, go, gettext, confirmDialog, notification, bwsError, $log) {
 
     var msg = gettext('Are you sure you want to delete the backup words?');
     var successMsg = gettext('Backup words deleted');
-
     this.show = false;
+
+    var self = this;
 
     this.toggle = function() {
       this.show = !this.show;
@@ -32,13 +33,40 @@ angular.module('copayApp.controllers').controller('wordsController',
       });
     };
 
+
+    $scope.$on('$destroy', function() {
+      profileService.lockFC();
+    });
+
+
+    function setWords(words) {
+      if (words) {
+        self.mnemonicWords = words.split(/[\u3000\s]+/);
+        self.mnemonicHasPassphrase = fc.mnemonicHasPassphrase();
+        self.useIdeograms = words.indexOf("\u3000") >= 0;
+      }
+    };
+
     var fc = profileService.focusedClient;
-    var words = fc.getMnemonic();
+    try {
+      setWords(fc.getMnemonic());
+    } catch (e) {
+      if (e.message && e.message.match(/encrypted/) && fc.isPrivKeyEncrypted()) {
+        self.credentialsEncrypted = true;
 
-    if (words) {
-      this.mnemonicWords = words.split(/[\u3000\s]+/);
-      this.mnemonicHasPassphrase = fc.mnemonicHasPassphrase();
-      this.useIdeograms = words.indexOf("\u3000") >= 0;
+        $timeout(function(){
+          $scope.$apply();
+        }, 1);
+
+        profileService.unlockFC(function(err) {
+          if (err) {
+            self.error = bwsError.msg(err, gettext('Could not decrypt'));
+            $log.warn('Error decrypting credentials:',self.error); //TODO
+            return;
+          }
+          self.credentialsEncrypted = false;
+          setWords(fc.getMnemonic());
+        });
+      } 
     }
-
   });
