@@ -18,6 +18,12 @@
   margin: 0 auto;
 }
 
+.qr-scanner-input {
+  position: absolute;
+  top: 5px;
+  right: 0;
+}
+
 h1, h2, h3, h4, h5, h6 {
   color: #2C3E50;
 }

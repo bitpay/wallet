@@ -63,18 +63,9 @@
 
           <div class="input">
             <input id="secret" type="text" placeholder="{{'Paste invitation here'|translate}}" name="secret" ng-model="secret" wallet-secret required>
-            <div ng-hide="showScanner || disableScanner">
-              <a class="postfix text-right" ng-click="join.openScanner()"><i class="icon-scan size-18">&nbsp;</i></a>
+            <div class="qr-scanner-input">
+              <qr-scanner on-scan="join.onQrCodeScanned(data)"></qr-scanner>
             </div>
-            <div ng-show="showScanner">
-              <a class="postfix button warning" ng-click="cancelScanner()"><i class="fi-x">&nbsp;</i></a>
-            </div>
-          </div>
-
-          <div id="scanner"
-            class="row"
-            ng-if="showScanner"
-            ng-include="'views/includes/scanner.html'">
           </div>
 
           <a class="button outline light-gray tiny expand" ng-click="join.hideAdv=!join.hideAdv">
