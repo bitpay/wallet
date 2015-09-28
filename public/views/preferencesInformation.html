@@ -90,13 +90,15 @@
 
 
     <ul class="no-bullet m0 size-14" ng-show="index.balanceByAddress">
-    <h4 class="title m0" translate>Balance By Address</h4>
-      <li class="line-b p20 enable_text_select"  ng-repeat="a in index.balanceByAddress">
-        {{a.address}} 
-        <div class="text-gray text-right">
-          {{(a.amount/1e8).toFixed(8)}} BTC 
-        </div>
-      </li>
+      <div ng-if="index.balanceByAddress[0]">
+        <h4 class="title m0" translate>Balance By Address</h4>
+        <li class="line-b p20 enable_text_select"  ng-repeat="a in index.balanceByAddress">
+          {{a.address}} 
+          <div class="text-gray text-right">
+            {{(a.amount/1e8).toFixed(8)}} BTC 
+          </div>
+        </li>
+      </div>
     </ul>
 
 
