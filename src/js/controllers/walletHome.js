@@ -816,7 +816,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     var fc = profileService.focusedClient;
     self.setOngoingProcess();
     var ModalInstanceCtrl = function($scope, $modalInstance) {
-      $scope.txp = utilService.processTx(txp);
+      $scope.txp = txFormatService.processTx(txp);
       $scope.settings = config;
       $scope.color = fc.backgroundColor;
 
