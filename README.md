@@ -64,6 +64,23 @@ Then visit `localhost:3000` in your browser.
 - Install Xcode 6.1 (or newer)
 - Run `make ios-prod`
 
+#### Notes for Xcode 7.0 (ATS support)
+
+Before start Copay from Xcode, add these lines to "Custom iOS Target Properties":
+
+```
+<key>NSAppTransportSecurity</key>
+ <dict>
+  <key>NSAllowsArbitraryLoads</key>
+  <true/>
+ </dict>
+```
+
+![Example](http://i.stack.imgur.com/nGw3j.png)
+
+
+App Transport Security (ATS) enforces best practices in the secure connections between an app and its back end. [Read complete documentation](https://developer.apple.com/library/prerelease/ios/releasenotes/General/WhatsNewIniOS/Articles/iOS9.html).
+
 ### Windows Phone
 
 - Install Visual Studio 2013 (or newer)
