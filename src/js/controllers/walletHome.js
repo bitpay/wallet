@@ -1021,30 +1021,40 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
     var satToUnit = 1 / this.unitToSatoshi;
 
-    uri = sanitizeUri(uri);
-
-    if (!bitcore.URI.isValid(uri)) {
-      return uri;
-    }
-    var parsed = new bitcore.URI(uri);
-
-    var addr = parsed.address ? parsed.address.toString() : '';
-    var message = parsed.message;
-
-    var amount = parsed.amount ?
-      (parsed.amount.toFixed(0) * satToUnit).toFixed(this.unitDecimals) : 0;
-
-
-    if (parsed.r) {
-      this.setFromPayPro(parsed.r, function(err) {
-        if (err && addr && amount) {
-          self.setForm(addr, amount, message);
-          return addr;
+    // URI extensions for Payment Protocol with non-backwards-compatible request
+    if ((/^bitcoin:\?r=[\w+]/).exec(uri)) {
+      uri = decodeURIComponent(uri.replace('bitcoin:?r=', ''));
+      this.setFromPayPro(uri, function(err) {
+        if (err) {
+          return err;
         }
-      });
+      }); 
     } else {
-      this.setForm(addr, amount, message);
-      return addr;
+      uri = sanitizeUri(uri);
+
+      if (!bitcore.URI.isValid(uri)) {
+        return uri;
+      }
+      var parsed = new bitcore.URI(uri);
+
+      var addr = parsed.address ? parsed.address.toString() : '';
+      var message = parsed.message;
+
+      var amount = parsed.amount ?
+        (parsed.amount.toFixed(0) * satToUnit).toFixed(this.unitDecimals) : 0;
+
+
+      if (parsed.r) {
+        this.setFromPayPro(parsed.r, function(err) {
+          if (err && addr && amount) {
+            self.setForm(addr, amount, message);
+            return addr;
+          }
+        });
+      } else {
+        this.setForm(addr, amount, message);
+        return addr;
+      }
     }
 
   };
