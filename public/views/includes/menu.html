@@ -6,10 +6,10 @@
         <a></a>
     </div>
 
-    <menu-toggle ng-show="index.menu.length > 6"></menu-toggle>
+    <menu-toggle ng-show="index.menu.length > 6"/>
 </div>
 
-<div ng-if="!index.notAuthorized" class="bottom-bar row collapse">
+<div class="bottom-bar row collapse">
     <div ng-class="{ 'medium-10 small-10 columns': index.menu.length == 5 }">
         <div class="row collapse">
             <div class="medium-{{index.menuItemSize}} small-{{index.menuItemSize}} columns text-center bottombar-item"
@@ -17,7 +17,7 @@
               <span ng-include="'views/includes/menu-item.html'"/>
             </div>
 
-            <menu-toggle ng-show="index.menu.length > 6"></menu-toggle>
+            <menu-toggle ng-show="index.menu.length > 6"/>
         </div>
     </div>
 
