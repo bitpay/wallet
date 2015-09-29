@@ -182,7 +182,7 @@
     receive
 
     -->
-    <div id="receive" class="receive tab-view" ng-if="!index.notAuthorized">
+    <div id="receive" class="receive tab-view">
 
       <div ng-show="index.needsBackup && !home.skipBackup" class="p60t row text-center">
         <div class="text-warning text-bold m15b">
@@ -280,7 +280,7 @@
     send
 
     -->
-    <div id="send" class="send tab-view" ng-if="!index.notAuthorized">
+    <div id="send" class="send tab-view">
       <div>
         <h4 class="title m0">
 
@@ -439,7 +439,7 @@
     history
 
     -->
-    <div id="history" class="history tab-view" ng-if="!index.notAuthorized">
+    <div id="history" class="history tab-view">
       <div class="row m20t" ng-show="!index.txHistory[0] && !index.updatingTxHistory">
         <div class="large-12 columns">
           <div class="oh text-center">
