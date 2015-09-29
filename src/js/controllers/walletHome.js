@@ -1019,21 +1019,12 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       return newUri;
     };
 
-    function backwardCompatible(uri) {
-      var regex = /^bitcoin:\?r=[\w+]/;
-      var match = regex.exec(uri);
-      if (!match || match.length === 0) {
-        return false;
-      } else {
-        return decodeURIComponent(uri.replace('bitcoin:?r=', ''));
-      }
-    }
-
-    var backwardCompatibleUri = backwardCompatible(uri);
     var satToUnit = 1 / this.unitToSatoshi;
 
-    if (backwardCompatibleUri) {
-      this.setFromPayPro(backwardCompatibleUri, function(err) {
+    // URI extensions for Payment Protocol with non-backwards-compatible request
+    if ((/^bitcoin:\?r=[\w+]/).exec(uri)) {
+      uri = decodeURIComponent(uri.replace('bitcoin:?r=', ''));
+      this.setFromPayPro(uri, function(err) {
         if (err) {
           return err;
         }
