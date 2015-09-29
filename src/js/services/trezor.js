@@ -58,8 +58,8 @@ angular.module('copayApp.services')
     };
 
 
-    root.signTx = function(txp, account, callback) {
-      console.log('[trezor.js.66:txp:]', txp); //TODO
+    root.signTx = function(xPubKeys, txp, account, callback) {
+      console.log('[trezor.js.66:txp:]', xPubKeys, txp); //TODO
 
       var inputs = [],
         outputs = [];
@@ -109,7 +109,65 @@ angular.module('copayApp.services')
         }
 
       } else {
-        $log.error('TODO: multisig');
+
+        // P2SH Wallet
+        var inAmount = 0;
+
+        var sigs = xPubKeys.map(function(v) {
+          return '';
+        });
+
+
+        inputs = lodash.map(txp.inputs, function(i) {
+          var pathArr = i.path.split('/');
+          var n = [44 | 0x80000000, 0 | 0x80000000, account | 0x80000000, parseInt(pathArr[1]), parseInt(pathArr[2])];
+//          var np = [parseInt(pathArr[1]), parseInt(pathArr[2])];
+          inAmount += i.satoshis;
+
+          var pubkeys = lodash(xPubKeys.map(function(v) {
+            return {
+              node: v,
+              address_n: n,
+            };
+          })).reverse().value();
+console.log('[trezor.js.121:pubkeys:]',pubkeys); //TODO
+
+          return {
+            address_n: n,
+            prev_index: i.vout,
+            prev_hash: i.txid,
+            script_type: 'SPENDMULTISIG',
+            multisig: {
+              pubkeys: pubkeys,
+              signatures: sigs,
+              m: txp.requiredSignatures,
+            }
+          };
+        });
+
+        var change = inAmount - txp.fee - txp.amount;
+        if (change > 0) {
+          var pathArr = txp.changeAddress.path.split('/');
+          var n = [44 | 0x80000000, 0 | 0x80000000, account | 0x80000000, parseInt(pathArr[1]), parseInt(pathArr[2])];
+
+          var pubkeys = lodash(xPubKeys.map(function(v) {
+            return {
+              node: v,
+              address_n: n,
+            };
+          })).reverse().value();
+
+          tmpOutputs.push({
+            address_n: n,
+            amount: change,
+            script_type: 'PAYTOMULTISIG',
+            multisig: {
+              pubkeys: pubkeys,
+              signatures: sigs,
+              m: txp.requiredSignatures,
+            }
+          });
+        }
       }
 
       // Shuffle outputs for improved privacy
@@ -118,7 +176,7 @@ angular.module('copayApp.services')
           outputs[order] = tmpOutputs.shift();
         });
 
-        if (tmpOutputs.length) 
+        if (tmpOutputs.length)
           return cb("Error creating transaction: tmpOutput order");
       } else {
         outputs = tmpOutputs;
