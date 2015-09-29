@@ -1040,6 +1040,10 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
   font-size: 14px;
 }
 
+.bg-gray {
+  background-color: #F1F3F5;
+}
+
 .bg-circle {
   background: #253547;
   border-radius: 100%;
