@@ -56,9 +56,11 @@
       <li class="line-b p10"  ng-repeat="pk in pubKeys">
         <div class="row">
           <div class="small-3 columns">Copayer {{$index}}</div>
-          
           <div class="small-9 columns oh enable_text_select text-gray" style="text-overflow:ellipsis">
             {{pk}} 
+            <span class="right size-12" ng-if="$index == 0">
+              ({{basePath}})
+            </span>
           </div>
         </div>
       </li>
