@@ -5,7 +5,7 @@ angular.module('copayApp.controllers').controller('preferencesInformation',
 
     var fc = profileService.focusedClient;
     var c = fc.credentials;
-    var basePath = 'xpub'
+    var base = 'xpub'
 
     $scope.walletName = c.walletName;
     $scope.walletId = c.walletId;
@@ -28,7 +28,7 @@ angular.module('copayApp.controllers').controller('preferencesInformation',
         i = 0,
         e = addrs.pop();
       while (i++ < 10 && e) {
-        e.path = basePath + e.path.substring(1);
+        e.path = base + e.path.substring(1);
         last10.push(e);
         e = addrs.pop();
       }
@@ -64,7 +64,7 @@ angular.module('copayApp.controllers').controller('preferencesInformation',
         var body = 'Copay Wallet' + fc.walletName + ' Addresses\n  Only Main Addresses are  shown.\n\n';
         body += '\n\n';
         body += addrs.map(function(v) {
-          return addrs.address, basePath + addrs.path.substring(1), formatDate(addrs.createdOn);
+          return addrs.address, base + addrs.path.substring(1), formatDate(addrs.createdOn);
         }).join('\n');
 
         var properties = {
