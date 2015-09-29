@@ -268,6 +268,7 @@ console.log('[profileService.js.239:walletClient:]',walletClient); //TODO
           return cb(gettext('Cannot join the same wallet more that once'));
         }
       } catch (ex) {
+        $log.debug(ex);
         return cb(gettext('Bad wallet invitation'));
       }
       opts.networkName = walletData.network;
@@ -568,7 +569,11 @@ console.log('[profileService.js.239:walletClient:]',walletClient); //TODO
       var fc = root.focusedClient;
       $log.info('Requesting Trezor  to sign the transaction');
 
-      trezor.signTx(txp, 0, function(result) {
+console.log('[profileService.js.570] xPub:', fc.credentials.xPubKey); //TODO
+      var xPubKeys  = lodash.pluck(fc.credentials.publicKeyRing,'xPubKey');
+console.log('[profileService.js.571:xPubKeys:]',xPubKeys); //TODO
+
+      trezor.signTx(xPubKeys, txp, 0, function(result) {
         $log.debug('Trezor response',result);
         if (!result.success)
           return cb(result.error || result);

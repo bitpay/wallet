@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('createController',
-  function($scope, $rootScope, $location, $timeout, $log, lodash, go, profileService, configService, isMobile, isCordova, gettext, isChromeApp, ledger, trezor) {
+  function($scope, $rootScope, $location, $timeout, $log, lodash, go, profileService, configService,  isCordova, gettext, ledger, trezor, isMobile) {
 
     var self = this;
     var defaults = configService.getDefaults();
@@ -40,10 +40,6 @@ angular.module('copayApp.controllers').controller('createController',
 
     this.setTotalCopayers = function(tc) {
       updateRCSelect(tc);
-    };
-
-    this.isChromeApp = function() {
-      return isChromeApp;
     };
 
     this.create = function(form) {
