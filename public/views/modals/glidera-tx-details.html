@@ -15,8 +15,10 @@
 <div class="modal-content fix-modals-touch">
   <div class="header-modal bg-gray text-center">
     <div class="p20">
-      <i class="icon-buy-btc size-60" ng-show="tx.type == 'BUY'"></i>
-      <i class="icon-sell-btc size-60" ng-show="tx.type == 'SELL'"></i>
+      <img src="../img/bought.svg" alt="bought" width="80" ng-show="tx.type == 'BUY' && tx.status == 'COMPLETE'">
+      <img src="../img/bought-pending.svg" alt="bought" width="65" ng-show="tx.type == 'BUY' && tx.status == 'PROCESSING'">
+      <img src="../img/sold.svg" alt="bought" width="80" ng-show="tx.type == 'SELL' && tx.status == 'COMPLETE'">
+      <img src="../img/sold-pending.svg" alt="bought" width="65" ng-show="tx.type == 'SELL' && tx.status == 'PROCESSING'">
     </div>
     <span ng-show="tx.type == 'BUY'">Bought</span>
     <span ng-show="tx.type == 'SELL'">Sold</span>
