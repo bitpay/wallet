@@ -5,13 +5,15 @@ angular.module('copayApp.controllers').controller('preferencesInformation',
 
     var fc = profileService.focusedClient;
     var c = fc.credentials;
-    var base = 'xpub'
+    var base = 'xpub';
+    var basePath = profileService.getUtils().PATHS.BASE_ADDRESS_DERIVATION[c.derivationStrategy][c.network];
 
     $scope.walletName = c.walletName;
     $scope.walletId = c.walletId;
     $scope.network = c.network;
     $scope.addressType = c.addressType || 'P2SH';
     $scope.derivationStrategy = c.derivationStrategy || 'BIP45';
+    $scope.basePath = basePath;
     $scope.M = c.m;
     $scope.N = c.n;
     $scope.pubKeys = lodash.pluck(c.publicKeyRing, 'xPubKey');
