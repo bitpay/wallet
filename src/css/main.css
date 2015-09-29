@@ -496,6 +496,12 @@ input[type=number]::-webkit-outer-spin-button {
   border: 1px solid #4B6178;
 }
 
+.label.outline.gray {
+  font-size: 90%;
+  background: transparent;
+  border: 1px solid #A9B6C2;
+}
+
 .label.success {background-color: #1ABC9C;}
 .label.alert {background-color: #ED4A43;}
 .label.gray {background-color: #4B6178;}

@@ -140,8 +140,8 @@
       <li ng-show="index.glideraPermissions.transact &&
       (index.glideraStatus.userCanBuy || index.glideraStatus.userCanTransact)" class="line-b line-t p20 pointer"
       ng-click="$root.go('buyGlidera')">
-        <i class="icon-buy-btc size-24 m5r"></i>
-        <span>Buy Bitcoin</span>
+        <img src="../img/buy-bitcoin.svg" alt="buy bitcoin" width="40">
+        <span class="m10 text-normal text-bold">Buy Bitcoin</span>
         <span class="right text-gray">
           <i class="icon-arrow-right3 size-24 right"></i>
         </span>
@@ -150,11 +150,11 @@
       ng-show="index.glideraPermissions.transact &&
       (index.glideraStatus.userCanSell || index.glideraStatus.userCanTransact)"
       ng-click="$root.go('sellGlidera')">
-      <i class="icon-sell-btc size-24 m5r"></i>
-      <span>Sell Bitcoin</span>
-      <span class="right text-gray">
-        <i class="icon-arrow-right3 size-24 right"></i>
-      </span>
+        <img src="../img/sell-bitcoin.svg" alt="buy bitcoin" width="40">
+        <span class="m10 text-normal text-bold">Sell Bitcoin</span>
+        <span class="right text-gray">
+          <i class="icon-arrow-right3 size-24 right"></i>
+        </span>
       </li>
     </ul>
 
@@ -168,28 +168,29 @@
         ng-click="glidera.openTxModal(index.glideraToken, tx)"
         class="row collapse last-transactions-content">
         <div class="large-3 medium-3 small-3 columns">
-          <span class="label tu radius" ng-show="tx.type == 'BUY'"
-            ng-style="{'background-color':index.backgroundColor}">Bought</span>
-          <span class="label tu gray radius" ng-show="tx.type == 'SELL'">Sold</span>
+          <img src="../img/bought.svg" alt="bought" width="39" ng-show="tx.type == 'BUY' && tx.status == 'COMPLETE'">
+          <img src="../img/bought-pending.svg" alt="bought" width="33" ng-show="tx.type == 'BUY' && tx.status == 'PROCESSING'">
+          <img src="../img/sold.svg" alt="bought" width="39" ng-show="tx.type == 'SELL' && tx.status == 'COMPLETE'">
+          <img src="../img/sold-pending.svg" alt="bought" width="33" ng-show="tx.type == 'SELL' && tx.status == 'PROCESSING'">
         </div>
 
         <div class="large-4 medium-4 small-4 columns">
-          <span class="size-16">
+          <span class="size-14 text-bold">
             {{tx.subtotal|currency:'':2}} {{tx.currency}}
           </span>
         </div>
         <div class="large-4 medium-4 small-4 columns text-right">
           <div class="m5t size-12 text-gray">
-            <time ng-if="tx.transactionDate">{{tx.transactionDate | amTimeAgo}}</time>
+            <div ng-show="tx.status == 'COMPLETE'">
+              <time ng-if="tx.transactionDate">{{tx.transactionDate | amTimeAgo}}</time>
+            </div>
+            <div ng-show="tx.status == 'PROCESSING'">
+              <span class="label outline gray radius text-gray text-info" ng-if="tx.status == 'PROCESSING'">Processing</span>
+            </div>
           </div>
         </div>
         <div class="large-1 medium-1 small-1 columns text-right">
           <i class="icon-arrow-right3 size-18"></i>
-        </div>
-        <div class="size-12 text-gray columns m5t">
-          <span class="text-success" ng-if="tx.status == 'COMPLETE'">Completed</span>
-          <span class="text-info" ng-if="tx.status == 'PROCESSING'">Processing</span>
-          <span class="text-warning" ng-if="tx.status == 'ERROR'">Error</span>
         </div>
       </div>
     </div>
