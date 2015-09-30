@@ -44,11 +44,13 @@ angular.element(document).ready(function() {
       // Back button event
       document.addEventListener('backbutton', function() {
         var loc = window.location;
-        if (loc.toString().match(/index\.html#\/$/)) {
-          navigator.app.exitApp();
-        } else {
-          window.location = '#/cordova/walletHome';
+        var isHome = loc.toString().match(/index\.html#\/$/) ? 'true' : '';
+        if (!window.ignoreMobilePause) {
+          window.location = '#/cordova/backbutton/'+isHome;
         }
+        setTimeout(function() {
+          window.ignoreMobilePause = false;
+        }, 100);
       }, false);
 
       document.addEventListener('menubutton', function() {
@@ -68,7 +70,6 @@ angular.element(document).ready(function() {
       startAngular();
     }, false);
   } else {
-
     try {
       window.handleOpenURL = handleBitcoinURI;
       window.plugins.webintent.getUri(handleBitcoinURI);

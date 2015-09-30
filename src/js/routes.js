@@ -444,13 +444,20 @@ angular
         }
       })
       .state('cordova', {
-        url: '/cordova/:status',
+        url: '/cordova/:status/:isHome',
         views: {
           'main': {
-            controller: function($rootScope, $stateParams, $timeout, go) {
+            controller: function($rootScope, $state, $stateParams, $timeout, go, isCordova) {
               switch ($stateParams.status) {
                 case 'resume':
-                  $rootScope.$emit('Local/Resume');
+                  $rootScope.$emit('Local/Resume'); 
+                  break;
+                case 'backbutton':
+                  if (isCordova && $stateParams.isHome == 'true' && !$rootScope.modalOpened) {
+                    navigator.app.exitApp();
+                  } else {
+                    $rootScope.$emit('closeModal');
+                  }
                   break;
               };
               $timeout(function() {
@@ -527,7 +534,6 @@ angular
     var cachedTransitionState, cachedBackPanel;
 
     $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
-
 
       if (!profileService.profile && toState.needProfile) {
 
