@@ -104,6 +104,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   var confirm_msg = gettextCatalog.getString('Confirm');
 
   $scope.openCopayersModal = function(copayers, copayerId) {
+    $rootScope.modalOpened = true;
     var fc = profileService.focusedClient;
 
     var ModalInstanceCtrl = function($scope, $modalInstance) {
@@ -120,7 +121,13 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       controller: ModalInstanceCtrl,
     });
 
+    var disableCloseModal = $rootScope.$on('closeModal', function() {
+      modalInstance.dismiss('cancel');
+    });
+
     modalInstance.result.finally(function() {
+      $rootScope.modalOpened = false;
+      disableCloseModal();
       var m = angular.element(document.getElementsByClassName('reveal-modal'));
       m.addClass('slideOutDown');
     });
@@ -128,9 +135,11 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
 
   $scope.openWalletsModal = function(wallets) {
+    $rootScope.modalOpened = true;
 
     var ModalInstanceCtrl = function($scope, $modalInstance) {
-      $scope.wallets = wallets;
+      $scope.wallets = wallets; 
+
       $scope.cancel = function() {
         $modalInstance.dismiss('cancel');
       };
@@ -161,7 +170,13 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       controller: ModalInstanceCtrl,
     });
 
+    var disableCloseModal = $rootScope.$on('closeModal', function() {
+      modalInstance.dismiss('cancel');
+    });
+
     modalInstance.result.finally(function() {
+      $rootScope.modalOpened = false;
+      disableCloseModal();
       var m = angular.element(document.getElementsByClassName('reveal-modal'));
       m.addClass('slideOutDown');
     });
@@ -177,6 +192,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   // isGlidera flag is a security mesure so glidera status is not
   // only determined by the tx.message
   this.openTxpModal = function(tx, copayers, isGlidera) {
+    $rootScope.modalOpened = true;
     var fc = profileService.focusedClient;
     var refreshUntilItChanges = false;
     var currentSpendUnconfirmed = $scope.currentSpendUnconfirmed;
@@ -380,7 +396,13 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       controller: ModalInstanceCtrl,
     });
 
+    var disableCloseModal = $rootScope.$on('closeModal', function() {
+      modalInstance.dismiss('cancel');
+    });
+
     modalInstance.result.finally(function() {
+      $rootScope.modalOpened = false;
+      disableCloseModal();
       var m = angular.element(document.getElementsByClassName('reveal-modal'));
       m.addClass('slideOutRight');
     });
@@ -447,6 +469,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   };
 
   this.openCustomizedAmountModal = function(addr) {
+    $rootScope.modalOpened = true;
     var self = this;
     var fc = profileService.focusedClient;
     var ModalInstanceCtrl = function($scope, $modalInstance) {
@@ -536,7 +559,13 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       controller: ModalInstanceCtrl,
     });
 
+    var disableCloseModal = $rootScope.$on('closeModal', function() {
+      modalInstance.dismiss('cancel');
+    });
+
     modalInstance.result.finally(function() {
+      $rootScope.modalOpened = false;
+      disableCloseModal();
       var m = angular.element(document.getElementsByClassName('reveal-modal'));
       m.addClass('slideOutDown');
     });
@@ -926,6 +955,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   };
 
   this.openPPModal = function(paypro) {
+    $rootScope.modalOpened = true;
     var ModalInstanceCtrl = function($scope, $modalInstance) {
       var fc = profileService.focusedClient;
       var satToUnit = 1 / self.unitToSatoshi;
@@ -947,7 +977,13 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       controller: ModalInstanceCtrl,
     });
 
+    var disableCloseModal = $rootScope.$on('closeModal', function() {
+      modalInstance.dismiss('cancel');
+    });
+
     modalInstance.result.finally(function() {
+      $rootScope.modalOpened = false;
+      disableCloseModal();
       var m = angular.element(document.getElementsByClassName('reveal-modal'));
       m.addClass('slideOutDown');
     });
@@ -1090,6 +1126,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   };
 
   this.openTxModal = function(btx) {
+    $rootScope.modalOpened = true;
     var self = this;
     var fc = profileService.focusedClient;
     var ModalInstanceCtrl = function($scope, $modalInstance) {
@@ -1129,7 +1166,13 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       controller: ModalInstanceCtrl,
     });
 
+    var disableCloseModal = $rootScope.$on('closeModal', function() {
+      modalInstance.dismiss('cancel');
+    });
+
     modalInstance.result.finally(function() {
+      $rootScope.modalOpened = false;
+      disableCloseModal();
       var m = angular.element(document.getElementsByClassName('reveal-modal'));
       m.addClass('slideOutRight');
     });
