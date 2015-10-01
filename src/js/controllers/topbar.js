@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('topbarController', function($rootScope, go) {
+angular.module('copayApp.controllers').controller('topbarController', function($scope, $rootScope, go) {
 
   this.onQrCodeScanned = function(data) {
     $rootScope.$emit('dataScanned', data);
