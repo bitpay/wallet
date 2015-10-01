@@ -18,6 +18,8 @@ webkitbuilds/*
 !webkitbuilds/setup-win64.iss
 !webkitbuilds/favicon.ico
 !webkitbuilds/.desktop
+!webkitbuilds/build-osx.sh
+!webkitbuilds/Background.png
 
 # chrome extensions
 browser-extensions/chrome/copay-chrome-extension
