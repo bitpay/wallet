@@ -203,7 +203,7 @@ _:-ms-fullscreen, :root .main {
   height: 75px;
   position: absolute;
   top: -33px;
-  font-size: 35px;
+  font-size: 2.2rem;
   border: 3px solid #fff;
   background: #1ABC9C;
   margin: 0;
@@ -301,7 +301,7 @@ a.missing-copayers {
 .sidebar .avatar-wallet, .payment-uri .avatar-wallet, .modal-content .avatar-wallet {
   background-color: #2C3E50;
   color: #fff;
-  font-size: 20px;
+  font-size: 1.4rem;
   font-weight: 700;
   margin-right: 15px;
   text-align: center;
@@ -561,6 +561,11 @@ to prevent collapsing during animation*/
 }
 
 /*** modals ***/
+
+.hideModal {
+  visibility: none !important;
+  display: none !important;
+}
 
 .reveal-modal-bg {
   display: none !important;

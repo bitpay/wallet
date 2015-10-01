@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('copayersController',
-  function($scope, $rootScope, $timeout, $log, $modal, profileService, go, notification, isCordova, gettext, gettextCatalog) {
+  function($scope, $rootScope, $timeout, $log, $modal, profileService, go, notification, isCordova, gettext, gettextCatalog, animationService) {
     var self = this;
 
     var delete_msg = gettextCatalog.getString('Are you sure you want to delete this wallet?');
@@ -37,9 +37,15 @@ angular.module('copayApp.controllers').controller('copayersController',
 
       var modalInstance = $modal.open({
         templateUrl: 'views/modals/confirmation.html',
-        windowClass: 'full',
+        windowClass: animationService.modalAnimated.slideUp,
         controller: ModalInstanceCtrl
       });
+
+      modalInstance.result.finally(function() {
+        var m = angular.element(document.getElementsByClassName('reveal-modal'));
+        m.addClass(animationService.modalAnimated.slideOutDown);
+      });
+
       modalInstance.result.then(function(ok) {
         if (ok) {
           _deleteWallet();
