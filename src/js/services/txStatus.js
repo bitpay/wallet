@@ -51,13 +51,13 @@ angular.module('copayApp.services').factory('txStatus', function($modal, lodash,
     };
     var modalInstance = $modal.open({
       templateUrl: root._templateUrl(type, txp),
-      windowClass: 'full popup-tx-status closeModalAnimation',
+      windowClass: 'popup-tx-status full',
       controller: ModalInstanceCtrl,
     });
 
     modalInstance.result.finally(function() {
       var m = angular.element(document.getElementsByClassName('reveal-modal'));
-      m.addClass('animated fadeOutUp');
+      m.addClass('hideModal');
     });
   };
 

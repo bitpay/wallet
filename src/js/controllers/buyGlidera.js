@@ -1,20 +1,13 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('buyGlideraController', 
-  function($scope, $timeout, $modal, profileService, addressService, glideraService, bwsError, lodash, isChromeApp) {
+  function($scope, $timeout, $modal, profileService, addressService, glideraService, bwsError, lodash, isChromeApp, animationService) {
     
     var self = this;
     this.show2faCodeInput = null;
     this.error = null;
     this.success = null;
     this.loading = null; 
-
-    // DISABLE ANIMATION ON CHROMEAPP
-    if (isChromeApp) {
-      var animatedSlideUp = 'full';
-    } else {
-      var animatedSlideUp = 'full animated slideInUp';
-    }
 
     this.otherWallets = function(testnet) {
       var network = testnet ? 'testnet' : 'livenet';
@@ -57,13 +50,13 @@ angular.module('copayApp.controllers').controller('buyGlideraController',
 
       var modalInstance = $modal.open({
         templateUrl: 'views/modals/wallets.html',
-          windowClass: animatedSlideUp,
+          windowClass: animationService.modalAnimated.slideUp,
           controller: ModalInstanceCtrl,
       });
 
       modalInstance.result.finally(function() {
         var m = angular.element(document.getElementsByClassName('reveal-modal'));
-        m.addClass('slideOutDown');
+        m.addClass(animationService.modalAnimated.slideOutDown);
       });
 
       modalInstance.result.then(function(obj) {
