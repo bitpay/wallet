@@ -11,10 +11,10 @@ module.exports = function(grunt) {
         command: 'rm -Rf bower_components node_modules'
       },
       osx64: {
-        command: 'hdiutil create  -megabytes 150 -volname Copay -srcfolder webkitbuilds/copay/osx64/copay.app/ -ov -format UDZO webkitbuilds/copay-osx64.dmg'
+        command: 'webkitbuilds/build-osx.sh osx64'
       },
       osx32: {
-        command: 'hdiutil create  -megabytes 150 -volname Copay -srcfolder webkitbuilds/copay/osx32/copay.app/ -ov -format UDZO webkitbuilds/copay-osx32.dmg'
+        command: 'webkitbuilds/build-osx.sh osx32'
       }
     },
     watch: {
