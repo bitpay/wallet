@@ -3,6 +3,7 @@ angular.module('copayApp.controllers').controller('paperWalletController',
     self = this;
     var fc = profileService.focusedClient;
     var rawTx;
+    if (isCordova) self.message = "Decrypting a paper wallet could take around 5 minutes on this device. please be patient and keep the app open."
 
     self.onQrCodeScanned = function(data) {
       $scope.privateKey = data;
