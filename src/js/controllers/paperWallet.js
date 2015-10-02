@@ -1,5 +1,5 @@
 angular.module('copayApp.controllers').controller('paperWalletController',
-  function($scope, $http, $timeout, profileService, go, addressService, bitcore) {
+  function($scope, $http, $timeout, configService, profileService, go, addressService, bitcore) {
     self = this;
     var fc = profileService.focusedClient;
     var rawTx;
@@ -9,12 +9,13 @@ angular.module('copayApp.controllers').controller('paperWalletController',
     }
 
     self.createTx = function(privateKey, passphrase) {
-      if (privateKey.charAt(0) != 6) {
+      if (privateKey.charAt(0) != '6') {
         var isValidKey = self.checkPrivateKey(privateKey);
 
         if (!isValidKey) return;
       }
 
+      var config = configService.getSync().wallet.settings;
       self.error = null;
       self.scanning = true;
       $timeout(function() {
@@ -24,7 +25,7 @@ angular.module('copayApp.controllers').controller('paperWalletController',
           if (err)
             self.error = err.toString();
           else {
-            self.balance = (utxos / 1e8).toFixed(8);
+            self.balance = profileService.formatAmount(utxos) + ' ' + config.unitName;
             rawTx = rawtx;
           }
 
