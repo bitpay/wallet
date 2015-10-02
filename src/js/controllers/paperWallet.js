@@ -1,6 +1,5 @@
 angular.module('copayApp.controllers').controller('paperWalletController',
-  function($scope, $http, $timeout, profileService, go, addressService) {
-
+  function($scope, $http, $timeout, $rootScope, profileService, go, addressService, isCordova, gettext) {
     self = this;
     var fc = profileService.focusedClient;
     var rawTx;
@@ -10,17 +9,26 @@ angular.module('copayApp.controllers').controller('paperWalletController',
     }
 
     self.createTx = function(privateKey, passphrase) {
-      if (!privateKey) self.error = "Enter privateKey or scann for one";
-      self.getRawTx(privateKey, passphrase, function(err, rawtx, utxos) {
-        if (err) self.error = err.toString();
-        else {
-          self.balance = (utxos / 1e8).toFixed(8);
-          rawTx = rawtx;
-        }
-        $timeout(function() {
-          $scope.$apply();
-        }, 1);
-      });
+      self.error = null;
+      self.scanning = true;
+
+      $timeout(function() {
+        self.getRawTx(privateKey, passphrase, function(err, rawtx, utxos) {
+          self.scanning = false;
+
+          if (err)
+            self.error = err.toString();
+          else {
+            self.balance = (utxos / 1e8).toFixed(8);
+            rawTx = rawtx;
+          }
+
+          $timeout(function() {
+            $scope.$apply();
+          }, 1);
+
+        });
+      }, 100);
     };
 
     self.getRawTx = function(privateKey, passphrase, cb) {
@@ -58,12 +66,11 @@ angular.module('copayApp.controllers').controller('paperWalletController',
     };
 
     self.transaction = function() {
-
       self.doTransaction(rawTx).then(function(err, response) {
           self.goHome();
         },
         function(err) {
-          self.error = err;
+          self.error = err.toString();
         });
     };
 
@@ -76,5 +83,4 @@ angular.module('copayApp.controllers').controller('paperWalletController',
         rawtx: rawTx
       });
     };
-
   });
