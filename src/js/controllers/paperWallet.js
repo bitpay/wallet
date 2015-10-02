@@ -3,7 +3,7 @@ angular.module('copayApp.controllers').controller('paperWalletController',
     self = this;
     var fc = profileService.focusedClient;
     var rawTx;
-    self.isCordova = !isCordova;
+    self.isCordova = isCordova;
 
     self.onQrCodeScanned = function(data) {
       $scope.privateKey = data;
