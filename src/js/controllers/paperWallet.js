@@ -1,5 +1,5 @@
 angular.module('copayApp.controllers').controller('paperWalletController',
-  function($scope, $http, profileService, addressService) {
+  function($scope, $http, $timeout, profileService, go, addressService) {
 
     self = this;
     var fc = profileService.focusedClient;
@@ -7,22 +7,19 @@ angular.module('copayApp.controllers').controller('paperWalletController',
 
     self.onQrCodeScanned = function(data) {
       $scope.privateKey = data;
-      console.log(data);
     }
 
     self.createTx = function(privateKey, passphrase) {
-      console.log("entro");
-      console.log(privateKey);
-      console.log(passphrase);
       if (!privateKey) self.error = "Enter privateKey or scann for one";
-      this.getRawTx(privateKey, passphrase, function(err, rawTx, utxos) {
-        console.log(utxos);
-        console.log("creada");
+      self.getRawTx(privateKey, passphrase, function(err, rawtx, utxos) {
         if (err) self.error = err.toString();
         else {
           self.balance = (utxos / 1e8).toFixed(8);
-          rawTx = rawTx;
+          rawTx = rawtx;
         }
+        $timeout(function() {
+          $scope.$apply();
+        }, 1);
       });
     };
 
@@ -39,7 +36,6 @@ angular.module('copayApp.controllers').controller('paperWalletController',
 
               fc.buildTxFromPrivateKey(privateKey, destinationAddress, null, function(err, tx) {
                 if (err) return cb(err);
-                console.log(tx.serialize());
                 return cb(null, tx.serialize(), utxos);
               });
             });
@@ -54,7 +50,6 @@ angular.module('copayApp.controllers').controller('paperWalletController',
 
             fc.buildTxFromPrivateKey(privateKey, destinationAddress, null, function(err, tx) {
               if (err) return cb(err);
-              console.log(tx.serialize());
               return cb(null, tx.serialize(), utxos);
             });
           });
@@ -64,13 +59,16 @@ angular.module('copayApp.controllers').controller('paperWalletController',
 
     self.transaction = function() {
 
-      self.doTransaction(rawTx).then(function(response) {
-          console.log(response); //mostrar pantalla de sent successfully
+      self.doTransaction(rawTx).then(function(err, response) {
+          self.goHome();
         },
         function(err) {
           self.error = err;
-          console.log(err); //mostrar mensaje de error en la pantalla
         });
+    };
+
+    self.goHome = function() {
+      go.walletHome();
     };
 
     self.doTransaction = function(rawTx) {

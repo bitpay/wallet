@@ -1,7 +1,7 @@
 <div
   class="topbar-container"
   ng-include="'views/includes/topbar.html'"
-  ng-init="titleSection='Scan Paper Wallet'; goBackToState = 'preferencesAdvanced';">
+  ng-init="titleSection='Sweep paper wallet'; goBackToState = 'preferencesAdvanced';">
 </div>
 
 <div class="content p20v" ng-controller="paperWalletController as paperWallet">
@@ -24,17 +24,18 @@
       </div>
       <div ng-show="paperWallet.balance">
         <label for="totalBalance">
-          <h2 translate>Total Amount to be recived: {{paperWallet.balance}} BTC</h2>
+          <h2 translate>Funds founds: {{paperWallet.balance}} BTC</h2>
         </label>
       </div>
     </div>
   </div>
   <div class="row">
      <div class="large-12 medium-12 columns" ng-show="paperWallet.balance">
-      <button ng-style="{'background-color':index.backgroundColor}" class="button black round expand" ng-click="paperWallet.transaction()" translate>Accept</button>               
+      <button ng-style="{'background-color':index.backgroundColor}" class="button black round expand" ng-click="paperWallet.transaction()" translate>sweep wallet</button>
+      <span>Funds will be transfered to the wallet: {{index.alias}} </span>               
     </div>
     <div class="large-12 medium-12 columns"  ng-show="!paperWallet.balance" >
-      <button ng-style="{'background-color':index.backgroundColor}" class="button black round expand" ng-click="paperWallet.createTx(privateKey, passphrase)" translate>Create transaction</button>               
+      <button ng-style="{'background-color':index.backgroundColor}" class="button black round expand" ng-click="paperWallet.createTx(privateKey, passphrase)" translate>Scan Wallet Funds</button>               
     </div>
   </div>
 </div>
