@@ -81,12 +81,21 @@ angular.module('copayApp.controllers').controller('paperWalletController',
     };
 
     self.transaction = function() {
-      self.doTransaction(rawTx).then(function(err, response) {
+      self.error = null;
+      self.sending = true;
+      $timeout(function() {
+        self.doTransaction(rawTx).then(function(err, response) {
+          self.sending = false;
           self.goHome();
         },
         function(err) {
+          self.sending = false;
           self.error = err.toString();
+          $timeout(function() {
+            $scope.$apply();
+          }, 1);
         });
+      }, 100);
     };
 
     self.goHome = function() {
