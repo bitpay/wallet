@@ -1,5 +1,5 @@
 angular.module('copayApp.controllers').controller('paperWalletController',
-  function($scope, $http, $timeout, $rootScope, profileService, go, addressService, isCordova, gettext) {
+  function($scope, $http, $timeout, profileService, go, addressService) {
     self = this;
     var fc = profileService.focusedClient;
     var rawTx;
@@ -12,7 +12,6 @@ angular.module('copayApp.controllers').controller('paperWalletController',
     self.createTx = function(privateKey, passphrase) {
       self.error = null;
       self.scanning = true;
-
       $timeout(function() {
         self.getRawTx(privateKey, passphrase, function(err, rawtx, utxos) {
           self.scanning = false;
@@ -27,7 +26,6 @@ angular.module('copayApp.controllers').controller('paperWalletController',
           $timeout(function() {
             $scope.$apply();
           }, 1);
-
         });
       }, 100);
     };
