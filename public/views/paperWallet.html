@@ -7,6 +7,20 @@
 <div class="content p20v" ng-controller="paperWalletController as paperWallet">
   <div class="row">
     <div class="large-12 medium-12 columns">
+
+      <div class="onGoingProcess" ng-show="paperWallet.scanning">
+        <div class="onGoingProcess-content" ng-style="{'background-color':index.backgroundColor}">
+          <div class="spinner">
+            <div class="rect1"></div>
+            <div class="rect2"></div>
+            <div class="rect3"></div>
+            <div class="rect4"></div>
+            <div class="rect5"></div>
+          </div>
+          <span translate>Scanning wallet funds...</span>
+        </div>
+      </div>
+      
       <div class="text-warning size-14 m20b" ng-show="paperWallet.error">
         <i class="fi-alert size-12"></i>
         <span translate>{{paperWallet.error}}</span>
@@ -31,11 +45,22 @@
   </div>
   <div class="row">
      <div class="large-12 medium-12 columns" ng-show="paperWallet.balance">
-      <button ng-style="{'background-color':index.backgroundColor}" class="button black round expand" ng-click="paperWallet.transaction()" translate>sweep wallet</button>
-      <span>Funds will be transfered to the wallet: {{index.alias}} </span>               
+      <button 
+        ng-style="{'background-color':index.backgroundColor}" 
+        class="button black round expand" 
+        ng-click="paperWallet.transaction()" 
+        translate>sweep wallet
+      </button>
+      <span>Funds will be transfered to the wallet: {{index.alias || index.walletName}} </span>               
     </div>
     <div class="large-12 medium-12 columns"  ng-show="!paperWallet.balance" >
-      <button ng-style="{'background-color':index.backgroundColor}" class="button black round expand" ng-click="paperWallet.createTx(privateKey, passphrase)" translate>Scan Wallet Funds</button>               
+      <button
+        ng-disabled="paperWallet.scanning || !privateKey"
+        ng-style="{'background-color':index.backgroundColor}" 
+        class="button black round expand" 
+        ng-click="paperWallet.createTx(privateKey, passphrase)" 
+        translate>Scan Wallet Funds
+      </button>               
     </div>
   </div>
 </div>
