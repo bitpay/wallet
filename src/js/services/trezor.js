@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.services')
-  .factory('trezor', function($log, $timeout, bwcService, gettext, lodash) {
+  .factory('trezor', function($log, $timeout, bwcService, gettext, lodash, bitcore) {
     var root = {};
 
     var SETTLE_TIME = 3000;
@@ -59,8 +59,28 @@ angular.module('copayApp.services')
       });
     };
 
+    root._orderPubKeys = function(xPub, np) {
+      var xPubKeys = lodash.clone(xPub);
+      var path = lodash.clone(np);
+      path.unshift('m');
+      path = path.join('/');
+
+      var keys = lodash.map(xPubKeys, function(x) {
+        var pub = (new bitcore.HDPublicKey(x)).derive(path).publicKey;
+        return {
+          xpub: x,
+          pub: pub.toString('hex'),
+        };
+      });
+
+      var sorted = lodash.sortBy(keys, function(x) {
+        return x.pub;
+      });
+
+      return lodash.pluck(sorted, 'xpub');
+    };
+
     root.signTx = function(xPubKeys, txp, account, callback) {
-      console.log('[trezor.js.66:txp:]', xPubKeys, txp); //TODO
 
       var inputs = [],
         outputs = [];
@@ -126,12 +146,13 @@ angular.module('copayApp.services')
 
           inAmount += i.satoshis;
 
-          var pubkeys = xPubKeys.map(function(v) {
+          var orderedPubKeys = root._orderPubKeys(xPubKeys, np);
+          var pubkeys = lodash(orderedPubKeys.map(function(v) {
             return {
               node: v,
               address_n: np,
             };
-          });
+          }));
 
           return {
             address_n: n,
@@ -152,12 +173,13 @@ angular.module('copayApp.services')
           var n = [44 | 0x80000000, 0 | 0x80000000, account | 0x80000000, parseInt(pathArr[1]), parseInt(pathArr[2])];
           var np = n.slice(3);
 
-          var pubkeys = xPubKeys.map(function(v) {
+          var orderedPubKeys = root._orderPubKeys(xPubKeys, np);
+          var pubkeys = lodash(orderedPubKeys.map(function(v) {
             return {
               node: v,
               address_n: np,
             };
-          });
+          }));
 
           // 6D
           // 6C
