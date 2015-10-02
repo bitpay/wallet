@@ -1,6 +1,24 @@
-* Support for backup phrases (BIP39)
-* Support for BIP44
-* Support for non-multisig addresses for personal wallets (1-of-1)
-* Advanced wallet details
-* Ledger support for multisig wallets
-* Minor bug fixes
+Major updates
+=============
+
+* Support for iOS 9
+* Trezor hardware wallet support
+* Paper wallet support
+
+Minor updates
+=============
+
+* New splash to install Copay in OSX
+* Fix animations
+* Handle back-button on Android devices if a modal is opened
+* Fix beep sound after barcodescanner on Android devices
+* Fix derivation path on Advanced Information
+* Add non-backward compatibility URI for payment protocol
+* Hide menu bottom if wallet is not authorized
+* Fix wording on the backup page
+* Fix translation strings
+* Updates the packages dependencies with bower
+* Support for iOS 9
+* Fix mnemonic with private key encrypted
+* Fix time in proposal transactions
+* Fix autofocus to password input in Request Password for Spending Funds modal
