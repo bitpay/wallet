@@ -1,13 +1,9 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('joinController',
-  function($scope, $rootScope, $timeout, go, isMobile, notification, profileService, isCordova, isChromeApp, $modal, gettext, lodash, ledger) {
+  function($scope, $rootScope, $timeout, go, notification, profileService, isCordova, $modal, gettext, lodash, ledger, trezor) {
 
     var self = this;
-
-    this.isChromeApp = function() {
-      return isChromeApp;
-    };
 
     this.onQrCodeScanned = function(data) {
       $scope.secret = data;
@@ -45,11 +41,13 @@ angular.module('copayApp.controllers').controller('joinController',
         return;
       }
  
-      if (form.hwLedger.$modelValue) {
-        self.ledger = true;
-        // TODO account
-        ledger.getInfoForNewWallet(0, function(err, lopts) {
-          self.ledger = false;
+      if (form.hwLedger.$modelValue || form.hwTrezor.$modelValue) {
+        self.hwWallet = form.hwLedger.$modelValue ? 'Ledger'  : 'TREZOR';
+        var src= form.hwLedger.$modelValue ? ledger  : trezor;
+
+        var account = 0;
+        src.getInfoForNewWallet(account, function(err, lopts) {
+          self.hwWallet = false;
           if (err) {
             self.error = err;
             $scope.$apply();

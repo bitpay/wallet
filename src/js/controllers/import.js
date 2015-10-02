@@ -1,12 +1,11 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('importController',
-  function($scope, $rootScope, $location, $timeout, $log, profileService, notification, go, isMobile, isCordova, sjcl, gettext, lodash, ledger) {
+  function($scope, $rootScope, $location, $timeout, $log, profileService, notification, go, isMobile, sjcl, gettext, lodash, ledger, trezor) {
 
     var self = this;
 
     this.isSafari = isMobile.Safari();
-    this.isCordova = isCordova;
     var reader = new FileReader();
 
     window.ignoreMobilePause = true;
@@ -182,6 +181,44 @@ angular.module('copayApp.controllers').controller('importController',
       _importMnemonic(words, opts);
     };
 
+    this.importTrezor = function(form) {
+      var self = this;
+      if (form.$invalid) {
+        this.error = gettext('There is an error in the form');
+        $timeout(function() {
+          $scope.$apply();
+        });
+        return;
+      }
+      self.hwWallet = 'Trezor';
+      // TODO account
+      trezor.getInfoForNewWallet(0, function(err, lopts) {
+        self.hwWallet = false;
+        if (err) {
+          self.error = err;
+          $scope.$apply();
+          return;
+        }
+        lopts.externalSource = 'trezor';
+        self.loading = true;
+        $log.debug('Import opts', lopts);
+        profileService.importExtendedPublicKey(lopts, function(err, walletId) {
+          self.loading = false;
+          if (err) {
+            self.error = err;
+            return $timeout(function() {
+              $scope.$apply();
+            });
+          }
+          $rootScope.$emit('Local/WalletImported', walletId);
+          notification.success(gettext('Success'), gettext('Your wallet has been imported correctly'));
+          go.walletHome();
+        });
+      }, 100);
+    };
+
+
+
     this.importLedger = function(form) {
       var self = this;
       if (form.$invalid) {
@@ -191,16 +228,15 @@ angular.module('copayApp.controllers').controller('importController',
         });
         return;
       }
-      self.ledger = true;
+      self.hwWallet = 'Ledger';
       // TODO account
       ledger.getInfoForNewWallet(0, function(err, lopts) {
-        self.ledger = false;
+        self.hwWallet = false;
         if (err) {
           self.error = err;
           $scope.$apply();
           return;
         }
-        lopts.externalIndex = $scope.externalIndex;
         lopts.externalSource = 'ledger';
         self.loading = true;
         $log.debug('Import opts', lopts);
