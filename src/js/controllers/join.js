@@ -42,8 +42,8 @@ angular.module('copayApp.controllers').controller('joinController',
       }
  
       if (form.hwLedger.$modelValue || form.hwTrezor.$modelValue) {
-        self.hwWallet = form.hwLedger.$modelValue ? 'Leger'  : 'TREZOR';
-        var src= form.hwLedger.$modelValue ? leger  : trezor;
+        self.hwWallet = form.hwLedger.$modelValue ? 'Ledger'  : 'TREZOR';
+        var src= form.hwLedger.$modelValue ? ledger  : trezor;
 
         var account = 0;
         src.getInfoForNewWallet(account, function(err, lopts) {

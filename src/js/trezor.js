@@ -49,15 +49,18 @@ window.TrezorConnect = (function () {
          * @param {boolean} success
          * @param {?string} error
          * @param {?string} xpubkey  serialized extended public key
+         * @param {?string} path     BIP32 serializd path of the key
          */
 
         /**
          * Load BIP32 extended public key by path.
          *
          * Path can be specified either in the string form ("m/44'/1/0") or as
-         * raw integer array.
+         * raw integer array. In case you omit the path, user is asked to select
+         * a BIP32 account to export, and the result contains m/44'/0'/x' node
+         * of the account.
          *
-         * @param {string|array<number>} path
+         * @param {?(string|array<number>)} path
          * @param {function(XPubKeyResult)} callback
          */
         this.getXPubKey = function (path, callback) {
@@ -265,6 +268,7 @@ window.TrezorConnect = (function () {
         };
 
         this.send = function (value, callback) {
+console.log('[trezor.js.270:value:]',value); //TODO
             if (waiting === null) {
                 waiting = callback;
                 target.postMessage(value, origin);
