@@ -73,9 +73,9 @@ angular.module('copayApp.controllers').controller('createController',
       }
 
       if (form.hwLedger.$modelValue || form.hwTrezor.$modelValue) {
-        self.hwWallet = form.hwLedger.$modelValue ? 'Leger'  : 'TREZOR';
+        self.hwWallet = form.hwLedger.$modelValue ? 'Ledger'  : 'TREZOR';
 
-        var src= form.hwLedger.$modelValue ? leger  : trezor;
+        var src= form.hwLedger.$modelValue ? ledger  : trezor;
 
         // TODO : account 
         var account = 0;

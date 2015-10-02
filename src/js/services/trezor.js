@@ -4,6 +4,8 @@ angular.module('copayApp.services')
   .factory('trezor', function($log, $timeout, bwcService, gettext, lodash) {
     var root = {};
 
+    var SETTLE_TIME = 3000;
+
     root.ENTROPY_INDEX_PATH = "0xb11e/";
     root.callbacks = {};
 
@@ -53,10 +55,9 @@ angular.module('copayApp.services')
             opts.externalIndex = account;
             return callback(null, opts);
           });
-        }, 5000);
+        }, SETTLE_TIME);
       });
     };
-
 
     root.signTx = function(xPubKeys, txp, account, callback) {
       console.log('[trezor.js.66:txp:]', xPubKeys, txp); //TODO
@@ -121,16 +122,16 @@ angular.module('copayApp.services')
         inputs = lodash.map(txp.inputs, function(i) {
           var pathArr = i.path.split('/');
           var n = [44 | 0x80000000, 0 | 0x80000000, account | 0x80000000, parseInt(pathArr[1]), parseInt(pathArr[2])];
-//          var np = [parseInt(pathArr[1]), parseInt(pathArr[2])];
+          var np = n.slice(3);
+
           inAmount += i.satoshis;
 
-          var pubkeys = lodash(xPubKeys.map(function(v) {
+          var pubkeys = xPubKeys.map(function(v) {
             return {
               node: v,
-              address_n: n,
+              address_n: np,
             };
-          })).reverse().value();
-console.log('[trezor.js.121:pubkeys:]',pubkeys); //TODO
+          });
 
           return {
             address_n: n,
@@ -149,13 +150,26 @@ console.log('[trezor.js.121:pubkeys:]',pubkeys); //TODO
         if (change > 0) {
           var pathArr = txp.changeAddress.path.split('/');
           var n = [44 | 0x80000000, 0 | 0x80000000, account | 0x80000000, parseInt(pathArr[1]), parseInt(pathArr[2])];
+          var np = n.slice(3);
 
-          var pubkeys = lodash(xPubKeys.map(function(v) {
+          var pubkeys = xPubKeys.map(function(v) {
             return {
               node: v,
-              address_n: n,
+              address_n: np,
             };
-          })).reverse().value();
+          });
+
+          // 6D
+          // 6C
+          // Addr: 3HFkHufeSaqJtqby8G9RiajaL6HdQDypRT
+          //
+          //
+          //(sin reverse)
+          // 6C
+          // 6D
+          // Addr: 3KCPRDXpmovs9nFvJHJjjsyoBDXXUZ2Frg
+          //  "asm" : "2 03e53b2f69e1705b253029aae2591fbd0e799ed8071c8588a545b2d472dd12df88 0379797abc21d6f82c7f0aba78fd3888d8ae75ec56a10509b20feedbeac20285d9 2 OP_CHECKMULTISIG",
+          // 
 
           tmpOutputs.push({
             address_n: n,
@@ -172,6 +186,7 @@ console.log('[trezor.js.121:pubkeys:]',pubkeys); //TODO
 
       // Shuffle outputs for improved privacy
       if (tmpOutputs.length > 1) {
+        outputs = new Array(tmpOutputs.length);
         lodash.each(txp.outputOrder, function(order) {
           outputs[order] = tmpOutputs.shift();
         });
@@ -182,6 +197,9 @@ console.log('[trezor.js.121:pubkeys:]',pubkeys); //TODO
         outputs = tmpOutputs;
       }
 
+      // Prevents: Uncaught DataCloneError: Failed to execute 'postMessage' on 'Window': An object could not be cloned.
+      inputs = JSON.parse(JSON.stringify(inputs));
+      outputs = JSON.parse(JSON.stringify(outputs));
 
       $log.debug('Signing with TREZOR', inputs, outputs);
       TrezorConnect.signTx(inputs, outputs, function(result) {
