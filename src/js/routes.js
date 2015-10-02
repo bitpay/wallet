@@ -44,7 +44,7 @@ angular
                     v = JSON.stringify(v);
                 }
                 // Trim output in mobile
-                if ( window.cordova ) {
+                if (window.cordova) {
                   v = v.toString();
                   if (v.length > 1000) {
                     v = v.substr(0, 997) + '...';
@@ -85,7 +85,7 @@ angular
         }
       });
 
-      $stateProvider
+    $stateProvider
       .state('translators', {
         url: '/translators',
         walletShouldBeComplete: true,
@@ -275,27 +275,27 @@ angular
       })
 
     .state('preferencesGlidera', {
-        url: '/preferencesGlidera',
-        walletShouldBeComplete: true,
-        needProfile: true,
-        views: {
-          'main': {
-            templateUrl: 'views/preferencesGlidera.html'
-          },
-        }
-      })
+      url: '/preferencesGlidera',
+      walletShouldBeComplete: true,
+      needProfile: true,
+      views: {
+        'main': {
+          templateUrl: 'views/preferencesGlidera.html'
+        },
+      }
+    })
 
     .state('preferencesAdvanced', {
-        url: '/preferencesAdvanced',
-        templateUrl: 'views/preferencesAdvanced.html',
-        walletShouldBeComplete: true,
-        needProfile: true,
-        views: {
-          'main': {
-            templateUrl: 'views/preferencesAdvanced.html'
-          },
-        }
-      })
+      url: '/preferencesAdvanced',
+      templateUrl: 'views/preferencesAdvanced.html',
+      walletShouldBeComplete: true,
+      needProfile: true,
+      views: {
+        'main': {
+          templateUrl: 'views/preferencesAdvanced.html'
+        },
+      }
+    })
       .state('preferencesColor', {
         url: '/preferencesColor',
         templateUrl: 'views/preferencesColor.html',
@@ -309,16 +309,16 @@ angular
       })
 
     .state('preferencesAltCurrency', {
-        url: '/preferencesAltCurrency',
-        templateUrl: 'views/preferencesAltCurrency.html',
-        walletShouldBeComplete: true,
-        needProfile: true,
-        views: {
-          'main': {
-            templateUrl: 'views/preferencesAltCurrency.html'
-          },
-        }
-      })
+      url: '/preferencesAltCurrency',
+      templateUrl: 'views/preferencesAltCurrency.html',
+      walletShouldBeComplete: true,
+      needProfile: true,
+      views: {
+        'main': {
+          templateUrl: 'views/preferencesAltCurrency.html'
+        },
+      }
+    })
       .state('preferencesAlias', {
         url: '/preferencesAlias',
         templateUrl: 'views/preferencesAlias.html',
@@ -376,18 +376,18 @@ angular
           },
         }
       })
- 
-      .state('about', {
-        url: '/about',
-        templateUrl: 'views/preferencesAbout.html',
-        walletShouldBeComplete: true,
-        needProfile: true,
-        views: {
-          'main': {
-            templateUrl: 'views/preferencesAbout.html'
-          },
-        }
-      })
+
+    .state('about', {
+      url: '/about',
+      templateUrl: 'views/preferencesAbout.html',
+      walletShouldBeComplete: true,
+      needProfile: true,
+      views: {
+        'main': {
+          templateUrl: 'views/preferencesAbout.html'
+        },
+      }
+    })
       .state('logs', {
         url: '/logs',
         templateUrl: 'views/preferencesLogs.html',
@@ -407,6 +407,17 @@ angular
         views: {
           'main': {
             templateUrl: 'views/export.html'
+          },
+        }
+      })
+      .state('paperWallet', {
+        url: '/paperWallet',
+        templateUrl: 'views/paperWallet.html',
+        walletShouldBeComplete: true,
+        needProfile: true,
+        views: {
+          'main': {
+            templateUrl: 'views/paperWallet.html'
           },
         }
       })
@@ -435,14 +446,14 @@ angular
       })
 
     .state('add', {
-        url: '/add',
-        needProfile: true,
-        views: {
-          'main': {
-            templateUrl: 'views/add.html'
-          },
-        }
-      })
+      url: '/add',
+      needProfile: true,
+      views: {
+        'main': {
+          templateUrl: 'views/add.html'
+        },
+      }
+    })
       .state('cordova', {
         url: '/cordova/:status/:isHome',
         views: {
@@ -450,7 +461,7 @@ angular
             controller: function($rootScope, $state, $stateParams, $timeout, go, isCordova) {
               switch ($stateParams.status) {
                 case 'resume':
-                  $rootScope.$emit('Local/Resume'); 
+                  $rootScope.$emit('Local/Resume');
                   break;
                 case 'backbutton':
                   if (isCordova && $stateParams.isHome == 'true' && !$rootScope.modalOpened) {
