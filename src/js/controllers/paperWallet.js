@@ -1,15 +1,22 @@
 angular.module('copayApp.controllers').controller('paperWalletController',
-  function($scope, $http, $timeout, profileService, go, addressService, isCordova) {
+  function($scope, $http, $timeout, $rootScope, profileService, go, addressService, isCordova, gettext, bitcore) {
     self = this;
     var fc = profileService.focusedClient;
     var rawTx;
-    self.isCordova = isCordova;
+
+    if (isCordova) self.message = "Decrypting a paper wallet could take around 5 minutes on this device. please be patient and keep the app open."
 
     self.onQrCodeScanned = function(data) {
       $scope.privateKey = data;
     }
 
     self.createTx = function(privateKey, passphrase) {
+      if (privateKey.charAt(0) != 6) {
+        var isValidPrivateKey = self.checkPrivateKey(privateKey);
+
+        if (isValidPrivateKey != true) return self.error = isValidPrivateKey;
+      }
+
       self.error = null;
       self.scanning = true;
       $timeout(function() {
@@ -29,6 +36,15 @@ angular.module('copayApp.controllers').controller('paperWalletController',
         });
       }, 100);
     };
+
+    self.checkPrivateKey = function(privateKey) {
+      try {
+        new bitcore.PrivateKey(privateKey, 'livenet');
+      } catch (err) {
+        return err.toString();
+      }
+      return true;
+    }
 
     self.getRawTx = function(privateKey, passphrase, cb) {
       if (privateKey.charAt(0) == 6) {
