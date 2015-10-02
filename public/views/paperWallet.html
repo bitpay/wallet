@@ -36,6 +36,7 @@
         </label>
         <input id="passphrase" type="password" name="passphrase" placeholder="Passphrase" ng-model="passphrase">
       </div>
+      <p ng-show="paperWallet.message" translate class="size-14 text-gray">{{paperWallet.message}}</p>
       <div ng-show="paperWallet.balance">
         <label for="totalBalance">
           <h2 translate>Funds founds: {{paperWallet.balance}} BTC</h2>
