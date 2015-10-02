@@ -10,9 +10,9 @@ angular.module('copayApp.controllers').controller('paperWalletController',
 
     self.createTx = function(privateKey, passphrase) {
       if (privateKey.charAt(0) != 6) {
-        var isValidPrivateKey = self.checkPrivateKey(privateKey);
+        var isValidKey = self.checkPrivateKey(privateKey);
 
-        if (isValidPrivateKey != true) return self.error = isValidPrivateKey;
+        if (!isValidKey) return;
       }
 
       self.error = null;
@@ -39,7 +39,8 @@ angular.module('copayApp.controllers').controller('paperWalletController',
       try {
         new bitcore.PrivateKey(privateKey, 'livenet');
       } catch (err) {
-        return err.toString();
+        self.error = err.toString();
+        return false;
       }
       return true;
     }
@@ -83,16 +84,16 @@ angular.module('copayApp.controllers').controller('paperWalletController',
       self.sending = true;
       $timeout(function() {
         self.doTransaction(rawTx).then(function(err, response) {
-          self.sending = false;
-          self.goHome();
-        },
-        function(err) {
-          self.sending = false;
-          self.error = err.toString();
-          $timeout(function() {
-            $scope.$apply();
-          }, 1);
-        });
+            self.sending = false;
+            self.goHome();
+          },
+          function(err) {
+            self.sending = false;
+            self.error = err.toString();
+            $timeout(function() {
+              $scope.$apply();
+            }, 1);
+          });
       }, 100);
     };
 
