@@ -24,7 +24,7 @@
   <div ng-show="!paperWallet.balance" class="row">
     <div class="large-12 medium-12 columns">  
       <div class="input">
-        <label for="privateKey"><span>Paper Wallet Private Key</span></label>
+        <label for="privateKey" translate>Paper Wallet Private Key</label>
         <input type="text" placeholder="{{'Paste your paper wallet private key here'|translate}}" ng-model="privateKey" id="privateKey">
         <div class="qr-scanner-input">
           <qr-scanner on-scan="paperWallet.onQrCodeScanned(data)"></qr-scanner>
