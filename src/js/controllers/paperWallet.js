@@ -1,9 +1,8 @@
 angular.module('copayApp.controllers').controller('paperWalletController',
-  function($scope, $http, $timeout, profileService, go, addressService, isCordova, bitcore) {
+  function($scope, $http, $timeout, profileService, go, addressService, bitcore) {
     self = this;
     var fc = profileService.focusedClient;
     var rawTx;
-    self.isCordova = isCordova;
 
     self.onQrCodeScanned = function(data) {
       $scope.privateKey = data;
