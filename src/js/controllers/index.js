@@ -110,8 +110,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       self.updateColor();
       self.updateAlias();
 
-      // DISABLED
-      //self.initGlidera();
+      self.initGlidera();
 
       if (fc.isPrivKeyExternal()) {
         self.needsBackup = false;
@@ -840,8 +839,10 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
   self.initGlidera = function(accessToken) {
     self.glideraEnabled = configService.getSync().glidera.enabled;
-    self.glideraTestnet = configService.getSync().glidera.testnet;
-    var network = self.glideraTestnet ? 'testnet' : 'livenet';
+//    self.glideraTestnet = configService.getSync().glidera.testnet;
+//    var network = self.glideraTestnet ? 'testnet' : 'livenet';
+//    Disabled for testnet
+    var network = 'livenet';
 
     self.glideraToken = null;
     self.glideraError = null;

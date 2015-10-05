@@ -22,6 +22,7 @@
     </div>
     <span ng-show="tx.type == 'BUY'">Bought</span>
     <span ng-show="tx.type == 'SELL'">Sold</span>
+    <b>{{tx.qty}}</b> BTC
     <div class="size-36 m20b">
       {{tx.subtotal|currency:'':2}} {{tx.currency}}
     </div>
