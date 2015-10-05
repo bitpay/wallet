@@ -39,8 +39,9 @@ angular.module('copayApp.services')
       var opts = {};
       root.getEntropySource(account, function(data) {
         if (!data.success) {
-          $log.warn(data.message);
-          return callback(data.message);
+          var err = data.message || data.error || 'TREZOR Error';
+          $log.warn(err);
+          return callback(err);
         }
         opts.entropySource = data.entropySource;
         $log.debug('Waiting TREZOR to settle...');
