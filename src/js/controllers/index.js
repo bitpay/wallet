@@ -842,6 +842,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 //    self.glideraTestnet = configService.getSync().glidera.testnet;
 //    var network = self.glideraTestnet ? 'testnet' : 'livenet';
 //    Disabled for testnet
+    self.glideraTestnet = false;
     var network = 'livenet';
 
     self.glideraToken = null;
