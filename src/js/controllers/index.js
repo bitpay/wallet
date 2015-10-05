@@ -110,8 +110,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       self.updateColor();
       self.updateAlias();
 
-      // DISABLED
-      //self.initGlidera();
+      self.initGlidera();
 
       if (fc.isPrivKeyExternal()) {
         self.needsBackup = false;
@@ -840,8 +839,11 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
   self.initGlidera = function(accessToken) {
     self.glideraEnabled = configService.getSync().glidera.enabled;
-    self.glideraTestnet = configService.getSync().glidera.testnet;
-    var network = self.glideraTestnet ? 'testnet' : 'livenet';
+//    self.glideraTestnet = configService.getSync().glidera.testnet;
+//    var network = self.glideraTestnet ? 'testnet' : 'livenet';
+//    Disabled for testnet
+    self.glideraTestnet = false;
+    var network = 'livenet';
 
     self.glideraToken = null;
     self.glideraError = null;
@@ -851,7 +853,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.glideraTxs = null;
     self.glideraStatus = null;
 
-    if (!self.glideraEnabled || self.isShared) return;
+    if (!self.glideraEnabled) return;
 
     glideraService.setCredentials(network);
 
@@ -1062,6 +1064,11 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
 
   $rootScope.$on('NewBlock', function() {
+    if (self.glideraEnabled) {
+      $timeout(function() {
+        self.updateGlidera();
+      });
+    }
     if (self.pendingAmount) {
       self.updateAll({
         walletStatus: null,

@@ -1,9 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('glideraController', 
-  function($scope, $timeout, $modal, profileService, configService, storageService, glideraService, isChromeApp) {
-      
-    var config = configService.getSync().wallet.settings;
+  function($scope, $timeout, $modal, profileService, configService, storageService, glideraService, isChromeApp, animationService) {
 
     this.getAuthenticateUrl = function() {
       return glideraService.getOauthCodeUrl();
@@ -35,16 +33,9 @@ angular.module('copayApp.controllers').controller('glideraController',
       }, 100);
     };
 
-    // DISABLE ANIMATION ON CHROMEAPP
-    if (isChromeApp) {
-      var animatedSlideRight = 'full';
-    }
-    else {
-      var animatedSlideRight = 'full animated slideInRight';
-    }
-
     this.openTxModal = function(token, tx) {
       var self = this;
+      var config = configService.getSync().wallet.settings;
       var fc = profileService.focusedClient;
       var ModalInstanceCtrl = function($scope, $modalInstance) {
         $scope.tx = tx;
@@ -63,13 +54,13 @@ angular.module('copayApp.controllers').controller('glideraController',
 
       var modalInstance = $modal.open({
         templateUrl: 'views/modals/glidera-tx-details.html',
-          windowClass: animatedSlideRight,
+          windowClass: animationService.modalAnimated.slideRight,
           controller: ModalInstanceCtrl,
       });
 
       modalInstance.result.finally(function() {
         var m = angular.element(document.getElementsByClassName('reveal-modal'));
-        m.addClass('slideOutRight');
+        m.addClass(animationService.modalAnimated.slideOutRight);
       });
     };
 

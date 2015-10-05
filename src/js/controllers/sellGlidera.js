@@ -14,11 +14,31 @@ angular.module('copayApp.controllers').controller('sellGlideraController',
     this.currentFeeLevel = config.wallet.settings.feeLevel || 'normal';
     var fc;
 
-    this.otherWallets = function(testnet) {
+    var otherWallets = function(testnet) {
       var network = testnet ? 'testnet' : 'livenet';
       return lodash.filter(profileService.getWallets(network), function(w) {
         return w.network == network && w.m == 1;
       });
+    };
+
+    this.init = function(testnet) {
+      self.otherWallets = otherWallets(testnet);
+      // Choose focused wallet
+      try {
+        var currentWalletId = profileService.focusedClient.credentials.walletId;
+        lodash.find(self.otherWallets, function(w) {
+          if (w.id == currentWalletId) {
+            $timeout(function() {
+              self.selectedWalletId = w.id;
+              self.selectedWalletName = w.name;
+              fc = profileService.getClient(w.id);
+              $scope.$apply();
+            }, 100);
+          }
+        });
+      } catch(e) {
+        $log.debug(e);
+      };
     };
 
     $scope.openWalletsModal = function(wallets) {
@@ -26,6 +46,7 @@ angular.module('copayApp.controllers').controller('sellGlideraController',
       self.selectedWalletId = null;
       self.selectedWalletName = null;
       var ModalInstanceCtrl = function($scope, $modalInstance) {
+        $scope.type = 'SELL';
         $scope.wallets = wallets;
         $scope.cancel = function() {
           $modalInstance.dismiss('cancel');
@@ -45,7 +66,7 @@ angular.module('copayApp.controllers').controller('sellGlideraController',
       };
 
       var modalInstance = $modal.open({
-        templateUrl: 'views/modals/wallets.html',
+        templateUrl: 'views/modals/glidera-wallets.html',
           windowClass: animationService.modalAnimated.slideUp,
           controller: ModalInstanceCtrl,
       });
