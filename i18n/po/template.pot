@@ -613,7 +613,7 @@ msgid "Funds are locked by pending spend proposals"
 msgstr ""
 
 #: public/views/paperWallet.html
-msgid "Funds founds"
+msgid "Funds found"
 msgstr ""
 
 #: src/js/services/notificationsService.js
