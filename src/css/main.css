@@ -502,6 +502,12 @@ input[type=number]::-webkit-outer-spin-button {
   border: 1px solid #4B6178;
 }
 
+.label.outline.gray {
+  font-size: 90%;
+  background: transparent;
+  border: 1px solid #A9B6C2;
+}
+
 .label.success {background-color: #1ABC9C;}
 .label.alert {background-color: #ED4A43;}
 .label.gray {background-color: #4B6178;}
@@ -1044,6 +1050,10 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
   margin: .5rem 1.3rem;
   padding: 0.3rem 0;
   font-size: 14px;
+}
+
+.bg-gray {
+  background-color: #F1F3F5;
 }
 
 .bg-circle {
