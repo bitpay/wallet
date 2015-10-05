@@ -58,11 +58,21 @@
       <div class="text-center m20v">
         <img src="img/glidera-logo.png" ng-click="index.updateGlidera(index.glideraToken, index.glideraPermissions)" width="200">
       </div>
-      <div class="text-center small-10 small-centered columns" ng-show="!showOauthForm">
+      <div class="text-center small-10 small-centered columns" ng-show="!showOauthForm"> 
         <p class="m10b">You can buy and sell Bitcoin with a US bank account directly in Copay.</p>
-        <p class="text-gray size-12">Connect your Glidera account to get started</p>
 
-        <a class="button m20t light-gray outline round small"
+        <p class="m20t text-gray size-12 text-left">
+          DISCLOSURE.<br>
+          Glidera Inc. (Glidera) is providing the service of buying or selling bitcoins to Copay users.  To enable this
+          service, Glidera has registered with US Treasury Department’s FinCEN as a Money Service Business
+          (#31000042625755).  Users of Copay must agree to the service agreement presented by Glidera prior to obtaining
+          Glidera’s service of buying or selling bitcoins. Service available in U.S. only; (buy & sell) CA, GA, IL, KS,
+          MA, MD, MO, MT, MN, SC, TX; (buy only) AZ, CO, DE, ME, NJ, PA, TN, UT.
+        </p>
+
+        <p class="m20t text-gray size-12">Connect your Glidera account to get started</p>
+
+        <a class="button light-gray outline round small"
           ng-click="$root.openExternalLink(glidera.getAuthenticateUrl(), '_system'); showOauthForm = true">
           Connect to Glidera
         </a>
@@ -175,6 +185,11 @@
         </div>
 
         <div class="large-4 medium-4 small-4 columns">
+          <div class="size-14">
+            <span ng-show="tx.type == 'BUY'">Bought</span>
+            <span ng-show="tx.type == 'SELL'">Sold</span>
+            <b>{{tx.qty}}</b> BTC
+          </div>
           <span class="size-14 text-bold">
             {{tx.subtotal|currency:'':2}} {{tx.currency}}
           </span>
