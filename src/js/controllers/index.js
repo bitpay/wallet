@@ -1064,6 +1064,11 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
 
   $rootScope.$on('NewBlock', function() {
+    if (self.glideraEnabled) {
+      $timeout(function() {
+        self.updateGlidera();
+      });
+    }
     if (self.pendingAmount) {
       self.updateAll({
         walletStatus: null,
