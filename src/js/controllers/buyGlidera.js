@@ -22,6 +22,7 @@ angular.module('copayApp.controllers').controller('buyGlideraController',
       self.selectedWalletName = null;
       self.selectedWalletAddr = null;
       var ModalInstanceCtrl = function($scope, $modalInstance) {
+        $scope.type = 'BUY';
         $scope.wallets = wallets;
         $scope.cancel = function() {
           $modalInstance.dismiss('cancel');
@@ -49,7 +50,7 @@ angular.module('copayApp.controllers').controller('buyGlideraController',
       };
 
       var modalInstance = $modal.open({
-        templateUrl: 'views/modals/wallets.html',
+        templateUrl: 'views/modals/glidera-wallets.html',
           windowClass: animationService.modalAnimated.slideUp,
           controller: ModalInstanceCtrl,
       });
