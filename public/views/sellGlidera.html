@@ -51,12 +51,12 @@
           ng-submit="sell.get2faCode(index.glideraToken)" novalidate>
 
           <div ng-if="index.glideraToken" 
-            ng-init="otherWallets = sell.otherWallets(index.glideraTestnet)"
-            ng-click="openWalletsModal(otherWallets)">
+            ng-init="sell.init(index.glideraTestnet)"
+            ng-click="openWalletsModal(sell.otherWallets)">
             <label>Wallet</label>
             <div class="input">
               <input type="text" id="address" name="address" ng-disabled="sell.selectedWalletId" 
-              ng-attr-placeholder="{{'Choose your destination wallet'}}" 
+              ng-attr-placeholder="{{'Choose your source wallet'}}" 
               ng-model="sell.selectedWalletName" required>
               <a class="postfix size-12 m0 text-gray">
                 <i class="icon-wallet size-18"></i>
