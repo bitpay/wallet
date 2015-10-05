@@ -853,7 +853,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.glideraTxs = null;
     self.glideraStatus = null;
 
-    if (!self.glideraEnabled || self.isShared) return;
+    if (!self.glideraEnabled) return;
 
     glideraService.setCredentials(network);
 
