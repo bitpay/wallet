@@ -9,19 +9,25 @@ angular.module('copayApp.services')
     root.ENTROPY_INDEX_PATH = "0xb11e/";
     root.callbacks = {};
 
+
+    root._err = function(data) {
+      var msg = 'TREZOR Error: ' + (data.error || data.message || 'unknown');
+      $log.warn(msg);
+      return msg;
+    };
+
     root.getEntropySource = function(account, callback) {
       var path = root.ENTROPY_INDEX_PATH + account + "'";
       var xpub = root.getXPubKey(path, function(data) {
         if (!data.success) {
-          $log.warn(data.message);
-          return callback(data);
+          return callback(root._err(data));
         }
 
         var b = bwcService.getBitcore();
 
         var x = b.HDPublicKey(data.xpubkey);
         data.entropySource = x.publicKey.toString();
-        return callback(data);
+        return callback(null, data);
       });
     };
 
@@ -37,20 +43,15 @@ angular.module('copayApp.services')
 
     root.getInfoForNewWallet = function(account, callback) {
       var opts = {};
-      root.getEntropySource(account, function(data) {
-        if (!data.success) {
-          var err = data.message || data.error || 'TREZOR Error';
-          $log.warn(err);
-          return callback(err);
-        }
+      root.getEntropySource(account, function(err, data) {
+        if (err) return callback(err);
         opts.entropySource = data.entropySource;
         $log.debug('Waiting TREZOR to settle...');
         $timeout(function() {
           root.getXPubKeyForAddresses(account, function(data) {
-            if (!data.success) {
-              $log.warn(data.message);
-              return callback(data);
-            }
+            if (!data.success) 
+              return callback(root._err(data));
+
             opts.extendedPublicKey = data.xpubkey;
             opts.externalSource = 'trezor';
             opts.externalIndex = account;
@@ -226,7 +227,10 @@ angular.module('copayApp.services')
 
       $log.debug('Signing with TREZOR', inputs, outputs);
       TrezorConnect.signTx(inputs, outputs, function(result) {
-        callback(result);
+        if (!data.success) 
+          return callback(root._err(data));
+
+        callback(null, result);
       });
     };
 
