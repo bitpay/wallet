@@ -17,7 +17,7 @@
       <span translate>Scan addresses for funds</span>
     </li>
 
-    <li class="line-b p20" ng-click="$root.go('paperWallet')">
+    <li ng-show="index.network == 'livenet'" class="line-b p20" ng-click="$root.go('paperWallet')">
       <i class="icon-arrow-right3 size-24 right text-gray"></i>  
       <span translate>Sweep paper wallet</span>
     </li>
