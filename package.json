@@ -29,6 +29,7 @@
     "java": false,
     "plugin": false
   },
+  "chromium-args": "--allow-running-insecure-content --ignore-certificate-errors",
   "id": "jid1-x7bV5evAaI1P9Q",
   "homepage": "https://github.com/bitpay/copay",
   "license": "MIT",
