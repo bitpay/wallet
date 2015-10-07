@@ -174,14 +174,16 @@
           </div>         
           </form>
 
-          <!-- <form name="importForm4" ng&#45;submit="import.importTrezor(importForm4)" novalidate> -->
-          <!-- <div class="large&#45;12 columns"> -->
-          <!--   <button translate type="submit" class="button round expand black" -->
-          <!--     ng&#45;disabled="import.loading || import.ledger"> -->
-          <!--     Import from TREZOR  -->
-          <!--   </button> -->
-          <!-- </div>          -->
-          <!-- </form> -->
+          <form name="importForm4" ng-submit="import.importTrezor(importForm4)" novalidate>
+          <div class="large-12 columns">
+              <!-- ng-disabled="import.loading || import.ledger" -->
+            <button translate type="submit" class="button round expand black"
+ng-disabled="true" 
+>
+              Import from TREZOR 
+            </button>
+          </div>         
+          </form>
  
       </div>
     </div>
