@@ -19,13 +19,13 @@ angular.module('copayApp.controllers').controller('paperWalletController',
       self.error = null;
       self.scanning = true;
       $timeout(function() {
-        self.getRawTx(privateKey, passphrase, function(err, rawtx, utxos) {
+        self.getRawTx(privateKey, passphrase, function(err, rawtx, balance) {
           self.scanning = false;
 
           if (err)
             self.error = err.toString();
           else {
-            self.balance = profileService.formatAmount(utxos) + ' ' + config.unitName;
+            self.balance = profileService.formatAmount(balance) + ' ' + config.unitName;
             rawTx = rawtx;
           }
 
@@ -46,26 +46,9 @@ angular.module('copayApp.controllers').controller('paperWalletController',
       return true;
     }
 
-    self.getRawTx = function(privateKey, passphrase, cb) {
-      if (privateKey.charAt(0) == 6) {
-        fc.decryptBIP38PrivateKey(privateKey, passphrase, null, function(err, privateKey) {
-          if (err) return cb(err);
-
-          fc.getBalanceFromPrivateKey(privateKey, function(err, utxos) {
-            if (err) return cb(err);
-
-            addressService.getAddress(fc.credentials.walletId, true, function(err, destinationAddress) {
-              if (err) return cb(err);
-
-              fc.buildTxFromPrivateKey(privateKey, destinationAddress, null, function(err, tx) {
-                if (err) return cb(err);
-                return cb(null, tx.serialize(), utxos);
-              });
-            });
-          });
-        });
-      } else {
-        fc.getBalanceFromPrivateKey(privateKey, function(err, utxos) {
+    self.getRawTx = function(scannedKey, passphrase, cb) {
+      function buildTx(privateKey, cb) {
+        fc.getBalanceFromPrivateKey(privateKey, function(err, balance) {
           if (err) return cb(err)
 
           addressService.getAddress(fc.credentials.walletId, true, function(err, destinationAddress) {
@@ -73,10 +56,19 @@ angular.module('copayApp.controllers').controller('paperWalletController',
 
             fc.buildTxFromPrivateKey(privateKey, destinationAddress, null, function(err, tx) {
               if (err) return cb(err);
-              return cb(null, tx.serialize(), utxos);
+              return cb(null, tx.serialize(), balance);
             });
           });
         });
+      }
+
+      if (scannedKey.charAt(0) == '6') {
+        fc.decryptBIP38PrivateKey(scannedKey, passphrase, null, function(err, privateKey) {
+          if (err) return cb(err);
+          buildTx(privateKey, cb);
+        });
+      } else {
+        buildTx(scannedKey, cb);
       }
     };
 
