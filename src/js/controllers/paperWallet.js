@@ -1,5 +1,5 @@
 angular.module('copayApp.controllers').controller('paperWalletController',
-  function($scope, $http, $timeout, $log, configService, profileService, go, addressService, bitcore) {
+  function($scope, $http, $timeout, $log, configService, profileService, go, addressService, txStatus, bitcore) {
     self = this;
     var fc = profileService.focusedClient;
     var rawTx;
@@ -53,6 +53,7 @@ angular.module('copayApp.controllers').controller('paperWalletController',
 
       $timeout(function() {
         self._scanFunds(function(err, privateKey, balance) {
+          self.scanning = false;
           if (err) {
             $log.error(err);
             self.error = err.message || err.toString();
@@ -63,10 +64,7 @@ angular.module('copayApp.controllers').controller('paperWalletController',
             self.balance = profileService.formatAmount(balance) + ' ' + config.unitName;
           }
 
-          self.scanning = false;
-          $timeout(function() {
-            $scope.$apply();
-          }, 1);
+          $scope.$apply();
         });
       }, 100);
     }
@@ -95,15 +93,20 @@ angular.module('copayApp.controllers').controller('paperWalletController',
 
       $timeout(function() {
         self._sweepWallet(function(err, destinationAddress, txid) {
+          self.sending = false;
+
           if (err) {
             self.error = err.message || err.toString();
             $log.error(err);
+          } else {
+            txStatus.notify({
+              status: 'broadcasted'
+            }, function() {
+              go.walletHome();
+            });
           }
-          self.sending = false;
-          $timeout(function() {
-            $scope.$apply();
-            if (!err) go.walletHome();
-          }, 1);
+
+          $scope.$apply();
         });
       }, 100);
     }
