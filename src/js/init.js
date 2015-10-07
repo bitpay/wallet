@@ -57,8 +57,6 @@ angular.element(document).ready(function() {
         window.location = '#/preferences';
       }, false);
 
-
-
       setTimeout(function() {
         navigator.splashscreen.hide();
       }, 2000);
@@ -66,6 +64,11 @@ angular.element(document).ready(function() {
       window.plugins.webintent.getUri(handleBitcoinURI);
       window.plugins.webintent.onNewIntent(handleBitcoinURI);
       window.handleOpenURL = handleBitcoinURI;
+
+      window.plugins.touchid.isAvailable(
+        function(msg) { window.touchidAvailable = true; }, // success handler: TouchID available
+        function(msg) { window.touchidAvailable = false; } // error handler: no TouchID available
+      );
 
       startAngular();
     }, false);

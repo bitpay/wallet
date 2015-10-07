@@ -6,7 +6,7 @@
 </div>
 
 
-<div class="content preferences" ng-controller="preferencesController as preferences">
+<div class="content preferences" ng-controller="preferencesController as preferences" ng-init="preferences.init()">
 
   <ul class="no-bullet m0 size-14" ng-show="!index.noFocusedWallet">
     <h4 class="title m0">{{index.alias}} [{{index.walletName}}] <span translate>settings</span></h4>
@@ -40,13 +40,17 @@
       <span translate>Request Password for Spending Funds</span>
       <switch id="network-name" name="encrypt" ng-model="encrypt" class="green right"></switch>
     </li>
+    <li class="line-b p20" ng-show="preferences.touchidAvailable">
+      <span translate>Request Touch ID for Spending Funds</span>
+      <switch id="touchid" name="touchid" ng-model="touchid" class="green right"></switch>
+    </li>
     <li class="line-b p20" ng-show="index.isPrivKeyExternal">
       <span translate>Hardware wallet</span>
       <span class="right text-gray">
         {{preferences.externalSource}} 
         <!-- (Accont {{preferences.externalAccount}}) -->
       </span>
-    </li>
+    </li> 
     <li class="line-b p20" ng-click="$root.go('backup')"  ng-hide="index.isPrivKeyExternal">
       <i class="icon-arrow-right3 size-24 right text-gray"></i>  
       <span class="text-warning right" ng-show="index.needsBackup">

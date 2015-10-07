@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, lodash, go, profileService, configService, isCordova, rateService, storageService, addressService, gettext, amMoment, nodeWebkit, addonManager, feeService, isChromeApp, bwsError, txFormatService, uxLanguage, $state, glideraService, isMobile) {
+angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, lodash, go, profileService, configService, isCordova, rateService, storageService, addressService, gettext, gettextCatalog, amMoment, nodeWebkit, addonManager, feeService, isChromeApp, bwsError, txFormatService, uxLanguage, $state, glideraService, isMobile) {
   var self = this;
   self.isCordova = isCordova;
   self.isChromeApp = isChromeApp;
@@ -1150,6 +1150,20 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
   $rootScope.$on('Local/SetTab', function(event, tab, reset) {
     self.setTab(tab, reset);
+  });
+
+  $rootScope.$on('Local/RequestTouchid', function(event, cb) {
+    window.plugins.touchid.verifyFingerprint(
+      gettextCatalog.getString('Scan your fingerprint please'),
+      function(msg) {
+        // OK
+        return cb();
+      },
+      function(msg) {
+        // ERROR
+        return cb(gettext('Invalid Touch ID'));
+      }
+    );
   });
 
   $rootScope.$on('Local/ShowAlert', function(event, msg, cb) {
