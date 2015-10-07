@@ -9,18 +9,36 @@ angular.module('copayApp.controllers').controller('buyGlideraController',
     this.success = null;
     this.loading = null; 
 
-    this.otherWallets = function(testnet) {
+    var otherWallets = function(testnet) {
       var network = testnet ? 'testnet' : 'livenet';
       return lodash.filter(profileService.getWallets(network), function(w) {
         return w.network == network;
       });
     };
 
+    this.init = function(testnet) {
+      self.otherWallets = otherWallets(testnet);
+      // Choose focused wallet
+      try {
+        var currentWalletId = profileService.focusedClient.credentials.walletId;
+        lodash.find(self.otherWallets, function(w) {
+          if (w.id == currentWalletId) {
+            $timeout(function() {
+              self.selectedWalletId = w.id;
+              self.selectedWalletName = w.name;
+              $scope.$apply();
+            }, 100);
+          }
+        });
+      } catch(e) {
+        $log.debug(e);
+      };
+    };
+
     $scope.openWalletsModal = function(wallets) {
       self.error = null;
       self.selectedWalletId = null;
       self.selectedWalletName = null;
-      self.selectedWalletAddr = null;
       var ModalInstanceCtrl = function($scope, $modalInstance) {
         $scope.type = 'BUY';
         $scope.wallets = wallets;
@@ -34,17 +52,9 @@ angular.module('copayApp.controllers').controller('buyGlideraController',
             $modalInstance.dismiss('cancel');
             return;
           }
-          addressService.getAddress(walletId, false, function(err, walletAddr) {
-            if (err) {
-              self.error = bwsError.cb(err, 'Could not create address');
-              $modalInstance.dismiss('cancel');
-              return;
-            }
-            $modalInstance.close({
-              'walletId': walletId, 
-              'walletName': walletName, 
-              'walletAddr': walletAddr
-            });
+          $modalInstance.close({
+            'walletId': walletId, 
+            'walletName': walletName, 
           });
         };
       };
@@ -64,7 +74,6 @@ angular.module('copayApp.controllers').controller('buyGlideraController',
         $timeout(function() {
           self.selectedWalletId = obj.walletId;
           self.selectedWalletName = obj.walletName;
-          self.selectedWalletAddr = obj.walletAddr;
           $scope.$apply();
         }, 100);
       });
@@ -110,23 +119,29 @@ angular.module('copayApp.controllers').controller('buyGlideraController',
       var self = this;
       self.error = null;
       self.loading = 'Buying bitcoin...';
-      var data = {
-        destinationAddress: self.selectedWalletAddr,
-        qty: self.buyPrice.qty,
-        priceUuid: self.buyPrice.priceUuid,
-        useCurrentPrice: false,
-        ip: null 
-      };
       $timeout(function() {
-        glideraService.buy(token, twoFaCode, data, function(err, data) {
-          self.loading = null;
+        addressService.getAddress(self.selectedWalletId, false, function(err, walletAddr) {
           if (err) {
-            self.error = err;
+            self.error = bwsError.cb(err, 'Could not create address');
+            return;
           }
-          else {
-            self.success = data;
-            $scope.$emit('Local/GlideraTx');
-          }
+          var data = {
+            destinationAddress: walletAddr,
+            qty: self.buyPrice.qty,
+            priceUuid: self.buyPrice.priceUuid,
+            useCurrentPrice: false,
+            ip: null 
+          };
+          glideraService.buy(token, twoFaCode, data, function(err, data) {
+            self.loading = null;
+            if (err) {
+              self.error = err;
+            }
+            else {
+              self.success = data;
+              $scope.$emit('Local/GlideraTx');
+            }
+          });
         });
       }, 100);
     };

@@ -52,8 +52,8 @@
           ng-submit="buy.get2faCode(index.glideraToken)" novalidate>
 
           <div ng-if="index.glideraToken" 
-            ng-init="otherWallets = buy.otherWallets(index.glideraTestnet)"
-            ng-click="openWalletsModal(otherWallets)">
+            ng-init="buy.init(index.glideraTestnet)"
+            ng-click="openWalletsModal(buy.otherWallets)">
             <label>Wallet</label>
             <div class="input">
               <input type="text" id="address" name="address" ng-disabled="buy.selectedWalletId" 
@@ -99,7 +99,7 @@
             ng-style="{'background-color':index.backgroundColor}"
             type="submit" value="{{'Continue'}}" 
             ng-disabled="index.glideraLimits.transactDisabledPendingFirstTransaction || !buy.buyPrice.qty ||
-            !buy.selectedWalletAddr || buy.loading">
+            !buy.selectedWalletId || buy.loading">
           </div>
         </form> 
       </div>
