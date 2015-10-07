@@ -112,7 +112,7 @@
               </span>
             </div>
 
-            <div ng-show="!import.isSafari && !import.isCordova" class="line-b m10b">
+            <div ng-show="!index.isSafari && !index.isCordova" class="line-b m10b">
               <label for="backupFile">
                 <span translate>Choose a backup file from your computer</span>  <i class="fi-laptop"></i>
               </label>
@@ -120,7 +120,7 @@
               name="backupFile" ng-model="import.backupFile" ng-file-select>
             </div>
 
-            <div ng-show="import.isSafari || import.isCordova">
+            <div ng-show="index.isSafari || index.isCordova">
               <label for="backupText">
                 <span translate>Paste the backup plain text code</span>  <i class="fi-clipboard"></i>
               </label>

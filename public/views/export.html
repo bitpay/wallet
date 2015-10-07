@@ -68,14 +68,14 @@
       <button class="black round expand m0" ng-click="backup.downloadWalletBackup()"
         ng-disabled="(!backup.password || backup.password != backup.repeatpassword)"
         ng-style="{'background-color':index.backgroundColor}"
-        ng-show="!backup.isSafari && !backup.isCordova"><i class="fi-download"></i>
+        ng-show="!index.isSafari && !index.isCordova"><i class="fi-download"></i>
         <span translate>Download</span></button>
       <button class="black round expand m0" ng-click="backup.viewWalletBackup()"
         ng-disabled="(!backup.password || backup.password != backup.repeatpassword)"
         ng-style="{'background-color':index.backgroundColor}"
-        ng-show="backup.isSafari && !backup.isCordova"><i class="fi-eye"></i>
+        ng-show="index.isSafari && !index.isCordova"><i class="fi-eye"></i>
         <span translate>View</span></button>
-      <div ng-show="backup.isCordova">
+      <div ng-show="index.isCordova">
         <h4 translate>Export options</h4>
         <button class="black round expand" ng-disabled="(!backup.password || backup.password != backup.repeatpassword)"
           ng-style="{'background-color':index.backgroundColor}"

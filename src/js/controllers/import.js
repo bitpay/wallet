@@ -1,11 +1,10 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('importController',
-  function($scope, $rootScope, $location, $timeout, $log, profileService, notification, go, isMobile, sjcl, gettext, lodash, ledger, trezor) {
+  function($scope, $rootScope, $location, $timeout, $log, profileService, notification, go, sjcl, gettext, lodash, ledger, trezor) {
 
     var self = this;
 
-    this.isSafari = isMobile.Safari();
     var reader = new FileReader();
 
     window.ignoreMobilePause = true;
