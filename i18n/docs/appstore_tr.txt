@@ -18,6 +18,6 @@ Başlıca mobil ve masaüstü platformlarına senkronize erişim
 150'den fazla para birimi desteği ve BTC&Bits arasında birim gösterim seçimi
 Ödemeler ve transferler için e-posta bildirimleri
 Özelleştirilebilir cüzdan adlandırma ve arka plan renkleri
-10 supported languages (EN, JP, FR, ES, IT, DE, PT, RU, EL, TR)
+10 dil desteği (EN, JP, FR, ES, BT, DE, PT, RU, EL, TR)
 
 Copay, sahipli olmayan sunucular üzerinde çalışan açık kaynak kodlu bir yazılımdır. Yani işlevine devam etmek için herhangi bir firmanın düzenli desteğine ihtiyaç duymaz. İsteyen herkes Copay'in GitHub üzerindeki (https://github.com/bitpay/copay) açık kaynak koduna bakabilir veya katkıda bulunabilir. 
