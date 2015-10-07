@@ -108,10 +108,10 @@
               <switch id="hw-ledger" name="hwLedger" ng-model="hwLedger" ng-change="isTestnet=false" class="green right m5t m10b"></switch>
             </label>
             <!--  -->
-            <!-- <label ng&#45;show="!index.isCordova" for="hw&#45;trezor" class="oh"> -->
-            <!--   <span translate>Use TREZOR hardware wallet</span> -->
-            <!--   <switch id="hw&#45;trezor" name="hwTrezor" ng&#45;model="hwTrezor" class="green right m5t m10b"></switch> -->
-            <!-- </label> -->
+            <label ng-show="!index.isCordova && 0" for="hw-trezor" class="oh">
+              <span translate>Use TREZOR hardware wallet</span>
+              <switch id="hw-trezor" name="hwTrezor" ng-model="hwTrezor" class="green right m5t m10b"></switch>
+            </label>
 <!-- TODO account
             <div ng-show="hwLedger">
               <label class="oh"><span translate>Ledger Slot</span>
