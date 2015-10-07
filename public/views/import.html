@@ -112,7 +112,7 @@
               </span>
             </div>
 
-            <div ng-show="!import.isSafari && !import.isCordova" class="line-b m10b">
+            <div ng-show="!index.isSafari && !index.isCordova" class="line-b m10b">
               <label for="backupFile">
                 <span translate>Choose a backup file from your computer</span>  <i class="fi-laptop"></i>
               </label>
@@ -120,7 +120,7 @@
               name="backupFile" ng-model="import.backupFile" ng-file-select>
             </div>
 
-            <div ng-show="import.isSafari || import.isCordova">
+            <div ng-show="index.isSafari || index.isCordova">
               <label for="backupText">
                 <span translate>Paste the backup plain text code</span>  <i class="fi-clipboard"></i>
               </label>
@@ -176,16 +176,10 @@
 
           <form name="importForm4" ng-submit="import.importTrezor(importForm4)" novalidate>
           <div class="large-12 columns">
-<!-- TODO: account
-            <label class=" oh">
-              <span translate>Ledger Slot</span>
-              <select class="m10t" ng-model="externalIndex" ng-options="externalIndex as externalIndex for externalIndex in import.externalIndexValues">
-              </select>
-            </label>
-            <div class="oh text-gray line-b  size-12 p10b m20b"><span translate>Ledger supports up to 20 Copay wallets simultaneously. Select which slot to import</div>
--->
+              <!-- ng-disabled="import.loading || import.ledger" -->
             <button translate type="submit" class="button round expand black"
-              ng-disabled="import.loading || import.ledger">
+ng-disabled="true" 
+>
               Import from TREZOR 
             </button>
           </div>         

@@ -1,9 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('backupController',
-  function($rootScope, $scope, $timeout, backupService, profileService, isMobile, isCordova, notification, go, gettext, gettextCatalog) {
-    this.isSafari = isMobile.Safari();
-    this.isCordova = isCordova;
+  function($rootScope, $scope, $timeout, backupService, profileService, isMobile, notification, go, gettext, gettextCatalog) {
     this.error = null;
     this.success = null;
 
