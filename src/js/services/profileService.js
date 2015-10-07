@@ -236,7 +236,6 @@ angular.module('copayApp.services')
       root._seedWallet(opts, function(err, walletClient) {
         if (err) return cb(err);
 
-console.log('[profileService.js.239:walletClient:]',walletClient); //TODO
         walletClient.createWallet(opts.name, opts.myName || 'me', opts.m, opts.n, {
           network: opts.networkName
         }, function(err, secret) {
