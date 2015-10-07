@@ -5,7 +5,13 @@ angular.module('copayApp.controllers').controller('paperWalletController',
     var rawTx;
 
     self.onQrCodeScanned = function(data) {
-      $scope.privateKey = data;
+      $scope.inputData = data;
+      self.onData(data);
+    }
+
+    self.onData = function(data) {
+      self.scannedKey = data;
+      self.isPkEncrypted = (data.charAt(0) == '6');
     }
 
     self.createTx = function(privateKey, passphrase) {
