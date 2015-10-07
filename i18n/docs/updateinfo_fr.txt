@@ -1,6 +1,24 @@
-* Prise en charge des phrases de sauvegarde (BIP39)
-* Prise en charge de BIP44
-* Prise en charge des adresses non-multisig pour les portefeuilles personnels (1-sur-1)
-* Détails avancés du portefeuille
-* Prise en charge de Ledger pour les portefeuilles multisig
-* Corrections de bugs mineurs
+Mises à jour majeures
+=============
+
+* Compatibilité avec iOS 9
+* Prise en charge du portefeuille matériel Trezor
+* Prise en charge des portefeuilles de papier
+
+Mises à jour mineures
+=============
+
+* Nouvel écran d'installation de Copay dans OSX
+* Correction d'animations
+* Prise en charge du bouton retour sur les appareils Android si une fenêtre est ouverte
+* Correction du bip sonore après l'analyse d'un code QR sur les appareils Android
+* Correction du chemin de dérivation dans les informations avancées
+* Ajout de la non rétrocompatibilité pour le protocole de paiement
+* Masquage du menu si le portefeuille n'est pas autorisé
+* Correction de la formulation sur la page de sauvegarde
+* Correction des chaines de traduction
+* Mise à jour des dépendances des paquets avec bower
+* Compatibilité avec iOS 9
+* Correction du mnémonique avec une clé privée chiffrée
+* Correction de l'heure dans les propositions de transactions
+* Correction de l'autofocus sur le mot de passe dans la demande fenêtrée pour dépenser les fonds

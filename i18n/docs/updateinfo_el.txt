@@ -1,6 +1,0 @@
-* Support for backup phrases (BIP39)
-* Support for BIP44
-* Support for non-multisig addresses for personal wallets (1-of-1)
-* Advanced wallet details
-* Ledger support for multisig wallets
-* Μικρές διορθώσεις σφαλμάτων

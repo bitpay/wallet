@@ -12,15 +12,32 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Spanish\n"
 "Language: es\n"
-"PO-Revision-Date: 2015-09-18 13:52-0400\n"
+"PO-Revision-Date: 2015-10-07 10:52-0400\n"
+
+#: public/views/walletHome.html
+msgid "(possible double spend)"
+msgstr "(Posible doble gasto)"
 
 #: public/views/modals/paypro.html
 msgid "(Trusted)"
 msgstr "(De confianza)"
 
+#: src/js/controllers/walletHome.js
+msgid "{{fee}} will be deducted for bitcoin networking fees"
+msgstr "{{fee}} se descontará por comisión de la red bitcoin"
+
+#: public/views/copayers.html
 #: public/views/walletHome.html
-msgid "(possible double spend)"
-msgstr "(Posible doble gasto)"
+msgid "{{index.m}}-of-{{index.n}}"
+msgstr "{{index.m}}-de-{{index.n}}"
+
+#: public/views/includes/sidebar.html
+msgid "{{item.m}}-of-{{item.n}}"
+msgstr "{{item.m}}-de-{{item.n}}"
+
+#: src/js/controllers/importLegacy.js
+msgid "{{len}} wallets imported. Funds scanning in progress. Hold on to see updated balance"
+msgstr "{{len}} monederos importados. Búsqueda de fondos en progreso. Espere a ver el balance actualizado"
 
 #: public/views/modals/txp-details.html
 msgid "* A payment proposal can be deleted if 1) you are the creator, and no other copayer has signed, or 2) 24 hours have passed since the proposal was created."
@@ -57,6 +74,11 @@ msgstr "Acerca de Copay"
 #: src/js/controllers/walletHome.js
 msgid "Accept"
 msgstr "Aceptar"
+
+#: public/views/create.html
+#: public/views/join.html
+msgid "Add a Seed Passphrase"
+msgstr "Agregar una contraseña a la semilla"
 
 #: public/views/create.html
 #: public/views/join.html
@@ -162,10 +184,6 @@ msgstr "Copia de seguridad"
 msgid "Backup now"
 msgstr "Copia de seguridad"
 
-#: public/views/export.html
-msgid "Backup options"
-msgstr "Opciones de copia de seguridad"
-
 #: src/js/controllers/backup.js
 msgid "Backup words deleted"
 msgstr "Las palabras de la copia de seguridad fueron borradas"
@@ -182,21 +200,21 @@ msgstr "Balance por Dirección"
 msgid "Before receiving funds, it is highly recommended you backup your wallet keys."
 msgstr "Antes de recibir fondos, es altamente recomendable realizar una copia de seguridad."
 
-#: public/views/preferences.html
-msgid "Bitcoin Network Fee Policy"
-msgstr "Política de Comisión de la Red Bitcoin"
-
-#: public/views/paymentUri.html
-msgid "Bitcoin URI is NOT valid!"
-msgstr "¡Bitcoin URI no es válida!"
-
 #: public/views/walletHome.html
 msgid "Bitcoin address"
 msgstr "Dirección bitcoin"
 
+#: public/views/preferences.html
+msgid "Bitcoin Network Fee Policy"
+msgstr "Política de Comisión de la Red Bitcoin"
+
 #: public/views/preferencesFee.html
 msgid "Bitcoin transactions may include a fee collected by miners on the network. The higher the fee, the greater the incentive a miner has to include that transaction in a block. Actual fees are determined based on network load and the selected policy."
 msgstr "Las transacciones de Bitcoin pueden incluir una comisión colectada por los mineros en la red. Cuanto mayor sea la comisión, mayor será el incentivo para que el minero incluya esa transacción en un bloque. Las comisiones reales se determinan en base a la carga de la red y a la política seleccionada."
+
+#: public/views/paymentUri.html
+msgid "Bitcoin URI is NOT valid!"
+msgstr "¡Bitcoin URI no es válida!"
 
 #: public/views/modals/txp-details.html
 msgid "Broadcast Payment"
@@ -214,10 +232,6 @@ msgstr "Emitiendo transacción"
 msgid "Browser unsupported"
 msgstr "Navegador no soportado"
 
-#: public/views/includes/password.html
-msgid "CANCEL"
-msgstr "CANCELAR"
-
 #: public/views/copayers.html
 #: public/views/walletHome.html
 #: public/views/modals/confirmation.html
@@ -227,6 +241,10 @@ msgstr "CANCELAR"
 #: src/js/controllers/walletHome.js
 msgid "Cancel"
 msgstr "Cancelar"
+
+#: public/views/includes/password.html
+msgid "CANCEL"
+msgstr "CANCELAR"
 
 #: src/js/services/profileService.js
 msgid "Cannot join the same wallet more that once"
@@ -278,10 +296,16 @@ msgid "Confirmations"
 msgstr "Confirmaciones"
 
 #: public/views/create.html
+msgid "Connecting to {{create.hwWallet}} Wallet..."
+msgstr "Conectando al monedero {{create.hwWallet}}..."
+
 #: public/views/import.html
+msgid "Connecting to {{import.hwWallet}} Wallet..."
+msgstr "Conectando al monedero {{import.hwWallet}}..."
+
 #: public/views/join.html
-msgid "Connecting to Ledger Wallet..."
-msgstr "Conectando al Monedero Ledger..."
+msgid "Connecting to {{join.hwWallet}} Wallet..."
+msgstr "Conectando al monedero {{join.hwWallet}}..."
 
 #: src/js/services/bwsError.js
 msgid "Copayer already in this wallet"
@@ -304,10 +328,6 @@ msgstr "Copayers"
 #: src/js/controllers/walletHome.js
 msgid "Copied to clipboard"
 msgstr "Copiado al portapapeles"
-
-#: public/views/export.html
-msgid "Copy backup to a safe place"
-msgstr "Guardar copia de seguridad en un lugar seguro"
 
 #: public/views/export.html
 msgid "Copy this text as it is to a safe place (notepad or email)"
@@ -348,6 +368,10 @@ msgstr "No se puede crear utilizando la clave pública extendida especificada"
 #: src/js/services/profileService.js
 msgid "Could not create: Invalid wallet seed"
 msgstr "No se pudo crear: semilla del monedero no válida"
+
+#: src/js/controllers/backup.js
+msgid "Could not decrypt"
+msgstr "No se pudo descifrar"
 
 #: src/js/controllers/import.js
 msgid "Could not decrypt file, check your password"
@@ -397,14 +421,14 @@ msgstr "No se puede actualizar el monedero"
 msgid "Create"
 msgstr "Crear"
 
+#: public/views/create.html
+msgid "Create {{requiredCopayers}}-of-{{totalCopayers}} wallet"
+msgstr "Crea monedero {{requiredCopayers}}-de-{{totalCopayers}}"
+
 #: public/views/add.html
 #: public/views/create.html
 msgid "Create new wallet"
 msgstr "Crear nuevo monedero"
-
-#: public/views/create.html
-msgid "Create {{requiredCopayers}}-of-{{totalCopayers}} wallet"
-msgstr "Crea monedero {{requiredCopayers}}-de-{{totalCopayers}}"
 
 #: public/views/includes/sidebar.html
 msgid "Create, join or import"
@@ -418,42 +442,46 @@ msgstr "Creado por"
 msgid "Creating Profile..."
 msgstr "Creando el Perfil..."
 
-#: public/views/create.html
-msgid "Creating Wallet..."
-msgstr "Creando Monedero..."
-
 #: src/js/controllers/walletHome.js
 msgid "Creating transaction"
 msgstr "Creando transacción"
+
+#: public/views/create.html
+msgid "Creating Wallet..."
+msgstr "Creando Monedero..."
 
 #: public/views/preferencesFee.html
 #: public/views/modals/advancedSend.html
 msgid "Current fee rate for this policy: {{fee.feePerKBUnit}}/kiB"
 msgstr "Comisión actual para esta política: {{fee.feePerKBUnit}}/kiB"
 
-#: public/views/backup.html
-msgid "DELETE WORDS"
-msgstr "ELIMINAR PALABRAS"
-
 #: public/views/modals/tx-details.html
 msgid "Date"
 msgstr "Fecha"
 
-#: public/views/modals/txp-details.html
-msgid "Delete Payment Proposal"
-msgstr "Eliminar Propuesta de Pago"
-
-#: public/views/preferencesAdvanced.html
-msgid "Delete Wallet"
-msgstr "Eliminar monedero"
+#: public/views/paperWallet.html
+msgid "Decrypting a paper wallet could take around 5 minutes on this device. please be patient and keep the app open."
+msgstr "Descifrar un monedero de papel podría tomar alrededor de 5 minutos en este dispositivo. Por favor, sea paciente y mantenga la aplicación abierta."
 
 #: public/views/copayers.html
 msgid "Delete it and create a new one"
 msgstr "Borrarlo y crear uno nuevo"
 
+#: public/views/modals/txp-details.html
+msgid "Delete Payment Proposal"
+msgstr "Eliminar Propuesta de Pago"
+
 #: public/views/preferencesDeleteWallet.html
 msgid "Delete wallet"
 msgstr "Eliminar monedero"
+
+#: public/views/preferencesAdvanced.html
+msgid "Delete Wallet"
+msgstr "Eliminar monedero"
+
+#: public/views/backup.html
+msgid "DELETE WORDS"
+msgstr "ELIMINAR PALABRAS"
 
 #: src/js/controllers/walletHome.js
 msgid "Deleting payment"
@@ -482,13 +510,13 @@ msgstr "No incluya la clave privada"
 msgid "Don't see your language on Crowdin? Contact the Owner on Crowdin! We'd love to support your language."
 msgstr "¿No ve su idioma en Crowdin? Contáctese con el encargado del proyecto! Nos encantaría soportar su idioma."
 
+#: public/views/export.html
+msgid "Download"
+msgstr "Descargar"
+
 #: public/views/walletHome.html
 msgid "Download CSV file"
 msgstr "Descargar archivo CSV"
-
-#: public/views/export.html
-msgid "Download backup"
-msgstr "Descargar copia de seguridad"
 
 #: src/js/services/feeService.js
 msgid "Economy"
@@ -498,13 +526,13 @@ msgstr "Económico"
 msgid "Email"
 msgstr "Correo electrónico"
 
-#: public/views/preferences.html
-msgid "Email Notifications"
-msgstr "Notificaciones por Email"
-
 #: public/views/preferencesEmail.html
 msgid "Email for wallet notifications"
 msgstr "Correo electrónico para notificaciones del monedero"
+
+#: public/views/preferences.html
+msgid "Email Notifications"
+msgstr "Notificaciones por Email"
 
 #: src/js/controllers/export.js
 msgid "Encrypted export file saved"
@@ -539,6 +567,10 @@ msgstr "Expira"
 #: public/views/preferencesAdvanced.html
 msgid "Export"
 msgstr "Exportar"
+
+#: public/views/export.html
+msgid "Export options"
+msgstr "Opciones de exportación"
 
 #: public/views/preferencesInformation.html
 msgid "Extended Public Keys"
@@ -590,21 +622,25 @@ msgstr "Francés"
 msgid "Funds are locked by pending spend proposals"
 msgstr "Los fondos están bloqueados por propuestas de gastos pendientes"
 
+#: public/views/paperWallet.html
+msgid "Funds found"
+msgstr "Fondos encontrados"
+
 #: src/js/services/notificationsService.js
 msgid "Funds received"
 msgstr "Fondos Recibidos"
 
-#: public/views/splash.html
-msgid "GET STARTED"
-msgstr "COMENZAR"
-
-#: public/views/modals/customized-amount.html
-msgid "Generate QR Code"
-msgstr "Generar código QR"
+#: public/views/paperWallet.html
+msgid "Funds will be transfered to"
+msgstr "Los fondos serán transferidos a"
 
 #: public/views/walletHome.html
 msgid "Generate new address"
 msgstr "Generar nueva dirección"
+
+#: public/views/modals/customized-amount.html
+msgid "Generate QR Code"
+msgstr "Generar código QR"
 
 #: public/views/walletHome.html
 msgid "Generating .csv file..."
@@ -613,6 +649,10 @@ msgstr "Generando archivo .csv..."
 #: public/views/translators.html
 msgid "German"
 msgstr "Alemán"
+
+#: public/views/splash.html
+msgid "GET STARTED"
+msgstr "COMENZAR"
 
 #: public/views/modals/wallets.html
 msgid "Getting address for wallet {{selectedWalletName}} ..."
@@ -635,12 +675,12 @@ msgid "Hardware wallet"
 msgstr "Monedero físico"
 
 #: public/views/import.html
+msgid "Hardware Wallet"
+msgstr "Monedero físico"
+
+#: public/views/import.html
 msgid "Have a Backup from Copay v0.9?"
 msgstr "¿Tiene una copia de seguridad de Copay v0.9?"
-
-#: public/views/backup.html
-msgid "Hide Wallet Seed"
-msgstr "Ocultar semilla del monedero"
 
 #: public/views/create.html
 #: public/views/import.html
@@ -648,6 +688,10 @@ msgstr "Ocultar semilla del monedero"
 #: public/views/walletHome.html
 msgid "Hide advanced options"
 msgstr "Ocultar opciones avanzadas"
+
+#: public/views/backup.html
+msgid "Hide Wallet Seed"
+msgstr "Ocultar semilla del monedero"
 
 #: src/js/controllers/index.js
 msgid "History"
@@ -671,9 +715,17 @@ msgstr "Importar"
 msgid "Import backup"
 msgstr "Importar copia de seguridad"
 
+#: public/views/import.html
+msgid "Import from Ledger"
+msgstr "Importar del Ledger"
+
 #: public/views/importLegacy.html
 msgid "Import from the Cloud?"
 msgstr "¿Importar de la Nube?"
+
+#: public/views/import.html
+msgid "Import from TREZOR"
+msgstr "Importar de TREZOR"
 
 #: public/views/import.html
 msgid "Import here"
@@ -748,6 +800,10 @@ msgstr "Unirse a un monedero"
 msgid "Joining Wallet..."
 msgstr "Uniéndose al Monedero..."
 
+#: src/js/services/bwsError.js
+msgid "Key already associated with an existing wallet"
+msgstr "Clave ya asociada con un monedero existente"
+
 #: public/views/preferences.html
 msgid "Language"
 msgstr "Idioma"
@@ -764,13 +820,13 @@ msgstr "Más información sobre copias de seguridad en Copay"
 msgid "Learn more about Wallet Migration"
 msgstr "Más detalles para migrar Monedero"
 
-#: public/views/import.html
-msgid "Ledger"
-msgstr "Ledger"
-
 #: src/js/controllers/disclaimer.js
 msgid "Loading..."
 msgstr "Cargando..."
+
+#: public/views/includes/available-balance.html
+msgid "locked by pending payments"
+msgstr "bloqueado por pagos pendientes"
 
 #: src/js/services/bwsError.js
 msgid "Locktime in effect. Please wait to create a new spend proposal"
@@ -783,6 +839,10 @@ msgstr "Bloqueo temporal. Por favor espere para eliminar esta propuesta de gasto
 #: public/views/paymentUri.html
 msgid "Make a payment to"
 msgstr "Hacer un pago a"
+
+#: src/js/services/profileService.js
+msgid "me"
+msgstr "yo"
 
 #: public/views/includes/copayers.html
 #: public/views/modals/copayers.html
@@ -864,12 +924,20 @@ msgid "Official English Disclaimer"
 msgstr "Renuncia oficial en inglés"
 
 #: public/views/backup.html
-msgid "Once you have copy your wallet seed, it is recommended to delete it from this device."
+msgid "Once you have copied your wallet seed down, it is recommended to delete it from this device."
 msgstr "Una vez que se copia la semilla del monedero, se recomienda eliminarla de este dispositivo."
 
 #: public/views/preferencesInformation.html
 msgid "Only Main (not change) addresses are shown. The addresses on this list were not verified locally at this time."
 msgstr "Sólo las direcciones principales aparecen (no las usadas para el vuelto). Las direcciones de esta lista no fueron verificadas localmente en este momento."
+
+#: public/views/walletHome.html
+msgid "optional"
+msgstr "opcional"
+
+#: public/views/paperWallet.html
+msgid "Paper Wallet Private Key"
+msgstr "Clave privada del monedero de papel"
 
 #: public/views/modals/tx-details.html
 #: public/views/modals/txp-details.html
@@ -877,8 +945,13 @@ msgid "Participants"
 msgstr "Participantes"
 
 #: public/views/import.html
+#: public/views/paperWallet.html
 msgid "Passphrase"
 msgstr "Contraseña"
+
+#: public/views/paperWallet.html
+msgid "Passphrase (if you have one)"
+msgstr "Contraseña (si tiene una)"
 
 #: public/views/import.html
 #: public/views/importLegacy.html
@@ -901,6 +974,10 @@ msgstr "Pegar invitación aquí"
 msgid "Paste the backup plain text code"
 msgstr "Pegar copia de seguridad en texto plano"
 
+#: public/views/paperWallet.html
+msgid "Paste your paper wallet private key here"
+msgstr "Pegar la clave privada del monedero aquí"
+
 #: public/views/modals/paypro.html
 msgid "Pay To"
 msgstr "Pagar A"
@@ -908,6 +985,18 @@ msgstr "Pagar A"
 #: public/views/modals/tx-status.html
 msgid "Payment Accepted"
 msgstr "Pago Aceptado"
+
+#: public/views/modals/txp-details.html
+msgid "Payment accepted, but not yet broadcasted"
+msgstr "Pago aceptado, pero aún no fue enviado"
+
+#: public/views/modals/txp-details.html
+msgid "Payment accepted. It will be broadcasted by Glidera. In case there is a problem, it can be deleted 6 hours after it was created."
+msgstr "Pago aceptado. Se transmitirá por Glidera. En caso de que haya un problema, puede eliminar la transacción 6 horas después de fue creada."
+
+#: public/views/modals/txp-details.html
+msgid "Payment details"
+msgstr "Detalles del pago"
 
 #: public/views/modals/txp-details.html
 msgid "Payment Proposal"
@@ -941,30 +1030,13 @@ msgstr "Protocolo de Pago Inválido"
 msgid "Payment Protocol not supported on Chrome App"
 msgstr "El protocolo de pago no está soportado en Chrome"
 
-#: public/views/modals/tx-status.html
-msgid "Payment Rejected"
-msgstr "Pago Rechazado"
-
-#: public/views/modals/tx-status.html
-#: src/js/services/notificationsService.js
-msgid "Payment Sent"
-msgstr "Pago Enviado"
-
-#: public/views/modals/txp-details.html
-msgid "Payment accepted, but not yet broadcasted"
-msgstr "Pago aceptado, pero aún no fue enviado"
-
-#: public/views/modals/txp-details.html
-msgid "Payment accepted. It will be broadcasted by Glidera. In case there is a problem, it can be deleted 6 hours after it was created."
-msgstr "Pago aceptado. Se transmitirá por Glidera. En caso de que haya un problema, puede eliminar la transacción 6 horas después de fue creada."
-
-#: public/views/modals/txp-details.html
-msgid "Payment details"
-msgstr "Detalles del pago"
-
 #: public/views/modals/txp-details.html
 msgid "Payment rejected"
 msgstr "Pago rechazado"
+
+#: public/views/modals/tx-status.html
+msgid "Payment Rejected"
+msgstr "Pago Rechazado"
 
 #: public/views/modals/paypro.html
 msgid "Payment request"
@@ -973,6 +1045,11 @@ msgstr "Solicitud de pago"
 #: public/views/modals/txp-details.html
 msgid "Payment sent"
 msgstr "Pago enviado"
+
+#: public/views/modals/tx-status.html
+#: src/js/services/notificationsService.js
+msgid "Payment Sent"
+msgstr "Pago Enviado"
 
 #: public/views/walletHome.html
 msgid "Payment to"
@@ -1080,14 +1157,14 @@ msgstr "Información de la versión"
 msgid "Repeat password"
 msgstr "Repite la contraseña"
 
-#: public/views/preferences.html
-msgid "Request Password for Spending Funds"
-msgstr "Solicitar Contraseña para Gastar los Fondos"
-
 #: public/views/walletHome.html
 #: public/views/modals/customized-amount.html
 msgid "Request a specific amount"
 msgstr "Solicitar una cantidad específica"
+
+#: public/views/preferences.html
+msgid "Request Password for Spending Funds"
+msgstr "Solicitar Contraseña para Gastar los Fondos"
 
 #: src/js/controllers/walletHome.js
 msgid "Requesting Ledger Wallet to sign"
@@ -1109,14 +1186,6 @@ msgstr "Reintentando..."
 msgid "Russian"
 msgstr "Ruso"
 
-#: public/views/includes/password.html
-msgid "SET"
-msgstr "ESTABLECER"
-
-#: public/views/walletHome.html
-msgid "SKIP BACKUP"
-msgstr "OMITIR"
-
 #: public/views/preferencesAlias.html
 #: public/views/preferencesBwsUrl.html
 #: public/views/preferencesEmail.html
@@ -1127,17 +1196,25 @@ msgstr "Guardar"
 msgid "Saving preferences..."
 msgstr "Guardando preferencias..."
 
-#: src/js/services/notificationsService.js
-msgid "Scan Finished"
-msgstr "Búsqueda Finalizada"
-
 #: public/views/preferencesAdvanced.html
 msgid "Scan addresses for funds"
 msgstr "Buscar direcciones con fondos"
 
+#: src/js/services/notificationsService.js
+msgid "Scan Finished"
+msgstr "Búsqueda Finalizada"
+
 #: public/views/walletHome.html
 msgid "Scan status finished with error"
 msgstr "La búsqueda finalizó con error"
+
+#: public/views/paperWallet.html
+msgid "Scan Wallet Funds"
+msgstr "Buscar fondos del monedero"
+
+#: public/views/paperWallet.html
+msgid "Scanning wallet funds..."
+msgstr "Buscando fondos del monedero..."
 
 #: public/views/walletHome.html
 msgid "Scanning Wallet funds..."
@@ -1147,14 +1224,14 @@ msgstr "Buscando fondos en el Monedero..."
 msgid "See it on the blockchain"
 msgstr "Ver en la blockchain"
 
+#: public/views/import.html
+msgid "Seed passphrase"
+msgstr "Contraseña de la Semilla"
+
 #: public/views/create.html
 #: public/views/join.html
 msgid "Seed Passphrase"
 msgstr "Contraseña de la semilla"
-
-#: public/views/import.html
-msgid "Seed passphrase"
-msgstr "Contraseña de la Semilla"
 
 #: public/views/import.html
 msgid "Select a backup file"
@@ -1187,6 +1264,10 @@ msgstr "Enviar todo por correo electrónico"
 msgid "Send by email"
 msgstr "Enviar por correo electrónico"
 
+#: public/views/paperWallet.html
+msgid "Sending funds..."
+msgstr "Enviando los fondos..."
+
 #: public/views/walletHome.html
 msgid "Sent"
 msgstr "Enviado"
@@ -1203,6 +1284,10 @@ msgstr "Respuesta del servidor no pudo ser verificado"
 msgid "Session log"
 msgstr "Registro de sesión"
 
+#: public/views/includes/password.html
+msgid "SET"
+msgstr "ESTABLECER"
+
 #: public/views/export.html
 msgid "Set up a Export Password"
 msgstr "Configurar una contraseña al exportar"
@@ -1214,6 +1299,10 @@ msgstr "Configure una contraseña"
 #: public/views/preferencesEmail.html
 msgid "Setting up email notifications could weaken your privacy, if the wallet service provider is compromised. Information available to an attacker would include your wallet addresses and its balance, but no more."
 msgstr "Configurar notificaciones por correo electrónico podría debilitar su privacidad, si el proveedor de servicio se ve comprometido. Información disponible para un atacante incluiría sus direcciones de cartera y su balance, pero no más."
+
+#: public/views/preferences.html
+msgid "settings"
+msgstr "configuración"
 
 #: public/views/walletHome.html
 #: public/views/modals/customized-amount.html
@@ -1236,16 +1325,16 @@ msgstr "Compartir esta dirección para recibir pagos. Para proteger su privacida
 msgid "Shared Wallet"
 msgstr "Monedero Compartido"
 
-#: public/views/backup.html
-msgid "Show Wallet Seed"
-msgstr "Mostrar Semilla del Monedero"
-
 #: public/views/create.html
 #: public/views/import.html
 #: public/views/join.html
 #: public/views/walletHome.html
 msgid "Show advanced options"
 msgstr "Mostrar opciones avanzadas"
+
+#: public/views/backup.html
+msgid "Show Wallet Seed"
+msgstr "Mostrar Semilla del Monedero"
 
 #: src/js/services/bwsError.js
 msgid "Signatures rejected by server"
@@ -1254,6 +1343,10 @@ msgstr "Firmas rechazadas por el servidor"
 #: src/js/controllers/walletHome.js
 msgid "Signing payment"
 msgstr "Firmando el pago"
+
+#: public/views/walletHome.html
+msgid "SKIP BACKUP"
+msgstr "OMITIR"
 
 #: public/views/translators.html
 msgid "Spanish"
@@ -1283,6 +1376,14 @@ msgstr "Aún no esta listo"
 msgid "Success"
 msgstr "Listo"
 
+#: public/views/preferencesAdvanced.html
+msgid "Sweep paper wallet"
+msgstr "Monedero en papel"
+
+#: public/views/paperWallet.html
+msgid "Sweep Wallet"
+msgstr "Barrer Monedero"
+
 #: public/views/walletHome.html
 msgid "Tap to retry"
 msgstr "Toque para reintentar"
@@ -1297,13 +1398,13 @@ msgstr "Términos de Uso"
 msgid "Testnet"
 msgstr "Testnet"
 
-#: src/js/services/ledger.js
-msgid "The Ledger Chrome application is not installed"
-msgstr "La aplicación Ledger de Chrome no esta instalada"
-
 #: public/views/disclaimer.html
 msgid "The authors of the software, employees and affiliates of Bitpay, copyright holders, and BitPay, Inc. cannot retrieve your private keys or passwords if you lose or forget them and cannot guarantee transaction confirmation as they do not have control over the Bitcoin network."
 msgstr "Los autores de los software, empleados y afiliados de Bitpay, los titulares de derechos de autor, y BitPay, Inc. no pueden recuperar sus claves privadas o contraseñas si se pierde o se olvida de ellos y no se puede garantizar la confirmación de la transacción, ya que no tienen control sobre la red Bitcoin."
+
+#: src/js/services/ledger.js
+msgid "The Ledger Chrome application is not installed"
+msgstr "La aplicación Ledger de Chrome no esta instalada"
 
 #: src/js/controllers/walletHome.js
 msgid "The payment was created but could not be completed. Please try again from home screen"
@@ -1379,13 +1480,13 @@ msgstr "Para"
 msgid "To restore this {{index.m}}-{{index.n}} <b>shared</b> wallet you will need"
 msgstr "Para restaurar el monedero <b>compartido</b> {{index.m}}-{{index.n}} necesitará"
 
-#: public/views/backup.html
-msgid "To restore this {{index.m}}-{{index.n}} shared wallet you will need"
-msgstr "Para restaurar este monedero compartido {{index.m}}-{{index.n}} necesitará"
-
 #: public/views/disclaimer.html
 msgid "To the fullest extent permitted by law, this software is provided “as is” and no representations or warranties can be made of any kind, express or implied, including but not limited to the warranties of merchantability, fitness or a particular purpose and noninfringement."
 msgstr "En la máxima medida permitida por la ley, este software se proporciona \"tal cual está\" y no asume la responsabilidad ni ofrece garantías de ningún tipo, expresa o implícita, incluyendo, pero no limitado a las garantías comerciales, de conveniencia o a un propósito particular."
+
+#: public/views/walletHome.html
+msgid "too long!"
+msgstr "¡demasiado largo!"
 
 #: public/views/modals/txp-details.html
 msgid "Total"
@@ -1445,6 +1546,11 @@ msgstr "Actualizando Monedero..."
 msgid "Use Ledger hardware wallet"
 msgstr "Utilizar Ledger"
 
+#: public/views/create.html
+#: public/views/join.html
+msgid "Use TREZOR hardware wallet"
+msgstr "Utilizar el monedero físico TREZOR"
+
 #: public/views/preferences.html
 #: public/views/walletHome.html
 msgid "Use Unconfirmed Funds"
@@ -1459,8 +1565,115 @@ msgid "Version"
 msgstr "Versión"
 
 #: public/views/export.html
-msgid "View backup"
-msgstr "Ver Copia de Seguridad"
+msgid "View"
+msgstr "Ver"
+
+#: public/views/copayers.html
+msgid "Waiting for copayers"
+msgstr "Esperando copayers"
+
+#: public/views/copayers.html
+msgid "Waiting..."
+msgstr "Esperando..."
+
+#: public/views/preferencesDeleteWallet.html
+msgid "Wallet"
+msgstr "Monedero"
+
+#: public/views/preferences.html
+msgid "Wallet Alias"
+msgstr "Alias del monedero"
+
+#: src/js/services/bwsError.js
+msgid "Wallet already exists"
+msgstr "El monedero ya existe"
+
+#: src/js/services/profileService.js
+msgid "Wallet Already Imported:"
+msgstr "Este monedero ya fue importado: "
+
+#: src/js/services/profileService.js
+msgid "Wallet already in Copay:"
+msgstr "El Monedero ya existe en Copay:"
+
+#: public/views/preferencesInformation.html
+msgid "Wallet Configuration (m-n)"
+msgstr "Configuración del Monedero (m-n)"
+
+#: public/views/export.html
+msgid "Wallet Export"
+msgstr "Exportar Monedero"
+
+#: public/views/preferencesInformation.html
+msgid "Wallet Id"
+msgstr "Identificación del Monedero"
+
+#: public/views/copayers.html
+msgid "Wallet incomplete and broken"
+msgstr "Monedero incompleto y roto"
+
+#: public/views/preferencesAdvanced.html
+#: public/views/preferencesInformation.html
+msgid "Wallet Information"
+msgstr "Información del Monedero"
+
+#: public/views/join.html
+msgid "Wallet Invitation"
+msgstr "Invitación para unirse al monedero"
+
+#: public/views/join.html
+msgid "Wallet Invitation is not valid!"
+msgstr "¡Invitación no válida!"
+
+#: src/js/services/bwsError.js
+msgid "Wallet is full"
+msgstr "El monedero está lleno"
+
+#: src/js/services/bwsError.js
+msgid "Wallet is not complete"
+msgstr "El monedero no esta completo"
+
+#: public/views/create.html
+msgid "Wallet name"
+msgstr "Nombre del monedero"
+
+#: public/views/preferencesInformation.html
+msgid "Wallet Name (at creation)"
+msgstr "Nombre del Monedero (durante la creación)"
+
+#: public/views/preferencesInformation.html
+msgid "Wallet Network"
+msgstr "Red del Monedero"
+
+#: src/js/services/bwsError.js
+msgid "Wallet not found"
+msgstr "Monedero no encontrado"
+
+#: src/js/services/bwsError.js
+msgid "Wallet not registed at the Wallet Service. Recreate it from \"Create Wallet\" using \"Advanced Options\" to set your seed"
+msgstr "Monedero no registrado en Wallet Service. Volver a \"Crear Monedero\", usando \"Opciones avanzadas\" para ingresar la semilla"
+
+#: public/views/create.html
+#: public/views/import.html
+#: public/views/join.html
+msgid "Wallet Seed"
+msgstr "Semilla de Monedero"
+
+#: public/views/import.html
+msgid "Wallet Seed could require a passphrase to be imported"
+msgstr "La Semilla del Monedero podría requerir una contraseña para ser importada"
+
+#: src/js/services/bwsError.js
+msgid "Wallet seed is invalid"
+msgstr "Semilla del monedero inválida"
+
+#: public/views/backup.html
+msgid "Wallet seed not available. You can still export it from Advanced &gt; Export."
+msgstr "La semilla del monedero no está disponible. Todavía puede exportar desde Avanzado &gt; Exportar."
+
+#: src/js/services/bwsError.js
+msgid "Wallet service not found"
+msgstr "Wallet Service no encontrado"
 
 #: public/views/walletHome.html
 msgid "WARNING: Backup needed"
@@ -1483,6 +1696,10 @@ msgstr "ADVERTENCIA: La clave privada de este monedero no está disponible. La e
 msgid "WARNING: This seed was created with a passphrase. To recover this wallet both the mnemonic and passphrase are needed."
 msgstr "ADVERTENCIA: Esta semilla fue creada con una contraseña. Para recuperar este mondero necesita las palabras y la contraseña."
 
+#: public/views/modals/txp-details.html
+msgid "Warning: this transaction has unconfirmed inputs"
+msgstr "Advertencia: esta operación tiene entradas sin confirmar"
+
 #: public/views/modals/paypro.html
 msgid "WARNING: UNTRUSTED CERTIFICATE"
 msgstr "ADVERTENCIA: NO ES DE CONFIANZA EL CERTIFICADO"
@@ -1491,128 +1708,17 @@ msgstr "ADVERTENCIA: NO ES DE CONFIANZA EL CERTIFICADO"
 msgid "WARNING: Wallet not registered"
 msgstr "ADVERTENCIA: Monedero no registrado"
 
-#: public/views/splash.html
-msgid "WELCOME TO COPAY"
-msgstr "BIENVENIDO A COPAY"
-
-#: public/views/copayers.html
-msgid "Waiting for copayers"
-msgstr "Esperando copayers"
-
-#: public/views/copayers.html
-msgid "Waiting..."
-msgstr "Esperando..."
-
-#: public/views/preferencesDeleteWallet.html
-msgid "Wallet"
-msgstr "Monedero"
-
-#: public/views/preferences.html
-msgid "Wallet Alias"
-msgstr "Alias del monedero"
-
-#: src/js/services/profileService.js
-msgid "Wallet Already Imported:"
-msgstr "Este monedero ya fue importado: "
-
-#: public/views/preferencesInformation.html
-msgid "Wallet Configuration (m-n)"
-msgstr "Configuración del Monedero (m-n)"
-
-#: public/views/preferencesInformation.html
-msgid "Wallet Id"
-msgstr "Identificación del Monedero"
-
-#: public/views/preferencesAdvanced.html
-#: public/views/preferencesInformation.html
-msgid "Wallet Information"
-msgstr "Información del Monedero"
-
-#: public/views/join.html
-msgid "Wallet Invitation"
-msgstr "Invitación para unirse al monedero"
-
-#: public/views/join.html
-msgid "Wallet Invitation is not valid!"
-msgstr "¡Invitación no válida!"
-
-#: public/views/preferencesInformation.html
-msgid "Wallet Name (at creation)"
-msgstr "Nombre del Monedero (durante la creación)"
-
-#: public/views/preferencesInformation.html
-msgid "Wallet Network"
-msgstr "Red del Monedero"
-
-#: public/views/create.html
-#: public/views/import.html
-#: public/views/join.html
-msgid "Wallet Seed"
-msgstr "Semilla de Monedero"
-
-#: public/views/import.html
-msgid "Wallet Seed could require a passphrase to be imported"
-msgstr "La Semilla del Monedero podría requerir una contraseña para ser importada"
-
-#: src/js/services/bwsError.js
-msgid "Wallet already exists"
-msgstr "El monedero ya existe"
-
-#: src/js/services/profileService.js
-msgid "Wallet already in Copay:"
-msgstr "El Monedero ya existe en Copay:"
-
-#: src/js/services/bwsError.js
-msgid "Wallet already registered"
-msgstr "El Monedero ya esta registrado"
-
-#: public/views/copayers.html
-msgid "Wallet incomplete and broken"
-msgstr "Monedero incompleto y roto"
-
-#: src/js/services/bwsError.js
-msgid "Wallet is full"
-msgstr "El monedero está lleno"
-
-#: src/js/services/bwsError.js
-msgid "Wallet is not complete"
-msgstr "El monedero no esta completo"
-
-#: public/views/create.html
-msgid "Wallet name"
-msgstr "Nombre del monedero"
-
-#: src/js/services/bwsError.js
-msgid "Wallet not found"
-msgstr "Monedero no encontrado"
-
-#: src/js/services/bwsError.js
-msgid "Wallet not registed at the Wallet Service. Recreate it from \"Create Wallet\" using \"Advanced Options\" to set your seed"
-msgstr "Monedero no registrado en Wallet Service. Volver a \"Crear Monedero\", usando \"Opciones avanzadas\" para ingresar la semilla"
-
-#: src/js/services/bwsError.js
-msgid "Wallet seed is invalid"
-msgstr "Semilla del monedero inválida"
-
-#: public/views/backup.html
-msgid "Wallet seed not available. You can still export it from Advanced &gt; Export."
-msgstr "La semilla del monedero no está disponible. Todavía puede exportar desde Avanzado &gt; Exportar."
-
-#: src/js/services/bwsError.js
-msgid "Wallet service not found"
-msgstr "Wallet Service no encontrado"
-
 #: public/views/preferencesDeleteWallet.html
 msgid "Warning!"
 msgstr "¡Advertencia!"
 
-#: public/views/modals/txp-details.html
-msgid "Warning: this transaction has unconfirmed inputs"
-msgstr "Advertencia: esta operación tiene entradas sin confirmar"
-
 #: public/views/disclaimer.html
 msgid "We reserve the right to modify this disclaimer from time to time."
 msgstr "Nos reservamos el derecho a modificar el presente aviso legal de vez en cuando."
+
+#: public/views/splash.html
+msgid "WELCOME TO COPAY"
+msgstr "BIENVENIDO A COPAY"
 
 #: public/views/disclaimer.html
 msgid "While the software has undergone beta testing and continues to be improved by feedback from the open-source user and developer community, we cannot guarantee that there will be no bugs in the software."
@@ -1658,10 +1764,6 @@ msgstr "No tienes ningún monedero"
 msgid "You need the wallet seed to restore this personal wallet."
 msgstr "Necesita la semilla del monedero para restaurar este monedero personal."
 
-#: public/views/backup.html
-msgid "Your Wallet Seed"
-msgstr "Semilla del Monedero"
-
 #: public/views/import.html
 msgid "Your backup password"
 msgstr "Tu contraseña"
@@ -1692,47 +1794,10 @@ msgid "Your wallet key will be encrypted. Password cannot be recovered. Be sure 
 msgstr "Su clave del monedero se cifrarán. La contraseña no puede ser recuperada. Asegúrese de escribirlo"
 
 #: public/views/backup.html
-msgid "Your wallet seed and access to the wallet service where wallet is registered"
-msgstr "Semilla y acceso a Wallet Service donde esta registrado el monedero"
+msgid "Your Wallet Seed"
+msgstr "Semilla del Monedero"
 
 #: public/views/backup.html
-msgid "Your wallet seed and access to the wallet service where your wallet is registered"
-msgstr "Semilla y acceso a Wallet Service donde su monedero esta registrado"
-
-#: public/views/includes/available-balance.html
-msgid "locked by pending payments"
-msgstr "bloqueado por pagos pendientes"
-
-#: src/js/services/profileService.js
-msgid "me"
-msgstr "yo"
-
-#: public/views/walletHome.html
-msgid "optional"
-msgstr "opcional"
-
-#: public/views/preferences.html
-msgid "settings"
-msgstr "configuración"
-
-#: public/views/walletHome.html
-msgid "too long!"
-msgstr "¡demasiado largo!"
-
-#: src/js/controllers/walletHome.js
-msgid "{{fee}} will be deducted for bitcoin networking fees"
-msgstr "{{fee}} se descontará por comisión de la red bitcoin"
-
-#: public/views/copayers.html
-#: public/views/walletHome.html
-msgid "{{index.m}}-of-{{index.n}}"
-msgstr "{{index.m}}-de-{{index.n}}"
-
-#: public/views/includes/sidebar.html
-msgid "{{item.m}}-of-{{item.n}}"
-msgstr "{{item.m}}-de-{{item.n}}"
-
-#: src/js/controllers/importLegacy.js
-msgid "{{len}} wallets imported. Funds scanning in progress. Hold on to see updated balance"
-msgstr "{{len}} monederos importados. Búsqueda de fondos en progreso. Espere a ver el balance actualizado"
+msgid "Your wallet seed and access to the server that coordinated the initial wallet creation. You still need {{index.m}} keys to spend."
+msgstr "Su semilla del monedero y acceso al servidor que coordina la creación del monedero inicial. Aún necesita las {{index.m}} claves para gastar los fondos."
 
