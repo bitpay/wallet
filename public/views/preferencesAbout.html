@@ -5,17 +5,16 @@
 </div>
 
 <div class="content preferences" ng-controller="preferencesAbout as about">
-    <h4 class="title m0" translate>Release Information</h4>
-
+    <h4  translate>Release Information</h4>
     <div  ng-controller="versionController as v">
-      <ul class="no-bullet m0 size-14">
-        <li class="line-b p20" ng-conf>
+      <ul class="no-bullet m0">
+        <li  ng-conf>
           <span translate>Version</span>
           <span class="right text-gray">
             v{{v.version}} 
           </span>      
         </li>
-        <li class="line-b p20" ng-conf ng-click="$root.openExternalLink('https://github.com/bitpay/copay/tree/'+v.commitHash)">
+        <li  ng-conf ng-click="$root.openExternalLink('https://github.com/bitpay/copay/tree/'+v.commitHash)">
           <span translate>Commit hash</span>
           <span class="right text-gray">
             #{{v.commitHash}}
@@ -24,17 +23,17 @@
       </ul>
     </div>
  
-    <h4 class="title m0">&nbsp;</h4>
-    <ul class="no-bullet m0 size-14">
-      <li class="line-b p20" ng-click="$root.go('disclaimer')">
+    <h4></h4>
+    <ul class="no-bullet m0">
+      <li  ng-click="$root.go('disclaimer')">
         <i class="icon-arrow-right3 size-24 right text-gray"></i>  
         <span translate>Terms of Use</span>
       </li>
-      <li class="line-b p20" ng-click="$root.go('translators')">
+      <li  ng-click="$root.go('translators')">
         <i class="icon-arrow-right3 size-24 right text-gray"></i>  
         <span translate>Translators</span>
       </li>
-      <li class="line-b p20" ng-conf ng-click="$root.go('logs')">
+      <li  ng-conf ng-click="$root.go('logs')">
         <i class="icon-arrow-right3 size-24 right text-gray"></i>  
         <span translate>Session log</span>
       </li>

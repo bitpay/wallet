@@ -65,11 +65,12 @@
         ng-click="paperWallet.sweepWallet()" 
         translate>Sweep Wallet
       </button>
-      <div class="text-center">
-        <div class="size-12 text-gray" translate>Funds will be transfered to</div>
-        <b>{{index.alias || index.walletName}}</b>
-      </div>
     </div>
   </div>
+  <div class="text-center size-12 text-gray">
+    <span class="" translate>Funds will be transfered to</span>:
+    <b>{{index.alias || index.walletName}}</b>
+  </div>
+
 </div>
 <div class="extra-margin-bottom"></div>
