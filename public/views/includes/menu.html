@@ -1,12 +1,12 @@
-<div class="bottom-bar second-bottom-bar row collapse animated slideInRight" ng-class="{ 'slideOutRight': !showPlugins }" ng-show="index.menu.length > 6">
+<div class="bottom-bar second-bottom-bar row collapse animated slideInRight" ng-class="{ 'slideOutRight': !showPlugins }" ng-if="index.menu.length > 6">
     <div class="medium-{{index.menuItemSize}} small-{{index.menuItemSize}} columns text-center bottombar-item" ng-repeat="item in index.menu | limitTo: 5 - index.menu.length">
-        <span ng-include="'views/includes/menu-item.html'"/>
+        <span ng-include="'views/includes/menu-item.html'"></span>
     </div>
     <div class="medium-{{index.menuItemSize}} small-{{index.menuItemSize}} columns text-center bottombar-item" ng-repeat="n in index.menu | limitTo: 4 - index.menu.length % 6">
         <a></a>
     </div>
 
-    <menu-toggle ng-show="index.menu.length > 6"/>
+    <menu-toggle ng-show="index.menu.length > 6"></menu-toggle>
 </div>
 
 <div class="bottom-bar row collapse" ng-show="!index.notAuthorized">
@@ -14,15 +14,15 @@
         <div class="row collapse">
             <div class="medium-{{index.menuItemSize}} small-{{index.menuItemSize}} columns text-center bottombar-item"
                  ng-repeat="item in index.menu | limitTo: (index.menu.length > 6 ? 5 : (index.menu.length == 5 ? 4 : index.menu.length))">
-              <span ng-include="'views/includes/menu-item.html'"/>
+              <span ng-include="'views/includes/menu-item.html'"></span>
             </div>
 
-            <menu-toggle ng-show="index.menu.length > 6"/>
+            <menu-toggle ng-show="index.menu.length > 6"></menu-toggle>
         </div>
     </div>
 
     <div class="medium-2 small-2 columns text-center bottombar-item" ng-show="index.menu.length == 5">
-        <span ng-include="'views/includes/menu-item.html'" ng-init="item = index.menu[4]"/>
+        <span ng-include="'views/includes/menu-item.html'" ng-init="item = index.menu[4]"></span>
     </div>
 
 </div>
