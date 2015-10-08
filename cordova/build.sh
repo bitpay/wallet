@@ -129,7 +129,7 @@ if [ ! -d $PROJECT ]; then
   cordova plugin add org.apache.cordova.file
   checkOK
 
-  cordova plugin add cordova-plugin-touch-id && cordova prepare
+  cordova plugin add https://github.com/EddyVerbruggen/cordova-plugin-touch-id && cordova prepare
   checkOK
 
 fi
