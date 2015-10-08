@@ -6,28 +6,26 @@
 
 <div class="content preferences" ng-controller="preferencesAdvancedController as preferences">
 
-  <ul class="no-bullet m0 size-14">
+  <h4></h4>
+  <ul class="no-bullet m0">
 
-    <li class="line-b p20" ng-click="$root.go('information')">
+
+    <li  ng-click="$root.go('information')">
       <i class="icon-arrow-right3 size-24 right text-gray"></i>  
       <span translate>Wallet Information</span>
     </li>
 
-    <li class="line-b p20" ng-click="index.retryScan(); $root.go('walletHome'); ">
-      <span translate>Scan addresses for funds</span>
-    </li>
-
-    <li ng-show="index.network == 'livenet'" class="line-b p20" ng-click="$root.go('paperWallet')">
+    <li ng-show="index.network == 'livenet'" class="text-capitalize" ng-click="$root.go('paperWallet')">
       <i class="icon-arrow-right3 size-24 right text-gray"></i>  
       <span translate>Sweep paper wallet</span>
     </li>
  
-    <li class="line-b p20" ng-click="$root.go('export')">
+    <li  ng-click="$root.go('export')">
       <i class="icon-arrow-right3 size-24 right text-gray"></i>  
-      <span translate>Export</span>
+      <span translate>Export Wallet</span>
     </li>
 
-    <li class="line-b p20" ng-click="$root.go('delete')">
+    <li ng-click="$root.go('delete')">
       <i class="icon-arrow-right3 size-24 right text-gray"></i>  
       <span translate>Delete Wallet</span>
     </li>

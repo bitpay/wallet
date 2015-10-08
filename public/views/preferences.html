@@ -8,11 +8,11 @@
 
 <div class="content preferences" ng-controller="preferencesController as preferences" ng-init="preferences.init()">
 
-  <ul class="no-bullet m0 size-14" ng-show="!index.noFocusedWallet">
-    <h4 class="title m0">{{index.alias}} [{{index.walletName}}] <span translate>settings</span></h4>
+  <h4></h4>
+  <ul class="no-bullet m0" ng-show="!index.noFocusedWallet">
 
 
-    <li class="line-b p20" ng-click="$root.go('preferencesAlias')">
+    <li  ng-click="$root.go('preferencesAlias')">
       <span translate>Wallet Alias</span>
       <span class="right text-gray">
         <i class="icon-arrow-right3 size-24 right"></i>
@@ -20,7 +20,7 @@
       </span>
     </li>
 
-    <li class="line-b p20" ng-click="$root.go('preferencesEmail')">
+    <li ng-click="$root.go('preferencesEmail')">
       <span translate>Email Notifications</span>
       <span class="right text-gray">
         <i class="icon-arrow-right3 size-24 right"></i>
@@ -29,29 +29,25 @@
       </span>
     </li>
 
-    <li class="line-b p20" ng-click="$root.go('preferencesColor')">
+    <li ng-click="$root.go('preferencesColor')">
       <span translate>Color</span>
       <span class="right text-gray">
         <i class="icon-arrow-right3 size-24 right"></i>
         <span ng-style="{'color':index.backgroundColor}">&block;</span>
       </span>      
     </li>
-    <li class="line-b p20" ng-hide="index.isPrivKeyExternal">
-      <span translate>Request Password for Spending Funds</span>
-      <switch id="network-name" name="encrypt" ng-model="encrypt" class="green right"></switch>
-    </li>
-    <li class="line-b p20" ng-show="preferences.touchidAvailable">
-      <span translate>Request Touch ID for Spending Funds</span>
-      <switch id="touchid" name="touchid" ng-model="touchid" class="green right"></switch>
-    </li>
-    <li class="line-b p20" ng-show="index.isPrivKeyExternal">
+
+    <li ng-show="index.isPrivKeyExternal">
       <span translate>Hardware wallet</span>
       <span class="right text-gray">
         {{preferences.externalSource}} 
         <!-- (Accont {{preferences.externalAccount}}) -->
       </span>
     </li> 
-    <li class="line-b p20" ng-click="$root.go('backup')"  ng-hide="index.isPrivKeyExternal">
+
+    <h4>
+    </h4>
+    <li ng-click="$root.go('backup')"  ng-hide="index.isPrivKeyExternal">
       <i class="icon-arrow-right3 size-24 right text-gray"></i>  
       <span class="text-warning right" ng-show="index.needsBackup">
         <i class="fi-alert"></i> <span translate> Still not done</span>
@@ -59,37 +55,50 @@
       <span translate>Backup</span>
     </li>
  
-    <li class="line-b p20" ng-click="$root.go('preferencesAdvanced')">
+    <li ng-click="$root.go('preferencesAdvanced')">
       <i class="icon-arrow-right3 size-24 right text-gray"></i>  
       <span translate>Advanced</span>
     </li>
   </ul>
-  <ul class="no-bullet m0 size-14">
+    <h4 translate>
+      Spending Restrictions
+    </h4>
+  <ul class="no-bullet m0 ">
+    <li  ng-hide="index.isPrivKeyExternal">
+      <span translate>Request Password</span>
+      <switch id="network-name" name="encrypt" ng-model="encrypt" class="green right"></switch>
+    </li>
+    <li  ng-show="preferences.touchidAvailable">
+      <span translate>Scan Fingerpring</span>
+      <switch id="touchid" name="touchid" ng-model="touchid" class="green right"></switch>
+    </li>
+  </ul>
+  <ul class="no-bullet m0 ">
 
-    <h4 class="title m0" translate>Global settings</h4>
+    <h4 translate>Global settings</h4>
 
-    <li class="line-b p20" ng-show="!index.noFocusedWallet" ng-click="$root.go('preferencesLanguage')">
+    <li  ng-show="!index.noFocusedWallet" ng-click="$root.go('preferencesLanguage')">
       <span translate>Language</span>
       <span class="right text-gray">
         <i class="icon-arrow-right3 size-24 right"></i>
         {{preferences.currentLanguageName|translate}}
       </span>
     </li>
-    <li class="line-b p20" ng-show="!index.noFocusedWallet" ng-click="$root.go('preferencesUnit')">
+    <li  ng-show="!index.noFocusedWallet" ng-click="$root.go('preferencesUnit')">
       <span translate>Unit</span>
       <span class="right text-gray">
         <i class="icon-arrow-right3 size-24 right"></i>
         {{preferences.unitName}}
       </span>
     </li>
-    <li class="line-b p20" ng-show="!index.noFocusedWallet" ng-click="$root.go('preferencesAltCurrency')">
+    <li  ng-show="!index.noFocusedWallet" ng-click="$root.go('preferencesAltCurrency')">
       <span translate>Alternative Currency</span>
       <span class="right text-gray">
         <i class="icon-arrow-right3 size-24 right"></i>
         {{preferences.selectedAlternative.name}}
       </span>
     </li>
-    <li class="line-b p20" ng-show="!index.noFocusedWallet" ng-click="$root.go('preferencesFee')"
+    <li  ng-show="!index.noFocusedWallet" ng-click="$root.go('preferencesFee')"
       ng-show="(index.network == 'livenet' ? index.feeLevels.livenet : index.feeLevels.testnet)">
       <span translate>Bitcoin Network Fee Policy</span>
       <span class="right text-gray">
@@ -97,35 +106,37 @@
         {{index.feeOpts[index.currentFeeLevel]|translate}}
       </span>
     </li> 
-    <li class="line-b p20" ng-show="!index.noFocusedWallet">
+   <li  ng-show="!index.noFocusedWallet">
       <span translate>Use Unconfirmed Funds</span>
       <switch id="spend-unconfirmed" name="spendUnconfirmed" ng-model="spendUnconfirmed" class="green right"></switch>
     </li>
-    <li class="line-b p20" ng-click="$root.go('preferencesBwsUrl')">
+
+    <li ng-show="!index.noFocusedWallet">
+      <span>Enable Glidera Service</span>
+      <switch id="glidera-enabled" name="glideraEnabled" ng-model="glideraEnabled" class="green right"></switch>
+    </li>
+    <li ng-click="$root.go('preferencesBwsUrl')">
       <span>Bitcore Wallet Service</span>
       <span class="text-gray db">
           <i class="icon-arrow-right3 size-24 right"></i>
           {{preferences.bwsurl}}
         </span>
     </li>
-
-    <li class="line-b p20" ng-show="!index.noFocusedWallet">
-      <span>Enable Glidera Service</span>
-      <switch id="glidera-enabled" name="glideraEnabled" ng-model="glideraEnabled" class="green right"></switch>
-    </li>
+ 
     <!-- Disabled for testnet 
-    <li class="line-b p20" ng-show="!index.noFocusedWallet && glideraEnabled">
+    <li ng-show="!index.noFocusedWallet && glideraEnabled">
       <span>Glidera Sandbox</span>
       <switch id="glidera-testnet" name="glideraTestnet" ng-model="glideraTestnet" class="green right"></switch>
     </li>
     -->
 
-    <li class="line-b p20" ng-click="$root.go('about')">
+    <li ng-click="$root.go('about')">
       <i class="icon-arrow-right3 size-24 right text-gray"></i>  
       <span translate>About Copay</span>
     </li>
  
   </ul>
+  <h4></h4>
 
 </div>
 <div class="extra-margin-bottom"></div>
