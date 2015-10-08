@@ -404,48 +404,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     });
   };
 
-  self.updateTxHistory = function(skip) {
-    var fc = profileService.focusedClient;
-    if (!fc || !fc.isComplete()) return;
-    if (!skip) {
-      self.txHistory = [];
-      self.txHistoryUnique = {};
-    }
-    self.skipHistory = skip || 0;
-    $log.debug('Updating Transaction History');
-    self.txHistoryError = false;
-    self.updatingTxHistory = true;
-    self.txHistoryPaging = false;
-
-    $timeout(function() {
-      fc.getTxHistory({
-        skip: self.skipHistory,
-        limit: self.limitHistory + 1
-      }, function(err, txs) {
-        self.updatingTxHistory = false;
-        if (err) {
-          $log.debug('TxHistory ERROR:', err);
-          // We do not should errors here, since history is usually
-          // fetched AFTER others requests (if skip=0)
-          if (skip)
-            self.handleError(err);
-
-          self.txHistoryError = true;
-        } else {
-          $log.debug('Wallet Transaction History:', txs);
-          self.skipHistory = self.skipHistory + self.limitHistory;
-          self.setTxHistory(txs);
-        }
-        $rootScope.$apply();
-      });
-    });
-  };
-
-  self.debouncedUpdateHistory = lodash.throttle(function() {
-    self.updateTxHistory();
-  }, 5000);
-
-
   // This handles errors from BWS/index with are nomally
   // trigger from async events (like updates)
   self.handleError = function(err) {
@@ -551,7 +509,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
           self.txHistoryUnique[tx.txid] = true;
           c++;
         } else {
-          $log.debug('Ignoring duplicate TX in history: '+ tx.txid)
+          $log.debug('Ignoring duplicate TX in history: ' + tx.txid)
         }
       }
     });
@@ -648,51 +606,141 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     }
   };
 
+  // this.csvHistory = function() {
+
+  //   function saveFile(name, data) {
+  //     var chooser = document.querySelector(name);
+  //     chooser.addEventListener("change", function(evt) {
+  //       var fs = require('fs');
+  //       fs.writeFile(this.value, data, function(err) {
+  //         if (err) {
+  //           $log.debug(err);
+  //         }
+  //       });
+  //     }, false);
+  //     chooser.click();
+  //   }
+
+  //   function formatDate(date) {
+  //     var dateObj = new Date(date);
+  //     if (!dateObj) {
+  //       $log.debug('Error formating a date');
+  //       return 'DateError'
+  //     }
+  //     if (!dateObj.toJSON()) {
+  //       return '';
+  //     }
+
+  //     return dateObj.toJSON();
+  //   }
+
+  //   function formatString(str) {
+  //     if (!str) return '';
+
+  //     if (str.indexOf('"') !== -1) {
+  //       //replace all
+  //       str = str.replace(new RegExp('"', 'g'), '\'');
+  //     }
+
+  //     //escaping commas
+  //     str = '\"' + str + '\"';
+
+  //     return str;
+  //   }
+
+  //   var step = 6;
+
+  //   function getHistory(skip, cb) {
+  //     skip = skip || 0;
+  //     fc.getTxHistory({
+  //       skip: skip,
+  //       limit: step,
+  //     }, function(err, txs) {
+  //       if (err) return cb(err);
+  //       if (txs && txs.length > 0) {
+  //         allTxs.push(txs);
+  //         return getHistory(skip + step, cb);
+  //       } else {
+  //         return cb(null, lodash.flatten(allTxs));
+  //       }
+  //     });
+  //   };
+
+  //   if (isCordova) {
+  //     $log.info('Not available on mobile');
+  //     return;
+  //   }
+  //   var isNode = nodeWebkit.isDefined();
+  //   var fc = profileService.focusedClient;
+  //   if (!fc.isComplete()) return;
+  //   var self = this;
+  //   var allTxs = [];
+  //   $log.debug('Generating CSV from History');
+  //   self.setOngoingProcess('generatingCSV', true);
+  //   $timeout(function() {
+  //     getHistory(null, function(err, txs) {
+  //       self.setOngoingProcess('generatingCSV', false);
+  //       if (err) {
+  //         self.handleError(err);
+  //       } else {
+  //         $log.debug('Wallet Transaction History:', txs);
+
+  //         self.satToUnit = 1 / self.unitToSatoshi;
+  //         var data = txs;
+  //         var satToBtc = 1 / 100000000;
+  //         var filename = 'Copay-' + (self.alias || self.walletName) + '.csv';
+  //         var csvContent = '';
+  //         if (!isNode) csvContent = 'data:text/csv;charset=utf-8,';
+  //         csvContent += 'Date,Destination,Note,Amount,Currency,Spot Value,Total Value,Tax Type,Category\n';
+
+  //         var _amount, _note;
+  //         var dataString;
+  //         data.forEach(function(it, index) {
+  //           var amount = it.amount;
+
+  //           if (it.action == 'moved')
+  //             amount = 0;
+
+  //           _amount = (it.action == 'sent' ? '-' : '') + (amount * satToBtc).toFixed(8);
+  //           _note = formatString((it.message ? it.message : '') + ' TxId: ' + it.txid + ' Fee:' + (it.fees * satToBtc).toFixed(8));
+
+  //           if (it.action == 'moved')
+  //             _note += ' Moved:' + (it.amount * satToBtc).toFixed(8)
+
+  //           dataString = formatDate(it.time * 1000) + ',' + formatString(it.addressTo) + ',' + _note + ',' + _amount + ',BTC,,,,';
+  //           csvContent += dataString + "\n";
+
+  //           if (it.fees && (it.action == 'moved' || it.action == 'sent')) {
+  //             var _fee = (it.fees * satToBtc).toFixed(8)
+  //             csvContent += formatDate(it.time * 1000) + ',Bitcoin Network Fees,, -' + _fee + ',BTC,,,,' + "\n";
+  //           }
+  //         });
+
+  //         if (isNode) {
+  //           saveFile('#export_file', csvContent);
+  //         } else {
+  //           var encodedUri = encodeURI(csvContent);
+  //           var link = document.createElement("a");
+  //           link.setAttribute("href", encodedUri);
+  //           link.setAttribute("download", filename);
+  //           link.click();
+  //         }
+  //       }
+  //       $rootScope.$apply();
+  //     });
+  //   });
+  // };
+
   this.csvHistory = function() {
+    if (isCordova) return $log.info('Not available on mobile');
 
-    function saveFile(name, data) {
-      var chooser = document.querySelector(name);
-      chooser.addEventListener("change", function(evt) {
-        var fs = require('fs');
-        fs.writeFile(this.value, data, function(err) {
-          if (err) {
-            $log.debug(err);
-          }
-        });
-      }, false);
-      chooser.click();
-    }
-
-    function formatDate(date) {
-      var dateObj = new Date(date);
-      if (!dateObj) {
-        $log.debug('Error formating a date');
-        return 'DateError'
-      }
-      if (!dateObj.toJSON()) {
-        return '';
-      }
-
-      return dateObj.toJSON();
-    }
-
-    function formatString(str) {
-      if (!str) return '';
-
-      if (str.indexOf('"') !== -1) {
-        //replace all
-        str = str.replace(new RegExp('"', 'g'), '\'');
-      }
-
-      //escaping commas
-      str = '\"' + str + '\"';
-
-      return str;
-    }
+    var fc = profileService.focusedClient;
+    if (!fc.isComplete()) return;
 
     var step = 6;
 
     var unique = {};
+
     function getHistory(skip, cb) {
       skip = skip || 0;
       fc.getTxHistory({
@@ -700,87 +748,216 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         limit: step,
       }, function(err, txs) {
         if (err) return cb(err);
+
         if (txs && txs.length > 0) {
           lodash.each(txs, function(tx) {
-            if (!unique[tx.txid]){
+            if (!unique[tx.txid]) {
               allTxs.push(tx);
               unique[tx.txid] = 1;
               console.log("Got:" + lodash.keys(unique).length + " txs");
             } else {
-              console.log("Ignoring duplicate TX in CSV: "+ tx.txid);
+              console.log("Ignoring duplicate TX in CSV: " + tx.txid);
             }
           });
           return getHistory(skip + step, cb);
-        } else {
+        } else
           return cb(null, lodash.flatten(allTxs));
-        }
       });
     };
 
-    if (isCordova) {
-      $log.info('Not available on mobile');
-      return;
-    }
-    var isNode = nodeWebkit.isDefined();
-    var fc = profileService.focusedClient;
-    if (!fc.isComplete()) return;
     var self = this;
     var allTxs = [];
-    $log.debug('Generating CSV from History');
-    self.setOngoingProcess('generatingCSV', true);
+    $log.debug('Fetching transactions from History');
+    self.setOngoingProcess('generatingCSV', true); // cambiar esto
+
     $timeout(function() {
       getHistory(null, function(err, txs) {
-        self.setOngoingProcess('generatingCSV', false);
-        if (err) {
+        self.setOngoingProcess('generatingCSV', false); // cambiar esto
+
+        if (err)
           self.handleError(err);
-        } else {
+        else
           $log.debug('Wallet Transaction History:', txs);
 
-          self.satToUnit = 1 / self.unitToSatoshi;
-          var data = txs;
-          var satToBtc = 1 / 100000000;
-          var filename = 'Copay-' + (self.alias || self.walletName) + '.csv';
-          var csvContent = '';
-          if (!isNode) csvContent = 'data:text/csv;charset=utf-8,';
-          csvContent += 'Date,Destination,Note,Amount,Currency,Spot Value,Total Value,Tax Type,Category\n';
-
-          var _amount, _note;
-          var dataString;
-          data.forEach(function(it, index) {
-            var amount = it.amount;
-
-            if (it.action == 'moved')
-              amount = 0;
-
-            _amount = (it.action == 'sent' ? '-' : '') + (amount * satToBtc).toFixed(8);
-            _note = formatString((it.message ? it.message : '') + ' TxId: ' + it.txid + ' Fee:' + (it.fees * satToBtc).toFixed(8));
-
-            if (it.action == 'moved')
-              _note += ' Moved:' + (it.amount * satToBtc).toFixed(8)
-
-            dataString = formatDate(it.time * 1000) + ',' + formatString(it.addressTo) + ',' + _note + ',' + _amount + ',BTC,,,,';
-            csvContent += dataString + "\n";
-
-            if (it.fees && (it.action == 'moved' || it.action == 'sent')) {
-              var _fee = (it.fees * satToBtc).toFixed(8)
-              csvContent += formatDate(it.time * 1000) + ',Bitcoin Network Fees,, -' + _fee + ',BTC,,,,' + "\n";
-            }
-          });
-
-          if (isNode) {
-            saveFile('#export_file', csvContent);
-          } else {
-            var encodedUri = encodeURI(csvContent);
-            var link = document.createElement("a");
-            link.setAttribute("href", encodedUri);
-            link.setAttribute("download", filename);
-            link.click();
-          }
-        }
-        $rootScope.$apply();
+        // verificar wallets sin transacciones (pendiente)
+        storageService.setTxHistory(JSON.stringify(txs), fc.credentials.walletId, function() {
+          return;
+        });
       });
     });
   };
+
+  self.getLocalHistory = function(walletId, cb) {
+    storageService.getTxHistory(walletId, function(err, txH) {
+      if (err) return cb(err);
+      if (!txH) return cb($log.debug('There is not transactions stored'));
+
+      var txHistory;
+      try {
+        txHistory = JSON.parse(txH);
+      } catch (ex) {
+        return cb(ex);
+      }
+
+      // console.log('From getLocalHistory: ', txHistory);
+      // lodash.each(txHistory, function(tx) {
+      //   console.log(tx);
+      // });
+
+      return cb(null, txHistory);
+    });
+  }
+
+  // self.updateTxHistory = function(skip) {
+  //   var fc = profileService.focusedClient;
+  //   if (!fc || !fc.isComplete()) return;
+  //   if (!skip) {
+  //     self.txHistory = [];
+  //   }
+  //   self.skipHistory = skip || 0;
+  //   $log.debug('Updating Transaction History');
+  //   self.txHistoryError = false;
+  //   self.updatingTxHistory = true;
+  //   self.txHistoryPaging = false;
+
+  //   $timeout(function() {
+  //     fc.getTxHistory({
+  //       skip: self.skipHistory,
+  //       limit: self.limitHistory + 1
+  //     }, function(err, txs) {
+  //       self.updatingTxHistory = false;
+  //       if (err) {
+  //         $log.debug('TxHistory ERROR:', err);
+  //         // We do not should errors here, since history is usually
+  //         // fetched AFTER others requests (if skip=0)
+  //         if (skip)
+  //           self.handleError(err);
+
+  //         self.txHistoryError = true;
+  //       } else {
+  //         $log.debug('Wallet Transaction History:', txs);
+  //         self.skipHistory = self.skipHistory + self.limitHistory;
+  //         self.setTxHistory(txs);
+  //       }
+  //       $rootScope.$apply();
+  //     });
+  //   });
+  // };
+
+  // self.debouncedUpdateHistory = lodash.throttle(function() {
+  //   self.updateTxHistory();
+  // }, 5000);
+
+  self.updateTxHistory = function(skip) {
+    var fc = profileService.focusedClient;
+    if (!fc || !fc.isComplete()) return;
+    if (!skip) self.txHistory = [];
+
+    $log.debug('Updating Transaction History');
+    self.skipHistory = skip || 0;
+    self.txHistoryError = false;
+    self.updatingTxHistory = true;
+    self.txHistoryPaging = false;
+
+    $timeout(function() {
+      storageService.getTxHistoryFlag(fc.credentials.walletId, function(err, historyFlag) {
+        if (err) {
+          $log.debug('TxHistory ERROR:', err);
+          if (skip) self.handleError(err);
+          self.txHistoryError = true;
+          return;
+        }
+
+        if (historyFlag) {
+          // history from local storage
+          self.getLocalHistory(fc.credentials.walletId, function(err, txsFromLocal) {
+            self.updatingTxHistory = false;
+            if (err) {
+              $log.debug('TxHistory ERROR:', err);
+              if (skip) self.handleError(err);
+              self.txHistoryError = true;
+              return;
+            }
+
+            self.setTxHistory(txsFromLocal);
+            console.log('Loaded from local.');
+            $log.debug('Wallet Transaction History:', txsFromLocal);
+            storageService.setTxHistoryFlag(true, fc.credentials.walletId, function() {
+              return;
+            });
+          });
+        } else {
+          // history from BWC
+          fc.getTxHistory({
+            skip: self.skipHistory,
+            limit: self.limitHistory + 1
+          }, function(err, txsFromBWC) {
+            self.updatingTxHistory = false;
+            if (err) {
+              $log.debug('TxHistory ERROR:', err);
+
+              if (skip) self.handleError(err);
+              self.txHistoryError = true;
+              return;
+            } else {
+              if (!txsFromBWC[0])
+                return $log.debug('There is not transactions stored');
+
+              self.setTxHistory(txsFromBWC);
+              $log.debug('Wallet Transaction History:', txsFromBWC);
+              storageService.setTxHistory(JSON.stringify(txsFromBWC), fc.credentials.walletId, function() {
+                storageService.setTxHistoryFlag(true, fc.credentials.walletId, function() {
+                  return;
+                });
+              });
+              console.log('Loaded from BWC.');
+              // // Check if the last tx on server is equal to the last tx in local storage
+              // // console.log('Last tx from BWC: ', txsFromBWC[0]);
+              // self.getLocalHistory(function(err, txsFromLocal) {
+              //   // console.log('Last tx from LocalStorage: ', txsFromLocal[0]);
+              //   if (err) {
+              //     $log.debug('TxHistory ERROR:', err);
+              //     if (skip) self.handleError(err);
+              //     self.txHistoryError = true;
+              //   }
+
+              //   if (self.areEqualsTxs(txsFromBWC[0], txsFromLocal[0])) {
+              //     self.setTxHistory(txsFromLocal);
+              //     $log.debug('Wallet Transaction History:', txsFromLocal);
+              //     storageService.setTxHistoryFlag(true, function() {
+              //       return;
+              //     });
+              //   } else {
+              //     self.setTxHistory(txsFromBWC);
+              //     $log.debug('Wallet Transaction History:', txsFromBWC);
+              //     storageService.setTxHistory(JSON.stringify(txsFromBWC), function() {
+              //       return;
+              //     });
+              //     storageService.setTxHistoryFlag(false, function() {
+              //       return;
+              //     });
+              //   }
+              // });
+            }
+          });
+        }
+      });
+      self.skipHistory = self.skipHistory + self.limitHistory;
+      self.updatingTxHistory = false;
+      $rootScope.$apply();
+    });
+  };
+
+  self.debouncedUpdateHistory = lodash.throttle(function() {
+    self.updateTxHistory();
+  }, 5000);
+
+  self.areEqualsTxs = function(firstTx, secondTx) {
+    if (firstTx.txid == secondTx.txid) // enough to determinate it?
+      return true;
+    else
+      return false;
+  }
 
   self.showErrorPopup = function(msg, cb) {
     $log.warn('Showing err popup:' + msg);
