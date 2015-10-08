@@ -6,43 +6,51 @@
 
 
 
-<div class="content p20v" ng-controller="backupController as backup">
-  <div class="row">
-    <div class="columns" ng-show="!backup.backupWalletPlainText">
+<div class="content preferences" ng-controller="backupController as backup">
+  <h4></h4>
+  <div ng-show="!backup.backupWalletPlainText">
       <div class="text-warning size-14 m20b" ng-show="backup.error">
         <i class="fi-alert size-12"></i>
         <span translate> Failed to export </span>
       </div>
 
-      <div class="text-warning size-14 m20b" ng-show="backup.isEncrypted">
-        <i class="fi-alert size-12"></i>
-        <span translate> The private key for this wallet is encrypted. Exporting keep the private key encrypted in the export archive.</span>
+      <div class="row">
+        <div class="columns">
+          <div class="text-warning size-14 m20b" ng-show="backup.isEncrypted">
+            <i class="fi-alert size-12"></i>
+            <span translate> The private key for this wallet is encrypted. Exporting keep the private key encrypted in the export archive.</span>
 
-      </div>
-
-      <label for="password" translate>Set up a Export Password </label>
-      <div class="input">
-        <input type="password" class="form-control"
-        placeholder="{{'Your export password'|translate}}"
-        name="password" ng-model="backup.password">
-      </div>
-
-      <label for="password" translate>Repeat password</label>
-      <div class="input">
-        <input type="password" class="form-control"
-        placeholder="{{'Repeat password'|translate}}"
-        name="password" ng-model="backup.repeatpassword">
-      </div>
-
-
-      <div class="row" ng-hide="index.isPrivKeyExternal">
-        <div class="large-12 columns">
-          <label for="no-sign" class="line-b oh">
-            <span translate>Do not include private key</span>
-            <switch id="no-sign" name="noSign" ng-model="noSign" class="green right m5t m10b"></switch>
-          </label>
+          </div>
         </div>
       </div>
+
+      <form>
+        <div class="row">
+          <div class="columns">
+            <label for="password" translate>Set up a Export Password </label>
+            <div class="input">
+              <input type="password" class="form-control"
+                                     placeholder="{{'Your export password'|translate}}"
+                                     name="password" ng-model="backup.password">
+            </div>
+
+            <label for="password" translate>Repeat password</label>
+            <div class="input">
+              <input type="password" class="form-control"
+                                     placeholder="{{'Repeat password'|translate}}"
+                                     name="password" ng-model="backup.repeatpassword">
+            </div>
+          </div>
+        </div>
+      </form>
+
+      <h4></h4>
+      <ul class="no-bullet m0" ng-hide="index.isPrivKeyExternal">
+        <li>
+        <switch id="no-sign" name="noSign" ng-model="noSign" class="green right"></switch>
+        <span translate>Do not include private key</span>
+        </li>
+      </ul>
 
 
       <div class="box-notification"  ng-show="index.isPrivKeyExternal">
@@ -65,28 +73,32 @@
       </div>
 
 
-      <button class="black round expand m0" ng-click="backup.downloadWalletBackup()"
-        ng-disabled="(!backup.password || backup.password != backup.repeatpassword)"
-        ng-style="{'background-color':index.backgroundColor}"
-        ng-show="!index.isSafari && !index.isCordova"><i class="fi-download"></i>
-        <span translate>Download</span></button>
-      <button class="black round expand m0" ng-click="backup.viewWalletBackup()"
-        ng-disabled="(!backup.password || backup.password != backup.repeatpassword)"
-        ng-style="{'background-color':index.backgroundColor}"
-        ng-show="index.isSafari && !index.isCordova"><i class="fi-eye"></i>
-        <span translate>View</span></button>
-      <div ng-show="index.isCordova">
-        <h4 translate>Export options</h4>
-        <button class="black round expand" ng-disabled="(!backup.password || backup.password != backup.repeatpassword)"
-          ng-style="{'background-color':index.backgroundColor}"
-          ng-click="backup.copyWalletBackup()"><i class="fi-clipboard-pencil"></i>
-          <span translate>Copy to clipboard</span></button>
-        <button class="black round expand m0" ng-disabled="(!backup.password || backup.password != backup.repeatpassword)"
-          ng-style="{'background-color':index.backgroundColor}"
-          ng-click="backup.sendWalletBackup()"><i class="fi-mail"></i>
-          <span translate>Send by email</span></button>
+      <div class="row">
+        <div class="columns">
+          <button class="black round expand m20t" ng-click="backup.downloadWalletBackup()"
+            ng-disabled="(!backup.password || backup.password != backup.repeatpassword)"
+            ng-style="{'background-color':index.backgroundColor}"
+            ng-show="!index.isSafari && !index.isCordova"><i class="fi-download"></i>
+            <span translate>Download</span></button>
+          <button class="black round expand m20t" ng-click="backup.viewWalletBackup()"
+            ng-disabled="(!backup.password || backup.password != backup.repeatpassword)"
+            ng-style="{'background-color':index.backgroundColor}"
+            ng-show="index.isSafari && !index.isCordova"><i class="fi-eye"></i>
+            <span translate>View</span></button>
+          <div ng-show="index.isCordova">
+            <h4 translate>Export options</h4>
+            <button class="black round expand" ng-disabled="(!backup.password || backup.password != backup.repeatpassword)"
+              ng-style="{'background-color':index.backgroundColor}"
+              ng-click="backup.copyWalletBackup()"><i class="fi-clipboard-pencil"></i>
+              <span translate>Copy to clipboard</span></button>
+            <button class="black round expand" ng-disabled="(!backup.password || backup.password != backup.repeatpassword)"
+              ng-style="{'background-color':index.backgroundColor}"
+              ng-click="backup.sendWalletBackup()"><i class="fi-mail"></i>
+              <span translate>Send by email</span></button>
+          </div>
+        </div>
       </div>
-    </div>
+    
   </div>
 
   <div class="row" ng-show="backup.backupWalletPlainText">
