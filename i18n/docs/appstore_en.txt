@@ -16,6 +16,7 @@ We built the following features into this version of Copay for a bitcoin wallet 
 • Backup phrases (BIP39)
 • Hierarchical deterministic (HD) address generation and wallet backups
 • Device-based security: all private keys are stored locally, not in the cloud
+• Touch Id support to spend funds
 • Support for Bitcoin testnet wallets
 • Synchronous access across all major mobile and desktop platforms
 • Payment protocol (BIP70-BIP73) support: easily-identifiable payment requests and verifiably secure bitcoin payments
