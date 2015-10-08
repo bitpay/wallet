@@ -81,9 +81,9 @@ h4.title a {
   background: #F1F3F5;
   padding: 25px 0px 5px 20px;
   text-transform: uppercase;
-  color: #777;
-  font-size: 10px;
-  font-weight:200;
+  color: #555;
+  font-size: 12px;
+  font-weight:300;
   margin:0;
 }
 
@@ -94,7 +94,7 @@ h4.title a {
 }
 
 .preferences ul li {
-  padding:10px 20px;
+  padding:13px 20px;
   border-bottom: 1px solid #E9E9EC;
 }
 
