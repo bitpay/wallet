@@ -7,12 +7,14 @@
 
 
 <div class="content preferences" ng-controller="preferencesLanguageController as prefLang">
-  <div class="animated infinite flash text-center m20t text-gray" ng-show="prefLang.loading" translate>Applying changes</div>
-  <div ng-show="!prefLang.loading"
+  <h4></h4>
+  <ul class="no-bullet m0 ">
+  <li
     ng-repeat="lang in prefLang.availableLanguages" 
     ng-click="prefLang.save(lang.isoCode)" class="line-b p20 size-14">
     <span>{{lang.name}}</span>
     <i class="fi-check size-16 right" ng-show="index.defaultLanguageIsoCode == lang.isoCode"></i>
-  </div>
+  </li>
+  </ul>
 </div>
 <div class="extra-margin-bottom"></div>
