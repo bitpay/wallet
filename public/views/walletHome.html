@@ -513,11 +513,17 @@
           </div>
         </div>
       </div>
-      <div ng-if="!index.isCordova && index.txHistory[0] && !index.updatingTxHistory" class="m20t text-center">
+      <!-- <div ng-if="!index.isCordova && index.txHistory[0] && !index.updatingTxHistory" class="m20t text-center"> -->
+      <div>
         <input id="export_file" type="file" nwsaveas="Copay-{{index.alias || index.walletName}}.csv" accept=".csv" style="display:none">
-        <a class="text-gray size-12" ng-click="index.csvHistory();">
+        <a class="text-gray size-12" ng-click="index.csvHistory2();">
           <i class="fi-page-export-csv"></i>
           <span translate>Download CSV file</span>
+        </a>
+
+        <a class="text-gray size-12" ng-click="index.getLocalHistory();">
+          <i class="fi-page-export-csv"></i>
+          <span translate>READ CSV file</span>
         </a>
       </div>
       <div class="extra-margin-bottom"></div>
