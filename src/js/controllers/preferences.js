@@ -2,24 +2,34 @@
 
 angular.module('copayApp.controllers').controller('preferencesController',
   function($scope, $rootScope, $filter, $timeout, $modal, $log, lodash, configService, profileService, uxLanguage) {
-    var config = configService.getSync();
-    this.unitName = config.wallet.settings.unitName;
-    this.bwsurl = config.bws.url;
-    this.currentLanguageName = uxLanguage.getCurrentLanguageName();
-    this.selectedAlternative = {
-      name: config.wallet.settings.alternativeName,
-      isoCode: config.wallet.settings.alternativeIsoCode
-    }; 
-    $scope.spendUnconfirmed = config.wallet.spendUnconfirmed;
-    $scope.glideraEnabled = config.glidera.enabled;
-    $scope.glideraTestnet = config.glidera.testnet;
-    var fc = profileService.focusedClient;
-    if (fc) {
-      $scope.encrypt = fc.hasPrivKeyEncrypted();
-      this.externalSource = fc.getPrivKeyExternalSourceName() == 'ledger' ? "Ledger" : null;
-      // TODO externalAccount
-      //this.externalIndex = fc.getExternalIndex();
-    }
+    
+    this.init = function() {
+      var config = configService.getSync();
+      this.unitName = config.wallet.settings.unitName;
+      this.bwsurl = config.bws.url;
+      this.currentLanguageName = uxLanguage.getCurrentLanguageName();
+      this.selectedAlternative = {
+        name: config.wallet.settings.alternativeName,
+        isoCode: config.wallet.settings.alternativeIsoCode
+      }; 
+      $scope.spendUnconfirmed = config.wallet.spendUnconfirmed;
+      $scope.glideraEnabled = config.glidera.enabled;
+      $scope.glideraTestnet = config.glidera.testnet;
+      var fc = profileService.focusedClient;
+      if (fc) {
+        $scope.encrypt = fc.hasPrivKeyEncrypted();
+        this.externalSource = fc.getPrivKeyExternalSourceName() == 'ledger' ? "Ledger" : null;
+        // TODO externalAccount
+        //this.externalIndex = fc.getExternalIndex();
+      }
+
+      if (window.touchidAvailable) {
+        var walletId = fc.credentials.walletId;
+        this.touchidAvailable = true;
+        config.touchIdFor = config.touchIdFor || {};
+        $scope.touchid = config.touchIdFor[walletId];
+      }
+    };
 
     var unwatchSpendUnconfirmed = $scope.$watch('spendUnconfirmed', function(newVal, oldVal) {
       if (newVal == oldVal) return;
@@ -94,10 +104,43 @@ angular.module('copayApp.controllers').controller('preferencesController',
       });
     });
 
+    var unwatchRequestTouchid = $scope.$watch('touchid', function(newVal, oldVal) {
+      if (newVal == oldVal || $scope.touchidError) {
+        $scope.touchidError = false;
+        return;
+      }
+      var walletId = profileService.focusedClient.credentials.walletId;
+
+      var opts = {
+        touchIdFor: {}
+      };
+      opts.touchIdFor[walletId] = newVal;
+
+      $rootScope.$emit('Local/RequestTouchid', function(err) {
+        if (err) { 
+          $log.debug(err);
+          $timeout(function() {
+            $scope.touchidError = true;
+            $scope.touchid = oldVal;
+          }, 100);
+        }
+        else {
+          configService.set(opts, function(err) {
+            if (err) {
+              $log.debug(err);
+              $scope.touchidError = true;
+              $scope.touchid = oldVal;
+            }
+          });
+        }
+      });
+    });
+
     $scope.$on('$destroy', function() {
       unwatch();
       unwatchSpendUnconfirmed();
       unwatchGlideraEnabled();
       unwatchGlideraTestnet();
+      unwatchRequestTouchid();
     });
   });
