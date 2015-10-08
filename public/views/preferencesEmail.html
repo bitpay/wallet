@@ -6,8 +6,9 @@
 
 
 
-<div class="content preferences p20v" ng-controller="preferencesEmailController as prefEmail">
+<div class="content preferences" ng-controller="preferencesEmailController as prefEmail">
 
+  <h4></h4>
   <div class="onGoingProcess" ng-show="prefEmail.saving && !index.isOffline">
     <div class="onGoingProcess-content" ng-style="{'background-color':index.backgroundColor}">
       <div class="spinner">
@@ -34,6 +35,7 @@
     <input type="submit" class="button expand black round" value="{{'Save'|translate}}"
     ng-style="{'background-color':index.backgroundColor}" ng-disabled="emailForm.$invalid && !index.preferences.email">
   </form>
-  <p class="text-gray text-center columns size-14" translate>Setting up email notifications could weaken your privacy, if the wallet service provider is compromised. Information available to an attacker would include your wallet addresses and its balance, but no more.</p>
+    <div class="text-gray size-12 text-center" translate>Setting up email notifications could weaken your privacy, if the wallet service provider is compromised. Information available to an attacker would include your wallet addresses and its balance, but no more.
+  </div>
 </div>
 <div class="extra-margin-bottom"></div>

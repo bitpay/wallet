@@ -62,6 +62,43 @@ h4.title a {
   font-size: 12px;
 }
 
+.preferences {
+  background: #f1f3f5;
+}
+
+.preferences form {
+  background: white;
+  padding-top:10px;
+  margin-bottom: 10px;
+}
+
+.preferences .switch {
+  top:-5px !important;
+}
+
+
+.preferences h4 {
+  background: #F1F3F5;
+  padding: 25px 0px 5px 20px;
+  text-transform: uppercase;
+  color: #555;
+  font-size: 12px;
+  font-weight:300;
+  margin:0;
+}
+
+
+.preferences ul {
+  font-size:14px;
+  background: white;
+}
+
+.preferences ul li {
+  padding:13px 20px;
+  border-bottom: 1px solid #E9E9EC;
+}
+
+
 body, html{
   height:100%;
   width:100%;

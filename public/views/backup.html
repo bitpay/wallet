@@ -5,7 +5,8 @@
 </div>
 
 
-<div class="content p20v" ng-controller="wordsController as wordsC">
+<div class="content preferences" ng-controller="wordsController as wordsC">
+  <h4></h4>
 
 
   <div class="box-notification" ng-show="wordsC.error">
@@ -82,7 +83,7 @@
 
     <div class="row" ng-show="wordsC.show">
         <div class="columns">
-        <div class="p10" style="background:#eee" ng-class="{'enable_text_select': index.network == 'testnet'}">
+        <div class="p10" style="background:white" ng-class="{'enable_text_select': index.network == 'testnet'}">
           <span ng-repeat="word in wordsC.mnemonicWords track by $index"><span style="white-space:nowrap">{{word}}</span><span ng-show="wordsC.useIdeograms">&#x3000;</span> </span>  
         </div>
         </div>
