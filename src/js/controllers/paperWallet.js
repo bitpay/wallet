@@ -1,110 +1,113 @@
 angular.module('copayApp.controllers').controller('paperWalletController',
-  function($scope, $http, $timeout, configService, profileService, go, addressService, bitcore) {
+  function($scope, $http, $timeout, $log, configService, profileService, go, addressService, txStatus, bitcore) {
     self = this;
     var fc = profileService.focusedClient;
     var rawTx;
 
     self.onQrCodeScanned = function(data) {
-      $scope.privateKey = data;
+      $scope.inputData = data;
+      self.onData(data);
     }
 
-    self.createTx = function(privateKey, passphrase) {
-      if (privateKey.charAt(0) != '6') {
-        var isValidKey = self.checkPrivateKey(privateKey);
+    self.onData = function(data) {
+      self.error = '';
+      self.scannedKey = data;
+      self.isPkEncrypted = (data.charAt(0) == '6');
+    }
 
-        if (!isValidKey) return;
+    self._scanFunds = function(cb) {
+      function getPrivateKey(scannedKey, isPkEncrypted, passphrase, cb) {
+        if (!isPkEncrypted) return cb(null, scannedKey);
+        fc.decryptBIP38PrivateKey(scannedKey, passphrase, null, cb);
+      };
+
+      function getBalance(privateKey, cb) {
+        fc.getBalanceFromPrivateKey(privateKey, cb);
+      };
+
+      function checkPrivateKey(privateKey) {
+        try {
+          new bitcore.PrivateKey(privateKey, 'livenet');
+        } catch (err) {
+          return false;
+        }
+        return true;
       }
 
-      var config = configService.getSync().wallet.settings;
-      self.error = null;
-      self.scanning = true;
-      $timeout(function() {
-        self.getRawTx(privateKey, passphrase, function(err, rawtx, utxos) {
-          self.scanning = false;
+      getPrivateKey(self.scannedKey, self.isPkEncrypted, $scope.passphrase, function(err, privateKey) {
+        if (err) return cb(err);
+        if (!checkPrivateKey(privateKey)) return cb(new Error('Invalid private key'));
 
-          if (err)
-            self.error = err.toString();
-          else {
-            self.balance = profileService.formatAmount(utxos) + ' ' + config.unitName;
-            rawTx = rawtx;
+        getBalance(privateKey, function(err, balance) {
+          if (err) return cb(err);
+          return cb(null, privateKey, balance);
+        });
+      });
+    }
+
+    self.scanFunds = function() {
+      self.scanning = true;
+      self.privateKey = '';
+      self.balanceSat = 0;
+      self.error = '';
+
+      $timeout(function() {
+        self._scanFunds(function(err, privateKey, balance) {
+          self.scanning = false;
+          if (err) {
+            $log.error(err);
+            self.error = err.message || err.toString();
+          } else {
+            self.privateKey = privateKey;
+            self.balanceSat = balance;
+            var config = configService.getSync().wallet.settings;
+            self.balance = profileService.formatAmount(balance) + ' ' + config.unitName;
           }
 
-          $timeout(function() {
-            $scope.$apply();
-          }, 1);
+          $scope.$apply();
         });
       }, 100);
-    };
-
-    self.checkPrivateKey = function(privateKey) {
-      try {
-        new bitcore.PrivateKey(privateKey, 'livenet');
-      } catch (err) {
-        self.error = err.toString();
-        return false;
-      }
-      return true;
     }
 
-    self.getRawTx = function(privateKey, passphrase, cb) {
-      if (privateKey.charAt(0) == 6) {
-        fc.decryptBIP38PrivateKey(privateKey, passphrase, null, function(err, privateKey) {
+    self._sweepWallet = function(cb) {
+      addressService.getAddress(fc.credentials.walletId, true, function(err, destinationAddress) {
+        if (err) return cb(err);
+
+        fc.buildTxFromPrivateKey(self.privateKey, destinationAddress, null, function(err, tx) {
           if (err) return cb(err);
 
-          fc.getBalanceFromPrivateKey(privateKey, function(err, utxos) {
+          fc.broadcastRawTx({
+            rawTx: tx.serialize(),
+            network: 'livenet'
+          }, function(err, txid) {
             if (err) return cb(err);
-
-            addressService.getAddress(fc.credentials.walletId, true, function(err, destinationAddress) {
-              if (err) return cb(err);
-
-              fc.buildTxFromPrivateKey(privateKey, destinationAddress, null, function(err, tx) {
-                if (err) return cb(err);
-                return cb(null, tx.serialize(), utxos);
-              });
-            });
+            return cb(null, destinationAddress, txid);
           });
         });
-      } else {
-        fc.getBalanceFromPrivateKey(privateKey, function(err, utxos) {
-          if (err) return cb(err)
-
-          addressService.getAddress(fc.credentials.walletId, true, function(err, destinationAddress) {
-            if (err) return cb(err);
-
-            fc.buildTxFromPrivateKey(privateKey, destinationAddress, null, function(err, tx) {
-              if (err) return cb(err);
-              return cb(null, tx.serialize(), utxos);
-            });
-          });
-        });
-      }
-    };
-
-    self.transaction = function() {
-      self.error = null;
-      self.sending = true;
-      $timeout(function() {
-        self.doTransaction(rawTx).then(function(err, response) {
-            self.sending = false;
-            self.goHome();
-          },
-          function(err) {
-            self.sending = false;
-            self.error = err.toString();
-            $timeout(function() {
-              $scope.$apply();
-            }, 1);
-          });
-      }, 100);
-    };
-
-    self.goHome = function() {
-      go.walletHome();
-    };
-
-    self.doTransaction = function(rawTx) {
-      return $http.post('https://insight.bitpay.com/api/tx/send', {
-        rawtx: rawTx
       });
     };
+
+    self.sweepWallet = function() {
+      self.sending = true;
+      self.error = '';
+
+      $timeout(function() {
+        self._sweepWallet(function(err, destinationAddress, txid) {
+          self.sending = false;
+
+          if (err) {
+            self.error = err.message || err.toString();
+            $log.error(err);
+          } else {
+            txStatus.notify({
+              status: 'broadcasted'
+            }, function() {
+              go.walletHome();
+            });
+          }
+
+          $scope.$apply();
+        });
+      }, 100);
+    }
   });
