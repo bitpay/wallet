@@ -832,46 +832,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.updateTxHistory();
   }, 5000);
 
-  // self.updateTxHistory = function(skip) {
-  //   var fc = profileService.focusedClient;
-  //   if (!fc || !fc.isComplete()) return;
-  //   if (!skip) {
-  //     self.txHistory = [];
-  //   }
-  //   self.skipHistory = skip || 0;
-  //   $log.debug('Updating Transaction History');
-  //   self.txHistoryError = false;
-  //   self.updatingTxHistory = true;
-  //   self.txHistoryPaging = false;
-
-  //   $timeout(function() {
-  //     fc.getTxHistory({
-  //       skip: self.skipHistory,
-  //       limit: self.limitHistory + 1
-  //     }, function(err, txs) {
-  //       self.updatingTxHistory = false;
-  //       if (err) {
-  //         $log.debug('TxHistory ERROR:', err);
-  //         // We do not should errors here, since history is usually
-  //         // fetched AFTER others requests (if skip=0)
-  //         if (skip)
-  //           self.handleError(err);
-
-  //         self.txHistoryError = true;
-  //       } else {
-  //         $log.debug('Wallet Transaction History:', txs);
-  //         self.skipHistory = self.skipHistory + self.limitHistory;
-  //         self.setTxHistory(txs);
-  //       }
-  //       $rootScope.$apply();
-  //     });
-  //   });
-  // };
-
-  // self.debouncedUpdateHistory = lodash.throttle(function() {
-  //   self.updateTxHistory();
-  // }, 5000);
-
   self.showErrorPopup = function(msg, cb) {
     $log.warn('Showing err popup:' + msg);
     self.showAlert = {
