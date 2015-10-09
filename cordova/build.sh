@@ -87,19 +87,19 @@ if [ ! -d $PROJECT ]; then
   cordova plugin add https://github.com/phonegap/phonegap-plugin-barcodescanner.git
   checkOK
 
-  cordova plugin add org.apache.cordova.splashscreen
+  cordova plugin add cordova-plugin-splashscreen
   checkOK
 
-  cordova plugin add org.apache.cordova.statusbar
+  cordova plugin add cordova-plugin-statusbar
   checkOK
 
   cordova plugin add https://github.com/EddyVerbruggen/LaunchMyApp-PhoneGap-Plugin.git --variable URL_SCHEME=bitcoin
   checkOK
 
-  cordova plugin add org.apache.cordova.inappbrowser
+  cordova plugin add cordova-plugin-inappbrowser
   checkOK
 
-  cordova plugin add nl.x-services.plugins.toast && cordova prepare
+  cordova plugin add cordova-plugin-x-toast && cordova prepare
   checkOK
 
   cordova plugin add https://github.com/VersoSolutions/CordovaClipboard
@@ -114,19 +114,19 @@ if [ ! -d $PROJECT ]; then
   cordova plugin add hu.dpal.phonegap.plugins.spinnerdialog
   checkOK
 
-  cordova plugin add org.apache.cordova.dialogs
+  cordova plugin add cordova-plugin-dialogs
   checkOK
 
-  cordova plugin add org.apache.cordova.network-information
+  cordova plugin add cordova-plugin-network-information
   checkOK
 
-  cordova plugin add org.apache.cordova.console
+  cordova plugin add cordova-plugin-console
   checkOK
 
   cordova plugin add hu.dpal.phonegap.plugins.uniquedeviceid
   checkOK
 
-  cordova plugin add org.apache.cordova.file
+  cordova plugin add cordova-plugin-file
   checkOK
 
   cordova plugin add https://github.com/EddyVerbruggen/cordova-plugin-touch-id && cordova prepare
