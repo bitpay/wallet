@@ -38,6 +38,7 @@ angular.module('copayApp.services').factory('animationService', function(isCordo
     preferencesAlias: 12,
     preferencesEmail: 12,
     export: 13,
+    paperWallet: 13,
     logs: 13,
     information: 13,
     translators: 13,
