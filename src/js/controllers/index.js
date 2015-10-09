@@ -606,183 +606,133 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     }
   };
 
-  // this.csvHistory = function() {
-
-  //   function saveFile(name, data) {
-  //     var chooser = document.querySelector(name);
-  //     chooser.addEventListener("change", function(evt) {
-  //       var fs = require('fs');
-  //       fs.writeFile(this.value, data, function(err) {
-  //         if (err) {
-  //           $log.debug(err);
-  //         }
-  //       });
-  //     }, false);
-  //     chooser.click();
-  //   }
-
-  //   function formatDate(date) {
-  //     var dateObj = new Date(date);
-  //     if (!dateObj) {
-  //       $log.debug('Error formating a date');
-  //       return 'DateError'
-  //     }
-  //     if (!dateObj.toJSON()) {
-  //       return '';
-  //     }
-
-  //     return dateObj.toJSON();
-  //   }
-
-  //   function formatString(str) {
-  //     if (!str) return '';
-
-  //     if (str.indexOf('"') !== -1) {
-  //       //replace all
-  //       str = str.replace(new RegExp('"', 'g'), '\'');
-  //     }
-
-  //     //escaping commas
-  //     str = '\"' + str + '\"';
-
-  //     return str;
-  //   }
-
-  //   var step = 6;
-
-  //   function getHistory(skip, cb) {
-  //     skip = skip || 0;
-  //     fc.getTxHistory({
-  //       skip: skip,
-  //       limit: step,
-  //     }, function(err, txs) {
-  //       if (err) return cb(err);
-  //       if (txs && txs.length > 0) {
-  //         allTxs.push(txs);
-  //         return getHistory(skip + step, cb);
-  //       } else {
-  //         return cb(null, lodash.flatten(allTxs));
-  //       }
-  //     });
-  //   };
-
-  //   if (isCordova) {
-  //     $log.info('Not available on mobile');
-  //     return;
-  //   }
-  //   var isNode = nodeWebkit.isDefined();
-  //   var fc = profileService.focusedClient;
-  //   if (!fc.isComplete()) return;
-  //   var self = this;
-  //   var allTxs = [];
-  //   $log.debug('Generating CSV from History');
-  //   self.setOngoingProcess('generatingCSV', true);
-  //   $timeout(function() {
-  //     getHistory(null, function(err, txs) {
-  //       self.setOngoingProcess('generatingCSV', false);
-  //       if (err) {
-  //         self.handleError(err);
-  //       } else {
-  //         $log.debug('Wallet Transaction History:', txs);
-
-  //         self.satToUnit = 1 / self.unitToSatoshi;
-  //         var data = txs;
-  //         var satToBtc = 1 / 100000000;
-  //         var filename = 'Copay-' + (self.alias || self.walletName) + '.csv';
-  //         var csvContent = '';
-  //         if (!isNode) csvContent = 'data:text/csv;charset=utf-8,';
-  //         csvContent += 'Date,Destination,Note,Amount,Currency,Spot Value,Total Value,Tax Type,Category\n';
-
-  //         var _amount, _note;
-  //         var dataString;
-  //         data.forEach(function(it, index) {
-  //           var amount = it.amount;
-
-  //           if (it.action == 'moved')
-  //             amount = 0;
-
-  //           _amount = (it.action == 'sent' ? '-' : '') + (amount * satToBtc).toFixed(8);
-  //           _note = formatString((it.message ? it.message : '') + ' TxId: ' + it.txid + ' Fee:' + (it.fees * satToBtc).toFixed(8));
-
-  //           if (it.action == 'moved')
-  //             _note += ' Moved:' + (it.amount * satToBtc).toFixed(8)
-
-  //           dataString = formatDate(it.time * 1000) + ',' + formatString(it.addressTo) + ',' + _note + ',' + _amount + ',BTC,,,,';
-  //           csvContent += dataString + "\n";
-
-  //           if (it.fees && (it.action == 'moved' || it.action == 'sent')) {
-  //             var _fee = (it.fees * satToBtc).toFixed(8)
-  //             csvContent += formatDate(it.time * 1000) + ',Bitcoin Network Fees,, -' + _fee + ',BTC,,,,' + "\n";
-  //           }
-  //         });
-
-  //         if (isNode) {
-  //           saveFile('#export_file', csvContent);
-  //         } else {
-  //           var encodedUri = encodeURI(csvContent);
-  //           var link = document.createElement("a");
-  //           link.setAttribute("href", encodedUri);
-  //           link.setAttribute("download", filename);
-  //           link.click();
-  //         }
-  //       }
-  //       $rootScope.$apply();
-  //     });
-  //   });
-  // };
-
   this.csvHistory = function() {
-    if (isCordova) return $log.info('Not available on mobile');
 
-    var fc = profileService.focusedClient;
-    if (!fc.isComplete()) return;
+    function saveFile(name, data) {
+      var chooser = document.querySelector(name);
+      chooser.addEventListener("change", function(evt) {
+        var fs = require('fs');
+        fs.writeFile(this.value, data, function(err) {
+          if (err) {
+            $log.debug(err);
+          }
+        });
+      }, false);
+      chooser.click();
+    }
+
+    function formatDate(date) {
+      var dateObj = new Date(date);
+      if (!dateObj) {
+        $log.debug('Error formating a date');
+        return 'DateError'
+      }
+      if (!dateObj.toJSON()) {
+        return '';
+      }
+
+      return dateObj.toJSON();
+    }
+
+    function formatString(str) {
+      if (!str) return '';
+
+      if (str.indexOf('"') !== -1) {
+        //replace all
+        str = str.replace(new RegExp('"', 'g'), '\'');
+      }
+
+      //escaping commas
+      str = '\"' + str + '\"';
+
+      return str;
+    }
 
     var step = 6;
-    self._getHistory();
 
     var unique = {};
 
     function getHistory(skip, cb) {
-      skip = skip || 0;
-      fc.getTxHistory({
-        skip: skip,
-        limit: step,
-      }, function(err, txs) {
+      storageService.getTxHistory(c.walletId, function(err, txs) {
         if (err) return cb(err);
 
-        if (txs && txs.length > 0) {
-          lodash.each(txs, function(tx) {
-            if (!unique[tx.txid]) {
-              allTxs.push(tx);
-              unique[tx.txid] = 1;
-              console.log("Got:" + lodash.keys(unique).length + " txs");
-            } else {
-              console.log("Ignoring duplicate TX in CSV: " + tx.txid);
-            }
-          });
-          return getHistory(skip + step, cb);
-        } else
-          return cb(null, lodash.flatten(allTxs));
-      });
-    };
+        var txsFromLocal;
+        try {
+          txsFromLocal = JSON.parse(txs);
+        } catch (ex) {
+          return cb(ex);
+        }
 
+        allTxs.push(txsFromLocal);
+        return cb(null, lodash.flatten(allTxs));
+      });
+    }
+
+    if (isCordova) {
+      $log.info('Not available on mobile');
+      return;
+    }
+    var isNode = nodeWebkit.isDefined();
+    var fc = profileService.focusedClient;
+    var c = fc.credentials;
+    if (!fc.isComplete()) return;
     var self = this;
     var allTxs = [];
-    $log.debug('Fetching transactions from History');
-    self.setOngoingProcess('generatingCSV', true); // change this
+
+    $log.debug('Generating CSV from History');
+    self.setOngoingProcess('generatingCSV', true);
 
     $timeout(function() {
       getHistory(null, function(err, txs) {
-        self.setOngoingProcess('generatingCSV', false); // change this
-
-        if (err)
+        self.setOngoingProcess('generatingCSV', false);
+        if (err) {
           self.handleError(err);
-        else
+        } else {
           $log.debug('Wallet Transaction History:', txs);
 
-        storageService.setTxHistory(JSON.stringify(txs), walletId, function() {
-          return;
-        });
+          self.satToUnit = 1 / self.unitToSatoshi;
+          var data = txs;
+          var satToBtc = 1 / 100000000;
+          var filename = 'Copay-' + (self.alias || self.walletName) + '.csv';
+          var csvContent = '';
+
+          if (!isNode) csvContent = 'data:text/csv;charset=utf-8,';
+          csvContent += 'Date,Destination,Note,Amount,Currency,Spot Value,Total Value,Tax Type,Category\n';
+
+          var _amount, _note;
+          var dataString;
+          data.forEach(function(it, index) {
+            var amount = it.amount;
+
+            if (it.action == 'moved')
+              amount = 0;
+
+            _amount = (it.action == 'sent' ? '-' : '') + (amount * satToBtc).toFixed(8);
+            _note = formatString((it.message ? it.message : '') + ' TxId: ' + it.txid + ' Fee:' + (it.fees * satToBtc).toFixed(8));
+
+            if (it.action == 'moved')
+              _note += ' Moved:' + (it.amount * satToBtc).toFixed(8)
+
+            dataString = formatDate(it.time * 1000) + ',' + formatString(it.addressTo) + ',' + _note + ',' + _amount + ',BTC,,,,';
+            csvContent += dataString + "\n";
+
+            if (it.fees && (it.action == 'moved' || it.action == 'sent')) {
+              var _fee = (it.fees * satToBtc).toFixed(8)
+              csvContent += formatDate(it.time * 1000) + ',Bitcoin Network Fees,, -' + _fee + ',BTC,,,,' + "\n";
+            }
+          });
+
+          if (isNode) {
+            saveFile('#export_file', csvContent);
+          } else {
+            var encodedUri = encodeURI(csvContent);
+            var link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", filename);
+            link.click();
+          }
+        }
+        $rootScope.$apply();
       });
     });
   };
