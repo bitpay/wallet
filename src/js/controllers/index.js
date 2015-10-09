@@ -6,7 +6,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   self.isChromeApp = isChromeApp;
   self.isSafari = isMobile.Safari();
   self.onGoingProcess = {};
-  self.limitHistory = 5;
+  self.limitHistory = 6;
 
   function strip(number) {
     return (parseFloat(number.toPrecision(12)));
@@ -487,7 +487,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     var config = configService.getSync().wallet.settings;
     var now = Math.floor(Date.now() / 1000);
     var c = 0;
-    self.txHistoryPaging = txs[self.limitHistory] ? true : false;
+
     self.hasUnsafeConfirmed = false;
     lodash.each(txs, function(tx) {
       tx = txFormatService.processTx(tx);
@@ -738,6 +738,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     if (!fc.isComplete()) return;
 
     var step = 6;
+    self._getHistory();
 
     var unique = {};
 
@@ -768,45 +769,118 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     var self = this;
     var allTxs = [];
     $log.debug('Fetching transactions from History');
-    self.setOngoingProcess('generatingCSV', true); // cambiar esto
+    self.setOngoingProcess('generatingCSV', true); // change this
 
     $timeout(function() {
       getHistory(null, function(err, txs) {
-        self.setOngoingProcess('generatingCSV', false); // cambiar esto
+        self.setOngoingProcess('generatingCSV', false); // change this
 
         if (err)
           self.handleError(err);
         else
           $log.debug('Wallet Transaction History:', txs);
 
-        // verificar wallets sin transacciones (pendiente)
-        storageService.setTxHistory(JSON.stringify(txs), fc.credentials.walletId, function() {
+        storageService.setTxHistory(JSON.stringify(txs), walletId, function() {
           return;
         });
       });
     });
   };
 
-  self.getLocalHistory = function(walletId, cb) {
-    storageService.getTxHistory(walletId, function(err, txH) {
-      if (err) return cb(err);
-      if (!txH) return cb($log.debug('There is not transactions stored'));
+  self.areEqualsTxs = function(firstTx, secondTx) {
+    if (firstTx.txid == secondTx.txid)
+      return true;
+    else
+      return false;
+  }
 
-      var txHistory;
+  self.updateLocalTxHistory = function(cb) {
+    var fc = profileService.focusedClient;
+    var c = fc.credentials;
+    var txsToPush = [];
+
+    storageService.getTxHistory(c.walletId, function(err, txs) {
+      if (err) return cb(err);
+
+      var txsFromLocal;
       try {
-        txHistory = JSON.parse(txH);
+        txsFromLocal = JSON.parse(txs);
       } catch (ex) {
         return cb(ex);
       }
 
-      // console.log('From getLocalHistory: ', txHistory);
-      // lodash.each(txHistory, function(tx) {
-      //   console.log(tx);
-      // });
+      if (!txsFromLocal)
+        txsFromLocal = [];
 
-      return cb(null, txHistory);
+      var count = 0;
+      fillTxsObject(txsToPush);
+
+      function fillTxsObject(txsToPush) {
+        self.makeTxHistoryRequest(txsToPush, txsFromLocal, function(err, skipLoop, txsResult) {
+          if (err) return cb(err);
+          if (skipLoop) {
+            self.txHistory = [];
+            self.setTxHistory(lodash.compact(txsResult.concat(txsFromLocal)));
+            storageService.setTxHistory(JSON.stringify(self.txHistory), c.walletId, function() {
+              return cb(null);
+            });
+          } else
+            fillTxsObject(txsResult);
+        });
+      };
     });
   }
+
+  self.makeTxHistoryRequest = function(txsToPush, localTx, cb) {
+    var fc = profileService.focusedClient;
+    var c = fc.credentials;
+    var skipLoop = false;
+
+    fc.getTxHistory({
+      skip: self.skipHistory,
+      limit: self.limitHistory + 1
+    }, function(err, txsFromBWC) {
+      if (err) return cb(err);
+
+      if (!txsFromBWC[0]) {
+        skipLoop = true;
+        $log.debug('There is not transactions stored');
+      }
+
+      lodash.each(txsFromBWC, function(t) {
+        if (!localTx[0]) txsToPush.push(t);
+        else {
+          if (!self.areEqualsTxs(t, localTx[0]) && !skipLoop) {
+            txsToPush.push(t);
+          } else {
+            skipLoop = true;
+          }
+        }
+      });
+      self.skipHistory = self.skipHistory + self.limitHistory;
+      return cb(null, skipLoop, txsToPush);
+    });
+  }
+
+  self.updateTxHistory = function(skip) {
+    $log.debug('Updating Transaction History');
+    self.skipHistory = skip || 0;
+    self.txHistoryError = false;
+    self.updatingTxHistory = true;
+    self.txHistoryPaging = false;
+
+    $timeout(function() {
+      self.updateLocalTxHistory(function(err) {
+        if (err) self.txHistoryError = true;
+        self.updatingTxHistory = false;
+        $rootScope.$apply();
+      });
+    });
+  };
+
+  self.debouncedUpdateHistory = lodash.throttle(function() {
+    self.updateTxHistory();
+  }, 5000);
 
   // self.updateTxHistory = function(skip) {
   //   var fc = profileService.focusedClient;
@@ -847,117 +921,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   // self.debouncedUpdateHistory = lodash.throttle(function() {
   //   self.updateTxHistory();
   // }, 5000);
-
-  self.updateTxHistory = function(skip) {
-    var fc = profileService.focusedClient;
-    if (!fc || !fc.isComplete()) return;
-    if (!skip) self.txHistory = [];
-
-    $log.debug('Updating Transaction History');
-    self.skipHistory = skip || 0;
-    self.txHistoryError = false;
-    self.updatingTxHistory = true;
-    self.txHistoryPaging = false;
-
-    $timeout(function() {
-      storageService.getTxHistoryFlag(fc.credentials.walletId, function(err, historyFlag) {
-        if (err) {
-          $log.debug('TxHistory ERROR:', err);
-          if (skip) self.handleError(err);
-          self.txHistoryError = true;
-          return;
-        }
-
-        if (historyFlag) {
-          // history from local storage
-          self.getLocalHistory(fc.credentials.walletId, function(err, txsFromLocal) {
-            self.updatingTxHistory = false;
-            if (err) {
-              $log.debug('TxHistory ERROR:', err);
-              if (skip) self.handleError(err);
-              self.txHistoryError = true;
-              return;
-            }
-
-            self.setTxHistory(txsFromLocal);
-            console.log('Loaded from local.');
-            $log.debug('Wallet Transaction History:', txsFromLocal);
-            storageService.setTxHistoryFlag(true, fc.credentials.walletId, function() {
-              return;
-            });
-          });
-        } else {
-          // history from BWC
-          fc.getTxHistory({
-            skip: self.skipHistory,
-            limit: self.limitHistory + 1
-          }, function(err, txsFromBWC) {
-            self.updatingTxHistory = false;
-            if (err) {
-              $log.debug('TxHistory ERROR:', err);
-
-              if (skip) self.handleError(err);
-              self.txHistoryError = true;
-              return;
-            } else {
-              if (!txsFromBWC[0])
-                return $log.debug('There is not transactions stored');
-
-              self.setTxHistory(txsFromBWC);
-              $log.debug('Wallet Transaction History:', txsFromBWC);
-              storageService.setTxHistory(JSON.stringify(txsFromBWC), fc.credentials.walletId, function() {
-                storageService.setTxHistoryFlag(true, fc.credentials.walletId, function() {
-                  return;
-                });
-              });
-              console.log('Loaded from BWC.');
-              // // Check if the last tx on server is equal to the last tx in local storage
-              // // console.log('Last tx from BWC: ', txsFromBWC[0]);
-              // self.getLocalHistory(function(err, txsFromLocal) {
-              //   // console.log('Last tx from LocalStorage: ', txsFromLocal[0]);
-              //   if (err) {
-              //     $log.debug('TxHistory ERROR:', err);
-              //     if (skip) self.handleError(err);
-              //     self.txHistoryError = true;
-              //   }
-
-              //   if (self.areEqualsTxs(txsFromBWC[0], txsFromLocal[0])) {
-              //     self.setTxHistory(txsFromLocal);
-              //     $log.debug('Wallet Transaction History:', txsFromLocal);
-              //     storageService.setTxHistoryFlag(true, function() {
-              //       return;
-              //     });
-              //   } else {
-              //     self.setTxHistory(txsFromBWC);
-              //     $log.debug('Wallet Transaction History:', txsFromBWC);
-              //     storageService.setTxHistory(JSON.stringify(txsFromBWC), function() {
-              //       return;
-              //     });
-              //     storageService.setTxHistoryFlag(false, function() {
-              //       return;
-              //     });
-              //   }
-              // });
-            }
-          });
-        }
-      });
-      self.skipHistory = self.skipHistory + self.limitHistory;
-      self.updatingTxHistory = false;
-      $rootScope.$apply();
-    });
-  };
-
-  self.debouncedUpdateHistory = lodash.throttle(function() {
-    self.updateTxHistory();
-  }, 5000);
-
-  self.areEqualsTxs = function(firstTx, secondTx) {
-    if (firstTx.txid == secondTx.txid) // enough to determinate it?
-      return true;
-    else
-      return false;
-  }
 
   self.showErrorPopup = function(msg, cb) {
     $log.warn('Showing err popup:' + msg);
