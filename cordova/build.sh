@@ -129,7 +129,13 @@ if [ ! -d $PROJECT ]; then
   cordova plugin add cordova-plugin-file
   checkOK
 
-  cordova plugin add https://github.com/EddyVerbruggen/cordova-plugin-touch-id && cordova prepare
+  cordova plugin add cordova-plugin-touch-id && cordova prepare
+  checkOK
+
+  cordova plugin add cordova-plugin-transport-security
+  checkOK
+
+  cordova plugin add cordova-ios-requires-fullscreen
   checkOK
 
 fi
