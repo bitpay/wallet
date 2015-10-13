@@ -224,12 +224,9 @@ angular.module('copayApp.services')
       storage.get('txsHistory-' + walletId, cb);
     }
 
-    root.setTxHistoryFlag = function(value, walletId, cb) {
-      storage.set('txsHistoryFlag-' + walletId, value, cb);
+    root.removeTxHistory = function(walletId, cb) {
+      storage.remove('txsHistory-' + walletId, cb);
     }
 
-    root.getTxHistoryFlag = function(walletId, cb) {
-      storage.get('txsHistoryFlag-' + walletId, cb);
-    }
     return root;
   });
