@@ -13,51 +13,53 @@
 
 
     <li  ng-click="$root.go('preferencesAlias')">
-      <span translate>Wallet Alias</span>
-      <span class="right text-gray">
-        <i class="icon-arrow-right3 size-24 right"></i>
+      <div class="right text-gray">
         {{index.alias||index.walletName}}
-      </span>
+        <i class="icon-arrow-right3 size-24"></i>
+      </div>
+      <div translate>Wallet Alias</div>
     </li>
 
     <li ng-click="$root.go('preferencesEmail')">
-      <span translate>Email Notifications</span>
-      <span class="right text-gray">
-        <i class="icon-arrow-right3 size-24 right"></i>
-         <span ng-if="!index.preferences.email" translate>Disabled</span>
-         <span ng-if="index.preferences.email">{{index.preferences.email}}</span>
-      </span>
+      <div class="right text-gray">
+        <span ng-if="!index.preferences.email" translate>Disabled</span>
+        <span ng-if="index.preferences.email">{{index.preferences.email}}</span>
+        <i class="icon-arrow-right3 size-24"></i>
+      </div>
+      <div translate>Email Notifications</div>
     </li>
 
     <li ng-click="$root.go('preferencesColor')">
-      <span translate>Color</span>
-      <span class="right text-gray">
-        <i class="icon-arrow-right3 size-24 right"></i>
+      <div class="right text-gray">
         <span ng-style="{'color':index.backgroundColor}">&block;</span>
-      </span>      
+        <i class="icon-arrow-right3 size-24"></i>
+      </div>      
+      <div translate>Color</div>
     </li>
 
     <li ng-show="index.isPrivKeyExternal">
-      <span translate>Hardware wallet</span>
-      <span class="right text-gray">
+      <div class="right text-gray">
         {{preferences.externalSource}} 
         <!-- (Accont {{preferences.externalAccount}}) -->
-      </span>
+      </div>
+      <div translate>Hardware wallet</div>
     </li> 
 
     <h4>
     </h4>
     <li ng-click="$root.go('backup')"  ng-hide="index.isPrivKeyExternal">
-      <i class="icon-arrow-right3 size-24 right text-gray"></i>  
-      <span class="text-warning right" ng-show="index.needsBackup">
-        <i class="fi-alert"></i> <span translate> Still not done</span>
-      </span>
-      <span translate>Backup</span>
+      <div class="right text-gray">
+        <span class="text-warning" ng-show="index.needsBackup">
+          <i class="fi-alert"></i><span translate>Still not done</span>
+        </span>
+        <i class="icon-arrow-right3 size-24 text-gray"></i>
+      </div>
+      <div translate>Backup</div>
     </li>
  
     <li ng-click="$root.go('preferencesAdvanced')">
       <i class="icon-arrow-right3 size-24 right text-gray"></i>  
-      <span translate>Advanced</span>
+      <div translate>Advanced</div>
     </li>
   </ul>
     <h4 translate>
@@ -65,12 +67,12 @@
     </h4>
   <ul class="no-bullet m0 ">
     <li  ng-hide="index.isPrivKeyExternal">
-      <span translate>Request Password</span>
       <switch id="network-name" name="encrypt" ng-model="encrypt" class="green right"></switch>
+      <div translate>Request Password</div>
     </li>
     <li  ng-show="preferences.touchidAvailable">
-      <span translate>Scan Fingerprint</span>
       <switch id="touchid" name="touchid" ng-model="touchid" class="green right"></switch>
+      <div translate>Scan Fingerprint</div>
     </li>
   </ul>
   <ul class="no-bullet m0 ">
@@ -78,42 +80,42 @@
     <h4 translate>Global settings</h4>
 
     <li  ng-show="!index.noFocusedWallet" ng-click="$root.go('preferencesLanguage')">
-      <span translate>Language</span>
-      <span class="right text-gray">
-        <i class="icon-arrow-right3 size-24 right"></i>
+      <div class="right text-gray">
         {{preferences.currentLanguageName|translate}}
-      </span>
+        <i class="icon-arrow-right3 size-24"></i>
+      </div>
+      <div translate>Language</div>
     </li>
     <li  ng-show="!index.noFocusedWallet" ng-click="$root.go('preferencesUnit')">
-      <span translate>Unit</span>
-      <span class="right text-gray">
-        <i class="icon-arrow-right3 size-24 right"></i>
+      <div class="right text-gray">
         {{preferences.unitName}}
-      </span>
+        <i class="icon-arrow-right3 size-24"></i>
+      </div>
+      <div translate>Unit</div>
     </li>
     <li  ng-show="!index.noFocusedWallet" ng-click="$root.go('preferencesAltCurrency')">
-      <span translate>Alternative Currency</span>
-      <span class="right text-gray">
-        <i class="icon-arrow-right3 size-24 right"></i>
+      <div class="right text-gray">
         {{preferences.selectedAlternative.name}}
-      </span>
+        <i class="icon-arrow-right3 size-24"></i>
+      </div>
+      <div translate>Alternative Currency</div>
     </li>
     <li  ng-show="!index.noFocusedWallet" ng-click="$root.go('preferencesFee')"
       ng-show="(index.network == 'livenet' ? index.feeLevels.livenet : index.feeLevels.testnet)">
-      <span translate>Bitcoin Network Fee Policy</span>
-      <span class="right text-gray">
-        <i class="icon-arrow-right3 size-24 right"></i>
+      <div class="right text-gray">
         {{index.feeOpts[index.currentFeeLevel]|translate}}
-      </span>
+        <i class="icon-arrow-right3 size-24"></i>
+      </div>
+      <div translate>Bitcoin Network Fee Policy</div>
     </li> 
    <li  ng-show="!index.noFocusedWallet">
-      <span translate>Use Unconfirmed Funds</span>
       <switch id="spend-unconfirmed" name="spendUnconfirmed" ng-model="spendUnconfirmed" class="green right"></switch>
+      <div translate>Use Unconfirmed Funds</div>
     </li>
 
     <li ng-show="!index.noFocusedWallet">
-      <span>Enable Glidera Service</span>
       <switch id="glidera-enabled" name="glideraEnabled" ng-model="glideraEnabled" class="green right"></switch>
+      <div>Enable Glidera Service</div>
     </li>
  
     <!-- Disabled for testnet 
@@ -125,7 +127,7 @@
 
     <li ng-click="$root.go('about')">
       <i class="icon-arrow-right3 size-24 right text-gray"></i>  
-      <span translate>About Copay</span>
+      <div translate>About Copay</div>
     </li>
  
   </ul>
