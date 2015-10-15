@@ -5,8 +5,8 @@ angular.module('copayApp.controllers').controller('preferencesBwsUrlController',
     this.error = null;
     this.success = null;
 
-    var fc = profileService.focusedClient; +
-    var walletId = fc.credentials.walletId; +
+    var fc = profileService.focusedClient;
+    var walletId = fc.credentials.walletId;
     var defaults = configService.getDefaults();
     var config = configService.getSync();
 
