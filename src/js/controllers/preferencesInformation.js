@@ -1,11 +1,12 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('preferencesInformation',
-  function($scope, $log, $timeout, lodash, profileService) {
+  function($scope, $log, $timeout, isMobile, gettextCatalog, lodash, profileService) {
+    var base = 'xpub';
 
+    this.init = function() {
     var fc = profileService.focusedClient;
     var c = fc.credentials;
-    var base = 'xpub';
     var basePath = profileService.getUtils().PATHS.BASE_ADDRESS_DERIVATION[c.derivationStrategy][c.network];
 
     $scope.walletName = c.walletName;
@@ -40,8 +41,17 @@ angular.module('copayApp.controllers').controller('preferencesInformation',
       });
 
     });
+    };
 
     this.sendAddrs = function() {
+      var self = this;
+      var fc = profileService.focusedClient;
+
+      if (isMobile.Android() || isMobile.Windows()) {
+        window.ignoreMobilePause = true;
+      }
+
+      self.loading = true;
 
       function formatDate(ts) {
         var dateObj = new Date(ts * 1000);
@@ -55,26 +65,33 @@ angular.module('copayApp.controllers').controller('preferencesInformation',
         return dateObj.toJSON();
       };
 
-      fc.getMainAddresses({
-        doNotVerify: true
-      }, function(err, addrs) {
-        if (err) {
-          $log.warn(err);
-          return;
-        };
+      $timeout(function() {
+        fc.getMainAddresses({
+          doNotVerify: true
+        }, function(err, addrs) {
+          self.loading = false;
+          if (err) {
+            $log.warn(err);
+            return;
+          };
 
-        var body = 'Copay Wallet' + fc.walletName + ' Addresses\n  Only Main Addresses are  shown.\n\n';
-        body += '\n\n';
-        body += addrs.map(function(v) {
-          return addrs.address, base + addrs.path.substring(1), formatDate(addrs.createdOn);
-        }).join('\n');
+          var body = 'Copay Wallet "' + $scope.walletName + '" Addresses\n  Only Main Addresses are  shown.\n\n';
+          body += "\n";
+          body += addrs.map(function(v) {
+            return ('* ' + v.address + ' ' + base + v.path.substring(1) + ' ' + formatDate(v.createdOn));
+          }).join("\n");
 
-        var properties = {
-          subject: 'Copay Addresses',
-          body: body,
-          isHtml: false
-        };
-        window.plugin.email.open(properties);
-      });
+          var properties = {
+            subject: 'Copay Addresses',
+            body: body,
+            isHtml: false
+          };
+          window.plugin.email.open(properties);
+
+          $timeout(function() {
+            $scope.$apply();
+          }, 1000);
+        });
+      }, 100);
     };
   });
