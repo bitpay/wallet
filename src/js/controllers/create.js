@@ -1,9 +1,10 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('createController',
-  function($scope, $rootScope, $location, $timeout, $log, lodash, go, profileService, configService,  isCordova, gettext, ledger, trezor, isMobile) {
+  function($scope, $rootScope, $location, $timeout, $log, lodash, go, profileService, configService, isCordova, gettext, ledger, trezor, isMobile) {
 
     var self = this;
+    var config = configService.getSync();
     var defaults = configService.getDefaults();
     this.isWindowsPhoneApp = isMobile.Windows() && isCordova;
 
@@ -22,6 +23,9 @@ angular.module('copayApp.controllers').controller('createController',
       11: 1,
       12: 1,
     };
+
+    var defaults = configService.getDefaults();
+    $scope.bwsurl = defaults.bws.url;
 
     // ng-repeat defined number of times instead of repeating over array?
     this.getNumber = function(num) {
@@ -73,9 +77,9 @@ angular.module('copayApp.controllers').controller('createController',
       }
 
       if (form.hwLedger.$modelValue || form.hwTrezor.$modelValue) {
-        self.hwWallet = form.hwLedger.$modelValue ? 'Ledger'  : 'TREZOR';
+        self.hwWallet = form.hwLedger.$modelValue ? 'Ledger' : 'TREZOR';
 
-        var src= form.hwLedger.$modelValue ? ledger  : trezor;
+        var src = form.hwLedger.$modelValue ? ledger : trezor;
 
         // TODO : account 
         var account = 0;
@@ -106,13 +110,24 @@ angular.module('copayApp.controllers').controller('createController',
               $rootScope.$apply();
             });
             return;
-          } 
+          }
+
+          var opts_ = {
+            bws: {}
+          };
+          opts_.bws[walletId] = $scope.bwsurl;
+          configService.set(opts_, function(err) {
+            if (err) console.log(err);
+            $scope.$emit('Local/BWSUpdated');
+            applicationService.restart();
+            go.walletHome();
+          });
+
           if (opts.mnemonic || opts.externalSource || opts.extendedPrivateKey) {
             if (opts.n == 1) {
               $rootScope.$emit('Local/WalletImported', walletId);
             }
           }
-          go.walletHome();
         });
       }, 100);
     }
