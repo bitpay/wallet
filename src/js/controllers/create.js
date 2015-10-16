@@ -4,7 +4,6 @@ angular.module('copayApp.controllers').controller('createController',
   function($scope, $rootScope, $location, $timeout, $log, lodash, go, profileService, configService, isCordova, gettext, ledger, trezor, isMobile) {
 
     var self = this;
-    var config = configService.getSync();
     var defaults = configService.getDefaults();
     this.isWindowsPhoneApp = isMobile.Windows() && isCordova;
 
