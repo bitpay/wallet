@@ -77,6 +77,13 @@
           </a>
           <div ng-show="join.hideAdv" class="row">
             <div class="large-12 columns">
+
+            <label  for="bws" class="oh">
+              <span translate>Specify Bitcore Wallet Service URL
+                <input type="text" id="bwsurl" type="text" name="bwsurl" ng-model="bwsurl">
+              </span>
+            </label>
+              
             <label for="hw-ledger" class="oh" ng-show="index.isChromeApp">
               <span translate>Use Ledger hardware wallet</span>
               <switch id="hw-ledger" name="hwLedger" ng-model="hwLedger" class="green right m5t m10b"></switch>
