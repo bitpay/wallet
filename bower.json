@@ -8,7 +8,7 @@
   ],
   "dependencies": {
     "angular": "1.4.6",
-    "angular-bitcore-wallet-client": "0.6.4",
+    "angular-bitcore-wallet-client": "~1.0.0",
     "angular-foundation": "0.7.0",
     "angular-gettext": "2.1.0",
     "angular-moment": "0.10.1",
