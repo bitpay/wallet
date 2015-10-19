@@ -15,10 +15,10 @@
 <div class="modal-content fix-modals-touch">
   <div class="header-modal bg-gray text-center">
     <div class="p20">
-      <img src="../img/bought.svg" alt="bought" width="80" ng-show="tx.type == 'BUY' && tx.status == 'COMPLETE'">
-      <img src="../img/bought-pending.svg" alt="bought" width="65" ng-show="tx.type == 'BUY' && tx.status == 'PROCESSING'">
-      <img src="../img/sold.svg" alt="bought" width="80" ng-show="tx.type == 'SELL' && tx.status == 'COMPLETE'">
-      <img src="../img/sold-pending.svg" alt="bought" width="65" ng-show="tx.type == 'SELL' && tx.status == 'PROCESSING'">
+      <img src="img/bought.svg" alt="bought" width="80" ng-show="tx.type == 'BUY' && tx.status == 'COMPLETE'">
+      <img src="img/bought-pending.svg" alt="bought" width="65" ng-show="tx.type == 'BUY' && tx.status == 'PROCESSING'">
+      <img src="img/sold.svg" alt="bought" width="80" ng-show="tx.type == 'SELL' && tx.status == 'COMPLETE'">
+      <img src="img/sold-pending.svg" alt="bought" width="65" ng-show="tx.type == 'SELL' && tx.status == 'PROCESSING'">
     </div>
     <span ng-show="tx.type == 'BUY'">Bought</span>
     <span ng-show="tx.type == 'SELL'">Sold</span>
@@ -28,7 +28,7 @@
     </div>
   </div>
 
-  <ul class="no-bullet size-14 m0"> 
+  <ul class="no-bullet size-14 m0">
 
     <li class="line-b p10 oh">
       <span class="text-gray">Status</span>
@@ -45,7 +45,7 @@
     <li ng-show="tx.price" class="line-b p10 oh">
       <span class="text-gray">Exchange rate</span>
       <span class="right">{{tx.price|currency:'':2}} {{tx.currency}}/BTC</span>
-    </li> 
+    </li>
 
     <li ng-show="tx.subtotal" class="line-b p10 oh">
       <span class="text-gray">Subtotal</span>
