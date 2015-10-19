@@ -31,7 +31,6 @@ angular.module('copayApp.controllers').controller('importController',
       configService.set(opts, function(err) {
         if (err) return cb(err);
         $scope.$emit('Local/BWSUpdated');
-        applicationService.restart();
         return cb(null);
       });
     }

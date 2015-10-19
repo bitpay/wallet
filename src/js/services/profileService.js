@@ -48,72 +48,72 @@ angular.module('copayApp.services')
       });
     };
 
-    root.setWalletClients = function() {
-      lodash.each(root.profile.credentials, function(credentials) {
+    root.setWalletClient = function(credentials) {
+      if (root.walletClients[credentials.walletId] &&
+        root.walletClients[credentials.walletId].started) {
+        return;
+      }
 
-        if (root.walletClients[credentials.walletId] &&
-          root.walletClients[credentials.walletId].started) {
+      var config = configService.getSync();
+      var defaults = configService.getDefaults();
+
+      bwcService.setBaseUrl(config.bws[credentials.walletId] || defaults.bws.url);
+      bwcService.setTransports(['polling']);
+
+      var client = bwcService.getClient(JSON.stringify(credentials));
+      root.walletClients[credentials.walletId] = client;
+      client.removeAllListeners();
+
+      client.on('reconnect', function() {
+        if (root.focusedClient.credentials.walletId == client.credentials.walletId) {
+          $log.debug('### Online');
+        }
+      });
+
+      client.on('reconnecting', function() {
+        if (root.focusedClient.credentials.walletId == client.credentials.walletId) {
+          $log.debug('### Offline');
+        }
+      });
+
+      client.on('notification', function(n) {
+        $log.debug('BWC Notification:', n);
+        notificationService.newBWCNotification(n,
+          client.credentials.walletId, client.credentials.walletName);
+
+        if (root.focusedClient.credentials.walletId == client.credentials.walletId) {
+          $rootScope.$emit(n.type);
+        } else {
+          $rootScope.$apply();
+        }
+      });
+
+      client.on('walletCompleted', function() {
+        $log.debug('Wallet completed');
+
+        root.updateCredentialsFC(function() {
+          $rootScope.$emit('Local/WalletCompleted')
+        });
+
+      });
+
+      root.walletClients[credentials.walletId].started = true;
+      root.walletClients[credentials.walletId].doNotVerifyPayPro = isChromeApp;
+
+      client.initNotifications(function(err) {
+        if (err) {
+          $log.error('Could not init notifications err:', err);
           return;
         }
+      });
+    }
 
-        var client = bwcService.getClient(JSON.stringify(credentials));
-        root.walletClients[credentials.walletId] = client;
-        client.removeAllListeners();
-
-
-        client.on('reconnect', function() {
-          if (root.focusedClient.credentials.walletId == client.credentials.walletId) {
-            $log.debug('### Online');
-          }
-        });
-
-
-        client.on('reconnecting', function() {
-          if (root.focusedClient.credentials.walletId == client.credentials.walletId) {
-            $log.debug('### Offline');
-          }
-        });
-
-        client.on('notification', function(n) {
-          $log.debug('BWC Notification:', n);
-          notificationService.newBWCNotification(n,
-            client.credentials.walletId, client.credentials.walletName);
-
-          if (root.focusedClient.credentials.walletId == client.credentials.walletId) {
-            $rootScope.$emit(n.type);
-          } else {
-            $rootScope.$apply();
-          }
-        });
-
-        client.on('walletCompleted', function() {
-          $log.debug('Wallet completed');
-
-          root.updateCredentialsFC(function() {
-            $rootScope.$emit('Local/WalletCompleted')
-          });
-
-        });
-
-        root.walletClients[credentials.walletId].started = true;
-        root.walletClients[credentials.walletId].doNotVerifyPayPro = isChromeApp;
-
-        client.initNotifications(function(err) {
-          if (err) {
-            $log.error('Could not init notifications err:', err);
-            return;
-          }
-        });
+    root.setWalletClients = function(walletId) {
+      var credentials = root.profile.credentials;
+      lodash.each(credentials, function(credentials) {
+        root.setWalletClient(credentials);
       });
       $rootScope.$emit('Local/WalletListUpdated');
-    };
-
-
-    root.applyConfig = function() {
-      var config = configService.getSync();
-      $log.debug('Applying preferences');
-      bwcService.setBaseUrl(config.bws.url);
-      bwcService.setTransports(['polling']);
     };
 
     root.bindProfile = function(profile, cb) {
@@ -122,7 +122,6 @@ angular.module('copayApp.services')
       configService.get(function(err) {
         $log.debug('Preferences read');
         if (err) return cb(err);
-        root.applyConfig();
         root.setWalletClients();
         storageService.getFocusedWalletId(function(err, focusedWalletId) {
           if (err) return cb(err);
@@ -327,7 +326,7 @@ angular.module('copayApp.services')
         'walletId': walletId
       });
       if (w) {
-        return cb(gettext('Wallet already in Copay' + ": ") + w.walletName );
+        return cb(gettext('Wallet already in Copay' + ": ") + w.walletName);
       }
 
       root.profile.credentials.push(JSON.parse(walletClient.export()));
@@ -369,7 +368,7 @@ angular.module('copayApp.services')
 
 
     root._normalizeMnemonic = function(words) {
-      var isJA = words.indexOf('\u3000') > -1; 
+      var isJA = words.indexOf('\u3000') > -1;
       var wordList = words.split(/[\u3000\s]+/);
 
       return wordList.join(isJA ? '\u3000' : ' ');
@@ -415,7 +414,6 @@ angular.module('copayApp.services')
     root.create = function(opts, cb) {
       $log.info('Creating profile');
       configService.get(function(err) {
-        root.applyConfig();
         root._createNewProfile(opts, function(err, p) {
           if (err) return cb(err);
 
@@ -552,7 +550,7 @@ angular.module('copayApp.services')
       $log.info('Requesting Ledger Chrome app to sign the transaction');
 
       ledger.signTx(txp, 0, function(result) {
-        $log.debug('Ledger response',result);
+        $log.debug('Ledger response', result);
         if (!result.success)
           return cb(result.message || result.error);
 
@@ -568,11 +566,11 @@ angular.module('copayApp.services')
       var fc = root.focusedClient;
       $log.info('Requesting Trezor  to sign the transaction');
 
-      var xPubKeys  = lodash.pluck(fc.credentials.publicKeyRing,'xPubKey');
+      var xPubKeys = lodash.pluck(fc.credentials.publicKeyRing, 'xPubKey');
       trezor.signTx(xPubKeys, txp, 0, function(err, result) {
         if (err) return cb(err);
 
-        $log.debug('Trezor response',result);
+        $log.debug('Trezor response', result);
         txp.signatures = result.signatures;
         return fc.signTxProposal(txp, cb);
       });
