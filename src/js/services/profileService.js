@@ -247,15 +247,12 @@ angular.module('copayApp.services')
         }, function(err, secret) {
           if (err) return bwsError.cb(err, gettext('Error creating wallet'), cb);
 
-          root.storeData(walletClient, function(err) {
-            if (err) return cb(err);
-            return cb(null);
-          });
+          root.storeData(walletClient, opts.bwsurl, cb);
         })
       });
     };
 
-    root.storeData = function(walletClient, cb) {
+    root.storeData = function(walletClient, bwsurl, cb) {
       var walletId = walletClient.credentials.walletId;
       var opts_ = {
         bws: {}
@@ -276,7 +273,7 @@ angular.module('copayApp.services')
       });
     }
 
-    root.joinWallet = function(opts, bwsurl, cb) {
+    root.joinWallet = function(opts, cb) {
       var walletClient = bwcService.getClient();
       $log.debug('Joining Wallet:', opts);
 
@@ -302,7 +299,7 @@ angular.module('copayApp.services')
         walletClient.joinWallet(opts.secret, opts.myName || 'me', {}, function(err) {
           if (err) return bwsError.cb(err, gettext('Could not join wallet'), cb);
 
-          root.storeData(walletClient, function(err) {
+          root.storeData(walletClient, opts.bwsurl, function(err) {
             if (err) return cb(err);
             return cb(null);
           });
