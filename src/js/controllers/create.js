@@ -56,6 +56,7 @@ angular.module('copayApp.controllers').controller('createController',
         name: form.walletName.$modelValue,
         myName: $scope.totalCopayers > 1 ? form.myName.$modelValue : null,
         networkName: form.isTestnet.$modelValue ? 'testnet' : 'livenet',
+        bwsurl: $scope.bwsurl
       };
       var setSeed = form.setSeed.$modelValue;
       if (setSeed) {
@@ -110,15 +111,6 @@ angular.module('copayApp.controllers').controller('createController',
             });
             return;
           }
-
-          var opts_ = {
-            bws: {}
-          };
-          opts_.bws[walletId] = $scope.bwsurl;
-          configService.set(opts_, function(err) {
-            if (err) console.log(err);
-            go.walletHome();
-          });
 
           if (opts.mnemonic || opts.externalSource || opts.extendedPrivateKey) {
             if (opts.n == 1) {

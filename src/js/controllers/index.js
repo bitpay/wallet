@@ -1129,18 +1129,15 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.setFocusedWallet();
     self.updateTxHistory();
     go.walletHome();
-    storageService.getCleanAndScanAddresses(function(err, val) {
-      if (val) {
-        $log.debug('Clear last address cache and Scan');
-        lodash.each(lodash.keys(profileService.walletClients), function(walletId) {
-          addressService.expireAddress(walletId, function(err) {
-            self.startScan(walletId);
-          });
+    storageService.getCleanAndScanAddresses(function(err, walletId) {
+      if (walletId && profileService.walletClients[walletId]) {
+        $log.debug('Clear last address cache and Scan ', walletId);
+        addressService.expireAddress(walletId, function(err) {
+          self.startScan(walletId);
         });
         storageService.removeCleanAndScanAddresses(function() {});
       }
     });
-
   });
 
   $rootScope.$on('Local/SetTab', function(event, tab, reset) {

@@ -1,10 +1,9 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('joinController',
-  function($scope, $rootScope, $timeout, go, notification, profileService, configService, isCordova, $modal, gettext, lodash, ledger, trezor) {
+  function($scope, $rootScope, $timeout, go, notification, profileService, configService, isCordova, storageService, applicationService, $modal, gettext, lodash, ledger, trezor) {
 
     var self = this;
-    var defaults = configService.getDefaults();
     var defaults = configService.getDefaults();
     $scope.bwsurl = defaults.bws.url;
 
@@ -24,6 +23,7 @@ angular.module('copayApp.controllers').controller('joinController',
       var opts = {
         secret: form.secret.$modelValue,
         myName: form.myName.$modelValue,
+        bwsurl: $scope.bwsurl
       }
 
       var setSeed = form.setSeed.$modelValue;
@@ -71,25 +71,13 @@ angular.module('copayApp.controllers').controller('joinController',
             self.loading = false;
             self.error = err;
             $rootScope.$apply();
-            return
+            return;
           }
+
           $timeout(function() {
             var fc = profileService.focusedClient;
-
-            var opts_ = {
-              bws: {}
-            };
-
-            opts_.bws[fc.credentials.walletId] = $scope.bwsurl;
-            configService.set(opts_, function(err) {
-              if (err) console.log(err);
-            });
-
-            if (fc.isComplete() && (opts.mnemonic || opts.externalSource || opts.extendedPrivateKey)) {
+            if (fc.isComplete() && (opts.mnemonic || opts.externalSource || opts.extendedPrivateKey))
               $rootScope.$emit('Local/WalletImported', fc.credentials.walletId);
-            } else {
-              go.walletHome();
-            }
           }, 2000);
         });
       }, 100);
