@@ -840,9 +840,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
   self.initGlidera = function(accessToken) {
     self.glideraEnabled = configService.getSync().glidera.enabled;
-//    self.glideraTestnet = configService.getSync().glidera.testnet;
-//    var network = self.glideraTestnet ? 'testnet' : 'livenet';
-//    Disabled for testnet
+    //    self.glideraTestnet = configService.getSync().glidera.testnet;
+    //    var network = self.glideraTestnet ? 'testnet' : 'livenet';
+    //    Disabled for testnet
     self.glideraTestnet = false;
     var network = 'livenet';
 
@@ -1003,11 +1003,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         email: email || null
       },
     }, cb);
-  });
-
-  $rootScope.$on('Local/BWSUpdated', function(event) {
-    profileService.applyConfig();
-    storageService.setCleanAndScanAddresses(function() {});
   });
 
   $rootScope.$on('Local/WalletCompleted', function(event) {

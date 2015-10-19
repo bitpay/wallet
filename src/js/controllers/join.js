@@ -84,7 +84,6 @@ angular.module('copayApp.controllers').controller('joinController',
             configService.set(opts_, function(err) {
               if (err) console.log(err);
               $scope.$emit('Local/BWSUpdated');
-              applicationService.restart();
             });
 
             if (fc.isComplete() && (opts.mnemonic || opts.externalSource || opts.extendedPrivateKey)) {

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('preferencesBwsUrlController',
-  function($scope, $log, configService, go, applicationService, profileService) {
+  function($scope, $log, configService, go, applicationService, profileService, storageService) {
     this.error = null;
     this.success = null;
 
@@ -35,15 +35,16 @@ angular.module('copayApp.controllers').controller('preferencesBwsUrlController',
         this.bwsurl = bws;
       }
 
-      var opts = {
-        bws: {}
-      };
-      opts.bws[walletId] = this.bwsurl;
+    var opts = {
+      bws: {}
+    };
+    opts.bws[walletId] = this.bwsurl;
 
-      configService.set(opts, function(err) {
-        if (err) console.log(err);
-        $scope.$emit('Local/BWSUpdated');
+    configService.set(opts, function(err) {
+      if (err) console.log(err);
+      storageService.setCleanAndScanAddresses(function() {
         applicationService.restart();
       });
+    });
     };
   });
