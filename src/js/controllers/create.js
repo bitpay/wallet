@@ -117,7 +117,6 @@ angular.module('copayApp.controllers').controller('createController',
           opts_.bws[walletId] = $scope.bwsurl;
           configService.set(opts_, function(err) {
             if (err) console.log(err);
-            $scope.$emit('Local/BWSUpdated');
             go.walletHome();
           });
 
