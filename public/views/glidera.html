@@ -58,7 +58,7 @@
       <div class="text-center m20v">
         <img src="img/glidera-logo.png" ng-click="index.updateGlidera(index.glideraToken, index.glideraPermissions)" width="200">
       </div>
-      <div class="text-center small-10 small-centered columns" ng-show="!showOauthForm"> 
+      <div class="text-center small-10 small-centered columns" ng-show="!showOauthForm">
         <p class="m10b">You can buy and sell Bitcoin with a US bank account directly in Copay.</p>
 
         <p class="m20t text-gray size-12 text-left">
@@ -95,7 +95,7 @@
             ng-style="{'background-color':index.backgroundColor}"
             type="submit" value="Get started" ng-disabled="oauthCodeForm.$invalid || glidera.loading">
         </form>
-        <button class="button light-gray expand outline round" 
+        <button class="button light-gray expand outline round"
           ng-click="showOauthForm = false; index.glideraError = null; glidera.error = null">
           <i class="fi-arrow-left"></i> <span class="tu">Back</span>
         </button>
@@ -150,7 +150,7 @@
       <li ng-show="index.glideraPermissions.transact &&
       (index.glideraStatus.userCanBuy || index.glideraStatus.userCanTransact)" class="line-b line-t p20 pointer"
       ng-click="$root.go('buyGlidera')">
-        <img src="../img/buy-bitcoin.svg" alt="buy bitcoin" width="40">
+        <img src="img/buy-bitcoin.svg" alt="buy bitcoin" width="40">
         <span class="m10 text-normal text-bold">Buy Bitcoin</span>
         <span class="right text-gray">
           <i class="icon-arrow-right3 size-24 right"></i>
@@ -160,7 +160,7 @@
       ng-show="index.glideraPermissions.transact &&
       (index.glideraStatus.userCanSell || index.glideraStatus.userCanTransact)"
       ng-click="$root.go('sellGlidera')">
-        <img src="../img/sell-bitcoin.svg" alt="buy bitcoin" width="40">
+        <img src="img/sell-bitcoin.svg" alt="buy bitcoin" width="40">
         <span class="m10 text-normal text-bold">Sell Bitcoin</span>
         <span class="right text-gray">
           <i class="icon-arrow-right3 size-24 right"></i>
@@ -178,10 +178,10 @@
         ng-click="glidera.openTxModal(index.glideraToken, tx)"
         class="row collapse last-transactions-content">
         <div class="large-3 medium-3 small-3 columns">
-          <img src="../img/bought.svg" alt="bought" width="39" ng-show="tx.type == 'BUY' && tx.status == 'COMPLETE'">
-          <img src="../img/bought-pending.svg" alt="bought" width="33" ng-show="tx.type == 'BUY' && tx.status == 'PROCESSING'">
-          <img src="../img/sold.svg" alt="bought" width="39" ng-show="tx.type == 'SELL' && tx.status == 'COMPLETE'">
-          <img src="../img/sold-pending.svg" alt="bought" width="33" ng-show="tx.type == 'SELL' && tx.status == 'PROCESSING'">
+          <img src="img/bought.svg" alt="bought" width="39" ng-show="tx.type == 'BUY' && tx.status == 'COMPLETE'">
+          <img src="img/bought-pending.svg" alt="bought" width="33" ng-show="tx.type == 'BUY' && tx.status == 'PROCESSING'">
+          <img src="img/sold.svg" alt="bought" width="39" ng-show="tx.type == 'SELL' && tx.status == 'COMPLETE'">
+          <img src="img/sold-pending.svg" alt="bought" width="33" ng-show="tx.type == 'SELL' && tx.status == 'PROCESSING'">
         </div>
 
         <div class="large-4 medium-4 small-4 columns">
