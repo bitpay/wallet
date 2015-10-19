@@ -124,7 +124,7 @@ angular.module('copayApp.services')
     };
 
     root.storeFocusedWalletId = function(id, cb) {
-      storage.set('focusedWalletId', id||'', cb);
+      storage.set('focusedWalletId', id || '', cb);
     };
 
     root.getFocusedWalletId = function(cb) {
@@ -151,8 +151,8 @@ angular.module('copayApp.services')
       storage.get('backup-' + walletId, cb);
     };
 
-    root.setCleanAndScanAddresses = function(cb) {
-      storage.set('CleanAndScanAddresses', Date.now(), cb);
+    root.setCleanAndScanAddresses = function(walletId, cb) {
+      storage.set('CleanAndScanAddresses', walletId, cb);
     };
 
     root.getCleanAndScanAddresses = function(cb) {

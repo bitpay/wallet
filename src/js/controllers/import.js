@@ -28,10 +28,7 @@ angular.module('copayApp.controllers').controller('importController',
         bws: {}
       };
       opts.bws[walletId] = $scope.bwsurl;
-      configService.set(opts, function(err) {
-        if (err) return cb(err);
-        return cb(null);
-      });
+      configService.set(opts, cb);
     }
 
     var _importBlob = function(str, opts) {
@@ -56,7 +53,8 @@ angular.module('copayApp.controllers').controller('importController',
       $timeout(function() {
         profileService.importWallet(str2, {
           compressed: null,
-          password: null
+          password: null,
+          bwsurl: $scope.bwsurl
         }, function(err, walletId) {
           self.loading = false;
           if (err) {
@@ -64,7 +62,6 @@ angular.module('copayApp.controllers').controller('importController',
           } else {
             setBwsURL(walletId, function() {
               $rootScope.$emit('Local/WalletImported', walletId);
-              go.walletHome();
               notification.success(gettext('Success'), gettext('Your wallet has been imported correctly'));
             });
           }
@@ -88,7 +85,6 @@ angular.module('copayApp.controllers').controller('importController',
           setBwsURL(walletId, function() {
             $rootScope.$emit('Local/WalletImported', walletId);
             notification.success(gettext('Success'), gettext('Your wallet has been imported correctly'));
-            go.walletHome();
           });
         });
       }, 100);
@@ -109,7 +105,6 @@ angular.module('copayApp.controllers').controller('importController',
           setBwsURL(walletId, function() {
             $rootScope.$emit('Local/WalletImported', walletId);
             notification.success(gettext('Success'), gettext('Your wallet has been imported correctly'));
-            go.walletHome();
           });
         });
       }, 100);
@@ -264,7 +259,6 @@ angular.module('copayApp.controllers').controller('importController',
           setBwsURL(walletId, function() {
             $rootScope.$emit('Local/WalletImported', walletId);
             notification.success(gettext('Success'), gettext('Your wallet has been imported correctly'));
-            go.walletHome();
           });
         });
       }, 100);

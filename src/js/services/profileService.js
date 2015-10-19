@@ -48,17 +48,21 @@ angular.module('copayApp.services')
       });
     };
 
+    root.setBaseURL = function(walletId) {
+      var config = configService.getSync();
+      var defaults = configService.getDefaults();
+
+      bwcService.setBaseUrl(config.bws[walletId] || defaults.bws.url);
+      bwcService.setTransports(['polling']);
+    }
+
     root.setWalletClient = function(credentials) {
       if (root.walletClients[credentials.walletId] &&
         root.walletClients[credentials.walletId].started) {
         return;
       }
 
-      var config = configService.getSync();
-      var defaults = configService.getDefaults();
-
-      bwcService.setBaseUrl(config.bws[credentials.walletId] || defaults.bws.url);
-      bwcService.setTransports(['polling']);
+      root.setBaseURL(credentials.walletId);
 
       var client = bwcService.getClient(JSON.stringify(credentials));
       root.walletClients[credentials.walletId] = client;
@@ -108,7 +112,7 @@ angular.module('copayApp.services')
       });
     }
 
-    root.setWalletClients = function(walletId) {
+    root.setWalletClients = function() {
       var credentials = root.profile.credentials;
       lodash.each(credentials, function(credentials) {
         root.setWalletClient(credentials);
@@ -165,6 +169,9 @@ angular.module('copayApp.services')
 
     root._seedWallet = function(opts, cb) {
       opts = opts || {};
+      if (opts.bwsurl)
+        bwcService.setBaseUrl(opts.bwsurl);
+
       var walletClient = bwcService.getClient();
       var network = opts.networkName || 'livenet';
 
@@ -240,19 +247,36 @@ angular.module('copayApp.services')
         }, function(err, secret) {
           if (err) return bwsError.cb(err, gettext('Error creating wallet'), cb);
 
-          root.profile.credentials.push(JSON.parse(walletClient.export()));
-          root.setWalletClients();
-
-          root.setAndStoreFocus(walletClient.credentials.walletId, function() {
-            storageService.storeProfile(root.profile, function(err) {
-              return cb(null, secret, walletClient.credentials.walletId);
-            });
+          root.storeData(walletClient, function(err) {
+            if (err) return cb(err);
+            return cb(null);
           });
         })
       });
     };
 
-    root.joinWallet = function(opts, cb) {
+    root.storeData = function(walletClient, cb) {
+      var walletId = walletClient.credentials.walletId;
+      var opts_ = {
+        bws: {}
+      };
+      opts_.bws[walletId] = bwsurl;
+      configService.set(opts_, function(err) {
+        if (err) console.log(err);
+
+        root.profile.credentials.push(JSON.parse(walletClient.export()));
+        root.setWalletClients();
+
+        root.setAndStoreFocus(walletId, function() {
+          storageService.storeProfile(root.profile, function(err) {
+            if (err) return cb(err);
+            return cb(null);
+          });
+        });
+      });
+    }
+
+    root.joinWallet = function(opts, bwsurl, cb) {
       var walletClient = bwcService.getClient();
       $log.debug('Joining Wallet:', opts);
 
@@ -278,18 +302,13 @@ angular.module('copayApp.services')
         walletClient.joinWallet(opts.secret, opts.myName || 'me', {}, function(err) {
           if (err) return bwsError.cb(err, gettext('Could not join wallet'), cb);
 
-          root.profile.credentials.push(JSON.parse(walletClient.export()));
-          root.setWalletClients();
-
-          root.setAndStoreFocus(walletClient.credentials.walletId, function() {
-            storageService.storeProfile(root.profile, function(err) {
-              return cb();
-            });
+          root.storeData(walletClient, function(err) {
+            if (err) return cb(err);
+            return cb(null);
           });
-        })
-      })
+        });
+      });
     };
-
 
     root.getClient = function(walletId) {
       return root.walletClients[walletId];
@@ -341,7 +360,11 @@ angular.module('copayApp.services')
     };
 
     root.importWallet = function(str, opts, cb) {
+      if (opts.bwsurl)
+        bwcService.setBaseUrl(opts.bwsurl);
+
       var walletClient = bwcService.getClient();
+
       $log.debug('Importing Wallet:', opts);
       try {
         walletClient.import(str, {
@@ -365,7 +388,6 @@ angular.module('copayApp.services')
         root._addWalletClient(walletClient, cb);
       });
     };
-
 
     root._normalizeMnemonic = function(words) {
       var isJA = words.indexOf('\u3000') > -1;
@@ -408,8 +430,6 @@ angular.module('copayApp.services')
         root._addWalletClient(walletClient, cb);
       });
     };
-
-
 
     root.create = function(opts, cb) {
       $log.info('Creating profile');

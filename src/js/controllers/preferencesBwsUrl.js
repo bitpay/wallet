@@ -35,16 +35,16 @@ angular.module('copayApp.controllers').controller('preferencesBwsUrlController',
         this.bwsurl = bws;
       }
 
-    var opts = {
-      bws: {}
-    };
-    opts.bws[walletId] = this.bwsurl;
+      var opts = {
+        bws: {}
+      };
+      opts.bws[walletId] = this.bwsurl;
 
-    configService.set(opts, function(err) {
-      if (err) console.log(err);
-      storageService.setCleanAndScanAddresses(function() {
-        applicationService.restart();
+      configService.set(opts, function(err) {
+        if (err) console.log(err);
+        storageService.setCleanAndScanAddresses(walletId, function() {
+          applicationService.restart();
+        });
       });
-    });
     };
   });
