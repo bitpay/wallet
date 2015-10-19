@@ -83,7 +83,6 @@ angular.module('copayApp.controllers').controller('joinController',
             opts_.bws[fc.credentials.walletId] = $scope.bwsurl;
             configService.set(opts_, function(err) {
               if (err) console.log(err);
-              $scope.$emit('Local/BWSUpdated');
             });
 
             if (fc.isComplete() && (opts.mnemonic || opts.externalSource || opts.extendedPrivateKey)) {

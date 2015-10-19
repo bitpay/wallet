@@ -23,14 +23,13 @@ angular.module('copayApp.controllers').controller('importController',
       });
     };
 
-    var setBwsurl = function(walletId, cb) {
+    var setBwsURL = function(walletId, cb) {
       var opts = {
         bws: {}
       };
       opts.bws[walletId] = $scope.bwsurl;
       configService.set(opts, function(err) {
         if (err) return cb(err);
-        $scope.$emit('Local/BWSUpdated');
         return cb(null);
       });
     }
@@ -63,7 +62,7 @@ angular.module('copayApp.controllers').controller('importController',
           if (err) {
             self.error = err;
           } else {
-            setBwsurl(walletId, function() {
+            setBwsURL(walletId, function() {
               $rootScope.$emit('Local/WalletImported', walletId);
               go.walletHome();
               notification.success(gettext('Success'), gettext('Your wallet has been imported correctly'));
@@ -86,7 +85,7 @@ angular.module('copayApp.controllers').controller('importController',
             });
           }
 
-          setBwsurl(walletId, function() {
+          setBwsURL(walletId, function() {
             $rootScope.$emit('Local/WalletImported', walletId);
             notification.success(gettext('Success'), gettext('Your wallet has been imported correctly'));
             go.walletHome();
@@ -107,7 +106,7 @@ angular.module('copayApp.controllers').controller('importController',
               $scope.$apply();
             });
           }
-          setBwsurl(walletId, function() {
+          setBwsURL(walletId, function() {
             $rootScope.$emit('Local/WalletImported', walletId);
             notification.success(gettext('Success'), gettext('Your wallet has been imported correctly'));
             go.walletHome();
@@ -224,7 +223,7 @@ angular.module('copayApp.controllers').controller('importController',
               $scope.$apply();
             });
           }
-          setBwsurl(walletId, function() {
+          setBwsURL(walletId, function() {
             $rootScope.$emit('Local/WalletImported', walletId);
             notification.success(gettext('Success'), gettext('Your wallet has been imported correctly'));
             go.walletHome();
@@ -262,7 +261,7 @@ angular.module('copayApp.controllers').controller('importController',
               $scope.$apply();
             });
           }
-          setBwsurl(walletId, function() {
+          setBwsURL(walletId, function() {
             $rootScope.$emit('Local/WalletImported', walletId);
             notification.success(gettext('Success'), gettext('Your wallet has been imported correctly'));
             go.walletHome();
