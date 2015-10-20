@@ -168,18 +168,16 @@
             <div class="oh text-gray line-b  size-12 p10b m20b"><span translate>Ledger supports up to 20 Copay wallets simultaneously. Select which slot to import</div>
 -->
             <button translate type="submit" class="button round expand black"
-              ng-disabled="import.loading || import.ledger">
+              ng-disabled="import.loading || import.hwWallet">
               Import from Ledger 
             </button>
           </div>         
           </form>
 
-          <form name="importForm4" ng-submit="import.importTrezor(importForm4)" novalidate>
-          <div class="large-12 columns">
-              <!-- ng-disabled="import.loading || import.ledger" -->
-            <button translate type="submit" class="button round expand black"
-ng-disabled="true" 
->
+          <form name="importForm4" ng-submit="import.importTrezor(importForm4)" novalidate ng-show="index.isChromeApp">
+          <div class="large-12 columns" ng-disabled="import.loading || import.hwWallet">
+               
+            <button translate type="submit" class="button round expand black">
               Import from TREZOR 
             </button>
           </div>         

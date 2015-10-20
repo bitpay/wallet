@@ -107,7 +107,7 @@
               <span translate>Use Ledger hardware wallet</span>
               <switch id="hw-ledger" name="hwLedger" ng-model="hwLedger" ng-change="isTestnet=false" class="green right m5t m10b"></switch>
             </label>
-            <label ng-show="!index.isCordova" for="hw-trezor" class="oh">
+            <label ng-show="index.isChromeApp" for="hw-trezor" class="oh">
               <span translate>Use TREZOR hardware wallet</span>
               <switch id="hw-trezor" name="hwTrezor" ng-model="hwTrezor" class="green right m5t m10b"></switch>
             </label>
