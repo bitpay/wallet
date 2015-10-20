@@ -13,7 +13,7 @@ angular.module('copayApp.services')
     root._err = function(data) {
       var msg = 'TREZOR Error: ' + (data.error || data.message || 'unknown');
       $log.warn(msg);
-      return msg;
+      return JSON.parse(JSON.stringify(msg));
     };
 
     root.getEntropySource = function(account, callback) {
@@ -226,11 +226,11 @@ angular.module('copayApp.services')
       outputs = JSON.parse(JSON.stringify(outputs));
 
       $log.debug('Signing with TREZOR', inputs, outputs);
-      TrezorConnect.signTx(inputs, outputs, function(result) {
-        if (!data.success) 
-          return callback(root._err(data));
+      TrezorConnect.signTx(inputs, outputs, function(res) {
+        if (!res.success) 
+          return callback(root._err(res));
 
-        callback(null, result);
+        callback(null, res);
       });
     };
 

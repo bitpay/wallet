@@ -6,7 +6,8 @@
   "permissions": [
     "storage",
     "notifications",
-    "videoCapture"
+    "videoCapture",
+    "webview"
   ],
   "app": {
     "background": {

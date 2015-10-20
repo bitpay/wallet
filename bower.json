@@ -21,6 +21,7 @@
     "foundation-icon-fonts": "*",
     "moment": "2.10.3",
     "ng-lodash": "0.2.3",
-    "qrcode-decoder-js": "*"
+    "qrcode-decoder-js": "*",
+    "trezor-connect": "~1.0.1"
   }
 }

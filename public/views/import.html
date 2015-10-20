@@ -150,14 +150,14 @@
     </div>
 
     <div class="row" ng-show="type == 'hwWallet'">
-      <div class="large-12 columns">
+      <div class="large-12 columns"  ng-show="index.isChromeApp">
           <div class="box-notification" ng-show="import.error">
             <span class="text-warning size-14">
               {{import.error|translate}}
             </span>
           </div>
 
-          <form name="importForm3" ng-submit="import.importLedger(importForm3)" ng-show="index.isChromeApp" novalidate>
+          <form name="importForm3" ng-submit="import.importLedger(importForm3)" novalidate>
           <div class="large-12 columns">
 <!-- TODO: account
             <label class=" oh">
@@ -168,23 +168,24 @@
             <div class="oh text-gray line-b  size-12 p10b m20b"><span translate>Ledger supports up to 20 Copay wallets simultaneously. Select which slot to import</div>
 -->
             <button translate type="submit" class="button round expand black"
-              ng-disabled="import.loading || import.ledger">
+              ng-disabled="import.loading || import.hwWallet">
               Import from Ledger 
             </button>
           </div>         
           </form>
 
           <form name="importForm4" ng-submit="import.importTrezor(importForm4)" novalidate>
-          <div class="large-12 columns">
-              <!-- ng-disabled="import.loading || import.ledger" -->
-            <button translate type="submit" class="button round expand black"
-ng-disabled="true" 
->
+          <div class="large-12 columns" ng-disabled="import.loading || import.hwWallet">
+               
+            <button translate type="submit" class="button round expand black">
               Import from TREZOR 
             </button>
           </div>         
           </form>
  
+      </div>
+      <div class="large-12 columns text-center text-gray size-14"  ng-show="!index.isChromeApp">
+      <div translate> Hardware wallets only available on Copay Chrome App version</div>
       </div>
     </div>
  
