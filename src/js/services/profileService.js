@@ -52,7 +52,7 @@ angular.module('copayApp.services')
       var config = configService.getSync();
       var defaults = configService.getDefaults();
 
-      bwcService.setBaseUrl(config.bwsFor[walletId] || defaults.bws.url);
+      bwcService.setBaseUrl((config.bwsFor && config.bwsFor[walletId]) || defaults.bws.url);
       bwcService.setTransports(['polling']);
     }
 
