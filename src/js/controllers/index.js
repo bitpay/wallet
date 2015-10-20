@@ -840,9 +840,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
   self.initGlidera = function(accessToken) {
     self.glideraEnabled = configService.getSync().glidera.enabled;
-//    self.glideraTestnet = configService.getSync().glidera.testnet;
-//    var network = self.glideraTestnet ? 'testnet' : 'livenet';
-//    Disabled for testnet
+    //    self.glideraTestnet = configService.getSync().glidera.testnet;
+    //    var network = self.glideraTestnet ? 'testnet' : 'livenet';
+    //    Disabled for testnet
     self.glideraTestnet = false;
     var network = 'livenet';
 
@@ -1005,11 +1005,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     }, cb);
   });
 
-  $rootScope.$on('Local/BWSUpdated', function(event) {
-    profileService.applyConfig();
-    storageService.setCleanAndScanAddresses(function() {});
-  });
-
   $rootScope.$on('Local/WalletCompleted', function(event) {
     self.setFocusedWallet();
     go.walletHome();
@@ -1134,18 +1129,15 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.setFocusedWallet();
     self.updateTxHistory();
     go.walletHome();
-    storageService.getCleanAndScanAddresses(function(err, val) {
-      if (val) {
-        $log.debug('Clear last address cache and Scan');
-        lodash.each(lodash.keys(profileService.walletClients), function(walletId) {
-          addressService.expireAddress(walletId, function(err) {
-            self.startScan(walletId);
-          });
+    storageService.getCleanAndScanAddresses(function(err, walletId) {
+      if (walletId && profileService.walletClients[walletId]) {
+        $log.debug('Clear last address cache and Scan ', walletId);
+        addressService.expireAddress(walletId, function(err) {
+          self.startScan(walletId);
         });
         storageService.removeCleanAndScanAddresses(function() {});
       }
     });
-
   });
 
   $rootScope.$on('Local/SetTab', function(event, tab, reset) {

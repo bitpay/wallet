@@ -131,6 +131,12 @@
               <switch id="seed" name="setSeed" ng-model="setSeed" class="green right m5t m10b"></switch>
             </label>
 
+            <label  for="bws" class="oh">
+              <span translate>Specify Bitcore Wallet Service URL
+                <input type="text" id="bwsurl" name="bwsurl" ng-model="bwsurl">
+              </span>
+            </label>
+
             <label for="createPassphrase" class="line-b oh" ng-hide="setSeed || hwLedger || hwTrezor" ><span translate>Add a Seed Passphrase</span>  <small translate>Add an optional passphrase to secure the seed</small>
               <div class="input">
                 <input type="text" class="form-control" 
@@ -168,7 +174,7 @@
           <span translate>Create {{requiredCopayers}}-of-{{totalCopayers}} wallet</span>
         </button>
         
-	<button type="submit" class="button round black expand m0" ng-show="totalCopayers == 1" ng-disabled="setupForm.$invalid || create.loading || create.hwWallet">
+        <button type="submit" class="button round black expand m0" ng-show="totalCopayers == 1" ng-disabled="setupForm.$invalid || create.loading || create.hwWallet">
           <span translate>Create new wallet</span>
         </button>
       </div>

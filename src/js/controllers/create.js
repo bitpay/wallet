@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('createController',
-  function($scope, $rootScope, $location, $timeout, $log, lodash, go, profileService, configService,  isCordova, gettext, ledger, trezor, isMobile) {
+  function($scope, $rootScope, $location, $timeout, $log, lodash, go, profileService, configService, isCordova, gettext, ledger, trezor, isMobile) {
 
     var self = this;
     var defaults = configService.getDefaults();
@@ -22,6 +22,9 @@ angular.module('copayApp.controllers').controller('createController',
       11: 1,
       12: 1,
     };
+
+    var defaults = configService.getDefaults();
+    $scope.bwsurl = defaults.bws.url;
 
     // ng-repeat defined number of times instead of repeating over array?
     this.getNumber = function(num) {
@@ -53,6 +56,7 @@ angular.module('copayApp.controllers').controller('createController',
         name: form.walletName.$modelValue,
         myName: $scope.totalCopayers > 1 ? form.myName.$modelValue : null,
         networkName: form.isTestnet.$modelValue ? 'testnet' : 'livenet',
+        bwsurl: $scope.bwsurl
       };
       var setSeed = form.setSeed.$modelValue;
       if (setSeed) {
@@ -73,9 +77,9 @@ angular.module('copayApp.controllers').controller('createController',
       }
 
       if (form.hwLedger.$modelValue || form.hwTrezor.$modelValue) {
-        self.hwWallet = form.hwLedger.$modelValue ? 'Ledger'  : 'TREZOR';
+        self.hwWallet = form.hwLedger.$modelValue ? 'Ledger' : 'TREZOR';
 
-        var src= form.hwLedger.$modelValue ? ledger  : trezor;
+        var src = form.hwLedger.$modelValue ? ledger : trezor;
 
         // TODO : account 
         var account = 0;
@@ -106,13 +110,13 @@ angular.module('copayApp.controllers').controller('createController',
               $rootScope.$apply();
             });
             return;
-          } 
+          }
+
           if (opts.mnemonic || opts.externalSource || opts.extendedPrivateKey) {
             if (opts.n == 1) {
               $rootScope.$emit('Local/WalletImported', walletId);
             }
           }
-          go.walletHome();
         });
       }, 100);
     }

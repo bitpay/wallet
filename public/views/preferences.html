@@ -115,13 +115,6 @@
       <span>Enable Glidera Service</span>
       <switch id="glidera-enabled" name="glideraEnabled" ng-model="glideraEnabled" class="green right"></switch>
     </li>
-    <li ng-click="$root.go('preferencesBwsUrl')">
-      <span>Bitcore Wallet Service</span>
-      <span class="text-gray db">
-          <i class="icon-arrow-right3 size-24 right"></i>
-          {{preferences.bwsurl}}
-        </span>
-    </li>
  
     <!-- Disabled for testnet 
     <li ng-show="!index.noFocusedWallet && glideraEnabled">
