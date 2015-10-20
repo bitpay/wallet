@@ -5,42 +5,42 @@ angular.module('copayApp.controllers').controller('preferencesInformation',
     var base = 'xpub';
 
     this.init = function() {
-    var fc = profileService.focusedClient;
-    var c = fc.credentials;
-    var basePath = profileService.getUtils().getBaseAddressDerivationPath(c.derivationStrategy, c.network, 0);
+      var fc = profileService.focusedClient;
+      var c = fc.credentials;
+      var basePath = profileService.getUtils().getBaseAddressDerivationPath(c.derivationStrategy, c.network, 0);
 
-    $scope.walletName = c.walletName;
-    $scope.walletId = c.walletId;
-    $scope.network = c.network;
-    $scope.addressType = c.addressType || 'P2SH';
-    $scope.derivationStrategy = c.derivationStrategy || 'BIP45';
-    $scope.basePath = basePath;
-    $scope.M = c.m;
-    $scope.N = c.n;
-    $scope.pubKeys = lodash.pluck(c.publicKeyRing, 'xPubKey');
-    $scope.addrs = null;
+      $scope.walletName = c.walletName;
+      $scope.walletId = c.walletId;
+      $scope.network = c.network;
+      $scope.addressType = c.addressType || 'P2SH';
+      $scope.derivationStrategy = c.derivationStrategy || 'BIP45';
+      $scope.basePath = basePath;
+      $scope.M = c.m;
+      $scope.N = c.n;
+      $scope.pubKeys = lodash.pluck(c.publicKeyRing, 'xPubKey');
+      $scope.addrs = null;
 
-    fc.getMainAddresses({
-      doNotVerify: true
-    }, function(err, addrs) {
-      if (err) {
-        $log.warn(err);
-        return;
-      };
-      var last10 = [],
+      fc.getMainAddresses({
+        doNotVerify: true
+      }, function(err, addrs) {
+        if (err) {
+          $log.warn(err);
+          return;
+        };
+        var last10 = [],
         i = 0,
         e = addrs.pop();
-      while (i++ < 10 && e) {
-        e.path = base + e.path.substring(1);
-        last10.push(e);
-        e = addrs.pop();
-      }
-      $scope.addrs = last10;
-      $timeout(function() {
-        $scope.$apply();
-      });
+        while (i++ < 10 && e) {
+          e.path = base + e.path.substring(1);
+          last10.push(e);
+          e = addrs.pop();
+        }
+        $scope.addrs = last10;
+        $timeout(function() {
+          $scope.$apply();
+        });
 
-    });
+      });
     };
 
     this.sendAddrs = function() {
