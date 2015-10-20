@@ -254,10 +254,11 @@ angular.module('copayApp.services')
 
     root.storeData = function(walletClient, bwsurl, cb) {
       var walletId = walletClient.credentials.walletId;
+      var defaults = configService.getDefaults();
       var opts_ = {
-        bws: {}
+        bwsFor: {}
       };
-      opts_.bws[walletId] = bwsurl;
+      opts_.bwsFor[walletId] = bwsurl || defaults.bws.url;
       configService.set(opts_, function(err) {
         if (err) console.log(err);
 
