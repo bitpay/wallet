@@ -62,19 +62,21 @@
       <div translate>Advanced</div>
     </li>
   </ul>
+  <div ng-show="!index.noFocusedWallet && (!index.isPrivKeyExternal || preferences.touchidAvailable)">
     <h4 translate>
       Spending Restrictions
     </h4>
-  <ul class="no-bullet m0 ">
-    <li  ng-hide="index.isPrivKeyExternal">
-      <switch id="network-name" name="encrypt" ng-model="encrypt" class="green right"></switch>
-      <div translate>Request Password</div>
-    </li>
-    <li  ng-show="preferences.touchidAvailable">
-      <switch id="touchid" name="touchid" ng-model="touchid" class="green right"></switch>
-      <div translate>Scan Fingerprint</div>
-    </li>
-  </ul>
+    <ul class="no-bullet m0 ">
+      <li ng-show="!index.isPrivKeyExternal">
+        <switch id="network-name" name="encrypt" ng-model="encrypt" class="green right"></switch>
+        <div translate>Request Password</div>
+      </li>
+      <li  ng-show="preferences.touchidAvailable">
+        <switch id="touchid" name="touchid" ng-model="touchid" class="green right"></switch>
+        <div translate>Scan Fingerprint</div>
+      </li>
+    </ul>
+  </div>
   <ul class="no-bullet m0 ">
 
     <h4 translate>Global settings</h4>
