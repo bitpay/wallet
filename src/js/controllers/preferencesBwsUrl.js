@@ -10,8 +10,7 @@ angular.module('copayApp.controllers').controller('preferencesBwsUrlController',
     var defaults = configService.getDefaults();
     var config = configService.getSync();
 
-    config.bws = config.bws || {};
-    this.bwsurl = config.bws[walletId] || defaults.bws.url;
+    this.bwsurl = config.bwsFor[walletId] || defaults.bws.url;
 
     this.save = function() {
 
