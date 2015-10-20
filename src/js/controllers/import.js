@@ -49,13 +49,11 @@ angular.module('copayApp.controllers').controller('importController',
       }
 
       self.loading = true;
+      opts.compressed = null;
+      opts.password = null;
 
       $timeout(function() {
-        profileService.importWallet(str2, {
-          compressed: null,
-          password: null,
-          bwsurl: $scope.bwsurl
-        }, function(err, walletId) {
+        profileService.importWallet(str2, opts, function(err, walletId) {
           self.loading = false;
           if (err) {
             self.error = err;
@@ -69,11 +67,11 @@ angular.module('copayApp.controllers').controller('importController',
       }, 100);
     };
 
-    var _importExtendedPrivateKey = function(xPrivKey) {
+    var _importExtendedPrivateKey = function(xPrivKey, opts) {
       self.loading = true;
 
       $timeout(function() {
-        profileService.importExtendedPrivateKey(xPrivKey, function(err, walletId) {
+        profileService.importExtendedPrivateKey(xPrivKey, opts, function(err, walletId) {
           self.loading = false;
           if (err) {
             self.error = err;
@@ -114,7 +112,9 @@ angular.module('copayApp.controllers').controller('importController',
       // If we use onloadend, we need to check the readyState.
       reader.onloadend = function(evt) {
         if (evt.target.readyState == FileReader.DONE) { // DONE == 2
-          _importBlob(evt.target.result);
+          var opts = {};
+          opts.bwsurl = $scope.bwsurl;
+          _importBlob(evt.target.result, opts);
         }
       }
     };
@@ -145,7 +145,9 @@ angular.module('copayApp.controllers').controller('importController',
       if (backupFile) {
         reader.readAsBinaryString(backupFile);
       } else {
-        _importBlob(backupText);
+        var opts = {};
+        opts.bwsurl = $scope.bwsurl;
+        _importBlob(backupText, opts);
       }
     };
 
@@ -160,6 +162,8 @@ angular.module('copayApp.controllers').controller('importController',
       }
 
       var opts = {};
+      if ($scope.bwsurl)
+        opts.bwsurl = $scope.bwsurl;
 
       var passphrase = form.passphrase.$modelValue;
       var words = form.words.$modelValue;
@@ -168,7 +172,7 @@ angular.module('copayApp.controllers').controller('importController',
       if (!words) {
         this.error = gettext('Please enter the seed words');
       } else if (words.indexOf('xprv') == 0 || words.indexOf('tprv') == 0) {
-        return _importExtendedPrivateKey(words)
+        return _importExtendedPrivateKey(words, opts);
       } else {
         var wordList = words.split(/[\u3000\s]+/);
 

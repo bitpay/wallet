@@ -265,10 +265,7 @@ angular.module('copayApp.services')
         root.setWalletClients();
 
         root.setAndStoreFocus(walletId, function() {
-          storageService.storeProfile(root.profile, function(err) {
-            if (err) return cb(err);
-            return cb(null);
-          });
+          storageService.storeProfile(root.profile, cb);
         });
       });
     }
@@ -298,11 +295,7 @@ angular.module('copayApp.services')
 
         walletClient.joinWallet(opts.secret, opts.myName || 'me', {}, function(err) {
           if (err) return bwsError.cb(err, gettext('Could not join wallet'), cb);
-
-          root.storeData(walletClient, opts.bwsurl, function(err) {
-            if (err) return cb(err);
-            return cb(null);
-          });
+          root.storeData(walletClient, opts.bwsurl, cb);
         });
       });
     };
@@ -334,7 +327,7 @@ angular.module('copayApp.services')
       });
     };
 
-    root._addWalletClient = function(walletClient, cb) {
+    root._addWalletClient = function(walletClient, opts, cb) {
       var walletId = walletClient.credentials.walletId;
 
       // check if exist
@@ -344,16 +337,7 @@ angular.module('copayApp.services')
       if (w) {
         return cb(gettext('Wallet already in Copay' + ": ") + w.walletName);
       }
-
-      root.profile.credentials.push(JSON.parse(walletClient.export()));
-      root.setWalletClients();
-
-      root.setAndStoreFocus(walletId, function() {
-        storageService.storeProfile(root.profile, function(err) {
-          return cb(null, walletId);
-        });
-      });
-
+      root.storeData(walletClient, opts.bwsurl, cb);
     };
 
     root.importWallet = function(str, opts, cb) {
@@ -371,10 +355,13 @@ angular.module('copayApp.services')
       } catch (err) {
         return cb(gettext('Could not import. Check input file and password'));
       }
-      root._addWalletClient(walletClient, cb);
+      root._addWalletClient(walletClient, opts, cb);
     };
 
-    root.importExtendedPrivateKey = function(xPrivKey, cb) {
+    root.importExtendedPrivateKey = function(xPrivKey, opts, cb) {
+      if (opts.bwsurl)
+        bwcService.setBaseUrl(opts.bwsurl);
+
       var walletClient = bwcService.getClient();
       $log.debug('Importing Wallet xPrivKey');
 
@@ -382,7 +369,7 @@ angular.module('copayApp.services')
         if (err)
           return bwsError.cb(err, gettext('Could not import'), cb);
 
-        root._addWalletClient(walletClient, cb);
+        root._addWalletClient(walletClient, opts, cb);
       });
     };
 
@@ -394,6 +381,9 @@ angular.module('copayApp.services')
     };
 
     root.importMnemonic = function(words, opts, cb) {
+      if (opts.bwsurl)
+        bwcService.setBaseUrl(opts.bwsurl);
+
       var walletClient = bwcService.getClient();
 
       $log.debug('Importing Wallet Mnemonic');
@@ -406,11 +396,14 @@ angular.module('copayApp.services')
         if (err)
           return bwsError.cb(err, gettext('Could not import'), cb);
 
-        root._addWalletClient(walletClient, cb);
+        root._addWalletClient(walletClient, opts, cb);
       });
     };
 
     root.importExtendedPublicKey = function(opts, cb) {
+      if (opts.bwsurl)
+        bwcService.setBaseUrl(opts.bwsurl);
+
       var walletClient = bwcService.getClient();
       $log.debug('Importing Wallet XPubKey');
 
@@ -424,7 +417,7 @@ angular.module('copayApp.services')
           return bwsError.cb(err, gettext('Could not import'), cb);
         }
 
-        root._addWalletClient(walletClient, cb);
+        root._addWalletClient(walletClient, opts, cb);
       });
     };
 
@@ -444,6 +437,9 @@ angular.module('copayApp.services')
     };
 
     root.importLegacyWallet = function(username, password, blob, cb) {
+      if (opts.bwsurl)
+        bwcService.setBaseUrl(opts.bwsurl);
+
       var walletClient = bwcService.getClient();
 
       walletClient.createWalletFromOldCopay(username, password, blob, function(err, existed) {
