@@ -1,11 +1,12 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('importController',
-  function($scope, $rootScope, $location, $timeout, $log, profileService, notification, go, sjcl, gettext, lodash, ledger, trezor) {
+  function($scope, $rootScope, $location, $timeout, $log, profileService, configService, notification, go, sjcl, gettext, lodash, ledger, trezor) {
 
     var self = this;
-
     var reader = new FileReader();
+    var defaults = configService.getDefaults();
+    $scope.bwsurl = defaults.bws.url;
 
     window.ignoreMobilePause = true;
     $scope.$on('$destroy', function() {
@@ -40,30 +41,27 @@ angular.module('copayApp.controllers').controller('importController',
       }
 
       self.loading = true;
+      opts.compressed = null;
+      opts.password = null;
 
       $timeout(function() {
-        profileService.importWallet(str2, {
-          compressed: null,
-          password: null
-        }, function(err, walletId) {
+        profileService.importWallet(str2, opts, function(err, walletId) {
           self.loading = false;
           if (err) {
             self.error = err;
           } else {
             $rootScope.$emit('Local/WalletImported', walletId);
-            go.walletHome();
             notification.success(gettext('Success'), gettext('Your wallet has been imported correctly'));
           }
         });
       }, 100);
     };
 
-
-    var _importExtendedPrivateKey = function(xPrivKey) {
+    var _importExtendedPrivateKey = function(xPrivKey, opts) {
       self.loading = true;
 
       $timeout(function() {
-        profileService.importExtendedPrivateKey(xPrivKey, function(err, walletId) {
+        profileService.importExtendedPrivateKey(xPrivKey, opts, function(err, walletId) {
           self.loading = false;
           if (err) {
             self.error = err;
@@ -73,12 +71,9 @@ angular.module('copayApp.controllers').controller('importController',
           }
           $rootScope.$emit('Local/WalletImported', walletId);
           notification.success(gettext('Success'), gettext('Your wallet has been imported correctly'));
-          go.walletHome();
         });
       }, 100);
     };
-
-
 
     var _importMnemonic = function(words, opts) {
       self.loading = true;
@@ -94,7 +89,6 @@ angular.module('copayApp.controllers').controller('importController',
           }
           $rootScope.$emit('Local/WalletImported', walletId);
           notification.success(gettext('Success'), gettext('Your wallet has been imported correctly'));
-          go.walletHome();
         });
       }, 100);
     };
@@ -103,7 +97,9 @@ angular.module('copayApp.controllers').controller('importController',
       // If we use onloadend, we need to check the readyState.
       reader.onloadend = function(evt) {
         if (evt.target.readyState == FileReader.DONE) { // DONE == 2
-          _importBlob(evt.target.result);
+          var opts = {};
+          opts.bwsurl = $scope.bwsurl;
+          _importBlob(evt.target.result, opts);
         }
       }
     };
@@ -134,10 +130,11 @@ angular.module('copayApp.controllers').controller('importController',
       if (backupFile) {
         reader.readAsBinaryString(backupFile);
       } else {
-        _importBlob(backupText);
+        var opts = {};
+        opts.bwsurl = $scope.bwsurl;
+        _importBlob(backupText, opts);
       }
     };
-
 
     this.importMnemonic = function(form) {
       if (form.$invalid) {
@@ -150,6 +147,8 @@ angular.module('copayApp.controllers').controller('importController',
       }
 
       var opts = {};
+      if ($scope.bwsurl)
+        opts.bwsurl = $scope.bwsurl;
 
       var passphrase = form.passphrase.$modelValue;
       var words = form.words.$modelValue;
@@ -157,8 +156,8 @@ angular.module('copayApp.controllers').controller('importController',
 
       if (!words) {
         this.error = gettext('Please enter the seed words');
-      } else if (words.indexOf('xprv') == 0  || words.indexOf('tprv') == 0) {
-        return _importExtendedPrivateKey(words)
+      } else if (words.indexOf('xprv') == 0 || words.indexOf('tprv') == 0) {
+        return _importExtendedPrivateKey(words, opts);
       } else {
         var wordList = words.split(/[\u3000\s]+/);
 
@@ -172,7 +171,6 @@ angular.module('copayApp.controllers').controller('importController',
         });
         return;
       }
-
 
       opts.passphrase = form.passphrase.$modelValue || null;
       opts.networkName = form.isTestnet.$modelValue ? 'testnet' : 'livenet';
@@ -198,9 +196,12 @@ angular.module('copayApp.controllers').controller('importController',
           $scope.$apply();
           return;
         }
+
         lopts.externalSource = 'trezor';
+        lopts.bwsurl = $scope.bwsurl;
         self.loading = true;
         $log.debug('Import opts', lopts);
+
         profileService.importExtendedPublicKey(lopts, function(err, walletId) {
           self.loading = false;
           if (err) {
@@ -215,8 +216,6 @@ angular.module('copayApp.controllers').controller('importController',
         });
       }, 100);
     };
-
-
 
     this.importLedger = function(form) {
       var self = this;
@@ -236,9 +235,12 @@ angular.module('copayApp.controllers').controller('importController',
           $scope.$apply();
           return;
         }
+
         lopts.externalSource = 'ledger';
+        lopts.bwsurl = $scope.bwsurl;
         self.loading = true;
         $log.debug('Import opts', lopts);
+
         profileService.importExtendedPublicKey(lopts, function(err, walletId) {
           self.loading = false;
           if (err) {
@@ -249,7 +251,6 @@ angular.module('copayApp.controllers').controller('importController',
           }
           $rootScope.$emit('Local/WalletImported', walletId);
           notification.success(gettext('Success'), gettext('Your wallet has been imported correctly'));
-          go.walletHome();
         });
       }, 100);
     };

@@ -1,9 +1,11 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('joinController',
-  function($scope, $rootScope, $timeout, go, notification, profileService, isCordova, $modal, gettext, lodash, ledger, trezor) {
+  function($scope, $rootScope, $timeout, go, notification, profileService, configService, isCordova, storageService, applicationService, $modal, gettext, lodash, ledger, trezor) {
 
     var self = this;
+    var defaults = configService.getDefaults();
+    $scope.bwsurl = defaults.bws.url;
 
     this.onQrCodeScanned = function(data) {
       $scope.secret = data;
@@ -21,10 +23,11 @@ angular.module('copayApp.controllers').controller('joinController',
       var opts = {
         secret: form.secret.$modelValue,
         myName: form.myName.$modelValue,
+        bwsurl: $scope.bwsurl
       }
 
       var setSeed = form.setSeed.$modelValue;
-      if  (setSeed) {
+      if (setSeed) {
         var words = form.privateKey.$modelValue;
         if (words.indexOf(' ') == -1 && words.indexOf('prv') == 1 && words.length > 108) {
           opts.extendedPrivateKey = words;
@@ -40,10 +43,10 @@ angular.module('copayApp.controllers').controller('joinController',
         this.error = gettext('Please enter the wallet seed');
         return;
       }
- 
+
       if (form.hwLedger.$modelValue || form.hwTrezor.$modelValue) {
-        self.hwWallet = form.hwLedger.$modelValue ? 'Ledger'  : 'TREZOR';
-        var src= form.hwLedger.$modelValue ? ledger  : trezor;
+        self.hwWallet = form.hwLedger.$modelValue ? 'Ledger' : 'TREZOR';
+        var src = form.hwLedger.$modelValue ? ledger : trezor;
 
         var account = 0;
         src.getInfoForNewWallet(account, function(err, lopts) {
@@ -68,15 +71,13 @@ angular.module('copayApp.controllers').controller('joinController',
             self.loading = false;
             self.error = err;
             $rootScope.$apply();
-            return
+            return;
           }
+
           $timeout(function() {
             var fc = profileService.focusedClient;
-            if ( fc.isComplete() && (opts.mnemonic || opts.externalSource || opts.extendedPrivateKey)) {
+            if (fc.isComplete() && (opts.mnemonic || opts.externalSource || opts.extendedPrivateKey))
               $rootScope.$emit('Local/WalletImported', fc.credentials.walletId);
-            } else {
-              go.walletHome();
-            }
           }, 2000);
         });
       }, 100);

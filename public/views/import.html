@@ -84,6 +84,12 @@
                 <switch id="network-name" name="isTestnet" ng-model="isTestnet" class="green right m5t m10b"></switch>
               </label>
 
+              <label  for="bws" class="oh">
+                <span translate>Specify Bitcore Wallet Service URL
+                  <input type="text" id="bwsurl" name="bwsurl" ng-model="bwsurl">
+                </span>
+              </label>
+
              <label for="passphrase" class="oh line-b"><span translate>Passphrase</span>  <small translate>Wallet Seed could require a passphrase to be imported</small>
               <div class="input">
                 <input type="password" class="form-control" placeholder="{{'Seed passphrase'|translate}}"
@@ -133,6 +139,27 @@
               <input type="password" class="form-control" placeholder="{{'Your backup password'|translate}}"
               name="password" ng-model="import.password">
             </div>
+
+            <div class="m10t oh" ng-init="hideAdv=true">
+              <a class="button outline light-gray expand tiny" ng-click="hideAdv=!hideAdv">
+                <i class="fi-widget m3r"></i>
+                <span translate ng-hide="!hideAdv">Show advanced options</span>
+                <span translate ng-hide="hideAdv">Hide advanced options</span>
+                <i ng-if="hideAdv" class="icon-arrow-down4"></i>
+                <i ng-if="!hideAdv" class="icon-arrow-up4"></i>
+              </a>
+            </div>
+            <div ng-hide="hideAdv" class="row">
+              <div class="large-12 columns">
+
+                <label  for="bws" class="oh">
+                  <span translate>Specify Bitcore Wallet Service URL
+                    <input type="text" id="bwsurl" name="bwsurl" ng-model="bwsurl">
+                  </span>
+                </label>
+              </div>
+            </div>
+            
             <button translate type="submit" class="button round expand black"
               ng-disabled="importForm.$invalid || !import.password || import.loading">
               Import backup
@@ -159,6 +186,7 @@
 
           <form name="importForm3" ng-submit="import.importLedger(importForm3)" ng-show="index.isChromeApp" novalidate>
           <div class="large-12 columns">
+
 <!-- TODO: account
             <label class=" oh">
               <span translate>Ledger Slot</span>
@@ -171,18 +199,57 @@
               ng-disabled="import.loading || import.ledger">
               Import from Ledger 
             </button>
+
+            <div class="m10t oh" ng-init="hideAdvLedger=true">
+              <a class="button outline light-gray expand tiny" ng-click="hideAdvLedger=!hideAdvLedger">
+                <i class="fi-widget m3r"></i>
+                <span translate ng-hide="!hideAdvLedger">Show advanced options</span>
+                <span translate ng-hide="hideAdvLedger">Hide advanced options</span>
+                <i ng-if="hideAdvLedger" class="icon-arrow-down4"></i>
+                <i ng-if="!hideAdvLedger" class="icon-arrow-up4"></i>
+              </a>
+            </div>
+            <div ng-hide="hideAdvLedger" class="row">
+              <div class="large-12 columns">
+
+                <label  for="bws" class="oh">
+                  <span translate>Specify Bitcore Wallet Service URL
+                    <input type="text" id="bwsurl" name="bwsurl" ng-model="bwsurl">
+                  </span>
+                </label>
+              </div>
+            </div>
           </div>         
           </form>
 
           <form name="importForm4" ng-submit="import.importTrezor(importForm4)" novalidate>
           <div class="large-12 columns">
+
               <!-- ng-disabled="import.loading || import.ledger" -->
-            <button translate type="submit" class="button round expand black"
-ng-disabled="true" 
->
+            <button translate type="submit" class="button round expand black" ng-disabled="true">
               Import from TREZOR 
-            </button>
-          </div>         
+            </button> 
+
+            <div class="m10t oh" ng-init="hideAdvTrezor=true">
+              <a class="button outline light-gray expand tiny" ng-click="hideAdvTrezor=!hideAdvTrezor">
+                <i class="fi-widget m3r"></i>
+                <span translate ng-hide="!hideAdvTrezor">Show advanced options</span>
+                <span translate ng-hide="hideAdvTrezor">Hide advanced options</span>
+                <i ng-if="hideAdvTrezor" class="icon-arrow-down4"></i>
+                <i ng-if="!hideAdvTrezor" class="icon-arrow-up4"></i>
+              </a>
+            </div>
+            <div ng-hide="hideAdvTrezor" class="row">
+              <div class="large-12 columns">
+
+                <label  for="bws" class="oh">
+                  <span translate>Specify Bitcore Wallet Service URL
+                    <input type="text" id="bwsurl" name="bwsurl" ng-model="bwsurl">
+                  </span>
+                </label>
+              </div>
+            </div>     
+          </div>   
           </form>
  
       </div>
