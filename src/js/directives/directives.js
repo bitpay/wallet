@@ -37,7 +37,7 @@ angular.module('copayApp.directives')
             if (/^bitcoin:/.test(value)) {
               var uri, isAddressValid;
               var isUriValid = URI.isValid(value);
-              if (isUriValid) { 
+              if (isUriValid) {
                 uri = new URI(value);
                 isAddressValid = Address.isValid(uri.address.toString(), networkName)
               }
@@ -311,7 +311,7 @@ angular.module('copayApp.directives')
         negative: "="
       },
       controller: function($scope) {
-        $scope.logo_url = $scope.negative ? 'img/logo-negative.png' : 'img/logo.png';
+        $scope.logo_url = $scope.negative ? 'img/logo-negative.svg' : 'img/logo.svg';
       },
       replace: true,
       template: '<img ng-src="{{ logo_url }}" alt="Copay">'
