@@ -423,7 +423,11 @@ angular.module('copayApp.services')
 
     root.create = function(opts, cb) {
       $log.info('Creating profile');
+      var defaults = configService.getDefaults();
+
       configService.get(function(err) {
+        bwcService.setBaseUrl(defaults.bws.url);
+        bwcService.setTransports(['polling']);
         root._createNewProfile(opts, function(err, p) {
           if (err) return cb(err);
 
