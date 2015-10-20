@@ -150,14 +150,14 @@
     </div>
 
     <div class="row" ng-show="type == 'hwWallet'">
-      <div class="large-12 columns">
+      <div class="large-12 columns"  ng-show="index.isChromeApp">
           <div class="box-notification" ng-show="import.error">
             <span class="text-warning size-14">
               {{import.error|translate}}
             </span>
           </div>
 
-          <form name="importForm3" ng-submit="import.importLedger(importForm3)" ng-show="index.isChromeApp" novalidate>
+          <form name="importForm3" ng-submit="import.importLedger(importForm3)" novalidate>
           <div class="large-12 columns">
 <!-- TODO: account
             <label class=" oh">
@@ -174,7 +174,7 @@
           </div>         
           </form>
 
-          <form name="importForm4" ng-submit="import.importTrezor(importForm4)" novalidate ng-show="index.isChromeApp">
+          <form name="importForm4" ng-submit="import.importTrezor(importForm4)" novalidate>
           <div class="large-12 columns" ng-disabled="import.loading || import.hwWallet">
                
             <button translate type="submit" class="button round expand black">
@@ -183,6 +183,9 @@
           </div>         
           </form>
  
+      </div>
+      <div class="large-12 columns text-center text-gray size-14"  ng-show="!index.isChromeApp">
+      <div translate> Hardware wallets only available on Copay Chrome App version</div>
       </div>
     </div>
  
