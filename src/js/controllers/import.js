@@ -23,14 +23,6 @@ angular.module('copayApp.controllers').controller('importController',
       });
     };
 
-    var setBwsURL = function(walletId, cb) {
-      var opts = {
-        bws: {}
-      };
-      opts.bws[walletId] = $scope.bwsurl;
-      configService.set(opts, cb);
-    }
-
     var _importBlob = function(str, opts) {
       var str2, err;
       try {
@@ -58,10 +50,8 @@ angular.module('copayApp.controllers').controller('importController',
           if (err) {
             self.error = err;
           } else {
-            setBwsURL(walletId, function() {
-              $rootScope.$emit('Local/WalletImported', walletId);
-              notification.success(gettext('Success'), gettext('Your wallet has been imported correctly'));
-            });
+            $rootScope.$emit('Local/WalletImported', walletId);
+            notification.success(gettext('Success'), gettext('Your wallet has been imported correctly'));
           }
         });
       }, 100);
@@ -79,11 +69,8 @@ angular.module('copayApp.controllers').controller('importController',
               $scope.$apply();
             });
           }
-
-          setBwsURL(walletId, function() {
-            $rootScope.$emit('Local/WalletImported', walletId);
-            notification.success(gettext('Success'), gettext('Your wallet has been imported correctly'));
-          });
+          $rootScope.$emit('Local/WalletImported', walletId);
+          notification.success(gettext('Success'), gettext('Your wallet has been imported correctly'));
         });
       }, 100);
     };
@@ -100,10 +87,8 @@ angular.module('copayApp.controllers').controller('importController',
               $scope.$apply();
             });
           }
-          setBwsURL(walletId, function() {
-            $rootScope.$emit('Local/WalletImported', walletId);
-            notification.success(gettext('Success'), gettext('Your wallet has been imported correctly'));
-          });
+          $rootScope.$emit('Local/WalletImported', walletId);
+          notification.success(gettext('Success'), gettext('Your wallet has been imported correctly'));
         });
       }, 100);
     };
@@ -211,9 +196,12 @@ angular.module('copayApp.controllers').controller('importController',
           $scope.$apply();
           return;
         }
+
         lopts.externalSource = 'trezor';
+        lopts.bwsurl = $scope.bwsurl;
         self.loading = true;
         $log.debug('Import opts', lopts);
+
         profileService.importExtendedPublicKey(lopts, function(err, walletId) {
           self.loading = false;
           if (err) {
@@ -222,11 +210,9 @@ angular.module('copayApp.controllers').controller('importController',
               $scope.$apply();
             });
           }
-          setBwsURL(walletId, function() {
-            $rootScope.$emit('Local/WalletImported', walletId);
-            notification.success(gettext('Success'), gettext('Your wallet has been imported correctly'));
-            go.walletHome();
-          });
+          $rootScope.$emit('Local/WalletImported', walletId);
+          notification.success(gettext('Success'), gettext('Your wallet has been imported correctly'));
+          go.walletHome();
         });
       }, 100);
     };
@@ -249,9 +235,12 @@ angular.module('copayApp.controllers').controller('importController',
           $scope.$apply();
           return;
         }
+
         lopts.externalSource = 'ledger';
+        lopts.bwsurl = $scope.bwsurl;
         self.loading = true;
         $log.debug('Import opts', lopts);
+
         profileService.importExtendedPublicKey(lopts, function(err, walletId) {
           self.loading = false;
           if (err) {
@@ -260,10 +249,8 @@ angular.module('copayApp.controllers').controller('importController',
               $scope.$apply();
             });
           }
-          setBwsURL(walletId, function() {
-            $rootScope.$emit('Local/WalletImported', walletId);
-            notification.success(gettext('Success'), gettext('Your wallet has been imported correctly'));
-          });
+          $rootScope.$emit('Local/WalletImported', walletId);
+          notification.success(gettext('Success'), gettext('Your wallet has been imported correctly'));
         });
       }, 100);
     };

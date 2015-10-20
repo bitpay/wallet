@@ -441,9 +441,6 @@ angular.module('copayApp.services')
     };
 
     root.importLegacyWallet = function(username, password, blob, cb) {
-      if (opts.bwsurl)
-        bwcService.setBaseUrl(opts.bwsurl);
-
       var walletClient = bwcService.getClient();
 
       walletClient.createWalletFromOldCopay(username, password, blob, function(err, existed) {
