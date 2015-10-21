@@ -82,6 +82,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.currentFeeLevel = null;
     self.notAuthorized = false;
     self.txHistory = [];
+    self.txHistoryUnique = {};
     self.balanceByAddress = null;
     self.txHistoryPaging = false;
     self.pendingTxProposalsCountForUs = null;
@@ -408,6 +409,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     if (!fc || !fc.isComplete()) return;
     if (!skip) {
       self.txHistory = [];
+      self.txHistoryUnique = {};
     }
     self.skipHistory = skip || 0;
     $log.debug('Updating Transaction History');
@@ -544,8 +546,13 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       }
 
       if (c < self.limitHistory) {
-        self.txHistory.push(tx);
-        c++;
+        if (!self.txHistoryUnique[tx.txid]) {
+          self.txHistory.push(tx);
+          self.txHistoryUnique[tx.txid] = true;
+          c++;
+        } else {
+          $log.debug('Ignoring duplicate TX in history: '+ tx.txid)
+        }
       }
     });
   };
@@ -685,6 +692,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
     var step = 6;
 
+    var unique = {};
     function getHistory(skip, cb) {
       skip = skip || 0;
       fc.getTxHistory({
@@ -693,7 +701,15 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       }, function(err, txs) {
         if (err) return cb(err);
         if (txs && txs.length > 0) {
-          allTxs.push(txs);
+          lodash.each(txs, function(tx) {
+            if (!unique[tx.txid]){
+              allTxs.push(tx);
+              unique[tx.txid] = 1;
+              console.log("Got:" + lodash.keys(unique).length + " txs");
+            } else {
+              console.log("Ignoring duplicate TX in CSV: "+ tx.txid);
+            }
+          });
           return getHistory(skip + step, cb);
         } else {
           return cb(null, lodash.flatten(allTxs));
