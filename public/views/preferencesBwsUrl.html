@@ -1,7 +1,7 @@
 <div
   class="topbar-container"
   ng-include="'views/includes/topbar.html'"
-  ng-init="titleSection='Bitcore Wallet Service'; goBackToState = 'preferencesAdvanced'; noColor = true">
+  ng-init="titleSection='Wallet Service URL'; goBackToState = 'preferencesAdvanced'; noColor = true">
 </div>
 
 
@@ -9,7 +9,7 @@
 <div class="content preferences" ng-controller="preferencesBwsUrlController as prefBwsUrl">
   <h4> </h4>
   <form name="settingsBwsUrlForm" ng-submit="prefBwsUrl.save()" class="columns">
-    <label>Bitcore Wallet Service URL</label>
+    <label>Wallet Service URL</label>
     <input type="text" id="bwsurl" type="text" name="bwsurl" ng-model="prefBwsUrl.bwsurl">
     <input type="submit" class="button expand black round" value="{{'Save'|translate}}"
     ng-style="{'background-color':index.backgroundColor}">
