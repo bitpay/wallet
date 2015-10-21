@@ -138,10 +138,6 @@ msgstr ""
 msgid "Amount in"
 msgstr ""
 
-#: public/views/preferencesLanguage.html
-msgid "Applying changes"
-msgstr ""
-
 #: src/js/controllers/backup.js
 msgid "Are you sure you want to delete the backup words?"
 msgstr ""
@@ -554,12 +550,12 @@ msgstr ""
 msgid "Expires"
 msgstr ""
 
-#: public/views/preferencesAdvanced.html
-msgid "Export"
-msgstr ""
-
 #: public/views/export.html
 msgid "Export options"
+msgstr ""
+
+#: public/views/preferencesAdvanced.html
+msgid "Export Wallet"
 msgstr ""
 
 #: public/views/preferencesInformation.html
@@ -757,6 +753,10 @@ msgstr ""
 msgid "Invalid address"
 msgstr ""
 
+#: src/js/controllers/index.js
+msgid "Invalid Touch ID"
+msgstr ""
+
 #: src/js/controllers/copayers.js
 msgid "Invitation to share a Copay Wallet"
 msgstr ""
@@ -937,10 +937,6 @@ msgstr ""
 #: public/views/import.html
 #: public/views/paperWallet.html
 msgid "Passphrase"
-msgstr ""
-
-#: public/views/paperWallet.html
-msgid "Passphrase (if you have one)"
 msgstr ""
 
 #: public/views/import.html
@@ -1153,7 +1149,7 @@ msgid "Request a specific amount"
 msgstr ""
 
 #: public/views/preferences.html
-msgid "Request Password for Spending Funds"
+msgid "Request Password"
 msgstr ""
 
 #: src/js/controllers/walletHome.js
@@ -1186,8 +1182,12 @@ msgstr ""
 msgid "Saving preferences..."
 msgstr ""
 
-#: public/views/preferencesAdvanced.html
+#: public/views/preferencesInformation.html
 msgid "Scan addresses for funds"
+msgstr ""
+
+#: public/views/preferences.html
+msgid "Scan Fingerprint"
 msgstr ""
 
 #: src/js/services/notificationsService.js
@@ -1200,6 +1200,10 @@ msgstr ""
 
 #: public/views/paperWallet.html
 msgid "Scan Wallet Funds"
+msgstr ""
+
+#: src/js/controllers/index.js
+msgid "Scan your fingerprint please"
 msgstr ""
 
 #: public/views/paperWallet.html
@@ -1290,10 +1294,6 @@ msgstr ""
 msgid "Setting up email notifications could weaken your privacy, if the wallet service provider is compromised. Information available to an attacker would include your wallet addresses and its balance, but no more."
 msgstr ""
 
-#: public/views/preferences.html
-msgid "settings"
-msgstr ""
-
 #: public/views/walletHome.html
 #: public/views/modals/customized-amount.html
 msgid "Share address"
@@ -1353,6 +1353,10 @@ msgstr ""
 
 #: src/js/services/bwsError.js
 msgid "Spend proposal not found"
+msgstr ""
+
+#: public/views/preferences.html
+msgid "Spending Restrictions"
 msgstr ""
 
 #: public/views/preferences.html
