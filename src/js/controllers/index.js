@@ -82,6 +82,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.currentFeeLevel = null;
     self.notAuthorized = false;
     self.txHistory = [];
+    self.txHistoryUnique = {};
     self.balanceByAddress = null;
     self.txHistoryPaging = false;
     self.pendingTxProposalsCountForUs = null;
@@ -408,6 +409,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     if (!fc || !fc.isComplete()) return;
     if (!skip) {
       self.txHistory = [];
+      self.txHistoryUnique = {};
     }
     self.skipHistory = skip || 0;
     $log.debug('Updating Transaction History');
@@ -544,8 +546,13 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       }
 
       if (c < self.limitHistory) {
-        self.txHistory.push(tx);
-        c++;
+        if (!self.txHistoryUnique[tx.txid]) {
+          self.txHistory.push(tx);
+          self.txHistoryUnique[tx.txid] = true;
+          c++;
+        } else {
+          $log.debug('Ignoring duplicate TX in history: '+ tx.txid)
+        }
       }
     });
   };
@@ -700,7 +707,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
               unique[tx.txid] = 1;
               console.log("Got:" + lodash.keys(unique).length + " txs");
             } else {
-              console.log("Ignoring Duplicate TX:", tx.txid);
+              console.log("Ignoring duplicate TX in CSV: "+ tx.txid);
             }
           });
           return getHistory(skip + step, cb);
