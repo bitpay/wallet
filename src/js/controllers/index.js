@@ -685,6 +685,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
     var step = 6;
 
+    var unique = {};
     function getHistory(skip, cb) {
       skip = skip || 0;
       fc.getTxHistory({
@@ -693,7 +694,15 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       }, function(err, txs) {
         if (err) return cb(err);
         if (txs && txs.length > 0) {
-          allTxs.push(txs);
+          lodash.each(txs, function(tx) {
+            if (!unique[tx.txid]){
+              allTxs.push(tx);
+              unique[tx.txid] = 1;
+              console.log("Got:" + lodash.keys(unique).length + " txs");
+            } else {
+              console.log("Ignoring Duplicate TX:", tx.txid);
+            }
+          });
           return getHistory(skip + step, cb);
         } else {
           return cb(null, lodash.flatten(allTxs));
