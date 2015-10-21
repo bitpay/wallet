@@ -485,7 +485,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   var SAFE_CONFIRMATIONS = 6;
 
   self.setTxHistory = function(txs) {
-    console.log(txs);
     self.txHistoryUnique = {};
     var config = configService.getSync().wallet.settings;
     var now = Math.floor(Date.now() / 1000);
@@ -505,7 +504,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         self.hasUnsafeConfirmed = true;
       }
 
-      console.log(self.txHistoryUnique[tx.txid]);
       if (!self.txHistoryUnique[tx.txid]) {
         self.txHistory.push(tx);
         self.txHistoryUnique[tx.txid] = true;
