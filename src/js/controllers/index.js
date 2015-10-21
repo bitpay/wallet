@@ -404,46 +404,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     });
   };
 
-  self.updateTxHistory = function(skip) {
-    var fc = profileService.focusedClient;
-    if (!fc || !fc.isComplete()) return;
-    if (!skip) {
-      self.txHistory = [];
-      self.txHistoryUnique = {};
-    }
-    self.skipHistory = skip || 0;
-    $log.debug('Updating Transaction History');
-    self.txHistoryError = false;
-    self.updatingTxHistory = true;
-    self.txHistoryPaging = false;
 
-    $timeout(function() {
-      fc.getTxHistory({
-        skip: self.skipHistory,
-        limit: self.limitHistory + 1
-      }, function(err, txs) {
-        self.updatingTxHistory = false;
-        if (err) {
-          $log.debug('TxHistory ERROR:', err);
-          // We do not should errors here, since history is usually
-          // fetched AFTER others requests (if skip=0)
-          if (skip)
-            self.handleError(err);
-
-          self.txHistoryError = true;
-        } else {
-          $log.debug('Wallet Transaction History:', txs);
-          self.skipHistory = self.skipHistory + self.limitHistory;
-          self.setTxHistory(txs);
-        }
-        $rootScope.$apply();
-      });
-    });
-  };
-
-  self.debouncedUpdateHistory = lodash.throttle(function() {
-    self.updateTxHistory();
-  }, 5000);
 
 
   // This handles errors from BWS/index with are nomally
@@ -462,6 +423,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       self.showErrorPopup(msg);
     }
   };
+
   self.openWallet = function() {
     var fc = profileService.focusedClient;
     $timeout(function() {
@@ -526,10 +488,11 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   var SAFE_CONFIRMATIONS = 6;
 
   self.setTxHistory = function(txs) {
+    console.log(txs);
+    self.txHistoryUnique = {};
     var config = configService.getSync().wallet.settings;
     var now = Math.floor(Date.now() / 1000);
-    var c = 0;
-    self.txHistoryPaging = txs[self.limitHistory] ? true : false;
+
     self.hasUnsafeConfirmed = false;
     lodash.each(txs, function(tx) {
       tx = txFormatService.processTx(tx);
@@ -545,14 +508,12 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         self.hasUnsafeConfirmed = true;
       }
 
-      if (c < self.limitHistory) {
-        if (!self.txHistoryUnique[tx.txid]) {
-          self.txHistory.push(tx);
-          self.txHistoryUnique[tx.txid] = true;
-          c++;
-        } else {
-          $log.debug('Ignoring duplicate TX in history: '+ tx.txid)
-        }
+      console.log(self.txHistoryUnique[tx.txid]);
+      if (!self.txHistoryUnique[tx.txid]) {
+        self.txHistory.push(tx);
+        self.txHistoryUnique[tx.txid] = true;
+      } else {
+        $log.debug('Ignoring duplicate TX in history: ' + tx.txid)
       }
     });
   };
@@ -693,27 +654,29 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     var step = 6;
 
     var unique = {};
-    function getHistory(skip, cb) {
-      skip = skip || 0;
-      fc.getTxHistory({
-        skip: skip,
-        limit: step,
-      }, function(err, txs) {
+
+
+    function getHistory(cb) {
+      storageService.getTxHistory(c.walletId, function(err, txs) {
         if (err) return cb(err);
+        var txsFromLocal;
+        try {
+          txsFromLocal = JSON.parse(txs);
+        } catch (ex) {
+          return cb(ex);
+        }
         if (txs && txs.length > 0) {
-          lodash.each(txs, function(tx) {
-            if (!unique[tx.txid]){
+          lodash.each(txsFromLocal, function(tx) {
+            if (!unique[tx.txid]) {
               allTxs.push(tx);
               unique[tx.txid] = 1;
               console.log("Got:" + lodash.keys(unique).length + " txs");
             } else {
-              console.log("Ignoring duplicate TX in CSV: "+ tx.txid);
+              console.log("Ignoring duplicate TX in CSV: " + tx.txid);
             }
           });
-          return getHistory(skip + step, cb);
-        } else {
-          return cb(null, lodash.flatten(allTxs));
         }
+        return cb(null, lodash.flatten(allTxs));
       });
     };
 
@@ -781,6 +744,101 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       });
     });
   };
+
+
+  self.areEqualsTxs = function(firstTx, secondTx) {
+    if (firstTx.txid == secondTx.txid)
+      return true;
+    else
+      return false;
+  }
+
+  self.updateLocalTxHistory = function(cb) {
+    var fc = profileService.focusedClient;
+    var c = fc.credentials;
+    var txsToPush = [];
+    storageService.getTxHistory(c.walletId, function(err, txs) {
+      if (err) return cb(err);
+
+      var txsFromLocal;
+      try {
+        txsFromLocal = JSON.parse(txs);
+      } catch (ex) {
+        return cb(ex);
+      }
+
+      if (!txsFromLocal)
+        txsFromLocal = [];
+
+      var count = 0;
+      fillTxsObject(txsToPush);
+
+      function fillTxsObject(txsToPush) {
+        self.makeTxHistoryRequest(txsToPush, txsFromLocal, function(err, skipLoop, txsResult) {
+          if (err) return cb(err);
+          if (skipLoop) {
+            self.txHistory = [];
+            self.setTxHistory(lodash.compact(txsResult.concat(txsFromLocal)));
+            storageService.setTxHistory(JSON.stringify(self.txHistory), c.walletId, function() {
+              return cb(null);
+            });
+          } else
+            fillTxsObject(txsResult);
+        });
+      };
+    });
+  }
+
+  self.makeTxHistoryRequest = function(txsToPush, localTx, cb) {
+    var fc = profileService.focusedClient;
+    var c = fc.credentials;
+    var skipLoop = false;
+
+    fc.getTxHistory({
+      skip: self.skipHistory,
+      limit: self.limitHistory + 1
+    }, function(err, txsFromBWC) {
+      if (err) return cb(err);
+
+      if (!txsFromBWC[0]) {
+        skipLoop = true;
+      }
+      lodash.each(txsFromBWC, function(t) {
+        if (!localTx[0]) txsToPush.push(t);
+        else {
+          if (!self.areEqualsTxs(t, localTx[0])) {
+            if (!skipLoop)
+              txsToPush.push(t);
+          } else {
+            skipLoop = true;
+          }
+        }
+      });
+      console.log("transactions to push : ", txsToPush);
+      self.skipHistory = self.skipHistory + self.limitHistory;
+      return cb(null, skipLoop, txsToPush);
+    });
+  }
+
+  self.updateTxHistory = function() {
+    $log.debug('Updating Transaction History');
+    self.skipHistory = 0;
+    self.txHistoryUnique = {};
+    self.txHistoryError = false;
+    self.updatingTxHistory = true;
+    self.txHistoryPaging = false;
+    $timeout(function() {
+      self.updateLocalTxHistory(function(err) {
+        if (err) self.txHistoryError = true;
+        self.updatingTxHistory = false;
+        $rootScope.$apply();
+      });
+    });
+  };
+
+  self.debouncedUpdateHistory = lodash.throttle(function() {
+    self.updateTxHistory();
+  }, 5000);
 
   self.showErrorPopup = function(msg, cb) {
     $log.warn('Showing err popup:' + msg);
