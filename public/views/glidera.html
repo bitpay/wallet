@@ -146,10 +146,11 @@
       </div>
     </div>
 
-    <ul class="no-bullet m0 size-14">
-      <li ng-show="index.glideraPermissions.transact &&
-      (index.glideraStatus.userCanBuy || index.glideraStatus.userCanTransact)" class="line-b line-t p20 pointer"
-      ng-click="$root.go('buyGlidera')">
+    <ul class="no-bullet m0 size-14" 
+      ng-show="index.glideraStatus && index.glideraPermissions.transact && (index.glideraStatus.userBankAccountIsSetup && index.glideraStatus.bankAccountState == 'VERIFIED')">
+      <li ng-show="index.glideraStatus.userCanTransact && index.glideraStatus.userCanBuy" 
+          class="line-b line-t p20 pointer"
+          ng-click="$root.go('buyGlidera')">
         <img src="img/buy-bitcoin.svg" alt="buy bitcoin" width="40">
         <span class="m10 text-normal text-bold">Buy Bitcoin</span>
         <span class="right text-gray">
@@ -157,9 +158,8 @@
         </span>
       </li>
       <li class="line-b p20 pointer"
-      ng-show="index.glideraPermissions.transact &&
-      (index.glideraStatus.userCanSell || index.glideraStatus.userCanTransact)"
-      ng-click="$root.go('sellGlidera')">
+          ng-show="index.glideraStatus.userCanTransact && index.glideraStatus.userCanSell"
+          ng-click="$root.go('sellGlidera')">
         <img src="img/sell-bitcoin.svg" alt="buy bitcoin" width="40">
         <span class="m10 text-normal text-bold">Sell Bitcoin</span>
         <span class="right text-gray">
