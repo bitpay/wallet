@@ -1,0 +1,130 @@
+<div ng-init="wallets[0] ? selectedWalletsOpt = true : selectedWalletsOpts = false">
+  <nav class="tab-bar">
+    <section class="left-small">
+      <a ng-show="!editAddressbook" ng-click="cancel()" class="p10">
+        <span class="text-close" translate>Close</span>
+      </a>
+    </section>
+
+    <section class="middle tab-bar-section">
+      <ul class="button-group round even-2" ng-show="!editAddressbook && wallets[0]">
+        <li ng-class="{'selected':selectedWalletsOpt}" ng-click="selectedWalletsOpt = true"
+          translate>
+          Wallets
+        </li>
+        <li ng-class="{'selected':!selectedWalletsOpt}" ng-click="selectedWalletsOpt = false" translate>
+          Addressbook
+        </li>
+      </ul>
+      <h1 ng-show="editAddressbook || !wallets[0]" class="title ellipsis" ng-style="{'color':color}" translate>
+        Addressbook
+      </h1>
+    </section>
+
+    <section class="right-small" ng-show="!selectedWalletsOpt" ng-click="toggleEditAddressbook()">
+      <a ng-show="!editAddressbook" href class="p10">
+        <span class="text-close" translate>Edit</span>
+      </a>
+      <a ng-show="editAddressbook && !addAddressbookEntry" href class="p10">
+        <span class="text-close" translate>Done</span>
+      </a>
+    </section>
+  </nav>
+
+  <div class="modal-content fix-modals-touch">
+    
+    <div ng-show="selectedWalletsOpt">
+      <div class="onGoingProcess" ng-if="gettingAddress">
+        <div class="onGoingProcess-content" ng-style="{'background-color':'#222'}">
+          <div class="spinner">
+            <div class="rect1"></div>
+            <div class="rect2"></div>
+            <div class="rect3"></div>
+            <div class="rect4"></div>
+            <div class="rect5"></div>
+          </div>
+          <span translate> Getting address for wallet {{selectedWalletName}} ...</span>
+        </div>
+      </div>
+
+      <div ng-if="!gettingAddress">
+        <ul class="no-bullet">
+          <li class="line-b" ng-repeat="w in wallets">
+          <a ng-click="selectWallet(w.id, w.name)" class="db oh">
+            <div class="avatar-wallet"
+              ng-style="{'background-color':w.color}">{{(w.name || w.id) | limitTo: 1}}</div>
+            <div class="ellipsis name-wallet text-bold">{{w.name || w.id}}</div>
+            <div class="size-12">{{w.m}} of {{w.n}}
+              <span ng-show="w.network=='testnet'">[Testnet]</span>
+            </div>
+          </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div ng-show="!selectedWalletsOpt" class="m20b">
+      <ul ng-show="!addAddressbookEntry" class="no-bullet m0" ng-init="list()">
+        <li class="p10 line-b" ng-repeat="(addr, label) in list">
+          <a ng-show="selectedAddressbook[addr]" 
+            class="removeAddressbook" 
+            ng-click="remove(addr)" translate>Remove</a>
+          <a class="selectAddressbook" 
+            ng-show="editAddressbook" 
+            ng-click="toggleSelectAddressbook(addr)">
+            <i class="fi-trash"></i></a> 
+          <div ng-click="selectAddressbook(addr)"> 
+            {{label}}
+            <div class="size-10 text-gray ellipsis">{{addr}}</div>
+          </div> 
+        </li>
+        <li class="m10t" ng-show="!editAddressbook">
+          <a ng-click="toggleAddAddressbookEntry()" class="p10">
+            <i class="fi-plus size-18 m10r"></i> 
+            <span class="text-close size-12" translate>Add a new entry</span>
+          </a>
+        </li>
+      </ul>
+
+      <div ng-if="addAddressbookEntry" ng-init="addressbook.address = ''; addressbook.label = ''">
+        <h4 class="title m0" translate>Add a new entry</h4>
+        <form name="addressbookForm" class="p10" no-validate>
+          <div class="text-warning size-12 m10b" ng-show="error">{{error|translate}}</div>
+          <span ng-hide="addressbookForm.address.$pristine">
+            <span class="has-error right size-12" ng-show="addressbookForm.address.$invalid && addressbook.address">
+              <i class="icon-close-circle size-14"></i>
+              <span class="vm" translate>Not valid</span>
+            </span>
+            <small class="right text-primary" ng-show="!addressbookForm.address.$invalid">
+              <i class="icon-checkmark-circle size-14"></i>
+            </small>
+          </span>
+          <label translate>Address</label>
+          <input type="text" id="address" name="address" ng-model="addressbook.address" valid-address required>
+          <label translate>Label</label>
+          <input type="text" id="label" name="label" ng-model="addressbook.label" required>
+          <div class="row">
+            <div class="columns large-6 medium-6 small-6">
+              <input type="button" 
+                     class="button expand round" 
+                     ng-click="toggleAddAddressbookEntry()"
+                     value="{{'Cancel'|translate}}">
+            </div>
+            <div class="columns large-6 medium-6 small-6">
+              <input type="submit" 
+                     class="button expand round" 
+                     value="{{'Save'|translate}}"
+                     ng-disabled="!addressbookForm.$valid"
+                     ng-style="{'background-color':color}" 
+                     ng-click="add(addressbook)">
+            </div>
+          </div>
+        </form>
+      
+      </div>
+
+    </div>
+
+    <div class="extra-margin-bottom"></div>
+  </div>
+</div>

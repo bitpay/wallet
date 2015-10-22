@@ -34,7 +34,8 @@
         <span ng-show="!btx.merchant.pr.ca"><i class="fi-unlock color-yellowi"></i> {{btx.merchant.domain}}</span>
       </span>
       <span ng-if="!btx.merchant">
-        <span class="enable_text_select"> {{btx.labelTo || btx.addressTo}}</span>
+        <span ng-show="btx.labelTo">{{btx.labelTo}}</span>
+        <contact ng-show="!btx.labelTo" class="enable_text_select" address="{{btx.addressTo}}"></contact>
       </span>
     </span>
     </li> 
