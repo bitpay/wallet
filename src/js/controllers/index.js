@@ -734,11 +734,18 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     });
   };
 
-  self.areEqualsTxs = function(firstTx, secondTx) {
-    if (firstTx.txid == secondTx.txid)
+  self.stopSync = function(remoteTx, localTx) {
+    if (remoteTx.txid == localTx.txid)
       return true;
     else
       return false;
+  }
+
+  self.removeLessThanSixConfirmations = function(txs) {
+    return lodash.map(txs, function(tx) {
+      if (tx.confirmations >= 6)
+        return tx;
+    });
   }
 
   self.updateLocalTxHistory = function(cb) {
@@ -749,23 +756,25 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     storageService.getTxHistory(c.walletId, function(err, txs) {
       if (err) return cb(err);
 
-      var txsFromLocal;
+      var localTxs;
       try {
-        txsFromLocal = JSON.parse(txs);
+        localTxs = JSON.parse(txs);
       } catch (ex) {
         return cb(ex);
       }
 
-      if (!txsFromLocal)
-        txsFromLocal = [];
+      if (!localTxs)
+        localTxs = [];
+
+      var txsFromLocal = self.removeLessThanSixConfirmations(localTxs);
 
       var count = 0;
       fillTxsObject(txsToPush);
 
       function fillTxsObject(txsToPush) {
-        self.makeTxHistoryRequest(txsToPush, txsFromLocal, function(err, skipLoop, txsResult) {
+        self.makeTxHistoryRequest(txsToPush, txsFromLocal, function(err, exitLoop, txsResult) {
           if (err) return cb(err);
-          if (skipLoop) {
+          if (exitLoop) {
             self.txHistory = [];
             self.setTxHistory(lodash.compact(txsResult.concat(txsFromLocal)));
             storageService.setTxHistory(JSON.stringify(self.txHistory), c.walletId, function() {
@@ -781,7 +790,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   self.makeTxHistoryRequest = function(txsToPush, localTx, cb) {
     var fc = profileService.focusedClient;
     var c = fc.credentials;
-    var skipLoop = false;
+    var exitLoop = false;
 
     fc.getTxHistory({
       skip: self.skipHistory,
@@ -790,28 +799,28 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       if (err) return cb(err);
 
       if (!txsFromBWC[0]) {
-        skipLoop = true;
+        exitLoop = true;
         $log.debug('There is not transactions stored');
       }
 
       lodash.each(txsFromBWC, function(t) {
         if (!localTx[0]) txsToPush.push(t);
         else {
-          if (!self.areEqualsTxs(t, localTx[0]) && !skipLoop) {
+          if (!self.stopSync(t, localTx[0]) && !exitLoop) {
             txsToPush.push(t);
           } else {
-            skipLoop = true;
+            exitLoop = true;
           }
         }
       });
       self.skipHistory = self.skipHistory + self.limitHistory;
-      return cb(null, skipLoop, txsToPush);
+      return cb(null, exitLoop, txsToPush);
     });
   }
 
-  self.updateTxHistory = function(skip) {
+  self.updateTxHistory = function() {
     $log.debug('Updating Transaction History');
-    self.skipHistory = skip || 0;
+    self.skipHistory = 0;
     self.txHistoryError = false;
     self.updatingTxHistory = true;
     self.txHistoryPaging = false;
