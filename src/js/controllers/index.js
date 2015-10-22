@@ -486,7 +486,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   self.setTxHistory = function(txs) {
     var config = configService.getSync().wallet.settings;
     var now = Math.floor(Date.now() / 1000);
-    var c = 0;
+    self.txHistoryUnique = {};
 
     self.hasUnsafeConfirmed = false;
     lodash.each(txs, function(tx) {
@@ -503,14 +503,11 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         self.hasUnsafeConfirmed = true;
       }
 
-      if (c < self.limitHistory) {
-        if (!self.txHistoryUnique[tx.txid]) {
-          self.txHistory.push(tx);
-          self.txHistoryUnique[tx.txid] = true;
-          c++;
-        } else {
-          $log.debug('Ignoring duplicate TX in history: ' + tx.txid)
-        }
+      if (!self.txHistoryUnique[tx.txid]) {
+        self.txHistory.push(tx);
+        self.txHistoryUnique[tx.txid] = true;
+      } else {
+        $log.debug('Ignoring duplicate TX in history: ' + tx.txid)
       }
     });
   };
