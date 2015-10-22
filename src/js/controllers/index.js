@@ -818,7 +818,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     });
   }
 
-  self.updateTxHistory = function() {
+  self.updateHistory = function() {
     $log.debug('Updating Transaction History');
     self.skipHistory = 0;
     self.txHistoryError = false;
@@ -834,8 +834,12 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     });
   };
 
-  self.debouncedUpdateHistory = lodash.throttle(function() {
-    self.updateTxHistory();
+  self.updateTxHistory = lodash.debounce(function() {
+    self.updateHistory();
+  }, 1000);
+
+  self.throttledUpdateHistory = lodash.throttle(function() {
+    self.updateHistory();
   }, 5000);
 
   self.showErrorPopup = function(msg, cb) {
@@ -1146,7 +1150,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     } else if (self.hasUnsafeConfirmed) {
       $log.debug('Wallet has transactions with few confirmations. Updating.')
       if (self.network == 'testnet') {
-        self.debouncedUpdateHistory();
+        self.throttledUpdateHistory();
       } else {
         self.updateTxHistory();
       }
