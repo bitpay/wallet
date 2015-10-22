@@ -180,26 +180,32 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
       $scope.add = function(addressbook) {
         $scope.error = null;
-        addressbookService.add(addressbook, function(err, ab) {
-          if (err) { 
-            $scope.error = err;
-            return;
-          }
-          $scope.list = ab;
-          $scope.editAddressbook = true;
-          $scope.toggleEditAddressbook();
-        });
+        $timeout(function() {
+          addressbookService.add(addressbook, function(err, ab) {
+            if (err) { 
+              $scope.error = err;
+              return;
+            }
+            $scope.list = ab;
+            $scope.editAddressbook = true;
+            $scope.toggleEditAddressbook();
+            $scope.$digest();
+          });
+        }, 100);
       };
 
       $scope.remove = function(addr) {
         $scope.error = null;
-        addressbookService.remove(addr, function(err, ab) {
-          if (err) { 
-            $scope.error = err;
-            return;
-          }
-          $scope.list = ab;
-        });
+        $timeout(function() {
+          addressbookService.remove(addr, function(err, ab) {
+            if (err) { 
+              $scope.error = err;
+              return;
+            }
+            $scope.list = ab;
+            $scope.$digest();
+          });
+        }, 100);
       };
 
       $scope.cancel = function() {
