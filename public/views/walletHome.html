@@ -455,6 +455,29 @@
           </div>
         </div>
       </div>
+      <div class="row m20t text-center" ng-show="index.txHistoryPaging || index.updatingTxHistory">
+        <div class="columns large-12 medium-12 small-12">
+          <button class="outline light-gray round small expand m0"
+            ng-click="index.updateTxHistory(index.skipHistory)"
+            ng-if="!index.updatingTxHistory">
+            <span translate>More</span> <i class="icon-arrow-down4 ng-scope"></i>
+          </button>
+          <div class="spinner" ng-if="index.updatingTxHistory">
+            <div class="rect1"></div>
+            <div class="rect2"></div>
+            <div class="rect3"></div>
+            <div class="rect4"></div>
+            <div class="rect5"></div>
+          </div>
+        </div>
+      </div>
+      <div ng-if="!index.isCordova && index.txHistory[0] && !index.updatingTxHistory" class="m20t text-center">
+        <input id="export_file" type="file" nwsaveas="Copay-{{index.alias || index.walletName}}.csv" accept=".csv" style="display:none">
+        <a class="text-gray size-12" ng-click="index.csvHistory();">
+          <i class="fi-page-export-csv"></i>
+          <span translate>Download CSV file</span>
+        </a>
+      </div>
       <div ng-show="index.txHistory[0]">
         <div ng-repeat="btx in index.txHistory"
           ng-click="home.openTxModal(btx)"
@@ -496,29 +519,6 @@
             <contact ng-show="!btx.message" class="enable_text_select" address="{{btx.addressTo}}"></contact>
           </div>
         </div>
-        <div class="row m20t text-center" ng-show="index.txHistoryPaging || index.updatingTxHistory">
-          <div class="columns large-12 medium-12 small-12">
-          <button class="outline light-gray round small expand m0"
-            ng-click="index.updateTxHistory(index.skipHistory)"
-            ng-if="!index.updatingTxHistory">
-            <span translate>More</span> <i class="icon-arrow-down4 ng-scope"></i>
-          </button>
-          <div class="spinner" ng-if="index.updatingTxHistory">
-            <div class="rect1"></div>
-            <div class="rect2"></div>
-            <div class="rect3"></div>
-            <div class="rect4"></div>
-            <div class="rect5"></div>
-          </div>
-          </div>
-        </div>
-      </div>
-      <div ng-if="!index.isCordova && index.txHistory[0] && !index.updatingTxHistory" class="m20t text-center">
-        <input id="export_file" type="file" nwsaveas="Copay-{{index.alias || index.walletName}}.csv" accept=".csv" style="display:none">
-        <a class="text-gray size-12" ng-click="index.csvHistory();">
-          <i class="fi-page-export-csv"></i>
-          <span translate>Download CSV file</span>
-        </a>
       </div>
       <div class="extra-margin-bottom"></div>
     </div> <!-- END History -->

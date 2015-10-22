@@ -2,6 +2,7 @@
 
 angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, lodash, go, profileService, configService, isCordova, rateService, storageService, addressService, gettext, gettextCatalog, amMoment, nodeWebkit, addonManager, feeService, isChromeApp, bwsError, txFormatService, uxLanguage, $state, glideraService, isMobile) {
   var self = this;
+  var CONFIRMATIONS = 12;
   self.isCordova = isCordova;
   self.isChromeApp = isChromeApp;
   self.isSafari = isMobile.Safari();
@@ -743,7 +744,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
   self.removeLessThanSixConfirmations = function(txs) {
     return lodash.map(txs, function(tx) {
-      if (tx.confirmations >= 6)
+      if (tx.confirmations >= CONFIRMATIONS)
         return tx;
     });
   }
