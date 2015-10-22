@@ -98,6 +98,50 @@ h4.title a {
   border-bottom: 1px solid #E9E9EC;
 }
 
+.addressbook-input {
+  display: block;
+  margin-bottom: 1.5rem;
+  background-color: #E4E8EC;
+  padding-left: 0.5rem;
+  color: #2C3E50;
+  font-size: 13px;
+  height: 35px;
+  padding-top: 7px;
+}
+
+ul.button-group {
+  margin-top: 9px;
+}
+
+ul.button-group li:first-child {
+  border-top-left-radius: 0.2rem;
+  border-bottom-left-radius: 0.2rem;
+  border: 1px solid #DEDFE1;
+}
+
+ul.button-group li:last-child {
+  border-top-right-radius: 0.2rem;
+  border-bottom-right-radius: 0.2rem;
+  border: 1px solid #DEDFE1;
+}
+
+.button-group.even-2 li {
+  margin: 0 -3px;
+}
+
+ul.button-group li {
+  color: #A5B2BF;
+  cursor: pointer;
+  text-transform: uppercase;
+  font-size: 0.7rem;
+  display: block;
+  padding: 3px 0;
+}
+
+ul.button-group li.selected {
+  color: #fff;
+  background-color: #DEDFE1;
+}
 
 body, html{
   height:100%;

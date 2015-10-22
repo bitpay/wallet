@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('walletHomeController', function($scope, $rootScope, $timeout, $filter, $modal, $log, notification, txStatus, isCordova, profileService, lodash, configService, rateService, storageService, bitcore, isChromeApp, gettext, gettextCatalog, nodeWebkit, addressService, ledger, feeService, bwsError, confirmDialog, txFormatService, animationService) {
+angular.module('copayApp.controllers').controller('walletHomeController', function($scope, $rootScope, $timeout, $filter, $modal, $log, notification, txStatus, isCordova, profileService, lodash, configService, rateService, storageService, bitcore, isChromeApp, gettext, gettextCatalog, nodeWebkit, addressService, ledger, feeService, bwsError, confirmDialog, txFormatService, animationService, addressbookService) {
 
   var self = this;
   $rootScope.hideMenuBar = false;
@@ -136,12 +136,71 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     });
   };
 
-
-  $scope.openWalletsModal = function(wallets) {
+  $scope.openDestinationAddressModal = function(wallets, address, label) {
     $rootScope.modalOpened = true;
+    var fc = profileService.focusedClient;
+    self.resetForm();
 
     var ModalInstanceCtrl = function($scope, $modalInstance) {
       $scope.wallets = wallets; 
+      $scope.editAddressbook = false;
+      $scope.addAddressbookEntry = false;
+      $scope.selectedAddressbook = {};
+      $scope.addressbook = { 'address' : address, 'label' : label};
+      $scope.color = fc.backgroundColor;
+
+      $scope.selectAddressbook = function(addr) {
+        $modalInstance.close(addr);
+      };
+
+      $scope.toggleEditAddressbook = function() {
+        $scope.editAddressbook = !$scope.editAddressbook;
+        $scope.selectedAddressbook = {};
+        $scope.addAddressbookEntry = false;
+      };
+
+      $scope.toggleSelectAddressbook = function(addr) {
+        $scope.selectedAddressbook[addr] = $scope.selectedAddressbook[addr] ? false : true;
+      };
+
+      $scope.toggleAddAddressbookEntry = function() {
+        $scope.addAddressbookEntry = !$scope.addAddressbookEntry;
+      };
+
+      $scope.list = function() {
+        $scope.error = null;
+        addressbookService.list(function(err, ab) {
+          if (err) { 
+            $scope.error = err;
+            return;
+          }
+          $scope.list = ab;
+        });
+      };
+
+      $scope.add = function(addressbook) {
+        $scope.error = null;
+        addressbookService.add(addressbook, function(err, ab) {
+          if (err) { 
+            $scope.error = err;
+            return;
+          }
+          $scope.list = ab;
+          $scope.editAddressbook = true;
+          $scope.toggleEditAddressbook();
+        });
+      };
+
+      $scope.remove = function(addr) {
+        $scope.error = null;
+        addressbookService.remove(addr, function(err, ab) {
+          if (err) { 
+            $scope.error = err;
+            return;
+          }
+          $scope.list = ab;
+        });
+      };
 
       $scope.cancel = function() {
         $modalInstance.dismiss('cancel');
@@ -168,7 +227,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     };
 
     var modalInstance = $modal.open({
-      templateUrl: 'views/modals/wallets.html',
+      templateUrl: 'views/modals/destination-address.html',
       windowClass: animationService.modalAnimated.slideUp,
       controller: ModalInstanceCtrl,
     });
@@ -718,6 +777,9 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
         },
         set: function(newValue) {
           $scope.__address = self.onAddressChange(newValue);
+          if ($scope.sendForm && $scope.sendForm.address.$valid) {
+            self.lockAddress = true;
+          }
         },
         enumerable: true,
         configurable: true

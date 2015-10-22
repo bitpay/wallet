@@ -340,6 +340,21 @@ a.missing-copayers {
   padding: 1rem 0.7rem;
 }
 
+.modal-content ul li a.removeAddressbook {
+  background-color: white;
+  color: red;
+  margin-right: -10px;
+  float: right;
+}
+
+.modal-content ul li a.selectAddressbook {
+  float: left;
+  font-size: 18px;
+  padding: 13px 14px;
+  color: red;
+  margin-right: 10px;
+}
+
 .sidebar ul.off-canvas-list li a i {
   vertical-align: middle;
   opacity: 0.6;

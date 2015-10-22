@@ -22,7 +22,7 @@
             <span ng-show="!tx.merchant.pr.ca"><i class="fi-unlock"></i> {{tx.merchant.domain}}</span>
           </span>
           <span ng-if="!tx.merchant">
-            {{tx.toAddress}}
+            <contact address="{{tx.toAddress}}"></contact>
           </span>
         </span>
       </div>

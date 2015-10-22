@@ -18,7 +18,7 @@
       class="line-b p10 oh" 
       ng-click="copyAddress(tx.toAddress)">
       <span class="text-gray" translate>To</span>:
-      <span class="right enable_text_select">{{tx.toAddress}}</span>
+      <contact class="right enable_text_select" address="{{tx.toAddress}}"></contact>
     </li>
     <li class="line-b p10">
       <span ng-show="tx.hasMultiplesOutputs" class="text-gray" translate>Total</span>
