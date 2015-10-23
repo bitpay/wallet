@@ -14,8 +14,8 @@
 <div class="modal-content fix-modals-touch" ng-init="updateCopayerList()">
   <h4 class="title m0" translate>Details</h4>
   <ul class="no-bullet size-14 m0">
-    <li ng-if="!tx.hasMultiplesOutputs" 
-      class="line-b p10 oh" 
+    <li ng-if="!tx.hasMultiplesOutputs"
+      class="line-b p10 oh"
       ng-click="copyAddress(tx.toAddress)">
       <span class="text-gray" translate>To</span>:
       <contact class="right enable_text_select" address="{{tx.toAddress}}"></contact>
@@ -31,8 +31,8 @@
       <span class="text-gray" translate>Note</span>:
       <span class="right">{{tx.message}}</span>
     </li>
-    
-    <li ng-show="tx.hasMultiplesOutputs" class="line-b p10 oh" 
+
+    <li ng-show="tx.hasMultiplesOutputs" class="line-b p10 oh"
       ng-click="showMultiplesOutputs = !showMultiplesOutputs">
       <span class="text-gray" translate>Recipients</span>:
       <span class="right">{{tx.recipientCount}}
@@ -49,7 +49,7 @@
     <li class="line-b p10">
       <span class="text-gray" translate>Fee</span>:
       <span class="right">{{tx.feeStr}}</span>
-    </li> 
+    </li>
     <li class="line-b p10">
       <span class="text-gray" translate>Time</span>:
       <span class="right">
@@ -135,7 +135,7 @@
   <div class="text-center text-gray m20t" ng-show="tx.status != 'pending'">
     <div ng-show="tx.status=='accepted' && !tx.isGlidera" >
       <div class="m10b size-12" translate>Payment accepted, but not yet broadcasted</div>
-      
+
       <button class="primary round"
         ng-click="broadcast(tx)"
         ng-disabled="loading"
@@ -156,7 +156,7 @@
     </div>
   </div>
 
-  <div class="row columns text-center m20t" ng-if="tx.canBeRemoved">
+  <div class="columns text-center m20t" ng-if="tx.canBeRemoved">
     <div class="text-gray size-12 m20b" ng-if="!tx.isGlidera" translate>
       * A payment proposal can be deleted if 1) you are the creator, and no other copayer has signed, or 2) 24 hours have passed since the proposal was created.
     </div>
