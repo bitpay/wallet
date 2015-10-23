@@ -85,7 +85,7 @@
           <a ng-click="toggleAddAddressbookEntry()" class="p10">
             <i class="fi-plus size-18 m10r"></i> 
             <span class="text-close size-12" translate>Add a new entry</span> 
-            <span ng-show="!list[newAddress]">({{newAddress}})</span>
+            <span ng-show="!list[newAddress] && newAddress">({{newAddress}})</span>
           </a>
         </li>
       </ul>
