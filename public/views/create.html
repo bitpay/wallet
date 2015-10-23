@@ -119,8 +119,8 @@
                 </select>
               </label>
               <div class="oh text-gray line-b  size-12   p10b m20b"><span translate>Ledger supports up to 20 Copay wallets simultaneously. Select which slot should be used to host this wallet</div>
-            </div> 
--->        
+            </div>
+-->
             <label for="network-name" class="oh" ng-show="!hwLedger && !hwTrezor">
               <span translate>Testnet</span>
               <switch id="network-name" name="isTestnet" ng-model="isTestnet" class="green right m5t m10b"></switch>
@@ -131,18 +131,13 @@
               <switch id="seed" name="setSeed" ng-model="setSeed" class="green right m5t m10b"></switch>
             </label>
 
-            <label  for="bws" class="oh">
-              <span>Wallet Service URL</span>
-              <input type="text" id="bwsurl" name="bwsurl" ng-model="bwsurl">
-            </label>
-
-            <label for="createPassphrase" class="line-b oh" ng-hide="setSeed || hwLedger || hwTrezor" ><span translate>Add a Seed Passphrase</span>  <small translate>Add an optional passphrase to secure the seed</small>
+            <label for="createPassphrase" class="oh" ng-hide="setSeed || hwLedger || hwTrezor" ><span translate>Add a Seed Passphrase</span>  <small translate>Add an optional passphrase to secure the seed</small>
               <div class="input">
-                <input type="text" class="form-control" 
+                <input type="text" class="form-control"
                 name="createPassphrase" ng-model="createPassphrase">
               </div>
             </label>
- 
+
             <label for="ext-master" class="m10t" ng-show="setSeed">
               <span translate>Wallet Seed</span>
               <small translate>Enter the seed words (BIP39)</small>
@@ -150,10 +145,15 @@
               type="text"
               name="privateKey" ng-model="privateKey">
             </label>
-            <label for="passphrase" class="line-b oh" ng-show="setSeed"><span translate>Seed Passphrase</span>  <small translate>The seed could require a passphrase to be imported</small>
+            <label for="passphrase" class="oh" ng-show="setSeed"><span translate>Seed Passphrase</span>  <small translate>The seed could require a passphrase to be imported</small>
               <div class="input">
                 <input type="text" class="form-control" name="passphrase" ng-model="passphrase">
               </div>
+            </label>
+
+            <label  for="bws" class="oh">
+              <span>Wallet Service URL</span>
+              <input type="text" id="bwsurl" name="bwsurl" ng-model="bwsurl">
             </label>
           </div>
         </div>
@@ -172,7 +172,7 @@
         <button type="submit" class="button round black expand m0" ng-show="totalCopayers != 1" ng-disabled="setupForm.$invalid || create.loading || create.hwWallet">
           <span translate>Create {{requiredCopayers}}-of-{{totalCopayers}} wallet</span>
         </button>
-        
+
         <button type="submit" class="button round black expand m0" ng-show="totalCopayers == 1" ng-disabled="setupForm.$invalid || create.loading || create.hwWallet">
           <span translate>Create new wallet</span>
         </button>
