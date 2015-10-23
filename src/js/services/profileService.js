@@ -4,6 +4,9 @@ angular.module('copayApp.services')
 
     var root = {};
 
+    var FOREGROUND_UPDATE_PERIOD = 5;
+    var BACKGROUND_UPDATE_PERIOD = 30;
+
     root.profile = null;
     root.focusedClient = null;
     root.walletClients = {};
@@ -37,6 +40,14 @@ angular.module('copayApp.services')
         $rootScope.$emit('Local/NoWallets');
       } else {
         $rootScope.$emit('Local/NewFocusedWallet');
+
+        // Set update period
+        lodash.each(root.walletClients, function(client, id) {
+          client.setNotificationsInterval(BACKGROUND_UPDATE_PERIOD);
+        });
+        root.focusedClient.setNotificationsInterval(FOREGROUND_UPDATE_PERIOD);
+
+        console.log('[profileService.js.49] SETTING...'); //TODO
       }
 
       return cb();
@@ -68,18 +79,6 @@ angular.module('copayApp.services')
       root.walletClients[credentials.walletId] = client;
       client.removeAllListeners();
 
-      client.on('reconnect', function() {
-        if (root.focusedClient.credentials.walletId == client.credentials.walletId) {
-          $log.debug('### Online');
-        }
-      });
-
-      client.on('reconnecting', function() {
-        if (root.focusedClient.credentials.walletId == client.credentials.walletId) {
-          $log.debug('### Offline');
-        }
-      });
-
       client.on('notification', function(n) {
         $log.debug('BWC Notification:', n);
         notificationService.newBWCNotification(n,
@@ -104,11 +103,12 @@ angular.module('copayApp.services')
       root.walletClients[credentials.walletId].started = true;
       root.walletClients[credentials.walletId].doNotVerifyPayPro = isChromeApp;
 
-      client.initNotifications(function(err) {
+      client.initialize({}, function(err) {
         if (err) {
           $log.error('Could not init notifications err:', err);
           return;
         }
+        client.setNotificationsInterval(BACKGROUND_UPDATE_PERIOD);
       });
     }
 
