@@ -7,10 +7,10 @@ angular.module('copayApp.services').factory('animationService', function(isCordo
 
   // DISABLE ANIMATION ON DESKTOP
   root.modalAnimated = {
-    slideUp : isCordova ? 'full animated slideInUp' : 'full',
-    slideRight : isCordova ? 'full animated slideInRight' : 'full',
-    slideOutDown : isCordova ? 'slideOutDown' : 'hideModal',
-    slideOutRight : isCordova ? 'slideOutRight' : 'hideModal',
+    slideUp: isCordova ? 'full animated slideInUp' : 'full',
+    slideRight: isCordova ? 'full animated slideInRight' : 'full',
+    slideOutDown: isCordova ? 'slideOutDown' : 'hideModal',
+    slideOutRight: isCordova ? 'slideOutRight' : 'hideModal',
   };
 
   var pageWeight = {
@@ -34,7 +34,7 @@ angular.module('copayApp.services').factory('animationService', function(isCordo
     preferencesUnit: 12,
     preferencesFee: 12,
     preferencesAltCurrency: 12,
-    preferencesBwsUrl: 12,
+    preferencesBwsUrl: 13,
     preferencesAlias: 12,
     preferencesEmail: 12,
     export: 13,
@@ -51,7 +51,8 @@ angular.module('copayApp.services').factory('animationService', function(isCordo
   };
 
   function cleanUpLater(e, e2) {
-    var cleanedUp = false, timeoutID;
+    var cleanedUp = false,
+      timeoutID;
     var cleanUp = function() {
       if (cleanedUp) return;
       cleanedUp = true;
@@ -72,7 +73,7 @@ angular.module('copayApp.services').factory('animationService', function(isCordo
     timeoutID = setTimeout(cleanUp, 500);
   };
 
-  root.transitionAnimated = function (fromState, toState, event) {
+  root.transitionAnimated = function(fromState, toState, event) {
 
     if (isaosp)
       return true;
@@ -94,7 +95,7 @@ angular.module('copayApp.services').factory('animationService', function(isCordo
 
 
     var entering = null,
-        leaving = null;
+      leaving = null;
 
     // Horizontal Slide Animation?
     if (isCordova && fromWeight && toWeight) {
@@ -108,7 +109,7 @@ angular.module('copayApp.services').factory('animationService', function(isCordo
     } else if (isCordova && fromName && fromWeight >= 0 && toWeight >= 0) {
       if (toWeight) {
         entering = 'CslideInUp';
-        
+
       } else {
         leaving = 'CslideOutDown';
       }
