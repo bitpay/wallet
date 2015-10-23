@@ -455,13 +455,8 @@
           </div>
         </div>
       </div>
-      <div class="row m20t text-center" ng-show="index.txHistoryPaging || index.updatingTxHistory">
+      <div class="row m20t text-center" ng-show="index.updatingTxHistory">
         <div class="columns large-12 medium-12 small-12">
-          <button class="outline light-gray round small expand m0"
-            ng-click="index.updateTxHistory(index.skipHistory)"
-            ng-if="!index.updatingTxHistory">
-            <span translate>More</span> <i class="icon-arrow-down4 ng-scope"></i>
-          </button>
           <div class="spinner" ng-if="index.updatingTxHistory">
             <div class="rect1"></div>
             <div class="rect2"></div>
