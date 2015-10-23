@@ -956,6 +956,53 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     }, 100);
   };
 
+  this.confirmTx = function(txp, cb) {
+    var self = this;
+    var fc = profileService.focusedClient;
+    self.setOngoingProcess();
+    var ModalInstanceCtrl = function($scope, $modalInstance) {
+      $scope.txp = txFormatService.processTx(txp);
+      $scope.settings = config;
+      $scope.color = fc.backgroundColor;
+
+      $scope.deleteTx = function(txp) {
+        $scope.loading = true;
+        self.resetForm();
+        $timeout(function() {
+          $modalInstance.close();
+          fc.removeTxProposal(txp, function(err, txpb) {
+            if (err) $log.error(err);
+          });
+        }, 100);
+      };
+
+      $scope.confirmTx = function(txId) {
+        $scope.loading = true;
+        $timeout(function() {
+          $modalInstance.close(txId); 
+        }, 100);
+      };
+    };
+
+    var modalInstance = $modal.open({
+      templateUrl: 'views/modals/tx-confirm.html',
+      windowClass: 'full animated slideInUp',
+      backdrop : 'static',
+      keyboard :false,
+      controller: ModalInstanceCtrl,
+    });
+
+    modalInstance.result.finally(function(txp) {
+      var m = angular.element(document.getElementsByClassName('reveal-modal'));
+      m.addClass('slideOutDown');
+    });
+
+    modalInstance.result.then(function(txId) {
+      if (txId) return cb();
+    });
+  
+  };
+
   this._setOngoingForSigning = function() {
     var fc = profileService.focusedClient;
 
@@ -967,39 +1014,40 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   };
 
   this.signAndBroadcast = function(txp, cb) {
-    var fc = profileService.focusedClient;
+    self.confirmTx(txp, function() {
+      var fc = profileService.focusedClient;
+      self._setOngoingForSigning();
+      profileService.signTxProposal(txp, function(err, signedTx) {
+        self.setOngoingProcess();
+        if (err) {
+          err.message = bwsError.msg(err, gettextCatalog.getString('The payment was created but could not be signed. Please try again from home screen'));
+          return cb(err);
+        }
 
-    this._setOngoingForSigning();
-    profileService.signTxProposal(txp, function(err, signedTx) {
-      self.setOngoingProcess();
-      if (err) {
-        err.message = bwsError.msg(err, gettextCatalog.getString('The payment was created but could not be signed. Please try again from home screen'));
-        return cb(err);
-      }
+        if (signedTx.status == 'accepted') {
+          self.setOngoingProcess(gettext('Broadcasting transaction'));
+          fc.broadcastTxProposal(signedTx, function(err, btx, memo) {
+            self.setOngoingProcess();
+            if (err) {
+              err.message = bwsError.msg(err, gettextCatalog.getString('The payment was signed but could not be broadcasted. Please try again from home screen'));
+              return cb(err);
+            }
+            if (memo)
+              $log.info(memo);
 
-      if (signedTx.status == 'accepted') {
-        self.setOngoingProcess(gettext('Broadcasting transaction'));
-        fc.broadcastTxProposal(signedTx, function(err, btx, memo) {
+            txStatus.notify(btx, function() {
+              $scope.$emit('Local/TxProposalAction', true);
+              return cb();
+            });
+          });
+        } else {
           self.setOngoingProcess();
-          if (err) {
-            err.message = bwsError.msg(err, gettextCatalog.getString('The payment was signed but could not be broadcasted. Please try again from home screen'));
-            return cb(err);
-          }
-          if (memo)
-            $log.info(memo);
-
-          txStatus.notify(btx, function() {
-            $scope.$emit('Local/TxProposalAction', true);
+          txStatus.notify(signedTx, function() {
+            $scope.$emit('Local/TxProposalAction');
             return cb();
           });
-        });
-      } else {
-        self.setOngoingProcess();
-        txStatus.notify(signedTx, function() {
-          $scope.$emit('Local/TxProposalAction');
-          return cb();
-        });
-      }
+        }
+      });
     });
   };
 
