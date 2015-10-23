@@ -216,5 +216,17 @@ angular.module('copayApp.services')
       storage.remove('addressbook-' + network, cb);
     };
 
+    root.setTxHistory = function(txs, walletId, cb) {
+      storage.set('txsHistory-' + walletId, txs, cb);
+    }
+
+    root.getTxHistory = function(walletId, cb) {
+      storage.get('txsHistory-' + walletId, cb);
+    }
+
+    root.removeTxHistory = function(walletId, cb) {
+      storage.remove('txsHistory-' + walletId, cb);
+    }
+
     return root;
   });

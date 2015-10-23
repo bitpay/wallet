@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('preferencesDeleteWalletController',
-  function($scope, $rootScope, $filter, $timeout, $modal, $log, notification, profileService, isCordova, go, gettext, gettextCatalog, animationService) {
+  function($scope, $rootScope, $filter, $timeout, $modal, $log, storageService, notification, profileService, isCordova, go, gettext, gettextCatalog, animationService) {
     this.isCordova = isCordova;
     this.error = null;
 
@@ -46,14 +46,19 @@ angular.module('copayApp.controllers').controller('preferencesDeleteWalletContro
     var _deleteWallet = function() {
       var fc = profileService.focusedClient;
       var name = fc.credentials.walletName;
-      var walletName = (fc.alias||'') + ' [' + name + ']';
+      var walletName = (fc.alias || '') + ' [' + name + ']';
       var self = this;
 
       profileService.deleteWalletFC({}, function(err) {
         if (err) {
           self.error = err.message || err;
         } else {
-          notification.success(gettextCatalog.getString('Success'), gettextCatalog.getString('The wallet "{{walletName}}" was deleted', {walletName: walletName}));
+          storageService.removeTxHistory(fc.credentials.walletId, function() {
+            notification.success(gettextCatalog.getString('Success'), gettextCatalog.getString('The wallet "{{walletName}}" was deleted', {
+              walletName: walletName
+            }));
+            return;
+          });
         }
       });
     };
