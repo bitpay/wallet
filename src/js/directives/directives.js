@@ -162,27 +162,25 @@ angular.module('copayApp.directives')
       }
     }
   })
-  .directive('contact', function() {
+  .directive('contact', ['addressbookService', function(addressbookService) {
     return {
       restrict: 'E',
       link: function(scope, element, attrs) {
-        if (!scope.wallet) return;
-
-        var address = attrs.address;
-        var contact = scope.wallet.addressBook[address];
-        if (contact && !contact.hidden) {
-          element.append(contact.label);
-          element.attr('tooltip', attrs.address);
-        } else {
-          element.append(address);
-        }
+        var addr = attrs.address;
+        addressbookService.getLabel(addr, function(label) {
+          if (label) {
+            element.append(label);
+          } else {
+            element.append(addr);
+          }
+        });
 
         element.bind('click', function() {
           selectText(element[0]);
         });
       }
     };
-  })
+  }])
   .directive('highlightOnChange', function() {
     return {
       restrict: 'A',

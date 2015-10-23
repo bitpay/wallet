@@ -204,5 +204,17 @@ angular.module('copayApp.services')
       storage.remove('glideraToken-' + network, cb);
     };
 
+    root.setAddressbook = function(network, addressbook, cb) {
+      storage.set('addressbook-' + network, addressbook, cb);
+    };
+
+    root.getAddressbook = function(network, cb) {
+      storage.get('addressbook-' + network, cb);
+    };
+
+    root.removeAddressbook = function(network, cb) {
+      storage.remove('addressbook-' + network, cb);
+    };
+
     return root;
   });
