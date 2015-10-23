@@ -608,7 +608,6 @@ input[type=number]::-webkit-outer-spin-button {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  padding-top: 3px;
 }
 
 ul.pagination li.current a {
