@@ -136,7 +136,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     });
   };
 
-  $scope.openDestinationAddressModal = function(wallets, address, label) {
+  $scope.openDestinationAddressModal = function(wallets, address) {
     $rootScope.modalOpened = true;
     var fc = profileService.focusedClient;
     self.resetForm();
@@ -146,8 +146,28 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       $scope.editAddressbook = false;
       $scope.addAddressbookEntry = false;
       $scope.selectedAddressbook = {};
-      $scope.addressbook = { 'address' : address, 'label' : label};
+      $scope.newAddress = address;
+      $scope.addressbook = { 'address' : ($scope.newAddress || '') , 'label' : ''};
       $scope.color = fc.backgroundColor;
+
+      $scope.beforeQrCodeScann = function() {
+        $scope.error = null;
+        $scope.addAddressbookEntry = true;
+        $scope.editAddressbook = false;
+      };
+
+      $scope.onQrCodeScanned = function(data, addressbookForm) {
+        $timeout(function() {
+          var form = addressbookForm;
+          if (data && form) {
+            data = data.replace('bitcoin:', '');
+            form.address.$setViewValue(data);
+            form.address.$isValid = true;
+            form.address.$render();
+          }
+          $scope.$digest();
+        }, 100);
+      };
 
       $scope.selectAddressbook = function(addr) {
         $modalInstance.close(addr);
@@ -164,6 +184,8 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       };
 
       $scope.toggleAddAddressbookEntry = function() {
+        $scope.error = null;
+        $scope.addressbook = { 'address' : ($scope.newAddress || '') , 'label' : ''};
         $scope.addAddressbookEntry = !$scope.addAddressbookEntry;
       };
 
