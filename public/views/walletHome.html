@@ -322,7 +322,8 @@
               <div class="input">
                 <input ng-show="sendForm.address.$invalid" class="m0" type="text" id="address" name="address" ng-disabled="home.blockUx || home.lockAddress" ng-attr-placeholder="{{'Bitcoin address'|translate}}" ng-model="_address" valid-address required ng-focus="home.formFocus('address')" ng-blur="home.formFocus(false)">
                 <contact class="addressbook-input" ng-if="!sendForm.address.$invalid && _address" address="{{_address}}"></contact>
-                <a class="postfix size-12 m0 text-gray" ng-click="openDestinationAddressModal(index.otherWallets)">
+                <a class="postfix size-12 m0 text-gray" 
+                ng-click="openDestinationAddressModal(index.otherWallets, _address)">
                   <i class="icon-wallet size-18"></i>
                 </a>
               </div>

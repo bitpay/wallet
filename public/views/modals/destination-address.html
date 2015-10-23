@@ -1,13 +1,13 @@
 <div ng-init="wallets[0] ? selectedWalletsOpt = true : selectedWalletsOpts = false">
   <nav class="tab-bar">
     <section class="left-small">
-      <a ng-show="!editAddressbook" ng-click="cancel()" class="p10">
+      <a ng-show="!editAddressbook && !addAddressbookEntry" ng-click="cancel()" class="p10">
         <span class="text-close" translate>Close</span>
       </a>
     </section>
 
     <section class="middle tab-bar-section">
-      <ul class="button-group round even-2" ng-show="!editAddressbook && wallets[0]">
+      <ul class="button-group round even-2" ng-show="!editAddressbook && wallets[0] && !addAddressbookEntry">
         <li ng-class="{'selected':selectedWalletsOpt}" ng-click="selectedWalletsOpt = true"
           translate>
           Wallets
@@ -16,18 +16,21 @@
           Addressbook
         </li>
       </ul>
-      <h1 ng-show="editAddressbook || !wallets[0]" class="title ellipsis" ng-style="{'color':color}" translate>
+      <h1 ng-show="(editAddressbook || !wallets[0]) && !addAddressbookEntry" class="title ellipsis" ng-style="{'color':color}" translate>
         Addressbook
       </h1>
     </section>
 
     <section class="right-small" ng-show="!selectedWalletsOpt" ng-click="toggleEditAddressbook()">
-      <a ng-show="!editAddressbook" href class="p10">
+      <a ng-show="!editAddressbook && !addAddressbookEntry" href class="p10">
         <span class="text-close" translate>Edit</span>
       </a>
       <a ng-show="editAddressbook && !addAddressbookEntry" href class="p10">
         <span class="text-close" translate>Done</span>
       </a>
+      <qr-scanner ng-show="addAddressbookEntry" 
+        on-scan="onQrCodeScanned(data, addressbookForm)"
+        before-scan="beforeQrCodeScann()"></qr-scanner>
     </section>
   </nav>
 
@@ -81,12 +84,13 @@
         <li class="m10t" ng-show="!editAddressbook">
           <a ng-click="toggleAddAddressbookEntry()" class="p10">
             <i class="fi-plus size-18 m10r"></i> 
-            <span class="text-close size-12" translate>Add a new entry</span>
+            <span class="text-close size-12" translate>Add a new entry</span> 
+            <span ng-show="!list[newAddress]">({{newAddress}})</span>
           </a>
         </li>
       </ul>
 
-      <div ng-if="addAddressbookEntry" ng-init="addressbook.address = ''; addressbook.label = ''">
+      <div ng-show="addAddressbookEntry">
         <h4 class="title m0" translate>Add a new entry</h4>
         <form name="addressbookForm" class="p10" no-validate>
           <div class="text-warning size-12 m10b" ng-show="error">{{error|translate}}</div>
@@ -107,7 +111,7 @@
             <div class="columns large-6 medium-6 small-6">
               <input type="button" 
                      class="button expand round" 
-                     ng-click="toggleAddAddressbookEntry()"
+                     ng-click="newAddress = ''; toggleAddAddressbookEntry()"
                      value="{{'Cancel'|translate}}">
             </div>
             <div class="columns large-6 medium-6 small-6">
@@ -116,7 +120,7 @@
                      value="{{'Save'|translate}}"
                      ng-disabled="!addressbookForm.$valid"
                      ng-style="{'background-color':color}" 
-                     ng-click="add(addressbook)">
+                     ng-click="newAddress = ''; add(addressbook)">
             </div>
           </div>
         </form>
