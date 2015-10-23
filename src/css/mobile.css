@@ -758,33 +758,36 @@ textarea:focus
   width: 100%;
   border-bottom: 1px solid #DEDFE1;
   margin-bottom: 25px;
-  padding: 0 0 .5rem 1rem;
   overflow: hidden;
 }
 
 .create-tab .tab-container {
   float: left;
+  text-align: center;
 }
 
 
 .create-tab a {
   font-size: .7rem;
-  padding: 0 0 .6rem;
+  padding: 0 .2rem .6rem .2rem;
   color: #929396;
   text-transform: uppercase;
   font-weight: 500;
+  display: block;
 }
 
-.create-tab a:hover,
-.create-tab a:focus {
-  border-bottom: 3px solid #929396;
+.tab-container:hover a {
+  color: #7A8C9E;
 }
 
-.create-tab a.selected,
-.create-tab a:active {
-  font-weight: 600;
+.tab-container.selected,
+.tab-container:active {
+  border-bottom: 3px solid #4B6178;
+}
+
+.tab-container.selected a {
   color: #2C3E50;
-  border-bottom: 3px solid #2C3E50;
+  font-weight: 600;
 }
 
 /* removes 300ms in IE */
