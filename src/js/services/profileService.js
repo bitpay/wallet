@@ -338,7 +338,9 @@ angular.module('copayApp.services')
       if (w) {
         return cb(gettext('Wallet already in Copay' + ": ") + w.walletName);
       }
-      root.storeData(walletClient, opts.bwsurl, cb);
+      root.storeData(walletClient, opts.bwsurl, function(err){
+        return cb(err, walletId);
+      });
     };
 
     root.importWallet = function(str, opts, cb) {
