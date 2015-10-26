@@ -247,29 +247,10 @@ angular.module('copayApp.services')
         }, function(err, secret) {
           if (err) return bwsError.cb(err, gettext('Error creating wallet'), cb);
 
-          root.storeData(walletClient, opts.bwsurl, cb);
+          root._addWalletClient(walletClient, opts, cb);
         })
       });
     };
-
-    root.storeData = function(walletClient, bwsurl, cb) {
-      var walletId = walletClient.credentials.walletId;
-      var defaults = configService.getDefaults();
-      var opts_ = {
-        bwsFor: {}
-      };
-      opts_.bwsFor[walletId] = bwsurl || defaults.bws.url;
-      configService.set(opts_, function(err) {
-        if (err) console.log(err);
-
-        root.profile.credentials.push(JSON.parse(walletClient.export()));
-        root.setWalletClients();
-
-        root.setAndStoreFocus(walletId, function() {
-          storageService.storeProfile(root.profile, cb);
-        });
-      });
-    }
 
     root.joinWallet = function(opts, cb) {
       var walletClient = bwcService.getClient();
@@ -296,7 +277,7 @@ angular.module('copayApp.services')
 
         walletClient.joinWallet(opts.secret, opts.myName || 'me', {}, function(err) {
           if (err) return bwsError.cb(err, gettext('Could not join wallet'), cb);
-          root.storeData(walletClient, opts.bwsurl, cb);
+          root._addWalletClient(walletClient, opts, cb);
         });
       });
     };
@@ -338,7 +319,25 @@ angular.module('copayApp.services')
       if (w) {
         return cb(gettext('Wallet already in Copay' + ": ") + w.walletName);
       }
-      root.storeData(walletClient, opts.bwsurl, cb);
+
+      var defaults = configService.getDefaults();
+      var bwsFor = {};
+      bwsFor[walletId] = opts.bwsurl || defaults.bws.url;
+
+      configService.set({
+        bwsFor: bwsFor,
+      }, function(err) {
+        if (err) console.log(err);
+
+        root.profile.credentials.push(JSON.parse(walletClient.export()));
+        root.setWalletClients();
+
+        root.setAndStoreFocus(walletId, function() {
+          storageService.storeProfile(root.profile, function(err){
+            return cb(err, walletId);
+          });
+        });
+      });
     };
 
     root.importWallet = function(str, opts, cb) {
