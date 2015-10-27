@@ -36,14 +36,12 @@
 
   <div class="create-tab small-only-text-center" ng-hide="create.hideTabs">
     <div class="row">
-    <div class="tab-container small-6 medium-3 large-2">
+    <div class="tab-container small-6 medium-3 large-2" ng-class="{'selected': totalCopayers == 1}">
     <a href
-      ng-class="{'selected': totalCopayers == 1}"
       ng-click="create.setTotalCopayers(1)" translate>Personal Wallet</a>
     </div>
-    <div class="tab-container small-6 medium-3 large-2">
+    <div class="tab-container small-6 medium-3 large-2" ng-class="{'selected': totalCopayers != 1}">
     <a href
-      ng-class="{'selected': totalCopayers != 1}"
       ng-click="create.setTotalCopayers(3)" translate>Shared Wallet</a>
     </div>
     </div>
