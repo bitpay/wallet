@@ -178,7 +178,11 @@ angular.module('copayApp.services')
       if (opts.mnemonic) {
         try {
           opts.mnemonic = root._normalizeMnemonic(opts.mnemonic);
-          walletClient.seedFromMnemonic(opts.mnemonic, opts.passphrase, network);
+          walletClient.seedFromMnemonic(opts.mnemonic, {
+            network: network,
+            passphrase: opts.passphrase,
+            account: 0,
+          });
         } catch (ex) {
           $log.info(ex);
           return cb(gettext('Could not create: Invalid wallet seed'));
@@ -192,7 +196,9 @@ angular.module('copayApp.services')
         }
       } else if (opts.extendedPublicKey) {
         try {
-          walletClient.seedFromExtendedPublicKey(opts.extendedPublicKey, opts.externalSource, opts.entropySource);
+          walletClient.seedFromExtendedPublicKey(opts.extendedPublicKey, opts.externalSource, opts.entropySource, {
+            account: 0
+          });
         } catch (ex) {
           $log.warn("Creating wallet from Extended Public Key Arg:", ex, opts);
           return cb(gettext('Could not create using the specified extended public key'));
@@ -200,12 +206,21 @@ angular.module('copayApp.services')
       } else {
         var lang = uxLanguage.getCurrentLanguage();
         try {
-          walletClient.seedFromRandomWithMnemonic(network, opts.passphrase, lang);
+          walletClient.seedFromRandomWithMnemonic({
+            network: network,
+            passphrase: opts.passphrase,
+            language: lang,
+            account: 0,
+          });
         } catch (e) {
           $log.info('Error creating seed: ' + e.message);
           if (e.message.indexOf('language') > 0) {
             $log.info('Using default language for mnemonic');
-            walletClient.seedFromRandomWithMnemonic(network, opts.passphrase);
+            walletClient.seedFromRandomWithMnemonic({
+              network: network,
+              passphrase: opts.passphrase,
+              account: 0,
+            });
           } else {
             return cb(e);
           }
@@ -392,6 +407,7 @@ angular.module('copayApp.services')
       walletClient.importFromMnemonic(words, {
         network: opts.networkName,
         passphrase: opts.passphrase,
+        account: 0,
       }, function(err) {
         if (err)
           return bwsError.cb(err, gettext('Could not import'), cb);
@@ -407,7 +423,9 @@ angular.module('copayApp.services')
       var walletClient = bwcService.getClient();
       $log.debug('Importing Wallet XPubKey');
 
-      walletClient.importFromExtendedPublicKey(opts.extendedPublicKey, opts.externalSource, opts.entropySource, function(err) {
+      walletClient.importFromExtendedPublicKey(opts.extendedPublicKey, opts.externalSource, opts.entropySource, {
+        account: 0
+      }, function(err) {
         if (err) {
 
           // in HW wallets, req key is always the same. They can't addAccess.
