@@ -18,7 +18,9 @@ angular.module('copayApp.controllers').controller('wordsController',
 
     self.toggle = function() {
       self.error = "";
-      self.show = !self.show;
+      if (!self.credentialsEncrypted)
+        self.show = !self.show;
+
       if (self.show)
         $rootScope.$emit('Local/BackupDone');
 
@@ -70,9 +72,10 @@ angular.module('copayApp.controllers').controller('wordsController',
             if (err) {
               self.error = bwsError.msg(err, gettext('Could not decrypt'));
               $log.warn('Error decrypting credentials:', self.error); //TODO
-              self.show = !self.show;
               return;
             }
+            if (!self.show && self.credentialsEncrypted)
+              self.show = !self.show;
             self.credentialsEncrypted = false;
             setWords(fc.getMnemonic());
           });
