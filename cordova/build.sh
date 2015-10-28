@@ -174,6 +174,9 @@ if [ $CURRENT_OS == "ANDROID" ]; then
 
 #  cp android/AndroidManifest.xml $PROJECT/platforms/android/AndroidManifest.xml
 #  checkOK
+  
+  cp android/build-extras.gradle $PROJECT/platforms/android/build-extras.gradle
+  checkOK
 
   cp android/project.properties $PROJECT/platforms/android/project.properties
   checkOK
