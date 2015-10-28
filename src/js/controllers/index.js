@@ -333,19 +333,20 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
   self.setSendMax = function() {
 
+    self.feeToSendMaxStr = null;
+    self.feeRateToSendMax = null;
+
     // Set Send max
     if (self.currentFeeLevel && self.totalBytesToSendMax) {
       feeService.getCurrentFeeValue(self.currentFeeLevel, function(err, feePerKb) {
 
         // KB to send max
-        if (self.totalBytesToSendMax) {
-          var feeToSendMaxSat = parseInt(((self.totalBytesToSendMax * feePerKb) / 1000.).toFixed(0));
-          self.feeRateToSendMax = feePerKb;
+        var feeToSendMaxSat = parseInt(((self.totalBytesToSendMax * feePerKb) / 1000.).toFixed(0));
+        self.feeRateToSendMax = feePerKb;
+
+        if (self.availableBalanceSat > feeToSendMaxSat) {
           self.availableMaxBalance = strip((self.availableBalanceSat - feeToSendMaxSat) * self.satToUnit);
           self.feeToSendMaxStr = profileService.formatAmount(feeToSendMaxSat) + ' ' + self.unitName;
-        } else {
-          self.feeToSendMaxStr = null;
-          self.feeRateToSendMax = null;
         }
       });
     }
