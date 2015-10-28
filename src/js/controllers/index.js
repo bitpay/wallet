@@ -787,12 +787,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.showAlert = {
       msg: msg,
       close: function(err) {
-        if (self.isCordova && navigator && navigator.app) {
-          navigator.app.exitApp();
-        } else {
-          self.showAlert = null;
-          if (cb) return cb(err);
-        }
+        self.showAlert = null;
+        if (cb) return cb(err);
       },
     };
     $timeout(function() {
@@ -1054,7 +1050,11 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   });
 
   $rootScope.$on('Local/DeviceError', function(event, err) {
-    self.showErrorPopup(err);
+    self.showErrorPopup(err, function() {
+      if (self.isCordova && navigator && navigator.app) {
+        navigator.app.exitApp();
+      }
+    });
   });
 
   $rootScope.$on('Local/WalletImported', function(event, walletId) {
