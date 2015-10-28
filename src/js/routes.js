@@ -515,10 +515,10 @@ angular
         // Try to open local profile
         profileService.loadAndBindProfile(function(err) {
           if (err) {
-            if (err.message.match('NOPROFILE')) {
+            if (err.message && err.message.match('NOPROFILE')) {
               $log.debug('No profile... redirecting');
               $state.transitionTo('splash');
-            } else if (err.message.match('NONAGREEDDISCLAIMER')) {
+            } else if (err.message && err.message.match('NONAGREEDDISCLAIMER')) {
               $log.debug('Display disclaimer... redirecting');
               $state.transitionTo('disclaimer');
             } else {

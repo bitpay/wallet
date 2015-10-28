@@ -41,15 +41,21 @@ angular.module('copayApp.services')
         json = JSON.parse(text);
       } catch (e) {};
 
+      if (!json) return cb('Could not access storage')
+
       if (!json.iter || !json.ct)
         return cb(null, text);
 
       $log.debug('Profile is encrypted');
       getUUID(function(uuid) {
         if (!uuid)
-          return cb(new Error('Could not decrypt localstorage profile'));
+          return cb('Could not decrypt storage: could not get device ID');
 
-        text = sjcl.decrypt(uuid, text);
+        try {
+          text = sjcl.decrypt(uuid, text);
+        } catch(e) {
+          return cb('Could not decrypt storage: device ID mismatch');
+        };
         return cb(null, text);
       });
     };
