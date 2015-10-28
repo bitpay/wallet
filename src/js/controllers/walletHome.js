@@ -142,12 +142,15 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     self.resetForm();
 
     var ModalInstanceCtrl = function($scope, $modalInstance) {
-      $scope.wallets = wallets; 
+      $scope.wallets = wallets;
       $scope.editAddressbook = false;
       $scope.addAddressbookEntry = false;
       $scope.selectedAddressbook = {};
       $scope.newAddress = address;
-      $scope.addressbook = { 'address' : ($scope.newAddress || '') , 'label' : ''};
+      $scope.addressbook = {
+        'address': ($scope.newAddress || ''),
+        'label': ''
+      };
       $scope.color = fc.backgroundColor;
 
       $scope.beforeQrCodeScann = function() {
@@ -185,14 +188,17 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
       $scope.toggleAddAddressbookEntry = function() {
         $scope.error = null;
-        $scope.addressbook = { 'address' : ($scope.newAddress || '') , 'label' : ''};
+        $scope.addressbook = {
+          'address': ($scope.newAddress || ''),
+          'label': ''
+        };
         $scope.addAddressbookEntry = !$scope.addAddressbookEntry;
       };
 
       $scope.list = function() {
         $scope.error = null;
         addressbookService.list(function(err, ab) {
-          if (err) { 
+          if (err) {
             $scope.error = err;
             return;
           }
@@ -204,7 +210,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
         $scope.error = null;
         $timeout(function() {
           addressbookService.add(addressbook, function(err, ab) {
-            if (err) { 
+            if (err) {
               $scope.error = err;
               return;
             }
@@ -220,7 +226,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
         $scope.error = null;
         $timeout(function() {
           addressbookService.remove(addr, function(err, ab) {
-            if (err) { 
+            if (err) {
               $scope.error = err;
               return;
             }
@@ -348,7 +354,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       };
 
       $scope.sign = function(txp) {
-        var fc = profileService.focusedClient; 
+        var fc = profileService.focusedClient;
 
         if (!fc.canSign() && !fc.isPrivKeyExternal())
           return;
@@ -366,7 +372,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
         self._setOngoingForSigning();
         $scope.loading = true;
-        $scope.error = null; 
+        $scope.error = null;
         $timeout(function() {
           requestTouchid(function(err) {
             if (err) {
@@ -900,7 +906,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
         } else {
           feeService.getCurrentFeeValue(self.currentSendFeeLevel, cb);
         }
-      }; 
+      };
 
       requestTouchid(function(err) {
         if (err) {
@@ -1159,6 +1165,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
   this.setFromUri = function(uri) {
     var self = this;
+
     function sanitizeUri(uri) {
       // Fixes when a region uses comma to separate decimals
       var regex = /[\?\&]amount=(\d+([\,\.]\d+)?)/i;
@@ -1180,7 +1187,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
         if (err) {
           return err;
         }
-      }); 
+      });
     } else {
       uri = sanitizeUri(uri);
 
@@ -1302,37 +1309,13 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     this.setForm(null, amount, null, feeRate);
   };
 
-  // TODO: showPopup alike
-  this.confirmDialog = function(msg, cb) {
-    if (isCordova) {
-      navigator.notification.confirm(
-        msg,
-        function(buttonIndex) {
-          if (buttonIndex == 1) {
-            $timeout(function() {
-              return cb(true);
-            }, 1);
-          } else {
-            return cb(false);
-          }
-        },
-        confirm_msg, [accept_msg, cancel_msg]
-      );
-    } else if (isChromeApp) {
-      // No feedback, alert/confirm not supported.
-      return cb(true);
-    } else {
-      return cb(confirm(msg));
-    }
-  };
-
   this.sendAll = function(amount, feeStr, feeRate) {
     var self = this;
     var msg = gettextCatalog.getString("{{fee}} will be deducted for bitcoin networking fees", {
       fee: feeStr
     });
 
-    this.confirmDialog(msg, function(confirmed) {
+    confirmDialog.show(msg, function(confirmed) {
       if (confirmed)
         self._doSendAll(amount, feeRate);
     });
@@ -1345,5 +1328,4 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     this.setAddress();
     this.setSendFormInputs();
   }
-
 });
