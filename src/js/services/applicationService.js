@@ -14,17 +14,15 @@ angular.module('copayApp.services')
       } else {
         // Go home reloading the application
         if (isChromeApp) {
-          if (nodeWebkit.isDefined()) {
-            go.walletHome();
-            $timeout(function() {
-              var win = require('nw.gui').Window.get();
-              win.reload(3);
-              //or
-              win.reloadDev();
-            }, 100);
-          } else {
-            chrome.runtime.reload();
-          }
+          chrome.runtime.reload();
+        } else if (nodeWebkit.isDefined()) {
+          go.walletHome();
+          $timeout(function() {
+            var win = require('nw.gui').Window.get();
+            win.reload(3);
+            //or
+            win.reloadDev();
+          }, 100);
         } else {
           window.location = window.location.href.substr(0, hashIndex);
         }
