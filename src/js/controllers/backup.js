@@ -10,8 +10,10 @@ angular.module('copayApp.controllers').controller('wordsController',
     var fc = profileService.focusedClient;
 
     if (fc.isPrivKeyEncrypted()) self.credentialsEncrypted = true;
-    else setWords(fc.getMnemonic());
-
+    else {
+      setWords(fc.getMnemonic());
+      $rootScope.$emit('Local/BackupDone');
+    }
     if (fc.credentials && !fc.credentials.mnemonicEncrypted && !fc.credentials.mnemonic) {
       self.deleted = true;
     }
@@ -20,9 +22,6 @@ angular.module('copayApp.controllers').controller('wordsController',
       self.error = "";
       if (!self.credentialsEncrypted)
         self.show = !self.show;
-
-      if (self.show)
-        $rootScope.$emit('Local/BackupDone');
 
       if (self.credentialsEncrypted)
         self.passwordRequest();
@@ -78,6 +77,7 @@ angular.module('copayApp.controllers').controller('wordsController',
               self.show = !self.show;
             self.credentialsEncrypted = false;
             setWords(fc.getMnemonic());
+            $rootScope.$emit('Local/BackupDone');
           });
         }
       }
