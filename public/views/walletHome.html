@@ -510,8 +510,11 @@
             <i class="icon-arrow-right3 size-18"></i>
           </div>
           <div class="size-14 text-gray columns m5t" ng-if="btx.message || btx.addressTo">
-            <div ng-show="btx.message">{{btx.message}}</div>
-            <contact ng-show="!btx.message" class="enable_text_select" address="{{btx.addressTo}}"></contact>
+            <div ng-show="btx.message"><span translate>Note</span>: {{btx.message}}</div>
+            <div ng-show="!btx.message">
+              <span translate>To</span>: 
+              <contact address="{{btx.addressTo}}"></contact>
+            </div>
           </div>
         </div>
       </div>
