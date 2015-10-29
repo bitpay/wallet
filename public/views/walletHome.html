@@ -465,6 +465,10 @@
             <div class="rect5"></div>
           </div>
         </div>
+        <p ng-show="index.showWaitingSign" translate class="size-12 text-gray">
+          Initial transaction history synchronization can take some minutes for wallets with many transactions.</br>
+          Please stand by.
+        </p>
       </div>
       <div ng-if="!index.isCordova && index.txHistory[0] && !index.updatingTxHistory" class="m20t text-center">
         <input id="export_file" type="file" nwsaveas="Copay-{{index.alias || index.walletName}}.csv" accept=".csv" style="display:none">

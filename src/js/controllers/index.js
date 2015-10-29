@@ -762,6 +762,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         $log.warn(ex);
       }
 
+      if (!localTxs) self.showWaitingSign = true;
+
       return cb(null, self.removeSoftConfirmedTx(localTxs));
     });
   }
@@ -831,6 +833,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       self.updateLocalTxHistory(function(err) {
         if (err) self.txHistoryError = true;
         self.updatingTxHistory = false;
+        self.showWaitingSign = false;
         $rootScope.$apply();
       });
     });
