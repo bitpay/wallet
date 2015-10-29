@@ -93,6 +93,13 @@ To fix this problem, add the follow:
 <key>UIRequiresFullScreen</key>
 <string>YES</string>
 ```
+###### Build settings, headers search path
+
+Add this line to your Build Settings -> Header Search Paths -> Release
+
+"$(OBJROOT)/UninstalledProducts/$(PLATFORM_NAME)/include"
+
+
 
 ### Windows Phone
 
