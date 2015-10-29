@@ -3,7 +3,7 @@
   <Identity Name="18C7659D.CopayWallet" Publisher="CN=F89609D1-EB3E-45FD-A58A-C2E3895FCE7B" Version="1.4.3.0" />
   <mp:PhoneIdentity PhoneProductId="5381aa50-9069-11e4-84cc-293caf9cbdc8" PhonePublisherId="F89609D1-EB3E-45FD-A58A-C2E3895FCE7B" />
   <Properties>
-    <DisplayName>Copay Wallet</DisplayName>
+    <DisplayName>Copay Bitcoin Wallet</DisplayName>
     <PublisherDisplayName>BitPay Inc.</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
@@ -16,7 +16,7 @@
   </Resources>
   <Applications>
     <Application Id="x5381aa50y9069y11e4y84ccy293caf9cbdc8x" Executable="AGHost.exe" EntryPoint="MainPage.xaml">
-      <m3:VisualElements DisplayName="Copay Wallet" Square150x150Logo="Assets\SquareTile150x150.png" Square44x44Logo="Assets\Logo.png" Description="Copay" ForegroundText="light" BackgroundColor="#464646">
+      <m3:VisualElements DisplayName="Copay Bitcoin Wallet" Square150x150Logo="Assets\SquareTile150x150.png" Square44x44Logo="Assets\Logo.png" Description="A multisignature Bitcoin Wallet" ForegroundText="light" BackgroundColor="#464646">
         <m3:DefaultTile Square71x71Logo="Assets\SquareTile71x71.png">
         </m3:DefaultTile>
         <m3:SplashScreen Image="SplashScreenImage.jpg" />
