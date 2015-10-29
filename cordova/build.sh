@@ -212,15 +212,20 @@ if [ $CURRENT_OS == "WP8" ]; then
   echo "Wp8 project!!!"
   cp -R $PROJECT/www/* $PROJECT/platforms/wp8/www
   checkOK
-  cp -vf wp/Properties/* $PROJECT/platforms/wp8/Properties/
-  cp -vf wp/Package.appxmanifest $PROJECT/platforms/wp8/
-  cp -vf wp/MainPage.xaml $PROJECT/platforms/wp8/
-  checkOK
-  cp -vf wp/Assets/* $PROJECT/platforms/wp8/Assets/
-  cp -vf wp/SplashScreenImage.jpg $PROJECT/platforms/wp8/
-  cp -vf wp/ApplicationIcon.png $PROJECT/platforms/wp8/
-  cp -vf wp/Background.png $PROJECT/platforms/wp8/
-  checkOK
+  if ! $CLEAR
+  then
+    cp -vf wp/Properties/* $PROJECT/platforms/wp8/Properties/
+    checkOK
+    cp -vf wp/MainPage.xaml $PROJECT/platforms/wp8/
+    checkOK
+    cp -vf wp/Package.appxmanifest $PROJECT/platforms/wp8/
+    checkOK
+    cp -vf wp/Assets/* $PROJECT/platforms/wp8/Assets/
+    cp -vf wp/SplashScreenImage.jpg $PROJECT/platforms/wp8/
+    cp -vf wp/ApplicationIcon.png $PROJECT/platforms/wp8/
+    cp -vf wp/Background.png $PROJECT/platforms/wp8/
+    checkOK
+  fi
 fi
 
 
