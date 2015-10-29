@@ -48,12 +48,14 @@ angular.module('copayApp.services')
 
       $log.debug('Profile is encrypted');
       getUUID(function(uuid) {
+        $log.debug('Device UUID:' + uuid);
         if (!uuid)
           return cb('Could not decrypt storage: could not get device ID');
 
         try {
           text = sjcl.decrypt(uuid, text);
         } catch(e) {
+          $log.warn('Decrypt error: ', e);
           return cb('Could not decrypt storage: device ID mismatch');
         };
         return cb(null, text);
