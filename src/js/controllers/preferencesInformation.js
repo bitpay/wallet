@@ -95,8 +95,13 @@ angular.module('copayApp.controllers').controller('preferencesInformation',
     };
 
     this.clearTransactionHistory = function() {
-      storageService.removeTxHistory(c.walletId, function() {
-        return;
+      storageService.removeTxHistory(c.walletId, function(err) {
+        if (err) return $log.err(err);
+
+        $timeout(function() {
+          $scope.$emit('Local/ClearHistory');
+          go.walletHome();
+        }, 100);
       });
     }
   });

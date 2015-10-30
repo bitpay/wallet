@@ -910,19 +910,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     });
   };
 
-  self.clearHistoryFeedback = function() {
-    self.txHistory = [];
-    $log.debug('The wallet transaction history has been deleted');
-    self.setOngoingProcess('deletingHistory', true);
-
-    self.updateHistory();
-    go.walletHome();
-
-    $timeout(function() {
-      self.setOngoingProcess('deletingHistory', false);
-    }, 2000);
-  };
-
   self.setUxLanguage = function() {
     var userLang = uxLanguage.update();
     self.defaultLanguageIsoCode = userLang;
@@ -1018,6 +1005,16 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   };
 
   // UX event handlers
+  $rootScope.$on('Local/ClearHistory', function(event, walletId) {
+    storageService.removeTxHistory(walletId, function(err) {
+      if (err) root.showErrorPopup(err);
+
+      $log.debug('The wallet transaction history has been deleted');
+      self.txHistory = [];
+      self.updateHistory();
+    });
+  });
+
   $rootScope.$on('Local/ColorUpdated', function(event) {
     self.updateColor();
     $timeout(function() {
