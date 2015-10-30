@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('preferencesInformation',
-  function($scope, $log, $timeout, isMobile, gettextCatalog, lodash, profileService, storageService) {
+  function($scope, $log, $timeout, isMobile, gettextCatalog, lodash, profileService, storageService, go) {
     var base = 'xpub';
     var fc = profileService.focusedClient;
     var c = fc.credentials;
@@ -96,7 +96,7 @@ angular.module('copayApp.controllers').controller('preferencesInformation',
 
     this.clearTransactionHistory = function() {
       storageService.removeTxHistory(c.walletId, function() {
-        $log.info('The wallet transaction history has been deleted');
+        return;
       });
     }
   });

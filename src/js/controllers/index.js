@@ -910,6 +910,19 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     });
   };
 
+  self.clearHistoryFeedback = function() {
+    self.txHistory = [];
+    $log.debug('The wallet transaction history has been deleted');
+    self.setOngoingProcess('deletingHistory', true);
+
+    self.updateHistory();
+    go.walletHome();
+
+    $timeout(function() {
+      self.setOngoingProcess('deletingHistory', false);
+    }, 2000);
+  };
+
   self.setUxLanguage = function() {
     var userLang = uxLanguage.update();
     self.defaultLanguageIsoCode = userLang;
