@@ -97,7 +97,7 @@ angular.module('copayApp.controllers').controller('preferencesInformation',
     this.clearTransactionHistory = function() {
       storageService.removeTxHistory(c.walletId, function(err) {
         if (err) {
-          $log.err(err);
+          $log.error(err);
           return;
         }
 
