@@ -96,7 +96,6 @@
       </li>
     </ul>
 
-
     <ul class="no-bullet m0 size-14" ng-show="index.balanceByAddress">
       <div ng-if="index.balanceByAddress[0]">
         <h4 class="title m0" translate>Balance By Address</h4>
@@ -109,6 +108,15 @@
           </div>
         </li>
       </div>
+    </ul>
+
+    <ul class="no-bullet m0 size-14">
+      <h4 class="title m0" translate>Transaction history</h4>
+      <li class="line-b p20 oh">
+        <button class="black round small expand"  ng-style="{'background-color':index.backgroundColor}" ng-click="info.clearTransactionHistory();">
+          <span translate>Clear history</span>
+        </button>
+      </li>
     </ul>
 
     <h4></h4>

@@ -1,12 +1,12 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('preferencesInformation',
-  function($scope, $log, $timeout, isMobile, gettextCatalog, lodash, profileService) {
+  function($scope, $log, $timeout, isMobile, gettextCatalog, lodash, profileService, storageService, go) {
     var base = 'xpub';
+    var fc = profileService.focusedClient;
+    var c = fc.credentials;
 
     this.init = function() {
-      var fc = profileService.focusedClient;
-      var c = fc.credentials;
       var basePath = profileService.getUtils().getBaseAddressDerivationPath(c.derivationStrategy, c.network, 0);
 
       $scope.walletName = c.walletName;
@@ -28,8 +28,8 @@ angular.module('copayApp.controllers').controller('preferencesInformation',
           return;
         };
         var last10 = [],
-        i = 0,
-        e = addrs.pop();
+          i = 0,
+          e = addrs.pop();
         while (i++ < 10 && e) {
           e.path = base + e.path.substring(1);
           last10.push(e);
@@ -45,7 +45,6 @@ angular.module('copayApp.controllers').controller('preferencesInformation',
 
     this.sendAddrs = function() {
       var self = this;
-      var fc = profileService.focusedClient;
 
       if (isMobile.Android() || isMobile.Windows()) {
         window.ignoreMobilePause = true;
@@ -94,4 +93,19 @@ angular.module('copayApp.controllers').controller('preferencesInformation',
         });
       }, 100);
     };
+
+    this.clearTransactionHistory = function() {
+      storageService.removeTxHistory(c.walletId, function(err) {
+        if (err) {
+          $log.error(err);
+          return;
+        }
+
+        $scope.$emit('Local/ClearHistory');
+
+        $timeout(function() {
+          go.walletHome();
+        }, 100);
+      });
+    }
   });
