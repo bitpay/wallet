@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, lodash, go, profileService, configService, isCordova, rateService, storageService, addressService, gettext, gettextCatalog, amMoment, nodeWebkit, addonManager, feeService, isChromeApp, bwsError, txFormatService, uxLanguage, $state, glideraService, isMobile) {
+angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, lodash, go, profileService, configService, isCordova, rateService, storageService, addressService, gettext, gettextCatalog, amMoment, nodeWebkit, addonManager, feeService, isChromeApp, bwsError, txFormatService, uxLanguage, $state, glideraService, isMobile, addressbookService) {
   var self = this;
   var SOFT_CONFIRMATION_LIMIT = 12;
   self.isCordova = isCordova;
@@ -111,6 +111,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       self.copayers = [];
       self.updateColor();
       self.updateAlias();
+      self.setAddressbook();
 
       self.initGlidera();
 
@@ -1007,10 +1008,24 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
   };
 
+  self.setAddressbook = function() {
+    addressbookService.list(function(err, ab) {
+      if (err) {
+        $log.error('Error getting the addressbook');
+        return;
+      }
+      self.addressbook = ab;
+    }); 
+  };
+
   $rootScope.$on('Local/ClearHistory', function(event) {
     $log.debug('The wallet transaction history has been deleted');
     self.txHistory = [];
     self.updateHistory();
+  });
+
+  $rootScope.$on('Local/AddressbookUpdated', function(event) {
+    self.setAddressbook();
   });
 
   // UX event handlers

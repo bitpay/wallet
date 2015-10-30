@@ -272,6 +272,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
     modalInstance.result.finally(function() {
       $rootScope.modalOpened = false;
+      $rootScope.$emit('Local/AddressbookUpdated');
       disableCloseModal();
       var m = angular.element(document.getElementsByClassName('reveal-modal'));
       m.addClass(animationService.modalAnimated.slideOutDown);
