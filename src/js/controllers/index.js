@@ -1005,7 +1005,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   };
 
   // UX event handlers
-  $rootScope.$on('Local/ClearHistory', function(event, walletId) {
+  $rootScope.$on('Local/ClearHistory', function(event) {
     $log.debug('The wallet transaction history has been deleted');
     self.txHistory = [];
     self.updateHistory();
