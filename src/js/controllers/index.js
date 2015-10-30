@@ -1116,13 +1116,16 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.needsBackup = false;
     $log.debug('Backup done');
     storageService.setBackupFlag(self.walletId, function(err) {
-      if (err) root.showErrorPopup(err);
       $log.debug('Backup done stored');
     });
   });
 
   $rootScope.$on('Local/DeviceError', function(event, err) {
-    root.showErrorPopup(err);
+    self.showErrorPopup(err, function() {
+      if (self.isCordova && navigator && navigator.app) {
+        navigator.app.exitApp();
+      }
+    });
   });
 
   $rootScope.$on('Local/WalletImported', function(event, walletId) {

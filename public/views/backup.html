@@ -8,7 +8,6 @@
 <div class="content preferences" ng-controller="wordsController as wordsC">
   <h4></h4>
 
-
   <div class="box-notification" ng-show="wordsC.error">
     <span class="text-warning">
     {{wordsC.error|translate}}
@@ -17,7 +16,7 @@
 
 
 
-  <div ng-show="wordsC.mnemonicWords">
+  <div ng-show="wordsC.mnemonicWords || (wordsC.credentialsEncrypted && !wordsC.deleted)">
     <div class="row"  ng-show="index.n==1">
       <div class="m10t columns size-14 text-gray">
         <span translate>
@@ -33,11 +32,11 @@
         <span translate>
           To restore this {{index.m}}-{{index.n}} <b>shared</b> wallet you will need
         </span>:
-  <ol class="m10t columns size-14 text-gray">
-    <li translate>Your wallet seed and access to the server that coordinated the initial wallet creation. You still need {{index.m}} keys to spend.</li>
-    <li translate><b>OR</b> the wallet seed of <b>all</b> copayers in the wallet</li>
-    <li translate><b>OR</b> 1 wallet export file and the remaining quorum of wallet seeds (e.g. in a 3-5 wallet: 1 wallet export file + 2 wallet seeds of any of the other copayers).</li>
-  </ol>
+        <ol class="m10t columns size-14 text-gray">
+          <li translate>Your wallet seed and access to the server that coordinated the initial wallet creation. You still need {{index.m}} keys to spend.</li>
+          <li translate><b>OR</b> the wallet seed of <b>all</b> copayers in the wallet</li>
+          <li translate><b>OR</b> 1 wallet export file and the remaining quorum of wallet seeds (e.g. in a 3-5 wallet: 1 wallet export file + 2 wallet seeds of any of the other copayers).</li>
+        </ol>
         </span>
       </div>
     </div>
@@ -46,22 +45,22 @@
         <span translate>
           To restore this {{index.m}}-{{index.n}} <b>shared</b> wallet you will need
         </span>:
-  <ol class="m10t columns size-14 text-gray">
-    <li translate>Your wallet seed and access to the server that coordinated the initial wallet creation. You still need {{index.m}} keys to spend.</li>
-    <li translate><b>OR</b> the wallet seeds of <b>all</b> copayers in the wallet</li>
-  </ol>
+        <ol class="m10t columns size-14 text-gray">
+          <li translate>Your wallet seed and access to the server that coordinated the initial wallet creation. You still need {{index.m}} keys to spend.</li>
+          <li translate><b>OR</b> the wallet seeds of <b>all</b> copayers in the wallet</li>
+        </ol>
         </span>
       </div>
     </div>
   </div>
- 
-  <div class="row m20t" ng-show="!wordsC.mnemonicWords && !wordsC.credentialsEncrypted">
+
+  <div class="row m20t" ng-show="wordsC.deleted">
     <div class="columns size-14 text-gray text-center" translate>
         Wallet seed not available. You can still export it from Advanced &gt; Export.
     </div>
   </div>
  
-  <div ng-show="wordsC.mnemonicWords">
+  <div ng-show="wordsC.mnemonicWords || (wordsC.credentialsEncrypted && !wordsC.deleted)">
     <div class="row">
         <div class="m10t columns">
           <a class="button outline light-gray expand tiny" ng-click="wordsC.toggle()">

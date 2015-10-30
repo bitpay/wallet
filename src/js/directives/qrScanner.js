@@ -67,7 +67,11 @@ angular.module('copayApp.directives')
                     localMediaStreamTrack[i].stop();
                   }
                 } else {
-                  localMediaStream.stop();
+                  try {
+                    localMediaStream.stop();
+                  } catch(e) {
+                    // Older Chromium not support the STOP function
+                  };
                 }
                 localMediaStream = null;
                 video.src = '';
