@@ -66,7 +66,8 @@
     <li ng-if="btx.time" class="line-b p10 oh">
     <span class="text-gray" translate>Date</span>:
     <span class="right">
-      <time>{{ btx.time * 1000 | amCalendar}}</time>
+      <time>{{ btx.time * 1000 | amDateFormat:'MM/DD/YYYY HH:mm a'}}</time>
+      <time>({{ btx.time * 1000 | amTimeAgo}})</time>
     </span>
     </li>
     <li class="line-b p10" ng-show="btx.action != 'received'">
