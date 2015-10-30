@@ -5,6 +5,22 @@ sign:
 verify: 
 	gpg --verify browser-extensions/chrome/copay-chrome-extension.zip.sig browser-extensions/chrome/copay-chrome-extension.zip
 
+sign-desktop:
+	gpg -u 1112CFA1 --output webkitbuilds/copay-linux32.zip.sig --detach-sig webkitbuilds/copay-linux32.zip
+	gpg -u 1112CFA1 --output webkitbuilds/copay-linux64.zip.sig --detach-sig webkitbuilds/copay-linux64.zip
+	gpg -u 1112CFA1 --output webkitbuilds/copay-osx32.dmg.sig --detach-sig webkitbuilds/copay-osx32.dmg
+	gpg -u 1112CFA1 --output webkitbuilds/copay-osx64.dmg.sig --detach-sig webkitbuilds/copay-osx64.dmg
+	gpg -u 1112CFA1 --output webkitbuilds/copay-win32.exe.sig --detach-sig webkitbuilds/copay-win32.exe
+	gpg -u 1112CFA1 --output webkitbuilds/copay-win64.exe.sig --detach-sig webkitbuilds/copay-win64.exe
+
+verify-desktop:
+	gpg --verify webkitbuilds/copay-linux32.zip.sig webkitbuilds/copay-linux32.zip
+	gpg --verify webkitbuilds/copay-linux64.zip.sig webkitbuilds/copay-linux64.zip
+	gpg --verify webkitbuilds/copay-osx32.dmg.sig webkitbuilds/copay-osx32.dmg
+	gpg --verify webkitbuilds/copay-osx64.dmg.sig webkitbuilds/copay-osx64.dmg
+	gpg --verify webkitbuilds/copay-win32.exe.sig webkitbuilds/copay-win32.exe
+	gpg --verify webkitbuilds/copay-win64.exe.sig webkitbuilds/copay-win64.exe
+
 chrome:
 	browser-extensions/chrome/build.sh
 
