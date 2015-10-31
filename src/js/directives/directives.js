@@ -174,10 +174,6 @@ angular.module('copayApp.directives')
             element.append(addr);
           }
         });
-
-        element.bind('click', function() {
-          selectText(element[0]);
-        });
       }
     };
   }])
