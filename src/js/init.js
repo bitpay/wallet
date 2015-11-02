@@ -34,7 +34,7 @@ angular.element(document).ready(function() {
 
       document.addEventListener('resume', function() {
         if (!window.ignoreMobilePause) {
-          window.location = '#/cordova/resume';
+          window.location = '#/cordova/resume/';
         }
         setTimeout(function() {
           window.ignoreMobilePause = false;
