@@ -757,13 +757,17 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       if (err) return cb(err);
 
       var localTxs = [];
+
+      if (!txs) {
+        self.showWaitingSign = true;
+        return cb(null, localTxs);
+      }
+
       try {
         localTxs = JSON.parse(txs);
       } catch (ex) {
         $log.warn(ex);
       }
-
-      if (!localTxs) self.showWaitingSign = true;
 
       return cb(null, self.removeSoftConfirmedTx(localTxs));
     });
