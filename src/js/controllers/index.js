@@ -768,8 +768,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       } catch (ex) {
         $log.warn(ex);
       }
-
-      return cb(null, self.removeSoftConfirmedTx(localTxs));
+      return cb(null, lodash.compact(self.removeSoftConfirmedTx(localTxs)));
     });
   }
 
@@ -1019,7 +1018,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         return;
       }
       self.addressbook = ab;
-    }); 
+    });
   };
 
   $rootScope.$on('Local/ClearHistory', function(event) {
