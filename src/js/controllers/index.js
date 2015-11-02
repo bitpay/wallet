@@ -1011,7 +1011,12 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
   };
 
-  self.setAddressbook = function() {
+  self.setAddressbook = function(ab) {
+    if (ab) {
+      self.addressbook = ab;
+      return;
+    }
+
     addressbookService.list(function(err, ab) {
       if (err) {
         $log.error('Error getting the addressbook');
@@ -1027,8 +1032,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.updateHistory();
   });
 
-  $rootScope.$on('Local/AddressbookUpdated', function(event) {
-    self.setAddressbook();
+  $rootScope.$on('Local/AddressbookUpdated', function(event, ab) {
+    self.setAddressbook(ab);
   });
 
   // UX event handlers

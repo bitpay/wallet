@@ -214,7 +214,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
               $scope.error = err;
               return;
             }
-            $rootScope.$emit('Local/AddressbookUpdated');
+            $rootScope.$emit('Local/AddressbookUpdated', ab);
             $scope.list = ab;
             $scope.editAddressbook = true;
             $scope.toggleEditAddressbook();
@@ -231,7 +231,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
               $scope.error = err;
               return;
             }
-            $rootScope.$emit('Local/AddressbookUpdated');
+            $rootScope.$emit('Local/AddressbookUpdated', ab);
             $scope.list = ab;
             $scope.$digest();
           });
