@@ -214,6 +214,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
               $scope.error = err;
               return;
             }
+            $rootScope.$emit('Local/AddressbookUpdated');
             $scope.list = ab;
             $scope.editAddressbook = true;
             $scope.toggleEditAddressbook();
@@ -230,6 +231,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
               $scope.error = err;
               return;
             }
+            $rootScope.$emit('Local/AddressbookUpdated');
             $scope.list = ab;
             $scope.$digest();
           });
@@ -272,7 +274,6 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
     modalInstance.result.finally(function() {
       $rootScope.modalOpened = false;
-      $rootScope.$emit('Local/AddressbookUpdated');
       disableCloseModal();
       var m = angular.element(document.getElementsByClassName('reveal-modal'));
       m.addClass(animationService.modalAnimated.slideOutDown);
