@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: French\n"
 "Language: fr\n"
-"PO-Revision-Date: 2015-10-07 10:52-0400\n"
+"PO-Revision-Date: 2015-11-03 14:27-0500\n"
 
 #: public/views/walletHome.html
 msgid "(possible double spend)"
@@ -75,6 +75,10 @@ msgstr "À propos de Copay"
 msgid "Accept"
 msgstr "Accepter"
 
+#: public/views/modals/destination-address.html
+msgid "Add a new entry"
+msgstr "Ajouter une nouvelle entrée"
+
 #: public/views/create.html
 #: public/views/join.html
 msgid "Add a Seed Passphrase"
@@ -91,6 +95,7 @@ msgstr "Ajouter un portefeuille"
 
 #: public/views/paymentUri.html
 #: public/views/modals/customized-amount.html
+#: public/views/modals/destination-address.html
 #: public/views/modals/paypro.html
 msgid "Address"
 msgstr "Adresse"
@@ -98,6 +103,10 @@ msgstr "Adresse"
 #: public/views/preferencesInformation.html
 msgid "Address Type"
 msgstr "Type d'adresse"
+
+#: public/views/modals/destination-address.html
+msgid "Addressbook"
+msgstr "Répertoire"
 
 #: public/views/preferences.html
 msgid "Advanced"
@@ -147,10 +156,6 @@ msgstr "Montant en dessous du seuil minimal recommandé"
 #: public/views/modals/customized-amount.html
 msgid "Amount in"
 msgstr "Montant en"
-
-#: public/views/preferencesLanguage.html
-msgid "Applying changes"
-msgstr "Appliquer les changements"
 
 #: src/js/controllers/backup.js
 msgid "Are you sure you want to delete the backup words?"
@@ -235,6 +240,7 @@ msgstr "Navigateur non supporté"
 #: public/views/copayers.html
 #: public/views/walletHome.html
 #: public/views/modals/confirmation.html
+#: public/views/modals/destination-address.html
 #: src/js/services/confirmDialog.js
 #: src/js/controllers/copayers.js
 #: src/js/controllers/preferencesDelete.js
@@ -262,17 +268,17 @@ msgstr "La modification d'un alias de portefeuille affecte uniquement le nom du 
 msgid "Choose a backup file from your computer"
 msgstr "Choisissez un fichier de sauvegarde depuis votre ordinateur"
 
-#: public/views/modals/wallets.html
-msgid "Choose a wallet to send funds"
-msgstr "Choisissez un portefeuille pour envoyer des fonds"
+#: public/views/preferencesInformation.html
+msgid "Clear history"
+msgstr "Effacer l'historique"
 
 #: public/views/includes/topbar.html
 #: public/views/modals/advancedSend.html
 #: public/views/modals/copayers.html
 #: public/views/modals/customized-amount.html
+#: public/views/modals/destination-address.html
 #: public/views/modals/paypro.html
 #: public/views/modals/scanner.html
-#: public/views/modals/wallets.html
 msgid "Close"
 msgstr "Fermer"
 
@@ -510,6 +516,10 @@ msgstr "Ne pas inclure la clé privée"
 msgid "Don't see your language on Crowdin? Contact the Owner on Crowdin! We'd love to support your language."
 msgstr "Vous ne voyez pas votre langue sur Crowdin ? Contactez le propriétaire sur Crowdin ! Nous serions ravis de prendre en charge votre langue."
 
+#: public/views/modals/destination-address.html
+msgid "Done"
+msgstr "Terminé"
+
 #: public/views/export.html
 msgid "Download"
 msgstr "Télécharger"
@@ -521,6 +531,10 @@ msgstr "Télécharger le fichier CSV"
 #: src/js/services/feeService.js
 msgid "Economy"
 msgstr "Économique"
+
+#: public/views/modals/destination-address.html
+msgid "Edit"
+msgstr "Editer"
 
 #: public/views/importLegacy.html
 msgid "Email"
@@ -564,13 +578,13 @@ msgstr "Erreur d'importation du portefeuille :"
 msgid "Expires"
 msgstr "Expire"
 
-#: public/views/preferencesAdvanced.html
-msgid "Export"
-msgstr "Exporter"
-
 #: public/views/export.html
 msgid "Export options"
 msgstr "Options d'exportation"
+
+#: public/views/preferencesAdvanced.html
+msgid "Export Wallet"
+msgstr "Exporter le portefeuille"
 
 #: public/views/preferencesInformation.html
 msgid "Extended Public Keys"
@@ -654,7 +668,7 @@ msgstr "Allemand"
 msgid "GET STARTED"
 msgstr "COMMENCER"
 
-#: public/views/modals/wallets.html
+#: public/views/modals/destination-address.html
 msgid "Getting address for wallet {{selectedWalletName}} ..."
 msgstr "Obtention d'une adresse pour le portefeuille {{selectedWalletName}} ..."
 
@@ -751,6 +765,12 @@ msgstr "En aucun cas les auteurs du logiciel, employés et sociétés affiliés 
 msgid "Incorrect address network"
 msgstr "Adresse réseau incorrecte"
 
+#: public/views/walletHome.html
+msgid "Initial transaction history synchronization can take some minutes for wallets with many transactions.<br>\n"
+"          Please stand by."
+msgstr "La première synchronisation de l'historique des transactions peut prendre quelques minutes pour les portefeuilles disposant de nombreuses transactions.<br>\n"
+"          Veuillez patienter."
+
 #: src/js/services/bwsError.js
 msgid "Insufficient funds"
 msgstr "Fonds insuffisants"
@@ -766,6 +786,10 @@ msgstr "Invalide"
 #: src/js/services/bwsError.js
 msgid "Invalid address"
 msgstr "Adresse invalide"
+
+#: src/js/controllers/index.js
+msgid "Invalid Touch ID"
+msgstr "Touch ID invalide"
 
 #: src/js/controllers/copayers.js
 msgid "Invitation to share a Copay Wallet"
@@ -803,6 +827,10 @@ msgstr "Connexion au portefeuille..."
 #: src/js/services/bwsError.js
 msgid "Key already associated with an existing wallet"
 msgstr "La clé est déjà associée avec un portefeuille existant"
+
+#: public/views/modals/destination-address.html
+msgid "Label"
+msgstr "Étiquette"
 
 #: public/views/preferences.html
 msgid "Language"
@@ -864,10 +892,6 @@ msgid "Message"
 msgstr "Message"
 
 #: public/views/walletHome.html
-msgid "More"
-msgstr "Plus"
-
-#: public/views/walletHome.html
 msgid "Moved"
 msgstr "Déplacé"
 
@@ -909,6 +933,7 @@ msgstr "Non autorisé"
 
 #: public/views/walletHome.html
 #: public/views/modals/customized-amount.html
+#: public/views/modals/destination-address.html
 msgid "Not valid"
 msgstr "Non valide"
 
@@ -948,10 +973,6 @@ msgstr "Participants"
 #: public/views/paperWallet.html
 msgid "Passphrase"
 msgstr "Phrase de passe"
-
-#: public/views/paperWallet.html
-msgid "Passphrase (if you have one)"
-msgstr "Phrase de passe (si vous en avez une)"
 
 #: public/views/import.html
 #: public/views/importLegacy.html
@@ -1152,6 +1173,10 @@ msgstr "Rejet du paiement"
 msgid "Release Information"
 msgstr "Informations de version"
 
+#: public/views/modals/destination-address.html
+msgid "Remove"
+msgstr "Supprimer"
+
 #: public/views/export.html
 #: public/views/includes/password.html
 msgid "Repeat password"
@@ -1163,8 +1188,8 @@ msgid "Request a specific amount"
 msgstr "Demander un montant précis"
 
 #: public/views/preferences.html
-msgid "Request Password for Spending Funds"
-msgstr "Exiger un mot de passe de dépenses"
+msgid "Request Password"
+msgstr "Demander un mot de passe"
 
 #: src/js/controllers/walletHome.js
 msgid "Requesting Ledger Wallet to sign"
@@ -1189,6 +1214,7 @@ msgstr "Russe"
 #: public/views/preferencesAlias.html
 #: public/views/preferencesBwsUrl.html
 #: public/views/preferencesEmail.html
+#: public/views/modals/destination-address.html
 msgid "Save"
 msgstr "Enregistrer"
 
@@ -1196,9 +1222,13 @@ msgstr "Enregistrer"
 msgid "Saving preferences..."
 msgstr "Enregistrement des préférences..."
 
-#: public/views/preferencesAdvanced.html
+#: public/views/preferencesInformation.html
 msgid "Scan addresses for funds"
 msgstr "Analyser les adresses pour des fonds"
+
+#: public/views/preferences.html
+msgid "Scan Fingerprint"
+msgstr "Scanner l'empreinte digitale"
 
 #: src/js/services/notificationsService.js
 msgid "Scan Finished"
@@ -1211,6 +1241,10 @@ msgstr "Analyse terminée avec des erreurs"
 #: public/views/paperWallet.html
 msgid "Scan Wallet Funds"
 msgstr "Analyser les fonds du portefeuille"
+
+#: src/js/controllers/index.js
+msgid "Scan your fingerprint please"
+msgstr "Veuillez scanner votre empreinte digitale"
 
 #: public/views/paperWallet.html
 msgid "Scanning wallet funds..."
@@ -1251,13 +1285,13 @@ msgstr "Certificat auto-signé"
 msgid "Send"
 msgstr "Envoyer"
 
+#: public/views/preferencesInformation.html
+msgid "Send addresses by email"
+msgstr "Envoyer les adresses par e-mail"
+
 #: public/views/walletHome.html
 msgid "Send All"
 msgstr "Tout envoyer"
-
-#: public/views/preferencesInformation.html
-msgid "Send all by email"
-msgstr "Tout envoyer par e-mail"
 
 #: public/views/export.html
 #: public/views/preferencesLogs.html
@@ -1288,6 +1322,10 @@ msgstr "Journal de session"
 msgid "SET"
 msgstr "APPLIQUER"
 
+#: public/views/preferencesBwsUrl.html
+msgid "Set default url"
+msgstr "Définir l'url par défaut"
+
 #: public/views/export.html
 msgid "Set up a Export Password"
 msgstr "Spécifiez un mot de passe d'exportation"
@@ -1299,10 +1337,6 @@ msgstr "Spécifiez un mot de passe"
 #: public/views/preferencesEmail.html
 msgid "Setting up email notifications could weaken your privacy, if the wallet service provider is compromised. Information available to an attacker would include your wallet addresses and its balance, but no more."
 msgstr "Appliquer des notifications e-mail peut affaiblir votre vie privée si le fournisseur du service de portefeuille est compromis. Les informations disponibles à un attaquant incluent les adresses de votre portefeuille et leurs soldes, mais rien de plus."
-
-#: public/views/preferences.html
-msgid "settings"
-msgstr "paramètres"
 
 #: public/views/walletHome.html
 #: public/views/modals/customized-amount.html
@@ -1364,6 +1398,10 @@ msgstr "La proposition de dépense n'est pas acceptée"
 #: src/js/services/bwsError.js
 msgid "Spend proposal not found"
 msgstr "Propostion de dépense introuvable"
+
+#: public/views/preferences.html
+msgid "Spending Restrictions"
+msgstr "Restrictions des dépenses"
 
 #: public/views/preferences.html
 msgid "Still not done"
@@ -1507,6 +1545,10 @@ msgstr "Transaction"
 #: src/js/services/bwsError.js
 msgid "Transaction already broadcasted"
 msgstr "Transaction déjà diffusée"
+
+#: public/views/preferencesInformation.html
+msgid "Transaction history"
+msgstr "Historique des transactions"
 
 #: public/views/translators.html
 msgid "Translation Credits"
@@ -1674,6 +1716,10 @@ msgstr "La graine de portefeuille n'est pas disponible. Vous pouvez toujours l'e
 #: src/js/services/bwsError.js
 msgid "Wallet service not found"
 msgstr "Wallet Service introuvable"
+
+#: public/views/modals/destination-address.html
+msgid "Wallets"
+msgstr "Portefeuilles"
 
 #: public/views/walletHome.html
 msgid "WARNING: Backup needed"
