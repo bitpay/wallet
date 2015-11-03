@@ -65,6 +65,10 @@ msgstr ""
 msgid "Accept"
 msgstr ""
 
+#: public/views/modals/destination-address.html
+msgid "Add a new entry"
+msgstr ""
+
 #: public/views/create.html
 #: public/views/join.html
 msgid "Add a Seed Passphrase"
@@ -81,12 +85,17 @@ msgstr ""
 
 #: public/views/paymentUri.html
 #: public/views/modals/customized-amount.html
+#: public/views/modals/destination-address.html
 #: public/views/modals/paypro.html
 msgid "Address"
 msgstr ""
 
 #: public/views/preferencesInformation.html
 msgid "Address Type"
+msgstr ""
+
+#: public/views/modals/destination-address.html
+msgid "Addressbook"
 msgstr ""
 
 #: public/views/preferences.html
@@ -221,6 +230,7 @@ msgstr ""
 #: public/views/copayers.html
 #: public/views/walletHome.html
 #: public/views/modals/confirmation.html
+#: public/views/modals/destination-address.html
 #: src/js/services/confirmDialog.js
 #: src/js/controllers/copayers.js
 #: src/js/controllers/preferencesDelete.js
@@ -248,17 +258,17 @@ msgstr ""
 msgid "Choose a backup file from your computer"
 msgstr ""
 
-#: public/views/modals/wallets.html
-msgid "Choose a wallet to send funds"
+#: public/views/preferencesInformation.html
+msgid "Clear history"
 msgstr ""
 
 #: public/views/includes/topbar.html
 #: public/views/modals/advancedSend.html
 #: public/views/modals/copayers.html
 #: public/views/modals/customized-amount.html
+#: public/views/modals/destination-address.html
 #: public/views/modals/paypro.html
 #: public/views/modals/scanner.html
-#: public/views/modals/wallets.html
 msgid "Close"
 msgstr ""
 
@@ -496,6 +506,10 @@ msgstr ""
 msgid "Don't see your language on Crowdin? Contact the Owner on Crowdin! We'd love to support your language."
 msgstr ""
 
+#: public/views/modals/destination-address.html
+msgid "Done"
+msgstr ""
+
 #: public/views/export.html
 msgid "Download"
 msgstr ""
@@ -506,6 +520,10 @@ msgstr ""
 
 #: src/js/services/feeService.js
 msgid "Economy"
+msgstr ""
+
+#: public/views/modals/destination-address.html
+msgid "Edit"
 msgstr ""
 
 #: public/views/importLegacy.html
@@ -640,7 +658,7 @@ msgstr ""
 msgid "GET STARTED"
 msgstr ""
 
-#: public/views/modals/wallets.html
+#: public/views/modals/destination-address.html
 msgid "Getting address for wallet {{selectedWalletName}} ..."
 msgstr ""
 
@@ -737,6 +755,12 @@ msgstr ""
 msgid "Incorrect address network"
 msgstr ""
 
+#: public/views/walletHome.html
+msgid ""
+"Initial transaction history synchronization can take some minutes for wallets with many transactions.<br>\n"
+"          Please stand by."
+msgstr ""
+
 #: src/js/services/bwsError.js
 msgid "Insufficient funds"
 msgstr ""
@@ -792,6 +816,10 @@ msgstr ""
 
 #: src/js/services/bwsError.js
 msgid "Key already associated with an existing wallet"
+msgstr ""
+
+#: public/views/modals/destination-address.html
+msgid "Label"
 msgstr ""
 
 #: public/views/preferences.html
@@ -854,10 +882,6 @@ msgid "Message"
 msgstr ""
 
 #: public/views/walletHome.html
-msgid "More"
-msgstr ""
-
-#: public/views/walletHome.html
 msgid "Moved"
 msgstr ""
 
@@ -899,6 +923,7 @@ msgstr ""
 
 #: public/views/walletHome.html
 #: public/views/modals/customized-amount.html
+#: public/views/modals/destination-address.html
 msgid "Not valid"
 msgstr ""
 
@@ -1138,6 +1163,10 @@ msgstr ""
 msgid "Release Information"
 msgstr ""
 
+#: public/views/modals/destination-address.html
+msgid "Remove"
+msgstr ""
+
 #: public/views/export.html
 #: public/views/includes/password.html
 msgid "Repeat password"
@@ -1175,6 +1204,7 @@ msgstr ""
 #: public/views/preferencesAlias.html
 #: public/views/preferencesBwsUrl.html
 #: public/views/preferencesEmail.html
+#: public/views/modals/destination-address.html
 msgid "Save"
 msgstr ""
 
@@ -1245,12 +1275,12 @@ msgstr ""
 msgid "Send"
 msgstr ""
 
-#: public/views/walletHome.html
-msgid "Send All"
+#: public/views/preferencesInformation.html
+msgid "Send addresses by email"
 msgstr ""
 
-#: public/views/preferencesInformation.html
-msgid "Send all by email"
+#: public/views/walletHome.html
+msgid "Send All"
 msgstr ""
 
 #: public/views/export.html
@@ -1280,6 +1310,10 @@ msgstr ""
 
 #: public/views/includes/password.html
 msgid "SET"
+msgstr ""
+
+#: public/views/preferencesBwsUrl.html
+msgid "Set default url"
 msgstr ""
 
 #: public/views/export.html
@@ -1502,6 +1536,10 @@ msgstr ""
 msgid "Transaction already broadcasted"
 msgstr ""
 
+#: public/views/preferencesInformation.html
+msgid "Transaction history"
+msgstr ""
+
 #: public/views/translators.html
 msgid "Translation Credits"
 msgstr ""
@@ -1667,6 +1705,10 @@ msgstr ""
 
 #: src/js/services/bwsError.js
 msgid "Wallet service not found"
+msgstr ""
+
+#: public/views/modals/destination-address.html
+msgid "Wallets"
 msgstr ""
 
 #: public/views/walletHome.html
