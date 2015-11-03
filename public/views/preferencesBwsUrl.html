@@ -7,11 +7,10 @@
 
 
 <div class="content preferences" ng-controller="preferencesBwsUrlController as prefBwsUrl">
-  <h4 class="title m0">  
-  <a class="right lh" ng-click="prefBwsUrl.resetDefaultUrl()" translate> Reset to default url</a>
-  </h4> 
+  <h4 class="title m0"></h4>
   <form name="settingsBwsUrlForm" ng-submit="prefBwsUrl.save()" class="columns">
-    <label>Wallet Service URL</label>
+    <label class="left">Wallet Service URL</label>
+    <a class="right size-12" ng-click="prefBwsUrl.resetDefaultUrl()" translate> Set default url</a>
     <input type="text" id="bwsurl" type="text" name="bwsurl" ng-model="prefBwsUrl.bwsurl">
     <input type="submit" class="button expand black round" value="{{'Save'|translate}}"
     ng-style="{'background-color':index.backgroundColor}">
