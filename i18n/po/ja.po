@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Japanese\n"
 "Language: ja\n"
-"PO-Revision-Date: 2015-10-07 10:52-0400\n"
+"PO-Revision-Date: 2015-11-03 10:08-0500\n"
 
 #: public/views/walletHome.html
 msgid "(possible double spend)"
@@ -75,6 +75,10 @@ msgstr "Copayについて"
 msgid "Accept"
 msgstr "承諾"
 
+#: public/views/modals/destination-address.html
+msgid "Add a new entry"
+msgstr "Add a new entry"
+
 #: public/views/create.html
 #: public/views/join.html
 msgid "Add a Seed Passphrase"
@@ -91,6 +95,7 @@ msgstr "ウォレットを追加"
 
 #: public/views/paymentUri.html
 #: public/views/modals/customized-amount.html
+#: public/views/modals/destination-address.html
 #: public/views/modals/paypro.html
 msgid "Address"
 msgstr "アドレス"
@@ -98,6 +103,10 @@ msgstr "アドレス"
 #: public/views/preferencesInformation.html
 msgid "Address Type"
 msgstr "アドレスの種類"
+
+#: public/views/modals/destination-address.html
+msgid "Addressbook"
+msgstr "Addressbook"
 
 #: public/views/preferences.html
 msgid "Advanced"
@@ -147,10 +156,6 @@ msgstr "最小送金額を下回っています。"
 #: public/views/modals/customized-amount.html
 msgid "Amount in"
 msgstr "換算済金額"
-
-#: public/views/preferencesLanguage.html
-msgid "Applying changes"
-msgstr "変更を反映"
 
 #: src/js/controllers/backup.js
 msgid "Are you sure you want to delete the backup words?"
@@ -236,6 +241,7 @@ msgstr "ブラウザ未対応"
 #: public/views/copayers.html
 #: public/views/walletHome.html
 #: public/views/modals/confirmation.html
+#: public/views/modals/destination-address.html
 #: src/js/services/confirmDialog.js
 #: src/js/controllers/copayers.js
 #: src/js/controllers/preferencesDelete.js
@@ -263,17 +269,17 @@ msgstr "ウォレット通称を変更しても、この端末でしか変わり
 msgid "Choose a backup file from your computer"
 msgstr "パソコンからバックアップファイルを選択して下さい。"
 
-#: public/views/modals/wallets.html
-msgid "Choose a wallet to send funds"
-msgstr "送金元のウォレットを選択して下さい"
+#: public/views/preferencesInformation.html
+msgid "Clear history"
+msgstr "Clear history"
 
 #: public/views/includes/topbar.html
 #: public/views/modals/advancedSend.html
 #: public/views/modals/copayers.html
 #: public/views/modals/customized-amount.html
+#: public/views/modals/destination-address.html
 #: public/views/modals/paypro.html
 #: public/views/modals/scanner.html
-#: public/views/modals/wallets.html
 msgid "Close"
 msgstr "閉じる"
 
@@ -511,6 +517,10 @@ msgstr "秘密鍵を含めない"
 msgid "Don't see your language on Crowdin? Contact the Owner on Crowdin! We'd love to support your language."
 msgstr "ご自分の言語はCrowdinで見当たりませんか？Crowdinの管理者に連絡とってみてください。是非とも対応したく思っております。"
 
+#: public/views/modals/destination-address.html
+msgid "Done"
+msgstr "Done"
+
 #: public/views/export.html
 msgid "Download"
 msgstr "ダウンロード"
@@ -522,6 +532,10 @@ msgstr "CSVファイルをダウンロード"
 #: src/js/services/feeService.js
 msgid "Economy"
 msgstr "節約"
+
+#: public/views/modals/destination-address.html
+msgid "Edit"
+msgstr "Edit"
 
 #: public/views/importLegacy.html
 msgid "Email"
@@ -565,13 +579,13 @@ msgstr "ウォレットインポート時にエラー："
 msgid "Expires"
 msgstr "有効期限："
 
-#: public/views/preferencesAdvanced.html
-msgid "Export"
-msgstr "エクスポート"
-
 #: public/views/export.html
 msgid "Export options"
 msgstr "エクスポート設定"
+
+#: public/views/preferencesAdvanced.html
+msgid "Export Wallet"
+msgstr "ウォレットをエクスポート"
 
 #: public/views/preferencesInformation.html
 msgid "Extended Public Keys"
@@ -655,7 +669,7 @@ msgstr "ドイツ語"
 msgid "GET STARTED"
 msgstr "はじめよう"
 
-#: public/views/modals/wallets.html
+#: public/views/modals/destination-address.html
 msgid "Getting address for wallet {{selectedWalletName}} ..."
 msgstr "「{{selectedWalletName}}」のアドレスを取得中…"
 
@@ -752,6 +766,12 @@ msgstr "和訳は簡単な要約と考えて下さい。"
 msgid "Incorrect address network"
 msgstr "アドレスのネットワークが不正です。"
 
+#: public/views/walletHome.html
+msgid "Initial transaction history synchronization can take some minutes for wallets with many transactions.<br>\n"
+"          Please stand by."
+msgstr "Initial transaction history synchronization can take some minutes for wallets with many transactions.<br>\n"
+"          Please stand by."
+
 #: src/js/services/bwsError.js
 msgid "Insufficient funds"
 msgstr "残高不足"
@@ -767,6 +787,10 @@ msgstr "無効"
 #: src/js/services/bwsError.js
 msgid "Invalid address"
 msgstr "不正アドレス"
+
+#: src/js/controllers/index.js
+msgid "Invalid Touch ID"
+msgstr "認証できませんでした"
 
 #: src/js/controllers/copayers.js
 msgid "Invitation to share a Copay Wallet"
@@ -804,6 +828,10 @@ msgstr "ウォレット参加中…"
 #: src/js/services/bwsError.js
 msgid "Key already associated with an existing wallet"
 msgstr "この鍵は既存のウォレットにて登録されています"
+
+#: public/views/modals/destination-address.html
+msgid "Label"
+msgstr "Label"
 
 #: public/views/preferences.html
 msgid "Language"
@@ -865,10 +893,6 @@ msgid "Message"
 msgstr "メッセージ"
 
 #: public/views/walletHome.html
-msgid "More"
-msgstr "更に"
-
-#: public/views/walletHome.html
 msgid "Moved"
 msgstr "移動済"
 
@@ -910,6 +934,7 @@ msgstr "権限がありません。"
 
 #: public/views/walletHome.html
 #: public/views/modals/customized-amount.html
+#: public/views/modals/destination-address.html
 msgid "Not valid"
 msgstr "無効です"
 
@@ -949,10 +974,6 @@ msgstr "参加者"
 #: public/views/paperWallet.html
 msgid "Passphrase"
 msgstr "パスワード"
-
-#: public/views/paperWallet.html
-msgid "Passphrase (if you have one)"
-msgstr "パスワード (掛かっている場合のみ要入力)"
 
 #: public/views/import.html
 #: public/views/importLegacy.html
@@ -1154,6 +1175,10 @@ msgstr "送金の提案却下中"
 msgid "Release Information"
 msgstr "リリース情報"
 
+#: public/views/modals/destination-address.html
+msgid "Remove"
+msgstr "Remove"
+
 #: public/views/export.html
 #: public/views/includes/password.html
 msgid "Repeat password"
@@ -1165,8 +1190,8 @@ msgid "Request a specific amount"
 msgstr "指定金額を要求"
 
 #: public/views/preferences.html
-msgid "Request Password for Spending Funds"
-msgstr "送金時にパスワードを要求"
+msgid "Request Password"
+msgstr "パスワードをリクエスト"
 
 #: src/js/controllers/walletHome.js
 msgid "Requesting Ledger Wallet to sign"
@@ -1191,6 +1216,7 @@ msgstr "ロシア語"
 #: public/views/preferencesAlias.html
 #: public/views/preferencesBwsUrl.html
 #: public/views/preferencesEmail.html
+#: public/views/modals/destination-address.html
 msgid "Save"
 msgstr "保存"
 
@@ -1198,9 +1224,13 @@ msgstr "保存"
 msgid "Saving preferences..."
 msgstr "設定を保存中…"
 
-#: public/views/preferencesAdvanced.html
+#: public/views/preferencesInformation.html
 msgid "Scan addresses for funds"
 msgstr "アドレスの残高照会"
+
+#: public/views/preferences.html
+msgid "Scan Fingerprint"
+msgstr "指紋スキャン"
 
 #: src/js/services/notificationsService.js
 msgid "Scan Finished"
@@ -1213,6 +1243,10 @@ msgstr "スキャンがエラーに終わりました"
 #: public/views/paperWallet.html
 msgid "Scan Wallet Funds"
 msgstr "ウォレット残高照会"
+
+#: src/js/controllers/index.js
+msgid "Scan your fingerprint please"
+msgstr "指紋をスキャンしてください"
 
 #: public/views/paperWallet.html
 msgid "Scanning wallet funds..."
@@ -1253,13 +1287,13 @@ msgstr "自己署名証明書"
 msgid "Send"
 msgstr "送信"
 
+#: public/views/preferencesInformation.html
+msgid "Send addresses by email"
+msgstr "Send addresses by email"
+
 #: public/views/walletHome.html
 msgid "Send All"
 msgstr "全額を送金"
-
-#: public/views/preferencesInformation.html
-msgid "Send all by email"
-msgstr "全てをメールで送信"
 
 #: public/views/export.html
 #: public/views/preferencesLogs.html
@@ -1290,6 +1324,10 @@ msgstr "セッションのログ"
 msgid "SET"
 msgstr "指定"
 
+#: public/views/preferencesBwsUrl.html
+msgid "Set default url"
+msgstr "Set default url"
+
 #: public/views/export.html
 msgid "Set up a Export Password"
 msgstr "バックアップ用のパスワードを設定"
@@ -1301,10 +1339,6 @@ msgstr "パスワードを設定"
 #: public/views/preferencesEmail.html
 msgid "Setting up email notifications could weaken your privacy, if the wallet service provider is compromised. Information available to an attacker would include your wallet addresses and its balance, but no more."
 msgstr "メールのお知らせを有効にすると、悪意のあるサーバー運用者ならあなたの全てのアドレスとそれぞれの残高・履歴情報が把握できプライバシーの侵害に繋がる可能性があります。"
-
-#: public/views/preferences.html
-msgid "settings"
-msgstr "設定"
 
 #: public/views/walletHome.html
 #: public/views/modals/customized-amount.html
@@ -1368,6 +1402,10 @@ msgstr "送金の提案が受諾されませんでした。"
 #: src/js/services/bwsError.js
 msgid "Spend proposal not found"
 msgstr "送金の提案が見つかりませんでした。"
+
+#: public/views/preferences.html
+msgid "Spending Restrictions"
+msgstr "送金上限"
 
 #: public/views/preferences.html
 msgid "Still not done"
@@ -1511,6 +1549,10 @@ msgstr "取引"
 #: src/js/services/bwsError.js
 msgid "Transaction already broadcasted"
 msgstr "取引は既に配信されました。"
+
+#: public/views/preferencesInformation.html
+msgid "Transaction history"
+msgstr "Transaction history"
 
 #: public/views/translators.html
 msgid "Translation Credits"
@@ -1678,6 +1720,10 @@ msgstr "ウォレットの復元フレーズがありません。バックアッ
 #: src/js/services/bwsError.js
 msgid "Wallet service not found"
 msgstr "Wallet serviceが見つかりません。"
+
+#: public/views/modals/destination-address.html
+msgid "Wallets"
+msgstr "Wallets"
 
 #: public/views/walletHome.html
 msgid "WARNING: Backup needed"
