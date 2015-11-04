@@ -188,8 +188,10 @@ angular.module('copayApp.controllers').controller('importController',
         return;
       }
       self.hwWallet = 'Trezor';
-      // TODO account
-      trezor.getInfoForNewWallet(0, function(err, lopts) {
+      var account = form.account.$modelValue;
+      var isMultisig = form.isMultisig.$modelValue;
+
+      trezor.getInfoForNewWallet(isMultisig, account, function(err, lopts) {
         self.hwWallet = false;
         if (err) {
           self.error = err;
@@ -227,8 +229,8 @@ angular.module('copayApp.controllers').controller('importController',
         return;
       }
       self.hwWallet = 'Ledger';
-      // TODO account
-      ledger.getInfoForNewWallet(0, function(err, lopts) {
+      var account = form.account.$modelValue;
+      ledger.getInfoForNewWallet(true, account, function(err, lopts) {
         self.hwWallet = false;
         if (err) {
           self.error = err;

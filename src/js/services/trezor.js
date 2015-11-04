@@ -1,39 +1,21 @@
 'use strict';
 
 angular.module('copayApp.services')
-  .factory('trezor', function($log, $timeout, bwcService, gettext, lodash, bitcore) {
+  .factory('trezor', function($log, $timeout, bwcService, gettext, lodash, bitcore, hwWallet) {
     var root = {};
 
     var SETTLE_TIME = 3000;
-
-    root.ENTROPY_INDEX_PATH = "0xb11e/";
     root.callbacks = {};
 
-
-    root._err = function(data) {
-      var msg = 'TREZOR Error: ' + (data.error || data.message || 'unknown');
-      $log.warn(msg);
-      return msg;
-    };
-
-    root.getEntropySource = function(account, callback) {
-      var path = root.ENTROPY_INDEX_PATH + account + "'";
-      var xpub = root.getXPubKey(path, function(data) {
-        if (!data.success) {
-          return callback(root._err(data));
-        }
-
-        var b = bwcService.getBitcore();
-
-        var x = b.HDPublicKey(data.xpubkey);
-        data.entropySource = x.publicKey.toString();
-        return callback(null, data);
+    root.getEntropySource = function(isMultisig, account, callback) {
+      root.getXPubKey(hwWallet.getEntropyPath(isMultisig, account), function(data) {
+        if (!data.success) 
+          return callback(hwWallet._err(data));
+        
+        return callback(null,  hwWallet.pubKeyToEntropySource(data.xpubkey));
       });
     };
 
-    root.getXPubKeyForAddresses = function(account, callback) {
-      return root.getXPubKey(root._getPath(account), callback);
-    };
 
     root.getXPubKey = function(path, callback) {
       $log.debug('TREZOR deriving xPub path:', path);
@@ -41,16 +23,17 @@ angular.module('copayApp.services')
     };
 
 
-    root.getInfoForNewWallet = function(account, callback) {
+    root.getInfoForNewWallet = function(isMultisig, account, callback) {
       var opts = {};
-      root.getEntropySource(account, function(err, data) {
+      root.getEntropySource(isMultisig, account, function(err, data) {
         if (err) return callback(err);
         opts.entropySource = data.entropySource;
         $log.debug('Waiting TREZOR to settle...');
         $timeout(function() {
-          root.getXPubKeyForAddresses(account, function(data) {
-            if (!data.success) 
-              return callback(root._err(data));
+
+          root.getXPubKey(hwWallet.getAddressPath(isMultisig, account), function(data) {
+            if (!data.success)
+              return callback(hwWallet._err(data));
 
             opts.extendedPublicKey = data.xpubkey;
             opts.externalSource = 'trezor';
@@ -110,7 +93,7 @@ angular.module('copayApp.services')
         var inAmount = 0;
         inputs = lodash.map(txp.inputs, function(i) {
           var pathArr = i.path.split('/');
-          var n = [44 | 0x80000000, 0 | 0x80000000, account | 0x80000000, parseInt(pathArr[1]), parseInt(pathArr[2])];
+          var n = [hwWallet.UNISIG_ROOTPATH | 0x80000000, 0 | 0x80000000, account | 0x80000000, parseInt(pathArr[1]), parseInt(pathArr[2])];
           inAmount += i.satoshis;
           return {
             address_n: n,
@@ -122,7 +105,7 @@ angular.module('copayApp.services')
         var change = inAmount - txp.fee - txp.amount;
         if (change > 0) {
           var pathArr = txp.changeAddress.path.split('/');
-          var n = [44 | 0x80000000, 0 | 0x80000000, account | 0x80000000, parseInt(pathArr[1]), parseInt(pathArr[2])];
+          var n = [hwWallet.UNISIG_ROOTPATH | 0x80000000, 0 | 0x80000000, account | 0x80000000, parseInt(pathArr[1]), parseInt(pathArr[2])];
 
           tmpOutputs.push({
             address_n: n,
@@ -133,7 +116,7 @@ angular.module('copayApp.services')
 
       } else {
 
-        // P2SH Wallet
+        // P2SH Wallet, multisig wallet
         var inAmount = 0;
 
         var sigs = xPubKeys.map(function(v) {
@@ -143,7 +126,7 @@ angular.module('copayApp.services')
 
         inputs = lodash.map(txp.inputs, function(i) {
           var pathArr = i.path.split('/');
-          var n = [44 | 0x80000000, 0 | 0x80000000, account | 0x80000000, parseInt(pathArr[1]), parseInt(pathArr[2])];
+          var n = [hwWallet.MULTISIG_ROOTPATH | 0x80000000, 0 | 0x80000000, account | 0x80000000, parseInt(pathArr[1]), parseInt(pathArr[2])];
           var np = n.slice(3);
 
           inAmount += i.satoshis;
@@ -172,7 +155,7 @@ angular.module('copayApp.services')
         var change = inAmount - txp.fee - txp.amount;
         if (change > 0) {
           var pathArr = txp.changeAddress.path.split('/');
-          var n = [44 | 0x80000000, 0 | 0x80000000, account | 0x80000000, parseInt(pathArr[1]), parseInt(pathArr[2])];
+          var n = [hwWallet.MULTISIG_ROOTPATH | 0x80000000, 0 | 0x80000000, account | 0x80000000, parseInt(pathArr[1]), parseInt(pathArr[2])];
           var np = n.slice(3);
 
           var orderedPubKeys = root._orderPubKeys(xPubKeys, np);
@@ -182,18 +165,6 @@ angular.module('copayApp.services')
               address_n: np,
             };
           }));
-
-          // 6D
-          // 6C
-          // Addr: 3HFkHufeSaqJtqby8G9RiajaL6HdQDypRT
-          //
-          //
-          //(sin reverse)
-          // 6C
-          // 6D
-          // Addr: 3KCPRDXpmovs9nFvJHJjjsyoBDXXUZ2Frg
-          //  "asm" : "2 03e53b2f69e1705b253029aae2591fbd0e799ed8071c8588a545b2d472dd12df88 0379797abc21d6f82c7f0aba78fd3888d8ae75ec56a10509b20feedbeac20285d9 2 OP_CHECKMULTISIG",
-          // 
 
           tmpOutputs.push({
             address_n: n,
@@ -227,16 +198,12 @@ angular.module('copayApp.services')
 
       $log.debug('Signing with TREZOR', inputs, outputs);
       TrezorConnect.signTx(inputs, outputs, function(result) {
-        if (!data.success) 
-          return callback(root._err(data));
+        if (!data.success)
+          return callback(hwWallet._err(data));
 
         callback(null, result);
       });
     };
-
-    root._getPath = function(account) {
-      return "44'/0'/" + account + "'";
-    }
 
     return root;
   });
