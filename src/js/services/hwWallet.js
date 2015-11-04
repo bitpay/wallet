@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.services')
-  .factory('hwWallet', function($log) {
+  .factory('hwWallet', function($log,  bwcService) {
     var root = {};
 
     // Ledger magic number to get xPub without user confirmation
@@ -11,7 +11,7 @@ angular.module('copayApp.services')
     root.LIVENET_PATH = 0;
 
     root._err = function(data) {
-      var msg = 'HW WALLET Error: ' + (data.error || data.message || 'unknown');
+      var msg = 'Hardware Wallet Error: ' + (data.error || data.message || 'unknown');
       $log.warn(msg);
       return msg;
     };
@@ -23,8 +23,7 @@ angular.module('copayApp.services')
 
     root.getEntropyPath = function(isMultisig, account) {
       var rootPath = isMultisig ? root.MULTISIG_ROOTPATH : root.UNISIG_ROOTPATH;
-      var path = hwWallet.ENTROPY_INDEX_PATH + rootPath + "'/"
-      account + "'";
+      var path = root.ENTROPY_INDEX_PATH + rootPath + "'/" + account + "'";
       return path;
     };
 

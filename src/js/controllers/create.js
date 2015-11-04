@@ -49,9 +49,8 @@ angular.module('copayApp.controllers').controller('createController',
       }];
       $scope.seedSource = self.seedOptions[0];
 
-
-// TODO
-//      if (!isChromeApp) return;
+      // TODO
+      //      if (!isChromeApp) return;
 
       if (n > 1)
         self.seedOptions.push({
@@ -63,6 +62,7 @@ angular.module('copayApp.controllers').controller('createController',
         id: 'trezor',
         label: gettext('Trezor Hardware Wallet'),
       });
+
     };
 
     this.TCValues = lodash.range(2, defaults.limits.totalCopayers + 1);
@@ -71,12 +71,18 @@ angular.module('copayApp.controllers').controller('createController',
     this.setTotalCopayers = function(tc) {
       updateRCSelect(tc);
       updateSeedSourceSelect(tc);
+      self.seedSourceId = $scope.seedSource.id;
     };
 
 
     this.setSeedSource = function(src) {
       self.seedSourceId = $scope.seedSource.id;
-console.log('[create.js.78:seedSourceId:]',self.seedSourceId); //TODO
+
+      if (self.seedSourceId == 'ledger')
+        self.accountValues = lodash.range(0, 99);
+      else 
+        self.accountValues = lodash.range(1, 100);
+
       $timeout(function() {
         $rootScope.$apply();
       });
@@ -95,7 +101,7 @@ console.log('[create.js.78:seedSourceId:]',self.seedSourceId); //TODO
         networkName: form.isTestnet.$modelValue ? 'testnet' : 'livenet',
         bwsurl: $scope.bwsurl
       };
-      var setSeed = form.setSeed.$modelValue;
+      var setSeed = self.seedSourceId =='set';
       if (setSeed) {
         var words = form.privateKey.$modelValue;
         if (words.indexOf(' ') == -1 && words.indexOf('prv') == 1 && words.length > 108) {
@@ -113,12 +119,16 @@ console.log('[create.js.78:seedSourceId:]',self.seedSourceId); //TODO
         return;
       }
 
-      if (form.hwLedger.$modelValue || form.hwTrezor.$modelValue) {
-        self.hwWallet = form.hwLedger.$modelValue ? 'Ledger' : 'TREZOR';
 
-        var src = form.hwLedger.$modelValue ? ledger : trezor;
+      if (self.seedSourceId == 'ledger' || self.seedSourceId == 'trezor') {
+        var account = $scope.account;
+        if (!account) {
+          this.error = gettext('Please select account');
+          return;
+        }
+        self.hwWallet = self.seedSourceId == 'ledger' ? 'Ledger' : 'Trezor';
+        var src = self.seedSourceId == 'ledger' ? ledger : trezor;
 
-        var account = form.account.$modelValue;
         src.getInfoForNewWallet(opts.n > 1, account, function(err, lopts) {
           self.hwWallet = false;
           if (err) {
@@ -178,4 +188,5 @@ console.log('[create.js.78:seedSourceId:]',self.seedSourceId); //TODO
       $rootScope.hideWalletNavigation = false;
     });
     updateSeedSourceSelect(1);
+    self.seedSourceId = 'new'
   });
