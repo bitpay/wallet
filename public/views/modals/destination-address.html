@@ -8,15 +8,15 @@
 
     <section class="middle tab-bar-section">
       <ul class="button-group round even-2" ng-show="!editAddressbook && wallets[0] && !addAddressbookEntry">
-        <li ng-class="{'selected':selectedWalletsOpt}" ng-click="selectedWalletsOpt = true"
+        <li class="ellipsis" ng-class="{'selected':selectedWalletsOpt}" ng-click="selectedWalletsOpt = true"
           translate>
           Wallets
         </li>
-        <li ng-class="{'selected':!selectedWalletsOpt}" ng-click="selectedWalletsOpt = false" translate>
+        <li class="ellipsis" ng-class="{'selected':!selectedWalletsOpt}" ng-click="selectedWalletsOpt = false" translate>
           Addressbook
         </li>
       </ul>
-      <h1 ng-show="(editAddressbook || !wallets[0]) && !addAddressbookEntry" class="title ellipsis" ng-style="{'color':color}" translate>
+      <h1 ng-show="(editAddressbook || !wallets[0]) && !addAddressbookEntry" class="title ellipsis" translate>
         Addressbook
       </h1>
     </section>
