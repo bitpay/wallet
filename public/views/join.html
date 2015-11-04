@@ -32,118 +32,123 @@
     </div>
   </div>
 
-  <div class="row">
-    <div class="large-12 columns">
+  <form name="joinForm" ng-submit="join.join(joinForm)" novalidate>
+    <div class="row">
+      <div class="large-12 columns">
+        <div class="box-notification" ng-show="join.error ">
+          <span class="text-warning size-14">
+            {{join.error|translate}}
+          </span>
+        </div>
 
-      <div class="box-notification" ng-show="join.error ">
-        <span class="text-warning size-14">
-          {{join.error|translate}}
-        </span>
-      </div>
-
-      <form name="joinForm" ng-submit="join.join(joinForm)" novalidate>
+        <div>
           <label><span translate>Your nickname</span>
             <div class="input">
               <input type="text" placeholder="{{'John'|translate}}" class="form-control" name="myName" ng-model="myName" ng-required="true">
             </div>
           </label>
+        </div>
 
-          <div class="row collapse">
-            <label for="secret" class="left"><span translate>Wallet Invitation</span>
-              <small translate ng-show="joinForm.secret.$pristine">Required</small>
-            </label>
-            <span class="has-error right size-12" ng-show="joinForm.secret.$invalid
-              && !joinForm.secret.$pristine">
-              <span class="icon-input"><i class="fi-x"></i></span>
-              <span translate>Wallet Invitation is not valid!</span>
-            </span>
-            <small class="icon-input right" ng-show="joinForm.secret.$valid
-              && !joinForm.secret.$pristine"><i class="fi-check"></i></small>
+        <div class="row collapse">
+          <label for="secret" class="left"><span translate>Wallet Invitation</span>
+            <small translate ng-show="joinForm.secret.$pristine">Required</small>
+          </label>
+          <span class="has-error right size-12" ng-show="joinForm.secret.$invalid
+            && !joinForm.secret.$pristine">
+            <span class="icon-input"><i class="fi-x"></i></span>
+            <span translate>Wallet Invitation is not valid!</span>
+          </span>
+          <small class="icon-input right" ng-show="joinForm.secret.$valid
+            && !joinForm.secret.$pristine"><i class="fi-check"></i></small>
+        </div>
+
+        <div class="input">
+          <input id="secret" type="text" placeholder="{{'Paste invitation here'|translate}}" name="secret" ng-model="secret" wallet-secret required>
+          <div class="qr-scanner-input">
+            <qr-scanner on-scan="join.onQrCodeScanned(data)"></qr-scanner>
           </div>
+        </div>
 
-          <div class="input">
-            <input id="secret" type="text" placeholder="{{'Paste invitation here'|translate}}" name="secret" ng-model="secret" wallet-secret required>
-            <div class="qr-scanner-input">
-              <qr-scanner on-scan="join.onQrCodeScanned(data)"></qr-scanner>
-            </div>
-          </div>
-
-          <a class="button outline light-gray tiny expand" ng-click="join.hideAdv=!join.hideAdv">
+        <div class="m10t oh" ng-init="hideAdv=true">
+          <a class="button outline light-gray expand tiny" ng-click="hideAdv=!hideAdv">
             <i class="fi-widget m3r"></i>
-            <span translate ng-show="!join.hideAdv">Show advanced options</span>
-            <span translate ng-show="join.hideAdv">Hide advanced options</span>
-            <i ng-show="!join.hideAdv" class="icon-arrow-down4"></i>
-            <i ng-show="join.hideAdv" class="icon-arrow-up4"></i>
+            <span translate ng-hide="!hideAdv">Show advanced options</span>
+            <span translate ng-hide="hideAdv">Hide advanced options</span>
+            <i ng-if="hideAdv" class="icon-arrow-down4"></i>
+            <i ng-if="!hideAdv" class="icon-arrow-up4"></i>
           </a>
-          <div ng-show="join.hideAdv" class="row">
-            <div class="large-12 columns">
+        </div>
 
-            <label for="hw-ledger" class="oh" ng-show="index.isChromeApp">
-              <span translate>Use Ledger hardware wallet</span>
-              <switch id="hw-ledger" name="hwLedger" ng-model="hwLedger" class="green right m5t m10b"></switch>
-            </label>
+        <div ng-hide="hideAdv" class="row">
+          <div class="large-12 columns">
+            <div>
+              <label for="bws" class="oh">
+                <span>Wallet Service URL</span>
+                <input type="text" id="bwsurl" name="bwsurl" ng-model="bwsurl">
+              </label>
+            </div>
 
-            <label ng-show="!index.isCordova && 0" for="hw-trezor" class="oh">
-              <span translate>Use TREZOR hardware wallet</span>
-              <switch id="hw-trezor" name="hwTrezor" ng-model="hwTrezor" class="green right m5t m10b"></switch>
-            </label>
+            <div>
+              <label><span translate>Wallet Seed</span>
+              <select class="m10t" ng-model="seedSource"
+                ng-options="seed as seed.label for seed in join.seedOptions"
+                ng-change="join.setSeedSource()">
+              </select>
+              </label>
+            </div>
 
-<!-- TODO account
-            <div class="large-12 columns" ng-hide="!hwLedger">
-              <label class="oh">
-                <span translate>Ledger Slot</span>
-                <select class="m10t" ng-model="externalIndex" ng-options="externalIndex as externalIndex for externalIndex in join.externalIndexValues">
+            <div ng-show="join.seedSourceId == 'trezor' || join.seedSourceId == 'ledger'">
+
+              <label class="oh"><span translate>Account</span>
+                <select class="m10t" ng-model="account" ng-options="externalIndex as externalIndex for externalIndex in join.accountValues">
                 </select>
               </label>
-              <div class="oh text-gray line-b  size-12  p10b m20b"><span translate>Ledger supports up to 20 Copay wallets simultaneously. Select which slot should be used to host this wallet</div>
+              <div class="oh text-gray line-b  size-12   p10b m20b"><span translate>Multiple wallets accounts are supported on the device simultaneously. Select which account should be used for this wallet</div>
             </div>
--->
-            <label   ng-show="!hwLedger && !hwTrezor" for="seed" class="oh">
-              <span translate>Specify your wallet seed</span>
-              <switch id="seed" name="setSeed" ng-model="setSeed" class="green right m5t m10b"></switch>
-            </label>
 
-            <label for="createPassphrase" class="oh" ng-show="!setSeed && !hwLedger && !hwTrezor" ><span translate>Add a Seed Passphrase</span>  <small translate>Add an optional passphrase to secure the seed</small>
-              <div class="input">
-                <input type="text" class="form-control"
-                name="createPassphrase" ng-model="createPassphrase">
-              </div>
-            </label>
+            <div class="box-notification" ng-show="join.seedSourceId=='new' && createPassphrase">
+              <span class="text-warning size-14">
+                <i class="fi-alert"></i>
+                <span translate>
+                WARNING: Passphrase cannot be recovered. <b>Be sure to write it down</b>. The wallet can not be restored without the passphrase.
+                </span>
+              </span>
+            </div>
 
-            <label for="ext-master" class="m10t" ng-show="setSeed">
-              <span translate>Wallet Seed</span>
-              <small translate>Enter the seed words (BIP39)</small>
-              <input id="ext-master"
-              type="text"
-              name="privateKey" ng-model="privateKey">
-            </label>
-            <label for="passphrase" class="oh" ng-show="setSeed"><span translate>Seed Passphrase</span>  <small translate>The seed could require a passphrase to be imported</small>
-              <div class="input">
-                <input type="text" class="form-control" name="passphrase" ng-model="passphrase">
-              </div>
-            </label>
+            <div ng-show="join.seedSourceId=='new' ">
+              <label for="createPassphrase"  ><span translate>Add a Seed Passphrase</span>  <small translate>Add an optional passphrase to secure the seed</small>
+                <div class="input">
+                  <input type="text" class="form-control"
+                  name="createPassphrase" ng-model="createPassphrase">
+                </div>
+              </label>
+            </div>
 
-            <label  for="bws" class="oh">
-              <span>Wallet Service URL</span>
-              <input type="text" id="bwsurl" name="bwsurl" ng-model="bwsurl">
-            </label>
-          </div>
-        </div>
+            <div ng-show="join.seedSourceId=='set'">
+              <label for="ext-master">
+                <span translate>Wallet Seed</span>
+                <small translate>Enter the seed words (BIP39)</small>
+                <input id="ext-master"
+                type="text"
+                name="privateKey" ng-model="privateKey">
+              </label>
+            </div>
 
-        <div class="box-notification" ng-show="!setSeed && createPassphrase">
-          <span class="text-warning size-14">
-            <i class="fi-alert"></i>
-            <span translate>
-            WARNING: Passphrase cannot be recovered. <b>Be sure to write it down</b>. The wallet can not be restored without the passphrase.
-            </span>
-          </span>
-        </div>
+            <div ng-show="join.seedSourceId=='set'">
+              <label for="passphrase"> <span translate>Seed Passphrase</span>  <small translate>The seed could require a passphrase to be imported</small>
+                <div class="input">
+                  <input type="text" class="form-control" name="passphrase" ng-model="passphrase">
+                </div>
+              </label>
+            </div>
+          </div> <!-- columns -->
+        </div> <!-- advanced -->
 
-          <button translate type="submit" class="button expand black m0 round"
-            ng-disabled="joinForm.$invalid || join.loading">Join</button>
-      </form>
-    </div>
-  </div>
+        <button translate type="submit" class="button expand black m0 round"
+          ng-disabled="joinForm.$invalid || join.loading">Join</button>
+      </div> <!-- large-12 columns -->
+    </div> <!-- row -->
+  </form>
 </div>
 
 <div class="extra-margin-bottom"></div>

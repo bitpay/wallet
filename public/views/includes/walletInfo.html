@@ -3,4 +3,7 @@
 <div ng-show="index.isPrivKeyExternal" style="text-transform: capitalize">
   <span translate>External Private Key:</span>
   {{index.externalSource}}
+  <span>(<span translate>Account</span>:
+    #{{index.account || 0}})
+  </span>
 </div>
