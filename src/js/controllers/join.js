@@ -6,6 +6,8 @@ angular.module('copayApp.controllers').controller('joinController',
     var self = this;
     var defaults = configService.getDefaults();
     $scope.bwsurl = defaults.bws.url;
+    self.accountValuesForSeed = lodash.range(0, 100);
+    $scope.accountForSeed = 0;
 
     this.onQrCodeScanned = function(data) {
       $scope.secret = data;
@@ -55,7 +57,8 @@ angular.module('copayApp.controllers').controller('joinController',
       var opts = {
         secret: form.secret.$modelValue,
         myName: form.myName.$modelValue,
-        bwsurl: $scope.bwsurl
+        bwsurl: $scope.bwsurl,
+        account: $scope.accountForSeed || 0,
       }
 
       var setSeed = self.seedSourceId =='set';
@@ -82,6 +85,7 @@ angular.module('copayApp.controllers').controller('joinController',
           this.error = gettext('Please select account');
           return;
         }
+        opts.account =  account;
         self.hwWallet = self.seedSourceId == 'ledger' ? 'Ledger' : 'Trezor';
         var src = self.seedSourceId == 'ledger' ? ledger : trezor;
 
