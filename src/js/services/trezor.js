@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.services')
-  .factory('trezor', function($log, $timeout, bwcService, gettext, lodash, bitcore, hwWallet) {
+  .factory('trezor', function($log, $timeout, gettext, lodash, bitcore, hwWallet) {
     var root = {};
 
     var SETTLE_TIME = 3000;
@@ -24,10 +24,11 @@ angular.module('copayApp.services')
 
 
     root.getInfoForNewWallet = function(isMultisig, account, callback) {
+      account = account - 1;
       var opts = {};
       root.getEntropySource(isMultisig, account, function(err, data) {
         if (err) return callback(err);
-        opts.entropySource = data.entropySource;
+        opts.entropySource = data;
         $log.debug('Waiting TREZOR to settle...');
         $timeout(function() {
 
@@ -37,7 +38,7 @@ angular.module('copayApp.services')
 
             opts.extendedPublicKey = data.xpubkey;
             opts.externalSource = 'trezor';
-            opts.externalIndex = account;
+            opts.account = account;
             return callback(null, opts);
           });
         }, SETTLE_TIME);

@@ -181,7 +181,7 @@ angular.module('copayApp.services')
           walletClient.seedFromMnemonic(opts.mnemonic, {
             network: network,
             passphrase: opts.passphrase,
-            account: 0,
+            account: opts.account || 0,
           });
         } catch (ex) {
           $log.info(ex);
@@ -197,7 +197,7 @@ angular.module('copayApp.services')
       } else if (opts.extendedPublicKey) {
         try {
           walletClient.seedFromExtendedPublicKey(opts.extendedPublicKey, opts.externalSource, opts.entropySource, {
-            account: 0
+            account: opts.account || 0, 
           });
         } catch (ex) {
           $log.warn("Creating wallet from Extended Public Key Arg:", ex, opts);
@@ -420,7 +420,7 @@ angular.module('copayApp.services')
       walletClient.importFromMnemonic(words, {
         network: opts.networkName,
         passphrase: opts.passphrase,
-        account: 0,
+        account: opts.account,
       }, function(err) {
         if (err)
           return bwsError.cb(err, gettext('Could not import'), cb);
@@ -437,7 +437,7 @@ angular.module('copayApp.services')
       $log.debug('Importing Wallet XPubKey');
 
       walletClient.importFromExtendedPublicKey(opts.extendedPublicKey, opts.externalSource, opts.entropySource, {
-        account: 0
+        account: opts.account || 0,
       }, function(err) {
         if (err) {
 

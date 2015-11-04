@@ -40,7 +40,7 @@ angular.module('copayApp.services')
 
     root.getInfoForNewWallet = function(isMultisig, account, callback) {
       var opts = {};
-      root.getEntropySource(isMultisig, account, function(entropySource) {
+      root.getEntropySource(isMultisig, account, function(err, entropySource) {
         if (err) return callback(err);
 
         opts.entropySource = entropySource;
@@ -51,7 +51,7 @@ angular.module('copayApp.services')
           }
           opts.extendedPublicKey = data.xpubkey;
           opts.externalSource = 'ledger';
-          opts.externalIndex = account;
+          opts.account = account;
           return callback(null, opts);
         });
       });
