@@ -5,19 +5,12 @@ angular.module('copayApp.services')
     var root = {};
     var LEDGER_CHROME_ID = "kkdpmhnladdopljabkgpacgpliggeeaf";
 
-    // Ledger magic number to get xPub without user confirmation
-    root.ENTROPY_INDEX_PATH = "0xb11e/";
-    root.UNISIG_ROOTPATH = 44;
-    root.MULTISIG_ROOTPATH = 48;
-
     root.callbacks = {};
-
     root.hasSession = function() {
       root._message({
         command: "has_session"
       });
     }
-
 
     root.getEntropySource = function(isMultisig, account, callback) {
       root.getXPubKey(hwWallet.getEntropyPath(isMultisig, account), function(data) {

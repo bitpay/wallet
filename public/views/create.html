@@ -160,7 +160,22 @@
               </label>
             </div>
 
-            <div ng-show="create.seedSourceId == 'set' || create.seedSourceId == 'new'">
+            <div ng-show="create.seedSourceId == 'set'">
+              <label class="oh"><span translate>Account</span>
+                <select class="m10t" ng-model="accountForSeed" ng-options="externalIndex as externalIndex for externalIndex in create.accountValuesForSeed">
+                </select>
+              </label>
+              <div class="oh text-gray line-b  size-12   p10b m20b"><span translate>Multiple accounts can be derived from the same seed. Specify which account to use</div>
+            </div>
+
+            <div  class="oh" ng-show="create.seedSourceId == 'set' && privateKey.split(' ').length>20 && totalCopayers != 1">
+              <label for="fromHardware">
+                <span translate>Hardware Wallet?</span>
+                <switch id="fromHardware" name="fromHardware" ng-model="fromHardware" class="green right m5t m10b"></switch>
+              </label>
+            </div>
+
+            <div class="oh"  ng-show="(create.seedSourceId == 'set' || create.seedSourceId == 'new') && ! fromHardware">
               <label for="network-name" >
                 <span translate>Testnet</span>
                 <switch id="network-name" name="isTestnet" ng-model="isTestnet" class="green right m5t m10b"></switch>

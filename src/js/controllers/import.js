@@ -7,6 +7,8 @@ angular.module('copayApp.controllers').controller('importController',
     var reader = new FileReader();
     var defaults = configService.getDefaults();
     $scope.bwsurl = defaults.bws.url;
+    $scope.accountForSeed = 0;
+    self.accountValuesForSeed = lodash.range(0, 100);
 
     window.ignoreMobilePause = true;
     $scope.$on('$destroy', function() {
@@ -17,8 +19,7 @@ angular.module('copayApp.controllers').controller('importController',
 
     var updateSeedSourceSelect = function() {
       self.seedOptions = [];
-// TODO
-//     if (!isChromeApp) return;
+      if (!isChromeApp) return;
 
       self.seedOptions.push({
         id: 'ledger',
@@ -193,6 +194,7 @@ angular.module('copayApp.controllers').controller('importController',
 
       opts.passphrase = form.passphrase.$modelValue || null;
       opts.networkName = form.isTestnet.$modelValue ? 'testnet' : 'livenet';
+      opts.account = $scope.accountForSeed;
 
       _importMnemonic(words, opts);
     };
@@ -256,11 +258,7 @@ angular.module('copayApp.controllers').controller('importController',
     this.setSeedSource = function() {
       if (!$scope.seedSource) return;
       self.seedSourceId = $scope.seedSource.id;
-
-      if (self.seedSourceId == 'ledger')
-        self.accountValues = lodash.range(0, 99);
-      else 
-        self.accountValues = lodash.range(1, 100);
+      self.accountValues = lodash.range(1, 100);
 
       $timeout(function() {
         $rootScope.$apply();

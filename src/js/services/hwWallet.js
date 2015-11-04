@@ -17,13 +17,26 @@ angular.module('copayApp.services')
     };
 
     root.getAddressPath = function(isMultisig, account) {
-      var rootPath = isMultisig ? root.MULTISIG_ROOTPATH : root.UNISIG_ROOTPATH;
+      var rootPath;
+
+      if (account) {
+        rootPath = isMultisig ? root.MULTISIG_ROOTPATH : root.UNISIG_ROOTPATH;
+      } else {
+        // Old ledger wallet compat
+        rootPath = 44;
+      }
       return rootPath + "'/" + root.LIVENET_PATH + "'/" + account + "'";
     }
 
     root.getEntropyPath = function(isMultisig, account) {
-      var rootPath = isMultisig ? root.MULTISIG_ROOTPATH : root.UNISIG_ROOTPATH;
-      var path = root.ENTROPY_INDEX_PATH + rootPath + "'/" + account + "'";
+      var path;
+      if (account) {
+        var rootPath = isMultisig ? root.MULTISIG_ROOTPATH : root.UNISIG_ROOTPATH;
+        path = root.ENTROPY_INDEX_PATH + rootPath + "'/" + account + "'";
+      } else {
+        // Old ledger wallet compat
+        path = root.ENTROPY_INDEX_PATH  + "0'";
+      }
       return path;
     };
 
