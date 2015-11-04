@@ -99,8 +99,17 @@
           </a>
         </div>
         <div ng-hide="hideAdv" class="row">
-          <div class="large-12 columns">
 
+          <div class="large-12 medium-12 columns">
+            <label><span translate>Wallet Seed</span>
+            <select class="m10t" ng-model="seedSource"
+              ng-options="seed as seed.label for seed in create.seedOptions"
+              ng-change="create.setSeedSource()">
+            </select>
+            </label>
+          </div>
+
+          <div class="large-12 columns">
             <label ng-show="index.isChromeApp && totalCopayers > 1 " for="hw-ledger" class="oh">
               <span translate>Use Ledger hardware wallet</span>
               <switch id="hw-ledger" name="hwLedger" ng-model="hwLedger" ng-change="isTestnet=false" class="green right m5t m10b"></switch>
@@ -124,26 +133,21 @@
               <switch id="network-name" name="isTestnet" ng-model="isTestnet" class="green right m5t m10b"></switch>
             </label>
 
-            <label  ng-show="!hwLedger && !hwTrezor" for="seed" class="oh">
-              <span translate>Specify your wallet seed</span>
-              <switch id="seed" name="setSeed" ng-model="setSeed" class="green right m5t m10b"></switch>
-            </label>
-
-            <label for="createPassphrase" class="oh" ng-hide="setSeed || hwLedger || hwTrezor" ><span translate>Add a Seed Passphrase</span>  <small translate>Add an optional passphrase to secure the seed</small>
+            <label for="createPassphrase" class="oh" ng-show="create.seedSourceId=='new' " ><span translate>Add a Seed Passphrase</span>  <small translate>Add an optional passphrase to secure the seed</small>
               <div class="input">
                 <input type="text" class="form-control"
                 name="createPassphrase" ng-model="createPassphrase">
               </div>
             </label>
 
-            <label for="ext-master" class="m10t" ng-show="setSeed">
+            <label for="ext-master" class="m10t" ng-show="create.seedSourceId=='set'">
               <span translate>Wallet Seed</span>
               <small translate>Enter the seed words (BIP39)</small>
               <input id="ext-master"
               type="text"
               name="privateKey" ng-model="privateKey">
             </label>
-            <label for="passphrase" class="oh" ng-show="setSeed"><span translate>Seed Passphrase</span>  <small translate>The seed could require a passphrase to be imported</small>
+            <label for="passphrase" class="oh" ng-show="create.seedSourceId=='set'"><span translate>Seed Passphrase</span>  <small translate>The seed could require a passphrase to be imported</small>
               <div class="input">
                 <input type="text" class="form-control" name="passphrase" ng-model="passphrase">
               </div>

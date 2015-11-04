@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('createController',
-  function($scope, $rootScope, $location, $timeout, $log, lodash, go, profileService, configService, isCordova, gettext, ledger, trezor, isMobile) {
+  function($scope, $rootScope, $location, $timeout, $log, lodash, go, profileService, configService, isCordova, gettext, ledger, trezor, isMobile, isChromeApp) {
 
     var self = this;
     var defaults = configService.getDefaults();
@@ -38,11 +38,48 @@ angular.module('copayApp.controllers').controller('createController',
       $scope.requiredCopayers = Math.min(parseInt(n / 2 + 1), maxReq);
     };
 
+    var updateSeedSourceSelect = function(n) {
+
+      self.seedOptions = [{
+        id: 'new',
+        label: gettext('New Random Seed'),
+      }, {
+        id: 'set',
+        label: gettext('Specify Seed...'),
+      }];
+      $scope.seedSource = self.seedOptions[0];
+
+
+// TODO
+//      if (!isChromeApp) return;
+
+      if (n > 1)
+        self.seedOptions.push({
+          id: 'ledger',
+          label: gettext('Ledger Hardware Wallet'),
+        });
+
+      self.seedOptions.push({
+        id: 'trezor',
+        label: gettext('Trezor Hardware Wallet'),
+      });
+    };
+
     this.TCValues = lodash.range(2, defaults.limits.totalCopayers + 1);
     $scope.totalCopayers = defaults.wallet.totalCopayers;
 
     this.setTotalCopayers = function(tc) {
       updateRCSelect(tc);
+      updateSeedSourceSelect(tc);
+    };
+
+
+    this.setSeedSource = function(src) {
+      self.seedSourceId = $scope.seedSource.id;
+console.log('[create.js.78:seedSourceId:]',self.seedSourceId); //TODO
+      $timeout(function() {
+        $rootScope.$apply();
+      });
     };
 
     this.create = function(form) {
@@ -81,9 +118,8 @@ angular.module('copayApp.controllers').controller('createController',
 
         var src = form.hwLedger.$modelValue ? ledger : trezor;
 
-        // TODO : account 
-        var account = 0;
-        src.getInfoForNewWallet(account, function(err, lopts) {
+        var account = form.account.$modelValue;
+        src.getInfoForNewWallet(opts.n > 1, account, function(err, lopts) {
           self.hwWallet = false;
           if (err) {
             self.error = err;
@@ -141,4 +177,5 @@ angular.module('copayApp.controllers').controller('createController',
     $scope.$on("$destroy", function() {
       $rootScope.hideWalletNavigation = false;
     });
+    updateSeedSourceSelect(1);
   });
