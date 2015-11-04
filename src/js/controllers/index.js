@@ -829,6 +829,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   }
 
   self.updateHistory = function() {
+    var fc = profileService.focusedClient;
+    if (!fc.isComplete()) return;
+
     $log.debug('Updating Transaction History');
     self.txHistoryError = false;
     self.updatingTxHistory = true;
