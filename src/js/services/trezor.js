@@ -91,8 +91,11 @@ angular.module('copayApp.services')
 
       if (txp.addressType == 'P2PKH') {
 
+        $log.debug("Trezor signing uni-sig p2pkh. Account:", account);
+
         var inAmount = 0;
         inputs = lodash.map(txp.inputs, function(i) {
+          $log.debug("Trezor TX input path:", i.path);
           var pathArr = i.path.split('/');
           var n = [hwWallet.UNISIG_ROOTPATH | 0x80000000, 0 | 0x80000000, account | 0x80000000, parseInt(pathArr[1]), parseInt(pathArr[2])];
           inAmount += i.satoshis;
@@ -105,6 +108,7 @@ angular.module('copayApp.services')
 
         var change = inAmount - txp.fee - txp.amount;
         if (change > 0) {
+          $log.debug("Trezor TX change path:", txp.changeAddress.path);
           var pathArr = txp.changeAddress.path.split('/');
           var n = [hwWallet.UNISIG_ROOTPATH | 0x80000000, 0 | 0x80000000, account | 0x80000000, parseInt(pathArr[1]), parseInt(pathArr[2])];
 
@@ -119,6 +123,7 @@ angular.module('copayApp.services')
 
         // P2SH Wallet, multisig wallet
         var inAmount = 0;
+        $log.debug("Trezor signing multi-sig p2sh. Account:", account);
 
         var sigs = xPubKeys.map(function(v) {
           return '';
@@ -126,6 +131,7 @@ angular.module('copayApp.services')
 
 
         inputs = lodash.map(txp.inputs, function(i) {
+          $log.debug("Trezor TX input path:", i.path);
           var pathArr = i.path.split('/');
           var n = [hwWallet.MULTISIG_ROOTPATH | 0x80000000, 0 | 0x80000000, account | 0x80000000, parseInt(pathArr[1]), parseInt(pathArr[2])];
           var np = n.slice(3);
@@ -155,6 +161,7 @@ angular.module('copayApp.services')
 
         var change = inAmount - txp.fee - txp.amount;
         if (change > 0) {
+          $log.debug("Trezor TX change path:", txp.changeAddress.path);
           var pathArr = txp.changeAddress.path.split('/');
           var n = [hwWallet.MULTISIG_ROOTPATH | 0x80000000, 0 | 0x80000000, account | 0x80000000, parseInt(pathArr[1]), parseInt(pathArr[2])];
           var np = n.slice(3);

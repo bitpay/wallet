@@ -594,7 +594,7 @@ angular.module('copayApp.services')
       var fc = root.focusedClient;
       $log.info('Requesting Ledger Chrome app to sign the transaction');
 
-      ledger.signTx(txp, 0, function(result) {
+      ledger.signTx(txp, fc.credentials.account, function(result) {
         $log.debug('Ledger response', result);
         if (!result.success)
           return cb(result.message || result.error);
@@ -612,7 +612,7 @@ angular.module('copayApp.services')
       $log.info('Requesting Trezor  to sign the transaction');
 
       var xPubKeys = lodash.pluck(fc.credentials.publicKeyRing, 'xPubKey');
-      trezor.signTx(xPubKeys, txp, 0, function(err, result) {
+      trezor.signTx(xPubKeys, txp, fc.credentials.account, function(err, result) {
         if (err) return cb(err);
 
         $log.debug('Trezor response', result);
