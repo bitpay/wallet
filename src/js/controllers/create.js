@@ -123,6 +123,7 @@ angular.module('copayApp.controllers').controller('createController',
           this.error = gettext('Please select account');
           return;
         }
+        opts.account =  account;
         self.hwWallet = self.seedSourceId == 'ledger' ? 'Ledger' : 'Trezor';
         var src = self.seedSourceId == 'ledger' ? ledger : trezor;
 

@@ -186,11 +186,10 @@ angular.module('copayApp.services')
 
           // </ Nasty
           if (opts.fromHardware && opts.n>1) {
-            walletClient.credentials.derivationStrategy == 
+            //walletClient.credentials.derivationStrategy == 
           }
-
           // Nasty>
-          }
+
         } catch (ex) {
           $log.info(ex);
           return cb(gettext('Could not create: Invalid wallet seed'));

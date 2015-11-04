@@ -141,6 +141,16 @@
                 </div>
               </label>
             </div>
+
+            <div ng-show="join.seedSourceId == 'set'">
+              <label class="oh"><span translate>Account</span>
+                <select class="m10t" ng-model="accountForSeed" ng-options="externalIndex as externalIndex for externalIndex in join.accountValuesForSeed">
+                </select>
+              </label>
+              <div class="oh text-gray line-b  size-12   p10b m20b"><span translate>Multiple accounts can be derived from the same seed. Specify which account to use</div>
+            </div>
+
+
           </div> <!-- columns -->
         </div> <!-- advanced -->
 
