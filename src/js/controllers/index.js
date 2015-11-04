@@ -107,6 +107,11 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       self.canSign = fc.canSign();
       self.isPrivKeyExternal = fc.isPrivKeyExternal();
       self.externalSource = fc.getPrivKeyExternalSourceName();
+      self.account = fc.credentials.account;
+
+      if (self.externalSource == 'trezor')
+        self.account++;
+
       self.txps = [];
       self.copayers = [];
       self.updateColor();

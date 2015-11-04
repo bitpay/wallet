@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('importController',
-  function($scope, $rootScope, $location, $timeout, $log, profileService, configService, notification, go, sjcl, gettext, lodash, ledger, trezor) {
+  function($scope, $rootScope, $location, $timeout, $log, profileService, configService, notification, go, sjcl, gettext, lodash, ledger, trezor, isChromeApp) {
 
     var self = this;
     var reader = new FileReader();
@@ -14,6 +14,25 @@ angular.module('copayApp.controllers').controller('importController',
         window.ignoreMobilePause = false;
       }, 100);
     });
+
+    var updateSeedSourceSelect = function() {
+      self.seedOptions = [];
+// TODO
+//     if (!isChromeApp) return;
+
+      self.seedOptions.push({
+        id: 'ledger',
+        label: gettext('Ledger Hardware Wallet'),
+      });
+
+      self.seedOptions.push({
+        id: 'trezor',
+        label: gettext('Trezor Hardware Wallet'),
+      });
+      $scope.seedSource = self.seedOptions[0];
+    };
+
+
 
     this.setType = function(type) {
       $scope.type = type;
@@ -178,19 +197,8 @@ angular.module('copayApp.controllers').controller('importController',
       _importMnemonic(words, opts);
     };
 
-    this.importTrezor = function(form) {
+    this.importTrezor = function(account, isMultisig) {
       var self = this;
-      if (form.$invalid) {
-        this.error = gettext('There is an error in the form');
-        $timeout(function() {
-          $scope.$apply();
-        });
-        return;
-      }
-      self.hwWallet = 'Trezor';
-      var account = form.account.$modelValue;
-      var isMultisig = form.isMultisig.$modelValue;
-
       trezor.getInfoForNewWallet(isMultisig, account, function(err, lopts) {
         self.hwWallet = false;
         if (err) {
@@ -219,8 +227,7 @@ angular.module('copayApp.controllers').controller('importController',
       }, 100);
     };
 
-    this.importLedger = function(form) {
-      var self = this;
+    this.importHW = function(form) {
       if (form.$invalid) {
         this.error = gettext('There is an error in the form');
         $timeout(function() {
@@ -228,8 +235,40 @@ angular.module('copayApp.controllers').controller('importController',
         });
         return;
       }
-      self.hwWallet = 'Ledger';
-      var account = form.account.$modelValue;
+
+      var account = $scope.account;
+      var isMultisig = form.isMultisig.$modelValue;
+
+      switch (self.seedSourceId) {
+        case ('ledger'):
+          self.hwWallet = 'Ledger';
+          self.importLedger(account);
+          break;
+        case ('trezor'):
+          self.hwWallet = 'Trezor';
+          self.importTrezor(account, isMultisig);
+          break;
+        default:
+          throw ('Error: bad source id');
+      };
+    };
+
+    this.setSeedSource = function() {
+      if (!$scope.seedSource) return;
+      self.seedSourceId = $scope.seedSource.id;
+
+      if (self.seedSourceId == 'ledger')
+        self.accountValues = lodash.range(0, 99);
+      else 
+        self.accountValues = lodash.range(1, 100);
+
+      $timeout(function() {
+        $rootScope.$apply();
+      });
+    };
+
+    this.importLedger = function(account) {
+      var self = this;
       ledger.getInfoForNewWallet(true, account, function(err, lopts) {
         self.hwWallet = false;
         if (err) {
@@ -257,4 +296,6 @@ angular.module('copayApp.controllers').controller('importController',
       }, 100);
     };
 
+    updateSeedSourceSelect();
+    self.setSeedSource('new');
   });

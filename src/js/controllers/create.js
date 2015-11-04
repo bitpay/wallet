@@ -48,9 +48,8 @@ angular.module('copayApp.controllers').controller('createController',
         label: gettext('Specify Seed...'),
       }];
       $scope.seedSource = self.seedOptions[0];
-
-      // TODO
-      //      if (!isChromeApp) return;
+// TODO
+//      if (!isChromeApp) return;
 
       if (n > 1)
         self.seedOptions.push({
@@ -187,6 +186,7 @@ angular.module('copayApp.controllers').controller('createController',
     $scope.$on("$destroy", function() {
       $rootScope.hideWalletNavigation = false;
     });
+
     updateSeedSourceSelect(1);
-    self.seedSourceId = 'new'
+    self.setSeedSource('new');
   });

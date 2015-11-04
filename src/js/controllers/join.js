@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('joinController',
-  function($scope, $rootScope, $timeout, go, notification, profileService, configService, isCordova, storageService, applicationService, $modal, gettext, lodash, ledger, trezor) {
+  function($scope, $rootScope, $timeout, go, notification, profileService, configService, isCordova, storageService, applicationService, $modal, gettext, lodash, ledger, trezor, isChromeApp) {
 
     var self = this;
     var defaults = configService.getDefaults();
@@ -11,6 +11,44 @@ angular.module('copayApp.controllers').controller('joinController',
       $scope.secret = data;
       $scope.joinForm.secret.$setViewValue(data);
       $scope.joinForm.secret.$render();
+    };
+
+
+    var updateSeedSourceSelect = function() {
+      self.seedOptions = [{
+        id: 'new',
+        label: gettext('New Random Seed'),
+      }, {
+        id: 'set',
+        label: gettext('Specify Seed...'),
+      }];
+      $scope.seedSource = self.seedOptions[0];
+
+// TODO
+//      if (!isChromeApp) return;
+
+      self.seedOptions.push({
+        id: 'ledger',
+        label: gettext('Ledger Hardware Wallet'),
+      });
+
+      self.seedOptions.push({
+        id: 'trezor',
+        label: gettext('Trezor Hardware Wallet'),
+      });
+    };
+
+    this.setSeedSource = function(src) {
+      self.seedSourceId = $scope.seedSource.id;
+
+      if (self.seedSourceId == 'ledger')
+        self.accountValues = lodash.range(0, 99);
+      else 
+        self.accountValues = lodash.range(1, 100);
+
+      $timeout(function() {
+        $rootScope.$apply();
+      });
     };
 
     this.join = function(form) {
@@ -26,7 +64,7 @@ angular.module('copayApp.controllers').controller('joinController',
         bwsurl: $scope.bwsurl
       }
 
-      var setSeed = form.setSeed.$modelValue;
+      var setSeed = self.seedSourceId =='set';
       if (setSeed) {
         var words = form.privateKey.$modelValue;
         if (words.indexOf(' ') == -1 && words.indexOf('prv') == 1 && words.length > 108) {
@@ -44,10 +82,14 @@ angular.module('copayApp.controllers').controller('joinController',
         return;
       }
 
-      if (form.hwLedger.$modelValue || form.hwTrezor.$modelValue) {
-        self.hwWallet = form.hwLedger.$modelValue ? 'Ledger' : 'TREZOR';
-        var src = form.hwLedger.$modelValue ? ledger : trezor;
-        var account = form.account.$modelValue;
+      if (self.seedSourceId == 'ledger' || self.seedSourceId == 'trezor') {
+        var account = $scope.account;
+        if (!account) {
+          this.error = gettext('Please select account');
+          return;
+        }
+        self.hwWallet = self.seedSourceId == 'ledger' ? 'Ledger' : 'Trezor';
+        var src = self.seedSourceId == 'ledger' ? ledger : trezor;
 
         src.getInfoForNewWallet(true, account, function(err, lopts) {
           self.hwWallet = false;
@@ -82,4 +124,7 @@ angular.module('copayApp.controllers').controller('joinController',
         });
       }, 100);
     };
+
+    updateSeedSourceSelect();
+    self.setSeedSource('new');
   });
