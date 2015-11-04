@@ -94,7 +94,7 @@ angular.module('copayApp.services')
             body = gettextCatalog.getString('Wallet seed is invalid');
             break;
           case 'MAIN_ADDRESS_GAP_REACHED':
-            body = gettextCatalog.getString('You cannot generate more until you register any activity');
+            body = gettextCatalog.getString('Empty addresses limit reached. New addresses cannot be generated.');
             break;
   
           case 'ERROR':
@@ -112,7 +112,7 @@ angular.module('copayApp.services')
         body = gettextCatalog.getString(err);
       }
 
-      var msg = prefix + ( body ? ': ' + body  : '');
+      var msg = prefix + ( body ? (prefix ? ': ' : '') + body  : '');
       return msg;
     };
 
