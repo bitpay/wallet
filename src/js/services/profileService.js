@@ -183,6 +183,14 @@ angular.module('copayApp.services')
             passphrase: opts.passphrase,
             account: opts.account || 0,
           });
+
+          // </ Nasty
+          if (opts.fromHardware && opts.n>1) {
+            walletClient.credentials.derivationStrategy == 
+          }
+
+          // Nasty>
+          }
         } catch (ex) {
           $log.info(ex);
           return cb(gettext('Could not create: Invalid wallet seed'));
@@ -420,7 +428,7 @@ angular.module('copayApp.services')
       walletClient.importFromMnemonic(words, {
         network: opts.networkName,
         passphrase: opts.passphrase,
-        account: opts.account,
+        account: opts.account || 0,
       }, function(err) {
         if (err)
           return bwsError.cb(err, gettext('Could not import'), cb);

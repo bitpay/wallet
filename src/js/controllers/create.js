@@ -25,6 +25,8 @@ angular.module('copayApp.controllers').controller('createController',
 
     var defaults = configService.getDefaults();
     $scope.bwsurl = defaults.bws.url;
+    self.accountValuesForSeed = lodash.range(0, 100);
+    $scope.accountForSeed = 0;
 
     // ng-repeat defined number of times instead of repeating over array?
     this.getNumber = function(num) {
@@ -48,8 +50,7 @@ angular.module('copayApp.controllers').controller('createController',
         label: gettext('Specify Seed...'),
       }];
       $scope.seedSource = self.seedOptions[0];
-// TODO
-//      if (!isChromeApp) return;
+      if (!isChromeApp) return;
 
       if (n > 1)
         self.seedOptions.push({
@@ -76,11 +77,7 @@ angular.module('copayApp.controllers').controller('createController',
 
     this.setSeedSource = function(src) {
       self.seedSourceId = $scope.seedSource.id;
-
-      if (self.seedSourceId == 'ledger')
-        self.accountValues = lodash.range(0, 99);
-      else 
-        self.accountValues = lodash.range(1, 100);
+      self.accountValues = lodash.range(1, 100);
 
       $timeout(function() {
         $rootScope.$apply();
@@ -98,7 +95,9 @@ angular.module('copayApp.controllers').controller('createController',
         name: form.walletName.$modelValue,
         myName: $scope.totalCopayers > 1 ? form.myName.$modelValue : null,
         networkName: form.isTestnet.$modelValue ? 'testnet' : 'livenet',
-        bwsurl: $scope.bwsurl
+        bwsurl: $scope.bwsurl,
+        account: $scope.accountForSeed || 0,
+        use48: $scope.fromHardware,
       };
       var setSeed = self.seedSourceId =='set';
       if (setSeed) {
@@ -117,7 +116,6 @@ angular.module('copayApp.controllers').controller('createController',
         this.error = gettext('Please enter the wallet seed');
         return;
       }
-
 
       if (self.seedSourceId == 'ledger' || self.seedSourceId == 'trezor') {
         var account = $scope.account;

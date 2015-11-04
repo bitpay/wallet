@@ -76,6 +76,14 @@
                 <switch id="network-name" name="isTestnet" ng-model="isTestnet" class="green right m5t m10b"></switch>
               </label>
 
+              <div>
+                <label class="oh"><span translate>BIP44 Account</span>
+                  <select class="m10t" ng-model="accountForSeed" ng-options="externalIndex as externalIndex for externalIndex in import.accountValuesForSeed">
+                  </select>
+                </label>
+                <div class="oh text-gray line-b  size-12   p10b m20b"><span translate>Multiple accounts can be derived from the same seed. Specify which account to import</div>
+              </div>
+
               <label for="passphrase" class="oh"><span translate>Passphrase</span>  <small translate>Wallet Seed could require a passphrase to be imported</small>
               <div class="input">
                 <input type="password" class="form-control" placeholder="{{'Seed passphrase'|translate}}"

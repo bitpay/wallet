@@ -23,9 +23,7 @@ angular.module('copayApp.controllers').controller('joinController',
         label: gettext('Specify Seed...'),
       }];
       $scope.seedSource = self.seedOptions[0];
-
-// TODO
-//      if (!isChromeApp) return;
+      if (!isChromeApp) return;
 
       self.seedOptions.push({
         id: 'ledger',
@@ -40,11 +38,7 @@ angular.module('copayApp.controllers').controller('joinController',
 
     this.setSeedSource = function(src) {
       self.seedSourceId = $scope.seedSource.id;
-
-      if (self.seedSourceId == 'ledger')
-        self.accountValues = lodash.range(0, 99);
-      else 
-        self.accountValues = lodash.range(1, 100);
+      self.accountValues = lodash.range(1, 100);
 
       $timeout(function() {
         $rootScope.$apply();
