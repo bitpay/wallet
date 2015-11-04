@@ -198,11 +198,11 @@ angular.module('copayApp.services')
       outputs = JSON.parse(JSON.stringify(outputs));
 
       $log.debug('Signing with TREZOR', inputs, outputs);
-      TrezorConnect.signTx(inputs, outputs, function(result) {
-        if (!data.success)
-          return callback(hwWallet._err(data));
+      TrezorConnect.signTx(inputs, outputs, function(res) {
+        if (!res.success)
+          return callback(hwWallet._err(res));
 
-        callback(null, result);
+        callback(null, res);
       });
     };
 

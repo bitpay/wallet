@@ -37,8 +37,7 @@ module.exports = function(grunt) {
           'src/js/routes.js',
           'src/js/services/*.js',
           'src/js/models/*.js',
-          'src/js/controllers/*.js',
-          'src/js/trezor.js'
+          'src/js/controllers/*.js'
         ],
         tasks: ['concat:js']
       }
@@ -79,7 +78,8 @@ module.exports = function(grunt) {
           'src/js/translations.js',
           'src/js/version.js',
           'src/js/init.js',
-          'src/js/trezor.js'
+          'src/js/trezor-url.js',
+          'bower_components/trezor-connect/login.js'
         ],
         dest: 'public/js/copay.js'
       },
