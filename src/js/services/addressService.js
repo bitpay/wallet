@@ -35,8 +35,8 @@ angular.module('copayApp.services')
               root._createAddress(walletId, cb);
             }, 5000);
           } else if (err.code && err.code == 'MAIN_ADDRESS_GAP_REACHED') {
-            prefix = gettextCatalog.getString('Limit of address generation reached');
             $log.warn(err.message);
+            prefix = null;
             client.getMainAddresses({reverse: true, limit : 1}, function(err, addr) {
               if (err) return cb(err);
               return cb(null, addr[0].address);
