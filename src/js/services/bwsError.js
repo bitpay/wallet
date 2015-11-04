@@ -93,6 +93,9 @@ angular.module('copayApp.services')
           case 'INVALID_BACKUP': 
             body = gettextCatalog.getString('Wallet seed is invalid');
             break;
+          case 'MAIN_ADDRESS_GAP_REACHED':
+            body = gettextCatalog.getString('You cannot generate more until you register any activity');
+            break;
   
           case 'ERROR':
             body = (err.message || err.error);
