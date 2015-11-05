@@ -24,3 +24,5 @@ In case you have a multisignature wallet originally created from a hardware devi
   m/48'/0'/8'
 
 for a multisignature wallet, account 8.
+
+Finally, note that TREZOR use 1-based account numbers, so if your are trying for example to recover TREZOR multisig account #8, you should enter `m/48'/0'/7'`.
