@@ -13,7 +13,7 @@ angular.module('copayApp.services')
     root._err = function(data) {
       var msg = 'Hardware Wallet Error: ' + (data.error || data.message || 'unknown');
       $log.warn(msg);
-      return JSON.parse(JSON.stringify(msg));
+      return msg;
     };
 
     root.getAddressPath = function(isMultisig, account) {

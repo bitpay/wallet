@@ -24,7 +24,6 @@ angular.module('copayApp.services')
 
 
     root.getInfoForNewWallet = function(isMultisig, account, callback) {
-      account = account - 1;
       var opts = {};
       root.getEntropySource(isMultisig, account, function(err, data) {
         if (err) return callback(err);

@@ -116,12 +116,9 @@
             </div>
 
             <div ng-show="create.seedSourceId == 'trezor' || create.seedSourceId == 'ledger'">
-
-              <label class="oh"><span translate>Account</span>
-                <select class="m10t" ng-model="account" ng-options="externalIndex as externalIndex for externalIndex in create.accountValues">
-                </select>
+              <label class="oh"><span translate>Account Number</span>
+                <input type="number" id="account" ng-model="account">
               </label>
-              <div class="oh text-gray line-b  size-12   p10b m20b"><span translate>Multiple wallets accounts are supported on the device simultaneously. Select which account should be used for this wallet</div>
             </div>
 
             <div class="box-notification" ng-show="create.seedSourceId=='new' && createPassphrase">
@@ -161,21 +158,11 @@
             </div>
 
             <div ng-show="create.seedSourceId == 'set'">
-              <label class="oh"><span translate>Account</span>
-                <select class="m10t" ng-model="accountForSeed" ng-options="externalIndex as externalIndex for externalIndex in create.accountValuesForSeed">
-                </select>
-              </label>
-              <div class="oh text-gray line-b  size-12   p10b m20b"><span translate>Multiple accounts can be derived from the same seed. Specify which account to use</div>
-            </div>
-
-            <div  class="oh" ng-show="create.seedSourceId == 'set' && privateKey.split(' ').length>20 && totalCopayers != 1">
-              <label for="fromHardware">
-                <span translate>Hardware Wallet?</span>
-                <switch id="fromHardware" name="fromHardware" ng-model="fromHardware" class="green right m5t m10b"></switch>
+              <label class="oh"><span translate>Derivation Path</span> <small translate>BIP32 path for address derivation</small>
+                <input type="text" class="form-control" name="derivationPath" ng-model="derivationPath">
               </label>
             </div>
-
-            <div class="oh"  ng-show="(create.seedSourceId == 'set' || create.seedSourceId == 'new') && ! fromHardware">
+            <div class="oh"  ng-show="create.seedSourceId == 'new'">
               <label for="network-name" >
                 <span translate>Testnet</span>
                 <switch id="network-name" name="isTestnet" ng-model="isTestnet" class="green right m5t m10b"></switch>

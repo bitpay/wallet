@@ -1,11 +1,12 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('createController',
-  function($scope, $rootScope, $location, $timeout, $log, lodash, go, profileService, configService, isCordova, gettext, ledger, trezor, isMobile, isChromeApp, isDevel) {
+  function($scope, $rootScope, $location, $timeout, $log, lodash, go, profileService, configService, isCordova, gettext, ledger, trezor, isMobile, isChromeApp, isDevel, derivationPathHelper) {
 
     var self = this;
     var defaults = configService.getDefaults();
     this.isWindowsPhoneApp = isMobile.Windows() && isCordova;
+    $scope.account = 1;
 
     /* For compressed keys, m*73 + n*34 <= 496 */
     var COPAYER_PAIR_LIMITS = {
@@ -25,8 +26,7 @@ angular.module('copayApp.controllers').controller('createController',
 
     var defaults = configService.getDefaults();
     $scope.bwsurl = defaults.bws.url;
-    self.accountValuesForSeed = lodash.range(0, 100);
-    $scope.accountForSeed = 0;
+    $scope.derivationPath = derivationPathHelper.default;
 
     // ng-repeat defined number of times instead of repeating over array?
     this.getNumber = function(num) {
@@ -77,7 +77,6 @@ angular.module('copayApp.controllers').controller('createController',
 
     this.setSeedSource = function(src) {
       self.seedSourceId = $scope.seedSource.id;
-      self.accountValues = lodash.range(1, 100);
 
       $timeout(function() {
         $rootScope.$apply();
@@ -89,6 +88,7 @@ angular.module('copayApp.controllers').controller('createController',
         this.error = gettext('Please enter the required fields');
         return;
       }
+
       var opts = {
         m: $scope.requiredCopayers,
         n: $scope.totalCopayers,
@@ -96,18 +96,29 @@ angular.module('copayApp.controllers').controller('createController',
         myName: $scope.totalCopayers > 1 ? form.myName.$modelValue : null,
         networkName: form.isTestnet.$modelValue ? 'testnet' : 'livenet',
         bwsurl: $scope.bwsurl,
-        account: $scope.accountForSeed || 0,
         use48: $scope.fromHardware,
       };
-      var setSeed = self.seedSourceId =='set';
+      var setSeed = self.seedSourceId == 'set';
       if (setSeed) {
-        var words = form.privateKey.$modelValue;
+
+        var words = form.privateKey.$modelValue || '';
         if (words.indexOf(' ') == -1 && words.indexOf('prv') == 1 && words.length > 108) {
           opts.extendedPrivateKey = words;
         } else {
           opts.mnemonic = words;
         }
         opts.passphrase = form.passphrase.$modelValue;
+
+        var pathData = derivationPathHelper.parse($scope.derivationPath);
+        if (!pathData) {
+          this.error = gettext('Invalid derivation path');
+          return;
+        }
+
+        opts.account = pathData.account;
+        opts.networkName = pathData.networkName;
+        opts.derivationStrategy = pathData.derivationStrategy;
+
       } else {
         opts.passphrase = form.createPassphrase.$modelValue;
       }
@@ -119,11 +130,15 @@ angular.module('copayApp.controllers').controller('createController',
 
       if (self.seedSourceId == 'ledger' || self.seedSourceId == 'trezor') {
         var account = $scope.account;
-        if (!account) {
-          this.error = gettext('Please select account');
+        if (!account || account < 1) {
+          this.error = gettext('Invalid account number');
           return;
         }
-        opts.account =  account;
+
+        if ( self.seedSourceId == 'trezor')
+          account = account - 1;
+
+        opts.account = account;
         self.hwWallet = self.seedSourceId == 'ledger' ? 'Ledger' : 'Trezor';
         var src = self.seedSourceId == 'ledger' ? ledger : trezor;
 

@@ -1,14 +1,14 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('importController',
-  function($scope, $rootScope, $location, $timeout, $log, profileService, configService, notification, go, sjcl, gettext, lodash, ledger, trezor, isChromeApp, isDevel) {
+  function($scope, $rootScope, $location, $timeout, $log, profileService, configService, notification, go, sjcl, gettext, lodash, ledger, trezor, isChromeApp, isDevel, derivationPathHelper) {
 
     var self = this;
     var reader = new FileReader();
     var defaults = configService.getDefaults();
     $scope.bwsurl = defaults.bws.url;
-    $scope.accountForSeed = 0;
-    self.accountValuesForSeed = lodash.range(0, 100);
+    $scope.derivationPath = derivationPathHelper.default;
+    $scope.account = 1;
 
     window.ignoreMobilePause = true;
     $scope.$on('$destroy', function() {
@@ -196,8 +196,16 @@ angular.module('copayApp.controllers').controller('importController',
       }
 
       opts.passphrase = form.passphrase.$modelValue || null;
-      opts.networkName = form.isTestnet.$modelValue ? 'testnet' : 'livenet';
-      opts.account = $scope.accountForSeed;
+
+      var pathData = derivationPathHelper.parse($scope.derivationPath);
+      if (!pathData) {
+        this.error = gettext('Invalid derivation path');
+        return;
+      }
+      opts.account = pathData.account;
+      opts.networkName = pathData.networkName;
+      opts.derivationStrategy = pathData.derivationStrategy;
+
 
       _importMnemonic(words, opts);
     };
@@ -233,15 +241,24 @@ angular.module('copayApp.controllers').controller('importController',
     };
 
     this.importHW = function(form) {
-      if (form.$invalid) {
+      if (form.$invalid || $scope.account < 0 ) {
         this.error = gettext('There is an error in the form');
         $timeout(function() {
           $scope.$apply();
         });
         return;
       }
+      this.error = '';
 
-      var account = $scope.account;
+      var account = + $scope.account;
+      
+      if (self.seedSourceId == 'trezor') {
+        if ( account < 1) {
+          this.error = gettext('Invalid account number');
+          return;
+        }
+        account = account - 1;
+      }
       var isMultisig = form.isMultisig.$modelValue;
 
       switch (self.seedSourceId) {
@@ -261,7 +278,6 @@ angular.module('copayApp.controllers').controller('importController',
     this.setSeedSource = function() {
       if (!$scope.seedSource) return;
       self.seedSourceId = $scope.seedSource.id;
-      self.accountValues = lodash.range(1, 100);
 
       $timeout(function() {
         $rootScope.$apply();
