@@ -1,13 +1,12 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('joinController',
-  function($scope, $rootScope, $timeout, go, notification, profileService, configService, isCordova, storageService, applicationService, $modal, gettext, lodash, ledger, trezor, isChromeApp, isDevel) {
+  function($scope, $rootScope, $timeout, go, notification, profileService, configService, isCordova, storageService, applicationService, $modal, gettext, lodash, ledger, trezor, isChromeApp, isDevel,derivationPathHelper) {
 
     var self = this;
     var defaults = configService.getDefaults();
     $scope.bwsurl = defaults.bws.url;
-    self.accountValuesForSeed = lodash.range(0, 100);
-    $scope.accountForSeed = 0;
+    $scope.derivationPath = derivationPathHelper.default;
 
     this.onQrCodeScanned = function(data) {
       $scope.secret = data;
@@ -62,7 +61,6 @@ angular.module('copayApp.controllers').controller('joinController',
         secret: form.secret.$modelValue,
         myName: form.myName.$modelValue,
         bwsurl: $scope.bwsurl,
-        account: $scope.accountForSeed || 0,
       }
 
       var setSeed = self.seedSourceId =='set';
@@ -74,6 +72,15 @@ angular.module('copayApp.controllers').controller('joinController',
           opts.mnemonic = words;
         }
         opts.passphrase = form.passphrase.$modelValue;
+
+        var pathData = derivationPathHelper.parse($scope.derivationPath);
+        if (!pathData) {
+          this.error = gettext('Invalid derivation path');
+          return;
+        }
+        opts.account = pathData.account;
+        opts.networkName = pathData.networkName;
+        opts.derivationStrategy = pathData.derivationStrategy;
       } else {
         opts.passphrase = form.createPassphrase.$modelValue;
       }
@@ -85,10 +92,14 @@ angular.module('copayApp.controllers').controller('joinController',
 
       if (self.seedSourceId == 'ledger' || self.seedSourceId == 'trezor') {
         var account = $scope.account;
-        if (!account) {
-          this.error = gettext('Please select account');
+        if (!account || account < 1) {
+          this.error = gettext('Invalid account number');
           return;
         }
+
+        if ( self.seedSourceId == 'trezor')
+          account = account - 1;
+
         opts.account =  account;
         self.hwWallet = self.seedSourceId == 'ledger' ? 'Ledger' : 'Trezor';
         var src = self.seedSourceId == 'ledger' ? ledger : trezor;
