@@ -1,10 +1,11 @@
 'use strict';
 angular.module('copayApp.controllers').controller('glideraUriController',
-  function($scope, $stateParams, $timeout, profileService, glideraService, storageService, go) { 
+  function($scope, $stateParams, $timeout, profileService, configService, glideraService, storageService, go) { 
 
     this.submitOauthCode = function(code) {
-      var fc = profileService.focusedClient;
       var self = this;
+      var glideraTestnet = configService.getSync().glidera.testnet;
+      var network = glideraTestnet ? 'testnet' : 'livenet';
       this.loading = true;
       this.error = null;
       $timeout(function() {
@@ -17,7 +18,7 @@ angular.module('copayApp.controllers').controller('glideraUriController',
               }, 100);
           }
           else if (data && data.access_token) {
-            storageService.setGlideraToken(fc.credentials.network, data.access_token, function() {
+            storageService.setGlideraToken(network, data.access_token, function() {
               $scope.$emit('Local/GlideraUpdated', data.access_token);
               $timeout(function() {
                 go.path('glidera');
