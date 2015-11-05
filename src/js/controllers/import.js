@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('importController',
-  function($scope, $rootScope, $location, $timeout, $log, profileService, configService, notification, go, sjcl, gettext, lodash, ledger, trezor, isChromeApp) {
+  function($scope, $rootScope, $location, $timeout, $log, profileService, configService, notification, go, sjcl, gettext, lodash, ledger, trezor, isChromeApp, isDevel) {
 
     var self = this;
     var reader = new FileReader();
@@ -19,18 +19,21 @@ angular.module('copayApp.controllers').controller('importController',
 
     var updateSeedSourceSelect = function() {
       self.seedOptions = [];
-      if (!isChromeApp) return;
 
-      self.seedOptions.push({
-        id: 'ledger',
-        label: gettext('Ledger Hardware Wallet'),
-      });
+      if (isChromeApp) {
+        self.seedOptions.push({
+          id: 'ledger',
+          label: gettext('Ledger Hardware Wallet'),
+        });
+      }
 
-      self.seedOptions.push({
-        id: 'trezor',
-        label: gettext('Trezor Hardware Wallet'),
-      });
-      $scope.seedSource = self.seedOptions[0];
+      if (isChromeApp || isDevel) {
+        self.seedOptions.push({
+          id: 'trezor',
+          label: gettext('Trezor Hardware Wallet'),
+        });
+        $scope.seedSource = self.seedOptions[0];
+      }
     };
 
 

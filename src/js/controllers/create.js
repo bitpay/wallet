@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('createController',
-  function($scope, $rootScope, $location, $timeout, $log, lodash, go, profileService, configService, isCordova, gettext, ledger, trezor, isMobile, isChromeApp) {
+  function($scope, $rootScope, $location, $timeout, $log, lodash, go, profileService, configService, isCordova, gettext, ledger, trezor, isMobile, isChromeApp, isDevel) {
 
     var self = this;
     var defaults = configService.getDefaults();
@@ -50,19 +50,19 @@ angular.module('copayApp.controllers').controller('createController',
         label: gettext('Specify Seed...'),
       }];
       $scope.seedSource = self.seedOptions[0];
-      if (!isChromeApp) return;
 
-      if (n > 1)
+      if (n > 1 && isChromeApp)
         self.seedOptions.push({
           id: 'ledger',
           label: gettext('Ledger Hardware Wallet'),
         });
 
-      self.seedOptions.push({
-        id: 'trezor',
-        label: gettext('Trezor Hardware Wallet'),
-      });
-
+      if (isChromeApp || isDevel) {
+        self.seedOptions.push({
+          id: 'trezor',
+          label: gettext('Trezor Hardware Wallet'),
+        });
+      }
     };
 
     this.TCValues = lodash.range(2, defaults.limits.totalCopayers + 1);
