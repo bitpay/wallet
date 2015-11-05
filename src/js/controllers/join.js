@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('joinController',
-  function($scope, $rootScope, $timeout, go, notification, profileService, configService, isCordova, storageService, applicationService, $modal, gettext, lodash, ledger, trezor, isChromeApp) {
+  function($scope, $rootScope, $timeout, go, notification, profileService, configService, isCordova, storageService, applicationService, $modal, gettext, lodash, ledger, trezor, isChromeApp, isDevel) {
 
     var self = this;
     var defaults = configService.getDefaults();
@@ -25,17 +25,21 @@ angular.module('copayApp.controllers').controller('joinController',
         label: gettext('Specify Seed...'),
       }];
       $scope.seedSource = self.seedOptions[0];
-      if (!isChromeApp) return;
 
-      self.seedOptions.push({
-        id: 'ledger',
-        label: gettext('Ledger Hardware Wallet'),
-      });
 
-      self.seedOptions.push({
-        id: 'trezor',
-        label: gettext('Trezor Hardware Wallet'),
-      });
+      if (isChromeApp) {
+        self.seedOptions.push({
+          id: 'ledger',
+          label: gettext('Ledger Hardware Wallet'),
+        });
+      }
+
+      if (isChromeApp || isDevel) {
+        self.seedOptions.push({
+          id: 'trezor',
+          label: gettext('Trezor Hardware Wallet'),
+        });
+      }
     };
 
     this.setSeedSource = function(src) {
