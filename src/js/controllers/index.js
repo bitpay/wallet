@@ -925,11 +925,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
   self.initGlidera = function(accessToken) {
     self.glideraEnabled = configService.getSync().glidera.enabled;
-    //    self.glideraTestnet = configService.getSync().glidera.testnet;
-    //    var network = self.glideraTestnet ? 'testnet' : 'livenet';
-    //    Disabled for testnet
-    self.glideraTestnet = false;
-    var network = 'livenet';
+    self.glideraTestnet = configService.getSync().glidera.testnet;
+    var network = self.glideraTestnet ? 'testnet' : 'livenet';
 
     self.glideraToken = null;
     self.glideraError = null;

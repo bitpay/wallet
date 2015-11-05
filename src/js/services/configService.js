@@ -70,12 +70,17 @@ angular.module('copayApp.services').factory('configService', function(storageSer
           configCache.wallet.settings.unitCode = defaultConfig.wallet.settings.unitCode;
         }
         if (!configCache.glidera) {
-          configCache.glidera = defaultConfig.glidera;
+          configCache.glidera = defaultConfig.glidera; 
         }
 
       } else {
         configCache = lodash.clone(defaultConfig);
       };
+
+      // Glidera
+      // Disabled for testnet
+      configCache.glidera.testnet = false;
+
       $log.debug('Preferences read:', configCache)
       return cb(err, configCache);
     });
