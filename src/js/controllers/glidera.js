@@ -8,8 +8,9 @@ angular.module('copayApp.controllers').controller('glideraController',
     };
 
     this.submitOauthCode = function(code) {
-      var fc = profileService.focusedClient;
       var self = this;
+      var glideraTestnet = configService.getSync().glidera.testnet;
+      var network = glideraTestnet ? 'testnet' : 'livenet';
       this.loading = true;
       this.error = null;
       $timeout(function() {
@@ -22,7 +23,7 @@ angular.module('copayApp.controllers').controller('glideraController',
               }, 100);
           }
           else if (data && data.access_token) {
-            storageService.setGlideraToken(fc.credentials.network, data.access_token, function() {
+            storageService.setGlideraToken(network, data.access_token, function() {
               $scope.$emit('Local/GlideraUpdated', data.access_token);
               $timeout(function() {
                 $scope.$apply();
