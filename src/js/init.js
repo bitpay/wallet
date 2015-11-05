@@ -28,13 +28,20 @@ angular.element(document).ready(function() {
 
       document.addEventListener('pause', function() {
         if (!window.ignoreMobilePause) {
-          window.location = '#/';
+          setTimeout(function() {
+            window.location = '#/cordova/pause/';
+          }, 100);
         }
+        setTimeout(function() {
+          window.ignoreMobilePause = false;
+        }, 100);
       }, false);
 
       document.addEventListener('resume', function() {
         if (!window.ignoreMobilePause) {
-          window.location = '#/cordova/resume/';
+          setTimeout(function() {
+            window.location = '#/cordova/resume/';
+          }, 100);
         }
         setTimeout(function() {
           window.ignoreMobilePause = false;
