@@ -11,7 +11,7 @@ angular.module('copayApp.services')
     root.focusedClient = null;
     root.walletClients = {};
 
-    root.Utils =  bwcService.getUtils();
+    root.Utils = bwcService.getUtils();
     root.formatAmount = function(amount) {
       var config = configService.getSync().wallet.settings;
       if (config.unitCode == 'sat') return amount;
@@ -276,8 +276,8 @@ angular.module('copayApp.services')
 
         // check if exist
         if (lodash.find(root.profile.credentials, {
-          'walletId': walletData.walletId
-        })) {
+            'walletId': walletData.walletId
+          })) {
           return cb(gettext('Cannot join the same wallet more that once'));
         }
       } catch (ex) {
@@ -337,32 +337,45 @@ angular.module('copayApp.services')
       });
     };
 
+    root.setMetaData = function(walletClient, cb) {
+      storageService.setAddressbook(walletClient.credentials.network, walletClient.credentials.historyCache, function(err) {
+        if (err) return cb(err);
+        storageService.setTxHistory(walletClient.credentials.historyCache, walletClient.credentials.walletId, function(err) {
+          if (err) return cb(err);
+          return cb(null);
+        });
+      });
+    }
+
     root._addWalletClient = function(walletClient, opts, cb) {
       var walletId = walletClient.credentials.walletId;
-
-      // check if exist
-      var w = lodash.find(root.profile.credentials, {
-        'walletId': walletId
-      });
-      if (w) {
-        return cb(gettext('Wallet already in Copay' + ": ") + w.walletName);
-      }
-
-      var defaults = configService.getDefaults();
-      var bwsFor = {};
-      bwsFor[walletId] = opts.bwsurl || defaults.bws.url;
-
-      configService.set({
-        bwsFor: bwsFor,
-      }, function(err) {
+      root.setMetaData(walletClient, function(err) {
         if (err) console.log(err);
 
-        root.profile.credentials.push(JSON.parse(walletClient.export()));
-        root.setWalletClients();
+        // check if exist
+        var w = lodash.find(root.profile.credentials, {
+          'walletId': walletId
+        });
+        if (w) {
+          return cb(gettext('Wallet already in Copay' + ": ") + w.walletName);
+        }
 
-        root.setAndStoreFocus(walletId, function() {
-          storageService.storeProfile(root.profile, function(err) {
-            return cb(err, walletId);
+        var defaults = configService.getDefaults();
+        var bwsFor = {};
+        bwsFor[walletId] = opts.bwsurl || defaults.bws.url;
+
+        configService.set({
+          bwsFor: bwsFor,
+        }, function(err) {
+          if (err) console.log(err);
+
+          root.profile.credentials.push(JSON.parse(walletClient.export()));
+          root.setWalletClients();
+
+          root.setAndStoreFocus(walletId, function() {
+            storageService.storeProfile(root.profile, function(err) {
+              return cb(err, walletId);
+            });
           });
         });
       });
