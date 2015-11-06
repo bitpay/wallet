@@ -828,9 +828,13 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   }
   self.showAllHistory = function() {
     self.historyShowShowAll = false;
+    self.historyRendering = true;
     $timeout(function() {
       $rootScope.$apply();
-      self.txHistory = self.completeHistory;
+      $timeout(function() {
+        self.historyRendering = false;
+        self.txHistory = self.completeHistory;
+      });
     });
   };
 
