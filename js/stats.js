@@ -148,8 +148,18 @@ Stats.prototype.showWallets = function(data) {
     }
   });
 
-  var completeDays = [{
-    key: 'Total new wallets',
+  var walletsPerMonth = [{
+    key: 'New wallets per month',
+    values: byMonthGrouped
+  }];
+
+  var walletsPerWeek = [{
+    key: 'New wallets per week',
+    values: byWeekGrouped
+  }];
+
+  var walletsPerDay = [{
+    key: 'New wallets per day',
     values: _.map(data, function(d) {
       return {
         x: d.date,
@@ -158,37 +168,29 @@ Stats.prototype.showWallets = function(data) {
     }),
   }];
 
-  var walletsPerMonth = [{
-    key: 'New wallets per month',
-    values: byMonthGrouped,
-    color: '#2ca02c'
-  }];
-
-  var walletsPerWeek = [{
-    key: 'New wallets per week',
-    values: byWeekGrouped,
-    color: '#ff7f0e'
-  }];
-
   $('#interval').change(function() {
-    var interval = $('#interval').val();
-    var coords = [];
-
-    if (interval == 'complete')
-      coords = completeDays;
-    else if (interval == 'perMonth')
-      coords = walletsPerMonth;
-    else if (interval == 'perWeek')
-      coords = walletsPerWeek;
-
     nv.addGraph(function() {
-      var chart = nv.models.lineChart()
-        .showLegend(true)
-        .useInteractiveGuideline(true);
+      var interval = $('#interval').val();
+      var opts = {};
+
+      if (interval == 'perDay') {
+        opts.coords = walletsPerDay;
+        opts.graphic = nv.models.lineChart();
+        opts.format = '%d';
+      } else if (interval == 'perMonth') {
+        opts.coords = walletsPerMonth;
+        opts.graphic = nv.models.discreteBarChart();
+        opts.format = '%b';
+      } else if (interval == 'perWeek') {
+        opts.coords = walletsPerWeek;
+        opts.graphic = nv.models.discreteBarChart();
+        opts.format = '%W';
+      }
+      var chart = opts.graphic;
 
       chart.xAxis
         .tickFormat(function(d) {
-          return d3.time.format('%b %d')(new Date(d));
+          return d3.time.format(opts.format)(new Date(d));
         });
 
       chart.yAxis
@@ -198,7 +200,7 @@ Stats.prototype.showWallets = function(data) {
       d3.select('#chart-wallets svg').remove();
       d3.select('#chart-wallets')
         .append('svg')
-        .datum(coords)
+        .datum(opts.coords)
         .transition().duration(500)
         .call(chart);
 
