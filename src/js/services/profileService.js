@@ -338,9 +338,10 @@ angular.module('copayApp.services')
     };
 
     root.setMetaData = function(walletClient, addressBook, historyCache, cb) {
-      storageService.setAddressbook(walletClient.credentials.network, addressBook, function(err) {
+
+      storageService.setAddressbook(walletClient.credentials.network, JSON.stringify(addressBook), function(err) {
         if (err) return cb(err);
-        storageService.setTxHistory(historyCache, walletClient.credentials.walletId, function(err) {
+        storageService.setTxHistory(JSON.stringify(historyCache), walletClient.credentials.walletId, function(err) {
           if (err) return cb(err);
           return cb(null);
         });
@@ -393,6 +394,9 @@ angular.module('copayApp.services')
       } catch (err) {
         return cb(gettext('Could not import. Check input file and password'));
       }
+
+      str = JSON.parse(str);
+
       var addressBook = str.addressBook || [];
       var historyCache = str.historyCache ||  [];
 
