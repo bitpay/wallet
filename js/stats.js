@@ -15,6 +15,10 @@ Stats.prototype.run = function() {
   $('#network').change(function() {
     self.refresh();
   }).trigger('change');
+
+  $('#interval').change(function() {
+    self.refresh();
+  }).trigger('change');
 };
 
 Stats.prototype.refresh = function() {
@@ -90,10 +94,10 @@ Stats.prototype.error = function(msg) {
 };
 
 Stats.prototype.show = function(data) {
-  this.showTotals(data);
+  //  this.showTotals(data);
   this.showWallets(data);
-  this.showTransactions(data);
-  this.showAmount(data);
+  //  this.showTransactions(data);
+  //  this.showAmount(data);
 };
 
 Stats.prototype.showTotals = function(data) {
@@ -126,26 +130,27 @@ Stats.prototype.showTotals = function(data) {
 };
 
 Stats.prototype.showWallets = function(data) {
-
-  var byWeek = _.groupBy(data, 'week');
-  var byWeekGrouped = _.map(byWeek, function(v, k) {
-    return _.sum(v, function(d) {
-      return d.wallets;
-    });
-  });
-
-  console.log('By week: ', byWeek);
-  console.log('By week grouped: ', byWeekGrouped);
+  var interval = $('#interval').val();
 
   var byMonth = _.groupBy(data, 'month');
   var byMonthGrouped = _.map(byMonth, function(v, k) {
-    return _.sum(v, function(d) {
-      return d.wallets;
-    });
+    return {
+      x: v[0].date,
+      y: _.sum(v, function(d) {
+        return d.wallets;
+      })
+    }
   });
 
-  console.log('By month: ', byMonth);
-  console.log('By month grouped: ', byMonthGrouped);
+  var byWeek = _.groupBy(data, 'week');
+  var byWeekGrouped = _.map(byWeek, function(v, k) {
+    return {
+      x: v[0].date,
+      y: _.sum(v, function(d) {
+        return d.wallets;
+      })
+    }
+  });
 
   var completeDays = [{
     key: 'Total new wallets',
@@ -157,26 +162,26 @@ Stats.prototype.showWallets = function(data) {
     }),
   }];
 
-  var perWeek = [{
-    key: 'New wallets per week',
-    values: _.map(_.take(data, 7), function(d) {
-      return {
-        x: d.date,
-        y: d.wallets || 0,
-      };
-    }),
+  var walletsPerMonth = [{
+    key: 'New wallets per month',
+    values: byMonthGrouped,
     color: '#2ca02c'
   }];
 
-  var perMonth = [{
-    key: 'New wallets per month',
-    values: _.map(_.take(data, 30), function(d) {
-      return {
-        x: d.date,
-        y: d.wallets || 0,
-      };
-    })
+  var walletsPerWeek = [{
+    key: 'New wallets per week',
+    values: byWeekGrouped,
+    color: '#ff7f0e'
   }];
+
+  var coords = [];
+
+  if (interval == 'complete')
+    coords = completeDays;
+  else if (interval == 'perMonth')
+    coords = walletsPerMonth;
+  else if (interval == 'perWeek')
+    coords = walletsPerWeek;
 
   nv.addGraph(function() {
     var chart = nv.models.lineChart()
@@ -195,7 +200,7 @@ Stats.prototype.showWallets = function(data) {
     d3.select('#chart-wallets svg').remove();
     d3.select('#chart-wallets')
       .append('svg')
-      .datum(completeDays.concat(perWeek).concat(perMonth))
+      .datum(coords)
       .transition().duration(500)
       .call(chart);
 
