@@ -53,6 +53,14 @@ angular.module('copayApp.services')
       return cb();
     };
 
+    root.addMetadata = function(b, opts) {
+
+      b = JSON.parse(b);
+      if (opts.historyCache) b.historyCache = opts.historyCache;
+      if (opts.addressBook) b.addressBook = opts.addressBook;
+      return JSON.stringify(b);
+    }
+
     root.walletExport = function(password, opts) {
       if (!password) {
         return null;
@@ -61,6 +69,8 @@ angular.module('copayApp.services')
       try {
         opts = opts || {};
         var b = fc.export(opts);
+        if (opts.historyCache || opts.addressBook) b = root.addMetadata(b, opts);
+
         var e = sjcl.encrypt(password, b, {
           iter: 10000
         });
