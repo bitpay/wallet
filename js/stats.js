@@ -55,24 +55,35 @@ Stats.prototype.transform = function(data) {
     if (!result[d.day]) result[d.day] = {};
     result[d.day].walletCount = d.count;
   });
+
   _.each(data.txProposals.amountByDay, function(d) {
     if (!result[d.day]) result[d.day] = {};
     result[d.day].txAmount = d.amount / 1e8;
   });
+
   _.each(data.txProposals.nbByDay, function(d) {
     if (!result[d.day]) result[d.day] = {};
     result[d.day].txCount = d.count;
   });
 
   return _.map(result, function(v, k) {
+    var d = new Date(parseDate(k));
+
     return {
       date: parseDate(k),
       amount: v.txAmount,
       txps: v.txCount,
       wallets: v.walletCount,
+      week: d.getFullYear() + '-' + d.getWeek(),
+      month: d.getFullYear() + '-' + d.getMonth()
     };
   });
 };
+
+Date.prototype.getWeek = function() {
+  var onejan = new Date(this.getFullYear(), 0, 1);
+  return Math.ceil((((this - onejan) / 86400000) + onejan.getDay() + 1) / 7);
+}
 
 Stats.prototype.error = function(msg) {
   alert(msg);
@@ -115,8 +126,29 @@ Stats.prototype.showTotals = function(data) {
 };
 
 Stats.prototype.showWallets = function(data) {
-  data = [{
-    key: 'New wallets',
+
+  var byWeek = _.groupBy(data, 'week');
+  var byWeekGrouped = _.map(byWeek, function(v, k) {
+    return _.sum(v, function(d) {
+      return d.wallets;
+    });
+  });
+
+  console.log('By week: ', byWeek);
+  console.log('By week grouped: ', byWeekGrouped);
+
+  var byMonth = _.groupBy(data, 'month');
+  var byMonthGrouped = _.map(byMonth, function(v, k) {
+    return _.sum(v, function(d) {
+      return d.wallets;
+    });
+  });
+
+  console.log('By month: ', byMonth);
+  console.log('By month grouped: ', byMonthGrouped);
+
+  var completeDays = [{
+    key: 'Total new wallets',
     values: _.map(data, function(d) {
       return {
         x: d.date,
@@ -125,8 +157,30 @@ Stats.prototype.showWallets = function(data) {
     }),
   }];
 
+  var perWeek = [{
+    key: 'New wallets per week',
+    values: _.map(_.take(data, 7), function(d) {
+      return {
+        x: d.date,
+        y: d.wallets || 0,
+      };
+    }),
+    color: '#2ca02c'
+  }];
+
+  var perMonth = [{
+    key: 'New wallets per month',
+    values: _.map(_.take(data, 30), function(d) {
+      return {
+        x: d.date,
+        y: d.wallets || 0,
+      };
+    })
+  }];
+
   nv.addGraph(function() {
     var chart = nv.models.lineChart()
+      .showLegend(true)
       .useInteractiveGuideline(true);
 
     chart.xAxis
@@ -141,7 +195,7 @@ Stats.prototype.showWallets = function(data) {
     d3.select('#chart-wallets svg').remove();
     d3.select('#chart-wallets')
       .append('svg')
-      .datum(data)
+      .datum(completeDays.concat(perWeek).concat(perMonth))
       .transition().duration(500)
       .call(chart);
 
