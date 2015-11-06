@@ -276,8 +276,8 @@ angular.module('copayApp.services')
 
         // check if exist
         if (lodash.find(root.profile.credentials, {
-          'walletId': walletData.walletId
-        })) {
+            'walletId': walletData.walletId
+          })) {
           return cb(gettext('Cannot join the same wallet more that once'));
         }
       } catch (ex) {
@@ -324,6 +324,16 @@ angular.module('copayApp.services')
       });
     };
 
+    root.setMetaData = function(walletClient, addressBook, historyCache, cb) {
+      storageService.setAddressbook(walletClient.credentials.network, addressBook, function(err) {
+        if (err) return cb(err);
+        storageService.setTxHistory(historyCache, walletClient.credentials.walletId, function(err) {
+          if (err) return cb(err);
+          return cb(null);
+        });
+      });
+    }
+
     root._addWalletClient = function(walletClient, opts, cb) {
       var walletId = walletClient.credentials.walletId;
 
@@ -348,7 +358,7 @@ angular.module('copayApp.services')
         root.setWalletClients();
 
         root.setAndStoreFocus(walletId, function() {
-          storageService.storeProfile(root.profile, function(err){
+          storageService.storeProfile(root.profile, function(err) {
             return cb(err, walletId);
           });
         });
@@ -370,7 +380,14 @@ angular.module('copayApp.services')
       } catch (err) {
         return cb(gettext('Could not import. Check input file and password'));
       }
-      root._addWalletClient(walletClient, opts, cb);
+      var addressBook = str.addressBook || [];
+      var historyCache = str.historyCache ||  [];
+
+      root.setMetaData(walletClient, addressBook, historyCache, function(err) {
+        if (err) console.log(err);
+
+        root._addWalletClient(walletClient, opts, cb);
+      });
     };
 
     root.importExtendedPrivateKey = function(xPrivKey, opts, cb) {
