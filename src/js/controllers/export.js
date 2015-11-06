@@ -35,7 +35,7 @@ angular.module('copayApp.controllers').controller('backupController',
       });
     };
 
-    self.getMetaData = function() {
+    self.getMetaData = function(cb) {
       self.getHistoryCache(function(err, txsFromLocal) {
         if (err) {
           return cb(err);

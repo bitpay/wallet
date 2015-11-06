@@ -337,10 +337,10 @@ angular.module('copayApp.services')
       });
     };
 
-    root.setMetaData = function(walletClient, cb) {
-      storageService.setAddressbook(walletClient.credentials.network, walletClient.credentials.historyCache, function(err) {
+    root.setMetaData = function(walletClient, addressBook, historyCache, cb) {
+      storageService.setAddressbook(walletClient.credentials.network, addressBook, function(err) {
         if (err) return cb(err);
-        storageService.setTxHistory(walletClient.credentials.historyCache, walletClient.credentials.walletId, function(err) {
+        storageService.setTxHistory(historyCache, walletClient.credentials.walletId, function(err) {
           if (err) return cb(err);
           return cb(null);
         });
@@ -349,33 +349,30 @@ angular.module('copayApp.services')
 
     root._addWalletClient = function(walletClient, opts, cb) {
       var walletId = walletClient.credentials.walletId;
-      root.setMetaData(walletClient, function(err) {
+
+      // check if exist
+      var w = lodash.find(root.profile.credentials, {
+        'walletId': walletId
+      });
+      if (w) {
+        return cb(gettext('Wallet already in Copay' + ": ") + w.walletName);
+      }
+
+      var defaults = configService.getDefaults();
+      var bwsFor = {};
+      bwsFor[walletId] = opts.bwsurl || defaults.bws.url;
+
+      configService.set({
+        bwsFor: bwsFor,
+      }, function(err) {
         if (err) console.log(err);
 
-        // check if exist
-        var w = lodash.find(root.profile.credentials, {
-          'walletId': walletId
-        });
-        if (w) {
-          return cb(gettext('Wallet already in Copay' + ": ") + w.walletName);
-        }
+        root.profile.credentials.push(JSON.parse(walletClient.export()));
+        root.setWalletClients();
 
-        var defaults = configService.getDefaults();
-        var bwsFor = {};
-        bwsFor[walletId] = opts.bwsurl || defaults.bws.url;
-
-        configService.set({
-          bwsFor: bwsFor,
-        }, function(err) {
-          if (err) console.log(err);
-
-          root.profile.credentials.push(JSON.parse(walletClient.export()));
-          root.setWalletClients();
-
-          root.setAndStoreFocus(walletId, function() {
-            storageService.storeProfile(root.profile, function(err) {
-              return cb(err, walletId);
-            });
+        root.setAndStoreFocus(walletId, function() {
+          storageService.storeProfile(root.profile, function(err) {
+            return cb(err, walletId);
           });
         });
       });
@@ -384,7 +381,7 @@ angular.module('copayApp.services')
     root.importWallet = function(str, opts, cb) {
       if (opts.bwsurl)
         bwcService.setBaseUrl(opts.bwsurl);
-
+      console.log(str);
       var walletClient = bwcService.getClient();
 
       $log.debug('Importing Wallet:', opts);
@@ -396,7 +393,11 @@ angular.module('copayApp.services')
       } catch (err) {
         return cb(gettext('Could not import. Check input file and password'));
       }
-      root._addWalletClient(walletClient, opts, cb);
+      root.setMetaData(walletClient, str.addressBook, str.historyCache, function(err) {
+        if (err) console.log(err);
+
+        root._addWalletClient(walletClient, opts, cb);
+      });
     };
 
     root.importExtendedPrivateKey = function(xPrivKey, opts, cb) {
