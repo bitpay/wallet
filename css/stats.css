@@ -1,4 +1,5 @@
 html, body {
+  font-family: Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif;
   margin: 0px;
   padding: 0px;
   height: 100%;
@@ -11,22 +12,50 @@ svg {
   height: 300px;
   display: block;
   font: 10px arial;
+  margin: 0 auto;
 }
 
-body {
-  padding-top: 20px;
-  width: 650px;
-  margin: auto;
+.top-bar {
+  background: #35495D;
+  padding: 1.5rem;
+  height: auto;
+  overflow: hidden;
 }
 
-select {
-  float:right;
-  margin: 0 28px 40px 0;
+.top-bar .row {
+  max-width: 62.5em;
 }
 
-ul#totals {
-  list-style:none;
-  clear:both;
+.top-bar a {
+  color: #B2C0CF;
+  text-transform: uppercase;
+  margin-top: 7px;
+}
+
+.top-bar a:hover {
+  color: #fff;
+}
+
+.m20t {margin-top: 20px;}
+
+section.download {
+  background: #00BD9C;
+  padding: 2.2rem;
+}
+
+section.download h2 {
+  color: #FFFFFF;
+  line-height: 3;
+}
+
+section.download button {
+  text-transform: uppercase;
+}
+
+section.download button.outline {
+  border: 1px solid #fff;
+  color: #fff;
+  background-color: transparent;
 }
 
 #totals li {
@@ -35,8 +64,8 @@ ul#totals {
   padding: 20px;
   margin: 6px;
   border: 1px lightgray solid;
-  height: 60px;
-  width: 142px;
+  height: 100px;
+  width: 191px;
 }
 
 #totals li:first-child {
@@ -47,7 +76,7 @@ ul#totals {
   margin-right: 0;
 }
 
-#totals .label {
+#totals span {
   font-size: 12px;
   color: #888;
 }
