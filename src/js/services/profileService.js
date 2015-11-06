@@ -381,7 +381,7 @@ angular.module('copayApp.services')
     root.importWallet = function(str, opts, cb) {
       if (opts.bwsurl)
         bwcService.setBaseUrl(opts.bwsurl);
-      console.log(str);
+
       var walletClient = bwcService.getClient();
 
       $log.debug('Importing Wallet:', opts);
@@ -393,7 +393,10 @@ angular.module('copayApp.services')
       } catch (err) {
         return cb(gettext('Could not import. Check input file and password'));
       }
-      root.setMetaData(walletClient, str.addressBook, str.historyCache, function(err) {
+      var addressBook = str.addressBook || [];
+      var historyCache = str.historyCache ||  [];
+
+      root.setMetaData(walletClient, addressBook, historyCache, function(err) {
         if (err) console.log(err);
 
         root._addWalletClient(walletClient, opts, cb);
