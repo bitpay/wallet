@@ -15,10 +15,6 @@ Stats.prototype.run = function() {
   $('#network').change(function() {
     self.refresh();
   }).trigger('change');
-
-  $('#interval').change(function() {
-    self.refresh();
-  }).trigger('change');
 };
 
 Stats.prototype.refresh = function() {
@@ -94,10 +90,10 @@ Stats.prototype.error = function(msg) {
 };
 
 Stats.prototype.show = function(data) {
-  //  this.showTotals(data);
+  this.showTotals(data);
   this.showWallets(data);
-  //  this.showTransactions(data);
-  //  this.showAmount(data);
+  this.showTransactions(data);
+  this.showAmount(data);
 };
 
 Stats.prototype.showTotals = function(data) {
@@ -130,7 +126,7 @@ Stats.prototype.showTotals = function(data) {
 };
 
 Stats.prototype.showWallets = function(data) {
-  var interval = $('#interval').val();
+  var self = this;
 
   var byMonth = _.groupBy(data, 'month');
   var byMonthGrouped = _.map(byMonth, function(v, k) {
@@ -174,40 +170,43 @@ Stats.prototype.showWallets = function(data) {
     color: '#ff7f0e'
   }];
 
-  var coords = [];
+  $('#interval').change(function() {
+    var interval = $('#interval').val();
+    var coords = [];
 
-  if (interval == 'complete')
-    coords = completeDays;
-  else if (interval == 'perMonth')
-    coords = walletsPerMonth;
-  else if (interval == 'perWeek')
-    coords = walletsPerWeek;
+    if (interval == 'complete')
+      coords = completeDays;
+    else if (interval == 'perMonth')
+      coords = walletsPerMonth;
+    else if (interval == 'perWeek')
+      coords = walletsPerWeek;
 
-  nv.addGraph(function() {
-    var chart = nv.models.lineChart()
-      .showLegend(true)
-      .useInteractiveGuideline(true);
+    nv.addGraph(function() {
+      var chart = nv.models.lineChart()
+        .showLegend(true)
+        .useInteractiveGuideline(true);
 
-    chart.xAxis
-      .tickFormat(function(d) {
-        return d3.time.format('%b %d')(new Date(d));
-      });
+      chart.xAxis
+        .tickFormat(function(d) {
+          return d3.time.format('%b %d')(new Date(d));
+        });
 
-    chart.yAxis
-      .axisLabel(data[0].key)
-      .tickFormat(d3.format(',f'));
+      chart.yAxis
+        .axisLabel(data[0].key)
+        .tickFormat(d3.format(',f'));
 
-    d3.select('#chart-wallets svg').remove();
-    d3.select('#chart-wallets')
-      .append('svg')
-      .datum(coords)
-      .transition().duration(500)
-      .call(chart);
+      d3.select('#chart-wallets svg').remove();
+      d3.select('#chart-wallets')
+        .append('svg')
+        .datum(coords)
+        .transition().duration(500)
+        .call(chart);
 
-    nv.utils.windowResize(chart.update);
+      nv.utils.windowResize(chart.update);
 
-    return chart;
-  });
+      return chart;
+    });
+  }).trigger('change');
 };
 
 Stats.prototype.showTransactions = function(data) {
