@@ -7,7 +7,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   self.isChromeApp = isChromeApp;
   self.isSafari = isMobile.Safari();
   self.onGoingProcess = {};
-  self.limitHistory = 6;
+  self.historyShowLimit = 10;
 
   function strip(number) {
     return (parseFloat(number.toPrecision(12)));
@@ -83,7 +83,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.currentFeeLevel = null;
     self.notAuthorized = false;
     self.txHistory = [];
-    self.txHistoryUnique = {};
+    self.completeHistory = [];
+    self.txProgress = 0;
+    self.historyShowShowAll = false;
     self.balanceByAddress = null;
     self.pendingTxProposalsCountForUs = null;
     self.setSpendUnconfirmed();
@@ -490,12 +492,13 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
   var SAFE_CONFIRMATIONS = 6;
 
-  self.setTxHistory = function(txs) {
+  self.processNewTxs = function(txs) {
     var config = configService.getSync().wallet.settings;
     var now = Math.floor(Date.now() / 1000);
-    self.txHistoryUnique = {};
-
+    var txHistoryUnique = {};
+    var ret = [];
     self.hasUnsafeConfirmed = false;
+
     lodash.each(txs, function(tx) {
       tx = txFormatService.processTx(tx);
 
@@ -510,13 +513,15 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         self.hasUnsafeConfirmed = true;
       }
 
-      if (!self.txHistoryUnique[tx.txid]) {
-        self.txHistory.push(tx);
-        self.txHistoryUnique[tx.txid] = true;
+      if (!txHistoryUnique[tx.txid]) {
+        ret.push(tx);
+        txHistoryUnique[tx.txid] = true;
       } else {
         $log.debug('Ignoring duplicate TX in history: ' + tx.txid)
       }
     });
+
+    return ret;
   };
 
   self.updateAlias = function() {
@@ -740,13 +745,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     });
   };
 
-  self.stopSync = function(remoteTx, localTx) {
-    if (remoteTx.txid == localTx.txid)
-      return true;
-    else
-      return false;
-  }
-
   self.removeSoftConfirmedTx = function(txs) {
     return lodash.map(txs, function(tx) {
       if (tx.confirmations >= SOFT_CONFIRMATION_LIMIT)
@@ -778,60 +776,84 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   }
 
   self.updateLocalTxHistory = function(cb) {
+    var requestLimit = 6;
+
     self.getConfirmedTxs(function(err, txsFromLocal) {
       if (err) return cb(err);
+      var endingTxid = txsFromLocal[0] ? txsFromLocal[0].txid : null;
+      console.log('[index.js.791:endingTxid:]', endingTxid); //TODO
 
-      var fc = profileService.focusedClient;
-      var c = fc.credentials;
-      fillTxsObject();
+      function getNewTxs(newTxs, skip, i_cb) {
 
-      function fillTxsObject(txsResult, index) {
-        txsResult = txsResult || [];
-        index = index || 0;
+        self.getTxsFromServer(skip, endingTxid, requestLimit, function(err, res, shouldContinue) {
+          if (err) return i_cb(err);
 
-        self.makeTxHistoryRequest(txsResult, index, txsFromLocal[0], function(err, newIndex, exitLoop) {
-          if (err) return cb(err);
-          if (exitLoop) {
-            self.txHistory = [];
-            self.setTxHistory(lodash.compact(txsResult.concat(txsFromLocal)));
-            return storageService.setTxHistory(JSON.stringify(self.txHistory), c.walletId, function() {
-              return cb(null);
-            });
+
+          newTxs = newTxs.concat(res);
+          skip = skip + requestLimit;
+
+          $log.debug('Syncing TXs. Got:' + newTxs.length + ' Skip:' + skip, ' EndingTxid:', endingTxid, ' Continue:', shouldContinue);
+
+          if (!shouldContinue) {
+            newTxs = self.processNewTxs(newTxs);
+            $log.debug('Finish Sync: New Txs: ' + newTxs.length);
+            return i_cb(null, newTxs);
           }
-          fillTxsObject(txsResult, newIndex);
+
+          self.txProgress = newTxs.length;
+          $timeout(function(){
+            $rootScope.$apply();
+          });
+          getNewTxs(newTxs, skip, i_cb);
         });
       };
+
+      getNewTxs([], 0, function(err, txs) {
+        if (err) return cb(err);
+
+        var newHistory = lodash.compact(txs.concat(txsFromLocal));
+        $log.debug('Tx History synced. Total Txs: ' + newHistory.length);
+
+        self.completeHistory = newHistory;
+        self.txHistory = newHistory.slice(0, self.historyShowLimit);
+        self.historyShowShowAll = newHistory.length >= self.historyShowLimit;
+
+        var fc = profileService.focusedClient;
+        var c = fc.credentials;
+        return storageService.setTxHistory(JSON.stringify(newHistory), c.walletId, function() {
+          return cb();
+        });
+      });
     });
   }
+  self.showAllHistory = function() {
+    self.historyShowShowAll = false;
+    self.txHistory = self.completeHistory;
+    $timeout(function() {
+      $rootScope.$apply();
+    });
+  };
 
-  self.makeTxHistoryRequest = function(txsResult, index, endingTx, cb) {
+  self.getTxsFromServer = function(skip, endingTxid, limit, cb) {
+    var res = [];
+
     var fc = profileService.focusedClient;
-    var c = fc.credentials;
-    var exitLoop = false;
-
     fc.getTxHistory({
-      skip: index,
-      limit: self.limitHistory + 1
-    }, function(err, txsFromBWC) {
+      skip: skip,
+      limit: limit
+    }, function(err, txsFromServer) {
       if (err) return cb(err);
 
-      if (!txsFromBWC[0])
-        exitLoop = true;
+      if (!txsFromServer.length)
+        return cb();
 
-      lodash.each(txsFromBWC, function(t) {
-        if (!endingTx) txsResult.push(t);
-        else {
-          if (!self.stopSync(t, endingTx) && !exitLoop) {
-            txsResult.push(t);
-          } else {
-            exitLoop = true;
-          }
-        }
+      var res = lodash.takeWhile(txsFromServer, function(tx) {
+        return tx.txid != endingTxid;
       });
-      index = index + self.limitHistory;
-      return cb(null, index, exitLoop);
+
+      return cb(null, res, res.length == limit);
     });
-  }
+  };
 
   self.updateHistory = function() {
     var fc = profileService.focusedClient;
