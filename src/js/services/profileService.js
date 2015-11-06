@@ -303,15 +303,28 @@ angular.module('copayApp.services')
 
     root.deleteWalletFC = function(opts, cb) {
       var fc = root.focusedClient;
+      var walletId = fc.credentials.walletId;
       $log.debug('Deleting Wallet:', fc.credentials.walletName);
 
       fc.removeAllListeners();
       root.profile.credentials = lodash.reject(root.profile.credentials, {
-        walletId: fc.credentials.walletId
+        walletId: walletId
       });
 
-      delete root.walletClients[fc.credentials.walletId];
+      delete root.walletClients[walletId]; 
       root.focusedClient = null;
+
+      storageService.clearLastAddress(walletId, function(err) {
+        if (err) $log.warn(err);
+      });
+
+      storageService.removeTxHistory(walletId, function(err) {
+        if (err) $log.warn(err);
+      });
+
+      storageService.clearBackupFlag(walletId, function(err) {
+        if (err) $log.warn(err);
+      });
 
       $timeout(function() {
         root.setWalletClients();
