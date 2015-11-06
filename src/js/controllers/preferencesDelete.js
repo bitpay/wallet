@@ -53,12 +53,9 @@ angular.module('copayApp.controllers').controller('preferencesDeleteWalletContro
         if (err) {
           self.error = err.message || err;
         } else {
-          storageService.removeTxHistory(fc.credentials.walletId, function() {
-            notification.success(gettextCatalog.getString('Success'), gettextCatalog.getString('The wallet "{{walletName}}" was deleted', {
-              walletName: walletName
-            }));
-            return;
-          });
+          notification.success(gettextCatalog.getString('Success'), gettextCatalog.getString('The wallet "{{walletName}}" was deleted', {
+            walletName: walletName
+          }));
         }
       });
     };

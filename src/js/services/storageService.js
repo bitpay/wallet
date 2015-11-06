@@ -159,6 +159,10 @@ angular.module('copayApp.services')
       storage.get('backup-' + walletId, cb);
     };
 
+    root.clearBackupFlag = function(walletId, cb) {
+      storage.remove('backup-' + walletId, cb);
+    };
+
     root.setCleanAndScanAddresses = function(walletId, cb) {
       storage.set('CleanAndScanAddresses', walletId, cb);
     };
