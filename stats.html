@@ -11,7 +11,7 @@
       <script type="text/javascript" src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
       <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.7.0/nv.d3.min.js"></script>
       <script type="text/javascript" src="./js/stats.js"></script>
-      <script type="text/javascript" src="./js/foundation.js"></script>
+      <script type="text/javascript" src="./foundation/foundation.js"></script>
       <script>
         $(document).ready(function(){
           (new Stats()).run();
@@ -20,18 +20,19 @@
   </head>
   <body class='with-3d-shadow with-transitions'>
     <nav class="top-bar" data-topbar role="navigation">
-      <div class="left">
-        <img src="https://copay.io/images/copay-logo-white.svg" alt="Copay">
-      </div>
-      <div class="right">
-        <select name="list" id="network">
-            <option value="livenet" selected>Livenet</option>
-            <option value="testnet">Testnet</option>
-        </select>
-      </div>
-    </ul>
+      <div class="row">
+        <div class="left">
+          <img src="https://copay.io/images/copay-logo-white.svg" alt="Copay">
+        </div>
+        <div class="right large-2">
+          <select name="list" id="network">
+              <option value="livenet" selected>Livenet</option>
+              <option value="testnet">Testnet</option>
+          </select>
+        </div>
+    </div>
   </nav>
-  <div class="row m20t">
+  <div class="row text-center m20t">
     <ul id="totals">
       <li id="total-wallets"><span>Wallets</span><span class="value"></span></li>
       <li id="total-txps"><span>Proposals</span><span class="value"></span></li>
@@ -50,16 +51,18 @@
   </section>
 
   <nav class="top-bar" data-topbar role="navigation">
-    <ul class="title-area">
-      <li class="name">
-        <h1><img src="https://copay.io/images/copay-logo-white.svg" alt="Copay"></h1>
-      </li>
-    </ul>
-    <ul class="right inline-list">
-      <li><a href="#">Wallets</a></li>
-      <li><a href="#">Proposals</a></li>
-      <li><a href="#">Amount</a></li>
-    </ul>
+    <div class="row">
+      <ul class="title-area">
+        <li class="name">
+          <h1><img src="https://copay.io/images/copay-logo-white.svg" alt="Copay"></h1>
+        </li>
+      </ul>
+      <ul class="right inline-list">
+        <li><a href="#">Wallets</a></li>
+        <li><a href="#">Proposals</a></li>
+        <li><a href="#">Amount</a></li>
+      </ul>
+    </div>
   </nav>
   </body>
 </html>

@@ -12,14 +12,18 @@ svg {
   height: 300px;
   display: block;
   font: 10px arial;
+  margin: 0 auto;
 }
 
 .top-bar {
   background: #35495D;
   padding: 1.5rem;
-  width: 100%;
   height: auto;
   overflow: hidden;
+}
+
+.top-bar .row {
+  max-width: 62.5em;
 }
 
 .top-bar a {
