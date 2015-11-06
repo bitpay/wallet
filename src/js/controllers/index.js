@@ -828,9 +828,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   }
   self.showAllHistory = function() {
     self.historyShowShowAll = false;
-    self.txHistory = self.completeHistory;
     $timeout(function() {
       $rootScope.$apply();
+      self.txHistory = self.completeHistory;
     });
   };
 
@@ -857,7 +857,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
   self.updateHistory = function() {
     var fc = profileService.focusedClient;
-    if (!fc.isComplete()) return;
+    if (!fc.isComplete() || self.updatingTxHistory) return;
 
     $log.debug('Updating Transaction History');
     self.txHistoryError = false;
@@ -865,9 +865,12 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
     $timeout(function() {
       self.updateLocalTxHistory(function(err) {
-        if (err) self.txHistoryError = true;
         self.updatingTxHistory = false;
         self.showWaitingSign = false;
+
+        if (err) 
+          self.txHistoryError = true;
+
         $rootScope.$apply();
       });
     });
