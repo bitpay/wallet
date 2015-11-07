@@ -25,13 +25,17 @@ angular.module('copayApp.services')
     };
 
     var encryptOnMobile = function(text, cb) {
-      getUUID(function(uuid) {
-        if (uuid) {
-          $log.debug('Encrypting profile');
-          text = sjcl.encrypt(uuid, text);
-        }
-        return cb(null, text);
-      });
+
+      // UUID encryption is disabled.
+      return cb(null, text);
+      //
+      // getUUID(function(uuid) {
+      //   if (uuid) {
+      //     $log.debug('Encrypting profile');
+      //     text = sjcl.encrypt(uuid, text);
+      //   }
+      //   return cb(null, text);
+      // });
     };
 
 
@@ -43,8 +47,10 @@ angular.module('copayApp.services')
 
       if (!json) return cb('Could not access storage')
 
-      if (!json.iter || !json.ct)
+      if (!json.iter || !json.ct) {
+        $log.debug('Profile is not encrypted');
         return cb(null, text);
+      }
 
       $log.debug('Profile is encrypted');
       getUUID(function(uuid) {
@@ -111,7 +117,6 @@ angular.module('copayApp.services')
       storage.get('profile', function(err, str) {
 
         if (err || !str)
-        // Migrate ?
           return cb(err);
 
         decryptOnMobile(str, function(err, str) {
@@ -120,6 +125,7 @@ angular.module('copayApp.services')
           try {
             p = Profile.fromString(str);
           } catch (e) {
+            $log.debug('Could not read profile:', e);
             err = new Error('Could not read profile:' + p);
           }
           return cb(err, p);
