@@ -60,6 +60,11 @@ angular.module('copayApp.services')
 
         try {
           text = sjcl.decrypt(uuid, text);
+
+          $log.info('Migrating to unencrypted profile');
+          return storage.set('profile', text, function(err) {
+            return cb(err, text);
+          });
         } catch(e) {
           $log.warn('Decrypt error: ', e);
           return cb('Could not decrypt storage: device ID mismatch');
