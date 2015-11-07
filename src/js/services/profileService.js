@@ -46,8 +46,6 @@ angular.module('copayApp.services')
           client.setNotificationsInterval(BACKGROUND_UPDATE_PERIOD);
         });
         root.focusedClient.setNotificationsInterval(FOREGROUND_UPDATE_PERIOD);
-
-        console.log('[profileService.js.49] SETTING...'); //TODO
       }
 
       return cb();
