@@ -1,9 +1,9 @@
-<span ng-show="index.network != 'livenet'"> Testnet </span>
-<img  ng-show="!index.canSign && !index.isPrivKeyExternal" src="img/">
-<div ng-show="index.isPrivKeyExternal" style="text-transform: capitalize">
-  <span translate>External Private Key:</span>
-  {{index.externalSource}}
-  <span>(<span translate>Account</span>:
-    #{{index.account || 0}})
-  </span>
-</div>
+
+<span ng-show="index.isShared"><span translate>{{index.m}}-of-{{index.n}}</span></span>
+<img style="height:1em" ng-show="index.isShared" src="img/icon-users.svg">
+<img style="height:1em"  ng-show="index.network != 'livenet'" src="img/icon-testnet.svg">
+<img style="height:1em"  ng-show="!index.canSign && !index.isPrivKeyExternal" src="img/icon-view.svg">
+<img style="height:1em"  ng-show="index.isPrivKeyEncrypted" src="img/icon-lock.svg">
+
+<img style="height:1em"  ng-show="index.externalSource == 'trezor'" src="img/icon-trezor.svg">
+<span style="height:1em" ng-show="index.account"><span translate>Account</span>: #{{index.account || 0}} </span>
