@@ -108,6 +108,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       self.isComplete = fc.isComplete();
       self.canSign = fc.canSign();
       self.isPrivKeyExternal = fc.isPrivKeyExternal();
+      self.isPrivKeyEncrypted = fc.isPrivKeyEncrypted();
       self.externalSource = fc.getPrivKeyExternalSourceName();
       self.account = fc.credentials.account;
 
@@ -781,7 +782,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.getConfirmedTxs(function(err, txsFromLocal) {
       if (err) return cb(err);
       var endingTxid = txsFromLocal[0] ? txsFromLocal[0].txid : null;
-      console.log('[index.js.791:endingTxid:]', endingTxid); //TODO
 
       function getNewTxs(newTxs, skip, i_cb) {
 
