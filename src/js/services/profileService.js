@@ -311,7 +311,7 @@ angular.module('copayApp.services')
         walletId: walletId
       });
 
-      delete root.walletClients[walletId];
+      delete root.walletClients[walletId]; 
       root.focusedClient = null;
 
       storageService.clearLastAddress(walletId, function(err) {
@@ -323,10 +323,6 @@ angular.module('copayApp.services')
       });
 
       storageService.clearBackupFlag(walletId, function(err) {
-        if (err) $log.warn(err);
-      });
-
-      storageService.removeTxHistory(walletId, function(err) {
         if (err) $log.warn(err);
       });
 
@@ -365,7 +361,7 @@ angular.module('copayApp.services')
         root.setWalletClients();
 
         root.setAndStoreFocus(walletId, function() {
-          storageService.storeProfile(root.profile, function(err) {
+          storageService.storeProfile(root.profile, function(err){
             return cb(err, walletId);
           });
         });
