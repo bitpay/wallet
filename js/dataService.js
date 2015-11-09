@@ -10,7 +10,6 @@ app.service('dataService', function($rootScope) {
         return;
       }
       root.show(data);
-      self.loading = false;
     });
   };
 
