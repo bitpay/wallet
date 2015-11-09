@@ -26,8 +26,8 @@
         </div>
         <div class="right large-2">
           <select name="list" id="network">
-              <option value="livenet" selected>Livenet</option>
-              <option value="testnet">Testnet</option>
+            <option value="livenet" selected>Livenet</option>
+            <option value="testnet">Testnet</option>
           </select>
         </div>
     </div>
@@ -38,7 +38,13 @@
       <li id="total-txps"><span>Proposals</span><span class="value"></span></li>
       <li id="total-amount"><span>Amount (BTC)</span><span class="value"></span></li>
     </ul>
-    <div id="chart-wallets" class="chart"></div>
+    <div id="chart-wallets" class="chart">
+      <select name="list" id="interval">
+        <option value="perDay" selected>Per day</option>
+        <option value="perWeek">Per week</option>
+        <option value="perMonth">Per month</option>
+      </select>
+    </div>
     <div id="chart-txps" class="chart"></div>
     <div id="chart-amount" class="chart"></div>
   </div>

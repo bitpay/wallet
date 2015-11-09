@@ -55,24 +55,35 @@ Stats.prototype.transform = function(data) {
     if (!result[d.day]) result[d.day] = {};
     result[d.day].walletCount = d.count;
   });
+
   _.each(data.txProposals.amountByDay, function(d) {
     if (!result[d.day]) result[d.day] = {};
     result[d.day].txAmount = d.amount / 1e8;
   });
+
   _.each(data.txProposals.nbByDay, function(d) {
     if (!result[d.day]) result[d.day] = {};
     result[d.day].txCount = d.count;
   });
 
   return _.map(result, function(v, k) {
+    var d = new Date(parseDate(k));
+
     return {
       date: parseDate(k),
       amount: v.txAmount,
       txps: v.txCount,
       wallets: v.walletCount,
+      week: d.getFullYear() + '-' + d.getWeek(),
+      month: d.getFullYear() + '-' + d.getMonth()
     };
   });
 };
+
+Date.prototype.getWeek = function() {
+  var onejan = new Date(this.getFullYear(), 0, 1);
+  return Math.ceil((((this - onejan) / 86400000) + onejan.getDay() + 1) / 7);
+}
 
 Stats.prototype.error = function(msg) {
   alert(msg);
@@ -115,8 +126,40 @@ Stats.prototype.showTotals = function(data) {
 };
 
 Stats.prototype.showWallets = function(data) {
-  data = [{
-    key: 'New wallets',
+  var self = this;
+
+  var byMonth = _.groupBy(data, 'month');
+  var byMonthGrouped = _.map(byMonth, function(v, k) {
+    return {
+      x: v[0].date,
+      y: _.sum(v, function(d) {
+        return d.wallets;
+      })
+    }
+  });
+
+  var byWeek = _.groupBy(data, 'week');
+  var byWeekGrouped = _.map(byWeek, function(v, k) {
+    return {
+      x: v[0].date,
+      y: _.sum(v, function(d) {
+        return d.wallets;
+      })
+    }
+  });
+
+  var walletsPerMonth = [{
+    key: 'New wallets per month',
+    values: byMonthGrouped
+  }];
+
+  var walletsPerWeek = [{
+    key: 'New wallets per week',
+    values: byWeekGrouped
+  }];
+
+  var walletsPerDay = [{
+    key: 'New wallets per day',
     values: _.map(data, function(d) {
       return {
         x: d.date,
@@ -125,30 +168,47 @@ Stats.prototype.showWallets = function(data) {
     }),
   }];
 
-  nv.addGraph(function() {
-    var chart = nv.models.lineChart()
-      .useInteractiveGuideline(true);
+  $('#interval').change(function() {
+    nv.addGraph(function() {
+      var interval = $('#interval').val();
+      var opts = {};
 
-    chart.xAxis
-      .tickFormat(function(d) {
-        return d3.time.format('%b %d')(new Date(d));
-      });
+      if (interval == 'perDay') {
+        opts.coords = walletsPerDay;
+        opts.graphic = nv.models.lineChart();
+        opts.format = '%d';
+      } else if (interval == 'perMonth') {
+        opts.coords = walletsPerMonth;
+        opts.graphic = nv.models.discreteBarChart();
+        opts.format = '%b';
+      } else if (interval == 'perWeek') {
+        opts.coords = walletsPerWeek;
+        opts.graphic = nv.models.discreteBarChart();
+        opts.format = '%W';
+      }
+      var chart = opts.graphic;
 
-    chart.yAxis
-      .axisLabel(data[0].key)
-      .tickFormat(d3.format(',f'));
+      chart.xAxis
+        .tickFormat(function(d) {
+          return d3.time.format(opts.format)(new Date(d));
+        });
 
-    d3.select('#chart-wallets svg').remove();
-    d3.select('#chart-wallets')
-      .append('svg')
-      .datum(data)
-      .transition().duration(500)
-      .call(chart);
+      chart.yAxis
+        .axisLabel(data[0].key)
+        .tickFormat(d3.format(',f'));
 
-    nv.utils.windowResize(chart.update);
+      d3.select('#chart-wallets svg').remove();
+      d3.select('#chart-wallets')
+        .append('svg')
+        .datum(opts.coords)
+        .transition().duration(500)
+        .call(chart);
 
-    return chart;
-  });
+      nv.utils.windowResize(chart.update);
+
+      return chart;
+    });
+  }).trigger('change');
 };
 
 Stats.prototype.showTransactions = function(data) {
