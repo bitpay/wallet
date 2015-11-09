@@ -2,7 +2,7 @@
 <div 
   class="topbar-container" 
   ng-include="'views/includes/topbar.html'"
-  ng-init="titleSection='Preferences'; closeToHome = true">
+  ng-init="titleSection='Wallet Preferences'; closeToHome = true">
 </div>
 
 
@@ -17,7 +17,7 @@
         {{index.alias||index.walletName}}
         <i class="icon-arrow-right3 size-24"></i>
       </div>
-      <div translate>Wallet Alias</div>
+      <div translate>Alias</div>
     </li>
 
     <li ng-click="$root.go('preferencesEmail')">
@@ -77,62 +77,6 @@
       </li>
     </ul>
   </div>
-  <ul class="no-bullet m0 ">
-
-    <h4 translate>Global settings</h4>
-
-    <li  ng-show="!index.noFocusedWallet" ng-click="$root.go('preferencesLanguage')">
-      <div class="right text-gray">
-        {{preferences.currentLanguageName|translate}}
-        <i class="icon-arrow-right3 size-24"></i>
-      </div>
-      <div translate>Language</div>
-    </li>
-    <li  ng-show="!index.noFocusedWallet" ng-click="$root.go('preferencesUnit')">
-      <div class="right text-gray">
-        {{preferences.unitName}}
-        <i class="icon-arrow-right3 size-24"></i>
-      </div>
-      <div translate>Unit</div>
-    </li>
-    <li  ng-show="!index.noFocusedWallet" ng-click="$root.go('preferencesAltCurrency')">
-      <div class="right text-gray">
-        {{preferences.selectedAlternative.name}}
-        <i class="icon-arrow-right3 size-24"></i>
-      </div>
-      <div translate>Alternative Currency</div>
-    </li>
-    <li  ng-show="!index.noFocusedWallet" ng-click="$root.go('preferencesFee')"
-      ng-show="(index.network == 'livenet' ? index.feeLevels.livenet : index.feeLevels.testnet)">
-      <div class="right text-gray">
-        {{index.feeOpts[index.currentFeeLevel]|translate}}
-        <i class="icon-arrow-right3 size-24"></i>
-      </div>
-      <div translate>Bitcoin Network Fee Policy</div>
-    </li> 
-   <li  ng-show="!index.noFocusedWallet">
-      <switch id="spend-unconfirmed" name="spendUnconfirmed" ng-model="spendUnconfirmed" class="green right"></switch>
-      <div translate>Use Unconfirmed Funds</div>
-    </li>
-
-    <li ng-show="!index.noFocusedWallet">
-      <switch id="glidera-enabled" name="glideraEnabled" ng-model="glideraEnabled" class="green right"></switch>
-      <div>Enable Glidera Service</div>
-    </li>
- 
-    <!-- Disabled for testnet 
-    <li ng-show="!index.noFocusedWallet && glideraEnabled">
-      <span>Glidera Sandbox</span>
-      <switch id="glidera-testnet" name="glideraTestnet" ng-model="glideraTestnet" class="green right"></switch>
-    </li>
-    -->
-
-    <li ng-click="$root.go('about')">
-      <i class="icon-arrow-right3 size-24 right text-gray"></i>  
-      <div translate>About Copay</div>
-    </li>
- 
-  </ul>
   <h4></h4>
 
 </div>
