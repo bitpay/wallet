@@ -38,7 +38,8 @@ svg {
 footer a {
   color: #7A8C9E;
   text-transform: uppercase;
-  margin-top: 28px;
+  margin-top: 2.1rem;
+  font-size: 0.8rem;
 }
 
 footer a:hover {
