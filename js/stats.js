@@ -175,7 +175,7 @@ Stats.prototype.showWallets = function(data) {
 
       if (interval == 'perDay') {
         opts.coords = walletsPerDay;
-        opts.format = '%d';
+        opts.format = '%b %d';
         opts.label = walletsPerDay[0].key;
       } else if (interval == 'perMonth') {
         opts.coords = walletsPerMonth;
