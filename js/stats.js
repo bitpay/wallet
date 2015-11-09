@@ -149,17 +149,17 @@ Stats.prototype.showWallets = function(data) {
   });
 
   var walletsPerMonth = [{
-    key: 'New wallets per month',
+    key: '# of New wallets per month',
     values: byMonthGrouped
   }];
 
   var walletsPerWeek = [{
-    key: 'New wallets per week',
+    key: '# of New wallets per week',
     values: byWeekGrouped
   }];
 
   var walletsPerDay = [{
-    key: 'New wallets per day',
+    key: '# of New wallets per day',
     values: _.map(data, function(d) {
       return {
         x: d.date,
@@ -175,18 +175,19 @@ Stats.prototype.showWallets = function(data) {
 
       if (interval == 'perDay') {
         opts.coords = walletsPerDay;
-        opts.graphic = nv.models.lineChart();
         opts.format = '%d';
+        opts.label = walletsPerDay[0].key;
       } else if (interval == 'perMonth') {
         opts.coords = walletsPerMonth;
-        opts.graphic = nv.models.discreteBarChart();
         opts.format = '%b';
+        opts.label = walletsPerMonth[0].key;
       } else if (interval == 'perWeek') {
         opts.coords = walletsPerWeek;
-        opts.graphic = nv.models.discreteBarChart();
         opts.format = '%W';
+        opts.label = walletsPerWeek[0].key;
       }
-      var chart = opts.graphic;
+      var chart = nv.models.lineChart()
+        .useInteractiveGuideline(true);
 
       chart.xAxis
         .tickFormat(function(d) {
@@ -194,7 +195,7 @@ Stats.prototype.showWallets = function(data) {
         });
 
       chart.yAxis
-        .axisLabel(data[0].key)
+        .axisLabel(opts.label)
         .tickFormat(d3.format(',f'));
 
       d3.select('#chart-wallets svg').remove();
