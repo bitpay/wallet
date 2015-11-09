@@ -30,45 +30,45 @@
             <option value="testnet">Testnet</option>
           </select>
         </div>
-    </div>
-  </nav>
-  <div class="row text-center m20t">
-    <ul id="totals">
-      <li id="total-wallets"><span>Wallets</span><span class="value"></span></li>
-      <li id="total-txps"><span>Proposals</span><span class="value"></span></li>
-      <li id="total-amount"><span>Amount (BTC)</span><span class="value"></span></li>
+      </div>
+    </nav>
+    <ul id="totals" class="row m20t text-center">
+      <li class="large-4 columns panel" id="total-wallets"><span>Wallets</span><span class="value"></span></li>
+      <li class="large-4 columns panel" id="total-txps"><span>Proposals</span><span class="value"></span></li>
+      <li class="large-4 columns panel" id="total-amount"><span>Amount (BTC)</span><span class="value"></span></li>
     </ul>
-    <div id="chart-wallets" class="chart">
-      <select name="list" id="interval">
-        <option value="perDay" selected>Per day</option>
-        <option value="perWeek">Per week</option>
-        <option value="perMonth">Per month</option>
-      </select>
-    </div>
-    <div id="chart-txps" class="chart"></div>
-    <div id="chart-amount" class="chart"></div>
-  </div>
-
-  <section class="download">
-    <div class="row text-center">
-      <h2>Message to get you to download copay</h2>
-      <button class="button primary round outline large">Get Copay</button>
-    </div>
-  </section>
-
-  <nav class="top-bar" data-topbar role="navigation">
     <div class="row">
-      <ul class="title-area">
-        <li class="name">
-          <h1><img src="https://copay.io/images/copay-logo-white.svg" alt="Copay"></h1>
-        </li>
-      </ul>
-      <ul class="right inline-list">
+      <h3>New Wallets</h3>
+      <div id="chart-wallets" class="chart panel">
+        <select class="large-2 left" name="list" id="interval">
+          <option value="perDay" selected>Per day</option>
+          <option value="perWeek">Per week</option>
+          <option value="perMonth">Per month</option>
+        </select>
+      </div>
+      <h3>Proposals</h3>
+      <div id="chart-txps" class="chart panel"></div>
+      <h3>Amount (BTC)</h3>
+      <div id="chart-amount" class="chart panel"></div>
+    </div>
+
+
+    <section class="download">
+      <div class="row text-center">
+        <h2>Message to get you to download copay</h2>
+        <button class="button primary round outline large">Get Copay</button>
+      </div>
+    </section>
+
+    <footer class="row">
+      <div class="left m10">
+        <h1><img src="https://copay.io/images/logo-copay-footer.svg" alt="Copay" width="80"></h1>
+      </div>
+      <ul class="right inline-list m0">
         <li><a href="#">Wallets</a></li>
         <li><a href="#">Proposals</a></li>
         <li><a href="#">Amount</a></li>
       </ul>
-    </div>
-  </nav>
+    </footer>
   </body>
 </html>

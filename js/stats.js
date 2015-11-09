@@ -179,11 +179,11 @@ Stats.prototype.showWallets = function(data) {
         opts.format = '%d';
       } else if (interval == 'perMonth') {
         opts.coords = walletsPerMonth;
-        opts.graphic = nv.models.discreteBarChart();
+        opts.graphic = nv.models.lineChart();
         opts.format = '%b';
       } else if (interval == 'perWeek') {
         opts.coords = walletsPerWeek;
-        opts.graphic = nv.models.discreteBarChart();
+        opts.graphic = nv.models.lineChart();
         opts.format = '%W';
       }
       var chart = opts.graphic;
