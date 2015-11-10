@@ -8,6 +8,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   self.isSafari = isMobile.Safari();
   self.onGoingProcess = {};
   self.historyShowLimit = 10;
+  self.updatingTxHistory = {};
 
   function strip(number) {
     return (parseFloat(number.toPrecision(12)));
@@ -123,6 +124,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
       self.initGlidera();
 
+      self.setCustomBWSFlag();
       if (fc.isPrivKeyExternal()) {
         self.needsBackup = false;
         self.openWallet();
@@ -133,6 +135,13 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         });
       }
     });
+  };
+
+  self.setCustomBWSFlag = function() {
+    var defaults = configService.getDefaults();
+    var config = configService.getSync();
+
+    self.usingCustomBWS = config.bwsFor && (config.bwsFor[self.walletId] != defaults.bws.url);
   };
 
   self.setTab = function(tab, reset, tries, switchState) {
@@ -753,17 +762,14 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     });
   }
 
-  self.getConfirmedTxs = function(cb) {
-    var fc = profileService.focusedClient;
-    var c = fc.credentials;
+  self.getConfirmedTxs = function(walletId, cb) {
 
-    storageService.getTxHistory(c.walletId, function(err, txs) {
+    storageService.getTxHistory(walletId, function(err, txs) {
       if (err) return cb(err);
 
       var localTxs = [];
 
       if (!txs) {
-        self.showWaitingSign = true;
         return cb(null, localTxs);
       }
 
@@ -776,20 +782,21 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     });
   }
 
-  self.updateLocalTxHistory = function(cb) {
+  self.updateLocalTxHistory = function(client, cb) {
     var requestLimit = 6;
+    var walletId = client.credentials.walletId;
 
-    self.getConfirmedTxs(function(err, txsFromLocal) {
+    self.getConfirmedTxs(walletId, function(err, txsFromLocal) {
       if (err) return cb(err);
       var endingTxid = txsFromLocal[0] ? txsFromLocal[0].txid : null;
 
       function getNewTxs(newTxs, skip, i_cb) {
 
-        self.getTxsFromServer(skip, endingTxid, requestLimit, function(err, res, shouldContinue) {
+        self.getTxsFromServer(client, skip, endingTxid, requestLimit, function(err, res, shouldContinue) {
           if (err) return i_cb(err);
 
 
-          newTxs = newTxs.concat(res);
+          newTxs = newTxs.concat(lodash.compact(res));
           skip = skip + requestLimit;
 
           $log.debug('Syncing TXs. Got:' + newTxs.length + ' Skip:' + skip, ' EndingTxid:', endingTxid, ' Continue:', shouldContinue);
@@ -800,8 +807,10 @@ angular.module('copayApp.controllers').controller('indexController', function($r
             return i_cb(null, newTxs);
           }
 
-          self.txProgress = newTxs.length;
-          $timeout(function(){
+          if (walletId ==  profileService.focusedClient.credentials.walletId) 
+            self.txProgress = newTxs.length;
+
+          $timeout(function() {
             $rootScope.$apply();
           });
           getNewTxs(newTxs, skip, i_cb);
@@ -814,13 +823,13 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         var newHistory = lodash.compact(txs.concat(txsFromLocal));
         $log.debug('Tx History synced. Total Txs: ' + newHistory.length);
 
-        self.completeHistory = newHistory;
-        self.txHistory = newHistory.slice(0, self.historyShowLimit);
-        self.historyShowShowAll = newHistory.length >= self.historyShowLimit;
+        if (walletId ==  profileService.focusedClient.credentials.walletId) {
+          self.completeHistory = newHistory;
+          self.txHistory = newHistory.slice(0, self.historyShowLimit);
+          self.historyShowShowAll = newHistory.length >= self.historyShowLimit;
+        }
 
-        var fc = profileService.focusedClient;
-        var c = fc.credentials;
-        return storageService.setTxHistory(JSON.stringify(newHistory), c.walletId, function() {
+        return storageService.setTxHistory(JSON.stringify(newHistory), walletId, function() {
           return cb();
         });
       });
@@ -838,11 +847,10 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     });
   };
 
-  self.getTxsFromServer = function(skip, endingTxid, limit, cb) {
+  self.getTxsFromServer = function(client, skip, endingTxid, limit, cb) {
     var res = [];
 
-    var fc = profileService.focusedClient;
-    fc.getTxHistory({
+    client.getTxHistory({
       skip: skip,
       limit: limit
     }, function(err, txsFromServer) {
@@ -861,18 +869,18 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
   self.updateHistory = function() {
     var fc = profileService.focusedClient;
-    if (!fc.isComplete() || self.updatingTxHistory) return;
+    var walletId = fc.credentials.walletId;
+
+    if (!fc.isComplete() || self.updatingTxHistory[walletId]) return;
 
     $log.debug('Updating Transaction History');
     self.txHistoryError = false;
-    self.updatingTxHistory = true;
+    self.updatingTxHistory[walletId] = true;
 
     $timeout(function() {
-      self.updateLocalTxHistory(function(err) {
-        self.updatingTxHistory = false;
-        self.showWaitingSign = false;
-
-        if (err) 
+      self.updateLocalTxHistory(fc, function(err) {
+        self.updatingTxHistory[walletId] = false;
+        if (err)
           self.txHistoryError = true;
 
         $rootScope.$apply();
@@ -1323,6 +1331,14 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     $rootScope.$on(eventName, function() {
       // Re try to open wallet (will triggers)
       self.setFocusedWallet();
+    });
+  });
+
+  $rootScope.$on('Local/NewEncryptionSetting', function() {
+    var fc = profileService.focusedClient;
+    self.isPrivKeyEncrypted = fc.isPrivKeyEncrypted();
+    $timeout(function() {
+      $rootScope.$apply();
     });
   });
 });

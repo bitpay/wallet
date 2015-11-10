@@ -13,7 +13,7 @@ angular.module('copayApp.controllers').controller('preferencesBwsUrlController',
     this.bwsurl = (config.bwsFor && config.bwsFor[walletId]) || defaults.bws.url;
 
     this.resetDefaultUrl = function() {
-      this.bwsurl = 'https://bws.bitpay.com/bws/api';
+      this.bwsurl = defaults.bws.url;
     };
 
     this.save = function() {

@@ -16,28 +16,28 @@ angular.module('copayApp.services')
       return msg;
     };
 
-    root.getAddressPath = function(isMultisig, account) {
-      var rootPath;
 
-      if (account) {
-        rootPath = isMultisig ? root.MULTISIG_ROOTPATH : root.UNISIG_ROOTPATH;
-      } else {
-        // Old ledger wallet compat
-        rootPath = 44;
-      }
-      return rootPath + "'/" + root.LIVENET_PATH + "'/" + account + "'";
+    root.getRootPath = function(device, isMultisig, account) {
+      if (!isMultisig) return root.UNISIG_ROOTPATH;
+
+      // Compat
+      if (device == 'ledger' && account ==0) return root.UNISIG_ROOTPATH;
+
+      return root.MULTISIG_ROOTPATH;
+    };
+
+    root.getAddressPath = function(device, isMultisig, account) {
+      return root.getRootPath(device,isMultisig,account) + "'/" + root.LIVENET_PATH + "'/" + account + "'";
     }
 
-    root.getEntropyPath = function(isMultisig, account) {
+    root.getEntropyPath = function(device, isMultisig, account) {
       var path;
-      if (account) {
-        var rootPath = isMultisig ? root.MULTISIG_ROOTPATH : root.UNISIG_ROOTPATH;
-        path = root.ENTROPY_INDEX_PATH + rootPath + "'/" + account + "'";
-      } else {
-        // Old ledger wallet compat
-        path = root.ENTROPY_INDEX_PATH  + "0'";
-      }
-      return path;
+
+      // Old ledger wallet compat
+      if (device == 'ledger' && account == 0)
+        return root.ENTROPY_INDEX_PATH  + "0'";
+
+      return root.ENTROPY_INDEX_PATH + root.getRootPath(device,isMultisig,account) + "'/" + account + "'";
     };
 
     root.pubKeyToEntropySource = function(xPubKey) {

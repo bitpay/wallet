@@ -173,12 +173,6 @@ angular.module('copayApp.services')
       var walletClient = bwcService.getClient();
       var network = opts.networkName || 'livenet';
 
-      // TODO refactor this and use bwc contants?
-      var derivationStrategy = 'BIP44';
-      if (opts.fromHardware && opts.n > 1) {
-        derivationStrategy = 'BIP48';
-      }
-
 
       if (opts.mnemonic) {
         try {
@@ -187,7 +181,7 @@ angular.module('copayApp.services')
             network: network,
             passphrase: opts.passphrase,
             account: opts.account || 0,
-            derivationStrategy: derivationStrategy,
+            derivationStrategy: opts.derivationStrategy || 'BIP44',
           });
 
         } catch (ex) {
@@ -205,7 +199,7 @@ angular.module('copayApp.services')
         try {
           walletClient.seedFromExtendedPublicKey(opts.extendedPublicKey, opts.externalSource, opts.entropySource, {
             account: opts.account || 0,
-            derivationStrategy: derivationStrategy,
+            derivationStrategy: opts.derivationStrategy || 'BIP44',
           });
         } catch (ex) {
           $log.warn("Creating wallet from Extended Public Key Arg:", ex, opts);
@@ -319,7 +313,7 @@ angular.module('copayApp.services')
         walletId: walletId
       });
 
-      delete root.walletClients[walletId]; 
+      delete root.walletClients[walletId];
       root.focusedClient = null;
 
       storageService.clearLastAddress(walletId, function(err) {
@@ -446,6 +440,7 @@ angular.module('copayApp.services')
 
       walletClient.importFromExtendedPublicKey(opts.extendedPublicKey, opts.externalSource, opts.entropySource, {
         account: opts.account || 0,
+        derivationStrategy: opts.derivationStrategy || 'BIP44',
       }, function(err) {
         if (err) {
 
