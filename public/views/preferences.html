@@ -101,6 +101,7 @@
       </div>
       <div translate>Alternative Currency</div>
     </li>
+<!-- TODO: DISABLE THEME SELECTION
     <li ng-show="!index.noFocusedWallet" ng-click="$root.go('preferencesTheme')">
       <span translate>Theme</span>
       <span class="right text-gray">
@@ -108,6 +109,7 @@
         {{theme.header.name}}
       </span>
     </li>
+-->
     <li ng-show="!index.noFocusedWallet" ng-click="$root.go('preferencesFee')"
       ng-show="(index.network == 'livenet' ? index.feeLevels.livenet : index.feeLevels.testnet)">
       <div class="right text-gray">
