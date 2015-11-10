@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('sidebarController',
-  function($rootScope, $timeout, lodash, profileService, configService, go, isMobile, isCordova) {
+  function($rootScope, $timeout, $log, lodash, profileService, configService, go, isMobile, isCordova, themeCatalogService) {
     var self = this;
     self.isWindowsPhoneApp = isMobile.Windows() && isCordova;
     self.walletSelection = false;
@@ -12,14 +12,17 @@ angular.module('copayApp.controllers').controller('sidebarController',
       self.setWallets();
     });
 
-    $rootScope.$on('Local/ColorUpdated', function(event) {
+    $rootScope.$on('Local/SkinUpdated', function(event) {
       self.setWallets();
     });
-
+    
+    $rootScope.$on('Local/ThemeUpdated', function(event) {
+      self.setWallets();
+    });
+    
     $rootScope.$on('Local/AliasUpdated', function(event) {
       self.setWallets();
     });
-
 
     self.signout = function() {
       profileService.signout();
@@ -41,15 +44,18 @@ angular.module('copayApp.controllers').controller('sidebarController',
     self.setWallets = function() {
       if (!profileService.profile) return;
       var config = configService.getSync();
-      config.colorFor = config.colorFor || {};
+      var catalog = themeCatalogService.getSync();
       config.aliasFor = config.aliasFor || {};
+      catalog.skinFor = catalog.skinFor || {};
       var ret = lodash.map(profileService.profile.credentials, function(c) {
         return {
           m: c.m,
           n: c.n,
           name: config.aliasFor[c.walletId] || c.walletName,
           id: c.walletId,
-          color: config.colorFor[c.walletId] || '#4A90E2',
+          avatarIsWalletName: (catalog.skinFor[c.walletId] !== undefined ? $rootScope.theme.skins[catalog.skinFor[c.walletId]].avatarIsWalletName : $rootScope.theme.skins[$rootScope.theme.header.defaultSkinId].avatarIsWalletName),
+          avatarBackground: (catalog.skinFor[c.walletId] !== undefined ? $rootScope.theme.skins[catalog.skinFor[c.walletId]].avatarBackground : $rootScope.theme.skins[$rootScope.theme.header.defaultSkinId].avatarBackground),
+          avatarBorder: (catalog.skinFor[c.walletId] !== undefined ? $rootScope.theme.skins[catalog.skinFor[c.walletId]].avatarBorderSmall : $rootScope.theme.skins[$rootScope.theme.header.defaultSkinId].avatarBorderSmall),
         };
       });
       self.wallets = lodash.sortBy(ret, 'name');

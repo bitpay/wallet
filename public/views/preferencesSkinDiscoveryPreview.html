@@ -1,0 +1,17 @@
+<div ng-controller="preferencesSkinDiscoveryPreviewController as p">
+  <img style="size=cover" src="{{discoveredSkinHeaders[discoveredSkinId].previewImage}}"/>
+  <div class="preview-overlay">
+    <div class="preview-overlay-content">
+      <span translate>Skin Preview</span>
+    </div>
+  </div>
+  <div class="bottom-bar preview-button-bar">
+    <a class="preview-button-left columns large-6 medium-6 small-6 text-center" ng-click="$root.go('preferencesSkinDiscovery')">
+      <span class="text-close">{{'Close'|translate}}</span>
+    </a>
+    <a class="preview-button columns large-6 medium-6 small-6 text-center" ng-click="p.import(discoveredSkinId)">
+      <span class="text-close">{{'Import'|translate}}</span>
+    </a>
+  </div>
+</div>
+<div class="extra-margin-bottom"></div>

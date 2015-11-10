@@ -1,0 +1,46 @@
+{
+  "header": {
+    "schemaVersion": "1",
+    "version": "1.0",
+    "name": "Deep Lilac",
+    "description": "",
+    "author": "BitPay, Inc.",
+    "date": "11/1/2015",
+    "galleryImage": "<resource-0>",
+    "previewImage": "<resource-1>",
+    "product": {
+      "id": "0",
+      "price": "$0.00"
+    }
+  },
+  "resources": [
+    "<skin-path>/gallery.png",
+    "<skin-path>/preview.png"
+  ],
+  "navBarTitleColor": "#9B59B6",
+  "navBarBackground": "#FFFFFF",
+  "navBarButtonTextColor": "#8597A7",
+  "navBarButtonIconColor": "#8597A7",
+  "tabBarBackground": "#2C3E50",
+  "tabBarSelectedBackground": "#122232",
+  "avatarIsWalletName": "true",
+  "avatarBorderSmall": "none",
+  "avatarBorderBig": "3px solid #FFFFFF",
+  "avatarBackground": "#9B59B6",
+  "homeFullBackground": "none",
+  "homeTopTextColor": "#FFFFFF",
+  "homeTopBackground": "#9B59B6",
+  "homeTopBorderBottom": "none",
+  "homeMiddleTextColor": "#2C3E50",
+  "homeMiddleBackground": "none",
+  "homeMiddleBorderBottom": "1px solid #E9E9EC",
+  "homeBottomTextColor": "#2C3E50",
+  "homeBottomBackground": "none",
+  "homePreferencesButtonColor": "#8597A7",
+  "buttonBackground": "#9B59B6",
+  "buttonTextColor": "#FFFFFF",
+  "progressBackground": "#9B59B6",
+  "progressTextColor": "#FFFFFF",
+  "iconBackground": "#9B59B6",
+  "textHighlightColor": "#9B59B6"
+}

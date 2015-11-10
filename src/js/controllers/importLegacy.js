@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('importLegacyController',
-  function($rootScope, $scope, $log, $timeout, notification, legacyImportService, profileService, go, lodash, bitcore, gettext, gettextCatalog) {
+  function($rootScope, $scope, $log, $timeout, notification, legacyImportService, profileService, go, lodash, bitcore, gettext, gettextCatalog, themeService) {
 
     var self = this;
     self.messages = [];
@@ -54,7 +54,12 @@ angular.module('copayApp.controllers').controller('importLegacyController',
             return;
           }
 
-          notification.success( gettextCatalog.getString('{{len}} wallets imported. Funds scanning in progress. Hold on to see updated balance', {len: ids.length}));
+          notification.success(
+            gettextCatalog.getString('{{len}} wallets imported. Funds scanning in progress. Hold on to see updated balance',
+            {len: ids.length}),
+            {color: themeService.getPublishedSkin().textHighlightColor,
+             iconColor: themeService.getPublishedTheme().notificationBarIconColor,
+             barBackground: themeService.getPublishedTheme().notificationBarBackground});
           self.scan(toScanIds);
         });
       }, 100);

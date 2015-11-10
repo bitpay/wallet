@@ -7,7 +7,7 @@
 <div class="content glidera" ng-controller="glideraUriController as glidera" ng-init="glidera.checkCode()">
 
   <div class="onGoingProcess" ng-show="glidera.loading">
-    <div class="onGoingProcess-content" ng-style="{'background-color':index.backgroundColor}">
+    <div class="onGoingProcess-content" ng-style="{'background':theme.progressBackground, 'color':theme.progressTextColor}">
     <div class="spinner">
       <div class="rect1"></div>
       <div class="rect2"></div>

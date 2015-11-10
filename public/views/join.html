@@ -1,13 +1,13 @@
 <div
   class="topbar-container"
   ng-include="'views/includes/topbar.html'"
-  ng-init="titleSection='Join shared wallet'; goBackToState = 'add'; noColor = true">
+  ng-init="titleSection='Join shared wallet'; goBackToState = 'add'; useTheme = true">
 </div>
 
 
 <div class="content p20v" ng-controller="joinController as join">
   <div class="onGoingProcess" ng-show="join.loading && !join.hwWallet">
-    <div class="onGoingProcess-content" ng-style="{'background-color':'#222'}">
+    <div class="onGoingProcess-content" ng-style="{'background':theme.progressBackground, 'color':theme.progressTextColor}">
     <div class="spinner">
       <div class="rect1"></div>
       <div class="rect2"></div>
@@ -20,7 +20,7 @@
   </div>
 
   <div class="onGoingProcess" ng-show="join.hwWallet">
-    <div class="onGoingProcess-content" ng-style="{'background-color':'#222'}">
+    <div class="onGoingProcess-content" ng-style="{'background':theme.progressBackground, 'color':theme.progressTextColor}">
     <div class="spinner">
       <div class="rect1"></div>
       <div class="rect2"></div>
@@ -139,7 +139,7 @@
           </span>
         </div>
 
-          <button translate type="submit" class="button expand black m0 round"
+          <button translate type="submit" class="button expand black m0 round" ng-style="{'background':theme.buttonBackground, 'color':theme.buttonTextColor}"
             ng-disabled="joinForm.$invalid || join.loading">Join</button>
       </form>
     </div>

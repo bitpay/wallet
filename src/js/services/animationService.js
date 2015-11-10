@@ -22,7 +22,14 @@ angular.module('copayApp.services').factory('animationService', function(isCordo
 
     preferences: 11,
     glidera: 11,
-    preferencesColor: 12,
+    preferencesSkin: 12,
+    preferencesSkinPreview: 100,
+    preferencesSkinDiscovery: 13,
+    preferencesSkinDiscoveryPreview: 100,
+    preferencesTheme: 12,
+    preferencesThemePreview: 100,
+    preferencesThemeDiscovery: 13,
+    preferencesThemeDiscoveryPreview: 100,
     backup: 12,
     preferencesAdvanced: 12,
     buyGlidera: 12,
@@ -98,7 +105,7 @@ angular.module('copayApp.services').factory('animationService', function(isCordo
       leaving = null;
 
     // Horizontal Slide Animation?
-    if (isCordova && fromWeight && toWeight) {
+    if ((fromWeight && toWeight) && (toWeight <= 99 && fromWeight <= 99)) {
       if (fromWeight > toWeight) {
         leaving = 'CslideOutRight';
       } else {
@@ -106,10 +113,9 @@ angular.module('copayApp.services').factory('animationService', function(isCordo
       }
 
       // Vertical Slide Animation?
-    } else if (isCordova && fromName && fromWeight >= 0 && toWeight >= 0) {
-      if (toWeight) {
+    } else if (fromName && fromWeight >= 0 && toWeight >= 0) {
+      if (toWeight && (fromWeight <= 99 || toWeight > 199)) {
         entering = 'CslideInUp';
-
       } else {
         leaving = 'CslideOutDown';
       }

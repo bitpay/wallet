@@ -72,33 +72,31 @@
         </span>
       </div>
 
-
       <div class="row">
         <div class="columns">
           <button class="black round expand m20t" ng-click="backup.downloadWalletBackup()"
             ng-disabled="(!backup.password || backup.password != backup.repeatpassword)"
-            ng-style="{'background-color':index.backgroundColor}"
+            ng-style="{'background':theme.buttonBackground, 'color':theme.buttonTextColor}"
             ng-show="!index.isSafari && !index.isCordova"><i class="fi-download"></i>
             <span translate>Download</span></button>
           <button class="black round expand m20t" ng-click="backup.viewWalletBackup()"
             ng-disabled="(!backup.password || backup.password != backup.repeatpassword)"
-            ng-style="{'background-color':index.backgroundColor}"
+            ng-style="{'background':theme.buttonBackground, 'color':theme.buttonTextColor}"
             ng-show="index.isSafari && !index.isCordova"><i class="fi-eye"></i>
             <span translate>View</span></button>
           <div ng-show="index.isCordova">
             <h4 translate>Export options</h4>
             <button class="black round expand" ng-disabled="(!backup.password || backup.password != backup.repeatpassword)"
-              ng-style="{'background-color':index.backgroundColor}"
+              ng-style="{'background':theme.buttonBackground, 'color':theme.buttonTextColor}"
               ng-click="backup.copyWalletBackup()"><i class="fi-clipboard-pencil"></i>
               <span translate>Copy to clipboard</span></button>
             <button class="black round expand" ng-disabled="(!backup.password || backup.password != backup.repeatpassword)"
-              ng-style="{'background-color':index.backgroundColor}"
+              ng-style="{'background':theme.buttonBackground, 'color':theme.buttonTextColor}"
               ng-click="backup.sendWalletBackup()"><i class="fi-mail"></i>
               <span translate>Send by email</span></button>
           </div>
         </div>
-      </div>
-    
+      </div>    
   </div>
 
   <div class="row" ng-show="backup.backupWalletPlainText">

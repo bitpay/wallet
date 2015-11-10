@@ -28,13 +28,12 @@
       </div>
       <div translate>Email Notifications</div>
     </li>
-
-    <li ng-click="$root.go('preferencesColor')">
-      <div class="right text-gray">
-        <span ng-style="{'color':index.backgroundColor}">&block;</span>
-        <i class="icon-arrow-right3 size-24"></i>
-      </div>      
-      <div translate>Color</div>
+    <li class="line-b p20" ng-click="$root.go('preferencesSkin')">
+      <span translate>Skin</span>
+      <span class="right text-gray">
+        <i class="icon-arrow-right3 size-24 right"></i>
+        <span>{{skin.header.name}}</span>
+      </span>      
     </li>
 
     <li ng-show="index.isPrivKeyExternal">
@@ -102,7 +101,14 @@
       </div>
       <div translate>Alternative Currency</div>
     </li>
-    <li  ng-show="!index.noFocusedWallet" ng-click="$root.go('preferencesFee')"
+    <li ng-show="!index.noFocusedWallet" ng-click="$root.go('preferencesTheme')">
+      <span translate>Theme</span>
+      <span class="right text-gray">
+        <i class="icon-arrow-right3 size-24 right"></i>
+        {{theme.header.name}}
+      </span>
+    </li>
+    <li ng-show="!index.noFocusedWallet" ng-click="$root.go('preferencesFee')"
       ng-show="(index.network == 'livenet' ? index.feeLevels.livenet : index.feeLevels.testnet)">
       <div class="right text-gray">
         {{index.feeOpts[index.currentFeeLevel]|translate}}
