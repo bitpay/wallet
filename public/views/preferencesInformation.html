@@ -15,6 +15,7 @@
         </span>
       </li>
 
+
       <li class="line-b p20 oh">
         <span translate>Wallet Id</span>
         <span class="right text-gray enable_text_select">
@@ -28,6 +29,8 @@
           {{M}}-{{N}}
         </span>
       </li>
+
+
 
        <li class="line-b p20 oh">
         <span translate>Wallet Network</span>
@@ -49,6 +52,39 @@
         <span translate>Derivation Strategy</span>
         <span class="right text-gray">
           {{derivationStrategy}}
+        </span>
+      </li>
+
+      <li class="line-b p20 oh" ng-show="index.externalSource">
+        <span translate>Hardware Wallet</span>
+        <span class="right text-gray capitalize">
+          {{index.externalSource}}
+        </span>
+      </li>
+
+      <li class="line-b p20 oh" ng-show="!index.externalSource && !index.canSign">
+        <span translate></span>
+        <span class="right text-gray capitalize">
+          No private key
+        </span>
+      </li>
+ 
+      <li class="line-b p20 oh" ng-show="index.account">
+        <span translate>Account ({{derivationStrategy}})</span>
+        <span class="right text-gray">
+          #{{index.account}}
+        </span>
+      </li>
+
+
+
+    <h4 class="title m0" translate>Copayers</h4>
+      <li ng-repeat="copayer in index.copayers">
+        <span class="size-12" ng-show="copayer.id == index.copayerId">
+          <i class="icon-contact size-24 m10r"></i> {{copayer.name}} ({{'Me'|translate}}) <i class="fi-check m5 right"></i>
+        </span>
+        <span class="size-12 text-gray" ng-show="copayer.id != index.copayerId">
+          <i class="icon-contact size-24 m10r"></i> {{copayer.name}}<i class="fi-check m5 right"></i>
         </span>
       </li>
 

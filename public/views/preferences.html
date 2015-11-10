@@ -62,12 +62,12 @@
       <div translate>Advanced</div>
     </li>
   </ul>
-  <div ng-show="!index.noFocusedWallet && (!index.isPrivKeyExternal || preferences.touchidAvailable)">
-    <h4 translate>
+  <div ng-show="!index.noFocusedWallet && index.canSign">
+    <h4 translate  ng-show="index.canSign">
       Spending Restrictions
     </h4>
-    <ul class="no-bullet m0 ">
-      <li ng-show="!index.isPrivKeyExternal">
+    <ul class="no-bullet m0">
+      <li>
         <switch id="network-name" name="encrypt" ng-model="encrypt" class="green right"></switch>
         <div translate>Request Password</div>
       </li>

@@ -1,16 +1,53 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('joinController',
-  function($scope, $rootScope, $timeout, go, notification, profileService, configService, isCordova, storageService, applicationService, $modal, gettext, lodash, ledger, trezor) {
+  function($scope, $rootScope, $timeout, go, notification, profileService, configService, isCordova, storageService, applicationService, $modal, gettext, lodash, ledger, trezor, isChromeApp, isDevel,derivationPathHelper) {
 
     var self = this;
     var defaults = configService.getDefaults();
     $scope.bwsurl = defaults.bws.url;
+    $scope.derivationPath = derivationPathHelper.default;
 
     this.onQrCodeScanned = function(data) {
       $scope.secret = data;
       $scope.joinForm.secret.$setViewValue(data);
       $scope.joinForm.secret.$render();
+    };
+
+
+    var updateSeedSourceSelect = function() {
+      self.seedOptions = [{
+        id: 'new',
+        label: gettext('New Random Seed'),
+      }, {
+        id: 'set',
+        label: gettext('Specify Seed...'),
+      }];
+      $scope.seedSource = self.seedOptions[0];
+
+
+      if (isChromeApp) {
+        self.seedOptions.push({
+          id: 'ledger',
+          label: gettext('Ledger Hardware Wallet'),
+        });
+      }
+
+      if (isChromeApp || isDevel) {
+        self.seedOptions.push({
+          id: 'trezor',
+          label: gettext('Trezor Hardware Wallet'),
+        });
+      }
+    };
+
+    this.setSeedSource = function(src) {
+      self.seedSourceId = $scope.seedSource.id;
+      self.accountValues = lodash.range(1, 100);
+
+      $timeout(function() {
+        $rootScope.$apply();
+      });
     };
 
     this.join = function(form) {
@@ -23,10 +60,10 @@ angular.module('copayApp.controllers').controller('joinController',
       var opts = {
         secret: form.secret.$modelValue,
         myName: form.myName.$modelValue,
-        bwsurl: $scope.bwsurl
+        bwsurl: $scope.bwsurl,
       }
 
-      var setSeed = form.setSeed.$modelValue;
+      var setSeed = self.seedSourceId =='set';
       if (setSeed) {
         var words = form.privateKey.$modelValue;
         if (words.indexOf(' ') == -1 && words.indexOf('prv') == 1 && words.length > 108) {
@@ -35,6 +72,15 @@ angular.module('copayApp.controllers').controller('joinController',
           opts.mnemonic = words;
         }
         opts.passphrase = form.passphrase.$modelValue;
+
+        var pathData = derivationPathHelper.parse($scope.derivationPath);
+        if (!pathData) {
+          this.error = gettext('Invalid derivation path');
+          return;
+        }
+        opts.account = pathData.account;
+        opts.networkName = pathData.networkName;
+        opts.derivationStrategy = pathData.derivationStrategy;
       } else {
         opts.passphrase = form.createPassphrase.$modelValue;
       }
@@ -44,12 +90,21 @@ angular.module('copayApp.controllers').controller('joinController',
         return;
       }
 
-      if (form.hwLedger.$modelValue || form.hwTrezor.$modelValue) {
-        self.hwWallet = form.hwLedger.$modelValue ? 'Ledger' : 'TREZOR';
-        var src = form.hwLedger.$modelValue ? ledger : trezor;
+      if (self.seedSourceId == 'ledger' || self.seedSourceId == 'trezor') {
+        var account = $scope.account;
+        if (!account || account < 1) {
+          this.error = gettext('Invalid account number');
+          return;
+        }
 
-        var account = 0;
-        src.getInfoForNewWallet(account, function(err, lopts) {
+        if ( self.seedSourceId == 'trezor')
+          account = account - 1;
+
+        opts.account =  account;
+        self.hwWallet = self.seedSourceId == 'ledger' ? 'Ledger' : 'Trezor';
+        var src = self.seedSourceId == 'ledger' ? ledger : trezor;
+
+        src.getInfoForNewWallet(true, account, function(err, lopts) {
           self.hwWallet = false;
           if (err) {
             self.error = err;
@@ -82,4 +137,7 @@ angular.module('copayApp.controllers').controller('joinController',
         });
       }, 100);
     };
+
+    updateSeedSourceSelect();
+    self.setSeedSource('new');
   });

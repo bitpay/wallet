@@ -106,36 +106,6 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   var cancel_msg = gettextCatalog.getString('Cancel');
   var confirm_msg = gettextCatalog.getString('Confirm');
 
-  $scope.openCopayersModal = function(copayers, copayerId) {
-    $rootScope.modalOpened = true;
-    var fc = profileService.focusedClient;
-
-    var ModalInstanceCtrl = function($scope, $modalInstance) {
-      $scope.copayers = copayers;
-      $scope.copayerId = copayerId;
-      $scope.color = fc.backgroundColor;
-      $scope.cancel = function() {
-        $modalInstance.dismiss('cancel');
-      };
-    };
-    var modalInstance = $modal.open({
-      templateUrl: 'views/modals/copayers.html',
-      windowClass: animationService.modalAnimated.slideUp,
-      controller: ModalInstanceCtrl,
-    });
-
-    var disableCloseModal = $rootScope.$on('closeModal', function() {
-      modalInstance.dismiss('cancel');
-    });
-
-    modalInstance.result.finally(function() {
-      $rootScope.modalOpened = false;
-      disableCloseModal();
-      var m = angular.element(document.getElementsByClassName('reveal-modal'));
-      m.addClass(animationService.modalAnimated.slideOutDown);
-    });
-  };
-
   $scope.openDestinationAddressModal = function(wallets, address) {
     $rootScope.modalOpened = true;
     var fc = profileService.focusedClient;
