@@ -4,17 +4,19 @@ var app = angular.module("statsApp", ["statsApp.dataService"])
   .controller("dataController", function($rootScope, $timeout, dataService) {
 
     var self = this;
-    // self.loading = true;
     var opts = {};
+    opts.network = 'livenet';
     opts.url = 'https://bws.bitpay.com/bws/api';
-    // var URL = 'http://localhost:3232/bws/api';
     opts.from = '2015-01-01';
+    self.loading = true;
 
-    $('#network').change(function() {
-      self.loading = true;
-      dataService.refresh(opts);
-      $timeout(function() {}, 100);
-    }).trigger('change');
+    dataService.fetch(opts, function(err, data) {
+      if (err) {
+        self.error('Could not fetch data');
+        return;
+      }
+      dataService.show(data);
+    });
 
     $rootScope.$on('Data/Finish', function(event) {
       self.loading = false;

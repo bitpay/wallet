@@ -22,18 +22,11 @@
         <div class="left">
           <img src="https://copay.io/images/copay-logo-white.svg" alt="Copay" width="100">
         </div>
-        <div class="right large-2">
-          <select name="list" id="network">
-            <option value="livenet" selected>Livenet</option>
-            <option value="testnet">Testnet</option>
-          </select>
-        </div>
       </div>
     </nav>
     <div class="text-center" ng-show="dataC.loading">
       <div class="three-quarters-loader">
       </div>
-      <p>Loading…</p>
     </div>
 
     <div class="content">
@@ -46,16 +39,28 @@
       <div class="row" ng-show="!dataC.loading">
         <h3>New Wallets</h3>
         <div id="chart-wallets" class="chart panel">
-          <select class="large-2 left" name="list" id="interval">
+          <select class="large-2 left" name="list" id="walletsInterval">
             <option value="perDay" selected>Per day</option>
             <option value="perWeek">Per week</option>
             <option value="perMonth">Per month</option>
           </select>
         </div>
         <h3>Proposals</h3>
-        <div id="chart-txps" class="chart panel"></div>
+        <div id="chart-txps" class="chart panel">
+          <select class="large-2 left" name="list" id="proposalsInterval">
+            <option value="perDay" selected>Per day</option>
+            <option value="perWeek">Per week</option>
+            <option value="perMonth">Per month</option>
+          </select>
+        </div>
         <h3>Amount (BTC)</h3>
-        <div id="chart-amount" class="chart panel"></div>
+        <div id="chart-amount" class="chart panel">
+          <select class="large-2 left" name="list" id="amountInterval">
+            <option value="perDay" selected>Per day</option>
+            <option value="perWeek">Per week</option>
+            <option value="perMonth">Per month</option>
+          </select>
+        </div>
       </div>
 
       <section class="download">
