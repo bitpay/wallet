@@ -35,6 +35,21 @@ svg {
   max-width: 62.5em;
 }
 
+.top-bar p {
+  color: #A5B2BF;
+  font-size: 14px;
+  letter-spacing: 1px;
+  margin-top: 5px;
+}
+
+.spinner {
+  padding: 20% 50%;
+}
+
+.swtich {
+  margin: 0 15px;
+}
+
 footer a {
   color: #7A8C9E;
   text-transform: uppercase;
