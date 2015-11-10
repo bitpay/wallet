@@ -119,14 +119,13 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
     return index;
   }
 
-  root._bootstrapBaseTheme = function(themeName, skinList, callback) {
-
-    $http(root._get_local(root._getThemeResourcePath(themeName) + '/theme.json')).then(function(response) {
+  root._bootstrapBaseTheme = function(baseTheme, callback) {
+    $http(root._get_local(root._getThemeResourcePath(baseTheme.theme) + '/theme.json')).then(function(response) {
 
       // Initialize the theme.
       // 
       var themeJSON = JSON.stringify(response.data);
-      var themeResourceUrl = root._getLocalThemeResourceUrl(themeName);
+      var themeResourceUrl = root._getLocalThemeResourceUrl(baseTheme.theme);
       themeJSON = themeJSON.replace(/<theme-path>/g, themeResourceUrl);
       var theme = JSON.parse(themeJSON);
 
@@ -150,14 +149,14 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
       // Initialize the skins.
       // 
       var promises = [];
-      for (var i = 0; i < skinList.length; i++) {
+      for (var i = 0; i < baseTheme.skins.length; i++) {
         // Collect and serialize all http requests to get skin files.
         promises.push(
-          $http(root._get_local(root._getSkinResourcePath(themeName, skinList[i]) + '/skin.json')).then(function(response) {
+          $http(root._get_local(root._getSkinResourcePath(baseTheme.theme, baseTheme.skins[i]) + '/skin.json')).then(function(response) {
 
             var skin = response.data;
-            var themeResourceUrl = root._getLocalThemeResourceUrl(themeName);
-            var skinResourceUrl = root._getLocalSkinResourceUrl(themeName, skin.header.name);
+            var themeResourceUrl = root._getLocalThemeResourceUrl(baseTheme.theme);
+            var skinResourceUrl = root._getLocalSkinResourceUrl(baseTheme.theme, skin.header.name);
 
             var skinJSON = JSON.stringify(skin);
             skinJSON = skinJSON.replace(/<theme-path>/g, themeResourceUrl);
@@ -200,6 +199,46 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
 
   };
 
+  // Build and publish the initial theme catalog.
+  root._buildCatalog = function(callback) {
+
+    themeCatalogService.get(function(err, catalog) {
+      $log.debug('Theme catalog read');
+      if (err) {
+        $log.debug('Failed to read theme catalog: ' + JSON.stringify(err)); // TODO: put out string, not JSON
+        return;
+      }
+
+      var catalogThemes = catalog.themes || {};
+
+      if (lodash.isEmpty(catalogThemes)) {
+        $log.debug('Initializing theme catalog');
+        var cat = {
+          themeId: {},
+          themes: {}
+        };
+
+        cat.themeId = $rootScope.themeId;
+        cat.themes = $rootScope.themes;
+
+        themeCatalogService.set(cat, function(err) {
+          if (err) {
+            $rootScope.$emit('Local/DeviceError', err);
+            return;
+          }
+
+          $rootScope.$emit('Local/ThemeUpdated');
+          callback();
+        });
+
+      } else {
+        root._publishCatalog();
+        callback();
+      }
+
+    });
+  };
+
   // Publish the current configuration to $rootScope. Views only read from $rootScope values.
   root._publishCatalog = function() {
     $rootScope.themes = lodash.cloneDeep(root._themes());
@@ -213,63 +252,22 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
     });
   };
 
+
   ///////////////////////////////////////////////////////////////////////////////
 
-  // bootstrap() - publish initial presentation before a profile or theme catalog exists.
+  // init() - construct the theme catalog and publish the initial presentation.
   // 
-  root.bootstrap = function() {
-    root._bootstrapBaseTheme(
-      'Copay',
-      [
-        'Aquamarine Blue',
-        'Brilliant Rose',
-        'Deep Lilac',
-        'Feijoa',
-        'Havelock Blue',
-        'Hit Pink',
-        'Iris',
-        'Light Slate Gray',
-        'Mustard',
-        'Purple Pizzazz',
-        'Valencia',
-        'West Side'
-      ],
-      function() {
+  root.init = function() {
+    root._bootstrapBaseTheme(baseTheme, function() {
         $log.debug('Theme service bootstrapped to theme/skin: ' +
           $rootScope.theme.header.name + '/' +
           $rootScope.skin.header.name +
           (root.walletId == '' ? ' [no wallet yet]' : ' [walletId: ' + root.walletId + ']'));
+
+        root._buildCatalog(function() {
+          $log.debug('Theme service initialized');
+        });
       });
-  };
-
-  // applyCatalog() - ensure the catalog exists and is published.
-  // 
-  root.init = function() {
-    var catalog = themeCatalogService.getSync();
-    var catalogThemes = catalog.themes || {};
-
-    if (lodash.isEmpty(catalogThemes)) {
-      $log.debug('Initializing theme catalog');
-      var cat = {
-        themeId: {},
-        themes: {}
-      };
-
-      cat.themeId = $rootScope.themeId;
-      cat.themes = $rootScope.themes;
-
-      themeCatalogService.set(cat, function(err) {
-        if (err) {
-          $rootScope.$emit('Local/DeviceError', err);
-          return;
-        }
-
-        $rootScope.$emit('Local/ThemeUpdated');
-      });
-
-    } else {
-      root._publishCatalog();
-    }
   };
 
   // updateSkin() - handles updating the skin when the wallet is changed.
@@ -277,7 +275,6 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
   root.updateSkin = function(walletId) {
     root.walletId = walletId;
     var catalog = themeCatalogService.getSync();
-
     if (catalog.skinFor && catalog.skinFor[root.walletId] === undefined) {
       root.setSkinForWallet(root.getPublishedThemeDefaultSkinId(), root.walletId);
     } else {
@@ -288,7 +285,6 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
   // setTheme() - sets the theme for the app.
   // 
   root.setTheme = function(themeId, callback) {
-
     var switchingTheme = (themeId != root.getPublishedThemeId());
 
     if (switchingTheme) {
@@ -394,6 +390,10 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
   root.isSkinCompatible = function(skinHeader) {
     return root._skinSchemaVersion() == skinHeader.schemaVersion;
   };
+
+  root.getCatalog = function() {
+    return themeCatalogService.getSync();
+  }
 
   root.getCatalogThemes = function() {
     return root._themes();
