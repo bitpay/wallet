@@ -21,13 +21,14 @@ angular
 
     $logProvider.debugEnabled(true);
     $provide.decorator('$log', ['$delegate',
-      function($delegate) {
+      function($delegate, isDevel) {
         var historicLog = historicLogProvider.$get();
 
         ['debug', 'info', 'warn', 'error', 'log'].forEach(function(level) {
+          if (isDevel && level == 'error') return;
+
           var orig = $delegate[level];
           $delegate[level] = function() {
-
             if (level == 'error')
               console.log(arguments);
 

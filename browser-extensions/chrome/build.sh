@@ -55,6 +55,12 @@ echo $CMD
 $CMD
 checkOK
 
+cd $BUILDDIR/../..
+CMD="rsync -rLRv ./bower_components/trezor-connect/chrome/* $APPDIR"
+echo $CMD
+$CMD
+checkOK
+
 # Zipping chrome-extension
 echo "${OpenColor}${Green}* Zipping all chrome-extension files...${CloseColor}"
 cd $BUILDDIR
