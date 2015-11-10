@@ -9,7 +9,7 @@
 <div class="content glidera" ng-controller="glideraController as glidera">
 
   <div class="onGoingProcess" ng-show="glidera.loading || index.glideraLoading">
-    <div class="onGoingProcess-content" ng-style="{'background-color':index.backgroundColor}">
+    <div class="onGoingProcess-content" ng-style="{'background':theme.progressBackground, 'color':theme.progressTextColor}">
     <div class="spinner">
       <div class="rect1"></div>
       <div class="rect2"></div>
@@ -82,7 +82,7 @@
           ng-attr-placeholder="{{'Paste the authorization code here'}}" required>
           <input
             class="button expand round"
-            ng-style="{'background-color':index.backgroundColor}"
+            ng-style="{'background':theme.buttonBackground, 'color':theme.buttonTextColor}"
             type="submit" value="Get started" ng-disabled="oauthCodeForm.$invalid || glidera.loading">
         </form>
         <button class="button light-gray expand outline round" 
@@ -169,7 +169,7 @@
         class="row collapse last-transactions-content">
         <div class="large-3 medium-3 small-3 columns">
           <span class="label tu radius" ng-show="tx.type == 'BUY'"
-            ng-style="{'background-color':index.backgroundColor}">Bought</span>
+            ng-style="{'background-color':skin.textHighlightColor}">Bought</span>
           <span class="label tu gray radius" ng-show="tx.type == 'SELL'">Sold</span>
         </div>
 

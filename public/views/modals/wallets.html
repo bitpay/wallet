@@ -1,12 +1,12 @@
-<nav class="tab-bar">
+<nav class="tab-bar" ng-style="{'background':skin.navBarBackground}">
   <section class="left-small">
     <a ng-click="cancel()" class="p10">
-      <span class="text-close" translate>Close</span>
+      <span class="text-close" ng-style="{'color':skin.navBarButtonTextColor}" translate>Close</span>
     </a>
   </section>
 
   <section class="middle tab-bar-section">
-    <h1 class="title ellipsis" ng-style="{'color':color}" translate>
+    <h1 class="title ellipsis" ng-style="{'color':skin.navBarTitleColor}" translate>
       Choose a wallet to send funds
     </h1>
   </section>
@@ -14,7 +14,7 @@
 
 <div class="modal-content">
   <div class="onGoingProcess" ng-if="gettingAddress">
-    <div class="onGoingProcess-content" ng-style="{'background-color':'#222'}">
+    <div class="onGoingProcess-content" ng-style="{'background':skin.progressBackground, 'color':skin.progressTextColor}">
       <div class="spinner">
         <div class="rect1"></div>
         <div class="rect2"></div>
@@ -29,8 +29,10 @@
     <ul class="no-bullet">
       <li class="line-b" ng-repeat="w in wallets">
       <a ng-click="selectWallet(w.id, w.name)" class="db oh">
-        <div class="avatar-wallet"
-          ng-style="{'background-color':w.color}">{{(w.name || w.id) | limitTo: 1}}</div>
+        <div ng-if="w.avatarIsWalletName == 'true'" class="avatar-wallet"
+          ng-style="{'background-color':w.avatarBackground, 'border':w.avatarBorder}">{{(w.name || w.id) | limitTo: 1}}</div>
+        <div ng-if="w.avatarIsWalletName == 'false'" class="avatar-wallet"
+          ng-style="{'background':w.avatarBackground, 'border':w.avatarBorder}"></div>
         <div class="ellipsis name-wallet text-bold">{{w.name || w.id}}</div>
         <div class="size-12">{{w.m}} of {{w.n}}
           <span ng-show="w.network=='testnet'">[Testnet]</span>

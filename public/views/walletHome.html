@@ -9,7 +9,7 @@
     <div class="text-center text-warning m20b">
       <i class="fi-alert"></i> <span translate>You do not have a wallet</span>
     </div>
-    <button class="button black round expand" ng-click="$root.go('add')" translate>Create</button>
+    <button class="button black round expand" ng-style="{'background':theme.buttonBackground, 'color':theme.buttonTextColor}" ng-click="$root.go('add')" translate>Create</button>
 
     <div class="text-center text-gray p20v" ng-click="$root.go('preferences')">
       <button class=" outline round dark-gray tiny" translate> Preferences </button>
@@ -17,7 +17,7 @@
   </div>
 
   <div class="onGoingProcess" ng-show="index.isOffline">
-    <div class="onGoingProcess-content" ng-style="{'background-color':'#222'}">
+    <div class="onGoingProcess-content" ng-style="{'background':skin.progressBackground, 'color':skin.progressTextColor}">
       <div class="spinner">
         <div class="rect1"></div>
         <div class="rect2"></div>
@@ -30,7 +30,7 @@
   </div>
 
   <div class="onGoingProcess" ng-show="index.anyOnGoingProcess && !index.isOffline">
-    <div class="onGoingProcess-content" ng-style="{'background-color':index.backgroundColor}">
+    <div class="onGoingProcess-content" ng-style="{'background':skin.progressBackground, 'color':skin.progressTextColor}">
       <div class="spinner">
         <div class="rect1"></div>
         <div class="rect2"></div>
@@ -51,7 +51,7 @@
   </div>
 
   <div class="onGoingProcess" ng-show="home.onGoingProcess && !index.anyOnGoingProces && !index.isOffline">
-    <div class="onGoingProcess-content" ng-style="{'background-color':index.backgroundColor}">
+    <div class="onGoingProcess-content" ng-style="{'background':skin.progressBackground, 'color':skin.progressTextColor}">
       <div class="spinner">
         <div class="rect1"></div>
         <div class="rect2"></div>
@@ -71,9 +71,11 @@
 
     -->
 
-    <div id="walletHome" class="walletHome tab-view tab-in">
+    <div id="walletHome" class="walletHome tab-view tab-in" ng-style="{'background':skin.homeFullBackground}">
       <div class="oh">
-        <div class="amount" ng-style="{'background-color':index.backgroundColor}">
+
+        <div class="amount" ng-style="{'color':skin.homeTopTextColor, 'background':skin.homeTopBackground, 'border-bottom':skin.homeTopBorderBottom}">
+          
           <div ng-if="!index.anyOnGoingProcess && !index.notAuthorized">
             <div ng-show="index.updateError" ng-click='index.openWallet(); index.updateTxHistory()'>
               <span class="size-12 db m10b">{{index.updateError|translate}}</span>
@@ -105,19 +107,23 @@
               <strong>...</strong>
             </div>
           </div>
+
         </div> <!-- amount -->
 
-        <div class="pr columns line-b">
-          <div class="avatar-wallet left"
-            ng-style="{'background-color':index.backgroundColor}">{{ (index.alias || index.walletName) | limitTo: 1}}
+        <div class="pr columns" ng-style="{'color':skin.homeMiddleTextColor, 'background':skin.homeMiddleBackground, 'border-bottom':skin.homeMiddleBorderBottom}">
+          <div ng-if="skin.avatarIsWalletName == 'true'" class="avatar-wallet left"
+            ng-style="{'background':skin.avatarBackground, 'border':skin.avatarBorderBig}">{{(index.alias || index.walletName) | limitTo: 1}}
           </div>
-          <div class="right">
-            <a ng-click="$root.go('preferences')" class="button outline round light-gray tiny preferences-icon m0">
+          <div ng-if="skin.avatarIsWalletName == 'false'" class="avatar-wallet left"
+            ng-style="{'background':skin.avatarBackground, 'border':skin.avatarBorderBig}">
+          </div>
+          <div class="right" style="margin-top: 11px">
+            <a ng-click="$root.go('preferences')" class="button outline round light-gray tiny preferences-icon m0" ng-style="{'color':skin.homePreferencesButtonColor, 'border-color':skin.homePreferencesButtonColor}">
               <i class="fi-widget size-18 vm"></i>
               <span class="show-for-medium-up" translate>Preferences</span>
             </a>
           </div>
-          <div class="wallet-info">
+          <div class="wallet-info" style="margin-top: 11px">
             <div ng-show="index.isShared" ng-click="openCopayersModal(index.copayers, index.copayerId)">
               <p class="m0">
               {{(index.alias || index.walletName)}}
@@ -138,43 +144,46 @@
             </div>
           </div>
         </div>
+
       </div> <!-- oh -->
 
+      <div style="top: 248px; bottom: 0; width: 100%; position: absolute" ng-style="{'color':skin.homeBottomTextColor, 'background':skin.homeBottomBackground}">
+        <div class="m20t" ng-show="index.notAuthorized && ! index.anyOnGoingProcess">
+          <div class="text-center text-warning">
+            <i class="fi-alert"></i>
+            <span translate>
+              WARNING: Wallet not registered
+            </span>
+          </div>
+          <div class="text-center text-gray m15r m15l" translate>
+            This wallet is not registered at the given Bitcore Wallet Service (BWS). You can recreate it from the local information.
+          </div>
+          <div class="text-center m10t ">
+            <span class="button outline round dark-gray tiny"
+              ng-click="index.recreate()">
+              <span translate>Recreate</span>
+            </span>
+          </div>
+        </div>
 
-      <div class="m20t" ng-show="index.notAuthorized && ! index.anyOnGoingProcess">
-        <div class="text-center text-warning">
-          <i class="fi-alert"></i>
-          <span translate>
-            WARNING: Wallet not registered
-          </span>
+        <div ng-if="index.txps[0]">
+          <h4 ng-show="index.requiresMultipleSignatures" class="title m0" translate>Payment Proposals</h4>
+          <h4 ng-show="!index.requiresMultipleSignatures" class="title m0" translate>Unsent transactions</h4>
+          <div class="last-transactions pr" ng-repeat="tx in index.txps"
+            ng-include="index.txTemplateUrl">
+          </div>
+
+          <div class="text-gray text-center size-12 p10t"
+            ng-show="index.lockedBalanceSat && !index.updatingStatus">
+            <span translate>Total Locked Balance</span>:
+            <b>{{index.lockedBalanceStr}} </b>
+            <span> {{index.lockedBalanceAlternative}}
+              {{index.alternativeIsoCode}} </span>
+          </div>
         </div>
-        <div class="text-center text-gray m15r m15l" translate>
-          This wallet is not registered at the given Bitcore Wallet Service (BWS). You can recreate it from the local information.
-        </div>
-        <div class="text-center m10t ">
-          <span class="button outline round dark-gray tiny"
-            ng-click="index.recreate()">
-            <span translate>Recreate</span>
-          </span>
-        </div>
+        <div class="extra-margin-bottom"></div>
+
       </div>
-
-      <div ng-if="index.txps[0]">
-        <h4 ng-show="index.requiresMultipleSignatures" class="title m0" translate>Payment Proposals</h4>
-        <h4 ng-show="!index.requiresMultipleSignatures" class="title m0" translate>Unsent transactions</h4>
-        <div class="last-transactions pr" ng-repeat="tx in index.txps"
-          ng-include="index.txTemplateUrl">
-        </div>
-
-        <div class="text-gray text-center size-12 p10t"
-          ng-show="index.lockedBalanceSat && !index.updatingStatus">
-          <span translate>Total Locked Balance</span>:
-          <b>{{index.lockedBalanceStr}} </b>
-          <span> {{index.lockedBalanceAlternative}}
-            {{index.alternativeIsoCode}} </span>
-        </div>
-      </div>
-      <div class="extra-margin-bottom"></div>
     </div> <!-- END WalletHome -->
 
     <!--
@@ -203,7 +212,7 @@
         </div>
         <div class="small-6 columns m20t">
           <span class="button black expand round tiny"
-            ng-click="$root.go('backup')" ng-style="{'background-color':index.backgroundColor}" >
+            ng-click="$root.go('backup')" ng-style="{'background':skin.buttonBackground, 'color':skin.buttonTextColor}" >
             <span translate>Backup now</span>
           </span>
         </div>
@@ -259,7 +268,7 @@
         <div class="row m20t">
           <div class="large-12 columns">
             <button class="button black expand round m0" ng-click="home.setAddress(true)"
-              ng-style="{'background-color':index.backgroundColor}" ng-disabled="home.blockUx || index.isOffline ||home.generatingAddress" translate>
+              ng-style="{'background':skin.buttonBackground, 'color':skin.buttonTextColor}" ng-disabled="home.blockUx || index.isOffline ||home.generatingAddress" translate>
               Generate new address
             </button>
           </div>
@@ -422,7 +431,7 @@
               </div>
               <div class="columns" ng-class="{'small-6 medium-6 large-6':(home._paypro || home.lockAddress || home.lockAmount)}">
                 <button type="submit" class="button black round expand" ng-disabled="sendForm.$invalid || home.blockUx ||  index.isOffline"
-                  ng-style="{'background-color':index.backgroundColor}"  translate>
+                  ng-style="{'background':skin.buttonBackground, 'color':skin.buttonTextColor}"  translate>
                   Send
                 </button>
               </div>
@@ -459,7 +468,7 @@
           class="row collapse last-transactions-content">
           <div class="large-3 medium-3 small-3 columns">
             <span class="label tu radius" ng-show="btx.action == 'received'"
-              ng-style="{'background-color':index.backgroundColor}" translate>Received</span>
+              ng-style="{'background-color':skin.textHighlightColor}" translate>Received</span>
             <span class="label tu gray radius" ng-show="btx.action == 'sent'" translate>Sent</span>
             <span class="label tu gray radius" ng-show="btx.action == 'moved'" translate>Moved</span>
             <span class="label tu warning radius" ng-show="btx.action == 'invalid'" translate>Invalid</span>

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('importController',
-  function($scope, $rootScope, $location, $timeout, $log, profileService, notification, go, isMobile, isCordova, sjcl, gettext, lodash, ledger) {
+  function($scope, $rootScope, $location, $timeout, $log, profileService, notification, go, isMobile, isCordova, sjcl, gettext, lodash, ledger, themeService) {
 
     var self = this;
 
@@ -54,7 +54,12 @@ angular.module('copayApp.controllers').controller('importController',
           } else {
             $rootScope.$emit('Local/WalletImported', walletId);
             go.walletHome();
-            notification.success(gettext('Success'), gettext('Your wallet has been imported correctly'));
+            notification.success(
+              gettext('Success'),
+              gettext('Your wallet has been imported correctly'),
+              {color: themeService.getPublishedSkin().textHighlightColor,
+               iconColor: themeService.getPublishedTheme().notificationBarIconColor,
+               barBackground: themeService.getPublishedTheme().notificationBarBackground});
           }
         });
       }, 100);
@@ -74,7 +79,12 @@ angular.module('copayApp.controllers').controller('importController',
             });
           }
           $rootScope.$emit('Local/WalletImported', walletId);
-          notification.success(gettext('Success'), gettext('Your wallet has been imported correctly'));
+          notification.success(
+            gettext('Success'),
+            gettext('Your wallet has been imported correctly'),
+            {color: themeService.getPublishedSkin().textHighlightColor,
+             iconColor: themeService.getPublishedTheme().notificationBarIconColor,
+             barBackground: themeService.getPublishedTheme().notificationBarBackground});
           go.walletHome();
         });
       }, 100);
@@ -95,7 +105,12 @@ angular.module('copayApp.controllers').controller('importController',
             });
           }
           $rootScope.$emit('Local/WalletImported', walletId);
-          notification.success(gettext('Success'), gettext('Your wallet has been imported correctly'));
+          notification.success(
+            gettext('Success'),
+            gettext('Your wallet has been imported correctly'),
+            {color: themeService.getPublishedSkin().textHighlightColor,
+             iconColor: themeService.getPublishedTheme().notificationBarIconColor,
+             barBackground: themeService.getPublishedTheme().notificationBarBackground});
           go.walletHome();
         });
       }, 100);
@@ -213,7 +228,12 @@ angular.module('copayApp.controllers').controller('importController',
             });
           }
           $rootScope.$emit('Local/WalletImported', walletId);
-          notification.success(gettext('Success'), gettext('Your wallet has been imported correctly'));
+          notification.success(
+            gettext('Success'),
+            gettext('Your wallet has been imported correctly'),
+            {color: themeService.getPublishedSkin().textHighlightColor,
+             iconColor: themeService.getPublishedTheme().notificationBarIconColor,
+             barBackground: themeService.getPublishedTheme().notificationBarBackground});
           go.walletHome();
         });
       }, 100);

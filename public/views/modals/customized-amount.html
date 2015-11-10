@@ -1,11 +1,11 @@
-<nav class="tab-bar">
+<nav class="tab-bar" ng-style="{'background':skin.navBarBackground}">
   <section class="left-small">
     <a ng-click="cancel()" class="p10">
-      <span class="text-close" translate>Close</span>
+      <span class="text-close" ng-style="{'color':skin.navBarButtonTextColor}" translate>Close</span>
     </a>
   </section>
   <section class="middle tab-bar-section">
-    <h1 class="title ellipsis" ng-style="{'color':color}" translate>
+    <h1 class="title ellipsis" ng-style="{'color':skin.navBarTitleColor}" translate>
       Request a specific amount
     </h1>
   </section>
@@ -76,7 +76,7 @@
             <a class="postfix" ng-click="toggleAlternative()"> {{ alternativeIsoCode }}</a>
           </div>
         </div>
-        <button type="submit" class="button black round expand" ng-disabled="amountForm.$invalid" ng-style="{'background-color':color}" translate>
+        <button type="submit" class="button black round expand" ng-style="{'background':skin.buttonBackground, 'color':skin.buttonTextColor}" ng-disabled="amountForm.$invalid" translate>
           Generate QR Code
         </button>
       </form>

@@ -296,19 +296,95 @@ angular
           },
         }
       })
-      .state('preferencesColor', {
-        url: '/preferencesColor',
-        templateUrl: 'views/preferencesColor.html',
+      .state('preferencesSkin', {
+        url: '/preferencesSkin',
+        templateUrl: 'views/preferencesSkin.html',
         walletShouldBeComplete: true,
         needProfile: true,
         views: {
           'main': {
-            templateUrl: 'views/preferencesColor.html'
+            templateUrl: 'views/preferencesSkin.html'
           },
         }
       })
-
-    .state('preferencesAltCurrency', {
+      .state('preferencesSkinPreview', {
+        url: '/preferencesSkinPreview',
+        templateUrl: 'views/preferencesSkinPreview.html',
+        walletShouldBeComplete: true,
+        needProfile: true,
+        views: {
+          'main': {
+            templateUrl: 'views/preferencesSkinPreview.html'
+          },
+        }
+      })
+      .state('preferencesSkinDiscovery', {
+        url: '/preferencesSkinDiscovery',
+        templateUrl: 'views/preferencesSkinDiscovery.html',
+        walletShouldBeComplete: true,
+        needProfile: true,
+        views: {
+          'main': {
+            templateUrl: 'views/preferencesSkinDiscovery.html'
+          },
+        }
+      })
+      .state('preferencesSkinDiscoveryPreview', {
+        url: '/preferencesSkinDiscoveryPreview',
+        templateUrl: 'views/preferencesSkinDiscoveryPreview.html',
+        walletShouldBeComplete: true,
+        needProfile: true,
+        views: {
+          'main': {
+            templateUrl: 'views/preferencesSkinDiscoveryPreview.html'
+          },
+        }
+      })
+      .state('preferencesTheme', {
+        url: '/preferencesTheme',
+        templateUrl: 'views/preferencesTheme.html',
+        walletShouldBeComplete: true,
+        needProfile: true,
+        views: {
+          'main': {
+            templateUrl: 'views/preferencesTheme.html'
+          },
+        }
+      })
+      .state('preferencesThemePreview', {
+        url: '/preferencesThemePreview',
+        templateUrl: 'views/preferencesThemePreview.html',
+        walletShouldBeComplete: true,
+        needProfile: true,
+        views: {
+          'main': {
+            templateUrl: 'views/preferencesThemePreview.html'
+          },
+        }
+      })
+      .state('preferencesThemeDiscovery', {
+        url: '/preferencesThemeDiscovery',
+        templateUrl: 'views/preferencesThemeDiscovery.html',
+        walletShouldBeComplete: true,
+        needProfile: true,
+        views: {
+          'main': {
+            templateUrl: 'views/preferencesThemeDiscovery.html'
+          },
+        }
+      })
+      .state('preferencesThemeDiscoveryPreview', {
+        url: '/preferencesThemeDiscoveryPreview',
+        templateUrl: 'views/preferencesThemeDiscoveryPreview.html',
+        walletShouldBeComplete: true,
+        needProfile: true,
+        views: {
+          'main': {
+            templateUrl: 'views/preferencesThemeDiscoveryPreview.html'
+          },
+        }
+      })
+      .state('preferencesAltCurrency', {
         url: '/preferencesAltCurrency',
         templateUrl: 'views/preferencesAltCurrency.html',
         walletShouldBeComplete: true,
@@ -463,9 +539,11 @@ angular
         needProfile: false
       });
   })
-  .run(function($rootScope, $state, $log, uriHandler, isCordova, profileService, $timeout, nodeWebkit, uxLanguage) {
+  .run(function($rootScope, $state, $log, uriHandler, isCordova, profileService, $timeout, nodeWebkit, uxLanguage, themeService) {
     FastClick.attach(document.body);
 
+    // For early view presention, make the default theme available immediately (prior to profile and wallet creation).
+    themeService.bootstrap();
     uxLanguage.init();
 
     // Register URI handler, not for mobileApp
@@ -496,7 +574,14 @@ angular
 
       preferences: 11,
       glidera: 11,
-      preferencesColor: 12,
+      preferencesSkin: 12,
+      preferencesSkinPreview: 100,
+      preferencesSkinDiscovery: 13,
+      preferencesSkinDiscoveryPreview: 100,
+      preferencesTheme: 12,
+      preferencesThemePreview: 100,
+      preferencesThemeDiscovery: 13,
+      preferencesThemeDiscoveryPreview: 100,
       backup: 12,
       preferencesAdvanced: 12,
       buyGlidera: 12,
@@ -527,7 +612,6 @@ angular
     var cachedTransitionState, cachedBackPanel;
 
     $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
-
 
       if (!profileService.profile && toState.needProfile) {
 
@@ -587,7 +671,6 @@ angular
       };
 
       function animateTransition(fromState, toState, event) {
-
         if (isaosp)
           return true;
 
@@ -606,12 +689,11 @@ angular
         var fromWeight = pageWeight[fromName];
         var toWeight = pageWeight[toName];
 
-
         var entering = null,
           leaving = null;
 
         // Horizontal Slide Animation?
-        if (fromWeight && toWeight) {
+        if ((fromWeight && toWeight) && (toWeight <= 99 && fromWeight <= 99)) {
           if (fromWeight > toWeight) {
             leaving = 'CslideOutRight';
           } else {
@@ -620,7 +702,7 @@ angular
 
           // Vertical Slide Animation?
         } else if (fromName && fromWeight >= 0 && toWeight >= 0) {
-          if (toWeight) {
+          if (toWeight && (fromWeight <= 99 || toWeight > 199)) {
             entering = 'CslideInUp';
           } else {
             leaving = 'CslideOutDown';

@@ -29,11 +29,12 @@
       </span>
     </li>
 
-    <li class="line-b p20" ng-click="$root.go('preferencesColor')">
-      <span translate>Color</span>
+    <li class="line-b p20" ng-click="$root.go('preferencesSkin')">
+      <!-- TODO: translate Skin -->
+      <span translate>Skin</span>
       <span class="right text-gray">
         <i class="icon-arrow-right3 size-24 right"></i>
-        <span ng-style="{'color':index.backgroundColor}">&block;</span>
+        <span>{{skin.header.name}}</span>
       </span>      
     </li>
     <li class="line-b p20" ng-hide="index.isPrivKeyExternal">
@@ -85,6 +86,13 @@
         {{preferences.selectedAlternative.name}}
       </span>
     </li>
+    <li class="line-b p20" ng-show="!index.noFocusedWallet" ng-click="$root.go('preferencesTheme')">
+      <span translate>Theme</span>
+      <span class="right text-gray">
+        <i class="icon-arrow-right3 size-24 right"></i>
+        {{theme.header.name}}
+      </span>
+    </li>
     <li class="line-b p20" ng-show="!index.noFocusedWallet" ng-click="$root.go('preferencesFee')"
       ng-show="(index.network == 'livenet' ? index.feeLevels.livenet : index.feeLevels.testnet)">
       <span translate>Bitcoin Network Fee Policy</span>
@@ -118,7 +126,7 @@
 
     <li class="line-b p20" ng-click="$root.go('about')">
       <i class="icon-arrow-right3 size-24 right text-gray"></i>  
-      <span translate>About Copay</span>
+      <span translate>About Copay Bitcoin Wallet</span>
     </li>
  
   </ul>
