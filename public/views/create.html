@@ -175,8 +175,8 @@
         <button type="submit" class="button round black expand m0" ng-show="totalCopayers != 1" ng-disabled="setupForm.$invalid || create.loading || create.hwWallet">
           <span translate>Create {{requiredCopayers}}-of-{{totalCopayers}} wallet</span>
         </button>
-
-        <button type="submit" class="button round black expand m0" ng-show="totalCopayers == 1" ng-disabled="setupForm.$invalid || create.loading || create.hwWallet">
+                
+        <button type="submit" class="button round black expand m0" ng-style="{'background':theme.buttonBackground, 'color':theme.buttonTextColor}" ng-show="totalCopayers == 1" ng-disabled="setupForm.$invalid || create.loading || create.hwWallet">
           <span translate>Create new wallet</span>
         </button>
 

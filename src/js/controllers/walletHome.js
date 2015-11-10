@@ -112,7 +112,6 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     self.resetForm();
 
     var ModalInstanceCtrl = function($scope, $modalInstance) {
-<<<<<<< 95217cef02a026680d6cbc68e0b5179e45b370db
       $scope.wallets = wallets;
       $scope.editAddressbook = false;
       $scope.addAddressbookEntry = false;
@@ -128,13 +127,6 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
         $scope.error = null;
         $scope.addAddressbookEntry = true;
         $scope.editAddressbook = false;
-=======
-      $scope.copayers = copayers;
-      $scope.copayerId = copayerId;
-
-      $scope.cancel = function() {
-        $modalInstance.dismiss('cancel');
->>>>>>> Baseline implementation for themes and skins.
       };
 
       $scope.onQrCodeScanned = function(data, addressbookForm) {

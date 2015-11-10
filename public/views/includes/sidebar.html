@@ -20,7 +20,7 @@
       <div class="size-12" ng-show="item.n > 1" translate>{{item.m}}-of-{{item.n}}</div>
     </a>
     </li>
-    <li>
+    <li ng-style="{'border-bottom-color':theme.sidebarListSeparatorColor}">
       <a ng-click="$root.go('add')" class="oh">
         <i class="icon-arrow-right3 size-18 right m10t"></i>
         <i class="fi-plus size-24 icon"></i>
@@ -30,7 +30,7 @@
         <div translate>Create, join or import</div>
       </a>
     </li>
-    <li ng-show="index.glideraEnabled">
+    <li ng-style="{'border-bottom-color':theme.sidebarListSeparatorColor}" ng-show="index.glideraEnabled">
       <a ng-click="$root.go('glidera')" class="oh">
         <i class="icon-arrow-right3 size-18 right m10t"></i>
         <i class="icon-bank size-24 icon"></i>
