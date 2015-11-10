@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.services').factory('txStatus', function($modal, lodash, profileService, $timeout) {
+angular.module('copayApp.services').factory('txStatus', function($rootScope, $modal, lodash, profileService, $timeout, animationService) {
   var root = {};
 
   root.notify = function(txp, cb) {
@@ -42,22 +42,34 @@ angular.module('copayApp.services').factory('txStatus', function($modal, lodash,
   };
 
   var openModal = function(type, txp, cb) {
+    $rootScope.modalOpened = true;
     var ModalInstanceCtrl = function($scope, $modalInstance) {
       $scope.type = type;
       $scope.cancel = function() {
         $modalInstance.dismiss('cancel');
       };
+      
+      $timeout(function() {
+        $modalInstance.dismiss('cancel');
+      }, 2000);
+      
       if (cb) $timeout(cb, 100);
     };
     var modalInstance = $modal.open({
       templateUrl: root._templateUrl(type, txp),
-      windowClass: 'popup-tx-status full',
+      windowClass: animationService.modalAnimated.fadeIn + ' popup-tx-status',
       controller: ModalInstanceCtrl,
     });
 
+    var disableCloseModal = $rootScope.$on('closeModal', function() {
+      modalInstance.dismiss('cancel');
+    });
+
     modalInstance.result.finally(function() {
+      $rootScope.modalOpened = false;
+      disableCloseModal();
       var m = angular.element(document.getElementsByClassName('reveal-modal'));
-      m.addClass('hideModal');
+      m.addClass(animationService.modalAnimated.fadeOut);
     });
   };
 
