@@ -39,7 +39,11 @@ angular.module('copayApp.controllers').controller('wordsController',
           fc.clearMnemonic();
           profileService.updateCredentialsFC(function() {
             self.deleted = true;
-            notification.success(successMsg);
+            notification.success(
+              successMsg, '',
+              {color: themeService.getPublishedSkin().textHighlightColor,
+               iconColor: themeService.getPublishedTheme().notificationBarIconColor,
+               barBackground: themeService.getPublishedTheme().notificationBarBackground});
             go.walletHome();
           });
         }
