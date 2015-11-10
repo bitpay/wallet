@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, lodash, go, profileService, configService, isCordova, rateService, storageService, addressService, gettext, gettextCatalog, amMoment, nodeWebkit, addonManager, feeService, isChromeApp, bwsError, txFormatService, uxLanguage, $state, glideraService, isMobile, addressbookService) {
+angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, lodash, go, profileService, configService, isCordova, rateService, storageService, addressService, gettext, gettextCatalog, amMoment, nodeWebkit, addonManager, feeService, isChromeApp, bwsError, txFormatService, uxLanguage, $state, glideraService, isMobile, addressbookService, themeService) {
   var self = this;
   var SOFT_CONFIRMATION_LIMIT = 12;
   self.isCordova = isCordova;
@@ -119,7 +119,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
       self.txps = [];
       self.copayers = [];
-      self.updateColor();
+      self.updateSkin();
       self.updateAlias();
       self.setAddressbook();
 
@@ -135,6 +135,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
           self.openWallet();
         });
       }
+
     });
   };
 
@@ -543,19 +544,16 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     fc.alias = self.alias;
   };
 
-  self.updateColor = function() {
-    var config = configService.getSync();
-    config.colorFor = config.colorFor || {};
-    self.backgroundColor = config.colorFor[self.walletId] || '#4A90E2';
-    var fc = profileService.focusedClient;
-    fc.backgroundColor = self.backgroundColor;
+  self.updateSkin = function() {
+    themeService.updateSkin(self.walletId, function() {
+      $scope.$emit('Local/SkinUpdated');
+    });
   };
 
   self.setBalance = function(balance) {
     if (!balance) return;
     var config = configService.getSync().wallet.settings;
     var COIN = 1e8;
-
 
     // Address with Balance
     self.balanceByAddress = balance.byAddress;
@@ -1079,12 +1077,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   });
 
   // UX event handlers
-  $rootScope.$on('Local/ColorUpdated', function(event) {
-    self.updateColor();
-    $timeout(function() {
-      $rootScope.$apply();
-    });
-  });
 
   $rootScope.$on('Local/AliasUpdated', function(event) {
     self.updateAlias();
