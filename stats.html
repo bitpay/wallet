@@ -3,6 +3,7 @@
     <head>
       <meta charset="utf-8">
       <link type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.7.0/nv.d3.css" rel="stylesheet">
+      <link rel="stylesheet" href="css/angular-ui-switch.css"/>
       <link type="text/css" href="css/foundation.css" rel="stylesheet">
       <link type="text/css" href="css/stats.css" rel="stylesheet">
       <link rel="stylesheet" href="http://css-spinners.com/css/spinner/three-quarters.css" type="text/css">
@@ -12,6 +13,7 @@
       <script type="text/javascript" src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
       <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.7.0/nv.d3.min.js"></script>
       <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+      <script type="text/javascript" src="js/angular-ui-switch.js"></script>
       <script type="text/javascript" src="js/dataController.js"></script>
       <script type="text/javascript" src="js/dataService.js"></script>
       <script type="text/javascript" src="js/foundation/foundation.js"></script>
@@ -23,18 +25,17 @@
           <img src="https://copay.io/images/copay-logo-white.svg" alt="Copay" width="100">
         </div>
         <div class="right large-2">
-          <select name="list" id="network">
-            <option value="livenet" selected>Livenet</option>
-            <option value="testnet">Testnet</option>
-          </select>
+          <p class="right">LIVENET</p>
+          <form class="right swtich">
+            <switch id="network" name="network" ng-model="network" ng-change="changeNetwork" class="green"></switch>
+          </form>
+          <p class="right">TESNET</p>
         </div>
       </div>
     </nav>
 
-    <div class="text-center" ng-show="dataC.loading">
-      <div class="three-quarters-loader">
-        Loading…
-      </div>
+    <div class="text-center spinner" ng-show="dataC.loading">
+      <div class="three-quarters-loader"></div>
     </div>
 
     <div class="container">

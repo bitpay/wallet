@@ -3,7 +3,7 @@ app.service('dataService', function($rootScope) {
   var root = {};
 
   root.refresh = function(opts) {
-    opts.network = $('#network').val();
+    //opts.network = $('#network').val();
     root.fetch(opts, function(err, data) {
       if (err) {
         self.error('Could not fetch data');
