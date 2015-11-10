@@ -78,11 +78,11 @@ angular.module('copayApp.controllers').controller('backupController',
       });
     }
 
-    self.getBackup = function() {
+    self.getBackup = function(cb) {
       self.getMetaData(function(err, txsFromLocal, localAddressBook) {
         if (err) {
           self.error = true;
-          return;
+          return cb(null);
         }
         var opts = {
           noSign: $scope.noSign,
@@ -96,26 +96,30 @@ angular.module('copayApp.controllers').controller('backupController',
         } else {
           self.error = false;
         }
-        return ew;
+        return cb(ew);
       });
     }
 
     self.viewWalletBackup = function() {
       var self = this;
       $timeout(function() {
-        var ew = self.getBackup();
-        if (!ew) return;
-        self.backupWalletPlainText = ew;
-        $rootScope.$emit('Local/BackupDone');
+        self.getBackup(function(backup) {
+          var ew = backup;
+          if (!ew) return;
+          self.backupWalletPlainText = ew;
+          $rootScope.$emit('Local/BackupDone');
+        });
       }, 100);
     };
 
     self.copyWalletBackup = function() {
-      var ew = self.getBackup();
-      if (!ew) return;
-      window.cordova.plugins.clipboard.copy(ew);
-      window.plugins.toast.showShortCenter(gettextCatalog.getString('Copied to clipboard'));
-      $rootScope.$emit('Local/BackupDone');
+      self.getBackup(function(backup) {
+        var ew = backup;
+        if (!ew) return;
+        window.cordova.plugins.clipboard.copy(ew);
+        window.plugins.toast.showShortCenter(gettextCatalog.getString('Copied to clipboard'));
+        $rootScope.$emit('Local/BackupDone');
+      });
     };
 
     self.sendWalletBackup = function() {
@@ -128,19 +132,21 @@ angular.module('copayApp.controllers').controller('backupController',
       if (fc.alias) {
         name = fc.alias + ' [' + name + ']';
       }
-      var ew = self.getBackup();
-      if (!ew) return;
+      self.getBackup(function(backup) {
+        var ew = backup;
+        if (!ew) return;
 
-      if ($scope.noSign)
-        name = name + '(No Private Key)';
+        if ($scope.noSign)
+          name = name + '(No Private Key)';
 
-      var properties = {
-        subject: 'Copay Wallet Backup: ' + name,
-        body: 'Here is the encrypted backup of the wallet ' + name + ': \n\n' + ew + '\n\n To import this backup, copy all text between {...}, including the symbols {}',
-        isHtml: false
-      };
-      $rootScope.$emit('Local/BackupDone');
-      window.plugin.email.open(properties);
+        var properties = {
+          subject: 'Copay Wallet Backup: ' + name,
+          body: 'Here is the encrypted backup of the wallet ' + name + ': \n\n' + ew + '\n\n To import this backup, copy all text between {...}, including the symbols {}',
+          isHtml: false
+        };
+        $rootScope.$emit('Local/BackupDone');
+        window.plugin.email.open(properties);
+      });
     };
 
   });
