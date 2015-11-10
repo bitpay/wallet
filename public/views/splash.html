@@ -1,12 +1,13 @@
-<div class="splash content text-center" 
+<div class="splash content text-center"
+  ng-style="{'background':theme.startBackground}"
   ng-init="init()" 
   ng-controller="splashController">
   <div ng-if="!index.hasProfile">
     <div class="row">
       <div class="medium-centered small-centered large-centered columns">
         <div class="m20t">
-          <span class="text-bold size-16 text-white" translate>WELCOME TO COPAY</span>
-          <p class="text-gray size-14 m0 text-light" translate>A multisignature bitcoin wallet</p>
+          <span class="text-bold size-16 text-white" ng-style="{'color':theme.startTitleTextColor}" translate>WELCOME TO COPAY</span>
+          <p class="text-gray size-14 m0 text-light" ng-style="{'color':theme.startTextColor}" translate>A multisignature bitcoin wallet</p>
         </div>
       </div>
     </div>
@@ -19,7 +20,7 @@
       {{(error)|translate}}. <span translate>Retrying...</span>
     </div>
     <div class="onGoingProcess" ng-show="creatingProfile">
-      <div class="onGoingProcess-content" ng-style="{'background-color':'#222'}">
+      <div class="onGoingProcess-content" ng-style="{'background':theme.startProgressBackground, 'color':theme.startProgressTextColor}">
         <div class="spinner">
           <div class="rect1"></div>
           <div class="rect2"></div>
@@ -32,10 +33,10 @@
     </div>
     <div class="row" ng-show="!creatingProfile">
       <div class="start-button large-8 medium-8 small-8 medium-centered small-centered large-centered columns">
-        <button ng-click="create()" class="button black expand round size-12 text-spacing" translate>
+        <button ng-click="create()" class="button black expand round size-12 text-spacing" ng-style="{'background':theme.startButtonBackground, 'color':theme.startButtonTextColor}" translate>
           GET STARTED
         </button>
-        <p class="text-gray m5b size-12" translate>Already have a wallet?</p>
+        <p class="text-gray m5b size-12" ng-style="{'color':theme.startTextColor}" translate>Already have a wallet?</p>
         <button  ng-click="create(true)" class="button round outline dark-gray tiny" translate>Import backup </button>
       </div>
     </div>

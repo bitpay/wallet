@@ -1,17 +1,21 @@
 <nav class="sidebar left-off-canvas-menu" ng-controller="sidebarController as sidebar">
-  <header>
+  <div class="sidebar-bg" ng-style="{'background':theme.sidebarBackground}">
+  <header ng-style="{'border-bottom-color':theme.sidebarListSeparatorColor}">
     <logo ng-if="!sidebar.isWindowsPhoneApp" negative="true" width="80"></logo>
     <img ng-if="sidebar.isWindowsPhoneApp" src="img/logo-negative.png" alt="Copay" width="80">
-    <div ng-include="'views/includes/version.html'"></div>
+    <div style="padding-top: 17.5%" ng-style="{'color':theme.sidebarTextColor}" ng-include="'views/includes/version.html'"></div>
   </header>
   <ul class="off-canvas-list">
     <li ng-show="sidebar.wallets[0]"
     ng-repeat="item in sidebar.wallets track by $index"
     ng-class="{'selected': item.id == index.walletId}"
+    ng-style="{
+    'border-bottom-color':theme.sidebarListSeparatorColor,
+    'background': item.id == index.walletId ? theme.sidebarSelectedWalletBackground : 'none'}"
     class="nav-item">
     <a ng-click="sidebar.switchWallet(item.id, index.walletId)" class="oh">
       <div class="avatar-wallet"
-        ng-style="{'background-color':item.color}">{{(item.name || item.id) | limitTo: 1}}</div>
+        ng-style="{'background':item.avatarBackground}">{{(item.name || item.id) | limitTo: 1}}</div>
       <div class="name-wallet" ng-class="{'m8t':item.n == 1}">{{item.name || item.id}}</div>
       <div class="size-12" ng-show="item.n > 1" translate>{{item.m}}-of-{{item.n}}</div>
     </a>
@@ -47,4 +51,5 @@
       </a>
     </li>
   </ul>
+  </div> <!-- sidebar-bg -->
 </nav>

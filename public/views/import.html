@@ -1,24 +1,24 @@
 <div
   class="topbar-container"
   ng-include="'views/includes/topbar.html'"
-  ng-init="titleSection='Import wallet';  goBackToState = 'add'; noColor = true">
+  ng-init="titleSection='Import wallet';  goBackToState = 'add'; useTheme = true">
 </div>
 
 <div class="content p20v" ng-controller="importController as import" ng-init="type='12'">
   <div class="onGoingProcess" ng-show="import.loading  && !import.hwWallet">
-    <div class="onGoingProcess-content" ng-style="{'background-color':'#222'}">
+    <div class="onGoingProcess-content" ng-style="{'background':theme.progressBackground, 'color':theme.progressTextColor}">
     <div class="spinner">
       <div class="rect1"></div>
       <div class="rect2"></div>
       <div class="rect3"></div>
       <div class="rect4"></div>
-      <div class="rect5"></div>
+      <div class="rect5"></div>false
     </div>
     <span translate>Importing wallet...</span>
     </div>
   </div>
   <div class="onGoingProcess" ng-show="import.hwWallet">
-    <div class="onGoingProcess-content" ng-style="{'background-color':'#222'}">
+    <div class="onGoingProcess-content" ng-style="{'background':theme.progressBackground, 'color':theme.progressTextColor}">
     <div class="spinner">
       <div class="rect1"></div>
       <div class="rect2"></div>

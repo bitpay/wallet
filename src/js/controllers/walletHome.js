@@ -121,7 +121,6 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
         'address': ($scope.newAddress || ''),
         'label': ''
       };
-      $scope.color = fc.backgroundColor;
 
       $scope.beforeQrCodeScann = function() {
         $scope.error = null;
@@ -270,7 +269,6 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       $scope.copayerId = fc.credentials.copayerId;
       $scope.canSign = fc.canSign() || fc.isPrivKeyExternal();
       $scope.loading = null;
-      $scope.color = fc.backgroundColor;
       $scope.isShared = fc.credentials.n > 1;
 
       // ToDo: use tx.customData instead of tx.message
@@ -554,7 +552,6 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     var fc = profileService.focusedClient;
     var ModalInstanceCtrl = function($scope, $modalInstance) {
       $scope.addr = addr;
-      $scope.color = fc.backgroundColor;
       $scope.unitName = self.unitName;
       $scope.alternativeAmount = self.alternativeAmount;
       $scope.alternativeName = self.alternativeName;
@@ -1063,7 +1060,6 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       $scope.isRateAvailable = self.isRateAvailable;
       $scope.unitTotal = (paypro.amount * satToUnit).toFixed(self.unitDecimals);
       $scope.unitName = self.unitName;
-      $scope.color = fc.backgroundColor;
 
       $scope.cancel = function() {
         $modalInstance.dismiss('cancel');
@@ -1230,8 +1226,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     var fc = profileService.focusedClient;
     var ModalInstanceCtrl = function($scope, $modalInstance) {
       $scope.btx = btx;
-      $scope.settings = walletSettings;
-      $scope.color = fc.backgroundColor;
+      $scope.settings = config;
       $scope.copayerId = fc.credentials.copayerId;
       $scope.isShared = fc.credentials.n > 1;
 

@@ -1,7 +1,7 @@
 <div
   class="topbar-container"
   ng-include="'views/includes/topbar.html'"
-  ng-init="titleSection='Import legacy wallet'; goBackToState = 'import'; noColor = true">
+  ng-init="titleSection='Import legacy wallet'; goBackToState = 'import'; useTheme = true">
 </div>
 
 <div class="content p20v" ng-controller="importLegacyController as importLegacy">
@@ -51,6 +51,7 @@
 
           <button translate type="submit"
             class="button black round expand m0"
+            ng-style="{'background':theme.buttonBackground, 'color':theme.buttonTextColor}"
             ng-disabled="importForm.$invalid">
             Import
           </button>

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('copayersController',
-  function($scope, $rootScope, $timeout, $log, $modal, profileService, go, notification, isCordova, gettext, gettextCatalog, animationService) {
+  function($scope, $rootScope, $timeout, $log, $modal, profileService, go, notification, isCordova, gettext, gettextCatalog, animationService, themeService) {
     var self = this;
 
     var delete_msg = gettextCatalog.getString('Are you sure you want to delete this wallet?');
@@ -69,7 +69,12 @@ angular.module('copayApp.controllers').controller('copayersController',
           } else {
             go.walletHome();
             $timeout(function() {
-              notification.success(gettextCatalog.getString('Success'), gettextCatalog.getString('The wallet "{{walletName}}" was deleted', {walletName: walletName}));
+              notification.success(
+                gettextCatalog.getString('Success'),
+                gettextCatalog.getString('The wallet "{{walletName}}" was deleted', {walletName: walletName}),
+                {color: themeService.getPublishedTheme().textHighlightColor,
+                 iconColor: themeService.getPublishedTheme().notificationBarIconColor,
+                 barBackground: themeService.getPublishedTheme().notificationBarBackground});
             });
           }
         });

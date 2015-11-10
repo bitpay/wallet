@@ -258,6 +258,14 @@ input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill, inpu
   overflow: auto;
 }
 
+.content-top {
+  width:100%;
+  position: absolute;
+  top: 0px;
+  bottom: 45px;
+  overflow: auto;
+}
+
 .content.disclaimer {
   top: 0;
 }
@@ -413,7 +421,7 @@ ul.manage li {
 }
 
 .manage a i.circle {
-  background-color: #4B6178;
+  background-color: #1c9bd7;
   width: 50px;
   height: 50px;
   padding: 0.65rem;
@@ -531,7 +539,7 @@ ul.manage li {
 }
 
 .sidebar li.nav-item.selected .name-wallet {
-  color: #fff;
+  color: #233e81;
 }
 
 .name-wallet i {
@@ -721,6 +729,17 @@ table tbody tr:last-child td {
   border-bottom: none;
 }
 
+.img-container {
+  position: relative;
+}
+
+.img-container .top {
+  position: absolute;
+  top: -2%;
+  right: -2%;
+  width: 30%;
+  z-index: 1;
+}
 
 /*////////////////////////////  BUTTON OUTLINE  ////////////////////////////*/
 
@@ -827,8 +846,8 @@ button.black:focus,
 .button.black,
 .button.black:hover,
 .button.black:focus {
-  background-color: #2C3E50;
-  color: #fff;
+ background-color: #1c9bd7;
+ color: #fff;
 }
 
 /* GRAY */
@@ -1191,17 +1210,14 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
   color: #A5B2BF;
   font-weight: normal;
 }
-
 .splash {
   top: 0;
-  background: #2C3E50;
-  background-image: -webkit-linear-gradient(#3D5672 0%, #223243 100%);
-  background-image: -o-linear-gradient(#3D5672 0%, #223243 100%);
-  background-image: linear-gradient(#3D5672 0%, #223243 100%);
+  width: 100%;
+  background-repeat: no-repeat;
 }
 
 .splash .start-button button.black {
-  background-color: #4B6178;
+  background-color: #1c9bd7;
 }
 
 .splash .start-button button.outline.tiny {
@@ -1273,7 +1289,7 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
 }
 
 .onGoingProcess-content {
-  background: #213140;
+  background: #1c9bd7;
   text-align: center;
   max-width: 16.5rem;
   max-height: 3.5rem;
@@ -1283,6 +1299,41 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
   font-size: 13px;
   opacity: 0.8;
   border-radius: 3px;
+}
+
+.preview-overlay {
+  left: 0;
+  width: 100%;
+  bottom: 90px;
+  position: absolute;
+  z-index: 1020;
+}
+
+.preview-overlay-content {
+  background-color: rgba(0,0,0,0.3) !important;
+  color: #FFFFFF;
+  text-align: center;
+  max-width: 16.5rem;
+  max-height: 3.5rem;
+  margin: auto;
+  padding: 0.5rem;
+  font-size: 13px;
+  border-radius: 3px;
+}
+
+.preview-button-bar {
+  background-color: rgba(255,255,255,0.9) !important;
+  line-height: 2.95rem;
+}
+
+.preview-button, .preview-button:hover {
+  color: #8597A7 !important;
+
+}
+
+.preview-button-left, .preview-button-left:hover {
+  color: #8597A7 !important;
+  border-right :1px solid #8597A7;
 }
 
 /*/////////////////// SPINNER ////////////////////*/
