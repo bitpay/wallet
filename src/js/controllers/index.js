@@ -843,8 +843,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       $timeout(function() {
         self.historyRendering = false;
         self.txHistory = self.completeHistory;
-      });
-    });
+      }, 100);
+    }, 100);
   };
 
   self.getTxsFromServer = function(client, skip, endingTxid, limit, cb) {
