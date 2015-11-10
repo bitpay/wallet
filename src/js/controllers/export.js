@@ -37,13 +37,11 @@ angular.module('copayApp.controllers').controller('backupController',
 
     self.getMetaData = function(cb) {
       self.getHistoryCache(function(err, txsFromLocal) {
-        if (err) {
-          return cb(err);
-        }
+        if (err) return cb(err);
+
         self.getAddressbook(function(err, localAddressBook) {
-          if (err) {
-            return cb(err);
-          }
+          if (err) return cb(err);
+
           return cb(null, txsFromLocal, localAddressBook)
         });
       });
@@ -60,6 +58,8 @@ angular.module('copayApp.controllers').controller('backupController',
         } catch (ex) {
           $log.warn(ex);
         }
+        if (!localTxs[0]) return cb(null, null);
+
         return cb(null, localTxs);
       });
     }
@@ -74,6 +74,7 @@ angular.module('copayApp.controllers').controller('backupController',
         } catch (ex) {
           $log.warn(ex);
         }
+
         return cb(null, localAddressBook);
       });
     }
