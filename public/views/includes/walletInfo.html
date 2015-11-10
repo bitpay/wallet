@@ -1,11 +1,16 @@
 
 <span ng-show="index.isShared"><span translate>{{index.m}}-of-{{index.n}}</span></span>
 <img style="height:1em"  ng-show="index.network != 'livenet'" src="img/icon-testnet.svg">
-<img style="height:1em"  ng-show="!index.canSign && !index.isPrivKeyExternal" src="img/icon-view.svg">
+<img style="height:1em"  ng-show="!index.canSign && !index.isPrivKeyExternal" src="img/icon-read-only.svg">
 
 <img style="height:1em"  ng-show="index.externalSource == 'trezor'" src="img/icon-trezor.svg">
+<img style="height:1em"  ng-show="index.externalSource == 'ledger'" src="img/icon-ledger.svg">
 <span style="height:1em" ng-show="index.account">#{{index.account || 0}} </span>
 
 <img style="height:1em"  ng-show="index.isPrivKeyEncrypted" src="img/icon-lock.svg">
 
-<img style="height:1em"  ng-show="index.preferences.email" src="img/icon-email.svg">
+<!-- <img style="height:1em"  ng&#45;show="index.preferences.email" src="img/icon&#45;email.svg"> -->
+<img style="height:1em"  ng-show="index.usingCustomBWS" src="img/icon-bws.svg">
+
+<img style="height:1em"  class="animated flash infinite" ng-show="index.updatingTxHistory[index.walletId]" src="img/icon-sync.svg">
+

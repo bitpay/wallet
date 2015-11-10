@@ -55,6 +55,7 @@ angular.module('copayApp.controllers').controller('preferencesController',
             return;
           }
           profileService.setPrivateKeyEncryptionFC(password, function() {
+            $rootScope.$emit('Local/NewEncryptionSetting');
             $scope.encrypt = true;
           });
         });
@@ -66,6 +67,7 @@ angular.module('copayApp.controllers').controller('preferencesController',
               return;
             }
             profileService.disablePrivateKeyEncryptionFC(function(err) {
+              $rootScope.$emit('Local/NewEncryptionSetting');
               if (err) {
                 $scope.encrypt = true;
                 $log.error(err);

@@ -7,7 +7,7 @@ angular.module('copayApp.controllers').controller('preferencesInformation',
     var c = fc.credentials;
 
     this.init = function() {
-      var basePath = profileService.getUtils().getBaseAddressDerivationPath(c.derivationStrategy, c.network, c.account); 
+      var basePath = c.getBaseAddressDerivationPath(); 
 
       $scope.walletName = c.walletName;
       $scope.walletId = c.walletId;

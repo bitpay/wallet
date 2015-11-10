@@ -13,7 +13,7 @@ angular.module('copayApp.services')
     }
 
     root.getEntropySource = function(isMultisig, account, callback) {
-      root.getXPubKey(hwWallet.getEntropyPath(isMultisig, account), function(data) {
+      root.getXPubKey(hwWallet.getEntropyPath('ledger', isMultisig, account), function(data) {
         if (!data.success) 
           return callback(hwWallet._err(data));
         
@@ -37,7 +37,7 @@ angular.module('copayApp.services')
         if (err) return callback(err);
 
         opts.entropySource = entropySource;
-        root.getXPubKey(hwWallet.getAddressPath(isMultisig, account), function(data) {
+        root.getXPubKey(hwWallet.getAddressPath('ledger', isMultisig, account), function(data) {
           if (!data.success) {
             $log.warn(data.message);
             return callback(data);
@@ -45,6 +45,9 @@ angular.module('copayApp.services')
           opts.extendedPublicKey = data.xpubkey;
           opts.externalSource = 'ledger';
           opts.account = account;
+
+          // Old ledger compat
+          opts.derivationStrategy = account ? 'BIP48' : 'BIP44';
           return callback(null, opts);
         });
       });
@@ -54,11 +57,10 @@ angular.module('copayApp.services')
       root.callbacks["sign_p2sh"] = callback;
       var redeemScripts = [];
       var paths = [];
-
-      var tx = bwcService.getUtils().buildTx(txp);
+      var tx = bwcService.buildTx(txp);
       for (var i = 0; i < tx.inputs.length; i++) {
         redeemScripts.push(new ByteString(tx.inputs[i].redeemScript.toBuffer().toString('hex'), GP.HEX).toString());
-        paths.push(hwWallet.getAddressPath(isMultisig, account) + txp.inputs[i].path.substring(1));
+        paths.push(hwWallet.getAddressPath('ledger', isMultisig, account) + txp.inputs[i].path.substring(1));
       }
       var splitTransaction = root._splitTransaction(new ByteString(tx.toString(), GP.HEX));
       var inputs = [];
