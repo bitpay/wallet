@@ -34,7 +34,7 @@ angular.module('copayApp.services').factory('configService', function(storageSer
 
     // External services
     glidera: {
-      enabled: true,
+      visible: true,
       testnet: false
     },
 

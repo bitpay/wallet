@@ -57,9 +57,9 @@ angular.module('copayApp.controllers').controller('importLegacyController',
           notification.success(
             gettextCatalog.getString('{{len}} wallets imported. Funds scanning in progress. Hold on to see updated balance',
             {len: ids.length}),
-            {color: themeService.getPublishedSkin().textHighlightColor,
-             iconColor: themeService.getPublishedTheme().notificationBarIconColor,
-             barBackground: themeService.getPublishedTheme().notificationBarBackground});
+            {color: themeService.getPublishedSkin().view.textHighlightColor,
+             iconColor: themeService.getPublishedTheme().view.notificationBarIconColor,
+             barBackground: themeService.getPublishedTheme().view.notificationBarBackground});
           self.scan(toScanIds);
         });
       }, 100);

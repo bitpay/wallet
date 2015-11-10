@@ -3,27 +3,37 @@ i18n/po/*.mo
 i18n/crowdin_api_key.txt
 src/js/translations.js
 
-# version
-src/js/version.js
+# brand
+src/js/brand.js
 
 # cordova
 cordova/project/*
 cordova/*.keystore
+cordova/build.sh
+cordova/config.xml
+cordova/Makefile
+cordova/android/AndroidManifest.xml
+cordova/android/project.properties
+cordova/ios/*-Info.plist
+cordova/wp/MainPage.xaml
+cordova/wp/properties/WMAppManifest.xml
+cordova/wp/Package.appxmanifest
+
+# make
+Makefile
 
 # node-webkit
 cache
 webkitbuilds/*
 !webkitbuilds/README.md
-!webkitbuilds/setup-win32.iss
-!webkitbuilds/setup-win64.iss
 !webkitbuilds/favicon.ico
-!webkitbuilds/.desktop
-!webkitbuilds/build-osx.sh
 !webkitbuilds/Background.png
 
 # chrome extensions
 browser-extensions/chrome/copay-chrome-extension
 browser-extensions/chrome/copay-chrome-extension.zip
+browser-extensions/chrome/build.sh
+browser-extensions/chrome/manifest.json
 
 # Logs
 logs
@@ -87,8 +97,17 @@ Session.vim
 .netrwhist
 *~
 
-# copay public
+# Copay public
 public/icons/*
 public/css/*
 public/lib/*
 public/js/*
+public/themes/*
+
+# Mobile resources
+cordova/android/res/*
+cordova/ios/icons/*
+cordova/ios/splash/*
+cordova/wp/Assets/*
+cordova/wp/*.png
+cordova/wp/*.jpg

@@ -6,7 +6,7 @@
 
 <div class="content p20v" ng-controller="importController as import" ng-init="type='12'">
   <div class="onGoingProcess" ng-show="import.loading  && !import.hwWallet">
-    <div class="onGoingProcess-content" ng-style="{'background':theme.progressBackground, 'color':theme.progressTextColor}">
+    <div class="onGoingProcess-content" ng-style="{'background':theme.view.progressBackground, 'color':theme.view.progressTextColor}">
     <div class="spinner">
       <div class="rect1"></div>
       <div class="rect2"></div>
@@ -18,7 +18,7 @@
     </div>
   </div>
   <div class="onGoingProcess" ng-show="import.hwWallet">
-    <div class="onGoingProcess-content" ng-style="{'background':theme.progressBackground, 'color':theme.progressTextColor}">
+    <div class="onGoingProcess-content" ng-style="{'background':theme.view.progressBackground, 'color':theme.view.progressTextColor}">
     <div class="spinner">
       <div class="rect1"></div>
       <div class="rect2"></div>
@@ -83,7 +83,7 @@
               </label>
             </div>
           </div>
-            <button translate type="submit" class="button round expand black m10t" ng-style="{'background':theme.buttonBackground, 'color':theme.buttonTextColor}"
+            <button translate type="submit" class="button round expand black m10t" ng-style="{'background':theme.view.buttonBackground, 'color':theme.view.buttonTextColor}"
               ng-disabled="importForm12.$invalid || import.loading">
               Import
             </button>
@@ -137,7 +137,7 @@
                 </label>
               </div>
             </div>
-            <button translate type="submit" class="button round expand black" ng-style="{'background':theme.buttonBackground, 'color':theme.buttonTextColor}"
+            <button translate type="submit" class="button round expand black" ng-style="{'background':theme.view.buttonBackground, 'color':theme.view.buttonTextColor}"
               ng-disabled="importForm.$invalid || !import.password || import.loading">
               Import backup
             </button>
@@ -168,7 +168,7 @@
             </label>
             <div class="oh text-gray line-b  size-12 p10b m20b"><span translate>Ledger supports up to 20 Copay wallets simultaneously. Select which slot to import</div>
 -->
-            <button translate type="submit" class="button round expand black" ng-style="{'background':theme.buttonBackground, 'color':theme.buttonTextColor}"
+            <button translate type="submit" class="button round expand black" ng-style="{'background':theme.view.buttonBackground, 'color':theme.view.buttonTextColor}"
               ng-disabled="import.loading || import.ledger">
               Import from Ledger
             </button>

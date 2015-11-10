@@ -1,6 +1,6 @@
 'use strict';
 angular.module('copayApp.services')
-  .factory('profileService', function profileServiceFactory($rootScope, $location, $timeout, $filter, $log, lodash, storageService, bwcService, configService, notificationService, isChromeApp, isCordova, gettext, gettextCatalog, nodeWebkit, bwsError, uxLanguage, ledger, bitcore, trezor, themeCatalogService, themeService) {
+  .factory('profileService', function profileServiceFactory($rootScope, $location, $timeout, $filter, $log, lodash, storageService, bwcService, configService, notificationService, isChromeApp, isCordova, gettext, gettextCatalog, nodeWebkit, bwsError, uxLanguage, ledger, bitcore, trezor, themeService) {
 
     var root = {};
 
@@ -122,12 +122,6 @@ angular.module('copayApp.services')
 
     root.bindProfile = function(profile, cb) {
       root.profile = profile;
-
-      themeCatalogService.get(function(err) {
-        $log.debug('Theme catalog read');
-        if (err) return cb(err);
-        themeService.init();
-      });      
       configService.get(function(err) {
         $log.debug('Preferences read');
         if (err) return cb(err);
@@ -578,7 +572,7 @@ angular.module('copayApp.services')
       if (!root.profile) return [];
 
       var config = configService.getSync();
-      var catalog = themeCatalogService.getSync();
+      var catalog = themeService.getCatalog();
       config.aliasFor = config.aliasFor || {};
       catalog.skinFor = catalog.skinFor || {};
       var ret = lodash.map(root.profile.credentials, function(c) {
@@ -588,9 +582,9 @@ angular.module('copayApp.services')
           name: config.aliasFor[c.walletId] || c.walletName,
           id: c.walletId,
           network: c.network,
-          avatarIsWalletName: (catalog.skinFor[c.walletId] !== undefined ? $rootScope.theme.skins[catalog.skinFor[c.walletId]].avatarIsWalletName : $rootScope.theme.skins[$rootScope.theme.header.defaultSkinId].avatarIsWalletName),
-          avatarBackground: (catalog.skinFor[c.walletId] !== undefined ? $rootScope.theme.skins[catalog.skinFor[c.walletId]].avatarBackground : $rootScope.theme.skins[$rootScope.theme.header.defaultSkinId].avatarBackground),
-          avatarBorder: (catalog.skinFor[c.walletId] !== undefined ? $rootScope.theme.skins[catalog.skinFor[c.walletId]].avatarBorderSmall : $rootScope.theme.skins[$rootScope.theme.header.defaultSkinId].avatarBorderSmall),
+          avatarIsWalletName: (catalog.skinFor[c.walletId] !== undefined ? $rootScope.theme.skins[catalog.skinFor[c.walletId]].view.avatarIsWalletName : $rootScope.theme.skins[$rootScope.theme.header.defaultSkinId].view.avatarIsWalletName),
+          avatarBackground: (catalog.skinFor[c.walletId] !== undefined ? $rootScope.theme.skins[catalog.skinFor[c.walletId]].view.avatarBackground : $rootScope.theme.skins[$rootScope.theme.header.defaultSkinId].view.avatarBackground),
+          avatarBorder: (catalog.skinFor[c.walletId] !== undefined ? $rootScope.theme.skins[catalog.skinFor[c.walletId]].view.avatarBorderSmall : $rootScope.theme.skins[$rootScope.theme.header.defaultSkinId].view.avatarBorderSmall),
         };
       });
       ret = lodash.filter(ret, function(w) {

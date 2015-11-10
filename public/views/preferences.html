@@ -101,15 +101,13 @@
       </div>
       <div translate>Alternative Currency</div>
     </li>
-<!-- TODO: DISABLE THEME SELECTION
-    <li ng-show="!index.noFocusedWallet" ng-click="$root.go('preferencesTheme')">
+    <li ng-show="index.brand.features.theme.themeDiscovery.enabled && !index.noFocusedWallet" ng-click="$root.go('preferencesTheme')">
       <span translate>Theme</span>
       <span class="right text-gray">
         <i class="icon-arrow-right3 size-24 right"></i>
         {{theme.header.name}}
       </span>
     </li>
--->
     <li ng-show="!index.noFocusedWallet" ng-click="$root.go('preferencesFee')"
       ng-show="(index.network == 'livenet' ? index.feeLevels.livenet : index.feeLevels.testnet)">
       <div class="right text-gray">
@@ -123,8 +121,8 @@
       <div translate>Use Unconfirmed Funds</div>
     </li>
 
-    <li ng-show="!index.noFocusedWallet">
-      <switch id="glidera-enabled" name="glideraEnabled" ng-model="glideraEnabled" class="green right"></switch>
+    <li ng-show="index.brand.features.glidera.enabled && !index.noFocusedWallet">
+      <switch id="glidera-visible" name="glideraVisible" ng-model="glideraVisible" class="green right"></switch>
       <div>Enable Glidera Service</div>
     </li>
  
@@ -137,7 +135,7 @@
 
     <li ng-click="$root.go('about')">
       <i class="icon-arrow-right3 size-24 right text-gray"></i>  
-      <div translate>About Copay</div>
+      <div translate>About {{index.brand.shortName}}</div>
     </li>
  
   </ul>

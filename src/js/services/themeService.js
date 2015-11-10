@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.services').factory('themeService', function($rootScope, $log, $http, $timeout, $q, themeCatalogService, lodash, notification, gettext) {
+angular.module('copayApp.services').factory('themeService', function($rootScope, $log, $http, $timeout, $q, themeCatalogService, lodash, notification, gettext, brand) {
 
   // The $rootScope is used to track theme and skin objects.  Views reference $rootScope for rendering.
   // 
@@ -92,7 +92,7 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
   // Return the absolute resource url for the specified theme.
   // This value is always local.
   root._getLocalThemeResourceUrl = function(themeName) {
-    return themeCatalogService.getApplicationDirectory() + root._getThemeResourcePath(themeName);
+    return encodeURI(themeCatalogService.getApplicationDirectory() + root._getThemeResourcePath(themeName));
   };
 
   // Return the relative resource path for the specified theme's skin.
@@ -103,7 +103,7 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
   // Return the absolute resource url for the specified theme's skin.
   // This value is always local.
   root._getLocalSkinResourceUrl = function(themeName, skinName) {
-    return themeCatalogService.getApplicationDirectory() + root._getSkinResourcePath(themeName, skinName);
+    return encodeURI(themeCatalogService.getApplicationDirectory() + root._getSkinResourcePath(themeName, skinName));
   };
 
   // Get the skin index for the specified skinName in the theme.
@@ -119,14 +119,14 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
     return index;
   }
 
-  root._bootstrapBaseTheme = function(themeName, skinList, callback) {
-
-    $http(root._get_local(root._getThemeResourcePath(themeName) + '/theme.json')).then(function(response) {
+  root._bootstrapTheme = function(themeDef, callback) {
+    $http(root._get_local(root._getThemeResourcePath(themeDef.theme) + '/theme.json')).then(function(response) {
 
       // Initialize the theme.
       // 
       var themeJSON = JSON.stringify(response.data);
-      var themeResourceUrl = root._getLocalThemeResourceUrl(themeName);
+      var themeResourceUrl = root._getLocalThemeResourceUrl(themeDef.theme);
+
       themeJSON = themeJSON.replace(/<theme-path>/g, themeResourceUrl);
       var theme = JSON.parse(themeJSON);
 
@@ -150,14 +150,14 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
       // Initialize the skins.
       // 
       var promises = [];
-      for (var i = 0; i < skinList.length; i++) {
+      for (var i = 0; i < themeDef.skins.length; i++) {
         // Collect and serialize all http requests to get skin files.
         promises.push(
-          $http(root._get_local(root._getSkinResourcePath(themeName, skinList[i]) + '/skin.json')).then(function(response) {
+          $http(root._get_local(root._getSkinResourcePath(themeDef.theme, themeDef.skins[i]) + '/skin.json')).then(function(response) {
 
             var skin = response.data;
-            var themeResourceUrl = root._getLocalThemeResourceUrl(themeName);
-            var skinResourceUrl = root._getLocalSkinResourceUrl(themeName, skin.header.name);
+            var themeResourceUrl = root._getLocalThemeResourceUrl(themeDef.theme);
+            var skinResourceUrl = root._getLocalSkinResourceUrl(themeDef.theme, skin.header.name);
 
             var skinJSON = JSON.stringify(skin);
             skinJSON = skinJSON.replace(/<theme-path>/g, themeResourceUrl);
@@ -200,6 +200,46 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
 
   };
 
+  // Build and publish the initial theme catalog.
+  root._buildCatalog = function(callback) {
+
+    themeCatalogService.get(function(err, catalog) {
+      $log.debug('Theme catalog read');
+      if (err) {
+        $log.debug('Failed to read theme catalog: ' + JSON.stringify(err)); // TODO: put out string, not JSON
+        return;
+      }
+
+      var catalogThemes = catalog.themes || {};
+
+      if (lodash.isEmpty(catalogThemes)) {
+        $log.debug('Initializing theme catalog');
+        var cat = {
+          themeId: {},
+          themes: {}
+        };
+
+        cat.themeId = $rootScope.themeId;
+        cat.themes = $rootScope.themes;
+
+        themeCatalogService.set(cat, function(err) {
+          if (err) {
+            $rootScope.$emit('Local/DeviceError', err);
+            return;
+          }
+
+          $rootScope.$emit('Local/ThemeUpdated');
+          callback();
+        });
+
+      } else {
+        root._publishCatalog();
+        callback();
+      }
+
+    });
+  };
+
   // Publish the current configuration to $rootScope. Views only read from $rootScope values.
   root._publishCatalog = function() {
     $rootScope.themes = lodash.cloneDeep(root._themes());
@@ -213,63 +253,22 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
     });
   };
 
+
   ///////////////////////////////////////////////////////////////////////////////
 
-  // bootstrap() - publish initial presentation before a profile or theme catalog exists.
+  // init() - construct the theme catalog and publish the initial presentation.
   // 
-  root.bootstrap = function() {
-    root._bootstrapBaseTheme(
-      'Copay',
-      [
-        'Aquamarine Blue',
-        'Brilliant Rose',
-        'Deep Lilac',
-        'Feijoa',
-        'Havelock Blue',
-        'Hit Pink',
-        'Iris',
-        'Light Slate Gray',
-        'Mustard',
-        'Purple Pizzazz',
-        'Valencia',
-        'West Side'
-      ],
-      function() {
+  root.init = function() {
+    root._bootstrapTheme(brand.features.theme.definition, function() {
         $log.debug('Theme service bootstrapped to theme/skin: ' +
           $rootScope.theme.header.name + '/' +
           $rootScope.skin.header.name +
           (root.walletId == '' ? ' [no wallet yet]' : ' [walletId: ' + root.walletId + ']'));
+
+        root._buildCatalog(function() {
+          $log.debug('Theme service initialized');
+        });
       });
-  };
-
-  // applyCatalog() - ensure the catalog exists and is published.
-  // 
-  root.init = function() {
-    var catalog = themeCatalogService.getSync();
-    var catalogThemes = catalog.themes || {};
-
-    if (lodash.isEmpty(catalogThemes)) {
-      $log.debug('Initializing theme catalog');
-      var cat = {
-        themeId: {},
-        themes: {}
-      };
-
-      cat.themeId = $rootScope.themeId;
-      cat.themes = $rootScope.themes;
-
-      themeCatalogService.set(cat, function(err) {
-        if (err) {
-          $rootScope.$emit('Local/DeviceError', err);
-          return;
-        }
-
-        $rootScope.$emit('Local/ThemeUpdated');
-      });
-
-    } else {
-      root._publishCatalog();
-    }
   };
 
   // updateSkin() - handles updating the skin when the wallet is changed.
@@ -277,7 +276,6 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
   root.updateSkin = function(walletId) {
     root.walletId = walletId;
     var catalog = themeCatalogService.getSync();
-
     if (catalog.skinFor && catalog.skinFor[root.walletId] === undefined) {
       root.setSkinForWallet(root.getPublishedThemeDefaultSkinId(), root.walletId);
     } else {
@@ -288,20 +286,45 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
   // setTheme() - sets the theme for the app.
   // 
   root.setTheme = function(themeId, callback) {
+    $log.debug('' + (themeId != root.getPublishedThemeId() ?  'Switching theme...' : 'Reapplying theme...'));
+    $log.debug('' + (themeId != root.getPublishedThemeId() ? 
+      'Old theme: ' + root.getPublishedThemeById(root.getPublishedThemeId()).header.name + '\n' +
+      'New theme: ' + root.getPublishedThemeById(themeId).header.name :
+      'Current theme: ' + root.getPublishedThemeById(themeId).header.name));
 
-    var switchingTheme = (themeId != root.getPublishedThemeId());
+    var cat = {
+      themeId: {}
+    };
 
-    if (switchingTheme) {
+    cat.themeId = themeId;
 
-      $log.debug('Switching theme...');
-      $log.debug('Old theme: ' + root.getPublishedThemeById(root.getPublishedThemeId()).header.name);
-      $log.debug('New theme: ' + root.getPublishedThemeById(themeId).header.name);
+    themeCatalogService.set(cat, function(err) {
+      if (err) {
+        $rootScope.$emit('Local/DeviceError', err);
+        return;
+      }
 
+      // Need to go through catalog.skinFor[] and remap all skins to be compatible with the new theme
+      // Example; old theme has 12 skins, new theme has 6 skins
+      //   if catalog.skinFor[walletId] = skin id 12 then it won't resolve with the new theme (since it has only 6 skins)
+      //   
+      // TODO: Should provide a UI for wallet to skin re-mapping using the new theme's skins
+      // 
+      // For now, simply force all catalog.skinFor to the themes default skin
+      //
+      var catalog = themeCatalogService.getSync();
       var cat = {
-        themeId: {}
+        skinFor: {}
       };
 
-      cat.themeId = themeId;
+      // Assigned new theme default skin to all wallets.
+      for (var walletId in catalog.skinFor) {
+        $log.debug('Reassigning skin for wallet: ' + walletId +
+          ', new skinId: ' + root.getCatalogTheme().header.defaultSkinId +
+          ' (was skinId: ' + root.getCatalogSkinIdForWallet(walletId) + ')');
+
+        cat.skinFor[walletId] = root.getCatalogTheme().header.defaultSkinId;
+      }
 
       themeCatalogService.set(cat, function(err) {
         if (err) {
@@ -309,57 +332,34 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
           return;
         }
 
-        // Need to go through catalog.skinFor[] and remap all skins to be compatible with the new theme
-        // Example; old theme has 12 skins, new theme has 6 skins
-        //   if catalog.skinFor[walletId] = skin id 12 then it won't resolve with the new theme (since it has only 6 skins)
-        //   
-        // TODO: Should provide a UI for wallet to skin re-mapping using the new theme's skins
-        // 
-        // For now, simply force all catalog.skinFor to the themes default skin
-        //
-        var catalog = themeCatalogService.getSync();
-        var cat = {
-          skinFor: {}
-        };
+        root._publishCatalog();
 
-        // Assigned new theme default skin to all wallets.
-        for (var walletId in catalog.skinFor) {
-          $log.debug('Reassigning skin for wallet: ' + walletId +
-            ', new skinId: ' + root.getCatalogTheme().header.defaultSkinId +
-            ' (was skinId: ' + root.getCatalogSkinIdForWallet(walletId) + ')');
-
-          cat.skinFor[walletId] = root.getCatalogTheme().header.defaultSkinId;
+        if (callback) {
+          callback();
         }
 
-        themeCatalogService.set(cat, function(err) {
-          if (err) {
-            $rootScope.$emit('Local/DeviceError', err);
-            return;
-          }
+        $rootScope.$emit('Local/ThemeUpdated');
+        $rootScope.$emit('Local/SkinUpdated');
 
-          root._publishCatalog();
-
-          if (callback) {
-            callback();
-          }
-
-          $rootScope.$emit('Local/ThemeUpdated');
-          $rootScope.$emit('Local/SkinUpdated');
-
-          notification.success(
-            gettext('Success'),
-            gettext('Theme changed to \'' + root.getPublishedTheme().header.name + '\''),
-            {color: root.getPublishedSkin().textHighlightColor,
-             iconColor: root.getPublishedTheme().notificationBarIconColor,
-             barBackground: root.getPublishedTheme().notificationBarBackground});
-        });
+        notification.success(
+          gettext('Success'),
+          gettext('Theme set to \'' + root.getPublishedTheme().header.name + '\''),
+          {color: root.getPublishedSkin().view.textHighlightColor,
+           iconColor: root.getPublishedTheme().view.notificationBarIconColor,
+           barBackground: root.getPublishedTheme().view.notificationBarBackground});
       });
-    };
+    });
   };
 
   // setSkinForWallet() - sets the skin for the specified wallet.
   // 
   root.setSkinForWallet = function(skinId, walletId, callback) {
+    $log.debug('' + (skinId != root.getPublishedSkinId() ?  'Switching skin... [walletId: ' + walletId + ']' : 'Reapplying skin... [walletId: ' + walletId + ']'));
+    $log.debug('' + (skinId != root.getPublishedSkinId() ? 
+      'Old skin: ' + root.getPublishedSkinById(root.getPublishedSkinId()).header.name + '\n' +
+      'New skin: ' + root.getPublishedSkinById(skinId).header.name :
+      'Current skin: ' + root.getPublishedSkinById(skinId).header.name));
+
     root.walletId = walletId;
 
     var cat = {
@@ -394,6 +394,10 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
   root.isSkinCompatible = function(skinHeader) {
     return root._skinSchemaVersion() == skinHeader.schemaVersion;
   };
+
+  root.getCatalog = function() {
+    return themeCatalogService.getSync();
+  }
 
   root.getCatalogThemes = function() {
     return root._themes();
@@ -531,9 +535,9 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
         notification.success(
           gettext('Success'),
           gettext('Imported theme \'' + catalog.themes[index].header.name + '\''),
-          {color: root.getPublishedSkin().textHighlightColor,
-           iconColor: root.getPublishedTheme().notificationBarIconColor,
-           barBackground: root.getPublishedTheme().notificationBarBackground});
+          {color: root.getPublishedSkin().view.textHighlightColor,
+           iconColor: root.getPublishedTheme().view.notificationBarIconColor,
+           barBackground: root.getPublishedTheme().view.notificationBarBackground});
 
         $log.debug('Imported theme \'' + catalog.themes[index].header.name + '\'');
       });
@@ -623,9 +627,9 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
         notification.success(
           gettext('Success'),
           gettext('Imported skin \'' + catalog.themes[t_index].skins[s_index].header.name + '\''),
-          {color: root.getPublishedSkin().textHighlightColor,
-           iconColor: root.getPublishedTheme().notificationBarIconColor,
-           barBackground: root.getPublishedTheme().notificationBarBackground});
+          {color: root.getPublishedSkin().view.textHighlightColor,
+           iconColor: root.getPublishedTheme().view.notificationBarIconColor,
+           barBackground: root.getPublishedTheme().view.notificationBarBackground});
 
         $log.debug('Imported skin \'' + catalog.themes[t_index].skins[s_index].header.name + '\'');
       });

@@ -9,7 +9,7 @@
 <div class="content p20v" ng-controller="createController as create" ng-init="create.setTotalCopayers(1)">
 
   <div class="onGoingProcess" ng-show="create.loading && !create.hwWallet">
-    <div class="onGoingProcess-content" ng-style="{'background':theme.progressBackground, 'color':theme.progressTextColor}">
+    <div class="onGoingProcess-content" ng-style="{'background':theme.view.progressBackground, 'color':theme.view.progressTextColor}">
     <div class="spinner">
       <div class="rect1"></div>
       <div class="rect2"></div>
@@ -22,7 +22,7 @@
   </div>
 
   <div class="onGoingProcess" ng-show="create.hwWallet">
-    <div class="onGoingProcess-content" ng-style="{'background':theme.progressBackground, 'color':theme.progressTextColor}">
+    <div class="onGoingProcess-content" ng-style="{'background':theme.view.progressBackground, 'color':theme.view.progressTextColor}">
     <div class="spinner">
       <div class="rect1"></div>
       <div class="rect2"></div>
@@ -165,11 +165,11 @@
           </span>
         </div>
 
-        <button type="submit" class="button round black expand m0" ng-style="{'background':theme.buttonBackground, 'color':theme.buttonTextColor}" ng-show="totalCopayers != 1" ng-disabled="setupForm.$invalid || create.loading || create.hwWallet">
+        <button type="submit" class="button round black expand m0" ng-style="{'background':theme.view.buttonBackground, 'color':theme.view.buttonTextColor}" ng-show="totalCopayers != 1" ng-disabled="setupForm.$invalid || create.loading || create.hwWallet">
           <span translate>Create {{requiredCopayers}}-of-{{totalCopayers}} wallet</span>
         </button>
                 
-        <button type="submit" class="button round black expand m0" ng-style="{'background':theme.buttonBackground, 'color':theme.buttonTextColor}" ng-show="totalCopayers == 1" ng-disabled="setupForm.$invalid || create.loading || create.hwWallet">
+        <button type="submit" class="button round black expand m0" ng-style="{'background':theme.view.buttonBackground, 'color':theme.view.buttonTextColor}" ng-show="totalCopayers == 1" ng-disabled="setupForm.$invalid || create.loading || create.hwWallet">
           <span translate>Create new wallet</span>
         </button>
       </div>

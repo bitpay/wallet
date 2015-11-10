@@ -56,9 +56,9 @@ angular.module('copayApp.services')
       var config = configService.getSync();
       var name = config.aliasFor[walletId] || walletName;
 
-      var color = themeService.getPublishedSkin().textHighlightColor;
-      var iconColor = themeService.getPublishedTheme().notificationBarIconColor;
-      var barBackground = themeService.getPublishedTheme().notificationBarBackground;
+      var color = themeService.getPublishedSkin().view.textHighlightColor;
+      var iconColor = themeService.getPublishedTheme().view.notificationBarIconColor;
+      var barBackground = themeService.getPublishedTheme().view.notificationBarBackground;
 
       switch (notificationData.type) {
         case 'NewTxProposal':

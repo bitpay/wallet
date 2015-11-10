@@ -1,0 +1,19 @@
+{
+  "manifest_version": 2,
+  "name": "%APP-SHORT-NAME%",
+  "description": "%APP-DESCRIPTION%",
+  "version": "%APP-VERSION%",
+  "permissions": [
+    "storage",
+    "notifications",
+    "videoCapture"
+  ],
+  "app": {
+    "background": {
+      "scripts": ["initial.js"]
+    }
+  },
+  "icons": {
+    "128": "img/icons/icon-chrome-128.png"
+  }
+}

@@ -560,8 +560,7 @@ angular
   .run(function($rootScope, $state, $log, uriHandler, isCordova, profileService, $timeout, nodeWebkit, uxLanguage, animationService, themeService) {
     FastClick.attach(document.body);
 
-    // For early view presention, make the default theme available immediately (prior to profile and wallet creation).
-    themeService.bootstrap();
+    themeService.init();
     uxLanguage.init();
 
     // Register URI handler, not for mobileApp

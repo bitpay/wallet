@@ -56,9 +56,9 @@ angular.module('copayApp.controllers').controller('preferencesDeleteWalletContro
           notification.success(
             gettextCatalog.getString('Success'),
             gettextCatalog.getString('The wallet "{{walletName}}" was deleted', {walletName: walletName}),
-            {color: themeService.getPublishedTheme().textHighlightColor,
-             iconColor: themeService.getPublishedTheme().notificationBarIconColor,
-             barBackground: themeService.getPublishedTheme().notificationBarBackground});
+            {color: themeService.getPublishedTheme().view.textHighlightColor,
+             iconColor: themeService.getPublishedTheme().view.notificationBarIconColor,
+             barBackground: themeService.getPublishedTheme().view.notificationBarBackground});
         }
       });
     };

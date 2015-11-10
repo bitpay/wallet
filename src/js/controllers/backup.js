@@ -39,9 +39,9 @@ angular.module('copayApp.controllers').controller('wordsController',
             self.deleted = true;
             notification.success(
               successMsg, '',
-              {color: themeService.getPublishedSkin().textHighlightColor,
-               iconColor: themeService.getPublishedTheme().notificationBarIconColor,
-               barBackground: themeService.getPublishedTheme().notificationBarBackground});
+              {color: themeService.getPublishedSkin().view.textHighlightColor,
+               iconColor: themeService.getPublishedTheme().view.notificationBarIconColor,
+               barBackground: themeService.getPublishedTheme().view.notificationBarBackground});
             go.walletHome();
           });
         }
