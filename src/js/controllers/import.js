@@ -226,7 +226,12 @@ angular.module('copayApp.controllers').controller('importController',
             });
           }
           $rootScope.$emit('Local/WalletImported', walletId);
-          notification.success(gettext('Success'), gettext('Your wallet has been imported correctly'));
+          notification.success(
+            gettext('Success'),
+            gettext('Your wallet has been imported correctly'),
+            {color: themeService.getPublishedSkin().textHighlightColor,
+             iconColor: themeService.getPublishedTheme().notificationBarIconColor,
+             barBackground: themeService.getPublishedTheme().notificationBarBackground});
           go.walletHome();
         });
       }, 100);
