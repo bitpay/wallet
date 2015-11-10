@@ -33,7 +33,6 @@ angular.module('copayApp.services').factory('themeCatalogService', function(stor
   };
 
   root.getSync = function() {
-    console.trace();
     if (!catalogCache)
       throw new Error('themeCatalogService#getSync called when cache is not initialized');
     return catalogCache;
