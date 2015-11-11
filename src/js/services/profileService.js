@@ -408,9 +408,12 @@ angular.module('copayApp.services')
       var addressBook = str.addressBook || {};
       var historyCache = str.historyCache ||  [];
 
-      root.setMetaData(walletClient, addressBook, historyCache, function(err) {
-        if (err) console.log(err);
-        root._addWalletClient(walletClient, opts, cb);
+      root._addWalletClient(walletClient, opts, function(err, walletId) {
+        if (err) return cb(err);
+        root.setMetaData(walletClient, addressBook, historyCache, function(error) {
+          if (error) console.log(error);
+          return cb(err, walletId);
+        });
       });
     };
 
