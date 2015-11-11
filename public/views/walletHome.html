@@ -182,31 +182,25 @@
     -->
     <div id="receive" class="receive tab-view">
 
-      <div ng-show="index.needsBackup && !home.skipBackup" class="p60t row text-center">
-        <div class="text-warning text-bold m15b">
-          <i class="fi-alert"></i>
-          <span translate>
-            WARNING: Backup needed
-          </span>
-        </div>
-        <div class="text-gray m15h" translate>
-          Before receiving funds, it is highly recommended you backup your wallet keys.
-        </div>
+      <div ng-show="index.needsBackup" class="p60t row text-center">
+        <div class="large-12 columns">
+          <div class="text-warning text-bold m15b">
+            <i class="fi-alert"></i>
+            <span translate>
+              WARNING: Backup needed
+            </span>
+          </div>
+          <div class="text-gray" translate>
+            Before receiving funds, it is highly recommended you backup your wallet keys.
+          </div>
 
-        <div class="small-6 columns m20t">
-          <span class="button expand outline round dark-gray tiny"
-            ng-click="home.skipBackup = true">
-            <span translate>SKIP BACKUP</span>
-          </span>
-        </div>
-        <div class="small-6 columns m20t">
-          <span class="button black expand round tiny"
+          <button class="m20t button black expand round"
             ng-click="$root.go('backup')" ng-style="{'background-color':index.backgroundColor}" >
             <span translate>Backup now</span>
-          </span>
+          </button>
         </div>
       </div>
-      <div ng-show="!index.needsBackup || home.skipBackup">
+      <div ng-show="!index.needsBackup">
         <div class="row">
           <!-- Address-->
           <div class="large-12 columns">
