@@ -11,7 +11,7 @@ angular.module('copayApp.services')
     root.focusedClient = null;
     root.walletClients = {};
 
-    root.Utils =  bwcService.getUtils();
+    root.Utils = bwcService.getUtils();
     root.formatAmount = function(amount) {
       var config = configService.getSync().wallet.settings;
       if (config.unitCode == 'sat') return amount;
@@ -276,8 +276,8 @@ angular.module('copayApp.services')
 
         // check if exist
         if (lodash.find(root.profile.credentials, {
-          'walletId': walletData.walletId
-        })) {
+            'walletId': walletData.walletId
+          })) {
           return cb(gettext('Cannot join the same wallet more that once'));
         }
       } catch (ex) {
@@ -337,6 +337,25 @@ angular.module('copayApp.services')
       });
     };
 
+    root.setMetaData = function(walletClient, addressBook, historyCache, cb) {
+      storageService.getAddressbook(walletClient.credentials.network, function(err, localAddressBook) {
+        var localAddressBook1 = {};
+        try {
+          localAddressBook1 = JSON.parse(localAddressBook);
+        } catch (ex) {
+          $log.warn(ex);
+        }
+        var mergeAddressBook = lodash.merge(addressBook, localAddressBook1);
+        storageService.setAddressbook(walletClient.credentials.network, JSON.stringify(addressBook), function(err) {
+          if (err) return cb(err);
+          storageService.setTxHistory(JSON.stringify(historyCache), walletClient.credentials.walletId, function(err) {
+            if (err) return cb(err);
+            return cb(null);
+          });
+        });
+      });
+    }
+
     root._addWalletClient = function(walletClient, opts, cb) {
       var walletId = walletClient.credentials.walletId;
 
@@ -383,7 +402,19 @@ angular.module('copayApp.services')
       } catch (err) {
         return cb(gettext('Could not import. Check input file and password'));
       }
-      root._addWalletClient(walletClient, opts, cb);
+
+      str = JSON.parse(str);
+
+      var addressBook = str.addressBook || {};
+      var historyCache = str.historyCache ||  [];
+
+      root._addWalletClient(walletClient, opts, function(err, walletId) {
+        if (err) return cb(err);
+        root.setMetaData(walletClient, addressBook, historyCache, function(error) {
+          if (error) console.log(error);
+          return cb(err, walletId);
+        });
+      });
     };
 
     root.importExtendedPrivateKey = function(xPrivKey, opts, cb) {
