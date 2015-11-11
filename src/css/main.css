@@ -110,7 +110,7 @@ h4.title a {
 }
 
 ul.button-group {
-  margin-top: 9px;
+  margin-top: 8px;
 }
 
 ul.button-group li:first-child {
@@ -127,6 +127,7 @@ ul.button-group li:last-child {
 
 .button-group.even-2 li {
   margin: 0 -3px;
+  padding: 4px 5px;
 }
 
 ul.button-group li {
