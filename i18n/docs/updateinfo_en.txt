@@ -1,4 +1,7 @@
-* Adds option to set a different Wallet Service per wallet
-* Enhances  CSV generator (only desktop version)
-* Updates Cordova to version 5.3.3
-* Fixes minor bugs
+* TREZOR (for ChromeApp)
+* Improves notifications
+* Addressbook
+* Transaction history cache and better ordering
+* Fixes BIP44 Gaps
+* Reset to default BWS URL
+* Fixes resume event on mobile
