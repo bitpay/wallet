@@ -339,9 +339,13 @@ angular.module('copayApp.services')
 
     root.setMetaData = function(walletClient, addressBook, historyCache, cb) {
       storageService.getAddressbook(walletClient.credentials.network, function(err, localAddressBook) {
-        localAddressBook = JSON.parse(localAddressBook);
-        if (!localAddressBook) localAddressBook = {};
-        addressBook = lodash.merge(addressBook, localAddressBook);
+        var localAddressBook1 = {};
+        try {
+          localAddressBook1 = JSON.parse(localAddressBook);
+        } catch (ex) {
+          $log.warn(ex);
+        }
+        var mergeAddressBook = lodash.merge(addressBook, localAddressBook1);
         storageService.setAddressbook(walletClient.credentials.network, JSON.stringify(addressBook), function(err) {
           if (err) return cb(err);
           storageService.setTxHistory(JSON.stringify(historyCache), walletClient.credentials.walletId, function(err) {
