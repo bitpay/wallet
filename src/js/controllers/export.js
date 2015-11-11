@@ -6,12 +6,12 @@ angular.module('copayApp.controllers').controller('backupController',
 
     self.error = null;
     self.success = null;
-
+    $scope.metaData = true;
     var fc = profileService.focusedClient;
     self.isEncrypted = fc.isPrivKeyEncrypted();
 
     self.downloadWalletBackup = function() {
-      self.getMetaData(function(err, txsFromLocal, localAddressBook) {
+      self.getMetaData($scope.metaData, function(err, txsFromLocal, localAddressBook) {
         if (err) {
           self.error = true;
           return;
@@ -28,14 +28,14 @@ angular.module('copayApp.controllers').controller('backupController',
             return;
           }
 
-          $rootScope.$emit('Local/BackupDone');
           notification.success(gettext('Success'), gettext('Encrypted export file saved'));
           go.walletHome();
         });
       });
     };
 
-    self.getMetaData = function(cb) {
+    self.getMetaData = function(metaData, cb) {
+      if (metaData == false) return cb();
       self.getHistoryCache(function(err, txsFromLocal) {
         if (err) return cb(err);
 
@@ -108,7 +108,6 @@ angular.module('copayApp.controllers').controller('backupController',
           var ew = backup;
           if (!ew) return;
           self.backupWalletPlainText = ew;
-          $rootScope.$emit('Local/BackupDone');
         });
       }, 100);
     };
@@ -119,7 +118,6 @@ angular.module('copayApp.controllers').controller('backupController',
         if (!ew) return;
         window.cordova.plugins.clipboard.copy(ew);
         window.plugins.toast.showShortCenter(gettextCatalog.getString('Copied to clipboard'));
-        $rootScope.$emit('Local/BackupDone');
       });
     };
 
@@ -145,7 +143,6 @@ angular.module('copayApp.controllers').controller('backupController',
           body: 'Here is the encrypted backup of the wallet ' + name + ': \n\n' + ew + '\n\n To import this backup, copy all text between {...}, including the symbols {}',
           isHtml: false
         };
-        $rootScope.$emit('Local/BackupDone');
         window.plugin.email.open(properties);
       });
     };
