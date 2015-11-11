@@ -1,7 +1,7 @@
 <nav class="sidebar left-off-canvas-menu" ng-controller="sidebarController as sidebar">
   <div class="sidebar-bg" ng-style="{'background':theme.sidebarBackground}">
     <header ng-style="{'border-bottom-color':theme.sidebarListSeparatorColor}">
-      <div style="padding-top: 25%" ng-style="{'color':theme.sidebarTextColor}" ng-include="'views/includes/version.html'"></div>
+      <div ng-style="{'color':theme.sidebarVersionTextColor, 'padding-top':theme.sidebarVersionTextPaddingTop}" ng-include="'views/includes/version.html'"></div>
     </header>
     <ul class="off-canvas-list">
       <li ng-show="sidebar.wallets[0]"
