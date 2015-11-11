@@ -20,7 +20,7 @@
   </div>
 
   <div class="onGoingProcess" ng-show="join.hwWallet">
-    <div class="onGoingProcess-content" ng-style="{'background-color':'#222'}">
+    <div class="onGoingProcess-content" ng-style="{'background-color':'#222'}" style="max-height:6.5em">
     <div class="spinner">
       <div class="rect1"></div>
       <div class="rect2"></div>
@@ -29,6 +29,7 @@
       <div class="rect5"></div>
     </div>
     <span translate>Connecting to {{join.hwWallet}} Wallet...</span>
+    <span ng-show="join.hwWallet=='Trezor'" translate>Please accept to export two public keys from the Trezor app</span>
     </div>
   </div>
 
@@ -98,12 +99,9 @@
             </div>
 
             <div ng-show="join.seedSourceId == 'trezor' || join.seedSourceId == 'ledger'">
-
-              <label class="oh"><span translate>Account</span>
-                <select class="m10t" ng-model="account" ng-options="externalIndex as externalIndex for externalIndex in join.accountValues">
-                </select>
+              <label class="oh"><span translate>Account Number</span>
+                <input type="number" id="account" ng-model="account">
               </label>
-              <div class="oh text-gray line-b  size-12   p10b m20b"><span translate>Multiple wallets accounts are supported on the device simultaneously. Select which account should be used for this wallet</div>
             </div>
 
             <div class="box-notification" ng-show="join.seedSourceId=='new' && createPassphrase">
