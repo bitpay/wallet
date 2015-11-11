@@ -11,15 +11,13 @@ angular.module('copayApp.services')
     root.focusedClient = null;
     root.walletClients = {};
 
-    root.getUtils = function() {
-      return bwcService.getUtils();
-    };
+    root.Utils =  bwcService.getUtils();
     root.formatAmount = function(amount) {
       var config = configService.getSync().wallet.settings;
       if (config.unitCode == 'sat') return amount;
 
       //TODO : now only works for english, specify opts to change thousand separator and decimal separator
-      return this.getUtils().formatAmount(amount, config.unitCode);
+      return this.Utils.formatAmount(amount, config.unitCode);
     };
 
     root._setFocus = function(walletId, cb) {
@@ -274,7 +272,7 @@ angular.module('copayApp.services')
       $log.debug('Joining Wallet:', opts);
 
       try {
-        var walletData = this.getUtils().fromSecret(opts.secret);
+        var walletData = bwcService.parseSecret(opts.secret);
 
         // check if exist
         if (lodash.find(root.profile.credentials, {
