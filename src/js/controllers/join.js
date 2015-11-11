@@ -29,14 +29,14 @@ angular.module('copayApp.controllers').controller('joinController',
       if (isChromeApp) {
         self.seedOptions.push({
           id: 'ledger',
-          label: gettext('Ledger Hardware Wallet'),
+          label: 'Ledger Hardware Wallet',
         });
       }
 
       if (isChromeApp || isDevel) {
         self.seedOptions.push({
           id: 'trezor',
-          label: gettext('Trezor Hardware Wallet'),
+          label: 'Trezor Hardware Wallet',
         });
       }
     };
