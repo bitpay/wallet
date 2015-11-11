@@ -7,6 +7,7 @@ angular.module('copayApp.controllers').controller('joinController',
     var defaults = configService.getDefaults();
     $scope.bwsurl = defaults.bws.url;
     $scope.derivationPath = derivationPathHelper.default;
+    $scope.account = 1;
 
     this.onQrCodeScanned = function(data) {
       $scope.secret = data;
@@ -43,7 +44,6 @@ angular.module('copayApp.controllers').controller('joinController',
 
     this.setSeedSource = function(src) {
       self.seedSourceId = $scope.seedSource.id;
-      self.accountValues = lodash.range(1, 100);
 
       $timeout(function() {
         $rootScope.$apply();
@@ -55,7 +55,6 @@ angular.module('copayApp.controllers').controller('joinController',
         self.error = gettext('Please enter the required fields');
         return;
       }
-      self.loading = true;
 
       var opts = {
         secret: form.secret.$modelValue,
@@ -120,6 +119,7 @@ angular.module('copayApp.controllers').controller('joinController',
     };
 
     this._join = function(opts) {
+      self.loading = true;
       $timeout(function() {
         profileService.joinWallet(opts, function(err) {
           if (err) {

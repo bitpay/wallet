@@ -92,6 +92,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.setSpendUnconfirmed();
 
     $timeout(function() {
+      $rootScope.$apply();
       self.hasProfile = true;
       self.noFocusedWallet = false;
       self.onGoingProcess = {};
@@ -141,7 +142,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     var defaults = configService.getDefaults();
     var config = configService.getSync();
 
-    self.usingCustomBWS = config.bwsFor && (config.bwsFor[self.walletId] != defaults.bws.url);
+    self.usingCustomBWS = config.bwsFor &&  config.bwsFor[self.walletId] && (config.bwsFor[self.walletId] != defaults.bws.url);
   };
 
   self.setTab = function(tab, reset, tries, switchState) {
