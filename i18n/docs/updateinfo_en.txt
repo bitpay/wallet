@@ -1,7 +1,7 @@
-* TREZOR (for ChromeApp)
-* Improves notifications
+* TREZOR support (only in Chrome App version)
+* New notification system. Reduced bandwidth usage and better handling of network disconnections
 * Addressbook
 * Transaction history cache and better ordering
-* Fixes BIP44 Gaps
-* Reset to default BWS URL
+* Better BIP44 Support: prevent gaps in indexes when scanning wallets and generating addresses
+* Per Wallet BWS Setting
 * Fixes resume event on mobile
