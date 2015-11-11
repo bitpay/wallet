@@ -22,7 +22,7 @@
   </div>
 
   <div class="onGoingProcess" ng-show="create.hwWallet">
-    <div class="onGoingProcess-content" ng-style="{'background-color':'#222'}">
+    <div class="onGoingProcess-content" ng-style="{'background-color':'#222'}" style="max-height:6.5em" >
     <div class="spinner">
       <div class="rect1"></div>
       <div class="rect2"></div>
@@ -31,6 +31,7 @@
       <div class="rect5"></div>
     </div>
     <span translate>Connecting to {{create.hwWallet}} Wallet...</span>
+    <span ng-show="create.hwWallet=='Trezor'" translate>Please accept to export two public keys from the Trezor app</span>
     </div>
   </div>
 
