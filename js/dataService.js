@@ -3,10 +3,9 @@ app.service('dataService', function($rootScope) {
   var root = {};
 
   root.fetch = function(opts, cb) {
-    var to = moment().subtract(1, 'days').format('YYYY-MM-DD');
-    var url_ = opts.url + '/v1/stats/?network=' + opts.network + '&from=' + opts.from + '&to=' + to;
+    var utl = opts.url + '/v1/stats/?network=' + opts.network + '&from=' + opts.from + '&to=' + opts.to;
 
-    d3.json(url_)
+    d3.json(utl)
       .get(function(err, data) {
         if (err) return cb(err);
         if (!data || _.isEmpty(data)) return cb('No data');

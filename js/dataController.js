@@ -1,24 +1,50 @@
 'use strict';
 
 var app = angular.module("statsApp", ["statsApp.dataService"])
-  .controller("dataController", function($rootScope, $timeout, dataService) {
+  .controller("dataController", function($rootScope, $timeout, $scope, dataService) {
 
     var self = this;
     var config = {};
     var dataSet = [];
     var opts = {};
+    var defaultDateFrom = '2015-01-01';
+    var defaultDateTo = moment().subtract(1, 'days').format('YYYY-MM-DD');
     opts.network = 'livenet';
     opts.url = 'https://bws.bitpay.com/bws/api';
-    opts.from = '2015-01-01';
-    self.loading = true;
+    opts.from = defaultDateFrom;
+    opts.to = defaultDateTo;
 
-    dataService.fetch(opts, function(err, data) {
-      if (err) {
-        self.error('Could not fetch data');
-        return;
-      }
-      dataSet = data;
-      dataService.initGraphs(data);
+    init();
+
+    function init() {
+      self.loading = true;
+      dataService.fetch(opts, function(err, data) {
+        if (err) {
+          self.error('Could not fetch data');
+          return;
+        }
+        dataSet = data;
+        dataService.initGraphs(data);
+      });
+    }
+
+    $scope.reDraw = function() {
+      opts.from = $('#datePickerFrom').val() || defaultDateFrom;
+      opts.to = $('#datePickerTo').val() || defaultDateTo;
+      init();
+    };
+
+    $('#datePickerFrom').val(opts.from);
+    $('#datePickerTo').val(opts.to);
+
+    $('#datePickerFrom').Zebra_DatePicker({
+      start_date: opts.from,
+      show_clear_date: true,
+    });
+
+    $('#datePickerTo').Zebra_DatePicker({
+      start_date: opts.to,
+      show_clear_date: true,
     });
 
     $('#walletsInterval').change(function() {
