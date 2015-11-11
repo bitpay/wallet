@@ -5,7 +5,7 @@
     <link type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.7.0/nv.d3.css" rel="stylesheet">
     <link type="text/css" href="css/foundation.css" rel="stylesheet">
     <link type="text/css" href="css/stats.css" rel="stylesheet">
-    <link type="text/css" href="css/zebra_datepicker/default.css" rel="stylesheet">
+    <link type="text/css" href="css/zebra_datepicker/metallic.css" rel="stylesheet">
     <link type="text/css" href="http://css-spinners.com/css/spinner/three-quarters.css" type="text/css" rel="stylesheet">
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js" charset="utf-8"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.8.0/lodash.min.js"></script>
@@ -32,17 +32,19 @@
     </div>
 
     <div class="container">
-      <div class="row">
-        <div class="col">
-          <span class="left">Date from</span>
-          <input type="text" id="datePickerFrom" class="large-4 medium-4 columns" placeholder="Metrics from"/>
-        </div>
-        <div class="col">
-          <span class="left">Date to</span>
-          <input type="text" id="datePickerTo" class="large-4 medium-4 columns" placeholder="Metrics to"/>
-        </div>
-        <div class="col">
-          <button value="reDraw" ng-click="reDraw();">Redraw</button>
+      <div class="row" ng-show="!dataC.loading">
+        <div class="large-8 panel oh">
+          <div class="large-4 columns">
+            <span class="left">Date from</span>
+            <input type="text" id="datePickerFrom" class="large-4 medium-4 columns" placeholder="Metrics from"/>
+          </div>
+          <div class="large-4 columns">
+            <span class="left">Date to</span>
+            <input type="text" id="datePickerTo" class="large-4 medium-4 columns" placeholder="Metrics to"/>
+          </div>
+          <div class="large-4 columns">
+            <button class="button radius" value="reDraw" ng-click="reDraw();">Redraw</button>
+          </div>
         </div>
       </div>
       <ul id="totals" class="row m20t text-center" ng-show="!dataC.loading">
