@@ -932,7 +932,7 @@ msgid "New Random Seed"
 msgstr ""
 
 #: public/views/import.html
-msgid "No harware wallets supported on this device"
+msgid "No hardware wallets supported on this device"
 msgstr ""
 
 #: public/views/walletHome.html
