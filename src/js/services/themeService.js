@@ -285,19 +285,45 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
   // setTheme() - sets the theme for the app.
   // 
   root.setTheme = function(themeId, callback) {
-    var switchingTheme = (themeId != root.getPublishedThemeId());
+    $log.debug('' + (themeId != root.getPublishedThemeId() ?  'Switching theme...' : 'Reapplying theme...'));
+    $log.debug('' + (themeId != root.getPublishedThemeId() ? 
+      'Old theme: ' + root.getPublishedThemeById(root.getPublishedThemeId()).header.name + '\n' +
+      'New theme: ' + root.getPublishedThemeById(themeId).header.name :
+      'Current theme: ' + root.getPublishedThemeById(themeId).header.name));
 
-    if (switchingTheme) {
+    var cat = {
+      themeId: {}
+    };
 
-      $log.debug('Switching theme...');
-      $log.debug('Old theme: ' + root.getPublishedThemeById(root.getPublishedThemeId()).header.name);
-      $log.debug('New theme: ' + root.getPublishedThemeById(themeId).header.name);
+    cat.themeId = themeId;
 
+    themeCatalogService.set(cat, function(err) {
+      if (err) {
+        $rootScope.$emit('Local/DeviceError', err);
+        return;
+      }
+
+      // Need to go through catalog.skinFor[] and remap all skins to be compatible with the new theme
+      // Example; old theme has 12 skins, new theme has 6 skins
+      //   if catalog.skinFor[walletId] = skin id 12 then it won't resolve with the new theme (since it has only 6 skins)
+      //   
+      // TODO: Should provide a UI for wallet to skin re-mapping using the new theme's skins
+      // 
+      // For now, simply force all catalog.skinFor to the themes default skin
+      //
+      var catalog = themeCatalogService.getSync();
       var cat = {
-        themeId: {}
+        skinFor: {}
       };
 
-      cat.themeId = themeId;
+      // Assigned new theme default skin to all wallets.
+      for (var walletId in catalog.skinFor) {
+        $log.debug('Reassigning skin for wallet: ' + walletId +
+          ', new skinId: ' + root.getCatalogTheme().header.defaultSkinId +
+          ' (was skinId: ' + root.getCatalogSkinIdForWallet(walletId) + ')');
+
+        cat.skinFor[walletId] = root.getCatalogTheme().header.defaultSkinId;
+      }
 
       themeCatalogService.set(cat, function(err) {
         if (err) {
@@ -305,57 +331,34 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
           return;
         }
 
-        // Need to go through catalog.skinFor[] and remap all skins to be compatible with the new theme
-        // Example; old theme has 12 skins, new theme has 6 skins
-        //   if catalog.skinFor[walletId] = skin id 12 then it won't resolve with the new theme (since it has only 6 skins)
-        //   
-        // TODO: Should provide a UI for wallet to skin re-mapping using the new theme's skins
-        // 
-        // For now, simply force all catalog.skinFor to the themes default skin
-        //
-        var catalog = themeCatalogService.getSync();
-        var cat = {
-          skinFor: {}
-        };
+        root._publishCatalog();
 
-        // Assigned new theme default skin to all wallets.
-        for (var walletId in catalog.skinFor) {
-          $log.debug('Reassigning skin for wallet: ' + walletId +
-            ', new skinId: ' + root.getCatalogTheme().header.defaultSkinId +
-            ' (was skinId: ' + root.getCatalogSkinIdForWallet(walletId) + ')');
-
-          cat.skinFor[walletId] = root.getCatalogTheme().header.defaultSkinId;
+        if (callback) {
+          callback();
         }
 
-        themeCatalogService.set(cat, function(err) {
-          if (err) {
-            $rootScope.$emit('Local/DeviceError', err);
-            return;
-          }
+        $rootScope.$emit('Local/ThemeUpdated');
+        $rootScope.$emit('Local/SkinUpdated');
 
-          root._publishCatalog();
-
-          if (callback) {
-            callback();
-          }
-
-          $rootScope.$emit('Local/ThemeUpdated');
-          $rootScope.$emit('Local/SkinUpdated');
-
-          notification.success(
-            gettext('Success'),
-            gettext('Theme changed to \'' + root.getPublishedTheme().header.name + '\''),
-            {color: root.getPublishedSkin().textHighlightColor,
-             iconColor: root.getPublishedTheme().notificationBarIconColor,
-             barBackground: root.getPublishedTheme().notificationBarBackground});
-        });
+        notification.success(
+          gettext('Success'),
+          gettext('Theme set to \'' + root.getPublishedTheme().header.name + '\''),
+          {color: root.getPublishedSkin().textHighlightColor,
+           iconColor: root.getPublishedTheme().notificationBarIconColor,
+           barBackground: root.getPublishedTheme().notificationBarBackground});
       });
-    };
+    });
   };
 
   // setSkinForWallet() - sets the skin for the specified wallet.
   // 
   root.setSkinForWallet = function(skinId, walletId, callback) {
+    $log.debug('' + (skinId != root.getPublishedSkinId() ?  'Switching skin... [walletId: ' + walletId + ']' : 'Reapplying skin... [walletId: ' + walletId + ']'));
+    $log.debug('' + (skinId != root.getPublishedSkinId() ? 
+      'Old skin: ' + root.getPublishedSkinById(root.getPublishedSkinId()).header.name + '\n' +
+      'New skin: ' + root.getPublishedSkinById(skinId).header.name :
+      'Current skin: ' + root.getPublishedSkinById(skinId).header.name));
+
     root.walletId = walletId;
 
     var cat = {
