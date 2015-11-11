@@ -19,25 +19,39 @@
   <body class='with-3d-shadow with-transitions' ng-controller="dataController as dataC">
     <nav class="top-bar" data-topbar role="navigation">
       <div class="row">
-        <div class="left">
+        <div class="text-center">
           <img src="https://copay.io/images/copay-logo-white.svg" alt="Copay" width="100">
         </div>
       </div>
     </nav>
-    <div class="text-center" ng-show="dataC.loading">
+    <div class="text-center spinner" ng-show="dataC.loading">
       <div class="three-quarters-loader">
       </div>
     </div>
 
     <div class="content">
       <ul id="totals" class="row m20t text-center" ng-show="!dataC.loading">
-        <li class="large-4 medium-4 columns panel" id="total-wallets"><span>Wallets</span><span class="value"></span></li>
-        <li class="large-4 medium-4 columns panel" id="total-txps"><span>Proposals</span><span class="value"></span></li>
-        <li class="large-4 medium-4 columns panel" id="total-amount"><span>Amount (BTC)</span><span class="value"></span></li>
+        <li class="large-4 medium-4 columns panel" id="total-wallets">
+          <a class="oh" href="#wallets">
+            <span>Wallets</span>
+            <span class="value"></span>
+          </a>
+        </li>
+        <li class="large-4 medium-4 columns panel" id="total-txps">
+          <a href="#proposals" class="oh">
+            <span>Proposals</span>
+            <span class="value"></span>
+          </a>
+        </li>
+        <li class="large-4 medium-4 columns panel" id="total-amount">
+          <a href="#amount" class="oh">
+            <span>Amount (BTC)</span>
+            <span class="value"></span></li>
+          </a>
       </ul>
-      
+
       <div class="row" ng-show="!dataC.loading">
-        <h3>New Wallets</h3>
+        <h3 id="wallets">New Wallets</h3>
         <div id="chart-wallets" class="chart panel">
           <select class="large-2 left" name="list" id="walletsInterval">
             <option value="perDay" selected>Per day</option>
@@ -45,7 +59,7 @@
             <option value="perMonth">Per month</option>
           </select>
         </div>
-        <h3>Proposals</h3>
+        <h3 id="proposals">Proposals</h3>
         <div id="chart-txps" class="chart panel">
           <select class="large-2 left" name="list" id="proposalsInterval">
             <option value="perDay" selected>Per day</option>
@@ -53,7 +67,7 @@
             <option value="perMonth">Per month</option>
           </select>
         </div>
-        <h3>Amount (BTC)</h3>
+        <h3 id="amount">Amount (BTC)</h3>
         <div id="chart-amount" class="chart panel">
           <select class="large-2 left" name="list" id="amountInterval">
             <option value="perDay" selected>Per day</option>

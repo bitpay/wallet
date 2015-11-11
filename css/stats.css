@@ -35,6 +35,10 @@ svg {
   max-width: 62.5em;
 }
 
+.spinner {
+  margin: 20% 50%;
+}
+
 footer a {
   color: #7A8C9E;
   text-transform: uppercase;
@@ -48,6 +52,7 @@ footer a:hover {
 
 .m20t {margin-top: 20px;}
 .m10 {margin: 10px;}
+.oh {overflow: hidden;}
 
 section.download {
   background: #00BD9C;
@@ -72,7 +77,11 @@ section.download button.outline {
 
 #totals li {
   display:inline-block;
-  padding: 20px;
+  padding: 10px;
+}
+
+#totals li:hover {
+  background-color: #f1f3f5;
 }
 
 #totals li:first-child {
