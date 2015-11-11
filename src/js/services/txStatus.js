@@ -45,9 +45,6 @@ angular.module('copayApp.services').factory('txStatus', function($rootScope, $mo
     $rootScope.modalOpened = true;
     var ModalInstanceCtrl = function($scope, $modalInstance) {
       $scope.type = type;
-      $scope.cancel = function() {
-        $modalInstance.dismiss('cancel');
-      };
       
       $timeout(function() {
         $modalInstance.dismiss('cancel');
