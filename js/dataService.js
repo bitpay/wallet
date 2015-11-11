@@ -58,14 +58,6 @@ app.service('dataService', function($rootScope) {
     alert(msg);
   };
 
-  root.show = function(data) {
-    root.showTotals(data);
-    root.showWallets(data);
-    root.showTransactions(data);
-    root.showAmount(data);
-    $rootScope.$emit('Data/Finish');
-  };
-
   root.showTotals = function(data) {
     function addCommas(nStr) {
       nStr += '';
@@ -95,14 +87,25 @@ app.service('dataService', function($rootScope) {
     $('#total-amount .value').html(addCommas(total.amount.toFixed(2)));
   };
 
-  root.showWallets = function(data) {
+  root.getCoords = function(data, graph) {
+    var opts = {};
+
+    if (graph == 'wallets') {
+      opts.yValue = 'wallets';
+      opts.key = '# of New wallets';
+    } else if (graph == 'proposals') {
+      opts.yValue = 'txps';
+      opts.key = '# of Proposals';
+    } else if (graph == 'amount') {
+      opts.yValue = 'amount';
+      opts.key = 'Amount sent';
+    }
+
     var byMonth = _.groupBy(data, 'month');
     var byMonthGrouped = _.map(byMonth, function(v, k) {
       return {
         x: v[0].date,
-        y: _.sum(v, function(d) {
-          return d.wallets;
-        })
+        y: _.sum(v, opts.yValue)
       }
     });
 
@@ -110,246 +113,103 @@ app.service('dataService', function($rootScope) {
     var byWeekGrouped = _.map(byWeek, function(v, k) {
       return {
         x: v[0].date,
-        y: _.sum(v, function(d) {
-          return d.wallets;
-        })
+        y: _.sum(v, opts.yValue)
       }
     });
 
-    var walletsPerMonth = [{
-      key: '# of New wallets per month',
+    var coordsPerMonth = [{
+      key: opts.key + ' per month',
       values: byMonthGrouped
     }];
 
-    var walletsPerWeek = [{
-      key: '# of New wallets per week',
+    var coordsPerWeek = [{
+      key: opts.key + ' per week',
       values: byWeekGrouped
     }];
 
-    var walletsPerDay = [{
-      key: '# of New wallets per day',
-      values: _.map(data, function(d) {
+    var dataCoords = _.map(data, function(d) {
+      return _.pick(d, ['date', opts.yValue]);
+    });
+
+    var coordsPerDay = [{
+      key: opts.key + ' per day',
+      values: _.map(dataCoords, function(d) {
         return {
           x: d.date,
-          y: d.wallets || 0,
-        };
-      }),
+          y: d[opts.yValue]
+        }
+      })
     }];
 
-    $('#walletsInterval').change(function() {
-      nv.addGraph(function() {
-        var interval = $('#walletsInterval').val();
-        var opts = {};
-
-        if (interval == 'perDay') {
-          opts.coords = walletsPerDay;
-          opts.format = '%b %d';
-          opts.label = walletsPerDay[0].key;
-        } else if (interval == 'perMonth') {
-          opts.coords = walletsPerMonth;
-          opts.format = '%b';
-          opts.label = walletsPerMonth[0].key;
-        } else if (interval == 'perWeek') {
-          opts.coords = walletsPerWeek;
-          opts.format = '%W';
-          opts.label = walletsPerWeek[0].key;
-        }
-        var chart = nv.models.lineChart()
-          .useInteractiveGuideline(true);
-
-        chart.xAxis
-          .tickFormat(function(d) {
-            return d3.time.format(opts.format)(new Date(d));
-          });
-
-        chart.yAxis
-          .axisLabel(opts.label)
-          .tickFormat(d3.format(',f'));
-
-        d3.select('#chart-wallets svg').remove();
-        d3.select('#chart-wallets')
-          .append('svg')
-          .datum(opts.coords)
-          .transition().duration(500)
-          .call(chart);
-
-        nv.utils.windowResize(chart.update);
-
-        return chart;
-      });
-    }).trigger('change');
+    return {
+      perMonth: coordsPerMonth,
+      perWeek: coordsPerWeek,
+      perDay: coordsPerDay
+    };
   };
 
-  root.showTransactions = function(data) {
-    var byMonth = _.groupBy(data, 'month');
-    var byMonthGrouped = _.map(byMonth, function(v, k) {
-      return {
-        x: v[0].date,
-        y: _.sum(v, function(d) {
-          return d.txps;
-        })
+  root.show = function(dataSet, config) {
+    var coords = root.getCoords(dataSet, config.graph);
+
+    nv.addGraph(function() {
+      var opts = {};
+
+      if (config.interval == 'perDay') {
+        opts.coords = coords.perDay;
+        opts.format = '%b %d';
+        opts.label = coords.perDay[0].key;
+      } else if (config.interval == 'perMonth') {
+        opts.coords = coords.perMonth;
+        opts.format = '%b';
+        opts.label = coords.perMonth[0].key;
+      } else if (config.interval == 'perWeek') {
+        opts.coords = coords.perWeek;
+        opts.format = '%W';
+        opts.label = coords.perWeek[0].key;
       }
+      var chart = nv.models.lineChart()
+        .useInteractiveGuideline(true);
+
+      chart.xAxis
+        .tickFormat(function(d) {
+          return d3.time.format(opts.format)(new Date(d));
+        });
+
+      chart.yAxis
+        .axisLabel(opts.label)
+        .tickFormat(d3.format(',f'));
+
+      d3.select(config.chart + ' svg').remove();
+      d3.select(config.chart)
+        .append('svg')
+        .datum(opts.coords)
+        .transition().duration(500)
+        .call(chart);
+
+      nv.utils.windowResize(chart.update);
+
+      return chart;
     });
-
-    var byWeek = _.groupBy(data, 'week');
-    var byWeekGrouped = _.map(byWeek, function(v, k) {
-      return {
-        x: v[0].date,
-        y: _.sum(v, function(d) {
-          return d.txps;
-        })
-      }
-    });
-
-    var proposalsPerMonth = [{
-      key: '# Transaction proposals per month',
-      values: byMonthGrouped
-    }];
-
-    var proposalsPerWeek = [{
-      key: '# Transaction proposals per week',
-      values: byWeekGrouped
-    }];
-
-    var proposalsPerDay = [{
-      key: '# of Transaction proposals per day',
-      values: _.map(data, function(d) {
-        return {
-          x: d.date,
-          y: d.txps || 0,
-        };
-      }),
-    }];
-
-    $('#proposalsInterval').change(function() {
-      nv.addGraph(function() {
-        var interval = $('#proposalsInterval').val();
-        var opts = {};
-
-        if (interval == 'perDay') {
-          opts.coords = proposalsPerDay;
-          opts.format = '%b %d';
-          opts.label = proposalsPerDay[0].key;
-        } else if (interval == 'perMonth') {
-          opts.coords = proposalsPerMonth;
-          opts.format = '%b';
-          opts.label = proposalsPerMonth[0].key;
-        } else if (interval == 'perWeek') {
-          opts.coords = proposalsPerWeek;
-          opts.format = '%W';
-          opts.label = proposalsPerWeek[0].key;
-        }
-
-        var chart = nv.models.lineChart()
-          .useInteractiveGuideline(true);
-
-        chart.xAxis
-          .tickFormat(function(d) {
-            return d3.time.format(opts.format)(new Date(d));
-          });
-
-        chart.yAxis
-          .axisLabel(opts.label)
-          .tickFormat(d3.format(',f'));
-
-        d3.select('#chart-txps svg').remove();
-        d3.select('#chart-txps')
-          .append('svg')
-          .datum(opts.coords)
-          .transition().duration(500)
-          .call(chart);
-
-        nv.utils.windowResize(chart.update);
-
-        return chart;
-      });
-    }).trigger('change');
   };
 
-  root.showAmount = function(data) {
-    var byMonth = _.groupBy(data, 'month');
-    var byMonthGrouped = _.map(byMonth, function(v, k) {
-      return {
-        x: v[0].date,
-        y: _.sum(v, function(d) {
-          return d.amount;
-        })
-      }
+  root.initGraphs = function(data) {
+    root.showTotals(data);
+    root.show(data, {
+      graph: 'wallets',
+      interval: 'perDay',
+      chart: '#chart-wallets'
     });
-
-    var byWeek = _.groupBy(data, 'week');
-    var byWeekGrouped = _.map(byWeek, function(v, k) {
-      return {
-        x: v[0].date,
-        y: _.sum(v, function(d) {
-          return d.amount;
-        })
-      }
+    root.show(data, {
+      graph: 'proposals',
+      interval: 'perDay',
+      chart: '#chart-txps'
     });
-
-    var amountPerMonth = [{
-      key: 'Amount sent per month (BTC)',
-      values: byMonthGrouped
-    }];
-
-    var amountPerWeek = [{
-      key: 'Amount sent per week (BTC)',
-      values: byWeekGrouped
-    }];
-
-    var amountPerDay = [{
-      key: 'Amount sent per day (BTC)',
-      values: _.map(data, function(d) {
-        return {
-          x: d.date,
-          y: d.amount || 0,
-        };
-      }),
-    }];
-
-    $('#amountInterval').change(function() {
-      nv.addGraph(function() {
-        var interval = $('#amountInterval').val();
-        var opts = {};
-
-        if (interval == 'perDay') {
-          opts.coords = amountPerDay;
-          opts.format = '%b %d';
-          opts.label = amountPerDay[0].key;
-        } else if (interval == 'perMonth') {
-          opts.coords = amountPerMonth;
-          opts.format = '%b';
-          opts.label = amountPerMonth[0].key;
-        } else if (interval == 'perWeek') {
-          opts.coords = amountPerWeek;
-          opts.format = '%W';
-          opts.label = amountPerWeek[0].key;
-        }
-
-        var chart = nv.models.lineChart()
-          .useInteractiveGuideline(true);
-
-        chart.xAxis
-          .tickFormat(function(d) {
-            return d3.time.format(opts.format)(new Date(d));
-          });
-
-        chart.yAxis
-          .axisLabel(opts.label)
-          .tickFormat(d3.format(',f'));
-
-        d3.select('#chart-amount svg').remove();
-        d3.select('#chart-amount')
-          .append('svg')
-          .datum(opts.coords)
-          .transition().duration(500)
-          .call(chart);
-
-        nv.utils.windowResize(chart.update);
-
-        return chart;
-      });
-    }).trigger('change');
+    root.show(data, {
+      graph: 'amount',
+      interval: 'perDay',
+      chart: '#chart-amount'
+    });
+    $rootScope.$emit('Data/Finish');
   };
 
   return root;
