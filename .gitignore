@@ -12,32 +12,21 @@ cordova/*.keystore
 cordova/build.sh
 cordova/config.xml
 cordova/Makefile
-cordova/android/AndoidManifest.xml
+cordova/android/AndroidManifest.xml
 cordova/android/project.properties
 cordova/ios/*-Info.plist
 cordova/wp/MainPage.xaml
 cordova/wp/properties/WMAppManifest.xml
 cordova/wp/Package.appxmanifest
-cordova/webkitbuilds/.desktop
-cordova/webkitbuilds/build-osx.sh
-cordova/webkitbuilds/setup-win32.iss
-cordova/webkitbuilds/setup-win64.iss
 
 # make
-./Makefile
-
-# npm
-./package.json
+Makefile
 
 # node-webkit
 cache
 webkitbuilds/*
 !webkitbuilds/README.md
-!webkitbuilds/setup-win32.iss
-!webkitbuilds/setup-win64.iss
 !webkitbuilds/favicon.ico
-!webkitbuilds/.desktop
-!webkitbuilds/build-osx.sh
 !webkitbuilds/Background.png
 
 # chrome extensions

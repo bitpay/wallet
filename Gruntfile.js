@@ -167,9 +167,9 @@ module.exports = function(grunt) {
       rename_ios_plist: {
         files: [{
           expand: true,
-          cwd: 'cordova/ios',
+          cwd: 'cordova/ios/',
           src: 'App-Info.plist',
-          dest: './',
+          dest: 'cordova/ios/',
           rename: function(dest, src) {
             return dest + config.appShortName.replace(/ +/g, '') + '-Info.plist';
           }
@@ -186,7 +186,7 @@ module.exports = function(grunt) {
       android_res: {
         files: [{
           expand: true,
-          cwd: 'brands/' + brand + '/resources/android/res/',
+          cwd: 'brands/' + brand + '/resources/android/',
           src: ['**'],
           dest: 'cordova/android/res/'
         }]
@@ -272,7 +272,7 @@ module.exports = function(grunt) {
         dest: 'copay-linux64/'
       }
     },
-    'string-replace': {
+    replace: {
       build_config: {
         files: {
           'cordova/android/AndroidManifest.xml': 'build-config-templates/cordova/android/AndroidManifest.xml',
@@ -280,7 +280,7 @@ module.exports = function(grunt) {
           'cordova/build.sh': 'build-config-templates/cordova/build.sh',
           'cordova/config.xml': 'build-config-templates/cordova/config.xml',
           'cordova/Makefile': 'build-config-templates/cordova/Makefile',
-          'cordova/ios/App-Info.plist': 'build-config-templates/ios/App-Info.plist',
+          'cordova/ios/App-Info.plist': 'build-config-templates/cordova/ios/App-Info.plist',
           'cordova/wp/Package.appxmanifest': 'build-config-templates/cordova/wp/Package.appxmanifest',
           'cordova/wp/Properties/WMAppManifest.xml': 'build-config-templates/cordova/wp/Properties/WMAppManifest.xml',
           'Makefile': 'build-config-templates/Makefile',
@@ -291,19 +291,19 @@ module.exports = function(grunt) {
           'webkitbuilds/setup-win64.iss': 'build-config-templates/webkitbuilds/setup-win64.iss'
         },
         options: {
-          replacements: [
-            { pattern: /%APP-PACKAGE-NAME%/g, replacement: config.appPackageName },
-            { pattern: /%APP-SHORT-NAME%/g, replacement: config.appShortName },
-            { pattern: /%APP-SHORT-CAMEL-NAME%/g, replacement: config.appShortName.replace(/ +/g, '') },
-            { pattern: /%APP-LONG-NAME%/g, replacement: config.appLongName },
-            { pattern: /%APP-EXE-NAME%/g, replacement: config.appExeName },
-            { pattern: /%APP-DESCRIPTION%/g, replacement: config.appDescription },
-            { pattern: /%APP-PUBLISHER%/g, replacement: config.appPublisher },
-            { pattern: /%APP-PUBLISHER-WEBSITE%/g, replacement: config.appPublisherWebsite },
-            { pattern: /%APP-PUBLISHER-EMAIL%/g, replacement: config.appPublisherEmail },
-            { pattern: /%APP-SPLASH-SCREEN%/g, replacement: config.appSplashScreen },
-            { pattern: /%APP-VERSION%/g, replacement: config.appVersion },
-            { pattern: /%ANDROID-VERSION-CODE%/g, replacement: config.androidVersionCode }
+          patterns: [
+            { match: /%APP-PACKAGE-NAME%/g, replacement: config.appPackageName },
+            { match: /%APP-SHORT-NAME%/g, replacement: config.appShortName },
+            { match: /%APP-SHORT-CAMEL-NAME%/g, replacement: config.appShortName.replace(/ +/g, '') },
+            { match: /%APP-LONG-NAME%/g, replacement: config.appLongName },
+            { match: /%APP-EXE-NAME%/g, replacement: config.appExeName },
+            { match: /%APP-DESCRIPTION%/g, replacement: config.appDescription },
+            { match: /%APP-PUBLISHER%/g, replacement: config.appPublisher },
+            { match: /%APP-PUBLISHER-WEBSITE%/g, replacement: config.appPublisherWebsite },
+            { match: /%APP-PUBLISHER-EMAIL%/g, replacement: config.appPublisherEmail },
+            { match: /%APP-SPLASH-SCREEN%/g, replacement: config.appSplashScreen },
+            { match: /%APP-VERSION%/g, replacement: config.appVersion },
+            { match: /%ANDROID-VERSION-CODE%/g, replacement: config.androidVersionCode }
           ]
         }
       }
@@ -369,13 +369,13 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-karma-coveralls');
   grunt.loadNpmTasks('grunt-node-webkit-builder');
   grunt.loadNpmTasks('grunt-contrib-compress');
-  grunt.loadNpmTasks('grunt-string-replace');
+  grunt.loadNpmTasks('grunt-replace');
 
   grunt.registerTask('buildBrand', 'Build the brand configuration.', function() {
     buildBrandConfig('./brands/' + brand + '/config.json');
   });
 
-  grunt.registerTask('default', ['nggettext_compile', 'buildBrand', 'concat', 'copy:icons', 'copy:theme', 'string-replace:build_config', 'copy:rename_ios_plist', 'copy:android_res', 'copy:ios_icons', 'copy:ios_splash', 'copy:wp_assets', 'copy:wp_imgs']);
+  grunt.registerTask('default', ['nggettext_compile', 'buildBrand', 'concat', 'copy:icons', 'copy:theme', 'replace:build_config', 'copy:rename_ios_plist', 'copy:android_res', 'copy:ios_icons', 'copy:ios_splash', 'copy:wp_assets', 'copy:wp_imgs']);
   grunt.registerTask('prod', ['default', 'uglify']);
   grunt.registerTask('translate', ['nggettext_extract']);
   grunt.registerTask('test', ['karma:unit']);
