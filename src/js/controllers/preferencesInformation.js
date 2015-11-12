@@ -100,7 +100,6 @@ angular.module('copayApp.controllers').controller('preferencesInformation',
           $log.error(err);
           return;
         }
-
         $scope.$emit('Local/ClearHistory');
 
         $timeout(function() {

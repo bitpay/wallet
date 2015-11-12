@@ -796,7 +796,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         self.getTxsFromServer(client, skip, endingTxid, requestLimit, function(err, res, shouldContinue) {
           if (err) return i_cb(err);
 
-
           newTxs = newTxs.concat(lodash.compact(res));
           skip = skip + requestLimit;
 
@@ -820,7 +819,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
       getNewTxs([], 0, function(err, txs) {
         if (err) return cb(err);
-
         var newHistory = lodash.compact(txs.concat(txsFromLocal));
         $log.debug('Tx History synced. Total Txs: ' + newHistory.length);
 
@@ -1071,7 +1069,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
   $rootScope.$on('Local/ClearHistory', function(event) {
     $log.debug('The wallet transaction history has been deleted');
-    self.txHistory = [];
+    self.txHistory = self.completeHistory = [];
     self.updateHistory();
   });
 
@@ -1200,7 +1198,10 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       $log.debug('Backup done stored');
       addressService.expireAddress(walletId, function(err) {
         $timeout(function() {
-          self.startScan(walletId);
+          self.txHistory = self.completeHistory = [];
+          storageService.removeTxHistory(walletId, function() {
+            self.startScan(walletId);
+          });
         }, 500);
       });
     });
@@ -1247,7 +1248,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   });
 
   lodash.each(['NewTxProposal', 'TxProposalFinallyRejected', 'TxProposalRemoved', 'NewOutgoingTxByThirdParty',
-    'Local/NewTxProposal', 'Local/TxProposalAction', 'ScanFinished', 'Local/GlideraTx'
+    'Local/NewTxProposal', 'Local/TxProposalAction', 'Local/GlideraTx'
   ], function(eventName) {
     $rootScope.$on(eventName, function(event, untilItChanges) {
       self.updateAll({
@@ -1258,6 +1259,15 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     });
   });
 
+  $rootScope.$on('ScanFinished', function() {
+    $log.debug('Scan Finished. Updating history');
+    storageService.removeTxHistory(self.walletId, function() {
+      self.updateAll({
+        walletStatus: null,
+        triggerTxUpdate: true,
+      });
+    });
+  });
 
   lodash.each(['TxProposalRejectedBy', 'TxProposalAcceptedBy'], function(eventName) {
     $rootScope.$on(eventName, function() {
