@@ -175,7 +175,7 @@ Since version 1.5, Copay uses the root `m/48'` for hardware multisignature walle
 
 Copay depends on [Bitcore Wallet Service](https://github.com/bitpay/bitcore-wallet-service) (BWS) for blockchain information, networking and Copayer synchronization.  A BWS instance can be setup and operational within minutes or you can use a public instance like `https://bws.bitpay.com`.  Switching between BWS instances is very simple and can be done with a click from within Copay.  BWS also allows Copay to interoperate with other wallets like [Bitcore Wallet CLI] (https://github.com/bitpay/bitcore-wallet).
 
-## Hardware Wallets Support
+## Hardware Wallet Support
 
 Copay supports Ledger and Trezor hardware wallets. The support is only available only on Chrome App. Ledger supports is only aviable on multisig wallets,  Trezor, both in multisig and non-multisig wallets.
 
