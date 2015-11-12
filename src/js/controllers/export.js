@@ -80,7 +80,7 @@ angular.module('copayApp.controllers').controller('backupController',
     }
 
     self.getBackup = function(cb) {
-      self.getMetaData(function(err, txsFromLocal, localAddressBook) {
+      self.getMetaData($scope.metaData, function(err, txsFromLocal, localAddressBook) {
         if (err) {
           self.error = true;
           return cb(null);
