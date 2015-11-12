@@ -24,10 +24,10 @@ cordova/webkitbuilds/setup-win32.iss
 cordova/webkitbuilds/setup-win64.iss
 
 # make
-Makefile
+./Makefile
 
 # npm
-package.json
+./package.json
 
 # node-webkit
 cache
