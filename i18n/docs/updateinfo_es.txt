@@ -1,24 +1,7 @@
-Actualizaciones importantes
-=============
-
-* Soporte para iOS 9
-* Soporte a monederos físicos con Trezor
-* Soporte a monederos en papel
-
-Actualizaciones menores
-=============
-
-* Nueva ventana de instalación de Copay para OSX
-* Corrige animaciones
-* Manejo del botón volver en los dispositivos Android al abrir una ventana emergente
-* Corrige el sonido emitido luego de escanear un código en dispositivos Android
-* Corrige el "derivation path" en Información Avanzada
-* Agrega compatibilidad hacia atrás para URIs del protocolo de pago
-* Ocultar el menú si el monedero no esta autorizado
-* Corrige textos en la página de copia de seguridad
-* Corrige cadenas de traducción
-* Actualiza la dependencia de paquetes con "bower"
-* Soporte para iOS 9
-* Corrige "mnemonic" con clave privada encriptada
-* Corrige la hora en las propuestas de transacciones
-* Corrige el auto foco en el campo de contraseña en la opción de "Requerir contraseña para gastar los fondos"
+* Soporte de TREZOR (solo en la versión de Chrome App)
+* Nuevo sistema de notificación. Uso de ancho de banda reducido y mejor manejo de desconexiones de la red
+* Libreta de direcciones
+* Caché para el historial de transacciones y mejora en el orden de las mismas
+* Mejor soporte de BIP44: evitar diferencias en los índices cuando se aborda el análisis de un monedero y la generación de direcciones
+* Ajuste de BWS por monederos
+* Correcciones en el evento reanudar del celular
