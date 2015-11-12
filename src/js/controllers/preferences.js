@@ -2,6 +2,8 @@
 
 angular.module('copayApp.controllers').controller('preferencesController',
   function($scope, $rootScope, $filter, $timeout, $modal, $log, lodash, configService, profileService, uxLanguage) {
+
+    $scope.appShortName = window.appShortName;
     
     this.init = function() {
       var config = configService.getSync();

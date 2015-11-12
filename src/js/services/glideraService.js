@@ -22,13 +22,13 @@ angular.module('copayApp.services').factory('glideraService', function($http, $l
       credentials.HOST = 'https://glidera.io';
       if (isCordova) {
         credentials.REDIRECT_URI = 'bitcoin://glidera';
-        credentials.CLIENT_ID = '9c8023f0ac0128235b7b27a6f2610c83';
-        credentials.CLIENT_SECRET = '30431511407b47f25a83bffd72881d55';
+        credentials.CLIENT_ID = window.glideraCordova_CLIENT_ID;
+        credentials.CLIENT_SECRET = window.glideraCordova_CLIENT_SECRET;
       }
       else {
         credentials.REDIRECT_URI = 'urn:ietf:wg:oauth:2.0:oob';
-        credentials.CLIENT_ID = '8a9e8a9cf155db430c1ea6c7889afed1';
-        credentials.CLIENT_SECRET = '24ddec578f38d5488bfe13601933c05f';
+        credentials.CLIENT_ID = window.glidera_CLIENT_ID;
+        credentials.CLIENT_SECRET = window.glidera_CLIENT_SECRET;
       }
     };
   };

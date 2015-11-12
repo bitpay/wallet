@@ -1,10 +1,10 @@
-<div 
-  class="topbar-container" 
-  ng-include="'views/includes/topbar.html'"
-  ng-init="titleSection='About Copay Bitcoin Wallet'; goBackToState = 'preferences'">
-</div>
+<div class="preferences" ng-controller="preferencesAbout as about">
+  <div 
+    class="topbar-container" 
+    ng-include="'views/includes/topbar.html'"
+    ng-init="titleSection='About ' + appShortName; goBackToState = 'preferences'">
+  </div>
 
-<div class="content preferences" ng-controller="preferencesAbout as about">
     <h4  translate>Release Information</h4>
     <div  ng-controller="versionController as v">
       <ul class="no-bullet m0">

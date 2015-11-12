@@ -258,7 +258,7 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
   // init() - construct the theme catalog and publish the initial presentation.
   // 
   root.init = function() {
-    root._bootstrapBaseTheme(baseTheme, function() {
+    root._bootstrapBaseTheme(window.baseTheme, function() {
         $log.debug('Theme service bootstrapped to theme/skin: ' +
           $rootScope.theme.header.name + '/' +
           $rootScope.skin.header.name +

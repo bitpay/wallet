@@ -1,7 +1,10 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('disclaimerController',
-  function($scope, $timeout, storageService, applicationService, gettextCatalog, isCordova, uxLanguage) {
+  function($scope, $timeout, $log, storageService, applicationService, gettextCatalog, isCordova, uxLanguage) {
+
+    $scope.appLongName = window.appLongName;
+    $scope.disclaimerItems = window.disclaimer;
 
     $scope.agree = function() {
       if (isCordova) {
