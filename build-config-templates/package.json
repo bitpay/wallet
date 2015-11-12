@@ -1,5 +1,5 @@
 {
-  "name": "%APP-SHORT-CAMEL-NAME%",
+  "name": "%APP-EXE-NAME%",
   "description": "%APP-DESCRIPTION%",
   "author": "%APP-PUBLISHER%",
   "version": "%APP-VERSION%",
