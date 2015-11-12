@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Japanese\n"
 "Language: ja\n"
-"PO-Revision-Date: 2015-11-03 10:08-0500\n"
+"PO-Revision-Date: 2015-11-11 14:51-0500\n"
 
 #: public/views/walletHome.html
 msgid "(possible double spend)"
@@ -27,7 +27,7 @@ msgid "{{fee}} will be deducted for bitcoin networking fees"
 msgstr "{{fee}} のビットコインネットワーク手数料が差し引かれます。"
 
 #: public/views/copayers.html
-#: public/views/walletHome.html
+#: public/views/includes/walletInfo.html
 msgid "{{index.m}}-of-{{index.n}}"
 msgstr "{{index.m}}-of-{{index.n}}"
 
@@ -75,9 +75,19 @@ msgstr "Copayについて"
 msgid "Accept"
 msgstr "承諾"
 
+#: public/views/join.html
+#: public/views/preferencesInformation.html
+msgid "Account"
+msgstr ""
+
+#: public/views/create.html
+#: public/views/import.html
+msgid "Account Number"
+msgstr ""
+
 #: public/views/modals/destination-address.html
 msgid "Add a new entry"
-msgstr "Add a new entry"
+msgstr "新規追加"
 
 #: public/views/create.html
 #: public/views/join.html
@@ -106,7 +116,7 @@ msgstr "アドレスの種類"
 
 #: public/views/modals/destination-address.html
 msgid "Addressbook"
-msgstr "Addressbook"
+msgstr "アドレス帳"
 
 #: public/views/preferences.html
 msgid "Advanced"
@@ -206,6 +216,12 @@ msgstr "アドレスごとの残高"
 msgid "Before receiving funds, it is highly recommended you backup your wallet keys."
 msgstr "ビットコインをもらう前に、このウォレットのバックアップすることを強くおすすめします。"
 
+#: public/views/create.html
+#: public/views/import.html
+#: public/views/join.html
+msgid "BIP32 path for address derivation"
+msgstr ""
+
 #: public/views/walletHome.html
 msgid "Bitcoin address"
 msgstr "ビットコインアドレス"
@@ -271,11 +287,10 @@ msgstr "パソコンからバックアップファイルを選択して下さい
 
 #: public/views/preferencesInformation.html
 msgid "Clear history"
-msgstr "Clear history"
+msgstr "履歴をクリア"
 
 #: public/views/includes/topbar.html
 #: public/views/modals/advancedSend.html
-#: public/views/modals/copayers.html
 #: public/views/modals/customized-amount.html
 #: public/views/modals/destination-address.html
 #: public/views/modals/paypro.html
@@ -326,7 +341,7 @@ msgstr "ウォレット参加者が既に送金の提案の意思表明をして
 msgid "Copayer data mismatch"
 msgstr "ウォレット参加者のデータ不整合"
 
-#: public/views/modals/copayers.html
+#: public/views/preferencesInformation.html
 msgid "Copayers"
 msgstr "ウォレット参加者"
 
@@ -494,6 +509,12 @@ msgstr "フレーズを削除"
 msgid "Deleting payment"
 msgstr "取引削除中…"
 
+#: public/views/create.html
+#: public/views/import.html
+#: public/views/join.html
+msgid "Derivation Path"
+msgstr ""
+
 #: public/views/preferencesInformation.html
 msgid "Derivation Strategy"
 msgstr "派生パス"
@@ -519,7 +540,7 @@ msgstr "ご自分の言語はCrowdinで見当たりませんか？Crowdinの管�
 
 #: public/views/modals/destination-address.html
 msgid "Done"
-msgstr "Done"
+msgstr "完了"
 
 #: public/views/export.html
 msgid "Download"
@@ -535,7 +556,7 @@ msgstr "節約"
 
 #: public/views/modals/destination-address.html
 msgid "Edit"
-msgstr "Edit"
+msgstr "編集"
 
 #: public/views/importLegacy.html
 msgid "Email"
@@ -548,6 +569,10 @@ msgstr "メールによるウォレットのお知らせ"
 #: public/views/preferences.html
 msgid "Email Notifications"
 msgstr "メールのお知らせ"
+
+#: src/js/services/bwsError.js
+msgid "Empty addresses limit reached. New addresses cannot be generated."
+msgstr ""
 
 #: src/js/controllers/export.js
 msgid "Encrypted export file saved"
@@ -590,10 +615,6 @@ msgstr "ウォレットをエクスポート"
 #: public/views/preferencesInformation.html
 msgid "Extended Public Keys"
 msgstr "拡張公開鍵"
-
-#: public/views/includes/walletInfo.html
-msgid "External Private Key:"
-msgstr "外部デバイス秘密鍵:"
 
 #: public/views/export.html
 msgid "Failed to export"
@@ -690,10 +711,6 @@ msgid "Hardware wallet"
 msgstr "ハードウェアウォレット"
 
 #: public/views/import.html
-msgid "Hardware Wallet"
-msgstr "ハードウェアウォレット"
-
-#: public/views/import.html
 msgid "Have a Backup from Copay v0.9?"
 msgstr "Copay v0.9 のバックアップをお持ちですか？"
 
@@ -730,17 +747,9 @@ msgstr "インポート"
 msgid "Import backup"
 msgstr "バックアップをインポート"
 
-#: public/views/import.html
-msgid "Import from Ledger"
-msgstr "Ledger からインポート..."
-
 #: public/views/importLegacy.html
 msgid "Import from the Cloud?"
 msgstr "クラウドからのインポートを行いますか？"
-
-#: public/views/import.html
-msgid "Import from TREZOR"
-msgstr "TREZOR からインポート..."
 
 #: public/views/import.html
 msgid "Import here"
@@ -769,8 +778,8 @@ msgstr "アドレスのネットワークが不正です。"
 #: public/views/walletHome.html
 msgid "Initial transaction history synchronization can take some minutes for wallets with many transactions.<br>\n"
 "          Please stand by."
-msgstr "Initial transaction history synchronization can take some minutes for wallets with many transactions.<br>\n"
-"          Please stand by."
+msgstr "初回の取引紹介は少し時間がかかる場合がございます。(特に取引履歴がたくさんあるウォレット)<br>\n"
+"          少々お待ち下さい。"
 
 #: src/js/services/bwsError.js
 msgid "Insufficient funds"
@@ -784,9 +793,21 @@ msgstr "手数料付けるには残高が足りません"
 msgid "Invalid"
 msgstr "無効"
 
+#: src/js/controllers/create.js
+#: src/js/controllers/import.js
+#: src/js/controllers/join.js
+msgid "Invalid account number"
+msgstr ""
+
 #: src/js/services/bwsError.js
 msgid "Invalid address"
 msgstr "不正アドレス"
+
+#: src/js/controllers/create.js
+#: src/js/controllers/import.js
+#: src/js/controllers/join.js
+msgid "Invalid derivation path"
+msgstr ""
 
 #: src/js/controllers/index.js
 msgid "Invalid Touch ID"
@@ -831,7 +852,7 @@ msgstr "この鍵は既存のウォレットにて登録されています"
 
 #: public/views/modals/destination-address.html
 msgid "Label"
-msgstr "Label"
+msgstr "ラベル"
 
 #: public/views/preferences.html
 msgid "Language"
@@ -873,8 +894,8 @@ msgstr "支払いは次の宛先へ"
 msgid "me"
 msgstr "自分"
 
+#: public/views/preferencesInformation.html
 #: public/views/includes/copayers.html
-#: public/views/modals/copayers.html
 #: public/views/modals/tx-details.html
 #: public/views/modals/txp-details.html
 msgid "Me"
@@ -896,9 +917,9 @@ msgstr "メッセージ"
 msgid "Moved"
 msgstr "移動済"
 
-#: public/views/walletHome.html
-msgid "Multisignature wallet"
-msgstr "マルチシグネチャウォレット"
+#: public/views/join.html
+msgid "Multiple wallets accounts are supported on the device simultaneously. Select which account should be used for this wallet"
+msgstr ""
 
 #: public/views/walletHome.html
 msgid "My Bitcoin address"
@@ -916,9 +937,14 @@ msgstr "ネットワーク接続エラー"
 msgid "New Payment Proposal"
 msgstr "新しい送金の提案"
 
-#: public/views/includes/walletInfo.html
-msgid "No Private key"
-msgstr "秘密鍵なし"
+#: src/js/controllers/create.js
+#: src/js/controllers/join.js
+msgid "New Random Seed"
+msgstr ""
+
+#: public/views/import.html
+msgid "No hardware wallets supported on this device"
+msgstr ""
 
 #: public/views/walletHome.html
 msgid "No transactions yet"
@@ -1177,7 +1203,7 @@ msgstr "リリース情報"
 
 #: public/views/modals/destination-address.html
 msgid "Remove"
-msgstr "Remove"
+msgstr "削除"
 
 #: public/views/export.html
 #: public/views/includes/password.html
@@ -1289,7 +1315,7 @@ msgstr "送信"
 
 #: public/views/preferencesInformation.html
 msgid "Send addresses by email"
-msgstr "Send addresses by email"
+msgstr "ビットコインアドレスをメールにて共有"
 
 #: public/views/walletHome.html
 msgid "Send All"
@@ -1326,7 +1352,7 @@ msgstr "指定"
 
 #: public/views/preferencesBwsUrl.html
 msgid "Set default url"
-msgstr "Set default url"
+msgstr "デフォルトURLに設定"
 
 #: public/views/export.html
 msgid "Set up a Export Password"
@@ -1360,6 +1386,7 @@ msgid "Share this wallet address to receive payments. To protect your privacy, n
 msgstr "これを人に共有することでビットコインを送ってもらうことができます。プライバシー向上の観点から、アドレスが1回でも使用されたら新しいアドレスが自動生成されます。"
 
 #: public/views/create.html
+#: public/views/import.html
 msgid "Shared Wallet"
 msgstr "共有ウォレットに参加"
 
@@ -1369,6 +1396,10 @@ msgstr "共有ウォレットに参加"
 #: public/views/walletHome.html
 msgid "Show advanced options"
 msgstr "詳細設定を表示"
+
+#: public/views/walletHome.html
+msgid "Show all"
+msgstr ""
 
 #: public/views/backup.html
 msgid "Show Wallet Seed"
@@ -1390,10 +1421,10 @@ msgstr "バックアップをスキップ"
 msgid "Spanish"
 msgstr "スペイン語"
 
-#: public/views/create.html
-#: public/views/join.html
-msgid "Specify your wallet seed"
-msgstr "復元フレーズを指定"
+#: src/js/controllers/create.js
+#: src/js/controllers/join.js
+msgid "Specify Seed..."
+msgstr ""
 
 #: src/js/services/bwsError.js
 msgid "Spend proposal is not accepted"
@@ -1436,7 +1467,6 @@ msgid "Terms of Use"
 msgstr "利用規約"
 
 #: public/views/create.html
-#: public/views/import.html
 msgid "Testnet"
 msgstr "テスト用ネットワーク"
 
@@ -1552,7 +1582,11 @@ msgstr "取引は既に配信されました。"
 
 #: public/views/preferencesInformation.html
 msgid "Transaction history"
-msgstr "Transaction history"
+msgstr "取引履歴"
+
+#: public/views/walletHome.html
+msgid "Transactions<br> Downloaded"
+msgstr ""
 
 #: public/views/translators.html
 msgid "Translation Credits"
@@ -1586,16 +1620,6 @@ msgstr "未送信取引"
 #: public/views/walletHome.html
 msgid "Updating Wallet..."
 msgstr "ウォレット更新中…"
-
-#: public/views/create.html
-#: public/views/join.html
-msgid "Use Ledger hardware wallet"
-msgstr "Ledger ハードウェアウォレットを使用"
-
-#: public/views/create.html
-#: public/views/join.html
-msgid "Use TREZOR hardware wallet"
-msgstr "TREZOR ハードウェアウォレットを使用"
 
 #: public/views/preferences.html
 #: public/views/walletHome.html
@@ -1723,7 +1747,7 @@ msgstr "Wallet serviceが見つかりません。"
 
 #: public/views/modals/destination-address.html
 msgid "Wallets"
-msgstr "Wallets"
+msgstr "ウォレット"
 
 #: public/views/walletHome.html
 msgid "WARNING: Backup needed"
