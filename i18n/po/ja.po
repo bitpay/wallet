@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Japanese\n"
 "Language: ja\n"
-"PO-Revision-Date: 2015-11-11 14:51-0500\n"
+"PO-Revision-Date: 2015-11-12 10:48-0500\n"
 
 #: public/views/walletHome.html
 msgid "(possible double spend)"
@@ -78,12 +78,12 @@ msgstr "承諾"
 #: public/views/join.html
 #: public/views/preferencesInformation.html
 msgid "Account"
-msgstr ""
+msgstr "ポケット"
 
 #: public/views/create.html
 #: public/views/import.html
 msgid "Account Number"
-msgstr ""
+msgstr "ポケット番号"
 
 #: public/views/modals/destination-address.html
 msgid "Add a new entry"
@@ -220,7 +220,7 @@ msgstr "ビットコインをもらう前に、このウォレットのバック
 #: public/views/import.html
 #: public/views/join.html
 msgid "BIP32 path for address derivation"
-msgstr ""
+msgstr "階級アドレス派生のパス"
 
 #: public/views/walletHome.html
 msgid "Bitcoin address"
@@ -513,7 +513,7 @@ msgstr "取引削除中…"
 #: public/views/import.html
 #: public/views/join.html
 msgid "Derivation Path"
-msgstr ""
+msgstr "派生パス"
 
 #: public/views/preferencesInformation.html
 msgid "Derivation Strategy"
@@ -572,7 +572,7 @@ msgstr "メールのお知らせ"
 
 #: src/js/services/bwsError.js
 msgid "Empty addresses limit reached. New addresses cannot be generated."
-msgstr ""
+msgstr "未使用アドレスを生成しすぎたため、これ以上アドレスを生成することができません。"
 
 #: src/js/controllers/export.js
 msgid "Encrypted export file saved"
@@ -797,7 +797,7 @@ msgstr "無効"
 #: src/js/controllers/import.js
 #: src/js/controllers/join.js
 msgid "Invalid account number"
-msgstr ""
+msgstr "無効なポケット番号です。"
 
 #: src/js/services/bwsError.js
 msgid "Invalid address"
@@ -807,7 +807,7 @@ msgstr "不正アドレス"
 #: src/js/controllers/import.js
 #: src/js/controllers/join.js
 msgid "Invalid derivation path"
-msgstr ""
+msgstr "無効な派生パス"
 
 #: src/js/controllers/index.js
 msgid "Invalid Touch ID"
@@ -919,7 +919,7 @@ msgstr "移動済"
 
 #: public/views/join.html
 msgid "Multiple wallets accounts are supported on the device simultaneously. Select which account should be used for this wallet"
-msgstr ""
+msgstr "このデバイスに同一フレーズの中でも複数の「ポケット」で使い分けられるようになっています。このウォレットにフレーズのどのポケットを割り当てるかを選択して下さい。"
 
 #: public/views/walletHome.html
 msgid "My Bitcoin address"
@@ -940,11 +940,11 @@ msgstr "新しい送金の提案"
 #: src/js/controllers/create.js
 #: src/js/controllers/join.js
 msgid "New Random Seed"
-msgstr ""
+msgstr "新規フレーズ作成"
 
 #: public/views/import.html
 msgid "No hardware wallets supported on this device"
-msgstr ""
+msgstr "この端末ではハードウェアウォレットがサポートされていません"
 
 #: public/views/walletHome.html
 msgid "No transactions yet"
@@ -1399,7 +1399,7 @@ msgstr "詳細設定を表示"
 
 #: public/views/walletHome.html
 msgid "Show all"
-msgstr ""
+msgstr "すべて表示"
 
 #: public/views/backup.html
 msgid "Show Wallet Seed"
@@ -1424,7 +1424,7 @@ msgstr "スペイン語"
 #: src/js/controllers/create.js
 #: src/js/controllers/join.js
 msgid "Specify Seed..."
-msgstr ""
+msgstr "フレーズ指定…"
 
 #: src/js/services/bwsError.js
 msgid "Spend proposal is not accepted"
@@ -1586,7 +1586,7 @@ msgstr "取引履歴"
 
 #: public/views/walletHome.html
 msgid "Transactions<br> Downloaded"
-msgstr ""
+msgstr "取引履歴<br>ダウンロード完了"
 
 #: public/views/translators.html
 msgid "Translation Credits"
