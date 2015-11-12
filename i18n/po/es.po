@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Spanish\n"
 "Language: es\n"
-"PO-Revision-Date: 2015-11-03 14:27-0500\n"
+"PO-Revision-Date: 2015-11-12 07:31-0500\n"
 
 #: public/views/walletHome.html
 msgid "(possible double spend)"
@@ -27,7 +27,7 @@ msgid "{{fee}} will be deducted for bitcoin networking fees"
 msgstr "{{fee}} se descontará por comisión de la red bitcoin"
 
 #: public/views/copayers.html
-#: public/views/walletHome.html
+#: public/views/includes/walletInfo.html
 msgid "{{index.m}}-of-{{index.n}}"
 msgstr "{{index.m}}-de-{{index.n}}"
 
@@ -74,6 +74,16 @@ msgstr "Acerca de Copay"
 #: src/js/controllers/walletHome.js
 msgid "Accept"
 msgstr "Aceptar"
+
+#: public/views/join.html
+#: public/views/preferencesInformation.html
+msgid "Account"
+msgstr "Cuenta"
+
+#: public/views/create.html
+#: public/views/import.html
+msgid "Account Number"
+msgstr "Número de cuenta"
 
 #: public/views/modals/destination-address.html
 msgid "Add a new entry"
@@ -205,6 +215,12 @@ msgstr "Balance por Dirección"
 msgid "Before receiving funds, it is highly recommended you backup your wallet keys."
 msgstr "Antes de recibir fondos, es altamente recomendable realizar una copia de seguridad."
 
+#: public/views/create.html
+#: public/views/import.html
+#: public/views/join.html
+msgid "BIP32 path for address derivation"
+msgstr "BIP32 para el camino de derivación de direcciones"
+
 #: public/views/walletHome.html
 msgid "Bitcoin address"
 msgstr "Dirección bitcoin"
@@ -274,7 +290,6 @@ msgstr "Limpiar historial"
 
 #: public/views/includes/topbar.html
 #: public/views/modals/advancedSend.html
-#: public/views/modals/copayers.html
 #: public/views/modals/customized-amount.html
 #: public/views/modals/destination-address.html
 #: public/views/modals/paypro.html
@@ -325,7 +340,7 @@ msgstr "Ya ha votado en esta propuesta de gasto"
 msgid "Copayer data mismatch"
 msgstr "Discrepancia en los datos del Copayer"
 
-#: public/views/modals/copayers.html
+#: public/views/preferencesInformation.html
 msgid "Copayers"
 msgstr "Copayers"
 
@@ -493,6 +508,12 @@ msgstr "ELIMINAR PALABRAS"
 msgid "Deleting payment"
 msgstr "Eliminando el Pago"
 
+#: public/views/create.html
+#: public/views/import.html
+#: public/views/join.html
+msgid "Derivation Path"
+msgstr "Camino de derivación"
+
 #: public/views/preferencesInformation.html
 msgid "Derivation Strategy"
 msgstr "Estrategia de derivación"
@@ -548,6 +569,10 @@ msgstr "Correo electrónico para notificaciones del monedero"
 msgid "Email Notifications"
 msgstr "Notificaciones por Email"
 
+#: src/js/services/bwsError.js
+msgid "Empty addresses limit reached. New addresses cannot be generated."
+msgstr "Se ha alcanzado el límite de direcciones vacías. No se pueden generar nuevas direcciones."
+
 #: src/js/controllers/export.js
 msgid "Encrypted export file saved"
 msgstr "La exportación del archivo cifrado se ha guardado"
@@ -589,10 +614,6 @@ msgstr "Exportar Monedero"
 #: public/views/preferencesInformation.html
 msgid "Extended Public Keys"
 msgstr "Claves Públicas Extendidas"
-
-#: public/views/includes/walletInfo.html
-msgid "External Private Key:"
-msgstr "Clave Privada Externa:"
 
 #: public/views/export.html
 msgid "Failed to export"
@@ -689,10 +710,6 @@ msgid "Hardware wallet"
 msgstr "Monedero físico"
 
 #: public/views/import.html
-msgid "Hardware Wallet"
-msgstr "Monedero físico"
-
-#: public/views/import.html
 msgid "Have a Backup from Copay v0.9?"
 msgstr "¿Tiene una copia de seguridad de Copay v0.9?"
 
@@ -729,17 +746,9 @@ msgstr "Importar"
 msgid "Import backup"
 msgstr "Importar copia de seguridad"
 
-#: public/views/import.html
-msgid "Import from Ledger"
-msgstr "Importar del Ledger"
-
 #: public/views/importLegacy.html
 msgid "Import from the Cloud?"
 msgstr "¿Importar de la Nube?"
-
-#: public/views/import.html
-msgid "Import from TREZOR"
-msgstr "Importar de TREZOR"
 
 #: public/views/import.html
 msgid "Import here"
@@ -783,9 +792,21 @@ msgstr "Fondos insuficientes para el pago de la comisión"
 msgid "Invalid"
 msgstr "Inválido"
 
+#: src/js/controllers/create.js
+#: src/js/controllers/import.js
+#: src/js/controllers/join.js
+msgid "Invalid account number"
+msgstr "Número de cuenta inválido"
+
 #: src/js/services/bwsError.js
 msgid "Invalid address"
 msgstr "Dirección inválida"
+
+#: src/js/controllers/create.js
+#: src/js/controllers/import.js
+#: src/js/controllers/join.js
+msgid "Invalid derivation path"
+msgstr "Camino de derivación no válido"
 
 #: src/js/controllers/index.js
 msgid "Invalid Touch ID"
@@ -872,8 +893,8 @@ msgstr "Hacer un pago a"
 msgid "me"
 msgstr "yo"
 
+#: public/views/preferencesInformation.html
 #: public/views/includes/copayers.html
-#: public/views/modals/copayers.html
 #: public/views/modals/tx-details.html
 #: public/views/modals/txp-details.html
 msgid "Me"
@@ -895,9 +916,9 @@ msgstr "Mensaje"
 msgid "Moved"
 msgstr "Movido"
 
-#: public/views/walletHome.html
-msgid "Multisignature wallet"
-msgstr "Monedero multifirma"
+#: public/views/join.html
+msgid "Multiple wallets accounts are supported on the device simultaneously. Select which account should be used for this wallet"
+msgstr "Múltiples cuentas de monederos son compatibles simultáneamente en el mismo dispositivo. Seleccione la cuenta que debe utilizarse para este monedero"
 
 #: public/views/walletHome.html
 msgid "My Bitcoin address"
@@ -915,9 +936,14 @@ msgstr "Error de conexión a la red"
 msgid "New Payment Proposal"
 msgstr "Nueva Propuesta de Pago"
 
-#: public/views/includes/walletInfo.html
-msgid "No Private key"
-msgstr "Sin clave privada"
+#: src/js/controllers/create.js
+#: src/js/controllers/join.js
+msgid "New Random Seed"
+msgstr "Nueva Semilla Aleatoria"
+
+#: public/views/import.html
+msgid "No hardware wallets supported on this device"
+msgstr "No hay monederos hardware compatibles con este dispositivo"
 
 #: public/views/walletHome.html
 msgid "No transactions yet"
@@ -1356,6 +1382,7 @@ msgid "Share this wallet address to receive payments. To protect your privacy, n
 msgstr "Compartir esta dirección para recibir pagos. Para proteger su privacidad, se generan nuevas direcciones automáticamente luego de recibir un pago."
 
 #: public/views/create.html
+#: public/views/import.html
 msgid "Shared Wallet"
 msgstr "Monedero Compartido"
 
@@ -1365,6 +1392,10 @@ msgstr "Monedero Compartido"
 #: public/views/walletHome.html
 msgid "Show advanced options"
 msgstr "Mostrar opciones avanzadas"
+
+#: public/views/walletHome.html
+msgid "Show all"
+msgstr "Mostrar todo"
 
 #: public/views/backup.html
 msgid "Show Wallet Seed"
@@ -1386,10 +1417,10 @@ msgstr "OMITIR"
 msgid "Spanish"
 msgstr "Español"
 
-#: public/views/create.html
-#: public/views/join.html
-msgid "Specify your wallet seed"
-msgstr "Especificar la Semilla de su Monedero"
+#: src/js/controllers/create.js
+#: src/js/controllers/join.js
+msgid "Specify Seed..."
+msgstr "Especificar la semilla..."
 
 #: src/js/services/bwsError.js
 msgid "Spend proposal is not accepted"
@@ -1432,7 +1463,6 @@ msgid "Terms of Use"
 msgstr "Términos de Uso"
 
 #: public/views/create.html
-#: public/views/import.html
 msgid "Testnet"
 msgstr "Testnet"
 
@@ -1550,6 +1580,10 @@ msgstr "La transacción ya se ha enviado"
 msgid "Transaction history"
 msgstr "Historial de transacciones"
 
+#: public/views/walletHome.html
+msgid "Transactions<br> Downloaded"
+msgstr "Transacciones<br> Descargar"
+
 #: public/views/translators.html
 msgid "Translation Credits"
 msgstr "Créditos de traducción"
@@ -1582,16 +1616,6 @@ msgstr "Transacciones no enviadas"
 #: public/views/walletHome.html
 msgid "Updating Wallet..."
 msgstr "Actualizando Monedero..."
-
-#: public/views/create.html
-#: public/views/join.html
-msgid "Use Ledger hardware wallet"
-msgstr "Utilizar Ledger"
-
-#: public/views/create.html
-#: public/views/join.html
-msgid "Use TREZOR hardware wallet"
-msgstr "Utilizar el monedero físico TREZOR"
 
 #: public/views/preferences.html
 #: public/views/walletHome.html

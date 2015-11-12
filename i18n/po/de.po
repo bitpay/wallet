@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: German\n"
 "Language: de\n"
-"PO-Revision-Date: 2015-10-07 10:52-0400\n"
+"PO-Revision-Date: 2015-11-11 14:51-0500\n"
 
 #: public/views/walletHome.html
 msgid "(possible double spend)"
@@ -27,7 +27,7 @@ msgid "{{fee}} will be deducted for bitcoin networking fees"
 msgstr "{{fee}} wird als Netzwerkgebühr abgezogen"
 
 #: public/views/copayers.html
-#: public/views/walletHome.html
+#: public/views/includes/walletInfo.html
 msgid "{{index.m}}-of-{{index.n}}"
 msgstr "{{index.m}}-von-{{index.n}}"
 
@@ -75,6 +75,20 @@ msgstr "Über Copay"
 msgid "Accept"
 msgstr "Akzeptieren"
 
+#: public/views/join.html
+#: public/views/preferencesInformation.html
+msgid "Account"
+msgstr ""
+
+#: public/views/create.html
+#: public/views/import.html
+msgid "Account Number"
+msgstr ""
+
+#: public/views/modals/destination-address.html
+msgid "Add a new entry"
+msgstr ""
+
 #: public/views/create.html
 #: public/views/join.html
 msgid "Add a Seed Passphrase"
@@ -91,6 +105,7 @@ msgstr "Wallet hinzufügen"
 
 #: public/views/paymentUri.html
 #: public/views/modals/customized-amount.html
+#: public/views/modals/destination-address.html
 #: public/views/modals/paypro.html
 msgid "Address"
 msgstr "Adresse"
@@ -98,6 +113,10 @@ msgstr "Adresse"
 #: public/views/preferencesInformation.html
 msgid "Address Type"
 msgstr "Adresstyp"
+
+#: public/views/modals/destination-address.html
+msgid "Addressbook"
+msgstr ""
 
 #: public/views/preferences.html
 msgid "Advanced"
@@ -148,10 +167,6 @@ msgstr "Betrag unter Schwellenwert"
 msgid "Amount in"
 msgstr "Betrag in"
 
-#: public/views/preferencesLanguage.html
-msgid "Applying changes"
-msgstr "Änderungen anwenden"
-
 #: src/js/controllers/backup.js
 msgid "Are you sure you want to delete the backup words?"
 msgstr "Sollen diese Sicherungsworte wirklich gelöscht werden?"
@@ -200,6 +215,12 @@ msgstr "Guthaben nach Adresse"
 msgid "Before receiving funds, it is highly recommended you backup your wallet keys."
 msgstr "Bevor Beträge empfangen werden, wird dringend empfohlen die Wallet Schlüssel zu sichern."
 
+#: public/views/create.html
+#: public/views/import.html
+#: public/views/join.html
+msgid "BIP32 path for address derivation"
+msgstr ""
+
 #: public/views/walletHome.html
 msgid "Bitcoin address"
 msgstr "Bitcoinadresse"
@@ -235,6 +256,7 @@ msgstr "Der eingesetzte Browser wird nicht unterstützt"
 #: public/views/copayers.html
 #: public/views/walletHome.html
 #: public/views/modals/confirmation.html
+#: public/views/modals/destination-address.html
 #: src/js/services/confirmDialog.js
 #: src/js/controllers/copayers.js
 #: src/js/controllers/preferencesDelete.js
@@ -262,17 +284,16 @@ msgstr "Änderung der Aliases hat nur Auswirkungen auf den lokalen Namen des Wal
 msgid "Choose a backup file from your computer"
 msgstr "Bitte eine Sicherungsdatei vom Computer wählen"
 
-#: public/views/modals/wallets.html
-msgid "Choose a wallet to send funds"
-msgstr "Wählen Sie eine Zahlungsmethode, um Geld zu senden"
+#: public/views/preferencesInformation.html
+msgid "Clear history"
+msgstr ""
 
 #: public/views/includes/topbar.html
 #: public/views/modals/advancedSend.html
-#: public/views/modals/copayers.html
 #: public/views/modals/customized-amount.html
+#: public/views/modals/destination-address.html
 #: public/views/modals/paypro.html
 #: public/views/modals/scanner.html
-#: public/views/modals/wallets.html
 msgid "Close"
 msgstr "Schließen"
 
@@ -319,7 +340,7 @@ msgstr "Copayer hat schon für diesen Zahlungsvorschlag angestimmt"
 msgid "Copayer data mismatch"
 msgstr "Copayer Datenkonflikt"
 
-#: public/views/modals/copayers.html
+#: public/views/preferencesInformation.html
 msgid "Copayers"
 msgstr "Copayer"
 
@@ -487,6 +508,12 @@ msgstr "WÖRTER LÖSCHEN"
 msgid "Deleting payment"
 msgstr "Zahlung löschen"
 
+#: public/views/create.html
+#: public/views/import.html
+#: public/views/join.html
+msgid "Derivation Path"
+msgstr ""
+
 #: public/views/preferencesInformation.html
 msgid "Derivation Strategy"
 msgstr "Ableitungstrategie"
@@ -510,6 +537,10 @@ msgstr "Den privaten Schlüssel nicht einbeziehen"
 msgid "Don't see your language on Crowdin? Contact the Owner on Crowdin! We'd love to support your language."
 msgstr "Wird deine Sprache auf Crowdin nicht angezeigt? Kontaktiere den Support von Crowdin, denn wir würden deine Sprache gerne hinzufügen."
 
+#: public/views/modals/destination-address.html
+msgid "Done"
+msgstr ""
+
 #: public/views/export.html
 msgid "Download"
 msgstr "Herunterladen"
@@ -522,6 +553,10 @@ msgstr "CSV-Datei herunterladen"
 msgid "Economy"
 msgstr "Wirtschaftlich"
 
+#: public/views/modals/destination-address.html
+msgid "Edit"
+msgstr ""
+
 #: public/views/importLegacy.html
 msgid "Email"
 msgstr "E-Mail"
@@ -533,6 +568,10 @@ msgstr "E-Mail für Wallet Benachrichtigungen"
 #: public/views/preferences.html
 msgid "Email Notifications"
 msgstr "Benachrichtigunen per E-Mail"
+
+#: src/js/services/bwsError.js
+msgid "Empty addresses limit reached. New addresses cannot be generated."
+msgstr ""
 
 #: src/js/controllers/export.js
 msgid "Encrypted export file saved"
@@ -564,21 +603,17 @@ msgstr "Fehler beim Import des Wallets"
 msgid "Expires"
 msgstr "Gültig bis"
 
-#: public/views/preferencesAdvanced.html
-msgid "Export"
-msgstr "Export"
-
 #: public/views/export.html
 msgid "Export options"
 msgstr "Export-Optionen"
 
+#: public/views/preferencesAdvanced.html
+msgid "Export Wallet"
+msgstr ""
+
 #: public/views/preferencesInformation.html
 msgid "Extended Public Keys"
 msgstr "Erweiterte öffentliche Schlüssel"
-
-#: public/views/includes/walletInfo.html
-msgid "External Private Key:"
-msgstr "Externer privater Schlüssel:"
 
 #: public/views/export.html
 msgid "Failed to export"
@@ -654,7 +689,7 @@ msgstr "Deutsch"
 msgid "GET STARTED"
 msgstr "JETZT STARTEN"
 
-#: public/views/modals/wallets.html
+#: public/views/modals/destination-address.html
 msgid "Getting address for wallet {{selectedWalletName}} ..."
 msgstr "Ermittle die Adresse des Wallets {{selectedWalletName}}..."
 
@@ -672,10 +707,6 @@ msgstr "Griechisch"
 
 #: public/views/preferences.html
 msgid "Hardware wallet"
-msgstr "Hardware-Wallet"
-
-#: public/views/import.html
-msgid "Hardware Wallet"
 msgstr "Hardware-Wallet"
 
 #: public/views/import.html
@@ -715,17 +746,9 @@ msgstr "Import"
 msgid "Import backup"
 msgstr "Importiere Sicherung"
 
-#: public/views/import.html
-msgid "Import from Ledger"
-msgstr "Import von Ledger"
-
 #: public/views/importLegacy.html
 msgid "Import from the Cloud?"
 msgstr "Aus der Cloud importieren"
-
-#: public/views/import.html
-msgid "Import from TREZOR"
-msgstr "Import von TREZOR"
 
 #: public/views/import.html
 msgid "Import here"
@@ -751,6 +774,11 @@ msgstr "Die Autoren der Software, Mitarbeiter und Partner von Bitpay, Inhaber vo
 msgid "Incorrect address network"
 msgstr "Falsche Netzwerk-Adresse"
 
+#: public/views/walletHome.html
+msgid "Initial transaction history synchronization can take some minutes for wallets with many transactions.<br>\n"
+"          Please stand by."
+msgstr ""
+
 #: src/js/services/bwsError.js
 msgid "Insufficient funds"
 msgstr "Nicht ausreichendes Guthaben"
@@ -763,9 +791,25 @@ msgstr "Nicht ausreichendes Guthaben für die Gebühr"
 msgid "Invalid"
 msgstr "Ungültig"
 
+#: src/js/controllers/create.js
+#: src/js/controllers/import.js
+#: src/js/controllers/join.js
+msgid "Invalid account number"
+msgstr ""
+
 #: src/js/services/bwsError.js
 msgid "Invalid address"
 msgstr "Ungültige Adresse"
+
+#: src/js/controllers/create.js
+#: src/js/controllers/import.js
+#: src/js/controllers/join.js
+msgid "Invalid derivation path"
+msgstr ""
+
+#: src/js/controllers/index.js
+msgid "Invalid Touch ID"
+msgstr ""
 
 #: src/js/controllers/copayers.js
 msgid "Invitation to share a Copay Wallet"
@@ -803,6 +847,10 @@ msgstr "Teilnahme am Wallet einrichten..."
 #: src/js/services/bwsError.js
 msgid "Key already associated with an existing wallet"
 msgstr "Schlüssel ist bereits mit einem existierenden Wallet verbunden"
+
+#: public/views/modals/destination-address.html
+msgid "Label"
+msgstr ""
 
 #: public/views/preferences.html
 msgid "Language"
@@ -844,8 +892,8 @@ msgstr "Sende eine Zahlung an"
 msgid "me"
 msgstr "Ich"
 
+#: public/views/preferencesInformation.html
 #: public/views/includes/copayers.html
-#: public/views/modals/copayers.html
 #: public/views/modals/tx-details.html
 #: public/views/modals/txp-details.html
 msgid "Me"
@@ -864,16 +912,12 @@ msgid "Message"
 msgstr "Nachricht"
 
 #: public/views/walletHome.html
-msgid "More"
-msgstr "Mehr"
-
-#: public/views/walletHome.html
 msgid "Moved"
 msgstr "Verschoben"
 
-#: public/views/walletHome.html
-msgid "Multisignature wallet"
-msgstr "Gemeinschaftliches Wallet"
+#: public/views/join.html
+msgid "Multiple wallets accounts are supported on the device simultaneously. Select which account should be used for this wallet"
+msgstr ""
 
 #: public/views/walletHome.html
 msgid "My Bitcoin address"
@@ -891,9 +935,14 @@ msgstr "Netzwerkverbindungsfehler"
 msgid "New Payment Proposal"
 msgstr "Neue Zahlungsvorschlag"
 
-#: public/views/includes/walletInfo.html
-msgid "No Private key"
-msgstr "Kein privater Schlüssel"
+#: src/js/controllers/create.js
+#: src/js/controllers/join.js
+msgid "New Random Seed"
+msgstr ""
+
+#: public/views/import.html
+msgid "No hardware wallets supported on this device"
+msgstr ""
 
 #: public/views/walletHome.html
 msgid "No transactions yet"
@@ -909,6 +958,7 @@ msgstr "Nicht berechtigt"
 
 #: public/views/walletHome.html
 #: public/views/modals/customized-amount.html
+#: public/views/modals/destination-address.html
 msgid "Not valid"
 msgstr "Nicht gültig"
 
@@ -948,10 +998,6 @@ msgstr "Teilnehmer"
 #: public/views/paperWallet.html
 msgid "Passphrase"
 msgstr "Passphrase"
-
-#: public/views/paperWallet.html
-msgid "Passphrase (if you have one)"
-msgstr "Passphrase (falls vorhanden)"
 
 #: public/views/import.html
 #: public/views/importLegacy.html
@@ -1152,6 +1198,10 @@ msgstr "Zahlung ablehenen"
 msgid "Release Information"
 msgstr "Information zur Veröffentlichung"
 
+#: public/views/modals/destination-address.html
+msgid "Remove"
+msgstr ""
+
 #: public/views/export.html
 #: public/views/includes/password.html
 msgid "Repeat password"
@@ -1163,8 +1213,8 @@ msgid "Request a specific amount"
 msgstr "Einen bestimmten Betrag anfordern"
 
 #: public/views/preferences.html
-msgid "Request Password for Spending Funds"
-msgstr "Passwort für Beträge anfordern"
+msgid "Request Password"
+msgstr ""
 
 #: src/js/controllers/walletHome.js
 msgid "Requesting Ledger Wallet to sign"
@@ -1189,6 +1239,7 @@ msgstr "Pусский"
 #: public/views/preferencesAlias.html
 #: public/views/preferencesBwsUrl.html
 #: public/views/preferencesEmail.html
+#: public/views/modals/destination-address.html
 msgid "Save"
 msgstr "Speichern"
 
@@ -1196,9 +1247,13 @@ msgstr "Speichern"
 msgid "Saving preferences..."
 msgstr "Speichere Einstellungen"
 
-#: public/views/preferencesAdvanced.html
+#: public/views/preferencesInformation.html
 msgid "Scan addresses for funds"
 msgstr "Adresse auf neue Beträge überprüfen"
+
+#: public/views/preferences.html
+msgid "Scan Fingerprint"
+msgstr ""
 
 #: src/js/services/notificationsService.js
 msgid "Scan Finished"
@@ -1211,6 +1266,10 @@ msgstr "Überprüfung wurde mit Fehlern beendet"
 #: public/views/paperWallet.html
 msgid "Scan Wallet Funds"
 msgstr "Prüfe Beträge des Wallets"
+
+#: src/js/controllers/index.js
+msgid "Scan your fingerprint please"
+msgstr ""
 
 #: public/views/paperWallet.html
 msgid "Scanning wallet funds..."
@@ -1251,13 +1310,13 @@ msgstr "Selbstsigniertes Zertifikat"
 msgid "Send"
 msgstr "Senden"
 
+#: public/views/preferencesInformation.html
+msgid "Send addresses by email"
+msgstr ""
+
 #: public/views/walletHome.html
 msgid "Send All"
 msgstr "Alle senden"
-
-#: public/views/preferencesInformation.html
-msgid "Send all by email"
-msgstr "Alle per E-Mail versenden"
 
 #: public/views/export.html
 #: public/views/preferencesLogs.html
@@ -1288,6 +1347,10 @@ msgstr "Sitzungsprotokoll"
 msgid "SET"
 msgstr "EINRICHTEN"
 
+#: public/views/preferencesBwsUrl.html
+msgid "Set default url"
+msgstr ""
+
 #: public/views/export.html
 msgid "Set up a Export Password"
 msgstr "Einrichten eines Kennworts für den Export"
@@ -1299,10 +1362,6 @@ msgstr "Passwort einrichten"
 #: public/views/preferencesEmail.html
 msgid "Setting up email notifications could weaken your privacy, if the wallet service provider is compromised. Information available to an attacker would include your wallet addresses and its balance, but no more."
 msgstr "Das Einrichten einer E-Mail Benachrichtigung schwächt die Privatsphäre, wenn der Wallet Service Anbieter kompromittiert wurde. Der Angreifer  kann jedoch nur Wallet Adresse und Guthaben erfahren, mehr nicht."
-
-#: public/views/preferences.html
-msgid "settings"
-msgstr "Einstellungen"
 
 #: public/views/walletHome.html
 #: public/views/modals/customized-amount.html
@@ -1322,6 +1381,7 @@ msgid "Share this wallet address to receive payments. To protect your privacy, n
 msgstr "Um Zahlungen zu empfangen, die hier angegebene Adresse teilen. Um die Privatsphäre zu schützen wird nach jeder Nutzung eine neue Adresse erzeugt."
 
 #: public/views/create.html
+#: public/views/import.html
 msgid "Shared Wallet"
 msgstr "Wallet teilen"
 
@@ -1331,6 +1391,10 @@ msgstr "Wallet teilen"
 #: public/views/walletHome.html
 msgid "Show advanced options"
 msgstr "Erweiterte Optionen anzeigen"
+
+#: public/views/walletHome.html
+msgid "Show all"
+msgstr ""
 
 #: public/views/backup.html
 msgid "Show Wallet Seed"
@@ -1352,10 +1416,10 @@ msgstr "SICHERUNG ÜBERSPRINGEN"
 msgid "Spanish"
 msgstr "Español"
 
-#: public/views/create.html
-#: public/views/join.html
-msgid "Specify your wallet seed"
-msgstr "Wallet-Seed eingeben"
+#: src/js/controllers/create.js
+#: src/js/controllers/join.js
+msgid "Specify Seed..."
+msgstr ""
 
 #: src/js/services/bwsError.js
 msgid "Spend proposal is not accepted"
@@ -1364,6 +1428,10 @@ msgstr "Zahlungsvorschlag wurde nicht akzeptiert"
 #: src/js/services/bwsError.js
 msgid "Spend proposal not found"
 msgstr "Zahlungsvorschlag wurde nicht gefunden"
+
+#: public/views/preferences.html
+msgid "Spending Restrictions"
+msgstr ""
 
 #: public/views/preferences.html
 msgid "Still not done"
@@ -1394,7 +1462,6 @@ msgid "Terms of Use"
 msgstr "Nutzungsbedingungen"
 
 #: public/views/create.html
-#: public/views/import.html
 msgid "Testnet"
 msgstr "Testnet"
 
@@ -1482,7 +1549,7 @@ msgstr "Voraussetzungen um dieses <b>geteilte</b> {{index.m}}-{{index.n}} Wallet
 
 #: public/views/disclaimer.html
 msgid "To the fullest extent permitted by law, this software is provided “as is” and no representations or warranties can be made of any kind, express or implied, including but not limited to the warranties of merchantability, fitness or a particular purpose and noninfringement."
-msgstr "To the fullest extent permitted by law, this software is provided “as is” and no representations or warranties can be made of any kind, express or implied, including but not limited to the warranties of merchantability, fitness or a particular purpose and noninfringement."
+msgstr ""
 
 #: public/views/walletHome.html
 msgid "too long!"
@@ -1507,6 +1574,14 @@ msgstr "Transaktion"
 #: src/js/services/bwsError.js
 msgid "Transaction already broadcasted"
 msgstr "Transaktion wurde bereits übermittelt"
+
+#: public/views/preferencesInformation.html
+msgid "Transaction history"
+msgstr ""
+
+#: public/views/walletHome.html
+msgid "Transactions<br> Downloaded"
+msgstr ""
 
 #: public/views/translators.html
 msgid "Translation Credits"
@@ -1540,16 +1615,6 @@ msgstr "Nicht vesendete Transaktionen"
 #: public/views/walletHome.html
 msgid "Updating Wallet..."
 msgstr "Wallet aktualisieren..."
-
-#: public/views/create.html
-#: public/views/join.html
-msgid "Use Ledger hardware wallet"
-msgstr "Ledger Hardware-Wallet benutzen"
-
-#: public/views/create.html
-#: public/views/join.html
-msgid "Use TREZOR hardware wallet"
-msgstr "TREZOR Hardware-Wallet benutzen"
 
 #: public/views/preferences.html
 #: public/views/walletHome.html
@@ -1674,6 +1739,10 @@ msgstr "Wallet-Seed ist nicht verfügbar. Dieser kann noch über Erweiterter Exp
 #: src/js/services/bwsError.js
 msgid "Wallet service not found"
 msgstr "Wallet-Dienst nicht gefunden"
+
+#: public/views/modals/destination-address.html
+msgid "Wallets"
+msgstr ""
 
 #: public/views/walletHome.html
 msgid "WARNING: Backup needed"
