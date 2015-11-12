@@ -13,7 +13,7 @@ Copay is a Multisig HD Wallet. Copay app holds the extended private keys for the
  * Wallet Backup (WB): Exported data from Copay, containing an AES encrypted JSON with many wallet parameters (like extended private key, wallet name, extended public keys of copayers, etc. See #export-format). This data can be created from Copay v1.2+ (Settings -> Export) and it was the default backup format on previous Copay versions. WB can be a file (standard format for Copay desktop versions) or a text (standard for Copay mobile versions).
 
 ### Backup recovery cases
- * Case 1: Loss of device holding the wallet
+ * Case 1: Lost of device holding the wallet
  * Case 2: Change to a new Bitcore Wallet Service (BWS)
  * Case 3: Lost device + new Bitcore Wallet Service
 
@@ -72,3 +72,21 @@ Copay is a Multisig HD Wallet. Copay app holds the extended private keys for the
       - Wallet should be recreated and funds should be accesable 
       
       In this case, Copayers will not be able to decrypt the 'notes' field on the new Spend Proposals, because the shared secret stored at the WD is not longer known by other copayers.
+
+
+### Hardware wallets
+
+In case hardware based wallet is created and then the hardware device is lost, it is possible, using Copay, to access the funds in case the hardware device seed (mnemonic) is available.
+
+In order to recover a hardware wallet you need to enter the seed in
+   Create or the Join wallet  -> Advance options -> specify seed. 
+   
+You can select the account you need to import and select if the wallet is multisig or not thru the `derivation path`: Copay uses `m/48'` for multisignature hardware wallets, and `m/44'` for all the other wallet types. The format is the following:
+
+  m/XX'/<coin_type>'/<account'>
+  
+For harward wallets, `coin_type` is always `0`.
+
+For example, if you need to import a non-multisignatured wallet, account 8, you should enter: `m/44'/0'/8'`
+Note that TREZOR use 1-based account numbers, so if your are trying for example to recover TREZOR multisig account #8, you should enter `m/48'/0'/7'`.
+
