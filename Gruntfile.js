@@ -178,7 +178,7 @@ module.exports = function(grunt) {
       rename_ios_plist: {
         files: [{
           expand: true,
-          cwd: 'cordova/ios',
+          cwd: 'cordova/ios/',
           src: 'App-Info.plist',
           dest: 'cordova/ios/',
           rename: function(dest, src) {
@@ -250,7 +250,7 @@ module.exports = function(grunt) {
         },
       }
     },
-    'replace': {
+    replace: {
       build_config: {
         files: {
           'cordova/android/AndroidManifest.xml': 'build-config-templates/cordova/android/AndroidManifest.xml',
@@ -355,7 +355,17 @@ module.exports = function(grunt) {
     buildBrandConfig('./brands/' + brand + '/config.json');
   });
 
-  grunt.registerTask('default', ['nggettext_compile', 'buildBrand', 'browserify', 'concat', 'copy:icons', 'copy:theme', 'string-replace:build_config', 'copy:rename_ios_plist', 'copy:android_res', 'copy:ios_icons', 'copy:ios_splash', 'copy:wp_assets', 'copy:wp_imgs']);
+  grunt.registerTask('default', [
+    'nggettext_compile',
+    'buildBrand',
+    'browserify',
+    'concat',
+    'copy:theme',
+    'replace:build_config',
+    'copy:rename_ios_plist',
+    'exec:rm_temp_files'
+  ]);
+
   grunt.registerTask('prod', ['default', 'uglify']);
   grunt.registerTask('translate', ['nggettext_extract']);
   grunt.registerTask('test', ['karma:unit']);
