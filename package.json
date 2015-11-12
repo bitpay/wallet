@@ -1,8 +1,8 @@
 {
-  "name": "%APP-SHORT-NAME%",
-  "description": "%APP-DESCRIPTION%",
-  "author": "%APP-PUBLISHER%",
-  "version": "%APP-VERSION%",
+  "name": "Copay",
+  "description": "A secure bitcoin wallet for friends and companies.",
+  "author": "BitPay, Inc.",
+  "version": "1.5.0",
   "keywords": [
     "wallet",
     "copay",
@@ -12,7 +12,7 @@
   ],
   "main": "public/index.html",
   "window": {
-    "title": "%APP-SHORT-NAME% - %APP-DESCRIPTION%",
+    "title": "Copay - A secure bitcoin wallet for friends and companies.",
     "icon": "./public/img/icons/icon-256.png",
     "toolbar": false,
     "show": true,
@@ -30,7 +30,7 @@
     "plugin": false
   },
   "id": "jid1-x7bV5evAaI1P9Q",
-  "homepage": "%APP-PUBLISHER-WEBSITE%",
+  "homepage": "https://copay.io",
   "license": "MIT",
   "repository": {
     "url": "git://github.com/bitpay/copay.git",
@@ -50,7 +50,7 @@
     "grunt-contrib-copy": "^0.8.1",
     "grunt-contrib-uglify": "^0.9.2",
     "grunt-contrib-watch": "^0.6.1",
-    "grunt-contrib-replace": "^1.2.0",
+    "grunt-replace": "^0.11.0",
     "grunt-exec": "^0.4.6",
     "shelljs": "^0.3.0"
   },
