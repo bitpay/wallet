@@ -1,4 +1,6 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('preferencesAbout',
-  function() {});
+  function($scope) {
+    $scope.appShortName = window.appShortName;
+  });

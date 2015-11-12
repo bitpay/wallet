@@ -1,0 +1,46 @@
+{
+  "header": {
+    "schemaVersion": "1",
+    "version": "1.0",
+    "name": "Mustard",
+    "description": "",
+    "author": "BitPay, Inc.",
+    "date": "11/1/2015",
+    "galleryImage": "<resource-0>",
+    "previewImage": "<resource-1>",
+    "product": {
+      "id": "0",
+      "price": "$0.00"
+    }
+  },
+  "resources": [
+    "<skin-path>/gallery.png",
+    "<skin-path>/preview.png"
+  ],
+  "navBarTitleColor": "#FADA58",
+  "navBarBackground": "#FFFFFF",
+  "navBarButtonTextColor": "#8597A7",
+  "navBarButtonIconColor": "#8597A7",
+  "tabBarBackground": "#2C3E50",
+  "tabBarSelectedBackground": "#122232",
+  "avatarIsWalletName": "true",
+  "avatarBorderSmall": "none",
+  "avatarBorderBig": "3px solid #FFFFFF",
+  "avatarBackground": "#FADA58",
+  "homeFullBackground": "none",
+  "homeTopTextColor": "#FFFFFF",
+  "homeTopBackground": "#FADA58",
+  "homeTopBorderBottom": "none",
+  "homeMiddleTextColor": "#2C3E50",
+  "homeMiddleBackground": "none",
+  "homeMiddleBorderBottom": "1px solid #E9E9EC",
+  "homeBottomTextColor": "#2C3E50",
+  "homeBottomBackground": "none",
+  "homePreferencesButtonColor": "#8597A7",
+  "buttonBackground": "#FADA58",
+  "buttonTextColor": "#FFFFFF",
+  "progressBackground": "#FADA58",
+  "progressTextColor": "#FFFFFF",
+  "iconBackground": "#FADA58",
+  "textHighlightColor": "#FADA58"
+}

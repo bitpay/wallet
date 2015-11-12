@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="%APP-PACKAGE-NAME%"
+  version="%APP-VERSION%"
+  android-versionCode="%ANDROID-VERSION-CODE%"
+  ios-CFBundleVersion="%APP-VERSION%">
+    <name>%APP-SHORT-NAME%</name>
+    <description>
+      %APP-DESCRIPTION%
+    </description>
+    <author email="%APP-PUBLISHER-EMAIL%" href="%APP-PUBLISHER-WEBSITE%">
+        %APP-PUBLISHER%
+    </author>
+    <content src="index.html" />
+    <access origin="*" />
+    <preference name="AndroidPersistentFileLocation" value="Internal" />
+    <preference name="iosPersistentFileLocation" value="Library" />
+    <preference name="DisallowOverscroll" value="true"/>
+    <preference name="HideKeyboardFormAccessoryBar" value="true"/>
+    <preference name="SplashScreen" value="%APP-SPLASH-SCREEN%" />
+    <preference name="SplashScreenDelay" value="10000" />
+    <preference name="BackgroundColor" value="#2C3E50" />
+    <preference name="StatusBarOverlaysWebView" value="false" />
+    <preference name="StatusBarBackgroundColor" value="#2C3E50" />
+    <preference name="StatusBarStyle" value="lightcontent" />
+    <preference name="BackupWebStorage" value="none"/>
+    <preference name="windows-target-version" value="8.1"/>
+    <preference name="Orientation" value="portrait" />
+</widget>
