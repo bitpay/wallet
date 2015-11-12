@@ -18,6 +18,9 @@ Binary versions of Copay are available for download at [Copay.io](https://copay.
 - Synchronous access across all major mobile and desktop platforms
 - Payment protocol (BIP70-BIP73) support: easily-identifiable payment requests and verifiable, secure bitcoin payments
 - Support for over 150 currency pricing options and unit denomination in BTC or bits
+- Mnemonic (BIP39) support for wallet backups
+- Paper wallet sweep support (BIP38)
+- Hardware wallet support (Trezor and Ledger) (only in Chrome App version)
 - Email notifications for payments and transfers
 - Customizable wallet naming and background colors
 - Multiple languages supported
@@ -137,7 +140,7 @@ For more information regarding how addresses are generated using this procedure,
 
 ## Copay Backups and Recovery
 
-Copay v1.2 use BIP39 mnemonics for backing up wallets.  The standard BIP44 is used for wallet address derivation. Multisig wallets use P2SH addresses, while non-multisig wallets use P2PKH. 
+Since v1.2 Copay uses BIP39 mnemonics for backing up wallets.  The standard BIP44 is used for wallet address derivation. Multisig wallets use P2SH addresses, while non-multisig wallets use P2PKH. 
 
 Information about backup and recovery procedures is available at https://github.com/bitpay/copay/blob/master/backupRecovery.md
 
@@ -159,11 +162,13 @@ Depending on the key `derivationStrategy`, addresses are derived using
 |  <1.2  | All  |  BIP45 | P2SH   |
 |  >=1.2 | Non-multisig  | BIP44  | P2PKH   |
 | >=1.2  | Multisig  |  BIP44 |  P2SH   |
-
+| >=1.5  | Multisig Hardware wallets  |  BIP44 (root m/48') |  P2SH   |
 
 Using a tool like [Bitcore PlayGround](http://bitcore.io/playground) all wallet addresses can be generated. (TIP: Use the `Address` section for P2PKH address type wallet and `Multisig Address` for P2SH address type wallets). For multisig addresses, the required number of signatures (key `m` on the export) is also needed to recreate the addresses.
 
 BIP45 note: All addresses generated at BWS with BIP45 use the 'shared cosigner index' (2147483647) so Copay address indexes look like: `m/45'/2147483647/0/x` for main addresses and `m/45'/2147483647/1/y` for change addresses.
+
+Since version 1.5, Copay uses the root `m/48'` for hardware multisignature wallets. This was coordinated with Ledger and Trezor teams. While the derivation path format is still similar to BIP44, the root was in order to indicate that these wallets are not discoverable by scanning addresses for funds. Address generation for multisignature wallets needs the other's copayers extended public keys.
 
 
 ## Bitcore Wallet Service
