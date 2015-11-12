@@ -1248,7 +1248,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   });
 
   lodash.each(['NewTxProposal', 'TxProposalFinallyRejected', 'TxProposalRemoved', 'NewOutgoingTxByThirdParty',
-    'Local/NewTxProposal', 'Local/TxProposalAction', 'ScanFinished', 'Local/GlideraTx'
+    'Local/NewTxProposal', 'Local/TxProposalAction', 'Local/GlideraTx'
   ], function(eventName) {
     $rootScope.$on(eventName, function(event, untilItChanges) {
       self.updateAll({
@@ -1260,9 +1260,12 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   });
 
   $rootScope.$on('ScanFinished', function() {
-    console.log('Scan Finished. Updating history');
+    $log.debug('Scan Finished. Updating history');
     storageService.removeTxHistory(self.walletId, function() {
-      self.updateHistory();
+      self.updateAll({
+        walletStatus: null,
+        triggerTxUpdate: true,
+      });
     });
   });
 
