@@ -1,12 +1,31 @@
 module.exports = function(grunt) {
 
+  // To add a new brand configuration:
+  // 
+  // - Create a brand configuration at /brands/<my-brand>/config.json.
+  // - Create the brand themes and skins at /brands/<my-brand>/themes.
+  // 
+  // Usage: grunt --target=<my-brand>
+  // 
+  // Examples:
+  // 
+  // grunt
+  // grunt --target=copay
+  // grunt --target=mtb
+  // 
+
+  var fs = require('fs');
+  var shell = require('shelljs');
+  var brand = grunt.option('target') || 'copay';
+
+  console.log('INFO: Configuring for brand \'' + brand + '\'');
+
+  // Brand Configuration
+  var config = grunt.file.readJSON('./brands/' + brand + '/config.json');
+
   // Project Configuration
   grunt.initConfig({
-    pkg: grunt.file.readJSON('package.json'),
     exec: {
-      version: {
-        command: 'node ./util/version.js'
-      },
       clear: {
         command: 'rm -Rf bower_components node_modules'
       },
@@ -76,7 +95,7 @@ module.exports = function(grunt) {
           'src/js/services/*.js',
           'src/js/controllers/*.js',
           'src/js/translations.js',
-          'src/js/version.js',
+          'src/js/brand.js',
           'src/js/init.js',
           'src/js/trezor-url.js',
           'bower_components/trezor-connect/login.js'
@@ -155,6 +174,25 @@ module.exports = function(grunt) {
           flatten: true,
           filter: 'isFile'
         }, ],
+      },
+      rename_ios_plist: {
+        files: [{
+          expand: true,
+          cwd: 'cordova/ios',
+          src: 'App-Info.plist',
+          dest: 'cordova/ios/',
+          rename: function(dest, src) {
+            return dest + config.appShortName.replace(/ +/g, '') + '-Info.plist';
+          }
+        }],
+      },
+      theme: {
+        files: [{
+          expand: true,
+          cwd: 'brands/' + brand + '/themes/',
+          src: ['**'],
+          dest: 'public/themes/'
+        }]
       }
     },
     karma: {
@@ -211,8 +249,94 @@ module.exports = function(grunt) {
           'angular-bitcore-wallet-client/angular-bitcore-wallet-client.js': ['angular-bitcore-wallet-client/index.js']
         },
       }
+    },
+    'replace': {
+      build_config: {
+        files: {
+          'cordova/android/AndroidManifest.xml': 'build-config-templates/cordova/android/AndroidManifest.xml',
+          'cordova/android/project.properties': 'build-config-templates/cordova/android/project.properties',
+          'cordova/build.sh': 'build-config-templates/cordova/build.sh',
+          'cordova/config.xml': 'build-config-templates/cordova/config.xml',
+          'cordova/ios/App-Info.plist': 'build-config-templates/ios/App-Info.plist',
+          'cordova/wp/MainPage.xaml': 'build-config-templates/cordova/wp/MainPage.xaml',
+          'cordova/wp/Package.appxmanifest': 'build-config-templates/cordova/wp/Package.appxmanifest',
+          'cordova/wp/Properties/WMAppManifest.xml': 'build-config-templates/cordova/wp/Properties/WMAppManifest.xml',
+          'Makefile': 'build-config-templates/Makefile',
+          'package.json': 'build-config-templates/package.json',
+          'webkitbuilds/.desktop': 'build-config-templates/webkitbuilds/.desktop',
+          'webkitbuilds/build-osx.sh': 'build-config-templates/webkitbuilds/build-osx.sh',
+          'webkitbuilds/setup-win32.iss': 'build-config-templates/webkitbuilds/setup-win32.iss',
+          'webkitbuilds/setup-win64.iss': 'build-config-templates/webkitbuilds/setup-win64.iss'
+        },
+        options: {
+          mode: 0755,
+          patterns: [
+            { match: /%BRAND-ID%/g, replacement: brandId },
+            { match: /%APP-PACKAGE-NAME%/g, replacement: brandConfig.packageName },
+            { match: /%APP-SHORT-NAME%/g, replacement: brandConfig.shortName },
+            { match: /%APP-SHORT-CAMEL-NAME%/g, replacement: brandConfig.shortName.replace(/ +/g, '') },
+            { match: /%APP-LONG-NAME%/g, replacement: brandConfig.longName },
+            { match: /%APP-EXE-NAME%/g, replacement: brandConfig.exeName },
+            { match: /%APP-DESCRIPTION%/g, replacement: brandConfig.description },
+            { match: /%APP-PUBLISHER%/g, replacement: brandConfig.publisher },
+            { match: /%APP-PUBLISHER-WEBSITE%/g, replacement: brandConfig.publisherWebsite },
+            { match: /%APP-PUBLISHER-EMAIL%/g, replacement: brandConfig.publisherEmail },
+            { match: /%APP-VERSION%/g, replacement: brandConfig.version },
+            { match: /%ANDROID-VERSION-CODE%/g, replacement: brandConfig.androidVersionCode }
+          ]
+        }
+      }
     }
   });
+
+  getCommitHash = function() {
+    //exec git command to get the hash of the current commit
+    //git rev-parse HEAD
+    var hash = shell.exec('git rev-parse HEAD', {
+      silent: true
+    }).output.trim().substr(0, 7);
+    return hash;
+  };
+
+  getAllFoldersFromFolder = function(dir) {
+    var results = [];
+    var path;
+    fs.readdirSync(dir).forEach(function(item) {
+      path = dir + '/' + item;
+      var stat = fs.statSync(path);
+      if (stat && stat.isDirectory()) {
+        results.push(item);
+      }
+    });
+    return results;
+  };
+
+  buildBrandConfig = function(jsonFile) {
+    var content = '';
+    var config = JSON.parse(fs.readFileSync(jsonFile, 'utf8'));
+    config.baseTheme = {};
+    config.baseTheme.theme = config.theme;
+    config.baseTheme.skins = getAllFoldersFromFolder('./brands/' + brand + '/themes/' + config.baseTheme.theme + '/skins/');
+    content += 'window.appVersion = ' + JSON.stringify(config.appVersion,null,2) + ';\n';
+    content += 'window.appCommitHash = ' + JSON.stringify(getCommitHash(),null,2) + ';\n';
+    content += 'window.androidVersionCode = ' + JSON.stringify(config.androidVersionCode,null,2) + ';\n';
+    content += 'window.appShortName = ' + JSON.stringify(config.appShortName,null,2) + ';\n';
+    content += 'window.appLongName = ' + JSON.stringify(config.appLongName,null,2) + ';\n';
+    content += 'window.appDescriptionappDescription = ' + JSON.stringify(config.appDescription,null,2) + ';\n';
+    content += 'window.appPublisher = ' + JSON.stringify(config.appPublisher,null,2) + ';\n';
+    content += 'window.appPublisherWebsite = ' + JSON.stringify(config.appPublisherWebsite,null,2) + ';\n';
+    content += 'window.appPublisherEmail = ' + JSON.stringify(config.appPublisherEmail,null,2) + ';\n';
+    content += 'window.appPackageName = ' + JSON.stringify(config.appPackageName,null,2) + ';\n';
+    content += 'window.appExeName = ' + JSON.stringify(config.appExeName,null,2) + ';\n';
+    content += 'window.appSplashScreen = ' + JSON.stringify(config.appSplashScreen,null,2) + ';\n';
+    content += 'window.disclaimer = ' + JSON.stringify(config.disclaimer,null,2) + ';\n';
+    content += 'window.baseTheme = ' + JSON.stringify(config.baseTheme,null,2) + ';\n';
+    content += 'window.glidera_CLIENT_ID = ' + JSON.stringify(config.glidera_CLIENT_ID,null,2) + ';\n';
+    content += 'window.glidera_CLIENT_SECRET = ' + JSON.stringify(config.glidera_CLIENT_SECRET,null,2) + ';\n';
+    content += 'window.glideraCordova_CLIENT_ID = ' + JSON.stringify(config.glideraCordova_CLIENT_ID,null,2) + ';\n';
+    content += 'window.glideraCordova_CLIENT_SECRET = ' + JSON.stringify(config.glideraCordova_CLIENT_SECRET,null,2) + ';\n';
+    fs.writeFileSync("./src/js/brand.js", content);
+  };
 
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-copy');
@@ -225,11 +349,17 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-karma-coveralls');
   grunt.loadNpmTasks('grunt-node-webkit-builder');
   grunt.loadNpmTasks('grunt-contrib-compress');
+  grunt.loadNpmTasks('grunt-replace');
 
-  grunt.registerTask('default', ['nggettext_compile', 'exec:version', 'browserify', 'concat', 'copy:icons']);
+  grunt.registerTask('buildBrand', 'Build the brand configuration.', function() {
+    buildBrandConfig('./brands/' + brand + '/config.json');
+  });
+
+  grunt.registerTask('default', ['nggettext_compile', 'buildBrand', 'browserify', 'concat', 'copy:icons', 'copy:theme', 'string-replace:build_config', 'copy:rename_ios_plist', 'copy:android_res', 'copy:ios_icons', 'copy:ios_splash', 'copy:wp_assets', 'copy:wp_imgs']);
   grunt.registerTask('prod', ['default', 'uglify']);
   grunt.registerTask('translate', ['nggettext_extract']);
   grunt.registerTask('test', ['karma:unit']);
   grunt.registerTask('test-coveralls', ['karma:prod', 'coveralls']);
   grunt.registerTask('desktop', ['prod', 'nodewebkit', 'copy:linux', 'compress:linux32', 'compress:linux64', 'exec:osx32', 'exec:osx64']);
+
 };

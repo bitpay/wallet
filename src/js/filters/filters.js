@@ -26,6 +26,11 @@ angular.module('copayApp.filters', [])
       });
     }
   })
+  .filter("sanitize", ['$sce', function($sce) {
+    return function(htmlCode) {
+      return $sce.trustAsHtml(htmlCode);
+    }
+  }])
 
 .filter('noFractionNumber', ['$filter', '$locale', 'configService',
   function(filter, locale, configService) {
