@@ -35,6 +35,20 @@ svg {
   max-width: 62.5em;
 }
 
+.top-bar label  {
+  color: #A5B2BF;
+}
+
+.top-bar button {
+  vertical-align: top;
+}
+
+.top-bar input {
+  width: 140px;
+  height: 30px;
+  border-radius: 3px;
+}
+
 .spinner {
   margin: 20% 50%;
 }
@@ -111,4 +125,34 @@ section.download button.outline {
 
 .nvd3 text {
   font-family: Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+
+.Zebra_DatePicker {
+  background-color: #213140;
+  border: 3px solid #213140;
+}
+
+.Zebra_DatePicker td.dp_selected {
+  background: #1ABC9C;
+}
+
+.Zebra_DatePicker td.dp_current {
+  color: #1ABC9C;
+}
+
+.Zebra_DatePicker td.dp_hover {
+  background: #2C3E50;
+}
+
+.Zebra_DatePicker .dp_header .dp_hover {
+  background: #2C3E50;
+}
+
+.Zebra_DatePicker .dp_footer .dp_hover {
+  background: #2C3E50;
+}
+
+button.Zebra_DatePicker_Icon {
+  background: url('../img/calendar.svg') no-repeat left top;
 }
