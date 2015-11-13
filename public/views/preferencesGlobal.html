@@ -8,7 +8,7 @@
 
 <div class="content preferences" ng-controller="preferencesGlobalController as prefGlobal" ng-init="prefGlobal.init()">
 
-  <ul ng-show="!index.noFocusedWallet" class="no-bullet m0 ">
+  <ul class="no-bullet m0 ">
     <h4></h4>
 
     <li ng-click="$root.go('preferencesLanguage')">
@@ -19,7 +19,7 @@
       <div translate>Language</div>
     </li>
   </ul> 
-  <ul ng-show="!index.noFocusedWallet" class="no-bullet m0 ">
+  <ul class="no-bullet m0 ">
     <h4></h4>
     <li ng-click="$root.go('preferencesUnit')">
       <div class="right text-gray">
@@ -36,7 +36,7 @@
       <div translate>Alternative Currency</div>
     </li>
   </ul>
-  <ul ng-show="!index.noFocusedWallet" class="no-bullet m0 ">
+  <ul class="no-bullet m0 ">
     <h4></h4>
     <li ng-click="$root.go('preferencesFee')"
       ng-show="(index.network == 'livenet' ? index.feeLevels.livenet : index.feeLevels.testnet)">
@@ -51,7 +51,7 @@
       <div translate>Use Unconfirmed Funds</div>
     </li>
   </ul>
-  <ul ng-show="!index.noFocusedWallet" class="no-bullet m0 ">
+  <ul class="no-bullet m0 ">
     <h4></h4>
     <li>
       <switch id="glidera-enabled" name="glideraEnabled" ng-model="glideraEnabled" class="green right"></switch>
@@ -59,7 +59,7 @@
     </li>
  
     <!-- Disabled for testnet 
-    <li ng-show="!index.noFocusedWallet && glideraEnabled">
+    <li ng-show="glideraEnabled">
       <span>Glidera Sandbox</span>
       <switch id="glidera-testnet" name="glideraTestnet" ng-model="glideraTestnet" class="green right"></switch>
     </li>
