@@ -1,15 +1,16 @@
 {
-  "appVersion": "1.5.0",
+  "version": "1.5.0",
+  "commitHash": "<calculated>",
   "androidVersionCode": "54",
-  "appShortName": "Copay",
-  "appLongName": "Copay Bitcoin Wallet",
-  "appDescription": "A secure bitcoin wallet for friends and companies.",
-  "appPublisher": "BitPay, Inc.",
-  "appPublisherWebsite": "https://copay.io",
-  "appPublisherEmail": "support@bitpay.com",
-  "appPackageName": "com.bitpay.copay",
-  "appExeName": "copay",
-  "appSplashScreen": "copayscreen",
+  "shortName": "Copay",
+  "longName": "Copay Bitcoin Wallet",
+  "description": "A secure bitcoin wallet for friends and companies.",
+  "publisher": "BitPay, Inc.",
+  "publisherWebsite": "https://copay.io",
+  "publisherEmail": "support@bitpay.com",
+  "packageName": "com.bitpay.copay",
+  "exeName": "copay",
+  "splashScreen": "copayscreen",
   "disclaimer": [
     "The software you are about to use functions as a free, open source, and multi-signature digital wallet.",
     "The software does not constitute an account where BitPay or other third parties serve as financial intermediaries or custodians of your bitcoin.",
@@ -24,9 +25,24 @@
     "In no event shall the authors of the software, employees and affiliates of Bitpay, copyright holders, or BitPay, Inc. be held liable for any claim, damages or other liability, whether in an action of contract, tort, or otherwise, arising from, out of or in connection with the software.",
     "We reserve the right to modify this disclaimer from time to time."
   ],
-  "theme": "Copay",
-  "glidera_CLIENT_ID": "8a9e8a9cf155db430c1ea6c7889afed1",
-  "glidera_CLIENT_SECRET": "24ddec578f38d5488bfe13601933c05f",
-  "glideraCordova_CLIENT_ID": "9c8023f0ac0128235b7b27a6f2610c83",
-  "glideraCordova_CLIENT_SECRET": "30431511407b47f25a83bffd72881d55"
+  "features": {
+    "glidera": {
+      "enabled": true,
+      "auth": {
+        "clientId": "8a9e8a9cf155db430c1ea6c7889afed1",
+        "clientSecret": "24ddec578f38d5488bfe13601933c05f",
+        "cordovaClientId": "9c8023f0ac0128235b7b27a6f2610c83",
+        "cordovaClientSecret": "30431511407b47f25a83bffd72881d55"
+      }
+    },
+    "theme": {
+      "name": "Copay",
+      "themeDiscovery": {
+        "enabled": true
+      },
+      "skinDiscovery": {
+        "enabled": true
+      }
+    }
+  }
 }

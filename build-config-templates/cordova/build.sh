@@ -17,21 +17,22 @@ BUILDDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 PROJECT="$BUILDDIR/project"
 
 CURRENT_OS=$1
+CURRENT_BRAND=$2
 
 if [ -z "CURRENT_OS" ]
 then
- echo "Build.sh WP8|ANDROID|IOS"
+ echo "Build.sh WP8|ANDROID|IOS <brand-id>"
 fi
 
 CLEAR=false
 DBGJS=false
 
-if [[ $2 == "--clear" || $3 == "--clear" ]]
+if [[ $3 == "--clear" || $4 == "--clear" ]]
 then
   CLEAR=true
 fi
 
-if [[ $2 == "--dbgjs" || $3 == "--dbgjs" ]]
+if [[ $3 == "--dbgjs" || $4 == "--dbgjs" ]]
 then
   DBGJS=true
 fi
@@ -51,6 +52,7 @@ fi
 
 echo "Build directory is $BUILDDIR"
 echo "Project directory is $PROJECT"
+echo "Brand is $CURRENT_BRAND"
 
 
 if [ ! -d $PROJECT ]; then
@@ -144,12 +146,12 @@ if $DBGJS
 then
   echo "${OpenColor}${Green}* Generating %APP-SHORT-CAMEL-NAME% bundle (debug js)...${CloseColor}"
   cd $BUILDDIR/..
-  grunt
+  grunt --target=$CURRENT_BRAND
   checkOK
 else
   echo "${OpenColor}${Green}* Generating %APP-SHORT-CAMEL-NAME% bundle...${CloseColor}"
   cd $BUILDDIR/..
-  grunt prod
+  grunt --target=$CURRENT_BRAND prod
   checkOK
 fi
 
