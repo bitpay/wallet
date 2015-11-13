@@ -150,8 +150,8 @@ angular.module('copayApp.services')
     root.getAppDir = function() {
       if (isCordova) {
         var appDir = cordova.file.applicationDirectory;
-        if (isMobile.iOS()) {
-          // iOS returns the application root, we need the public web directory.
+        if (isMobile.iOS() || isMobile.Android()) {
+          // We need the public web directory root.
           appDir += 'www';
         }
         return appDir;
