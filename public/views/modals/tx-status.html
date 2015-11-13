@@ -4,6 +4,9 @@
   <div class="text-center size-18 text-white text-bold tu p20">
     <span translate>Payment Sent</span>
   </div>
+  <div class="m20t size-12 text-white text-center" ng-init="countdown()" translate>
+    This popup will close in {{timer}} seconds
+  </div>
 </div>
 
 
@@ -11,6 +14,9 @@
   <i class="small-centered columns fi-check m40tp"></i>
   <div class="text-center size-18 text-primary tu text-bold p20">
     <span translate>Payment Proposal Created</span>
+  </div>
+  <div class="m20t size-12 text-gray text-center" ng-init="countdown()" translate>
+    This popup will close in {{timer}} seconds
   </div>
 </div>
 
@@ -21,11 +27,17 @@
   <div class="text-center size-18 text-primary tu text-bold p20">
     <span translate>Payment Accepted</span>
   </div>
+  <div class="m20t size-12 text-gray text-center" ng-init="countdown()" translate>
+    This popup will close in {{timer}} seconds
+  </div>
 </div>
 
 <div ng-if="type=='rejected'" class="popup-txrejected">
   <i class="fi-x small-centered columns m40tp"></i>
   <div class="text-center size-18 tu text-warning text-bold p20">
     <span translate>Payment Rejected</span>
+  </div>
+  <div class="m20t size-12 text-gray text-center" ng-init="countdown()" translate>
+    This popup will close in {{timer}} seconds
   </div>
 </div>
