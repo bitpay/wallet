@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('preferencesUnitController',
-  function($rootScope, $scope, $log, configService, go) {
+  function($scope, $timeout, $log, configService, go) {
     var config = configService.getSync();
     this.unitName = config.wallet.settings.unitName;
     this.unitOpts = [
@@ -52,8 +52,11 @@ angular.module('copayApp.controllers').controller('preferencesUnitController',
 
       configService.set(opts, function(err) {
         if (err) $log.warn(err);
+        go.preferencesGlobal();
         $scope.$emit('Local/UnitSettingUpdated');
-        go.preferences();
+        $timeout(function() {
+          $scope.$apply();
+        }, 100);
       });
 
     };
