@@ -101,11 +101,12 @@
               <i class="icon-checkmark-circle size-14"></i>
             </small>
           </span>
+
           <label translate>Address</label>
           <div class="input">
-            <input type="text" id="address" name="address" ng-model="addressbook.address" valid-address required placeholder="Put the destination address here" translate>
+            <input type="text" id="address" name="address" ng-model="addressbook.address" valid-address required>
             <div class="qr-scanner-input">
-              <qr-scanner ng-show="addAddressbookEntry" on-scan="onQrCodeScanned(data, addressbookForm)" before-scan="beforeQrCodeScann()"></qr-scanner>
+              <qr-scanner on-scan="onQrCodeScanned(data, addressbookForm)" before-scan="beforeQrCodeScann()"></qr-scanner>
             </div>
           </div>
           
