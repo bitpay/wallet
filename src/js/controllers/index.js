@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, lodash, go, profileService, configService, isCordova, rateService, storageService, addressService, gettext, gettextCatalog, amMoment, nodeWebkit, addonManager, feeService, isChromeApp, bwsError, txFormatService, uxLanguage, $state, glideraService, isMobile, addressbookService, themeService) {
+angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, lodash, go, profileService, configService, isCordova, rateService, storageService, addressService, gettext, gettextCatalog, amMoment, nodeWebkit, addonManager, feeService, isChromeApp, bwsError, txFormatService, uxLanguage, $state, glideraService, isMobile, addressbookService, themeService, brand) {
   var self = this;
   var SOFT_CONFIRMATION_LIMIT = 12;
   self.isCordova = isCordova;
@@ -9,6 +9,14 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   self.onGoingProcess = {};
   self.historyShowLimit = 10;
   self.updatingTxHistory = {};
+  self.brand = brand;
+
+  var features = '';
+  features += (brand.features.glidera.enabled ? 'Glidera,' : '');
+  features += (brand.features.theme.themeDiscovery.enabled ? 'Theme Discovery,' : '');
+  features += (brand.features.theme.skinDiscovery.enabled ? 'Skin Discovery,' : '');
+  $log.debug('Application branding: ' + brand.shortName);
+  $log.debug('Enabled features: ' + features.substring(0, features.length-1));
 
   function strip(number) {
     return (parseFloat(number.toPrecision(12)));
@@ -967,7 +975,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   };
 
   self.initGlidera = function(accessToken) {
-    self.glideraEnabled = configService.getSync().glidera.enabled;
+    self.glideraVisible = configService.getSync().glidera.visible;
     self.glideraTestnet = configService.getSync().glidera.testnet;
     var network = self.glideraTestnet ? 'testnet' : 'livenet';
 
@@ -979,7 +987,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.glideraTxs = null;
     self.glideraStatus = null;
 
-    if (!self.glideraEnabled) return;
+    if (!self.glideraVisible) return;
 
     glideraService.setCredentials(network);
 
@@ -1210,7 +1218,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
 
   $rootScope.$on('NewBlock', function() {
-    if (self.glideraEnabled) {
+    if (self.glideraVisible) {
       $timeout(function() {
         self.updateGlidera();
       });

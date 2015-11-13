@@ -3,8 +3,6 @@
 angular.module('copayApp.controllers').controller('splashController',
   function($scope, $timeout, $log, profileService, storageService, go, themeService) {
     
-    $scope.appShortName = window.appShortName;
-
     $scope.create = function(noWallet) {
       $scope.creatingProfile = true;
 
