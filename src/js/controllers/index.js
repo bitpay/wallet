@@ -868,6 +868,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
   self.updateHistory = function() {
     var fc = profileService.focusedClient;
+    if (!fc) return;
     var walletId = fc.credentials.walletId;
 
     if (!fc.isComplete() || self.updatingTxHistory[walletId]) return;
