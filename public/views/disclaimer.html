@@ -8,13 +8,13 @@
 
 	<div class="content p20b" ng-class="{'disclaimer':!index.hasProfile}">
 		<h4 class="title m0" ng-show="!index.hasProfile">
-			<div class="right">{{appLongName}}</div>
+			<div class="right">{{index.brand.longName}}</div>
 			<div translate>Terms of Use</div>
 		</h4>
 		<div class="p20h m10t", ng-style="{'background':theme.disclaimerBackground, 'color':theme.disclaimerTextColor}">
 			<p class="enable_text_select size-14">
 				<ul>
-					<li translate ng-repeat="item in disclaimerItems" ng-bind-html="item | sanitize">{{item.value}}</li>
+					<li translate ng-repeat="item in index.brand.disclaimer" ng-bind-html="item | sanitize">{{item.value}}</li>
 				</ul>
 			</p>
 			<p ng-show="lang != 'en'">

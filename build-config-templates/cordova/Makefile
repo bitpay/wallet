@@ -2,7 +2,7 @@
 
 all:
 
-#  grunt dist-mobile-dbg
+#  grunt --target=%APP-EXE-NAME% dist-mobile-dbg
 
 plugins:
 	make -C project plugins

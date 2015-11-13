@@ -109,6 +109,5 @@ cordova/android/res/*
 cordova/ios/icons/*
 cordova/ios/splash/*
 cordova/wp/Assets/*
-cordova/wp/ApplicationIcon.png
-cordova/wp/Background.png
-cordova/wp/SplashScreenImage.jpg
+cordova/wp/*.png
+cordova/wp/*.jpg

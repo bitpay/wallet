@@ -35,7 +35,7 @@ mkdir -p $APPDIR
 
 # Re-compile %APP-EXE-NAME%Bundle.js
 echo "${OpenColor}${Green}* Generating %APP-EXE-NAME% bundle...${CloseColor}"
-grunt
+grunt --target=%APP-EXE-NAME%
 checkOK
 
 # Copy all chrome-extension files

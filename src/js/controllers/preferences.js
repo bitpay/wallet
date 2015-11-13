@@ -2,8 +2,6 @@
 
 angular.module('copayApp.controllers').controller('preferencesController',
   function($scope, $rootScope, $filter, $timeout, $modal, $log, lodash, configService, profileService, uxLanguage) {
-
-    $scope.appShortName = window.appShortName;
     
     this.init = function() {
       var config = configService.getSync();
@@ -15,7 +13,7 @@ angular.module('copayApp.controllers').controller('preferencesController',
         isoCode: config.wallet.settings.alternativeIsoCode
       }; 
       $scope.spendUnconfirmed = config.wallet.spendUnconfirmed;
-      $scope.glideraEnabled = config.glidera.enabled;
+      $scope.glideraVisible = config.glidera.visible;
       $scope.glideraTestnet = config.glidera.testnet;
       var fc = profileService.focusedClient;
       if (fc) {
@@ -80,11 +78,11 @@ angular.module('copayApp.controllers').controller('preferencesController',
       }
     });
 
-    var unwatchGlideraEnabled = $scope.$watch('glideraEnabled', function(newVal, oldVal) {
+    var unwatchGlideraEnabled = $scope.$watch('glideraVisible', function(newVal, oldVal) {
       if (newVal == oldVal) return;
       var opts = {
         glidera: {
-          enabled: newVal
+          visible: newVal
         }
       };
       configService.set(opts, function(err) {

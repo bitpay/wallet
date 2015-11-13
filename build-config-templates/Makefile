@@ -25,7 +25,7 @@ chrome:
 	browser-extensions/chrome/build.sh
 
 cordova-base:
-	grunt dist-mobile
+	grunt --target=%APP-EXE-NAME% dist-mobile
 
 # ios:  cordova-base
 # 	make -C cordova ios
@@ -38,27 +38,27 @@ cordova-base:
 # 	make -C cordova release-android
 #
 wp8-prod:
-	cordova/build.sh WP8 --clear
+	cordova/build.sh WP8 %APP-EXE-NAME% --clear
 	cordova/wp/fix-svg.sh
 	echo -e "\a"
 
 wp8-debug:
-	cordova/build.sh WP8 --dbgjs
+	cordova/build.sh WP8 %APP-EXE-NAME% --dbgjs
 	cordova/wp/fix-svg.sh
 	echo -e "\a"
 
 ios-prod:
-	cordova/build.sh IOS --clear
+	cordova/build.sh IOS %APP-EXE-NAME% --clear
 	cd cordova/project && cordova build ios
 	open cordova/project/platforms/ios/%APP-SHORT-CAMEL-NAME%.xcodeproj
 
 ios-debug:
-	cordova/build.sh IOS --dbgjs
+	cordova/build.sh IOS %APP-EXE-NAME% --dbgjs
 	cd cordova/project && cordova build ios
 	open cordova/project/platforms/ios/%APP-SHORT-CAMEL-NAME%.xcodeproj
 
 android-prod:
-	cordova/build.sh ANDROID --clear
+	cordova/build.sh ANDROID %APP-EXE-NAME% --clear
 	cp ./etc/beep.ogg ./cordova/project/plugins/phonegap-plugin-barcodescanner/src/android/LibraryProject/res/raw/beep.ogg
 	cd cordova/project && cordova build android --release
 	jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore ../%APP-EXE-NAME%.keystore -signedjar cordova/project/platforms/android/build/outputs/apk/android-release-signed.apk  cordova/project/platforms/android/build/outputs/apk/android-release-unsigned.apk %APP-EXE-NAME%_play 
@@ -66,11 +66,11 @@ android-prod:
 	
 
 android-debug:
-	cordova/build.sh ANDROID --dbgjs --clear
+	cordova/build.sh ANDROID %APP-EXE-NAME% --dbgjs --clear
 	cp ./etc/beep.ogg ./cordova/project/plugins/phonegap-plugin-barcodescanner/src/android/LibraryProject/res/raw/beep.ogg
 	cd cordova/project && cordova run android
 
 android-debug-fast:
-	cordova/build.sh ANDROID --dbgjs
+	cordova/build.sh ANDROID %APP-EXE-NAME% --dbgjs
 	cp ./etc/beep.ogg ./cordova/project/plugins/phonegap-plugin-barcodescanner/src/android/LibraryProject/res/raw/beep.ogg
 	cd cordova/project && cordova run android	

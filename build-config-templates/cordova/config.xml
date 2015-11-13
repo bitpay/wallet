@@ -3,7 +3,7 @@
   version="%APP-VERSION%"
   android-versionCode="%ANDROID-VERSION-CODE%"
   ios-CFBundleVersion="%APP-VERSION%">
-    <name>%APP-SHORT-NAME%</name>
+    <name>%APP-SHORT-CAMEL-NAME%</name>
     <description>
       %APP-DESCRIPTION%
     </description>

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.services').factory('themeService', function($rootScope, $log, $http, $timeout, $q, themeCatalogService, lodash, notification, gettext) {
+angular.module('copayApp.services').factory('themeService', function($rootScope, $log, $http, $timeout, $q, themeCatalogService, lodash, notification, gettext, brand) {
 
   // The $rootScope is used to track theme and skin objects.  Views reference $rootScope for rendering.
   // 
@@ -92,7 +92,7 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
   // Return the absolute resource url for the specified theme.
   // This value is always local.
   root._getLocalThemeResourceUrl = function(themeName) {
-    return themeCatalogService.getApplicationDirectory() + root._getThemeResourcePath(themeName);
+    return encodeURI(themeCatalogService.getApplicationDirectory() + root._getThemeResourcePath(themeName));
   };
 
   // Return the relative resource path for the specified theme's skin.
@@ -103,7 +103,7 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
   // Return the absolute resource url for the specified theme's skin.
   // This value is always local.
   root._getLocalSkinResourceUrl = function(themeName, skinName) {
-    return themeCatalogService.getApplicationDirectory() + root._getSkinResourcePath(themeName, skinName);
+    return encodeURI(themeCatalogService.getApplicationDirectory() + root._getSkinResourcePath(themeName, skinName));
   };
 
   // Get the skin index for the specified skinName in the theme.
@@ -119,13 +119,14 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
     return index;
   }
 
-  root._bootstrapBaseTheme = function(baseTheme, callback) {
-    $http(root._get_local(root._getThemeResourcePath(baseTheme.theme) + '/theme.json')).then(function(response) {
+  root._bootstrapTheme = function(themeDef, callback) {
+    $http(root._get_local(root._getThemeResourcePath(themeDef.theme) + '/theme.json')).then(function(response) {
 
       // Initialize the theme.
       // 
       var themeJSON = JSON.stringify(response.data);
-      var themeResourceUrl = root._getLocalThemeResourceUrl(baseTheme.theme);
+      var themeResourceUrl = root._getLocalThemeResourceUrl(themeDef.theme);
+
       themeJSON = themeJSON.replace(/<theme-path>/g, themeResourceUrl);
       var theme = JSON.parse(themeJSON);
 
@@ -149,14 +150,14 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
       // Initialize the skins.
       // 
       var promises = [];
-      for (var i = 0; i < baseTheme.skins.length; i++) {
+      for (var i = 0; i < themeDef.skins.length; i++) {
         // Collect and serialize all http requests to get skin files.
         promises.push(
-          $http(root._get_local(root._getSkinResourcePath(baseTheme.theme, baseTheme.skins[i]) + '/skin.json')).then(function(response) {
+          $http(root._get_local(root._getSkinResourcePath(themeDef.theme, themeDef.skins[i]) + '/skin.json')).then(function(response) {
 
             var skin = response.data;
-            var themeResourceUrl = root._getLocalThemeResourceUrl(baseTheme.theme);
-            var skinResourceUrl = root._getLocalSkinResourceUrl(baseTheme.theme, skin.header.name);
+            var themeResourceUrl = root._getLocalThemeResourceUrl(themeDef.theme);
+            var skinResourceUrl = root._getLocalSkinResourceUrl(themeDef.theme, skin.header.name);
 
             var skinJSON = JSON.stringify(skin);
             skinJSON = skinJSON.replace(/<theme-path>/g, themeResourceUrl);
@@ -258,7 +259,7 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
   // init() - construct the theme catalog and publish the initial presentation.
   // 
   root.init = function() {
-    root._bootstrapBaseTheme(window.baseTheme, function() {
+    root._bootstrapTheme(brand.features.theme.definition, function() {
         $log.debug('Theme service bootstrapped to theme/skin: ' +
           $rootScope.theme.header.name + '/' +
           $rootScope.skin.header.name +
