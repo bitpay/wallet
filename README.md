@@ -177,9 +177,15 @@ Copay depends on [Bitcore Wallet Service](https://github.com/bitpay/bitcore-wall
 
 ## Hardware Wallet Support
 
-Copay supports Ledger and Trezor hardware wallets. The support is only available only on Chrome App. Ledger supports is only aviable on multisig wallets,  Trezor, both in multisig and non-multisig wallets.
+Copay supports Ledger and Trezor hardware wallets. The support is only available only on Chrome App. Ledger support is only available on multisig wallets.
 
-To create or join a wallet using a hardware device go to 
+To use Ledger, you need to have the Ledger Chrome App installed, available at:
+https://chrome.google.com/webstore/detail/ledger-wallet/kkdpmhnladdopljabkgpacgpliggeeaf
+
+To use Trezor, you need to have the Trezor Chrome Extension installed, available at:
+https://chrome.google.com/webstore/detail/trezor-chrome-extension/jcjjhjgimijdkoamemaghajlhegmoclj
+
+To create or join a wallet using Ledger or Trezor go to:
 
   Add Wallet -> Create or Join -> Advanced options -> Wallet Seed -> select Trezor or Ledger
   
@@ -197,8 +203,6 @@ Everytime you need to sign a transaction, the device will be needed to performe 
 Finally, in case you loose the device and you have the 24 words seed for the device, you can recover access to your funds using Copay, see: https://github.com/bitpay/copay/blob/master/backupRecovery.md#hardware-wallets
 
  
- 
-
 ## Translations
 Copay uses standard gettext PO files for translations and [Crowdin](https://crowdin.com/project/copay) as the front-end tool for translators.  To join our team of translators, please create an account at [Crowdin](https://crowdin.com) and translate the Copay documentation and application text into your native language.
 
