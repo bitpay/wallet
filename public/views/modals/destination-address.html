@@ -2,7 +2,7 @@
   <nav class="tab-bar">
     <section class="left-small">
       <a ng-show="!editAddressbook && !addAddressbookEntry" ng-click="cancel()" class="p10">
-        <span class="text-close" translate>Close</span>
+        <span class="text-close" ng-style="{'color':skin.view.navBarButtonTextColor}" translate>Close</span>
       </a>
     </section>
 
@@ -16,7 +16,7 @@
           Addressbook
         </li>
       </ul>
-      <h1 ng-show="(editAddressbook || !wallets[0]) && !addAddressbookEntry" class="title ellipsis" translate>
+      <h1 ng-show="(editAddressbook || !wallets[0]) && !addAddressbookEntry" class="title ellipsis" ng-style="{'color':skin.view.navBarTitleColor}" translate>
         Addressbook
       </h1>
       <h1 ng-show="addAddressbookEntry" class="title ellipsis" translate>
@@ -37,7 +37,7 @@
   <div class="modal-content fix-modals-touch">
     <div ng-show="selectedWalletsOpt">
       <div class="onGoingProcess" ng-if="gettingAddress">
-        <div class="onGoingProcess-content" ng-style="{'background-color':'#222'}">
+        <div class="onGoingProcess-content" ng-style="{'background':skin.view.progressBackground, 'color':skin.view.progressTextColor}">
           <div class="spinner">
             <div class="rect1"></div>
             <div class="rect2"></div>
