@@ -53,9 +53,9 @@ angular.module('copayApp.controllers').controller('sidebarController',
           n: c.n,
           name: config.aliasFor[c.walletId] || c.walletName,
           id: c.walletId,
-          avatarIsWalletName: (catalog.skinFor[c.walletId] !== undefined ? $rootScope.theme.skins[catalog.skinFor[c.walletId]].avatarIsWalletName : $rootScope.theme.skins[$rootScope.theme.header.defaultSkinId].avatarIsWalletName),
-          avatarBackground: (catalog.skinFor[c.walletId] !== undefined ? $rootScope.theme.skins[catalog.skinFor[c.walletId]].avatarBackground : $rootScope.theme.skins[$rootScope.theme.header.defaultSkinId].avatarBackground),
-          avatarBorder: (catalog.skinFor[c.walletId] !== undefined ? $rootScope.theme.skins[catalog.skinFor[c.walletId]].avatarBorderSmall : $rootScope.theme.skins[$rootScope.theme.header.defaultSkinId].avatarBorderSmall),
+          avatarIsWalletName: (catalog.skinFor[c.walletId] !== undefined ? $rootScope.theme.skins[catalog.skinFor[c.walletId]].view.avatarIsWalletName : $rootScope.theme.skins[$rootScope.theme.header.defaultSkinId].view.avatarIsWalletName),
+          avatarBackground: (catalog.skinFor[c.walletId] !== undefined ? $rootScope.theme.skins[catalog.skinFor[c.walletId]].view.avatarBackground : $rootScope.theme.skins[$rootScope.theme.header.defaultSkinId].view.avatarBackground),
+          avatarBorder: (catalog.skinFor[c.walletId] !== undefined ? $rootScope.theme.skins[catalog.skinFor[c.walletId]].view.avatarBorderSmall : $rootScope.theme.skins[$rootScope.theme.header.defaultSkinId].view.avatarBorderSmall),
         };
       });
       self.wallets = lodash.sortBy(ret, 'name');
