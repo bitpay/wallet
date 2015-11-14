@@ -276,8 +276,8 @@ angular.module('copayApp.services')
 
         // check if exist
         if (lodash.find(root.profile.credentials, {
-            'walletId': walletData.walletId
-          })) {
+          'walletId': walletData.walletId
+        })) {
           return cb(gettext('Cannot join the same wallet more that once'));
         }
       } catch (ex) {
@@ -379,9 +379,26 @@ angular.module('copayApp.services')
         root.profile.credentials.push(JSON.parse(walletClient.export()));
         root.setWalletClients();
 
-        root.setAndStoreFocus(walletId, function() {
-          storageService.storeProfile(root.profile, function(err) {
-            return cb(err, walletId);
+
+        var handleImport = function(cb) {
+          var isImport =  opts.mnemonic || opts.externalSource || opts.extendedPrivateKey;
+
+          if (!isImport) 
+            return cb();
+
+          $rootScope.$emit('Local/BackupDone', walletId);
+
+          if (!walletClient.isComplete()) 
+            return cb();
+
+          storageService.setCleanAndScanAddresses(walletId, cb);
+        };
+
+        handleImport(function() {
+          root.setAndStoreFocus(walletId, function() {
+            storageService.storeProfile(root.profile, function(err) {
+              return cb(err, walletId);
+            });
           });
         });
       });

@@ -923,9 +923,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       }
 
       profileService.setWalletClients();
-      $timeout(function() {
-        $rootScope.$emit('Local/WalletImported', self.walletId);
-      }, 100);
+      self.startScan(self.walletId);
     });
   };
 
@@ -1176,10 +1174,10 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.debouncedUpdate();
   });
 
-  $rootScope.$on('Local/BackupDone', function(event) {
+  $rootScope.$on('Local/BackupDone', function(event, walletId) {
     self.needsBackup = false;
     $log.debug('Backup done');
-    storageService.setBackupFlag(self.walletId, function(err) {
+    storageService.setBackupFlag(walletId || self.walletId, function(err) {
       $log.debug('Backup done stored');
     });
   });
