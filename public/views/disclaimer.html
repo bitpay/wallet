@@ -11,7 +11,7 @@
 			<div class="right">{{index.brand.longName}}</div>
 			<div translate>Terms of Use</div>
 		</h4>
-		<div class="p20h m10t", ng-style="{'background':theme.disclaimerBackground, 'color':theme.disclaimerTextColor}">
+		<div class="p20h m10t", ng-style="{'background':theme.view.disclaimerBackground, 'color':theme.view.disclaimerTextColor}">
 			<p class="enable_text_select size-14">
 				<ul>
 					<li translate ng-repeat="item in index.brand.disclaimer" ng-bind-html="item | sanitize">{{item.value}}</li>
@@ -23,7 +23,7 @@
 
 			<div ng-show="!agreed">
 				<p translate>I affirm that I have read, understood, and agree with these terms.</p>
-				<button class="black round expand" ng-style="{'background':theme.disclaimerButtonBackground, 'color':theme.disclaimerButtonTextColor}" ng-click="agree()" ng-disabled="loading" translate>
+				<button class="black round expand" ng-style="{'background':theme.view.disclaimerButtonBackground, 'color':theme.view.disclaimerButtonTextColor}" ng-click="agree()" ng-disabled="loading" translate>
 					Agree
 				</button>
 			</div>

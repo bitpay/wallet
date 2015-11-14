@@ -10,7 +10,7 @@
 
   <h4></h4>
   <div class="onGoingProcess" ng-show="prefEmail.saving && !index.isOffline">
-    <div class="onGoingProcess-content" ng-style="{'background':skin.progressBackground, 'color':skin.progressTextColor}">
+    <div class="onGoingProcess-content" ng-style="{'background':skin.view.progressBackground, 'color':skin.view.progressTextColor}">
       <div class="spinner">
         <div class="rect1"></div>
         <div class="rect2"></div>
@@ -33,7 +33,7 @@
     <label translate>Email for wallet notifications</label>
     <input type="email" id="email" name="email" ng-model="prefEmail.email" required>
     <input type="submit" class="button expand black round" value="{{'Save'|translate}}"
-    ng-style="{'background':skin.buttonBackground, 'color':skin.buttonTextColor}" ng-disabled="emailForm.$invalid && !index.preferences.email">
+    ng-style="{'background':skin.view.buttonBackground, 'color':skin.view.buttonTextColor}" ng-disabled="emailForm.$invalid && !index.preferences.email">
   </form>
     <div class="text-gray size-12 text-center" translate>Setting up email notifications could weaken your privacy, if the wallet service provider is compromised. Information available to an attacker would include your wallet addresses and its balance, but no more.
   </div>

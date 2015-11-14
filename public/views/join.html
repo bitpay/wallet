@@ -7,7 +7,7 @@
 
 <div class="content p20v" ng-controller="joinController as join">
   <div class="onGoingProcess" ng-show="join.loading && !join.hwWallet">
-    <div class="onGoingProcess-content" ng-style="{'background':theme.progressBackground, 'color':theme.progressTextColor}">
+    <div class="onGoingProcess-content" ng-style="{'background':theme.view.progressBackground, 'color':theme.view.progressTextColor}">
     <div class="spinner">
       <div class="rect1"></div>
       <div class="rect2"></div>
@@ -20,7 +20,7 @@
   </div>
 
   <div class="onGoingProcess" ng-show="join.hwWallet">
-    <div class="onGoingProcess-content" ng-style="{'background':theme.progressBackground, 'color':theme.progressTextColor}" style="max-height:6.5em">
+    <div class="onGoingProcess-content" ng-style="{'background':theme.view.progressBackground, 'color':theme.view.progressTextColor}" style="max-height:6.5em">
     <div class="spinner">
       <div class="rect1"></div>
       <div class="rect2"></div>
@@ -147,7 +147,7 @@
           </div> <!-- columns -->
         </div> <!-- advanced -->
 
-        <button translate type="submit" class="button expand black m0 round"
+        <button translate type="submit" class="button expand black m0 round" ng-style="{'background':theme.view.buttonBackground, 'color':theme.view.buttonTextColor}"
           ng-disabled="joinForm.$invalid || join.loading">Join</button>
       </div> <!-- large-12 columns -->
     </div> <!-- row -->

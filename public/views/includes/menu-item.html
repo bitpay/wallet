@@ -1,5 +1,5 @@
 <a ng-click="index.setTab(item, false, 0, true)" ng-class="{'active': index.tab == item.link}" id="menu-{{item.link}}"
-	ng-style="{'background-color': index.tab == item.link ? skin.tabBarSelectedBackground : '', 'border-top-color':skin.tabBarSelectedBackground}">
+	ng-style="{'background-color': index.tab == item.link ? skin.view.tabBarSelectedBackground : '', 'border-top-color':skin.tabBarSelectedBackground}">
   <i class="size-24 {{item.icon}} db"></i>
   <div class="size-10 tu">
     {{ item.title|translate }}
