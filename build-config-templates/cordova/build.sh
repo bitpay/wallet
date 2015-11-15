@@ -16,10 +16,10 @@ generateIconsAndSplash() {
   mkdir -p project/resources
   checkOK
 
-  cp ../brands/%BRAND-ID%/resources/icon.psd project/resources
+  cp ../brands/%BRAND-ID%/resources/psd/icon.psd project/resources
   checkOK
 
-  cp ../brands/%BRAND-ID%/resources/splash.psd project/resources
+  cp ../brands/%BRAND-ID%/resources/psd/splash.psd project/resources
   checkOK
 
   cd project
