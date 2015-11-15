@@ -344,9 +344,9 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
         notification.success(
           gettext('Success'),
           gettext('Theme set to \'' + root.getPublishedTheme().header.name + '\''),
-          {color: root.getPublishedSkin().textHighlightColor,
-           iconColor: root.getPublishedTheme().notificationBarIconColor,
-           barBackground: root.getPublishedTheme().notificationBarBackground});
+          {color: root.getPublishedSkin().view.textHighlightColor,
+           iconColor: root.getPublishedTheme().view.notificationBarIconColor,
+           barBackground: root.getPublishedTheme().view.notificationBarBackground});
       });
     });
   };
@@ -535,9 +535,9 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
         notification.success(
           gettext('Success'),
           gettext('Imported theme \'' + catalog.themes[index].header.name + '\''),
-          {color: root.getPublishedSkin().textHighlightColor,
-           iconColor: root.getPublishedTheme().notificationBarIconColor,
-           barBackground: root.getPublishedTheme().notificationBarBackground});
+          {color: root.getPublishedSkin().view.textHighlightColor,
+           iconColor: root.getPublishedTheme().view.notificationBarIconColor,
+           barBackground: root.getPublishedTheme().view.notificationBarBackground});
 
         $log.debug('Imported theme \'' + catalog.themes[index].header.name + '\'');
       });
@@ -627,9 +627,9 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
         notification.success(
           gettext('Success'),
           gettext('Imported skin \'' + catalog.themes[t_index].skins[s_index].header.name + '\''),
-          {color: root.getPublishedSkin().textHighlightColor,
-           iconColor: root.getPublishedTheme().notificationBarIconColor,
-           barBackground: root.getPublishedTheme().notificationBarBackground});
+          {color: root.getPublishedSkin().view.textHighlightColor,
+           iconColor: root.getPublishedTheme().view.notificationBarIconColor,
+           barBackground: root.getPublishedTheme().view.notificationBarBackground});
 
         $log.debug('Imported skin \'' + catalog.themes[t_index].skins[s_index].header.name + '\'');
       });
