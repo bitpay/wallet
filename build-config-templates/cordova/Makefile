@@ -29,11 +29,16 @@ wp8: project plugins
 
 ios: project plugins
 	make -C project ios
-	cp ios/%APP-SHORT-CAMEL-NAME%-Info.plist project/platforms/ios/%APP-SHORT-CAMEL-NAME%-Info.plist
+	cp ios/%APP-SHORT-NAME%-Info.plist project/platforms/ios/%APP-SHORT-NAME%-Info.plist
 	mkdir -p project/platforms/ios/%APP-SHORT-CAMEL-NAME%/Resources/icons
 	mkdir -p project/platforms/ios/%APP-SHORT-CAMEL-NAME%/Resources/splash
-	cp -R ios/icons/* project/platforms/ios/%APP-SHORT-CAMEL-NAME%/Resources/icons
-	cp -R ios/splash/* project/platforms/ios/%APP-SHORT-CAMEL-NAME%/Resources/splash
+
+	mkdir project/resources
+	cp ../brands/%BRAND-ID%/resources/icon.psd project/resources
+	cp ../brands/%BRAND-ID%/resources/splash.psd project/resources
+	cd project; ionic resources
+	cp -R project/resources/ios/icon/* project/platforms/ios/%APP-SHORT-CAMEL-NAME%/Resources/icons
+	cp -R project/resources/ios/splash/* project/platforms/ios/%APP-SHORT-CAMEL-NAME%/Resources/splash
 
 open-ios: ios
 	open project/platforms/ios/%APP-SHORT-CAMEL-NAME%.xcodeproj

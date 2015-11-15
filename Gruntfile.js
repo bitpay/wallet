@@ -260,7 +260,7 @@ module.exports = function(grunt) {
           'cordova/android/project.properties': 'build-config-templates/cordova/android/project.properties',
           'cordova/build.sh': 'build-config-templates/cordova/build.sh',
           'cordova/config.xml': 'build-config-templates/cordova/config.xml',
-          'cordova/ios/App-Info.plist': 'build-config-templates/ios/App-Info.plist',
+          'cordova/ios/App-Info.plist': 'build-config-templates/cordova/ios/App-Info.plist',
           'cordova/wp/MainPage.xaml': 'build-config-templates/cordova/wp/MainPage.xaml',
           'cordova/wp/Package.appxmanifest': 'build-config-templates/cordova/wp/Package.appxmanifest',
           'cordova/wp/Properties/WMAppManifest.xml': 'build-config-templates/cordova/wp/Properties/WMAppManifest.xml',
@@ -273,7 +273,7 @@ module.exports = function(grunt) {
         },
         options: {
           mode: 0755,
-        patterns: [
+          patterns: [
             { match: /%BRAND-ID%/g, replacement: brandId },
             { match: /%APP-PACKAGE-NAME%/g, replacement: brandConfig.packageName },
             { match: /%APP-SHORT-NAME%/g, replacement: brandConfig.shortName },

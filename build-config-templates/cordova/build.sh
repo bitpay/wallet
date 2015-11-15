@@ -12,6 +12,22 @@ checkOK() {
   fi
 }
 
+generateIconsAndSplash() {
+  mkdir -p project/resources
+  checkOK
+
+  cp ../brands/%BRAND-ID%/resources/icon.psd project/resources
+  checkOK
+
+  cp ../brands/%BRAND-ID%/resources/splash.psd project/resources
+  checkOK
+
+  cd project
+  ionic resources
+  checkOK
+  cd ..
+}
+
 # Configs
 BUILDDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 PROJECT="$BUILDDIR/project"
@@ -171,63 +187,43 @@ checkOK
 if [ $CURRENT_OS == "ANDROID" ]; then
   echo "Android project!!!"
 
-  mkdir -p $PROJECT/platforms/android/res/xml/
-  checkOK
-
-#  cp android/AndroidManifest.xml $PROJECT/platforms/android/AndroidManifest.xml
-#  checkOK
-  
   cp android/build-extras.gradle $PROJECT/platforms/android/build-extras.gradle
   checkOK
 
   cp android/project.properties $PROJECT/platforms/android/project.properties
   checkOK
 
-  cp -R android/res/* $PROJECT/platforms/android/res
-  checkOK
+  generateIconsAndSplash
+
 fi
 
 if [ $CURRENT_OS == "IOS" ]; then
 
   echo "IOS project!!!"
 
-  mkdir -p $PROJECT/platforms/ios
-  checkOK
-
   cp ios/%APP-SHORT-CAMEL-NAME%-Info.plist $PROJECT/platforms/ios/%APP-SHORT-CAMEL-NAME%-Info.plist
   checkOK
 
-  mkdir -p $PROJECT/platforms/ios/%APP-SHORT-CAMEL-NAME%/Resources/icons
-  checkOK
+  generateIconsAndSplash
 
-  mkdir -p $PROJECT/platforms/ios/%APP-SHORT-CAMEL-NAME%/Resources/splash
-  checkOK
-
-  cp -R ios/icons/* $PROJECT/platforms/ios/%APP-SHORT-CAMEL-NAME%/Resources/icons
-  checkOK
-
-  cp -R ios/splash/* $PROJECT/platforms/ios/%APP-SHORT-CAMEL-NAME%/Resources/splash
-  checkOK
 fi
 
 if [ $CURRENT_OS == "WP8" ]; then
   echo "Wp8 project!!!"
-  cp -R $PROJECT/www/* $PROJECT/platforms/wp8/www
+  cp -af $PROJECT/www/* $PROJECT/platforms/wp8/www
   checkOK
+
+  generateIconsAndSplash
+
   if ! $CLEAR
   then
-    cp -vf wp/Properties/* $PROJECT/platforms/wp8/Properties/
+    cp wp/Properties/* $PROJECT/platforms/wp8/Properties/
     checkOK
-    cp -vf wp/MainPage.xaml $PROJECT/platforms/wp8/
+
+    cp wp/MainPage.xaml $PROJECT/platforms/wp8/
     checkOK
-    cp -vf wp/Package.appxmanifest $PROJECT/platforms/wp8/
-    checkOK
-    cp -vf wp/Assets/* $PROJECT/platforms/wp8/Assets/
-    cp -vf wp/SplashScreenImage.jpg $PROJECT/platforms/wp8/
-    cp -vf wp/ApplicationIcon.png $PROJECT/platforms/wp8/
-    cp -vf wp/Background.png $PROJECT/platforms/wp8/
+
+    cp wp/Package.appxmanifest $PROJECT/platforms/wp8/
     checkOK
   fi
 fi
-
-
