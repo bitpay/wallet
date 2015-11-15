@@ -83,8 +83,27 @@
       <icon src="resources/wp8/Icon/ApplicationIcon.png" width="99" height="99" />
       <!-- tile image -->
       <icon src="resources/wp8/Icon/Background.png" width="159" height="159" />
+      <icon src="resources/wp8/Assets/62x62@1.png" width="62" height="62" />
+      <icon src="resources/wp8/Assets/62x62@2.png" width="124" height="124" />
+      <icon src="resources/wp8/Assets/99x99@1.png" width="99" height="99" />
+      <icon src="resources/wp8/Assets/99x99@1.png" width="198" height="198" />
+      <icon src="resources/wp8/Assets/173x173@1.png" width="173" height="173" />
+      <icon src="resources/wp8/Assets/173x173@2.png" width="346" height="346" />
+      <icon src="resources/wp8/Assets/200x200@1.png" width="200" height="200" />
+      <icon src="resources/wp8/Assets/200x200@2.png" width="400" height="400" />
+      <icon src="resources/wp8/Assets/BadgeLogo.png" width="58" height="58" />
+      <icon src="resources/wp8/Assets/icon-300.png" width="300" height="300" />
+      <icon src="resources/wp8/Assets/icon@1.png" width="62" height="62" />
+      <icon src="resources/wp8/Assets/icon@2.png" width="124" height="124" />
+      <icon src="resources/wp8/Assets/icon@2x.png" width="114" height="114" />
+      <icon src="resources/wp8/Assets/Logo.png" width="106" height="106" />
+      <icon src="resources/wp8/Assets/SquareTile71x71.png" width="170" height="170" />
+      <icon src="resources/wp8/Assets/SquareTile150x150.png" width="360" height="360" />
+      <icon src="resources/wp8/Assets/StoreLogo.png" width="120" height="120" />
+      <icon src="resources/wp8/Assets/WideLogo.png" width="744" height="360" />
       <!-- images are determined by width and height. The following are supported -->
       <splash src="resources/wp8/Splash/SplashScreenImage.png" width="768" height="1280"/>
+
     </platform>
 
 </widget>
