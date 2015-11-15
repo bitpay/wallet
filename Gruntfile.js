@@ -185,46 +185,6 @@ module.exports = function(grunt) {
           src: ['**'],
           dest: 'public/themes/'
         }]
-      },
-      android_res: {
-        files: [{
-          expand: true,
-          cwd: 'brands/' + brandId + '/resources/android/',
-          src: ['**'],
-          dest: 'cordova/android/res/'
-        }]
-      },
-      ios_icons: {
-        files: [{
-          expand: true,
-          cwd: 'brands/' + brandId + '/resources/ios/icons/',
-          src: ['**'],
-          dest: 'cordova/ios/icons/'
-        }]
-      },
-      ios_splash: {
-        files: [{
-          expand: true,
-          cwd: 'brands/' + brandId + '/resources/ios/splash/',
-          src: ['**'],
-          dest: 'cordova/ios/splash/'
-        }]
-      },
-      wp_assets: {
-        files: [{
-          expand: true,
-          cwd: 'brands/' + brandId + '/resources/wp/Assets/',
-          src: ['**'],
-          dest: 'cordova/wp/Assets/'
-        }]
-      },
-      wp_imgs: {
-        files: [{
-          expand: true,
-          cwd: 'brands/' + brandId + '/resources/wp/',
-          src: '*.{jpg,png}',
-          dest: 'cordova/wp/'
-        }]
       }
     },
     karma: {
@@ -282,8 +242,9 @@ module.exports = function(grunt) {
           'cordova/android/project.properties': 'build-config-templates/cordova/android/project.properties',
           'cordova/build.sh': 'build-config-templates/cordova/build.sh',
           'cordova/config.xml': 'build-config-templates/cordova/config.xml',
-          'cordova/Makefile': 'build-config-templates/cordova/Makefile',
           'cordova/ios/App-Info.plist': 'build-config-templates/cordova/ios/App-Info.plist',
+          'cordova/Makefile': 'build-config-templates/cordova/Makefile',
+          'cordova/wp/MainPage.xaml': 'build-config-templates/cordova/wp/MainPage.xaml',
           'cordova/wp/Package.appxmanifest': 'build-config-templates/cordova/wp/Package.appxmanifest',
           'cordova/wp/Properties/WMAppManifest.xml': 'build-config-templates/cordova/wp/Properties/WMAppManifest.xml',
           'Makefile': 'build-config-templates/Makefile',
@@ -296,6 +257,7 @@ module.exports = function(grunt) {
         options: {
           mode: 0755,
           patterns: [
+            { match: /%BRAND-ID%/g, replacement: brandId },
             { match: /%APP-PACKAGE-NAME%/g, replacement: brandConfig.packageName },
             { match: /%APP-SHORT-NAME%/g, replacement: brandConfig.shortName },
             { match: /%APP-SHORT-CAMEL-NAME%/g, replacement: brandConfig.shortName.replace(/ +/g, '') },
@@ -305,7 +267,6 @@ module.exports = function(grunt) {
             { match: /%APP-PUBLISHER%/g, replacement: brandConfig.publisher },
             { match: /%APP-PUBLISHER-WEBSITE%/g, replacement: brandConfig.publisherWebsite },
             { match: /%APP-PUBLISHER-EMAIL%/g, replacement: brandConfig.publisherEmail },
-            { match: /%APP-SPLASH-SCREEN%/g, replacement: brandConfig.splashScreen },
             { match: /%APP-VERSION%/g, replacement: brandConfig.version },
             { match: /%ANDROID-VERSION-CODE%/g, replacement: brandConfig.androidVersionCode }
           ]
@@ -379,15 +340,9 @@ module.exports = function(grunt) {
     'nggettext_compile',
     'buildBrand',
     'concat',
-    'copy:icons',
     'copy:theme',
     'replace:build_config',
     'copy:rename_ios_plist',
-    'copy:android_res',
-    'copy:ios_icons',
-    'copy:ios_splash',
-    'copy:wp_assets',
-    'copy:wp_imgs',
     'exec:rm_temp_files'
   ]);
 

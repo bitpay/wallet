@@ -50,7 +50,7 @@ wp8-debug:
 ios-prod:
 	cordova/build.sh IOS %APP-EXE-NAME% --clear
 	cd cordova/project && cordova build ios
-	open cordova/project/platforms/ios/%APP-SHORT-CAMEL-NAME%.xcodeproj
+	open "cordova/project/platforms/ios/%APP-SHORT-CAMEL-NAME%.xcodeproj"
 
 ios-debug:
 	cordova/build.sh IOS %APP-EXE-NAME% --dbgjs
@@ -63,7 +63,6 @@ android-prod:
 	cd cordova/project && cordova build android --release
 	jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore ../%APP-EXE-NAME%.keystore -signedjar cordova/project/platforms/android/build/outputs/apk/android-release-signed.apk  cordova/project/platforms/android/build/outputs/apk/android-release-unsigned.apk %APP-EXE-NAME%_play 
 	../android-sdk-macosx/build-tools/21.1.1/zipalign -v 4 cordova/project/platforms/android/build/outputs/apk/android-release-signed.apk cordova/project/platforms/android/build/outputs/apk/android-release-signed-aligned.apk 
-	
 
 android-debug:
 	cordova/build.sh ANDROID %APP-EXE-NAME% --dbgjs --clear

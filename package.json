@@ -1,5 +1,5 @@
 {
-  "name": "copay",
+  "name": "mtb",
   "description": "A secure bitcoin wallet for friends and companies.",
   "author": "BitPay, Inc.",
   "version": "1.5.0",
@@ -12,7 +12,7 @@
   ],
   "main": "public/index.html",
   "window": {
-    "title": "Copay - A secure bitcoin wallet for friends and companies.",
+    "title": "Mike Tyson Bitcoin - A secure bitcoin wallet for friends and companies.",
     "icon": "./public/img/icons/icon-256.png",
     "toolbar": false,
     "show": true,
@@ -67,6 +67,7 @@
     "grunt-karma-coveralls": "^2.5.3",
     "grunt-node-webkit-builder": "^1.0.2",
     "grunt-string-replace": "^1.2.0",
+    "ionic": "^1.7.8",
     "karma": "^0.12.31",
     "karma-cli": "0.0.4",
     "karma-coverage": "^0.2.7",
