@@ -54,9 +54,9 @@ angular.module('copayApp.controllers').controller('importController',
             notification.success(
               gettext('Success'),
               gettext('Your wallet has been imported correctly'),
-              {color: themeService.getPublishedSkin().textHighlightColor,
-               iconColor: themeService.getPublishedTheme().notificationBarIconColor,
-               barBackground: themeService.getPublishedTheme().notificationBarBackground});
+              {color: themeService.getPublishedSkin().view.textHighlightColor,
+               iconColor: themeService.getPublishedTheme().view.notificationBarIconColor,
+               barBackground: themeService.getPublishedTheme().view.notificationBarBackground});
           }
         });
       }, 100);
@@ -78,9 +78,9 @@ angular.module('copayApp.controllers').controller('importController',
           notification.success(
             gettext('Success'),
             gettext('Your wallet has been imported correctly'),
-            {color: themeService.getPublishedSkin().textHighlightColor,
-             iconColor: themeService.getPublishedTheme().notificationBarIconColor,
-             barBackground: themeService.getPublishedTheme().notificationBarBackground});
+            {color: themeService.getPublishedSkin().view.textHighlightColor,
+             iconColor: themeService.getPublishedTheme().view.notificationBarIconColor,
+             barBackground: themeService.getPublishedTheme().view.notificationBarBackground});
         });
       }, 100);
     };
@@ -101,9 +101,9 @@ angular.module('copayApp.controllers').controller('importController',
           notification.success(
             gettext('Success'),
             gettext('Your wallet has been imported correctly'),
-            {color: themeService.getPublishedSkin().textHighlightColor,
-             iconColor: themeService.getPublishedTheme().notificationBarIconColor,
-             barBackground: themeService.getPublishedTheme().notificationBarBackground});
+            {color: themeService.getPublishedSkin().view.textHighlightColor,
+             iconColor: themeService.getPublishedTheme().view.notificationBarIconColor,
+             barBackground: themeService.getPublishedTheme().view.notificationBarBackground});
         });
       }, 100);
     };
@@ -229,9 +229,9 @@ angular.module('copayApp.controllers').controller('importController',
           notification.success(
             gettext('Success'),
             gettext('Your wallet has been imported correctly'),
-            {color: themeService.getPublishedSkin().textHighlightColor,
-             iconColor: themeService.getPublishedTheme().notificationBarIconColor,
-             barBackground: themeService.getPublishedTheme().notificationBarBackground});
+            {color: themeService.getPublishedSkin().view.textHighlightColor,
+             iconColor: themeService.getPublishedTheme().view.notificationBarIconColor,
+             barBackground: themeService.getPublishedTheme().view.notificationBarBackground});
           go.walletHome();
         });
       }, 100);
@@ -273,9 +273,9 @@ angular.module('copayApp.controllers').controller('importController',
           notification.success(
             gettext('Success'),
             gettext('Your wallet has been imported correctly'),
-            {color: themeService.getPublishedSkin().textHighlightColor,
-             iconColor: themeService.getPublishedTheme().notificationBarIconColor,
-             barBackground: themeService.getPublishedTheme().notificationBarBackground});
+            {color: themeService.getPublishedSkin().view.textHighlightColor,
+             iconColor: themeService.getPublishedTheme().view.notificationBarIconColor,
+             barBackground: themeService.getPublishedTheme().view.notificationBarBackground});
         });
       }, 100);
     };
