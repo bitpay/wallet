@@ -30,6 +30,12 @@ angular.module('copayApp.controllers').controller('backupController',
 
           $rootScope.$emit('Local/BackupDone');
           notification.success(gettext('Success'), gettext('Encrypted export file saved'));
+          notification.success(
+              gettext('Success'),
+              gettext('Encrypted export file saved'),
+              {color: themeService.getPublishedSkin().view.textHighlightColor,
+                iconColor: themeService.getPublishedTheme().view.notificationBarIconColor,
+                barBackground: themeService.getPublishedTheme().view.notificationBarBackground});
           go.walletHome();
         });
       });
