@@ -149,7 +149,7 @@
             </div>
           </div>
 
-          <button translate type="submit" class="button round expand black"
+          <button translate type="submit" class="button round expand black" ng-style="{'background':theme.view.buttonBackground, 'color':theme.view.buttonTextColor}"
             ng-disabled="importForm.$invalid || !import.password || import.loading">
             Import backup
           </button>

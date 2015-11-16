@@ -270,11 +270,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       $scope.copayerId = fc.credentials.copayerId;
       $scope.canSign = fc.canSign() || fc.isPrivKeyExternal();
       $scope.loading = null;
-<<<<<<< HEAD
-=======
-      $scope.color = fc.backgroundColor;
       $scope.isShared = fc.credentials.n > 1;
->>>>>>> upstream/v1.5
 
       // ToDo: use tx.customData instead of tx.message
       if (tx.message === 'Glidera transaction' && isGlidera) {

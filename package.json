@@ -1,5 +1,5 @@
 {
-  "name": "mtb",
+  "name": "copay",
   "description": "A secure bitcoin wallet for friends and companies.",
   "author": "BitPay, Inc.",
   "version": "1.5.0",
@@ -12,7 +12,7 @@
   ],
   "main": "public/index.html",
   "window": {
-    "title": "Mike Tyson Bitcoin - A secure bitcoin wallet for friends and companies.",
+    "title": "Copay - A secure bitcoin wallet for friends and companies.",
     "icon": "./public/img/icons/icon-256.png",
     "toolbar": false,
     "show": true,
