@@ -433,11 +433,14 @@ angular
           },
         }
       })
-      .state('settings', {
-        url: '/settings',
-        controller: 'settingsController',
-        templateUrl: 'views/settings.html',
-        needProfile: false
+      .state('preferencesGlobal', {
+        url: '/preferencesGlobal',
+        needProfile: true,
+        views: {
+          'main': {
+            templateUrl: 'views/preferencesGlobal.html',
+          },
+        }
       })
       .state('warning', {
         url: '/warning',

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('preferencesLanguageController',
-  function($scope, $log, $timeout, configService, go, uxLanguage) {
+  function($scope, $log, $timeout, configService, uxLanguage, go) {
 
     this.availableLanguages = uxLanguage.getLanguages();
 
@@ -17,9 +17,10 @@ angular.module('copayApp.controllers').controller('preferencesLanguageController
 
       configService.set(opts, function(err) {
         if (err) $log.warn(err);
+        go.preferencesGlobal();
         $scope.$emit('Local/LanguageSettingUpdated');
         $timeout(function() {
-          go.preferences();
+          $scope.$apply();
         }, 100);
       });
     };
