@@ -1,0 +1,32 @@
+<div
+  class="topbar-container"
+  ng-include="'views/includes/topbar.html'"
+  ng-init="titleSection='Delete Seed Words'; goBackToState = 'securityPreferences'">
+</div>
+
+
+<div class="content preferences" ng-controller="preferencesDeleteWordsController as preferences">
+
+  <h4></h4>
+  <div class="text-center text-gray">
+    <span translate>Wallet</span>: {{index.walletName}}
+    <span ng-show="index.alias">({{index.alias}})</span>
+  </div>
+  <h4 class="text-warning text-center m0" translate>Warning!</h4>
+  <div class="box-notification" ng-show="preferences.error" >
+    <span class="text-warning size-14">
+      {{preferences.error|translate}}
+    </span>
+  </div>
+  <div class="columns text-center">
+    <p translate class="size-14 text-gray" ng-show="!index.needsBackup" >  <span translate>
+              Once you have copied your wallet seed down, it is recommended to delete it from this device.
+            </span></p>
+    <button class="button round expand warning" ng-disabled="index.needsBackup" ng-click="preferences.delete()" translate>
+       <i class="fi-trash"></i>
+       <span translate>
+      DELETE WORDS
+    </span>
+    </button>
+  </div>
+  </div>
