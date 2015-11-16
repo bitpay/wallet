@@ -1096,6 +1096,18 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
 .scrollArea {
   height: 280px;
   overflow: scroll;
+  background: #213140;
+  border: 1px solid #4B6178;
+  border-radius: 5px;
+  margin: 1.6rem;
+  color: #A5B2BF;
+  line-height: 30px;
+  padding: 0.5rem;
+}
+
+.scrollArea ul {
+  font-size: 0.8rem;
+  text-align: left;
 }
 
 .tabbable {
@@ -1203,7 +1215,7 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
 }
 
 .splash .container-image {
-  padding: 2rem 0;
+  padding: 1rem 0;
 }
 
 .preferences li {
