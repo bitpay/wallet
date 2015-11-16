@@ -11,6 +11,10 @@ angular.module('copayApp.services').factory('animationService', function(isCordo
     slideRight: isCordova ? 'full animated slideInRight' : 'full',
     slideOutDown: isCordova ? 'slideOutDown' : 'hideModal',
     slideOutRight: isCordova ? 'slideOutRight' : 'hideModal',
+    fadeIn: isCordova ? 'full animated fadeIn' : 'full',
+    fadeOut: isCordova ? 'fadeOut' : 'hideModal',
+    bounceIn: isCordova ? 'full animated bounceIn' : 'full',
+    bounceOutDown: isCordova ? 'bounceOutDown' : 'hideModal',
   };
 
   var pageWeight = {
