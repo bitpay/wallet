@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('preferencesAltCurrencyController',
-  function($scope, $rootScope, configService, go, rateService, lodash) {
+  function($scope, $timeout, $log, configService, rateService, lodash, go) {
     this.hideAdv = true;
     this.hidePriv = true;
     this.hideSecret = true;
@@ -48,8 +48,12 @@ angular.module('copayApp.controllers').controller('preferencesAltCurrencyControl
       };
 
       configService.set(opts, function(err) {
-        if (err) console.log(err);
+        if (err) $log.warn(err);
+        go.preferencesGlobal();
         $scope.$emit('Local/UnitSettingUpdated');
+        $timeout(function() {
+          $scope.$apply();
+        }, 100);
       });
     };
 

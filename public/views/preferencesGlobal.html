@@ -1,0 +1,78 @@
+
+<div 
+  class="topbar-container" 
+  ng-include="'views/includes/topbar.html'"
+  ng-init="titleSection='Global Preferences'; closeToHome = true; noColor = true">
+</div>
+
+
+<div class="content preferences" ng-controller="preferencesGlobalController as prefGlobal" ng-init="prefGlobal.init()">
+
+  <ul class="no-bullet m0 ">
+    <h4></h4>
+
+    <li ng-click="$root.go('preferencesLanguage')">
+      <div class="right text-gray">
+        {{prefGlobal.currentLanguageName|translate}}
+        <i class="icon-arrow-right3 size-24"></i>
+      </div>
+      <div translate>Language</div>
+    </li>
+  </ul> 
+  <ul class="no-bullet m0 ">
+    <h4></h4>
+    <li ng-click="$root.go('preferencesUnit')">
+      <div class="right text-gray">
+        {{prefGlobal.unitName}}
+        <i class="icon-arrow-right3 size-24"></i>
+      </div>
+      <div translate>Unit</div>
+    </li>
+    <li ng-click="$root.go('preferencesAltCurrency')">
+      <div class="right text-gray">
+        {{prefGlobal.selectedAlternative.name}}
+        <i class="icon-arrow-right3 size-24"></i>
+      </div>
+      <div translate>Alternative Currency</div>
+    </li>
+  </ul>
+  <ul class="no-bullet m0 ">
+    <h4></h4>
+    <li ng-click="$root.go('preferencesFee')"
+      ng-show="(index.network == 'livenet' ? index.feeLevels.livenet : index.feeLevels.testnet)">
+      <div class="right text-gray">
+        {{index.feeOpts[index.currentFeeLevel]|translate}}
+        <i class="icon-arrow-right3 size-24"></i>
+      </div>
+      <div translate>Bitcoin Network Fee Policy</div>
+    </li>  
+    <li>
+      <switch id="spend-unconfirmed" name="spendUnconfirmed" ng-model="spendUnconfirmed" class="green right"></switch>
+      <div translate>Use Unconfirmed Funds</div>
+    </li>
+  </ul>
+  <ul class="no-bullet m0 ">
+    <h4></h4>
+    <li>
+      <switch id="glidera-enabled" name="glideraEnabled" ng-model="glideraEnabled" class="green right"></switch>
+      <div>Enable Glidera Service</div>
+    </li>
+ 
+    <!-- Disabled for testnet 
+    <li ng-show="glideraEnabled">
+      <span>Glidera Sandbox</span>
+      <switch id="glidera-testnet" name="glideraTestnet" ng-model="glideraTestnet" class="green right"></switch>
+    </li>
+    -->
+  </ul>
+  <ul class="no-bullet m0">
+    <h4></h4>
+    <li ng-click="$root.go('about')">
+      <i class="icon-arrow-right3 size-24 right text-gray"></i>  
+      <div translate>About Copay</div>
+    </li>
+  </ul>
+  <h4></h4>
+
+</div>
+<div class="extra-margin-bottom"></div>
