@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="com.bitpay.copay" 
+  version="1.5.1"
+  android-versionCode="55"
+  ios-CFBundleVersion="1.5.1">
+    <name>Copay</name>
+    <description>
+      A secure bitcoin wallet for friends and companies.
+    </description>
+    <author email="support@bitpay.com" href="https://copay.io">
+        BitPay Inc.
+    </author>
+    <content src="index.html" />
+    <access origin="*" />
+    <preference name="AndroidPersistentFileLocation" value="Internal" />
+    <preference name="iosPersistentFileLocation" value="Library" />
+    <preference name="DisallowOverscroll" value="true"/>
+    <preference name="HideKeyboardFormAccessoryBar" value="true"/>
+    <preference name="SplashScreen" value="copayscreen" />
+    <preference name="SplashScreenDelay" value="10000" />
+    <preference name="BackgroundColor" value="#2C3E50" />
+    <preference name="StatusBarOverlaysWebView" value="false" />
+    <preference name="StatusBarBackgroundColor" value="#2C3E50" />
+    <preference name="StatusBarStyle" value="lightcontent" />
+    <preference name="BackupWebStorage" value="none"/>
+    <preference name="windows-target-version" value="8.1"/>
+    <preference name="Orientation" value="portrait" />
+</widget>

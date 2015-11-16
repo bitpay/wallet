@@ -106,36 +106,6 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   var cancel_msg = gettextCatalog.getString('Cancel');
   var confirm_msg = gettextCatalog.getString('Confirm');
 
-  $scope.openCopayersModal = function(copayers, copayerId) {
-    $rootScope.modalOpened = true;
-    var fc = profileService.focusedClient;
-
-    var ModalInstanceCtrl = function($scope, $modalInstance) {
-      $scope.copayers = copayers;
-      $scope.copayerId = copayerId;
-
-      $scope.cancel = function() {
-        $modalInstance.dismiss('cancel');
-      };
-    };
-    var modalInstance = $modal.open({
-      templateUrl: 'views/modals/copayers.html',
-      windowClass: animationService.modalAnimated.slideUp,
-      controller: ModalInstanceCtrl,
-    });
-
-    var disableCloseModal = $rootScope.$on('closeModal', function() {
-      modalInstance.dismiss('cancel');
-    });
-
-    modalInstance.result.finally(function() {
-      $rootScope.modalOpened = false;
-      disableCloseModal();
-      var m = angular.element(document.getElementsByClassName('reveal-modal'));
-      m.addClass(animationService.modalAnimated.slideOutDown);
-    });
-  };
-
   $scope.openDestinationAddressModal = function(wallets, address) {
     $rootScope.modalOpened = true;
     var fc = profileService.focusedClient;
@@ -300,6 +270,11 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       $scope.copayerId = fc.credentials.copayerId;
       $scope.canSign = fc.canSign() || fc.isPrivKeyExternal();
       $scope.loading = null;
+<<<<<<< HEAD
+=======
+      $scope.color = fc.backgroundColor;
+      $scope.isShared = fc.credentials.n > 1;
+>>>>>>> upstream/v1.5
 
       // ToDo: use tx.customData instead of tx.message
       if (tx.message === 'Glidera transaction' && isGlidera) {
@@ -979,6 +954,9 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     profileService.signTxProposal(txp, function(err, signedTx) {
       self.setOngoingProcess();
       if (err) {
+        if (!lodash.isObject(err)) {
+          err = { message: err};
+        }
         err.message = bwsError.msg(err, gettextCatalog.getString('The payment was created but could not be signed. Please try again from home screen'));
         return cb(err);
       }

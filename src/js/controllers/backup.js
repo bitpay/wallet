@@ -12,7 +12,6 @@ angular.module('copayApp.controllers').controller('wordsController',
     if (fc.isPrivKeyEncrypted()) self.credentialsEncrypted = true;
     else {
       setWords(fc.getMnemonic());
-      $rootScope.$emit('Local/BackupDone');
     }
     if (fc.credentials && !fc.credentials.mnemonicEncrypted && !fc.credentials.mnemonic) {
       self.deleted = true;
@@ -20,8 +19,11 @@ angular.module('copayApp.controllers').controller('wordsController',
 
     self.toggle = function() {
       self.error = "";
-      if (!self.credentialsEncrypted)
+      if (!self.credentialsEncrypted) {
+        if (!self.show)
+          $rootScope.$emit('Local/BackupDone');
         self.show = !self.show;
+      }
 
       if (self.credentialsEncrypted)
         self.passwordRequest();
