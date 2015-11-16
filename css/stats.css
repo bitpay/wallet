@@ -70,23 +70,28 @@ footer a:hover {
 
 section.download {
   background: #00BD9C;
-  padding: 4rem;
+  padding: 4rem 0;
   margin-top: 3rem;
 }
 
-section.download h2 {
+section.download h3 {
   color: #FFFFFF;
-  line-height: 2.3;
+  margin: 0 0 2rem;
 }
 
-section.download button {
+section.download a {
   text-transform: uppercase;
 }
 
-section.download button.outline {
+section.download a.outline {
   border: 1px solid #fff;
   color: #fff;
   background-color: transparent;
+}
+
+section.download a.outline:hover {
+  background: #fff;
+  color: #00BD9C;
 }
 
 #totals li {
