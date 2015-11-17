@@ -142,7 +142,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     var defaults = configService.getDefaults();
     var config = configService.getSync();
 
-    self.usingCustomBWS = config.bwsFor &&  config.bwsFor[self.walletId] && (config.bwsFor[self.walletId] != defaults.bws.url);
+    self.usingCustomBWS = config.bwsFor && config.bwsFor[self.walletId] && (config.bwsFor[self.walletId] != defaults.bws.url);
   };
 
   self.setTab = function(tab, reset, tries, switchState) {
@@ -807,7 +807,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
             return i_cb(null, newTxs);
           }
 
-          if (walletId ==  profileService.focusedClient.credentials.walletId) 
+          if (walletId == profileService.focusedClient.credentials.walletId)
             self.txProgress = newTxs.length;
 
           $timeout(function() {
@@ -822,7 +822,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         var newHistory = lodash.compact(txs.concat(txsFromLocal));
         $log.debug('Tx History synced. Total Txs: ' + newHistory.length);
 
-        if (walletId ==  profileService.focusedClient.credentials.walletId) {
+        if (walletId == profileService.focusedClient.credentials.walletId) {
           self.completeHistory = newHistory;
           self.txHistory = newHistory.slice(0, self.historyShowLimit);
           self.historyShowShowAll = newHistory.length >= self.historyShowLimit;
@@ -1295,15 +1295,17 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   $rootScope.$on('Local/NewFocusedWallet', function() {
     self.setFocusedWallet();
     self.updateTxHistory();
-    go.walletHome();
-    storageService.getCleanAndScanAddresses(function(err, walletId) {
-      if (walletId && profileService.walletClients[walletId]) {
-        $log.debug('Clear last address cache and Scan ', walletId);
-        addressService.expireAddress(walletId, function(err) {
-          self.startScan(walletId);
-        });
-        storageService.removeCleanAndScanAddresses(function() {});
-      }
+    storageService.getCopayDisclaimerFlag(function(err, val) {
+      if (val) go.walletHome();
+      storageService.getCleanAndScanAddresses(function(err, walletId) {
+        if (walletId && profileService.walletClients[walletId]) {
+          $log.debug('Clear last address cache and Scan ', walletId);
+          addressService.expireAddress(walletId, function(err) {
+            self.startScan(walletId);
+          });
+          storageService.removeCleanAndScanAddresses(function() {});
+        }
+      });
     });
   });
 
