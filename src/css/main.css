@@ -1107,7 +1107,13 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
 
 .scrollArea ul {
   font-size: 0.8rem;
-  text-align: left;
+  text-align: justify;
+  margin-left: 0;
+}
+
+.scrollArea li {
+  list-style-type:none;
+  display: inline;
 }
 
 .tabbable {
