@@ -2,19 +2,11 @@
 
 angular.module('copayApp.controllers').controller('disclaimerController',
   function($scope, $timeout, $log, profileService, isCordova, storageService, gettextCatalog, applicationService, uxLanguage, go) {
-
+    self = this;
+    $scope.noProfile = true;
 
     $scope.create = function() {
-      $scope.creatingProfile = true;
-      if (isCordova) {
-        window.plugins.spinnerDialog.show(null, gettextCatalog.getString('Loading...'), true);
-      }
-      $scope.loading = true;
       storageService.setCopayDisclaimerFlag(function(err) {
-        $scope.creatingProfile = false;
-        if (isCordova) {
-          window.plugins.spinnerDialog.hide();
-        }
         applicationService.restart();
       });
     };
@@ -27,10 +19,17 @@ angular.module('copayApp.controllers').controller('disclaimerController',
         profileService.create({
           noWallet: noWallet
         }, function(err) {
-          if (err) {
+          if (err && !'EEXIST') {
             $log.warn(err);
             $scope.error = err;
             $scope.$apply();
+            $scope.noProfile = true;
+            $timeout(function() {
+              $scope.init();
+            }, 3000);
+          } else {
+            $scope.error = "";
+            $scope.noProfile = false;
           }
         });
       });

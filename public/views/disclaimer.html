@@ -58,7 +58,7 @@
     </div>
     <div class="row" ng-show="!creatingProfile">
       <div class="start-button columns">
-        <button ng-click="create()" class="button black expand round size-12 text-spacing" translate>
+        <button ng-disabled="noProfile" ng-click="create()" class="button black expand round size-12 text-spacing" translate>
           GET STARTED
         </button>
       </div>
