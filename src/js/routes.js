@@ -308,18 +308,6 @@ angular
           },
         }
       })
-
-    .state('preferencesAltCurrency', {
-      url: '/preferencesAltCurrency',
-      templateUrl: 'views/preferencesAltCurrency.html',
-      walletShouldBeComplete: true,
-      needProfile: true,
-      views: {
-        'main': {
-          templateUrl: 'views/preferencesAltCurrency.html'
-        },
-      }
-    })
       .state('preferencesSkinPreview', {
         url: '/preferencesSkinPreview',
         templateUrl: 'views/preferencesSkinPreview.html',
@@ -399,7 +387,6 @@ angular
       })
       .state('preferencesAltCurrency', {
         url: '/preferencesAltCurrency',
-        templateUrl: 'views/preferencesAltCurrency.html',
         walletShouldBeComplete: true,
         needProfile: true,
         views: {

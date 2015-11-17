@@ -106,7 +106,7 @@ angular.module('copayApp.services').factory('animationService', function(isCordo
       leaving = null;
 
     // Horizontal Slide Animation?
-    if ((fromWeight && toWeight) && (toWeight <= 99 && fromWeight <= 99)) {
+    if (isCordova && (fromWeight && toWeight) && (toWeight <= 99 && fromWeight <= 99)) {
       if (fromWeight > toWeight) {
         leaving = 'CslideOutRight';
       } else {
@@ -114,7 +114,7 @@ angular.module('copayApp.services').factory('animationService', function(isCordo
       }
 
       // Vertical Slide Animation?
-    } else if (fromName && fromWeight >= 0 && toWeight >= 0) {
+    } else if (isCordova && fromName && fromWeight >= 0 && toWeight >= 0) {
       if (toWeight && (fromWeight <= 99 || toWeight > 199)) {
         entering = 'CslideInUp';
       } else {
