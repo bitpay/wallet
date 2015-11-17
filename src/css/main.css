@@ -1099,7 +1099,7 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
   background: #213140;
   border: 1px solid #4B6178;
   border-radius: 5px;
-  margin: 0 1.6rem 1.6rem 1.6rem;
+  margin: 1.6rem;
   color: #A5B2BF;
   line-height: 30px;
   padding: 0.5rem;
