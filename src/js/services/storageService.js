@@ -1,16 +1,22 @@
 'use strict';
 angular.module('copayApp.services')
-  .factory('storageService', function(logHeader, fileStorageService, localStorageService, sjcl, $log, lodash, isCordova) {
+  .factory('storageService', function(logHeader, fileStorageService, localStorageService, sjcl, $q, $log, lodash, isCordova) {
 
     var root = {};
 
-    // File storage is not supported for writting according to 
-    // https://github.com/apache/cordova-plugin-file/#supported-platforms
-    var shouldUseFileStorage = isCordova && !isMobile.Windows();
-    $log.debug('Using file storage:', shouldUseFileStorage);
+    // See https://github.com/apache/cordova-plugin-file/#supported-platforms
+    // See see http://caniuse.com/#feat=filesystem
 
+    // Check for File System API support.
+    window.requestFileSystem = window.requestFileSystem || window.webkitRequestFileSystem;
+    var fileSystemAPISupported = (typeof window.requestFileSystem != 'undefined');
 
+    // Select the default storage method.
+    var shouldUseFileStorage = (isCordova && !isMobile.Windows());
     var storage = shouldUseFileStorage ? fileStorageService : localStorageService;
+
+    $log.debug('Using default storage: ' + (shouldUseFileStorage ? (isCordova ? 'file storage (cordova-plugin-file)' : 'file storage (File System API)') : 'local storage'));
+    $log.debug('File storage is available: ' + (fileSystemAPISupported ? 'yes' : 'no'));
 
     var getUUID = function(cb) {
       // TO SIMULATE MOBILE
@@ -37,7 +43,6 @@ angular.module('copayApp.services')
       //   return cb(null, text);
       // });
     };
-
 
     var decryptOnMobile = function(text, cb) {
       var json;
@@ -73,7 +78,17 @@ angular.module('copayApp.services')
       });
     };
 
+    root.fileStorageAvailable = function() {
+      return fileSystemAPISupported;
+    };
 
+    root.getApplicationDirectory = function() {
+      if (shouldUseFileStorage) {
+        return fileStorageService.getAppDir();
+      } else {
+        return '';
+      }
+    };
 
     root.tryToMigrate = function(cb) {
       if (!shouldUseFileStorage) return cb();
@@ -250,6 +265,26 @@ angular.module('copayApp.services')
     root.removeTxHistory = function(walletId, cb) {
       storage.remove('txsHistory-' + walletId, cb);
     }
+
+    // Theme catalog service requires fileStorageService.
+    root.getThemeCatalog = function(cb) {
+      if (!fileSystemAPISupported)
+        throw new Error('storageService#getThemeCatalog called when storage service does not support it');
+      fileStorageService.get('themeCatalog', cb);
+    };
+
+    root.storeThemeCatalog = function(val, cb) {
+      if (!fileSystemAPISupported)
+        throw new Error('storageService#storeThemeCatalog called when storage service does not support it');
+      $log.debug('Storing Theme Catalog', val);
+      fileStorageService.set('themeCatalog', val, cb);
+    };
+
+    root.clearThemeCatalog = function(cb) {
+      if (!fileSystemAPISupported)
+        throw new Error('storageService#clearThemeCatalog called when storage service does not support it');
+      fileStorageService.remove('themeCatalog', cb);
+    };
 
     return root;
   });

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('backupController',
-  function($rootScope, $scope, $timeout, $log, backupService, storageService, profileService, isMobile, notification, go, gettext, gettextCatalog) {
+  function($rootScope, $scope, $timeout, $log, backupService, storageService, profileService, isMobile, notification, go, gettext, gettextCatalog, themeService) {
     var self = this;
 
     self.error = null;
@@ -28,7 +28,12 @@ angular.module('copayApp.controllers').controller('backupController',
             return;
           }
 
-          notification.success(gettext('Success'), gettext('Encrypted export file saved'));
+          notification.success(
+            gettextCatalog.getString('Success'),
+            gettextCatalog.getString('Encrypted export file saved'),
+            {color: themeService.getPublishedSkin().view.textHighlightColor,
+             iconColor: themeService.getPublishedTheme().view.notificationBarIconColor,
+             barBackground: themeService.getPublishedTheme().view.notificationBarBackground});
           go.walletHome();
         });
       });

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.services').factory('glideraService', function($http, $log, isCordova) {
+angular.module('copayApp.services').factory('glideraService', function($http, $log, isCordova, brand) {
   var root = {};
   var credentials = {};
 
@@ -9,26 +9,26 @@ angular.module('copayApp.services').factory('glideraService', function($http, $l
       credentials.HOST = 'https://sandbox.glidera.io';
       if (isCordova) {
         credentials.REDIRECT_URI = 'bitcoin://glidera';
-        credentials.CLIENT_ID = 'dfc56e4336e32bb8ba46dde34f3d7d6d';
-        credentials.CLIENT_SECRET = '5eb679058f6c7eb81123162323d4fba5';
+        credentials.CLIENT_ID = "dfc56e4336e32bb8ba46dde34f3d7d6d";
+        credentials.CLIENT_SECRET = "5eb679058f6c7eb81123162323d4fba5";
       }
       else {
         credentials.REDIRECT_URI = 'urn:ietf:wg:oauth:2.0:oob';
-        credentials.CLIENT_ID = '9915b6ffa6dc3baffb87135ed3873d49';
-        credentials.CLIENT_SECRET = 'd74eda05b9c6a228fd5c85cfbd0eb7eb';
+        credentials.CLIENT_ID = "9915b6ffa6dc3baffb87135ed3873d49";
+        credentials.CLIENT_SECRET = "d74eda05b9c6a228fd5c85cfbd0eb7eb";
       }
     }
     else {
       credentials.HOST = 'https://glidera.io';
       if (isCordova) {
         credentials.REDIRECT_URI = 'bitcoin://glidera';
-        credentials.CLIENT_ID = '9c8023f0ac0128235b7b27a6f2610c83';
-        credentials.CLIENT_SECRET = '30431511407b47f25a83bffd72881d55';
+        credentials.CLIENT_ID = brand.features.glidera.auth.cordovaClientId;
+        credentials.CLIENT_SECRET = brand.features.glidera.auth.cordovaClientSecret;
       }
       else {
         credentials.REDIRECT_URI = 'urn:ietf:wg:oauth:2.0:oob';
-        credentials.CLIENT_ID = '8a9e8a9cf155db430c1ea6c7889afed1';
-        credentials.CLIENT_SECRET = '24ddec578f38d5488bfe13601933c05f';
+        credentials.CLIENT_ID = brand.features.glidera.auth.clientId;
+        credentials.CLIENT_SECRET = brand.features.glidera.auth.clientSecret;
       }
     };
   };

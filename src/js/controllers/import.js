@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('importController',
-  function($scope, $rootScope, $location, $timeout, $log, profileService, configService, notification, go, sjcl, gettext, lodash, ledger, trezor, isChromeApp, isDevel, derivationPathHelper) {
+  function($scope, $rootScope, $location, $timeout, $log, profileService, configService, notification, go, sjcl, gettext, lodash, ledger, trezor, themeService, isChromeApp, isDevel, derivationPathHelper) {
 
     var self = this;
     var reader = new FileReader();
@@ -74,7 +74,12 @@ angular.module('copayApp.controllers').controller('importController',
             self.error = err;
           } else {
             $rootScope.$emit('Local/WalletImported', walletId);
-            notification.success(gettext('Success'), gettext('Your wallet has been imported correctly'));
+            notification.success(
+              gettext('Success'),
+              gettext('Your wallet has been imported correctly'),
+              {color: themeService.getPublishedSkin().view.textHighlightColor,
+               iconColor: themeService.getPublishedTheme().view.notificationBarIconColor,
+               barBackground: themeService.getPublishedTheme().view.notificationBarBackground});
           }
         });
       }, 100);
@@ -93,7 +98,12 @@ angular.module('copayApp.controllers').controller('importController',
             });
           }
           $rootScope.$emit('Local/WalletImported', walletId);
-          notification.success(gettext('Success'), gettext('Your wallet has been imported correctly'));
+          notification.success(
+            gettext('Success'),
+            gettext('Your wallet has been imported correctly'),
+            {color: themeService.getPublishedSkin().view.textHighlightColor,
+             iconColor: themeService.getPublishedTheme().view.notificationBarIconColor,
+             barBackground: themeService.getPublishedTheme().view.notificationBarBackground});
         });
       }, 100);
     };
@@ -111,7 +121,12 @@ angular.module('copayApp.controllers').controller('importController',
             });
           }
           $rootScope.$emit('Local/WalletImported', walletId);
-          notification.success(gettext('Success'), gettext('Your wallet has been imported correctly'));
+          notification.success(
+            gettext('Success'),
+            gettext('Your wallet has been imported correctly'),
+            {color: themeService.getPublishedSkin().view.textHighlightColor,
+             iconColor: themeService.getPublishedTheme().view.notificationBarIconColor,
+             barBackground: themeService.getPublishedTheme().view.notificationBarBackground});
         });
       }, 100);
     };
@@ -234,7 +249,12 @@ angular.module('copayApp.controllers').controller('importController',
             });
           }
           $rootScope.$emit('Local/WalletImported', walletId);
-          notification.success(gettext('Success'), gettext('Your wallet has been imported correctly'));
+          notification.success(
+            gettext('Success'),
+            gettext('Your wallet has been imported correctly'),
+            {color: themeService.getPublishedSkin().view.textHighlightColor,
+             iconColor: themeService.getPublishedTheme().view.notificationBarIconColor,
+             barBackground: themeService.getPublishedTheme().view.notificationBarBackground});
           go.walletHome();
         });
       }, 100);
@@ -308,7 +328,12 @@ angular.module('copayApp.controllers').controller('importController',
             });
           }
           $rootScope.$emit('Local/WalletImported', walletId);
-          notification.success(gettext('Success'), gettext('Your wallet has been imported correctly'));
+          notification.success(
+            gettext('Success'),
+            gettext('Your wallet has been imported correctly'),
+            {color: themeService.getPublishedSkin().view.textHighlightColor,
+             iconColor: themeService.getPublishedTheme().view.notificationBarIconColor,
+             barBackground: themeService.getPublishedTheme().view.notificationBarBackground});
         });
       }, 100);
     };

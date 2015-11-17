@@ -1,14 +1,22 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, lodash, go, profileService, configService, isCordova, rateService, storageService, addressService, gettext, gettextCatalog, amMoment, nodeWebkit, addonManager, feeService, isChromeApp, bwsError, txFormatService, uxLanguage, $state, glideraService, isMobile, addressbookService) {
+angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, lodash, go, profileService, configService, isCordova, rateService, storageService, addressService, gettext, gettextCatalog, amMoment, nodeWebkit, addonManager, feeService, isChromeApp, bwsError, txFormatService, uxLanguage, $state, glideraService, isMobile, addressbookService, themeService, brand) {
   var self = this;
   var SOFT_CONFIRMATION_LIMIT = 12;
   self.isCordova = isCordova;
   self.isChromeApp = isChromeApp;
   self.isSafari = isMobile.Safari();
   self.onGoingProcess = {};
-  self.historyShowLimit = 10;
+  self.limitHistory = 10;
   self.updatingTxHistory = {};
+  self.brand = brand;
+
+  var features = '';
+  features += (brand.features.glidera.enabled ? 'Glidera,' : '');
+  features += (brand.features.theme.themeDiscovery.enabled ? 'Theme Discovery,' : '');
+  features += (brand.features.theme.skinDiscovery.enabled ? 'Skin Discovery,' : '');
+  $log.debug('Application branding: ' + brand.shortName);
+  $log.debug('Enabled features: ' + features.substring(0, features.length-1));
 
   function strip(number) {
     return (parseFloat(number.toPrecision(12)));
@@ -119,7 +127,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
       self.txps = [];
       self.copayers = [];
-      self.updateColor();
+      self.updateSkin();
       self.updateAlias();
       self.setAddressbook();
 
@@ -135,6 +143,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
           self.openWallet();
         });
       }
+
     });
   };
 
@@ -543,19 +552,16 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     fc.alias = self.alias;
   };
 
-  self.updateColor = function() {
-    var config = configService.getSync();
-    config.colorFor = config.colorFor || {};
-    self.backgroundColor = config.colorFor[self.walletId] || '#4A90E2';
-    var fc = profileService.focusedClient;
-    fc.backgroundColor = self.backgroundColor;
+  self.updateSkin = function() {
+    themeService.updateSkin(self.walletId, function() {
+      $scope.$emit('Local/SkinUpdated');
+    });
   };
 
   self.setBalance = function(balance) {
     if (!balance) return;
     var config = configService.getSync().wallet.settings;
     var COIN = 1e8;
-
 
     // Address with Balance
     self.balanceByAddress = balance.byAddress;
@@ -969,7 +975,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   };
 
   self.initGlidera = function(accessToken) {
-    self.glideraEnabled = configService.getSync().glidera.enabled;
+    self.glideraVisible = configService.getSync().glidera.visible;
     self.glideraTestnet = configService.getSync().glidera.testnet;
     var network = self.glideraTestnet ? 'testnet' : 'livenet';
 
@@ -981,7 +987,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.glideraTxs = null;
     self.glideraStatus = null;
 
-    if (!self.glideraEnabled) return;
+    if (!self.glideraVisible) return;
 
     glideraService.setCredentials(network);
 
@@ -1079,12 +1085,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   });
 
   // UX event handlers
-  $rootScope.$on('Local/ColorUpdated', function(event) {
-    self.updateColor();
-    $timeout(function() {
-      $rootScope.$apply();
-    });
-  });
 
   $rootScope.$on('Local/AliasUpdated', function(event) {
     self.updateAlias();
@@ -1218,7 +1218,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
 
   $rootScope.$on('NewBlock', function() {
-    if (self.glideraEnabled) {
+    if (self.glideraVisible) {
       $timeout(function() {
         self.updateGlidera();
       });

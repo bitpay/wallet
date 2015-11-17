@@ -2,7 +2,7 @@
   <nav class="tab-bar">
     <section class="left-small">
       <a ng-show="!editAddressbook && !addAddressbookEntry" ng-click="cancel()" class="p10">
-        <span class="text-close" translate>Close</span>
+        <span class="text-close" ng-style="{'color':skin.view.navBarButtonTextColor}" translate>Close</span>
       </a>
     </section>
 
@@ -16,7 +16,7 @@
           Addressbook
         </li>
       </ul>
-      <h1 ng-show="(editAddressbook || !wallets[0]) && !addAddressbookEntry" class="title ellipsis" translate>
+      <h1 ng-show="(editAddressbook || !wallets[0]) && !addAddressbookEntry" class="title ellipsis" ng-style="{'color':skin.view.navBarTitleColor}" translate>
         Addressbook
       </h1>
       <h1 ng-show="addAddressbookEntry" class="title ellipsis" translate>
@@ -37,7 +37,7 @@
   <div class="modal-content fix-modals-touch">
     <div ng-show="selectedWalletsOpt">
       <div class="onGoingProcess" ng-if="gettingAddress">
-        <div class="onGoingProcess-content" ng-style="{'background-color':'#222'}">
+        <div class="onGoingProcess-content" ng-style="{'background':skin.view.progressBackground, 'color':skin.view.progressTextColor}">
           <div class="spinner">
             <div class="rect1"></div>
             <div class="rect2"></div>
@@ -53,8 +53,10 @@
         <ul class="no-bullet">
           <li class="line-b" ng-repeat="w in wallets">
           <a ng-click="selectWallet(w.id, w.name)" class="db oh">
-            <div class="avatar-wallet"
-              ng-style="{'background-color':w.color}">{{(w.name || w.id) | limitTo: 1}}</div>
+            <div ng-if="w.avatarIsWalletName == 'true'" class="avatar-wallet"
+              ng-style="{'background-color':w.avatarBackground, 'border':w.avatarBorder}">{{(w.name || w.id) | limitTo: 1}}</div>
+            <div ng-if="w.avatarIsWalletName == 'false'" class="avatar-wallet"
+              ng-style="{'background':w.avatarBackground, 'border':w.avatarBorder}"></div>
             <div class="ellipsis name-wallet text-bold">{{w.name || w.id}}</div>
             <div class="size-12">{{w.m}} of {{w.n}}
               <span ng-show="w.network=='testnet'">[Testnet]</span>
@@ -63,7 +65,6 @@
           </li>
         </ul>
       </div>
-    </div>
 
     <div ng-show="!selectedWalletsOpt" class="m20b">
       <ul ng-show="!addAddressbookEntry" class="no-bullet m0" ng-init="list()">

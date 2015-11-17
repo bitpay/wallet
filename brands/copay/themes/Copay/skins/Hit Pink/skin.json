@@ -1,0 +1,49 @@
+{
+  "header": {
+    "schemaVersion": "1",
+    "version": "1.0",
+    "name": "Hit Pink",
+    "description": "",
+    "author": "BitPay, Inc.",
+    "date": "11/1/2015",
+    "galleryImage": "<resource-0>",
+    "previewImage": "<resource-1>",
+    "product": {
+      "id": "0",
+      "price": "$0.00"
+    }
+  },
+  "resources": [
+    "<skin-path>/gallery.png",
+    "<skin-path>/preview.png"
+  ],
+  "view": {
+    "navBarTitleColor": "#FAA77F",
+    "navBarBackground": "#FFFFFF",
+    "navBarButtonTextColor": "#8597A7",
+    "navBarButtonIconColor": "#8597A7",
+    "navBarBorderBottom": "#FFFFFF",
+    "tabBarBackground": "#2C3E50",
+    "tabBarSelectedBackground": "#122232",
+    "avatarIsWalletName": "true",
+    "avatarBorderSmall": "none",
+    "avatarBorderBig": "3px solid #FFFFFF",
+    "avatarBackground": "#FAA77F",
+    "homeFullBackground": "none",
+    "homeTopTextColor": "#FFFFFF",
+    "homeTopBackground": "#FAA77F",
+    "homeTopBorderBottom": "none",
+    "homeMiddleTextColor": "#2C3E50",
+    "homeMiddleBackground": "none",
+    "homeMiddleBorderBottom": "1px solid #E9E9EC",
+    "homeBottomTextColor": "#2C3E50",
+    "homeBottomBackground": "none",
+    "homePreferencesButtonColor": "#8597A7",
+    "buttonBackground": "#FAA77F",
+    "buttonTextColor": "#FFFFFF",
+    "progressBackground": "#FAA77F",
+    "progressTextColor": "#FFFFFF",
+    "iconBackground": "#FAA77F",
+    "textHighlightColor": "#FAA77F"
+  }
+}

@@ -1,11 +1,11 @@
-<nav class="tab-bar">
+<nav class="tab-bar" ng-style="{'background':skin.view.navBarBackground}">
   <section class="left-small">
     <a ng-click="cancel()" class="p10">
-      <span class="text-close" translate>Close</span>
+      <span class="text-close" ng-style="{'color':skin.view.navBarButtonTextColor}" translate>Close</span>
     </a>
   </section>
   <section class="middle tab-bar-section">
-    <h1 class="title ellipsis" ng-style="{'color':color}" translate>
+    <h1 class="title ellipsis" ng-style="{'color':skin.view.navBarTitleColor}" translate>
       Payment request
     </h1>
   </section>
