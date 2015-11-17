@@ -21,6 +21,7 @@ angular.module('copayApp.services').factory('animationService', function(isCordo
     uriglidera: -1,
 
     preferences: 11,
+    preferencesGlobal: 11,
     glidera: 11,
     preferencesSkin: 12,
     preferencesSkinPreview: 100,

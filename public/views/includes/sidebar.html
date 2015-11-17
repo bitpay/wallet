@@ -22,7 +22,7 @@
     <li ng-style="{'border-bottom-color':theme.view.sidebarListSeparatorColor}">
       <a ng-click="$root.go('add')" class="oh">
         <i class="icon-arrow-right3 size-18 right m10t"></i>
-        <i class="fi-plus size-24 db left m20r m5t"></i>
+        <i class="fi-plus size-24 icon"></i>
         <div class="tu text-bold">
           <span class="size-12" translate>Add wallet</span>
         </div>
@@ -32,11 +32,21 @@
     <li ng-style="{'border-bottom-color':theme.view.sidebarListSeparatorColor}" ng-show="index.brand.features.glidera.enabled && index.glideraVisible">
       <a ng-click="$root.go('glidera')" class="oh">
         <i class="icon-arrow-right3 size-18 right m10t"></i>
-        <i class="icon-bank size-24 db left m20r m5t"></i>
+        <i class="icon-bank size-24 icon"></i>
         <div class="tu text-bold">
           <span class="size-12">Buy &amp; Sell Bitcoin</span>
         </div>
         <div>Glidera</div>
+      </a>
+    </li>
+    <li>
+      <a ng-click="$root.go('preferencesGlobal')" class="oh">
+        <i class="icon-arrow-right3 size-18 right m10t"></i>
+        <i class="fi-widget size-24 icon"></i>
+        <div class="tu text-bold">
+          <span class="size-12">Settings</span>
+        </div>
+        <div>Global preferences</div>
       </a>
     </li>
   </ul>

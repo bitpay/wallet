@@ -18,6 +18,9 @@ Binary versions of Copay are available for download at [Copay.io](https://copay.
 - Synchronous access across all major mobile and desktop platforms
 - Payment protocol (BIP70-BIP73) support: easily-identifiable payment requests and verifiable, secure bitcoin payments
 - Support for over 150 currency pricing options and unit denomination in BTC or bits
+- Mnemonic (BIP39) support for wallet backups
+- Paper wallet sweep support (BIP38)
+- Hardware wallet support (Trezor and Ledger) (only in Chrome App version)
 - Email notifications for payments and transfers
 - Customizable wallet naming and background colors
 - Multiple languages supported
@@ -137,7 +140,7 @@ For more information regarding how addresses are generated using this procedure,
 
 ## Copay Backups and Recovery
 
-Copay v1.2 use BIP39 mnemonics for backing up wallets.  The standard BIP44 is used for wallet address derivation. Multisig wallets use P2SH addresses, while non-multisig wallets use P2PKH. 
+Since v1.2 Copay uses BIP39 mnemonics for backing up wallets.  The standard BIP44 is used for wallet address derivation. Multisig wallets use P2SH addresses, while non-multisig wallets use P2PKH. 
 
 Information about backup and recovery procedures is available at https://github.com/bitpay/copay/blob/master/backupRecovery.md
 
@@ -159,17 +162,47 @@ Depending on the key `derivationStrategy`, addresses are derived using
 |  <1.2  | All  |  BIP45 | P2SH   |
 |  >=1.2 | Non-multisig  | BIP44  | P2PKH   |
 | >=1.2  | Multisig  |  BIP44 |  P2SH   |
-
+| >=1.5  | Multisig Hardware wallets  |  BIP44 (root m/48') |  P2SH   |
 
 Using a tool like [Bitcore PlayGround](http://bitcore.io/playground) all wallet addresses can be generated. (TIP: Use the `Address` section for P2PKH address type wallet and `Multisig Address` for P2SH address type wallets). For multisig addresses, the required number of signatures (key `m` on the export) is also needed to recreate the addresses.
 
 BIP45 note: All addresses generated at BWS with BIP45 use the 'shared cosigner index' (2147483647) so Copay address indexes look like: `m/45'/2147483647/0/x` for main addresses and `m/45'/2147483647/1/y` for change addresses.
+
+Since version 1.5, Copay uses the root `m/48'` for hardware multisignature wallets. This was coordinated with Ledger and Trezor teams. While the derivation path format is still similar to BIP44, the root was in order to indicate that these wallets are not discoverable by scanning addresses for funds. Address generation for multisignature wallets needs the other's copayers extended public keys.
 
 
 ## Bitcore Wallet Service
 
 Copay depends on [Bitcore Wallet Service](https://github.com/bitpay/bitcore-wallet-service) (BWS) for blockchain information, networking and Copayer synchronization.  A BWS instance can be setup and operational within minutes or you can use a public instance like `https://bws.bitpay.com`.  Switching between BWS instances is very simple and can be done with a click from within Copay.  BWS also allows Copay to interoperate with other wallets like [Bitcore Wallet CLI] (https://github.com/bitpay/bitcore-wallet).
 
+## Hardware Wallet Support
+
+Copay supports Ledger and Trezor hardware wallets. The support is only available only on Chrome App. Ledger support is only available on multisig wallets.
+
+To use Ledger, you need to have the Ledger Chrome App installed, available at:
+https://chrome.google.com/webstore/detail/ledger-wallet/kkdpmhnladdopljabkgpacgpliggeeaf
+
+To use Trezor, you need to have the Trezor Chrome Extension installed, available at:
+https://chrome.google.com/webstore/detail/trezor-chrome-extension/jcjjhjgimijdkoamemaghajlhegmoclj
+
+To create or join a wallet using Ledger or Trezor go to:
+
+  Add Wallet -> Create or Join -> Advanced options -> Wallet Seed -> select Trezor or Ledger
+  
+Both devices support multiple accounts, so you can use then for multiple wallets. Select the account and the click on create or join.
+
+It is also possible to import an wallet from a device using:
+  Add Wallet -> Import -> Hardware wallet
+ 
+Here it is also necesary to select the account number.
+
+When creating or joining a wallet, Copay will ask for two public keys for the device. One public keys is used for the wallet itself and the other is used as entropy source to create a private / public key pair for signing request to the Wallet Service.
+
+Everytime you need to sign a transaction, the device will be needed to performe the signature. Follow the screen instructions after clicking the `send` or `accept` buttons.
+
+Finally, in case you loose the device and you have the 24 words seed for the device, you can recover access to your funds using Copay, see: https://github.com/bitpay/copay/blob/master/backupRecovery.md#hardware-wallets
+
+ 
 ## Translations
 Copay uses standard gettext PO files for translations and [Crowdin](https://crowdin.com/project/copay) as the front-end tool for translators.  To join our team of translators, please create an account at [Crowdin](https://crowdin.com) and translate the Copay documentation and application text into your native language.
 

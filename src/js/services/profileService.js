@@ -11,15 +11,13 @@ angular.module('copayApp.services')
     root.focusedClient = null;
     root.walletClients = {};
 
-    root.getUtils = function() {
-      return bwcService.getUtils();
-    };
+    root.Utils = bwcService.getUtils();
     root.formatAmount = function(amount) {
       var config = configService.getSync().wallet.settings;
       if (config.unitCode == 'sat') return amount;
 
       //TODO : now only works for english, specify opts to change thousand separator and decimal separator
-      return this.getUtils().formatAmount(amount, config.unitCode);
+      return this.Utils.formatAmount(amount, config.unitCode);
     };
 
     root._setFocus = function(walletId, cb) {
@@ -46,8 +44,6 @@ angular.module('copayApp.services')
           client.setNotificationsInterval(BACKGROUND_UPDATE_PERIOD);
         });
         root.focusedClient.setNotificationsInterval(FOREGROUND_UPDATE_PERIOD);
-
-        console.log('[profileService.js.49] SETTING...'); //TODO
       }
 
       return cb();
@@ -175,14 +171,17 @@ angular.module('copayApp.services')
       var walletClient = bwcService.getClient();
       var network = opts.networkName || 'livenet';
 
+
       if (opts.mnemonic) {
         try {
           opts.mnemonic = root._normalizeMnemonic(opts.mnemonic);
           walletClient.seedFromMnemonic(opts.mnemonic, {
             network: network,
             passphrase: opts.passphrase,
-            account: 0,
+            account: opts.account || 0,
+            derivationStrategy: opts.derivationStrategy || 'BIP44',
           });
+
         } catch (ex) {
           $log.info(ex);
           return cb(gettext('Could not create: Invalid wallet seed'));
@@ -197,7 +196,8 @@ angular.module('copayApp.services')
       } else if (opts.extendedPublicKey) {
         try {
           walletClient.seedFromExtendedPublicKey(opts.extendedPublicKey, opts.externalSource, opts.entropySource, {
-            account: 0
+            account: opts.account || 0,
+            derivationStrategy: opts.derivationStrategy || 'BIP44',
           });
         } catch (ex) {
           $log.warn("Creating wallet from Extended Public Key Arg:", ex, opts);
@@ -272,12 +272,12 @@ angular.module('copayApp.services')
       $log.debug('Joining Wallet:', opts);
 
       try {
-        var walletData = this.getUtils().fromSecret(opts.secret);
+        var walletData = bwcService.parseSecret(opts.secret);
 
         // check if exist
         if (lodash.find(root.profile.credentials, {
-          'walletId': walletData.walletId
-        })) {
+            'walletId': walletData.walletId
+          })) {
           return cb(gettext('Cannot join the same wallet more that once'));
         }
       } catch (ex) {
@@ -311,7 +311,7 @@ angular.module('copayApp.services')
         walletId: walletId
       });
 
-      delete root.walletClients[walletId]; 
+      delete root.walletClients[walletId];
       root.focusedClient = null;
 
       storageService.clearLastAddress(walletId, function(err) {
@@ -337,6 +337,25 @@ angular.module('copayApp.services')
       });
     };
 
+    root.setMetaData = function(walletClient, addressBook, historyCache, cb) {
+      storageService.getAddressbook(walletClient.credentials.network, function(err, localAddressBook) {
+        var localAddressBook1 = {};
+        try {
+          localAddressBook1 = JSON.parse(localAddressBook);
+        } catch (ex) {
+          $log.warn(ex);
+        }
+        var mergeAddressBook = lodash.merge(addressBook, localAddressBook1);
+        storageService.setAddressbook(walletClient.credentials.network, JSON.stringify(addressBook), function(err) {
+          if (err) return cb(err);
+          storageService.setTxHistory(JSON.stringify(historyCache), walletClient.credentials.walletId, function(err) {
+            if (err) return cb(err);
+            return cb(null);
+          });
+        });
+      });
+    }
+
     root._addWalletClient = function(walletClient, opts, cb) {
       var walletId = walletClient.credentials.walletId;
 
@@ -361,7 +380,7 @@ angular.module('copayApp.services')
         root.setWalletClients();
 
         root.setAndStoreFocus(walletId, function() {
-          storageService.storeProfile(root.profile, function(err){
+          storageService.storeProfile(root.profile, function(err) {
             return cb(err, walletId);
           });
         });
@@ -383,7 +402,19 @@ angular.module('copayApp.services')
       } catch (err) {
         return cb(gettext('Could not import. Check input file and password'));
       }
-      root._addWalletClient(walletClient, opts, cb);
+
+      str = JSON.parse(str);
+
+      var addressBook = str.addressBook || {};
+      var historyCache = str.historyCache ||  [];
+
+      root._addWalletClient(walletClient, opts, function(err, walletId) {
+        if (err) return cb(err);
+        root.setMetaData(walletClient, addressBook, historyCache, function(error) {
+          if (error) console.log(error);
+          return cb(err, walletId);
+        });
+      });
     };
 
     root.importExtendedPrivateKey = function(xPrivKey, opts, cb) {
@@ -420,7 +451,7 @@ angular.module('copayApp.services')
       walletClient.importFromMnemonic(words, {
         network: opts.networkName,
         passphrase: opts.passphrase,
-        account: 0,
+        account: opts.account || 0,
       }, function(err) {
         if (err)
           return bwsError.cb(err, gettext('Could not import'), cb);
@@ -437,7 +468,8 @@ angular.module('copayApp.services')
       $log.debug('Importing Wallet XPubKey');
 
       walletClient.importFromExtendedPublicKey(opts.extendedPublicKey, opts.externalSource, opts.entropySource, {
-        account: 0
+        account: opts.account || 0,
+        derivationStrategy: opts.derivationStrategy || 'BIP44',
       }, function(err) {
         if (err) {
 
@@ -596,7 +628,7 @@ angular.module('copayApp.services')
       var fc = root.focusedClient;
       $log.info('Requesting Ledger Chrome app to sign the transaction');
 
-      ledger.signTx(txp, 0, function(result) {
+      ledger.signTx(txp, fc.credentials.account, function(result) {
         $log.debug('Ledger response', result);
         if (!result.success)
           return cb(result.message || result.error);
@@ -614,7 +646,7 @@ angular.module('copayApp.services')
       $log.info('Requesting Trezor  to sign the transaction');
 
       var xPubKeys = lodash.pluck(fc.credentials.publicKeyRing, 'xPubKey');
-      trezor.signTx(xPubKeys, txp, 0, function(err, result) {
+      trezor.signTx(xPubKeys, txp, fc.credentials.account, function(err, result) {
         if (err) return cb(err);
 
         $log.debug('Trezor response', result);

@@ -1,9 +1,10 @@
-<div class="preferences" ng-controller="preferencesAbout as about">
+<div class="content preferences" ng-controller="preferencesAbout as about">
   <div 
     class="topbar-container" 
     ng-include="'views/includes/topbar.html'"
-    ng-init="titleSection='About ' + index.brand.shortName; goBackToState = 'preferences'">
+      ng-init="titleSection='About ' + index.brand.shortName; goBackToState = 'preferences'">
   </div>
+
     <h4  translate>Release Information</h4>
       <ul class="no-bullet m0">
         <li  ng-conf>

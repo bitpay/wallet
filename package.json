@@ -1,8 +1,8 @@
 {
-  "name": "mtb",
-  "description": "A secure bitcoin wallet for friends and companies.",
-  "author": "BitPay, Inc.",
-  "version": "1.5.0",
+  "name": "copay",
+  "description": "A multisignature wallet",
+  "author": "BitPay",
+  "version": "1.5.1",
   "keywords": [
     "wallet",
     "copay",
