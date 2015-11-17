@@ -41,7 +41,6 @@ angular.module('copayApp.controllers').controller('glideraController',
       var ModalInstanceCtrl = function($scope, $modalInstance) {
         $scope.tx = tx;
         $scope.settings = config;
-        $scope.color = fc.backgroundColor;
 
         glideraService.getTransaction(token, tx.transactionUuid, function(error, tx) {
           $scope.tx = tx;

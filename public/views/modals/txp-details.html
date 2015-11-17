@@ -1,12 +1,12 @@
-<nav class="tab-bar">
+<nav class="tab-bar" ng-style="{'background':skin.view.navBarBackground}">
   <section class="left-small">
     <a ng-click="cancel()">
       <i class="icon-arrow-left3 icon-back"></i>
-      <span class="text-back" translate>Back</span>
+      <span class="text-back" ng-style="{'color':skin.view.navBarButtonTextColor}" translate>Back</span>
     </a>
   </section>
   <section class="middle tab-bar-section">
-    <h1 class="title ellipsis" ng-style="{'color':color}" translate>
+    <h1 class="title ellipsis" ng-style="{'color':skin.view.navBarTitleColor}" translate>
       Payment Proposal
     </h1>
   </section>
@@ -124,7 +124,7 @@
     </div>
     <div class="large-5 medium-5 small-6 columns text-right" ng-show="canSign">
       <button class="button primary round expand" ng-click="sign(tx)"
-        ng-style="{'background-color':color}"
+        ng-style="{'background':theme.view.buttonBackground, 'color':theme.view.buttonTextColor}"
         ng-disabled="loading">
         <i class="fi-check"></i>
         <span translate>Accept</span>

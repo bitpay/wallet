@@ -1,6 +1,6 @@
 'use strict';
 angular.module('copayApp.services')
-  .factory('profileService', function profileServiceFactory($rootScope, $location, $timeout, $filter, $log, lodash, storageService, bwcService, configService, notificationService, isChromeApp, isCordova, gettext, gettextCatalog, nodeWebkit, bwsError, uxLanguage, ledger, bitcore, trezor) {
+  .factory('profileService', function profileServiceFactory($rootScope, $location, $timeout, $filter, $log, lodash, storageService, bwcService, configService, notificationService, isChromeApp, isCordova, gettext, gettextCatalog, nodeWebkit, bwsError, uxLanguage, ledger, bitcore, trezor, themeService) {
 
     var root = {};
 
@@ -118,15 +118,15 @@ angular.module('copayApp.services')
 
     root.bindProfile = function(profile, cb) {
       root.profile = profile;
-
       configService.get(function(err) {
         $log.debug('Preferences read');
         if (err) return cb(err);
         root.setWalletClients();
         storageService.getFocusedWalletId(function(err, focusedWalletId) {
           if (err) return cb(err);
+          $log.debug('profileService(): focusedWalletId='+focusedWalletId);
           root._setFocus(focusedWalletId, function() {
-            $rootScope.$emit('Local/ProfileBound');
+            $rootScope.$emit('Local/ProfileBound');            
             return cb();
           });
         });
@@ -493,7 +493,6 @@ angular.module('copayApp.services')
         bwcService.setTransports(['polling']);
         root._createNewProfile(opts, function(err, p) {
           if (err) return cb(err);
-
           root.bindProfile(p, function(err) {
             storageService.storeNewProfile(p, function(err) {
               return cb(err);
@@ -501,6 +500,7 @@ angular.module('copayApp.services')
           });
         });
       });
+
     };
 
     root.importLegacyWallet = function(username, password, blob, cb) {
@@ -604,8 +604,9 @@ angular.module('copayApp.services')
       if (!root.profile) return [];
 
       var config = configService.getSync();
-      config.colorFor = config.colorFor || {};
+      var catalog = themeService.getCatalog();
       config.aliasFor = config.aliasFor || {};
+      catalog.skinFor = catalog.skinFor || {};
       var ret = lodash.map(root.profile.credentials, function(c) {
         return {
           m: c.m,
@@ -613,7 +614,9 @@ angular.module('copayApp.services')
           name: config.aliasFor[c.walletId] || c.walletName,
           id: c.walletId,
           network: c.network,
-          color: config.colorFor[c.walletId] || '#2C3E50'
+          avatarIsWalletName: (catalog.skinFor[c.walletId] !== undefined ? $rootScope.theme.skins[catalog.skinFor[c.walletId]].view.avatarIsWalletName : $rootScope.theme.skins[$rootScope.theme.header.defaultSkinId].view.avatarIsWalletName),
+          avatarBackground: (catalog.skinFor[c.walletId] !== undefined ? $rootScope.theme.skins[catalog.skinFor[c.walletId]].view.avatarBackground : $rootScope.theme.skins[$rootScope.theme.header.defaultSkinId].view.avatarBackground),
+          avatarBorder: (catalog.skinFor[c.walletId] !== undefined ? $rootScope.theme.skins[catalog.skinFor[c.walletId]].view.avatarBorderSmall : $rootScope.theme.skins[$rootScope.theme.header.defaultSkinId].view.avatarBorderSmall),
         };
       });
       ret = lodash.filter(ret, function(w) {

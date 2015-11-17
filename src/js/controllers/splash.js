@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('splashController',
-  function($scope, $timeout, $log, profileService, storageService, go) {
+  function($scope, $timeout, $log, profileService, storageService, go, themeService) {
     
     $scope.create = function(noWallet) {
       $scope.creatingProfile = true;

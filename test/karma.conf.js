@@ -38,7 +38,7 @@ module.exports = function(config) {
     // list of files to exclude
     exclude: [
       'src/js/translations.js',
-      'src/js/version.js',
+      'src/js/brand.js',
       'test/karma.conf.js',
       'test/old/*'
     ],
