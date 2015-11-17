@@ -58,35 +58,6 @@ angular.module('copayApp.controllers').controller('preferencesController',
       }
     });
 
-<<<<<<< e0512a21656d6ea65a129609bd3f8d16800146c9
-=======
-    var unwatchGlideraEnabled = $scope.$watch('glideraVisible', function(newVal, oldVal) {
-      if (newVal == oldVal) return;
-      var opts = {
-        glidera: {
-          visible: newVal
-        }
-      };
-      configService.set(opts, function(err) {
-        $rootScope.$emit('Local/GlideraUpdated');
-        if (err) $log.debug(err);
-      });
-    });
-
-    var unwatchGlideraTestnet = $scope.$watch('glideraTestnet', function(newVal, oldVal) {
-      if (newVal == oldVal) return;
-      var opts = {
-        glidera: {
-          testnet: newVal
-        }
-      };
-      configService.set(opts, function(err) {
-        $rootScope.$emit('Local/GlideraUpdated');
-        if (err) $log.debug(err);
-      });
-    });
-
->>>>>>> Fixes to build process and introduction of features on/off into brand configuration.
     var unwatchRequestTouchid = $scope.$watch('touchid', function(newVal, oldVal) {
       if (newVal == oldVal || $scope.touchidError) {
         $scope.touchidError = false;
