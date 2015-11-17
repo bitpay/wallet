@@ -10,6 +10,7 @@
   "publisherEmail": "support@bitpay.com",
   "packageName": "com.bitpay.copay",
   "exeName": "copay",
+  "deviceStatusBarBackgroundColor": "#2C3E50",
   "disclaimer": [
     "The software you are about to use functions as a free, open source, and multi-signature digital wallet.",
     "The software does not constitute an account where BitPay or other third parties serve as financial intermediaries or custodians of your bitcoin.",
