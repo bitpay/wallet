@@ -9,13 +9,13 @@ angular.module('copayApp.controllers').controller('disclaimerController',
       go.walletHome();
     };
 
-    var create = function () {
+    var create = function() {
       $scope.creatingProfile = true;
       profileService.create({}, function(err) {
 
         if (err) {
 
-          if (err == 'EEXISTS') 
+          if (err == 'EEXISTS')
             return go.walletHome();
 
           $log.warn(err);
@@ -32,6 +32,6 @@ angular.module('copayApp.controllers').controller('disclaimerController',
       });
     };
 
-//    create();
+    create();
 
   });
