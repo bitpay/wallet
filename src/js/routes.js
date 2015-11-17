@@ -563,7 +563,13 @@ angular
   .run(function($rootScope, $state, $log, uriHandler, isCordova, profileService, $timeout, nodeWebkit, uxLanguage, animationService, themeService) {
     FastClick.attach(document.body);
 
-    themeService.init();
+    themeService.init(function() {
+      if (isCordova) {
+        // Style the device status bar.
+        window.StatusBar.backgroundColorByHexString($rootScope.theme.view.deviceStatusBarBackgroundColor);
+      }
+    });
+
     uxLanguage.init();
 
     // Register URI handler, not for mobileApp

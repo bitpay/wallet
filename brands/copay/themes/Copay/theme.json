@@ -20,6 +20,7 @@
     "<theme-path>/sidebar.png"
   ],
   "view": {
+    "deviceStatusBarBackgroundColor": "#2C3E50",
     "disclaimerBackground": "#FFFFFF",
     "disclaimerTextColor": "#2C3E50",
     "disclaimerButtonBackground": "#2C3E50",
@@ -42,6 +43,7 @@
     "navBarBackground": "#FFFFFF",
     "navBarButtonTextColor": "#8597A7",
     "navBarButtonIconColor": "#8597A7",
+    "navBarBorderBottom": "#FFFFFF",
     "notificationBarBackground": "rgba(44,62,80,0.90)",
     "notificationBarIconColor": "#213140",
     "buttonBackground": "#2C3E50",
