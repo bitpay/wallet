@@ -1,7 +1,6 @@
 <div class="splash content text-center"
-  ng-init="init()"
   ng-controller="disclaimerController">
-  <div ng-if="!agreed">
+  <div>
     <div class="row">
       <div class="container-image large-2 medium-2 small-2 medium-centered small-centered large-centered columns">
       <img src="img/icon-splash.png" alt="icon" width="100%">
@@ -33,20 +32,23 @@
       </div>
     </div>
     </div>
-    <div class="text-center size-12 text-warning" ng-show="error">
-      {{(error)|translate}}. <span translate>Retrying...</span>
-    </div>
+
     <div class="row">
       <p ng-show="lang != 'en'">
         <a class="center" ng-click="$root.openExternalLink('https://copay.io/disclaimer')" translate>Official English Disclaimer</a>
       </p>
     </div>
-    <div ng-show="!agreed">
+    <div>
         <p class="text-gray columns" translate>I affirm that I have read, understood, and agree with these terms.</p>
     </div>
     <div class="row">
+
+      <div class="text-center size-12 text-warning" ng-show="error">
+        {{(error)|translate}}. <span translate>Retrying...</span>
+      </div>
+
       <div class="start-button columns">
-        <button ng-disabled="noProfile" ng-click="create()" class="button black expand round size-12 text-spacing" translate>
+        <button ng-disabled="creatingProfile" ng-click="goHome()" class="button black expand round size-12 text-spacing" translate>
           GET STARTED
         </button>
       </div>

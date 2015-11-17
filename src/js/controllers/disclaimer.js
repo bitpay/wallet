@@ -1,38 +1,37 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('disclaimerController',
-  function($scope, $timeout, $log, profileService, isCordova, storageService, gettextCatalog, applicationService, uxLanguage, go) {
+  function($scope, $timeout, $log, profileService, isCordova, storageService, gettextCatalog, uxLanguage, go) {
     self = this;
-    $scope.noProfile = true;
+    $scope.lang = uxLanguage.currentLanguage;
 
-    $scope.create = function() {
-      storageService.setCopayDisclaimerFlag(function(err) {
-        applicationService.restart();
+    $scope.goHome = function() {
+      go.walletHome();
+    };
+
+    var create = function () {
+      $scope.creatingProfile = true;
+      profileService.create({}, function(err) {
+
+        if (err) {
+
+          if (err == 'EEXISTS') 
+            return go.walletHome();
+
+          $log.warn(err);
+          $scope.error = err;
+          $scope.$apply();
+          $timeout(function() {
+            $log.warn('Retrying to create profile......');
+            create();
+          }, 3000);
+        } else {
+          $scope.error = "";
+          $scope.creatingProfile = false;
+        }
       });
     };
 
-    $scope.init = function(noWallet) {
-      storageService.getCopayDisclaimerFlag(function(err, val) {
-        $scope.lang = uxLanguage.currentLanguage;
-        $scope.agreed = val;
-
-        profileService.create({
-          noWallet: noWallet
-        }, function(err) {
-          if (err && !'EEXIST') {
-            $log.warn(err);
-            $scope.error = err;
-            $scope.$apply();
-            $scope.noProfile = true;
-            $timeout(function() {
-              $scope.init();
-            }, 3000);
-          } else {
-            $scope.error = "";
-            $scope.noProfile = false;
-          }
-        });
-      });
-    };
+//    create();
 
   });
