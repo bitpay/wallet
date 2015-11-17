@@ -33,20 +33,8 @@
       </div>
     </div>
     </div>
-    <div class="text-center size-12 text-warning" ng-show="error && !creatingProfile">
+    <div class="text-center size-12 text-warning" ng-show="error">
       {{(error)|translate}}. <span translate>Retrying...</span>
-    </div>
-    <div class="onGoingProcess" ng-show="creatingProfile">
-      <div class="onGoingProcess-content" ng-style="{'background-color':'#222'}">
-        <div class="spinner">
-          <div class="rect1"></div>
-          <div class="rect2"></div>
-          <div class="rect3"></div>
-          <div class="rect4"></div>
-          <div class="rect5"></div>
-        </div>
-        <span translate>Creating Profile...</span>
-      </div>
     </div>
     <div class="row">
       <p ng-show="lang != 'en'">
@@ -56,7 +44,7 @@
     <div ng-show="!agreed">
         <p class="text-gray columns" translate>I affirm that I have read, understood, and agree with these terms.</p>
     </div>
-    <div class="row" ng-show="!creatingProfile">
+    <div class="row">
       <div class="start-button columns">
         <button ng-disabled="noProfile" ng-click="create()" class="button black expand round size-12 text-spacing" translate>
           GET STARTED
