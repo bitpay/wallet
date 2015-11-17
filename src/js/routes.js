@@ -76,17 +76,6 @@ angular
     $compileProvider.imgSrcSanitizationWhitelist(/^\s*((https?|ftp|file|blob|chrome-extension):|data:image\/)/);
 
     $stateProvider
-      .state('splash', {
-        url: '/splash',
-        needProfile: false,
-        views: {
-          'main': {
-            templateUrl: 'views/splash.html',
-          }
-        }
-      });
-
-    $stateProvider
       .state('translators', {
         url: '/translators',
         walletShouldBeComplete: true,
@@ -521,9 +510,6 @@ angular
           if (err) {
             if (err.message && err.message.match('NOPROFILE')) {
               $log.debug('No profile... redirecting');
-              $state.transitionTo('splash');
-            } else if (err.message && err.message.match('NONAGREEDDISCLAIMER')) {
-              $log.debug('Display disclaimer... redirecting');
               $state.transitionTo('disclaimer');
             } else {
               throw new Error(err); // TODO
