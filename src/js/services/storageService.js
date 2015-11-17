@@ -11,15 +11,12 @@ angular.module('copayApp.services')
     window.requestFileSystem = window.requestFileSystem || window.webkitRequestFileSystem;
     var fileSystemAPISupported = (typeof window.requestFileSystem != 'undefined');
 
-    // Select the storage method.
-    var shouldUseFileStorage = (isCordova && !isMobile.Windows()) || fileSystemAPISupported;
+    // Select the default storage method.
+    var shouldUseFileStorage = (isCordova && !isMobile.Windows());
     var storage = shouldUseFileStorage ? fileStorageService : localStorageService;
 
-    $log.debug('Using storage: ' + (shouldUseFileStorage ? (isCordova ? 'file storage (cordova-plugin-file)' : 'file storage (File System API)') : 'local storage'));
-
-    var isUsingFileStorage = function() {
-      return shouldUseFileStorage;
-    }
+    $log.debug('Using default storage: ' + (shouldUseFileStorage ? (isCordova ? 'file storage (cordova-plugin-file)' : 'file storage (File System API)') : 'local storage'));
+    $log.debug('File storage is available: ' + (fileSystemAPISupported ? 'yes' : 'no'));
 
     var getUUID = function(cb) {
       // TO SIMULATE MOBILE
@@ -79,6 +76,10 @@ angular.module('copayApp.services')
         };
         return cb(null, text);
       });
+    };
+
+    root.fileStorageAvailable = function() {
+      return fileSystemAPISupported;
     };
 
     root.getApplicationDirectory = function() {
@@ -265,17 +266,24 @@ angular.module('copayApp.services')
       storage.remove('txsHistory-' + walletId, cb);
     }
 
+    // Theme catalog service requires fileStorageService.
     root.getThemeCatalog = function(cb) {
-      storage.get('themeCatalog', cb);
+      if (!fileSystemAPISupported)
+        throw new Error('storageService#getThemeCatalog called when storage service does not support it');
+      fileStorageService.get('themeCatalog', cb);
     };
 
     root.storeThemeCatalog = function(val, cb) {
+      if (!fileSystemAPISupported)
+        throw new Error('storageService#storeThemeCatalog called when storage service does not support it');
       $log.debug('Storing Theme Catalog', val);
-      storage.set('themeCatalog', val, cb);
+      fileStorageService.set('themeCatalog', val, cb);
     };
 
     root.clearThemeCatalog = function(cb) {
-      storage.remove('themeCatalog', cb);
+      if (!fileSystemAPISupported)
+        throw new Error('storageService#clearThemeCatalog called when storage service does not support it');
+      fileStorageService.remove('themeCatalog', cb);
     };
 
     return root;

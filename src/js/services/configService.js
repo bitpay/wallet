@@ -32,6 +32,11 @@ angular.module('copayApp.services').factory('configService', function(storageSer
       }
     },
 
+    theme: {
+      themeId: {},
+      skinFor: {}
+    },
+
     // External services
     glidera: {
       visible: true,

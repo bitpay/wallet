@@ -15,17 +15,15 @@ angular.module('copayApp.services').factory('themeCatalogService', function(stor
       skinSchemaVersion: '1'
     },
 
-    themeId: {},
-    themes: {},
-    skinFor: {}
+    themes: {}
 
   };
 
   var catalogCache = null;
 
-  root.supportsDiscovery = function() {
-    // Theme and skin discovery and import requires more storage space than local storage con provide.
-    return storageService.isUsingFileStorage();
+  root.supportsWritingThemeContent = function() {
+    // Theme and skin discovery and import requires more storage space than local storage can provide.
+    return storageService.fileStorageAvailable();
   }
 
   root.getApplicationDirectory = function() {
