@@ -1,12 +1,15 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('wordsController',
-  function($rootScope, $scope, $timeout, profileService, go, gettext, confirmDialog, notification, bwsError, $log) {
+  function($rootScope, $scope, $timeout, $log, $compile, lodash, profileService, go, gettext, confirmDialog, notification, bwsError) {
 
     var msg = gettext('Are you sure you want to delete the backup words?');
     var successMsg = gettext('Backup words deleted');
     var self = this;
     self.show = false;
+    self.sorted = false;
+    $scope.seed = '';
+    var customSortWords = [];
     var fc = profileService.focusedClient;
 
     if (fc.isPrivKeyEncrypted()) self.credentialsEncrypted = true;
@@ -83,5 +86,32 @@ angular.module('copayApp.controllers').controller('wordsController',
           });
         }
       }
+    }
+
+    self.disableButton = function(word) {
+      document.getElementById(word).disabled = true;
+      $scope.seed += word + ' ';
+      customSortWords.push(word);
+
+      if (customSortWords.length == 12)
+        self.shouldContinue(customSortWords);
+
+      self.addButton(word);
+    }
+
+    self.addButton = function(word) {
+      var btnhtml = '<button class="button radius tiny" style="white-space:nowrap" ' +
+        'ng - click = "wordsC.removeButton(' + word + ')" id = "{{' + word + '_}}" > ' + word + ' </button>';
+      var temp = $compile(btnhtml)($scope);
+      angular.element(document.getElementById('addWord')).append(temp);
+    }
+
+    self.removeButton = function(word) {
+
+    }
+
+    self.shouldContinue = function(customSortWords) {
+      if (lodash.isEqual(self.mnemonicWords, customSortWords))
+        self.sorted = true;
     }
   });
