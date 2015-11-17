@@ -1295,17 +1295,14 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   $rootScope.$on('Local/NewFocusedWallet', function() {
     self.setFocusedWallet();
     self.updateTxHistory();
-    storageService.getCopayDisclaimerFlag(function(err, val) {
-      if (val) go.walletHome();
-      storageService.getCleanAndScanAddresses(function(err, walletId) {
-        if (walletId && profileService.walletClients[walletId]) {
-          $log.debug('Clear last address cache and Scan ', walletId);
-          addressService.expireAddress(walletId, function(err) {
-            self.startScan(walletId);
-          });
-          storageService.removeCleanAndScanAddresses(function() {});
-        }
-      });
+    storageService.getCleanAndScanAddresses(function(err, walletId) {
+      if (walletId && profileService.walletClients[walletId]) {
+        $log.debug('Clear last address cache and Scan ', walletId);
+        addressService.expireAddress(walletId, function(err) {
+          self.startScan(walletId);
+        });
+        storageService.removeCleanAndScanAddresses(function() {});
+      }
     });
   });
 
