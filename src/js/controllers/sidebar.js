@@ -28,8 +28,7 @@ angular.module('copayApp.controllers').controller('sidebarController',
     self.switchWallet = function(selectedWalletId, currentWalletId) {
       if (selectedWalletId == currentWalletId) return;
       self.walletSelection = false;
-      profileService.setAndStoreFocus(selectedWalletId, function() {
-      });
+      profileService.setAndStoreFocus(selectedWalletId, function() {});
     };
 
     self.toggleWalletSelection = function() {
@@ -40,10 +39,14 @@ angular.module('copayApp.controllers').controller('sidebarController',
 
     self.setWallets = function() {
       if (!profileService.profile) return;
+
       var config = configService.getSync();
       config.colorFor = config.colorFor || {};
       config.aliasFor = config.aliasFor || {};
-      var ret = lodash.map(profileService.profile.credentials, function(c) {
+
+      // Sanitize empty wallets (fixed in BWC 1.8.1, and auto fixed when wallets completes)
+      var credentials = lodash.filter(profileService.profile.credentials, 'walletName');
+      var ret = lodash.map(credentials, function(c) {
         return {
           m: c.m,
           n: c.n,
@@ -52,6 +55,7 @@ angular.module('copayApp.controllers').controller('sidebarController',
           color: config.colorFor[c.walletId] || '#4A90E2',
         };
       });
+
       self.wallets = lodash.sortBy(ret, 'name');
     };
 

@@ -792,7 +792,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       if (!txs || !txs[0]) return;
 
       var cacheUnit = txs[0].amountStr.split(' ')[1];
-      console.log('[index.js.794:cacheUnit:]', cacheUnit, config.unitName); //TODO
 
       if (cacheUnit == config.unitName)
         return;
