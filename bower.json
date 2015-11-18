@@ -24,7 +24,6 @@
     "qrcode-decoder-js": "*",
     "trezor-connect": "~1.0.1",
     "fastclick": "*",
-    "angular-ui-switch": "~0.1.0",
     "bitcore-lib": "~0.13.7"
   },
   "resolutions": {
