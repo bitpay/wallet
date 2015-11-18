@@ -1,43 +1,43 @@
 
 <div ng-if="type == 'broadcasted'" class="popup-txsent">
-  <i class="small-centered columns fi-check m20tp"></i>
+  <i class="small-centered columns fi-check m40tp"></i>
   <div class="text-center size-18 text-white text-bold tu p20">
     <span translate>Payment Sent</span>
   </div>
-  <div class="text-center">
-    <a class="button outline round white tiny small-4" ng-click="cancel()">OKAY</a>
+  <div class="m20t size-12 text-white text-center" ng-init="countdown()" translate>
+    This popup will close in {{timer}} seconds
   </div>
 </div>
 
 
 <div ng-if="type == 'created'" class="popup-txsigned">
-  <i class="small-centered columns fi-check m20tp"></i>
+  <i class="small-centered columns fi-check m40tp"></i>
   <div class="text-center size-18 text-primary tu text-bold p20">
     <span translate>Payment Proposal Created</span>
   </div>
-  <div class="text-center">
-    <a class="button outline round light-gray tiny small-4" ng-click="cancel()">OKAY</a>
+  <div class="m20t size-12 text-gray text-center" ng-init="countdown()" translate>
+    This popup will close in {{timer}} seconds
   </div>
 </div>
 
 
 
 <div ng-if="type == 'accepted'" class="popup-txsigned">
-  <i class="small-centered columns fi-check m20tp"></i>
+  <i class="small-centered columns fi-check m40tp"></i>
   <div class="text-center size-18 text-primary tu text-bold p20">
     <span translate>Payment Accepted</span>
   </div>
-  <div class="text-center">
-    <a class="button outline round light-gray tiny small-4" ng-click="cancel()">OKAY</a>
+  <div class="m20t size-12 text-gray text-center" ng-init="countdown()" translate>
+    This popup will close in {{timer}} seconds
   </div>
 </div>
 
 <div ng-if="type=='rejected'" class="popup-txrejected">
-  <i class="fi-x small-centered columns m20tp"></i>
+  <i class="fi-x small-centered columns m40tp"></i>
   <div class="text-center size-18 tu text-warning text-bold p20">
     <span translate>Payment Rejected</span>
   </div>
-  <div class="text-center">
-    <a class="button outline light-gray round tiny small-4" ng-click="cancel()">OKAY</a>
+  <div class="m20t size-12 text-gray text-center" ng-init="countdown()" translate>
+    This popup will close in {{timer}} seconds
   </div>
 </div>
