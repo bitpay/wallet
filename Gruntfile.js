@@ -61,8 +61,8 @@ module.exports = function(grunt) {
           'bower_components/angular-qrcode/angular-qrcode.js',
           'bower_components/angular-gettext/dist/angular-gettext.js',
           'bower_components/angular-touch/angular-touch.js',
-          'bower_components/angular-bitcore-wallet-client/angular-bitcore-wallet-client.js',
-          'bower_components/angular-ui-switch/angular-ui-switch.js'
+          'bower_components/angular-ui-switch/angular-ui-switch.js',
+          'angular-bitcore-wallet-client/angular-bitcore-wallet-client.js'
         ],
         dest: 'public/lib/angular.js'
       },
@@ -112,8 +112,8 @@ module.exports = function(grunt) {
       pot: {
         files: {
           'i18n/po/template.pot': [
-            'public/index.html', 
-            'public/views/*.html', 
+            'public/index.html',
+            'public/views/*.html',
             'public/views/**/*.html',
             'src/js/routes.js',
             'src/js/services/*.js',
@@ -140,10 +140,21 @@ module.exports = function(grunt) {
         dest: 'public/icons/'
       },
       linux: {
-        files: [
-          {expand: true, cwd: 'webkitbuilds/',src: ['.desktop', '../public/img/icons/favicon.ico', '../public/img/icons/icon-256.png'],dest: 'webkitbuilds/copay/linux32/', flatten: true, filter: 'isFile' },
-          {expand: true, cwd: 'webkitbuilds/',src: ['.desktop', '../public/img/icons/favicon.ico', '../public/img/icons/icon-256.png'],dest: 'webkitbuilds/copay/linux64/', flatten: true, filter: 'isFile' },
-        ],
+        files: [{
+          expand: true,
+          cwd: 'webkitbuilds/',
+          src: ['.desktop', '../public/img/icons/favicon.ico', '../public/img/icons/icon-256.png'],
+          dest: 'webkitbuilds/copay/linux32/',
+          flatten: true,
+          filter: 'isFile'
+        }, {
+          expand: true,
+          cwd: 'webkitbuilds/',
+          src: ['.desktop', '../public/img/icons/favicon.ico', '../public/img/icons/icon-256.png'],
+          dest: 'webkitbuilds/copay/linux64/',
+          flatten: true,
+          filter: 'isFile'
+        }, ],
       }
     },
     karma: {
@@ -166,11 +177,11 @@ module.exports = function(grunt) {
     },
     nodewebkit: {
       options: {
-          platforms: ['win','osx','linux'],
-          buildDir: './webkitbuilds',
-          version: '0.12.2',
-          macIcns: './public/img/icons/icon.icns',
-          exeIco: './public/img/icons/icon.ico'
+        platforms: ['win', 'osx', 'linux'],
+        buildDir: './webkitbuilds',
+        version: '0.12.2',
+        macIcns: './public/img/icons/icon.icns',
+        exeIco: './public/img/icons/icon.ico'
       },
       src: ['./package.json', './public/**/*']
     },
@@ -193,6 +204,13 @@ module.exports = function(grunt) {
         src: ['**/*'],
         dest: 'copay-linux64/'
       }
+    },
+    browserify: {
+      dist: {
+        files: {
+          'angular-bitcore-wallet-client/angular-bitcore-wallet-client.js': ['angular-bitcore-wallet-client/index.js']
+        },
+      }
     }
   });
 
@@ -201,6 +219,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-angular-gettext');
+  grunt.loadNpmTasks('grunt-browserify');
   grunt.loadNpmTasks('grunt-exec');
   grunt.loadNpmTasks('grunt-karma');
   grunt.loadNpmTasks('grunt-karma-coveralls');

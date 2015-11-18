@@ -40,10 +40,12 @@
     "url": "https://github.com/bitpay/copay/issues"
   },
   "dependencies": {
+    "bitcore-wallet-client": "1.8.1",
     "express": "^4.11.2",
     "fs": "0.0.2",
     "grunt": "^0.4.5",
     "grunt-angular-gettext": "^0.2.15",
+    "grunt-browserify": "^4.0.1",
     "grunt-cli": "^0.1.13",
     "grunt-contrib-compress": "^0.13.0",
     "grunt-contrib-concat": "^0.5.1",
