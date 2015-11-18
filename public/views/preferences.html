@@ -29,12 +29,13 @@
       <div translate>Email Notifications</div>
     </li>
 
-    <li ng-click="$root.go('preferencesColor')">
+    <li ng-click="$root.go('preferencesSkin')">
+      <!-- TODO: translate Skin -->
       <div class="right text-gray">
-        <span ng-style="{'color':index.backgroundColor}">&block;</span>
-        <i class="icon-arrow-right3 size-24"></i>
+        <i class="icon-arrow-right3 size-24 right"></i>
+        <span>{{skin.header.name}}</span>
       </div>      
-      <div translate>Color</div>
+      <div translate>Skin</div>
     </li>
 
     <li ng-show="index.isPrivKeyExternal">

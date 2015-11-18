@@ -1,25 +1,25 @@
-<nav ng-controller="topbarController as topbar" class="tab-bar">
+<nav ng-controller="topbarController as topbar" class="tab-bar" ng-style="{'background': (useTheme ? theme.view.navBarBackground : skin.view.navBarBackground), 'border-bottom': (useTheme ? theme.view.navBarBorderBottom : skin.view.navBarBorderBottom)}">
   <section class="left-small">
     <a id="hamburger" class="p10" ng-show="!goBackToState && !closeToHome  && !index.noFocusedWallet"
-      ng-click="index.openMenu()"><i class="fi-list size-24"></i>
+      ng-click="index.openMenu()"><i class="fi-list size-24" ng-style="{'color': useTheme ? theme.view.navBarButtonIconColor : skin.view.navBarButtonIconColor}"></i>
     </a>
     <a ng-show="goBackToState"
-      ng-click="$root.go(goBackToState); goBackToState = null"><i class="icon-arrow-left3 icon-back"></i>
-      <span class="text-back">{{'Back'|translate}}</span>
+      ng-click="$root.go(goBackToState); goBackToState = null"><i class="icon-arrow-left3 icon-back" ng-style="{'color': useTheme ? theme.view.navBarButtonTextColor : skin.view.navBarButtonTextColor}"></i>
+      <span class="text-back" ng-style="{'color': useTheme ? theme.view.navBarButtonTextColor : skin.view.navBarButtonTextColor}">{{'Back'|translate}}</span>
     </a>
 
     <a ng-show="closeToHome" class="p10 "
       ng-click="topbar.goHome(); closeToHome = null">
-      <span class="text-close">{{'Close'|translate}}</span>
+      <span class="text-close" ng-style="{'color': useTheme ? theme.view.navBarButtonTextColor : skin.view.navBarButtonTextColor}">{{'Close'|translate}}</span>
     </a>
   </section>
 
   <section class="right-small" ng-show="showCamera">
-    <qr-scanner ng-show="index.isComplete" on-scan="topbar.onQrCodeScanned(data)" before-scan="topbar.openSendScreen()"></qr-scanner>
+    <qr-scanner ng-show="index.isComplete" on-scan="topbar.onQrCodeScanned(data)" before-scan="topbar.openSendScreen()" ng-style="{'color': useTheme ? theme.view.navBarButtonIconColor : skin.view.navBarButtonIconColor}"></qr-scanner>
   </section>
 
   <section class="middle tab-bar-section">
-    <h1 class="title ellipsis" ng-style="{'color': noColor ? '#4A90E2' : index.backgroundColor}">
+    <h1 class="title ellipsis" ng-style="{'color': useTheme ? theme.view.navBarTitleColor : skin.view.navBarTitleColor}">
       {{(titleSection|translate) || (index.alias || index.walletName)}}
     </h1>
   </section>

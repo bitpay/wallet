@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('wordsController',
-  function($rootScope, $scope, $timeout, profileService, go, gettext, confirmDialog, notification, bwsError, $log) {
+  function($rootScope, $scope, $timeout, profileService, go, gettext, confirmDialog, notification, bwsError, $log, themeService) {
 
     var msg = gettext('Are you sure you want to delete the backup words?');
     var successMsg = gettext('Backup words deleted');
@@ -39,7 +39,11 @@ angular.module('copayApp.controllers').controller('wordsController',
           fc.clearMnemonic();
           profileService.updateCredentialsFC(function() {
             self.deleted = true;
-            notification.success(successMsg);
+            notification.success(
+              successMsg, '',
+              {color: themeService.getPublishedSkin().view.textHighlightColor,
+               iconColor: themeService.getPublishedTheme().view.notificationBarIconColor,
+               barBackground: themeService.getPublishedTheme().view.notificationBarBackground});
             go.walletHome();
           });
         }

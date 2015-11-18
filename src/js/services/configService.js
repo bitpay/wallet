@@ -32,9 +32,14 @@ angular.module('copayApp.services').factory('configService', function(storageSer
       }
     },
 
+    theme: {
+      themeId: {},
+      skinFor: {}
+    },
+
     // External services
     glidera: {
-      enabled: true,
+      visible: true,
       testnet: false
     },
 
@@ -54,7 +59,6 @@ angular.module('copayApp.services').factory('configService', function(storageSer
   };
 
   root.get = function(cb) {
-
     storageService.getConfig(function(err, localConfig) {
       if (localConfig) {
         configCache = JSON.parse(localConfig);
@@ -72,7 +76,6 @@ angular.module('copayApp.services').factory('configService', function(storageSer
         if (!configCache.glidera) {
           configCache.glidera = defaultConfig.glidera; 
         }
-
       } else {
         configCache = lodash.clone(defaultConfig);
       };
