@@ -65,7 +65,7 @@ angular.module('copayApp.services')
         // requestFileSystem is prefixed in Google Chrome and Opera.
         window.requestFileSystem = window.requestFileSystem || window.webkitRequestFileSystem;
 
-        var requestedBytes = 5*1024*1024;
+        var requestedBytes = 25*1024*1024;
         $log.debug('Requesting ' + requestedBytes + ' bytes');
 
         navigator.webkitPersistentStorage.requestQuota(requestedBytes, function(grantedBytes) {
