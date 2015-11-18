@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.services').factory('themeService', function($rootScope, $log, $http, $timeout, $q, configService, themeCatalogService, lodash, notification, gettext, brand) {
+angular.module('copayApp.services').factory('themeService', function($rootScope, $log, $http, $timeout, $q, configService, themeCatalogService, lodash, notification, gettextCatalog, brand) {
 
   // The $rootScope is used to track theme and skin objects.  Views reference $rootScope for rendering.
   // 
@@ -19,6 +19,7 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
   // 
 
   var root = {};
+  var promisesAfterInit = [];
   root.themeServiceInitialized = false;
   root.walletId = '';
 
@@ -121,7 +122,7 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
   }
 
   root._bootstrapTheme = function(themeDef, callback) {
-    $http(root._get_local(root._getThemeResourcePath(themeDef.theme) + '/theme.json')).then(function(response) {
+    $http(root._get_local(root._getThemeResourcePath(themeDef.theme) + '/theme.json')).then(function successCallback(response) {
 
       // Initialize the theme.
       // 
@@ -185,8 +186,21 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
 
       $q.all(promises).then(function() {
         // This is run after all of the http requests are done.
-        $rootScope.skinId = $rootScope.theme.header.defaultSkinId;
-        $rootScope.skin = $rootScope.theme.skins[$rootScope.theme.header.defaultSkinId];
+        // If there is configuration setting then use that instead of default skin (occurs during page reload).
+        var selectedSkinId = $rootScope.theme.header.defaultSkinId;
+
+        try {
+          var config = configService.getSync();
+          if (root.walletId != '' && config.theme.skinFor[root.walletId]) {
+            selectedSkinId = config.theme.skinFor[root.walletId];
+          }
+        } catch(err){
+          // Called configService.getSync() before service was initialized.
+          // Ignore, just use default skin.
+        }
+
+        $rootScope.skinId = selectedSkinId;
+        $rootScope.skin = $rootScope.theme.skins[$rootScope.skinId];
 
         if (callback) {
           callback();
@@ -195,7 +209,7 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
         $log.debug('Error: failed to GET local skin resources ' + response.config.url);
       });
 
-    }).catch(function(response) {
+    }, function errorCallback(response) {
       $log.debug('Error: failed to GET ' + response.config.url);
     });
 
@@ -221,10 +235,10 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
       }
 
       // The theme service catalog might not support writing theme content, if not then we skip writing the content
-      // and only write the selected theme id (in this case the theme content is available in $rootScope only).
+      // (in this case the theme content is available in $rootScope only).
       if (themeCatalogService.supportsWritingThemeContent()) {
 
-        themeCatalogService.get(function(err, catalog) {      
+        themeCatalogService.get(function(err, catalog) {
           $log.debug('Theme catalog read');
           if (err) {
             $log.debug('Failed to read theme catalog: ' + JSON.stringify(err)); // TODO: put out string, not JSON
@@ -317,19 +331,24 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
   // init() - construct the theme catalog and publish the initial presentation.
   // 
   root.init = function(callback) {
-    root._bootstrapTheme(brand.features.theme.definition, function() {
-        $log.debug('Theme service bootstrapped to theme/skin: ' +
-          $rootScope.theme.header.name + '/' +
-          $rootScope.skin.header.name +
-          (root.walletId == '' ? ' [no wallet yet]' : ' [walletId: ' + root.walletId + ']'));
 
-        root._buildCatalog(function() {
-          root._migrateLegacyColorsToSkins();
-          callback();
-          root.themeServiceInitialized = true;
-          $log.debug('Theme service initialized');
-        });
+    $log.debug('Initializing theme service...');
+
+    // Build the catalog from the default brand definition.
+    root._bootstrapTheme(brand.features.theme.definition, function() {
+      $log.debug('Theme service bootstrapped to theme/skin: ' +
+        $rootScope.theme.header.name + '/' +
+        $rootScope.skin.header.name +
+        (root.walletId == '' ? ' [no wallet yet]' : ' [walletId: ' + root.walletId + ']'));
+
+      root._buildCatalog(function() {
+        root.themeServiceInitialized = true;
+        root._migrateLegacyColorsToSkins();
+//          root._publishCatalog();
+        callback();
+        $log.debug('Theme service initialized');
       });
+    });
   };
 
   // updateSkin() - handles updating the skin when the wallet is changed.
@@ -341,7 +360,7 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
       root.setSkinForWallet(root.getPublishedThemeDefaultSkinId(), root.walletId);
     } else {
       root.setSkinForWallet(config.theme.skinFor[root.walletId], root.walletId);
-    }
+    }      
   };
 
   // setTheme() - sets the theme for the app.
@@ -420,10 +439,11 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
   // 
   root.setSkinForWallet = function(skinId, walletId, callback) {
     $log.debug('' + (skinId != root.getPublishedSkinId() ?  'Switching skin... [walletId: ' + walletId + ']' : 'Reapplying skin... [walletId: ' + walletId + ']'));
+
     $log.debug('' + (root.getPublishedSkinById(skinId) != undefined && skinId != root.getPublishedSkinId() ? 
       'Old skin: ' + root.getPublishedSkinById(root.getPublishedSkinId()).header.name + '\n' +
       'New skin: ' + root.getPublishedSkinById(skinId).header.name :
-      'Current skin: ' + (root.getPublishedSkinById(skinId) != undefined ? root.getPublishedSkinById(skinId).header.name : 'not set')));
+      'Current skin: ' + (root.getPublishedSkinById(skinId) != undefined ? root.getPublishedSkinById(skinId).header.name : 'not set, setting to skinId ' + skinId)));
 
     root.walletId = walletId;
 
@@ -486,6 +506,10 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
     return root._currentSkinIdForWallet(walletId);
   };
 
+  root.getCatalogSkinById = function(skinId) {
+    return root.getCatalogTheme().skins[skinId];
+  };
+
   root.getPublishedThemes = function() {
     return $rootScope.themes;
   }
@@ -534,7 +558,7 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
   root.discoverThemes = function(callback) {
 
     // Get theme headers from the server.
-    $http(root._get('/themes')).then(function(response) {
+    $http(root._get('/themes')).then(function successCallback(response) {
       var themeHeaders = response.data.data;
       var discoveredThemeHeaders = [];
 
@@ -550,7 +574,7 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
       $rootScope.discoveredThemeHeaders = discoveredThemeHeaders;
       $log.debug('Theme service: discovered ' + discoveredThemeHeaders.length + ' themes');
       callback(discoveredThemeHeaders);
-    }).catch(function(response) {
+    }, function errorCallback(response) {
       callback([]);
       $log.debug('Error: failed to GET theme resources from ' + response.config.url);
     });
@@ -565,7 +589,7 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
     var discoveredThemeName = $rootScope.discoveredThemeHeaders[discoveredThemeId].name;
 
     // Get the full theme from the server.
-    $http(root._get('/themes/' + discoveredThemeName)).then(function(response) {
+    $http(root._get('/themes/' + discoveredThemeName)).then(function successCallback(response) {
 
       // Import the discovered theme.
       // Read the full theme from the theme server and add it to this applications configuration settings.
@@ -611,7 +635,7 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
 
         $log.debug('Imported theme \'' + catalog.themes[index].header.name + '\'');
       });
-    }).catch(function(response) {
+    }, function errorCallback(response) {
       callback({});
       $log.debug('Error: failed to GET theme resources from ' + response.config.url);
     });
@@ -624,7 +648,7 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
   root.discoverSkins = function(theme, callback) {
 
     // Get skin headers from the server.
-    $http(root._get('/themes/' + theme.header.name + '/skins')).then(function(response) {
+    $http(root._get('/themes/' + theme.header.name + '/skins')).then(function successCallback(response) {
       var skinHeaders = response.data.data;
       var discoveredSkinHeaders = [];
 
@@ -640,7 +664,7 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
       $rootScope.discoveredSkinHeaders = discoveredSkinHeaders;
       $log.debug('Theme service: discovered ' + discoveredSkinHeaders.length + ' skins');
       callback(discoveredSkinHeaders);
-    }).catch(function(response) {
+    }, function errorCallback(response) {
       callback([]);
       $log.debug('Error: failed to GET skin resources from ' + response.config.url);
   });
@@ -652,7 +676,7 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
     var theme = root.getPublishedTheme();
     var skinName = $rootScope.discoveredSkinHeaders[discoveredSkinId].name;
 
-    $http(root._get('/themes/' + theme.header.name + '/' + skinName)).then(function(response) {
+    $http(root._get('/themes/' + theme.header.name + '/' + skinName)).then(function successCallback(response) {
 
       var discoveredSkin = response.data;
 
@@ -703,7 +727,7 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
 
         $log.debug('Imported skin \'' + catalog.themes[t_index].skins[s_index].header.name + '\'');
       });
-    }).catch(function(response) {
+    }, function errorCallback(response) {
       callback({});
       $log.debug('Error: failed to GET skin resources from ' + response.config.url);
     });

@@ -12,7 +12,7 @@ angular.module('copayApp.controllers').controller('preferencesGlobalController',
         isoCode: config.wallet.settings.alternativeIsoCode
       }; 
       $scope.spendUnconfirmed = config.wallet.spendUnconfirmed;
-      $scope.glideraEnabled = config.glidera.enabled;
+      $scope.glideraVisible = config.glidera.visible;
       $scope.glideraTestnet = config.glidera.testnet;
     };
 
@@ -29,11 +29,11 @@ angular.module('copayApp.controllers').controller('preferencesGlobalController',
       });
     });
 
-    var unwatchGlideraEnabled = $scope.$watch('glideraEnabled', function(newVal, oldVal) {
+    var unwatchGlideraVisible = $scope.$watch('glideraVisible', function(newVal, oldVal) {
       if (newVal == oldVal) return;
       var opts = {
         glidera: {
-          enabled: newVal
+          visible: newVal
         }
       };
       configService.set(opts, function(err) {
@@ -57,7 +57,7 @@ angular.module('copayApp.controllers').controller('preferencesGlobalController',
 
     $scope.$on('$destroy', function() {
       unwatchSpendUnconfirmed();
-      unwatchGlideraEnabled();
+      unwatchGlideraVisible();
       unwatchGlideraTestnet();
     });
   });

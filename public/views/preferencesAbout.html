@@ -1,10 +1,9 @@
-<div 
-  class="topbar-container" 
-  ng-include="'views/includes/topbar.html'"
-  ng-init="titleSection='About ' + index.brand.shortName; goBackToState = 'preferencesGlobal'; useTheme = false">
-</div>
-
 <div class="preferences" ng-controller="preferencesAbout as about">
+  <div 
+    class="topbar-container" 
+    ng-include="'views/includes/topbar.html'"
+      ng-init="titleSection='About ' + index.brand.shortName; goBackToState = 'preferencesGlobal'; useTheme = true">
+  </div>
     <h4  translate>Release Information</h4>
       <ul class="no-bullet m0">
         <li  ng-conf>
