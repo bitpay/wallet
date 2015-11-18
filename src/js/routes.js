@@ -286,18 +286,6 @@ angular
       }
     })
 
-    .state('securityPreferences', {
-      url: '/securityPreferences',
-      templateUrl: 'views/securityPreferences.html',
-      walletShouldBeComplete: true,
-      needProfile: true,
-      views: {
-        'main': {
-          templateUrl: 'views/securityPreferences.html'
-        },
-      }
-    })
-
     .state('preferencesAdvanced', {
       url: '/preferencesAdvanced',
       templateUrl: 'views/preferencesAdvanced.html',
