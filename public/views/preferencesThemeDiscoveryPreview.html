@@ -1,0 +1,17 @@
+<div ng-controller="preferencesThemeDiscoveryPreviewController as p">
+  <img style="size=cover" src="{{discoveredThemeHeaders[discoveredThemeId].previewImage}}"/>
+  <div class="preview-overlay">
+    <div class="preview-overlay-content">
+      <span translate>Theme Preview</span>
+    </div>
+  </div>
+  <div class="bottom-bar preview-button-bar">
+    <a class="preview-button-left columns large-6 medium-6 small-6 text-center" ng-click="$root.go('preferencesThemeDiscovery')">
+      <span class="text-close">{{'Close'|translate}}</span>
+    </a>
+    <a class="preview-button columns large-6 medium-6 small-6 text-center" ng-click="p.import(discoveredThemeId)">
+      <span class="text-close">{{'Import'|translate}}</span>
+    </a>
+  </div>
+</div>
+<div class="extra-margin-bottom"></div>

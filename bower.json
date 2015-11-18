@@ -22,7 +22,12 @@
     "moment": "2.10.3",
     "ng-lodash": "0.2.3",
     "qrcode-decoder-js": "*",
-    "trezor-connect": "~1.0.1"
+    "trezor-connect": "~1.0.1",
+    "fastclick": "*",
+    "bitcore-lib": "~0.13.7"
+  },
+  "resolutions": {
+    "qrcode-generator": "0.0.1"
   }
 }
 

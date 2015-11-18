@@ -117,12 +117,12 @@
       </li>
 
       <li class="line-b p20" >
-      <button class="black round small expand"  ng-style="{'background-color':index.backgroundColor}"  ng-click="index.retryScan(); $root.go('walletHome'); ">
+      <button class="black round small expand" ng-style="{'background':skin.view.buttonBackground, 'color':skin.view.buttonTextColor}" ng-click="index.retryScan(); $root.go('walletHome'); ">
 
       <span translate>Scan addresses for funds</span>
       </button>
       
-      <button ng-show="index.isCordova" class="black round small expand" 
+      <button ng-show="index.isCordova" class="black round small expand" ng-style="{'background':skin.view.buttonBackground, 'color':skin.view.buttonTextColor}"
         ng-style="{'background-color':index.backgroundColor}" 
         ng-click="info.sendAddrs()"
         ng-disabled="info.loading">
@@ -149,7 +149,7 @@
     <ul class="no-bullet m0 size-14">
       <h4 class="title m0" translate>Transaction history</h4>
       <li class="line-b p20 oh">
-        <button class="black round small expand"  ng-style="{'background-color':index.backgroundColor}" ng-click="info.clearTransactionHistory();">
+        <button class="black round small expand" ng-style="{'background':skin.view.buttonBackground, 'color':skin.view.buttonTextColor}" ng-click="info.clearTransactionHistory();">
           <span translate>Clear history</span>
         </button>
       </li>

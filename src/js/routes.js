@@ -297,29 +297,104 @@ angular
         },
       }
     })
-      .state('preferencesColor', {
-        url: '/preferencesColor',
-        templateUrl: 'views/preferencesColor.html',
+      .state('preferencesSkin', {
+        url: '/preferencesSkin',
+        templateUrl: 'views/preferencesSkin.html',
         walletShouldBeComplete: true,
         needProfile: true,
         views: {
           'main': {
-            templateUrl: 'views/preferencesColor.html'
+            templateUrl: 'views/preferencesSkin.html'
           },
         }
       })
-
-    .state('preferencesAltCurrency', {
-      url: '/preferencesAltCurrency',
-      templateUrl: 'views/preferencesAltCurrency.html',
-      walletShouldBeComplete: true,
-      needProfile: true,
-      views: {
-        'main': {
-          templateUrl: 'views/preferencesAltCurrency.html'
-        },
-      }
-    })
+      .state('preferencesSkinPreview', {
+        url: '/preferencesSkinPreview',
+        templateUrl: 'views/preferencesSkinPreview.html',
+        walletShouldBeComplete: true,
+        needProfile: true,
+        views: {
+          'main': {
+            templateUrl: 'views/preferencesSkinPreview.html'
+          },
+        }
+      })
+      .state('preferencesSkinDiscovery', {
+        url: '/preferencesSkinDiscovery',
+        templateUrl: 'views/preferencesSkinDiscovery.html',
+        walletShouldBeComplete: true,
+        needProfile: true,
+        views: {
+          'main': {
+            templateUrl: 'views/preferencesSkinDiscovery.html'
+          },
+        }
+      })
+      .state('preferencesSkinDiscoveryPreview', {
+        url: '/preferencesSkinDiscoveryPreview',
+        templateUrl: 'views/preferencesSkinDiscoveryPreview.html',
+        walletShouldBeComplete: true,
+        needProfile: true,
+        views: {
+          'main': {
+            templateUrl: 'views/preferencesSkinDiscoveryPreview.html'
+          },
+        }
+      })
+      .state('preferencesTheme', {
+        url: '/preferencesTheme',
+        templateUrl: 'views/preferencesTheme.html',
+        walletShouldBeComplete: true,
+        needProfile: true,
+        views: {
+          'main': {
+            templateUrl: 'views/preferencesTheme.html'
+          },
+        }
+      })
+      .state('preferencesThemePreview', {
+        url: '/preferencesThemePreview',
+        templateUrl: 'views/preferencesThemePreview.html',
+        walletShouldBeComplete: true,
+        needProfile: true,
+        views: {
+          'main': {
+            templateUrl: 'views/preferencesThemePreview.html'
+          },
+        }
+      })
+      .state('preferencesThemeDiscovery', {
+        url: '/preferencesThemeDiscovery',
+        templateUrl: 'views/preferencesThemeDiscovery.html',
+        walletShouldBeComplete: true,
+        needProfile: true,
+        views: {
+          'main': {
+            templateUrl: 'views/preferencesThemeDiscovery.html'
+          },
+        }
+      })
+      .state('preferencesThemeDiscoveryPreview', {
+        url: '/preferencesThemeDiscoveryPreview',
+        templateUrl: 'views/preferencesThemeDiscoveryPreview.html',
+        walletShouldBeComplete: true,
+        needProfile: true,
+        views: {
+          'main': {
+            templateUrl: 'views/preferencesThemeDiscoveryPreview.html'
+          },
+        }
+      })
+      .state('preferencesAltCurrency', {
+        url: '/preferencesAltCurrency',
+        walletShouldBeComplete: true,
+        needProfile: true,
+        views: {
+          'main': {
+            templateUrl: 'views/preferencesAltCurrency.html'
+          },
+        }
+      })
       .state('preferencesAlias', {
         url: '/preferencesAlias',
         templateUrl: 'views/preferencesAlias.html',
@@ -485,8 +560,15 @@ angular
         needProfile: false
       });
   })
-  .run(function($rootScope, $state, $log, uriHandler, isCordova, profileService, $timeout, nodeWebkit, uxLanguage, animationService) {
+  .run(function($rootScope, $state, $log, uriHandler, isCordova, profileService, $timeout, nodeWebkit, uxLanguage, animationService, themeService) {
     FastClick.attach(document.body);
+
+    themeService.init(function() {
+      if (isCordova) {
+        // Style the device status bar.
+        window.StatusBar.backgroundColorByHexString($rootScope.theme.view.deviceStatusBarBackgroundColor);
+      }
+    });
 
     uxLanguage.init();
 
@@ -508,6 +590,7 @@ angular
       }
       win.menu = nativeMenuBar;
     }
+
 
     $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
 

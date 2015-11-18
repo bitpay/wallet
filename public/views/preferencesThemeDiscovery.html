@@ -1,0 +1,33 @@
+<div 
+  class="topbar-container" 
+  ng-include="'views/includes/topbar.html'"
+  ng-init="titleSection='Discover new themes'; goBackToState = 'preferencesTheme'; useTheme = true">
+</div>
+<div class="content preferences" ng-controller="preferencesThemeDiscoveryController as p">
+
+  <div class="onGoingProcess" ng-show="p.inProgress">
+    <div class="onGoingProcess-content" ng-style="{'background':skin.view.progressBackground, 'color':skin.view.progressTextColor}">
+      <div class="spinner">
+        <div class="rect1"></div>
+        <div class="rect2"></div>
+        <div class="rect3"></div>
+        <div class="rect4"></div>
+        <div class="rect5"></div>
+      </div>
+      <span translate>Searching for themes...</span>
+    </div>
+  </div>
+
+  <div class="p20v  text-center" ng-show="!p.themesFound">
+    <span translate>No Themes Found</span>
+  </div>
+	<div style="padding: 6px;" ng-show="discoveredThemeHeaders.length > 0">
+	  <div class="columns large-2 medium-3 small-4" style="padding: 6px;" ng-repeat="th in discoveredThemeHeaders track by $index" ng-click="p.preview($index)">
+      <div class="img-container">
+        <img class="top" src="http://www.lighthousecatholicmedia.org/images/cdclub_free_badge.gif" ng-show="{{th.product.price == '$0.00'}}">
+        <img class="bottom" ng-src="{{th.galleryImage}}">
+      </div>
+	  </div>
+  </div>
+</div>
+<div class="extra-margin-bottom"></div>

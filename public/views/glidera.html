@@ -2,14 +2,14 @@
 <div
   class="topbar-container"
   ng-include="'views/includes/topbar.html'"
-  ng-init="titleSection='Buy & Sell Bitcoin'; closeToHome = true">
+  ng-init="titleSection='Buy & Sell Bitcoin'; closeToHome = true; useTheme = true">
 </div>
 
 
 <div class="content glidera" ng-controller="glideraController as glidera">
 
   <div class="onGoingProcess" ng-show="glidera.loading || index.glideraLoading">
-    <div class="onGoingProcess-content" ng-style="{'background-color':index.backgroundColor}">
+    <div class="onGoingProcess-content" ng-style="{'background':theme.view.progressBackground, 'color':theme.view.progressTextColor}">
     <div class="spinner">
       <div class="rect1"></div>
       <div class="rect2"></div>
@@ -92,7 +92,7 @@
           ng-attr-placeholder="{{'Paste the authorization code here'}}" required>
           <input
             class="button expand round"
-            ng-style="{'background-color':index.backgroundColor}"
+            ng-style="{'background':theme.view.buttonBackground, 'color':theme.view.buttonTextColor}"
             type="submit" value="Get started" ng-disabled="oauthCodeForm.$invalid || glidera.loading">
         </form>
         <button class="button light-gray expand outline round"

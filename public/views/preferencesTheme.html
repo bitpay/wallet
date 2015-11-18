@@ -1,0 +1,16 @@
+<div 
+  class="topbar-container" 
+  ng-include="'views/includes/topbar.html'"
+  ng-init="titleSection='Theme'; goBackToState = 'preferencesGlobal'; useTheme = true">
+</div>
+<div class="content preferences" ng-controller="preferencesThemeController as p">
+	<div style="padding: 6px;">
+	  <div class="columns large-2 medium-3 small-4" style="padding: 6px;" ng-repeat="t in p.themes" ng-click="p.preview($index)">
+      <img ng-src="{{t.header.galleryImage}}">
+	  </div>
+	  <div class="columns large-2 medium-3 small-4" style="padding: 6px;" ng-click="$root.go('preferencesThemeDiscovery')">
+      <img ng-src="img/discover-new.png">
+	  </div>
+  </div>
+</div>
+<div class="extra-margin-bottom"></div>
