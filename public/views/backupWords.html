@@ -4,17 +4,10 @@
   ng-init="titleSection='Backup'; goBackToState = 'backup'">
 </div>
 
-
-<div class="content preferences" ng-controller="wordsController as wordsC">
+<div class="content preferences" ng-controller="backupWordsController as backupWordsC">
   <h4></h4>
-
-  <div class="box-notification" ng-show="wordsC.error">
-    <span class="text-warning">
-    {{wordsC.error|translate}}
-    </span>
-  </div>
  
-  <div ng-show="wordsC.mnemonicWords || (wordsC.credentialsEncrypted && !wordsC.deleted)">
+  <div ng-show="backupWordsC.mnemonicWords || (backupWordsC.credentialsEncrypted && !backupWordsC.deleted)">
 
     <div class="row m10t m10b">
       <div class="small-centered  text-gray columns size-14 text-center" translate>
@@ -28,8 +21,8 @@
           <div id="addWord"></div>
         </div>
         <div class="p10" style="background:white" ng-class="{'enable_text_select': index.network == 'testnet'}">
-          <span ng-repeat="word in wordsC.mnemonicWords track by $index">
-            <button class="button radius tiny" style="white-space:nowrap" ng-click="wordsC.disableButton(word)" id="{{word}}">{{word}}</button>
+          <span ng-repeat="word in backupWordsC.mnemonicWords track by $index">
+            <button class="button radius tiny" style="white-space:nowrap" ng-click="backupWordsC.disableButton(word)" id="{{word}}">{{word}}</button>
           </span>
         </div>
       </div>
@@ -37,10 +30,19 @@
 
     <div class="columns text-center m20t">
       <button 
-        ng-disabled="!wordsC.sorted"
+        ng-show="!backupWordsC.mnemonicHasPassphrase"
+        ng-disabled="!backupWordsC.sorted"
         ng-style="{'background-color':index.backgroundColor}" 
         class="button black round expand" 
         ng-click="$root.go('backupConfirm');" 
+        translate>Continue
+      </button>
+      <button 
+        ng-show="backupWordsC.mnemonicHasPassphrase"
+        ng-disabled="!backupWordsC.sorted"
+        ng-style="{'background-color':index.backgroundColor}" 
+        class="button black round expand" 
+        ng-click="$root.go('backupPassphrase');" 
         translate>Continue
       </button>
     </div>

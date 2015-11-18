@@ -456,6 +456,17 @@ angular
           },
         }
       })
+      .state('backupPassphrase', {
+        url: '/backupPassphrase',
+        templateUrl: 'views/backupPassphrase.html',
+        walletShouldBeComplete: true,
+        needProfile: true,
+        views: {
+          'main': {
+            templateUrl: 'views/backupPassphrase.html'
+          },
+        }
+      })
       .state('preferencesGlobal', {
         url: '/preferencesGlobal',
         needProfile: true,

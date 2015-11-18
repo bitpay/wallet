@@ -1,0 +1,57 @@
+<div
+  class="topbar-container"
+  ng-include="'views/includes/topbar.html'"
+  ng-init="titleSection='Backup'; goBackToState = 'backupWords'">
+</div>
+
+<div class="content preferences" ng-controller="backupPassphraseController as backupPassphraseC">
+  <h4></h4>
+  <div class="box-notification" ng-show="backupPassphraseC.error">
+    <span class="text-warning">
+      {{backupPassphraseC.error|translate}}
+    </span>
+  </div>
+
+  <div ng-show="backupPassphraseC.mnemonicWords || (backupPassphraseC.credentialsEncrypted && !backupPassphraseC.deleted)">
+    <div class="row m10t m10b panel">
+      <div class="small-centered  text-gray columns size-14 text-center" translate>
+        Passphrase needed
+      </div>
+      <div class="columns size-14 m20t">
+        <input type="text" id="passphrase" ng-model="passphrase" autofocus/>
+      </div>
+    </div>
+
+    <div class="columns text-center m20t">
+      <button
+        ng-show="!backupPassphraseC.passphraseSuccess"
+        ng-disabled="!passphrase || backupPassphraseC.error"
+        ng-style="{'background-color':index.backgroundColor}" 
+        class="button black round expand" 
+        ng-click="backupPassphraseC.confirm()"
+        translate>Confirm passphrase
+      </button>
+      <button
+        ng-show="backupPassphraseC.passphraseSuccess"
+        ng-disabled="!passphrase || backupPassphraseC.error"
+        ng-style="{'background-color':index.backgroundColor}" 
+        class="button black round expand" 
+        ng-click="$root.go('backupConfirm');"
+        translate>Continue
+      </button>
+    </div>
+
+    <div class="row m20t"  ng-show="index.n==1">
+      <div class="columns size-12 text-gray">
+        <div class="p10t"  style="border-top:1px solid #ccc">
+          <span translate>You can safely install your wallet on another device and use it from multiple devices at the same time.</span> 
+          <a href="#" ng-click="$root.openExternalLink('https://github.com/bitpay/copay/blob/master/README.md#copay-backups-and-recovery')" translate>
+            Learn more about Copay backups
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+<div class="extra-margin-bottom"></div>

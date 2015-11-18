@@ -4,17 +4,13 @@
   ng-init="titleSection='Backup'; goBackToState = 'preferences'">
 </div>
 
-
-<div class="content preferences" ng-controller="wordsController as wordsC">
+<div class="content preferences" ng-controller="backupController as wordsC">
   <h4></h4>
-
   <div class="box-notification" ng-show="wordsC.error">
     <span class="text-warning">
     {{wordsC.error|translate}}
     </span>
   </div>
-
-
 
   <div ng-show="wordsC.mnemonicWords || (wordsC.credentialsEncrypted && !wordsC.deleted)">
     <div class="row"  ng-show="index.n==1">
@@ -75,23 +71,23 @@
 
 
     <!-- <div class="row m10t m10b" ng-show="wordsC.show"> -->
-    <div class="row m10t m10b">
+    <div class="row m10t m10b" ng-show="!wordsC.credentialsEncrypted">
       <div class="small-centered  text-gray columns size-14 text-center" translate>
           Your Wallet Seed
       </div>
     </div>
 
     <!-- <div class="row" ng-show="wordsC.show"> -->
-    <div class="row">
+    <div class="row" ng-show="!wordsC.credentialsEncrypted">
         <div class="columns">
-        <div class="p10" style="background:white" ng-class="{'enable_text_select': index.network == 'testnet'}">
-          <span ng-repeat="word in wordsC.mnemonicWords track by $index"><span style="white-space:nowrap">{{word}}</span><span ng-show="wordsC.useIdeograms">&#x3000;</span> </span>  
-        </div>
+          <div class="p10" style="background:white" ng-class="{'enable_text_select': index.network == 'testnet'}">
+            <span ng-repeat="word in wordsC.mnemonicWords track by $index"><span style="white-space:nowrap">{{word}}</span><span ng-show="wordsC.useIdeograms">&#x3000;</span> </span>  
+          </div>
         </div>
     </div>
 
     <!-- <div class="row m10t m20b" ng-show="wordsC.show"> -->
-    <div class="row m10t m20b">
+    <div class="row m10t m20b" ng-show="!wordsC.credentialsEncrypted">
       <div class="columns" ng-show="wordsC.mnemonicHasPassphrase">
         <span class="size-12">
           <i class="fi-alert"></i>
@@ -120,8 +116,12 @@
     </div> -->
 
     <div class="columns text-center">
-      <button class="black round small expand" ng-style="{'background-color':index.backgroundColor}" ng-click="$root.go('backupWords');" translate>
-        Continue
+      <button 
+        ng-disabled="wordsC.credentialsEncrypted"
+        class="black round small expand" 
+        ng-style="{'background-color':index.backgroundColor}" 
+        ng-click="$root.go('backupWords');" 
+        translate>Continue
       </button>
     </div>
 
@@ -136,8 +136,6 @@
         </div>
       </div>
     </div>
-
   </div>
-
 </div>
 <div class="extra-margin-bottom"></div>
