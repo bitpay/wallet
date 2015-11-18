@@ -6,6 +6,9 @@ src/js/translations.js
 # brand
 src/js/brand.js
 
+# package.json
+package.json
+
 # cordova
 cordova/project/*
 cordova/*.keystore
