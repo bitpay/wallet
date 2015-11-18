@@ -88,30 +88,40 @@ angular.module('copayApp.controllers').controller('wordsController',
       }
     }
 
+    self.enableButton = function(word) {
+      document.getElementById(word).disabled = false;
+      lodash.remove(customSortWords, function(v) {
+        return v == word;
+      });
+    }
+
     self.disableButton = function(word) {
       document.getElementById(word).disabled = true;
-      $scope.seed += word + ' ';
       customSortWords.push(word);
-
-      if (customSortWords.length == 12)
-        self.shouldContinue(customSortWords);
-
       self.addButton(word);
     }
 
     self.addButton = function(word) {
+      var asd = 'apospodk';
       var btnhtml = '<button class="button radius tiny" style="white-space:nowrap" ' +
-        'ng - click = "wordsC.removeButton(' + word + ')" id = "{{' + word + '_}}" > ' + word + ' </button>';
+        'data-ng-click="wordsC.removeButton($event)" id="_' + word + '" > ' + word + ' </button>';
       var temp = $compile(btnhtml)($scope);
       angular.element(document.getElementById('addWord')).append(temp);
+      self.shouldContinue(customSortWords);
     }
 
-    self.removeButton = function(word) {
-
+    self.removeButton = function(event) {
+      var id = (event.target.id);
+      var element = document.getElementById(id);
+      element.remove();
+      self.enableButton(id.substring(1));
+      self.shouldContinue(customSortWords);
     }
 
     self.shouldContinue = function(customSortWords) {
       if (lodash.isEqual(self.mnemonicWords, customSortWords))
         self.sorted = true;
+      else
+        self.sorted = false;
     }
   });
