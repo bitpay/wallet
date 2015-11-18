@@ -6,19 +6,18 @@ angular.module('copayApp.controllers').controller('wordsController',
     var msg = gettext('Are you sure you want to delete the backup words?');
     var successMsg = gettext('Backup words deleted');
     var self = this;
-    self.show = false;
-    self.sorted = false;
-    $scope.seed = '';
     var customSortWords = [];
     var fc = profileService.focusedClient;
+    self.show = false;
+    self.sorted = false;
 
-    if (fc.isPrivKeyEncrypted()) self.credentialsEncrypted = true;
-    else {
+    if (fc.isPrivKeyEncrypted())
+      self.credentialsEncrypted = true;
+    else
       setWords(fc.getMnemonic());
-    }
-    if (fc.credentials && !fc.credentials.mnemonicEncrypted && !fc.credentials.mnemonic) {
+
+    if (fc.credentials && !fc.credentials.mnemonicEncrypted && !fc.credentials.mnemonic)
       self.deleted = true;
-    }
 
     self.toggle = function() {
       self.error = "";
