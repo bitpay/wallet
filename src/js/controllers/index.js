@@ -786,10 +786,31 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   self.updateLocalTxHistory = function(client, cb) {
     var requestLimit = 6;
     var walletId = client.credentials.walletId;
+    var config = configService.getSync().wallet.settings;
+
+    var fixTxsUnit = function(txs) {
+      if (!txs || !txs[0]) return;
+
+      var cacheUnit = txs[0].amountStr.split(' ')[1];
+
+      if (cacheUnit == config.unitName)
+        return;
+
+      var name = ' ' + config.unitName;
+
+      $log.debug('Fixing Tx Cache Unit to:' + name)
+      lodash.each(txs, function(tx) {
+
+        tx.amountStr = profileService.formatAmount(tx.amount, config.unitName) + name;
+        tx.feeStr = profileService.formatAmount(tx.fees, config.unitName) + name;
+      });
+    };
 
     self.getConfirmedTxs(walletId, function(err, txsFromLocal) {
       if (err) return cb(err);
       var endingTxid = txsFromLocal[0] ? txsFromLocal[0].txid : null;
+
+      fixTxsUnit(txsFromLocal);
 
       function getNewTxs(newTxs, skip, i_cb) {
 
@@ -924,9 +945,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       }
 
       profileService.setWalletClients();
-      $timeout(function() {
-        $rootScope.$emit('Local/WalletImported', self.walletId);
-      }, 100);
+      self.startScan(self.walletId);
     });
   };
 
@@ -1140,8 +1159,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   });
 
   $rootScope.$on('Local/UnitSettingUpdated', function(event) {
-    self.updateAll();
-    self.updateTxHistory();
+    self.updateAll({
+      triggerTxUpdate: true,
+    });
     self.updateRemotePreferences({
       saveAll: true
     }, function() {
@@ -1177,10 +1197,10 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.debouncedUpdate();
   });
 
-  $rootScope.$on('Local/BackupDone', function(event) {
+  $rootScope.$on('Local/BackupDone', function(event, walletId) {
     self.needsBackup = false;
     $log.debug('Backup done');
-    storageService.setBackupFlag(self.walletId, function(err) {
+    storageService.setBackupFlag(walletId || self.walletId, function(err) {
       $log.debug('Backup done stored');
     });
   });
