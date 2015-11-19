@@ -226,7 +226,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-node-webkit-builder');
   grunt.loadNpmTasks('grunt-contrib-compress');
 
-  grunt.registerTask('default', ['nggettext_compile', 'exec:version', 'concat', 'copy:icons']);
+  grunt.registerTask('default', ['nggettext_compile', 'exec:version', 'browserify', 'concat', 'copy:icons']);
   grunt.registerTask('prod', ['default', 'uglify']);
   grunt.registerTask('translate', ['nggettext_extract']);
   grunt.registerTask('test', ['karma:unit']);
