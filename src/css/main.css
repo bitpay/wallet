@@ -359,6 +359,15 @@ ul.tx-copayers {
   background-color: #C0392B;
 }
 
+.circle-icon {
+  background: #F1F3F5;
+  border-radius: 100%;
+  padding: 1.5rem;
+  width: 80px;
+  height: 80px;
+  margin: 0 auto;
+}
+
 .date-message {
   background-color: #213140;
   border-radius: 3px;
