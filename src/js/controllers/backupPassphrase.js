@@ -6,10 +6,18 @@ angular.module('copayApp.controllers').controller('backupPassphraseController',
     var self = this;
     var fc = profileService.focusedClient;
     self.passphraseSuccess = false;
+    self.checkingPassphrase = false;
     self.error = "";
 
     setWords(fc.getMnemonic());
     var words = fc.getMnemonic();
+
+    self.changePassphrase = function() {
+      self.passphraseSuccess = false;
+      $timeout(function() {
+        $rootScope.$apply();
+      }, 1);
+    }
 
     function setWords(words) {
       if (words) {
@@ -20,6 +28,9 @@ angular.module('copayApp.controllers').controller('backupPassphraseController',
     };
 
     self.confirm = function() {
+      self.checkingPassphrase = true;
+      self.error = "";
+
       var walletClient = bwcService.getClient();
 
       walletClient.importFromMnemonic(words, {
@@ -27,8 +38,19 @@ angular.module('copayApp.controllers').controller('backupPassphraseController',
         passphrase: $scope.passphrase,
         account: 0,
       }, function(err) {
-        if (err)
+        self.checkingPassphrase = false;
+        if (err) {
           self.error = err.message;
+          $timeout(function() {
+            $rootScope.$apply();
+          }, 1);
+          return;
+        }
+
+        self.passphraseSuccess = true;
+        $timeout(function() {
+          $rootScope.$apply();
+        }, 1);
       });
     }
   });

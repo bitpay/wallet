@@ -22,7 +22,7 @@
         </div>
         <div class="p10" style="background:white" ng-class="{'enable_text_select': index.network == 'testnet'}">
           <span ng-repeat="word in backupWordsC.mnemonicWords track by $index">
-            <button class="button radius tiny" style="white-space:nowrap" ng-click="backupWordsC.disableButton(word)" id="{{word}}">{{word}}</button>
+            <button class="button radius tiny" ng-style="{'background-color':index.backgroundColor}" ng-click="backupWordsC.disableButton(word)" id="{{word}}">{{word}}</button>
           </span>
         </div>
       </div>

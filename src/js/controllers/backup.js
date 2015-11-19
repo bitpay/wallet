@@ -39,7 +39,6 @@ angular.module('copayApp.controllers').controller('backupController',
 
             self.credentialsEncrypted = false;
             setWords(fc.getMnemonic());
-            // $rootScope.$emit('Local/BackupDone');
           });
         }
       }
