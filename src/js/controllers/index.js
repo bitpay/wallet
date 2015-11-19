@@ -703,7 +703,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
     $timeout(function() {
       getHistory(function(err, txs) {
-console.log('[index.js:684]',txs); //TODO
         self.setOngoingProcess('generatingCSV', false);
         if (err) {
           self.handleError(err);
