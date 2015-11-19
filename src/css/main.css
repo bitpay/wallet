@@ -110,19 +110,19 @@ h4.title a {
 }
 
 ul.button-group {
-  margin-top: 8px;
+  margin-top: 11px;
 }
 
 ul.button-group li:first-child {
   border-top-left-radius: 0.2rem;
   border-bottom-left-radius: 0.2rem;
-  border: 1px solid #DEDFE1;
+  border: 1px solid #A5B2BF;
 }
 
 ul.button-group li:last-child {
   border-top-right-radius: 0.2rem;
   border-bottom-right-radius: 0.2rem;
-  border: 1px solid #DEDFE1;
+  border: 1px solid #A5B2BF;
 }
 
 .button-group.even-2 li {
@@ -141,7 +141,7 @@ ul.button-group li {
 
 ul.button-group li.selected {
   color: #fff;
-  background-color: #DEDFE1;
+  background-color: #A5B2BF;
 }
 
 body, html{
