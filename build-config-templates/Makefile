@@ -50,12 +50,12 @@ wp8-debug:
 ios-prod:
 	cordova/build.sh IOS %APP-EXE-NAME% --clear
 	cd cordova/project && cordova build ios
-	open "cordova/project/platforms/ios/%APP-SHORT-CAMEL-NAME%.xcodeproj"
+	open "cordova/project/platforms/ios/%APP-SHORT-NAME%.xcodeproj"
 
 ios-debug:
 	cordova/build.sh IOS %APP-EXE-NAME% --dbgjs
 	cd cordova/project && cordova build ios
-	open cordova/project/platforms/ios/%APP-SHORT-CAMEL-NAME%.xcodeproj
+	open "cordova/project/platforms/ios/%APP-SHORT-NAME%.xcodeproj"
 
 android-prod:
 	cordova/build.sh ANDROID %APP-EXE-NAME% --clear
