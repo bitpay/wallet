@@ -20,7 +20,7 @@ angular
     $urlRouterProvider.otherwise('/');
 
     $logProvider.debugEnabled(true);
-    $provide.decorator('$log', ['$delegate',
+    $provide.decorator('$log', ['$delegate', 'isDevel',
       function($delegate, isDevel) {
         var historicLog = historicLogProvider.$get();
 
