@@ -514,7 +514,7 @@
           <div class="size-14 text-gray columns m5t" ng-if="btx.message || btx.addressTo">
             <div ng-show="btx.message">{{btx.message}}</div>
             <div ng-show="!btx.message">
-              <span translate>To</span>: {{index.addressbook[btx.addressTo] || btx.addressTo}}
+              {{index.addressbook[btx.addressTo] || btx.addressTo}}
             </div>
           </div>
         </div>
