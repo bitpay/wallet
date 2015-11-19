@@ -294,7 +294,8 @@ a.missing-copayers {
 .sidebar .icon {
   width:  39px;
   text-align: center;
-  margin-right: 15px;
+  margin-right: 13px;
+  margin-left: -2px;
   float: left;
   display: block;
 }
@@ -321,7 +322,7 @@ a.missing-copayers {
   width: 35px;
   height: 35px;
   border-radius: 3px;
-  padding: 2px;
+  padding: 0px;
   border: 1px solid #fff;
 }
 
@@ -780,7 +781,7 @@ textarea:focus
 
 .create-tab {
   width: 100%;
-  border-bottom: 1px solid #DEDFE1;
+  border-bottom: 1px solid #A5B2BF;
   margin-bottom: 25px;
   overflow: hidden;
 }

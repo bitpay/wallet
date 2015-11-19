@@ -27,7 +27,7 @@ angular.module('copayApp.services').factory('addressbookService', function(stora
     root.list(function(err, ab) {
       if (err) return cb(err);
       if (!ab) ab = {};
-      if (ab[entry.address]) return cb('Entry already exist');
+      if (ab[entry.address]) return cb('Entry already exists');
       ab[entry.address] = entry.label;
       storageService.setAddressbook(fc.credentials.network, JSON.stringify(ab), function(err, ab) {
         if (err) return cb('Error adding new entry');

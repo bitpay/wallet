@@ -1,27 +1,27 @@
 <div ng-init="wallets[0] ? selectedWalletsOpt = true : selectedWalletsOpts = false">
-  <nav class="tab-bar">
+  <nav class="tab-bar" ng-style="{'background': skin.view.navBarBackground, 'border-bottom': skin.view.navBarBorderBottom}">
     <section class="left-small">
       <a ng-show="!editAddressbook && !addAddressbookEntry" ng-click="cancel()" class="p10">
         <span class="text-close" ng-style="{'color':skin.view.navBarButtonTextColor}" translate>Close</span>
       </a>
     </section>
 
-    <section class="middle tab-bar-section">
+    <section class="middle tab-bar-section" ng-style="{'color': skin.view.navBarTitleColor}">
       <ul class="button-group round even-2" ng-show="!editAddressbook && wallets[0] && !addAddressbookEntry">
         <li class="ellipsis" ng-class="{'selected':selectedWalletsOpt}" ng-click="selectedWalletsOpt = true"
           translate>
           Wallets
         </li>
         <li class="ellipsis" ng-class="{'selected':!selectedWalletsOpt}" ng-click="selectedWalletsOpt = false" translate>
-          Addressbook
+          Address book
         </li>
       </ul>
-      <h1 ng-show="(editAddressbook || !wallets[0]) && !addAddressbookEntry" class="title ellipsis" ng-style="{'color':skin.view.navBarTitleColor}" translate>
-        Addressbook
-      </h1>
-      <h1 ng-show="addAddressbookEntry" class="title ellipsis" translate>
+      <div ng-show="(editAddressbook || !wallets[0]) && !addAddressbookEntry" class="title ellipsis" translate>
+        Address book
+      </div>
+      <div ng-show="addAddressbookEntry" class="title ellipsis" translate>
         Add a new entry
-      </h1>
+      </div>
     </section>
 
     <section class="right-small" ng-show="!selectedWalletsOpt" ng-click="toggleEditAddressbook()">
@@ -57,7 +57,7 @@
                 ng-style="{'background-color':w.avatarBackground, 'border':w.avatarBorder}">{{(w.name || w.id) | limitTo: 1}}</div>
               <div ng-if="w.avatarIsWalletName == 'false'" class="avatar-wallet"
                 ng-style="{'background':w.avatarBackground, 'border':w.avatarBorder}"></div>
-              <div class="ellipsis name-wallet text-bold">{{w.name || w.id}}</div>
+              <div class="ellipsis text-black size-14 text-bold">{{w.name || w.id}}</div>
               <div class="size-12">{{w.m}} of {{w.n}}
                 <span ng-show="w.network=='testnet'">[Testnet]</span>
               </div>
@@ -77,15 +77,15 @@
             ng-show="editAddressbook" 
             ng-click="toggleSelectAddressbook(addr)">
             <i class="fi-trash"></i></a> 
-          <div ng-click="selectAddressbook(addr)"> 
-            {{label}}
-            <div class="size-10 text-gray ellipsis">{{addr}}</div>
+          <div ng-click="selectAddressbook(addr)">
+            <div class="text-bold size-14">{{label}}</div>
+            <div class="size-12 text-gray ellipsis">{{addr}}</div>
           </div> 
         </li>
         <li class="m10t" ng-show="!editAddressbook">
           <a ng-click="toggleAddAddressbookEntry()" class="p10">
             <i class="fi-plus size-18 m10r"></i> 
-            <span class="text-close size-12" translate>Add a new entry</span>
+            <span class="text-close size-14" translate>Add a new entry</span>
             <span ng-show="!list[newAddress] && newAddress">({{newAddress}})</span>
           </a>
         </li>
@@ -93,9 +93,9 @@
 
       <div ng-show="addAddressbookEntry">
         <form name="addressbookForm" class="p10" no-validate>
-          <div class="text-warning size-12 m10b" ng-show="error">{{error|translate}}</div>
+          <div class="text-warning size-14 m10b" ng-show="error">{{error|translate}}</div>
           <span ng-hide="addressbookForm.address.$pristine">
-            <span class="has-error right size-12" ng-show="addressbookForm.address.$invalid && addressbook.address">
+            <span class="has-error right size-14" ng-show="addressbookForm.address.$invalid && addressbook.address">
               <i class="icon-close-circle size-14"></i>
               <span class="vm" translate>Not valid</span>
             </span>
