@@ -703,6 +703,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
     $timeout(function() {
       getHistory(function(err, txs) {
+console.log('[index.js:684]',txs); //TODO
         self.setOngoingProcess('generatingCSV', false);
         if (err) {
           self.handleError(err);
@@ -716,9 +717,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
           var csvContent = '';
 
           if (!isNode) csvContent = 'data:text/csv;charset=utf-8,';
-          csvContent += 'Date,Destination,Note,Amount,Currency,Spot Value,Total Value,Tax Type,Category\n';
+          csvContent += 'Date,Destination,Note,Amount,Currency,Txid,Creator,Copayers\n';
 
-          var _amount, _note;
+          var _amount, _note, _copayers, _creator;
           var dataString;
           data.forEach(function(it, index) {
             var amount = it.amount;
@@ -726,18 +727,29 @@ angular.module('copayApp.controllers').controller('indexController', function($r
             if (it.action == 'moved')
               amount = 0;
 
+            _copayers = '';
+            _creator = '';
+
+            if (it.actions && it.actions.length > 1) {
+              for (var i = 0; i < it.actions.length; i++) { 
+                _copayers += it.actions[i].copayerName + ':' + it.actions[i].type + ' - ';
+              }
+              _creator = (it.creatorName && it.creatorName != 'undefined') ? it.creatorName : '';
+            }
+            _copayers = formatString(_copayers);
+            _creator = formatString(_creator);
             _amount = (it.action == 'sent' ? '-' : '') + (amount * satToBtc).toFixed(8);
-            _note = formatString((it.message ? it.message : '') + ' TxId: ' + it.txid + ' Fee:' + (it.fees * satToBtc).toFixed(8));
+            _note = formatString((it.message ? it.message : ''));
 
             if (it.action == 'moved')
               _note += ' Moved:' + (it.amount * satToBtc).toFixed(8)
 
-            dataString = formatDate(it.time * 1000) + ',' + formatString(it.addressTo) + ',' + _note + ',' + _amount + ',BTC,,,,';
+            dataString = formatDate(it.time * 1000) + ',' + formatString(it.addressTo) + ',' + _note + ',' + _amount + ',BTC,' + it.txid + ',' + _creator + ',' + _copayers;
             csvContent += dataString + "\n";
 
             if (it.fees && (it.action == 'moved' || it.action == 'sent')) {
               var _fee = (it.fees * satToBtc).toFixed(8)
-              csvContent += formatDate(it.time * 1000) + ',Bitcoin Network Fees,, -' + _fee + ',BTC,,,,' + "\n";
+              csvContent += formatDate(it.time * 1000) + ',Bitcoin Network Fees,, -' + _fee + ',BTC,,,' + "\n";
             }
           });
 
