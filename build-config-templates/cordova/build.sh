@@ -16,10 +16,23 @@ generateIconsAndSplash() {
   mkdir -p project/resources
   checkOK
 
-  cp ../brands/%BRAND-ID%/resources/psd/icon.psd project/resources
+  ICON_FILE=../brands/%BRAND-ID%/resources/icon.psd
+  SPLASH_FILE=../brands/%BRAND-ID%/resources/splash.psd
+
+  if [ -f ../brands/%BRAND-ID%/resources/$1/icon.psd ];
+  then
+    ICON_FILE=../brands/%BRAND-ID%/resources/$1/icon.psd
+  fi
+
+  if [ -f ../brands/%BRAND-ID%/resources/$1/splash.psd ];
+  then
+    SPLASH_FILE=../brands/%BRAND-ID%/resources/$1/splash.psd
+  fi
+
+  cp $ICON_FILE project/resources
   checkOK
 
-  cp ../brands/%BRAND-ID%/resources/psd/splash.psd project/resources
+  cp $SPLASH_FILE project/resources
   checkOK
 
   cd project
@@ -193,7 +206,7 @@ if [ $CURRENT_OS == "ANDROID" ]; then
   cp android/project.properties $PROJECT/platforms/android/project.properties
   checkOK
 
-  generateIconsAndSplash
+  generateIconsAndSplash android
 
 fi
 
@@ -204,7 +217,7 @@ if [ $CURRENT_OS == "IOS" ]; then
   cp ios/%APP-SHORT-CAMEL-NAME%-Info.plist $PROJECT/platforms/ios/%APP-SHORT-CAMEL-NAME%-Info.plist
   checkOK
 
-  generateIconsAndSplash
+  generateIconsAndSplash ios
 
 fi
 
@@ -213,7 +226,7 @@ if [ $CURRENT_OS == "WP8" ]; then
   cp -af $PROJECT/www/* $PROJECT/platforms/wp8/www
   checkOK
 
-  generateIconsAndSplash
+  generateIconsAndSplash wp8
 
   if ! $CLEAR
   then
