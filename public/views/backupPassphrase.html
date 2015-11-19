@@ -12,20 +12,33 @@
     </span>
   </div>
 
+  <div class="onGoingProcess" ng-show="backupPassphraseC.checkingPassphrase">
+    <div class="onGoingProcess-content" ng-style="{'background-color':index.backgroundColor}">
+      <div class="spinner">
+        <div class="rect1"></div>
+        <div class="rect2"></div>
+        <div class="rect3"></div>
+        <div class="rect4"></div>
+        <div class="rect5"></div>
+      </div>
+      <span translate>Verifying passphrase...</span>
+    </div>
+  </div>
+
   <div ng-show="backupPassphraseC.mnemonicWords || (backupPassphraseC.credentialsEncrypted && !backupPassphraseC.deleted)">
     <div class="row m10t m10b panel">
       <div class="small-centered  text-gray columns size-14 text-center" translate>
         Passphrase needed
       </div>
       <div class="columns size-14 m20t">
-        <input type="text" id="passphrase" ng-model="passphrase" autofocus/>
+        <input type="text" id="passphrase" ng-model="passphrase" autocapitalize="off" spellcheck="false" ng-keypress="backupPassphraseC.changePassphrase()" autofocus/>
       </div>
     </div>
 
     <div class="columns text-center m20t">
       <button
         ng-show="!backupPassphraseC.passphraseSuccess"
-        ng-disabled="!passphrase || backupPassphraseC.error"
+        ng-disabled="!passphrase"
         ng-style="{'background-color':index.backgroundColor}" 
         class="button black round expand" 
         ng-click="backupPassphraseC.confirm()"

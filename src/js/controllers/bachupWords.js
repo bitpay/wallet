@@ -32,7 +32,8 @@ angular.module('copayApp.controllers').controller('backupWordsController',
     }
 
     self.addButton = function(word) {
-      var btnhtml = '<button class="button radius tiny" style="white-space:nowrap" ' +
+      var btnhtml = '<button class="button radius tiny"' +
+        'ng-style="{\'background-color\':index.backgroundColor}"' +
         'data-ng-click="backupWordsC.removeButton($event)" id="_' + word + '" > ' + word + ' </button>';
       var temp = $compile(btnhtml)($scope);
       angular.element(document.getElementById('addWord')).append(temp);
