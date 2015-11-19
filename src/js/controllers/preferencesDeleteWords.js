@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('preferencesDeleteWordsController',
-  function($scope, $rootScope, $filter, $timeout, $modal, $log, confirmDialog, storageService, notification, profileService, isCordova, go, gettext, gettextCatalog, animationService) {
+  function(confirmDialog, notification, profileService, go, gettext) {
     var self = this;
     var fc = profileService.focusedClient;
     var msg = gettext('Are you sure you want to delete the backup words?');
