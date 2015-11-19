@@ -5,6 +5,10 @@ angular.module('copayApp.controllers').controller('backupController',
 
     var self = this;
     var fc = profileService.focusedClient;
+    self.deleted = false;
+
+    if (fc.credentials && !fc.credentials.mnemonicEncrypted && !fc.credentials.mnemonic)
+      self.deleted = true;
 
     if (fc.isPrivKeyEncrypted()) {
       self.credentialsEncrypted = true;
