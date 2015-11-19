@@ -243,7 +243,6 @@ module.exports = function(grunt) {
           'cordova/build.sh': 'build-config-templates/cordova/build.sh',
           'cordova/config.xml': 'build-config-templates/cordova/config.xml',
           'cordova/ios/App-Info.plist': 'build-config-templates/cordova/ios/App-Info.plist',
-          'cordova/Makefile': 'build-config-templates/cordova/Makefile',
           'cordova/wp/MainPage.xaml': 'build-config-templates/cordova/wp/MainPage.xaml',
           'cordova/wp/Package.appxmanifest': 'build-config-templates/cordova/wp/Package.appxmanifest',
           'cordova/wp/Properties/WMAppManifest.xml': 'build-config-templates/cordova/wp/Properties/WMAppManifest.xml',
