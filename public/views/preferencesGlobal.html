@@ -2,7 +2,7 @@
 <div 
   class="topbar-container" 
   ng-include="'views/includes/topbar.html'"
-  ng-init="titleSection='Global Preferences'; closeToHome = true; noColor = true">
+  ng-init="titleSection='Global Preferences'; closeToHome = true; useTheme = true">
 </div>
 
 
@@ -35,6 +35,13 @@
       </div>
       <div translate>Alternative Currency</div>
     </li>
+    <li ng-click="$root.go('preferencesTheme')">
+      <div class="right text-gray">
+        {{theme.header.name}}
+        <i class="icon-arrow-right3 size-24"></i>
+      </div>
+      <div translate>Theme</div>
+    </li>
   </ul>
   <ul class="no-bullet m0 ">
     <h4></h4>
@@ -54,12 +61,12 @@
   <ul class="no-bullet m0 ">
     <h4></h4>
     <li>
-      <switch id="glidera-enabled" name="glideraEnabled" ng-model="glideraEnabled" class="green right"></switch>
-      <div>Enable Glidera Service</div>
+      <switch id="glidera-visible" name="glideraVisible" ng-model="glideraVisible" class="green right"></switch>
+      <div>Show Glidera Service</div>
     </li>
  
     <!-- Disabled for testnet 
-    <li ng-show="glideraEnabled">
+    <li ng-show="glideraVisible">
       <span>Glidera Sandbox</span>
       <switch id="glidera-testnet" name="glideraTestnet" ng-model="glideraTestnet" class="green right"></switch>
     </li>
@@ -69,8 +76,8 @@
     <h4></h4>
     <li ng-click="$root.go('about')">
       <i class="icon-arrow-right3 size-24 right text-gray"></i>  
-      <div translate>About Copay</div>
-    </li>
+      <div translate>About {{index.brand.shortName}}</div>
+    </li>    
   </ul>
   <h4></h4>
 

@@ -553,9 +553,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   };
 
   self.updateSkin = function() {
-    themeService.updateSkin(self.walletId, function() {
-      $scope.$emit('Local/SkinUpdated');
-    });
+    themeService.updateSkin(self.walletId);
   };
 
   self.setBalance = function(balance) {
@@ -1353,4 +1351,13 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       $rootScope.$apply();
     });
   });
+
+  $rootScope.$on('Local/ThemeUpdated', function(event) {
+    self.updateAll();
+  });
+
+  $rootScope.$on('Local/SkinUpdated', function(event) {
+    self.updateAll();
+  });
+
 });

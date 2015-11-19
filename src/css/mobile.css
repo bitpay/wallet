@@ -215,6 +215,7 @@ _:-ms-fullscreen, :root .main {
 
 .walletHome .wallet-info {
   margin-left: 85px;
+  margin-top: 10px;
   line-height: 110%;
   height: 60px;
   overflow: hidden;
