@@ -615,7 +615,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       self.alternativeConversionRate = $filter('noFractionNumber')(alternativeConversionRate, 2);
 
       self.alternativeBalanceAvailable = true;
-      self.updatingBalance = false;
 
       self.isRateAvailable = true;
       $rootScope.$apply();
