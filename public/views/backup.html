@@ -13,16 +13,6 @@
   </div>
 
   <div ng-show="wordsC.mnemonicWords || (wordsC.credentialsEncrypted && !wordsC.deleted)">
-    <div class="row"  ng-show="index.n==1">
-      <div class="m10t columns size-14 text-gray">
-        <span translate>
-          You need the wallet seed to restore this personal wallet.
-        </span>
-        <span translate class="text-bold">
-          Write it down and keep them somewhere safe.
-        </span>
-      </div>
-    </div>
     <div class="row" ng-show="(index.n>1 && index.m != index.n )">
       <div class="m10t columns size-14 text-gray">
         <span translate>
@@ -52,77 +42,159 @@
 
   <div class="row m20t" ng-show="wordsC.deleted">
     <div class="columns size-14 text-gray text-center" translate>
-        Wallet seed not available. You can still export it from Advanced &gt; Export.
+      Wallet seed not available. You can still export it from Advanced &gt; Export.
     </div>
   </div>
  
   <div ng-show="wordsC.mnemonicWords || (wordsC.credentialsEncrypted && !wordsC.deleted)">
-    <!-- <div class="row">
-        <div class="m10t columns">
-          <a class="button outline light-gray expand tiny" ng-click="wordsC.toggle()">
-            <i class="fi-widget m3r"></i>
-            <span translate ng-hide="wordsC.show">Show Wallet Seed</span>
-            <span translate ng-hide="!wordsC.show">Hide Wallet Seed</span>
-            <i ng-if="!wordsC.show" class="icon-arrow-down4"></i>
-            <i ng-if="wordsC.show" class="icon-arrow-up4"></i>
-          </a>
-        </div>
-    </div> -->
-
-
-    <!-- <div class="row m10t m10b" ng-show="wordsC.show"> -->
-    <div class="row m10t m10b" ng-show="!wordsC.credentialsEncrypted">
-      <div class="small-centered  text-gray columns size-14 text-center" translate>
-          Your Wallet Seed
-      </div>
-    </div>
-
-    <!-- <div class="row" ng-show="wordsC.show"> -->
-    <div class="row" ng-show="!wordsC.credentialsEncrypted">
-        <div class="columns">
-          <div class="p10" style="background:white" ng-class="{'enable_text_select': index.network == 'testnet'}">
-            <span ng-repeat="word in wordsC.mnemonicWords track by $index"><span style="white-space:nowrap">{{word}}</span><span ng-show="wordsC.useIdeograms">&#x3000;</span> </span>  
-          </div>
-        </div>
-    </div>
-
-    <!-- <div class="row m10t m20b" ng-show="wordsC.show"> -->
-    <div class="row m10t m20b" ng-show="!wordsC.credentialsEncrypted">
-      <div class="columns" ng-show="wordsC.mnemonicHasPassphrase">
-        <span class="size-12">
-          <i class="fi-alert"></i>
-          <span translate>
-          WARNING: This seed was created with a passphrase. To recover this wallet both the mnemonic and passphrase are needed.
-          </span>
+    <div class="row"  ng-show="index.n==1 && wordsC.step1">
+      <div class="m10t columns size-14 text-gray">
+        <span translate>
+          You need the wallet seed to restore this personal wallet.
+        </span>
+        <span translate class="text-bold">
+          Write it down and keep them somewhere safe.
         </span>
       </div>
     </div>
+    <div class="row" ng-show="wordsC.credentialsEncrypted">
+      <div class="m10t columns">
+        <a class="button outline light-gray expand tiny" ng-click="wordsC.toggle()">
+          <i class="fi-widget m3r"></i>
+          <span translate ng-hide="wordsC.show">Show Wallet Seed</span>
+        </a>
+      </div>
+    </div>
 
-    <!-- <div class="row" ng-show="wordsC.show"> -->
-    <!-- <div class="row">
-        <div class="m10t text-center columns">
-          <div class="size-12 text-gray">
+    <div class="row m10t m10b" ng-show="!wordsC.credentialsEncrypted">
+      <div class="small-centered  text-gray columns size-14 text-center" translate>
+        Your Wallet Seed
+      </div>
+    </div>
+
+    <!-- 
+    ## STEP 1 
+    -->
+    <div ng-show="wordsC.step1">
+      <div class="row" ng-show="!wordsC.credentialsEncrypted">
+          <div class="columns">
+            <div class="p10" style="background:white" ng-class="{'enable_text_select': index.network == 'testnet'}">
+              <span ng-repeat="word in wordsC.mnemonicWords track by $index"><span style="white-space:nowrap">{{word}}</span><span ng-show="wordsC.useIdeograms">&#x3000;</span> </span>  
+            </div>
+          </div>
+      </div>
+
+      <div class="row m10t m20b" ng-show="!wordsC.credentialsEncrypted">
+        <div class="columns" ng-show="wordsC.mnemonicHasPassphrase">
+          <span class="size-12">
+            <i class="fi-alert"></i>
             <span translate>
-              Once you have copied your wallet seed down, it is recommended to delete it from this device.
+              WARNING: This seed was created with a passphrase. To recover this wallet both the mnemonic and passphrase are needed.
+            </span>
+          </span>
+        </div>
+      </div>
+
+      <div class="columns text-center">
+        <button 
+          ng-disabled="wordsC.credentialsEncrypted"
+          class="black round small expand" 
+          ng-style="{'background-color':index.backgroundColor}" 
+          ng-click="wordsC.goToStep2();"
+          translate>Continue
+        </button>
+      </div>
+    </div>
+
+    <!-- 
+    ## STEP 2 
+    -->
+    <div ng-show="wordsC.step2">
+      <div class="row m10b">
+        <div class="columns">
+          <div class="p10 panel" ng-class="{'enable_text_select': index.network == 'testnet'}">
+            <div id="addWord"></div>
+          </div>
+          <div class="p10" style="background:white" ng-class="{'enable_text_select': index.network == 'testnet'}">
+            <span ng-repeat="word in wordsC.mnemonicWords track by $index">
+              <button class="button radius tiny" ng-style="{'background-color':index.backgroundColor}" ng-click="wordsC.disableButton(word)" id="{{word}}">{{word}}</button>
             </span>
           </div>
-          <button class="button outline m10t round dark-gray tiny" ng-click="wordsC.delete()">
-            <i class="fi-trash"></i> 
-            <span translate>
-              DELETE WORDS
-            </span>
-          </button>
         </div>
-    </div> -->
+      </div>
 
-    <div class="columns text-center">
-      <button 
-        ng-disabled="wordsC.credentialsEncrypted"
-        class="black round small expand" 
-        ng-style="{'background-color':index.backgroundColor}" 
-        ng-click="$root.go('backupWords');" 
-        translate>Continue
-      </button>
+      <div class="columns text-center">
+        <button 
+          ng-disabled="!wordsC.selectComplete"
+          class="black round small expand" 
+          ng-style="{'background-color':index.backgroundColor}" 
+          ng-click="wordsC.goToStep3();"
+          translate>Continue
+        </button>
+      </div>
+    </div>
+
+    <!-- 
+    ## STEP 3 
+    --> 
+    <div ng-show="wordsC.step3">
+      <div class="row m10t m10b panel">
+        <div class="small-centered  text-gray columns size-14 text-center" translate>
+          Passphrase needed
+        </div>
+        <div class="columns size-14 m20t">
+          <input type="text" id="passphrase" ng-model="passphrase" autocapitalize="off" spellcheck="false" autofocus/>
+        </div>
+      </div>
+
+      <div class="columns text-center m20t">
+        <button
+          ng-disabled="!passphrase"
+          ng-style="{'background-color':index.backgroundColor}" 
+          class="button black round expand" 
+          ng-click="wordsC.goToStep4();"
+          translate>Continue
+        </button>
+      </div>
+    </div>
+
+    <!-- 
+    ## STEP 4 
+    --> 
+    <div ng-show="wordsC.step4">
+      <div class="box-notification" ng-show="wordsC.backupNoOk">
+        <span class="text-warning" translate>
+          Failed to verify backup. Please try again
+        </span>
+      </div>
+
+      <div class="onGoingProcess" ng-show="wordsC.checking">
+        <div class="onGoingProcess-content" ng-style="{'background-color':index.backgroundColor}">
+          <div class="spinner">
+            <div class="rect1"></div>
+            <div class="rect2"></div>
+            <div class="rect3"></div>
+            <div class="rect4"></div>
+            <div class="rect5"></div>
+          </div>
+          <span translate>Verifying...</span>
+        </div>
+      </div>
+
+      <div class="row m10t m10b">
+        <div class="small-centered  text-gray columns size-14 text-center" translate>
+          Congratulations
+        </div>
+      </div>
+
+      <div class="columns text-center m20t">
+        <button 
+          ng-style="{'background-color':index.backgroundColor}" 
+          class="button black round expand" 
+          ng-click="wordsC.confirm();"
+          translate>Finish
+        </button>
+      </div>
     </div>
 
     <!-- hide this in multisig just to show less text -->

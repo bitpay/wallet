@@ -445,17 +445,6 @@ angular
           },
         }
       })
-      .state('backupConfirm', {
-        url: '/backupConfirm',
-        templateUrl: 'views/backupConfirm.html',
-        walletShouldBeComplete: true,
-        needProfile: true,
-        views: {
-          'main': {
-            templateUrl: 'views/backupConfirm.html'
-          },
-        }
-      })
       .state('backupPassphrase', {
         url: '/backupPassphrase',
         templateUrl: 'views/backupPassphrase.html',
@@ -464,6 +453,17 @@ angular
         views: {
           'main': {
             templateUrl: 'views/backupPassphrase.html'
+          },
+        }
+      })
+      .state('backupConfirm', {
+        url: '/backupConfirm',
+        templateUrl: 'views/backupConfirm.html',
+        walletShouldBeComplete: true,
+        needProfile: true,
+        views: {
+          'main': {
+            templateUrl: 'views/backupConfirm.html'
           },
         }
       })
