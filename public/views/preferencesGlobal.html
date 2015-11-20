@@ -35,7 +35,7 @@
       </div>
       <div translate>Alternative Currency</div>
     </li>
-    <li ng-click="$root.go('preferencesTheme')">
+    <li ng-show="index.brand.features.theme.themeDiscovery.enabled" ng-click="$root.go('preferencesTheme')">
       <div class="right text-gray">
         {{theme.header.name}}
         <i class="icon-arrow-right3 size-24"></i>
