@@ -16,7 +16,6 @@
     ## STEP 1
     -->
 
-
     <div ng-show="wordsC.step1">
       <div ng-show="wordsC.mnemonicWords || (wordsC.credentialsEncrypted && !wordsC.deleted)">
         <h5 class="text-center">Write your wallet seed</h5>
@@ -100,20 +99,21 @@
     <!--
     ## STEP 2
     -->
+
     <div ng-show="wordsC.step2" class="columns">
       <div class="columns text-center">
-          <h5>Confirm your wallet seed</h5>
-          <p class="p20 text-gray m0">
-            Please tap the words in order to confirm your backup phrase is correctly written.
-          </p>
-          <div class="panel words text-left" ng-class="{'enable_text_select': index.network == 'testnet'}">
-            <div id="addWord"></div>
-          </div>
-          <div class="text-left m20b" ng-class="{'enable_text_select': index.network == 'testnet'}">
-            <span ng-repeat="word in wordsC.mnemonicWords track by $index">
-              <button class="button radius tiny words" ng-click="wordsC.disableButton(word)" id="{{word}}">{{word}}</button>
-            </span>
-          </div>
+        <h5>Confirm your wallet seed</h5>
+        <p class="p20 text-gray m0">
+          Please tap the words in order to confirm your backup phrase is correctly written.
+        </p>
+        <div class="panel words text-left" ng-class="{'enable_text_select': index.network == 'testnet'}">
+          <div id="addWord"></div>
+        </div>
+        <div class="text-left m20b" ng-class="{'enable_text_select': index.network == 'testnet'}">
+          <span ng-repeat="word in wordsC.shuffledMnemonicWords track by $index">
+            <button class="button radius tiny words" ng-click="wordsC.disableButton(word)" id="{{word}}">{{word}}</button>
+          </span>
+        </div>
       </div>
 
       <div class="columns text-center">
@@ -130,6 +130,7 @@
     <!--
     ## STEP 3
     -->
+
     <div ng-show="wordsC.step3">
       <div class="columns text-center">
         <h5> Enter your passphrase</h5>
@@ -152,6 +153,7 @@
     <!--
     ## STEP 4
     -->
+    
     <div ng-show="wordsC.step4">
       <div class="box-notification" ng-show="wordsC.backupNoOk">
         <span class="text-warning" translate>
