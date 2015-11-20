@@ -182,23 +182,18 @@
     -->
     <div id="receive" class="receive tab-view">
 
-      <div ng-show="index.needsBackup" class="p60t row text-center">
-        <div class="large-12 columns">
-          <div class="text-warning text-bold m15b">
-            <i class="fi-alert"></i>
-            <span translate>
-              WARNING: Backup needed
-            </span>
-          </div>
-          <div class="text-gray" translate>
-            Before receiving funds, it is highly recommended you backup your wallet keys.
-          </div>
-
-          <button class="m20t button black expand round"
-            ng-click="$root.go('backup')" ng-style="{'background-color':index.backgroundColor}" >
-            <span translate>Backup now</span>
-          </button>
+      <div ng-show="index.needsBackup" class="p60t columns text-center">
+        <div class="circle-icon">
+          <i class="fi-alert size-48"></i>
         </div>
+        <h5>Backup Needed</h5>
+        <p class="text-gray p20" translate>
+          Before receiving funds, it is highly recommended you backup your wallet. If you lose this device, it is impossible to access your funds without a backup.
+        </p>
+        <button class="m20t button black expand round"
+          ng-click="$root.go('backup')" ng-style="{'background-color':index.backgroundColor}" >
+          <span translate>Backup now</span>
+      </button>
       </div>
       <div ng-show="!index.needsBackup">
         <div class="row">
@@ -473,6 +468,14 @@
             <span translate>Transactions Downloaded</span>
           </div>
         </div>
+        <div ng-show="index.txProgress > 6" translate class="size-12 text-gray m20t">
+          Initial transaction history synchronization can take some minutes for wallets with many transactions.</br>
+          Please stand by.
+        </div>
+        <div ng-show="index.txProgress > 6" class="size-14 text-gray m20t">
+          <b>{{index.txProgress}}</b>
+          <span translate>Transactions<br> Downloaded</span>
+        </div>
       </div>
 
       <div ng-show="index.txHistory[0]">
@@ -514,7 +517,7 @@
           <div class="size-14 text-gray columns m5t" ng-if="btx.message || btx.addressTo">
             <div ng-show="btx.message">{{btx.message}}</div>
             <div ng-show="!btx.message">
-              {{index.addressbook[btx.addressTo] || btx.addressTo}}
+              <span translate>To</span>: {{index.addressbook[btx.addressTo] || btx.addressTo}}
             </div>
           </div>
         </div>
