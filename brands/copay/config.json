@@ -38,10 +38,10 @@
     "theme": {
       "name": "Copay",
       "themeDiscovery": {
-        "enabled": true
+        "enabled": false
       },
       "skinDiscovery": {
-        "enabled": true
+        "enabled": false
       }
     }
   }
