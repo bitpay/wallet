@@ -367,6 +367,21 @@ ul.tx-copayers {
   margin: 0 auto;
 }
 
+.receive .circle-icon {
+  padding: 0.2rem;
+  margin-bottom: 1rem;
+}
+
+.backup .circle-icon {
+  background: #fff;
+  padding: 0.2rem;
+  margin-bottom: 1rem;
+}
+
+.receive h5, .backup h5 {
+  font-weight: 500;
+}
+
 .date-message {
   background-color: #213140;
   border-radius: 3px;
@@ -1005,6 +1020,7 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
   text-transform: lowercase;
   font-size: 0.8rem;
   margin: 5px;
+  padding: 0.5rem;
 }
 
 .backup button[disabled] {
