@@ -75,10 +75,10 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
   };
 
   root._get_local = function(endpoint) {
-    $log.debug('GET ' + encodeURI(themeCatalogService.getApplicationDirectory() + endpoint));
+    $log.debug('GET ' + themeCatalogService.getApplicationDirectory() + endpoint);
     return {
       method: 'GET',
-      url: encodeURI(themeCatalogService.getApplicationDirectory() + endpoint),
+      url: themeCatalogService.getApplicationDirectory() + endpoint,
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json'
@@ -94,7 +94,7 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
   // Return the absolute resource url for the specified theme.
   // This value is always local.
   root._getLocalThemeResourceUrl = function(themeName) {
-    return encodeURI(themeCatalogService.getApplicationDirectory() + root._getThemeResourcePath(themeName));
+    return themeCatalogService.getApplicationDirectory() + encodeURI(root._getThemeResourcePath(themeName));
   };
 
   // Return the relative resource path for the specified theme's skin.
@@ -105,7 +105,7 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
   // Return the absolute resource url for the specified theme's skin.
   // This value is always local.
   root._getLocalSkinResourceUrl = function(themeName, skinName) {
-    return encodeURI(themeCatalogService.getApplicationDirectory() + root._getSkinResourcePath(themeName, skinName));
+    return themeCatalogService.getApplicationDirectory() + encodeURI(root._getSkinResourcePath(themeName, skinName));
   };
 
   // Get the skin index for the specified skinName in the theme.
