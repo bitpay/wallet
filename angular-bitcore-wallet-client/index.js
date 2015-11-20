@@ -40,6 +40,7 @@ bwcModule.provider("bwcService", function() {
     };
 
     service.buildTx = Client.buildTx;
+    service.parseSecret = Client.parseSecret;
 
     service.getUtils = function() {
       return Client.Utils;
