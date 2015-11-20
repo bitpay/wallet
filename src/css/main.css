@@ -988,6 +988,29 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
   padding: 1rem;
 }
 
+.panel.words {
+  background: #E6EAEE;
+  border: 1px dashed #A5B2BF;
+  min-height: 170px;
+}
+
+.backup .panel {
+  padding: 0.5rem;
+}
+
+.backup button.words {
+  background: #FFFFFF;
+  box-shadow: 0px 0px 4px 0px rgba(0,0,0,0.30);
+  color: #4B6178;
+  text-transform: lowercase;
+  font-size: 0.8rem;
+  margin: 5px;
+}
+
+.backup button[disabled] {
+  box-shadow: none;
+}
+
 .panel qrcode {
   background-color: white;
 }
