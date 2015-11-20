@@ -78,8 +78,6 @@ angular.module('copayApp.controllers').controller('backupController',
         self.mnemonicHasPassphrase = fc.mnemonicHasPassphrase();
         self.useIdeograms = words.indexOf("\u3000") >= 0;
       }
-      console.log(self.mnemonicWords);
-      console.log(self.shuffledMnemonicWords);
     };
 
     self.toggle = function() {
