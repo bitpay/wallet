@@ -187,8 +187,6 @@ angular.module('copayApp.controllers').controller('backupController',
         return;
       }
 
-      console.log('OK');
-
       var words = lodash.map(mnemonic.split(' '), function(d) {
         return d;
       });
