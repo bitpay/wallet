@@ -88,7 +88,7 @@
       <div class="columns text-center">
         <button
           ng-disabled="wordsC.credentialsEncrypted"
-          class="black round small expand"
+          class="round expand"
           ng-style="{'background-color':index.backgroundColor}"
           ng-click="wordsC.goToStep2();"
           translate>Continue
@@ -100,10 +100,10 @@
     ## STEP 2
     -->
 
-    <div ng-show="wordsC.step2" class="columns">
+    <div ng-show="wordsC.step2">
       <div class="columns text-center">
         <h5>Confirm your wallet seed</h5>
-        <p class="p20 text-gray m0">
+        <p class="p20v text-gray m0">
           Please tap the words in order to confirm your backup phrase is correctly written.
         </p>
         <div class="panel words text-left" ng-class="{'enable_text_select': index.network == 'testnet'}">
@@ -119,7 +119,7 @@
       <div class="columns text-center">
         <button
           ng-disabled="!wordsC.selectComplete"
-          class="black round small expand"
+          class="round expand"
           ng-style="{'background-color':index.backgroundColor}"
           ng-click="wordsC.goToStep3();"
           translate>Continue
@@ -143,7 +143,7 @@
         <button
           ng-disabled="!passphrase"
           ng-style="{'background-color':index.backgroundColor}"
-          class="button black round expand"
+          class="button round expand"
           ng-click="wordsC.goToStep4();"
           translate>Continue
         </button>
@@ -153,7 +153,7 @@
     <!--
     ## STEP 4
     -->
-    
+
     <div ng-show="wordsC.step4">
       <div class="box-notification" ng-show="wordsC.backupNoOk">
         <span class="text-warning" translate>
@@ -187,7 +187,7 @@
       <div class="columns text-center m20t">
         <button
           ng-style="{'background-color':index.backgroundColor}"
-          class="button black round expand"
+          class="button round expand"
           ng-click="wordsC.confirm();"
           translate>Finish
         </button>
