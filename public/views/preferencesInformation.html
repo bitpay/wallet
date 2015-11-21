@@ -1,7 +1,7 @@
 <div 
   class="topbar-container" 
   ng-include="'views/includes/topbar.html'"
-  ng-init="titleSection='Wallet Information'; goBackToState = 'preferencesAdvanced'">
+  ng-init="titleSection='Wallet Information'; goBackToState = 'preferencesAdvanced'; useTheme = false">
 </div>
 
 <div class="content preferences" ng-controller="preferencesInformation as info" ng-init="info.init()">
@@ -123,7 +123,7 @@
       </button>
       
       <button ng-show="index.isCordova" class="black round small expand" ng-style="{'background':skin.view.buttonBackground, 'color':skin.view.buttonTextColor}"
-        ng-style="{'background-color':index.backgroundColor}" 
+        ng-style="{'background':skin.view.buttonBackground, 'color':skin.view.buttonTextColor}" 
         ng-click="info.sendAddrs()"
         ng-disabled="info.loading">
         <i class="fi-mail"></i>
