@@ -121,7 +121,6 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
         'address': ($scope.newAddress || ''),
         'label': ''
       };
-      $scope.color = fc.backgroundColor;
 
       $scope.beforeQrCodeScann = function() {
         $scope.error = null;

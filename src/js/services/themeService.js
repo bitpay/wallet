@@ -314,15 +314,30 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
     var config = configService.getSync();
     var colorFor = config.colorFor || [];
 
-    for(var walletId in colorFor) {
-      var color = colorFor[walletId];
-      if(typeof skinIdForColor[color] === 'undefined') {
-        skinId = 4;  // Copay's default wallet color
+    if (colorFor != []) {
+      for(var walletId in colorFor) {
+        var color = colorFor[walletId];
+        if(typeof skinIdForColor[color] === 'undefined') {
+          skinId = 4;  // Copay's default wallet color
+        }
+        else {
+          skinId = skinIdForColor[color];
+        }
+        $log.debug('Migrating wallet to skin... [walletId: ' + walletId + ']');
+        root.setSkinForWallet(skinId, walletId);
       }
-      else {
-        skinId = skinIdForColor[color];
-      }
-      root.setSkinForWallet(skinId, walletId);
+
+      var opts = {
+        colorFor: {}
+      };
+
+      configService.set(opts, function(err) {
+        if (err) {
+          $rootScope.$emit('Local/DeviceError', err);
+          return;
+        }
+        $log.debug('Done migrating wallets to skins');
+      });
     }
   };
 

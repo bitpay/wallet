@@ -1,13 +1,13 @@
 <div
   class="topbar-container"
   ng-include="'views/includes/topbar.html'"
-  ng-init="titleSection='Sweep paper wallet'; goBackToState = 'preferencesAdvanced';">
+  ng-init="titleSection='Sweep paper wallet'; goBackToState = 'preferencesAdvanced'; useTheme = false">
 </div>
 
 <div class="content preferences" ng-controller="paperWalletController as paperWallet">
   <h4 ng-show="!paperWallet.error"></h4>
   <div class="onGoingProcess" ng-show="paperWallet.scanning || paperWallet.sending">
-    <div class="onGoingProcess-content" ng-style="{'background-color':index.backgroundColor}">
+    <div class="onGoingProcess-content" ng-style="{'background':skin.view.progressBackground, 'color':skin.view.progressTextColor}">
       <div class="spinner">
         <div class="rect1"></div>
         <div class="rect2"></div>
@@ -43,7 +43,7 @@
           </div>
           <button
             ng-disabled="paperWallet.scanning || !paperWallet.scannedKey"
-            ng-style="{'background-color':index.backgroundColor}" 
+            ng-style="{'background':skin.view.buttonBackground, 'color':skin.view.buttonTextColor}"
             class="button black round expand" 
             ng-click="paperWallet.scanFunds()" 
             translate>Scan Wallet Funds
@@ -63,7 +63,7 @@
 
       <button 
         ng-disabled="paperWallet.sending || paperWallet.balanceSat <= 0"
-        ng-style="{'background-color':index.backgroundColor}" 
+        ng-style="{'background':skin.view.buttonBackground, 'color':skin.view.buttonTextColor}"
         class="button black round expand" 
         ng-click="paperWallet.sweepWallet()" 
         translate>Sweep Wallet
