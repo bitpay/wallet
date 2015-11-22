@@ -52,6 +52,8 @@ angular.module('copayApp.services').factory('themeCatalogService', function(stor
     var catalog = defaultCatalog;
     storageService.getThemeCatalog(function(err, oldCat) {
       if (lodash.isString(oldCat)) {
+        if (oldCat.length == 0)
+          oldCat = '{}';
         oldCat = JSON.parse(oldCat);
       }
       if (lodash.isString(catalog)) {
