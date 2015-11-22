@@ -11,10 +11,16 @@ angular.module('copayApp.services')
     var root = {};
     var _fs;
     var _dir;
+    var initialAlloction = 50*1024*1024; // Initial allocation of 50MB of file storage space.
+    var maxWriteRetries = 1;
+    var writeRetries = maxWriteRetries;
 
     root.init = function(cb) {
       if (_dir) return cb(null, _fs, _dir);
+      root.allocate(initialAlloction, cb);
+    };
 
+    root.allocate = function(requestedBytes, cb) {
       function onFileSystemSuccess(fs) {
         _fs = fs;
         if (isCordova) {
@@ -59,22 +65,17 @@ angular.module('copayApp.services')
 
       if (isCordova) {
         window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, onFileSystemSuccess, fail);
-
       } else {
 
         // requestFileSystem is prefixed in Google Chrome and Opera.
         window.requestFileSystem = window.requestFileSystem || window.webkitRequestFileSystem;
 
-        var requestedBytes = 25*1024*1024;
-        $log.debug('Requesting ' + requestedBytes + ' bytes');
-
+        $log.debug('File storage requesting ' + requestedBytes + ' bytes');
         navigator.webkitPersistentStorage.requestQuota(requestedBytes, function(grantedBytes) {
-          $log.debug('Granted ' + grantedBytes + ' bytes');
+          $log.debug('File storage granted ' + grantedBytes + ' bytes');
           window.webkitRequestFileSystem(PERSISTENT, grantedBytes, onFileSystemSuccess, fail);
         }, fail);
-
       }
-
     };
 
     root.get = function(k, cb) {
@@ -116,14 +117,14 @@ angular.module('copayApp.services')
           fileEntry.createWriter(function(fileWriter) {
 
             fileWriter.onwriteend = function(e) {
-              console.log('Write completed.');
+              $log.debug('Write completed.');
               return cb();
             };
 
             fileWriter.onerror = function(e) {
               var err = e.error ? e.error : JSON.stringify(e);
-              console.log('Write failed: ' + err);
-              return cb('Fail to write:' + err);
+              $log.debug('Write failed: ' + err);
+              return cb('Failed to write:' + err);
             };
 
             if (lodash.isObject(v))
@@ -138,8 +139,31 @@ angular.module('copayApp.services')
             if (isCordova) {
               fileWriter.write(v);
             } else {
+
               var blob = new Blob([v], {type: 'text/plain'});
-              fileWriter.write(blob);
+
+              navigator.webkitPersistentStorage.queryUsageAndQuota (function(usedBytes, grantedBytes) {
+                $log.debug('File storage is using ', usedBytes, ' of ', grantedBytes, 'bytes');
+
+                if (blob.size < (grantedBytes - usedBytes)) {
+                  fileWriter.write(blob);
+                } else if (writeRetries > 0) {
+                  $log.debug('Error: not enough space to write, will attempt to allocate storage and retry...');
+                  // Retry after allocating 110% of the blob size.
+                  root.allocate(Math.round(blob.size * 1.1), function() {
+                    writeRetries--;
+                    root.set(k, v, cb);
+                  });
+                } else {
+                  writeRetries = maxWriteRetries;
+                  $log.debug('Error: file storage permanent failure, not enough space to write file');
+                  fileWriter.onerror('File storage permanent failure, not enough space to write file');
+                }
+
+              }, function(e) {
+                $log.debug('Error', e);
+              });
+
             }
 
           }, cb);
@@ -186,7 +210,7 @@ angular.module('copayApp.services')
         }, function(fileEntry) {
           // Create a FileWriter object for our FileEntry (log.txt).
           fileEntry.remove(function() {
-            console.log('File removed.');
+            $log.debug('File removed.');
             return cb();
           }, cb, cb);
         });
