@@ -278,7 +278,7 @@
 
           <a class="right lh"
             ng-if="index.feeToSendMaxStr && index.availableBalanceSat > 0 && !home.blockUx && !home.lockAmount"
-            ng-click="home.sendAll(index.availableMaxBalance, index.feeToSendMaxStr, index.feeRateToSendMax)"
+            ng-click="home.sendAll(index.availableMaxBalance, index.feeToSendMaxStr, index.feeRateToSendMax, index.currentFeeLevel)"
              translate> Send All
           </a>
 
@@ -383,7 +383,7 @@
               </div>
             </div>
 
-            <div class="m20b" ng-init="home.hideAdvSend=true">
+            <div class="m20b" ng-init="home.hideAdvSend=true" ng-show="!home.disableAdvSend">
               <a class="button outline light-gray expand tiny m0" ng-click="home.hideAdvSend=!home.hideAdvSend">
                 <i class="fi-widget m3r"></i>
                 <span translate ng-hide="!home.hideAdvSend">Show advanced options</span>
