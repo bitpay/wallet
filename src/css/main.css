@@ -369,17 +369,24 @@ ul.tx-copayers {
 
 .receive .circle-icon {
   padding: 0.2rem;
-  margin-bottom: 1rem;
+  margin-bottom: 2rem;
 }
 
 .backup .circle-icon {
   background: #fff;
   padding: 0.2rem;
-  margin-bottom: 1rem;
+  margin-bottom: 2rem;
 }
 
 .receive h5, .backup h5 {
   font-weight: 500;
+  color: #4B6178;
+  margin-bottom: 1rem;
+}
+
+.receive p, .backup p {
+  font-size: 0.9rem;
+  margin-bottom: 2rem;
 }
 
 .date-message {
@@ -1006,7 +1013,7 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
 .panel.words {
   background: #E6EAEE;
   border: 1px dashed #A5B2BF;
-  min-height: 170px;
+  min-height: 147px;
 }
 
 .backup .panel {
