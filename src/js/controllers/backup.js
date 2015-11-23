@@ -7,15 +7,22 @@ angular.module('copayApp.controllers').controller('backupController',
     var fc = profileService.focusedClient;
     var customWords = [];
     var mnemonic = null;
-    self.xPrivKey = null;
-    self.step1 = true;
-    self.step2 = false;
-    self.step3 = false;
-    self.step4 = false;
-    self.deleted = false;
-    self.credentialsEncrypted = false;
-    self.selectComplete = false;
-    self.backupError = false;
+
+    function init() {
+      customWords = [];
+      mnemonic = null;
+      self.xPrivKey = null;
+      self.step1 = true;
+      self.step2 = false;
+      self.step3 = false;
+      self.step4 = false;
+      self.deleted = false;
+      self.credentialsEncrypted = false;
+      self.selectComplete = false;
+      self.backupError = false;
+    }
+
+    init();
 
     if (fc.credentials && !fc.credentials.mnemonicEncrypted && !fc.credentials.mnemonic)
       self.deleted = true;
@@ -31,6 +38,21 @@ angular.module('copayApp.controllers').controller('backupController',
       self.xPrivKey = fc.credentials.xPrivKey;
       profileService.lockFC();
       return mnemonic;
+    }
+
+    self.goToStep = function() {
+      if (self.step2) {
+        self.goToStep1();
+      } else if (self.step3) {
+        self.goToStep2();
+      }
+    }
+
+    self.goToStep1 = function() {
+      init();
+      $timeout(function() {
+        $scope.$apply();
+      }, 1);
     }
 
     self.goToStep2 = function() {

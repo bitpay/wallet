@@ -9,6 +9,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   self.onGoingProcess = {};
   self.historyShowLimit = 10;
   self.updatingTxHistory = {};
+  self.prevState = 'walletHome';
 
   function strip(number) {
     return (parseFloat(number.toPrecision(12)));
@@ -729,7 +730,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
             _creator = '';
 
             if (it.actions && it.actions.length > 1) {
-              for (var i = 0; i < it.actions.length; i++) { 
+              for (var i = 0; i < it.actions.length; i++) {
                 _copayers += it.actions[i].copayerName + ':' + it.actions[i].type + ' - ';
               }
               _creator = (it.creatorName && it.creatorName != 'undefined') ? it.creatorName : '';
@@ -1096,6 +1097,10 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       self.addressbook = ab;
     });
   };
+
+  $rootScope.$on('$stateChangeSuccess', function(ev, to, toParams, from, fromParams) {
+    self.prevState = from.name || 'walletHome';
+  });
 
   $rootScope.$on('Local/ClearHistory', function(event) {
     $log.debug('The wallet transaction history has been deleted');
