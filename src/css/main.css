@@ -389,6 +389,22 @@ ul.tx-copayers {
   margin-bottom: 2rem;
 }
 
+.backup .tab-bar {
+  background: #f1f3f5;
+  border-bottom: none;
+}
+
+.backup .button-box {
+  background: #fff;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 1rem;
+  z-index: 9999;
+  border-top: 1px solid #E0E6EA;
+}
+
 .date-message {
   background-color: #213140;
   border-radius: 3px;
