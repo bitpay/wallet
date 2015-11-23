@@ -15,7 +15,7 @@ angular.module('copayApp.controllers').controller('backupController',
     self.deleted = false;
     self.credentialsEncrypted = false;
     self.selectComplete = false;
-    self.backupNoOk = false;
+    self.backupError = false;
 
     if (fc.credentials && !fc.credentials.mnemonicEncrypted && !fc.credentials.mnemonic)
       self.deleted = true;
@@ -50,10 +50,7 @@ angular.module('copayApp.controllers').controller('backupController',
         self.step3 = true;
         self.step4 = false;
       } else {
-        self.step1 = false;
-        self.step2 = false;
-        self.step3 = false;
-        self.step4 = true;
+        self.goToStep4();
       }
 
       $timeout(function() {
@@ -62,10 +59,13 @@ angular.module('copayApp.controllers').controller('backupController',
     }
 
     self.goToStep4 = function() {
+      self.confirm();
+
       self.step1 = false;
       self.step2 = false;
       self.step3 = false;
       self.step4 = true;
+
       $timeout(function() {
         $scope.$apply();
       }, 1);
@@ -156,7 +156,7 @@ angular.module('copayApp.controllers').controller('backupController',
     }
 
     self.confirm = function() {
-      self.backupNoOk = false;
+      self.backupError = false;
 
       var walletClient = bwcService.getClient();
 
@@ -180,10 +180,12 @@ angular.module('copayApp.controllers').controller('backupController',
 
       } catch (err) {
         $log.debug('Failed to verify backup: ', err);
-        self.backupNoOk = true;
+        self.backupError = true;
+
         $timeout(function() {
           $scope.$apply();
         }, 1);
+
         return;
       }
 
@@ -193,7 +195,6 @@ angular.module('copayApp.controllers').controller('backupController',
 
       if (lodash.isEqual(words, customWords)) {
         $rootScope.$emit('Local/BackupDone');
-        go.walletHome();
       }
     }
   });
