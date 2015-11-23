@@ -1,4 +1,4 @@
-<div class="" ng-controller="backupController as wordsC">
+<div class="backup" ng-controller="backupController as wordsC">
   <nav class="tab-bar">
     <section class="left-small" ng-show="!wordsC.step1 && !wordsC.step4">
       <a ng-click="wordsC.goToStep();">
@@ -16,7 +16,7 @@
     </section>
   </nav>
 
-  <div class="content preferences backup">
+  <div class="content preferences">
     <div class="box-notification" ng-show="wordsC.error">
       <span class="text-warning" translate>
         {{wordsC.error}}
@@ -93,10 +93,10 @@
         </div>
       </div>
 
-      <div class="columns text-center">
+      <div class="button-box">
         <button
           ng-disabled="wordsC.credentialsEncrypted"
-          class="round expand"
+          class="round expand m0"
           ng-style="{'background-color':index.backgroundColor}"
           ng-click="wordsC.goToStep2();"
           translate>Continue
@@ -124,10 +124,10 @@
         </div>
       </div>
 
-      <div class="columns text-center">
+      <div class="button-box">
         <button
           ng-disabled="!wordsC.selectComplete"
-          class="round expand"
+          class="round expand m0"
           ng-style="{'background-color':index.backgroundColor}"
           ng-click="wordsC.goToStep3();"
           translate>Continue
@@ -147,11 +147,11 @@
         </div>
       </div>
 
-      <div class="columns text-center m20t">
+      <div class="button-box">
         <button
           ng-disabled="!passphrase"
           ng-style="{'background-color':index.backgroundColor}"
-          class="button round expand"
+          class="button round expand m0"
           ng-click="wordsC.goToStep4();"
           translate>Continue
         </button>
@@ -194,26 +194,26 @@
         <h5>Backup failed</h5>
         <p class="text-gray columns" translate>
           Failed to verify backup. Please check your information
+        </p>
 
-        <div class="columns text-center m20t">
+        <div class="button-box">
           <button
             ng-style="{'background-color':index.backgroundColor}"
-            class="button round expand"
+            class="button round expand m0"
             ng-click="$root.go(index.prevState);"
             translate>Try again
           </button>
         </div>
       </div>
-    </div>
-
-    <!-- hide this in multisig just to show less text -->
-    <div class="row m20t"  ng-show="index.n==1">
-      <div class="columns size-12 text-gray">
-        <div class="p10t"  style="border-top:1px solid #ccc">
-          <span translate>You can safely install your wallet on another device and use it from multiple devices at the same time.</span>
-          <a href="#" ng-click="$root.openExternalLink('https://github.com/bitpay/copay/blob/master/README.md#copay-backups-and-recovery')" translate>
-            Learn more about Copay backups
-          </a>
+      <!-- hide this in multisig just to show less text -->
+      <div class="row m20t"  ng-show="index.n==1">
+        <div class="columns size-12 text-gray">
+          <div class="p10t"  style="border-top:1px solid #ccc">
+            <span translate>You can safely install your wallet on another device and use it from multiple devices at the same time.</span>
+            <a href="#" ng-click="$root.openExternalLink('https://github.com/bitpay/copay/blob/master/README.md#copay-backups-and-recovery')" translate>
+              Learn more about Copay backups
+            </a>
+          </div>
         </div>
       </div>
     </div>
