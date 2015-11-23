@@ -155,32 +155,28 @@
     -->
 
     <div ng-show="wordsC.step4">
-      <div class="box-notification" ng-show="wordsC.backupNoOk">
+      <!-- <div class="box-notification" ng-show="wordsC.backupError">
         <span class="text-warning" translate>
           Failed to verify backup. Please try again
         </span>
-      </div>
+      </div> -->
 
-      <div class="onGoingProcess" ng-show="wordsC.checking">
-        <div class="onGoingProcess-content" ng-style="{'background-color':index.backgroundColor}">
-          <div class="spinner">
-            <div class="rect1"></div>
-            <div class="rect2"></div>
-            <div class="rect3"></div>
-            <div class="rect4"></div>
-            <div class="rect5"></div>
-          </div>
-          <span translate>Verifying...</span>
-        </div>
-      </div>
-
-      <div class="row m10t m10b text-center">
+      <div class="row m10t m10b text-center" ng-show="!wordsC.backupError">
         <div class="circle-icon">
           <i class="fi-like size-48"></i>
         </div>
         <h5>Congratulation</h5>
         <p class="text-gray p20" translate>
-          You backed up your new wallet. You can now restore this wallet at any time.
+          You backed up your new wallet. You can now restore this wallet at any time
+        </p>
+      </div>
+      <div class="row m10t m10b text-center" ng-show="wordsC.backupError">
+        <div class="circle-icon">
+          <i class="fi-like size-48"></i>
+        </div>
+        <h5>Backup failed</h5>
+        <p class="text-gray p20" translate>
+          Failed to verify backup. Please try again
         </p>
       </div>
 
@@ -188,7 +184,7 @@
         <button
           ng-style="{'background-color':index.backgroundColor}"
           class="button round expand"
-          ng-click="wordsC.confirm();"
+          ng-click="$root.go('walletHome');"
           translate>Finish
         </button>
       </div>
