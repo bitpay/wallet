@@ -263,43 +263,39 @@ angular
           },
         }
       })
-
-    .state('preferencesGlidera', {
-      url: '/preferencesGlidera',
-      walletShouldBeComplete: true,
-      needProfile: true,
-      views: {
-        'main': {
-          templateUrl: 'views/preferencesGlidera.html'
-        },
-      }
-    })
-
-    .state('preferencesAdvanced', {
-      url: '/preferencesAdvanced',
-      templateUrl: 'views/preferencesAdvanced.html',
-      walletShouldBeComplete: true,
-      needProfile: true,
-      views: {
-        'main': {
-          templateUrl: 'views/preferencesAdvanced.html'
-        },
-      }
-    })
-
-    .state('preferencesColor', {
-      url: '/preferencesColor',
-      templateUrl: 'views/preferencesColor.html',
-      walletShouldBeComplete: true,
-      needProfile: true,
-      views: {
-        'main': {
-          templateUrl: 'views/preferencesColor.html'
-        },
-      }
-    })
-
-    .state('preferencesAltCurrency', {
+      .state('preferencesGlidera', {
+        url: '/preferencesGlidera',
+        walletShouldBeComplete: true,
+        needProfile: true,
+        views: {
+          'main': {
+            templateUrl: 'views/preferencesGlidera.html'
+          },
+        }
+      })
+      .state('preferencesAdvanced', {
+        url: '/preferencesAdvanced',
+        templateUrl: 'views/preferencesAdvanced.html',
+        walletShouldBeComplete: true,
+        needProfile: true,
+        views: {
+          'main': {
+            templateUrl: 'views/preferencesAdvanced.html'
+          },
+        }
+      })
+      .state('preferencesColor', {
+        url: '/preferencesColor',
+        templateUrl: 'views/preferencesColor.html',
+        walletShouldBeComplete: true,
+        needProfile: true,
+        views: {
+          'main': {
+            templateUrl: 'views/preferencesColor.html'
+          },
+        }
+      })
+      .state('preferencesAltCurrency', {
         url: '/preferencesAltCurrency',
         templateUrl: 'views/preferencesAltCurrency.html',
         walletShouldBeComplete: true,
@@ -378,8 +374,7 @@ angular
           },
         }
       })
-
-    .state('about', {
+      .state('about', {
         url: '/about',
         templateUrl: 'views/preferencesAbout.html',
         walletShouldBeComplete: true,
@@ -449,8 +444,7 @@ angular
         templateUrl: 'views/warning.html',
         needProfile: false
       })
-
-    .state('add', {
+      .state('add', {
         url: '/add',
         needProfile: true,
         views: {
@@ -516,12 +510,14 @@ angular
 
         // Give us time to open / create the profile
         event.preventDefault();
-
         // Try to open local profile
         profileService.loadAndBindProfile(function(err) {
           if (err) {
             if (err.message && err.message.match('NOPROFILE')) {
               $log.debug('No profile... redirecting');
+              $state.transitionTo('disclaimer');
+            } else if (err.message && err.message.match('NONAGREEDDISCLAIMER')) {
+              $log.debug('Display disclaimer... redirecting');
               $state.transitionTo('disclaimer');
             } else {
               throw new Error(err); // TODO
