@@ -21,8 +21,6 @@ angular.module('copayApp.services')
     };
 
     root._setFocus = function(walletId, cb) {
-      $log.debug('Set focus:', walletId);
-
       // Set local object
       if (walletId)
         root.focusedClient = root.walletClients[walletId];
@@ -124,7 +122,6 @@ angular.module('copayApp.services')
         root.setWalletClients();
         storageService.getFocusedWalletId(function(err, focusedWalletId) {
           if (err) return cb(err);
-          $log.debug('profileService(): focusedWalletId='+focusedWalletId);
           root._setFocus(focusedWalletId, function() {
             $rootScope.$emit('Local/ProfileBound');            
             return cb();
