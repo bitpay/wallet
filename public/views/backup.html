@@ -30,7 +30,7 @@
     <div ng-show="wordsC.step1">
       <div ng-show="wordsC.mnemonicWords || (wordsC.credentialsEncrypted && !wordsC.deleted)">
         <h5 class="text-center">Write your wallet seed</h5>
-        <div class="p20 size-14 text-gray" ng-show="(index.n>1 && index.m != index.n )">
+        <div class="size-14 text-gray" ng-show="(index.n>1 && index.m != index.n )">
           <span translate>
             To restore this {{index.m}}-{{index.n}} <b>shared</b> wallet you will need
           </span>:
@@ -41,7 +41,7 @@
           </ol>
           </span>
         </div>
-        <div class="p20 size-14 text-gray" ng-show="(index.n>1 && index.m == index.n )">
+        <div class="size-14 text-gray" ng-show="(index.n>1 && index.m == index.n )">
           <span translate>
             To restore this {{index.m}}-{{index.n}} <b>shared</b> wallet you will need
           </span>:
@@ -60,12 +60,9 @@
       </div>
 
       <div ng-show="wordsC.mnemonicWords || (wordsC.credentialsEncrypted && !wordsC.deleted)">
-        <p class="p20 text-gray"  ng-show="index.n==1 && wordsC.step1">
+        <p class="text-center columns text-gray"  ng-show="index.n==1 && wordsC.step1">
           <span translate>
-            You need the wallet seed to restore this personal wallet.
-          </span>
-          <span translate class="text-bold">
-            Write it down and keep them somewhere safe.
+            You need the wallet seed to restore this personal wallet. Write it down and keep them somewhere safe.
           </span>
         </p>
         <div class="row" ng-show="wordsC.credentialsEncrypted">
@@ -114,7 +111,7 @@
     <div ng-show="wordsC.step2">
       <div class="columns text-center">
         <h5>Confirm your wallet seed</h5>
-        <p class="p20v text-gray m0">
+        <p class="text-gray m0">
           Please tap the words in order to confirm your backup phrase is correctly written.
         </p>
         <div class="panel words text-left" ng-class="{'enable_text_select': index.network == 'testnet'}">
@@ -177,7 +174,7 @@
           <i class="fi-like size-48"></i>
         </div>
         <h5>Congratulation</h5>
-        <p class="text-gray p20" translate>
+        <p class="text-gray columns" translate>
           You backed up your new wallet. You can now restore this wallet at any time
         </p>
 
@@ -195,9 +192,8 @@
           <i class="fi-dislike size-48"></i>
         </div>
         <h5>Backup failed</h5>
-        <p class="text-gray p20" translate>
+        <p class="text-gray columns" translate>
           Failed to verify backup. Please check your information
-        </p>
 
         <div class="columns text-center m20t">
           <button
