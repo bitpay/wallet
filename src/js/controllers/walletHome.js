@@ -23,6 +23,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   this.isMobile = isMobile.any();
   this.isWindowsPhoneApp = isMobile.Windows() && isCordova;
   this.blockUx = false;
+  this.disableAdvSend = false;
   this.isRateAvailable = false;
   this.showScanner = false;
   this.isMobile = isMobile.any();
@@ -1022,6 +1023,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     this.lockAmount = false;
     this.currentSendFeeLevel = null;
     this.hideAdvSend = true;
+    this.disableAdvSend = false;
     $scope.currentSpendUnconfirmed = configService.getSync().wallet.spendUnconfirmed;
 
     this._amount = this._address = null;
@@ -1285,15 +1287,19 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     this.setForm(null, amount, null, feeRate);
   };
 
-  this.sendAll = function(amount, feeStr, feeRate) {
+  this.sendAll = function(amount, feeStr, feeRate, currentFeeLevel) {
     var self = this;
     var msg = gettextCatalog.getString("{{fee}} will be deducted for bitcoin networking fees", {
       fee: feeStr
     });
 
     confirmDialog.show(msg, function(confirmed) {
-      if (confirmed)
+      if (confirmed) {
         self._doSendAll(amount, feeRate);
+        self.disableAdvSend = true;
+        self.currentSendFeeLevel = currentFeeLevel;
+        $scope.currentSpendUnconfirmed = configService.getSync().wallet.spendUnconfirmed;
+      } 
     });
   };
 
