@@ -33,7 +33,7 @@ angular.module('copayApp.services').factory('configService', function(storageSer
     },
 
     theme: {
-      themeId: {},
+      themeId: null,
       skinFor: {}
     },
 
@@ -102,6 +102,25 @@ angular.module('copayApp.services').factory('configService', function(storageSer
         newOpts = JSON.parse(newOpts);
       }
       lodash.merge(config, oldOpts, newOpts);
+      configCache = config;
+
+      storageService.storeConfig(JSON.stringify(config), cb);
+    });
+  };
+
+  root.replace = function(newOpts, cb) {
+    var config = defaultConfig;
+    storageService.getConfig(function(err, oldOpts) {
+      if (lodash.isString(oldOpts)) {
+        oldOpts = JSON.parse(oldOpts);
+      }
+      if (lodash.isString(config)) {
+        config = JSON.parse(config);
+      }
+      if (lodash.isString(newOpts)) {
+        newOpts = JSON.parse(newOpts);
+      }
+      lodash.assign(config, oldOpts, newOpts);
       configCache = config;
 
       storageService.storeConfig(JSON.stringify(config), cb);

@@ -75,6 +75,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     var fc = profileService.focusedClient;
     if (!fc) return;
 
+    $log.debug('Set focus:', fc.credentials.walletId);
+
     // Clean status
     self.totalBalanceSat = null;
     self.lockedBalanceSat = null;
