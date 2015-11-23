@@ -7,7 +7,7 @@ angular.module('copayApp.services').factory('themeCatalogService', function(stor
   var defaultCatalog = {
 
     service: {
-      url: 'http://localhost:3001/cts/api', // TODO
+      url: 'http://54.175.239.60:3001/cts/api', //'http://localhost:3001/cts/api', // TODO
     },
 
     metadata: {

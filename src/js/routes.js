@@ -568,6 +568,7 @@ angular
         // Style the device status bar.
         window.StatusBar.backgroundColorByHexString($rootScope.theme.view.deviceStatusBarBackgroundColor);
       }
+      $rootScope.$emit('Local/ThemeUpdated', true);
     });
 
     uxLanguage.init();
@@ -590,7 +591,6 @@ angular
       }
       win.menu = nativeMenuBar;
     }
-
 
     $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
 

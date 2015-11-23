@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('sidebarController',
-  function($rootScope, $timeout, $log, lodash, profileService, configService, go, isMobile, isCordova) {
+  function($rootScope, $timeout, $log, lodash, profileService, configService, go, isMobile, isCordova, themeService) {
     var self = this;
     self.isWindowsPhoneApp = isMobile.Windows() && isCordova;
     self.walletSelection = false;
@@ -42,7 +42,7 @@ angular.module('copayApp.controllers').controller('sidebarController',
 
     self.setWallets = function() {
       if (!profileService.profile) return;
-
+      if (!themeService.initialized) return;
       var config = configService.getSync();
       config.aliasFor = config.aliasFor || {};
       config.theme.skinFor = config.theme.skinFor || {};
