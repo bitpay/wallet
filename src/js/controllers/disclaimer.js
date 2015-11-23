@@ -18,7 +18,7 @@ angular.module('copayApp.controllers').controller('disclaimerController',
         if (err) {
 
           if (err == 'EEXISTS') {
-            storageService.getCopayDisclaimerFlag(function(val) {
+            storageService.getCopayDisclaimerFlag(function(err, val) {
               if (val) return go.walletHome();
               $scope.creatingProfile = false;
             });
