@@ -18,7 +18,7 @@
     ng-controller="indexController as index" 
     ng-swipe-disable-mouse 
     ng-swipe-left="index.closeMenu()"
-    ng-swipe-right="index.agreeDisclaimer ? index.openMenu()">
+    ng-swipe-right="index.agreeDisclaimer ? index.openMenu() : null">
 
     <div class="off-canvas-wrap" id="off-canvas-wrap">
       <div class="inner-wrap">
