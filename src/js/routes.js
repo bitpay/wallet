@@ -457,27 +457,33 @@ angular
         url: '/cordova/:status/:isHome',
         views: {
           'main': {
-            controller: function($rootScope, $state, $stateParams, $timeout, go, isCordova, storageService) {
+            controller: function($rootScope, $state, $log, $stateParams, $timeout, go, isCordova, storageService) {
 
-              switch ($stateParams.status) {
-                case 'resume':
-                  $rootScope.$emit('Local/Resume');
-                  break;
-                case 'backbutton':
-                  if (isCordova && $stateParams.isHome == 'true' && !$rootScope.modalOpened) {
-                    navigator.app.exitApp();
-                  } else {
-                    $rootScope.$emit('closeModal');
-                  }
-                  break;
-              };
+              if ($stateParams.status == "pause")
+                return;
+
               storageService.getCopayDisclaimerFlag(function(err, val) {
-                if (!val) navigator.app.exitApp();
 
-                $timeout(function() {
-                  $rootScope.$emit('Local/SetTab', 'walletHome', true);
-                }, 100);
-                go.walletHome();
+                $log.debug('### State: ', $stateParams.status);
+                switch ($stateParams.status) {
+                  case 'resume':
+                    $rootScope.$emit('Local/Resume');
+                    break;
+                  case 'backbutton':
+                    var shouldExit = $stateParams.isHome == 'true' || !val;
+                    if (isCordova && shouldExit && !$rootScope.modalOpened) {
+                      return navigator.app.exitApp();
+                    } else {
+                      $rootScope.$emit('closeModal');
+                    }
+                    break;
+                };
+
+                if (val) {
+                  go.walletHome(true);
+                } else {
+                  $state.transitionTo('disclaimer');
+                }
               });
             }
           }

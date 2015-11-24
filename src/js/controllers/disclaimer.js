@@ -1,10 +1,9 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('disclaimerController',
-  function($scope, $timeout, $log, profileService, isCordova, storageService, gettextCatalog, uxLanguage, go) {
+  function($scope, $timeout, $log, profileService, isCordova, storageService, applicationService, gettextCatalog, uxLanguage, go) {
     self = this;
     $scope.lang = uxLanguage.currentLanguage;
-
     $scope.goHome = function() {
       storageService.setCopayDisclaimerFlag(function(err) {
         go.walletHome();
@@ -16,14 +15,13 @@ angular.module('copayApp.controllers').controller('disclaimerController',
       profileService.create({}, function(err) {
 
         if (err) {
-
+          $log.warn(err);
           if (err == 'EEXISTS') {
             storageService.getCopayDisclaimerFlag(function(err, val) {
               if (val) return go.walletHome();
               $scope.creatingProfile = false;
             });
           } else {
-            $log.warn(err);
             $scope.error = err;
             $scope.$apply();
             $timeout(function() {
@@ -38,6 +36,8 @@ angular.module('copayApp.controllers').controller('disclaimerController',
       });
     };
 
-    create();
-
+    if (!profileService.profile)
+      create();
+    else
+      applicationService.restart();
   });
