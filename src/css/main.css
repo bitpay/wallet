@@ -395,14 +395,12 @@ ul.tx-copayers {
 }
 
 .backup .button-box {
-  background: #fff;
   position: absolute;
   bottom: 0;
   left: 0;
   width: 100%;
-  padding: 1rem;
+  padding: 1.5rem 1rem;
   z-index: 9999;
-  border-top: 1px solid #E0E6EA;
 }
 
 .date-message {
