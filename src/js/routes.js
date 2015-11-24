@@ -457,7 +457,8 @@ angular
         url: '/cordova/:status/:isHome',
         views: {
           'main': {
-            controller: function($rootScope, $state, $stateParams, $timeout, go, isCordova) {
+            controller: function($rootScope, $state, $stateParams, $timeout, go, isCordova, storageService) {
+
               switch ($stateParams.status) {
                 case 'resume':
                   $rootScope.$emit('Local/Resume');
@@ -470,10 +471,14 @@ angular
                   }
                   break;
               };
-              $timeout(function() {
-                $rootScope.$emit('Local/SetTab', 'walletHome', true);
-              }, 100);
-              go.walletHome();
+              storageService.getCopayDisclaimerFlag(function(err, val) {
+                if (!val) navigator.app.exitApp();
+
+                $timeout(function() {
+                  $rootScope.$emit('Local/SetTab', 'walletHome', true);
+                }, 100);
+                go.walletHome();
+              });
             }
           }
         },

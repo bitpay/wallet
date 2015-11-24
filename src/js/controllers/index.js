@@ -135,6 +135,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
           self.openWallet();
         });
       }
+      storageService.getCopayDisclaimerFlag(function(err, val) {
+        self.agreeDisclaimer = val;
+      });
     });
   };
 
