@@ -9,6 +9,7 @@ angular.module('copayApp.controllers').controller('backupController',
     var mnemonic = null;
 
     function init() {
+      $scope.passphrase = '';
       resetAllButtons();
       customWords = [];
       mnemonic = null;
