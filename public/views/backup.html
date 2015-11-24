@@ -84,14 +84,12 @@
         </div>
       </div>
 
-      <div class="row m10t m20b" ng-show="!wordsC.credentialsEncrypted">
-        <div class="columns" ng-show="wordsC.mnemonicHasPassphrase">
-          <span class="size-12">
+      <div class="columns" ng-show="!wordsC.credentialsEncrypted">
+        <div class="line-t p10 size-10 text-gray text-center" ng-show="wordsC.mnemonicHasPassphrase">
             <i class="fi-alert"></i>
             <span translate>
-              WARNING: This seed was created with a passphrase. To recover this wallet both the mnemonic and passphrase are needed.
+              This seed was created with a passphrase. To recover this wallet both the mnemonic and passphrase are needed.
             </span>
-          </span>
         </div>
       </div>
 
@@ -144,7 +142,10 @@
     <div ng-show="wordsC.step3">
       <div class="columns text-center">
         <h5> Enter your passphrase</h5>
-        <div class="panel m20v">
+        <p class="text-gray m0">
+          In order to verify your wallet backup, please type your passphrase:
+        </p>
+        <div class="m20v">
           <input type="text" id="passphrase" ng-model="passphrase" autocapitalize="off" spellcheck="false" autofocus/>
         </div>
       </div>
@@ -190,7 +191,7 @@
           <!-- hide this in multisig just to show less text -->
           <div class="row m20t"  ng-show="index.n==1">
             <div class="columns size-10 text-gray">
-              <div class="p10t"  style="border-top:1px solid #ccc">
+              <div class="p10t line-t">
                 <span translate>You can safely install your wallet on another device and use it from multiple devices at the same time.</span>
                 <a href="#" ng-click="$root.openExternalLink('https://github.com/bitpay/copay/blob/master/README.md#copay-backups-and-recovery')" translate>
                   Learn more about Copay backups
@@ -219,7 +220,7 @@
           <!-- hide this in multisig just to show less text -->
           <div class="row m20t"  ng-show="index.n==1">
             <div class="columns size-10 text-gray">
-              <div class="p10t"  style="border-top:1px solid #ccc">
+              <div class="p10t line-t">
                 <span translate>You can safely install your wallet on another device and use it from multiple devices at the same time.</span>
                 <a href="#" ng-click="$root.openExternalLink('https://github.com/bitpay/copay/blob/master/README.md#copay-backups-and-recovery')" translate>
                   Learn more about Copay backups
