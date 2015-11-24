@@ -403,6 +403,14 @@ ul.tx-copayers {
   z-index: 9999;
 }
 
+.backup input[type="text"] {
+  border-bottom: 1px solid #CAD4DB;
+}
+
+.backup input[type="text"]:focus {
+  border-bottom: 1px solid #A5B2BF;
+}
+
 .date-message {
   background-color: #213140;
   border-radius: 3px;
