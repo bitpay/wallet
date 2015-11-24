@@ -9,6 +9,7 @@ angular.module('copayApp.controllers').controller('backupController',
     var mnemonic = null;
 
     function init() {
+      resetAllButtons();
       customWords = [];
       mnemonic = null;
       self.xPrivKey = null;
@@ -139,6 +140,14 @@ angular.module('copayApp.controllers').controller('backupController',
           });
         }
       }
+    }
+
+    function resetAllButtons() {
+      var node = document.getElementById('addWord');
+      node.innerHTML = '';
+      lodash.each(self.mnemonicWords, function(d) {
+        document.getElementById(d).disabled = false;
+      });
     }
 
     self.enableButton = function(word) {
