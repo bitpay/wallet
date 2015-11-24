@@ -1100,6 +1100,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
   $rootScope.$on('$stateChangeSuccess', function(ev, to, toParams, from, fromParams) {
     self.prevState = from.name || 'walletHome';
+    self.tab = 'walletHome';
   });
 
   $rootScope.$on('Local/ClearHistory', function(event) {
