@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.services').factory('go', function($window, $rootScope, $location, $state, profileService, nodeWebkit) {
+angular.module('copayApp.services').factory('go', function($window, $rootScope, $location, $state, $timeout, profileService, nodeWebkit) {
   var root = {};
 
   var hideSidebars = function() {
@@ -32,8 +32,7 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
   root.openExternalLink = function(url, target) {
     if (nodeWebkit.isDefined()) {
       nodeWebkit.openExternalLink(url);
-    }
-    else {
+    } else {
       target = target || '_blank';
       var ref = window.open(url, target, 'location=no');
     }
@@ -53,14 +52,22 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
     toggleSidebar(invert);
   };
 
-  root.walletHome = function() {
+  root.walletHome = function(delayed) {
     var fc = profileService.focusedClient;
     if (fc && !fc.isComplete()) {
       root.path('copayers');
     } else {
-      root.path('walletHome', function() {
-        $rootScope.$emit('Local/SetTab', 'walletHome', true);
-      });
+      if (delayed) {
+        $timeout(function() {
+          root.path('walletHome', function() {
+            $rootScope.$emit('Local/SetTab', 'walletHome', true);
+          });
+        }, 100);
+      } else {
+        root.path('walletHome', function() {
+          $rootScope.$emit('Local/SetTab', 'walletHome', true);
+        });
+      }
     }
   };
 
