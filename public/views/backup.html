@@ -95,6 +95,7 @@
 
       <div class="button-box">
         <button
+          ng-show="!wordsC.deleted"
           ng-disabled="wordsC.credentialsEncrypted"
           class="round expand m0"
           ng-style="{'background-color':index.backgroundColor}"
