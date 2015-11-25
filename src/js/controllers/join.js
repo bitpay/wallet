@@ -129,11 +129,6 @@ angular.module('copayApp.controllers').controller('joinController',
             return;
           }
 
-          $timeout(function() {
-            var fc = profileService.focusedClient;
-            if (fc.isComplete() && (opts.mnemonic || opts.externalSource || opts.extendedPrivateKey))
-              $rootScope.$emit('Local/WalletImported', fc.credentials.walletId);
-          }, 2000);
         });
       }, 100);
     };
