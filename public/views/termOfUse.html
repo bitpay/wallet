@@ -1,0 +1,13 @@
+<div 
+  class="topbar-container" 
+  ng-include="'views/includes/topbar.html'"
+  ng-init="titleSection='Terms of use'; goBackToState = 'about'; noColor = true">
+</div>
+
+<div ng-include="'views/includes/terms.html'"></div>
+<div class="row">
+  <p ng-show="lang != 'en'">
+    <a class="center" ng-click="$root.openExternalLink('https://copay.io/disclaimer')" translate>Official English Disclaimer</a>
+  </p>
+</div>
+<div class="extra-margin-bottom"></div>

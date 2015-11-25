@@ -438,6 +438,15 @@ angular
           },
         }
       })
+      .state('termOfUse', {
+        url: '/termOfUse',
+        needProfile: true,
+        views: {
+          'main': {
+            templateUrl: 'views/termOfUse.html',
+          },
+        }
+      })
       .state('warning', {
         url: '/warning',
         controller: 'warningController',
