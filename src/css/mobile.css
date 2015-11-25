@@ -113,7 +113,7 @@ _:-ms-fullscreen, :root .main {
 }
 
 .right-small {
-  width: 4.7rem;
+  width: 50%;
   text-align: right;
   line-height: 2.7rem;
   border-left: none;
@@ -813,6 +813,92 @@ textarea:focus
 .tab-container.selected a {
   color: #2C3E50;
   font-weight: 600;
+}
+
+.gallery-grid-text {
+  line-height: 1.2;
+  position: absolute;
+  bottom: 15px;
+  text-align: center;
+  width: 100%;
+  padding: 0 10px 0 10px;
+  font-size: 21px;
+  font-weight: 200;
+}
+
+.gallery-grid-detail-button {
+  padding: 5px 30px 30px 10px;
+  position: absolute;
+  top: 0;
+  float: left !important;
+  font-size: 21px;
+}
+
+.gallery-grid-item-selected {
+  padding-top: 5px;
+  position: absolute;
+  top: 0;
+  right: 10px;  
+  float: right !important;
+  font-size: 21px;
+}
+
+.list-style-none {
+  list-style-type: none;
+}
+
+.gallery-list-image {
+  float: left !important;
+  margin: 10px 15px 10px 0;
+  width:50px;
+  height:50px;
+}
+
+.gallery-list-container {
+  line-height: 70px;
+}
+
+.gallery-list-accessory-container {
+  padding: 0 10px 0 0;
+  line-height: 65px;
+  color: #8597A7;
+  float: right !important;
+}
+
+.gallery-listd-container {
+  height: 120px;
+}
+
+.gallery-listd-accessory-container {
+  margin: 0 0 0 10px;
+  padding: 0 10px 0 10px;
+  height: 120px;
+  line-height: 120px;
+  color: #8597A7;
+  float: right !important;
+}
+
+.gallery-listd-image {
+  float: left !important;
+  margin: 10px 15px 10px 0;
+  width:100px;
+  height:100px;
+}
+
+.gallery-listd-text-lg {
+  padding-top: 10px;
+  font-weight: 700px;
+}
+
+.gallery-listd-text-sm {
+  padding-top: 5px;
+  line-height: 1.25;
+  font-size: 10px;
+  overflow: hidden; 
+  text-overflow: ellipsis; 
+  display: -webkit-box;
+  -webkit-line-clamp: 6;
+  -webkit-box-orient: vertical;
 }
 
 /* removes 300ms in IE */

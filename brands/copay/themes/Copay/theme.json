@@ -9,6 +9,7 @@
     "galleryImage": "<resource-0>",
     "previewImage": "<resource-1>",
     "defaultSkinName": "Havelock Blue",
+    "skinGalleryLayout": "list",
     "product": {
       "id": "0",
       "price": "$0.00"
@@ -50,7 +51,9 @@
     "buttonTextColor": "#FFFFFF",
     "progressBackground": "#2C3E50",
     "progressTextColor": "#FFFFFF",
-    "iconBackground": "#2C3E50"
+    "iconBackground": "#2C3E50",
+    "textColor": "#2C3E50",
+    "galleryOverlayColor": "#FFFFFF"
   },
   "skins": []
 }

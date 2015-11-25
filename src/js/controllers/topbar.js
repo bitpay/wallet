@@ -14,4 +14,8 @@ angular.module('copayApp.controllers').controller('topbarController', function($
     go.walletHome();
   };
 
+  this.changeLayout = function() {
+    $rootScope.$emit('changeLayout');
+  };
+
 });
