@@ -126,7 +126,7 @@ if [ ! -d $PROJECT ]; then
   cordova plugin add hu.dpal.phonegap.plugins.uniquedeviceid
   checkOK
 
-  cordova plugin add cordova-plugin-file
+  cordova plugin add cordova-plugin-file@3.0.0
   checkOK
 
   cordova plugin add cordova-plugin-touch-id && cordova prepare
