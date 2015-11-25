@@ -71,7 +71,7 @@ Then visit `localhost:3000` in your browser.
 
 ###### ATS support 
 
-Before start Copay from Xcode, add these lines to "Custom iOS Target Properties":
+Before starting Copay from Xcode, add these lines to "Custom iOS Target Properties":
 
 ```
 <key>NSAppTransportSecurity</key>
@@ -90,7 +90,7 @@ App Transport Security (ATS) enforces best practices in the secure connections b
 
 `iPad Multitasking support requires launch story board in bundle`
 
-To fix this problem, add the follow:
+To fix this problem, add the following:
 
 ```
 <key>UIRequiresFullScreen</key>
@@ -113,7 +113,7 @@ Add this line to your Build Settings -> Header Search Paths -> Release
 
 Copay uses NW.js (also know as node-webkit) for its desktop version. NW.js an app runtime based on `Chromium` and `node.js`.
 
-- Install NW.js in your system from [nwjs.io](http://nwjs.io/)
+- Install NW.js on your system from [nwjs.io](http://nwjs.io/)
 - Run `grunt desktop`
 
 ### Google Chrome App
@@ -132,7 +132,7 @@ The Copay Firefox Extension has been deprecated and is no longer supported.
 
 Copay implements a multisig wallet using [p2sh](https://en.bitcoin.it/wiki/Pay_to_script_hash) addresses.  It supports multiple wallets, each with its own configuration, such as 3-of-5 (3 required signatures from 5 participant peers) or 2-of-3.  To create a multisig wallet shared between multiple participants, Copay requires the extended public keys of all the wallet participants.  Those public keys are then incorporated into the wallet configuration and combined to generate a payment address where funds can be sent into the wallet.  Conversely, each participant manages their own private key and that private key is never transmitted anywhere.
 
-To unlock a payment and spend the wallet's funds, a quorum of participant signatures must be collected and assembled in the transaction.  The funds cannot be spent without at least the minimum number of signatures required by the wallet configuration (2-of-3, 3-of-5, 6-of-6, etc).  Once a transaction proposal is created, the proposal is distributed among the wallet participants for each to sign the transaction locally.  Finally, when the transaction is signed, the last signing participant will broadcast the transaction to the Bitcoin network.
+To unlock a payment and spend the wallet's funds, a quorum of participant signatures must be collected and assembled in the transaction.  The funds cannot be spent without at least the minimum number of signatures required by the wallet configuration (2-of-3, 3-of-5, 6-of-6, etc.).  Once a transaction proposal is created, the proposal is distributed among the wallet participants for each to sign the transaction locally.  Finally, when the transaction is signed, the last signing participant will broadcast the transaction to the Bitcoin network.
 
 Copay also implements [BIP32](https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki) to generate new addresses for peers.  The public key that each participant contributes to the wallet is a BIP32 extended public key.  As additional public keys are needed for wallet operations (to produce new addresses to receive payments into the wallet, for example) new public keys can be derived from the participants' original extended public keys.  Once again, it's important to stress that each participant keeps their own private keys locally - private keys are not shared - and are used to sign transaction proposals to make payments from the shared wallet.
 
@@ -140,13 +140,13 @@ For more information regarding how addresses are generated using this procedure,
 
 ## Copay Backups and Recovery
 
-Since v1.2 Copay uses BIP39 mnemonics for backing up wallets.  The standard BIP44 is used for wallet address derivation. Multisig wallets use P2SH addresses, while non-multisig wallets use P2PKH. 
+Since v1.2 Copay uses BIP39 mnemonics for backing up wallets.  The BIP44 standard is used for wallet address derivation. Multisig wallets use P2SH addresses, while non-multisig wallets use P2PKH. 
 
-Information about backup and recovery procedures is available at https://github.com/bitpay/copay/blob/master/backupRecovery.md
+Information about backup and recovery procedures is available at: https://github.com/bitpay/copay/blob/master/backupRecovery.md
 
-Previous versions of Copay use files as backups. See the following section.
+Previous versions of Copay used files as backups. See the following section.
 
-It is possible to recover funds from a Copay Wallet without using Copay or the Wallet Service, check the [Copay Recovery Tool](https://github.com/bitpay/copay-recovery)
+It is possible to recover funds from a Copay Wallet without using Copay or the Wallet Service, check the [Copay Recovery Tool](https://github.com/bitpay/copay-recovery).
 
 
 ## Wallet Export format
@@ -164,11 +164,11 @@ Depending on the key `derivationStrategy`, addresses are derived using
 | >=1.2  | Multisig  |  BIP44 |  P2SH   |
 | >=1.5  | Multisig Hardware wallets  |  BIP44 (root m/48') |  P2SH   |
 
-Using a tool like [Bitcore PlayGround](http://bitcore.io/playground) all wallet addresses can be generated. (TIP: Use the `Address` section for P2PKH address type wallet and `Multisig Address` for P2SH address type wallets). For multisig addresses, the required number of signatures (key `m` on the export) is also needed to recreate the addresses.
+Using a tool like [Bitcore PlayGround](http://bitcore.io/playground) all wallet addresses can be generated. (TIP: Use the `Address` section for P2PKH address type wallets and `Multisig Address` for P2SH address type wallets). For multisig addresses, the required number of signatures (key `m` on the export) is also needed to recreate the addresses.
 
 BIP45 note: All addresses generated at BWS with BIP45 use the 'shared cosigner index' (2147483647) so Copay address indexes look like: `m/45'/2147483647/0/x` for main addresses and `m/45'/2147483647/1/y` for change addresses.
 
-Since version 1.5, Copay uses the root `m/48'` for hardware multisignature wallets. This was coordinated with Ledger and Trezor teams. While the derivation path format is still similar to BIP44, the root was in order to indicate that these wallets are not discoverable by scanning addresses for funds. Address generation for multisignature wallets needs the other's copayers extended public keys.
+Since version 1.5, Copay uses the root `m/48'` for hardware multisignature wallets. This was coordinated with Ledger and Trezor teams. While the derivation path format is still similar to BIP44, the root was in order to indicate that these wallets are not discoverable by scanning addresses for funds. Address generation for multisignature wallets requires the other copayers extended public keys.
 
 
 ## Bitcore Wallet Service
@@ -177,7 +177,7 @@ Copay depends on [Bitcore Wallet Service](https://github.com/bitpay/bitcore-wall
 
 ## Hardware Wallet Support
 
-Copay supports Ledger and Trezor hardware wallets. The support is only available only on Chrome App. Ledger support is only available on multisig wallets.
+Copay supports Ledger and Trezor hardware wallets. Hardware wallet support is only available through the Chrome App. Ledger support is only available on multisig wallets.
 
 To use Ledger, you need to have the Ledger Chrome App installed, available at:
 https://chrome.google.com/webstore/detail/ledger-wallet/kkdpmhnladdopljabkgpacgpliggeeaf
@@ -189,18 +189,18 @@ To create or join a wallet using Ledger or Trezor go to:
 
   Add Wallet -> Create or Join -> Advanced options -> Wallet Seed -> select Trezor or Ledger
   
-Both devices support multiple accounts, so you can use then for multiple wallets. Select the account and the click on create or join.
+Both devices support multiple accounts, so you can use them for multiple wallets. Select the account and then click on create or join.
 
-It is also possible to import an wallet from a device using:
+It is also possible to import a wallet from a device using:
   Add Wallet -> Import -> Hardware wallet
  
 Here it is also necesary to select the account number.
 
-When creating or joining a wallet, Copay will ask for two public keys for the device. One public keys is used for the wallet itself and the other is used as entropy source to create a private / public key pair for signing request to the Wallet Service.
+When creating or joining a wallet, Copay will ask for two public keys for the device. One public keys is used for the wallet itself and the other is used as an entropy source to create a private / public key pair for signing requests to the Wallet Service.
 
-Everytime you need to sign a transaction, the device will be needed to performe the signature. Follow the screen instructions after clicking the `send` or `accept` buttons.
+Every time you need to sign a transaction, the device will be needed to perform the signature. Follow the on screen instructions after clicking the `send` or `accept` buttons.
 
-Finally, in case you loose the device and you have the 24 words seed for the device, you can recover access to your funds using Copay, see: https://github.com/bitpay/copay/blob/master/backupRecovery.md#hardware-wallets
+Finally, in case you lose the device and you have the 24 word seed for the device, you can recover access to your funds using Copay, see: https://github.com/bitpay/copay/blob/master/backupRecovery.md#hardware-wallets
 
  
 ## Translations
@@ -248,7 +248,7 @@ $ gpg --verify \
  $FILENAME.sig \
  $FILENAME
 
-# If should say:
+# It should say:
  "Good signature from "Copay (visit copay.io) <copay@bitpay.com>"
 ``` 
 
