@@ -21,6 +21,8 @@ webkitbuilds/*
 !webkitbuilds/build-osx.sh
 !webkitbuilds/Background.png
 
+
+
 # chrome extensions
 browser-extensions/chrome/copay-chrome-extension
 browser-extensions/chrome/copay-chrome-extension.zip
@@ -51,6 +53,7 @@ build/Release
 # https://www.npmjs.org/doc/misc/npm-faq.html#should-i-check-my-node_modules-folder-into-git-
 node_modules
 bower_components
+angular-bitcore-wallet-client/angular-bitcore-wallet-client.js
 
 # Users Environment Variables
 .lock-wscript
