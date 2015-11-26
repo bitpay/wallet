@@ -286,29 +286,30 @@ angular
         },
       }
     })
-      .state('preferencesColor', {
-        url: '/preferencesColor',
-        templateUrl: 'views/preferencesColor.html',
-        walletShouldBeComplete: true,
-        needProfile: true,
-        views: {
-          'main': {
-            templateUrl: 'views/preferencesColor.html'
-          },
-        }
-      })
 
-    .state('preferencesAltCurrency', {
-      url: '/preferencesAltCurrency',
-      templateUrl: 'views/preferencesAltCurrency.html',
+    .state('preferencesColor', {
+      url: '/preferencesColor',
+      templateUrl: 'views/preferencesColor.html',
       walletShouldBeComplete: true,
       needProfile: true,
       views: {
         'main': {
-          templateUrl: 'views/preferencesAltCurrency.html'
+          templateUrl: 'views/preferencesColor.html'
         },
       }
     })
+
+    .state('preferencesAltCurrency', {
+        url: '/preferencesAltCurrency',
+        templateUrl: 'views/preferencesAltCurrency.html',
+        walletShouldBeComplete: true,
+        needProfile: true,
+        views: {
+          'main': {
+            templateUrl: 'views/preferencesAltCurrency.html'
+          },
+        }
+      })
       .state('preferencesAlias', {
         url: '/preferencesAlias',
         templateUrl: 'views/preferencesAlias.html',
@@ -345,6 +346,17 @@ angular
 
         }
       })
+      .state('deleteWords', {
+        url: '/deleteWords',
+        templateUrl: 'views/preferencesDeleteWords.html',
+        walletShouldBeComplete: true,
+        needProfile: true,
+        views: {
+          'main': {
+            templateUrl: 'views/preferencesDeleteWords.html'
+          },
+        }
+      })
       .state('delete', {
         url: '/delete',
         templateUrl: 'views/preferencesDeleteWallet.html',
@@ -368,16 +380,16 @@ angular
       })
 
     .state('about', {
-      url: '/about',
-      templateUrl: 'views/preferencesAbout.html',
-      walletShouldBeComplete: true,
-      needProfile: true,
-      views: {
-        'main': {
-          templateUrl: 'views/preferencesAbout.html'
-        },
-      }
-    })
+        url: '/about',
+        templateUrl: 'views/preferencesAbout.html',
+        walletShouldBeComplete: true,
+        needProfile: true,
+        views: {
+          'main': {
+            templateUrl: 'views/preferencesAbout.html'
+          },
+        }
+      })
       .state('logs', {
         url: '/logs',
         templateUrl: 'views/preferencesLogs.html',
@@ -439,14 +451,14 @@ angular
       })
 
     .state('add', {
-      url: '/add',
-      needProfile: true,
-      views: {
-        'main': {
-          templateUrl: 'views/add.html'
-        },
-      }
-    })
+        url: '/add',
+        needProfile: true,
+        views: {
+          'main': {
+            templateUrl: 'views/add.html'
+          },
+        }
+      })
       .state('cordova', {
         url: '/cordova/:status/:isHome',
         views: {
@@ -525,7 +537,7 @@ angular
 
         $state.transitionTo('copayers');
         event.preventDefault();
-      } 
+      }
 
       if (!animationService.transitionAnimated(fromState, toState)) {
         event.preventDefault();
