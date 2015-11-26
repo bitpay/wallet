@@ -111,7 +111,7 @@ Add this line to your Build Settings -> Header Search Paths -> Release
 
 ### Desktop versions (Windows, OS X, Linux)
 
-Copay uses NW.js (also know as node-webkit) for its desktop version. NW.js an app runtime based on `Chromium` and `node.js`.
+Copay uses NW.js (also know as node-webkit) for its desktop version. NW.js is an app runtime based on `Chromium` and `node.js`.
 
 - Install NW.js on your system from [nwjs.io](http://nwjs.io/)
 - Run `grunt desktop`
