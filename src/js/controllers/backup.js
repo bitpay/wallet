@@ -98,7 +98,7 @@ angular.module('copayApp.controllers').controller('backupController',
     function setWords(words) {
       if (words) {
         self.mnemonicWords = words.split(/[\u3000\s]+/);
-        self.shuffledMnemonicWords = lodash.shuffle(self.mnemonicWords);
+        self.shuffledMnemonicWords = lodash.sortBy(self.mnemonicWords);
         self.mnemonicHasPassphrase = fc.mnemonicHasPassphrase();
         self.useIdeograms = words.indexOf("\u3000") >= 0;
       }
