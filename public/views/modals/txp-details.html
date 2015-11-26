@@ -11,7 +11,10 @@
     </h1>
   </section>
 </nav>
-<div class="modal-content fix-modals-touch" ng-init="updateCopayerList()">
+<div class="modal-content fix-modals-touch" 
+     ng-swipe-disable-mouse
+     ng-swipe-right="cancel()"
+     ng-init="updateCopayerList()">
   <h4 class="title m0" translate>Details</h4>
   <ul class="no-bullet size-14 m0">
     <li ng-if="!tx.hasMultiplesOutputs"
