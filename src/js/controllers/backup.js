@@ -14,10 +14,7 @@ angular.module('copayApp.controllers').controller('backupController',
       customWords = [];
       mnemonic = null;
       self.xPrivKey = null;
-      self.step1 = true;
-      self.step2 = false;
-      self.step3 = false;
-      self.step4 = false;
+      self.step = 1;
       self.deleted = false;
       self.credentialsEncrypted = false;
       self.selectComplete = false;
@@ -42,57 +39,15 @@ angular.module('copayApp.controllers').controller('backupController',
       return mnemonic;
     }
 
-    self.goToStep = function() {
-      if (self.step2) {
-        self.goToStep1();
-      } else if (self.step3) {
-        self.goToStep2();
+    self.goToStep = function(n) {
+      self.step = n;
+      if (self.step == 1)
+        init();
+      if (self.step == 3 && !self.mnemonicHasPassphrase)
+        self.step++;
+      if (self.step == 4) {
+        confirm();
       }
-    }
-
-    self.goToStep1 = function() {
-      init();
-      $timeout(function() {
-        $scope.$apply();
-      }, 1);
-    }
-
-    self.goToStep2 = function() {
-      self.step1 = false;
-      self.step2 = true;
-      self.step3 = false;
-      self.step4 = false;
-      $timeout(function() {
-        $scope.$apply();
-      }, 1);
-    }
-
-    self.goToStep3 = function() {
-      if (self.mnemonicHasPassphrase) {
-        self.step1 = false;
-        self.step2 = false;
-        self.step3 = true;
-        self.step4 = false;
-      } else {
-        self.goToStep4();
-      }
-
-      $timeout(function() {
-        $scope.$apply();
-      }, 1);
-    }
-
-    self.goToStep4 = function() {
-      self.confirm();
-
-      self.step1 = false;
-      self.step2 = false;
-      self.step3 = false;
-      self.step4 = true;
-
-      $timeout(function() {
-        $scope.$apply();
-      }, 1);
     }
 
     function setWords(words) {
@@ -187,7 +142,7 @@ angular.module('copayApp.controllers').controller('backupController',
         self.selectComplete = false;
     }
 
-    self.confirm = function() {
+    function confirm() {
       self.backupError = false;
 
       var walletClient = bwcService.getClient();
