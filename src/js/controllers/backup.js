@@ -31,13 +31,6 @@ angular.module('copayApp.controllers').controller('backupController',
         initWords();
     }
 
-    function getMnemonic() {
-      mnemonic = fc.getMnemonic();
-      self.xPrivKey = fc.credentials.xPrivKey;
-      profileService.lockFC();
-      return mnemonic;
-    }
-
     self.goToStep = function(n) {
       self.step = n;
       if (self.step == 1)
@@ -51,19 +44,12 @@ angular.module('copayApp.controllers').controller('backupController',
 
     function initWords() {
       var words = fc.getMnemonic();
-      console.log('words: ', fc.getMnemonic());
-      console.log('credentials: ', fc.credentials);
       self.xPrivKey = fc.credentials.xPrivKey;
       profileService.lockFC();
-
       self.mnemonicWords = words.split(/[\u3000\s]+/);
       self.shuffledMnemonicWords = lodash.sortBy(self.mnemonicWords);;
       self.mnemonicHasPassphrase = fc.mnemonicHasPassphrase();
       self.useIdeograms = words.indexOf("\u3000") >= 0;
-
-      console.log('self.mnemonicWords: ', self.mnemonicWords);
-      console.log('self.shuffledMnemonicWords: ', self.shuffledMnemonicWords);
-      console.log('self.mnemonicHasPassphrase: ', self.mnemonicHasPassphrase);
     };
 
     self.toggle = function() {
@@ -158,14 +144,10 @@ angular.module('copayApp.controllers').controller('backupController',
     function confirm() {
       self.backupError = false;
 
-      console.log('Original words: ', self.mnemonicWords);
-
       var walletClient = bwcService.getClient();
       var separator = self.useIdeograms ? '\u3000' : ' ';
       var customSentence = lodash.pluck(customWords, 'word').join(separator);
-
       var passphrase = $scope.passphrase || '';
-      console.log('Custom:         ', customSentence);
 
       try {
         walletClient.seedFromMnemonic(customSentence, {
@@ -178,8 +160,6 @@ angular.module('copayApp.controllers').controller('backupController',
       }
 
       if (walletClient.credentials.xPrivKey != self.xPrivKey) {
-        console.log('wc privKey: ', walletClient.credentials.xPrivKey);
-        console.log('self.xPrivKey: ', self.xPrivKey);
         return backupError('Private key mismatch');
       }
 
