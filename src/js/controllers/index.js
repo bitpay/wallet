@@ -138,6 +138,14 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     });
   };
 
+  self.agreeDisclaimer = function() {
+    storageService.getProfile(function(err, profile) {
+      if (profile && profile.agreeDisclaimer)
+        return profile.agreeDisclaimer;
+      return null;
+    });
+  };
+
   self.setCustomBWSFlag = function() {
     var defaults = configService.getDefaults();
     var config = configService.getSync();
@@ -729,7 +737,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
             _creator = '';
 
             if (it.actions && it.actions.length > 1) {
-              for (var i = 0; i < it.actions.length; i++) { 
+              for (var i = 0; i < it.actions.length; i++) {
                 _copayers += it.actions[i].copayerName + ':' + it.actions[i].type + ' - ';
               }
               _creator = (it.creatorName && it.creatorName != 'undefined') ? it.creatorName : '';
@@ -1325,14 +1333,17 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   $rootScope.$on('Local/NewFocusedWallet', function() {
     self.setFocusedWallet();
     self.updateTxHistory();
-    storageService.getCleanAndScanAddresses(function(err, walletId) {
-      if (walletId && profileService.walletClients[walletId]) {
-        $log.debug('Clear last address cache and Scan ', walletId);
-        addressService.expireAddress(walletId, function(err) {
-          self.startScan(walletId);
-        });
-        storageService.removeCleanAndScanAddresses(function() {});
-      }
+    storageService.getProfile(function(err, profile) {
+      if (profile && profile.agreeDisclaimer) go.walletHome();
+      storageService.getCleanAndScanAddresses(function(err, walletId) {
+        if (walletId && profileService.walletClients[walletId]) {
+          $log.debug('Clear last address cache and Scan ', walletId);
+          addressService.expireAddress(walletId, function(err) {
+            self.startScan(walletId);
+          });
+          storageService.removeCleanAndScanAddresses(function() {});
+        }
+      });
     });
   });
 

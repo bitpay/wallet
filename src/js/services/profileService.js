@@ -140,7 +140,7 @@ angular.module('copayApp.services')
           return cb(err);
         }
         if (!profile) {
-          // Migration?? 
+          // Migration??
           storageService.tryToMigrate(function(err, migratedProfile) {
             if (err) return cb(err);
             if (!migratedProfile)
@@ -150,10 +150,14 @@ angular.module('copayApp.services')
             return root.bindProfile(profile, cb);
           })
         } else {
-          $log.debug('Profile read');
-          return root.bindProfile(profile, cb);
+          storageService.getCopayDisclaimerFlag(function(err, val) {
+            if (!profile.agreeDisclaimer) {
+              if (!val) return cb(new Error('NONAGREEDDISCLAIMER: Non agreed disclaimer'));
+            }
+            $log.debug('Profile read');
+            return root.bindProfile(profile, cb);
+          });
         }
-
       });
     };
 
@@ -270,8 +274,8 @@ angular.module('copayApp.services')
 
         // check if exist
         if (lodash.find(root.profile.credentials, {
-          'walletId': walletData.walletId
-        })) {
+            'walletId': walletData.walletId
+          })) {
           return cb(gettext('Cannot join the same wallet more that once'));
         }
       } catch (ex) {
@@ -375,14 +379,14 @@ angular.module('copayApp.services')
 
 
         var handleImport = function(cb) {
-          var isImport =  opts.mnemonic || opts.externalSource || opts.extendedPrivateKey;
+          var isImport = opts.mnemonic || opts.externalSource || opts.extendedPrivateKey;
 
-          if (!isImport) 
+          if (!isImport)
             return cb();
 
           $rootScope.$emit('Local/BackupDone', walletId);
 
-          if (!walletClient.isComplete()) 
+          if (!walletClient.isComplete())
             return cb();
 
           storageService.setCleanAndScanAddresses(walletId, cb);
@@ -513,6 +517,15 @@ angular.module('copayApp.services')
         });
       });
     };
+
+    root.storeDisclaimer = function(cb) {
+      storageService.getProfile(function(err, profile) {
+        profile.agreeDisclaimer = true;
+        storageService.storeProfile(profile, function() {
+          return cb(err);
+        });
+      });
+    }
 
     root.importLegacyWallet = function(username, password, blob, cb) {
       var walletClient = bwcService.getClient();
