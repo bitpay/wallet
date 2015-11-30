@@ -395,11 +395,12 @@ ul.tx-copayers {
 }
 
 .backup .button-box {
-  position: absolute;
+  background: #F1F3F5;
+  position: fixed;
   bottom: 0;
   left: 0;
   width: 100%;
-  padding: 1.5rem 1rem;
+  padding: 0.5rem 1rem 1rem;
   z-index: 9999;
 }
 
@@ -409,6 +410,10 @@ ul.tx-copayers {
 
 .backup input[type="text"]:focus {
   border-bottom: 1px solid #A5B2BF;
+}
+
+.extra-padding-bottom {
+  padding-bottom: 78px;
 }
 
 .date-message {
