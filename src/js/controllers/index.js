@@ -135,8 +135,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
           self.openWallet();
         });
       }
-      storageService.getCopayDisclaimerFlag(function(err, val) {
-        self.agreeDisclaimer = val;
+      storageService.getProfile(function(err, profile) {
+        self.agreeDisclaimer = profile.agreeDisclaimer;
       });
     });
   };
@@ -732,7 +732,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
             _creator = '';
 
             if (it.actions && it.actions.length > 1) {
-              for (var i = 0; i < it.actions.length; i++) { 
+              for (var i = 0; i < it.actions.length; i++) {
                 _copayers += it.actions[i].copayerName + ':' + it.actions[i].type + ' - ';
               }
               _creator = (it.creatorName && it.creatorName != 'undefined') ? it.creatorName : '';
@@ -1328,8 +1328,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   $rootScope.$on('Local/NewFocusedWallet', function() {
     self.setFocusedWallet();
     self.updateTxHistory();
-    storageService.getCopayDisclaimerFlag(function(err, val) {
-      if (val) go.walletHome();
+    storageService.getProfile(function(err, val) {
+      if (val.agreeDisclaimer) go.walletHome();
       storageService.getCleanAndScanAddresses(function(err, walletId) {
         if (walletId && profileService.walletClients[walletId]) {
           $log.debug('Clear last address cache and Scan ', walletId);

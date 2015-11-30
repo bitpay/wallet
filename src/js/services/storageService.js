@@ -120,7 +120,6 @@ angular.module('copayApp.services')
 
     root.getProfile = function(cb) {
       storage.get('profile', function(err, str) {
-
         if (err || !str)
           return cb(err);
 
@@ -197,14 +196,6 @@ angular.module('copayApp.services')
 
     root.clearConfig = function(cb) {
       storage.remove('config', cb);
-    };
-
-    root.setCopayDisclaimerFlag = function(cb) {
-      storage.set('agreeDisclaimer', true, cb);
-    };
-
-    root.getCopayDisclaimerFlag = function(cb) {
-      storage.get('agreeDisclaimer', cb);
     };
 
     root.setRemotePrefsStoredFlag = function(cb) {

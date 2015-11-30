@@ -471,7 +471,7 @@ angular
               if ($stateParams.status == "pause")
                 return;
 
-              storageService.getCopayDisclaimerFlag(function(err, val) {
+              storageService.getProfile(function(err, profile) {
 
                 $log.debug('### State: ', $stateParams.status);
                 switch ($stateParams.status) {
@@ -479,7 +479,7 @@ angular
                     $rootScope.$emit('Local/Resume');
                     break;
                   case 'backbutton':
-                    var shouldExit = $stateParams.isHome == 'true' || !val;
+                    var shouldExit = $stateParams.isHome == 'true' || !profile.agreeDisclaimer;
                     if (isCordova && shouldExit && !$rootScope.modalOpened) {
                       return navigator.app.exitApp();
                     } else {
@@ -488,7 +488,7 @@ angular
                     break;
                 };
 
-                if (val) {
+                if (profile.agreeDisclaimer) {
                   go.walletHome(true);
                 } else {
                   $state.transitionTo('disclaimer');
