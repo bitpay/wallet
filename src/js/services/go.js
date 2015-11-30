@@ -57,17 +57,9 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
     if (fc && !fc.isComplete()) {
       root.path('copayers');
     } else {
-      if (delayed) {
-        $timeout(function() {
-          root.path('walletHome', function() {
-            $rootScope.$emit('Local/SetTab', 'walletHome', true);
-          });
-        }, 100);
-      } else {
-        root.path('walletHome', function() {
-          $rootScope.$emit('Local/SetTab', 'walletHome', true);
-        });
-      }
+      root.path('walletHome', function() {
+        $rootScope.$emit('Local/SetTab', 'walletHome', true);
+      });
     }
   };
 

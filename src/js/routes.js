@@ -466,38 +466,23 @@ angular
         url: '/cordova/:status/:isHome',
         views: {
           'main': {
-            controller: function($rootScope, $state, $log, $stateParams, $timeout, go, isCordova, storageService) {
-
-              if ($stateParams.status == "pause")
-                return;
-
-              storageService.getProfile(function(err, profile) {
-
-                //for compatibility
-                storageService.getCopayDisclaimerFlag(function(err, val) {
-
-                  $log.debug('### State: ', $stateParams.status);
-                  switch ($stateParams.status) {
-                    case 'resume':
-                      $rootScope.$emit('Local/Resume');
-                      break;
-                    case 'backbutton':
-                      var shouldExit = $stateParams.isHome == 'true' || !profile.agreeDisclaimer || !val;
-                      if (isCordova && shouldExit && !$rootScope.modalOpened) {
-                        return navigator.app.exitApp();
-                      } else {
-                        $rootScope.$emit('closeModal');
-                      }
-                      break;
-                  };
-
-                  if (profile.agreeDisclaimer || val) {
-                    go.walletHome(true);
+            controller: function($rootScope, $state, $stateParams, $timeout, go, isCordova) {
+              switch ($stateParams.status) {
+                case 'resume':
+                  $rootScope.$emit('Local/Resume');
+                  break;
+                case 'backbutton':
+                  if (isCordova && $stateParams.isHome == 'true' && !$rootScope.modalOpened) {
+                    navigator.app.exitApp();
                   } else {
-                    $state.transitionTo('disclaimer');
+                    $rootScope.$emit('closeModal');
                   }
-                });
-              });
+                  break;
+              };
+              $timeout(function() {
+                $rootScope.$emit('Local/SetTab', 'walletHome', true);
+              }, 100);
+              go.walletHome();
             }
           }
         },
