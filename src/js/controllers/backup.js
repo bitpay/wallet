@@ -6,14 +6,11 @@ angular.module('copayApp.controllers').controller('backupController',
     var self = this;
     var fc = profileService.focusedClient;
     var customWords = [];
-    var mnemonic = null;
 
     function init() {
       $scope.passphrase = '';
       resetAllButtons();
       customWords = [];
-      mnemonic = null;
-      self.xPrivKey = null;
       self.step = 1;
       self.deleted = false;
       self.credentialsEncrypted = false;
@@ -26,11 +23,13 @@ angular.module('copayApp.controllers').controller('backupController',
     if (fc.credentials && !fc.credentials.mnemonicEncrypted && !fc.credentials.mnemonic)
       self.deleted = true;
 
-    if (fc.isPrivKeyEncrypted()) {
+    if (fc.isPrivKeyEncrypted() && !self.deleted) {
       self.credentialsEncrypted = true;
       passwordRequest();
-    } else
-      setWords(getMnemonic());
+    } else {
+      if (!self.deleted)
+        initWords();
+    }
 
     function getMnemonic() {
       mnemonic = fc.getMnemonic();
@@ -50,13 +49,21 @@ angular.module('copayApp.controllers').controller('backupController',
       }
     }
 
-    function setWords(words) {
-      if (words) {
-        self.mnemonicWords = words.split(/[\u3000\s]+/);
-        self.shuffledMnemonicWords = lodash.sortBy(self.mnemonicWords);
-        self.mnemonicHasPassphrase = fc.mnemonicHasPassphrase();
-        self.useIdeograms = words.indexOf("\u3000") >= 0;
-      }
+    function initWords() {
+      var words = fc.getMnemonic();
+      console.log('words: ', fc.getMnemonic());
+      console.log('credentials: ', fc.credentials);
+      self.xPrivKey = fc.credentials.xPrivKey;
+      profileService.lockFC();
+
+      self.mnemonicWords = words.split(/[\u3000\s]+/);
+      self.shuffledMnemonicWords = lodash.sortBy(self.mnemonicWords);;
+      self.mnemonicHasPassphrase = fc.mnemonicHasPassphrase();
+      self.useIdeograms = words.indexOf("\u3000") >= 0;
+
+      console.log('self.mnemonicWords: ', self.mnemonicWords);
+      console.log('self.shuffledMnemonicWords: ', self.shuffledMnemonicWords);
+      console.log('self.mnemonicHasPassphrase: ', self.mnemonicHasPassphrase);
     };
 
     self.toggle = function() {
@@ -72,7 +79,7 @@ angular.module('copayApp.controllers').controller('backupController',
 
     function passwordRequest() {
       try {
-        setWords(getMnemonic());
+        initWords();
       } catch (e) {
         if (e.message && e.message.match(/encrypted/) && fc.isPrivKeyEncrypted()) {
 
@@ -88,7 +95,7 @@ angular.module('copayApp.controllers').controller('backupController',
             }
 
             self.credentialsEncrypted = false;
-            setWords(getMnemonic());
+            initWords();
 
             $timeout(function() {
               $scope.$apply();
@@ -99,10 +106,10 @@ angular.module('copayApp.controllers').controller('backupController',
     }
 
     function resetAllButtons() {
-      var node = document.getElementById('addWord');
-      node.innerHTML = '';
-      lodash.each(self.mnemonicWords, function(d) {
-        document.getElementById(d).disabled = false;
+      document.getElementById('addWord').innerHTML = '';
+      var nodes = document.getElementById("buttons").getElementsByTagName('button');
+      lodash.each(nodes, function(n) {
+        document.getElementById(n.id).disabled = false;
       });
     }
 
@@ -113,15 +120,19 @@ angular.module('copayApp.controllers').controller('backupController',
       });
     }
 
-    self.disableButton = function(word) {
-      document.getElementById(word).disabled = true;
-      customWords.push(word);
-      self.addButton(word);
+    self.disableButton = function(index, word) {
+      var element = {
+        index: index,
+        word: word
+      };
+      document.getElementById(index + word).disabled = true;
+      customWords.push(element);
+      self.addButton(index, word);
     }
 
-    self.addButton = function(word) {
-      var btnhtml = '<button class="button radius tiny words"' +
-        'data-ng-click="wordsC.removeButton($event)" id="_' + word + '" > ' + word + ' </button>';
+    self.addButton = function(index, word) {
+      var btnhtml = '<button class="button radius tiny words" ng-disabled="wordsC.disableButtons"' +
+        'data-ng-click="wordsC.removeButton($event)" id="_' + index + word + '" > ' + word + ' </button>';
       var temp = $compile(btnhtml)($scope);
       angular.element(document.getElementById('addWord')).append(temp);
       self.shouldContinue();
@@ -129,9 +140,11 @@ angular.module('copayApp.controllers').controller('backupController',
 
     self.removeButton = function(event) {
       var id = (event.target.id);
-      var element = document.getElementById(id);
-      element.remove();
+      document.getElementById(id).remove();
       self.enableButton(id.substring(1));
+      lodash.remove(customWords, function(d) {
+        return d.index == id.substring(1, 3);
+      });
       self.shouldContinue();
     }
 
@@ -145,43 +158,40 @@ angular.module('copayApp.controllers').controller('backupController',
     function confirm() {
       self.backupError = false;
 
+      console.log('Original words: ', self.mnemonicWords);
+
       var walletClient = bwcService.getClient();
+      var separator = self.useIdeograms ? '\u3000' : ' ';
+      var customSentence = lodash.pluck(customWords, 'word').join(separator);
+
+      var passphrase = $scope.passphrase || '';
+      console.log('Custom:         ', customSentence);
 
       try {
-        var formatedCustomWords = '';
-
-        lodash.each(customWords, function(d) {
-          return formatedCustomWords += ' ' + d;
-        });
-
-        var passphrase = $scope.passphrase || '';
-
-        walletClient.seedFromMnemonic(formatedCustomWords.trim(), {
+        walletClient.seedFromMnemonic(customSentence, {
           network: fc.credentials.network,
           passphrase: passphrase,
           account: fc.credentials.account
         })
-
-        if (walletClient.credentials.xPrivKey != self.xPrivKey)
-          throw 'Private key mismatch';
-
       } catch (err) {
-        $log.debug('Failed to verify backup: ', err);
-        self.backupError = true;
-
-        $timeout(function() {
-          $scope.$apply();
-        }, 1);
-
-        return;
+        return backupError(err);
       }
 
-      var words = lodash.map(mnemonic.split(' '), function(d) {
-        return d;
-      });
-
-      if (lodash.isEqual(words, customWords)) {
-        $rootScope.$emit('Local/BackupDone');
+      if (walletClient.credentials.xPrivKey != self.xPrivKey) {
+        console.log('wc privKey: ', walletClient.credentials.xPrivKey);
+        console.log('self.xPrivKey: ', self.xPrivKey);
+        return backupError('Private key mismatch');
       }
+
+      $rootScope.$emit('Local/BackupDone');
     }
+
+    function backupError(err) {
+      $log.debug('Failed to verify backup: ', err);
+      self.backupError = true;
+
+      $timeout(function() {
+        $scope.$apply();
+      }, 1);
+    };
   });
