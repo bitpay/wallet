@@ -516,6 +516,15 @@ angular.module('copayApp.services')
       });
     };
 
+    root.storeDisclaimer = function(cb) {
+      storageService.getProfile(function(err, profile) {
+        profile.agreeDisclaimer = true;
+        storageService.storeProfile(profile, function() {
+          return cb(err);
+        });
+      });
+    }
+
     root.importLegacyWallet = function(username, password, blob, cb) {
       var walletClient = bwcService.getClient();
 

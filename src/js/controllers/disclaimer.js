@@ -6,11 +6,13 @@ angular.module('copayApp.controllers').controller('disclaimerController',
     $scope.lang = uxLanguage.currentLanguage;
 
     $scope.goHome = function() {
-      storageService.getProfile(function(err, profile) {
-        profile.agreeDisclaimer = true;
-        storageService.storeProfile(profile, function() {
-          go.walletHome();
-        });
+      $scope.error = "";
+      profileService.storeDisclaimer(function(err) {
+        if (err) {
+          $scope.error = err;
+          $log.warn(err);
+          $scope.$apply();
+        } else go.walletHome();
       });
     };
 
@@ -20,19 +22,12 @@ angular.module('copayApp.controllers').controller('disclaimerController',
 
         if (err) {
           $log.warn(err);
-          if (err == 'EEXISTS') {
-
-            if (profileService.profile.agreeDisclaimer) return go.walletHome();
-            $scope.creatingProfile = false;
-
-          } else {
-            $scope.error = err;
-            $scope.$apply();
-            $timeout(function() {
-              $log.warn('Retrying to create profile......');
-              create();
-            }, 3000);
-          }
+          $scope.error = err;
+          $scope.$apply();
+          $timeout(function() {
+            $log.warn('Retrying to create profile......');
+            create();
+          }, 3000);
         } else {
           $scope.error = "";
           $scope.creatingProfile = false;
