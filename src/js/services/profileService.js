@@ -134,7 +134,6 @@ angular.module('copayApp.services')
     };
 
     root.loadAndBindProfile = function(cb) {
-
       storageService.getProfile(function(err, profile) {
         if (err) {
           $rootScope.$emit('Local/DeviceError', err);
@@ -151,10 +150,13 @@ angular.module('copayApp.services')
             return root.bindProfile(profile, cb);
           })
         } else {
-          if (!profile.agreeDisclaimer)
-            return cb(new Error('NONAGREEDDISCLAIMER: Non agreed disclaimer'));
-          $log.debug('Profile read');
-          return root.bindProfile(profile, cb);
+          storageService.getCopayDisclaimerFlag(function(err, val) {
+            if (!profile.agreeDisclaimer) {
+              if (!val) return cb(new Error('NONAGREEDDISCLAIMER: Non agreed disclaimer'));
+            }
+            $log.debug('Profile read');
+            return root.bindProfile(profile, cb);
+          });
         }
       });
     };

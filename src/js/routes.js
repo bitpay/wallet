@@ -473,26 +473,30 @@ angular
 
               storageService.getProfile(function(err, profile) {
 
-                $log.debug('### State: ', $stateParams.status);
-                switch ($stateParams.status) {
-                  case 'resume':
-                    $rootScope.$emit('Local/Resume');
-                    break;
-                  case 'backbutton':
-                    var shouldExit = $stateParams.isHome == 'true' || !profile.agreeDisclaimer;
-                    if (isCordova && shouldExit && !$rootScope.modalOpened) {
-                      return navigator.app.exitApp();
-                    } else {
-                      $rootScope.$emit('closeModal');
-                    }
-                    break;
-                };
+                //for compatibility
+                storageService.getCopayDisclaimerFlag(function(err, val) {
 
-                if (profile.agreeDisclaimer) {
-                  go.walletHome(true);
-                } else {
-                  $state.transitionTo('disclaimer');
-                }
+                  $log.debug('### State: ', $stateParams.status);
+                  switch ($stateParams.status) {
+                    case 'resume':
+                      $rootScope.$emit('Local/Resume');
+                      break;
+                    case 'backbutton':
+                      var shouldExit = $stateParams.isHome == 'true' || !profile.agreeDisclaimer || !val;
+                      if (isCordova && shouldExit && !$rootScope.modalOpened) {
+                        return navigator.app.exitApp();
+                      } else {
+                        $rootScope.$emit('closeModal');
+                      }
+                      break;
+                  };
+
+                  if (profile.agreeDisclaimer || val) {
+                    go.walletHome(true);
+                  } else {
+                    $state.transitionTo('disclaimer');
+                  }
+                });
               });
             }
           }

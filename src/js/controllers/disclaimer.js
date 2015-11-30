@@ -38,7 +38,10 @@ angular.module('copayApp.controllers').controller('disclaimerController',
     storageService.getProfile(function(err, profile) {
       if (!profile) create();
       else $scope.creatingProfile = false;
+
+      //compatible
+      storageService.getCopayDisclaimerFlag(function(err, val) {
+        if (val) go.walletHome();
+      });
     });
-
-
   });
