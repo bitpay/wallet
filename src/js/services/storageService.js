@@ -65,7 +65,7 @@ angular.module('copayApp.services')
           return storage.set('profile', text, function(err) {
             return cb(err, text);
           });
-        } catch(e) {
+        } catch (e) {
           $log.warn('Decrypt error: ', e);
           return cb('Could not decrypt storage: device ID mismatch');
         };
@@ -120,7 +120,6 @@ angular.module('copayApp.services')
 
     root.getProfile = function(cb) {
       storage.get('profile', function(err, str) {
-
         if (err || !str)
           return cb(err);
 
@@ -197,6 +196,11 @@ angular.module('copayApp.services')
 
     root.clearConfig = function(cb) {
       storage.remove('config', cb);
+    };
+
+    //for compatibility
+    root.getCopayDisclaimerFlag = function(cb) {
+      storage.get('agreeDisclaimer', cb);
     };
 
     root.setRemotePrefsStoredFlag = function(cb) {
