@@ -367,6 +367,55 @@ ul.tx-copayers {
   margin: 0 auto;
 }
 
+.receive .circle-icon {
+  padding: 0.2rem;
+  margin-bottom: 2rem;
+}
+
+.backup .circle-icon {
+  background: #fff;
+  padding: 0.2rem;
+  margin-bottom: 2rem;
+}
+
+.receive h5, .backup h5 {
+  font-weight: 500;
+  color: #4B6178;
+  margin-bottom: 1rem;
+}
+
+.receive p, .backup p {
+  font-size: 0.9rem;
+  margin-bottom: 2rem;
+}
+
+.backup .tab-bar {
+  background: #f1f3f5;
+  border-bottom: none;
+}
+
+.backup .button-box {
+  background: #F1F3F5;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 0.5rem 1rem 1rem;
+  z-index: 9999;
+}
+
+.backup input[type="text"] {
+  border-bottom: 1px solid #CAD4DB;
+}
+
+.backup input[type="text"]:focus {
+  border-bottom: 1px solid #A5B2BF;
+}
+
+.extra-padding-bottom {
+  padding-bottom: 78px;
+}
+
 .date-message {
   background-color: #213140;
   border-radius: 3px;
@@ -986,6 +1035,30 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
   background: #FFFFFF;
   border-radius: 3px;
   padding: 1rem;
+}
+
+.panel.words {
+  background: #E6EAEE;
+  border: 1px dashed #A5B2BF;
+  min-height: 147px;
+}
+
+.backup .panel {
+  padding: 0.5rem;
+}
+
+.backup button.words {
+  background: #FFFFFF;
+  box-shadow: 0px 0px 4px 0px rgba(0,0,0,0.30);
+  color: #4B6178;
+  text-transform: lowercase;
+  font-size: 0.8rem;
+  margin: 5px;
+  padding: 0.5rem;
+}
+
+.backup button[disabled] {
+  box-shadow: none;
 }
 
 .panel qrcode {
