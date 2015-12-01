@@ -425,9 +425,10 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   };
 
   // This handles errors from BWS/index with are nomally
-  // trigger from async events (like updates)
-  self.handleError = function(err) {
-    $log.warn('Client ERROR:', err);
+  // trigger from async events (like updates).
+  // Debounce function avoids multiple popups
+  var _handleError = function(err) {
+    $log.warn('Client ERROR: ', err);
     if (err.code === 'NOT_AUTHORIZED') {
       self.notAuthorized = true;
       go.walletHome();
@@ -440,6 +441,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       self.showErrorPopup(msg);
     }
   };
+
+  self.handleError = lodash.debounce(_handleError, 1000);
+
   self.openWallet = function() {
     var fc = profileService.focusedClient;
     $timeout(function() {
@@ -919,9 +923,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     $log.warn('Showing err popup:' + msg);
     self.showAlert = {
       msg: msg,
-      close: function(err) {
+      close: function() {
         self.showAlert = null;
-        if (cb) return cb(err);
+        if (cb) return cb();
       },
     };
     $timeout(function() {
@@ -1341,10 +1345,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         return cb(gettext('Invalid Touch ID'));
       }
     );
-  });
-
-  $rootScope.$on('Local/ShowAlert', function(event, msg, cb) {
-    self.showErrorPopup(msg, cb);
   });
 
   $rootScope.$on('Local/NeedsPassword', function(event, isSetup, cb) {
