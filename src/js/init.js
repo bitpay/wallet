@@ -32,9 +32,6 @@ angular.element(document).ready(function() {
             window.location = '#/cordova/pause/';
           }, 100);
         }
-        setTimeout(function() {
-          window.ignoreMobilePause = false;
-        }, 100);
       }, false);
 
       document.addEventListener('resume', function() {
