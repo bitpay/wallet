@@ -118,6 +118,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       $scope.addAddressbookEntry = false;
       $scope.selectedAddressbook = {};
       $scope.newAddress = address;
+      $scope.walletName = fc.credentials.walletName;
       $scope.addressbook = {
         'address': ($scope.newAddress || ''),
         'label': ''
