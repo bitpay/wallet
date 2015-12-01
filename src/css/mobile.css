@@ -193,10 +193,6 @@ _:-ms-fullscreen, :root .main {
   height:100%;
 }
 
-.walletHome {
-  background-color: #fff;
-}
-
 .walletHome .avatar-wallet {
   padding: 0.5rem;
   width: 75px;
@@ -600,7 +596,7 @@ to prevent collapsing during animation*/
   top: 45px;
   padding-bottom: 33px;
   -webkit-transform: translate3d(0,0,0);
-  background: #fff;
+  background: #f6f7f9;
 }
 
 body.modal-open {
