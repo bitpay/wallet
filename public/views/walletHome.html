@@ -1,7 +1,7 @@
 
 <div class="topbar-container"
   ng-include="'views/includes/topbar.html'"
-  ng-init="showCamera = true">
+  ng-init="showPreferences = true">
 </div>
 
 <div ng-controller="walletHomeController as home">
@@ -111,11 +111,8 @@
           <div class="avatar-wallet left"
             ng-style="{'background-color':index.backgroundColor}">{{ (index.alias || index.walletName) | limitTo: 1}}
           </div>
-          <div class="right">
-            <a ng-click="$root.go('preferences')" class="button outline round light-gray tiny preferences-icon m0">
-              <i class="fi-widget size-18 vm"></i>
-              <span class="show-for-medium-up" translate>Preferences</span>
-            </a>
+          <div class="camera-icon" ng-show="index.isComplete">
+            <qr-scanner on-scan="home.onQrCodeScanned(data)" before-scan="home.openSendScreen()"></qr-scanner> 
           </div>
           <div class="wallet-info">
             <div ng-show="index.isShared">

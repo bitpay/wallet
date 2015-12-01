@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('walletHomeController', function($scope, $rootScope, $timeout, $filter, $modal, $log, notification, txStatus, isCordova, profileService, lodash, configService, rateService, storageService, bitcore, isChromeApp, gettext, gettextCatalog, nodeWebkit, addressService, ledger, feeService, bwsError, confirmDialog, txFormatService, animationService, addressbookService) {
+angular.module('copayApp.controllers').controller('walletHomeController', function($scope, $rootScope, $timeout, $filter, $modal, $log, notification, txStatus, isCordova, profileService, lodash, configService, rateService, storageService, bitcore, isChromeApp, gettext, gettextCatalog, nodeWebkit, addressService, ledger, feeService, bwsError, confirmDialog, txFormatService, animationService, addressbookService, go) {
 
   var self = this;
   $rootScope.hideMenuBar = false;
@@ -98,6 +98,14 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     }
   };
 
+  this.onQrCodeScanned = function(data) {
+    $rootScope.$emit('dataScanned', data);
+  };
+
+  this.openSendScreen = function() {
+    go.send();
+  };
+
   rateService.whenAvailable(function() {
     self.isRateAvailable = true;
     $rootScope.$digest();
@@ -123,7 +131,6 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
         'address': ($scope.newAddress || ''),
         'label': ''
       };
-      $scope.color = fc.backgroundColor;
 
       $scope.beforeQrCodeScann = function() {
         $scope.error = null;
