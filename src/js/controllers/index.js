@@ -562,6 +562,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.backgroundColor = config.colorFor[self.walletId] || '#4A90E2';
     var fc = profileService.focusedClient;
     fc.backgroundColor = self.backgroundColor;
+    if (isCordova && StatusBar.isVisible) {
+      StatusBar.backgroundColorByHexString(fc.backgroundColor);
+    }
   };
 
   self.setBalance = function(balance) {

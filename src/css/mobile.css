@@ -90,13 +90,11 @@ _:-ms-fullscreen, :root .main {
 }
 
 .tab-bar {
-  background: #FFFFFF;
+  background-color: #4B6178;
   z-index: 5;
-  border-bottom: 1px solid #E9E9EC;
 }
 
 .tab-bar h1 {
-  color: #7A8C9E;
   font-weight: 500;
   font-size: 14px;
 }
@@ -117,6 +115,10 @@ _:-ms-fullscreen, :root .main {
   text-align: right;
   line-height: 2.7rem;
   border-left: none;
+}
+
+.right-small a, .left-small a {
+  color: #FFFFFF;
 }
 
 .tab-bar .icon-back {
@@ -220,6 +222,19 @@ _:-ms-fullscreen, :root .main {
   overflow: hidden;
 }
 
+.camera-icon a {
+  color: #fff;
+  display: block;
+  position: absolute;
+  background: #333;
+  border: 1px solid #666;
+  padding: 15px 17px;
+  border-radius: 100%;
+  top: -43px;
+  right: 15px;
+  opacity: 0.7;
+}
+
 .copayers {
   position: relative;
   padding: 0;
@@ -245,12 +260,6 @@ ul.copayer-list img {
 
 .box-founds {
   background-color: #213140;
-}
-
-
-
-.right-small a, .left-small a {
-  color: #A5B2BF;
 }
 
 a.missing-copayers {
