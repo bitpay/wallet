@@ -48,6 +48,7 @@ angular.module('copayApp.controllers').controller('sellGlideraController',
       var ModalInstanceCtrl = function($scope, $modalInstance) {
         $scope.type = 'SELL';
         $scope.wallets = wallets;
+        $scope.noColor = true;
         $scope.cancel = function() {
           $modalInstance.dismiss('cancel');
         };
