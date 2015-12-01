@@ -637,7 +637,7 @@ angular.module('copayApp.services')
           name: config.aliasFor[c.walletId] || c.walletName,
           id: c.walletId,
           network: c.network,
-          color: config.colorFor[c.walletId] || '#2C3E50'
+          color: config.colorFor[c.walletId] || '#4A90E2'
         };
       });
       ret = lodash.filter(ret, function(w) {

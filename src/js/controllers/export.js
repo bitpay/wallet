@@ -28,6 +28,7 @@ angular.module('copayApp.controllers').controller('exportController',
             return;
           }
 
+          $rootScope.$emit('Local/BackupDone');
           notification.success(gettext('Success'), gettext('Encrypted export file saved'));
           go.walletHome();
         });
@@ -96,6 +97,7 @@ angular.module('copayApp.controllers').controller('exportController',
           self.error = true;
         } else {
           self.error = false;
+          $rootScope.$emit('Local/BackupDone');
         }
         return cb(ew);
       });
