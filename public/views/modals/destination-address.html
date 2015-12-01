@@ -7,20 +7,8 @@
     </section>
 
     <section class="middle tab-bar-section">
-      <ul class="button-group round even-2" ng-show="!editAddressbook && wallets[0] && !addAddressbookEntry">
-        <li class="ellipsis" ng-class="{'selected':selectedWalletsOpt}" ng-click="selectedWalletsOpt = true"
-          translate>
-          Wallets
-        </li>
-        <li class="ellipsis" ng-class="{'selected':!selectedWalletsOpt}" ng-click="selectedWalletsOpt = false" translate>
-          Addressbook
-        </li>
-      </ul>
-      <h1 ng-show="(editAddressbook || !wallets[0]) && !addAddressbookEntry" class="title ellipsis" translate>
-        Addressbook
-      </h1>
-      <h1 ng-show="addAddressbookEntry" class="title ellipsis" translate>
-        Add a new entry
+      <h1 class="title ellipsis">
+      {{walletName}}
       </h1>
     </section>
 
@@ -34,7 +22,19 @@
     </section>
   </nav>
 
-  <div class="modal-content fix-modals-touch">
+  <div class="modal-content fix-modals-touch p20v">
+    <div class="create-tab small-only-text-center">
+      <div class="row">
+        <div class="tab-container small-6 medium-3 large-2" ng-class="{'selected':selectedWalletsOpt}" ng-click="selectedWalletsOpt = true">
+        <a href
+          ng-click="create.setTotalCopayers(1)" translate> My wallets</a>
+        </div>
+        <div class="tab-container small-6 medium-3 large-2" ng-class="{'selected':!selectedWalletsOpt}" ng-click="selectedWalletsOpt = false">
+        <a href
+          ng-click="create.setTotalCopayers(3)" translate>My contacts</a>
+        </div>
+      </div>
+    </div>
     <div ng-show="selectedWalletsOpt">
       <div class="onGoingProcess" ng-if="gettingAddress">
         <div class="onGoingProcess-content" ng-style="{'background-color':'#222'}">
