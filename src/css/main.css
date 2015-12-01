@@ -45,13 +45,15 @@ h4 {
   font-size: 0.875rem;
 }
 
-h4.title {
-  background: #F1F3F5;
+.send h4.title {
+  box-shadow: 0px 1px 3px 0px rgba(0,0,0,0.10);
+  background: #fff;
   padding: 0.8rem;
   text-transform: uppercase;
   color: #2C3E50;
   font-weight: 700;
   font-size: 0.7rem;
+  text-align: center;
 }
 
 h4.title a {
@@ -59,10 +61,6 @@ h4.title a {
   font-weight: 400;
   padding: 7px;
   font-size: 12px;
-}
-
-.preferences {
-  background: #f1f3f5;
 }
 
 .preferences form {
@@ -77,7 +75,7 @@ h4.title a {
 
 
 .preferences h4 {
-  background: #F1F3F5;
+  background: #F6F7F9;
   padding: 25px 0px 5px 20px;
   text-transform: uppercase;
   color: #555;
@@ -227,7 +225,7 @@ input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill, inpu
 
 .page, .main {
   height:100%;
-  background-color: #fff;
+  background-color: #F6F7F9;
 }
 
 .button.small.side-bar {
@@ -244,7 +242,7 @@ input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill, inpu
 }
 
 .main {
-  background-color: #fff;
+  background-color: #F6F7F9;
   padding: 0 0 58px 0;
   position: relative;
 }
@@ -359,7 +357,7 @@ ul.tx-copayers {
 }
 
 .circle-icon {
-  background: #F1F3F5;
+  background: #fff;
   border-radius: 100%;
   padding: 1.5rem;
   width: 80px;
@@ -373,7 +371,6 @@ ul.tx-copayers {
 }
 
 .backup .circle-icon {
-  background: #fff;
   padding: 0.2rem;
   margin-bottom: 2rem;
 }
@@ -390,7 +387,7 @@ ul.tx-copayers {
 }
 
 .backup .tab-bar {
-  background: #f1f3f5;
+  background: #F6F7F9;
   border-bottom: none;
 }
 
@@ -924,15 +921,18 @@ ul.wallet-selection.wallets {
 }
 
 .postfix.button, .prefix.button {
-  position: absolute;
-  width: 38px;
-  height: 28px;
-  right: 7px;
-  top: 7px;
-  -moz-box-shadow: none;
-  box-shadow: none;
-  line-height: 1.7rem;
-  border-radius: 2px;
+    position: absolute;
+    width: 35px;
+    height: 22px;
+    right: 7px;
+    top: 5px;
+    -moz-box-shadow: none;
+    box-shadow: none;
+    font-size: 12px;
+    border-radius: 2px;
+    line-height: 2;
+    padding: 0;
+    font-weight: 500;
 }
 
 .postfix.button i, .prefix.button i {
@@ -956,6 +956,10 @@ label.postfix, a.postfix {
   top: 0;
   right: 0;
   width: 40px;
+}
+
+a.button.postfix {
+  color: #fff;
 }
 
 .pointer {
