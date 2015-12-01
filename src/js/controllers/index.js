@@ -9,6 +9,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   self.onGoingProcess = {};
   self.historyShowLimit = 10;
   self.updatingTxHistory = {};
+  self.prevState = 'walletHome';
 
   function strip(number) {
     return (parseFloat(number.toPrecision(12)));
@@ -1104,6 +1105,11 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       self.addressbook = ab;
     });
   };
+
+  $rootScope.$on('$stateChangeSuccess', function(ev, to, toParams, from, fromParams) {
+    self.prevState = from.name || 'walletHome';
+    self.tab = 'walletHome';
+  });
 
   $rootScope.$on('Local/ClearHistory', function(event) {
     $log.debug('The wallet transaction history has been deleted');
