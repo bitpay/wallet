@@ -21,19 +21,14 @@
   </div>
 
   <div ng-show="index.glideraLimits && !sell.show2faCodeInput && !sell.success">
-    <h4 class="title m0">
-      <div class="left">
-        <i class="fi-info size-24 m10r"></i>
-      </div>
-      <div class="size-10">
-        <span class="text-light">Daily sell limit</span>:
-        {{index.glideraLimits.dailySell|currency:'':2}} {{index.glideraLimits.currency}}
-        (remaining {{index.glideraLimits.dailySellRemaining|currency:'':2}} {{index.glideraLimits.currency}}) 
-        <br>
-        <span class="text-light">Monthly sell limit</span>:
-        {{index.glideraLimits.monthlySell|currency:'':2}} {{index.glideraLimits.currency}}
-        (remaining {{index.glideraLimits.monthlySellRemaining|currency:'':2}} {{index.glideraLimits.currency}})
-      </div>
+    <h4 class="title m0 text-left">
+      <span class="text-light">Daily sell limit</span>:
+      {{index.glideraLimits.dailySell|currency:'':2}} {{index.glideraLimits.currency}}
+      (remaining {{index.glideraLimits.dailySellRemaining|currency:'':2}} {{index.glideraLimits.currency}}) 
+      <br>
+      <span class="text-light">Monthly sell limit</span>:
+      {{index.glideraLimits.monthlySell|currency:'':2}} {{index.glideraLimits.currency}}
+      (remaining {{index.glideraLimits.monthlySellRemaining|currency:'':2}} {{index.glideraLimits.currency}})
     </h4>
   </div>
 
