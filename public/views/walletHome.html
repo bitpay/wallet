@@ -270,7 +270,7 @@
           <available-balance></available-balance>
           <a class="db"
             ng-if="index.feeToSendMaxStr && index.availableBalanceSat > 0 && !home.blockUx && !home.lockAmount"
-            ng-click="home.sendAll(index.availableMaxBalance, index.feeToSendMaxStr, index.feeRateToSendMax, index.currentFeeLevel)"
+            ng-click="home.sendAll(index.availableMaxBalance, index.feeToSendMaxStr)"
              translate> Send All
           </a>
         </h4>
@@ -280,7 +280,7 @@
       </div>
       <div class="row m20t">
         <div class="large-12 large-centered columns m20t">
-          <form name="sendForm" ng-submit="home.submitForm()" ng-disabled="home.blockUx || home.onGoingProcess" novalidate>
+          <form name="sendForm" ng-submit="home.submitForm(index.feeRateToSendMax)" ng-disabled="home.blockUx || home.onGoingProcess" novalidate>
             <div class="box-notification" ng-show="home.error" ng-click="home.resetError()">
               <span class="text-warning">
                 {{home.error|translate}}
@@ -311,7 +311,7 @@
                 </div>
                 <a class="postfix button" 
                 ng-style="{'background-color':index.backgroundColor}"
-                ng-click="openDestinationAddressModal(index.otherWallets, _address)">
+                ng-click="home.openDestinationAddressModal(index.otherWallets, _address)">
                   <i class="fi-plus size-14 lh"></i>
                 </a>
               </div>
@@ -376,35 +376,6 @@
                 </div>
               </div>
             </div>
-
-            <div class="m20b" ng-init="home.hideAdvSend=true" ng-show="!home.disableAdvSend">
-              <a class="button outline light-gray expand tiny m0" ng-click="home.hideAdvSend=!home.hideAdvSend">
-                <i class="fi-widget m3r"></i>
-                <span translate ng-hide="!home.hideAdvSend">Show advanced options</span>
-                <span translate ng-hide="home.hideAdvSend">Hide advanced options</span>
-                <i ng-if="home.hideAdvSend" class="icon-arrow-down4"></i>
-                <i ng-if="!home.hideAdvSend" class="icon-arrow-up4"></i>
-              </a>
-              <div class="m10t" ng-hide="home.hideAdvSend">
-                <div ng-show="(index.network == 'livenet' ? index.feeLevels.livenet : index.feeLevels.testnet)">
-                  <h4 class="title m0" translate>Fee policy for this transaction</h4>
-                  <ul class="no-bullet m0 size-14">
-                    <li ng-repeat="fee in (index.network == 'livenet' ? index.feeLevels.livenet : index.feeLevels.testnet)"
-                      ng-click="home.setFee(fee.level)" class="line-b p20">
-                      {{index.feeOpts[fee.level]|translate}}
-                      <i class="fi-check size-16 right"
-                        ng-show="(home.currentSendFeeLevel || index.currentFeeLevel) == fee.level"></i>
-                    </li>
-                  </ul>
-                </div>
-                <h4 class="title m0">&nbsp;</h4>
-                <div class="p20 line-b">
-                  <span class="size-14" translate>Use Unconfirmed Funds</span>
-                  <switch id="spend-unconfirmed" name="currentSpendUnconfirmed" ng-model="currentSpendUnconfirmed" class="green right"></switch>
-                </div>
-              </div>
-            </div>
-
 
             <div class="row" ng-show="!home.onGoingProcess">
               <div class="large-6 medium-6 small-6 columns" ng-show="!home.blockUx && (home._paypro || home.lockAddress || home.lockAmount)">

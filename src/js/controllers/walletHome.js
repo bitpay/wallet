@@ -1,13 +1,12 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('walletHomeController', function($scope, $rootScope, $timeout, $filter, $modal, $log, notification, txStatus, isCordova, profileService, lodash, configService, rateService, storageService, bitcore, isChromeApp, gettext, gettextCatalog, nodeWebkit, addressService, ledger, feeService, bwsError, confirmDialog, txFormatService, animationService, addressbookService, go) {
+angular.module('copayApp.controllers').controller('walletHomeController', function($scope, $rootScope, $timeout, $filter, $modal, $log, notification, txStatus, isCordova, profileService, lodash, configService, rateService, storageService, bitcore, isChromeApp, gettext, gettextCatalog, nodeWebkit, addressService, ledger, bwsError, confirmDialog, txFormatService, animationService, addressbookService, go) {
 
   var self = this;
   $rootScope.hideMenuBar = false;
   $rootScope.wpInputFocused = false;
   var config = configService.getSync();
   var configWallet = config.wallet;
-  $scope.currentSpendUnconfirmed = configWallet.spendUnconfirmed;
 
   // INIT
   var walletSettings = configWallet.settings;
@@ -23,7 +22,6 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   this.isMobile = isMobile.any();
   this.isWindowsPhoneApp = isMobile.Windows() && isCordova;
   this.blockUx = false;
-  this.disableAdvSend = false;
   this.isRateAvailable = false;
   this.showScanner = false;
   this.isMobile = isMobile.any();
@@ -115,10 +113,11 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   var cancel_msg = gettextCatalog.getString('Cancel');
   var confirm_msg = gettextCatalog.getString('Confirm');
 
-  $scope.openDestinationAddressModal = function(wallets, address) {
+  this.openDestinationAddressModal = function(wallets, address) {
     $rootScope.modalOpened = true;
     var fc = profileService.focusedClient;
-    self.resetForm();
+    self.lockAddress = false;
+    self._address = null;
 
     var ModalInstanceCtrl = function($scope, $modalInstance) {
       $scope.wallets = wallets;
@@ -272,7 +271,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     $rootScope.modalOpened = true;
     var fc = profileService.focusedClient;
     var refreshUntilItChanges = false;
-    var currentSpendUnconfirmed = $scope.currentSpendUnconfirmed;
+    var currentSpendUnconfirmed = configWallet.spendUnconfirmed;
     var ModalInstanceCtrl = function($scope, $modalInstance) {
       $scope.error = null;
       $scope.copayers = copayers
@@ -662,15 +661,6 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
   // Send 
 
-  var unwatchSpendUnconfirmed = $scope.$watch('currentSpendUnconfirmed', function(newVal, oldVal) {
-    if (newVal == oldVal) return;
-    $scope.currentSpendUnconfirmed = newVal;
-  });
-
-  $scope.$on('$destroy', function() {
-    unwatchSpendUnconfirmed();
-  });
-
   this.canShowAlternative = function() {
     return $scope.showAlternative;
   };
@@ -838,13 +828,10 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     };
   };
 
-  this.setFee = function(level) {
-    this.currentSendFeeLevel = level;
-  };
-
-  this.submitForm = function() {
+  this.submitForm = function(currentFeePerKb) {
     var fc = profileService.focusedClient;
     var unitToSat = this.unitToSatoshi;
+    var currentSpendUnconfirmed = configWallet.spendUnconfirmed;
 
     if (isCordova && this.isWindowsPhoneApp) {
       this.hideAddress = false;
@@ -882,14 +869,6 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       address = form.address.$modelValue;
       amount = parseInt((form.amount.$modelValue * unitToSat).toFixed(0));
 
-      var getFee = function(cb) {
-        if (form.feePerKb) {
-          cb(null, form.feePerKb);
-        } else {
-          feeService.getCurrentFeeValue(self.currentSendFeeLevel, cb);
-        }
-      };
-
       requestTouchid(function(err) {
         if (err) {
           profileService.lockFC();
@@ -901,43 +880,40 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
           return;
         }
 
-        getFee(function(err, feePerKb) {
-          if (err) $log.debug(err);
-          fc.sendTxProposal({
-            toAddress: address,
-            amount: amount,
-            message: comment,
-            payProUrl: paypro ? paypro.url : null,
-            feePerKb: feePerKb,
-            excludeUnconfirmedUtxos: $scope.currentSpendUnconfirmed ? false : true
-          }, function(err, txp) {
-            if (err) {
-              self.setOngoingProcess();
-              profileService.lockFC();
-              return self.setSendError(err);
-            }
+        fc.sendTxProposal({
+          toAddress: address,
+          amount: amount,
+          message: comment,
+          payProUrl: paypro ? paypro.url : null,
+          feePerKb: currentFeePerKb,
+          excludeUnconfirmedUtxos: currentSpendUnconfirmed ? false : true
+        }, function(err, txp) {
+          if (err) {
+            self.setOngoingProcess();
+            profileService.lockFC();
+            return self.setSendError(err);
+          }
 
-            if (!fc.canSign() && !fc.isPrivKeyExternal()) {
-              $log.info('No signing proposal: No private key')
-              self.setOngoingProcess();
-              self.resetForm();
-              txStatus.notify(txp, function() {
-                return $scope.$emit('Local/TxProposalAction');
-              });
-              return;
-            }
-
-            self.signAndBroadcast(txp, function(err) {
-              self.setOngoingProcess();
-              self.resetForm();
-              if (err) {
-                self.error = err.message ? err.message : gettext('The payment was created but could not be completed. Please try again from home screen');
-                $scope.$emit('Local/TxProposalAction');
-                $timeout(function() {
-                  $scope.$digest();
-                }, 1);
-              }
+          if (!fc.canSign() && !fc.isPrivKeyExternal()) {
+            $log.info('No signing proposal: No private key')
+            self.setOngoingProcess();
+            self.resetForm();
+            txStatus.notify(txp, function() {
+              return $scope.$emit('Local/TxProposalAction');
             });
+            return;
+          }
+
+          self.signAndBroadcast(txp, function(err) {
+            self.setOngoingProcess();
+            self.resetForm();
+            if (err) {
+              self.error = err.message ? err.message : gettext('The payment was created but could not be completed. Please try again from home screen');
+              $scope.$emit('Local/TxProposalAction');
+              $timeout(function() {
+                $scope.$digest();
+              }, 1);
+            }
           });
         });
       });
@@ -994,7 +970,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     });
   };
 
-  this.setForm = function(to, amount, comment, feeRate) {
+  this.setForm = function(to, amount, comment) {
     var form = $scope.sendForm;
     if (to) {
       form.address.$setViewValue(to);
@@ -1015,10 +991,6 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       form.comment.$isValid = true;
       form.comment.$render();
     }
-
-    if (feeRate) {
-      form.feeRate = feeRate;
-    }
   };
 
 
@@ -1029,18 +1001,10 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
     this.lockAddress = false;
     this.lockAmount = false;
-    this.currentSendFeeLevel = null;
-    this.hideAdvSend = true;
-    this.disableAdvSend = false;
-    $scope.currentSpendUnconfirmed = configService.getSync().wallet.spendUnconfirmed;
 
     this._amount = this._address = null;
 
     var form = $scope.sendForm;
-
-    if (form && form.feeRate) {
-      form.feeRate = null;
-    }
 
     if (form && form.amount) {
       form.amount.$pristine = true;
@@ -1291,11 +1255,11 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     return actions.hasOwnProperty('create');
   };
 
-  this._doSendAll = function(amount, feeRate) {
-    this.setForm(null, amount, null, feeRate);
+  this._doSendAll = function(amount) {
+    this.setForm(null, amount, null);
   };
 
-  this.sendAll = function(amount, feeStr, feeRate, currentFeeLevel) {
+  this.sendAll = function(amount, feeStr) {
     var self = this;
     var msg = gettextCatalog.getString("{{fee}} will be deducted for bitcoin networking fees", {
       fee: feeStr
@@ -1303,10 +1267,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
     confirmDialog.show(msg, function(confirmed) {
       if (confirmed) {
-        self._doSendAll(amount, feeRate);
-        self.disableAdvSend = true;
-        self.currentSendFeeLevel = currentFeeLevel;
-        $scope.currentSpendUnconfirmed = configService.getSync().wallet.spendUnconfirmed;
+        self._doSendAll(amount);
       } 
     });
   };
