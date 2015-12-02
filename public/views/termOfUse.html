@@ -3,9 +3,9 @@
 	  ng-include="'views/includes/topbar.html'"
 	  ng-init="titleSection='Terms of use'; goBackToState = 'about'; noColor = true">
 	</div>
-	<div class="content">
+	<div ng-controller="termOfUseController" class="content">
 		<p class="enable_text_select m0">
-			<div  ng-include="'views/includes/terms.html'"></div>
+			<div class="terms" ng-include="'views/includes/terms.html'"></div>
 		</p>
 		<div class="row text-center">
 			<p ng-show="lang != 'en'">
