@@ -554,6 +554,103 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
     }
   };
 
+  // deleteTheme() - removes the specified theme and all associated skins from the catalog.
+  // 
+  root.deleteTheme = function(themeId, callback) {
+    var theme = root.getPublishedTheme();
+    var catalog = themeCatalogService.getSync();
+    var catalogThemes = catalog.themes || {};
+
+    // Find the theme which will be deleted.
+    var t_index = catalogThemes.length || 0;
+    var i;
+    for (i = 0; i < catalogThemes.length; i++) {
+      if (catalogThemes[i].header.name == theme.header.name) {
+        t_index = i;
+        break;
+      }
+    }
+
+    var cat = {
+      themes: []
+    };
+    
+    // Make a copy of the themes and remove the specified theme.
+    cat.themes = lodash.cloneDeep(catalogThemes);
+//    var deletedTheme = cat.themes.splice(themeId, 1);
+    var deletedTheme = lodash.pullAt(cat.themes, themeId);
+
+    themeCatalogService.replace(cat, function(err) {   //TODO: cannot save themes if not using filestorage (content available in $rootScope only)
+      if (err) {
+        $rootScope.$emit('Local/DeviceError', err);
+        return;
+      }
+
+      root._publishCatalog();
+
+      if (callback) {
+        callback();
+      }
+
+      notification.success(
+        gettextCatalog.getString('Success'),
+        gettextCatalog.getString('Deleted theme \'' + deletedTheme[0].header.name + '\''),
+        {color: root.getPublishedSkin().view.textHighlightColor,
+         iconColor: root.getPublishedTheme().view.notificationBarIconColor,
+         barBackground: root.getPublishedTheme().view.notificationBarBackground});
+
+      $log.debug('Deleted skin \'' + deletedTheme[0].header.name + '\'');
+    });
+  };
+
+  // deleteSkin() - removes the specified skin from the catalog.
+  // 
+  root.deleteSkin = function(skinId, callback) {
+    var theme = root.getPublishedTheme();
+    var catalog = themeCatalogService.getSync();
+    var catalogThemes = catalog.themes || {};
+
+    // Find the theme for which the skin will be deleted.
+    var t_index = catalogThemes.length || 0;
+    var i;
+    for (i = 0; i < catalogThemes.length; i++) {
+      if (catalogThemes[i].header.name == theme.header.name) {
+        t_index = i;
+        break;
+      }
+    }
+
+    var cat = {
+      themes: []
+    };
+    
+    // Make a copy of the themes and remove the skin from the specified theme.
+    cat.themes = lodash.cloneDeep(catalogThemes);
+    var deletedSkin = cat.themes[t_index].skins.splice(skinId, 1);
+
+    themeCatalogService.replace(cat, function(err) {   //TODO: cannot save themes if not using filestorage (content available in $rootScope only)
+      if (err) {
+        $rootScope.$emit('Local/DeviceError', err);
+        return;
+      }
+
+      root._publishCatalog();
+
+      if (callback) {
+        callback();
+      }
+
+      notification.success(
+        gettextCatalog.getString('Success'),
+        gettextCatalog.getString('Deleted skin \'' + deletedSkin[0].header.name + '\''),
+        {color: root.getPublishedSkin().view.textHighlightColor,
+         iconColor: root.getPublishedTheme().view.notificationBarIconColor,
+         barBackground: root.getPublishedTheme().view.notificationBarBackground});
+
+      $log.debug('Deleted skin \'' + deletedSkin[0].header.name + '\'');
+    });
+  };
+
   ///////////////////////////////////////////////////////////////////////////////
 
   // get() functions return the $rootScope published or stored configuration values for use by controllers and services.
@@ -565,6 +662,7 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
     return root._skinSchemaVersion() == skinHeader.schemaVersion;
   };
 
+  // Catalog objects.
   root.getCatalog = function() {
     return themeCatalogService.getSync();
   }
@@ -574,7 +672,11 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
   };
 
   root.getCatalogTheme = function() {
-    return root._themeById(root._currentThemeId());
+    return Theme.create(root._themeById(root._currentThemeId()));
+  };
+
+  root.getCatalogThemeById = function(themeId) {
+    return Theme.create(root._themeById(themeId));
   };
 
   root.getCatalogThemeId = function() {
@@ -590,9 +692,10 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
   };
 
   root.getCatalogSkinById = function(skinId) {
-    return root.getCatalogTheme().skins[skinId];
+    return Skin.create(root.getCatalogTheme().skins[skinId]);
   };
 
+  // Published objects.
   root.getPublishedThemes = function() {
     return $rootScope.themes;
   }
@@ -676,10 +779,13 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
 
       // Import the discovered theme.
       // Read the full theme from the theme server and add it to this applications configuration settings.
-      var discoveredTheme = response.data;
-      var catalogThemes = catalog.themes || [];
+      var discoveredTheme = Theme.create(response.data);
+
+      // Allow imported themes to be deleted.
+      discoveredTheme.setDelete(true);
 
       // Avoid adding duplicates. The theme name is the key. Re-import the theme if it was previously imported.
+      var catalogThemes = catalog.themes || [];
       var index = catalogThemes.length || 0;
       var i;
       for (i = 0; i < catalogThemes.length; i++) {
@@ -761,7 +867,10 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
 
     $http(root._get('/themes/' + theme.header.name + '/' + skinName)).then(function successCallback(response) {
 
-      var discoveredSkin = response.data;
+      var discoveredSkin = Skin.create(response.data);
+
+      // Allow imported skins to be deleted.
+      discoveredSkin.setDelete(true);
 
       var catalog = themeCatalogService.getSync();
       var catalogThemes = catalog.themes || {};

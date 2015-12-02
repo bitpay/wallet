@@ -1,16 +1,61 @@
 <div 
   class="topbar-container" 
   ng-include="'views/includes/topbar.html'"
-  ng-init="titleSection='Skin'; goBackToState = 'preferences'; useTheme = false">
+  ng-init="titleSection='Skin'; goBackToState = 'preferences'; useTheme = false; showPlus = index.brand.features.theme.skinDiscovery.enabled; plusState = 'preferencesSkinDiscovery'; showLayout = true; layoutEvent='skinLayout'">
 </div>
-<div class="content preferences" ng-controller="preferencesSkinController as p">
-	<div style="padding: 6px;">
-	  <div class="columns large-2 medium-3 small-4" style="padding: 6px;" ng-repeat="s in p.skins" ng-click="p.preview($index)">
-      <img ng-src="{{s.header.galleryImage}}">
-	  </div>
-	  <div ng-show="index.brand.features.theme.skinDiscovery.enabled" class="columns large-2 medium-3 small-4" style="padding: 6px;" ng-click="$root.go('preferencesSkinDiscovery')">
-      <img ng-src="img/discover-new.png">
+<div class="content preferences white" ng-controller="preferencesSkinController as p">
+
+  <!-- Grid layout -->
+  <div class="row" style="padding-left: 1px;" ng-show="p.skinGalleryLayout == 'grid'">
+	  <div class="columns large-2 medium-3 small-4 end" style="padding: 1px 1px 1px 0;" ng-repeat="s in p.skins">
+      <img ng-src="{{s.header.galleryImage}}" ng-click="p.save($index)"/>
+      <i class="fi-info gallery-grid-action-button"  ng-click="p.preview($index)"></i>
+      <i class="fi-check gallery-grid-item-selected" ng-show="$root.skin.header.name == s.header.name"></i>
+      <div class="gallery-grid-text">{{s.header.name}}</div>
 	  </div>
   </div>
+
+  <!-- List layout -->
+  <div ng-show="p.skinGalleryLayout == 'list'">
+    <ul class="no-bullet m0">
+      <li class="p0i oa" ng-repeat="s in p.skins">
+
+        <div class="gallery-list-accessory-container" ng-click="p.preview($index)">
+          <i class="fi-check size-16 p10r" style="vertical-align: 3px" ng-show="$root.skin.header.name == s.header.name"></i>
+          <i class="fi-info size-24"></i>
+        </div>
+
+        <div class="gallery-list-container" ng-click="p.save($index)">
+          <img class="gallery-list-image" ng-src="{{s.header.galleryImage}}"/>
+          <div class="gallery-list-text-lg">{{s.header.name}}</div>
+          <div class="gallery-list-text-sm text-italic">{{s.header.author}} - Version {{s.header.version}}, {{s.header.date}}</div>
+        </div>
+
+      </li>
+    </ul>
+  </div>
+
+  <!-- List detail layout -->
+  <div ng-show="p.skinGalleryLayout == 'list-detail'">
+    <ul class="no-bullet m0">
+      <li class="p0i oa" ng-repeat="s in p.skins">
+
+        <div class="gallery-listd-accessory-container" ng-click="p.preview($index)">
+          <i class="fi-check size-16 p10r" style="vertical-align: 3px" ng-show="$root.skin.header.name == s.header.name"></i>
+          <i class="fi-check size-16 p10r" style="vertical-align: 3px; color: white" ng-show="$root.skin.header.name != s.header.name"></i>
+          <i class="fi-info size-24"></i>
+        </div>
+
+        <div class="gallery-listd-container" ng-click="p.save($index)">
+          <img class="gallery-listd-image" ng-src="{{s.header.galleryImage}}"/>
+          <div class="gallery-listd-text-lg">{{s.header.name}}</div>
+          <div class="gallery-listd-text-sm">{{s.header.description}}</div>
+          <div class="gallery-listd-text-sm text-italic">{{s.header.author}} - Version {{s.header.version}}, {{s.header.date}}</div>
+        </div>
+
+      </li>
+    </ul>
+  </div>
+
 </div>
 <div class="extra-margin-bottom"></div>

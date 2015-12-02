@@ -113,7 +113,7 @@ _:-ms-fullscreen, :root .main {
 }
 
 .right-small {
-  width: 4.7rem;
+  width: 50%;
   text-align: right;
   line-height: 2.7rem;
   border-left: none;
@@ -813,6 +813,129 @@ textarea:focus
 .tab-container.selected a {
   color: #2C3E50;
   font-weight: 600;
+}
+
+.gallery-grid-text {
+  line-height: 30px;
+  position: absolute;
+  bottom: 0;
+  text-align: center;
+  width: 99%;
+  padding: 0 10px 0 10px;
+  font-size: 14px;
+  font-weight: 400;
+  color: #FFFFFF;
+  background-color: rgba(0,0,0,0.25);
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.gallery-grid-action-button {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  font-size: 21px;
+  color: #FFFFFF;
+  background-color: rgba(0,0,0,0.25);
+  border-radius: 3px;
+  width: 40px;
+  height: 40px;
+  text-align: center;
+  line-height: 40px;
+}
+
+.gallery-grid-item-selected {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  font-size: 21px;
+  color: #FFFFFF;
+  background-color: rgba(0,0,0,0.25);
+  border-radius: 3px;
+  width: 40px;
+  height: 40px;
+  text-align: center;
+  line-height: 40px;
+}
+
+.gallery-list-image {
+  float: left !important;
+  margin: 10px 10px 10px 15px;
+  width:50px;
+  height:50px;
+}
+
+.gallery-list-container {
+  height: 70px;
+}
+
+.gallery-list-accessory-container {
+  padding: 4px 20px 0 0;
+  line-height: 62px;
+  color: #8597A7;
+  float: right !important;
+}
+
+.gallery-list-accessory-container2 {
+  padding: 5px 5px 0 0;
+  color: #8597A7;
+  float: right !important;
+}
+
+.gallery-list-text-lg {
+  padding-top: 16px;
+}
+
+.gallery-list-text-sm {
+  line-height: 12px;
+  font-size: 10px;
+  overflow: hidden; 
+  text-overflow: ellipsis; 
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+}
+
+.gallery-list-action-bar {
+  color: #8597A7;
+  width: 100%;
+  text-align: left;
+}
+
+.gallery-listd-container {
+  height: 120px;
+}
+
+.gallery-listd-accessory-container {
+  margin: 0 0 0 10px;
+  padding: 0 20px 0 10px;
+  height: 120px;
+  line-height: 120px;
+  color: #8597A7;
+  float: right !important;
+}
+
+.gallery-listd-image {
+  float: left !important;
+  margin: 10px 15px 10px 15px;
+  width:100px;
+  height:100px;
+}
+
+.gallery-listd-text-lg {
+  padding-top: 10px;
+  font-weight: 700px;
+}
+
+.gallery-listd-text-sm {
+  line-height: 12px;
+  font-size: 10px;
+  overflow: hidden; 
+  text-overflow: ellipsis; 
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
 }
 
 /* removes 300ms in IE */

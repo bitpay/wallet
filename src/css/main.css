@@ -66,6 +66,10 @@ h4.title a {
   background: #f1f3f5;
 }
 
+.preferences.white {
+  background: #ffffff;
+}
+
 .preferences form {
   background: white;
   padding-top:10px;
@@ -469,10 +473,14 @@ ul.manage li {
 .m20tp {margin-top: 20%;}
 .m15 {margin: 15px;}
 .m15h {margin: 0 15px;}
+.p1 {padding: 1px;}
+.p5t {padding-top: 5px;}
 .p10t {padding-top: 10px;}
 .p10h {padding-right: 10px; padding-left: 10px;}
 .p0r {padding-right: 0;}
+.p10r {padding-right: 10px;}
 .p70r {padding-right: 70px;}
+.p30l {padding-left: 30px;}
 .p70l {padding-left: 70px;}
 .p5h {padding: 0 5px;}
 .p20h {padding: 0 20px;}
@@ -496,6 +504,7 @@ ul.manage li {
 .lh {line-height: 0;}
 .lh140 {line-height: 140%;}
 .oh {overflow:hidden;}
+.oa {overflow:auto;}
 .vm {vertical-align: middle;}
 .vt {vertical-align: top;}
 .ma { margin: 0 auto;}
@@ -1313,8 +1322,9 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
 }
 
 .preview-button-bar {
-  background-color: rgba(255,255,255,0.9) !important;
-  line-height: 2.95rem;
+  background-color: rgba(255,255,255,1.0) !important;
+  line-height: 45px;
+  height: 45px;
 }
 
 .preview-button, .preview-button:hover {
@@ -1325,6 +1335,16 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
 .preview-button-left, .preview-button-left:hover {
   color: #8597A7 !important;
   border-right :1px solid #8597A7;
+}
+
+.preview-image {
+  position: absolute;
+  width: 100%;
+  top: 0;
+  bottom: 45px;
+  background-position: center center;
+  background-size: contain;
+  background-repeat: no-repeat;
 }
 
 /*/////////////////// SPINNER ////////////////////*/

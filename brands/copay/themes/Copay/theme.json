@@ -3,7 +3,7 @@
     "schemaVersion": "1",
     "version": "1.0",
     "name": "Copay",
-    "description": "",
+    "description": "The default theme for the Copay bitcoin wallet.",
     "author": "BitPay, Inc.",
     "date": "11/1/2015",
     "galleryImage": "<resource-0>",
@@ -12,6 +12,9 @@
     "product": {
       "id": "0",
       "price": "$0.00"
+    },
+    "permissions": {
+      "delete": false
     }
    },
   "resources": [
@@ -50,7 +53,8 @@
     "buttonTextColor": "#FFFFFF",
     "progressBackground": "#2C3E50",
     "progressTextColor": "#FFFFFF",
-    "iconBackground": "#2C3E50"
+    "iconBackground": "#2C3E50",
+    "textColor": "#2C3E50"
   },
   "skins": []
 }

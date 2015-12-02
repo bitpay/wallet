@@ -69,6 +69,27 @@ angular.module('copayApp.services').factory('themeCatalogService', function(stor
     });
   };
 
+  root.replace = function(newCat, cb) {
+    var catalog = defaultCatalog;
+    storageService.getThemeCatalog(function(err, oldCat) {
+      if (lodash.isString(oldCat)) {
+        if (oldCat.length == 0)
+          oldCat = '{}';
+        oldCat = JSON.parse(oldCat);
+      }
+      if (lodash.isString(catalog)) {
+        catalog = JSON.parse(catalog);
+      }
+      if (lodash.isString(newCat)) {
+        newCat = JSON.parse(newCat);
+      }
+      lodash.assign(catalog, oldCat, newCat);
+      catalogCache = catalog;
+
+      storageService.storeThemeCatalog(JSON.stringify(catalog), cb);
+    });
+  };
+
   root.reset = function(cb) {
     catalogCache = lodash.clone(defaultCatalog);
     storageService.removeCatalog(cb);

@@ -34,7 +34,12 @@ angular.module('copayApp.services').factory('configService', function(storageSer
 
     theme: {
       themeId: null,
-      skinFor: {}
+      skinFor: {},
+    },
+
+    view: {
+      themeGalleryLayout: 'grid',
+      skinGalleryLayout: 'grid',
     },
 
     // External services

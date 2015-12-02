@@ -11,6 +11,9 @@
     "product": {
       "id": "0",
       "price": "$0.00"
+    },
+    "permissions": {
+      "delete": false
     }
   },
   "resources": [
