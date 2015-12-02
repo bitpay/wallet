@@ -45,7 +45,7 @@ h4 {
   font-size: 0.875rem;
 }
 
-.send h4.title {
+.send h4.title, .glidera h4.title {
   box-shadow: 0px 1px 3px 0px rgba(0,0,0,0.10);
   background: #fff;
   padding: 0.8rem;
