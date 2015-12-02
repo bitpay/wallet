@@ -1,16 +1,60 @@
 <div 
   class="topbar-container" 
   ng-include="'views/includes/topbar.html'"
-  ng-init="titleSection='Theme'; goBackToState = 'preferencesGlobal'; useTheme = true">
+  ng-init="titleSection='Theme'; goBackToState = 'preferencesGlobal'; useTheme = true; showPlus = true; plusState = 'preferencesThemeDiscovery'; showLayout = true; layoutEvent='themeLayout'">
 </div>
-<div class="content preferences" ng-controller="preferencesThemeController as p">
-	<div style="padding: 6px;">
-	  <div class="columns large-2 medium-3 small-4" style="padding: 6px;" ng-repeat="t in p.themes" ng-click="p.preview($index)">
-      <img ng-src="{{t.header.galleryImage}}">
-	  </div>
-	  <div class="columns large-2 medium-3 small-4" style="padding: 6px;" ng-click="$root.go('preferencesThemeDiscovery')">
-      <img ng-src="img/discover-new.png">
-	  </div>
+<div class="content preferences white" ng-controller="preferencesThemeController as p">
+
+  <!-- Grid layout -->
+  <div class="row" style="padding-left: 1px;" ng-show="p.themeGalleryLayout == 'grid'">
+    <div class="columns large-2 medium-3 small-4 end" style="padding: 1px 1px 1px 0;" ng-repeat="t in p.themes">
+      <img ng-src="{{t.header.galleryImage}}" ng-click="p.save($index)"/>
+      <i class="fi-info gallery-grid-action-button"  ng-click="p.preview($index)"></i>
+      <i class="fi-check gallery-grid-item-selected" ng-show="$root.theme.header.name == t.header.name"></i>
+    </div>
   </div>
+
+  <!-- List layout -->
+  <div ng-show="p.themeGalleryLayout == 'list'">
+    <ul class="no-bullet m0">
+      <li class="p0i oa" ng-repeat="t in p.themes">
+
+        <div class="gallery-list-accessory-container" ng-click="p.preview($index)">
+          <i class="fi-check size-16 p10r" style="vertical-align: 3px" ng-show="$root.theme.header.name == t.header.name"></i>
+          <i class="fi-info size-24"></i>
+        </div>
+
+        <div class="gallery-list-container" ng-click="p.save($index)">
+          <img class="gallery-list-image" ng-src="{{t.header.galleryImage}}"/>
+          <div class="gallery-list-text-lg">{{t.header.name}}</div>
+          <div class="gallery-list-text-sm text-italic">{{t.header.author}} - Version {{t.header.version}}, {{t.header.date}}</div>
+        </div>
+
+      </li>
+    </ul>
+  </div>
+
+  <!-- List detail layout -->
+  <div ng-show="p.themeGalleryLayout == 'list-detail'">
+    <ul class="no-bullet m0">
+      <li class="p0i oa" ng-repeat="t in p.themes">
+
+        <div class="gallery-listd-accessory-container" ng-click="p.preview($index)">
+          <i class="fi-check size-16 p10r" style="vertical-align: 3px" ng-show="$root.theme.header.name == t.header.name"></i>
+          <i class="fi-check size-16 p10r" style="vertical-align: 3px; color: white" ng-show="$root.theme.header.name != t.header.name"></i>
+          <i class="fi-info size-24"></i>
+        </div>
+
+        <div class="gallery-listd-container" ng-click="p.save($index)">
+          <img class="gallery-listd-image" ng-src="{{t.header.galleryImage}}"/>
+          <div class="gallery-listd-text-lg">{{t.header.name}}</div>
+          <div class="gallery-listd-text-sm">{{t.header.description}}</div>
+          <div class="gallery-listd-text-sm text-italic">{{t.header.author}} - Version {{t.header.version}}, {{t.header.date}}</div>
+        </div>
+
+      </li>
+    </ul>
+  </div>
+
 </div>
 <div class="extra-margin-bottom"></div>

@@ -1,16 +1,17 @@
 <div ng-controller="preferencesThemePreviewController as p">
-  <img style="size=cover" src="{{themes[previewThemeId].header.previewImage}}"/>
-  <div class="preview-overlay">
-    <div class="preview-overlay-content">
-      <span translate>Theme Preview</span>
-    </div>
+  <div class="preview-image" style="background-image: url({{themes[previewThemeId].header.previewImage}}),
+    -webkit-linear-gradient(-45deg, rgba(40,52,59,1) 0%,rgba(130,140,149,1) 50%,rgba(40,52,59,1) 100%),
+    linear-gradient(135deg, rgba(40,52,59,1) 0%,rgba(130,140,149,1) 50%,rgba(40,52,59,1) 100%)">
   </div>
   <div class="bottom-bar preview-button-bar">
-    <a class="preview-button-left columns large-6 medium-6 small-6 text-center" ng-click="$root.go('preferencesTheme')">
-      <span class="text-close">{{'Close'|translate}}</span>
+    <a class="preview-button columns large-4 medium-4 small-4 text-center" ng-click="$root.go('preferencesTheme')">
+      <i class="fi-x size-24"></i>
     </a>
-    <a class="preview-button-left columns large-6 medium-6 small-6 text-center" ng-click="p.save(previewThemeId)" >
-      <span class="text-close">{{'Set'|translate}}</span>
+    <a class="preview-button columns large-4 medium-4 small-4 text-center" ng-click="p.save(previewThemeId)">
+      <i class="fi-check size-24"></i>
+    </a>
+    <a class="preview-button columns large-4 medium-4 small-4 text-center" ng-click="p.delete(previewThemeId)" ng-show="p.canDeleteTheme(previewThemeId)">
+      <i class="fi-trash size-24"></i>
     </a>
   </div>
 </div>

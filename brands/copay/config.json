@@ -39,7 +39,7 @@
     "theme": {
       "name": "Copay",
       "themeDiscovery": {
-        "enabled": false
+        "enabled": true
       },
       "skinDiscovery": {
         "enabled": false

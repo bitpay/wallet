@@ -66,6 +66,10 @@ h4.title a {
   background: #f1f3f5;
 }
 
+.preferences.white {
+  background: #ffffff;
+}
+
 .preferences form {
   background: white;
   padding-top:10px;
@@ -1327,8 +1331,9 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
 }
 
 .preview-button-bar {
-  background-color: rgba(255,255,255,0.9) !important;
-  line-height: 2.95rem;
+  background-color: rgba(255,255,255,1.0) !important;
+  line-height: 45px;
+  height: 45px;
 }
 
 .preview-button, .preview-button:hover {
@@ -1339,6 +1344,16 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
 .preview-button-left, .preview-button-left:hover {
   color: #8597A7 !important;
   border-right :1px solid #8597A7;
+}
+
+.preview-image {
+  position: absolute;
+  width: 100%;
+  top: 0;
+  bottom: 45px;
+  background-position: center center;
+  background-size: contain;
+  background-repeat: no-repeat;
 }
 
 /*/////////////////// SPINNER ////////////////////*/
