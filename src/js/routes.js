@@ -342,6 +342,18 @@ angular
 
         }
       })
+      .state('preferencesHistory', {
+        url: '/preferencesHistory',
+        templateUrl: 'views/preferencesHistory.html',
+        walletShouldBeComplete: true,
+        needProfile: true,
+        views: {
+          'main': {
+            templateUrl: 'views/preferencesHistory.html'
+          },
+
+        }
+      })
       .state('deleteWords', {
         url: '/deleteWords',
         templateUrl: 'views/preferencesDeleteWords.html',
