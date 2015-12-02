@@ -1348,14 +1348,19 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.updateTxHistory();
     storageService.getProfile(function(err, profile) {
       if (profile && profile.agreeDisclaimer) go.walletHome();
-      storageService.getCleanAndScanAddresses(function(err, walletId) {
-        if (walletId && profileService.walletClients[walletId]) {
-          $log.debug('Clear last address cache and Scan ', walletId);
-          addressService.expireAddress(walletId, function(err) {
-            self.startScan(walletId);
-          });
-          storageService.removeCleanAndScanAddresses(function() {});
-        }
+
+      //compatible
+      storageService.getCopayDisclaimerFlag(function(err, val) {
+        if (val) go.walletHome();
+        storageService.getCleanAndScanAddresses(function(err, walletId) {
+          if (walletId && profileService.walletClients[walletId]) {
+            $log.debug('Clear last address cache and Scan ', walletId);
+            addressService.expireAddress(walletId, function(err) {
+              self.startScan(walletId);
+            });
+            storageService.removeCleanAndScanAddresses(function() {});
+          }
+        });
       });
     });
   });
