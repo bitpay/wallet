@@ -74,7 +74,7 @@ h4.title a {
 }
 
 
-.preferences h4, .modal-content h4 {
+.preferences h4, .modal-content h4, .walletHome h4 {
   background: #F6F7F9;
   padding: 25px 0px 5px 20px;
   text-transform: uppercase;
@@ -329,6 +329,7 @@ ul.tx-copayers {
 }
 
 .last-transactions-content {
+  background: #fff;
   padding: 1.5rem 1rem;
   cursor:pointer;
   border-bottom: 1px solid #E4E8EC;
