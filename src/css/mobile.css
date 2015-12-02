@@ -171,7 +171,7 @@ _:-ms-fullscreen, :root .main {
 .amount {
   width: 100%;
   text-align: center;
-  padding: 2.5rem 1rem 1.5rem 1rem;
+  padding: 1.5rem 1rem 1.5rem 1rem;
   margin-bottom: 11px;
   color: #fff;
   height: 175px;
@@ -227,12 +227,14 @@ _:-ms-fullscreen, :root .main {
   position: absolute;
   padding: 15px 17px;
   border-radius: 100%;
-  top: -40px;
+  top: inherit;
   right: 15px;
+  bottom: 45px;
 }
 
 .send .camera-icon a {
-  top: 32px;
+  top: inherit;
+  bottom: 0;
 }
 
 .copayers {
