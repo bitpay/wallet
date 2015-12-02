@@ -265,20 +265,21 @@
 
     -->
     <div id="send" class="send tab-view">
-      <div>
+      <div class="pr">
         <h4 class="title m0">
-
-          <a class="right lh"
+          <available-balance></available-balance>
+          <a class="db"
             ng-if="index.feeToSendMaxStr && index.availableBalanceSat > 0 && !home.blockUx && !home.lockAmount"
             ng-click="home.sendAll(index.availableMaxBalance, index.feeToSendMaxStr, index.feeRateToSendMax, index.currentFeeLevel)"
              translate> Send All
           </a>
-
-          <available-balance></available-balance>
         </h4>
+        <div class="camera-icon" ng-show="index.isComplete">
+          <qr-scanner on-scan="home.onQrCodeScanned(data)" before-scan="home.openSendScreen()"></qr-scanner> 
+        </div>
       </div>
       <div class="row m20t">
-        <div class="large-12 large-centered columns">
+        <div class="large-12 large-centered columns m20t">
           <form name="sendForm" ng-submit="home.submitForm()" ng-disabled="home.blockUx || home.onGoingProcess" novalidate>
             <div class="box-notification" ng-show="home.error" ng-click="home.resetError()">
               <span class="text-warning">
