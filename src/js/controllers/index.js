@@ -20,26 +20,22 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   };
 
   self.menu = [{
-    'title': gettext('Home'),
-    'icon': 'icon-home',
-    'link': 'walletHome'
-  }, {
     'title': gettext('Receive'),
     'icon': 'icon-receive2',
     'link': 'receive'
   }, {
+    'title': gettext('Home'),
+    'icon': 'icon-home',
+    'link': 'walletHome'
+  }, {
     'title': gettext('Send'),
     'icon': 'icon-paperplane',
     'link': 'send'
-  }, {
-    'title': gettext('History'),
-    'icon': 'icon-history',
-    'link': 'history'
   }];
 
   self.addonViews = addonManager.addonViews();
   self.menu = self.menu.concat(addonManager.addonMenuItems());
-  self.menuItemSize = self.menu.length > 5 ? 2 : 3;
+  self.menuItemSize = self.menu.length > 4 ? 2 : 4;
   self.txTemplateUrl = addonManager.txTemplateUrl() || 'views/includes/transaction.html';
 
   self.tab = 'walletHome';

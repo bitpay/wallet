@@ -169,6 +169,114 @@
             {{index.alternativeIsoCode}} </span>
         </div>
       </div>
+
+      <!-- Activity -->
+
+      <h4 class="title m0" translate>Activity</h4>
+      <div class="row m20t" ng-show="!index.updatingTxHistory[index.walletId] && !index.txHistory[0]">
+        <div class="large-12 columns">
+          <div class="oh text-center">
+            <span ng-show="index.txHistoryError && !index.notAuthorized" ng-click='index.updateTxHistory()'>
+              <p class="size-12 m10b db text-gray" translate>Could not fetch transaction history</p>
+              <button class="outline round light-gray tiny" translate>Tap to retry</button>
+            </span>
+            <span ng-if="!index.txHistoryError" translate>
+              No transactions yet
+            </span>
+          </div>
+        </div>
+      </div>
+      <div ng-show="index.updatingTxHistory[index.walletId]">
+        <div ng-show="index.txProgress > 6" class="row m20t text-center">
+          <div class="circle-icon">
+            <img src="img/icon-sync.svg" alt="sync" width="70">
+          </div>
+          <div translate class="size-12 text-gray m20t small-10 small-centered columns">
+            Initial transaction history synchronization can take some minutes for wallets with many transactions.
+            <b> Please stand by.</b>
+          </div>
+          <div class="small-8 small-centered columns line-b p10 m20b"></div>
+          <div class="columns large-12 medium-12 small-12 m10b">
+            <div class="spinner">
+              <div class="rect1"></div>
+              <div class="rect2"></div>
+              <div class="rect3"></div>
+              <div class="rect4"></div>
+              <div class="rect5"></div>
+            </div>
+          </div>
+          <div class="size-14 text-gray m20t">
+            <b>{{index.txProgress}}</b> <br>
+            <span translate>Transactions Downloaded</span>
+          </div>
+        </div>
+      </div>
+
+      <div ng-show="index.txHistory[0]">
+        <div ng-repeat="btx in index.txHistory"
+          ng-click="home.openTxModal(btx)"
+          class="row collapse last-transactions-content">
+          <div class="large-3 medium-3 small-3 columns">
+            <span class="label tu radius" ng-show="btx.action == 'received'"
+              ng-style="{'background-color':index.backgroundColor}" translate>Received</span>
+            <span class="label tu gray radius" ng-show="btx.action == 'sent'" translate>Sent</span>
+            <span class="label tu gray radius" ng-show="btx.action == 'moved'" translate>Moved</span>
+            <span class="label tu warning radius" ng-show="btx.action == 'invalid'" translate>Invalid</span>
+          </div>
+
+          <div class="large-4 medium-4 small-4 columns">
+            <span class="size-16">
+              <span ng-if="btx.action == 'received'">+</span>
+              <span ng-if="btx.action == 'sent'">-</span>
+              <span  class="size-12" ng-if="btx.action == 'invalid'" translate>
+              (possible double spend)
+              </span>
+              <span  ng-if="btx.action != 'invalid'">
+              {{btx.amountStr}}
+              </span>
+            </span>
+          </div>
+          <div class="large-4 medium-4 small-4 columns text-right">
+            <div class="m5t size-12 text-gray">
+              <time ng-if="btx.time">{{btx.time * 1000 | amTimeAgo}}</time>
+              <span translate class="text-warning"
+                ng-show="!btx.time && (!btx.confirmations || btx.confirmations == 0)">
+                Unconfirmed
+              </span>
+            </div>
+          </div>
+          <div class="large-1 medium-1 small-1 columns text-right">
+            <i class="icon-arrow-right3 size-18"></i>
+          </div>
+          <div class="size-14 text-gray columns m5t" ng-if="btx.message || btx.addressTo">
+            <div ng-show="btx.message">{{btx.message}}</div>
+            <div ng-show="!btx.message">
+              <span translate>To</span>: {{index.addressbook[btx.addressTo] || btx.addressTo}}
+            </div>
+          </div>
+        </div>
+
+        <div class="row m20t text-center" ng-show="index.historyRendering">
+          <div class="columns large-12 medium-12 small-12">
+            <div class="spinner">
+              <div class="rect1"></div>
+              <div class="rect2"></div>
+              <div class="rect3"></div>
+              <div class="rect4"></div>
+              <div class="rect5"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row m20t">
+            <button type="submit" class="outline round small expand m0" ng-show="index.historyShowShowAll" ng-click="index.showAllHistory()" ng-style="{'background-color':index.backgroundColor}" translate>
+              <i class="icon-arrow-down4 ng-scope"></i>
+              Show all
+            </button>
+          </div>
+      </div>
+
+
       <div class="extra-margin-bottom"></div>
     </div> <!-- END WalletHome -->
 
@@ -393,117 +501,6 @@
       </div>
       <div class="extra-margin-bottom"></div>
     </div> <!-- END Send -->
-
-    <!--
-
-    history
-
-    -->
-    <div id="history" class="history tab-view">
-      <div class="row m20t" ng-show="!index.txHistory[0] && !index.updatingTxHistory[index.walletId]">
-        <div class="large-12 columns">
-          <div class="oh text-center">
-            <span ng-show="index.txHistoryError && !index.notAuthorized" ng-click='index.updateTxHistory()'>
-              <p class="size-12 m10b db text-gray" translate>Could not fetch transaction history</p>
-              <button class="outline round light-gray tiny" translate>Tap to retry</button>
-            </span>
-            <span ng-if="!index.txHistoryError" translate>
-              No transactions yet
-            </span>
-          </div>
-        </div>
-      </div>
-      <div ng-show="index.updatingTxHistory[index.walletId]">
-        <div ng-show="index.txProgress > 6" class="row m20t text-center">
-          <div class="circle-icon">
-            <img src="img/icon-sync.svg" alt="sync" width="70">
-          </div>
-          <div translate class="size-12 text-gray m20t small-10 small-centered columns">
-            Initial transaction history synchronization can take some minutes for wallets with many transactions.
-            <b> Please stand by.</b>
-          </div>
-          <div class="small-8 small-centered columns line-b p10 m20b"></div>
-          <div class="columns large-12 medium-12 small-12 m10b">
-            <div class="spinner">
-              <div class="rect1"></div>
-              <div class="rect2"></div>
-              <div class="rect3"></div>
-              <div class="rect4"></div>
-              <div class="rect5"></div>
-            </div>
-          </div>
-          <div class="size-14 text-gray m20t">
-            <b>{{index.txProgress}}</b> <br>
-            <span translate>Transactions Downloaded</span>
-          </div>
-        </div>
-      </div>
-
-      <div ng-show="index.txHistory[0]">
-        <div ng-repeat="btx in index.txHistory"
-          ng-click="home.openTxModal(btx)"
-          class="row collapse last-transactions-content">
-          <div class="large-3 medium-3 small-3 columns">
-            <span class="label tu radius" ng-show="btx.action == 'received'"
-              ng-style="{'background-color':index.backgroundColor}" translate>Received</span>
-            <span class="label tu gray radius" ng-show="btx.action == 'sent'" translate>Sent</span>
-            <span class="label tu gray radius" ng-show="btx.action == 'moved'" translate>Moved</span>
-            <span class="label tu warning radius" ng-show="btx.action == 'invalid'" translate>Invalid</span>
-          </div>
-
-          <div class="large-4 medium-4 small-4 columns">
-            <span class="size-16">
-              <span ng-if="btx.action == 'received'">+</span>
-              <span ng-if="btx.action == 'sent'">-</span>
-              <span  class="size-12" ng-if="btx.action == 'invalid'" translate>
-              (possible double spend)
-              </span>
-              <span  ng-if="btx.action != 'invalid'">
-              {{btx.amountStr}}
-              </span>
-            </span>
-          </div>
-          <div class="large-4 medium-4 small-4 columns text-right">
-            <div class="m5t size-12 text-gray">
-              <time ng-if="btx.time">{{btx.time * 1000 | amTimeAgo}}</time>
-              <span translate class="text-warning"
-                ng-show="!btx.time && (!btx.confirmations || btx.confirmations == 0)">
-                Unconfirmed
-              </span>
-            </div>
-          </div>
-          <div class="large-1 medium-1 small-1 columns text-right">
-            <i class="icon-arrow-right3 size-18"></i>
-          </div>
-          <div class="size-14 text-gray columns m5t" ng-if="btx.message || btx.addressTo">
-            <div ng-show="btx.message">{{btx.message}}</div>
-            <div ng-show="!btx.message">
-              <span translate>To</span>: {{index.addressbook[btx.addressTo] || btx.addressTo}}
-            </div>
-          </div>
-        </div>
-
-        <div class="row m20t text-center" ng-show="index.historyRendering">
-          <div class="columns large-12 medium-12 small-12">
-            <div class="spinner">
-              <div class="rect1"></div>
-              <div class="rect2"></div>
-              <div class="rect3"></div>
-              <div class="rect4"></div>
-              <div class="rect5"></div>
-            </div>
-          </div>
-        </div>
-
-        <div class="row m20t">
-            <button type="submit" class="outline round small expand m0" ng-show="index.historyShowShowAll" ng-click="index.showAllHistory()" ng-style="{'background-color':index.backgroundColor}" translate>
-              <i class="icon-arrow-down4 ng-scope"></i>
-              Show all
-            </button>
-          </div>
-      </div>
-      <div class="extra-margin-bottom"></div>
-    </div> <!-- END History -->
 
     <div id="{{view.id}}" class="{{view.class}} tab-view" ng-repeat="view in index.addonViews" ng-include="view.template">
     </div>
