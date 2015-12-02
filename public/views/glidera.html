@@ -105,13 +105,13 @@
   </div>
 
   <div ng-if="index.glideraToken && index.glideraPermissions">
-    <div class="m20v text-center">
+    <div class="p20v text-center white">
       <img src="img/glidera-logo.png" ng-click="index.updateGlidera(index.glideraToken, index.glideraPermissions)" width="100">
     </div>
     <div class="sub-header"  ng-click="$root.go('preferencesGlidera')">
       <div class="left">
         <div ng-show="!index.glideraPersonalInfo && !index.glideraEmail">
-          <h4 class="title p0i m10t m0">Preferences</h4>
+          Preferences
         </div>
         <div ng-show="index.glideraPersonalInfo" class="size-12">
           <b>
@@ -170,7 +170,7 @@
     </ul>
 
     <div ng-show="index.glideraPermissions.transaction_history">
-      <h4 class="title m0">Activity</h4>
+      <h4>Activity</h4>
       <div ng-show="index.glideraTxs.length == 0 && !index.glideraLoadingHistory"
         class="size-12 p10 text-center text-gray">
         No activity in your account
