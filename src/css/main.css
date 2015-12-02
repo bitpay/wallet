@@ -46,7 +46,7 @@ h4 {
 }
 
 .send h4.title, .glidera h4.title {
-  box-shadow: 0px 1px 3px 0px rgba(0,0,0,0.10);
+  border-bottom: 1px solid #E2E7ED;
   background: #fff;
   padding: 0.8rem;
   color: #4B6178;
@@ -525,6 +525,7 @@ ul.manage li {
 .p20h {padding: 0 20px;}
 .p20v {padding: 20px 0;}
 .p20b {padding-bottom: 20px;}
+.p25b {padding-bottom: 25px;}
 .p25l {padding-left: 25px;}
 .p15 {padding:15px;}
 .p20 {padding:20px;}
@@ -625,7 +626,7 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 .header-modal {
-  box-shadow: 0px 1px 3px 0px rgba(0,0,0,0.10);
+  border-bottom: 1px solid #E2E7ED;
   background: #fff;
   width: 100%;
   padding: 0.8rem;
