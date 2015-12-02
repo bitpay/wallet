@@ -1175,6 +1175,21 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
 }
 
 /*/////////////////////////////////////////////////*/
+.terms {
+  padding: 0.8rem;
+}
+
+.terms ul {
+  font-size: 0.8rem;
+  text-align: justify;
+  margin-left: 0;
+}
+
+.terms li {
+  list-style-type:none;
+  display: inline;
+}
+
 .scrollArea {
   height: 280px;
   overflow: scroll;
