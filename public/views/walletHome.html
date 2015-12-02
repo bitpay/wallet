@@ -72,7 +72,7 @@
     -->
 
     <div id="walletHome" class="walletHome tab-view tab-in">
-      <div class="oh">
+      <div class="oh pr">
         <div class="amount" ng-style="{'background-color':index.backgroundColor}">
           <div ng-if="!index.anyOnGoingProcess && !index.notAuthorized">
             <div ng-show="index.updateError" ng-click='index.openWallet(); index.updateTxHistory()'>
@@ -110,10 +110,7 @@
         <div class="pr columns line-b">
           <div class="avatar-wallet left"
             ng-style="{'background-color':index.backgroundColor}">{{ (index.alias || index.walletName) | limitTo: 1}}
-          </div>
-          <div class="camera-icon" ng-show="index.isComplete">
-            <qr-scanner on-scan="home.onQrCodeScanned(data)" before-scan="home.openSendScreen()"></qr-scanner> 
-          </div>
+          </div> 
           <div class="wallet-info">
             <div ng-show="index.isShared">
               <p class="m0">
@@ -132,6 +129,9 @@
               </div>
             </div>
           </div>
+        </div>
+        <div class="camera-icon" ng-show="index.isComplete">
+          <qr-scanner on-scan="home.onQrCodeScanned(data)" before-scan="home.openSendScreen()"></qr-scanner> 
         </div>
       </div> <!-- oh -->
 
@@ -265,10 +265,10 @@
 
     -->
     <div id="send" class="send tab-view">
-      <div class="pr">
+      <div class="pr p20b">
         <h4 class="title m0">
           <available-balance></available-balance>
-          <a class="db"
+          <a 
             ng-if="index.feeToSendMaxStr && index.availableBalanceSat > 0 && !home.blockUx && !home.lockAmount"
             ng-click="home.sendAll(index.availableMaxBalance, index.feeToSendMaxStr)"
              translate> Send All

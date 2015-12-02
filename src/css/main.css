@@ -54,7 +54,6 @@ h4 {
   font-size: 0.75rem;
   text-align: center;
   line-height: 1.5;
-  min-height: 62px;
 }
 
 h4.title a {
@@ -524,6 +523,7 @@ ul.manage li {
 .p5h {padding: 0 5px;}
 .p20h {padding: 0 20px;}
 .p20v {padding: 20px 0;}
+.p20b {padding-bottom: 20px;}
 .p25l {padding-left: 25px;}
 .p15 {padding:15px;}
 .p20 {padding:20px;}
