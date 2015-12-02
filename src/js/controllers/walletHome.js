@@ -126,6 +126,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       $scope.selectedAddressbook = {};
       $scope.newAddress = address;
       $scope.walletName = fc.credentials.walletName;
+      $scope.color = fc.backgroundColor;
       $scope.addressbook = {
         'address': ($scope.newAddress || ''),
         'label': ''
@@ -688,7 +689,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
     // on touchdown elements
     $log.debug('Binding touchstart elements...');
-    ['hamburger', 'menu-walletHome', 'menu-send', 'menu-receive', 'menu-history'].forEach(function(id) {
+    ['hamburger', 'menu-walletHome', 'menu-send', 'menu-receive'].forEach(function(id) {
       var e = document.getElementById(id);
       if (e) e.addEventListener('touchstart', function() {
         try {
