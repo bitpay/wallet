@@ -219,16 +219,19 @@ _:-ms-fullscreen, :root .main {
 }
 
 .camera-icon a {
+  background: #4B6178;
+  box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.50);
   color: #fff;
   display: block;
   position: absolute;
-  background: #333;
-  border: 1px solid #666;
   padding: 15px 17px;
   border-radius: 100%;
-  top: -43px;
+  top: -40px;
   right: 15px;
-  opacity: 0.7;
+}
+
+.send .camera-icon a {
+  top: 32px;
 }
 
 .copayers {
