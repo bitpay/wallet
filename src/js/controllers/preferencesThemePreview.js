@@ -9,4 +9,13 @@ angular.module('copayApp.controllers').controller('preferencesThemePreviewContro
     });
   };
 
+  this.canDeleteTheme = function(themeId) {
+		return (themeService.getPublishedThemeId() != themeId) && themeService.getCatalogThemeById(themeId).canDelete();
+  };
+
+  this.delete = function(themeId) {
+    themeService.deleteTheme(themeId, function() {
+      $state.go('preferencesTheme');
+    });
+  };
 });

@@ -1,34 +1,34 @@
 <div 
   class="topbar-container" 
   ng-include="'views/includes/topbar.html'"
-  ng-init="titleSection='Skin'; goBackToState = 'preferences'; useTheme = false; showPlus = true; plusState = 'preferencesSkinDiscovery'; showLayout = true;">
+  ng-init="titleSection='Skin'; goBackToState = 'preferences'; useTheme = false; showPlus = true; plusState = 'preferencesSkinDiscovery'; showLayout = true; layoutEvent='skinLayout'">
 </div>
-<div class="content preferences" ng-controller="preferencesSkinController as p">
+<div class="content preferences white" ng-controller="preferencesSkinController as p">
 
   <!-- Grid layout -->
-  <div ng-show="skinGalleryLayout == 'grid'">
-	  <div class="columns large-2 medium-3 small-4 p1" ng-repeat="s in p.skins" ng-click="p.save($index)" ng-style="{'color': theme.view.galleryOverlayColor}">
-      <img ng-src="{{s.header.galleryImage}}"/>
-      <i class="fi-eye gallery-grid-detail-button"  ng-click="p.preview($index)"></i>
+  <div class="row" style="padding-left: 1px;" ng-show="p.skinGalleryLayout == 'grid'">
+	  <div class="columns large-2 medium-3 small-4 end" style="padding: 1px 1px 1px 0;" ng-repeat="s in p.skins">
+      <img ng-src="{{s.header.galleryImage}}" ng-click="p.save($index)"/>
+      <i class="fi-info gallery-grid-action-button"  ng-click="p.preview($index)"></i>
       <i class="fi-check gallery-grid-item-selected" ng-show="$root.skin.header.name == s.header.name"></i>
       <div class="gallery-grid-text">{{s.header.name}}</div>
 	  </div>
   </div>
 
   <!-- List layout -->
-  <div ng-show="skinGalleryLayout == 'list'">
-    <ul class="list-style-none">
+  <div ng-show="p.skinGalleryLayout == 'list'">
+    <ul class="no-bullet m0">
       <li class="p0i oa" ng-repeat="s in p.skins">
 
         <div class="gallery-list-accessory-container" ng-click="p.preview($index)">
-          <i class="fi-check size-16 p10r" style="vertical-align: 4px" ng-show="$root.skin.header.name == s.header.name"></i>
-          <i class="fi-info size-24" style="vertical-align: 1px"></i>
-          <i class="icon-arrow-right3 size-24" style="vertical-align: -1px"></i>
+          <i class="fi-check size-16 p10r" style="vertical-align: 3px" ng-show="$root.skin.header.name == s.header.name"></i>
+          <i class="fi-info size-24"></i>
         </div>
 
         <div class="gallery-list-container" ng-click="p.save($index)">
           <img class="gallery-list-image" ng-src="{{s.header.galleryImage}}"/>
-          <div>{{s.header.name}}</div>
+          <div class="gallery-list-text-lg">{{s.header.name}}</div>
+          <div class="gallery-list-text-sm text-italic">{{s.header.author}} - Version {{s.header.version}}, {{s.header.date}}</div>
         </div>
 
       </li>
@@ -36,26 +36,26 @@
   </div>
 
   <!-- List detail layout -->
-  <div ng-show="skinGalleryLayout == 'list-detail'">
-    <ul class="list-style-none">
+  <div ng-show="p.skinGalleryLayout == 'list-detail'">
+    <ul class="no-bullet m0">
       <li class="p0i oa" ng-repeat="s in p.skins">
 
         <div class="gallery-listd-accessory-container" ng-click="p.preview($index)">
-          <i class="fi-check size-16 p10r" style="vertical-align: 4px" ng-show="$root.skin.header.name == s.header.name"></i>
-          <i class="fi-info size-24" style="vertical-align: 1px"></i>
-          <i class="icon-arrow-right3 size-24" style="vertical-align: -1px"></i>
+          <i class="fi-check size-16 p10r" style="vertical-align: 3px" ng-show="$root.skin.header.name == s.header.name"></i>
+          <i class="fi-check size-16 p10r" style="vertical-align: 3px; color: white" ng-show="$root.skin.header.name != s.header.name"></i>
+          <i class="fi-info size-24"></i>
         </div>
 
         <div class="gallery-listd-container" ng-click="p.save($index)">
           <img class="gallery-listd-image" ng-src="{{s.header.galleryImage}}"/>
           <div class="gallery-listd-text-lg">{{s.header.name}}</div>
           <div class="gallery-listd-text-sm">{{s.header.description}}</div>
+          <div class="gallery-listd-text-sm text-italic">{{s.header.author}} - Version {{s.header.version}}, {{s.header.date}}</div>
         </div>
 
       </li>
     </ul>
   </div>
 
-</div>
 </div>
 <div class="extra-margin-bottom"></div>

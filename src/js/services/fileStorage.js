@@ -115,8 +115,13 @@ angular.module('copayApp.services')
         }, function(fileEntry) {
           // Create a FileWriter object for our FileEntry, k (key).
           fileEntry.createWriter(function(fileWriter) {
-
+            var truncated = false;
             fileWriter.onwriteend = function(e) {
+              if (!truncated) {
+                  truncated = true;
+                  this.truncate(this.position);
+                  return;
+              }
               $log.debug('Write completed.');
               return cb();
             };

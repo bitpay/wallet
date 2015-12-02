@@ -1,17 +1,27 @@
 <div ng-controller="preferencesSkinDiscoveryPreviewController as p">
   <img style="size=cover" src="{{discoveredSkinHeaders[discoveredSkinId].previewImage}}"/>
-  <div class="preview-overlay">
-    <div class="preview-overlay-content">
-      <span translate>Skin Preview</span>
+
+  <div class="onGoingProcess" ng-show="p.inProgress">
+    <div class="onGoingProcess-content" ng-style="{'background':skin.view.progressBackground, 'color':skin.view.progressTextColor}">
+      <div class="spinner">
+        <div class="rect1"></div>
+        <div class="rect2"></div>
+        <div class="rect3"></div>
+        <div class="rect4"></div>
+        <div class="rect5"></div>
+      </div>
+      <span translate>{{p.progressMessage}}</span>
     </div>
   </div>
+
   <div class="bottom-bar preview-button-bar">
-    <a class="preview-button-left columns large-6 medium-6 small-6 text-center" ng-click="$root.go('preferencesSkinDiscovery')">
-      <span class="text-close">{{'Close'|translate}}</span>
+    <a class="preview-button columns large-6 medium-6 small-6 text-center" ng-click="$root.go('preferencesSkinDiscovery')">
+      <i class="fi-x size-24"></i>
     </a>
     <a class="preview-button columns large-6 medium-6 small-6 text-center" ng-click="p.import(discoveredSkinId)">
-      <span class="text-close">{{'Import'|translate}}</span>
+      <i class="fi-download size-24"></i>
     </a>
   </div>
+
 </div>
 <div class="extra-margin-bottom"></div>

@@ -816,53 +816,91 @@ textarea:focus
 }
 
 .gallery-grid-text {
-  line-height: 1.2;
+  line-height: 30px;
   position: absolute;
-  bottom: 15px;
+  bottom: 0;
   text-align: center;
-  width: 100%;
+  width: 99%;
   padding: 0 10px 0 10px;
-  font-size: 21px;
-  font-weight: 200;
+  font-size: 14px;
+  font-weight: 400;
+  color: #FFFFFF;
+  background-color: rgba(0,0,0,0.25);
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 }
 
-.gallery-grid-detail-button {
-  padding: 5px 30px 30px 10px;
+.gallery-grid-action-button {
   position: absolute;
-  top: 0;
-  float: left !important;
+  top: 5px;
+  right: 5px;
   font-size: 21px;
+  color: #FFFFFF;
+  background-color: rgba(0,0,0,0.25);
+  border-radius: 3px;
+  width: 40px;
+  height: 40px;
+  text-align: center;
+  line-height: 40px;
 }
 
 .gallery-grid-item-selected {
-  padding-top: 5px;
   position: absolute;
-  top: 0;
-  right: 10px;  
-  float: right !important;
+  top: 5px;
+  left: 5px;
   font-size: 21px;
-}
-
-.list-style-none {
-  list-style-type: none;
+  color: #FFFFFF;
+  background-color: rgba(0,0,0,0.25);
+  border-radius: 3px;
+  width: 40px;
+  height: 40px;
+  text-align: center;
+  line-height: 40px;
 }
 
 .gallery-list-image {
   float: left !important;
-  margin: 10px 15px 10px 0;
+  margin: 10px 10px 10px 15px;
   width:50px;
   height:50px;
 }
 
 .gallery-list-container {
-  line-height: 70px;
+  height: 70px;
 }
 
 .gallery-list-accessory-container {
-  padding: 0 10px 0 0;
-  line-height: 65px;
+  padding: 4px 20px 0 0;
+  line-height: 62px;
   color: #8597A7;
   float: right !important;
+}
+
+.gallery-list-accessory-container2 {
+  padding: 5px 5px 0 0;
+  color: #8597A7;
+  float: right !important;
+}
+
+.gallery-list-text-lg {
+  padding-top: 16px;
+}
+
+.gallery-list-text-sm {
+  line-height: 12px;
+  font-size: 10px;
+  overflow: hidden; 
+  text-overflow: ellipsis; 
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+}
+
+.gallery-list-action-bar {
+  color: #8597A7;
+  width: 100%;
+  text-align: left;
 }
 
 .gallery-listd-container {
@@ -871,7 +909,7 @@ textarea:focus
 
 .gallery-listd-accessory-container {
   margin: 0 0 0 10px;
-  padding: 0 10px 0 10px;
+  padding: 0 20px 0 10px;
   height: 120px;
   line-height: 120px;
   color: #8597A7;
@@ -880,7 +918,7 @@ textarea:focus
 
 .gallery-listd-image {
   float: left !important;
-  margin: 10px 15px 10px 0;
+  margin: 10px 15px 10px 15px;
   width:100px;
   height:100px;
 }
@@ -891,13 +929,12 @@ textarea:focus
 }
 
 .gallery-listd-text-sm {
-  padding-top: 5px;
-  line-height: 1.25;
+  line-height: 12px;
   font-size: 10px;
   overflow: hidden; 
   text-overflow: ellipsis; 
   display: -webkit-box;
-  -webkit-line-clamp: 6;
+  -webkit-line-clamp: 5;
   -webkit-box-orient: vertical;
 }
 

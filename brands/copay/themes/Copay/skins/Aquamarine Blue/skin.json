@@ -3,7 +3,7 @@
     "schemaVersion": "1",
     "version": "1.0",
     "name": "Aquamarine Blue",
-    "description": "this is a long descript for this really cool skin which you should put on your wallet.  It only takes a few sseconds to add the skin and you will really like it. this is a long descript for this really cool skin which you should put on your wallet.  It only takes a few sseconds to add the skin and you will really like it.this is a long descript for this really cool skin which you should put on your wallet.  It only takes a few sseconds to add the skin and you will really like it.",
+    "description": "",
     "author": "BitPay, Inc.",
     "date": "11/1/2015",
     "galleryImage": "<resource-0>",
@@ -11,6 +11,9 @@
     "product": {
       "id": "0",
       "price": "$0.00"
+    },
+    "permissions": {
+      "delete": false
     }
   },
   "resources": [

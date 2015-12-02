@@ -1,7 +1,7 @@
 <div 
   class="topbar-container" 
   ng-include="'views/includes/topbar.html'"
-  ng-init="titleSection='Discover new skins'; goBackToState = 'preferencesSkin'; useTheme = false">
+  ng-init="titleSection='Discover new skins'; goBackToState = 'preferencesSkin'; useTheme = false; showLayout = true; layoutEvent='skinLayout'">
 </div>
 <div class="content preferences" ng-controller="preferencesSkinDiscoveryController as p">
 
@@ -14,20 +14,61 @@
         <div class="rect4"></div>
         <div class="rect5"></div>
       </div>
-      <span translate>Searching for skins...</span>
+      <span translate>{{p.progressMessage}}</span>
     </div>
   </div>
 
   <div class="p20v  text-center" ng-show="!p.skinsFound">
     <span translate>No Skins Found</span>
   </div>
-	<div style="padding: 6px;" ng-show="discoveredSkinHeaders.length > 0">
-	  <div class="columns large-2 medium-3 small-4" style="padding: 6px;" ng-repeat="sh in discoveredSkinHeaders track by $index" ng-click="p.preview($index)">
-      <div class="img-container">
-        <img class="top" src="http://www.lighthousecatholicmedia.org/images/cdclub_free_badge.gif" ng-show="{{sh.product.price == '$0.00'}}">
-        <img class="bottom" ng-src="{{sh.galleryImage}}">
-      </div>
-	  </div>
+
+  <!-- Grid layout -->
+  <div class="row" style="padding-left: 1px;" ng-show="(discoveredSkinHeaders.length > 0) && (p.skinGalleryLayout == 'grid')">
+    <div class="columns large-2 medium-3 small-4 end" style="padding: 1px 1px 1px 0;" ng-repeat="sh in discoveredSkinHeaders track by $index">
+      <img ng-src="{{sh.galleryImage}}" ng-click="p.preview($index)"/>
+      <i class="fi-download gallery-grid-action-button" ng-click="p.import($index)"></i>
+      <div class="gallery-grid-text">{{sh.name}}</div>
+    </div>
   </div>
+
+  <!-- List layout -->
+  <div ng-show="p.skinGalleryLayout == 'list'">
+    <ul class="no-bullet m0">
+      <li class="p0i oa" ng-repeat="sh in discoveredSkinHeaders track by $index">
+
+        <div class="gallery-list-accessory-container" ng-click="p.import($index)">
+          <i class="fi-download size-24"></i>
+        </div>
+
+        <div class="gallery-list-container" ng-click="p.preview($index)">
+          <img class="gallery-list-image" ng-src="{{sh.galleryImage}}"/>
+          <div class="gallery-list-text-lg">{{sh.name}}</div>
+          <div class="gallery-list-text-sm text-italic">{{sh.author}} - Version {{sh.version}}, {{sh.date}}</div>
+        </div>
+
+      </li>
+    </ul>
+  </div>
+
+  <!-- List detail layout -->
+  <div ng-show="p.skinGalleryLayout == 'list-detail'">
+    <ul class="no-bullet m0">
+      <li class="p0i oa" ng-repeat="sh in discoveredSkinHeaders track by $index">
+
+        <div class="gallery-listd-accessory-container" ng-click="p.import($index)">
+          <i class="fi-download size-24"></i>
+        </div>
+
+        <div class="gallery-listd-container" ng-click="p.preview($index)">
+          <img class="gallery-listd-image" ng-src="{{sh.galleryImage}}"/>
+          <div class="gallery-listd-text-lg">{{sh.name}}</div>
+          <div class="gallery-listd-text-sm">{{sh.description}}</div>
+          <div class="gallery-listd-text-sm text-italic">{{sh.author}} - Version {{sh.version}}, {{sh.date}}</div>
+        </div>
+
+      </li>
+    </ul>
+  </div>
+
 </div>
 <div class="extra-margin-bottom"></div>
