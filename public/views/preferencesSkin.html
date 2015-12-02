@@ -1,7 +1,7 @@
 <div 
   class="topbar-container" 
   ng-include="'views/includes/topbar.html'"
-  ng-init="titleSection='Skin'; goBackToState = 'preferences'; useTheme = false; showPlus = true; plusState = 'preferencesSkinDiscovery'; showLayout = true; layoutEvent='skinLayout'">
+  ng-init="titleSection='Skin'; goBackToState = 'preferences'; useTheme = false; showPlus = index.brand.features.theme.skinDiscovery.enabled; plusState = 'preferencesSkinDiscovery'; showLayout = true; layoutEvent='skinLayout'">
 </div>
 <div class="content preferences white" ng-controller="preferencesSkinController as p">
 
