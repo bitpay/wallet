@@ -151,7 +151,7 @@ _:-ms-fullscreen, :root .main {
   width: 100%;
   z-index: 5;
   background: #FFFFFF;
-  box-shadow: 0px -1px 3px 0px rgba(0,0,0,0.20);
+  border-top: 1px solid #E2E7ED;
 }
 
 .second-bottom-bar {
@@ -172,7 +172,6 @@ _:-ms-fullscreen, :root .main {
   width: 100%;
   text-align: center;
   padding: 1.5rem 1rem 1.5rem 1rem;
-  margin-bottom: 11px;
   color: #fff;
   height: 175px;
 }
@@ -196,12 +195,18 @@ _:-ms-fullscreen, :root .main {
   height:100%;
 }
 
+.avatar-name {
+  position: relative;
+  padding-top: 10px;
+  background-color: #fff;
+}
+
 .walletHome .avatar-wallet {
   padding: 0.5rem;
   width: 75px;
   height: 75px;
   position: absolute;
-  top: -33px;
+  top: -22px;
   font-size: 2.2rem;
   border: 3px solid #fff;
   background: #1ABC9C;
