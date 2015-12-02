@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('sellGlideraController', 
-  function($scope, $timeout, $log, $modal, configService, profileService, addressService, feeService, glideraService, bwsError, lodash, isChromeApp, animationService) {
+  function($scope, $timeout, $log, $modal, configService, profileService, addressService, glideraService, bwsError, lodash, isChromeApp, animationService) {
 
     var self = this;
     var config = configService.getSync();
@@ -11,7 +11,6 @@ angular.module('copayApp.controllers').controller('sellGlideraController',
     this.error = null;
     this.loading = null;
     this.currentSpendUnconfirmed = config.wallet.spendUnconfirmed;
-    this.currentFeeLevel = config.wallet.settings.feeLevel || 'normal';
     var fc;
 
     var otherWallets = function(testnet) {
@@ -123,7 +122,7 @@ angular.module('copayApp.controllers').controller('sellGlideraController',
       }, 100);
     };
 
-    this.createTx = function(token, permissions, twoFaCode) {
+    this.createTx = function(token, permissions, twoFaCode, currentFeePerKb) {
       var self = this;
       self.error = null;
 
@@ -143,65 +142,62 @@ angular.module('copayApp.controllers').controller('sellGlideraController',
             }
             var amount = parseInt((self.sellPrice.qty * 100000000).toFixed(0));
 
-            feeService.getCurrentFeeValue(self.currentFeeLevel, function(err, feePerKb) {
-              if (err) $log.debug(err);
-              fc.sendTxProposal({
-                toAddress: sellAddress,
-                amount: amount,
-                message: 'Glidera transaction',
-                customData: {'glideraToken': token},
-                payProUrl: null,
-                feePerKb: feePerKb,
-                excludeUnconfirmedUtxos: self.currentSpendUnconfirmed ? false : true
-              }, function(err, txp) {
-                if (err) {
-                  profileService.lockFC();
-                  $log.error(err);
-                  $timeout(function() {
-                    self.loading = null;
-                    self.error = bwsError.msg(err, 'Error');
-                  }, 1);
-                  return;
-                }
-
-                if (!fc.canSign()) {
+            fc.sendTxProposal({
+              toAddress: sellAddress,
+              amount: amount,
+              message: 'Glidera transaction',
+              customData: {'glideraToken': token},
+              payProUrl: null,
+              feePerKb: currentFeePerKb,
+              excludeUnconfirmedUtxos: self.currentSpendUnconfirmed ? false : true
+            }, function(err, txp) {
+              if (err) {
+                profileService.lockFC();
+                $log.error(err);
+                $timeout(function() {
                   self.loading = null;
-                  $log.info('No signing proposal: No private key');
-                  return;
-                }
+                  self.error = bwsError.msg(err, 'Error');
+                }, 1);
+                return;
+              }
 
-                _signTx(txp, function(err, txp, rawTx) {
-                  profileService.lockFC();
-                  if (err) {
+              if (!fc.canSign()) {
+                self.loading = null;
+                $log.info('No signing proposal: No private key');
+                return;
+              }
+
+              _signTx(txp, function(err, txp, rawTx) {
+                profileService.lockFC();
+                if (err) {
+                  self.loading = null;
+                  self.error = err;
+                  $scope.$apply();
+                }
+                else {
+                  var data = {
+                    refundAddress: refundAddress,
+                    signedTransaction: rawTx,
+                    priceUuid: self.sellPrice.priceUuid,
+                    useCurrentPrice: self.sellPrice.priceUuid ? false : true,
+                    ip: null 
+                  };
+                  glideraService.sell(token, twoFaCode, data, function(err, data) {
                     self.loading = null;
-                    self.error = err;
-                    $scope.$apply();
-                  }
-                  else {
-                    var data = {
-                      refundAddress: refundAddress,
-                      signedTransaction: rawTx,
-                      priceUuid: self.sellPrice.priceUuid,
-                      useCurrentPrice: self.sellPrice.priceUuid ? false : true,
-                      ip: null 
-                    };
-                    glideraService.sell(token, twoFaCode, data, function(err, data) {
-                      self.loading = null;
-                      if (err) {
-                        self.error = err;
-                        fc.removeTxProposal(txp, function(err, txpb) {
-                          $timeout(function() {
-                            $scope.$emit('Local/GlideraError');
-                          }, 100);
-                        });
-                      }
-                      else {
-                        self.success = data;
-                        $scope.$emit('Local/GlideraTx');
-                      }
-                    });
-                  }
-                });
+                    if (err) {
+                      self.error = err;
+                      fc.removeTxProposal(txp, function(err, txpb) {
+                        $timeout(function() {
+                          $scope.$emit('Local/GlideraError');
+                        }, 100);
+                      });
+                    }
+                    else {
+                      self.success = data;
+                      $scope.$emit('Local/GlideraTx');
+                    }
+                  });
+                }
               });
             });
           });
