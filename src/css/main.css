@@ -45,7 +45,7 @@ h4 {
   font-size: 0.875rem;
 }
 
-.send h4.title {
+.send h4.title, .glidera h4.title {
   box-shadow: 0px 1px 3px 0px rgba(0,0,0,0.10);
   background: #fff;
   padding: 0.8rem;
@@ -74,7 +74,7 @@ h4.title a {
 }
 
 
-.preferences h4 {
+.preferences h4, .modal-content h4, .walletHome h4 {
   background: #F6F7F9;
   padding: 25px 0px 5px 20px;
   text-transform: uppercase;
@@ -85,7 +85,7 @@ h4.title a {
 }
 
 
-.preferences ul {
+.preferences ul, .modal-content ul {
   font-size:14px;
   background: white;
 }
@@ -329,6 +329,7 @@ ul.tx-copayers {
 }
 
 .last-transactions-content {
+  background: #fff;
   padding: 1.5rem 1rem;
   cursor:pointer;
   border-bottom: 1px solid #E4E8EC;
@@ -623,6 +624,8 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 .header-modal {
+  box-shadow: 0px 1px 3px 0px rgba(0,0,0,0.10);
+  background: #fff;
   width: 100%;
   padding: 0.8rem;
   position: relative;
