@@ -113,10 +113,11 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   var cancel_msg = gettextCatalog.getString('Cancel');
   var confirm_msg = gettextCatalog.getString('Confirm');
 
-  $scope.openDestinationAddressModal = function(wallets, address) {
+  this.openDestinationAddressModal = function(wallets, address) {
     $rootScope.modalOpened = true;
     var fc = profileService.focusedClient;
-    self.resetForm();
+    self.lockAddress = false;
+    self._address = null;
 
     var ModalInstanceCtrl = function($scope, $modalInstance) {
       $scope.wallets = wallets;
@@ -969,7 +970,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     });
   };
 
-  this.setForm = function(to, amount, comment, feeRate) {
+  this.setForm = function(to, amount, comment) {
     var form = $scope.sendForm;
     if (to) {
       form.address.$setViewValue(to);
@@ -990,10 +991,6 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       form.comment.$isValid = true;
       form.comment.$render();
     }
-
-    if (feeRate) {
-      form.feeRate = feeRate;
-    }
   };
 
 
@@ -1008,10 +1005,6 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     this._amount = this._address = null;
 
     var form = $scope.sendForm;
-
-    if (form && form.feeRate) {
-      form.feeRate = null;
-    }
 
     if (form && form.amount) {
       form.amount.$pristine = true;
@@ -1262,11 +1255,11 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     return actions.hasOwnProperty('create');
   };
 
-  this._doSendAll = function(amount, feeRate) {
-    this.setForm(null, amount, null, feeRate);
+  this._doSendAll = function(amount) {
+    this.setForm(null, amount, null);
   };
 
-  this.sendAll = function(amount, feeStr, feeRate) {
+  this.sendAll = function(amount, feeStr) {
     var self = this;
     var msg = gettextCatalog.getString("{{fee}} will be deducted for bitcoin networking fees", {
       fee: feeStr
@@ -1274,7 +1267,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
     confirmDialog.show(msg, function(confirmed) {
       if (confirmed) {
-        self._doSendAll(amount, feeRate);
+        self._doSendAll(amount);
       } 
     });
   };
