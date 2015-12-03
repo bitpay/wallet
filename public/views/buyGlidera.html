@@ -35,8 +35,8 @@
   <div class="row m20t">
     <div class="columns">
 
-      <div class="box-notification" ng-show="index.glideraLimits.transactDisabledPendingFirstTransaction">
-        <span class="text-warning size-14">
+      <div class="box-notification m20b" ng-show="index.glideraLimits.transactDisabledPendingFirstTransaction">
+        <span class="text-warning">
           This operation was disabled because you have a pending first transaction
         </span>
       </div>
@@ -117,8 +117,8 @@
           </p>
         </div>
       </div>
-      <div class="box-notification" ng-show="buy.error && !buy.success">
-        <span class="text-warning size-14">
+      <div class="box-notification m20b" ng-show="buy.error && !buy.success">
+        <span class="text-warning">
           {{buy.error}}
         </span>
       </div>
