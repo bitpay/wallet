@@ -330,7 +330,7 @@ ul.tx-copayers {
 
 .last-transactions-content {
   background: #fff;
-  padding: 1.5rem 1rem;
+  padding: 0.8rem 1rem;
   cursor:pointer;
   border-bottom: 1px solid #E4E8EC;
 }
@@ -340,6 +340,12 @@ ul.tx-copayers {
   width: 100%;
   padding: 1rem;
   text-align: center;
+}
+
+.icon-circle-active {
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
 }
 
 .icon-sign {
@@ -1419,6 +1425,10 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
   text-align: center;
   font-size: 10px;
   vertical-align: middle;
+}
+
+.walletHome .spinner > div {
+  background-color: #8597A7;
 }
 
 .spinner > div {
