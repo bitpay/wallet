@@ -18,6 +18,10 @@
     },
     "preferences": {
       "showSkinGalleryGridLabel": true
+    },
+    "social": {
+      "likes": 0,
+      "iLikeThis": false
     }
   },
   "resources": [

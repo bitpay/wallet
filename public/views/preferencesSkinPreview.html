@@ -14,14 +14,18 @@
   </div>
 
   <div class="bottom-bar preview-button-bar">
-    <div class="preview-button columns large-4 medium-4 small-4 text-center" ng-click="$root.go('preferencesSkin')">
+    <div class="preview-button columns large-3 medium-3 small-3 text-center" ng-click="$root.go('preferencesSkin')">
       <i class="fi-x size-24"></i>
     </div>
-    <div class="preview-button columns large-4 medium-4 small-4 text-center" ng-click="p.save(previewSkinId)">
-      <i class="fi-check size-24"></i>
-    </div>
-    <div class="preview-button columns large-4 medium-4 small-4 text-center" ng-click="p.delete(previewSkinId)" ng-show="p.canDeleteSkin(previewSkinId)">
+    <div class="preview-button columns large-3 medium-3 small-3 text-center" ng-click="p.delete(previewSkinId)" ng-show="p.canDeleteSkin(previewSkinId)">
       <i class="fi-trash size-24"></i>
+    </div>
+    <div class="preview-button columns large-3 medium-3 small-3 text-center" ng-click="p.like(previewSkinId)" ng-show="index.brand.features.theme.socialLike.enabled">
+      <i class="fi-like size-24" ng-show="!theme.skins[previewSkinId].header.social.iLikeThis"></i>
+      <i class="fi-like size-24 text-black" ng-show="theme.skins[previewSkinId].header.social.iLikeThis"></i>
+    </div>
+    <div class="preview-button columns large-3 medium-3 small-3 text-center" ng-click="p.save(previewSkinId)">
+      <i class="fi-check size-24"></i>
     </div>
   </div>
 </div>
