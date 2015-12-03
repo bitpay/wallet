@@ -27,7 +27,7 @@
     <div class="columns large-2 medium-3 small-4 end" style="padding: 1px 1px 1px 0;" ng-repeat="sh in discoveredSkinHeaders track by $index">
       <img ng-src="{{sh.galleryImage}}" ng-click="p.preview($index)"/>
       <i class="fi-download gallery-grid-action-button" ng-click="p.import($index)"></i>
-      <div class="gallery-grid-text">{{sh.name}}</div>
+      <div class="gallery-grid-text" ng-show="sh.preferences.showSkinGalleryGridLabel">{{sh.name}}</div>
     </div>
   </div>
 
@@ -43,7 +43,7 @@
         <div class="gallery-list-container" ng-click="p.preview($index)">
           <img class="gallery-list-image" ng-src="{{sh.galleryImage}}"/>
           <div class="gallery-list-text-lg">{{sh.name}}</div>
-          <div class="gallery-list-text-sm text-italic">{{sh.author}} - Version {{sh.version}}, {{sh.date}}</div>
+          <div class="gallery-list-text-sm">{{sh.description}}</div>
         </div>
 
       </li>
@@ -63,7 +63,6 @@
           <img class="gallery-listd-image" ng-src="{{sh.galleryImage}}"/>
           <div class="gallery-listd-text-lg">{{sh.name}}</div>
           <div class="gallery-listd-text-sm">{{sh.description}}</div>
-          <div class="gallery-listd-text-sm gallery-listd-text-footer text-italic">{{sh.author}} - Version {{sh.version}}, {{sh.date}}</div>
         </div>
 
       </li>
