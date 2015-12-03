@@ -176,26 +176,18 @@
       <div class="row m20t" ng-show="!index.updatingTxHistory[index.walletId] && !index.txHistory[0]">
         <div class="large-12 columns">
           <div class="oh text-center">
+            <span ng-if="!index.txHistoryError" translate>
+              No transactions yet
+            </span>
             <span ng-show="index.txHistoryError && !index.notAuthorized" ng-click='index.updateTxHistory()'>
               <p class="size-12 m10b db text-gray" translate>Could not fetch transaction history</p>
               <button class="outline round light-gray tiny" translate>Tap to retry</button>
-            </span>
-            <span ng-if="!index.txHistoryError" translate>
-              No transactions yet
             </span>
           </div>
         </div>
       </div>
       <div ng-show="index.updatingTxHistory[index.walletId]">
-        <div ng-show="index.txProgress > 6" class="row m20t text-center">
-          <div class="circle-icon">
-            <img src="img/icon-sync.svg" alt="sync" width="70">
-          </div>
-          <div translate class="size-12 text-gray m20t small-10 small-centered columns">
-            Initial transaction history synchronization can take some minutes for wallets with many transactions.
-            <b> Please stand by.</b>
-          </div>
-          <div class="small-8 small-centered columns line-b p10 m20b"></div>
+        <div  class="row p20 text-center" ng-show="index.txProgress > 6">
           <div class="columns large-12 medium-12 small-12 m10b">
             <div class="spinner">
               <div class="rect1"></div>
@@ -205,9 +197,10 @@
               <div class="rect5"></div>
             </div>
           </div>
-          <div class="size-14 text-gray m20t">
-            <b>{{index.txProgress}}</b> <br>
-            <span translate>Transactions Downloaded</span>
+          <div class="size-12 text-gray m20t">
+            {{index.txProgress}}
+            <span translate>Transactions Downloaded</span> <br>
+            <b translate>Wait some minutes...</b>
           </div>
         </div>
       </div>
