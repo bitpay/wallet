@@ -758,8 +758,9 @@ textarea:focus
 }
 
 .payment-proposal-to {
+  width: 100%;
   display: inline-block;
-  padding: 3px 15px;
+  padding: 5px 15px;
   background-color: rgba(0, 0, 0, 0.1);
 }
 
@@ -767,8 +768,8 @@ textarea:focus
   margin-right: 10px;
   padding-right: 10px;
   border-right: 1px solid;
-  border-color: rgba(0, 0, 0, 0.1);
-  font-size: 25px;
+  border-color: rgba(255, 255, 255, 0.1);
+  font-size: 20px;
   vertical-align: middle;
 }
 
