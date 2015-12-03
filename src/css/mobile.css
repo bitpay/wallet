@@ -121,6 +121,10 @@ _:-ms-fullscreen, :root .main {
   color: #FFFFFF;
 }
 
+.backup .right-small a, .backup .left-small a {
+  color: #7A8C9E;
+}
+
 .tab-bar .icon-back {
   font-size: 2.5rem;
   position: absolute;
@@ -293,7 +297,7 @@ a.missing-copayers {
   background: #2C3E50;
 }
 
-.sidebar .icon {
+.sidebar .icon, .modal-content .icon {
   width:  39px;
   text-align: center;
   margin-right: 15px;
@@ -754,8 +758,9 @@ textarea:focus
 }
 
 .payment-proposal-to {
+  width: 100%;
   display: inline-block;
-  padding: 3px 15px;
+  padding: 5px 15px;
   background-color: rgba(0, 0, 0, 0.1);
 }
 
@@ -763,8 +768,8 @@ textarea:focus
   margin-right: 10px;
   padding-right: 10px;
   border-right: 1px solid;
-  border-color: rgba(0, 0, 0, 0.1);
-  font-size: 25px;
+  border-color: rgba(255, 255, 255, 0.1);
+  font-size: 20px;
   vertical-align: middle;
 }
 
@@ -806,6 +811,7 @@ textarea:focus
 }
 
 .create-tab {
+  background-color: #fff;
   width: 100%;
   border-bottom: 1px solid #DEDFE1;
   margin-bottom: 25px;
@@ -820,15 +826,11 @@ textarea:focus
 
 .create-tab a {
   font-size: .7rem;
-  padding: 0 .2rem .6rem .2rem;
-  color: #929396;
+  padding: 1.2rem .2rem .6rem .2rem;
+  color: #7A8C9E;
   text-transform: uppercase;
   font-weight: 500;
   display: block;
-}
-
-.tab-container:hover a {
-  color: #7A8C9E;
 }
 
 .tab-container.selected,
@@ -838,7 +840,6 @@ textarea:focus
 
 .tab-container.selected a {
   color: #2C3E50;
-  font-weight: 600;
 }
 
 /* removes 300ms in IE */

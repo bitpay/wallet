@@ -17,6 +17,19 @@
      ng-swipe-right="cancel()">
   <div class="header-modal size-36 text-center">
     <div ng-show="btx.action != 'invalid'">
+      <div ng-show="btx.action == 'received'">
+        <img src="img/icon-receive.svg" alt="sync" width="50">
+        <p class="m0 text-gray size-14"> Received</p>
+      </div>
+      <div ng-show="btx.action == 'sent'">
+        <img src="img/icon-sent.svg" alt="sync" width="50">
+        <p class="m0 text-gray size-14"> Sent</p>
+      </div>
+      <div ng-show="btx.action == 'moved'">
+        <img src="img/icon-moved.svg" alt="sync" width="50">
+        <p class="m0 text-gray size-14"> Moved</p>
+      </div>
+      
       <span ng-if="btx.action == 'received'">+</span><span ng-if="btx.action == 'sent'">-</span>{{btx.amountStr}}
     </div>
     <div ng-show="btx.action == 'invalid'">
