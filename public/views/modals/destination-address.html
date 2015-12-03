@@ -84,14 +84,18 @@
             ng-click="toggleSelectAddressbook(addr)">
             <i class="fi-trash"></i></a> 
           <div ng-click="selectAddressbook(addr)"> 
-            {{label}}
-            <div class="size-10 text-gray ellipsis">{{addr}}</div>
+
+            <i class="icon-contact left size-42 m10r text-gray"></i> 
+            <div class="">
+              <span>{{label}}</span>
+              <div class="size-12 text-gray ellipsis">{{addr}}</div>
+            </div>
           </div> 
         </li>
-        <li class="m10t" ng-show="!editAddressbook">
-          <a ng-click="toggleAddAddressbookEntry()" class="p10">
-            <i class="fi-plus size-18 m10r"></i> 
-            <span class="text-close size-12" translate>Add a new entry</span>
+        <li class="p10" ng-show="!editAddressbook">
+          <a ng-click="toggleAddAddressbookEntry()" class="p0i">
+            <i class="fi-plus size-24 m20r lh icon"></i> 
+            <span class="size-12 tu text-bold" translate>Add a new entry</span>
             <span ng-show="!list[newAddress] && newAddress">({{newAddress}})</span>
           </a>
         </li>
