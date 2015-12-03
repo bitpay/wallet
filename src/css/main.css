@@ -653,12 +653,6 @@ input[type=number]::-webkit-outer-spin-button {
 .label.alert {background-color: #ED4A43;}
 .label.gray {background-color: #4B6178;}
 
-.history .label  {
-  width: 57px;
-  text-align: center;
-  font-size: 65%;
-}
-
 .bg-alert {
   background-color: #ED4A43;
 }
