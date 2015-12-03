@@ -342,6 +342,12 @@ ul.tx-copayers {
   text-align: center;
 }
 
+.icon-circle-active {
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+}
+
 .icon-sign {
   padding: 0.2rem 0.3rem;
   border-radius: 100%;
@@ -1422,7 +1428,7 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
 }
 
 .spinner > div {
-  background-color: #fff;
+  background-color: #8597A7;
   height: 100%;
   width: 2px;
   display: inline-block;
