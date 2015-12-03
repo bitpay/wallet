@@ -873,13 +873,6 @@ textarea:focus
 .gallery-list-accessory-container {
   padding: 4px 20px 0 10px;
   line-height: 62px;
-  color: #8597A7;
-  float: right !important;
-}
-
-.gallery-list-accessory-container2 {
-  padding: 5px 5px 0 0;
-  color: #8597A7;
   float: right !important;
 }
 
@@ -913,7 +906,6 @@ textarea:focus
   padding: 0 20px 0 10px;
   height: 120px;
   line-height: 120px;
-  color: #8597A7;
   float: right !important;
 }
 
@@ -938,12 +930,6 @@ textarea:focus
   -webkit-line-clamp: 5;
   -webkit-box-orient: vertical;
   white-space: pre-wrap;
-}
-
-.gallery-listd-text-footer {
-  bottom: 10px;
-  position: absolute;
-  margin-left: 130px;
 }
 
 /* removes 300ms in IE */

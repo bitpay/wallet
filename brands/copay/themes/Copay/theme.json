@@ -15,8 +15,11 @@
     },
     "permissions": {
       "delete": false
+    },
+    "preferences": {
+      "showSkinGalleryGridLabel": true
     }
-   },
+  },
   "resources": [
     "<theme-path>/gallery.png",
     "<theme-path>/preview.png",

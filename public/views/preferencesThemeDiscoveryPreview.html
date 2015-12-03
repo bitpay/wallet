@@ -1,5 +1,17 @@
 <div ng-controller="preferencesThemeDiscoveryPreviewController as p">
-  <img style="size=cover" src="{{discoveredThemeHeaders[discoveredThemeId].previewImage}}"/>
+
+  <div class="preview-container">
+    <div class="preview-image-sm" style="background-image: url({{discoveredThemeHeaders[discoveredThemeId].galleryImage}})"></div>
+    <div class="preview-header-text">    
+      <div class="size-14">{{discoveredThemeHeaders[discoveredThemeId].name}}</div>
+      <div class="size-10">
+        <div>{{discoveredThemeHeaders[discoveredThemeId].author}}</div>
+        <div>Version {{discoveredThemeHeaders[discoveredThemeId].version}}, {{discoveredThemeHeaders[discoveredThemeId].date}}</div>
+      </div>
+    </div>
+    <div class="preview-description size-12">{{discoveredThemeHeaders[discoveredThemeId].description}}</div>
+    <div class="preview-image-lg" style="background-image: url({{discoveredThemeHeaders[discoveredThemeId].previewImage}})"></div>
+  </div>
 
   <div class="onGoingProcess" ng-show="p.inProgress">
     <div class="onGoingProcess-content" ng-style="{'background':theme.view.progressBackground, 'color':theme.view.progressTextColor}">
@@ -15,12 +27,12 @@
   </div>
 
   <div class="bottom-bar preview-button-bar">
-    <a class="preview-button columns large-6 medium-6 small-6 text-center" ng-click="$root.go('preferencesThemeDiscovery')">
+    <div class="preview-button columns large-6 medium-6 small-6 text-center" ng-click="$root.go('preferencesThemeDiscovery')">
       <i class="fi-x size-24"></i>
-    </a>
-    <a class="preview-button columns large-6 medium-6 small-6 text-center" ng-click="p.import(discoveredThemeId)">
+    </div>
+    <div class="preview-button columns large-6 medium-6 small-6 text-center" ng-click="p.import(discoveredThemeId)">
       <i class="fi-download size-24"></i>
-    </a>
+    </div>
   </div>
 </div>
 <div class="extra-margin-bottom"></div>

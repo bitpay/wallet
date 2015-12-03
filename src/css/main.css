@@ -1331,19 +1331,56 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
 }
 
 .preview-button-bar {
+  color: #8597A7;
   background-color: rgba(255,255,255,1.0) !important;
   line-height: 45px;
   height: 45px;
 }
 
 .preview-button, .preview-button:hover {
-  color: #8597A7 !important;
-
 }
 
-.preview-button-left, .preview-button-left:hover {
-  color: #8597A7 !important;
-  border-right :1px solid #8597A7;
+.preview-container {
+  background: #f1f3f5;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+}
+
+.preview-header-text {
+  position: absolute;
+  left: 120px;
+  top: 10px;
+}
+
+.preview-description {
+  position: relative;
+  top: 10px;
+  margin: 0 10px 0 10px;
+  line-height: 14px;
+  overflow: hidden; 
+  text-overflow: ellipsis; 
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+}
+
+.preview-image-sm {
+  width: 100px;
+  height: 100px;
+  background-size: contain;
+  margin: 10px 0 0 10px;
+}
+
+.preview-image-lg {
+  position: absolute;
+  width: 100%;
+  top: 200px;
+  bottom: 65px;
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
 }
 
 .preview-image {

@@ -1,5 +1,17 @@
 <div ng-controller="preferencesSkinDiscoveryPreviewController as p">
-  <img style="size=cover" src="{{discoveredSkinHeaders[discoveredSkinId].previewImage}}"/>
+
+  <div class="preview-container">
+    <div class="preview-image-sm" style="background-image: url({{discoveredSkinHeaders[discoveredSkinId].galleryImage}})"></div>
+    <div class="preview-header-text">    
+      <div class="size-14">{{discoveredSkinHeaders[discoveredSkinId].name}}</div>
+      <div class="size-10">
+        <div>{{discoveredSkinHeaders[discoveredSkinId].author}}</div>
+        <div>Version {{discoveredSkinHeaders[discoveredSkinId].version}}, {{discoveredSkinHeaders[discoveredSkinId].date}}</div>
+      </div>
+    </div>
+    <div class="preview-description size-12">{{discoveredSkinHeaders[discoveredSkinId].description}}</div>
+    <div class="preview-image-lg" style="background-image: url({{discoveredSkinHeaders[discoveredSkinId].previewImage}})"></div>
+  </div>
 
   <div class="onGoingProcess" ng-show="p.inProgress">
     <div class="onGoingProcess-content" ng-style="{'background':skin.view.progressBackground, 'color':skin.view.progressTextColor}">
@@ -15,12 +27,12 @@
   </div>
 
   <div class="bottom-bar preview-button-bar">
-    <a class="preview-button columns large-6 medium-6 small-6 text-center" ng-click="$root.go('preferencesSkinDiscovery')">
+    <div class="preview-button columns large-6 medium-6 small-6 text-center" ng-click="$root.go('preferencesSkinDiscovery')">
       <i class="fi-x size-24"></i>
-    </a>
-    <a class="preview-button columns large-6 medium-6 small-6 text-center" ng-click="p.import(discoveredSkinId)">
+    </div>
+    <div class="preview-button columns large-6 medium-6 small-6 text-center" ng-click="p.import(discoveredSkinId)">
       <i class="fi-download size-24"></i>
-    </a>
+    </div>
   </div>
 
 </div>

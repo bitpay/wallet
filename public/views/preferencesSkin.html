@@ -11,7 +11,7 @@
       <img ng-src="{{s.header.galleryImage}}" ng-click="p.save($index)"/>
       <i class="fi-info gallery-grid-action-button"  ng-click="p.preview($index)"></i>
       <i class="fi-check gallery-grid-item-selected" ng-show="$root.skin.header.name == s.header.name"></i>
-      <div class="gallery-grid-text">{{s.header.name}}</div>
+      <div class="gallery-grid-text" ng-show="s.header.preferences.showSkinGalleryGridLabel">{{s.header.name}}</div>
 	  </div>
   </div>
 
@@ -23,7 +23,7 @@
         <div class="gallery-list-accessory-container" ng-click="p.preview($index)">
           <i class="fi-check size-16 p10r" style="vertical-align: 3px" ng-show="$root.skin.header.name == s.header.name"></i>
           <i class="fi-check size-16 p10r" style="vertical-align: 3px; color: white" ng-show="$root.skin.header.name != s.header.name"></i>
-          <i class="fi-info size-24"></i>
+          <i class="fi-info size-24 text-gray"></i>
         </div>
 
         <div class="gallery-list-container" ng-click="p.save($index)">
@@ -44,14 +44,13 @@
         <div class="gallery-listd-accessory-container" ng-click="p.preview($index)">
           <i class="fi-check size-16 p10r" style="vertical-align: 3px" ng-show="$root.skin.header.name == s.header.name"></i>
           <i class="fi-check size-16 p10r" style="vertical-align: 3px; color: white" ng-show="$root.skin.header.name != s.header.name"></i>
-          <i class="fi-info size-24"></i>
+          <i class="fi-info size-24 text-gray"></i>
         </div>
 
         <div class="gallery-listd-container" ng-click="p.save($index)">
           <img class="gallery-listd-image" ng-src="{{s.header.galleryImage}}"/>
           <div class="gallery-listd-text-lg">{{s.header.name}}</div>
           <div class="gallery-listd-text-sm">{{s.header.description}}</div>
-          <div class="gallery-listd-text-sm gallery-listd-text-footer text-italic">{{s.header.author}} - Version {{s.header.version}}, {{s.header.date}}</div>
         </div>
 
       </li>
