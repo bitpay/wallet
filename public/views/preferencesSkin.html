@@ -1,7 +1,7 @@
 <div 
   class="topbar-container" 
   ng-include="'views/includes/topbar.html'"
-  ng-init="titleSection='Skin'; goBackToState = 'preferences'; useTheme = false; showPlus = index.brand.features.theme.skinDiscovery.enabled; plusState = 'preferencesSkinDiscovery'; showLayout = true; layoutEvent='skinLayout'">
+  ng-init="titleSection='Choose skin'; goBackToState = 'preferences'; useTheme = false; showPlus = index.brand.features.theme.skinDiscovery.enabled; plusState = 'preferencesSkinDiscovery'; showLayout = true; layoutEvent='skinLayout'">
 </div>
 <div class="content preferences white" ng-controller="preferencesSkinController as p">
 
@@ -11,7 +11,7 @@
       <img ng-src="{{s.header.galleryImage}}" ng-click="p.save($index)"/>
       <i class="fi-info gallery-grid-action-button"  ng-click="p.preview($index)"></i>
       <i class="fi-check gallery-grid-item-selected" ng-show="$root.skin.header.name == s.header.name"></i>
-      <div class="gallery-grid-text" ng-show="s.header.preferences.showSkinGalleryGridLabel">{{s.header.name}}</div>
+      <div class="gallery-grid-text" ng-show="theme.header.preferences.showSkinGalleryGridLabel">{{s.header.name}}</div>
 	  </div>
   </div>
 
