@@ -49,13 +49,13 @@
   </div>
 
   <form name="setupForm" ng-submit="create.create(setupForm)" novalidate>
+    <div class="box-notification m20b" ng-show="create.error">
+      <span class="text-warning">
+        {{create.error|translate}}
+      </span>
+    </div>
     <div class="row">
-      <div class="large-12 columns">
-        <div class="box-notification" ng-show="create.error">
-          <span class="text-warning size-14">
-            {{create.error|translate}}
-          </span>
-        </div>
+      <div class="large-12 columns"> 
 
         <div ng-hide="create.hideWalletName">
           <label><span translate>Wallet name</span>

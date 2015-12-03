@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.services').factory('txStatus', function($modal, lodash, profileService, $timeout) {
+angular.module('copayApp.services').factory('txStatus', function($modal, lodash, profileService, $timeout, txFormatService) {
   var root = {};
 
   root.notify = function(txp, cb) {
@@ -42,8 +42,11 @@ angular.module('copayApp.services').factory('txStatus', function($modal, lodash,
   };
 
   var openModal = function(type, txp, cb) {
+    var fc = profileService.focusedClient;
     var ModalInstanceCtrl = function($scope, $modalInstance) {
       $scope.type = type;
+      $scope.tx = txFormatService.processTx(txp);
+      $scope.color = fc.backgroundColor;
       $scope.cancel = function() {
         $modalInstance.dismiss('cancel');
       };

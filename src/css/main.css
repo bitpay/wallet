@@ -75,7 +75,7 @@ h4.title a {
 
 .preferences h4, .modal-content h4, .walletHome h4, .glidera h4 {
   background: #F6F7F9;
-  padding: 25px 0px 5px 20px;
+  padding: 25px 0px 5px 10px;
   text-transform: uppercase;
   color: #555;
   font-size: 12px;
@@ -272,9 +272,6 @@ input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill, inpu
   padding: 0.5rem;
   border-radius: 2px;
   background: #FFFFFF;
-  box-shadow: 1px 1px 0px 0px rgba(0,0,0,0.10);
-  margin: 0 auto;
-  margin-bottom: 1.6rem;
 }
 
 .box-notification .box-icon {
@@ -352,7 +349,8 @@ ul.tx-copayers {
   padding: 0.2rem 0.3rem;
   border-radius: 100%;
   color: #fff;
-  margin-right: 7px;
+  font-size: 10px;
+  margin-top: 3px;
 }
 
 .icon-sign.check {
@@ -488,6 +486,7 @@ ul.manage li {
 .m0 {margin: 0;}
 .p0i {padding: 0 !important;}
 .db {display: block;}
+.dib {display: inline-block;}
 .size-10 { font-size: 10px; }
 .size-12 { font-size: 12px; }
 .size-14 { font-size: 14px; }
@@ -520,6 +519,7 @@ ul.manage li {
 .m20r {margin-right: 20px;}
 .m20t {margin-top: 20px;}
 .m20tp {margin-top: 20%;}
+.m30tp {margin-top: 30%;}
 .m15 {margin: 15px;}
 .m15h {margin: 0 15px;}
 .p10t {padding-top: 10px;}
@@ -535,6 +535,7 @@ ul.manage li {
 .p25l {padding-left: 25px;}
 .p15 {padding:15px;}
 .p20 {padding:20px;}
+.p20t {padding-top:20px;}
 .p10 {padding:10px;}
 .p10b {padding-bottom:10px;}
 .p45t {padding-top:45px;}
@@ -632,7 +633,6 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 .header-modal {
-  border-bottom: 1px solid #E2E7ED;
   background: #fff;
   width: 100%;
   padding: 0.8rem;

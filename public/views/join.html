@@ -34,13 +34,13 @@
   </div>
 
   <form name="joinForm" ng-submit="join.join(joinForm)" novalidate>
+    <div class="box-notification m20b" ng-show="join.error ">
+      <span class="text-warning">
+        {{join.error|translate}}
+      </span>
+    </div>
     <div class="row">
-      <div class="large-12 columns">
-        <div class="box-notification" ng-show="join.error ">
-          <span class="text-warning size-14">
-            {{join.error|translate}}
-          </span>
-        </div>
+      <div class="large-12 columns"> 
 
         <div>
           <label><span translate>Your nickname</span>
