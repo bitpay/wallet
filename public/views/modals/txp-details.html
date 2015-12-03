@@ -161,11 +161,11 @@
     <ul class="no-bullet size-14 m0">
       <li class="line-b p10 text-gray" ng-repeat="ac in tx.actions">
         <i class="icon-contact size-24"></i>
-        {{ac.copayerName}} <span ng-if="ac.copayerId == copayerId">({{'Me'|translate}})</span>
-        <span class="right tu">
-          <span ng-if="ac.type == 'reject'" class="text-warning"><i class="fi-x icon-sign x"></i>Rejected</span>
-          <span ng-if="ac.type == 'accept'" class="text-success"><i class="fi-check icon-sign check"></i>Signed</span>
+        <span class="right">
+          <i ng-if="ac.type == 'reject'" class="fi-x icon-sign x db"></i>
+          <i ng-if="ac.type == 'accept'" class="fi-check icon-sign check db"></i>
         </span>
+        {{ac.copayerName}} <span ng-if="ac.copayerId == copayerId">({{'Me'|translate}})</span>
       </li>
     </ul>
   </div> 
