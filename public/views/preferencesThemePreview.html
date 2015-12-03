@@ -14,14 +14,18 @@
   </div>
 
   <div class="bottom-bar preview-button-bar">
-    <div class="preview-button columns large-4 medium-4 small-4 text-center" ng-click="$root.go('preferencesTheme')">
+    <div class="preview-button columns large-3 medium-3 small-3 text-center" ng-click="$root.go('preferencesTheme')">
       <i class="fi-x size-24"></i>
     </div>
-    <div class="preview-button columns large-4 medium-4 small-4 text-center" ng-click="p.save(previewThemeId)">
-      <i class="fi-check size-24"></i>
-    </div>
-    <div class="preview-button columns large-4 medium-4 small-4 text-center" ng-click="p.delete(previewThemeId)" ng-show="p.canDeleteTheme(previewThemeId)">
+    <div class="preview-button columns large-3 medium-3 small-3 text-center" ng-click="p.delete(previewThemeId)" ng-show="p.canDeleteTheme(previewThemeId)">
       <i class="fi-trash size-24"></i>
+    </div>
+    <div class="preview-button columns large-3 medium-3 small-3 text-center" ng-click="p.like(previewThemeId)" ng-show="index.brand.features.theme.socialLike.enabled">
+      <i class="fi-like size-24" ng-show="!themes[previewThemeId].header.social.iLikeThis"></i>
+      <i class="fi-like size-24 text-black" ng-show="themes[previewThemeId].header.social.iLikeThis"></i>
+    </div>
+    <div class="preview-button columns large-3 medium-3 small-3 text-center" ng-click="p.save(previewThemeId)">
+      <i class="fi-check size-24"></i>
     </div>
   </div>
 </div>

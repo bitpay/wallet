@@ -18,4 +18,9 @@ angular.module('copayApp.controllers').controller('preferencesThemePreviewContro
       $state.go('preferencesTheme');
     });
   };
+
+  this.like = function(themeId) {
+    themeService.likeTheme(themeId);
+  };
+
 });

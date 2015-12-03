@@ -43,6 +43,9 @@
       },
       "skinDiscovery": {
         "enabled": false
+      },
+      "socialLike": {
+        "enabled": false
       }
     }
   }
