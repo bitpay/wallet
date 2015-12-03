@@ -216,15 +216,29 @@
         <div ng-repeat="btx in index.txHistory"
           ng-click="home.openTxModal(btx)"
           class="row collapse last-transactions-content">
-          <div class="large-3 medium-3 small-3 columns">
-            <span class="label tu radius" ng-show="btx.action == 'received'"
-              ng-style="{'background-color':index.backgroundColor}" translate>Received</span>
-            <span class="label tu gray radius" ng-show="btx.action == 'sent'" translate>Sent</span>
-            <span class="label tu gray radius" ng-show="btx.action == 'moved'" translate>Moved</span>
-            <span class="label tu warning radius" ng-show="btx.action == 'invalid'" translate>Invalid</span>
+          <div class="large-6 medium-6 small-6 columns size-14">
+            <div class="m10r left">
+              <img src="img/icon-receive.svg" alt="sync" width="40" ng-show="btx.action == 'received'">
+              <img src="img/icon-sent.svg" alt="sync" width="40" ng-show="btx.action == 'sent'">
+              <img src="img/icon-moved.svg" alt="sync" width="40" ng-show="btx.action == 'moved'">
+            </div>
+            <div class="m10t">
+              <span ng-show="btx.action == 'received'" translate>Received</span>
+              <span ng-show="btx.action == 'sent'">
+                {{index.addressbook[btx.addressTo]}}
+                <span ng-show="!index.addressbook[btx.addressTo] && btx.message">
+                  <span class="ellipsis">{{btx.message}}</span>
+                </span>
+                <span ng-show="!index.addressbook[btx.addressTo] && !btx.message">
+                  <span translate> Sent</span>
+                </span>
+              </span>
+              <span ng-show="btx.action == 'moved'" translate>Moved</span>
+              <span class="label tu warning radius" ng-show="btx.action == 'invalid'" translate>Invalid</span>
+            </div>
           </div>
 
-          <div class="large-4 medium-4 small-4 columns">
+          <div class="large-5 medium-5 small-5 columns text-right">
             <span class="size-16">
               <span ng-if="btx.action == 'received'">+</span>
               <span ng-if="btx.action == 'sent'">-</span>
@@ -235,9 +249,7 @@
               {{btx.amountStr}}
               </span>
             </span>
-          </div>
-          <div class="large-4 medium-4 small-4 columns text-right">
-            <div class="m5t size-12 text-gray">
+            <div class="size-12 text-gray">
               <time ng-if="btx.time">{{btx.time * 1000 | amTimeAgo}}</time>
               <span translate class="text-warning"
                 ng-show="!btx.time && (!btx.confirmations || btx.confirmations == 0)">
@@ -245,14 +257,8 @@
               </span>
             </div>
           </div>
-          <div class="large-1 medium-1 small-1 columns text-right">
+          <div class="large-1 medium-1 small-1 columns text-right m10t">
             <i class="icon-arrow-right3 size-18"></i>
-          </div>
-          <div class="size-14 text-gray columns m5t" ng-if="btx.message || btx.addressTo">
-            <div ng-show="btx.message">{{btx.message}}</div>
-            <div ng-show="!btx.message">
-              <span translate>To</span>: {{index.addressbook[btx.addressTo] || btx.addressTo}}
-            </div>
           </div>
         </div>
 
