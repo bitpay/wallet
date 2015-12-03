@@ -744,6 +744,27 @@ textarea:focus
   padding-top: 1rem;
 }
 
+.payment-proposal-head {
+  color: #fff;
+  padding: 0 10px 20px 10px;
+  text-align: center;
+}
+
+.payment-proposal-to {
+  display: inline-block;
+  padding: 3px 15px;
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.payment-proposal-to i {
+  margin-right: 10px;
+  padding-right: 10px;
+  border-right: 1px solid;
+  border-color: rgba(0, 0, 0, 0.1);
+  font-size: 25px;
+  vertical-align: middle;
+}
+
 ::-webkit-input-placeholder {
   color: #B7C2CD;
 }
