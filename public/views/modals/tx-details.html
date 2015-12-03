@@ -19,15 +19,15 @@
     <div ng-show="btx.action != 'invalid'">
       <div ng-show="btx.action == 'received'">
         <img src="img/icon-receive.svg" alt="sync" width="50">
-        <p class="m0 text-gray size-14"> Received</p>
+        <p class="m0 text-gray size-14" translate>Received</p>
       </div>
       <div ng-show="btx.action == 'sent'">
         <img src="img/icon-sent.svg" alt="sync" width="50">
-        <p class="m0 text-gray size-14"> Sent</p>
+        <p class="m0 text-gray size-14" translate>Sent</p>
       </div>
       <div ng-show="btx.action == 'moved'">
         <img src="img/icon-moved.svg" alt="sync" width="50">
-        <p class="m0 text-gray size-14"> Moved</p>
+        <p class="m0 text-gray size-14" translate>Moved</p>
       </div>
       
       <span ng-if="btx.action == 'received'">+</span><span ng-if="btx.action == 'sent'">-</span>{{btx.amountStr}}

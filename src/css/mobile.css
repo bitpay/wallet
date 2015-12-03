@@ -833,8 +833,7 @@ textarea:focus
   display: block;
 }
 
-.tab-container.selected,
-.tab-container:active {
+.tab-container.selected {
   border-bottom: 3px solid #4B6178;
 }
 
