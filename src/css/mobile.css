@@ -705,14 +705,15 @@ textarea:focus
   position: absolute;
   width: 100%;
   height: 100%;
-  background: #1ABC9C;
+  background: rgba(24,44,58,0.90);
 }
 
 .popup-txsent i {
   font-size: 5rem;
-  background-color: #fff;
-  color: #1ABC9C;
+  color: #4A90E2;
   border-radius: 100%;
+  border-color: #4A90E2;
+  border: 2px solid;
   width: 150px;
   height: 150px;
   display: block;
@@ -722,9 +723,10 @@ textarea:focus
 
 .popup-txsigned i {
   font-size: 5rem;
-  background-color: #1ABC9C;
-  color: #fff;
+  color: #4A90E2;
   border-radius: 100%;
+  border-color: #4A90E2;
+  border: 2px solid;
   width: 150px;
   height: 150px;
   display: block;
@@ -734,9 +736,10 @@ textarea:focus
 
 .popup-txrejected i {
   font-size: 5rem;
-  background-color: #ED4A43;
-  color: #fff;
+  color: #4A90E2;
   border-radius: 100%;
+  border-color: #4A90E2;
+  border: 2px solid;
   width: 150px;
   height: 150px;
   display: block;
