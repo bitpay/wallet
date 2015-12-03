@@ -64,6 +64,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     var fc = profileService.focusedClient;
     if (!fc) return;
 
+    // loading full wallet
+    self.loadingWallet = true;
+
     // Clean status
     self.totalBalanceSat = null;
     self.lockedBalanceSat = null;
@@ -923,6 +926,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     $timeout(function() {
       self.updateLocalTxHistory(fc, function(err) {
         self.updatingTxHistory[walletId] = false;
+        self.loadingWallet = false;
+        self.txProgress = 0;
         if (err)
           self.txHistoryError = true;
 
