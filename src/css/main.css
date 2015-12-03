@@ -1427,8 +1427,12 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
   vertical-align: middle;
 }
 
-.spinner > div {
+.walletHome .spinner > div {
   background-color: #8597A7;
+}
+
+.spinner > div {
+  background-color: #fff;
   height: 100%;
   width: 2px;
   display: inline-block;
