@@ -85,6 +85,20 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
     };
   };
 
+  var _post = function(endpoint, data) {
+    var catalog = themeCatalogService.getSync();
+    $log.debug('POST ' + encodeURI(catalog.service.url + endpoint) + ' data = ' + JSON.stringify(data));
+    return {
+      method: 'POST',
+      url: encodeURI(catalog.service.url + endpoint),
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      data: data
+    };
+  };
+
   // Return the relative resource path for the specified theme.
   root._getThemeResourcePath = function(themeName) {
     return '/themes/' + themeName;
@@ -650,6 +664,98 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
       $log.debug('Deleted skin \'' + deletedSkin[0].header.name + '\'');
     });
   };
+
+  // likeTheme() - likes the specified theme.
+  // 
+  root.likeTheme = function(themeId) {
+    var theme = root.getCatalogThemeById(themeId);
+    theme.toggleLike();
+
+    var catalogThemes = root.getCatalogThemes();
+    catalogThemes[root.getPublishedThemeId()] = theme;
+
+    var cat = {
+      themes: []
+    };
+    
+    cat.themes = lodash.cloneDeep(catalogThemes);
+
+    themeCatalogService.set(cat, function(err) {   //TODO: cannot save themes if not using filestorage (content available in $rootScope only)
+      if (err) {
+        $rootScope.$emit('Local/DeviceError', err);
+        return;
+      }
+
+      root._publishCatalog();
+
+      // Share the like with the server.
+      var data = {
+        theme: theme.header.name,
+      };
+
+      $http(_post('/social/like/theme', data)).then(function(data) {
+        $log.info('Like theme: SUCCESS');
+      }, function(data) {
+        $log.error('Like theme: ERROR ' + data.statusText);
+      });
+
+      notification.success(
+        gettextCatalog.getString('Yay!'),
+        gettextCatalog.getString('You like theme \'' + theme.header.name + '\''),
+        {color: root.getPublishedSkin().view.textHighlightColor,
+         iconColor: root.getPublishedTheme().view.notificationBarIconColor,
+         barBackground: root.getPublishedTheme().view.notificationBarBackground});
+
+      $log.debug('You like theme \'' + theme.header.name + '\'');
+    });
+  };
+
+  // likeSkin() - likes the specified skin.
+  // 
+  root.likeSkin = function(skinId) {
+    var skin = root.getCatalogSkinById(skinId);
+    skin.toggleLike();
+
+    var catalogThemes = root.getCatalogThemes();
+    catalogThemes[root.getPublishedThemeId()].skins[skinId] = skin;
+
+    var cat = {
+      themes: []
+    };
+    
+    cat.themes = lodash.cloneDeep(catalogThemes);
+
+    themeCatalogService.set(cat, function(err) {   //TODO: cannot save themes if not using filestorage (content available in $rootScope only)
+      if (err) {
+        $rootScope.$emit('Local/DeviceError', err);
+        return;
+      }
+
+      root._publishCatalog();
+
+      // Share the like with the server.
+      var data = {
+        theme: root.getPublishedTheme().header.name,
+        skin: skin.name
+      };
+
+      $http(_post('/social/like/skin', data)).then(function(data) {
+        $log.info('Like skin: SUCCESS');
+      }, function(data) {
+        $log.error('Like skin: ERROR ' + data.statusText);
+      });
+
+      notification.success(
+        gettextCatalog.getString('Yay!'),
+        gettextCatalog.getString('You like skin \'' + skin.header.name + '\''),
+        {color: root.getPublishedSkin().view.textHighlightColor,
+         iconColor: root.getPublishedTheme().view.notificationBarIconColor,
+         barBackground: root.getPublishedTheme().view.notificationBarBackground});
+
+      $log.debug('You like skin \'' + skin.header.name + '\'');
+    });
+  };
+
 
   ///////////////////////////////////////////////////////////////////////////////
 

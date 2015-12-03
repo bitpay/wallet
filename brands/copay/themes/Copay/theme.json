@@ -15,8 +15,15 @@
     },
     "permissions": {
       "delete": false
+    },
+    "preferences": {
+      "showSkinGalleryGridLabel": true
+    },
+    "social": {
+      "likes": 0,
+      "iLikeThis": false
     }
-   },
+  },
   "resources": [
     "<theme-path>/gallery.png",
     "<theme-path>/preview.png",

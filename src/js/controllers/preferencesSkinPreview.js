@@ -21,4 +21,8 @@ angular.module('copayApp.controllers').controller('preferencesSkinPreviewControl
     });
   };
 
+  this.like = function(skinId) {
+    themeService.likeSkin(skinId);
+  };
+
 });

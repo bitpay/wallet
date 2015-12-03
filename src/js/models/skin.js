@@ -21,3 +21,7 @@ Skin.prototype.canDelete = function() {
 Skin.prototype.setDelete = function(b) {
   this.header.permissions['delete'] = b;
 };
+
+Skin.prototype.toggleLike = function() {
+  this.header.social.iLikeThis = !this.header.social.iLikeThis;
+};

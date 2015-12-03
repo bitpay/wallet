@@ -1,18 +1,32 @@
 <div ng-controller="preferencesSkinPreviewController as p">
-  <div class="preview-image" style="background-image: url({{theme.skins[previewSkinId].header.previewImage}}),
-    -webkit-linear-gradient(-45deg, rgba(40,52,59,1) 0%,rgba(130,140,149,1) 50%,rgba(40,52,59,1) 100%),
-    linear-gradient(135deg, rgba(40,52,59,1) 0%,rgba(130,140,149,1) 50%,rgba(40,52,59,1) 100%)">
+
+  <div class="preview-container">
+    <div class="preview-image-sm" style="background-image: url({{theme.skins[previewSkinId].header.galleryImage}})"></div>
+    <div class="preview-header-text">    
+      <div class="size-14">{{theme.skins[previewSkinId].header.name}}</div>
+      <div class="size-10">
+        <div>{{theme.skins[previewSkinId].header.author}}</div>
+        <div>Version {{theme.skins[previewSkinId].header.version}}, {{theme.skins[previewSkinId].header.date}}</div>
+      </div>
+    </div>
+    <div class="preview-description size-12">{{theme.skins[previewSkinId].header.description}}</div>
+    <div class="preview-image-lg" style="background-image: url({{theme.skins[previewSkinId].header.previewImage}})"></div>
   </div>
+
   <div class="bottom-bar preview-button-bar">
-    <a class="preview-button columns large-4 medium-4 small-4 text-center" ng-click="$root.go('preferencesSkin')">
+    <div class="preview-button columns large-3 medium-3 small-3 text-center" ng-click="$root.go('preferencesSkin')">
       <i class="fi-x size-24"></i>
-    </a>
-    <a class="preview-button columns large-4 medium-4 small-4 text-center" ng-click="p.save(previewSkinId)">
-      <i class="fi-check size-24"></i>
-    </a>
-    <a class="preview-button columns large-4 medium-4 small-4 text-center" ng-click="p.delete(previewSkinId)" ng-show="p.canDeleteSkin(previewSkinId)">
+    </div>
+    <div class="preview-button columns large-3 medium-3 small-3 text-center" ng-click="p.delete(previewSkinId)" ng-show="p.canDeleteSkin(previewSkinId)">
       <i class="fi-trash size-24"></i>
-    </a>
+    </div>
+    <div class="preview-button columns large-3 medium-3 small-3 text-center" ng-click="p.like(previewSkinId)" ng-show="index.brand.features.theme.socialLike.enabled">
+      <i class="fi-like size-24" ng-show="!theme.skins[previewSkinId].header.social.iLikeThis"></i>
+      <i class="fi-like size-24 text-black" ng-show="theme.skins[previewSkinId].header.social.iLikeThis"></i>
+    </div>
+    <div class="preview-button columns large-3 medium-3 small-3 text-center" ng-click="p.save(previewSkinId)">
+      <i class="fi-check size-24"></i>
+    </div>
   </div>
 </div>
 <div class="extra-margin-bottom"></div>

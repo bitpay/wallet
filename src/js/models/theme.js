@@ -22,3 +22,7 @@ Theme.prototype.canDelete = function() {
 Theme.prototype.setDelete = function(b) {
   this.header.permissions['delete'] = b;
 };
+
+Theme.prototype.toggleLike = function() {
+  this.header.social.iLikeThis = !this.header.social.iLikeThis;
+};

@@ -21,13 +21,13 @@
 
         <div class="gallery-list-accessory-container" ng-click="p.preview($index)">
           <i class="fi-check size-16 p10r" style="vertical-align: 3px" ng-show="$root.theme.header.name == t.header.name"></i>
-          <i class="fi-info size-24"></i>
+          <i class="fi-info size-24 text-gray"></i>
         </div>
 
         <div class="gallery-list-container" ng-click="p.save($index)">
           <img class="gallery-list-image" ng-src="{{t.header.galleryImage}}"/>
           <div class="gallery-list-text-lg">{{t.header.name}}</div>
-          <div class="gallery-list-text-sm text-italic">{{t.header.author}} - Version {{t.header.version}}, {{t.header.date}}</div>
+          <div class="gallery-list-text-sm">{{t.header.description}}</div>
         </div>
 
       </li>
@@ -42,14 +42,13 @@
         <div class="gallery-listd-accessory-container" ng-click="p.preview($index)">
           <i class="fi-check size-16 p10r" style="vertical-align: 3px" ng-show="$root.theme.header.name == t.header.name"></i>
           <i class="fi-check size-16 p10r" style="vertical-align: 3px; color: white" ng-show="$root.theme.header.name != t.header.name"></i>
-          <i class="fi-info size-24"></i>
+          <i class="fi-info size-24 text-gray"></i>
         </div>
 
         <div class="gallery-listd-container" ng-click="p.save($index)">
           <img class="gallery-listd-image" ng-src="{{t.header.galleryImage}}"/>
           <div class="gallery-listd-text-lg">{{t.header.name}}</div>
           <div class="gallery-listd-text-sm">{{t.header.description}}</div>
-          <div class="gallery-listd-text-sm text-italic">{{t.header.author}} - Version {{t.header.version}}, {{t.header.date}}</div>
         </div>
 
       </li>
