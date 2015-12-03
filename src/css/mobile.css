@@ -816,7 +816,6 @@ textarea:focus
   border-bottom: 1px solid #DEDFE1;
   margin-bottom: 25px;
   overflow: hidden;
-  padding-top: 20px;
 }
 
 .create-tab .tab-container {
@@ -827,7 +826,7 @@ textarea:focus
 
 .create-tab a {
   font-size: .7rem;
-  padding: 0 .2rem .6rem .2rem;
+  padding: 1.2rem .2rem .6rem .2rem;
   color: #7A8C9E;
   text-transform: uppercase;
   font-weight: 500;
