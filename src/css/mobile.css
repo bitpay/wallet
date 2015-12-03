@@ -121,6 +121,10 @@ _:-ms-fullscreen, :root .main {
   color: #FFFFFF;
 }
 
+.backup .right-small a, .backup .left-small a {
+  color: #7A8C9E;
+}
+
 .tab-bar .icon-back {
   font-size: 2.5rem;
   position: absolute;
@@ -806,10 +810,12 @@ textarea:focus
 }
 
 .create-tab {
+  background-color: #fff;
   width: 100%;
   border-bottom: 1px solid #DEDFE1;
   margin-bottom: 25px;
   overflow: hidden;
+  padding-top: 20px;
 }
 
 .create-tab .tab-container {
@@ -821,14 +827,10 @@ textarea:focus
 .create-tab a {
   font-size: .7rem;
   padding: 0 .2rem .6rem .2rem;
-  color: #929396;
+  color: #7A8C9E;
   text-transform: uppercase;
   font-weight: 500;
   display: block;
-}
-
-.tab-container:hover a {
-  color: #7A8C9E;
 }
 
 .tab-container.selected,
@@ -838,7 +840,6 @@ textarea:focus
 
 .tab-container.selected a {
   color: #2C3E50;
-  font-weight: 600;
 }
 
 /* removes 300ms in IE */
