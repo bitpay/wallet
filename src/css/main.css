@@ -440,6 +440,7 @@ ul.manage li {
 .p0i {padding: 0 !important;}
 .db {display: block;}
 .size-10 { font-size: 10px; }
+.size-11 { font-size: 11px; }
 .size-12 { font-size: 12px; }
 .size-14 { font-size: 14px; }
 .size-16 { font-size: 16px; }
@@ -1324,8 +1325,8 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
 .preview-button-bar {
   color: #8597A7;
   background-color: rgba(255,255,255,1.0) !important;
-  line-height: 45px;
-  height: 45px;
+  line-height: 58px;
+  height: 58px;
 }
 
 .preview-button, .preview-button:hover {

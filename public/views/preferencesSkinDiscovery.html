@@ -27,7 +27,7 @@
     <div class="columns large-2 medium-3 small-4 end" style="padding: 1px 1px 1px 0;" ng-repeat="sh in discoveredSkinHeaders track by $index">
       <img ng-src="{{sh.galleryImage}}" ng-click="p.preview($index)"/>
       <i class="fi-download gallery-grid-action-button" ng-click="p.import($index)"></i>
-      <div class="gallery-grid-text" ng-show="sh.preferences.showSkinGalleryGridLabel">{{sh.name}}</div>
+      <div class="gallery-grid-text" ng-show="theme.header.preferences.showSkinGalleryGridLabel">{{sh.name}}</div>
     </div>
   </div>
 

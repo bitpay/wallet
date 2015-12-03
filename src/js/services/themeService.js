@@ -688,16 +688,18 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
 
       root._publishCatalog();
 
-      // Share the like with the server.
-      var data = {
-        theme: theme.header.name,
-      };
+      // Notify other people that you like this.
+      if (theme.header.social.iLikeThis) {
+        var data = {
+          theme: theme.header.name,
+        };
 
-      $http(_post('/social/like/theme', data)).then(function(data) {
-        $log.info('Like theme: SUCCESS');
-      }, function(data) {
-        $log.error('Like theme: ERROR ' + data.statusText);
-      });
+        $http(_post('/social/like/theme', data)).then(function(data) {
+          $log.info('Like theme: SUCCESS');
+        }, function(data) {
+          $log.error('Like theme: ERROR ' + data.statusText);
+        });
+      }
 
       notification.success(
         gettextCatalog.getString('Yay!'),
@@ -733,17 +735,19 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
 
       root._publishCatalog();
 
-      // Share the like with the server.
-      var data = {
-        theme: root.getPublishedTheme().header.name,
-        skin: skin.name
-      };
+      // Notify other people that you like this.
+      if (skin.header.social.iLikeThis) {
+        var data = {
+          theme: root.getPublishedTheme().header.name,
+          skin: skin.name
+        };
 
-      $http(_post('/social/like/skin', data)).then(function(data) {
-        $log.info('Like skin: SUCCESS');
-      }, function(data) {
-        $log.error('Like skin: ERROR ' + data.statusText);
-      });
+        $http(_post('/social/like/skin', data)).then(function(data) {
+          $log.info('Like skin: SUCCESS');
+        }, function(data) {
+          $log.error('Like skin: ERROR ' + data.statusText);
+        });
+      }
 
       notification.success(
         gettextCatalog.getString('Yay!'),

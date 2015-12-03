@@ -4,7 +4,7 @@
     <div class="preview-image-sm" style="background-image: url({{themes[previewThemeId].header.galleryImage}})"></div>
     <div class="preview-header-text">    
       <div class="size-14">{{themes[previewThemeId].header.name}}</div>
-      <div class="size-10">
+      <div class="size-11">
         <div>{{themes[previewThemeId].header.author}}</div>
         <div>Version {{themes[previewThemeId].header.version}}, {{themes[previewThemeId].header.date}}</div>
       </div>
@@ -19,6 +19,9 @@
     </div>
     <div class="preview-button columns large-3 medium-3 small-3 text-center" ng-click="p.delete(previewThemeId)" ng-show="p.canDeleteTheme(previewThemeId)">
       <i class="fi-trash size-24"></i>
+    </div>
+    <div class="preview-button columns large-3 medium-3 small-3 text-center" ng-show="!p.canDeleteTheme(previewThemeId)">
+      &nbsp; <!-- this div is a hack to take up space and preserve the button/column layout when the delete option is hidden -->
     </div>
     <div class="preview-button columns large-3 medium-3 small-3 text-center" ng-click="p.like(previewThemeId)" ng-show="index.brand.features.theme.socialLike.enabled">
       <i class="fi-like size-24" ng-show="!themes[previewThemeId].header.social.iLikeThis"></i>
