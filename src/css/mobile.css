@@ -881,8 +881,8 @@ textarea:focus
 }
 
 .gallery-list-text-sm {
-  line-height: 12px;
-  font-size: 10px;
+  line-height: 13px;
+  font-size: 11px;
   overflow: hidden; 
   text-overflow: ellipsis; 
   display: -webkit-box;
@@ -922,8 +922,8 @@ textarea:focus
 }
 
 .gallery-listd-text-sm {
-  line-height: 12px;
-  font-size: 10px;
+  line-height: 13px;
+  font-size: 11px;
   overflow: hidden; 
   text-overflow: ellipsis; 
   display: -webkit-box;
