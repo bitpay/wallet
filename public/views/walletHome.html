@@ -162,7 +162,7 @@
         </div>
 
         <div class="text-gray text-center size-12 p10t"
-          ng-show="index.lockedBalanceSat && !index.updatingStatus">
+          ng-show="index.lockedBalanceSat">
           <span translate>Total Locked Balance</span>:
           <b>{{index.lockedBalanceStr}} </b>
           <span> {{index.lockedBalanceAlternative}}
@@ -172,22 +172,22 @@
 
       <!-- Activity -->
 
-      <h4 class="title m0" translate>Activity</h4>
-      <div class="row m20t" ng-show="!index.updatingTxHistory[index.walletId] && !index.txHistory[0]">
+      <div class="row" 
+        ng-show="!index.loadingWallet && !index.txHistory[0]">
         <div class="large-12 columns">
-          <div class="oh text-center">
+          <div class="oh text-gray size-12 text-center m20t">
             <span ng-if="!index.txHistoryError" translate>
               No transactions yet
             </span>
             <span ng-show="index.txHistoryError && !index.notAuthorized" ng-click='index.updateTxHistory()'>
-              <p class="size-12 m10b db text-gray" translate>Could not fetch transaction history</p>
+              <p translate>Could not fetch transaction history</p>
               <button class="outline round light-gray tiny" translate>Tap to retry</button>
             </span>
           </div>
         </div>
       </div>
-      <div ng-show="index.updatingTxHistory[index.walletId]">
-        <div  class="row p20 text-center" ng-show="index.txProgress > 6">
+      <div ng-show="index.updatingTxHistory[index.walletId] && index.txProgress > 6">
+        <div  class="row p20 text-center">
           <div class="columns large-12 medium-12 small-12 m10b">
             <div class="spinner">
               <div class="rect1"></div>
@@ -206,6 +206,7 @@
       </div>
 
       <div ng-show="index.txHistory[0]">
+        <h4 class="title m0" translate>Activity</h4>
         <div ng-repeat="btx in index.txHistory"
           ng-click="home.openTxModal(btx)"
           class="row collapse last-transactions-content">
