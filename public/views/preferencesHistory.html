@@ -5,13 +5,12 @@
 </div>
 <div class="content preferences" ng-controller="preferencesHistory as history">
   <h4></h4>
-<ul class="no-bullet m0 size-14">
-    <li class="line-b p20 oh" ng-show="!index.isCordova" id="export_file" type="file" nwsaveas="Copay-{{index.alias || index.walletName}}.csv" accept=".csv"  ng-click="index.csvHistory();">
-      <i class="fi-page-export-csv"></i>
-      <a translate>Export to file</a>
-  </li>
-  <li class="line-b p20 oh" ng-click="history.clearTransactionHistory();">
-      <a translate>Clear cache</a>
-  </li>
-</ul>
+  <ul class="no-bullet m0">
+    <li ng-show="!index.isCordova" id="export_file" type="file" nwsaveas="Copay-{{index.alias || index.walletName}}.csv" accept=".csv"  ng-click="index.csvHistory();">
+      <span translate>Export to file</span>
+    </li>
+    <li ng-click="history.clearTransactionHistory();">
+      <span translate>Clear cache</span>
+    </li>
+  </ul>
 </div>
