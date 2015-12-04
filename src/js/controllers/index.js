@@ -131,7 +131,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         self.openWallet();
       } else {
         storageService.getBackupFlag(self.walletId, function(err, val) {
-          console.log(fc.credentials);
           if (!fc.credentials.mnemonic)
             self.needsBackup = false;
           else
