@@ -12,7 +12,9 @@ angular.module('copayApp.controllers').controller('disclaimerController',
           $scope.error = err;
           $log.warn(err);
           $scope.$apply();
-        } else go.walletHome();
+        } else {
+          applicationService.restart();
+        }
       });
     };
 
@@ -39,9 +41,12 @@ angular.module('copayApp.controllers').controller('disclaimerController',
       if (!profile) create();
       else $scope.creatingProfile = false;
 
-      //compatible
-      storageService.getCopayDisclaimerFlag(function(err, val) {
-        if (val) go.walletHome();
-      });
+      storageService.getProfile(function(profile) {
+        if (profile && profile.agreeDisclaimer) go.walletHome();
+        //compatible
+        storageService.getCopayDisclaimerFlag(function(err, val) {
+          if (val) go.walletHome();
+        });
+      })
     });
   });
