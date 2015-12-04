@@ -172,6 +172,34 @@ _:-ms-fullscreen, :root .main {
     padding-top: 1rem !important;
 }
 
+.menu-activity {
+  background-image: linear-gradient(-180deg, #F1F3F5 0%, #FFFFFF 40%);
+  box-shadow: 0px -1px 0px 0px rgba(165,178,191,0.35);
+  width: 100%;
+  height: 8rem;
+  position: absolute;
+  top: -15px;
+  margin-left: auto;
+  margin-right: auto;
+  left:0;
+  right:0;
+  border-radius: 100%;
+  z-index: -999;
+}
+
+.icon-activity  {
+  font-size: 28px;
+  position: absolute;
+  display: block;
+  left: 0;
+  right: 0;
+  top: -4px;
+}
+
+.name-activity {
+  margin-top: 18px;
+}
+
 .amount {
   width: 100%;
   text-align: center;
@@ -821,6 +849,10 @@ textarea:focus
 .create-tab .tab-container {
   float: left;
   text-align: center;
+}
+
+.test {
+  background: red;
 }
 
 

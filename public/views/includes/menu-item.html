@@ -1,10 +1,11 @@
 <a  ng-click="index.setTab(item, false, 0, true)" 
     ng-style="{'color': index.tab == item.link ? index.backgroundColor : '#4B6178'}" id="menu-{{item.link}}">
-    <i class="size-18 {{item.icon}} db"></i>
-    <div class="size-10 tu">
+    <i class="size-18 {{item.icon}} db" ng-class="{ 'icon-activity': item.link=='walletHome' }"></i>
+    <div class="size-10 tu" ng-class="{ 'name-activity': item.link=='walletHome' }">
         {{ item.title|translate }}
         <span class="label alert round" ng-if="item.link=='walletHome' && index.pendingTxProposalsCountForUs > 0">
             {{ index.pendingTxProposalsCountForUs }}
         </span>
+        <span class="menu-activity hide-for-large-only" ng-if="item.link=='walletHome'">
     </div>
 </a>
