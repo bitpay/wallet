@@ -25,6 +25,7 @@ angular.module('copayApp.controllers').controller('disclaimerController',
         if (err) {
           $log.warn(err);
           $scope.error = err;
+          $scope.$apply();
           $timeout(function() {
             $log.warn('Retrying to create profile......');
             create();
