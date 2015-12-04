@@ -131,7 +131,10 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         self.openWallet();
       } else {
         storageService.getBackupFlag(self.walletId, function(err, val) {
-          self.needsBackup = self.network == 'testnet' ? false : !val;
+          if (!fc.credentials.mnemonic)
+            self.needsBackup = false;
+          else
+            self.needsBackup = self.network == 'testnet' ? false : !val;
           self.openWallet();
         });
       }
