@@ -173,7 +173,7 @@
       <!-- Activity -->
 
       <div class="row" 
-        ng-show="!index.loadingWallet && !index.txHistory[0]">
+        ng-show="!index.loadingWallet && !index.txHistory[0] && !index.updatingTxHistory[index.walletId]">
         <div class="large-12 columns">
           <div class="oh text-gray size-12 text-center m20t">
             <span ng-if="!index.txHistoryError" translate>
