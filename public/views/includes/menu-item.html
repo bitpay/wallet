@@ -3,7 +3,7 @@
     <i class="size-18 {{item.icon}} db" ng-class="{ 'icon-activity': item.link=='walletHome' }"></i>
     <div class="size-10 tu" ng-class="{ 'name-activity': item.link=='walletHome' }">
         {{ item.title|translate }}
-        <span class="label alert round" ng-if="item.link=='walletHome' && index.pendingTxProposalsCountForUs > 0">
+        <span class="label activity round" ng-style="{'background-color': index.tab == item.link" ng-if="item.link=='walletHome' && index.pendingTxProposalsCountForUs > 0">
             {{ index.pendingTxProposalsCountForUs }}
         </span>
         <span class="menu-activity hide-for-large-only" ng-if="item.link=='walletHome'">
