@@ -198,9 +198,8 @@
             </div>
           </div>
           <div class="size-12 text-gray m20t">
-            {{index.txProgress}}
-            <span translate>Transactions Downloaded</span> <br>
-            <b translate>Wait some minutes...</b>
+            <div translate>{{index.txProgress}} transactions downloaded</div>
+            <div translate>Updating transaction history. Please stand by.</div>
           </div>
         </div>
       </div>
@@ -268,12 +267,13 @@
           </div>
         </div>
 
-        <div class="row m20t">
-            <button type="submit" class="outline round small expand m0" ng-show="index.historyShowShowAll" ng-click="index.showAllHistory()" ng-style="{'background-color':index.backgroundColor}">
-              <i class="icon-arrow-down4 ng-scope"></i>
-              <span translate>Show all</span>
-            </button>
-          </div>
+        <div class="m20t text-center">
+          <a class="text-gray size-12" 
+             ng-show="index.historyShowShowAll" 
+             ng-click="index.showAllHistory()">
+            <span translate>Show all</span>
+          </a>
+        </div>
       </div>
 
 
