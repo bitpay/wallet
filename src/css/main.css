@@ -991,6 +991,16 @@ a.button.postfix {
   padding: 0;
 }
 
+.icon-wallet {
+  vertical-align: top;
+  display: block;
+  margin-top: 7px;  
+}
+
+.walletHome .icon-wallet {
+  display: inline;
+}
+
 .icon-input {
   font-size: 9px;
   color: #fff;
@@ -1042,6 +1052,10 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
 .text-success {color: #1ABC9C;}
 .text-spacing {letter-spacing:2px;}
 .text-capitalize {text-transform: capitalize;}
+
+.payment-uri .panel {
+  line-height: 1.4;
+}
 
 .panel {
   background: #FFFFFF;

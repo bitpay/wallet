@@ -360,7 +360,6 @@ a.missing-copayers {
   width: 35px;
   height: 35px;
   border-radius: 3px;
-  padding: 2px;
 }
 
 .sidebar header {
@@ -404,11 +403,6 @@ a.missing-copayers {
   padding: 13px 14px;
   color: red;
   margin-right: 10px;
-}
-
-.sidebar ul.off-canvas-list li a i {
-  vertical-align: middle;
-  opacity: 0.6;
 }
 
 .sidebar .left-off-canvas-menu {

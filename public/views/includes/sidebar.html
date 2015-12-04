@@ -11,15 +11,17 @@
     class="nav-item">
     <a ng-click="sidebar.switchWallet(item.id, index.walletId)" class="oh">
       <div class="avatar-wallet"
-        ng-style="{'background-color':item.color}">{{(item.name || item.id) | limitTo: 1}}</div>
+        ng-style="{'background-color':item.color}">
+        <i class="icon-wallet size-21"></i>
+      </div>
       <div class="name-wallet" ng-class="{'m8t':item.n == 1}">{{item.name || item.id}}</div>
       <div class="size-12" ng-show="item.n > 1" translate>{{item.m}}-of-{{item.n}}</div>
     </a>
     </li>
     <li>
       <a ng-click="$root.go('add')" class="oh">
-        <i class="icon-arrow-right3 size-18 right m10t"></i>
-        <i class="fi-plus size-24 icon"></i>
+        <i class="icon-arrow-right3 size-18 right m10t vm"></i>
+        <i class="fi-plus size-24 icon vm"></i>
         <div class="tu text-bold">
           <span class="size-12" translate>Add wallet</span>
         </div>
@@ -28,8 +30,8 @@
     </li>
     <li ng-show="index.glideraEnabled">
       <a ng-click="$root.go('glidera')" class="oh">
-        <i class="icon-arrow-right3 size-18 right m10t"></i>
-        <i class="icon-bank size-24 icon"></i>
+        <i class="icon-arrow-right3 size-18 right m10t vm"></i>
+        <i class="icon-bank size-24 icon vm"></i>
         <div class="tu text-bold">
           <span class="size-12" translate>Buy &amp; Sell Bitcoin</span>
         </div>
@@ -38,8 +40,8 @@
     </li>
     <li>
       <a ng-click="$root.go('preferencesGlobal')" class="oh">
-        <i class="icon-arrow-right3 size-18 right m10t"></i>
-        <i class="fi-widget size-24 icon"></i>
+        <i class="icon-arrow-right3 size-18 right m10t vm"></i>
+        <i class="fi-widget size-24 icon vm"></i>
         <div class="tu text-bold">
           <span class="size-12" translate>Settings</span>
         </div>
