@@ -21,15 +21,15 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
   self.menu = [{
     'title': gettext('Receive'),
-    'icon': 'icon-receive2',
+    'icon': 'icon-receive',
     'link': 'receive'
   }, {
     'title': gettext('Home'),
-    'icon': 'icon-home',
+    'icon': 'icon-activity',
     'link': 'walletHome'
   }, {
     'title': gettext('Send'),
-    'icon': 'icon-paperplane',
+    'icon': 'icon-send',
     'link': 'send'
   }];
 
