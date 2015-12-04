@@ -134,6 +134,11 @@ angular.module('copayApp.services')
     };
 
     root.loadAndBindProfile = function(cb) {
+      root.checkDisclaimer(function(val) {
+        if (!val) { 
+          return cb(new Error('NONAGREEDDISCLAIMER: Non agreed disclaimer'));
+        }
+        else {
       storageService.getProfile(function(err, profile) {
         if (err) {
           $rootScope.$emit('Local/DeviceError', err);
@@ -150,13 +155,10 @@ angular.module('copayApp.services')
             return root.bindProfile(profile, cb);
           })
         } else {
-          storageService.getCopayDisclaimerFlag(function(err, val) {
-            if (!profile.agreeDisclaimer) {
-              if (!val) return cb(new Error('NONAGREEDDISCLAIMER: Non agreed disclaimer'));
-            }
-            $log.debug('Profile read');
-            return root.bindProfile(profile, cb);
-          });
+          $log.debug('Profile read');
+          return root.bindProfile(profile, cb);
+        }
+      });
         }
       });
     };
@@ -521,11 +523,35 @@ angular.module('copayApp.services')
     root.storeDisclaimer = function(cb) {
       storageService.getProfile(function(err, profile) {
         profile.agreeDisclaimer = true;
-        storageService.storeProfile(profile, function() {
+        storageService.storeProfile(profile, function(err) {
           return cb(err);
         });
       });
-    }
+    };
+
+    root.checkDisclaimer = function(cb) {
+      if (root.profile && root.profile.agreeDisclaimer) return cb(true);
+      storageService.getProfile(function(err, profile) {
+        if (profile && profile.agreeDisclaimer)
+          return cb(true);
+        else if (profile && !profile.agreeDisclaimer) {
+          storageService.getCopayDisclaimerFlag(function(err, val) {
+            if (val) {
+              root.storeDisclaimer(function(err) {
+                if (err) $log.error(err);
+                return cb(true);
+              });
+            }
+            else {
+              return cb();
+            }
+          });
+        }
+        else {
+          return cb();
+        }
+      });   
+    };
 
     root.importLegacyWallet = function(username, password, blob, cb) {
       var walletClient = bwcService.getClient();
