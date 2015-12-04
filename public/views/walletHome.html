@@ -109,7 +109,8 @@
 
         <div class="avatar-name columns line-b">
           <div class="avatar-wallet left"
-            ng-style="{'background-color':index.backgroundColor}">{{ (index.alias || index.walletName) | limitTo: 1}}
+            ng-style="{'background-color':index.backgroundColor}">
+            <i class="icon-wallet size-24"></i>
           </div> 
           <div class="wallet-info">
             <div ng-show="index.isShared">

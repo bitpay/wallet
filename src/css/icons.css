@@ -24,6 +24,9 @@
 	-moz-osx-font-smoothing: grayscale;
 }
 
+.icon-wallet:before {
+	content: "\e903";
+}
 .icon-activity:before {
 	content: "\e900";
 }
@@ -179,7 +182,7 @@
 .icon-trash:before {
 	content: "\e626";
 }
-.icon-wallet:before {
+.icon-wallet2:before {
 	content: "\e622";
 }
 .icon-history:before {
