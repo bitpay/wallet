@@ -7,6 +7,9 @@ angular.module('copayApp.controllers').controller('preferencesDeleteWordsControl
     var msg = gettext('Are you sure you want to delete the backup words?');
     var successMsg = gettext('Backup words deleted');
 
+    if (fc.credentials && !fc.credentials.mnemonicEncrypted && !fc.credentials.mnemonic)
+      self.deleted = true;
+
     self.delete = function() {
       confirmDialog.show(msg,
         function(ok) {
