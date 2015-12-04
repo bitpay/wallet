@@ -174,11 +174,11 @@ _:-ms-fullscreen, :root .main {
 
 .menu-activity {
   background-image: linear-gradient(-180deg, #F1F3F5 0%, #FFFFFF 30%);
-  box-shadow: 0px -1px 0px 0px rgba(165,178,191,0.30);
+  box-shadow: 0px -1px 0px 0px rgba(165,178,191,0.35);
   width: 100%;
   height: 8rem;
   position: absolute;
-  top: -15px;
+  top: -10px;
   margin-left: auto;
   margin-right: auto;
   left:0;
