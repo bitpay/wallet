@@ -474,9 +474,9 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
         self.copyAddress(addr);
       };
 
-      $scope.cancel = function() {
+      $scope.cancel = lodash.debounce(function() {
         $modalInstance.dismiss('cancel');
-      };
+      }, 0, 1000);
     };
 
     var modalInstance = $modal.open({
@@ -1228,9 +1228,9 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
         self.copyAddress(addr);
       };
 
-      $scope.cancel = function() {
+      $scope.cancel = lodash.debounce(function() {
         $modalInstance.dismiss('cancel');
-      };
+      }, 0, 1000);
 
     };
 
