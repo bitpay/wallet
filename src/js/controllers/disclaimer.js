@@ -4,16 +4,6 @@ angular.module('copayApp.controllers').controller('disclaimerController',
   function($scope, $timeout, $log, profileService, isCordova, storageService, applicationService, gettextCatalog, uxLanguage, go) {
     self = this;
 
-    $scope.goHome = function() {
-      $scope.error = "";
-      profileService.storeDisclaimer(function(err) {
-        if (err) {
-          $scope.error = err;
-          $scope.$apply();
-        } else go.walletHome();
-      });
-    };
-
     var create = function() {
       $scope.creatingProfile = true;
       profileService.create({}, function(err) {

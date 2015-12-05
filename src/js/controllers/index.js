@@ -125,22 +125,19 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
       self.initGlidera();
 
-      self.setCustomBWSFlag();
-      profileService.checkDisclaimer(function(v) {
-        if (v) self.disclaimerAccepted = true;
-        if (fc.isPrivKeyExternal()) {
-          self.needsBackup = false;
+      self.setCustomBWSFlag(); 
+      if (fc.isPrivKeyExternal()) {
+        self.needsBackup = false;
+        self.openWallet();
+      } else {
+        storageService.getBackupFlag(self.walletId, function(err, val) {
+          if (!fc.credentials.mnemonic)
+            self.needsBackup = false;
+          else
+            self.needsBackup = self.network == 'testnet' ? false : !val;
           self.openWallet();
-        } else {
-          storageService.getBackupFlag(self.walletId, function(err, val) {
-            if (!fc.credentials.mnemonic)
-              self.needsBackup = false;
-            else
-              self.needsBackup = self.network == 'testnet' ? false : !val;
-            self.openWallet();
-          });
-        }
-      });
+        });
+      }
     });
   };
 
@@ -149,6 +146,28 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     var config = configService.getSync();
 
     self.usingCustomBWS = config.bwsFor && config.bwsFor[self.walletId] && (config.bwsFor[self.walletId] != defaults.bws.url);
+  };
+
+  self.agreeDisclaimer = function() {
+    var profile = profileService.profile;
+    if (profile) profile.agreeDisclaimer = true;
+    self.disclaimerAccepted = true;
+    profileService.storeDisclaimer(function(err) {
+      if (err) $log.error(err); 
+      go.walletHome();
+    });
+  };
+
+  self.checkDisclaimer = function() {
+    if (self.disclaimerAccepted == true) { 
+      go.walletHome();
+      return;
+    }
+    profileService.checkDisclaimer(function(v) {
+      if (v) { 
+        self.agreeDisclaimer();
+      } else go.path('disclaimer');
+    });
   };
 
   self.setTab = function(tab, reset, tries, switchState) {
@@ -975,6 +994,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   };
 
   self.openMenu = function() {
+    if (!self.disclaimerAccepted) return;
     go.swipe(true);
   };
 
@@ -1220,7 +1240,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
   $rootScope.$on('Local/Resume', function(event) {
     $log.debug('### Resume event');
-    if (!self.disclaimerAccepted) go.path('disclaimer');
+    self.checkDisclaimer();
     self.debouncedUpdate();
   });
 
@@ -1343,17 +1363,16 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.setUxLanguage();
     self.setFocusedWallet();
     self.updateTxHistory();
-    if (self.disclaimerAccepted) go.walletHome();
-    
-        storageService.getCleanAndScanAddresses(function(err, walletId) {
-          if (walletId && profileService.walletClients[walletId]) {
-            $log.debug('Clear last address cache and Scan ', walletId);
-            addressService.expireAddress(walletId, function(err) {
-              self.startScan(walletId);
-            });
-            storageService.removeCleanAndScanAddresses(function() {});
-          }
+    self.checkDisclaimer();
+    storageService.getCleanAndScanAddresses(function(err, walletId) {
+      if (walletId && profileService.walletClients[walletId]) {
+        $log.debug('Clear last address cache and Scan ', walletId);
+        addressService.expireAddress(walletId, function(err) {
+          self.startScan(walletId);
         });
+        storageService.removeCleanAndScanAddresses(function() {});
+      }
+    });
   });
 
   $rootScope.$on('Local/SetTab', function(event, tab, reset) {
