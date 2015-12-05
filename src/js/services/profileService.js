@@ -118,7 +118,7 @@ angular.module('copayApp.services')
 
     root.bindProfile = function(profile, cb) {
       root.profile = profile;
-
+      
       configService.get(function(err) {
         $log.debug('Preferences read');
         if (err) return cb(err);
@@ -127,18 +127,21 @@ angular.module('copayApp.services')
           if (err) return cb(err);
           root._setFocus(focusedWalletId, function() {
             $rootScope.$emit('Local/ProfileBound');
-            return cb();
+            root.checkDisclaimer(function(val) {
+              if (!val) { 
+                return cb(new Error('NONAGREEDDISCLAIMER: Non agreed disclaimer'));
+              }
+              else {
+                return cb();
+              }
+            });
           });
         });
       });
+        
     };
 
-    root.loadAndBindProfile = function(cb) {
-      root.checkDisclaimer(function(val) {
-        if (!val) { 
-          return cb(new Error('NONAGREEDDISCLAIMER: Non agreed disclaimer'));
-        }
-        else {
+    root.loadAndBindProfile = function(cb) { 
       storageService.getProfile(function(err, profile) {
         if (err) {
           $rootScope.$emit('Local/DeviceError', err);
@@ -157,8 +160,6 @@ angular.module('copayApp.services')
         } else {
           $log.debug('Profile read');
           return root.bindProfile(profile, cb);
-        }
-      });
         }
       });
     };
@@ -530,14 +531,14 @@ angular.module('copayApp.services')
     };
 
     root.checkDisclaimer = function(cb) {
-      if (root.profile && root.profile.agreeDisclaimer) return cb(true);
       storageService.getProfile(function(err, profile) {
         if (profile && profile.agreeDisclaimer)
           return cb(true);
         else if (profile && !profile.agreeDisclaimer) {
           storageService.getCopayDisclaimerFlag(function(err, val) {
             if (val) {
-              root.storeDisclaimer(function(err) {
+              profile.agreeDisclaimer = true;
+              storageService.storeProfile(profile, function(err) {
                 if (err) $log.error(err);
                 return cb(true);
               });
