@@ -127,7 +127,7 @@ angular.module('copayApp.services')
           if (err) return cb(err);
           root._setFocus(focusedWalletId, function() {
             $rootScope.$emit('Local/ProfileBound');
-            root.checkDisclaimer(function(val) {
+            root.isDisclaimerAccepted(function(val) {
               if (!val) { 
                 return cb(new Error('NONAGREEDDISCLAIMER: Non agreed disclaimer'));
               }
@@ -521,23 +521,23 @@ angular.module('copayApp.services')
       });
     };
 
-    root.storeDisclaimer = function(cb) {
+    root.setDisclaimerAccepted = function(cb) {
       storageService.getProfile(function(err, profile) {
-        profile.agreeDisclaimer = true;
+        profile.disclaimerAccepted = true;
         storageService.storeProfile(profile, function(err) {
           return cb(err);
         });
       });
     };
 
-    root.checkDisclaimer = function(cb) {
+    root.isDisclaimerAccepted = function(cb) {
       storageService.getProfile(function(err, profile) {
-        if (profile && profile.agreeDisclaimer)
+        if (profile && profile.disclaimerAccepted)
           return cb(true);
-        else if (profile && !profile.agreeDisclaimer) {
+        else if (profile && !profile.disclaimerAccepted) {
           storageService.getCopayDisclaimerFlag(function(err, val) {
             if (val) {
-              profile.agreeDisclaimer = true;
+              profile.disclaimerAccepted = true;
               storageService.storeProfile(profile, function(err) {
                 if (err) $log.error(err);
                 return cb(true);

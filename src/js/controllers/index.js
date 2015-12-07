@@ -148,24 +148,24 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.usingCustomBWS = config.bwsFor && config.bwsFor[self.walletId] && (config.bwsFor[self.walletId] != defaults.bws.url);
   };
 
-  self.agreeDisclaimer = function() {
+  self.acceptDisclaimer = function() {
     var profile = profileService.profile;
-    if (profile) profile.agreeDisclaimer = true;
+    if (profile) profile.disclaimerAccepted = true;
     self.disclaimerAccepted = true;
-    profileService.storeDisclaimer(function(err) {
+    profileService.setDisclaimerAccepted(function(err) {
       if (err) $log.error(err); 
       go.walletHome();
     });
   };
 
-  self.checkDisclaimer = function() {
+  self.isDisclaimerAccepted = function() {
     if (self.disclaimerAccepted == true) { 
       go.walletHome();
       return;
     }
-    profileService.checkDisclaimer(function(v) {
+    profileService.isDisclaimerAccepted(function(v) {
       if (v) { 
-        self.agreeDisclaimer();
+        self.acceptDisclaimer();
       } else go.path('disclaimer');
     });
   };
@@ -1240,7 +1240,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
   $rootScope.$on('Local/Resume', function(event) {
     $log.debug('### Resume event');
-    self.checkDisclaimer();
+    self.isDisclaimerAccepted();
     self.debouncedUpdate();
   });
 
@@ -1363,7 +1363,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.setUxLanguage();
     self.setFocusedWallet();
     self.updateTxHistory();
-    self.checkDisclaimer();
+    self.isDisclaimerAccepted();
     storageService.getCleanAndScanAddresses(function(err, walletId) {
       if (walletId && profileService.walletClients[walletId]) {
         $log.debug('Clear last address cache and Scan ', walletId);
