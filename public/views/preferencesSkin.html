@@ -1,12 +1,23 @@
 <div 
   class="topbar-container" 
   ng-include="'views/includes/topbar.html'"
-  ng-init="titleSection='Choose skin'; goBackToState = 'preferences'; useTheme = false; showPlus = index.brand.features.theme.skinDiscovery.enabled; plusState = 'preferencesSkinDiscovery'; showLayout = true; layoutEvent='skinLayout'">
+  ng-init="titleSection=(index.brand.features.theme.skinGallery.enabled ? 'Choose skin' : 'Color'); goBackToState = 'preferences'; useTheme = false; showPlus = index.brand.features.theme.skinDiscovery.enabled; plusState = 'preferencesSkinDiscovery'; showLayout = index.brand.features.theme.skinGallery.enabled; layoutEvent='skinLayout'">
 </div>
 <div class="content preferences white" ng-controller="preferencesSkinController as p">
 
+  <!-- Legacy color layout -->
+  <!-- TODO: remove at the intruduction of themes & skins -->
+  <div ng-show="!index.brand.features.theme.skinGallery.enabled">
+    <ul class="no-bullet m0">
+      <li ng-repeat="s in p.skins" ng-click="p.save($index)">
+        <span ng-style="{'color': s.view.homeTopBackground}">&block;</span>
+        <i class="fi-check size-16 right" ng-show="$root.skin.header.name == s.header.name"></i>
+      </li>
+    </ul>
+  </div>
+
   <!-- Grid layout -->
-  <div class="row" style="padding-left: 1px;" ng-show="p.skinGalleryLayout == 'grid'">
+  <div class="row" style="padding-left: 1px;" ng-show="p.skinGalleryLayout == 'grid' && index.brand.features.theme.skinGallery.enabled">
 	  <div class="columns large-2 medium-3 small-4 end" style="padding: 1px 1px 1px 0;" ng-repeat="s in p.skins">
       <img ng-src="{{s.header.galleryImage}}" ng-click="p.save($index)"/>
       <i class="fi-info gallery-grid-action-button"  ng-click="p.preview($index)"></i>
@@ -16,7 +27,7 @@
   </div>
 
   <!-- List layout -->
-  <div ng-show="p.skinGalleryLayout == 'list'">
+  <div ng-show="p.skinGalleryLayout == 'list' && index.brand.features.theme.skinGallery.enabled">
     <ul class="no-bullet m0">
       <li class="p0i oa" ng-repeat="s in p.skins">
 
@@ -37,7 +48,7 @@
   </div>
 
   <!-- List detail layout -->
-  <div ng-show="p.skinGalleryLayout == 'list-detail'">
+  <div ng-show="p.skinGalleryLayout == 'list-detail' && index.brand.features.theme.skinGallery.enabled">
     <ul class="no-bullet m0">
       <li class="p0i oa" ng-repeat="s in p.skins">
 

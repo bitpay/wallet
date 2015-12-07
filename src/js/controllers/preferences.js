@@ -2,8 +2,7 @@
 
 angular.module('copayApp.controllers').controller('preferencesController',
   function($scope, $rootScope, $timeout, $log, configService, profileService) {
-    $scope.appShortName = window.appShortName;
-    
+
     this.init = function() {
       var config = configService.getSync();
       var fc = profileService.focusedClient;
