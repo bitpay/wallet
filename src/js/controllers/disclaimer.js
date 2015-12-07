@@ -30,7 +30,7 @@ angular.module('copayApp.controllers').controller('disclaimerController',
         else $scope.creatingProfile = false;
 
         //compatible
-        profileService.checkDisclaimer(function(val) {
+        profileService.isDisclaimerAccepted(function(val) {
           if (val) go.walletHome();
         });
       });
