@@ -28,6 +28,7 @@ angular.module('copayApp.controllers').controller('backupController',
             return;
           }
 
+          $rootScope.$emit('Local/BackupDone');
           notification.success(gettext('Success'), gettext('Encrypted export file saved'));
           notification.success(
               gettext('Success'),
@@ -102,6 +103,7 @@ angular.module('copayApp.controllers').controller('backupController',
           self.error = true;
         } else {
           self.error = false;
+          $rootScope.$emit('Local/BackupDone');
         }
         return cb(ew);
       });

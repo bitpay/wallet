@@ -156,7 +156,7 @@
     </div>
   </div>
 
-  <div class="columns text-center m20t" ng-if="tx.canBeRemoved">
+  <div class="columns text-center m20t" ng-if="tx.canBeRemoved && isShared">
     <div class="text-gray size-12 m20b" ng-if="!tx.isGlidera" translate>
       * A payment proposal can be deleted if 1) you are the creator, and no other copayer has signed, or 2) 24 hours have passed since the proposal was created.
     </div>

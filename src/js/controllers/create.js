@@ -170,11 +170,6 @@ angular.module('copayApp.controllers').controller('createController',
             return;
           }
 
-          if (opts.mnemonic || opts.externalSource || opts.extendedPrivateKey) {
-            if (opts.n == 1) {
-              $rootScope.$emit('Local/WalletImported', walletId);
-            }
-          }
         });
       }, 100);
     }

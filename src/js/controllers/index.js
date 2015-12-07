@@ -154,7 +154,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     var defaults = configService.getDefaults();
     var config = configService.getSync();
 
-    self.usingCustomBWS = config.bwsFor &&  config.bwsFor[self.walletId] && (config.bwsFor[self.walletId] != defaults.bws.url);
+    self.usingCustomBWS = config.bwsFor && config.bwsFor[self.walletId] && (config.bwsFor[self.walletId] != defaults.bws.url);
   };
 
   self.setTab = function(tab, reset, tries, switchState) {
@@ -437,9 +437,10 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   };
 
   // This handles errors from BWS/index with are nomally
-  // trigger from async events (like updates)
-  self.handleError = function(err) {
-    $log.warn('Client ERROR:', err);
+  // trigger from async events (like updates).
+  // Debounce function avoids multiple popups
+  var _handleError = function(err) {
+    $log.warn('Client ERROR: ', err);
     if (err.code === 'NOT_AUTHORIZED') {
       self.notAuthorized = true;
       go.walletHome();
@@ -452,6 +453,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       self.showErrorPopup(msg);
     }
   };
+
+  self.handleError = lodash.debounce(_handleError, 1000);
+
   self.openWallet = function() {
     var fc = profileService.focusedClient;
     $timeout(function() {
@@ -622,7 +626,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       self.alternativeConversionRate = $filter('noFractionNumber')(alternativeConversionRate, 2);
 
       self.alternativeBalanceAvailable = true;
-      self.updatingBalance = false;
 
       self.isRateAvailable = true;
       $rootScope.$apply();
@@ -793,10 +796,31 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   self.updateLocalTxHistory = function(client, cb) {
     var requestLimit = 6;
     var walletId = client.credentials.walletId;
+    var config = configService.getSync().wallet.settings;
+
+    var fixTxsUnit = function(txs) {
+      if (!txs || !txs[0]) return;
+
+      var cacheUnit = txs[0].amountStr.split(' ')[1];
+
+      if (cacheUnit == config.unitName)
+        return;
+
+      var name = ' ' + config.unitName;
+
+      $log.debug('Fixing Tx Cache Unit to:' + name)
+      lodash.each(txs, function(tx) {
+
+        tx.amountStr = profileService.formatAmount(tx.amount, config.unitName) + name;
+        tx.feeStr = profileService.formatAmount(tx.fees, config.unitName) + name;
+      });
+    };
 
     self.getConfirmedTxs(walletId, function(err, txsFromLocal) {
       if (err) return cb(err);
       var endingTxid = txsFromLocal[0] ? txsFromLocal[0].txid : null;
+
+      fixTxsUnit(txsFromLocal);
 
       function getNewTxs(newTxs, skip, i_cb) {
 
@@ -814,7 +838,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
             return i_cb(null, newTxs);
           }
 
-          if (walletId ==  profileService.focusedClient.credentials.walletId) 
+          if (walletId == profileService.focusedClient.credentials.walletId)
             self.txProgress = newTxs.length;
 
           $timeout(function() {
@@ -829,7 +853,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         var newHistory = lodash.compact(txs.concat(txsFromLocal));
         $log.debug('Tx History synced. Total Txs: ' + newHistory.length);
 
-        if (walletId ==  profileService.focusedClient.credentials.walletId) {
+        if (walletId == profileService.focusedClient.credentials.walletId) {
           self.completeHistory = newHistory;
           self.txHistory = newHistory.slice(0, self.historyShowLimit);
           self.historyShowShowAll = newHistory.length >= self.historyShowLimit;
@@ -907,9 +931,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     $log.warn('Showing err popup:' + msg);
     self.showAlert = {
       msg: msg,
-      close: function(err) {
+      close: function() {
         self.showAlert = null;
-        if (cb) return cb(err);
+        if (cb) return cb();
       },
     };
     $timeout(function() {
@@ -931,9 +955,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       }
 
       profileService.setWalletClients();
-      $timeout(function() {
-        $rootScope.$emit('Local/WalletImported', self.walletId);
-      }, 100);
+      self.startScan(self.walletId);
     });
   };
 
@@ -1141,8 +1163,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   });
 
   $rootScope.$on('Local/UnitSettingUpdated', function(event) {
-    self.updateAll();
-    self.updateTxHistory();
+    self.updateAll({
+      triggerTxUpdate: true,
+    });
     self.updateRemotePreferences({
       saveAll: true
     }, function() {
@@ -1178,10 +1201,10 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.debouncedUpdate();
   });
 
-  $rootScope.$on('Local/BackupDone', function(event) {
+  $rootScope.$on('Local/BackupDone', function(event, walletId) {
     self.needsBackup = false;
     $log.debug('Backup done');
-    storageService.setBackupFlag(self.walletId, function(err) {
+    storageService.setBackupFlag(walletId || self.walletId, function(err) {
       $log.debug('Backup done stored');
     });
   });
@@ -1324,10 +1347,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         return cb(gettext('Invalid Touch ID'));
       }
     );
-  });
-
-  $rootScope.$on('Local/ShowAlert', function(event, msg, cb) {
-    self.showErrorPopup(msg, cb);
   });
 
   $rootScope.$on('Local/NeedsPassword', function(event, isSetup, cb) {

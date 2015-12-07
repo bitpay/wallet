@@ -269,6 +269,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       $scope.copayerId = fc.credentials.copayerId;
       $scope.canSign = fc.canSign() || fc.isPrivKeyExternal();
       $scope.loading = null;
+      $scope.isShared = fc.credentials.n > 1;
 
       // ToDo: use tx.customData instead of tx.message
       if (tx.message === 'Glidera transaction' && isGlidera) {
@@ -948,6 +949,9 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     profileService.signTxProposal(txp, function(err, signedTx) {
       self.setOngoingProcess();
       if (err) {
+        if (!lodash.isObject(err)) {
+          err = { message: err};
+        }
         err.message = bwsError.msg(err, gettextCatalog.getString('The payment was created but could not be signed. Please try again from home screen'));
         return cb(err);
       }
