@@ -26,6 +26,7 @@ webkitbuilds/*
 # chrome extensions
 browser-extensions/chrome/copay-chrome-extension
 browser-extensions/chrome/copay-chrome-extension.zip
+browser-extensions/chrome/copay-chrome-extension.zip.sig
 
 # Logs
 logs
