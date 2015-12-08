@@ -334,7 +334,7 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
     var config = configService.getSync();
     var colorFor = config.colorFor || [];
 
-    if (colorFor != []) {
+    if (colorFor.length > 0) {
       for(var walletId in colorFor) {
         var color = colorFor[walletId];
         if(typeof skinIdForColor[color] === 'undefined') {
