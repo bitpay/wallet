@@ -1377,7 +1377,7 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
 .preview-image-lg {
   position: absolute;
   width: 100%;
-  top: 0;
+  top: 200px;
   bottom: 65px;
   background-position: center bottom;
   background-size: contain;
