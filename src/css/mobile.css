@@ -816,16 +816,16 @@ textarea:focus
 }
 
 .gallery-grid-text {
-  line-height: 30px;
+  line-height: 25px;
   position: absolute;
   bottom: 0;
-  text-align: center;
   width: 99%;
-  padding: 0 10px 0 10px;
-  font-size: 14px;
+  padding: 0 30px 0 10px;
+  font-size: 12px;
   font-weight: 400;
   color: #FFFFFF;
-  background-color: rgba(0,0,0,0.25);
+  background: -webkit-linear-gradient(top, rgba(0,0,0,0) 0%,rgba(0,0,0,0.4) 60%,rgba(0,0,0,0.6) 100%);
+  background: linear-gradient(to bottom, rgba(0,0,0,0) 0%,rgba(0,0,0,0.4) 60%,rgba(0,0,0,0.6) 100%);
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
@@ -833,30 +833,22 @@ textarea:focus
 
 .gallery-grid-action-button {
   position: absolute;
-  top: 5px;
-  right: 5px;
-  font-size: 21px;
+  bottom: 0;
+  font-size: 16px;
   color: #FFFFFF;
-  background-color: rgba(0,0,0,0.25);
-  border-radius: 3px;
-  width: 40px;
-  height: 40px;
-  text-align: center;
-  line-height: 40px;
+  width: 100%;
+  text-align: right;
+  padding-right: 10px;
 }
 
 .gallery-grid-item-selected {
   position: absolute;
-  top: 5px;
-  left: 5px;
-  font-size: 21px;
+  bottom: 0;
+  font-size: 16px;
   color: #FFFFFF;
-  background-color: rgba(0,0,0,0.25);
-  border-radius: 3px;
-  width: 40px;
-  height: 40px;
-  text-align: center;
-  line-height: 40px;
+  width: 100%;
+  text-align: right;
+  padding-right: 10px;
 }
 
 .gallery-list-image {
