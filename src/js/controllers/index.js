@@ -15,6 +15,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   features += (brand.features.glidera.enabled ? 'Glidera,' : '');
   features += (brand.features.theme.themeDiscovery.enabled ? 'Theme Discovery,' : '');
   features += (brand.features.theme.skinDiscovery.enabled ? 'Skin Discovery,' : '');
+  features += (brand.features.theme.skinGallery.enabled ? 'Skin Gallery,' : '');
   features += (brand.features.theme.socialLike.enabled ? 'Like Themes & Skins,' : '');
   $log.debug('Application branding: ' + brand.shortName);
   $log.debug('Enabled features: ' + features.substring(0, features.length-1));
