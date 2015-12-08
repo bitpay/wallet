@@ -1052,6 +1052,7 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
 .text-success {color: #1ABC9C;}
 .text-spacing {letter-spacing:2px;}
 .text-capitalize {text-transform: capitalize;}
+.text-shadow {text-shadow: 2px 2px 3px rgba(150, 150, 150, 1);}
 
 .payment-uri .panel {
   line-height: 1.4;
