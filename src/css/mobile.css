@@ -254,6 +254,7 @@ _:-ms-fullscreen, :root .main {
   top: inherit;
   right: 15px;
   bottom: 45px;
+  line-height: 12px;
 }
 
 .send .camera-icon a {
