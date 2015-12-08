@@ -97,11 +97,8 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   };
 
   this.onQrCodeScanned = function(data) {
+    if (data) go.send();
     $rootScope.$emit('dataScanned', data);
-  };
-
-  this.openSendScreen = function() {
-    go.send();
   };
 
   rateService.whenAvailable(function() {

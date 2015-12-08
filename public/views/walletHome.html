@@ -132,7 +132,7 @@
           </div>
         </div>
         <div class="camera-icon" ng-show="index.isComplete">
-          <qr-scanner on-scan="home.onQrCodeScanned(data)" before-scan="home.openSendScreen()"></qr-scanner> 
+          <qr-scanner on-scan="home.onQrCodeScanned(data)"></qr-scanner> 
         </div>
       </div> <!-- oh -->
 
@@ -381,7 +381,7 @@
           </a>
         </h4>
         <div class="camera-icon" ng-show="index.isComplete">
-          <qr-scanner on-scan="home.onQrCodeScanned(data)" before-scan="home.openSendScreen()"></qr-scanner> 
+          <qr-scanner on-scan="home.onQrCodeScanned(data)"></qr-scanner> 
         </div>
       </div>
       <div class="box-notification m20t" ng-show="home.error" ng-click="home.resetError()">
@@ -414,10 +414,10 @@
                 <div class="addressbook-input" ng-show="!sendForm.address.$invalid && _address">
                   {{index.addressbook[_address] || _address}}
                 </div>
-                <a class="postfix button" 
-                ng-style="{'background-color':index.backgroundColor}"
+                <a class="postfix size-12 m0 text-gray" 
+                ng-style="{'color':index.backgroundColor}"
                 ng-click="home.openDestinationAddressModal(index.otherWallets, _address)">
-                  <i class="fi-plus size-14 lh"></i>
+                  <i class="icon-wallet text-bold size-18"></i>
                 </a>
               </div>
             </div>
