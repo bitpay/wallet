@@ -20,10 +20,12 @@
   <div class="row" style="padding-left: 1px;" ng-show="p.skinGalleryLayout == 'grid' && index.brand.features.theme.skinGallery.enabled">
 	  <div class="columns large-2 medium-3 small-4 end" style="padding: 1px 1px 1px 0;" ng-repeat="s in p.skins">
       <img ng-src="{{s.header.galleryImage}}" ng-click="p.save($index)"/>
-      <i class="fi-info gallery-grid-action-button"  ng-click="p.preview($index)"></i>
-      <i class="fi-check gallery-grid-item-selected" ng-show="$root.skin.header.name == s.header.name"></i>
       <div class="gallery-grid-text" ng-show="theme.header.preferences.showSkinGalleryGridLabel">{{s.header.name}}</div>
-	  </div>
+      <div ng-click="p.preview($index)">
+        <i class="fi-info gallery-grid-action-button"  ng-show="$root.skin.header.name != s.header.name"></i>
+        <i class="fi-check gallery-grid-item-selected" ng-show="$root.skin.header.name == s.header.name"></i>
+      </div>
+    </div>
   </div>
 
   <!-- List layout -->
