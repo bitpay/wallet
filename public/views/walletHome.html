@@ -414,10 +414,10 @@
                 <div class="addressbook-input" ng-show="!sendForm.address.$invalid && _address">
                   {{index.addressbook[_address] || _address}}
                 </div>
-                <a class="postfix button" 
-                ng-style="{'background-color':index.backgroundColor}"
+                <a class="postfix size-12 m0 text-gray" 
+                ng-style="{'color':index.backgroundColor}"
                 ng-click="home.openDestinationAddressModal(index.otherWallets, _address)">
-                  <i class="fi-plus size-14 lh"></i>
+                  <i class="icon-wallet size-18"></i>
                 </a>
               </div>
             </div>
