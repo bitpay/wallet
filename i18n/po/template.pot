@@ -21,6 +21,10 @@ msgstr ""
 msgid "{{index.m}}-of-{{index.n}}"
 msgstr ""
 
+#: public/views/walletHome.html
+msgid "{{index.txProgress}} transactions downloaded"
+msgstr ""
+
 #: public/views/includes/sidebar.html
 msgid "{{item.m}}-of-{{item.n}}"
 msgstr ""
@@ -76,6 +80,7 @@ msgid "Account Number"
 msgstr ""
 
 #: public/views/walletHome.html
+#: src/js/controllers/index.js
 msgid "Activity"
 msgstr ""
 
@@ -231,6 +236,10 @@ msgstr ""
 
 #: public/views/unsupported.html
 msgid "Browser unsupported"
+msgstr ""
+
+#: public/views/includes/sidebar.html
+msgid "Buy &amp; Sell Bitcoin"
 msgstr ""
 
 #: public/views/copayers.html
@@ -487,7 +496,7 @@ msgid "Delete Wallet"
 msgstr ""
 
 #: public/views/preferencesDeleteWords.html
-msgid "DELETE WORDS"
+msgid "Delete words"
 msgstr ""
 
 #: src/js/controllers/walletHome.js
@@ -675,6 +684,10 @@ msgstr ""
 msgid "Getting address for wallet {{selectedWalletName}} ..."
 msgstr ""
 
+#: public/views/includes/sidebar.html
+msgid "Global preferences"
+msgstr ""
+
 #: public/views/translators.html
 msgid "Greek"
 msgstr ""
@@ -691,10 +704,6 @@ msgstr ""
 #: public/views/import.html
 #: public/views/join.html
 msgid "Hide advanced options"
-msgstr ""
-
-#: src/js/controllers/index.js
-msgid "Home"
 msgstr ""
 
 #: public/views/disclaimer.html
@@ -1344,6 +1353,7 @@ msgid "Setting up email notifications could weaken your privacy, if the wallet s
 msgstr ""
 
 #: public/views/walletHome.html
+#: public/views/includes/sidebar.html
 msgid "Settings"
 msgstr ""
 
@@ -1549,10 +1559,6 @@ msgstr ""
 msgid "Transaction History"
 msgstr ""
 
-#: public/views/walletHome.html
-msgid "Transactions Downloaded"
-msgstr ""
-
 #: public/views/translators.html
 msgid "Translation Credits"
 msgstr ""
@@ -1566,7 +1572,7 @@ msgid "Try again"
 msgstr ""
 
 #: public/views/import.html
-msgid "Type the Seed Word (usually 12 words)"
+msgid "Type the Seed Phrase (usually 12 words)"
 msgstr ""
 
 #: src/js/controllers/walletHome.js
@@ -1584,6 +1590,10 @@ msgstr ""
 
 #: public/views/walletHome.html
 msgid "Unsent transactions"
+msgstr ""
+
+#: public/views/walletHome.html
+msgid "Updating transaction history. Please stand by."
 msgstr ""
 
 #: public/views/walletHome.html
@@ -1606,21 +1616,12 @@ msgstr ""
 msgid "View"
 msgstr ""
 
-#: public/views/walletHome.html
-msgid "Wait some minutes..."
-msgstr ""
-
 #: public/views/copayers.html
 msgid "Waiting for copayers"
 msgstr ""
 
 #: public/views/copayers.html
 msgid "Waiting..."
-msgstr ""
-
-#: public/views/preferencesDeleteWallet.html
-#: public/views/preferencesDeleteWords.html
-msgid "Wallet"
 msgstr ""
 
 #: src/js/services/bwsError.js
@@ -1707,6 +1708,7 @@ msgid "Wallet seed is invalid"
 msgstr ""
 
 #: public/views/backup.html
+#: public/views/preferencesDeleteWords.html
 msgid "Wallet seed not available. You can still export it from Advanced &gt; Export."
 msgstr ""
 
