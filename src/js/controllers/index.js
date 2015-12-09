@@ -364,7 +364,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
         if (opts.triggerTxUpdate) {
           $timeout(function() {
-            self.updateTxHistory();
+            self.debounceUpdateHistory();
           }, 1);
         }
       });
@@ -953,13 +953,13 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     });
   };
 
-  self.updateTxHistory = lodash.debounce(function() {
+  self.debounceUpdateHistory = lodash.debounce(function() {
     self.updateHistory();
   }, 1000);
 
   self.throttledUpdateHistory = lodash.throttle(function() {
     self.updateHistory();
-  }, 5000);
+  }, 10000);
 
   self.showErrorPopup = function(msg, cb) {
     $log.warn('Showing err popup:' + msg);
@@ -1140,7 +1140,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   $rootScope.$on('Local/ClearHistory', function(event) {
     $log.debug('The wallet transaction history has been deleted');
     self.txHistory = self.completeHistory = [];
-    self.updateHistory();
+    self.debounceUpdateHistory();
   });
 
   $rootScope.$on('Local/AddressbookUpdated', function(event, ab) {
@@ -1232,7 +1232,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.updateAll({
       quiet: true
     });
-    self.updateTxHistory();
+    self.debounceUpdateHistory();
   }, 4000, {
     leading: false,
     trailing: true
@@ -1301,7 +1301,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       if (self.network == 'testnet') {
         self.throttledUpdateHistory();
       } else {
-        self.updateTxHistory();
+        self.debounceUpdateHistory();
       }
     }
   });
@@ -1362,7 +1362,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   $rootScope.$on('Local/NewFocusedWallet', function() {
     self.setUxLanguage();
     self.setFocusedWallet();
-    self.updateTxHistory();
+    self.debounceUpdateHistory();
     self.isDisclaimerAccepted();
     storageService.getCleanAndScanAddresses(function(err, walletId) {
       if (walletId && profileService.walletClients[walletId]) {
