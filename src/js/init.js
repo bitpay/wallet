@@ -11,8 +11,7 @@ angular.element(document).ready(function() {
     if (!url) return;
     if (url.indexOf('glidera') != -1) {
       url = '#/uri-glidera' + url.replace('bitcoin://glidera', '');
-    }
-    else {
+    } else {
       url = '#/uri-payment/' + url;
     }
     setTimeout(function() {
@@ -48,9 +47,11 @@ angular.element(document).ready(function() {
       // Back button event
       document.addEventListener('backbutton', function() {
         var loc = window.location;
-        var isHome = loc.toString().match(/index\.html#\/$/) ? 'true' : '';
+        var exit = loc.toString().match(/disclaimer/) ? 'true' : '';
+        if (exit != 'true')
+          var exit = loc.toString().match(/index\.html#\/$/) ? 'true' : '';
         if (!window.ignoreMobilePause) {
-          window.location = '#/cordova/backbutton/'+isHome;
+          window.location = '#/cordova/backbutton/' + exit;
         }
         setTimeout(function() {
           window.ignoreMobilePause = false;
@@ -70,8 +71,12 @@ angular.element(document).ready(function() {
       window.handleOpenURL = handleBitcoinURI;
 
       window.plugins.touchid.isAvailable(
-        function(msg) { window.touchidAvailable = true; }, // success handler: TouchID available
-        function(msg) { window.touchidAvailable = false; } // error handler: no TouchID available
+        function(msg) {
+          window.touchidAvailable = true;
+        }, // success handler: TouchID available
+        function(msg) {
+          window.touchidAvailable = false;
+        } // error handler: no TouchID available
       );
 
       startAngular();

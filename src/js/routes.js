@@ -475,7 +475,7 @@ angular
         }
       })
       .state('cordova', {
-        url: '/cordova/:status/:isHome',
+        url: '/cordova/:status/:exit',
         views: {
           'main': {
             controller: function($rootScope, $state, $stateParams, $timeout, go, isCordova) {
@@ -484,7 +484,7 @@ angular
                   $rootScope.$emit('Local/Resume');
                   break;
                 case 'backbutton':
-                  if (isCordova && $stateParams.isHome == 'true' && !$rootScope.modalOpened) {
+                  if (isCordova && $stateParams.exit == 'true' && !$rootScope.modalOpened) {
                     navigator.app.exitApp();
                   } else {
                     $rootScope.$emit('closeModal');
