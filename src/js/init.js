@@ -24,6 +24,10 @@ angular.element(document).ready(function() {
   if (window.cordova !== undefined) {
 
     document.addEventListener('deviceready', function() {
+      var exitApp = false,
+        intval = setInterval(function() {
+          exitApp = false;
+        }, 2000);
 
       document.addEventListener('pause', function() {
         if (!window.ignoreMobilePause) {
@@ -45,17 +49,24 @@ angular.element(document).ready(function() {
       }, false);
 
       // Back button event
+
       document.addEventListener('backbutton', function() {
-        var loc = window.location;
-        var exit = loc.toString().match(/disclaimer/) ? 'true' : '';
-        if (exit != 'true')
-          var exit = loc.toString().match(/index\.html#\/$/) ? 'true' : '';
-        if (!window.ignoreMobilePause) {
-          window.location = '#/cordova/backbutton/' + exit;
+        if (exitApp) {
+          clearInterval(intval)
+          var loc = window.location;
+          var exit = loc.toString().match(/disclaimer/) ? 'true' : '';
+          if (exit != 'true')
+            var exit = loc.toString().match(/index\.html#\/$/) ? 'true' : '';
+          if (!window.ignoreMobilePause) {
+            window.location = '#/cordova/backbutton/' + exit;
+          }
+          setTimeout(function() {
+            window.ignoreMobilePause = false;
+          }, 100);
+        } else {
+          window.plugins.toast.showShortCenter('Press again to exit');
+          exitApp = true;
         }
-        setTimeout(function() {
-          window.ignoreMobilePause = false;
-        }, 100);
       }, false);
 
       document.addEventListener('menubutton', function() {
