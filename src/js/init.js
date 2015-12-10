@@ -64,7 +64,7 @@ angular.element(document).ready(function() {
 
       setTimeout(function() {
         navigator.splashscreen.hide();
-      }, 2000);
+      }, 1000);
 
       window.plugins.webintent.getUri(handleBitcoinURI);
       window.plugins.webintent.onNewIntent(handleBitcoinURI);
