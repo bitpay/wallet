@@ -305,7 +305,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
             self.updateError = bwsError.msg(err, gettext('Could not update Wallet'));
           } else {
             if (!opts.quiet)
-              self.setOngoingProcess('scanning', ret.wallet.scanning);
+              self.setOngoingProcess('scanning', ret.wallet.scanStatus == 'running');
           }
           return cb(err, ret);
         });
