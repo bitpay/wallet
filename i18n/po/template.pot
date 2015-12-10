@@ -941,6 +941,10 @@ msgstr ""
 msgid "Not authorized"
 msgstr ""
 
+#: public/views/preferences.html
+msgid "Not completed"
+msgstr ""
+
 #: public/views/walletHome.html
 #: public/views/modals/customized-amount.html
 #: public/views/modals/destination-address.html
@@ -1340,12 +1344,12 @@ msgstr ""
 msgid "Set default url"
 msgstr ""
 
-#: public/views/export.html
-msgid "Set up a Export Password"
-msgstr ""
-
 #: public/views/includes/password.html
 msgid "Set up a password"
+msgstr ""
+
+#: public/views/export.html
+msgid "Set up an Export Password"
 msgstr ""
 
 #: public/views/preferencesEmail.html
@@ -1416,10 +1420,6 @@ msgstr ""
 
 #: src/js/services/bwsError.js
 msgid "Spend proposal not found"
-msgstr ""
-
-#: public/views/preferences.html
-msgid "Still not done"
 msgstr ""
 
 #: src/js/controllers/copayers.js
@@ -1600,6 +1600,10 @@ msgstr ""
 msgid "Updating Wallet..."
 msgstr ""
 
+#: public/views/walletHome.html
+msgid "Updating..."
+msgstr ""
+
 #: public/views/preferencesGlobal.html
 msgid "Use Unconfirmed Funds"
 msgstr ""
@@ -1667,6 +1671,10 @@ msgstr ""
 
 #: src/js/services/bwsError.js
 msgid "Wallet is full"
+msgstr ""
+
+#: src/js/services/bwsError.js
+msgid "Wallet is locked"
 msgstr ""
 
 #: src/js/services/bwsError.js
@@ -1783,7 +1791,7 @@ msgid "You assume any and all risks associated with the use of the software."
 msgstr ""
 
 #: public/views/backup.html
-msgid "You backed up your new wallet. You can now restore this wallet at any time"
+msgid "You backed up your wallet. You can now restore this wallet at any time."
 msgstr ""
 
 #: public/views/backup.html
