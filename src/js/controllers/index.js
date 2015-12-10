@@ -1325,6 +1325,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     'Local/NewTxProposal', 'Local/TxProposalAction', 'Local/GlideraTx'
   ], function(eventName) {
     $rootScope.$on(eventName, function(event, untilItChanges) {
+      self.newTx = eventName == 'Local/TxProposalAction' && untilItChanges;
       self.updateAll({
         walletStatus: null,
         untilItChanges: untilItChanges,
