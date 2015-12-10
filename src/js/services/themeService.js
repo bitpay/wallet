@@ -591,7 +591,6 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
     
     // Make a copy of the themes and remove the specified theme.
     cat.themes = lodash.cloneDeep(catalogThemes);
-//    var deletedTheme = cat.themes.splice(themeId, 1);
     var deletedTheme = lodash.pullAt(cat.themes, themeId);
 
     themeCatalogService.replace(cat, function(err) {   //TODO: cannot save themes if not using filestorage (content available in $rootScope only)
