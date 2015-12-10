@@ -75,7 +75,7 @@
       <div class="oh pr">
         <div class="amount" ng-style="{'background-color':index.backgroundColor}">
           <div ng-if="!index.anyOnGoingProcess && !index.notAuthorized">
-            <div ng-show="index.updateError" ng-click='index.openWallet(); index.updateTxHistory()'>
+            <div ng-show="index.updateError" ng-click='index.openWallet()'>
               <span class="size-12 db m10b">{{index.updateError|translate}}</span>
               <button class="outline white tiny round" translate>Tap to retry</button>
             </div>
@@ -85,7 +85,7 @@
               <br><span translate>Tap to retry</span>
             </div>
 
-            <div ng-click='index.updateAll(); index.updateTxHistory()'  ng-show="!index.updateError && index.walletScanStatus != 'error'">
+            <div ng-click='index.updateAll({triggerTxUpdate: true})'  ng-show="!index.updateError && index.walletScanStatus != 'error'">
               <strong class="size-36">{{index.totalBalanceStr}}</strong>
               <div class="size-14"
                 ng-if="index.totalBalanceAlternative">
@@ -180,7 +180,7 @@
             <span ng-if="!index.txHistoryError" translate>
               No transactions yet
             </span>
-            <span ng-show="index.txHistoryError && !index.notAuthorized" ng-click='index.updateTxHistory()'>
+            <span ng-show="index.txHistoryError && !index.notAuthorized" ng-click='index.debounceUpdateHistory()'>
               <p translate>Could not fetch transaction history</p>
               <button class="outline round light-gray tiny" translate>Tap to retry</button>
             </span>
@@ -206,7 +206,13 @@
       </div>
 
       <div ng-show="index.txHistory[0]">
-        <h4 class="title m0" translate>Activity</h4>
+        <h4 class="title m0">
+          <span translate>Activity</span>
+          <small ng-show="index.updatingTxHistory[index.walletId] && !index.loadingWallet" translate>
+            Updating...
+          </small>
+        </h4>
+        
         <div ng-repeat="btx in index.txHistory"
           ng-click="home.openTxModal(btx)"
           class="row collapse last-transactions-content">
