@@ -475,7 +475,7 @@ angular
         }
       })
       .state('cordova', {
-        url: '/cordova/:status/:exit/:secondBackButtonPress',
+        url: '/cordova/:status/:fromHome/:fromDisclaimer/:secondBackButtonPress',
         views: {
           'main': {
             controller: function($rootScope, $state, $stateParams, $timeout, go, isCordova) {
@@ -485,7 +485,11 @@ angular
                   $rootScope.$emit('Local/Resume');
                   break;
                 case 'backbutton':
-                  if (isCordova && $stateParams.exit == 'true' && !$rootScope.modalOpened) {
+
+                  if ($stateParams.fromDisclaimer == 'true')
+                    navigator.app.exitApp();
+
+                  if (isCordova && $stateParams.fromHome == 'true' && !$rootScope.modalOpened) {
                     if ($stateParams.secondBackButtonPress == 'true') {
                       navigator.app.exitApp();
                     } else {

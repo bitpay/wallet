@@ -33,7 +33,7 @@ angular.element(document).ready(function() {
       document.addEventListener('pause', function() {
         if (!window.ignoreMobilePause) {
           setTimeout(function() {
-            window.location = '#/cordova/pause//';
+            window.location = '#/cordova/pause///';
           }, 100);
         }
       }, false);
@@ -41,7 +41,7 @@ angular.element(document).ready(function() {
       document.addEventListener('resume', function() {
         if (!window.ignoreMobilePause) {
           setTimeout(function() {
-            window.location = '#/cordova/resume//';
+            window.location = '#/cordova/resume///';
           }, 100);
         }
         setTimeout(function() {
@@ -54,11 +54,10 @@ angular.element(document).ready(function() {
       document.addEventListener('backbutton', function() {
 
         var loc = window.location;
-        var exit = loc.toString().match(/disclaimer/) ? 'true' : '';
-        if (exit != 'true')
-          var exit = loc.toString().match(/index\.html#\/$/) ? 'true' : '';
+        var fromDisclaimer = loc.toString().match(/disclaimer/) ? 'true' : '';
+        var fromHome = loc.toString().match(/index\.html#\/$/) ? 'true' : '';
         if (!window.ignoreMobilePause) {
-          window.location = '#/cordova/backbutton/' + exit + '/' + secondBackButtonPress;
+          window.location = '#/cordova/backbutton/' + fromHome + '/' + fromDisclaimer + '/' + secondBackButtonPress;
           if (secondBackButtonPress == 'true') {
             clearInterval(intval);
           } else {
