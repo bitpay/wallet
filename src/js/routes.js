@@ -475,7 +475,7 @@ angular
         }
       })
       .state('cordova', {
-        url: '/cordova/:status/:exit/:exitApp',
+        url: '/cordova/:status/:exit/:secondBackButtonPress',
         views: {
           'main': {
             controller: function($rootScope, $state, $stateParams, $timeout, go, isCordova) {
@@ -486,7 +486,7 @@ angular
                   break;
                 case 'backbutton':
                   if (isCordova && $stateParams.exit == 'true' && !$rootScope.modalOpened) {
-                    if ($stateParams.exitApp == 'true') {
+                    if ($stateParams.secondBackButtonPress == 'true') {
                       navigator.app.exitApp();
                     } else {
                       window.plugins.toast.showShortBottom('Press again to exit');
