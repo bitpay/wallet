@@ -7,7 +7,6 @@
   font-family: Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
-
 .panel h1, .panel h2, .panel h3, .panel h4, .panel h5, .panel h6, .panel p, .panel li, .panel dl {
   color: #2C3E50;
 }
@@ -46,24 +45,21 @@ h4 {
   font-size: 0.875rem;
 }
 
-h4.title {
-  background: #F1F3F5;
+.send h4.title, .glidera h4.title {
+  border-bottom: 1px solid #E2E7ED;
+  background: #fff;
   padding: 0.8rem;
-  text-transform: uppercase;
-  color: #2C3E50;
-  font-weight: 700;
-  font-size: 0.7rem;
+  color: #4B6178;
+  font-weight: 500;
+  font-size: 0.75rem;
+  text-align: center;
+  line-height: 1.5;
 }
 
 h4.title a {
   text-transform: none;
   font-weight: 400;
-  padding: 7px;
   font-size: 12px;
-}
-
-.preferences {
-  background: #f1f3f5;
 }
 
 .preferences form {
@@ -77,9 +73,9 @@ h4.title a {
 }
 
 
-.preferences h4 {
-  background: #F1F3F5;
-  padding: 25px 0px 5px 20px;
+.preferences h4, .modal-content h4, .walletHome h4, .glidera h4 {
+  background: #F6F7F9;
+  padding: 25px 0px 5px 10px;
   text-transform: uppercase;
   color: #555;
   font-size: 12px;
@@ -88,7 +84,7 @@ h4.title a {
 }
 
 
-.preferences ul {
+.preferences ul, .modal-content ul {
   font-size:14px;
   background: white;
 }
@@ -228,7 +224,7 @@ input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill, inpu
 
 .page, .main {
   height:100%;
-  background-color: #fff;
+  background-color: #F6F7F9;
 }
 
 .button.small.side-bar {
@@ -245,7 +241,7 @@ input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill, inpu
 }
 
 .main {
-  background-color: #fff;
+  background-color: #F6F7F9;
   padding: 0 0 58px 0;
   position: relative;
 }
@@ -273,11 +269,9 @@ input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill, inpu
 .box-notification {
   position: relative;
   font-size: 12px;
-  padding: 0.5rem 2rem 0.5rem 0.7rem;
+  padding: 0.5rem;
   border-radius: 2px;
-  background: #F2F5F8;
-  margin: 0 auto;
-  margin-bottom: 1.6rem;
+  background: #FFFFFF;
 }
 
 .box-notification .box-icon {
@@ -332,7 +326,8 @@ ul.tx-copayers {
 }
 
 .last-transactions-content {
-  padding: 1.5rem 1rem;
+  background: #fff;
+  padding: 0.8rem 1rem;
   cursor:pointer;
   border-bottom: 1px solid #E4E8EC;
 }
@@ -344,11 +339,18 @@ ul.tx-copayers {
   text-align: center;
 }
 
+.icon-circle-active {
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+}
+
 .icon-sign {
   padding: 0.2rem 0.3rem;
   border-radius: 100%;
   color: #fff;
-  margin-right: 7px;
+  font-size: 10px;
+  margin-top: 3px;
 }
 
 .icon-sign.check {
@@ -360,12 +362,60 @@ ul.tx-copayers {
 }
 
 .circle-icon {
-  background: #F1F3F5;
+  background: #fff;
   border-radius: 100%;
   padding: 1.5rem;
   width: 80px;
   height: 80px;
   margin: 0 auto;
+}
+
+.receive .circle-icon {
+  padding: 0.2rem;
+  margin-bottom: 2rem;
+}
+
+.backup .circle-icon {
+  padding: 0.2rem;
+  margin-bottom: 2rem;
+}
+
+.receive h5, .backup h5 {
+  font-weight: 500;
+  color: #4B6178;
+  margin-bottom: 1rem;
+}
+
+.receive p, .backup p {
+  font-size: 0.9rem;
+  margin-bottom: 2rem;
+}
+
+.backup .tab-bar {
+  background: #F6F7F9;
+  border-bottom: none;
+}
+
+.backup .button-box {
+  background: #F1F3F5;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 0.5rem 1rem 1rem;
+  z-index: 9999;
+}
+
+.backup input[type="text"] {
+  border-bottom: 1px solid #CAD4DB;
+}
+
+.backup input[type="text"]:focus {
+  border-bottom: 1px solid #A5B2BF;
+}
+
+.extra-padding-bottom {
+  padding-bottom: 78px;
 }
 
 .date-message {
@@ -436,6 +486,7 @@ ul.manage li {
 .m0 {margin: 0;}
 .p0i {padding: 0 !important;}
 .db {display: block;}
+.dib {display: inline-block;}
 .size-10 { font-size: 10px; }
 .size-12 { font-size: 12px; }
 .size-14 { font-size: 14px; }
@@ -468,6 +519,7 @@ ul.manage li {
 .m20r {margin-right: 20px;}
 .m20t {margin-top: 20px;}
 .m20tp {margin-top: 20%;}
+.m30tp {margin-top: 30%;}
 .m15 {margin: 15px;}
 .m15h {margin: 0 15px;}
 .p10t {padding-top: 10px;}
@@ -478,9 +530,12 @@ ul.manage li {
 .p5h {padding: 0 5px;}
 .p20h {padding: 0 20px;}
 .p20v {padding: 20px 0;}
+.p20b {padding-bottom: 20px;}
+.p25b {padding-bottom: 25px;}
 .p25l {padding-left: 25px;}
 .p15 {padding:15px;}
 .p20 {padding:20px;}
+.p20t {padding-top:20px;}
 .p10 {padding:10px;}
 .p10b {padding-bottom:10px;}
 .p45t {padding-top:45px;}
@@ -578,6 +633,7 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 .header-modal {
+  background: #fff;
   width: 100%;
   padding: 0.8rem;
   position: relative;
@@ -602,12 +658,6 @@ input[type=number]::-webkit-outer-spin-button {
 .label.success {background-color: #1ABC9C;}
 .label.alert {background-color: #ED4A43;}
 .label.gray {background-color: #4B6178;}
-
-.history .label  {
-  width: 57px;
-  text-align: center;
-  font-size: 65%;
-}
 
 .bg-alert {
   background-color: #ED4A43;
@@ -641,7 +691,7 @@ input[type="color"], input[type="date"], input[type="datetime-local"], input[typ
   border: none;
   padding-left: 0.1rem;
   font-size: 13px;
-  border-bottom: 1px solid #F1F3F5;
+  border-bottom: 1px solid #E9EDF0;
 }
 
 input[type="text"]:focus, input[type="password"]:focus, input[type="date"]:focus, input[type="datetime"]:focus, input[type="datetime-local"]:focus, input[type="month"]:focus, input[type="week"]:focus, input[type="email"]:focus, input[type="number"]:focus, input[type="search"]:focus, input[type="tel"]:focus, input[type="time"]:focus, input[type="url"]:focus, input[type="color"]:focus, textarea:focus {
@@ -876,15 +926,18 @@ ul.wallet-selection.wallets {
 }
 
 .postfix.button, .prefix.button {
-  position: absolute;
-  width: 38px;
-  height: 28px;
-  right: 7px;
-  top: 7px;
-  -moz-box-shadow: none;
-  box-shadow: none;
-  line-height: 1.7rem;
-  border-radius: 2px;
+    position: absolute;
+    width: 35px;
+    height: 22px;
+    right: 7px;
+    top: 5px;
+    -moz-box-shadow: none;
+    box-shadow: none;
+    font-size: 12px;
+    border-radius: 2px;
+    line-height: 2;
+    padding: 0;
+    font-weight: 500;
 }
 
 .postfix.button i, .prefix.button i {
@@ -910,6 +963,10 @@ label.postfix, a.postfix {
   width: 40px;
 }
 
+a.button.postfix {
+  color: #fff;
+}
+
 .pointer {
   cursor: pointer;
 }
@@ -932,6 +989,16 @@ label.postfix, a.postfix {
 .input label {
   line-height: 0;
   padding: 0;
+}
+
+.icon-wallet {
+  vertical-align: top;
+  display: block;
+  margin-top: 7px;  
+}
+
+.walletHome .icon-wallet {
+  display: inline;
 }
 
 .icon-input {
@@ -969,6 +1036,9 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
 .black {
   background-color: #2C3E50;
 }
+.white {
+  background-color: #FFFFFF;
+}
 .text-italic {font-style: italic;}
 .text-light {font-weight: 200;}
 .text-bold {font-weight: 700;}
@@ -982,11 +1052,40 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
 .text-success {color: #1ABC9C;}
 .text-spacing {letter-spacing:2px;}
 .text-capitalize {text-transform: capitalize;}
+.text-shadow {text-shadow: 2px 2px 3px rgba(150, 150, 150, 1);}
+
+.payment-uri .panel {
+  line-height: 1.4;
+}
 
 .panel {
   background: #FFFFFF;
   border-radius: 3px;
   padding: 1rem;
+}
+
+.panel.words {
+  background: #E6EAEE;
+  border: 1px dashed #A5B2BF;
+  min-height: 147px;
+}
+
+.backup .panel {
+  padding: 0.5rem;
+}
+
+.backup button.words {
+  background: #FFFFFF;
+  box-shadow: 0px 0px 4px 0px rgba(0,0,0,0.30);
+  color: #4B6178;
+  text-transform: lowercase;
+  font-size: 0.8rem;
+  margin: 5px;
+  padding: 0.5rem;
+}
+
+.backup button[disabled] {
+  box-shadow: none;
 }
 
 .panel qrcode {
@@ -1103,6 +1202,43 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
 }
 
 /*/////////////////////////////////////////////////*/
+.terms {
+  padding: 0.8rem;
+}
+
+.terms ul {
+  font-size: 0.8rem;
+  text-align: justify;
+  margin-left: 0;
+}
+
+.terms li {
+  list-style-type:none;
+  display: inline;
+}
+
+.scrollArea {
+  height: 280px;
+  overflow: scroll;
+  background: #213140;
+  border: 1px solid #4B6178;
+  border-radius: 5px;
+  margin: 1.6rem;
+  color: #A5B2BF;
+  line-height: 30px;
+  padding: 0.5rem;
+}
+
+.scrollArea ul {
+  font-size: 0.8rem;
+  text-align: justify;
+  margin-left: 0;
+}
+
+.scrollArea li {
+  list-style-type:none;
+  display: inline;
+}
 
 .tabbable {
   border: 2px solid #213140;
@@ -1209,7 +1345,7 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
 }
 
 .splash .container-image {
-  padding: 2rem 0;
+  padding: 1rem 0;
 }
 
 .preferences li {
@@ -1304,6 +1440,10 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
   text-align: center;
   font-size: 10px;
   vertical-align: middle;
+}
+
+.walletHome .spinner > div {
+  background-color: #8597A7;
 }
 
 .spinner > div {

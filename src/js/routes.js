@@ -76,17 +76,6 @@ angular
     $compileProvider.imgSrcSanitizationWhitelist(/^\s*((https?|ftp|file|blob|chrome-extension):|data:image\/)/);
 
     $stateProvider
-      .state('splash', {
-        url: '/splash',
-        needProfile: false,
-        views: {
-          'main': {
-            templateUrl: 'views/splash.html',
-          }
-        }
-      });
-
-    $stateProvider
       .state('translators', {
         url: '/translators',
         walletShouldBeComplete: true,
@@ -274,29 +263,27 @@ angular
           },
         }
       })
-
-    .state('preferencesGlidera', {
-      url: '/preferencesGlidera',
-      walletShouldBeComplete: true,
-      needProfile: true,
-      views: {
-        'main': {
-          templateUrl: 'views/preferencesGlidera.html'
-        },
-      }
-    })
-
-    .state('preferencesAdvanced', {
-      url: '/preferencesAdvanced',
-      templateUrl: 'views/preferencesAdvanced.html',
-      walletShouldBeComplete: true,
-      needProfile: true,
-      views: {
-        'main': {
-          templateUrl: 'views/preferencesAdvanced.html'
-        },
-      }
-    })
+      .state('preferencesGlidera', {
+        url: '/preferencesGlidera',
+        walletShouldBeComplete: true,
+        needProfile: true,
+        views: {
+          'main': {
+            templateUrl: 'views/preferencesGlidera.html'
+          },
+        }
+      })
+      .state('preferencesAdvanced', {
+        url: '/preferencesAdvanced',
+        templateUrl: 'views/preferencesAdvanced.html',
+        walletShouldBeComplete: true,
+        needProfile: true,
+        views: {
+          'main': {
+            templateUrl: 'views/preferencesAdvanced.html'
+          },
+        }
+      })
       .state('preferencesColor', {
         url: '/preferencesColor',
         templateUrl: 'views/preferencesColor.html',
@@ -308,18 +295,17 @@ angular
           },
         }
       })
-
-    .state('preferencesAltCurrency', {
-      url: '/preferencesAltCurrency',
-      templateUrl: 'views/preferencesAltCurrency.html',
-      walletShouldBeComplete: true,
-      needProfile: true,
-      views: {
-        'main': {
-          templateUrl: 'views/preferencesAltCurrency.html'
-        },
-      }
-    })
+      .state('preferencesAltCurrency', {
+        url: '/preferencesAltCurrency',
+        templateUrl: 'views/preferencesAltCurrency.html',
+        walletShouldBeComplete: true,
+        needProfile: true,
+        views: {
+          'main': {
+            templateUrl: 'views/preferencesAltCurrency.html'
+          },
+        }
+      })
       .state('preferencesAlias', {
         url: '/preferencesAlias',
         templateUrl: 'views/preferencesAlias.html',
@@ -356,6 +342,29 @@ angular
 
         }
       })
+      .state('preferencesHistory', {
+        url: '/preferencesHistory',
+        templateUrl: 'views/preferencesHistory.html',
+        walletShouldBeComplete: true,
+        needProfile: true,
+        views: {
+          'main': {
+            templateUrl: 'views/preferencesHistory.html'
+          },
+
+        }
+      })
+      .state('deleteWords', {
+        url: '/deleteWords',
+        templateUrl: 'views/preferencesDeleteWords.html',
+        walletShouldBeComplete: true,
+        needProfile: true,
+        views: {
+          'main': {
+            templateUrl: 'views/preferencesDeleteWords.html'
+          },
+        }
+      })
       .state('delete', {
         url: '/delete',
         templateUrl: 'views/preferencesDeleteWallet.html',
@@ -377,18 +386,17 @@ angular
           },
         }
       })
-
-    .state('about', {
-      url: '/about',
-      templateUrl: 'views/preferencesAbout.html',
-      walletShouldBeComplete: true,
-      needProfile: true,
-      views: {
-        'main': {
-          templateUrl: 'views/preferencesAbout.html'
-        },
-      }
-    })
+      .state('about', {
+        url: '/about',
+        templateUrl: 'views/preferencesAbout.html',
+        walletShouldBeComplete: true,
+        needProfile: true,
+        views: {
+          'main': {
+            templateUrl: 'views/preferencesAbout.html'
+          },
+        }
+      })
       .state('logs', {
         url: '/logs',
         templateUrl: 'views/preferencesLogs.html',
@@ -442,24 +450,32 @@ angular
           },
         }
       })
+      .state('termOfUse', {
+        url: '/termOfUse',
+        needProfile: true,
+        views: {
+          'main': {
+            templateUrl: 'views/termOfUse.html',
+          },
+        }
+      })
       .state('warning', {
         url: '/warning',
         controller: 'warningController',
         templateUrl: 'views/warning.html',
         needProfile: false
       })
-
-    .state('add', {
-      url: '/add',
-      needProfile: true,
-      views: {
-        'main': {
-          templateUrl: 'views/add.html'
-        },
-      }
-    })
+      .state('add', {
+        url: '/add',
+        needProfile: true,
+        views: {
+          'main': {
+            templateUrl: 'views/add.html'
+          },
+        }
+      })
       .state('cordova', {
-        url: '/cordova/:status/:isHome',
+        url: '/cordova/:status/:exit',
         views: {
           'main': {
             controller: function($rootScope, $state, $stateParams, $timeout, go, isCordova) {
@@ -468,7 +484,7 @@ angular
                   $rootScope.$emit('Local/Resume');
                   break;
                 case 'backbutton':
-                  if (isCordova && $stateParams.isHome == 'true' && !$rootScope.modalOpened) {
+                  if (isCordova && $stateParams.exit == 'true' && !$rootScope.modalOpened) {
                     navigator.app.exitApp();
                   } else {
                     $rootScope.$emit('closeModal');
@@ -515,13 +531,12 @@ angular
 
         // Give us time to open / create the profile
         event.preventDefault();
-
         // Try to open local profile
         profileService.loadAndBindProfile(function(err) {
           if (err) {
             if (err.message && err.message.match('NOPROFILE')) {
               $log.debug('No profile... redirecting');
-              $state.transitionTo('splash');
+              $state.transitionTo('disclaimer');
             } else if (err.message && err.message.match('NONAGREEDDISCLAIMER')) {
               $log.debug('Display disclaimer... redirecting');
               $state.transitionTo('disclaimer');
@@ -539,7 +554,7 @@ angular
 
         $state.transitionTo('copayers');
         event.preventDefault();
-      } 
+      }
 
       if (!animationService.transitionAnimated(fromState, toState)) {
         event.preventDefault();

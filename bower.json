@@ -10,7 +10,7 @@
     "angular": "1.4.6",
     "angular-bitcore-wallet-client": "1.1.7",
     "angular-foundation": "0.7.0",
-    "angular-gettext": "2.1.0",
+    "angular-gettext": "2.1.2",
     "angular-moment": "0.10.1",
     "angular-qrcode": "monospaced/angular-qrcode#~6.0.3",
     "angular-ui-router": "0.2.15",

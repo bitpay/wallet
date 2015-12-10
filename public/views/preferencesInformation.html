@@ -102,35 +102,31 @@
       </li>
     </ul>
     
-    <ul class="no-bullet m0 size-14" ng-show="addrs">
-    <h4 class="title m0" translate>Last Wallet Addresses</h4>
-      <li  ng-repeat="a in addrs" class="oh">
+    <div ng-show="addrs">
+      <h4 class="title m0" translate>Last Wallet Addresses</h4>
+      <ul class="no-bullet m0">
+        <li ng-repeat="a in addrs" class="oh">
           <div class="enable_text_select ellipsis">
             {{a.address}} 
           </div>
           <div class="text-gray size-12 right enable_text_select">
             {{a.path}} &middot;  {{a.createdOn *1000  | amDateFormat:'MMMM Do YYYY, h:mm a' }}
           </div>
-      </li>
-      <li class="line-b p10 text-centered text-gray size-12">
-        <span translate>Only Main (not change) addresses are shown. The addresses on this list were not verified locally at this time.</span>
-      </li>
+        </li>
+      </ul>
+      <div class="text-centered text-gray size-12 m10" translate>
+        Only Main (not change) addresses are shown. The addresses on this list were not verified locally at this time.
+      </div>
 
-      <li class="line-b p20" >
-      <button class="black round small expand"  ng-style="{'background-color':index.backgroundColor}"  ng-click="index.retryScan(); $root.go('walletHome'); ">
-
-      <span translate>Scan addresses for funds</span>
-      </button>
-      
-      <button ng-show="index.isCordova" class="black round small expand" 
-        ng-style="{'background-color':index.backgroundColor}" 
-        ng-click="info.sendAddrs()"
-        ng-disabled="info.loading">
-        <i class="fi-mail"></i>
-        <span translate>Send addresses by email</span>
-      </button>
-      </li>
-    </ul>
+      <ul class="no-bullet m0">
+        <li ng-style="{'color':index.backgroundColor}" ng-click="index.retryScan(); $root.go('walletHome')" translate>
+          Scan addresses for funds
+        </li>
+        <li ng-style="{'color':index.backgroundColor}" ng-show="index.isCordova" ng-click="info.sendAddrs()" translate>
+          Send addresses by email
+        </li>
+      </ul>
+    </div>
 
     <ul class="no-bullet m0 size-14" ng-show="index.balanceByAddress">
       <div ng-if="index.balanceByAddress[0]">
@@ -146,14 +142,6 @@
       </div>
     </ul>
 
-    <ul class="no-bullet m0 size-14">
-      <h4 class="title m0" translate>Transaction history</h4>
-      <li class="line-b p20 oh">
-        <button class="black round small expand"  ng-style="{'background-color':index.backgroundColor}" ng-click="info.clearTransactionHistory();">
-          <span translate>Clear history</span>
-        </button>
-      </li>
-    </ul>
 
     <h4></h4>
 

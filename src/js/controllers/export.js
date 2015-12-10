@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('backupController',
+angular.module('copayApp.controllers').controller('exportController',
   function($rootScope, $scope, $timeout, $log, backupService, storageService, profileService, isMobile, notification, go, gettext, gettextCatalog) {
     var self = this;
 

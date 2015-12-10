@@ -9,6 +9,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   self.onGoingProcess = {};
   self.historyShowLimit = 10;
   self.updatingTxHistory = {};
+  self.prevState = 'walletHome';
 
   function strip(number) {
     return (parseFloat(number.toPrecision(12)));
@@ -19,26 +20,22 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   };
 
   self.menu = [{
-    'title': gettext('Home'),
-    'icon': 'icon-home',
-    'link': 'walletHome'
-  }, {
     'title': gettext('Receive'),
-    'icon': 'icon-receive2',
+    'icon': 'icon-receive',
     'link': 'receive'
   }, {
-    'title': gettext('Send'),
-    'icon': 'icon-paperplane',
-    'link': 'send'
+    'title': gettext('Activity'),
+    'icon': 'icon-activity',
+    'link': 'walletHome'
   }, {
-    'title': gettext('History'),
-    'icon': 'icon-history',
-    'link': 'history'
+    'title': gettext('Send'),
+    'icon': 'icon-send',
+    'link': 'send'
   }];
 
   self.addonViews = addonManager.addonViews();
   self.menu = self.menu.concat(addonManager.addonMenuItems());
-  self.menuItemSize = self.menu.length > 5 ? 2 : 3;
+  self.menuItemSize = self.menu.length > 4 ? 2 : 4;
   self.txTemplateUrl = addonManager.txTemplateUrl() || 'views/includes/transaction.html';
 
   self.tab = 'walletHome';
@@ -66,6 +63,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   self.setFocusedWallet = function() {
     var fc = profileService.focusedClient;
     if (!fc) return;
+
+    // loading full wallet
+    self.loadingWallet = true;
 
     // Clean status
     self.totalBalanceSat = null;
@@ -125,13 +125,16 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
       self.initGlidera();
 
-      self.setCustomBWSFlag();
+      self.setCustomBWSFlag(); 
       if (fc.isPrivKeyExternal()) {
         self.needsBackup = false;
         self.openWallet();
       } else {
         storageService.getBackupFlag(self.walletId, function(err, val) {
-          self.needsBackup = self.network == 'testnet' ? false : !val;
+          if (!fc.credentials.mnemonic)
+            self.needsBackup = false;
+          else
+            self.needsBackup = self.network == 'testnet' ? false : !val;
           self.openWallet();
         });
       }
@@ -143,6 +146,28 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     var config = configService.getSync();
 
     self.usingCustomBWS = config.bwsFor && config.bwsFor[self.walletId] && (config.bwsFor[self.walletId] != defaults.bws.url);
+  };
+
+  self.acceptDisclaimer = function() {
+    var profile = profileService.profile;
+    if (profile) profile.disclaimerAccepted = true;
+    self.disclaimerAccepted = true;
+    profileService.setDisclaimerAccepted(function(err) {
+      if (err) $log.error(err); 
+      go.walletHome();
+    });
+  };
+
+  self.isDisclaimerAccepted = function() {
+    if (self.disclaimerAccepted == true) { 
+      go.walletHome();
+      return;
+    }
+    profileService.isDisclaimerAccepted(function(v) {
+      if (v) { 
+        self.acceptDisclaimer();
+      } else go.path('disclaimer');
+    });
   };
 
   self.setTab = function(tab, reset, tries, switchState) {
@@ -339,7 +364,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
         if (opts.triggerTxUpdate) {
           $timeout(function() {
-            self.updateTxHistory();
+            self.debounceUpdateHistory();
           }, 1);
         }
       });
@@ -553,6 +578,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.backgroundColor = config.colorFor[self.walletId] || '#4A90E2';
     var fc = profileService.focusedClient;
     fc.backgroundColor = self.backgroundColor;
+    if (isCordova && StatusBar.isVisible) {
+      StatusBar.backgroundColorByHexString(fc.backgroundColor);
+    }
   };
 
   self.setBalance = function(balance) {
@@ -719,9 +747,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
           var csvContent = '';
 
           if (!isNode) csvContent = 'data:text/csv;charset=utf-8,';
-          csvContent += 'Date,Destination,Note,Amount,Currency,Spot Value,Total Value,Tax Type,Category\n';
+          csvContent += 'Date,Destination,Note,Amount,Currency,Txid,Creator,Copayers\n';
 
-          var _amount, _note;
+          var _amount, _note, _copayers, _creator;
           var dataString;
           data.forEach(function(it, index) {
             var amount = it.amount;
@@ -729,18 +757,29 @@ angular.module('copayApp.controllers').controller('indexController', function($r
             if (it.action == 'moved')
               amount = 0;
 
+            _copayers = '';
+            _creator = '';
+
+            if (it.actions && it.actions.length > 1) {
+              for (var i = 0; i < it.actions.length; i++) {
+                _copayers += it.actions[i].copayerName + ':' + it.actions[i].type + ' - ';
+              }
+              _creator = (it.creatorName && it.creatorName != 'undefined') ? it.creatorName : '';
+            }
+            _copayers = formatString(_copayers);
+            _creator = formatString(_creator);
             _amount = (it.action == 'sent' ? '-' : '') + (amount * satToBtc).toFixed(8);
-            _note = formatString((it.message ? it.message : '') + ' TxId: ' + it.txid + ' Fee:' + (it.fees * satToBtc).toFixed(8));
+            _note = formatString((it.message ? it.message : ''));
 
             if (it.action == 'moved')
               _note += ' Moved:' + (it.amount * satToBtc).toFixed(8)
 
-            dataString = formatDate(it.time * 1000) + ',' + formatString(it.addressTo) + ',' + _note + ',' + _amount + ',BTC,,,,';
+            dataString = formatDate(it.time * 1000) + ',' + formatString(it.addressTo) + ',' + _note + ',' + _amount + ',BTC,' + it.txid + ',' + _creator + ',' + _copayers;
             csvContent += dataString + "\n";
 
             if (it.fees && (it.action == 'moved' || it.action == 'sent')) {
               var _fee = (it.fees * satToBtc).toFixed(8)
-              csvContent += formatDate(it.time * 1000) + ',Bitcoin Network Fees,, -' + _fee + ',BTC,,,,' + "\n";
+              csvContent += formatDate(it.time * 1000) + ',Bitcoin Network Fees,, -' + _fee + ',BTC,,,' + "\n";
             }
           });
 
@@ -816,7 +855,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       fixTxsUnit(txsFromLocal);
 
       function getNewTxs(newTxs, skip, i_cb) {
-
         self.getTxsFromServer(client, skip, endingTxid, requestLimit, function(err, res, shouldContinue) {
           if (err) return i_cb(err);
 
@@ -843,6 +881,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
       getNewTxs([], 0, function(err, txs) {
         if (err) return cb(err);
+
         var newHistory = lodash.compact(txs.concat(txsFromLocal));
         $log.debug('Tx History synced. Total Txs: ' + newHistory.length);
 
@@ -904,6 +943,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     $timeout(function() {
       self.updateLocalTxHistory(fc, function(err) {
         self.updatingTxHistory[walletId] = false;
+        self.loadingWallet = false;
+        self.txProgress = 0;
         if (err)
           self.txHistoryError = true;
 
@@ -912,13 +953,13 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     });
   };
 
-  self.updateTxHistory = lodash.debounce(function() {
+  self.debounceUpdateHistory = lodash.debounce(function() {
     self.updateHistory();
   }, 1000);
 
   self.throttledUpdateHistory = lodash.throttle(function() {
     self.updateHistory();
-  }, 5000);
+  }, 10000);
 
   self.showErrorPopup = function(msg, cb) {
     $log.warn('Showing err popup:' + msg);
@@ -953,6 +994,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   };
 
   self.openMenu = function() {
+    if (!self.disclaimerAccepted) return;
     go.swipe(true);
   };
 
@@ -1090,10 +1132,15 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     });
   };
 
+  $rootScope.$on('$stateChangeSuccess', function(ev, to, toParams, from, fromParams) {
+    self.prevState = from.name || 'walletHome';
+    self.tab = 'walletHome';
+  });
+
   $rootScope.$on('Local/ClearHistory', function(event) {
     $log.debug('The wallet transaction history has been deleted');
     self.txHistory = self.completeHistory = [];
-    self.updateHistory();
+    self.debounceUpdateHistory();
   });
 
   $rootScope.$on('Local/AddressbookUpdated', function(event, ab) {
@@ -1134,10 +1181,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         storageService.setRemotePrefsStoredFlag(function() {});
       });
     });
-  });
-
-  $rootScope.$on('Local/NewFocusedWallet', function() {
-    self.setUxLanguage();
   });
 
   $rootScope.$on('Local/LanguageSettingUpdated', function() {
@@ -1189,7 +1232,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.updateAll({
       quiet: true
     });
-    self.updateTxHistory();
+    self.debounceUpdateHistory();
   }, 4000, {
     leading: false,
     trailing: true
@@ -1197,6 +1240,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
   $rootScope.$on('Local/Resume', function(event) {
     $log.debug('### Resume event');
+    self.isDisclaimerAccepted();
     self.debouncedUpdate();
   });
 
@@ -1257,7 +1301,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       if (self.network == 'testnet') {
         self.throttledUpdateHistory();
       } else {
-        self.updateTxHistory();
+        self.debounceUpdateHistory();
       }
     }
   });
@@ -1316,9 +1360,10 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   });
 
   $rootScope.$on('Local/NewFocusedWallet', function() {
+    self.setUxLanguage();
     self.setFocusedWallet();
-    self.updateTxHistory();
-    go.walletHome();
+    self.debounceUpdateHistory();
+    self.isDisclaimerAccepted();
     storageService.getCleanAndScanAddresses(function(err, walletId) {
       if (walletId && profileService.walletClients[walletId]) {
         $log.debug('Clear last address cache and Scan ', walletId);
