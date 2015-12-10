@@ -33,7 +33,7 @@ angular.element(document).ready(function() {
       document.addEventListener('pause', function() {
         if (!window.ignoreMobilePause) {
           setTimeout(function() {
-            window.location = '#/cordova/pause/';
+            window.location = '#/cordova/pause//';
           }, 100);
         }
       }, false);
@@ -41,7 +41,7 @@ angular.element(document).ready(function() {
       document.addEventListener('resume', function() {
         if (!window.ignoreMobilePause) {
           setTimeout(function() {
-            window.location = '#/cordova/resume/';
+            window.location = '#/cordova/resume//';
           }, 100);
         }
         setTimeout(function() {
