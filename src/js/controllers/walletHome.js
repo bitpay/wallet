@@ -911,7 +911,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
               $timeout(function() {
                 $scope.$digest();
               }, 1);
-            }
+            } else go.walletHome();
           });
         });
       });
