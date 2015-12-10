@@ -475,17 +475,22 @@ angular
         }
       })
       .state('cordova', {
-        url: '/cordova/:status/:exit',
+        url: '/cordova/:status/:exit/:exitApp',
         views: {
           'main': {
             controller: function($rootScope, $state, $stateParams, $timeout, go, isCordova) {
+
               switch ($stateParams.status) {
                 case 'resume':
                   $rootScope.$emit('Local/Resume');
                   break;
                 case 'backbutton':
                   if (isCordova && $stateParams.exit == 'true' && !$rootScope.modalOpened) {
-                    navigator.app.exitApp();
+                    if ($stateParams.exitApp == 'true') {
+                      navigator.app.exitApp();
+                    } else {
+                      window.plugins.toast.showShortBottom('Press again to exit');
+                    }
                   } else {
                     $rootScope.$emit('closeModal');
                   }
