@@ -1,7 +1,4 @@
-* Soporte de TREZOR (solo en la versión de Chrome App)
-* Nuevo sistema de notificación. Uso de ancho de banda reducido y mejor manejo de desconexiones de la red
-* Libreta de direcciones
-* Caché para el historial de transacciones y mejora en el orden de las mismas
-* Mejor soporte de BIP44: evitar diferencias en los índices cuando se aborda el análisis de un monedero y la generación de direcciones
-* Ajuste de BWS por monederos
-* Correcciones en el evento reanudar del celular
+* Mejora en el diseño e interfaz de usuario
+* Nuevo proceso de verificación de la copia de seguridad
+* Arranque más rápido
+* Toneladas de correcciones
