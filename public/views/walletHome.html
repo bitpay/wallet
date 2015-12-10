@@ -187,7 +187,8 @@
           </div>
         </div>
       </div>
-      <div ng-show="index.updatingTxHistory[index.walletId] && index.txProgress > 6">
+      <div ng-show="index.updatingTxHistory[index.walletId] 
+                && ( (index.txProgress > 6 && !index.txHistory[0]) || (index.txProgress > 50 ) )">
         <div  class="row p20 text-center">
           <div class="columns large-12 medium-12 small-12 m10b">
             <div class="spinner">
@@ -208,10 +209,23 @@
       <div ng-show="index.txHistory[0]">
         <h4 class="title m0">
           <span translate>Activity</span>
-          <small ng-show="index.updatingTxHistory[index.walletId] && !index.loadingWallet" translate>
-            Updating...
-          </small>
         </h4>
+
+ 
+        <div ng-if="index.txHistory[0] &&  index.updatingTxHistory[index.walletId]" class="row collapse last-transactions-content animated fadeInDown">
+          <div class="large-6 medium-6 small-6 columns size-14">
+            <div class="m10r left">
+              <img src="img/icon-new.svg" width="40">
+            </div>
+            <div class="m10t" style="background:#eee; width: 8em; margin-left: 52px; line-height:0.6em">
+              <span>&nbsp;</span>
+            </div>
+            <div style="margin-top:5px; background:#eee; width: 6em; margin-left: 52px; line-height:0.6em">
+              <span>&nbsp;</span>
+            </div>
+ 
+         </div>
+        </div>
         
         <div ng-repeat="btx in index.txHistory"
           ng-click="home.openTxModal(btx)"

@@ -855,7 +855,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       fixTxsUnit(txsFromLocal);
 
       function getNewTxs(newTxs, skip, i_cb) {
-
         self.getTxsFromServer(client, skip, endingTxid, requestLimit, function(err, res, shouldContinue) {
           if (err) return i_cb(err);
 
@@ -882,6 +881,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
       getNewTxs([], 0, function(err, txs) {
         if (err) return cb(err);
+
         var newHistory = lodash.compact(txs.concat(txsFromLocal));
         $log.debug('Tx History synced. Total Txs: ' + newHistory.length);
 
