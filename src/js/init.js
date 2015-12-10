@@ -25,10 +25,15 @@ angular.element(document).ready(function() {
 
     document.addEventListener('deviceready', function() {
 
+      var secondBackButtonPress = 'false';
+      var intval = setInterval(function() {
+        secondBackButtonPress = 'false';
+      }, 5000);
+
       document.addEventListener('pause', function() {
         if (!window.ignoreMobilePause) {
           setTimeout(function() {
-            window.location = '#/cordova/pause/';
+            window.location = '#/cordova/pause//';
           }, 100);
         }
       }, false);
@@ -36,7 +41,7 @@ angular.element(document).ready(function() {
       document.addEventListener('resume', function() {
         if (!window.ignoreMobilePause) {
           setTimeout(function() {
-            window.location = '#/cordova/resume/';
+            window.location = '#/cordova/resume//';
           }, 100);
         }
         setTimeout(function() {
@@ -45,13 +50,20 @@ angular.element(document).ready(function() {
       }, false);
 
       // Back button event
+
       document.addEventListener('backbutton', function() {
+
         var loc = window.location;
         var exit = loc.toString().match(/disclaimer/) ? 'true' : '';
         if (exit != 'true')
           var exit = loc.toString().match(/index\.html#\/$/) ? 'true' : '';
         if (!window.ignoreMobilePause) {
-          window.location = '#/cordova/backbutton/' + exit;
+          window.location = '#/cordova/backbutton/' + exit + '/' + secondBackButtonPress;
+          if (secondBackButtonPress == 'true') {
+            clearInterval(intval);
+          } else {
+            secondBackButtonPress = 'true';
+          }
         }
         setTimeout(function() {
           window.ignoreMobilePause = false;
