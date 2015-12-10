@@ -1,7 +1,4 @@
-* TREZOR support (only in Chrome App version)
-* New notification system. Reduced bandwidth usage and better handling of network disconnections
-* Addressbook
-* Transaction history cache and better ordering
-* Better BIP44 Support: prevent gaps in indexes when scanning wallets and generating addresses
-* Per Wallet BWS Setting
-* Fixes resume event on mobile
+* Enhanced user interface and design
+* New backup verification quiz
+* Faster bootstrapping
+* Tons of bug fixes
