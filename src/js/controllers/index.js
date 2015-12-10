@@ -125,7 +125,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
       self.initGlidera();
 
-      self.setCustomBWSFlag(); 
+      self.setCustomBWSFlag();
       if (fc.isPrivKeyExternal()) {
         self.needsBackup = false;
         self.openWallet();
@@ -153,18 +153,18 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     if (profile) profile.disclaimerAccepted = true;
     self.disclaimerAccepted = true;
     profileService.setDisclaimerAccepted(function(err) {
-      if (err) $log.error(err); 
+      if (err) $log.error(err);
       go.walletHome();
     });
   };
 
   self.isDisclaimerAccepted = function() {
-    if (self.disclaimerAccepted == true) { 
+    if (self.disclaimerAccepted == true) {
       go.walletHome();
       return;
     }
     profileService.isDisclaimerAccepted(function(v) {
-      if (v) { 
+      if (v) {
         self.acceptDisclaimer();
       } else go.path('disclaimer');
     });
@@ -948,6 +948,10 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         if (err)
           self.txHistoryError = true;
 
+        $timeout(function() {
+          self.newTx = false
+        }, 1000);
+
         $rootScope.$apply();
       });
     });
@@ -1276,6 +1280,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   });
 
   $rootScope.$on('NewIncomingTx', function() {
+    self.newTx = true;
     self.updateAll({
       walletStatus: null,
       untilItChanges: true,
@@ -1308,6 +1313,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
 
   $rootScope.$on('NewOutgoingTx', function() {
+    self.newTx = true;
     self.updateAll({
       walletStatus: null,
       untilItChanges: true,
@@ -1319,6 +1325,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     'Local/NewTxProposal', 'Local/TxProposalAction', 'Local/GlideraTx'
   ], function(eventName) {
     $rootScope.$on(eventName, function(event, untilItChanges) {
+      self.newTx = eventName == 'Local/TxProposalAction' && untilItChanges;
       self.updateAll({
         walletStatus: null,
         untilItChanges: untilItChanges,
