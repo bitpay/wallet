@@ -30,7 +30,7 @@
     <div class="preview-button columns large-6 medium-6 small-6 text-center" ng-click="$root.go('preferencesThemeDiscovery')">
       <i class="fi-x size-24"></i>
     </div>
-    <div class="preview-button columns large-6 medium-6 small-6 text-center" ng-click="p.import(discoveredThemeId)">
+    <div class="preview-button columns large-6 medium-6 small-6 text-center" ng-click="p.import(discoveredThemeId)" ng-hide="discoveredThemeHeaders[discoveredThemeId].name == theme.header.name">
       <i class="fi-download size-24"></i>
     </div>
   </div>

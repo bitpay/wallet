@@ -26,7 +26,7 @@
   <div class="row" style="padding-left: 1px;" ng-show="(discoveredThemeHeaders.length > 0) && (p.themeGalleryLayout == 'grid')">
     <div class="columns large-2 medium-3 small-4 end" style="padding: 1px 1px 1px 0;" ng-repeat="th in discoveredThemeHeaders track by $index">
       <img ng-src="{{th.galleryImage}}" ng-click="p.preview($index)"/>
-      <i class="fi-download gallery-grid-action-button" ng-click="p.import($index)"></i>
+      <i class="fi-download gallery-grid-action-button" ng-click="p.import($index)" ng-hide="th.name == theme.header.name"></i>
     </div>
   </div>
 
@@ -35,7 +35,7 @@
     <ul class="no-bullet m0">
       <li class="p0i oa" ng-repeat="th in discoveredThemeHeaders track by $index">
 
-        <div class="gallery-list-accessory-container" ng-click="p.import($index)">
+        <div class="gallery-list-accessory-container" ng-click="p.import($index)" ng-hide="th.name == theme.header.name">
           <i class="fi-download size-24"></i>
         </div>
 
@@ -54,7 +54,7 @@
     <ul class="no-bullet m0">
       <li class="p0i oa" ng-repeat="th in discoveredThemeHeaders track by $index">
 
-        <div class="gallery-listd-accessory-container" ng-click="p.import($index)">
+        <div class="gallery-listd-accessory-container" ng-click="p.import($index)" ng-hide="th.name == theme.header.name">
           <i class="fi-download size-24"></i>
         </div>
 
