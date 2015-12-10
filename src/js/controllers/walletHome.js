@@ -39,8 +39,8 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   });
 
   var disablePaymentUriListener = $rootScope.$on('paymentUri', function(event, uri) {
+    $rootScope.$emit('Local/SetTab', 'send');
     $timeout(function() {
-      $rootScope.$emit('Local/SetTab', 'send');
       self.setForm(uri);
     }, 100);
   });
