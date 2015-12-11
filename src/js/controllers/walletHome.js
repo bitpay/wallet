@@ -792,6 +792,19 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
         configurable: true
       });
 
+    Object.defineProperty($scope,
+      "_customFee", {
+        get: function() {
+          return $scope.__customFee;
+        },
+        set: function(newValue) {
+          $scope.__customFee = newValue;
+          self.resetError();
+        },
+        enumerable: true,
+        configurable: true
+      });
+
     var fc = profileService.focusedClient;
     // ToDo: use a credential's (or fc's) function for this
     this.hideNote = !fc.credentials.sharedEncryptingKey;

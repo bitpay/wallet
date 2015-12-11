@@ -399,7 +399,10 @@
                       ng-click="home.setFee(fee.level)" class="line-b p20">
                       {{index.feeOpts[fee.level]|translate}}
                       <i class="fi-check size-16 right"
-                        ng-show="(home.currentSendFeeLevel || index.currentFeeLevel) == fee.level"></i>
+                        ng-show="(home.currentSendFeeLevel || index.currentFeeLevel) == fee.level && fee.level != index.feeOpts['custom']"></i>
+                      <div class="input right" ng-show="(home.currentSendFeeLevel || index.currentFeeLevel) == fee.level && fee.level == index.feeOpts['custom']">
+                        <input type="number" id="customFee" ng-disabled="home.blockUx" name="customFee" ng-attr-placeholder="{{'Satoshis'|translate}}" ng-minlength="10000" ng-maxlength="10000000" ng-model="_customFee" valid-amount required autocomplete="off" ng-focus="home.formFocus('customFee')" ng-blur="home.formFocus(false)">
+                      </div>
                     </li>
                   </ul>
                 </div>
