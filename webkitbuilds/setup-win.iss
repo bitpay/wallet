@@ -5,7 +5,7 @@
 #define MyAppVersion "1.6.1"
 #define MyAppPublisher "BitPay"
 #define MyAppURL "https://copay.io"
-#define MyAppExeName "copay.exe"
+#define MyAppExeName "Copay.exe"
 
 [Setup]
 AppId={{804636ee-b017-4cad-8719-e58ac97ffa5c}
@@ -18,7 +18,7 @@ AppSupportURL={#MyAppURL}
 AppUpdatesURL={#MyAppURL}
 DefaultDirName={pf}\{#MyAppName}
 DefaultGroupName={#MyAppName}
-OutputBaseFilename=copay-win64
+OutputBaseFilename=Copay-win
 OutputDir=./
 Compression=lzma
 SolidCompression=yes
@@ -33,8 +33,8 @@ Name: "spanish"; MessagesFile: "compiler:Languages\Spanish.isl"
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: "copay\win64\copay.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "copay\win64\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "Copay\win64\copay.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "Copay\win64\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "../public/img/icons/favicon.ico"; DestDir: "{app}"; DestName: "icon.ico"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
