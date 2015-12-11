@@ -14,8 +14,7 @@ cordova/*.keystore
 cache
 webkitbuilds/*
 !webkitbuilds/README.md
-!webkitbuilds/setup-win32.iss
-!webkitbuilds/setup-win64.iss
+!webkitbuilds/setup-win.iss
 !webkitbuilds/favicon.ico
 !webkitbuilds/.desktop
 !webkitbuilds/build-osx.sh

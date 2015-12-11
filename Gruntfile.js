@@ -10,11 +10,8 @@ module.exports = function(grunt) {
       clear: {
         command: 'rm -Rf bower_components node_modules'
       },
-      osx64: {
-        command: 'webkitbuilds/build-osx.sh osx64'
-      },
-      osx32: {
-        command: 'webkitbuilds/build-osx.sh osx32'
+      osx: {
+        command: 'webkitbuilds/build-osx.sh'
       }
     },
     watch: {
@@ -144,17 +141,10 @@ module.exports = function(grunt) {
           expand: true,
           cwd: 'webkitbuilds/',
           src: ['.desktop', '../public/img/icons/favicon.ico', '../public/img/icons/icon-256.png'],
-          dest: 'webkitbuilds/copay/linux32/',
+          dest: 'webkitbuilds/Copay/linux64/',
           flatten: true,
           filter: 'isFile'
-        }, {
-          expand: true,
-          cwd: 'webkitbuilds/',
-          src: ['.desktop', '../public/img/icons/favicon.ico', '../public/img/icons/icon-256.png'],
-          dest: 'webkitbuilds/copay/linux64/',
-          flatten: true,
-          filter: 'isFile'
-        }, ],
+        }],
       }
     },
     karma: {
@@ -178,7 +168,7 @@ module.exports = function(grunt) {
     nodewebkit: {
       options: {
         appName: 'Copay',
-        platforms: ['win', 'osx', 'linux'],
+        platforms: ['win64', 'osx64', 'linux64'],
         buildDir: './webkitbuilds',
         version: '0.12.2',
         macIcns: './public/img/icons/icon.icns',
@@ -187,23 +177,14 @@ module.exports = function(grunt) {
       src: ['./package.json', './public/**/*']
     },
     compress: {
-      linux32: {
+      linux: {
         options: {
-          archive: './webkitbuilds/copay-linux32.zip'
+          archive: './webkitbuilds/Copay-linux.zip'
         },
         expand: true,
-        cwd: './webkitbuilds/copay/linux32/',
+        cwd: './webkitbuilds/Copay/linux64/',
         src: ['**/*'],
-        dest: 'copay-linux32/'
-      },
-      linux64: {
-        options: {
-          archive: './webkitbuilds/copay-linux64.zip'
-        },
-        expand: true,
-        cwd: './webkitbuilds/copay/linux64/',
-        src: ['**/*'],
-        dest: 'copay-linux64/'
+        dest: 'copay-linux/'
       }
     },
     browserify: {
@@ -232,5 +213,5 @@ module.exports = function(grunt) {
   grunt.registerTask('translate', ['nggettext_extract']);
   grunt.registerTask('test', ['karma:unit']);
   grunt.registerTask('test-coveralls', ['karma:prod', 'coveralls']);
-  grunt.registerTask('desktop', ['prod', 'nodewebkit', 'copy:linux', 'compress:linux32', 'compress:linux64', 'exec:osx32', 'exec:osx64']);
+  grunt.registerTask('desktop', ['prod', 'nodewebkit', 'copy:linux', 'compress:linux', 'exec:osx']);
 };
