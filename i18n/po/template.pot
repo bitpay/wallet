@@ -180,6 +180,14 @@ msgstr ""
 msgid "Backup"
 msgstr ""
 
+#: public/views/backup.html
+msgid "Backup failed"
+msgstr ""
+
+#: public/views/walletHome.html
+msgid "Backup Needed"
+msgstr ""
+
 #: public/views/walletHome.html
 msgid "Backup now"
 msgstr ""
@@ -300,8 +308,16 @@ msgstr ""
 msgid "Confirm"
 msgstr ""
 
+#: public/views/backup.html
+msgid "Confirm your wallet seed"
+msgstr ""
+
 #: public/views/modals/tx-details.html
 msgid "Confirmations"
+msgstr ""
+
+#: public/views/backup.html
+msgid "Congratulations!"
 msgstr ""
 
 #: public/views/create.html
@@ -573,6 +589,10 @@ msgstr ""
 msgid "Enter the seed words (BIP39)"
 msgstr ""
 
+#: public/views/backup.html
+msgid "Enter your passphrase"
+msgstr ""
+
 #: public/views/includes/password.html
 msgid "Enter your password"
 msgstr ""
@@ -745,6 +765,10 @@ msgstr ""
 
 #: public/views/includes/terms.html
 msgid "In no event shall the authors of the software, employees and affiliates of Bitpay, copyright holders, or BitPay, Inc. be held liable for any claim, damages or other liability, whether in an action of contract, tort, or otherwise, arising from, out of or in connection with the software."
+msgstr ""
+
+#: public/views/backup.html
+msgid "In order to verify your wallet backup, please type your passphrase:"
 msgstr ""
 
 #: public/views/export.html
@@ -1116,6 +1140,10 @@ msgstr ""
 msgid "Please enter the wallet seed"
 msgstr ""
 
+#: public/views/backup.html
+msgid "Please tap the words in order to confirm your backup phrase is correctly written."
+msgstr ""
+
 #: src/js/services/bwsError.js
 msgid "Please upgrade Copay to perform this action"
 msgstr ""
@@ -1130,6 +1158,10 @@ msgstr ""
 
 #: src/js/controllers/export.js
 msgid "Preparing backup..."
+msgstr ""
+
+#: src/js/routes.js
+msgid "Press again to exit"
 msgstr ""
 
 #: src/js/services/feeService.js
@@ -1600,10 +1632,6 @@ msgstr ""
 msgid "Updating Wallet..."
 msgstr ""
 
-#: public/views/walletHome.html
-msgid "Updating..."
-msgstr ""
-
 #: public/views/preferencesGlobal.html
 msgid "Use Unconfirmed Funds"
 msgstr ""
@@ -1764,6 +1792,10 @@ msgstr ""
 
 #: public/views/includes/terms.html
 msgid "While the software has undergone beta testing and continues to be improved by feedback from the open-source user and developer community, we cannot guarantee that there will be no bugs in the software."
+msgstr ""
+
+#: public/views/backup.html
+msgid "Write your wallet seed"
 msgstr ""
 
 #: src/js/controllers/import.js
