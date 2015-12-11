@@ -31,7 +31,7 @@
 
     <div ng-show="wordsC.step == 1">
       <div ng-show="wordsC.mnemonicWords || (wordsC.credentialsEncrypted && !wordsC.deleted)">
-        <h5 class="text-center">Write your wallet seed</h5>
+        <h5 class="text-center" translate>Write your wallet seed</h5>
         <div class="size-14 text-gray" ng-show="(index.n>1 && index.m != index.n )">
           <span translate>
             To restore this {{index.m}}-{{index.n}} <b>shared</b> wallet you will need
@@ -111,8 +111,8 @@
 
     <div ng-show="wordsC.step == 2">
       <div class="columns text-center extra-padding-bottom">
-        <h5>Confirm your wallet seed</h5>
-        <p class="text-gray m0">
+        <h5 translate>Confirm your wallet seed</h5>
+        <p class="text-gray m0" translate>
           Please tap the words in order to confirm your backup phrase is correctly written.
         </p>
         <div class="panel words text-left" ng-class="{'enable_text_select': index.network == 'testnet'}">
@@ -143,8 +143,8 @@
 
     <div ng-show="wordsC.step == 3">
       <div class="columns text-center">
-        <h5> Enter your passphrase</h5>
-        <p class="text-gray m0">
+        <h5 translate>Enter your passphrase</h5>
+        <p class="text-gray m0" translate>
           In order to verify your wallet backup, please type your passphrase:
         </p>
         <div class="m20v">
@@ -200,7 +200,8 @@
       <div class="row m10t m10b text-center" ng-show="wordsC.backupError">
         <div class="circle-icon">
           <i class="fi-dislike size-48"></i>
-        </div>Backup failed</h5>
+        </div>
+        <h5 translate>Backup failed</h5>
         <p class="text-gray columns" translate>
           Failed to verify backup. Please check your information
         </p>
