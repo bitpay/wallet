@@ -870,6 +870,9 @@ textarea:focus
 
 .gallery-list-text-lg {
   padding-top: 10px;
+  overflow: hidden; 
+  text-overflow: ellipsis; 
+  white-space: nowrap;
 }
 
 .gallery-list-text-sm {
@@ -910,7 +913,9 @@ textarea:focus
 
 .gallery-listd-text-lg {
   padding-top: 10px;
-  font-weight: 700px;
+  overflow: hidden; 
+  text-overflow: ellipsis; 
+  white-space: nowrap;
 }
 
 .gallery-listd-text-sm {
