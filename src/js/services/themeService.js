@@ -157,7 +157,8 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
 
       // Replace resource tags with paths.
       for (var n = 0; n < theme.resources.length; n++) {
-        themeJSON = themeJSON.replace('<resource-' + n + '>', theme.resources[n]);
+        var re = new RegExp('<resource-' + n + '>', 'g');
+        themeJSON = themeJSON.replace(re, theme.resources[n]);
       }
       theme = JSON.parse(themeJSON);
 
@@ -191,7 +192,8 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
 
             // Replace resource tags with paths.
             for (var n = 0; n < skin.resources.length; n++) {
-              skinJSON = skinJSON.replace('<resource-' + n + '>', skin.resources[n]);
+              var re = new RegExp('<resource-' + n + '>', 'g');
+              skinJSON = skinJSON.replace(re, skin.resources[n]);
             }
             skin = JSON.parse(skinJSON);
 
