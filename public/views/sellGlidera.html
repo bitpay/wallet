@@ -1,7 +1,7 @@
 <div 
   class="topbar-container" 
   ng-include="'views/includes/topbar.html'"
-  ng-init="titleSection='Sell'; goBackToState = 'glidera'">
+  ng-init="titleSection='Sell'; goBackToState = 'glidera'; noColor = true">
 </div>
 
 
@@ -21,27 +21,22 @@
   </div>
 
   <div ng-show="index.glideraLimits && !sell.show2faCodeInput && !sell.success">
-    <h4 class="title m0">
-      <div class="left">
-        <i class="fi-info size-24 m10r"></i>
-      </div>
-      <div class="size-10">
-        <span class="text-light">Daily sell limit</span>:
-        {{index.glideraLimits.dailySell|currency:'':2}} {{index.glideraLimits.currency}}
-        (remaining {{index.glideraLimits.dailySellRemaining|currency:'':2}} {{index.glideraLimits.currency}}) 
-        <br>
-        <span class="text-light">Monthly sell limit</span>:
-        {{index.glideraLimits.monthlySell|currency:'':2}} {{index.glideraLimits.currency}}
-        (remaining {{index.glideraLimits.monthlySellRemaining|currency:'':2}} {{index.glideraLimits.currency}})
-      </div>
+    <h4 class="title m0 text-left">
+      <span class="text-light">Daily sell limit</span>:
+      {{index.glideraLimits.dailySell|currency:'':2}} {{index.glideraLimits.currency}}
+      (remaining {{index.glideraLimits.dailySellRemaining|currency:'':2}} {{index.glideraLimits.currency}}) 
+      <br>
+      <span class="text-light">Monthly sell limit</span>:
+      {{index.glideraLimits.monthlySell|currency:'':2}} {{index.glideraLimits.currency}}
+      (remaining {{index.glideraLimits.monthlySellRemaining|currency:'':2}} {{index.glideraLimits.currency}})
     </h4>
   </div>
 
   <div class="row m20t">
     <div class="columns">
 
-      <div class="box-notification" ng-show="index.glideraLimits.transactDisabledPendingFirstTransaction">
-        <span class="text-warning size-14">
+      <div class="box-notification m20b" ng-show="index.glideraLimits.transactDisabledPendingFirstTransaction">
+        <span class="text-warning">
           This operation was disabled because you have a pending first transaction
         </span>
       </div>
@@ -111,7 +106,7 @@
             Please, enter the code below
           </p>
           <form name="sellForm" 
-            ng-submit="sell.createTx(index.glideraToken, index.glideraPermissions, twoFaCode)" novalidate>
+            ng-submit="sell.createTx(index.glideraToken, index.glideraPermissions, twoFaCode, index.feeRateToSendMax)" novalidate>
               <input type="number" ng-model="twoFaCode" required>
               <input class="button black expand round" 
               ng-style="{'background-color':index.backgroundColor}"

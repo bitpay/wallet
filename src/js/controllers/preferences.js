@@ -2,7 +2,13 @@
 
 angular.module('copayApp.controllers').controller('preferencesController',
   function($scope, $rootScope, $timeout, $log, configService, profileService) {
-    
+
+    var fc = profileService.focusedClient;
+    $scope.deleted = false;
+    if (fc.credentials && !fc.credentials.mnemonicEncrypted && !fc.credentials.mnemonic) {
+      $scope.deleted = true;
+    }
+
     this.init = function() {
       var config = configService.getSync();
       var fc = profileService.focusedClient;
@@ -37,8 +43,8 @@ angular.module('copayApp.controllers').controller('preferencesController',
           });
         });
       } else {
-        if (!val && fc.hasPrivKeyEncrypted())  {
-          profileService.unlockFC(function(err){
+        if (!val && fc.hasPrivKeyEncrypted()) {
+          profileService.unlockFC(function(err) {
             if (err) {
               $scope.encrypt = true;
               return;
@@ -70,14 +76,13 @@ angular.module('copayApp.controllers').controller('preferencesController',
       opts.touchIdFor[walletId] = newVal;
 
       $rootScope.$emit('Local/RequestTouchid', function(err) {
-        if (err) { 
+        if (err) {
           $log.debug(err);
           $timeout(function() {
             $scope.touchidError = true;
             $scope.touchid = oldVal;
           }, 100);
-        }
-        else {
+        } else {
           configService.set(opts, function(err) {
             if (err) {
               $log.debug(err);

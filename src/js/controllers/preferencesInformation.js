@@ -7,7 +7,7 @@ angular.module('copayApp.controllers').controller('preferencesInformation',
     var c = fc.credentials;
 
     this.init = function() {
-      var basePath = c.getBaseAddressDerivationPath(); 
+      var basePath = c.getBaseAddressDerivationPath();
 
       $scope.walletName = c.walletName;
       $scope.walletId = c.walletId;
@@ -94,17 +94,4 @@ angular.module('copayApp.controllers').controller('preferencesInformation',
       }, 100);
     };
 
-    this.clearTransactionHistory = function() {
-      storageService.removeTxHistory(c.walletId, function(err) {
-        if (err) {
-          $log.error(err);
-          return;
-        }
-        $scope.$emit('Local/ClearHistory');
-
-        $timeout(function() {
-          go.walletHome();
-        }, 100);
-      });
-    }
   });

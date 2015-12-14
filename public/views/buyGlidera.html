@@ -1,7 +1,7 @@
 <div 
   class="topbar-container" 
   ng-include="'views/includes/topbar.html'"
-  ng-init="titleSection='Buy'; goBackToState = 'glidera'">
+  ng-init="titleSection='Buy'; goBackToState = 'glidera'; noColor = true">
 </div>
 
 
@@ -21,27 +21,22 @@
   </div>
 
   <div ng-show="index.glideraLimits  && !buy.show2faCodeInput && !buy.success">
-    <h4 class="title m0">
-      <div class="left">
-        <i class="fi-info size-24 m10r"></i>
-      </div>
-      <div class="size-10">
-        <span class="text-light">Daily buy limit</span>:
-        {{index.glideraLimits.dailyBuy|currency:'':2}} {{index.glideraLimits.currency}}
-        (remaining {{index.glideraLimits.dailyBuyRemaining|currency:'':2}} {{index.glideraLimits.currency}}) 
-        <br>
-        <span class="text-light">Monthly buy limit</span>:
-        {{index.glideraLimits.monthlyBuy|currency:'':2}} {{index.glideraLimits.currency}}
-        (remaining {{index.glideraLimits.monthlyBuyRemaining|currency:'':2}} {{index.glideraLimits.currency}})
-      </div>
+    <h4 class="title m0 text-left">
+      <span class="text-light">Daily buy limit</span>:
+      {{index.glideraLimits.dailyBuy|currency:'':2}} {{index.glideraLimits.currency}}
+      (remaining {{index.glideraLimits.dailyBuyRemaining|currency:'':2}} {{index.glideraLimits.currency}}) 
+      <br>
+      <span class="text-light">Monthly buy limit</span>:
+      {{index.glideraLimits.monthlyBuy|currency:'':2}} {{index.glideraLimits.currency}}
+      (remaining {{index.glideraLimits.monthlyBuyRemaining|currency:'':2}} {{index.glideraLimits.currency}})
     </h4>
   </div>
 
   <div class="row m20t">
     <div class="columns">
 
-      <div class="box-notification" ng-show="index.glideraLimits.transactDisabledPendingFirstTransaction">
-        <span class="text-warning size-14">
+      <div class="box-notification m20b" ng-show="index.glideraLimits.transactDisabledPendingFirstTransaction">
+        <span class="text-warning">
           This operation was disabled because you have a pending first transaction
         </span>
       </div>
@@ -122,8 +117,8 @@
           </p>
         </div>
       </div>
-      <div class="box-notification" ng-show="buy.error && !buy.success">
-        <span class="text-warning size-14">
+      <div class="box-notification m20b" ng-show="buy.error && !buy.success">
+        <span class="text-warning">
           {{buy.error}}
         </span>
       </div>

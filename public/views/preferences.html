@@ -9,8 +9,8 @@
 <div class="content preferences" ng-controller="preferencesController as preferences" ng-init="preferences.init()">
 
   <h4></h4>
-  <ul class="no-bullet m0" ng-show="!index.noFocusedWallet">
 
+  <ul class="no-bullet m0" ng-show="!index.noFocusedWallet">
 
     <li  ng-click="$root.go('preferencesAlias')">
       <div class="right text-gray">
@@ -45,39 +45,55 @@
       <div translate>Hardware wallet</div>
     </li> 
 
-    <h4>
-    </h4>
     <li ng-click="$root.go('backup')"  ng-hide="index.isPrivKeyExternal">
       <div class="right text-gray">
         <span class="text-warning" ng-show="index.needsBackup">
-          <i class="fi-alert"></i> <span translate>Still not done</span>
+          <i class="fi-alert"></i> <span translate>Not completed</span>
         </span>
         <i class="icon-arrow-right3 size-24 text-gray"></i>
       </div>
       <div translate>Backup</div>
     </li>
- 
+
     <li ng-click="$root.go('preferencesAdvanced')">
       <i class="icon-arrow-right3 size-24 right text-gray"></i>  
       <div translate>Advanced</div>
     </li>
+
   </ul>
+
+  <h4 translate  ng-show="index.canSign || !deleted">
+    Security preferences
+  </h4>
+
   <div ng-show="!index.noFocusedWallet && index.canSign">
-    <h4 translate  ng-show="index.canSign">
-      Spending Restrictions
-    </h4>
+
     <ul class="no-bullet m0">
+
       <li>
         <switch id="network-name" name="encrypt" ng-model="encrypt" class="green right"></switch>
         <div translate>Request Password</div>
       </li>
+
       <li  ng-show="preferences.touchidAvailable">
         <switch id="touchid" name="touchid" ng-model="touchid" class="green right"></switch>
         <div translate>Scan Fingerprint</div>
       </li>
     </ul>
-  </div>
-  <h4></h4>
 
+  </div>
+  <div ng-show ="!deleted">
+
+    <ul class="no-bullet m0">
+      <li ng-click="$root.go('deleteWords')">
+        <i class="icon-arrow-right3 size-24 right text-gray"></i>
+        <div translate>Delete seed words</div>
+      </li>
+    </ul>
+
+  </div>
+
+ <h4></h4>
 </div>
+
 <div class="extra-margin-bottom"></div>

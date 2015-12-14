@@ -1,32 +1,47 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('disclaimerController',
-  function($scope, $timeout, storageService, applicationService, gettextCatalog, isCordova, uxLanguage) {
+  function($scope, $timeout, $log, profileService, isCordova, storageService, applicationService, gettextCatalog, uxLanguage, go) {
+    self = this;
+    self.tries = 0;
 
-    $scope.agree = function() {
-      if (isCordova) {
-        window.plugins.spinnerDialog.show(null, gettextCatalog.getString('Loading...'), true);
-      }
-      $scope.loading = true;
-      $timeout(function() {
-        storageService.setCopayDisclaimerFlag(function(err) {
+    var create = function(noWallet) {
+      $scope.creatingProfile = true;
+      profileService.create({
+        noWallet: noWallet
+      }, function(err) {
+
+        if (err) {
+          $log.warn(err);
+          $scope.error = err;
+          $scope.$apply();
           $timeout(function() {
-            if (isCordova) {
-              window.plugins.spinnerDialog.hide();
+            $log.warn('Retrying to create profile......');
+            if (self.tries == 3) {
+              self.tries == 0;
+              create(true);
+            } else {
+              self.tries += 1;
+              create(false);
             }
-            applicationService.restart();
-          }, 1000);
-        });
-      }, 100);
+          }, 3000);
+        } else {
+          $scope.error = "";
+          $scope.creatingProfile = false;
+        }
+      });
     };
-    
-    $scope.init = function() {
-      storageService.getCopayDisclaimerFlag(function(err, val) {
-        $scope.lang = uxLanguage.currentLanguage;
-        $scope.agreed = val;
-        $timeout(function() {
-          $scope.$digest();
-        }, 1);
+
+    this.init = function() {
+      self.lang = uxLanguage.currentLanguage;
+      storageService.getProfile(function(err, profile) {
+        if (!profile) create(false);
+        else $scope.creatingProfile = false;
+
+        //compatible
+        profileService.isDisclaimerAccepted(function(val) {
+          if (val) go.walletHome();
+        });
       });
     };
   });
