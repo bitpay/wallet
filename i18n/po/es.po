@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Spanish\n"
 "Language: es\n"
-"PO-Revision-Date: 2015-12-10 13:19-0500\n"
+"PO-Revision-Date: 2015-12-13 06:02-0500\n"
 
 #: public/views/walletHome.html
 msgid "(possible double spend)"
@@ -190,6 +190,14 @@ msgstr "Volver"
 msgid "Backup"
 msgstr "Copia de seguridad"
 
+#: public/views/backup.html
+msgid "Backup failed"
+msgstr "Falló la copia de seguridad"
+
+#: public/views/walletHome.html
+msgid "Backup Needed"
+msgstr "Se requiere hacer copia de seguridad"
+
 #: public/views/walletHome.html
 msgid "Backup now"
 msgstr "Realizar copia de seguridad ahora"
@@ -310,9 +318,17 @@ msgstr "Commit hash"
 msgid "Confirm"
 msgstr "Confirmar"
 
+#: public/views/backup.html
+msgid "Confirm your wallet seed"
+msgstr "Confirmar su semilla del monedero"
+
 #: public/views/modals/tx-details.html
 msgid "Confirmations"
 msgstr "Confirmaciones"
+
+#: public/views/backup.html
+msgid "Congratulations!"
+msgstr "¡Felicitaciones!"
 
 #: public/views/create.html
 msgid "Connecting to {{create.hwWallet}} Wallet..."
@@ -583,6 +599,10 @@ msgstr "El archivo cifrado se ha exportado y guardado"
 msgid "Enter the seed words (BIP39)"
 msgstr "Ingrese las palabras de la semilla (BIP39)"
 
+#: public/views/backup.html
+msgid "Enter your passphrase"
+msgstr "Introduzca su contraseña"
+
 #: public/views/includes/password.html
 msgid "Enter your password"
 msgstr "Ingrese su contraseña"
@@ -756,6 +776,10 @@ msgstr "Importando..."
 #: public/views/includes/terms.html
 msgid "In no event shall the authors of the software, employees and affiliates of Bitpay, copyright holders, or BitPay, Inc. be held liable for any claim, damages or other liability, whether in an action of contract, tort, or otherwise, arising from, out of or in connection with the software."
 msgstr "En ningún caso los autores, empleados y afiliados de Bitpay, los titulares de derechos de autor, o BitPay, Inc. serán declarados responsables de los reclamos, daños o cualquier otra responsabilidad, ya sea en una acción de contrato, agravio o de otra manera, que surja fuera de la conexión con el software."
+
+#: public/views/backup.html
+msgid "In order to verify your wallet backup, please type your passphrase:"
+msgstr "Con el fin de verificar la copia de seguridad del monedero, por favor escriba su contraseña:"
 
 #: public/views/export.html
 msgid "Include address book and history cache"
@@ -1126,6 +1150,10 @@ msgstr "Por favor ingrese las palabras de la semilla"
 msgid "Please enter the wallet seed"
 msgstr "Por favor ingrese la semilla del monedero"
 
+#: public/views/backup.html
+msgid "Please tap the words in order to confirm your backup phrase is correctly written."
+msgstr "Por favor presione las palabras para confirmar que su copia de seguridad está correctamente escrita."
+
 #: src/js/services/bwsError.js
 msgid "Please upgrade Copay to perform this action"
 msgstr "Por favor actualice Copay para realizar esta acción"
@@ -1141,6 +1169,10 @@ msgstr "Portugués"
 #: src/js/controllers/export.js
 msgid "Preparing backup..."
 msgstr "Preparando copia de seguridad..."
+
+#: src/js/routes.js
+msgid "Press again to exit"
+msgstr "Presione nuevamente para salir"
 
 #: src/js/services/feeService.js
 msgid "Priority"
@@ -1610,10 +1642,6 @@ msgstr "Actualizando el historial de transacciones. Por favor aguarde un momento
 msgid "Updating Wallet..."
 msgstr "Actualizando Monedero..."
 
-#: public/views/walletHome.html
-msgid "Updating..."
-msgstr "Actualizando..."
-
 #: public/views/preferencesGlobal.html
 msgid "Use Unconfirmed Funds"
 msgstr "Utilizar los fondos sin confirmar"
@@ -1775,6 +1803,10 @@ msgstr "BIENVENIDO A COPAY"
 #: public/views/includes/terms.html
 msgid "While the software has undergone beta testing and continues to be improved by feedback from the open-source user and developer community, we cannot guarantee that there will be no bugs in the software."
 msgstr "Mientras que el software ha experimentado pruebas en beta y aún sigue mejorando mediante la retroalimentación de la comunidad de desarrollador y usuarios de código abierto, no podemos garantizar que no habrá errores en el software."
+
+#: public/views/backup.html
+msgid "Write your wallet seed"
+msgstr "Escriba la semilla de su monedero"
 
 #: src/js/controllers/import.js
 msgid "Wrong number of seed words:"

@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: French\n"
 "Language: fr\n"
-"PO-Revision-Date: 2015-12-10 13:19-0500\n"
+"PO-Revision-Date: 2015-12-14 15:33-0500\n"
 
 #: public/views/walletHome.html
 msgid "(possible double spend)"
@@ -190,6 +190,14 @@ msgstr "Retour"
 msgid "Backup"
 msgstr "Sauvegarder"
 
+#: public/views/backup.html
+msgid "Backup failed"
+msgstr "La sauvegarde a échoué"
+
+#: public/views/walletHome.html
+msgid "Backup Needed"
+msgstr "Sauvegarde nécessaire"
+
 #: public/views/walletHome.html
 msgid "Backup now"
 msgstr "Sauvegarder"
@@ -310,9 +318,17 @@ msgstr "Commit hash"
 msgid "Confirm"
 msgstr "Confirmer"
 
+#: public/views/backup.html
+msgid "Confirm your wallet seed"
+msgstr "Confirmez votre graine de portefeuille"
+
 #: public/views/modals/tx-details.html
 msgid "Confirmations"
 msgstr "Confirmations"
+
+#: public/views/backup.html
+msgid "Congratulations!"
+msgstr "Félicitations !"
 
 #: public/views/create.html
 msgid "Connecting to {{create.hwWallet}} Wallet..."
@@ -583,6 +599,10 @@ msgstr "Le fichier d'exportation chiffré a été enregistré"
 msgid "Enter the seed words (BIP39)"
 msgstr "Écrivez les mots de la graine (BIP39)"
 
+#: public/views/backup.html
+msgid "Enter your passphrase"
+msgstr "Entrez votre phrase de passe"
+
 #: public/views/includes/password.html
 msgid "Enter your password"
 msgstr "Écrivez votre mot de passe"
@@ -756,6 +776,10 @@ msgstr "Importation..."
 #: public/views/includes/terms.html
 msgid "In no event shall the authors of the software, employees and affiliates of Bitpay, copyright holders, or BitPay, Inc. be held liable for any claim, damages or other liability, whether in an action of contract, tort, or otherwise, arising from, out of or in connection with the software."
 msgstr "En aucun cas les auteurs du logiciel, employés et sociétés affiliés de Bitpay, détenteurs de droits d'auteur, ou BitPay, Inc. ne peuvent être tenus responsables de toute réclamation, dommages ou autre responsabilité, que ce soit dans une action contractuelle, délictuelle ou autre, découlant ou en étant en connexion avec le logiciel."
+
+#: public/views/backup.html
+msgid "In order to verify your wallet backup, please type your passphrase:"
+msgstr "Afin de vérifier votre sauvegarde de portefeuille, veuillez saisir votre phrase de passe :"
 
 #: public/views/export.html
 msgid "Include address book and history cache"
@@ -1126,6 +1150,10 @@ msgstr "Veuillez saisir les mots de la graine"
 msgid "Please enter the wallet seed"
 msgstr "Veuillez saisir la graine de portefeuille"
 
+#: public/views/backup.html
+msgid "Please tap the words in order to confirm your backup phrase is correctly written."
+msgstr "Veuillez sélectionner les mots afin de confirmer que votre phrase de sauvegarde est correctement écrite."
+
 #: src/js/services/bwsError.js
 msgid "Please upgrade Copay to perform this action"
 msgstr "Veuillez mettre à jour Copay pour effectuer cette action"
@@ -1141,6 +1169,10 @@ msgstr "Portugais"
 #: src/js/controllers/export.js
 msgid "Preparing backup..."
 msgstr "Préparation de la sauvegarde..."
+
+#: src/js/routes.js
+msgid "Press again to exit"
+msgstr "Appuyez de nouveau pour quitter"
 
 #: src/js/services/feeService.js
 msgid "Priority"
@@ -1610,10 +1642,6 @@ msgstr "Mise à jour de l'historique des transactions. Veuillez patienter."
 msgid "Updating Wallet..."
 msgstr "Mise à jour du portefeuille..."
 
-#: public/views/walletHome.html
-msgid "Updating..."
-msgstr "Mise à jour..."
-
 #: public/views/preferencesGlobal.html
 msgid "Use Unconfirmed Funds"
 msgstr "Utiliser les fonds non confirmés"
@@ -1775,6 +1803,10 @@ msgstr "BIENVENUE SUR COPAY"
 #: public/views/includes/terms.html
 msgid "While the software has undergone beta testing and continues to be improved by feedback from the open-source user and developer community, we cannot guarantee that there will be no bugs in the software."
 msgstr "Bien que le logiciel ait subi des tests bêta et continue d'être amélioré par les retours d'utilisateurs et de développeurs de la communauté open source, nous ne pouvons pas garantir qu'il n'y aura plus de bugs dans le logiciel."
+
+#: public/views/backup.html
+msgid "Write your wallet seed"
+msgstr "Écrivez votre graine de portefeuille"
 
 #: src/js/controllers/import.js
 msgid "Wrong number of seed words:"
