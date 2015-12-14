@@ -1363,6 +1363,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       self.noFocusedWallet = true;
       self.isComplete = null;
       self.walletName = null;
+      self.setUxLanguage();
       profileService.isDisclaimerAccepted(function(v) {
         if (v) {
           go.path('import');
