@@ -1357,12 +1357,17 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   });
 
   $rootScope.$on('Local/NoWallets', function(event) {
+
     $timeout(function() {
       self.hasProfile = true;
       self.noFocusedWallet = true;
       self.isComplete = null;
       self.walletName = null;
-      go.path('import');
+      profileService.isDisclaimerAccepted(function(v) {
+        if (v) {
+          go.path('import');
+        }
+      });
     });
   });
 
