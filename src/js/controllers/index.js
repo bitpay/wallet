@@ -154,9 +154,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.disclaimerAccepted = true;
     profileService.setDisclaimerAccepted(function(err) {
       if (err) $log.error(err);
-      if (lodash.isEmpty(profileService.focusedClient)) {
-        $rootScope.$emit('Local/NoWallets');
-      } else go.walletHome();
+      go.walletHome();
     });
   };
 
@@ -1359,16 +1357,17 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   });
 
   $rootScope.$on('Local/NoWallets', function(event) {
-    profileService.isDisclaimerAccepted(function(v) {
-      if (v) {
-        $timeout(function() {
-          self.hasProfile = true;
-          self.noFocusedWallet = true;
-          self.isComplete = null;
-          self.walletName = null;
+
+    $timeout(function() {
+      self.hasProfile = true;
+      self.noFocusedWallet = true;
+      self.isComplete = null;
+      self.walletName = null;
+      profileService.isDisclaimerAccepted(function(v) {
+        if (v) {
           go.path('import');
-        });
-      }
+        }
+      });
     });
   });
 
