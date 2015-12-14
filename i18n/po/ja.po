@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Japanese\n"
 "Language: ja\n"
-"PO-Revision-Date: 2015-12-10 13:19-0500\n"
+"PO-Revision-Date: 2015-12-14 15:33-0500\n"
 
 #: public/views/walletHome.html
 msgid "(possible double spend)"
@@ -191,6 +191,14 @@ msgstr "戻る"
 msgid "Backup"
 msgstr "バックアップ"
 
+#: public/views/backup.html
+msgid "Backup failed"
+msgstr "バックアップ失敗"
+
+#: public/views/walletHome.html
+msgid "Backup Needed"
+msgstr "要バックアップ"
+
 #: public/views/walletHome.html
 msgid "Backup now"
 msgstr "今すぐバックアップ"
@@ -311,9 +319,17 @@ msgstr "コミットのハッシュ値"
 msgid "Confirm"
 msgstr "確認"
 
+#: public/views/backup.html
+msgid "Confirm your wallet seed"
+msgstr "復元フレーズを確認"
+
 #: public/views/modals/tx-details.html
 msgid "Confirmations"
 msgstr "承認回数"
+
+#: public/views/backup.html
+msgid "Congratulations!"
+msgstr "おめでとうございます！"
 
 #: public/views/create.html
 msgid "Connecting to {{create.hwWallet}} Wallet..."
@@ -584,6 +600,10 @@ msgstr "暗号化されたバックアップ保存しました"
 msgid "Enter the seed words (BIP39)"
 msgstr "復元フレーズの単語をご入力下さい。"
 
+#: public/views/backup.html
+msgid "Enter your passphrase"
+msgstr "復元フレーズ用のパスワードを入力して下さい"
+
 #: public/views/includes/password.html
 msgid "Enter your password"
 msgstr "パスワードを入力して下さい。"
@@ -757,6 +777,10 @@ msgstr "インポート中…"
 #: public/views/includes/terms.html
 msgid "In no event shall the authors of the software, employees and affiliates of Bitpay, copyright holders, or BitPay, Inc. be held liable for any claim, damages or other liability, whether in an action of contract, tort, or otherwise, arising from, out of or in connection with the software."
 msgstr "和訳は簡単な要約と考えて下さい。"
+
+#: public/views/backup.html
+msgid "In order to verify your wallet backup, please type your passphrase:"
+msgstr "ウォレットのバックアップを確認するためには、復元フレーズ用のパスワードをご入力下さい。"
 
 #: public/views/export.html
 msgid "Include address book and history cache"
@@ -1128,6 +1152,10 @@ msgstr "復元フレーズをご入力下さい"
 msgid "Please enter the wallet seed"
 msgstr "シード(復元)フレーズをご入力下さい"
 
+#: public/views/backup.html
+msgid "Please tap the words in order to confirm your backup phrase is correctly written."
+msgstr "正しい順番に単語をタップして、ちゃんと書き留めてあることをご確認下さい。"
+
 #: src/js/services/bwsError.js
 msgid "Please upgrade Copay to perform this action"
 msgstr "この操作を実行するにはCopayを最新バージョンに更新してください"
@@ -1143,6 +1171,10 @@ msgstr "ポルトガル語"
 #: src/js/controllers/export.js
 msgid "Preparing backup..."
 msgstr "バックアップを準備中..."
+
+#: src/js/routes.js
+msgid "Press again to exit"
+msgstr "もう一度押して終了"
 
 #: src/js/services/feeService.js
 msgid "Priority"
@@ -1614,10 +1646,6 @@ msgstr "取引履歴を更新します。しばらくお待ちください。"
 msgid "Updating Wallet..."
 msgstr "ウォレット更新中…"
 
-#: public/views/walletHome.html
-msgid "Updating..."
-msgstr "更新中..."
-
 #: public/views/preferencesGlobal.html
 msgid "Use Unconfirmed Funds"
 msgstr "未承認ビットコインを使用"
@@ -1779,6 +1807,10 @@ msgstr "ようこそ COPAY へ"
 #: public/views/includes/terms.html
 msgid "While the software has undergone beta testing and continues to be improved by feedback from the open-source user and developer community, we cannot guarantee that there will be no bugs in the software."
 msgstr "このソフトは長いテスト期間を経てリリースしましたが、今後バグや不具合が見つからないという保障はございません。"
+
+#: public/views/backup.html
+msgid "Write your wallet seed"
+msgstr "復元フレーズを書き留めて下さい"
 
 #: src/js/controllers/import.js
 msgid "Wrong number of seed words:"
