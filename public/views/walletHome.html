@@ -75,7 +75,7 @@
       <div class="oh pr">
         <div class="amount" ng-style="{'background-color':index.backgroundColor}">
           <div ng-if="!index.anyOnGoingProcess && !index.notAuthorized">
-            <div ng-show="index.updateError" ng-click='index.openWallet()'>
+            <div class="m15t" ng-show="index.updateError" ng-click='index.updateAll({triggerTxUpdate: true})'>
               <span class="size-12 db m10b">{{index.updateError|translate}}</span>
               <button class="outline white tiny round" translate>Tap to retry</button>
             </div>
@@ -173,19 +173,11 @@
 
       <!-- Activity -->
 
-      <div class="row" 
-        ng-show="!index.loadingWallet && !index.txHistory[0] && !index.updatingTxHistory[index.walletId]">
-        <div class="large-12 columns">
-          <div class="oh text-gray size-12 text-center m20t">
-            <span ng-if="!index.txHistoryError" translate>
-              No transactions yet
-            </span>
-            <span ng-show="index.txHistoryError && !index.notAuthorized" ng-click='index.debounceUpdateHistory()'>
-              <p translate>Could not fetch transaction history</p>
-              <button class="outline round light-gray tiny" translate>Tap to retry</button>
-            </span>
-          </div>
-        </div>
+      <div 
+          class="m20t text-gray size-12 text-center" 
+          ng-show="!index.loadingWallet && !index.txHistory[0] && !index.updatingTxHistory[index.walletId] &&
+          !index.txHistoryError && !index.updateError" translate>
+        No transactions yet
       </div>
       <div ng-show="index.updatingTxHistory[index.walletId] 
                 && ( (index.txProgress > 6 && !index.txHistory[0]) || (index.txProgress > 50 ) )">
