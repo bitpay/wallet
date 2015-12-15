@@ -30,21 +30,18 @@
   </div>
   <div class="row">
 
-    <div class="text-center size-12 text-warning" ng-show="error">
-      {{(error)|translate}}. <span translate>Retrying...</span>
-    </div>
     <div class="onGoingProcess" ng-show="creatingProfile">
-    <div class="onGoingProcess-content" ng-style="{'background-color':'#222'}">
-      <div class="spinner">
-        <div class="rect1"></div>
-        <div class="rect2"></div>
-        <div class="rect3"></div>
-        <div class="rect4"></div>
-        <div class="rect5"></div>
+      <div class="onGoingProcess-content" ng-style="{'background-color':'#222'}">
+        <div class="spinner">
+          <div class="rect1"></div>
+          <div class="rect2"></div>
+          <div class="rect3"></div>
+          <div class="rect4"></div>
+          <div class="rect5"></div>
+        </div>
+        <span translate>Creating Wallet...</span>
       </div>
-      <span translate>Creating Profile...</span>
     </div>
-  </div>
     <div class="start-button columns">
       <button ng-disabled="creatingProfile" ng-click="index.acceptDisclaimer()" class="button black expand round size-12 text-spacing" translate>
         I AGREE. GET STARTED
