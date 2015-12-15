@@ -478,7 +478,7 @@ angular
         url: '/cordova/:status/:fromHome/:fromDisclaimer/:secondBackButtonPress',
         views: {
           'main': {
-            controller: function($rootScope, $state, $stateParams, $timeout, go, isCordova) {
+            controller: function($rootScope, $state, $stateParams, $timeout, go, isCordova, gettextCatalog) {
 
               switch ($stateParams.status) {
                 case 'resume':
@@ -493,7 +493,7 @@ angular
                     if ($stateParams.secondBackButtonPress == 'true') {
                       navigator.app.exitApp();
                     } else {
-                      window.plugins.toast.showShortBottom('Press again to exit');
+                      window.plugins.toast.showShortBottom(gettextCatalog.getString('Press again to exit'));
                     }
                   } else {
                     $rootScope.$emit('closeModal');
