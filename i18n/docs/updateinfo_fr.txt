@@ -1,7 +1,4 @@
-* Prise en charge de TREZOR (uniquement en version Chrome App)
-* Nouveau système de notification. Réduction de la bande passante et meilleure gestion des déconnexions réseaux
-* Répertoire
-* Mise en cache de l'historique des transactions et meilleur arrangement
-* Meilleur support de BIP44 : empêche des lacunes dans les index lors de l'analyse des portefeuilles et lors de la génération des adresses
-* Paramètre BWS pour chaque portefeuille
-* Correction de l'évènement reprise sur mobile
+* Amélioration de l'interface utilisateur et du design
+* Nouvelle procédure de vérification de la sauvegarde
+* Bootstrapping plus rapide
+* Plein de corrections de bugs

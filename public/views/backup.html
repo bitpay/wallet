@@ -1,133 +1,229 @@
-<div
-  class="topbar-container"
-  ng-include="'views/includes/topbar.html'"
-  ng-init="titleSection='Backup'; goBackToState = 'preferences'">
-</div>
+<div class="backup" ng-controller="backupController as wordsC">
+  <nav class="tab-bar">
+    <section class="left-small" ng-show="(wordsC.step != 1 && wordsC.step != 4)">
+      <a ng-click="wordsC.goToStep(1);">
+        <i class="icon-arrow-left3 icon-back"></i>
+      </a>
+    </section>
 
+    <section class="middle tab-bar-section">
+    </section>
 
-<div class="content preferences" ng-controller="wordsController as wordsC">
-  <h4></h4>
-
-  <div class="box-notification" ng-show="wordsC.error">
-    <span class="text-warning">
-    {{wordsC.error|translate}}
-    </span>
-  </div>
-
-
-
-  <div ng-show="wordsC.mnemonicWords || (wordsC.credentialsEncrypted && !wordsC.deleted)">
-    <div class="row"  ng-show="index.n==1">
-      <div class="m10t columns size-14 text-gray">
-        <span translate>
-          You need the wallet seed to restore this personal wallet.
+    <section class="right-small">
+      <a class="p10" ng-click="$root.go(index.prevState);">
+        <span class="text-close">
+          <i class="fi-x size-24"></i>
         </span>
-        <span translate class="text-bold">
-          Write it down and keep them somewhere safe.
-        </span>
-      </div>
-    </div>
-    <div class="row" ng-show="(index.n>1 && index.m != index.n )">
-      <div class="m10t columns size-14 text-gray">
-        <span translate>
-          To restore this {{index.m}}-{{index.n}} <b>shared</b> wallet you will need
-        </span>:
-        <ol class="m10t columns size-14 text-gray">
-          <li translate>Your wallet seed and access to the server that coordinated the initial wallet creation. You still need {{index.m}} keys to spend.</li>
-          <li translate><b>OR</b> the wallet seed of <b>all</b> copayers in the wallet</li>
-          <li translate><b>OR</b> 1 wallet export file and the remaining quorum of wallet seeds (e.g. in a 3-5 wallet: 1 wallet export file + 2 wallet seeds of any of the other copayers).</li>
-        </ol>
-        </span>
-      </div>
-    </div>
-    <div class="row" ng-show="(index.n>1 && index.m == index.n )">
-      <div class="m10t columns size-14 text-gray">
-        <span translate>
-          To restore this {{index.m}}-{{index.n}} <b>shared</b> wallet you will need
-        </span>:
-        <ol class="m10t columns size-14 text-gray">
-          <li translate>Your wallet seed and access to the server that coordinated the initial wallet creation. You still need {{index.m}} keys to spend.</li>
-          <li translate><b>OR</b> the wallet seeds of <b>all</b> copayers in the wallet</li>
-        </ol>
-        </span>
-      </div>
-    </div>
-  </div>
+      </a>
+    </section>
+  </nav>
 
-  <div class="row m20t" ng-show="wordsC.deleted">
-    <div class="columns size-14 text-gray text-center" translate>
-        Wallet seed not available. You can still export it from Advanced &gt; Export.
-    </div>
-  </div>
- 
-  <div ng-show="wordsC.mnemonicWords || (wordsC.credentialsEncrypted && !wordsC.deleted)">
-    <div class="row">
-        <div class="m10t columns">
-          <a class="button outline light-gray expand tiny" ng-click="wordsC.toggle()">
-            <i class="fi-widget m3r"></i>
-            <span translate ng-hide="wordsC.show">Show Wallet Seed</span>
-            <span translate ng-hide="!wordsC.show">Hide Wallet Seed</span>
-            <i ng-if="!wordsC.show" class="icon-arrow-down4"></i>
-            <i ng-if="wordsC.show" class="icon-arrow-up4"></i>
-          </a>
-        </div>
+  <div class="content preferences">
+    <div class="box-notification" ng-show="wordsC.error">
+      <span class="text-warning">
+        {{wordsC.error|translate}}
+      </span>
     </div>
 
+    <!--
+    ## STEP 1
+    -->
 
-    <div class="row m10t m10b" ng-show="wordsC.show">
-      <div class="small-centered  text-gray columns size-14 text-center" translate>
-          Your Wallet Seed
-      </div>
-    </div>
-
-    <div class="row" ng-show="wordsC.show">
-        <div class="columns">
-        <div class="p10" style="background:white" ng-class="{'enable_text_select': index.network == 'testnet'}">
-          <span ng-repeat="word in wordsC.mnemonicWords track by $index"><span style="white-space:nowrap">{{word}}</span><span ng-show="wordsC.useIdeograms">&#x3000;</span> </span>  
-        </div>
-        </div>
-    </div>
-
-    <div class="row m10t m20b" ng-show="wordsC.show">
-        <div class="columns" ng-show="wordsC.mnemonicHasPassphrase">
-          <span class="size-12">
-            <i class="fi-alert"></i>
-            <span translate>
-            WARNING: This seed was created with a passphrase. To recover this wallet both the mnemonic and passphrase are needed.
-            </span>
+    <div ng-show="wordsC.step == 1">
+      <div ng-show="wordsC.mnemonicWords || (wordsC.credentialsEncrypted && !wordsC.deleted)">
+        <h5 class="text-center" translate>Write your wallet seed</h5>
+        <div class="size-14 text-gray" ng-show="(index.n>1 && index.m != index.n )">
+          <span translate>
+            To restore this {{index.m}}-{{index.n}} <b>shared</b> wallet you will need
+          </span>:
+          <ol class="m10t columns size-14 text-gray">
+            <li translate>Your wallet seed and access to the server that coordinated the initial wallet creation. You still need {{index.m}} keys to spend.</li>
+            <li translate><b>OR</b> the wallet seed of <b>all</b> copayers in the wallet</li>
+            <li translate><b>OR</b> 1 wallet export file and the remaining quorum of wallet seeds (e.g. in a 3-5 wallet: 1 wallet export file + 2 wallet seeds of any of the other copayers).</li>
+          </ol>
           </span>
         </div>
-    </div>
+        <div class="size-14 text-gray" ng-show="(index.n>1 && index.m == index.n )">
+          <span translate>
+            To restore this {{index.m}}-{{index.n}} <b>shared</b> wallet you will need
+          </span>:
+          <ol class="m10t columns size-14 text-gray">
+            <li translate>Your wallet seed and access to the server that coordinated the initial wallet creation. You still need {{index.m}} keys to spend.</li>
+            <li translate><b>OR</b> the wallet seeds of <b>all</b> copayers in the wallet</li>
+          </ol>
+          </span>
+        </div>
+      </div>
 
-    <div class="row" ng-show="wordsC.show">
-        <div class="m10t text-center columns">
-          <div class="size-12 text-gray">
-            <span translate>
-              Once you have copied your wallet seed down, it is recommended to delete it from this device.
-            </span>
+      <div class="row m20t" ng-show="wordsC.deleted">
+        <div class="columns size-14 text-gray text-center" translate>
+          Wallet seed not available. You can still export it from Advanced &gt; Export.
+        </div>
+      </div>
+
+      <div ng-show="wordsC.mnemonicWords || (wordsC.credentialsEncrypted && !wordsC.deleted)">
+        <p class="text-center columns text-gray"  ng-show="index.n==1 && wordsC.step == 1">
+          <span translate>
+            You need the wallet seed to restore this personal wallet. Write it down and keep them somewhere safe.
+          </span>
+        </p>
+        <div class="row" ng-show="wordsC.credentialsEncrypted">
+          <div class="m10t columns">
+            <a class="button outline light-gray expand tiny" ng-click="wordsC.toggle()">
+              <i class="fi-widget m3r"></i>
+              <span translate ng-hide="wordsC.show">Show Wallet Seed</span>
+            </a>
           </div>
-          <button class="button outline m10t round dark-gray tiny" ng-click="wordsC.delete()">
-            <i class="fi-trash"></i> 
-            <span translate>
-              DELETE WORDS
-            </span>
-          </button>
         </div>
-    </div>
+        <div class="row" ng-show="!wordsC.credentialsEncrypted">
+          <div class="columns">
+            <div class="panel" ng-class="{'enable_text_select': index.network == 'testnet'}">
+              <span ng-repeat="word in wordsC.mnemonicWords track by $index"><span style="white-space:nowrap">{{word}}</span><span ng-show="wordsC.useIdeograms">&#x3000;</span> </span>
+            </div>
+          </div>
+        </div>
+      </div>
 
-    <!-- hide this in multisig just to show less text -->
-    <div class="row m20t"  ng-show="index.n==1">
-      <div class="columns size-12 text-gray">
-        <div class="p10t"  style="border-top:1px solid #ccc">
-          <span translate>You can safely install your wallet on another device and use it from multiple devices at the same time.</span> 
-          <a href="#" ng-click="$root.openExternalLink('https://github.com/bitpay/copay/blob/master/README.md#copay-backups-and-recovery')" translate>
-            Learn more about Copay backups
-          </a>
+      <div class="columns extra-padding-bottom" ng-show="!wordsC.credentialsEncrypted">
+        <div class="line-t p10 size-10 text-gray text-center" ng-show="wordsC.mnemonicHasPassphrase">
+            <i class="fi-alert"></i>
+            <span translate>
+              This seed was created with a passphrase. To recover this wallet both the mnemonic and passphrase are needed.
+            </span>
         </div>
+      </div>
+
+      <div class="button-box">
+        <button
+          ng-show="!wordsC.deleted"
+          ng-disabled="wordsC.credentialsEncrypted"
+          class="round expand m0"
+          ng-style="{'background-color':index.backgroundColor}"
+          ng-click="wordsC.goToStep(2);"
+          translate>Continue
+        </button>
       </div>
     </div>
 
-  </div>
+    <!--
+    ## STEP 2
+    -->
 
+    <div ng-show="wordsC.step == 2">
+      <div class="columns text-center extra-padding-bottom">
+        <h5 translate>Confirm your wallet seed</h5>
+        <p class="text-gray m0" translate>
+          Please tap the words in order to confirm your backup phrase is correctly written.
+        </p>
+        <div class="panel words text-left" ng-class="{'enable_text_select': index.network == 'testnet'}">
+          <div id="addWord"></div>
+        </div>
+        <div class="text-left" ng-class="{'enable_text_select': index.network == 'testnet'}" id="buttons">
+          <span ng-repeat="word in wordsC.shuffledMnemonicWords track by $index">
+            <button class="button radius tiny words" ng-if="$index > 9" ng-click="wordsC.disableButton($index, word)" id="{{$index + word}}">{{word}}</button>
+            <button class="button radius tiny words" ng-if="$index <= 9" ng-click="wordsC.disableButton('0' + $index, word)" id="{{'0' + $index + word}}">{{word}}</button>
+          </span>
+        </div>
+      </div>
+
+      <div class="button-box">
+        <button
+          ng-disabled="!wordsC.selectComplete"
+          class="round expand m0"
+          ng-style="{'background-color':index.backgroundColor}"
+          ng-click="wordsC.goToStep(3);"
+          translate>Continue
+        </button>
+      </div>
+    </div>
+
+    <!--
+    ## STEP 3
+    -->
+
+    <div ng-show="wordsC.step == 3">
+      <div class="columns text-center">
+        <h5 translate>Enter your passphrase</h5>
+        <p class="text-gray m0" translate>
+          In order to verify your wallet backup, please type your passphrase:
+        </p>
+        <div class="m20v">
+          <input type="text" id="passphrase" ng-model="passphrase" autocapitalize="off" spellcheck="false" autofocus/>
+        </div>
+      </div>
+
+      <div class="button-box">
+        <button
+          ng-disabled="!passphrase"
+          ng-style="{'background-color':index.backgroundColor}"
+          class="button round expand m0"
+          ng-click="wordsC.goToStep(4);"
+          translate>Continue
+        </button>
+      </div>
+    </div>
+
+    <!--
+    ## STEP 4
+    -->
+
+    <div ng-show="wordsC.step == 4">
+      <div class="row m10t m10b text-center" ng-show="!wordsC.backupError">
+        <div class="circle-icon">
+          <i class="fi-like size-48"></i>
+        </div>
+        <h5 translate>Congratulations!</h5>
+        <p class="text-gray columns" translate>
+          You backed up your wallet. You can now restore this wallet at any time.
+        </p>
+
+        <div class="columns text-center m20t">
+          <button
+            ng-style="{'background-color':index.backgroundColor}"
+            class="button round expand"
+            ng-click="$root.go('walletHome');"
+            translate>Finish
+          </button>
+          <!-- hide this in multisig just to show less text -->
+          <div class="row m20t"  ng-show="index.n==1">
+            <div class="columns size-10 text-gray">
+              <div class="p10t line-t">
+                <span translate>You can safely install your wallet on another device and use it from multiple devices at the same time.</span>
+                <a href="#" ng-click="$root.openExternalLink('https://github.com/bitpay/copay/blob/master/README.md#copay-backups-and-recovery')" translate>
+                  Learn more about Copay backups
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row m10t m10b text-center" ng-show="wordsC.backupError">
+        <div class="circle-icon">
+          <i class="fi-dislike size-48"></i>
+        </div>
+        <h5 translate>Backup failed</h5>
+        <p class="text-gray columns" translate>
+          Failed to verify backup. Please check your information
+        </p>
+        <div class="columns size-10 text-gray extra-padding-bottom" ng-show="index.n==1">
+          <div class="p10t line-t">
+            <span translate>You can safely install your wallet on another device and use it from multiple devices at the same time.</span>
+            <a href="#" ng-click="$root.openExternalLink('https://github.com/bitpay/copay/blob/master/README.md#copay-backups-and-recovery')" translate>
+              Learn more about Copay backups
+            </a>
+          </div>
+        </div>
+
+        <div class="button-box">
+          <button
+            ng-style="{'background-color':index.backgroundColor}"
+            class="button round expand m0"
+            ng-click="wordsC.goToStep(1);"
+            translate>Try again
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 <div class="extra-margin-bottom"></div>

@@ -10,15 +10,14 @@ if [ -d "$dir" ]; then
 fi
 
 # set up your app name, architecture, and background image file name
-APP_NAME="copay"
-ARCH="$1"
+APP_NAME="Copay"
 DMG_BACKGROUND_IMG="Background.png"
 
-PATH_NAME="copay/$1/"
+PATH_NAME="Copay/osx64/"
 # you should not need to change these
 APP_EXE="${PATH_NAME}${APP_NAME}.app/Contents/MacOS/nwjs"
 
-VOL_NAME="${APP_NAME}-${ARCH}"
+VOL_NAME="${APP_NAME}-osx"
 DMG_TMP="${VOL_NAME}-temp.dmg"
 DMG_FINAL="${VOL_NAME}.dmg"
 STAGING_DIR="tmp"
