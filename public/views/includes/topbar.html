@@ -1,4 +1,6 @@
-<nav ng-controller="topbarController as topbar" class="tab-bar">
+<nav ng-controller="topbarController as topbar" 
+  class="tab-bar" 
+  ng-style="{'background-color': noColor ? '#4B6178' : index.backgroundColor}">
   <section class="left-small">
     <a id="hamburger" class="p10" ng-show="!goBackToState && !closeToHome  && !index.noFocusedWallet"
       ng-click="index.openMenu()"><i class="fi-list size-24"></i>
@@ -14,12 +16,14 @@
     </a>
   </section>
 
-  <section class="right-small" ng-show="showCamera">
-    <qr-scanner ng-show="index.isComplete" on-scan="topbar.onQrCodeScanned(data)" before-scan="topbar.openSendScreen()"></qr-scanner>
+  <section class="right-small" ng-show="showPreferences && !index.noFocusedWallet">
+    <a class="p10" ng-click="topbar.goPreferences()">
+      <i class="fi-widget size-24"></i>
+    </a>
   </section>
 
   <section class="middle tab-bar-section">
-    <h1 class="title ellipsis" ng-style="{'color': noColor ? '#4A90E2' : index.backgroundColor}">
+    <h1 class="title ellipsis">
       {{(titleSection|translate) || (index.alias || index.walletName)}}
     </h1>
   </section>

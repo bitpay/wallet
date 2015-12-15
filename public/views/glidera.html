@@ -2,7 +2,7 @@
 <div
   class="topbar-container"
   ng-include="'views/includes/topbar.html'"
-  ng-init="titleSection='Buy & Sell Bitcoin'; closeToHome = true">
+  ng-init="titleSection='Buy & Sell Bitcoin'; closeToHome = true; noColor = true">
 </div>
 
 
@@ -66,8 +66,9 @@
           Glidera Inc. (Glidera) is providing the service of buying or selling bitcoins to Copay users.  To enable this
           service, Glidera has registered with US Treasury Department’s FinCEN as a Money Service Business
           (#31000042625755).  Users of Copay must agree to the service agreement presented by Glidera prior to obtaining
-          Glidera’s service of buying or selling bitcoins. Service available in U.S. only; (buy & sell) CA, GA, IL, KS,
-          MA, MD, MO, MT, MN, SC, TX; (buy only) AZ, CO, DE, ME, NJ, PA, TN, UT.
+          Glidera’s service of buying or selling bitcoins. Service available in U.S. and Canada only. In U.S. (buy & sell) CA, GA, IL, KS,
+          MA, MD, MO, MT, MN, SC, TX; (buy only) AZ, CO, DE, ME, NJ, PA, TN, UT. In Canada (buy & sell) AB, BC, MB, NB, NL, NS, NT, NU,
+          ON, PE, SK, YT.
         </p>
 
         <p class="m20t text-gray size-12">Connect your Glidera account to get started</p>
@@ -104,13 +105,13 @@
   </div>
 
   <div ng-if="index.glideraToken && index.glideraPermissions">
-    <div class="m20v text-center">
+    <div class="p20v text-center white">
       <img src="img/glidera-logo.png" ng-click="index.updateGlidera(index.glideraToken, index.glideraPermissions)" width="100">
     </div>
     <div class="sub-header"  ng-click="$root.go('preferencesGlidera')">
       <div class="left">
         <div ng-show="!index.glideraPersonalInfo && !index.glideraEmail">
-          <h4 class="title p0i m10t m0">Preferences</h4>
+          Preferences
         </div>
         <div ng-show="index.glideraPersonalInfo" class="size-12">
           <b>
@@ -132,23 +133,22 @@
     </div>
     <div class="row">
       <div class="text-center columns small-8 small-centered m30v size-12"
-        ng-show="index.glideraStatus && (!index.glideraStatus.userEmailIsSetup || !index.glideraStatus.userPhoneIsSetup
-        || (!index.glideraStatus.userBankAccountIsSetup && index.glideraStatus.bankAccountState != 'VERIFIED'))">
+        ng-show="index.glideraStatus && !index.glideraStatus.userCanTransact">
         <h4 class="text-bold"> Complete Setup</h4>
-        Your Glidera account is not ready to transact. Please, verify it at <b>Glidera.io</b>
-          <a class="button m20t light-gray outline round tiny"
-            ng-init="glideraUrl = index.glideraTestnet ? 'https://sandbox.glidera.io/login' :
-            'https://glidera.io/login'"
-            ng-click="$root.openExternalLink(glideraUrl)">
-            Go to Glidera
-          </a>
+        <div>Your Glidera account is not ready to transact. Please, verify it at <b>Glidera.io</b></div>
+        <a class="button m20t light-gray outline round tiny"
+           ng-init="glideraUrl = index.glideraTestnet ? 'https://sandbox.glidera.io/login' :
+           'https://glidera.io/login'"
+           ng-click="$root.openExternalLink(glideraUrl)">
+          Go to Glidera
+        </a>
         </div>
       </div>
     </div>
 
     <ul class="no-bullet m0 size-14" 
-      ng-show="index.glideraStatus && index.glideraPermissions.transact && (index.glideraStatus.userBankAccountIsSetup && index.glideraStatus.bankAccountState == 'VERIFIED')">
-      <li ng-show="index.glideraStatus.userCanTransact && index.glideraStatus.userCanBuy" 
+      ng-show="index.glideraStatus && index.glideraStatus.userCanTransact">
+      <li ng-show="index.glideraStatus.userCanBuy" 
           class="line-b line-t p20 pointer"
           ng-click="$root.go('buyGlidera')">
         <img src="img/buy-bitcoin.svg" alt="buy bitcoin" width="40">
@@ -158,7 +158,7 @@
         </span>
       </li>
       <li class="line-b p20 pointer"
-          ng-show="index.glideraStatus.userCanTransact && index.glideraStatus.userCanSell"
+          ng-show="index.glideraStatus.userCanSell"
           ng-click="$root.go('sellGlidera')">
         <img src="img/sell-bitcoin.svg" alt="buy bitcoin" width="40">
         <span class="m10 text-normal text-bold">Sell Bitcoin</span>
@@ -169,7 +169,7 @@
     </ul>
 
     <div ng-show="index.glideraPermissions.transaction_history">
-      <h4 class="title m0">Activity</h4>
+      <h4>Activity</h4>
       <div ng-show="index.glideraTxs.length == 0 && !index.glideraLoadingHistory"
         class="size-12 p10 text-center text-gray">
         No activity in your account

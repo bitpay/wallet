@@ -1,11 +1,11 @@
-<nav class="tab-bar">
+<nav class="tab-bar" ng-style="{'background-color':color}">
   <section class="left-small">
     <a ng-click="cancel()" class="p10">
       <span class="text-close" translate>Close</span>
     </a>
   </section>
   <section class="middle tab-bar-section">
-    <h1 class="title ellipsis" ng-style="{'color':color}" translate>
+    <h1 class="title ellipsis" translate>
       Request a specific amount
     </h1>
   </section>
@@ -60,20 +60,20 @@
             <span translate>Amount</span>
           </label>
           <div class="input">
-            <input type="number" id="amount" name="amount" ng-attr-placeholder="{{'Amount'|translate}}" 
-            ng-model="_customAmount" valid-amount required autocomplete="off">
+            <input type="number" id="amount" name="amount" ng-attr-placeholder="{{'Amount in'|translate}} {{unitName}}"
+            ng-model="_customAmount" ng-minlength="0.00000001" ng-maxlength="10000000000" valid-amount required autocomplete="off">
             <input type="number" id="alternative"  name="alternative"  ng-model="_customAlternative" style="display:none">
-            <a class="postfix" ng-click="toggleAlternative()">{{unitName}}</a>
+            <a class="postfix button" ng-style="{'background-color':color}" ng-click="toggleAlternative()">{{unitName}}</a>
           </div>
         </div>
         <div ng-if="showAlternative">
-          <label for="alternative"><span translate>Amount in</span> {{ alternativeName }}
+          <label for="alternative"><span translate>Amount</span> [{{ alternativeIsoCode }}]
           </label>
           <div class="input">
-            <input type="number" id="alternative" name="alternative" ng-attr-placeholder="{{'Amount'|translate}}" 
+            <input type="number" id="alternative" name="alternative" ng-attr-placeholder="{{'Amount in'|translate}} {{alternativeName}}" 
             ng-model="_customAlternative" required autocomplete="off" required>
             <input type="number" id="amount" name="amount" ng-model="_customAmount" style="display:none">
-            <a class="postfix" ng-click="toggleAlternative()"> {{ alternativeIsoCode }}</a>
+            <a class="postfix button black" ng-click="toggleAlternative()"> {{ alternativeIsoCode }}</a>
           </div>
         </div>
         <button type="submit" class="button black round expand" ng-disabled="amountForm.$invalid" ng-style="{'background-color':color}" translate>

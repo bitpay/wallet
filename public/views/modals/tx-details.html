@@ -1,4 +1,4 @@
-<nav class="tab-bar">
+<nav class="tab-bar" ng-style="{'background-color':color}">
   <section class="left-small">
     <a ng-click="cancel()">
       <i class="icon-arrow-left3 icon-back"></i>
@@ -6,18 +6,33 @@
     </a>
   </section>
   <section class="middle tab-bar-section">
-    <h1 class="title ellipsis" ng-style="{'color':color}" translate>
+    <h1 class="title ellipsis" translate>
       Transaction
     </h1>
   </section>
 </nav>
 
-<div class="modal-content fix-modals-touch">
-  <div class="header-modal text-center">
-    <div class="size-42" ng-show="btx.action != 'invalid'">
+<div class="modal-content fix-modals-touch"
+     ng-swipe-disable-mouse
+     ng-swipe-right="cancel()">
+  <div class="header-modal size-36 text-center">
+    <div ng-show="btx.action != 'invalid'">
+      <div ng-show="btx.action == 'received'">
+        <img src="img/icon-receive-history.svg" alt="sync" width="50">
+        <p class="m0 text-gray size-14" translate>Received</p>
+      </div>
+      <div ng-show="btx.action == 'sent'">
+        <img src="img/icon-sent-history.svg" alt="sync" width="50">
+        <p class="m0 text-gray size-14" translate>Sent</p>
+      </div>
+      <div ng-show="btx.action == 'moved'">
+        <img src="img/icon-moved.svg" alt="sync" width="50">
+        <p class="m0 text-gray size-14" translate>Moved</p>
+      </div>
+      
       <span ng-if="btx.action == 'received'">+</span><span ng-if="btx.action == 'sent'">-</span>{{btx.amountStr}}
     </div>
-    <div class="size-42" ng-show="btx.action == 'invalid'">
+    <div ng-show="btx.action == 'invalid'">
       -
     </div>
   </div>
@@ -27,7 +42,7 @@
   <ul class="no-bullet size-14 m0"> 
 
     <li ng-if="!btx.hasMultiplesOutputs && btx.addressTo && btx.addressTo != 'N/A'" class="line-b p10 oh" ng-click="copyAddress(btx.addressTo)">
-    <span class="text-gray" translate>To</span>:
+    <span class="text-gray" translate>To</span>
     <span class="right">
       <span ng-if="btx.merchant">
         <span ng-show="btx.merchant.pr.ca"><i class="fi-lock color-greeni"></i> {{btx.merchant.domain}}</span>
@@ -42,7 +57,7 @@
 
     <li ng-show="btx.hasMultiplesOutputs" class="line-b p10 oh" 
       ng-click="showMultiplesOutputs = !showMultiplesOutputs">
-      <span class="text-gray" translate>Recipients</span>:
+      <span class="text-gray" translate>Recipients</span>
       <span class="right">{{btx.recipientCount}}
         <i ng-show="showMultiplesOutputs" class="icon-arrow-up3 size-24"></i>
         <i ng-show="!showMultiplesOutputs" class="icon-arrow-down3 size-24"></i>
@@ -55,7 +70,7 @@
     </div>
 
     <li ng-show="btc.message" class="line-b p10 oh">
-      <span class="text-gray" translate>Note</span>:
+      <span class="text-gray" translate>Note</span>
       <span class="right">{{btx.message}}</span>
     </li>
     
@@ -64,28 +79,28 @@
       This transaction has become invalid; possibly due to a double spend attempt.
     </span>
     <li ng-if="btx.time" class="line-b p10 oh">
-    <span class="text-gray" translate>Date</span>:
+    <span class="text-gray" translate>Date</span>
     <span class="right">
       <time>{{ btx.time * 1000 | amDateFormat:'MM/DD/YYYY HH:mm a'}}</time>
       <time>({{ btx.time * 1000 | amTimeAgo}})</time>
     </span>
     </li>
     <li class="line-b p10" ng-show="btx.action != 'received'">
-      <span class="text-gray" translate>Fee</span>:
+      <span class="text-gray" translate>Fee</span>
       <span class="right">{{btx.feeStr}}</span>
     </li>
     <li class="line-b p10 oh" ng-if="btx.message && btx.action != 'received'">
-      <span class="text-gray" translate>Note</span>:
+      <span class="text-gray" translate>Note</span>
       <span class="right">{{btx.message}}</span>
     </li>
     <li ng-if="btx.merchant" class="line-b p10 oh">
-    <span class="text-gray" translate>Merchant message</span>:
+    <span class="text-gray" translate>Merchant message</span>
     <span class="right">
       {{btx.merchant.pr.pd.memo}}
     </span>
     </li>
     <li ng-if="btx.time" class="line-b p10 oh">
-    <span class="text-gray" translate>Confirmations</span>:
+    <span class="text-gray" translate>Confirmations</span>
     <span class="right" >
       <span class="text-warning" ng-show="!btx.confirmations || btx.confirmations == 0" translate>
         Unconfirmed
@@ -105,11 +120,12 @@
     <h4 class="title m0" translate>Participants</h4>
     <ul class="no-bullet size-14 m0">
       <li class="line-b p10 text-gray" ng-repeat="c in btx.actions">
-      <span class="right">
-        <i ng-if="c.type == 'reject'" class="fi-x icon-sign x db"></i>
-        <i ng-if="c.type == 'accept'" class="fi-check icon-sign check db"></i>
-      </span>
-      {{c.copayerName}} <span ng-if="c.copayerId == copayerId">({{'Me'|translate}})</span>
+        <i class="icon-contact size-24"></i>
+        <span class="right">
+          <i ng-if="c.type == 'reject'" class="fi-x icon-sign x db"></i>
+          <i ng-if="c.type == 'accept'" class="fi-check icon-sign check db"></i>
+        </span>
+        {{c.copayerName}} <span ng-if="c.copayerId == copayerId">({{'Me'|translate}})</span>
       </li>
     </ul>
   </div>
