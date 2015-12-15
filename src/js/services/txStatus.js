@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.services').factory('txStatus', function($modal, lodash, profileService, $timeout, txFormatService) {
+angular.module('copayApp.services').factory('txStatus', function($modal, lodash, profileService, $timeout, txFormatService, isCordova) {
   var root = {};
 
   root.notify = function(txp, cb) {
@@ -47,6 +47,9 @@ angular.module('copayApp.services').factory('txStatus', function($modal, lodash,
       $scope.type = type;
       $scope.tx = txFormatService.processTx(txp);
       $scope.color = fc.backgroundColor;
+      if (isCordova && StatusBar.isVisible) {
+        StatusBar.hide();
+      }
       $scope.cancel = function() {
         $modalInstance.dismiss('cancel');
       };
@@ -59,6 +62,9 @@ angular.module('copayApp.services').factory('txStatus', function($modal, lodash,
     });
 
     modalInstance.result.finally(function() {
+      if (isCordova && !StatusBar.isVisible) {
+        StatusBar.show();
+      }
       var m = angular.element(document.getElementsByClassName('reveal-modal'));
       m.addClass('hideModal');
     });
