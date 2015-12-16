@@ -396,14 +396,21 @@ ul.tx-copayers {
   border-bottom: none;
 }
 
-.backup .button-box {
-  background: #F1F3F5;
+.button-box {
   position: fixed;
   bottom: 0;
   left: 0;
   width: 100%;
-  padding: 0.5rem 1rem 1rem;
+  padding: 0.8rem;
   z-index: 9999;
+}
+
+.backup .button-box {
+  background: #F6F7F9;
+}
+
+.splash .button-box {
+  background: #2C3E50;
 }
 
 .backup input[type="text"] {
@@ -1223,7 +1230,7 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
   background: #213140;
   border: 1px solid #4B6178;
   border-radius: 5px;
-  margin: 1.6rem;
+  margin: 1rem;
   color: #A5B2BF;
   line-height: 30px;
   padding: 0.5rem;
@@ -1231,8 +1238,10 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
 
 .scrollArea ul {
   font-size: 0.8rem;
-  text-align: justify;
+  text-align: left;
   margin-left: 0;
+  line-height: 1.4;
+  margin-bottom: 0;
 }
 
 .scrollArea li {
