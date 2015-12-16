@@ -24,7 +24,7 @@ angular.module('copayApp.services').factory('txFormatService', function(profileS
   root.processTx = function(tx) {
     if (!tx) return; 
 
-    if (lodash.isArray(tx.outputs) && tx.action != 'received') {
+    if (lodash.isArray(tx.outputs) && tx.outputs.length > 0 && tx.action != 'received') {
       tx.hasMultiplesOutputs = true;
       tx.recipientCount = tx.outputs.length;
       tx.amount = lodash.reduce(tx.outputs, function(total, o) {
