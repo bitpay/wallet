@@ -2,7 +2,7 @@
 
 angular.module('copayApp.controllers').controller('disclaimerController',
   function($scope, $timeout, $log, profileService, isCordova, storageService, applicationService, gettextCatalog, uxLanguage, go) {
-    self = this;
+    var self = this;
     self.tries = 0;
 
     var create = function(noWallet) {
