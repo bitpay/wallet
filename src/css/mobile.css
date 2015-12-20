@@ -630,7 +630,7 @@ to prevent collapsing during animation*/
   height: 100%;
   width: 100%;
   top: 45px;
-  padding-bottom: 33px;
+  padding-bottom: 50px;
   -webkit-transform: translate3d(0,0,0);
   background: #f6f7f9;
 }
