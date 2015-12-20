@@ -87,6 +87,9 @@ if [ ! -d $PROJECT ]; then
   cordova plugin add https://github.com/phonegap/phonegap-plugin-barcodescanner.git
   checkOK
 
+  cordova plugin add cordova-plugin-globalization
+  checkOK
+
   cordova plugin add cordova-plugin-splashscreen
   checkOK
 
