@@ -1,6 +1,6 @@
 'use strict';
 angular.module('copayApp.services')
-  .factory('uxLanguage', function languageService($log, lodash, gettextCatalog, amMoment, configService) {
+  .factory('uxLanguage', function languageService($log, $timeout, lodash, gettextCatalog, amMoment, configService) {
     var root = {};
 
     root.availableLanguages = [{
@@ -26,16 +26,24 @@ angular.module('copayApp.services')
 
     root.currentLanguage = null;
 
-    root._detect = function() {
-      // Auto-detect browser language
-      var userLang, androidLang;
+    root._detect = function(cb) {
 
-      if (navigator && navigator.userAgent && (androidLang = navigator.userAgent.match(/android.*\W(\w\w)-(\w\w)\W/i))) {
-        userLang = androidLang[1];
+      var userLang, androidLang;
+      if (navigator && navigator.globalization) {
+
+        navigator.globalization.getPreferredLanguage(function(preferedLanguage) {
+          // works for iOS and Android 4.x
+          userLang = preferedLanguage.value;
+          userLang = userLang ? (userLang.split('-', 1)[0] || 'en') : 'en';
+          return cb(userLang);
+        });
       } else {
-        // works for iOS and Android 4.x
+        // Auto-detect browser language
         userLang = navigator.userLanguage || navigator.language;
+        userLang = userLang ? (userLang.split('-', 1)[0] || 'en') : 'en';
+        return cb(userLang);
       }
+
       userLang = userLang ? (userLang.split('-', 1)[0] || 'en') : 'en';
 
       // Set only available languages
@@ -72,20 +80,25 @@ angular.module('copayApp.services')
     };
 
     root.init = function() {
-      root._set(root._detect());
+      root._detect(function(lang) {
+        root._set(lang);
+      });
     };
 
     root.update = function() {
       var userLang = configService.getSync().wallet.settings.defaultLanguage;
 
       if (!userLang) {
-        userLang = root._detect();
-      }
 
-      if (userLang != gettextCatalog.getCurrentLanguage()) {
-        root._set(userLang);
+        root._detect(function(lang) {
+          userLang = lang;
+
+          if (userLang != root.currentLanguage) {
+            root._set(lang);
+          }
+          return userLang;
+        });
       }
-      return userLang;
     };
 
     root.getName = function(lang) {
