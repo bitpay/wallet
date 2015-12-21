@@ -85,7 +85,7 @@ angular.module('copayApp.services')
       });
     };
 
-    root.update = function() {
+    root.update = function(cb) {
       var userLang = configService.getSync().wallet.settings.defaultLanguage;
 
       if (!userLang) {
@@ -96,8 +96,13 @@ angular.module('copayApp.services')
           if (userLang != root.currentLanguage) {
             root._set(lang);
           }
-          return userLang;
+          return cb(userLang);
         });
+      } else {
+        if (userLang != root.currentLanguage) {
+          root._set(userLang);
+        }
+        return cb(userLang);
       }
     };
 
