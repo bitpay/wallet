@@ -279,10 +279,6 @@ ul.copayer-list img {
   display: block;
 }
 
-.bottombar-item a.active span, .bottombar-item a.active i {
-  font-weight: bold;
-}
-
 .bottombar-item a.active .label {
   text-shadow: none;
 }

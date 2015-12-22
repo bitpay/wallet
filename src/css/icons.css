@@ -24,6 +24,15 @@
 	-moz-osx-font-smoothing: grayscale;
 }
 
+.icon-activity-active:before {
+    content: "\e904";
+}
+.icon-receive-active:before {
+    content: "\e905";
+}
+.icon-send-active:before {
+    content: "\e906";
+}
 .icon-wallet:before {
 	content: "\e903";
 }
