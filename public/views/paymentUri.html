@@ -32,7 +32,7 @@
           <li class="panel" ng-repeat="w in wallets">
           <a ng-click="payment.selectWallet(w.id)">
             <div ng-if="w.avatarIsWalletName == 'true'" class="avatar-wallet" 
-              ng-style="{'background':w.avatarBackground, 'border':w.avatarBorder}">{{(w.name || w.id) | limitTo: 1}}</div>
+              ng-style="{'background':w.avatarBackground, 'border':w.avatarBorder}"><i class="icon-wallet size-21"></i></div>
             <div ng-if="w.avatarIsWalletName == 'false'" class="avatar-wallet" 
               ng-style="{'background':w.avatarBackground, 'border':w.avatarBorder}"></div>
             <div class="ellipsis">{{w.name || w.id}}</div>

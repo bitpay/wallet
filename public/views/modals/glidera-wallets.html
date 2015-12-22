@@ -28,7 +28,9 @@
     <li class="line-b" ng-repeat="w in wallets">
     <a ng-click="selectWallet(w.id, w.name)" class="db oh">
       <div class="avatar-wallet"
-        ng-style="{'background-color':w.color}">{{(w.name || w.id) | limitTo: 1}}</div>
+        ng-style="{'background-color':w.color}">
+        <i class="icon-wallet size-21"></i>
+      </div>
       <div class="ellipsis name-wallet text-bold">{{w.name || w.id}}</div>
       <div class="size-12">{{w.m}} of {{w.n}}
         <span ng-show="w.network=='testnet'">[Testnet]</span>

@@ -7,6 +7,7 @@
 <div class="content preferences" ng-controller="preferencesAdvancedController as preferences">
 
   <h4></h4>
+  
   <ul class="no-bullet m0">
 
     <li  ng-click="$root.go('information')">
@@ -14,7 +15,7 @@
       <div translate>Wallet Information</div>
     </li>
 
-    <li ng-show="index.network == 'livenet'" class="text-capitalize" ng-click="$root.go('paperWallet')">
+    <li ng-show="index.network == 'livenet'" ng-click="$root.go('paperWallet')">
       <i class="icon-arrow-right3 size-24 right text-gray"></i>  
       <div translate>Sweep paper wallet</div>
     </li>
@@ -26,14 +27,21 @@
  
     <li  ng-click="$root.go('preferencesBwsUrl')">
       <i class="icon-arrow-right3 size-24 right text-gray"></i>  
-      <span>Wallet Service URL</span>
+      <div>Wallet Service URL</div>
+    </li>
+
+     <li ng-click="$root.go('preferencesHistory')">
+      <i class="icon-arrow-right3 size-24 right text-gray"></i>
+      <div translate>Transaction History</div>
     </li>
 
     <li ng-click="$root.go('delete')">
-      <i class="icon-arrow-right3 size-24 right text-gray"></i>  
+      <i class="icon-arrow-right3 size-24 right text-gray"></i>
       <div translate>Delete Wallet</div>
     </li>
+
   </ul>
+
 </div>
 <div class="extra-margin-bottom"></div>
 

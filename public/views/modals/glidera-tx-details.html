@@ -12,7 +12,9 @@
   </section>
 </nav>
 
-<div class="modal-content fix-modals-touch">
+<div class="modal-content fix-modals-touch"
+     ng-swipe-disable-mouse
+     ng-swipe-right="cancel()">
   <div class="header-modal bg-gray text-center">
     <div class="p20">
       <img src="img/bought.svg" alt="bought" width="80" ng-show="tx.type == 'BUY' && tx.status == 'COMPLETE'">

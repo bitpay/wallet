@@ -1,10 +1,13 @@
-<a ng-click="index.setTab(item, false, 0, true)" ng-class="{'active': index.tab == item.link}" id="menu-{{item.link}}"
-	ng-style="{'background-color': index.tab == item.link ? skin.view.tabBarSelectedBackground : '', 'border-top-color':skin.view.tabBarSelectedBackground}">
-  <i class="size-24 {{item.icon}} db"></i>
-  <div class="size-10 tu">
-    {{ item.title|translate }}
-    <span class="label alert round" ng-if="item.link=='walletHome' && index.pendingTxProposalsCountForUs > 0">
-      {{ index.pendingTxProposalsCountForUs }}
+<a ng-click="index.setTab(item, false, 0, true)" 
+   ng-style="{'background-color': index.tab == item.link ? skin.view.tabBarSelectedBackground : '', 'border-top-color':skin.view.tabBarSelectedBackground}" 
+   id="menu-{{item.link}}">
+    <i class="size-18 {{item.icon}} db"></i>
+    <span class="size-10 tu">
+        {{ item.title|translate }}
+        <span class="label round" 
+          ng-if="item.link=='walletHome' && index.pendingTxProposalsCountForUs > 0">
+            {{ index.pendingTxProposalsCountForUs }}
+        </span>
     </span>
-  </div>
+    <div ng-if="item.link == 'walletHome'" class="menu-wallet-home"></div>
 </a>

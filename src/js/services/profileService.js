@@ -128,34 +128,28 @@ angular.module('copayApp.services')
           });
         });
       });
+        
     };
 
-    root.loadAndBindProfile = function(cb) {
-      storageService.getCopayDisclaimerFlag(function(err, val) {
-        if (!val) {
-          return cb(new Error('NONAGREEDDISCLAIMER: Non agreed disclaimer'));
+    root.loadAndBindProfile = function(cb) { 
+      storageService.getProfile(function(err, profile) {
+        if (err) {
+          $rootScope.$emit('Local/DeviceError', err);
+          return cb(err);
+        }
+        if (!profile) {
+          // Migration??
+          storageService.tryToMigrate(function(err, migratedProfile) {
+            if (err) return cb(err);
+            if (!migratedProfile)
+              return cb(new Error('NOPROFILE: No profile'));
+
+            profile = migratedProfile;
+            return root.bindProfile(profile, cb);
+          })
         } else {
-          storageService.getProfile(function(err, profile) {
-            if (err) {
-              $rootScope.$emit('Local/DeviceError', err);
-              return cb(err);
-            }
-            if (!profile) {
-              // Migration?? 
-              storageService.tryToMigrate(function(err, migratedProfile) {
-                if (err) return cb(err);
-                if (!migratedProfile)
-                  return cb(new Error('NOPROFILE: No profile'));
-
-                profile = migratedProfile;
-                return root.bindProfile(profile, cb);
-              })
-            } else {
-              $log.debug('Profile read');
-              return root.bindProfile(profile, cb);
-            }
-
-          });
+          $log.debug('Profile read');
+          return root.bindProfile(profile, cb);
         }
       });
     };
@@ -273,8 +267,8 @@ angular.module('copayApp.services')
 
         // check if exist
         if (lodash.find(root.profile.credentials, {
-          'walletId': walletData.walletId
-        })) {
+            'walletId': walletData.walletId
+          })) {
           return cb(gettext('Cannot join the same wallet more that once'));
         }
       } catch (ex) {
@@ -378,14 +372,14 @@ angular.module('copayApp.services')
 
 
         var handleImport = function(cb) {
-          var isImport =  opts.mnemonic || opts.externalSource || opts.extendedPrivateKey;
+          var isImport = opts.mnemonic || opts.externalSource || opts.extendedPrivateKey;
 
-          if (!isImport) 
+          if (!isImport)
             return cb();
 
           $rootScope.$emit('Local/BackupDone', walletId);
 
-          if (!walletClient.isComplete()) 
+          if (!walletClient.isComplete())
             return cb();
 
           storageService.setCleanAndScanAddresses(walletId, cb);
@@ -515,6 +509,39 @@ angular.module('copayApp.services')
         });
       });
 
+    };
+
+    root.setDisclaimerAccepted = function(cb) {
+      storageService.getProfile(function(err, profile) {
+        profile.disclaimerAccepted = true;
+        storageService.storeProfile(profile, function(err) {
+          return cb(err);
+        });
+      });
+    };
+
+    root.isDisclaimerAccepted = function(cb) {
+      storageService.getProfile(function(err, profile) {
+        if (profile && profile.disclaimerAccepted)
+          return cb(true);
+        else if (profile && !profile.disclaimerAccepted) {
+          storageService.getCopayDisclaimerFlag(function(err, val) {
+            if (val) {
+              profile.disclaimerAccepted = true;
+              storageService.storeProfile(profile, function(err) {
+                if (err) $log.error(err);
+                return cb(true);
+              });
+            }
+            else {
+              return cb();
+            }
+          });
+        }
+        else {
+          return cb();
+        }
+      });   
     };
 
     root.importLegacyWallet = function(username, password, blob, cb) {

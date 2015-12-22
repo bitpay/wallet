@@ -6,22 +6,10 @@
       </a>
     </section>
 
-    <section class="middle tab-bar-section" ng-style="{'color': skin.view.navBarTitleColor}">
-      <ul class="button-group round even-2" ng-show="!editAddressbook && wallets[0] && !addAddressbookEntry">
-        <li class="ellipsis" ng-class="{'selected':selectedWalletsOpt}" ng-click="selectedWalletsOpt = true"
-          translate>
-          Wallets
-        </li>
-        <li class="ellipsis" ng-class="{'selected':!selectedWalletsOpt}" ng-click="selectedWalletsOpt = false" translate>
-          Address book
-        </li>
-      </ul>
-      <div ng-show="(editAddressbook || !wallets[0]) && !addAddressbookEntry" class="title ellipsis" translate>
-        Address book
-      </div>
-      <div ng-show="addAddressbookEntry" class="title ellipsis" translate>
-        Add a new entry
-      </div>
+    <section class="middle tab-bar-section">
+      <h1 class="title ellipsis">
+      {{walletName}}
+      </h1>
     </section>
 
     <section class="right-small" ng-show="!selectedWalletsOpt" ng-click="toggleEditAddressbook()">
@@ -34,7 +22,27 @@
     </section>
   </nav>
 
-  <div class="modal-content fix-modals-touch">
+  <div class="modal-content fix-modals-touch p20b">
+    <div class="create-tab small-only-text-center">
+      <div class="row">
+        <div class="tab-container small-6 medium-3 large-2" 
+          ng-class="{'selected':selectedWalletsOpt}" 
+          ng-style="{'border-color':selectedWalletsOpt ? color : 'inherit'}"
+          ng-click="selectedWalletsOpt = true">
+        <a href
+          ng-style="{'color':selectedWalletsOpt ? color : 'inherit'}"
+          ng-click="create.setTotalCopayers(1)" translate> My wallets</a>
+        </div>
+        <div class="tab-container small-6 medium-3 large-2" 
+          ng-class="{'selected':!selectedWalletsOpt}" 
+          ng-style="{'border-color':!selectedWalletsOpt ? color : 'inherit'}"
+          ng-click="selectedWalletsOpt = false">
+        <a href
+          ng-style="{'color':!selectedWalletsOpt ? color : 'inherit'}"
+          ng-click="create.setTotalCopayers(3)" translate>My contacts</a>
+        </div>
+      </div>
+    </div>
     <div ng-show="selectedWalletsOpt">
       <div class="onGoingProcess" ng-if="gettingAddress">
         <div class="onGoingProcess-content" ng-style="{'background':skin.view.progressBackground, 'color':skin.view.progressTextColor}">
@@ -54,7 +62,7 @@
           <li class="line-b" ng-repeat="w in wallets">
             <a ng-click="selectWallet(w.id, w.name)" class="db oh">
               <div ng-if="w.avatarIsWalletName == 'true'" class="avatar-wallet"
-                ng-style="{'background':w.avatarBackground, 'border':w.avatarBorder}">{{(w.name || w.id) | limitTo: 1}}</div>
+                ng-style="{'background':w.avatarBackground, 'border':w.avatarBorder}"><i class="icon-wallet size-21 vt"></i></div>
               <div ng-if="w.avatarIsWalletName == 'false'" class="avatar-wallet"
                 ng-style="{'background':w.avatarBackground, 'border':w.avatarBorder}"></div>
               <div class="ellipsis text-black size-14 text-bold">{{w.name || w.id}}</div>
@@ -77,15 +85,19 @@
             ng-show="editAddressbook" 
             ng-click="toggleSelectAddressbook(addr)">
             <i class="fi-trash"></i></a> 
-          <div ng-click="selectAddressbook(addr)">
-            <div class="text-bold size-14">{{label}}</div>
-            <div class="size-12 text-gray ellipsis">{{addr}}</div>
+          <div ng-click="selectAddressbook(addr)"> 
+
+            <i class="icon-contact left size-42 m10r text-gray"></i> 
+            <div class="">
+              <span>{{label}}</span>
+              <div class="size-12 text-gray ellipsis">{{addr}}</div>
+            </div>
           </div> 
         </li>
-        <li class="m10t" ng-show="!editAddressbook">
-          <a ng-click="toggleAddAddressbookEntry()" class="p10">
-            <i class="fi-plus size-18 m10r"></i> 
-            <span class="text-close size-14" translate>Add a new entry</span>
+        <li class="p10" ng-show="!editAddressbook">
+          <a ng-click="toggleAddAddressbookEntry()" class="p0i">
+            <i class="fi-plus size-24 m20r lh icon"></i> 
+            <span class="size-12 tu text-bold" translate>Add a new entry</span>
             <span ng-show="!list[newAddress] && newAddress">({{newAddress}})</span>
           </a>
         </li>
@@ -123,7 +135,7 @@
             </div>
             <div class="columns large-6 medium-6 small-6">
               <input type="submit" 
-                     class="button expand round" 
+                     class="button expand round black" 
                      value="{{'Save'|translate}}"
                      ng-disabled="!addressbookForm.$valid"
                      ng-style="{'background':skin.view.buttonBackground, 'color':skin.view.buttonTextColor}" 
