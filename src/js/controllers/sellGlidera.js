@@ -123,7 +123,7 @@ angular.module('copayApp.controllers').controller('sellGlideraController',
       }, 100);
     };
 
-    this.createTx = function(token, permissions, twoFaCode, currentFeePerKb) {
+    this.createTx = function(token, permissions, twoFaCode) {
       var self = this;
       self.error = null;
 
