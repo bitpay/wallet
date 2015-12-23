@@ -73,9 +73,7 @@
 
     <div id="walletHome" class="walletHome tab-view tab-in" ng-style="{'background':skin.view.homeFullBackground}">
       <div class="oh pr">
-
         <div class="amount" ng-style="{'color':skin.view.homeTopTextColor, 'background':skin.view.homeTopBackground, 'border-bottom':skin.view.homeTopBorderBottom}">
-          
           <div ng-if="!index.anyOnGoingProcess && !index.notAuthorized">
             <div class="m15t" ng-show="index.updateError" ng-click='index.updateAll({triggerTxUpdate: true})'>
               <span class="size-12 db m10b">{{index.updateError|translate}}</span>

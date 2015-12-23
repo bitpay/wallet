@@ -62,14 +62,6 @@ h4.title a {
   font-size: 12px;
 }
 
-.preferences {
-  background: #f1f3f5;
-}
-
-.preferences.white {
-  background: #ffffff;
-}
-
 .preferences form {
   background: white;
   padding-top:10px;

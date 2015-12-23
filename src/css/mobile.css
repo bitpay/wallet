@@ -154,7 +154,8 @@ _:-ms-fullscreen, :root .main {
   bottom: 0;
   width: 100%;
   z-index: 5;
-  background: #233e81;
+  background: #FFFFFF;
+  border-top: 1px solid #E2E7ED;
 }
 
 .second-bottom-bar {
@@ -189,9 +190,8 @@ _:-ms-fullscreen, :root .main {
 .amount {
   width: 100%;
   text-align: center;
-  padding: 2.5rem 0rem 1.5rem 0rem;
-  margin-bottom: 1px;
-  color: #233e81;
+  padding: 1.5rem 1rem 1.5rem 1rem;
+  color: #fff;
   height: 175px;
 }
 
@@ -225,8 +225,8 @@ _:-ms-fullscreen, :root .main {
   width: 75px;
   height: 75px;
   position: absolute;
-  top: -23px;
-  font-size: 35px;
+  top: -22px;
+  font-size: 2.2rem;
   border: 3px solid #fff;
   background: #1ABC9C;
   margin: 0;
@@ -277,14 +277,10 @@ ul.copayer-list img {
   color: #A5B2BF;
   padding: 0.5rem 0;
   display: block;
-  border-top-width: 3px ;   
-  border-top-style: solid;
-  border-top-color: #1c9bd7;
 }
 
-.bottombar-item a.active {
-  color: #E4E8EC;
-  background-color: #1c9bd7;
+.bottombar-item a.active span, .bottombar-item a.active i {
+  font-weight: bold;
 }
 
 .bottombar-item a.active .label {
@@ -361,8 +357,6 @@ a.missing-copayers {
   width: 35px;
   height: 35px;
   border-radius: 3px;
-  padding: 0px;
-  border: 1px solid #fff;
 }
 
 .sidebar header {

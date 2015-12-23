@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('backupController',
-  function($rootScope, $scope, $timeout, $log, $compile, go, lodash, profileService, gettext, bwcService, confirmDialog, notification, bwsError, themeService) {
+  function($rootScope, $scope, $timeout, $log, $state, $compile, go, lodash, profileService, gettext, bwcService, bwsError, themeService) {
 
     var self = this;
     var fc = profileService.focusedClient;
@@ -61,35 +61,6 @@ angular.module('copayApp.controllers').controller('backupController',
       $timeout(function() {
         $scope.$apply();
       }, 1);
-    };
-
-    self.delete = function() {
-      confirmDialog.show(msg, function(ok) {
-        if (ok) {
-          fc.clearMnemonic();
-          profileService.updateCredentialsFC(function() {
-            self.deleted = true;
-            notification.success(
-              successMsg, '',
-              {color: themeService.getPublishedSkin().view.textHighlightColor,
-               iconColor: themeService.getPublishedTheme().view.notificationBarIconColor,
-               barBackground: themeService.getPublishedTheme().view.notificationBarBackground});
-            go.walletHome();
-          });
-        }
-      });
-    };
-
-    $scope.$on('$destroy', function() {
-      profileService.lockFC();
-    });
-
-    function setWords(words) {
-      if (words) {
-        self.mnemonicWords = words.split(/[\u3000\s]+/);
-        self.mnemonicHasPassphrase = fc.mnemonicHasPassphrase();
-        self.useIdeograms = words.indexOf("\u3000") >= 0;
-      }
     };
 
     function passwordRequest() {

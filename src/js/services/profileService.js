@@ -116,6 +116,7 @@ angular.module('copayApp.services')
 
     root.bindProfile = function(profile, cb) {
       root.profile = profile;
+
       configService.get(function(err) {
         $log.debug('Preferences read');
         if (err) return cb(err);
@@ -123,8 +124,15 @@ angular.module('copayApp.services')
         storageService.getFocusedWalletId(function(err, focusedWalletId) {
           if (err) return cb(err);
           root._setFocus(focusedWalletId, function() {
-            $rootScope.$emit('Local/ProfileBound');            
-            return cb();
+            $rootScope.$emit('Local/ProfileBound');
+            root.isDisclaimerAccepted(function(val) {
+              if (!val) { 
+                return cb(new Error('NONAGREEDDISCLAIMER: Non agreed disclaimer'));
+              }
+              else {
+                return cb();
+              }
+            });
           });
         });
       });
@@ -509,6 +517,39 @@ angular.module('copayApp.services')
         });
       });
 
+    };
+
+    root.setDisclaimerAccepted = function(cb) {
+      storageService.getProfile(function(err, profile) {
+        profile.disclaimerAccepted = true;
+        storageService.storeProfile(profile, function(err) {
+          return cb(err);
+        });
+      });
+    };
+
+    root.isDisclaimerAccepted = function(cb) {
+      storageService.getProfile(function(err, profile) {
+        if (profile && profile.disclaimerAccepted)
+          return cb(true);
+        else if (profile && !profile.disclaimerAccepted) {
+          storageService.getCopayDisclaimerFlag(function(err, val) {
+            if (val) {
+              profile.disclaimerAccepted = true;
+              storageService.storeProfile(profile, function(err) {
+                if (err) $log.error(err);
+                return cb(true);
+              });
+            }
+            else {
+              return cb();
+            }
+          });
+        }
+        else {
+          return cb();
+        }
+      });   
     };
 
     root.setDisclaimerAccepted = function(cb) {
