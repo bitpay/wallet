@@ -1190,6 +1190,11 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.updateAll();
   });
 
+  $rootScope.$on('Local/EnableNotifications', function(event, vale) {
+    //make suscribe/unsuscribe
+    self.updateAll();
+  });
+
   $rootScope.$on('Local/FeeLevelUpdated', function(event, level) {
     self.setCurrentFeeLevel(level);
   });
