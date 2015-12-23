@@ -13,46 +13,49 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
   document.addEventListener('deviceready', function() {
 
-    var push = PushNotification.init({
-      android: {
-        senderID: "959259672122"
-      },
-      ios: {
-        alert: "true",
-        badge: true,
-        sound: 'false'
-      },
-      windows: {}
-    });
+    if (isCordova) {
+      var push = PushNotification.init({
+        android: {
+          senderID: "959259672122"
+        },
+        ios: {
+          alert: "true",
+          badge: true,
+          sound: 'false'
+        },
+        windows: {}
+      });
+    }
 
     push.on('registration', function(data) {
       var opts = {};
       opts.user = "Gabriel";
       opts.type = "android";
       opts.token = data.registrationId;
-      pushNotificationsService.subscribe(opts).then(function(response) {
-          console.log(response);
-        },
-        function(err) {
-          console.log(err);
-        });
+      storageService.setNotificationsOptions(JSON.stringify(opts), function() {
+        pushNotificationsService.subscribe(opts).then(function(response) {
+            $log.debug('Suscribed: ' + response.status);
+          },
+          function(err) {
+            $log.warn('Error: ' + err);
+          });
+      });
+
     });
 
     push.on('notification', function(data) {
-      console.log("notification event");
-      alert(data.message);
-
-      // data.message,
-      // data.title,
-      // data.count,
-      // data.sound,
-      // data.image,
-      // data.additionalData
+      $log.debug('Notification event: ', data.message);
+      /* data.message,
+       data.title,
+       data.count,
+       data.sound,
+       data.image,
+       data.additionalData
+      */
     });
 
     push.on('error', function(e) {
-      console.log("error pushhhhhh");
-      alert(e.message);
+      $log.warn('Error trying to push notifications: ', e);
     });
 
   });
@@ -1243,9 +1246,25 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.updateAll();
   });
 
-  $rootScope.$on('Local/EnableNotifications', function(event, vale) {
-    //make suscribe/unsuscribe
-    self.updateAll();
+  $rootScope.$on('Local/EnableNotifications', function(event, val) {
+    storageService.getNotificationsOptions(function(err, opts) {
+      if (val.notifications.enabled) {
+        pushNotificationsService.subscribe(opts).then(function(response) {
+            $log.debug('Suscribed: ' + response.status);
+          },
+          function(err) {
+            $log.warn('Error: ' + err);
+          });
+      } else {
+        pushNotificationsService.unsubscribe(JSON.parse(opts).token).then(function(response) {
+            $log.debug('Unsuscribed: ' + response.status);
+          },
+          function(err) {
+            $log.warn('Error: ' + err);
+          });
+      }
+      self.updateAll();
+    });
   });
 
   $rootScope.$on('Local/FeeLevelUpdated', function(event, level) {
