@@ -72,7 +72,7 @@
     -->
 
     <div id="walletHome" class="walletHome tab-view tab-in" ng-style="{'background':skin.view.homeFullBackground}">
-      <div class="oh">
+      <div class="oh pr">
 
         <div class="amount" ng-style="{'color':skin.view.homeTopTextColor, 'background':skin.view.homeTopBackground, 'border-bottom':skin.view.homeTopBorderBottom}">
           
@@ -112,16 +112,11 @@
 
         <div class="pr columns" ng-style="{'color':skin.view.homeMiddleTextColor, 'background':skin.view.homeMiddleBackground, 'border-bottom':skin.view.homeMiddleBorderBottom}">
           <div ng-if="skin.view.avatarIsWalletName == 'true'" class="avatar-wallet left"
-            ng-style="{'background':skin.view.avatarBackground, 'border':skin.view.avatarBorderBig}">{{(index.alias || index.walletName) | limitTo: 1}}
+            ng-style="{'background':skin.view.avatarBackground, 'border':skin.view.avatarBorderBig}">
+            <i class="icon-wallet size-24"></i>
           </div>
           <div ng-if="skin.view.avatarIsWalletName == 'false'" class="avatar-wallet left"
             ng-style="{'background':skin.view.avatarBackground, 'border':skin.view.avatarBorderBig}">
-          </div>
-          <div class="right" style="margin-top: 11px">
-            <a ng-click="$root.go('preferences')" class="button outline round light-gray tiny preferences-icon m0" ng-style="{'color':skin.view.homePreferencesButtonColor, 'border-color':skin.view.homePreferencesButtonColor}">
-              <i class="fi-widget size-18 vm"></i>
-              <span class="show-for-medium-up" translate>Preferences</span>
-            </a>
           </div>
           <div class="wallet-info">
             <div ng-show="index.isShared">
@@ -147,33 +142,30 @@
         </div>
       </div> <!-- oh -->
 
-      </div> <!-- oh -->
-
-      <div style="top: 248px; bottom: 0; width: 100%; position: absolute" ng-style="{'color':skin.view.homeBottomTextColor, 'background':skin.view.homeBottomBackground}">
-        <div class="m20t" ng-show="index.notAuthorized && ! index.anyOnGoingProcess">
-          <div class="text-center text-warning">
-            <i class="fi-alert"></i>
-            <span translate>
-              WARNING: Wallet not registered
-            </span>
-          </div>
-          <div class="text-center text-gray m15r m15l" translate>
-            This wallet is not registered at the given Bitcore Wallet Service (BWS). You can recreate it from the local information.
-          </div>
-          <div class="text-center m10t ">
-            <span class="button outline round dark-gray tiny"
-              ng-click="index.recreate()">
-              <span translate>Recreate</span>
-            </span>
-          </div>
+      <div class="m20t" ng-show="index.notAuthorized && ! index.anyOnGoingProcess">
+        <div class="text-center text-warning">
+          <i class="fi-alert"></i>
+          <span translate>
+            WARNING: Wallet not registered
+          </span>
         </div>
+        <div class="text-center text-gray m15r m15l" translate>
+          This wallet is not registered at the given Bitcore Wallet Service (BWS). You can recreate it from the local information.
+        </div>
+        <div class="text-center m10t ">
+          <span class="button outline round dark-gray tiny"
+            ng-click="index.recreate()">
+            <span translate>Recreate</span>
+          </span>
+        </div>
+      </div>
 
-        <div ng-if="index.txps[0]">
-          <h4 ng-show="index.requiresMultipleSignatures" class="title m0" translate>Payment Proposals</h4>
-          <h4 ng-show="!index.requiresMultipleSignatures" class="title m0" translate>Unsent transactions</h4>
-          <div class="last-transactions pr" ng-repeat="tx in index.txps"
-            ng-include="index.txTemplateUrl">
-          </div>
+      <div ng-if="index.txps[0]">
+        <h4 ng-show="index.requiresMultipleSignatures" class="title m0" translate>Payment Proposals</h4>
+        <h4 ng-show="!index.requiresMultipleSignatures" class="title m0" translate>Unsent transactions</h4>
+        <div class="last-transactions pr" ng-repeat="tx in index.txps">
+          <div ng-include="index.txTemplateUrl"></div>
+        </div>
 
         <div class="text-gray text-center size-12 p10t"
           ng-show="index.lockedBalanceSat">
@@ -182,8 +174,6 @@
           <span> {{index.lockedBalanceAlternative}}
             {{index.alternativeIsoCode}} </span>
         </div>
-        <div class="extra-margin-bottom"></div>
-
       </div>
 
       <!-- Activity -->
@@ -217,7 +207,6 @@
         <h4 class="title m0">
           <span translate>Activity</span>
         </h4>
-
  
         <div ng-if="index.txHistory[0] &&  index.updatingTxHistory[index.walletId] && index.newTx" class="row collapse last-transactions-content animated fadeInDown">
           <div class="large-6 medium-6 small-6 columns size-14">
