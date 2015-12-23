@@ -371,14 +371,15 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     });
   };
 
-  self.setSpendUnconfirmed = function() {
-    self.spendUnconfirmed = configService.getSync().wallet.spendUnconfirmed;
+  self.setSpendUnconfirmed = function(spendUnconfirmed) {
+    self.spendUnconfirmed = spendUnconfirmed || configService.getSync().wallet.spendUnconfirmed;
   };
 
-  self.setSendMax = function() {
+  self.setFeeAndSendMax = function(cb) {
 
     self.feeToSendMaxStr = null;
-    self.feeRateToSendMax = null;
+    self.availableMaxBalance = null;
+    self.currentFeePerKb = null;
 
     // Set Send max
     if (self.currentFeeLevel && self.totalBytesToSendMax) {
@@ -386,12 +387,14 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
         // KB to send max
         var feeToSendMaxSat = parseInt(((self.totalBytesToSendMax * feePerKb) / 1000.).toFixed(0));
-        self.feeRateToSendMax = feePerKb;
+        self.currentFeePerKb = feePerKb;
 
         if (self.availableBalanceSat > feeToSendMaxSat) {
           self.availableMaxBalance = strip((self.availableBalanceSat - feeToSendMaxSat) * self.satToUnit);
           self.feeToSendMaxStr = profileService.formatAmount(feeToSendMaxSat) + ' ' + self.unitName;
         }
+          
+        if (cb) return cb(self.currentFeePerKb, self.availableMaxBalance, self.feeToSendMaxStr);
       });
     }
 
@@ -399,7 +402,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
   self.setCurrentFeeLevel = function(level) {
     self.currentFeeLevel = level || configService.getSync().wallet.settings.feeLevel || 'normal';
-    self.setSendMax();
+    self.setFeeAndSendMax();
   };
 
 
@@ -1185,13 +1188,17 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     });
   });
 
-  $rootScope.$on('Local/SpendUnconfirmedUpdated', function(event) {
-    self.setSpendUnconfirmed();
+  $rootScope.$on('Local/SpendUnconfirmedUpdated', function(event, spendUnconfirmed) {
+    self.setSpendUnconfirmed(spendUnconfirmed);
     self.updateAll();
   });
 
   $rootScope.$on('Local/FeeLevelUpdated', function(event, level) {
     self.setCurrentFeeLevel(level);
+  });
+
+  $rootScope.$on('Local/SetFeeSendMax', function(event, cb) {
+    self.setFeeAndSendMax(cb);
   });
 
   $rootScope.$on('Local/ProfileBound', function() {
@@ -1449,4 +1456,5 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       $rootScope.$apply();
     });
   });
+ 
 });
