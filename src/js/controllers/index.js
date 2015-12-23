@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, lodash, go, profileService, configService, isCordova, rateService, storageService, addressService, gettext, gettextCatalog, amMoment, nodeWebkit, addonManager, feeService, isChromeApp, bwsError, txFormatService, uxLanguage, $state, glideraService, isMobile, addressbookService) {
+angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, pushNotificationsService, lodash, go, profileService, configService, isCordova, rateService, storageService, addressService, gettext, gettextCatalog, amMoment, nodeWebkit, addonManager, feeService, isChromeApp, bwsError, txFormatService, uxLanguage, $state, glideraService, isMobile, addressbookService) {
   var self = this;
   var SOFT_CONFIRMATION_LIMIT = 12;
   self.isCordova = isCordova;
@@ -10,6 +10,52 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   self.historyShowLimit = 10;
   self.updatingTxHistory = {};
   self.prevState = 'walletHome';
+
+  document.addEventListener('deviceready', function() {
+
+    var push = PushNotification.init({
+      android: {
+        senderID: "959259672122"
+      },
+      ios: {
+        alert: "true",
+        badge: true,
+        sound: 'false'
+      },
+      windows: {}
+    });
+
+    push.on('registration', function(data) {
+      var opts = {};
+      opts.user = "Gabriel";
+      opts.type = "android";
+      opts.token = data.registrationId;
+      pushNotificationsService.subscribe(opts).then(function(response) {
+          console.log(response);
+        },
+        function(err) {
+          console.log(err);
+        });
+    });
+
+    push.on('notification', function(data) {
+      console.log("notification event");
+      alert(data.message);
+
+      // data.message,
+      // data.title,
+      // data.count,
+      // data.sound,
+      // data.image,
+      // data.additionalData
+    });
+
+    push.on('error', function(e) {
+      console.log("error pushhhhhh");
+      alert(e.message);
+    });
+
+  });
 
   function strip(number) {
     return (parseFloat(number.toPrecision(12)));
