@@ -231,6 +231,14 @@ angular.module('copayApp.services')
       storage.get('addressbook-' + network, cb);
     };
 
+    root.setNotificationsOptions = function(opts, cb) {
+      storage.set('notifications', opts, cb);
+    }
+
+    root.getNotificationsOptions = function(cb) {
+      storage.get('notifications', cb);
+    }
+
     root.removeAddressbook = function(network, cb) {
       storage.remove('addressbook-' + network, cb);
     };
