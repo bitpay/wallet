@@ -29,8 +29,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
     push.on('registration', function(data) {
       var opts = {};
-      opts.user = "Gabriel";
-      opts.type = "android";
+      var deviceType = (navigator.userAgent.match(/iPhone/i)) == "iPhone" ? "ios" : (navigator.userAgent.match(/Android/i)) == "Android" ? "android" : null;
+      opts.user = "copayUser";
+      opts.type = deviceType;
       opts.token = data.registrationId;
       storageService.setNotificationsOptions(JSON.stringify(opts), function() {
         pushNotificationsService.subscribe(opts).then(function(response) {
