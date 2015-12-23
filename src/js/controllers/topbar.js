@@ -1,14 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('topbarController', function($scope, $rootScope, go) {
-
-  this.onQrCodeScanned = function(data) {
-    $rootScope.$emit('dataScanned', data);
-  };
-
-  this.openSendScreen = function() {
-    go.send();
-  };
+angular.module('copayApp.controllers').controller('topbarController', function(go) { 
 
   this.goHome = function() {
     go.walletHome();
@@ -16,6 +8,10 @@ angular.module('copayApp.controllers').controller('topbarController', function($
 
   this.changeLayout = function(layoutEvent) {
     $rootScope.$emit(layoutEvent);
+  };
+  
+  this.goPreferences = function() {
+    go.preferences();
   };
 
 });

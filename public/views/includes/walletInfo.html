@@ -12,5 +12,5 @@
 <!-- <img style="height:1em"  ng&#45;show="index.preferences.email" src="img/icon&#45;email.svg"> -->
 <img style="height:1em"  ng-show="index.usingCustomBWS" src="img/icon-bws.svg">
 
-<img style="height:1em"  class="animated flash infinite" ng-show="index.updatingTxHistory[index.walletId]" src="img/icon-sync.svg">
+<img style="height:1em"  class="animated flash infinite" ng-show="index.loadingWallet || index.updatingTxHistory[index.walletId]" src="img/icon-sync.svg">
 

@@ -34,13 +34,13 @@
   </div>
 
   <form name="joinForm" ng-submit="join.join(joinForm)" novalidate>
+    <div class="box-notification m20b" ng-show="join.error ">
+      <span class="text-warning">
+        {{join.error|translate}}
+      </span>
+    </div>
     <div class="row">
-      <div class="large-12 columns">
-        <div class="box-notification" ng-show="join.error ">
-          <span class="text-warning size-14">
-            {{join.error|translate}}
-          </span>
-        </div>
+      <div class="large-12 columns"> 
 
         <div>
           <label><span translate>Your nickname</span>
@@ -116,7 +116,7 @@
             <div ng-show="join.seedSourceId=='new' ">
               <label for="createPassphrase"  ><span translate>Add a Seed Passphrase</span>  <small translate>Add an optional passphrase to secure the seed</small>
                 <div class="input">
-                  <input type="text" class="form-control"
+                  <input type="text" class="form-control" autocapitalize="off"
                   name="createPassphrase" ng-model="createPassphrase">
                 </div>
               </label>
@@ -127,6 +127,7 @@
                 <span translate>Wallet Seed</span>
                 <small translate>Enter the seed words (BIP39)</small>
                 <input id="ext-master"
+                autocapitalize="off"
                 type="text"
                 name="privateKey" ng-model="privateKey">
               </label>
@@ -135,7 +136,7 @@
             <div ng-show="join.seedSourceId=='set'">
               <label for="passphrase"> <span translate>Seed Passphrase</span>  <small translate>The seed could require a passphrase to be imported</small>
                 <div class="input">
-                  <input type="text" class="form-control" name="passphrase" ng-model="passphrase">
+                  <input type="text" autocapitalize="off" class="form-control" name="passphrase" ng-model="passphrase">
                 </div>
               </label>
             </div>

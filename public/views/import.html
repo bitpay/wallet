@@ -4,7 +4,7 @@
   ng-init="titleSection='Import wallet';  goBackToState = 'add'; useTheme = true">
 </div>
 
-<div class="content p20v" ng-controller="importController as import" ng-init="type='12'">
+<div class="content p20b" ng-controller="importController as import" ng-init="type='12'">
   <div class="onGoingProcess" ng-show="import.loading  && !import.hwWallet">
     <div class="onGoingProcess-content" ng-style="{'background':theme.view.progressBackground, 'color':theme.view.progressTextColor}">
     <div class="spinner">
@@ -44,18 +44,18 @@
     </div>
   </div>
 
-  <div class="row" ng-show="type == '12' ">
-    <div class="large-12 columns">
-        <form name="importForm12" ng-submit="import.importMnemonic(importForm12)" novalidate>
-          <div class="box-notification" ng-show="import.error">
-            <span class="text-warning size-14">
-              {{import.error|translate}}
-            </span>
-          </div>
+  <div ng-show="type == '12' ">
+    <div class="box-notification m20b" ng-show="import.error">
+      <span class="text-warning">
+        {{import.error|translate}}
+      </span>
+    </div>
+    <div class="row large-12 columns">
+        <form name="importForm12" ng-submit="import.importMnemonic(importForm12)" novalidate> 
 
           <div >
             <label for="words">
-              <span translate>Type the Seed Word (usually 12 words)</span>:
+              <span translate>Type the Seed Phrase (usually 12 words)</span>:
             </label>
             <textarea class="form-control" name="words" ng-model="import.words" rows="2" autocapitalize="off" spellcheck="false"></textarea>
           </div>
@@ -100,14 +100,14 @@
     </div>
   </div>
 
-  <div class="row" ng-show="type == 'file' ">
-    <div class="large-12 columns">
-        <form name="importForm" ng-submit="import.importBlob(importForm)" novalidate>
-          <div class="box-notification" ng-show="import.error">
-            <span class="text-warning size-14">
-              {{import.error|translate}}
-            </span>
-          </div>
+  <div ng-show="type == 'file' ">
+    <div class="box-notification m20b" ng-show="import.error">
+      <span class="text-warning size-14">
+        {{import.error|translate}}
+      </span>
+    </div>
+    <div class="row large-12 columns">
+        <form name="importForm" ng-submit="import.importBlob(importForm)" novalidate> 
 
           <div ng-show="!index.isSafari && !index.isCordova" class="line-b m10b">
             <label for="backupFile">
@@ -166,13 +166,13 @@
     </div>
   </div>
 
-  <div class="row" ng-show="type == 'hwWallet'">
-    <div class="large-12 columns">
-        <div class="box-notification" ng-show="import.error">
-          <span class="text-warning size-14">
-            {{import.error|translate}}
-          </span>
-        </div>
+  <div ng-show="type == 'hwWallet'">
+    <div class="box-notification m20b" ng-show="import.error">
+      <span class="text-warning size-14">
+        {{import.error|translate}}
+      </span>
+    </div>
+    <div class="row large-12 columns"> 
 
       <form name="importForm3" ng-submit="import.importHW(importForm3)" novalidate>
         <div class="large-12 columns">

@@ -29,6 +29,7 @@ Makefile
 cache
 webkitbuilds/*
 !webkitbuilds/README.md
+!webkitbuilds/setup-win.iss
 !webkitbuilds/favicon.ico
 !webkitbuilds/Background.png
 
@@ -39,6 +40,7 @@ browser-extensions/chrome/copay-chrome-extension
 browser-extensions/chrome/copay-chrome-extension.zip
 browser-extensions/chrome/build.sh
 browser-extensions/chrome/manifest.json
+browser-extensions/chrome/copay-chrome-extension.zip.sig
 
 # Logs
 logs
