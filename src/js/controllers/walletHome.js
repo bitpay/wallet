@@ -831,6 +831,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     var fc = profileService.focusedClient;
     var unitToSat = this.unitToSatoshi;
     var currentSpendUnconfirmed = configWallet.spendUnconfirmed;
+    var currentFeeLevel = walletSettings.feeLevel || 'normal';
 
     if (isCordova && this.isWindowsPhoneApp) {
       this.hideAddress = false;
@@ -864,7 +865,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       if (self.lockedCurrentFeePerKb) {
         cb(null, self.lockedCurrentFeePerKb);
       } else {
-        feeService.getCurrentFeeValue(self.currentFeeLevel, cb);
+        feeService.getCurrentFeeValue(currentFeeLevel, cb);
       }
     };
 
@@ -1272,16 +1273,27 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
   this.sendAll = function() {
     var self = this;
+    self.error = null;
+    self.setOngoingProcess(gettext('Getting fee'));
     $rootScope.$emit('Local/SetFeeSendMax', function(currentFeePerKb, availableMaxBalance, feeToSendMaxStr) {
+      self.setOngoingProcess();
+      if (lodash.isNull(currentFeePerKb)) {
+        self.error = gettext('Could not calculate fee');
+        $scope.$apply();
+        return;
+      }
       self.lockedCurrentFeePerKb = currentFeePerKb;
       var msg = gettextCatalog.getString("{{fee}} will be deducted for bitcoin networking fees", {
         fee: feeToSendMaxStr
       });
 
+      $scope.$apply();
       confirmDialog.show(msg, function(confirmed) {
         if (confirmed) {
           self._doSendAll(availableMaxBalance);
-        } 
+        } else {
+          self.resetForm();
+        }
       });
     });
   };
