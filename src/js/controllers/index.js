@@ -614,16 +614,18 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     // Address with Balance
     self.balanceByAddress = balance.byAddress;
 
-    // SAT
+    // Spend unconfirmed funds
     if (self.spendUnconfirmed) {
       self.totalBalanceSat = balance.totalAmount;
       self.lockedBalanceSat = balance.lockedAmount;
       self.availableBalanceSat = balance.availableAmount;
+      self.totalBytesToSendMax = balance.totalBytesToSendMax;
       self.pendingAmount = null;
     } else {
       self.totalBalanceSat = balance.totalConfirmedAmount;
       self.lockedBalanceSat = balance.lockedConfirmedAmount;
       self.availableBalanceSat = balance.availableConfirmedAmount;
+      self.totalBytesToSendMax = balance.totalBytesToSendConfirmedMax;
       self.pendingAmount = balance.totalAmount - balance.totalConfirmedAmount;
     }
 
@@ -646,8 +648,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.alternativeName = config.alternativeName;
     self.alternativeIsoCode = config.alternativeIsoCode;
 
-    // Other
-    self.totalBytesToSendMax = balance.totalBytesToSendMax;
+    // Set fee level and max value to send all
     self.setCurrentFeeLevel();
 
     // Check address
