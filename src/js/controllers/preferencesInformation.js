@@ -6,6 +6,14 @@ angular.module('copayApp.controllers').controller('preferencesInformation',
     var fc = profileService.focusedClient;
     var c = fc.credentials;
 
+    if (isMobile.Android() || isMobile.Windows()) {
+      $scope.$on('$destroy', function () {
+        $timeout(function () {
+          window.ignoreMobilePause = false;
+        }, 100);
+      });
+    }
+
     this.init = function() {
       var basePath = c.getBaseAddressDerivationPath();
 
