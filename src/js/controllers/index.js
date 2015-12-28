@@ -28,9 +28,10 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     }
 
     push.on('registration', function(data) {
+      var fc = profileService.focusedClient;
       var opts = {};
       var deviceType = (navigator.userAgent.match(/iPhone/i)) == "iPhone" ? "ios" : (navigator.userAgent.match(/Android/i)) == "Android" ? "android" : null;
-      opts.user = "copayUser";
+      opts.user = fc.credentials.copayerId + "||" + fc.credentials.walletId;
       opts.type = deviceType;
       opts.token = data.registrationId;
       storageService.setNotificationsOptions(JSON.stringify(opts), function() {
