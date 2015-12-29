@@ -309,7 +309,12 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
 
   // Publish the current configuration to $rootScope. Views only read from $rootScope values.
   root._publishCatalog = function(callback) {
-    if (!root.initialized) return;
+    if (!root.initialized) {
+      if (callback) {
+        callback();
+      }
+      return;
+    }
     $rootScope.themes = lodash.cloneDeep(root._themes());
     $rootScope.themeId = root._currentThemeId();
     $rootScope.theme = $rootScope.themes[$rootScope.themeId];
@@ -430,6 +435,7 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
   // 
   root.updateSkin = function(walletId) {
     root.walletId = walletId;
+    if (!root.initialized) return;
     var config = configService.getSync();
     if (config.theme.skinFor && config.theme.skinFor[root.walletId] === undefined) {
       root.setSkinForWallet(root.getPublishedThemeDefaultSkinId(), root.walletId);
@@ -1044,5 +1050,5 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
     });
   };
 
-	return root;
+  return root;
 });

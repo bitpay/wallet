@@ -409,16 +409,12 @@ ul.tx-copayers {
   bottom: 0;
   left: 0;
   width: 100%;
-  padding: 0.8rem;
+  padding: 0rem 0.8rem 0.8rem 0.8rem;
   z-index: 9999;
 }
 
 .backup .button-box {
   background: #F6F7F9;
-}
-
-.splash .button-box {
-  background: #2C3E50;
 }
 
 .backup input[type="text"] {
@@ -1234,44 +1230,22 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
 }
 
 /*/////////////////////////////////////////////////*/
-.terms {
-  padding: 0.8rem;
-}
-
-.terms ul {
-  font-size: 0.8rem;
-  text-align: justify;
-  margin-left: 0;
-}
-
-.terms li {
-  list-style-type:none;
-  display: inline;
-}
 
 .scrollArea {
-  height: 280px;
   overflow: scroll;
-  background: #213140;
   border: 1px solid #4B6178;
   border-radius: 5px;
   margin: 1rem;
   color: #A5B2BF;
-  line-height: 30px;
-  padding: 0.5rem;
-}
-
-.scrollArea ul {
-  font-size: 0.8rem;
-  text-align: left;
-  margin-left: 0;
-  line-height: 1.4;
-  margin-bottom: 0;
+  padding: 10px 20px 0 20px;
+  position: absolute;
+  top: 60px;
+  bottom: 110px;
 }
 
 .scrollArea li {
-  list-style-type:none;
-  display: inline;
+  font-size: 13px;
+  margin: 10px 0;
 }
 
 .tabbable {

@@ -10,10 +10,10 @@
         'border-bottom-color':theme.view.sidebarListSeparatorColor,
         'background': item.id == index.walletId ? theme.view.sidebarSelectedWalletBackground : 'none'}">
         <a ng-click="sidebar.switchWallet(item.id, index.walletId)" class="oh">
-          <div ng-if="item.avatarIsWalletName == 'true'" class="avatar-wallet"
-            ng-style="{'background':item.avatarBackground, 'border':item.avatarBorder}">{{(item.name || item.id) | limitTo: 1}}</div>
-          <div ng-if="item.avatarIsWalletName == 'false'" class="avatar-wallet"
-            ng-style="{'background':item.avatarBackground, 'border':item.avatarBorder}"></div>
+          <div class="avatar-wallet"
+            ng-style="{'color':item.avatarColor, 'background':item.avatarBackground, 'border':item.avatarBorder}">
+            <i class="icon-wallet size-20"></i>
+          </div>
           <div class="name-wallet" ng-class="{'m8t':item.n == 1}"
             ng-style="{'color': item.id == index.walletId ? theme.view.sidebarSelectedWalletNameColor : theme.view.sidebarWalletNameColor}">{{item.name || item.id}}</div>
           <div class="size-12" ng-show="item.n > 1" translate>{{item.m}}-of-{{item.n}}</div>

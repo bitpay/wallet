@@ -1,6 +1,6 @@
 
 <div ng-if="type == 'broadcasted'" class="popup-txsent text-center">
-  <i class="small-centered columns fi-check m30tp" ng-style="{'color':color, 'border-color':color}"></i>
+  <i class="small-centered columns fi-check m30tp" ng-style="{'color':skin.view.textHighlightColor, 'border-color':skin.view.textHighlightColor}"></i>
   <div ng-show="tx.amountStr" class="m20t size-36 text-white">
     {{tx.amountStr}}
   </div>
@@ -14,8 +14,8 @@
 
 
 <div ng-if="type == 'created'" class="popup-txsigned">
-  <i class="small-centered columns fi-check m30tp" ng-style="{'color':color, 'border-color':color}"></i>
-  <div class="text-center size-18 tu text-bold p20" ng-style="{'color':color}">
+  <i class="small-centered columns fi-check m30tp" ng-style="{'color':skin.view.textHighlightColor, 'border-color':skin.view.textHighlightColor}"></i>
+  <div class="text-center size-18 tu text-bold p20" ng-style="{'color':skin.view.textHighlightColor}">
     <span translate>Payment Proposal Created</span>
   </div>
   <div class="text-center">
@@ -26,8 +26,8 @@
 
 
 <div ng-if="type == 'accepted'" class="popup-txsigned">
-  <i class="small-centered columns fi-check m30tp" ng-style="{'color':color, 'border-color':color}"></i>
-  <div class="text-center size-18 text-primary tu text-bold p20" ng-style="{'color':color}">
+  <i class="small-centered columns fi-check m30tp" ng-style="{'color':skin.view.textHighlightColor, 'border-color':skin.view.textHighlightColor}"></i>
+  <div class="text-center size-18 text-primary tu text-bold p20" ng-style="{'color':skin.view.textHighlightColor}">
     <span translate>Payment Accepted</span>
   </div>
   <div class="text-center">
@@ -36,8 +36,8 @@
 </div>
 
 <div ng-if="type=='rejected'" class="popup-txrejected">
-  <i class="fi-x small-centered columns m30tp" ng-style="{'color':color, 'border-color':color}"></i>
-  <div class="text-center size-18 tu text-bold p20" ng-style="{'color':color}">
+  <i class="fi-x small-centered columns m30tp" ng-style="{'color':skin.view.textHighlightColor, 'border-color':skin.view.textHighlightColor}"></i>
+  <div class="text-center size-18 tu text-bold p20" ng-style="{'color':skin.view.textHighlightColor}">
     <span translate>Payment Rejected</span>
   </div>
   <div class="text-center">

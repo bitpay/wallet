@@ -591,14 +591,6 @@ angular
   .run(function($rootScope, $state, $log, uriHandler, isCordova, profileService, $timeout, nodeWebkit, uxLanguage, animationService, themeService) {
     FastClick.attach(document.body);
 
-    themeService.init(function() {
-      if (isCordova) {
-        // Style the device status bar.
-        window.StatusBar.backgroundColorByHexString($rootScope.theme.view.deviceStatusBarBackgroundColor);
-      }
-      $rootScope.$emit('Local/ThemeUpdated', true);
-    });
-
     uxLanguage.init();
 
     // Register URI handler, not for mobileApp
@@ -620,6 +612,26 @@ angular
       win.menu = nativeMenuBar;
     }
 
+    // Presentation must be initialized prior to showing any views.
+    var initializePresentation = function(callback) {
+      themeService.init(function() {
+        if (isCordova) {
+          // Style the device status bar.
+          window.StatusBar.backgroundColorByHexString($rootScope.theme.view.deviceStatusBarBackgroundColor);
+        }
+        $rootScope.$emit('Local/ThemeUpdated', true);
+        callback();
+      });
+    };
+
+    var presentUI = function() {
+      if (isCordova) {
+        $timeout(function() {
+          navigator.splashscreen.hide();
+        }, 1000);
+      }
+    };
+
     $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
 
       if (!profileService.profile && toState.needProfile) {
@@ -631,16 +643,30 @@ angular
           if (err) {
             if (err.message && err.message.match('NOPROFILE')) {
               $log.debug('No profile... redirecting');
-              $state.transitionTo('disclaimer');
+
+              initializePresentation(function() {
+                profileService.create(false, function() {
+                  $state.transitionTo('disclaimer');
+                  presentUI();
+                });
+              });
             } else if (err.message && err.message.match('NONAGREEDDISCLAIMER')) {
               $log.debug('Display disclaimer... redirecting');
-              $state.transitionTo('disclaimer');
+
+              initializePresentation(function() {
+                $state.transitionTo('disclaimer');
+                presentUI();
+              });
             } else {
               throw new Error(err); // TODO
             }
           } else {
             $log.debug('Profile loaded ... Starting UX.');
-            $state.transitionTo(toState.name || toState, toParams);
+
+            initializePresentation(function() {
+              $state.transitionTo(toState.name || toState, toParams);              
+              presentUI();
+            });
           }
         });
       }

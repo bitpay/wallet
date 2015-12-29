@@ -1,5 +1,5 @@
 <a ng-click="index.setTab(item, false, 0, true)" 
-   ng-style="{'background-color': index.tab == item.link ? skin.view.tabBarSelectedBackground : '#A5B2BF', 'border-top-color':skin.view.tabBarSelectedBackground}" 
+   ng-style="{'color': index.tab == item.link ? skin.view.tabBarSelectedColor : skin.view.tabBarColor}"
    id="menu-{{item.link}}">
     <i class="size-18 {{item.icon}} db"></i>
     <span class="size-10 tu">
@@ -9,5 +9,5 @@
             {{ index.pendingTxProposalsCountForUs }}
         </span>
     </span>
-    <div ng-if="item.link == 'walletHome'" class="menu-wallet-home"></div>
+    <div ng-if="item.link == 'walletHome'" class="menu-wallet-home" ng-style="{'background': skin.view.tabBarHomeBackground, 'box-shadow': skin.view.tabBarHomeShadow}"></div>
 </a>

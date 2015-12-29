@@ -1,6 +1,7 @@
 <nav ng-controller="topbarController as topbar" 
   class="tab-bar" 
   ng-style="{'background': (useTheme ? theme.view.navBarBackground : skin.view.navBarBackground), 'border-bottom': (useTheme ? theme.view.navBarBorderBottom : skin.view.navBarBorderBottom)}">
+
   <section class="left-small">
     <a id="hamburger" class="p10" ng-show="!goBackToState && !closeToHome  && !index.noFocusedWallet" ng-click="index.openMenu()">
       <i class="fi-list size-24" ng-style="{'color': useTheme ? theme.view.navBarButtonIconColor : skin.view.navBarButtonIconColor}"></i>
@@ -21,14 +22,15 @@
     <a id="plus" class="p10" style="line-height: 3rem" ng-show="showPlus" ng-click="$root.go(plusState);">
       <i class="fi-plus size-24" ng-style="{'color': useTheme ? theme.view.navBarButtonIconColor : skin.view.navBarButtonIconColor}"></i>
     </a>
-    <a class="p10" ng-show="!showLayout && !showPlus" ng-click="topbar.goPreferences()">
-      <i class="fi-widget size-24"></i>
+    <a id="prefs" class="p10" style="line-height: 3rem" ng-show="showPreferences" ng-click="topbar.goPreferences()">
+      <i class="fi-widget size-24" ng-style="{'color': useTheme ? theme.view.navBarButtonIconColor : skin.view.navBarButtonIconColor}"></i>
     </a>
   </section>
 
   <section class="middle tab-bar-section">
-    <h1 class="title ellipsis">
+    <h1 class="title ellipsis" style="line-height: 3rem">
       {{(titleSection|translate) || (index.alias || index.walletName)}}
     </h1>
   </section>
+
 </nav>

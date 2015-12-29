@@ -1,11 +1,11 @@
 	<div
 	  class="topbar-container"
 	  ng-include="'views/includes/topbar.html'"
-	  ng-init="titleSection='Terms of use'; goBackToState = 'about'; noColor = true">
+	  ng-init="titleSection='Terms of use'; goBackToState = 'about'; useTheme = true">
 	</div>
-	<div ng-controller="termOfUseController" class="content">
+	<div ng-controller="termOfUseController" class="content" style="padding: 0 20px 0 20px">
 		<p class="enable_text_select m0">
-			<div class="terms" ng-include="'views/includes/terms.html'"></div>
+      <div ng-repeat="item in index.brand.disclaimer track by $index" ng-bind-html="item | sanitize">{{item.value|translate}}</div>
 		</p>
 		<div class="row text-center">
 			<p ng-show="lang != 'en'">

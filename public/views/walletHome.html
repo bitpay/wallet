@@ -1,7 +1,7 @@
 
 <div class="topbar-container"
   ng-include="'views/includes/topbar.html'"
-  ng-init="showPreferences = true">
+  ng-init="useTheme = false; showPreferences = true">
 </div>
 
 <div ng-controller="walletHomeController as home">
@@ -109,12 +109,9 @@
         </div> <!-- amount -->
 
         <div class="pr columns" ng-style="{'color':skin.view.homeMiddleTextColor, 'background':skin.view.homeMiddleBackground, 'border-bottom':skin.view.homeMiddleBorderBottom}">
-          <div ng-if="skin.view.avatarIsWalletName == 'true'" class="avatar-wallet left"
-            ng-style="{'background':skin.view.avatarBackground, 'border':skin.view.avatarBorderBig}">
+          <div class="avatar-wallet left"
+            ng-style="{'color':skin.view.avatarColor, 'background':skin.view.avatarBackground, 'border':skin.view.avatarBorderBig}">
             <i class="icon-wallet size-24"></i>
-          </div>
-          <div ng-if="skin.view.avatarIsWalletName == 'false'" class="avatar-wallet left"
-            ng-style="{'background':skin.view.avatarBackground, 'border':skin.view.avatarBorderBig}">
           </div>
           <div class="wallet-info">
             <div ng-show="index.isShared">
@@ -429,7 +426,7 @@
                   {{index.addressbook[_address] || _address}}
                 </div>
                 <a class="postfix size-12 m0 text-gray" 
-                ng-style="{'color':index.backgroundColor}"
+                ng-style="{'color':skin.view.textHighlightColor}"
                 ng-click="home.openDestinationAddressModal(index.otherWallets, _address)">
                   <i class="icon-wallet text-bold size-18"></i>
                 </a>
@@ -468,7 +465,7 @@
                   <div class="input">
                     <input type="number" id="amount" ng-disabled="home.blockUx || home.lockAmount" name="amount" ng-attr-placeholder="{{'Amount in'|translate}} {{home.unitName}}" ng-minlength="0.00000001" ng-maxlength="10000000000" ng-model="_amount" valid-amount required autocomplete="off" ng-focus="home.formFocus('amount')" ng-blur="home.formFocus(false)">
                     <input type="number" id="alternative"  name="alternative"  ng-model="_alternative" style="display:none">
-                    <a class="postfix button" ng-style="{'background-color':index.backgroundColor}" ng-click="home.showAlternative()">{{home.unitName}}</a>
+                    <a class="postfix button" ng-style="{'background-color':skin.view.textHighlightColor}" ng-click="home.showAlternative()">{{home.unitName}}</a>
                   </div>
                 </div>
                 <div ng-if="home.canShowAlternative()">

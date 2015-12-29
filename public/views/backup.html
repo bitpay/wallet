@@ -98,7 +98,7 @@
           ng-show="!wordsC.deleted"
           ng-disabled="wordsC.credentialsEncrypted"
           class="round expand m0"
-          ng-style="{'background-color':index.backgroundColor}"
+          ng-style="{'background-color':skin.view.textHighlightColor}"
           ng-click="wordsC.goToStep(2);"
           translate>Continue
         </button>
@@ -130,7 +130,7 @@
         <button
           ng-disabled="!wordsC.selectComplete"
           class="round expand m0"
-          ng-style="{'background-color':index.backgroundColor}"
+          ng-style="{'background-color':skin.view.textHighlightColor}"
           ng-click="wordsC.goToStep(3);"
           translate>Continue
         </button>
@@ -155,7 +155,7 @@
       <div class="button-box">
         <button
           ng-disabled="!passphrase"
-          ng-style="{'background-color':index.backgroundColor}"
+          ng-style="{'background-color':skin.view.textHighlightColor}"
           class="button round expand m0"
           ng-click="wordsC.goToStep(4);"
           translate>Continue
@@ -179,7 +179,7 @@
 
         <div class="columns text-center m20t">
           <button
-            ng-style="{'background-color':index.backgroundColor}"
+            ng-style="{'background-color':skin.view.textHighlightColor}"
             class="button round expand"
             ng-click="$root.go('walletHome');"
             translate>Finish
@@ -216,7 +216,7 @@
 
         <div class="button-box">
           <button
-            ng-style="{'background-color':index.backgroundColor}"
+            ng-style="{'background-color':skin.view.textHighlightColor}"
             class="button round expand m0"
             ng-click="wordsC.goToStep(1);"
             translate>Try again

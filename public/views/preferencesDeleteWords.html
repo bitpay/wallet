@@ -18,7 +18,7 @@
     </div>
     <ul class="no-bullet m0" ng-show="!index.needsBackup">
       <li ng-click="preferences.delete()">
-        <div class="right" ng-style="{'color':index.backgroundColor}">
+        <div class="right" ng-style="{'color':skin.view.textHighlightColor}">
           {{index.walletName}} <span ng-show="index.alias">({{index.alias}})</span>
         </div>
         <div translate>Delete words</div>

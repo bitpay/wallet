@@ -55,7 +55,7 @@ angular.module('copayApp.controllers').controller('sidebarController',
           n: c.n,
           name: config.aliasFor[c.walletId] || c.walletName,
           id: c.walletId,
-          avatarIsWalletName: (config.theme.skinFor[c.walletId] !== undefined ? $rootScope.theme.skins[config.theme.skinFor[c.walletId]].view.avatarIsWalletName : $rootScope.theme.skins[$rootScope.theme.header.defaultSkinId].view.avatarIsWalletName),
+          avatarColor: (config.theme.skinFor[c.walletId] !== undefined ? $rootScope.theme.skins[config.theme.skinFor[c.walletId]].view.avatarColor : $rootScope.theme.skins[$rootScope.theme.header.defaultSkinId].view.avatarColor),
           avatarBackground: (config.theme.skinFor[c.walletId] !== undefined ? $rootScope.theme.skins[config.theme.skinFor[c.walletId]].view.avatarBackground : $rootScope.theme.skins[$rootScope.theme.header.defaultSkinId].view.avatarBackground),
           avatarBorder: (config.theme.skinFor[c.walletId] !== undefined ? $rootScope.theme.skins[config.theme.skinFor[c.walletId]].view.avatarBorderSmall : $rootScope.theme.skins[$rootScope.theme.header.defaultSkinId].view.avatarBorderSmall),
         };

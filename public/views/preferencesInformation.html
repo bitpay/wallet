@@ -119,10 +119,10 @@
       </div>
 
       <ul class="no-bullet m0">
-        <li ng-style="{'color':index.backgroundColor}" ng-click="index.retryScan(); $root.go('walletHome')" translate>
+        <li ng-style="{'color':skin.view.textHighlightColor}" ng-click="index.retryScan(); $root.go('walletHome')" translate>
           Scan addresses for funds
         </li>
-        <li ng-style="{'color':index.backgroundColor}" ng-show="index.isCordova" ng-click="info.sendAddrs()" translate>
+        <li ng-style="{'color':skin.view.textHighlightColor}" ng-show="index.isCordova" ng-click="info.sendAddrs()" translate>
           Send addresses by email
         </li>
       </ul>

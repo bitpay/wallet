@@ -27,18 +27,18 @@
       <div class="row">
         <div class="tab-container small-6 medium-3 large-2" 
           ng-class="{'selected':selectedWalletsOpt}" 
-          ng-style="{'border-color':selectedWalletsOpt ? color : 'inherit'}"
+          ng-style="{'border-color':selectedWalletsOpt ? skin.view.textHighlightColor : 'inherit'}"
           ng-click="selectedWalletsOpt = true">
         <a href
-          ng-style="{'color':selectedWalletsOpt ? color : 'inherit'}"
+          ng-style="{'color':selectedWalletsOpt ? skin.view.textHighlightColor : 'inherit'}"
           ng-click="create.setTotalCopayers(1)" translate> My wallets</a>
         </div>
         <div class="tab-container small-6 medium-3 large-2" 
           ng-class="{'selected':!selectedWalletsOpt}" 
-          ng-style="{'border-color':!selectedWalletsOpt ? color : 'inherit'}"
+          ng-style="{'border-color':!selectedWalletsOpt ? skin.view.textHighlightColor : 'inherit'}"
           ng-click="selectedWalletsOpt = false">
         <a href
-          ng-style="{'color':!selectedWalletsOpt ? color : 'inherit'}"
+          ng-style="{'color':!selectedWalletsOpt ? skin.view.textHighlightColor : 'inherit'}"
           ng-click="create.setTotalCopayers(3)" translate>My contacts</a>
         </div>
       </div>
@@ -61,10 +61,8 @@
         <ul class="no-bullet">
           <li class="line-b" ng-repeat="w in wallets">
             <a ng-click="selectWallet(w.id, w.name)" class="db oh">
-              <div ng-if="w.avatarIsWalletName == 'true'" class="avatar-wallet"
-                ng-style="{'background':w.avatarBackground, 'border':w.avatarBorder}"><i class="icon-wallet size-21 vt"></i></div>
-              <div ng-if="w.avatarIsWalletName == 'false'" class="avatar-wallet"
-                ng-style="{'background':w.avatarBackground, 'border':w.avatarBorder}"></div>
+              <div class="avatar-wallet"
+                ng-style="{'color':w.avatarColor, 'background':w.avatarBackground, 'border':w.avatarBorder}"><i class="icon-wallet size-20 vt"></i></div>
               <div class="ellipsis text-black size-14 text-bold">{{w.name || w.id}}</div>
               <div class="size-12">{{w.m}} of {{w.n}}
                 <span ng-show="w.network=='testnet'">[Testnet]</span>
