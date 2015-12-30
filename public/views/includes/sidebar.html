@@ -8,19 +8,19 @@
       ng-repeat="item in sidebar.wallets track by $index"
       ng-style="{
         'border-bottom-color':theme.view.sidebarListSeparatorColor,
-        'background': item.id == index.walletId ? theme.view.sidebarSelectedWalletBackground : 'none'}">
+        'background': item.id == index.walletId ? theme.view.sidebarListSelectedItemBackground : 'none'}">
         <a ng-click="sidebar.switchWallet(item.id, index.walletId)" class="oh">
           <div class="avatar-wallet"
             ng-style="{'color':item.avatarColor, 'background':item.avatarBackground, 'border':item.avatarBorder}">
             <i class="icon-wallet size-20"></i>
           </div>
           <div class="name-wallet" ng-class="{'m8t':item.n == 1}"
-            ng-style="{'color': item.id == index.walletId ? theme.view.sidebarSelectedWalletNameColor : theme.view.sidebarWalletNameColor}">{{item.name || item.id}}</div>
+            ng-style="{'color': item.id == index.walletId ? theme.view.sidebarListSelectedItemColor : theme.view.sidebarListItemColor}">{{item.name || item.id}}</div>
           <div class="size-12" ng-show="item.n > 1" translate>{{item.m}}-of-{{item.n}}</div>
         </a>
       </li>
       <li ng-style="{'border-bottom-color':theme.view.sidebarListSeparatorColor}">
-        <a ng-click="$root.go('add')" class="oh">
+        <a ng-click="$root.go('add')" class="oh" ng-style="{'color':theme.view.sidebarListItemColor}">
           <i class="icon-arrow-right3 size-18 right m10t"></i>
           <i class="fi-plus size-24 icon"></i>
           <div class="tu text-bold">
@@ -30,7 +30,7 @@
         </a>
       </li>
       <li ng-style="{'border-bottom-color':theme.view.sidebarListSeparatorColor}" ng-show="index.brand.features.glidera.enabled && index.glideraVisible">
-        <a ng-click="$root.go('glidera')" class="oh">
+        <a ng-click="$root.go('glidera')" class="oh" ng-style="{'color':theme.view.sidebarListItemColor}">
           <i class="icon-arrow-right3 size-18 right m10t"></i>
           <i class="icon-bank size-24 icon"></i>
           <div class="tu text-bold">
@@ -40,7 +40,7 @@
         </a>
       </li>
       <li ng-style="{'border-bottom-color':theme.view.sidebarListSeparatorColor}">
-        <a ng-click="$root.go('preferencesGlobal')" class="oh" >
+        <a ng-click="$root.go('preferencesGlobal')" class="oh" ng-style="{'color':theme.view.sidebarListItemColor}">
           <i class="icon-arrow-right3 size-18 right m10t"></i>
           <i class="fi-widget size-24 icon"></i>
           <div class="tu text-bold">

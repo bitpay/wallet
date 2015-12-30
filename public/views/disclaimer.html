@@ -9,7 +9,7 @@
   </div>
   <div class="row">
     <div class="scrollArea" ng-style="{'background':theme.view.disclaimerBackground, 'color':theme.view.disclaimerTextColor}">
-      <div class="size-14 text-gray text-center" translate>Terms of Use</div>
+      <div class="size-14 text-center" translate>Terms of Use</div>
       <p class="enable_text_select size-14">
         <div ng-repeat="item in index.brand.disclaimer track by $index" ng-bind-html="item | sanitize">{{item.value|translate}}</div>
       </p>
@@ -24,7 +24,7 @@
 
   <div class="row">
     <div class="start-button columns button-box">
-      <p class="text-gray size-12 text-center m10b lh15" translate>I affirm that I have read, understood, and agree with these terms.</p>
+      <p class="size-12 text-center m10b lh15" ng-style="{'color':theme.view.disclaimerSubtitleTextColor}" translate>I affirm that I have read, understood, and agree with these terms.</p>
       <button ng-click="index.acceptDisclaimer()" class="button black expand round size-12 text-spacing m0" ng-style="{'background':theme.view.disclaimerButtonBackground, 'color':theme.view.disclaimerButtonTextColor}" translate>
         I AGREE. LET'S GET STARTED!
       </button>

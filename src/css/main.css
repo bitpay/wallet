@@ -334,10 +334,8 @@ ul.tx-copayers {
 }
 
 .last-transactions-content {
-  background: #fff;
   padding: 0.8rem 1rem;
   cursor:pointer;
-  border-bottom: 1px solid #E4E8EC;
 }
 
 .sign-action {
@@ -1233,7 +1231,7 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
 /*/////////////////////////////////////////////////*/
 
 .scrollArea {
-  overflow: scroll;
+  overflow: auto;
   border: 1px solid #4B6178;
   border-radius: 5px;
   margin: 1rem;

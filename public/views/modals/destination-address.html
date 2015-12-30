@@ -1,8 +1,8 @@
 <div ng-init="wallets[0] ? selectedWalletsOpt = true : selectedWalletsOpts = false">
   <nav class="tab-bar" ng-style="{'background': skin.view.navBarBackground, 'border-bottom': skin.view.navBarBorderBottom}">
     <section class="left-small">
-      <a ng-show="!editAddressbook && !addAddressbookEntry" ng-click="cancel()" class="p10">
-        <span class="text-close" ng-style="{'color':skin.view.navBarButtonTextColor}" translate>Close</span>
+      <a ng-show="!editAddressbook && !addAddressbookEntry" ng-click="cancel()" class="p10" ng-style="{'color':skin.view.navBarButtonTextColor}">
+        <span class="text-close" translate>Close</span>
       </a>
     </section>
 
