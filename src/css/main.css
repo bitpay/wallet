@@ -409,7 +409,7 @@ ul.tx-copayers {
   bottom: 0;
   left: 0;
   width: 100%;
-  padding: 0rem 0.8rem 0.8rem 0.8rem;
+  padding: 0 16px 20px 16px;
   z-index: 9999;
 }
 
@@ -566,6 +566,7 @@ ul.manage li {
 .m-negative-l {margin-left: -0.9375rem;}
 .br100 {border-radius: 100% !important;}
 .lh {line-height: 0;}
+.lh15 {line-height: 1.5;}
 .lh140 {line-height: 140%;}
 .oh {overflow:hidden;}
 .oa {overflow:auto;}

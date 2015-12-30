@@ -132,7 +132,7 @@
             </div>
           </div>
         </div>
-        <div class="camera-icon" ng-show="index.isComplete">
+        <div class="camera-icon" ng-style="{'color':skin.view.cameraButtonColor, 'background':skin.view.cameraButtonBackground}" ng-show="index.isComplete">
           <qr-scanner on-scan="home.onQrCodeScanned(data)"></qr-scanner> 
         </div>
       </div> <!-- oh -->
@@ -391,7 +391,7 @@
              translate> Send All
           </a>
         </h4>
-        <div class="camera-icon" ng-show="index.isComplete">
+        <div class="camera-icon" ng-style="{'color':skin.view.cameraButtonColor, 'background':skin.view.cameraButtonBackground}" ng-show="index.isComplete">
           <qr-scanner on-scan="home.onQrCodeScanned(data)"></qr-scanner> 
         </div>
       </div>
@@ -474,7 +474,7 @@
                   <div class="input">
                     <input type="number" id="alternative" ng-disabled="home.blockUx || !home.isRateAvailable || home.lockAmount" name="alternative" ng-attr-placeholder="{{'Amount in'|translate}} {{ home.alternativeName }}" ng-model="_alternative" required autocomplete="off" ng-focus="home.formFocus('amount')" ng-blur="home.formFocus(false)">
                     <input type="number" id="amount" name="amount" ng-model="_amount" style="display:none">
-                    <a class="postfix button black" ng-click="home.hideAlternative()"> {{ home.alternativeIsoCode }}</a>
+                    <a class="postfix button black" ng-style="{'background-color':skin.view.textHighlightColor}" ng-click="home.hideAlternative()"> {{ home.alternativeIsoCode }}</a>
                   </div>
                 </div>
               </div>
