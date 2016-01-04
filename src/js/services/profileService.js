@@ -326,6 +326,8 @@ angular.module('copayApp.services')
         if (err) $log.warn(err);
       });
 
+      $rootScope.$emit('Local/UnsubscribeNotifications', walletId);
+
       $timeout(function() {
         root.setWalletClients();
         root.setAndStoreFocus(null, function() {
@@ -397,7 +399,7 @@ angular.module('copayApp.services')
         handleImport(function() {
           root.setAndStoreFocus(walletId, function() {
             storageService.storeProfile(root.profile, function(err) {
-              $rootScope.$emit('Local/EnableNotifications');
+              $rootScope.$emit('Local/SubscribeNotifications');
               return cb(err, walletId);
             });
           });

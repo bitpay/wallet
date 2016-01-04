@@ -1273,8 +1273,12 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     go.walletHome();
   });
 
-  $rootScope.$on('Local/EnableNotifications', function(event) {
+  $rootScope.$on('Local/SubscribeNotifications', function(event) {
     pushNotificationsService.enableNotifications();
+  });
+
+  $rootScope.$on('Local/UnsubscribeNotifications', function(event, walletId) {
+    pushNotificationsService.unsubscribe(walletId);
   });
 
   self.debouncedUpdate = lodash.throttle(function() {
