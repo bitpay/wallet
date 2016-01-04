@@ -397,7 +397,7 @@ angular.module('copayApp.services')
         handleImport(function() {
           root.setAndStoreFocus(walletId, function() {
             storageService.storeProfile(root.profile, function(err) {
-              $rootScope.$emit('Local/EnableNotifications', true);
+              $rootScope.$emit('Local/EnableNotifications');
               return cb(err, walletId);
             });
           });
