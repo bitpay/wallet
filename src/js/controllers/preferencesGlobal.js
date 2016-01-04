@@ -41,7 +41,7 @@ angular.module('copayApp.controllers').controller('preferencesGlobalController',
         }
       };
       configService.set(opts, function(err) {
-        $rootScope.$emit('Local/EnableNotifications', opts);
+        $rootScope.$emit('Local/EnableNotifications', opts.notifications.enabled);
         if (err) $log.debug(err);
       });
     });

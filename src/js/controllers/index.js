@@ -13,28 +13,35 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
   document.addEventListener('deviceready', function() {
 
-    if (isCordova) {
-      var push = PushNotification.init({
-        android: {
-          senderID: "959259672122"
-        },
-        ios: {
-          alert: "true",
-          badge: true,
-          sound: 'false'
-        },
-        windows: {}
+    if (self.isCordova) {
+      storageService.getDeviceToken(function(err, token) {
+        if (!token) pushNotificationInit();
       });
     }
+
+  });
+
+  function pushNotificationInit() {
+    var push = PushNotification.init({
+      android: {
+        senderID: "959259672122"
+      },
+      ios: {
+        alert: "true",
+        badge: true,
+        sound: 'false'
+      },
+      windows: {}
+    });
 
     push.on('registration', function(data) {
       var fc = profileService.focusedClient;
       var opts = {};
-      var deviceType = (navigator.userAgent.match(/iPhone/i)) == "iPhone" ? "ios" : (navigator.userAgent.match(/Android/i)) == "Android" ? "android" : null;
-      opts.user = fc.credentials.copayerId + "||" + fc.credentials.walletId;
-      opts.type = deviceType;
+      opts.user = fc.credentials.walletId;
+      opts.type = (navigator.userAgent.match(/iPhone/i)) == "iPhone" ? "ios" : (navigator.userAgent.match(/Android/i)) == "Android" ? "android" : null;
       opts.token = data.registrationId;
-      storageService.setNotificationsOptions(JSON.stringify(opts), function() {
+
+      storageService.setDeviceToken(data.registrationId, function() {
         pushNotificationsService.subscribe(opts).then(function(response) {
             $log.debug('Suscribed: ' + response.status);
           },
@@ -59,8 +66,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     push.on('error', function(e) {
       $log.warn('Error trying to push notifications: ', e);
     });
-
-  });
+  }
 
   function strip(number) {
     return (parseFloat(number.toPrecision(12)));
@@ -1249,8 +1255,13 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   });
 
   $rootScope.$on('Local/EnableNotifications', function(event, val) {
-    storageService.getNotificationsOptions(function(err, opts) {
-      if (val.notifications.enabled) {
+    storageService.getDeviceToken(function(err, token) {
+      var fc = profileService.focusedClient;
+      var opts = {};
+      opts.user = [fc.credentials.walletId];
+      opts.type = (navigator.userAgent.match(/iPhone/i)) == "iPhone" ? "ios" : (navigator.userAgent.match(/Android/i)) == "Android" ? "android" : null;
+      opts.token = token;
+      if (val) {
         pushNotificationsService.subscribe(opts).then(function(response) {
             $log.debug('Suscribed: ' + response.status);
           },
@@ -1258,7 +1269,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
             $log.warn('Error: ' + err);
           });
       } else {
-        pushNotificationsService.unsubscribe(JSON.parse(opts).token).then(function(response) {
+        pushNotificationsService.unsubscribe(token).then(function(response) {
             $log.debug('Unsuscribed: ' + response.status);
           },
           function(err) {
