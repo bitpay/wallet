@@ -1,6 +1,6 @@
 'use strict';
 angular.module('copayApp.services')
-  .factory('profileService', function profileServiceFactory($rootScope, $location, $timeout, $filter, $log, lodash, storageService, bwcService, configService, notificationService, isChromeApp, isCordova, gettext, gettextCatalog, nodeWebkit, bwsError, uxLanguage, ledger, bitcore, trezor) {
+  .factory('profileService', function profileServiceFactory($rootScope, $location, $timeout, $filter, $log, lodash, storageService, bwcService, configService, notificationService, isChromeApp, isCordova, gettext, gettextCatalog, nodeWebkit, bwsError, uxLanguage, ledger, bitcore, trezor, themeService) {
 
     var root = {};
 
@@ -716,9 +716,9 @@ angular.module('copayApp.services')
           name: config.aliasFor[c.walletId] || c.walletName,
           id: c.walletId,
           network: c.network,
-          avatarColor: (config.theme.skinFor[c.walletId] !== undefined ? $rootScope.theme.skins[config.theme.skinFor[c.walletId]].view.avatarColor : $rootScope.theme.skins[$rootScope.theme.header.defaultSkinId].view.avatarColor),
-          avatarBackground: (config.theme.skinFor[c.walletId] !== undefined ? $rootScope.theme.skins[config.theme.skinFor[c.walletId]].view.avatarBackground : $rootScope.theme.skins[$rootScope.theme.header.defaultSkinId].view.avatarBackground),
-          avatarBorder: (config.theme.skinFor[c.walletId] !== undefined ? $rootScope.theme.skins[config.theme.skinFor[c.walletId]].view.avatarBorderSmall : $rootScope.theme.skins[$rootScope.theme.header.defaultSkinId].view.avatarBorderSmall),
+          avatarColor: themeService.getPublishedSkinForWalletId(c.walletId).view.avatarColor,
+          avatarBackground: themeService.getPublishedSkinForWalletId(c.walletId).view.avatarBackground,
+          avatarBorder: themeService.getPublishedSkinForWalletId(c.walletId).view.avatarBorderSmall,
         };
       });
       ret = lodash.filter(ret, function(w) {

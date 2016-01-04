@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.services').factory('themeCatalogService', function(storageService, lodash, $log) {
+angular.module('copayApp.services').factory('themeCatalogService', function(storageService, lodash, $log, brand) {
 
   var root = {};
 
@@ -11,8 +11,7 @@ angular.module('copayApp.services').factory('themeCatalogService', function(stor
     },
 
     metadata: {
-      themeSchemaVersion: '1',
-      skinSchemaVersion: '1'
+      themeSchemaVersion: brand.features.theme.requiredSchema
     },
 
     themes: {}
@@ -20,6 +19,15 @@ angular.module('copayApp.services').factory('themeCatalogService', function(stor
   };
 
   var catalogCache = null;
+
+  root.getRequiredSchema = function() {
+    return brand.features.theme.requiredSchema;
+  };
+
+  root.isCatalogCompatible = function() {
+//    return root.getRequiredSchema() == root.getSync().metadata.themeSchemaVersion;
+    return false;
+  };
 
   root.supportsWritingThemeContent = function() {
     // Theme and skin discovery and import requires more storage space than local storage can provide.

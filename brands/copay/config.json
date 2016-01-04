@@ -38,6 +38,7 @@
     },
     "theme": {
       "name": "Copay",
+      "requiredSchema": 2,
       "themeDiscovery": {
         "enabled": false
       },

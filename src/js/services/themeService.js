@@ -22,14 +22,8 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
   root.initialized = false;
   root.walletId = 'NONE';
 
-  root._themeSchemaVersion = function() {
-    var catalog = themeCatalogService.getSync();
-    return catalog.metadata.themeSchemaVersion;
-  };
-
-  root._skinSchemaVersion = function() {
-    var catalog = themeCatalogService.getSync();
-    return catalog.metadata.skinSchemaVersion;
+  root._theme = function() {
+    return root._themeById(root._currentThemeId());
   };
 
   root._themes = function() {
@@ -42,9 +36,21 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
     return catalog.themes[themeId];
   };
 
-  root._currentThemeId = function() {
+  root._currentThemeName = function() {
     var config = configService.getSync();
-    return config.theme.themeId;
+    return config.theme.name;
+  };
+
+  root._currentThemeId = function() {
+    var catalog = themeCatalogService.getSync();
+    return lodash.findIndex(catalog.themes, function(theme) {
+      return theme.header.name == root._currentThemeName();
+    });
+  };
+
+  root._currentSkinName = function() {
+    var config = configService.getSync();
+    return config.theme.skinFor[root.walletId];
   };
 
   root._currentSkinId = function() {
@@ -53,9 +59,12 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
 
   root._currentSkinIdForWallet = function(walletId) {
     var config = configService.getSync();
-    var skinId = root._themeById(root._currentThemeId()).header.defaultSkinId;
+    var skinId = root._theme().header.defaultSkinId;
     if (config.theme.skinFor != undefined && config.theme.skinFor[walletId] != undefined) {
-      skinId = config.theme.skinFor[walletId];
+      var foundSkinId = lodash.findIndex(root._theme().skins, function(skin) {
+        return skin.header.name == config.theme.skinFor[walletId];
+      });
+      skinId = (foundSkinId < 0 ? skinId : foundSkinId);
     }
     return skinId;
   };
@@ -162,11 +171,10 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
       }
       theme = JSON.parse(themeJSON);
 
-      // The defaultSkinName attribute is no longer needed.
       // The resources attribute is no longer needed.
-      var defaultSkinName = theme.header.defaultSkinName;
-      delete theme.header.defaultSkinName;
       delete theme.resources;
+
+      var defaultSkinName = theme.header.defaultSkinName;
 
       $rootScope.themes = [];
       $rootScope.themes[0] = lodash.cloneDeep(theme);
@@ -211,25 +219,38 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
 
       $q.all(promises).then(function() {
         // This is run after all of the http requests are done.
-        // If there is configuration setting then use that instead of default skin (occurs during page reload).
+        // 
+        // If there is a configuration setting then use that instead of default skin (occurs during page reload).
         var selectedSkinId = $rootScope.theme.header.defaultSkinId;
 
-        try {
-          var config = configService.getSync();
-          if (root.walletId != '' && config.theme.skinFor[root.walletId]) {
-            selectedSkinId = config.theme.skinFor[root.walletId];
+        var config = configService.getSync();
+        if (root.walletId != '' && config.theme.skinFor[root.walletId]) {
+          selectedSkinId = lodash.findIndex($rootScope.theme.skins, function(skin) {
+            return skin.header.name == config.theme.skinFor[root.walletId];
+          });
+
+          if (selectedSkinId < 0) {
+            // This can happen if the app is being upgraded with schema changes and the users configured theme/skin
+            // is not in the catalog (and could be imported later in this init cycle).  For now just set default skin.
+            selectedSkinId = $rootScope.theme.header.defaultSkinId;
           }
-        } catch(err){
-          // Called configService.getSync() before service was initialized.
-          // Ignore, just use default skin.
         }
 
         $rootScope.skinId = selectedSkinId;
         $rootScope.skin = $rootScope.theme.skins[$rootScope.skinId];
 
-        if (callback) {
-          callback();
-        }
+        $log.debug('Theme service bootstrapped to theme/skin: ' +
+          $rootScope.theme.header.name + '/' +
+          $rootScope.skin.header.name +
+          (root.walletId == 'NONE' ? ' [no wallet yet]' : ' [walletId: ' + root.walletId + ']'));
+
+        // Build the theme catalog from the bootstrapped theme and skins.
+        root._buildCatalog(function() {
+          if (callback) {
+            callback();
+          }
+        });
+
       }).catch(function(response) {
         $log.debug('Error: failed to GET local skin resources ' + response.config.url);
       });
@@ -240,21 +261,20 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
 
   };
 
-  // Reads the published theme and skin and ensures the configuration is persisted in application configuration and the theme catalog.
   root._buildCatalog = function(callback) {
 
     // Write the published theme and skin to the app configuration.
     var opts = {
       theme: {
-        themeId: {},
+        name: {},
         skinFor: {}
       }
     };
 
     opts.theme = {};
-    opts.theme.themeId = $rootScope.themeId;
+    opts.theme.name = $rootScope.theme.header.name;
     opts.theme.skinFor = {};
-    opts.theme.skinFor[root.walletId] = $rootScope.skinId;
+    opts.theme.skinFor[root.walletId] = $rootScope.skin.header.name;
 
     configService.set(opts, function(err) {
       if (err) {
@@ -263,40 +283,24 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
       }
 
       // The theme service catalog might not support writing theme content, if not then we skip writing the content
-      // (in this case the theme content is available in $rootScope only).
+      // (in this case the theme content is available in $rootScope only; cannot import themes or skins in this case).
       if (themeCatalogService.supportsWritingThemeContent()) {
 
-        themeCatalogService.get(function(err, catalog) {
-          $log.debug('Theme catalog read');
+        $log.debug('Initializing theme catalog');
+        var cat = {
+          themes: {}
+        };
+
+        cat.themes = $rootScope.themes;
+
+        themeCatalogService.set(cat, function(err) {
           if (err) {
-            $log.debug('Failed to read theme catalog: ' + JSON.stringify(err)); // TODO: put out string, not JSON
+            $rootScope.$emit('Local/DeviceError', err);
             return;
           }
 
-          var catalogThemes = catalog.themes || {};
-
-          if (lodash.isEmpty(catalogThemes)) {
-            $log.debug('Initializing theme catalog');
-            var cat = {
-              themes: {}
-            };
-
-            cat.themes = $rootScope.themes;
-
-            themeCatalogService.set(cat, function(err) {
-              if (err) {
-                $rootScope.$emit('Local/DeviceError', err);
-                return;
-              }
-
-              $rootScope.$emit('Local/ThemeUpdated');
-              callback();
-            });
-
-          } else {
-            root._publishCatalog();
-            callback();
-          }
+          $rootScope.$emit('Local/ThemeUpdated');
+          callback();
         });
 
       } else {
@@ -304,6 +308,82 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
         $rootScope.$emit('Local/ThemeUpdated');
         callback();
       }
+    });
+  };
+
+  root._upgradeCatalog = function(callback) {
+
+    // Temporarily cache the old catalog so we can remember what the user had (some may have been imported).
+    var oldCatalog = lodash.cloneDeep(themeCatalogService.getSync());
+
+    // Rebuild default/built-in catalog themes[] (and skins) from brand.theme.defintion.
+    // This operation sets the default theme and skin configuration.
+    root._bootstrapTheme(brand.features.theme.definition, function() {
+
+      // For each theme in the old catalog that does not yet exist in the new catalog, try to import them from the configured CTS.
+      // 
+      var newCatalog = themeCatalogService.getSync();
+      var usersThemeNames = lodash.pluck(oldCatalog.themes, 'header.name');
+
+      for (var t = 0; t < usersThemeNames.length; t++) {
+        var themeName = usersThemeNames[t];
+
+        // Check for existance.
+        var themeIndex = lodash.findIndex(newCatalog.themes, function(theme) {
+          return theme.header.name == themeName;
+        });
+
+        if (themeIndex < 0) {
+
+          // Attempt to import the users theme not currently in the new catalog.
+          root.importTheme(themeName, false, function(theme) {
+            if (lodash.isEmpty(theme)) {
+              // Failed to import the theme.
+              // Notify user?
+            } else {
+
+              // For each skin in the old original catalog that does not yet exist in the new catalog, try to import them from the configured CTS.
+              var oldTheme = lodash.find(oldCatalog.themes, {'header': {'name': themeName}});
+              for (var s = 0; s < oldTheme.skins.length; s++) {
+                var skinName = oldTheme.skins[s].header.name;
+
+                // Attempt to import the users skin not currently in the new catalog.
+                root.importSkin(themeName, skinName, false, function(skin) {
+                  if (lodash.isEmpty(skin)) {
+                    // Failed to import the skin.
+                    // Notify user?
+                  } else {
+                    // Imported skin.
+                  }
+                });
+              }
+            }
+          });
+        }
+
+        // Check and set the theme; choose the users configured theme or the default theme if users configuration is not available.
+        themeIndex = lodash.findIndex(newCatalog.themes, function(theme) {
+          var config = configService.getSync();
+          return theme.header.name == config.theme.name;
+        });
+
+        if (themeIndex < 0) {
+          // The users configured theme is not in the catalog.
+          // Set the theme to the default theme (the currently published theme). This also remaps skins for all wallets.
+          root.setTheme(root.getPublishedThemeId(), false, function() {
+            // Done setting theme.
+          });
+
+        } else {
+
+          // Set the users configured theme.
+          root.setTheme(themeIndex, false, function() {
+            // Done setting theme.
+          });
+        }
+      }
+
+      callback();
     });
   };
 
@@ -331,19 +411,19 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
 
   root._migrateLegacyColorsToSkins = function() {
 
-    var skinIdForColor = [
-      {'#DD4B39': '10'},
-      {'#F38F12': '11'},
-      {'#FAA77F': '5'},
-      {'#FADA58': '8'},
-      {'#9EDD72': '3'},
-      {'#77DADA': '0'},
-      {'#4A90E2': '4'},
-      {'#484ED3': '6'},
-      {'#9B59B6': '2'},
-      {'#E856EF': '9'},
-      {'#FF599E': '1'},
-      {'#7A8C9E': '7'}
+    var skinNameForColor = [
+      {'#DD4B39': 'Valencia'},
+      {'#F38F12': 'West Side'},
+      {'#FAA77F': 'Hit Pink'},
+      {'#FADA58': 'Mustard'},
+      {'#9EDD72': 'Feijoa'},
+      {'#77DADA': 'Aquamarine Blue'},
+      {'#4A90E2': 'Havelock Blue'},
+      {'#484ED3': 'Iris'},
+      {'#9B59B6': 'Deep Lilac'},
+      {'#E856EF': 'Purple Pizzazz'},
+      {'#FF599E': 'Brilliant Rose'},
+      {'#7A8C9E': 'Light Slate Gray'}
     ];
 
     var config = configService.getSync();
@@ -352,14 +432,12 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
     if (colorFor.length > 0) {
       for(var walletId in colorFor) {
         var color = colorFor[walletId];
-        if(typeof skinIdForColor[color] === 'undefined') {
-          skinId = 4;  // Copay's default wallet color
-        }
-        else {
-          skinId = skinIdForColor[color];
+        var skinName = root.getPublishedTheme().header.defaultSkinName;
+        if(typeof skinNameForColor[color] !== 'undefined') {
+          skinName = skinNameForColor[color];
         }
         $log.debug('Migrating wallet to skin... [walletId: ' + walletId + ']');
-        root.setSkinForWallet(skinId, walletId);
+        root.setSkinForWallet(root.getPublishedSkinIdByName(), walletId);
       }
 
       var opts = {
@@ -398,34 +476,37 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
         if (err)
           $log.debug('Error reading preferences');
 
-        if (lodash.isNull(config.theme.themeId)) {
+        if (lodash.isNull(config.theme.name)) {
 
           // Application configuration does not specify a theme.
-          // Read the brand theme definition and build the catalog for the first time.
+          // Read the brand theme definition, publish, and build the catalog for the first time.
           root._bootstrapTheme(brand.features.theme.definition, function() {
+            root._migrateLegacyColorsToSkins();
+            root.initialized = true;
+            callback();
+            $log.debug('Theme service initialized');
+          });
 
-            $log.debug('Theme service bootstrapped to theme/skin: ' +
-              $rootScope.theme.header.name + '/' +
-              $rootScope.skin.header.name +
-              (root.walletId == 'NONE' ? ' [no wallet yet]' : ' [walletId: ' + root.walletId + ']'));
+        } else {
 
-            root._buildCatalog(function() {
-              root._migrateLegacyColorsToSkins();
+          // Check that the catalog schema is compatible with this application.
+          // 
+          if (!themeCatalogService.isCatalogCompatible()) {
+
+            root._upgradeCatalog(function() {
               root.initialized = true;
               callback();
               $log.debug('Theme service initialized');
             });
 
-          });
+          } else {
 
-        } else {
-
-          root.initialized = true;
-          root._publishCatalog(function() {
-            callback();
-            $log.debug('Theme service initialized');
-          });
-
+            root.initialized = true;
+            root._publishCatalog(function() {
+              callback();
+              $log.debug('Theme service initialized');
+            });
+          }
         }
       });
     });
@@ -440,13 +521,13 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
     if (config.theme.skinFor && config.theme.skinFor[root.walletId] === undefined) {
       root.setSkinForWallet(root.getPublishedThemeDefaultSkinId(), root.walletId);
     } else {
-      root.setSkinForWallet(config.theme.skinFor[root.walletId], root.walletId);
+      root.setSkinForWallet(root.getCatalogSkinIdForWallet(root.walletId), root.walletId);
     }      
   };
 
   // setTheme() - sets the theme for the app.
   // 
-  root.setTheme = function(themeId, callback) {
+  root.setTheme = function(themeId, notify, callback) {
     $log.debug('' + (themeId != root.getPublishedThemeId() ?  'Switching theme...' : 'Reapplying theme...'));
     $log.debug('' + (themeId != root.getPublishedThemeId() ? 
       'Old theme: ' + root.getPublishedThemeById(root.getPublishedThemeId()).header.name + '\n' +
@@ -455,11 +536,11 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
 
     var opts = {
       theme: {
-        themeId: {}
+        name: {}
       }
     };
 
-    opts.theme.themeId = themeId;
+    opts.theme.name = root.getCatalogThemeById(themeId).header.name;
 
     configService.set(opts, function(err) {
       if (err) {
@@ -471,7 +552,7 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
       // Example; old theme has 12 skins, new theme has 6 skins
       //   if config.theme.skinFor[walletId] = skin id 12 then it won't resolve with the new theme (since it has only 6 skins)
       //   
-      // TODO: Should provide a UI for wallet to skin re-mapping using the new theme's skins
+      // TODO: Should provide a UI for wallet-skin re-mapping using the new theme's skins
       // 
       // For now, simply force all config.theme.skinFor to the themes default skin
       //
@@ -482,13 +563,22 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
         }
       };
 
-      // Assigned new theme default skin to all wallets.
+      // For all wallets, if the configured skin does not exist on this theme then reassign to the default skin for theme.
+      // Skin name is the key so if two themes have the same skin name then the skin will not be reassigned.
       for (var walletId in config.theme.skinFor) {
-        $log.debug('Reassigning skin for wallet: ' + walletId +
-          ', new skinId: ' + root.getPublishedThemeById(themeId).header.defaultSkinId +
-          ' (was skinId: ' + root.getCatalogSkinIdForWallet(walletId) + ')');
 
-        opts.theme.skinFor[walletId] = root.getCatalogTheme().header.defaultSkinId;
+        var skinIndex = lodash.findIndex(root.getCatalogThemeById(themeId).skins, function(skin) {
+          return skin.header.name == config.theme.skinFor[walletId];
+        });
+
+        if (skinIndex < 0) {
+          // Configured skin not found, reassign the default skin.
+          $log.debug('Reassigning skin for wallet: ' + walletId +
+            ', new skinId: ' + root.getPublishedThemeById(themeId).header.defaultSkinId +
+            ' (was skinId: ' + root.getCatalogSkinIdForWallet(walletId) + ')');
+
+          opts.theme.skinFor[walletId] = root.getCatalogTheme().header.defaultSkinName;
+        }
       }
 
       configService.set(opts, function(err) {
@@ -506,12 +596,14 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
         $rootScope.$emit('Local/ThemeUpdated');
         $rootScope.$emit('Local/SkinUpdated');
 
-        notification.success(
-          gettextCatalog.getString('Success'),
-          gettextCatalog.getString('Theme set to \'' + root.getPublishedTheme().header.name + '\''),
-          {color: root.getPublishedSkin().view.textHighlightColor,
-           iconColor: root.getPublishedTheme().view.notificationBarIconColor,
-           barBackground: root.getPublishedTheme().view.notificationBarBackground});
+        if (notify) {
+          notification.success(
+            gettextCatalog.getString('Success'),
+            gettextCatalog.getString('Theme set to \'' + root.getPublishedTheme().header.name + '\''),
+            {color: root.getPublishedSkin().view.textHighlightColor,
+             iconColor: root.getPublishedTheme().view.notificationBarIconColor,
+             barBackground: root.getPublishedTheme().view.notificationBarBackground});
+        }
       });
     });
   };
@@ -535,12 +627,12 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
 
       var opts = {
         theme: {
-          themeId: {},
+          name: {},
           skinFor: {}
         }
       };
 
-      opts.theme.themeId = config.theme.themeId;
+      opts.theme.name = config.theme.name;
       opts.theme.skinFor[root.walletId] = config.theme.skinFor['NONE'];
 
       configService.replace(opts, function(err) {
@@ -565,7 +657,7 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
         }
       };
 
-      opts.theme.skinFor[root.walletId] = skinId;
+      opts.theme.skinFor[root.walletId] = root.getPublishedSkinById(skinId).header.name;
 
       configService.set(opts, function(err) {
         if (err) {
@@ -778,26 +870,17 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
 
   ///////////////////////////////////////////////////////////////////////////////
 
-  // get() functions return the $rootScope published or stored configuration values for use by controllers and services.
-  // 
-  root.isThemeCompatible = function(themeHeader) {
-    return root._themeSchemaVersion() == themeHeader.schemaVersion;
-  };
-  root.isSkinCompatible = function(skinHeader) {
-    return root._skinSchemaVersion() == skinHeader.schemaVersion;
-  };
-
   // Catalog objects.
   root.getCatalog = function() {
     return themeCatalogService.getSync();
-  }
+  };
 
   root.getCatalogThemes = function() {
     return root._themes();
   };
 
   root.getCatalogTheme = function() {
-    return Theme.create(root._themeById(root._currentThemeId()));
+    return Theme.create(root._theme());
   };
 
   root.getCatalogThemeById = function(themeId) {
@@ -857,9 +940,19 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
     return root.getPublishedTheme().header.defaultSkinId;
   };
 
+  root.getPublishedSkinIdByName = function(name) {
+    return lodash.findIndex(root.getPublishedSkins(), function(skin) {
+      return skin.header.name == name;
+    });
+  };
+
   root.getPublishedSkin = function() {
     var theme = root.getPublishedTheme();
     return theme.skins[root.getPublishedSkinId()];
+  };
+
+  root.getPublishedSkinForWalletId = function(walletId) {
+    return $rootScope.theme.skins[root.getCatalogSkinIdForWallet(walletId)];
   };
 
   ///////////////////////////////////////////////////////////////////////////////
@@ -869,17 +962,13 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
   root.discoverThemes = function(callback) {
 
     // Get theme headers from the server.
-    $http(root._get('/themes')).then(function successCallback(response) {
+    var schema = themeCatalogService.getRequiredSchema();
+    $http(root._get('/themes/' + schema)).then(function successCallback(response) {
       var themeHeaders = response.data.data;
       var discoveredThemeHeaders = [];
 
       for (var i = 0; i < themeHeaders.length; i++) {
-        // Check theme compatibility. Allow only exact version match.
-        if (root.isThemeCompatible(themeHeaders[i])) {
-          discoveredThemeHeaders.push(themeHeaders[i]);
-        } else {
-          $log.debug('Not a compatible theme. Skipping theme: ' + themeHeaders[i].name);
-        }
+        discoveredThemeHeaders.push(themeHeaders[i]);
       }
 
       $rootScope.discoveredThemeHeaders = discoveredThemeHeaders;
@@ -891,16 +980,16 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
     });
   };
 
-  root.importTheme = function(discoveredThemeId, callback) {
+  root.importTheme = function(discoveredThemeName, notify, callback) {
 
     if (!themeCatalogService.supportsWritingThemeContent())
       throw new Error('themeService#importTheme improperly called when platform does not support writing theme content');
 
     var catalog = themeCatalogService.getSync();
-    var discoveredThemeName = $rootScope.discoveredThemeHeaders[discoveredThemeId].name;
 
     // Get the full theme from the server.
-    $http(root._get('/themes/' + discoveredThemeName)).then(function successCallback(response) {
+    var schema = themeCatalogService.getRequiredSchema();
+    $http(root._get('/themes/' + schema + '/' + discoveredThemeName)).then(function successCallback(response) {
 
       // Import the discovered theme.
       // Read the full theme from the theme server and add it to this applications configuration settings.
@@ -940,12 +1029,14 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
           callback(catalog[index]);
         }
 
-        notification.success(
-          gettextCatalog.getString('Success'),
-          gettextCatalog.getString('Imported theme \'' + catalog.themes[index].header.name + '\''),
-          {color: root.getPublishedSkin().view.textHighlightColor,
-           iconColor: root.getPublishedTheme().view.notificationBarIconColor,
-           barBackground: root.getPublishedTheme().view.notificationBarBackground});
+        if (notify) {
+          notification.success(
+            gettextCatalog.getString('Success'),
+            gettextCatalog.getString('Imported theme \'' + catalog.themes[index].header.name + '\''),
+            {color: root.getPublishedSkin().view.textHighlightColor,
+             iconColor: root.getPublishedTheme().view.notificationBarIconColor,
+             barBackground: root.getPublishedTheme().view.notificationBarBackground});
+        }
 
         $log.debug('Imported theme \'' + catalog.themes[index].header.name + '\'');
       });
@@ -962,17 +1053,13 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
   root.discoverSkins = function(theme, callback) {
 
     // Get skin headers from the server.
-    $http(root._get('/themes/' + theme.header.name + '/skins')).then(function successCallback(response) {
+    var schema = themeCatalogService.getRequiredSchema();
+    $http(root._get('/themes/' + schema + '/' + theme.header.name + '/skins')).then(function successCallback(response) {
       var skinHeaders = response.data.data;
       var discoveredSkinHeaders = [];
 
       for (var i = 0; i < skinHeaders.length; i++) {
-        // Check skin compatibility. Allow only exact version match.
-        if (root.isSkinCompatible(skinHeaders[i])) {
-          discoveredSkinHeaders.push(skinHeaders[i]);
-        } else {
-          $log.debug('Not a compatible skin. Skipping skin: ' + skinHeaders[i].name);
-        }
+        discoveredSkinHeaders.push(skinHeaders[i]);
       }
 
       $rootScope.discoveredSkinHeaders = discoveredSkinHeaders;
@@ -984,13 +1071,11 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
   });
   };
 
-  // Import skin into the published theme.
-  root.importSkin = function(discoveredSkinId, callback) {
+  // Import skin into the specified theme.
+  root.importSkin = function(themeName, discoveredSkinName, notify, callback) {
 
-    var theme = root.getPublishedTheme();
-    var skinName = $rootScope.discoveredSkinHeaders[discoveredSkinId].name;
-
-    $http(root._get('/themes/' + theme.header.name + '/' + skinName)).then(function successCallback(response) {
+    var schema = themeCatalogService.getRequiredSchema();
+    $http(root._get('/themes/' + schema + '/' + themeName + '/' + discoveredSkinName)).then(function successCallback(response) {
 
       var discoveredSkin = Skin.create(response.data);
 
@@ -1035,12 +1120,14 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
           callback(catalog.themes[t_index].skins[s_index]);
         }
 
-        notification.success(
-          gettextCatalog.getString('Success'),
-          gettextCatalog.getString('Imported skin \'' + catalog.themes[t_index].skins[s_index].header.name + '\''),
-          {color: root.getPublishedSkin().view.textHighlightColor,
-           iconColor: root.getPublishedTheme().view.notificationBarIconColor,
-           barBackground: root.getPublishedTheme().view.notificationBarBackground});
+        if (notify) {
+          notification.success(
+            gettextCatalog.getString('Success'),
+            gettextCatalog.getString('Imported skin \'' + catalog.themes[t_index].skins[s_index].header.name + '\''),
+            {color: root.getPublishedSkin().view.textHighlightColor,
+             iconColor: root.getPublishedTheme().view.notificationBarIconColor,
+             barBackground: root.getPublishedTheme().view.notificationBarBackground});
+        }
 
         $log.debug('Imported skin \'' + catalog.themes[t_index].skins[s_index].header.name + '\'');
       });

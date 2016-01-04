@@ -4,7 +4,7 @@ angular.module('copayApp.controllers').controller('preferencesThemePreviewContro
   function($scope, $state, $log, profileService, go, themeService) {
 
   this.save = function(themeId) {
-    themeService.setTheme(themeId, function() {
+    themeService.setTheme(themeId, true, function() {
       $state.go('preferencesTheme');
     });
   };
