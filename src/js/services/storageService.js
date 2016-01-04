@@ -231,12 +231,12 @@ angular.module('copayApp.services')
       storage.get('addressbook-' + network, cb);
     };
 
-    root.setNotificationsOptions = function(opts, cb) {
-      storage.set('notifications', opts, cb);
+    root.setDeviceToken = function(token, cb) {
+      storage.set('token', token, cb);
     }
 
-    root.getNotificationsOptions = function(cb) {
-      storage.get('notifications', cb);
+    root.getDeviceToken = function(cb) {
+      storage.get('token', cb);
     }
 
     root.removeAddressbook = function(network, cb) {
