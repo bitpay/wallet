@@ -12,61 +12,14 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   self.prevState = 'walletHome';
 
   document.addEventListener('deviceready', function() {
-
     if (self.isCordova) {
       storageService.getDeviceToken(function(err, token) {
-        if (!token) pushNotificationInit();
+        $timeout(function() {
+          if (!token) pushNotificationsService.pushNotificationsInit();
+        }, 5000);
       });
     }
-
   });
-
-  function pushNotificationInit() {
-    var push = PushNotification.init({
-      android: {
-        senderID: "959259672122"
-      },
-      ios: {
-        alert: "true",
-        badge: true,
-        sound: 'false'
-      },
-      windows: {}
-    });
-
-    push.on('registration', function(data) {
-      var fc = profileService.focusedClient;
-      var opts = {};
-      opts.user = fc.credentials.walletId;
-      opts.type = (navigator.userAgent.match(/iPhone/i)) == "iPhone" ? "ios" : (navigator.userAgent.match(/Android/i)) == "Android" ? "android" : null;
-      opts.token = data.registrationId;
-
-      storageService.setDeviceToken(data.registrationId, function() {
-        pushNotificationsService.subscribe(opts).then(function(response) {
-            $log.debug('Suscribed: ' + response.status);
-          },
-          function(err) {
-            $log.warn('Error: ' + err);
-          });
-      });
-
-    });
-
-    push.on('notification', function(data) {
-      $log.debug('Notification event: ', data.message);
-      /* data.message,
-       data.title,
-       data.count,
-       data.sound,
-       data.image,
-       data.additionalData
-      */
-    });
-
-    push.on('error', function(e) {
-      $log.warn('Error trying to push notifications: ', e);
-    });
-  }
 
   function strip(number) {
     return (parseFloat(number.toPrecision(12)));
@@ -1254,32 +1207,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.updateAll();
   });
 
-  $rootScope.$on('Local/EnableNotifications', function(event, val) {
-    storageService.getDeviceToken(function(err, token) {
-      var fc = profileService.focusedClient;
-      var opts = {};
-      opts.user = [fc.credentials.walletId];
-      opts.type = (navigator.userAgent.match(/iPhone/i)) == "iPhone" ? "ios" : (navigator.userAgent.match(/Android/i)) == "Android" ? "android" : null;
-      opts.token = token;
-      if (val) {
-        pushNotificationsService.subscribe(opts).then(function(response) {
-            $log.debug('Suscribed: ' + response.status);
-          },
-          function(err) {
-            $log.warn('Error: ' + err);
-          });
-      } else {
-        pushNotificationsService.unsubscribe(token).then(function(response) {
-            $log.debug('Unsuscribed: ' + response.status);
-          },
-          function(err) {
-            $log.warn('Error: ' + err);
-          });
-      }
-      self.updateAll();
-    });
-  });
-
   $rootScope.$on('Local/FeeLevelUpdated', function(event, level) {
     self.setCurrentFeeLevel(level);
   });
@@ -1344,6 +1271,10 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   $rootScope.$on('Local/WalletCompleted', function(event) {
     self.setFocusedWallet();
     go.walletHome();
+  });
+
+  $rootScope.$on('Local/EnableNotifications', function(event) {
+    pushNotificationsService.enableNotifications();
   });
 
   self.debouncedUpdate = lodash.throttle(function() {
