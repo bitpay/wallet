@@ -25,8 +25,7 @@ angular.module('copayApp.services').factory('themeCatalogService', function(stor
   };
 
   root.isCatalogCompatible = function() {
-//    return root.getRequiredSchema() == root.getSync().metadata.themeSchemaVersion;
-    return false;
+    return root.getRequiredSchema() == root.getSync().metadata.themeSchemaVersion;
   };
 
   root.supportsWritingThemeContent = function() {
