@@ -18,8 +18,8 @@ checkOK() {
 
 # Configs
 BUILDDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-APPDIR="$BUILDDIR/%APP-EXE-NAME%-chrome-extension"
-ZIPFILE="%APP-EXE-NAME%-chrome-extension.zip"
+APPDIR="$BUILDDIR/%APP-EXE-NAME%-chrome-app"
+ZIPFILE="%APP-EXE-NAME%-chrome-app.zip"
 VERSION="%APP-VERSION%"
 
 # Move to the build directory
@@ -33,29 +33,24 @@ fi
 
 mkdir -p $APPDIR
 
-# Re-compile %APP-EXE-NAME%Bundle.js
-echo "${OpenColor}${Green}* Generating %APP-EXE-NAME% bundle...${CloseColor}"
-grunt --target=%APP-EXE-NAME%
-checkOK
-
 # Copy all chrome-extension files
 echo "${OpenColor}${Green}* Copying all chrome-extension files...${CloseColor}"
 sed "s/APP_VERSION/$VERSION/g" manifest.json > $APPDIR/manifest.json
 checkOK
 
  
-INCLUDE=`cat ../include`
+INCLUDE=`cat include`
 INITIAL=$BUILDDIR/initial.js
 echo "INITIAL: $INITIAL"
 cp -vf $INITIAL $APPDIR
 
-cd $BUILDDIR/../../public
-CMD="rsync -rLRv --exclude-from $BUILDDIR/../exclude $INCLUDE $APPDIR"
+cd $BUILDDIR/../public
+CMD="rsync -rLRv --exclude-from $BUILDDIR/exclude $INCLUDE $APPDIR"
 echo $CMD
 $CMD
 checkOK
 
-cd $BUILDDIR/../..
+cd $BUILDDIR/..
 CMD="rsync -rLRv ./bower_components/trezor-connect/chrome/* $APPDIR"
 echo $CMD
 $CMD
@@ -68,4 +63,4 @@ rm $ZIPFILE
 zip -qr $ZIPFILE "`basename $APPDIR`"
 checkOK
 
-echo "${OpenColor}${Yellow}\nThe Chrome Extension is ready at $BUILDDIR/%APP-EXE-NAME%-chrome-extension.zip${CloseColor}"
+echo "${OpenColor}${Yellow}\nThe Chrome Extension is ready at $BUILDDIR/%APP-EXE-NAME%-chrome-app.zip${CloseColor}"
