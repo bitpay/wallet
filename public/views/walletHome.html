@@ -325,9 +325,9 @@
             <h2 class="text-center m10t" translate>My Bitcoin address</h2>
             <div class="text-center" ng-click="home.copyAddress(home.addr[index.walletId])" ng-show="home.addr[index.walletId] || home.generatingAddress">
               <qrcode size="180" data="bitcoin:{{home.addr[index.walletId]}}"></qrcode>
-              <div  ng-show="home.generatingAddress" style="position:relative; top:-226px; height:0px">
-                <div style="height:180px; width:180px; margin:auto; background: url(img/qr.png) white">
-                  <div class="spinner" style="margin-top:80px">
+              <div ng-show="home.generatingAddress" style="position:relative; top:-186px; height:0px">
+                <div style="height:180px; width:180px; margin:auto; background: white">
+                  <div class="spinner" style="margin-top:60px">
                     <div class="rect1"></div>
                     <div class="rect2"></div>
                     <div class="rect3"></div>
