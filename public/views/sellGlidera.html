@@ -106,7 +106,7 @@
             Please, enter the code below
           </p>
           <form name="sellForm" 
-            ng-submit="sell.createTx(index.glideraToken, index.glideraPermissions, twoFaCode, index.feeRateToSendMax)" novalidate>
+            ng-submit="sell.createTx(index.glideraToken, index.glideraPermissions, twoFaCode)" novalidate>
               <input type="number" ng-model="twoFaCode" required>
               <input class="button black expand round" 
               ng-style="{'background-color':index.backgroundColor}"
