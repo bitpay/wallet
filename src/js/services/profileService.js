@@ -1,6 +1,6 @@
 'use strict';
 angular.module('copayApp.services')
-  .factory('profileService', function profileServiceFactory($rootScope, $location, $timeout, $filter, $log, lodash, storageService, bwcService, configService, notificationService, isChromeApp, isCordova, gettext, gettextCatalog, nodeWebkit, bwsError, uxLanguage, ledger, bitcore, trezor) {
+  .factory('profileService', function profileServiceFactory($rootScope, $location, $timeout, $filter, $log, lodash, storageService, bwcService, configService, notificationService, isChromeApp, isCordova, gettext, gettextCatalog, nodeWebkit, bwsError, uxLanguage, ledger, bitcore, trezor, themeService) {
 
     var root = {};
 
@@ -500,7 +500,7 @@ angular.module('copayApp.services')
       });
     };
 
-    root.create = function(opts, cb) {
+    root._create = function(opts, cb) {
       $log.info('Creating profile');
       var defaults = configService.getDefaults();
 
@@ -516,7 +516,28 @@ angular.module('copayApp.services')
           });
         });
       });
+    };
 
+    root.tries = 0;
+    root.create = function(noWallet, cb) {
+      root._create({
+        noWallet: noWallet
+      }, function(err) {
+        if (err) {
+          $log.warn(err);
+          $timeout(function() {
+            $log.warn('Retrying to create profile... ' + root.tries);
+            if (root.tries == 3) {
+              root.tries == 0;
+              root.create(true, cb);
+            } else {
+              root.tries += 1;
+              root.create(false, cb);
+            }
+          }, 3000);
+        }
+        cb();
+      });
     };
 
     root.setDisclaimerAccepted = function(cb) {
@@ -695,9 +716,9 @@ angular.module('copayApp.services')
           name: config.aliasFor[c.walletId] || c.walletName,
           id: c.walletId,
           network: c.network,
-          avatarIsWalletName: (config.theme.skinFor[c.walletId] !== undefined ? $rootScope.theme.skins[config.theme.skinFor[c.walletId]].view.avatarIsWalletName : $rootScope.theme.skins[$rootScope.theme.header.defaultSkinId].view.avatarIsWalletName),
-          avatarBackground: (config.theme.skinFor[c.walletId] !== undefined ? $rootScope.theme.skins[config.theme.skinFor[c.walletId]].view.avatarBackground : $rootScope.theme.skins[$rootScope.theme.header.defaultSkinId].view.avatarBackground),
-          avatarBorder: (config.theme.skinFor[c.walletId] !== undefined ? $rootScope.theme.skins[config.theme.skinFor[c.walletId]].view.avatarBorderSmall : $rootScope.theme.skins[$rootScope.theme.header.defaultSkinId].view.avatarBorderSmall),
+          avatarColor: themeService.getPublishedSkinForWalletId(c.walletId).view.avatarColor,
+          avatarBackground: themeService.getPublishedSkinForWalletId(c.walletId).view.avatarBackground,
+          avatarBorder: themeService.getPublishedSkinForWalletId(c.walletId).view.avatarBorderSmall,
         };
       });
       ret = lodash.filter(ret, function(w) {

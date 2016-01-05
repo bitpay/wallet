@@ -33,7 +33,7 @@ angular.module('copayApp.services').factory('configService', function(storageSer
     },
 
     theme: {
-      themeId: null,
+      name: null,
       skinFor: {},
     },
 

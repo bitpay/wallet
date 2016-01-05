@@ -73,10 +73,6 @@ angular.element(document).ready(function() {
         window.location = '#/preferences';
       }, false);
 
-      setTimeout(function() {
-        navigator.splashscreen.hide();
-      }, 4000);
-
       window.plugins.webintent.getUri(handleBitcoinURI);
       window.plugins.webintent.onNewIntent(handleBitcoinURI);
       window.handleOpenURL = handleBitcoinURI;

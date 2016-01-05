@@ -19,7 +19,7 @@ angular.module('copayApp.controllers').controller('preferencesThemeController',
     };
 
     this.save = function(themeId) {
-	    themeService.setTheme(themeId);
+	    themeService.setTheme(themeId, true);
     };
 
 	  // Listen for layout events from the topbar controller.

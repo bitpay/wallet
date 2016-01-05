@@ -46,7 +46,6 @@ angular.module('copayApp.services').factory('txStatus', function($modal, lodash,
     var ModalInstanceCtrl = function($scope, $modalInstance) {
       $scope.type = type;
       $scope.tx = txFormatService.processTx(txp);
-      $scope.color = fc.backgroundColor;
       if (isCordova && StatusBar.isVisible) {
         StatusBar.hide();
       }

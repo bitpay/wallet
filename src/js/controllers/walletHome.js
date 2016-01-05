@@ -123,7 +123,6 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       $scope.selectedAddressbook = {};
       $scope.newAddress = address;
       $scope.walletName = fc.credentials.walletName;
-      $scope.color = fc.backgroundColor;
       $scope.addressbook = {
         'address': ($scope.newAddress || ''),
         'label': ''

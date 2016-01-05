@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('topbarController', function(go) { 
+angular.module('copayApp.controllers').controller('topbarController', function($rootScope, go) { 
 
   this.goHome = function() {
     go.walletHome();

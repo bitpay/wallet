@@ -190,7 +190,7 @@ _:-ms-fullscreen, :root .main {
 .amount {
   width: 100%;
   text-align: center;
-  padding: 1.5rem 1rem 1.5rem 1rem;
+  padding: 2.5rem 1rem 1.5rem 1rem;
   color: #fff;
   height: 175px;
 }
@@ -243,21 +243,21 @@ _:-ms-fullscreen, :root .main {
   overflow: hidden;
 }
 
-.camera-icon a {
-  background: #4B6178;
+.camera-icon {
   box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.50);
-  color: #fff;
   display: block;
   position: absolute;
-  padding: 15px 17px;
   border-radius: 100%;
   top: inherit;
   right: 15px;
-  bottom: 45px;
-  line-height: 12px;
+  bottom: 47px;
+  width: 50px;
+  height: 50px;
+  text-align: center;
+  line-height: 26px;
 }
 
-.send .camera-icon a {
+.send .camera-icon {
   top: inherit;
   bottom: 0;
 }

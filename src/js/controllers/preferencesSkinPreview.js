@@ -12,7 +12,7 @@ angular.module('copayApp.controllers').controller('preferencesSkinPreviewControl
   };
 
   this.canDeleteSkin = function(skinId) {
-		return (themeService.getPublishedSkinId != skinId) && themeService.getCatalogSkinById(skinId).canDelete();
+		return (themeService.getPublishedSkinId() != skinId) && themeService.getCatalogSkinById(skinId).canDelete();
   };
 
   this.delete = function(skinId) {

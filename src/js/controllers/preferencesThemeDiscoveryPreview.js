@@ -8,7 +8,8 @@ angular.module('copayApp.controllers').controller('preferencesThemeDiscoveryPrev
     this.import = function(discoveredThemeId) {
       self.inProgress = true;
 	    self.progressMessage = 'Importing theme...';
-      themeService.importTheme(discoveredThemeId, function() {
+      var discoveredThemeName = $rootScope.discoveredThemeHeaders[discoveredThemeId].name;
+      themeService.importTheme(discoveredThemeName, true, function() {
 	      self.inProgress = false;
 	      $state.go('preferencesThemeDiscovery');
       });

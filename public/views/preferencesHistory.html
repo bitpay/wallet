@@ -9,12 +9,12 @@
     <li>
       <div ng-show="!index.isCordova">
         <input id="export_file" type="file" nwsaveas="Copay-{{index.alias || index.walletName}}.csv" accept=".csv" style="display:none">
-        <a ng-style="{'color':index.backgroundColor}" ng-click="index.csvHistory();">
+        <a ng-style="{'color':skin.view.textHighlightColor}" ng-click="index.csvHistory();">
           <span translate>Export to file</span>
         </a>
       </div>
     </li>
-    <li ng-style="{'color':index.backgroundColor}" ng-click="history.clearTransactionHistory();" translate>
+    <li ng-style="{'color':skin.view.textHighlightColor}" ng-click="history.clearTransactionHistory();" translate>
       Clear cache
     </li>
   </ul>

@@ -31,10 +31,8 @@
         <ul class="no-bullet">
           <li class="panel" ng-repeat="w in wallets">
           <a ng-click="payment.selectWallet(w.id)">
-            <div ng-if="w.avatarIsWalletName == 'true'" class="avatar-wallet" 
-              ng-style="{'background':w.avatarBackground, 'border':w.avatarBorder}"><i class="icon-wallet size-21"></i></div>
-            <div ng-if="w.avatarIsWalletName == 'false'" class="avatar-wallet" 
-              ng-style="{'background':w.avatarBackground, 'border':w.avatarBorder}"></div>
+            <div class="avatar-wallet" 
+              ng-style="{'color':w.avatarColor, 'background':w.avatarBackground, 'border':w.avatarBorder}"><i class="icon-wallet size-20"></i></div>
             <div class="ellipsis">{{w.name || w.id}}</div>
             <div class="size-12">{{w.m}} of {{w.n}} 
               <span ng-show="w.network=='testnet'">[Testnet]</span>
