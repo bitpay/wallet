@@ -1077,7 +1077,7 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
       var t_index = catalogThemes.length || 0;
       var i;
       for (i = 0; i < catalogThemes.length; i++) {
-        if (catalogThemes[i].header.name == theme.header.name) {
+        if (catalogThemes[i].header.name == themeName) {
           t_index = i;
           break;
         }
