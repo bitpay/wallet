@@ -81,6 +81,12 @@ angular.module('copayApp.services').factory('configService', function(storageSer
         if (!configCache.glidera) {
           configCache.glidera = defaultConfig.glidera; 
         }
+        if (!configCache.theme) {
+          configCache.theme = defaultConfig.theme;
+        }
+        if (!configCache.view) {
+          configCache.view = defaultConfig.view;
+        }
       } else {
         configCache = lodash.clone(defaultConfig);
       };

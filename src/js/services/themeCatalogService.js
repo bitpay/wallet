@@ -28,6 +28,10 @@ angular.module('copayApp.services').factory('themeCatalogService', function(stor
     return root.getRequiredSchema() == root.getSync().metadata.themeSchemaVersion;
   };
 
+  root.isCatalogEmpty = function() {
+    return lodash.isEmpty(catalogCache.themes);
+  };
+
   root.supportsWritingThemeContent = function() {
     // Theme and skin discovery and import requires more storage space than local storage can provide.
     return storageService.fileStorageAvailable();
@@ -35,6 +39,25 @@ angular.module('copayApp.services').factory('themeCatalogService', function(stor
 
   root.getApplicationDirectory = function() {
     return storageService.getApplicationDirectory();
+  };
+
+  root.init = function(themes, cb) {
+    $log.debug('Initializing theme catalog');
+    var cat = {
+      themes: {}
+    };
+
+    cat.themes = themes;
+
+    root.replace(cat, function(err) {
+      if (err) {
+        $rootScope.$emit('Local/DeviceError', err);
+        return;
+      }
+
+      $log.debug('Theme catalog initialized');
+      cb();
+    });
   };
 
   root.getSync = function() {

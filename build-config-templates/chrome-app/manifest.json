@@ -5,6 +5,7 @@
   "version": "%APP-VERSION%",
   "permissions": [
     "storage",
+    "unlimitedStorage",
     "notifications",
     "videoCapture",
     "webview"

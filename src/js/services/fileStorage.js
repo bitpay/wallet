@@ -73,7 +73,7 @@ angular.module('copayApp.services')
         $log.debug('File storage requesting ' + requestedBytes + ' bytes');
         navigator.webkitPersistentStorage.requestQuota(requestedBytes, function(grantedBytes) {
           $log.debug('File storage granted ' + grantedBytes + ' bytes');
-          window.webkitRequestFileSystem(PERSISTENT, grantedBytes, onFileSystemSuccess, fail);
+          window.requestFileSystem(PERSISTENT, grantedBytes, onFileSystemSuccess, fail);
         }, fail);
       }
     };
@@ -166,12 +166,14 @@ angular.module('copayApp.services')
                 }
 
               }, function(e) {
-                $log.debug('Error', e);
+                $log.debug('Error writing file storage', e);
               });
 
             }
 
           }, cb);
+        }, function(e) {
+          $log.debug('Error writing file storage', e);          
         });
       });
     };

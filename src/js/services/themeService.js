@@ -286,20 +286,8 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
       // (in this case the theme content is available in $rootScope only; cannot import themes or skins in this case).
       if (themeCatalogService.supportsWritingThemeContent()) {
 
-        $log.debug('Initializing theme catalog');
-        var cat = {
-          themes: {}
-        };
-
-        cat.themes = $rootScope.themes;
-
-        themeCatalogService.set(cat, function(err) {
-          if (err) {
-            $rootScope.$emit('Local/DeviceError', err);
-            return;
-          }
-
-          $rootScope.$emit('Local/ThemeUpdated');
+        themeCatalogService.init($rootScope.themes, function() {
+         $rootScope.$emit('Local/ThemeUpdated');
           callback();
         });
 
@@ -470,13 +458,13 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
         return;
       }
 
-      // Read application configuration.
+      // Theme service initialization depends on application configuration; force read it now.
       configService.get(function(err, config) {
         $log.debug('Preferences read');
         if (err)
           $log.debug('Error reading preferences');
 
-        if (lodash.isNull(config.theme.name)) {
+        if (themeCatalogService.isCatalogEmpty()) {
 
           // Application configuration does not specify a theme.
           // Read the brand theme definition, publish, and build the catalog for the first time.
