@@ -34,6 +34,9 @@ module.exports = function(grunt) {
       },
       osx: {
         command: 'webkitbuilds/build-osx.sh'
+      },
+      chrome: {
+        command: 'chrome-app/build.sh'
       }
     },
     watch: {
@@ -251,7 +254,9 @@ module.exports = function(grunt) {
           'webkitbuilds/.desktop': 'build-config-templates/webkitbuilds/.desktop',
           'webkitbuilds/build-osx.sh': 'build-config-templates/webkitbuilds/build-osx.sh',
           'webkitbuilds/setup-win32.iss': 'build-config-templates/webkitbuilds/setup-win32.iss',
-          'webkitbuilds/setup-win64.iss': 'build-config-templates/webkitbuilds/setup-win64.iss'
+          'webkitbuilds/setup-win64.iss': 'build-config-templates/webkitbuilds/setup-win64.iss',
+          'chrome-app/build.sh': 'build-config-templates/chrome-app/build.sh',
+          'chrome-app/manifest.json': 'build-config-templates/chrome-app/manifest.json'
         },
         options: {
           mode: 0755,
@@ -348,6 +353,7 @@ module.exports = function(grunt) {
   ]);
 
   grunt.registerTask('prod', ['default', 'uglify']);
+  grunt.registerTask('chrome', ['default', 'exec:chrome']);
   grunt.registerTask('translate', ['nggettext_extract']);
   grunt.registerTask('test', ['karma:unit']);
   grunt.registerTask('test-coveralls', ['karma:prod', 'coveralls']);

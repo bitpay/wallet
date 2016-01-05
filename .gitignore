@@ -36,11 +36,11 @@ webkitbuilds/*
 
 
 # chrome extensions
-browser-extensions/chrome/copay-chrome-extension
-browser-extensions/chrome/copay-chrome-extension.zip
-browser-extensions/chrome/build.sh
-browser-extensions/chrome/manifest.json
-browser-extensions/chrome/copay-chrome-extension.zip.sig
+chrome-app/copay-chrome-app
+chrome-app/copay-chrome-app.zip
+chrome-app/build.sh
+chrome-app/manifest.json
+chrome-app/copay-chrome-app.zip.sig
 
 # Logs
 logs
