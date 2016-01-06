@@ -250,6 +250,10 @@ msgstr ""
 msgid "Buy &amp; Sell Bitcoin"
 msgstr ""
 
+#: src/js/controllers/walletHome.js
+msgid "Calculating fee"
+msgstr ""
+
 #: public/views/copayers.html
 #: public/views/walletHome.html
 #: public/views/modals/confirmation.html
@@ -378,6 +382,10 @@ msgstr ""
 msgid "Could not broadcast payment"
 msgstr ""
 
+#: src/js/controllers/walletHome.js
+msgid "Could not calculate fee"
+msgstr ""
+
 #: src/js/services/addressService.js
 msgid "Could not create address"
 msgstr ""
@@ -412,10 +420,6 @@ msgstr ""
 
 #: src/js/controllers/walletHome.js
 msgid "Could not fetch payment information"
-msgstr ""
-
-#: public/views/walletHome.html
-msgid "Could not fetch transaction history"
 msgstr ""
 
 #: src/js/services/profileService.js
@@ -467,15 +471,12 @@ msgstr ""
 msgid "Created by"
 msgstr ""
 
-#: public/views/disclaimer.html
-msgid "Creating Profile..."
-msgstr ""
-
 #: src/js/controllers/walletHome.js
 msgid "Creating transaction"
 msgstr ""
 
 #: public/views/create.html
+#: public/views/disclaimer.html
 msgid "Creating Wallet..."
 msgstr ""
 
@@ -1242,10 +1243,6 @@ msgstr ""
 
 #: public/views/create.html
 msgid "Required number of signatures"
-msgstr ""
-
-#: public/views/disclaimer.html
-msgid "Retrying..."
 msgstr ""
 
 #: public/views/translators.html
