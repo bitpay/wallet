@@ -1,6 +1,6 @@
 'use strict';
 angular.module('copayApp.services')
-  .factory('profileService', function profileServiceFactory($rootScope, $location, $timeout, $filter, $log, lodash, storageService, bwcService, configService, notificationService, isChromeApp, isCordova, gettext, gettextCatalog, nodeWebkit, bwsError, uxLanguage, ledger, bitcore, trezor, themeService) {
+  .factory('profileService', function profileServiceFactory($rootScope, $location, $timeout, $filter, $log, lodash, storageService, bwcService, configService, notificationService, isChromeApp, isCordova, gettext, gettextCatalog, nodeWebkit, bwsError, uxLanguage, ledger, bitcore, trezor, themeService, Profile) {
 
     var root = {};
 
@@ -10,15 +10,6 @@ angular.module('copayApp.services')
     root.profile = null;
     root.focusedClient = null;
     root.walletClients = {};
-
-    root.Utils = bwcService.getUtils();
-    root.formatAmount = function(amount) {
-      var config = configService.getSync().wallet.settings;
-      if (config.unitCode == 'sat') return amount;
-
-      //TODO : now only works for english, specify opts to change thousand separator and decimal separator
-      return this.Utils.formatAmount(amount, config.unitCode);
-    };
 
     root._setFocus = function(walletId, cb) {
       // Set local object
@@ -35,7 +26,7 @@ angular.module('copayApp.services')
       if (lodash.isEmpty(root.focusedClient)) {
         $rootScope.$emit('Local/NoWallets');
       } else {
-        $rootScope.$emit('Local/NewFocusedWallet');
+        $rootScope.$emit('Local/NewFocusedWallet', root.focusedClient);
 
         // Set update period
         lodash.each(root.walletClients, function(client, id) {
@@ -538,39 +529,6 @@ angular.module('copayApp.services')
         }
         cb();
       });
-    };
-
-    root.setDisclaimerAccepted = function(cb) {
-      storageService.getProfile(function(err, profile) {
-        profile.disclaimerAccepted = true;
-        storageService.storeProfile(profile, function(err) {
-          return cb(err);
-        });
-      });
-    };
-
-    root.isDisclaimerAccepted = function(cb) {
-      storageService.getProfile(function(err, profile) {
-        if (profile && profile.disclaimerAccepted)
-          return cb(true);
-        else if (profile && !profile.disclaimerAccepted) {
-          storageService.getCopayDisclaimerFlag(function(err, val) {
-            if (val) {
-              profile.disclaimerAccepted = true;
-              storageService.storeProfile(profile, function(err) {
-                if (err) $log.error(err);
-                return cb(true);
-              });
-            }
-            else {
-              return cb();
-            }
-          });
-        }
-        else {
-          return cb();
-        }
-      });   
     };
 
     root.setDisclaimerAccepted = function(cb) {

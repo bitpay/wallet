@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.services').factory('themeService', function($rootScope, $log, $http, $timeout, $q, configService, themeCatalogService, lodash, notification, gettextCatalog, brand) {
+angular.module('copayApp.services').factory('themeService', function($rootScope, $log, $http, $timeout, $q, configService, themeCatalogService, Theme, Skin, lodash, notification, gettextCatalog, brand) {
 
   // The $rootScope is used to track theme and skin objects.  Views reference $rootScope for rendering.
   // 
@@ -252,7 +252,7 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
         });
 
       }).catch(function(response) {
-        $log.debug('Error: failed to GET local skin resources ' + response.config.url);
+        $log.debug('Error: failed to GET local skin resources, ensure your skin files are valid JSON');
       });
 
     }, function errorCallback(response) {
@@ -565,7 +565,7 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
             ', new skinId: ' + root.getPublishedThemeById(themeId).header.defaultSkinId +
             ' (was skinId: ' + root.getCatalogSkinIdForWallet(walletId) + ')');
 
-          opts.theme.skinFor[walletId] = root.getCatalogTheme().header.defaultSkinName;
+          opts.theme.skinFor[walletId] = root.getCurrentTheme().header.defaultSkinName;
         }
       }
 
@@ -858,6 +858,15 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
 
   ///////////////////////////////////////////////////////////////////////////////
 
+  // Current objects.
+  root.getCurrentTheme = function() {
+    return new Theme(root._themeById(root._currentThemeId()));
+  };
+
+  root.getCurrentSkin = function() {
+    return new Skin(root.getCurrentTheme().skins[root._currentSkinId()], root.getCurrentTheme());
+  };
+
   // Catalog objects.
   root.getCatalog = function() {
     return themeCatalogService.getSync();
@@ -867,12 +876,8 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
     return root._themes();
   };
 
-  root.getCatalogTheme = function() {
-    return Theme.create(root._theme());
-  };
-
   root.getCatalogThemeById = function(themeId) {
-    return Theme.create(root._themeById(themeId));
+    return new Theme(root._themeById(themeId));
   };
 
   root.getCatalogThemeId = function() {
@@ -888,7 +893,7 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
   };
 
   root.getCatalogSkinById = function(skinId) {
-    return Skin.create(root.getCatalogTheme().skins[skinId]);
+    return new Skin(root.getCurrentTheme().skins[skinId], root.getCurrentTheme());
   };
 
   // Published objects.
@@ -905,7 +910,7 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
   };
 
   root.getPublishedTheme = function() {
-    return root.getPublishedThemeById(root.getPublishedThemeId());
+    return new Theme(root.getPublishedThemeById(root.getPublishedThemeId()));
   };
 
   root.getPublishedSkinsForTheme = function(themeId) {
@@ -917,7 +922,7 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
   };
 
   root.getPublishedSkinById = function(skinId) {
-    return root.getPublishedTheme().skins[skinId];
+    return new Skin(root.getPublishedTheme().skins[skinId], root.getPublishedTheme());
   };
 
   root.getPublishedSkinId = function() {
@@ -936,7 +941,7 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
 
   root.getPublishedSkin = function() {
     var theme = root.getPublishedTheme();
-    return theme.skins[root.getPublishedSkinId()];
+    return new Skin(theme.skins[root.getPublishedSkinId()], root.getPublishedTheme());
   };
 
   root.getPublishedSkinForWalletId = function(walletId) {
@@ -981,7 +986,7 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
 
       // Import the discovered theme.
       // Read the full theme from the theme server and add it to this applications configuration settings.
-      var discoveredTheme = Theme.create(response.data);
+      var discoveredTheme = new Theme(response.data);
 
       // Allow imported themes to be deleted.
       discoveredTheme.setDelete(true);
@@ -1056,7 +1061,7 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
     }, function errorCallback(response) {
       callback([]);
       $log.debug('Error: failed to GET skin resources from ' + response.config.url);
-  });
+    });
   };
 
   // Import skin into the specified theme.
@@ -1065,7 +1070,7 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
     var schema = themeCatalogService.getRequiredSchema();
     $http(root._get('/themes/' + schema + '/' + themeName + '/' + discoveredSkinName)).then(function successCallback(response) {
 
-      var discoveredSkin = Skin.create(response.data);
+      var discoveredSkin = new Skin(response.data, root.getCurrentTheme());
 
       // Allow imported skins to be deleted.
       discoveredSkin.setDelete(true);

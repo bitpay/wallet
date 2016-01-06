@@ -61,5 +61,6 @@
     "progressTextColor": "#FFFFFF",
     "iconBackground": "#484ED3",
     "textHighlightColor": "#484ED3"
-  }
+  },
+  "service": {}
 }

@@ -1,12 +1,21 @@
 'use strict';
 
-angular.module('copayApp.services').factory('txFormatService', function(profileService, rateService, configService, lodash) {
+angular.module('copayApp.services').factory('txFormatService', function(bwcService, rateService, configService, lodash) {
   var root = {};
+  root.Utils = bwcService.getUtils();
+
+  root.formatAmount = function(amount) {
+    var config = configService.getSync().wallet.settings;
+    if (config.unitCode == 'sat') return amount;
+
+    //TODO : now only works for english, specify opts to change thousand separator and decimal separator
+    return root.Utils.formatAmount(amount, config.unitCode);
+  };
 
   var formatAmountStr = function(amount) {
     if (!amount) return;
     var config = configService.getSync().wallet.settings;
-    return profileService.formatAmount(amount) + ' ' + config.unitName;
+    return root.formatAmount(amount) + ' ' + config.unitName;
   };
 
   var formatAlternativeStr = function(amount) {
@@ -18,7 +27,7 @@ angular.module('copayApp.services').factory('txFormatService', function(profileS
   var formatFeeStr = function(fee) {
     if (!fee) return;
     var config = configService.getSync().wallet.settings;
-    return profileService.formatAmount(fee) + ' ' + config.unitName;
+    return root.formatAmount(fee) + ' ' + config.unitName;
   };
 
   root.processTx = function(tx) {

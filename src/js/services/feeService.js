@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.services').factory('feeService', function($log, profileService, configService, gettextCatalog, lodash) {
+angular.module('copayApp.services').factory('feeService', function($log, profileService, configService, gettextCatalog, lodash, txFormatService) {
   var root = {};
 
   // Constant fee options to translate
@@ -38,8 +38,8 @@ angular.module('copayApp.services').factory('feeService', function($log, profile
         if (errLivenet || errTestnet) $log.debug('Could not get dynamic fee');
         else {
           for (var i = 0; i < 3; i++) {
-            levelsLivenet[i]['feePerKBUnit'] = profileService.formatAmount(levelsLivenet[i].feePerKB) + ' ' + unitName;
-            levelsTestnet[i]['feePerKBUnit'] = profileService.formatAmount(levelsTestnet[i].feePerKB) + ' ' + unitName;
+            levelsLivenet[i]['feePerKBUnit'] = txFormatService.formatAmount(levelsLivenet[i].feePerKB) + ' ' + unitName;
+            levelsTestnet[i]['feePerKBUnit'] = txFormatService.formatAmount(levelsTestnet[i].feePerKB) + ' ' + unitName;
           }
         }
 

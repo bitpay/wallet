@@ -10,6 +10,7 @@ var modules = [
   'uiSwitch',
   'bwcModule',
   'copayApp.filters',
+  'copayApp.model',
   'copayApp.services',
   'copayApp.controllers',
   'copayApp.directives',
@@ -19,6 +20,7 @@ var modules = [
 var copayApp = window.copayApp = angular.module('copayApp', modules);
 
 angular.module('copayApp.filters', []);
+angular.module('copayApp.model', []);
 angular.module('copayApp.services', []);
 angular.module('copayApp.controllers', []);
 angular.module('copayApp.directives', []);
