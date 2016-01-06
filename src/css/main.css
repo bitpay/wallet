@@ -999,13 +999,12 @@ a.button.postfix {
 }
 
 .icon-wallet {
-  vertical-align: top;
   display: block;
   margin-top: 7px;  
 }
 
 .walletHome .icon-wallet {
-  display: inline;
+  margin-top: 14px;
 }
 
 .icon-input {
