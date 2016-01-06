@@ -1265,6 +1265,14 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     });
   };
 
+  $rootScope.$on('Local/PaymentServiceStatus', function(event, status) {
+    if (status) {
+      self.setOngoingProcess(status);
+    } else {
+      self.setOngoingProcess();      
+    }
+  });
+
   /* Start setup */
 
   this.bindTouchDown();
