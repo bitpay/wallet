@@ -664,7 +664,8 @@ angular.module('copayApp.services')
           name: config.aliasFor[c.walletId] || c.walletName,
           id: c.walletId,
           network: c.network,
-          color: config.colorFor[c.walletId] || '#4A90E2'
+          color: config.colorFor[c.walletId] || '#4A90E2',
+          copayerId: c.copayerId
         };
       });
       ret = lodash.filter(ret, function(w) {
