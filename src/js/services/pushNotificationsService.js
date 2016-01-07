@@ -18,6 +18,7 @@ angular.module('copayApp.services')
       });
 
       push.on('registration', function(data) {
+        $log.debug('Starting registration');
         storageService.setDeviceToken(data.registrationId, function() {
           root.enableNotifications();
         });
@@ -41,13 +42,11 @@ angular.module('copayApp.services')
 
     root.enableNotifications = function() {
       storageService.getDeviceToken(function(err, token) {
-
         lodash.forEach(profileService.getWallets('testnet'), function(wallets) {
           var opts = {};
-          opts.user = wallets.id;
+          opts.user = wallets.id + '$' + wallets.copayerId;
           opts.type = (navigator.userAgent.match(/iPhone/i)) == "iPhone" ? "ios" : (navigator.userAgent.match(/Android/i)) == "Android" ? "android" : null;
           opts.token = token;
-
           root.subscribe(opts).then(function(response) {
               $log.debug('Suscribed: ' + response.status);
             },
@@ -70,17 +69,17 @@ angular.module('copayApp.services')
     }
 
     root.subscribe = function(opts) {
-      return $http.post('http://192.168.1.121:8000/subscribe', opts);
+      return $http.post('http://192.168.1.128:8000/subscribe', opts);
     }
 
     root.unsubscribe = function(user) {
-      return $http.post('http://192.168.1.121:8000/unsubscribe', {
+      return $http.post('http://192.168.1.128:8000/unsubscribe', {
         user: user
       });
     }
 
     root.unsubscribeAll = function(token) {
-      return $http.post('http://192.168.1.121:8000/unsubscribe', {
+      return $http.post('http://192.168.1.128:8000/unsubscribe', {
         token: token
       });
     }
