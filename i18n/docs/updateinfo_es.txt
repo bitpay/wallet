@@ -1,4 +1,4 @@
-* Mejora en el diseño e interfaz de usuario
-* Nuevo proceso de verificación de la copia de seguridad
-* Arranque más rápido
-* Toneladas de correcciones
+* Mejora de algunos iconos
+* Cambios menores de UX en recibir
+* Actualización de traducciones
+* Corrección de errores

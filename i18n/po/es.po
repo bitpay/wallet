@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Spanish\n"
 "Language: es\n"
-"PO-Revision-Date: 2015-12-13 06:02-0500\n"
+"PO-Revision-Date: 2016-01-08 15:18-0500\n"
 
 #: public/views/walletHome.html
 msgid "(possible double spend)"
@@ -242,15 +242,15 @@ msgstr "¡Bitcoin URI no es válida!"
 
 #: public/views/modals/txp-details.html
 msgid "Broadcast Payment"
-msgstr "Emitir el Pago"
+msgstr "Enviar Pago"
 
 #: src/js/controllers/walletHome.js
 msgid "Broadcasting Payment"
-msgstr "Emitiendo el Pago"
+msgstr "Enviando el Pago"
 
 #: src/js/controllers/walletHome.js
 msgid "Broadcasting transaction"
-msgstr "Emitiendo la transacción"
+msgstr "Enviando transacción"
 
 #: public/views/unsupported.html
 msgid "Browser unsupported"
@@ -259,6 +259,10 @@ msgstr "Navegador no soportado"
 #: public/views/includes/sidebar.html
 msgid "Buy &amp; Sell Bitcoin"
 msgstr "Comprar &amp; Vender Bitcoin"
+
+#: src/js/controllers/walletHome.js
+msgid "Calculating fee"
+msgstr "Calculando comisión"
 
 #: public/views/copayers.html
 #: public/views/walletHome.html
@@ -378,67 +382,67 @@ msgstr "Copiar al portapapeles"
 
 #: src/js/controllers/walletHome.js
 msgid "Could not accept payment"
-msgstr "No se ha podido aceptar el pago"
+msgstr "No se pudo aceptar el pago"
 
 #: src/js/controllers/index.js
 msgid "Could not access Wallet Service: Not found"
-msgstr "No se ha podido acceder a Wallet Service: No encontrado"
+msgstr "No se pudo acceder a Wallet Service: No encontrado"
 
 #: src/js/controllers/walletHome.js
 msgid "Could not broadcast payment"
-msgstr "No se ha podido emitir el pago"
+msgstr "No se pudo enviar el pago"
+
+#: src/js/controllers/walletHome.js
+msgid "Could not calculate fee"
+msgstr "No se pudo calcular la comisión"
 
 #: src/js/services/addressService.js
 msgid "Could not create address"
-msgstr "No se ha podido crear la dirección"
+msgstr "No se pudo crear la dirección"
 
 #: src/js/controllers/walletHome.js
 msgid "Could not create payment proposal"
-msgstr "No se ha podido crear la propuesta de pago"
+msgstr "No se pudo crear la propuesta de pago"
 
 #: src/js/services/profileService.js
 msgid "Could not create using the specified extended private key"
-msgstr "No se ha podido crear el monedero usando la clave privada ingresada"
+msgstr "No se pudo crear el monedero usando la clave privada ingresada"
 
 #: src/js/services/profileService.js
 msgid "Could not create using the specified extended public key"
-msgstr "No se ha podido crear con la clave pública extendida especificada"
+msgstr "No se pudo crear con la clave pública extendida especificada"
 
 #: src/js/services/profileService.js
 msgid "Could not create: Invalid wallet seed"
-msgstr "No se ha podido crear: semilla del monedero no válida"
+msgstr "No se pudo crear: semilla del monedero no válida"
 
 #: src/js/controllers/backup.js
 msgid "Could not decrypt"
-msgstr "No se ha podido descifrar"
+msgstr "No se pudo descifrar"
 
 #: src/js/controllers/import.js
 msgid "Could not decrypt file, check your password"
-msgstr "No se ha podido desencriptar el archivo, verifique su contraseña"
+msgstr "No se pudo desencriptar el archivo, verifique su contraseña"
 
 #: src/js/controllers/walletHome.js
 msgid "Could not delete payment proposal"
-msgstr "No se ha podido eliminar la propuesta de pago"
+msgstr "No se pudo eliminar la propuesta de pago"
 
 #: src/js/controllers/walletHome.js
 msgid "Could not fetch payment information"
-msgstr "No se ha podido obtener información del pago"
-
-#: public/views/walletHome.html
-msgid "Could not fetch transaction history"
-msgstr "No se ha podido obtener el historial de transacciones"
+msgstr "No se pudo obtener información del pago"
 
 #: src/js/services/profileService.js
 msgid "Could not import"
-msgstr "No se ha podido importar"
+msgstr "No se pudo importar"
 
 #: src/js/services/profileService.js
 msgid "Could not import. Check input file and password"
-msgstr "No se ha podido importar. Verifique el archivo y contraseña"
+msgstr "No se pudo importar. Verifique el archivo y contraseña"
 
 #: src/js/services/profileService.js
 msgid "Could not join wallet"
-msgstr "No se ha podido unir al monedero"
+msgstr "No se pudo unir al monedero"
 
 #: src/js/controllers/walletHome.js
 msgid "Could not recognize a valid Bitcoin QR Code"
@@ -446,15 +450,15 @@ msgstr "No se reconoció el código QR de Bitcoin válido"
 
 #: src/js/controllers/walletHome.js
 msgid "Could not reject payment"
-msgstr "No se ha podido rechazar el pago"
+msgstr "No se pudo rechazar el pago"
 
 #: src/js/controllers/walletHome.js
 msgid "Could not send payment"
-msgstr "No se ha podido enviar el pago"
+msgstr "No se pudo enviar el pago"
 
 #: src/js/controllers/index.js
 msgid "Could not update Wallet"
-msgstr "No se ha podido actualizar el monedero"
+msgstr "No se pudo actualizar el monedero"
 
 #: public/views/walletHome.html
 msgid "Create"
@@ -467,7 +471,7 @@ msgstr "Crea monedero {{requiredCopayers}}-de-{{totalCopayers}}"
 #: public/views/add.html
 #: public/views/create.html
 msgid "Create new wallet"
-msgstr "Crear nuevo monedero"
+msgstr "Crear un nuevo monedero"
 
 #: public/views/includes/sidebar.html
 msgid "Create, join or import"
@@ -477,17 +481,14 @@ msgstr "Crear, unirse o importar"
 msgid "Created by"
 msgstr "Creado por"
 
-#: public/views/disclaimer.html
-msgid "Creating Profile..."
-msgstr "Creando el Perfil..."
-
 #: src/js/controllers/walletHome.js
 msgid "Creating transaction"
-msgstr "Creando la transacción"
+msgstr "Creando transacción"
 
 #: public/views/create.html
+#: public/views/disclaimer.html
 msgid "Creating Wallet..."
-msgstr "Creando el Monedero..."
+msgstr "Creando monedero..."
 
 #: public/views/preferencesFee.html
 msgid "Current fee rate for this policy: {{fee.feePerKBUnit}}/kiB"
@@ -503,7 +504,7 @@ msgstr "Descifrar un monedero de papel podría tomar alrededor de 5 minutos en e
 
 #: public/views/copayers.html
 msgid "Delete it and create a new one"
-msgstr "Borrarlo y crear uno nuevo"
+msgstr "Borrar y crear uno nuevo"
 
 #: public/views/modals/txp-details.html
 msgid "Delete Payment Proposal"
@@ -601,7 +602,7 @@ msgstr "Ingrese las palabras de la semilla (BIP39)"
 
 #: public/views/backup.html
 msgid "Enter your passphrase"
-msgstr "Introduzca su contraseña"
+msgstr "Ingrese su contraseña"
 
 #: public/views/includes/password.html
 msgid "Enter your password"
@@ -823,7 +824,7 @@ msgstr "Touch ID inválido"
 
 #: src/js/controllers/copayers.js
 msgid "Invitation to share a Copay Wallet"
-msgstr "Invitación para compartir un monedero Copay"
+msgstr "Invitación para compartir un monedero de Copay"
 
 #: public/views/translators.html
 msgid "Italian"
@@ -852,7 +853,7 @@ msgstr "Unirse a un monedero compartido"
 
 #: public/views/join.html
 msgid "Joining Wallet..."
-msgstr "Conectándose al Monedero..."
+msgstr "Uniéndose al monedero..."
 
 #: src/js/services/bwsError.js
 msgid "Key already associated with an existing wallet"
@@ -1254,10 +1255,6 @@ msgstr "Requerido"
 msgid "Required number of signatures"
 msgstr "Número requerido de firmas"
 
-#: public/views/disclaimer.html
-msgid "Retrying..."
-msgstr "Reintentando..."
-
 #: public/views/translators.html
 msgid "Russian"
 msgstr "Ruso"
@@ -1358,7 +1355,7 @@ msgstr "Enviando"
 
 #: public/views/paperWallet.html
 msgid "Sending funds..."
-msgstr "Enviando los fondos..."
+msgstr "Enviando fondos..."
 
 #: public/views/walletHome.html
 #: public/views/modals/tx-details.html
@@ -1510,7 +1507,7 @@ msgstr "El pago fue eliminado por el creador"
 
 #: src/js/controllers/walletHome.js
 msgid "The payment was signed but could not be broadcasted. Please try again from home screen"
-msgstr "El pago fue firmado pero no pudo ser emitido. Por favor intente nuevamente desde la pantalla de inicio"
+msgstr "El pago fue firmado pero no pudo ser enviado. Por favor intente nuevamente desde la pantalla de inicio"
 
 #: public/views/export.html
 msgid "The private key for this wallet is encrypted. Exporting keep the private key encrypted in the export archive."
@@ -1595,7 +1592,7 @@ msgstr "Transacción"
 
 #: src/js/services/bwsError.js
 msgid "Transaction already broadcasted"
-msgstr "La transacción ya se ha emitido"
+msgstr "La transacción ya fue enviada"
 
 #: public/views/preferencesAdvanced.html
 msgid "Transaction History"

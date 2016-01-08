@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Japanese\n"
 "Language: ja\n"
-"PO-Revision-Date: 2015-12-14 15:33-0500\n"
+"PO-Revision-Date: 2016-01-08 10:49-0500\n"
 
 #: public/views/walletHome.html
 msgid "(possible double spend)"
@@ -261,6 +261,10 @@ msgstr "ブラウザ未対応"
 msgid "Buy &amp; Sell Bitcoin"
 msgstr "ビットコインの購入&amp;売却"
 
+#: src/js/controllers/walletHome.js
+msgid "Calculating fee"
+msgstr ""
+
 #: public/views/copayers.html
 #: public/views/walletHome.html
 #: public/views/modals/confirmation.html
@@ -389,6 +393,10 @@ msgstr "Wallet Serviceにアクセスできませんでした: 見つかりま�
 msgid "Could not broadcast payment"
 msgstr "送金を配信できませんでした。"
 
+#: src/js/controllers/walletHome.js
+msgid "Could not calculate fee"
+msgstr ""
+
 #: src/js/services/addressService.js
 msgid "Could not create address"
 msgstr "アドレスを生成できませんでした。"
@@ -424,10 +432,6 @@ msgstr "送金の提案を削除できませんでした"
 #: src/js/controllers/walletHome.js
 msgid "Could not fetch payment information"
 msgstr "支払い情報が取得できませんでした。"
-
-#: public/views/walletHome.html
-msgid "Could not fetch transaction history"
-msgstr "取引履歴を取得できませんでした。"
 
 #: src/js/services/profileService.js
 msgid "Could not import"
@@ -478,15 +482,12 @@ msgstr "作成、参加、インポート"
 msgid "Created by"
 msgstr "作成者"
 
-#: public/views/disclaimer.html
-msgid "Creating Profile..."
-msgstr "ウォレット作成中…"
-
 #: src/js/controllers/walletHome.js
 msgid "Creating transaction"
 msgstr "取引作成中…"
 
 #: public/views/create.html
+#: public/views/disclaimer.html
 msgid "Creating Wallet..."
 msgstr "ウォレット作成中…"
 
@@ -1255,10 +1256,6 @@ msgstr "入力必須"
 #: public/views/create.html
 msgid "Required number of signatures"
 msgstr "必要な署名の数を選択"
-
-#: public/views/disclaimer.html
-msgid "Retrying..."
-msgstr "再度試しています…"
 
 #: public/views/translators.html
 msgid "Russian"
