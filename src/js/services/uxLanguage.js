@@ -10,20 +10,11 @@ angular.module('copayApp.services')
       name: 'Français',
       isoCode: 'fr',
     }, {
-      name: 'Italiano',
-      isoCode: 'it',
-    }, {
       name: 'Deutsch',
       isoCode: 'de',
     }, {
       name: 'Español',
       isoCode: 'es',
-    }, {
-      name: 'Português',
-      isoCode: 'pt',
-    }, {
-      name: 'Ελληνικά',
-      isoCode: 'el',
     }, {
       name: '日本語',
       isoCode: 'ja',
@@ -31,9 +22,6 @@ angular.module('copayApp.services')
     }, {
       name: 'Pусский',
       isoCode: 'ru',
-    }, {
-      name: 'Türk',
-      isoCode: 'tr',
     }];
 
     root.currentLanguage = null;
@@ -49,6 +37,11 @@ angular.module('copayApp.services')
         userLang = navigator.userLanguage || navigator.language;
       }
       userLang = userLang ? (userLang.split('-', 1)[0] || 'en') : 'en';
+
+      // Set only available languages
+      userLang = lodash.find(root.availableLanguages, {
+        'isoCode': userLang
+      }) ? userLang : 'en';
 
       return userLang;
     };
