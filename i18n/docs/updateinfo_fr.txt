@@ -1,4 +1,4 @@
-* Amélioration de l'interface utilisateur et du design
-* Nouvelle procédure de vérification de la sauvegarde
-* Bootstrapping plus rapide
-* Plein de corrections de bugs
+* Amélioration de certaines icônes
+* Amélioration minime de l'interface graphique sur "Recevoir"
+* Mise à jour des traductions
+* Corrections de bugs
