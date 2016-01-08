@@ -1,4 +1,4 @@
-* Enhanced user interface and design
-* New backup verification quiz
-* Faster bootstrapping
-* Tons of bug fixes
+* Improves some icons
+* Minor UX changes on receive
+* Update translations
+* Bug fixes
