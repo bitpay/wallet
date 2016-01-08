@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: French\n"
 "Language: fr\n"
-"PO-Revision-Date: 2015-12-14 15:33-0500\n"
+"PO-Revision-Date: 2016-01-08 15:18-0500\n"
 
 #: public/views/walletHome.html
 msgid "(possible double spend)"
@@ -258,7 +258,11 @@ msgstr "Navigateur non supporté"
 
 #: public/views/includes/sidebar.html
 msgid "Buy &amp; Sell Bitcoin"
-msgstr "Acheter &amp; Vendre Bitcoin"
+msgstr "Acheter &amp; Vendre des Bitcoins"
+
+#: src/js/controllers/walletHome.js
+msgid "Calculating fee"
+msgstr "Calcul des frais"
 
 #: public/views/copayers.html
 #: public/views/walletHome.html
@@ -388,6 +392,10 @@ msgstr "Impossible d'accéder au Wallet Service : Introuvable"
 msgid "Could not broadcast payment"
 msgstr "Impossible de diffuser le paiement"
 
+#: src/js/controllers/walletHome.js
+msgid "Could not calculate fee"
+msgstr "Impossible de calculer les frais"
+
 #: src/js/services/addressService.js
 msgid "Could not create address"
 msgstr "Impossible de créer l'adresse"
@@ -423,10 +431,6 @@ msgstr "Impossible de supprimer la proposition de paiement"
 #: src/js/controllers/walletHome.js
 msgid "Could not fetch payment information"
 msgstr "Impossible de récupérer les informations de paiement"
-
-#: public/views/walletHome.html
-msgid "Could not fetch transaction history"
-msgstr "Impossible de récupérer l'historique des transactions"
 
 #: src/js/services/profileService.js
 msgid "Could not import"
@@ -477,15 +481,12 @@ msgstr "Créer, rejoindre ou importer"
 msgid "Created by"
 msgstr "Créée par"
 
-#: public/views/disclaimer.html
-msgid "Creating Profile..."
-msgstr "Création du profile..."
-
 #: src/js/controllers/walletHome.js
 msgid "Creating transaction"
 msgstr "Création de la transaction"
 
 #: public/views/create.html
+#: public/views/disclaimer.html
 msgid "Creating Wallet..."
 msgstr "Création du portefeuille..."
 
@@ -1193,12 +1194,12 @@ msgstr "Recevoir"
 #: public/views/walletHome.html
 #: public/views/modals/tx-details.html
 msgid "Received"
-msgstr "Reçue"
+msgstr "Reçus"
 
 #: public/views/modals/tx-details.html
 #: public/views/modals/txp-details.html
 msgid "Recipients"
-msgstr "Destinataires"
+msgstr "Destinataire(s)"
 
 #: public/views/walletHome.html
 msgid "Reconnecting to Wallet Service..."
@@ -1253,10 +1254,6 @@ msgstr "Requis"
 #: public/views/create.html
 msgid "Required number of signatures"
 msgstr "Nombre requis de signatures"
-
-#: public/views/disclaimer.html
-msgid "Retrying..."
-msgstr "Nouvelle tentative"
 
 #: public/views/translators.html
 msgid "Russian"
@@ -1364,7 +1361,7 @@ msgstr "Envoi des fonds..."
 #: public/views/modals/tx-details.html
 #: public/views/modals/tx-status.html
 msgid "Sent"
-msgstr "Envoyée"
+msgstr "Envoyés"
 
 #: public/views/importLegacy.html
 msgid "Server"
@@ -1846,7 +1843,7 @@ msgstr "Vous n'avez aucun portefeuille"
 
 #: public/views/backup.html
 msgid "You need the wallet seed to restore this personal wallet. Write it down and keep them somewhere safe."
-msgstr "Vous avez besoin de la graine de portefeuille pour restaurer ce portefeuille personnel. Notez-la et conservez-le dans un endroit sûr."
+msgstr "Vous avez besoin de la graine de portefeuille pour restaurer ce portefeuille personnel. Notez-la et conservez-la dans un endroit sûr."
 
 #: public/views/import.html
 msgid "Your backup password"
