@@ -44,9 +44,6 @@ angular.element(document).ready(function() {
             window.location = '#/cordova/resume///';
           }, 100);
         }
-        setTimeout(function() {
-          window.ignoreMobilePause = false;
-        }, 100);
       }, false);
 
       // Back button event

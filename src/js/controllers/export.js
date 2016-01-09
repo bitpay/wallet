@@ -10,6 +10,14 @@ angular.module('copayApp.controllers').controller('exportController',
     var fc = profileService.focusedClient;
     self.isEncrypted = fc.isPrivKeyEncrypted();
 
+    if (isMobile.Android() || isMobile.Windows()) {
+      $scope.$on('$destroy', function () {
+        $timeout(function () {
+          window.ignoreMobilePause = false;
+        }, 100);
+      });
+    }
+
     self.downloadWalletBackup = function() {
       self.getMetaData($scope.metaData, function(err, txsFromLocal, localAddressBook) {
         if (err) {

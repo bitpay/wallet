@@ -9,6 +9,14 @@ angular.module('copayApp.controllers').controller('copayersController',
     var cancel_msg = gettextCatalog.getString('Cancel');
     var confirm_msg = gettextCatalog.getString('Confirm');
 
+    if (isMobile.Android() || isMobile.Windows()) {
+      $scope.$on('$destroy', function () {
+        $timeout(function () {
+          window.ignoreMobilePause = false;
+        }, 100);
+      });
+    }
+
     self.init = function() {
       var fc = profileService.focusedClient;
       if (fc.isComplete()) {

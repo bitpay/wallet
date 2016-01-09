@@ -28,6 +28,14 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   this.addr = {};
   this.lockedCurrentFeePerKb = null;
 
+  if (isMobile.Android() || isMobile.Windows()) {
+    $scope.$on('$destroy', function () {
+      $timeout(function () {
+        window.ignoreMobilePause = false;
+      }, 100);
+    });
+  }
+
   var disableScannerListener = $rootScope.$on('dataScanned', function(event, data) {
     self.setForm(data);
     $rootScope.$emit('Local/SetTab', 'send');
