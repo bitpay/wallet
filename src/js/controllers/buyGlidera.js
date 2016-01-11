@@ -9,6 +9,8 @@ angular.module('copayApp.controllers').controller('buyGlideraController',
     this.success = null;
     this.loading = null; 
 
+    window.ignoreMobilePause = true;
+
     var otherWallets = function(testnet) {
       var network = testnet ? 'testnet' : 'livenet';
       return lodash.filter(profileService.getWallets(network), function(w) {

@@ -14,6 +14,8 @@ angular.module('copayApp.controllers').controller('sellGlideraController',
     this.currentFeeLevel = config.wallet.settings.feeLevel || 'normal';
     var fc;
 
+    window.ignoreMobilePause = true;
+
     var otherWallets = function(testnet) {
       var network = testnet ? 'testnet' : 'livenet';
       return lodash.filter(profileService.getWallets(network), function(w) {
