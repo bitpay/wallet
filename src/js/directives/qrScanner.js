@@ -11,29 +11,27 @@ angular.module('copayApp.directives')
               window.plugins.spinnerDialog.hide();
               window.ignoreMobilePause = false;
             }, 100);
-            if (!isMobile.iOS() && result.cancelled) return;
+            if (isMobile.Windows() && result.cancelled) return;
 
             $timeout(function() {
-              var data = isMobile.iOS() ? result : result.text;
+              var data = isMobile.Windows() ? result.text : result;
               $scope.onScan({ data: data });
             }, 1000);
           };
 
-          var onError = function() {
-            function onError(error) {
-              $timeout(function() {
-                window.ignoreMobilePause = false;
-                window.plugins.spinnerDialog.hide();
-              }, 100);
-            }
+          var onError = function(error) {
+            $timeout(function() {
+              window.ignoreMobilePause = false;
+              window.plugins.spinnerDialog.hide();
+            }, 100);
           };
 
           $scope.cordovaOpenScanner = function() {
             window.ignoreMobilePause = true;
             window.plugins.spinnerDialog.show(null, gettextCatalog.getString('Preparing camera...'), true);
             $timeout(function() {
-              if (isMobile.iOS()) {
-                cloudSky.zBar.scan({}, onSuccess, onError)
+              if (!isMobile.Windows()) {
+                cloudSky.zBar.scan({}, onSuccess, onError);
               } else {
                 cordova.plugins.barcodeScanner.scan(onSuccess, onError);
               }
