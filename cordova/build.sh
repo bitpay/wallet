@@ -84,11 +84,14 @@ if [ ! -d $PROJECT ]; then
   cordova plugin add https://github.com/florentvaldelievre/virtualartifacts-webIntent.git
   checkOK
 
-  cordova plugin add https://github.com/phonegap/phonegap-plugin-barcodescanner.git
-  checkOK
-
-  cordova plugin add https://github.com/tjwoon/csZBar.git
-  checkOK
+  if [ $CURRENT_OS == "IOS" ]
+  then
+    cordova plugin add https://github.com/tjwoon/csZBar.git
+    checkOK
+  else
+    cordova plugin add https://github.com/phonegap/phonegap-plugin-barcodescanner.git
+    checkOK
+  fi
 
   cordova plugin add cordova-plugin-splashscreen
   checkOK
