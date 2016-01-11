@@ -135,20 +135,17 @@ if [ ! -d $PROJECT ]; then
   cordova plugin add cordova-plugin-file@3.0.0
   checkOK
 
-  if [ $CURRENT_OS == "IOS" ]
-  then
-    cordova plugin add cordova-plugin-touch-id && cordova prepare
-    checkOK
+  cordova plugin add cordova-plugin-touch-id && cordova prepare
+  checkOK
 
-    cordova plugin add cordova-plugin-transport-security
-    checkOK
+  cordova plugin add cordova-plugin-transport-security
+  checkOK
 
-    cordova plugin add cordova-ios-requires-fullscreen
-    checkOK
+  cordova plugin add cordova-ios-requires-fullscreen
+  checkOK
 
-    cordova plugin add cordova-plugin-disable-bitcode
-    checkOK
-  fi
+  cordova plugin add cordova-plugin-disable-bitcode
+  checkOK
 
 fi
 
