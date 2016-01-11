@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('glideraController', 
-  function($scope, $timeout, $modal, profileService, configService, storageService, glideraService, isChromeApp, animationService) {
+  function($rootScope, $scope, $timeout, $modal, profileService, configService, storageService, glideraService, isChromeApp, animationService, lodash) {
 
     window.ignoreMobilePause = true;
 
@@ -37,6 +37,7 @@ angular.module('copayApp.controllers').controller('glideraController',
     };
 
     this.openTxModal = function(token, tx) {
+      $rootScope.modalOpened = true;
       var self = this;
       var config = configService.getSync().wallet.settings;
       var fc = profileService.focusedClient;
@@ -50,9 +51,9 @@ angular.module('copayApp.controllers').controller('glideraController',
           $scope.tx = tx;
         });
 
-        $scope.cancel = function() {
+        $scope.cancel = lodash.debounce(function() {
           $modalInstance.dismiss('cancel');
-        };
+        }, 0, 1000);
 
       };
 
@@ -62,7 +63,13 @@ angular.module('copayApp.controllers').controller('glideraController',
           controller: ModalInstanceCtrl,
       });
 
+      var disableCloseModal = $rootScope.$on('closeModal', function() {
+        modalInstance.dismiss('cancel');
+      });
+
       modalInstance.result.finally(function() {
+        $rootScope.modalOpened = false;
+        disableCloseModal();
         var m = angular.element(document.getElementsByClassName('reveal-modal'));
         m.addClass(animationService.modalAnimated.slideOutRight);
       });
