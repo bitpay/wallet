@@ -3,6 +3,8 @@
 angular.module('copayApp.controllers').controller('glideraController', 
   function($scope, $timeout, $modal, profileService, configService, storageService, glideraService, isChromeApp, animationService) {
 
+    window.ignoreMobilePause = true;
+
     this.getAuthenticateUrl = function() {
       return glideraService.getOauthCodeUrl();
     };
