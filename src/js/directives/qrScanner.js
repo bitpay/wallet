@@ -1,36 +1,40 @@
 'use strict';
 
 angular.module('copayApp.directives')
-    .directive('qrScanner', ['$rootScope', '$timeout', '$modal', 'isCordova', 'gettextCatalog',
-      function($rootScope, $timeout, $modal, isCordova, gettextCatalog) {
+    .directive('qrScanner', ['$rootScope', '$timeout', '$modal', 'isCordova', 'gettextCatalog', 'isMobile', 
+      function($rootScope, $timeout, $modal, isCordova, gettextCatalog, isMobile) {
 
         var controller = function($scope) {
+
+          var onSuccess = function(result) {
+            $timeout(function() {
+              window.plugins.spinnerDialog.hide();
+              window.ignoreMobilePause = false;
+            }, 100);
+            if (isMobile.Windows() && result.cancelled) return;
+
+            $timeout(function() {
+              var data = isMobile.Windows() ? result.text : result;
+              $scope.onScan({ data: data });
+            }, 1000);
+          };
+
+          var onError = function(error) {
+            $timeout(function() {
+              window.ignoreMobilePause = false;
+              window.plugins.spinnerDialog.hide();
+            }, 100);
+          };
 
           $scope.cordovaOpenScanner = function() {
             window.ignoreMobilePause = true;
             window.plugins.spinnerDialog.show(null, gettextCatalog.getString('Preparing camera...'), true);
             $timeout(function() {
-              cordova.plugins.barcodeScanner.scan(
-                  function onSuccess(result) {
-                    $timeout(function() {
-                      window.plugins.spinnerDialog.hide();
-                      window.ignoreMobilePause = false;
-                    }, 100);
-                    if (result.cancelled) return;
-
-                    $timeout(function() {
-                      var data = result.text;
-                      $scope.onScan({ data: data });
-                    }, 1000);
-                  },
-                  function onError(error) {
-                    $timeout(function() {
-                      window.ignoreMobilePause = false;
-                      window.plugins.spinnerDialog.hide();
-                    }, 100);
-                    alert('Scanning error');
-                  }
-              );
+              if (!isMobile.Windows()) {
+                cloudSky.zBar.scan({}, onSuccess, onError);
+              } else {
+                cordova.plugins.barcodeScanner.scan(onSuccess, onError);
+              }
               if ($scope.beforeScan) {
                 $scope.beforeScan();
               }
