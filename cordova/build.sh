@@ -84,8 +84,15 @@ if [ ! -d $PROJECT ]; then
   cordova plugin add https://github.com/florentvaldelievre/virtualartifacts-webIntent.git
   checkOK
 
-  cordova plugin add https://github.com/phonegap/phonegap-plugin-barcodescanner.git
-  checkOK
+  if [ $CURRENT_OS != "WP8" ]
+  then
+    cordova plugin add https://github.com/tjwoon/csZBar.git
+    checkOK
+  else
+    echo "${OpenColor}${Green}* Using plugin phonegap-plugin-barcodescanner for Windows Phone 8  ${CloseColor}"
+    cordova plugin add https://github.com/phonegap/phonegap-plugin-barcodescanner.git
+    checkOK
+  fi
 
   cordova plugin add cordova-plugin-splashscreen
   checkOK
@@ -136,6 +143,9 @@ if [ ! -d $PROJECT ]; then
   checkOK
 
   cordova plugin add cordova-ios-requires-fullscreen
+  checkOK
+
+  cordova plugin add cordova-plugin-disable-bitcode
   checkOK
 
 fi
