@@ -45,7 +45,9 @@ angular.element(document).ready(function() {
           }, 100);
         }
         setTimeout(function() {
-          window.ignoreMobilePause = false;
+          var loc = window.location;
+          var ignoreMobilePause = loc.toString().match(/(glidera|buy|sell)/) ? true : false;
+          window.ignoreMobilePause = ignoreMobilePause;
         }, 100);
       }, false);
 
