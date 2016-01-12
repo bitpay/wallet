@@ -89,6 +89,7 @@ if [ ! -d $PROJECT ]; then
     cordova plugin add https://github.com/tjwoon/csZBar.git
     checkOK
   else
+    echo "${OpenColor}${Green}* Using plugin phonegap-plugin-barcodescanner for Windows Phone 8  ${CloseColor}"
     cordova plugin add https://github.com/phonegap/phonegap-plugin-barcodescanner.git
     checkOK
   fi
