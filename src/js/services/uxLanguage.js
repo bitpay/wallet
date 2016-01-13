@@ -35,23 +35,24 @@ angular.module('copayApp.services')
           // works for iOS and Android 4.x
           userLang = preferedLanguage.value;
           userLang = userLang ? (userLang.split('-', 1)[0] || 'en') : 'en';
+          // Set only available languages
+          userLang = root.isAvailableLanguage(userLang);
           return cb(userLang);
         });
       } else {
         // Auto-detect browser language
         userLang = navigator.userLanguage || navigator.language;
         userLang = userLang ? (userLang.split('-', 1)[0] || 'en') : 'en';
+        // Set only available languages
+        userLang = root.isAvailableLanguage(userLang);
         return cb(userLang);
       }
+    };
 
-      userLang = userLang ? (userLang.split('-', 1)[0] || 'en') : 'en';
-
-      // Set only available languages
-      userLang = lodash.find(root.availableLanguages, {
+    root.isAvailableLanguage = function(userLang) {
+      return lodash.find(root.availableLanguages, {
         'isoCode': userLang
       }) ? userLang : 'en';
-
-      return userLang;
     };
 
     root._set = function(lang) {
