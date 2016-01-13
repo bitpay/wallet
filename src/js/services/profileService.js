@@ -81,7 +81,7 @@ angular.module('copayApp.services')
           client.credentials.walletId, client.credentials.walletName);
 
         if (root.focusedClient.credentials.walletId == client.credentials.walletId) {
-          $rootScope.$emit(n.type);
+          $rootScope.$emit(n.type, n);
         } else {
           $rootScope.$apply();
         }

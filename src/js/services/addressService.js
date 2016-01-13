@@ -26,7 +26,7 @@ angular.module('copayApp.services')
 
       $log.debug('Creating address for wallet:', walletId);
 
-      client.createAddress(function(err, addr) {
+      client.createAddress({}, function(err, addr) {
         if (err) {
           var prefix = gettextCatalog.getString('Could not create address');
           if (err.error && err.error.match(/locked/gi)) {
