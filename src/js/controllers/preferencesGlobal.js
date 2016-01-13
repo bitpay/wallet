@@ -36,12 +36,12 @@ angular.module('copayApp.controllers').controller('preferencesGlobalController',
     var unwatchNotification = $scope.$watch('notifications', function(newVal, oldVal) {
       if (newVal == oldVal) return;
       var opts = {
-        notifications: {
+      pushNotifications: {
           enabled: newVal
         }
       };
       configService.set(opts, function(err) {
-        if (opts.notifications.enabled)
+        if (opts.pushNotifications.enabled)
           pushNotificationsService.enableNotifications();
         else
           pushNotificationsService.disableNotifications();
