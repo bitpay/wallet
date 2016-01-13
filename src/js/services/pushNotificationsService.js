@@ -1,31 +1,21 @@
 'use strict';
 angular.module('copayApp.services')
-  .factory('pushNotificationsService', function($http, $log, profileService, storageService, lodash) {
+  .factory('pushNotificationsService', function($http, $log, isMobile, profileService, storageService, configService, lodash) {
     var root = {};
+    var defaults = configService.getDefaults();
 
     root.pushNotificationsInit = function() {
-
-      var push = PushNotification.init({
-        android: {
-          senderID: "959259672122"
-        },
-        ios: {
-          alert: "true",
-          badge: true,
-          sound: 'false'
-        },
-        windows: {}
-      });
+      var push = PushNotification.init(defaults.pushNotifications.config);
 
       push.on('registration', function(data) {
-        $log.debug('Starting registration');
+        $log.debug('Starting push notification registration');
         storageService.setDeviceToken(data.registrationId, function() {
           root.enableNotifications();
         });
       });
 
       push.on('notification', function(data) {
-        $log.debug('Notification event: ', data.message);
+        $log.debug('Push notification event: ', data.message);
         /* data.message,
          data.title,
          data.count,
@@ -45,7 +35,7 @@ angular.module('copayApp.services')
         lodash.forEach(profileService.getWallets('testnet'), function(wallets) {
           var opts = {};
           opts.user = wallets.id + '$' + wallets.copayerId;
-          opts.type = (navigator.userAgent.match(/iPhone/i)) == "iPhone" ? "ios" : (navigator.userAgent.match(/Android/i)) == "Android" ? "android" : null;
+          opts.type = isMobile.iOS() ? "ios" : isMobile.Android() ? "android" : null;
           opts.token = token;
           root.subscribe(opts).then(function(response) {
               $log.debug('Suscribed: ' + response.status);
@@ -69,17 +59,17 @@ angular.module('copayApp.services')
     }
 
     root.subscribe = function(opts) {
-      return $http.post('http://192.168.1.128:8000/subscribe', opts);
+      return $http.post(defaults.pushNotifications.url + '/subscribe', opts);
     }
 
     root.unsubscribe = function(user) {
-      return $http.post('http://192.168.1.128:8000/unsubscribe', {
+      return $http.post(defaults.pushNotifications.url + '/unsubscribe', {
         user: user
       });
     }
 
     root.unsubscribeAll = function(token) {
-      return $http.post('http://192.168.1.128:8000/unsubscribe', {
+      return $http.post(defaults.pushNotifications.url + '/unsubscribe', {
         token: token
       });
     }

@@ -42,8 +42,20 @@ angular.module('copayApp.services').factory('configService', function(storageSer
       url: 'https://insight.bitpay.com:443/api/rates',
     },
 
-    notifications: {
-      enabled: true
+    pushNotifications: {
+      enabled: true,
+      url: 'http://192.168.1.111:8080',
+      config: {
+        android: {
+          senderID: '959259672122',
+        },
+        ios: {
+          alert: 'true',
+          badge: 'true',
+          sound: 'true',
+        },
+        windows: {},
+      }
     },
   };
 
