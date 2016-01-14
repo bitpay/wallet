@@ -26,24 +26,33 @@ angular.module('copayApp.services')
 
     root.currentLanguage = null;
 
-    root._detect = function() {
-      // Auto-detect browser language
+    root._detect = function(cb) {
+
       var userLang, androidLang;
+      if (navigator && navigator.globalization) {
 
-      if (navigator && navigator.userAgent && (androidLang = navigator.userAgent.match(/android.*\W(\w\w)-(\w\w)\W/i))) {
-        userLang = androidLang[1];
+        navigator.globalization.getPreferredLanguage(function(preferedLanguage) {
+          // works for iOS and Android 4.x
+          userLang = preferedLanguage.value;
+          userLang = userLang ? (userLang.split('-', 1)[0] || 'en') : 'en';
+          // Set only available languages
+          userLang = root.isAvailableLanguage(userLang);
+          return cb(userLang);
+        });
       } else {
-        // works for iOS and Android 4.x
+        // Auto-detect browser language
         userLang = navigator.userLanguage || navigator.language;
+        userLang = userLang ? (userLang.split('-', 1)[0] || 'en') : 'en';
+        // Set only available languages
+        userLang = root.isAvailableLanguage(userLang);
+        return cb(userLang);
       }
-      userLang = userLang ? (userLang.split('-', 1)[0] || 'en') : 'en';
+    };
 
-      // Set only available languages
-      userLang = lodash.find(root.availableLanguages, {
+    root.isAvailableLanguage = function(userLang) {
+      return lodash.find(root.availableLanguages, {
         'isoCode': userLang
       }) ? userLang : 'en';
-
-      return userLang;
     };
 
     root._set = function(lang) {
@@ -72,20 +81,30 @@ angular.module('copayApp.services')
     };
 
     root.init = function() {
-      root._set(root._detect());
+      root._detect(function(lang) {
+        root._set(lang);
+      });
     };
 
-    root.update = function() {
+    root.update = function(cb) {
       var userLang = configService.getSync().wallet.settings.defaultLanguage;
 
       if (!userLang) {
-        userLang = root._detect();
-      }
 
-      if (userLang != gettextCatalog.getCurrentLanguage()) {
-        root._set(userLang);
+        root._detect(function(lang) {
+          userLang = lang;
+
+          if (userLang != root.currentLanguage) {
+            root._set(lang);
+          }
+          return cb(userLang);
+        });
+      } else {
+        if (userLang != root.currentLanguage) {
+          root._set(userLang);
+        }
+        return cb(userLang);
       }
-      return userLang;
     };
 
     root.getName = function(lang) {
