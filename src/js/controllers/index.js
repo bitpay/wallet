@@ -300,7 +300,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         return cb(null, opts.walletStatus);
       else {
         self.updateError = false;
-        return fc.getStatus({}, function(err, ret) {
+        return fc.getStatus({ twoStep : true }, function(err, ret) {
           if (err) {
             self.updateError = bwsError.msg(err, gettext('Could not update Wallet'));
           } else {
@@ -1342,6 +1342,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     }
   });
 
+  $rootScope.$on('BalanceUpdated', function(e, n) {
+    self.setBalance(n.data);
+  });
 
   $rootScope.$on('NewOutgoingTx', function() {
     self.newTx = true;
