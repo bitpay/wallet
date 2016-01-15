@@ -305,35 +305,37 @@ angular.module('copayApp.services')
       var fc = root.focusedClient;
       var walletId = fc.credentials.walletId;
 
-      $rootScope.$emit('Local/UnsubscribeNotifications');
-      $log.debug('Deleting Wallet:', fc.credentials.walletName);
+      $rootScope.$emit('Local/UnsubscribeNotifications', walletId, function() {
 
-      fc.removeAllListeners();
-      root.profile.credentials = lodash.reject(root.profile.credentials, {
-        walletId: walletId
-      });
+        $log.debug('Deleting Wallet:', fc.credentials.walletName);
 
-      delete root.walletClients[walletId];
-      root.focusedClient = null;
+        fc.removeAllListeners();
+        root.profile.credentials = lodash.reject(root.profile.credentials, {
+          walletId: walletId
+        });
 
-      storageService.clearLastAddress(walletId, function(err) {
-        if (err) $log.warn(err);
-      });
+        delete root.walletClients[walletId];
+        root.focusedClient = null;
 
-      storageService.removeTxHistory(walletId, function(err) {
-        if (err) $log.warn(err);
-      });
+        storageService.clearLastAddress(walletId, function(err) {
+          if (err) $log.warn(err);
+        });
 
-      storageService.clearBackupFlag(walletId, function(err) {
-        if (err) $log.warn(err);
-      });
+        storageService.removeTxHistory(walletId, function(err) {
+          if (err) $log.warn(err);
+        });
 
-      $timeout(function() {
-        root.setWalletClients();
-        root.setAndStoreFocus(null, function() {
-          storageService.storeProfile(root.profile, function(err) {
-            if (err) return cb(err);
-            return cb();
+        storageService.clearBackupFlag(walletId, function(err) {
+          if (err) $log.warn(err);
+        });
+
+        $timeout(function() {
+          root.setWalletClients();
+          root.setAndStoreFocus(null, function() {
+            storageService.storeProfile(root.profile, function(err) {
+              if (err) return cb(err);
+              return cb();
+            });
           });
         });
       });

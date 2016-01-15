@@ -1288,10 +1288,13 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     pushNotificationsService.enableNotifications();
   });
 
-  $rootScope.$on('Local/UnsubscribeNotifications', function(event) {
-    pushNotificationsService.unsubscribe(null, function(err, response) {
-      if (err) $log.warn('Error: ' + err.code);
-      $log.debug('Unsubscribed: ' + response);
+  $rootScope.$on('Local/UnsubscribeNotifications', function(event, walletId, cb) {
+    storageService.getDeviceToken(function(err, token) {
+      pushNotificationsService.unsubscribe(token, walletId, function(err, response) {
+        if (err) $log.warn('Error: ' + err.code);
+        $log.debug('Unsubscribed: ' + response);
+        return cb();
+      });
     });
   });
 
