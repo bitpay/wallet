@@ -304,6 +304,8 @@ angular.module('copayApp.services')
     root.deleteWalletFC = function(opts, cb) {
       var fc = root.focusedClient;
       var walletId = fc.credentials.walletId;
+
+      $rootScope.$emit('Local/UnsubscribeNotifications');
       $log.debug('Deleting Wallet:', fc.credentials.walletName);
 
       fc.removeAllListeners();
@@ -325,8 +327,6 @@ angular.module('copayApp.services')
       storageService.clearBackupFlag(walletId, function(err) {
         if (err) $log.warn(err);
       });
-
-      $rootScope.$emit('Local/UnsubscribeNotifications', walletId);
 
       $timeout(function() {
         root.setWalletClients();
