@@ -47,8 +47,8 @@ angular
                 // Trim output in mobile
                 if (window.cordova) {
                   v = v.toString();
-                  if (v.length > 1000) {
-                    v = v.substr(0, 997) + '...';
+                  if (v.length > 300) {
+                    v = v.substr(0, 297) + '...';
                   }
                 }
               } catch (e) {
