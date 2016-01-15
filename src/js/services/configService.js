@@ -44,7 +44,6 @@ angular.module('copayApp.services').factory('configService', function(storageSer
 
     pushNotifications: {
       enabled: true,
-      url: 'http://192.168.1.111:8080',
       config: {
         android: {
           senderID: '959259672122',
