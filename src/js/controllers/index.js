@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, isMobile, pushNotificationsService, lodash, go, profileService, configService, isCordova, rateService, storageService, addressService, gettext, gettextCatalog, amMoment, nodeWebkit, addonManager, feeService, isChromeApp, bwsError, txFormatService, uxLanguage, $state, glideraService, isMobile, addressbookService) {
+angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, pushNotificationsService, lodash, go, profileService, configService, isCordova, rateService, storageService, addressService, gettext, gettextCatalog, amMoment, nodeWebkit, addonManager, feeService, isChromeApp, bwsError, txFormatService, uxLanguage, $state, glideraService, isMobile, addressbookService) {
   var self = this;
   var SOFT_CONFIRMATION_LIMIT = 12;
   self.isCordova = isCordova;
@@ -319,7 +319,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         return cb(null, opts.walletStatus);
       else {
         self.updateError = false;
-        return fc.getStatus({ twoStep : true }, function(err, ret) {
+        return fc.getStatus({
+          twoStep: true
+        }, function(err, ret) {
           if (err) {
             self.updateError = bwsError.msg(err, gettext('Could not update Wallet'));
           } else {
