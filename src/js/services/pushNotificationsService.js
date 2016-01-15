@@ -34,43 +34,38 @@ angular.module('copayApp.services')
       storageService.getDeviceToken(function(err, token) {
         lodash.forEach(profileService.getWallets('testnet'), function(wallets) {
           var opts = {};
-          opts.user = wallets.id + '$' + wallets.copayerId;
           opts.type = isMobile.iOS() ? "ios" : isMobile.Android() ? "android" : null;
           opts.token = token;
-          root.subscribe(opts).then(function(response) {
-              $log.debug('Suscribed: ' + response.status);
-            },
-            function(err) {
-              $log.warn('Error: ' + err.status);
-            });
+          root.subscribe(opts, wallets.id, function(err, response) {
+            if (err) $log.warn('Error: ' + err.code);
+            $log.debug('Suscribed: ' + JSON.stringify(response));
+          });
         });
       });
     }
 
     root.disableNotifications = function() {
       storageService.getDeviceToken(function(err, token) {
-        root.unsubscribeAll(token).then(function(response) {
-            $log.debug('Unsubscribed: ' + response.status);
-          },
-          function(err) {
-            $log.warn('Error: ' + err.status);
-          });
+        root.unsubscribe(token, function(err, response) {
+          if (err) $log.warn('Error: ' + err.code);
+          $log.debug('Unsubscribed: ' + response);
+        });
       });
     }
 
-    root.subscribe = function(opts) {
-      return $http.post(defaults.pushNotifications.url + '/subscribe', opts);
-    }
-
-    root.unsubscribe = function(user) {
-      return $http.post(defaults.pushNotifications.url + '/unsubscribe', {
-        user: user
+    root.subscribe = function(opts, walletId, cb) {
+      var walletClient = profileService.getClient(walletId);
+      walletClient.pushNotificationsSubscribe(opts, function(err, resp) {
+        if (err) return cb(err);
+        return cb(null, resp);
       });
     }
 
-    root.unsubscribeAll = function(token) {
-      return $http.post(defaults.pushNotifications.url + '/unsubscribe', {
-        token: token
+    root.unsubscribe = function(opts, cb) {
+      var walletClient = profileService.focusedClient;
+      walletClient.pushNotificationsUnsubscribe(opts, function(err, resp) {
+        if (err) return cb(err);
+        return cb(null, resp);
       });
     }
 

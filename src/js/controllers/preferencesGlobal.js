@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('preferencesGlobalController',
-  function($scope, $rootScope, $log, configService, uxLanguage, isCordova, pushNotificationsService) {
+  function($scope, $rootScope, $log, configService, isMobile, uxLanguage, pushNotificationsService) {
 
     this.init = function() {
       var config = configService.getSync();
@@ -17,7 +17,7 @@ angular.module('copayApp.controllers').controller('preferencesGlobalController',
       $scope.notifications = config.notifications ? config.notifications.enabled : true;
     };
 
-    if (isCordova) $scope.mobile = true;
+    if (isMobile.Android() || isMobile.iOS()) $scope.mobile = true;
     else $scope.mobile = false;
 
     var unwatchSpendUnconfirmed = $scope.$watch('spendUnconfirmed', function(newVal, oldVal) {
@@ -36,7 +36,7 @@ angular.module('copayApp.controllers').controller('preferencesGlobalController',
     var unwatchNotification = $scope.$watch('notifications', function(newVal, oldVal) {
       if (newVal == oldVal) return;
       var opts = {
-      pushNotifications: {
+        pushNotifications: {
           enabled: newVal
         }
       };
