@@ -27,7 +27,7 @@ angular.module('copayApp.controllers').controller('importLegacyController',
     });
 
     self.scan = function(ids) {
-      $log.debug('### Scaning: ' + ids)
+      $log.debug('### Scanning: ' + ids)
       var i = 0;
       lodash.each(ids, function(id) {
         $rootScope.$emit('Local/WalletImported', id);

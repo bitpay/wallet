@@ -4,7 +4,7 @@ angular.module('copayApp.services')
 
     var root = {};
 
-    // File storage is not supported for writting according to 
+    // File storage is not supported for writing according to 
     // https://github.com/apache/cordova-plugin-file/#supported-platforms
     var shouldUseFileStorage = isCordova && !isMobile.Windows();
     $log.debug('Using file storage:', shouldUseFileStorage);
