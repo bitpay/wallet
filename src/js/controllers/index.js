@@ -452,7 +452,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     });
   };
 
-  // This handles errors from BWS/index with are nomally
+  // This handles errors from BWS/index which normally
   // trigger from async events (like updates).
   // Debounce function avoids multiple popups
   var _handleError = function(err) {

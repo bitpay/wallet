@@ -264,7 +264,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   };
 
   var GLIDERA_LOCK_TIME = 6 * 60 * 60;
-  // isGlidera flag is a security mesure so glidera status is not
+  // isGlidera flag is a security measure so glidera status is not
   // only determined by the tx.message
   this.openTxpModal = function(tx, copayers, isGlidera) {
     $rootScope.modalOpened = true;
@@ -1110,7 +1110,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
         if (!paypro.verified) {
           self.resetForm();
-          $log.warn('Failed to verified payment protocol signatured');
+          $log.warn('Failed to verify payment protocol signatures');
           self.error = gettext('Payment Protocol Invalid');
           $timeout(function() {
             $rootScope.$digest();

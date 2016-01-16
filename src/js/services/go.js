@@ -88,7 +88,7 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
 
 
   // Global go. This should be in a better place TODO
-  // We dont do a 'go' directive, to use the benefits of ng-touch with ng-click
+  // We don't do a 'go' directive, to use the benefits of ng-touch with ng-click
   $rootScope.go = function(path) {
     root.path(path);
   };
