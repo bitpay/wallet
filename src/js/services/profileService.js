@@ -692,7 +692,7 @@ angular.module('copayApp.services')
 
     root._signWithTrezor = function(txp, cb) {
       var fc = root.focusedClient;
-      $log.info('Requesting Trezor  to sign the transaction');
+      $log.info('Requesting Trezor to sign the transaction');
 
       var xPubKeys = lodash.pluck(fc.credentials.publicKeyRing, 'xPubKey');
       trezor.signTx(xPubKeys, txp, fc.credentials.account, function(err, result) {
