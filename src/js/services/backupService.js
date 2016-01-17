@@ -32,7 +32,7 @@ angular.module('copayApp.services')
             $log.debug("case 3");
           } else {
             // We're screwed, blob constructor unsupported entirely   
-            $log.debug("Errore");
+            $log.debug("Error");
           }
         }
         return out;
