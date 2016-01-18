@@ -15,7 +15,7 @@
 <div class="modal-content fix-modals-touch"
      ng-swipe-disable-mouse
      ng-swipe-right="cancel()">
-  <div class="header-modal size-36 text-center">
+  <div class="header-modal text-center" ng-init="getAlternativeAmount()">
     <div ng-show="btx.action != 'invalid'">
       <div ng-show="btx.action == 'received'">
         <img src="img/icon-receive-history.svg" alt="sync" width="50">
@@ -30,11 +30,21 @@
         <p class="m0 text-gray size-14" translate>Moved</p>
       </div>
       
-      <span ng-if="btx.action == 'received'">+</span><span ng-if="btx.action == 'sent'">-</span>{{btx.amountStr}}
+      <div class="size-36">
+        <span ng-if="btx.action == 'received'">+</span><span ng-if="btx.action == 'sent'">-</span>{{btx.amountStr}}
+      </div>
+      <div class="alternative-amount" ng-click="showRate=!showRate" ng-init="showRate = false">
+        <span class="label gray radius" ng-show="!showRate && alternativeAmountStr">
+          {{alternativeAmountStr}}
+        </span>
+        <span class="size-12" ng-show="showRate && alternativeAmountStr">
+          {{rateStr}} ({{rateDate | amDateFormat:'MM/DD/YYYY HH:mm a'}})
+        </span>
+      </div>
     </div>
     <div ng-show="btx.action == 'invalid'">
       -
-    </div>
+    </div> 
   </div>
 
   <h4 class="title m0" translate>Details</h4>
