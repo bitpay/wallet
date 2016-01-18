@@ -45,12 +45,10 @@ angular.module('copayApp.services')
     }
 
     root.disableNotifications = function() {
-      storageService.getDeviceToken(function(err, token) {
-        lodash.forEach(profileService.getWallets('testnet'), function(wallet) {
-          root.unsubscribe(token, wallet.id, function(err, response) {
-            if (err) $log.warn('Error: ' + err.code);
-            $log.debug('Unsubscribed: ' + response);
-          });
+      lodash.forEach(profileService.getWallets('testnet'), function(wallet) {
+        root.unsubscribe(wallet.id, function(err, response) {
+          if (err) $log.warn('Error: ' + err.code);
+          $log.debug('Unsubscribed: ' + response);
         });
       });
     }
@@ -63,9 +61,9 @@ angular.module('copayApp.services')
       });
     }
 
-    root.unsubscribe = function(token, walletId, cb) {
+    root.unsubscribe = function(walletId, cb) {
       var walletClient = profileService.getClient(walletId);
-      walletClient.pushNotificationsUnsubscribe(token, function(err, resp) {
+      walletClient.pushNotificationsUnsubscribe(function(err, resp) {
         if (err) return cb(err);
         return cb(null, resp);
       });
