@@ -371,6 +371,7 @@ angular.module('copayApp.services')
         return cb(gettext('Wallet already in Copay' + ": ") + w.walletName);
       }
 
+      var config = configService.getSync();
       var defaults = configService.getDefaults();
       var bwsFor = {};
       bwsFor[walletId] = opts.bwsurl || defaults.bws.url;
@@ -401,7 +402,8 @@ angular.module('copayApp.services')
         handleImport(function() {
           root.setAndStoreFocus(walletId, function() {
             storageService.storeProfile(root.profile, function(err) {
-              $rootScope.$emit('Local/SubscribeNotifications');
+              if (config.pushNotifications.enabled)
+                $rootScope.$emit('Local/SubscribeNotifications');
               return cb(err, walletId);
             });
           });
