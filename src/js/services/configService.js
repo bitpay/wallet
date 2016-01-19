@@ -46,7 +46,7 @@ angular.module('copayApp.services').factory('configService', function(storageSer
       enabled: true,
       config: {
         android: {
-          senderID: '959259672122',
+          senderID: '1036948132229',
         },
         ios: {
           alert: 'true',
