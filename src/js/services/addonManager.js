@@ -31,4 +31,13 @@ angular.module('copayApp.services').service('addonManager', function (lodash) {
     var addon = lodash.find(addons, 'txTemplateUrl');
     return addon ? addon.txTemplateUrl() : null;
   }
+  
+  this.processCreateTxOpts = function(txOpts) {
+    lodash.each(addons, function (addon) {
+      if (addon.processCreateTxOpts) {
+        addon.processCreateTxOpts(txOpts);
+      }
+    });
+  };
+
 });
