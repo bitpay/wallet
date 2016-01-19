@@ -118,7 +118,7 @@ angular.module('copayApp.services')
 
     root.bindProfile = function(profile, cb) {
       root.profile = profile;
-      
+
       configService.get(function(err) {
         $log.debug('Preferences read');
         if (err) return cb(err);
@@ -128,20 +128,19 @@ angular.module('copayApp.services')
           root._setFocus(focusedWalletId, function() {
             $rootScope.$emit('Local/ProfileBound');
             root.isDisclaimerAccepted(function(val) {
-              if (!val) { 
+              if (!val) {
                 return cb(new Error('NONAGREEDDISCLAIMER: Non agreed disclaimer'));
-              }
-              else {
+              } else {
                 return cb();
               }
             });
           });
         });
       });
-        
+
     };
 
-    root.loadAndBindProfile = function(cb) { 
+    root.loadAndBindProfile = function(cb) {
       storageService.getProfile(function(err, profile) {
         if (err) {
           $rootScope.$emit('Local/DeviceError', err);
@@ -305,34 +304,38 @@ angular.module('copayApp.services')
     root.deleteWalletFC = function(opts, cb) {
       var fc = root.focusedClient;
       var walletId = fc.credentials.walletId;
-      $log.debug('Deleting Wallet:', fc.credentials.walletName);
 
-      fc.removeAllListeners();
-      root.profile.credentials = lodash.reject(root.profile.credentials, {
-        walletId: walletId
-      });
+      $rootScope.$emit('Local/UnsubscribeNotifications', walletId, function() {
 
-      delete root.walletClients[walletId];
-      root.focusedClient = null;
+        $log.debug('Deleting Wallet:', fc.credentials.walletName);
 
-      storageService.clearLastAddress(walletId, function(err) {
-        if (err) $log.warn(err);
-      });
+        fc.removeAllListeners();
+        root.profile.credentials = lodash.reject(root.profile.credentials, {
+          walletId: walletId
+        });
 
-      storageService.removeTxHistory(walletId, function(err) {
-        if (err) $log.warn(err);
-      });
+        delete root.walletClients[walletId];
+        root.focusedClient = null;
 
-      storageService.clearBackupFlag(walletId, function(err) {
-        if (err) $log.warn(err);
-      });
+        storageService.clearLastAddress(walletId, function(err) {
+          if (err) $log.warn(err);
+        });
 
-      $timeout(function() {
-        root.setWalletClients();
-        root.setAndStoreFocus(null, function() {
-          storageService.storeProfile(root.profile, function(err) {
-            if (err) return cb(err);
-            return cb();
+        storageService.removeTxHistory(walletId, function(err) {
+          if (err) $log.warn(err);
+        });
+
+        storageService.clearBackupFlag(walletId, function(err) {
+          if (err) $log.warn(err);
+        });
+
+        $timeout(function() {
+          root.setWalletClients();
+          root.setAndStoreFocus(null, function() {
+            storageService.storeProfile(root.profile, function(err) {
+              if (err) return cb(err);
+              return cb();
+            });
           });
         });
       });
@@ -368,6 +371,7 @@ angular.module('copayApp.services')
         return cb(gettext('Wallet already in Copay' + ": ") + w.walletName);
       }
 
+      var config = configService.getSync();
       var defaults = configService.getDefaults();
       var bwsFor = {};
       bwsFor[walletId] = opts.bwsurl || defaults.bws.url;
@@ -398,6 +402,8 @@ angular.module('copayApp.services')
         handleImport(function() {
           root.setAndStoreFocus(walletId, function() {
             storageService.storeProfile(root.profile, function(err) {
+              if (config.pushNotifications.enabled)
+                $rootScope.$emit('Local/SubscribeNotifications');
               return cb(err, walletId);
             });
           });
@@ -542,16 +548,14 @@ angular.module('copayApp.services')
                 if (err) $log.error(err);
                 return cb(true);
               });
-            }
-            else {
+            } else {
               return cb();
             }
           });
-        }
-        else {
+        } else {
           return cb();
         }
-      });   
+      });
     };
 
     root.importLegacyWallet = function(username, password, blob, cb) {
@@ -664,7 +668,8 @@ angular.module('copayApp.services')
           name: config.aliasFor[c.walletId] || c.walletName,
           id: c.walletId,
           network: c.network,
-          color: config.colorFor[c.walletId] || '#4A90E2'
+          color: config.colorFor[c.walletId] || '#4A90E2',
+          copayerId: c.copayerId
         };
       });
       ret = lodash.filter(ret, function(w) {
