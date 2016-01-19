@@ -231,6 +231,14 @@ angular.module('copayApp.services')
       storage.get('addressbook-' + network, cb);
     };
 
+    root.setDeviceToken = function(token, cb) {
+      storage.set('token', token, cb);
+    }
+
+    root.getDeviceToken = function(cb) {
+      storage.get('token', cb);
+    }
+
     root.removeAddressbook = function(network, cb) {
       storage.remove('addressbook-' + network, cb);
     };
