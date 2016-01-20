@@ -3,8 +3,11 @@ angular.module('copayApp.services')
   .factory('pushNotificationsService', function($http, $log, isMobile, profileService, storageService, configService, lodash) {
     var root = {};
     var defaults = configService.getDefaults();
+    var usePushNotifications = isMobile.iOS() || isMobile.Android();
 
     root.pushNotificationsInit = function() {
+      if (!usePushNotifications) return;
+
       var push = PushNotification.init(defaults.pushNotifications.config);
 
       push.on('registration', function(data) {
@@ -31,6 +34,8 @@ angular.module('copayApp.services')
     };
 
     root.enableNotifications = function() {
+      if (!usePushNotifications) return;
+
       storageService.getDeviceToken(function(err, token) {
         lodash.forEach(profileService.getWallets('testnet'), function(wallet) {
           var opts = {};
@@ -45,6 +50,8 @@ angular.module('copayApp.services')
     }
 
     root.disableNotifications = function() {
+      if (!usePushNotifications) return;
+
       lodash.forEach(profileService.getWallets('testnet'), function(wallet) {
         root.unsubscribe(wallet.id, function(err, response) {
           if (err) $log.warn('Error: ' + err.code);
@@ -54,6 +61,8 @@ angular.module('copayApp.services')
     }
 
     root.subscribe = function(opts, walletId, cb) {
+      if (!usePushNotifications) return;
+
       var walletClient = profileService.getClient(walletId);
       walletClient.pushNotificationsSubscribe(opts, function(err, resp) {
         if (err) return cb(err);
@@ -62,6 +71,8 @@ angular.module('copayApp.services')
     }
 
     root.unsubscribe = function(walletId, cb) {
+      if (!usePushNotifications) return;
+
       var walletClient = profileService.getClient(walletId);
       walletClient.pushNotificationsUnsubscribe(function(err, resp) {
         if (err) return cb(err);

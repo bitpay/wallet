@@ -5,7 +5,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   var SOFT_CONFIRMATION_LIMIT = 12;
   self.isCordova = isCordova;
   self.isChromeApp = isChromeApp;
-  self.pushDeviceType = isMobile.iOS() || isMobile.Android();
+  self.usePushNotifications = isMobile.iOS() || isMobile.Android();
   self.isSafari = isMobile.Safari();
   self.onGoingProcess = {};
   self.historyShowLimit = 10;
@@ -13,13 +13,13 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   self.prevState = 'walletHome';
 
   document.addEventListener('deviceready', function() {
-    if (self.pushDeviceType) {
-      storageService.getDeviceToken(function(err, token) {
-        $timeout(function() {
-          if (!token) pushNotificationsService.pushNotificationsInit();
-        }, 5000);
-      });
-    }
+    if (!self.usePushNotifications) return;
+
+    storageService.getDeviceToken(function(err, token) {
+      $timeout(function() {
+        if (!token) pushNotificationsService.pushNotificationsInit();
+      }, 5000);
+    });
   });
 
   function strip(number) {
@@ -1286,12 +1286,15 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   });
 
   $rootScope.$on('Local/SubscribeNotifications', function(event) {
-    if (self.pushDeviceType) {
-      pushNotificationsService.enableNotifications();
-    }
+    if (!self.usePushNotifications) return;
+
+    pushNotificationsService.enableNotifications();
+
   });
 
   $rootScope.$on('Local/UnsubscribeNotifications', function(event, walletId, cb) {
+    if (self.usePushNotifications) return cb();
+
     pushNotificationsService.unsubscribe(walletId, function(err, response) {
       if (err) $log.warn('Error: ' + err.code);
       $log.debug('Unsubscribed: ' + response);
