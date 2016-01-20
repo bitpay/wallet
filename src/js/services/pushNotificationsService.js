@@ -42,8 +42,8 @@ angular.module('copayApp.services')
           opts.type = isMobile.iOS() ? "ios" : isMobile.Android() ? "android" : null;
           opts.token = token;
           root.subscribe(opts, wallet.id, function(err, response) {
-            if (err) $log.warn('Error: ' + err.code);
-            $log.debug('Suscribed to push notifications service: ' + JSON.stringify(response));
+            if (err) $log.warn('Subscription error: ' + err.code);
+            else $log.debug('Subscribed to push notifications service: ' + JSON.stringify(response));
           });
         });
       });
@@ -53,15 +53,14 @@ angular.module('copayApp.services')
       if (!usePushNotifications) return;
 
       lodash.forEach(profileService.getWallets('testnet'), function(wallet) {
-        root.unsubscribe(wallet.id, function(err, response) {
-          if (err) $log.warn('Error: ' + err.code);
-          $log.debug('Unsubscribed from push notifications service');
+        root.unsubscribe(wallet.id, function(err) {
+          if (err) $log.warn('Subscription error: ' + err.code);
+          else $log.debug('Unsubscribed from push notifications service');
         });
       });
     }
 
     root.subscribe = function(opts, walletId, cb) {
-      if (!usePushNotifications) return;
 
       var walletClient = profileService.getClient(walletId);
       walletClient.pushNotificationsSubscribe(opts, function(err, resp) {
@@ -71,12 +70,11 @@ angular.module('copayApp.services')
     }
 
     root.unsubscribe = function(walletId, cb) {
-      if (!usePushNotifications) return;
 
       var walletClient = profileService.getClient(walletId);
-      walletClient.pushNotificationsUnsubscribe(function(err, resp) {
+      walletClient.pushNotificationsUnsubscribe(function(err) {
         if (err) return cb(err);
-        return cb(null, resp);
+        return cb(null);
       });
     }
 
