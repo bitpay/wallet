@@ -30,7 +30,7 @@
     -->
 
     <div ng-show="wordsC.step == 1">
-      <div ng-show="wordsC.mnemonicWords || (wordsC.credentialsEncrypted && !wordsC.deleted)">
+      <div ng-show="wordsC.mnemonicWords || (wordsC.credentialsEncrypted && !wordsC.deleted)" class="row">
         <h5 class="text-center" translate>Write your wallet seed</h5>
         <div class="size-14 text-gray columns" ng-show="(index.n>1 && index.m != index.n )">
           <span translate>
