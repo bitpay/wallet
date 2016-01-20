@@ -1074,11 +1074,12 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     });
   };
 
-  self.setUxLanguage = function() {
+  self.setUxLanguage = function(cb) {
     uxLanguage.update(function(lang) {
       var userLang = lang;
       self.defaultLanguageIsoCode = userLang;
       self.defaultLanguageName = uxLanguage.getName(userLang);
+      if (cb) return cb();
     });
   };
 
@@ -1433,7 +1434,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       self.noFocusedWallet = true;
       self.isComplete = null;
       self.walletName = null;
-      self.setUxLanguage(function() {});
+      self.setUxLanguage();
       profileService.isDisclaimerAccepted(function(v) {
         if (v) {
           go.path('import');
@@ -1443,7 +1444,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   });
 
   $rootScope.$on('Local/NewFocusedWallet', function() {
-    self.setUxLanguage(function() {});
+    self.setUxLanguage();
     self.setFocusedWallet();
     self.debounceUpdateHistory();
     self.isDisclaimerAccepted();
