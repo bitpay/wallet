@@ -1472,7 +1472,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       },
       function(msg) {
         // ERROR
-        return cb(gettext('Invalid Touch ID'));
+        return cb(gettext('Error with Touch ID:') + msg);
       }
     );
   });
