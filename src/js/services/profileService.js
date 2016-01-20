@@ -647,7 +647,7 @@ angular.module('copayApp.services')
             $log.debug('Locking wallet automatically');
             root.lockFC();
           };
-        }, 2000);
+        }, 60000);
         return cb();
       });
     };
