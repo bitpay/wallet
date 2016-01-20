@@ -23,7 +23,7 @@
     <span class="payment-proposal-to"
       ng-click="copyAddress(tx.toAddress)">
       <i class="fi-bitcoin left"></i>
-      <contact ng-if="!tx.hasMultiplesOutputs" class="dib enable_text_select ellipsis m5t size-14" address="{{tx.toAddress}}"></contact>
+      <contact ng-if="!tx.hasMultiplesOutputs" class="dib enable_text_select ellipsis m5t m5b size-14" address="{{tx.toAddress}}"></contact>
       <span ng-if="tx.hasMultiplesOutputs" translate>
         Multiple recipients
       </span>
