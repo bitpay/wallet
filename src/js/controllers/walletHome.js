@@ -335,69 +335,70 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
       $scope.sign = function(txp) {
         var fc = profileService.focusedClient;
+        $scope.error = null;
 
         if (!fc.canSign() && !fc.isPrivKeyExternal())
           return;
 
-        if (fc.isPrivKeyEncrypted()) {
-          profileService.unlockFC(function(err) {
-            if (err) {
-              $scope.error = bwsError.msg(err);
-              return;
-            }
-            return $scope.sign(txp);
-          });
-          return;
-        };
-
-        self._setOngoingForSigning();
         $scope.loading = true;
-        $scope.error = null;
         $timeout(function() {
+
           requestTouchid(function(err) {
             if (err) {
-              self.setOngoingProcess();
               $scope.loading = false;
-              profileService.lockFC();
               $scope.error = err;
-              $scope.$digest();
+              $timeout(function() {
+                $scope.$digest();
+              });
               return;
             }
 
-            profileService.signTxProposal(txp, function(err, txpsi) {
-              self.setOngoingProcess();
+            profileService.unlockFC(function(err) {
               if (err) {
-                $scope.$emit('UpdateTx');
                 $scope.loading = false;
-                $scope.error = bwsError.msg(err, gettextCatalog.getString('Could not accept payment'));
-                $scope.$digest();
-              } else {
-                //if txp has required signatures then broadcast it
-                var txpHasRequiredSignatures = txpsi.status == 'accepted';
-                if (txpHasRequiredSignatures) {
-                  self.setOngoingProcess(gettextCatalog.getString('Broadcasting transaction'));
-                  $scope.loading = true;
-                  fc.broadcastTxProposal(txpsi, function(err, txpsb, memo) {
-                    self.setOngoingProcess();
-                    $scope.loading = false;
-                    if (err) {
-                      $scope.$emit('UpdateTx');
-                      $scope.error = bwsError.msg(err, gettextCatalog.getString('Could not broadcast payment'));
-                      $scope.$digest();
-                    } else {
-                      $log.debug('Transaction signed and broadcasted')
-                      if (memo)
-                        $log.info(memo);
-
-                      refreshUntilItChanges = true;
-                      $modalInstance.close(txpsb);
-                    }
-                  });
-                } else {
-                  $scope.loading = false;
-                  $modalInstance.close(txpsi);
-                }
+                $scope.error = bwsError.msg(err);
+                $timeout(function() {
+                  $scope.$digest();
+                });
+                return;
               }
+
+              self._setOngoingForSigning();
+              profileService.signTxProposal(txp, function(err, txpsi) {
+                self.setOngoingProcess();
+                if (err) {
+                  $scope.$emit('UpdateTx');
+                  $scope.loading = false;
+                  $scope.error = bwsError.msg(err, gettextCatalog.getString('Could not accept payment'));
+                  $scope.$digest();
+                } else {
+                  //if txp has required signatures then broadcast it
+                  var txpHasRequiredSignatures = txpsi.status == 'accepted';
+                  if (txpHasRequiredSignatures) {
+                    self.setOngoingProcess(gettextCatalog.getString('Broadcasting transaction'));
+                    $scope.loading = true;
+                    fc.broadcastTxProposal(txpsi, function(err, txpsb, memo) {
+                      self.setOngoingProcess();
+                      $scope.loading = false;
+                      if (err) {
+                        $scope.$emit('UpdateTx');
+                        $scope.error = bwsError.msg(err, gettextCatalog.getString('Could not broadcast payment'));
+                        $scope.$digest();
+                      } else {
+                        $log.debug('Transaction signed and broadcasted')
+                        if (memo)
+                          $log.info(memo);
+
+                        refreshUntilItChanges = true;
+                        $modalInstance.close(txpsb);
+                      }
+                    });
+                  } else {
+                    $scope.loading = false;
+                    $modalInstance.close(txpsi);
+                  }
+                }
+              });
             });
           });
         }, 100);
@@ -833,6 +834,8 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     var currentSpendUnconfirmed = configWallet.spendUnconfirmed;
     var currentFeeLevel = walletSettings.feeLevel || 'normal';
 
+    this.resetError();
+
     if (isCordova && this.isWindowsPhoneApp) {
       this.hideAddress = false;
       this.hideAmount = false;
@@ -842,15 +845,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     if (form.$invalid) {
       this.error = gettext('Unable to send transaction proposal');
       return;
-    }
-
-    if (fc.isPrivKeyEncrypted()) {
-      profileService.unlockFC(function(err) {
-        if (err) return self.setSendError(err);
-        return self.submitForm();
-      });
-      return;
-    };
+    } 
 
     var comment = form.comment.$modelValue;
 
@@ -869,7 +864,6 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       }
     };
 
-    self.setOngoingProcess(gettextCatalog.getString('Creating transaction'));
     $timeout(function() {
       var paypro = self._paypro;
       var address, amount;
@@ -879,8 +873,6 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
       requestTouchid(function(err) {
         if (err) {
-          profileService.lockFC();
-          self.setOngoingProcess();
           self.error = err;
           $timeout(function() {
             $scope.$digest();
@@ -888,42 +880,48 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
           return;
         }
 
-        getFee(function(err, feePerKb) {
-          if (err) $log.debug(err);
-          fc.sendTxProposal({
-            toAddress: address,
-            amount: amount,
-            message: comment,
-            payProUrl: paypro ? paypro.url : null,
-            feePerKb: feePerKb,
-            excludeUnconfirmedUtxos: currentSpendUnconfirmed ? false : true
-          }, function(err, txp) {
-            if (err) {
-              self.setOngoingProcess();
-              profileService.lockFC();
-              return self.setSendError(err);
-            }
-
-            if (!fc.canSign() && !fc.isPrivKeyExternal()) {
-              $log.info('No signing proposal: No private key')
-              self.setOngoingProcess();
-              self.resetForm();
-              txStatus.notify(txp, function() {
-                return $scope.$emit('Local/TxProposalAction');
-              });
-              return;
-            }
-
-            self.signAndBroadcast(txp, function(err) {
-              self.setOngoingProcess();
-              self.resetForm();
+        profileService.unlockFC(function(err) {
+          if (err) {
+            return self.setSendError(err);
+          } 
+        
+          self.setOngoingProcess(gettextCatalog.getString('Creating transaction'));
+          getFee(function(err, feePerKb) {
+            if (err) $log.debug(err);
+            fc.sendTxProposal({
+              toAddress: address,
+              amount: amount,
+              message: comment,
+              payProUrl: paypro ? paypro.url : null,
+              feePerKb: feePerKb,
+              excludeUnconfirmedUtxos: currentSpendUnconfirmed ? false : true
+            }, function(err, txp) {
               if (err) {
-                self.error = err.message ? err.message : gettext('The payment was created but could not be completed. Please try again from home screen');
-                $scope.$emit('Local/TxProposalAction');
-                $timeout(function() {
-                  $scope.$digest();
-                }, 1);
-              } else go.walletHome();
+                self.setOngoingProcess();
+                return self.setSendError(err);
+              }
+
+              if (!fc.canSign() && !fc.isPrivKeyExternal()) {
+                $log.info('No signing proposal: No private key')
+                self.setOngoingProcess();
+                self.resetForm();
+                txStatus.notify(txp, function() {
+                  return $scope.$emit('Local/TxProposalAction');
+                });
+                return;
+              }
+
+              self.signAndBroadcast(txp, function(err) {
+                self.setOngoingProcess();
+                self.resetForm();
+                if (err) {
+                  self.error = err.message ? err.message : gettext('The payment was created but could not be completed. Please try again from home screen');
+                  $scope.$emit('Local/TxProposalAction');
+                  $timeout(function() {
+                    $scope.$digest();
+                  }, 1);
+                } else go.walletHome();
+              });
             });
           });
         });

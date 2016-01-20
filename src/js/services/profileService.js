@@ -626,6 +626,7 @@ angular.module('copayApp.services')
 
     root.unlockFC = function(cb) {
       var fc = root.focusedClient;
+      if (!fc.isPrivKeyEncrypted()) return cb();
       $log.debug('Wallet is encrypted');
       $rootScope.$emit('Local/NeedsPassword', false, function(err2, password) {
         if (err2 || !password) {
