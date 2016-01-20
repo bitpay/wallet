@@ -1485,6 +1485,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         return cb(err, pass);
       },
     };
+    $timeout(function() {
+      $rootScope.$apply();
+    });
   });
 
   lodash.each(['NewCopayer', 'CopayerUpdated'], function(eventName) {
