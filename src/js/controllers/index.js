@@ -13,8 +13,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   self.prevState = 'walletHome';
 
   document.addEventListener('deviceready', function() {
-    if (!self.usePushNotifications) return;
-
     storageService.getDeviceToken(function(err, token) {
       $timeout(function() {
         if (!token) pushNotificationsService.pushNotificationsInit();
@@ -1286,18 +1284,17 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   });
 
   $rootScope.$on('Local/SubscribeNotifications', function(event) {
-    if (!self.usePushNotifications) return;
 
     pushNotificationsService.enableNotifications();
 
   });
 
   $rootScope.$on('Local/UnsubscribeNotifications', function(event, walletId, cb) {
-    if (self.usePushNotifications) return cb();
+    if (!self.usePushNotifications) return cb();
 
-    pushNotificationsService.unsubscribe(walletId, function(err, response) {
-      if (err) $log.warn('Error: ' + err.code);
-      $log.debug('Unsubscribed: ' + response);
+    pushNotificationsService.unsubscribe(walletId, function(err) {
+      if (err) $log.warn('Subscription error: ' + err.code);
+      else $log.debug('Unsubscribed from push notifications service');
       return cb();
     });
   });
