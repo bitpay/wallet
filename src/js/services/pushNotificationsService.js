@@ -38,7 +38,7 @@ angular.module('copayApp.services')
           opts.token = token;
           root.subscribe(opts, wallet.id, function(err, response) {
             if (err) $log.warn('Error: ' + err.code);
-            $log.debug('Suscribed: ' + JSON.stringify(response));
+            $log.debug('Suscribed to push notifications service: ' + JSON.stringify(response));
           });
         });
       });
@@ -48,7 +48,7 @@ angular.module('copayApp.services')
       lodash.forEach(profileService.getWallets('testnet'), function(wallet) {
         root.unsubscribe(wallet.id, function(err, response) {
           if (err) $log.warn('Error: ' + err.code);
-          $log.debug('Unsubscribed: ' + response);
+          $log.debug('Unsubscribed from push notifications service');
         });
       });
     }

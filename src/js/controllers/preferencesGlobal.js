@@ -14,7 +14,7 @@ angular.module('copayApp.controllers').controller('preferencesGlobalController',
       $scope.spendUnconfirmed = config.wallet.spendUnconfirmed;
       $scope.glideraEnabled = config.glidera.enabled;
       $scope.glideraTestnet = config.glidera.testnet;
-      $scope.notifications = config.notifications ? config.notifications.enabled : true;
+      $scope.pushNotifications = config.pushNotifications.enabled;
     };
 
     if (isMobile.Android() || isMobile.iOS()) $scope.mobile = true;
@@ -33,7 +33,7 @@ angular.module('copayApp.controllers').controller('preferencesGlobalController',
       });
     });
 
-    var unwatchNotification = $scope.$watch('notifications', function(newVal, oldVal) {
+    var unwatchPushNotifications = $scope.$watch('pushNotifications', function(newVal, oldVal) {
       if (newVal == oldVal) return;
       var opts = {
         pushNotifications: {
@@ -79,5 +79,6 @@ angular.module('copayApp.controllers').controller('preferencesGlobalController',
       unwatchSpendUnconfirmed();
       unwatchGlideraEnabled();
       unwatchGlideraTestnet();
+      unwatchPushNotifications();
     });
   });
