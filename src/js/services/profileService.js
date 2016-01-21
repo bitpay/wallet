@@ -99,6 +99,11 @@ angular.module('copayApp.services')
       root.walletClients[credentials.walletId].started = true;
       root.walletClients[credentials.walletId].doNotVerifyPayPro = isChromeApp;
 
+      if (client.hasPrivKeyEncrypted() && !client.isPrivKeyEncrypted()) {
+        $log.warn('Auto locking unlocked wallet:' + credentials.walletId);
+        client.lock();
+      }
+
       client.initialize({}, function(err) {
         if (err) {
           $log.error('Could not init notifications err:', err);
@@ -110,8 +115,8 @@ angular.module('copayApp.services')
 
     root.setWalletClients = function() {
       var credentials = root.profile.credentials;
-      lodash.each(credentials, function(credentials) {
-        root.setWalletClient(credentials);
+      lodash.each(credentials, function(credential) {
+        root.setWalletClient(credential);
       });
       $rootScope.$emit('Local/WalletListUpdated');
     };
@@ -626,7 +631,10 @@ angular.module('copayApp.services')
 
     root.unlockFC = function(cb) {
       var fc = root.focusedClient;
-      if (!fc.isPrivKeyEncrypted()) return cb();
+
+      if (!fc.isPrivKeyEncrypted()) 
+        return cb();
+
       $log.debug('Wallet is encrypted');
       $rootScope.$emit('Local/NeedsPassword', false, function(err2, password) {
         if (err2 || !password) {
@@ -642,12 +650,6 @@ angular.module('copayApp.services')
             message: gettext('Wrong password')
           });
         }
-        $timeout(function() {
-          if (fc.hasPrivKeyEncrypted()) {
-            $log.debug('Locking wallet automatically');
-            root.lockFC();
-          };
-        }, 60000);
         return cb();
       });
     };

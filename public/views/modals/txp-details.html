@@ -42,7 +42,7 @@
     </div>
 
     <div class="oh p20t white" ng-if="tx.pendingForUs">
-      <div class="large-6 medium-6 small-6 columns">
+      <div class="large-6 medium-6 small-6 columns" ng-show="isShared">
         <button class="button outline round dark-gray expand" ng-click="reject(tx);"
                                                               ng-disabled="loading">
           <i class="fi-x"></i>
