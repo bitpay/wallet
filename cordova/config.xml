@@ -20,7 +20,7 @@
     <preference name="ShowSplashScreenSpinner" value="false" /> 
     <preference name="AutoHideSplashScreen" value="false" />
     <preference name="FadeSplashScreen" value="true" />  
-    <preference name="FadeSplashScreenDuration" value="0.5" />
+    <preference name="FadeSplashScreenDuration" value="1" />
     <preference name="BackgroundColor" value="#2C3E50" />
     <preference name="StatusBarOverlaysWebView" value="false" />
     <preference name="StatusBarBackgroundColor" value="#2C3E50" />
