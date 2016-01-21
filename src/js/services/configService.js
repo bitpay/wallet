@@ -79,7 +79,7 @@ angular.module('copayApp.services').factory('configService', function(storageSer
 
       // Glidera
       // Disabled for testnet
-      configCache.glidera.testnet = false;
+      configCache.glidera.testnet = true;
 
       $log.debug('Preferences read:', configCache)
       return cb(err, configCache);
