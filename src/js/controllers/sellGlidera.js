@@ -112,7 +112,7 @@ angular.module('copayApp.controllers').controller('sellGlideraController',
 
     this.get2faCode = function(token) {
       var self = this;
-      this.loading = 'Sending 2FA code...';
+      self.loading = 'Sending 2FA code...';
       $timeout(function() {
         glideraService.get2faCode(token, function(err, sent) {
           self.loading = null;
@@ -135,7 +135,7 @@ angular.module('copayApp.controllers').controller('sellGlideraController',
           self.error = err;
           return;
         }
-        this.loading = 'Selling Bitcoin...';
+        self.loading = 'Selling Bitcoin...';
         $timeout(function() {
           addressService.getAddress(fc.credentials.walletId, null, function(err, refundAddress) {
             if (!refundAddress) {
@@ -174,7 +174,7 @@ angular.module('copayApp.controllers').controller('sellGlideraController',
                     return;
                   }
 
-                  txSignService.sign(tx, function(err, txp) {
+                  txSignService.sign(txp, function(err, txp) {
                     if (err) {
                       self.loading = null;
                       self.error = err;
@@ -192,7 +192,7 @@ angular.module('copayApp.controllers').controller('sellGlideraController',
                         self.loading = null;
                         if (err) {
                           self.error = err;
-                          fc.removeTxProposal(txp, function(err, txpb) {
+                          fc.removeTxProposal(txp, function(err, txp) {
                             $timeout(function() {
                               $scope.$emit('Local/GlideraError');
                             }, 100);
