@@ -37,7 +37,7 @@ angular.module('copayApp.services')
       if (!usePushNotifications) return;
 
       storageService.getDeviceToken(function(err, token) {
-        lodash.forEach(profileService.getWallets('testnet'), function(wallet) {
+        lodash.forEach(profileService.getWallets(null), function(wallet) {
           var opts = {};
           opts.type = isMobile.iOS() ? "ios" : isMobile.Android() ? "android" : null;
           opts.token = token;
@@ -52,7 +52,7 @@ angular.module('copayApp.services')
     root.disableNotifications = function() {
       if (!usePushNotifications) return;
 
-      lodash.forEach(profileService.getWallets('testnet'), function(wallet) {
+      lodash.forEach(profileService.getWallets(null), function(wallet) {
         root.unsubscribe(wallet.id, function(err) {
           if (err) $log.warn('Subscription error: ' + err.code);
           else $log.debug('Unsubscribed from push notifications service');
