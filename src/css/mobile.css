@@ -195,6 +195,11 @@ _:-ms-fullscreen, :root .main {
   height: 175px;
 }
 
+.alternative-amount {
+  height: 25px;
+  text-align: center;
+}
+
 .scroll-section {
   position: absolute;
   top: 120px;

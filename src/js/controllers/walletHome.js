@@ -1214,12 +1214,32 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     $rootScope.modalOpened = true;
     var self = this;
     var fc = profileService.focusedClient;
-    var ModalInstanceCtrl = function($scope, $modalInstance) {
+    var ModalInstanceCtrl = function($scope, $filter, $log, $modalInstance) {
       $scope.btx = btx;
       $scope.settings = walletSettings;
       $scope.color = fc.backgroundColor;
       $scope.copayerId = fc.credentials.copayerId;
-      $scope.isShared = fc.credentials.n > 1;
+      $scope.isShared = fc.credentials.n > 1; 
+
+      $scope.getAlternativeAmount = function() {
+        var satToBtc = 1 / 100000000;
+        fc.getFiatRate({ 
+          code : self.alternativeIsoCode, 
+          ts : btx.time * 1000
+        }, function(err, res) {
+          if (err) { 
+            $log.debug('Could not get historic rate');
+            return;
+          }
+          if (res && res.rate) {
+            var alternativeAmountBtc = (btx.amount * satToBtc).toFixed(8);
+            $scope.rateDate = res.fetchedOn;
+            $scope.rateStr = res.rate + ' ' + self.alternativeIsoCode;
+            $scope.alternativeAmountStr = $filter('noFractionNumber')(alternativeAmountBtc * res.rate, 2) + ' ' + self.alternativeIsoCode;
+            $scope.$apply();
+          }
+        });
+      };
 
       $scope.getAmount = function(amount) {
         return self.getAmount(amount);
