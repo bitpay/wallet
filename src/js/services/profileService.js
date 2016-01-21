@@ -1,6 +1,6 @@
 'use strict';
 angular.module('copayApp.services')
-  .factory('profileService', function profileServiceFactory($rootScope, $location, $timeout, $filter, $log, lodash, storageService, bwcService, configService, notificationService, isChromeApp, isCordova, gettext, gettextCatalog, nodeWebkit, bwsError, uxLanguage, ledger, bitcore, trezor) {
+  .factory('profileService', function profileServiceFactory($rootScope, $location, $timeout, $filter, $log, lodash, storageService, bwcService, configService, notificationService, isChromeApp, isCordova, gettext, gettextCatalog, nodeWebkit, bwsError, uxLanguage, bitcore) {
 
     var root = {};
 
@@ -674,60 +674,6 @@ angular.module('copayApp.services')
         return (w.network == network);
       });
       return lodash.sortBy(ret, 'name');
-    };
-
-    root._signWithLedger = function(txp, cb) {
-      var fc = root.focusedClient;
-      $log.info('Requesting Ledger Chrome app to sign the transaction');
-
-      ledger.signTx(txp, fc.credentials.account, function(result) {
-        $log.debug('Ledger response', result);
-        if (!result.success)
-          return cb(result.message || result.error);
-
-        txp.signatures = lodash.map(result.signatures, function(s) {
-          return s.substring(0, s.length - 2);
-        });
-        return fc.signTxProposal(txp, cb);
-      });
-    };
-
-
-    root._signWithTrezor = function(txp, cb) {
-      var fc = root.focusedClient;
-      $log.info('Requesting Trezor  to sign the transaction');
-
-      var xPubKeys = lodash.pluck(fc.credentials.publicKeyRing, 'xPubKey');
-      trezor.signTx(xPubKeys, txp, fc.credentials.account, function(err, result) {
-        if (err) return cb(err);
-
-        $log.debug('Trezor response', result);
-        txp.signatures = result.signatures;
-        return fc.signTxProposal(txp, cb);
-      });
-    };
-
-
-    root.signTxProposal = function(txp, cb) {
-      var fc = root.focusedClient;
-
-      if (fc.isPrivKeyExternal()) {
-        switch (fc.getPrivKeyExternalSourceName()) {
-          case 'ledger':
-            return root._signWithLedger(txp, cb);
-          case 'trezor':
-            return root._signWithTrezor(txp, cb);
-          default:
-            var msg = 'Unsupported External Key:' + fc.getPrivKeyExternalSourceName();
-            $log.error(msg);
-            return cb(msg);
-        }
-      } else {
-        return fc.signTxProposal(txp, function(err, signedTxp) {
-          root.lockFC();
-          return cb(err, signedTxp);
-        });
-      }
     };
 
     return root;
