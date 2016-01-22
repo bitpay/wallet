@@ -7,7 +7,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   self.isChromeApp = isChromeApp;
   self.isSafari = isMobile.Safari();
   self.isWindowsPhoneApp = isMobile.Windows() && isCordova;
-  self.usePushNotifications = self.isCordova && !self.isWindowsPrhoneApp;
+  self.usePushNotifications = self.isCordova && !self.isWindowsPhoneApp;
   self.onGoingProcess = {};
   self.historyShowLimit = 10;
   self.updatingTxHistory = {};
