@@ -90,7 +90,7 @@ angular.module('copayApp.services').factory('txSignService', function($rootScope
   };
 
   var _signWithLedger = function(txp, cb) {
-    var fc = root.focusedClient;
+    var fc = profileService.focusedClient;
     $log.info('Requesting Ledger Chrome app to sign the transaction');
 
     ledger.signTx(txp, fc.credentials.account, function(result) {
@@ -106,7 +106,7 @@ angular.module('copayApp.services').factory('txSignService', function($rootScope
   };
 
   var _signWithTrezor = function(txp, cb) {
-    var fc = root.focusedClient;
+    var fc = profileService.focusedClient;
     $log.info('Requesting Trezor  to sign the transaction');
 
     var xPubKeys = lodash.pluck(fc.credentials.publicKeyRing, 'xPubKey');
@@ -151,8 +151,10 @@ angular.module('copayApp.services').factory('txSignService', function($rootScope
         return cb(bwsError.msg(err), gettextCatalog.getString('Could not accept payment'));
       };
 
-      if (txp.status != 'accepted')
-        return (null, txp);
+      if (txp.status != 'accepted') {
+        stopReport(opts);
+        return cb(null, txp);
+      }
 
       reportBroadcastingStatus(opts);
       fc.broadcastTxProposal(txp, function(err, txp, memo) {
