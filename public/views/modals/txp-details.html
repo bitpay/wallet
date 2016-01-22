@@ -23,7 +23,7 @@
     <span class="payment-proposal-to"
       ng-click="copyAddress(tx.toAddress)">
       <i class="fi-bitcoin left"></i>
-      <contact ng-if="!tx.hasMultiplesOutputs" class="dib enable_text_select ellipsis m5t size-14" address="{{tx.toAddress}}"></contact>
+      <contact ng-if="!tx.hasMultiplesOutputs" class="dib enable_text_select ellipsis m5t m5b size-14" address="{{tx.toAddress}}"></contact>
       <span ng-if="tx.hasMultiplesOutputs" translate>
         Multiple recipients
       </span>
@@ -42,7 +42,7 @@
     </div>
 
     <div class="oh p20t white" ng-if="tx.pendingForUs">
-      <div class="large-6 medium-6 small-6 columns">
+      <div class="large-6 medium-6 small-6 columns" ng-show="isShared">
         <button class="button outline round dark-gray expand" ng-click="reject(tx);"
                                                               ng-disabled="loading">
           <i class="fi-x"></i>
@@ -170,12 +170,12 @@
     </ul>
   </div> 
 
-  <div class="columns text-center m20t" ng-if="tx.canBeRemoved">
-    <div class="text-gray size-12 m20b" ng-if="!tx.isGlidera && isShared" translate>
+  <div class="columns text-center m20t" ng-if="tx.canBeRemoved || (tx.status == 'accepted' && !tx.broadcastedOn)">
+    <div class="text-gray size-12 m20b" ng-show="!tx.isGlidera && isShared" translate>
       * A payment proposal can be deleted if 1) you are the creator, and no other copayer has signed, or 2) 24 hours have passed since the proposal was created.
     </div>
     <button class="tiny round outline dark-gray warning" ng-click="remove(tx)"
-      ng-disabled="loading" ng-show="tx.canBeRemoved">
+      ng-disabled="loading">
       <i class="fi-trash size-14 m5r"></i>
       <span translate>Delete Payment Proposal</span>
     </button>
