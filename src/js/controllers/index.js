@@ -5,20 +5,21 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   var SOFT_CONFIRMATION_LIMIT = 12;
   self.isCordova = isCordova;
   self.isChromeApp = isChromeApp;
-  self.usePushNotifications = isMobile.iOS() || isMobile.Android();
   self.isSafari = isMobile.Safari();
+  self.isWindowsPhoneApp = isMobile.Windows() && isCordova;
+  self.usePushNotifications = self.isCordova && !self.isWindowsPrhoneApp;
   self.onGoingProcess = {};
   self.historyShowLimit = 10;
   self.updatingTxHistory = {};
   self.prevState = 'walletHome';
 
-  document.addEventListener('deviceready', function() {
+  if (self.usePushNotifications) {
     storageService.getDeviceToken(function(err, token) {
       $timeout(function() {
         if (!token) pushNotificationsService.pushNotificationsInit();
       }, 5000);
     });
-  });
+  }
 
   function strip(number) {
     return (parseFloat(number.toPrecision(12)));
@@ -1285,6 +1286,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   });
 
   $rootScope.$on('Local/SubscribeNotifications', function(event) {
+    if (!self.usePushNotifications) return;
 
     pushNotificationsService.enableNotifications();
 
