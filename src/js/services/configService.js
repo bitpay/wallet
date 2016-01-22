@@ -87,6 +87,9 @@ angular.module('copayApp.services').factory('configService', function(storageSer
         if (!configCache.glidera) {
           configCache.glidera = defaultConfig.glidera;
         }
+        if (!configCache.pushNotifications) {
+          configCache.pushNotifications = defaultConfig.pushNotifications;
+        }
 
       } else {
         configCache = lodash.clone(defaultConfig);

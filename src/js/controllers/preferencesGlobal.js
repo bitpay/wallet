@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('preferencesGlobalController',
-  function($scope, $rootScope, $log, configService, isMobile, uxLanguage, pushNotificationsService) {
+  function($scope, $rootScope, $log, configService, uxLanguage, pushNotificationsService) {
 
     this.init = function() {
       var config = configService.getSync();
@@ -16,9 +16,6 @@ angular.module('copayApp.controllers').controller('preferencesGlobalController',
       $scope.glideraTestnet = config.glidera.testnet;
       $scope.pushNotifications = config.pushNotifications.enabled;
     };
-
-    if (isMobile.Android() || isMobile.iOS()) $scope.mobile = true;
-    else $scope.mobile = false;
 
     var unwatchSpendUnconfirmed = $scope.$watch('spendUnconfirmed', function(newVal, oldVal) {
       if (newVal == oldVal) return;

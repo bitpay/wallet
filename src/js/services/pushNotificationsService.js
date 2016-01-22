@@ -1,9 +1,9 @@
 'use strict';
 angular.module('copayApp.services')
-  .factory('pushNotificationsService', function($http, $log, isMobile, profileService, storageService, configService, lodash) {
+  .factory('pushNotificationsService', function($http, $log, isMobile, profileService, storageService, configService, lodash, isCordova) {
     var root = {};
     var defaults = configService.getDefaults();
-    var usePushNotifications = isMobile.iOS() || isMobile.Android();
+    var usePushNotifications = isCordova && !isMobile.Windows();
 
     root.pushNotificationsInit = function() {
       if (!usePushNotifications) return;
