@@ -2,7 +2,6 @@
 
 angular.module('copayApp.services').factory('txSignService', function($rootScope, profileService, gettextCatalog, lodash, trezor, ledger, configService, bwsError, $log) {
   var root = {};
-  var config = configService.getSync();
 
   var reportSigningStatus = function(opts) {
     if (!opts.reporterFn) return;
@@ -41,17 +40,26 @@ angular.module('copayApp.services').factory('txSignService', function($rootScope
           return cb();
         },
         function(msg) {
-          $log.debug('Touch ID Failed:' + msg);
-          return cb(gettext('Touch ID Failed:') + msg);
+          $log.debug('Touch ID Failed:' + JSON.stringify(msg));
+          return cb(gettextCatalog.getString('Touch ID Failed') + ': ' + msg.localizedDescription);
         }
       );
     } catch (e) {
-      $log.debug('Touch ID Failed:' + e);
-      return cb(gettext('Touch ID Failed:') + e);
+      $log.debug('Touch ID Failed:' + JSON.stringify(e));
+      return cb(gettextCatalog.getString('Touch ID Failed'));
     };
   };
 
+  root.setTouchId = function(cb) {
+    if (window.touchidAvailable) {
+      requestTouchId(cb);
+    } else {
+      return cb();
+    }
+  };
+
   root.checkTouchId = function(cb) {
+    var config = configService.getSync();
     var fc = profileService.focusedClient;
     config.touchIdFor = config.touchIdFor || {};
     if (window.touchidAvailable && config.touchIdFor[fc.credentials.walletId]) {
