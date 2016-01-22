@@ -1,21 +1,25 @@
 'use strict';
 angular.module('copayApp.services')
-  .factory('bwsError', function bwcErrorService($log, gettextCatalog, bwcService) {
+  .factory('bwsError', function bwcErrorService($log, gettextCatalog) {
     var root = {};
-    var clientError = bwcService;
-    console.log('Client Error: ', clientError);
 
     root.msg = function(err, prefix) {
+      var name;
 
-      console.log(err);
-      if (err instanceof error.NOT_AUTHORIZED)
-        console.log('true');
+      if (err.name == 'Error')
+        name = err.message
+      else
+
+      if (err.name)
+        name = err.name.replace(/^bwc.Error/g, '');
+      else
+        name = err;
 
       var body = '';
       prefix = prefix || '';
 
-      if (err) {
-        switch (err.code) {
+      if (err && name) {
+        switch (name) {
           case 'INVALID_BACKUP':
             body = gettextCatalog.getString(err.message);
             break;
@@ -126,8 +130,8 @@ angular.module('copayApp.services')
             break;
 
           default:
-            $log.warn('Unknown error type:', err.code);
-            body = err.message || err.code;
+            $log.warn('Unknown error type:', name);
+            body = err.message || name;
             break;
         }
       } else if (err.message) {
