@@ -36,7 +36,7 @@ bwcModule.provider("bwcService", function() {
     };
 
     service.getErrors = function() {
-      return Client.Errors;
+      return Client.errors;
     };
 
     service.getSJCL = function() {
