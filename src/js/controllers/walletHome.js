@@ -259,7 +259,6 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   this.openTxpModal = function(tx, copayers, isGlidera) {
     $rootScope.modalOpened = true;
     var fc = profileService.focusedClient;
-    var refreshUntilItChanges = false;
     var currentSpendUnconfirmed = configWallet.spendUnconfirmed;
     var ModalInstanceCtrl = function($scope, $modalInstance) {
       $scope.error = null;
@@ -278,8 +277,6 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
         }
       }
       $scope.tx = tx;
-
-      refreshUntilItChanges = false;
       $scope.currentSpendUnconfirmed = currentSpendUnconfirmed;
 
       $scope.getShortNetworkName = function() {
@@ -341,7 +338,6 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
             });
             return;
           }
-          refreshUntilItChanges = true;
           $modalInstance.close(txp);
           return;
         });
@@ -404,7 +400,6 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
               if (memo)
                 $log.info(memo);
 
-              refreshUntilItChanges = true;
               $modalInstance.close(txpb);
             }
           });
@@ -442,11 +437,11 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       self.setOngoingProcess();
       if (txp) {
         txStatus.notify(txp, function() {
-          $scope.$emit('Local/TxProposalAction', refreshUntilItChanges);
+          $scope.$emit('Local/TxProposalAction', txp.status == 'broadcasted');
         });
       } else {
         $timeout(function() {
-          $scope.$emit('Local/TxProposalAction', refreshUntilItChanges);
+          $scope.$emit('Local/TxProposalAction');
         }, 100);
       }
     });
@@ -857,7 +852,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
               } else {
                 go.walletHome();
                 txStatus.notify(txp, function() {
-                  $scope.$emit('Local/TxProposalAction', true);
+                  $scope.$emit('Local/TxProposalAction', txp.status == 'broadcasted');
                 });
               };
             });
