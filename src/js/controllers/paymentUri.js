@@ -2,6 +2,7 @@
 angular.module('copayApp.controllers').controller('paymentUriController',
   function($rootScope, $stateParams, $location, $timeout, profileService, configService, lodash, bitcore, go) {
 
+    window.ignoreMobilePause = true;
     function strip(number) {
       return (parseFloat(number.toPrecision(12)));
     };
