@@ -175,12 +175,12 @@ angular.module('copayApp.services').factory('txSignService', function($rootScope
   };
 
   root.prepareAndSignAndBroadcast = function(txp, opts, cb) {
-    reportSigningStatus(opts);
     root.prepare(function(err) {
       if (err) {
         stopReport(opts);
         return cb(err);
       };
+      reportSigningStatus(opts);
       root.signAndBroadcast(txp, opts, function(err, txp) {
         if (err) {
           stopReport(opts);
