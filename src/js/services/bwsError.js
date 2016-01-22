@@ -1,72 +1,77 @@
 'use strict';
 angular.module('copayApp.services')
-  .factory('bwsError', function bwcErrorService($log, gettextCatalog) {
+  .factory('bwsError', function bwcErrorService($log, gettextCatalog, bwcService) {
     var root = {};
+    var clientError = bwcService;
+    console.log('Client Error: ', clientError);
 
     root.msg = function(err, prefix) {
-      console.log('ERROR: ');
+
       console.log(err);
+      if (err instanceof error.NOT_AUTHORIZED)
+        console.log('true');
+
       var body = '';
       prefix = prefix || '';
 
-      if (err && err.code) {
+      if (err) {
         switch (err.code) {
           case 'INVALID_BACKUP':
-            body = err.message;
+            body = gettextCatalog.getString(err.message);
             break;
           case 'WALLET_DOES_NOT_EXIST':
-            body = err.message;
+            body = gettextCatalog.getString(err.message);
             break;
           case 'MISSING_PRIVATE_KEY':
-            body = err.message;
+            body = gettextCatalog.getString(err.message);
             break;
           case 'ENCRYPTED_PRIVATE_KEY':
-            body = err.message;
+            body = gettextCatalog.getString(err.message);
             break;
           case 'SERVER_COMPROMISED':
-            body = err.message;
+            body = gettextCatalog.getString(err.message);
             break;
           case 'COULD_NOT_BUILD_TRANSACTION':
-            body = err.message;
+            body = gettextCatalog.getString(err.message);
             break;
           case 'INSUFFICIENT_FUNDS':
-            body = err.message;
+            body = gettextCatalog.getString(err.message);
             break;
           case 'CONNECTION_ERROR':
-            body = err.message;
+            body = gettextCatalog.getString(err.message);
             break;
           case 'NOT_FOUND':
-            body = err.message;
+            body = gettextCatalog.getString(err.message);
             break;
           case 'ECONNRESET_ERROR':
-            body = err.message;
+            body = gettextCatalog.getString(err.message);
             break;
           case 'BAD_RESPONSE_CODE':
-            body = err.message;
+            body = gettextCatalog.getString(err.message);
             break;
           case 'WALLET_ALREADY_EXISTS':
-            body = err.message;
+            body = gettextCatalog.getString(err.message);
             break;
           case 'COPAYER_IN_WALLET':
-            body = err.message;
+            body = gettextCatalog.getString(err.message);
             break;
           case 'WALLET_FULL':
-            body = err.message;
+            body = gettextCatalog.getString(err.message);
             break;
           case 'WALLET_NOT_FOUND':
-            body = err.message;
+            body = gettextCatalog.getString(err.message);
             break;
           case 'INSUFFICIENT_FUNDS_FOR_FEE':
-            body = err.message;
+            body = gettextCatalog.getString(err.message);
             break;
           case 'LOCKED_FUNDS':
-            body = err.message;
+            body = gettextCatalog.getString(err.message);
             break;
           case 'COPAYER_VOTED':
-            body = err.message;
+            body = gettextCatalog.getString(err.message);
             break;
           case 'NOT_AUTHORIZED':
-            body = err.message;
+            body = gettextCatalog.getString(err.message);
             break;
           case 'TX_ALREADY_BROADCASTED':
             body = gettextCatalog.getString('Transaction already broadcasted');
