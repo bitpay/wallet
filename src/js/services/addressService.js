@@ -4,9 +4,8 @@ angular.module('copayApp.services')
   .factory('addressService', function(storageService, profileService, $log, $timeout, lodash, bwsError, gettextCatalog) {
     var root = {};
 
-
-    root.expireAddress = function(walletId,cb) {
-      $log.debug('Cleaning Address ' + walletId );
+    root.expireAddress = function(walletId, cb) {
+      $log.debug('Cleaning Address ' + walletId);
       storageService.clearLastAddress(walletId, function(err) {
         return cb(err);
       });
@@ -34,10 +33,13 @@ angular.module('copayApp.services')
             return $timeout(function() {
               root._createAddress(walletId, cb);
             }, 5000);
-          } else if (err.code && err.code == 'MAIN_ADDRESS_GAP_REACHED') {
+          } else if (err.message && err.message == 'MAIN_ADDRESS_GAP_REACHED') {
             $log.warn(err.message);
             prefix = null;
-            client.getMainAddresses({reverse: true, limit : 1}, function(err, addr) {
+            client.getMainAddresses({
+              reverse: true,
+              limit: 1
+            }, function(err, addr) {
               if (err) return cb(err);
               return cb(null, addr[0].address);
             });
