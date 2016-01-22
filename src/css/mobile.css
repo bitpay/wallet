@@ -784,12 +784,12 @@ textarea:focus
 }
 
 .payment-proposal-to i {
-  margin-right: 10px;
+  position: absolute;
+  left: 25px;
   padding-right: 10px;
   border-right: 1px solid;
   border-color: rgba(255, 255, 255, 0.1);
   font-size: 20px;
-  vertical-align: middle;
 }
 
 ::-webkit-input-placeholder {

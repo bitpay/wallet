@@ -1,6 +1,6 @@
 'use strict';
 angular.module('copayApp.services')
-  .factory('profileService', function profileServiceFactory($rootScope, $location, $timeout, $filter, $log, lodash, storageService, bwcService, configService, notificationService, isChromeApp, isCordova, gettext, gettextCatalog, nodeWebkit, bwsError, uxLanguage, ledger, bitcore, trezor) {
+  .factory('profileService', function profileServiceFactory($rootScope, $location, $timeout, $filter, $log, lodash, storageService, bwcService, configService, notificationService, isChromeApp, isCordova, gettext, gettextCatalog, nodeWebkit, bwsError, uxLanguage, bitcore) {
 
     var root = {};
 
@@ -99,6 +99,11 @@ angular.module('copayApp.services')
       root.walletClients[credentials.walletId].started = true;
       root.walletClients[credentials.walletId].doNotVerifyPayPro = isChromeApp;
 
+      if (client.hasPrivKeyEncrypted() && !client.isPrivKeyEncrypted()) {
+        $log.warn('Auto locking unlocked wallet:' + credentials.walletId);
+        client.lock();
+      }
+
       client.initialize({}, function(err) {
         if (err) {
           $log.error('Could not init notifications err:', err);
@@ -110,8 +115,8 @@ angular.module('copayApp.services')
 
     root.setWalletClients = function() {
       var credentials = root.profile.credentials;
-      lodash.each(credentials, function(credentials) {
-        root.setWalletClient(credentials);
+      lodash.each(credentials, function(credential) {
+        root.setWalletClient(credential);
       });
       $rootScope.$emit('Local/WalletListUpdated');
     };
@@ -630,6 +635,10 @@ angular.module('copayApp.services')
 
     root.unlockFC = function(cb) {
       var fc = root.focusedClient;
+
+      if (!fc.isPrivKeyEncrypted()) 
+        return cb();
+
       $log.debug('Wallet is encrypted');
       $rootScope.$emit('Local/NeedsPassword', false, function(err2, password) {
         if (err2 || !password) {
@@ -645,12 +654,6 @@ angular.module('copayApp.services')
             message: gettext('Wrong password')
           });
         }
-        $timeout(function() {
-          if (fc.hasPrivKeyEncrypted()) {
-            $log.debug('Locking wallet automatically');
-            root.lockFC();
-          };
-        }, 2000);
         return cb();
       });
     };
@@ -678,60 +681,6 @@ angular.module('copayApp.services')
         });
       }
       return lodash.sortBy(ret, 'name');
-    };
-
-    root._signWithLedger = function(txp, cb) {
-      var fc = root.focusedClient;
-      $log.info('Requesting Ledger Chrome app to sign the transaction');
-
-      ledger.signTx(txp, fc.credentials.account, function(result) {
-        $log.debug('Ledger response', result);
-        if (!result.success)
-          return cb(result.message || result.error);
-
-        txp.signatures = lodash.map(result.signatures, function(s) {
-          return s.substring(0, s.length - 2);
-        });
-        return fc.signTxProposal(txp, cb);
-      });
-    };
-
-
-    root._signWithTrezor = function(txp, cb) {
-      var fc = root.focusedClient;
-      $log.info('Requesting Trezor to sign the transaction');
-
-      var xPubKeys = lodash.pluck(fc.credentials.publicKeyRing, 'xPubKey');
-      trezor.signTx(xPubKeys, txp, fc.credentials.account, function(err, result) {
-        if (err) return cb(err);
-
-        $log.debug('Trezor response', result);
-        txp.signatures = result.signatures;
-        return fc.signTxProposal(txp, cb);
-      });
-    };
-
-
-    root.signTxProposal = function(txp, cb) {
-      var fc = root.focusedClient;
-
-      if (fc.isPrivKeyExternal()) {
-        switch (fc.getPrivKeyExternalSourceName()) {
-          case 'ledger':
-            return root._signWithLedger(txp, cb);
-          case 'trezor':
-            return root._signWithTrezor(txp, cb);
-          default:
-            var msg = 'Unsupported External Key:' + fc.getPrivKeyExternalSourceName();
-            $log.error(msg);
-            return cb(msg);
-        }
-      } else {
-        return fc.signTxProposal(txp, function(err, signedTxp) {
-          root.lockFC();
-          return cb(err, signedTxp);
-        });
-      }
     };
 
     return root;

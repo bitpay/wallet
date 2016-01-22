@@ -43,9 +43,7 @@ angular.module('copayApp.controllers').controller('paymentUriController',
 
     this.selectWallet = function(wid) {
       var self = this;
-      if (wid != profileService.focusedClient.credentials.walletId) {
-        profileService.setAndStoreFocus(wid, function() {});
-      }
+      profileService.setAndStoreFocus(wid, function() {});
       $timeout(function() {
         $rootScope.$emit('paymentUri', self.bitcoinURI);
       }, 1000);
