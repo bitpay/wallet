@@ -21,61 +21,61 @@ angular.module('copayApp.services')
       if (err && name) {
         switch (name) {
           case 'INVALID_BACKUP':
-            body = gettextCatalog.getString(err.message);
+            body = gettextCatalog.getString('Wallet seed is invalid');
             break;
           case 'WALLET_DOES_NOT_EXIST':
-            body = gettextCatalog.getString(err.message);
+            body = gettextCatalog.getString('Wallet not registered at the wallet service. Recreate it from "Create Wallet" using "Advanced Options" to set your seed');
             break;
           case 'MISSING_PRIVATE_KEY':
-            body = gettextCatalog.getString(err.message);
+            body = gettextCatalog.getString('Missing private keys to sign');
             break;
           case 'ENCRYPTED_PRIVATE_KEY':
-            body = gettextCatalog.getString(err.message);
+            body = gettextCatalog.getString('Private key is encrypted, cannot sign');
             break;
           case 'SERVER_COMPROMISED':
-            body = gettextCatalog.getString(err.message);
+            body = gettextCatalog.getString('Server response could not be verified');
             break;
           case 'COULD_NOT_BUILD_TRANSACTION':
-            body = gettextCatalog.getString(err.message);
+            body = gettextCatalog.getString('Could not build transaction');
             break;
           case 'INSUFFICIENT_FUNDS':
-            body = gettextCatalog.getString(err.message);
+            body = gettextCatalog.getString('Insufficient funds');
             break;
           case 'CONNECTION_ERROR':
-            body = gettextCatalog.getString(err.message);
+            body = gettextCatalog.getString('Network connection error');
             break;
           case 'NOT_FOUND':
-            body = gettextCatalog.getString(err.message);
+            body = gettextCatalog.getString('Wallet service not found');
             break;
           case 'ECONNRESET_ERROR':
-            body = gettextCatalog.getString(err.message);
+            body = gettextCatalog.getString('Connection reset by peer');
             break;
           case 'BAD_RESPONSE_CODE':
-            body = gettextCatalog.getString(err.message);
+            body = gettextCatalog.getString('The request could not be understood by the server');
             break;
           case 'WALLET_ALREADY_EXISTS':
-            body = gettextCatalog.getString(err.message);
+            body = gettextCatalog.getString('Wallet already exists');
             break;
           case 'COPAYER_IN_WALLET':
-            body = gettextCatalog.getString(err.message);
+            body = gettextCatalog.getString('Copayer already in this wallet');
             break;
           case 'WALLET_FULL':
-            body = gettextCatalog.getString(err.message);
+            body = gettextCatalog.getString('Wallet is full');
             break;
           case 'WALLET_NOT_FOUND':
-            body = gettextCatalog.getString(err.message);
+            body = gettextCatalog.getString('Wallet not found');
             break;
           case 'INSUFFICIENT_FUNDS_FOR_FEE':
-            body = gettextCatalog.getString(err.message);
+            body = gettextCatalog.getString('Insufficient funds for fee');
             break;
           case 'LOCKED_FUNDS':
-            body = gettextCatalog.getString(err.message);
+            body = gettextCatalog.getString('Funds are locked by pending spend proposals');
             break;
           case 'COPAYER_VOTED':
-            body = gettextCatalog.getString(err.message);
+            body = gettextCatalog.getString('Copayer already voted on this spend proposal');
             break;
           case 'NOT_AUTHORIZED':
-            body = gettextCatalog.getString(err.message);
+            body = gettextCatalog.getString('Not authorized');
             break;
           case 'TX_ALREADY_BROADCASTED':
             body = gettextCatalog.getString('Transaction already broadcasted');
@@ -135,9 +135,9 @@ angular.module('copayApp.services')
             break;
         }
       } else if (err.message) {
-        body = gettextCatalog.getString(err.message);
+        body = err.message;
       } else {
-        body = gettextCatalog.getString(err);
+        body = err;
       }
 
       var msg = prefix + (body ? (prefix ? ': ' : '') + body : '');
