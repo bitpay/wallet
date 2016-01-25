@@ -60,7 +60,7 @@ angular.module('copayApp.services')
 
       lodash.forEach(walletsClients, function(walletClient) {
         root.unsubscribe(walletClient, function(err) {
-          if (err) $log.warn('Subscription error: ' + err.code);
+          if (err) $log.warn('Unsubscription error: ' + err.message);
           else $log.debug('Unsubscribed from push notifications service');
         });
       });
