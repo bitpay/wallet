@@ -1,0 +1,11 @@
+{
+  "type": "applet",
+  "id": "compact-starter-applet",
+  "name": "Compact Starter",
+  "description": "Starter applet for the compact container.",
+  "author": "BitPay, Inc.",
+  "date": "1/20/2016",
+  "version": "1.0.0",
+  "mainViewUri": "index.html",
+  "container": "compact"
+}

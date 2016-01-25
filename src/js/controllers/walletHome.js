@@ -1269,7 +1269,15 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     if (status) {
       self.setOngoingProcess(status);
     } else {
-      self.setOngoingProcess();      
+      self.setOngoingProcess();
+    }
+  });
+
+  $rootScope.$on('Local/PluginStatus', function(event, status) {
+    if (status) {
+      self.setOngoingProcess(status);
+    } else {
+      self.setOngoingProcess();
     }
   });
 

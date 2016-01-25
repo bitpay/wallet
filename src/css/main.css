@@ -1563,6 +1563,26 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
   animation-delay: -0.8s;
 }
 
+/* Angular circular slider */
+.amount-slider .acs-panel {
+}
+
+.amount-slider .acs {
+  border: 35px solid rgba(214, 214, 214, 0.5) !important;
+  background: rgba(0,0,0,0);
+}
+
+.amount-slider .acs-value {
+  background: rgba(0,0,0,0);
+  border: rgba(0,0,0,0);
+  color: #2C3E50;
+}
+
+.amount-slider .acs-indicator {
+  background: #909090;
+  border: none;
+}
+
 @-webkit-keyframes stretchdelay {
   0%, 40%, 100% { -webkit-transform: scaleY(0.4) }
   20% { -webkit-transform: scaleY(1.0) }

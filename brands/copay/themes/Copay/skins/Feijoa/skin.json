@@ -34,6 +34,7 @@
     "tabBarBackground": "#FFFFFF",
     "tabBarHomeBackground": "#FFFFFF linear-gradient(to bottom, rgba(185,185,185,0.3) 0%, rgba(255,255,255,1) 30%)",
     "tabBarHomeShadow": "0px -1px 0px 0px rgba(165,178,191,0.35)",
+    "tabBarVisible": true,
     "avatarColor": "rgba(255,255,255,1)",
     "avatarBorderSmall": "none",
     "avatarBorderBig": "3px solid #FFFFFF",
@@ -52,6 +53,7 @@
     "homeListSectionHeaderBackground": "#F6F7F9",
     "homeListItemBackground": "#FFFFFF",
     "homeListItemBorderBottom": "1px solid #E4E8EC",
+    "homeCameraButtonVisible": true,
     "cameraButtonColor": "#8597A7",
     "cameraButtonBackground": "#2C3E50",
     "cameraButtonShadow": "0px 0px 5px 0px rgba(0,0,0,0.50)",
@@ -62,5 +64,5 @@
     "iconBackground": "#9EDD72",
     "textHighlightColor": "#9EDD72"
   },
-  "service": {}
+  "applet": {}
 }

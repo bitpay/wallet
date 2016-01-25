@@ -1,6 +1,10 @@
 'use strict';
 
-angular.module('copayApp.model').factory('BitPayService', function (AbstractPaymentService, $rootScope, $log, gettext, $timeout) {
+angular.module('copayApp.plugins').factory('BitPayService', function (AbstractPaymentService, $rootScope, $log, gettext, copayPluginService) {
+
+  // Service identification
+  // 
+  var id = 'bitpay';
 
   // Private properties
   //
@@ -39,7 +43,6 @@ angular.module('copayApp.model').factory('BitPayService', function (AbstractPaym
   // }
 
   // Constructor
-  // See Skin and Theme schema for available BitPay service properties.
   // 
   function BitPayService(obj) {
     self = this;
@@ -48,6 +51,9 @@ angular.module('copayApp.model').factory('BitPayService', function (AbstractPaym
         self[property] = obj[property];
       }
     }
+    var my = copayPluginService.getRegistryEntry(id);
+    self.providerName = my.name;
+    self.providerDescription = my.description;
   };
 
   BitPayService.prototype = new AbstractPaymentService();
@@ -61,7 +67,7 @@ angular.module('copayApp.model').factory('BitPayService', function (AbstractPaym
   BitPayService.prototype.createPaymentRequest = function(data, cb) {
     var postData = {
       // Required parameters
-      token: self.provider.api.auth.token,
+      token: self.api.auth.token,
       guid: self.guid(),
       price: data.price,
       currency: data.currency,
@@ -83,17 +89,21 @@ angular.module('copayApp.model').factory('BitPayService', function (AbstractPaym
         phone: data.phone,
         notify: data.notify
       },
-      transactionSpeed: self.provider.api.transactionSpeed,
-      notificationEmail: self.provider.api.notificationEmail,
-      notificationURL: self.provider.api.notificationURL
+      transactionSpeed: self.api.transactionSpeed,
+      notificationEmail: self.api.notificationEmail,
+      notificationURL: self.api.notificationURL
     };
 
     $rootScope.$emit('Local/PaymentServiceStatus', gettext('Fetching payment instructions'));
+    
     self.post('/invoices', postData, function(err, response) {
       $rootScope.$emit('Local/PaymentServiceStatus');
+      if (err) {
+        return cb(err);
+      }
       $log.debug('Invoice created: ' + JSON.stringify(response.data));
       self.paymentRequest = response.data;
-      cb(err);
+      cb();
     });
     return self;
   };

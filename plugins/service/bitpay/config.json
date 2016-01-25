@@ -1,0 +1,10 @@
+{
+  "type": "service",
+  "id": "bitpay",
+  "name": "BitPay Payment Service",
+  "description": "Create and pay a BitPay invoice.",
+  "author": "BitPay, Inc.",
+  "date": "1/20/2016",
+  "version": "1.0.0",
+  "serviceClass": "BitPayService"
+}

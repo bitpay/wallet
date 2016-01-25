@@ -27,6 +27,9 @@
     "</ul>"
   ],
   "features": {
+    "bitrefill": {
+      "enabled": true
+    },
     "glidera": {
       "enabled": true,
       "auth": {

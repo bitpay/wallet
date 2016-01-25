@@ -22,6 +22,9 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
   root.initialized = false;
   root.walletId = 'NONE';
 
+  var MAX_SKIN_HISTORY = 5;
+  root.skinHistory = [];
+
   root._theme = function() {
     return root._themeById(root._currentThemeId());
   };
@@ -397,6 +400,20 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
     }
   };
 
+  // Push the skin id onto the top of history stack.
+  root._pushSkin = function(skinId) {
+    // Avoid sequential duplicates.
+    if (root.skinHistory[root.skinHistory.length-1] != skinId) {
+      root.skinHistory.push(skinId);
+      root.skinHistory = root.skinHistory.slice(0, MAX_SKIN_HISTORY);
+    }
+  };
+
+  // Remove and return the skin id from the top of the history stack.
+  root._popSkin = function() {
+    return root.skinHistory.pop();
+  };
+
   root._migrateLegacyColorsToSkins = function() {
 
     var skinNameForColor = [
@@ -425,7 +442,7 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
           skinName = skinNameForColor[color];
         }
         $log.debug('Migrating wallet to skin... [walletId: ' + walletId + ']');
-        root.setSkinForWallet(root.getPublishedSkinIdByName(), walletId);
+        root.setSkinForWallet(root.getPublishedSkinIdByName(), walletId, true);
       }
 
       var opts = {
@@ -507,9 +524,9 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
     if (!root.initialized) return;
     var config = configService.getSync();
     if (config.theme.skinFor && config.theme.skinFor[root.walletId] === undefined) {
-      root.setSkinForWallet(root.getPublishedThemeDefaultSkinId(), root.walletId);
+      root.setSkinForWallet(root.getPublishedThemeDefaultSkinId(), root.walletId, true);
     } else {
-      root.setSkinForWallet(root.getCatalogSkinIdForWallet(root.walletId), root.walletId);
+      root.setSkinForWallet(root.getCatalogSkinIdForWallet(root.walletId), root.walletId, true);
     }      
   };
 
@@ -598,17 +615,24 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
 
   // setSkinForWallet() - sets the skin for the specified wallet.
   // 
-  root.setSkinForWallet = function(skinId, walletId, callback) {
-    $log.debug('' + (skinId != root.getPublishedSkinId() ?  'Switching skin... [walletId: ' + walletId + ']' : 'Reapplying skin... [walletId: ' + walletId + ']'));
+  root.setSkinForWallet = function(skinId, walletId, history, callback) {
+    var reapplyingSkin = (skinId == root.getPublishedSkinId());
+
+    $log.debug('' + (reapplyingSkin ?  'Reapplying skin... [walletId: ' + walletId + ']' : 'Switching skin... [walletId: ' + walletId + ']'));
 
     $log.debug('' + (root.getPublishedSkinById(skinId) != undefined && skinId != root.getPublishedSkinId() ? 
       'Old skin: ' + root.getPublishedSkinById(root.getPublishedSkinId()).header.name + '\n' +
       'New skin: ' + root.getPublishedSkinById(skinId).header.name :
       'Current skin: ' + (root.getPublishedSkinById(skinId) != undefined ? root.getPublishedSkinById(skinId).header.name : 'not set, setting to skinId ' + skinId)));
 
+    // Retain a history of applied skins.
+    if (history && !reapplyingSkin) {
+      root._pushSkin(root.getPublishedSkinId());
+    }
+
     root.walletId = walletId;
 
-    // Check for bootstrapped skin and replace with the assigned walletId (the bootsrapped skin is assigned
+    // Check for bootstrapped skin and replace with the assigned walletId (the bootstrapped skin is assigned
     // before the wallet is created).
     var config = configService.getSync();
     if (config.theme.skinFor && config.theme.skinFor['NONE']) {
@@ -662,6 +686,23 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
         $rootScope.$emit('Local/SkinUpdated');
       });
     }
+  };
+
+  // popSkin() - set the previous skin for the current wallet.
+  //
+  root.popSkin = function(callback) {
+    var skinId = root._popSkin();
+    if (skinId) {
+      root.setSkinForWallet(skinId, root.walletId, false, callback);
+    } else {
+      $log.debug('Attempted to pop skin with empty skin history');
+    }
+  };
+
+  // hasSkinHistory() - return true if there is skin history, false otherwise.
+  // 
+  root.hasSkinHistory = function() {
+    return root.skinHistory.length > 0;
   };
 
   // deleteTheme() - removes the specified theme and all associated skins from the catalog.

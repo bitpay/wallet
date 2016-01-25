@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.model').factory('AbstractPaymentService', function ($rootScope, $log, $http, $timeout, FocusedWallet, isChromeApp, configService, lodash, gettext) {
+angular.module('copayApp.plugins').factory('AbstractPaymentService', function ($log, $http, copayWalletService) {
  
   // Constructor
   // See https://medium.com/opinionated-angularjs/angular-model-objects-with-javascript-classes-2e6a067c73bc#.970bxmciz
@@ -12,7 +12,7 @@ angular.module('copayApp.model').factory('AbstractPaymentService', function ($ro
   // 
   // Convenience method to maintain interation with this service by the caller.
   AbstractPaymentService.sendPayment = function(data, cb) {
-    return FocusedWallet.sendPayment(data, cb);
+    return copayWalletService.sendPayment(data, cb);
   };
 
   // Public methods
@@ -22,10 +22,10 @@ angular.module('copayApp.model').factory('AbstractPaymentService', function ($ro
   };
 
   AbstractPaymentService.prototype.get = function(endpoint) {
-    $log.debug('GET ' + encodeURI(this.provider.api.url + endpoint));
+    $log.debug('GET ' + encodeURI(this.api.url + endpoint));
     var getData = {
       method: 'GET',
-      url: encodeURI(this.provider.api.url + endpoint),
+      url: encodeURI(this.api.url + endpoint),
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json'
@@ -41,10 +41,10 @@ angular.module('copayApp.model').factory('AbstractPaymentService', function ($ro
   };
 
   AbstractPaymentService.prototype.post = function(endpoint, data, cb) {
-    $log.debug('POST ' + encodeURI(this.provider.api.url + endpoint) + ' data = ' + JSON.stringify(data));
+    $log.debug('POST ' + encodeURI(this.api.url + endpoint) + ' data = ' + JSON.stringify(data));
     var postData = {
       method: 'POST',
-      url: encodeURI(this.provider.api.url + endpoint),
+      url: encodeURI(this.api.url + endpoint),
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json'

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.model').factory('Theme', function ($log) {
+angular.module('copayApp.model').factory('Theme', function () {
 
    // Constructor
    // See https://medium.com/opinionated-angularjs/angular-model-objects-with-javascript-classes-2e6a067c73bc#.970bxmciz
@@ -8,7 +8,6 @@ angular.module('copayApp.model').factory('Theme', function ($log) {
     this.header = obj.header || {};
     this.resources = obj.resources || [];
     this.view = obj.view || {};
-    this.service = obj.service || {};
     this.skins = obj.skins || [];
     return this;
   };

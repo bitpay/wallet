@@ -1,12 +1,17 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('preferencesSkinController',
-  function($rootScope, $scope, $state, $log, $timeout, go, themeService, profileService, configService) {
+  function($rootScope, $scope, $state, $log, $timeout, lodash, go, themeService, profileService, configService) {
 
   	var self = this;
 		var config = configService.getSync();
 		this.skinGalleryLayout = config.view.skinGalleryLayout;
-    this.skins = themeService.getPublishedSkins();
+
+		// Return only vanity skins (no applets).
+		this.skins = lodash.filter(themeService.getPublishedSkins(), function(skin) {
+//			return lodash.isEmpty(skin.applet);
+			return skin;
+		});
 
   	var nextLayout = {};
 		nextLayout['grid'] = 'list';
@@ -21,7 +26,7 @@ angular.module('copayApp.controllers').controller('preferencesSkinController',
 	  this.save = function(skinId) {
 	    var fc = profileService.focusedClient;
 	    var walletId = fc.credentials.walletId;
-	    themeService.setSkinForWallet(skinId, walletId);
+	    themeService.setSkinForWallet(skinId, walletId, true);
 	  };
 
 	  // Listen for layout events from the topbar controller.

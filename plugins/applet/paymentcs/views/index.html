@@ -1,0 +1,64 @@
+<div ng-controller="paymentCSController as c">
+  <div class="applet-container" ng-style="{'background': c.applet.view.background}">
+
+	  <ion-nav-bar class="bar bar-header bar-stable side='right'">
+			<ion-nav-buttons side="right">
+	    	<a class="button button-icon icon ion-close" ng-if="applet.canClose()" ng-click="applet.close()"></a>
+			</ion-nav-buttons>
+	  </ion-nav-bar>
+
+	  <div class="applet-content">
+
+			<div style="position: absolute; float: right; right: 50%;" ng-click="c.setCurrency()">
+				<div style="position: relative; float: right; right: -50%; top: 120px; z-index: 2; font-size: 32px;"
+					ng-style="{'color': c.applet.view.csValueColor}">
+				  {{c.displayAmount}}
+				</div>
+			</div>
+			<div style="position: absolute; float: right; right: 50%;" ng-click="c.setCurrency()">
+				<div style="position: relative; float: right; right: -50%; top: 160px; z-index: 2; font-size: 16px;"
+					ng-style="{'color': c.applet.view.csValueColor}">
+				  {{c.currency}}
+				</div>
+			</div>
+
+			<div class="text-center" style="position: absolute; width: 100%; top: 20px">
+				<style type="text/css">
+					.amount-slider .acs {
+					  background: {{c.applet.view.csBackground}};
+					  border: {{c.applet.view.csBorder}};
+					}
+					.amount-slider .acs-value {
+					  background: {{c.applet.view.csValueBackground}};
+					  border: {{c.applet.view.csValueBorder}};
+					}
+					.amount-slider .acs-indicator {
+					  background: {{c.applet.view.csIndicatorBackground}};
+					  border: {{c.applet.view.csIndicatorBorder}};
+					}
+			  </style>
+				<circular-slider
+				  class="amount-slider"
+				  shape="Circle"
+				  on-slide="c.onSlide"
+				  on-slide-end="c.onSlideEnd"
+				  radius="125"
+				  handle-dist-ratio="0.865"
+				  indicator-ball-ratio="0.28"
+				  min="c.min"
+				  max="c.max"
+				  value="c.amount">
+				</circular-slider>
+
+		    <div class="text-center m20t">
+		      <button class="button outline round tiny" ng-click="c.pay()"
+		      	ng-style="{'background': c.applet.view.payButtonBackground, 'border': c.applet.view.payButtonBorder, 'color': c.applet.view.payButtonColor}">
+		        <span translate>{{c.applet.view.payButtonText}}</span>
+		      </button>
+		    </div>
+
+			</div>
+
+		</div>
+	</div>
+</div>
