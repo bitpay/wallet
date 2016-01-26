@@ -16,7 +16,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   if (self.usePushNotifications) {
     storageService.getDeviceToken(function(err, token) {
       $timeout(function() {
-        if (!token) pushNotificationsService.pushNotificationsInit();
+        if (!token) pushNotificationsService.pushNotificationsInit(profileService.walletClients);
       }, 5000);
     });
   }
@@ -1285,24 +1285,11 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     go.walletHome();
   });
 
-  $rootScope.$on('Local/SubscribeNotifications', function(event) {
-    if (!self.usePushNotifications) return;
+  $rootScope.$on('Local/ProfileCreated', function(event) {
     self.updateRemotePreferences({
       saveAll: true
     }, function() {
       $log.debug('Remote preferences saved');
-      pushNotificationsService.enableNotifications();
-    });
-
-  });
-
-  $rootScope.$on('Local/UnsubscribeNotifications', function(event, walletId, cb) {
-    if (!self.usePushNotifications) return cb();
-
-    pushNotificationsService.unsubscribe(walletId, function(err) {
-      if (err) $log.warn('Subscription error: ' + err.code);
-      else $log.debug('Unsubscribed from push notifications service');
-      return cb();
     });
   });
 
