@@ -9,13 +9,12 @@ angular.module('copayApp.services')
 
       var name;
 
-      if (err.name == 'Error')
-        name = err.message
-      else
-
-      if (err.name)
-        name = err.name.replace(/^bwc.Error/g, '');
-      else
+      if (err.name) {
+        if (err.name == 'Error')
+          name = err.message
+        else
+          name = err.name.replace(/^bwc.Error/g, '');
+      } else
         name = err;
 
       var body = '';
