@@ -4,6 +4,9 @@ angular.module('copayApp.services')
     var root = {};
 
     root.msg = function(err, prefix) {
+      if (!err)
+        return 'Unknown error';
+
       var name;
 
       if (err.name == 'Error')
@@ -18,7 +21,7 @@ angular.module('copayApp.services')
       var body = '';
       prefix = prefix || '';
 
-      if (err && name) {
+      if (name) {
         switch (name) {
           case 'INVALID_BACKUP':
             body = gettextCatalog.getString('Wallet seed is invalid');
