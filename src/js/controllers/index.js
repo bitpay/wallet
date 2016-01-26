@@ -16,7 +16,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   if (self.usePushNotifications) {
     storageService.getDeviceToken(function(err, token) {
       $timeout(function() {
-        if (!token) pushNotificationsService.pushNotificationsInit(profileService.walletClients);
+        if (!token) pushNotificationsService.pushNotificationsInit();
       }, 5000);
     });
   }
@@ -1291,6 +1291,12 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     }, function() {
       $log.debug('Remote preferences saved');
     });
+  });
+
+  $rootScope.$on('Local/pushNotificationsRegistration', function(event) {
+    var config = configService.getSync();
+    if (self.usePushNotifications && config.pushNotifications.enabled)
+      pushNotificationsService.enableNotifications(profileService.walletClients);
   });
 
   self.debouncedUpdate = lodash.throttle(function() {
