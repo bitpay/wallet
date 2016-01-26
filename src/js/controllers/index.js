@@ -13,14 +13,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   self.updatingTxHistory = {};
   self.prevState = 'walletHome';
 
-  if (self.usePushNotifications) {
-    storageService.getDeviceToken(function(err, token) {
-      $timeout(function() {
-        if (!token) pushNotificationsService.pushNotificationsInit();
-      }, 5000);
-    });
-  }
-
   function strip(number) {
     return (parseFloat(number.toPrecision(12)));
   };
@@ -1233,7 +1225,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       self.updateRemotePreferences({
         saveAll: true
       }, function() {
-        $log.debug('Remote preferences saved')
+        $log.debug('Remote preferences saved');
         storageService.setRemotePrefsStoredFlag(function() {});
       });
     });
@@ -1293,10 +1285,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     });
   });
 
-  $rootScope.$on('Local/pushNotificationsRegistration', function(event) {
-    var config = configService.getSync();
-    if (self.usePushNotifications && config.pushNotifications.enabled)
-      pushNotificationsService.enableNotifications(profileService.walletClients);
+  $rootScope.$on('Local/pushNotificationsReady', function(event) {
+    pushNotificationsService.enableNotifications(profileService.walletClients);
   });
 
   self.debouncedUpdate = lodash.throttle(function() {

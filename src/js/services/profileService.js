@@ -132,12 +132,15 @@ angular.module('copayApp.services')
           if (err) return cb(err);
           root._setFocus(focusedWalletId, function() {
             $rootScope.$emit('Local/ProfileBound');
-            root.isDisclaimerAccepted(function(val) {
-              if (!val) {
-                return cb(new Error('NONAGREEDDISCLAIMER: Non agreed disclaimer'));
-              } else {
-                return cb();
-              }
+            storageService.getDeviceToken(function(err, token) {
+              if (!token) pushNotificationsService.pushNotificationsInit();
+              root.isDisclaimerAccepted(function(val) {
+                if (!val) {
+                  return cb(new Error('NONAGREEDDISCLAIMER: Non agreed disclaimer'));
+                } else {
+                  return cb();
+                }
+              });
             });
           });
         });

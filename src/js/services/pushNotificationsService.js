@@ -1,6 +1,6 @@
 'use strict';
 angular.module('copayApp.services')
-  .factory('pushNotificationsService', function($http, $log, isMobile, storageService, configService, lodash, isCordova) {
+  .factory('pushNotificationsService', function($http, $rootScope, $log, isMobile, storageService, configService, lodash, isCordova) {
     var root = {};
     var defaults = configService.getDefaults();
     var usePushNotifications = isCordova && !isMobile.Windows();
@@ -8,12 +8,15 @@ angular.module('copayApp.services')
     root.pushNotificationsInit = function() {
       if (!usePushNotifications) return;
 
+      var config = configService.getSync();
+      if (!config.pushNotifications.enabled) return;
+
       var push = PushNotification.init(defaults.pushNotifications.config);
 
       push.on('registration', function(data) {
         $log.debug('Starting push notification registration');
         storageService.setDeviceToken(data.registrationId, function() {
-          $rootScope.$emit('Local/pushNotificationsRegistration');
+          $rootScope.$emit('Local/pushNotificationsReady');
         });
       });
 
@@ -35,6 +38,9 @@ angular.module('copayApp.services')
 
     root.enableNotifications = function(walletsClients) {
       if (!usePushNotifications) return;
+
+      var config = configService.getSync();
+      if (!config.pushNotifications.enabled) return;
 
       storageService.getDeviceToken(function(err, token) {
         lodash.forEach(walletsClients, function(walletClient) {
@@ -62,6 +68,9 @@ angular.module('copayApp.services')
 
     root.subscribe = function(opts, walletClient, cb) {
       if (!usePushNotifications) return;
+
+      var config = configService.getSync();
+      if (!config.pushNotifications.enabled) return;
 
       walletClient.pushNotificationsSubscribe(opts, function(err, resp) {
         if (err) return cb(err);
