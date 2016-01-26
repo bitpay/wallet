@@ -1287,8 +1287,12 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
   $rootScope.$on('Local/SubscribeNotifications', function(event) {
     if (!self.usePushNotifications) return;
-
-    pushNotificationsService.enableNotifications();
+    self.updateRemotePreferences({
+      saveAll: true
+    }, function() {
+      $log.debug('Remote preferences saved');
+      pushNotificationsService.enableNotifications();
+    });
 
   });
 
