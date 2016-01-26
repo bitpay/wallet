@@ -5,7 +5,7 @@ angular.module('copayApp.services')
     var defaults = configService.getDefaults();
     var usePushNotifications = isCordova && !isMobile.Windows();
 
-    root.pushNotificationsInit = function(walletClients) {
+    root.pushNotificationsInit = function() {
       if (!usePushNotifications) return;
 
       var push = PushNotification.init(defaults.pushNotifications.config);
@@ -13,7 +13,7 @@ angular.module('copayApp.services')
       push.on('registration', function(data) {
         $log.debug('Starting push notification registration');
         storageService.setDeviceToken(data.registrationId, function() {
-          root.enableNotifications(walletsClients);
+          $rootScope.$emit('Local/pushNotificationsRegistration');
         });
       });
 
