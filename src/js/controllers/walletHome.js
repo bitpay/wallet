@@ -286,8 +286,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
         $rootScope.$on(eventName, function() {
           fc.getTx($scope.tx.id, function(err, tx) {
             if (err) {
-
-              if (err.code && err.code == 'TX_NOT_FOUND' &&
+              if (err.message && err.message == 'TX_NOT_FOUND' &&
                 (eventName == 'transactionProposalRemoved' || eventName == 'TxProposalRemoved')) {
                 $scope.tx.removed = true;
                 $scope.tx.canBeRemoved = false;
@@ -1100,15 +1099,15 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       $scope.settings = walletSettings;
       $scope.color = fc.backgroundColor;
       $scope.copayerId = fc.credentials.copayerId;
-      $scope.isShared = fc.credentials.n > 1; 
+      $scope.isShared = fc.credentials.n > 1;
 
       $scope.getAlternativeAmount = function() {
         var satToBtc = 1 / 100000000;
-        fc.getFiatRate({ 
-          code : self.alternativeIsoCode, 
-          ts : btx.time * 1000
+        fc.getFiatRate({
+          code: self.alternativeIsoCode,
+          ts: btx.time * 1000
         }, function(err, res) {
-          if (err) { 
+          if (err) {
             $log.debug('Could not get historic rate');
             return;
           }

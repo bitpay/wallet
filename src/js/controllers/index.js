@@ -1,8 +1,9 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, pushNotificationsService, lodash, go, profileService, configService, isCordova, rateService, storageService, addressService, gettext, gettextCatalog, amMoment, nodeWebkit, addonManager, feeService, isChromeApp, bwsError, txFormatService, uxLanguage, $state, glideraService, isMobile, addressbookService) {
+angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, bwcService, pushNotificationsService, lodash, go, profileService, configService, isCordova, rateService, storageService, addressService, gettext, gettextCatalog, amMoment, nodeWebkit, addonManager, feeService, isChromeApp, bwsError, txFormatService, uxLanguage, $state, glideraService, isMobile, addressbookService) {
   var self = this;
   var SOFT_CONFIRMATION_LIMIT = 12;
+  var errors = bwcService.getErrors();
   self.isCordova = isCordova;
   self.isChromeApp = isChromeApp;
   self.isSafari = isMobile.Safari();
@@ -470,10 +471,10 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   // Debounce function avoids multiple popups
   var _handleError = function(err) {
     $log.warn('Client ERROR: ', err);
-    if (err.code === 'NOT_AUTHORIZED') {
+    if (err instanceof errors.NOT_AUTHORIZED) {
       self.notAuthorized = true;
       go.walletHome();
-    } else if (err.code === 'NOT_FOUND') {
+    } else if (err instanceof errors.NOT_FOUND) {
       self.showErrorPopup(gettext('Could not access Wallet Service: Not found'));
     } else {
       var msg = ""

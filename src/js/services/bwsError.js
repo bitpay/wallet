@@ -4,49 +4,77 @@ angular.module('copayApp.services')
     var root = {};
 
     root.msg = function(err, prefix) {
+      if (!err)
+        return 'Unknown error';
+
+      var name;
+
+      if (err.name) {
+        if (err.name == 'Error')
+          name = err.message
+        else
+          name = err.name.replace(/^bwc.Error/g, '');
+      } else
+        name = err;
+
       var body = '';
       prefix = prefix || '';
 
-      if (err && err.code) {
-        switch (err.code) {
+      if (name) {
+        switch (name) {
+          case 'INVALID_BACKUP':
+            body = gettextCatalog.getString('Wallet seed is invalid');
+            break;
+          case 'WALLET_DOES_NOT_EXIST':
+            body = gettextCatalog.getString('Wallet not registered at the wallet service. Recreate it from "Create Wallet" using "Advanced Options" to set your seed');
+            break;
+          case 'MISSING_PRIVATE_KEY':
+            body = gettextCatalog.getString('Missing private keys to sign');
+            break;
+          case 'ENCRYPTED_PRIVATE_KEY':
+            body = gettextCatalog.getString('Private key is encrypted, cannot sign');
+            break;
+          case 'SERVER_COMPROMISED':
+            body = gettextCatalog.getString('Server response could not be verified');
+            break;
+          case 'COULD_NOT_BUILD_TRANSACTION':
+            body = gettextCatalog.getString('Could not build transaction');
+            break;
+          case 'INSUFFICIENT_FUNDS':
+            body = gettextCatalog.getString('Insufficient funds');
+            break;
           case 'CONNECTION_ERROR':
             body = gettextCatalog.getString('Network connection error');
             break;
           case 'NOT_FOUND':
             body = gettextCatalog.getString('Wallet service not found');
             break;
-          case 'BAD_SIGNATURES':
-            body = gettextCatalog.getString('Signatures rejected by server');
+          case 'ECONNRESET_ERROR':
+            body = gettextCatalog.getString('Connection reset by peer');
             break;
-          case 'COPAYER_DATA_MISMATCH':
-            body = gettextCatalog.getString('Copayer data mismatch');
+          case 'BAD_RESPONSE_CODE':
+            body = gettextCatalog.getString('The request could not be understood by the server');
+            break;
+          case 'WALLET_ALREADY_EXISTS':
+            body = gettextCatalog.getString('Wallet already exists');
             break;
           case 'COPAYER_IN_WALLET':
             body = gettextCatalog.getString('Copayer already in this wallet');
             break;
-          case 'COPAYER_REGISTERED':
-            body = gettextCatalog.getString('Key already associated with an existing wallet');
+          case 'WALLET_FULL':
+            body = gettextCatalog.getString('Wallet is full');
             break;
-          case 'COPAYER_VOTED':
-            body = gettextCatalog.getString('Copayer already voted on this spend proposal');
-            break;
-          case 'DUST_AMOUNT':
-            body = gettextCatalog.getString('Amount below dust threshold');
-            break;
-          case 'INCORRECT_ADDRESS_NETWORK':
-            body = gettextCatalog.getString('Incorrect address network');
-            break;
-          case 'INSUFFICIENT_FUNDS':
-            body = gettextCatalog.getString('Insufficient funds');
+          case 'WALLET_NOT_FOUND':
+            body = gettextCatalog.getString('Wallet not found');
             break;
           case 'INSUFFICIENT_FUNDS_FOR_FEE':
             body = gettextCatalog.getString('Insufficient funds for fee');
             break;
-          case 'INVALID_ADDRESS':
-            body = gettextCatalog.getString('Invalid address');
-            break;
           case 'LOCKED_FUNDS':
             body = gettextCatalog.getString('Funds are locked by pending spend proposals');
+            break;
+          case 'COPAYER_VOTED':
+            body = gettextCatalog.getString('Copayer already voted on this spend proposal');
             break;
           case 'NOT_AUTHORIZED':
             body = gettextCatalog.getString('Not authorized');
@@ -72,26 +100,23 @@ angular.module('copayApp.services')
           case 'UPGRADE_NEEDED':
             body = gettextCatalog.getString('Please upgrade Copay to perform this action');
             break;
-          case 'WALLET_ALREADY_EXISTS':
-            body = gettextCatalog.getString('Wallet already exists');
+          case 'BAD_SIGNATURES':
+            body = gettextCatalog.getString('Signatures rejected by server');
             break;
-          case 'WALLET_FULL':
-            body = gettextCatalog.getString('Wallet is full');
+          case 'COPAYER_DATA_MISMATCH':
+            body = gettextCatalog.getString('Copayer data mismatch');
             break;
-          case 'WALLET_NOT_COMPLETE':
-            body = gettextCatalog.getString('Wallet is not complete');
+          case 'DUST_AMOUNT':
+            body = gettextCatalog.getString('Amount below dust threshold');
             break;
-          case 'WALLET_NOT_FOUND':
-            body = gettextCatalog.getString('Wallet not found');
+          case 'INCORRECT_ADDRESS_NETWORK':
+            body = gettextCatalog.getString('Incorrect address network');
             break;
-          case 'SERVER_COMPROMISED':
-            body = gettextCatalog.getString('Server response could not be verified');
+          case 'COPAYER_REGISTERED':
+            body = gettextCatalog.getString('Key already associated with an existing wallet');
             break;
-          case 'WALLET_DOES_NOT_EXIST':
-            body = gettextCatalog.getString('Wallet not registered at the wallet service. Recreate it from "Create Wallet" using "Advanced Options" to set your seed');
-            break;
-          case 'INVALID_BACKUP':
-            body = gettextCatalog.getString('Wallet seed is invalid');
+          case 'INVALID_ADDRESS':
+            body = gettextCatalog.getString('Invalid address');
             break;
           case 'MAIN_ADDRESS_GAP_REACHED':
             body = gettextCatalog.getString('Empty addresses limit reached. New addresses cannot be generated.');
@@ -99,20 +124,22 @@ angular.module('copayApp.services')
           case 'WALLET_LOCKED':
             body = gettextCatalog.getString('Wallet is locked');
             break;
-
+          case 'WALLET_NOT_COMPLETE':
+            body = gettextCatalog.getString('Wallet is not complete');
+            break;
           case 'ERROR':
             body = (err.message || err.error);
             break;
 
           default:
-            $log.warn('Unknown error type:', err.code);
-            body = err.message || err.code;
+            $log.warn('Unknown error type:', name);
+            body = err.message || name;
             break;
         }
       } else if (err.message) {
-        body = gettextCatalog.getString(err.message);
+        body = err.message;
       } else {
-        body = gettextCatalog.getString(err);
+        body = err;
       }
 
       var msg = prefix + (body ? (prefix ? ': ' : '') + body : '');

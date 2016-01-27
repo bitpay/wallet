@@ -48,7 +48,7 @@ angular.module('copayApp.services')
           opts.type = isMobile.iOS() ? "ios" : isMobile.Android() ? "android" : null;
           opts.token = token;
           root.subscribe(opts, walletClient, function(err, response) {
-            if (err) $log.warn('Subscription error: ' + err.code);
+            if (err) $log.warn('Subscription error: ' + err.message);
             else $log.debug('Subscribed to push notifications service: ' + JSON.stringify(response));
           });
         });
@@ -60,7 +60,7 @@ angular.module('copayApp.services')
 
       lodash.forEach(walletsClients, function(walletClient) {
         root.unsubscribe(walletClient, function(err) {
-          if (err) $log.warn('Subscription error: ' + err.code);
+          if (err) $log.warn('Unsubscription error: ' + err.message);
           else $log.debug('Unsubscribed from push notifications service');
         });
       });
