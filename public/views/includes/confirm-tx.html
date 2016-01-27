@@ -1,42 +1,40 @@
+<div class="modalMask"></div>
 
-<div class="passModalMask">
- </div>
+<div class="confirmTxModal" ng-controller="confirmTxController as confirm" ng-init="tx = index.confirmTx.txp">
 
-<div class="alertModal">
-  <div class="row">
-    <div class="columns">
-      <h4 class="text-center m10v size-18" translate>Confirm transaction</h4>
-
-      <ul class="no-bullet size-14 m0"> 
-        <li class="line-b p10">
-          <span class="text-gray" translate>Amount</span>
-          <span class="right">{{home.confirmTxPopup.amountStr}}
-            <span ng-show="txp.alternativeAmountStr" class="label gray radius">{{home.confirmTxPopup.alternativeAmountStr}}</span>
-          </span>
-        </li>
-        <li class="line-b p10" ng-show="txp.action != 'received'">
-          <span class="text-gray" translate>Fee</span>
-          <span class="right">{{home.confirmTxPopup.feeStr}}</span>
-        </li>
-      </ul>
-
-    </div>
+  <div class="confirmHead" ng-style="{'background-color':index.backgroundColor}">
+    <h1 class="m0 text-center text-white size-18" translate>Confirm transaction</h1>
   </div>
-  <div class="row m20t">
-    <div class="small-6 columns">
-      <button 
-        ng-click="home.closeConfirmTx()"
-        class="round small-6 columns outline dark-gray expand" translate>
-        Cancel
-      </button>
+  <div class="p10">
+    <div class="size-36">{{tx.amountStr}}</div>
+    <div class="size-14 text-light" ng-show="tx.alternativeAmountStr">{{tx.alternativeAmountStr}}</div>
+    <i class="db fi-arrow-down size-24 m10v"></i>
+    <div class="payment-proposal-to" ng-click="copyAddress(tx.toAddress)">
+      <i class="fi-bitcoin left m10l"></i>
+      <contact ng-if="!tx.hasMultiplesOutputs" class="dib enable_text_select ellipsis m5t m5b m15l size-14" address="{{tx.toAddress}}"></contact>
+      <span ng-if="tx.hasMultiplesOutputs" translate>
+        Multiple recipients
+      </span>
     </div>
-    <div class="small-6 columns">
-      <button 
-         ng-click="home.acceptConfirmTx()"
-         class="round expand" 
-         ng-style="{'background-color':index.backgroundColor}" translate>
-        Accept
-      </button>
+    <div class="text-bold m10t size-12">
+      <span translate>Fee</span>: {{tx.feeStr}}
+    </div>
+    <div class="row m20t">
+      <div class="large-6 medium-6 small-6 columns">
+        <button 
+           ng-click="confirm.close(index.confirmTx.callback)"
+           class="small m10b round outline dark-gray expand" translate>
+          Cancel
+        </button>
+      </div>
+      <div class="large-6 medium-6 small-6 columns">
+        <button 
+           ng-click="confirm.accept(index.confirmTx.callback)"
+           class="small m10b round expand" 
+           ng-style="{'background-color':index.backgroundColor}" translate>
+          Accept
+        </button>
+      </div> 
     </div>
   </div>
 </div>

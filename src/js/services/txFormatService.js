@@ -30,6 +30,7 @@ angular.module('copayApp.services').factory('txFormatService', function(profileS
         tx.hasMultiplesOutputs = true;
         tx.recipientCount = outputs;
       }
+      tx.toAddress = tx.outputs[0].toAddress;
       tx.amount = lodash.reduce(tx.outputs, function(total, o) {
         o.amountStr = formatAmountStr(o.amount);
         o.alternativeAmountStr = formatAlternativeStr(o.amount);
