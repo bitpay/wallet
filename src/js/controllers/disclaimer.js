@@ -4,6 +4,7 @@ angular.module('copayApp.controllers').controller('disclaimerController',
   function($scope, $timeout, $log, profileService, isCordova, storageService, applicationService, gettextCatalog, uxLanguage, go) {
     var self = this;
     self.tries = 0;
+    $scope.creatingProfile = true;
 
     var create = function(noWallet) {
       $scope.creatingProfile = true;
