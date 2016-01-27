@@ -391,7 +391,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
   self.setFeeAndSendMax = function(cb) {
 
-    self.feeToSendMaxStr = null;
     self.availableMaxBalance = null;
     self.currentFeePerKb = null;
 
@@ -1451,6 +1450,19 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
   $rootScope.$on('Local/SetTab', function(event, tab, reset) {
     self.setTab(tab, reset);
+  });
+
+  $rootScope.$on('Local/NeedConfirmation', function(event, txp, cb) {
+    self.confirmTx = {
+      txp : txFormatService.processTx(txp),
+      callback: function(accept) {
+        self.confirmTx = null;
+        return cb(accept);
+      }
+    };
+    $timeout(function() {
+      $rootScope.$apply();
+    });
   });
 
   $rootScope.$on('Local/NeedsPassword', function(event, isSetup, cb) {
