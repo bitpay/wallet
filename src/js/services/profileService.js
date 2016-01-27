@@ -315,7 +315,7 @@ angular.module('copayApp.services')
       var walletId = fc.credentials.walletId;
 
       pushNotificationsService.unsubscribe(root.getClient(walletId), function(err) {
-        if (err) $log.warn('Subscription error: ' + err.code);
+        if (err) $log.warn('Unsubscription error: ' + err.message);
         else $log.debug('Unsubscribed from push notifications service');
 
         $log.debug('Deleting Wallet:', fc.credentials.walletName);
