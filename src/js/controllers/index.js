@@ -22,6 +22,18 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     go.walletHome();
   };
 
+  if(self.usePushNotifications){
+    // Listening for push notifications
+    var push = PushNotification.init(configService.getDefaults().pushNotifications.config);
+
+    push.on('notification', function(data) {
+      $log.debug('Push notification event: ', data.message);
+      profileService.setAndStoreFocus(data.additionalData.walletId, function(){
+        $log.debug('Push notification clicked. Focused wallet done.');
+      });
+    });
+  }
+
   self.menu = [{
     'title': gettext('Receive'),
     'icon': {
