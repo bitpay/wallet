@@ -1,6 +1,6 @@
 'use strict';
 angular.module('copayApp.services')
-  .factory('pushNotificationsService', function($http, $log, isMobile, profileService, storageService, configService, lodash, isCordova) {
+  .factory('pushNotificationsService', function($http, $rootScope, $log, isMobile, storageService, configService, lodash, isCordova) {
     var root = {};
     var defaults = configService.getDefaults();
     var usePushNotifications = isCordova && !isMobile.Windows();
@@ -8,12 +8,15 @@ angular.module('copayApp.services')
     root.pushNotificationsInit = function() {
       if (!usePushNotifications) return;
 
+      var config = configService.getSync();
+      if (!config.pushNotifications.enabled) return;
+
       var push = PushNotification.init(defaults.pushNotifications.config);
 
       push.on('registration', function(data) {
         $log.debug('Starting push notification registration');
         storageService.setDeviceToken(data.registrationId, function() {
-          root.enableNotifications();
+          $rootScope.$emit('Local/pushNotificationsReady');
         });
       });
 
@@ -33,15 +36,18 @@ angular.module('copayApp.services')
       });
     };
 
-    root.enableNotifications = function() {
+    root.enableNotifications = function(walletsClients) {
       if (!usePushNotifications) return;
 
+      var config = configService.getSync();
+      if (!config.pushNotifications.enabled) return;
+
       storageService.getDeviceToken(function(err, token) {
-        lodash.forEach(profileService.getWallets(null), function(wallet) {
+        lodash.forEach(walletsClients, function(walletClient) {
           var opts = {};
           opts.type = isMobile.iOS() ? "ios" : isMobile.Android() ? "android" : null;
           opts.token = token;
-          root.subscribe(opts, wallet.id, function(err, response) {
+          root.subscribe(opts, walletClient, function(err, response) {
             if (err) $log.warn('Subscription error: ' + err.code);
             else $log.debug('Subscribed to push notifications service: ' + JSON.stringify(response));
           });
@@ -49,29 +55,32 @@ angular.module('copayApp.services')
       });
     }
 
-    root.disableNotifications = function() {
+    root.disableNotifications = function(walletsClients) {
       if (!usePushNotifications) return;
 
-      lodash.forEach(profileService.getWallets(null), function(wallet) {
-        root.unsubscribe(wallet.id, function(err) {
+      lodash.forEach(walletsClients, function(walletClient) {
+        root.unsubscribe(walletClient, function(err) {
           if (err) $log.warn('Subscription error: ' + err.code);
           else $log.debug('Unsubscribed from push notifications service');
         });
       });
     }
 
-    root.subscribe = function(opts, walletId, cb) {
+    root.subscribe = function(opts, walletClient, cb) {
+      if (!usePushNotifications) return;
 
-      var walletClient = profileService.getClient(walletId);
+      var config = configService.getSync();
+      if (!config.pushNotifications.enabled) return;
+
       walletClient.pushNotificationsSubscribe(opts, function(err, resp) {
         if (err) return cb(err);
         return cb(null, resp);
       });
     }
 
-    root.unsubscribe = function(walletId, cb) {
+    root.unsubscribe = function(walletClient, cb) {
+      if (!usePushNotifications) return;
 
-      var walletClient = profileService.getClient(walletId);
       walletClient.pushNotificationsUnsubscribe(function(err) {
         if (err) return cb(err);
         return cb(null);
