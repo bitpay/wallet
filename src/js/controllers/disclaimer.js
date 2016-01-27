@@ -7,7 +7,6 @@ angular.module('copayApp.controllers').controller('disclaimerController',
     $scope.creatingProfile = true;
 
     var create = function(noWallet) {
-      $scope.creatingProfile = true;
       profileService.create({
         noWallet: noWallet
       }, function(err) {
