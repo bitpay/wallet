@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('preferencesGlobalController',
-  function($scope, $rootScope, $log, configService, uxLanguage, pushNotificationsService) {
+  function($scope, $rootScope, $log, configService, uxLanguage, pushNotificationsService, profileService) {
 
     this.init = function() {
       var config = configService.getSync();
@@ -39,9 +39,9 @@ angular.module('copayApp.controllers').controller('preferencesGlobalController',
       };
       configService.set(opts, function(err) {
         if (opts.pushNotifications.enabled)
-          pushNotificationsService.enableNotifications();
+          pushNotificationsService.enableNotifications(profileService.walletClients);
         else
-          pushNotificationsService.disableNotifications();
+          pushNotificationsService.disableNotifications(profileService.walletClients);
         if (err) $log.debug(err);
       });
     });
