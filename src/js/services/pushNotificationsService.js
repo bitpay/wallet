@@ -67,7 +67,7 @@ angular.module('copayApp.services')
     }
 
     root.subscribe = function(opts, walletClient, cb) {
-      if (!usePushNotifications) return;
+      if (!usePushNotifications) return cb();
 
       var config = configService.getSync();
       if (!config.pushNotifications.enabled) return;
@@ -79,7 +79,7 @@ angular.module('copayApp.services')
     }
 
     root.unsubscribe = function(walletClient, cb) {
-      if (!usePushNotifications) return;
+      if (!usePushNotifications) return cb();
 
       walletClient.pushNotificationsUnsubscribe(function(err) {
         if (err) return cb(err);
