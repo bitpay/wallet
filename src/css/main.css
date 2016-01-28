@@ -1121,6 +1121,7 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
   word-wrap: break-word;
   text-align: center;
   font-size: 14px;
+  margin: 10px;
 }
 
 .collapse {
@@ -1431,12 +1432,13 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
 
 /*/////////////////// SPINNER ////////////////////*/
 
-#history .spinner, #receive .spinner {
+#history .spinner, #receive .spinner, .copayers .spinner {
   height: 46px;
 }
 
 #history .spinner > div,
-#receive .spinner > div
+#receive .spinner > div,
+.copayers .spinner > div 
 {
   background-color: #7A8C9E;
 }

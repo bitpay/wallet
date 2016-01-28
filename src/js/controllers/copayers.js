@@ -16,8 +16,6 @@ angular.module('copayApp.controllers').controller('copayersController',
         go.walletHome();
         return;
       }
-      self.loading = false;
-      self.isCordova = isCordova;
     };
 
     var _modalDeleteWallet = function() {
@@ -55,25 +53,23 @@ angular.module('copayApp.controllers').controller('copayersController',
 
     var _deleteWallet = function() {
       var fc = profileService.focusedClient;
-      $timeout(function() {
-        var fc = profileService.focusedClient;
-        var walletName = fc.credentials.walletName;
-
-        profileService.deleteWalletFC({}, function(err) {
-          if (err) {
-            this.error = err.message || err;
-            console.log(err);
-            $timeout(function() {
-              $scope.$digest();
-            });
-          } else {
-            go.walletHome();
-            $timeout(function() {
-              notification.success(gettextCatalog.getString('Success'), gettextCatalog.getString('The wallet "{{walletName}}" was deleted', {walletName: walletName}));
-            });
-          }
-        });
-      }, 100);
+      var walletName = fc.credentials.walletName;
+      profileService.deleteWalletFC({}, function(err) {
+        if (err) {
+          self.error = err.message || err;
+          $timeout(function() {
+            $scope.$digest();
+          });
+        } else {
+          go.walletHome();
+          $timeout(function() {
+            notification.success(
+                gettextCatalog.getString('Success'), 
+                gettextCatalog.getString('The wallet "{{walletName}}" was deleted', {walletName: walletName})
+            );
+          });
+        }
+      });
     };
 
     self.deleteWallet = function() {
