@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, bwcService, pushNotificationsService, lodash, go, profileService, configService, isCordova, rateService, storageService, addressService, gettext, gettextCatalog, amMoment, nodeWebkit, addonManager, feeService, isChromeApp, bwsError, txFormatService, uxLanguage, $state, glideraService, isMobile, addressbookService) {
+angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, sjcl, bwcService, pushNotificationsService, lodash, go, profileService, configService, isCordova, rateService, storageService, addressService, gettext, gettextCatalog, amMoment, nodeWebkit, addonManager, feeService, isChromeApp, bwsError, txFormatService, uxLanguage, $state, glideraService, isMobile, addressbookService) {
   var self = this;
   var SOFT_CONFIRMATION_LIMIT = 12;
   var errors = bwcService.getErrors();
@@ -28,9 +28,15 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
     push.on('notification', function(data) {
       $log.debug('Push notification event: ', data.message);
-      profileService.setAndStoreFocus(data.additionalData.walletId, function(){
-        $log.debug('Push notification clicked. Focused wallet done.');
-      });
+      if(data.additionalData.coldstart){
+        $timeout(function () {
+          var findWallet = lodash.find(profileService.getWallets(), function(w){
+            return (lodash.isEqual(data.additionalData.walletId, sjcl.hash.sha256.hash(w.id)));
+          });
+          if(!findWallet) return $log.debug('Wallet not found');
+          profileService.setAndStoreFocus(findWallet.id, function(){});
+        },100);
+      }
     });
   }
 
