@@ -517,7 +517,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       message: 'test multi-output',
       fee: 1000,
       createdOn: new Date() / 1000,
-      type: 'multiple_output',
       outputs: []
     };
     function addOutput(n) {
