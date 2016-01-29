@@ -853,7 +853,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     var self = this;
     this.confirmTxPopup = null;
     this.setOngoingProcess(gettextCatalog.getString('Sending transaction'));
-    txSignService.publishTx(txp.id, function(err) {
+    txSignService.publishTx(txp, function(err) {
       self.setOngoingProcess();
       if (err) {
         $log.debug(err);
