@@ -97,8 +97,9 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     $rootScope.$digest();
   });
 
-  this.scrollUp = function(){
-    $location.hash('notification');
+  this.scrollUp = function(location){
+    if(!location) return;
+    $location.hash(location);
     $anchorScroll();
   };
 
@@ -670,6 +671,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
         this.hideAmount = true;
       }
     }
+    this.scrollUp('comment');
     $timeout(function() {
       $rootScope.$digest();
     }, 1);
@@ -744,7 +746,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       fc.credentials.m > 1 ? gettextCatalog.getString('Could not create payment proposal') : gettextCatalog.getString('Could not send payment');
 
     this.error = bwsError.msg(err, prefix);
-    this.scrollUp();
+    this.scrollUp('notification');
     $timeout(function() {
       $scope.$digest();
     }, 1);
