@@ -120,9 +120,9 @@ angular.module('copayApp.services').factory('txSignService', function($rootScope
 
   root.publishTx = function(txp, cb) {
     var fc = profileService.focusedClient;
-    fc.publishTxProposal({txp: txp}, function(err) {
+    fc.publishTxProposal({txp: txp}, function(err, txp) {
       if (err) return cb(err);
-      else return cb();
+      else return cb(null, txp);
     });
   };
 
