@@ -111,7 +111,7 @@
           <div class="avatar-wallet left"
             ng-style="{'background-color':index.backgroundColor}">
             <i class="icon-wallet size-24"></i>
-          </div> 
+          </div>
           <div class="wallet-info">
             <div ng-show="index.isShared">
               <p class="m0">
@@ -132,7 +132,7 @@
           </div>
         </div>
         <div class="camera-icon" ng-show="index.isComplete">
-          <qr-scanner on-scan="home.onQrCodeScanned(data)"></qr-scanner> 
+          <qr-scanner on-scan="home.onQrCodeScanned(data)"></qr-scanner>
         </div>
       </div> <!-- oh -->
 
@@ -173,13 +173,13 @@
 
       <!-- Activity -->
 
-      <div 
-          class="m20t text-gray size-12 text-center" 
+      <div
+          class="m20t text-gray size-12 text-center"
           ng-show="!index.loadingWallet && !index.txHistory[0] && !index.updatingTxHistory[index.walletId] &&
           !index.txHistoryError && !index.updateError" translate>
         No transactions yet
       </div>
-      <div ng-show="index.updatingTxHistory[index.walletId] 
+      <div ng-show="index.updatingTxHistory[index.walletId]
                 && ( (index.txProgress > 6 && !index.txHistory[0]) || (index.txProgress > 50 ) )">
         <div  class="row p20 text-center">
           <div class="columns large-12 medium-12 small-12 m10b">
@@ -203,7 +203,7 @@
           <span translate>Activity</span>
         </h4>
 
- 
+
         <div ng-if="index.txHistory[0] &&  index.updatingTxHistory[index.walletId] && index.newTx" class="row collapse last-transactions-content animated fadeInDown">
           <div class="large-6 medium-6 small-6 columns size-14">
             <div class="m10r left">
@@ -215,10 +215,10 @@
             <div style="margin-top:5px; background:#eee; width: 6em; margin-left: 52px; line-height:0.6em">
               <span>&nbsp;</span>
             </div>
- 
+
          </div>
         </div>
-        
+
         <div ng-repeat="btx in index.txHistory"
           ng-click="home.openTxModal(btx)"
           class="row collapse last-transactions-content">
@@ -281,8 +281,8 @@
         </div>
 
         <div class="m20t text-center">
-          <a class="text-gray size-12" 
-             ng-show="index.historyShowShowAll" 
+          <a class="text-gray size-12"
+             ng-show="index.historyShowShowAll"
              ng-click="index.showAllHistory()">
             <span translate>Show all</span>
           </a>
@@ -306,7 +306,7 @@
         </div>
         <h5 translate>Backup Needed</h5>
         <p class="text-gray m20b columns" translate>
-          Before receiving funds, it is highly recommended you backup your wallet. If you lose this device, it is impossible to access your funds without a backup.
+          Before receiving funds, it is necessary backup your wallet. If you lose this device, it is impossible to access your funds without a backup.
         </p>
         <button class="m20t button black expand round"
           ng-click="$root.go('backup')" ng-style="{'background-color':index.backgroundColor}" >
@@ -365,7 +365,7 @@
             </a>
           </div>
           <div class="small-12 columns" ng-show="index.isCordova && !home.generatingAddress && home.addr[index.walletId]">
-            <span class="button outline light-gray small round expand" 
+            <span class="button outline light-gray small round expand"
               ng-click="home.shareAddress(home.addr[index.walletId])">
               <span translate>Share address</span>
             </span>
@@ -385,14 +385,14 @@
       <div class="pr p25b">
         <h4 class="title m0">
           <available-balance></available-balance>
-          <a 
+          <a
             ng-show="!home.lockedCurrentFeePerKb && index.feeToSendMaxStr && index.availableBalanceSat > 0 && !home.blockUx && !home.lockAmount"
             ng-click="home.sendAll()"
              translate> Send All
           </a>
         </h4>
         <div class="camera-icon" ng-show="index.isComplete">
-          <qr-scanner on-scan="home.onQrCodeScanned(data)"></qr-scanner> 
+          <qr-scanner on-scan="home.onQrCodeScanned(data)"></qr-scanner>
         </div>
       </div>
       <div class="box-notification m20t" ng-show="home.error" ng-click="home.resetError()">
@@ -401,8 +401,8 @@
         </span>
       </div>
       <div class="row m20t">
-        <div class="large-12 large-centered columns"> 
-          <form name="sendForm" ng-submit="home.submitForm()" ng-disabled="home.blockUx || home.onGoingProcess" novalidate> 
+        <div class="large-12 large-centered columns">
+          <form name="sendForm" ng-submit="home.submitForm()" ng-disabled="home.blockUx || home.onGoingProcess" novalidate>
 
             <div ng-hide="home._paypro || home.hideAddress">
               <div class="row collapse">
@@ -425,7 +425,7 @@
                 <div class="addressbook-input" ng-show="!sendForm.address.$invalid && _address">
                   {{index.addressbook[_address] || _address}}
                 </div>
-                <a class="postfix size-12 m0 text-gray" 
+                <a class="postfix size-12 m0 text-gray"
                 ng-style="{'color':index.backgroundColor}"
                 ng-click="home.openDestinationAddressModal(index.otherWallets, _address)">
                   <i class="icon-wallet text-bold size-18"></i>
