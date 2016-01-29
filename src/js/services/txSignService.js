@@ -109,6 +109,8 @@ angular.module('copayApp.services').factory('txSignService', function($rootScope
 
     getFee(function(err, feePerKb) {
       if (err) $log.debug(err);
+      opts.feePerKb = feePerKb;
+      opts.excludeUnconfirmedUtxos = currentSpendUnconfirmed ? false : true;
       fc.createTxProposal(opts, function(err, txp) {
         if (err) return cb(err);
         else return cb(null, txp);
@@ -116,9 +118,9 @@ angular.module('copayApp.services').factory('txSignService', function($rootScope
     });
   };
 
-  root.publishTx = function(txId, cb) {
+  root.publishTx = function(txp, cb) {
     var fc = profileService.focusedClient;
-    fc.publishTxProposal(txId, function(err) {
+    fc.publishTxProposal({txp: txp}, function(err) {
       if (err) return cb(err);
       else return cb();
     });
