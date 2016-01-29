@@ -26,7 +26,7 @@ angular.module('copayApp.services').factory('txFormatService', function(profileS
 
     var outputs = lodash.isArray(tx.outputs) ? tx.outputs.length : 0;
     if (outputs && tx.action != 'received') {
-      if ((tx.type && tx.type == 'multiple_output') || (tx.proposalType && tx.proposalType == 'multiple_output')) {
+      if ((tx.type && tx.type == 'multiple_outputs') || (tx.proposalType && tx.proposalType == 'multiple_outputs')) {
         tx.hasMultiplesOutputs = true;
         tx.recipientCount = outputs;
       }
