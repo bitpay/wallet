@@ -22,20 +22,26 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     go.walletHome();
   };
 
-  if(self.usePushNotifications){
+  if (self.usePushNotifications) {
     // Listening for push notifications
     var push = PushNotification.init(configService.getDefaults().pushNotifications.config);
 
     push.on('notification', function(data) {
-      $log.debug('Push notification event: ', data.message);
-      if(data.additionalData.coldstart){
-        $timeout(function () {
-          var findWallet = lodash.find(profileService.getWallets(), function(w){
+      if (!data.additionalData.foreground) {
+        window.ignoreMobilePause = true;
+        window.plugins.spinnerDialog.show(null, gettextCatalog.getString('LOADING...'), true)
+        $log.debug('Push notification event: ', data.message);
+        $timeout(function() {
+          var findWallet = lodash.find(profileService.getWallets(), function(w) {
             return (lodash.isEqual(data.additionalData.walletId, sjcl.hash.sha256.hash(w.id)));
           });
-          if(!findWallet) return $log.debug('Wallet not found');
-          profileService.setAndStoreFocus(findWallet.id, function(){});
-        },100);
+          if (!findWallet) return $log.debug('Wallet not found');
+          profileService.setAndStoreFocus(findWallet.id, function() {
+            $timeout(function() {
+              window.plugins.spinnerDialog.hide();
+            }, 200);
+          });
+        }, 100);
       }
     });
   }
