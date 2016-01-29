@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('walletHomeController', function($scope, $rootScope, $timeout, $filter, $modal, $log, notification, txStatus, isCordova, isMobile, profileService, lodash, configService, rateService, storageService, bitcore, isChromeApp, gettext, gettextCatalog, nodeWebkit, addressService, ledger, bwsError, confirmDialog, txFormatService, animationService, addressbookService, go, feeService, txSignService) {
+angular.module('copayApp.controllers').controller('walletHomeController', function($scope, $location, $anchorScroll, $rootScope, $timeout, $filter, $modal, $log, notification, txStatus, isCordova, isMobile, profileService, lodash, configService, rateService, storageService, bitcore, isChromeApp, gettext, gettextCatalog, nodeWebkit, addressService, ledger, bwsError, confirmDialog, txFormatService, animationService, addressbookService, go, feeService, txSignService) {
 
   var self = this;
   window.ignoreMobilePause = false;
@@ -96,6 +96,11 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     self.isRateAvailable = true;
     $rootScope.$digest();
   });
+
+  this.scrollUp = function(){
+    $location.hash('notification');
+    $anchorScroll();
+  };
 
   var accept_msg = gettextCatalog.getString('Accept');
   var cancel_msg = gettextCatalog.getString('Cancel');
@@ -596,7 +601,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     });
   };
 
-  // Send 
+  // Send
 
   this.canShowAlternative = function() {
     return $scope.showAlternative;
@@ -739,7 +744,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       fc.credentials.m > 1 ? gettextCatalog.getString('Could not create payment proposal') : gettextCatalog.getString('Could not send payment');
 
     this.error = bwsError.msg(err, prefix);
-
+    this.scrollUp();
     $timeout(function() {
       $scope.$digest();
     }, 1);
@@ -1076,7 +1081,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     }
   };
 
-  // History 
+  // History
 
   function strip(number) {
     return (parseFloat(number.toPrecision(12)));
