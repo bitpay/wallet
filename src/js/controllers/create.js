@@ -164,7 +164,7 @@ angular.module('copayApp.controllers').controller('createController',
           if (err) {
             $log.warn(err);
             self.error = err;
-            scrollUp();
+            scrollUp('notification');
             $timeout(function() {
               $rootScope.$apply();
             });
@@ -175,8 +175,9 @@ angular.module('copayApp.controllers').controller('createController',
       }, 100);
     }
 
-    function scrollUp(){
-      $location.hash('notification');
+    function scrollUp(location){
+      if(!location) return;
+      $location.hash(location);
       $anchorScroll();
     };
 
