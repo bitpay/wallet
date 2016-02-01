@@ -395,7 +395,7 @@
           <qr-scanner on-scan="home.onQrCodeScanned(data)"></qr-scanner>
         </div>
       </div>
-      <div class="box-notification m20t" id="notification" ng-show="home.error" ng-click="home.resetError()">
+      <div class="box-notification m20t" ng-show="home.error" ng-click="home.resetError()">
         <span class="text-warning">
           {{home.error|translate}}
         </span>
