@@ -19,21 +19,6 @@ angular.module('copayApp.services')
           $rootScope.$emit('Local/pushNotificationsReady');
         });
       });
-
-      push.on('notification', function(data) {
-        $log.debug('Push notification event: ', data.message);
-        /* data.message,
-         data.title,
-         data.count,
-         data.sound,
-         data.image,
-         data.additionalData
-        */
-      });
-
-      push.on('error', function(e) {
-        $log.warn('Error trying to push notifications: ', e);
-      });
     };
 
     root.enableNotifications = function(walletsClients) {
