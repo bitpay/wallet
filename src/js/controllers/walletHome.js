@@ -671,7 +671,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
         this.hideAmount = true;
       }
     }
-    this.scrollUp('comment');
+
     $timeout(function() {
       $rootScope.$digest();
     }, 1);
