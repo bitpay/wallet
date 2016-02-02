@@ -387,7 +387,8 @@
           <available-balance></available-balance>
           <a 
             ng-show="!home.lockedCurrentFeePerKb && index.feeToSendMaxStr && index.availableBalanceSat > 0 && !home.blockUx && !home.lockAmount"
-            ng-click="home.sendAll()"
+            ng-click="home.sendAll()" 
+            class="p10"
              translate> Send All
           </a>
         </h4>
