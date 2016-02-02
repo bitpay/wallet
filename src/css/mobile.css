@@ -348,8 +348,9 @@ a.missing-copayers {
   text-align: center;
   float: left;
   width: 35px;
-  height: 35px;
+  height: 30px;
   border-radius: 3px;
+  padding-top: 5px;
 }
 
 .sidebar header {

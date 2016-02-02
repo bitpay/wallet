@@ -120,6 +120,18 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
         'label': ''
       };
 
+      $scope.checkClipboard = function() {
+        if (!isCordova || isMobile.Windows()) return;
+        
+        window.cordova.plugins.clipboard.paste(function(value) {
+          var Address = bitcore.Address;
+          var networkName = fc.credentials.network;
+          if (Address.isValid(value, networkName) && !$scope.newAddress) {
+            $scope.newAddress = value;
+          }
+        });
+      };
+
       $scope.beforeQrCodeScann = function() {
         $scope.error = null;
         $scope.addAddressbookEntry = true;
@@ -250,6 +262,9 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       if (addr) {
         self.setForm(addr);
       }
+    }, function() {
+      // onRejected
+      self.resetForm();
     });
   };
 
@@ -916,7 +931,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     $timeout(function() {
       $rootScope.$digest();
     }, 1);
-  };
+  }; 
 
   this.openPPModal = function(paypro) {
     $rootScope.modalOpened = true;

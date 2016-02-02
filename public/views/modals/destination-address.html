@@ -1,4 +1,4 @@
-<div ng-init="wallets[0] ? selectedWalletsOpt = true : selectedWalletsOpts = false">
+<div ng-init="wallets[0] ? selectedWalletsOpt = true : selectedWalletsOpts = false; checkClipboard()">
   <nav class="tab-bar" ng-style="{'background-color':color}">
     <section class="left-small">
       <a ng-show="!editAddressbook && !addAddressbookEntry" ng-click="cancel()" class="p10">
@@ -63,7 +63,7 @@
           <a ng-click="selectWallet(w.id, w.name)" class="db oh">
             <div class="avatar-wallet"
               ng-style="{'background-color':w.color}">
-              <i class="icon-wallet size-21 vt"></i>
+              <i class="icon-wallet size-21"></i>
             </div>
             <div class="ellipsis name-wallet text-bold">{{w.name || w.id}}</div>
             <div class="size-12">{{w.m}} of {{w.n}}
@@ -98,7 +98,7 @@
           <a ng-click="toggleAddAddressbookEntry()" class="p0i">
             <i class="fi-plus size-24 m20r lh icon"></i> 
             <span class="size-12 tu text-bold" translate>Add a new entry</span>
-            <span ng-show="!list[newAddress] && newAddress">({{newAddress}})</span>
+            <span class="size-10" ng-show="!list[newAddress] && newAddress">({{newAddress}})</span>
           </a>
         </li>
       </ul>
