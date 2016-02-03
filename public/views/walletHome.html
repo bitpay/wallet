@@ -107,29 +107,8 @@
           </div>
         </div> <!-- amount -->
 
-        <div class="avatar-name columns line-b">
-          <div class="avatar-wallet left"
-            ng-style="{'background-color':index.backgroundColor}">
-            <i class="icon-wallet size-24"></i>
-          </div>
-          <div class="wallet-info">
-            <div ng-show="index.isShared">
-              <p class="m0">
-              {{(index.alias || index.walletName)}}
-              </p>
-              <div class="size-12 text-gray">
-                <span ng-include="'views/includes/walletInfo.html'"></span>
-              </div>
-            </div>
-            <div ng-show="!index.isShared">
-              <p class="m0">
-              {{(index.alias || index.walletName)}}
-              </p>
-              <div class="size-12 text-gray">
-                <span ng-include="'views/includes/walletInfo.html'"></span>
-              </div>
-            </div>
-          </div>
+        <div class="wallet-info">
+          <span ng-include="'views/includes/walletInfo.html'"></span>
         </div>
         <div class="camera-icon" ng-show="index.isComplete">
           <qr-scanner on-scan="home.onQrCodeScanned(data)"></qr-scanner>
@@ -137,7 +116,7 @@
       </div> <!-- oh -->
 
 
-      <div class="m20t" ng-show="index.notAuthorized && ! index.anyOnGoingProcess">
+      <div class="oh pr m20t" ng-show="index.notAuthorized && ! index.anyOnGoingProcess">
         <div class="text-center text-warning">
           <i class="fi-alert"></i>
           <span translate>
@@ -155,7 +134,7 @@
         </div>
       </div>
 
-      <div ng-if="index.txps[0]">
+      <div class="oh pr" ng-if="index.txps[0]">
         <h4 ng-show="index.requiresMultipleSignatures" class="title m0" translate>Payment Proposals</h4>
         <h4 ng-show="!index.requiresMultipleSignatures" class="title m0" translate>Unsent transactions</h4>
         <div class="last-transactions pr" ng-repeat="tx in index.txps">
@@ -174,7 +153,7 @@
       <!-- Activity -->
 
       <div
-          class="m20t text-gray size-12 text-center"
+          class="oh pr m20t text-gray size-12 text-center"
           ng-show="!index.loadingWallet && !index.txHistory[0] && !index.updatingTxHistory[index.walletId] &&
           !index.txHistoryError && !index.updateError" translate>
         No transactions yet
@@ -198,7 +177,7 @@
         </div>
       </div>
 
-      <div ng-show="index.txHistory[0]">
+      <div class="oh pr" ng-show="index.txHistory[0]">
         <h4 class="title m0">
           <span translate>Activity</span>
         </h4>

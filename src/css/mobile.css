@@ -192,7 +192,8 @@ _:-ms-fullscreen, :root .main {
   text-align: center;
   padding: 1.5rem 1rem 1.5rem 1rem;
   color: #fff;
-  height: 175px;
+  height: 150px;
+  margin-bottom: 25px;
 }
 
 .alternative-amount {
@@ -219,12 +220,6 @@ _:-ms-fullscreen, :root .main {
   height:100%;
 }
 
-.avatar-name {
-  position: relative;
-  padding-top: 10px;
-  background-color: #fff;
-}
-
 .walletHome .avatar-wallet {
   padding: 0.5rem;
   width: 75px;
@@ -242,10 +237,12 @@ _:-ms-fullscreen, :root .main {
 }
 
 .walletHome .wallet-info {
-  margin-left: 85px;
-  line-height: 110%;
-  height: 60px;
-  overflow: hidden;
+  position: absolute;
+  top: inherit;
+  left: 10px;
+  bottom: 30px;
+  font-size: 20px;
+  color: #fff;
 }
 
 .camera-icon a {
@@ -258,7 +255,7 @@ _:-ms-fullscreen, :root .main {
   border-radius: 100%;
   top: inherit;
   right: 15px;
-  bottom: 45px;
+  bottom: 2px;
   line-height: 12px;
 }
 
@@ -807,7 +804,7 @@ textarea:focus
   transform: translate3d(-100%, 0, 0);
   width:100%;
   position: absolute;
-  top: 45px;
+  top: 44px;
   bottom: 37px;
   overflow: auto;
   padding-bottom: 40px;
