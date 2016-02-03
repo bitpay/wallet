@@ -12,7 +12,7 @@ angular.module('copayApp.controllers').controller('paperWalletController',
     self.onData = function(data) {
       self.error = '';
       self.scannedKey = data;
-      self.isPkEncrypted = (data.charAt(0) == '6');
+      self.isPkEncrypted = (data.substring(0,2) == '6P');
     }
 
     self._scanFunds = function(cb) {
