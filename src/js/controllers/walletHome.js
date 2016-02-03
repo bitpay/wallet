@@ -4,7 +4,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
   var self = this;
   window.ignoreMobilePause = false;
-  $rootScope.hideMenuBar = false;
+  $rootScope.shouldHideMenuBar = false;
   $rootScope.wpInputFocused = false;
   var config = configService.getSync();
   var configWallet = config.wallet;
@@ -84,7 +84,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     disableFocusListener();
     disableResumeListener();
     disableOngoingProcessListener();
-    $rootScope.hideMenuBar = false;
+    $rootScope.shouldHideMenuBar = false;
   });
 
   this.onQrCodeScanned = function(data) {
@@ -638,10 +638,10 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
   this.hideMenuBar = lodash.debounce(function(hide) {
     if (hide) {
-      $rootScope.hideMenuBar = true;
+      $rootScope.shouldHideMenuBar = true;
       this.bindTouchDown();
     } else {
-      $rootScope.hideMenuBar = false;
+      $rootScope.shouldHideMenuBar = false;
     }
     $rootScope.$digest();
   }, 100);
