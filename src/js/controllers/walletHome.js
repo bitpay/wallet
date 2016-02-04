@@ -28,6 +28,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   this.addr = {};
   this.lockedCurrentFeePerKb = null;
   self.paymentExpired = true;
+  self.usePaypro = false;
 
   var disableScannerListener = $rootScope.$on('dataScanned', function(event, data) {
     self.setForm(data);
@@ -949,6 +950,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   this.resetForm = function() {
     this.resetError();
     self.paymentExpired = true;
+    self.usePaypro = false;
     this._paypro = null;
     this.lockedCurrentFeePerKb = null;
 
@@ -1068,9 +1070,10 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   };
 
   function _countDownPaymentTime(time){
+    self.usePaypro = true;
     self.paymentExpired = false;
-    // self.timeToExpire = time;
-    self.timeToExpire = (Math.floor(Date.now()/1000) + 10);
+    self.timeToExpire = time;
+    // self.timeToExpire = (Math.floor(Date.now()/1000) + 10);
     var countDown = $interval(function(){
       self.timeToExpire--;
       if(self.timeToExpire <= Math.floor(Date.now() / 1000)){
