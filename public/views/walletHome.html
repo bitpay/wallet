@@ -367,6 +367,7 @@
             class="p10"
              translate> Send All
           </a>
+          <time ng-show="!home.paymentExpired" translate>Payment expires: {{home.timeToExpire * 1000 | amTimeAgo}}</time>
         </h4>
         <div class="camera-icon" ng-show="index.isComplete">
           <qr-scanner on-scan="home.onQrCodeScanned(data)"></qr-scanner>
@@ -475,7 +476,7 @@
                 <a ng-click="home.resetForm(sendForm)" class="button expand outline dark-gray round" translate>Cancel</a>
               </div>
               <div class="columns" ng-class="{'small-6 medium-6 large-6':(home._paypro || home.lockAddress || home.lockAmount)}">
-                <button type="submit" class="button black round expand" ng-disabled="sendForm.$invalid || home.blockUx ||  index.isOffline"
+                <button type="submit" class="button black round expand" ng-disabled="sendForm.$invalid || home.blockUx || index.isOffline || home.paymentExpired"
                   ng-style="{'background-color':index.backgroundColor}"  translate>
                   Send
                 </button>

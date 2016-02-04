@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('walletHomeController', function($scope, $rootScope, $timeout, $filter, $modal, $log, notification, txStatus, isCordova, isMobile, profileService, lodash, configService, rateService, storageService, bitcore, isChromeApp, gettext, gettextCatalog, nodeWebkit, addressService, ledger, bwsError, confirmDialog, txFormatService, animationService, addressbookService, go, feeService, txService) {
+angular.module('copayApp.controllers').controller('walletHomeController', function($scope, $rootScope, $interval, $timeout, $filter, $modal, $log, notification, txStatus, isCordova, isMobile, profileService, lodash, configService, rateService, storageService, bitcore, isChromeApp, gettext, gettextCatalog, nodeWebkit, addressService, ledger, bwsError, confirmDialog, txFormatService, animationService, addressbookService, go, feeService, txSignService) {
 
   var self = this;
   window.ignoreMobilePause = false;
@@ -27,6 +27,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   this.showScanner = false;
   this.addr = {};
   this.lockedCurrentFeePerKb = null;
+  self.paymentExpired = true;
 
   var disableScannerListener = $rootScope.$on('dataScanned', function(event, data) {
     self.setForm(data);
@@ -37,6 +38,10 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       self.resetForm();
       self.error = gettext('Could not recognize a valid Bitcoin QR Code');
     }
+
+    $timeout(function () {
+      $rootScope.$appply();
+    }, 10);
   });
 
   var disablePaymentUriListener = $rootScope.$on('paymentUri', function(event, uri) {
@@ -618,7 +623,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     });
   };
 
-  // Send 
+  // Send
 
   this.canShowAlternative = function() {
     return $scope.showAlternative;
@@ -673,7 +678,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     if (isCordova && !this.isWindowsPhoneApp) {
       this.hideMenuBar(what);
     }
-    
+
     var self = this;
     if (isCordova && !this.isWindowsPhoneApp && what == 'address') {
       getClipboard(function(value) {
@@ -877,7 +882,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       });
 
     }, 100);
-  }; 
+  };
 
   this.acceptTx = function(txp) {
     var self = this;
@@ -975,7 +980,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     $timeout(function() {
       $rootScope.$digest();
     }, 1);
-  }; 
+  };
 
   this.openPPModal = function(paypro) {
     $rootScope.modalOpened = true;
@@ -1059,9 +1064,25 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
         self._paypro = paypro;
         self.setForm(paypro.toAddress, (paypro.amount * satToUnit).toFixed(self.unitDecimals), paypro.memo);
+        _countDownPaymentTime(paypro.expires);
         return cb();
       });
     }, 1);
+  };
+
+  function _countDownPaymentTime(time){
+    self.paymentExpired = false;
+    // self.timeToExpire = time;
+    self.timeToExpire = (Math.floor(Date.now()/1000) + 10);
+    var countDown = $interval(function(){
+      self.timeToExpire--;
+      if(self.timeToExpire <= Math.floor(Date.now() / 1000)){
+        self.paymentExpired = true;
+        self.timeToExpire = null;
+        self.error = gettext('Cannot send the payment: time to sign expired');
+        $interval.cancel(countDown);
+      }
+    }, 1000);
   };
 
   this.setFromUri = function(uri) {
@@ -1135,7 +1156,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     }
   };
 
-  // History 
+  // History
 
   function strip(number) {
     return (parseFloat(number.toPrecision(12)));
