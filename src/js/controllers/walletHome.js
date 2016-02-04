@@ -38,10 +38,6 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       self.resetForm();
       self.error = gettext('Could not recognize a valid Bitcoin QR Code');
     }
-
-    $timeout(function () {
-      $rootScope.$appply();
-    }, 10);
   });
 
   var disablePaymentUriListener = $rootScope.$on('paymentUri', function(event, uri) {
@@ -952,6 +948,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
   this.resetForm = function() {
     this.resetError();
+    self.paymentExpired = true;
     this._paypro = null;
     this.lockedCurrentFeePerKb = null;
 
@@ -1079,6 +1076,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       if(self.timeToExpire <= Math.floor(Date.now() / 1000)){
         self.paymentExpired = true;
         self.timeToExpire = null;
+        self._paypro = null;
         self.error = gettext('Cannot send the payment: time to sign expired');
         $interval.cancel(countDown);
       }
