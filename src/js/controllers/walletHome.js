@@ -285,6 +285,9 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     var fc = profileService.focusedClient;
     var currentSpendUnconfirmed = configWallet.spendUnconfirmed;
     var ModalInstanceCtrl = function($scope, $modalInstance) {
+      $scope.paymentExpired = false;
+      $scope.usePaypro = false;
+      checkPaypro();
       $scope.error = null;
       $scope.copayers = copayers
       $scope.copayerId = fc.credentials.copayerId;
@@ -306,6 +309,21 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       $scope.getShortNetworkName = function() {
         return fc.credentials.networkName.substring(0, 4);
       };
+
+      function checkPaypro() {
+        if(tx.payProUrl && !isChromeApp){
+          fc.fetchPayPro({
+            payProUrl: tx.payProUrl,
+          }, function(err, paypro) {
+            if (err) return $log.debug(err);
+            tx.paypro = paypro;
+            $scope.usePaypro = true;
+            $scope.paymentExpired = tx.paypro.expires <= Math.floor(Date.now() / 1000);
+            $scope.$apply();
+          });
+        }
+      };
+
       lodash.each(['TxProposalRejectedBy', 'TxProposalAcceptedBy', 'transactionProposalRemoved', 'TxProposalRemoved', 'NewOutgoingTx', 'UpdateTx'], function(eventName) {
         $rootScope.$on(eventName, function() {
           fc.getTx($scope.tx.id, function(err, tx) {
@@ -324,9 +342,12 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
             var action = lodash.find(tx.actions, {
               copayerId: fc.credentials.copayerId
             });
+
             $scope.tx = txFormatService.processTx(tx);
+
             if (!action && tx.status == 'pending')
               $scope.tx.pendingForUs = true;
+
             $scope.updateCopayerList();
             $scope.$apply();
           });
@@ -1073,7 +1094,6 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     self.usePaypro = true;
     self.paymentExpired = false;
     self.timeToExpire = time;
-    // self.timeToExpire = (Math.floor(Date.now()/1000) + 10);
     var countDown = $interval(function(){
       self.timeToExpire--;
       if(self.timeToExpire <= Math.floor(Date.now() / 1000)){
