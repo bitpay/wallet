@@ -916,6 +916,17 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     }, 100);
   };
 
+  self.filter = function(search) {
+    if (lodash.isEmpty(search)) return self.txHistory;
+    var result = lodash.filter(self.txHistory, function(tx) {
+      return lodash.includes(tx.amountStr, search) ||
+        lodash.includes(tx.message, search) ||
+        lodash.includes(self.addressbook[tx.addressTo], search) ||
+        lodash.includes(tx.addressTo, search);
+    });
+    return result;
+  }
+
   self.getTxsFromServer = function(client, skip, endingTxid, limit, cb) {
     var res = [];
 
