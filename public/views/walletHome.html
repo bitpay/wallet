@@ -195,9 +195,10 @@
           </div>
         </div>
 
-        <div class="left-inner-addon ">
+        <div id="searchLabel" class="left-inner-addon ">
           <i class="fi-magnifying-glass"></i>
-          <input ng-focus="home.formFocus(true)"
+          <input ng-click="home.searchInput()"
+                ng-focus="home.formFocus(true)"
                 ng-blur="home.formFocus(false)"
                 type="text"
                 class="form-control"
