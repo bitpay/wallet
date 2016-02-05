@@ -181,8 +181,6 @@
         <h4 class="title m0">
           <span translate>Activity</span>
         </h4>
-
-
         <div ng-if="index.txHistory[0] &&  index.updatingTxHistory[index.walletId] && index.newTx" class="row collapse last-transactions-content animated fadeInDown">
           <div class="large-6 medium-6 small-6 columns size-14">
             <div class="m10r left">
@@ -198,8 +196,9 @@
          </div>
         </div>
 
-        <div ng-repeat="btx in index.txHistory"
-             fast-click callback-fn="home.openTxModal(btx)"
+        <input type="text" ng-model="search">
+        <div ng-repeat="btx in index.filter(search)"
+          ng-click="home.openTxModal(btx)"
           class="row collapse last-transactions-content">
           <div class="large-6 medium-6 small-6 columns size-14">
             <div class="m10r left">
