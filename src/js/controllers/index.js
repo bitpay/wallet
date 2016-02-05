@@ -922,10 +922,18 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       return lodash.includes(tx.amountStr, search) ||
         lodash.includes(tx.message, search) ||
         lodash.includes(self.addressbook[tx.addressTo], search) ||
-        lodash.includes(tx.addressTo, search);
+        lodash.includes(tx.addressTo, search) ||
+        lodash.isEqual(formatDate(new Date(tx.time * 1000)), search);
     });
     return result;
   }
+
+  function formatDate(date) {
+    var day = ('0' + date.getDate()).slice(-2).toString();
+    var month = ('0' + (date.getMonth() + 1)).slice(-2).toString();
+    var year = date.getFullYear();
+    return [month, day, year].join('/');
+  };
 
   self.getTxsFromServer = function(client, skip, endingTxid, limit, cb) {
     var res = [];
