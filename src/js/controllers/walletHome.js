@@ -831,7 +831,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     }, 1);
   };
 
-// subscription 
+// subscription
   this.setOngoingProcess = function(name) {
     var self = this;
     self.blockUx = !!name;
