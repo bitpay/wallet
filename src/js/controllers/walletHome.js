@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('walletHomeController', function($scope, $rootScope, $timeout, $filter, $modal, $log, notification, txStatus, isCordova, isMobile, profileService, lodash, configService, rateService, storageService, bitcore, isChromeApp, gettext, gettextCatalog, nodeWebkit, addressService, ledger, bwsError, confirmDialog, txFormatService, animationService, addressbookService, go, feeService, txService) {
+angular.module('copayApp.controllers').controller('walletHomeController', function($scope, $location, $anchorScroll, $rootScope, $timeout, $filter, $modal, $log, notification, txStatus, isCordova, isMobile, profileService, lodash, configService, rateService, storageService, bitcore, isChromeApp, gettext, gettextCatalog, nodeWebkit, addressService, ledger, bwsError, confirmDialog, txFormatService, animationService, addressbookService, go, feeService, txService) {
 
   var self = this;
   window.ignoreMobilePause = false;
@@ -27,6 +27,19 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   this.showScanner = false;
   this.addr = {};
   this.lockedCurrentFeePerKb = null;
+
+  self.searchInput = function() {
+    $timeout(function() {
+      scrollUp('searchLabel');
+    }, 300);
+  }
+
+  function scrollUp(location) {
+    if (!location) return;
+    console.log(JSON.stringify(location));
+    $location.hash(location);
+    $anchorScroll();
+  };
 
   var disableScannerListener = $rootScope.$on('dataScanned', function(event, data) {
     self.setForm(data);
@@ -673,7 +686,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     if (isCordova && !this.isWindowsPhoneApp) {
       this.hideMenuBar(what);
     }
-    
+
     var self = this;
     if (isCordova && !this.isWindowsPhoneApp && what == 'address') {
       getClipboard(function(value) {
@@ -839,7 +852,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       amount = parseInt((form.amount.$modelValue * unitToSat).toFixed(0));
 
       outputs.push({
-        'toAddress' : address,
+        'toAddress': address,
         'amount': amount,
         'message': comment
       });
@@ -869,7 +882,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
           });
           return;
         } else {
-          $rootScope.$emit('Local/NeedsConfirmation', txp,  function(accept) {
+          $rootScope.$emit('Local/NeedsConfirmation', txp, function(accept) {
             if (accept) self.acceptTx(txp);
             else self.resetForm();
           });
@@ -877,7 +890,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       });
 
     }, 100);
-  }; 
+  };
 
   this.acceptTx = function(txp) {
     var self = this;
@@ -975,7 +988,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     $timeout(function() {
       $rootScope.$digest();
     }, 1);
-  }; 
+  };
 
   this.openPPModal = function(paypro) {
     $rootScope.modalOpened = true;
