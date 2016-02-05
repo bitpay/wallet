@@ -195,8 +195,14 @@
 
          </div>
         </div>
-
-        <input type="text" ng-model="search">
+        
+        <div class="left-inner-addon ">
+          <i class="fi-magnifying-glass"></i>
+          <input type="text"
+                class="form-control"
+                 placeholder="Amount, address, mm/dd/yyyy"
+                 ng-model="search"></input>
+        </div>
         <div ng-repeat="btx in index.filter(search)"
           ng-click="home.openTxModal(btx)"
           class="row collapse last-transactions-content">

@@ -613,6 +613,18 @@ ul.manage li {
   visibility: hidden;
 }
 
+.left-inner-addon {
+    position: relative;
+}
+.left-inner-addon input {
+    padding-left: 30px !important;
+    margin-bottom: 0rem !important;
+}
+.left-inner-addon i {
+    position: absolute;
+    padding: 5px;
+    padding-left: 2%;
+}
 /* Turn Off Number Input Spinners */
 input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button {
