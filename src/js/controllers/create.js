@@ -92,21 +92,21 @@ angular.module('copayApp.controllers').controller('createController',
       var opts = {
         m: $scope.requiredCopayers,
         n: $scope.totalCopayers,
-        name: form.walletName.$modelValue,
-        myName: $scope.totalCopayers > 1 ? form.myName.$modelValue : null,
-        networkName: form.isTestnet.$modelValue ? 'testnet' : 'livenet',
+        name: $scope.walletName,
+        myName: $scope.totalCopayers > 1 ? $scope.myName : null,
+        networkName: $scope.isTestnet ? 'testnet' : 'livenet',
         bwsurl: $scope.bwsurl,
       };
       var setSeed = self.seedSourceId == 'set';
       if (setSeed) {
 
-        var words = form.privateKey.$modelValue || '';
+        var words = $scope.privateKey || '';
         if (words.indexOf(' ') == -1 && words.indexOf('prv') == 1 && words.length > 108) {
           opts.extendedPrivateKey = words;
         } else {
           opts.mnemonic = words;
         }
-        opts.passphrase = form.passphrase.$modelValue;
+        opts.passphrase = $scope.passphrase;
 
         var pathData = derivationPathHelper.parse($scope.derivationPath);
         if (!pathData) {
@@ -119,7 +119,7 @@ angular.module('copayApp.controllers').controller('createController',
         opts.derivationStrategy = pathData.derivationStrategy;
 
       } else {
-        opts.passphrase = form.createPassphrase.$modelValue;
+        opts.passphrase = $scope.createPassphrase;
       }
 
       if (setSeed && !opts.mnemonic && !opts.extendedPrivateKey) {
