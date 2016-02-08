@@ -1,0 +1,70 @@
+<nav class="sidebar" ng-controller="sidebarRightController as sidebar">
+<!--
+  <div class="sidebar-bg" ng-style="{'background':theme.view.sidebarRBackground}">
+-->
+
+    <style>
+      .brick.small {
+        width: 140px;
+        height: 140px;
+      }
+
+      .brick.large {
+        width: 300px;
+        height: 300px;
+      }
+    </style>
+
+    <div class="gridly" style="width:200px; height:500px">
+      <div class="brick small" style="background: red"></div>
+      <div class="brick small" style="background: green"></div>
+      <div class="brick large" style="background: blue"></div>
+      <div class="brick small" style="background: yellow"></div>
+      <div class="brick small" style="background: white"></div>
+      <div class="brick large" style="background: aqua"></div>
+    </div>
+
+    <!-- Grid layout -->
+    <div class="row" style="padding-left: 1px;" ng-show="sidebar.appletGalleryLayout == 'grid'">
+      <div class="columns large-2 medium-3 small-4 end" style="padding: 1px 1px 1px 0;" ng-repeat="a in sidebar.applets">
+        <img menu-close ng-src="{{a.header.galleryImage}}" ng-click="applet.open(a.header.name)"/>
+        <div class="gallery-grid-text">
+          <div ng-if="theme.header.preferences.showAppletGalleryGridLabel">{{a.header.name}}</div>
+          <div ng-if="!theme.header.preferences.showAppletGalleryGridLabel">&nbsp;</div>
+        </div>
+      </div>
+    </div>
+<!--
+
+    <!-- List layout --
+    <div ng-show="sidebar.appletGalleryLayout == 'list'">
+      <ul class="no-bullet m0">
+        <li class="p0i oa" ng-repeat="a in sidebar.applets">
+
+          <div menu-close class="gallery-list-container" ng-click="applet.open(a.header.name)">
+            <img class="gallery-list-image" ng-src="{{a.header.galleryImage}}"/>
+            <div class="gallery-list-text-lg">{{a.header.name}}</div>
+            <div class="gallery-list-text-sm">{{a.header.description}}</div>
+          </div>
+
+        </li>
+      </ul>
+    </div>
+
+    <!-- List detail layout --
+    <div ng-show="sidebar.appletGalleryLayout == 'list-detail'">
+      <ul class="no-bullet m0">
+        <li class="p0i oa" ng-repeat="a in sidebar.applets">
+
+          <div menu-close class="gallery-listd-container" ng-click="applet.open(a.header.name)">
+            <img class="gallery-listd-image" ng-src="{{a.header.galleryImage}}"/>
+            <div class="gallery-listd-text-lg">{{a.header.name}}</div>
+            <div class="gallery-listd-text-sm">{{a.header.description}}</div>
+          </div>
+
+        </li>
+      </ul>
+    </div>
+-->
+  </div> <!-- sidebar-bg -->
+</nav>

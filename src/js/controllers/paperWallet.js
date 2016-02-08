@@ -1,5 +1,5 @@
 angular.module('copayApp.controllers').controller('paperWalletController',
-  function($scope, $http, $timeout, $log, configService, profileService, go, addressService, txStatus, bitcore) {
+  function($scope, $http, $timeout, $log, configService, profileService, go, addressService, txStatus, bitcore, txFormatService) {
     var self = this;
     var fc = profileService.focusedClient;
     var rawTx;
@@ -61,7 +61,7 @@ angular.module('copayApp.controllers').controller('paperWalletController',
             self.privateKey = privateKey;
             self.balanceSat = balance;
             var config = configService.getSync().wallet.settings;
-            self.balance = profileService.formatAmount(balance) + ' ' + config.unitName;
+            self.balance = txFormatService.formatAmount(balance) + ' ' + config.unitName;
           }
 
           $scope.$apply();

@@ -6,6 +6,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   self.isCordova = isCordova;
   self.isChromeApp = isChromeApp;
   self.isSafari = isMobile.Safari();
+  self.physicalScreenWidth = ((window.innerWidth > 0) ? window.innerWidth : screen.width);
+  self.physicalScreenHeight = ((window.innerHeight > 0) ? window.innerHeight : screen.height);
   self.onGoingProcess = {};
   self.historyShowLimit = 10;
   self.updatingTxHistory = {};
@@ -16,6 +18,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   features += (brand.features.theme.themeDiscovery.enabled ? 'Theme Discovery,' : '');
   features += (brand.features.theme.skinDiscovery.enabled ? 'Skin Discovery,' : '');
   features += (brand.features.theme.skinGallery.enabled ? 'Skin Gallery,' : '');
+  features += (brand.features.theme.applets.enabled ? 'Applets,' : '');
   features += (brand.features.theme.socialLike.enabled ? 'Like Themes & Skins,' : '');
   $log.debug('Application branding: ' + brand.shortName);
   $log.debug('Enabled features: ' + features.substring(0, features.length-1));
@@ -179,7 +182,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     profileService.isDisclaimerAccepted(function(v) {
       if (v) {
         self.acceptDisclaimer();
-      } else go.path('disclaimer');
+      } else go.disclaimer();
     });
   };
 
@@ -403,7 +406,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
         if (self.availableBalanceSat > feeToSendMaxSat) {
           self.availableMaxBalance = strip((self.availableBalanceSat - feeToSendMaxSat) * self.satToUnit);
-          self.feeToSendMaxStr = profileService.formatAmount(feeToSendMaxSat) + ' ' + self.unitName;
+          self.feeToSendMaxStr = txFormatService.formatAmount(feeToSendMaxSat) + ' ' + self.unitName;
         }
       });
     }
@@ -635,12 +638,12 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.unitName = config.unitName;
 
     //STR
-    self.totalBalanceStr = profileService.formatAmount(self.totalBalanceSat) + ' ' + self.unitName;
-    self.lockedBalanceStr = profileService.formatAmount(self.lockedBalanceSat) + ' ' + self.unitName;
-    self.availableBalanceStr = profileService.formatAmount(self.availableBalanceSat) + ' ' + self.unitName;
+    self.totalBalanceStr = txFormatService.formatAmount(self.totalBalanceSat) + ' ' + self.unitName;
+    self.lockedBalanceStr = txFormatService.formatAmount(self.lockedBalanceSat) + ' ' + self.unitName;
+    self.availableBalanceStr = txFormatService.formatAmount(self.availableBalanceSat) + ' ' + self.unitName;
 
     if (self.pendingAmount) {
-      self.pendingAmountStr = profileService.formatAmount(self.pendingAmount) + ' ' + self.unitName;
+      self.pendingAmountStr = txFormatService.formatAmount(self.pendingAmount) + ' ' + self.unitName;
     } else {
       self.pendingAmountStr = null;
     }
@@ -867,8 +870,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       $log.debug('Fixing Tx Cache Unit to:' + name)
       lodash.each(txs, function(tx) {
 
-        tx.amountStr = profileService.formatAmount(tx.amount, config.unitName) + name;
-        tx.feeStr = profileService.formatAmount(tx.fees, config.unitName) + name;
+        tx.amountStr = txFormatService.formatAmount(tx.amount, config.unitName) + name;
+        tx.feeStr = txFormatService.formatAmount(tx.fees, config.unitName) + name;
       });
     };
 
@@ -1021,13 +1024,14 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     });
   };
 
-  self.openMenu = function() {
+  this.toggleLeftMenu = function() {
     if (!self.disclaimerAccepted) return;
-    go.swipe(true);
+    go.toggleLeftMenu();
   };
 
-  self.closeMenu = function() {
-    go.swipe();
+  this.toggleRightMenu = function() {
+    if (!self.disclaimerAccepted) return;
+    go.toggleRightMenu();
   };
 
   self.retryScan = function() {

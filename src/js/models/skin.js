@@ -1,27 +1,46 @@
 'use strict';
+angular.module('copayApp.model').factory('Skin', function ($log, lodash, Applet) {
 
-function Skin() {
-  this.version = '1.0.0';
-};
+   // Constructor
+   // Skin is contructed with it's parent theme.
+   // 
+  function Skin(obj, theme) {
+    this.header = obj.header || {};
+    this.resources = obj.resources || [];
+    this.view = obj.view || {};
+    this.applet = obj.applet || {};
+    this.theme = theme;
+    return this;
+  };
 
-Skin.create = function(props) {
-  props = props || {};
+  // Public methods
+  // 
+  Skin.prototype.canDelete = function() {
+    return this.header.permissions['delete'];
+  };
 
-  var s = new Skin();
-  s.header = props.header || {};
-  s.resources = props.resources || [];
-  s.view = props.view || {};
-  return s;
-};
+  Skin.prototype.setDelete = function(b) {
+    this.header.permissions['delete'] = b;
+  };
 
-Skin.prototype.canDelete = function() {
-  return this.header.permissions['delete'];
-};
+  Skin.prototype.toggleLike = function() {
+    this.header.social.iLikeThis = !this.header.social.iLikeThis;
+  };
 
-Skin.prototype.setDelete = function(b) {
-  this.header.permissions['delete'] = b;
-};
+  Skin.prototype.isApplet = function() {
+    return (!lodash.isEmpty(this.applet));
+  };
 
-Skin.prototype.toggleLike = function() {
-  this.header.social.iLikeThis = !this.header.social.iLikeThis;
-};
+  Skin.prototype.isVanity = function() {
+    return (!lodash.isEmpty(this.view));
+  };
+
+  Skin.prototype.getApplet = function() {
+    if (!this.isApplet()) {
+      return null;
+    }
+    return new Applet(this.applet, this);
+  };
+
+  return Skin;
+});

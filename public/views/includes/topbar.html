@@ -3,8 +3,8 @@
   ng-style="{'background': (useTheme ? theme.view.navBarBackground : skin.view.navBarBackground), 'border-bottom': (useTheme ? theme.view.navBarBorderBottom : skin.view.navBarBorderBottom)}">
 
   <section class="left-small">
-    <a id="hamburger" class="p10" ng-show="!goBackToState && !closeToHome  && !index.noFocusedWallet" ng-click="index.openMenu()">
-      <i class="fi-list size-24" ng-style="{'color': useTheme ? theme.view.navBarButtonIconColor : skin.view.navBarButtonIconColor}"></i>
+    <a id="hamburger" class="p10" ng-show="!goBackToState && !closeToHome  && !index.noFocusedWallet" ng-click="index.toggleLeftMenu()">
+      <i class="fi-list size-29" ng-style="{'color': useTheme ? theme.view.navBarButtonIconColor : skin.view.navBarButtonIconColor}"></i>
     </a>
     <a ng-show="goBackToState" ng-click="$root.go(goBackToState); goBackToState = null">
       <i class="icon-arrow-left3 icon-back" ng-style="{'color': useTheme ? theme.view.navBarButtonTextColor : skin.view.navBarButtonTextColor}"></i>
@@ -16,14 +16,19 @@
   </section>
 
   <section class="right-small">
-    <a id="layout" class="p10" ng-show="showLayout" ng-click="topbar.changeLayout(layoutEvent)">
-      <i class="fi-list-thumbnails size-24" ng-style="{'color': useTheme ? theme.view.navBarButtonIconColor : skin.view.navBarButtonIconColor}"></i>
+    <!-- For skin preferences -->
+    <a id="layout" ng-class="showPlus?'p0i':'p10'" ng-show="showLayout" ng-click="topbar.changeLayout(layoutEvent)">
+      <i class="fi-list-thumbnails size-29" ng-style="{'color': useTheme ? theme.view.navBarButtonIconColor : skin.view.navBarButtonIconColor}"></i>
     </a>
     <a id="plus" class="p10" style="line-height: 3rem" ng-show="showPlus" ng-click="$root.go(plusState);">
-      <i class="fi-plus size-24" ng-style="{'color': useTheme ? theme.view.navBarButtonIconColor : skin.view.navBarButtonIconColor}"></i>
+      <i class="fi-plus size-29" ng-style="{'color': useTheme ? theme.view.navBarButtonIconColor : skin.view.navBarButtonIconColor}"></i>
     </a>
-    <a id="prefs" class="p10" style="line-height: 3rem" ng-show="showPreferences" ng-click="topbar.goPreferences()">
-      <i class="fi-widget size-24" ng-style="{'color': useTheme ? theme.view.navBarButtonIconColor : skin.view.navBarButtonIconColor}"></i>
+    <!-- For wallet home -->
+    <a id="prefs" ng-class="showApplets?'p0i':'p10'" style="line-height: 3rem" ng-show="showPreferences" ng-click="topbar.goPreferences()">
+      <i class="fi-widget size-29" ng-style="{'color': useTheme ? theme.view.navBarButtonIconColor : skin.view.navBarButtonIconColor}"></i>
+    </a>
+    <a id="applets" class="p10" ng-show="showApplets" ng-click="index.toggleRightMenu()">
+      <i class="fi-thumbnails size-29" ng-style="{'color': useTheme ? theme.view.navBarButtonIconColor : skin.view.navBarButtonIconColor}"></i>
     </a>
   </section>
 

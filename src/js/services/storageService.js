@@ -1,6 +1,6 @@
 'use strict';
 angular.module('copayApp.services')
-  .factory('storageService', function(logHeader, fileStorageService, localStorageService, sjcl, $q, $log, lodash, isCordova) {
+  .factory('storageService', function(logHeader, fileStorageService, localStorageService, sjcl, $q, $log, lodash, isCordova, Profile) {
 
     var root = {};
 

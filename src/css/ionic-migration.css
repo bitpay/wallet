@@ -1,0 +1,28 @@
+/*
+ *
+ * Ionic migration CSS
+ * These styles reapply foundation.css styles AFTER iconic.css has been applied.
+ * This has the effect of allowing all foundation styles be available at the same time as all Ionic styles being available.
+ * Where there are conflicts between foundation and css, this file resolves the conflict with a compromise which the developer must manage.
+ * This stylesheet is merged into copay.css.
+ */
+
+/* Foundation.css styles re-applied.  These styles are exactly as described in foundation.css */
+
+
+/* Conflicting styles that are customized as a compromise. These styles are a merge or compromise of foundation.css and ionic.css. */
+
+.row {
+	display: inherit;
+	padding: 0;
+}
+
+button, .button {
+	min-width: inherit;
+  min-height: inherit;
+  text-overflow: inherit;
+}
+
+.modal-open {
+  pointer-events: inherit;
+}

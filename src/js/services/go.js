@@ -1,32 +1,18 @@
 'use strict';
 
-angular.module('copayApp.services').factory('go', function($window, $rootScope, $location, $state, $timeout, profileService, nodeWebkit) {
+angular.module('copayApp.services').factory('go', function($window, $rootScope, $location, $state, $timeout, profileService, nodeWebkit, $ionicSideMenuDelegate) {
   var root = {};
 
-  var hideSidebars = function() {
-    if (typeof document === 'undefined')
-      return;
-
-    var elem = document.getElementById('off-canvas-wrap');
-    elem.className = 'off-canvas-wrap';
+  root.setSideMenusEnabled = function(b) {
+    $ionicSideMenuDelegate.canDragContent(b);
   };
 
-  var toggleSidebar = function(invert) {
-    if (typeof document === 'undefined')
-      return;
+  root.toggleLeftMenu = function() {
+    $ionicSideMenuDelegate.toggleLeft()
+  };
 
-    var elem = document.getElementById('off-canvas-wrap');
-    var leftbarActive = elem.className.indexOf('move-right') >= 0;
-
-    if (invert) {
-      if (profileService.profile && !$rootScope.hideNavigation) {
-        elem.className = 'off-canvas-wrap move-right';
-      }
-    } else {
-      if (leftbarActive) {
-        hideSidebars();
-      }
-    }
+  root.toggleRightMenu = function() {
+    $ionicSideMenuDelegate.toggleRight()
   };
 
   root.openExternalLink = function(url, target) {
@@ -45,11 +31,11 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
       }, function() {
         if (cb) return cb('animation in progress');
       });
-    hideSidebars();
   };
 
-  root.swipe = function(invert) {
-    toggleSidebar(invert);
+  root.disclaimer = function() {
+    root.setSideMenusEnabled(false);
+    root.path('disclaimer');
   };
 
   root.walletHome = function(delayed) {
@@ -59,10 +45,10 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
     } else {
       root.path('walletHome', function() {
         $rootScope.$emit('Local/SetTab', 'walletHome', true);
+        root.setSideMenusEnabled(true);
       });
     }
   };
-
 
   root.send = function() {
     root.path('walletHome', function() {
@@ -86,7 +72,6 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
     $state.reload();
   };
 
-
   // Global go. This should be in a better place TODO
   // We dont do a 'go' directive, to use the benefits of ng-touch with ng-click
   $rootScope.go = function(path) {
@@ -96,8 +81,6 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
   $rootScope.openExternalLink = function(url, target) {
     root.openExternalLink(url, target);
   };
-
-
 
   return root;
 });

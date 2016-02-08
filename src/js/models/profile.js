@@ -1,41 +1,46 @@
 'use strict';
 
-/**
- * Profile
- *
- * credential: array of OBJECTS
- */
-function Profile() {
-  this.version = '1.0.0';
-};
+angular.module('copayApp.model').factory('Profile', function () {
 
-Profile.create = function(opts) {
-  opts = opts || {};
+  // Constructor
+  // 
+  function Profile() {
+    this.version = '1.0.0';
+    return this;
+  };
 
-  var x = new Profile();
-  x.createdOn = Date.now();
-  x.credentials = opts.credentials || [];
-  x.disclaimerAccepted = false;
-  return x;
-};
+  // Static methods
+  // 
+  Profile.create = function(opts) {
+    opts = opts || {};
 
-Profile.fromObj = function(obj) {
-  var x = new Profile();
+    var x = new Profile();
+    x.createdOn = Date.now();
+    x.credentials = opts.credentials || [];
+    return x;
+  };
 
-  x.createdOn = obj.createdOn;
-  x.credentials = obj.credentials;
-  x.disclaimerAccepted = obj.disclaimerAccepted;
+  Profile.fromObj = function(obj) {
+    var x = new Profile();
 
-  if (x.credentials[0] && typeof x.credentials[0] != 'object')
-    throw ("credentials should be an object");
+    x.createdOn = obj.createdOn;
+    x.credentials = obj.credentials;
 
-  return x;
-};
+    if (x.credentials[0] && typeof x.credentials[0] != 'object')
+      throw ("credentials should be an object");
 
-Profile.fromString = function(str) {
-  return Profile.fromObj(JSON.parse(str));
-};
+    return x;
+  };
 
-Profile.prototype.toObj = function() {
-  return JSON.stringify(this);
-};
+  Profile.fromString = function(str) {
+    return Profile.fromObj(JSON.parse(str));
+  };
+
+  // Public methods
+  // 
+  Profile.prototype.toObj = function() {
+    return JSON.stringify(this);
+  };
+
+  return Profile;
+});

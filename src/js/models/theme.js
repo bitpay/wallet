@@ -1,28 +1,30 @@
 'use strict';
 
-function Theme() {
-  this.version = '1.0.0';
-};
+angular.module('copayApp.model').factory('Theme', function () {
 
-Theme.create = function(props) {
-  props = props || {};
+   // Constructor
+   // See https://medium.com/opinionated-angularjs/angular-model-objects-with-javascript-classes-2e6a067c73bc#.970bxmciz
+  function Theme(obj) {
+    this.header = obj.header || {};
+    this.resources = obj.resources || [];
+    this.view = obj.view || {};
+    this.skins = obj.skins || [];
+    return this;
+  };
 
-  var t = new Theme();
-  t.header = props.header || {};
-  t.resources = props.resources || [];
-  t.view = props.view || {};
-  t.skins = props.skins || [];
-  return t;
-};
+  // Public methods
+  // 
+  Theme.prototype.canDelete = function() {
+    return this.header.permissions['delete'];
+  };
 
-Theme.prototype.canDelete = function() {
-  return this.header.permissions['delete'];
-};
+  Theme.prototype.setDelete = function(b) {
+    this.header.permissions['delete'] = b;
+  };
 
-Theme.prototype.setDelete = function(b) {
-  this.header.permissions['delete'] = b;
-};
+  Theme.prototype.toggleLike = function() {
+    this.header.social.iLikeThis = !this.header.social.iLikeThis;
+  };
 
-Theme.prototype.toggleLike = function() {
-  this.header.social.iLikeThis = !this.header.social.iLikeThis;
-};
+  return Theme;
+});

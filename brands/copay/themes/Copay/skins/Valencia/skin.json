@@ -2,9 +2,20 @@
   "header": {
     "version": "1.0",
     "name": "Valencia",
-    "description": "",
+    "description": "A Copay skin.",
     "author": "BitPay, Inc.",
     "date": "11/1/2015",
+    "url": {
+      "marketing": "https://copay.io/",
+      "support": "https://github.com/bitpay/copay/issues/new",
+      "privacy": "https://copay.io/disclaimer"
+    },
+    "category": {
+      "primary": "General",
+      "secondary": "Copay"
+    },
+    "keywords": "copay",
+    "rating": "4+",
     "galleryImage": "<resource-0>",
     "previewImage": "<resource-1>",
     "product": {

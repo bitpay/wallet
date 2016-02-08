@@ -9,7 +9,7 @@
   <!-- TODO: remove at the intruduction of themes & skins -->
   <div ng-show="!index.brand.features.theme.skinGallery.enabled">
     <ul class="no-bullet m0">
-      <li ng-repeat="s in p.skins" ng-click="p.save($index)">
+      <li ng-repeat="s in p.skins" ng-click="p.save(s.header.name)">
         <span ng-style="{'color': s.view.homeTopBackground}">&block;</span>
         <i class="fi-check size-16 right" ng-show="$root.skin.header.name == s.header.name"></i>
       </li>
@@ -19,12 +19,12 @@
   <!-- Grid layout -->
   <div class="row" style="padding-left: 1px;" ng-show="p.skinGalleryLayout == 'grid' && index.brand.features.theme.skinGallery.enabled">
 	  <div class="columns large-2 medium-3 small-4 end" style="padding: 1px 1px 1px 0;" ng-repeat="s in p.skins">
-      <img ng-src="{{s.header.galleryImage}}" ng-click="p.save($index)"/>
+      <img ng-src="{{s.header.galleryImage}}" ng-click="p.save(s.header.name)"/>
       <div class="gallery-grid-text">
         <div ng-if="theme.header.preferences.showSkinGalleryGridLabel">{{s.header.name}}</div>
         <div ng-if="!theme.header.preferences.showSkinGalleryGridLabel">&nbsp;</div>
       </div>
-      <div ng-click="p.preview($index)">
+      <div ng-click="p.preview(s.header.name)">
         <i class="fi-info gallery-grid-action-button"  ng-show="$root.skin.header.name != s.header.name"></i>
         <i class="fi-check gallery-grid-item-selected" ng-show="$root.skin.header.name == s.header.name"></i>
       </div>
@@ -36,13 +36,13 @@
     <ul class="no-bullet m0">
       <li class="p0i oa" ng-repeat="s in p.skins">
 
-        <div class="gallery-list-accessory-container" ng-click="p.preview($index)">
+        <div class="gallery-list-accessory-container" ng-click="p.preview(s.header.name)">
           <i class="fi-check size-16 p10r" style="vertical-align: 3px" ng-show="$root.skin.header.name == s.header.name"></i>
           <i class="fi-check size-16 p10r" style="vertical-align: 3px; color: white" ng-show="$root.skin.header.name != s.header.name"></i>
           <i class="fi-info size-24 text-gray"></i>
         </div>
 
-        <div class="gallery-list-container" ng-click="p.save($index)">
+        <div class="gallery-list-container" ng-click="p.save(s.header.name)">
           <img class="gallery-list-image" ng-src="{{s.header.galleryImage}}"/>
           <div class="gallery-list-text-lg">{{s.header.name}}</div>
           <div class="gallery-list-text-sm">{{s.header.description}}</div>
@@ -57,13 +57,13 @@
     <ul class="no-bullet m0">
       <li class="p0i oa" ng-repeat="s in p.skins">
 
-        <div class="gallery-listd-accessory-container" ng-click="p.preview($index)">
+        <div class="gallery-listd-accessory-container" ng-click="p.preview(s.header.name)">
           <i class="fi-check size-16 p10r" style="vertical-align: 3px" ng-show="$root.skin.header.name == s.header.name"></i>
           <i class="fi-check size-16 p10r" style="vertical-align: 3px; color: white" ng-show="$root.skin.header.name != s.header.name"></i>
           <i class="fi-info size-24 text-gray"></i>
         </div>
 
-        <div class="gallery-listd-container" ng-click="p.save($index)">
+        <div class="gallery-listd-container" ng-click="p.save(s.header.name)">
           <img class="gallery-listd-image" ng-src="{{s.header.galleryImage}}"/>
           <div class="gallery-listd-text-lg">{{s.header.name}}</div>
           <div class="gallery-listd-text-sm">{{s.header.description}}</div>

@@ -6,7 +6,7 @@ angular.module('copayApp.controllers').controller('preferencesSkinPreviewControl
   this.save = function(skinId) {
     var fc = profileService.focusedClient;
     var walletId = fc.credentials.walletId;
-    themeService.setSkinForWallet(skinId, walletId, function() {
+    themeService.setSkinForWallet(skinId, walletId, true, function() {
       $state.go('preferencesSkin');
     });
   };

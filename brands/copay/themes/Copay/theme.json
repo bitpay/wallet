@@ -17,6 +17,7 @@
       "delete": false
     },
     "preferences": {
+      "showAppletGalleryGridLabel": true,
       "showSkinGalleryGridLabel": true
     },
     "social": {
@@ -27,7 +28,8 @@
   "resources": [
     "<theme-path>/gallery.png",
     "<theme-path>/preview.png",
-    "<theme-path>/sidebar.png"
+    "<theme-path>/sidebar-left.png",
+    "<theme-path>/sidebar-right.png"
   ],
   "view": {
     "deviceStatusBarBackgroundColor": "#2C3E50",
@@ -38,13 +40,14 @@
     "disclaimerTextColor": "#A5B2BF",
     "disclaimerButtonBackground": "#4B6178",
     "disclaimerButtonTextColor": "#FFFFFF",
-    "sidebarVersionTextColor": "#FFFFFF",
-    "sidebarVersionTextPaddingTop": "30px",
-    "sidebarListItemColor": "#A5B2BF",
-    "sidebarListSelectedItemColor": "#FFFFFF",
-    "sidebarListSelectedItemBackground": "#122232",
-    "sidebarListSeparatorColor": "#384B5F",
-    "sidebarBackground": "url(<resource-2>) top / 100% no-repeat #2C3E50",
+    "sidebarLVersionTextColor": "#FFFFFF",
+    "sidebarLVersionTextPaddingTop": "30px",
+    "sidebarLListItemColor": "#A5B2BF",
+    "sidebarLListSelectedItemColor": "#FFFFFF",
+    "sidebarLListSelectedItemBackground": "#122232",
+    "sidebarLListSeparatorColor": "#384B5F",
+    "sidebarLBackground": "url(<resource-2>) top / 100% no-repeat #2C3E50",
+    "sidebarRBackground": "url(<resource-3>) top / 100% no-repeat #2C3E50",
     "navBarTitleColor": "#2C3E50",
     "navBarBackground": "#2C3E50",
     "navBarButtonTextColor": "#FFFFFF",

@@ -15,6 +15,7 @@ module.exports = function(grunt) {
   // 
 
   var fs = require('fs');
+  var p = require('path');
   var shell = require('shelljs');
   var brandId = grunt.option('target') || 'copay';
 
@@ -71,22 +72,20 @@ module.exports = function(grunt) {
       },
       angular: {
         src: [
-          'bower_components/fastclick/lib/fastclick.js',
           'bower_components/qrcode-generator/js/qrcode.js',
           'bower_components/qrcode-decoder-js/lib/qrcode-decoder.js',
           'bower_components/moment/min/moment-with-locales.js',
-          'bower_components/angular/angular.js',
-          'bower_components/angular-ui-router/release/angular-ui-router.js',
+          'bower_components/angular-base64/angular-base64.min.js',
           'bower_components/angular-foundation/mm-foundation-tpls.js',
           'bower_components/angular-moment/angular-moment.js',
           'bower_components/ng-lodash/build/ng-lodash.js',
           'bower_components/angular-qrcode/angular-qrcode.js',
           'bower_components/angular-gettext/dist/angular-gettext.js',
           'bower_components/angular-touch/angular-touch.js',
-          'bower_components/angular-ui-switch/angular-ui-switch.js',
+          'bower_components/angular-css/angular-css.min.js',
           'angular-bitcore-wallet-client/angular-bitcore-wallet-client.js'
         ],
-        dest: 'public/lib/angular.js'
+        dest: 'public/lib/angular.lib.js'
       },
       js: {
         src: [
@@ -96,17 +95,22 @@ module.exports = function(grunt) {
           'src/js/filters/*.js',
           'src/js/models/*.js',
           'src/js/services/*.js',
+          'src/js/pluginApi/*.js',
           'src/js/controllers/*.js',
           'src/js/translations.js',
           'src/js/brand.js',
           'src/js/init.js',
+          'src/js/plugins.js',
           'src/js/trezor-url.js',
-          'bower_components/trezor-connect/login.js'
+          'bower_components/trezor-connect/login.js',
+          'plugins/**/js/*.js'
         ],
         dest: 'public/js/copay.js'
       },
       css: {
-        src: ['src/css/*.css'],
+        src: [
+          'src/css/*.css'
+        ],
         dest: 'public/css/copay.css'
       },
       foundation: {
@@ -114,10 +118,36 @@ module.exports = function(grunt) {
           'bower_components/angular/angular-csp.css',
           'bower_components/foundation/css/foundation.css',
           'bower_components/animate.css/animate.css',
-          'bower_components/angular-ui-switch/angular-ui-switch.css'
         ],
         dest: 'public/css/foundation.css',
-      }
+      },
+      ionic_js: {
+        src: [
+          'bower_components/ionic/release/js/ionic.bundle.min.js'
+        ],
+        dest: 'public/lib/ionic.bundle.js'
+      },
+      ionic_css: {
+        src: [
+          'bower_components/ionic/release/css/ionic.min.css'
+        ],
+        dest: 'public/css/ionic.css',
+      },
+      ui_components_js: {
+        src: [
+          'bower_components/jquery/dist/jquery.js',
+          'bower_components/roundSlider/dist/roundslider.min.js',
+          'bower_components/gridly/javascripts/jquery.gridly.js'
+        ],
+        dest: 'public/lib/ui-components.js'
+      },
+      ui_components_css: {
+        src: [
+          'bower_components/roundSlider/dist/roundslider.min.css',
+          'bower_components/gridly/javascripts/jquery.gridly.css'
+        ],
+        dest: 'public/css/ui-components.css',
+      },
     },
     uglify: {
       options: {
@@ -126,7 +156,7 @@ module.exports = function(grunt) {
       prod: {
         files: {
           'public/js/copay.js': ['public/js/copay.js'],
-          'public/lib/angular.js': ['public/lib/angular.js']
+          'public/lib/angular.lib.js': ['public/lib/angular.lib.js']
         }
       }
     },
@@ -154,6 +184,22 @@ module.exports = function(grunt) {
         }
       },
     },
+    remove: {
+      themes: {
+        options: {
+          trace: false
+        },
+        fileList: [],
+        dirList: ['public/themes/']
+      },
+      applets: {
+        options: {
+          trace: false
+        },
+        fileList: [],
+        dirList: ['public/applets/']
+      }
+    },
     copy: {
       icons: {
         expand: true,
@@ -161,6 +207,12 @@ module.exports = function(grunt) {
         src: 'bower_components/foundation-icon-fonts/foundation-icons.*',
         dest: 'public/icons/'
       },
+      ionic_fonts: {
+        expand: true,
+        flatten: true,
+        src: 'bower_components/ionic/release/fonts/ionicons.*',
+        dest: 'public/fonts/'
+      },      
       linux: {
         files: [{
           expand: true,
@@ -182,12 +234,23 @@ module.exports = function(grunt) {
           }
         }],
       },
-      theme: {
+      themes: {
         files: [{
           expand: true,
           cwd: 'brands/' + brandId + '/themes/',
           src: ['**'],
           dest: 'public/themes/'
+        }]
+      },
+      applets: {
+        files: [{
+          expand: true,
+          cwd: 'plugins/applets/',
+          src: ['**/public/css/**', '**/public/img/**', '**/public/views/**'],
+          dest: 'public/applets/',
+          rename: function(dest, src) {
+            return dest + src.replace(/public\//g, '');
+          }
         }]
       }
     },
@@ -301,6 +364,26 @@ module.exports = function(grunt) {
     return results;
   };
 
+  getAllFilesByExpr = function(matchExpr, path) {
+    var list = [];
+    var stats;
+    fs.readdirSync(path).forEach(function (file) {
+      stats = fs.lstatSync(p.join(path, file));
+      if(stats.isDirectory()) {
+        list = list.concat(getAllFilesByExpr(matchExpr, p.join(path, file)));
+      } else {
+        if (file.match(matchExpr)) {
+          list.push(p.join(path, file));
+        }
+      }
+    });
+    return list;
+  };
+
+  cleanAppletPath = function(path) {
+    return (path.replace(/plugins\//g, '')).replace(/public\//g, '');
+  }
+
   cleanJSONQuotesOnKeys = function(json) {
     return json.replace(/"(\w+)"\s*:/g, '$1:');
   }
@@ -324,6 +407,57 @@ module.exports = function(grunt) {
     fs.writeFileSync("./src/js/brand.js", content);
   };
 
+  buildPluginRegistry = function() {
+    var content = '';
+    content += '\'use strict\';\n\n';
+    content += '// Do not edit, this file is auto-generated by grunt.\n\n';
+    content += 'angular.module(\'copayApp\').constant(\'plugins\', \n';
+    content += '[';
+
+    var pluginIds = [];
+    var filelist = getAllFilesByExpr('config.json', './plugins');
+    for (var i = 0; i < filelist.length; i++) {
+      if (i > 0) {
+        content += ',\n';
+      }
+
+      var filePath = filelist[i].replace(/config.json/g, '');
+      var data = grunt.file.readJSON(filelist[i]);
+
+      if (data.type == 'applet') {
+        // Add the applet root directory.
+        data.path = cleanAppletPath(filePath);
+
+        // Complete the main view URI.
+        if (data.mainViewUri.indexOf('/') >= 0) {
+          throw new Error('Applet in \'' + filelist[i] + '\' should not include a path in \'mainViewUri\'. Use only the view name; e.g., \'index.html\'.');
+        }
+        data.mainViewUri = data.path + 'views/' + data.mainViewUri;
+
+        // Add stylesheets.
+        data.stylesheets = [];
+        var stylesheets = getAllFilesByExpr('^.*\.(css|CSS)$', filePath + 'public/css/');
+        stylesheets.forEach(function (path) {
+          data.stylesheets.push(cleanAppletPath(path));
+        });
+      }
+
+      // Detect and fail if duplicate plugin id exists.
+      if (pluginIds.indexOf(data.id) < 0) {
+        pluginIds.push(data.id);
+      } else {
+        throw new Error('Duplicate plugin id detected: \'' + data.id + '\'');
+      }
+
+      console.log('> [' + data.type + '] \'' + data.name + '\', id=' + data.id);
+      content += cleanJSONQuotesOnKeys(JSON.stringify(data, null, 2));
+    }
+
+    content += ']\n';
+    content += ');\n';
+    fs.writeFileSync("./src/js/plugins.js", content);
+  };
+
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-watch');
@@ -335,18 +469,28 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-karma-coveralls');
   grunt.loadNpmTasks('grunt-node-webkit-builder');
   grunt.loadNpmTasks('grunt-contrib-compress');
+  grunt.loadNpmTasks('grunt-remove');
   grunt.loadNpmTasks('grunt-replace');
 
   grunt.registerTask('buildBrand', 'Build the brand configuration.', function() {
     buildBrandConfig();
   });
 
+  grunt.registerTask('buildPluginRegistry', 'Build the plugin registry.', function() {
+    buildPluginRegistry();
+  });
+
   grunt.registerTask('default', [
     'nggettext_compile',
     'buildBrand',
+    'buildPluginRegistry',
     'browserify',
     'concat',
-    'copy:theme',
+    'copy:ionic_fonts',
+    'remove:themes',
+    'copy:themes',
+    'remove:applets',
+    'copy:applets',
     'replace:build_config',
     'copy:rename_ios_plist',
     'exec:rm_temp_files'

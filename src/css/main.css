@@ -19,7 +19,7 @@
 
 .qr-scanner-input {
   position: absolute;
-  top: 5px;
+  top: -5px;
   right: 0;
 }
 
@@ -504,6 +504,7 @@ ul.manage li {
 .size-18 { font-size: 18px; }
 .size-21 { font-size: 21px; }
 .size-24 { font-size: 24px; }
+.size-29 { font-size: 29px; }
 .size-36 { font-size: 36px; }
 .size-42 { font-size: 42px; }
 .size-48 { font-size: 48px; }

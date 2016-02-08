@@ -167,7 +167,14 @@
             <div class="oh"  ng-show="create.seedSourceId == 'new'">
               <label for="network-name" >
                 <span>Testnet</span>
-                <switch id="network-name" name="isTestnet" ng-model="isTestnet" class="green right m5t m10b"></switch>
+                <span class="right m5t m10b">
+                  <label class="toggle">
+                     <input type="checkbox" id="network-name" name="isTestnet" ng-model="isTestnet">
+                     <div class="track">
+                       <div class="handle"></div>
+                     </div>
+                  </label>
+                </span>
               </label>
             </div> 
           </div> <!-- columns -->

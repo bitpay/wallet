@@ -1,7 +1,6 @@
-
 <div class="topbar-container"
   ng-include="'views/includes/topbar.html'"
-  ng-init="useTheme = false; showPreferences = true">
+  ng-init="useTheme = false; showPreferences = true; showApplets = index.brand.features.theme.applets.enabled">
 </div>
 
 <div ng-controller="walletHomeController as home">
@@ -71,9 +70,11 @@
 
     -->
 
-    <div id="walletHome" class="walletHome tab-view tab-in" ng-style="{'background':skin.view.homeFullBackground}">
-      <div class="oh pr">
+    <div id="walletHome" class="walletHome tab-view tab-in" ng-style="{'background':skin.view.homeFullBackground}">      
+      <div class="pr">
+
         <div class="amount" ng-style="{'color':skin.view.homeTopTextColor, 'background':skin.view.homeTopBackground, 'border-bottom':skin.view.homeTopBorderBottom}">
+
           <div ng-if="!index.anyOnGoingProcess && !index.notAuthorized">
             <div class="m15t" ng-show="index.updateError" ng-click='index.updateAll({triggerTxUpdate: true})'>
               <span class="size-12 db m10b">{{index.updateError|translate}}</span>
@@ -96,7 +97,6 @@
                 <span translate>Pending Confirmation</span>:
                 {{index.pendingAmountStr}}
               </div>
-
             </div>
           </div>
 
@@ -109,6 +109,7 @@
         </div> <!-- amount -->
 
         <div class="pr columns" ng-style="{'color':skin.view.homeMiddleTextColor, 'background':skin.view.homeMiddleBackground, 'border-bottom':skin.view.homeMiddleBorderBottom}">
+        
           <div class="avatar-wallet left"
             ng-style="{'color':skin.view.avatarColor, 'background':skin.view.avatarBackground, 'border':skin.view.avatarBorderBig}">
             <i class="icon-wallet size-24"></i>
@@ -132,11 +133,11 @@
             </div>
           </div>
         </div>
-        <div class="camera-icon" ng-style="{'color':skin.view.cameraButtonColor, 'background':skin.view.cameraButtonBackground, 'box-shadow':skin.view.cameraButtonShadow}" ng-show="index.isComplete">
+        <div class="camera-icon" ng-style="{'color':skin.view.cameraButtonColor, 'background':skin.view.cameraButtonBackground, 'box-shadow':skin.view.cameraButtonShadow}"
+          ng-show="index.isComplete">
           <qr-scanner on-scan="home.onQrCodeScanned(data)"></qr-scanner> 
         </div>
-      </div> <!-- oh -->
-
+      </div> <!-- pr -->
       <div style="top: 248px; bottom: 0; width: 100%; position: absolute" ng-style="{'color':skin.view.homeBottomTextColor, 'background':skin.view.homeBottomBackground}">
 
         <div class="m20t" ng-show="index.notAuthorized && ! index.anyOnGoingProcess">
@@ -176,6 +177,7 @@
         </div>
 
         <!-- Activity -->
+
         <div 
             class="m20t size-12 text-center" 
             ng-show="!index.loadingWallet && !index.txHistory[0] && !index.updatingTxHistory[index.walletId] &&

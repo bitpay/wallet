@@ -1,0 +1,218 @@
+/*
+ *
+ * Copay applet CSS
+ *
+ */
+
+.applet-content {
+  position: absolute;
+	top: 0;
+  left: 0;
+	bottom: 0;
+  width: 100%;
+}
+
+.applet-modal { 
+  width: 90%;
+  min-height: 0 !important;
+  height: 90% !important;
+  top: 5%;
+  left: 5%;
+  right: 5%;
+  bottom: 5%;
+  background-color: transparent;
+  border-radius: 5px;
+  -webkit-box-shadow: 2px 2px 10px rgba(0,0,0,0.5);
+  box-shadow: 2px 2px 10px rgba(0,0,0,0.5);
+  -webkit-animation-duration: 0.4s;
+  animation-duration: 0.4s;
+  -webkit-animation-delay: 0s;
+  animation-delay: 0s;
+  -webkit-animation-iteration-count: 1;
+  animation-iteration-count: 1;
+}
+
+.button-applet-header .icon:before, .button-applet-header.icon:before {
+  font-size: 20px !important;
+}
+
+/* Start of Ionic modifications. */
+/*
+ * Allow the applet-content div to fill the modal space.
+ * See https://forum.ionicframework.com/t/fill-content-container/605/11
+ */
+.scroll-content > .scroll {
+  height: 100%;
+}
+
+/*
+ * Allow the ion-nav-bar to be colored using ng-style.
+ * See http://codepen.io/brandyshea/pen/ZGQmYP
+ */
+/*
+.nav-bar-block, .bar {
+  background: inherit !important;
+  border: inherit !important;
+}
+
+.nav-bar-block, .bar, .title {
+  color: inherit !important;
+}
+
+.bar .title {
+  font-size: 14px;
+}
+*/
+/*
+ * Fix modal backdrop for smaller devices
+ * See http://loring-dodge.azurewebsites.net/ionic-nifty-modal/
+ */
+@media (max-width: 679px) {
+  .active .modal-backdrop-bg {
+    opacity: .5;
+  }
+  .modal-backdrop-bg {
+    -webkit-transition: opacity 300ms ease-in-out;
+    transition: opacity 300ms ease-in-out;
+    background-color: #000;
+    opacity: 0;
+  }
+}
+/* End of Ionic modifications. */
+
+/*
+ * Animations for closing an ionic modal.
+ * See https://github.com/kevincobain2000/ionic-animated-modal
+ */
+.animated.modal.bounceIn.ng-leave {
+  -webkit-animation-name:bounceOut;
+  animation-name:bounceOut;
+}
+.animated.modal.bounceInDown.ng-leave {
+  -webkit-animation-name:bounceOutUp;
+  animation-name:bounceOutUp;
+}
+.animated.modal.bounceInLeft.ng-leave {
+  -webkit-animation-name:bounceOutLeft;
+  animation-name:bounceOutLeft;
+}
+.animated.modal.bounceInRight.ng-leave {
+  -webkit-animation-name:bounceOutRight;
+  animation-name:bounceOutRight;
+}
+.animated.modal.bounceInUp.ng-leave {
+  -webkit-animation-name:bounceOutDown;
+  animation-name:bounceOutDown;
+}
+.animated.modal.bounceOut.ng-leave {
+  -webkit-animation-name:bounceOut;
+  animation-name:bounceOut;
+}
+.animated.modal.fadeIn.ng-leave {
+  -webkit-animation-name:fadeOut;
+  animation-name:fadeOut;
+}
+.animated.modal.fadeInDown.ng-leave {
+  -webkit-animation-name:fadeOutDown;
+  animation-name:fadeOutDown;
+}
+.animated.modal.fadeInDownBig.ng-leave {
+  -webkit-animation-name:fadeOutDownBig;
+  animation-name:fadeOutDownBig;
+}
+.animated.modal.fadeInLeft.ng-leave {
+  -webkit-animation-name:fadeOutLeft;
+  animation-name:fadeOutLeft;
+}
+.animated.modal.fadeInLeftBig.ng-leave {
+  -webkit-animation-name:fadeOutLeftBig;
+  animation-name:fadeOutLeftBig;
+}
+.animated.modal.fadeInRight.ng-leave {
+  -webkit-animation-name:fadeOutRight;
+  animation-name:fadeOutRight;
+}
+.animated.modal.fadeInRightBig.ng-leave {
+  -webkit-animation-name:fadeOutRightBig;
+  animation-name:fadeOutRightBig;
+}
+.animated.modal.fadeInUp.ng-leave {
+  -webkit-animation-name:fadeOutUp;
+  animation-name:fadeOutUp;
+}
+.animated.modal.fadeInUpBig.ng-leave {
+  -webkit-animation-name:fadeOutUpBig;
+  animation-name:fadeOutUpBig;
+}
+.animated.modal.flipInX.ng-leave {
+  -webkit-animation-name:flipOutX;
+  animation-name:flipOutX;
+}
+.animated.modal.flipInY.ng-leave {
+  -webkit-animation-name:flipOutY;
+  animation-name:flipOutY;
+}
+.animated.modal.lightSpeedIn.ng-leave {
+  -webkit-animation-name:lightSpeedOut;
+  animation-name:lightSpeedOut;
+}
+.animated.modal.rotateIn.ng-leave {
+  -webkit-animation-name:rotateOut;
+  animation-name:rotateOut;
+}
+.animated.modal.rotateInDownLeft.ng-leave {
+  -webkit-animation-name:rotateOutDownLeft;
+  animation-name:rotateOutDownLeft;
+}
+.animated.modal.rotateInDownRight.ng-leave {
+  -webkit-animation-name:rotateOutDownRight;
+  animation-name:rotateOutDownRight;
+}
+.animated.modal.rotateInUpLeft.ng-leave {
+  -webkit-animation-name:rotateOutUpLeft;
+  animation-name:rotateOutUpLeft;
+}
+.animated.modal.rotateInUpRight.ng-leave {
+  -webkit-animation-name:rotateOutUpRight;
+  animation-name:rotateOutUpRight;
+}
+.animated.modal.slideInUp.ng-leave {
+  -webkit-animation-name:slideOutDown;
+  animation-name:slideOutDown;
+}
+.animated.modal.slideInDown.ng-leave {
+  -webkit-animation-name:slideOutUp;
+  animation-name:slideOutUp;
+}
+.animated.modal.slideInLeft.ng-leave {
+  -webkit-animation-name:slideOutLeft;
+  animation-name:slideOutLeft;
+}
+.animated.modal.slideInRight.ng-leave {
+  -webkit-animation-name:slideOutRight;
+  animation-name:slideOutRight;
+}
+.animated.modal.zoomIn.ng-leave {
+  -webkit-animation-name:zoomOut;
+  animation-name:zoomOut;
+}
+.animated.modal.zoomInDown.ng-leave {
+  -webkit-animation-name:zoomOutDown;
+  animation-name:zoomOutDown;
+}
+.animated.modal.zoomInLeft.ng-leave {
+  -webkit-animation-name:zoomOutLeft;
+  animation-name:zoomOutLeft;
+}
+.animated.modal.zoomInRight.ng-leave {
+  -webkit-animation-name:zoomOutRight;
+  animation-name:zoomOutRight;
+}
+.animated.modal.zoomInUp.ng-leave {
+  -webkit-animation-name:zoomOutUp;
+  animation-name:zoomOutUp;
+}
+.animated.modal.rollIn.ng-leave {
+  -webkit-animation-name:rollOut;
+  animation-name:rollOut;
+}
