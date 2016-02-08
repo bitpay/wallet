@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('createController',
-  function($scope, $rootScope, $location, $timeout, $log, lodash, go, profileService, configService, isCordova, gettext, ledger, trezor, isMobile, isChromeApp, isDevel, derivationPathHelper) {
+  function($scope, $location, $anchorScroll, $rootScope, $timeout, $log, lodash, go, profileService, configService, isCordova, gettext, ledger, trezor, isMobile, isChromeApp, isDevel, derivationPathHelper) {
 
     var self = this;
     var defaults = configService.getDefaults();
@@ -164,6 +164,7 @@ angular.module('copayApp.controllers').controller('createController',
           if (err) {
             $log.warn(err);
             self.error = err;
+            scrollUp('notification');
             $timeout(function() {
               $rootScope.$apply();
             });
@@ -173,6 +174,12 @@ angular.module('copayApp.controllers').controller('createController',
         });
       }, 100);
     }
+
+    function scrollUp(location){
+      if(!location) return;
+      $location.hash(location);
+      $anchorScroll();
+    };
 
     this.formFocus = function(what) {
       if (!this.isWindowsPhoneApp) return
