@@ -97,6 +97,19 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     $rootScope.$digest();
   });
 
+  var getClipboard = function(cb) {
+    if (!isCordova || isMobile.Windows()) return cb();
+
+    window.cordova.plugins.clipboard.paste(function(value) {
+      var fc = profileService.focusedClient;
+      var Address = bitcore.Address;
+      var networkName = fc.credentials.network;
+      if (Address.isValid(value, networkName) && !$scope.newAddress) {
+        return cb(value);
+      }
+    });
+  };
+
   var accept_msg = gettextCatalog.getString('Accept');
   var cancel_msg = gettextCatalog.getString('Cancel');
   var confirm_msg = gettextCatalog.getString('Confirm');
@@ -121,14 +134,8 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       };
 
       $scope.checkClipboard = function() {
-        if (!isCordova || isMobile.Windows()) return;
-        
-        window.cordova.plugins.clipboard.paste(function(value) {
-          var Address = bitcore.Address;
-          var networkName = fc.credentials.network;
-          if (Address.isValid(value, networkName) && !$scope.newAddress) {
-            $scope.newAddress = value;
-          }
+        getClipboard(function(value) {
+          $scope.newAddress = value;
         });
       };
 
@@ -666,6 +673,20 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     if (isCordova && !this.isWindowsPhoneApp) {
       this.hideMenuBar(what);
     }
+    
+    var self = this;
+    if (isCordova && !this.isWindowsPhoneApp && what == 'address') {
+      getClipboard(function(value) {
+        if (value) {
+          document.getElementById("amount").focus();
+          $timeout(function() {
+            window.plugins.toast.showShortCenter(gettextCatalog.getString('Pasted from clipboard'));
+            self.setForm(value);
+          }, 100);
+        }
+      });
+    }
+
     if (!this.isWindowsPhoneApp) return
 
     if (!what) {
