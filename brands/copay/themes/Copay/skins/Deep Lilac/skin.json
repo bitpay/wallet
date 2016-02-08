@@ -2,9 +2,20 @@
   "header": {
     "version": "1.0",
     "name": "Deep Lilac",
-    "description": "",
+    "description": "A Copay skin.",
     "author": "BitPay, Inc.",
     "date": "11/1/2015",
+    "url": {
+      "marketing": "https://copay.io/",
+      "support": "https://github.com/bitpay/copay/issues/new",
+      "privacy": "https://copay.io/disclaimer"
+    },
+    "category": {
+      "primary": "General",
+      "secondary": "Copay"
+    },
+    "keywords": "copay",
+    "rating": "4+",
     "galleryImage": "<resource-0>",
     "previewImage": "<resource-1>",
     "product": {
@@ -34,7 +45,6 @@
     "tabBarBackground": "#FFFFFF",
     "tabBarHomeBackground": "#FFFFFF linear-gradient(to bottom, rgba(185,185,185,0.3) 0%, rgba(255,255,255,1) 30%)",
     "tabBarHomeShadow": "0px -1px 0px 0px rgba(165,178,191,0.35)",
-    "tabBarVisible": true,
     "avatarColor": "rgba(255,255,255,1)",
     "avatarBorderSmall": "none",
     "avatarBorderBig": "3px solid #FFFFFF",
@@ -53,7 +63,6 @@
     "homeListSectionHeaderBackground": "#F6F7F9",
     "homeListItemBackground": "#FFFFFF",
     "homeListItemBorderBottom": "1px solid #E4E8EC",
-    "homeCameraButtonVisible": true,
     "cameraButtonColor": "#8597A7",
     "cameraButtonBackground": "#2C3E50",
     "cameraButtonShadow": "0px 0px 5px 0px rgba(0,0,0,0.50)",
@@ -63,6 +72,5 @@
     "progressTextColor": "#FFFFFF",
     "iconBackground": "#9B59B6",
     "textHighlightColor": "#9B59B6"
-  },
-  "applet": {}
+  }
 }

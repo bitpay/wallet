@@ -6,27 +6,22 @@ angular.module('copayApp.controllers').controller('preferencesSkinController',
   	var self = this;
 		var config = configService.getSync();
 		this.skinGalleryLayout = config.view.skinGalleryLayout;
-
-		// Return only vanity skins (no applets).
-		this.skins = lodash.filter(themeService.getPublishedSkins(), function(skin) {
-//			return lodash.isEmpty(skin.applet);
-			return skin;
-		});
+		this.skins = themeService.getVanitySkins();
 
   	var nextLayout = {};
 		nextLayout['grid'] = 'list';
 		nextLayout['list'] = 'list-detail';
 		nextLayout['list-detail'] = 'grid';
 
-    this.preview = function(skinId) {
-      $rootScope.previewSkinId = skinId;
+    this.preview = function(skinName) {
+      $rootScope.previewSkinId = themeService.getPublishedSkinIdByName(skinName);
       $state.go('preferencesSkinPreview');
     };
 
-	  this.save = function(skinId) {
+	  this.save = function(skinName) {
 	    var fc = profileService.focusedClient;
 	    var walletId = fc.credentials.walletId;
-	    themeService.setSkinForWallet(skinId, walletId, true);
+	    themeService.setSkinByNameForWallet(skinName, walletId, true);
 	  };
 
 	  // Listen for layout events from the topbar controller.

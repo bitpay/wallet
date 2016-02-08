@@ -25,6 +25,10 @@ angular.module('copayApp.model').factory('FocusedWallet', function ($rootScope, 
     return FocusedWallet.bwc;
   };
 
+  FocusedWallet.getWalletId = function() {
+    return FocusedWallet.bwc.credentials.walletId;
+  };
+
   FocusedWallet.getFee = function(cb) {
     var bwc = FocusedWallet.bwc;
     var config = configService.getSync().wallet.settings;

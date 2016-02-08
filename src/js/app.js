@@ -3,7 +3,6 @@
 var modules = [
   'ui.router',
   'angularMoment',
-  'angular.circular-slider',
   'base64',
   'door3.css',
   'ionic',
@@ -11,13 +10,13 @@ var modules = [
   'monospaced.qrcode',
   'gettext',
   'ngLodash',
-  'uiSwitch',
   'bwcModule',
   'copayApp.filters',
   'copayApp.model',
   'copayApp.services',
   'copayApp.controllers',
   'copayApp.directives',
+  'copayApp.api',
   'copayApp.plugins'
 ];
 
@@ -28,5 +27,6 @@ angular.module('copayApp.model', []);
 angular.module('copayApp.services', []);
 angular.module('copayApp.controllers', []);
 angular.module('copayApp.directives', []);
+angular.module('copayApp.api', []);
 angular.module('copayApp.plugins', []);
 

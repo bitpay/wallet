@@ -206,14 +206,6 @@ _:-ms-fullscreen, :root .main {
   left: 0;
 }
 
-.right-off-canvas-menu {
-  background-color: #213140 ;
-}
-
-.off-canvas-wrap,.inner-wrap{
-  height:100%;
-}
-
 .avatar-name {
   position: relative;
   padding-top: 10px;
@@ -325,7 +317,10 @@ a.missing-copayers {
 
 .sidebar {
   background: #000;
+
+  height: 100%;
 }
+/* AJP ADDED 1 ^^ */
 
 .sidebar .icon, .modal-content .icon {
   width:  39px;
@@ -340,7 +335,13 @@ a.missing-copayers {
   overflow: hidden;
   border-bottom-style: solid;
   border-bottom-width: 1px;
+
+  padding: 1rem 0.7rem;
+  font-size: 12px;
+  font-weight: 300;
+  color: #A5B2BF;
 }
+/* AJP ADDED 4 ^^ */
 
 .sidebar li.nav-item.selected {
   background-image: -webkit-linear-gradient(left, rgba(255,255,255,.5), rgba(255,255,255,0));
@@ -372,11 +373,10 @@ a.missing-copayers {
   padding: 5px;
 }
 
-.sidebar ul.off-canvas-list {
-  margin-bottom: 30px;
+.sidebar ul {
+  margin: 0 0 30px 0;
 }
-
-.sidebar ul.off-canvas-list li a,  .modal-content ul li a {
+.modal-content ul li a {
   font-size: 12px;
   font-weight: 300;
   border-bottom: transparent;
@@ -399,39 +399,12 @@ a.missing-copayers {
   margin-right: 10px;
 }
 
-.sidebar .left-off-canvas-menu {
-  background: #E4E8EC;
-  line-height: 24px;
-}
-
 /*
  * Remove all vendors hover / shadow / fade
  */
 
 .tooltip {
   display: none !important;
-}
-
-.move-right .exit-off-canvas,
-.move-left .exit-off-canvas {
-  box-shadow: none;
-}
-
-ul.off-canvas-list li a:hover {
-  background: none;
-}
-
-.move-right .close-menu {
-  cursor: pointer;
-  box-shadow: none;
-  display: block;
-  position: absolute;
-  background: none;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: 1002;
 }
 
 /* === */

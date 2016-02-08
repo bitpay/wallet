@@ -1,0 +1,90 @@
+{
+  "header": {
+    "version": "1.0",
+    "name": "American Red Cross",
+    "description": "Donate to the American Red Cross",
+    "author": "BitPay, Inc.",
+    "date": "11/1/2015",
+    "url": {
+      "marketing": "http://www.redcross.org/",
+      "support": "http://www.redcross.org/contact-us",
+      "privacy": "http://www.redcross.org/privacy-policy"
+    },
+    "category": {
+      "primary": "Business",
+      "secondary": "Finance"
+    },
+    "keywords": "American Red Cross, disaster relief, donate blood, charity",
+    "rating": "4+",
+    "galleryImage": "<resource-0>",
+    "previewImage": "<resource-1>",
+    "product": {
+      "id": "0",
+      "price": "$0.00"
+    },
+    "permissions": {
+      "delete": false
+    },
+    "social": {
+      "likes": 0,
+      "iLikeThis": false
+    }
+  },
+  "resources": [
+    "<skin-path>/gallery.png",
+    "<skin-path>/preview.png",
+    "<skin-path>/applet-background.png"
+  ],
+  "applet": {
+    "header": {
+      "id": "paymentcs-applet"
+    },
+    "model": {
+      "csMinimum": "10",
+      "csMaximum": "100",
+      "csInitialAmount": "25",
+      "csCurrency": "USD"
+    },
+    "view": {
+      "background": "url(<resource-2>) top center / contain no-repeat, #FFFFFF",
+      "navBarBackground": "#F7F7F7",
+      "navBarBottomBorder": "1px solid #6D6E70",
+      "navBarButtonColor": "#6D6E70",
+      "navBarTitleColor": "#6D6E70",
+      "csBackground": "#FFFFFF",
+      "csRangeBackground": "#EB0000",
+      "csPathBackground": "#E9E9E9",
+      "csHandleBackground": "#838383",
+      "csHandleBorder": "1px solid #E9E9E9",
+      "csInnerBorder": "1px solid #838383",
+      "csOuterBorder": "1px solid #838383",
+      "csStartBorder": "1px solid #838383",
+      "csEndBorder": "1px solid #838383",
+      "csValueColor": "#2C3E50",
+      "csValueUnitColor": "#2C3E50",
+      "payButtonBackground": "none",
+      "payButtonBorder": "1px solid #A5B2BF",
+      "payButtonColor": "#8597A7",
+      "payButtonText": "Donate now"
+    },
+    "services" : [{
+      "id": "payment-service",
+      "providerId": "bitpay",
+      "memo": "American Red Cross donation.",
+      "api": {
+        "url": "https://test.bitpay.com",
+        "auth": {
+          "token": "F3mNhfiGT3TCBcBFp6egxzPVjxtDPNMjKA3ru9TdFqaX"
+        },
+        "transactionSpeed": "high",
+        "notificationEmail": "",
+        "notificationURL": ""
+      },
+      "required": {
+        "buyer": {
+          "fields": "name,email,phone,address1,locality,region,postalCode"
+        }
+      }
+    }]
+  }
+}

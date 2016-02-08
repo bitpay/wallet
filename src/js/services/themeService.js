@@ -190,7 +190,7 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
       for (var i = 0; i < themeDef.skins.length; i++) {
         // Collect and serialize all http requests to get skin files.
         promises.push(
-          $http(root._get_local(root._getSkinResourcePath(themeDef.theme, themeDef.skins[i]) + '/skin.json')).then(function(response) {
+          $http(root._get_local(root._getSkinResourcePath(themeDef.theme, themeDef.skins[i]) + '/skin.json')).then(function successCallback(response) {
 
             var skin = response.data;
             var themeResourceUrl = root._getLocalThemeResourceUrl(themeDef.theme);
@@ -216,6 +216,8 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
             if (defaultSkinName == skin.header.name) {
               $rootScope.theme.header.defaultSkinId = $rootScope.theme.skins.length - 1;
             }
+          }, function errorCallback(response) {
+            $log.debug('Error: failed to GET ' + response.config.url + ', status: ' + response.status);
           })
         );
       }
@@ -259,7 +261,7 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
       });
 
     }, function errorCallback(response) {
-      $log.debug('Error: failed to GET ' + response.config.url);
+      $log.debug('Error: failed to GET ' + response.config.url + ', status: ' + response.status);
     });
 
   };
@@ -442,7 +444,7 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
           skinName = skinNameForColor[color];
         }
         $log.debug('Migrating wallet to skin... [walletId: ' + walletId + ']');
-        root.setSkinForWallet(root.getPublishedSkinIdByName(), walletId, true);
+        root.setSkinByNameForWallet(skinName, walletId, true);
       }
 
       var opts = {
@@ -688,6 +690,12 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
     }
   };
 
+  // setSkinByNameForWallet() - convenience function.
+  // 
+  root.setSkinByNameForWallet = function(skinName, walletId, history, callback) {
+    root.setSkinForWallet(root.getPublishedSkinIdByName(skinName), walletId, history, callback);
+  };
+
   // popSkin() - set the previous skin for the current wallet.
   //
   root.popSkin = function(callback) {
@@ -703,6 +711,37 @@ angular.module('copayApp.services').factory('themeService', function($rootScope,
   // 
   root.hasSkinHistory = function() {
     return root.skinHistory.length > 0;
+  };
+
+  // getVanitySkins() - return only the collection of vanity skins.
+  // 
+  root.getVanitySkins = function() {
+    return lodash.filter(root.getPublishedSkins(), function(skin) {
+      return (new Skin(skin)).isVanity();
+    });
+  };
+
+  // getAppletSkins() - return only the collection of applet skins.
+  // 
+  root.getAppletSkins = function() {
+    return lodash.filter(root.getPublishedSkins(), function(skin) {
+      return (new Skin(skin)).isApplet();
+    });
+  };
+
+  // setAppletByNameForWallet() - sets the skin for the specified wallet.
+  // 
+  root.setAppletByNameForWallet = function(skinName, walletId, callback) {
+    // When an applet is set the underlying wallet view is applied to the applet skin.
+    // This allows the wallet skin to remain unchanged while the applet is presented.
+    // The applet skin (vanity) 'view' is ignored (it is overwritten by design).
+    // This strategy allows the applet to borrow the wallet skin settings for application to the applet presentation
+    // allowing for a uniquely uniform presentation of the applet.
+    var currentView = $rootScope.skin.view;
+    root.setSkinByNameForWallet(skinName, walletId, true, function() {
+      $rootScope.skin.view = currentView;
+      callback();
+    });
   };
 
   // deleteTheme() - removes the specified theme and all associated skins from the catalog.

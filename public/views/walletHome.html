@@ -1,7 +1,6 @@
-<div ng-include="'views/includes/applet/container-full.html'"></div>
 <div class="topbar-container"
   ng-include="'views/includes/topbar.html'"
-  ng-init="useTheme = false; showPreferences = true">
+  ng-init="useTheme = false; showPreferences = true; showApplets = index.brand.features.theme.applets.enabled">
 </div>
 
 <div ng-controller="walletHomeController as home">
@@ -135,13 +134,11 @@
           </div>
         </div>
         <div class="camera-icon" ng-style="{'color':skin.view.cameraButtonColor, 'background':skin.view.cameraButtonBackground, 'box-shadow':skin.view.cameraButtonShadow}"
-          ng-show="index.isComplete && skin.view.homeCameraButtonVisible">
+          ng-show="index.isComplete">
           <qr-scanner on-scan="home.onQrCodeScanned(data)"></qr-scanner> 
         </div>
       </div> <!-- pr -->
-
       <div style="top: 248px; bottom: 0; width: 100%; position: absolute" ng-style="{'color':skin.view.homeBottomTextColor, 'background':skin.view.homeBottomBackground}">
-        <div ng-include="'views/includes/applet/container-compact.html'"></div>
 
         <div class="m20t" ng-show="index.notAuthorized && ! index.anyOnGoingProcess">
           <div class="text-center text-warning">
@@ -180,6 +177,7 @@
         </div>
 
         <!-- Activity -->
+
         <div 
             class="m20t size-12 text-center" 
             ng-show="!index.loadingWallet && !index.txHistory[0] && !index.updatingTxHistory[index.walletId] &&
@@ -525,4 +523,4 @@
   </div>
 </div>
 <div class="extra-margin-bottom"></div>
-<div ng-include="'views/includes/menu.html'" ng-show="!index.noFocusedWallet && skin.view.tabBarVisible"></div>
+<div ng-include="'views/includes/menu.html'" ng-show="!index.noFocusedWallet"></div>

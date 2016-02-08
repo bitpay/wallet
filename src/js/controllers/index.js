@@ -6,6 +6,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   self.isCordova = isCordova;
   self.isChromeApp = isChromeApp;
   self.isSafari = isMobile.Safari();
+  self.physicalScreenWidth = ((window.innerWidth > 0) ? window.innerWidth : screen.width);
+  self.physicalScreenHeight = ((window.innerHeight > 0) ? window.innerHeight : screen.height);
   self.onGoingProcess = {};
   self.historyShowLimit = 10;
   self.updatingTxHistory = {};
@@ -16,6 +18,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   features += (brand.features.theme.themeDiscovery.enabled ? 'Theme Discovery,' : '');
   features += (brand.features.theme.skinDiscovery.enabled ? 'Skin Discovery,' : '');
   features += (brand.features.theme.skinGallery.enabled ? 'Skin Gallery,' : '');
+  features += (brand.features.theme.applets.enabled ? 'Applets,' : '');
   features += (brand.features.theme.socialLike.enabled ? 'Like Themes & Skins,' : '');
   $log.debug('Application branding: ' + brand.shortName);
   $log.debug('Enabled features: ' + features.substring(0, features.length-1));
@@ -179,7 +182,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     profileService.isDisclaimerAccepted(function(v) {
       if (v) {
         self.acceptDisclaimer();
-      } else go.path('disclaimer');
+      } else go.disclaimer();
     });
   };
 
@@ -1021,13 +1024,14 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     });
   };
 
-  self.openMenu = function() {
+  this.toggleLeftMenu = function() {
     if (!self.disclaimerAccepted) return;
-    go.swipe(true);
+    go.toggleLeftMenu();
   };
 
-  self.closeMenu = function() {
-    go.swipe();
+  this.toggleRightMenu = function() {
+    if (!self.disclaimerAccepted) return;
+    go.toggleRightMenu();
   };
 
   self.retryScan = function() {

@@ -14,12 +14,8 @@ angular.module('copayApp.model').factory('Applet', function ($log, lodash, Plugi
 
   // Public methods
   //
-  Applet.prototype.container = function() {
-    return PluginRegistry.getEntry(this.header.id).container;
-  };
-
-  Applet.prototype.rootPath = function() {
-    return PluginRegistry.getEntry(this.header.id).pluginRoot;
+  Applet.prototype.path = function(uri) {
+    return PluginRegistry.getEntry(this.header.id).path + uri;
   };
 
   Applet.prototype.stylesheets = function() {
@@ -27,7 +23,7 @@ angular.module('copayApp.model').factory('Applet', function ($log, lodash, Plugi
   };
 
   Applet.prototype.mainViewUrl = function() {
-    return this.rootPath() + 'views/' + PluginRegistry.getEntry(this.header.id).mainViewUri;
+    return PluginRegistry.getEntry(this.header.id).mainViewUri;
   };
 
   Applet.prototype.getService = function(id) {

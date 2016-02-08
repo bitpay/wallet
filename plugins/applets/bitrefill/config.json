@@ -1,0 +1,10 @@
+{
+  "type": "applet",
+  "id": "bitrefill-applet",
+  "name": "Bitrefill",
+  "description": "Top up prepaid mobile phones with bitcoin.",
+  "author": "Bitrefill",
+  "date": "1/20/2016",
+  "version": "1.0.0",
+  "mainViewUri": "index.html"
+}

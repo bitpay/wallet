@@ -81,12 +81,26 @@
     <ul class="no-bullet m0">
 
       <li>
-        <switch id="network-name" name="encrypt" ng-model="encrypt" class="green right"></switch>
+        <span class="right">
+          <label class="toggle">
+             <input type="checkbox" id="network-name" name="encrypt" ng-model="encrypt">
+             <div class="track">
+               <div class="handle"></div>
+             </div>
+          </label>
+        </span>
         <div translate>Request Password</div>
       </li>
 
       <li  ng-show="preferences.touchidAvailable">
-        <switch id="touchid" name="touchid" ng-model="touchid" class="green right"></switch>
+        <span class="right">
+          <label class="toggle">
+             <input type="checkbox" id="touchid" name="touchid" ng-model="touchid">
+             <div class="track">
+               <div class="handle"></div>
+             </div>
+          </label>
+        </span>
         <div translate>Scan Fingerprint</div>
       </li>
     </ul>

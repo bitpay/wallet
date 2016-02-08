@@ -39,6 +39,7 @@ angular.module('copayApp.services').factory('configService', function(storageSer
 
     view: {
       themeGalleryLayout: 'grid',
+      appletGalleryLayout: 'grid',
       skinGalleryLayout: 'grid',
     },
 

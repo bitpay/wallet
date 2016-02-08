@@ -48,14 +48,28 @@
 
       <ul class="no-bullet m0">
         <li>
-        <switch id="no-metaData" name="metaData" ng-model="metaData" class="green right"></switch>
+        <span class="right">
+          <label class="toggle">
+             <input type="checkbox" id="no-metaData" name="metaData" ng-model="metaData">
+             <div class="track">
+               <div class="handle"></div>
+             </div>
+          </label>
+        </span>
         <span translate>Include address book and history cache</span>
         </li>
       </ul>
       
       <ul class="no-bullet m0" ng-show="index.canSign">
         <li>
-        <switch id="no-sign" name="noSign" ng-model="noSign" class="green right"></switch>
+        <span class="right">
+          <label class="toggle">
+             <input type="checkbox" id="no-sign" name="noSign" ng-model="noSign">
+             <div class="track">
+               <div class="handle"></div>
+             </div>
+          </label>
+        </span>
         <span translate>Do not include private key</span>
         </li>
       </ul>

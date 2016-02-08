@@ -26,7 +26,14 @@
 
           <label for="fromCloud" class="line-b oh m20b">
             <span translate>Import from the Cloud?</span>
-            <switch id="fromCloud" name="fromCloud" ng-model="importLegacy.fromCloud" class="green right m5t m10b"></switch>
+            <span class="right m5t m10b">
+              <label class="toggle">
+                 <input type="checkbox" id="fromCloud" name="fromCloud" ng-model="importLegacy.fromCloud">
+                 <div class="track">
+                   <div class="handle"></div>
+                 </div>
+              </label>
+            </span>
           </label>
 
           <label for="username">

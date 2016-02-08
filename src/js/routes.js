@@ -582,8 +582,7 @@ angular
         needProfile: false
       });
   })
-  .run(function($rootScope, $state, $log, uriHandler, isCordova, profileService, $timeout, nodeWebkit, uxLanguage, animationService, themeService) {
-    FastClick.attach(document.body);
+  .run(function($rootScope, $state, $log, uriHandler, isCordova, profileService, $timeout, nodeWebkit, uxLanguage, animationService, themeService, appletService, go) {
 
     uxLanguage.init();
 
@@ -609,12 +608,14 @@ angular
     // Presentation must be initialized prior to showing any views.
     var initializePresentation = function(callback) {
       themeService.init(function() {
-        if (isCordova) {
-          // Style the device status bar.
-          window.StatusBar.backgroundColorByHexString($rootScope.theme.view.deviceStatusBarBackgroundColor);
-        }
-        $rootScope.$emit('Local/ThemeUpdated', true);
-        callback();
+        appletService.init(function() {
+          if (isCordova) {
+            // Style the device status bar.
+            window.StatusBar.backgroundColorByHexString($rootScope.theme.view.deviceStatusBarBackgroundColor);
+          }
+          $rootScope.$emit('Local/ThemeUpdated', true);
+          callback();
+        });
       });
     };
 
@@ -640,7 +641,7 @@ angular
 
               initializePresentation(function() {
                 profileService.create(false, function() {
-                  $state.transitionTo('disclaimer');
+                  go.disclaimer();
                   presentUI();
                 });
               });
@@ -648,7 +649,7 @@ angular
               $log.debug('Display disclaimer... redirecting');
 
               initializePresentation(function() {
-                $state.transitionTo('disclaimer');
+                go.disclaimer();
                 presentUI();
               });
             } else {
@@ -666,7 +667,6 @@ angular
       }
 
       if (profileService.focusedClient && !profileService.focusedClient.isComplete() && toState.walletShouldBeComplete) {
-
         $state.transitionTo('copayers');
         event.preventDefault();
       }

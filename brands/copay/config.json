@@ -27,9 +27,6 @@
     "</ul>"
   ],
   "features": {
-    "bitrefill": {
-      "enabled": true
-    },
     "glidera": {
       "enabled": true,
       "auth": {
@@ -50,6 +47,9 @@
       },
       "skinGallery": {
         "enabled": false
+      },
+      "applets": {
+        "enabled": true
       },
       "socialLike": {
         "enabled": false

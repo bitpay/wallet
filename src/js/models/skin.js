@@ -27,12 +27,16 @@ angular.module('copayApp.model').factory('Skin', function ($log, lodash, Applet)
     this.header.social.iLikeThis = !this.header.social.iLikeThis;
   };
 
-  Skin.prototype.hasApplet = function() {
+  Skin.prototype.isApplet = function() {
     return (!lodash.isEmpty(this.applet));
   };
 
+  Skin.prototype.isVanity = function() {
+    return (!lodash.isEmpty(this.view));
+  };
+
   Skin.prototype.getApplet = function() {
-    if (!this.hasApplet()) {
+    if (!this.isApplet()) {
       return null;
     }
     return new Applet(this.applet, this);

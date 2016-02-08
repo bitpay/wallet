@@ -2,7 +2,6 @@ var express = require('express');
 var path = require('path');
 var app = express();
 app.use(express.static(__dirname + '/public'));
-app.use('/plugins', express.static(__dirname + '/plugins'));
 
 var port = process.env.PORT || 3000;
 app.listen(port);
