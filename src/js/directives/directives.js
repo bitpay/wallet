@@ -342,8 +342,6 @@ angular.module('copayApp.directives')
             touchStartX = event.targetTouches[0].pageX;
             touchStartY = event.targetTouches[0].pageY;
 
-            console.log('PRIMER CLICKKKKKK!!');
-
             return true;
           });
 
@@ -353,16 +351,13 @@ angular.module('copayApp.directives')
               event.preventDefault();
             } 
             trackingClick = false;
-            console.log('SOLTANDO EL CLICKKKKKK!!');
             return false;
           });
 
           element.on('touchmove', function(event) {
-console.log('[directives.js:357] MOVING 1', trackingClick); //TODO
             if (!trackingClick) {
               return true;
             }
-console.log('[directives.js:361] MOVING 2', trackingClick); //TODO
 
             // If the touch has moved, cancel the click tracking
             if (targetElement !== event.target

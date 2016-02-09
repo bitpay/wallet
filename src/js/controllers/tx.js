@@ -16,13 +16,11 @@ angular.module('copayApp.controllers').controller('txController',
     }
 
     this.getAlternativeAmount = function(btx) {
-console.log('[tx.js:18]',btx); //TODO
       var satToBtc = 1 / 100000000;
       fc.getFiatRate({
         code: self.alternativeIsoCode,
         ts: btx.time * 1000
       }, function(err, res) {
-console.log('[tx.js:24]',res); //TODO
         if (err) {
           $log.debug('Could not get historic rate');
           return;
