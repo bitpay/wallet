@@ -1149,6 +1149,10 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     return this.alternativeIsoCode;
   };
 
+  this.openNewTxModal = function(tx) {
+    $rootScope.$emit('Local/TxModal', tx);
+  };
+
   this.openTxModal = function(btx) {
     $rootScope.modalOpened = true;
     var self = this;
