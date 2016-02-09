@@ -1344,6 +1344,13 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     });
   });
 
+  $rootScope.$on('Local/TxModal', function(event, tx) {
+    self.showTx = tx;
+    $timeout(function() {
+      $rootScope.$apply();
+    });
+  });
+
   $rootScope.$on('NewIncomingTx', function() {
     self.newTx = true;
     self.updateAll({
