@@ -1,42 +1,44 @@
-<nav class="tab-bar">
-  <section class="left-small">
-    <a ng-click="cancel()" class="p10" ng-style="{'color':theme.view.navBarButtonTextColor}">
-      <span class="text-close">Close</span>
-    </a>
-  </section>
+<ion-modal-view ng-controller="glideraWalletsController">
+  <nav class="tab-bar" ng-style="{'background':theme.view.navBarBackground}">
+    <section class="left-small">
+      <a ng-click="cancel()" class="p10" ng-style="{'color':theme.view.navBarButtonTextColor}">
+        <span class="text-close">Close</span>
+      </a>
+    </section>
 
-  <section class="middle tab-bar-section">
-    <h1 class="title ellipsis">
-      <span ng-show="type == 'BUY'">Choose your destination wallet</span>
-      <span ng-show="type == 'SELL'">Choose your source wallet</span>
-    </h1>
-  </section>
-</nav>
+    <section class="middle tab-bar-section">
+      <h1 class="title ellipsis" ng-style="{'color':theme.view.navBarTitleColor}">
+        <span ng-show="type == 'BUY'">Choose your destination wallet</span>
+        <span ng-show="type == 'SELL'">Choose your source wallet</span>
+      </h1>
+    </section>
+  </nav>
 
-<div class="modal-content">
-  <div ng-show="type == 'SELL'">
-    <h4 class="title m0 oh">
-      <div class="left">
-        <i class="fi-info size-18 m10r"></i>
-      </div>
-      <div class="size-10 m5t">
-        Notice: only 1-1 (single signature) wallets can be used for sell bitcoin
-      </div>
-    </h4>
+  <div class="modal-content">
+    <div ng-show="type == 'SELL'">
+      <h4 class="title m0 oh">
+        <div class="left">
+          <i class="fi-info size-18 m10r"></i>
+        </div>
+        <div class="size-10 m5t">
+          Notice: only 1-1 (single signature) wallets can be used for sell bitcoin
+        </div>
+      </h4>
+    </div>
+    <ul class="no-bullet">
+      <li class="line-b" ng-repeat="w in wallets">
+      <a ng-click="selectWallet(w.id, w.name)" class="db oh">
+        <div class="avatar-wallet"
+          ng-style="{'color':w.avatarColor, 'background':w.avatarBackground, 'border':w.avatarBorder}">
+          <i class="icon-wallet size-21"></i>
+        </div>
+        <div class="ellipsis name-wallet text-bold">{{w.name || w.id}}</div>
+        <div class="size-12">{{w.m}} of {{w.n}}
+          <span ng-show="w.network=='testnet'">[Testnet]</span>
+        </div>
+      </a>
+      </li>
+    </ul>
+    <div class="extra-margin-bottom"></div>
   </div>
-  <ul class="no-bullet">
-    <li class="line-b" ng-repeat="w in wallets">
-    <a ng-click="selectWallet(w.id, w.name)" class="db oh">
-      <div class="avatar-wallet"
-        ng-style="{'color':w.avatarColor, 'background':w.avatarBackground, 'border':w.avatarBorder}">
-        <i class="icon-wallet size-21"></i>
-      </div>
-      <div class="ellipsis name-wallet text-bold">{{w.name || w.id}}</div>
-      <div class="size-12">{{w.m}} of {{w.n}}
-        <span ng-show="w.network=='testnet'">[Testnet]</span>
-      </div>
-    </a>
-    </li>
-  </ul>
-  <div class="extra-margin-bottom"></div>
-</div>
+</ion-modal-view>

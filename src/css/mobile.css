@@ -958,3 +958,146 @@ textarea:focus
 /* removes 300ms in IE */
 -ms-touch-action: manipulation; /* IE10 /
 touch-action: manipulation; /* IE11+ */
+
+/*
+ * Animations for closing an ionic modal.
+ * See https://github.com/kevincobain2000/ionic-animated-modal
+ */
+.animated.modal.bounceIn.ng-leave {
+  -webkit-animation-name:bounceOut;
+  animation-name:bounceOut;
+}
+.animated.modal.bounceInDown.ng-leave {
+  -webkit-animation-name:bounceOutUp;
+  animation-name:bounceOutUp;
+}
+.animated.modal.bounceInLeft.ng-leave {
+  -webkit-animation-name:bounceOutLeft;
+  animation-name:bounceOutLeft;
+}
+.animated.modal.bounceInRight.ng-leave {
+  -webkit-animation-name:bounceOutRight;
+  animation-name:bounceOutRight;
+}
+.animated.modal.bounceInUp.ng-leave {
+  -webkit-animation-name:bounceOutDown;
+  animation-name:bounceOutDown;
+}
+.animated.modal.bounceOut.ng-leave {
+  -webkit-animation-name:bounceOut;
+  animation-name:bounceOut;
+}
+.animated.modal.fadeIn.ng-leave {
+  -webkit-animation-name:fadeOut;
+  animation-name:fadeOut;
+}
+.animated.modal.fadeInDown.ng-leave {
+  -webkit-animation-name:fadeOutDown;
+  animation-name:fadeOutDown;
+}
+.animated.modal.fadeInDownBig.ng-leave {
+  -webkit-animation-name:fadeOutDownBig;
+  animation-name:fadeOutDownBig;
+}
+.animated.modal.fadeInLeft.ng-leave {
+  -webkit-animation-name:fadeOutLeft;
+  animation-name:fadeOutLeft;
+}
+.animated.modal.fadeInLeftBig.ng-leave {
+  -webkit-animation-name:fadeOutLeftBig;
+  animation-name:fadeOutLeftBig;
+}
+.animated.modal.fadeInRight.ng-leave {
+  -webkit-animation-name:fadeOutRight;
+  animation-name:fadeOutRight;
+}
+.animated.modal.fadeInRightBig.ng-leave {
+  -webkit-animation-name:fadeOutRightBig;
+  animation-name:fadeOutRightBig;
+}
+.animated.modal.fadeInUp.ng-leave {
+  -webkit-animation-name:fadeOutUp;
+  animation-name:fadeOutUp;
+}
+.animated.modal.fadeInUpBig.ng-leave {
+  -webkit-animation-name:fadeOutUpBig;
+  animation-name:fadeOutUpBig;
+}
+.animated.modal.flipInX.ng-leave {
+  -webkit-animation-name:flipOutX;
+  animation-name:flipOutX;
+}
+.animated.modal.flipInY.ng-leave {
+  -webkit-animation-name:flipOutY;
+  animation-name:flipOutY;
+}
+.animated.modal.lightSpeedIn.ng-leave {
+  -webkit-animation-name:lightSpeedOut;
+  animation-name:lightSpeedOut;
+}
+.animated.modal.rotateIn.ng-leave {
+  -webkit-animation-name:rotateOut;
+  animation-name:rotateOut;
+}
+.animated.modal.rotateInDownLeft.ng-leave {
+  -webkit-animation-name:rotateOutDownLeft;
+  animation-name:rotateOutDownLeft;
+}
+.animated.modal.rotateInDownRight.ng-leave {
+  -webkit-animation-name:rotateOutDownRight;
+  animation-name:rotateOutDownRight;
+}
+.animated.modal.rotateInUpLeft.ng-leave {
+  -webkit-animation-name:rotateOutUpLeft;
+  animation-name:rotateOutUpLeft;
+}
+.animated.modal.rotateInUpRight.ng-leave {
+  -webkit-animation-name:rotateOutUpRight;
+  animation-name:rotateOutUpRight;
+}
+.animated.modal.slideInUp.ng-leave {
+  -webkit-animation-name:slideOutDown;
+  animation-name:slideOutDown;
+}
+.animated.modal.slideInDown.ng-leave {
+  -webkit-animation-name:slideOutUp;
+  animation-name:slideOutUp;
+}
+.animated.modal.slideInLeft.ng-leave {
+  -webkit-animation-name:slideOutLeft;
+  animation-name:slideOutLeft;
+}
+.animated.modal.slideInRight.ng-enter {
+    -webkit-animation-name:slideInRight;
+    animation-name:slideInRight;
+    -webkit-animation-duration: 0.3s;
+}
+.animated.modal.slideInRight.ng-leave {
+    -webkit-animation-name:slideOutRight;
+    animation-name:slideOutRight;
+    -webkit-animation-duration: 0.3s;
+}
+.animated.modal.zoomIn.ng-leave {
+  -webkit-animation-name:zoomOut;
+  animation-name:zoomOut;
+}
+.animated.modal.zoomInDown.ng-leave {
+  -webkit-animation-name:zoomOutDown;
+  animation-name:zoomOutDown;
+}
+.animated.modal.zoomInLeft.ng-leave {
+  -webkit-animation-name:zoomOutLeft;
+  animation-name:zoomOutLeft;
+}
+.animated.modal.zoomInRight.ng-leave {
+  -webkit-animation-name:zoomOutRight;
+  animation-name:zoomOutRight;
+}
+.animated.modal.zoomInUp.ng-leave {
+  -webkit-animation-name:zoomOutUp;
+  animation-name:zoomOutUp;
+}
+.animated.modal.rollIn.ng-leave {
+  -webkit-animation-name:rollOut;
+  animation-name:rollOut;
+}

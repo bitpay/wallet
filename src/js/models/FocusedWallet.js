@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.model').factory('FocusedWallet', function ($rootScope, $log, $timeout, $modal, lodash, isChromeApp, gettext, configService) {
+angular.module('copayApp.model').factory('FocusedWallet', function ($rootScope, $log, $timeout, $ionicModal, lodash, isChromeApp, gettext, configService) {
  
   // Static properties
   // 
@@ -291,24 +291,19 @@ angular.module('copayApp.model').factory('FocusedWallet', function ($rootScope, 
     openModal(type, txp, cb);
   };
 
-  function openModal(type, txp, cb) {    
-    var ModalInstanceCtrl = function($scope, $modalInstance) {
-      $scope.type = type;
-      $scope.cancel = function() {
-        $modalInstance.dismiss('cancel');
-      };
-      if (cb) $timeout(cb, 100);
-    };
+  function openModal(type, txp, cb) {
+    $scope.cb = cb;
+    $scope.txp = txp;
+    $scope.type = type;
 
-    var modalInstance = $modal.open({
-      templateUrl: 'views/modals/tx-status.html',
-      windowClass: 'popup-tx-status full',
-      controller: ModalInstanceCtrl,
-    });
-
-    modalInstance.result.finally(function() {
-      var m = angular.element(document.getElementsByClassName('reveal-modal'));
-      m.addClass('hideModal');
+    $ionicModal.fromTemplateUrl('views/modals/tx-status.html', {
+      scope: $scope,
+      backdropClickToClose: false,
+      hardwareBackButtonClose: false,
+      animation: 'slide-in-up'
+    }).then(function(modal) {
+      $scope.txStatusModal = modal;
+      $scope.txStatusModal.show();
     });
   };
 

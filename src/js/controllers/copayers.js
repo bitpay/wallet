@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('copayersController',
-  function($scope, $rootScope, $timeout, $log, $modal, profileService, go, notification, isCordova, gettext, gettextCatalog, animationService, themeService) {
+  function($scope, $rootScope, $timeout, $log, $ionicModal, profileService, go, notification, isCordova, gettext, gettextCatalog, animationService, themeService) {
     var self = this;
 
     var delete_msg = gettextCatalog.getString('Are you sure you want to delete this wallet?');
@@ -21,35 +21,21 @@ angular.module('copayApp.controllers').controller('copayersController',
     };
 
     var _modalDeleteWallet = function() {
-      var ModalInstanceCtrl = function($scope, $modalInstance, gettext) {
-        $scope.title = delete_msg;
-        $scope.loading = false;
+      $scope.title = delete_msg;
+      $scope.accept_msg = accept_msg;
+      $scope.cancel_msg = cancel_msg;
+      $scope.confirm_msg = confirm_msg;
+      $scope.okAction = _deleteWallet;
+      $scope.loading = false;
 
-        $scope.ok = function() {
-          $scope.loading = true;
-          $modalInstance.close(accept_msg);
-
-        };
-        $scope.cancel = function() {
-          $modalInstance.dismiss(cancel_msg);
-        };
-      };
-
-      var modalInstance = $modal.open({
-        templateUrl: 'views/modals/confirmation.html',
-        windowClass: animationService.modalAnimated.slideUp,
-        controller: ModalInstanceCtrl
-      });
-
-      modalInstance.result.finally(function() {
-        var m = angular.element(document.getElementsByClassName('reveal-modal'));
-        m.addClass(animationService.modalAnimated.slideOutDown);
-      });
-
-      modalInstance.result.then(function(ok) {
-        if (ok) {
-          _deleteWallet();
-        }
+      $ionicModal.fromTemplateUrl('views/modals/confirmation.html', {
+        scope: $scope,
+        backdropClickToClose: false,
+        hardwareBackButtonClose: false,
+        animation: 'slide-in-up'
+      }).then(function(modal) {
+        $scope.confirmationModal = modal;
+        $scope.confirmationModal.show();
       });
     };
 

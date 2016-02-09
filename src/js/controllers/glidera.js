@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('glideraController', 
-  function($scope, $timeout, $modal, profileService, configService, storageService, glideraService, isChromeApp, animationService) {
+  function($scope, $timeout, $ionicModal, profileService, configService, storageService, glideraService, isChromeApp, animationService) {
 
     this.getAuthenticateUrl = function() {
       return glideraService.getOauthCodeUrl();
@@ -36,31 +36,22 @@ angular.module('copayApp.controllers').controller('glideraController',
 
     this.openTxModal = function(token, tx) {
       var self = this;
-      var config = configService.getSync().wallet.settings;
-      var fc = profileService.focusedClient;
-      var ModalInstanceCtrl = function($scope, $modalInstance) {
+
+      $scope.self = self;
+      $scope.tx = tx;
+
+      glideraService.getTransaction(token, tx.transactionUuid, function(error, tx) {
         $scope.tx = tx;
-        $scope.settings = config;
-
-        glideraService.getTransaction(token, tx.transactionUuid, function(error, tx) {
-          $scope.tx = tx;
-        });
-
-        $scope.cancel = function() {
-          $modalInstance.dismiss('cancel');
-        };
-
-      };
-
-      var modalInstance = $modal.open({
-        templateUrl: 'views/modals/glidera-tx-details.html',
-          windowClass: animationService.modalAnimated.slideRight,
-          controller: ModalInstanceCtrl,
       });
 
-      modalInstance.result.finally(function() {
-        var m = angular.element(document.getElementsByClassName('reveal-modal'));
-        m.addClass(animationService.modalAnimated.slideOutRight);
+      $ionicModal.fromTemplateUrl('views/modals/glidera-tx-details.html', {
+        scope: $scope,
+        backdropClickToClose: false,
+        hardwareBackButtonClose: false,
+        animation: 'slide-in-up'
+      }).then(function(modal) {
+        $scope.glideraTxDetailsModal = modal;
+        $scope.glideraTxDetailsModal.show();
       });
     };
 

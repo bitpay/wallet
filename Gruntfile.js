@@ -96,7 +96,7 @@ module.exports = function(grunt) {
           'src/js/models/*.js',
           'src/js/services/*.js',
           'src/js/pluginApi/*.js',
-          'src/js/controllers/*.js',
+          'src/js/controllers/**/*.js',
           'src/js/translations.js',
           'src/js/brand.js',
           'src/js/init.js',
