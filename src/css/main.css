@@ -623,7 +623,7 @@ ul.manage li {
 .left-inner-addon i {
     position: absolute;
     padding: 5px;
-    padding-left: 2%;
+    padding-left: 20px;
 }
 /* Turn Off Number Input Spinners */
 input[type=number]::-webkit-inner-spin-button,
