@@ -996,6 +996,12 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     });
   };
 
+  self.setCompactTxHistory = function() {
+    self.txHistory = self.completeHistory.slice(0, self.historyShowLimit);
+    if (self.completeHistory.length > self.historyShowLimit)
+      self.historyShowShowAll = true;
+  };
+
   self.debounceUpdateHistory = lodash.debounce(function() {
     self.updateHistory();
   }, 1000);
@@ -1177,15 +1183,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       self.addressbook = ab;
     });
   };
-
-  $rootScope.$on('Local/UpdateTxHistory', function(event) {
-    $timeout(function () {
-      self.txHistory = self.completeHistory.slice(0, self.historyShowLimit);
-      if (self.completeHistory.length > self.historyShowLimit)
-        self.historyShowShowAll = true;
-    }, 10);
-  });
-
 
   $rootScope.$on('$stateChangeSuccess', function(ev, to, toParams, from, fromParams) {
     self.prevState = from.name || 'walletHome';
