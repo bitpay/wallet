@@ -1098,7 +1098,6 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       $scope.btx = btx;
       $scope.settings = walletSettings;
       $scope.color = fc.backgroundColor;
-      $scope.network = fc.credentials.network;
       $scope.copayerId = fc.credentials.copayerId;
       $scope.isShared = fc.credentials.n > 1;
 

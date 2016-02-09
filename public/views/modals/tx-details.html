@@ -146,9 +146,11 @@
         (getShortNetworkName() == 'test' ? 'test-' : '') + 'insight.bitpay.com/tx/' + btx.txid)">
         <span class="text-gray" translate>See it on the blockchain</span>
       </button>
-      <button class="button outline round dark-gray tiny" ng-show="btx.action == 'sent' && network == 'testnet'" ng-click="sendAgain(btx)">
-        <span class="text-gray" translate>Send again</span>
-      </button>
+      <ul class="no-bullet m0" ng-show="btx.action == 'sent' && getShortNetworkName() == 'test'">
+        <li ng-click="sendAgain(btx)">
+          <span ng-style="{'color':color}" translate>Send again</span>
+        </li>
+      </ul>
     </div>
   </div>
 
