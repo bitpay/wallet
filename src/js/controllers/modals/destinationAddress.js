@@ -102,6 +102,7 @@ angular.module('copayApp.controllers').controller('destinationAddressController'
 
   $scope.cancel = function() {
     $scope.destinationAddressModal.hide();
+    $scope.destinationAddressModal.remove();
 		$rootScope.modalOpened = false;
   };
 

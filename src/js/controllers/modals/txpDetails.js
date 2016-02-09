@@ -201,11 +201,6 @@ angular.module('copayApp.controllers').controller('txpDetailsController', functi
     self.copyAddress(addr);
   };
 
-  $scope.cancel = function() {
-    $scope.txpDetailsModal.hide();
-		$rootScope.modalOpened = false;
-  };
-
   $scope.close = function(txp) {
     self.setOngoingProcess();
     if (txp) {
@@ -218,6 +213,12 @@ angular.module('copayApp.controllers').controller('txpDetailsController', functi
       }, 100);
     }
     $scope.cancel();
+  };
+
+  $scope.cancel = function() {
+    $scope.txpDetailsModal.hide();
+    $scope.txpDetailsModal.remove();
+    $rootScope.modalOpened = false;
   };
 
 });

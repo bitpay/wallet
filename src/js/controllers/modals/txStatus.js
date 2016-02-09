@@ -6,6 +6,7 @@ angular.module('copayApp.controllers').controller('payproController', function($
 
   $scope.cancel = function() {
     $scope.txStatusModal.hide();
+    $scope.txStatusModal.remove();
   };
 
 });

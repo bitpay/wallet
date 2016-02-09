@@ -10,6 +10,7 @@ angular.module('copayApp.controllers').controller('confirmationController', func
 
   $scope.cancel = function() {
     $scope.confirmationModal.hide();
+    $scope.confirmationModal.remove();
   };
 
 });

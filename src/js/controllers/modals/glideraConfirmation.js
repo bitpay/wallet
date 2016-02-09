@@ -15,6 +15,7 @@ angular.module('copayApp.controllers').controller('glideraConfirmationController
 
   $scope.cancel = function() {
     $scope.glideraConfirmationModal.hide();
+    $scope.glideraConfirmationModal.remove();
   };
 
 });

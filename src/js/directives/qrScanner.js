@@ -65,6 +65,9 @@ angular.module('copayApp.directives')
             onScan: "&",
             beforeScan: "&"
           },
+          link: function ($scope, $element, $attributes) {
+            $scope.skin = $rootScope.skin;
+          },
           controller: controller,
           replace: true,
           template: '<div id="camera-icon" class="p10" ng-click="openScanner()"><i class="icon-scan size-21"></i></div>'
