@@ -1399,7 +1399,14 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
   border-top-right-radius: 5px;
 }
 
-/*******************/
+.txModal {
+  background: #FFFFFF;
+  border-radius: 5px;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 1100;
+}
 
 .alertModal {
   background: #FFFFFF;

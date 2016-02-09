@@ -317,4 +317,71 @@ angular.module('copayApp.directives')
       replace: true,
       templateUrl: 'views/includes/available-balance.html'
     }
-  });
+  })
+  .directive('fastClick', [ 'isCordova', '$timeout', function(isCordova, $timeout) {
+    return {
+      scope: { someCtrlFn: '&callbackFn'},
+      link: function(scope, element, attrs) {
+
+        if (!isCordova) {
+          element.on('click', function(){
+            scope.someCtrlFn();
+            console.log('click real');
+          });
+        } else {
+          var trackingClick = false;
+          var targetElement = null;
+          var touchStartX = 0;
+          var touchStartY = 0;
+          var touchBoundary = 10;
+
+          element.on('touchstart', function(event) {
+
+            trackingClick = true;
+            targetElement = event.target;
+            touchStartX = event.targetTouches[0].pageX;
+            touchStartY = event.targetTouches[0].pageY;
+
+            console.log('PRIMER CLICKKKKKK!!');
+
+            return true;
+          });
+
+          element.on('touchend', function(event) { 
+            if (trackingClick) {
+              scope.someCtrlFn();
+              event.preventDefault();
+            } 
+            trackingClick = false;
+            console.log('SOLTANDO EL CLICKKKKKK!!');
+            return false;
+          });
+
+          element.on('touchmove', function(event) {
+console.log('[directives.js:357] MOVING 1', trackingClick); //TODO
+            if (!trackingClick) {
+              return true;
+            }
+console.log('[directives.js:361] MOVING 2', trackingClick); //TODO
+
+            // If the touch has moved, cancel the click tracking
+            if (targetElement !== event.target
+                || (Math.abs(event.changedTouches[0].pageX - touchStartX) > touchBoundary
+                  || (Math.abs(event.changedTouches[0].pageY - touchStartY) > touchBoundary))) {
+              trackingClick = false;
+              targetElement = null;
+            }
+
+            return true;
+          });
+
+          element.on('touchcancel', function() {
+            trackingClick = false;
+            targetElement = null;
+          });
+        }
+      }
+    } 
+  }]);
+  
+;
