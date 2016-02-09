@@ -926,7 +926,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         if (walletId == profileService.focusedClient.credentials.walletId) {
           self.completeHistory = newHistory;
           self.txHistory = newHistory.slice(0, self.historyShowLimit);
-          self.historyShowShowAll = newHistory.length >= self.historyShowLimit;
+          self.historyShowShowAll = newHistory.length > self.historyShowLimit;
         }
 
         return storageService.setTxHistory(JSON.stringify(newHistory), walletId, function() {
@@ -935,6 +935,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       });
     });
   }
+
   self.showAllHistory = function() {
     self.historyShowShowAll = false;
     self.historyRendering = true;
@@ -1176,6 +1177,15 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       self.addressbook = ab;
     });
   };
+
+  $rootScope.$on('Local/UpdateTxHistory', function(event) {
+    $timeout(function () {
+      self.txHistory = self.completeHistory.slice(0, self.historyShowLimit);
+      if (self.completeHistory.length > self.historyShowLimit)
+        self.historyShowShowAll = true;
+    }, 10);
+  });
+
 
   $rootScope.$on('$stateChangeSuccess', function(ev, to, toParams, from, fromParams) {
     self.prevState = from.name || 'walletHome';
