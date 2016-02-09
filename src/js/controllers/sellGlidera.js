@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('sellGlideraController', 
-  function($scope, $timeout, $log, $modal, configService, profileService, addressService, glideraService, bwsError, lodash, isChromeApp, animationService) {
+  function($scope, $timeout, $log, $ionicModal, configService, profileService, addressService, glideraService, bwsError, lodash, isChromeApp, animationService) {
 
     var self = this;
     var config = configService.getSync();
@@ -44,45 +44,20 @@ angular.module('copayApp.controllers').controller('sellGlideraController',
       self.error = null;
       self.selectedWalletId = null;
       self.selectedWalletName = null;
-      var ModalInstanceCtrl = function($scope, $modalInstance) {
-        $scope.type = 'SELL';
-        $scope.wallets = wallets;
-        $scope.noColor = true;
-        $scope.cancel = function() {
-          $modalInstance.dismiss('cancel');
-        };
 
-        $scope.selectWallet = function(walletId, walletName) {
-          if (!profileService.getClient(walletId).isComplete()) {
-            self.error = bwsError.msg({'code': 'WALLET_NOT_COMPLETE'}, 'Could not choose the wallet');
-            $modalInstance.dismiss('cancel');
-            return;
-          }
-          $modalInstance.close({
-            'walletId': walletId, 
-            'walletName': walletName,
-          });
-        };
-      };
+      $scope.type = 'SELL';
+      $scope.wallets = wallets;
+      $scope.noColor = true;
+      $scope.self = self;
 
-      var modalInstance = $modal.open({
-        templateUrl: 'views/modals/glidera-wallets.html',
-          windowClass: animationService.modalAnimated.slideUp,
-          controller: ModalInstanceCtrl,
-      });
-
-      modalInstance.result.finally(function() {
-        var m = angular.element(document.getElementsByClassName('reveal-modal'));
-        m.addClass(animationService.modalAnimated.slideOutDown);
-      });
-
-      modalInstance.result.then(function(obj) {
-        $timeout(function() {
-          self.selectedWalletId = obj.walletId;
-          self.selectedWalletName = obj.walletName;
-          fc = profileService.getClient(obj.walletId);
-          $scope.$apply();
-        }, 100);
+      $ionicModal.fromTemplateUrl('views/modals/glidera-wallets.html', {
+        scope: $scope,
+        backdropClickToClose: false,
+        hardwareBackButtonClose: false,
+        animation: 'slide-in-up'
+      }).then(function(modal) {
+        $scope.glideraWalletsModal = modal;
+        $scope.glideraWalletsModal.show();
       });
     };
 
