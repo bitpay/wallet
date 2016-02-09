@@ -31,12 +31,11 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   self.searchInput = function() {
     $timeout(function() {
       scrollUp('searchLabel');
-    }, 300);
+    }, 200);
   }
 
   function scrollUp(location) {
     if (!location) return;
-    console.log(JSON.stringify(location));
     $location.hash(location);
     $anchorScroll();
   };
