@@ -917,6 +917,14 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   };
 
   self.filter = function(search) {
+
+    function formatDate(date) {
+      var day = ('0' + date.getDate()).slice(-2).toString();
+      var month = ('0' + (date.getMonth() + 1)).slice(-2).toString();
+      var year = date.getFullYear();
+      return [month, day, year].join('/');
+    };
+
     if (lodash.isEmpty(search)) return self.txHistory;
     var result = lodash.filter(self.txHistory, function(tx) {
       return lodash.includes(tx.amountStr, search) ||
@@ -927,13 +935,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     });
     return result;
   }
-
-  function formatDate(date) {
-    var day = ('0' + date.getDate()).slice(-2).toString();
-    var month = ('0' + (date.getMonth() + 1)).slice(-2).toString();
-    var year = date.getFullYear();
-    return [month, day, year].join('/');
-  };
 
   self.getTxsFromServer = function(client, skip, endingTxid, limit, cb) {
     var res = [];

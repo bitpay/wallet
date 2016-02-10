@@ -197,8 +197,9 @@
 
         <div id="searchLabel" class="left-inner-addon ">
           <i class="fi-magnifying-glass"></i>
-          <input ng-click="home.searchInput()"
-                ng-focus="home.formFocus(true)"
+          <input name="search"
+                ng-click="home.searchInput()"
+                ng-focus="home.formFocus('search')"
                 ng-blur="home.formFocus(false)"
                 type="text"
                 placeholder="{{'Amount, address, mm/dd/yyyy' | translate}}"
