@@ -315,7 +315,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
           fc.fetchPayPro({
             payProUrl: tx.payProUrl,
           }, function(err, paypro) {
-            if (err) return $log.debug(err);
+            if (err) return;
             tx.paypro = paypro;
             $scope.usePaypro = true;
             $scope.paymentExpired = tx.paypro.expires <= Math.floor(Date.now() / 1000);
