@@ -1,5 +1,5 @@
-<nav ng-controller="topbarController as topbar" 
-  class="tab-bar" 
+<nav ng-controller="topbarController as topbar"
+  class="tab-bar"
   ng-style="{'background-color': noColor ? '#4B6178' : index.backgroundColor}">
   <section class="left-small">
     <a id="hamburger" class="p10" ng-show="!goBackToState && !closeToHome  && !index.noFocusedWallet"
@@ -11,13 +11,13 @@
     </a>
 
     <a ng-show="closeToHome" class="p10 "
-      ng-click="topbar.goHome(); closeToHome = null">
+      ng-click="topbar.goHome(); index.setCompactTxHistory(); closeToHome = null">
       <span class="text-close">{{'Close'|translate}}</span>
     </a>
   </section>
 
   <section class="right-small" ng-show="showPreferences && !index.noFocusedWallet">
-    <a class="p10" ng-click="topbar.goPreferences()">
+    <a class="p10" ng-click="topbar.goPreferences(); index.setCompactTxHistory()">
       <i class="fi-widget size-24"></i>
     </a>
   </section>
