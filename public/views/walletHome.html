@@ -361,13 +361,14 @@
       <div class="pr p25b">
         <h4 class="title m0">
           <available-balance></available-balance>
-          <a
-            ng-show="!home.lockedCurrentFeePerKb && index.feeToSendMaxStr && index.availableBalanceSat > 0 && !home.blockUx && !home.lockAmount"
-            ng-click="home.sendAll()" 
-            class="p10"
+          <a ng-show="!home.lockedCurrentFeePerKb && index.feeToSendMaxStr && index.availableBalanceSat > 0 && !home.blockUx && !home.lockAmount"
+             ng-click="home.sendAll()"
              translate> Send All
           </a>
-          <time ng-show="!home.paymentExpired" translate>Payment expires: {{home.timeToExpire * 1000 | amTimeAgo}}</time>
+          <div ng-show="!home.paymentExpired">
+            <span translate>Payment expires</span>
+            <time> {{home.timeToExpire * 1000 | amTimeAgo}}</time>
+          </div>
         </h4>
         <div class="camera-icon" ng-show="index.isComplete">
           <qr-scanner on-scan="home.onQrCodeScanned(data)"></qr-scanner>
