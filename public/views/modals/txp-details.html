@@ -140,7 +140,13 @@
           <contact address="{{tx.toAddress}}" ng-hide="tx.merchant"></contact>
         </span>
       </li>
-      <li class="line-b p10">
+      <li class="line-b p10" ng-if="paymentExpired">
+        <span class="text-gray" translate>Expired</span>
+        <span class="right text-alert">
+          <time>{{tx.paypro.expires * 1000 | amTimeAgo }}</time>
+        </span>
+      </li>
+      <li class="line-b p10" ng-if="!paymentExpired">
         <span class="text-gray" translate>Expires</span>
         <span class="right">
           <time>{{tx.paypro.expires * 1000 | amTimeAgo }}</time>
