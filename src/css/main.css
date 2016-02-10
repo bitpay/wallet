@@ -613,18 +613,6 @@ ul.manage li {
   visibility: hidden;
 }
 
-.left-inner-addon {
-    position: relative;
-}
-.left-inner-addon input {
-    padding-left: 30px !important;
-    margin-bottom: 0rem !important;
-}
-.left-inner-addon i {
-    position: absolute;
-    padding: 5px;
-    padding-left: 20px;
-}
 /* Turn Off Number Input Spinners */
 input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button {
@@ -794,6 +782,20 @@ table tbody tr:last-child td {
   border-bottom: none;
 }
 
+/*////////////////////////////   SEARCH INPUT  ////////////////////////////*/
+
+.left-inner-addon {
+    position: relative;
+}
+.left-inner-addon input {
+    padding-left: 40px;
+    margin-bottom: auto;
+}
+.left-inner-addon i {
+    position: absolute;
+    padding: 5px;
+    padding-left: 20px;
+}
 
 /*////////////////////////////  BUTTON OUTLINE  ////////////////////////////*/
 
