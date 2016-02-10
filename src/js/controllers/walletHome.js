@@ -1149,81 +1149,8 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     return this.alternativeIsoCode;
   };
 
-  this.openNewTxModal = function(tx) {
+  this.openTxModal = function(tx) {
     $rootScope.$emit('Local/TxModal', tx);
-  };
-
-  this.openTxModal = function(btx) {
-    $rootScope.modalOpened = true;
-    var self = this;
-    var fc = profileService.focusedClient;
-    var ModalInstanceCtrl = function($scope, $filter, $log, $modalInstance) {
-      $scope.btx = btx;
-      $scope.settings = walletSettings;
-      $scope.color = fc.backgroundColor;
-      $scope.copayerId = fc.credentials.copayerId;
-      $scope.isShared = fc.credentials.n > 1;
-
-      $scope.getAlternativeAmount = function() {
-        var satToBtc = 1 / 100000000;
-        fc.getFiatRate({
-          code: self.alternativeIsoCode,
-          ts: btx.time * 1000
-        }, function(err, res) {
-          if (err) {
-            $log.debug('Could not get historic rate');
-            return;
-          }
-          if (res && res.rate) {
-            var alternativeAmountBtc = (btx.amount * satToBtc).toFixed(8);
-            $scope.rateDate = res.fetchedOn;
-            $scope.rateStr = res.rate + ' ' + self.alternativeIsoCode;
-            $scope.alternativeAmountStr = $filter('noFractionNumber')(alternativeAmountBtc * res.rate, 2) + ' ' + self.alternativeIsoCode;
-            $scope.$apply();
-          }
-        });
-      };
-
-      $scope.getAmount = function(amount) {
-        return self.getAmount(amount);
-      };
-
-      $scope.getUnitName = function() {
-        return self.getUnitName();
-      };
-
-      $scope.getShortNetworkName = function() {
-        var n = fc.credentials.network;
-        return n.substring(0, 4);
-      };
-
-      $scope.copyToClipboard = function(addr) {
-        if (!addr) return;
-        self.copyToClipboard(addr);
-      };
-
-      $scope.cancel = lodash.debounce(function() {
-        $modalInstance.dismiss('cancel');
-      }, 0, 1000);
-
-    };
-
-    var modalInstance = $modal.open({
-      templateUrl: 'views/modals/tx-details.html',
-      windowClass: animationService.modalAnimated.slideRight,
-      controller: ModalInstanceCtrl,
-    });
-
-    var disableCloseModal = $rootScope.$on('closeModal', function() {
-      modalInstance.dismiss('cancel');
-    });
-
-    modalInstance.result.finally(function() {
-      $rootScope.modalOpened = false;
-      disableCloseModal();
-      var m = angular.element(document.getElementsByClassName('reveal-modal'));
-      m.addClass(animationService.modalAnimated.slideOutRight);
-    });
   };
 
   this.hasAction = function(actions, action) {

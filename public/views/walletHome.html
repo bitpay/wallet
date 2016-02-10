@@ -199,21 +199,7 @@
         </div>
 
         <div ng-repeat="btx in index.txHistory"
-             fast-click callback-fn="home.openNewTxModal({
-                        txid: btx.txid,
-                        action: btx.action,
-                        hasMultiplesOutputs: btx.hasMultiplesOutputs,
-                        addressTo: btx.addressTo,
-                        merchant: btx.merchant,
-                        labelTo: btx.labelTo,
-                        recipientCount: btx.recipientCount,
-                        outputs: btx.outputs,
-                        message: btx.message,
-                        time: btx.time,
-                        confirmations: btx.confirmations,
-                        safeConfirmed: btx.safeConfirmed,
-                        amountStr: btx.amountStr
-                        })"
+             fast-click callback-fn="home.openTxModal(btx)"
           class="row collapse last-transactions-content">
           <div class="large-6 medium-6 small-6 columns size-14">
             <div class="m10r left">
