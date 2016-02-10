@@ -1,21 +1,31 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('txController',
-  function($rootScope, $scope, $timeout, profileService, notification, go, gettext, isCordova, nodeWebkit) {
+  function($rootScope, $scope, $timeout, $filter, lodash, profileService, isCordova, nodeWebkit, configService, animationService) {
 
     var fc = profileService.focusedClient;
+    var config = configService.getSync();
+    var configWallet = config.wallet;
+    var walletSettings = configWallet.settings;
+    var m = angular.element(document.getElementsByClassName('txModal'));
+    m.addClass(animationService.modalAnimated.slideRight);
+
+    this.alternativeIsoCode = walletSettings.alternativeIsoCode;
     this.color = fc.backgroundColor;
     this.copayerId = fc.credentials.copayerId;
     this.isShared = fc.credentials.n > 1;
 
+
     if (isCordova) {
-      $scope.modalOpening = true;
-      $timeout(function() {
-        $scope.modalOpening = false; 
-      }, 300);
+      $rootScope.modalOpened = true;
+      var self = this;
+      var disableCloseModal = $rootScope.$on('closeModal', function() {
+        self.cancel();
+      });
     }
 
     this.getAlternativeAmount = function(btx) {
+      var self = this;
       var satToBtc = 1 / 100000000;
       fc.getFiatRate({
         code: self.alternativeIsoCode,
@@ -48,18 +58,19 @@ angular.module('copayApp.controllers').controller('txController',
       } else if (nodeWebkit.isDefined()) {
         nodeWebkit.writeToClipboard(addr);
       }
-    };   
+    };
 
-    this.cancel = function() {
+    this.cancel = lodash.debounce(function() {
+      m.addClass(animationService.modalAnimated.slideOutRight);
       if (isCordova) {
-        $scope.modalClosing = true;
+        $rootScope.modalOpened = false;
+        disableCloseModal();
         $timeout(function() {
-          $scope.modalClosing = false;
           $rootScope.$emit('Local/TxModal', null);
-        }, 300);
+        }, 350);
       } else {
         $rootScope.$emit('Local/TxModal', null);
       }
-    };
+    }, 0, 1000);
 
   });

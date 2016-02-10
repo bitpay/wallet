@@ -326,7 +326,6 @@ angular.module('copayApp.directives')
         if (!isCordova) {
           element.on('click', function(){
             scope.someCtrlFn();
-            console.log('click real');
           });
         } else {
           var trackingClick = false;
