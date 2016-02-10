@@ -201,8 +201,7 @@
                 ng-focus="home.formFocus(true)"
                 ng-blur="home.formFocus(false)"
                 type="text"
-                class="form-control"
-                placeholder="Amount, address, mm/dd/yyyy"
+                placeholder="{{'Amount, address, mm/dd/yyyy' | translate}}"
                 ng-model="search"></input>
         </div>
         <div ng-repeat="btx in index.filter(search) track by btx.txid"
