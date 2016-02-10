@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('walletHomeController', function($scope, $rootScope, $interval, $timeout, $filter, $modal, $log, notification, txStatus, isCordova, isMobile, profileService, lodash, configService, rateService, storageService, bitcore, isChromeApp, gettext, gettextCatalog, nodeWebkit, addressService, ledger, bwsError, confirmDialog, txFormatService, animationService, addressbookService, go, feeService, txSignService) {
+angular.module('copayApp.controllers').controller('walletHomeController', function($scope, $rootScope, $interval, $timeout, $filter, $modal, $log, notification, txStatus, isCordova, isMobile, profileService, lodash, configService, rateService, storageService, bitcore, isChromeApp, gettext, gettextCatalog, nodeWebkit, addressService, ledger, bwsError, confirmDialog, txFormatService, animationService, addressbookService, go, feeService) {
 
   var self = this;
   window.ignoreMobilePause = false;
@@ -1084,26 +1084,37 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
         self._paypro = paypro;
         self.setForm(paypro.toAddress, (paypro.amount * satToUnit).toFixed(self.unitDecimals), paypro.memo);
-        _countDownPaymentTime(paypro.expires);
+        _paymentTimeControl(paypro.expires);
         return cb();
       });
     }, 1);
   };
 
-  function _countDownPaymentTime(time) {
+  function _paymentTimeControl(timeToExpire) {
     self.usePaypro = true;
+    var now = Math.floor(Date.now() / 1000);
+
+    if (timeToExpire <= now) {
+      setExpiredPaymentValues();
+      return;
+    }
+
     self.paymentExpired = false;
-    self.timeToExpire = time;
+    self.timeToExpire = timeToExpire;
     var countDown = $interval(function() {
-      if (self.timeToExpire <= Math.floor(Date.now() / 1000)) {
-        self.paymentExpired = true;
-        self.timeToExpire = null;
-        self._paypro = null;
-        self.error = gettext('Cannot sign: The payment request has expired');
+      if (self.timeToExpire <= now) {
+        setExpiredPaymentValues();
         $interval.cancel(countDown);
       }
-      self.timeToExpire--;
+      self.timeToExpire --;
     }, 1000);
+
+    function setExpiredPaymentValues() {
+      self.paymentExpired = true;
+      self.timeToExpire = null;
+      self._paypro = null;
+      self.error = gettext('Cannot sign: The payment request has expired');
+    };
   };
 
   this.setFromUri = function(uri) {
