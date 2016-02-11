@@ -961,7 +961,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     var result = lodash.filter(self.txHistory, function(tx) {
       return lodash.includes(tx.amountStr, search) ||
         lodash.includes(tx.message, search) ||
-        lodash.includes(self.addressbook[tx.addressTo], search) ||
+        lodash.includes(self.addressbook ? self.addressbook[tx.addressTo] : null, search) ||
         lodash.includes(tx.addressTo, search) ||
         lodash.isEqual(formatDate(new Date(tx.time * 1000)), search);
     });
