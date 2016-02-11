@@ -24,20 +24,25 @@ angular.module('copayApp.services').factory('txFormatService', function(profileS
   root.processTx = function(tx) {
     if (!tx) return; 
 
-    var outputs = lodash.isArray(tx.outputs) ? tx.outputs.length : 0;
-    if (outputs && tx.action != 'received') {
-      if (outputs > 1) {
-        tx.hasMultiplesOutputs = true;
-        tx.recipientCount = outputs;
-      }
-      tx.amount = lodash.reduce(tx.outputs, function(total, o) {
-        o.amountStr = formatAmountStr(o.amount);
-        o.alternativeAmountStr = formatAlternativeStr(o.amount);
-        return total + o.amount;
-      }, 0);
-    }
+    // New transaction output format
+    if (tx.outputs) {
 
-    tx.toAddress = tx.outputs[0].toAddress; // Get first address for single transactions
+      var outputsNr = tx.outputs.length;
+
+      if (tx.action != 'received') {
+        if (outputsNr > 1) {
+          tx.recipientCount = outputsNr;
+          tx.hasMultiplesOutputs = true;
+        }
+        tx.amount = lodash.reduce(tx.outputs, function(total, o) {
+          o.amountStr = formatAmountStr(o.amount);
+          o.alternativeAmountStr = formatAlternativeStr(o.amount);
+          return total + o.amount;
+        }, 0);
+      }
+      tx.toAddress = tx.outputs[0].toAddress;
+    } 
+
     tx.amountStr = formatAmountStr(tx.amount);
     tx.alternativeAmountStr = formatAlternativeStr(tx.amount);
     tx.feeStr = formatFeeStr(tx.fee || tx.fees);
