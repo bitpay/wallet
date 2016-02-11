@@ -85,7 +85,7 @@
               <br><span translate>Tap to retry</span>
             </div>
 
-            <div ng-click='index.updateAll({triggerTxUpdate: true})'  ng-show="!index.updateError && index.walletScanStatus != 'error'">
+            <div ng-click='index.updateAll({triggerTxUpdate: true})' ng-show="!index.updateError && index.walletScanStatus != 'error' && !index.shouldHideBalance" ng-mousedown="index.onMouseDown()" ng-mouseup="index.onMouseUp()">
               <strong class="size-36">{{index.totalBalanceStr}}</strong>
               <div class="size-14"
                 ng-if="index.totalBalanceAlternative">
@@ -96,8 +96,8 @@
                 <span translate>Pending Confirmation</span>:
                 {{index.pendingAmountStr}}
               </div>
-
             </div>
+            <div ng-show="index.shouldHideBalance" ng-mousedown="index.onMouseDown()" ng-mouseup="index.onMouseUp()">Soy un candado</div>
           </div>
 
           <div ng-if="index.anyOnGoingProcess">

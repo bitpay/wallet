@@ -58,6 +58,17 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     go.walletHome();
   };
 
+  self.onMouseDown = function() {
+    self.mouseDown = $timeout(function() {
+      if (self.shouldHideBalance) self.shouldHideBalance = false;
+      else self.shouldHideBalance = true;
+    }, 1000);
+  }
+
+  self.onMouseUp = function() {
+    $timeout.cancel(self.mouseDown);
+  }
+
   self.setOngoingProcess = function(processName, isOn) {
     $log.debug('onGoingProcess', processName, isOn);
     self[processName] = isOn;
