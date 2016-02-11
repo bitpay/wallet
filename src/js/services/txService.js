@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.services').factory('txSignService', function($rootScope, profileService, gettextCatalog, lodash, trezor, ledger, configService, bwsError, $log) {
+angular.module('copayApp.services').factory('txService', function($rootScope, profileService, gettextCatalog, lodash, trezor, ledger, configService, bwsError, $log, feeService) {
   var root = {};
 
   var reportSigningStatus = function(opts) {
@@ -85,7 +85,44 @@ angular.module('copayApp.services').factory('txSignService', function($rootScope
         };
 
         return cb();
+
       });
+    });
+  }; 
+
+  root.createTx = function(opts, cb) {
+    var fc = profileService.focusedClient;
+    var config = configService.getSync();
+    var configWallet = config.wallet;
+    var walletSettings = configWallet.settings;
+    
+    var currentSpendUnconfirmed = configWallet.spendUnconfirmed;
+    var currentFeeLevel = walletSettings.feeLevel || 'normal';
+    
+    var getFee = function(cb) {
+      if (opts.lockedCurrentFeePerKb) {
+        cb(null, opts.lockedCurrentFeePerKb);
+      } else {
+        feeService.getCurrentFeeValue(currentFeeLevel, cb);
+      }
+    };
+
+    getFee(function(err, feePerKb) {
+      if (err) $log.debug(err);
+      opts.feePerKb = feePerKb;
+      opts.excludeUnconfirmedUtxos = currentSpendUnconfirmed ? false : true;
+      fc.createTxProposal(opts, function(err, txp) {
+        if (err) return cb(err);
+        else return cb(null, txp);
+      });
+    });
+  };
+
+  root.publishTx = function(txp, cb) {
+    var fc = profileService.focusedClient;
+    fc.publishTxProposal({txp: txp}, function(err, txp) {
+      if (err) return cb(err);
+      else return cb(null, txp);
     });
   };
 

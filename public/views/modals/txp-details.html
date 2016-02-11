@@ -31,17 +31,19 @@
   </div>
   
   <div class="oh">
-    <div class="box-notification m20t" ng-show="error">
+    <div class="box-notification" ng-show="error">
       <span class="text-warning size-14">
         {{error|translate}}
       </span>
     </div>
 
-    <div class="row column m20t text-center text-warning size-12" ng-if="tx.removed" translate>
-      The payment was removed by creator
+    <div class="row" ng-if="tx.removed">
+      <div class="column m20t text-center text-warning size-12" translate>
+        The payment was removed by creator
+      </div>
     </div>
 
-    <div class="oh p20t white" ng-if="tx.pendingForUs">
+    <div class="row p20t white" ng-if="tx.pendingForUs">
       <div class="large-6 medium-6 small-6 columns" ng-show="isShared">
         <button class="button outline round dark-gray expand" ng-click="reject(tx);"
                                                               ng-disabled="loading">

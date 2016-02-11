@@ -24,18 +24,24 @@ angular.module('copayApp.services').factory('txFormatService', function(profileS
   root.processTx = function(tx) {
     if (!tx) return; 
 
-    var outputs = lodash.isArray(tx.outputs) ? tx.outputs.length : 0;
-    if (outputs && tx.action != 'received') {
-      if ((tx.type && tx.type == 'multiple_output') || (tx.proposalType && tx.proposalType == 'multiple_output')) {
-        tx.hasMultiplesOutputs = true;
-        tx.recipientCount = outputs;
+    // New transaction output format
+    if (tx.outputs) {
+
+      var outputsNr = tx.outputs.length;
+
+      if (tx.action != 'received') {
+        if (outputsNr > 1) {
+          tx.recipientCount = outputsNr;
+          tx.hasMultiplesOutputs = true;
+        }
+        tx.amount = lodash.reduce(tx.outputs, function(total, o) {
+          o.amountStr = formatAmountStr(o.amount);
+          o.alternativeAmountStr = formatAlternativeStr(o.amount);
+          return total + o.amount;
+        }, 0);
       }
-      tx.amount = lodash.reduce(tx.outputs, function(total, o) {
-        o.amountStr = formatAmountStr(o.amount);
-        o.alternativeAmountStr = formatAlternativeStr(o.amount);
-        return total + o.amount;
-      }, 0);
-    }
+      tx.toAddress = tx.outputs[0].toAddress;
+    } 
 
     tx.amountStr = formatAmountStr(tx.amount);
     tx.alternativeAmountStr = formatAlternativeStr(tx.amount);
