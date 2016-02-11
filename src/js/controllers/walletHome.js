@@ -833,7 +833,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
           });
           return;
         } else {
-          $rootScope.$emit('Local/NeedConfirmation', txp,  function(accept) {
+          $rootScope.$emit('Local/NeedsConfirmation', txp,  function(accept) {
             if (accept) self.acceptTx(txp);
             else self.resetForm();
           });

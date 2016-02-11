@@ -1451,7 +1451,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.setTab(tab, reset);
   });
 
-  $rootScope.$on('Local/NeedConfirmation', function(event, txp, cb) {
+  $rootScope.$on('Local/NeedsConfirmation', function(event, txp, cb) {
     self.confirmTx = {
       txp : txFormatService.processTx(txp),
       callback: function(accept) {
