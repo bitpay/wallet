@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('preferencesController',
-  function($scope, $rootScope, $timeout, $log, configService, profileService, txSignService) {
+  function($scope, $rootScope, $timeout, $log, configService, profileService, txService) {
 
     var fc = profileService.focusedClient;
     $scope.deleted = false;
@@ -75,7 +75,7 @@ angular.module('copayApp.controllers').controller('preferencesController',
       };
       opts.touchIdFor[walletId] = newVal;
 
-      txSignService.setTouchId(function(err) {
+      txService.setTouchId(function(err) {
         if (err) {
           $log.debug(err);
           $timeout(function() {
