@@ -29,16 +29,17 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   this.lockedCurrentFeePerKb = null;
 
   self.searchInput = function() {
+
+    function scrollUp(location) {
+      if (!location) return;
+      $location.hash(location);
+      $anchorScroll();
+    };
+
     $timeout(function() {
       scrollUp('searchLabel');
     }, 200);
   }
-
-  function scrollUp(location) {
-    if (!location) return;
-    $location.hash(location);
-    $anchorScroll();
-  };
 
   var disableScannerListener = $rootScope.$on('dataScanned', function(event, data) {
     self.setForm(data);
