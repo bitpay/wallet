@@ -29,6 +29,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   this.lockedCurrentFeePerKb = null;
 
   self.searchInput = function() {
+    if (!isCordova) return;
 
     function scrollUp(location) {
       if (!location) return;
