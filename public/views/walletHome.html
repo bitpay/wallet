@@ -97,7 +97,7 @@
                 {{index.pendingAmountStr}}
               </div>
             </div>
-            <div ng-show="index.shouldHideBalance" ng-mousedown="index.onMouseDown()" ng-mouseup="index.onMouseUp()">Soy un candado</div>
+            <div ng-show="index.shouldHideBalance" ng-mousedown="index.onMouseDown()" ng-mouseup="index.onMouseUp()">I'am a padlock</div>
           </div>
 
           <div ng-if="index.anyOnGoingProcess">
@@ -382,6 +382,8 @@
     <div id="send" class="send tab-view">
       <div class="pr p25b">
         <h4 class="title m0">
+          <div ng-show="index.shouldHideBalance" ng-mousedown="index.onMouseDown()" ng-mouseup="index.onMouseUp()">I'am a padlock</div>
+            <div ng-show="!index.shouldHideBalance" ng-mousedown="index.onMouseDown()" ng-mouseup="index.onMouseUp()">
           <available-balance></available-balance>
           <span
             ng-show="home.lockedCurrentFeePerKb || home.blockUx || home.lockAmount"
@@ -391,6 +393,7 @@
             ng-click="home.sendAll(index.totalBytesToSendMax, index.availableBalanceSat)"
              translate> Send All
           </a>
+          </div>
           <div ng-show="!home.paymentExpired && home._paypro">
             <span translate>Payment expires</span>
             <time> {{home.timeToExpire * 1000 | amTimeAgo}}</time>

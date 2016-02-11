@@ -58,11 +58,16 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     go.walletHome();
   };
 
+  storageService.getHideBalanceFlag(function(err, shouldHideBalance) {
+    if (err) self.shouldHideBalance = false;
+    else self.shouldHideBalance = (shouldHideBalance == 'true') ? true : false;
+  });
+
   self.onMouseDown = function() {
     self.mouseDown = $timeout(function() {
-      if (self.shouldHideBalance) self.shouldHideBalance = false;
-      else self.shouldHideBalance = true;
-    }, 1000);
+      self.shouldHideBalance = self.shouldHideBalance ? false : true;
+      storageService.setHideBalanceFlag(self.shouldHideBalance, function() {});
+    }, 500);
   }
 
   self.onMouseUp = function() {

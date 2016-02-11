@@ -198,6 +198,14 @@ angular.module('copayApp.services')
       storage.remove('config', cb);
     };
 
+    root.setHideBalanceFlag = function(val, cb) {
+      storage.set('hideBalance', val, cb);
+    };
+
+    root.getHideBalanceFlag = function(cb) {
+      storage.get('hideBalance', cb);
+    };
+
     //for compatibility
     root.getCopayDisclaimerFlag = function(cb) {
       storage.get('agreeDisclaimer', cb);
