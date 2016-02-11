@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('sellGlideraController',
-  function($scope, $timeout, $log, $modal, configService, profileService, addressService, feeService, glideraService, bwsError, lodash, isChromeApp, animationService, txSignService) {
+  function($scope, $timeout, $log, $modal, configService, profileService, addressService, feeService, glideraService, bwsError, lodash, isChromeApp, animationService, txService) {
 
     var self = this;
     var config = configService.getSync();
@@ -130,7 +130,7 @@ angular.module('copayApp.controllers').controller('sellGlideraController',
       self.error = null;
 
 
-      txSignService.prepare(function(err) {
+      txService.prepare(function(err) {
         if (err) {
           self.error = err;
           return;
@@ -174,7 +174,7 @@ angular.module('copayApp.controllers').controller('sellGlideraController',
                     return;
                   }
 
-                  txSignService.sign(txp, function(err, txp) {
+                  txService.sign(txp, function(err, txp) {
                     if (err) {
                       self.loading = null;
                       self.error = err;
