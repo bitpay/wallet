@@ -345,17 +345,19 @@
           </div>
         </div>
         <div class="row m20t">
-          <div class="small-12 columns" ng-show="index.isCordova && !home.generatingAddress && home.addr[index.walletId]">
+          <div class="small-12 columns" ng-show="index.isCordova && home.addr[index.walletId]">
             <span class="button outline light-gray small round expand"
-              ng-click="home.shareAddress(home.addr[index.walletId])">
+              ng-click="home.shareAddress(home.addr[index.walletId])"
+              ng-disabled="home.generatingAddress">
               <span translate>Share address</span>
             </span>
           </div>
-          <div class="small-12 columns" ng-show="!home.generatingAddress && home.addr[index.walletId]">
-            <a class="button expand small round m10b" ng-click="home.openCustomizedAmountModal(home.addr[index.walletId])"
-            ng-style="{'background-color':index.backgroundColor}">
+          <div class="small-12 columns" ng-show="home.addr[index.walletId]">
+            <span class="button expand small round m10b" ng-click="home.openCustomizedAmountModal(home.addr[index.walletId])"
+            ng-style="{'background-color':index.backgroundColor}"
+            ng-disabled="home.generatingAddress">
               <span translate>Request a specific amount</span>
-            </a>
+            </span>
           </div>
         </div>
         <div class="row m10t" ng-show="home.addr[index.walletId]" >
