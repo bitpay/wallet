@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('walletHomeController', function($scope, $rootScope, $timeout, $filter, $modal, $log, notification, txStatus, isCordova, isMobile, profileService, lodash, configService, rateService, storageService, bitcore, isChromeApp, gettext, gettextCatalog, nodeWebkit, addressService, ledger, bwsError, confirmDialog, txFormatService, animationService, addressbookService, go, feeService, txSignService) {
+angular.module('copayApp.controllers').controller('walletHomeController', function($scope, $rootScope, $timeout, $filter, $modal, $log, notification, txStatus, isCordova, isMobile, profileService, lodash, configService, rateService, storageService, bitcore, isChromeApp, gettext, gettextCatalog, nodeWebkit, addressService, ledger, bwsError, confirmDialog, txFormatService, animationService, addressbookService, go, feeService, txService) {
 
   var self = this;
   window.ignoreMobilePause = false;
@@ -324,7 +324,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
         $scope.error = null;
         $scope.loading = true;
 
-        txSignService.prepareAndSignAndBroadcast(txp, {
+        txService.prepareAndSignAndBroadcast(txp, {
           reporterFn: self.setOngoingProcess.bind(self)
         }, function(err, txp) {
           $scope.loading = false;
@@ -818,7 +818,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       };
 
       self.setOngoingProcess(gettextCatalog.getString('Creating transaction'));
-      txSignService.createTx(opts, function(err, txp) {
+      txService.createTx(opts, function(err, txp) {
         self.setOngoingProcess();
         if (err) {
           return self.setSendError(err);
@@ -845,12 +845,12 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
   this.acceptTx = function(txp) {
     var self = this;
-    txSignService.prepare(function(err) {
+    txService.prepare(function(err) {
       if (err) {
         return self.setSendError(err);
       }
       self.setOngoingProcess(gettextCatalog.getString('Sending transaction'));
-      txSignService.publishTx(txp, function(err, txpPublished) {
+      txService.publishTx(txp, function(err, txpPublished) {
         if (err) {
           self.setOngoingProcess();
           self.setSendError(err);
@@ -864,7 +864,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   this.prepareSignAndBroadcastTx = function(txp) {
     var fc = profileService.focusedClient;
     var self = this;
-    txSignService.prepareAndSignAndBroadcast(txp, {
+    txService.prepareAndSignAndBroadcast(txp, {
       reporterFn: self.setOngoingProcess.bind(self)
     }, function(err, txp) {
       self.resetForm();

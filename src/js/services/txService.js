@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.services').factory('txSignService', function($rootScope, profileService, gettextCatalog, lodash, trezor, ledger, configService, bwsError, $log, feeService) {
+angular.module('copayApp.services').factory('txService', function($rootScope, profileService, gettextCatalog, lodash, trezor, ledger, configService, bwsError, $log, feeService) {
   var root = {};
 
   var reportSigningStatus = function(opts) {
