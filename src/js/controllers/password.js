@@ -3,42 +3,41 @@
 angular.module('copayApp.controllers').controller('passwordController',
   function($rootScope, $scope, $timeout, profileService, notification, go, gettext) {
 
-    var self = this;
-
     var pass1;
 
-    self.isVerification = false;
+    this.isVerification = false;
 
     document.getElementById("passwordInput").focus();
 
-    self.close = function(cb) {
+    this.close = function(cb) {
       return cb('No password given');
     };
 
-    self.set = function(isSetup, cb) {
-      self.error = false;
+    this.set = function(isSetup, cb) {
+      this.loading = true;
+      this.error = false;
+      
+      var self = this;
 
-      if (isSetup && !self.isVerification) {
-        document.getElementById("passwordInput").focus();
-        self.isVerification = true;
-        pass1 = self.password;
-        self.password = null;
-        $timeout(function() {
-          $rootScope.$apply();
-        })
-        return;
-      }
-      if (isSetup) {
-        if (pass1 != self.password) {
-          self.error = gettext('Passwords do not match');
-          self.isVerification = false;
-          self.password = null;
-          pass1 = null;
-
+      $timeout(function() {
+        if (isSetup && !self.isVerification) {
+          self.loading = false;
+          document.getElementById("passwordInput").focus();
+          self.isVerification = true;
+          pass1 = $scope.password;
+          $scope.password = null;
           return;
         }
-      }
-      return cb(null, self.password);
+        if (isSetup && pass1 != $scope.password) {
+          self.loading = false;
+          self.error = gettext('Passwords do not match');
+          self.isVerification = false;
+          $scope.password = null;
+          pass1 = null;
+          return;
+        }
+        return cb(null, $scope.password);
+      }, 100);
     };
 
   });
