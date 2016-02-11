@@ -97,6 +97,19 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     $rootScope.$digest();
   });
 
+  var getClipboard = function(cb) {
+    if (!isCordova || isMobile.Windows()) return cb();
+
+    window.cordova.plugins.clipboard.paste(function(value) {
+      var fc = profileService.focusedClient;
+      var Address = bitcore.Address;
+      var networkName = fc.credentials.network;
+      if (Address.isValid(value, networkName) && !$scope.newAddress) {
+        return cb(value);
+      }
+    });
+  };
+
   var accept_msg = gettextCatalog.getString('Accept');
   var cancel_msg = gettextCatalog.getString('Cancel');
   var confirm_msg = gettextCatalog.getString('Confirm');
@@ -118,6 +131,12 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       $scope.addressbook = {
         'address': ($scope.newAddress || ''),
         'label': ''
+      };
+
+      $scope.checkClipboard = function() {
+        getClipboard(function(value) {
+          $scope.newAddress = value;
+        });
       };
 
       $scope.beforeQrCodeScann = function() {
@@ -250,6 +269,9 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       if (addr) {
         self.setForm(addr);
       }
+    }, function() {
+      // onRejected
+      self.resetForm();
     });
   };
 
@@ -651,6 +673,20 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     if (isCordova && !this.isWindowsPhoneApp) {
       this.hideMenuBar(what);
     }
+    
+    var self = this;
+    if (isCordova && !this.isWindowsPhoneApp && what == 'address') {
+      getClipboard(function(value) {
+        if (value) {
+          document.getElementById("amount").focus();
+          $timeout(function() {
+            window.plugins.toast.showShortCenter(gettextCatalog.getString('Pasted from clipboard'));
+            self.setForm(value);
+          }, 100);
+        }
+      });
+    }
+
     if (!this.isWindowsPhoneApp) return
 
     if (!what) {
@@ -939,7 +975,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     $timeout(function() {
       $rootScope.$digest();
     }, 1);
-  };
+  }; 
 
   this.openPPModal = function(paypro) {
     $rootScope.modalOpened = true;
