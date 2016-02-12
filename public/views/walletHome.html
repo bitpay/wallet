@@ -311,7 +311,7 @@
         <button class="m20t button black expand round"
           ng-click="$root.go('backup')" ng-style="{'background-color':index.backgroundColor}" >
           <span translate>Backup now</span>
-      </button>
+        </button>
       </div>
       <div ng-show="!index.needsBackup">
         <div class="box-notification m20t" ng-show="home.addrError">
@@ -345,24 +345,26 @@
           </div>
         </div>
         <div class="row m20t">
-          <div class="small-12 columns" ng-show="index.isCordova && !home.generatingAddress && home.addr[index.walletId]">
-            <span class="button outline light-gray small round expand"
-              ng-click="home.shareAddress(home.addr[index.walletId])">
+          <div class="small-12 columns" ng-show="index.isCordova && home.addr[index.walletId]">
+            <button class="button outline light-gray small round expand"
+              ng-click="home.shareAddress(home.addr[index.walletId])"
+              ng-disabled="home.generatingAddress">
               <span translate>Share address</span>
-            </span>
+            </button>
           </div>
-          <div class="small-12 columns" ng-show="!home.generatingAddress && home.addr[index.walletId]">
-            <a class="button expand small round m10b" ng-click="home.openCustomizedAmountModal(home.addr[index.walletId])"
-            ng-style="{'background-color':index.backgroundColor}">
+          <div class="small-12 columns" ng-show="home.addr[index.walletId]">
+            <button class="button expand small round m10b" ng-click="home.openCustomizedAmountModal(home.addr[index.walletId])"
+            ng-style="{'background-color':index.backgroundColor}"
+            ng-disabled="home.generatingAddress">
               <span translate>Request a specific amount</span>
-            </a>
+            </button>
           </div>
         </div>
-        <div class="row m10t" ng-show="home.addr[index.walletId] && !home.blockUx && !home.generatingAddress" >
+        <div class="row m10t" ng-show="home.addr[index.walletId]" >
           <div class="large-12 columns">
             <div class="line-t size-10 text-gray m10b p10t">
               <span translate> Share this wallet address to receive payments. To protect your privacy, new addresses are generated automatically once you use them.</span>
-              <a ng-click="home.setAddress(true)" translate>Generate new address</a>
+                <a ng-show="!home.blockUx && !home.generatingAddress" ng-click="home.setAddress(true)" translate>Generate new address</a>
             </div>
           </div>
         </div>
