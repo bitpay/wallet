@@ -73,7 +73,7 @@ h4.title a {
 }
 
 
-.preferences h4, .modal-content h4, .walletHome h4, .glidera h4 {
+.preferences h4, .modal-content h4, .glidera h4 {
   background: #F6F7F9;
   padding: 25px 0px 5px 10px;
   text-transform: uppercase;
@@ -81,6 +81,10 @@ h4.title a {
   font-size: 12px;
   font-weight:300;
   margin:0;
+}
+
+.walletHome h4 {
+  padding: 15px 0px 5px 10px;
 }
 
 
@@ -1003,7 +1007,9 @@ a.button.postfix {
 }
 
 .walletHome .icon-wallet {
-  margin-top: 14px;
+  display: inline-block;
+  margin: 0;
+  vertical-align: baseline;
 }
 
 .icon-input {
