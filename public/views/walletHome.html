@@ -311,7 +311,7 @@
         <button class="m20t button black expand round"
           ng-click="$root.go('backup')" ng-style="{'background-color':index.backgroundColor}" >
           <span translate>Backup now</span>
-      </button>
+        </button>
       </div>
       <div ng-show="!index.needsBackup">
         <div class="box-notification m20t" ng-show="home.addrError">
@@ -346,18 +346,18 @@
         </div>
         <div class="row m20t">
           <div class="small-12 columns" ng-show="index.isCordova && home.addr[index.walletId]">
-            <span class="button outline light-gray small round expand"
+            <button class="button outline light-gray small round expand"
               ng-click="home.shareAddress(home.addr[index.walletId])"
               ng-disabled="home.generatingAddress">
               <span translate>Share address</span>
-            </span>
+            </button>
           </div>
           <div class="small-12 columns" ng-show="home.addr[index.walletId]">
-            <span class="button expand small round m10b" ng-click="home.openCustomizedAmountModal(home.addr[index.walletId])"
+            <button class="button expand small round m10b" ng-click="home.openCustomizedAmountModal(home.addr[index.walletId])"
             ng-style="{'background-color':index.backgroundColor}"
             ng-disabled="home.generatingAddress">
               <span translate>Request a specific amount</span>
-            </span>
+            </button>
           </div>
         </div>
         <div class="row m10t" ng-show="home.addr[index.walletId]" >
