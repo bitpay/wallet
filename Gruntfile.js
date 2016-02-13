@@ -486,6 +486,7 @@ module.exports = function(grunt) {
     'buildPluginRegistry',
     'browserify',
     'concat',
+    'copy:icons',
     'copy:ionic_fonts',
     'remove:themes',
     'copy:themes',

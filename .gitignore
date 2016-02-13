@@ -112,6 +112,7 @@ public/css/*
 public/lib/*
 public/js/*
 public/themes/*
+public/applets/*
 
 # Mobile resources
 cordova/android/res/*
