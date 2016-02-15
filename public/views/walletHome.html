@@ -134,7 +134,7 @@
         </div>
       </div>
 
-      <div class="oh pr" ng-if="index.txps[0]">
+      <div class="oh pr" ng-if="index.txps[0]" ng-show="!home.isSearching">
         <h4 ng-show="index.requiresMultipleSignatures" class="title m0" translate>Payment Proposals</h4>
         <h4 ng-show="!index.requiresMultipleSignatures" class="title m0" translate>Unsent transactions</h4>
         <div class="last-transactions pr" ng-repeat="tx in index.txps">
@@ -180,8 +180,9 @@
       <div class="oh pr" ng-show="index.txHistory[0]">
           <ul class="no-bullet m0">
             <li ng-click="home.searchInput()" ng-show="!home.isSearching">
-              <span class="title m15l" translate>Activity</span>
+              <h4 class="title m0" translate>Activity
               <a><i class="fi-magnifying-glass"></i></a>
+              </h4>
             </li>
           </ul>
         <div ng-if="index.txHistory[0] &&  index.updatingTxHistory[index.walletId] && index.newTx" class="row collapse last-transactions-content animated fadeInDown">
@@ -203,14 +204,21 @@
             <li class="left-inner-addon">
               <a ng-click="home.cancelSearch()" translate>Cancel</a>
               <i class="fi-magnifying-glass"></i>
+              <form ng-submit="index.filter(search)">
               <input name="search"
                 type="text"
-                placeholder="{{'Amount, address, mm/dd/yyyy' | translate}}"
+                placeholder="{{'Amount, address, note, mm/dd/yyyy' | translate}}"
                 ng-model="search"></input>
+              </form>
+            </li>
+            <li>
+              <h4 ng-show="index.matches">
+                <span class="vm" translate>{{index.result.length}} matches</span>
+              </h4>
             </li>
           </ul>
         </div>
-        <div ng-repeat="btx in index.filter(search)"
+        <div ng-repeat="btx in index.txHistoryToShow()"
           ng-click="home.openTxModal(btx)"
           class="row collapse last-transactions-content">
           <div class="large-6 medium-6 small-6 columns size-14">
@@ -259,7 +267,7 @@
           </div>
         </div>
 
-        <div class="row m20t text-center" ng-show="index.historyRendering">
+        <div class="row m20t text-center" ng-show="index.historyRendering && !home.isSearching">
           <div class="columns large-12 medium-12 small-12">
             <div class="spinner">
               <div class="rect1"></div>
@@ -273,8 +281,8 @@
 
         <div class="m20t text-center">
           <a class="text-gray size-12"
-             ng-show="index.historyShowMore"
-             ng-click="index.showMore()">
+             ng-show="index.historyShowMore && !home.isSearching"
+             ng-click="index.showMore()" >
             {{index.completeHistory.length - index.txHistory.length}} <span translate>more</span>
             <i class="icon-arrow-down4"></i>
           </a>

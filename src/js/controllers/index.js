@@ -14,6 +14,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   self.historyShowMoreLimit = 100;
   self.updatingTxHistory = {};
   self.prevState = 'walletHome';
+  self.isSearching = false;
 
   function strip(number) {
     return (parseFloat(number.toPrecision(12)));
@@ -955,7 +956,15 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     }
   };
 
+  self.txHistoryToShow = function() {
+    if (!self.isSearching) {
+      self.result = [];
+      return self.txHistory;
+    } else return self.result;
+  }
+
   self.filter = function(search) {
+    self.matches = false;
 
     function formatDate(date) {
       var day = ('0' + date.getDate()).slice(-2).toString();
@@ -964,16 +973,19 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       return [month, day, year].join('/');
     };
 
-    if (lodash.isEmpty(search)) return self.txHistory;
-    var result = lodash.filter(self.txHistory, function(tx) {
+    if (lodash.isEmpty(search)) return;
+    self.result = lodash.filter(self.txHistory, function(tx) {
       return lodash.includes(tx.amountStr, search) ||
         lodash.includes(tx.message, search) ||
         lodash.includes(self.addressbook ? self.addressbook[tx.addressTo] : null, search) ||
         lodash.includes(tx.addressTo, search) ||
         lodash.isEqual(formatDate(new Date(tx.time * 1000)), search);
     });
-    return result;
-  }
+    if (isCordova)
+      window.plugins.toast.showShortBottom(gettextCatalog.getString('Matches: ' + self.result.length));
+    else
+      self.matches = true;
+  };
 
   self.getTxsFromServer = function(client, skip, endingTxid, limit, cb) {
     var res = [];
@@ -1229,6 +1241,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   $rootScope.$on('Local/Searching', function(event, val) {
     if (val) self.showAllHistory();
     else self.hideHistory();
+    self.isSearching = val;
+    self.matches = false;
   });
 
   // UX event handlers
