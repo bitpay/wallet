@@ -160,9 +160,11 @@
 
       <div class="oh pr" ng-show="index.txHistory[0] || index.txProgress > 5">
         <ul class="no-bullet m0">
-          <li ng-click="home.searchInput()" ng-show="!home.isSearching">
+          <li ng-click="home.searchInput()" ng-show="!home.isSearching" >
             <h4 class="title m0" translate>Activity
-            <a><i class="fi-magnifying-glass"></i></a>
+              <span class="left-inner-addon2">
+                <i class="fi-magnifying-glass"></i>
+              </span>
             </h4>
           </li>
         </ul>
@@ -201,22 +203,33 @@
 
         <div id="searchLabel" ng-show="home.isSearching">
           <ul class="no-bullet m0">
-            <li class="left-inner-addon">
-              <a ng-click="home.cancelSearch()" translate>Cancel</a>
-              <i class="fi-magnifying-glass"></i>
+            <li class="left-inner-addon1">
+                <i ng-click="home.cancelSearch()" class="icon-close-circle size-14"></i>
+            </li>
+            <li class="left-inner-addon1">
+              <i class="fi-magnifying-glass size-14"></i>
               <form ng-submit="index.filter(search)">
               <input name="search"
                 type="text"
-                placeholder="{{'Amount, address, note, mm/dd/yyyy' | translate}}"
+                placeholder="{{'Search transactions' | translate}}"
                 ng-model="search"></input>
               </form>
             </li>
-            <li>
-              <h4 ng-show="index.matches">
-                <span class="vm" translate>{{index.result.length}} matches</span>
-              </h4>
-            </li>
           </ul>
+          <div ng-show="index.showOptions">
+            <div class="text-center">
+              <h4 class="size-14 text-gray"><span translate>Indexes you can use to search transactions: </span></h4>
+            </div>
+             <div class="text-center">
+              <h4 class="size-12 text-gray"><span translate>Transaction amount </span></h4>
+            </div>
+             <div class="text-center">
+              <h4 class="size-12 text-gray"><span translate>Wallet address or address book alias</span></h4>
+            </div>
+             <div class="text-center">
+              <h4 class="size-12 text-gray"><span translate>Date in format mm/dd/yyyy </span></h4>
+            </div>
+          </div>
         </div>
         <div ng-repeat="btx in index.txHistoryToShow() track by btx.txid"
           ng-click="home.openTxModal(btx)"
