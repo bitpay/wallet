@@ -20,7 +20,7 @@ angular
 
     // Fix error in chrome app since m43 of chrome
     $provide.decorator('$window', function($delegate) {
-      Object.defineProperty($delegate, 'history', {get: () => null});
+      Object.defineProperty($delegate, 'history', {get: function(){ return null; }});
       return $delegate;
     });
 
