@@ -784,24 +784,24 @@ table tbody tr:last-child td {
 
 /*////////////////////////////   SEARCH INPUT  ////////////////////////////*/
 
-.left-inner-addon {
+.left-inner-addon1 {
     position: relative;
 }
-.left-inner-addon input {
+.left-inner-addon1 input{
     padding-left: 40px;
     margin-bottom: auto;
-    max-width: 85%;
     border: 0px solid;
 }
-.left-inner-addon i {
-    position: absolute;
-    padding: 5px;
+.left-inner-addon1 i{
+    padding: 6px;
     padding-left: 20px;
 }
-.left-inner-addon a {
+.left-inner-addon2 i{
+    padding: 2px;
+    padding-left: 5px;
+}
+.fi-magnifying-glass {
     position: absolute;
-    padding: 5px;
-    right: 0.5px;
 }
 
 /*////////////////////////////  BUTTON OUTLINE  ////////////////////////////*/
