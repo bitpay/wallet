@@ -916,6 +916,13 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     }, 100);
   };
 
+  self.hideHistory = function() {
+    if (!self.historyShowShowAll) {
+      self.txHistory = self.txHistory.slice(0, 10);
+      self.historyShowShowAll = true;
+    }
+  };
+
   self.filter = function(search) {
 
     function formatDate(date) {
@@ -1190,6 +1197,11 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
   $rootScope.$on('Local/AddressbookUpdated', function(event, ab) {
     self.setAddressbook(ab);
+  });
+
+  $rootScope.$on('Local/Searching', function(event, val) {
+    if (val) self.showAllHistory();
+    else self.hideHistory();
   });
 
   // UX event handlers

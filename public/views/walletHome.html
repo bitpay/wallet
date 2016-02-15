@@ -195,15 +195,12 @@
           </div>
         </div>
 
-        <div id="searchLabel" class="left-inner-addon ">
+        <div class="left-inner-addon ">
           <i class="fi-magnifying-glass"></i>
-          <input name="search"
-                ng-click="home.searchInput()"
-                ng-focus="home.formFocus('search')"
-                ng-blur="home.formFocus(false)"
-                type="text"
-                placeholder="{{'Amount, address, mm/dd/yyyy' | translate}}"
-                ng-model="search"></input>
+          <input type="text"
+                class="form-control"
+                 placeholder="Amount, address, mm/dd/yyyy"
+                 ng-model="search"></input>
         </div>
         <div ng-repeat="btx in index.filter(search) track by btx.txid"
              fast-click callback-fn="home.openTxModal(btx)"

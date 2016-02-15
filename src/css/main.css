@@ -796,6 +796,11 @@ table tbody tr:last-child td {
     padding: 5px;
     padding-left: 20px;
 }
+.left-inner-addon a {
+    position: absolute;
+    padding: 5px;
+    right: 0px;
+}
 
 /*////////////////////////////  BUTTON OUTLINE  ////////////////////////////*/
 
