@@ -17,6 +17,13 @@ if (window && window.navigator) {
 angular
   .module('copayApp')
   .config(function(historicLogProvider, $provide, $logProvider, $stateProvider, $urlRouterProvider, $compileProvider) {
+
+    // Fix error in chrome app since m43 of chrome
+    $provide.decorator('$window', function($delegate) {
+      Object.defineProperty($delegate, 'history', {get: function(){ return null; }});
+      return $delegate;
+    });
+
     $urlRouterProvider.otherwise('/');
 
     $logProvider.debugEnabled(true);
