@@ -27,19 +27,16 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   this.showScanner = false;
   this.addr = {};
   this.lockedCurrentFeePerKb = null;
+  this.isSearching = false;
 
-  self.searchInput = function() {
-    if (!isCordova) return;
+  this.searchInput = function() {
+    this.isSearching = true;
+    $rootScope.$emit('Local/Searching', true);
+  }
 
-    function scrollUp(location) {
-      if (!location) return;
-      $location.hash(location);
-      $anchorScroll();
-    };
-
-    $timeout(function() {
-      scrollUp('searchLabel');
-    }, 200);
+  this.cancelSearch = function() {
+    this.isSearching = false;
+    $rootScope.$emit('Local/Searching', false);
   }
 
   var disableScannerListener = $rootScope.$on('dataScanned', function(event, data) {

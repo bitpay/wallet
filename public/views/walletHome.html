@@ -72,7 +72,7 @@
     -->
 
     <div id="walletHome" class="walletHome tab-view tab-in">
-      <div class="oh pr">
+      <div class="oh pr" ng-show="!home.isSearching">
         <div class="amount" ng-style="{'background-color':index.backgroundColor}">
           <div ng-if="!index.anyOnGoingProcess && !index.notAuthorized">
             <div class="m15t" ng-show="index.updateError" ng-click='index.updateAll({triggerTxUpdate: true})'>
@@ -178,9 +178,12 @@
       </div>
 
       <div class="oh pr" ng-show="index.txHistory[0]">
-        <h4 class="title m0">
-          <span translate>Activity</span>
-        </h4>
+          <ul class="no-bullet m0">
+            <li ng-click="home.searchInput()" ng-show="!home.isSearching">
+              <span class="title m15l" translate>Activity</span>
+              <a><i class="fi-magnifying-glass"></i></a>
+            </li>
+          </ul>
         <div ng-if="index.txHistory[0] &&  index.updatingTxHistory[index.walletId] && index.newTx" class="row collapse last-transactions-content animated fadeInDown">
           <div class="large-6 medium-6 small-6 columns size-14">
             <div class="m10r left">
@@ -195,16 +198,17 @@
 
          </div>
         </div>
-
-        <div id="searchLabel" class="left-inner-addon ">
-          <i class="fi-magnifying-glass"></i>
-          <input name="search"
-                ng-click="home.searchInput()"
-                ng-focus="home.formFocus('search')"
-                ng-blur="home.formFocus(false)"
+        <div id="searchLabel" ng-show="home.isSearching">
+          <ul class="no-bullet m0">
+            <li class="left-inner-addon">
+              <a ng-click="home.cancelSearch()" translate>Cancel</a>
+              <i class="fi-magnifying-glass"></i>
+              <input name="search"
                 type="text"
                 placeholder="{{'Amount, address, mm/dd/yyyy' | translate}}"
                 ng-model="search"></input>
+            </li>
+          </ul>
         </div>
         <div ng-repeat="btx in index.filter(search)"
           ng-click="home.openTxModal(btx)"
