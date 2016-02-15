@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('walletHomeController', function($scope, $location, $anchorScroll, $rootScope, $timeout, $filter, $modal, $log, notification, txStatus, isCordova, isMobile, profileService, lodash, configService, rateService, storageService, bitcore, isChromeApp, gettext, gettextCatalog, nodeWebkit, addressService, ledger, bwsError, confirmDialog, txFormatService, animationService, addressbookService, go, feeService, txService) {
+angular.module('copayApp.controllers').controller('walletHomeController', function($scope, $rootScope, $timeout, $filter, $modal, $log, notification, txStatus, isCordova, isMobile, profileService, lodash, configService, rateService, storageService, bitcore, isChromeApp, gettext, gettextCatalog, nodeWebkit, addressService, ledger, bwsError, confirmDialog, txFormatService, animationService, addressbookService, go, feeService, txService) {
 
   var self = this;
   window.ignoreMobilePause = false;
@@ -27,15 +27,18 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   this.showScanner = false;
   this.addr = {};
   this.lockedCurrentFeePerKb = null;
-  this.isSearching = false;
 
-  this.searchInput = function() {
-    this.isSearching = true;
+  self.isSearching = false;
+  $rootScope.$emit('Local/Searching', false);
+
+  self.searchInput = function() {
+    self.isSearching = true;
     $rootScope.$emit('Local/Searching', true);
   }
 
-  this.cancelSearch = function() {
-    this.isSearching = false;
+  self.cancelSearch = function() {
+    self.isSearching = false;
+    $scope.search = '';
     $rootScope.$emit('Local/Searching', false);
   }
 
@@ -64,6 +67,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   var disableFocusListener = $rootScope.$on('Local/NewFocusedWallet', function() {
     self.addr = {};
     self.resetForm();
+    self.cancelSearch();
   });
 
   var disableResumeListener = $rootScope.$on('Local/Resume', function() {
