@@ -790,6 +790,8 @@ table tbody tr:last-child td {
 .left-inner-addon input {
     padding-left: 40px;
     margin-bottom: auto;
+    max-width: 85%;
+    border: 0px solid;
 }
 .left-inner-addon i {
     position: absolute;
@@ -799,7 +801,7 @@ table tbody tr:last-child td {
 .left-inner-addon a {
     position: absolute;
     padding: 5px;
-    right: 0px;
+    right: 0.5px;
 }
 
 /*////////////////////////////  BUTTON OUTLINE  ////////////////////////////*/

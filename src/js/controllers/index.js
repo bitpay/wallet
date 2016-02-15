@@ -4,6 +4,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   var self = this;
   var SOFT_CONFIRMATION_LIMIT = 12;
   var errors = bwcService.getErrors();
+<<<<<<< 0b48a2e2f3178bc3dd4062c7c17fe59e89554285
   var historyUpdateInProgress = {};
 
   var ret = {};
@@ -18,6 +19,28 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   ret.prevState = 'walletHome';
 
   ret.menu = [{
+=======
+  self.isCordova = isCordova;
+  self.isChromeApp = isChromeApp;
+  self.isSafari = isMobile.Safari();
+  self.isWindowsPhoneApp = isMobile.Windows() && isCordova;
+  self.usePushNotifications = self.isCordova && !isMobile.Windows();
+  self.onGoingProcess = {};
+  self.historyShowLimit = 10;
+  self.updatingTxHistory = {};
+  self.prevState = 'walletHome';
+  self.isSearching = false;
+
+  function strip(number) {
+    return (parseFloat(number.toPrecision(12)));
+  };
+
+  self.goHome = function() {
+    go.walletHome();
+  };
+
+  self.menu = [{
+>>>>>>> refactor
     'title': gettext('Receive'),
     'icon': {
       false: 'icon-receive',
@@ -923,7 +946,15 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     }
   };
 
+  self.txHistoryToShow = function() {
+    if (!self.isSearching) {
+      self.result = [];
+      return self.txHistory;
+    } else return self.result;
+  }
+
   self.filter = function(search) {
+    self.matches = false;
 
     function formatDate(date) {
       var day = ('0' + date.getDate()).slice(-2).toString();
@@ -932,16 +963,19 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       return [month, day, year].join('/');
     };
 
-    if (lodash.isEmpty(search)) return self.txHistory;
-    var result = lodash.filter(self.txHistory, function(tx) {
+    if (lodash.isEmpty(search)) return;
+    self.result = lodash.filter(self.txHistory, function(tx) {
       return lodash.includes(tx.amountStr, search) ||
         lodash.includes(tx.message, search) ||
         lodash.includes(self.addressbook[tx.addressTo], search) ||
         lodash.includes(tx.addressTo, search) ||
         lodash.isEqual(formatDate(new Date(tx.time * 1000)), search);
     });
-    return result;
-  }
+    if (isCordova)
+      window.plugins.toast.showShortBottom(gettextCatalog.getString('Matches: ' + self.result.length));
+    else
+      self.matches = true;
+  };
 
   self.getTxsFromServer = function(client, skip, endingTxid, limit, cb) {
     var res = [];
@@ -1202,6 +1236,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   $rootScope.$on('Local/Searching', function(event, val) {
     if (val) self.showAllHistory();
     else self.hideHistory();
+    self.isSearching = val;
+    self.matches = false;
   });
 
   // UX event handlers
