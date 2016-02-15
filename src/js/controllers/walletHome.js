@@ -55,7 +55,6 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       self.setAddress();
       self.setSendFormInputs();
     }
-
     $log.debug('Cleaning WalletHome Instance');
     lodash.each(self, function(v, k) {
       if (lodash.isFunction(v)) return;

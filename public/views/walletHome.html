@@ -134,7 +134,7 @@
         </div>
       </div>
 
-      <div class="oh pr" ng-if="index.txps[0]">
+      <div class="oh pr" ng-if="index.txps[0]" ng-show="!home.isSearching">
         <h4 ng-show="index.requiresMultipleSignatures" class="title m0" translate>Payment Proposals</h4>
         <h4 ng-show="!index.requiresMultipleSignatures" class="title m0" translate>Unsent transactions</h4>
         <div class="last-transactions pr" ng-repeat="tx in index.txps">
@@ -159,9 +159,13 @@
       </div>
 
       <div class="oh pr" ng-show="index.txHistory[0] || index.txProgress > 5">
-        <h4 class="title m0">
-          <span translate>Activity</span>
-        </h4>
+        <ul class="no-bullet m0">
+          <li ng-click="home.searchInput()" ng-show="!home.isSearching">
+            <h4 class="title m0" translate>Activity
+            <a><i class="fi-magnifying-glass"></i></a>
+            </h4>
+          </li>
+        </ul>
 
         <div ng-show="index.updatingTxHistory && index.txProgress > 5">
           <div  class="row p20 text-center">
@@ -195,16 +199,28 @@
           </div>
         </div>
 
-        <div class="left-inner-addon ">
-          <i class="fi-magnifying-glass"></i>
-          <input type="text"
-                class="form-control"
-                 placeholder="Amount, address, mm/dd/yyyy"
-                 ng-model="search"></input>
+        <div id="searchLabel" ng-show="home.isSearching">
+          <ul class="no-bullet m0">
+            <li class="left-inner-addon">
+              <a ng-click="home.cancelSearch()" translate>Cancel</a>
+              <i class="fi-magnifying-glass"></i>
+              <form ng-submit="index.filter(search)">
+              <input name="search"
+                type="text"
+                placeholder="{{'Amount, address, note, mm/dd/yyyy' | translate}}"
+                ng-model="search"></input>
+              </form>
+            </li>
+            <li>
+              <h4 ng-show="index.matches">
+                <span class="vm" translate>{{index.result.length}} matches</span>
+              </h4>
+            </li>
+          </ul>
         </div>
-        <div ng-repeat="btx in index.filter(search) track by btx.txid"
-             fast-click callback-fn="home.openTxModal(btx)"
-             class="row collapse last-transactions-content">
+        <div ng-repeat="btx in index.txHistoryToShow() track by btx.txid"
+          ng-click="home.openTxModal(btx)"
+          class="row collapse last-transactions-content">
           <div class="large-6 medium-6 small-6 columns size-14">
             <div class="m10r left">
               <img src="img/icon-receive-history.svg" alt="sync" width="40" ng-show="btx.action == 'received'">
@@ -251,7 +267,7 @@
           </div>
         </div>
 
-        <div class="row m20t text-center" ng-show="index.historyRendering">
+        <div class="row m20t text-center" ng-show="index.historyRendering && !home.isSearching">
           <div class="columns large-12 medium-12 small-12">
             <div class="spinner">
               <div class="rect1"></div>
