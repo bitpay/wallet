@@ -4,7 +4,7 @@ angular.module('copayApp.services')
 
     var root = {};
 
-    // File storage is not supported for writing according to 
+    // File storage is not supported for writing according to
     // https://github.com/apache/cordova-plugin-file/#supported-platforms
     var shouldUseFileStorage = isCordova && !isMobile.Windows();
     $log.debug('Using file storage:', shouldUseFileStorage);
@@ -198,12 +198,12 @@ angular.module('copayApp.services')
       storage.remove('config', cb);
     };
 
-    root.setHideBalanceFlag = function(val, cb) {
-      storage.set('hideBalance', val, cb);
+    root.setHideBalanceFlag = function(walletId, val, cb) {
+      storage.set('hideBalance-' + walletId, val, cb);
     };
 
-    root.getHideBalanceFlag = function(cb) {
-      storage.get('hideBalance', cb);
+    root.getHideBalanceFlag = function(walletId, cb) {
+      storage.get('hideBalance-' + walletId, cb);
     };
 
     //for compatibility

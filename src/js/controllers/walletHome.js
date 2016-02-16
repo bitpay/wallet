@@ -25,6 +25,27 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   ret.isWindowsPhoneApp = isMobile.Windows() && isCordova;
   var vanillaScope = ret;
 
+  self.hideBalance = function() {
+    var fc = profileService.focusedClient;
+    storageService.getHideBalanceFlag(fc.credentials.walletId, function(err, shouldHideBalance) {
+      if (err) self.shouldHideBalance = false;
+      else self.shouldHideBalance = (shouldHideBalance == 'true') ? true : false;
+    });
+  }
+  self.hideBalance();
+
+  self.onMouseDown = function() {
+    var fc = profileService.focusedClient;
+    self.mouseDown = $timeout(function() {
+      self.shouldHideBalance = self.shouldHideBalance ? false : true;
+      storageService.setHideBalanceFlag(fc.credentials.walletId, self.shouldHideBalance, function() {});
+    }, 500);
+  }
+
+  self.onMouseUp = function() {
+    $timeout.cancel(self.mouseDown);
+  }
+
   var disableScannerListener = $rootScope.$on('dataScanned', function(event, data) {
     self.setForm(data);
     $rootScope.$emit('Local/SetTab', 'send');
