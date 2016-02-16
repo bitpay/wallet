@@ -24,5 +24,8 @@
     "qrcode-decoder-js": "*",
     "trezor-connect": "~1.0.1",
     "ng-csv": "~0.3.6"
+  },
+  "resolutions": {
+    "angular": "1.4.6"
   }
 }
