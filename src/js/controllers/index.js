@@ -143,9 +143,12 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         self.openWallet();
       } else {
         storageService.getBackupFlag(self.walletId, function(err, val) {
-          if (!fc.credentials.mnemonic)
-            self.needsBackup = false;
-          else
+          if (!fc.credentials.mnemonic) {
+            storageService.setBackupFlag(self.walletId, function(err) {
+              $log.debug('Backup stored');
+              self.needsBackup = false;
+            });
+          } else
             self.needsBackup = self.network == 'testnet' ? false : !val;
           self.openWallet();
         });
@@ -1275,7 +1278,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.needsBackup = false;
     $log.debug('Backup done');
     storageService.setBackupFlag(walletId || self.walletId, function(err) {
-      $log.debug('Backup done stored');
+      $log.debug('Backup stored');
     });
   });
 
