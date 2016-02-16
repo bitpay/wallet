@@ -25,8 +25,6 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   ret.isWindowsPhoneApp = isMobile.Windows() && isCordova;
   var vanillaScope = ret;
 
-
-
   var disableScannerListener = $rootScope.$on('dataScanned', function(event, data) {
     self.setForm(data);
     $rootScope.$emit('Local/SetTab', 'send');
@@ -93,8 +91,6 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     disableOngoingProcessListener();
     $rootScope.shouldHideMenuBar = false;
   });
-
-
 
   this.onQrCodeScanned = function(data) {
     if (data) go.send();
@@ -984,11 +980,9 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     }
   };
 
-
-
   this.resetForm = function() {
     this.resetError();
-    this.paymentExpired = false;
+    this.destinationWalletNeedsBackup = null;
     this._paypro = null;
     this.lockedCurrentFeePerKb = null;
 
@@ -1130,7 +1124,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       self._paypro = null;
       self.error = gettext('Cannot sign: The payment request has expired');
     };
-  };
+ };
 
   this.setFromUri = function(uri) {
     var self = this;

@@ -179,7 +179,7 @@
               <div translate>Updating transaction history. Please stand by.</div>
             </div>
           </div>
-        </div> 
+        </div>
 
         <div ng-if="index.txHistory[0] &&  index.updatingTxHistory && index.newTx" class="row collapse last-transactions-content animated fadeInDown">
           <div class="large-6 medium-6 small-6 columns size-14">
@@ -358,12 +358,12 @@
       <div class="pr p25b">
         <h4 class="title m0">
           <available-balance></available-balance>
-          <span 
-            ng-show="home.lockedCurrentFeePerKb || home.blockUx || home.lockAmount" 
+          <span
+            ng-show="home.lockedCurrentFeePerKb || home.blockUx || home.lockAmount"
             class="text-gray" translate>Send All</span>
           <a
             ng-show="index.availableBalanceSat > 0 && !home.lockedCurrentFeePerKb && !home.blockUx && !home.lockAmount"
-            ng-click="home.sendAll(index.totalBytesToSendMax, index.availableBalanceSat)" 
+            ng-click="home.sendAll(index.totalBytesToSendMax, index.availableBalanceSat)"
              translate> Send All
           </a>
           <div ng-show="!home.paymentExpired && home._paypro">
@@ -394,7 +394,11 @@
                     <i class="icon-close-circle size-14"></i>
                     <span class="vm" translate>Not valid</span>
                   </span>
-                  <small class="right text-primary" ng-show="!sendForm.address.$invalid">
+                  <span class="has-error right size-12" ng-show="home.destinationAddressNeedsBackup">
+                    <i class="icon-close-circle size-14"></i>
+                    <span class="vm" translate>Destination address needs backup</span>
+                  </span>
+                  <small class="right text-primary" ng-show="!sendForm.address.$invalid && !home.destinationAddressNeedsBackup">
                     <i class="icon-checkmark-circle size-14"></i>
                   </small>
                 </span>
