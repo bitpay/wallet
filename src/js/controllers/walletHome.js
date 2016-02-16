@@ -427,9 +427,9 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
         }, 100);
       };
 
-      $scope.copyAddress = function(addr) {
+      $scope.copyToClipboard = function(addr) {
         if (!addr) return;
-        self.copyAddress(addr);
+        self.copyToClipboard(addr);
       };
 
       $scope.cancel = lodash.debounce(function() {
@@ -497,7 +497,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     });
   };
 
-  this.copyAddress = function(addr) {
+  this.copyToClipboard = function(addr) {
     if (isCordova) {
       window.cordova.plugins.clipboard.copy(addr);
       window.plugins.toast.showShortCenter(gettextCatalog.getString('Copied to clipboard'));
@@ -1193,9 +1193,9 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
         return n.substring(0, 4);
       };
 
-      $scope.copyAddress = function(addr) {
+      $scope.copyToClipboard = function(addr) {
         if (!addr) return;
-        self.copyAddress(addr);
+        self.copyToClipboard(addr);
       };
 
       $scope.cancel = lodash.debounce(function() {
