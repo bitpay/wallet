@@ -120,6 +120,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   var confirm_msg = gettextCatalog.getString('Confirm');
 
   this.openDestinationAddressModal = function(wallets, address) {
+    self.destinationWalletNeedsBackup = null;
     $rootScope.modalOpened = true;
     var fc = profileService.focusedClient;
     self.lockAddress = false;
