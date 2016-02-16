@@ -8,6 +8,8 @@ var modules = [
   'gettext',
   'ngLodash',
   'uiSwitch',
+  'ngSanitize', 
+  'ngCsv',
   'bwcModule',
   'copayApp.filters',
   'copayApp.services',
