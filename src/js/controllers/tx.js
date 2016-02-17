@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('txController',
-  function($rootScope, $scope, $timeout, $filter, lodash, profileService, isCordova, nodeWebkit, configService, animationService) {
+  function($rootScope, $scope, $timeout, $filter, lodash, profileService, isCordova, nodeWebkit, configService, animationService, gettextCatalog) {
 
     var fc = profileService.focusedClient;
     var config = configService.getSync();
@@ -50,13 +50,12 @@ angular.module('copayApp.controllers').controller('txController',
       return n.substring(0, 4);
     };
 
-    this.copyAddress = function(addr) {
-      if (!addr) return;
+    this.copyToClipboard = function(value) {
       if (isCordova) {
-        window.cordova.plugins.clipboard.copy(addr);
+        window.cordova.plugins.clipboard.copy(value);
         window.plugins.toast.showShortCenter(gettextCatalog.getString('Copied to clipboard'));
       } else if (nodeWebkit.isDefined()) {
-        nodeWebkit.writeToClipboard(addr);
+        nodeWebkit.writeToClipboard(value);
       }
     };
 
