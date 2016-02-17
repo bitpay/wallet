@@ -34,8 +34,10 @@
           <p class="m0 text-gray size-14" translate>Moved</p>
         </div>
         
-        <div class="size-36">
-          <span ng-if="index.showTx.action == 'received'">+</span><span ng-if="index.showTx.action == 'sent'">-</span>{{index.showTx.amountStr}}
+        <div class="size-36" ng-click="txc.copyToClipboard(index.showTx.amountStr)">
+          <span ng-if="index.showTx.action == 'received'">+</span>
+          <span ng-if="index.showTx.action == 'sent'">-</span>
+          <span class="enable_text_select">{{index.showTx.amountStr}}</span>
         </div>
         <div class="alternative-amount" ng-click="showRate=!showRate" ng-init="showRate = false">
           <span class="label gray radius" ng-show="!showRate && alternativeAmountStr">
@@ -56,7 +58,7 @@
     <ul class="no-bullet size-14 m0"> 
 
       <li ng-if="!index.showTx.hasMultiplesOutputs && index.showTx.addressTo && index.showTx.addressTo != 'N/A'" class="line-b p10 oh"
-        ng-click="copyAddress(index.showTx.addressTo)">
+        ng-click="txc.copyToClipboard(index.showTx.addressTo)">
       <span class="text-gray" translate>To</span>
       <span class="right">
         <span ng-if="index.showTx.merchant">
@@ -83,11 +85,6 @@
         ng-repeat="output in index.showTx.outputs"
         ng-include="'views/includes/output.html'">
       </div>
-
-      <li ng-show="btc.message" class="line-b p10 oh">
-        <span class="text-gray" translate>Note</span>
-        <span class="right">{{index.showTx.message}}</span>
-      </li>
       
       <li ng-if="index.showTx.action == 'invalid'" class="line-b p10 oh">
       <span class="right" translate>
@@ -95,22 +92,25 @@
       </span>
       <li ng-if="index.showTx.time" class="line-b p10 oh">
       <span class="text-gray" translate>Date</span>
-      <span class="right">
+      <span class="right enable_text_select">
         <time>{{ index.showTx.time * 1000 | amDateFormat:'MM/DD/YYYY HH:mm a'}}</time>
         <time>({{ index.showTx.time * 1000 | amTimeAgo}})</time>
       </span>
       </li>
-      <li class="line-b p10" ng-show="index.showTx.action != 'received'">
+      <li class="line-b p10" ng-show="index.showTx.action != 'received'"
+        ng-click="txc.copyToClipboard(index.showTx.feeStr)">
         <span class="text-gray" translate>Fee</span>
-        <span class="right">{{index.showTx.feeStr}}</span>
+        <span class="right enable_text_select">{{index.showTx.feeStr}}</span>
       </li>
-      <li class="line-b p10 oh" ng-if="index.showTx.message && index.showTx.action != 'received'">
+      <li class="line-b p10 oh" ng-if="index.showTx.message && index.showTx.action != 'received'"
+        ng-click="txc.copyToClipboard(index.showTx.message)">
         <span class="text-gray" translate>Note</span>
-        <span class="right">{{index.showTx.message}}</span>
+        <span class="right enable_text_select">{{index.showTx.message}}</span>
       </li>
-      <li ng-if="index.showTx.merchant" class="line-b p10 oh">
+      <li ng-if="index.showTx.merchant" class="line-b p10 oh"
+        ng-click="txc.copyToClipboard(index.showTx.merchant.pr.pd.memo)">
       <span class="text-gray" translate>Merchant message</span>
-      <span class="right">
+      <span class="right enable_text_select">
         {{index.showTx.merchant.pr.pd.memo}}
       </span>
       </li>
