@@ -618,7 +618,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     });
   };
 
-  // Send 
+  // Send
 
   this.canShowAlternative = function() {
     return $scope.showAlternative;
@@ -1135,7 +1135,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     }
   };
 
-  // History 
+  // History
 
   function strip(number) {
     return (parseFloat(number.toPrecision(12)));
@@ -1178,6 +1178,13 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
             $scope.$apply();
           }
         });
+      };
+
+      $scope.sendAgain = function(btx){
+        self.resetForm();
+        self.setForm(btx.addressTo, btx.amount/100, btx.message);
+        $rootScope.$emit('Local/SetTab', 'send');
+        $scope.cancel();
       };
 
       $scope.getAmount = function(amount) {

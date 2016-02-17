@@ -29,7 +29,7 @@
         <img src="img/icon-moved.svg" alt="sync" width="50">
         <p class="m0 text-gray size-14" translate>Moved</p>
       </div>
-      
+
       <div class="size-36">
         <span ng-if="btx.action == 'received'">+</span><span ng-if="btx.action == 'sent'">-</span>{{btx.amountStr}}
       </div>
@@ -44,12 +44,12 @@
     </div>
     <div ng-show="btx.action == 'invalid'">
       -
-    </div> 
+    </div>
   </div>
 
   <h4 class="title m0" translate>Details</h4>
 
-  <ul class="no-bullet size-14 m0"> 
+  <ul class="no-bullet size-14 m0">
 
     <li ng-if="!btx.hasMultiplesOutputs && btx.addressTo && btx.addressTo != 'N/A'" class="line-b p10 oh" ng-click="copyAddress(btx.addressTo)">
     <span class="text-gray" translate>To</span>
@@ -63,9 +63,9 @@
         <contact ng-show="!btx.labelTo" class="enable_text_select" address="{{btx.addressTo}}"></contact>
       </span>
     </span>
-    </li> 
+    </li>
 
-    <li ng-show="btx.hasMultiplesOutputs" class="line-b p10 oh" 
+    <li ng-show="btx.hasMultiplesOutputs" class="line-b p10 oh"
       ng-click="showMultiplesOutputs = !showMultiplesOutputs">
       <span class="text-gray" translate>Recipients</span>
       <span class="right">{{btx.recipientCount}}
@@ -83,7 +83,7 @@
       <span class="text-gray" translate>Note</span>
       <span class="right">{{btx.message}}</span>
     </li>
-    
+
     <li ng-if="btx.action == 'invalid'" class="line-b p10 oh">
     <span class="right" translate>
       This transaction has become invalid; possibly due to a double spend attempt.
@@ -121,7 +121,7 @@
       <span class="label gray radius" ng-show="btx.safeConfirmed">
         {{btx.safeConfirmed}}
       </span>
- 
+
     </span>
     </li>
   </ul>
@@ -146,6 +146,11 @@
         (getShortNetworkName() == 'test' ? 'test-' : '') + 'insight.bitpay.com/tx/' + btx.txid)">
         <span class="text-gray" translate>See it on the blockchain</span>
       </button>
+      <ul class="no-bullet m0" ng-show="btx.action == 'sent' && getShortNetworkName() == 'test'">
+        <li ng-click="sendAgain(btx)">
+          <span ng-style="{'color':color}" translate>Send similar transaction</span>
+        </li>
+      </ul>
     </div>
   </div>
 
