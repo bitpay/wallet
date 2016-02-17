@@ -1407,10 +1407,11 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
 
 .txModal {
   background: #f6f7f9;
-  border-radius: 5px;
   position: absolute;
   width: 100%;
-  height: 100%;
+  top: 0;
+  bottom: 0;
+  overflow: hidden;
   z-index: 1100;
 }
 
