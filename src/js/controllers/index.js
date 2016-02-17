@@ -768,7 +768,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     $log.debug('Generating CSV from History');
     self.setOngoingProcess('generatingCSV', true);
 
-    $timeout(function() {
       getHistory(function(err, txs) {
         self.setOngoingProcess('generatingCSV', false);
         if (err) {
@@ -779,14 +778,11 @@ angular.module('copayApp.controllers').controller('indexController', function($r
           self.satToUnit = 1 / self.unitToSatoshi;
           var data = txs;
           var satToBtc = 1 / 100000000;
-          var filename = 'Copay-' + (self.alias || self.walletName) + '.csv';
-          var csvContent = '';
-
-          if (!isNode) csvContent = 'data:text/csv;charset=utf-8,';
-          csvContent += 'Date,Destination,Note,Amount,Currency,Txid,Creator,Copayers\n';
+          self.csvContent = [];
+          self.csvFilename = 'Copay-' + (self.alias || self.walletName) + '.csv';
+          self.csvHeader = ['Date', 'Destination', 'Note', 'Amount', 'Currency', 'Txid', 'Creator', 'Copayers'];
 
           var _amount, _note, _copayers, _creator;
-          var dataString;
           data.forEach(function(it, index) {
             var amount = it.amount;
 
@@ -810,28 +806,34 @@ angular.module('copayApp.controllers').controller('indexController', function($r
             if (it.action == 'moved')
               _note += ' Moved:' + (it.amount * satToBtc).toFixed(8)
 
-            dataString = formatDate(it.time * 1000) + ',' + formatString(it.addressTo) + ',' + _note + ',' + _amount + ',BTC,' + it.txid + ',' + _creator + ',' + _copayers;
-            csvContent += dataString + "\n";
+            self.csvContent.push({
+              'Date': formatDate(it.time * 1000),
+              'Destination': formatString(it.addressTo),
+              'Note': _note,
+              'Amount': _amount,
+              'Currency': 'BTC',
+              'Txid': it.txid,
+              'Creator': _creator,
+              'Copayers': _copayers
+            });
 
             if (it.fees && (it.action == 'moved' || it.action == 'sent')) {
               var _fee = (it.fees * satToBtc).toFixed(8)
-              csvContent += formatDate(it.time * 1000) + ',Bitcoin Network Fees,, -' + _fee + ',BTC,,,' + "\n";
+              self.csvContent.push({
+                'Date': formatDate(it.time * 1000),
+                'Destination': 'Bitcoin Network Fees',
+                'Note': '',
+                'Amount': '-'+_fee,
+                'Currency': 'BTC',
+                'Txid': '',
+                'Creator': '',
+                'Copayers': ''
+              });
             }
           });
-
-          if (isNode) {
-            saveFile('#export_file', csvContent);
-          } else {
-            var encodedUri = encodeURI(csvContent);
-            var link = document.createElement("a");
-            link.setAttribute("href", encodedUri);
-            link.setAttribute("download", filename);
-            link.click();
-          }
+          return;
         }
-        $rootScope.$apply();
       });
-    });
   };
 
   self.removeSoftConfirmedTx = function(txs) {
