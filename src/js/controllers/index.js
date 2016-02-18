@@ -14,6 +14,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   ret.usePushNotifications = ret.isCordova && !isMobile.Windows();
   ret.onGoingProcess = {};
   ret.historyShowLimit = 10;
+  ret.historyShowMoreLimit = 100;
   ret.prevState = 'walletHome';
 
   ret.menu = [{
@@ -100,31 +101,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
     self.cleanInstance();
     self.loadingWallet = true;
-
-    // Clean status
-    self.totalBalanceSat = null;
-    self.lockedBalanceSat = null;
-    self.availableBalanceSat = null;
-    self.pendingAmount = null;
-    self.spendUnconfirmed = null;
-
-    self.totalBalanceStr = null;
-    self.availableBalanceStr = null;
-    self.lockedBalanceStr = null;
-
-    self.alternativeBalanceAvailable = false;
-    self.totalBalanceAlternative = null;
-
-    self.currentFeeLevel = null;
-    self.notAuthorized = false;
-    self.txHistory = [];
-    self.completeHistory = [];
-    self.skipTxHistory = self.historyShowLimit;
-    self.nextTxHistory = self.historyShowLimit + self.moreTx;
-    self.txProgress = 0;
-    self.historyShowMore = false;
-    self.balanceByAddress = null;
-    self.pendingTxProposalsCountForUs = null;
     self.setSpendUnconfirmed();
 
     $timeout(function() {
@@ -987,10 +963,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
   self.showMore = function() {
     $timeout(function() {
-      self.txHistory = self.txHistory.concat(self.completeHistory.slice(self.skipTxHistory, self.nextTxHistory));
+      self.txHistory = self.completeHistory.slice(0, self.nextTxHistory);
       $log.debug('Total txs: ', self.txHistory.length + '/' + self.completeHistory.length);
-      self.skipTxHistory += self.moreTx;
-      self.nextTxHistory += self.moreTx;
+      self.nextTxHistory += self.historyShowMoreLimit;
       if (self.txHistory.length >= self.completeHistory.length)
         self.historyShowMore = false;
     }, 100);

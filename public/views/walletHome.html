@@ -260,7 +260,8 @@
           <a class="text-gray size-12"
              ng-show="index.historyShowMore"
              ng-click="index.showMore()">
-            <span translate>More {{index.txHistory.length}}/{{index.completeHistory.length}}</span>
+            {{index.completeHistory.length - index.txHistory.length}} <span translate>more</span>
+            <i class="icon-arrow-down4"></i>
           </a>
         </div>
       </div>
