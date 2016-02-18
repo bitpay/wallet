@@ -30,7 +30,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   self.updatingTxHistory = {};
   self.prevState = 'walletHome';
   self.isSearching = false;
-  self.showOptions = true;
 
   function strip(number) {
     return (parseFloat(number.toPrecision(12)));
@@ -940,24 +939,16 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     }, 100);
   };
 
-  self.hideHistory = function() {
-    if (!self.historyShowShowAll) {
-      self.txHistory = self.txHistory.slice(0, 10);
-      self.historyShowShowAll = true;
-    }
-  };
-
   self.txHistoryToShow = function() {
      if (!self.isSearching) {
        self.result = [];
        return self.txHistory;
-    } else return self.result;
+     } else return self.result;
    }
 
   self.filter = function(search) {
-    self.showOptions = true;
     self.result = [];
-    
+
     function formatDate(date) {
       var day = ('0' + date.getDate()).slice(-2).toString();
       var month = ('0' + (date.getMonth() + 1)).slice(-2).toString();
@@ -976,7 +967,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     });
     if (isCordova)
       window.plugins.toast.showShortBottom(gettextCatalog.getString('Matches: ' + self.result.length));
-    self.showOptions = (self.result.length == 0) ? true : false;
   };
 
   self.getTxsFromServer = function(client, skip, endingTxid, limit, cb) {
@@ -1236,10 +1226,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   });
 
   $rootScope.$on('Local/Searching', function(event, val) {
-    if (val) self.showAllHistory();
-    else self.hideHistory();
     self.isSearching = val;
-    self.showOptions = true;
   });
 
   // UX event handlers
