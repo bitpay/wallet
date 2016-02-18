@@ -203,7 +203,7 @@
           <div class="small-11 columns">
             <div class="searchLabel">
               <i class="fi-magnifying-glass size-14"></i>
-              <form ng-submit="index.filter(search)">
+              <form>
                 <input name="search"
                   type="search"
                   placeholder="{{'Search transactions' | translate}}"
@@ -213,10 +213,10 @@
             </div>
           </div>
           <div class="small-1 columns">
-            <a ng-click="index.isSearching = false">Cancel</a>
+            <a ng-click="index.isSearching = false" translate>Cancel</a>
           </div>
         </div>
-        <div ng-repeat="btx in index.txHistoryToShow() track by btx.txid"
+        <div ng-repeat="btx in index.txHistoryToShow(search) track by btx.txid"
           ng-click="home.openTxModal(btx)"
           class="row collapse last-transactions-content">
           <div class="large-6 medium-6 small-6 columns size-14">
