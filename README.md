@@ -291,12 +291,8 @@ gpg --import /tmp/key
 
 ## Support
 
-* [BitPay Labs](https://labs.bitpay.com/c/copay)
-  * Post a question in our discussion forums
 * [GitHub Issues](https://github.com/bitpay/copay/issues)
   * Open an issue if you are having problems with this project
-* [Email Support](mailto:support@bitpay.com)
-  * Our dedicated support team is always ready to help
 
 ## License
 
