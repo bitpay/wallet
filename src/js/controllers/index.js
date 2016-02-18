@@ -939,35 +939,38 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     }, 100);
   };
 
-  self.txHistoryToShow = function() {
-     if (!self.isSearching) {
-       self.result = [];
-       return self.txHistory;
-     } else return self.result;
-   }
+  self.txHistoryToShow = function(search) {
 
-  self.filter = function(search) {
-    self.result = [];
+    function filter(search) {
+      var result = [];
 
-    function formatDate(date) {
-      var day = ('0' + date.getDate()).slice(-2).toString();
-      var month = ('0' + (date.getMonth() + 1)).slice(-2).toString();
-      var year = date.getFullYear();
-      return [month, day, year].join('/');
+      function formatDate(date) {
+        var day = ('0' + date.getDate()).slice(-2).toString();
+        var month = ('0' + (date.getMonth() + 1)).slice(-2).toString();
+        var year = date.getFullYear();
+        return [month, day, year].join('/');
+      };
+
+      if (lodash.isEmpty(search)) return;
+
+      result = lodash.filter(self.txHistory, function(tx) {
+        return lodash.includes(tx.amountStr, search) ||
+          lodash.includes(tx.message, search) ||
+          lodash.includes(self.addressbook ? self.addressbook[tx.addressTo] : null, search) ||
+          lodash.includes(tx.addressTo, search) ||
+          lodash.isEqual(formatDate(new Date(tx.time * 1000)), search);
+      });
+      if (isCordova)
+        window.plugins.toast.showShortBottom(gettextCatalog.getString('Matches: ' + result.length));
+      return result;
     };
 
-    if (lodash.isEmpty(search)) return;
-
-    self.result = lodash.filter(self.txHistory, function(tx) {
-      return lodash.includes(tx.amountStr, search) ||
-        lodash.includes(tx.message, search) ||
-        lodash.includes(self.addressbook[tx.addressTo], search) ||
-        lodash.includes(tx.addressTo, search) ||
-        lodash.isEqual(formatDate(new Date(tx.time * 1000)), search);
-    });
-    if (isCordova)
-      window.plugins.toast.showShortBottom(gettextCatalog.getString('Matches: ' + self.result.length));
-  };
+     if (!self.isSearching) {
+       return self.txHistory;
+     } else {
+       return filter(search);;
+     }
+   }
 
   self.getTxsFromServer = function(client, skip, endingTxid, limit, cb) {
     var res = [];
