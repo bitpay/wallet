@@ -302,8 +302,8 @@
           <!-- Address-->
           <div class="large-12 columns">
             <h2 class="text-center m10t" translate>My Bitcoin address</h2>
-            <div class="text-center" ng-click="home.copyToClipboard(home.addr[index.walletId])" ng-show="home.addr[index.walletId] || home.generatingAddress">
-              <qrcode size="220" data="bitcoin:{{home.addr[index.walletId]}}"></qrcode>
+            <div class="text-center" ng-click="home.copyToClipboard(home.getWalletData('addr'))" ng-show="home.getWalletData('addr') || home.generatingAddress">
+              <qrcode size="220" data="bitcoin:{{home.getWalletData('addr')}}"></qrcode>
               <div ng-show="home.generatingAddress" style="position:relative; top:-226px; height:0px">
                 <div style="height:220px; width:220px; margin:auto; background: white">
                   <div class="spinner" style="margin-top:85px">
@@ -317,29 +317,29 @@
               </div>
               <div class="m10t" >
                 <h4 ng-class="{'enable_text_select': !index.isCordova}" class="size-12">
-                  {{home.generatingAddress ? '...' : home.addr[index.walletId]}}
+                  {{home.generatingAddress ? '...' : home.getWalletData('addr')}}
                 </h4>
               </div>
             </div>
           </div>
         </div>
         <div class="row m20t">
-          <div class="small-12 columns" ng-show="index.isCordova && home.addr[index.walletId]">
+          <div class="small-12 columns" ng-show="index.isCordova && home.getWalletData('addr')">
             <button class="button outline light-gray small round expand"
-              ng-click="home.shareAddress(home.addr[index.walletId])"
+              ng-click="home.shareAddress(home.getWalletData('addr'))"
               ng-disabled="home.generatingAddress">
               <span translate>Share address</span>
             </button>
           </div>
-          <div class="small-12 columns" ng-show="home.addr[index.walletId]">
-            <button class="button expand small round m10b" ng-click="home.openCustomizedAmountModal(home.addr[index.walletId])"
+          <div class="small-12 columns" ng-show="home.getWalletData('addr')">
+            <button class="button expand small round m10b" ng-click="home.openCustomizedAmountModal(home.getWalletData('addr'))"
             ng-style="{'background-color':index.backgroundColor}"
             ng-disabled="home.generatingAddress">
               <span translate>Request a specific amount</span>
             </button>
           </div>
         </div>
-        <div class="row m10t" ng-show="home.addr[index.walletId]" >
+        <div class="row m10t" ng-show="home.getWalletData('addr')" >
           <div class="large-12 columns">
             <div class="line-t size-10 text-gray m10b p10t">
               <span translate> Share this wallet address to receive payments. To protect your privacy, new addresses are generated automatically once you use them.</span>

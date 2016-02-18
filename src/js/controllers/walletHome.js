@@ -25,9 +25,9 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   this.blockUx = false;
   this.isRateAvailable = false;
   this.showScanner = false;
-  this.addr = {};
   this.lockedCurrentFeePerKb = null;
   this.paymentExpired = false;
+
 
   var disableScannerListener = $rootScope.$on('dataScanned', function(event, data) {
     self.setForm(data);
@@ -52,7 +52,6 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   });
 
   var disableFocusListener = $rootScope.$on('Local/NewFocusedWallet', function() {
-    self.addr = {};
     self.resetForm();
   });
 
@@ -87,6 +86,26 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     disableOngoingProcessListener();
     $rootScope.shouldHideMenuBar = false;
   });
+
+
+  this.walletData = {};
+  this.getWalletData = function(key) {
+    var fc = profileService.focusedClient;
+    if (!fc) return;
+    if (!this.walletData[fc.credentials.walletId]) return;
+
+    return this.walletData[fc.credentials.walletId][key];
+  };
+
+  this.setWalletData = function(key,val) {
+    var fc = profileService.focusedClient;
+    if (!fc) return;
+    if (!this.walletData[fc.credentials.walletId] )
+      this.walletData[fc.credentials.walletId] = {};
+
+    this.walletData[fc.credentials.walletId][key] = val;
+  };
+ 
 
   this.onQrCodeScanned = function(data) {
     if (data) go.send();
@@ -510,7 +529,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       return;
 
     // Address already set?
-    if (!forceNew && self.addr[fc.credentials.walletId]) {
+    if (!forceNew && self.getWalletData('addr')) {
       return;
     }
 
@@ -523,7 +542,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
           self.addrError = err;
         } else {
           if (addr)
-            self.addr[fc.credentials.walletId] = addr;
+            self.setWalletData('addr',addr);;
         }
 
         $scope.$digest();
