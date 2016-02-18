@@ -22,7 +22,8 @@ angular.module('copayApp.services').factory('txFormatService', function(profileS
   };
 
   root.processTx = function(tx) {
-    if (!tx) return; 
+    if (!tx || tx.action == 'invalid') 
+      return tx; 
 
     // New transaction output format
     if (tx.outputs) {
