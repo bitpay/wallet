@@ -53,6 +53,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   var disableFocusListener = $rootScope.$on('Local/NewFocusedWallet', function() {
     self.addr = {};
     self.resetForm();
+    $scope.search = '';
     $rootScope.$emit('Local/Searching', false);
   });
 
