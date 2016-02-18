@@ -864,7 +864,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   }
 
   self.updateLocalTxHistory = function(client, cb) {
-    var requestLimit = 6;
+    var requestLimit = 5;
     var walletId = client.credentials.walletId;
     var config = configService.getSync().wallet.settings;
 
@@ -913,6 +913,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
           $timeout(function() {
             $rootScope.$apply();
           });
+          requestLimit = 50;
           getNewTxs(newTxs, skip, i_cb);
         });
       };
