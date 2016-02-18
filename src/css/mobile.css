@@ -644,6 +644,8 @@ body.modal-open {
 
 .reveal-modal.animated.slideInRight,
 .reveal-modal.animated.slideOutRight,
+.txModal.animated.slideInRight,
+.txModal.animated.slideOutRight,
 .reveal-modal.animated.fadeOutUp,
 .reveal-modal.animated.slideInUp,
 .reveal-modal.animated.slideInDown {

@@ -1,7 +1,7 @@
 <div ng-init="wallets[0] ? selectedWalletsOpt = true : selectedWalletsOpts = false; checkClipboard()">
   <nav class="tab-bar" ng-style="{'background-color':color}">
     <section class="left-small">
-      <a ng-show="!editAddressbook && !addAddressbookEntry" ng-click="cancel()" class="p10">
+      <a ng-show="!editAddressbook && !addAddressbookEntry" fast-click callback-fn="cancel()" class="p10">
         <span class="text-close" translate>Close</span>
       </a>
     </section>
@@ -30,16 +30,14 @@
           ng-style="{'border-color':selectedWalletsOpt ? color : 'inherit'}"
           ng-click="selectedWalletsOpt = true">
         <a href
-          ng-style="{'color':selectedWalletsOpt ? color : 'inherit'}"
-          ng-click="create.setTotalCopayers(1)" translate> My wallets</a>
+          ng-style="{'color':selectedWalletsOpt ? color : 'inherit'}" translate> My wallets</a>
         </div>
         <div class="tab-container small-6 medium-3 large-2" 
           ng-class="{'selected':!selectedWalletsOpt}" 
           ng-style="{'border-color':!selectedWalletsOpt ? color : 'inherit'}"
           ng-click="selectedWalletsOpt = false">
         <a href
-          ng-style="{'color':!selectedWalletsOpt ? color : 'inherit'}"
-          ng-click="create.setTotalCopayers(3)" translate>My contacts</a>
+          ng-style="{'color':!selectedWalletsOpt ? color : 'inherit'}" translate>My contacts</a>
         </div>
       </div>
     </div>
