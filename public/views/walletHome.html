@@ -258,9 +258,9 @@
 
         <div class="m20t text-center">
           <a class="text-gray size-12"
-             ng-show="index.historyShowShowAll"
-             ng-click="index.showAllHistory()">
-            <span translate>Show all</span>
+             ng-show="index.historyShowMore"
+             ng-click="index.showMore()">
+            <span translate>More {{index.txHistory.length}}/{{index.completeHistory.length}}</span>
           </a>
         </div>
       </div>
