@@ -51,10 +51,13 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   var disableFocusListener = $rootScope.$on('Local/NewFocusedWallet', function() {
     self.addr = null;
     self.resetForm();
+    $rootScope.$emit('Local/Searching', false);
+
     if (profileService.focusedClient) {
       self.setAddress();
       self.setSendFormInputs();
     }
+
     $log.debug('Cleaning WalletHome Instance');
     lodash.each(self, function(v, k) {
       if (lodash.isFunction(v)) return;

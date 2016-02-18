@@ -784,26 +784,48 @@ table tbody tr:last-child td {
 
 /*////////////////////////////   SEARCH INPUT  ////////////////////////////*/
 
-.left-inner-addon1 {
-    position: relative;
+.searchBar {
+   display: table;
 }
-.left-inner-addon1 input{
-    padding-left: 40px;
-    margin-bottom: auto;
-    border: 0px solid;
-}
-.left-inner-addon1 i{
-    padding: 6px;
-    padding-left: 20px;
-}
-.left-inner-addon2 i{
-    padding: 2px;
-    padding-left: 5px;
-}
-.fi-magnifying-glass {
-    position: absolute;
+.searchBar .columns {
+   display: table-cell;
+   vertical-align: middle;
 }
 
+.searchBar .columns,
+.searchBar [class*="column"] + [class*="column"]:last-child {
+   float: none;
+}
+
+.searchBar form{
+  margin-left: 20px;
+}
+
+.searchBar input{
+  margin-bottom: auto;
+  border-bottom: 0px solid #E9EDF0;
+}
+.searchBar i{
+  position: absolute;
+  padding: 8px;
+}
+
+.searchBar .small-11{
+  padding-right: 5px;
+  padding-left: 5px;
+}
+
+.searchBar .small-1{
+  padding-left: 2px;
+  padding-right: 8px;
+}
+
+.searchLabel {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  background-color: rgba(0, 0, 0, 0.02);
+  border-radius: 10px;
+}
 /*////////////////////////////  BUTTON OUTLINE  ////////////////////////////*/
 
 .button.outline,
@@ -1498,8 +1520,8 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
 
 #history .spinner > div,
 #receive .spinner > div,
-.copayers .spinner > div, 
-.preferences-fee .spinner > div 
+.copayers .spinner > div,
+.preferences-fee .spinner > div
 {
   background-color: #7A8C9E;
 }
