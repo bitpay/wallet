@@ -16,7 +16,6 @@
     "angular-ui-router": "0.2.15",
     "angular-ui-switch": "0.1.1",
     "animate.css": "3.4.0",
-    "fastclick": "1.0.6",
     "foundation": "5.5.2",
     "foundation-icon-fonts": "*",
     "moment": "2.10.3",
