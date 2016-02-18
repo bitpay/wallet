@@ -28,20 +28,6 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   this.addr = {};
   this.lockedCurrentFeePerKb = null;
 
-  self.isSearching = false;
-  $rootScope.$emit('Local/Searching', false);
-
-  self.searchInput = function() {
-    self.isSearching = true;
-    $rootScope.$emit('Local/Searching', true);
-  }
-
-  self.cancelSearch = function() {
-    self.isSearching = false;
-    $scope.search = '';
-    $rootScope.$emit('Local/Searching', false);
-  }
-
   var disableScannerListener = $rootScope.$on('dataScanned', function(event, data) {
     self.setForm(data);
     $rootScope.$emit('Local/SetTab', 'send');
@@ -67,7 +53,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   var disableFocusListener = $rootScope.$on('Local/NewFocusedWallet', function() {
     self.addr = {};
     self.resetForm();
-    self.cancelSearch();
+    $rootScope.$emit('Local/Searching', false);
   });
 
   var disableResumeListener = $rootScope.$on('Local/Resume', function() {
@@ -633,7 +619,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     });
   };
 
-  // Send 
+  // Send
 
   this.canShowAlternative = function() {
     return $scope.showAlternative;
@@ -1150,7 +1136,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     }
   };
 
-  // History 
+  // History
 
   function strip(number) {
     return (parseFloat(number.toPrecision(12)));
