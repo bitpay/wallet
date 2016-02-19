@@ -4,7 +4,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   var self = this;
   var SOFT_CONFIRMATION_LIMIT = 12;
   var errors = bwcService.getErrors();
-<<<<<<< 0b48a2e2f3178bc3dd4062c7c17fe59e89554285
   var historyUpdateInProgress = {};
 
   var ret = {};
@@ -19,28 +18,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   ret.prevState = 'walletHome';
 
   ret.menu = [{
-=======
-  self.isCordova = isCordova;
-  self.isChromeApp = isChromeApp;
-  self.isSafari = isMobile.Safari();
-  self.isWindowsPhoneApp = isMobile.Windows() && isCordova;
-  self.usePushNotifications = self.isCordova && !isMobile.Windows();
-  self.onGoingProcess = {};
-  self.historyShowLimit = 10;
-  self.updatingTxHistory = {};
-  self.prevState = 'walletHome';
-  self.isSearching = false;
-
-  function strip(number) {
-    return (parseFloat(number.toPrecision(12)));
-  };
-
-  self.goHome = function() {
-    go.walletHome();
-  };
-
-  self.menu = [{
->>>>>>> refactor
     'title': gettext('Receive'),
     'icon': {
       false: 'icon-receive',
@@ -396,7 +373,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
   self.setSpendUnconfirmed = function(spendUnconfirmed) {
     self.spendUnconfirmed = spendUnconfirmed || configService.getSync().wallet.spendUnconfirmed;
-  }; 
+  };
 
   self.updateBalance = function() {
     var fc = profileService.focusedClient;
@@ -918,6 +895,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         if (walletId == profileService.focusedClient.credentials.walletId) {
           self.completeHistory = newHistory;
           self.setCompactTxHistory();
+          self.txHistory = newHistory.slice(0, self.historyShowLimit);
+          self.historyShowMore = newHistory.length > self.historyShowLimit;
+          self.txHistoryToList = self.txHistory;
         }
 
         return storageService.setTxHistory(JSON.stringify(newHistory), walletId, function() {
@@ -932,6 +912,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   self.showMore = function() {
     $timeout(function() {
       self.txHistory = self.completeHistory.slice(0, self.nextTxHistory);
+      self.txHistoryToList = self.txHistory;
       $log.debug('Total txs: ', self.txHistory.length + '/' + self.completeHistory.length);
       self.nextTxHistory += self.historyShowMoreLimit;
       if (self.txHistory.length >= self.completeHistory.length)
@@ -939,11 +920,25 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     }, 100);
   };
 
-  self.txHistoryToShow = function(search) {
+  self.startSearch = function(){
+    self.isSearching = true;
+    self.txHistoryToList = [];
+  }
+
+  self.cancelSearch = function(){
+    self.isSearching = false
+    self.txHistoryToList  = self.txHistory;
+  }
+
+  self.updateSearchInput = function(search){
+    self.search = search;
+    self.throttleSearch();
+  }
+
+  self.throttleSearch = lodash.throttle(function() {
 
     function filter(search) {
       var result = [];
-
       function formatDate(date) {
         var day = ('0' + date.getDate()).slice(-2).toString();
         var month = ('0' + (date.getMonth() + 1)).slice(-2).toString();
@@ -965,12 +960,12 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       return result;
     };
 
-     if (!self.isSearching) {
-       return self.txHistory;
-     } else {
-       return filter(search);;
-     }
-   }
+      self.txHistoryToList = filter(self.search);
+      $timeout(function() {
+        $rootScope.$apply();
+      });
+
+   },1000);
 
   self.getTxsFromServer = function(client, skip, endingTxid, limit, cb) {
     var res = [];

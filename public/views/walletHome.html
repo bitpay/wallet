@@ -160,7 +160,7 @@
 
       <div class="oh pr" ng-show="index.txHistory[0] || index.txProgress > 5">
         <ul class="no-bullet m0">
-          <li ng-click="index.isSearching = true;" ng-show="!index.isSearching" >
+          <li ng-click="index.startSearch()" ng-show="!index.isSearching" >
             <h4 class="title m0" translate>Activity
               <i class="fi-magnifying-glass"></i>
             </h4>
@@ -206,6 +206,7 @@
               <form>
                 <input name="search"
                   type="search"
+                  ng-change="index.updateSearchInput(search)"
                   placeholder="{{'Search transactions' | translate}}"
                   ng-model="search">
                 </input>
@@ -213,10 +214,10 @@
             </div>
           </div>
           <div class="small-1 columns">
-            <a ng-click="index.isSearching = false" translate>Cancel</a>
+            <a ng-click="index.cancelSearch()" translate>Cancel</a>
           </div>
         </div>
-        <div ng-repeat="btx in index.txHistoryToShow(search) track by btx.txid"
+        <div ng-repeat="btx in index.txHistoryToList track by btx.txid"
           ng-click="home.openTxModal(btx)"
           class="row collapse last-transactions-content">
           <div class="large-6 medium-6 small-6 columns size-14">
