@@ -930,6 +930,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
           self.completeHistory = newHistory;
           self.txHistory = newHistory.slice(0, self.historyShowLimit);
           self.historyShowMore = newHistory.length > self.historyShowLimit;
+          self.txHistoryToList = self.txHistory;
         }
 
         return storageService.setTxHistory(JSON.stringify(newHistory), walletId, function() {
@@ -942,6 +943,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   self.showMore = function() {
     $timeout(function() {
       self.txHistory = self.completeHistory.slice(0, self.nextTxHistory);
+      self.txHistoryToList = self.txHistory;
       $log.debug('Total txs: ', self.txHistory.length + '/' + self.completeHistory.length);
       self.nextTxHistory += self.historyShowMoreLimit;
       if (self.txHistory.length >= self.completeHistory.length)
@@ -949,11 +951,25 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     }, 100);
   };
 
-  self.txHistoryToShow = function(search) {
+  self.startSearch = function(){
+    self.isSearching = true;
+    self.txHistoryToList = [];
+  }
+
+  self.cancelSearch = function(){
+    self.isSearching = false
+    self.txHistoryToList  = self.txHistory;
+  }
+
+  self.updateSearchInput = function(search){
+    self.search = search;
+    self.throttleSearch();
+  }
+
+  self.throttleSearch = lodash.throttle(function() {
 
     function filter(search) {
       var result = [];
-
       function formatDate(date) {
         var day = ('0' + date.getDate()).slice(-2).toString();
         var month = ('0' + (date.getMonth() + 1)).slice(-2).toString();
@@ -975,12 +991,12 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       return result;
     };
 
-     if (!self.isSearching) {
-       return self.txHistory;
-     } else {
-       return filter(search);;
-     }
-   }
+      self.txHistoryToList = filter(self.search);
+      $timeout(function() {
+        $rootScope.$apply();
+      });
+
+   },1000);
 
   self.getTxsFromServer = function(client, skip, endingTxid, limit, cb) {
     var res = [];
