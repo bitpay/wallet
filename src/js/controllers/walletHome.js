@@ -250,6 +250,10 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
           }
 
           $modalInstance.close(addr);
+          profileService.isBackupNeeded(walletId, function(needsBackup) {
+            self.destinationWalletNeedsBackup = needsBackup;
+            $modalInstance.close(addr);
+          });
         });
       };
     };
