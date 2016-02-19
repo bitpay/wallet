@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('walletHomeController', function($scope, $rootScope, $interval, $timeout, $filter, $modal, $log, notification, txStatus, isCordova, isMobile, profileService, lodash, configService, rateService, storageService, bitcore, isChromeApp, gettext, gettextCatalog, nodeWebkit, addressService, ledger, bwsError, confirmDialog, txFormatService, animationService, addressbookService, go, feeService) {
+angular.module('copayApp.controllers').controller('walletHomeController', function($scope, $rootScope, $interval, $timeout, $filter, $modal, $log, notification, txStatus, isCordova, isMobile, profileService, lodash, configService, rateService, storageService, bitcore, isChromeApp, gettext, gettextCatalog, nodeWebkit, addressService, ledger, bwsError, confirmDialog, txFormatService, animationService, addressbookService, go, feeService, txService) {
 
   var self = this;
   window.ignoreMobilePause = false;
@@ -27,8 +27,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   this.showScanner = false;
   this.addr = {};
   this.lockedCurrentFeePerKb = null;
-  this.paymentExpired = true;
-  this.usePaypro = false;
+  this.paymentExpired = false;
 
   var disableScannerListener = $rootScope.$on('dataScanned', function(event, data) {
     self.setForm(data);
@@ -285,8 +284,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     var fc = profileService.focusedClient;
     var currentSpendUnconfirmed = configWallet.spendUnconfirmed;
     var ModalInstanceCtrl = function($scope, $modalInstance) {
-      $scope.paymentExpired = false;
-      $scope.usePaypro = false;
+      $scope.paymentExpired = null;
       checkPaypro();
       $scope.error = null;
       $scope.copayers = copayers
@@ -295,6 +293,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       $scope.loading = null;
       $scope.color = fc.backgroundColor;
       $scope.isShared = fc.credentials.n > 1;
+      var now = Math.floor(Date.now() / 1000);
 
       // ToDo: use tx.customData instead of tx.message
       if (tx.message === 'Glidera transaction' && isGlidera) {
@@ -311,17 +310,29 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       };
 
       function checkPaypro() {
-        if(tx.payProUrl && !isChromeApp){
+        if (tx.payProUrl && !isChromeApp) {
           fc.fetchPayPro({
             payProUrl: tx.payProUrl,
           }, function(err, paypro) {
             if (err) return;
             tx.paypro = paypro;
-            $scope.usePaypro = true;
-            $scope.paymentExpired = tx.paypro.expires <= Math.floor(Date.now() / 1000);
+            $scope.paymentExpired = tx.paypro.expires <= now;
+            if (!$scope.paymentExpired)
+              paymentTimeControl(tx.paypro.expires);
             $scope.$apply();
           });
         }
+      };
+
+      function paymentTimeControl(timeToExpire) {
+        $scope.expires = timeToExpire;
+        var countDown = $interval(function() {
+          if ($scope.expires <= now) {
+            $scope.paymentExpired = true;
+            $interval.cancel(countDown);
+          }
+          $scope.expires --;
+        }, 1000);
       };
 
       lodash.each(['TxProposalRejectedBy', 'TxProposalAcceptedBy', 'transactionProposalRemoved', 'TxProposalRemoved', 'NewOutgoingTx', 'UpdateTx'], function(eventName) {
@@ -970,8 +981,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
   this.resetForm = function() {
     this.resetError();
-    this.paymentExpired = true;
-    this.usePaypro = false;
+    this.paymentExpired = false;
     this._paypro = null;
     this.lockedCurrentFeePerKb = null;
 
@@ -1091,7 +1101,6 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   };
 
   function _paymentTimeControl(timeToExpire) {
-    self.usePaypro = true;
     var now = Math.floor(Date.now() / 1000);
 
     if (timeToExpire <= now) {
@@ -1099,7 +1108,6 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       return;
     }
 
-    self.paymentExpired = false;
     self.timeToExpire = timeToExpire;
     var countDown = $interval(function() {
       if (self.timeToExpire <= now) {
