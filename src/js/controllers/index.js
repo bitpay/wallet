@@ -13,6 +13,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   self.historyShowLimit = 10;
   self.updatingTxHistory = {};
   self.prevState = 'walletHome';
+  self.isSearching = false;
 
   function strip(number) {
     return (parseFloat(number.toPrecision(12)));
@@ -928,6 +929,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
           self.completeHistory = newHistory;
           self.txHistory = newHistory.slice(0, self.historyShowLimit);
           self.historyShowShowAll = newHistory.length > self.historyShowLimit;
+          self.txHistoryToList = self.txHistory;
         }
 
         return storageService.setTxHistory(JSON.stringify(newHistory), walletId, function() {
@@ -945,9 +947,64 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       $timeout(function() {
         self.historyRendering = false;
         self.txHistory = self.completeHistory;
+        self.txHistoryToList = self.txHistory;
       }, 100);
     }, 100);
   };
+
+  self.startSearch = function(){
+    self.isSearching = true;
+    self.txHistoryToList = [];
+    if(self.historyShowShowAll) self.txHistory = self.completeHistory;
+  }
+
+  self.cancelSearch = function(){
+    self.isSearching = false;
+    if(self.txHistory.length > self.historyShowLimit)
+      self.txHistoryToList = self.txHistory.slice(0, self.historyShowLimit);
+    else self.txHistoryToList = self.txHistory;
+  }
+
+  self.updateSearchInput = function(search){
+    self.search = search;
+    if (isCordova)
+      window.plugins.toast.hide();
+    self.throttleSearch();
+  }
+
+  self.throttleSearch = lodash.throttle(function() {
+
+    function filter(search) {
+      var result = [];
+      function formatDate(date) {
+        var day = ('0' + date.getDate()).slice(-2).toString();
+        var month = ('0' + (date.getMonth() + 1)).slice(-2).toString();
+        var year = date.getFullYear();
+        return [month, day, year].join('/');
+      };
+
+      if (lodash.isEmpty(search)) return;
+
+      result = lodash.filter(self.txHistory, function(tx) {
+        return lodash.includes(tx.amountStr, search) ||
+          lodash.includes(tx.message, search) ||
+          lodash.includes(self.addressbook ? self.addressbook[tx.addressTo] : null, search) ||
+          lodash.includes(tx.addressTo, search) ||
+          lodash.isEqual(formatDate(new Date(tx.time * 1000)), search);
+      });
+
+      return result;
+    };
+
+    self.txHistoryToList = filter(self.search);
+    if (isCordova)
+      window.plugins.toast.showShortBottom(gettextCatalog.getString('Matches: ' + self.txHistoryToList.length));
+
+    $timeout(function() {
+      $rootScope.$apply();
+    });
+
+   },1000);
 
   self.getTxsFromServer = function(client, skip, endingTxid, limit, cb) {
     var res = [];
@@ -1198,6 +1255,10 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
   $rootScope.$on('Local/AddressbookUpdated', function(event, ab) {
     self.setAddressbook(ab);
+  });
+
+  $rootScope.$on('Local/Searching', function(event, val) {
+    self.isSearching = val;
   });
 
   // UX event handlers
@@ -1470,7 +1531,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
   $rootScope.$on('Local/NeedsConfirmation', function(event, txp, cb) {
     self.confirmTx = {
-      txp : txFormatService.processTx(txp),
+      txp: txFormatService.processTx(txp),
       callback: function(accept) {
         self.confirmTx = null;
         return cb(accept);

@@ -782,7 +782,50 @@ table tbody tr:last-child td {
   border-bottom: none;
 }
 
+/*////////////////////////////   SEARCH INPUT  ////////////////////////////*/
 
+.searchBar {
+   display: table;
+}
+.searchBar .columns {
+   display: table-cell;
+   vertical-align: middle;
+}
+
+.searchBar .columns,
+.searchBar [class*="column"] + [class*="column"]:last-child {
+   float: none;
+}
+
+.searchBar form{
+  margin-left: 20px;
+}
+
+.searchBar input{
+  margin-bottom: auto;
+  border-bottom: 0px solid #E9EDF0;
+}
+.searchBar i{
+  position: absolute;
+  padding: 8px;
+}
+
+.searchBar .small-11{
+  padding-right: 5px;
+  padding-left: 5px;
+}
+
+.searchBar .small-1{
+  padding-left: 2px;
+  padding-right: 8px;
+}
+
+.searchLabel {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  background-color: rgba(0, 0, 0, 0.02);
+  border-radius: 10px;
+}
 /*////////////////////////////  BUTTON OUTLINE  ////////////////////////////*/
 
 .button.outline,
@@ -1477,7 +1520,7 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
 
 #history .spinner > div,
 #receive .spinner > div,
-.copayers .spinner > div 
+.copayers .spinner > div
 {
   background-color: #7A8C9E;
 }

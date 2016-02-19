@@ -72,7 +72,7 @@
     -->
 
     <div id="walletHome" class="walletHome tab-view tab-in">
-      <div class="oh pr">
+      <div class="oh pr" ng-show="!index.isSearching">
         <div class="amount" ng-style="{'background-color':index.backgroundColor}">
           <div ng-if="!index.anyOnGoingProcess && !index.notAuthorized">
             <div class="m15t" ng-show="index.updateError" ng-click='index.updateAll({triggerTxUpdate: true})'>
@@ -134,7 +134,7 @@
         </div>
       </div>
 
-      <div class="oh pr" ng-if="index.txps[0]">
+      <div class="oh pr" ng-if="index.txps[0]" ng-show="!index.isSearching">
         <h4 ng-show="index.requiresMultipleSignatures" class="title m0" translate>Payment Proposals</h4>
         <h4 ng-show="!index.requiresMultipleSignatures" class="title m0" translate>Unsent transactions</h4>
         <div class="last-transactions pr" ng-repeat="tx in index.txps">
@@ -175,14 +175,16 @@
             <div translate>Updating transaction history. Please stand by.</div>
           </div>
         </div>
-      </div> 
+      </div>
 
       <div class="oh pr" ng-show="index.txHistory[0]">
-        <h4 class="title m0">
-          <span translate>Activity</span>
-        </h4>
-
-
+          <ul class="no-bullet m0">
+            <li ng-click="index.startSearch()" ng-show="!index.isSearching" >
+              <h4 class="title m0" translate>Activity
+                <i class="fi-magnifying-glass"></i>
+              </h4>
+            </li>
+          </ul>
         <div ng-if="index.txHistory[0] &&  index.updatingTxHistory[index.walletId] && index.newTx" class="row collapse last-transactions-content animated fadeInDown">
           <div class="large-6 medium-6 small-6 columns size-14">
             <div class="m10r left">
@@ -197,9 +199,26 @@
 
          </div>
         </div>
-
-        <div ng-repeat="btx in index.txHistory"
-             fast-click callback-fn="home.openTxModal(btx)"
+        <div ng-show="index.isSearching" class="row searchBar">
+          <div class="small-11 columns">
+            <div class="searchLabel">
+              <i class="fi-magnifying-glass size-14"></i>
+              <form>
+                <input name="search"
+                  type="search"
+                  ng-change="index.updateSearchInput(search)"
+                  placeholder="{{'Search transactions' | translate}}"
+                  ng-model="search">
+                </input>
+              </form>
+            </div>
+          </div>
+          <div class="small-1 columns">
+            <a ng-click="index.cancelSearch()" translate>Cancel</a>
+          </div>
+        </div>
+        <div ng-repeat="btx in index.txHistoryToList"
+          ng-click="home.openTxModal(btx)"
           class="row collapse last-transactions-content">
           <div class="large-6 medium-6 small-6 columns size-14">
             <div class="m10r left">
@@ -247,7 +266,7 @@
           </div>
         </div>
 
-        <div class="row m20t text-center" ng-show="index.historyRendering">
+        <div class="row m20t text-center" ng-show="index.historyRendering && !index.isSearching">
           <div class="columns large-12 medium-12 small-12">
             <div class="spinner">
               <div class="rect1"></div>
@@ -261,7 +280,7 @@
 
         <div class="m20t text-center">
           <a class="text-gray size-12"
-             ng-show="index.historyShowShowAll"
+             ng-show="index.historyShowShowAll && !index.isSearching"
              ng-click="index.showAllHistory()">
             <span translate>Show all</span>
           </a>
@@ -363,7 +382,7 @@
           <available-balance></available-balance>
           <a
             ng-show="!home.lockedCurrentFeePerKb && index.feeToSendMaxStr && index.availableBalanceSat > 0 && !home.blockUx && !home.lockAmount"
-            ng-click="home.sendAll()" 
+            ng-click="home.sendAll()"
             class="p10"
              translate> Send All
           </a>
