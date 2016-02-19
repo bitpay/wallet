@@ -923,15 +923,20 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   self.startSearch = function(){
     self.isSearching = true;
     self.txHistoryToList = [];
+    if(self.historyShowShowAll) self.txHistory = self.completeHistory;
   }
 
   self.cancelSearch = function(){
-    self.isSearching = false
-    self.txHistoryToList  = self.txHistory;
+    self.isSearching = false;
+    if(self.txHistory.length > self.historyShowLimit)
+      self.txHistoryToList = self.txHistory.slice(0, self.historyShowLimit);
+    else self.txHistoryToList = self.txHistory;
   }
 
   self.updateSearchInput = function(search){
     self.search = search;
+    if (isCordova)
+      window.plugins.toast.hide();
     self.throttleSearch();
   }
 
@@ -955,15 +960,17 @@ angular.module('copayApp.controllers').controller('indexController', function($r
           lodash.includes(tx.addressTo, search) ||
           lodash.isEqual(formatDate(new Date(tx.time * 1000)), search);
       });
-      if (isCordova)
-        window.plugins.toast.showShortBottom(gettextCatalog.getString('Matches: ' + result.length));
+
       return result;
     };
 
-      self.txHistoryToList = filter(self.search);
-      $timeout(function() {
-        $rootScope.$apply();
-      });
+    self.txHistoryToList = filter(self.search);
+    if (isCordova)
+      window.plugins.toast.showShortBottom(gettextCatalog.getString('Matches: ' + self.txHistoryToList.length));
+
+    $timeout(function() {
+      $rootScope.$apply();
+    });
 
    },1000);
 
