@@ -136,26 +136,11 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       self.initGlidera();
 
       self.setCustomBWSFlag();
-      self.isBackupNeeded(fc, function(needsBackup) {
+      profileService.isBackupNeeded(self.walletId, function(needsBackup) {
         self.needsBackup = needsBackup;
         self.openWallet();
       });
     });
-  };
-
-  self.isBackupNeeded = function(fc, cb) {
-    if (fc.isPrivKeyExternal()) return cb(false);
-
-    if (!fc.credentials.mnemonic) {
-      storageService.setBackupFlag(self.walletId, function(err) {
-        $log.debug('Backup stored');
-        return cb(false);
-      });
-    } else {
-      storageService.getBackupFlag(self.walletId, function(err, val) {
-        return cb(self.network == 'testnet' ? false : !val);
-      });
-    }
   };
 
   self.setCustomBWSFlag = function() {
