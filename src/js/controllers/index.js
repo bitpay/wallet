@@ -358,7 +358,10 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         }
         $log.debug('Wallet Status:', walletStatus);
         self.setPendingTxps(walletStatus.pendingTxps);
-        self.setFeesOpts();
+
+        if (!self.feeLevels) {
+          self.setFeesOpts();
+        }
 
         // Status Shortcuts
         self.walletName = walletStatus.wallet.name;
@@ -405,6 +408,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         if (self.availableBalanceSat > feeToSendMaxSat) {
           self.availableMaxBalance = strip((self.availableBalanceSat - feeToSendMaxSat) * self.satToUnit);
           self.feeToSendMaxStr = profileService.formatAmount(feeToSendMaxSat) + ' ' + self.unitName;
+        } else {
+          self.feeToSendMaxStr = null;
         }
 
         if (cb) return cb(self.currentFeePerKb, self.availableMaxBalance, self.feeToSendMaxStr);
@@ -662,7 +667,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.alternativeIsoCode = config.alternativeIsoCode;
 
     // Set fee level and max value to send all
-    self.setCurrentFeeLevel();
+    if (!self.currentFeeLevel) {
+      self.setCurrentFeeLevel();
+    }
 
     // Check address
     addressService.isUsed(self.walletId, balance.byAddress, function(err, used) {
