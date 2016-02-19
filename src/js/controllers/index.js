@@ -11,7 +11,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   self.usePushNotifications = self.isCordova && !isMobile.Windows();
   self.onGoingProcess = {};
   self.historyShowLimit = 10;
-  self.moreTx = 100;
+  self.historyShowMoreLimit = 100;
   self.updatingTxHistory = {};
   self.prevState = 'walletHome';
 
@@ -98,8 +98,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.notAuthorized = false;
     self.txHistory = [];
     self.completeHistory = [];
-    self.skipTxHistory = self.historyShowLimit;
-    self.nextTxHistory = self.historyShowLimit + self.moreTx;
+    self.nextTxHistory = self.historyShowLimit + self.historyShowMoreLimit;
     self.txProgress = 0;
     self.historyShowMore = false;
     self.balanceByAddress = null;
@@ -941,10 +940,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
   self.showMore = function() {
     $timeout(function() {
-      self.txHistory = self.txHistory.concat(self.completeHistory.slice(self.skipTxHistory, self.nextTxHistory));
+      self.txHistory = self.completeHistory.slice(0, self.nextTxHistory);
       $log.debug('Total txs: ', self.txHistory.length + '/' + self.completeHistory.length);
-      self.skipTxHistory += self.moreTx;
-      self.nextTxHistory += self.moreTx;
+      self.nextTxHistory += self.historyShowMoreLimit;
       if (self.txHistory.length >= self.completeHistory.length)
         self.historyShowMore = false;
     }, 100);
