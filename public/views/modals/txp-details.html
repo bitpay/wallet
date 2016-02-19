@@ -11,7 +11,7 @@
     </h1>
   </section>
 </nav>
-<div class="modal-content fix-modals-touch" 
+<div class="modal-content fix-modals-touch"
      ng-swipe-disable-mouse
      ng-swipe-right="cancel()"
      ng-init="updateCopayerList()">
@@ -29,7 +29,7 @@
       </span>
     </span>
   </div>
-  
+
   <div class="oh">
     <div class="box-notification" ng-show="error">
       <span class="text-warning size-14">
@@ -54,7 +54,7 @@
       <div class="large-6 medium-6 small-6 columns text-right" ng-show="canSign">
         <button class="button primary round expand" ng-click="sign(tx)"
                                                     ng-style="{'background-color':color}"
-                                                    ng-disabled="loading">
+                                                    ng-disabled="loading || (paymentExpired && usePaypro)">
           <i class="fi-check"></i>
           <span translate>Accept</span>
         </button>
@@ -140,10 +140,16 @@
           <contact address="{{tx.toAddress}}" ng-hide="tx.merchant"></contact>
         </span>
       </li>
-      <li class="line-b p10">
+      <li class="line-b p10" ng-if="paymentExpired">
+        <span class="text-gray" translate>Expired</span>
+        <span class="right text-alert">
+          <time>{{tx.paypro.expires * 1000 | amTimeAgo }}</time>
+        </span>
+      </li>
+      <li class="line-b p10" ng-if="!paymentExpired">
         <span class="text-gray" translate>Expires</span>
         <span class="right">
-          <time>{{tx.paypro.expirationDate | amTimeAgo }}</time>
+          <time>{{expires * 1000 | amTimeAgo }}</time>
         </span>
       </li>
       <li class="line-b p10">
@@ -170,7 +176,7 @@
         {{ac.copayerName}} <span ng-if="ac.copayerId == copayerId">({{'Me'|translate}})</span>
       </li>
     </ul>
-  </div> 
+  </div>
 
   <div class="columns text-center m20t" ng-if="tx.canBeRemoved || (tx.status == 'accepted' && !tx.broadcastedOn)">
     <div class="text-gray size-12 m20b" ng-show="!tx.isGlidera && isShared" translate>

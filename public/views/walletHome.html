@@ -175,7 +175,7 @@
             <div translate>Updating transaction history. Please stand by.</div>
           </div>
         </div>
-      </div> 
+      </div>
 
       <div class="oh pr" ng-show="index.txHistory[0]">
         <h4 class="title m0">
@@ -361,12 +361,14 @@
       <div class="pr p25b">
         <h4 class="title m0">
           <available-balance></available-balance>
-          <a
-            ng-show="!home.lockedCurrentFeePerKb && index.feeToSendMaxStr && index.availableBalanceSat > 0 && !home.blockUx && !home.lockAmount"
-            ng-click="home.sendAll()" 
-            class="p10"
+          <a ng-show="!home.lockedCurrentFeePerKb && index.feeToSendMaxStr && index.availableBalanceSat > 0 && !home.blockUx && !home.lockAmount"
+             ng-click="home.sendAll()"
              translate> Send All
           </a>
+          <div ng-show="!home.paymentExpired && home._paypro">
+            <span translate>Payment expires</span>
+            <time> {{home.timeToExpire * 1000 | amTimeAgo}}</time>
+          </div>
         </h4>
         <div class="camera-icon" ng-show="index.isComplete">
           <qr-scanner on-scan="home.onQrCodeScanned(data)"></qr-scanner>
@@ -475,7 +477,7 @@
                 <a ng-click="home.resetForm(sendForm)" class="button expand outline dark-gray round" translate>Cancel</a>
               </div>
               <div class="columns" ng-class="{'small-6 medium-6 large-6':(home._paypro || home.lockAddress || home.lockAmount)}">
-                <button type="submit" class="button black round expand" ng-disabled="sendForm.$invalid || home.blockUx ||  index.isOffline"
+                <button type="submit" class="button black round expand" ng-disabled="sendForm.$invalid || home.blockUx || index.isOffline || (home.paymentExpired && home._paypro)"
                   ng-style="{'background-color':index.backgroundColor}"  translate>
                   Send
                 </button>
