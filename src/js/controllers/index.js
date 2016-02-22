@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, bwcService, pushNotificationsService, lodash, go, profileService, configService, isCordova, rateService, storageService, addressService, gettext, gettextCatalog, amMoment, nodeWebkit, addonManager, feeService, isChromeApp, bwsError, txFormatService, uxLanguage, $state, glideraService, isMobile, addressbookService) {
+angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, bwcService, pushNotificationsService, lodash, go, profileService, configService, isCordova, rateService, storageService, addressService, gettext, gettextCatalog, amMoment, nodeWebkit, addonManager, isChromeApp, bwsError, txFormatService, uxLanguage, $state, glideraService, isMobile, addressbookService) {
   var self = this;
   var SOFT_CONFIRMATION_LIMIT = 12;
   var errors = bwcService.getErrors();
@@ -45,7 +45,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   ret.txTemplateUrl = addonManager.txTemplateUrl() || 'views/includes/transaction.html';
 
   ret.tab = 'walletHome';
-  ret.feeOpts = feeService.feeOpts;
   var vanillaScope = ret;
 
 
@@ -359,10 +358,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         $log.debug('Wallet Status:', walletStatus);
         self.setPendingTxps(walletStatus.pendingTxps);
 
-        if (!self.feeLevels) {
-          self.setFeesOpts();
-        }
-
         // Status Shortcuts
         self.walletName = walletStatus.wallet.name;
         self.walletSecret = walletStatus.wallet.secret;
@@ -390,50 +385,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
   self.setSpendUnconfirmed = function(spendUnconfirmed) {
     self.spendUnconfirmed = spendUnconfirmed || configService.getSync().wallet.spendUnconfirmed;
-  };
-
-  self.setFeeAndSendMax = function(cb) {
-
-    self.availableMaxBalance = null;
-    self.currentFeePerKb = null;
-
-    // Set Send max
-    if (self.currentFeeLevel && self.totalBytesToSendMax) {
-      feeService.getCurrentFeeValue(self.currentFeeLevel, function(err, feePerKb) {
-
-        // KB to send max
-        var feeToSendMaxSat = parseInt(((self.totalBytesToSendMax * feePerKb) / 1000.).toFixed(0));
-        self.currentFeePerKb = feePerKb;
-
-        if (self.availableBalanceSat > feeToSendMaxSat) {
-          self.availableMaxBalance = strip((self.availableBalanceSat - feeToSendMaxSat) * self.satToUnit);
-          self.feeToSendMaxStr = profileService.formatAmount(feeToSendMaxSat) + ' ' + self.unitName;
-        } else {
-          self.feeToSendMaxStr = null;
-        }
-
-        if (cb) return cb(self.currentFeePerKb, self.availableMaxBalance, self.feeToSendMaxStr);
-      });
-    }
-
-  };
-
-  self.setCurrentFeeLevel = function(level) {
-    self.currentFeeLevel = level || configService.getSync().wallet.settings.feeLevel || 'normal';
-    self.setFeeAndSendMax();
-  };
-
-
-  self.setFeesOpts = function() {
-    var fc = profileService.focusedClient;
-    if (!fc) return;
-    $timeout(function() {
-      feeService.getFeeLevels(function(levels) {
-        self.feeLevels = levels;
-        $rootScope.$apply();
-      });
-    });
-  };
+  }; 
 
   self.updateBalance = function() {
     var fc = profileService.focusedClient;
@@ -665,11 +617,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
     self.alternativeName = config.alternativeName;
     self.alternativeIsoCode = config.alternativeIsoCode;
-
-    // Set fee level and max value to send all
-    if (!self.currentFeeLevel) {
-      self.setCurrentFeeLevel();
-    }
 
     // Check address
     addressService.isUsed(self.walletId, balance.byAddress, function(err, used) {
@@ -1249,14 +1196,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   $rootScope.$on('Local/SpendUnconfirmedUpdated', function(event, spendUnconfirmed) {
     self.setSpendUnconfirmed(spendUnconfirmed);
     self.updateAll();
-  });
-
-  $rootScope.$on('Local/FeeLevelUpdated', function(event, level) {
-    self.setCurrentFeeLevel(level);
-  });
-
-  $rootScope.$on('Local/SetFeeSendMax', function(event, cb) {
-    self.setFeeAndSendMax(cb);
   });
 
   $rootScope.$on('Local/ProfileBound', function() {
