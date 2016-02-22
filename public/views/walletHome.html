@@ -154,36 +154,34 @@
 
       <div
           class="oh pr m20t text-gray size-12 text-center"
-          ng-show="!index.loadingWallet && !index.txHistory[0] && !index.updatingTxHistory[index.walletId] &&
-          !index.txHistoryError && !index.updateError" translate>
+          ng-show="!index.loadingWallet && !index.txHistory[0] && !index.updatingTxHistory && !index.txHistoryError && !index.updateError" translate>
         No transactions yet
       </div>
-      <div ng-show="index.updatingTxHistory[index.walletId]
-                && ( (index.txProgress > 6 && !index.txHistory[0]) || (index.txProgress > 50 ) )">
-        <div  class="row p20 text-center">
-          <div class="columns large-12 medium-12 small-12 m10b">
-            <div class="spinner">
-              <div class="rect1"></div>
-              <div class="rect2"></div>
-              <div class="rect3"></div>
-              <div class="rect4"></div>
-              <div class="rect5"></div>
-            </div>
-          </div>
-          <div class="size-12 text-gray m20t">
-            <div translate>{{index.txProgress}} transactions downloaded</div>
-            <div translate>Updating transaction history. Please stand by.</div>
-          </div>
-        </div>
-      </div>
 
-      <div class="oh pr" ng-show="index.txHistory[0]">
+      <div class="oh pr" ng-show="index.txHistory[0] || index.txProgress > 5">
         <h4 class="title m0">
           <span translate>Activity</span>
         </h4>
 
+        <div ng-show="index.updatingTxHistory && index.txProgress > 5">
+          <div  class="row p20 text-center">
+            <div class="columns large-12 medium-12 small-12 m10b">
+              <div class="spinner">
+                <div class="rect1"></div>
+                <div class="rect2"></div>
+                <div class="rect3"></div>
+                <div class="rect4"></div>
+                <div class="rect5"></div>
+              </div>
+            </div>
+            <div class="size-12 text-gray m20t">
+              <div translate>{{index.txProgress}} transactions downloaded</div>
+              <div translate>Updating transaction history. Please stand by.</div>
+            </div>
+          </div>
+        </div> 
 
-        <div ng-if="index.txHistory[0] &&  index.updatingTxHistory[index.walletId] && index.newTx" class="row collapse last-transactions-content animated fadeInDown">
+        <div ng-if="index.txHistory[0] &&  index.updatingTxHistory && index.newTx" class="row collapse last-transactions-content animated fadeInDown">
           <div class="large-6 medium-6 small-6 columns size-14">
             <div class="m10r left">
               <img src="img/icon-new.svg" width="40">
@@ -194,11 +192,10 @@
             <div style="margin-top:5px; background:#eee; width: 6em; margin-left: 52px; line-height:0.6em">
               <span>&nbsp;</span>
             </div>
-
-         </div>
+          </div>
         </div>
 
-        <div ng-repeat="btx in index.txHistory"
+        <div ng-repeat="btx in index.txHistory track by btx.txid"
              fast-click callback-fn="home.openTxModal(btx)"
           class="row collapse last-transactions-content">
           <div class="large-6 medium-6 small-6 columns size-14">
@@ -302,8 +299,8 @@
           <!-- Address-->
           <div class="large-12 columns">
             <h2 class="text-center m10t" translate>My Bitcoin address</h2>
-            <div class="text-center" ng-click="home.copyToClipboard(home.addr[index.walletId])" ng-show="home.addr[index.walletId] || home.generatingAddress">
-              <qrcode size="220" data="bitcoin:{{home.addr[index.walletId]}}"></qrcode>
+            <div class="text-center" ng-click="home.copyToClipboard(home.addr)" ng-show="home.addr || home.generatingAddress">
+              <qrcode size="220" data="bitcoin:{{home.addr}}"></qrcode>
               <div ng-show="home.generatingAddress" style="position:relative; top:-226px; height:0px">
                 <div style="height:220px; width:220px; margin:auto; background: white">
                   <div class="spinner" style="margin-top:85px">
@@ -317,29 +314,29 @@
               </div>
               <div class="m10t" >
                 <h4 ng-class="{'enable_text_select': !index.isCordova}" class="size-12">
-                  {{home.generatingAddress ? '...' : home.addr[index.walletId]}}
+                  {{home.generatingAddress ? '...' : home.addr}}
                 </h4>
               </div>
             </div>
           </div>
         </div>
         <div class="row m20t">
-          <div class="small-12 columns" ng-show="index.isCordova && home.addr[index.walletId]">
+          <div class="small-12 columns" ng-show="index.isCordova && home.addr">
             <button class="button outline light-gray small round expand"
-              ng-click="home.shareAddress(home.addr[index.walletId])"
+              ng-click="home.shareAddress(home.addr)"
               ng-disabled="home.generatingAddress">
               <span translate>Share address</span>
             </button>
           </div>
-          <div class="small-12 columns" ng-show="home.addr[index.walletId]">
-            <button class="button expand small round m10b" ng-click="home.openCustomizedAmountModal(home.addr[index.walletId])"
+          <div class="small-12 columns" ng-show="home.addr">
+            <button class="button expand small round m10b" ng-click="home.openCustomizedAmountModal(home.addr)"
             ng-style="{'background-color':index.backgroundColor}"
             ng-disabled="home.generatingAddress">
               <span translate>Request a specific amount</span>
             </button>
           </div>
         </div>
-        <div class="row m10t" ng-show="home.addr[index.walletId]" >
+        <div class="row m10t" ng-show="home.addr" >
           <div class="large-12 columns">
             <div class="line-t size-10 text-gray m10b p10t">
               <span translate> Share this wallet address to receive payments. To protect your privacy, new addresses are generated automatically once you use them.</span>
@@ -361,8 +358,9 @@
       <div class="pr p25b">
         <h4 class="title m0">
           <available-balance></available-balance>
-          <a ng-show="!home.lockedCurrentFeePerKb && index.feeToSendMaxStr && index.availableBalanceSat > 0 && !home.blockUx && !home.lockAmount"
-             ng-click="home.sendAll()"
+          <a
+            ng-show="!home.lockedCurrentFeePerKb && index.feeToSendMaxStr && index.availableBalanceSat > 0 && !home.blockUx && !home.lockAmount"
+            ng-click="home.sendAll()" 
              translate> Send All
           </a>
           <div ng-show="!home.paymentExpired && home._paypro">

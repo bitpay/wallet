@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('walletHomeController', function($scope, $rootScope, $interval, $timeout, $filter, $modal, $log, notification, txStatus, isCordova, isMobile, profileService, lodash, configService, rateService, storageService, bitcore, isChromeApp, gettext, gettextCatalog, nodeWebkit, addressService, ledger, bwsError, confirmDialog, txFormatService, animationService, addressbookService, go, feeService, txService) {
+angular.module('copayApp.controllers').controller('walletHomeController', function($scope, $rootScope, $interval, $timeout, $filter, $modal, $log, notification, txStatus, isCordova, isMobile, profileService, lodash, configService, rateService, storageService, bitcore, isChromeApp, gettext, gettextCatalog, nodeWebkit, addressService, ledger, bwsError, confirmDialog, txFormatService, animationService, addressbookService, go, feeService, txService){
 
   var self = this;
   window.ignoreMobilePause = false;
@@ -8,26 +8,24 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   $rootScope.wpInputFocused = false;
   var config = configService.getSync();
   var configWallet = config.wallet;
-
-  // INIT
   var walletSettings = configWallet.settings;
-  this.unitToSatoshi = walletSettings.unitToSatoshi;
-  this.satToUnit = 1 / this.unitToSatoshi;
-  this.unitName = walletSettings.unitName;
-  this.alternativeIsoCode = walletSettings.alternativeIsoCode;
-  this.alternativeName = walletSettings.alternativeName;
-  this.alternativeAmount = 0;
-  this.unitDecimals = walletSettings.unitDecimals;
-  this.isCordova = isCordova;
-  this.addresses = [];
-  this.isMobile = isMobile.any();
-  this.isWindowsPhoneApp = isMobile.Windows() && isCordova;
-  this.blockUx = false;
-  this.isRateAvailable = false;
-  this.showScanner = false;
-  this.addr = {};
-  this.lockedCurrentFeePerKb = null;
-  this.paymentExpired = false;
+  var ret = {};
+
+  // INIT. Global value
+  ret.unitToSatoshi = walletSettings.unitToSatoshi;
+  ret.satToUnit = 1 / ret.unitToSatoshi;
+  ret.unitName = walletSettings.unitName;
+  ret.alternativeIsoCode = walletSettings.alternativeIsoCode;
+  ret.alternativeName = walletSettings.alternativeName;
+  ret.alternativeAmount = 0;
+  ret.unitDecimals = walletSettings.unitDecimals;
+  ret.isCordova = isCordova;
+  ret.addresses = [];
+  ret.isMobile = isMobile.any();
+  ret.isWindowsPhoneApp = isMobile.Windows() && isCordova;
+  var vanillaScope = ret;
+
+
 
   var disableScannerListener = $rootScope.$on('dataScanned', function(event, data) {
     self.setForm(data);
@@ -47,13 +45,21 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     }, 100);
   });
 
-  var disableAddrListener = $rootScope.$on('Local/NeedNewAddress', function() {
+  var disableAddrListener = $rootScope.$on('Local/AddressIsUsed', function() {
     self.setAddress(true);
   });
 
   var disableFocusListener = $rootScope.$on('Local/NewFocusedWallet', function() {
-    self.addr = {};
+    self.addr = null;
     self.resetForm();
+
+    $log.debug('Cleaning WalletHome Instance');
+    lodash.each(self, function(v, k) {
+      if (lodash.isFunction(v)) return;
+      if (vanillaScope[k]) return;
+
+      delete self[k];
+    });
   });
 
   var disableResumeListener = $rootScope.$on('Local/Resume', function() {
@@ -87,6 +93,8 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     disableOngoingProcessListener();
     $rootScope.shouldHideMenuBar = false;
   });
+
+
 
   this.onQrCodeScanned = function(data) {
     if (data) go.send();
@@ -510,7 +518,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       return;
 
     // Address already set?
-    if (!forceNew && self.addr[fc.credentials.walletId]) {
+    if (!forceNew && self.addr) {
       return;
     }
 
@@ -523,7 +531,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
           self.addrError = err;
         } else {
           if (addr)
-            self.addr[fc.credentials.walletId] = addr;
+            self.addr = addr;
         }
 
         $scope.$digest();
@@ -873,7 +881,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       amount = parseInt((form.amount.$modelValue * unitToSat).toFixed(0));
 
       outputs.push({
-        'toAddress' : address,
+        'toAddress': address,
         'amount': amount,
         'message': comment
       });
@@ -903,7 +911,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
           });
           return;
         } else {
-          $rootScope.$emit('Local/NeedsConfirmation', txp,  function(accept) {
+          $rootScope.$emit('Local/NeedsConfirmation', txp, function(accept) {
             if (accept) self.acceptTx(txp);
             else self.resetForm();
           });
@@ -1250,10 +1258,12 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   };
 
   /* Start setup */
+  lodash.assign(self, vanillaScope);
 
   this.bindTouchDown();
   if (profileService.focusedClient) {
     this.setAddress();
     this.setSendFormInputs();
   }
+
 });
