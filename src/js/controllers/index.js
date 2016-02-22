@@ -14,6 +14,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   ret.usePushNotifications = ret.isCordova && !isMobile.Windows();
   ret.onGoingProcess = {};
   ret.historyShowLimit = 10;
+  ret.historyShowMoreLimit = 100;
   ret.prevState = 'walletHome';
 
   ret.menu = [{
@@ -947,7 +948,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         // Final update
         if (walletId == profileService.focusedClient.credentials.walletId) {
           self.completeHistory = newHistory;
-          self.setCompactTxHistory();
+          self.txHistory = newHistory.slice(0, self.historyShowLimit);
+          self.historyShowMore = newHistory.length > self.historyShowLimit;
         }
 
         return storageService.setTxHistory(JSON.stringify(newHistory), walletId, function() {
@@ -959,15 +961,13 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     });
   }
 
-  self.showAllHistory = function() {
-    self.historyShowShowAll = false;
-    self.historyRendering = true;
+  self.showMore = function() {
     $timeout(function() {
-      $rootScope.$apply();
-      $timeout(function() {
-        self.historyRendering = false;
-        self.txHistory = self.completeHistory;
-      }, 100);
+      self.txHistory = self.completeHistory.slice(0, self.nextTxHistory);
+      $log.debug('Total txs: ', self.txHistory.length + '/' + self.completeHistory.length);
+      self.nextTxHistory += self.historyShowMoreLimit;
+      if (self.txHistory.length >= self.completeHistory.length)
+        self.historyShowMore = false;
     }, 100);
   };
 
@@ -1024,7 +1024,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
   self.setCompactTxHistory = function() {
     self.txHistory = self.completeHistory.slice(0, self.historyShowLimit);
-    self.historyShowShowAll = self.completeHistory.length > self.historyShowLimit;
+    if (self.completeHistory.length > self.historyShowLimit)
+      self.historyShowMore = true;
   };
 
   self.debounceUpdateHistory = lodash.debounce(function() {
