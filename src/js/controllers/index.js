@@ -1039,6 +1039,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   self.setCompactTxHistory = function() {
     self.nextTxHistory = self.historyShowMoreLimit;
     self.txHistory = self.completeHistory.slice(0, self.historyShowLimit);
+    self.txHistoryToList = self.txHistory;
     self.historyShowMore = self.completeHistory.length > self.historyShowLimit;
   };
 
