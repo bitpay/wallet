@@ -75,7 +75,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     self.bindTouchDown();
   });
 
-  var disableTabListener = $rootScope.$on('Local/TabChanged', function(e, tab) {
+  var disableTabListener = $rootScope.$on('Local/TabChanged', function(e, tab, reset, tx) {
     // This will slow down switch, do not add things here!
     switch (tab) {
       case 'receive':
@@ -84,6 +84,8 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
         break;
       case 'send':
         self.resetError();
+        if (reset) self.resetForm();
+        if (tx) self.setForm(tx.addressTo, tx.amount / 100, tx.message);
     };
   });
 

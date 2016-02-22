@@ -156,6 +156,13 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   };
 
 
+  self.sendSimilarTx = function() {
+    self.setTab('send', true);
+    $timeout(function() {
+      $rootScope.$apply();
+    });
+  };
+
   self.setTab = function(tab, reset, tries, switchState) {
     tries = tries || 0;
 
@@ -201,7 +208,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       }
 
       self.tab = tab;
-      $rootScope.$emit('Local/TabChanged', tab);
+      $rootScope.$emit('Local/TabChanged', tab, reset, self.showTx);
+      self.showTx = null;
     };
 
     if (switchState && !$state.is('walletHome')) {
