@@ -52,7 +52,7 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
     toggleSidebar(invert);
   };
 
-  root.walletHome = function(delayed) {
+  root.walletHome = function() {
     var fc = profileService.focusedClient;
     if (fc && !fc.isComplete()) {
       root.path('copayers');
@@ -62,7 +62,6 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
       });
     }
   };
-
 
   root.send = function() {
     root.path('walletHome', function() {
