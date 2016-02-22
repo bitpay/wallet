@@ -512,7 +512,6 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   };
 
   this.setAddress = function(forceNew) {
-console.log('[walletHome.js.795] KK', self.kk); //TODO
     self.addrError = null;
     var fc = profileService.focusedClient;
     if (!fc)
@@ -829,7 +828,6 @@ console.log('[walletHome.js.795] KK', self.kk); //TODO
     var self = this;
     self.blockUx = !!name;
 
-console.log('[walletHome.js.795] KK', self.kk); //TODO
     if (isCordova) {
       if (name) {
         window.plugins.spinnerDialog.hide();
