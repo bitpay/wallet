@@ -179,7 +179,7 @@
               <div translate>Updating transaction history. Please stand by.</div>
             </div>
           </div>
-        </div> 
+        </div>
 
         <div ng-if="index.txHistory[0] &&  index.updatingTxHistory && index.newTx" class="row collapse last-transactions-content animated fadeInDown">
           <div class="large-6 medium-6 small-6 columns size-14">
@@ -258,9 +258,10 @@
 
         <div class="m20t text-center">
           <a class="text-gray size-12"
-             ng-show="index.historyShowShowAll"
-             ng-click="index.showAllHistory()">
-            <span translate>Show all</span>
+            ng-show="index.historyShowMore"
+            ng-click="index.showMore()">
+            {{index.completeHistory.length - index.txHistory.length}} <span translate>more</span>
+            <i class="icon-arrow-down4"></i>
           </a>
         </div>
       </div>
@@ -358,12 +359,12 @@
       <div class="pr p25b">
         <h4 class="title m0">
           <available-balance></available-balance>
-          <span 
-            ng-show="home.lockedCurrentFeePerKb || home.blockUx || home.lockAmount" 
+          <span
+            ng-show="home.lockedCurrentFeePerKb || home.blockUx || home.lockAmount"
             class="text-gray" translate>Send All</span>
           <a
             ng-show="index.availableBalanceSat > 0 && !home.lockedCurrentFeePerKb && !home.blockUx && !home.lockAmount"
-            ng-click="home.sendAll(index.totalBytesToSendMax, index.availableBalanceSat)" 
+            ng-click="home.sendAll(index.totalBytesToSendMax, index.availableBalanceSat)"
              translate> Send All
           </a>
           <div ng-show="!home.paymentExpired && home._paypro">
