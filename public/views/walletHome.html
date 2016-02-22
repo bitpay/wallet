@@ -482,8 +482,8 @@
                 <a fast-click callback-fn="home.resetForm(sendForm)" class="button expand outline dark-gray round" translate>Cancel</a>
               </div>
               <div class="columns" ng-class="{'small-6 medium-6 large-6':(home._paypro || home.lockAddress || home.lockAmount)}">
-                <button type="submit" class="button black round expand" ng-disabled="sendForm.$invalid || home.blockUx ||  index.isOffline || home.destinationWalletNeedsBackup"
-                  ng-style="{'background-color':index.backgroundColor}"  translate>
+                <button class="button black round expand" ng-disabled="sendForm.$invalid || home.blockUx || index.isOffline || home.destinationWalletNeedsBackup"
+                  ng-style="{'background-color':index.backgroundColor}" fast-click callback-fn="home.submitForm()" translate>
                   Send
                 </button>
               </div>
