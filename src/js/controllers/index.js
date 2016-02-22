@@ -896,8 +896,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
           self.completeHistory = newHistory;
           self.setCompactTxHistory();
           self.txHistory = newHistory.slice(0, self.historyShowLimit);
-          self.historyShowMore = newHistory.length > self.historyShowLimit;
           self.txHistoryToList = self.txHistory;
+          self.historyShowMore = newHistory.length > self.historyShowLimit;
         }
 
         return storageService.setTxHistory(JSON.stringify(newHistory), walletId, function() {
@@ -910,27 +910,36 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   }
 
   self.showMore = function() {
-    $timeout(function() {
-      self.txHistory = self.completeHistory.slice(0, self.nextTxHistory);
-      self.txHistoryToList = self.txHistory;
-      $log.debug('Total txs: ', self.txHistory.length + '/' + self.completeHistory.length);
-      self.nextTxHistory += self.historyShowMoreLimit;
-      if (self.txHistory.length >= self.completeHistory.length)
-        self.historyShowMore = false;
-    }, 100);
+    if (self.isSearching) {
+       $timeout(function() {
+         self.txHistoryToList = self.result.slice(0, self.nextTxHistory);
+        $log.debug('Total txs: ', self.txHistoryToList.length + '/' + self.result.length);
+         self.nextTxHistory += self.historyShowMoreLimit;
+         if (self.txHistoryToList.length >= self.result.length)
+           self.historyShowMore = false;
+       }, 100);
+     } else {
+       $timeout(function() {
+         self.txHistory = self.completeHistory.slice(0, self.nextTxHistory);
+         self.txHistoryToList = self.txHistory;
+         $log.debug('Total txs: ', self.txHistory.length + '/' + self.completeHistory.length);
+         self.nextTxHistory += self.historyShowMoreLimit;
+         if (self.txHistory.length >= self.completeHistory.length)
+           self.historyShowMore = false;
+       }, 100);
+     }
   };
 
   self.startSearch = function(){
     self.isSearching = true;
     self.txHistoryToList = [];
-    if(self.historyShowShowAll) self.txHistory = self.completeHistory;
+    self.historyShowMore = false;
   }
 
   self.cancelSearch = function(){
     self.isSearching = false;
-    if(self.txHistory.length > self.historyShowLimit)
-      self.txHistoryToList = self.txHistory.slice(0, self.historyShowLimit);
-    else self.txHistoryToList = self.txHistory;
+    self.txHistoryToList = self.completeHistory.slice(0, self.historyShowLimit);
+    self.historyShowMore = self.completeHistory.length > self.historyShowLimit;
   }
 
   self.updateSearchInput = function(search){
@@ -943,7 +952,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   self.throttleSearch = lodash.throttle(function() {
 
     function filter(search) {
-      var result = [];
+      self.result = [];
       function formatDate(date) {
         var day = ('0' + date.getDate()).slice(-2).toString();
         var month = ('0' + (date.getMonth() + 1)).slice(-2).toString();
@@ -953,7 +962,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
       if (lodash.isEmpty(search)) return;
 
-      result = lodash.filter(self.txHistory, function(tx) {
+      self.result = lodash.filter(self.completeHistory, function(tx) {
         return lodash.includes(tx.amountStr, search) ||
           lodash.includes(tx.message, search) ||
           lodash.includes(self.addressbook ? self.addressbook[tx.addressTo] : null, search) ||
@@ -961,10 +970,13 @@ angular.module('copayApp.controllers').controller('indexController', function($r
           lodash.isEqual(formatDate(new Date(tx.time * 1000)), search);
       });
 
-      return result;
+      if (self.result.length > self.historyShowLimit) self.historyShowMore = true;
+      else self.historyShowMore = false;
+
+       return self.result;
     };
 
-    self.txHistoryToList = filter(self.search);
+    self.txHistoryToList = filter(self.search).slice(0, self.historyShowLimit);
     if (isCordova)
       window.plugins.toast.showShortBottom(gettextCatalog.getString('Matches: ' + self.txHistoryToList.length));
 
