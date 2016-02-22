@@ -134,7 +134,9 @@ angular.module('copayApp.services')
           root._setFocus(focusedWalletId, function() {
             $rootScope.$emit('Local/ProfileBound');
             storageService.getDeviceToken(function(err, token) {
-              if (!token) pushNotificationsService.pushNotificationsInit();
+              if (!token)
+                pushNotificationsService.pushNotificationsInit();
+
               root.isDisclaimerAccepted(function(val) {
                 if (!val) {
                   return cb(new Error('NONAGREEDDISCLAIMER: Non agreed disclaimer'));
@@ -413,6 +415,7 @@ angular.module('copayApp.services')
         handleImport(function() {
           root.setAndStoreFocus(walletId, function() {
             storageService.storeProfile(root.profile, function(err) {
+
               $rootScope.$emit('Local/ProfileCreated');
               if (config.pushNotifications.enabled)
                 pushNotificationsService.enableNotifications(root.walletClients);
@@ -447,7 +450,7 @@ angular.module('copayApp.services')
       root._addWalletClient(walletClient, opts, function(err, walletId) {
         if (err) return cb(err);
         root.setMetaData(walletClient, addressBook, historyCache, function(error) {
-          if (error) console.log(error);
+          if (error) $log.warn(error);
           return cb(err, walletId);
         });
       });
@@ -540,30 +543,23 @@ angular.module('copayApp.services')
     };
 
     root.setDisclaimerAccepted = function(cb) {
-      storageService.getProfile(function(err, profile) {
-        profile.disclaimerAccepted = true;
-        storageService.storeProfile(profile, function(err) {
-          return cb(err);
-        });
+      root.profile.disclaimerAccepted = true;
+      storageService.storeProfile(root.profile, function(err) {
+        return cb(err);
       });
     };
 
     root.isDisclaimerAccepted = function(cb) {
-      storageService.getProfile(function(err, profile) {
-        if (profile && profile.disclaimerAccepted)
+      var disclaimerAccepted = root.profile && root.profile.disclaimerAccepted;
+
+      if (disclaimerAccepted)
+        return cb(true);
+
+      // OLD flag
+      storageService.getCopayDisclaimerFlag(function(err, val) {
+        if (val) {
+          root.profile.disclaimerAccepted = true;
           return cb(true);
-        else if (profile && !profile.disclaimerAccepted) {
-          storageService.getCopayDisclaimerFlag(function(err, val) {
-            if (val) {
-              profile.disclaimerAccepted = true;
-              storageService.storeProfile(profile, function(err) {
-                if (err) $log.error(err);
-                return cb(true);
-              });
-            } else {
-              return cb();
-            }
-          });
         } else {
           return cb();
         }

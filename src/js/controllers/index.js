@@ -161,27 +161,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.usingCustomBWS = config.bwsFor && config.bwsFor[self.walletId] && (config.bwsFor[self.walletId] != defaults.bws.url);
   };
 
-  self.acceptDisclaimer = function() {
-    var profile = profileService.profile;
-    if (profile) profile.disclaimerAccepted = true;
-    self.disclaimerAccepted = true;
-    profileService.setDisclaimerAccepted(function(err) {
-      if (err) $log.error(err);
-      go.walletHome();
-    });
-  };
-
-  self.isDisclaimerAccepted = function() {
-    if (self.disclaimerAccepted == true) {
-      go.walletHome();
-      return;
-    }
-    profileService.isDisclaimerAccepted(function(v) {
-      if (v) {
-        self.acceptDisclaimer();
-      } else go.path('disclaimer');
-    });
-  };
 
   self.setTab = function(tab, reset, tries, switchState) {
     tries = tries || 0;
@@ -1068,8 +1047,11 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   };
 
   self.openMenu = function() {
-    if (!self.disclaimerAccepted) return;
-    go.swipe(true);
+    profileService.isDisclaimerAccepted(function(val){
+      if (val) go.swipe(true);
+      else 
+        $log.debug('Disclaimer not accepted, cannot open menu');
+    });
   };
 
   self.closeMenu = function() {
@@ -1334,7 +1316,12 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
   $rootScope.$on('Local/Resume', function(event) {
     $log.debug('### Resume event');
-    self.isDisclaimerAccepted();
+    profileService.isDisclaimerAccepted(function(v) {
+      if (!v) {
+        $log.debug('Disclaimer not accepted, resume to home');
+        go.path('disclaimer');
+      }
+    });
     self.debouncedUpdate();
   });
 
@@ -1476,7 +1463,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.setUxLanguage();
     self.setFocusedWallet();
     self.debounceUpdateHistory();
-    self.isDisclaimerAccepted();
     storageService.getCleanAndScanAddresses(function(err, walletId) {
       if (walletId && profileService.walletClients[walletId]) {
         $log.debug('Clear last address cache and Scan ', walletId);

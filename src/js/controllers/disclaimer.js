@@ -44,4 +44,11 @@ angular.module('copayApp.controllers').controller('disclaimerController',
         });
       });
     };
-  });
+
+    this.accept = function() {
+      profileService.setDisclaimerAccepted(function(err) {
+        if (err) $log.error(err);
+        else go.walletHome();
+      });
+    };
+});
