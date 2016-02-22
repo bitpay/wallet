@@ -280,9 +280,15 @@
 
         <div class="m20t text-center">
           <a class="text-gray size-12"
-             ng-show="index.historyShowMore && !home.isSearching"
-             ng-click="index.showMore()" >
-            {{index.completeHistory.length - index.txHistory.length}} <span translate>more</span>
+             ng-show="index.historyShowMore && !index.isSearching"
+             ng-click="index.showMore()">
+            {{index.completeHistory.length - index.txHistoryToList.length}} <span translate>more</span>
+            <i class="icon-arrow-down4"></i>
+          </a>
+          <a class="text-gray size-12"
+             ng-show="index.historyShowMore && index.isSearching"
+             ng-click="index.showMore()">
+            {{index.result.length - index.txHistoryToList.length}} <span translate>more</span>
             <i class="icon-arrow-down4"></i>
           </a>
         </div>
