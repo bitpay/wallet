@@ -79,17 +79,17 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     $log.debug('Cleaning Index Instance');
     lodash.each(self, function(v, k) {
       if (lodash.isFunction(v)) return;
-      if (vanillaScope[k]) {
-        self[k] = vanillaScope[k];
-        return;
-      }
-
       // This are to prevent flicker in mobile:
       if (k == 'hasProfile') return;
+      if (k == 'tab') return;
       if (k == 'noFocusedWallet') return;
       if (k == 'backgroundColor') return;
       if (k == 'loadingWallet') {
         self.loadingWallet = true;
+        return;
+      }
+      if (vanillaScope[k]) {
+        self[k] = vanillaScope[k];
         return;
       }
 
