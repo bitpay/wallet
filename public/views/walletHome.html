@@ -160,7 +160,7 @@
 
       <div class="oh pr" ng-show="index.txHistory[0] || index.txProgress > 5">
         <ul class="no-bullet m0">
-          <li ng-click="index.startSearch()" ng-show="!index.isSearching" >
+          <li ng-click="index.startSearch(); search=''" ng-show="!index.isSearching" >
             <h4 class="title m0" translate>Activity
               <i class="fi-magnifying-glass"></i>
             </h4>
