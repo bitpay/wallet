@@ -56,7 +56,10 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     $log.debug('Cleaning WalletHome Instance');
     lodash.each(self, function(v, k) {
       if (lodash.isFunction(v)) return;
-      if (vanillaScope[k]) return;
+      if (vanillaScope[k]) {
+        self[k] = vanillaScope[k];
+        return;
+      }
 
       delete self[k];
     });
@@ -823,7 +826,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     }, 1);
   };
 
-
+// subscription 
   this.setOngoingProcess = function(name) {
     var self = this;
     self.blockUx = !!name;
