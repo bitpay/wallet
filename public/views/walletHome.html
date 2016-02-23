@@ -220,8 +220,8 @@
             </div>
           </div>
 
-          <div class="large-5 medium-5 small-5 columns text-right">
-            <span class="size-16">
+          <div class="large-5 medium-5 small-5 columns text-right" >
+            <span class="size-16"  ng-class="{'text-bold': btx.recent}">
               <span ng-if="btx.action == 'received'">+</span>
               <span ng-if="btx.action == 'sent'">-</span>
               <span  class="size-12" ng-if="btx.action == 'invalid'" translate>
