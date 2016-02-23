@@ -24,7 +24,8 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   ret.isMobile = isMobile.any();
   ret.isWindowsPhoneApp = isMobile.Windows() && isCordova;
   var vanillaScope = ret;
-  this.isSearching = false;
+
+  $rootScope.$emit('Local/Searching', false);
 
   var disableScannerListener = $rootScope.$on('dataScanned', function(event, data) {
     self.setForm(data);
@@ -52,7 +53,6 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     self.addr = null;
     self.resetForm();
     $scope.search = '';
-    $rootScope.$emit('Local/Searching', false);
 
     if (profileService.focusedClient) {
       self.setAddress();
