@@ -83,8 +83,10 @@ h4.title a {
   margin:0;
 }
 
-.walletHome h4 {
-  padding: 15px 0px 5px 10px;
+.walletHome h4.title {
+  padding: 0 0 10px 15px;
+  margin: 5px 0 5px 0;
+  font-size: 16px;
 }
 
 
@@ -525,6 +527,7 @@ ul.manage li {
 .m40b {margin-bottom: 40px;}
 .m50b {margin-bottom: 50px;}
 .m10r {margin-right: 10px;}
+.m5l {margin-left: 5px;}
 .m15l {margin-left: 15px;}
 .m15t {margin-top: 15px;}
 .m20r {margin-right: 20px;}
@@ -804,10 +807,11 @@ table tbody tr:last-child td {
 .searchBar input{
   margin-bottom: auto;
   border-bottom: 0px solid #E9EDF0;
+  padding-left: 8px;
 }
 .searchBar i{
   position: absolute;
-  padding: 8px;
+  padding: 8px 0 8px 8px;
 }
 
 .searchBar .small-11{
@@ -825,6 +829,7 @@ table tbody tr:last-child td {
   margin-bottom: 10px;
   background-color: rgba(0, 0, 0, 0.02);
   border-radius: 10px;
+  position: relative;
 }
 /*////////////////////////////  BUTTON OUTLINE  ////////////////////////////*/
 
