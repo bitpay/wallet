@@ -159,13 +159,9 @@
       </div>
 
       <div class="oh pr" ng-show="index.txHistory[0] || index.txProgress > 5">
-        <ul class="no-bullet m0">
-          <li ng-click="index.startSearch(); search=''" ng-show="!index.isSearching" >
-            <h4 class="title m0" translate>Activity
-              <i class="fi-magnifying-glass"></i>
-            </h4>
-          </li>
-        </ul>
+        <h4 class="title" ng-click="index.startSearch(); search=''" ng-show="!index.isSearching" translate>Activity
+          <i class="dib m5l size-16 pointer fi-magnifying-glass"></i>
+        </h4>
 
         <div ng-show="index.updatingTxHistory && index.txProgress > 5">
           <div  class="row p20 text-center">
@@ -218,7 +214,7 @@
           </div>
         </div>
         <div ng-repeat="btx in index.txHistorySearchResults track by btx.txid"
-          ng-click="home.openTxModal(btx)"
+          fast-click callback-fn="home.openTxModal(btx)"
           class="row collapse last-transactions-content">
           <div class="large-6 medium-6 small-6 columns size-14">
             <div class="m10r left">
@@ -280,17 +276,17 @@
 
         <div class="m20t text-center">
           <a class="text-gray size-12"
-             ng-show="index.historyShowMore && !index.isSearching"
-             ng-click="index.showMore()" >
-             {{index.completeHistory.length - index.txHistory.length}}<span translate>more</span>
-             <i class="icon-arrow-down4"></i>
-           </a>
-           <a class="text-gray size-12"
-              ng-show="index.historyShowMore && index.isSearching"
-              ng-click="index.showMore()">
-             {{index.result.length - index.txHistorySearchResults.length}} <span translate>more</span>
-              <i class="icon-arrow-down4"></i>
-            </a>
+             ng-show="index.historyShowMore"
+             ng-click="index.showMore()">
+            <span translate>Show more</span> 
+            <span ng-if="!index.isSearching">
+              ({{index.completeHistory.length - index.txHistory.length}})
+            </span> 
+            <span ng-if="index.isSearching">
+              {{index.result.length - index.txHistorySearchResults.length}}
+            </span> 
+            <i class="icon-arrow-down4"></i>
+          </a>
         </div>
       </div>
 
