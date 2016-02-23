@@ -217,7 +217,7 @@
             <a ng-click="index.cancelSearch()" translate>Cancel</a>
           </div>
         </div>
-        <div ng-repeat="btx in index.txHistoryToList track by btx.txid"
+        <div ng-repeat="btx in index.txHistorySearchResults track by btx.txid"
           ng-click="home.openTxModal(btx)"
           class="row collapse last-transactions-content">
           <div class="large-6 medium-6 small-6 columns size-14">
@@ -288,7 +288,7 @@
            <a class="text-gray size-12"
               ng-show="index.historyShowMore && index.isSearching"
               ng-click="index.showMore()">
-             {{index.result.length - index.txHistoryToList.length}} <span translate>more</span>
+             {{index.result.length - index.txHistorySearchResults.length}} <span translate>more</span>
               <i class="icon-arrow-down4"></i>
             </a>
         </div>
