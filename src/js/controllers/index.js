@@ -137,20 +137,10 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       self.initGlidera();
 
       self.setCustomBWSFlag();
-
-      $rootScope.$apply();
-      if (fc.isPrivKeyExternal()) {
-        self.needsBackup = false;
+      profileService.isBackupNeeded(self.walletId, function(needsBackup) {
+        self.needsBackup = needsBackup;
         self.openWallet();
-      } else {
-        storageService.getBackupFlag(self.walletId, function(err, val) {
-          if (!fc.credentials.mnemonic)
-            self.needsBackup = false;
-          else
-            self.needsBackup = self.network == 'testnet' ? false : !val;
-          self.openWallet();
-        });
-      }
+      });
     });
   };
 
@@ -1275,7 +1265,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.needsBackup = false;
     $log.debug('Backup done');
     storageService.setBackupFlag(walletId || self.walletId, function(err) {
-      $log.debug('Backup done stored');
+      $log.debug('Backup stored');
     });
   });
 
