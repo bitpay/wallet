@@ -25,8 +25,6 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   ret.isWindowsPhoneApp = isMobile.Windows() && isCordova;
   var vanillaScope = ret;
 
-  $rootScope.$emit('Local/Searching', false);
-
   var disableScannerListener = $rootScope.$on('dataScanned', function(event, data) {
     self.setForm(data);
     $rootScope.$emit('Local/SetTab', 'send');
