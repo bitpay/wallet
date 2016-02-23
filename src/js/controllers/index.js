@@ -15,6 +15,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   ret.onGoingProcess = {};
   ret.historyShowLimit = 10;
   ret.historyShowMoreLimit = 100;
+  ret.isSearching = false;
   ret.prevState = 'walletHome';
 
   ret.menu = [{
@@ -895,9 +896,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         if (walletId == profileService.focusedClient.credentials.walletId) {
           self.completeHistory = newHistory;
           self.setCompactTxHistory();
-          self.txHistory = newHistory.slice(0, self.historyShowLimit);
-          self.txHistoryToList = self.txHistory;
-          self.historyShowMore = newHistory.length > self.historyShowLimit;
         }
 
         return storageService.setTxHistory(JSON.stringify(newHistory), walletId, function() {
