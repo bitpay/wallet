@@ -79,14 +79,17 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     $log.debug('Cleaning Index Instance');
     lodash.each(self, function(v, k) {
       if (lodash.isFunction(v)) return;
-      if (vanillaScope[k]) return;
-
       // This are to prevent flicker in mobile:
       if (k == 'hasProfile') return;
+      if (k == 'tab') return;
       if (k == 'noFocusedWallet') return;
       if (k == 'backgroundColor') return;
       if (k == 'loadingWallet') {
         self.loadingWallet = true;
+        return;
+      }
+      if (vanillaScope[k]) {
+        self[k] = vanillaScope[k];
         return;
       }
 
@@ -273,6 +276,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     tries = tries || 0;
     opts = opts || {};
 
+    var walletId = profileService.focusedClient.credentials.walletId
+
     if (opts.untilItChanges && lodash.isUndefined(initStatusHash)) {
       initStatusHash = _walletStatusHash();
       $log.debug('Updating status until it changes. initStatusHash:' + initStatusHash)
@@ -299,6 +304,14 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     var fc = profileService.focusedClient;
     if (!fc) return;
 
+
+    // If not untilItChanges...trigger history update now
+    if (opts.triggerTxUpdate && !opts.untilItChanges) {
+      $timeout(function() {
+        self.debounceUpdateHistory();
+      }, 1);
+    }
+
     $timeout(function() {
 
       if (!opts.quiet)
@@ -308,7 +321,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       get(function(err, walletStatus) {
         var currentStatusHash = _walletStatusHash(walletStatus);
         $log.debug('Status update. hash:' + currentStatusHash + ' Try:' + tries);
-        if (!err && opts.untilItChanges && initStatusHash == currentStatusHash && tries < 7) {
+        if (!err && opts.untilItChanges && initStatusHash == currentStatusHash && tries < 7 && walletId == profileService.focusedClient.credentials.walletId) {
           return $timeout(function() {
             $log.debug('Retrying update... Try:' + tries)
             return self.updateAll({
@@ -318,8 +331,13 @@ angular.module('copayApp.controllers').controller('indexController', function($r
             }, initStatusHash, ++tries);
           }, 1400 * tries);
         }
+
+        if (walletId != profileService.focusedClient.credentials.walletId)
+          return;
+
         if (!opts.quiet)
           self.setOngoingProcess('updatingStatus', false);
+
 
         if (err) {
           self.handleError(err);
@@ -344,7 +362,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         $rootScope.$emit('Local/BalanceUpdated', walletStatus.balance);
         $rootScope.$apply();
 
-        if (opts.triggerTxUpdate) {
+        if (opts.triggerTxUpdate && opts.untilItChanges) {
           $timeout(function() {
             self.debounceUpdateHistory();
           }, 1);
@@ -820,12 +838,17 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       var confirmedTxs = self.removeSoftConfirmedTx(txsFromLocal);
       var endingTxid = confirmedTxs[0] ? confirmedTxs[0].txid : null;
 
+
       // First update
       if (walletId == profileService.focusedClient.credentials.walletId) {
         self.completeHistory = txsFromLocal;
         self.setCompactTxHistory();
       }
 
+      if (historyUpdateInProgress[walletId]) 
+        return;
+       
+      historyUpdateInProgress[walletId] = true;
 
       function getNewTxs(newTxs, skip, i_cb) {
         self.getTxsFromServer(client, skip, endingTxid, requestLimit, function(err, res, shouldContinue) {
@@ -918,14 +941,13 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     if (!fc) return;
     var walletId = fc.credentials.walletId;
 
-    if (!fc.isComplete() || historyUpdateInProgress[walletId]) {
-      self.updatingTxHistory = historyUpdateInProgress[walletId];
+    if (!fc.isComplete()) {
       return;
     }
 
     $log.debug('Updating Transaction History');
     self.txHistoryError = false;
-    historyUpdateInProgress[walletId] = self.updatingTxHistory = true;
+    self.updatingTxHistory = true;
 
     $timeout(function() {
       self.updateLocalTxHistory(fc, function(err) {
@@ -956,7 +978,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
   self.throttledUpdateHistory = lodash.throttle(function() {
     self.updateHistory();
-  }, 10000);
+  }, 5000);
 
   self.showErrorPopup = function(msg, cb) {
     $log.warn('Showing err popup:' + msg);
@@ -991,9 +1013,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   };
 
   self.openMenu = function() {
-    profileService.isDisclaimerAccepted(function(val){
+    profileService.isDisclaimerAccepted(function(val) {
       if (val) go.swipe(true);
-      else 
+      else
         $log.debug('Disclaimer not accepted, cannot open menu');
     });
   };
@@ -1245,7 +1267,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       quiet: true
     });
     self.debounceUpdateHistory();
-  }, 4000, {
+  }, 2000, {
     leading: false,
     trailing: true
   });
@@ -1398,7 +1420,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   $rootScope.$on('Local/NewFocusedWallet', function() {
     self.setUxLanguage();
     self.setFocusedWallet();
-    self.debounceUpdateHistory();
+    self.updateHistory();
     storageService.getCleanAndScanAddresses(function(err, walletId) {
       if (walletId && profileService.walletClients[walletId]) {
         $log.debug('Clear last address cache and Scan ', walletId);

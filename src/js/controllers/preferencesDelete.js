@@ -56,6 +56,7 @@ angular.module('copayApp.controllers').controller('preferencesDeleteWalletContro
           notification.success(gettextCatalog.getString('Success'), gettextCatalog.getString('The wallet "{{walletName}}" was deleted', {
             walletName: walletName
           }));
+          go.walletHome();
         }
       });
     };
