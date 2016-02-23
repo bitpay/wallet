@@ -85,7 +85,7 @@
               <br><span translate>Tap to retry</span>
             </div>
 
-            <div ng-click='index.updateAll({triggerTxUpdate: true})' ng-show="!index.updateError && index.walletScanStatus != 'error' && !home.shouldHideBalance" ng-mousedown="home.onMouseDown()" ng-mouseup="home.onMouseUp()">
+            <div ng-click='index.updateAll({triggerTxUpdate: true})' ng-show="!index.updateError && index.walletScanStatus != 'error' && !index.shouldHideBalance" ng-mousedown="index.onMouseDown()" ng-mouseup="index.onMouseUp()">
               <strong class="size-36">{{index.totalBalanceStr}}</strong>
               <div class="size-14"
                 ng-if="index.totalBalanceAlternative">
@@ -97,7 +97,7 @@
                 {{index.pendingAmountStr}}
               </div>
             </div>
-            <div ng-show="!index.updateError && index.walletScanStatus != 'error' && home.shouldHideBalance" ng-mousedown="home.onMouseDown()" ng-mouseup="home.onMouseUp()">
+            <div ng-show="!index.updateError && index.walletScanStatus != 'error' && index.shouldHideBalance" ng-mousedown="index.onMouseDown()" ng-mouseup="index.onMouseUp()">
             <i class="fi-lock size-72"></i>
             </div>
           </div>
@@ -384,10 +384,10 @@
     <div id="send" class="send tab-view">
       <div class="pr p25b">
         <h4 class="title m0">
-          <div ng-show="index.shouldHideBalance" ng-mousedown="home.onMouseDown()" ng-mouseup="home.onMouseUp()">
+          <div ng-show="index.shouldHideBalance" ng-mousedown="index.onMouseDown()" ng-mouseup="index.onMouseUp()">
             <i class="fi-lock size-14 m5r"></i>
           </div>
-            <div ng-show="!index.shouldHideBalance" ng-mousedown="home.onMouseDown()" ng-mouseup="home.onMouseUp()">
+            <div ng-show="!index.shouldHideBalance" ng-mousedown="index.onMouseDown()" ng-mouseup="index.onMouseUp()">
           <available-balance></available-balance>
           <span
             ng-show="home.lockedCurrentFeePerKb || home.blockUx || home.lockAmount"

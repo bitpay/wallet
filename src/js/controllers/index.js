@@ -58,15 +58,17 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     go.walletHome();
   };
 
-  storageService.getHideBalanceFlag(function(err, shouldHideBalance) {
-    if (err) self.shouldHideBalance = false;
-    else self.shouldHideBalance = (shouldHideBalance == 'true') ? true : false;
-  });
+  self.hideBalance = function() {
+    storageService.getHideBalanceFlag(self.walletId, function(err, shouldHideBalance) {
+      if (err) self.shouldHideBalance = false;
+      else self.shouldHideBalance = (shouldHideBalance == 'true') ? true : false;
+    });
+  }
 
   self.onMouseDown = function() {
     self.mouseDown = $timeout(function() {
-      self.shouldHideBalance = self.shouldHideBalance ? false : true;
-      storageService.setHideBalanceFlag(self.shouldHideBalance, function() {});
+      self.shouldHideBalance = !self.shouldHideBalance;
+      storageService.setHideBalanceFlag(self.walletId, self.shouldHideBalance, function() {});
     }, 500);
   }
 
@@ -155,7 +157,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       self.setAddressbook();
 
       self.initGlidera();
-
+      self.hideBalance();
       self.setCustomBWSFlag();
       profileService.isBackupNeeded(self.walletId, function(needsBackup) {
         self.needsBackup = needsBackup;
