@@ -15,6 +15,10 @@ angular.module('copayApp.controllers').controller('txController',
     this.copayerId = fc.credentials.copayerId;
     this.isShared = fc.credentials.n > 1;
 
+    this.prepareSimilarTx = function(to, amount, message) {
+      $rootScope.$emit('dataScanned', to, amount, message);
+      this.cancel();
+    };
 
     if (isCordova) {
       $rootScope.modalOpened = true;

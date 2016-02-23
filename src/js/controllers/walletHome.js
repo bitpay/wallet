@@ -25,8 +25,9 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   ret.isWindowsPhoneApp = isMobile.Windows() && isCordova;
   var vanillaScope = ret;
 
-  var disableScannerListener = $rootScope.$on('dataScanned', function(event, data) {
-    self.setForm(data);
+  var disableScannerListener = $rootScope.$on('dataScanned', function(event, to, amount, message) {
+    self.resetForm();
+    self.setForm(to, amount * self.satToUnit, message);
     $rootScope.$emit('Local/SetTab', 'send');
 
     var form = $scope.sendForm;
@@ -75,7 +76,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     self.bindTouchDown();
   });
 
-  var disableTabListener = $rootScope.$on('Local/TabChanged', function(e, tab, reset, tx) {
+  var disableTabListener = $rootScope.$on('Local/TabChanged', function(e, tab) {
     // This will slow down switch, do not add things here!
     switch (tab) {
       case 'receive':
@@ -84,8 +85,6 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
         break;
       case 'send':
         self.resetError();
-        if (reset) self.resetForm();
-        if (tx) self.setForm(tx.addressTo, tx.amount / 100, tx.message);
     };
   });
 

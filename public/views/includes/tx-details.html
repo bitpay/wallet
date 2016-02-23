@@ -152,7 +152,7 @@
           <span class="text-gray" translate>See it on the blockchain</span>
         </button>
         <ul class="no-bullet size-14 m0" ng-show="txc.getShortNetworkName() == 'test'">
-          <li ng-style="{'color': txc.color}" ng-click="index.sendSimilarTx()">
+          <li ng-style="{'color': txc.color}" ng-click="txc.prepareSimilarTx(index.showTx.addressTo, index.showTx.amount, index.showTx.message)">
             <span translate>Send similar transaction</span>
           </li>
         </ul>
