@@ -92,18 +92,13 @@ angular.module('copayApp.services').factory('txService', function($rootScope, pr
 
   root.createTx = function(opts, cb) {
     var fc = profileService.focusedClient;
-    var config = configService.getSync();
-    var configWallet = config.wallet;
-    var walletSettings = configWallet.settings;
-    
-    var currentSpendUnconfirmed = configWallet.spendUnconfirmed;
-    var currentFeeLevel = walletSettings.feeLevel || 'normal';
+    var currentSpendUnconfirmed = configService.getSync().wallet.spendUnconfirmed;
     
     var getFee = function(cb) {
       if (opts.lockedCurrentFeePerKb) {
         cb(null, opts.lockedCurrentFeePerKb);
       } else {
-        feeService.getCurrentFeeValue(currentFeeLevel, cb);
+        feeService.getCurrentFeeValue(cb);
       }
     };
 

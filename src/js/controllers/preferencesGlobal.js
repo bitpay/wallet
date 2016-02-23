@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('preferencesGlobalController',
-  function($scope, $rootScope, $log, configService, uxLanguage, pushNotificationsService, profileService) {
+  function($scope, $rootScope, $log, configService, uxLanguage, pushNotificationsService, profileService, feeService) {
 
     this.init = function() {
       var config = configService.getSync();
@@ -11,6 +11,8 @@ angular.module('copayApp.controllers').controller('preferencesGlobalController',
         name: config.wallet.settings.alternativeName,
         isoCode: config.wallet.settings.alternativeIsoCode
       };
+      this.feeOpts = feeService.feeOpts;
+      this.currentFeeLevel = feeService.getCurrentFeeLevel();
       $scope.spendUnconfirmed = config.wallet.spendUnconfirmed;
       $scope.glideraEnabled = config.glidera.enabled;
       $scope.glideraTestnet = config.glidera.testnet;

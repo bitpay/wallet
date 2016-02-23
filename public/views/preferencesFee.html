@@ -3,19 +3,35 @@
   ng-include="'views/includes/topbar.html'"
   ng-init="titleSection='Bitcoin Network Fee Policy'; goBackToState = 'preferencesGlobal'; noColor = true">
 </div>
-<div class="content preferences" ng-controller="preferencesFeeController as prefFee">
+<div class="content preferences" ng-controller="preferencesFeeController as prefFee" ng-init="prefFee.init()">
   <h4></h4>
+  <div class="preferences-fee" ng-show="prefFee.loading">
+    <div  class="row p20 text-center">
+      <div class="columns large-12 medium-12 small-12 m10b">
+        <div class="spinner">
+          <div class="rect1"></div>
+          <div class="rect2"></div>
+          <div class="rect3"></div>
+          <div class="rect4"></div>
+          <div class="rect5"></div>
+        </div>
+      </div>
+      <div class="size-12 text-gray m20t" translate>
+        Loading...
+      </div>
+    </div>
+  </div>
   <ul class="no-bullet m0"> 
-    <li ng-repeat="fee in (index.network == 'livenet' ? index.feeLevels.livenet : index.feeLevels.testnet)"
+    <li ng-repeat="fee in (index.network == 'livenet' ? prefFee.feeLevels.livenet : prefFee.feeLevels.testnet)"
       ng-click="prefFee.save(fee.level)">
-      {{index.feeOpts[fee.level]|translate}}
-      <i class="fi-check size-16 right" ng-show="index.currentFeeLevel == fee.level"></i>
+      {{prefFee.feeOpts[fee.level]|translate}}
+      <i class="fi-check size-16 right" ng-show="prefFee.currentFeeLevel == fee.level"></i>
     </li>
   </ul>
 
   <div class="row m20t">
-    <div class="text-gray size-12 text-center" ng-repeat="fee in (index.network == 'livenet' ? index.feeLevels.livenet :
-      index.feeLevels.testnet)" ng-if="fee.level == index.currentFeeLevel">
+    <div class="text-gray size-12 text-center" ng-repeat="fee in (index.network == 'livenet' ? prefFee.feeLevels.livenet :
+      prefFee.feeLevels.testnet)" ng-if="fee.level == prefFee.currentFeeLevel">
       <div ng-show="fee.nbBlocks">
         <span translate>Average confirmation time: {{fee.nbBlocks * 10}} minutes</span>.
       </div>

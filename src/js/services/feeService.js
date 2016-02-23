@@ -10,10 +10,13 @@ angular.module('copayApp.services').factory('feeService', function($log, profile
     economy: gettextCatalog.getString('Economy')
   };
 
-  root.getCurrentFeeValue = function(currentSendFeeLevel, cb) { 
+  root.getCurrentFeeLevel = function() {
+    return configService.getSync().wallet.settings.feeLevel || 'normal';
+  };
+
+  root.getCurrentFeeValue = function(cb) {
     var fc = profileService.focusedClient;
-    var config = configService.getSync().wallet.settings;
-    var feeLevel = currentSendFeeLevel || config.feeLevel || 'normal';
+    var feeLevel = root.getCurrentFeeLevel();
     // static fee
     var fee = 10000;
     fc.getFeeLevels(fc.credentials.network, function(err, levels) {
@@ -30,8 +33,7 @@ angular.module('copayApp.services').factory('feeService', function($log, profile
 
   root.getFeeLevels = function(cb) { 
     var fc = profileService.focusedClient;
-    var config = configService.getSync().wallet.settings;
-    var unitName = config.unitName;
+    var unitName = configService.getSync().wallet.settings.unitName;
 
     fc.getFeeLevels('livenet', function(errLivenet, levelsLivenet) {
       fc.getFeeLevels('testnet', function(errTestnet, levelsTestnet) {

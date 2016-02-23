@@ -1477,7 +1477,8 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
 
 #history .spinner > div,
 #receive .spinner > div,
-.copayers .spinner > div 
+.copayers .spinner > div, 
+.preferences-fee .spinner > div 
 {
   background-color: #7A8C9E;
 }
