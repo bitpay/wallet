@@ -908,36 +908,32 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   }
 
   self.showMore = function() {
-    if (self.isSearching) {
-       $timeout(function() {
-         self.txHistoryToList = self.result.slice(0, self.nextTxHistory);
-        $log.debug('Total txs: ', self.txHistoryToList.length + '/' + self.result.length);
-         self.nextTxHistory += self.historyShowMoreLimit;
-         if (self.txHistoryToList.length >= self.result.length)
-           self.historyShowMore = false;
-       }, 100);
-     } else {
-       $timeout(function() {
-         self.txHistory = self.completeHistory.slice(0, self.nextTxHistory);
-         self.txHistoryToList = self.txHistory;
-         $log.debug('Total txs: ', self.txHistory.length + '/' + self.completeHistory.length);
-         self.nextTxHistory += self.historyShowMoreLimit;
-         if (self.txHistory.length >= self.completeHistory.length)
-           self.historyShowMore = false;
-       }, 100);
-     }
+    $timeout(function() {
+      if (self.isSearching) {
+           self.txHistoryToList = self.result.slice(0, self.nextTxHistory);
+       } else {
+           self.txHistory = self.completeHistory.slice(0, self.nextTxHistory);
+           self.txHistoryToList = self.txHistory;
+       }
+       $log.debug('Total txs: ', self.txHistoryToList.length + '/' + self.result.length);
+       self.nextTxHistory += self.historyShowMoreLimit;
+       if (self.txHistoryToList.length >= self.result.length)
+         self.historyShowMore = false;
+    }, 100);
   };
 
   self.startSearch = function(){
     self.isSearching = true;
     self.txHistoryToList = [];
+    self.result = [];
     self.historyShowMore = false;
+    self.nextTxHistory = self.historyShowMoreLimit;
   }
 
   self.cancelSearch = function(){
     self.isSearching = false;
-    self.txHistoryToList = self.completeHistory.slice(0, self.historyShowLimit);
-    self.historyShowMore = self.completeHistory.length > self.historyShowLimit;
+    self.result = [];
+    self.setCompactTxHistory();
   }
 
   self.updateSearchInput = function(search){
@@ -1233,7 +1229,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
   $rootScope.$on('Local/ClearHistory', function(event) {
     $log.debug('The wallet transaction history has been deleted');
-    self.txHistory = self.completeHistory = [];
+    self.txHistory = self.completeHistory = self.txHistoryToList = [];
     self.debounceUpdateHistory();
   });
 
@@ -1378,7 +1374,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       $log.debug('Backup done stored');
       addressService.expireAddress(walletId, function(err) {
         $timeout(function() {
-          self.txHistory = self.completeHistory = [];
+          self.txHistory = self.completeHistory = self.txHistoryToList = [];
           storageService.removeTxHistory(walletId, function() {
             self.startScan(walletId);
           });
