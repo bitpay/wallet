@@ -910,21 +910,24 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   self.showMore = function() {
     $timeout(function() {
       if (self.isSearching) {
-           self.txHistoryToList = self.result.slice(0, self.nextTxHistory);
+           self.txHistorySearchResults = self.result.slice(0, self.nextTxHistory);
+           $log.debug('Total txs: ', self.txHistorySearchResults.length + '/' + self.result.length);
+           if (self.txHistorySearchResults.length >= self.result.length)
+             self.historyShowMore = false;
        } else {
            self.txHistory = self.completeHistory.slice(0, self.nextTxHistory);
-           self.txHistoryToList = self.txHistory;
+           self.txHistorySearchResults = self.txHistory;
+           $log.debug('Total txs: ', self.txHistorySearchResults.length + '/' + self.completeHistory.length);
+           if (self.txHistorySearchResults.length >= self.completeHistory.length)
+             self.historyShowMore = false;
        }
-       $log.debug('Total txs: ', self.txHistoryToList.length + '/' + self.result.length);
        self.nextTxHistory += self.historyShowMoreLimit;
-       if (self.txHistoryToList.length >= self.result.length)
-         self.historyShowMore = false;
     }, 100);
   };
 
   self.startSearch = function(){
     self.isSearching = true;
-    self.txHistoryToList = [];
+    self.txHistorySearchResults = [];
     self.result = [];
     self.historyShowMore = false;
     self.nextTxHistory = self.historyShowMoreLimit;
@@ -973,7 +976,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
        return self.result;
     };
 
-    self.txHistoryToList = filter(self.search).slice(0, self.historyShowLimit);
+    self.txHistorySearchResults = filter(self.search).slice(0, self.historyShowLimit);
     if (isCordova)
       window.plugins.toast.showShortBottom(gettextCatalog.getString('Matches: ' + self.result.length));
 
@@ -1037,7 +1040,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.isSearching = false;
     self.nextTxHistory = self.historyShowMoreLimit;
     self.txHistory = self.completeHistory.slice(0, self.historyShowLimit);
-    self.txHistoryToList = self.txHistory;
+    self.txHistorySearchResults = self.txHistory;
     self.historyShowMore = self.completeHistory.length > self.historyShowLimit;
   };
 
@@ -1233,7 +1236,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
   $rootScope.$on('Local/ClearHistory', function(event) {
     $log.debug('The wallet transaction history has been deleted');
-    self.txHistory = self.completeHistory = self.txHistoryToList = [];
+    self.txHistory = self.completeHistory = self.txHistorySearchResults = [];
     self.debounceUpdateHistory();
   });
 
@@ -1374,7 +1377,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       $log.debug('Backup done stored');
       addressService.expireAddress(walletId, function(err) {
         $timeout(function() {
-          self.txHistory = self.completeHistory = self.txHistoryToList = [];
+          self.txHistory = self.completeHistory = self.txHistorySearchResults = [];
           storageService.removeTxHistory(walletId, function() {
             self.startScan(walletId);
           });
