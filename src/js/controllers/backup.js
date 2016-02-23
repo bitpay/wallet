@@ -6,6 +6,7 @@ angular.module('copayApp.controllers').controller('backupController',
     var self = this;
     var fc = profileService.focusedClient;
     var customWords = [];
+    self.walletName = fc.credentials.walletName;
 
     function init() {
       $scope.passphrase = '';
