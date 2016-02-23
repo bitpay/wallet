@@ -170,6 +170,7 @@ angular.module('copayApp.controllers').controller('createController',
             });
             return;
           }
+          go.walletHome();
 
         });
       }, 100);
