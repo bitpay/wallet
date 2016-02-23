@@ -395,7 +395,11 @@
                     <i class="icon-close-circle size-14"></i>
                     <span class="vm" translate>Not valid</span>
                   </span>
-                  <small class="right text-primary" ng-show="!sendForm.address.$invalid">
+                  <span class="has-error right size-12" ng-show="home.destinationWalletNeedsBackup">
+                    <i class="icon-close-circle size-14"></i>
+                    <span class="vm" translate>Destination wallet needs backup</span>
+                  </span>
+                  <small class="right text-primary" ng-show="!sendForm.address.$invalid && !home.destinationWalletNeedsBackup">
                     <i class="icon-checkmark-circle size-14"></i>
                   </small>
                 </span>
@@ -479,8 +483,8 @@
                 <a fast-click callback-fn="home.resetForm(sendForm)" class="button expand outline dark-gray round" translate>Cancel</a>
               </div>
               <div class="columns" ng-class="{'small-6 medium-6 large-6':(home._paypro || home.lockAddress || home.lockAmount)}">
-                <button class="button black round expand" ng-disabled="sendForm.$invalid || home.blockUx || index.isOffline || (home.paymentExpired && home._paypro)"
-                  ng-style="{'background-color':index.backgroundColor}" fast-click callback-fn="home.submitForm()"  translate>
+                <button class="button black round expand" ng-disabled="sendForm.$invalid || home.blockUx || index.isOffline || home.destinationWalletNeedsBackup"
+                  ng-style="{'background-color':index.backgroundColor}" fast-click callback-fn="home.submitForm()" translate>
                   Send
                 </button>
               </div>
