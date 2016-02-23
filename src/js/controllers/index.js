@@ -950,7 +950,17 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
     function filter(search) {
       self.result = [];
-      function formatDate(date) {
+
+      function computeSearchableString(tx){
+        var addrbook = '';
+        if(self.addressbook[tx.addressTo]!= 'undefined') addrbook = self.addressbook[tx.addressTo] || '';
+        var searchableDate = computeSearchableDate(new Date(tx.time * 1000));
+        var message = tx.message ? tx.message : '';
+        var addressTo = tx.addressTo ? tx.addressTo : '';
+        return ((tx.amountStr+message+addressTo+addrbook+searchableDate).toString()).toLowerCase();
+      }
+
+      function computeSearchableDate(date) {
         var day = ('0' + date.getDate()).slice(-2).toString();
         var month = ('0' + (date.getMonth() + 1)).slice(-2).toString();
         var year = date.getFullYear();
@@ -961,13 +971,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         self.historyShowMore = false;
         return [];
       }
-
       self.result = lodash.filter(self.completeHistory, function(tx) {
-        return lodash.includes(tx.amountStr, search) ||
-          lodash.includes(tx.message, search) ||
-          lodash.includes(self.addressbook ? self.addressbook[tx.addressTo] : null, search) ||
-          lodash.includes(tx.addressTo, search) ||
-          lodash.isEqual(formatDate(new Date(tx.time * 1000)), search);
+        if (!tx.searcheableString) tx.searcheableString = computeSearchableString(tx);
+          return lodash.includes(tx.searcheableString, search.toLowerCase());
       });
 
       if (self.result.length > self.historyShowLimit) self.historyShowMore = true;
