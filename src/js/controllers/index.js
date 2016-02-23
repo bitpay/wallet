@@ -975,7 +975,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
     self.txHistoryToList = filter(self.search).slice(0, self.historyShowLimit);
     if (isCordova)
-      window.plugins.toast.showShortBottom(gettextCatalog.getString('Matches: ' + self.txHistoryToList.length));
+      window.plugins.toast.showShortBottom(gettextCatalog.getString('Matches: ' + self.result.length));
 
     $timeout(function() {
       $rootScope.$apply();
