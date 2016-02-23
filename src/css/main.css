@@ -1493,6 +1493,7 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
 }
 
 .tx-details-blockchain li {
+  background-color: #F6F7F9;
   cursor: pointer !important;
 }
 
