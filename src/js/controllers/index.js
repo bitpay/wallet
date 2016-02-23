@@ -954,7 +954,10 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         return [month, day, year].join('/');
       };
 
-      if (lodash.isEmpty(search)) return;
+      if (lodash.isEmpty(search)) {
+        self.historyShowMore = false;
+        return [];
+      }
 
       self.result = lodash.filter(self.completeHistory, function(tx) {
         return lodash.includes(tx.amountStr, search) ||
