@@ -846,9 +846,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         self.setCompactTxHistory();
       }
 
-      if (historyUpdateInProgress[walletId]) 
+      if (historyUpdateInProgress[walletId])
         return;
-       
+
       historyUpdateInProgress[walletId] = true;
 
       function getNewTxs(newTxs, skip, i_cb) {
@@ -1235,10 +1235,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
   $rootScope.$on('Local/AddressbookUpdated', function(event, ab) {
     self.setAddressbook(ab);
-  });
-
-  $rootScope.$on('Local/Searching', function(event, val) {
-    self.isSearching = val;
   });
 
   // UX event handlers
