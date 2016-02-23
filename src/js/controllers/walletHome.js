@@ -50,11 +50,19 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   var disableFocusListener = $rootScope.$on('Local/NewFocusedWallet', function() {
     self.addr = null;
     self.resetForm();
+    if (profileService.focusedClient) {
+      self.setAddress();
+      self.setSendFormInputs();
+    }
 
     $log.debug('Cleaning WalletHome Instance');
     lodash.each(self, function(v, k) {
       if (lodash.isFunction(v)) return;
-      if (vanillaScope[k]) return;
+      if (vanillaScope[k]) {
+        self[k] = vanillaScope[k];
+        return;
+      }
+      if (k == 'isRateAvailable') return;
 
       delete self[k];
     });
@@ -823,7 +831,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     }, 1);
   };
 
-
+// subscription 
   this.setOngoingProcess = function(name) {
     var self = this;
     self.blockUx = !!name;
