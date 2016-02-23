@@ -72,7 +72,7 @@
     -->
 
     <div id="walletHome" class="walletHome tab-view tab-in">
-      <div class="oh pr">
+      <div class="oh pr" ng-show="!index.isSearching">
         <div class="amount" ng-style="{'background-color':index.backgroundColor}">
           <div ng-if="!index.anyOnGoingProcess && !index.notAuthorized">
             <div class="m15t" ng-show="index.updateError" ng-click='index.updateAll({triggerTxUpdate: true})'>
@@ -134,7 +134,7 @@
         </div>
       </div>
 
-      <div class="oh pr" ng-if="index.txps[0]">
+      <div class="oh pr" ng-if="index.txps[0]" ng-show="!index.isSearching">
         <h4 ng-show="index.requiresMultipleSignatures" class="title m0" translate>Payment Proposals</h4>
         <h4 ng-show="!index.requiresMultipleSignatures" class="title m0" translate>Unsent transactions</h4>
         <div class="last-transactions pr" ng-repeat="tx in index.txps">
@@ -159,8 +159,8 @@
       </div>
 
       <div class="oh pr" ng-show="index.txHistory[0] || index.txProgress > 5">
-        <h4 class="title m0">
-          <span translate>Activity</span>
+        <h4 class="title" ng-click="index.startSearch(); search=''" ng-show="!index.isSearching" translate>Activity
+          <i class="dib m5l size-16 pointer fi-magnifying-glass"></i>
         </h4>
 
         <div ng-show="index.updatingTxHistory && index.txProgress > 5">
@@ -195,8 +195,26 @@
           </div>
         </div>
 
-        <div ng-repeat="btx in index.txHistory track by btx.txid"
-             fast-click callback-fn="home.openTxModal(btx)"
+        <div ng-show="index.isSearching" class="row searchBar">
+          <div class="small-11 columns">
+            <div class="searchLabel">
+              <i class="fi-magnifying-glass size-14"></i>
+              <form>
+                <input name="search"
+                  type="search"
+                  ng-change="index.updateSearchInput(search)"
+                  placeholder="{{'Search transactions' | translate}}"
+                  ng-model="search">
+                </input>
+              </form>
+            </div>
+          </div>
+          <div class="small-1 columns">
+            <a ng-click="index.cancelSearch()" translate>Cancel</a>
+          </div>
+        </div>
+        <div ng-repeat="btx in index.txHistorySearchResults track by btx.txid"
+          fast-click callback-fn="home.openTxModal(btx)"
           class="row collapse last-transactions-content">
           <div class="large-6 medium-6 small-6 columns size-14">
             <div class="m10r left">
@@ -244,7 +262,7 @@
           </div>
         </div>
 
-        <div class="row m20t text-center" ng-show="index.historyRendering">
+        <div class="row m20t text-center" ng-show="index.historyRendering && !index.isSearching">
           <div class="columns large-12 medium-12 small-12">
             <div class="spinner">
               <div class="rect1"></div>
@@ -258,9 +276,15 @@
 
         <div class="m20t text-center">
           <a class="text-gray size-12"
-            ng-show="index.historyShowMore"
-            ng-click="index.showMore()">
-            <span translate>Show more</span> ({{index.completeHistory.length - index.txHistory.length}})
+             ng-show="index.historyShowMore"
+             ng-click="index.showMore()">
+            <span translate>Show more</span> 
+            <span ng-if="!index.isSearching">
+              ({{index.completeHistory.length - index.txHistory.length}})
+            </span> 
+            <span ng-if="index.isSearching">
+              ({{index.result.length - index.txHistorySearchResults.length}})
+            </span> 
             <i class="icon-arrow-down4"></i>
           </a>
         </div>
