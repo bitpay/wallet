@@ -847,7 +847,6 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     var fc = profileService.focusedClient;
     var unitToSat = this.unitToSatoshi;
     var currentSpendUnconfirmed = configWallet.spendUnconfirmed;
-    var currentFeeLevel = walletSettings.feeLevel || 'normal';
 
     var outputs = [];
 
@@ -1230,18 +1229,30 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     this.setForm(null, amount, null);
   };
 
-  this.sendAll = function() {
+  this.sendAll = function(totalBytesToSendMax, availableBalanceSat) {
     var self = this;
-    self.error = null;
-    self.setOngoingProcess(gettextCatalog.getString('Calculating fee'));
-    $rootScope.$emit('Local/SetFeeSendMax', function(currentFeePerKb, availableMaxBalance, feeToSendMaxStr) {
+    var availableMaxBalance;
+    var feeToSendMaxStr;
+    this.error = null;
+    this.setOngoingProcess(gettextCatalog.getString('Calculating fee'));
+
+    feeService.getCurrentFeeValue(function(err, feePerKb) {
       self.setOngoingProcess();
-      if (lodash.isNull(currentFeePerKb)) {
-        self.error = gettext('Could not calculate fee');
-        $scope.$apply();
+      if (err || lodash.isNull(feePerKb)) {
+        self.error = gettext('Could not get fee value');
         return;
       }
-      self.lockedCurrentFeePerKb = currentFeePerKb;
+
+      var feeToSendMaxSat = parseInt(((totalBytesToSendMax * feePerKb) / 1000.).toFixed(0));
+      if (availableBalanceSat > feeToSendMaxSat) {
+        self.lockedCurrentFeePerKb = feePerKb;
+        availableMaxBalance = strip((availableBalanceSat - feeToSendMaxSat) * self.satToUnit);
+        feeToSendMaxStr = profileService.formatAmount(feeToSendMaxSat) + ' ' + self.unitName;
+      } else {
+        self.error = gettext('Not enought funds for fee');
+        return;
+      }
+
       var msg = gettextCatalog.getString("{{fee}} will be deducted for bitcoin networking fees", {
         fee: feeToSendMaxStr
       });
