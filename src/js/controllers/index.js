@@ -1034,6 +1034,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   };
 
   self.setCompactTxHistory = function() {
+    self.isSearching = false;
     self.nextTxHistory = self.historyShowMoreLimit;
     self.txHistory = self.completeHistory.slice(0, self.historyShowLimit);
     self.txHistoryToList = self.txHistory;
