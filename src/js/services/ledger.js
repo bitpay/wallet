@@ -14,9 +14,9 @@ angular.module('copayApp.services')
 
     root.getEntropySource = function(isMultisig, account, callback) {
       root.getXPubKey(hwWallet.getEntropyPath('ledger', isMultisig, account), function(data) {
-        if (!data.success) 
+        if (!data.success)
           return callback(hwWallet._err(data));
-        
+
         return callback(null,  hwWallet.pubKeyToEntropySource(data.xpubkey));
       });
     };
@@ -57,7 +57,7 @@ angular.module('copayApp.services')
       root.callbacks["sign_p2sh"] = callback;
       var redeemScripts = [];
       var paths = [];
-      var tx = bwcService.buildTx(txp);
+      var tx = bwcService.getUtils().buildTx(txp);
       for (var i = 0; i < tx.inputs.length; i++) {
         redeemScripts.push(new ByteString(tx.inputs[i].redeemScript.toBuffer().toString('hex'), GP.HEX).toString());
         paths.push(hwWallet.getAddressPath('ledger', isMultisig, account) + txp.inputs[i].path.substring(1));
