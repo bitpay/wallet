@@ -150,9 +150,11 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       };
 
       $scope.checkClipboard = function() {
-        getClipboard(function(value) {
-          $scope.newAddress = value;
-        });
+        if (!$scope.newAddress) {
+          getClipboard(function(value) {
+            $scope.newAddress = value;
+          });
+        }
       };
 
       $scope.beforeQrCodeScann = function() {
