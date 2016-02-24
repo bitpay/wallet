@@ -367,6 +367,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
           $timeout(function() {
             self.debounceUpdateHistory();
           }, 1);
+        } else {
+          self.loadingWallet = false;
         }
       });
     });
