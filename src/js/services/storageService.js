@@ -4,7 +4,7 @@ angular.module('copayApp.services')
 
     var root = {};
 
-    // File storage is not supported for writing according to 
+    // File storage is not supported for writing according to
     // https://github.com/apache/cordova-plugin-file/#supported-platforms
     var shouldUseFileStorage = isCordova && !isMobile.Windows();
     $log.debug('Using file storage:', shouldUseFileStorage);
@@ -232,11 +232,11 @@ angular.module('copayApp.services')
     };
 
     root.setDeviceToken = function(token, cb) {
-      storage.set('token', token, cb);
+      storage.set('pushToken', token, cb);
     }
 
     root.getDeviceToken = function(cb) {
-      storage.get('token', cb);
+      storage.get('pushToken', cb);
     }
 
     root.removeAddressbook = function(network, cb) {
