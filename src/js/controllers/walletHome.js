@@ -923,7 +923,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
           return;
         } else {
           $rootScope.$emit('Local/NeedsConfirmation', txp, function(accept) {
-            if (accept) self.acceptTx(txp);
+            if (accept) self.confirmTx(txp);
             else self.resetForm();
           });
         }
@@ -932,7 +932,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     }, 100);
   };
 
-  this.acceptTx = function(txp) {
+  this.confirmTx = function(txp) {
     var self = this;
     txService.prepare(function(err) {
       if (err) {
