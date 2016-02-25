@@ -892,7 +892,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       getNewTxs([], 0, function(err, txs) {
         if (err) return cb(err);
 
-        var newHistory = lodash.compact(txs.concat(confirmedTxs));
+        var newHistory = lodash.uniq(lodash.compact(txs.concat(confirmedTxs)), function(x) {
+          return x.txid;
+        });
         var historyToSave = JSON.stringify(newHistory);
 
         lodash.each(txs, function(tx) {
@@ -919,22 +921,22 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   self.showMore = function() {
     $timeout(function() {
       if (self.isSearching) {
-           self.txHistorySearchResults = self.result.slice(0, self.nextTxHistory);
-           $log.debug('Total txs: ', self.txHistorySearchResults.length + '/' + self.result.length);
-           if (self.txHistorySearchResults.length >= self.result.length)
-             self.historyShowMore = false;
-       } else {
-           self.txHistory = self.completeHistory.slice(0, self.nextTxHistory);
-           self.txHistorySearchResults = self.txHistory;
-           $log.debug('Total txs: ', self.txHistorySearchResults.length + '/' + self.completeHistory.length);
-           if (self.txHistorySearchResults.length >= self.completeHistory.length)
-             self.historyShowMore = false;
-       }
-       self.nextTxHistory += self.historyShowMoreLimit;
+        self.txHistorySearchResults = self.result.slice(0, self.nextTxHistory);
+        $log.debug('Total txs: ', self.txHistorySearchResults.length + '/' + self.result.length);
+        if (self.txHistorySearchResults.length >= self.result.length)
+          self.historyShowMore = false;
+      } else {
+        self.txHistory = self.completeHistory.slice(0, self.nextTxHistory);
+        self.txHistorySearchResults = self.txHistory;
+        $log.debug('Total txs: ', self.txHistorySearchResults.length + '/' + self.completeHistory.length);
+        if (self.txHistorySearchResults.length >= self.completeHistory.length)
+          self.historyShowMore = false;
+      }
+      self.nextTxHistory += self.historyShowMoreLimit;
     }, 100);
   };
 
-  self.startSearch = function(){
+  self.startSearch = function() {
     self.isSearching = true;
     self.txHistorySearchResults = [];
     self.result = [];
@@ -942,13 +944,13 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.nextTxHistory = self.historyShowMoreLimit;
   }
 
-  self.cancelSearch = function(){
+  self.cancelSearch = function() {
     self.isSearching = false;
     self.result = [];
     self.setCompactTxHistory();
   }
 
-  self.updateSearchInput = function(search){
+  self.updateSearchInput = function(search) {
     self.search = search;
     if (isCordova)
       window.plugins.toast.hide();
@@ -960,13 +962,13 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     function filter(search) {
       self.result = [];
 
-      function computeSearchableString(tx){
+      function computeSearchableString(tx) {
         var addrbook = '';
-        if(tx.addressTo && self.addressbook && self.addressbook[tx.addressTo]) addrbook = self.addressbook[tx.addressTo] || '';
+        if (tx.addressTo && self.addressbook && self.addressbook[tx.addressTo]) addrbook = self.addressbook[tx.addressTo] || '';
         var searchableDate = computeSearchableDate(new Date(tx.time * 1000));
         var message = tx.message ? tx.message : '';
         var addressTo = tx.addressTo ? tx.addressTo : '';
-        return ((tx.amountStr+message+addressTo+addrbook+searchableDate).toString()).toLowerCase();
+        return ((tx.amountStr + message + addressTo + addrbook + searchableDate).toString()).toLowerCase();
       }
 
       function computeSearchableDate(date) {
@@ -982,13 +984,13 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       }
       self.result = lodash.filter(self.completeHistory, function(tx) {
         if (!tx.searcheableString) tx.searcheableString = computeSearchableString(tx);
-          return lodash.includes(tx.searcheableString, search.toLowerCase());
+        return lodash.includes(tx.searcheableString, search.toLowerCase());
       });
 
       if (self.result.length > self.historyShowLimit) self.historyShowMore = true;
       else self.historyShowMore = false;
 
-       return self.result;
+      return self.result;
     };
 
     self.txHistorySearchResults = filter(self.search).slice(0, self.historyShowLimit);
@@ -999,7 +1001,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       $rootScope.$apply();
     });
 
-   },1000);
+  }, 1000);
 
   self.getTxsFromServer = function(client, skip, endingTxid, limit, cb) {
     var res = [];
