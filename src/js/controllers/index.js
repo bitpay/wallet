@@ -962,7 +962,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
       function computeSearchableString(tx){
         var addrbook = '';
-        if(tx.addressTo && self.addressbook[tx.addressTo]!= 'undefined') addrbook = self.addressbook[tx.addressTo] || '';
+        if(tx.addressTo && self.addressbook && self.addressbook[tx.addressTo]) addrbook = self.addressbook[tx.addressTo] || '';
         var searchableDate = computeSearchableDate(new Date(tx.time * 1000));
         var message = tx.message ? tx.message : '';
         var addressTo = tx.addressTo ? tx.addressTo : '';
