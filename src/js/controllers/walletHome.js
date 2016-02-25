@@ -944,32 +944,26 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
           self.setOngoingProcess();
           self.setSendError(err);
         } else {
-          self.prepareSignAndBroadcastTx(txpPublished);
+          txService.signAndBroadcast(txpPublished, {
+            reporterFn: self.setOngoingProcess.bind(self)
+          }, function(err, txp) {
+            self.resetForm();
+
+            if (err) {
+              self.error = err.message ? err.message : gettext('The payment was created but could not be completed. Please try again from home screen');
+              $scope.$emit('Local/TxProposalAction');
+              $timeout(function() {
+                $scope.$digest();
+              }, 1);
+            } else {
+              go.walletHome();
+              txStatus.notify(txp, function() {
+                $scope.$emit('Local/TxProposalAction', txp.status == 'broadcasted');
+              });
+            }
+          });
         }
       });
-    });
-  };
-
-  this.prepareSignAndBroadcastTx = function(txp) {
-    var fc = profileService.focusedClient;
-    var self = this;
-    txService.prepareAndSignAndBroadcast(txp, {
-      reporterFn: self.setOngoingProcess.bind(self)
-    }, function(err, txp) {
-      self.resetForm();
-
-      if (err) {
-        self.error = err.message ? err.message : gettext('The payment was created but could not be completed. Please try again from home screen');
-        $scope.$emit('Local/TxProposalAction');
-        $timeout(function() {
-          $scope.$digest();
-        }, 1);
-      } else {
-        go.walletHome();
-        txStatus.notify(txp, function() {
-          $scope.$emit('Local/TxProposalAction', txp.status == 'broadcasted');
-        });
-      }
     });
   };
 
