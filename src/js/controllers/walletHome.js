@@ -923,7 +923,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
           return;
         } else {
           $rootScope.$emit('Local/NeedsConfirmation', txp, function(accept) {
-            if (accept) self.acceptTx(txp);
+            if (accept) self.confirmTx(txp);
             else self.resetForm();
           });
         }
@@ -932,7 +932,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     }, 100);
   };
 
-  this.acceptTx = function(txp) {
+  this.confirmTx = function(txp) {
     var self = this;
     txService.prepare(function(err) {
       if (err) {
@@ -944,32 +944,26 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
           self.setOngoingProcess();
           self.setSendError(err);
         } else {
-          self.prepareSignAndBroadcastTx(txpPublished);
+          txService.signAndBroadcast(txpPublished, {
+            reporterFn: self.setOngoingProcess.bind(self)
+          }, function(err, txp) {
+            self.resetForm();
+
+            if (err) {
+              self.error = err.message ? err.message : gettext('The payment was created but could not be completed. Please try again from home screen');
+              $scope.$emit('Local/TxProposalAction');
+              $timeout(function() {
+                $scope.$digest();
+              }, 1);
+            } else {
+              go.walletHome();
+              txStatus.notify(txp, function() {
+                $scope.$emit('Local/TxProposalAction', txp.status == 'broadcasted');
+              });
+            }
+          });
         }
       });
-    });
-  };
-
-  this.prepareSignAndBroadcastTx = function(txp) {
-    var fc = profileService.focusedClient;
-    var self = this;
-    txService.prepareAndSignAndBroadcast(txp, {
-      reporterFn: self.setOngoingProcess.bind(self)
-    }, function(err, txp) {
-      self.resetForm();
-
-      if (err) {
-        self.error = err.message ? err.message : gettext('The payment was created but could not be completed. Please try again from home screen');
-        $scope.$emit('Local/TxProposalAction');
-        $timeout(function() {
-          $scope.$digest();
-        }, 1);
-      } else {
-        go.walletHome();
-        txStatus.notify(txp, function() {
-          $scope.$emit('Local/TxProposalAction', txp.status == 'broadcasted');
-        });
-      }
     });
   };
 
