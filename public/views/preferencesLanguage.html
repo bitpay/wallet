@@ -13,7 +13,7 @@
     ng-repeat="lang in prefLang.availableLanguages" 
     ng-click="prefLang.save(lang.isoCode)" class="line-b p20 size-14">
     <span>{{lang.name}}</span>
-    <i class="fi-check size-16 right" ng-show="index.defaultLanguageIsoCode == lang.isoCode"></i>
+    <i class="fi-check size-16 right" ng-show="prefLang.currentLanguage == lang.isoCode"></i>
   </li>
   </ul>
 </div>
