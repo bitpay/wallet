@@ -652,6 +652,7 @@ input[type=number]::-webkit-outer-spin-button {
 .label {
   font-weight: 500;
   padding: 0.3rem 0.4rem;
+  vertical-align: text-bottom;
 }
 
 .label.outline {
