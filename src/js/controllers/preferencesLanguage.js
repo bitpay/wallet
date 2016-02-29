@@ -4,6 +4,7 @@ angular.module('copayApp.controllers').controller('preferencesLanguageController
   function($scope, $log, $timeout, configService, uxLanguage, go) {
 
     this.availableLanguages = uxLanguage.getLanguages();
+    this.currentLanguage = uxLanguage.getCurrentLanguage();
 
     this.save = function(newLang) {
 

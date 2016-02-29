@@ -20,6 +20,9 @@ angular.module('copayApp.services')
       isoCode: 'ja',
       useIdeograms: true,
     }, {
+      name: 'Polski',
+      isoCode: 'pl',
+    }, {
       name: 'Pусский',
       isoCode: 'ru',
     }];

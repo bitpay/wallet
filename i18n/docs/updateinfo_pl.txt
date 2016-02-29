@@ -1,0 +1,4 @@
+* Poprawiono kilka ikon
+* Zmieniono nieco interfejs użytkownika w "Otrzymaj"
+* Zaktualizowano tłumaczenia
+* Poprawiono błędy
