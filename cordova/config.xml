@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="com.bitpay.copay" 
   version="1.9.0"
-  android-versionCode="68"
+  android-versionCode="69"
   ios-CFBundleVersion="1.9.1">
     <name>Copay</name>
     <description>
