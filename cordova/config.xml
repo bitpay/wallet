@@ -2,7 +2,7 @@
 <widget id="com.bitpay.copay" 
   version="1.9.0"
   android-versionCode="68"
-  ios-CFBundleVersion="1.9.0">
+  ios-CFBundleVersion="1.9.1">
     <name>Copay</name>
     <description>
       A secure bitcoin wallet for friends and companies.
