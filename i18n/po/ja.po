@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Japanese\n"
 "Language: ja\n"
-"PO-Revision-Date: 2016-02-24 08:23-0500\n"
+"PO-Revision-Date: 2016-02-29 10:52-0500\n"
 
 #: public/views/walletHome.html
 msgid "(possible double spend)"
@@ -219,7 +219,7 @@ msgstr "アドレスごとの残高"
 
 #: public/views/walletHome.html
 msgid "Before receiving funds, it is necessary backup your wallet. If you lose this device, it is impossible to access your funds without a backup."
-msgstr ""
+msgstr "お金を受け取る前に、このウォレットのバックアップを取っておくことを必ずしていただきます。一ウォレットごとにバックアップは一回です。バックアップを取らないまま、この端末が紛失・故障されてしまったら全残高が消失されてしまいます。"
 
 #: public/views/create.html
 #: public/views/import.html
@@ -284,7 +284,7 @@ msgstr "キャンセル"
 
 #: public/views/copayers.html
 msgid "Cancel and delete the wallet"
-msgstr ""
+msgstr "キャンセルし、ウォレットを削除"
 
 #: src/js/services/profileService.js
 msgid "Cannot join the same wallet more that once"
@@ -292,7 +292,7 @@ msgstr "同じ端末で同じウォレットに複数回参加することがで
 
 #: src/js/controllers/walletHome.js
 msgid "Cannot sign: The payment request has expired"
-msgstr ""
+msgstr "署名できません: 支払い請求の期限が切れています。"
 
 #: public/views/modals/paypro.html
 msgid "Certified by"
@@ -335,7 +335,7 @@ msgstr "確認"
 
 #: public/views/includes/confirm-tx.html
 msgid "Confirm transaction"
-msgstr ""
+msgstr "取引を承認する"
 
 #: public/views/backup.html
 msgid "Confirm your wallet seed"
@@ -364,7 +364,7 @@ msgstr "{{join.hwWallet}} Wallet に接続中…"
 
 #: src/js/services/bwsError.js
 msgid "Connection reset by peer"
-msgstr ""
+msgstr "接続がピアによってリセットされました"
 
 #: public/views/backup.html
 msgid "Continue"
@@ -416,7 +416,7 @@ msgstr "送金を配信できませんでした。"
 
 #: src/js/services/bwsError.js
 msgid "Could not build transaction"
-msgstr ""
+msgstr "取引を作成できませんでした。"
 
 #: src/js/services/addressService.js
 msgid "Could not create address"
@@ -456,7 +456,7 @@ msgstr "支払い情報が取得できませんでした。"
 
 #: src/js/controllers/walletHome.js
 msgid "Could not get fee value"
-msgstr ""
+msgstr "手数料の金額を取得できませんでした。"
 
 #: src/js/services/profileService.js
 msgid "Could not import"
@@ -569,7 +569,7 @@ msgstr "派生パス"
 
 #: public/views/walletHome.html
 msgid "Destination wallet needs backup"
-msgstr ""
+msgstr "送り先のウォレットはバックアップが必要です"
 
 #: public/views/includes/tx-details.html
 #: public/views/modals/customized-amount.html
@@ -625,7 +625,7 @@ msgstr "未使用アドレスを生成しすぎたため、これ以上アドレ
 
 #: public/views/preferencesGlobal.html
 msgid "Enable push notifications"
-msgstr ""
+msgstr "プッシュ通知を有効化"
 
 #: src/js/controllers/export.js
 msgid "Encrypted export file saved"
@@ -658,7 +658,7 @@ msgstr "ウォレットインポート時にエラー："
 
 #: public/views/modals/txp-details.html
 msgid "Expired"
-msgstr ""
+msgstr "期限切れ"
 
 #: public/views/modals/paypro.html
 #: public/views/modals/txp-details.html
@@ -911,7 +911,7 @@ msgstr "ウォレット移行について詳しく"
 
 #: public/views/preferencesFee.html
 msgid "Loading..."
-msgstr ""
+msgstr "読み込み中..."
 
 #: public/views/includes/available-balance.html
 msgid "locked by pending payments"
@@ -931,7 +931,7 @@ msgstr "支払いは次の宛先へ"
 
 #: src/js/controllers/index.js
 msgid "Matches:"
-msgstr ""
+msgstr "結果:"
 
 #: src/js/services/profileService.js
 msgid "me"
@@ -960,7 +960,7 @@ msgstr "メッセージ"
 
 #: src/js/services/bwsError.js
 msgid "Missing private keys to sign"
-msgstr ""
+msgstr "署名するための秘密鍵がありません。"
 
 #: public/views/walletHome.html
 #: public/views/includes/tx-details.html
@@ -1028,7 +1028,7 @@ msgstr "未完了"
 
 #: src/js/controllers/walletHome.js
 msgid "Not enought funds for fee"
-msgstr ""
+msgstr "手数料含めたら残高が不足しています。"
 
 #: public/views/walletHome.html
 #: public/views/modals/customized-amount.html
@@ -1103,7 +1103,7 @@ msgstr "ペーパーウォレットの秘密鍵をここに貼り付けて下さ
 
 #: src/js/controllers/walletHome.js
 msgid "Pasted from clipboard"
-msgstr ""
+msgstr "クリップボードから貼り付け"
 
 #: public/views/modals/paypro.html
 msgid "Pay To"
@@ -1127,7 +1127,7 @@ msgstr "支払いの詳細"
 
 #: public/views/walletHome.html
 msgid "Payment expires"
-msgstr ""
+msgstr "支払い請求の有効期限"
 
 #: public/views/modals/txp-details.html
 msgid "Payment Proposal"
@@ -1238,7 +1238,7 @@ msgstr "優先"
 
 #: src/js/services/bwsError.js
 msgid "Private key is encrypted, cannot sign"
-msgstr ""
+msgstr "秘密鍵が暗号化されており署名できません。"
 
 #: public/views/modals/customized-amount.html
 msgid "QR Code"
@@ -1312,7 +1312,7 @@ msgstr "Ledger Walletに署名を要求しています。"
 
 #: src/js/services/txService.js
 msgid "Requesting Trezor Wallet to sign"
-msgstr ""
+msgstr "Trezor Walletに署名を要求しています。"
 
 #: public/views/join.html
 msgid "Required"
@@ -1371,7 +1371,7 @@ msgstr "ウォレット残高照会中…"
 
 #: public/views/walletHome.html
 msgid "Search transactions"
-msgstr ""
+msgstr "取引を検索"
 
 #: public/views/preferences.html
 msgid "Security preferences"
@@ -1431,7 +1431,7 @@ msgstr "送金中..."
 
 #: src/js/controllers/walletHome.js
 msgid "Sending transaction"
-msgstr ""
+msgstr "取引送信中"
 
 #: public/views/walletHome.html
 #: public/views/includes/tx-details.html
@@ -1509,7 +1509,7 @@ msgstr "詳細設定を表示"
 
 #: public/views/walletHome.html
 msgid "Show more"
-msgstr ""
+msgstr "もっと見る"
 
 #: public/views/backup.html
 msgid "Show Wallet Seed"
@@ -1586,7 +1586,7 @@ msgstr "このウォレットの秘密鍵が暗号化されています。バッ
 
 #: src/js/services/bwsError.js
 msgid "The request could not be understood by the server"
-msgstr ""
+msgstr "サーバーが要求を処理できませんでした。"
 
 #: public/views/create.html
 #: public/views/join.html
@@ -1665,7 +1665,7 @@ msgstr "参加人数を選択して下さい。"
 
 #: src/js/services/txService.js
 msgid "Touch ID Failed"
-msgstr ""
+msgstr "Touch ID が失敗しました。"
 
 #: public/views/includes/tx-details.html
 #: public/views/modals/tx-details.html
@@ -1817,7 +1817,7 @@ msgstr "ウォレットが見つかりません。"
 
 #: src/js/services/bwsError.js
 msgid "Wallet not registered at the wallet service. Recreate it from \"Create Wallet\" using \"Advanced Options\" to set your seed"
-msgstr ""
+msgstr "このウォレットは Wallet Service にて登録されていません。再び「新規作成」メニューから詳細設定を選び、復元フレーズをご入力下さい。"
 
 #: public/views/create.html
 #: public/views/import.html
