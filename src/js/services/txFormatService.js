@@ -26,7 +26,7 @@ angular.module('copayApp.services').factory('txFormatService', function(profileS
       return tx; 
 
     // New transaction output format
-    if (tx.outputs) {
+    if (tx.outputs && tx.outputs.length) {
 
       var outputsNr = tx.outputs.length;
 
