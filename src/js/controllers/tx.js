@@ -7,6 +7,8 @@ angular.module('copayApp.controllers').controller('txController',
     var config = configService.getSync();
     var configWallet = config.wallet;
     var walletSettings = configWallet.settings;
+    var unitToSatoshi = walletSettings.unitToSatoshi;
+    var satToUnit = 1 / unitToSatoshi;
     var m = angular.element(document.getElementsByClassName('txModal'));
     m.addClass(animationService.modalAnimated.slideRight);
 
@@ -16,7 +18,7 @@ angular.module('copayApp.controllers').controller('txController',
     this.isShared = fc.credentials.n > 1;
 
     this.prepareSimilarTx = function(to, amount, message) {
-      $rootScope.$emit('dataScanned', to, amount, message);
+      $rootScope.$emit('dataScanned', to, amount * satToUnit, message);
       this.cancel();
     };
 

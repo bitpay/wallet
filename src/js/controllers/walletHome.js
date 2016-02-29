@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('walletHomeController', function($scope, $rootScope, $interval, $timeout, $filter, $modal, $log, notification, txStatus, isCordova, isMobile, profileService, lodash, configService, rateService, storageService, bitcore, isChromeApp, gettext, gettextCatalog, nodeWebkit, addressService, ledger, bwsError, confirmDialog, txFormatService, animationService, addressbookService, go, feeService, txService){
+angular.module('copayApp.controllers').controller('walletHomeController', function($scope, $rootScope, $interval, $timeout, $filter, $modal, $log, notification, txStatus, isCordova, isMobile, profileService, lodash, configService, rateService, storageService, bitcore, isChromeApp, gettext, gettextCatalog, nodeWebkit, addressService, ledger, bwsError, confirmDialog, txFormatService, animationService, addressbookService, go, feeService, txService) {
 
   var self = this;
   window.ignoreMobilePause = false;
@@ -27,7 +27,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
   var disableScannerListener = $rootScope.$on('dataScanned', function(event, to, amount, message) {
     self.resetForm();
-    self.setForm(to, amount * self.satToUnit, message);
+    self.setForm(to, amount, message);
     $rootScope.$emit('Local/SetTab', 'send');
 
     var form = $scope.sendForm;
@@ -352,7 +352,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
             $scope.paymentExpired = true;
             $interval.cancel(countDown);
           }
-          $scope.expires --;
+          $scope.expires--;
         }, 1000);
       };
 
@@ -836,7 +836,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     }, 1);
   };
 
-// subscription
+  // subscription
   this.setOngoingProcess = function(name) {
     var self = this;
     self.blockUx = !!name;
@@ -1126,7 +1126,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
         setExpiredPaymentValues();
         $interval.cancel(countDown);
       }
-      self.timeToExpire --;
+      self.timeToExpire--;
     }, 1000);
 
     function setExpiredPaymentValues() {
@@ -1135,7 +1135,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       self._paypro = null;
       self.error = gettext('Cannot sign: The payment request has expired');
     };
- };
+  };
 
   this.setFromUri = function(uri) {
     var self = this;
