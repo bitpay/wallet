@@ -15,27 +15,23 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
       + 'wallet:sells:create,'
       + 'wallet:transactions:read';
 
+    if (isCordova) {
+      credentials.REDIRECT_URI = 'bitcoin://coinbase';
+    } else {
+      credentials.REDIRECT_URI = 'urn:ietf:wg:oauth:2.0:oob';
+    }
+
     if (network == 'testnet') {
       credentials.HOST = 'https://sandbox.coinbase.com';
       credentials.API = 'https://api.sandbox.coinbase.com';
       credentials.CLIENT_ID = '6cdcc82d5d46654c46880e93ab3d2a43c639776347dd88022904bd78cd067841';
       credentials.CLIENT_SECRET = '228cb6308951f4b6f41ba010c7d7981b2721a493c40c50fd2425132dcaccce59';
-      if (isCordova) {
-        credentials.REDIRECT_URI = 'bitcoin://coinbase';
-      } else {
-        credentials.REDIRECT_URI = 'urn:ietf:wg:oauth:2.0:oob';
-      }
     }
     else {
       credentials.HOST = 'https://coinbase.com';
       credentials.API = 'https://api.coinbase.com';
       credentials.CLIENT_ID = '';
       credentials.CLIENT_SECRET = '';
-      if (isCordova) {
-        credentials.REDIRECT_URI = 'bitcoin://coinbase';
-      } else {
-        credentials.REDIRECT_URI = 'urn:ietf:wg:oauth:2.0:oob';
-      }
     };
   };
 

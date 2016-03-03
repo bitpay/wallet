@@ -289,6 +289,15 @@ angular
           },
         }
       })
+      .state('uricoinbase', {
+        url: '/uri-coinbase?code',
+        needProfile: true,
+        views: {
+          'main': {
+            templateUrl: 'views/coinbaseUri.html'
+          },
+        }
+      })
       .state('preferencesAdvanced', {
         url: '/preferencesAdvanced',
         templateUrl: 'views/preferencesAdvanced.html',
