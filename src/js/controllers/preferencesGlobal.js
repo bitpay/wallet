@@ -23,7 +23,7 @@ angular.module('copayApp.controllers').controller('preferencesGlobalController',
       }
       $scope.spendUnconfirmed = config.wallet.spendUnconfirmed;
       $scope.glideraEnabled = config.glidera.enabled;
-      $scope.glideraTestnet = config.glidera.testnet;
+      $scope.coinbaseEnabled = config.coinbase.enabled;
       $scope.pushNotifications = config.pushNotifications.enabled;
     };
 
@@ -77,15 +77,15 @@ angular.module('copayApp.controllers').controller('preferencesGlobalController',
       });
     });
 
-    var unwatchGlideraTestnet = $scope.$watch('glideraTestnet', function(newVal, oldVal) {
+    var unwatchCoinbaseEnabled = $scope.$watch('coinbaseEnabled', function(newVal, oldVal) {
       if (newVal == oldVal) return;
       var opts = {
-        glidera: {
-          testnet: newVal
+        coinbase: {
+          enabled: newVal
         }
       };
       configService.set(opts, function(err) {
-        $rootScope.$emit('Local/GlideraUpdated');
+        $rootScope.$emit('Local/CoinbaseUpdated');
         if (err) $log.debug(err);
       });
     });
@@ -93,7 +93,7 @@ angular.module('copayApp.controllers').controller('preferencesGlobalController',
     $scope.$on('$destroy', function() {
       unwatchSpendUnconfirmed();
       unwatchGlideraEnabled();
-      unwatchGlideraTestnet();
+      unwatchCoinbaseEnabled();
       unwatchPushNotifications();
     });
   });

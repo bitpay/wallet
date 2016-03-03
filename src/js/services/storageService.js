@@ -223,6 +223,18 @@ angular.module('copayApp.services')
       storage.remove('glideraToken-' + network, cb);
     };
 
+    root.setCoinbaseToken = function(network, token, cb) {
+      storage.set('coinbaseToken-' + network, token, cb);
+    };
+
+    root.getCoinbaseToken = function(network, cb) {
+      storage.get('coinbaseToken-' + network, cb);
+    };
+
+    root.removeCoinbaseToken = function(network, cb) {
+      storage.remove('coinbaseToken-' + network, cb);
+    };
+
     root.setAddressbook = function(network, addressbook, cb) {
       storage.set('addressbook-' + network, addressbook, cb);
     };

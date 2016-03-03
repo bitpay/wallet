@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, latestReleaseService, bwcService, pushNotificationsService, lodash, go, profileService, configService, isCordova, rateService, storageService, addressService, gettext, gettextCatalog, amMoment, nodeWebkit, addonManager, isChromeApp, bwsError, txFormatService, uxLanguage, $state, glideraService, isMobile, addressbookService) {
+angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, latestReleaseService, bwcService, pushNotificationsService, lodash, go, profileService, configService, isCordova, rateService, storageService, addressService, gettext, gettextCatalog, amMoment, nodeWebkit, addonManager, isChromeApp, bwsError, txFormatService, uxLanguage, $state, glideraService, coinbaseService, isMobile, addressbookService) {
   var self = this;
   var SOFT_CONFIRMATION_LIMIT = 12;
   var errors = bwcService.getErrors();
@@ -147,6 +147,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       self.setAddressbook();
 
       self.initGlidera();
+      self.initCoinbase();
 
       self.setCustomBWSFlag();
 
@@ -1265,6 +1266,83 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
   };
 
+  self.initCoinbase = function(accessToken) {
+    self.coinbaseEnabled = configService.getSync().coinbase.enabled;
+    self.coinbaseTestnet = configService.getSync().coinbase.testnet;
+    var network = self.coinbaseTestnet ? 'testnet' : 'livenet';
+
+    self.coinbaseToken = null;
+    self.coinbaseError = null;
+    self.coinbasePermissions = null;
+    self.coinbaseEmail = null;
+    self.coinbasePersonalInfo = null;
+    self.coinbaseTxs = null;
+    self.coinbaseStatus = null;
+
+    if (!self.coinbaseEnabled) return;
+
+    coinbaseService.setCredentials(network);
+
+    var getToken = function(cb) {
+      if (accessToken) {
+        cb(null, accessToken);
+      } else {
+        storageService.getCoinbaseToken(network, cb);
+      }
+    };
+
+    getToken(function(err, accessToken) {
+      if (err || !accessToken) return;
+      else {
+        self.coinbaseLoading = 'Connecting to Coinbase...';
+        coinbaseService.getAccounts(accessToken, function(err, a) {
+          self.coinbaseLoading = null;
+          if (err) {
+            self.coinbaseError = err;
+          } else {
+            self.coinbaseToken = accessToken;
+            lodash.each(a.data, function(account) {
+              if (account.primary) {
+                self.coinbaseAccount = account;
+                self.updateCoinbase({
+                  fullUpdate: true
+                });
+                return;
+              }
+            });
+          }
+        });
+      }
+    });
+  };
+
+  self.updateCoinbase = function(opts) {
+    if (!self.coinbaseToken || !self.coinbaseAccount) return;
+    var accessToken = self.coinbaseToken;
+    var accountId = self.coinbaseAccount.id;
+
+    opts = opts || {};
+
+    coinbaseService.getAuthorizationInformation(accessToken, function(err, a) {
+      self.coinbaseAuthInfo = a.data.scopes;
+    });
+
+    coinbaseService.getCurrentUser(accessToken, function(err, u) {
+      self.coinbaseUser = u.data;
+    });
+
+    coinbaseService.getTransactions(accessToken, accountId, function(err, t) {
+      self.coinbaseLoadingHistory = 'Getting Coinbase transactions...';
+      self.coinbaseTransactions = [];
+      lodash.each(t.data, function(tx) {
+        if (tx.type == 'sell' || tx.type == 'buy') {
+          self.coinbaseTransactions.push(tx);
+        }
+      });
+    });
+
+  };
+
   self.setAddressbook = function(ab) {
     if (ab) {
       self.addressbook = ab;
@@ -1339,6 +1417,10 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
   $rootScope.$on('Local/GlideraUpdated', function(event, accessToken) {
     self.initGlidera(accessToken);
+  });
+
+  $rootScope.$on('Local/CoinbaseUpdated', function(event, accessToken) {
+    self.initCoinbase(accessToken);
   });
 
   $rootScope.$on('Local/GlideraTx', function(event, accessToken, permissions) {

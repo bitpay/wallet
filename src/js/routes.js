@@ -269,6 +269,26 @@ angular
           },
         }
       })
+      .state('coinbase', {
+        url: '/coinbase',
+        walletShouldBeComplete: true,
+        needProfile: true,
+        views: {
+          'main': {
+            templateUrl: 'views/coinbase.html'
+          },
+        }
+      })
+      .state('preferencesCoinbase', {
+        url: '/preferencesCoinbase',
+        walletShouldBeComplete: true,
+        needProfile: true,
+        views: {
+          'main': {
+            templateUrl: 'views/preferencesCoinbase.html'
+          },
+        }
+      })
       .state('preferencesAdvanced', {
         url: '/preferencesAdvanced',
         templateUrl: 'views/preferencesAdvanced.html',

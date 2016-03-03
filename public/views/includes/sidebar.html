@@ -38,6 +38,16 @@
         <div>Glidera</div>
       </a>
     </li>
+    <li ng-show="index.coinbaseEnabled">
+      <a ng-click="sidebar.closeMenu(); $root.go('coinbase')" class="oh">
+        <i class="icon-arrow-right3 size-18 right m10t vm"></i>
+        <i class="icon-bank size-24 icon vm"></i>
+        <div class="tu text-bold">
+          <span class="size-12" translate>Buy &amp; Sell Bitcoin</span>
+        </div>
+        <div>Coinbase</div>
+      </a>
+    </li>
     <li>
       <a ng-click="sidebar.closeMenu(); $root.go('preferencesGlobal')" class="oh">
         <i class="icon-arrow-right3 size-18 right m10t vm"></i>

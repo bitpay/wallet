@@ -1,0 +1,58 @@
+<nav class="tab-bar">
+  <section class="left-small">
+    <a ng-click="cancel()">
+      <i class="icon-arrow-left3 icon-back"></i>
+      <span class="text-back">Back</span>
+    </a>
+  </section>
+  <section class="middle tab-bar-section">
+    <h1 class="title ellipsis">
+      Details
+    </h1>
+  </section>
+</nav>
+
+<div class="modal-content fix-modals-touch"
+     ng-swipe-disable-mouse
+     ng-swipe-right="cancel()">
+  <div class="header-modal bg-gray text-center">
+    <div class="p20">
+      <img src="img/bought.svg" alt="bought" width="80" ng-show="tx.type == 'buy' && tx.status == 'completed'">
+      <img src="img/bought-pending.svg" alt="bought" width="65" ng-show="tx.type == 'buy' && tx.status == 'pending'">
+      <img src="img/sold.svg" alt="bought" width="80" ng-show="tx.type == 'sell' && tx.status == 'completed'">
+      <img src="img/sold-pending.svg" alt="bought" width="65" ng-show="tx.type == 'sell' && tx.status == 'pending'">
+    </div>
+    <span ng-show="tx.type == 'BUY'">Bought</span>
+    <span ng-show="tx.type == 'SELL'">Sold</span>
+    <b>{{tx.amount.amount}} {{tx.amount.currency}}</b>
+    <div class="size-36 m20b">
+      {{tx.native_amount.amount}} {{tx.native_amount.currency}}
+    </div>
+  </div>
+
+  <ul class="no-bullet size-14">
+
+    <li ng-show="tx.details" class="line-b p10 oh">
+      <span class="text-gray">{{tx.details.title}}</span>
+      <span class="right">{{tx.details.subtitle}}</span>
+    </li>
+
+    <li class="line-b p10 oh">
+      <span class="text-gray">Status</span>
+      <span class="text-success right" ng-if="tx.status == 'completed'">Completed</span>
+      <span class="text-info right" ng-if="tx.status == 'pending'">Processing</span>
+      <span class="text-warning right" ng-if="tx.status == 'error'">Error</span>
+    </li>
+
+    <li ng-show="tx.created_at" class="line-b p10 oh">
+      <span class="text-gray">Date</span>
+      <span class="right">{{tx.created_at | amCalendar}}</span>
+    </li>
+
+    <li ng-show="tx.description" class="line-b p10 oh text-bold">
+      <span class="text-gray">Description</span>
+      <span class="right">{{tx.description}}</span>
+    </li>
+  </ul>
+  <div class="extra-margin-bottom"></div>
+</div>
