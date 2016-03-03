@@ -70,7 +70,7 @@ angular.module('copayApp.controllers').controller('sellGlideraController',
       };
 
       var modalInstance = $modal.open({
-        templateUrl: 'views/modals/glidera-wallets.html',
+        templateUrl: 'views/modals/wallets.html',
         windowClass: animationService.modalAnimated.slideUp,
         controller: ModalInstanceCtrl,
       });

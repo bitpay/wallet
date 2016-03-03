@@ -298,6 +298,26 @@ angular
           },
         }
       })
+      .state('buyCoinbase', {
+        url: '/buycoinbase',
+        walletShouldBeComplete: true,
+        needProfile: true,
+        views: {
+          'main': {
+            templateUrl: 'views/buyCoinbase.html'
+          },
+        }
+      })
+      .state('sellCoinbase', {
+        url: '/sellcoinbase',
+        walletShouldBeComplete: true,
+        needProfile: true,
+        views: {
+          'main': {
+            templateUrl: 'views/sellCoinbase.html'
+          },
+        }
+      })
       .state('preferencesAdvanced', {
         url: '/preferencesAdvanced',
         templateUrl: 'views/preferencesAdvanced.html',

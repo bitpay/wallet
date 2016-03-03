@@ -1333,12 +1333,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
     coinbaseService.getTransactions(accessToken, accountId, function(err, t) {
       self.coinbaseLoadingHistory = 'Getting Coinbase transactions...';
-      self.coinbaseTransactions = [];
-      lodash.each(t.data, function(tx) {
-        if (tx.type == 'sell' || tx.type == 'buy') {
-          self.coinbaseTransactions.push(tx);
-        }
-      });
+      self.coinbaseTransactions = t.data || [];
     });
 
   };
@@ -1425,6 +1420,10 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
   $rootScope.$on('Local/GlideraTx', function(event, accessToken, permissions) {
     self.updateGlidera();
+  });
+
+  $rootScope.$on('Local/CoinbaseTx', function(event) {
+    self.updateCoinbase();
   });
 
   $rootScope.$on('Local/GlideraError', function(event) {
@@ -1540,6 +1539,11 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     if (self.glideraEnabled) {
       $timeout(function() {
         self.updateGlidera();
+      });
+    }
+    if (self.coinbaseEnabled) {
+      $timeout(function() {
+        self.updateCoinbase();
       });
     }
     if (self.pendingAmount) {
