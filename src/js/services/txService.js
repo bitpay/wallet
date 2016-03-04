@@ -103,7 +103,8 @@ angular.module('copayApp.services').factory('txService', function($rootScope, pr
     };
 
     getFee(function(err, feePerKb) {
-      if (err) $log.debug(err);
+      if (err) return cb(err);
+
       opts.feePerKb = feePerKb;
       opts.excludeUnconfirmedUtxos = currentSpendUnconfirmed ? false : true;
       fc.createTxProposal(opts, function(err, txp) {
