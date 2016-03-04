@@ -17,17 +17,18 @@ angular.module('copayApp.services').factory('feeService', function($log, profile
   root.getCurrentFeeValue = function(cb) {
     var fc = profileService.focusedClient;
     var feeLevel = root.getCurrentFeeLevel();
-    // static fee
-    var fee = 10000;
+
     fc.getFeeLevels(fc.credentials.network, function(err, levels) {
-      if (err) {
-        return cb({message: 'Could not get dynamic fee. Using static 10000sat'}, fee);
-      }
-      else {
-        fee = lodash.find(levels, { level: feeLevel }).feePerKB;
-        $log.debug('Dynamic fee: ' + feeLevel + ' ' + fee +  ' SAT');
-        return cb(null, fee); 
-      }
+      if (err) 
+        return cb({message: 'Could not get dynamic fee'});
+
+      var feeLevelValue = lodash.find(levels, { level: feeLevel });
+      if (!feeLevelValue || ! feeLevelValue.feePerKB)
+          return cb({message: 'Could not get dynamic fee for level: ' + feeLevel});
+
+      var fee = feeLevel.feePerKB;
+      $log.debug('Dynamic fee: ' + feeLevel + ' ' + fee +  ' SAT');
+      return cb(null, fee); 
     });
   }; 
 
