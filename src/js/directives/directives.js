@@ -318,12 +318,13 @@ angular.module('copayApp.directives')
       templateUrl: 'views/includes/available-balance.html'
     }
   })
-  .directive('fastClick', [ 'isCordova', '$timeout', function(isCordova, $timeout) {
+  .directive('fastClick', [ 'isCordova', '$timeout', 'isMobile', function(isCordova, $timeout, isMobile) {
     return {
       scope: { someCtrlFn: '&callbackFn'},
       link: function(scope, element, attrs) {
 
-        if (!isCordova) {
+        var isWindowsPhoneApp = isMobile.Windows() && isCordova;
+        if (!isCordova || isWindowsPhoneApp) {
           element.on('click', function(){
             scope.someCtrlFn();
           });
