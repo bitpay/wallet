@@ -1,0 +1,23 @@
+Zabezpečte vaše bitcoiny open-source, více-podpisovou peněženkou od BitPay. 
+Uživatelé Copay mohou uchovávat své prostředky jednotlivě nebo bezpečně finance sdílet so statními uživatele pomocí více-podpisových peněženek, které eliminují neoprávněné platby, protože ke schválení vyžadují více podpisů. Několik tipů pro využívání Copay peněženky s ostatními:
+
+Úspory pro výlety nebo společná peněženka s přáteli 
+Přehledy rodinných nákladů a úhrad
+Správa obchodů, klubů a zdrojů či nákladů organizací
+
+Vytvořili jsme následující funkce pro tuto verzi Copay pro bitcoin peněženku, která je dostupná a bezpečná:
+
+Správa a tvorba více peněženek 
+Intuitivní více-podpisové zabezpečení pro osobní nebo sdílené peněženky
+Snadná tvorba návrhů plateb pro sdílené peněženky s skupinové platby
+Hierarchicky deterministické (HD) vytváření adres a záloh peněženky 
+Device-based zabezpečení: všechny soukromé klíče jsou uloženy na zařízení, ne v Cloud
+Podpora Bitcoin test sítě
+Synchronizovaný přístup všech hlavních mobilních a Pc platforem
+Platební protokol (BIP70-BIP73): snadno identifikovatelný platební požadavek a bezpečně ověřitelné platby bitcoinem
+Podpora pro více než 150 měn a denominace BTC nebo bitů
+E-mailová upozornění pro platby a převody
+Přizpůsobitelné pojmenování a podbarvení peněženky
+6 podporovaných jazyků (EN, JP, FR, ES, DE, RU)
+
+Copay je bezplatný open-source software, fungující na decentralizovaných serverech, není tedy potřeba spoléhat na společnost pro trvalou podporu. Kdokoliv může prohlédnout nebo přispět k Copay zdrojovému kódu na GitHub (https://github.com/bitpay/copay). 
