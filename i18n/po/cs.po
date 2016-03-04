@@ -3,73 +3,73 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Project-Id-Version: copay\n"
-"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 "X-Generator: crowdin.com\n"
 "X-Crowdin-Project: copay\n"
-"X-Crowdin-Language: pl\n"
+"X-Crowdin-Language: cs\n"
 "X-Crowdin-File: template.pot\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Last-Translator: cmgustavo83\n"
-"Language-Team: Polish\n"
-"Language: pl\n"
+"Language-Team: Czech\n"
+"Language: cs\n"
 "PO-Revision-Date: 2016-03-04 16:54-0500\n"
 
 #: public/views/walletHome.html
 msgid "(possible double spend)"
-msgstr "(możliwa podwójna wypłata)"
+msgstr "(pravděpodobná dvojitá platba)"
 
 #: public/views/modals/paypro.html
 msgid "(Trusted)"
-msgstr "(Zaufany)"
+msgstr "(Věrohodný)"
 
 #: src/js/controllers/walletHome.js
 msgid "{{fee}} will be deducted for bitcoin networking fees"
-msgstr "{{fee}} zostanie potrącona prowizja sieci bitcoin"
+msgstr "{{fee}} bude odečteno jako poplatek bitcoinové síti"
 
 #: public/views/copayers.html
 #: public/views/includes/walletInfo.html
 msgid "{{index.m}}-of-{{index.n}}"
-msgstr "{{index.m}}-z-{{index.n}}"
+msgstr "{{index.m}} z {{index.n}}"
 
 #: public/views/walletHome.html
 msgid "{{index.txProgress}} transactions downloaded"
-msgstr "{{index.txProgress}} transakcja pobrana"
+msgstr "{{index.txProgress}} transakce stažena"
 
 #: public/views/includes/sidebar.html
 msgid "{{item.m}}-of-{{item.n}}"
-msgstr "{{item.m}}-z-{{item.n}}"
+msgstr "{{item.m}} z {{item.n}}"
 
 #: src/js/controllers/importLegacy.js
 msgid "{{len}} wallets imported. Funds scanning in progress. Hold on to see updated balance"
-msgstr "Ilość zaimportowanych portfeli: {{len}}. Kwoty są skanowane. Proszę czekać na aktualizację salda"
+msgstr "{{len}} peněženek importováno. Probíhá dohledávání zůstatků, během chvíle budou k dispozici"
 
 #: public/views/modals/txp-details.html
 msgid "* A payment proposal can be deleted if 1) you are the creator, and no other copayer has signed, or 2) 24 hours have passed since the proposal was created."
-msgstr "* Wniosek wypłaty może być usunięty jeśli: 1) Po utworzeniu nie zatwierdził go żaden inny współwłaściciel portfela lub 2) minęły 24 godziny od kiedy wniosek został utworzony."
+msgstr "* Návrh k platbě může být odstraněn pokud 1) jste jej vytvořil(a) a žádný spoluplátce jej nepodepsal 2) Uběhlo 24 hodin od vytvoření návrhu."
 
 #: public/views/includes/terms.html
 msgid "<b>IF YOU LOSE ACCESS TO YOUR COPAY WALLET OR YOUR ENCRYPTED PRIVATE KEYS AND YOU HAVE NOT SEPARATELY STORED A BACKUP OF YOUR WALLET AND CORRESPONDING PASSWORD, YOU ACKNOWLEDGE AND AGREE THAT ANY BITCOIN YOU HAVE ASSOCIATED WITH THAT COPAY WALLET WILL BECOME INACCESSIBLE.</b>"
-msgstr "<b>JEŚLI UŻYTKOWNIK STRACI DOSTĘP DO PORTFELA COPAY LUB ZASZYFROWANYCH KLUCZY PRYWATNYCH, A NIE MA ZAPISANEJ KOPII ZAPASOWEJ PORTFELA I HASŁA, PRZYJMUJE DO WIADOMOŚCI, ŻE JAKIEKOLWIEK POSIADANE BITCOINY ZWIĄZANE Z TYM PORTFELEM COPAY BĘDĄ NIEDOSTĘPNE.</b>"
+msgstr "<b>POKUD ZTRATÍTE PŘÍSTUP K VAŠI SPOLUPLÁTCOVSKÉ PENĚŽENCE NEBO VAŠÍM ŠIFROVANÝM KLÍČŮM A NEMÁTE ULOŽENOU ZÁLOHU VAŠI PENĚŽENKY A HESLEM ZVLÁŠTĚ, BERETE NA VĚDOMÍ ŽE VŠECHNY BITCOINY ULOŽENÉ V TÉTO SPOLUPLÁTCOVSKÉ PENĚŽENCE NEBUDOU DOSTUPNÉ. </b>"
 
 #: public/views/backup.html
 msgid "<b>OR</b> 1 wallet export file and the remaining quorum of wallet seeds (e.g. in a 3-5 wallet: 1 wallet export file + 2 wallet seeds of any of the other copayers)."
-msgstr "<b>LUB</b> 1 plik eksportu portfela i reszta wymaganych fraz odzyskiwania danych portfela (np. w portfelu 3-5: 1 plik eksportu portfela + 2 frazy odzyskiwania danych któregokolwiek z pozostałych współwłaścicieli portfela)."
+msgstr "<b>OR</b> 1 exportovaný soubor peněženky a zbývající limit pro zdroj peněženky (např. v 3-5 peněženek: 1 soubor + 2 zdroje peněženky alespoň jednoho ze spoluplátců)."
 
 #: public/views/backup.html
 msgid "<b>OR</b> the wallet seed of <b>all</b> copayers in the wallet"
-msgstr "<b>LUB</b> fraza odzyskiwania danych <b>wszystkich</b> współwłaścicieli portfela"
+msgstr "<b>OR</b> zdroj(ů) peněženky ze <b>všech</b> spoluplátců peněženky"
 
 #: public/views/backup.html
 msgid "<b>OR</b> the wallet seeds of <b>all</b> copayers in the wallet"
-msgstr "<b>LUB</b> frazy odzyskiwania danych <b> wszystkich </b> współwłaścicieli portfela"
+msgstr "<b>OR</b> zdrojů peněženky ze <b>všech</b> spoluplátců této peněženky"
 
 #: public/views/disclaimer.html
 msgid "A multisignature bitcoin wallet"
-msgstr "Portfel bitcoin z multipodpisami"
+msgstr "A vícepodpisová bitcoin peněženka"
 
 #: public/views/preferencesGlobal.html
 msgid "About Copay"
-msgstr "Informacje o Copay"
+msgstr "O Copay"
 
 #: public/views/includes/confirm-tx.html
 #: public/views/modals/txp-details.html
@@ -78,193 +78,193 @@ msgstr "Informacje o Copay"
 #: src/js/controllers/preferencesDelete.js
 #: src/js/controllers/walletHome.js
 msgid "Accept"
-msgstr "Akceptuj"
+msgstr "Přijmout"
 
 #: public/views/preferencesInformation.html
 msgid "Account"
-msgstr "Konto"
+msgstr "Účet"
 
 #: public/views/create.html
 #: public/views/import.html
 #: public/views/join.html
 msgid "Account Number"
-msgstr "Numer konta"
+msgstr "Číslo účtu"
 
 #: public/views/walletHome.html
 #: src/js/controllers/index.js
 msgid "Activity"
-msgstr "Transakcje"
+msgstr "Aktivita"
 
 #: public/views/modals/destination-address.html
 msgid "Add a new entry"
-msgstr "Dodaj nowy wpis"
+msgstr "Přidat nový záznam"
 
 #: public/views/create.html
 #: public/views/join.html
 msgid "Add a Seed Passphrase"
-msgstr "Dodaj hasło frazy odzyskiwania danych"
+msgstr "Přidat heslo zdroje"
 
 #: public/views/create.html
 #: public/views/join.html
 msgid "Add an optional passphrase to secure the seed"
-msgstr "Dodaj opcjonalnie hasło w celu zabezpieczenia frazy odzyskiwania danych"
+msgstr "Přidat nepovinné heslo pro zabezpečení zdroje"
 
 #: public/views/includes/sidebar.html
 msgid "Add wallet"
-msgstr "Dodaj portfel"
+msgstr "Přidat peněženku"
 
 #: public/views/paymentUri.html
 #: public/views/modals/customized-amount.html
 #: public/views/modals/destination-address.html
 #: public/views/modals/paypro.html
 msgid "Address"
-msgstr "Adres"
+msgstr "Adresa"
 
 #: public/views/preferencesInformation.html
 msgid "Address Type"
-msgstr "Rodzaj adresu"
+msgstr "Typ adresy"
 
 #: public/views/preferences.html
 msgid "Advanced"
-msgstr "Zaawansowane"
+msgstr "Pokročilé"
 
 #: public/views/preferences.html
 msgid "Alias"
-msgstr "Nazwa"
+msgstr "Název"
 
 #: public/views/preferencesAlias.html
 msgid "Alias for <i>{{index.walletName}}</i>"
-msgstr "Nazwa dla <i>{{index.walletName}}</i>"
+msgstr "Název pro <i>{{index.walletName}}</i>"
 
 #: public/views/translators.html
 msgid "All contributions to Copay's translation are welcome. Sign up at crowdin.com and join the Copay project at"
-msgstr "Wkład do tłumaczenia Copay mile widziany. Zapisz się na crowdin.com i dołącz do projektu Copay na"
+msgstr "Všichni spoluúčastníci překladů Copay jsou vítání. Přihlaště se na crowdin.com a přidejte se k projektu Copay na"
 
 #: public/views/includes/terms.html
 msgid "All transaction requests are irreversible."
-msgstr "Transakcji nie można wycofać."
+msgstr "Všechny žádosti o platbu jsou nevratné."
 
 #: public/views/preferencesGlobal.html
 msgid "Alternative Currency"
-msgstr "Alternatywna waluta"
+msgstr "Alternativní měna"
 
 #: public/views/paymentUri.html
 #: public/views/walletHome.html
 #: public/views/includes/output.html
 #: public/views/modals/customized-amount.html
 msgid "Amount"
-msgstr "Kwota"
+msgstr "Částka"
 
 #: src/js/services/bwsError.js
 msgid "Amount below dust threshold"
-msgstr "Kwota poniżej progu"
+msgstr "Částka pod nejnižší úrovní bitcoin platby"
 
 #: public/views/walletHome.html
 #: public/views/modals/customized-amount.html
 msgid "Amount in"
-msgstr "Kwota w"
+msgstr "Částka v"
 
 #: src/js/controllers/preferencesDeleteWords.js
 msgid "Are you sure you want to delete the backup words?"
-msgstr "Czy na pewno chcesz usunąć słowa frazy?"
+msgstr "Opravdu si přejete odstranit zálohu zdrojových slov?"
 
 #: src/js/controllers/copayers.js
 #: src/js/controllers/preferencesDelete.js
 msgid "Are you sure you want to delete this wallet?"
-msgstr "Czy na pewno chcesz usunąć ten portfel?"
+msgstr "Opravdu si přejete odstranit tuto peněženku?"
 
 #: public/views/includes/available-balance.html
 msgid "Available Balance"
-msgstr "Dostępne saldo"
+msgstr "Dostupný zůstatek"
 
 #: public/views/preferencesFee.html
 msgid "Average confirmation time: {{fee.nbBlocks * 10}} minutes"
-msgstr "Średni czas potwierdzenia: {{fee.nbBlocks * 10}} minut"
+msgstr "Průměrný čas potvrzení je: {{fee.nbBlocks * 10}} minut"
 
 #: public/views/includes/topbar.html
 #: public/views/includes/tx-details.html
 #: public/views/modals/tx-details.html
 #: public/views/modals/txp-details.html
 msgid "Back"
-msgstr "Powrót"
+msgstr "Zpět"
 
 #: public/views/preferences.html
 msgid "Backup"
-msgstr "Kopia zapasowa"
+msgstr "Záloha"
 
 #: public/views/backup.html
 msgid "Backup failed"
-msgstr "Tworzenie kopii zapasowej nie powiodło się"
+msgstr "Chyba zálohování"
 
 #: public/views/walletHome.html
 msgid "Backup Needed"
-msgstr "Potrzebna kopia zapasowa"
+msgstr "Vyžadována záloha"
 
 #: public/views/walletHome.html
 msgid "Backup now"
-msgstr "Utwórz kopię zapasową teraz"
+msgstr "Vytvořit zálohu"
 
 #: src/js/controllers/preferencesDeleteWords.js
 msgid "Backup words deleted"
-msgstr "Słowa kopii zapasowej usunięte"
+msgstr "Odstraněny zdrojová slova zálohy"
 
 #: src/js/services/profileService.js
 msgid "Bad wallet invitation"
-msgstr "Nieprawidłowe zaproszenie"
+msgstr "Chybný požadavek do peněženky"
 
 #: public/views/preferencesInformation.html
 msgid "Balance By Address"
-msgstr "Saldo wg adresu"
+msgstr "Zůstatek adres"
 
 #: public/views/walletHome.html
 msgid "Before receiving funds, it is necessary backup your wallet. If you lose this device, it is impossible to access your funds without a backup."
-msgstr "Przed otrzymaniem środków, konieczne jest wykonanie kopii zapasowej portfela. Jeśli utracisz to urządzenie, dostęp do funduszy bez kopii zapasowej będzie niemożliwy."
+msgstr "Před přijímáním plateb je zapotřebí vytvořit zálohu peněženky. Pokud dojde ke ztrátě zařízení nebude možné bez zálohy obnovit zůstatky peněženky."
 
 #: public/views/create.html
 #: public/views/import.html
 #: public/views/join.html
 msgid "BIP32 path for address derivation"
-msgstr "BIP32 ścieżka dla adresu derywacji"
+msgstr "BIP32 cesta pro derivaci adres"
 
 #: public/views/walletHome.html
 msgid "Bitcoin address"
-msgstr "Adres bitcoin"
+msgstr "Bitcoin adresa"
 
 #: public/views/preferencesGlobal.html
 msgid "Bitcoin Network Fee Policy"
-msgstr "Polityka prowizji sieci bitcoin"
+msgstr "Zásady poplatků bitcoinové sítě"
 
 #: public/views/preferencesFee.html
 msgid "Bitcoin transactions may include a fee collected by miners on the network. The higher the fee, the greater the incentive a miner has to include that transaction in a block. Actual fees are determined based on network load and the selected policy."
-msgstr "Transakcje bitcoinowe mogą zawierać prowizję pobieraną przez górników. Im wyższa prowizja, tym większa zachęta dla górnika, aby zawarł tę transakcję w bloku. Rzeczywiste opłaty ustala się w oparciu o obciążenie sieci i wybraną politykę."
+msgstr "Bitcoin transakce může obsahovat poplatek pro těžaře sítě. Čím větší poplatek je, tím pravděpodobnější je, že některý z těžařů tuto transakci zařadí do svého bloku. Současný poplatek je odvozen od vytížení sítě."
 
 #: public/views/paymentUri.html
 msgid "Bitcoin URI is NOT valid!"
-msgstr "Bitcoin URI jest nieprawidłowy!"
+msgstr "Bitcoin URI neni platná!"
 
 #: public/views/modals/txp-details.html
 msgid "Broadcast Payment"
-msgstr "Przekaż płatność"
+msgstr "Vysílání platby"
 
 #: src/js/controllers/walletHome.js
 msgid "Broadcasting Payment"
-msgstr "Przekazywanie płatności"
+msgstr "Vysílání platby"
 
 #: src/js/services/txService.js
 msgid "Broadcasting transaction"
-msgstr "Przekazywanie transakcji"
+msgstr "Vysílání transakce"
 
 #: public/views/unsupported.html
 msgid "Browser unsupported"
-msgstr "Przeglądarka nieobsługiwana"
+msgstr "Nepodporovaný prohlížeč"
 
 #: public/views/includes/sidebar.html
 msgid "Buy &amp; Sell Bitcoin"
-msgstr "Kup &amp; sprzedaj bitcoiny"
+msgstr "Koupit nebo prodat Bitcoin"
 
 #: src/js/controllers/walletHome.js
 msgid "Calculating fee"
-msgstr "Obliczanie prowizji"
+msgstr "Vypočítávám poplatek"
 
 #: public/views/walletHome.html
 #: public/views/includes/confirm-tx.html
@@ -275,39 +275,39 @@ msgstr "Obliczanie prowizji"
 #: src/js/controllers/preferencesDelete.js
 #: src/js/controllers/walletHome.js
 msgid "Cancel"
-msgstr "Anuluj"
+msgstr "Zrušit"
 
 #: public/views/includes/password.html
 msgid "CANCEL"
-msgstr "ANULUJ"
+msgstr "ZRUŠIT"
 
 #: public/views/copayers.html
 msgid "Cancel and delete the wallet"
-msgstr "Anuluj i usuń portfel"
+msgstr "Zrušit a odstranit peněženku"
 
 #: src/js/services/profileService.js
 msgid "Cannot join the same wallet more that once"
-msgstr "Nie można dołączyć tego samego portfela więcej niż raz"
+msgstr "Nelze spojit stejnou peněženku více než jednou"
 
 #: src/js/controllers/walletHome.js
 msgid "Cannot sign: The payment request has expired"
-msgstr "Nie można podpisać: Wniosek wypłaty wygasł"
+msgstr "Chyba podpisu: Návrh platby vypršel"
 
 #: public/views/modals/paypro.html
 msgid "Certified by"
-msgstr "Certyfikowane przez"
+msgstr "Ověřeno od"
 
 #: public/views/preferencesAlias.html
 msgid "Changing wallet alias only affects the local wallet name."
-msgstr "Zmiana nazwy portfela wpływa tylko na jego nazwę lokalną."
+msgstr "Změna názvu peněženky bude aktualizovat pouze název na tomto zařízení."
 
 #: public/views/import.html
 msgid "Choose a backup file from your computer"
-msgstr "Wybierz plik kopii zapasowej z komputera"
+msgstr "Vyberte zálohu z PC"
 
 #: public/views/preferencesHistory.html
 msgid "Clear cache"
-msgstr "Wyczyść pamięć podręczną"
+msgstr "Vymazat cache"
 
 #: public/views/includes/topbar.html
 #: public/views/modals/customized-amount.html
@@ -315,260 +315,260 @@ msgstr "Wyczyść pamięć podręczną"
 #: public/views/modals/paypro.html
 #: public/views/modals/scanner.html
 msgid "Close"
-msgstr "Zamknij"
+msgstr "Zavřít"
 
 #: public/views/preferences.html
 msgid "Color"
-msgstr "Kolor"
+msgstr "Barva"
 
 #: public/views/preferencesAbout.html
 msgid "Commit hash"
-msgstr "Zatwierdzony hash"
+msgstr "Hash softwaru"
 
 #: src/js/services/confirmDialog.js
 #: src/js/controllers/copayers.js
 #: src/js/controllers/preferencesDelete.js
 #: src/js/controllers/walletHome.js
 msgid "Confirm"
-msgstr "Potwierdź"
+msgstr "Potvrdit"
 
 #: public/views/includes/confirm-tx.html
 msgid "Confirm transaction"
-msgstr "Potwierdź transakcję"
+msgstr "Potvrdit transakci"
 
 #: public/views/backup.html
 msgid "Confirm your wallet seed"
-msgstr "Potwierdź swoją frazę odzyskiwania danych portfela"
+msgstr "Potvrdit zdroj peněženky"
 
 #: public/views/includes/tx-details.html
 #: public/views/modals/tx-details.html
 msgid "Confirmations"
-msgstr "Potwierdzenia"
+msgstr "Potvrzení"
 
 #: public/views/backup.html
 msgid "Congratulations!"
-msgstr "Gratulacje!"
+msgstr "Gratulujeme!"
 
 #: public/views/create.html
 msgid "Connecting to {{create.hwWallet}} Wallet..."
-msgstr "Łączenie z portfelem {{create.hwWallet}}..."
+msgstr "Připojuji k peněžence {{create.hwWallet}} ..."
 
 #: public/views/import.html
 msgid "Connecting to {{import.hwWallet}} Wallet..."
-msgstr "Łączenie z portfelem {{import.hwWallet}}..."
+msgstr "Připojuji k peněžence {{import.hwWallet}}..."
 
 #: public/views/join.html
 msgid "Connecting to {{join.hwWallet}} Wallet..."
-msgstr "Łączenie z portfelem {{join.hwWallet}}..."
+msgstr "Připojuji k peněžence {{join.hwWallet}}..."
 
 #: src/js/services/bwsError.js
 msgid "Connection reset by peer"
-msgstr "Połączenie zostało zresetowane"
+msgstr "Spojení obnoveno uzlem"
 
 #: public/views/backup.html
 msgid "Continue"
-msgstr "Dalej"
+msgstr "Pokračovat"
 
 #: src/js/services/bwsError.js
 msgid "Copayer already in this wallet"
-msgstr "Użytkownik jest już w tym portfelu"
+msgstr "Spoluplátce je již v peněžence"
 
 #: src/js/services/bwsError.js
 msgid "Copayer already voted on this spend proposal"
-msgstr "Użytkownik głosował już za tym wnioskiem wypłaty"
+msgstr "Spoluplátce pro tento návrh již hlasoval"
 
 #: src/js/services/bwsError.js
 msgid "Copayer data mismatch"
-msgstr "Niezgodność danych współwłaściciela portfela"
+msgstr "Data spoluplátce nesouhlasí"
 
 #: public/views/preferencesInformation.html
 msgid "Copayers"
-msgstr "Współwłaściciele portfela"
+msgstr "Spoluplátci"
 
 #: src/js/controllers/copayers.js
 #: src/js/controllers/export.js
 #: src/js/controllers/tx.js
 #: src/js/controllers/walletHome.js
 msgid "Copied to clipboard"
-msgstr "Skopiowano do schowka"
+msgstr "Zkopírováno"
 
 #: public/views/export.html
 msgid "Copy this text as it is to a safe place (notepad or email)"
-msgstr "Skopiuj ten tekst w bezpiecznym miejscu (notatnik lub e-mail)"
+msgstr "Zkopírujte tento text do bezpečného místa (např. email nebo poznámkový blok)"
 
 #: public/views/export.html
 msgid "Copy to clipboard"
-msgstr "Skopiuj do schowka"
+msgstr "Zkopírovat"
 
 #: src/js/services/txService.js
 msgid "Could not accept payment"
-msgstr "Nie można zaakceptować wypłaty"
+msgstr "Nebylo možné přijmout platbu"
 
 #: src/js/controllers/index.js
 msgid "Could not access Wallet Service: Not found"
-msgstr "Brak dostępu do Wallet Service: Nie znaleziono"
+msgstr "Nebylo možné navázat spojení se službou peněženky: Nebyla nalezena"
 
 #: src/js/services/txService.js
 #: src/js/controllers/walletHome.js
 msgid "Could not broadcast payment"
-msgstr "Wypłata nie może zostać wysłana"
+msgstr "Nebylo možné vyslat platbu"
 
 #: src/js/services/bwsError.js
 msgid "Could not build transaction"
-msgstr "Nie udało się utworzyć transakcji"
+msgstr "Nebylo možné sestavit transakci"
 
 #: src/js/services/addressService.js
 msgid "Could not create address"
-msgstr "Nie można utworzyć adresu"
+msgstr "Nebylo možné vytvořit adresu"
 
 #: src/js/controllers/walletHome.js
 msgid "Could not create payment proposal"
-msgstr "Nie można wygenerować wniosku wypłaty"
+msgstr "Nebylo možné vytvořit návrh platby"
 
 #: src/js/services/profileService.js
 msgid "Could not create using the specified extended private key"
-msgstr "Nie można utworzyć przy użyciu określonego rozszerzonego klucza prywatnego"
+msgstr "Nebylo možné vytvořit rozšířený veřejný klíč"
 
 #: src/js/services/profileService.js
 msgid "Could not create using the specified extended public key"
-msgstr "Nie można utworzyć przy użyciu określonego rozszerzonego klucza publicznego"
+msgstr "Nebylo možné vytvořit rozšířený veřejný klíč"
 
 #: src/js/services/profileService.js
 msgid "Could not create: Invalid wallet seed"
-msgstr "Nie można utworzyć: niepoprawna fraza odzyskiwania danych portfela"
+msgstr "Nebylo možné vytvořit: neplatný zdroj peněženky"
 
 #: src/js/controllers/backup.js
 msgid "Could not decrypt"
-msgstr "Nie można odszyfrować"
+msgstr "Nebylo možné dešifrovat"
 
 #: src/js/controllers/import.js
 msgid "Could not decrypt file, check your password"
-msgstr "Nie można odszyfrować pliku, sprawdź swoje hasło"
+msgstr "Nebylo možné dešifrovat, zkontrolujte heslo"
 
 #: src/js/controllers/walletHome.js
 msgid "Could not delete payment proposal"
-msgstr "Nie można usunąć wniosku wypłaty"
+msgstr "Nepodařilo se odstranit návrh platby"
 
 #: src/js/controllers/walletHome.js
 msgid "Could not fetch payment information"
-msgstr "Informacje dotyczące wypłaty nie mogą zostać pobrane"
+msgstr "Nebylo možné získat údaje platby"
 
 #: src/js/controllers/walletHome.js
 msgid "Could not get fee value"
-msgstr "Nie można uzyskać kwoty prowizji"
+msgstr "Nebylo možné získat hodnotu poplatku"
 
 #: src/js/services/profileService.js
 msgid "Could not import"
-msgstr "Nie można zaimportować"
+msgstr "Chyba importu"
 
 #: src/js/services/profileService.js
 msgid "Could not import. Check input file and password"
-msgstr "Nie można zaimportować. Sprawdź plik wejściowy i hasło"
+msgstr "Chyba importu. Zkontrolujte soubor a heslo"
 
 #: src/js/services/profileService.js
 msgid "Could not join wallet"
-msgstr "Nie można dołączyć portfela"
+msgstr "Chyba spojování peněženek"
 
 #: src/js/controllers/walletHome.js
 msgid "Could not recognize a valid Bitcoin QR Code"
-msgstr "Nie udało się rozpoznać poprawnego kodu QR"
+msgstr "Bitcoin QR kód nebyl rozpoznán"
 
 #: src/js/controllers/walletHome.js
 msgid "Could not reject payment"
-msgstr "Wypłata nie może być odrzucona"
+msgstr "Chyba odmítnutí platby"
 
 #: src/js/controllers/walletHome.js
 msgid "Could not send payment"
-msgstr "Wypłata nie może zostać wysłana"
+msgstr "Chyba při odesílání platby"
 
 #: src/js/controllers/index.js
 msgid "Could not update Wallet"
-msgstr "Nie można zaktualizować portfela"
+msgstr "Chyba při aktualizování platby"
 
 #: public/views/walletHome.html
 msgid "Create"
-msgstr "Utwórz"
+msgstr "Vytvořit"
 
 #: public/views/create.html
 msgid "Create {{requiredCopayers}}-of-{{totalCopayers}} wallet"
-msgstr "Utwórz portfel {{requiredCopayers}} z {{totalCopayers}}"
+msgstr "Vytvořit peněženku {{requiredCopayers}}-z-{{totalCopayers}}"
 
 #: public/views/add.html
 #: public/views/create.html
 msgid "Create new wallet"
-msgstr "Utwórz nowy portfel"
+msgstr "Vytvořit novou peněženku"
 
 #: public/views/includes/sidebar.html
 msgid "Create, join or import"
-msgstr "Utwórz, dołącz lub importuj"
+msgstr "Vytvořit, spojit nebo importovat"
 
 #: public/views/modals/txp-details.html
 msgid "Created by"
-msgstr "Utworzony przez"
+msgstr "Vytvořil"
 
 #: src/js/controllers/walletHome.js
 msgid "Creating transaction"
-msgstr "Tworzenie transakcji"
+msgstr "Vytvářím transakci"
 
 #: public/views/create.html
 #: public/views/disclaimer.html
 msgid "Creating Wallet..."
-msgstr "Tworzenie portfela..."
+msgstr "Vytvářím peněženku..."
 
 #: public/views/preferencesFee.html
 msgid "Current fee rate for this policy: {{fee.feePerKBUnit}}/kiB"
-msgstr "Obecna stawka prowizji dla tych ustawień: {{fee.feePerKBUnit}}/KiB"
+msgstr "Současná zásadu poplatků je: {{fee.feePerKBUnit}}/kiB"
 
 #: public/views/includes/tx-details.html
 #: public/views/modals/tx-details.html
 msgid "Date"
-msgstr "Data"
+msgstr "Datum"
 
 #: public/views/paperWallet.html
 msgid "Decrypting a paper wallet could take around 5 minutes on this device. please be patient and keep the app open."
-msgstr "Odszyfrowywanie papierowego portfela zajmie na tym urządzeniu około 5 minut. Prosimy o niezamykanie aplikacji."
+msgstr "Dešifrování papírové peněženky může na tomto zařízení trvat okolo 5 minut, buďte prosím trpělivý a nechejte aplikaci otevřenou."
 
 #: public/views/copayers.html
 msgid "Delete it and create a new one"
-msgstr "Usuń i utwórz nowy portfel"
+msgstr "Smazat a vytvořit novou"
 
 #: public/views/modals/txp-details.html
 msgid "Delete Payment Proposal"
-msgstr "Usuń wniosek wypłaty"
+msgstr "Odstranit návrh platby"
 
 #: public/views/preferences.html
 msgid "Delete seed words"
-msgstr "Usuń frazę odzyskiwania danych"
+msgstr "Odstranit zdrojová slova"
 
 #: public/views/preferencesDeleteWallet.html
 msgid "Delete wallet"
-msgstr "Usuń portfel"
+msgstr "Odstranit peněženku"
 
 #: public/views/preferencesAdvanced.html
 msgid "Delete Wallet"
-msgstr "Usuń portfel"
+msgstr "Odstranit peněženku"
 
 #: public/views/preferencesDeleteWords.html
 msgid "Delete words"
-msgstr "Usuń wyrazy"
+msgstr "Odstranit klíčová slova"
 
 #: src/js/controllers/walletHome.js
 msgid "Deleting payment"
-msgstr "Usuń wypłatę"
+msgstr "Odstranit platbu"
 
 #: public/views/create.html
 #: public/views/import.html
 #: public/views/join.html
 msgid "Derivation Path"
-msgstr "Ścieżka derywacji"
+msgstr "Cesta derivace"
 
 #: public/views/preferencesInformation.html
 msgid "Derivation Strategy"
-msgstr "Strategia derywacji"
+msgstr "Způsob derivace"
 
 #: public/views/walletHome.html
 msgid "Destination wallet needs backup"
-msgstr "Docelowy portfel wymaga kopii zapasowej"
+msgstr "Cílová peněženka vyžaduje zálohu"
 
 #: public/views/includes/tx-details.html
 #: public/views/modals/customized-amount.html
@@ -576,365 +576,365 @@ msgstr "Docelowy portfel wymaga kopii zapasowej"
 #: public/views/modals/tx-details.html
 #: public/views/modals/txp-details.html
 msgid "Details"
-msgstr "Szczegóły"
+msgstr "Detail"
 
 #: public/views/preferences.html
 msgid "Disabled"
-msgstr "Wyłącz"
+msgstr "Nedostupné"
 
 #: public/views/export.html
 msgid "Do not include private key"
-msgstr "Nie uwzględniaj klucza prywatnego"
+msgstr "Nevyplňujte soukromý klíč"
 
 #: public/views/translators.html
 msgid "Don't see your language on Crowdin? Contact the Owner on Crowdin! We'd love to support your language."
-msgstr "Nie widzisz swojego języka na Crowdin? Skontaktuj się z właścicielem projektu, ponieważ bardzo chcielibyśmy, wspierać twój język."
+msgstr "Nevidíte na Crowdin váš jazyk? Kontaktujte správce repozitáře na Crowdin. Rádi váš jazyk přidáme."
 
 #: public/views/modals/destination-address.html
 msgid "Done"
-msgstr "Gotowe"
+msgstr "Hotovo"
 
 #: public/views/export.html
 msgid "Download"
-msgstr "Pobierz"
+msgstr "Stáhnout"
 
 #: src/js/services/feeService.js
 msgid "Economy"
-msgstr "Ekonomiczna"
+msgstr "Ekonomický"
 
 #: public/views/modals/destination-address.html
 msgid "Edit"
-msgstr "Edytuj"
+msgstr "Upravit"
 
 #: public/views/importLegacy.html
 msgid "Email"
-msgstr "Adres e-mail"
+msgstr "Email"
 
 #: public/views/preferencesEmail.html
 msgid "Email for wallet notifications"
-msgstr "E-mail dla powiadomień portfela"
+msgstr "Email pro upozornění"
 
 #: public/views/preferences.html
 msgid "Email Notifications"
-msgstr "Powiadomienia e-mail"
+msgstr "Email upozornění"
 
 #: src/js/services/bwsError.js
 msgid "Empty addresses limit reached. New addresses cannot be generated."
-msgstr "Puste adresy osiągnęły limit. Nowe adresy nie mogą być generowane."
+msgstr "Limit prázdných adres dovrše. Nové adresy nemohou být vytvořeny."
 
 #: public/views/preferencesGlobal.html
 msgid "Enable push notifications"
-msgstr "Włącz powiadomienia"
+msgstr "Povolit notifikace"
 
 #: src/js/controllers/export.js
 msgid "Encrypted export file saved"
-msgstr "Zaszyfrowany plik eksportu zapisany"
+msgstr "Šifrovaný soubor byl vytvořen"
 
 #: public/views/create.html
 #: public/views/join.html
 msgid "Enter the seed words (BIP39)"
-msgstr "Wprowadź słowa frazy (BIP39)"
+msgstr "Vyplňte zdrojová slova (BIP39)"
 
 #: public/views/backup.html
 msgid "Enter your passphrase"
-msgstr "Wprowadź hasło frazy"
+msgstr "Vyplňte heslo"
 
 #: public/views/includes/password.html
 msgid "Enter your password"
-msgstr "Wprowadź hasło"
+msgstr "Vyplňte heslo"
 
 #: src/js/controllers/index.js
 msgid "Error at Wallet Service"
-msgstr "Błąd na Wallet Service"
+msgstr "Chyba Služby Peněženky"
 
 #: src/js/services/profileService.js
 msgid "Error creating wallet"
-msgstr "Błąd podczas tworzenia portfela"
+msgstr "Chyba vytváření peněženky"
 
 #: src/js/services/profileService.js
 msgid "Error importing wallet:"
-msgstr "Błąd importowania portfela:"
+msgstr "Chyba importování peněženky:"
 
 #: public/views/modals/txp-details.html
 msgid "Expired"
-msgstr "Wygasł"
+msgstr "Vyprošelo"
 
 #: public/views/modals/paypro.html
 #: public/views/modals/txp-details.html
 msgid "Expires"
-msgstr "Wygasa"
+msgstr "Vyprší"
 
 #: public/views/export.html
 msgid "Export options"
-msgstr "Opcje eksportu"
+msgstr "Možnosti exportu"
 
 #: public/views/preferencesHistory.html
 msgid "Export to file"
-msgstr "Eksportuj do pliku"
+msgstr "Exportovat do souboru"
 
 #: public/views/preferencesAdvanced.html
 msgid "Export Wallet"
-msgstr "Eksport portfela"
+msgstr "Exportovat peněženku"
 
 #: public/views/preferencesInformation.html
 msgid "Extended Public Keys"
-msgstr "Rozszerzone klucze publiczne"
+msgstr "Rozšířený veřejný klíč"
 
 #: public/views/export.html
 msgid "Failed to export"
-msgstr "Nie udało się wyeksportować"
+msgstr "Chyba exportu"
 
 #: src/js/controllers/importLegacy.js
 msgid "Failed to import wallets"
-msgstr "Nie powiódł się import portfeli"
+msgstr "Chyba importu peněženky"
 
 #: public/views/backup.html
 msgid "Failed to verify backup. Please check your information"
-msgstr "Nie udało się zweryfikować kopii zapasowej. Proszę sprawdzić swoje dane"
+msgstr "Chyba ověření zálohy. Zkontrolujte zadané informace"
 
 #: public/views/create.html
 msgid "Family vacation funds"
-msgstr "Fundusz wczasów rodzinnych"
+msgstr "Úspory rodiny na dovolenou"
 
 #: public/views/includes/confirm-tx.html
 #: public/views/includes/tx-details.html
 #: public/views/modals/tx-details.html
 #: public/views/modals/txp-details.html
 msgid "Fee"
-msgstr "Prowizja"
+msgstr "Poplatek"
 
 #. Get information of payment if using Payment Protocol
 #: src/js/controllers/walletHome.js
 msgid "Fetching Payment Information"
-msgstr "Pobieranie informacji o płatności"
+msgstr "Stahuji platební údaje"
 
 #: public/views/import.html
 msgid "File/Text Backup"
-msgstr "Kopia zapasowa pliku/tekstu"
+msgstr "Soubor/Text záloha"
 
 #: public/views/backup.html
 msgid "Finish"
-msgstr "Zakończ"
+msgstr "Konec"
 
 #: public/views/translators.html
 msgid "French"
-msgstr "francuski"
+msgstr "Francouzština"
 
 #: src/js/services/bwsError.js
 msgid "Funds are locked by pending spend proposals"
-msgstr "Fundusze są zablokowane przez rozpatrywane wniosku wypłaty"
+msgstr "Zůstatky jsou blokovány probíhajícím návrhem platby"
 
 #: public/views/paperWallet.html
 msgid "Funds found"
-msgstr "Znaleziono środki"
+msgstr "Zůstatky nalezeny"
 
 #: src/js/services/notificationsService.js
 msgid "Funds received"
-msgstr "Otrzymano środki"
+msgstr "Obdržena platba"
 
 #: public/views/paperWallet.html
 msgid "Funds will be transferred to"
-msgstr "Środki będą przekazane do"
+msgstr "Částka bude převedena k"
 
 #: public/views/walletHome.html
 msgid "Generate new address"
-msgstr "Generuj nowy adres"
+msgstr "Vytvořit novou adresu"
 
 #: public/views/modals/customized-amount.html
 msgid "Generate QR Code"
-msgstr "Generowanie kodu QR"
+msgstr "Vytvořit QR kód"
 
 #: public/views/walletHome.html
 msgid "Generating .csv file..."
-msgstr "Generowanie pliku csv..."
+msgstr "Vytvářím .csv soubor..."
 
 #: public/views/translators.html
 msgid "German"
-msgstr "niemiecki"
+msgstr "Němčina"
 
 #: public/views/modals/destination-address.html
 msgid "Getting address for wallet {{selectedWalletName}} ..."
-msgstr "Otrzymywanie adresu dla portfela {{selectedWalletName}} ..."
+msgstr "Získávání adres peněženky {{selectedWalletName}} ..."
 
 #: public/views/includes/sidebar.html
 msgid "Global preferences"
-msgstr "Ogólne preferencje"
+msgstr "Obecná nastavení"
 
 #: public/views/preferences.html
 msgid "Hardware wallet"
-msgstr "Portfel sprzętowy"
+msgstr "Hardware peněženka"
 
 #: public/views/import.html
 msgid "Have a Backup from Copay v0.9?"
-msgstr "Czy masz kopię zapasową z Copay v0.9?"
+msgstr "Máte zálohu z Copay verze v0.9?"
 
 #: public/views/create.html
 #: public/views/import.html
 #: public/views/join.html
 msgid "Hide advanced options"
-msgstr "Ukryj opcje zaawansowane"
+msgstr "Skrýt rozšířená nastavení"
 
 #: public/views/disclaimer.html
 msgid "I affirm that I have read, understood, and agree with these terms."
-msgstr "Potwierdzam, że przeczytałem, zrozumiałem i zgadza się z regulaminem."
+msgstr "Potvrzuji, že jsem si přečetl, porozuměl a odsouhlasil uvedené podmínky."
 
 #: public/views/disclaimer.html
 msgid "I AGREE. GET STARTED"
-msgstr "ZGADZAM SIĘ. ZACZYNAMY"
+msgstr "SOUHLASÍM. ZAČÍT"
 
 #: public/views/import.html
 #: public/views/importLegacy.html
 msgid "Import"
-msgstr "Importuj"
+msgstr "Import"
 
 #: public/views/import.html
 msgid "Import backup"
-msgstr "Importuj kopię zapasową"
+msgstr "Import zálohy"
 
 #: public/views/importLegacy.html
 msgid "Import from the Cloud?"
-msgstr "Importować z chmury?"
+msgstr "Import z Cloudu?"
 
 #: public/views/import.html
 msgid "Import here"
-msgstr "Importuj tutaj"
+msgstr "Importovat zde"
 
 #: public/views/add.html
 msgid "Import wallet"
-msgstr "Importuj portfel"
+msgstr "Import peněženky"
 
 #: public/views/import.html
 msgid "Importing wallet..."
-msgstr "Importowanie portfela..."
+msgstr "Importuji peněženku..."
 
 #: public/views/importLegacy.html
 msgid "Importing..."
-msgstr "Importowanie..."
+msgstr "Importuji..."
 
 #: public/views/includes/terms.html
 msgid "In no event shall the authors of the software, employees and affiliates of Bitpay, copyright holders, or BitPay, Inc. be held liable for any claim, damages or other liability, whether in an action of contract, tort, or otherwise, arising from, out of or in connection with the software."
-msgstr "W żadnym wypadku autorzy oprogramowania, pracownicy i oddziały Bitpay, posiadacze praw autorskich, czy BitPay, Inc. nie ponoszą odpowiedzialności za wszelkie roszczenia, odszkodowania lub inne zobowiązania, zarówno wynikające z umowy, czynu niedozwolonego lub z innego tytułu, związanego z oprogramowaniem."
+msgstr "Za žádných okolností autoři softwaru, zaměstnanci a přidružené osoby z Bitpay, vlastníci ochranných známek, BitPay, Inc nejsou odpovědni za škody nebo náhradu nákladů, plynoucí z používání tohoto softwaru."
 
 #: public/views/backup.html
 msgid "In order to verify your wallet backup, please type your passphrase:"
-msgstr "W celu weryfikacji kopii zapasowej portfela wpisz swoje hasło:"
+msgstr "Pro ověření zálohy uveďte heslo:"
 
 #: public/views/export.html
 msgid "Include address book and history cache"
-msgstr "Dołącz książkę adresową i historię pamięci podręcznej"
+msgstr "Začlenit seznam kontaktů a historii cache"
 
 #: src/js/services/bwsError.js
 msgid "Incorrect address network"
-msgstr "Nieprawidłowy adres sieciowy"
+msgstr "Neplatná síť adres"
 
 #: src/js/services/bwsError.js
 msgid "Insufficient funds"
-msgstr "Nie ma wystarczającej ilości środków"
+msgstr "Nedostatečná částka"
 
 #: src/js/services/bwsError.js
 msgid "Insufficient funds for fee"
-msgstr "Niewystarczające środki na prowizję"
+msgstr "Nedostatečný zůstatek pro poplatek"
 
 #: public/views/walletHome.html
 msgid "Invalid"
-msgstr "Nieprawidłowy"
+msgstr "Neplatné"
 
 #: src/js/controllers/create.js
 #: src/js/controllers/import.js
 #: src/js/controllers/join.js
 msgid "Invalid account number"
-msgstr "Nieprawidłowy numer konta"
+msgstr "Neplatné číslo účtu"
 
 #: src/js/services/bwsError.js
 msgid "Invalid address"
-msgstr "Nieprawidłowy adres"
+msgstr "Neplatná adresa"
 
 #: src/js/controllers/create.js
 #: src/js/controllers/import.js
 #: src/js/controllers/join.js
 msgid "Invalid derivation path"
-msgstr "Nieprawidłowa ścieżka derywacji"
+msgstr "Neplatná cesta derivace"
 
 #: src/js/controllers/copayers.js
 msgid "Invitation to share a Copay Wallet"
-msgstr "Zaproszenie do współdzielenia portfela Copay"
+msgstr "Pozvánka ke sdílené Copay Peněžence"
 
 #: public/views/translators.html
 msgid "Japanese"
-msgstr "japoński"
+msgstr "Japonština"
 
 #: public/views/create.html
 #: public/views/join.html
 msgid "John"
-msgstr "Jan"
+msgstr "John"
 
 #: public/views/join.html
 msgid "Join"
-msgstr "Dołącz"
+msgstr "Spojit"
 
 #: src/js/controllers/copayers.js
 msgid "Join my Copay wallet. Here is the invitation code: {{secret}} You can download Copay for your phone or desktop at https://copay.io"
-msgstr "Dołącz do mojego portfela Copay. Kod zaproszenia: {{secret}} Wersję desktopową lub aplikację na telefon można pobrać z https://copay.io"
+msgstr "Propojení mé Copay peněženky. Toto je kód pozvánky: {{secret}} Copay je možné stáhnout do telefonu nebo počítače na https://copay.io"
 
 #: public/views/add.html
 msgid "Join shared wallet"
-msgstr "Dołącz do portfela"
+msgstr "Spojit sdílenou peněženku"
 
 #: public/views/join.html
 msgid "Joining Wallet..."
-msgstr "Dołączanie do portfela..."
+msgstr "Spojuji peněženky..."
 
 #: src/js/services/bwsError.js
 msgid "Key already associated with an existing wallet"
-msgstr "Klucz jest już powiązany z istniejącym portfelem"
+msgstr "Klíč je již spojený s některou z peněženek"
 
 #: public/views/modals/destination-address.html
 msgid "Label"
-msgstr "Etykieta"
+msgstr "Štítek"
 
 #: public/views/preferencesGlobal.html
 msgid "Language"
-msgstr "Język"
+msgstr "Jazyk"
 
 #: public/views/preferencesInformation.html
 msgid "Last Wallet Addresses"
-msgstr "Ostatnie adresy portfela"
+msgstr "Poslední adresa peněženky"
 
 #: public/views/backup.html
 msgid "Learn more about Copay backups"
-msgstr "Dowiedz się więcej o kopiach zapasowych Copay"
+msgstr "Dozvědět se více o zálohování Copay"
 
 #: public/views/importLegacy.html
 msgid "Learn more about Wallet Migration"
-msgstr "Więcej informacji na temat migracji portfela"
+msgstr "Dozvědět se více o přemístění peněženky"
 
 #: public/views/preferencesFee.html
 msgid "Loading..."
-msgstr "Ładowanie..."
+msgstr "Načítám..."
 
 #: public/views/includes/available-balance.html
 msgid "locked by pending payments"
-msgstr "zablokowane przez oczekujące wypłaty"
+msgstr "zablokováno probíhající platbou"
 
 #: src/js/services/bwsError.js
 msgid "Locktime in effect. Please wait to create a new spend proposal"
-msgstr "Skuteczna blokada. Proszę czekać, aby utworzyć nowy wniosek wypłaty"
+msgstr "Čekání na locktime. Prosím vyčkejte na vytvoření nového platebního návrhu"
 
 #: src/js/services/bwsError.js
 msgid "Locktime in effect. Please wait to remove this spend proposal"
-msgstr "Skuteczna blokada. Proszę czekać, aby usunąć wniosek wypłaty"
+msgstr "Čekání na locktime. Prosím vyčkejte na vytvoření tohoto platebního návrhu"
 
 #: public/views/paymentUri.html
 msgid "Make a payment to"
-msgstr "Wypłać do"
+msgstr "Vytvořit platbu pro"
 
 #: src/js/controllers/index.js
 msgid "Matches:"
-msgstr "Dopasowania:"
+msgstr "Shody:"
 
 #: src/js/services/profileService.js
 msgid "me"
-msgstr "ja"
+msgstr "já"
 
 #: public/views/preferencesInformation.html
 #: public/views/includes/copayers.html
@@ -942,39 +942,39 @@ msgstr "ja"
 #: public/views/modals/tx-details.html
 #: public/views/modals/txp-details.html
 msgid "Me"
-msgstr "Ja"
+msgstr "Já"
 
 #: public/views/modals/paypro.html
 msgid "Memo"
-msgstr "Notatka"
+msgstr "Poznámka"
 
 #: public/views/includes/tx-details.html
 #: public/views/modals/tx-details.html
 msgid "Merchant message"
-msgstr "Wiadomość handlowa"
+msgstr "Zpráva obchodníka"
 
 #: public/views/paymentUri.html
 msgid "Message"
-msgstr "Wiadomość"
+msgstr "Zpráva"
 
 #: src/js/services/bwsError.js
 msgid "Missing private keys to sign"
-msgstr "Brak kluczy prywatnych do podpisania"
+msgstr "Chybějící soukromý klíč pro podpis"
 
 #: public/views/walletHome.html
 #: public/views/includes/tx-details.html
 #: public/views/modals/tx-details.html
 msgid "Moved"
-msgstr "Przeniesiony"
+msgstr "Přesunuto"
 
 #: public/views/includes/confirm-tx.html
 #: public/views/modals/txp-details.html
 msgid "Multiple recipients"
-msgstr "Wielu odbiorców"
+msgstr "Více příjemců"
 
 #: public/views/walletHome.html
 msgid "My Bitcoin address"
-msgstr "Mój adres Bitcoin"
+msgstr "Moje bitcoin adresa"
 
 #: public/views/modals/destination-address.html
 msgid "My contacts"
@@ -982,58 +982,58 @@ msgstr "Moje kontakty"
 
 #: public/views/modals/destination-address.html
 msgid "My wallets"
-msgstr "Moje portfele"
+msgstr "Moje peněženky"
 
 #: public/views/preferencesDeleteWords.html
 msgid "Need to do backup"
-msgstr "Musisz zrobić kopię zapasową"
+msgstr "Vyžaduje zálohu"
 
 #: public/views/paymentUri.html
 msgid "Network"
-msgstr "Sieć"
+msgstr "Síť"
 
 #: src/js/services/bwsError.js
 msgid "Network connection error"
-msgstr "Błąd połączenia z siecią"
+msgstr "Chyba síťového spojení"
 
 #: src/js/services/notificationsService.js
 msgid "New Payment Proposal"
-msgstr "Nowy wniosek wypłaty"
+msgstr "Nový návrh platby"
 
 #: src/js/controllers/create.js
 #: src/js/controllers/join.js
 msgid "New Random Seed"
-msgstr "Nowa losowa fraza"
+msgstr "Nová náhodná zdrojová slova"
 
 #: public/views/import.html
 msgid "No hardware wallets supported on this device"
-msgstr "Portfele sprzętowe nie są obsługiwane przez to urządzenie"
+msgstr "Toto zařízení nejsou podporována žádná hardware zařízení"
 
 #: public/views/walletHome.html
 msgid "No transactions yet"
-msgstr "Brak transakcji"
+msgstr "Žádné transakce"
 
 #: src/js/services/feeService.js
 msgid "Normal"
-msgstr "Zwykła"
+msgstr "Normální"
 
 #: src/js/services/bwsError.js
 msgid "Not authorized"
-msgstr "Brak autoryzacji"
+msgstr "Neautorizováno"
 
 #: public/views/preferences.html
 msgid "Not completed"
-msgstr "Nie ukończono"
+msgstr "Nedokončeno"
 
 #: src/js/controllers/walletHome.js
 msgid "Not enought funds for fee"
-msgstr "Brak środków na opłacenie prowizji"
+msgstr "Nedostatek zůstatku pro zahrnutí poplatku"
 
 #: public/views/walletHome.html
 #: public/views/modals/customized-amount.html
 #: public/views/modals/destination-address.html
 msgid "Not valid"
-msgstr "Nieprawidłowy"
+msgstr "Neplatné"
 
 #: public/views/walletHome.html
 #: public/views/includes/output.html
@@ -1041,595 +1041,595 @@ msgstr "Nieprawidłowy"
 #: public/views/modals/tx-details.html
 #: public/views/modals/txp-details.html
 msgid "Note"
-msgstr "Notatka"
+msgstr "Poznámka"
 
 #: public/views/disclaimer.html
 #: public/views/termOfUse.html
 msgid "Official English Disclaimer"
-msgstr "Oficjalna rezygnacja w języku angielskim"
+msgstr "Oficiální Disclaimer v Angličtině"
 
 #: public/views/preferencesDeleteWords.html
 msgid "Once you have copied your wallet seed down, it is recommended to delete it from this device."
-msgstr "Po skopiowaniu frazy zabezpieczającej portfel, zaleca się usunięcie jej z urządzenia."
+msgstr "Pokud máte zkopírována zdrojová slova peněženky, doporučujeme vám abyste si jej ze zařízení smazali."
 
 #: public/views/preferencesInformation.html
 msgid "Only Main (not change) addresses are shown. The addresses on this list were not verified locally at this time."
-msgstr "Wyświetlane są tylko główne (niezmienne) adresy. Adresy na tej liście nie zostały w tej chwili zweryfikowane lokalnie."
+msgstr "Viditelné jsou pouze hlavní (ne adresy pro vratky). Adresy na tomto seznamu nebyly lokálně ověřeny."
 
 #: public/views/walletHome.html
 msgid "optional"
-msgstr "opcjonalnie"
+msgstr "nepovinný"
 
 #: public/views/paperWallet.html
 msgid "Paper Wallet Private Key"
-msgstr "Klucz prywatny portfela papierowego"
+msgstr "Soukromý klíč papírové peněženky"
 
 #: public/views/includes/tx-details.html
 #: public/views/modals/tx-details.html
 #: public/views/modals/txp-details.html
 msgid "Participants"
-msgstr "Uczestnicy"
+msgstr "Účastníci"
 
 #: public/views/import.html
 #: public/views/paperWallet.html
 msgid "Passphrase"
-msgstr "Hasło"
+msgstr "Heslo"
 
 #: public/views/import.html
 #: public/views/importLegacy.html
 msgid "Password"
-msgstr "Hasło"
+msgstr "Heslo"
 
 #: src/js/services/profileService.js
 msgid "Password needed"
-msgstr "Potrzebne hasło"
+msgstr "Heslo vyžadováno"
 
 #: src/js/controllers/password.js
 msgid "Passwords do not match"
-msgstr "Hasła nie są takie same"
+msgstr "Hesla se neshodují"
 
 #: public/views/join.html
 msgid "Paste invitation here"
-msgstr "Wklej tutaj zaproszenie"
+msgstr "Pozvánku zkopírujte sem"
 
 #: public/views/import.html
 msgid "Paste the backup plain text code"
-msgstr "Wklej tekst kodu kopii zapasowej"
+msgstr "Zálohu zkopírujte sem"
 
 #: public/views/paperWallet.html
 msgid "Paste your paper wallet private key here"
-msgstr "Wklej tutaj prywatny klucz portfela papierowego"
+msgstr "Soukromý klíč papírové peněženky zkopírujte sem"
 
 #: src/js/controllers/walletHome.js
 msgid "Pasted from clipboard"
-msgstr "Wklejone ze schowka"
+msgstr "Zkopírovano"
 
 #: public/views/modals/paypro.html
 msgid "Pay To"
-msgstr "Zapłać"
+msgstr "Placeno komu"
 
 #: public/views/modals/tx-status.html
 msgid "Payment Accepted"
-msgstr "Wypłata zaakceptowana"
+msgstr "Platba přijata"
 
 #: public/views/modals/txp-details.html
 msgid "Payment accepted, but not yet broadcasted"
-msgstr "Wypłata zaakceptowana, ale jeszcze nie nadana"
+msgstr "Platba přijata, ale doposud nebyla odeslána"
 
 #: public/views/modals/txp-details.html
 msgid "Payment accepted. It will be broadcasted by Glidera. In case there is a problem, it can be deleted 6 hours after it was created."
-msgstr "Wypłata zaakceptowana. Będzie nadana przez Glidera. W przypadku wystąpienia problemu, może być usunięta 6 godzin po utworzeniu."
+msgstr "Platba přijata. Bude vyslánat do sítě pomocí Glidera. V případě, že nastanou komplikace, může být odstraněna po 6 hodinách od vytvoření."
 
 #: public/views/modals/txp-details.html
 msgid "Payment details"
-msgstr "Szczegóły wypłaty"
+msgstr "Údaje platby"
 
 #: public/views/walletHome.html
 msgid "Payment expires"
-msgstr "Płatność wygasa"
+msgstr "Expirace platby"
 
 #: public/views/modals/txp-details.html
 msgid "Payment Proposal"
-msgstr "Wniosek wypłaty"
+msgstr "Návrh platby"
 
 #: public/views/modals/tx-status.html
 msgid "Payment Proposal Created"
-msgstr "Wniosek wypłaty utworzony"
+msgstr "Návrh platby byl vytvořen"
 
 #: src/js/services/notificationsService.js
 msgid "Payment Proposal Rejected"
-msgstr "Wniosek wypłaty odrzucony"
+msgstr "Návrh platby byl odmítnut"
 
 #: src/js/services/notificationsService.js
 msgid "Payment Proposal Rejected by Copayer"
-msgstr "Wniosek wypłaty odrzucony przez współwłaściciela portfela"
+msgstr "Návrh platby odmítnut spoluplátcem"
 
 #: src/js/services/notificationsService.js
 msgid "Payment Proposal Signed by Copayer"
-msgstr "Wniosek wypłaty zatwierdzony przez współwłaściciela portfela"
+msgstr "Návrh platby byl podepsán spoluplátcem"
 
 #: public/views/walletHome.html
 msgid "Payment Proposals"
-msgstr "Wniosek wypłaty"
+msgstr "Návrhy plateb"
 
 #: src/js/controllers/walletHome.js
 msgid "Payment Protocol Invalid"
-msgstr "Protokół wypłaty nieprawidłowy"
+msgstr "Neplatný platební protokol"
 
 #: src/js/controllers/walletHome.js
 msgid "Payment Protocol not supported on Chrome App"
-msgstr "Protokół wypłaty nieobsługiwany przez Chrome"
+msgstr "Chrome App nepodporuje Platební protokol"
 
 #: public/views/modals/tx-status.html
 #: public/views/modals/txp-details.html
 msgid "Payment Rejected"
-msgstr "Wypłata odrzucona"
+msgstr "Platba odmítnuta"
 
 #: public/views/modals/paypro.html
 msgid "Payment request"
-msgstr "Wniosek o płatność"
+msgstr "Žádost platby"
 
 #: public/views/modals/txp-details.html
 #: src/js/services/notificationsService.js
 msgid "Payment Sent"
-msgstr "Płatność wysłana"
+msgstr "Platba odeslána"
 
 #: public/views/walletHome.html
 msgid "Payment to"
-msgstr "Wypłata dla"
+msgstr "Platba komu"
 
 #: public/views/walletHome.html
 msgid "Pending Confirmation"
-msgstr "Oczekiwanie na potwierdzenie"
+msgstr "Vyčkávající potvrzení"
 
 #: public/views/preferencesDeleteWallet.html
 msgid "Permanently delete this wallet. THIS ACTION CANNOT BE REVERSED"
-msgstr "Trwale usuń ten portfel. TEN KROK JEST NIEODWRACALNY"
+msgstr "Trvalé odstraněné této peněženky. NELZE VRÁTIT ZPĚT"
 
 #: public/views/create.html
 #: src/js/services/profileService.js
 msgid "Personal Wallet"
-msgstr "Portfel osobisty"
+msgstr "Osobní peněženka"
 
 #: public/views/create.html
 #: public/views/join.html
 msgid "Please accept to export two public keys from the Trezor app"
-msgstr "Proszę zaakceptować eksport dwóch kluczy publicznych z aplikacji Trezor"
+msgstr "Přijměte pro export dvou veřejných klíčů z aplikace Trezor"
 
 #: src/js/controllers/create.js
 #: src/js/controllers/join.js
 msgid "Please enter the required fields"
-msgstr "Proszę wypełnić wymagane pola"
+msgstr "Vyplňte požadovaná pole"
 
 #: src/js/controllers/import.js
 msgid "Please enter the seed words"
-msgstr "Proszę wpisać słowa frazy"
+msgstr "Vyplňte slova zdroje"
 
 #: src/js/controllers/create.js
 #: src/js/controllers/join.js
 msgid "Please enter the wallet seed"
-msgstr "Proszę wpisać frazę odzyskiwania danych portfela"
+msgstr "Vyplňte zdroj peněženky"
 
 #: public/views/backup.html
 msgid "Please tap the words in order to confirm your backup phrase is correctly written."
-msgstr "Proszę wybrać słowa w celu potwierdzenia poprawności frazy odzyskiwania danych."
+msgstr "Potvrďte pořadí slov pro potvrzení správnosti zálohy."
 
 #: src/js/services/bwsError.js
 msgid "Please upgrade Copay to perform this action"
-msgstr "Proszę uaktualnić Copay, by móc wykonać tę operację"
+msgstr "Pro tuto funkci je potřeba aktualizovat Copay"
 
 #: src/js/controllers/import.js
 msgid "Please, select your backup file"
-msgstr "Proszę wybrać plik kopii zapasowej"
+msgstr "Vyberte soubor zálohy"
 
 #: src/js/controllers/export.js
 msgid "Preparing backup..."
-msgstr "Przygotowywanie kopii zapasowej..."
+msgstr "Připravuji zálohu..."
 
 #: src/js/routes.js
 msgid "Press again to exit"
-msgstr "Naciśnij ponownie, aby wyjść"
+msgstr "Pro ukončení stiskněte tlačítko znovu"
 
 #: src/js/services/feeService.js
 msgid "Priority"
-msgstr "Priorytetowa"
+msgstr "Priorita"
 
 #: src/js/services/bwsError.js
 msgid "Private key is encrypted, cannot sign"
-msgstr "Klucz prywatny jest zaszyfrowany, nie można podpisać"
+msgstr "Soukromý klíč je šifrovaný, nelze podepsat"
 
 #: public/views/modals/customized-amount.html
 msgid "QR Code"
-msgstr "Kod QR"
+msgstr "QR kód"
 
 #: public/views/modals/scanner.html
 msgid "QR-Scanner"
-msgstr "Skaner kodów QR"
+msgstr "QR čtečka"
 
 #: src/js/controllers/index.js
 msgid "Receive"
-msgstr "Otrzymaj"
+msgstr "Přijmout"
 
 #: public/views/walletHome.html
 #: public/views/includes/tx-details.html
 #: public/views/modals/tx-details.html
 msgid "Received"
-msgstr "Otrzymane"
+msgstr "Přijato"
 
 #: public/views/includes/tx-details.html
 #: public/views/modals/tx-details.html
 #: public/views/modals/txp-details.html
 msgid "Recipients"
-msgstr "Odbiorcy"
+msgstr "Příjemci"
 
 #: public/views/walletHome.html
 msgid "Reconnecting to Wallet Service..."
-msgstr "Ponowne łączenie z Wallet Service..."
+msgstr "Navazuji spojení se službou peněženky..."
 
 #: public/views/walletHome.html
 msgid "Recreate"
-msgstr "Przywróć"
+msgstr "Znovu vytvářím"
 
 #: public/views/walletHome.html
 msgid "Recreating Wallet..."
-msgstr "Przywracanie portfela..."
+msgstr "Znovu vytvářím peněženku..."
 
 #: public/views/modals/txp-details.html
 msgid "Reject"
-msgstr "Odrzuć"
+msgstr "Odmítnout"
 
 #: src/js/controllers/walletHome.js
 msgid "Rejecting payment"
-msgstr "Odrzucanie płatności"
+msgstr "Odmítám platbu"
 
 #: public/views/preferencesAbout.html
 msgid "Release Information"
-msgstr "Informacje o wersji"
+msgstr "Vypouštění informací"
 
 #: public/views/modals/destination-address.html
 msgid "Remove"
-msgstr "Usuń"
+msgstr "Odstranit"
 
 #: public/views/export.html
 #: public/views/includes/password.html
 msgid "Repeat password"
-msgstr "Powtórz hasło"
+msgstr "Heslo znovu"
 
 #: public/views/walletHome.html
 #: public/views/modals/customized-amount.html
 msgid "Request a specific amount"
-msgstr "Prośba o konkretną kwotę"
+msgstr "Vyžádat konkrétní částku"
 
 #: public/views/preferences.html
 msgid "Request Password"
-msgstr "Wymagane hasło"
+msgstr "Vyžádat heslo"
 
 #: src/js/services/txService.js
 msgid "Requesting Ledger Wallet to sign"
-msgstr "Prośba Ledger Wallet o podpis"
+msgstr "Požaduji podpis Ledger peněženky"
 
 #: src/js/services/txService.js
 msgid "Requesting Trezor Wallet to sign"
-msgstr "Wniosek Trezor Wallet o podpis"
+msgstr "Vyžaduji podpis Trezor peněženky"
 
 #: public/views/join.html
 msgid "Required"
-msgstr "Wymagania"
+msgstr "Vyžadováno"
 
 #: public/views/create.html
 msgid "Required number of signatures"
-msgstr "Wymagana liczba podpisów"
+msgstr "Vyžadováno více podpisuů"
 
 #: public/views/translators.html
 msgid "Russian"
-msgstr "rosyjski"
+msgstr "Ruština"
 
 #: public/views/preferencesAlias.html
 #: public/views/preferencesBwsUrl.html
 #: public/views/preferencesEmail.html
 #: public/views/modals/destination-address.html
 msgid "Save"
-msgstr "Zapisz"
+msgstr "Uložit"
 
 #: public/views/preferencesEmail.html
 msgid "Saving preferences..."
-msgstr "Zapisywanie ustawień..."
+msgstr "Ukládám nastavení..."
 
 #: public/views/preferencesInformation.html
 msgid "Scan addresses for funds"
-msgstr "Skanuj adresy w celu znalezienia środków"
+msgstr "Naskenujte adresu pro zobrazení zůstatku"
 
 #: public/views/preferences.html
 msgid "Scan Fingerprint"
-msgstr "Skanuj linie papilarne"
+msgstr "Skenovat otisk"
 
 #: src/js/services/notificationsService.js
 msgid "Scan Finished"
-msgstr "Skanowanie zakończone"
+msgstr "Skenování dokončeno"
 
 #: public/views/walletHome.html
 msgid "Scan status finished with error"
-msgstr "Stan skanowania zakończony błędem"
+msgstr "Status skenování je chybová"
 
 #: public/views/paperWallet.html
 msgid "Scan Wallet Funds"
-msgstr "Skanuj środki portfela"
+msgstr "Skenovat zůstatek peněženky"
 
 #: src/js/services/txService.js
 msgid "Scan your fingerprint please"
-msgstr "Proszę zeskanować linie papilarne"
+msgstr "Naskenujte prosím svůj otisk"
 
 #: public/views/paperWallet.html
 msgid "Scanning wallet funds..."
-msgstr "Skanowanie środków portfela..."
+msgstr "Skenuji zůstatek peněženky..."
 
 #: public/views/walletHome.html
 msgid "Scanning Wallet funds..."
-msgstr "Skanowanie środków portfela..."
+msgstr "Skenuji zůstatek peněženky..."
 
 #: public/views/walletHome.html
 msgid "Search transactions"
-msgstr "Szukaj transakcji"
+msgstr "Vyhledávám transakce"
 
 #: public/views/preferences.html
 msgid "Security preferences"
-msgstr "Ustawienia zabezpieczeń"
+msgstr "Nastavení zabezpečení"
 
 #: public/views/includes/tx-details.html
 #: public/views/modals/tx-details.html
 msgid "See it on the blockchain"
-msgstr "Zobacz to w blockchainie"
+msgstr "Zobrazit na blockchainu"
 
 #: public/views/import.html
 msgid "Seed passphrase"
-msgstr "Hasło frazy odzyskiwania danych"
+msgstr "Heslo zdroje"
 
 #: public/views/create.html
 #: public/views/join.html
 msgid "Seed Passphrase"
-msgstr "Hasło frazy odzyskiwania danych"
+msgstr "Heslo zdroje"
 
 #: public/views/import.html
 msgid "Select a backup file"
-msgstr "Wybierz plik kopii zapasowej"
+msgstr "Vybrat soubor zálohy"
 
 #: public/views/paymentUri.html
 msgid "Select a wallet"
-msgstr "Wybierz portfel"
+msgstr "Vybrat peněženku"
 
 #: public/views/modals/paypro.html
 msgid "Self-signed Certificate"
-msgstr "Certyfikat z podpisem własnym"
+msgstr "Vlastnoručně podepsaný certifikát"
 
 #: public/views/walletHome.html
 #: src/js/controllers/index.js
 msgid "Send"
-msgstr "Wyślij"
+msgstr "Odesláno"
 
 #: public/views/preferencesInformation.html
 msgid "Send addresses by email"
-msgstr "Wyślij adresy przez e-mail"
+msgstr "Odeslat adresy emailem"
 
 #: public/views/walletHome.html
 msgid "Send All"
-msgstr "Wyślij wszystko"
+msgstr "Odeslat vše"
 
 #: public/views/export.html
 #: public/views/preferencesLogs.html
 msgid "Send by email"
-msgstr "Wyślij przez e-mail"
+msgstr "Odeslat emailem"
 
 #: public/views/includes/transaction.html
 msgid "Sending"
-msgstr "Wysyłanie"
+msgstr "Odesílám"
 
 #: public/views/paperWallet.html
 msgid "Sending funds..."
-msgstr "Wysyłanie środków..."
+msgstr "Odesílání částky..."
 
 #: src/js/controllers/walletHome.js
 msgid "Sending transaction"
-msgstr "Wysyłanie transakcji"
+msgstr "Odesílání transakce"
 
 #: public/views/walletHome.html
 #: public/views/includes/tx-details.html
 #: public/views/modals/tx-details.html
 #: public/views/modals/tx-status.html
 msgid "Sent"
-msgstr "Wysłane"
+msgstr "Odesláno"
 
 #: public/views/importLegacy.html
 msgid "Server"
-msgstr "Serwer"
+msgstr "Server"
 
 #: src/js/services/bwsError.js
 msgid "Server response could not be verified"
-msgstr "Odpowiedź serwera nie mogła zostać zweryfikowana"
+msgstr "Server nemůže být ověřen"
 
 #: public/views/preferencesAbout.html
 msgid "Session log"
-msgstr "Dziennik sesji"
+msgstr "Log sekce"
 
 #: public/views/includes/password.html
 msgid "SET"
-msgstr "ZATWIERDŹ"
+msgstr "NASTAVIT"
 
 #: public/views/preferencesBwsUrl.html
 msgid "Set default url"
-msgstr "Ustaw domyślny adres url"
+msgstr "Nastavit výchozí URL"
 
 #: public/views/includes/password.html
 msgid "Set up a password"
-msgstr "Ustawianie hasła"
+msgstr "Nastavit heslo"
 
 #: public/views/export.html
 msgid "Set up an Export Password"
-msgstr "Ustawianie hasła eksportu"
+msgstr "Nastavit heslo pro export"
 
 #: public/views/preferencesEmail.html
 msgid "Setting up email notifications could weaken your privacy, if the wallet service provider is compromised. Information available to an attacker would include your wallet addresses and its balance, but no more."
-msgstr "Włączenie powiadomień e-mail może mieć wpływ na twoją prywatność, jeżeli usługodawca portfela będzie narażony na ataki cyberprzestępców. Informacje dostępne dla atakującego będą zawierać jedynie adres twojego portfela i saldo."
+msgstr "Nastavení emailových notifikací může snížit vaše soukromí, pokud je poskytovatel emailu napaden. Útočník by mohl mít k dispozici vaše adresy peněženek a zůstatek, soukromé klíče k ovládání zůstatků ne."
 
 #: public/views/walletHome.html
 #: public/views/includes/sidebar.html
 msgid "Settings"
-msgstr "Ustawienia"
+msgstr "Nastavení"
 
 #: public/views/walletHome.html
 #: public/views/modals/customized-amount.html
 msgid "Share address"
-msgstr "Udostępnij adres"
+msgstr "Sdílet adresu"
 
 #: public/views/copayers.html
 msgid "Share invitation"
-msgstr "Wyślij zaproszenie"
+msgstr "Sdílet pozvánku"
 
 #: public/views/copayers.html
 msgid "Share this invitation with your copayers"
-msgstr "Wyślij zaproszenie współwłaścicielom portfela"
+msgstr "Sdílet tuto pozvánku se spoluplátci"
 
 #: public/views/walletHome.html
 msgid "Share this wallet address to receive payments. To protect your privacy, new addresses are generated automatically once you use them."
-msgstr "Udostępnij ten adres w celu otrzymania płatności. Aby chronić twoją prywatność nowe adresy są generowane automatycznie po ich użyciu."
+msgstr "Sdílet adresu této peněženky pro přijímání plateb. Pro ochranu soukromí po použití adresy je generována nová."
 
 #: public/views/create.html
 #: public/views/import.html
 msgid "Shared Wallet"
-msgstr "Współdzielony portfel"
+msgstr "Sdílená peněženka"
 
 #: public/views/create.html
 #: public/views/import.html
 #: public/views/join.html
 msgid "Show advanced options"
-msgstr "Pokaż opcje zaawansowane"
+msgstr "Zobrazit rozšířená nastavení"
 
 #: public/views/walletHome.html
 msgid "Show more"
-msgstr "Pokaż więcej"
+msgstr "Zobrazit více"
 
 #: public/views/backup.html
 msgid "Show Wallet Seed"
-msgstr "Pokaż frazę odzyskiwania danych portfela"
+msgstr "Zobrazit zdroje"
 
 #: src/js/services/bwsError.js
 msgid "Signatures rejected by server"
-msgstr "Podpisy odrzucone przez serwer"
+msgstr "Podpisy byly serverem odmítnuty"
 
 #: src/js/services/txService.js
 msgid "Signing payment"
-msgstr "Sygnuj wypłatę"
+msgstr "Podepisuji platbu"
 
 #: public/views/translators.html
 msgid "Spanish"
-msgstr "hiszpański"
+msgstr "Španělština"
 
 #: src/js/controllers/create.js
 #: src/js/controllers/join.js
 msgid "Specify Seed..."
-msgstr "Określanie frazy..."
+msgstr "Uveďte zdroje..."
 
 #: src/js/services/bwsError.js
 msgid "Spend proposal is not accepted"
-msgstr "Wniosek wypłaty nie został przyjęty"
+msgstr "Návrh platby nebyl přijat"
 
 #: src/js/services/bwsError.js
 msgid "Spend proposal not found"
-msgstr "Wniosek wypłaty nie został znaleziony"
+msgstr "Návrh platby nebyl nalezen"
 
 #: src/js/controllers/copayers.js
 #: src/js/controllers/export.js
 #: src/js/controllers/import.js
 #: src/js/controllers/preferencesDelete.js
 msgid "Success"
-msgstr "Udało się"
+msgstr "Úspěšné"
 
 #: public/views/preferencesAdvanced.html
 msgid "Sweep paper wallet"
-msgstr "Wyczyść papierowy portfel"
+msgstr "Převést papírovou peněženku"
 
 #: public/views/paperWallet.html
 msgid "Sweep Wallet"
-msgstr "Wyczyść portfel"
+msgstr "Převést peněženku"
 
 #: public/views/walletHome.html
 msgid "Tap to retry"
-msgstr "Ponów próbę"
+msgstr "Klikněte pro zopakování pokusu"
 
 #: public/views/disclaimer.html
 #: public/views/preferencesAbout.html
 msgid "Terms of Use"
-msgstr "Warunki użytkowania"
+msgstr "Podmínky používání"
 
 #: public/views/includes/terms.html
 msgid "The authors of the software, employees and affiliates of Bitpay, copyright holders, and BitPay, Inc. cannot retrieve your private keys or passwords if you lose or forget them and cannot guarantee transaction confirmation as they do not have control over the Bitcoin network."
-msgstr "Autorzy oprogramowania, pracownicy i asystenci Bitpay, posiadacze praw autorskich i BitPay Inc. nie mogą odzyskać kluczy prywatnych lub haseł w wypadku ich utraty i nie mogą zagwarantować potwierdzenia transakcji, ponieważ nie mają kontroli nad siecią Bitcoin."
+msgstr "Autoři tohoto software, zaměstnanci a ostatní z Bitpay, vlastníci ochranných známek, BitPay, Inc, nemůže obnovit vaše soukromé klíče nebo hesla, pokud dojde ke ztrátě a negarantuje potvrzení transakcí, protože nedrží kontrolu nad Bitcoin sítí."
 
 #: src/js/services/ledger.js
 msgid "The Ledger Chrome application is not installed"
-msgstr "Aplikacja Ledger Chrome nie jest zainstalowana"
+msgstr "Chrome aplikace pro Leger není instalována"
 
 #: src/js/controllers/walletHome.js
 msgid "The payment was created but could not be completed. Please try again from home screen"
-msgstr "Wypłata została utworzona, ale nie może być zakończona. Spróbuj ponownie na stronie głównej"
+msgstr "Platba byla vytvořena ale nemohla být dokončena. Opakujte akci z domovské obrazovky"
 
 #: public/views/modals/txp-details.html
 msgid "The payment was removed by creator"
-msgstr "Wypłata została usunięta przez jej twórcę"
+msgstr "Platba byla odstraněna tvůrcem"
 
 #: public/views/export.html
 msgid "The private key for this wallet is encrypted. Exporting keep the private key encrypted in the export archive."
-msgstr "Klucz prywatny tego portfela jest zaszyfrowany i będzie zaszyfrowany w eksportowanym pliku."
+msgstr "Soukromý klíč této peněženky je šifrovaný. Po exportu bude soukromý klíč šifrovaný v archivu exportu."
 
 #: src/js/services/bwsError.js
 msgid "The request could not be understood by the server"
-msgstr "Wniosek nie został zrozumiany przez serwer"
+msgstr "Požadavek nebyl serverem pochopen"
 
 #: public/views/create.html
 #: public/views/join.html
 msgid "The seed could require a passphrase to be imported"
-msgstr "Fraza odzyskiwania danych może wymagać hasła do zaimportowania"
+msgstr "Zdroj může pro import vyžadovat heslo"
 
 #: public/views/includes/terms.html
 msgid "The software does not constitute an account where BitPay or other third parties serve as financial intermediaries or custodians of your bitcoin."
-msgstr "Oprogramowanie nie jest kontem, gdzie BitPay lub inne osoby trzecie mogą służyć jako pośrednicy finansowi lub opiekunowie twoich bitcoinów."
+msgstr "Tento software nepředstavuje účet kde BitPay nebo jiné třetí strany slouží jako finanční zprostředkovatelé nebo správci vašeho bitcoin."
 
 #: public/views/includes/terms.html
 msgid "The software you are about to use functions as a free, open source, and multi-signature digital wallet."
-msgstr "Oprogramowanie to jest darmowym, open source, obsługującym multipodpisy cyfrowym portfelem."
+msgstr "Software který hodláte začít používat je zdarma, open-source, vícepodpisová digitální peněženka."
 
 #: src/js/services/bwsError.js
 msgid "The spend proposal is not pending"
-msgstr "Wniosek płatności nie jest oczekujący"
+msgstr "Platební návrh neočekává další schválení"
 
 #: src/js/controllers/copayers.js
 #: src/js/controllers/preferencesDelete.js
 msgid "The wallet \"{{walletName}}\" was deleted"
-msgstr "Portfel \"{{walletName}}\" został usunięty"
+msgstr "Peněženka \"{{walletName}}\" byla odstraněna"
 
 #: public/views/paymentUri.html
 msgid "There are no wallets to make this payment"
-msgstr "Brak portfela, aby dokonać tej wypłaty"
+msgstr "Pro platbu je potřeba založit peněženku"
 
 #: src/js/controllers/import.js
 msgid "There is an error in the form"
-msgstr "Wystąpił błąd w postaci"
+msgstr "Na formuláři je chyba"
 
 #: public/views/backup.html
 msgid "This seed was created with a passphrase. To recover this wallet both the mnemonic and passphrase are needed."
-msgstr "Ta fraza odzyskiwania danych został utworzona z hasłem. Aby odzyskać ten portfel potrzebujesz zarówno frazy jak i hasła."
+msgstr "Zdroj byl vytvořen s heslem. Pro obnovu této peněženky je zapotřebí zdroj i heslo."
 
 #: public/views/includes/tx-details.html
 #: public/views/modals/tx-details.html
 msgid "This transaction has become invalid; possibly due to a double spend attempt."
-msgstr "Ta transakcja jest nieprawidłowa. Może to być spowodowane próbą podwójnej płatności."
+msgstr "Transakce je neplatná, zřejmě kvůli pokusu o dvojí platbu."
 
 #: public/views/walletHome.html
 msgid "This wallet is not registered at the given Bitcore Wallet Service (BWS). You can recreate it from the local information."
-msgstr "Ten portfel nie jest zarejestrowany na Bitcore Wallet Service (BWS). Możesz go odtworzyć z lokalnego nośnika."
+msgstr "Tato peněženka není registrována na Bitcore Wallet Service (BWS). Můžete jej znovu vytvořit z lokální informací."
 
 #: public/views/modals/txp-details.html
 msgid "Time"
-msgstr "Czas"
+msgstr "Čas"
 
 #: public/views/walletHome.html
 #: public/views/includes/output.html
@@ -1637,323 +1637,323 @@ msgstr "Czas"
 #: public/views/modals/tx-details.html
 #: public/views/modals/txp-details.html
 msgid "To"
-msgstr "Do"
+msgstr "Komu"
 
 #: public/views/backup.html
 msgid "To restore this {{index.m}}-{{index.n}} <b>shared</b> wallet you will need"
-msgstr "Aby przywrócić ten {{index.m}}-{{index.n}} <b>wspólny</b> portfel musisz"
+msgstr "Pro obnovu této {{index.m}} z {{index.n}} <b>sdílené</b> peněženky potřebujete"
 
 #: public/views/includes/terms.html
 msgid "To the fullest extent permitted by law, this software is provided “as is” and no representations or warranties can be made of any kind, express or implied, including but not limited to the warranties of merchantability, fitness or a particular purpose and noninfringement."
-msgstr "W najszerszym zakresie dozwolonym przez prawo, to oprogramowanie jest dostarczane w stanie, w jakim jest (\"jak widać\") bez jakiejkolwiek gwarancji, ani wyraźnej, ani domyślnej, w tym między innymi domyślnych gwarancji co do przydatności handlowej, przydatności do określonych zastosowań i nienaruszalności."
+msgstr "V plném rozsahu povoleném zákonem tento software je poskytován \"tak jak je\" a žádné prohlášení ani záruky nemohou být zaručeny."
 
 #: public/views/walletHome.html
 msgid "too long!"
-msgstr "za długo!"
+msgstr "příliš dlouho!"
 
 #: public/views/walletHome.html
 msgid "Total Locked Balance"
-msgstr "Łącznie zablokowane środki"
+msgstr "Blokovaný zůstatek"
 
 #: public/views/create.html
 msgid "Total number of copayers"
-msgstr "Liczba współwłaścicieli portfela"
+msgstr "Počet spoluplátců"
 
 #: src/js/services/txService.js
 msgid "Touch ID Failed"
-msgstr "Odczyt Touch ID nie powiódł się"
+msgstr "Chyba Touch ID"
 
 #: public/views/includes/tx-details.html
 #: public/views/modals/tx-details.html
 msgid "Transaction"
-msgstr "Transakcja"
+msgstr "Transakce"
 
 #: src/js/services/bwsError.js
 msgid "Transaction already broadcasted"
-msgstr "Transakcja została już wysłana"
+msgstr "Transakce byla již odeslána"
 
 #: public/views/preferencesAdvanced.html
 msgid "Transaction History"
-msgstr "Historia Transakcji"
+msgstr "Historie transakcí"
 
 #: public/views/translators.html
 msgid "Translation Credits"
-msgstr "Przetłumaczone przez"
+msgstr "Poděkování překladatelům"
 
 #: public/views/preferencesAbout.html
 msgid "Translators"
-msgstr "Tłumacze"
+msgstr "Překladatelé"
 
 #: public/views/backup.html
 msgid "Try again"
-msgstr "Spróbuj ponownie"
+msgstr "Zkusit znovu"
 
 #: public/views/import.html
 msgid "Type the Seed Phrase (usually 12 words)"
-msgstr "Wpisz frazę odzyskiwania danych (zwykle 12 słów)"
+msgstr "Vyplňte zdroj (běžně 12 slov)"
 
 #: src/js/controllers/walletHome.js
 msgid "Unable to send transaction proposal"
-msgstr "Nie można wysłać wniosku transakcji"
+msgstr "Nebylo možné odeslat návrh platby"
 
 #: public/views/walletHome.html
 #: public/views/includes/tx-details.html
 #: public/views/modals/tx-details.html
 msgid "Unconfirmed"
-msgstr "Niepotwierdzone"
+msgstr "Nepotvrzené"
 
 #: public/views/preferencesGlobal.html
 msgid "Unit"
-msgstr "Jednostka"
+msgstr "Jednotka"
 
 #: public/views/walletHome.html
 msgid "Unsent transactions"
-msgstr "Niewysłane transakcje"
+msgstr "Neodeslaná transakce"
 
 #: public/views/walletHome.html
 msgid "Updating transaction history. Please stand by."
-msgstr "Aktualizowanie historii transakcji. Proszę czekać."
+msgstr "Aktualizuji historii transakcí."
 
 #: public/views/walletHome.html
 msgid "Updating Wallet..."
-msgstr "Aktualizowanie portfela..."
+msgstr "Aktualizuji peněženku..."
 
 #: public/views/preferencesGlobal.html
 msgid "Use Unconfirmed Funds"
-msgstr "Użyj niepotwierdzonych środków"
+msgstr "Použít nepotvrzené částky"
 
 #: public/views/importLegacy.html
 msgid "Username"
-msgstr "Nazwa użytkownika"
+msgstr "Jméno"
 
 #: public/views/preferencesAbout.html
 msgid "Version"
-msgstr "Wersja"
+msgstr "Verze"
 
 #: public/views/export.html
 msgid "View"
-msgstr "Widok"
+msgstr "Pohled"
 
 #: public/views/copayers.html
 msgid "Waiting for copayers"
-msgstr "Oczekiwanie na współwłaścicieli portfela"
+msgstr "Vyčkávání na spoluplátce"
 
 #: public/views/copayers.html
 msgid "Waiting..."
-msgstr "Oczekiwanie..."
+msgstr "Vyčkávání..."
 
 #: src/js/services/bwsError.js
 msgid "Wallet already exists"
-msgstr "Portfel już istnieje"
+msgstr "Peněženka již existuje"
 
 #: src/js/services/profileService.js
 msgid "Wallet Already Imported:"
-msgstr "Portfel już zaimportowany:"
+msgstr "Peněženka již byla importována:"
 
 #: src/js/services/profileService.js
 msgid "Wallet already in Copay:"
-msgstr "Portfel już w Copay:"
+msgstr "Peněženka je již v Copay:"
 
 #: public/views/preferencesInformation.html
 msgid "Wallet Configuration (m-n)"
-msgstr "Konfiguracja portfela (m-n)"
+msgstr "Nastavení peněženky (m z n)"
 
 #: public/views/export.html
 msgid "Wallet Export"
-msgstr "Eksport portfela"
+msgstr "Export peněženky"
 
 #: public/views/preferencesInformation.html
 msgid "Wallet Id"
-msgstr "Id Portfela"
+msgstr "Id peněženky"
 
 #: public/views/copayers.html
 msgid "Wallet incomplete and broken"
-msgstr "Awaria: Portfel nie działa"
+msgstr "Peněženka je neúplná a chybná"
 
 #: public/views/preferencesAdvanced.html
 #: public/views/preferencesInformation.html
 msgid "Wallet Information"
-msgstr "Informacje o portfelu"
+msgstr "Údaje peněženky"
 
 #: public/views/join.html
 msgid "Wallet Invitation"
-msgstr "Zaproszenie do portfela"
+msgstr "Pozvánka peněženky"
 
 #: public/views/join.html
 msgid "Wallet Invitation is not valid!"
-msgstr "Zaproszenie do portfela jest nieważne!"
+msgstr "Neplatná pozvánka peněženky!"
 
 #: src/js/services/bwsError.js
 msgid "Wallet is full"
-msgstr "Portfel jest pełny"
+msgstr "Peněženka je plná"
 
 #: src/js/services/bwsError.js
 msgid "Wallet is locked"
-msgstr "Portfel jest zablokowany"
+msgstr "Peněženka je zablokována"
 
 #: src/js/services/bwsError.js
 msgid "Wallet is not complete"
-msgstr "Portfel jest niekompletny"
+msgstr "Peněženka není úplná"
 
 #: public/views/create.html
 msgid "Wallet name"
-msgstr "Nazwa portfela"
+msgstr "Název peněženky"
 
 #: public/views/preferencesInformation.html
 msgid "Wallet Name (at creation)"
-msgstr "Nazwa portfela (oryginalna)"
+msgstr "Název peněženky (při vytváření)"
 
 #: public/views/preferencesInformation.html
 msgid "Wallet Network"
-msgstr "Sieć portfela"
+msgstr "Síť peněženky"
 
 #: src/js/services/bwsError.js
 msgid "Wallet not found"
-msgstr "Nie znaleziono portfela"
+msgstr "Peněženka nenalezena"
 
 #: src/js/services/bwsError.js
 msgid "Wallet not registered at the wallet service. Recreate it from \"Create Wallet\" using \"Advanced Options\" to set your seed"
-msgstr "Portfel nie jest zarejestrowany w Wallet Service. Odtwórz go używając polecenia \"Utwórz portfel\" z wykorzystaniem frazy odzyskiwania danych w ustawieniach zaawansowanych"
+msgstr "Peněženka nebyla registrována na službě peněženek. Znovu vytvořte peněženku přes \"Vytvořit peněženku\" pomocí \"Rozšířeného nastavení\" ve kterém nastavíte zdroj"
 
 #: public/views/create.html
 #: public/views/import.html
 #: public/views/join.html
 msgid "Wallet Seed"
-msgstr "Fraza odzyskiwania danych portfela"
+msgstr "Zdroj peněženky"
 
 #: public/views/import.html
 msgid "Wallet Seed could require a passphrase to be imported"
-msgstr "Import frazy odzyskiwania danych portfela może wymagać hasła"
+msgstr "Zdroj peněženky může vyžadovat při importování heslo"
 
 #: src/js/services/bwsError.js
 msgid "Wallet seed is invalid"
-msgstr "Fraza odzyskiwania danych portfela nieprawidłowa"
+msgstr "Zdroj peněženky není platný"
 
 #: public/views/backup.html
 #: public/views/preferencesDeleteWords.html
 msgid "Wallet seed not available. You can still export it from Advanced &gt; Export."
-msgstr "Fraza odzyskiwania danych portfela niedostępna. Nadal można go wyeksportować w: Zaawansowane &gt; Eksport portfela."
+msgstr "Zdroj peněženky není dostupný. I přesto můžete exportovat přes Rozšířené &gt; Export."
 
 #: src/js/services/bwsError.js
 msgid "Wallet service not found"
-msgstr "Nie znaleziono serwera"
+msgstr "Služba peněženky nenalezena"
 
 #: public/views/export.html
 msgid "WARNING: Not including the private key allows to check the wallet balance, transaction history, and create spend proposals from the export. However, does not allow to approve (sign) proposals, so <b>funds will not be accessible from the export</b>."
-msgstr "UWAGA: Jeśli plik eksportu nie zawiera klucza prywatnego, możliwe będzie jedynie sprawdzenie salda i historii transakcji, jak również wygenerowanie wniosków o płatność. Nie może być on jednak używany do sprawdzania poprawności (podpisywania) wniosków płatności, więc <b>środki z wyeksportowanego pliku nie będą dostępne</b>."
+msgstr "VAROVÁNÍ: Bez vložení soukromého klíče je možná kontrola zůstatků peněženek, historie transakcí a vytváření návrhů plateb z exportu. Nicméně, tyto údaje neumožňují (podepsat) návrhy plateb, tudíž <b>zůstatky nebudou z exportů ovladatelné<b>."
 
 #: public/views/create.html
 #: public/views/join.html
 msgid "WARNING: Passphrase cannot be recovered. <b>Be sure to write it down</b>. The wallet can not be restored without the passphrase."
-msgstr "OSTRZEŻENIE: Hasła nie można odzyskać. <b> Pamiętaj, aby je zapisać </b>. Portfela nie można przywrócić bez hasła."
+msgstr "VAROVÁNÍ: Heslo nemůže být obnoveno. <b>Zapište si jej<b>. Peněženka bez hesla nemůže být obnovena."
 
 #: public/views/export.html
 msgid "WARNING: The private key of this wallet is not available. The export allows to check the wallet balance, transaction history, and create spend proposals from the export. However, does not allow to approve (sign) proposals, so <b>funds will not be accessible from the export</b>."
-msgstr "UWAGA: Klucz prywatny nie jest dostępny. Ten eksport umożliwia sprawdzenie salda i historii transakcji, jak również wygenerowanie wniosków o płatność. Nie może być on jednak używany do sprawdzania poprawności (podpisywania) wniosków płatności, więc <b>środki z wyeksportowanego pliku nie będą dostępne</b>."
+msgstr "VAROVÁNÍ: Soukromý klíč této peněženky není dostupný. Export umožňuje kontrolu zůstatků peněženky, historii transakcí, vytvoření návrhu platby z exportu. Nicméně neumožňuje potvrdit (podepsat) návrhy, <b>zůstatky budou z exportu neovladatelné</b>."
 
 #: public/views/modals/txp-details.html
 msgid "Warning: this transaction has unconfirmed inputs"
-msgstr "Ostrzeżenie: ta transakcja ma niepotwierdzone dane wejściowe"
+msgstr "Varování: Tato transakce odesílá nepotvrzené zůstatky"
 
 #: public/views/modals/paypro.html
 msgid "WARNING: UNTRUSTED CERTIFICATE"
-msgstr "OSTRZEŻENIE: CERTYFIKAT NIEZAUFANY"
+msgstr "VAROVÁNÍ: NEDŮVĚRYHODNÝ CERTIFIKÁT"
 
 #: public/views/walletHome.html
 msgid "WARNING: Wallet not registered"
-msgstr "Ostrzeżenie: Portfel niezarejestrowany"
+msgstr "VÁROVÁNÍ: Neregistrovaná peněženka"
 
 #: public/views/preferencesDeleteWallet.html
 #: public/views/preferencesDeleteWords.html
 msgid "Warning!"
-msgstr "Ostrzeżenie!"
+msgstr "Varování!"
 
 #: public/views/includes/terms.html
 msgid "We reserve the right to modify this disclaimer from time to time."
-msgstr "Zastrzegamy sobie prawo do wprowadzania zmian w niniejszych warunkach użytkowania."
+msgstr "Rezervujeme si právu upravit podmínky užívání."
 
 #: public/views/disclaimer.html
 msgid "WELCOME TO COPAY"
-msgstr "WITAMY W COPAY"
+msgstr "VÍTEJTE V COPAY"
 
 #: public/views/includes/terms.html
 msgid "While the software has undergone beta testing and continues to be improved by feedback from the open-source user and developer community, we cannot guarantee that there will be no bugs in the software."
-msgstr "Dopóki oprogramowanie jest w fazie testów i nadal, dzięki informacjom od użytkowników i społeczności programistów, dokonywane są poprawki, nie możemy zagwarantować, że będzie ono wolne od błędów."
+msgstr "Zatímco software byl podroben testování beta a nadále je vylepšován zpětnou vazbou od open source uživatelské a vývojářské komunity, nemůžeme zaručit, že nedojde k žádným chybám v softwaru."
 
 #: public/views/backup.html
 msgid "Write your wallet seed"
-msgstr "Zapisz frazę odzyskiwania danych portfela"
+msgstr "Vyplňte zdroj peněženky"
 
 #: src/js/controllers/import.js
 msgid "Wrong number of seed words:"
-msgstr "Nieprawidłowa ilość słów frazy:"
+msgstr "Vyplňte počet zdrojových slov:"
 
 #: src/js/services/profileService.js
 msgid "Wrong password"
-msgstr "Nieprawidłowe hasło"
+msgstr "Chybné heslo"
 
 #: public/views/modals/confirmation.html
 msgid "Yes"
-msgstr "Tak"
+msgstr "Ano"
 
 #: public/views/includes/terms.html
 msgid "You acknowledge that your use of this software is at your own discretion and in compliance with all applicable laws."
-msgstr "Użytkownik przyjmuje do wiadomości, że korzysta z tego oprogramowania na własną odpowiedzialność i zgodnie z obowiązującym prawem."
+msgstr "Potvrzujete, že používáte tento software na vlastní uvážení a v souladu se všemi platnými zákony."
 
 #: public/views/includes/terms.html
 msgid "You are responsible for safekeeping your passwords, private key pairs, PINs and any other codes you use to access the software."
-msgstr "Użytkownik jest odpowiedzialny za przechowywanie swoich haseł, kluczy publicznych i prywatnych, numerów PIN i innych kodów, których używa do uzyskania dostępu do oprogramowania."
+msgstr "Jste odpovědni za bezpečné uchování hesel, soukromých klíčů, PINů a další údajů potřebných pro ovládání softwaru."
 
 #: public/views/includes/terms.html
 msgid "You assume any and all risks associated with the use of the software."
-msgstr "Użytkownik bierze na siebie wszelkie ryzyko związane z korzystaniem z tego oprogramowania."
+msgstr "Berete na vědomí risk spojený s používání tohoto softwaru."
 
 #: public/views/backup.html
 msgid "You backed up your wallet. You can now restore this wallet at any time."
-msgstr "Wykonałeś kopię zapasową portfela. Teraz możesz go odtworzyć w każdej chwili."
+msgstr "Zálohovali jste peněženku. Nyní je možné přistoupit k obnově."
 
 #: public/views/backup.html
 msgid "You can safely install your wallet on another device and use it from multiple devices at the same time."
-msgstr "Możesz bezpiecznie zainstalować swój portfel na innym urządzeniu i używać go z wieloma urządzeniami jednocześnie."
+msgstr "Bezpečně můžete instalovat peněženku na jiné zařízení a použít jej z jiného zařízení ve stejnou dobu."
 
 #: public/views/walletHome.html
 msgid "You do not have a wallet"
-msgstr "Nie masz portfela"
+msgstr "Nevlastníte žádnou peněženku"
 
 #: public/views/backup.html
 msgid "You need the wallet seed to restore this personal wallet. Write it down and keep them somewhere safe."
-msgstr "Potrzebujesz tę frazę odzyskiwania danych, aby móc odtworzyć portfel. Zapisz ją i przechowuj w bezpiecznym miejscu."
+msgstr "Je vyžadován zdroj k obnovení osobní peněženky. Zapiště si jej a bezpečně uschovejte."
 
 #: public/views/import.html
 msgid "Your backup password"
-msgstr "Hasło kopii zapasowej"
+msgstr "Vaše heslo pro zálohu"
 
 #: public/views/export.html
 msgid "Your export password"
-msgstr "Hasło eksportu"
+msgstr "Vaše heslo pro export"
 
 #: public/views/create.html
 #: public/views/join.html
 msgid "Your nickname"
-msgstr "Twój nick"
+msgstr "Vaše přezdívka"
 
 #: public/views/includes/password.html
 msgid "Your password"
-msgstr "Twoje hasło"
+msgstr "Vaše heslo"
 
 #: public/views/importLegacy.html
 msgid "Your profile password"
-msgstr "Twoje hasło profilowe"
+msgstr "Vaše heslo k účtu"
 
 #: src/js/controllers/import.js
 msgid "Your wallet has been imported correctly"
-msgstr "Twój portfel został zaimportowany poprawnie"
+msgstr "Vaše peněženka byla úspěšně importována"
 
 #: public/views/includes/password.html
 msgid "Your wallet key will be encrypted. Password cannot be recovered. Be sure to write it down"
-msgstr "Klucz portfela będzie zaszyfrowany. Hasło nie może być odzyskane. Pamiętaj, aby je zapisać"
+msgstr "Váš klíč peněženky bude šifrován. Heslo nemůže být obnoveno, proto jej pečlivě uschovejte"
 
 #: public/views/backup.html
 msgid "Your wallet seed and access to the server that coordinated the initial wallet creation. You still need {{index.m}} keys to spend."
-msgstr "Twoja fraza odzyskiwania danych i dostęp do serwera koordynowały tworzenie początkowego portfela. Musisz jeszcze {{index.m}} w celu dokonania płatności."
+msgstr "Váš zdroj peněženky a přístup k serveru koordinoval vytvoření počáteční peněženky. Potřebujete ještě {{index.m}} klíčů k platbě."
 
