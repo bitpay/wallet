@@ -17,9 +17,22 @@ angular.module('copayApp.controllers').controller('buyCoinbaseController',
           self.error = err;
           return;
         }
-        self.buyInfo = data;
+        self.buyInfo = data.data;
       });
-      
+    };
+
+    this.confirmBuy = function(token, account, buy) {
+      var self = this;
+      var accountId = account.id;
+      var buyId = buy.id;
+      coinbaseService.buyCommit(token, accountId, buyId, function(err, data) {
+        if (err) {
+          self.error = err;
+          return;
+        }
+        self.success = data.data;
+        $scope.$emit('Local/CoinbaseTx');
+      });
     };
 
   });

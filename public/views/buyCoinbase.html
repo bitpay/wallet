@@ -21,7 +21,7 @@
   </div>
 
 
-  <div class="row m20t">
+  <div class="row m20t" ng-show="!buy.buyInfo">
     <div class="columns">
       <div class="box-notification m20b" ng-show="buy.error">
         <span class="text-warning">
@@ -44,13 +44,59 @@
             type="submit" value="{{'Continue'}}">
           </div>
       </form>
-
-      <div ng-show="buy.buyInfo">
-
-        {{buy.buyInfo}}
-      </div>
-
     </div>
-  </div> 
+  </div>
+
+  <div ng-show="buy.buyInfo && !buy.success">
+    <h4 class="title">Confirm transaction</h4>
+
+    <ul class="no-bullet m10t size-12 white">
+      <li class="line-b line-t p15">
+        <span class="m10 text-normal text-bold">Amount</span>
+        <span class="right text-gray">{{buy.buyInfo.amount.amount}} {{buy.buyInfo.amount.currency}}</span>
+      </li>
+      <li class="line-b oh p15">
+        <span class="m10 text-normal text-bold">Fees</span>
+        <span class="right text-gray">
+          <div ng-repeat="fee in buy.buyInfo.fees">
+            <b>{{fee.type}}</b> {{fee.amount.amount}} {{fee.amount.currency}}
+          </div>
+        </span>
+      </li>
+      <li class="line-b p15">
+        <span class="m10 text-normal text-bold">Subtotal</span>
+        <span class="right text-gray">{{buy.buyInfo.subtotal.amount}} {{buy.buyInfo.subtotal.currency}}</span>
+      </li>
+      <li class="line-b p15">
+        <span class="m10 text-normal text-bold">Total</span>
+        <span class="right text-gray">{{buy.buyInfo.total.amount}} {{buy.buyInfo.total.currency}}</span>
+      </li> 
+      <li class="line-b p15">
+        <span class="m10 text-normal text-bold">Payout at</span>
+        <span class="right text-gray">{{buy.buyInfo.payout_at | amCalendar}}</span>
+      </li> 
+    </ul>
+    <div class="row">
+      <div class="columns">
+        <button class="button black round expand" 
+                ng-style="{'background-color':index.backgroundColor}"
+                ng-click="buy.confirmBuy(index.coinbaseToken, index.coinbaseAccount, buy.buyInfo)">
+          Buy
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="m20t row text-center" ng-show="buy.success">
+    <div class="columns">
+      <h1>Purchase initiated</h1>
+      <p class="text-gray">
+        A transfer has been initiated from your bank account. Your bitcoins should arrive to your account at {{buy.success.payout_at | amCalendar}}.
+      </p>
+
+      <button class="outline dark-gray round expand"
+              ng-click="$root.go('coinbase')">OK</button>
+    </div>
+  </div>
+
 </div>
 <div class="extra-margin-bottom"></div>
