@@ -1,0 +1,33 @@
+<div 
+  class="topbar-container" 
+  ng-include="'views/includes/topbar.html'"
+  ng-init="titleSection='Receive'; goBackToState = 'coinbase'; noColor = true">
+</div>
+
+
+<div class="content coinbase" ng-controller="receiveCoinbaseController as receive">
+
+  <div class="onGoingProcess" ng-show="receive.loading">
+    <div class="onGoingProcess-content" ng-style="{'background-color':index.backgroundColor}">
+    <div class="spinner">
+      <div class="rect1"></div>
+      <div class="rect2"></div>
+      <div class="rect3"></div>
+      <div class="rect4"></div>
+      <div class="rect5"></div>
+    </div>
+    <span>{{receive.loading}}</span>
+    </div>
+  </div>
+
+
+  <div class="row m20t">
+    <div class="columns">
+
+      Receive from coinbase
+      
+    </div>
+  </div>
+
+</div>
+<div class="extra-margin-bottom"></div>

@@ -31,6 +31,8 @@ angular.module('copayApp.services').factory('animationService', function(isCordo
     buyCoinbase: 12,
     sellGlidera: 12,
     sellCoinbase: 12,
+    sendCoinbase: 12,
+    receiveCoinbase: 12,
     preferencesGlidera: 12,
     preferencesCoinbase: 12,
     about: 12,

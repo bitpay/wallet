@@ -7,6 +7,7 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
   root.setCredentials = function(network) {
     credentials.SCOPE = ''
       + 'wallet:accounts:read,'
+      + 'wallet:addresses:create,'
       + 'wallet:user:read,'
       + 'wallet:user:email,'
       + 'wallet:buys:read,'
@@ -162,7 +163,6 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
   };
 
   var _post = function(endpoint, token, data) {
-console.log('[coinbaseService.js:164]',endpoint, token, data); //TODO
     return {
       method: 'POST',
       url: credentials.API + '/v2' + endpoint,
@@ -240,6 +240,29 @@ console.log('[coinbaseService.js:164]',endpoint, token, data); //TODO
     }, function(data) {
       $log.error('Coinbase Buy Request: ERROR ' + data.statusText);
       return cb('Coinbase Buy Request: ERROR ' + data.statusText);
+    });
+  };
+
+  root.buyCommit = function(token, accountId, buyId, cb) {
+    $http(_post('/accounts/' + accountId + '/buys/' + buyId + '/commit', token)).then(function(data) {
+      $log.info('Coinbase Buy Commit: SUCCESS');
+      return cb(null, data.data); 
+    }, function(data) {
+      $log.error('Coinbase Buy Commit: ERROR ' + data.statusText);
+      return cb('Coinbase Buy Commit: ERROR ' + data.statusText);
+    });
+  };
+
+  root.createAddress = function(token, accountId, data, cb) {
+    var data = {
+      name: data.name
+    };
+    $http(_post('/accounts/' + accountId + '/addresses', token, data)).then(function(data) {
+      $log.info('Coinbase Create Address: SUCCESS');
+      return cb(null, data.data); 
+    }, function(data) {
+      $log.error('Coinbase Create Address: ERROR ' + data.statusText);
+      return cb('Coinbase Create Address: ERROR ' + data.statusText);
     });
   };
 

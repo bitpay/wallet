@@ -318,6 +318,26 @@ angular
           },
         }
       })
+      .state('sendCoinbase', {
+        url: '/sendcoinbase',
+        walletShouldBeComplete: true,
+        needProfile: true,
+        views: {
+          'main': {
+            templateUrl: 'views/sendCoinbase.html'
+          },
+        }
+      })
+      .state('receiveCoinbase', {
+        url: '/receivecoinbase',
+        walletShouldBeComplete: true,
+        needProfile: true,
+        views: {
+          'main': {
+            templateUrl: 'views/receiveCoinbase.html'
+          },
+        }
+      })
       .state('preferencesAdvanced', {
         url: '/preferencesAdvanced',
         templateUrl: 'views/preferencesAdvanced.html',

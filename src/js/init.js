@@ -48,7 +48,7 @@ angular.element(document).ready(function() {
         }
         setTimeout(function() {
           var loc = window.location;
-          var ignoreMobilePause = loc.toString().match(/(buy|sell|buycoinbase|sellcoinbase)/) ? true : false;
+          var ignoreMobilePause = loc.toString().match(/(buy|sell|buycoinbase|sellcoinbase|sendcoinbase|receivecoinbase)/) ? true : false;
           window.ignoreMobilePause = ignoreMobilePause;
         }, 100);
       }, false);

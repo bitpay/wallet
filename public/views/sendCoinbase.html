@@ -1,0 +1,82 @@
+<div 
+  class="topbar-container" 
+  ng-include="'views/includes/topbar.html'"
+  ng-init="titleSection='Send'; goBackToState = 'coinbase'; noColor = true">
+</div>
+
+
+<div class="content coinbase" ng-controller="sendCoinbaseController as send">
+
+  <div class="onGoingProcess" ng-show="send.loading">
+    <div class="onGoingProcess-content" ng-style="{'background-color':index.backgroundColor}">
+    <div class="spinner">
+      <div class="rect1"></div>
+      <div class="rect2"></div>
+      <div class="rect3"></div>
+      <div class="rect4"></div>
+      <div class="rect5"></div>
+    </div>
+    <span>{{send.loading}}</span>
+    </div>
+  </div>
+
+  <div class="row m20t">
+    <div class="columns">
+      <div class="box-notification m20b" ng-show="send.error">
+        <span class="text-warning">
+          {{send.error}}
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <div class="row" ng-show="!send.success">
+    <div class="columns">
+        <form name="sendForm" 
+          ng-submit="send.createTx(index.coinbaseToken, index.coinbaseAccount)" novalidate>
+
+          <div ng-if="index.coinbaseToken" 
+            ng-init="send.init(index.coinbaseTestnet)"
+            ng-click="openWalletsModal(send.otherWallets)">
+            <label>Wallet</label>
+            <div class="input">
+              <input type="text" id="address" name="address" ng-disabled="send.selectedWalletId" 
+              ng-attr-placeholder="{{'Choose your source wallet'}}" 
+              ng-model="send.selectedWalletName" required>
+              <a class="postfix size-12 m0 text-gray">
+                <i class="icon-wallet size-18"></i>
+              </a>
+            </div>
+          </div>
+
+          <label><span>Amount in</span> {{showAlternative ? 'USD' : 'BTC'}}</label>
+          <div class="input">
+            <input ng-show="!showAlternative" type="number" id="amount" 
+            name="amount" ng-attr-placeholder="{{'Amount'}}"
+            ng-minlength="0.00000001" ng-maxlength="10000000000" 
+            ng-model="amount" autocomplete="off">
+
+            <a class="postfix">BTC</a>
+            
+            <input class="button black expand round" 
+            ng-style="{'background-color':index.backgroundColor}"
+            type="submit" value="{{'Continue'}}">
+          </div>
+        </form> 
+    </div>
+  </div>
+
+  <div class="m20t row text-center" ng-show="send.success">
+    <div class="columns">
+      <h1>Sent</h1>
+      <p class="text-gray">
+        A transfer has been initiated to your Coinbase account.
+      </p>
+
+      <button class="outline dark-gray round expand"
+              ng-click="$root.go('coinbase')">OK</button>
+    </div>
+  </div>
+
+</div>
+<div class="extra-margin-bottom"></div>
