@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('sidebarController',
-  function($rootScope, $timeout, lodash, profileService, configService, go, isMobile, isCordova) {
+  function($rootScope, $scope, $timeout, lodash, profileService, configService, go, isMobile, isCordova) {
     var self = this;
     self.isWindowsPhoneApp = isMobile.Windows() && isCordova;
     self.walletSelection = false;
@@ -20,6 +20,14 @@ angular.module('copayApp.controllers').controller('sidebarController',
       self.setWallets();
     });
 
+    $scope.sortableOptions = {
+      containment: '#scrollable-container',
+      scrollableContainer: '#scrollable-container',
+      //restrict move across columns. move only within column.
+      accept: function(sourceItemHandleScope, destSortableScope) {
+        return sourceItemHandleScope.itemScope.sortableScope.$id === destSortableScope.$id;
+      }
+    };
 
     self.closeMenu = function() {
       go.swipe();
@@ -60,7 +68,8 @@ angular.module('copayApp.controllers').controller('sidebarController',
         };
       });
 
-      self.wallets = lodash.sortBy(ret, 'name');
+      // self.wallets = lodash.sortBy(ret, 'name');
+      self.wallets = ret;
     };
 
     self.setWallets();

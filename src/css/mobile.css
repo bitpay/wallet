@@ -361,7 +361,7 @@ a.missing-copayers {
 }
 
 .sidebar ul.off-canvas-list {
-  margin-bottom: 30px;
+  margin-bottom: 0px;
 }
 
 .sidebar ul.off-canvas-list li a,  .modal-content ul li a {

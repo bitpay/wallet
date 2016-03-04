@@ -4,19 +4,22 @@
     <img ng-if="sidebar.isWindowsPhoneApp" src="img/logo-negative.png" alt="Copay" width="80">
     <div ng-include="'views/includes/version.html'"></div>
   </header>
-  <ul class="off-canvas-list">
+  <ul class="off-canvas-list" as-sortable="sortableOptions" data-ng-model="sidebar.wallets">
     <li ng-show="sidebar.wallets[0]"
-    ng-repeat="item in sidebar.wallets track by $index"
-    ng-class="{'selected': item.id == index.walletId}"
-    class="nav-item">
-    <a fast-click callback-fn="sidebar.closeMenu(); sidebar.switchWallet(item.id, index.walletId)" class="oh">
-      <div class="avatar-wallet"
-        ng-style="{'background-color':item.color}">
-        <i class="icon-wallet size-21"></i>
+      ng-repeat="item in sidebar.wallets"
+      ng-class="{'selected': item.id == index.walletId}"
+      as-sortable-item
+      class="nav-item">
+      <div as-sortable-item-handle>
+        <a fast-click callback-fn="sidebar.closeMenu(); sidebar.switchWallet(item.id, index.walletId)" class="oh">
+          <div class="avatar-wallet"
+            ng-style="{'background-color':item.color}">
+            <i class="icon-wallet size-21"></i>
+          </div>
+          <div class="name-wallet" ng-class="{'m8t':item.n == 1}">{{item.name || item.id}}</div>
+          <div class="size-12" ng-show="item.n > 1" translate>{{item.m}}-of-{{item.n}}</div>
+        </a>
       </div>
-      <div class="name-wallet" ng-class="{'m8t':item.n == 1}">{{item.name || item.id}}</div>
-      <div class="size-12" ng-show="item.n > 1" translate>{{item.m}}-of-{{item.n}}</div>
-    </a>
     </li>
     <li>
       <a ng-click="sidebar.closeMenu(); $root.go('add')" class="oh">
@@ -50,3 +53,5 @@
     </li>
   </ul>
 </nav>
+
+
