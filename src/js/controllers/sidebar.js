@@ -23,6 +23,7 @@ angular.module('copayApp.controllers').controller('sidebarController',
     $scope.sortableOptions = {
       containment: '#scrollable-container',
       scrollableContainer: '#scrollable-container',
+      longTouch: true,
       orderChanged: function() {
         self.setWalletSequence();
       },
@@ -62,14 +63,14 @@ angular.module('copayApp.controllers').controller('sidebarController',
 
       // Sanitize empty wallets (fixed in BWC 1.8.1, and auto fixed when wallets completes)
       var credentials = lodash.filter(profileService.profile.credentials, 'walletName');
-      var ret = lodash.map(lodash.range(0, credentials.length), function(i) {
+      var ret = lodash.map(credentials, function(c) {
         return {
-          m: credentials[i].m,
-          n: credentials[i].n,
-          name: config.aliasFor[credentials[i].walletId] || credentials[i].walletName,
-          id: credentials[i].walletId,
-          color: config.colorFor[credentials[i].walletId] || '#4A90E2',
-          sequence: config.sequenceFor[credentials[i].walletId],
+          m: c.m,
+          n: c.n,
+          name: config.aliasFor[c.walletId] || c.walletName,
+          id: c.walletId,
+          color: config.colorFor[c.walletId] || '#4A90E2',
+          sequence: config.sequenceFor[c.walletId],
         };
       });
 
