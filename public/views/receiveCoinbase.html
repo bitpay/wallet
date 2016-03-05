@@ -20,12 +20,61 @@
     </div>
   </div>
 
-
   <div class="row m20t">
     <div class="columns">
+      <div class="box-notification m20b" ng-show="receive.error">
+        <span class="text-warning">
+          {{receive.error}}
+        </span>
+      </div>
+    </div>
+  </div>
+  
+  <div class="row" ng-show="!receive.success">
+    <div class="columns">
+        <form name="receiveForm" 
+          ng-submit="receive.receive(index.coinbaseToken, index.coinbaseAccount)" novalidate>
 
-      Receive from coinbase
-      
+          <div ng-if="index.coinbaseToken" 
+            ng-init="receive.init(index.coinbaseTestnet)"
+            ng-click="openWalletsModal(receive.otherWallets)">
+            <label>Wallet</label>
+            <div class="input">
+              <input type="text" id="address" name="address" ng-disabled="receive.selectedWalletId" 
+              ng-attr-placeholder="{{'Choose your source wallet'}}" 
+              ng-model="receive.selectedWalletName" required>
+              <a class="postfix size-12 m0 text-gray">
+                <i class="icon-wallet size-18"></i>
+              </a>
+            </div>
+          </div>
+
+          <label><span>Amount in</span> {{showAlternative ? 'USD' : 'BTC'}}</label>
+          <div class="input">
+            <input ng-show="!showAlternative" type="number" id="amount" 
+            name="amount" ng-attr-placeholder="{{'Amount'}}"
+            ng-minlength="0.00000001" ng-maxlength="10000000000" 
+            ng-model="amount" autocomplete="off">
+
+            <a class="postfix">BTC</a>
+            
+            <input class="button black expand round" 
+            ng-style="{'background-color':index.backgroundColor}"
+            type="submit" value="{{'Continue'}}">
+          </div>
+        </form> 
+    </div>
+  </div>
+
+  <div class="m20t row text-center" ng-show="receive.success">
+    <div class="columns">
+      <h1>Received</h1>
+      <p class="text-gray">
+        A transfer has been initiated to your Copay selected wallet.
+      </p>
+
+      <button class="outline dark-gray round expand"
+              ng-click="$root.go('coinbase')">OK</button>
     </div>
   </div>
 

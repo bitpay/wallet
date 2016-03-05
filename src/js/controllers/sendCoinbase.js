@@ -1,11 +1,10 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('sendCoinbaseController', 
-  function($scope, $modal, $log, $timeout, lodash, profileService, configService, coinbaseService, animationService, txService) {
+  function($scope, $modal, $log, $timeout, lodash, profileService, configService, coinbaseService, animationService, txService, bwsError) {
     
     var fc;
     var config = configService.getSync();
-    this.currentSpendUnconfirmed = config.wallet.spendUnconfirmed;
     window.ignoreMobilePause = true;
 
 

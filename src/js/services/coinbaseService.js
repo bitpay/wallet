@@ -7,6 +7,7 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
   root.setCredentials = function(network) {
     credentials.SCOPE = ''
       + 'wallet:accounts:read,'
+      + 'wallet:addresses:read,'
       + 'wallet:addresses:create,'
       + 'wallet:user:read,'
       + 'wallet:user:email,'
@@ -14,7 +15,8 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
       + 'wallet:buys:create,'
       + 'wallet:sells:read,'
       + 'wallet:sells:create,'
-      + 'wallet:transactions:read';
+      + 'wallet:transactions:read,'
+      + 'wallet:transactions:send';
 
     if (isCordova) {
       credentials.REDIRECT_URI = 'bitcoin://coinbase';
@@ -258,6 +260,23 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
       name: data.name
     };
     $http(_post('/accounts/' + accountId + '/addresses', token, data)).then(function(data) {
+      $log.info('Coinbase Create Address: SUCCESS');
+      return cb(null, data.data); 
+    }, function(data) {
+      $log.error('Coinbase Create Address: ERROR ' + data.statusText);
+      return cb('Coinbase Create Address: ERROR ' + data.statusText);
+    });
+  };
+
+  root.sendTo = function(token, accountId, data, cb) {
+    var data = {
+      type: 'send',
+      to: data.to,
+      amount: data.amount,
+      currency: data.currency,
+      description: data.description
+    };
+    $http(_post('/accounts/' + accountId + '/transactions', token, data)).then(function(data) {
       $log.info('Coinbase Create Address: SUCCESS');
       return cb(null, data.data); 
     }, function(data) {
