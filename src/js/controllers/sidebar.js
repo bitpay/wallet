@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('sidebarController',
-  function($rootScope, $scope, $timeout, lodash, profileService, configService, go, isMobile, isCordova) {
+  function($rootScope, $scope, $log, $timeout, lodash, profileService, configService, go, isMobile, isCordova) {
     var self = this;
     self.isWindowsPhoneApp = isMobile.Windows() && isCordova;
     self.walletSelection = false;
@@ -23,6 +23,9 @@ angular.module('copayApp.controllers').controller('sidebarController',
     $scope.sortableOptions = {
       containment: '#scrollable-container',
       scrollableContainer: '#scrollable-container',
+      orderChanged: function() {
+        self.setWalletSequence();
+      },
       //restrict move across columns. move only within column.
       accept: function(sourceItemHandleScope, destSortableScope) {
         return sourceItemHandleScope.itemScope.sortableScope.$id === destSortableScope.$id;
@@ -55,21 +58,40 @@ angular.module('copayApp.controllers').controller('sidebarController',
       var config = configService.getSync();
       config.colorFor = config.colorFor || {};
       config.aliasFor = config.aliasFor || {};
+      config.sequenceFor = config.sequenceFor || {};
 
       // Sanitize empty wallets (fixed in BWC 1.8.1, and auto fixed when wallets completes)
       var credentials = lodash.filter(profileService.profile.credentials, 'walletName');
-      var ret = lodash.map(credentials, function(c) {
+      var ret = lodash.map(lodash.range(0, credentials.length), function(i) {
         return {
-          m: c.m,
-          n: c.n,
-          name: config.aliasFor[c.walletId] || c.walletName,
-          id: c.walletId,
-          color: config.colorFor[c.walletId] || '#4A90E2',
+          m: credentials[i].m,
+          n: credentials[i].n,
+          name: config.aliasFor[credentials[i].walletId] || credentials[i].walletName,
+          id: credentials[i].walletId,
+          color: config.colorFor[credentials[i].walletId] || '#4A90E2',
+          sequence: config.sequenceFor[credentials[i].walletId],
         };
       });
 
-      // self.wallets = lodash.sortBy(ret, 'name');
-      self.wallets = ret;
+      if (!lodash.isEmpty(config.sequenceFor))
+        self.wallets = lodash.sortBy(ret, 'sequence');
+      else
+        self.wallets = lodash.sortBy(ret, 'name');
+    };
+
+    self.setWalletSequence = function() {
+      var opts = {
+        sequenceFor: {}
+      };
+
+      lodash.each(lodash.range(0, self.wallets.length), function(i) {
+        opts.sequenceFor[self.wallets[i].id] = i;
+      });
+
+      configService.set(opts, function(err) {
+        if (err) $log.debug(err);
+        $log.debug('Wallet sequence saved');
+      });
     };
 
     self.setWallets();
