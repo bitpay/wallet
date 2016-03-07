@@ -125,7 +125,6 @@ angular.module('copayApp.controllers').controller('sendCoinbaseController',
           };
 
           txService.createTx(opts, function(err, txp) {
-console.log('[sendCoinbase.js:127]',err); //TODO
             if (err) {
               $log.debug(err);
               self.loading = null;
