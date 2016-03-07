@@ -38,7 +38,8 @@
         <div ng-if="index.coinbaseToken" 
           ng-init="send.init(index.coinbaseTestnet)"
           ng-click="openWalletsModal(send.otherWallets)">
-          <label>Send from</label>
+          <label>Copay Wallet</label>
+          {{send.selectedWalletName}} -- 
           <div class="input">
             <input type="text" id="address" name="address" ng-disabled="send.selectedWalletId" 
             ng-attr-placeholder="{{'Choose your source wallet'}}" 
@@ -69,13 +70,14 @@
           <i class="db fi-arrow-down size-24 m10v"></i>
         </div>
 
+        <label>Coinbase Account</label>
         <div class="disabled-input">
           {{index.coinbaseAccount.name}}
         </div>
           
         <div class="input m20t">
           <input class="button black expand round" 
-          ng-disabled="send.loading || !(amount || fiat)"
+          ng-disabled="send.loading || !amount"
           ng-style="{'background-color': '#2b71b1'}"
           type="submit" value="{{'Continue'}}">
         </div>

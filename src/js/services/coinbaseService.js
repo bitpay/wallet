@@ -89,6 +89,17 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
   root.getAccounts = function(token, cb) {
     if (!token) return cb('Invalid Token');
     $http(_get('/accounts', token)).then(function(data) {
+      $log.info('Coinbase Get Accounts: SUCCESS');
+      return cb(null, data.data);
+    }, function(data) {
+      $log.error('Coinbase Get Accounts: ERROR ' + data.statusText);
+      return cb(data.data);
+    });
+  };
+
+  root.getAccount = function(token, accountId, cb) {
+    if (!token) return cb('Invalid Token');
+    $http(_get('/accounts/' + accountId, token)).then(function(data) {
       $log.info('Coinbase Get Account: SUCCESS');
       return cb(null, data.data);
     }, function(data) {

@@ -3,7 +3,6 @@
 angular.module('copayApp.controllers').controller('receiveCoinbaseController', 
   function($scope, $modal, $log, $timeout, lodash, profileService, configService, coinbaseService, animationService, txService, bwsError, addressService) {
     
-    var fc;
     var config = configService.getSync();
     this.currentSpendUnconfirmed = config.wallet.spendUnconfirmed;
     window.ignoreMobilePause = true;
@@ -27,7 +26,6 @@ angular.module('copayApp.controllers').controller('receiveCoinbaseController',
             $timeout(function() {
               self.selectedWalletId = w.id;
               self.selectedWalletName = w.name;
-              fc = profileService.getClient(w.id);
               $scope.$apply();
             }, 100);
           }
@@ -38,6 +36,7 @@ angular.module('copayApp.controllers').controller('receiveCoinbaseController',
     };
 
     $scope.openWalletsModal = function(wallets) {
+      var self = this;
       this.error = null;
       this.selectedWalletId = null;
       this.selectedWalletName = null;
@@ -74,7 +73,6 @@ angular.module('copayApp.controllers').controller('receiveCoinbaseController',
       });
 
       modalInstance.result.then(function(obj) {
-        var self = this;
         $timeout(function() {
           self.selectedWalletId = obj.walletId;
           self.selectedWalletName = obj.walletName;
@@ -100,7 +98,7 @@ angular.module('copayApp.controllers').controller('receiveCoinbaseController',
             to: walletAddr,
             amount: $scope.amount,
             currency: 'BTC',
-            description: 'Send to Copay'
+            description: 'To Copay Wallet: ' + self.selectedWalletName
           };
           coinbaseService.sendTo(token, accountId, data, function(err, data) {
             self.loading = null;
@@ -109,7 +107,9 @@ angular.module('copayApp.controllers').controller('receiveCoinbaseController',
             }
             else {
               self.success = data.data;
-              $scope.$emit('Local/CoinbaseTx');
+              $timeout(function() {
+                $scope.$emit('Local/CoinbaseTx');
+              }, 2000);
             }
           });
         });

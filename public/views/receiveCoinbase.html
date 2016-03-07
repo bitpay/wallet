@@ -20,9 +20,13 @@
     </div>
   </div>
 
-  <div class="row m20t">
+  <div class="white p10 size-12" ng-show="index.coinbaseAccount && !receive.success">
+    Available balance: {{index.coinbaseAccount.balance.amount}} {{index.coinbaseAccount.balance.currency}}
+  </div>
+
+  <div class="row m20t" ng-show="receive.error">
     <div class="columns">
-      <div class="box-notification m20b" ng-show="receive.error">
+      <div class="box-notification">
         <ul class="no-bullet m0 size-12 text-warning">
           <li ng-repeat="err in receive.error.errors" ng-bind-html="err.message"></li>
         </ul>       
@@ -30,39 +34,50 @@
     </div>
   </div>
   
-  <div class="row" ng-show="!receive.success">
+  <div class="row m20t" ng-show="index.coinbaseAccount && !receive.success">
     <div class="columns">
-        <form name="receiveForm" 
-          ng-submit="receive.receive(index.coinbaseToken, index.coinbaseAccount)" novalidate>
+      <form name="receiveForm" 
+        ng-submit="receive.receive(index.coinbaseToken, index.coinbaseAccount)" novalidate>
 
-          <div ng-if="index.coinbaseToken" 
-            ng-init="receive.init(index.coinbaseTestnet)"
-            ng-click="openWalletsModal(receive.otherWallets)">
-            <label>Wallet</label>
-            <div class="input">
-              <input type="text" id="address" name="address" ng-disabled="receive.selectedWalletId" 
-              ng-attr-placeholder="{{'Choose your source wallet'}}" 
-              ng-model="receive.selectedWalletName" required>
-              <a class="postfix size-12 m0 text-gray">
-                <i class="icon-wallet size-18"></i>
-              </a>
-            </div>
-          </div>
+        <label>Coinbase Account</label>
+        <div class="disabled-input">
+          {{index.coinbaseAccount.name}}
+        </div>
 
-          <label><span>Amount in</span> {{showAlternative ? 'USD' : 'BTC'}}</label>
+        <label>Amount</label>
+        <div class="input">
+          <input type="number" id="amount" 
+          name="amount" ng-attr-placeholder="{{'Amount'}}"
+          ng-minlength="0.00000001" ng-maxlength="10000000000" 
+          ng-model="amount" autocomplete="off" ng-disabled="receive.loading">
+
+          <a class="postfix">BTC</a>
+        </div>
+
+        <div class="text-center">
+          <i class="db fi-arrow-down size-24 m10v"></i>
+        </div>
+
+        <div ng-if="index.coinbaseToken" 
+          ng-init="receive.init(index.coinbaseTestnet)"
+          ng-click="openWalletsModal(receive.otherWallets)">
+          <label>Copay Wallet</label>
           <div class="input">
-            <input ng-show="!showAlternative" type="number" id="amount" 
-            name="amount" ng-attr-placeholder="{{'Amount'}}"
-            ng-minlength="0.00000001" ng-maxlength="10000000000" 
-            ng-model="amount" autocomplete="off">
-
-            <a class="postfix">BTC</a>
-            
-            <input class="button black expand round" 
-            ng-style="{'background-color': '#2b71b1'}"
-            type="submit" value="{{'Continue'}}">
+            <input type="text" id="address" name="address" ng-disabled="receive.selectedWalletId" 
+            ng-attr-placeholder="{{'Choose your source wallet'}}" 
+            ng-model="receive.selectedWalletName" required>
+            <a class="postfix size-12 m0 text-gray">
+              <i class="icon-wallet size-18"></i>
+            </a>
           </div>
-        </form> 
+        </div> 
+          
+        <div class="input">
+          <input class="button black expand round" 
+          ng-style="{'background-color': '#2b71b1'}"
+          type="submit" value="{{'Continue'}}" ng-disabled="receive.loading || !amount">
+        </div>
+      </form> 
     </div>
   </div>
 

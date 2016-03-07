@@ -664,8 +664,9 @@ angular.module('copayApp.services')
       } catch (e) {};
     };
 
-    root.unlockFC = function(cb) {
-      var fc = root.focusedClient;
+    root.unlockFC = function(opts, cb) {
+      opts = opts || {};
+      var fc = opts.selectedClient || root.focusedClient;
 
       if (!fc.isPrivKeyEncrypted())
         return cb();

@@ -4,9 +4,10 @@ angular.module('copayApp.services').factory('txService', function($rootScope, pr
   var root = {};
 
   var reportSigningStatus = function(opts) {
+    opts = opts || {};
     if (!opts.reporterFn) return;
 
-    var fc = profileService.focusedClient;
+    var fc = opts.selectedClient || profileService.focusedClient;
 
     if (fc.isPrivKeyExternal()) {
       if (fc.getPrivKeyExternalSourceName() == 'ledger') {
@@ -58,9 +59,10 @@ angular.module('copayApp.services').factory('txService', function($rootScope, pr
     }
   };
 
-  root.checkTouchId = function(cb) {
+  root.checkTouchId = function(opts, cb) {
+    opts = opts || {};
     var config = configService.getSync();
-    var fc = profileService.focusedClient;
+    var fc = opts.selectedClient || profileService.focusedClient;
     config.touchIdFor = config.touchIdFor || {};
     if (window.touchidAvailable && config.touchIdFor[fc.credentials.walletId]) {
       requestTouchId(cb);
@@ -69,17 +71,18 @@ angular.module('copayApp.services').factory('txService', function($rootScope, pr
     }
   };
 
-  root.prepare = function(cb) {
-    var fc = profileService.focusedClient;
+  root.prepare = function(opts, cb) {
+    opts = opts || {};
+    var fc = opts.selectedClient || profileService.focusedClient;
     if (!fc.canSign() && !fc.isPrivKeyExternal())
       return cb('Cannot sign'); // should never happen, no need to translate
 
-    root.checkTouchId(function(err) {
+    root.checkTouchId(opts, function(err) {
       if (err) {
         return cb(err);
       };
 
-      profileService.unlockFC(function(err) {
+      profileService.unlockFC(opts, function(err) {
         if (err) {
           return cb(bwsError.msg(err));
         };
@@ -91,7 +94,8 @@ angular.module('copayApp.services').factory('txService', function($rootScope, pr
   }; 
 
   root.createTx = function(opts, cb) {
-    var fc = profileService.focusedClient;
+    opts = opts || {};
+    var fc = opts.selectedClient || profileService.focusedClient;
     var currentSpendUnconfirmed = configService.getSync().wallet.spendUnconfirmed;
     
     var getFee = function(cb) {
@@ -114,16 +118,18 @@ angular.module('copayApp.services').factory('txService', function($rootScope, pr
     });
   };
 
-  root.publishTx = function(txp, cb) {
-    var fc = profileService.focusedClient;
+  root.publishTx = function(txp, opts, cb) {
+    opts = opts || {};
+    var fc = opts.selectedClient || profileService.focusedClient;
     fc.publishTxProposal({txp: txp}, function(err, txp) {
       if (err) return cb(err);
       else return cb(null, txp);
     });
   };
 
-  var _signWithLedger = function(txp, cb) {
-    var fc = profileService.focusedClient;
+  var _signWithLedger = function(txp, opts, cb) {
+    opts = opts || {};
+    var fc = opts.selectedClient || profileService.focusedClient;
     $log.info('Requesting Ledger Chrome app to sign the transaction');
 
     ledger.signTx(txp, fc.credentials.account, function(result) {
@@ -138,8 +144,9 @@ angular.module('copayApp.services').factory('txService', function($rootScope, pr
     });
   };
 
-  var _signWithTrezor = function(txp, cb) {
-    var fc = profileService.focusedClient;
+  var _signWithTrezor = function(txp, opts, cb) {
+    opts = opts || {};
+    var fc = opts.selectedClient || profileService.focusedClient;
     $log.info('Requesting Trezor  to sign the transaction');
 
     var xPubKeys = lodash.pluck(fc.credentials.publicKeyRing, 'xPubKey');
@@ -152,15 +159,16 @@ angular.module('copayApp.services').factory('txService', function($rootScope, pr
     });
   };
 
-  root.sign = function(txp, cb) {
-    var fc = profileService.focusedClient;
+  root.sign = function(txp, opts, cb) {
+    opts = opts || {};
+    var fc = opts.selectedClient || profileService.focusedClient;
 
     if (fc.isPrivKeyExternal()) {
       switch (fc.getPrivKeyExternalSourceName()) {
         case 'ledger':
-          return _signWithLedger(txp, cb);
+          return _signWithLedger(txp, opts, cb);
         case 'trezor':
-          return _signWithTrezor(txp, cb);
+          return _signWithTrezor(txp, opts, cb);
         default:
           var msg = 'Unsupported External Key:' + fc.getPrivKeyExternalSourceName();
           $log.error(msg);
@@ -175,10 +183,11 @@ angular.module('copayApp.services').factory('txService', function($rootScope, pr
   };
 
   root.signAndBroadcast = function(txp, opts, cb) {
+    opts = opts || {};
     reportSigningStatus(opts);
 
-    var fc = profileService.focusedClient;
-    root.sign(txp, function(err, txp) {
+    var fc = opts.selectedClient || profileService.focusedClient;
+    root.sign(txp, opts, function(err, txp) {
       if (err) {
         stopReport(opts);
         return cb(bwsError.msg(err), gettextCatalog.getString('Could not accept payment'));
@@ -208,7 +217,8 @@ angular.module('copayApp.services').factory('txService', function($rootScope, pr
   };
 
   root.prepareAndSignAndBroadcast = function(txp, opts, cb) {
-    root.prepare(function(err) {
+    opts = opts || {};
+    root.prepare(opts, function(err) {
       if (err) {
         stopReport(opts);
         return cb(err);

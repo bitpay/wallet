@@ -3,6 +3,7 @@
 angular.module('copayApp.controllers').controller('sendCoinbaseController', 
   function($scope, $modal, $log, $timeout, lodash, profileService, configService, coinbaseService, animationService, txService, bwsError) {
     
+    var self = this;
     var fc;
     var config = configService.getSync();
     window.ignoreMobilePause = true;
@@ -16,7 +17,6 @@ angular.module('copayApp.controllers').controller('sendCoinbaseController',
     };
 
     this.init = function(testnet) {
-      var self = this;
       this.otherWallets = otherWallets(testnet);
       // Choose focused wallet
       try {
@@ -37,9 +37,9 @@ angular.module('copayApp.controllers').controller('sendCoinbaseController',
     };
 
     $scope.openWalletsModal = function(wallets) {
-      this.error = null;
-      this.selectedWalletId = null;
-      this.selectedWalletName = null;
+      self.error = null;
+      self.selectedWalletId = null;
+      self.selectedWalletName = null;
       var ModalInstanceCtrl = function($scope, $modalInstance) {
         $scope.type = 'SEND';
         $scope.wallets = wallets;
@@ -50,7 +50,7 @@ angular.module('copayApp.controllers').controller('sendCoinbaseController',
 
         $scope.selectWallet = function(walletId, walletName) {
           if (!profileService.getClient(walletId).isComplete()) {
-            this.error = bwsError.msg({
+            self.error = bwsError.msg({
               'code': 'WALLET_NOT_COMPLETE'
             }, 'Could not choose the wallet');
             $modalInstance.dismiss('cancel');
@@ -75,7 +75,6 @@ angular.module('copayApp.controllers').controller('sendCoinbaseController',
       });
 
       modalInstance.result.then(function(obj) {
-        var self = this;
         $timeout(function() {
           self.selectedWalletId = obj.walletId;
           self.selectedWalletName = obj.walletName;
@@ -86,15 +85,14 @@ angular.module('copayApp.controllers').controller('sendCoinbaseController',
     };
 
     this.createTx = function(token, account) {
-      var self = this;
-      self.error = null;
+      this.error = null;
 
       var accountId = account.id;
       var dataSrc = { name : 'Copay: ' + self.selectedWalletName };
       var outputs = [];
 
 
-      self.loading = 'Creating transaction...';
+      this.loading = 'Creating transaction...';
       $timeout(function() {
 
         coinbaseService.createAddress(token, accountId, dataSrc, function(err, data) {
@@ -117,6 +115,7 @@ angular.module('copayApp.controllers').controller('sendCoinbaseController',
           });
 
           var opts = {
+            selectedClient: fc,
             toAddress: address,
             amount: amount,
             outputs: outputs,
@@ -146,9 +145,8 @@ angular.module('copayApp.controllers').controller('sendCoinbaseController',
     };
 
     this.confirmTx = function(txp) {
-      var self = this;
-      self.error = null;
-      txService.prepare(function(err) {
+      this.error = null;
+      txService.prepare({selectedClient: fc}, function(err) {
         if (err) {
           $log.debug(err);
           self.loading = null;
@@ -159,7 +157,7 @@ angular.module('copayApp.controllers').controller('sendCoinbaseController',
           return;
         }
         self.loading = 'Sending transaction...';
-        txService.publishTx(txp, function(err, txpPublished) {
+        txService.publishTx(txp, {selectedClient: fc}, function(err, txpPublished) {
           if (err) {
             $log.debug(err);
             self.loading = null;
@@ -169,7 +167,7 @@ angular.module('copayApp.controllers').controller('sendCoinbaseController',
             }, 1);
             return;
           } else {
-            txService.signAndBroadcast(txpPublished, {}, function(err, txp) {
+            txService.signAndBroadcast(txpPublished, {selectedClient: fc}, function(err, txp) {
               if (err) {
                 self.loading = null;
                 self.error = {errors: [{ message: 'The payment was created but could not be completed. Please try again from home screen: ' + err.message }]};

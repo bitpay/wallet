@@ -943,12 +943,12 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
   this.confirmTx = function(txp) {
     var self = this;
-    txService.prepare(function(err) {
+    txService.prepare({}, function(err) {
       if (err) {
         return self.setSendError(err);
       }
       self.setOngoingProcess(gettextCatalog.getString('Sending transaction'));
-      txService.publishTx(txp, function(err, txpPublished) {
+      txService.publishTx(txp, {}, function(err, txpPublished) {
         if (err) {
           self.setOngoingProcess();
           self.setSendError(err);

@@ -1320,6 +1320,17 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
     opts = opts || {};
 
+    if (opts.updateAccount) {
+      coinbaseService.getAccount(accessToken, accountId, function(err, a) {
+        if (err) {
+          self.coinbaseError = err;
+          return;
+        }
+        self.coinbaseAccount = a.data;
+      });
+    
+    }
+
     coinbaseService.getAuthorizationInformation(accessToken, function(err, a) {
       if (err) {
         self.coinbaseError = err;
@@ -1431,7 +1442,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   });
 
   $rootScope.$on('Local/CoinbaseTx', function(event) {
-    self.updateCoinbase();
+    self.updateCoinbase({
+      updateAccount: true
+    });
   });
 
   $rootScope.$on('Local/GlideraError', function(event) {
