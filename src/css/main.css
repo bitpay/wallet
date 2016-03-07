@@ -111,6 +111,17 @@ h4.title a {
   padding-top: 7px;
 }
 
+.disabled-input {
+  display: block;
+  margin-bottom: 1.5rem;
+  background-color: #E4E8EC;
+  padding-left: 0.5rem;
+  color: #2C3E50;
+  font-size: 13px;
+  height: 35px;
+  padding-top: 7px;
+}
+
 ul.button-group {
   margin-top: 8px;
 }

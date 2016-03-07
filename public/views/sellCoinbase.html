@@ -8,7 +8,7 @@
 <div class="content coinbase" ng-controller="sellCoinbaseController as sell">
 
   <div class="onGoingProcess" ng-show="sell.loading">
-    <div class="onGoingProcess-content" ng-style="{'background-color':index.backgroundColor}">
+    <div class="onGoingProcess-content" ng-style="{'background-color': '#2b71b1'}">
     <div class="spinner">
       <div class="rect1"></div>
       <div class="rect2"></div>
@@ -41,7 +41,7 @@
             <a class="postfix">BTC</a>
 
             <input class="button black expand round" 
-            ng-style="{'background-color':index.backgroundColor}"
+            ng-style="{'background-color': '#2b71b1'}"
             type="submit" value="{{'Continue'}}">
           </div>
       </form>
@@ -80,7 +80,7 @@
     <div class="row">
       <div class="columns">
         <button class="button black round expand" 
-                ng-style="{'background-color':index.backgroundColor}"
+                ng-style="{'background-color': '#2b71b1'}"
                 ng-click="sell.confirmSell(index.coinbaseToken, index.coinbaseAccount, sell.sellInfo)">
           Sell
         </button>

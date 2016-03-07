@@ -8,7 +8,7 @@
 <div class="content coinbase" ng-controller="sendCoinbaseController as send">
 
   <div class="onGoingProcess" ng-show="send.loading">
-    <div class="onGoingProcess-content" ng-style="{'background-color':index.backgroundColor}">
+    <div class="onGoingProcess-content" ng-style="{'background-color': '#2b71b1'}">
     <div class="spinner">
       <div class="rect1"></div>
       <div class="rect2"></div>
@@ -20,9 +20,9 @@
     </div>
   </div>
 
-  <div class="row m20t">
+  <div class="row m20t" ng-show="send.error" ng-click="send.error = null">
     <div class="columns">
-      <div class="box-notification m20b" ng-show="send.error">
+      <div class="box-notification">
         <ul class="no-bullet m0 size-12 text-warning">
           <li ng-repeat="err in send.error.errors" ng-bind-html="err.message"></li>
         </ul>
@@ -30,39 +30,56 @@
     </div>
   </div>
 
-  <div class="row" ng-show="!send.success">
+  <div class="row m20t" ng-show="!send.success && index.coinbaseAccount">
     <div class="columns">
-        <form name="sendForm" 
-          ng-submit="send.createTx(index.coinbaseToken, index.coinbaseAccount)" novalidate>
+      <form name="sendForm" 
+        ng-submit="send.createTx(index.coinbaseToken, index.coinbaseAccount)" novalidate>
 
-          <div ng-if="index.coinbaseToken" 
-            ng-init="send.init(index.coinbaseTestnet)"
-            ng-click="openWalletsModal(send.otherWallets)">
-            <label>Wallet</label>
-            <div class="input">
-              <input type="text" id="address" name="address" ng-disabled="send.selectedWalletId" 
-              ng-attr-placeholder="{{'Choose your source wallet'}}" 
-              ng-model="send.selectedWalletName" required>
-              <a class="postfix size-12 m0 text-gray">
-                <i class="icon-wallet size-18"></i>
-              </a>
-            </div>
-          </div>
-
-          <label><span>Amount in</span> {{showAlternative ? 'USD' : 'BTC'}}</label>
+        <div ng-if="index.coinbaseToken" 
+          ng-init="send.init(index.coinbaseTestnet)"
+          ng-click="openWalletsModal(send.otherWallets)">
+          <label>Send from</label>
           <div class="input">
-            <input ng-show="!showAlternative" type="number" id="amount" 
-            name="amount" ng-attr-placeholder="{{'Amount'}}"
-            ng-minlength="0.00000001" ng-maxlength="10000000000" 
-            ng-model="amount" autocomplete="off">
-
-            <a class="postfix">BTC</a>
-            
-            <input class="button black expand round" 
-            ng-style="{'background-color':index.backgroundColor}"
-            type="submit" value="{{'Continue'}}">
+            <input type="text" id="address" name="address" ng-disabled="send.selectedWalletId" 
+            ng-attr-placeholder="{{'Choose your source wallet'}}" 
+            ng-model="send.selectedWalletName" required>
+            <a class="postfix size-12 m0 text-gray">
+              <i class="icon-wallet size-18"></i>
+            </a>
           </div>
-        </form> 
+        </div>
+
+        <label>Amount</label>
+        <div class="input">
+          <input 
+             type="number" 
+             id="amount" 
+             name="amount" 
+             ng-attr-placeholder="{{'Amount'}}"
+             ng-minlength="0.00000001" 
+             ng-maxlength="10000000000" 
+             ng-model="amount" 
+             autocomplete="off"
+             ng-disabled="send.loading">
+
+          <a class="postfix button" style="background-color: #2b71b1">BTC</a>
+        </div>
+
+        <div class="text-center">
+          <i class="db fi-arrow-down size-24 m10v"></i>
+        </div>
+
+        <div class="disabled-input">
+          {{index.coinbaseAccount.name}}
+        </div>
+          
+        <div class="input m20t">
+          <input class="button black expand round" 
+          ng-disabled="send.loading || !(amount || fiat)"
+          ng-style="{'background-color': '#2b71b1'}"
+          type="submit" value="{{'Continue'}}">
+        </div>
+      </form> 
     </div>
   </div>
 

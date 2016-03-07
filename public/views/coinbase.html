@@ -9,7 +9,7 @@
 <div class="content coinbase p20b" ng-controller="coinbaseController as coinbase">
 
   <div class="onGoingProcess" ng-show="coinbase.loading || index.coinbaseLoading">
-    <div class="onGoingProcess-content" ng-style="{'background-color':index.backgroundColor}">
+    <div class="onGoingProcess-content" ng-style="{'background-color': '#2b71b1'}">
     <div class="spinner">
       <div class="rect1"></div>
       <div class="rect2"></div>
@@ -80,7 +80,7 @@
           ng-attr-placeholder="{{'Paste the authorization code here'}}" required>
           <input
             class="button expand round"
-            ng-style="{'background-color':index.backgroundColor}"
+            ng-style="{'background-color': '#2b71b1'}"
             type="submit" value="Get started" ng-disabled="oauthCodeForm.$invalid || coinbase.loading">
         </form>
         <button class="button light-gray expand outline round"
@@ -91,9 +91,9 @@
     </div>
   </div>
 
-  <div ng-if="index.coinbaseToken && index.coinbaseAccount">
+  <div ng-if="(index.coinbaseToken && index.coinbaseAccount) || !index.coinbaseError">
 
-    <div class="p20v text-center">
+    <div class="p20v text-center" ng-show="index.coinbaseAccount">
       <img src="img/coinbase-logo.png" width="100">
     </div>
 
@@ -117,31 +117,31 @@
       <li class="line-b line-t p15 pointer"
           ng-click="$root.go('buyCoinbase')">
         <img src="img/buy-bitcoin.svg" alt="buy bitcoin" width="30">
-        <span class="m10 text-normal text-bold">Buy</span>
+        <span class="m10 text-normal text-bold">Buy Bitcoin</span>
         <span class="right text-gray">
           <i class="icon-arrow-right3 size-24 right"></i>
         </span>
       </li>
       <li class="line-b p15 pointer"
           ng-click="$root.go('sellCoinbase')">
-        <img src="img/sell-bitcoin.svg" alt="buy bitcoin" width="30">
-        <span class="m10 text-normal text-bold">Sell</span>
+        <img src="img/sell-bitcoin.svg" alt="sell bitcoin" width="30">
+        <span class="m10 text-normal text-bold">Sell Bitcoin</span>
         <span class="right text-gray">
           <i class="icon-arrow-right3 size-24 right"></i>
         </span>
       </li>
       <li class="line-b p15 pointer"
           ng-click="$root.go('sendCoinbase')">
-        <img src="img/icon-sent-history.svg" alt="buy bitcoin" width="30">
-        <span class="m10 text-normal text-bold">Send</span>
+        <img src="img/icon-sent-history.svg" alt="send bitcoin" width="30">
+        <span class="m10 text-normal text-bold">Send to {{index.coinbaseAccount.name}}</span>
         <span class="right text-gray">
           <i class="icon-arrow-right3 size-24 right"></i>
         </span>
       </li>
       <li class="line-b p15 pointer"
           ng-click="$root.go('receiveCoinbase')">
-        <img src="img/icon-receive-history.svg" alt="buy bitcoin" width="30">
-        <span class="m10 text-normal text-bold">Receive</span>
+        <img src="img/icon-receive-history.svg" alt="receive bitcoin" width="30">
+        <span class="m10 text-normal text-bold">Receive from {{index.coinbaseAccount.name}}</span>
         <span class="right text-gray">
           <i class="icon-arrow-right3 size-24 right"></i>
         </span>

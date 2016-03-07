@@ -41,7 +41,7 @@ angular.module('copayApp.controllers').controller('sendCoinbaseController',
       this.selectedWalletId = null;
       this.selectedWalletName = null;
       var ModalInstanceCtrl = function($scope, $modalInstance) {
-        $scope.type = 'SELL';
+        $scope.type = 'SEND';
         $scope.wallets = wallets;
         $scope.noColor = true;
         $scope.cancel = function() {
@@ -90,7 +90,7 @@ angular.module('copayApp.controllers').controller('sendCoinbaseController',
       self.error = null;
 
       var accountId = account.id;
-      var dataSrc = { name : 'Receive from Copay' };
+      var dataSrc = { name : 'Copay: ' + self.selectedWalletName };
       var outputs = [];
 
 
@@ -108,7 +108,7 @@ angular.module('copayApp.controllers').controller('sendCoinbaseController',
 
           address = data.data.address;
           amount = parseInt(($scope.amount * 100000000).toFixed(0));
-          comment = 'Send Bitcoin to Coinbase Account';
+          comment = 'To Coinbase Account: ' + account.name;
 
           outputs.push({
             'toAddress': address,
@@ -182,6 +182,7 @@ angular.module('copayApp.controllers').controller('sendCoinbaseController',
                 self.success = txp;
                 $timeout(function() {
                   $scope.$emit('Local/CoinbaseTx');
+                  $scope.$emit('Local/TxProposalAction', txp.status == 'broadcasted');
                 }, 2000);
               }
             });
