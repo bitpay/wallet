@@ -23,9 +23,9 @@
   <div class="row m20t">
     <div class="columns">
       <div class="box-notification m20b" ng-show="send.error">
-        <span class="text-warning">
-          {{send.error}}
-        </span>
+        <ul class="no-bullet m0 size-12 text-warning">
+          <li ng-repeat="err in send.error.errors" ng-bind-html="err.message"></li>
+        </ul>
       </div>
     </div>
   </div>

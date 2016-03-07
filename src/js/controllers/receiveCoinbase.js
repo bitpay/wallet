@@ -92,7 +92,8 @@ angular.module('copayApp.controllers').controller('receiveCoinbaseController',
       $timeout(function() {
         addressService.getAddress(self.selectedWalletId, false, function(err, walletAddr) {
           if (err) {
-            self.error = bwsError.cb(err, 'Could not create address');
+            self.loading = null;
+            self.error = {errors: [{ message: 'Could not create address' }]};
             return;
           }
           var data = {

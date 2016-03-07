@@ -100,7 +100,7 @@ angular.module('copayApp.controllers').controller('sendCoinbaseController',
         coinbaseService.createAddress(token, accountId, dataSrc, function(err, data) {
           if (err) {
             self.loading = null;
-            self.error = 'Could not get the destination bitcoin address';
+            self.error = err;
             return;
           }
 
@@ -125,10 +125,11 @@ angular.module('copayApp.controllers').controller('sendCoinbaseController',
           };
 
           txService.createTx(opts, function(err, txp) {
+console.log('[sendCoinbase.js:127]',err); //TODO
             if (err) {
               $log.debug(err);
               self.loading = null;
-              self.error = 'Could not create transaction';
+              self.error = {errors: [{ message: 'Could not create transaction: ' + err.message }]};
               $scope.$apply();
               return;
             }
@@ -147,6 +148,7 @@ angular.module('copayApp.controllers').controller('sendCoinbaseController',
 
     this.confirmTx = function(txp) {
       var self = this;
+      self.error = null;
       txService.prepare(function(err) {
         if (err) {
           $log.debug(err);
@@ -162,7 +164,7 @@ angular.module('copayApp.controllers').controller('sendCoinbaseController',
           if (err) {
             $log.debug(err);
             self.loading = null;
-            self.error = 'Transaction could not be published';
+            self.error = {errors: [{ message: 'Transaction could not be published: ' + err.message }]};
             $timeout(function() {
               $scope.$digest();
             }, 1);
@@ -171,7 +173,7 @@ angular.module('copayApp.controllers').controller('sendCoinbaseController',
             txService.signAndBroadcast(txpPublished, {}, function(err, txp) {
               if (err) {
                 self.loading = null;
-                self.error = 'The payment was created but could not be completed. Please try again from home screen';
+                self.error = {errors: [{ message: 'The payment was created but could not be completed. Please try again from home screen: ' + err.message }]};
                 $scope.$emit('Local/TxProposalAction');
                 $timeout(function() {
                   $scope.$digest();

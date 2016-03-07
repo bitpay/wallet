@@ -24,9 +24,9 @@
 
   <div class="row" ng-show="index.coinbaseError || (index.coinbaseToken && !index.coinbaseAccount)">
     <div class="m20b box-notification" ng-show="index.coinbaseError">
-      <div class="text-warning">
-        <span>{{index.coinbaseError}}</span>
-      </div>
+      <ul class="no-bullet m0 text-warning size-12">
+        <li ng-repeat="err in index.coinbaseError.errors" ng-bind-html="err.message"></li>
+      </ul>
     </div>
     <div class="m20b box-notification" ng-show="index.coinbaseToken && !index.coinbaseAccount">
       <div class="text-warning">
@@ -45,8 +45,7 @@
     </div>
   </div>
 
-  <div ng-if="!index.coinbaseToken && !index.coinbaseLoading && !index.coinbaseError"
-    class="row">
+  <div ng-if="!index.coinbaseToken && !index.coinbaseLoading && !index.coinbaseError" class="row">
     <div class="box-notification text-center size-12 text-warning" ng-show="index.coinbaseTestnet">
       <i class="fi-info"></i>
       Testnet wallets only work with Coinbase Sandbox Accounts
@@ -70,8 +69,10 @@
         </div>
       </div>
       <div class="text-center" ng-show="showOauthForm">
-        <div class="text-left box-notification size-12 text-warning" ng-show="coinbase.error">
-          {{coinbase.error}}
+        <div class="text-left box-notification" ng-show="coinbase.error">
+          <ul class="no-bullet m0 text-warning size-12">
+            <li ng-repeat="err in coinbase.error.errors" ng-bind-html="err.message"></li>
+          </ul>
         </div>
         <form name="oauthCodeForm" ng-submit="coinbase.submitOauthCode(code)" novalidate>
           <label>OAuth Code</label>
@@ -150,7 +151,7 @@
     <div ng-show="index.coinbaseTransactions">
       <h4 class="title">Activity</h4>
 
-      <div ng-show="index.coinbaseTransactions.length == 0 && !index.coinbaseLoadingHistory"
+      <div ng-show="index.coinbaseTransactions.length == 0"
         class="size-12 p10 text-center text-gray">
         No activity in your account
       </div>

@@ -1321,15 +1321,26 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     opts = opts || {};
 
     coinbaseService.getAuthorizationInformation(accessToken, function(err, a) {
+      if (err) {
+        self.coinbaseError = err;
+        return;
+      }
       self.coinbaseAuthInfo = a.data.scopes;
     });
 
     coinbaseService.getCurrentUser(accessToken, function(err, u) {
+      if (err) {
+        self.coinbaseError = err;
+        return;
+      }
       self.coinbaseUser = u.data;
     });
 
     coinbaseService.getTransactions(accessToken, accountId, function(err, t) {
-      self.coinbaseLoadingHistory = 'Getting Coinbase transactions...';
+      if (err) {
+        self.coinbaseError = err;
+        return;
+      }
       self.coinbaseTransactions = t.data || [];
     });
 
