@@ -1294,7 +1294,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     getToken(function(err, accessToken) {
       if (err || !accessToken) return;
       else {
-        self.coinbaseLoading = 'Connecting to Coinbase...';
+        self.coinbaseLoading = 'Getting primary account...';
         coinbaseService.getAccounts(accessToken, function(err, a) {
           self.coinbaseLoading = null;
           if (err) {
@@ -1302,12 +1302,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
           } else {
             self.coinbaseToken = accessToken;
             lodash.each(a.data, function(account) {
-              if (account.primary) {
+              if (account.primary && account.type == 'wallet') {
                 self.coinbaseAccount = account;
-                self.updateCoinbase({
-                  fullUpdate: true
-                });
-                return;
+                self.updateCoinbase();
               }
             });
           }

@@ -7,35 +7,10 @@
 <div class="content preferences" ng-controller="preferencesCoinbaseController as coinbase">
 
   <ul ng-if="index.coinbaseToken" class="no-bullet m0">
-    <h4 class="title m0">User Information</h4> 
-    <li>
-    <span>ID</span>
-    <span class="right text-gray">
-      {{index.coinbaseUser.id}}
-    </span>
-    </li>
-    <li>
-    <span>Name</span>
-    <span class="right text-gray">
-      {{index.coinbaseUser.name}}
-    </span>
-    </li>
-    <li>
-    <span>Email</span>
-    <span class="right text-gray">
-      {{index.coinbaseUser.email}}
-    </span>
-    </li>
-
-    <h4 class="title m0">Permissions</h4> 
-    <li ng-repeat="scope in index.coinbaseAuthInfo">
-      {{scope}}
-    </li>
-
     <h4 class="title m0">Account</h4>
     <li>
     <span>ID</span>
-    <span class="right text-gray">
+    <span class="right text-gray enable_text_select">
       {{index.coinbaseAccount.id}}
     </span>
     </li>
@@ -46,9 +21,101 @@
     </span>
     </li>
     <li>
+    <span>Type</span>
+    <span class="right text-gray">
+      {{index.coinbaseAccount.type}}
+    </span>
+    </li>
+    <li>
     <span>Balance</span>
     <span class="right text-gray">
       {{index.coinbaseAccount.balance.amount}} {{index.coinbaseAccount.balance.currency}}
+    </span>
+    </li>
+    <li>
+    <span>Native Balance</span>
+    <span class="right text-gray">
+      {{index.coinbaseAccount.native_balance.amount}} {{index.coinbaseAccount.native_balance.currency}}
+    </span>
+    </li>
+    <li>
+    <span>Created at</span>
+    <span class="right text-gray">
+      {{index.coinbaseAccount.created_at | amCalendar}}
+    </span>
+    </li>
+    <li>
+    <span>Updated at</span>
+    <span class="right text-gray">
+      {{index.coinbaseAccount.updated_at | amCalendar}}
+    </span>
+    </li>
+
+    <h4 class="title m0">User Information</h4> 
+    <li>
+    <span>ID</span>
+    <span class="right text-gray enable_text_select">
+      {{index.coinbaseUser.id}}
+    </span>
+    </li>
+    <li>
+    <span>Name</span>
+    <span class="right text-gray">
+      {{index.coinbaseUser.name}}
+    </span>
+    </li>
+    <li ng-show="index.coinbaseUser.username">
+    <span>Username</span>
+    <span class="right text-gray">
+      {{index.coinbaseUser.username}}
+    </span>
+    </li>
+    <li>
+    <span>Email</span>
+    <span class="right text-gray">
+      {{index.coinbaseUser.email}}
+    </span>
+    </li>
+    <li ng-show="index.coinbaseUser.profile_location">
+    <span>Profile location</span>
+    <span class="right text-gray">
+      {{index.coinbaseUser.profile_location}}
+    </span>
+    </li>
+    <li ng-show="index.coinbaseUser.profile_bio">
+    <span>Profile bio</span>
+    <span class="right text-gray">
+      {{index.coinbaseUser.profile_bio}}
+    </span>
+    </li>
+    <li ng-show="index.coinbaseUser.profile_url">
+    <span>Profile URL</span>
+    <span class="right text-gray">
+      {{index.coinbaseUser.profile_url}}
+    </span>
+    </li>
+    <li>
+    <span>Time zone</span>
+    <span class="right text-gray">
+      {{index.coinbaseUser.time_zone}}
+    </span>
+    </li>
+    <li>
+    <span>Native currency</span>
+    <span class="right text-gray">
+      {{index.coinbaseUser.native_currency}}
+    </span>
+    </li>
+    <li>
+    <span>Bitcoin unit</span>
+    <span class="right text-gray">
+      {{index.coinbaseUser.bitcoin_unit}}
+    </span>
+    </li>
+    <li>
+    <span>Country</span>
+    <span class="right text-gray">
+      {{index.coinbaseUser.country.name}}
     </span>
     </li>
   </ul>

@@ -164,6 +164,26 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
     });
   };
 
+  root.sellPrice = function(token, cb) {
+    $http(_get('/prices/sell', token)).then(function(data) {
+      $log.info('Coinbase Sell Price: SUCCESS');
+      return cb(null, data.data); 
+    }, function(data) {
+      $log.error('Coinbase Sell Price: ERROR ' + data.statusText);
+      return cb('Coinbase Sell Price: ERROR ' + data.statusText);
+    });
+  }; 
+
+  root.buyPrice = function(token, cb) {
+    $http(_get('/prices/buy', token)).then(function(data) {
+      $log.info('Coinbase Buy Price: SUCCESS');
+      return cb(null, data.data); 
+    }, function(data) {
+      $log.error('Coinbase Buy Price: ERROR ' + data.statusText);
+      return cb('Coinbase Buy Price: ERROR ' + data.statusText);
+    });
+  };
+
   var _post = function(endpoint, token, data) {
     return {
       method: 'POST',
@@ -175,20 +195,6 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
       },
       data: data
     };
-  };
-
-  root.sellPrice = function(token, price, cb) {
-    var data = {
-      qty: price.qty,
-      fiat: price.fiat
-    };
-    $http(_post('/prices/sell', token, null, data)).then(function(data) {
-      $log.info('Coinbase Sell Price: SUCCESS');
-      return cb(null, data.data); 
-    }, function(data) {
-      $log.error('Coinbase Sell Price: ERROR ' + data.statusText);
-      return cb('Coinbase Sell Price: ERROR ' + data.statusText);
-    });
   }; 
 
   root.sellRequest = function(token, accountId, data, cb) {
@@ -214,21 +220,7 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
       $log.error('Coinbase Sell Commit: ERROR ' + data.statusText);
       return cb('Coinbase Sell Commit: ERROR ' + data.statusText);
     });
-  };
-
-  root.buyPrice = function(token, price, cb) {
-    var data = {
-      qty: price.qty,
-      fiat: price.fiat
-    };
-    $http(_post('/prices/buy', token, null, data)).then(function(data) {
-      $log.info('Coinbase Buy Price: SUCCESS');
-      return cb(null, data.data); 
-    }, function(data) {
-      $log.error('Coinbase Buy Price: ERROR ' + data.statusText);
-      return cb('Coinbase Buy Price: ERROR ' + data.statusText);
-    });
-  };
+  }; 
 
   root.buyRequest = function(token, accountId, data, cb) {
     var data = {

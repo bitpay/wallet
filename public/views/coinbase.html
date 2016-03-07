@@ -22,28 +22,25 @@
     </div>
   </div>
 
-  <div class="row">
-    <div class="m20b box-notification" ng-if="index.coinbaseError">
+  <div class="row" ng-show="index.coinbaseError || (index.coinbaseToken && !index.coinbaseAccount)">
+    <div class="m20b box-notification" ng-show="index.coinbaseError">
       <div class="text-warning">
         <span>{{index.coinbaseError}}</span>
       </div>
     </div>
-    <div class="m10t text-center" ng-show="index.coinbaseError">
+    <div class="m20b box-notification" ng-show="index.coinbaseToken && !index.coinbaseAccount">
+      <div class="text-warning">
+        <span>Your primary account should be a WALLET. Set your wallet account as primary and try again.</span>
+      </div>
+    </div>
+    <div class="m10t text-center">
       <button
         class="dark-gray outline round tiny"
-        ng-show="index.coinbaseError.indexOf('Forbidden') == 40"
-        ng-click="index.coinbaseToken = null; index.coinbaseError = null">
-        Request a new token
+        ng-click="index.initCoinbase(index.coinbaseToken)">
+        Retry
       </button>
-      <div ng-show="index.coinbaseError.indexOf('Forbidden') != 40">
-        <button
-          class="dark-gray outline round tiny"
-          ng-click="index.initCoinbase(index.coinbaseToken)">
-          Retry
-        </button>
-        <div class="m20t size-12">
-          <a class="text-gray" ng-click="$root.go('preferencesCoinbase')">Preferences</a>
-        </div>
+      <div class="m20t size-12">
+        <a class="text-gray" ng-click="$root.go('preferencesCoinbase')">Preferences</a>
       </div>
     </div>
   </div>
@@ -102,10 +99,10 @@
     <div class="sub-header pointer" ng-show="index.coinbaseUser"  ng-click="$root.go('preferencesCoinbase')">
       <div class="left size-12">
         <b>
-        {{index.coinbaseUser.name}}
+        {{index.coinbaseAccount.name}}
         </b>
         <br>
-        {{index.coinbaseUser.email}}
+        {{index.coinbaseAccount.balance.amount}} {{index.coinbaseAccount.balance.currency}}
       </div>
       <div class="right m5t">
         <i class="fi-widget size-16 text-gray"></i>
