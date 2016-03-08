@@ -8,11 +8,16 @@ angular.module('copayApp.controllers').controller('buyCoinbaseController',
     this.buyRequest = function(token, account) {
       var self = this;
       var accountId = account.id;
+      var amount = $scope.amount ? $scope.amount : $scope.fiat;
+      var currency = $scope.amount ? 'BTC' : 'USD';
+      if (!amount) return;
       var dataSrc = {
-        amount: $scope.amount,
-        currency: 'BTC'
+        amount: amount,
+        currency: currency
       };
+      this.loading = 'Sending request...';
       coinbaseService.buyRequest(token, accountId, dataSrc, function(err, data) {
+        self.loading = null;
         if (err) {
           self.error = err;
           return;
@@ -25,7 +30,9 @@ angular.module('copayApp.controllers').controller('buyCoinbaseController',
       var self = this;
       var accountId = account.id;
       var buyId = buy.id;
+      this.loading = 'Buying bitcoin...';
       coinbaseService.buyCommit(token, accountId, buyId, function(err, data) {
+        self.loading = null;
         if (err) {
           self.error = err;
           return;

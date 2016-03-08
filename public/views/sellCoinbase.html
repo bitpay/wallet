@@ -20,27 +20,39 @@
     </div>
   </div>
 
-
-  <div class="row m20t" ng-show="!sell.sellInfo">
+  <div class="row m20t" ng-show="sell.error">
     <div class="columns">
-      <div class="box-notification m20b" ng-show="sell.error">
+      <div class="box-notification" ng-click="sell.error = null">
         <ul class="no-bullet m0 size-12 text-warning">
           <li ng-repeat="err in sell.error.errors" ng-bind-html="err.message"></li>
         </ul>
       </div>
+    </div>
+  </div>
+
+  <div class="row m20t" ng-show="!sell.sellInfo">
+    <div class="columns">
       <form
           name="sellCoinbasePriceForm" 
           ng-submit="sell.sellRequest(index.coinbaseToken, index.coinbaseAccount)" novalidate>
         <label>Amount in BTC</label>
           <div class="input">
-            <input type="number" id="amount" 
+            <input ng-show="!showAlternative" type="number" id="amount" 
             name="amount" ng-attr-placeholder="{{'Amount'}}"
             ng-minlength="0.00000001" ng-maxlength="10000000000" 
-            ng-model="amount" autocomplete="off">
+            ng-model="amount" autocomplete="off" ng-disabled="sell.loading">
             
-            <a class="postfix">BTC</a>
+            <input ng-show="showAlternative" type="number" id="fiat" 
+            name="fiat" ng-attr-placeholder="{{'Amount'}}" 
+            ng-model="fiat" autocomplete="off" ng-disabled="sell.loading">
+
+            <a ng-show="!showAlternative" class="postfix button" 
+              ng-click="showAlternative = true; amount = null">BTC</a>
+            <a ng-show="showAlternative" class="postfix button black" 
+              ng-click="showAlternative = false; fiat = null">USD</a>
 
             <input class="button black expand round" 
+            ng-disabled="sell.loading || (!amount && !fiat)"
             ng-style="{'background-color': '#2b71b1'}"
             type="submit" value="{{'Continue'}}">
           </div>
@@ -81,7 +93,8 @@
       <div class="columns">
         <button class="button black round expand" 
                 ng-style="{'background-color': '#2b71b1'}"
-                ng-click="sell.confirmSell(index.coinbaseToken, index.coinbaseAccount, sell.sellInfo)">
+                ng-click="sell.confirmSell(index.coinbaseToken, index.coinbaseAccount, sell.sellInfo)"
+                ng-disabled="sell.loading">
           Sell
         </button>
       </div>
