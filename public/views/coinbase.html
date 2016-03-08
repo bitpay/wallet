@@ -131,17 +131,17 @@
         </span>
       </li>
       <li class="line-b p15 pointer"
-          ng-click="$root.go('sendCoinbase')">
-        <img src="img/icon-sent-history.svg" alt="send bitcoin" width="30">
-        <span class="m10 text-normal text-bold">Send to {{index.coinbaseAccount.name}}</span>
+          ng-click="$root.go('receiveCoinbase')">
+        <img src="img/icon-receive-history.svg" alt="receive" width="30">
+        <span class="m10 text-normal text-bold">Receive</span>
         <span class="right text-gray">
           <i class="icon-arrow-right3 size-24 right"></i>
         </span>
       </li>
       <li class="line-b p15 pointer"
-          ng-click="$root.go('receiveCoinbase')">
-        <img src="img/icon-receive-history.svg" alt="receive bitcoin" width="30">
-        <span class="m10 text-normal text-bold">Receive from {{index.coinbaseAccount.name}}</span>
+          ng-click="$root.go('sendCoinbase')">
+        <img src="img/icon-sent-history.svg" alt="send" width="30">
+        <span class="m10 text-normal text-bold">Send</span>
         <span class="right text-gray">
           <i class="icon-arrow-right3 size-24 right"></i>
         </span>
@@ -163,8 +163,8 @@
           <img src="img/bought-pending.svg" alt="bought" width="24" ng-show="tx.type == 'buy' && tx.status == 'pending'">
           <img src="img/sold.svg" alt="bought" width="30" ng-show="tx.type == 'sell' && tx.status == 'completed'">
           <img src="img/sold-pending.svg" alt="bought" width="24" ng-show="tx.type == 'sell' && tx.status == 'pending'">
-          <img src="img/icon-sent-history.svg" alt="sent" width="30" ng-show="tx.type == 'send'">
-          <img src="img/icon-moved.svg" alt="any" width="30" ng-show="tx.type != 'send' && tx.type != 'buy' && tx.type !='sell'">
+          <img src="img/icon-sent-history.svg" alt="sent" width="30" ng-show="tx.type == 'send' && tx.to">
+          <img src="img/icon-receive-history.svg" alt="receive" width="30" ng-show="tx.type == 'send' && tx.from">
         </div>
 
         <div class="large-5 medium-5 small-5 columns">

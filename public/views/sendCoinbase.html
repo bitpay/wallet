@@ -20,26 +20,48 @@
     </div>
   </div>
 
-  <div class="row m20t" ng-show="send.error" ng-click="send.error = null">
+  <div class="white p10 size-12" ng-show="index.coinbaseAccount && !send.success">
+    Available balance: {{index.coinbaseAccount.balance.amount}} {{index.coinbaseAccount.balance.currency}}
+  </div>
+
+  <div class="row m20t" ng-show="send.error">
     <div class="columns">
       <div class="box-notification">
         <ul class="no-bullet m0 size-12 text-warning">
           <li ng-repeat="err in send.error.errors" ng-bind-html="err.message"></li>
-        </ul>
+        </ul>       
       </div>
     </div>
   </div>
-
-  <div class="row m20t" ng-show="!send.success && index.coinbaseAccount">
+  
+  <div class="row m20t" ng-show="index.coinbaseAccount && !send.success">
     <div class="columns">
       <form name="sendForm" 
-        ng-submit="send.createTx(index.coinbaseToken, index.coinbaseAccount)" novalidate>
+        ng-submit="send.send(index.coinbaseToken, index.coinbaseAccount)" novalidate>
+
+        <label>Coinbase Account</label>
+        <div class="disabled-input">
+          {{index.coinbaseAccount.name}}
+        </div>
+
+        <label>Amount</label>
+        <div class="input">
+          <input type="number" id="amount" 
+          name="amount" ng-attr-placeholder="{{'Amount'}}"
+          ng-minlength="0.00000001" ng-maxlength="10000000000" 
+          ng-model="amount" autocomplete="off" ng-disabled="send.loading">
+
+          <a class="postfix">BTC</a>
+        </div>
+
+        <div class="text-center">
+          <i class="db fi-arrow-down size-24 m10v"></i>
+        </div>
 
         <div ng-if="index.coinbaseToken" 
           ng-init="send.init(index.coinbaseTestnet)"
           ng-click="openWalletsModal(send.otherWallets)">
           <label>Copay Wallet</label>
-          {{send.selectedWalletName}} -- 
           <div class="input">
             <input type="text" id="address" name="address" ng-disabled="send.selectedWalletId" 
             ng-attr-placeholder="{{'Choose your source wallet'}}" 
@@ -48,38 +70,12 @@
               <i class="icon-wallet size-18"></i>
             </a>
           </div>
-        </div>
-
-        <label>Amount</label>
-        <div class="input">
-          <input 
-             type="number" 
-             id="amount" 
-             name="amount" 
-             ng-attr-placeholder="{{'Amount'}}"
-             ng-minlength="0.00000001" 
-             ng-maxlength="10000000000" 
-             ng-model="amount" 
-             autocomplete="off"
-             ng-disabled="send.loading">
-
-          <a class="postfix button" style="background-color: #2b71b1">BTC</a>
-        </div>
-
-        <div class="text-center">
-          <i class="db fi-arrow-down size-24 m10v"></i>
-        </div>
-
-        <label>Coinbase Account</label>
-        <div class="disabled-input">
-          {{index.coinbaseAccount.name}}
-        </div>
+        </div> 
           
-        <div class="input m20t">
+        <div class="input">
           <input class="button black expand round" 
-          ng-disabled="send.loading || !amount"
           ng-style="{'background-color': '#2b71b1'}"
-          type="submit" value="{{'Continue'}}">
+          type="submit" value="{{'Continue'}}" ng-disabled="send.loading || !amount">
         </div>
       </form> 
     </div>
@@ -89,7 +85,7 @@
     <div class="columns">
       <h1>Sent</h1>
       <p class="text-gray">
-        A transfer has been initiated to your Coinbase account.
+        A transfer has been initiated to your Copay selected wallet.
       </p>
 
       <button class="outline dark-gray round expand"

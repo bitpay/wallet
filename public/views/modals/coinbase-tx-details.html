@@ -17,15 +17,19 @@
      ng-swipe-right="cancel()">
   <div class="header-modal bg-gray text-center">
     <div class="p20">
-      <img src="img/bought.svg" alt="bought" width="80" ng-show="tx.type == 'buy' && tx.status == 'completed'">
+      <img src="img/bought.svg" alt="bought" width="65" ng-show="tx.type == 'buy' && tx.status == 'completed'">
       <img src="img/bought-pending.svg" alt="bought" width="65" ng-show="tx.type == 'buy' && tx.status == 'pending'">
-      <img src="img/sold.svg" alt="bought" width="80" ng-show="tx.type == 'sell' && tx.status == 'completed'">
+      <img src="img/sold.svg" alt="bought" width="65" ng-show="tx.type == 'sell' && tx.status == 'completed'">
       <img src="img/sold-pending.svg" alt="bought" width="65" ng-show="tx.type == 'sell' && tx.status == 'pending'">
+      <img src="img/icon-sent-history.svg" alt="sent" width="65" ng-show="tx.type == 'send' && tx.to">
+      <img src="img/icon-receive-history.svg" alt="receive" width="65" ng-show="tx.type == 'send' && tx.from">
     </div>
-    <span ng-show="tx.type == 'BUY'">Bought</span>
-    <span ng-show="tx.type == 'SELL'">Sold</span>
-    <b>{{tx.amount.amount}} {{tx.amount.currency}}</b>
-    <div class="size-36 m20b">
+    <span ng-show="tx.type == 'buy'">Bought</span>
+    <span ng-show="tx.type == 'sell'">Sold</span>
+    <span ng-show="tx.type == 'send' && tx.to">Sent</span>
+    <span ng-show="tx.type == 'send' && tx.from">Received</span>
+    <div class="size-24 text-bold">{{tx.amount.amount}} {{tx.amount.currency}}</div>
+    <div class="label gray radius m10b">
       {{tx.native_amount.amount}} {{tx.native_amount.currency}}
     </div>
   </div>
