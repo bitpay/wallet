@@ -141,6 +141,17 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
     });
   };
 
+  root.paginationTransactions = function(token, Url, cb) {
+    if (!token) return cb('Invalid Token');
+    $http(_get(Url.replace('/v2', ''), token)).then(function(data) {
+      $log.info('Coinbase Pagination Transactions: SUCCESS');
+      return cb(null, data.data);
+    }, function(data) {
+      $log.error('Coinbase Pagination Transactions: ERROR ' + data.statusText);
+      return cb(data.data);
+    });
+  };
+
   root.sellPrice = function(token, cb) {
     $http(_get('/prices/sell', token)).then(function(data) {
       $log.info('Coinbase Sell Price: SUCCESS');

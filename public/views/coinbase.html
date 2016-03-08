@@ -93,7 +93,7 @@
 
   <div ng-if="(index.coinbaseToken && index.coinbaseAccount) || !index.coinbaseError">
 
-    <div class="p20v text-center" ng-show="index.coinbaseAccount">
+    <div class="p20v text-center" ng-show="index.coinbaseAccount" ng-click="index.updateCoinbase({updateAccount: true})">
       <img src="img/coinbase-logo.png" width="100">
     </div>
 
@@ -151,11 +151,11 @@
     <div ng-show="index.coinbaseTransactions">
       <h4 class="title">Activity</h4>
 
-      <div ng-show="index.coinbaseTransactions.length == 0"
+      <div ng-show="index.coinbaseTransactions && index.coinbaseTransactions.data.length == 0"
         class="size-12 p10 text-center text-gray">
         No activity in your account
       </div>
-      <div ng-repeat="tx in index.coinbaseTransactions"
+      <div ng-repeat="tx in index.coinbaseTransactions.data"
         ng-click="coinbase.openTxModal(index.coinbaseToken, tx)"
         class="row collapse last-transactions-content">
         <div class="large-2 medium-2 small-2 columns">
@@ -165,6 +165,7 @@
           <img src="img/sold-pending.svg" alt="bought" width="24" ng-show="tx.type == 'sell' && tx.status == 'pending'">
           <img src="img/icon-sent-history.svg" alt="sent" width="30" ng-show="tx.type == 'send' && tx.to">
           <img src="img/icon-receive-history.svg" alt="receive" width="30" ng-show="tx.type == 'send' && tx.from">
+          <span ng-show="tx.type != 'buy' && tx.type != 'sell' && tx.type != 'send'">&nbsp;</span>
         </div>
 
         <div class="large-5 medium-5 small-5 columns">
@@ -187,6 +188,22 @@
         <div class="large-1 medium-1 small-1 columns text-right">
           <i class="icon-arrow-right3 size-18"></i>
         </div>
+      </div>
+      <div class="m15 oh">
+        <a class="text-gray size-12 text-left" 
+           ng-if="index.coinbaseTransactions.pagination.previous_uri"
+           ng-click="index.coinbaseTransactions = index.updateCoinbase(
+           {pagination: index.coinbaseTransactions.pagination.previous_uri})">
+          <i class="icon-arrow-left"></i>
+          Previous page
+        </a>
+        <a class="text-gray size-12 right" 
+           ng-if="index.coinbaseTransactions.pagination.next_uri"
+           ng-click="index.coinbaseTransactions = index.updateCoinbase(
+           {pagination: index.coinbaseTransactions.pagination.next_uri})">
+          Next page
+          <i class="icon-arrow-right"></i>
+        </a>
       </div>
     </div>
   </div>

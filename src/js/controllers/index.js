@@ -1331,29 +1331,41 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     
     }
 
-    coinbaseService.getAuthorizationInformation(accessToken, function(err, a) {
-      if (err) {
-        self.coinbaseError = err;
-        return;
-      }
-      self.coinbaseAuthInfo = a.data.scopes;
-    });
+    if (!opts.pagination) {
+      coinbaseService.getAuthorizationInformation(accessToken, function(err, a) {
+        if (err) {
+          self.coinbaseError = err;
+          return;
+        }
+        self.coinbaseAuthInfo = a.data.scopes;
+      });
 
-    coinbaseService.getCurrentUser(accessToken, function(err, u) {
-      if (err) {
-        self.coinbaseError = err;
-        return;
-      }
-      self.coinbaseUser = u.data;
-    });
+      coinbaseService.getCurrentUser(accessToken, function(err, u) {
+        if (err) {
+          self.coinbaseError = err;
+          return;
+        }
+        self.coinbaseUser = u.data;
+      });
 
-    coinbaseService.getTransactions(accessToken, accountId, function(err, t) {
-      if (err) {
-        self.coinbaseError = err;
-        return;
-      }
-      self.coinbaseTransactions = t.data || [];
-    });
+      coinbaseService.getTransactions(accessToken, accountId, function(err, t) {
+        if (err) {
+          self.coinbaseError = err;
+          return;
+        }
+        self.coinbaseTransactions = t || null;
+      });
+    }
+
+    if (opts.pagination) {
+      coinbaseService.paginationTransactions(accessToken, opts.pagination, function(err, t) {
+        if (err) {
+          self.coinbaseError = err;
+          return;
+        }
+        self.coinbaseTransactions = t || null;
+      });
+    }
 
   };
 
