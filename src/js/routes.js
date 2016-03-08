@@ -338,6 +338,15 @@ angular
           },
         }
       })
+      .state('buyandsell', {
+        url: '/buyandsell',
+        needProfile: true,
+        views: {
+          'main': {
+            templateUrl: 'views/buyAndSell.html'
+          },
+        }
+      })
       .state('preferencesAdvanced', {
         url: '/preferencesAdvanced',
         templateUrl: 'views/preferencesAdvanced.html',

@@ -52,6 +52,7 @@ angular.module('copayApp.services').factory('animationService', function(isCordo
     termOfUse: 13,
     translators: 13,
     add: 11,
+    buyandsell: 11,
     create: 12,
     join: 12,
     import: 12,
