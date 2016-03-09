@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.services').factory('go', function($window, $rootScope, $location, $state, $timeout, profileService, nodeWebkit) {
+angular.module('copayApp.services').factory('go', function($window, $rootScope, $location, $state, $timeout, $log, profileService, nodeWebkit) {
   var root = {};
 
   var hideSidebars = function() {
@@ -55,6 +55,7 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
   root.walletHome = function() {
     var fc = profileService.focusedClient;
     if (fc && !fc.isComplete()) {
+      $log.debug("Wallet not complete at startup... redirecting")
       root.path('copayers');
     } else {
       root.path('walletHome', function() {

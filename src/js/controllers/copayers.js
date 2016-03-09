@@ -9,6 +9,11 @@ angular.module('copayApp.controllers').controller('copayersController',
     var cancel_msg = gettextCatalog.getString('Cancel');
     var confirm_msg = gettextCatalog.getString('Confirm');
 
+    // Note that this is ONLY triggered when the page is opened
+    // IF a wallet is incomplete and copay is at /#copayers 
+    // and the user switch to an other complete wallet
+    // THIS IS NOT TRIGGERED.
+    //
     self.init = function() {
       var fc = profileService.focusedClient;
       if (fc.isComplete()) {
