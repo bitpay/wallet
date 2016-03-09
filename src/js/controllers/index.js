@@ -159,7 +159,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
             $log.debug('Wallet not complete after update... redirecting');
             go.path('copayers');
           } else {
-          if ($state.is('copayers')) {
+            if ($state.is('copayers')) {
               $log.debug('Wallet Complete after update... redirect to home');
               go.walletHome();
             }
@@ -1558,12 +1558,16 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.setFocusedWallet();
     self.updateHistory();
     storageService.getCleanAndScanAddresses(function(err, walletId) {
+
       if (walletId && profileService.walletClients[walletId]) {
         $log.debug('Clear last address cache and Scan ', walletId);
         addressService.expireAddress(walletId, function(err) {
           self.startScan(walletId);
         });
-        storageService.removeCleanAndScanAddresses(function() {});
+        storageService.removeCleanAndScanAddresses(function() {
+          $rootScope.$emit('Local/NewFocusedWalletReady');
+        });
+      } else {
         $rootScope.$emit('Local/NewFocusedWalletReady');
       }
     });

@@ -52,7 +52,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     self.resetForm();
     $scope.search = '';
 
-    if (profileService.focusedClient && rofileService.focusedClient.isComplete) {
+    if (profileService.focusedClient && profileService.focusedClient.isComplete) {
       self.setAddress();
       self.setSendFormInputs();
     }
