@@ -47,12 +47,12 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     self.setAddress(true);
   });
 
-  var disableFocusListener = $rootScope.$on('Local/NewFocusedWallet', function() {
+  var disableFocusListener = $rootScope.$on('Local/NewFocusedWalletReady', function() {
     self.addr = null;
     self.resetForm();
     $scope.search = '';
 
-    if (profileService.focusedClient) {
+    if (profileService.focusedClient && rofileService.focusedClient.isComplete) {
       self.setAddress();
       self.setSendFormInputs();
     }
