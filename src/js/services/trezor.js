@@ -9,10 +9,10 @@ angular.module('copayApp.services')
 
     root.getEntropySource = function(isMultisig, account, callback) {
       root.getXPubKey(hwWallet.getEntropyPath('trezor', isMultisig, account), function(data) {
-        if (!data.success) 
+        if (!data.success)
           return callback(hwWallet._err(data));
-        
-        return callback(null,  hwWallet.pubKeyToEntropySource(data.xpubkey));
+
+        return callback(null, hwWallet.pubKeyToEntropySource(data.xpubkey));
       });
     };
 
@@ -75,8 +75,28 @@ angular.module('copayApp.services')
         outputs = [];
       var tmpOutputs = [];
 
-      if (txp.type != 'simple')
+
+      if (txp.type && txp.type != 'simple') {
         return callback('Only TXPs type SIMPLE are supported in TREZOR');
+      } else if (txp.outputs) {
+        if (txp.outputs.length > 1)
+          return callback('Only single output TXPs are supported in TREZOR');
+      } else {
+          return callback('Unknown TXP at TREZOR');
+      }
+
+      if (txp.outputs) {
+
+        if (!txp.toAddress)
+          txp.toAddress = txp.outputs[0].toAddress;
+
+        if (!txp.amount)
+          txp.amount = txp.outputs[0].amount;
+      }
+
+      if (!txp.toAddress || !txp.amount)
+        return callback('No address or amount at TREZOR signing');
+
 
       var toScriptType = 'PAYTOADDRESS';
       if (txp.toAddress.charAt(0) == '2' || txp.toAddress.charAt(0) == '3')
