@@ -92,7 +92,7 @@ angular.module('copayApp.services')
         $log.debug('Wallet completed');
 
         root.updateCredentialsFC(function() {
-          $rootScope.$emit('Local/WalletCompleted')
+          $rootScope.$emit('Local/WalletCompleted', client.credentials.walletId);
         });
 
       });
@@ -149,6 +149,13 @@ angular.module('copayApp.services')
         });
       });
 
+    };
+
+
+    root.getProfile = function(cb) {
+      storageService.getProfile(function(err, profile) {
+        return cb(err, profile);
+      });
     };
 
     root.loadAndBindProfile = function(cb) {
