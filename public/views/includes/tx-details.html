@@ -1,4 +1,4 @@
-<div 
+<div
    ng-controller="txController as txc"
    class="txModal"
    ng-swipe-disable-mouse
@@ -33,7 +33,7 @@
           <img src="img/icon-moved.svg" alt="sync" width="50">
           <p class="m0 text-gray size-14" translate>Moved</p>
         </div>
-        
+
         <div class="size-36" ng-click="txc.copyToClipboard(index.showTx.amountStr)">
           <span ng-if="index.showTx.action == 'received'">+</span>
           <span ng-if="index.showTx.action == 'sent'">-</span>
@@ -50,12 +50,12 @@
       </div>
       <div ng-show="index.showTx.action == 'invalid'">
         -
-      </div> 
+      </div>
     </div>
 
     <h4 class="title m0" translate>Details</h4>
 
-    <ul class="no-bullet size-14 m0"> 
+    <ul class="no-bullet size-14 m0">
 
       <li ng-if="!index.showTx.hasMultiplesOutputs && index.showTx.addressTo && index.showTx.addressTo != 'N/A'" class="line-b p10 oh"
         ng-click="txc.copyToClipboard(index.showTx.addressTo)">
@@ -70,9 +70,9 @@
           <contact ng-show="!index.showTx.labelTo" class="enable_text_select" address="{{index.showTx.addressTo}}"></contact>
         </span>
       </span>
-      </li> 
+      </li>
 
-      <li ng-show="index.showTx.hasMultiplesOutputs" class="line-b p10 oh" 
+      <li ng-show="index.showTx.hasMultiplesOutputs" class="line-b p10 oh"
         ng-click="showMultiplesOutputs = !showMultiplesOutputs">
         <span class="text-gray" translate>Recipients</span>
         <span class="right">{{index.showTx.recipientCount}}
@@ -85,7 +85,7 @@
         ng-repeat="output in index.showTx.outputs"
         ng-include="'views/includes/output.html'">
       </div>
-      
+
       <li ng-if="index.showTx.action == 'invalid'" class="line-b p10 oh">
       <span class="right" translate>
         This transaction has become invalid; possibly due to a double spend attempt.
@@ -126,7 +126,7 @@
         <span class="label gray radius" ng-show="index.showTx.safeConfirmed">
           {{index.showTx.safeConfirmed}}
         </span>
-   
+
       </span>
       </li>
     </ul>
@@ -151,6 +151,11 @@
           (txc.getShortNetworkName() == 'test' ? 'test-' : '') + 'insight.bitpay.com/tx/' + index.showTx.txid)">
           <span class="text-gray" translate>See it on the blockchain</span>
         </button>
+        <ul class="no-bullet size-14 m0" ng-show="txc.getShortNetworkName() == 'test'">
+          <li ng-style="{'color': txc.color}" ng-click="txc.prepareSimilarTx(index.showTx.addressTo, index.showTx.amount, index.showTx.message)">
+            <span translate>Send similar transaction</span>
+          </li>
+        </ul>
       </div>
     </div>
 
