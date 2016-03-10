@@ -85,7 +85,7 @@
               <br><span translate>Tap to retry</span>
             </div>
 
-            <div ng-click='index.updateAll({triggerTxUpdate: true})'  ng-show="!index.updateError && index.walletScanStatus != 'error'">
+            <div ng-click='index.updateAll({triggerTxUpdate: true})' ng-show="!index.updateError && index.walletScanStatus != 'error' && !index.shouldHideBalance" ng-mousedown="index.onMouseDown()" ng-mouseup="index.onMouseUp()">
               <strong class="size-36">{{index.totalBalanceStr}}</strong>
               <div class="size-14"
                 ng-if="index.totalBalanceAlternative">
@@ -96,7 +96,9 @@
                 <span translate>Pending Confirmation</span>:
                 {{index.pendingAmountStr}}
               </div>
-
+            </div>
+            <div class="lock-icon" ng-show="!index.updateError && index.walletScanStatus != 'error' && index.shouldHideBalance" ng-mousedown="index.onMouseDown()" ng-mouseup="index.onMouseUp()">
+            <i class="fi-lock size-72"></i>
             </div>
           </div>
 
@@ -279,13 +281,13 @@
           <a class="text-gray size-12"
              ng-show="index.historyShowMore"
              ng-click="index.showMore()">
-            <span translate>Show more</span> 
+            <span translate>Show more</span>
             <span ng-if="!index.isSearching">
               ({{index.completeHistory.length - index.txHistory.length}})
-            </span> 
+            </span>
             <span ng-if="index.isSearching">
               ({{index.result.length - index.txHistorySearchResults.length}})
-            </span> 
+            </span>
             <i class="icon-arrow-down4"></i>
           </a>
         </div>
@@ -383,15 +385,20 @@
     <div id="send" class="send tab-view">
       <div class="pr p25b">
         <h4 class="title m0">
-          <available-balance></available-balance>
-          <span
-            ng-show="home.lockedCurrentFeePerKb || home.blockUx || home.lockAmount"
-            class="text-gray" translate>Send All</span>
-          <a
-            ng-show="index.availableBalanceSat > 0 && !home.lockedCurrentFeePerKb && !home.blockUx && !home.lockAmount"
-            ng-click="home.sendAll(index.totalBytesToSendMax, index.availableBalanceSat)"
-             translate> Send All
-          </a>
+          <div ng-show="index.shouldHideBalance" ng-mousedown="index.onMouseDown()" ng-mouseup="index.onMouseUp()">
+            <i class="fi-lock size-14 m5r"></i>
+          </div>
+          <div ng-mousedown="index.onMouseDown()" ng-mouseup="index.onMouseUp()">
+            <available-balance ng-show="!index.shouldHideBalance"></available-balance>
+            <span
+              ng-show="home.lockedCurrentFeePerKb || home.blockUx || home.lockAmount"
+              class="text-gray" translate>Send All</span>
+            <a
+              ng-show="index.availableBalanceSat > 0 && !home.lockedCurrentFeePerKb && !home.blockUx && !home.lockAmount"
+              ng-click="home.sendAll(index.totalBytesToSendMax, index.availableBalanceSat)"
+               translate> Send All
+            </a>
+          </div>
           <div ng-show="!home.paymentExpired && home._paypro">
             <span translate>Payment expires</span>
             <time> {{home.timeToExpire * 1000 | amTimeAgo}}</time>

@@ -785,6 +785,10 @@ table tbody tr:last-child td {
   border-bottom: none;
 }
 
+.lock-icon {
+  margin-top: -20px
+}
+
 /*////////////////////////////   SEARCH INPUT  ////////////////////////////*/
 
 .searchBar {
@@ -831,6 +835,7 @@ table tbody tr:last-child td {
   border-radius: 10px;
   position: relative;
 }
+
 /*////////////////////////////  BUTTON OUTLINE  ////////////////////////////*/
 
 .button.outline,
