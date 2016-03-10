@@ -49,35 +49,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   ret.tab = 'walletHome';
   var vanillaScope = ret;
 
-  if (ret.usePushNotifications) {
-    // Listening for push notifications
-    var push = PushNotification.init(configService.getDefaults().pushNotifications.config);
-
-    push.on('notification', function(data) {
-      if (!data.additionalData.foreground) {
-        window.ignoreMobilePause = true;
-        // window.plugins.spinnerDialog.show(null, gettextCatalog.getString('LOADING...'), true);
-        $log.debug('Push notification event: ', data.message);
-
-        $timeout(function() {
-          var wallets = profileService.getWallets();
-          var walletToFind = data.additionalData.walletId;
-
-          var walletFound = lodash.find(wallets, function(w) {
-            return (lodash.isEqual(walletToFind, sjcl.hash.sha256.hash(w.id)));
-          });
-
-          if (!walletFound) return $log.debug('Wallet not found');
-          profileService.setAndStoreFocus(walletFound.id, function() {
-            // $timeout(function() {
-            //   window.plugins.spinnerDialog.hide();
-            // }, 200);
-          });
-        }, 100);
-      }
-    });
-  }
-
   function strip(number) {
     return (parseFloat(number.toPrecision(12)));
   };
@@ -1405,10 +1376,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     }, function() {
       $log.debug('Remote preferences saved');
     });
-  });
-
-  $rootScope.$on('Local/pushNotificationsReady', function(event) {
-    pushNotificationsService.enableNotifications(profileService.walletClients);
   });
 
   self.debouncedUpdate = lodash.throttle(function() {
