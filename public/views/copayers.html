@@ -4,7 +4,7 @@
   ng-init="">
 </div>
 
-<div class="copayers p20v" ng-controller="copayersController as copayers" ng-init="copayers.init()">
+<div class="copayers content p20v" ng-controller="copayersController as copayers" ng-init="copayers.init()">
   <div ng-show="!index.notAuthorized">
     <h1 class="text-center" translate>Share this invitation with your copayers</h1>
 
@@ -36,7 +36,7 @@
           <span translate>Share invitation</span>
         </span>
       </div>
-      
+
       <div class="m30v line-t">
         <h4 class="size-14 p10h m10t">
           <span translate>Waiting for copayers</span>
@@ -46,7 +46,7 @@
         </h4>
         <div class="white line-b p10" ng-include="'views/includes/copayers.html'"></div>
         <div ng-if="!index.isComplete" class="line-b p10 white size-12">
-          <i class="fi-loop m5r p10l"></i> 
+          <i class="fi-loop m5r p10l"></i>
           <span translate>Waiting...</span>
         </div>
       </div>
@@ -66,4 +66,3 @@
 
   <div class="extra-margin-bottom"></div>
 </div>
-
