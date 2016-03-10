@@ -59,7 +59,7 @@
         <p class="m20t text-gray size-12">Connect your Coinbase account to get started</p>
 
         <a class="button light-gray outline round small"
-          ng-click="$root.openExternalLink(coinbase.getAuthenticateUrl(), '_system'); showOauthForm = true">
+          ng-click="coinbase.openAuthenticateWindow(); showOauthForm = true">
           Connect to Coinbase
         </a>
         <div>

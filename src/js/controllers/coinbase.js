@@ -1,8 +1,29 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('coinbaseController', 
-  function($rootScope, $scope, $timeout, $modal, profileService, configService, storageService, coinbaseService, isChromeApp, animationService, lodash) {
+  function($rootScope, $scope, $timeout, $modal, profileService, configService, storageService, coinbaseService, isChromeApp, animationService, lodash, nodeWebkit) {
 
+    this.openAuthenticateWindow = function() {
+      var oauthUrl = this.getAuthenticateUrl();
+      if (!nodeWebkit.isDefined()) {
+        $rootScope.openExternalLink(oauthUrl, '_system');
+      } else {
+        var self = this;
+        var gui = require('nw.gui');
+        var win = gui.Window.open(oauthUrl, {
+          focus: true,
+          position: 'center'
+        });
+        win.on ('loaded', function(){
+          var title = win.title;
+          if (title.indexOf('Coinbase') == -1) {
+            $scope.code = title;
+            self.submitOauthCode(title);
+            win.close();
+          }
+        });
+      }
+    }
 
     this.getAuthenticateUrl = function() {
       return coinbaseService.getOauthCodeUrl();
