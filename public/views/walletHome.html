@@ -97,7 +97,7 @@
                 {{index.pendingAmountStr}}
               </div>
             </div>
-            <div ng-show="!index.updateError && index.walletScanStatus != 'error' && index.shouldHideBalance" ng-mousedown="index.onMouseDown()" ng-mouseup="index.onMouseUp()">
+            <div class="lock-icon" ng-show="!index.updateError && index.walletScanStatus != 'error' && index.shouldHideBalance" ng-mousedown="index.onMouseDown()" ng-mouseup="index.onMouseUp()">
             <i class="fi-lock size-72"></i>
             </div>
           </div>
