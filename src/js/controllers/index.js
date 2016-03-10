@@ -49,7 +49,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   ret.tab = 'walletHome';
   var vanillaScope = ret;
 
-
   function strip(number) {
     return (parseFloat(number.toPrecision(12)));
   };
@@ -1377,10 +1376,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     }, function() {
       $log.debug('Remote preferences saved');
     });
-  });
-
-  $rootScope.$on('Local/pushNotificationsReady', function(event) {
-    pushNotificationsService.enableNotifications(profileService.walletClients);
   });
 
   self.debouncedUpdate = lodash.throttle(function() {
