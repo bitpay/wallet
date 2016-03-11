@@ -15,7 +15,6 @@ angular.module('copayApp.controllers').controller('txController',
     this.copayerId = fc.credentials.copayerId;
     this.isShared = fc.credentials.n > 1;
 
-
     if (isCordova) {
       $rootScope.modalOpened = true;
       var self = this;
