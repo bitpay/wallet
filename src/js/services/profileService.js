@@ -181,18 +181,6 @@ angular.module('copayApp.services')
       });
     };
 
-    root.isBackupNeeded = function(walletId, cb) {
-      var c = root.getClient(walletId);
-      if (c.isPrivKeyExternal()) return cb(false);
-      if (!c.credentials.mnemonic) return cb(false);
-      if (c.credentials.network == 'testnet') return cb(false);
-
-      storageService.getBackupFlag(walletId, function(err, val) {
-        if (err || val) return cb(false);
-        return cb(true);
-      });
-    };
-
     root._seedWallet = function(opts, cb) {
       opts = opts || {};
       if (opts.bwsurl)
@@ -306,8 +294,8 @@ angular.module('copayApp.services')
 
         // check if exist
         if (lodash.find(root.profile.credentials, {
-          'walletId': walletData.walletId
-        })) {
+            'walletId': walletData.walletId
+          })) {
           return cb(gettext('Cannot join the same wallet more that once'));
         }
       } catch (ex) {
@@ -680,6 +668,14 @@ angular.module('copayApp.services')
       });
     };
 
+    root.isBackupNeeded = function(walletId) {
+      var c = root.getClient(walletId);
+      if (c.isPrivKeyExternal()) return false;
+      if (!c.credentials.mnemonic) return false;
+      if (c.credentials.network == 'testnet') return false;
+      return true;
+    };
+
     root.getWallets = function(network) {
       if (!root.profile) return [];
 
@@ -694,7 +690,8 @@ angular.module('copayApp.services')
           id: c.walletId,
           network: c.network,
           color: config.colorFor[c.walletId] || '#4A90E2',
-          copayerId: c.copayerId
+          copayerId: c.copayerId,
+          needsBackup: root.isBackupNeeded(c.walletId)
         };
       });
       if (network) {

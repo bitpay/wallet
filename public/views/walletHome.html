@@ -279,13 +279,13 @@
           <a class="text-gray size-12"
              ng-show="index.historyShowMore"
              ng-click="index.showMore()">
-            <span translate>Show more</span> 
+            <span translate>Show more</span>
             <span ng-if="!index.isSearching">
               ({{index.completeHistory.length - index.txHistory.length}})
-            </span> 
+            </span>
             <span ng-if="index.isSearching">
               ({{index.result.length - index.txHistorySearchResults.length}})
-            </span> 
+            </span>
             <i class="icon-arrow-down4"></i>
           </a>
         </div>
@@ -420,11 +420,7 @@
                     <i class="icon-close-circle size-14"></i>
                     <span class="vm" translate>Not valid</span>
                   </span>
-                  <span class="has-error right size-12" ng-show="home.destinationWalletNeedsBackup">
-                    <i class="icon-close-circle size-14"></i>
-                    <span class="vm" translate>Destination wallet needs backup</span>
-                  </span>
-                  <small class="right text-primary" ng-show="!sendForm.address.$invalid && !home.destinationWalletNeedsBackup">
+                  <small class="right text-primary" ng-show="!sendForm.address.$invalid">
                     <i class="icon-checkmark-circle size-14"></i>
                   </small>
                 </span>
@@ -508,7 +504,7 @@
                 <a fast-click callback-fn="home.resetForm(sendForm)" class="button expand outline dark-gray round" translate>Cancel</a>
               </div>
               <div class="columns" ng-class="{'small-6 medium-6 large-6':(home._paypro || home.lockAddress || home.lockAmount)}">
-                <button class="button black round expand" ng-disabled="sendForm.$invalid || home.blockUx || index.isOffline || home.destinationWalletNeedsBackup"
+                <button class="button black round expand" ng-disabled="sendForm.$invalid || home.blockUx || index.isOffline"
                   ng-style="{'background-color':index.backgroundColor}" fast-click callback-fn="home.submitForm()" translate>
                   Send
                 </button>
