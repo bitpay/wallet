@@ -25,15 +25,15 @@
   <div class="modal-content fix-modals-touch p20b">
     <div class="create-tab small-only-text-center" ng-show="!editAddressbook && !addAddressbookEntry">
       <div class="row">
-        <div class="tab-container small-6 medium-3 large-2" 
-          ng-class="{'selected':selectedWalletsOpt}" 
+        <div class="tab-container small-6 medium-3 large-2"
+          ng-class="{'selected':selectedWalletsOpt}"
           ng-style="{'border-color':selectedWalletsOpt ? color : 'inherit'}"
           ng-click="selectedWalletsOpt = true">
         <a href
           ng-style="{'color':selectedWalletsOpt ? color : 'inherit'}" translate> My wallets</a>
         </div>
-        <div class="tab-container small-6 medium-3 large-2" 
-          ng-class="{'selected':!selectedWalletsOpt}" 
+        <div class="tab-container small-6 medium-3 large-2"
+          ng-class="{'selected':!selectedWalletsOpt}"
           ng-style="{'border-color':!selectedWalletsOpt ? color : 'inherit'}"
           ng-click="selectedWalletsOpt = false">
         <a href
@@ -58,16 +58,21 @@
       <div ng-if="!gettingAddress">
         <ul class="no-bullet">
           <li class="line-b" ng-repeat="w in wallets">
-          <a ng-click="selectWallet(w.id, w.name)" class="db oh">
-            <div class="avatar-wallet"
-              ng-style="{'background-color':w.color}">
-              <i class="icon-wallet size-21"></i>
-            </div>
-            <div class="ellipsis name-wallet text-bold">{{w.name || w.id}}</div>
-            <div class="size-12">{{w.m}} of {{w.n}}
-              <span ng-show="w.network=='testnet'">[Testnet]</span>
-            </div>
-          </a>
+            <a ng-click="selectWallet(w.id, w.name)" class="db oh">
+              <div class="avatar-wallet"
+                ng-style="{'background-color':w.color}">
+                <i class="icon-wallet size-21"></i>
+              </div>
+              <div class="ellipsis name-wallet text-bold">{{w.name || w.id}}
+                <span class="has-error right text-light size-12" ng-show="w.needsBackup">
+                  <i class="icon-close-circle size-14"></i>
+                  <span class="vm" translate>Needs backup</span>
+                </span>
+              </div>
+              <div class="size-12">{{w.m}} of {{w.n}}
+                <span ng-show="w.network=='testnet'">[Testnet]</span>
+              </div>
+            </a>
           </li>
         </ul>
       </div>
@@ -76,25 +81,25 @@
     <div ng-show="!selectedWalletsOpt" class="m20b">
       <ul ng-show="!addAddressbookEntry" class="no-bullet m0" ng-init="list()">
         <li class="p10 line-b" ng-repeat="(addr, label) in list">
-          <a ng-show="selectedAddressbook[addr]" 
-            class="removeAddressbook" 
+          <a ng-show="selectedAddressbook[addr]"
+            class="removeAddressbook"
             ng-click="remove(addr)" translate>Remove</a>
-          <a class="selectAddressbook" 
-            ng-show="editAddressbook" 
+          <a class="selectAddressbook"
+            ng-show="editAddressbook"
             ng-click="toggleSelectAddressbook(addr)">
-            <i class="fi-trash"></i></a> 
-          <div ng-click="selectAddressbook(addr)"> 
+            <i class="fi-trash"></i></a>
+          <div ng-click="selectAddressbook(addr)">
 
-            <i class="icon-contact left size-42 m10r text-gray"></i> 
+            <i class="icon-contact left size-42 m10r text-gray"></i>
             <div class="">
               <span>{{label}}</span>
               <div class="size-12 text-gray ellipsis">{{addr}}</div>
             </div>
-          </div> 
+          </div>
         </li>
         <li class="p10" ng-show="!editAddressbook">
           <a ng-click="toggleAddAddressbookEntry()" class="p0i">
-            <i class="fi-plus size-24 m20r lh icon"></i> 
+            <i class="fi-plus size-24 m20r lh icon"></i>
             <span class="size-12 tu text-bold" translate>Add a new entry</span>
             <span class="size-10" ng-show="!list[newAddress] && newAddress">({{newAddress}})</span>
           </a>
@@ -122,26 +127,26 @@
               <qr-scanner on-scan="onQrCodeScanned(data, addressbookForm)" before-scan="beforeQrCodeScann()"></qr-scanner>
             </div>
           </div>
-          
+
           <label translate>Label</label>
           <input type="text" id="label" name="label" ng-model="addressbook.label" required>
           <div class="row">
             <div class="columns large-6 medium-6 small-6">
-              <input type="button" 
-                     class="button expand outline dark-gray round" 
+              <input type="button"
+                     class="button expand outline dark-gray round"
                      ng-click="newAddress = ''; toggleAddAddressbookEntry()"
                      value="{{'Cancel'|translate}}">
             </div>
             <div class="columns large-6 medium-6 small-6">
-              <input type="submit" 
-                     class="button expand round black" 
+              <input type="submit"
+                     class="button expand round black"
                      value="{{'Save'|translate}}"
                      ng-disabled="!addressbookForm.$valid"
                      ng-click="newAddress = ''; add(addressbook)">
             </div>
           </div>
         </form>
-      
+
       </div>
 
     </div>
