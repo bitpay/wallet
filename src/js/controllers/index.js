@@ -128,7 +128,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       self.isPrivKeyEncrypted = fc.isPrivKeyEncrypted();
       self.externalSource = fc.getPrivKeyExternalSourceName();
       self.account = fc.credentials.account;
-      self.needsBackup = profileService.isBackupNeeded(self.walletId);
 
       if (self.externalSource == 'trezor')
         self.account++;
@@ -153,16 +152,19 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         }
       }
 
-      self.openWallet(function() {
-        if (!self.isComplete) {
-          $log.debug('Wallet not complete after update... redirecting');
-          go.path('copayers');
-        } else {
-          if ($state.is('copayers')) {
-            $log.debug('Wallet Complete after update... redirect to home');
-            go.walletHome();
+      profileService.isBackupNeeded(self.walletId, function(needsBackup) {
+        self.needsBackup = needsBackup;
+        self.openWallet(function() {
+          if (!self.isComplete) {
+            $log.debug('Wallet not complete after update... redirecting');
+            go.path('copayers');
+          } else {
+            if ($state.is('copayers')) {
+              $log.debug('Wallet Complete after update... redirect to home');
+              go.walletHome();
+            }
           }
-        }
+        });
       });
     });
   };
@@ -1489,7 +1491,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     });
   });
 
-  //untilItChange FALSE
+  //untilItChange FALSE 
   lodash.each(['NewTxProposal', 'TxProposalFinallyRejected', 'TxProposalRemoved', 'NewOutgoingTxByThirdParty',
     'Local/GlideraTx'
   ], function(eventName) {
