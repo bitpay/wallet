@@ -246,21 +246,28 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       };
 
       $scope.selectWallet = function(walletId, walletName) {
-        $scope.gettingAddress = true;
-        $scope.selectedWalletName = walletName;
-        $timeout(function() {
-          $scope.$apply();
-        });
-        addressService.getAddress(walletId, false, function(err, addr) {
-          $scope.gettingAddress = false;
+        profileService.isBackupNeeded(walletId, function(needsBackup) {
+          $scope.needsBackup = {};
+          $scope.needsBackup[walletId] = needsBackup;
+          if (needsBackup) return;
 
-          if (err) {
-            self.error = err;
-            $modalInstance.dismiss('cancel');
-            return;
-          }
+          $scope.gettingAddress = true;
+          $scope.selectedWalletName = walletName;
+          $timeout(function() {
+            $scope.$apply();
+          });
 
-          $modalInstance.close(addr);
+          addressService.getAddress(walletId, false, function(err, addr) {
+            $scope.gettingAddress = false;
+
+            if (err) {
+              self.error = err;
+              $modalInstance.dismiss('cancel');
+              return;
+            }
+
+            $modalInstance.close(addr);
+          });
         });
       };
     };

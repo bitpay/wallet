@@ -668,12 +668,16 @@ angular.module('copayApp.services')
       });
     };
 
-    root.isBackupNeeded = function(walletId) {
+    root.isBackupNeeded = function(walletId, cb) {
       var c = root.getClient(walletId);
-      if (c.isPrivKeyExternal()) return false;
-      if (!c.credentials.mnemonic) return false;
-      if (c.credentials.network == 'testnet') return false;
-      return true;
+      if (c.isPrivKeyExternal()) return cb(false);
+      if (!c.credentials.mnemonic) return cb(false);
+      if (c.credentials.network == 'testnet') return cb(false);
+
+      storageService.getBackupFlag(walletId, function(err, val) {
+        if (err || val) return cb(false);
+        return cb(true);
+      });
     };
 
     root.getWallets = function(network) {
@@ -690,8 +694,7 @@ angular.module('copayApp.services')
           id: c.walletId,
           network: c.network,
           color: config.colorFor[c.walletId] || '#4A90E2',
-          copayerId: c.copayerId,
-          needsBackup: root.isBackupNeeded(c.walletId)
+          copayerId: c.copayerId
         };
       });
       if (network) {
