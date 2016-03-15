@@ -6,7 +6,7 @@
 
 <div class="content preferences" ng-controller="preferencesCoinbaseController as coinbase">
 
-  <ul ng-if="index.coinbaseAccount" class="no-bullet m0">
+  <ul ng-if="index.coinbaseAccount && !index.coinbaseError" class="no-bullet m0">
     <h4 class="title m0">Account</h4>
     <li>
     <span>ID</span>
@@ -130,7 +130,7 @@
       </span>
     </li>
   </ul>
-  <ul ng-show="index.coinbaseToken" class="no-bullet m0">
+  <ul class="no-bullet m0">
     <h4></h4>
     <li ng-click="coinbase.revokeToken(index.coinbaseTestnet)">
       <i class="icon-arrow-right3 size-24 right text-gray"></i>
