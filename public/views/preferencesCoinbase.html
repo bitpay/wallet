@@ -118,6 +118,17 @@
       {{index.coinbaseUser.country.name}}
     </span>
     </li>
+
+    <h4 class="title m0">Payment Methods</h4> 
+    <li class="oh" ng-repeat="pm in index.coinbasePaymentMethods">
+      <span>{{pm.name}}</span>
+      <span class="right text-gray">
+        Allow buy: {{pm.allow_buy}}<br>
+        Allow sell: {{pm.allow_sell}}<br>
+        Primary buy: {{pm.primary_buy}}<br>
+        Primary sell: {{pm.primary_sell}}
+      </span>
+    </li>
   </ul>
   <ul class="no-bullet m0">
     <h4></h4>

@@ -1355,6 +1355,14 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         }
         self.coinbaseTransactions = t || null;
       });
+
+      coinbaseService.getPaymentMethods(accessToken, function(err, p) {
+        if (err) {
+          self.coinbaseError = err;
+          return;
+        }
+        self.coinbasePaymentMethods = p.data || null;
+      });
     }
 
     if (opts.pagination) {

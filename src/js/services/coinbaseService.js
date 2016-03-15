@@ -16,7 +16,8 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
       + 'wallet:sells:read,'
       + 'wallet:sells:create,'
       + 'wallet:transactions:read,'
-      + 'wallet:transactions:send';
+      + 'wallet:transactions:send,'
+      + 'wallet:payment-methods:read';
 
     if (isCordova) {
       credentials.REDIRECT_URI = 'bitcoin://coinbase';
@@ -130,6 +131,17 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
     });
   };
 
+  root.getTransaction = function(token, accountId, transactionId, cb) {
+    if (!token) return cb('Invalid Token');
+    $http(_get('/accounts/' + accountId + '/transactions/' + transactionId, token)).then(function(data) {
+      $log.info('Coinbase Transaction: SUCCESS');
+      return cb(null, data.data);
+    }, function(data) {
+      $log.error('Coinbase Transaction: ERROR ' + data.statusText);
+      return cb(data.data);
+    });
+  };
+
   root.getTransactions = function(token, accountId, cb) {
     if (!token) return cb('Invalid Token');
     $http(_get('/accounts/' + accountId + '/transactions', token)).then(function(data) {
@@ -168,6 +180,26 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
       return cb(null, data.data); 
     }, function(data) {
       $log.error('Coinbase Buy Price: ERROR ' + data.statusText);
+      return cb(data.data);
+    });
+  };
+
+  root.getPaymentMethods = function(token, cb) {
+    $http(_get('/payment-methods', token)).then(function(data) {
+      $log.info('Coinbase Get Payment Methods: SUCCESS');
+      return cb(null, data.data); 
+    }, function(data) {
+      $log.error('Coinbase Get Payment Methods: ERROR ' + data.statusText);
+      return cb(data.data);
+    });
+  };
+
+  root.getPaymentMethod = function(token, paymentMethodId, cb) {
+    $http(_get('/payment-methods/' + paymentMethodId, token)).then(function(data) {
+      $log.info('Coinbase Get Payment Method: SUCCESS');
+      return cb(null, data.data); 
+    }, function(data) {
+      $log.error('Coinbase Get Payment Method: ERROR ' + data.statusText);
       return cb(data.data);
     });
   };
