@@ -91,7 +91,7 @@
     </div>
   </div>
 
-  <div ng-if="(index.coinbaseToken && index.coinbaseAccount) || !index.coinbaseError">
+  <div ng-if="index.coinbaseToken && index.coinbaseAccount && !index.coinbaseError">
 
     <div class="p20v text-center" ng-show="index.coinbaseAccount" ng-click="index.updateCoinbase({updateAccount: true})">
       <img src="img/coinbase-logo.png" width="100">
