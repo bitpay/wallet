@@ -93,6 +93,15 @@ angular.module('copayApp.services').factory('txService', function($rootScope, pr
     });
   }; 
 
+  root.removeTx = function(txp, opts, cb) {
+    opts = opts || {};
+    var fc = opts.selectedClient || profileService.focusedClient;
+
+    fc.removeTxProposal(txp, function(err) {
+      return cb(err);
+    });
+  };
+
   root.createTx = function(opts, cb) {
     opts = opts || {};
     var fc = opts.selectedClient || profileService.focusedClient;

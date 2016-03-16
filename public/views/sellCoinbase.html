@@ -20,42 +20,92 @@
     </div>
   </div>
 
-  <div class="row m20t" ng-show="sell.error">
+  <div class="row m20t" ng-show="sell.error || index.coinbaseError" ng-click="sell.error = null">
     <div class="columns">
-      <div class="box-notification" ng-click="sell.error = null">
+      <div class="box-notification">
         <ul class="no-bullet m0 size-12 text-warning">
-          <li ng-repeat="err in sell.error.errors" ng-bind-html="err.message"></li>
+          <li ng-repeat="err in (sell.error.errors || index.coinbaseError.errors)" ng-bind-html="err.message"></li>
         </ul>
       </div>
     </div>
   </div>
 
-  <div class="row m20t" ng-show="!sell.sellInfo">
+  <div class="row m20t" 
+    ng-show="index.coinbaseAccount && !sell.sellInfo">
     <div class="columns">
       <form
-          name="sellCoinbasePriceForm" 
-          ng-submit="sell.sellRequest(index.coinbaseToken, index.coinbaseAccount)" novalidate>
-        <label>Amount in BTC</label>
+         name="sellCoinbaseForm" 
+         ng-submit="sell.depositFunds(index.coinbaseToken, index.coinbaseAccount)" 
+         novalidate>
+
+        <div 
+         ng-if="index.coinbaseToken"
+         ng-init="sell.init(index.coinbaseTestnet)"
+         ng-click="openWalletsModal(sell.otherWallets)">
+          <label>Copay Wallet</label>
           <div class="input">
-            <input ng-show="!showAlternative" type="number" id="amount" 
-            name="amount" ng-attr-placeholder="{{'Amount'}}"
-            ng-minlength="0.00000001" ng-maxlength="10000000000" 
-            ng-model="amount" autocomplete="off" ng-disabled="sell.loading">
-            
-            <input ng-show="showAlternative" type="number" id="fiat" 
-            name="fiat" ng-attr-placeholder="{{'Amount'}}" 
-            ng-model="fiat" autocomplete="off" ng-disabled="sell.loading">
-
-            <a ng-show="!showAlternative" class="postfix button" 
-              ng-click="showAlternative = true; amount = null">BTC</a>
-            <a ng-show="showAlternative" class="postfix button black" 
-              ng-click="showAlternative = false; fiat = null">USD</a>
-
-            <input class="button black expand round" 
-            ng-disabled="sell.loading || (!amount && !fiat)"
-            ng-style="{'background-color': '#2b71b1'}"
-            type="submit" value="{{'Continue'}}">
+            <input type="text" id="address" name="address" ng-disabled="sell.selectedWalletId" 
+            ng-attr-placeholder="{{'Choose your source wallet'}}" 
+            ng-model="sell.selectedWalletName" required>
+            <a class="postfix size-12 m0 text-gray">
+              <i class="icon-wallet size-18"></i>
+            </a>
           </div>
+        </div>
+
+        <label>
+          Amount 
+          <span 
+            ng-if="index.coinbaseToken"
+            ng-init="sell.getPrice(index.coinbaseToken)"
+            ng-show="sell.sellPrice" 
+            class="size-11 text-light right">
+            1 BTC <i class="icon-arrow-right"></i> {{sell.sellPrice.amount}} {{sell.sellPrice.currency}}
+          </span>
+        </label>
+        <div class="input">
+          <input ng-show="!showAlternative" type="number" id="amount" 
+          name="amount" ng-attr-placeholder="{{'Amount in ' + (showAlternative ? 'USD' : 'BTC')}}"
+          ng-minlength="0.00000001" ng-maxlength="10000000000" 
+          ng-model="amount" autocomplete="off" ng-disabled="sell.loading">
+          
+          <input ng-show="showAlternative" type="number" id="fiat" 
+          name="fiat" ng-attr-placeholder="{{'Amount in ' + (showAlternative ? 'USD' : 'BTC')}}" 
+          ng-model="fiat" autocomplete="off" ng-disabled="sell.loading">
+
+          <a ng-show="!showAlternative" class="postfix button" 
+            ng-click="showAlternative = true; amount = null">BTC</a>
+          <a ng-show="showAlternative" class="postfix button black" 
+            ng-click="showAlternative = false; fiat = null">USD</a>
+        </div>
+
+        <div class="text-center text-gray size-12 m10b">
+          <span ng-show="!(amount || fiat)">
+            Enter the amount to get the exchange rate
+          </span>
+          <span ng-show="!sell.sellPrice && (amount || fiat)">
+            Not available
+          </span>
+          <span class="label gray radius" ng-show="sell.sellPrice && amount && !fiat">
+            {{sell.sellPrice.amount * amount | currency : 'USD ' : 2}}
+          </span>
+        </div>
+
+        <div class="text-center">
+          <i class="db fi-arrow-down size-24 m10v"></i>
+        </div>
+
+        <label>Coinbase Account</label>
+        <div class="disabled-input">
+          {{index.coinbaseAccount.name}}
+        </div>
+
+        <div class="input m20t">
+          <input class="button black expand round" 
+                 ng-disabled="sell.loading || (!amount && !fiat)"
+                 ng-style="{'background-color': '#2b71b1'}"
+                 type="submit" value="Continue">
+        </div>
       </form>
     </div>
   </div>
