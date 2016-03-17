@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.services').factory('coinbaseService', function($http, $log, isCordova) {
+angular.module('copayApp.services').factory('coinbaseService', function($http, $log, isCordova, lodash, storageService, configService) {
   var root = {};
   var credentials = {};
 
@@ -294,6 +294,35 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
     }, function(data) {
       $log.error('Coinbase Create Address: ERROR ' + data.statusText);
       return cb(data.data);
+    });
+  };
+
+  // Pending transactions
+  
+  root.savePendingTransaction = function(ctx, cb) {
+    var network = configService.getSync().coinbase.testnet ? 'testnet' : 'livenet';
+    storageService.getCoinbaseTxs(network, function(err, oldTxs) {
+      if (lodash.isString(oldTxs)) {
+        oldTxs = JSON.parse(oldTxs);
+      }
+      if (lodash.isString(ctx)) {
+        ctx = JSON.parse(ctx);
+      }
+      var tx = oldTxs || {};
+      tx[ctx.id] = ctx;
+
+      tx = JSON.stringify(tx);
+
+      storageService.setCoinbaseTxs(network, tx, function(err) {
+        return cb();
+      });
+    });
+  };
+
+  root.getPendingTransactions = function(cb) {
+    var network = configService.getSync().coinbase.testnet ? 'testnet' : 'livenet';
+    storageService.getCoinbaseTxs(network, function(err, txs) {
+      return cb(err, JSON.parse(txs));
     });
   };
 

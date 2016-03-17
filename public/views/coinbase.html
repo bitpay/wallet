@@ -151,6 +151,39 @@
       </li>
     </ul>
 
+    <div ng-show="index.coinbasePendingTransactions && !index.coinbaseError">
+      <h4 class="title">Pending</h4>
+      <div ng-repeat="(id, tx) in index.coinbasePendingTransactions track by $index"
+        ng-click="coinbase.openTxModal(tx)"
+        class="row collapse last-transactions-content">
+        <div class="large-2 medium-2 small-2 columns">
+          <img src="img/bought-pending.svg" alt="bought" width="24" ng-show="tx.to && tx.status == 'pending'">
+          <img src="img/sold-pending.svg" alt="bought" width="24" ng-show="tx.from && tx.status == 'pending'">
+        </div>
+
+        <div class="large-5 medium-5 small-5 columns">
+          <div class="size-12 m5t">
+            <span ng-show="tx.type == 'sent' && tx.from">Sell</span>
+            <span ng-show="tx.type == 'sent' && tx.to">Buy</span>
+            <span class="text-bold">{{tx.amount.amount}} {{tx.amount.currency}}</span>
+          </div>
+        </div>
+        <div class="large-4 medium-4 small-4 columns text-right">
+          <div class="m5t size-12 text-gray">
+            <div ng-show="tx.status == 'completed'">
+              <time ng-if="tx.created_at">{{tx.created_at | amTimeAgo}}</time>
+            </div>
+            <div ng-show="tx.status == 'pending'">
+              <span class="label outline gray radius text-gray text-info" ng-if="tx.status == 'pending'">Processing</span>
+            </div>
+          </div>
+        </div>
+        <div class="large-1 medium-1 small-1 columns text-right">
+          <i class="icon-arrow-right3 size-18"></i>
+        </div>
+      </div>
+    </div>
+
     <div ng-show="index.coinbaseTransactions">
       <h4 class="title">Activity</h4>
 
@@ -159,7 +192,7 @@
         No activity in your account
       </div>
       <div ng-repeat="tx in index.coinbaseTransactions.data"
-        ng-click="coinbase.openTxModal(index.coinbaseToken, tx)"
+        ng-click="coinbase.openTxModal(tx)"
         class="row collapse last-transactions-content">
         <div class="large-2 medium-2 small-2 columns">
           <img src="img/bought.svg" alt="bought" width="30" ng-show="tx.type == 'buy' && tx.status == 'completed'">

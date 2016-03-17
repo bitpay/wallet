@@ -259,5 +259,17 @@ angular.module('copayApp.services')
       storage.remove('txsHistory-' + walletId, cb);
     }
 
+    root.setCoinbaseTxs = function(network, ctx, cb) {
+      storage.set('coinbaseTxs-' + network, ctx, cb);
+    };
+
+    root.getCoinbaseTxs = function(network, cb) {
+      storage.get('coinbaseTxs-' + network, cb);
+    };
+
+    root.removeCoinbaseTxs = function(network, cb) {
+      storage.remove('coinbaseTxs-' + network, cb);
+    };
+
     return root;
   });

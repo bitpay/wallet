@@ -1356,6 +1356,10 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         self.coinbaseTransactions = t || null;
       });
 
+      coinbaseService.getPendingTransactions(function(err, txs) {
+        self.coinbasePendingTransactions = txs;
+      });
+
       coinbaseService.getPaymentMethods(accessToken, function(err, p) {
         if (err) {
           self.coinbaseError = err;

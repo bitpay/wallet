@@ -95,18 +95,13 @@ angular.module('copayApp.controllers').controller('sellCoinbaseController',
       }
     };
 
-    this.sellRequest = function(token, account, tx) {
+    this.sellRequest = function(token, account, ctx) {
       var self = this;
-      var satToBtc = 1 / 100000000;
       var accountId = account.id;
-      var amount = tx.amount * satToBtc;
+      var amount = ctx.amount;
       if (!amount) return;
-      var dataSrc = {
-        amount: amount,
-        currency: 'BTC'
-      };
       this.loading = 'Sending request...';
-      coinbaseService.sellRequest(token, accountId, dataSrc, function(err, data) {
+      coinbaseService.sellRequest(token, accountId, amount, function(err, data) {
         self.loading = null;
         if (err) {
           self.error = err;
@@ -184,9 +179,33 @@ angular.module('copayApp.controllers').controller('sellCoinbaseController',
               self.loading = null;
               if (accept) { 
                 self.confirmTx(txp, function(err, tx) {
-                  if (err) self.error = err;
-                  else self.sellRequest(token, account, tx);
-                  
+                  if (err) { 
+                    self.error = err;
+                    return;
+                  }
+                  self.loading = 'Checking transaction...';
+                  coinbaseService.getTransactions(token, accountId, function(err, ctxs) {
+                    if (err) {
+                      $log.debug(err);
+                      return;
+                    }
+                    lodash.each(ctxs.data, function(ctx) {
+                      if (ctx.type == 'send' && ctx.from) {
+                        if (ctx.status == 'completed') {
+                          self.sellRequest(token, account, ctx);
+                        } else {
+                          // Save to localstorage
+                          self.loading = null;
+                          coinbaseService.savePendingTransaction(ctx);
+                          self.sendInfo = ctx;
+                          $timeout(function() {
+                            $scope.$emit('Local/CoinbaseTx');
+                          }, 2000);
+                        }
+                        return false;
+                      }
+                    });
+                  });
                 });
               }
             });
@@ -220,7 +239,7 @@ angular.module('copayApp.controllers').controller('sellCoinbaseController',
                 $timeout(function() {
                   self.loading = null;
                   return cb(null, txp);
-                }, 2000);
+                }, 5000);
               }
             });
           }
