@@ -279,13 +279,13 @@
           <a class="text-gray size-12"
              ng-show="index.historyShowMore"
              ng-click="index.showMore()">
-            <span translate>Show more</span> 
+            <span translate>Show more</span>
             <span ng-if="!index.isSearching">
               ({{index.completeHistory.length - index.txHistory.length}})
-            </span> 
+            </span>
             <span ng-if="index.isSearching">
               ({{index.result.length - index.txHistorySearchResults.length}})
-            </span> 
+            </span>
             <i class="icon-arrow-down4"></i>
           </a>
         </div>
@@ -386,11 +386,11 @@
           <available-balance></available-balance>
           <span
             ng-show="home.lockedCurrentFeePerKb || home.blockUx || home.lockAmount"
-            class="text-gray" translate>Send All</span>
+            class="text-gray" translate>Send Max</span>
           <a
             ng-show="index.availableBalanceSat > 0 && !home.lockedCurrentFeePerKb && !home.blockUx && !home.lockAmount"
-            ng-click="home.sendAll(index.totalBytesToSendMax, index.availableBalanceSat)"
-             translate> Send All
+            ng-click="home.sendMax()"
+             translate>Send Max
           </a>
           <div ng-show="!home.paymentExpired && home._paypro">
             <span translate>Payment expires</span>

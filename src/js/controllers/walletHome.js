@@ -1225,45 +1225,59 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     return actions.hasOwnProperty('create');
   };
 
-  this._doSendAll = function(amount) {
+  this._doSendMax = function(amount) {
     this.setForm(null, amount, null);
   };
 
-  this.sendAll = function(totalBytesToSendMax, availableBalanceSat) {
+  this.sendMax = function() {
     var self = this;
-    var availableMaxBalance;
-    var feeToSendMaxStr;
+    var fc = profileService.focusedClient;
     this.error = null;
     this.setOngoingProcess(gettextCatalog.getString('Calculating fee'));
 
     feeService.getCurrentFeeValue(function(err, feePerKb) {
       self.setOngoingProcess();
+
       if (err || lodash.isNull(feePerKb)) {
         self.error = gettext('Could not get fee value');
         return;
       }
 
-      var feeToSendMaxSat = parseInt(((totalBytesToSendMax * feePerKb) / 1000.).toFixed(0));
-      if (availableBalanceSat > feeToSendMaxSat) {
-        self.lockedCurrentFeePerKb = feePerKb;
-        availableMaxBalance = strip((availableBalanceSat - feeToSendMaxSat) * self.satToUnit);
-        feeToSendMaxStr = profileService.formatAmount(feeToSendMaxSat) + ' ' + self.unitName;
-      } else {
-        self.error = gettext('Not enought funds for fee');
-        return;
-      }
+      var opts = {};
+      opts.feePerKb = feePerKb;
 
-      var msg = gettextCatalog.getString("{{fee}} will be deducted for bitcoin networking fees", {
-        fee: feeToSendMaxStr
-      });
+      var config = configService.getSync();
+      if (!config.wallet.spendUnconfirmed)
+        opts.excludeUnconfirmedUtxos = 1;
+      else
+        opts.excludeUnconfirmedUtxos = null;
 
-      $scope.$apply();
-      confirmDialog.show(msg, function(confirmed) {
-        if (confirmed) {
-          self._doSendAll(availableMaxBalance);
-        } else {
-          self.resetForm();
+      opts.returnInputs = 1;
+
+      fc.getSendMaxInfo(opts, function(err, resp) {
+        if (err) {
+          self.error = err;
+          $scope.$apply();
+          return;
         }
+
+        if (resp.amount <= resp.fee) {
+          self.error = gettextCatalog.getString("The available amount is smaller than network fee provided");
+          $scope.$apply();
+          return;
+        }
+
+        var msg = gettextCatalog.getString("{{fee}} will be deducted for bitcoin networking fees", {
+          fee: profileService.formatAmount(resp.fee) + ' ' + self.unitName
+        });
+
+        confirmDialog.show(msg, function(confirmed) {
+          if (confirmed) {
+            self._doSendMax(resp.amount * self.satToUnit);
+          } else {
+            self.resetForm();
+          }
+        });
       });
     });
   };
