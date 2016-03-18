@@ -196,11 +196,13 @@ angular.module('copayApp.controllers').controller('sellCoinbaseController',
                         } else {
                           // Save to localstorage
                           self.loading = null;
-                          coinbaseService.savePendingTransaction(ctx);
-                          self.sendInfo = ctx;
-                          $timeout(function() {
-                            $scope.$emit('Local/CoinbaseTx');
-                          }, 2000);
+                          coinbaseService.savePendingTransaction(ctx, {}, function(err) {
+                            if (err) $log.debug(err);
+                            self.sendInfo = ctx;
+                            $timeout(function() {
+                              $scope.$emit('Local/CoinbaseTx');
+                            }, 2000);
+                          });
                         }
                         return false;
                       }

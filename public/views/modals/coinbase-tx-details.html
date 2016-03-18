@@ -18,16 +18,21 @@
   <div class="header-modal bg-gray text-center">
     <div class="p20">
       <img src="img/bought.svg" alt="bought" width="65" ng-show="tx.type == 'buy' && tx.status == 'completed'">
-      <img src="img/bought-pending.svg" alt="bought" width="65" ng-show="tx.type == 'buy' && tx.status == 'pending'">
+      <img src="img/bought-pending.svg" alt="bought" width="65" 
+      ng-show="(tx.type == 'buy' || (tx.type == 'send' && tx.to)) && tx.status == 'pending'">
       <img src="img/sold.svg" alt="bought" width="65" ng-show="tx.type == 'sell' && tx.status == 'completed'">
-      <img src="img/sold-pending.svg" alt="bought" width="65" ng-show="tx.type == 'sell' && tx.status == 'pending'">
+      <img src="img/sold-pending.svg" alt="bought" width="65" 
+        ng-show="(tx.type == 'sell' || (tx.type == 'send' && tx.from)) && tx.status == 'pending'">
       <img src="img/icon-sent-history.svg" alt="sent" width="65" ng-show="tx.type == 'send' && tx.to">
-      <img src="img/icon-receive-history.svg" alt="receive" width="65" ng-show="tx.type == 'send' && tx.from">
     </div>
-    <span ng-show="tx.type == 'buy'">Bought</span>
-    <span ng-show="tx.type == 'sell'">Sold</span>
-    <span ng-show="tx.type == 'send' && tx.to">Sent</span>
-    <span ng-show="tx.type == 'send' && tx.from">Received</span>
+    <div ng-show="tx.status == 'completed'">
+      <span ng-show="tx.type == 'buy'">Bought</span>
+      <span ng-show="tx.type == 'sell'">Sold</span>
+    </div>
+    <div ng-show="tx.status == 'pending'">
+      <span ng-show="tx.type == 'send' && tx.to">Buy</span>
+      <span ng-show="tx.type == 'send' && tx.from">Sell</span>
+    </div>
     <div class="size-24 text-bold">{{tx.amount.amount}} {{tx.amount.currency}}</div>
     <div class="label gray radius m10b">
       {{tx.native_amount.amount}} {{tx.native_amount.currency}}
@@ -44,7 +49,7 @@
     <li class="line-b p10 oh">
       <span class="text-gray">Status</span>
       <span class="text-success right" ng-if="tx.status == 'completed'">Completed</span>
-      <span class="text-info right" ng-if="tx.status == 'pending'">Processing</span>
+      <span class="text-info right" ng-if="tx.status == 'pending'">Pending</span>
       <span class="text-warning right" ng-if="tx.status == 'error'">Error</span>
     </li>
 

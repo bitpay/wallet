@@ -1357,7 +1357,21 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       });
 
       coinbaseService.getPendingTransactions(function(err, txs) {
+        // check if there is completed tx
         self.coinbasePendingTransactions = txs;
+        lodash.forEach(txs, function(data, txId) {
+          coinbaseService.getTransaction(accessToken, accountId, txId, function(err, tx) {
+            if (err) {
+              self.coinbaseError = err;
+              return;
+            }
+            var updatedTx = tx.data;
+            self.coinbasePendingTransactions[txId] = tx.data;
+            if (updatedTx.type == 'send' && updatedTx.status == 'completed' && updatedTx.from) {
+              self.sellPending(updatedTx);
+            }
+          });
+        });
       });
 
       coinbaseService.getPaymentMethods(accessToken, function(err, p) {
@@ -1379,6 +1393,25 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       });
     }
 
+  };
+
+  self.sellPending = function(tx) {
+    if (!tx) return;
+    var data = tx.amount;
+    data['commit'] = true;
+    coinbaseService.sellRequest(self.coinbaseToken, self.coinbaseAccount.id, data, function(err, res) {
+      if (err) {
+        self.coinbaseError = err;
+        return;
+      }
+      coinbaseService.savePendingTransaction(tx, {remove: true}, function(err) {
+        if (err) {
+          self.coinbaseError = err;
+          return;
+        }
+        self.updateCoinbase({updateAccount: true});
+      });
+    }); 
   };
 
   self.setAddressbook = function(ab) {

@@ -221,7 +221,7 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
     var data = {
       amount: data.amount,
       currency: data.currency,
-      commit: false
+      commit: data.commit || false
     };
     $http(_post('/accounts/' + accountId + '/sells', token, data)).then(function(data) {
       $log.info('Coinbase Sell Request: SUCCESS');
@@ -299,7 +299,7 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
 
   // Pending transactions
   
-  root.savePendingTransaction = function(ctx, cb) {
+  root.savePendingTransaction = function(ctx, opts, cb) {
     var network = configService.getSync().coinbase.testnet ? 'testnet' : 'livenet';
     storageService.getCoinbaseTxs(network, function(err, oldTxs) {
       if (lodash.isString(oldTxs)) {
@@ -309,12 +309,16 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
         ctx = JSON.parse(ctx);
       }
       var tx = oldTxs || {};
-      tx[ctx.id] = ctx;
+      if (opts && opts.remove) {
+        lodash.remove(tx[ctx.id]);
+      } else {
+        tx[ctx.id] = ctx;
+      }
 
       tx = JSON.stringify(tx);
 
       storageService.setCoinbaseTxs(network, tx, function(err) {
-        return cb();
+        return cb(err);
       });
     });
   };
