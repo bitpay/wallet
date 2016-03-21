@@ -1263,6 +1263,9 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
           $scope.$apply();
           return;
         }
+
+        verifyExcludedUtxos();
+
         if (resp.amount == 0) {
           self.error = gettext("Not enought funds for fee");
           $scope.$apply();
