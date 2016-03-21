@@ -1230,11 +1230,14 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     this.setForm(null, amount, null);
   };
 
-  this.sendMax = function(totalBytesToSendMax, availableBalanceSat) {
+  this.sendMax = function(availableBalanceSat) {
+    if (availableBalanceSat == 0) {
+      this.error = gettext("Cannot create transaction. Insufficient funds");
+      return;
+    }
+
     var self = this;
     var fc = profileService.focusedClient;
-    var availableMaxBalance;
-    var feeToSendMaxSat;
     this.error = null;
     this.warning = null;
     this.setOngoingProcess(gettextCatalog.getString('Calculating fee'));
@@ -1246,9 +1249,6 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
         return;
       }
 
-      feeToSendMaxSat = parseInt(((totalBytesToSendMax * feePerKb) / 1000.).toFixed(0));
-      availableMaxBalance = strip((availableBalanceSat - feeToSendMaxSat) * self.satToUnit);
-
       var opts = {};
       opts.feePerKb = feePerKb;
       opts.returnInputs = true;
@@ -1257,21 +1257,14 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       self.setOngoingProcess(gettextCatalog.getString('Retrieving inputs information'));
 
       fc.getSendMaxInfo(opts, function(err, resp) {
+        self.setOngoingProcess();
         if (err) {
-          self.setOngoingProcess();
           self.error = err;
           $scope.$apply();
           return;
         }
         if (resp.amount == 0) {
-          self.setOngoingProcess();
           self.error = gettext("Not enought funds for fee");
-          $scope.$apply();
-          return;
-        }
-        if (availableMaxBalance == 0) {
-          self.setOngoingProcess();
-          self.error = gettext("Cannot create transaction. Insufficient funds");
           $scope.$apply();
           return;
         }
@@ -1280,7 +1273,6 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
           fee: profileService.formatAmount(resp.fee) + ' ' + self.unitName
         });
 
-        self.setOngoingProcess();
         confirmDialog.show(msg, function(confirmed) {
           if (confirmed) {
             self._doSendMax(resp.amount * self.satToUnit);
@@ -1291,16 +1283,17 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
         });
 
         function verifyExcludedUtxos() {
+          var msg = [];
           if (resp.utxosBelowFee > 0) {
             var amountBelowFeeStr = profileService.formatAmount(resp.amountBelowFee) + ' ' + self.unitName;
-            self.warning = gettext("Warning: a total of " + amountBelowFeeStr + " are excluded. All they come from smaller utxos than the network fee provided");
-            $scope.$apply();
+            msg.push(gettext('Note: a total of ' + amountBelowFeeStr + " were excluded. These funds come from UTXOs smaller than the network fee provided."));
           }
           if (resp.utxosAboveMaxSize > 0) {
             var amountAboveMaxSizeStr = profileService.formatAmount(resp.amountAboveMaxSize) + ' ' + self.unitName;
-            self.warning = gettext("Warning: a total of " + amountAboveMaxSizeStr + " are excluded. The total size allowed per transaction was exceeded");
-            $scope.$apply();
+            msg.push(gettext('Note: a total of ' + amountAboveMaxSizeStr + " were excluded. The maximum size allowed for a transaction was exceeded"));
           }
+          self.warning = msg.join('\n');
+          $scope.$apply();
         }
       });
     });
