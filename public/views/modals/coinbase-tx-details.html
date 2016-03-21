@@ -19,24 +19,31 @@
     <div class="p20">
       <img src="img/bought.svg" alt="bought" width="65" ng-show="tx.type == 'buy' && tx.status == 'completed'">
       <img src="img/bought-pending.svg" alt="bought" width="65" 
-      ng-show="(tx.type == 'buy' || (tx.type == 'send' && tx.to)) && tx.status == 'pending'">
+      ng-show="(tx.type == 'buy' || (tx.type == 'send' && tx.to)) && tx.status != 'completed'">
       <img src="img/sold.svg" alt="bought" width="65" ng-show="tx.type == 'sell' && tx.status == 'completed'">
       <img src="img/sold-pending.svg" alt="bought" width="65" 
-        ng-show="(tx.type == 'sell' || (tx.type == 'send' && tx.from)) && tx.status == 'pending'">
+        ng-show="(tx.type == 'sell' || (tx.type == 'send' && tx.from)) && tx.status != 'completed'">
       <img src="img/icon-sent-history.svg" alt="sent" width="65" ng-show="tx.type == 'send' && tx.to">
     </div>
     <div ng-show="tx.status == 'completed'">
       <span ng-show="tx.type == 'buy'">Bought</span>
       <span ng-show="tx.type == 'sell'">Sold</span>
     </div>
-    <div ng-show="tx.status == 'pending'">
-      <span ng-show="tx.type == 'send' && tx.to">Buy</span>
-      <span ng-show="tx.type == 'send' && tx.from">Sell</span>
+    <div ng-show="tx.type == 'send' && (tx.to || tx.from)">
+      <span ng-show="tx.to">Buy</span>
+      <span ng-show="tx.from">Sell</span>
     </div>
     <div class="size-24 text-bold">{{tx.amount.amount}} {{tx.amount.currency}}</div>
     <div class="label gray radius m10b">
       {{tx.native_amount.amount}} {{tx.native_amount.currency}}
     </div>
+  </div>
+
+
+  <div class="m20b box-notification" ng-show="tx.error">
+    <ul class="no-bullet m0 text-warning size-12">
+      <li ng-repeat="err in tx.error.errors" ng-bind-html="err.message"></li>
+    </ul>
   </div>
 
   <ul class="no-bullet size-14">
@@ -63,5 +70,26 @@
       <span class="right">{{tx.description}}</span>
     </li>
   </ul>
+
+  <div class="row m20t p20t white" ng-if="tx.type == 'send' && tx.status != 'completed' && tx.from">
+    <div class="large-6 medium-6 small-6 columns">
+      <button class="button outline round dark-gray expand tiny" 
+              ng-click="cancel();"
+              ng-disabled="loading">
+        <i class="fi-x"></i>
+        <span translate>Cancel</span>
+      </button>
+    </div>
+    <div class="large-6 medium-6 small-6 columns text-right">
+      <button class="button primary round expand tiny" 
+              ng-click="accept()"
+              ng-style="{'background-color':color}"
+              ng-disabled="loading">
+        <i class="fi-check"></i>
+        <span translate>Accept</span>
+      </button>
+    </div>
+  </div>
+
   <div class="extra-margin-bottom"></div>
 </div>

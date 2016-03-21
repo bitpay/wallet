@@ -133,32 +133,21 @@
           <i class="icon-arrow-right3 size-24 right"></i>
         </span>
       </li>
-      <li class="line-b p15 pointer"
-          ng-click="$root.go('receiveCoinbase')">
-        <img src="img/icon-receive-history.svg" alt="receive" width="30">
-        <span class="m10 text-normal text-bold">Transfer from Copay</span>
-        <span class="right text-gray">
-          <i class="icon-arrow-right3 size-24 right"></i>
-        </span>
-      </li>
-      <li class="line-b p15 pointer"
-          ng-click="$root.go('sendCoinbase')">
-        <img src="img/icon-sent-history.svg" alt="send" width="30">
-        <span class="m10 text-normal text-bold">Transfer to Copay</span>
-        <span class="right text-gray">
-          <i class="icon-arrow-right3 size-24 right"></i>
-        </span>
-      </li>
     </ul>
 
     <div ng-show="index.coinbasePendingTransactions && !index.coinbaseError">
       <h4 class="title">Pending</h4>
+      <div class="m20b box-notification" ng-show="index.coinbasePendingError">
+        <ul class="no-bullet m0 text-warning size-12">
+          <li ng-repeat="err in index.coinbasePendingError.errors" ng-bind-html="err.message"></li>
+        </ul>
+      </div>
       <div ng-repeat="(id, tx) in index.coinbasePendingTransactions track by $index"
         ng-click="coinbase.openTxModal(tx)"
         class="row collapse last-transactions-content">
         <div class="large-2 medium-2 small-2 columns">
-          <img src="img/bought-pending.svg" alt="bought" width="24" ng-show="tx.to && tx.status == 'pending'">
-          <img src="img/sold-pending.svg" alt="bought" width="24" ng-show="tx.from && tx.status == 'pending'">
+          <img src="img/bought-pending.svg" alt="bought" width="24" ng-show="tx.to">
+          <img src="img/sold-pending.svg" alt="bought" width="24" ng-show="tx.from">
         </div>
 
         <div class="large-5 medium-5 small-5 columns">
@@ -169,7 +158,10 @@
           </div>
         </div>
         <div class="large-4 medium-4 small-4 columns text-right">
-          <div class="m5t size-12 text-gray">
+          <div ng-show="tx.error" class="m5t size-12 text-warning">
+            Error
+          </div>
+          <div ng-show="!tx.error" class="m5t size-12 text-gray">
             <div ng-show="tx.status == 'completed'">
               <time ng-if="tx.created_at">{{tx.created_at | amTimeAgo}}</time>
             </div>
