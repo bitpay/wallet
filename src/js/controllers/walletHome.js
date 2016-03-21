@@ -1229,30 +1229,30 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     this.setForm(null, amount, null);
   };
 
-  this.sendMax = function() {
+  this.sendMax = function(totalBytesToSendMax, availableBalanceSat) {
     var self = this;
     var fc = profileService.focusedClient;
+    var availableMaxBalance;
+    var feeToSendMaxSat;
     this.error = null;
+    this.warn = null;
     this.setOngoingProcess(gettextCatalog.getString('Calculating fee'));
 
     feeService.getCurrentFeeValue(function(err, feePerKb) {
       self.setOngoingProcess();
+      feeToSendMaxSat = parseInt(((totalBytesToSendMax * feePerKb) / 1000.).toFixed(0));
+      availableMaxBalance = strip((availableBalanceSat - feeToSendMaxSat) * self.satToUnit);
 
-      if (err || lodash.isNull(feePerKb)) {
+      if (err || !lodash.isNumber(feePerKb)) {
         self.error = gettext('Could not get fee value');
         return;
       }
 
       var opts = {};
       opts.feePerKb = feePerKb;
-
+      opts.returnInputs = true;
       var config = configService.getSync();
-      if (!config.wallet.spendUnconfirmed)
-        opts.excludeUnconfirmedUtxos = 1;
-      else
-        opts.excludeUnconfirmedUtxos = null;
-
-      opts.returnInputs = 1;
+      opts.excludeUnconfirmedUtxos = !config.wallet.spendUnconfirmed;
 
       fc.getSendMaxInfo(opts, function(err, resp) {
         if (err) {
@@ -1260,9 +1260,14 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
           $scope.$apply();
           return;
         }
-
-        if (resp.amount <= resp.fee) {
-          self.error = gettextCatalog.getString("The available amount is smaller than network fee provided");
+        console.log(resp);
+        if (resp.amount == 0) {
+          self.error = gettextCatalog.getString("Not enought funds for fee");
+          $scope.$apply();
+          return;
+        }
+        if (availableMaxBalance == 0) {
+          self.error = gettextCatalog.getString("Cannot create transaction. Insufficient funds");
           $scope.$apply();
           return;
         }
