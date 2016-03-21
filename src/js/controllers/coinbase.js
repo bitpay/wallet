@@ -67,6 +67,13 @@ angular.module('copayApp.controllers').controller('coinbaseController',
         $scope.color = fc.backgroundColor;
         $scope.noColor = true;
 
+        $scope.remove = function() {
+          coinbaseService.savePendingTransaction($scope.tx, {remove: true}, function(err) {
+            $rootScope.$emit('Local/CoinbaseTx');
+            $scope.cancel();
+          });
+        };
+
         $scope.cancel = lodash.debounce(function() {
           $modalInstance.dismiss('cancel');
         }, 0, 1000);

@@ -1313,7 +1313,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     });
   };
 
-  self.updateCoinbase = function(opts) {
+  self.updateCoinbase = lodash.debounce(function(opts) {
     if (!self.coinbaseToken || !self.coinbaseAccount) return;
     var accessToken = self.coinbaseToken;
     var accountId = self.coinbaseAccount.id;
@@ -1349,6 +1349,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       });
 
       coinbaseService.getTransactions(accessToken, accountId, function(err, t) {
+console.log('[index.js:1345]',t); //TODO
         if (err) {
           self.coinbaseError = err;
           return;
@@ -1394,7 +1395,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       });
     }
 
-  };
+  }, 1000);
 
   self.sellPending = function(tx) {
     if (!tx) return;
@@ -1407,7 +1408,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
           $log.debug(err);
         });
       } else {
-        coinbaseService.savePendingTransaction(tx, {type: 'sell', status: 'pending'}, function(err) {
+        coinbaseService.savePendingTransaction(tx, {remove: true}, function(err) {
           if (err) $log.debug(err);
         });
       }

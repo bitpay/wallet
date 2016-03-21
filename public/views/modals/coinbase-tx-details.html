@@ -71,22 +71,13 @@
     </li>
   </ul>
 
-  <div class="row m20t p20t white" ng-if="tx.type == 'send' && tx.status != 'completed' && tx.from">
-    <div class="large-6 medium-6 small-6 columns">
+  <div class="m20t p20t">
+    <div class="columns">
       <button class="button outline round dark-gray expand tiny" 
-              ng-click="cancel();"
+              ng-click="remove(tx);"
               ng-disabled="loading">
         <i class="fi-x"></i>
-        <span translate>Cancel</span>
-      </button>
-    </div>
-    <div class="large-6 medium-6 small-6 columns text-right">
-      <button class="button primary round expand tiny" 
-              ng-click="accept()"
-              ng-style="{'background-color':color}"
-              ng-disabled="loading">
-        <i class="fi-check"></i>
-        <span translate>Accept</span>
+        <span translate>Remove</span>
       </button>
     </div>
   </div>
