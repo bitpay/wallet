@@ -71,13 +71,24 @@
     </li>
   </ul>
 
-  <div class="m20t p20t">
+  <div class="row m20t" ng-show="tx.type == 'send' && tx.status == 'completed'">
+    <div class="columns">
+      <button class="outline black round expand"
+              ng-style="{'background-color': '#2b71b1'}"
+              ng-click="confirm(tx);"
+              ng-disabled="loading">
+        Confirm
+      </button>
+    </div>
+  </div>
+
+  <div class="row m20t" ng-show="tx.status == 'error'">
     <div class="columns">
       <button class="button outline round dark-gray expand tiny" 
               ng-click="remove(tx);"
               ng-disabled="loading">
         <i class="fi-x"></i>
-        <span translate>Remove</span>
+        Remove
       </button>
     </div>
   </div>

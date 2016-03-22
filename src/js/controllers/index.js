@@ -1349,7 +1349,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       });
 
       coinbaseService.getTransactions(accessToken, accountId, function(err, t) {
-console.log('[index.js:1345]',t); //TODO
         if (err) {
           self.coinbaseError = err;
           return;
@@ -1357,20 +1356,23 @@ console.log('[index.js:1345]',t); //TODO
         self.coinbaseTransactions = t || null;
       });
 
+
+      coinbaseService.getTransaction(accessToken, accountId, '76baa14a-7a8f-5c0a-83b6-29aac87b347c', function(err, tx) {
+console.log('[index.js:1354]',err, tx); //TODO
+      });
+
       coinbaseService.getPendingTransactions(function(err, txs) {
-        // check if there is completed tx
         self.coinbasePendingTransactions = lodash.isEmpty(txs) ? null : txs;
         lodash.forEach(txs, function(data, txId) {
-          if (data.type == 'sell') return;
+          if (data.type == 'sell' || data.status == 'error' || (data.type == 'send' && data.status == 'completed')) return;
           coinbaseService.getTransaction(accessToken, accountId, txId, function(err, tx) {
             if (err) {
               self.coinbasePendingError = err;
               return;
             }
-            var updatedTx = tx.data;
-            self.coinbasePendingTransactions[txId] = tx.data;
-            if (updatedTx.type == 'send' && updatedTx.status == 'completed' && updatedTx.from) {
-              self.sellPending(updatedTx);
+            self.coinbasePendingTransactions[tx.data.id] = tx.data;
+            if (tx.data.type == 'send' && tx.data.status == 'completed' && tx.data.from) {
+              self.sellPending(tx.data);
             }
           });
         });
@@ -1399,17 +1401,20 @@ console.log('[index.js:1345]',t); //TODO
 
   self.sellPending = function(tx) {
     if (!tx) return;
-    var data = tx.amount;
-    data['commit'] = true;
-    coinbaseService.sellRequest(self.coinbaseToken, self.coinbaseAccount.id, data, function(err, res) {
+    var amount = tx.amount;
+    amount['commit'] = true;
+    coinbaseService.sellRequest(self.coinbaseToken, self.coinbaseAccount.id, amount, function(err, res) {
+console.log('[index.js:1396]', err, res); //TODO
       if (err) {
-        $log.debug(err);
-        coinbaseService.savePendingTransaction(tx, {type: 'sell', status: 'error', error: err}, function(err) {
-          $log.debug(err);
+        coinbaseService.savePendingTransaction(tx, {status: 'error', error: err}, function(err) {
+          if (err) $log.debug(err);
         });
       } else {
-        coinbaseService.savePendingTransaction(tx, {remove: true}, function(err) {
-          if (err) $log.debug(err);
+        coinbaseService.getTransaction(self.coinbaseToken, self.coinbaseAccount.id, res.data.transaction.id, function(err, tx) {
+console.log('[index.js:1407]',err, tx); //TODO
+          coinbaseService.savePendingTransaction(tx.data, {}, function(err) {
+            if (err) $log.debug(err);
+          });
         });
       }
     }); 

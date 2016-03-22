@@ -310,14 +310,13 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
       }
       var tx = oldTxs || {};
       tx[ctx.id] = ctx;
-      if (opts) {
-        if (opts.remove) {
-          delete(tx[ctx.id]);
-        } else {
-          tx[ctx.id] = lodash.assign(ctx, opts);
-        }
+      if (opts && opts.error) {
+        tx[ctx.id] = lodash.assign(tx[ctx.id], opts);
       }
-
+      if (opts && opts.remove) {
+        delete(tx[ctx.id]);
+      }
+console.log('[coinbaseService.js:316]',tx); //TODO
       tx = JSON.stringify(tx);
 
       storageService.setCoinbaseTxs(network, tx, function(err) {
