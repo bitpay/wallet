@@ -1356,15 +1356,10 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         self.coinbaseTransactions = t || null;
       });
 
-
-      coinbaseService.getTransaction(accessToken, accountId, '76baa14a-7a8f-5c0a-83b6-29aac87b347c', function(err, tx) {
-console.log('[index.js:1354]',err, tx); //TODO
-      });
-
       coinbaseService.getPendingTransactions(function(err, txs) {
         self.coinbasePendingTransactions = lodash.isEmpty(txs) ? null : txs;
         lodash.forEach(txs, function(data, txId) {
-          if (data.type == 'sell' || data.status == 'error' || (data.type == 'send' && data.status == 'completed')) return;
+          if ((data.type == 'sell' && data.status == 'completed') || data.status == 'error' || (data.type == 'send' && data.status == 'completed')) return;
           coinbaseService.getTransaction(accessToken, accountId, txId, function(err, tx) {
             if (err) {
               self.coinbasePendingError = err;
@@ -1410,10 +1405,16 @@ console.log('[index.js:1396]', err, res); //TODO
           if (err) $log.debug(err);
         });
       } else {
-        coinbaseService.getTransaction(self.coinbaseToken, self.coinbaseAccount.id, res.data.transaction.id, function(err, tx) {
-console.log('[index.js:1407]',err, tx); //TODO
-          coinbaseService.savePendingTransaction(tx.data, {}, function(err) {
-            if (err) $log.debug(err);
+        coinbaseService.savePendingTransaction(tx, {remove: true}, function(err) {
+          if (!res.data.transaction) return;
+          coinbaseService.getTransaction(self.coinbaseToken, self.coinbaseAccount.id, res.data.transaction.id, function(err, updatedTx) {
+  console.log('[index.js:1407]',err, updatedTx); //TODO
+            coinbaseService.savePendingTransaction(updatedTx.data, {}, function(err) {
+              if (err) $log.debug(err);
+              $timeout(function() {
+                self.updateCoinbase({updateAccount: true});
+              }, 1000);
+            });
           });
         });
       }
