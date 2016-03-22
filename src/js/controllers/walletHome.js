@@ -336,23 +336,26 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
           }, function(err, paypro) {
             if (err) return;
             tx.paypro = paypro;
-            $scope.paymentExpired = tx.paypro.expires <= now;
-            if (!$scope.paymentExpired)
-              paymentTimeControl(tx.paypro.expires);
-            $scope.$apply();
+            paymentTimeControl(tx.paypro.expires);
           });
         }
       };
 
-      function paymentTimeControl(timeToExpire) {
-        $scope.expires = timeToExpire;
-        var countDown = $interval(function() {
-          if ($scope.expires <= now) {
-            $scope.paymentExpired = true;
-            $interval.cancel(countDown);
-          }
-          $scope.expires--;
+      function paymentTimeControl(expirationTime) {
+        $scope.paymentExpired = false;
+        var countDown;
+        setExpirationTime();
+        countDown = $interval(function() {
+          setExpirationTime();
         }, 1000);
+
+        function setExpirationTime() {
+          if (moment().isAfter(expirationTime * 1000)) {
+            $scope.paymentExpired = true;
+            if (countDown) $interval.cancel(countDown);
+          }
+          $scope.expires = moment(expirationTime * 1000).fromNow();
+        };
       };
 
       lodash.each(['TxProposalRejectedBy', 'TxProposalAcceptedBy', 'transactionProposalRemoved', 'TxProposalRemoved', 'NewOutgoingTx', 'UpdateTx'], function(eventName) {
@@ -1107,26 +1110,25 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     }, 1);
   };
 
-  function _paymentTimeControl(timeToExpire) {
-    var now = Math.floor(Date.now() / 1000);
-
-    if (timeToExpire <= now) {
-      setExpiredPaymentValues();
-      return;
-    }
-
-    self.timeToExpire = timeToExpire;
-    var countDown = $interval(function() {
-      if (self.timeToExpire <= now) {
-        setExpiredPaymentValues();
-        $interval.cancel(countDown);
-      }
-      self.timeToExpire--;
+  function _paymentTimeControl(expirationTime) {
+    self.paymentExpired = false;
+    var countDown;
+    setExpirationTime();
+    countDown = $interval(function() {
+      setExpirationTime();
     }, 1000);
+
+    function setExpirationTime() {
+      if (moment().isAfter(expirationTime * 1000)) {
+        setExpiredPaymentValues();
+        if (countDown) $interval.cancel(countDown);
+      }
+      self.remainingTimeStr = moment(expirationTime * 1000).fromNow();
+    };
 
     function setExpiredPaymentValues() {
       self.paymentExpired = true;
-      self.timeToExpire = null;
+      self.remainingTimeStr = null;
       self._paypro = null;
       self.error = gettext('Cannot sign: The payment request has expired');
     };
