@@ -1107,26 +1107,24 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     }, 1);
   };
 
-  function _paymentTimeControl(timeToExpire) {
-    var now = Math.floor(Date.now() / 1000);
-
-    if (timeToExpire <= now) {
-      setExpiredPaymentValues();
-      return;
-    }
-
-    self.timeToExpire = timeToExpire;
-    var countDown = $interval(function() {
-      if (self.timeToExpire <= now) {
-        setExpiredPaymentValues();
-        $interval.cancel(countDown);
-      }
-      self.timeToExpire--;
+  function _paymentTimeControl(expirationTime) {
+    var countDown;
+    setEpirationTime();
+    countDown = $interval(function() {
+      setEpirationTime();
     }, 1000);
+
+    function setEpirationTime() {
+      if (moment().isAfter(expirationTime * 1000)) {
+        setExpiredPaymentValues();
+        if (countDown) $interval.cancel(countDown);
+      }
+      self.remainingTimeStr = moment(expirationTime * 1000).fromNow();
+    };
 
     function setExpiredPaymentValues() {
       self.paymentExpired = true;
-      self.timeToExpire = null;
+      self.remainingTimeStr = null;
       self._paypro = null;
       self.error = gettext('Cannot sign: The payment request has expired');
     };
