@@ -279,13 +279,13 @@
           <a class="text-gray size-12"
              ng-show="index.historyShowMore"
              ng-click="index.showMore()">
-            <span translate>Show more</span> 
+            <span translate>Show more</span>
             <span ng-if="!index.isSearching">
               ({{index.completeHistory.length - index.txHistory.length}})
-            </span> 
+            </span>
             <span ng-if="index.isSearching">
               ({{index.result.length - index.txHistorySearchResults.length}})
-            </span> 
+            </span>
             <i class="icon-arrow-down4"></i>
           </a>
         </div>
@@ -394,7 +394,7 @@
           </a>
           <div ng-show="!home.paymentExpired && home._paypro">
             <span translate>Payment expires</span>
-            <time> {{home.timeToExpire * 1000 | amTimeAgo}}</time>
+            <time> {{home.remainingTimeStr}}</time>
           </div>
         </h4>
         <div class="camera-icon" ng-show="index.isComplete">
