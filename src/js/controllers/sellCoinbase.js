@@ -96,7 +96,6 @@ angular.module('copayApp.controllers').controller('sellCoinbaseController',
     };
 
     this.sellRequest = function(token, account, ctx) {
-      var self = this;
       var accountId = account.id;
       var amount = ctx.amount;
       if (!amount) return;
@@ -112,7 +111,6 @@ angular.module('copayApp.controllers').controller('sellCoinbaseController',
     };
 
     this.confirmSell = function(token, account, sell) {
-      var self = this;
       self.error = null;
       var accountId = account.id;
       var sellId = sell.id;
@@ -180,7 +178,7 @@ angular.module('copayApp.controllers').controller('sellCoinbaseController',
               if (accept) { 
                 self.confirmTx(txp, function(err, tx) {
                   if (err) { 
-                    self.error = err;
+                    self.error = {errors: [{ message: 'Could not create transaction: ' + err.message }]};
                     return;
                   }
                   self.loading = 'Checking transaction...';

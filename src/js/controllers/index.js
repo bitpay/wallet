@@ -1359,7 +1359,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       coinbaseService.getPendingTransactions(function(err, txs) {
         self.coinbasePendingTransactions = lodash.isEmpty(txs) ? null : txs;
         lodash.forEach(txs, function(data, txId) {
-          if ((data.type == 'sell' && data.status == 'completed') || data.status == 'error' || (data.type == 'send' && data.status == 'completed')) return;
+          if ((data.type == 'sell' && data.status == 'completed') || 
+              data.status == 'error' || 
+              (data.type == 'send' && data.status == 'completed')) return;
           coinbaseService.getTransaction(accessToken, accountId, txId, function(err, tx) {
             if (err) {
               self.coinbasePendingError = err;
