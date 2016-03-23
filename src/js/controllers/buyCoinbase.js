@@ -121,56 +121,62 @@ angular.module('copayApp.controllers').controller('buyCoinbaseController',
 
           self.loading = 'Getting transaction...';
           coinbaseService.getTransaction(token, accountId, tx.id, function(err, updatedTx) {
-            self.loading = null;
             if (err) $log.debug(err);
-            if (updatedTx.data.status == 'completed') {
-              // Send btc from coinbase to copay
-              self.receiveFromCoinbase(token, account, updatedTx.data);
-            } else {
-              coinbaseService.savePendingTransaction(updatedTx.data, null, function(err) {
+            addressService.getAddress(self.selectedWalletId, false, function(err, addr) {
+              if (err) { 
+                self.loading = null;
+                self.error = {errors: [{ message: 'Could not create address' }]};
+                return;
+              }
+              coinbaseService.savePendingTransaction(updatedTx.data, {toAddr: addr}, function(err) {
+                self.loading = null;
                 if (err) $log.debug(err);
-                self.success = updatedTx.data;
-                $timeout(function() {
-                  $scope.$emit('Local/CoinbaseTx');
-                }, 1000);
+                updatedTx.data['toAddr'] = addr;
+                if (updatedTx.data.status == 'completed') {
+                  self.sendToCopay(token, account, updatedTx.data);
+                } else {
+                  self.success = updatedTx.data;
+                  $timeout(function() {
+                    $scope.$emit('Local/CoinbaseTx');
+                  }, 1000);
+                }
               });
-            }
+            });
           });
         }
       });
     };
 
-    this.receiveFromCoinbase = function(token, account, tx) {
+    this.sendToCopay = function(token, account, tx) {
       self.error = null;
       var accountId = account.id;
 
       self.loading = 'Sending funds to Copay...';
-      addressService.getAddress(self.selectedWalletId, false, function(err, addr) {
-        if (err) { 
-          self.loading = null;
-          self.error = {errors: [{ message: 'Could not create address' }]};
-          return;
+      var data = {
+        to: tx.toAddr,
+        amount: tx.amount.amount,
+        currency: tx.amount.currency,
+        description: 'To Copay Wallet: ' + self.selectedWalletName
+      };
+      coinbaseService.sendTo(token, accountId, data, function(err, res) {
+        self.loading = null;
+        if (err) {
+          self.error = err;
+        } else {
+          self.receiveInfo = res.data;
+          if (!res.data.id) return;
+          coinbaseService.getTransaction(token, accountId, res.data.id, function(err, sendTx) {
+            coinbaseService.savePendingTransaction(tx, {remove: true}, function(err) {
+              coinbaseService.savePendingTransaction(sendTx.data, {}, function(err) {
+                $timeout(function() {
+                  $scope.$emit('Local/CoinbaseTx');
+                }, 1000);
+              });
+            });
+          });
         }
-        var data = {
-          to: addr,
-          amount: tx.amount.amount,
-          currency: tx.amount.currency,
-          description: 'To Copay Wallet: ' + self.selectedWalletName
-        };
-        coinbaseService.sendTo(token, accountId, data, function(err, res) {
-          self.loading = null;
-          if (err) {
-            self.error = err;
-          } else {
-            self.receiveInfo = res.data;
-            $timeout(function() {
-              $scope.$emit('Local/CoinbaseTx');
-            }, 1000);
-          }
 
-        });
       });
-      
     };
 
 

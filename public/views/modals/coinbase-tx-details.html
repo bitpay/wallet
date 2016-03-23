@@ -23,7 +23,6 @@
       <img src="img/sold.svg" alt="bought" width="65" ng-show="tx.type == 'sell' && tx.status == 'completed'">
       <img src="img/sold-pending.svg" alt="bought" width="65" 
         ng-show="(tx.type == 'sell' || (tx.type == 'send' && tx.from)) && tx.status != 'completed'">
-      <img src="img/icon-sent-history.svg" alt="sent" width="65" ng-show="tx.type == 'send' && tx.to">
     </div>
     <div ng-show="tx.status == 'completed'">
       <span ng-show="tx.type == 'buy'">Bought</span>

@@ -1360,6 +1360,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         self.coinbasePendingTransactions = lodash.isEmpty(txs) ? null : txs;
         lodash.forEach(txs, function(data, txId) {
           if ((data.type == 'sell' && data.status == 'completed') || 
+              (data.type == 'buy' && data.status == 'completed') ||
               data.status == 'error' || 
               (data.type == 'send' && data.status == 'completed')) return;
           coinbaseService.getTransaction(accessToken, accountId, txId, function(err, tx) {
@@ -1370,6 +1371,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
             self.coinbasePendingTransactions[tx.data.id] = tx.data;
             if (tx.data.type == 'send' && tx.data.status == 'completed' && tx.data.from) {
               self.sellPending(tx.data);
+            } else if (tx.data.type == 'buy' && tx.data.status == 'pending' && tx.data.buy) {
+              self.buyPending(tx.data);
             } else {
               coinbaseService.savePendingTransaction(tx.data, {}, function(err) {
                 if (err) $log.debug(err);
@@ -1399,6 +1402,34 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     }
 
   }, 1000);
+
+  self.buyPending = function(tx) {
+    if (!tx) return;
+    var data = {
+      to: tx.toAddr,
+      amount: tx.amount.amount,
+      currency: tx.amount.currency,
+      description: 'To Copay Wallet'
+    };
+    coinbaseService.sendTo(self.coinbaseToken, self.coinbaseAccount.id, data, function(err, res) {
+      if (err) {
+        coinbaseService.savePendingTransaction(tx, {status: 'error', error: err}, function(err) {
+          if (err) $log.debug(err);
+        });
+      } else {
+        if (!res.data.id) return;
+        coinbaseService.getTransaction(self.coinbaseToken, self.coinbaseAccount.id, res.data.id, function(err, sendTx) {
+          coinbaseService.savePendingTransaction(tx, {remove: true}, function(err) {
+            coinbaseService.savePendingTransaction(sendTx.data, {}, function(err) {
+              $timeout(function() {
+                self.updateCoinbase({updateAccount: true});
+              }, 1000);
+            });
+          });
+        });
+      }
+    });
+  };
 
   self.sellPending = function(tx) {
     if (!tx) return;
