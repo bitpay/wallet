@@ -316,7 +316,6 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
       if (opts && opts.remove) {
         delete(tx[ctx.id]);
       }
-console.log('[coinbaseService.js:316]',tx); //TODO
       tx = JSON.stringify(tx);
 
       storageService.setCoinbaseTxs(network, tx, function(err) {

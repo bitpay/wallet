@@ -30,8 +30,12 @@
       <span ng-show="tx.type == 'sell'">Sold</span>
     </div>
     <div ng-show="tx.type == 'send' && (tx.to || tx.from)">
-      <span ng-show="tx.to">Buy</span>
-      <span ng-show="tx.from">Sell</span>
+      <span ng-show="tx.to">Receiving purchased bitcoins</span>
+      <span ng-show="tx.from">Sending bitcoin to sell</span>
+    </div>
+    <div ng-show="(tx.type == 'sell' || tx.type == 'buy') && tx.status == 'pending'">
+      <span ng-show="tx.type == 'buy'">Buying bitcoin</span>
+      <span ng-show="tx.type == 'sell'">Selling bitcoin</span>
     </div>
     <div class="size-24 text-bold">{{tx.amount.amount}} {{tx.amount.currency}}</div>
     <div class="label gray radius m10b">
@@ -71,19 +75,11 @@
     </li>
   </ul>
 
-  <div class="row m20t" ng-show="tx.type == 'send' && tx.status == 'completed'">
+  <div class="row m20t p20t line-t" ng-show="tx.status == 'error' || (tx.type == 'send' && (tx.to || tx.from))">
     <div class="columns">
-      <button class="outline black round expand"
-              ng-style="{'background-color': '#2b71b1'}"
-              ng-click="confirm(tx);"
-              ng-disabled="loading">
-        Confirm
-      </button>
-    </div>
-  </div>
-
-  <div class="row m20t" ng-show="tx.status == 'error'">
-    <div class="columns">
+      <p class="text-center size-12 text-gray">
+        This action will cancel or remove the transaction without buy/sell.
+      </p>
       <button class="button outline round dark-gray expand tiny" 
               ng-click="remove(tx);"
               ng-disabled="loading">

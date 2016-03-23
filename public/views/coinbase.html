@@ -136,7 +136,7 @@
     </ul>
 
     <div ng-show="index.coinbasePendingTransactions && !index.coinbaseError">
-      <h4 class="title">Pending</h4>
+      <h4 class="title">Activity</h4>
       <div class="m20b box-notification" ng-show="index.coinbasePendingError">
         <ul class="no-bullet m0 text-warning size-12">
           <li ng-repeat="err in index.coinbasePendingError.errors" ng-bind-html="err.message"></li>
@@ -146,14 +146,16 @@
         ng-click="coinbase.openTxModal(tx)"
         class="row collapse last-transactions-content">
         <div class="large-2 medium-2 small-2 columns">
-          <img src="img/bought-pending.svg" alt="bought" width="24" ng-show="tx.to || tx.type == 'buy'">
-          <img src="img/sold-pending.svg" alt="sold" width="24" ng-show="tx.from || tx.type == 'sell'">
+          <img src="img/bought-pending.svg" alt="bought" width="24" ng-show="tx.to && tx.type == 'send'">
+          <img src="img/bought.svg" alt="bought" width="30" ng-show="!tx.to && tx.type == 'buy' && tx.status == 'completed'">
+          <img src="img/sold-pending.svg" alt="sold" width="24" ng-show="tx.from && tx.type == 'send'">
+          <img src="img/sold.svg" alt="sold" width="30" ng-show="!tx.from && tx.type == 'sell' && tx.status == 'completed'">
         </div>
 
         <div class="large-5 medium-5 small-5 columns">
           <div class="size-12 m5t">
-            <span ng-show="tx.type == 'sent' && tx.from">Sell</span>
-            <span ng-show="tx.type == 'sent' && tx.to">Buy</span>
+            <span ng-show="tx.type == 'sell' && tx.status == 'completed'">Sold</span>
+            <span ng-show="tx.type == 'buy' && tx.status == 'completed'">Bought</span>
             <span class="text-bold">{{tx.amount.amount}} {{tx.amount.currency}}</span>
           </div>
         </div>
@@ -177,7 +179,7 @@
     </div>
 
     <div ng-show="index.coinbaseTransactions">
-      <h4 class="title">Activity</h4>
+      <h4 class="title">Activity from Coinbase</h4>
 
       <div ng-show="index.coinbaseTransactions && index.coinbaseTransactions.data.length == 0"
         class="size-12 p10 text-center text-gray">
