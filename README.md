@@ -28,6 +28,7 @@ Binary versions of Copay are available for download at [Copay.io](https://copay.
 
 ## Installation
 
+### From source
 Clone the source:
 
 ```sh
@@ -55,6 +56,11 @@ Then visit `localhost:3000` in your browser.
 
 > **Note:** Other browser extensions could have access to Copay internal data and compromise the user's private key when running Copay as a web page.  For optimal security, you should disable all third-party browser extensions when using Copay in this manner.
 
+### Using homebrew
+Copay is available on the [homebrew](http://brew.sh) package manager on Mac OS X. If homebrew is installed then simply do
+
+    brew cask install copay
+    
 ## Build Copay App Bundles
 
 ### Android
