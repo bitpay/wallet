@@ -130,7 +130,6 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   var confirm_msg = gettextCatalog.getString('Confirm');
 
   this.openDestinationAddressModal = function(wallets, address) {
-    self.destinationWalletNeedsBackup = null;
     $rootScope.modalOpened = true;
     var fc = profileService.focusedClient;
     self.lockAddress = false;
@@ -247,22 +246,26 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       };
 
       $scope.selectWallet = function(walletId, walletName) {
-        $scope.gettingAddress = true;
-        $scope.selectedWalletName = walletName;
-        $timeout(function() {
-          $scope.$apply();
-        });
-        addressService.getAddress(walletId, false, function(err, addr) {
-          $scope.gettingAddress = false;
+        profileService.isBackupNeeded(walletId, function(needsBackup) {
+          $scope.needsBackup = {};
+          $scope.needsBackup[walletId] = needsBackup;
+          if (needsBackup) return;
 
-          if (err) {
-            self.error = err;
-            $modalInstance.dismiss('cancel');
-            return;
-          }
+          $scope.gettingAddress = true;
+          $scope.selectedWalletName = walletName;
+          $timeout(function() {
+            $scope.$apply();
+          });
 
-          profileService.isBackupNeeded(walletId, function(needsBackup) {
-            self.destinationWalletNeedsBackup = needsBackup;
+          addressService.getAddress(walletId, false, function(err, addr) {
+            $scope.gettingAddress = false;
+
+            if (err) {
+              self.error = err;
+              $modalInstance.dismiss('cancel');
+              return;
+            }
+
             $modalInstance.close(addr);
           });
         });
@@ -859,7 +862,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   };
 
   this.submitForm = function() {
-    if (!$scope._amount || !$scope._address || self.destinationWalletNeedsBackup) return;
+    if (!$scope._amount || !$scope._address) return;
     var fc = profileService.focusedClient;
     var unitToSat = this.unitToSatoshi;
     var currentSpendUnconfirmed = configWallet.spendUnconfirmed;
@@ -991,7 +994,6 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
   this.resetForm = function() {
     this.resetError();
-    this.destinationWalletNeedsBackup = null;
     this._paypro = null;
     this.lockedCurrentFeePerKb = null;
 
