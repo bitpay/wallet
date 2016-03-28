@@ -28,7 +28,7 @@
         <div translate>Create, join or import</div>
       </a>
     </li>
-    <li ng-show="index.glideraEnabled">
+    <li ng-show="index.glideraEnabled && index.isComplete">
       <a ng-click="sidebar.closeMenu(); $root.go('glidera')" class="oh">
         <i class="icon-arrow-right3 size-18 right m10t vm"></i>
         <i class="icon-bank size-24 icon vm"></i>
