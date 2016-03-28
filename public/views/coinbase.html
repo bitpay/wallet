@@ -116,7 +116,7 @@
       </div>
     </div>
 
-    <ul ng-show="index.coinbaseAuthInfo" class="no-bullet m0 size-12">
+    <ul ng-show="index.coinbaseAccount" class="no-bullet m0 size-12">
       <li class="line-b line-t p15 pointer"
           ng-click="$root.go('buyCoinbase')">
         <img src="img/buy-bitcoin.svg" alt="buy bitcoin" width="30">
@@ -178,64 +178,6 @@
       </div>
     </div>
 
-    <div ng-show="index.coinbaseTransactions">
-      <h4 class="title">Activity from Coinbase</h4>
-
-      <div ng-show="index.coinbaseTransactions && index.coinbaseTransactions.data.length == 0"
-        class="size-12 p10 text-center text-gray">
-        No activity in your account
-      </div>
-      <div ng-repeat="tx in index.coinbaseTransactions.data"
-        ng-click="coinbase.openTxModal(tx)"
-        class="row collapse last-transactions-content">
-        <div class="large-2 medium-2 small-2 columns">
-          <img src="img/bought.svg" alt="bought" width="30" ng-show="tx.type == 'buy' && tx.status == 'completed'">
-          <img src="img/bought-pending.svg" alt="bought" width="24" ng-show="tx.type == 'buy' && tx.status == 'pending'">
-          <img src="img/sold.svg" alt="bought" width="30" ng-show="tx.type == 'sell' && tx.status == 'completed'">
-          <img src="img/sold-pending.svg" alt="bought" width="24" ng-show="tx.type == 'sell' && tx.status == 'pending'">
-          <img src="img/icon-sent-history.svg" alt="sent" width="30" ng-show="tx.type == 'send' && tx.to">
-          <img src="img/icon-receive-history.svg" alt="receive" width="30" ng-show="tx.type == 'send' && tx.from">
-          <span ng-show="tx.type != 'buy' && tx.type != 'sell' && tx.type != 'send'">&nbsp;</span>
-        </div>
-
-        <div class="large-5 medium-5 small-5 columns">
-          <div class="size-12 m5t">
-            <span ng-show="tx.type == 'buy'">Bought</span>
-            <span ng-show="tx.type == 'sell'">Sold</span>
-            <span class="text-bold">{{tx.amount.amount}} {{tx.amount.currency}}</span>
-          </div>
-        </div>
-        <div class="large-4 medium-4 small-4 columns text-right">
-          <div class="m5t size-12 text-gray">
-            <div ng-show="tx.status == 'completed'">
-              <time ng-if="tx.created_at">{{tx.created_at | amTimeAgo}}</time>
-            </div>
-            <div ng-show="tx.status == 'pending'">
-              <span class="label outline gray radius text-gray text-info" ng-if="tx.status == 'pending'">Pending</span>
-            </div>
-          </div>
-        </div>
-        <div class="large-1 medium-1 small-1 columns text-right">
-          <i class="icon-arrow-right3 size-18"></i>
-        </div>
-      </div>
-      <div class="m15 oh">
-        <a class="text-gray size-12 text-left" 
-           ng-if="index.coinbaseTransactions.pagination.previous_uri"
-           ng-click="index.coinbaseTransactions = index.updateCoinbase(
-           {pagination: index.coinbaseTransactions.pagination.previous_uri})">
-          <i class="icon-arrow-left"></i>
-          Previous page
-        </a>
-        <a class="text-gray size-12 right" 
-           ng-if="index.coinbaseTransactions.pagination.next_uri"
-           ng-click="index.coinbaseTransactions = index.updateCoinbase(
-           {pagination: index.coinbaseTransactions.pagination.next_uri})">
-          Next page
-          <i class="icon-arrow-right"></i>
-        </a>
-      </div>
-    </div>
   </div>
 
   <div class="extra-margin-bottom"></div>

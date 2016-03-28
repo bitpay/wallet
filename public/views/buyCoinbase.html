@@ -36,6 +36,24 @@
 
       <form name="buyCoinbaseForm" 
           ng-submit="buy.buyRequest(index.coinbaseToken, index.coinbaseAccount)" novalidate>
+
+        <div ng-if="index.coinbaseToken" ng-init="buy.getPaymentMethods(index.coinbaseToken)">
+        <label>Payment method</label>
+        <select 
+          ng-model="selectedPaymentMethod.id" 
+          ng-options="item.id as item.name for item in buy.paymentMethods">
+        </select>
+
+        <div class="m20b size-12 text-gray" ng-show="selectedPaymentMethod.limits.buy[0]">
+          Total available: {{selectedPaymentMethod.limits.buy[0].total.amount}}
+          {{selectedPaymentMethod.limits.buy[0].total.currency}}<br>
+          Remaining: {{selectedPaymentMethod.limits.buy[0].remaining.amount}}
+          {{selectedPaymentMethod.limits.buy[0].remaining.currency}}
+        </div>
+
+        </div>
+
+
         <label>Amount 
           <span 
             ng-if="index.coinbaseToken"

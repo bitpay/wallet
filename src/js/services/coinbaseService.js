@@ -17,7 +17,8 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
       + 'wallet:sells:create,'
       + 'wallet:transactions:read,'
       + 'wallet:transactions:send,'
-      + 'wallet:payment-methods:read';
+      + 'wallet:payment-methods:read,'
+      + 'wallet:payment-methods:limits';
 
     if (isCordova) {
       credentials.REDIRECT_URI = 'bitcoin://coinbase';
@@ -221,6 +222,7 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
     var data = {
       amount: data.amount,
       currency: data.currency,
+      payment_method: data.payment_method || null,
       commit: data.commit || false
     };
     $http(_post('/accounts/' + accountId + '/sells', token, data)).then(function(data) {
@@ -246,6 +248,7 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
     var data = {
       amount: data.amount,
       currency: data.currency,
+      payment_method: data.payment_method || null,
       commit: false
     };
     $http(_post('/accounts/' + accountId + '/buys', token, data)).then(function(data) {

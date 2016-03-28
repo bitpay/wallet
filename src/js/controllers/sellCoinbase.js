@@ -34,6 +34,24 @@ angular.module('copayApp.controllers').controller('sellCoinbaseController',
       }; 
     };
 
+    this.getPaymentMethods = function(token) {
+      coinbaseService.getPaymentMethods(token, function(err, p) {
+        if (err) {
+          self.error = err;
+          return;
+        }
+        self.paymentMethods = [];
+        lodash.each(p.data, function(pm) {
+          if (pm.allow_sell) {
+            self.paymentMethods.push(pm);
+          }
+          if (pm.allow_sell && pm.primary_sell) {
+            $scope.selectedPaymentMethod = pm;
+          }
+        });
+      });
+    };
+
     this.getPrice = function(token) {
       var currency = 'USD';
       coinbaseService.sellPrice(token, currency, function(err, s) {
@@ -98,17 +116,18 @@ angular.module('copayApp.controllers').controller('sellCoinbaseController',
     };
 
     this.sellRequest = function(token, account, ctx) {
+      if (!ctx.amount) return;
       var accountId = account.id;
-      var amount = ctx.amount;
-      if (!amount) return;
+      var data = ctx.amount;
+      data['payment_method'] = $scope.selectedPaymentMethod.id || null;
       this.loading = 'Sending request...';
-      coinbaseService.sellRequest(token, accountId, amount, function(err, data) {
+      coinbaseService.sellRequest(token, accountId, data, function(err, sell) {
         self.loading = null;
         if (err) {
           self.error = err;
           return;
         }
-        self.sellInfo = data.data;
+        self.sellInfo = sell.data;
       });
     };
 

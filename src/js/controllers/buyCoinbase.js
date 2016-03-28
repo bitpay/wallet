@@ -34,6 +34,24 @@ angular.module('copayApp.controllers').controller('buyCoinbaseController',
       }; 
     };
 
+    this.getPaymentMethods = function(token) {
+      coinbaseService.getPaymentMethods(token, function(err, p) {
+        if (err) {
+          self.error = err;
+          return;
+        }
+        self.paymentMethods = [];
+        lodash.each(p.data, function(pm) {
+          if (pm.allow_buy) {
+            self.paymentMethods.push(pm);
+          }
+          if (pm.allow_buy && pm.primary_buy) {
+            $scope.selectedPaymentMethod = pm;
+          }
+        });
+      });
+    };
+
     this.getPrice = function(token) {
       var currency = 'USD';
       coinbaseService.buyPrice(token, currency, function(err, b) {
@@ -95,7 +113,8 @@ angular.module('copayApp.controllers').controller('buyCoinbaseController',
       if (!amount) return;
       var dataSrc = {
         amount: amount,
-        currency: currency
+        currency: currency,
+        payment_method: $scope.selectedPaymentMethod.id || null
       };
       this.loading = 'Sending request...';
       coinbaseService.buyRequest(token, accountId, dataSrc, function(err, data) {

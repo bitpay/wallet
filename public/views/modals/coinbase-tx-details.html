@@ -74,10 +74,10 @@
     </li>
   </ul>
 
-  <div class="row m20t p20t line-t" ng-show="tx.status == 'error' || (tx.type == 'send' && (tx.to || tx.from))">
+  <div class="row m20t p20t line-t" ng-show="tx.status == 'error' || (tx.type == 'send' && tx.status == 'pending')">
     <div class="columns">
       <p class="text-center size-12 text-gray">
-        This action will cancel or remove the transaction without buy/sell.
+        This action will remove the transaction.
       </p>
       <button class="button outline round dark-gray expand tiny" 
               ng-click="remove(tx);"

@@ -95,6 +95,14 @@
           <i class="db fi-arrow-down size-24 m10v"></i>
         </div>
 
+        <div ng-if="index.coinbaseToken" ng-init="sell.getPaymentMethods(index.coinbaseToken)">
+          <label>Deposit into</label>
+          <select 
+            ng-model="selectedPaymentMethod.id" 
+            ng-options="item.id as item.name for item in sell.paymentMethods">
+          </select>
+        </div>
+
         <label>Coinbase Account</label>
         <div class="disabled-input">
           {{index.coinbaseAccount.name}}
