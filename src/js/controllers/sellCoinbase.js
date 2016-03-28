@@ -35,7 +35,9 @@ angular.module('copayApp.controllers').controller('sellCoinbaseController',
     };
 
     this.getPrice = function(token) {
-      coinbaseService.sellPrice(token, function(err, s) {
+      var currency = 'USD';
+      coinbaseService.sellPrice(token, currency, function(err, s) {
+        if (err) return;
         self.sellPrice = s.data || null;
       });
     };

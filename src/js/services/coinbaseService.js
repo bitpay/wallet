@@ -164,8 +164,8 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
     });
   };
 
-  root.sellPrice = function(token, cb) {
-    $http(_get('/prices/sell', token)).then(function(data) {
+  root.sellPrice = function(token, currency, cb) {
+    $http(_get('/prices/sell?currency=' + currency, token)).then(function(data) {
       $log.info('Coinbase Sell Price: SUCCESS');
       return cb(null, data.data); 
     }, function(data) {
@@ -174,8 +174,8 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
     });
   }; 
 
-  root.buyPrice = function(token, cb) {
-    $http(_get('/prices/buy', token)).then(function(data) {
+  root.buyPrice = function(token, currency, cb) {
+    $http(_get('/prices/buy?currency=' + currency, token)).then(function(data) {
       $log.info('Coinbase Buy Price: SUCCESS');
       return cb(null, data.data); 
     }, function(data) {
