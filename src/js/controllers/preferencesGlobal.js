@@ -18,6 +18,9 @@ angular.module('copayApp.controllers').controller('preferencesGlobalController',
       $scope.glideraEnabled = config.glidera.enabled;
       $scope.glideraTestnet = config.glidera.testnet;
       $scope.pushNotifications = config.pushNotifications.enabled;
+      cordova.plugins.diagnostic.isRemoteNotificationsEnabled(function(isEnabled) {
+        $scope.PNEnabledByUser = isEnabled;
+      });
     };
 
     var unwatchSpendUnconfirmed = $scope.$watch('spendUnconfirmed', function(newVal, oldVal) {
