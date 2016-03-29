@@ -57,7 +57,6 @@ angular.module('copayApp.controllers').controller('coinbaseController',
     };
 
     this.openTxModal = function(tx) {
-console.log('[coinbase.js:59]',tx); //TODO
       $rootScope.modalOpened = true;
       var self = this;
       var config = configService.getSync().wallet.settings;
