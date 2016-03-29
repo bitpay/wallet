@@ -36,9 +36,13 @@
       <span ng-show="tx.type == 'buy'">Buying bitcoin</span>
       <span ng-show="tx.type == 'sell'">Selling bitcoin</span>
     </div>
-    <div class="size-24 text-bold">{{tx.amount.amount}} {{tx.amount.currency}}</div>
+    <div class="size-24 text-bold">
+      <span ng-if="tx.type == 'sell' || (tx.type == 'send' && tx.from)">-</span>{{tx.amount.amount.replace('-','')}} 
+      {{tx.amount.currency}}
+    </div>
     <div class="label gray radius m10b">
-      {{tx.native_amount.amount}} {{tx.native_amount.currency}}
+      <span ng-if="tx.type == 'sell' || (tx.type == 'send' && tx.from)">-</span>{{tx.native_amount.amount.replace('-','')}}
+      {{tx.native_amount.currency}}
     </div>
   </div>
 

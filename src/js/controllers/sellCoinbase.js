@@ -116,6 +116,7 @@ angular.module('copayApp.controllers').controller('sellCoinbaseController',
     };
 
     this.sellRequest = function(token, account, ctx) {
+      self.error = null;
       if (!ctx.amount) return;
       var accountId = account.id;
       var data = ctx.amount;

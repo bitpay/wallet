@@ -107,6 +107,7 @@ angular.module('copayApp.controllers').controller('buyCoinbaseController',
     };
 
     this.buyRequest = function(token, account) {
+      self.error = null;
       var accountId = account.id;
       var amount = $scope.amount ? $scope.amount : $scope.fiat;
       var currency = $scope.amount ? 'BTC' : 'USD';
@@ -128,6 +129,7 @@ angular.module('copayApp.controllers').controller('buyCoinbaseController',
     };
 
     this.confirmBuy = function(token, account, buy) {
+      self.error = null;
       var accountId = account.id;
       var buyId = buy.id;
       this.loading = 'Buying bitcoin...';

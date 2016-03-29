@@ -142,7 +142,7 @@
           <li ng-repeat="err in index.coinbasePendingError.errors" ng-bind-html="err.message"></li>
         </ul>
       </div>
-      <div ng-repeat="(id, tx) in index.coinbasePendingTransactions track by $index"
+      <div ng-repeat="(id, tx) in index.coinbasePendingTransactions | orderObjectBy:'updated_at':true"
         ng-click="coinbase.openTxModal(tx)"
         class="row collapse last-transactions-content">
         <div class="large-2 medium-2 small-2 columns">
@@ -156,7 +156,10 @@
           <div class="size-12 m5t">
             <span ng-show="tx.type == 'sell' && tx.status == 'completed'">Sold</span>
             <span ng-show="tx.type == 'buy' && tx.status == 'completed'">Bought</span>
-            <span class="text-bold">{{tx.amount.amount}} {{tx.amount.currency}}</span>
+            <span class="text-bold">
+              <span ng-if="tx.type == 'sell' || (tx.type == 'send' && tx.from)">-</span>{{tx.amount.amount.replace('-','')}} 
+              {{tx.amount.currency}}
+            </span>
           </div>
         </div>
         <div class="large-4 medium-4 small-4 columns text-right">
