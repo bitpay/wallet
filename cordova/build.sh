@@ -97,6 +97,9 @@ if [ ! -d $PROJECT ]; then
   cordova plugin add cordova-plugin-globalization
   checkOK
 
+  cordova plugin add cordova.plugins.diagnostic
+  checkOK
+
   cordova plugin add cordova-plugin-splashscreen
   checkOK
 
@@ -190,7 +193,7 @@ if [ $CURRENT_OS == "ANDROID" ]; then
 
 #  cp android/AndroidManifest.xml $PROJECT/platforms/android/AndroidManifest.xml
 #  checkOK
-  
+
   cp android/build-extras.gradle $PROJECT/platforms/android/build-extras.gradle
   checkOK
 
@@ -243,5 +246,3 @@ if [ $CURRENT_OS == "WP8" ]; then
     checkOK
   fi
 fi
-
-
