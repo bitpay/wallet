@@ -86,8 +86,8 @@
           <span ng-show="!sell.sellPrice && (amount || fiat)">
             Not available
           </span>
-          <span class="label gray radius" ng-show="sell.sellPrice && amount && !fiat">
-            {{sell.sellPrice.amount * amount | currency : 'USD ' : 2}}
+          <span ng-show="sell.sellPrice && amount && !fiat">
+            ~ {{sell.sellPrice.amount * amount | currency : 'USD ' : 2}}
           </span>
         </div>
 
@@ -101,11 +101,6 @@
             ng-model="selectedPaymentMethod.id" 
             ng-options="item.id as item.name for item in sell.paymentMethods">
           </select>
-        </div>
-
-        <label>Coinbase Account</label>
-        <div class="disabled-input">
-          {{index.coinbaseAccount.name}}
         </div>
 
         <div class="input m20t">

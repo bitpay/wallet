@@ -1,10 +1,28 @@
 
-<div
-  class="topbar-container"
-  ng-include="'views/includes/topbar.html'"
-  ng-init="titleSection='Buy & Sell Bitcoin'; closeToHome = true; noColor = true">
-</div>
+<div class="topbar-container">
+  <nav ng-controller="topbarController as topbar"
+       class="tab-bar"
+       ng-style="{'background-color': '#2b71b1'}">
+    <section class="left-small">
+      <a class="p10"
+         fast-click callback-fn="topbar.goHome()">
+        <span class="text-close">{{'Close'|translate}}</span>
+      </a>
+    </section>
 
+    <section class="right-small">
+      <a class="p10" fast-click callback-fn="$root.go('preferencesCoinbase')">
+        <i class="fi-widget size-24"></i>
+      </a>
+    </section>
+
+    <section class="middle tab-bar-section">
+      <h1 class="title ellipsis">
+        Buy & Sell Bitcoin
+      </h1>
+    </section>
+  </nav>
+</div>
 
 <div class="content coinbase p20b" ng-controller="coinbaseController as coinbase">
 
@@ -95,25 +113,6 @@
 
     <div class="p20v text-center" ng-show="index.coinbaseAccount" ng-click="index.updateCoinbase({updateAccount: true})">
       <img src="img/coinbase-logo.png" width="100">
-    </div>
-
-    <div class="sub-header pointer" ng-show="index.coinbaseUser"  ng-click="$root.go('preferencesCoinbase')">
-      <div class="left size-12">
-        <b>
-        {{index.coinbaseAccount.name}}
-        </b>
-        <br>
-        {{index.coinbaseAccount.balance.amount}} {{index.coinbaseAccount.balance.currency}}
-        <span class="label gray radius">
-          {{index.coinbaseAccount.native_balance.amount}} {{index.coinbaseAccount.native_balance.currency}}
-        </span>
-      </div>
-      <div class="right m5t">
-        <i class="fi-widget size-16 text-gray"></i>
-        <span class="right text-gray">
-          <i class="icon-arrow-right3 size-24 right"></i>
-        </span>
-      </div>
     </div>
 
     <ul ng-show="index.coinbaseAccount" class="no-bullet m0 size-12">

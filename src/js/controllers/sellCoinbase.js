@@ -216,6 +216,7 @@ angular.module('copayApp.controllers').controller('sellCoinbaseController',
                         } else {
                           // Save to localstorage
                           self.loading = null;
+                          ctx['description'] = 'Copay Wallet: ' + fc.credentials.walletName;
                           coinbaseService.savePendingTransaction(ctx, null, function(err) {
                             if (err) $log.debug(err);
                             self.sendInfo = ctx;

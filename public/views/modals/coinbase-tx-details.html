@@ -55,7 +55,7 @@
 
   <ul class="no-bullet size-14">
 
-    <li ng-show="tx.details" class="line-b p10 oh">
+    <li ng-show="tx.details && tx.status != 'pending'" class="line-b p10 oh">
       <span class="text-gray">{{tx.details.title}}</span>
       <span class="right">{{tx.details.subtitle}}</span>
     </li>
@@ -72,13 +72,14 @@
       <span class="right">{{tx.created_at | amCalendar}}</span>
     </li>
 
-    <li ng-show="tx.description" class="line-b p10 oh text-bold">
-      <span class="text-gray">Description</span>
-      <span class="right">{{tx.description}}</span>
+    <li ng-show="tx.description" class="line-b p10 oh">
+      <span class="text-gray" ng-show="tx.from && tx.type == 'send' && tx.status == 'pending'">Sent bitcoin from</span>
+      <span class="text-gray" ng-show="tx.to && tx.type == 'send' && tx.status == 'pending'">Receive bitcoin in</span>
+      <span class="right text-bold">{{tx.description}}</span>
     </li>
   </ul>
 
-  <div class="row m20t p20t line-t" ng-show="tx.status == 'error' || (tx.type == 'send' && tx.status == 'pending')">
+  <div class="row m20t p20t line-t" ng-show="tx.status == 'error'">
     <div class="columns">
       <p class="text-center size-12 text-gray">
         This action will remove the transaction.

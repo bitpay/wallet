@@ -17,8 +17,7 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
       + 'wallet:sells:create,'
       + 'wallet:transactions:read,'
       + 'wallet:transactions:send,'
-      + 'wallet:payment-methods:read,'
-      + 'wallet:payment-methods:limits';
+      + 'wallet:payment-methods:read';
 
     if (isCordova) {
       credentials.REDIRECT_URI = 'bitcoin://coinbase';

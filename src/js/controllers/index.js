@@ -1350,7 +1350,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
             self.coinbasePendingError = err;
             return;
           }
-          self.coinbasePendingTransactions[tx.data.id] = tx.data;
+          updateCoinbasePendingTransactions(self.coinbasePendingTransactions[tx.data.id], tx.data);
           if (tx.data.type == 'send' && tx.data.status == 'completed' && tx.data.from) {
             self.sellPending(tx.data);
           } else if (tx.data.type == 'buy' && tx.data.status == 'pending' && tx.data.buy) {
@@ -1365,6 +1365,19 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     });
 
   }, 1000);
+
+  var updateCoinbasePendingTransactions = function (obj/*, …*/) {
+    for (var i=1; i<arguments.length; i++) {
+      for (var prop in arguments[i]) {
+        var val = arguments[i][prop];
+        if (typeof val == "object") // this also applies to arrays or null!
+          updateCoinbasePendingTransactions(obj[prop], val);
+        else
+          obj[prop] = val ? val : obj[prop];
+      }
+    }
+    return obj;
+  };
 
   self.buyPending = function(tx) {
     if (!tx) return;

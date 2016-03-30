@@ -179,7 +179,7 @@ angular.module('copayApp.controllers').controller('buyCoinbaseController',
         to: tx.toAddr,
         amount: tx.amount.amount,
         currency: tx.amount.currency,
-        description: 'To Copay Wallet: ' + self.selectedWalletName
+        description: 'Copay Wallet: ' + self.selectedWalletName
       };
       coinbaseService.sendTo(token, accountId, data, function(err, res) {
         self.loading = null;
