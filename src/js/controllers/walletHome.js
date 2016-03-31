@@ -1124,11 +1124,16 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     }, 1000);
 
     function setExpirationTime() {
-      if (moment().isAfter(expirationTime * 1000)) {
+      var now = Math.floor(Date.now() / 1000);
+      if (now > expirationTime) {
         setExpiredValues();
         return;
       }
-      self.remainingTimeStr = moment(expirationTime * 1000).fromNow();
+
+      var totalSecs = expirationTime - now;
+      var m = Math.floor(totalSecs / 60);
+      var s = totalSecs % 60;
+      self.remainingTimeStr = m + ":" + s;
     };
 
     function setExpiredValues() {
