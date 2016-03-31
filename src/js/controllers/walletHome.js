@@ -1133,7 +1133,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       var totalSecs = expirationTime - now;
       var m = Math.floor(totalSecs / 60);
       var s = totalSecs % 60;
-      self.remainingTimeStr = m + ":" + s;
+      self.remainingTimeStr = ('0' + m).slice(-2) + ":" + ('0' + s).slice(-2);
     };
 
     function setExpiredValues() {
