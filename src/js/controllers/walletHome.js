@@ -52,7 +52,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     self.resetForm();
     $scope.search = '';
 
-    if (profileService.focusedClient && profileService.focusedClient.isComplete) {
+    if (profileService.focusedClient && profileService.focusedClient.isComplete()) {
       self.setAddress();
       self.setSendFormInputs();
     }
@@ -130,7 +130,6 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   var confirm_msg = gettextCatalog.getString('Confirm');
 
   this.openDestinationAddressModal = function(wallets, address) {
-    self.destinationWalletNeedsBackup = null;
     $rootScope.modalOpened = true;
     var fc = profileService.focusedClient;
     self.lockAddress = false;
@@ -247,22 +246,26 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       };
 
       $scope.selectWallet = function(walletId, walletName) {
-        $scope.gettingAddress = true;
-        $scope.selectedWalletName = walletName;
-        $timeout(function() {
-          $scope.$apply();
-        });
-        addressService.getAddress(walletId, false, function(err, addr) {
-          $scope.gettingAddress = false;
+        profileService.isBackupNeeded(walletId, function(needsBackup) {
+          $scope.needsBackup = {};
+          $scope.needsBackup[walletId] = needsBackup;
+          if (needsBackup) return;
 
-          if (err) {
-            self.error = err;
-            $modalInstance.dismiss('cancel');
-            return;
-          }
+          $scope.gettingAddress = true;
+          $scope.selectedWalletName = walletName;
+          $timeout(function() {
+            $scope.$apply();
+          });
 
-          profileService.isBackupNeeded(walletId, function(needsBackup) {
-            self.destinationWalletNeedsBackup = needsBackup;
+          addressService.getAddress(walletId, false, function(err, addr) {
+            $scope.gettingAddress = false;
+
+            if (err) {
+              self.error = err;
+              $modalInstance.dismiss('cancel');
+              return;
+            }
+
             $modalInstance.close(addr);
           });
         });
@@ -336,23 +339,26 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
           }, function(err, paypro) {
             if (err) return;
             tx.paypro = paypro;
-            $scope.paymentExpired = tx.paypro.expires <= now;
-            if (!$scope.paymentExpired)
-              paymentTimeControl(tx.paypro.expires);
-            $scope.$apply();
+            paymentTimeControl(tx.paypro.expires);
           });
         }
       };
 
-      function paymentTimeControl(timeToExpire) {
-        $scope.expires = timeToExpire;
-        var countDown = $interval(function() {
-          if ($scope.expires <= now) {
-            $scope.paymentExpired = true;
-            $interval.cancel(countDown);
-          }
-          $scope.expires--;
+      function paymentTimeControl(expirationTime) {
+        $scope.paymentExpired = false;
+        var countDown;
+        setExpirationTime();
+        countDown = $interval(function() {
+          setExpirationTime();
         }, 1000);
+
+        function setExpirationTime() {
+          if (moment().isAfter(expirationTime * 1000)) {
+            $scope.paymentExpired = true;
+            if (countDown) $interval.cancel(countDown);
+          }
+          $scope.expires = moment(expirationTime * 1000).fromNow();
+        };
       };
 
       lodash.each(['TxProposalRejectedBy', 'TxProposalAcceptedBy', 'transactionProposalRemoved', 'TxProposalRemoved', 'NewOutgoingTx', 'UpdateTx'], function(eventName) {
@@ -856,7 +862,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   };
 
   this.submitForm = function() {
-    if (!$scope._amount || !$scope._address || self.destinationWalletNeedsBackup) return;
+    if (!$scope._amount || !$scope._address) return;
     var fc = profileService.focusedClient;
     var unitToSat = this.unitToSatoshi;
     var currentSpendUnconfirmed = configWallet.spendUnconfirmed;
@@ -988,7 +994,6 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
   this.resetForm = function() {
     this.resetError();
-    this.destinationWalletNeedsBackup = null;
     this._paypro = null;
     this.lockedCurrentFeePerKb = null;
 
@@ -1107,26 +1112,25 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     }, 1);
   };
 
-  function _paymentTimeControl(timeToExpire) {
-    var now = Math.floor(Date.now() / 1000);
-
-    if (timeToExpire <= now) {
-      setExpiredPaymentValues();
-      return;
-    }
-
-    self.timeToExpire = timeToExpire;
-    var countDown = $interval(function() {
-      if (self.timeToExpire <= now) {
-        setExpiredPaymentValues();
-        $interval.cancel(countDown);
-      }
-      self.timeToExpire--;
+  function _paymentTimeControl(expirationTime) {
+    self.paymentExpired = false;
+    var countDown;
+    setExpirationTime();
+    countDown = $interval(function() {
+      setExpirationTime();
     }, 1000);
+
+    function setExpirationTime() {
+      if (moment().isAfter(expirationTime * 1000)) {
+        setExpiredPaymentValues();
+        if (countDown) $interval.cancel(countDown);
+      }
+      self.remainingTimeStr = moment(expirationTime * 1000).fromNow();
+    };
 
     function setExpiredPaymentValues() {
       self.paymentExpired = true;
-      self.timeToExpire = null;
+      self.remainingTimeStr = null;
       self._paypro = null;
       self.error = gettext('Cannot sign: The payment request has expired');
     };

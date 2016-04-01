@@ -1,6 +1,6 @@
 'use strict';
 angular.module('copayApp.services')
-  .factory('profileService', function profileServiceFactory($rootScope, $location, $timeout, $filter, $log, lodash, storageService, bwcService, configService, notificationService, pushNotificationsService, isChromeApp, isCordova, gettext, gettextCatalog, nodeWebkit, bwsError, uxLanguage, bitcore) {
+  .factory('profileService', function profileServiceFactory($rootScope, $location, $timeout, $filter, $log, lodash, storageService, bwcService, configService, notification, notificationService, pushNotificationsService, isChromeApp, isCordova, gettext, gettextCatalog, nodeWebkit, bwsError, uxLanguage, bitcore) {
 
     var root = {};
     var errors = bwcService.getErrors();
@@ -114,6 +114,26 @@ angular.module('copayApp.services')
       });
     }
 
+    root.checkLatestVersion = function(client, cb) {
+      var walletId = client.credentials.walletId;
+      $log.debug('Retrieving latest relsease information');
+
+      client.getLatestRelease(function(err, release) {
+        if (err) return cb(err);
+
+        var version = release.body.tag_name;
+        var majorTagNumber = version.split('.')[0].slice(1);
+
+        storageService.getLatestMajorTagNumber(function(err, lmtn) {
+          if (err) return cb(err);
+          if (majorTagNumber <= lmtn) return cb();
+          $log.debug('A new version of Copay is available');
+          notification.version(gettext('New version available'), version, {});
+          storageService.setLatestMajorTagNumber(majorTagNumber, function() {});
+        });
+      });
+    };
+
     root.setWalletClients = function() {
       var credentials = root.profile.credentials;
       lodash.each(credentials, function(credential) {
@@ -178,18 +198,6 @@ angular.module('copayApp.services')
           $log.debug('Profile read');
           return root.bindProfile(profile, cb);
         }
-      });
-    };
-
-    root.isBackupNeeded = function(walletId, cb) {
-      var c = root.getClient(walletId);
-      if (c.isPrivKeyExternal()) return cb(false);
-      if (!c.credentials.mnemonic) return cb(false);
-      if (c.credentials.network == 'testnet') return cb(false);
-
-      storageService.getBackupFlag(walletId, function(err, val) {
-        if (err || val) return cb(false);
-        return cb(true);
       });
     };
 
@@ -306,8 +314,8 @@ angular.module('copayApp.services')
 
         // check if exist
         if (lodash.find(root.profile.credentials, {
-          'walletId': walletData.walletId
-        })) {
+            'walletId': walletData.walletId
+          })) {
           return cb(gettext('Cannot join the same wallet more that once'));
         }
       } catch (ex) {
@@ -677,6 +685,18 @@ angular.module('copayApp.services')
           });
         }
         return cb();
+      });
+    };
+
+    root.isBackupNeeded = function(walletId, cb) {
+      var c = root.getClient(walletId);
+      if (c.isPrivKeyExternal()) return cb(false);
+      if (!c.credentials.mnemonic) return cb(false);
+      if (c.credentials.network == 'testnet') return cb(false);
+
+      storageService.getBackupFlag(walletId, function(err, val) {
+        if (err || val) return cb(false);
+        return cb(true);
       });
     };
 

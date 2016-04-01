@@ -5,11 +5,12 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   var SOFT_CONFIRMATION_LIMIT = 12;
   var errors = bwcService.getErrors();
   var historyUpdateInProgress = {};
-
   var ret = {};
+  ret.isNode = nodeWebkit.isDefined();
   ret.isCordova = isCordova;
   ret.isChromeApp = isChromeApp;
   ret.isSafari = isMobile.Safari();
+
   ret.isWindowsPhoneApp = isMobile.Windows() && isCordova;
   ret.usePushNotifications = ret.isCordova && !isMobile.Windows();
   ret.onGoingProcess = {};
@@ -151,6 +152,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
           go.walletHome();
         }
       }
+
+      if (!self.isNode)
+        profileService.checkLatestVersion(fc, function() {});
 
       profileService.isBackupNeeded(self.walletId, function(needsBackup) {
         self.needsBackup = needsBackup;
@@ -1491,7 +1495,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     });
   });
 
-  //untilItChange FALSE 
+  //untilItChange FALSE
   lodash.each(['NewTxProposal', 'TxProposalFinallyRejected', 'TxProposalRemoved', 'NewOutgoingTxByThirdParty',
     'Local/GlideraTx'
   ], function(eventName) {
