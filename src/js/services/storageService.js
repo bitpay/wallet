@@ -255,5 +255,13 @@ angular.module('copayApp.services')
       storage.remove('txsHistory-' + walletId, cb);
     }
 
+    root.getLatestMajorTagNumber = function(cb) {
+      storage.get('latestMajorTagNumber', cb);
+    }
+
+    root.setLatestMajorTagNumber = function(number, cb) {
+      storage.set('latestMajorTagNumber', number, cb);
+    }
+
     return root;
   });

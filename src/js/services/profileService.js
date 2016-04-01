@@ -1,6 +1,6 @@
 'use strict';
 angular.module('copayApp.services')
-  .factory('profileService', function profileServiceFactory($rootScope, $location, $timeout, $filter, $log, lodash, storageService, bwcService, configService, notificationService, pushNotificationsService, isChromeApp, isCordova, gettext, gettextCatalog, nodeWebkit, bwsError, uxLanguage, bitcore) {
+  .factory('profileService', function profileServiceFactory($rootScope, $location, $timeout, $filter, $log, lodash, storageService, bwcService, configService, notification, notificationService, pushNotificationsService, isChromeApp, isCordova, gettext, gettextCatalog, nodeWebkit, bwsError, uxLanguage, bitcore) {
 
     var root = {};
     var errors = bwcService.getErrors();
@@ -113,6 +113,26 @@ angular.module('copayApp.services')
         client.setNotificationsInterval(BACKGROUND_UPDATE_PERIOD);
       });
     }
+
+    root.checkLatestVersion = function(client, cb) {
+      var walletId = client.credentials.walletId;
+      $log.debug('Retrieving latest relsease information');
+
+      client.getLatestRelease(function(err, release) {
+        if (err) return cb(err);
+
+        var version = release.body.tag_name;
+        var majorTagNumber = version.split('.')[0].slice(1);
+
+        storageService.getLatestMajorTagNumber(function(err, lmtn) {
+          if (err) return cb(err);
+          if (majorTagNumber <= lmtn) return cb();
+          $log.debug('A new version of Copay is available');
+          notification.version(gettext('New version available'), version, {});
+          storageService.setLatestMajorTagNumber(majorTagNumber, function() {});
+        });
+      });
+    };
 
     root.setWalletClients = function() {
       var credentials = root.profile.credentials;
