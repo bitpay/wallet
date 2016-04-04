@@ -103,7 +103,7 @@
 
         <div class="input m20t">
           <input class="button black expand round" 
-          ng-disabled="buy.loading || (!amount && !fiat)"
+          ng-disabled="buy.loading || (!amount && !fiat) || !selectedPaymentMethod"
           ng-style="{'background-color': '#2b71b1'}"
           type="submit" value="{{'Continue'}}">
         </div>
