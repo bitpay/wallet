@@ -232,11 +232,11 @@ angular.module('copayApp.services')
     };
 
     root.setDeviceToken = function(token, cb) {
-      storage.set('pushToken', token, cb);
+      storage.set('pushToken01', token, cb);
     }
 
     root.getDeviceToken = function(cb) {
-      storage.get('pushToken', cb);
+      storage.get('pushToken01', cb);
     }
 
     root.removeAddressbook = function(network, cb) {
