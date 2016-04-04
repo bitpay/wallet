@@ -1347,7 +1347,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
             (data.type == 'send' && data.status == 'completed')) return;
         coinbaseService.getTransaction(accessToken, accountId, txId, function(err, tx) {
           if (err) {
-            self.coinbasePendingError = err;
+            coinbaseService.savePendingTransaction(data, {status: 'error', error: err}, function(err) {
+              if (err) $log.debug(err);
+            });
             return;
           }
           updateCoinbasePendingTransactions(self.coinbasePendingTransactions[tx.data.id], tx.data);
