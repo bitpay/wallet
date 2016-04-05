@@ -14,7 +14,7 @@
   "window": {
     "title": "Copay - A multisignature wallet",
     "icon": "./public/img/icons/icon-256.png",
-    "toolbar": true,
+    "toolbar": false,
     "show": true,
     "visible": true,
     "resizable": false,
