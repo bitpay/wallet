@@ -1,6 +1,10 @@
 'use strict';
 
+<<<<<<< 8228d013f47f26059f35df5aafbf3010d4aeccfc
 angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, bwcService, lodash, go, profileService, configService, isCordova, rateService, storageService, addressService, gettext, gettextCatalog, amMoment, nodeWebkit, addonManager, isChromeApp, bwsError, txFormatService, uxLanguage, $state, glideraService, isMobile, addressbookService) {
+=======
+angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, latestReleaseService, bwcService, pushNotificationsService, lodash, go, profileService, configService, isCordova, rateService, storageService, addressService, gettext, gettextCatalog, amMoment, nodeWebkit, addonManager, isChromeApp, bwsError, txFormatService, uxLanguage, $state, glideraService, isMobile, addressbookService) {
+>>>>>>> move to latestReleaseService - add tags format control
   var self = this;
   var SOFT_CONFIRMATION_LIMIT = 12;
   var errors = bwcService.getErrors();
@@ -49,6 +53,19 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   ret.tab = 'walletHome';
   var vanillaScope = ret;
 
+<<<<<<< 8228d013f47f26059f35df5aafbf3010d4aeccfc
+=======
+  if (self.isNode) {
+    latestReleaseService.checkLatestRelease(function(err, version) {
+      if (err) {
+        $log.warn(err);
+        return;
+      }
+      $scope.newVersion = gettext('There is a new version of Copay. Please update to ') + version;
+    });
+  }
+
+>>>>>>> move to latestReleaseService - add tags format control
   function strip(number) {
     return (parseFloat(number.toPrecision(12)));
   };
@@ -149,16 +166,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
           $log.debug('Wallet Complete BEFORE update... redirect to home');
           go.walletHome();
         }
-      }
-
-      if (self.isNode) {
-        profileService.checkLatestRelease(function(err, version) {
-          if (err) {
-            $log.warn(err);
-            return;
-          }
-          self.newVersion = 'There is a new version of Copay (' + version + '). Please upgrade';
-        });
       }
 
       profileService.isBackupNeeded(self.walletId, function(needsBackup) {

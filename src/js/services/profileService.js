@@ -1,10 +1,6 @@
 'use strict';
 angular.module('copayApp.services')
-<<<<<<< 9a10394cd932a6808499ecb61e8df760e931c344
   .factory('profileService', function profileServiceFactory($rootScope, $timeout, $filter, $log, sjcl, lodash, storageService, bwcService, configService, notificationService, pushNotificationsService, isChromeApp, isCordova, isMobile, gettext, gettextCatalog, nodeWebkit, bwsError, uxLanguage, bitcore) {
-=======
-  .factory('profileService', function profileServiceFactory($rootScope, $location, $timeout, $filter, $log, $http, lodash, storageService, bwcService, configService, notificationService, pushNotificationsService, isChromeApp, isCordova, gettext, gettextCatalog, nodeWebkit, bwsError, uxLanguage, bitcore) {
->>>>>>> new version is available
 
     var root = {};
     var errors = bwcService.getErrors();
