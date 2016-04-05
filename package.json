@@ -29,6 +29,7 @@
     "java": false,
     "plugin": false
   },
+  "dom_storage_quota": 100,
   "id": "jid1-x7bV5evAaI1P9Q",
   "homepage": "https://github.com/bitpay/copay",
   "license": "MIT",
