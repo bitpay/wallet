@@ -7,6 +7,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   var historyUpdateInProgress = {};
 
   var ret = {};
+  ret.isNode = nodeWebkit.isDefined();
   ret.isCordova = isCordova;
   ret.isChromeApp = isChromeApp;
   ret.isSafari = isMobile.Safari();
@@ -148,6 +149,16 @@ angular.module('copayApp.controllers').controller('indexController', function($r
           $log.debug('Wallet Complete BEFORE update... redirect to home');
           go.walletHome();
         }
+      }
+
+      if (self.isNode) {
+        profileService.checkLatestRelease(function(err, version) {
+          if (err) {
+            $log.warn(err);
+            return;
+          }
+          self.newVersion = 'There is a new version of Copay (' + version + '). Please upgrade';
+        });
       }
 
       profileService.isBackupNeeded(self.walletId, function(needsBackup) {

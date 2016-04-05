@@ -1,6 +1,10 @@
 'use strict';
 angular.module('copayApp.services')
+<<<<<<< 9a10394cd932a6808499ecb61e8df760e931c344
   .factory('profileService', function profileServiceFactory($rootScope, $timeout, $filter, $log, sjcl, lodash, storageService, bwcService, configService, notificationService, pushNotificationsService, isChromeApp, isCordova, isMobile, gettext, gettextCatalog, nodeWebkit, bwsError, uxLanguage, bitcore) {
+=======
+  .factory('profileService', function profileServiceFactory($rootScope, $location, $timeout, $filter, $log, $http, lodash, storageService, bwcService, configService, notificationService, pushNotificationsService, isChromeApp, isCordova, gettext, gettextCatalog, nodeWebkit, bwsError, uxLanguage, bitcore) {
+>>>>>>> new version is available
 
     var root = {};
     var errors = bwcService.getErrors();
@@ -451,6 +455,39 @@ angular.module('copayApp.services')
             });
           });
         });
+      });
+    };
+
+    root.checkLatestRelease = function(cb) {
+      var releaseURL = configService.getDefaults().release.url;
+
+      root.requestLatestRelease(releaseURL, function(err, release) {
+        if (err) return cb(err);
+
+        var actualVersion = window.version;
+        var latestVersion = release.data.tag_name;
+        var majorOfActualVersion = actualVersion.split('.')[0];
+        var majorOfLatestVersion = latestVersion.split('.')[0].slice(1);
+
+        if (majorOfLatestVersion <= majorOfActualVersion) return;
+        $log.debug('A new version of Copay is available: ' + latestVersion);
+        return cb(null, latestVersion);
+      });
+    };
+
+    root.requestLatestRelease = function(releaseURL, cb) {
+      $log.debug('Retrieving latest relsease information...');
+
+      var request = {
+        url: releaseURL,
+        method: 'GET',
+        json: true
+      };
+
+      $http(request).then(function(release) {
+        return cb(null, release);
+      }, function(err) {
+        return cb('Cannot get release information: ' + err);
       });
     };
 
