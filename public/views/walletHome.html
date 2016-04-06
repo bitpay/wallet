@@ -134,12 +134,8 @@
         </div>
       </div>
 
-      <div class="m10b m5l" ng-show="newRelease && !index.isSearching">
-        <ul class="no-bullet text-gray size-12">
-          <li ng-click="$root.openExternalLink('https://github.com/bitpay/copay/releases/latest')">
-            {{newRelease}} <i class="icon-arrow-right3 right size-18 m15r"></i>
-          </li>
-        </ul>
+      <div class="release size-12" ng-show="newRelease && !index.isSearching" ng-click="$root.openExternalLink('https://github.com/bitpay/copay/releases/latest')">
+        <span>{{newRelease}}</span><i class="icon-arrow-right3 right size-18"></i>
       </div>
 
       <div class="oh pr" ng-if="index.txps[0]" ng-show="!index.isSearching">
