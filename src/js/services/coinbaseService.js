@@ -312,7 +312,7 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
       }
       var tx = oldTxs || {};
       tx[ctx.id] = ctx;
-      if (opts && opts.error) {
+      if (opts && (opts.error || opts.status)) {
         tx[ctx.id] = lodash.assign(tx[ctx.id], opts);
       }
       if (opts && opts.remove) {

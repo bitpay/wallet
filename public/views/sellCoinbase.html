@@ -103,6 +103,17 @@
           </select>
         </div>
 
+        <div class="m20t">
+          <label>Price Sensitivity</label> 
+          <select 
+            ng-model="selectedPriceSensitivity" 
+            ng-options="item as item.name for item in priceSensitivity track by item.value">
+          </select>
+          <p class="size-12 text-gray">
+            Coinbase has not yet implemented an immediate method to sell bitcoin from a wallet. To make this sale, funds will be sent to your Coinbase account, and sold when Coinbase accepts the transaction (usually one hour).
+          </p>
+        </div>
+
         <div class="input m20t">
           <input class="button black expand round" 
                  ng-disabled="sell.loading || (!amount && !fiat)"

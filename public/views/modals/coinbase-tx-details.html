@@ -72,6 +72,16 @@
       <span class="right">{{tx.created_at | amCalendar}}</span>
     </li>
 
+    <li ng-show="tx.price_sensitivity" class="line-b p10 oh">
+      <span class="text-gray">Price Sensitivity</span>
+      <span class="right">{{tx.price_sensitivity.name}}</span>
+    </li>
+
+    <li ng-show="tx.sell_price_amount" class="line-b p10 oh">
+      <span class="text-gray">Sell Price</span>
+      <span class="right">{{tx.sell_price_amount}} {{tx.sell_price_currency}}</span>
+    </li>
+
     <li ng-show="tx.description" class="line-b p10 oh">
       <span class="text-gray" ng-show="tx.from && tx.type == 'send' && tx.status == 'pending'">Sent bitcoin from</span>
       <span class="text-gray" ng-show="tx.to && tx.type == 'send' && tx.status == 'pending'">Receive bitcoin in</span>

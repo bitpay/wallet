@@ -7,6 +7,30 @@ angular.module('copayApp.controllers').controller('sellCoinbaseController',
     var self = this;
     var fc;
 
+    $scope.priceSensitivity = [
+      {
+        value : 0.5,
+        name: '0.5%'
+      },
+      {
+        value : 1,
+        name: '1%'
+      },
+      {
+        value : 2,
+        name: '2%'
+      },
+      {
+        value : 5,
+        name: '5%'
+      },
+      {
+        value : 10,
+        name: '10%'
+      }
+    ];
+    $scope.selectedPriceSensitivity = $scope.priceSensitivity[1];
+
     var otherWallets = function(testnet) {
       var network = testnet ? 'testnet' : 'livenet';
       return lodash.filter(profileService.getWallets(network), function(w) {
@@ -216,6 +240,9 @@ angular.module('copayApp.controllers').controller('sellCoinbaseController',
                         } else {
                           // Save to localstorage
                           self.loading = null;
+                          ctx['price_sensitivity'] = $scope.selectedPriceSensitivity;
+                          ctx['sell_price_amount'] = self.sellPrice.amount;
+                          ctx['sell_price_currency'] = self.sellPrice.currency;
                           ctx['description'] = 'Copay Wallet: ' + fc.credentials.walletName;
                           coinbaseService.savePendingTransaction(ctx, null, function(err) {
                             if (err) $log.debug(err);
