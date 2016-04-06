@@ -1,6 +1,6 @@
 'use strict';
 angular.module('copayApp.services')
-  .factory('latestReleaseService', function profileServiceFactory($log, $http, configService, gettext, nodeWebkit) {
+  .factory('latestReleaseService', function latestReleaseServiceFactory($log, $http, configService, gettext, nodeWebkit) {
 
     var root = {};
 
@@ -17,12 +17,14 @@ angular.module('copayApp.services')
         if (!verifyTagFormat(latestVersion))
           return cb('Cannot verify the format of latest release tag: ' + latestVersion);
 
-        var currentVersionNumber = parseInt(formatTagNumber(currentVersion));
-        var latestVersionNumber = parseInt(formatTagNumber(latestVersion));
+        var current = formatTagNumber(currentVersion);
+        var latest = formatTagNumber(latestVersion);
 
-        if (latestVersionNumber <= currentVersionNumber) return;
+        if (latest.major < current.major || (latest.major == current.major && latest.minor <= current.minor))
+          return cb(null, false);
+
         $log.debug('A new version of Copay is available: ' + latestVersion);
-        return cb(null, latestVersion);
+        return cb(null, true);
       });
 
       function verifyTagFormat(tag) {
@@ -32,9 +34,12 @@ angular.module('copayApp.services')
 
       function formatTagNumber(tag) {
         var formatedNumber;
-        formatedNumber = tag.replace(/^v/i, '');
-        formatedNumber = formatedNumber.split('.');
-        return (formatedNumber[0].concat(formatedNumber[1]));
+        formatedNumber = tag.replace(/^v/i, '').split('.');
+        return {
+          major: +formatedNumber[0],
+          minor: +formatedNumber[1],
+          patch: +formatedNumber[2]
+        };
       };
     };
 
