@@ -19,7 +19,6 @@ angular.module('copayApp.services')
 
         var currentVersionNumber = parseInt(formatTagNumber(currentVersion));
         var latestVersionNumber = parseInt(formatTagNumber(latestVersion));
-        console.log(currentVersionNumber, latestVersionNumber);
 
         if (latestVersionNumber <= currentVersionNumber) return;
         $log.debug('A new version of Copay is available: ' + latestVersion);
@@ -27,14 +26,15 @@ angular.module('copayApp.services')
       });
 
       function verifyTagFormat(tag) {
-        var regex = /^v?[0-9]\.[0-9]\.[0-9]/i;
+        var regex = /^v?\d+\.\d+\.\d+$/i;
         return regex.exec(tag);
       };
 
       function formatTagNumber(tag) {
         var formatedNumber;
         formatedNumber = tag.replace(/^v/i, '');
-        return formatedNumber.replace(/\./g, '').substr(0, 2);
+        formatedNumber = formatedNumber.split('.');
+        return (formatedNumber[0].concat(formatedNumber[1]));
       };
     };
 
