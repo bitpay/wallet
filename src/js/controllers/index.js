@@ -1084,6 +1084,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   self.setCompactTxHistory = function() {
     self.isSearching = false;
     self.nextTxHistory = self.historyShowMoreLimit;
+    self.completeHistory = self.completeHistory ? self.completeHistory : [];
     self.txHistory = self.completeHistory.slice(0, self.historyShowLimit);
     self.txHistorySearchResults = self.txHistory;
     self.historyShowMore = self.completeHistory.length > self.historyShowLimit;
@@ -1491,7 +1492,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     });
   });
 
-  //untilItChange FALSE 
+  //untilItChange FALSE
   lodash.each(['NewTxProposal', 'TxProposalFinallyRejected', 'TxProposalRemoved', 'NewOutgoingTxByThirdParty',
     'Local/GlideraTx'
   ], function(eventName) {
