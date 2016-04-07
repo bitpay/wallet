@@ -12,7 +12,8 @@ angular.module('copayApp.services')
         if (root.token) return;
         $log.debug('Starting push notification registration');
         root.token = data.registrationId;
-        root.enableNotifications(walletsClients);
+        var config = configService.getSync();
+        if (config.pushNotifications.enabled) root.enableNotifications(walletsClients);
       });
 
       return push;
