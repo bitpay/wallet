@@ -570,6 +570,7 @@ ul.manage li {
 .vt {vertical-align: top;}
 .ma { margin: 0 auto;}
 .tu {text-transform: uppercase;}
+.tl {text-transform: lowercase;}
 
 .line {
   border-top: 1px solid #F8F8FB;
