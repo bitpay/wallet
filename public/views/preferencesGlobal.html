@@ -1,6 +1,6 @@
 
-<div 
-  class="topbar-container" 
+<div
+  class="topbar-container"
   ng-include="'views/includes/topbar.html'"
   ng-init="titleSection='Global preferences'; closeToHome = true; noColor = true">
 </div>
@@ -16,7 +16,7 @@
       </div>
       <div translate>Language</div>
     </li>
-  </ul> 
+  </ul>
   <h4></h4>
   <ul class="no-bullet m0 ">
     <li ng-click="$root.go('preferencesUnit')">
@@ -42,13 +42,13 @@
         <i class="icon-arrow-right3 size-24"></i>
       </div>
       <div translate>Bitcoin Network Fee Policy</div>
-    </li>  
+    </li>
     <li>
       <switch id="spend-unconfirmed" name="spendUnconfirmed" ng-model="spendUnconfirmed" class="green right"></switch>
       <div translate>Use Unconfirmed Funds</div>
     </li>
   </ul>
-  <div ng-show="index.usePushNotifications">
+  <div ng-show="prefGlobal.usePushNotifications">
     <h4></h4>
     <ul class="no-bullet m0">
       <li>
@@ -63,8 +63,8 @@
       <switch id="glidera-enabled" name="glideraEnabled" ng-model="glideraEnabled" class="green right"></switch>
       <div>Enable Glidera Service</div>
     </li>
- 
-    <!-- Disabled for testnet 
+
+    <!-- Disabled for testnet
     <li ng-show="glideraEnabled">
       <span>Glidera Sandbox</span>
       <switch id="glidera-testnet" name="glideraTestnet" ng-model="glideraTestnet" class="green right"></switch>
@@ -74,7 +74,7 @@
   <h4></h4>
   <ul class="no-bullet m0">
     <li ng-click="$root.go('about')">
-      <i class="icon-arrow-right3 size-24 right text-gray"></i>  
+      <i class="icon-arrow-right3 size-24 right text-gray"></i>
       <div translate>About Copay</div>
     </li>
   </ul>
