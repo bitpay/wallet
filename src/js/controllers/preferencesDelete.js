@@ -4,6 +4,7 @@ angular.module('copayApp.controllers').controller('preferencesDeleteWalletContro
   function($scope, $rootScope, $filter, $timeout, $modal, $log, storageService, notification, profileService, isCordova, go, gettext, gettextCatalog, animationService) {
     this.isCordova = isCordova;
     this.error = null;
+    $scope.isDeletingWallet = false;
 
     var delete_msg = gettextCatalog.getString('Are you sure you want to delete this wallet?');
     var accept_msg = gettextCatalog.getString('Accept');
@@ -38,7 +39,10 @@ angular.module('copayApp.controllers').controller('preferencesDeleteWalletContro
 
       modalInstance.result.then(function(ok) {
         if (ok) {
-          _deleteWallet();
+          $timeout(function() {
+            $scope.isDeletingWallet = true;
+            _deleteWallet();
+          }, 100);
         }
       });
     };
@@ -50,6 +54,7 @@ angular.module('copayApp.controllers').controller('preferencesDeleteWalletContro
       var self = this;
 
       profileService.deleteWalletFC({}, function(err) {
+        $scope.isDeletingWallet = false;
         if (err) {
           self.error = err.message || err;
         } else {
@@ -67,7 +72,10 @@ angular.module('copayApp.controllers').controller('preferencesDeleteWalletContro
           delete_msg,
           function(buttonIndex) {
             if (buttonIndex == 1) {
-              _deleteWallet();
+              $timeout(function() {
+                $scope.isDeletingWallet = true;
+                _deleteWallet();
+              }, 100);
             }
           },
           confirm_msg, [accept_msg, cancel_msg]
