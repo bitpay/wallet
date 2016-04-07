@@ -16,9 +16,10 @@
         Multiple recipients
       </span>
     </div>
-    <div class="text-bold m10t size-12" ng-init="confirm.processFee(tx.amount, tx.fee)">
+    <div class="m10t size-12" ng-init="confirm.processFee(tx.amount, tx.fee)">
       <div ng-show="!showPercentage" ng-click="showPercentage = true">
-        <span translate>Fee</span> (<span class="tl">{{confirm.feeLevel|translate}}</span>): {{tx.feeStr}}
+        <span translate>Fee</span> <span class="tl">({{confirm.feeLevel|translate}})</span>: 
+        <span class="text-bold">{{tx.feeStr}}</span>
         <span class="label gray radius">{{confirm.feeAlternativeStr}}</span>
       </div>
       <div ng-show="showPercentage" ng-click="showPercentage = false" translate>
