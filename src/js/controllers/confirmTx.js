@@ -9,7 +9,7 @@ angular.module('copayApp.controllers').controller('confirmTxController', functio
 
     this.feeLevel = feeService.feeOpts[feeService.getCurrentFeeLevel()];
     this.feeAlternativeStr = parseFloat((rateService.toFiat(fee, feeAlternativeIsoCode)).toFixed(2), 10) + ' ' + feeAlternativeIsoCode;
-    this.feeRateStr = (fee / amount * 100).toFixed(2) + '%' ;
+    this.feeRateStr = (fee / (amount + fee) * 100).toFixed(2) + '%' ;
   };
 
   this.close = function(cb) {
