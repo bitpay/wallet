@@ -33,12 +33,11 @@ angular.module('copayApp.services')
       };
 
       function formatTagNumber(tag) {
-        var formatedNumber;
-        formatedNumber = tag.replace(/^v/i, '').split('.');
+        var formattedNumber = tag.replace(/^v/i, '').split('.');
         return {
-          major: +formatedNumber[0],
-          minor: +formatedNumber[1],
-          patch: +formatedNumber[2]
+          major: +formattedNumber[0],
+          minor: +formattedNumber[1],
+          patch: +formattedNumber[2]
         };
       };
     };
