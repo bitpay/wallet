@@ -150,17 +150,7 @@ angular.module('copayApp.services')
 
     root.pushNotificationsInit = function() {
       var defaults = configService.getDefaults();
-      var push = PushNotification.init(defaults.pushNotifications.config);
-
-      push.on('registration', function(data) {
-        storageService.getDeviceToken(function(err, token) {
-          if (token) return;
-          $log.debug('Starting push notification registration');
-          storageService.setDeviceToken(data.registrationId, function() {
-            pushNotificationsService.enableNotifications(root.walletClients);
-          });
-        });
-      });
+      var push = pushNotificationsService.init(root.walletClients);
 
       push.on('notification', function(data) {
         if (!data.additionalData.foreground) {
@@ -172,7 +162,7 @@ angular.module('copayApp.services')
             var walletToFind = data.additionalData.walletId;
 
             var walletFound = lodash.find(wallets, function(w) {
-              return (lodash.isEqual(walletToFind, sjcl.hash.sha256.hash(w.id)));
+              return (lodash.isEqual(walletToFind, sjcl.codec.hex.fromBits(sjcl.hash.sha256.hash(w.id))));
             });
 
             if (!walletFound) return $log.debug('Wallet not found');

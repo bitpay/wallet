@@ -4,26 +4,38 @@ angular.module('copayApp.services')
     var root = {};
     var usePushNotifications = isCordova && !isMobile.Windows();
 
+    root.init = function(walletsClients) {
+      var defaults = configService.getDefaults();
+      var push = PushNotification.init(defaults.pushNotifications.config);
+
+      push.on('registration', function(data) {
+        if (root.token) return;
+        $log.debug('Starting push notification registration');
+        root.token = data.registrationId;
+        root.enableNotifications(walletsClients);
+      });
+
+      return push;
+    }
+
     root.enableNotifications = function(walletsClients) {
       if (!usePushNotifications) return;
 
       var config = configService.getSync();
       if (!config.pushNotifications.enabled) return;
 
-      storageService.getDeviceToken(function(err, token) {
-        if (err || !token) {
-          $log.warn('No token available for this device. Cannot set push notifications');
-          return;
-        }
+      if (!root.token) {
+        $log.warn('No token available for this device. Cannot set push notifications');
+        return;
+      }
 
-        lodash.forEach(walletsClients, function(walletClient) {
-          var opts = {};
-          opts.type = isMobile.iOS() ? "ios" : isMobile.Android() ? "android" : null;
-          opts.token = token;
-          root.subscribe(opts, walletClient, function(err, response) {
-            if (err) $log.warn('Subscription error: ' + err.message + ': ' + JSON.stringify(opts));
-            else $log.debug('Subscribed to push notifications service: ' + JSON.stringify(response));
-          });
+      lodash.forEach(walletsClients, function(walletClient) {
+        var opts = {};
+        opts.type = isMobile.iOS() ? "ios" : isMobile.Android() ? "android" : null;
+        opts.token = root.token;
+        root.subscribe(opts, walletClient, function(err, response) {
+          if (err) $log.warn('Subscription error: ' + err.message + ': ' + JSON.stringify(opts));
+          else $log.debug('Subscribed to push notifications service: ' + JSON.stringify(response));
         });
       });
     }
