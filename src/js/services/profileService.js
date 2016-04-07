@@ -1,6 +1,6 @@
 'use strict';
 angular.module('copayApp.services')
-  .factory('profileService', function profileServiceFactory($rootScope, $location, $timeout, $filter, $log, sjcl, lodash, storageService, bwcService, configService, notificationService, pushNotificationsService, isChromeApp, isCordova, isMobile, gettext, gettextCatalog, nodeWebkit, bwsError, uxLanguage, bitcore) {
+  .factory('profileService', function profileServiceFactory($rootScope, $timeout, $filter, $log, sjcl, lodash, storageService, bwcService, configService, notificationService, pushNotificationsService, isChromeApp, isCordova, isMobile, gettext, gettextCatalog, nodeWebkit, bwsError, uxLanguage, bitcore) {
 
     var root = {};
     var errors = bwcService.getErrors();
