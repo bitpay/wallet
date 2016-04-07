@@ -18,11 +18,10 @@
     </div>
     <div class="text-bold m10t size-12" ng-init="confirm.processFee(tx.amount, tx.fee)">
       <div ng-show="!showPercentage" ng-click="showPercentage = true">
-        <span translate>Fee</span>: {{tx.feeStr}}
+        <span translate>Fee</span> {{confirm.feeLevel|translate}}: {{tx.feeStr}}
         <span class="label gray radius">{{confirm.feeAlternativeStr}}</span>
       </div>
       <div ng-show="showPercentage" ng-click="showPercentage = false" translate>
-        {{confirm.feeLevel|translate}} &middot; 
         {{confirm.feeRateStr}} of the transaction
       </div>
     </div>
