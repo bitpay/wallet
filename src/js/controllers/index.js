@@ -41,8 +41,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   }];
 
   ret.addonViews = addonManager.addonViews();
-  ret.menu = ret.menu.concat(addonManager.addonMenuItems());
-  ret.menuItemSize = ret.menu.length > 4 ? 2 : 4;
   ret.txTemplateUrl = addonManager.txTemplateUrl() || 'views/includes/transaction.html';
 
   ret.tab = 'walletHome';
