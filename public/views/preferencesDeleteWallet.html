@@ -24,7 +24,7 @@
     <div class="m20b" translate>Permanently delete this wallet. THIS ACTION CANNOT BE REVERSED</div>
   </div>
   <ul class="no-bullet m0">
-    <li ng-click="isDeletingWallet || preferences.deleteWallet()">
+    <li ng-click="preferences.deleteWallet()">
       <div class="right" ng-style="{'color':index.backgroundColor}" ng-show="!isDeletingWallet">
         {{index.walletName}} <span ng-show="index.alias">({{index.alias}})</span>
       </div>
