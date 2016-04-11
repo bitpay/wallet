@@ -131,10 +131,11 @@ angular.module('copayApp.controllers').controller('sellCoinbaseController',
     };
 
     this.depositFunds = function(token, account) {
+      self.error = null;
       if ($scope.amount) {
         this.createTx(token, account, $scope.amount)
       } else if ($scope.fiat) {
-        var btcValue = ($scope.fiat / self.sellPrice).fixed(8);
+        var btcValue = ($scope.fiat / self.sellPrice.amount).toFixed(8);
         this.createTx(token, account, btcValue);
       }
     };
