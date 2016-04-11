@@ -48,7 +48,7 @@
       <div translate>Use Unconfirmed Funds</div>
     </li>
   </ul>
-  <div ng-show="prefGlobal.usePushNotifications">
+  <div ng-show="prefGlobal.usePushNotifications && PNEnabledByUser">
     <h4></h4>
     <ul class="no-bullet m0">
       <li>
@@ -78,7 +78,12 @@
       <div translate>About Copay</div>
     </li>
   </ul>
+  <div ng-show="prefGlobal.usePushNotifications && !PNEnabledByUser && isIOS">
+    <div class="text-centered text-gray size-12 m10" translate>Push notifications for Copay are currently disabled. Enable them in the Settings app.</div>
+    <ul class="no-bullet m0" ng-click="prefGlobal.openSettings()">
+      <li ng-style="{'color':index.backgroundColor}" translate>Open Settings app</li>
+    </ul>
+  </div>
   <h4></h4>
-
 </div>
 <div class="extra-margin-bottom"></div>

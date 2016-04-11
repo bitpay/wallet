@@ -14,11 +14,26 @@ angular.module('copayApp.controllers').controller('preferencesGlobalController',
       this.feeOpts = feeService.feeOpts;
       this.currentFeeLevel = feeService.getCurrentFeeLevel();
       this.usePushNotifications = isCordova && !isMobile.Windows();
+      $scope.PNEnabledByUser = true;
+      $scope.isIOS = isMobile.iOS();
+      if (!typeof cordova.plugins.diagnostic != undefined && $scope.isIOS) {
+        cordova.plugins.diagnostic.isRemoteNotificationsEnabled(function(isEnabled) {
+          $scope.PNEnabledByUser = isEnabled;
+        });
+      }
       $scope.spendUnconfirmed = config.wallet.spendUnconfirmed;
       $scope.glideraEnabled = config.glidera.enabled;
       $scope.glideraTestnet = config.glidera.testnet;
       $scope.pushNotifications = config.pushNotifications.enabled;
     };
+
+    this.openSettings = function() {
+      cordova.plugins.diagnostic.switchToSettings(function() {
+        $log.debug('switched to settings');
+      }, function(err) {
+        $log.debug(err);
+      });
+    }
 
     var unwatchSpendUnconfirmed = $scope.$watch('spendUnconfirmed', function(newVal, oldVal) {
       if (newVal == oldVal) return;
