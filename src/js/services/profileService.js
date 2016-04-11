@@ -1,9 +1,10 @@
 'use strict';
 angular.module('copayApp.services')
-  .factory('profileService', function profileServiceFactory($rootScope, $location, $timeout, $filter, $log, lodash, storageService, bwcService, configService, notificationService, pushNotificationsService, isChromeApp, isCordova, gettext, gettextCatalog, nodeWebkit, bwsError, uxLanguage, bitcore) {
+  .factory('profileService', function profileServiceFactory($rootScope, $timeout, $filter, $log, sjcl, lodash, storageService, bwcService, configService, notificationService, pushNotificationsService, isChromeApp, isCordova, isMobile, gettext, gettextCatalog, nodeWebkit, bwsError, uxLanguage, bitcore) {
 
     var root = {};
     var errors = bwcService.getErrors();
+    var usePushNotifications = isCordova && !isMobile.Windows();
 
     var FOREGROUND_UPDATE_PERIOD = 5;
     var BACKGROUND_UPDATE_PERIOD = 30;
@@ -133,22 +134,42 @@ angular.module('copayApp.services')
           if (err) return cb(err);
           root._setFocus(focusedWalletId, function() {
             $rootScope.$emit('Local/ProfileBound');
-            storageService.getDeviceToken(function(err, token) {
-              if (!token)
-                pushNotificationsService.pushNotificationsInit();
-
-              root.isDisclaimerAccepted(function(val) {
-                if (!val) {
-                  return cb(new Error('NONAGREEDDISCLAIMER: Non agreed disclaimer'));
-                } else {
-                  return cb();
-                }
-              });
+            if (usePushNotifications)
+              root.pushNotificationsInit();
+            root.isDisclaimerAccepted(function(val) {
+              if (!val) {
+                return cb(new Error('NONAGREEDDISCLAIMER: Non agreed disclaimer'));
+              } else {
+                return cb();
+              }
             });
           });
         });
       });
+    };
 
+    root.pushNotificationsInit = function() {
+      var defaults = configService.getDefaults();
+      var push = pushNotificationsService.init(root.walletClients);
+
+      push.on('notification', function(data) {
+        if (!data.additionalData.foreground) {
+          window.ignoreMobilePause = true;
+          $log.debug('Push notification event: ', data.message);
+
+          $timeout(function() {
+            var wallets = root.getWallets();
+            var walletToFind = data.additionalData.walletId;
+
+            var walletFound = lodash.find(wallets, function(w) {
+              return (lodash.isEqual(walletToFind, sjcl.codec.hex.fromBits(sjcl.hash.sha256.hash(w.id))));
+            });
+
+            if (!walletFound) return $log.debug('Wallet not found');
+            root.setAndStoreFocus(walletFound.id, function() {});
+          }, 100);
+        }
+      });
     };
 
 
