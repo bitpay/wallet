@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, bwcService, lodash, go, profileService, configService, isCordova, rateService, storageService, addressService, gettext, gettextCatalog, amMoment, nodeWebkit, addonManager, isChromeApp, bwsError, txFormatService, uxLanguage, $state, glideraService, isMobile, addressbookService) {
+angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, latestReleaseService, bwcService, pushNotificationsService, lodash, go, profileService, configService, isCordova, rateService, storageService, addressService, gettext, gettextCatalog, amMoment, nodeWebkit, addonManager, isChromeApp, bwsError, txFormatService, uxLanguage, $state, glideraService, isMobile, addressbookService) {
   var self = this;
   var SOFT_CONFIRMATION_LIMIT = 12;
   var errors = bwcService.getErrors();
@@ -45,6 +45,18 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
   ret.tab = 'walletHome';
   var vanillaScope = ret;
+
+  if (nodeWebkit.isDefined()) {
+    latestReleaseService.checkLatestRelease(function(err, newRelease) {
+      if (err) {
+        $log.warn(err);
+        return;
+      }
+
+      if (newRelease)
+        $scope.newRelease = gettext('There is a new version of Copay. Please update');
+    });
+  }
 
   function strip(number) {
     return (parseFloat(number.toPrecision(12)));

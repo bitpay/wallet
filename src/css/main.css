@@ -596,6 +596,26 @@ ul.manage li {
   padding-top: 0 !important;
 }
 
+.release {
+   cursor: pointer;
+   cursor: hand;
+   background-color: #E9E9EC;
+   margin-top: -30px;
+   margin-bottom: 5px;
+   padding-top: 30px;
+   padding-bottom: 20px;
+   text-align: center;
+   text-color: #444;
+ }
+
+ .release span {
+   margin-left: 15px;
+ }
+
+ .release i {
+   margin-right: 15px;
+ }
+
 .tab-bar h1, .tab-bar h2, .tab-bar h3, .tab-bar h4, .tab-bar h5, .tab-bar h6 {
   line-height: 2.7rem;
 }
