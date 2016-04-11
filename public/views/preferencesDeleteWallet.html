@@ -6,6 +6,18 @@
 
 
 <div class="content preferences" ng-controller="preferencesDeleteWalletController as preferences">
+  <div class="onGoingProcess" ng-show="isDeletingWallet">
+    <div class="onGoingProcess-content" ng-style="{'background-color':index.backgroundColor}">
+    <div class="spinner">
+      <div class="rect1"></div>
+      <div class="rect2"></div>
+      <div class="rect3"></div>
+      <div class="rect4"></div>
+      <div class="rect5"></div>
+    </div>
+    <span translate>Deleting Wallet...</span>
+    </div>
+  </div>
 
   <div class="text-center text-gray m20t size-12">
     <div class="text-warning size-18 m10b" translate>Warning!</div>
@@ -13,7 +25,7 @@
   </div>
   <ul class="no-bullet m0">
     <li ng-click="preferences.deleteWallet()">
-      <div class="right" ng-style="{'color':index.backgroundColor}">
+      <div class="right" ng-style="{'color':index.backgroundColor}" ng-show="!isDeletingWallet">
         {{index.walletName}} <span ng-show="index.alias">({{index.alias}})</span>
       </div>
       <div translate>Delete wallet</div>
