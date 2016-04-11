@@ -17,7 +17,7 @@
      ng-swipe-right="cancel()">
   <div class="header-modal bg-gray text-center">
     <div class="p20">
-      <img src="img/bought.svg" alt="bought" width="65" ng-show="tx.type == 'buy' && tx.status == 'completed'">
+      <img src="img/bought.svg" alt="bought" width="65" ng-show="(tx.type == 'buy' || (tx.type == 'send' && tx.to)) && tx.status == 'completed'">
       <img src="img/bought-pending.svg" alt="bought" width="65" 
       ng-show="(tx.type == 'buy' || (tx.type == 'send' && tx.to)) && tx.status != 'completed'">
       <img src="img/sold.svg" alt="bought" width="65" ng-show="tx.type == 'sell' && tx.status == 'completed'">
@@ -25,14 +25,14 @@
         ng-show="(tx.type == 'sell' || (tx.type == 'send' && tx.from)) && tx.status != 'completed'">
     </div>
     <div ng-show="tx.status == 'completed'">
-      <span ng-show="tx.type == 'buy'">Bought</span>
+      <span ng-show="tx.type == 'buy' || tx.type == 'send'">Bought</span>
       <span ng-show="tx.type == 'sell'">Sold</span>
     </div>
-    <div ng-show="tx.type == 'send' && (tx.to || tx.from)">
+    <div ng-show="tx.type == 'send' && (tx.to || tx.from) && tx.status != 'completed'">
       <span ng-show="tx.to">Receiving purchased bitcoins</span>
       <span ng-show="tx.from">Sending bitcoin to sell</span>
     </div>
-    <div ng-show="(tx.type == 'sell' || tx.type == 'buy') && tx.status == 'pending'">
+    <div ng-show="(tx.type == 'sell' || tx.type == 'buy') && tx.status != 'completed'">
       <span ng-show="tx.type == 'buy'">Buying bitcoin</span>
       <span ng-show="tx.type == 'sell'">Selling bitcoin</span>
     </div>
@@ -83,8 +83,8 @@
     </li>
 
     <li ng-show="tx.description" class="line-b p10 oh">
-      <span class="text-gray" ng-show="tx.from && tx.type == 'send' && tx.status == 'pending'">Sent bitcoin from</span>
-      <span class="text-gray" ng-show="tx.to && tx.type == 'send' && tx.status == 'pending'">Receive bitcoin in</span>
+      <span class="text-gray" ng-show="tx.from && tx.type == 'send'">Sent bitcoin from</span>
+      <span class="text-gray" ng-show="tx.to && tx.type == 'send'">Receive bitcoin in</span>
       <span class="right text-bold">{{tx.description}}</span>
     </li>
   </ul>

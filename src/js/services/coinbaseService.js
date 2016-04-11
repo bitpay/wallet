@@ -34,8 +34,8 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
     else {
       credentials.HOST = 'https://coinbase.com';
       credentials.API = 'https://api.coinbase.com';
-      credentials.CLIENT_ID = '';
-      credentials.CLIENT_SECRET = '';
+      credentials.CLIENT_ID = window.coinbase_client_id;
+      credentials.CLIENT_SECRET = window.coinbase_client_secret;
     };
   };
 
@@ -46,7 +46,8 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
       + '&redirect_uri='
       + credentials.REDIRECT_URI
       + '&state=SECURE_RANDOM&scope='
-      + credentials.SCOPE;
+      + credentials.SCOPE
+      + '&meta[send_limit_amount]=100&meta[send_limit_currency]=USD&meta[send_limit_period]=day';
   };
 
   root.getToken = function(code, cb) {

@@ -145,8 +145,8 @@
         ng-click="coinbase.openTxModal(tx)"
         class="row collapse last-transactions-content">
         <div class="large-2 medium-2 small-2 columns">
-          <img src="img/bought-pending.svg" alt="bought" width="24" ng-show="tx.to && tx.type == 'send'">
-          <img src="img/bought.svg" alt="bought" width="30" ng-show="!tx.to && tx.type == 'buy' && tx.status == 'completed'">
+          <img src="img/bought-pending.svg" alt="bought" width="24" ng-show="(tx.type == 'buy' || (tx.to && tx.type == 'send')) && tx.status != 'completed'">
+          <img src="img/bought.svg" alt="bought" width="30" ng-show="(tx.type == 'buy' || (tx.to && tx.type == 'send')) && tx.status == 'completed'">
           <img src="img/sold-pending.svg" alt="sold" width="24" ng-show="tx.from && tx.type == 'send'">
           <img src="img/sold.svg" alt="sold" width="30" ng-show="!tx.from && tx.type == 'sell' && tx.status == 'completed'">
         </div>

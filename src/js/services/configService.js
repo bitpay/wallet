@@ -115,7 +115,7 @@ angular.module('copayApp.services').factory('configService', function(storageSer
 
       // Coinbase
       // Disabled for testnet
-      configCache.coinbase.testnet = true;
+      configCache.coinbase.testnet = false;
 
       $log.debug('Preferences read:', configCache)
       return cb(err, configCache);
