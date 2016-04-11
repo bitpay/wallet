@@ -1082,9 +1082,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   self.setCompactTxHistory = function() {
     self.isSearching = false;
     self.nextTxHistory = self.historyShowMoreLimit;
-    self.txHistory = self.completeHistory.slice(0, self.historyShowLimit);
+    self.txHistory = self.completeHistory ? self.completeHistory.slice(0, self.historyShowLimit) : null;
     self.txHistorySearchResults = self.txHistory;
-    self.historyShowMore = self.completeHistory.length > self.historyShowLimit;
+    self.historyShowMore = self.completeHistory ? self.completeHistory.length > self.historyShowLimit : null;
   };
 
   self.debounceUpdateHistory = lodash.debounce(function() {

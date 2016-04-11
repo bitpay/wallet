@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('preferencesDeleteWalletController',
-  function($scope, $rootScope, $filter, $timeout, $modal, $log, storageService, notification, profileService, isCordova, go, gettext, gettextCatalog, animationService) {
+  function($scope, $rootScope, $filter, $timeout, $modal, $log, storageService, notification, profileService, isCordova, go, gettext, gettextCatalog, animationService, applicationService) {
     this.isCordova = isCordova;
     this.error = null;
     $scope.isDeletingWallet = false;
@@ -59,7 +59,7 @@ angular.module('copayApp.controllers').controller('preferencesDeleteWalletContro
           notification.success(gettextCatalog.getString('Success'), gettextCatalog.getString('The wallet "{{walletName}}" was deleted', {
             walletName: walletName
           }));
-          go.walletHome();
+          applicationService.restart();
         }
       });
     };
