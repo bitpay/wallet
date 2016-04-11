@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('preferencesGlobalController',
-  function($scope, $rootScope, $log, configService, uxLanguage, pushNotificationsService, profileService, feeService) {
+  function($scope, $rootScope, $log, configService, uxLanguage, isCordova, isMobile, pushNotificationsService, profileService, feeService) {
 
     this.init = function() {
       var config = configService.getSync();
@@ -13,6 +13,7 @@ angular.module('copayApp.controllers').controller('preferencesGlobalController',
       };
       this.feeOpts = feeService.feeOpts;
       this.currentFeeLevel = feeService.getCurrentFeeLevel();
+      this.usePushNotifications = isCordova && !isMobile.Windows();
       $scope.spendUnconfirmed = config.wallet.spendUnconfirmed;
       $scope.glideraEnabled = config.glidera.enabled;
       $scope.glideraTestnet = config.glidera.testnet;
