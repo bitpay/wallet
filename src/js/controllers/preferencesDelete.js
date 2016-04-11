@@ -39,15 +39,13 @@ angular.module('copayApp.controllers').controller('preferencesDeleteWalletContro
 
       modalInstance.result.then(function(ok) {
         if (ok) {
-          $timeout(function() {
-            $scope.isDeletingWallet = true;
-            _deleteWallet();
-          }, 100);
+          _deleteWallet();
         }
       });
     };
 
     var _deleteWallet = function() {
+      $scope.isDeletingWallet = true;
       var fc = profileService.focusedClient;
       var name = fc.credentials.walletName;
       var walletName = (fc.alias || '') + ' [' + name + ']';
@@ -67,15 +65,13 @@ angular.module('copayApp.controllers').controller('preferencesDeleteWalletContro
     };
 
     this.deleteWallet = function() {
+      if ($scope.isDeletingWallet) return;
       if (isCordova) {
         navigator.notification.confirm(
           delete_msg,
           function(buttonIndex) {
             if (buttonIndex == 1) {
-              $timeout(function() {
-                $scope.isDeletingWallet = true;
-                _deleteWallet();
-              }, 100);
+              _deleteWallet();
             }
           },
           confirm_msg, [accept_msg, cancel_msg]
