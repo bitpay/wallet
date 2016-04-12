@@ -29,7 +29,7 @@
       <span ng-show="tx.type == 'sell'">Sold</span>
     </div>
     <div ng-show="tx.type == 'send' && (tx.to || tx.from) && tx.status != 'completed'">
-      <span ng-show="tx.to">Receiving purchased bitcoins</span>
+      <span ng-show="tx.to">Receiving purchased bitcoin</span>
       <span ng-show="tx.from">Sending bitcoin to sell</span>
     </div>
     <div ng-show="(tx.type == 'sell' || tx.type == 'buy') && tx.status != 'completed'">
