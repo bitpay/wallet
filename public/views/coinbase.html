@@ -141,7 +141,7 @@
           <li ng-repeat="err in index.coinbasePendingError.errors" ng-bind-html="err.message"></li>
         </ul>
       </div>
-      <div ng-repeat="(id, tx) in index.coinbasePendingTransactions | orderObjectBy:'updated_at':true"
+      <div ng-repeat="(id, tx) in index.coinbasePendingTransactions | orderObjectBy:'updated_at':true track by $index"
         ng-click="coinbase.openTxModal(tx)"
         class="row collapse last-transactions-content">
         <div class="large-2 medium-2 small-2 columns">

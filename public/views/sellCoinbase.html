@@ -38,87 +38,110 @@
          ng-submit="sell.depositFunds(index.coinbaseToken, index.coinbaseAccount)" 
          novalidate>
 
-        <div 
-         ng-if="index.coinbaseToken"
-         ng-init="sell.init(index.coinbaseTestnet)"
-         ng-click="openWalletsModal(sell.otherWallets)">
-          <label>Copay Wallet</label>
+
+        <div ng-show="!showPriceSensitivity">
+
+          <div 
+           ng-if="index.coinbaseToken"
+           ng-init="sell.init(index.coinbaseTestnet)"
+           ng-click="openWalletsModal(sell.otherWallets)">
+            <label>Copay Wallet</label>
+            <div class="input">
+              <input type="text" id="address" name="address" ng-disabled="sell.selectedWalletId" 
+              ng-attr-placeholder="{{'Choose your source wallet'}}" 
+              ng-model="sell.selectedWalletName" required>
+              <a class="postfix size-12 m0 text-gray">
+                <i class="icon-wallet size-18"></i>
+              </a>
+            </div>
+          </div>
+
+          <label>
+            Amount 
+            <span 
+              ng-if="index.coinbaseToken"
+              ng-init="sell.getPrice(index.coinbaseToken)"
+              ng-show="sell.sellPrice" 
+              class="size-11 text-light right">
+              1 BTC <i class="icon-arrow-right"></i> {{sell.sellPrice.amount}} {{sell.sellPrice.currency}}
+            </span>
+          </label>
           <div class="input">
-            <input type="text" id="address" name="address" ng-disabled="sell.selectedWalletId" 
-            ng-attr-placeholder="{{'Choose your source wallet'}}" 
-            ng-model="sell.selectedWalletName" required>
-            <a class="postfix size-12 m0 text-gray">
-              <i class="icon-wallet size-18"></i>
-            </a>
+            <input ng-show="!showAlternative" type="number" id="amount" 
+            name="amount" ng-attr-placeholder="{{'Amount in ' + (showAlternative ? 'USD' : 'BTC')}}"
+            ng-minlength="0.00000001" ng-maxlength="10000000000" 
+            ng-model="amount" autocomplete="off" ng-disabled="sell.loading">
+            
+            <input ng-show="showAlternative" type="number" id="fiat" 
+            name="fiat" ng-attr-placeholder="{{'Amount in ' + (showAlternative ? 'USD' : 'BTC')}}" 
+            ng-model="fiat" autocomplete="off" ng-disabled="sell.loading">
+
+            <a ng-show="!showAlternative" class="postfix button" 
+              ng-click="showAlternative = true; amount = null">BTC</a>
+            <a ng-show="showAlternative" class="postfix button black" 
+              ng-click="showAlternative = false; fiat = null">USD</a>
+          </div>
+
+          <div class="text-center text-gray size-12 m10b">
+            <span ng-show="!(amount || fiat)">
+              Enter the amount to get the exchange rate
+            </span>
+            <span ng-show="!sell.sellPrice && (amount || fiat)">
+              Not available
+            </span>
+            <span ng-show="sell.sellPrice && amount && !fiat">
+              ~ {{sell.sellPrice.amount * amount | currency : 'USD ' : 2}}
+            </span>
+          </div>
+
+          <div class="text-center">
+            <i class="db fi-arrow-down size-24 m10v"></i>
+          </div>
+
+          <div ng-if="index.coinbaseToken" ng-init="sell.getPaymentMethods(index.coinbaseToken)">
+            <label>Deposit into</label>
+            <select 
+              ng-model="selectedPaymentMethod.id" 
+              ng-options="item.id as item.name for item in sell.paymentMethods">
+            </select>
+          </div>
+          <div class="input m20t">
+            <a href class="button black expand round" 
+                   ng-disabled="sell.loading || (!amount && !fiat)"
+                   ng-style="{'background-color': '#2b71b1'}"
+                   ng-click="showPriceSensitivity = true">Continue</a>
           </div>
         </div>
 
-        <label>
-          Amount 
-          <span 
-            ng-if="index.coinbaseToken"
-            ng-init="sell.getPrice(index.coinbaseToken)"
-            ng-show="sell.sellPrice" 
-            class="size-11 text-light right">
-            1 BTC <i class="icon-arrow-right"></i> {{sell.sellPrice.amount}} {{sell.sellPrice.currency}}
-          </span>
-        </label>
-        <div class="input">
-          <input ng-show="!showAlternative" type="number" id="amount" 
-          name="amount" ng-attr-placeholder="{{'Amount in ' + (showAlternative ? 'USD' : 'BTC')}}"
-          ng-minlength="0.00000001" ng-maxlength="10000000000" 
-          ng-model="amount" autocomplete="off" ng-disabled="sell.loading">
-          
-          <input ng-show="showAlternative" type="number" id="fiat" 
-          name="fiat" ng-attr-placeholder="{{'Amount in ' + (showAlternative ? 'USD' : 'BTC')}}" 
-          ng-model="fiat" autocomplete="off" ng-disabled="sell.loading">
-
-          <a ng-show="!showAlternative" class="postfix button" 
-            ng-click="showAlternative = true; amount = null">BTC</a>
-          <a ng-show="showAlternative" class="postfix button black" 
-            ng-click="showAlternative = false; fiat = null">USD</a>
-        </div>
-
-        <div class="text-center text-gray size-12 m10b">
-          <span ng-show="!(amount || fiat)">
-            Enter the amount to get the exchange rate
-          </span>
-          <span ng-show="!sell.sellPrice && (amount || fiat)">
-            Not available
-          </span>
-          <span ng-show="sell.sellPrice && amount && !fiat">
-            ~ {{sell.sellPrice.amount * amount | currency : 'USD ' : 2}}
-          </span>
-        </div>
-
-        <div class="text-center">
-          <i class="db fi-arrow-down size-24 m10v"></i>
-        </div>
-
-        <div ng-if="index.coinbaseToken" ng-init="sell.getPaymentMethods(index.coinbaseToken)">
-          <label>Deposit into</label>
-          <select 
-            ng-model="selectedPaymentMethod.id" 
-            ng-options="item.id as item.name for item in sell.paymentMethods">
-          </select>
-        </div>
-
-        <div class="m20t">
-          <label>Price Sensitivity</label> 
+        <div ng-show="showPriceSensitivity">
+          <h1>Price Sensitivity</h1> 
+          <p class="size-14 text-gray">
+            Coinbase has not yet implemented an immediate method to sell bitcoin from a wallet. To make this sale, funds
+            will be sent to your Coinbase account, and sold when Coinbase accepts the transaction (usually one
+            hour).
+          </p>
+          <label>At what percentage lower price would you accept to sell?</label>
           <select 
             ng-model="selectedPriceSensitivity" 
             ng-options="item as item.name for item in priceSensitivity track by item.value">
           </select>
           <p class="size-12 text-gray">
-            Coinbase has not yet implemented an immediate method to sell bitcoin from a wallet. To make this sale, funds will be sent to your Coinbase account, and sold when Coinbase accepts the transaction (usually one hour).
+          Estimated sale value: {{sell.sellPrice.amount * amount | currency : 'USD ' : 2}} <br>
+          Still sell if price fall until: 
+          {{(sell.sellPrice.amount - (selectedPriceSensitivity.value / 100) * sell.sellPrice.amount) * amount | currency : 'USD ' : 2}}
           </p>
-        </div>
 
-        <div class="input m20t">
-          <input class="button black expand round" 
-                 ng-disabled="sell.loading || (!amount && !fiat)"
-                 ng-style="{'background-color': '#2b71b1'}"
-                 type="submit" value="Continue">
+          <div class="input m20t row">
+            <div class="columns large-6 medium-6 small-6">
+              <a href class="button outline dark-gray expand round" ng-click="showPriceSensitivity = false">Back</a>
+            </div>
+            <div class="columns large-6 medium-6 small-6">
+            <input class="button black expand round" 
+                   ng-disabled="sell.loading || (!amount && !fiat)"
+                   ng-style="{'background-color': '#2b71b1'}"
+                   type="submit" value="Confirm">
+            </div>
+          </div>
         </div>
       </form>
     </div>
