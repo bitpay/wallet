@@ -54,12 +54,11 @@
     <div class="m10t text-center">
       <button
         class="dark-gray outline round tiny"
-        ng-click="index.initCoinbase(index.coinbaseToken)">
-        Refresh Token
+        ng-click="coinbase.refreshToken()">
+        Reconnect
       </button>
       <div class="m20t size-12">
-        Or go to <a class="text-gray" ng-click="$root.go('preferencesCoinbase')">Preferences</a> and remove Token
-        manually
+        Or go to <a class="text-gray" ng-click="$root.go('preferencesCoinbase')">Preferences</a> and log out manually.
       </div>
     </div>
   </div>

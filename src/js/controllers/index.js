@@ -1299,6 +1299,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
           self.coinbaseLoading = null;
           if (err) {
             self.coinbaseError = err;
+            if (err.errors[0] && err.errors[0].id == 'token_expired') {
+              self.refreshToken();
+            }
           } else {
             self.coinbaseToken = accessToken;
             lodash.each(a.data, function(account) {
@@ -1397,6 +1400,24 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       }
     }
     return obj;
+  };
+
+  self.refreshToken = function() {
+    var coinbaseTestnet = configService.getSync().coinbase.testnet;
+    var network = coinbaseTestnet ? 'testnet' : 'livenet';
+    storageService.getCoinbaseRefreshToken(network, function(err, refreshToken) {
+      coinbaseService.refreshToken(refreshToken, function(err, data) {
+        if (err) {
+          self.coinbaseError = err;
+        } else if (data && data.access_token && data.refresh_token) {
+          storageService.setCoinbaseToken(network, data.access_token, function() {
+            storageService.setCoinbaseRefreshToken(network, data.refresh_token, function() {
+              self.updateCoinbase(data.access_token);
+            });
+          });
+        }
+      });
+    });
   };
 
   self.buyPending = function(tx) {
