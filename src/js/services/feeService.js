@@ -15,10 +15,10 @@ angular.module('copayApp.services').factory('feeService', function($log, bwcServ
   };
 
   root.getCurrentFeeValue = function(cb) {
-    var walletClient = bwcService.getClient();
+    var fc = profileService.focusedClient;
     var feeLevel = root.getCurrentFeeLevel();
 
-    walletClient.getFeeLevels('livenet', function(err, levels) {
+    fc.getFeeLevels(fc.credentials.network, function(err, levels) {
       if (err)
         return cb({
           message: 'Could not get dynamic fee'
