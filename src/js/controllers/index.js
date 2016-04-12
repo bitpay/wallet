@@ -1299,7 +1299,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
           self.coinbaseLoading = null;
           if (err) {
             self.coinbaseError = err;
-            if (err.errors[0] && err.errors[0].id == 'token_expired') {
+            if (err.errors[0] && err.errors[0].id == 'expired_token') {
               self.refreshCoinbaseToken();
             }
           } else {
@@ -1327,6 +1327,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       coinbaseService.getAccount(accessToken, accountId, function(err, a) {
         if (err) {
           self.coinbaseError = err;
+          if (err.errors[0] && err.errors[0].id == 'expired_token') {
+            self.refreshCoinbaseToken();
+          }
           return;
         }
         self.coinbaseAccount = a.data;
@@ -1336,6 +1339,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     coinbaseService.getCurrentUser(accessToken, function(err, u) {
       if (err) {
         self.coinbaseError = err;
+        if (err.errors[0] && err.errors[0].id == 'expired_token') {
+          self.refreshCoinbaseToken();
+        }
         return;
       }
       self.coinbaseUser = u.data;
@@ -1411,7 +1417,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         } else if (data && data.access_token && data.refresh_token) {
           storageService.setCoinbaseToken(network, data.access_token, function() {
             storageService.setCoinbaseRefreshToken(network, data.refresh_token, function() {
-              self.updateCoinbase(data.access_token);
+              $timeout(function() {
+                self.initCoinbase(data.access_token);
+              }, 100);
             });
           });
         }
