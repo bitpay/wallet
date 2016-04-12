@@ -1300,7 +1300,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
           if (err) {
             self.coinbaseError = err;
             if (err.errors[0] && err.errors[0].id == 'token_expired') {
-              self.refreshToken();
+              self.refreshCoinbaseToken();
             }
           } else {
             self.coinbaseToken = accessToken;
@@ -1402,9 +1402,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     return obj;
   };
 
-  self.refreshToken = function() {
-    var coinbaseTestnet = configService.getSync().coinbase.testnet;
-    var network = coinbaseTestnet ? 'testnet' : 'livenet';
+  self.refreshCoinbaseToken = function() {
+    var network = self.coinbaseTestnet ? 'testnet' : 'livenet';
     storageService.getCoinbaseRefreshToken(network, function(err, refreshToken) {
       coinbaseService.refreshToken(refreshToken, function(err, data) {
         if (err) {

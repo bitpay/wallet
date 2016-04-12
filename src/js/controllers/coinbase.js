@@ -58,36 +58,6 @@ angular.module('copayApp.controllers').controller('coinbaseController',
       }, 100);
     };
 
-    this.refreshToken = function() {
-      var self = this;
-      var coinbaseTestnet = configService.getSync().coinbase.testnet;
-      var network = coinbaseTestnet ? 'testnet' : 'livenet';
-      this.loading = true;
-      this.error = null;
-      $timeout(function() {
-        storageService.getCoinbaseRefreshToken(network, function(err, refreshToken) {
-          coinbaseService.refreshToken(refreshToken, function(err, data) {
-            self.loading = null;
-            if (err) {
-              self.error = err;
-              $timeout(function() {
-                $scope.$apply();
-              }, 100);
-            } else if (data && data.access_token && data.refresh_token) {
-              storageService.setCoinbaseToken(network, data.access_token, function() {
-                storageService.setCoinbaseRefreshToken(network, data.refresh_token, function() {
-                  $scope.$emit('Local/CoinbaseUpdated', data.access_token);
-                  $timeout(function() {
-                    $scope.$apply();
-                  }, 100);
-                });
-              });
-            }
-          });
-        });
-      }, 100);
-    };
-
     this.openTxModal = function(tx) {
       $rootScope.modalOpened = true;
       var self = this;
