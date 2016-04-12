@@ -76,6 +76,32 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
     });
   };
 
+  root.refreshToken = function(refreshToken, cb) {
+    var req = {
+      method: 'POST',
+      url: credentials.API + '/oauth/token',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      data: { 
+        grant_type : 'refresh_token',
+        client_id : credentials.CLIENT_ID,
+        client_secret: credentials.CLIENT_SECRET,
+        redirect_uri: credentials.REDIRECT_URI,
+        refresh_token: refreshToken 
+      }
+    };
+
+    $http(req).then(function(data) {
+      $log.info('Coinbase Refresh Access Token: SUCCESS');
+      return cb(null, data.data); 
+    }, function(data) {
+      $log.error('Coinbase Refresh Access Token: ERROR ' + data.statusText);
+      return cb(data.data);
+    });
+  };
+
   var _get = function(endpoint, token) {
     return {
       method: 'GET',

@@ -223,6 +223,14 @@ angular.module('copayApp.services')
       storage.remove('glideraToken-' + network, cb);
     };
 
+    root.setCoinbaseRefreshToken = function(network, token, cb) {
+      storage.set('coinbaseRefreshToken-' + network, token, cb);
+    };
+
+    root.getCoinbaseRefreshToken = function(network, cb) {
+      storage.get('coinbaseRefreshToken-' + network, cb);
+    };
+
     root.setCoinbaseToken = function(network, token, cb) {
       storage.set('coinbaseToken-' + network, token, cb);
     };
