@@ -15,8 +15,8 @@ angular.module('copayApp.controllers').controller('preferencesGlobalController',
       this.currentFeeLevel = feeService.getCurrentFeeLevel();
       this.usePushNotifications = isCordova && !isMobile.Windows();
       $scope.PNEnabledByUser = true;
-      $scope.isIOS = isMobile.iOS();
-      if (!typeof cordova.plugins.diagnostic != undefined && $scope.isIOS) {
+      $scope.isIOSApp = isMobile.iOS() && isCordova;
+      if ($scope.isIOSApp) {
         cordova.plugins.diagnostic.isRemoteNotificationsEnabled(function(isEnabled) {
           $scope.PNEnabledByUser = isEnabled;
         });
