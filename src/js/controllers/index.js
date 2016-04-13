@@ -1356,6 +1356,10 @@ angular.module('copayApp.controllers').controller('indexController', function($r
             (dataFromStorage.type == 'send' && dataFromStorage.status == 'completed')) return;
         coinbaseService.getTransaction(accessToken, accountId, txId, function(err, tx) {
           if (err) {
+            if (err.errors[0] && err.errors[0].id == 'expired_token') {
+              self.refreshCoinbaseToken();
+              return;
+            }
             coinbaseService.savePendingTransaction(dataFromStorage, {status: 'error', error: err}, function(err) {
               if (err) $log.debug(err);
             });
@@ -1366,6 +1370,10 @@ angular.module('copayApp.controllers').controller('indexController', function($r
           if (tx.data.type == 'send' && tx.data.status == 'completed' && tx.data.from) {
             coinbaseService.sellPrice(accessToken, dataFromStorage.sell_price_currency, function(err, s) {
               if (err) {
+                if (err.errors[0] && err.errors[0].id == 'expired_token') {
+                  self.refreshCoinbaseToken();
+                  return;
+                }
                 coinbaseService.savePendingTransaction(dataFromStorage, {status: 'error', error: err}, function(err) {
                   if (err) $log.debug(err);
                 });
@@ -1437,6 +1445,10 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     };
     coinbaseService.sendTo(self.coinbaseToken, self.coinbaseAccount.id, data, function(err, res) {
       if (err) {
+        if (err.errors[0] && err.errors[0].id == 'expired_token') {
+          self.refreshCoinbaseToken();
+          return;
+        }
         coinbaseService.savePendingTransaction(tx, {status: 'error', error: err}, function(err) {
           if (err) $log.debug(err);
         });
@@ -1466,6 +1478,10 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     data['commit'] = true;
     coinbaseService.sellRequest(self.coinbaseToken, self.coinbaseAccount.id, data, function(err, res) {
       if (err) {
+        if (err.errors[0] && err.errors[0].id == 'expired_token') {
+          self.refreshCoinbaseToken();
+          return;
+        }
         coinbaseService.savePendingTransaction(tx, {status: 'error', error: err}, function(err) {
           if (err) $log.debug(err);
         });
