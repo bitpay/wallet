@@ -1243,44 +1243,79 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     return actions.hasOwnProperty('create');
   };
 
-  this._doSendAll = function(amount) {
+  this._doSendMax = function(amount) {
     this.setForm(null, amount, null);
   };
 
-  this.sendAll = function(totalBytesToSendMax, availableBalanceSat) {
+  this.sendMax = function(availableBalanceSat) {
+    if (availableBalanceSat == 0) {
+      this.error = gettext("Cannot create transaction. Insufficient funds");
+      return;
+    }
+
     var self = this;
-    var availableMaxBalance;
-    var feeToSendMaxStr;
+    var fc = profileService.focusedClient;
     this.error = null;
     this.setOngoingProcess(gettextCatalog.getString('Calculating fee'));
 
     feeService.getCurrentFeeValue(function(err, feePerKb) {
-      self.setOngoingProcess();
-      if (err || lodash.isNull(feePerKb)) {
+      if (err || !lodash.isNumber(feePerKb)) {
+        self.setOngoingProcess();
         self.error = gettext('Could not get fee value');
         return;
       }
 
-      var feeToSendMaxSat = parseInt(((totalBytesToSendMax * feePerKb) / 1000.).toFixed(0));
-      if (availableBalanceSat > feeToSendMaxSat) {
-        self.lockedCurrentFeePerKb = feePerKb;
-        availableMaxBalance = strip((availableBalanceSat - feeToSendMaxSat) * self.satToUnit);
-        feeToSendMaxStr = profileService.formatAmount(feeToSendMaxSat) + ' ' + self.unitName;
-      } else {
-        self.error = gettext('Not enought funds for fee');
-        return;
-      }
+      var opts = {};
+      opts.feePerKb = feePerKb;
+      opts.returnInputs = true;
+      var config = configService.getSync();
+      opts.excludeUnconfirmedUtxos = !config.wallet.spendUnconfirmed;
+      self.setOngoingProcess(gettextCatalog.getString('Retrieving inputs information'));
 
-      var msg = gettextCatalog.getString("{{fee}} will be deducted for bitcoin networking fees", {
-        fee: feeToSendMaxStr
-      });
+      fc.getSendMaxInfo(opts, function(err, resp) {
+        self.setOngoingProcess();
+        if (err) {
+          self.error = err;
+          $scope.$apply();
+          return;
+        }
 
-      $scope.$apply();
-      confirmDialog.show(msg, function(confirmed) {
-        if (confirmed) {
-          self._doSendAll(availableMaxBalance);
-        } else {
-          self.resetForm();
+        if (resp.amount == 0) {
+          self.error = gettext("Not enought funds for fee");
+          $scope.$apply();
+          return;
+        }
+
+        var msg = gettextCatalog.getString("{{fee}} will be deducted for bitcoin networking fees", {
+          fee: profileService.formatAmount(resp.fee) + ' ' + self.unitName
+        });
+
+        var warningMsg = verifyExcludedUtxos();
+
+        if (!lodash.isEmpty(warningMsg))
+          msg += '. \n' + warningMsg;
+
+        confirmDialog.show(msg, function(confirmed) {
+          if (confirmed) {
+            self._doSendMax(resp.amount * self.satToUnit);
+          } else {
+            self.resetForm();
+          }
+        });
+
+        function verifyExcludedUtxos() {
+          var warningMsg = [];
+          if (resp.utxosBelowFee > 0) {
+            warningMsg.push(gettextCatalog.getString("Note: a total of {{amountBelowFeeStr}} were excluded. These funds come from UTXOs smaller than the network fee provided.", {
+              amountBelowFeeStr: profileService.formatAmount(resp.amountBelowFee) + ' ' + self.unitName
+            }));
+          }
+          if (resp.utxosAboveMaxSize > 0) {
+            warningMsg.push(gettextCatalog.getString("Note: a total of {{amountAboveMaxSizeStr}} were excluded. The maximum size allowed for a transaction was exceeded", {
+              amountAboveMaxSizeStr: profileService.formatAmount(resp.amountAboveMaxSize) + ' ' + self.unitName
+            }));
+          }
+          return warningMsg.join('\n');
         }
       });
     });
