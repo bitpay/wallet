@@ -1,0 +1,60 @@
+<div
+  class="topbar-container"
+  ng-include="'views/includes/topbar.html'"
+  ng-init="titleSection='Preferences'; goBackToState = 'coinbase'; noColor = true">
+</div>
+
+<div class="content preferences" ng-controller="preferencesCoinbaseController as coinbase">
+
+  <ul ng-if="index.coinbaseAccount && !index.coinbaseError" class="no-bullet m0">
+    <h4 class="title m0">Account</h4>
+    <li>
+    <span>ID</span>
+    <span class="right text-gray enable_text_select">
+      {{index.coinbaseAccount.id}}
+    </span>
+    </li>
+    <li>
+    <span>Name</span>
+    <span class="right text-gray">
+      {{index.coinbaseAccount.name}}
+    </span>
+    </li>
+    <li>
+    <span>Balance</span>
+    <span class="right text-gray">
+      {{index.coinbaseAccount.balance.amount}} {{index.coinbaseAccount.balance.currency}}
+    </span>
+    </li>
+    <li>
+    <span>Native Balance</span>
+    <span class="right text-gray">
+      {{index.coinbaseAccount.native_balance.amount}} {{index.coinbaseAccount.native_balance.currency}}
+    </span>
+    </li>
+
+    <h4 class="title m0">User Information</h4> 
+    <li>
+    <span>ID</span>
+    <span class="right text-gray enable_text_select">
+      {{index.coinbaseUser.id}}
+    </span>
+    </li>
+    <li>
+    <span>Email</span>
+    <span class="right text-gray">
+      {{index.coinbaseUser.email}}
+    </span>
+    </li>
+  </ul>
+  <ul class="no-bullet m0">
+    <h4></h4>
+    <li ng-click="coinbase.revokeToken(index.coinbaseTestnet)">
+      <i class="icon-arrow-right3 size-24 right text-gray"></i>
+      <span class="text-warning">Log out</span>
+    </li>
+  </ul>
+  <h4></h4>
+
+</div>
+<div class="extra-margin-bottom"></div>

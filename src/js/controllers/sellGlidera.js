@@ -70,7 +70,7 @@ angular.module('copayApp.controllers').controller('sellGlideraController',
       };
 
       var modalInstance = $modal.open({
-        templateUrl: 'views/modals/glidera-wallets.html',
+        templateUrl: 'views/modals/wallets.html',
         windowClass: animationService.modalAnimated.slideUp,
         controller: ModalInstanceCtrl,
       });
@@ -129,7 +129,7 @@ angular.module('copayApp.controllers').controller('sellGlideraController',
       self.error = null;
 
 
-      txService.prepare(function(err) {
+      txService.prepare({selectedClient: fc}, function(err) {
         if (err) {
           self.error = err;
           return;
@@ -173,7 +173,7 @@ angular.module('copayApp.controllers').controller('sellGlideraController',
                     return;
                   }
 
-                  txService.sign(txp, function(err, txp) {
+                  txService.sign(txp, {selectedClient: fc}, function(err, txp) {
                     if (err) {
                       self.loading = null;
                       self.error = err;

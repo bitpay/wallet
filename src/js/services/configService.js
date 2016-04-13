@@ -38,6 +38,11 @@ angular.module('copayApp.services').factory('configService', function(storageSer
       testnet: false
     },
 
+    coinbase: {
+      enabled: true,
+      testnet: false
+    },
+
     rates: {
       url: 'https://insight.bitpay.com:443/api/rates',
     },
@@ -93,6 +98,9 @@ angular.module('copayApp.services').factory('configService', function(storageSer
         if (!configCache.glidera) {
           configCache.glidera = defaultConfig.glidera;
         }
+        if (!configCache.coinbase) {
+          configCache.coinbase = defaultConfig.coinbase;
+        }
         if (!configCache.pushNotifications) {
           configCache.pushNotifications = defaultConfig.pushNotifications;
         }
@@ -104,6 +112,10 @@ angular.module('copayApp.services').factory('configService', function(storageSer
       // Glidera
       // Disabled for testnet
       configCache.glidera.testnet = false;
+
+      // Coinbase
+      // Disabled for testnet
+      configCache.coinbase.testnet = false;
 
       $log.debug('Preferences read:', configCache)
       return cb(err, configCache);

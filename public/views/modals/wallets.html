@@ -7,8 +7,8 @@
 
   <section class="middle tab-bar-section">
     <h1 class="title ellipsis">
-      <span ng-show="type == 'BUY'">Choose your destination wallet</span>
-      <span ng-show="type == 'SELL'">Choose your source wallet</span>
+      <span ng-show="type == 'BUY' || type == 'RECEIVE'">Choose your destination wallet</span>
+      <span ng-show="type == 'SELL' || type == 'SEND'">Choose your source wallet</span>
     </h1>
   </section>
 </nav>

@@ -7,6 +7,9 @@ module.exports = function(grunt) {
       version: {
         command: 'node ./util/version.js'
       },
+      coinbase: {
+        command: 'node ./util/coinbase.js'
+      },
       clear: {
         command: 'rm -Rf bower_components node_modules'
       },
@@ -75,6 +78,7 @@ module.exports = function(grunt) {
           'src/js/controllers/*.js',
           'src/js/translations.js',
           'src/js/version.js',
+          'src/js/coinbase.js',
           'src/js/init.js',
           'src/js/trezor-url.js',
           'bower_components/trezor-connect/login.js'
@@ -209,7 +213,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-node-webkit-builder');
   grunt.loadNpmTasks('grunt-contrib-compress');
 
-  grunt.registerTask('default', ['nggettext_compile', 'exec:version', 'browserify', 'concat', 'copy:icons']);
+  grunt.registerTask('default', ['nggettext_compile', 'exec:version', 'exec:coinbase', 'browserify', 'concat', 'copy:icons']);
   grunt.registerTask('prod', ['default', 'uglify']);
   grunt.registerTask('translate', ['nggettext_extract']);
   grunt.registerTask('test', ['karma:unit']);
