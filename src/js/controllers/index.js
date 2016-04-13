@@ -295,8 +295,10 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   self.updateAll = function(opts, initStatusHash, tries) {
     tries = tries || 0;
     opts = opts || {};
+    var fc = profileService.focusedClient;
+    if (!fc) return;
 
-    var walletId = profileService.focusedClient.credentials.walletId
+    var walletId = fc.credentials.walletId
 
     if (opts.untilItChanges && lodash.isUndefined(initStatusHash)) {
       initStatusHash = _walletStatusHash();
@@ -320,10 +322,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         });
       }
     };
-
-    var fc = profileService.focusedClient;
-    if (!fc) return;
-
 
     // If not untilItChanges...trigger history update now
     if (opts.triggerTxUpdate && !opts.untilItChanges) {

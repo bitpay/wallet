@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.services').factory('feeService', function($log, profileService, configService, gettextCatalog, lodash) {
+angular.module('copayApp.services').factory('feeService', function($log, bwcService, profileService, configService, gettextCatalog, lodash) {
   var root = {};
 
   // Constant fee options to translate
@@ -19,25 +19,32 @@ angular.module('copayApp.services').factory('feeService', function($log, profile
     var feeLevel = root.getCurrentFeeLevel();
 
     fc.getFeeLevels(fc.credentials.network, function(err, levels) {
-      if (err) 
-        return cb({message: 'Could not get dynamic fee'});
+      if (err)
+        return cb({
+          message: 'Could not get dynamic fee'
+        });
 
-      var feeLevelValue = lodash.find(levels, { level: feeLevel });
-      if (!feeLevelValue || ! feeLevelValue.feePerKB)
-          return cb({message: 'Could not get dynamic fee for level: ' + feeLevel});
+      var feeLevelValue = lodash.find(levels, {
+        level: feeLevel
+      });
+      if (!feeLevelValue || !feeLevelValue.feePerKB)
+        return cb({
+          message: 'Could not get dynamic fee for level: ' + feeLevel
+        });
 
       var fee = feeLevelValue.feePerKB;
-      $log.debug('Dynamic fee: ' + feeLevel + ' ' + fee +  ' SAT');
-      return cb(null, fee); 
+      $log.debug('Dynamic fee: ' + feeLevel + ' ' + fee + ' SAT');
+      return cb(null, fee);
     });
-  }; 
+  };
 
-  root.getFeeLevels = function(cb) { 
-    var fc = profileService.focusedClient;
+  root.getFeeLevels = function(cb) {
+    var walletClient = bwcService.getClient();
+
     var unitName = configService.getSync().wallet.settings.unitName;
 
-    fc.getFeeLevels('livenet', function(errLivenet, levelsLivenet) {
-      fc.getFeeLevels('testnet', function(errTestnet, levelsTestnet) {
+    walletClient.getFeeLevels('livenet', function(errLivenet, levelsLivenet) {
+      walletClient.getFeeLevels('testnet', function(errTestnet, levelsTestnet) {
         if (errLivenet || errTestnet) $log.debug('Could not get dynamic fee');
         else {
           for (var i = 0; i < 3; i++) {
