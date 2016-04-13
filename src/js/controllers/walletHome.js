@@ -688,7 +688,6 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
   this.resetError = function() {
     this.error = this.success = null;
-    this.warning = null;
   };
 
   this.bindTouchDown = function(tries) {
@@ -1239,7 +1238,6 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     var self = this;
     var fc = profileService.focusedClient;
     this.error = null;
-    this.warning = null;
     this.setOngoingProcess(gettextCatalog.getString('Calculating fee'));
 
     feeService.getCurrentFeeValue(function(err, feePerKb) {
@@ -1264,8 +1262,6 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
           return;
         }
 
-        verifyExcludedUtxos();
-
         if (resp.amount == 0) {
           self.error = gettext("Not enought funds for fee");
           $scope.$apply();
@@ -1276,27 +1272,32 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
           fee: profileService.formatAmount(resp.fee) + ' ' + self.unitName
         });
 
+        var warningMsg = verifyExcludedUtxos();
+
+        if (!lodash.isEmpty(warningMsg))
+          msg += '. \n' + warningMsg;
+
         confirmDialog.show(msg, function(confirmed) {
           if (confirmed) {
             self._doSendMax(resp.amount * self.satToUnit);
-            verifyExcludedUtxos();
           } else {
             self.resetForm();
           }
         });
 
         function verifyExcludedUtxos() {
-          var msg = [];
+          var warningMsg = [];
           if (resp.utxosBelowFee > 0) {
-            var amountBelowFeeStr = profileService.formatAmount(resp.amountBelowFee) + ' ' + self.unitName;
-            msg.push(gettext('Note: a total of ' + amountBelowFeeStr + " were excluded. These funds come from UTXOs smaller than the network fee provided."));
+            warningMsg.push(gettextCatalog.getString("Note: a total of {{amountBelowFeeStr}} were excluded. These funds come from UTXOs smaller than the network fee provided.", {
+              amountBelowFeeStr: profileService.formatAmount(resp.amountBelowFee) + ' ' + self.unitName
+            }));
           }
           if (resp.utxosAboveMaxSize > 0) {
-            var amountAboveMaxSizeStr = profileService.formatAmount(resp.amountAboveMaxSize) + ' ' + self.unitName;
-            msg.push(gettext('Note: a total of ' + amountAboveMaxSizeStr + " were excluded. The maximum size allowed for a transaction was exceeded"));
+            warningMsg.push(gettextCatalog.getString("Note: a total of {{amountAboveMaxSizeStr}} were excluded. The maximum size allowed for a transaction was exceeded", {
+              amountAboveMaxSizeStr: profileService.formatAmount(resp.amountAboveMaxSize) + ' ' + self.unitName
+            }));
           }
-          self.warning = msg.join('\n');
-          $scope.$apply();
+          return warningMsg.join('\n');
         }
       });
     });
