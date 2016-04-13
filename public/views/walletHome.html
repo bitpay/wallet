@@ -390,11 +390,11 @@
           <available-balance></available-balance>
           <span
             ng-show="home.lockedCurrentFeePerKb || home.blockUx || home.lockAmount"
-            class="text-gray" translate>Send All</span>
+            class="text-gray" translate>Send Max</span>
           <a
             ng-show="index.availableBalanceSat > 0 && !home.lockedCurrentFeePerKb && !home.blockUx && !home.lockAmount"
-            ng-click="home.sendAll(index.totalBytesToSendMax, index.availableBalanceSat)"
-             translate> Send All
+            ng-click="home.sendMax(index.availableBalanceSat)"
+             translate>Send Max
           </a>
           <div ng-show="!home.paymentExpired && home._paypro">
             <span translate>Payment expires</span>
