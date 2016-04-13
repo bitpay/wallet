@@ -3,6 +3,10 @@ i18n/po/*.mo
 i18n/crowdin_api_key.txt
 src/js/translations.js
 
+# Coinbase API ClientID/Secret
+coinbase.json
+src/js/coinbase.js
+
 # version
 src/js/version.js
 

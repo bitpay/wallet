@@ -269,6 +269,64 @@ angular
           },
         }
       })
+      .state('coinbase', {
+        url: '/coinbase',
+        walletShouldBeComplete: true,
+        needProfile: true,
+        views: {
+          'main': {
+            templateUrl: 'views/coinbase.html'
+          },
+        }
+      })
+      .state('preferencesCoinbase', {
+        url: '/preferencesCoinbase',
+        walletShouldBeComplete: true,
+        needProfile: true,
+        views: {
+          'main': {
+            templateUrl: 'views/preferencesCoinbase.html'
+          },
+        }
+      })
+      .state('uricoinbase', {
+        url: '/uri-coinbase?code',
+        needProfile: true,
+        views: {
+          'main': {
+            templateUrl: 'views/coinbaseUri.html'
+          },
+        }
+      })
+      .state('buyCoinbase', {
+        url: '/buycoinbase',
+        walletShouldBeComplete: true,
+        needProfile: true,
+        views: {
+          'main': {
+            templateUrl: 'views/buyCoinbase.html'
+          },
+        }
+      })
+      .state('sellCoinbase', {
+        url: '/sellcoinbase',
+        walletShouldBeComplete: true,
+        needProfile: true,
+        views: {
+          'main': {
+            templateUrl: 'views/sellCoinbase.html'
+          },
+        }
+      })
+      .state('buyandsell', {
+        url: '/buyandsell',
+        needProfile: true,
+        views: {
+          'main': {
+            templateUrl: 'views/buyAndSell.html'
+          },
+        }
+      })
       .state('preferencesAdvanced', {
         url: '/preferencesAdvanced',
         templateUrl: 'views/preferencesAdvanced.html',

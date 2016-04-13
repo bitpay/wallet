@@ -44,7 +44,7 @@ angular.module('copayApp.controllers').controller('preferencesController',
         });
       } else {
         if (!val && fc.hasPrivKeyEncrypted()) {
-          profileService.unlockFC(function(err) {
+          profileService.unlockFC({}, function(err) {
             if (err) {
               $scope.encrypt = true;
               return;
