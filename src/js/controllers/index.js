@@ -298,7 +298,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     var fc = profileService.focusedClient;
     if (!fc) return;
 
-    var walletId = profileService.focusedClient.credentials.walletId
+    var walletId = fc.credentials.walletId
 
     if (opts.untilItChanges && lodash.isUndefined(initStatusHash)) {
       initStatusHash = _walletStatusHash();
