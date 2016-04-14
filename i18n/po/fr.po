@@ -1200,7 +1200,7 @@ msgstr "Paiement à"
 
 #: public/views/walletHome.html
 msgid "Pending Confirmation"
-msgstr "Confirmations en attente"
+msgstr "Confirmation en attente"
 
 #: public/views/preferencesDeleteWallet.html
 msgid "Permanently delete this wallet. THIS ACTION CANNOT BE REVERSED"
