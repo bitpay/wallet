@@ -12,6 +12,10 @@ msgstr ""
 msgid "(Trusted)"
 msgstr ""
 
+#: public/views/includes/confirm-tx.html
+msgid "{{confirm.feeRateStr}} of the transaction"
+msgstr ""
+
 #: src/js/controllers/walletHome.js
 msgid "{{fee}} will be deducted for bitcoin networking fees"
 msgstr ""
@@ -61,7 +65,6 @@ msgstr ""
 msgid "About Copay"
 msgstr ""
 
-#: public/views/includes/confirm-tx.html
 #: public/views/modals/txp-details.html
 #: src/js/services/confirmDialog.js
 #: src/js/controllers/copayers.js
@@ -275,6 +278,10 @@ msgstr ""
 msgid "Cancel and delete the wallet"
 msgstr ""
 
+#: src/js/controllers/walletHome.js
+msgid "Cannot create transaction. Insufficient funds"
+msgstr ""
+
 #: src/js/services/profileService.js
 msgid "Cannot join the same wallet more that once"
 msgstr ""
@@ -315,15 +322,12 @@ msgstr ""
 msgid "Commit hash"
 msgstr ""
 
+#: public/views/includes/confirm-tx.html
 #: src/js/services/confirmDialog.js
 #: src/js/controllers/copayers.js
 #: src/js/controllers/preferencesDelete.js
 #: src/js/controllers/walletHome.js
 msgid "Confirm"
-msgstr ""
-
-#: public/views/includes/confirm-tx.html
-msgid "Confirm transaction"
 msgstr ""
 
 #: public/views/backup.html
@@ -546,6 +550,10 @@ msgstr ""
 msgid "Deleting payment"
 msgstr ""
 
+#: public/views/preferencesDeleteWallet.html
+msgid "Deleting Wallet..."
+msgstr ""
+
 #: public/views/create.html
 #: public/views/import.html
 #: public/views/join.html
@@ -554,10 +562,6 @@ msgstr ""
 
 #: public/views/preferencesInformation.html
 msgid "Derivation Strategy"
-msgstr ""
-
-#: public/views/walletHome.html
-msgid "Destination wallet needs backup"
 msgstr ""
 
 #: public/views/includes/tx-details.html
@@ -978,6 +982,10 @@ msgstr ""
 msgid "Need to do backup"
 msgstr ""
 
+#: public/views/modals/destination-address.html
+msgid "Needs backup"
+msgstr ""
+
 #: public/views/paymentUri.html
 msgid "Network"
 msgstr ""
@@ -1033,6 +1041,14 @@ msgstr ""
 msgid "Note"
 msgstr ""
 
+#: src/js/controllers/walletHome.js
+msgid "Note: a total of {{amountAboveMaxSizeStr}} were excluded. The maximum size allowed for a transaction was exceeded"
+msgstr ""
+
+#: src/js/controllers/walletHome.js
+msgid "Note: a total of {{amountBelowFeeStr}} were excluded. These funds come from UTXOs smaller than the network fee provided."
+msgstr ""
+
 #: public/views/disclaimer.html
 #: public/views/termOfUse.html
 msgid "Official English Disclaimer"
@@ -1044,6 +1060,10 @@ msgstr ""
 
 #: public/views/preferencesInformation.html
 msgid "Only Main (not change) addresses are shown. The addresses on this list were not verified locally at this time."
+msgstr ""
+
+#: public/views/preferencesGlobal.html
+msgid "Open Settings app"
 msgstr ""
 
 #: public/views/walletHome.html
@@ -1228,6 +1248,10 @@ msgstr ""
 msgid "Private key is encrypted, cannot sign"
 msgstr ""
 
+#: public/views/preferencesGlobal.html
+msgid "Push notifications for Copay are currently disabled. Enable them in the Settings app."
+msgstr ""
+
 #: public/views/modals/customized-amount.html
 msgid "QR Code"
 msgstr ""
@@ -1308,6 +1332,10 @@ msgstr ""
 
 #: public/views/create.html
 msgid "Required number of signatures"
+msgstr ""
+
+#: src/js/controllers/walletHome.js
+msgid "Retrieving inputs information"
 msgstr ""
 
 #: public/views/translators.html
@@ -1400,13 +1428,17 @@ msgstr ""
 msgid "Send addresses by email"
 msgstr ""
 
-#: public/views/walletHome.html
-msgid "Send All"
+#: public/views/includes/confirm-tx.html
+msgid "Send bitcoin"
 msgstr ""
 
 #: public/views/export.html
 #: public/views/preferencesLogs.html
 msgid "Send by email"
+msgstr ""
+
+#: public/views/walletHome.html
+msgid "Send Max"
 msgstr ""
 
 #: public/views/includes/transaction.html
@@ -1600,6 +1632,10 @@ msgstr ""
 msgid "There are no wallets to make this payment"
 msgstr ""
 
+#: src/js/controllers/index.js
+msgid "There is a new version of Copay. Please update"
+msgstr ""
+
 #: src/js/controllers/import.js
 msgid "There is an error in the form"
 msgstr ""
@@ -1680,10 +1716,6 @@ msgstr ""
 
 #: public/views/import.html
 msgid "Type the Seed Phrase (usually 12 words)"
-msgstr ""
-
-#: src/js/controllers/walletHome.js
-msgid "Unable to send transaction proposal"
 msgstr ""
 
 #: public/views/walletHome.html
