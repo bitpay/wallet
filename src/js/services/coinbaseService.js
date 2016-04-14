@@ -47,7 +47,7 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
       + credentials.REDIRECT_URI
       + '&state=SECURE_RANDOM&scope='
       + credentials.SCOPE
-      + '&meta[send_limit_amount]=100&meta[send_limit_currency]=USD&meta[send_limit_period]=day';
+      + '&meta[send_limit_amount]=1000&meta[send_limit_currency]=USD&meta[send_limit_period]=day';
   };
 
   root.getToken = function(code, cb) {
