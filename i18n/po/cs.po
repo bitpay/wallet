@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Czech\n"
 "Language: cs\n"
-"PO-Revision-Date: 2016-03-04 16:54-0500\n"
+"PO-Revision-Date: 2016-04-13 13:33-0400\n"
 
 #: public/views/walletHome.html
 msgid "(possible double spend)"
@@ -21,6 +21,10 @@ msgstr "(pravděpodobná dvojitá platba)"
 #: public/views/modals/paypro.html
 msgid "(Trusted)"
 msgstr "(Věrohodný)"
+
+#: public/views/includes/confirm-tx.html
+msgid "{{confirm.feeRateStr}} of the transaction"
+msgstr ""
 
 #: src/js/controllers/walletHome.js
 msgid "{{fee}} will be deducted for bitcoin networking fees"
@@ -71,7 +75,6 @@ msgstr "A vícepodpisová bitcoin peněženka"
 msgid "About Copay"
 msgstr "O Copay"
 
-#: public/views/includes/confirm-tx.html
 #: public/views/modals/txp-details.html
 #: src/js/services/confirmDialog.js
 #: src/js/controllers/copayers.js
@@ -285,6 +288,10 @@ msgstr "ZRUŠIT"
 msgid "Cancel and delete the wallet"
 msgstr "Zrušit a odstranit peněženku"
 
+#: src/js/controllers/walletHome.js
+msgid "Cannot create transaction. Insufficient funds"
+msgstr ""
+
 #: src/js/services/profileService.js
 msgid "Cannot join the same wallet more that once"
 msgstr "Nelze spojit stejnou peněženku více než jednou"
@@ -325,16 +332,13 @@ msgstr "Barva"
 msgid "Commit hash"
 msgstr "Hash softwaru"
 
+#: public/views/includes/confirm-tx.html
 #: src/js/services/confirmDialog.js
 #: src/js/controllers/copayers.js
 #: src/js/controllers/preferencesDelete.js
 #: src/js/controllers/walletHome.js
 msgid "Confirm"
 msgstr "Potvrdit"
-
-#: public/views/includes/confirm-tx.html
-msgid "Confirm transaction"
-msgstr "Potvrdit transakci"
 
 #: public/views/backup.html
 msgid "Confirm your wallet seed"
@@ -556,6 +560,10 @@ msgstr "Odstranit klíčová slova"
 msgid "Deleting payment"
 msgstr "Odstranit platbu"
 
+#: public/views/preferencesDeleteWallet.html
+msgid "Deleting Wallet..."
+msgstr ""
+
 #: public/views/create.html
 #: public/views/import.html
 #: public/views/join.html
@@ -565,10 +573,6 @@ msgstr "Cesta derivace"
 #: public/views/preferencesInformation.html
 msgid "Derivation Strategy"
 msgstr "Způsob derivace"
-
-#: public/views/walletHome.html
-msgid "Destination wallet needs backup"
-msgstr "Cílová peněženka vyžaduje zálohu"
 
 #: public/views/includes/tx-details.html
 #: public/views/modals/customized-amount.html
@@ -988,6 +992,10 @@ msgstr "Moje peněženky"
 msgid "Need to do backup"
 msgstr "Vyžaduje zálohu"
 
+#: public/views/modals/destination-address.html
+msgid "Needs backup"
+msgstr ""
+
 #: public/views/paymentUri.html
 msgid "Network"
 msgstr "Síť"
@@ -1043,6 +1051,14 @@ msgstr "Neplatné"
 msgid "Note"
 msgstr "Poznámka"
 
+#: src/js/controllers/walletHome.js
+msgid "Note: a total of {{amountAboveMaxSizeStr}} were excluded. The maximum size allowed for a transaction was exceeded"
+msgstr ""
+
+#: src/js/controllers/walletHome.js
+msgid "Note: a total of {{amountBelowFeeStr}} were excluded. These funds come from UTXOs smaller than the network fee provided."
+msgstr ""
+
 #: public/views/disclaimer.html
 #: public/views/termOfUse.html
 msgid "Official English Disclaimer"
@@ -1055,6 +1071,10 @@ msgstr "Pokud máte zkopírována zdrojová slova peněženky, doporučujeme vá
 #: public/views/preferencesInformation.html
 msgid "Only Main (not change) addresses are shown. The addresses on this list were not verified locally at this time."
 msgstr "Viditelné jsou pouze hlavní (ne adresy pro vratky). Adresy na tomto seznamu nebyly lokálně ověřeny."
+
+#: public/views/preferencesGlobal.html
+msgid "Open Settings app"
+msgstr ""
 
 #: public/views/walletHome.html
 msgid "optional"
@@ -1238,6 +1258,10 @@ msgstr "Priorita"
 msgid "Private key is encrypted, cannot sign"
 msgstr "Soukromý klíč je šifrovaný, nelze podepsat"
 
+#: public/views/preferencesGlobal.html
+msgid "Push notifications for Copay are currently disabled. Enable them in the Settings app."
+msgstr ""
+
 #: public/views/modals/customized-amount.html
 msgid "QR Code"
 msgstr "QR kód"
@@ -1319,6 +1343,10 @@ msgstr "Vyžadováno"
 #: public/views/create.html
 msgid "Required number of signatures"
 msgstr "Vyžadováno více podpisuů"
+
+#: src/js/controllers/walletHome.js
+msgid "Retrieving inputs information"
+msgstr ""
 
 #: public/views/translators.html
 msgid "Russian"
@@ -1410,14 +1438,18 @@ msgstr "Odesláno"
 msgid "Send addresses by email"
 msgstr "Odeslat adresy emailem"
 
-#: public/views/walletHome.html
-msgid "Send All"
-msgstr "Odeslat vše"
+#: public/views/includes/confirm-tx.html
+msgid "Send bitcoin"
+msgstr ""
 
 #: public/views/export.html
 #: public/views/preferencesLogs.html
 msgid "Send by email"
 msgstr "Odeslat emailem"
+
+#: public/views/walletHome.html
+msgid "Send Max"
+msgstr ""
 
 #: public/views/includes/transaction.html
 msgid "Sending"
@@ -1610,6 +1642,10 @@ msgstr "Peněženka \"{{walletName}}\" byla odstraněna"
 msgid "There are no wallets to make this payment"
 msgstr "Pro platbu je potřeba založit peněženku"
 
+#: src/js/controllers/index.js
+msgid "There is a new version of Copay. Please update"
+msgstr ""
+
 #: src/js/controllers/import.js
 msgid "There is an error in the form"
 msgstr "Na formuláři je chyba"
@@ -1691,10 +1727,6 @@ msgstr "Zkusit znovu"
 #: public/views/import.html
 msgid "Type the Seed Phrase (usually 12 words)"
 msgstr "Vyplňte zdroj (běžně 12 slov)"
-
-#: src/js/controllers/walletHome.js
-msgid "Unable to send transaction proposal"
-msgstr "Nebylo možné odeslat návrh platby"
 
 #: public/views/walletHome.html
 #: public/views/includes/tx-details.html

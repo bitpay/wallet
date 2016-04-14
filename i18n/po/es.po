@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Spanish\n"
 "Language: es\n"
-"PO-Revision-Date: 2016-02-24 12:31-0500\n"
+"PO-Revision-Date: 2016-04-14 11:36-0400\n"
 
 #: public/views/walletHome.html
 msgid "(possible double spend)"
@@ -21,6 +21,10 @@ msgstr "(Posible doble gasto)"
 #: public/views/modals/paypro.html
 msgid "(Trusted)"
 msgstr "(De confianza)"
+
+#: public/views/includes/confirm-tx.html
+msgid "{{confirm.feeRateStr}} of the transaction"
+msgstr "{{confirm.feeRateStr}} de la transacción"
 
 #: src/js/controllers/walletHome.js
 msgid "{{fee}} will be deducted for bitcoin networking fees"
@@ -71,7 +75,6 @@ msgstr "Monedero multifirma de bitcoin"
 msgid "About Copay"
 msgstr "Acerca de Copay"
 
-#: public/views/includes/confirm-tx.html
 #: public/views/modals/txp-details.html
 #: src/js/services/confirmDialog.js
 #: src/js/controllers/copayers.js
@@ -285,6 +288,10 @@ msgstr "CANCELAR"
 msgid "Cancel and delete the wallet"
 msgstr "Cancelar y borrar el monedero"
 
+#: src/js/controllers/walletHome.js
+msgid "Cannot create transaction. Insufficient funds"
+msgstr "No se puede crear transacciones. Insuficiencia de fondos"
+
 #: src/js/services/profileService.js
 msgid "Cannot join the same wallet more that once"
 msgstr "No puede unirse al mismo monedero más de una vez"
@@ -325,16 +332,13 @@ msgstr "Color"
 msgid "Commit hash"
 msgstr "Commit hash"
 
+#: public/views/includes/confirm-tx.html
 #: src/js/services/confirmDialog.js
 #: src/js/controllers/copayers.js
 #: src/js/controllers/preferencesDelete.js
 #: src/js/controllers/walletHome.js
 msgid "Confirm"
 msgstr "Confirmar"
-
-#: public/views/includes/confirm-tx.html
-msgid "Confirm transaction"
-msgstr "Confirmar transacción"
 
 #: public/views/backup.html
 msgid "Confirm your wallet seed"
@@ -556,6 +560,10 @@ msgstr "Eliminar palabras"
 msgid "Deleting payment"
 msgstr "Eliminando el pago"
 
+#: public/views/preferencesDeleteWallet.html
+msgid "Deleting Wallet..."
+msgstr "Eliminando Monedero..."
+
 #: public/views/create.html
 #: public/views/import.html
 #: public/views/join.html
@@ -565,10 +573,6 @@ msgstr "Camino de derivación"
 #: public/views/preferencesInformation.html
 msgid "Derivation Strategy"
 msgstr "Estrategia de derivación"
-
-#: public/views/walletHome.html
-msgid "Destination wallet needs backup"
-msgstr "El monedero de destino debe realizar una copia de seguridad"
 
 #: public/views/includes/tx-details.html
 #: public/views/modals/customized-amount.html
@@ -988,6 +992,10 @@ msgstr "Mis monederos"
 msgid "Need to do backup"
 msgstr "Necesita hacer una copias de seguridad"
 
+#: public/views/modals/destination-address.html
+msgid "Needs backup"
+msgstr "Necesita copia de seguridad"
+
 #: public/views/paymentUri.html
 msgid "Network"
 msgstr "Red"
@@ -1043,6 +1051,14 @@ msgstr "No válido"
 msgid "Note"
 msgstr "Nota"
 
+#: src/js/controllers/walletHome.js
+msgid "Note: a total of {{amountAboveMaxSizeStr}} were excluded. The maximum size allowed for a transaction was exceeded"
+msgstr "Nota: se excluyeron un total de {{amountAboveMaxSizeStr}}. El tamaño máximo permitido para una transacción se ha excedido"
+
+#: src/js/controllers/walletHome.js
+msgid "Note: a total of {{amountBelowFeeStr}} were excluded. These funds come from UTXOs smaller than the network fee provided."
+msgstr "Nota: se excluyeron un total de {{amountBelowFeeStr}}. Estos fondos provienen de UTXOs más pequeños que la tarifa de red suministrada."
+
 #: public/views/disclaimer.html
 #: public/views/termOfUse.html
 msgid "Official English Disclaimer"
@@ -1055,6 +1071,10 @@ msgstr "Una vez que se copia la semilla del monedero, se recomienda eliminarla d
 #: public/views/preferencesInformation.html
 msgid "Only Main (not change) addresses are shown. The addresses on this list were not verified locally at this time."
 msgstr "Sólo las direcciones principales aparecen (no las usadas para el vuelto). Las direcciones de esta lista no fueron verificadas localmente en este momento."
+
+#: public/views/preferencesGlobal.html
+msgid "Open Settings app"
+msgstr "Abrir Configuración de la Aplicación"
 
 #: public/views/walletHome.html
 msgid "optional"
@@ -1238,6 +1258,10 @@ msgstr "Prioritario"
 msgid "Private key is encrypted, cannot sign"
 msgstr "La clave privada esta encriptada, no puede firmar"
 
+#: public/views/preferencesGlobal.html
+msgid "Push notifications for Copay are currently disabled. Enable them in the Settings app."
+msgstr "Notificaciones push para Copay están deshabilitadas. Habilitarla en la configuración de la aplicación."
+
 #: public/views/modals/customized-amount.html
 msgid "QR Code"
 msgstr "Código QR"
@@ -1319,6 +1343,10 @@ msgstr "Requerido"
 #: public/views/create.html
 msgid "Required number of signatures"
 msgstr "Número requerido de firmas"
+
+#: src/js/controllers/walletHome.js
+msgid "Retrieving inputs information"
+msgstr "Recuperando información de las entradas"
 
 #: public/views/translators.html
 msgid "Russian"
@@ -1410,14 +1438,18 @@ msgstr "Enviar"
 msgid "Send addresses by email"
 msgstr "Enviar las direcciones por email"
 
-#: public/views/walletHome.html
-msgid "Send All"
-msgstr "Enviar Todo"
+#: public/views/includes/confirm-tx.html
+msgid "Send bitcoin"
+msgstr "Enviar bitcoin"
 
 #: public/views/export.html
 #: public/views/preferencesLogs.html
 msgid "Send by email"
 msgstr "Enviar por correo electrónico"
+
+#: public/views/walletHome.html
+msgid "Send Max"
+msgstr "Enviar máximo"
 
 #: public/views/includes/transaction.html
 msgid "Sending"
@@ -1610,6 +1642,10 @@ msgstr "El monedero \"{{walletName}}\" fue eliminado"
 msgid "There are no wallets to make this payment"
 msgstr "No dispone de monederos para realizar este pago"
 
+#: src/js/controllers/index.js
+msgid "There is a new version of Copay. Please update"
+msgstr "Hay una nueva versión de Copay. Por favor actualizar"
+
 #: src/js/controllers/import.js
 msgid "There is an error in the form"
 msgstr "Hay un error en el formulario"
@@ -1691,10 +1727,6 @@ msgstr "Vuelva a intentarlo"
 #: public/views/import.html
 msgid "Type the Seed Phrase (usually 12 words)"
 msgstr "Escriba la frase de la semilla (generalmente de 12 palabras)"
-
-#: src/js/controllers/walletHome.js
-msgid "Unable to send transaction proposal"
-msgstr "No se puede enviar la propuesta de transacción"
 
 #: public/views/walletHome.html
 #: public/views/includes/tx-details.html

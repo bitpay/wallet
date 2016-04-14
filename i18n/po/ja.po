@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Japanese\n"
 "Language: ja\n"
-"PO-Revision-Date: 2016-02-29 10:52-0500\n"
+"PO-Revision-Date: 2016-04-13 13:33-0400\n"
 
 #: public/views/walletHome.html
 msgid "(possible double spend)"
@@ -21,6 +21,10 @@ msgstr "(二重払い可能性あり)"
 #: public/views/modals/paypro.html
 msgid "(Trusted)"
 msgstr "(信頼済み)"
+
+#: public/views/includes/confirm-tx.html
+msgid "{{confirm.feeRateStr}} of the transaction"
+msgstr ""
 
 #: src/js/controllers/walletHome.js
 msgid "{{fee}} will be deducted for bitcoin networking fees"
@@ -71,7 +75,6 @@ msgstr "マルチシグネチャビットコインウォレット"
 msgid "About Copay"
 msgstr "Copayについて"
 
-#: public/views/includes/confirm-tx.html
 #: public/views/modals/txp-details.html
 #: src/js/services/confirmDialog.js
 #: src/js/controllers/copayers.js
@@ -286,6 +289,10 @@ msgstr "キャンセル"
 msgid "Cancel and delete the wallet"
 msgstr "キャンセルし、ウォレットを削除"
 
+#: src/js/controllers/walletHome.js
+msgid "Cannot create transaction. Insufficient funds"
+msgstr ""
+
 #: src/js/services/profileService.js
 msgid "Cannot join the same wallet more that once"
 msgstr "同じ端末で同じウォレットに複数回参加することができません。"
@@ -326,16 +333,13 @@ msgstr "色"
 msgid "Commit hash"
 msgstr "コミットのハッシュ値"
 
+#: public/views/includes/confirm-tx.html
 #: src/js/services/confirmDialog.js
 #: src/js/controllers/copayers.js
 #: src/js/controllers/preferencesDelete.js
 #: src/js/controllers/walletHome.js
 msgid "Confirm"
 msgstr "確認"
-
-#: public/views/includes/confirm-tx.html
-msgid "Confirm transaction"
-msgstr "取引を承認する"
 
 #: public/views/backup.html
 msgid "Confirm your wallet seed"
@@ -557,6 +561,10 @@ msgstr "単語データを削除する"
 msgid "Deleting payment"
 msgstr "取引削除中…"
 
+#: public/views/preferencesDeleteWallet.html
+msgid "Deleting Wallet..."
+msgstr ""
+
 #: public/views/create.html
 #: public/views/import.html
 #: public/views/join.html
@@ -566,10 +574,6 @@ msgstr "派生パス"
 #: public/views/preferencesInformation.html
 msgid "Derivation Strategy"
 msgstr "派生パス"
-
-#: public/views/walletHome.html
-msgid "Destination wallet needs backup"
-msgstr "送り先のウォレットはバックアップが必要です"
 
 #: public/views/includes/tx-details.html
 #: public/views/modals/customized-amount.html
@@ -989,6 +993,10 @@ msgstr "アプリ内ウォレット"
 msgid "Need to do backup"
 msgstr "バックアップを行う必要があります。"
 
+#: public/views/modals/destination-address.html
+msgid "Needs backup"
+msgstr ""
+
 #: public/views/paymentUri.html
 msgid "Network"
 msgstr "ネットワーク"
@@ -1044,6 +1052,14 @@ msgstr "無効です"
 msgid "Note"
 msgstr "メモ"
 
+#: src/js/controllers/walletHome.js
+msgid "Note: a total of {{amountAboveMaxSizeStr}} were excluded. The maximum size allowed for a transaction was exceeded"
+msgstr ""
+
+#: src/js/controllers/walletHome.js
+msgid "Note: a total of {{amountBelowFeeStr}} were excluded. These funds come from UTXOs smaller than the network fee provided."
+msgstr ""
+
 #: public/views/disclaimer.html
 #: public/views/termOfUse.html
 msgid "Official English Disclaimer"
@@ -1056,6 +1072,10 @@ msgstr "復元フレーズを控えたら、このデバイスから削除する
 #: public/views/preferencesInformation.html
 msgid "Only Main (not change) addresses are shown. The addresses on this list were not verified locally at this time."
 msgstr "受け取り用のアドレスしか表示していません。現時点ではローカルの端末ではアドレスの正確性を二重確認していなくて、サーバーを信じる必要があります。"
+
+#: public/views/preferencesGlobal.html
+msgid "Open Settings app"
+msgstr ""
 
 #: public/views/walletHome.html
 msgid "optional"
@@ -1240,6 +1260,10 @@ msgstr "優先"
 msgid "Private key is encrypted, cannot sign"
 msgstr "秘密鍵が暗号化されており署名できません。"
 
+#: public/views/preferencesGlobal.html
+msgid "Push notifications for Copay are currently disabled. Enable them in the Settings app."
+msgstr ""
+
 #: public/views/modals/customized-amount.html
 msgid "QR Code"
 msgstr "QRコード"
@@ -1321,6 +1345,10 @@ msgstr "入力必須"
 #: public/views/create.html
 msgid "Required number of signatures"
 msgstr "必要な署名の数を選択"
+
+#: src/js/controllers/walletHome.js
+msgid "Retrieving inputs information"
+msgstr ""
 
 #: public/views/translators.html
 msgid "Russian"
@@ -1412,14 +1440,18 @@ msgstr "送信"
 msgid "Send addresses by email"
 msgstr "ビットコインアドレスをメールにて共有"
 
-#: public/views/walletHome.html
-msgid "Send All"
-msgstr "全額を送金"
+#: public/views/includes/confirm-tx.html
+msgid "Send bitcoin"
+msgstr ""
 
 #: public/views/export.html
 #: public/views/preferencesLogs.html
 msgid "Send by email"
 msgstr "メールで送信"
+
+#: public/views/walletHome.html
+msgid "Send Max"
+msgstr ""
 
 #: public/views/includes/transaction.html
 msgid "Sending"
@@ -1614,6 +1646,10 @@ msgstr "ウォレット \"{{walletName}}\" が削除されました"
 msgid "There are no wallets to make this payment"
 msgstr "送金可能なウォレットがありません"
 
+#: src/js/controllers/index.js
+msgid "There is a new version of Copay. Please update"
+msgstr ""
+
 #: src/js/controllers/import.js
 msgid "There is an error in the form"
 msgstr "フォームにエラーがありました"
@@ -1695,10 +1731,6 @@ msgstr "もう一度やり直してください。"
 #: public/views/import.html
 msgid "Type the Seed Phrase (usually 12 words)"
 msgstr "復元フレーズの単語 (通常 12 個) を入力して下さい。"
-
-#: src/js/controllers/walletHome.js
-msgid "Unable to send transaction proposal"
-msgstr "取引提案を送れませんでした。"
 
 #: public/views/walletHome.html
 #: public/views/includes/tx-details.html
