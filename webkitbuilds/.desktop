@@ -1,6 +1,6 @@
 [Desktop Entry]
 Type=Application
-Version=1.9.7
+Version=1.10.0
 Name=Copay
 Comment=A multisignature wallet
 Exec=copay
