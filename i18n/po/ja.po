@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Japanese\n"
 "Language: ja\n"
-"PO-Revision-Date: 2016-04-13 13:33-0400\n"
+"PO-Revision-Date: 2016-04-14 12:16-0400\n"
 
 #: public/views/walletHome.html
 msgid "(possible double spend)"
@@ -24,7 +24,7 @@ msgstr "(信頼済み)"
 
 #: public/views/includes/confirm-tx.html
 msgid "{{confirm.feeRateStr}} of the transaction"
-msgstr ""
+msgstr "{{confirm.feeRateStr}}のレート"
 
 #: src/js/controllers/walletHome.js
 msgid "{{fee}} will be deducted for bitcoin networking fees"
@@ -291,7 +291,7 @@ msgstr "キャンセルし、ウォレットを削除"
 
 #: src/js/controllers/walletHome.js
 msgid "Cannot create transaction. Insufficient funds"
-msgstr ""
+msgstr "取引を作成できません。資金不足です。"
 
 #: src/js/services/profileService.js
 msgid "Cannot join the same wallet more that once"
@@ -563,7 +563,7 @@ msgstr "取引削除中…"
 
 #: public/views/preferencesDeleteWallet.html
 msgid "Deleting Wallet..."
-msgstr ""
+msgstr "ウォレット削除中…"
 
 #: public/views/create.html
 #: public/views/import.html
@@ -995,7 +995,7 @@ msgstr "バックアップを行う必要があります。"
 
 #: public/views/modals/destination-address.html
 msgid "Needs backup"
-msgstr ""
+msgstr "要バックアップ"
 
 #: public/views/paymentUri.html
 msgid "Network"
@@ -1054,11 +1054,11 @@ msgstr "メモ"
 
 #: src/js/controllers/walletHome.js
 msgid "Note: a total of {{amountAboveMaxSizeStr}} were excluded. The maximum size allowed for a transaction was exceeded"
-msgstr ""
+msgstr "注意：合計{{amountAboveMaxSizeStr}} を除外しました。取引に許可される最大サイズを超えました"
 
 #: src/js/controllers/walletHome.js
 msgid "Note: a total of {{amountBelowFeeStr}} were excluded. These funds come from UTXOs smaller than the network fee provided."
-msgstr ""
+msgstr "注意：合計 {{amountBelowFeeStr}} を除外しました。これらのビットコインは手数料よりも低い額となるため除外しました。"
 
 #: public/views/disclaimer.html
 #: public/views/termOfUse.html
@@ -1075,7 +1075,7 @@ msgstr "受け取り用のアドレスしか表示していません。現時点
 
 #: public/views/preferencesGlobal.html
 msgid "Open Settings app"
-msgstr ""
+msgstr "設定を開く"
 
 #: public/views/walletHome.html
 msgid "optional"
@@ -1262,7 +1262,7 @@ msgstr "秘密鍵が暗号化されており署名できません。"
 
 #: public/views/preferencesGlobal.html
 msgid "Push notifications for Copay are currently disabled. Enable them in the Settings app."
-msgstr ""
+msgstr "Copayのプッシュ通知は現在無効です。アプリ設定で有効にします。"
 
 #: public/views/modals/customized-amount.html
 msgid "QR Code"
@@ -1348,7 +1348,7 @@ msgstr "必要な署名の数を選択"
 
 #: src/js/controllers/walletHome.js
 msgid "Retrieving inputs information"
-msgstr ""
+msgstr "入力情報の取得中"
 
 #: public/views/translators.html
 msgid "Russian"
@@ -1442,7 +1442,7 @@ msgstr "ビットコインアドレスをメールにて共有"
 
 #: public/views/includes/confirm-tx.html
 msgid "Send bitcoin"
-msgstr ""
+msgstr "ビットコインを送金"
 
 #: public/views/export.html
 #: public/views/preferencesLogs.html
@@ -1451,7 +1451,7 @@ msgstr "メールで送信"
 
 #: public/views/walletHome.html
 msgid "Send Max"
-msgstr ""
+msgstr "最大額を送金"
 
 #: public/views/includes/transaction.html
 msgid "Sending"
@@ -1648,7 +1648,7 @@ msgstr "送金可能なウォレットがありません"
 
 #: src/js/controllers/index.js
 msgid "There is a new version of Copay. Please update"
-msgstr ""
+msgstr "Copay の新しいバージョンがあります。更新してください。"
 
 #: src/js/controllers/import.js
 msgid "There is an error in the form"
