@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Polish\n"
 "Language: pl\n"
-"PO-Revision-Date: 2016-03-04 16:54-0500\n"
+"PO-Revision-Date: 2016-04-14 11:36-0400\n"
 
 #: public/views/walletHome.html
 msgid "(possible double spend)"
@@ -22,9 +22,13 @@ msgstr "(możliwa podwójna wypłata)"
 msgid "(Trusted)"
 msgstr "(Zaufany)"
 
+#: public/views/includes/confirm-tx.html
+msgid "{{confirm.feeRateStr}} of the transaction"
+msgstr ""
+
 #: src/js/controllers/walletHome.js
 msgid "{{fee}} will be deducted for bitcoin networking fees"
-msgstr "{{fee}} zostanie potrącona prowizja sieci bitcoin"
+msgstr "{{fee}} zostanie potrącone jako prowizja sieci bitcoin"
 
 #: public/views/copayers.html
 #: public/views/includes/walletInfo.html
@@ -33,7 +37,7 @@ msgstr "{{index.m}}-z-{{index.n}}"
 
 #: public/views/walletHome.html
 msgid "{{index.txProgress}} transactions downloaded"
-msgstr "{{index.txProgress}} transakcja pobrana"
+msgstr "{{index.txProgress}} transakcji pobrane"
 
 #: public/views/includes/sidebar.html
 msgid "{{item.m}}-of-{{item.n}}"
@@ -71,7 +75,6 @@ msgstr "Portfel bitcoin z multipodpisami"
 msgid "About Copay"
 msgstr "Informacje o Copay"
 
-#: public/views/includes/confirm-tx.html
 #: public/views/modals/txp-details.html
 #: src/js/services/confirmDialog.js
 #: src/js/controllers/copayers.js
@@ -285,6 +288,10 @@ msgstr "ANULUJ"
 msgid "Cancel and delete the wallet"
 msgstr "Anuluj i usuń portfel"
 
+#: src/js/controllers/walletHome.js
+msgid "Cannot create transaction. Insufficient funds"
+msgstr ""
+
 #: src/js/services/profileService.js
 msgid "Cannot join the same wallet more that once"
 msgstr "Nie można dołączyć tego samego portfela więcej niż raz"
@@ -325,16 +332,13 @@ msgstr "Kolor"
 msgid "Commit hash"
 msgstr "Zatwierdzony hash"
 
+#: public/views/includes/confirm-tx.html
 #: src/js/services/confirmDialog.js
 #: src/js/controllers/copayers.js
 #: src/js/controllers/preferencesDelete.js
 #: src/js/controllers/walletHome.js
 msgid "Confirm"
 msgstr "Potwierdź"
-
-#: public/views/includes/confirm-tx.html
-msgid "Confirm transaction"
-msgstr "Potwierdź transakcję"
 
 #: public/views/backup.html
 msgid "Confirm your wallet seed"
@@ -556,6 +560,10 @@ msgstr "Usuń wyrazy"
 msgid "Deleting payment"
 msgstr "Usuń wypłatę"
 
+#: public/views/preferencesDeleteWallet.html
+msgid "Deleting Wallet..."
+msgstr ""
+
 #: public/views/create.html
 #: public/views/import.html
 #: public/views/join.html
@@ -565,10 +573,6 @@ msgstr "Ścieżka derywacji"
 #: public/views/preferencesInformation.html
 msgid "Derivation Strategy"
 msgstr "Strategia derywacji"
-
-#: public/views/walletHome.html
-msgid "Destination wallet needs backup"
-msgstr "Docelowy portfel wymaga kopii zapasowej"
 
 #: public/views/includes/tx-details.html
 #: public/views/modals/customized-amount.html
@@ -612,7 +616,7 @@ msgstr "Adres e-mail"
 
 #: public/views/preferencesEmail.html
 msgid "Email for wallet notifications"
-msgstr "E-mail dla powiadomień portfela"
+msgstr "Adres e-mail dla powiadomień portfela"
 
 #: public/views/preferences.html
 msgid "Email Notifications"
@@ -988,6 +992,10 @@ msgstr "Moje portfele"
 msgid "Need to do backup"
 msgstr "Musisz zrobić kopię zapasową"
 
+#: public/views/modals/destination-address.html
+msgid "Needs backup"
+msgstr ""
+
 #: public/views/paymentUri.html
 msgid "Network"
 msgstr "Sieć"
@@ -1043,6 +1051,14 @@ msgstr "Nieprawidłowy"
 msgid "Note"
 msgstr "Notatka"
 
+#: src/js/controllers/walletHome.js
+msgid "Note: a total of {{amountAboveMaxSizeStr}} were excluded. The maximum size allowed for a transaction was exceeded"
+msgstr ""
+
+#: src/js/controllers/walletHome.js
+msgid "Note: a total of {{amountBelowFeeStr}} were excluded. These funds come from UTXOs smaller than the network fee provided."
+msgstr ""
+
 #: public/views/disclaimer.html
 #: public/views/termOfUse.html
 msgid "Official English Disclaimer"
@@ -1055,6 +1071,10 @@ msgstr "Po skopiowaniu frazy zabezpieczającej portfel, zaleca się usunięcie j
 #: public/views/preferencesInformation.html
 msgid "Only Main (not change) addresses are shown. The addresses on this list were not verified locally at this time."
 msgstr "Wyświetlane są tylko główne (niezmienne) adresy. Adresy na tej liście nie zostały w tej chwili zweryfikowane lokalnie."
+
+#: public/views/preferencesGlobal.html
+msgid "Open Settings app"
+msgstr ""
 
 #: public/views/walletHome.html
 msgid "optional"
@@ -1238,6 +1258,10 @@ msgstr "Priorytetowa"
 msgid "Private key is encrypted, cannot sign"
 msgstr "Klucz prywatny jest zaszyfrowany, nie można podpisać"
 
+#: public/views/preferencesGlobal.html
+msgid "Push notifications for Copay are currently disabled. Enable them in the Settings app."
+msgstr ""
+
 #: public/views/modals/customized-amount.html
 msgid "QR Code"
 msgstr "Kod QR"
@@ -1320,6 +1344,10 @@ msgstr "Wymagania"
 msgid "Required number of signatures"
 msgstr "Wymagana liczba podpisów"
 
+#: src/js/controllers/walletHome.js
+msgid "Retrieving inputs information"
+msgstr ""
+
 #: public/views/translators.html
 msgid "Russian"
 msgstr "rosyjski"
@@ -1378,7 +1406,7 @@ msgstr "Ustawienia zabezpieczeń"
 #: public/views/includes/tx-details.html
 #: public/views/modals/tx-details.html
 msgid "See it on the blockchain"
-msgstr "Zobacz to w blockchainie"
+msgstr "Zobacz w blockchainie"
 
 #: public/views/import.html
 msgid "Seed passphrase"
@@ -1410,14 +1438,18 @@ msgstr "Wyślij"
 msgid "Send addresses by email"
 msgstr "Wyślij adresy przez e-mail"
 
-#: public/views/walletHome.html
-msgid "Send All"
-msgstr "Wyślij wszystko"
+#: public/views/includes/confirm-tx.html
+msgid "Send bitcoin"
+msgstr ""
 
 #: public/views/export.html
 #: public/views/preferencesLogs.html
 msgid "Send by email"
 msgstr "Wyślij przez e-mail"
+
+#: public/views/walletHome.html
+msgid "Send Max"
+msgstr ""
 
 #: public/views/includes/transaction.html
 msgid "Sending"
@@ -1517,7 +1549,7 @@ msgstr "Podpisy odrzucone przez serwer"
 
 #: src/js/services/txService.js
 msgid "Signing payment"
-msgstr "Sygnuj wypłatę"
+msgstr "Podpisywanie wypłaty"
 
 #: public/views/translators.html
 msgid "Spanish"
@@ -1610,6 +1642,10 @@ msgstr "Portfel \"{{walletName}}\" został usunięty"
 msgid "There are no wallets to make this payment"
 msgstr "Brak portfela, aby dokonać tej wypłaty"
 
+#: src/js/controllers/index.js
+msgid "There is a new version of Copay. Please update"
+msgstr ""
+
 #: src/js/controllers/import.js
 msgid "There is an error in the form"
 msgstr "Wystąpił błąd w postaci"
@@ -1674,7 +1710,7 @@ msgstr "Transakcja została już wysłana"
 
 #: public/views/preferencesAdvanced.html
 msgid "Transaction History"
-msgstr "Historia Transakcji"
+msgstr "Historia transakcji"
 
 #: public/views/translators.html
 msgid "Translation Credits"
@@ -1691,10 +1727,6 @@ msgstr "Spróbuj ponownie"
 #: public/views/import.html
 msgid "Type the Seed Phrase (usually 12 words)"
 msgstr "Wpisz frazę odzyskiwania danych (zwykle 12 słów)"
-
-#: src/js/controllers/walletHome.js
-msgid "Unable to send transaction proposal"
-msgstr "Nie można wysłać wniosku transakcji"
 
 #: public/views/walletHome.html
 #: public/views/includes/tx-details.html
