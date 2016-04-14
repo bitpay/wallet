@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Russian\n"
 "Language: ru\n"
-"PO-Revision-Date: 2016-02-24 08:23-0500\n"
+"PO-Revision-Date: 2016-04-13 13:33-0400\n"
 
 #: public/views/walletHome.html
 msgid "(possible double spend)"
@@ -21,6 +21,10 @@ msgstr "(возможна двойная трата)"
 #: public/views/modals/paypro.html
 msgid "(Trusted)"
 msgstr "(Доверенный)"
+
+#: public/views/includes/confirm-tx.html
+msgid "{{confirm.feeRateStr}} of the transaction"
+msgstr ""
 
 #: src/js/controllers/walletHome.js
 msgid "{{fee}} will be deducted for bitcoin networking fees"
@@ -71,7 +75,6 @@ msgstr "Биткойн-кошелёк с мультиподписью"
 msgid "About Copay"
 msgstr "О Copay"
 
-#: public/views/includes/confirm-tx.html
 #: public/views/modals/txp-details.html
 #: src/js/services/confirmDialog.js
 #: src/js/controllers/copayers.js
@@ -218,7 +221,7 @@ msgstr "Баланс на адресах"
 
 #: public/views/walletHome.html
 msgid "Before receiving funds, it is necessary backup your wallet. If you lose this device, it is impossible to access your funds without a backup."
-msgstr ""
+msgstr "Прежде чем получать переводы необходимо создать резервную копию кошелька. Если вы потеряете это устройство, вы не сможете получить доступ к вашим средствам без резервной копии."
 
 #: public/views/create.html
 #: public/views/import.html
@@ -283,6 +286,10 @@ msgstr "ОТМЕНА"
 
 #: public/views/copayers.html
 msgid "Cancel and delete the wallet"
+msgstr "Отменить и удалить кошелёк"
+
+#: src/js/controllers/walletHome.js
+msgid "Cannot create transaction. Insufficient funds"
 msgstr ""
 
 #: src/js/services/profileService.js
@@ -291,7 +298,7 @@ msgstr "Нельзя присоединиться к одному и тому ж
 
 #: src/js/controllers/walletHome.js
 msgid "Cannot sign: The payment request has expired"
-msgstr ""
+msgstr "Не удалось подписать: запрос платежа истёк"
 
 #: public/views/modals/paypro.html
 msgid "Certified by"
@@ -325,16 +332,13 @@ msgstr "Цвет"
 msgid "Commit hash"
 msgstr "Хэш версии"
 
+#: public/views/includes/confirm-tx.html
 #: src/js/services/confirmDialog.js
 #: src/js/controllers/copayers.js
 #: src/js/controllers/preferencesDelete.js
 #: src/js/controllers/walletHome.js
 msgid "Confirm"
 msgstr "Подтвердить"
-
-#: public/views/includes/confirm-tx.html
-msgid "Confirm transaction"
-msgstr ""
 
 #: public/views/backup.html
 msgid "Confirm your wallet seed"
@@ -363,7 +367,7 @@ msgstr "Подключаемся к кошельку {{join.hwWallet}}..."
 
 #: src/js/services/bwsError.js
 msgid "Connection reset by peer"
-msgstr ""
+msgstr "Соединение сброшено другой стороной"
 
 #: public/views/backup.html
 msgid "Continue"
@@ -415,7 +419,7 @@ msgstr "Не удалось отправить платёж"
 
 #: src/js/services/bwsError.js
 msgid "Could not build transaction"
-msgstr ""
+msgstr "Не удалось создать транзакцию"
 
 #: src/js/services/addressService.js
 msgid "Could not create address"
@@ -455,7 +459,7 @@ msgstr "Не удалось получить информацию о плате�
 
 #: src/js/controllers/walletHome.js
 msgid "Could not get fee value"
-msgstr ""
+msgstr "Не удалось получить информацию о комиссии"
 
 #: src/js/services/profileService.js
 msgid "Could not import"
@@ -556,6 +560,10 @@ msgstr "Удалить мнемонику"
 msgid "Deleting payment"
 msgstr "Удаление платежа"
 
+#: public/views/preferencesDeleteWallet.html
+msgid "Deleting Wallet..."
+msgstr ""
+
 #: public/views/create.html
 #: public/views/import.html
 #: public/views/join.html
@@ -565,10 +573,6 @@ msgstr "Путь деривации"
 #: public/views/preferencesInformation.html
 msgid "Derivation Strategy"
 msgstr "Стратегия деривации"
-
-#: public/views/walletHome.html
-msgid "Destination wallet needs backup"
-msgstr ""
 
 #: public/views/includes/tx-details.html
 #: public/views/modals/customized-amount.html
@@ -624,7 +628,7 @@ msgstr "Достигнут предел пустых адресов. Новые 
 
 #: public/views/preferencesGlobal.html
 msgid "Enable push notifications"
-msgstr ""
+msgstr "Включить Push-уведомления"
 
 #: src/js/controllers/export.js
 msgid "Encrypted export file saved"
@@ -657,7 +661,7 @@ msgstr "Ошибка импорта кошелька:"
 
 #: public/views/modals/txp-details.html
 msgid "Expired"
-msgstr ""
+msgstr "Истекла"
 
 #: public/views/modals/paypro.html
 #: public/views/modals/txp-details.html
@@ -780,7 +784,7 @@ msgstr "Я подтверждаю, что я прочитал(а), понял(а
 
 #: public/views/disclaimer.html
 msgid "I AGREE. GET STARTED"
-msgstr "СОГЛАСЕН. ПРИСТУПИМ"
+msgstr "Принять и продолжить"
 
 #: public/views/import.html
 #: public/views/importLegacy.html
@@ -910,7 +914,7 @@ msgstr "Узнайте больше о переносе кошелька"
 
 #: public/views/preferencesFee.html
 msgid "Loading..."
-msgstr ""
+msgstr "Загрузка..."
 
 #: public/views/includes/available-balance.html
 msgid "locked by pending payments"
@@ -930,7 +934,7 @@ msgstr "Сделать платёж"
 
 #: src/js/controllers/index.js
 msgid "Matches:"
-msgstr ""
+msgstr "Совпадения:"
 
 #: src/js/services/profileService.js
 msgid "me"
@@ -959,7 +963,7 @@ msgstr "Сообщение"
 
 #: src/js/services/bwsError.js
 msgid "Missing private keys to sign"
-msgstr ""
+msgstr "Отсутствуют закрытые ключи для подписи"
 
 #: public/views/walletHome.html
 #: public/views/includes/tx-details.html
@@ -987,6 +991,10 @@ msgstr "Мои кошельки"
 #: public/views/preferencesDeleteWords.html
 msgid "Need to do backup"
 msgstr "Необходимо создать резервную копию"
+
+#: public/views/modals/destination-address.html
+msgid "Needs backup"
+msgstr ""
 
 #: public/views/paymentUri.html
 msgid "Network"
@@ -1027,7 +1035,7 @@ msgstr "Не завершено"
 
 #: src/js/controllers/walletHome.js
 msgid "Not enought funds for fee"
-msgstr ""
+msgstr "Недостаточно средств для комиссии"
 
 #: public/views/walletHome.html
 #: public/views/modals/customized-amount.html
@@ -1043,6 +1051,14 @@ msgstr "Недействительно"
 msgid "Note"
 msgstr "Примечание"
 
+#: src/js/controllers/walletHome.js
+msgid "Note: a total of {{amountAboveMaxSizeStr}} were excluded. The maximum size allowed for a transaction was exceeded"
+msgstr ""
+
+#: src/js/controllers/walletHome.js
+msgid "Note: a total of {{amountBelowFeeStr}} were excluded. These funds come from UTXOs smaller than the network fee provided."
+msgstr ""
+
 #: public/views/disclaimer.html
 #: public/views/termOfUse.html
 msgid "Official English Disclaimer"
@@ -1055,6 +1071,10 @@ msgstr "Рекомендуется удалить мнемонику с устр
 #: public/views/preferencesInformation.html
 msgid "Only Main (not change) addresses are shown. The addresses on this list were not verified locally at this time."
 msgstr "Отображаются только основные адреса (не со сдачей). Адреса в этом списке на данный момент ещё не были проверены локально."
+
+#: public/views/preferencesGlobal.html
+msgid "Open Settings app"
+msgstr ""
 
 #: public/views/walletHome.html
 msgid "optional"
@@ -1102,7 +1122,7 @@ msgstr "Вставьте закрытый ключ бумажного кошел
 
 #: src/js/controllers/walletHome.js
 msgid "Pasted from clipboard"
-msgstr ""
+msgstr "Вставлено из буфера обмена"
 
 #: public/views/modals/paypro.html
 msgid "Pay To"
@@ -1126,7 +1146,7 @@ msgstr "Детали платежа"
 
 #: public/views/walletHome.html
 msgid "Payment expires"
-msgstr ""
+msgstr "Платёж истекает"
 
 #: public/views/modals/txp-details.html
 msgid "Payment Proposal"
@@ -1236,6 +1256,10 @@ msgstr "Приоритетная"
 
 #: src/js/services/bwsError.js
 msgid "Private key is encrypted, cannot sign"
+msgstr "Закрытый ключ зашифрован, не удалось подписать"
+
+#: public/views/preferencesGlobal.html
+msgid "Push notifications for Copay are currently disabled. Enable them in the Settings app."
 msgstr ""
 
 #: public/views/modals/customized-amount.html
@@ -1310,7 +1334,7 @@ msgstr "Запрашиваем Ledger для подписания транзак
 
 #: src/js/services/txService.js
 msgid "Requesting Trezor Wallet to sign"
-msgstr ""
+msgstr "Запрашиваем Trezor для подписания транзакции"
 
 #: public/views/join.html
 msgid "Required"
@@ -1319,6 +1343,10 @@ msgstr "Необходимо"
 #: public/views/create.html
 msgid "Required number of signatures"
 msgstr "Требуемое число подписей"
+
+#: src/js/controllers/walletHome.js
+msgid "Retrieving inputs information"
+msgstr ""
 
 #: public/views/translators.html
 msgid "Russian"
@@ -1369,7 +1397,7 @@ msgstr "Сканирование адресов кошелька..."
 
 #: public/views/walletHome.html
 msgid "Search transactions"
-msgstr ""
+msgstr "Поиск транзакций"
 
 #: public/views/preferences.html
 msgid "Security preferences"
@@ -1410,14 +1438,18 @@ msgstr "Отправить"
 msgid "Send addresses by email"
 msgstr "Отправить адреса по email"
 
-#: public/views/walletHome.html
-msgid "Send All"
-msgstr "Отправить все"
+#: public/views/includes/confirm-tx.html
+msgid "Send bitcoin"
+msgstr ""
 
 #: public/views/export.html
 #: public/views/preferencesLogs.html
 msgid "Send by email"
 msgstr "Отправить на email"
+
+#: public/views/walletHome.html
+msgid "Send Max"
+msgstr ""
 
 #: public/views/includes/transaction.html
 msgid "Sending"
@@ -1429,7 +1461,7 @@ msgstr "Отправка средств..."
 
 #: src/js/controllers/walletHome.js
 msgid "Sending transaction"
-msgstr ""
+msgstr "Отправка транзакции"
 
 #: public/views/walletHome.html
 #: public/views/includes/tx-details.html
@@ -1505,7 +1537,7 @@ msgstr "Показать дополнительные настройки"
 
 #: public/views/walletHome.html
 msgid "Show more"
-msgstr ""
+msgstr "Показать еще"
 
 #: public/views/backup.html
 msgid "Show Wallet Seed"
@@ -1582,7 +1614,7 @@ msgstr "Закрытый ключ этого кошелька зашифрова
 
 #: src/js/services/bwsError.js
 msgid "The request could not be understood by the server"
-msgstr ""
+msgstr "Запрос не распознан сервером"
 
 #: public/views/create.html
 #: public/views/join.html
@@ -1609,6 +1641,10 @@ msgstr "Кошелёк «{{walletName}}» был удален"
 #: public/views/paymentUri.html
 msgid "There are no wallets to make this payment"
 msgstr "Нет кошельков, чтобы осуществить этот платёж"
+
+#: src/js/controllers/index.js
+msgid "There is a new version of Copay. Please update"
+msgstr ""
 
 #: src/js/controllers/import.js
 msgid "There is an error in the form"
@@ -1661,7 +1697,7 @@ msgstr "Количество совладельцев"
 
 #: src/js/services/txService.js
 msgid "Touch ID Failed"
-msgstr ""
+msgstr "Ошибка Touch ID"
 
 #: public/views/includes/tx-details.html
 #: public/views/modals/tx-details.html
@@ -1691,10 +1727,6 @@ msgstr "Попрoбуйте снова"
 #: public/views/import.html
 msgid "Type the Seed Phrase (usually 12 words)"
 msgstr "Введите мнемонику (обычно двенадцать слов)"
-
-#: src/js/controllers/walletHome.js
-msgid "Unable to send transaction proposal"
-msgstr "Не удается отправить предложение транзакции"
 
 #: public/views/walletHome.html
 #: public/views/includes/tx-details.html
@@ -1813,7 +1845,7 @@ msgstr "Кошелёк не найден"
 
 #: src/js/services/bwsError.js
 msgid "Wallet not registered at the wallet service. Recreate it from \"Create Wallet\" using \"Advanced Options\" to set your seed"
-msgstr ""
+msgstr "Кошелёк не зарегистрирован на сервере Bitcore. Пересоздайте кошелёк воспользовавшись дополнительными настройками чтобы указать мнемонику"
 
 #: public/views/create.html
 #: public/views/import.html
