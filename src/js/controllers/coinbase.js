@@ -3,6 +3,8 @@
 angular.module('copayApp.controllers').controller('coinbaseController', 
   function($rootScope, $scope, $timeout, $modal, profileService, configService, storageService, coinbaseService, isChromeApp, animationService, lodash, nodeWebkit) {
 
+    window.ignoreMobilePause = true;
+    
     this.openAuthenticateWindow = function() {
       var oauthUrl = this.getAuthenticateUrl();
       if (!nodeWebkit.isDefined()) {

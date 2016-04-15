@@ -17,13 +17,15 @@ angular.module('copayApp.controllers').controller('coinbaseUriController',
                 $scope.$apply();
               }, 100);
           }
-          else if (data && data.access_token) {
+          else if (data && data.access_token && data.refresh_token) {
             storageService.setCoinbaseToken(network, data.access_token, function() {
-              $scope.$emit('Local/CoinbaseUpdated', data.access_token);
-              $timeout(function() {
-                go.path('coinbase');
-                $scope.$apply();
-              }, 100);
+              storageService.setCoinbaseRefreshToken(network, data.refresh_token, function() {
+                $scope.$emit('Local/CoinbaseUpdated', data.access_token);
+                $timeout(function() {
+                  go.path('coinbase');
+                  $scope.$apply();
+                }, 100);
+              });
             });
           }
         });

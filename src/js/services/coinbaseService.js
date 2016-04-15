@@ -356,7 +356,8 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
   root.getPendingTransactions = function(cb) {
     var network = configService.getSync().coinbase.testnet ? 'testnet' : 'livenet';
     storageService.getCoinbaseTxs(network, function(err, txs) {
-      return cb(err, JSON.parse(txs));
+      var _txs = txs ? JSON.parse(txs) : {};
+      return cb(err, _txs);
     });
   };
 
