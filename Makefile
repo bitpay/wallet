@@ -5,14 +5,18 @@ sign:
 verify: 
 	gpg --verify browser-extensions/chrome/copay-chrome-extension.zip.sig browser-extensions/chrome/copay-chrome-extension.zip
 
-sign-desktop:
+sign-osx:
+	codesign -s 3rd webkitbuilds/Copay-osx.dmg 
+
+verify-osx:
+	codesign -dv webkitbuilds/Copay-osx.dmg 
+
+sign-desktop:  sign-osx
 	gpg -u 1112CFA1 --output webkitbuilds/Copay-linux.zip.sig --detach-sig webkitbuilds/Copay-linux.zip
-	gpg -u 1112CFA1 --output webkitbuilds/Copay-osx.dmg.sig --detach-sig webkitbuilds/Copay-osx.dmg
 	gpg -u 1112CFA1 --output webkitbuilds/Copay-win.exe.sig --detach-sig webkitbuilds/Copay-win.exe
 
-verify-desktop:
+verify-desktop: verify-osx
 	gpg --verify webkitbuilds/Copay-linux.zip.sig webkitbuilds/Copay-linux.zip
-	gpg --verify webkitbuilds/Copay-osx.dmg.sig webkitbuilds/Copay-osx.dmg
 	gpg --verify webkitbuilds/Copay-win.exe.sig webkitbuilds/Copay-win.exe
 
 chrome:
