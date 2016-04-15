@@ -140,12 +140,18 @@ angular.module('copayApp.controllers').controller('exportController',
         if ($scope.noSign)
           name = name + '(No Private Key)';
 
-        var properties = {
-          subject: 'Copay Wallet Backup: ' + name,
-          body: 'Here is the encrypted backup of the wallet ' + name + ': \n\n' + ew + '\n\n To import this backup, copy all text between {...}, including the symbols {}',
-          isHtml: false
-        };
-        window.plugin.email.open(properties);
+        var subject = 'Copay Wallet Backup: ' + name;
+        var body = 'Here is the encrypted backup of the wallet ' + name + ': \n\n' + ew + '\n\n To import this backup, copy all text between {...}, including the symbols {}';
+        window.plugins.socialsharing.shareViaEmail(
+          body,
+          subject,
+          null, // TO: must be null or an array
+          null, // CC: must be null or an array
+          null, // BCC: must be null or an array
+          null, // FILES: can be null, a string, or an array
+          function() {},
+          function() {}
+        );
       });
     };
 
