@@ -121,9 +121,6 @@ if [ ! -d $PROJECT ]; then
   cordova plugin add https://github.com/VersoSolutions/CordovaClipboard
   checkOK
 
-  cordova plugin add cordova-plugin-email-composer@0.8.3
-  checkOK
-
   cordova plugin add https://github.com/EddyVerbruggen/SocialSharing-PhoneGap-Plugin.git && cordova prepare
   checkOK
 

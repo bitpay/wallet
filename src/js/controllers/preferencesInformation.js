@@ -80,12 +80,16 @@ angular.module('copayApp.controllers').controller('preferencesInformation',
             return ('* ' + v.address + ' ' + base + v.path.substring(1) + ' ' + formatDate(v.createdOn));
           }).join("\n");
 
-          var properties = {
-            subject: 'Copay Addresses',
-            body: body,
-            isHtml: false
-          };
-          window.plugin.email.open(properties);
+          window.plugins.socialsharing.shareViaEmail(
+            body,
+            'Copay Addresses',
+            null, // TO: must be null or an array
+            null, // CC: must be null or an array
+            null, // BCC: must be null or an array
+            null, // FILES: can be null, a string, or an array
+            function() {},
+            function() {}
+          );
 
           $timeout(function() {
             $scope.$apply();
