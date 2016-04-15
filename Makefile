@@ -8,7 +8,7 @@ verify:
 sign-osx:
 	codesign -s 3rd webkitbuilds/Copay-osx.dmg 
 
-verfy-osx
+verify-osx:
 	codesign -dv webkitbuilds/Copay-osx.dmg 
 
 sign-desktop:  sign-osx
