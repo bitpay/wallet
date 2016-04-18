@@ -11,11 +11,11 @@ sign-osx:
 verify-osx:
 	codesign -dv webkitbuilds/Copay-osx.dmg 
 
-sign-desktop:  sign-osx
+sign-desktop:
 	gpg -u 1112CFA1 --output webkitbuilds/Copay-linux.zip.sig --detach-sig webkitbuilds/Copay-linux.zip
 	gpg -u 1112CFA1 --output webkitbuilds/Copay-win.exe.sig --detach-sig webkitbuilds/Copay-win.exe
 
-verify-desktop: verify-osx
+verify-desktop:
 	gpg --verify webkitbuilds/Copay-linux.zip.sig webkitbuilds/Copay-linux.zip
 	gpg --verify webkitbuilds/Copay-win.exe.sig webkitbuilds/Copay-win.exe
 
