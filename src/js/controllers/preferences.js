@@ -19,12 +19,12 @@ angular.module('copayApp.controllers').controller('preferencesController',
         //this.externalIndex = fc.getExternalIndex();
       }
 
-      if (window.touchidAvailable) {
-        var walletId = fc.credentials.walletId;
+      var walletId = fc.credentials.walletId;
+      config.touchIdFor = config.touchIdFor || {};
+      $scope.touchid = config.touchIdFor[walletId];
+
+      if (window.touchidAvailable)
         this.touchidAvailable = true;
-        config.touchIdFor = config.touchIdFor || {};
-        $scope.touchid = config.touchIdFor[walletId];
-      }
     };
 
     var unwatchEncrypt = $scope.$watch('encrypt', function(val) {
