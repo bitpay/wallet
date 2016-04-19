@@ -116,8 +116,8 @@ angular.module('copayApp.services')
           fileEntry.remove(function() {
             console.log('File removed.');
             return cb();
-          }, cb, cb);
-        });
+          }, cb);
+        }, cb);
       });
     };
 
