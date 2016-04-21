@@ -151,10 +151,10 @@ angular.module('copayApp.controllers').controller('buyCoinbaseController',
                 self.error = {errors: [{ message: 'Could not create address' }]};
                 return;
               }
-              coinbaseService.savePendingTransaction(updatedTx.data, {toAddr: addr}, function(err) {
+              updatedTx.data['toAddr'] = addr;
+              coinbaseService.savePendingTransaction(updatedTx.data, {}, function(err) {
                 self.loading = null;
                 if (err) $log.debug(err);
-                updatedTx.data['toAddr'] = addr;
                 if (updatedTx.data.status == 'completed') {
                   self.sendToCopay(token, account, updatedTx.data);
                 } else {
