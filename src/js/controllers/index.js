@@ -1390,8 +1390,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
                 });
               }
             });
-          } else if (tx.data.type == 'buy' && tx.data.status == 'pending' && tx.data.buy) {
-            self.buyPending(tx.data);
+          } else if (tx.data.type == 'buy' && tx.data.status == 'completed' && tx.data.buy) {
+            self.sendToCopay(dataFromStorage);
           } else {
             coinbaseService.savePendingTransaction(dataFromStorage, {}, function(err) {
               if (err) $log.debug(err);
@@ -1435,7 +1435,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     });
   };
 
-  self.buyPending = function(tx) {
+  self.sendToCopay = function(tx) {
     if (!tx) return;
     var data = {
       to: tx.toAddr,
