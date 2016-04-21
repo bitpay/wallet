@@ -1297,7 +1297,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
         confirmDialog.show(msg, function(confirmed) {
           if (confirmed) {
-            self._doSendMax(resp.amount * self.satToUnit);
+            self._doSendMax(parseFloat((resp.amount * self.satToUnit).toFixed(self.unitDecimals)));
           } else {
             self.resetForm();
           }
