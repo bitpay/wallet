@@ -3,6 +3,26 @@ module.exports = function(grunt) {
   // Project Configuration
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
+    'string-replace': {
+      dist: {
+        files: {
+          'cordova/config.xml': ['config-templates/config.xml'],
+          'cordova/wp/Package.appxmanifest': ['config-templates/Package.appxmanifest'],
+          'cordova/wp/Properties/WMAppManifest.xml': ['config-templates/WMAppManifest.xml'],
+          'webkitbuilds/.desktop': ['config-templates/.desktop'],
+          'webkitbuilds/setup-win.iss': ['config-templates/setup-win.iss']
+        },
+        options: {
+          replacements: [{
+            pattern: /%APP-VERSION%/g,
+            replacement: '<%= pkg.version %>'
+            }, {
+            pattern: /%ANDROID-VERSION-CODE%/g,
+            replacement: '<%= pkg.androidVersionCode %>'
+          }]
+        }
+      }
+    },
     exec: {
       version: {
         command: 'node ./util/version.js'
@@ -212,6 +232,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-karma-coveralls');
   grunt.loadNpmTasks('grunt-node-webkit-builder');
   grunt.loadNpmTasks('grunt-contrib-compress');
+  grunt.loadNpmTasks('grunt-string-replace');
 
   grunt.registerTask('default', ['nggettext_compile', 'exec:version', 'exec:coinbase', 'browserify', 'concat', 'copy:icons']);
   grunt.registerTask('prod', ['default', 'uglify']);
@@ -220,4 +241,5 @@ module.exports = function(grunt) {
   grunt.registerTask('test-coveralls', ['karma:prod', 'coveralls']);
   grunt.registerTask('desktop', ['prod', 'nodewebkit', 'copy:linux', 'compress:linux']);
   grunt.registerTask('osx', ['prod', 'nodewebkit', 'exec:osx']);
+  grunt.registerTask('release', ['string-replace:dist']);
 };
