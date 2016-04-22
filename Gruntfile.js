@@ -14,7 +14,7 @@ module.exports = function(grunt) {
         command: 'rm -Rf bower_components node_modules'
       },
       osx: {
-        command: 'webkitbuilds/build-osx.sh'
+        command: 'webkitbuilds/build-osx.sh sign'
       }
     },
     watch: {
@@ -218,5 +218,6 @@ module.exports = function(grunt) {
   grunt.registerTask('translate', ['nggettext_extract']);
   grunt.registerTask('test', ['karma:unit']);
   grunt.registerTask('test-coveralls', ['karma:prod', 'coveralls']);
-  grunt.registerTask('desktop', ['prod', 'nodewebkit', 'copy:linux', 'compress:linux', 'exec:osx']);
+  grunt.registerTask('desktop', ['prod', 'nodewebkit', 'copy:linux', 'compress:linux']);
+  grunt.registerTask('osx', ['prod', 'nodewebkit', 'exec:osx']);
 };
