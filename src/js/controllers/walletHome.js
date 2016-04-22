@@ -207,6 +207,9 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
             return;
           }
           $scope.list = ab;
+          $timeout(function(){
+            $scope.$digest();
+          });
         });
       };
 
@@ -1281,7 +1284,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
         }
 
         if (resp.amount == 0) {
-          self.error = gettext("Not enought funds for fee");
+          self.error = gettext("Not enough funds for fee");
           $scope.$apply();
           return;
         }
@@ -1297,7 +1300,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
         confirmDialog.show(msg, function(confirmed) {
           if (confirmed) {
-            self._doSendMax(resp.amount * self.satToUnit);
+            self._doSendMax(parseFloat((resp.amount * self.satToUnit).toFixed(self.unitDecimals)));
           } else {
             self.resetForm();
           }

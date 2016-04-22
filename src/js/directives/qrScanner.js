@@ -14,7 +14,7 @@ angular.module('copayApp.directives')
             if (isMobile.Windows() && result.cancelled) return;
 
             $timeout(function() {
-              var data = isMobile.Windows() ? result.text : result;
+              var data = isMobile.iOS() ? result : result.text;
               $scope.onScan({ data: data });
             }, 1000);
           };
@@ -30,7 +30,7 @@ angular.module('copayApp.directives')
             window.ignoreMobilePause = true;
             window.plugins.spinnerDialog.show(null, gettextCatalog.getString('Preparing camera...'), true);
             $timeout(function() {
-              if (!isMobile.Windows()) {
+              if (isMobile.iOS()) {
                 cloudSky.zBar.scan({}, onSuccess, onError);
               } else {
                 cordova.plugins.barcodeScanner.scan(onSuccess, onError);

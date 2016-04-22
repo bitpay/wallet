@@ -84,13 +84,12 @@ if [ ! -d $PROJECT ]; then
   cordova plugin add https://github.com/florentvaldelievre/virtualartifacts-webIntent.git
   checkOK
 
-  if [ $CURRENT_OS != "WP8" ]
+  if [ $CURRENT_OS == "IOS" ]
   then
     cordova plugin add https://github.com/tjwoon/csZBar.git
     checkOK
   else
-    echo "${OpenColor}${Green}* Using plugin phonegap-plugin-barcodescanner for Windows Phone 8  ${CloseColor}"
-    cordova plugin add https://github.com/phonegap/phonegap-plugin-barcodescanner.git
+    cordova plugin add https://github.com/jrontend/phonegap-plugin-barcodescanner
     checkOK
   fi
 
