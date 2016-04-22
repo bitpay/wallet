@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Deployment AppPlatformVersion="8.1" xmlns="http://schemas.microsoft.com/windowsphone/2014/deployment">
+  <DefaultLanguage code="en-US" xmlns="" />
+  <Languages xmlns="">
+    <Language code="en-US" />
+    <Language code="fr" />
+    <Language code="de" />
+    <Language code="ja" />
+    <Language code="es" />
+    <Language code="ru" />
+    <Language code="pl" />
+    <Language code="cs" />
+  </Languages>
+  <App Author="Bitpay Inc." BitsPerPixel="32" Description="A multisignature Bitcoin Wallet" Genre="apps.normal" ProductID="{5381aa50-9069-11e4-84cc-293caf9cbdc8}" Publisher="Copay Bitcoin Wallet" PublisherID="{31cdd08b-457c-413d-b440-f6665eec847d}" RuntimeType="Silverlight" Title="Copay Bitcoin Wallet" Version="%APP-VERSION%.0" xmlns="" NotificationService="MPN">
+    <IconPath IsRelative="true" IsResource="false">Assets\icon@2.png</IconPath>
+    <Capabilities>
+      <Capability Name="ID_CAP_WEBBROWSERCOMPONENT" />
+      <Capability Name="ID_CAP_NETWORKING" />
+      <Capability Name="ID_CAP_ISV_CAMERA" />
+      <Capability Name="ID_CAP_IDENTITY_DEVICE" />
+    </Capabilities>
+    <Tasks>
+      <DefaultTask Name="_default" NavigationPage="MainPage.xaml" />
+    </Tasks>
+    <Tokens>
+      <PrimaryToken TaskName="_default" TokenID="CopayToken">
+        <TemplateFlip>
+          <SmallImageURI IsRelative="true" IsResource="false">Assets\200x200@1.png</SmallImageURI>
+          <Count>0</Count>
+          <BackgroundImageURI IsRelative="true" IsResource="false">Assets\200x200@2.png</BackgroundImageURI>
+          <Title>Copay Bitcoin Wallet</Title>
+          <BackContent />
+          <BackBackgroundImageURI />
+          <BackTitle />
+          <LargeBackgroundImageURI />
+          <LargeBackContent />
+          <LargeBackBackgroundImageURI />
+          <DeviceLockImageURI />
+          <HasLarge>false</HasLarge>
+        </TemplateFlip>
+      </PrimaryToken>
+    </Tokens>
+    <ScreenResolutions>
+      <ScreenResolution Name="ID_RESOLUTION_WVGA" />
+      <ScreenResolution Name="ID_RESOLUTION_WXGA" />
+      <ScreenResolution Name="ID_RESOLUTION_HD720P" />
+    </ScreenResolutions>
+  </App>
+</Deployment>
