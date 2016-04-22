@@ -10,7 +10,7 @@ angular.module('copayApp.controllers').controller('buyCoinbaseController',
     var otherWallets = function(testnet) {
       var network = testnet ? 'testnet' : 'livenet';
       return lodash.filter(profileService.getWallets(network), function(w) {
-        return w.network == network && w.m == 1;
+        return w.network == network;
       });
     };
 
@@ -75,6 +75,7 @@ angular.module('copayApp.controllers').controller('buyCoinbaseController',
             self.error = bwsError.msg({
               'code': 'WALLET_NOT_COMPLETE'
             }, 'Could not choose the wallet');
+            self.error = {errors: [{ message: 'The Wallet could not be selected' }]};
             $modalInstance.dismiss('cancel');
             return;
           }
