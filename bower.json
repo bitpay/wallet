@@ -8,15 +8,14 @@
   ],
   "dependencies": {
     "angular": "1.4.6",
-    "angular-bitcore-wallet-client": "1.1.7",
-    "angular-foundation": "0.7.0",
-    "angular-gettext": "2.1.2",
+    "angular-foundation": "0.8.0",
+    "angular-gettext": "2.2.1",
     "angular-moment": "0.10.1",
-    "angular-qrcode": "monospaced/angular-qrcode#~6.0.3",
+    "angular-qrcode": "monospaced/angular-qrcode#~6.2.1",
     "angular-ui-router": "0.2.18",
     "angular-ui-switch": "0.1.1",
-    "animate.css": "3.4.0",
-    "foundation": "5.5.2",
+    "animate.css": "3.5.1",
+    "foundation": "5.5.3",
     "foundation-icon-fonts": "*",
     "moment": "2.10.3",
     "ng-lodash": "0.2.3",
@@ -25,6 +24,7 @@
     "ng-csv": "~0.3.6"
   },
   "resolutions": {
-    "angular": "1.4.6"
+    "angular": "1.4.6",
+    "qrcode-generator": "0.1.0"
   }
 }
