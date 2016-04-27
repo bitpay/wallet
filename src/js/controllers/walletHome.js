@@ -61,7 +61,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     $log.debug('Cleaning WalletHome Instance');
     lodash.each(self, function(v, k) {
       if (lodash.isFunction(v)) return;
-      if (vanillaScope[k]) {
+      if (!lodash.isUndefined(vanillaScope[k])) {
         self[k] = vanillaScope[k];
         return;
       }
