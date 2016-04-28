@@ -189,9 +189,12 @@ angular.module('copayApp.services').factory('txService', function($rootScope, pr
       }
     } else {
 
+      txp.signatures = null;
       $log.info('[txService.js.191] at sign: (isEncrypted):', fc.isPrivKeyEncrypted());
+      $log.info('txp BEFORE:', txp);
 
       fc.signTxProposal(txp, function(err, signedTxp) {
+        $log.info('txp AFTER:',err, signedTxp);
         profileService.lockFC();
         return cb(err, signedTxp);
       });
