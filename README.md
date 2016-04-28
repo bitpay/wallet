@@ -45,6 +45,7 @@ npm install -g grunt-cli
 Build Copay:
 
 ```sh
+sudo gem install sass
 bower install
 npm install
 grunt
