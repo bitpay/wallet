@@ -3,21 +3,21 @@
   ng-style="{'background-color': noColor ? '#4B6178' : index.backgroundColor}">
   <section class="left-small">
     <a id="hamburger" class="p10" ng-show="!goBackToState && !closeToHome  && !index.noFocusedWallet"
-      fast-click callback-fn="index.openMenu()"><i class="fi-list size-24"></i>
+      ng-click="index.openMenu()"><i class="fi-list size-24"></i>
     </a>
     <a ng-show="goBackToState"
-      fast-click callback-fn="$root.go(goBackToState); goBackToState = null"><i class="icon-arrow-left3 icon-back"></i>
+      ng-click="$root.go(goBackToState); goBackToState = null"><i class="icon-arrow-left3 icon-back"></i>
       <span class="text-back">{{'Back'|translate}}</span>
     </a>
 
     <a ng-show="closeToHome" class="p10 "
-      fast-click callback-fn="topbar.goHome(); index.setCompactTxHistory(); closeToHome = null">
+      ng-click="topbar.goHome(); index.setCompactTxHistory(); closeToHome = null">
       <span class="text-close">{{'Close'|translate}}</span>
     </a>
   </section>
 
   <section class="right-small" ng-show="showPreferences && !index.noFocusedWallet">
-    <a class="p10" fast-click callback-fn="topbar.goPreferences(); index.setCompactTxHistory()">
+    <a class="p10" ng-click="topbar.goPreferences(); index.setCompactTxHistory()">
       <i class="fi-widget size-24"></i>
     </a>
   </section>

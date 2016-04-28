@@ -82,18 +82,21 @@ module.exports = function(grunt) {
         sourceMapStyle: 'link' // embed, link, inline
       },
       angular: {
-        src: [
+        src: [ 
           'bower_components/qrcode-generator/js/qrcode.js',
           'bower_components/qrcode-decoder-js/lib/qrcode-decoder.js',
           'bower_components/moment/min/moment-with-locales.js',
           'bower_components/angular/angular.js',
           'bower_components/angular-ui-router/release/angular-ui-router.js',
           'bower_components/angular-foundation/mm-foundation-tpls.js',
+          'bower_components/angular-touch/angular-touch.js',
+          'bower_components/fastclick/lib/fastclick.js',
+          'bower_components/stateful-fastclick/dist/stateful-fastclick.js',
+          'bower_components/angular-stateful-fastclick/lib/angular-stateful-fastclick.js',
           'bower_components/angular-moment/angular-moment.js',
           'bower_components/ng-lodash/build/ng-lodash.js',
           'bower_components/angular-qrcode/angular-qrcode.js',
           'bower_components/angular-gettext/dist/angular-gettext.js',
-          'bower_components/angular-touch/angular-touch.js',
           'bower_components/angular-ui-switch/angular-ui-switch.js',
           'bower_components/angular-sanitize/angular-sanitize.js',
           'bower_components/ng-csv/build/ng-csv.js',
