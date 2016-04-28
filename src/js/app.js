@@ -10,6 +10,7 @@ var modules = [
   'uiSwitch',
   'ngSanitize', 
   'ngCsv',
+  'ngTouch',
   'bwcModule',
   'copayApp.filters',
   'copayApp.services',
