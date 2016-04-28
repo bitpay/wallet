@@ -219,7 +219,7 @@
           </div>
         </div>
         <div ng-repeat="btx in index.txHistorySearchResults track by btx.txid"
-          fast-click callback-fn="home.openTxModal(btx)"
+          ng-click="home.openTxModal(btx)"
           class="row collapse last-transactions-content">
           <div class="large-6 medium-6 small-6 columns size-14">
             <div class="m10r left">
@@ -437,7 +437,7 @@
                 </div>
                 <a class="postfix size-12 m0 text-gray"
                 ng-style="{'color':index.backgroundColor}"
-                fast-click callback-fn="home.openDestinationAddressModal(index.otherWallets, _address)">
+                ng-click="home.openDestinationAddressModal(index.otherWallets, _address)">
                   <i class="icon-wallet text-bold size-18"></i>
                 </a>
               </div>
@@ -505,11 +505,11 @@
 
             <div class="row" ng-show="!home.onGoingProcess">
               <div class="large-6 medium-6 small-6 columns" ng-show="!home.blockUx && (home._paypro || home.lockAddress || home.lockAmount)">
-                <a fast-click callback-fn="home.resetForm(sendForm)" class="button expand outline dark-gray round" translate>Cancel</a>
+                <a ng-click="home.resetForm(sendForm)" class="button expand outline dark-gray round" translate>Cancel</a>
               </div>
               <div class="columns" ng-class="{'small-6 medium-6 large-6':(home._paypro || home.lockAddress || home.lockAmount)}">
                 <button class="button black round expand" ng-disabled="sendForm.$invalid || home.blockUx || index.isOffline || home.paymentExpired"
-                  ng-style="{'background-color':index.backgroundColor}" fast-click callback-fn="home.submitForm()" translate>
+                  ng-style="{'background-color':index.backgroundColor}" ng-click="home.submitForm()" translate>
                   Send
                 </button>
               </div>

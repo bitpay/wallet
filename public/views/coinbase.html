@@ -5,13 +5,13 @@
        ng-style="{'background-color': '#2b71b1'}">
     <section class="left-small">
       <a class="p10"
-         fast-click callback-fn="topbar.goHome()">
+         ng-click="topbar.goHome()">
         <span class="text-close">Close</span>
       </a>
     </section>
 
     <section class="right-small">
-      <a class="p10" fast-click callback-fn="$root.go('preferencesCoinbase')">
+      <a class="p10" ng-click="$root.go('preferencesCoinbase')">
         <i class="fi-widget size-24"></i>
       </a>
     </section>

@@ -9,7 +9,7 @@
     ng-repeat="item in sidebar.wallets track by $index"
     ng-class="{'selected': item.id == index.walletId}"
     class="nav-item">
-    <a fast-click callback-fn="sidebar.closeMenu(); sidebar.switchWallet(item.id, index.walletId)" class="oh">
+    <a ng-click="sidebar.closeMenu(); sidebar.switchWallet(item.id, index.walletId)" class="oh">
       <div class="avatar-wallet"
         ng-style="{'background-color':item.color}">
         <i class="icon-wallet size-21"></i>
