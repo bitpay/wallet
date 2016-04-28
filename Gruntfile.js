@@ -62,6 +62,20 @@ module.exports = function(grunt) {
         tasks: ['concat:js']
       }
     },
+    sass: {
+      dist: {
+        options: {
+          style: 'compact',
+          sourcemap: 'none'
+        },
+        files: [{
+          expand: true,
+          src: ['src/sass/*.scss'],
+          dest: './',
+          ext: '.css'
+        }]
+      }
+    },
     concat: {
       options: {
         sourceMap: false,
@@ -106,7 +120,7 @@ module.exports = function(grunt) {
         dest: 'public/js/copay.js'
       },
       css: {
-        src: ['src/css/*.css'],
+        src: ['src/css/*.css', 'src/sass/*.css'],
         dest: 'public/css/copay.css'
       },
       foundation: {
@@ -233,8 +247,9 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-node-webkit-builder');
   grunt.loadNpmTasks('grunt-contrib-compress');
   grunt.loadNpmTasks('grunt-string-replace');
+  grunt.loadNpmTasks('grunt-contrib-sass');
 
-  grunt.registerTask('default', ['nggettext_compile', 'exec:version', 'exec:coinbase', 'browserify', 'concat', 'copy:icons']);
+  grunt.registerTask('default', ['nggettext_compile', 'exec:version', 'exec:coinbase', 'browserify', 'sass', 'concat', 'copy:icons']);
   grunt.registerTask('prod', ['default', 'uglify']);
   grunt.registerTask('translate', ['nggettext_extract']);
   grunt.registerTask('test', ['karma:unit']);
