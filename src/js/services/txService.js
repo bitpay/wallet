@@ -91,7 +91,7 @@ angular.module('copayApp.services').factory('txService', function($rootScope, pr
 
       });
     });
-  }; 
+  };
 
   root.removeTx = function(txp, opts, cb) {
     opts = opts || {};
@@ -106,7 +106,7 @@ angular.module('copayApp.services').factory('txService', function($rootScope, pr
     opts = opts || {};
     var fc = opts.selectedClient || profileService.focusedClient;
     var currentSpendUnconfirmed = configService.getSync().wallet.spendUnconfirmed;
-    
+
     var getFee = function(cb) {
       if (opts.lockedCurrentFeePerKb) {
         cb(null, opts.lockedCurrentFeePerKb);
@@ -115,16 +115,23 @@ angular.module('copayApp.services').factory('txService', function($rootScope, pr
       }
     };
 
-    getFee(function(err, feePerKb) {
-      if (err) return cb(err);
-
-      opts.feePerKb = feePerKb;
-      opts.excludeUnconfirmedUtxos = currentSpendUnconfirmed ? false : true;
+    if (opts.sendMax) {
       fc.createTxProposal(opts, function(err, txp) {
         if (err) return cb(err);
         else return cb(null, txp);
       });
-    });
+    }else {
+      getFee(function(err, feePerKb) {
+        if (err) return cb(err);
+
+        opts.feePerKb = feePerKb;
+        opts.excludeUnconfirmedUtxos = currentSpendUnconfirmed ? false : true;
+        fc.createTxProposal(opts, function(err, txp) {
+          if (err) return cb(err);
+          else return cb(null, txp);
+        });
+      });
+    }
   };
 
   root.publishTx = function(txp, opts, cb) {
