@@ -94,6 +94,10 @@ Session.vim
 .netrwhist
 *~
 
+# SASS
+src/sass/*.css
+.sass-cache
+
 # copay public
 public/icons/*
 public/css/*
