@@ -72,6 +72,7 @@ angular.module('copayApp.services').factory('txService', function($rootScope, pr
   };
 
   root.prepare = function(opts, cb) {
+    $log.info("Preparing to sign transaction");
     opts = opts || {};
     var fc = opts.selectedClient || profileService.focusedClient;
     if (!fc.canSign() && !fc.isPrivKeyExternal())
@@ -79,12 +80,14 @@ angular.module('copayApp.services').factory('txService', function($rootScope, pr
 
     root.checkTouchId(opts, function(err) {
       if (err) {
+        $log.warn('CheckTouchId error:', err);
         return cb(err);
       };
 
       profileService.unlockFC(opts, function(err) {
         if (err) {
-          return cb(bwsError.msg(err));
+          $log.warn("prepare/unlockFC error:", err);
+          return cb(err);
         };
 
         return cb();
@@ -184,6 +187,9 @@ angular.module('copayApp.services').factory('txService', function($rootScope, pr
           return cb(msg);
       }
     } else {
+
+console.log('[txService.js.191] at sign: (isEncrypted):', fc.isPrivKeyEncrypted());
+
       fc.signTxProposal(txp, function(err, signedTxp) {
         profileService.lockFC();
         return cb(err, signedTxp);
@@ -227,8 +233,10 @@ angular.module('copayApp.services').factory('txService', function($rootScope, pr
 
   root.prepareAndSignAndBroadcast = function(txp, opts, cb) {
     opts = opts || {};
+
     root.prepare(opts, function(err) {
       if (err) {
+        $log.warn('Prepare error:' +  err);
         stopReport(opts);
         return cb(err);
       };

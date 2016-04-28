@@ -946,12 +946,17 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
   this.confirmTx = function(txp) {
     var self = this;
+
+console.log('[walletHome.js.949] confirmTx'); //TODO
     txService.prepare({}, function(err) {
+console.log('[walletHome.js.952] after prepare:', err); //TODO
       if (err) {
+        $log.warn('confirmTx/Prepare error:',  err);
         return self.setSendError(err);
       }
       self.setOngoingProcess(gettextCatalog.getString('Sending transaction'));
       txService.publishTx(txp, {}, function(err, txpPublished) {
+console.log('[walletHome.js.958:err:] publish:',err); //TODO
         if (err) {
           self.setOngoingProcess();
           self.setSendError(err);
@@ -959,6 +964,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
           txService.signAndBroadcast(txpPublished, {
             reporterFn: self.setOngoingProcess.bind(self)
           }, function(err, txp) {
+console.log('[walletHome.js.966:err:] sign',err); //TODO
             self.resetForm();
 
             if (err) {
