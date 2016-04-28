@@ -172,6 +172,7 @@ angular.module('copayApp.services').factory('txService', function($rootScope, pr
   };
 
   root.sign = function(txp, opts, cb) {
+    $log.info('at .sign');
     opts = opts || {};
     var fc = opts.selectedClient || profileService.focusedClient;
 
@@ -188,7 +189,7 @@ angular.module('copayApp.services').factory('txService', function($rootScope, pr
       }
     } else {
 
-console.log('[txService.js.191] at sign: (isEncrypted):', fc.isPrivKeyEncrypted());
+      $log.info('[txService.js.191] at sign: (isEncrypted):', fc.isPrivKeyEncrypted());
 
       fc.signTxProposal(txp, function(err, signedTxp) {
         profileService.lockFC();
@@ -198,6 +199,7 @@ console.log('[txService.js.191] at sign: (isEncrypted):', fc.isPrivKeyEncrypted(
   };
 
   root.signAndBroadcast = function(txp, opts, cb) {
+    $log.info('at .signAndBroadcast');
     opts = opts || {};
     reportSigningStatus(opts);
 
@@ -233,6 +235,7 @@ console.log('[txService.js.191] at sign: (isEncrypted):', fc.isPrivKeyEncrypted(
 
   root.prepareAndSignAndBroadcast = function(txp, opts, cb) {
     opts = opts || {};
+    $log.info('at .prepareSignAndBroadcast');
 
     root.prepare(opts, function(err) {
       if (err) {
@@ -240,7 +243,6 @@ console.log('[txService.js.191] at sign: (isEncrypted):', fc.isPrivKeyEncrypted(
         stopReport(opts);
         return cb(err);
       };
-      reportSigningStatus(opts);
       root.signAndBroadcast(txp, opts, function(err, txp) {
         if (err) {
           stopReport(opts);
