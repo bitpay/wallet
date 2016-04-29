@@ -108,7 +108,7 @@ if [ ! -d $PROJECT ]; then
   cordova plugin add phonegap-plugin-push@1.2.3
   checkOK
 
-  cordova plugin add cordova-plugin-customurlscheme --variable URL_SCHEME=bitcoin
+  cordova plugin add https://github.com/cmgustavo/Custom-URL-scheme.git --variable URL_SCHEME=bitcoin --variable SECOND_URL_SCHEME=copay
   checkOK
 
   cordova plugin add cordova-plugin-inappbrowser
