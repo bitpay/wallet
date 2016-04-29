@@ -64,9 +64,9 @@
                 <i class="icon-wallet size-21"></i>
               </div>
               <div class="ellipsis name-wallet text-bold">{{w.name || w.id}}
-                <span class="has-error right text-light size-12" ng-show="needsBackup[w.id]">
+                <span class="has-error right text-light size-12" ng-show="errorByWallet[w.id]">
                   <i class="icon-close-circle size-14"></i>
-                  <span class="vm" translate>Needs backup</span>
+                  <span class="vm">{{errorByWallet[w.id] | translate }}</span>
                 </span>
               </div>
               <div class="size-12">{{w.m}} of {{w.n}}
