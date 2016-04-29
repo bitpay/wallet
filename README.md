@@ -22,6 +22,7 @@ Binary versions of Copay are available for download at [Copay.io](https://copay.
 - Paper wallet sweep support (BIP38)
 - Hardware wallet support (Trezor and Ledger) (only in Chrome App version)
 - Email notifications for payments and transfers
+- Push notifications (only available for ios and android versions)
 - Customizable wallet naming and background colors
 - Multiple languages supported
 - Available for [iOS](https://itunes.apple.com/us/app/copay/id951330296), [Android](https://play.google.com/store/apps/details?id=com.bitpay.copay&hl=en), [Windows Phone](http://www.windowsphone.com/en-us/store/app/copay-wallet/4372479b-a064-4d18-8bd3-74a3bdb81c3a), [Chrome App](https://chrome.google.com/webstore/detail/copay/cnidaodnidkbaplmghlelgikaiejfhja?hl=en), [Linux](https://github.com/bitpay/copay/releases/latest), [Windows](https://github.com/bitpay/copay/releases/latest) and [OS X](https://github.com/bitpay/copay/releases/latest) devices
@@ -45,6 +46,7 @@ npm install -g grunt-cli
 Build Copay:
 
 ```sh
+sudo gem install sass
 bower install
 npm install
 grunt
