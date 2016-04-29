@@ -127,6 +127,9 @@ angular.module('copayApp.services')
           case 'WALLET_NOT_COMPLETE':
             body = gettextCatalog.getString('Wallet is not complete');
             break;
+          case 'WALLET_NEEDS_BACKUP':
+            body = gettextCatalog.getString('Wallet needs backup');
+            break;
           case 'ERROR':
             body = (err.message || err.error);
             break;

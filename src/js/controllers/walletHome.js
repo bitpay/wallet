@@ -254,15 +254,16 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
         var fc = profileService.getClient(walletId);
         $scope.errorByWallet = {};
         profileService.isBackupNeeded(walletId, function(needsBackup) {
-          if (needsBackup) { 
-            $scope.errorByWallet[walletId] = gettext('Needs backup');
-            return;
-          }
-
+          
           if (!fc.isComplete()) {
             $scope.errorByWallet[walletId] = gettext('Wallet is not complete');
             return;
           }
+          
+          if (needsBackup) { 
+            $scope.errorByWallet[walletId] = gettext('Needs backup');
+            return;
+          } 
           
           $scope.gettingAddress = true;
           $scope.selectedWalletName = walletName;
