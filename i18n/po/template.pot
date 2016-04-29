@@ -1024,7 +1024,7 @@ msgid "Not completed"
 msgstr ""
 
 #: src/js/controllers/walletHome.js
-msgid "Not enought funds for fee"
+msgid "Not enough funds for fee"
 msgstr ""
 
 #: public/views/walletHome.html
@@ -1052,6 +1052,10 @@ msgstr ""
 #: public/views/disclaimer.html
 #: public/views/termOfUse.html
 msgid "Official English Disclaimer"
+msgstr ""
+
+#: public/views/modals/tx-status.html
+msgid "OKAY"
 msgstr ""
 
 #: public/views/preferencesDeleteWords.html
