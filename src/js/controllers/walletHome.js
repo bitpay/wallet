@@ -912,7 +912,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
       var opts = {};
 
-      if (self.sendMaxInfo) {
+      if (!lodash.isEmpty(self.sendMaxInfo)) {
         opts.sendMax = true;
         opts.inputs = self.sendMaxInfo.inputs;
         opts.fee = self.sendMaxInfo.fee;
