@@ -32,8 +32,8 @@ angular
             if (level == 'error')
               console.log(arguments);
 
-            var args = [].slice.call(arguments);
-            if (!Array.isArray(args)) args = [args];
+            var args = Array.prototype.slice.call(arguments);
+
             args = args.map(function(v) {
               try {
                 if (typeof v == 'undefined') v = 'undefined';
@@ -47,8 +47,8 @@ angular
                 // Trim output in mobile
                 if (window.cordova) {
                   v = v.toString();
-                  if (v.length > 300) {
-                    v = v.substr(0, 297) + '...';
+                  if (v.length > 3000) {
+                    v = v.substr(0, 2997) + '...';
                   }
                 }
               } catch (e) {
@@ -57,9 +57,11 @@ angular
               }
               return v;
             });
+
             try {
               if (window.cordova)
                 console.log(args.join(' '));
+
               historicLog.add(level, args.join(' '));
               orig.apply(null, args);
             } catch (e) {
