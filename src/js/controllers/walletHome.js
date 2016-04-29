@@ -1255,10 +1255,6 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     return actions.hasOwnProperty('create');
   };
 
-  this._doSendMax = function(amount) {
-    this.setForm(null, amount, null);
-  };
-
   this.sendMax = function(availableBalanceSat) {
     if (availableBalanceSat == 0) {
       this.error = gettext("Cannot create transaction. Insufficient funds");
@@ -1310,7 +1306,8 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
         confirmDialog.show(msg, function(confirmed) {
           if (confirmed) {
             self.sendMaxInfo = resp;
-            self._doSendMax(parseFloat((resp.amount * self.satToUnit).toFixed(self.unitDecimals)));
+            var amount = parseFloat((resp.amount * self.satToUnit).toFixed(self.unitDecimals));
+            self.setForm(null, amount, null);
           } else {
             self.resetForm();
           }
