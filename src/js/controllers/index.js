@@ -97,7 +97,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         self.loadingWallet = true;
         return;
       }
-      if (vanillaScope[k]) {
+      if (!lodash.isUndefined(vanillaScope[k])) {
         self[k] = vanillaScope[k];
         return;
       }
@@ -1350,9 +1350,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     coinbaseService.getPendingTransactions(function(err, txs) {
       self.coinbasePendingTransactions = lodash.isEmpty(txs) ? null : txs;
       lodash.forEach(txs, function(dataFromStorage, txId) {
-        if ((dataFromStorage.type == 'sell' && dataFromStorage.status == 'completed') || 
+        if ((dataFromStorage.type == 'sell' && dataFromStorage.status == 'completed') ||
             (dataFromStorage.type == 'buy' && dataFromStorage.status == 'completed') ||
-            dataFromStorage.status == 'error' || 
+            dataFromStorage.status == 'error' ||
             (dataFromStorage.type == 'send' && dataFromStorage.status == 'completed')) return;
         coinbaseService.getTransaction(accessToken, accountId, txId, function(err, tx) {
           if (err) {
@@ -1453,7 +1453,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
           if (err) $log.debug(err);
         });
       } else {
-        if (!res.data.id) { 
+        if (!res.data.id) {
           coinbaseService.savePendingTransaction(tx, {status: 'error', error: err}, function(err) {
             if (err) $log.debug(err);
           });
@@ -1492,7 +1492,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
           });
           return;
         }
-        coinbaseService.savePendingTransaction(tx, {remove: true}, function(err) { 
+        coinbaseService.savePendingTransaction(tx, {remove: true}, function(err) {
           coinbaseService.getTransaction(self.coinbaseToken, self.coinbaseAccount.id, res.data.transaction.id, function(err, updatedTx) {
             coinbaseService.savePendingTransaction(updatedTx.data, {}, function(err) {
               if (err) $log.debug(err);
@@ -1503,7 +1503,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
           });
         });
       }
-    }); 
+    });
   };
 
   self.setAddressbook = function(ab) {

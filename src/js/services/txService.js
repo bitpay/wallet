@@ -72,6 +72,7 @@ angular.module('copayApp.services').factory('txService', function($rootScope, pr
   };
 
   root.prepare = function(opts, cb) {
+    $log.info("at .prepare");
     opts = opts || {};
     var fc = opts.selectedClient || profileService.focusedClient;
     if (!fc.canSign() && !fc.isPrivKeyExternal())
@@ -79,12 +80,14 @@ angular.module('copayApp.services').factory('txService', function($rootScope, pr
 
     root.checkTouchId(opts, function(err) {
       if (err) {
+        $log.warn('CheckTouchId error:', err);
         return cb(err);
       };
 
       profileService.unlockFC(opts, function(err) {
         if (err) {
-          return cb(bwsError.msg(err));
+          $log.warn("prepare/unlockFC error:", err);
+          return cb(err);
         };
 
         return cb();
@@ -176,6 +179,7 @@ angular.module('copayApp.services').factory('txService', function($rootScope, pr
   };
 
   root.sign = function(txp, opts, cb) {
+    $log.info('at .sign');
     opts = opts || {};
     var fc = opts.selectedClient || profileService.focusedClient;
 
@@ -191,14 +195,26 @@ angular.module('copayApp.services').factory('txService', function($rootScope, pr
           return cb(msg);
       }
     } else {
-      fc.signTxProposal(txp, function(err, signedTxp) {
-        profileService.lockFC();
-        return cb(err, signedTxp);
-      });
+
+      txp.signatures = null;
+      $log.info('at .sign: (isEncrypted):', fc.isPrivKeyEncrypted());
+      $log.info('txp BEFORE:', txp);
+
+      try {
+        fc.signTxProposal(txp, function(err, signedTxp) {
+          $log.info('txp AFTER:',err, signedTxp);
+          profileService.lockFC();
+          return cb(err, signedTxp);
+        });
+      } catch (e) {
+        $log.warn('Error at signTxProposal:', e);
+        return cb(e);
+      }
     }
   };
 
   root.signAndBroadcast = function(txp, opts, cb) {
+    $log.info('at .signAndBroadcast');
     opts = opts || {};
     reportSigningStatus(opts);
 
@@ -234,12 +250,14 @@ angular.module('copayApp.services').factory('txService', function($rootScope, pr
 
   root.prepareAndSignAndBroadcast = function(txp, opts, cb) {
     opts = opts || {};
+    $log.info('at .prepareSignAndBroadcast');
+
     root.prepare(opts, function(err) {
       if (err) {
+        $log.warn('Prepare error:' +  err);
         stopReport(opts);
         return cb(err);
       };
-      reportSigningStatus(opts);
       root.signAndBroadcast(txp, opts, function(err, txp) {
         if (err) {
           stopReport(opts);
