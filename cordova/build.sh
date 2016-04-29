@@ -93,6 +93,16 @@ if [ ! -d $PROJECT ]; then
     checkOK
   fi
 
+  if [ $CURRENT_OS == "IOS" ]; then
+    cordova plugin add phonegap-plugin-push --variable SENDER_ID="XXXXXXX"
+    checkOK
+  fi
+
+  if [ $CURRENT_OS == "ANDROID" ]; then
+    cordova plugin add phonegap-plugin-push@1.2.3
+    checkOK
+  fi
+
   cordova plugin add cordova-plugin-globalization
   checkOK
 
@@ -103,9 +113,6 @@ if [ ! -d $PROJECT ]; then
   checkOK
 
   cordova plugin add cordova-plugin-statusbar
-  checkOK
-
-  cordova plugin add phonegap-plugin-push@1.2.3
   checkOK
 
   cordova plugin add https://github.com/cmgustavo/Custom-URL-scheme.git --variable URL_SCHEME=bitcoin --variable SECOND_URL_SCHEME=copay
