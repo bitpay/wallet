@@ -24,6 +24,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   ret.isMobile = isMobile.any();
   ret.isWindowsPhoneApp = isMobile.Windows() && isCordova;
   ret.countDown = null;
+  ret.sendMaxInfo = {};
   var vanillaScope = ret;
 
   var disableScannerListener = $rootScope.$on('dataScanned', function(event, data) {
@@ -909,14 +910,21 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
         'message': comment
       });
 
-      var opts = {
-        toAddress: address,
-        amount: amount,
-        outputs: outputs,
-        message: comment,
-        payProUrl: paypro ? paypro.url : null,
-        lockedCurrentFeePerKb: self.lockedCurrentFeePerKb
-      };
+      var opts = {};
+
+      if (self.sendMaxInfo) {
+        opts.sendMax = true;
+        opts.inputs = self.sendMaxInfo.inputs;
+        opts.fee = self.sendMaxInfo.fee;
+      }else {
+        opts.amount = amount;
+      }
+
+      opts.toAddress = address;
+      opts.outputs = outputs;
+      opts.message = comment;
+      opts.payProUrl = paypro ? paypro.url : null;
+      opts.lockedCurrentFeePerKb = self.lockedCurrentFeePerKb;
 
       self.setOngoingProcess(gettextCatalog.getString('Creating transaction'));
       txService.createTx(opts, function(err, txp) {
@@ -1004,6 +1012,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
   this.resetForm = function() {
     this.resetError();
+    this.sendMaxInfo = {};
     if (this.countDown) $interval.cancel(this.countDown);
     this._paypro = null;
     this.lockedCurrentFeePerKb = null;
@@ -1246,10 +1255,6 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     return actions.hasOwnProperty('create');
   };
 
-  this._doSendMax = function(amount) {
-    this.setForm(null, amount, null);
-  };
-
   this.sendMax = function(availableBalanceSat) {
     if (availableBalanceSat == 0) {
       this.error = gettext("Cannot create transaction. Insufficient funds");
@@ -1300,7 +1305,9 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
         confirmDialog.show(msg, function(confirmed) {
           if (confirmed) {
-            self._doSendMax(parseFloat((resp.amount * self.satToUnit).toFixed(self.unitDecimals)));
+            self.sendMaxInfo = resp;
+            var amount = parseFloat((resp.amount * self.satToUnit).toFixed(self.unitDecimals));
+            self.setForm(null, amount, null);
           } else {
             self.resetForm();
           }
