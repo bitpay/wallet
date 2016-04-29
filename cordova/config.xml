@@ -1,8 +1,8 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="com.bitpay.copay" 
-  version="1.11.5"
-  android-versionCode="87"
-  ios-CFBundleVersion="1.11.5">
+  version="1.11.6"
+  android-versionCode="88"
+  ios-CFBundleVersion="1.11.6">
     <name>Copay</name>
     <description>
       A secure bitcoin wallet for friends and companies.
