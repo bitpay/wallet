@@ -72,7 +72,7 @@ angular.module('copayApp.services').factory('txService', function($rootScope, pr
   };
 
   root.prepare = function(opts, cb) {
-    $log.info("Preparing to sign transaction");
+    $log.info("at .prepare");
     opts = opts || {};
     var fc = opts.selectedClient || profileService.focusedClient;
     if (!fc.canSign() && !fc.isPrivKeyExternal())
@@ -190,7 +190,7 @@ angular.module('copayApp.services').factory('txService', function($rootScope, pr
     } else {
 
       txp.signatures = null;
-      $log.info('[txService.js.191] at sign: (isEncrypted):', fc.isPrivKeyEncrypted());
+      $log.info('at .sign: (isEncrypted):', fc.isPrivKeyEncrypted());
       $log.info('txp BEFORE:', txp);
 
       fc.signTxProposal(txp, function(err, signedTxp) {

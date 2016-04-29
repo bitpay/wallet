@@ -63,7 +63,7 @@ android-prod:
 	
 
 android-debug:
-	cordova/build.sh ANDROID --dbgjs --clear
+	cordova/build.sh ANDROID --dbgjs 
 	cd cordova/project && cordova run android
 
 android-debug-fast:

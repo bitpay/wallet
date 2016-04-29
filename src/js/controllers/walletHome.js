@@ -947,7 +947,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   this.confirmTx = function(txp) {
     var self = this;
 
-    $log.info('[walletHome.js.949] confirmTx');
+    $log.info('at .confirmTx');
     txService.prepare({}, function(err) {
       $log.info('after .prepare:', err);
       if (err) {
