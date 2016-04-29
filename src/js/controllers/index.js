@@ -1419,6 +1419,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   self.refreshCoinbaseToken = function() {
     var network = self.coinbaseTestnet ? 'testnet' : 'livenet';
     storageService.getCoinbaseRefreshToken(network, function(err, refreshToken) {
+      if (!refreshToken) return;
       coinbaseService.refreshToken(refreshToken, function(err, data) {
         if (err) {
           self.coinbaseError = err;
