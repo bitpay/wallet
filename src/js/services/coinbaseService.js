@@ -20,7 +20,7 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
       + 'wallet:payment-methods:read';
 
     if (isCordova) {
-      credentials.REDIRECT_URI = 'bitcoin://coinbase';
+      credentials.REDIRECT_URI = 'copay://coinbase';
     } else {
       credentials.REDIRECT_URI = 'urn:ietf:wg:oauth:2.0:oob';
     }

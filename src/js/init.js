@@ -10,9 +10,9 @@ angular.element(document).ready(function() {
   var handleBitcoinURI = function(url) {
     if (!url) return;
     if (url.indexOf('glidera') != -1) {
-      url = '#/uri-glidera' + url.replace('bitcoin://glidera', '');
+      url = '#/uri-glidera' + url.replace('copay://glidera', '');
     } else if (url.indexOf('coinbase') != -1) {
-      url = '#/uri-coinbase' + url.replace('bitcoin://coinbase', '');
+      url = '#/uri-coinbase' + url.replace('copay://coinbase', '');
     } else {
       url = '#/uri-payment/' + url;
     }
