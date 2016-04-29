@@ -361,6 +361,14 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
     });
   };
 
+  root.logout = function(network, cb) {
+    storageService.removeCoinbaseToken(network, function() {
+      storageService.removeCoinbaseRefreshToken(network, function() {
+        return cb();
+      });
+    });
+  };
+
   return root;
 
 });

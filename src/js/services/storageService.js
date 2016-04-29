@@ -231,6 +231,10 @@ angular.module('copayApp.services')
       storage.get('coinbaseRefreshToken-' + network, cb);
     };
 
+    root.removeCoinbaseRefreshToken = function(network, cb) {
+      storage.remove('coinbaseRefreshToken-' + network, cb);
+    };
+
     root.setCoinbaseToken = function(network, token, cb) {
       storage.set('coinbaseToken-' + network, token, cb);
     };
