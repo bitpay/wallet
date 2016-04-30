@@ -439,6 +439,8 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
         self.setOngoingProcess(gettextCatalog.getString('Rejecting payment'));
         $scope.loading = true;
         $scope.error = null;
+
+        // TODO: This should be in txService
         $timeout(function() {
           fc.rejectTxProposal(txp, null, function(err, txpr) {
             self.setOngoingProcess();
@@ -982,7 +984,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
           self.setOngoingProcess();
 
           if (err) {
-            self.error = err.message ? err.message : gettext('The payment was created but could not be completed. Please try again from home screen');
+            self.error = bwsError.msg(err, gettextCatalog.getString('The payment was created but could not be completed. Please try again from home screen'));
             $scope.$emit('Local/TxProposalAction');
             $timeout(function() {
               $scope.$digest();
