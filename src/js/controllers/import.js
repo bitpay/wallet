@@ -82,6 +82,7 @@ angular.module('copayApp.controllers').controller('importController',
     };
 
     var _importExtendedPrivateKey = function(xPrivKey, opts) {
+console.log('[import.js.84:xPrivKey:]',xPrivKey); //TODO
       self.loading = true;
 
       $timeout(function() {

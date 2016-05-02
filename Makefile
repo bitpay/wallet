@@ -56,7 +56,7 @@ ios-debug:
 	open cordova/project/platforms/ios/Copay.xcodeproj
 
 android-prod:
-	cordova/build.sh ANDROID  --clear
+	cordova/build.sh ANDROID
 	rm -f cordova/project/platforms/android/build/outputs/apk/android-release-signed-aligned.apk 
 	cd cordova/project && cordova build android --release
 	jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore ../copay.keystore -signedjar cordova/project/platforms/android/build/outputs/apk/android-release-signed.apk  cordova/project/platforms/android/build/outputs/apk/android-release-unsigned.apk copay_play 
@@ -68,5 +68,5 @@ android-debug:
 	cd cordova/project && cordova run android
 
 android-debug-fast:
-	cordova/build.sh ANDROID --dbgjs
+	cordova/build.sh ANDROID --dbgjs 
 	cd cordova/project && cordova run android	 --device

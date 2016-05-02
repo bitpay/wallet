@@ -75,6 +75,7 @@ angular.module('copayApp.services').factory('txService', function($rootScope, pr
     $log.info("at .prepare");
     opts = opts || {};
     var fc = opts.selectedClient || profileService.focusedClient;
+    $log.info('FC Client Dump:' + fc);
     if (!fc.canSign() && !fc.isPrivKeyExternal())
       return cb('Cannot sign'); // should never happen, no need to translate
 
