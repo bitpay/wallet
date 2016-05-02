@@ -760,9 +760,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         var satToBtc = 1 / 100000000;
         self.csvContent = [];
         self.csvFilename = 'Copay-' + (self.alias || self.walletName) + '.csv';
-        self.csvHeader = ['Date', 'Destination', 'Note', 'Amount', 'Currency', 'Txid', 'Creator', 'Copayers'];
+        self.csvHeader = ['Date', 'Destination', 'Note', 'Amount', 'Currency', 'Txid', 'Creator', 'Copayers', 'Address'];
 
-        var _amount, _note, _copayers, _creator;
+        var _amount, _note, _copayers, _creator, _address;
         data.forEach(function(it, index) {
           var amount = it.amount;
 
@@ -771,6 +771,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
           _copayers = '';
           _creator = '';
+          _address = '';
 
           if (it.actions && it.actions.length > 1) {
             for (var i = 0; i < it.actions.length; i++) {
@@ -786,6 +787,12 @@ angular.module('copayApp.controllers').controller('indexController', function($r
           if (it.action == 'moved')
             _note += ' Moved:' + (it.amount * satToBtc).toFixed(8)
 
+          if (it.action == 'sent')
+            _address = it.addressTo;
+
+          if (it.action == 'received')
+            _address = lodash.map(it.outputs,'address').join(',');
+
           self.csvContent.push({
             'Date': formatDate(it.time * 1000),
             'Destination': formatString(it.addressTo),
@@ -794,7 +801,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
             'Currency': 'BTC',
             'Txid': it.txid,
             'Creator': _creator,
-            'Copayers': _copayers
+            'Copayers': _copayers,
+            'Address': _address,
           });
 
           if (it.fees && (it.action == 'moved' || it.action == 'sent')) {
@@ -807,7 +815,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
               'Currency': 'BTC',
               'Txid': '',
               'Creator': '',
-              'Copayers': ''
+              'Copayers': '',
+              'Address': '',
             });
           }
         });
