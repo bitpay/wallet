@@ -694,18 +694,6 @@ angular.module('copayApp.services')
       });
     };
 
-    root.isBackupNeeded = function(walletId, cb) {
-      var c = root.getClient(walletId);
-      if (c.isPrivKeyExternal()) return cb(false);
-      if (!c.credentials.mnemonic) return cb(false);
-      if (c.credentials.network == 'testnet') return cb(false);
-
-      storageService.getBackupFlag(walletId, function(err, val) {
-        if (err || val) return cb(false);
-        return cb(true);
-      });
-    };
-
     root.getWallets = function(network) {
       if (!root.profile) return [];
 

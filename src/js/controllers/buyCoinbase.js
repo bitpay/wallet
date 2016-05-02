@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('buyCoinbaseController', 
-  function($scope, $modal, $log, $timeout, lodash, profileService, coinbaseService, animationService, txService, bwsError, addressService) {
+  function($scope, $modal, $log, $timeout, lodash, profileService, coinbaseService, animationService, txService, bwsError, addressService, walletService) {
     
     window.ignoreMobilePause = true;
     var self = this;
@@ -71,21 +71,16 @@ angular.module('copayApp.controllers').controller('buyCoinbaseController',
         };
 
         $scope.selectWallet = function(walletId, walletName) {
-          profileService.isBackupNeeded(walletId, function(needsBackup) {
-            if (!profileService.getClient(walletId).isComplete()) {
-              self.error = {errors: [{ message: 'The Wallet is imcomplete. It could not be selected' }]};
+          walletService.isReady(walletId, function(err) {
+            if (err) {
+              self.error = {errors: [{ message: err }]};
               $modalInstance.dismiss('cancel');
-              return;
+            } else {
+              $modalInstance.close({
+                'walletId': walletId,
+                'walletName': walletName,
+              });
             }
-            if (needsBackup) { 
-              self.error = {errors: [{ message: 'The wallet needs backup. It could not be selected' }]};
-              $modalInstance.dismiss('cancel');
-              return;
-            } 
-            $modalInstance.close({
-              'walletId': walletId,
-              'walletName': walletName,
-            });
           });
         };
       };

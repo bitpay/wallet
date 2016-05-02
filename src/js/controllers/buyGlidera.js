@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('buyGlideraController', 
-  function($scope, $timeout, $modal, profileService, addressService, glideraService, bwsError, lodash, isChromeApp, animationService) {
+  function($scope, $timeout, $modal, profileService, addressService, glideraService, bwsError, lodash, isChromeApp, animationService, walletService) {
     
     var self = this;
     this.show2faCodeInput = null;
@@ -50,21 +50,16 @@ angular.module('copayApp.controllers').controller('buyGlideraController',
         };
 
         $scope.selectWallet = function(walletId, walletName) {
-          profileService.isBackupNeeded(walletId, function(needsBackup) {
-            if (!profileService.getClient(walletId).isComplete()) {
-              self.error = bwsError.msg({'code': 'WALLET_NOT_COMPLETE'}, 'Could not choose the wallet');
+          walletService.isReady(walletId, function(err) {
+            if (err) {
+              self.error = err;
               $modalInstance.dismiss('cancel');
-              return;
+            } else {
+              $modalInstance.close({
+                'walletId': walletId,
+                'walletName': walletName,
+              });
             }
-            if (needsBackup) { 
-              self.error = bwsError.msg({'code': 'WALLET_NEEDS_BACKUP'}, 'Could not choose the wallet');
-              $modalInstance.dismiss('cancel');
-              return;
-            } 
-            $modalInstance.close({
-              'walletId': walletId,
-              'walletName': walletName,
-            });
           });
         };
       };

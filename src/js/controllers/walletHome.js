@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('walletHomeController', function($scope, $rootScope, $interval, $timeout, $filter, $modal, $log, notification, txStatus, isCordova, isMobile, profileService, lodash, configService, rateService, storageService, bitcore, isChromeApp, gettext, gettextCatalog, nodeWebkit, addressService, ledger, bwsError, confirmDialog, txFormatService, animationService, addressbookService, go, feeService, txService) {
+angular.module('copayApp.controllers').controller('walletHomeController', function($scope, $rootScope, $interval, $timeout, $filter, $modal, $log, notification, txStatus, isCordova, isMobile, profileService, lodash, configService, rateService, storageService, bitcore, isChromeApp, gettext, gettextCatalog, nodeWebkit, addressService, ledger, bwsError, confirmDialog, txFormatService, animationService, addressbookService, go, feeService, txService, walletService) {
 
   var self = this;
   window.ignoreMobilePause = false;
@@ -251,37 +251,29 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       };
 
       $scope.selectWallet = function(walletId, walletName) {
-        var fc = profileService.getClient(walletId);
-        $scope.errorByWallet = {};
-        profileService.isBackupNeeded(walletId, function(needsBackup) {
-          
-          if (!fc.isComplete()) {
-            $scope.errorByWallet[walletId] = gettext('Wallet is not complete');
-            return;
-          }
-          
-          if (needsBackup) { 
-            $scope.errorByWallet[walletId] = gettext('Needs backup');
-            return;
+        $scope.errorSelectedWallet = {};
+
+        walletService.isReady(walletId, function(err) {
+          if (err) $scope.errorSelectedWallet[walletId] = err;
+          else {
+            $scope.gettingAddress = true;
+            $scope.selectedWalletName = walletName;
+            $timeout(function() {
+              $scope.$apply();
+            });
+
+            addressService.getAddress(walletId, false, function(err, addr) {
+              $scope.gettingAddress = false;
+
+              if (err) {
+                self.error = err;
+                $modalInstance.dismiss('cancel');
+                return;
+              }
+
+              $modalInstance.close(addr);
+            });
           } 
-          
-          $scope.gettingAddress = true;
-          $scope.selectedWalletName = walletName;
-          $timeout(function() {
-            $scope.$apply();
-          });
-
-          addressService.getAddress(walletId, false, function(err, addr) {
-            $scope.gettingAddress = false;
-
-            if (err) {
-              self.error = err;
-              $modalInstance.dismiss('cancel');
-              return;
-            }
-
-            $modalInstance.close(addr);
-          });
         });
       };
     };
