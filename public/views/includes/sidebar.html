@@ -28,7 +28,7 @@
         <div translate>Create, join or import</div>
       </a>
     </li>
-    <li ng-show="index.isWindowsPhoneApp && index.isComplete && (index.glideraEnabled || index.coinbaseEnabled)">
+    <li ng-show="!index.isWindowsPhoneApp && index.isComplete && (index.glideraEnabled || index.coinbaseEnabled)">
       <a ng-click="sidebar.closeMenu(); $root.go('buyandsell')" class="oh">
         <i class="icon-arrow-right3 size-18 right m10t vm"></i>
         <i class="icon-bank size-24 icon vm"></i>
