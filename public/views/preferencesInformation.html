@@ -8,6 +8,15 @@
     <h4 class="title m0" translate>Wallet Information</h4>
 
     <ul class="no-bullet m0 size-14">
+      <li class="line-b p20 oh " ng-if="androidTest">
+        <span style="color:red" translate>BETA: Android Key Derivation Test:</span>
+        <span class="right text-gray">
+          {{androidTest}}
+        </span>
+      </li>
+
+
+
       <li class="line-b p20 oh">
         <span translate>Wallet Name (at creation)</span>
         <span class="right text-gray">

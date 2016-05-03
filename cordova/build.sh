@@ -58,12 +58,12 @@ if [ ! -d $PROJECT ]; then
   echo "${OpenColor}${Green}* Creating project... ${CloseColor}"
   cordova create project com.bitpay.copay Copay
   checkOK
-
   cd $PROJECT
-
   if [ $CURRENT_OS == "ANDROID" ]; then
     echo "${OpenColor}${Green}* Adding Android platform... ${CloseColor}"
-    cordova platforms add android
+echo "SSSSSSSSSSSSSSSSSSS";
+    cordova platforms add android@5.1.1
+echo "SSSSSSSSSSSSSSSSSSS";
     checkOK
   fi
 

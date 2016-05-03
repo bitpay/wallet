@@ -75,6 +75,7 @@ angular.module('copayApp.services').factory('txService', function($rootScope, pr
     $log.info("at .prepare");
     opts = opts || {};
     var fc = opts.selectedClient || profileService.focusedClient;
+    $log.info('FC Client Dump:' + fc);
     if (!fc.canSign() && !fc.isPrivKeyExternal())
       return cb('Cannot sign'); // should never happen, no need to translate
 
@@ -198,18 +199,13 @@ angular.module('copayApp.services').factory('txService', function($rootScope, pr
 
       txp.signatures = null;
       $log.info('at .sign: (isEncrypted):', fc.isPrivKeyEncrypted());
-      $log.info('txp BEFORE:', txp);
+      $log.info('txp BEFORE .signTxProposal:', txp);
 
-      try {
-        fc.signTxProposal(txp, function(err, signedTxp) {
-          $log.info('txp AFTER:',err, signedTxp);
-          profileService.lockFC();
-          return cb(err, signedTxp);
-        });
-      } catch (e) {
-        $log.warn('Error at signTxProposal:', e);
-        return cb(e);
-      }
+      fc.signTxProposal(txp, function(err, signedTxp) {
+        $log.info('txp AFTER .signTxProposal:',err, signedTxp);
+        profileService.lockFC();
+        return cb(err, signedTxp);
+      });
     }
   };
 
@@ -222,7 +218,7 @@ angular.module('copayApp.services').factory('txService', function($rootScope, pr
     root.sign(txp, opts, function(err, txp) {
       if (err) {
         stopReport(opts);
-        return cb(bwsError.msg(err), gettextCatalog.getString('Could not accept payment'));
+        return bwsError.cb(err, gettextCatalog.getString('Could not accept payment'), cb);
       };
 
       if (txp.status != 'accepted') {
@@ -235,7 +231,7 @@ angular.module('copayApp.services').factory('txService', function($rootScope, pr
         stopReport(opts);
 
         if (err) {
-          return cb(bwsError.msg(err, gettextCatalog.getString('Could not broadcast payment')));
+          return bwsError.cb(err, gettextCatalog.getString('Could not broadcast payment'), cb);
         };
 
         $log.debug('Transaction signed and broadcasted')

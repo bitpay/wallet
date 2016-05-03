@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('preferencesInformation',
-  function($scope, $log, $timeout, isMobile, gettextCatalog, lodash, profileService, storageService, go) {
+  function($scope, $log, $timeout, isMobile, gettextCatalog, lodash, profileService, storageService, go, bitcore) {
     var base = 'xpub';
     var fc = profileService.focusedClient;
     var c = fc.credentials;
@@ -19,6 +19,20 @@ angular.module('copayApp.controllers').controller('preferencesInformation',
       $scope.N = c.n;
       $scope.pubKeys = lodash.pluck(c.publicKeyRing, 'xPubKey');
       $scope.addrs = null;
+
+
+      if (isMobile.Android()) {
+        $scope.androidTest = 'testing';
+
+        var xp = bitcore.HDPrivateKey("tprv8ZgxMBicQKsPebv8CVghFoaaZ6ejmcSmSaKo99sUnswCCPeccGbLzfoksA2wd5XdHe8UHLwM2emuBWD4cBvQ7BPTJhFu75u3HcSjRVFmYM9");
+
+        var pub = xp.derive("m/44'/1'/0'").hdPublicKey.toString();
+        if (pub == 'tpubDCe5stHkJZhfNMpQLgqRVYjSfADoosJ7FvxukgyXf1YzrCnru2z61giPXbgJGGxnHt922CY22DDDYD6d28jnd9okctoXNW837TmbNaAEM99') {
+          $scope.androidTest = 'OK, TEST PASSED';
+        } else {
+          $scope.androidTest = 'FAILED!! Please report to matias@bitpay.com. Result:' + pub;
+        }
+      }
 
       fc.getMainAddresses({
         doNotVerify: true

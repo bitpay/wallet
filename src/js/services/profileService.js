@@ -76,6 +76,9 @@ angular.module('copayApp.services')
       var client = bwcService.getClient(JSON.stringify(credentials));
       root.walletClients[credentials.walletId] = client;
       client.removeAllListeners();
+      client.on('report', function(n) {
+         $log.info('BWC Report:'+ n);
+      });
 
       client.on('notification', function(n) {
         $log.debug('BWC Notification:', n);
@@ -118,6 +121,7 @@ angular.module('copayApp.services')
     root.setWalletClients = function() {
       var credentials = root.profile.credentials;
       lodash.each(credentials, function(credential) {
+        //$log.info("Credentials:", credentials);
         root.setWalletClient(credential);
       });
       $rootScope.$emit('Local/WalletListUpdated');
@@ -673,18 +677,18 @@ angular.module('copayApp.services')
 
       $log.debug('Wallet is encrypted');
       $rootScope.$emit('Local/NeedsPassword', false, function(err2, password) {
-        if (err2 || !password) {
-          return cb({
-            message: (err2 || gettext('Password needed'))
-          });
-        }
+
+        if (err2) 
+          return cb(err2);
+
+        if (!password) 
+          return cb(gettext('Password needed'));
+
         try {
           fc.unlock(password);
         } catch (e) {
-          $log.debug(e);
-          return cb({
-            message: gettext('Wrong password')
-          });
+          $log.warn('Error decrypting wallet:', e);
+          return cb(gettext('Wrong password'));
         }
         return cb();
       });
