@@ -29,6 +29,8 @@
     <preference name="windows-target-version" value="8.1"/>
     <preference name="Orientation" value="portrait" />
 
+
+
     <platform name="ios">
       <!-- iOS 8.0+ -->
       <!-- iPad Pro  -->

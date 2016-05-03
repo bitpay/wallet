@@ -1,8 +1,8 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="com.bitpay.copay" 
-  version="1.12.1"
-  android-versionCode="90"
-  ios-CFBundleVersion="1.12.1">
+  version="1.12.11"
+  android-versionCode="101"
+  ios-CFBundleVersion="1.12.11">
     <name>Copay</name>
     <description>
       A secure bitcoin wallet for friends and companies.
@@ -28,6 +28,8 @@
     <preference name="BackupWebStorage" value="none"/>
     <preference name="windows-target-version" value="8.1"/>
     <preference name="Orientation" value="portrait" />
+
+
 
     <platform name="ios">
       <!-- iOS 8.0+ -->
