@@ -46,7 +46,7 @@ angular.module('copayApp.controllers').controller('backupController',
     function initWords() {
       var words = fc.getMnemonic();
       self.xPrivKey = fc.credentials.xPrivKey;
-      profileService.lockFC();
+      profileService.lockFC(fc);
       self.mnemonicWords = words.split(/[\u3000\s]+/);
       self.shuffledMnemonicWords = lodash.sortBy(self.mnemonicWords);;
       self.mnemonicHasPassphrase = fc.mnemonicHasPassphrase();
@@ -74,7 +74,7 @@ angular.module('copayApp.controllers').controller('backupController',
             $scope.$apply();
           }, 1);
 
-          profileService.unlockFC({}, function(err) {
+          profileService.unlockFC(fc, function(err) {
             if (err) {
               self.error = bwsError.msg(err, gettext('Could not decrypt'));
               $log.warn('Error decrypting credentials:', self.error); //TODO

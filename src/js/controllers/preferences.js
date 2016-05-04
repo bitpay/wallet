@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('preferencesController',
-  function($scope, $rootScope, $timeout, $log, configService, profileService, txService) {
+  function($scope, $rootScope, $timeout, $log, configService, profileService, fingerprintService) {
 
     var fc = profileService.focusedClient;
     $scope.deleted = false;
@@ -44,7 +44,7 @@ angular.module('copayApp.controllers').controller('preferencesController',
         });
       } else {
         if (!val && fc.hasPrivKeyEncrypted()) {
-          profileService.unlockFC({}, function(err) {
+          profileService.unlockFC(fc, function(err) {
             if (err) {
               $scope.encrypt = true;
               return;
@@ -75,7 +75,7 @@ angular.module('copayApp.controllers').controller('preferencesController',
       };
       opts.touchIdFor[walletId] = newVal;
 
-      txService.setTouchId(function(err) {
+      fingerprintService.set(function(err) {
         if (err) {
           $log.debug(err);
           $timeout(function() {

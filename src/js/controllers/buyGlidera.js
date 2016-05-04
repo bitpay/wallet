@@ -50,7 +50,8 @@ angular.module('copayApp.controllers').controller('buyGlideraController',
         };
 
         $scope.selectWallet = function(walletId, walletName) {
-          walletService.isReady(walletId, function(err) {
+          var client = profileService.getClient(walletId);
+          walletService.isReady(client, function(err) {
             if (err) {
               self.error = err;
               $modalInstance.dismiss('cancel');

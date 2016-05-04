@@ -164,7 +164,7 @@ angular.module('copayApp.controllers').controller('sellGlideraController',
                   excludeUnconfirmedUtxos: self.currentSpendUnconfirmed ? false : true
                 }, function(err, txp) {
                   if (err) {
-                    profileService.lockFC();
+                    profileService.lockFC(fc);
                     $log.error(err);
                     $timeout(function() {
                       self.loading = null;

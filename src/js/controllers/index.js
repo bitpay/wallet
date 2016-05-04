@@ -161,7 +161,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         }
       }
 
-      walletService.isBackupNeeded(self.walletId, function(needsBackup) {
+      walletService.isBackupNeeded(fc, function(needsBackup) {
         self.needsBackup = needsBackup;
         self.openWallet(function() {
           if (!self.isComplete) {

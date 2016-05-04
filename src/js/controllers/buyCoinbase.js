@@ -71,7 +71,8 @@ angular.module('copayApp.controllers').controller('buyCoinbaseController',
         };
 
         $scope.selectWallet = function(walletId, walletName) {
-          walletService.isReady(walletId, function(err) {
+          var client = profileService.getClient(walletId);
+          walletService.isReady(client, function(err) {
             if (err) {
               self.error = {errors: [{ message: err }]};
               $modalInstance.dismiss('cancel');

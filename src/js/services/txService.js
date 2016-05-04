@@ -85,7 +85,7 @@ angular.module('copayApp.services').factory('txService', function($rootScope, pr
         return cb(err);
       };
 
-      profileService.unlockFC(opts, function(err) {
+      profileService.unlockFC(fc, function(err) {
         if (err) {
           $log.warn("prepare/unlockFC error:", err);
           return cb(err);
@@ -201,11 +201,16 @@ angular.module('copayApp.services').factory('txService', function($rootScope, pr
       $log.info('at .sign: (isEncrypted):', fc.isPrivKeyEncrypted());
       $log.info('txp BEFORE .signTxProposal:', txp);
 
-      fc.signTxProposal(txp, function(err, signedTxp) {
-        $log.info('txp AFTER .signTxProposal:',err, signedTxp);
-        profileService.lockFC();
-        return cb(err, signedTxp);
-      });
+      try {
+        fc.signTxProposal(txp, function(err, signedTxp) {
+          $log.info('txp AFTER:',err, signedTxp);
+          profileService.lockFC(fc);
+          return cb(err, signedTxp);
+        });
+      } catch (e) {
+        $log.warn('Error at signTxProposal:', e);
+        return cb(e);
+      }
     }
   };
 

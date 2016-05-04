@@ -130,6 +130,15 @@ angular.module('copayApp.services')
           case 'WALLET_NEEDS_BACKUP':
             body = gettextCatalog.getString('Wallet needs backup');
             break;
+          case 'MISSING_PARAMETER':
+            body = gettextCatalog.getString('Missing parameter');
+            break;
+          case 'NO_PASSWORD_GIVEN':
+            body = gettextCatalog.getString('No password given');
+            break;
+          case 'PASSWORD_INCORRECT':
+            body = gettextCatalog.getString('Wrong password');
+            break;
           case 'ERROR':
             body = (err.message || err.error);
             break;
@@ -150,7 +159,7 @@ angular.module('copayApp.services')
     };
 
     root.cb = function(err, prefix, cb) {
-      return cb(root.msg(err, prefix))
+      return cb(root.msg(err, prefix));
     };
 
     return root;
