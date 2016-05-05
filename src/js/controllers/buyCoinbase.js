@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('buyCoinbaseController', 
-  function($scope, $modal, $log, $timeout, lodash, profileService, coinbaseService, animationService, txService, bwsError, addressService, walletService) {
+  function($scope, $modal, $log, $timeout, lodash, profileService, coinbaseService, animationService, bwsError, addressService, walletService) {
     
     window.ignoreMobilePause = true;
     var self = this;

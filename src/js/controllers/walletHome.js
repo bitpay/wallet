@@ -994,14 +994,14 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
         }
 
         self.setOngoingProcess(gettextCatalog.getString('Sending transaction'));
-        walletService.publishTx(txp, client, function(err, txpPublished) {
+        walletService.publishTx(txp, client, function(err, publishedTxp) {
           if (err) {
             self.setOngoingProcess();
             return self.setSendError(err);
           }
 
           self.setOngoingProcess(gettextCatalog.getString('Signing transaction'));
-          walletService.signTx(txpPublished, client, function(err, signedTxp) {
+          walletService.signTx(publishedTxp, client, function(err, signedTxp) {
             self.setOngoingProcess();
             profileService.lockFC(client);
             if (err) {

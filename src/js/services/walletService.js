@@ -149,5 +149,15 @@ angular.module('copayApp.services').factory('walletService', function($log, loda
     });
   };
 
+  root.removeTx = function(txp, client, cb) {
+    if (lodash.isEmpty(txp) || lodash.isEmpty(client)) 
+      return cb('MISSING_PARAMETER');
+    
+    client.removeTxProposal(txp, function(err) {
+      $log.debug('Transaction removed');
+      return cb(err);
+    });
+  };
+
   return root;
 });
