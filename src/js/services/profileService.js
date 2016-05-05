@@ -75,11 +75,6 @@ angular.module('copayApp.services')
 
       var client = bwcService.getClient(JSON.stringify(credentials));
       root.walletClients[credentials.walletId] = client;
-      if(client.incorrectDerivation) {
-        storageService.clearLastAddress(credentials.walletId, function(err) {
-          if (err) $log.warn(err);
-        });
-      }
       client.removeAllListeners();
       client.on('report', function(n) {
          $log.info('BWC Report:'+ n);
@@ -683,10 +678,10 @@ angular.module('copayApp.services')
       $log.debug('Wallet is encrypted');
       $rootScope.$emit('Local/NeedsPassword', false, function(err2, password) {
 
-        if (err2)
+        if (err2) 
           return cb(err2);
 
-        if (!password)
+        if (!password) 
           return cb(gettext('Password needed'));
 
         try {
