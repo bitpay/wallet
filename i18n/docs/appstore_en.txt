@@ -18,6 +18,6 @@ Payment protocol (BIP70-BIP73) support: easily-identifiable payment requests and
 Support for 150+ currency pricing options and unit denomination in BTC or bits
 Email notifications for payments and transfers
 Customizable wallet naming and background colors
-6 supported languages (EN, JP, FR, ES, DE, RU)
+9 supported languages (EN, CS, FR, DE, IT, ES, JA, PL, RU)
 
 Copay is free and open source software run on non-proprietary servers, so there's no need to rely on any company for continuous support. Anyone can review or contribute to Copay's source code on GitHub (https://github.com/bitpay/copay). 
