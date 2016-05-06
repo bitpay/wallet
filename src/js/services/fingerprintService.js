@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.services').factory('fingerprintService', function(gettextCatalog) {
+angular.module('copayApp.services').factory('fingerprintService', function(gettextCatalog, configService) {
   var root = {};
 
   var requestTouchId = function(cb) {
@@ -22,9 +22,14 @@ angular.module('copayApp.services').factory('fingerprintService', function(gette
     };
   };
 
-  root.check = function(client, config, cb) {
+  root.isAvailable = function(client) {
+    var config = configService.getSync();
     config.touchIdFor = config.touchIdFor || {};
-    if (window.touchidAvailable && config.touchIdFor[client.credentials.walletId]) {
+    return (window.touchidAvailable && config.touchIdFor[client.credentials.walletId]);
+  };
+
+  root.check = function(client, cb) {
+    if (root.isAvailable()) {
       requestTouchId(cb);
     } else {
       return cb();

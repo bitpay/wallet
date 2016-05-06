@@ -216,7 +216,7 @@ angular.module('copayApp.controllers').controller('sellCoinbaseController',
             feeLevel: walletSettings.feeLevel || 'normal'
           };
 
-          walletService.createTx(txp, fc, function(err, createdTxp) {
+          walletService.createTx(fc, txp, function(err, createdTxp) {
             if (err) {
               $log.debug(err);
               self.loading = null;
@@ -270,9 +270,8 @@ angular.module('copayApp.controllers').controller('sellCoinbaseController',
     };
 
     this.confirmTx = function(txp, cb) {
-      var config = configService.getSync();
 
-      fingerprintService.check(fc, config, function(err) {
+      fingerprintService.check(fc, function(err) {
         if (err) {
           $log.debug(err);
           return cb(err);
@@ -285,29 +284,29 @@ angular.module('copayApp.controllers').controller('sellCoinbaseController',
           }
 
           self.loading = 'Sending bitcoin to Coinbase...';
-          walletService.publishTx(txp, fc, function(err, publishedTxp) {
+          walletService.publishTx(fc, txp, function(err, publishedTxp) {
             if (err) {
               self.loading = null;
               $log.debug(err);
               return cb({errors: [{ message: 'Transaction could not be published: ' + err.message }]});
             }
 
-            walletService.signTx(publishedTxp, fc, function(err, signedTxp) {
+            walletService.signTx(fc, publishedTxp, function(err, signedTxp) {
               profileService.lockFC(fc);
               if (err) {
                 self.loading = null;
                 $log.debug(err);
-                walletService.removeTx(signedTxp, fc, function(err) {
+                walletService.removeTx(fc, signedTxp, function(err) {
                   if (err) $log.debug(err);
                 });
                 return cb({errors: [{ message: 'The payment was created but could not be completed: ' + err.message }]});
               }
 
-              walletService.broadcastTx(signedTxp, fc, function(err, broadcastedTxp) {
+              walletService.broadcastTx(fc, signedTxp, function(err, broadcastedTxp) {
                 if (err) {
                   self.loading = null;
                   $log.debug(err);
-                  walletService.removeTx(broadcastedTxp, fc, function(err) {
+                  walletService.removeTx(fc, broadcastedTxp, function(err) {
                     if (err) $log.debug(err);
                   });
                   return cb({errors: [{ message: 'The payment was created but could not be broadcasted: ' + err.message }]});

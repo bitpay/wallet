@@ -3,7 +3,7 @@
 angular.module('copayApp.services').factory('walletService', function($log, lodash, trezor, ledger, storageService) {
   var root = {};
 
-  var _signWithLedger = function(txp, client, cb) {
+  var _signWithLedger = function(client, txp, cb) {
     $log.info('Requesting Ledger Chrome app to sign the transaction');
 
     ledger.signTx(txp, client.credentials.account, function(result) {
@@ -18,7 +18,7 @@ angular.module('copayApp.services').factory('walletService', function($log, loda
     });
   };
 
-  var _signWithTrezor = function(txp, client, cb) {
+  var _signWithTrezor = function(client, txp, cb) {
     $log.info('Requesting Trezor  to sign the transaction');
 
     var xPubKeys = lodash.pluck(client.credentials.publicKeyRing, 'xPubKey');
@@ -53,7 +53,7 @@ angular.module('copayApp.services').factory('walletService', function($log, loda
     });
   };
 
-  root.createTx = function(txp, client, cb) {
+  root.createTx = function(client, txp, cb) {
     if (lodash.isEmpty(txp) || lodash.isEmpty(client)) 
       return cb('MISSING_PARAMETER');
 
@@ -89,7 +89,7 @@ angular.module('copayApp.services').factory('walletService', function($log, loda
     }
   };
 
-  root.publishTx = function(txp, client, cb) {
+  root.publishTx = function(client, txp, cb) {
     if (lodash.isEmpty(txp) || lodash.isEmpty(client)) 
       return cb('MISSING_PARAMETER');
 
@@ -102,16 +102,16 @@ angular.module('copayApp.services').factory('walletService', function($log, loda
     });
   };
 
-  root.signTx = function(txp, client, cb) {
+  root.signTx = function(client, txp, cb) {
     if (lodash.isEmpty(txp) || lodash.isEmpty(client)) 
       return cb('MISSING_PARAMETER');
     
     if (client.isPrivKeyExternal()) {
       switch (client.getPrivKeyExternalSourceName()) {
         case 'ledger':
-          return _signWithLedger(txp, opts, cb);
+          return _signWithLedger(client, txp, cb);
         case 'trezor':
-          return _signWithTrezor(txp, opts, cb);
+          return _signWithTrezor(client, txp, cb);
         default:
           var msg = 'Unsupported External Key:' + client.getPrivKeyExternalSourceName();
           $log.error(msg);
@@ -131,7 +131,7 @@ angular.module('copayApp.services').factory('walletService', function($log, loda
     }
   };
 
-  root.broadcastTx = function(txp, client, cb) {
+  root.broadcastTx = function(client, txp, cb) {
     if (lodash.isEmpty(txp) || lodash.isEmpty(client)) 
       return cb('MISSING_PARAMETER');
       
@@ -149,7 +149,7 @@ angular.module('copayApp.services').factory('walletService', function($log, loda
     });
   };
 
-  root.removeTx = function(txp, client, cb) {
+  root.removeTx = function(client, txp, cb) {
     if (lodash.isEmpty(txp) || lodash.isEmpty(client)) 
       return cb('MISSING_PARAMETER');
     

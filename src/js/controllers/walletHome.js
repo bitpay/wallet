@@ -419,7 +419,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
         $scope.error = null;
         $scope.loading = true;
         
-        fingerprintService.check(client, config, function(err) {
+        fingerprintService.check(client, function(err) {
           if (err) {
             $scope.loading = false;
             $scope.error = err;
@@ -433,7 +433,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
               return;
             }
 
-            walletService.signTx(txp, client, function(err, signedTxp) {
+            walletService.signTx(client, txp, function(err, signedTxp) {
               profileService.lockFC(client);
               if (err) {
                 $scope.loading = false;
@@ -442,7 +442,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
               }
 
               if (signedTxp.status == 'accepted') {
-                walletService.broadcastTx(signedTxp, client, function(err, broadcastedTxp) {
+                walletService.broadcastTx(client, signedTxp, function(err, broadcastedTxp) {
                   $scope.loading = false;
                   $scope.$emit('UpdateTx');
                   $modalInstance.close(broadcastedTxp);
@@ -956,7 +956,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       txp.feeLevel = walletSettings.feeLevel || 'normal';
 
       self.setOngoingProcess(gettextCatalog.getString('Creating transaction'));
-      walletService.createTx(txp, client, function(err, createdTxp) {
+      walletService.createTx(client, txp, function(err, createdTxp) {
         self.setOngoingProcess();
         if (err) {
           return self.setSendError(err);
@@ -983,7 +983,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     var client = profileService.focusedClient;
     var self = this;
 
-    fingerprintService.check(client, config, function(err) {
+    fingerprintService.check(client, function(err) {
       if (err) {
         return self.setSendError(err);
       }
@@ -994,14 +994,14 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
         }
 
         self.setOngoingProcess(gettextCatalog.getString('Sending transaction'));
-        walletService.publishTx(txp, client, function(err, publishedTxp) {
+        walletService.publishTx(client, txp, function(err, publishedTxp) {
           if (err) {
             self.setOngoingProcess();
             return self.setSendError(err);
           }
 
           self.setOngoingProcess(gettextCatalog.getString('Signing transaction'));
-          walletService.signTx(publishedTxp, client, function(err, signedTxp) {
+          walletService.signTx(client, publishedTxp, function(err, signedTxp) {
             self.setOngoingProcess();
             profileService.lockFC(client);
             if (err) {
@@ -1014,7 +1014,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
             
             if (signedTxp.status == 'accepted') {
               self.setOngoingProcess(gettextCatalog.getString('Broadcasting transaction'));
-              walletService.broadcastTx(signedTxp, client, function(err, broadcastedTxp) {
+              walletService.broadcastTx(client, signedTxp, function(err, broadcastedTxp) {
                 self.setOngoingProcess();
                 if (err) {
                   return self.setSendError(err);

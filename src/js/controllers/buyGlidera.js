@@ -55,12 +55,12 @@ angular.module('copayApp.controllers').controller('buyGlideraController',
             if (err) {
               self.error = err;
               $modalInstance.dismiss('cancel');
-            } else {
-              $modalInstance.close({
-                'walletId': walletId,
-                'walletName': walletName,
-              });
+              return;
             }
+            $modalInstance.close({
+              'walletId': walletId,
+              'walletName': walletName,
+            });
           });
         };
       };
@@ -97,26 +97,24 @@ angular.module('copayApp.controllers').controller('buyGlideraController',
         self.gettingBuyPrice = false;
         if (err) {
           self.error = 'Could not get exchange information. Please, try again.';
+          return;
         }
-        else {
-          self.buyPrice = buyPrice;
-        }
+        self.buyPrice = buyPrice;
       });     
     };
 
     this.get2faCode = function(token) {
       var self = this;
-      this.loading = 'Sending 2FA code...';
+      self.error = null;
+      self.loading = 'Sending 2FA code...';
       $timeout(function() {
         glideraService.get2faCode(token, function(err, sent) {
           self.loading = null;
           if (err) {
             self.error = 'Could not send confirmation code to your phone';
+            return;
           }
-          else {
-            self.error = null;
-            self.show2faCodeInput = sent;
-          }
+          self.show2faCodeInput = sent;
         });
       }, 100);
     };
@@ -142,11 +140,10 @@ angular.module('copayApp.controllers').controller('buyGlideraController',
             self.loading = null;
             if (err) {
               self.error = err;
+              return;
             }
-            else {
-              self.success = data;
-              $scope.$emit('Local/GlideraTx');
-            }
+            self.success = data;
+            $scope.$emit('Local/GlideraTx');
           });
         });
       }, 100);

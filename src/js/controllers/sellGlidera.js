@@ -91,20 +91,19 @@ angular.module('copayApp.controllers').controller('sellGlideraController',
 
     this.getSellPrice = function(token, price) {
       var self = this;
-      this.error = null;
+      self.error = null;
       if (!price || (price && !price.qty && !price.fiat)) {
-        this.sellPrice = null;
+        self.sellPrice = null;
         return;
       }
-      this.gettingSellPrice = true;
+      self.gettingSellPrice = true;
       glideraService.sellPrice(token, price, function(err, sellPrice) {
         self.gettingSellPrice = false;
         if (err) {
           self.error = 'Could not get exchange information. Please, try again.';
-        } else {
-          self.error = null;
-          self.sellPrice = sellPrice;
+          return;
         }
+        self.sellPrice = sellPrice;
       });
     };
 
@@ -165,7 +164,7 @@ angular.module('copayApp.controllers').controller('sellGlideraController',
           };
 
           self.loading = 'Creating transaction...';
-          walletService.createTx(txp, fc, function(err, createdTxp) {
+          walletService.createTx(fc, txp, function(err, createdTxp) {
             self.loading = null;
             if (err) {
               self.error = err.message || bwsError.msg(err);
@@ -173,7 +172,7 @@ angular.module('copayApp.controllers').controller('sellGlideraController',
             }
             $scope.$emit('Local/NeedsConfirmation', createdTxp, function(accept) {
               if (accept) {
-                fingerprintService.check(fc, config, function(err) {
+                fingerprintService.check(fc, function(err) {
                   if (err) {
                     self.error = err.message || bwsError.msg(err);
                     return;
@@ -187,43 +186,43 @@ angular.module('copayApp.controllers').controller('sellGlideraController',
 
                     self.loading = 'Signing transaction...';
 
-                    walletService.publishTx(createdTxp, fc, function(err, publishedTxp) {
+                    walletService.publishTx(fc, createdTxp, function(err, publishedTxp) {
                       if (err) {
                         self.loading = null;
                         self.error = err.message || bwsError.msg(err);
                       }
 
-                      walletService.signTx(publishedTxp, fc, function(err, signedTxp) {
+                      walletService.signTx(fc, publishedTxp, function(err, signedTxp) {
                         profileService.lockFC(fc);
-                        walletService.removeTx(signedTxp, fc, function(err) {
+                        walletService.removeTx(fc, signedTxp, function(err) {
                           if (err) $log.debug(err);
                         });
                         if (err) {
                           self.loading = null;
                           self.error = err.message || bwsError.msg(err);
-                        } else {
-                          var rawTx = signedTxp.raw;
-                          var data = {
-                            refundAddress: refundAddress,
-                            signedTransaction: rawTx,
-                            priceUuid: self.sellPrice.priceUuid,
-                            useCurrentPrice: self.sellPrice.priceUuid ? false : true,
-                            ip: null
-                          };
-                          self.loading = 'Selling bitcoin...';
-                          glideraService.sell(token, twoFaCode, data, function(err, data) {
-                            self.loading = null;
-                            if (err) {
-                              self.error = err.message || bwsError.msg(err);
-                              $timeout(function() {
-                                $scope.$emit('Local/GlideraError');
-                              }, 100);
-                            } else {
-                              self.success = data;
-                              $scope.$emit('Local/GlideraTx');
-                            }
-                          });
+                          return;
                         }
+                        var rawTx = signedTxp.raw;
+                        var data = {
+                          refundAddress: refundAddress,
+                          signedTransaction: rawTx,
+                          priceUuid: self.sellPrice.priceUuid,
+                          useCurrentPrice: self.sellPrice.priceUuid ? false : true,
+                          ip: null
+                        };
+                        self.loading = 'Selling bitcoin...';
+                        glideraService.sell(token, twoFaCode, data, function(err, data) {
+                          self.loading = null;
+                          if (err) {
+                            self.error = err.message || bwsError.msg(err);
+                            $timeout(function() {
+                              $scope.$emit('Local/GlideraError');
+                            }, 100);
+                            return;
+                          }
+                          self.success = data;
+                          $scope.$emit('Local/GlideraTx');
+                        });
                       });
                     });
                   });
