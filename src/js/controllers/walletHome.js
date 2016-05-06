@@ -127,6 +127,14 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     });
   };
 
+  var handleEncryptedWallet = function(client, cb) {
+    if (!walletService.isEncrypted(client)) return cb();
+    $rootScope.$emit('Local/NeedsPassword', false, function(err, password) {
+      if (err) return cb(err);
+      return cb(walletService.unlock(client, password));
+    });
+  };
+
   var accept_msg = gettextCatalog.getString('Accept');
   var cancel_msg = gettextCatalog.getString('Cancel');
   var confirm_msg = gettextCatalog.getString('Confirm');
@@ -426,7 +434,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
             return;
           }
 
-          profileService.unlockFC(client, function(err) {
+          handleEncryptedWallet(client, function(err) {
             if (err) {
               $scope.loading = false;
               $scope.error = err;
@@ -434,7 +442,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
             }
 
             walletService.signTx(client, txp, function(err, signedTxp) {
-              profileService.lockFC(client);
+              walletService.lock(client);
               if (err) {
                 $scope.loading = false;
                 $scope.error = err;
@@ -977,7 +985,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       });
 
     }, 100);
-  };
+  }; 
 
   this.confirmTx = function(txp) {
     var client = profileService.focusedClient;
@@ -988,7 +996,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
         return self.setSendError(err);
       }
 
-      profileService.unlockFC(client, function(err) {
+      handleEncryptedWallet(client, function(err) {
         if (err) {
           return self.setSendError(err);
         }
@@ -1003,7 +1011,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
           self.setOngoingProcess(gettextCatalog.getString('Signing transaction'));
           walletService.signTx(client, publishedTxp, function(err, signedTxp) {
             self.setOngoingProcess();
-            profileService.lockFC(client);
+            walletService.lock(client);
             if (err) {
               $scope.$emit('Local/TxProposalAction');
               return self.setSendError(

@@ -638,7 +638,7 @@ angular.module('copayApp.services')
       $log.debug('Encrypting private key for', fc.credentials.walletName);
 
       fc.setPrivateKeyEncryption(password);
-      root.lockFC(fc);
+      fc.lock();
       root.updateCredentialsFC(function() {
         $log.debug('Wallet encrypted');
         return cb();
@@ -657,35 +657,6 @@ angular.module('copayApp.services')
       }
       root.updateCredentialsFC(function() {
         $log.debug('Wallet encryption disabled');
-        return cb();
-      });
-    };
-
-    root.lockFC = function(client) {
-      try {
-        client.lock();
-      } catch (e) {};
-    };
-
-    root.unlockFC = function(client, cb) {
-      if (!client.isPrivKeyEncrypted())
-        return cb();
-
-      $log.debug('Wallet is encrypted');
-      $rootScope.$emit('Local/NeedsPassword', false, function(err2, password) {
-
-        if (err2) 
-          return cb(err2);
-
-        if (!password) 
-          return cb('NO_PASSWORD_GIVEN');
-
-        try {
-          client.unlock(password);
-        } catch (e) {
-          $log.warn('Error decrypting wallet:', e);
-          return cb('PASSWORD_INCORRECT');
-        }
         return cb();
       });
     };

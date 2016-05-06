@@ -1,12 +1,20 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('backupController',
-  function($rootScope, $scope, $timeout, $log, $state, $compile, go, lodash, profileService, gettext, bwcService, bwsError) {
+  function($rootScope, $scope, $timeout, $log, $state, $compile, go, lodash, profileService, gettext, bwcService, bwsError, walletService) {
 
     var self = this;
     var fc = profileService.focusedClient;
     var customWords = [];
     self.walletName = fc.credentials.walletName;
+
+    var handleEncryptedWallet = function(client, cb) {
+      if (!walletService.isEncrypted(client)) return cb();
+      $rootScope.$emit('Local/NeedsPassword', false, function(err, password) {
+        if (err) return cb(err);
+        return cb(walletService.unlock(client, password));
+      });
+    };
 
     function init() {
       $scope.passphrase = '';
@@ -46,7 +54,7 @@ angular.module('copayApp.controllers').controller('backupController',
     function initWords() {
       var words = fc.getMnemonic();
       self.xPrivKey = fc.credentials.xPrivKey;
-      profileService.lockFC(fc);
+      walletService.lock(fc);
       self.mnemonicWords = words.split(/[\u3000\s]+/);
       self.shuffledMnemonicWords = lodash.sortBy(self.mnemonicWords);;
       self.mnemonicHasPassphrase = fc.mnemonicHasPassphrase();
@@ -74,7 +82,7 @@ angular.module('copayApp.controllers').controller('backupController',
             $scope.$apply();
           }, 1);
 
-          profileService.unlockFC(fc, function(err) {
+          handleEncryptedWallet(fc, function(err) {
             if (err) {
               self.error = bwsError.msg(err, gettext('Could not decrypt'));
               $log.warn('Error decrypting credentials:', self.error); //TODO

@@ -38,6 +38,14 @@ angular.module('copayApp.controllers').controller('sellCoinbaseController',
       });
     };
 
+    var handleEncryptedWallet = function(client, cb) {
+      if (!walletService.isEncrypted(client)) return cb();
+      $rootScope.$emit('Local/NeedsPassword', false, function(err, password) {
+        if (err) return cb(err);
+        return cb(walletService.unlock(client, password));
+      });
+    };
+
     this.init = function(testnet) {
       self.otherWallets = otherWallets(testnet);
       // Choose focused wallet
@@ -277,7 +285,7 @@ angular.module('copayApp.controllers').controller('sellCoinbaseController',
           return cb(err);
         }
 
-        profileService.unlockFC(fc, function(err) {
+        handleEncryptedWallet(fc, function(err) {
           if (err) {
             $log.debug(err);
             return cb(err);
@@ -292,7 +300,7 @@ angular.module('copayApp.controllers').controller('sellCoinbaseController',
             }
 
             walletService.signTx(fc, publishedTxp, function(err, signedTxp) {
-              profileService.lockFC(fc);
+              walletService.lock(fc);
               if (err) {
                 self.loading = null;
                 $log.debug(err);

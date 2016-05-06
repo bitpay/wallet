@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('preferencesController',
-  function($scope, $rootScope, $timeout, $log, configService, profileService, fingerprintService) {
+  function($scope, $rootScope, $timeout, $log, configService, profileService, fingerprintService, walletService) {
 
     var fc = profileService.focusedClient;
     var config = configService.getSync();
@@ -12,7 +12,7 @@ angular.module('copayApp.controllers').controller('preferencesController',
 
     this.init = function() {
       if (fc) {
-        $scope.encrypt = fc.hasPrivKeyEncrypted();
+        $scope.encrypt = walletService.isEncrypted(fc);
         this.externalSource = fc.getPrivKeyExternalSourceName() == 'ledger' ? "Ledger" : null;
         // TODO externalAccount
         //this.externalIndex = fc.getExternalIndex();
@@ -22,11 +22,18 @@ angular.module('copayApp.controllers').controller('preferencesController',
       $scope.touchid = config.touchIdFor ? config.touchIdFor[fc.credentials.walletId] : null;
     };
 
+    var handleEncryptedWallet = function(client, cb) {
+      $rootScope.$emit('Local/NeedsPassword', false, function(err, password) {
+        if (err) return cb(err);
+        return cb(walletService.unlock(client, password));
+      });
+    };
+
     var unwatchEncrypt = $scope.$watch('encrypt', function(val) {
       var fc = profileService.focusedClient;
       if (!fc) return;
 
-      if (val && !fc.hasPrivKeyEncrypted()) {
+      if (val && !walletService.isEncrypted(fc)) {
         $rootScope.$emit('Local/NeedsPassword', true, function(err, password) {
           if (err || !password) {
             $scope.encrypt = false;
@@ -38,8 +45,8 @@ angular.module('copayApp.controllers').controller('preferencesController',
           });
         });
       } else {
-        if (!val && fc.hasPrivKeyEncrypted()) {
-          profileService.unlockFC(fc, function(err) {
+        if (!val && walletService.isEncrypted(fc)) {
+         handleEncryptedWallet(fc, function(err) {
             if (err) {
               $scope.encrypt = true;
               return;

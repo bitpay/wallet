@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('sellGlideraController',
-  function($scope, $timeout, $log, $modal, configService, profileService, addressService, feeService, glideraService, bwsError, lodash, isChromeApp, animationService, walletService, fingerprintService) {
+  function($rootScope, $scope, $timeout, $log, $modal, configService, profileService, addressService, feeService, glideraService, bwsError, lodash, isChromeApp, animationService, walletService, fingerprintService) {
 
     var self = this;
     var config = configService.getSync();
@@ -18,6 +18,14 @@ angular.module('copayApp.controllers').controller('sellGlideraController',
       var network = testnet ? 'testnet' : 'livenet';
       return lodash.filter(profileService.getWallets(network), function(w) {
         return w.network == network && w.m == 1;
+      });
+    };
+
+    var handleEncryptedWallet = function(client, cb) {
+      if (!walletService.isEncrypted(client)) return cb();
+      $rootScope.$emit('Local/NeedsPassword', false, function(err, password) {
+        if (err) return cb(err);
+        return cb(walletService.unlock(client, password));
       });
     };
 
@@ -178,7 +186,7 @@ angular.module('copayApp.controllers').controller('sellGlideraController',
                     return;
                   }
 
-                  profileService.unlockFC(fc, function(err) {
+                  handleEncryptedWallet(fc, function(err) {
                     if (err) {
                       self.error = err.message || bwsError.msg(err);
                       return;
@@ -193,7 +201,7 @@ angular.module('copayApp.controllers').controller('sellGlideraController',
                       }
 
                       walletService.signTx(fc, publishedTxp, function(err, signedTxp) {
-                        profileService.lockFC(fc);
+                        walletService.lock(fc);
                         walletService.removeTx(fc, signedTxp, function(err) {
                           if (err) $log.debug(err);
                         });

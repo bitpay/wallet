@@ -53,6 +53,34 @@ angular.module('copayApp.services').factory('walletService', function($log, loda
     });
   };
 
+  root.isEncrypted = function(client) {
+    if (lodash.isEmpty(client)) return;
+    var isEncrypted = client.isPrivKeyEncrypted();
+    if (isEncrypted) $log.debug('Wallet is encrypted');
+    return isEncrypted;
+  };
+
+  root.lock = function(client) {
+    try {
+      client.lock();
+    } catch (e) {
+      $log.warn('Encrypting wallet:', e);
+    };
+  };
+
+  root.unlock = function(client, password) {
+    if (lodash.isEmpty(client))
+      return 'MISSING_PARAMETER';
+    if (lodash.isEmpty(password))
+      return 'NO_PASSWORD_GIVEN';
+    try {
+      client.unlock(password);
+    } catch (e) {
+      $log.warn('Decrypting wallet:', e);
+      return 'PASSWORD_INCORRECT';
+    }
+  };
+
   root.createTx = function(client, txp, cb) {
     if (lodash.isEmpty(txp) || lodash.isEmpty(client)) 
       return cb('MISSING_PARAMETER');
