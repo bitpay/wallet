@@ -166,14 +166,24 @@ angular.module('copayApp.services').factory('walletService', function($log, loda
     if (txp.status != 'accepted')
       return cb('TX_NOT_ACCEPTED');
 
-    client.broadcastTxProposal(txp, function(err, txp, memo) {
+    client.broadcastTxProposal(txp, function(err, broadcastedTxp, memo) {
       if (err) 
         return cb(err);
 
       $log.debug('Transaction broadcasted');
       if (memo) $log.info(memo);
 
-      return cb(null, txp);
+      return cb(null, broadcastedTxp);
+    });
+  };
+
+  root.rejectTx = function(client, txp, cb) {
+    if (lodash.isEmpty(txp) || lodash.isEmpty(client)) 
+      return cb('MISSING_PARAMETER');
+    
+    client.rejectTxProposal(txp, null, function(err, rejectedTxp) {
+      $log.debug('Transaction rejected');
+      return cb(err, rejectedTxp);
     });
   };
 

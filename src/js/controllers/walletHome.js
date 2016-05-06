@@ -470,13 +470,13 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       };
 
       $scope.reject = function(txp) {
+        var client = profileService.focusedClient;
         self.setOngoingProcess(gettextCatalog.getString('Rejecting payment'));
         $scope.loading = true;
         $scope.error = null;
 
-        // TODO: This should be in txService
         $timeout(function() {
-          fc.rejectTxProposal(txp, null, function(err, txpr) {
+          walletService.rejectTx(client, txp, function(err, txpr) {
             self.setOngoingProcess();
             $scope.loading = false;
             if (err) {
@@ -492,11 +492,12 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
 
       $scope.remove = function(txp) {
+        var client = profileService.focusedClient;
         self.setOngoingProcess(gettextCatalog.getString('Deleting payment'));
         $scope.loading = true;
         $scope.error = null;
         $timeout(function() {
-          fc.removeTxProposal(txp, function(err, txpb) {
+          walletService.removeTx(client, txp, function(err) {}
             self.setOngoingProcess();
             $scope.loading = false;
 
@@ -513,23 +514,20 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       };
 
       $scope.broadcast = function(txp) {
+        var client = profileService.focusedClient;
         self.setOngoingProcess(gettextCatalog.getString('Broadcasting Payment'));
         $scope.loading = true;
         $scope.error = null;
         $timeout(function() {
-          fc.broadcastTxProposal(txp, function(err, txpb, memo) {
+          walletService.broadcastTx(client, txp, function(err, txpb) {
             self.setOngoingProcess();
             $scope.loading = false;
             if (err) {
               $scope.error = bwsError.msg(err, gettextCatalog.getString('Could not broadcast payment'));
               $scope.$digest();
-            } else {
-
-              if (memo)
-                $log.info(memo);
-
-              $modalInstance.close(txpb);
+              return;
             }
+            $modalInstance.close(txpb);
           });
         }, 100);
       };
