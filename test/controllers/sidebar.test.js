@@ -6,6 +6,6 @@ describe('sidebarController', function(){
   beforeEach(angular.mock.module('copayApp.controllers'));
 
   it('wallet selection', function(){
-    expect(true).not.toBeUndefined();
+    should.exist(true);
   });
 });
