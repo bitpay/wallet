@@ -5,7 +5,7 @@ describe('sidebarController', function(){
 
   beforeEach(angular.mock.module('copayApp.controllers'));
 
-  it('wallet selection', function(){
+  it('dummy test', function(){
     should.exist(true);
   });
 });

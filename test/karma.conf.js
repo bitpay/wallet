@@ -22,10 +22,8 @@ module.exports = function(config) {
       'bower_components/angular-ui-router/release/angular-ui-router.js',
       'bower_components/angular-foundation/mm-foundation.js',
       'bower_components/angular-foundation/mm-foundation-tpls.js',
-      'bower_components/angular-animate/angular-animate.js',
       'bower_components/angular-moment/angular-moment.js',
       'bower_components/ng-lodash/build/ng-lodash.js',
-      'bower_components/angular-qrcode/qrcode.js',
       'bower_components/angular-gettext/dist/angular-gettext.js',
       'bower_components/angular-touch/angular-touch.js',
       'bower_components/angular-ui-switch/angular-ui-switch.js',
@@ -54,7 +52,7 @@ module.exports = function(config) {
     // test results reporter to use
     // possible values: 'dots', 'progress'
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-    reporters: ['progress', , 'coverage'],
+    reporters: ['progress', 'coverage'],
 
     // optionally, configure the reporter
     coverageReporter: {
