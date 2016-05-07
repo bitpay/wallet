@@ -100,6 +100,7 @@ module.exports = function(config) {
       'karma-chai', 
       'karma-sinon',
     'karma-phantomjs-launcher',
+    'karma-chrome-launcher',
     ],
 
 
