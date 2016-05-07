@@ -108,13 +108,13 @@
               <span class="text-warning size-14">
                 <i class="fi-alert"></i>
                 <span translate>
-                WARNING: Passphrase cannot be recovered. <b>Be sure to write it down</b>. The wallet can not be restored without the passphrase.
+                WARNING: Recovery password cannot be recovered. <b>Be sure to write it down</b>. The wallet can not be restored without the recovery password.
                 </span>
               </span>
             </div>
 
             <div ng-show="join.seedSourceId=='new' ">
-              <label for="createPassphrase"  ><span translate>Add a Passphrase</span>  <small translate>Add an optional passphrase to secure the recovery phrase</small>
+              <label for="createPassphrase"  ><span translate>Add a Recovery password</span>  <small translate>Add an optional recovery password to secure the recovery phrase</small>
                 <div class="input">
                   <input type="text" class="form-control" autocapitalize="off"
                   name="createPassphrase" ng-model="createPassphrase">
@@ -134,7 +134,7 @@
             </div>
 
             <div ng-show="join.seedSourceId=='set'">
-              <label for="passphrase"> <span translate>Passphrase</span>  <small translate>The recovery phrase could require a passphrase to be imported</small>
+              <label for="passphrase"> <span translate>Recovery password</span>  <small translate>The recovery phrase could require a recovery password to be imported</small>
                 <div class="input">
                   <input type="text" autocapitalize="off" class="form-control" name="passphrase" ng-model="passphrase">
                 </div>
