@@ -1,24 +1,25 @@
-
-describe('walletService', function () {
+describe('walletService', function() {
 
   var walletService;
-  beforeEach(module('copayApp.services'));
-
-  // The module needs to be included in the test.
-  beforeEach(module('copayApp'));
-  
 
 
-  beforeEach(inject(function (_walletService_) {
+  // Adds walletService's module dependencies
+  beforeEach(function() {
+    module('ngLodash');
+    module('gettext');
+    module('bwcModule');
+    module('copayApp.services');
+  });
+
+
+  beforeEach(inject(function(_walletService_) {
     walletService = _walletService_;
   }));
 
-  describe('walletService', function () {
-
-    it('should be defined', function () {
-      should.exists(walletService);
+  describe('walletService', function() {
+    it('should be defined', function() {
+      should.exist(walletService);
     });
-
   });
 
 });

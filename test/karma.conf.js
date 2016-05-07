@@ -27,7 +27,11 @@ module.exports = function(config) {
       'bower_components/angular-gettext/dist/angular-gettext.js',
       'bower_components/angular-touch/angular-touch.js',
       'bower_components/angular-ui-switch/angular-ui-switch.js',
+      'bower_components/angular-qrcode/angular-qrcode.js',
+      'bower_components/angular-sanitize/angular-sanitize.js',
+      'bower_components/ng-csv/build/ng-csv.js',
       'node_modules/angular-mocks/angular-mocks.js',
+      'angular-bitcore-wallet-client/angular-bitcore-wallet-client.js',
       'src/js/**/*.js',
       'test/**/*.js'
     ],
@@ -36,7 +40,7 @@ module.exports = function(config) {
     // list of files to exclude
     exclude: [
       'src/js/translations.js',
-      'src/js/version.js',
+      //      'src/js/version.js',
       'test/karma.conf.js',
       'test/old/*'
     ],
@@ -52,7 +56,7 @@ module.exports = function(config) {
     // test results reporter to use
     // possible values: 'dots', 'progress'
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-    reporters: ['progress', 'coverage'],
+    reporters: ['mocha', 'coverage'],
 
     // optionally, configure the reporter
     coverageReporter: {
@@ -88,6 +92,15 @@ module.exports = function(config) {
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
     browsers: ['PhantomJS'],
+
+    plugins: [
+      'karma-mocha-reporter', 
+      'karma-coverage', 
+      'karma-mocha', 
+      'karma-chai', 
+      'karma-sinon',
+    'karma-phantomjs-launcher',
+    ],
 
 
     // Continuous Integration mode

@@ -497,7 +497,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
         $scope.loading = true;
         $scope.error = null;
         $timeout(function() {
-          walletService.removeTx(client, txp, function(err) {}
+          walletService.removeTx(client, txp, function(err) {
             self.setOngoingProcess();
             $scope.loading = false;
 
