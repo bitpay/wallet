@@ -89,7 +89,7 @@
         <div class="line-t p10 size-10 text-gray text-center" ng-show="wordsC.mnemonicHasPassphrase">
             <i class="fi-alert"></i>
             <span translate>
-              This recovery phrase was created with a recovery password. To recover this wallet both the recovery phrase and recovery password are needed.
+              This recovery phrase was created with a passphrase. To recover this wallet both the mnemonic and passphrase are needed.
             </span>
         </div>
       </div>
@@ -144,9 +144,9 @@
 
     <div ng-show="wordsC.step == 3">
       <div class="columns text-center">
-        <h5 translate>Enter your recovery password</h5>
+        <h5 translate>Enter your passphrase</h5>
         <p class="text-gray m0" translate>
-          In order to verify your wallet backup, please type your recovery password:
+          In order to verify your wallet backup, please type your passphrase:
         </p>
         <div class="m20v">
           <input type="text" id="passphrase" ng-model="passphrase" autocapitalize="off" spellcheck="false" autofocus/>
