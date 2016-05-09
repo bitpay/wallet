@@ -16,6 +16,13 @@ angular.module('copayApp.services').factory('derivationPathHelper', function(lod
       case "44'":
         ret.derivationStrategy = 'BIP44';
         break;
+      case "45'":
+        return {
+          derivationStrategy: 'BIP45',
+          networkName: 'livenet',
+          account: 0,
+        }
+        break;
       case "48'":
         ret.derivationStrategy = 'BIP48';
         break;
@@ -37,7 +44,7 @@ angular.module('copayApp.services').factory('derivationPathHelper', function(lod
     var match = arr[3].match(/(\d+)'/);
     if (!match)
       return false;
-    ret.account = + match[1]
+    ret.account = +match[1]
 
     return ret;
   };

@@ -495,7 +495,7 @@ angular.module('copayApp.services')
       var walletClient = bwcService.getClient();
       $log.debug('Importing Wallet xPrivKey');
 
-      walletClient.importFromExtendedPrivateKey(xPrivKey, function(err) {
+      walletClient.importFromExtendedPrivateKey(xPrivKey, opts, function(err) {
         if (err)
           return bwsError.cb(err, gettext('Could not import'), cb);
 

@@ -82,7 +82,6 @@ angular.module('copayApp.controllers').controller('importController',
     };
 
     var _importExtendedPrivateKey = function(xPrivKey, opts) {
-console.log('[import.js.84:xPrivKey:]',xPrivKey); //TODO
       self.loading = true;
 
       $timeout(function() {
@@ -177,7 +176,16 @@ console.log('[import.js.84:xPrivKey:]',xPrivKey); //TODO
       if ($scope.bwsurl)
         opts.bwsurl = $scope.bwsurl;
 
-      var passphrase = form.passphrase.$modelValue;
+
+      var pathData = derivationPathHelper.parse($scope.derivationPath);
+      if (!pathData) {
+        this.error = gettext('Invalid derivation path');
+        return;
+      }
+      opts.account = pathData.account;
+      opts.networkName = pathData.networkName;
+      opts.derivationStrategy = pathData.derivationStrategy;
+
       var words = form.words.$modelValue;
       this.error = null;
 
@@ -199,17 +207,8 @@ console.log('[import.js.84:xPrivKey:]',xPrivKey); //TODO
         return;
       }
 
+      var passphrase = form.passphrase.$modelValue;
       opts.passphrase = form.passphrase.$modelValue || null;
-
-      var pathData = derivationPathHelper.parse($scope.derivationPath);
-      if (!pathData) {
-        this.error = gettext('Invalid derivation path');
-        return;
-      }
-      opts.account = pathData.account;
-      opts.networkName = pathData.networkName;
-      opts.derivationStrategy = pathData.derivationStrategy;
-
 
       _importMnemonic(words, opts);
     };
