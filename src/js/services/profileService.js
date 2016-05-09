@@ -467,7 +467,7 @@ angular.module('copayApp.services')
           password: opts.password
         });
       } catch (err) {
-        return cb(gettext('Could not import. Check input file and password'));
+        return cb(gettext('Could not import. Check input file and spending password'));
       }
 
       str = JSON.parse(str);
@@ -675,7 +675,7 @@ angular.module('copayApp.services')
       $rootScope.$emit('Local/NeedsPassword', false, function(err2, password) {
         if (err2 || !password) {
           return cb({
-            message: (err2 || gettext('Password needed'))
+            message: (err2 || gettext('Spending Password needed'))
           });
         }
         try {
@@ -683,7 +683,7 @@ angular.module('copayApp.services')
         } catch (e) {
           $log.debug(e);
           return cb({
-            message: gettext('Wrong password')
+            message: gettext('Wrong spending password')
           });
         }
         return cb();

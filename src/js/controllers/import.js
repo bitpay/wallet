@@ -51,7 +51,7 @@ angular.module('copayApp.controllers').controller('importController',
       try {
         str2 = sjcl.decrypt(self.password, str);
       } catch (e) {
-        err = gettext('Could not decrypt file, check your password');
+        err = gettext('Could not decrypt file, check your spending password');
         $log.warn(e);
       };
 
