@@ -227,7 +227,7 @@ angular.module('copayApp.services')
 
         } catch (ex) {
           $log.info(ex);
-          return cb(gettext('Could not create: Invalid wallet seed'));
+          return cb(gettext('Could not create: Invalid wallet recovery phrase'));
         }
       } else if (opts.extendedPrivateKey) {
         try {
@@ -256,9 +256,9 @@ angular.module('copayApp.services')
             account: 0,
           });
         } catch (e) {
-          $log.info('Error creating seed: ' + e.message);
+          $log.info('Error creating recovery phrase: ' + e.message);
           if (e.message.indexOf('language') > 0) {
-            $log.info('Using default language for mnemonic');
+            $log.info('Using default language for recovery phrase');
             walletClient.seedFromRandomWithMnemonic({
               network: network,
               passphrase: opts.passphrase,
@@ -471,7 +471,7 @@ angular.module('copayApp.services')
           password: opts.password
         });
       } catch (err) {
-        return cb(gettext('Could not import. Check input file and password'));
+        return cb(gettext('Could not import. Check input file and spending password'));
       }
 
       str = JSON.parse(str);
@@ -682,13 +682,13 @@ angular.module('copayApp.services')
           return cb(err2);
 
         if (!password) 
-          return cb(gettext('Password needed'));
+          return cb(gettext('Spending Password needed'));
 
         try {
           fc.unlock(password);
         } catch (e) {
           $log.warn('Error decrypting wallet:', e);
-          return cb(gettext('Wrong password'));
+          return cb(gettext('Wrong spending password'));
         }
         return cb();
       });
