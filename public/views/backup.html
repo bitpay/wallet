@@ -32,15 +32,15 @@
 
     <div ng-show="wordsC.step == 1">
       <div ng-show="wordsC.mnemonicWords || (wordsC.credentialsEncrypted && !wordsC.deleted)" class="row">
-        <h5 class="text-center" translate>Write your wallet seed</h5>
+        <h5 class="text-center" translate>Write your wallet recovery phrase</h5>
         <div class="size-14 text-gray columns" ng-show="(index.n>1 && index.m != index.n )">
           <span translate>
             To restore this {{index.m}}-{{index.n}} <b>shared</b> wallet you will need
           </span>:
           <ol class="m10t columns size-14 text-gray">
-            <li translate>Your wallet seed and access to the server that coordinated the initial wallet creation. You still need {{index.m}} keys to spend.</li>
-            <li translate><b>OR</b> the wallet seed of <b>all</b> copayers in the wallet</li>
-            <li translate><b>OR</b> 1 wallet export file and the remaining quorum of wallet seeds (e.g. in a 3-5 wallet: 1 wallet export file + 2 wallet seeds of any of the other copayers).</li>
+            <li translate>Your wallet recovery phrase and access to the server that coordinated the initial wallet creation. You still need {{index.m}} keys to spend.</li>
+            <li translate><b>OR</b> the wallet recovery phrase of <b>all</b> copayers in the wallet</li>
+            <li translate><b>OR</b> 1 wallet export file and the remaining quorum of wallet recovery phrases (e.g. in a 3-5 wallet: 1 wallet export file + 2 wallet recovery phrases of any of the other copayers).</li>
           </ol>
           </span>
         </div>
@@ -49,8 +49,8 @@
             To restore this {{index.m}}-{{index.n}} <b>shared</b> wallet you will need
           </span>:
           <ol class="m10t columns size-14 text-gray">
-            <li translate>Your wallet seed and access to the server that coordinated the initial wallet creation. You still need {{index.m}} keys to spend.</li>
-            <li translate><b>OR</b> the wallet seeds of <b>all</b> copayers in the wallet</li>
+            <li translate>Your wallet recovery phrase and access to the server that coordinated the initial wallet creation. You still need {{index.m}} keys to spend.</li>
+            <li translate><b>OR</b> the wallet recovery phrases of <b>all</b> copayers in the wallet</li>
           </ol>
           </span>
         </div>
@@ -58,21 +58,21 @@
 
       <div class="row m20t" ng-show="wordsC.deleted">
         <div class="columns size-14 text-gray text-center" translate>
-          Wallet seed not available. You can still export it from Advanced &gt; Export.
+          Wallet recovery phrase not available. You can still export it from Advanced &gt; Export.
         </div>
       </div>
 
       <div ng-show="wordsC.mnemonicWords || (wordsC.credentialsEncrypted && !wordsC.deleted)">
         <p class="text-center columns text-gray"  ng-show="index.n==1 && wordsC.step == 1">
           <span translate>
-            You need the wallet seed to restore this personal wallet. Write it down and keep them somewhere safe.
+            You need the wallet recovery phrase to restore this personal wallet. Write it down and keep them somewhere safe.
           </span>
         </p>
         <div class="row" ng-show="wordsC.credentialsEncrypted">
           <div class="m10t columns">
             <a class="button outline light-gray expand tiny" ng-click="wordsC.toggle()">
               <i class="fi-widget m3r"></i>
-              <span translate ng-hide="wordsC.show">Show Wallet Seed</span>
+              <span translate ng-hide="wordsC.show">Show Wallet Recovery Phrase</span>
             </a>
           </div>
         </div>
@@ -89,7 +89,7 @@
         <div class="line-t p10 size-10 text-gray text-center" ng-show="wordsC.mnemonicHasPassphrase">
             <i class="fi-alert"></i>
             <span translate>
-              This seed was created with a passphrase. To recover this wallet both the mnemonic and passphrase are needed.
+              This recovery phrase was created with a password. To recover this wallet both the recovery phrase and password are needed.
             </span>
         </div>
       </div>
@@ -112,7 +112,7 @@
 
     <div ng-show="wordsC.step == 2">
       <div class="columns text-center extra-padding-bottom">
-        <h5 translate>Confirm your wallet seed</h5>
+        <h5 translate>Confirm your wallet recovery phrase</h5>
         <p class="text-gray m0" translate>
           Please tap the words in order to confirm your backup phrase is correctly written.
         </p>
@@ -144,9 +144,9 @@
 
     <div ng-show="wordsC.step == 3">
       <div class="columns text-center">
-        <h5 translate>Enter your passphrase</h5>
+        <h5 translate>Enter your password</h5>
         <p class="text-gray m0" translate>
-          In order to verify your wallet backup, please type your passphrase:
+          In order to verify your wallet backup, please type your password:
         </p>
         <div class="m20v">
           <input type="text" id="passphrase" ng-model="passphrase" autocapitalize="off" spellcheck="false" autofocus/>

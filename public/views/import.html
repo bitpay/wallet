@@ -33,7 +33,7 @@
   <div class="create-tab pr small-only-text-center" ng-hide="create.hideTabs">
     <div class="row">
       <div class="tab-container small-4 medium-4 large-4" ng-class="{'selected': type =='12'}">
-        <a href ng-click="import.setType('12')" translate>Wallet Seed</a>
+        <a href ng-click="import.setType('12')" translate>Wallet Recovery Phrase</a>
       </div>
       <div class="tab-container small-4 medium-4 large-4" ng-class="{'selected': type=='file'}">
         <a href ng-click="import.setType('file')" translate>File/Text Backup</a>
@@ -55,7 +55,7 @@
 
           <div >
             <label for="words">
-              <span translate>Type the Seed Phrase (usually 12 words)</span>:
+              <span translate>Type the Recovery Phrase (usually 12 words)</span>:
             </label>
             <textarea class="form-control" name="words" ng-model="import.words" rows="2" autocapitalize="off" spellcheck="false"></textarea>
           </div>
@@ -72,9 +72,9 @@
           <div ng-hide="hideAdv" class="row">
             <div class="large-12 columns">
 
-              <label for="passphrase" class="oh"><span translate>Passphrase</span>  <small translate>Wallet Seed could require a passphrase to be imported</small>
+              <label for="passphrase" class="oh"><span translate>Password</span>  <small translate>The Wallet Recovery Phrase could require a password to be imported</small>
               <div class="input">
-                <input type="password" class="form-control" placeholder="{{'Seed passphrase'|translate}}"
+                <input type="password" class="form-control" placeholder="{{'Password'|translate}}"
                 name="passphrase" ng-model="import.passphrase">
               </div>
               </label>
@@ -124,7 +124,7 @@
             <textarea class="form-control" name="backupText" ng-model="import.backupText" rows="5"></textarea>
           </div>
 
-          <label for="password"><span translate>Password</span>
+          <label for="password"><span translate>Spending Password</span>
           </label>
           <div class="input">
             <input type="password" class="form-control" placeholder="{{'Your backup password'|translate}}"
@@ -181,7 +181,7 @@
           </div>
           <div ng-show="import.seedOptions[0]">
             <div>
-              <label><span translate>Wallet Seed</span>
+              <label><span translate>Wallet Recovery Phrase</span>
               <select class="m10t" ng-model="seedSource"
                 ng-options="seed as seed.label for seed in import.seedOptions"
                 ng-change="import.setSeedSource()">
