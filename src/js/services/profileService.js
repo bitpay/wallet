@@ -638,7 +638,7 @@ angular.module('copayApp.services')
       $log.debug('Encrypting private key for', fc.credentials.walletName);
 
       fc.setPrivateKeyEncryption(password);
-      root.lockFC();
+      fc.lock();
       root.updateCredentialsFC(function() {
         $log.debug('Wallet encrypted');
         return cb();
@@ -658,51 +658,6 @@ angular.module('copayApp.services')
       root.updateCredentialsFC(function() {
         $log.debug('Wallet encryption disabled');
         return cb();
-      });
-    };
-
-    root.lockFC = function() {
-      var fc = root.focusedClient;
-      try {
-        fc.lock();
-      } catch (e) {};
-    };
-
-    root.unlockFC = function(opts, cb) {
-      opts = opts || {};
-      var fc = opts.selectedClient || root.focusedClient;
-
-      if (!fc.isPrivKeyEncrypted())
-        return cb();
-
-      $log.debug('Wallet is encrypted');
-      $rootScope.$emit('Local/NeedsPassword', false, function(err2, password) {
-
-        if (err2) 
-          return cb(err2);
-
-        if (!password) 
-          return cb(gettext('Spending Password needed'));
-
-        try {
-          fc.unlock(password);
-        } catch (e) {
-          $log.warn('Error decrypting wallet:', e);
-          return cb(gettext('Wrong spending password'));
-        }
-        return cb();
-      });
-    };
-
-    root.isBackupNeeded = function(walletId, cb) {
-      var c = root.getClient(walletId);
-      if (c.isPrivKeyExternal()) return cb(false);
-      if (!c.credentials.mnemonic) return cb(false);
-      if (c.credentials.network == 'testnet') return cb(false);
-
-      storageService.getBackupFlag(walletId, function(err, val) {
-        if (err || val) return cb(false);
-        return cb(true);
       });
     };
 
