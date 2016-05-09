@@ -1,37 +1,39 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('preferencesController',
-  function($scope, $rootScope, $timeout, $log, configService, profileService, txService) {
+  function($scope, $rootScope, $timeout, $log, configService, profileService, fingerprintService, walletService) {
 
     var fc = profileService.focusedClient;
+    var config = configService.getSync();
     $scope.deleted = false;
     if (fc.credentials && !fc.credentials.mnemonicEncrypted && !fc.credentials.mnemonic) {
       $scope.deleted = true;
     }
 
     this.init = function() {
-      var config = configService.getSync();
-      var fc = profileService.focusedClient;
       if (fc) {
-        $scope.encrypt = fc.hasPrivKeyEncrypted();
+        $scope.encrypt = walletService.isEncrypted(fc);
         this.externalSource = fc.getPrivKeyExternalSourceName() == 'ledger' ? "Ledger" : null;
         // TODO externalAccount
         //this.externalIndex = fc.getExternalIndex();
       }
 
-      var walletId = fc.credentials.walletId;
-      config.touchIdFor = config.touchIdFor || {};
-      $scope.touchid = config.touchIdFor[walletId];
+      this.touchidAvailable = fingerprintService.isAvailable();
+      $scope.touchid = config.touchIdFor ? config.touchIdFor[fc.credentials.walletId] : null;
+    };
 
-      if (window.touchidAvailable)
-        this.touchidAvailable = true;
+    var handleEncryptedWallet = function(client, cb) {
+      $rootScope.$emit('Local/NeedsPassword', false, function(err, password) {
+        if (err) return cb(err);
+        return cb(walletService.unlock(client, password));
+      });
     };
 
     var unwatchEncrypt = $scope.$watch('encrypt', function(val) {
       var fc = profileService.focusedClient;
       if (!fc) return;
 
-      if (val && !fc.hasPrivKeyEncrypted()) {
+      if (val && !walletService.isEncrypted(fc)) {
         $rootScope.$emit('Local/NeedsPassword', true, function(err, password) {
           if (err || !password) {
             $scope.encrypt = false;
@@ -43,8 +45,8 @@ angular.module('copayApp.controllers').controller('preferencesController',
           });
         });
       } else {
-        if (!val && fc.hasPrivKeyEncrypted()) {
-          profileService.unlockFC({}, function(err) {
+        if (!val && walletService.isEncrypted(fc)) {
+         handleEncryptedWallet(fc, function(err) {
             if (err) {
               $scope.encrypt = true;
               return;
@@ -68,29 +70,29 @@ angular.module('copayApp.controllers').controller('preferencesController',
         $scope.touchidError = false;
         return;
       }
-      var walletId = profileService.focusedClient.credentials.walletId;
+      var walletId = fc.credentials.walletId;
 
       var opts = {
         touchIdFor: {}
       };
       opts.touchIdFor[walletId] = newVal;
 
-      txService.setTouchId(function(err) {
+      fingerprintService.check(fc, function(err) {
         if (err) {
           $log.debug(err);
           $timeout(function() {
             $scope.touchidError = true;
             $scope.touchid = oldVal;
           }, 100);
-        } else {
-          configService.set(opts, function(err) {
-            if (err) {
-              $log.debug(err);
-              $scope.touchidError = true;
-              $scope.touchid = oldVal;
-            }
-          });
+          return;
         }
+        configService.set(opts, function(err) {
+          if (err) {
+            $log.debug(err);
+            $scope.touchidError = true;
+            $scope.touchid = oldVal;
+          }
+        });
       });
     });
 
