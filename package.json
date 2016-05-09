@@ -63,9 +63,10 @@
   },
   "devDependencies": {
     "adm-zip": "^0.4.7",
-    "angular": "^1.5.5",
-    "angular-mocks": "^1.5.5",
+    "angular": "1.4.6",
+    "angular-mocks": "1.4.10",
     "bhttp": "^1.2.1",
+    "chai": "^3.5.0",
     "cordova": "5.4.1",
     "cordova-android": "5.1.1",
     "grunt-contrib-sass": "^1.0.0",
@@ -75,12 +76,14 @@
     "grunt-string-replace": "^1.2.1",
     "karma": "^0.13.22",
     "karma-chai": "^0.1.0",
+    "karma-chrome-launcher": "^1.0.1",
     "karma-cli": "^1.0.0",
     "karma-coverage": "^1.0.0",
     "karma-mocha": "^1.0.1",
     "karma-mocha-reporter": "^2.0.3",
     "karma-phantomjs-launcher": "^1.0.0",
     "karma-sinon": "^1.0.5",
+    "mocha": "^2.4.5",
     "phantomjs-prebuilt": "^2.1.7",
     "xcode": "^0.8.2"
   }

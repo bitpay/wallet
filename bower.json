@@ -8,6 +8,7 @@
   ],
   "dependencies": {
     "angular": "1.4.6",
+    "angular-mocks": "1.4.10",
     "angular-foundation": "0.8.0",
     "angular-gettext": "2.2.1",
     "angular-moment": "0.10.1",
