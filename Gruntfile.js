@@ -256,7 +256,7 @@ module.exports = function(grunt) {
   grunt.registerTask('prod', ['default', 'uglify']);
   grunt.registerTask('translate', ['nggettext_extract']);
   grunt.registerTask('test', ['karma:unit']);
-  grunt.registerTask('test-coveralls', ['karma:prod', 'coveralls']);
+  grunt.registerTask('test-coveralls', ['browserify', 'karma:prod', 'coveralls']);
   grunt.registerTask('desktop', ['prod', 'nodewebkit', 'copy:linux', 'compress:linux']);
   grunt.registerTask('osx', ['prod', 'nodewebkit', 'exec:osx']);
   grunt.registerTask('release', ['string-replace:dist']);
