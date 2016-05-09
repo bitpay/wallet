@@ -23,10 +23,10 @@ angular.module('copayApp.services')
       if (name) {
         switch (name) {
           case 'INVALID_BACKUP':
-            body = gettextCatalog.getString('Wallet seed is invalid');
+            body = gettextCatalog.getString('Wallet recovery phrase is invalid');
             break;
           case 'WALLET_DOES_NOT_EXIST':
-            body = gettextCatalog.getString('Wallet not registered at the wallet service. Recreate it from "Create Wallet" using "Advanced Options" to set your seed');
+            body = gettextCatalog.getString('Wallet not registered at the wallet service. Recreate it from "Create Wallet" using "Advanced Options" to set your recovery phrase');
             break;
           case 'MISSING_PRIVATE_KEY':
             body = gettextCatalog.getString('Missing private keys to sign');

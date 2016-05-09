@@ -227,7 +227,7 @@ angular.module('copayApp.services')
 
         } catch (ex) {
           $log.info(ex);
-          return cb(gettext('Could not create: Invalid wallet seed'));
+          return cb(gettext('Could not create: Invalid wallet recovery phrase'));
         }
       } else if (opts.extendedPrivateKey) {
         try {
@@ -256,7 +256,7 @@ angular.module('copayApp.services')
             account: 0,
           });
         } catch (e) {
-          $log.info('Error creating seed: ' + e.message);
+          $log.info('Error creating recovery phrase: ' + e.message);
           if (e.message.indexOf('language') > 0) {
             $log.info('Using default language for mnemonic');
             walletClient.seedFromRandomWithMnemonic({

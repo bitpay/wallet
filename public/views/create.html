@@ -108,7 +108,7 @@
             </div>
 
             <div>
-              <label><span translate>Wallet Seed</span>
+              <label><span translate>Wallet Recovery Phrase</span>
               <select class="m10t" ng-model="seedSource"
                 ng-options="seed as seed.label for seed in create.seedOptions"
                 ng-change="create.setSeedSource()">
@@ -132,7 +132,7 @@
             </div>
 
             <div ng-show="create.seedSourceId=='new' ">
-              <label for="createPassphrase"  ><span translate>Add a Seed Passphrase</span>  <small translate>Add an optional passphrase to secure the seed</small>
+              <label for="createPassphrase"  ><span translate>Add a Passphrase</span>  <small translate>Add an optional passphrase to secure the recovery phrase</small>
                 <div class="input">
                   <input type="text" class="form-control" autocapitalize="off"
                   name="createPassphrase" ng-model="createPassphrase">
@@ -142,8 +142,8 @@
 
             <div ng-show="create.seedSourceId=='set'">
               <label for="ext-master">
-                <span translate>Wallet Seed</span>
-                <small translate>Enter the seed words (BIP39)</small>
+                <span translate>Wallet Recovery Phrase</span>
+                <small translate>Enter the recovery phrase (BIP39)</small>
                 <input id="ext-master"
                 autocapitalize="off"
                 type="text"
@@ -152,7 +152,7 @@
             </div>
 
             <div ng-show="create.seedSourceId=='set'">
-              <label for="passphrase"> <span translate>Seed Passphrase</span>  <small translate>The seed could require a passphrase to be imported</small>
+              <label for="passphrase"> <span translate>Passphrase</span>  <small translate>The recovery phrase could require a passphrase to be imported</small>
                 <div class="input">
                   <input type="text" autocapitalize="off" class="form-control" name="passphrase" ng-model="passphrase">
                 </div>
