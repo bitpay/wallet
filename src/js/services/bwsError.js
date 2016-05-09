@@ -134,10 +134,10 @@ angular.module('copayApp.services')
             body = gettextCatalog.getString('Missing parameter');
             break;
           case 'NO_PASSWORD_GIVEN':
-            body = gettextCatalog.getString('No password given');
+            body = gettextCatalog.getString('Spending Password needed');
             break;
           case 'PASSWORD_INCORRECT':
-            body = gettextCatalog.getString('Wrong password');
+            body = gettextCatalog.getString('Wrong spending password');
             break;
           case 'ERROR':
             body = (err.message || err.error);
