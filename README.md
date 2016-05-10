@@ -5,7 +5,7 @@
 
 Copay is an easy-to-use, open-source, multiplatform, multisignature, secure bitcoin wallet platform for both individuals and companies.  Copay uses [Bitcore Wallet Service](https://github.com/bitpay/bitcore-wallet-service) (BWS) for peer synchronization and network interfacing.
 
-Binary versions of Copay are available for download at [Copay.io](https://copay.io/#download). Copay Binaries are signed with the key copay@bitpay.com [See here for details](https://github.com/bitpay/copay#how-to-verify-copay-signatures)
+Binary versions of Copay are available for download at [Copay.io](https://copay.io/#download). Copay Binaries are signed with the key `copay@bitpay.com` – See the section [`How to Verify Copay Signatures`](https://github.com/bitpay/copay#how-to-verify-copay-signatures) for details.
 
 ## Main Features
 
@@ -27,35 +27,25 @@ Binary versions of Copay are available for download at [Copay.io](https://copay.
 - Multiple languages supported
 - Available for [iOS](https://itunes.apple.com/us/app/copay/id951330296), [Android](https://play.google.com/store/apps/details?id=com.bitpay.copay&hl=en), [Windows Phone](http://www.windowsphone.com/en-us/store/app/copay-wallet/4372479b-a064-4d18-8bd3-74a3bdb81c3a), [Chrome App](https://chrome.google.com/webstore/detail/copay/cnidaodnidkbaplmghlelgikaiejfhja?hl=en), [Linux](https://github.com/bitpay/copay/releases/latest), [Windows](https://github.com/bitpay/copay/releases/latest) and [OS X](https://github.com/bitpay/copay/releases/latest) devices
 
-## Installation
+## Install For Development
 
-Clone the source:
+Clone the repo and open the directory:
 
 ```sh
 git clone https://github.com/bitpay/copay.git
 cd copay
 ```
 
-Install [bower](http://bower.io/) and [grunt](http://gruntjs.com/getting-started) if you haven't already:
+Ensure you have [Node](https://nodejs.org/) installed, then install and start Copay:
 
 ```sh
-npm install -g bower
-npm install -g grunt-cli
-```
-
-Build Copay:
-
-```sh
-sudo gem install sass
-bower install
 npm install
-grunt
 npm start
 ```
 
-Then visit `localhost:3000` in your browser.
+Visit [`localhost:3000`](http://localhost:3000/) to view the app.
 
-> **Note:** Other browser extensions could have access to Copay internal data and compromise the user's private key when running Copay as a web page.  For optimal security, you should disable all third-party browser extensions when using Copay in this manner.
+> **Note:** This method should only be used for development purposes. When running Copay in a normal browser environment, browser extensions and other malicious code might have access to internal data and private keys. For production use, see the latest official [releases](https://github.com/bitpay/copay/releases/).
 
 ## Build Copay App Bundles
 
@@ -71,7 +61,7 @@ Then visit `localhost:3000` in your browser.
 
 ##### Notes for Xcode 7.0
 
-###### ATS support 
+###### ATS support
 
 Before starting Copay from Xcode, add these lines to "Custom iOS Target Properties":
 
@@ -142,7 +132,7 @@ For more information regarding how addresses are generated using this procedure,
 
 ## Copay Backups and Recovery
 
-Since v1.2 Copay uses BIP39 mnemonics for backing up wallets.  The BIP44 standard is used for wallet address derivation. Multisig wallets use P2SH addresses, while non-multisig wallets use P2PKH. 
+Since v1.2 Copay uses BIP39 mnemonics for backing up wallets.  The BIP44 standard is used for wallet address derivation. Multisig wallets use P2SH addresses, while non-multisig wallets use P2PKH.
 
 Information about backup and recovery procedures is available at: https://github.com/bitpay/copay/blob/master/backupRecovery.md
 
@@ -151,12 +141,12 @@ Previous versions of Copay used files as backups. See the following section.
 It is possible to recover funds from a Copay Wallet without using Copay or the Wallet Service, check the [Copay Recovery Tool](https://github.com/bitpay/copay-recovery).
 
 
-## Wallet Export format
+## Wallet Export Format
 
 Copay encrypts the backup with the [Stanford JS Crypto Library](http://bitwiseshiftleft.github.io/sjcl/).  To extract the private key of your wallet you can use https://bitwiseshiftleft.github.io/sjcl/demo/, copy the backup to 'ciphertext' and enter your password.  The resulting JSON will have a key named: `xPrivKey`, that is the extended private key of your wallet.  That information is enough to sign any transaction from your wallet, so be careful when handling it!
 
 The backup also contains the key `publicKeyRing` that holds the extended public keys of the Copayers.
-Depending on the key `derivationStrategy`, addresses are derived using 
+Depending on the key `derivationStrategy`, addresses are derived using
 [BIP44](https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki) or [BIP45](https://github.com/bitcoin/bips/blob/master/bip-0045.mediawiki). Wallets created in Copay v1.2 and forward always use BIP44, all previous wallets use BIP45. Also note that since Copay version v1.2, non-multisig wallets use address types Pay-to-PublicKeyHash (P2PKH) while multisig wallets still use Pay-to-ScriptHash (P2SH) (key `addressType` at the backup):
 
 | Copay Version  | Wallet Type   | Derivation Strategy   | Address Type  |
@@ -190,12 +180,12 @@ https://chrome.google.com/webstore/detail/trezor-chrome-extension/jcjjhjgimijdko
 To create or join a wallet using Ledger or Trezor go to:
 
   Add Wallet -> Create or Join -> Advanced options -> Wallet Seed -> select Trezor or Ledger
-  
+
 Both devices support multiple accounts, so you can use them for multiple wallets. Select the account and then click on create or join.
 
 It is also possible to import a wallet from a device using:
   Add Wallet -> Import -> Hardware wallet
- 
+
 Here it is also necesary to select the account number.
 
 When creating or joining a wallet, Copay will ask for two public keys for the device. One public keys is used for the wallet itself and the other is used as an entropy source to create a private / public key pair for signing requests to the Wallet Service.
@@ -204,7 +194,7 @@ Every time you need to sign a transaction, the device will be needed to perform 
 
 Finally, in case you lose the device and you have the 24 word seed for the device, you can recover access to your funds using Copay, see: https://github.com/bitpay/copay/blob/master/backupRecovery.md#hardware-wallets
 
- 
+
 ## Translations
 Copay uses standard gettext PO files for translations and [Crowdin](https://crowdin.com/project/copay) as the front-end tool for translators.  To join our team of translators, please create an account at [Crowdin](https://crowdin.com) and translate the Copay documentation and application text into your native language.
 
@@ -227,34 +217,35 @@ This will download all partial and complete language translations while also cle
 
 *Gracias totales!*
 
-## Release schedules
+## Release Schedules
 Copay uses the `MAJOR.MINOR.BATCH` convention for versioning.  Any release that adds features should modify the MINOR or MAJOR number.
 
 ### Bug Fixing Releases
 
 We release bug fixes as soon as possible for all platforms.  Usually around a week after patches, a new release is made with language translation updates (like 1.1.4 and then 1.1.5).  There is no coordination so all platforms are updated at the same time.
 
-### Minor and Major releases
+### Minor and Major Releases
 - t+0: tag the release 1.2 and "text lock" (meaning only non-text related bug fixes. Though this rule is sometimes broken, it's good to make a rule.)
 - t+7: testing for 1.2 is finished, translation is also finished, and 1.2.1 is tagged with all translations along with bug fixes made in the last week.
 - t+7: iOS is submitted for 1.2.1. All other platforms are submitted with auto-release off.
 - t + (~17): All platforms 1.2.1 are released when Apple approves the iOS application update.
 
-## How to verify Copay signatures
+## How to Verify Copay Signatures
 
- 1. Download copay@bitpay.com public key (`gpg --recv-keys 1112CFA1`)
- 1. Download Copay binary ($FILENAME) and signature file ($FILENAME.sig)
- 1. Check it by running:
+ 1. Download the `copay@bitpay.com` public key (`gpg --recv-keys 1112CFA1`)
+ 2. Download Copay binary (`$FILENAME`) and signature file (`$FILENAME.sig`)
+ 3. Verify the signature by running:
+
 ``` bash
 $ gpg --verify \
  $FILENAME.sig \
  $FILENAME
 
-# It should say:
- "Good signature from "Copay (visit copay.io) <copay@bitpay.com>"
-``` 
+# It should return:
+Good signature from "Copay (visit copay.io) <copay@bitpay.com>"
+```
 
-### Public Key for Copay binaries
+### Public Key for Copay Binaries
 Instead of importing the public key from a public server (like gnu's) you can grab it from here:
 
 ```
