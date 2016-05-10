@@ -16,10 +16,8 @@ describe('walletService', function() {
     walletService = _walletService_;
   }));
 
-  describe('walletService', function() {
-    it('should be defined', function() {
-      should.exist(walletService);
-    });
+  it('should be defined', function() {
+    should.exist(walletService);
   });
 
 });
