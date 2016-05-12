@@ -127,7 +127,7 @@ module.exports = function(grunt) {
         dest: 'public/js/copay.js'
       },
       css: {
-        src: ['src/css/*.css', 'src/sass/*.css'],
+        src: ['src/sass/*.css', 'src/css/*.css'],
         dest: 'public/css/copay.css'
       },
       foundation: {
