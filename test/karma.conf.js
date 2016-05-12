@@ -10,7 +10,7 @@ module.exports = function(config) {
 
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-    frameworks: ['mocha', 'chai'],
+    frameworks: ['mocha', 'chai', 'sinon'],
 
 
     // list of files / patterns to load in the browser
@@ -35,6 +35,7 @@ module.exports = function(config) {
       'bower_components/angular-mocks/angular-mocks.js',
       'angular-bitcore-wallet-client/angular-bitcore-wallet-client.js',
       'src/js/**/*.js',
+      'test/helpers.js',
       'test/**/*.js'
     ],
 

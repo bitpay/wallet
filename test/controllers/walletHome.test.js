@@ -6,38 +6,8 @@ describe('walletHome', function() {
   var fakeNotification = {};
 
 
-  // UI-Router mock from
-  // https://gist.github.com/bmwant/4c8e5fee7a539dba69ace42b617d79c3
   angular.module('stateMock', []);
-  angular.module('stateMock').service("$state", function($q) {
-    this.expectedTransitions = [];
-    this.transitionTo = function(stateName) {
-      if (this.expectedTransitions.length > 0) {
-        var expectedState = this.expectedTransitions.shift();
-        if (expectedState !== stateName) {
-          throw Error("Expected transition to state: " + expectedState + " but transitioned to " + stateName);
-        }
-      } else {
-        throw Error("No more transitions were expected! Tried to transition to " + stateName);
-      }
-      console.log("Mock transition to: " + stateName);
-      var deferred = $q.defer();
-      var promise = deferred.promise;
-      deferred.resolve();
-      return promise;
-    };
-
-    this.go = this.transitionTo;
-    this.expectTransitionTo = function(stateName) {
-      this.expectedTransitions.push(stateName);
-    };
-
-    this.ensureAllTransitionsHappened = function() {
-      if (this.expectedTransitions.length > 0) {
-        throw Error("Not all transitions happened!");
-      }
-    };
-  });
+  angular.module('stateMock').service("$state", mocks.$state.bind());
 
   // Adds walletService's module dependencies
   beforeEach(function() {

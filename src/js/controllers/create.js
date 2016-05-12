@@ -159,6 +159,7 @@ angular.module('copayApp.controllers').controller('createController',
     this._create = function(opts) {
       self.loading = true;
       $timeout(function() {
+console.log('[create.js.162:opts:]',opts); //TODO
         profileService.createWallet(opts, function(err, walletId) {
           self.loading = false;
           if (err) {

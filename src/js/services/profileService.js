@@ -143,9 +143,8 @@ angular.module('copayApp.services')
             root.isDisclaimerAccepted(function(val) {
               if (!val) {
                 return cb(new Error('NONAGREEDDISCLAIMER: Non agreed disclaimer'));
-              } else {
-                return cb();
-              }
+              } 
+              return cb();
             });
           });
         });
@@ -311,11 +310,13 @@ angular.module('copayApp.services')
     };
 
     root.joinWallet = function(opts, cb) {
+console.log('[profileService.js.318:bwcService:] getSJCL',bwcService.getSJCL); //TODO
       var walletClient = bwcService.getClient();
       $log.debug('Joining Wallet:', opts);
 
       try {
         var walletData = bwcService.parseSecret(opts.secret);
+console.log('[profileService.js.319:walletData:]',walletData); //TODO
 
         // check if exist
         if (lodash.find(root.profile.credentials, {
@@ -323,7 +324,10 @@ angular.module('copayApp.services')
           })) {
           return cb(gettext('Cannot join the same wallet more that once'));
         }
+
+console.log('[profileService.js.328]'); //TODO
       } catch (ex) {
+console.log('[profileService.js.330:ex:]',ex); //TODO
         $log.debug(ex);
         return cb(gettext('Bad wallet invitation'));
       }
@@ -566,6 +570,7 @@ angular.module('copayApp.services')
           if (err) return cb(err);
 
           root.bindProfile(p, function(err) {
+            // ignore NONAGREEDDISCLAIMER
             storageService.storeNewProfile(p, function(err) {
               return cb(err);
             });
@@ -584,6 +589,7 @@ angular.module('copayApp.services')
     root.isDisclaimerAccepted = function(cb) {
       var disclaimerAccepted = root.profile && root.profile.disclaimerAccepted;
 
+console.log('[profileService.js.609]', root.profile); //TODO
       if (disclaimerAccepted)
         return cb(true);
 
