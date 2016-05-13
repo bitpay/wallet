@@ -23,16 +23,11 @@
     "ng-lodash": "0.2.3",
     "qrcode-decoder-js": "*",
     "trezor-connect": "~1.0.1",
-    "ng-csv": "~0.3.6",
-    "angular-touch": "^1.5.5",
-    "fastclick": "^1.0.6",
-    "stateful-fastclick": "^1.0.2",
-    "angular-stateful-fastclick": "^1.0.2"
+    "ng-csv": "~0.3.6"
   },
   "resolutions": {
     "angular": "1.4.6",
     "qrcode-generator": "0.1.0",
-    "angular-ui-router": "0.2.18",
-    "fastclick": "1.0.6"
+    "angular-ui-router": "0.2.18"
   }
 }
