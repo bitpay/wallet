@@ -85,7 +85,7 @@
               <br><span translate>Tap to retry</span>
             </div>
 
-            <div ng-click='index.updateAll({triggerTxUpdate: true})'  ng-show="!index.updateError && index.walletScanStatus != 'error'">
+            <div ng-click='index.updateAll({triggerTxUpdate: true})'  ng-show="!index.updateError && index.walletScanStatus != 'error' && !index.shouldHideBalance" on-hold="index.onHold()">
               <strong class="size-36">{{index.totalBalanceStr}}</strong>
               <div class="size-14"
                 ng-if="index.totalBalanceAlternative">
@@ -97,6 +97,12 @@
                 {{index.pendingAmountStr}}
               </div>
 
+            </div>
+            <div ng-show="index.shouldHideBalance" on-hold="index.onHold()">
+                <strong class="size-24" translate>[Balance Hidden]</strong>
+                <div class="size-14" transalate>
+                  Tap and hold to show
+                </div>
             </div>
           </div>
 
@@ -396,7 +402,7 @@
     <div id="send" class="send tab-view">
       <div class="pr p25b">
         <h4 class="title m0">
-          <available-balance></available-balance>
+          <available-balance ng-show="!index.shouldHideBalance"></available-balance>
           <span
             ng-show="home.lockedCurrentFeePerKb || home.blockUx || home.lockAmount"
             class="text-gray" translate>Send Max</span>
