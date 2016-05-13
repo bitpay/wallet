@@ -52,7 +52,7 @@ module.exports = function(grunt) {
         },
       },
       css: {
-        files: ['src/css/*.css'],
+        files: ['src/sass/*.css', 'src/css/*.css'],
         tasks: ['concat:css']
       },
       sass: {

@@ -1,0 +1,75 @@
+
+<div class="topbar-container">
+  <nav ng-controller="topbarController as topbar"
+       class="tab-bar">
+    <section class="left-small">
+      <a class="p10"
+         ng-click="topbar.goHome()">
+        <span class="text-close">Close</span>
+      </a>
+    </section>
+
+    <section class="right-small">
+      <a class="p10" ng-click="$root.go('buyAmazon')">
+        <i class="fi-shopping-cart size-24"></i>
+      </a>
+    </section>
+
+    <section class="middle tab-bar-section">
+      <h1 class="title ellipsis">
+        Amazon Gift Card
+      </h1>
+    </section>
+  </nav>
+</div>
+
+<div class="content amazon p20b" ng-controller="amazonController as amazon">
+
+  <div class="onGoingProcess" ng-show="amazon.loading">
+    <div class="onGoingProcess-content">
+    <div class="spinner">
+      <div class="rect1"></div>
+      <div class="rect2"></div>
+      <div class="rect3"></div>
+      <div class="rect4"></div>
+      <div class="rect5"></div>
+    </div>
+    <span ng-show="amazon.loading">{{amazon.loading}}</span>
+    </div>
+  </div>
+
+  <div ng-init="amazon.init()">
+
+    <div class="p20t text-center">
+      <img src="img/amazon-gift-card.png" alt="Amazon Gift Card" width="200">
+    </div>
+
+    <div class="p20t text-center size-12" ng-if="!amazon.giftCards">
+      No gift card in your wallet. <a ng-click="$root.go('buyAmazon')">Buy one now!</a>
+    </div>
+
+    <div ng-if="amazon.giftCards">
+      <h4 class="title">Cards</h4>
+      <div ng-repeat="(id, item) in amazon.giftCards | orderObjectBy:'date':true track by $index"
+           ng-click="amazon.openCardModal(item)"
+        class="row collapse last-transactions-content size-12">
+        <div class="large-2 medium-2 small-2 columns">
+          <img src="img/amazon-item.png" alt="{{id}}" width="30">
+        </div>
+        <div class="large-4 medium-4 small-4 columns text-bold">
+          {{item.cardInfo.value.amount | currency : item.cardInfo.value.currencyCode + ' ' : 2}}
+        </div>
+        <div class="large-5 medium-5 small-5 columns text-right">
+          <span class="text-warning" ng-if="item.status == 'ERROR'">Error</span>
+          <span class="text-light" ng-if="item.status != 'ERROR'">{{item.date * 1000 | amCalendar}}</span>
+        </div>
+        <div class="large-1 medium-1 small-1 columns text-right">
+          <i class="icon-arrow-right3 size-18"></i>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="extra-margin-bottom"></div>
+</div>
