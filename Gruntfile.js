@@ -214,7 +214,7 @@ module.exports = function(grunt) {
         expand: true,
         flatten: true,
         src: 'bower_components/ionic/release/fonts/ionicons.*',
-        dest: 'public/font/'
+        dest: 'public/fonts/'
       },
       linux: {
         files: [{
