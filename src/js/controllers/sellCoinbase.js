@@ -321,7 +321,7 @@ angular.module('copayApp.controllers').controller('sellCoinbaseController',
                 }
                 $timeout(function() {
                   self.loading = null;
-                  return cb(null, txp);
+                  return cb(null, broadcastedTxp);
                 }, 5000);
               });
             });
