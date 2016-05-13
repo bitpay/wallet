@@ -152,6 +152,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
       self.initGlidera();
       self.initCoinbase();
+      self.initAmazon();
 
       self.hideBalance();
 
@@ -1032,6 +1033,10 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     });
   };
 
+
+  self.initAmazon = function() {
+    self.amazonEnabled = configService.getSync().amazon.enabled;
+  };
 
   self.initGlidera = function(accessToken) {
     self.glideraEnabled = configService.getSync().glidera.enabled;

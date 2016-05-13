@@ -1,0 +1,119 @@
+<div 
+  class="topbar-container" 
+  ng-include="'views/includes/topbar.html'"
+  ng-init="titleSection='Buy a gift card'; goBackToState = 'amazon'; noColor = true">
+</div>
+
+
+<div class="content amazon" ng-controller="buyAmazonController as buy">
+
+  <div class="onGoingProcess" ng-show="buy.loading">
+    <div class="onGoingProcess-content" ng-style="{'background-color': '#2b71b1'}">
+    <div class="spinner">
+      <div class="rect1"></div>
+      <div class="rect2"></div>
+      <div class="rect3"></div>
+      <div class="rect4"></div>
+      <div class="rect5"></div>
+    </div>
+    <span>{{buy.loading}}</span>
+    </div>
+  </div>
+
+  <div class="row m20t" ng-show="!buy.giftCard">
+    <div class="columns">
+
+      <div class="box-notification m20b" ng-show="buy.error" ng-click="buy.error = null">
+        <span class="text-warning">
+          {{buy.error}}
+        </span>
+      </div>     
+
+      <div class="text-center">
+        <img src="img/amazon-card.png" alt="Amazon Gift Card" width="200">
+        <div class="tu size-12 text-gray">Redeem online</div>
+      </div>
+      <form
+         name="buyAmazonForm" 
+         ng-submit="buy.createTx()" 
+         novalidate>
+
+        <div class="m20v text-center">
+          <a class="amazon-select-amount" ng-click="buy.setAmount()">-</a>
+          <span class="amazon-amount">${{fiat}}</span>
+          <a class="amazon-select-amount" ng-click="buy.setAmount(1)">+</a>
+        </div>
+
+        <div 
+         ng-init="buy.init()"
+         ng-click="openWalletsModal(buy.otherWallets)">
+          <label>Pay From Copay Wallet</label>
+          <div class="input">
+            <input type="text" id="address" name="address" ng-disabled="buy.selectedWalletId" 
+            ng-attr-placeholder="{{'Choose your source wallet'}}" 
+            ng-model="buy.selectedWalletName" required>
+            <a class="postfix size-12 m0 text-gray">
+              <i class="icon-wallet size-18"></i>
+            </a>
+          </div>
+        </div> 
+
+        <div class="size-12 text-gray text-light m10v">
+          Use your Amazon.com Gift Card to shop from a huge selection of books, electronics, music, movies, software, apparel, toys, and more.
+        </div>
+
+        <div class="input m20t">
+          <input class="button black expand round" 
+                   ng-disabled="buy.loading || !fiat"
+                   ng-style="{'background-color': '#2b71b1'}"
+                   type="submit" value="Buy">
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="m20t row" ng-show="buy.giftCard">
+    <div class="columns">
+      <h1 class="text-center">Gift card ready to redeem!</h1>
+
+      <div class="size-12 text-center">
+        <span class="label gray radius">
+        {{buy.giftCard.cardInfo.value.amount | currency : buy.giftCard.cardInfo.value.currencyCode + ' ' : 2 }}
+        </span>
+      </div>
+
+      <div class="white p10 m10">
+        <div class="tu text-gray size-12">Claim code</div>
+        <div class="text-bold size-16 m5t enable_text_select">{{buy.giftCard.gcClaimCode}}</div>
+      </div>
+
+      <div class="text-center m20t">
+        <button class="button outline round dark-gray tiny" 
+          ng-click="$root.openExternalLink('https://www.amazon.com/gc/redeem?claimCode=' + buy.giftCard.gcClaimCode)">
+          <span class="text-gray">Go to amazon.com</span>
+        </button>
+      </div>
+
+      <div class="m20 size-12 text-gray line-t p10t">
+        To redeem your gift card, follow these steps:
+        <ol class="size-12">
+          <li>Visit www.amazon.com/gc.</li>
+          <li>Click Apply to Account and enter the claim code when prompted.</li>
+          <li>Gift card funds will be applied automatically to eligible orders during the checkout process.</li>
+          <li>You must pay for any remaining balance on your order with another payment method.</li>
+        </ol>
+      </div>
+
+      <div class="text-center m20t line-t p10t">
+        <div class="tu text-gray size-12 text-left">BitPay invoice</div>
+        <div class="text-bold size-16 m5t text-left">{{buy.giftCard.bitpayInvoiceId}}</div>
+        <button class="m20t button outline round dark-gray tiny" 
+          ng-click="$root.openExternalLink('https://bitpay.com/invoice/' + buy.giftCard.bitpayInvoiceId)">
+          <span class="text-gray">View invoice</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+</div>
+<div class="extra-margin-bottom"></div>
