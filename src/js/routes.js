@@ -148,11 +148,6 @@ angular
           },
         }
       })
-      .state('importProfile', {
-        url: '/importProfile',
-        templateUrl: 'views/importProfile.html',
-        needProfile: false
-      })
       .state('importLegacy', {
         url: '/importLegacy',
         needProfile: true,
