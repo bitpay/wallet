@@ -1,0 +1,45 @@
+<nav class="tab-bar">
+  <section class="left-small">
+    <a ng-click="cancel()">
+      <i class="icon-arrow-left3 icon-back"></i>
+      <span class="text-back">Back</span>
+    </a>
+  </section>
+  <section class="middle tab-bar-section">
+    <h1 class="title ellipsis">
+      Details
+    </h1>
+  </section>
+</nav>
+
+<div class="modal-content fix-modals-touch"
+     ng-swipe-disable-mouse
+     ng-swipe-right="cancel()">
+  <div class="header-modal bg-gray text-center">
+
+    <img src="img/amazon-card.png" alt="Amazon" width="200">
+    
+    <div class="size-24 text-bold m10t">
+      {{card.cardInfo.value.amount | currency : card.cardInfo.value.currencyCode + ' ' : 2}}
+    </div>
+  </div>
+
+  <ul class="no-bullet size-14">
+    <li class="line-b p10 oh">
+      <span class="text-gray">Claim code</span>
+      <span class="text-bold right enable_text_select">{{card.gcClaimCode}}</span>
+    </li>
+    <li class="line-b p10 oh">
+      <span class="text-gray">Status</span>
+      <span class="text-success right" ng-if="card.status == 'SUCCESS'">Completed</span>
+      <span class="text-info right" ng-if="card.status == 'PENDING'">Pending</span>
+      <span class="text-warning right" ng-if="card.status == 'ERROR'">Error</span>
+    </li>
+    <li class="line-b p10 oh">
+      <span class="text-gray">BitPay Invoice ID</span>
+      <span class="text-gray right enable_text_select">{{card.bitpayInvoiceId}}</span>
+    </li>
+  </ul>
+
+  <div class="extra-margin-bottom"></div>
+</div>
