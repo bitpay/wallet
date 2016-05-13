@@ -138,7 +138,35 @@ module.exports = function(grunt) {
           'bower_components/angular-ui-switch/angular-ui-switch.css'
         ],
         dest: 'public/css/foundation.css',
-      }
+      },
+      ionic_js: {
+        src: [
+          'bower_components/ionic/release/js/ionic.bundle.min.js'
+        ],
+        dest: 'public/lib/ionic.bundle.js'
+      },
+      ionic_css: {
+        src: [
+          'bower_components/ionic/release/css/ionic.min.css'
+        ],
+        dest: 'public/css/ionic.css',
+      },
+      ui_components_js: {
+        src: [
+          'bower_components/jquery/dist/jquery.js',
+          'bower_components/roundSlider/dist/roundslider.min.js',
+          'bower_components/angular-gridster/dist/angular-gridster.min.js',
+          'bower_components/javascript-detect-element-resize/detect-element-resize.js'
+        ],
+        dest: 'public/lib/ui-components.js'
+      },
+      ui_components_css: {
+        src: [
+          'bower_components/roundSlider/dist/roundslider.min.css',
+          'bower_components/angular-gridster/dist/angular-gridster.min.css'
+        ],
+        dest: 'public/css/ui-components.css',
+      },
     },
     uglify: {
       options: {
@@ -181,6 +209,12 @@ module.exports = function(grunt) {
         flatten: true,
         src: 'bower_components/foundation-icon-fonts/foundation-icons.*',
         dest: 'public/icons/'
+      },
+      ionic_fonts: {
+        expand: true,
+        flatten: true,
+        src: 'bower_components/ionic/release/fonts/ionicons.*',
+        dest: 'public/font/'
       },
       linux: {
         files: [{
@@ -242,7 +276,7 @@ module.exports = function(grunt) {
     }
   });
 
-  grunt.registerTask('default', ['nggettext_compile', 'exec:version', 'exec:coinbase', 'browserify', 'sass', 'concat', 'copy:icons']);
+  grunt.registerTask('default', ['nggettext_compile', 'exec:version', 'exec:coinbase', 'browserify', 'sass', 'concat', 'copy:icons', 'copy:ionic_fonts']);
   grunt.registerTask('prod', ['default', 'uglify']);
   grunt.registerTask('translate', ['nggettext_extract']);
   grunt.registerTask('test', ['karma:unit']);
