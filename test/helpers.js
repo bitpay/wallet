@@ -47,7 +47,7 @@ mocks.notification = {};
  * opts
  */
 
-mocks.init = function(opts) {
+mocks.init = function(fixtures) {
 
   angular.module('stateMock', []);
   angular.module('stateMock').service("$state", mocks.$state.bind());
@@ -59,7 +59,7 @@ mocks.init = function(opts) {
     module('ngLodash');
     module('gettext');
     module('bwcModule', function($provide) {
-      $provide.decorator('bwcService', function($delegate) {
+      $provide.decorator('bwcService', function($delegate, lodash) {
         var getClient = $delegate.getClient;
         var config = $delegate.config;
 
@@ -80,11 +80,24 @@ mocks.init = function(opts) {
           if (walletData)
             bwc.import(walletData);
 
-          bwc.createWallet = function(walletName, copayerName, m, n, opts, cb) {
-            console.log('[helpers.js.81:bwc:]', bwc.credentials); //TODO
-            console.log('FAKE CREATE WALLET'); //TODO
-            return cb();
-          }
+          // TODO do this better....
+          function hash(method,url, args){
+            return method+url+JSON.stringify(args);
+          };
+
+          // Use fixtures
+          bwc._doRequest = function(method, url, args, cb) {
+            // find fixed response:
+            var hash = (method, url, args);
+            if (lodash.isUndefined(fixtures[hash])){
+              console.log('Method:', method);
+              console.log('URL:', url);
+              console.log('ARGS:', args);
+              throw 'Could find fixture for '+ hash;
+            } 
+
+            return fixtures[hash];
+          };
 
           return bwc;
         };

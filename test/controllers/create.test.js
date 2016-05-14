@@ -2,7 +2,9 @@ describe('createController', function() {
   var walletService;
   var storeProfile;
 
-  mocks.init();
+  var fixtures = {}; // TODO: Read from file
+
+  mocks.init(fixtures);
 
   it('should be defined', function() {
     should.exist(create);
@@ -35,9 +37,7 @@ describe('createController', function() {
       c.network.should.equal('livenet');
       // from test vectors from https://dcpos.github.io/bip39/
       c.xPrivKey.should.equal('xprv9s21ZrQH143K2x4gnzRB1eZDq92Uuvy9CXbvgQGdvykXZ9mkkot6LBjzDpgaAfvzkuxJe9JKJXQ38VoPutxvACA5MsyoBs5UyQ4HZKGshGs');
-      console.log('[create.test.js.53:profile:]', c); //TODO
       done();
     });
   });
-
 });

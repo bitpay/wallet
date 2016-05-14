@@ -588,8 +588,6 @@ console.log('[profileService.js.330:ex:]',ex); //TODO
 
     root.isDisclaimerAccepted = function(cb) {
       var disclaimerAccepted = root.profile && root.profile.disclaimerAccepted;
-
-console.log('[profileService.js.609]', root.profile); //TODO
       if (disclaimerAccepted)
         return cb(true);
 
