@@ -63,14 +63,6 @@ mocks.init = function(fixtures) {
         var getClient = $delegate.getClient;
         var config = $delegate.config;
 
-        $delegate.Client.parseSecret = function(data) {
-          console.log('[helpers.js.65:parseSecret:]', data); //TODO
-          return {
-            walletId: 'walletId'
-          };
-        };
-
-
         $delegate.getClient = function(walletData) {
           var bwc = new $delegate.Client({
             baseUrl: config.baseUrl,
