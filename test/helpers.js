@@ -73,21 +73,22 @@ mocks.init = function(fixtures) {
             bwc.import(walletData);
 
           // TODO do this better....
-          function hash(method,url, args){
-            return method+url+JSON.stringify(args);
+          function createHash(method, url, args) {
+            return JSON.stringify({
+              'method': method,
+              'url': url,
+              'args': args
+            });
           };
 
           // Use fixtures
           bwc._doRequest = function(method, url, args, cb) {
             // find fixed response:
-            var hash = (method, url, args);
-            if (lodash.isUndefined(fixtures[hash])){
-              console.log('Method:', method);
-              console.log('URL:', url);
-              console.log('ARGS:', args);
-              throw 'Could find fixture for '+ hash;
-            } 
-
+            var hash = createHash(method, url, args);
+            if (lodash.isUndefined(fixtures[hash])) {
+              console.log('##### UNDEFINED FIXTURED ####:', hash); //TODO
+              throw 'Could find fixture';
+            }
             return fixtures[hash];
           };
 
