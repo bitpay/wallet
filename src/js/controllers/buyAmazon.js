@@ -169,7 +169,8 @@ angular.module('copayApp.controllers').controller('buyAmazonController',
                   var gift = {
                     amount: dataSrc.price,
                     currencyCode: dataSrc.currency,
-                    bitpayInvoiceId: data.data.id
+                    bitpayInvoiceId: data.data.id,
+                    bitpayInvoiceUrl: data.data.url
                   };
                   self.loading = 'Buying gift card...';
                   amazonService.buyGiftCard(gift, function(err, giftCard) {

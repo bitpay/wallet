@@ -25,9 +25,14 @@
   </div>
 
   <ul class="no-bullet size-14">
-    <li class="line-b p10 oh">
+    <li class="line-b p10 oh pointer" ng-click="$root.openExternalLink()">
+      <i class="icon-arrow-right3 size-24 right text-bold"></i>  
       <span class="text-gray">Claim code</span>
       <span class="text-bold right enable_text_select">{{card.gcClaimCode}}</span>
+    </li>
+    <li class="line-b p10 oh">
+      <span class="text-gray">Created at</span>
+      <span class="test-gray right enable_text_select">{{card.date * 1000 | amDateFormat:'MM/DD/YYYY HH:mm a'}}</span>
     </li>
     <li class="line-b p10 oh">
       <span class="text-gray">Status</span>
@@ -35,8 +40,9 @@
       <span class="text-info right" ng-if="card.status == 'PENDING'">Pending</span>
       <span class="text-warning right" ng-if="card.status == 'ERROR'">Error</span>
     </li>
-    <li class="line-b p10 oh">
-      <span class="text-gray">BitPay Invoice ID</span>
+    <li class="line-b p10 oh pointer" ng-click="$root.openExternalLink(card.bitpayInvoiceUrl)">
+      <i class="icon-arrow-right3 size-24 right text-gray"></i>  
+      <span class="text-gray">BitPay Invoice</span>
       <span class="text-gray right enable_text_select">{{card.bitpayInvoiceId}}</span>
     </li>
   </ul>
