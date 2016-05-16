@@ -19,7 +19,8 @@ angular.module('copayApp.services').factory('amazonService', function($http, $lo
     "gcExpirationDate":null,
     "gcId":"A2GCN9BRX5QS76",
     "status":"SUCCESS",
-    "bitpayInvoiceId":"NJtevvEponHbQVmYoL7FYp" 
+    "bitpayInvoiceId":"NJtevvEponHbQVmYoL7FYp",
+    "bitpayInvoiceUrl":"http://test.bitpay.com/invoice?id=XwrLryQEypTKg4nq37t3bN" 
   };
 
   root.setCredentials = function(network) {
@@ -36,7 +37,7 @@ angular.module('copayApp.services').factory('amazonService', function($http, $lo
     };
   };
 
-  var _getBitPay = function(endpoint, token) {
+  var _getBitPay = function(endpoint) {
     return {
       method: 'GET',
       url: credentials.BITPAY_API + endpoint,
@@ -67,8 +68,18 @@ angular.module('copayApp.services').factory('amazonService', function($http, $lo
       $log.info('BitPay Create Invoice: SUCCESS');
       return cb(null, data.data); 
     }, function(data) {
-      $log.error('BitPay Create Invoice: ERROR ' + data.statusText);
-      return cb(data);
+      $log.error('BitPay Create Invoice: ERROR ' + data.data.error);
+      return cb(data.data.error);
+    });
+  };
+
+  root.getBitPayInvoice = function(id, cb) {
+    $http(_getBitPay('/invoices/' + id)).then(function(data) {
+      $log.info('BitPay Get Invoice: SUCCESS');
+      return cb(null, data.data);
+    }, function(data) {
+      $log.error('BitPay Get Invoice: ERROR ' + data.data.error);
+      return cb(data.data.error);
     });
   };
 
@@ -112,6 +123,7 @@ angular.module('copayApp.services').factory('amazonService', function($http, $lo
     saveData.cardInfo.value.amount = gift.amount;
     saveData.cardInfo.value.currencyCode = gift.currencyCode;
     saveData['bitpayInvoiceId'] = gift.bitpayInvoiceId;
+    saveData['bitpayInvoiceUrl'] = gift.bitpayInvoiceUrl;
     saveData['date'] = newId;
     root.saveGiftCard(saveData, null, function(err) {
       return cb(null, fakeData);

@@ -108,7 +108,7 @@
         <div class="tu text-gray size-12 text-left">BitPay invoice</div>
         <div class="text-bold size-16 m5t text-left">{{buy.giftCard.bitpayInvoiceId}}</div>
         <button class="m20t button outline round dark-gray tiny" 
-          ng-click="$root.openExternalLink('https://bitpay.com/invoice/' + buy.giftCard.bitpayInvoiceId)">
+          ng-click="$root.openExternalLink(buy.giftCard.bitpayInvoiceUrl)">
           <span class="text-gray">View invoice</span>
         </button>
       </div>
