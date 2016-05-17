@@ -19,7 +19,7 @@
     </section>
   </nav>
 
-  <div class="content preferences">
+  <div class="content preferences text-center">
     <div class="box-notification" ng-show="wordsC.error">
       <span class="text-warning">
         {{wordsC.error|translate}}
@@ -37,21 +37,21 @@
           <span translate>
             To restore this {{index.m}}-{{index.n}} <b>shared</b> wallet you will need
           </span>:
-          <ol class="m10t columns size-14 text-gray">
-            <li translate>Your wallet recovery phrase and access to the server that coordinated the initial wallet creation. You still need {{index.m}} keys to spend.</li>
-            <li translate><b>OR</b> the wallet recovery phrase of <b>all</b> copayers in the wallet</li>
-            <li translate><b>OR</b> 1 wallet export file and the remaining quorum of wallet recovery phrases (e.g. in a 3-5 wallet: 1 wallet export file + 2 wallet recovery phrases of any of the other copayers).</li>
-          </ol>
+          <div class="m10t columns size-14 text-gray">
+            <span translate>Your wallet recovery phrase and access to the server that coordinated the initial wallet creation. You still need {{index.m}} keys to spend.</span>
+            <span translate><b>OR</b> the wallet recovery phrase of <b>all</b> copayers in the wallet</span>
+            <span translate><b>OR</b> 1 wallet export file and the remaining quorum of wallet recovery phrases (e.g. in a 3-5 wallet: 1 wallet export file + 2 wallet recovery phrases of any of the other copayers).</span>
+          </div>
           </span>
         </div>
         <div class="size-14 text-gray columns" ng-show="(index.n>1 && index.m == index.n )">
           <span translate>
             To restore this {{index.m}}-{{index.n}} <b>shared</b> wallet you will need
           </span>:
-          <ol class="m10t columns size-14 text-gray">
-            <li translate>Your wallet recovery phrase and access to the server that coordinated the initial wallet creation. You still need {{index.m}} keys to spend.</li>
-            <li translate><b>OR</b> the wallet recovery phrases of <b>all</b> copayers in the wallet</li>
-          </ol>
+          <div class="m10t columns size-14 text-gray">
+            <span translate>Your wallet recovery phrase and access to the server that coordinated the initial wallet creation. You still need {{index.m}} keys to spend.</span>
+            <span translate><b>OR</b> the wallet recovery phrases of <b>all</b> copayers in the wallet</span>
+          </div>
           </span>
         </div>
       </div>
