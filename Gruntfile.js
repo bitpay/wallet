@@ -97,7 +97,6 @@ module.exports = function(grunt) {
           'bower_components/ng-lodash/build/ng-lodash.js',
           'bower_components/angular-qrcode/angular-qrcode.js',
           'bower_components/angular-gettext/dist/angular-gettext.js',
-          'bower_components/angular-ui-switch/angular-ui-switch.js',
           'bower_components/angular-sanitize/angular-sanitize.js',
           'bower_components/ng-csv/build/ng-csv.js',
           'angular-bitcore-wallet-client/angular-bitcore-wallet-client.js'

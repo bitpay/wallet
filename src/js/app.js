@@ -8,7 +8,6 @@ var modules = [
   'gettext',
   'ionic',
   'ngLodash',
-  'uiSwitch',
   'ngSanitize',
   'ngCsv',
   'bwcModule',
