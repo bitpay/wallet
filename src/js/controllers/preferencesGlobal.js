@@ -35,24 +35,22 @@ angular.module('copayApp.controllers').controller('preferencesGlobalController',
       });
     }
 
-    var unwatchSpendUnconfirmed = $scope.$watch('spendUnconfirmed', function(newVal, oldVal) {
-      if (newVal == oldVal) return;
+    $scope.spendUnconfirmedChange = function() {
       var opts = {
         wallet: {
-          spendUnconfirmed: newVal
+          spendUnconfirmed: $scope.spendUnconfirmed
         }
       };
       configService.set(opts, function(err) {
-        $rootScope.$emit('Local/SpendUnconfirmedUpdated', newVal);
+        $rootScope.$emit('Local/SpendUnconfirmedUpdated', $scope.spendUnconfirmed);
         if (err) $log.debug(err);
       });
-    });
+    };
 
-    var unwatchPushNotifications = $scope.$watch('pushNotifications', function(newVal, oldVal) {
-      if (newVal == oldVal) return;
+    $scope.pushNotificationsChange = function() {
       var opts = {
         pushNotifications: {
-          enabled: newVal
+          enabled: $scope.pushNotifications
         }
       };
       configService.set(opts, function(err) {
@@ -62,38 +60,29 @@ angular.module('copayApp.controllers').controller('preferencesGlobalController',
           pushNotificationsService.disableNotifications(profileService.walletClients);
         if (err) $log.debug(err);
       });
-    });
+    };
 
-    var unwatchGlideraEnabled = $scope.$watch('glideraEnabled', function(newVal, oldVal) {
-      if (newVal == oldVal) return;
+    $scope.glideraChange = function() {
       var opts = {
         glidera: {
-          enabled: newVal
+          enabled: $scope.glideraEnabled
         }
       };
       configService.set(opts, function(err) {
         $rootScope.$emit('Local/GlideraUpdated');
         if (err) $log.debug(err);
       });
-    });
+    };
 
-    var unwatchCoinbaseEnabled = $scope.$watch('coinbaseEnabled', function(newVal, oldVal) {
-      if (newVal == oldVal) return;
+    $scope.coinbaseChange = function() {
       var opts = {
         coinbase: {
-          enabled: newVal
+          enabled: $scope.coinbaseEnabled
         }
       };
       configService.set(opts, function(err) {
         $rootScope.$emit('Local/CoinbaseUpdated');
         if (err) $log.debug(err);
       });
-    });
-
-    $scope.$on('$destroy', function() {
-      unwatchSpendUnconfirmed();
-      unwatchGlideraEnabled();
-      unwatchCoinbaseEnabled();
-      unwatchPushNotifications();
-    });
+    };
   });

@@ -16,6 +16,16 @@
 	display: inherit;
 }
 
+.item-toggle .toggle {
+	right: 28px;
+}
+
+.toggle-label {
+	color: rgb(41, 55, 68);
+	font-size: 14px;
+	margin-left: 5px;
+}
+
 button, .button {
 	min-width: inherit;
   min-height: inherit;
