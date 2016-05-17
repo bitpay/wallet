@@ -38,6 +38,8 @@ mocks.$timeout = function(cb) {
 
 mocks.modal = function() {};
 
+
+mocks.setProfile = function(profile) {};
 /*
  * opts
  */
@@ -49,21 +51,14 @@ mocks.init = function(fixtures, controllerName, opts, done) {
 
   mocks.go = {};
   mocks.go.walletHome = sinon.stub();
+  mocks.go.path = sinon.stub();
 
   mocks.notification = {
     success: sinon.stub(),
   };
 
-
-
   angular.module('stateMock', []);
   angular.module('stateMock').service("$state", mocks.$state.bind());
-
-  // Adds walletService's module dependencies
-  if (!opts.keepLocalStorage) {
-    console.log(' * deleting localstorage');
-    localStorage.clear();
-  }
 
   module('ngLodash');
   module('gettext');
@@ -133,9 +128,25 @@ mocks.init = function(fixtures, controllerName, opts, done) {
   module('copayApp.controllers');
 
 
-  inject(function($rootScope, $controller, _configService_, _profileService_, _storageService_) {
+  inject(function($rootScope, $controller, $httpBackend, $injector, _configService_, _profileService_, _storageService_) {
     scope = $rootScope.$new();
     storageService = _storageService_;
+
+    // Set up the mock http service responses
+    $httpBackend = $injector.get('$httpBackend');
+
+    // backend definition common for all tests
+    $httpBackend.when('GET', 'https://bitpay.com/api/rates')
+      .respond({
+        code: "BTC",
+        name: "Bitcoin",
+        rate: 1
+      }, {
+        code: "USD",
+        name: "US Dollar",
+        rate: 452.92
+      });
+
 
     _configService_.get(function() {
       ctrl = $controller(controllerName, {
@@ -147,14 +158,34 @@ mocks.init = function(fixtures, controllerName, opts, done) {
         go: mocks.go,
       });
 
-      _profileService_.create({
-        noWallet: true
-      }, function(err) {
-        should.not.exist(err);
-        _profileService_.setDisclaimerAccepted(function() {
+      if (opts.load) {
+        _profileService_.loadAndBindProfile(function(err) {
+          console.log('[helpers.js.145:err:]', err); //TODO
+          should.not.exist(err, err);
           done();
         });
-      });
+      } else {
+        _profileService_.create({
+          noWallet: true
+        }, function(err) {
+          should.not.exist(err, err);
+          _profileService_.setDisclaimerAccepted(function() {
+            done();
+          });
+        });
+      }
     });
   });
+};
+
+mocks.clear = function(opts, done) {
+  opts = opts || {};
+
+  if (!opts.keepStorage) {
+    // Adds walletService's module dependencies
+    console.log(' * deleting localstorage');
+    localStorage.clear();
+  }
+
+  done();
 };

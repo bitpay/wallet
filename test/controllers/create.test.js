@@ -1,7 +1,4 @@
 describe('createController', function() {
-  var walletService;
-  var storeProfile;
-
   var fixtures = {
 
     // createWallet 1-1
@@ -103,6 +100,12 @@ describe('createController', function() {
     mocks.init(fixtures, 'createController', {}, done);
   })
 
+
+  afterEach(function(done){
+    mocks.clear({}, done);
+  });
+
+
   it('should be defined', function() {
     should.exist(ctrl);
   });
@@ -140,7 +143,7 @@ describe('createController', function() {
   });
 
 
-  it('should create a 2-2 wallet from mnemonic', function(done) {
+  it('should create an incomplete 2-2 wallet from mnemonic', function(done) {
     var fakeForm = {};
 
     // FROM DATA
@@ -165,6 +168,7 @@ describe('createController', function() {
     storageService.getProfile(function(err, profile) {
       should.not.exist(err);
       var c = profile.credentials[0];
+console.log('[create.test.js.167]', JSON.stringify(c)); //TODO
       c.network.should.equal('livenet');
       // from test vectors from https://dcpos.github.io/bip39/
       c.xPrivKey.should.equal('xprv9s21ZrQH143K27bhzfejhNcitEAJgLKCfdLxwhr1FLu43FLqLwscAxXgmkucpF4k8eGmepSctkiQDbcR98Qd1bzSeDuR9jeyQAQEanPT2A4');
