@@ -40,14 +40,17 @@ mocks.modal = function() {};
 mocks.go = {};
 mocks.go.walletHome = sinon.stub();
 
-mocks.notification = {};
+mocks.notification = {
+  success: sinon.stub(),
+};
 
 
 /*
  * opts
  */
 
-mocks.init = function(fixtures) {
+mocks.init = function(fixtures, controllerName) {
+  should.exist(controllerName, 'Provide the name of the Controller to mocks.init()');
 
   angular.module('stateMock', []);
   angular.module('stateMock').service("$state", mocks.$state.bind());
@@ -77,15 +80,22 @@ mocks.init = function(fixtures) {
           if (walletData)
             bwc.import(walletData);
 
-          // TODO do this better....
           function createHash(method, url, args) {
-            var x = method + url + JSON.stringify(args);
+            var headers = JSON.stringify(bwc._getHeaders(method, url, args));
+            var x = method + url + JSON.stringify(args) + headers;
             var sjcl = $delegate.getSJCL();
             return sjcl.codec.hex.fromBits(sjcl.hash.sha256.hash(x));
           };
 
+          bwc._doGetRequest = function(url, cb) {
+            url += url.indexOf('?') > 0 ? '&' : '?';
+            url += 'r=' + 69321;
+            return this._doRequest('get', url, {}, cb);
+          };
+
           // Use fixtures
           bwc._doRequest = function(method, url, args, cb) {
+
             // find fixed response:
             var hash = createHash(method, url, args);
             if (lodash.isUndefined(fixtures[hash])) {
@@ -93,9 +103,10 @@ mocks.init = function(fixtures) {
               console.log('##### method:', method); //TODO
               console.log('##### url   :', url); //TODO
               console.log('##### args  :', JSON.stringify(args)); //TODO
+              console.log('##### header:', JSON.stringify(bwc._getHeaders(method, url, args)));
               throw 'Could find fixture';
             } else {
-              console.log('Using fixture: ' + hash.substr(0,6) + ' for: ' + url);
+              console.log('Using fixture: ' + hash.substr(0, 6) + ' for: ' + url);
             }
 
             return cb(null, fixtures[hash]);
@@ -121,7 +132,7 @@ mocks.init = function(fixtures) {
       storageService = _storageService_;
 
       _configService_.get(function() {
-        create = $controller('createController', {
+        ctrl = $controller(controllerName, {
           $scope: scope,
           $modal: mocks.modal,
           notification: mocks.notification,

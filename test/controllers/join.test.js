@@ -6,7 +6,7 @@ describe('joinController', function() {
 
 
 
-  mocks.init();
+  mocks.init({}, 'joinController');
 
   // Init config
   beforeEach(function(done) {
@@ -30,7 +30,7 @@ describe('joinController', function() {
 
 
 
-  it('should be defined', function() {
+  it.skip('should be defined', function() {
     should.exist(join);
   });
 

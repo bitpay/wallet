@@ -5,11 +5,11 @@ describe('createController', function() {
   var fixtures = {
 
     // createWallet
-    'f0717760b3ff6606e6ab88df109f42186fbe84cf1b1c9d15c1d512910fd3aa89': {
+    '56db6f58f2c212591afb4d508d03e5fb40bb786f23dc56c43b98bde42dc513e5': {
       "walletId": "267bfa75-5575-4af7-8aa3-f5186bc99262"
     },
     // join
-    'cd36f2e90826a0c7f03eb32faf06c81a44ef06947e5d2d2c64fc1d6fbbd191d7': {
+    'd2f00a570de17f52fcda4b1b4b4ed1bc688a3b33c193b71630c3183dab70e6ec': {
       "copayerId": "a9dcee10fe9c611300e6c7926ece20780f89b9a98baaa342928038b5503ed929",
       "wallet": {
         "version": "1.0.0",
@@ -56,13 +56,13 @@ describe('createController', function() {
 
   }; // TODO: Read from file
 
-  mocks.init(fixtures);
+  mocks.init(fixtures, 'createController');
 
   it('should be defined', function() {
-    should.exist(create);
+    should.exist(ctrl);
   });
 
-  it.only('should create a 1-1 wallet from mnemonic', function(done) {
+  it('should create a 1-1 wallet from mnemonic', function(done) {
     var fakeForm = {};
 
     // FROM DATA
@@ -77,10 +77,10 @@ describe('createController', function() {
     scope.privateKey = 'legal winner thank year wave sausage worth useful legal winner thank yellow';
     scope._walletPrivKey = 'Kz4CFSTgLzoYfMkt97BTBotUbZYXjMts6Ej9HbVfCf5oLmun1BXy';
 
-    create.setSeedSource();
-    create.create(fakeForm);
+    ctrl.setSeedSource();
+    ctrl.create(fakeForm);
 
-    should.not.exist(create.error);
+    should.not.exist(ctrl.error);
     mocks.go.walletHome.calledOnce.should.equal(true);
 
     // check resulting profile
