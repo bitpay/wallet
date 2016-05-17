@@ -100,7 +100,7 @@ h4.title a {
 }
 
 .walletHome h4.title {
-  padding: 0 0 10px 15px;
+  padding: 20px 0 10px 15px;
   margin: 5px 0 5px 0;
   font-size: 16px;
 }
@@ -618,6 +618,14 @@ ul.manage li {
 
 .m20t {
   margin-top: 20px;
+}
+
+.m50t {
+  margin-top: 50px;
+}
+
+.m150t {
+  margin-top: 150px;
 }
 
 .m20tp {
@@ -1575,6 +1583,13 @@ input.ng-invalid-match {
   margin-bottom: 25px;
 }
 
+.amountcollapsed {
+  width: 100%;
+  text-align: center;
+  color: #fff;
+  height: 50px;
+}
+
 .alternative-amount {
   height: 25px;
   text-align: center;
@@ -1615,11 +1630,19 @@ input.ng-invalid-match {
     text-align: center;
     border-radius: 5px;
   }
-  .wallet-info {
+  .walletinfo {
     position: absolute;
     top: inherit;
     left: 10px;
     bottom: 26px;
+    font-size: 20px;
+    color: #fff;
+  }
+  .walletinfocollapsed {
+    position: absolute;
+    top: inherit;
+    left: 10px;
+    bottom: 0px;
     font-size: 20px;
     color: #fff;
   }
@@ -2144,4 +2167,3 @@ body.modal-open {
     color: #2C3E50;
   }
 }
-

@@ -16,7 +16,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   ret.isWindowsPhoneApp = platformInfo.isWP;
   ret.onGoingProcess = {};
   ret.historyShowLimit = 10;
-  ret.historyShowMoreLimit = 100;
+  ret.historyShowMoreLimit = 10;
   ret.isSearching = false;
   ret.prevState = 'walletHome';
 
@@ -322,6 +322,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   };
 
   self.updateAll = function(opts, initStatusHash, tries) {
+    $scope.$broadcast('scroll.refreshComplete');
     tries = tries || 0;
     opts = opts || {};
     var fc = profileService.focusedClient;
@@ -985,6 +986,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
           self.historyShowMore = false;
       }
       self.nextTxHistory += self.historyShowMoreLimit;
+      $scope.$broadcast('scroll.infiniteScrollComplete');
     }, 100);
   };
 
