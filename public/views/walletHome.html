@@ -178,7 +178,7 @@
       </div>
 
       <div class="oh pr" ng-show="index.txHistory[0] || index.txProgress > 5">
-        <h4 class="title" ng-click="index.startSearch(); search=''" ng-show="!index.isSearching">
+        <h4 class="title" ng-click="index.startSearch(); openModal()">
           <span translate>Activity</span>
           <i class="dib m5l size-16 pointer fi-magnifying-glass"></i>
         </h4>
@@ -201,7 +201,7 @@
           </div>
         </div>
 
-        <div ng-if="index.txHistory[0] &&  index.updatingTxHistory && index.newTx" class="row collapse last-transactions-content animated fadeInDown">
+        <div ng-if="index.txHistory[0] && index.updatingTxHistory && index.newTx" class="row collapse last-transactions-content animated fadeInDown">
           <div class="large-6 medium-6 small-6 columns size-14">
             <div class="m10r left">
               <img src="img/icon-new.svg" width="40">
@@ -215,25 +215,9 @@
           </div>
         </div>
 
-        <div ng-show="index.isSearching" class="row searchBar">
-          <div class="small-11 columns">
-            <div class="searchLabel">
-              <i class="fi-magnifying-glass size-14"></i>
-              <form>
-                <input name="search"
-                  type="search"
-                  ng-change="index.updateSearchInput(search)"
-                  placeholder="{{'Search transactions' | translate}}"
-                  ng-model="search">
-                </input>
-              </form>
-            </div>
-          </div>
-          <div class="small-1 columns">
-            <a ng-click="index.cancelSearch()" translate>Cancel</a>
-          </div>
-        </div>
-        <div ng-repeat="btx in index.txHistorySearchResults track by btx.txid"
+        <div class="row"></div>
+
+        <div ng-repeat="btx in index.txHistory track by btx.txid"
           ng-click="home.openTxModal(btx)"
           class="row collapse last-transactions-content">
           <div class="large-6 medium-6 small-6 columns size-14">
