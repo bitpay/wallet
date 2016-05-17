@@ -63,7 +63,12 @@ mocks.init = function(fixtures) {
         var getClient = $delegate.getClient;
         var config = $delegate.config;
 
+        // Fix Encryption IVs
+        var utils = $delegate.getUtils();
+        utils.SJCL.iv = 'BZQVWAP6d1e4G8Fq1rQKbA==';
+
         $delegate.getClient = function(walletData) {
+
           var bwc = new $delegate.Client({
             baseUrl: config.baseUrl,
             verbose: config.verbose,
@@ -74,11 +79,9 @@ mocks.init = function(fixtures) {
 
           // TODO do this better....
           function createHash(method, url, args) {
-            return JSON.stringify({
-              'method': method,
-              'url': url,
-              'args': args
-            });
+            var x = method + url + JSON.stringify(args);
+            var sjcl = $delegate.getSJCL();
+            return sjcl.codec.hex.fromBits(sjcl.hash.sha256.hash(x));
           };
 
           // Use fixtures
@@ -87,9 +90,15 @@ mocks.init = function(fixtures) {
             var hash = createHash(method, url, args);
             if (lodash.isUndefined(fixtures[hash])) {
               console.log('##### UNDEFINED FIXTURED ####:', hash); //TODO
+              console.log('##### method:', method); //TODO
+              console.log('##### url   :', url); //TODO
+              console.log('##### args  :', JSON.stringify(args)); //TODO
               throw 'Could find fixture';
+            } else {
+              console.log('Using fixture: ' + hash.substr(0,6) + ' for: ' + url);
             }
-            return fixtures[hash];
+
+            return cb(null, fixtures[hash]);
           };
 
           return bwc;

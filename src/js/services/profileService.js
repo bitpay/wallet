@@ -300,7 +300,8 @@ angular.module('copayApp.services')
         if (err) return cb(err);
 
         walletClient.createWallet(opts.name, opts.myName || 'me', opts.m, opts.n, {
-          network: opts.networkName
+          network: opts.networkName,
+          walletPrivKey: opts.walletPrivKey,
         }, function(err, secret) {
           if (err) return bwsError.cb(err, gettext('Error creating wallet'), cb);
 
@@ -310,13 +311,11 @@ angular.module('copayApp.services')
     };
 
     root.joinWallet = function(opts, cb) {
-console.log('[profileService.js.318:bwcService:] getSJCL',bwcService.getSJCL); //TODO
       var walletClient = bwcService.getClient();
       $log.debug('Joining Wallet:', opts);
 
       try {
         var walletData = bwcService.parseSecret(opts.secret);
-console.log('[profileService.js.319:walletData:]',walletData); //TODO
 
         // check if exist
         if (lodash.find(root.profile.credentials, {
