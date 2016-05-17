@@ -7,25 +7,13 @@
 <div class="content p20b" ng-controller="importController as import" ng-init="type='12'">
   <div class="onGoingProcess" ng-show="import.loading  && !import.hwWallet">
     <div class="onGoingProcess-content" ng-style="{'background-color':'#222'}">
-    <div class="spinner">
-      <div class="rect1"></div>
-      <div class="rect2"></div>
-      <div class="rect3"></div>
-      <div class="rect4"></div>
-      <div class="rect5"></div>
-    </div>
+    <ion-spinner class="spinner-stable" icon="lines"></ion-spinner>
     <span translate>Importing wallet...</span>
     </div>
   </div>
   <div class="onGoingProcess" ng-show="import.hwWallet">
     <div class="onGoingProcess-content" ng-style="{'background-color':'#222'}">
-    <div class="spinner">
-      <div class="rect1"></div>
-      <div class="rect2"></div>
-      <div class="rect3"></div>
-      <div class="rect4"></div>
-      <div class="rect5"></div>
-    </div>
+    <ion-spinner class="spinner-stable" icon="lines"></ion-spinner>
     <span translate>Connecting to {{import.hwWallet}} Wallet...</span>
     </div>
   </div>
@@ -51,7 +39,7 @@
       </span>
     </div>
     <div class="row large-12 columns">
-        <form name="importForm12" ng-submit="import.importMnemonic(importForm12)" novalidate> 
+        <form name="importForm12" ng-submit="import.importMnemonic(importForm12)" novalidate>
 
           <div >
             <label for="words">
@@ -84,7 +72,7 @@
                   <input type="text" class="form-control" name="derivationPath" ng-model="derivationPath">
                 </label>
               </div>
- 
+
               <label  for="bws" class="oh">
                 <span>Wallet Service URL</span>
                 <input type="text" id="bwsurl" name="bwsurl" ng-model="bwsurl">
@@ -107,7 +95,7 @@
       </span>
     </div>
     <div class="row large-12 columns">
-        <form name="importForm" ng-submit="import.importBlob(importForm)" novalidate> 
+        <form name="importForm" ng-submit="import.importBlob(importForm)" novalidate>
 
           <div ng-show="!index.isSafari && !index.isCordova" class="line-b m10b">
             <label for="backupFile">
@@ -172,7 +160,7 @@
         {{import.error|translate}}
       </span>
     </div>
-    <div class="row large-12 columns"> 
+    <div class="row large-12 columns">
 
       <form name="importForm3" ng-submit="import.importHW(importForm3)" novalidate>
         <div class="large-12 columns">

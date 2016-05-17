@@ -18,26 +18,14 @@
 
   <div class="onGoingProcess" ng-show="index.isOffline">
     <div class="onGoingProcess-content" ng-style="{'background-color':'#222'}">
-      <div class="spinner">
-        <div class="rect1"></div>
-        <div class="rect2"></div>
-        <div class="rect3"></div>
-        <div class="rect4"></div>
-        <div class="rect5"></div>
-      </div>
+      <ion-spinner class="spinner-stable" icon="lines"></ion-spinner>
       <span translate>Reconnecting to Wallet Service...</span>
     </div>
   </div>
 
   <div class="onGoingProcess" ng-show="index.anyOnGoingProcess && !index.isOffline">
     <div class="onGoingProcess-content" ng-style="{'background-color':index.backgroundColor}">
-      <div class="spinner">
-        <div class="rect1"></div>
-        <div class="rect2"></div>
-        <div class="rect3"></div>
-        <div class="rect4"></div>
-        <div class="rect5"></div>
-      </div>
+      <ion-spinner class="spinner-stable" icon="lines"></ion-spinner>
       <span translate ng-show="
         index.onGoingProcessName == 'openingWallet'
         || index.onGoingProcessName == 'updatingStatus'
@@ -52,13 +40,7 @@
 
   <div class="onGoingProcess" ng-show="home.onGoingProcess && !index.anyOnGoingProces && !index.isOffline">
     <div class="onGoingProcess-content" ng-style="{'background-color':index.backgroundColor}">
-      <div class="spinner">
-        <div class="rect1"></div>
-        <div class="rect2"></div>
-        <div class="rect3"></div>
-        <div class="rect4"></div>
-        <div class="rect5"></div>
-      </div>
+      <ion-spinner class="spinner-stable" icon="lines"></ion-spinner>
       {{home.onGoingProcess}}...
     </div>
   </div>
@@ -168,30 +150,24 @@
             </div>
           </div>
 
-      <!-- Activity -->
-          <h4 class="title"  ng-click="index.startSearch(); openModal()">
+          <!-- Activity -->
+          
+          <h4 class="title" ng-click="index.startSearch(); openModal()" ng-show="!index.notAuthorized">
             <span translate>Activity</span>
             <i class="dib m5l size-16 pointer fi-magnifying-glass"></i>
           </h4>
 
-          <div
-              class="oh pr m20t text-gray size-12 text-center"
-              ng-show="!index.loadingWallet && !index.txHistory[0] && !index.updatingTxHistory && !index.txHistoryError && !index.updateError" translate>
-            No transactions yet
+          <div class="oh pr m20t text-gray size-12 text-center"
+            ng-show="!index.loadingWallet && !index.txHistory[0] && !index.updatingTxHistory && !index.txHistoryError && !index.updateError && !index.notAuthorized"
+            translate>No transactions yet
           </div>
 
-          <div class="oh pr" ng-show="index.txHistory[0] || index.txProgress > 5">
+          <div class="oh pr" ng-show="(index.txHistory[0] || index.txProgress > 5) && !index.notAuthorized">
 
             <div ng-show="index.updatingTxHistory && index.txProgress > 5">
               <div  class="row p20 text-center">
                 <div class="columns large-12 medium-12 small-12 m10b">
-                  <div class="spinner">
-                    <div class="rect1"></div>
-                    <div class="rect2"></div>
-                    <div class="rect3"></div>
-                    <div class="rect4"></div>
-                    <div class="rect5"></div>
-                  </div>
+                  <ion-spinner class="spinner-dark" icon="lines"></ion-spinner>
                 </div>
                 <div class="size-12 text-gray m20t">
                   <div translate>{{index.txProgress}} transactions downloaded</div>
@@ -265,13 +241,7 @@
 
             <div class="row m20t text-center" ng-show="index.historyRendering && !index.ching">
               <div class="columns large-12 medium-12 small-12">
-                <div class="spinner">
-                  <div class="rect1"></div>
-                  <div class="rect2"></div>
-                  <div class="rect3"></div>
-                  <div class="rect4"></div>
-                  <div class="rect5"></div>
-                </div>
+                <ion-spinner class="spinner-stable" icon="lines"></ion-spinner>
               </div>
             </div>
 
@@ -321,13 +291,7 @@
               <qrcode size="220" data="bitcoin:{{home.addr}}"></qrcode>
               <div ng-show="home.generatingAddress" style="position:relative; top:-226px; height:0px">
                 <div style="height:220px; width:220px; margin:auto; background: white">
-                  <div class="spinner" style="margin-top:85px">
-                    <div class="rect1"></div>
-                    <div class="rect2"></div>
-                    <div class="rect3"></div>
-                    <div class="rect4"></div>
-                    <div class="rect5"></div>
-                  </div>
+                  <ion-spinner class="spinner-stable" icon="lines" style="margin-top: 85px"></ion-spinner>
                 </div>
               </div>
               <div class="m10t" >

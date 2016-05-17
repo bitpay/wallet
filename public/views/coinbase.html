@@ -28,13 +28,7 @@
 
   <div class="onGoingProcess" ng-show="coinbase.loading || index.coinbaseLoading">
     <div class="onGoingProcess-content" ng-style="{'background-color': '#2b71b1'}">
-    <div class="spinner">
-      <div class="rect1"></div>
-      <div class="rect2"></div>
-      <div class="rect3"></div>
-      <div class="rect4"></div>
-      <div class="rect5"></div>
-    </div>
+    <ion-spinner class="spinner-stable" icon="lines"></ion-spinner>
     <span ng-show="coinbase.loading">Connecting to Coinbase...</span>
     <span ng-show="index.coinbaseLoading">{{index.coinbaseLoading}}</span>
     </div>
@@ -156,7 +150,7 @@
             <span ng-show="tx.type == 'sell' && tx.status == 'completed'">Sold</span>
             <span ng-show="tx.type == 'buy' && tx.status == 'completed'">Bought</span>
             <span class="text-bold">
-              <span ng-if="tx.type == 'sell' || (tx.type == 'send' && tx.from)">-</span>{{tx.amount.amount.replace('-','')}} 
+              <span ng-if="tx.type == 'sell' || (tx.type == 'send' && tx.from)">-</span>{{tx.amount.amount.replace('-','')}}
               {{tx.amount.currency}}
             </span>
           </div>
