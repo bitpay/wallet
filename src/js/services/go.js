@@ -39,6 +39,7 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
   };
 
   root.path = function(path, cb) {
+console.log('[go.js.41:path:]',path); //TODO
     $state.transitionTo(path)
       .then(function() {
         if (cb) return cb();
@@ -53,7 +54,7 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
   };
 
   root.walletHome = function() {
-console.log('[go.js.55:walletHome:]'); //TODO
+console.log('[go.js.56:walletHome:]',walletHome); //TODO
     var fc = profileService.focusedClient;
     if (fc && !fc.isComplete()) {
       $log.debug("Wallet not complete at startup... redirecting")
