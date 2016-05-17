@@ -8,13 +8,7 @@
   <h4 ng-show="!paperWallet.error"></h4>
   <div class="onGoingProcess" ng-show="paperWallet.scanning || paperWallet.sending">
     <div class="onGoingProcess-content" ng-style="{'background-color':index.backgroundColor}">
-      <div class="spinner">
-        <div class="rect1"></div>
-        <div class="rect2"></div>
-        <div class="rect3"></div>
-        <div class="rect4"></div>
-        <div class="rect5"></div>
-      </div>
+      <ion-spinner class="spinner-stable" icon="lines"></ion-spinner>
       <span ng-show="paperWallet.scanning" translate>Scanning wallet funds...</span>
       <span ng-show="paperWallet.sending" translate>Sending funds...</span>
     </div>
@@ -24,7 +18,7 @@
   </div>
   <form ng-show="!paperWallet.balance" class="oh">
     <div class="row">
-      <div class="large-12 medium-12 columns">  
+      <div class="large-12 medium-12 columns">
         <div class="input">
           <label for="inputData" translate>Paper Wallet Private Key</label>
           <input type="text" placeholder="{{'Paste your paper wallet private key here'|translate}}" ng-model="inputData" id="inputData" ng-change="paperWallet.onData(inputData)">
@@ -42,12 +36,12 @@
           </div>
           <button
             ng-disabled="paperWallet.scanning || !paperWallet.scannedKey"
-            ng-style="{'background-color':index.backgroundColor}" 
-            class="button black round expand" 
-            ng-click="paperWallet.scanFunds()" 
+            ng-style="{'background-color':index.backgroundColor}"
+            class="button black round expand"
+            ng-click="paperWallet.scanFunds()"
             translate>Scan Wallet Funds
           </button>
-        </div> 
+        </div>
       </div>
     </div>
   </form>
@@ -60,11 +54,11 @@
          </div>
        </div>
 
-      <button 
+      <button
         ng-disabled="paperWallet.sending || paperWallet.balanceSat <= 0"
-        ng-style="{'background-color':index.backgroundColor}" 
-        class="button black round expand" 
-        ng-click="paperWallet.sweepWallet()" 
+        ng-style="{'background-color':index.backgroundColor}"
+        class="button black round expand"
+        ng-click="paperWallet.sweepWallet()"
         translate>Sweep Wallet
       </button>
     </div>

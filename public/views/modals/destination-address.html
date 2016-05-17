@@ -44,13 +44,7 @@
     <div ng-show="selectedWalletsOpt">
       <div class="onGoingProcess" ng-if="gettingAddress">
         <div class="onGoingProcess-content" ng-style="{'background-color':'#222'}">
-          <div class="spinner">
-            <div class="rect1"></div>
-            <div class="rect2"></div>
-            <div class="rect3"></div>
-            <div class="rect4"></div>
-            <div class="rect5"></div>
-          </div>
+          <ion-spinner class="spinner-stable" icon="lines"></ion-spinner>
           <span translate> Getting address for wallet {{selectedWalletName}} ...</span>
         </div>
       </div>

@@ -8,26 +8,14 @@
 <div class="content p20v" ng-controller="joinController as join">
   <div class="onGoingProcess" ng-show="join.loading && !join.hwWallet">
     <div class="onGoingProcess-content" ng-style="{'background-color':'#222'}">
-    <div class="spinner">
-      <div class="rect1"></div>
-      <div class="rect2"></div>
-      <div class="rect3"></div>
-      <div class="rect4"></div>
-      <div class="rect5"></div>
-    </div>
+    <ion-spinner class="spinner-stable" icon="lines"></ion-spinner>
     <span translate>Joining Wallet...</span>
     </div>
   </div>
 
   <div class="onGoingProcess" ng-show="join.hwWallet">
     <div class="onGoingProcess-content" ng-style="{'background-color':'#222'}" style="max-height:6.5em">
-    <div class="spinner">
-      <div class="rect1"></div>
-      <div class="rect2"></div>
-      <div class="rect3"></div>
-      <div class="rect4"></div>
-      <div class="rect5"></div>
-    </div>
+    <ion-spinner class="spinner-stable" icon="lines"></ion-spinner>
     <span translate>Connecting to {{join.hwWallet}} Wallet...</span>
     <span ng-show="join.hwWallet=='Trezor'" translate>Please accept to export two public keys from the Trezor app</span>
     </div>
@@ -40,7 +28,7 @@
       </span>
     </div>
     <div class="row">
-      <div class="large-12 columns"> 
+      <div class="large-12 columns">
 
         <div>
           <label><span translate>Your nickname</span>

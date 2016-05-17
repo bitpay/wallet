@@ -10,13 +10,7 @@
 
   <div class="onGoingProcess" ng-show="glidera.loading || index.glideraLoading">
     <div class="onGoingProcess-content" ng-style="{'background-color':index.backgroundColor}">
-    <div class="spinner">
-      <div class="rect1"></div>
-      <div class="rect2"></div>
-      <div class="rect3"></div>
-      <div class="rect4"></div>
-      <div class="rect5"></div>
-    </div>
+    <ion-spinner class="spinner-stable" icon="lines"></ion-spinner>
     <span ng-show="glidera.loading">Connecting to Glidera...</span>
     <span ng-show="index.glideraLoading">{{index.glideraLoading}}</span>
     </div>
@@ -146,9 +140,9 @@
       </div>
     </div>
 
-    <ul class="no-bullet m0 size-14" 
+    <ul class="no-bullet m0 size-14"
       ng-show="index.glideraStatus && index.glideraStatus.userCanTransact">
-      <li ng-show="index.glideraStatus.userCanBuy" 
+      <li ng-show="index.glideraStatus.userCanBuy"
           class="line-b line-t p20 pointer"
           ng-click="$root.go('buyGlidera')">
         <img src="img/buy-bitcoin.svg" alt="buy bitcoin" width="40">

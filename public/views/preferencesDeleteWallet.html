@@ -8,13 +8,7 @@
 <div class="content preferences" ng-controller="preferencesDeleteWalletController as preferences">
   <div class="onGoingProcess" ng-show="isDeletingWallet">
     <div class="onGoingProcess-content" ng-style="{'background-color':index.backgroundColor}">
-    <div class="spinner">
-      <div class="rect1"></div>
-      <div class="rect2"></div>
-      <div class="rect3"></div>
-      <div class="rect4"></div>
-      <div class="rect5"></div>
-    </div>
+    <ion-spinner class="spinner-stable" icon="lines"></ion-spinner>
     <span translate>Deleting Wallet...</span>
     </div>
   </div>
