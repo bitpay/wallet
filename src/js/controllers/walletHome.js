@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('walletHomeController', function($scope, $rootScope, $interval, $timeout, $filter, $modal, $log, notification, txStatus, isCordova, isMobile, profileService, lodash, configService, rateService, storageService, bitcore, isChromeApp, gettext, gettextCatalog, nodeWebkit, addressService, ledger, bwsError, confirmDialog, txFormatService, animationService, addressbookService, go, feeService, walletService, fingerprintService) {
+angular.module('copayApp.controllers').controller('walletHomeController', function($scope, $rootScope, $interval, $timeout, $filter, $modal, $log, $ionicModal, notification, txStatus, isCordova, isMobile, profileService, lodash, configService, rateService, storageService, bitcore, isChromeApp, gettext, gettextCatalog, nodeWebkit, addressService, ledger, bwsError, confirmDialog, txFormatService, animationService, addressbookService, go, feeService, walletService, fingerprintService) {
 
   var self = this;
   window.ignoreMobilePause = false;
@@ -282,7 +282,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
               $modalInstance.close(addr);
             });
-          } 
+          }
         });
       };
     };
@@ -426,7 +426,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
         var client = profileService.focusedClient;
         $scope.error = null;
         $scope.loading = true;
-        
+
         fingerprintService.check(client, function(err) {
           if (err) {
             $scope.loading = false;
@@ -446,7 +446,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
               if (err) {
                 $scope.loading = false;
                 $scope.error = err;
-                return; 
+                return;
               }
 
               if (signedTxp.status == 'accepted') {
@@ -983,7 +983,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       });
 
     }, 100);
-  }; 
+  };
 
   this.confirmTx = function(txp) {
     var client = profileService.focusedClient;
@@ -1013,11 +1013,11 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
             if (err) {
               $scope.$emit('Local/TxProposalAction');
               return self.setSendError(
-                  err.message ? 
-                  err.message : 
+                  err.message ?
+                  err.message :
                   gettext('The payment was created but could not be completed. Please try again from home screen'));
             }
-            
+
             if (signedTxp.status == 'accepted') {
               self.setOngoingProcess(gettextCatalog.getString('Broadcasting transaction'));
               walletService.broadcastTx(client, signedTxp, function(err, broadcastedTxp) {
@@ -1042,6 +1042,22 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
         });
       });
     });
+  };
+
+  $ionicModal.fromTemplateUrl('views/modals/searchTransactions.html', {
+    scope: $scope,
+    focusFirstInput: true,
+    animation: 'slide-in-up'
+  }).then(function(modal) {
+    $scope.modal = modal;
+  });
+
+  $scope.openModal = function() {
+    $scope.modal.show();
+  };
+
+  $scope.closeModal = function() {
+    $scope.modal.hide();
   };
 
   this.setForm = function(to, amount, comment) {
