@@ -38,8 +38,11 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
     }
   };
 
+  root.is = function(name) {
+    return $state.is(name);
+  };
+
   root.path = function(path, cb) {
-console.log('[go.js.41:path:]',path); //TODO
     $state.transitionTo(path)
       .then(function() {
         if (cb) return cb();

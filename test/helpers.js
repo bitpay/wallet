@@ -14,12 +14,17 @@ mocks.$state = function($q) {
       throw Error("No more transitions were expected! Tried to transition to " + stateName);
     }
     console.log("Mock transition to: " + stateName);
+    this.current = stateName;
     var deferred = $q.defer();
     var promise = deferred.promise;
     deferred.resolve();
     return promise;
   };
 
+  this.is = function(name) {
+    console.log('[helpers.js.24:name:]', name); //TODO
+    return this.current == name;
+  };
   this.go = this.transitionTo;
   this.expectTransitionTo = function(stateName) {
     this.expectedTransitions.push(stateName);
@@ -52,6 +57,9 @@ mocks.init = function(fixtures, controllerName, opts, done) {
   mocks.go = {};
   mocks.go.walletHome = sinon.stub();
   mocks.go.path = sinon.stub();
+  mocks.go.is = function(name) {
+    return mocks.go.current == name
+  };
 
   mocks.notification = {
     success: sinon.stub(),
@@ -88,14 +96,17 @@ mocks.init = function(fixtures, controllerName, opts, done) {
           return sjcl.codec.hex.fromBits(sjcl.hash.sha256.hash(x));
         };
 
+        bwc._originalRequest = bwc._doRequest;
+
         bwc._doGetRequest = function(url, cb) {
           url += url.indexOf('?') > 0 ? '&' : '?';
           url += 'r=' + 69321;
           return this._doRequest('get', url, {}, cb);
         };
 
+
         // Use fixtures
-        bwc._doRequest = function(method, url, args, cb) {
+        bwc._doRequest = function(method, url, args, cb2) {
 
           // find fixed response:
           var hash = createHash(method, url, args);
@@ -105,12 +116,21 @@ mocks.init = function(fixtures, controllerName, opts, done) {
             console.log('##### url   :', url); //TODO
             console.log('##### args  :', JSON.stringify(args)); //TODO
             console.log('##### header:', JSON.stringify(bwc._getHeaders(method, url, args)));
-            throw 'Could find fixture';
+
+            var oldURL = bwc.baseURL;
+            bwc.baseURL = 'http://localhost:3232/bws/api';
+
+            console.log('##### running local: to http://localhost:3232/bws/api');
+            bwc._originalRequest(method, url, args, function(err, response) {
+              console.log("### RESPONSE: "+hash+"\n", JSON.stringify(response)); //TODO
+              bwc.baseURL = oldURL;
+              return cb2(null, response);
+            });
+
           } else {
             console.log('Using fixture: ' + hash.substr(0, 6) + ' for: ' + url);
+            return cb2(null, fixtures[hash]);
           }
-
-          return cb(null, fixtures[hash]);
         };
 
         return bwc;
@@ -124,11 +144,12 @@ mocks.init = function(fixtures, controllerName, opts, done) {
   module('copayApp.services', {
     $modal: mocks.modal,
     $timeout: mocks.$timeout,
+    $state: mocks.$state,
   });
   module('copayApp.controllers');
 
 
-  inject(function($rootScope, $controller, $httpBackend, $injector, _configService_, _profileService_, _storageService_) {
+  inject(function($rootScope, $controller,  $injector, _configService_, _profileService_, _storageService_) {
     scope = $rootScope.$new();
     storageService = _storageService_;
 
@@ -158,9 +179,10 @@ mocks.init = function(fixtures, controllerName, opts, done) {
         go: mocks.go,
       });
 
-      if (opts.load) {
+      if (opts.loadProfile) {
+        localStorage.setItem('profile', JSON.stringify(opts.loadProfile));
+
         _profileService_.loadAndBindProfile(function(err) {
-          console.log('[helpers.js.145:err:]', err); //TODO
           should.not.exist(err, err);
           done();
         });

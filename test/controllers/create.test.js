@@ -168,7 +168,6 @@ describe('createController', function() {
     storageService.getProfile(function(err, profile) {
       should.not.exist(err);
       var c = profile.credentials[0];
-console.log('[create.test.js.167]', JSON.stringify(c)); //TODO
       c.network.should.equal('livenet');
       // from test vectors from https://dcpos.github.io/bip39/
       c.xPrivKey.should.equal('xprv9s21ZrQH143K27bhzfejhNcitEAJgLKCfdLxwhr1FLu43FLqLwscAxXgmkucpF4k8eGmepSctkiQDbcR98Qd1bzSeDuR9jeyQAQEanPT2A4');
