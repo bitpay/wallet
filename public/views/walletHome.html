@@ -54,7 +54,7 @@
     -->
 
     <ion-content id="walletHome" class="walletHome tab-view tab-in" scroll="false">
-      <ion-content>
+      <ion-content delegate-handle="balance" on-scroll="freezeScroll()">
         <ion-refresher
          pulling-icon="ion-ios-refresh"
          on-refresh="index.updateAll({triggerTxUpdate: true})">
@@ -62,12 +62,12 @@
        <div class="oh pr">
         <div ng-style="{'background-color':index.backgroundColor}" ng-class="{amount: !shouldCollapse, amountcollapsed: shouldCollapse}">
           <div ng-if="!index.anyOnGoingProcess && !index.notAuthorized">
-            <div class="m15t" ng-show="index.updateError" ng-click='index.updateAll({triggerTxUpdate: true})'>
+            <div class="m15t" ng-show="index.updateError && !shouldCollapse" ng-click='index.updateAll({triggerTxUpdate: true})'>
               <span class="size-12 db m10b">{{index.updateError|translate}}</span>
               <button class="outline white tiny round" translate>Tap to retry</button>
             </div>
 
-            <div ng-show="index.walletScanStatus == 'error'" ng-click='index.retryScan()'>
+            <div ng-show="index.walletScanStatus == 'error' && !shouldCollapse" ng-click='index.retryScan()'>
               <span translate>Scan status finished with error</span>
               <br><span translate>Tap to retry</span>
             </div>
@@ -83,7 +83,7 @@
               </div>
 
             </div>
-            <div ng-show="index.shouldHideBalance" on-hold="index.onHold()">
+            <div ng-show="!index.updateError && index.walletScanStatus != 'error' && index.shouldHideBalance" on-hold="index.onHold()">
                 <strong class="size-24" translate>[Balance Hidden]</strong>
                 <div class="size-14" ng-if="!shouldCollapse" transalate>
                   Tap and hold to show
@@ -106,8 +106,7 @@
         </div>
       </div> <!-- oh -->
       </ion-content>
-
-      <ion-content overflow-scroll="true" ng-class="{m150t: !shouldCollapse, m50t: shouldCollapse}" delegate-handle="transactions" on-scroll="getScrollPosition()">
+      <ion-content overflow-scroll="true" ng-class="{m150t: !shouldCollapse, m50t: shouldCollapse}" delegate-handle="transactions" on-scroll="collapseBalanceContent(index.updatingTxHistory && index.txProgress > 5)">
         <div class="m50b">
           <div class="oh pr m20t" ng-show="index.incorrectDerivation">
             <div class="text-center text-warning">
@@ -157,7 +156,7 @@
           </div>
 
           <!-- Activity -->
-          
+
           <h4 class="title" ng-click="index.startSearch(); openModal()" ng-show="!index.notAuthorized">
             <span translate>Activity</span>
             <i class="dib m5l size-16 pointer fi-magnifying-glass"></i>
