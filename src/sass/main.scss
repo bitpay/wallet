@@ -833,10 +833,6 @@ ul.manage li {
   }
 }
 
-.sidebar li.nav-item.selected .name-wallet {
-  color: #fff;
-}
-
 .locked {
   font-size: 11px;
   color: #7A8C9E;
@@ -1606,14 +1602,6 @@ input.ng-invalid-match {
   left: 0;
 }
 
-.right-off-canvas-menu {
-  background-color: #213140;
-}
-
-.off-canvas-wrap, .inner-wrap {
-  height: 100%;
-}
-
 .walletHome {
   .avatar-wallet {
     padding: 0.5rem;
@@ -1687,6 +1675,11 @@ a.missing-copayers {
   margin-bottom: 50px;
 }
 
+.sidebar ion-content {
+  background: #2C3E50;
+  top: 115px;
+}
+
 .sidebar {
   background: #2C3E50;
   .icon {
@@ -1757,16 +1750,24 @@ a.missing-copayers {
       color: #fff;
     }
   }
-  ul.off-canvas-list {
-    margin-bottom: 30px;
-    li a {
-      font-size: 12px;
-      font-weight: 300;
-      border-bottom: transparent;
-      color: #A5B2BF;
-      padding: 1rem 0.7rem;
-    }
-  }
+}
+
+.sidebar li {
+  overflow: hidden;
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+
+  padding: 1rem 0.7rem;
+  font-size: 12px;
+  font-weight: 300;
+}
+
+.sidebar ul {
+  margin: 0 0 30px 0;
+}
+
+.sidebar a {
+  color: #A5B2BF;
 }
 
 .modal-content ul li a {
@@ -1790,11 +1791,6 @@ a.missing-copayers {
   }
 }
 
-.sidebar .left-off-canvas-menu {
-  background: #E4E8EC;
-  line-height: 24px;
-}
-
 /*
  * Remove all vendors hover / shadow / fade
  */
@@ -1805,23 +1801,6 @@ a.missing-copayers {
 
 .move-right .exit-off-canvas, .move-left .exit-off-canvas {
   box-shadow: none;
-}
-
-ul.off-canvas-list li a:hover {
-  background: none;
-}
-
-.move-right .close-menu {
-  cursor: pointer;
-  box-shadow: none;
-  display: block;
-  position: absolute;
-  background: none;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: 1002;
 }
 
 /* === */
