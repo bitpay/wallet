@@ -1,33 +1,7 @@
 'use strict';
 
-angular.module('copayApp.services').factory('go', function($window, $rootScope, $location, $state, $timeout, $log, profileService, nodeWebkit) {
+angular.module('copayApp.services').factory('go', function($window, $ionicSideMenuDelegate, $rootScope, $location, $state, $timeout, $log, profileService, nodeWebkit) {
   var root = {};
-
-  var hideSidebars = function() {
-    if (typeof document === 'undefined')
-      return;
-
-    var elem = document.getElementById('off-canvas-wrap');
-    elem.className = 'off-canvas-wrap';
-  };
-
-  var toggleSidebar = function(invert) {
-    if (typeof document === 'undefined')
-      return;
-
-    var elem = document.getElementById('off-canvas-wrap');
-    var leftbarActive = elem.className.indexOf('move-right') >= 0;
-
-    if (invert) {
-      if (profileService.profile && !$rootScope.hideNavigation) {
-        elem.className = 'off-canvas-wrap move-right';
-      }
-    } else {
-      if (leftbarActive) {
-        hideSidebars();
-      }
-    }
-  };
 
   root.openExternalLink = function(url, target) {
     if (nodeWebkit.isDefined()) {
@@ -45,11 +19,10 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
       }, function() {
         if (cb) return cb('animation in progress');
       });
-    hideSidebars();
   };
 
-  root.swipe = function(invert) {
-    toggleSidebar(invert);
+  root.toggleLeftMenu = function() {
+    $ionicSideMenuDelegate.toggleLeft()
   };
 
   root.walletHome = function() {

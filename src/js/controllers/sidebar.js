@@ -20,11 +20,6 @@ angular.module('copayApp.controllers').controller('sidebarController',
       self.setWallets();
     });
 
-
-    self.closeMenu = function() {
-      go.swipe();
-    };
-
     self.signout = function() {
       profileService.signout();
     };
