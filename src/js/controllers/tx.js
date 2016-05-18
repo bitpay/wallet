@@ -58,6 +58,10 @@ angular.module('copayApp.controllers').controller('txController',
       }
     };
 
+    this.editNote = function() {
+      // TODO
+    };
+
     this.cancel = lodash.debounce(function() {
       m.addClass(animationService.modalAnimated.slideOutRight);
       if (isCordova) {

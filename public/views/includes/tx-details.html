@@ -53,6 +53,51 @@
       </div> 
     </div>
 
+    <div class="tx-note" ng-init="showForm = false">
+      <div ng-show="!showForm">
+        <div ng-show="txNote">
+          <h4 class="title m0" translate>Note</h4>
+          <div class="p10 text-italic text-light white" ng-click="showForm = true">
+            {{txNote}}
+          </div>
+        </div>
+        <div ng-show="!txNote" class="m25t">
+          <ul class="no-bullet size-14 m0">
+            <li class="line-b p10 oh pointer text-secondary" ng-click="showForm = true">
+              Add a note
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div ng-show="showForm" class="m25t">
+        <h4 class="title m0" translate>Note</h4>
+        <form class="p10" name="noteForm" novalidate>
+          <div class="input">
+            <textarea 
+               id="note" 
+               name="note"
+               ng-maxlength="500" 
+               ng-model="note">
+            </textarea>
+          </div>     
+          <div class="row">
+            <div class="large-6 medium-6 small-6 columns">
+              <a ng-click="showForm = false" class="button expand outline dark-gray round" translate>Cancel</a>
+            </div>
+            <div class="large-6 medium-6 small-6 columns">
+              <button 
+                 class="button black round expand" 
+                 ng-disabled="!note"
+                 ng-style="{'background-color':txc.color}" 
+                 ng-click="editNote()" translate>
+                Save
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
     <h4 class="title m0" translate>Details</h4>
 
     <ul class="no-bullet size-14 m0"> 
