@@ -22,7 +22,7 @@ angular.module('copayApp.services').factory('go', function($window, $ionicSideMe
   };
 
   root.toggleLeftMenu = function() {
-    $ionicSideMenuDelegate.toggleLeft()
+    $ionicSideMenuDelegate.toggleLeft();
   };
 
   root.walletHome = function() {
