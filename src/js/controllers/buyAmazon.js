@@ -45,11 +45,12 @@ angular.module('copayApp.controllers').controller('buyAmazonController',
         });
       } catch (e) {
         $log.debug(e);
-      }; 
+      };
     };
 
     $scope.openWalletsModal = function(wallets) {
       self.error = null;
+      self.errorInfo = null;
       var ModalInstanceCtrl = function($scope, $modalInstance) {
         $scope.type = 'SELL';
         $scope.wallets = wallets;
@@ -104,6 +105,7 @@ angular.module('copayApp.controllers').controller('buyAmazonController',
 
     this.createTx = function() {
       self.error = null;
+      self.errorInfo = null;
 
       var currency_code = configService.getSync().amazon.testnet ? window.amazon_sandbox_currency_code : window.amazon_currency_code;
       var dataSrc = { 
@@ -178,6 +180,7 @@ angular.module('copayApp.controllers').controller('buyAmazonController',
                     self.loading = null;
                     if (err) { 
                       self.error = err;
+                      self.errorInfo = gift;
                       return;
                     }
                     self.giftCard = giftCard;

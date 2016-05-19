@@ -27,6 +27,17 @@
         <span class="text-warning">
           {{buy.error}}
         </span>
+        <div class="m10t size-12" ng-show="buy.errorInfo">
+          There was an error when trying to buy gift card, but the funds were sent to BitPay Invoice. Please, contact
+          BitPay to refund your bitcoin
+          <div class="p10 m10t">
+            Amount: {{buy.errorInfo.amount}} {{buy.errorInfo.currencyCode}}<br>
+            BitPay Invoice ID: {{buy.errorInfo.bitpayInvoiceId}}.
+          </div>
+          <div class="text-center">
+            <a ng-click="$root.openExternalLink(buy.errorInfo.bitpayInvoiceUrl)">Open invoice</a>
+          </div>
+        </div>
       </div>     
 
       <div class="text-center">
@@ -73,7 +84,27 @@
   </div>
 
   <div class="m20t row" ng-show="buy.giftCard">
-    <div class="columns">
+    <div class="columns" ng-show="buy.giftCard.status != 'SUCCESS'">
+      <h1 class="text-center">Amazon.com Gift Card could not be created</h1>
+      <div class="box-notification m20b">
+        <span class="text-warning">
+          There was an error when trying to create the Amazon.com Gift Card. Status: {{buy.giftCard.status}}
+        </span>
+      </div>
+      <div class="text-gray size-12 m20t">
+        <span ng-show="buy.giftCard.status == 'RESEND'">
+          This is a temporary/recoverable system failure that can be
+          resolved retrying the request from your list of cards
+        </span>
+        <span ng-show="buy.giftCard.status == 'FAILURE'">
+          This failure could not be recoverable. Request your refund from your list of cards 
+        </span>
+        <button class="m20t button outline round dark-gray expand" ng-click="$root.go('amazon')">
+          Back 
+        </button>
+      </div>
+    </div>
+    <div class="columns" ng-show="buy.giftCard.status == 'SUCCESS'">
       <h1 class="text-center">Gift card ready to redeem!</h1>
 
       <div class="size-12 text-center">
