@@ -49,6 +49,7 @@ angular.module('copayApp.controllers').controller('buyAmazonController',
     };
 
     $scope.openWalletsModal = function(wallets) {
+      if (self.loading) return;
       self.error = null;
       self.errorInfo = null;
       var ModalInstanceCtrl = function($scope, $modalInstance) {
@@ -94,6 +95,7 @@ angular.module('copayApp.controllers').controller('buyAmazonController',
     };
 
     this.setAmount = function(plus) {
+      if (self.loading) return;
       if (plus && $scope.fiat < maximumAmount ) {
         stepAmount = stepAmount + 1;
         $scope.fiat = stepAmount * multiplierAmount;
@@ -184,6 +186,9 @@ angular.module('copayApp.controllers').controller('buyAmazonController',
                       return;
                     }
                     self.giftCard = giftCard;
+                    $timeout(function() {
+                      $scope.$digest();
+                    });
                   });
                 });
               }
