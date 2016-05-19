@@ -1,46 +1,52 @@
 'use strict';
 
-angular.module('copayApp.services').factory('amazonService', function($http, $log, isCordova, lodash, storageService, configService) {
+angular.module('copayApp.services').factory('amazonService', function($http, $log, isCordova, lodash, moment, storageService, configService) {
   var root = {};
   var credentials = {};
 
-  var fakeData = {
-    "cardInfo": {
-      "cardNumber":null,
-      "cardStatus":"RefundedToPurchaser",
-      "expirationDate":null,
-      "value":{
-        "amount":1.0,
-        "currencyCode":"USD"
-      }
-    },
-    "creationRequestId":"AwssbTSpecTest001",
-    "gcClaimCode":"Z7NV-LBBG39-75MU",
-    "gcExpirationDate":null,
-    "gcId":"A2GCN9BRX5QS76",
-    "status":"SUCCESS",
-    "bitpayInvoiceId":"NJtevvEponHbQVmYoL7FYp",
-    "bitpayInvoiceUrl":"http://test.bitpay.com/invoice?id=XwrLryQEypTKg4nq37t3bN" 
-  };
-
   root.setCredentials = function(network) {
+    credentials.AMAZON_SANDBOX = network == 'testnet' ? true : false;
+    credentials.AMAZON_SERVICE_NAME = 'AGCODService';
 
     if (network == 'testnet') {
-      credentials.BITPAY_API = 'https://test.bitpay.com';
-      credentials.BITPAY_API_TOKEN = 'GDtYwBqbMZvjz5JrYZ1d2ba96StV92U4Yg4AGhT3C4He';
-      credentials.AMAZON_HOST = 'https://agcod-v2-gamma.amazon.com';
+      credentials.BITPAY_API_URL = window.amazon_sandbox_bitpay_api_url;
+      credentials.BITPAY_API_TOKEN = window.amazon_sandbox_bitpay_api_token;
+      credentials.AMAZON_ACCESS_KEY = window.amazon_sandbox_access_key;
+      credentials.AMAZON_SECRET_KEY = window.amazon_sandbox_secret_key;
+      credentials.AMAZON_PARTNER_ID = window.amazon_sandbox_partner_id;
+      credentials.AMAZON_REGION = window.amazon_sandbox_region;
+      credentials.AMAZON_ENDPOINT = window.amazon_sandbox_endpoint;
     }
     else {
-      credentials.BITPAY_API = 'https://bitpay.com';
-      credentials.BITPAY_API_TOKEN = window.bitpay_token;
-      credentials.AMAZON_HOST = 'https://agcod-v2.amazon.com';
+      credentials.BITPAY_API_URL = window.amazon_bitpay_api_url;
+      credentials.BITPAY_API_TOKEN = window.amazon_bitpay_api_token;
+      credentials.AMAZON_ACCESS_KEY = window.amazon_access_key;
+      credentials.AMAZON_SECRET_KEY = window.amazon_secret_key;
+      credentials.AMAZON_PARTNER_ID = window.amazon_partner_id;
+      credentials.AMAZON_REGION = window.amazon_region;
+      credentials.AMAZON_ENDPOINT = window.amazon_endpoint;
     };
   };
+
+  var _getSignatureKey = function() {
+
+    var key = credentials.AMAZON_SECRET_KEY;
+    var dateStamp = moment.utc().format('YYYYMMDD');
+    var regionName = credentials.AMAZON_REGION;
+    var serviceName = credentials.AMAZON_SERVICE_NAME;
+
+    var kDate= CryptoJS.HmacSHA256(dateStamp, "AWS4" + key, { asBytes: true});
+    var kRegion= CryptoJS.HmacSHA256(regionName, kDate, { asBytes: true });
+    var kService=CryptoJS.HmacSHA256(serviceName, kRegion, { asBytes: true });
+    var kSigning= CryptoJS.HmacSHA256("aws4_request", kService, { asBytes: true });
+
+    return kSigning;
+  }
 
   var _getBitPay = function(endpoint) {
     return {
       method: 'GET',
-      url: credentials.BITPAY_API + endpoint,
+      url: credentials.BITPAY_API_URL + endpoint,
       headers: {
         'content-type': 'application/json'
       }
@@ -51,7 +57,7 @@ angular.module('copayApp.services').factory('amazonService', function($http, $lo
     data.token = credentials.BITPAY_API_TOKEN;
     return {
       method: 'POST',
-      url: credentials.BITPAY_API + endpoint,
+      url: credentials.BITPAY_API_URL + endpoint,
       headers: {
         'content-type': 'application/json'
       },
@@ -116,17 +122,81 @@ angular.module('copayApp.services').factory('amazonService', function($http, $lo
     });
   };
 
-  root.buyGiftCard = function(gift, cb) {
-    var newId = Math.floor(Date.now() / 1000);
-    var saveData = fakeData;
-    saveData.gcId = saveData.gcId + '' + newId;
-    saveData.cardInfo.value.amount = gift.amount;
-    saveData.cardInfo.value.currencyCode = gift.currencyCode;
-    saveData['bitpayInvoiceId'] = gift.bitpayInvoiceId;
-    saveData['bitpayInvoiceUrl'] = gift.bitpayInvoiceUrl;
-    saveData['date'] = newId;
-    root.saveGiftCard(saveData, null, function(err) {
-      return cb(null, fakeData);
+  root.createGiftCard = function(dataSrc, cb) {
+    var sandbox = credentials.AMAZON_SANDBOX ? 'T' : 'P'; // T: test - P: production
+    var now = moment().unix();
+    var requestId = credentials.AMAZON_PARTNER_ID + sandbox + now;
+    
+    var data = {
+      'creationRequestId': requestId,
+      'partnerId': credentials.AMAZON_PARTNER_ID,
+      'value': {
+        'currencyCode': dataSrc.currencyCode,
+        'amount': dataSrc.amount
+      }
+    };
+
+    var content_type = 'application/json';
+    var accept = 'application/json';
+    var amz_date = moment.utc().format('YYYYMMDD[T]HHmmss[Z]');
+    var date_stamp = moment.utc().format('YYYYMMDD');
+    var amz_target = 'com.amazonaws.agcod.AGCODService.CreateGiftCard';
+    var canonical_querystring = '';
+
+    /************* TASK 1: CREATE A CANONICAL REQUEST *************/
+
+    var canonical_headers = 
+      'accept:' + accept + '\n' + 
+      'content-type:' + content_type + '\n' + 
+      'host:' + credentials.AMAZON_ENDPOINT.replace('https://', '') + '\n' + 
+      'x-amz-date:' + amz_date + '\n' + 
+      'x-amz-target:' + amz_target + '\n';    
+    
+    var signed_headers = 'accept;content-type;host;x-amz-date;x-amz-target';
+    data = JSON.stringify(data);
+    var payload_hash = CryptoJS.SHA256(data).toString(CryptoJS.enc.Hex);
+    var canonical_request = 'POST' + '\n' + '/CreateGiftCard' + '\n' + canonical_querystring + '\n' + canonical_headers + '\n' + signed_headers + '\n' + payload_hash;
+
+    /************* TASK 2: CREATE THE STRING TO SIGN *************/
+
+    var algorithm = 'AWS4-HMAC-SHA256';
+    var credential_scope = date_stamp + '/' + credentials.AMAZON_REGION + '/' + credentials.AMAZON_SERVICE_NAME + '/' + 'aws4_request';
+    var hashed_canonical_request = CryptoJS.SHA256(canonical_request).toString(CryptoJS.enc.Hex);
+    var string_to_sign = algorithm + '\n' + amz_date + '\n' + credential_scope + '\n' + hashed_canonical_request;
+
+    /************* TASK 3: CALCULATE THE SIGNATURE *************/
+
+    var signing_key = _getSignatureKey();    
+    var signature = CryptoJS.HmacSHA256(string_to_sign, signing_key).toString(CryptoJS.enc.Hex)
+    var authorization_header = algorithm + ' ' + 'Credential=' + credentials.AMAZON_ACCESS_KEY + '/' + credential_scope + ', ' +  'SignedHeaders=' + signed_headers + ', ' + 'Signature=' + signature;
+
+    /************* TASK 4: ADD SIGNING INFORMATION TO THE REQUEST *************/
+
+    var headers = {
+      'Content-Type': content_type,
+      'Accept': accept,
+      'X-Amz-Date': amz_date,
+      'X-Amz-Target': amz_target,
+      'Authorization': authorization_header
+    };
+
+    $http({
+      'method': 'POST',
+      'url': credentials.AMAZON_ENDPOINT + '/CreateGiftCard', 
+      'data': data, 
+      'headers': headers
+    }).then(function(data) {
+      $log.info('Amazon Create Gift Card: SUCCESS');
+      var newData = data.data;
+      newData['bitpayInvoiceId'] = dataSrc.bitpayInvoiceId;
+      newData['bitpayInvoiceUrl'] = dataSrc.bitpayInvoiceUrl;
+      newData['date'] = now;
+      root.saveGiftCard(newData, null, function(err) {
+        return cb(null, newData); 
+      });
+    }, function(data) {
+      $log.error('Amazon Create Gift Card: ERROR ' + data.statusText);
+      return cb(data.statusText);
     });
   };
 
