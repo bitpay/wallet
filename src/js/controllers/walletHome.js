@@ -27,28 +27,29 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   ret.sendMaxInfo = {};
   var vanillaScope = ret;
 
-  $scope.collapseBalanceContent = function(val) {
-    if (val) return;
-    $scope.shouldCollapse = $ionicScrollDelegate.$getByHandle('transactions').getScrollPosition().top > 50 ? true : false;
+  $scope.collapseBalanceContent = function(updating) {
+    if (updating) return;
+
+    var scrollPosition = $ionicScrollDelegate.$getByHandle('transactions').getScrollPosition().top;
+    $scope.shouldCollapse = scrollPosition > 50 ? true : false;
+
     $timeout(function() {
       $scope.$apply();
     });
   };
 
   $scope.freezeScroll = function() {
+    var scrollPosition = $ionicScrollDelegate.$getByHandle('balance').getScrollPosition().top;
+    var openRatio = $ionicSideMenuDelegate.getOpenRatio();
 
-    if($ionicScrollDelegate.$getByHandle('balance').getScrollPosition().top < -75) {
-        $ionicScrollDelegate.$getByHandle('balance').freezeScroll(true);
-        return;
-    }
-    if ($ionicSideMenuDelegate.getOpenRatio() != 0)
+    if (scrollPosition < -75 || openRatio != 0)
       $ionicScrollDelegate.$getByHandle('balance').freezeScroll(true);
     else
       $ionicScrollDelegate.$getByHandle('balance').freezeScroll(false);
 
-      $timeout(function() {
-        $scope.$apply();
-      });
+    $timeout(function() {
+      $scope.$apply();
+    });
   };
 
   var disableScannerListener = $rootScope.$on('dataScanned', function(event, data) {
@@ -240,7 +241,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
             return;
           }
           $scope.list = ab;
-          $timeout(function(){
+          $timeout(function() {
             $scope.$digest();
           });
         });
@@ -974,7 +975,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
         txp.sendMax = true;
         txp.inputs = self.sendMaxInfo.inputs;
         txp.fee = self.sendMaxInfo.fee;
-      }else {
+      } else {
         txp.amount = amount;
       }
 
@@ -1037,9 +1038,9 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
             if (err) {
               $scope.$emit('Local/TxProposalAction');
               return self.setSendError(
-                  err.message ?
-                  err.message :
-                  gettext('The payment was created but could not be completed. Please try again from home screen'));
+                err.message ?
+                err.message :
+                gettext('The payment was created but could not be completed. Please try again from home screen'));
             }
 
             if (signedTxp.status == 'accepted') {
