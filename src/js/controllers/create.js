@@ -74,7 +74,6 @@ angular.module('copayApp.controllers').controller('createController',
       self.seedSourceId = $scope.seedSource.id;
     };
 
-
     this.setSeedSource = function(src) {
       self.seedSourceId = $scope.seedSource.id;
 
@@ -94,7 +93,7 @@ angular.module('copayApp.controllers').controller('createController',
         n: $scope.totalCopayers,
         name: $scope.walletName,
         myName: $scope.totalCopayers > 1 ? $scope.myName : null,
-        networkName: $scope.isTestnet ? 'testnet' : 'livenet',
+        networkName: $scope.testnetEnabled ? 'testnet' : 'livenet',
         bwsurl: $scope.bwsurl,
       };
       var setSeed = self.seedSourceId == 'set';
@@ -134,7 +133,7 @@ angular.module('copayApp.controllers').controller('createController',
           return;
         }
 
-        if ( self.seedSourceId == 'trezor')
+        if (self.seedSourceId == 'trezor')
           account = account - 1;
 
         opts.account = account;
@@ -176,8 +175,8 @@ angular.module('copayApp.controllers').controller('createController',
       }, 100);
     }
 
-    function scrollUp(location){
-      if(!location) return;
+    function scrollUp(location) {
+      if (!location) return;
       $location.hash(location);
       $anchorScroll();
     };
