@@ -43,6 +43,52 @@ angular.module('copayApp.services').factory('amazonService', function($http, $lo
     return kSigning;
   }
 
+  
+  var _getHeaders = function(data, method, endpoint, amz_target) {
+    var content_type = 'application/json';
+    var accept = 'application/json';
+    var amz_date = moment.utc().format('YYYYMMDD[T]HHmmss[Z]');
+    var date_stamp = moment.utc().format('YYYYMMDD');
+    var canonical_querystring = '';
+
+    /************* TASK 1: CREATE A CANONICAL REQUEST *************/
+
+    var canonical_headers = 
+      'accept:' + accept + '\n' + 
+      'content-type:' + content_type + '\n' + 
+      'host:' + credentials.AMAZON_ENDPOINT.replace('https://', '') + '\n' + 
+      'x-amz-date:' + amz_date + '\n' + 
+      'x-amz-target:' + amz_target + '\n';    
+    
+    var signed_headers = 'accept;content-type;host;x-amz-date;x-amz-target';
+    data = JSON.stringify(data);
+    var payload_hash = CryptoJS.SHA256(data).toString(CryptoJS.enc.Hex);
+    var canonical_request = method + '\n' + endpoint + '\n' + canonical_querystring + '\n' + canonical_headers + '\n' + signed_headers + '\n' + payload_hash;
+
+    /************* TASK 2: CREATE THE STRING TO SIGN *************/
+
+    var algorithm = 'AWS4-HMAC-SHA256';
+    var credential_scope = date_stamp + '/' + credentials.AMAZON_REGION + '/' + credentials.AMAZON_SERVICE_NAME + '/' + 'aws4_request';
+    var hashed_canonical_request = CryptoJS.SHA256(canonical_request).toString(CryptoJS.enc.Hex);
+    var string_to_sign = algorithm + '\n' + amz_date + '\n' + credential_scope + '\n' + hashed_canonical_request;
+
+    /************* TASK 3: CALCULATE THE SIGNATURE *************/
+
+    var signing_key = _getSignatureKey();    
+    var signature = CryptoJS.HmacSHA256(string_to_sign, signing_key).toString(CryptoJS.enc.Hex)
+    var authorization_header = algorithm + ' ' + 'Credential=' + credentials.AMAZON_ACCESS_KEY + '/' + credential_scope + ', ' +  'SignedHeaders=' + signed_headers + ', ' + 'Signature=' + signature;
+
+    /************* TASK 4: ADD SIGNING INFORMATION TO THE REQUEST *************/
+
+    return {
+      'Content-Type': content_type,
+      'Accept': accept,
+      'X-Amz-Date': amz_date,
+      'X-Amz-Target': amz_target,
+      'Authorization': authorization_header
+    };
+  };
+
   var _getBitPay = function(endpoint) {
     return {
       method: 'GET',
@@ -125,7 +171,7 @@ angular.module('copayApp.services').factory('amazonService', function($http, $lo
   root.createGiftCard = function(dataSrc, cb) {
     var sandbox = credentials.AMAZON_SANDBOX ? 'T' : 'P'; // T: test - P: production
     var now = moment().unix();
-    var requestId = credentials.AMAZON_PARTNER_ID + sandbox + now;
+    var requestId = dataSrc.creationRequestId || credentials.AMAZON_PARTNER_ID + sandbox + now;
     
     var data = {
       'creationRequestId': requestId,
@@ -136,66 +182,55 @@ angular.module('copayApp.services').factory('amazonService', function($http, $lo
       }
     };
 
-    var content_type = 'application/json';
-    var accept = 'application/json';
-    var amz_date = moment.utc().format('YYYYMMDD[T]HHmmss[Z]');
-    var date_stamp = moment.utc().format('YYYYMMDD');
+    var method = 'POST';
+    var endpoint = '/CreateGiftCard';
     var amz_target = 'com.amazonaws.agcod.AGCODService.CreateGiftCard';
-    var canonical_querystring = '';
 
-    /************* TASK 1: CREATE A CANONICAL REQUEST *************/
-
-    var canonical_headers = 
-      'accept:' + accept + '\n' + 
-      'content-type:' + content_type + '\n' + 
-      'host:' + credentials.AMAZON_ENDPOINT.replace('https://', '') + '\n' + 
-      'x-amz-date:' + amz_date + '\n' + 
-      'x-amz-target:' + amz_target + '\n';    
-    
-    var signed_headers = 'accept;content-type;host;x-amz-date;x-amz-target';
-    data = JSON.stringify(data);
-    var payload_hash = CryptoJS.SHA256(data).toString(CryptoJS.enc.Hex);
-    var canonical_request = 'POST' + '\n' + '/CreateGiftCard' + '\n' + canonical_querystring + '\n' + canonical_headers + '\n' + signed_headers + '\n' + payload_hash;
-
-    /************* TASK 2: CREATE THE STRING TO SIGN *************/
-
-    var algorithm = 'AWS4-HMAC-SHA256';
-    var credential_scope = date_stamp + '/' + credentials.AMAZON_REGION + '/' + credentials.AMAZON_SERVICE_NAME + '/' + 'aws4_request';
-    var hashed_canonical_request = CryptoJS.SHA256(canonical_request).toString(CryptoJS.enc.Hex);
-    var string_to_sign = algorithm + '\n' + amz_date + '\n' + credential_scope + '\n' + hashed_canonical_request;
-
-    /************* TASK 3: CALCULATE THE SIGNATURE *************/
-
-    var signing_key = _getSignatureKey();    
-    var signature = CryptoJS.HmacSHA256(string_to_sign, signing_key).toString(CryptoJS.enc.Hex)
-    var authorization_header = algorithm + ' ' + 'Credential=' + credentials.AMAZON_ACCESS_KEY + '/' + credential_scope + ', ' +  'SignedHeaders=' + signed_headers + ', ' + 'Signature=' + signature;
-
-    /************* TASK 4: ADD SIGNING INFORMATION TO THE REQUEST *************/
-
-    var headers = {
-      'Content-Type': content_type,
-      'Accept': accept,
-      'X-Amz-Date': amz_date,
-      'X-Amz-Target': amz_target,
-      'Authorization': authorization_header
-    };
+    var headers = _getHeaders(data, method, endpoint, amz_target);
 
     $http({
-      'method': 'POST',
-      'url': credentials.AMAZON_ENDPOINT + '/CreateGiftCard', 
-      'data': data, 
+      'method': method,
+      'url': credentials.AMAZON_ENDPOINT + endpoint, 
+      'data': JSON.stringify(data), 
       'headers': headers
     }).then(function(data) {
-      $log.info('Amazon Create Gift Card: SUCCESS');
+      $log.info('Amazon.com Gift Card Create/Update: SUCCESS');
       var newData = data.data;
       newData['bitpayInvoiceId'] = dataSrc.bitpayInvoiceId;
       newData['bitpayInvoiceUrl'] = dataSrc.bitpayInvoiceUrl;
-      newData['date'] = now;
+      newData['date'] = dataSrc.date || now;
       root.saveGiftCard(newData, null, function(err) {
         return cb(null, newData); 
       });
     }, function(data) {
-      $log.error('Amazon Create Gift Card: ERROR ' + data.statusText);
+      $log.error('Amazon.com Gift Card Create/Update: ERROR ' + data.statusText);
+      return cb(data.statusText);
+    });
+  };
+
+  root.cancelGiftCard = function(dataSrc, cb) {
+    var data = {
+      'creationRequestId': dataSrc.creationRequestId,
+      'partnerId': credentials.AMAZON_PARTNER_ID,
+      'gcId': dataSrc.gcId,
+    };
+
+    var method = 'POST';
+    var endpoint = '/CancelGiftCard';
+    var amz_target = 'com.amazonaws.agcod.AGCODService.CancelGiftCard';
+
+    var headers = _getHeaders(data, method, endpoint, amz_target);
+
+    $http({
+      'method': method,
+      'url': credentials.AMAZON_ENDPOINT + endpoint, 
+      'data': JSON.stringify(data), 
+      'headers': headers
+    }).then(function(data) {
+      $log.info('Amazon.com Gift Card Cancel: SUCCESS');
+      return cb(null, data.data); 
+    }, function(data) {
+      $log.error('Amazon.com Gift Card Cancel: ERROR ' + data.statusText);
       return cb(data.statusText);
     });
   };

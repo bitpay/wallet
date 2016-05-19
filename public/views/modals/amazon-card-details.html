@@ -17,28 +17,55 @@
      ng-swipe-right="cancel()">
   <div class="header-modal bg-gray text-center">
 
-    <img src="img/amazon-card.png" alt="Amazon" width="200">
+    <img src="img/amazon-card.png" alt="Amazon" width="200" ng-click="refreshGiftCard()">
     
     <div class="size-24 text-bold m10t">
       {{card.cardInfo.value.amount | currency : card.cardInfo.value.currencyCode + ' ' : 2}}
     </div>
   </div>
 
+  <div class="box-notification m20b" ng-show="error" ng-click="error = null">
+    <span class="text-warning">
+      {{error}}
+    </span>
+  </div>
+
+  <div class="text-center size-12" ng-show="card.status != 'SUCCESS' && !loading">
+    <div ng-show="card.status == 'RESEND'">
+      <div class="text-secondary m10h">
+        There was a temporary/recoverable system failure that can be resolved by retrying the request
+      </div>
+      <button class="m10t button outline round dark-gray tiny" ng-click="refreshGiftCard()">
+        Try again
+      </button>
+    </div>
+    <div class="text-warning m10" ng-show="card.status == 'FAILURE'">
+      There was a failure to the create gift card that could not be recoverable. Please, contact BitPay to refund your bitcoin
+    </div>
+  </div>
+
   <ul class="no-bullet size-14">
-    <li class="line-b p10 oh pointer" ng-click="$root.openExternalLink()">
+    <li class="line-b p10 oh pointer" ng-show="card.gcClaimCode" ng-click="$root.openExternalLink()">
       <i class="icon-arrow-right3 size-24 right text-bold"></i>  
       <span class="text-gray">Claim code</span>
       <span class="text-bold right enable_text_select">{{card.gcClaimCode}}</span>
     </li>
     <li class="line-b p10 oh">
-      <span class="text-gray">Created at</span>
-      <span class="test-gray right enable_text_select">{{card.date * 1000 | amDateFormat:'MM/DD/YYYY HH:mm a'}}</span>
+      <span class="text-gray">Card status</span>
+      <span class="text-success right" ng-if="card.cardInfo.cardStatus == 'Fulfilled'">Fulfilled</span>
+      <span class="text-secondary right" ng-if="card.cardInfo.cardStatus == 'RefundedToPurchaser'">Refunded to purchaser</span>
+      <span class="text-warning right" ng-if="card.cardInfo.cardStatus == 'Expired'">Expired</span>
     </li>
     <li class="line-b p10 oh">
-      <span class="text-gray">Status</span>
-      <span class="text-success right" ng-if="card.status == 'SUCCESS'">Completed</span>
-      <span class="text-info right" ng-if="card.status == 'PENDING'">Pending</span>
-      <span class="text-warning right" ng-if="card.status == 'ERROR'">Error</span>
+      <span class="text-gray">Created at</span>
+      <span class="test-gray right">{{card.date * 1000 | amDateFormat:'MM/DD/YYYY HH:mm a'}}</span>
+    </li>
+    <li class="line-b p10 oh">
+      <span class="text-gray">Creation status</span>
+      <span class="text-success right" ng-if="card.status == 'SUCCESS'">Success</span>
+      <span class="text-secondary right" ng-if="card.status == 'RESEND'">Resend is required</span>
+      <span class="text-warning right" ng-if="card.status == 'FAILURE'">Error</span>
+      <span class="text-warning right" ng-if="card.status == 'REFUND'">Refunded</span>
     </li>
     <li class="line-b p10 oh pointer" ng-click="$root.openExternalLink(card.bitpayInvoiceUrl)">
       <i class="icon-arrow-right3 size-24 right text-gray"></i>  
@@ -46,6 +73,34 @@
       <span class="text-gray right enable_text_select">{{card.bitpayInvoiceId}}</span>
     </li>
   </ul>
+
+  <div class="row m20t" ng-show="card.status == 'FAILURE'">
+    <div class="columns text-center">
+      <p class="size-12 text-gray">
+      This action will remove the gift card
+      </p>
+      <button class="button outline round dark-gray tiny" 
+              ng-click="remove();"
+              ng-disabled="loading">
+        <i class="fi-x"></i>
+        Remove
+      </button>
+    </div>
+  </div>
+
+  <div class="row m20t" ng-show="card.status == 'SUCCESS' && card.cardInfo.cardStatus == 'Fulfilled'">
+    <div class="columns text-center">
+      <p class="size-12 text-gray">
+        This action will cancel the gift card
+      </p>
+      <button class="button outline round dark-gray tiny" 
+              ng-click="cancelGiftCard()"
+              ng-disabled="loading">
+        <i class="fi-x"></i>
+        Cancel
+      </button>
+    </div>
+  </div>
 
   <div class="extra-margin-bottom"></div>
 </div>
