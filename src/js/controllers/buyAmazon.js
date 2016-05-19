@@ -105,9 +105,10 @@ angular.module('copayApp.controllers').controller('buyAmazonController',
     this.createTx = function() {
       self.error = null;
 
+      var currency_code = configService.getSync().amazon.testnet ? window.amazon_sandbox_currency_code : window.amazon_currency_code;
       var dataSrc = { 
         price: $scope.fiat,
-        currency: 'USD'
+        currency: currency_code
       };
       var outputs = [];
       var config = configService.getSync();
@@ -129,7 +130,7 @@ angular.module('copayApp.controllers').controller('buyAmazonController',
 
           address = data.data.bitcoinAddress;
           amount = parseInt((data.data.btcPrice * 100000000).toFixed(0));
-          comment = 'Buy Amazon Gift Card';
+          comment = 'Amazon.com Gift Card';
 
           outputs.push({
             'toAddress': address,
@@ -172,8 +173,8 @@ angular.module('copayApp.controllers').controller('buyAmazonController',
                     bitpayInvoiceId: data.data.id,
                     bitpayInvoiceUrl: data.data.url
                   };
-                  self.loading = 'Buying gift card...';
-                  amazonService.buyGiftCard(gift, function(err, giftCard) {
+                  self.loading = 'Creating gift card...';
+                  amazonService.createGiftCard(gift, function(err, giftCard) {
                     self.loading = null;
                     if (err) { 
                       self.error = err;
