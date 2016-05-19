@@ -75,9 +75,14 @@ angular.module('copayApp.services')
 
       var client = bwcService.getClient(JSON.stringify(credentials));
       root.walletClients[credentials.walletId] = client;
+
+      if (client.incorrectDerivation) {
+        storageService.clearLastAddress(credentials.walletId,function() {});
+      }
+
       client.removeAllListeners();
       client.on('report', function(n) {
-         $log.info('BWC Report:'+ n);
+        $log.info('BWC Report:' + n);
       });
 
       client.on('notification', function(n) {
@@ -319,8 +324,8 @@ angular.module('copayApp.services')
 
         // check if exist
         if (lodash.find(root.profile.credentials, {
-            'walletId': walletData.walletId
-          })) {
+          'walletId': walletData.walletId
+        })) {
           return cb(gettext('Cannot join the same wallet more that once'));
         }
       } catch (ex) {
