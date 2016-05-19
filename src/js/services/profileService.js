@@ -323,10 +323,7 @@ angular.module('copayApp.services')
           })) {
           return cb(gettext('Cannot join the same wallet more that once'));
         }
-
-console.log('[profileService.js.328]'); //TODO
       } catch (ex) {
-console.log('[profileService.js.330:ex:]',ex); //TODO
         $log.debug(ex);
         return cb(gettext('Bad wallet invitation'));
       }

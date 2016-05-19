@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('backupController',
-  function($rootScope, $scope, $timeout, $log, $state, $compile, go, lodash, profileService, gettext, bwcService, bwsError, walletService) {
+  function($rootScope, $scope, $timeout, $document, $log, $state, $compile, go, lodash, profileService, gettext, bwcService, bwsError, walletService) {
 
     var self = this;
     var fc = profileService.focusedClient;
@@ -101,15 +101,15 @@ angular.module('copayApp.controllers').controller('backupController',
     }
 
     function resetAllButtons() {
-      document.getElementById('addWord').innerHTML = '';
-      var nodes = document.getElementById("buttons").getElementsByTagName('button');
+      $document.getElementById('addWord').innerHTML = '';
+      var nodes = $document.getElementById("buttons").getElementsByTagName('button');
       lodash.each(nodes, function(n) {
-        document.getElementById(n.id).disabled = false;
+        $document.getElementById(n.id).disabled = false;
       });
     }
 
     self.enableButton = function(word) {
-      document.getElementById(word).disabled = false;
+      $document.getElementById(word).disabled = false;
       lodash.remove(customWords, function(v) {
         return v == word;
       });
@@ -120,7 +120,7 @@ angular.module('copayApp.controllers').controller('backupController',
         index: index,
         word: word
       };
-      document.getElementById(index + word).disabled = true;
+      $document.getElementById(index + word).disabled = true;
       customWords.push(element);
       self.addButton(index, word);
     }
@@ -129,13 +129,13 @@ angular.module('copayApp.controllers').controller('backupController',
       var btnhtml = '<button class="button radius tiny words" ng-disabled="wordsC.disableButtons"' +
         'data-ng-click="wordsC.removeButton($event)" id="_' + index + word + '" > ' + word + ' </button>';
       var temp = $compile(btnhtml)($scope);
-      angular.element(document.getElementById('addWord')).append(temp);
+      angular.element($document.getElementById('addWord')).append(temp);
       self.shouldContinue();
     }
 
     self.removeButton = function(event) {
       var id = (event.target.id);
-      document.getElementById(id).remove();
+      $document.getElementById(id).remove();
       self.enableButton(id.substring(1));
       lodash.remove(customWords, function(d) {
         return d.index == id.substring(1, 3);

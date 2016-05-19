@@ -7,6 +7,7 @@ describe('index', function() {
     beforeEach(function(done) {
       mocks.init(FIXTURES, 'indexController', {
         loadProfile: PROFILE.incomplete2of2,
+        initController: true,
       }, done);
     });
 
@@ -20,9 +21,9 @@ describe('index', function() {
     it('should set the invitation code for incomplete wallets', function(done) {
       should.exist(ctrl);
 
+      ctrl.walletSecret.should.equal('GJ1A8mopdW7wPNWGVksqwQKz4CFSTgLzoYfMkt97BTBotUbZYXjMts6Ej9HbVfCf5oLmun1BXyL');
       // should redirect to copayers
       mocks.go.path.getCall(0).args[0].should.equal('copayers');
-      ctrl.walletSecret.should.equal('GJ1A8mopdW7wPNWGVksqwQKz4CFSTgLzoYfMkt97BTBotUbZYXjMts6Ej9HbVfCf5oLmun1BXyL');
       done();
     });
   });
@@ -31,6 +32,7 @@ describe('index', function() {
     beforeEach(function(done) {
       mocks.init(FIXTURES, 'indexController', {
         loadProfile: PROFILE.testnet1of1,
+        initController: true,
       }, done);
     });
 
@@ -63,9 +65,6 @@ describe('index', function() {
         done();
       });
     });
-
-
-
   });
 
 

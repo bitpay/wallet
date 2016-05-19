@@ -49,6 +49,18 @@ mocks.setProfile = function(profile) {};
  * opts
  */
 
+var getElements = sinon.stub();
+getElements.returns([]);
+
+var getElement = sinon.stub();
+getElement.returns({
+  getElementsByTagName: getElement,
+});
+
+mocks.$document = {
+  getElementById: getElement,
+};
+
 mocks.init = function(fixtures, controllerName, opts, done) {
   console.log(' * Mock init()');
   opts = opts || {};
@@ -122,7 +134,7 @@ mocks.init = function(fixtures, controllerName, opts, done) {
 
             console.log('##### running local: to http://localhost:3232/bws/api');
             bwc._originalRequest(method, url, args, function(err, response) {
-              console.log("### RESPONSE: "+hash+"\n", JSON.stringify(response)); //TODO
+              console.log("### RESPONSE: " + hash + "\n", JSON.stringify(response)); //TODO
               bwc.baseURL = oldURL;
               return cb2(null, response);
             });
@@ -148,8 +160,7 @@ mocks.init = function(fixtures, controllerName, opts, done) {
   });
   module('copayApp.controllers');
 
-
-  inject(function($rootScope, $controller,  $injector, _configService_, _profileService_, _storageService_) {
+  inject(function($rootScope, $controller, $injector, _configService_, _profileService_, _storageService_) {
     scope = $rootScope.$new();
     storageService = _storageService_;
 
@@ -168,22 +179,30 @@ mocks.init = function(fixtures, controllerName, opts, done) {
         rate: 452.92
       });
 
-
     _configService_.get(function() {
-      ctrl = $controller(controllerName, {
-        $scope: scope,
-        $modal: mocks.modal,
-        notification: mocks.notification,
-        configService: _configService_,
-        profileService: _profileService_,
-        go: mocks.go,
-      });
+      function startController() {
+        ctrl = $controller(controllerName, {
+          $scope: scope,
+          $modal: mocks.modal,
+          notification: mocks.notification,
+          configService: _configService_,
+          profileService: _profileService_,
+          go: mocks.go,
+          $document: mocks.$document,
+        });
+      };
+
+      if (opts.initController)
+        startController();
 
       if (opts.loadProfile) {
+
         localStorage.setItem('profile', JSON.stringify(opts.loadProfile));
 
         _profileService_.loadAndBindProfile(function(err) {
           should.not.exist(err, err);
+          if (!opts.initController)
+            startController();
           done();
         });
       } else {
@@ -192,6 +211,8 @@ mocks.init = function(fixtures, controllerName, opts, done) {
         }, function(err) {
           should.not.exist(err, err);
           _profileService_.setDisclaimerAccepted(function() {
+            if (!opts.initController)
+              startController();
             done();
           });
         });
