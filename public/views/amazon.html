@@ -40,7 +40,7 @@
 
   <div ng-init="amazon.init()">
 
-    <div class="p20t text-center">
+    <div class="p20t text-center" ng-click="amazon.init()">
       <img src="img/amazon-gift-card.png" alt="Amazon Gift Card" width="200">
     </div>
 
@@ -60,8 +60,9 @@
           {{item.cardInfo.value.amount | currency : item.cardInfo.value.currencyCode + ' ' : 2}}
         </div>
         <div class="large-5 medium-5 small-5 columns text-right">
-          <span class="text-warning" ng-if="item.status == 'ERROR'">Error</span>
-          <span class="text-light" ng-if="item.status != 'ERROR'">{{item.date * 1000 | amTimeAgo}}</span>
+          <span class="text-warning" ng-if="item.status == 'FAILURE'">Error</span>
+          <span class="text-secondary" ng-if="item.status == 'RESEND'">Resend is required</span>
+          <span class="text-light" ng-if="item.status == 'SUCCESS'">{{item.date * 1000 | amTimeAgo}}</span>
         </div>
         <div class="large-1 medium-1 small-1 columns text-right">
           <i class="icon-arrow-right3 size-18"></i>
