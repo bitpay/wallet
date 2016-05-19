@@ -15,7 +15,6 @@ angular.module('copayApp.controllers').controller('amazonController',
           return;
         }
         self.giftCards = gcds;
-      
       });
     };
     
@@ -26,8 +25,55 @@ angular.module('copayApp.controllers').controller('amazonController',
       var ModalInstanceCtrl = function($scope, $modalInstance) {
         $scope.card = card;
 
+        $scope.cancelGiftCard = function() {
+          $scope.refresh = true;
+          var dataSrc = {
+            creationRequestId: $scope.card.creationRequestId,
+            gcId: $scope.card.gcId,
+            bitpayInvoiceId: $scope.card.bitpayInvoiceId,
+            bitpayInvoiceUrl: $scope.card.bitpayInvoiceUrl,
+            date: $scope.card.date
+          };
+          $scope.loading = true;
+          amazonService.cancelGiftCard(dataSrc, function(err, data) {
+            $scope.loading = null;
+            if (err || data.status != 'SUCCESS') {
+              $scope.error = err || data.status;
+              return;
+            }
+            $scope.refreshGiftCard();
+          });
+        };
+
+        $scope.remove = function() {
+          amazonService.saveGiftCard($scope.card, {remove: true}, function(err) {
+            $modalInstance.close(true);
+          });
+        };
+
+        $scope.refreshGiftCard = function() {
+          $scope.refresh = true;
+          var dataSrc = {
+            creationRequestId: $scope.card.creationRequestId,
+            amount: $scope.card.cardInfo.value.amount,
+            currencyCode: $scope.card.cardInfo.value.currencyCode,
+            bitpayInvoiceId: $scope.card.bitpayInvoiceId,
+            bitpayInvoiceUrl: $scope.card.bitpayInvoiceUrl,
+            date: $scope.card.date
+          };
+          $scope.loading = true;
+          amazonService.createGiftCard(dataSrc, function(err, data) {
+            $scope.loading = null;
+            if (err) {
+              $scope.error = err;
+              return;
+            }
+            $scope.card = data;
+          });
+        };
+
         $scope.cancel = lodash.debounce(function() {
-          $modalInstance.dismiss('cancel');
+          $modalInstance.close($scope.refresh);
         }, 0, 1000);
 
       };
@@ -39,7 +85,7 @@ angular.module('copayApp.controllers').controller('amazonController',
       });
 
       var disableCloseModal = $rootScope.$on('closeModal', function() {
-        modalInstance.dismiss('cancel');
+        modalInstance.close($scope.refresh);
       });
 
       modalInstance.result.finally(function() {
@@ -48,6 +94,10 @@ angular.module('copayApp.controllers').controller('amazonController',
         var m = angular.element(document.getElementsByClassName('reveal-modal'));
         m.addClass(animationService.modalAnimated.slideOutRight);
       });
+
+      modalInstance.result.then(function(refresh) {
+        if (refresh) self.init();
+      }, function() {});
     };
 
   });
