@@ -15,6 +15,9 @@ angular.module('copayApp.controllers').controller('amazonController',
           return;
         }
         self.giftCards = gcds;
+        $timeout(function() {
+          $scope.$digest();
+        });
       });
     };
     
@@ -69,6 +72,9 @@ angular.module('copayApp.controllers').controller('amazonController',
               return;
             }
             $scope.card = data;
+            $timeout(function() {
+              $scope.$digest();
+            });
           });
         };
 
