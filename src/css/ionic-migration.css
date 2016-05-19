@@ -16,6 +16,14 @@
 	display: inherit;
 }
 
+.bct {
+ 	background-color: transparent !important;
+	margin-top: -25px;
+  padding-bottom: 30px;
+	right: -27px !important;
+	border-width: 0px;
+}
+
 .item-toggle .toggle {
 	right: 28px;
 }

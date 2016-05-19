@@ -152,10 +152,11 @@
                 <input type="text" class="form-control" name="derivationPath" ng-model="derivationPath">
               </label>
             </div>
-            <div class="oh"  ng-show="create.seedSourceId == 'new'">
-              <label for="network-name" >
+            <div class="oh" ng-show="create.seedSourceId == 'new'">
+              <label for="network-name" class="dbi">
                 <span>Testnet</span>
-                <switch id="network-name" name="isTestnet" ng-model="isTestnet" class="green right m5t m10b"></switch>
+                <ion-toggle ng-model="testnetEnabled" toggle-class="toggle-balanced" class="bct">
+                </ion-toggle>
               </label>
             </div>
           </div> <!-- columns -->
