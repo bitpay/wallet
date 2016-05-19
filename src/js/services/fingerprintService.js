@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.services').factory('fingerprintService', function(gettextCatalog, configService) {
+angular.module('copayApp.services').factory('fingerprintService', function($log, gettextCatalog, configService) {
   var root = {};
 
   var requestTouchId = function(cb) {
