@@ -29,7 +29,7 @@ angular.module('copayApp.services').factory('fingerprintService', function(gette
   };
 
   root.check = function(client, cb) {
-    if (root.isAvailable()) {
+    if (root.isAvailable(client)) {
       requestTouchId(cb);
     } else {
       return cb();
