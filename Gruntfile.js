@@ -111,7 +111,7 @@ module.exports = function(grunt) {
           'src/js/filters/*.js',
           'src/js/models/*.js',
           'src/js/services/*.js',
-          'src/js/controllers/*.js',
+          'src/js/controllers/**/*.js',
           'src/js/translations.js',
           'src/js/version.js',
           'src/js/coinbase.js',

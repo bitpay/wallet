@@ -1344,8 +1344,21 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     return this.alternativeIsoCode;
   };
 
-  this.openTxModal = function(tx) {
-    $rootScope.$emit('Local/TxModal', tx);
+  this.openTxModal = function(btx) {
+    var self = this;
+
+    $scope.btx = btx;
+    $scope.self = self;
+
+    $ionicModal.fromTemplateUrl('views/modals/tx-details.html', {
+      scope: $scope,
+      backdropClickToClose: false,
+      hardwareBackButtonClose: false,
+      hideDelay: 500
+    }).then(function(modal) {
+      $scope.txDetailsModal = modal;
+      $scope.txDetailsModal.show();
+    });
   };
 
   this.hasAction = function(actions, action) {

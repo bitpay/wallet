@@ -68,14 +68,14 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
   self.hideBalance = function() {
     storageService.getHideBalanceFlag(self.walletId, function(err, shouldHideBalance) {
-     if (err) self.shouldHideBalance = false;
-     else self.shouldHideBalance = (shouldHideBalance == 'true') ? true : false;
+      if (err) self.shouldHideBalance = false;
+      else self.shouldHideBalance = (shouldHideBalance == 'true') ? true : false;
     });
   }
 
-  self.onHold = function(){
-   self.shouldHideBalance = !self.shouldHideBalance;
-   storageService.setHideBalanceFlag(self.walletId, self.shouldHideBalance, function() {});
+  self.onHold = function() {
+    self.shouldHideBalance = !self.shouldHideBalance;
+    storageService.setHideBalanceFlag(self.walletId, self.shouldHideBalance, function() {});
   }
 
   self.setOngoingProcess = function(processName, isOn) {
@@ -1350,16 +1350,19 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       self.coinbasePendingTransactions = lodash.isEmpty(txs) ? null : txs;
       lodash.forEach(txs, function(dataFromStorage, txId) {
         if ((dataFromStorage.type == 'sell' && dataFromStorage.status == 'completed') ||
-            (dataFromStorage.type == 'buy' && dataFromStorage.status == 'completed') ||
-            dataFromStorage.status == 'error' ||
-            (dataFromStorage.type == 'send' && dataFromStorage.status == 'completed')) return;
+          (dataFromStorage.type == 'buy' && dataFromStorage.status == 'completed') ||
+          dataFromStorage.status == 'error' ||
+          (dataFromStorage.type == 'send' && dataFromStorage.status == 'completed')) return;
         coinbaseService.getTransaction(accessToken, accountId, txId, function(err, tx) {
           if (err) {
             if (err.errors[0] && err.errors[0].id == 'expired_token') {
               self.refreshCoinbaseToken();
               return;
             }
-            coinbaseService.savePendingTransaction(dataFromStorage, {status: 'error', error: err}, function(err) {
+            coinbaseService.savePendingTransaction(dataFromStorage, {
+              status: 'error',
+              error: err
+            }, function(err) {
               if (err) $log.debug(err);
             });
             return;
@@ -1373,7 +1376,10 @@ angular.module('copayApp.controllers').controller('indexController', function($r
                   self.refreshCoinbaseToken();
                   return;
                 }
-                coinbaseService.savePendingTransaction(dataFromStorage, {status: 'error', error: err}, function(err) {
+                coinbaseService.savePendingTransaction(dataFromStorage, {
+                  status: 'error',
+                  error: err
+                }, function(err) {
                   if (err) $log.debug(err);
                 });
                 return;
@@ -1383,8 +1389,15 @@ angular.module('copayApp.controllers').controller('indexController', function($r
               if (variance < dataFromStorage.price_sensitivity.value) {
                 self.sellPending(tx.data);
               } else {
-                var error = {errors: [{ message: 'Price falls over the selected percentage' }]};
-                coinbaseService.savePendingTransaction(dataFromStorage, {status: 'error', error: error}, function(err) {
+                var error = {
+                  errors: [{
+                    message: 'Price falls over the selected percentage'
+                  }]
+                };
+                coinbaseService.savePendingTransaction(dataFromStorage, {
+                  status: 'error',
+                  error: error
+                }, function(err) {
                   if (err) $log.debug(err);
                 });
               }
@@ -1402,8 +1415,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
   }, 1000);
 
-  var _updateCoinbasePendingTransactions = function (obj/*, …*/) {
-    for (var i=1; i<arguments.length; i++) {
+  var _updateCoinbasePendingTransactions = function(obj /*, …*/ ) {
+    for (var i = 1; i < arguments.length; i++) {
       for (var prop in arguments[i]) {
         var val = arguments[i][prop];
         if (typeof val == "object")
@@ -1449,21 +1462,31 @@ angular.module('copayApp.controllers').controller('indexController', function($r
           self.refreshCoinbaseToken();
           return;
         }
-        coinbaseService.savePendingTransaction(tx, {status: 'error', error: err}, function(err) {
+        coinbaseService.savePendingTransaction(tx, {
+          status: 'error',
+          error: err
+        }, function(err) {
           if (err) $log.debug(err);
         });
       } else {
         if (!res.data.id) {
-          coinbaseService.savePendingTransaction(tx, {status: 'error', error: err}, function(err) {
+          coinbaseService.savePendingTransaction(tx, {
+            status: 'error',
+            error: err
+          }, function(err) {
             if (err) $log.debug(err);
           });
           return;
         }
         coinbaseService.getTransaction(self.coinbaseToken, self.coinbaseAccount.id, res.data.id, function(err, sendTx) {
-          coinbaseService.savePendingTransaction(tx, {remove: true}, function(err) {
+          coinbaseService.savePendingTransaction(tx, {
+            remove: true
+          }, function(err) {
             coinbaseService.savePendingTransaction(sendTx.data, {}, function(err) {
               $timeout(function() {
-                self.updateCoinbase({updateAccount: true});
+                self.updateCoinbase({
+                  updateAccount: true
+                });
               }, 1000);
             });
           });
@@ -1482,22 +1505,32 @@ angular.module('copayApp.controllers').controller('indexController', function($r
           self.refreshCoinbaseToken();
           return;
         }
-        coinbaseService.savePendingTransaction(tx, {status: 'error', error: err}, function(err) {
+        coinbaseService.savePendingTransaction(tx, {
+          status: 'error',
+          error: err
+        }, function(err) {
           if (err) $log.debug(err);
         });
       } else {
         if (!res.data.transaction) {
-          coinbaseService.savePendingTransaction(tx, {status: 'error', error: err}, function(err) {
+          coinbaseService.savePendingTransaction(tx, {
+            status: 'error',
+            error: err
+          }, function(err) {
             if (err) $log.debug(err);
           });
           return;
         }
-        coinbaseService.savePendingTransaction(tx, {remove: true}, function(err) {
+        coinbaseService.savePendingTransaction(tx, {
+          remove: true
+        }, function(err) {
           coinbaseService.getTransaction(self.coinbaseToken, self.coinbaseAccount.id, res.data.transaction.id, function(err, updatedTx) {
             coinbaseService.savePendingTransaction(updatedTx.data, {}, function(err) {
               if (err) $log.debug(err);
               $timeout(function() {
-                self.updateCoinbase({updateAccount: true});
+                self.updateCoinbase({
+                  updateAccount: true
+                });
               }, 1000);
             });
           });
@@ -1685,13 +1718,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
           });
         }, 500);
       });
-    });
-  });
-
-  $rootScope.$on('Local/TxModal', function(event, tx) {
-    self.showTx = tx;
-    $timeout(function() {
-      $rootScope.$apply();
     });
   });
 
