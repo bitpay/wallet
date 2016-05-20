@@ -10,7 +10,7 @@ module.exports = function(config) {
 
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-    frameworks: ['mocha', 'chai'],
+    frameworks: ['jasmine'],
 
 
     // list of files / patterns to load in the browser
@@ -20,20 +20,16 @@ module.exports = function(config) {
       'bower_components/moment/min/moment-with-locales.js',
       'bower_components/angular/angular.js',
       'bower_components/angular-ui-router/release/angular-ui-router.js',
+      'bower_components/angular-foundation/mm-foundation.js',
       'bower_components/angular-foundation/mm-foundation-tpls.js',
-      'bower_components/angular-touch/angular-touch.js',
-      'bower_components/fastclick/lib/fastclick.js',
-      'bower_components/stateful-fastclick/dist/stateful-fastclick.js',
-      'bower_components/angular-stateful-fastclick/lib/angular-stateful-fastclick.js',
+      'bower_components/angular-animate/angular-animate.js',
       'bower_components/angular-moment/angular-moment.js',
       'bower_components/ng-lodash/build/ng-lodash.js',
-      'bower_components/angular-qrcode/angular-qrcode.js',
+      'bower_components/angular-qrcode/qrcode.js',
       'bower_components/angular-gettext/dist/angular-gettext.js',
+      'bower_components/angular-touch/angular-touch.js',
       'bower_components/angular-ui-switch/angular-ui-switch.js',
-      'bower_components/angular-sanitize/angular-sanitize.js',
-      'bower_components/ng-csv/build/ng-csv.js',
-      'bower_components/angular-mocks/angular-mocks.js',
-      'angular-bitcore-wallet-client/angular-bitcore-wallet-client.js',
+      'node_modules/angular-mocks/angular-mocks.js',
       'src/js/**/*.js',
       'test/**/*.js'
     ],
@@ -42,7 +38,7 @@ module.exports = function(config) {
     // list of files to exclude
     exclude: [
       'src/js/translations.js',
-      //      'src/js/version.js',
+      'src/js/version.js',
       'test/karma.conf.js',
       'test/old/*'
     ],
@@ -58,7 +54,7 @@ module.exports = function(config) {
     // test results reporter to use
     // possible values: 'dots', 'progress'
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-    reporters: ['mocha', 'coverage'],
+    reporters: ['progress', , 'coverage'],
 
     // optionally, configure the reporter
     coverageReporter: {
@@ -94,16 +90,6 @@ module.exports = function(config) {
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
     browsers: ['PhantomJS'],
-
-    plugins: [
-      'karma-mocha-reporter', 
-      'karma-coverage', 
-      'karma-mocha', 
-      'karma-chai', 
-      'karma-sinon',
-      'karma-phantomjs-launcher',
-      'karma-chrome-launcher',
-    ],
 
 
     // Continuous Integration mode

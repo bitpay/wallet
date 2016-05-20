@@ -18,7 +18,7 @@
         <div class="columns">
           <div class="text-warning size-14 m20b" ng-show="exportC.isEncrypted">
             <i class="fi-alert size-12"></i>
-            <span translate> A spending password is set for this wallet. Exporting keeps the spending password in the export archive.</span>
+            <span translate> The private key for this wallet is encrypted. Exporting keep the private key encrypted in the export archive.</span>
 
           </div>
         </div>
@@ -27,14 +27,14 @@
       <form>
         <div class="row">
           <div class="columns">
-            <label for="password" translate>Set up a password </label>
+            <label for="password" translate>Set up an Export Password </label>
             <div class="input">
               <input type="password" class="form-control"
-                                     placeholder="{{'Your password'|translate}}"
+                                     placeholder="{{'Your export password'|translate}}"
                                      name="password" ng-model="exportC.password">
             </div>
 
-            <label for="password" translate>Repeat the password</label>
+            <label for="password" translate>Repeat password</label>
             <div class="input">
               <input type="password" class="form-control"
                                      placeholder="{{'Repeat password'|translate}}"

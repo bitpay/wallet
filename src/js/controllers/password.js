@@ -10,7 +10,7 @@ angular.module('copayApp.controllers').controller('passwordController',
     document.getElementById("passwordInput").focus();
 
     this.close = function(cb) {
-      return cb('No spending password given');
+      return cb('No password given');
     };
 
     this.set = function(isSetup, cb) {
@@ -30,7 +30,7 @@ angular.module('copayApp.controllers').controller('passwordController',
         }
         if (isSetup && pass1 != $scope.password) {
           self.loading = false;
-          self.error = gettext('Spending Passwords do not match');
+          self.error = gettext('Passwords do not match');
           self.isVerification = false;
           $scope.password = null;
           pass1 = null;

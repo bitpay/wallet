@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('sellCoinbaseController', 
-  function($rootScope, $scope, $modal, $log, $timeout, lodash, profileService, coinbaseService, animationService, bwsError, configService, walletService, fingerprintService) {
+  function($scope, $modal, $log, $timeout, lodash, profileService, coinbaseService, animationService, txService, bwsError) {
     
     window.ignoreMobilePause = true;
     var self = this;
@@ -35,14 +35,6 @@ angular.module('copayApp.controllers').controller('sellCoinbaseController',
       var network = testnet ? 'testnet' : 'livenet';
       return lodash.filter(profileService.getWallets(network), function(w) {
         return w.network == network && w.m == 1;
-      });
-    };
-
-    var handleEncryptedWallet = function(client, cb) {
-      if (!walletService.isEncrypted(client)) return cb();
-      $rootScope.$emit('Local/NeedsPassword', false, function(err, password) {
-        if (err) return cb(err);
-        return cb(walletService.unlock(client, password));
       });
     };
 
@@ -187,9 +179,6 @@ angular.module('copayApp.controllers').controller('sellCoinbaseController',
       var accountId = account.id;
       var dataSrc = { name : 'Received from Copay: ' + self.selectedWalletName };
       var outputs = [];
-      var config = configService.getSync();
-      var configWallet = config.wallet;
-      var walletSettings = configWallet.settings;
 
 
       self.loading = 'Creating transaction...';
@@ -213,18 +202,17 @@ angular.module('copayApp.controllers').controller('sellCoinbaseController',
             'amount': amount,
             'message': comment
           });
-          
-          var txp = {
+
+          var opts = {
+            selectedClient: fc,
             toAddress: address,
             amount: amount,
             outputs: outputs,
             message: comment,
-            payProUrl: null,
-            excludeUnconfirmedUtxos: configWallet.spendUnconfirmed ? false : true,
-            feeLevel: walletSettings.feeLevel || 'normal'
+            payProUrl: null
           };
 
-          walletService.createTx(fc, txp, function(err, createdTxp) {
+          txService.createTx(opts, function(err, txp) {
             if (err) {
               $log.debug(err);
               self.loading = null;
@@ -232,10 +220,10 @@ angular.module('copayApp.controllers').controller('sellCoinbaseController',
               $scope.$apply();
               return;
             }
-            $scope.$emit('Local/NeedsConfirmation', createdTxp, function(accept) {
+            $scope.$emit('Local/NeedsConfirmation', txp, function(accept) {
               self.loading = null;
               if (accept) { 
-                self.confirmTx(createdTxp, function(err, tx) {
+                self.confirmTx(txp, function(err, tx) {
                   if (err) { 
                     self.error = {errors: [{ message: 'Could not create transaction: ' + err.message }]};
                     return;
@@ -278,54 +266,34 @@ angular.module('copayApp.controllers').controller('sellCoinbaseController',
     };
 
     this.confirmTx = function(txp, cb) {
-
-      fingerprintService.check(fc, function(err) {
+      txService.prepare({selectedClient: fc}, function(err) {
         if (err) {
           $log.debug(err);
           return cb(err);
         }
-
-        handleEncryptedWallet(fc, function(err) {
+        self.loading = 'Sending bitcoin to Coinbase...';
+        txService.publishTx(txp, {selectedClient: fc}, function(err, txpPublished) {
           if (err) {
+            self.loading = null;
             $log.debug(err);
-            return cb(err);
-          }
-
-          self.loading = 'Sending bitcoin to Coinbase...';
-          walletService.publishTx(fc, txp, function(err, publishedTxp) {
-            if (err) {
-              self.loading = null;
-              $log.debug(err);
-              return cb({errors: [{ message: 'Transaction could not be published: ' + err.message }]});
-            }
-
-            walletService.signTx(fc, publishedTxp, function(err, signedTxp) {
-              walletService.lock(fc);
+            return cb({errors: [{ message: 'Transaction could not be published: ' + err.message }]});
+          } else {
+            txService.signAndBroadcast(txpPublished, {selectedClient: fc}, function(err, txp) {
               if (err) {
                 self.loading = null;
                 $log.debug(err);
-                walletService.removeTx(fc, signedTxp, function(err) {
+                txService.removeTx(txp, function(err) {
                   if (err) $log.debug(err);
                 });
                 return cb({errors: [{ message: 'The payment was created but could not be completed: ' + err.message }]});
-              }
-
-              walletService.broadcastTx(fc, signedTxp, function(err, broadcastedTxp) {
-                if (err) {
-                  self.loading = null;
-                  $log.debug(err);
-                  walletService.removeTx(fc, broadcastedTxp, function(err) {
-                    if (err) $log.debug(err);
-                  });
-                  return cb({errors: [{ message: 'The payment was created but could not be broadcasted: ' + err.message }]});
-                }
+              } else {
                 $timeout(function() {
                   self.loading = null;
-                  return cb(null, broadcastedTxp);
+                  return cb(null, txp);
                 }, 5000);
-              });
+              }
             });
-          });
+          }
         });
       });
     };
