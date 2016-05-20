@@ -12,7 +12,6 @@ module.exports = function(config) {
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
     frameworks: ['mocha', 'chai', 'sinon'],
 
-
     // list of files / patterns to load in the browser
     files: [
       'bower_components/qrcode-generator/js/qrcode.js',
@@ -103,10 +102,17 @@ module.exports = function(config) {
     browsers: ['PhantomJS'],
 
     plugins: [
+<<<<<<< HEAD
       'karma-mocha-reporter',
       'karma-coverage',
       'karma-mocha',
       'karma-chai',
+=======
+      'karma-mocha-reporter', 
+      'karma-coverage', 
+      'karma-mocha', 
+      'karma-chai', 
+>>>>>>> Update with master (#4231)
       'karma-sinon',
       'karma-phantomjs-launcher',
       'karma-chrome-launcher',

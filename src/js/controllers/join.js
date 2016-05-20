@@ -86,7 +86,6 @@ angular.module('copayApp.controllers').controller('joinController',
 
 
       if (setSeed && !opts.mnemonic && !opts.extendedPrivateKey) {
-
         this.error = gettext('Please enter the wallet recovery phrase');
         return;
       }
