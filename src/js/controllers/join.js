@@ -86,7 +86,7 @@ angular.module('copayApp.controllers').controller('joinController',
 
 
       if (setSeed && !opts.mnemonic && !opts.extendedPrivateKey) {
-        this.error = gettext('Please enter the wallet seed');
+        this.error = gettext('Please enter the wallet recovery phrase');
         return;
       }
 
@@ -124,6 +124,8 @@ angular.module('copayApp.controllers').controller('joinController',
     this._join = function(opts) {
       self.loading = true;
       $timeout(function() {
+
+console.log('[join.js.124]', opts); //TODO
         profileService.joinWallet(opts, function(err) {
           if (err) {
             self.loading = false;

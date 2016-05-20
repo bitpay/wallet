@@ -97,26 +97,16 @@ module.exports = function(config) {
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
     browsers: ['PhantomJS'],
 
-<<<<<<< HEAD
     plugins: [
-<<<<<<< HEAD
       'karma-mocha-reporter',
       'karma-coverage',
       'karma-mocha',
       'karma-chai',
-=======
-      'karma-mocha-reporter', 
-      'karma-coverage', 
-      'karma-mocha', 
-      'karma-chai', 
->>>>>>> Update with master (#4231)
       'karma-sinon',
       'karma-phantomjs-launcher',
       'karma-chrome-launcher',
     ],
 
-=======
->>>>>>> Revert "Update with master" (#4232)
 
     // Continuous Integration mode
     // if true, Karma captures browsers, runs the tests and exits

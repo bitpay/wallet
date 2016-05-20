@@ -234,7 +234,11 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       $rootScope.$emit('Local/TabChanged', tab);
     };
 
+<<<<<<< HEAD
     if (switchState && !go.is('walletHome')) {
+=======
+    if (switchState && go.is('walletHome')) {
+>>>>>>> Add controller tests (#4205)
       go.path('walletHome', function() {
         changeTab();
       });
