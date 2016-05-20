@@ -33,7 +33,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   var vanillaScope = ret;
 
   $scope.collapseBalanceContent = function(updating) {
-    if (updating) return;
+    if (updating || isCordova) return;
 
     var scrollPosition = $ionicScrollDelegate.$getByHandle('transactions').getScrollPosition().top;
     $scope.shouldCollapse = scrollPosition > 50 ? true : false;
@@ -44,10 +44,9 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   };
 
   $scope.freezeScroll = function() {
-    var scrollPosition = $ionicScrollDelegate.$getByHandle('balance').getScrollPosition().top;
     var openRatio = $ionicSideMenuDelegate.getOpenRatio();
 
-    if (scrollPosition < -75 || openRatio != 0)
+    if (openRatio != 0)
       $ionicScrollDelegate.$getByHandle('balance').freezeScroll(true);
     else
       $ionicScrollDelegate.$getByHandle('balance').freezeScroll(false);

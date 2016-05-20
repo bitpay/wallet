@@ -16,6 +16,10 @@
 	display: inherit;
 }
 
+.behind {
+	z-index: -1;
+}
+
 .bct {
  	background-color: transparent !important;
 	margin-top: -25px;
@@ -65,10 +69,6 @@ button, .button {
 .backup .row {
   margin-top: 10px;
   padding: 0;
-}
-
-.scroll-view {
-  height: 100% !important;
 }
 
 /* Override the default modal size for large devices */
