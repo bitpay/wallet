@@ -690,19 +690,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
   self.csvHistory = function() {
 
-    function saveFile(name, data) {
-      var chooser = document.querySelector(name);
-      chooser.addEventListener("change", function(evt) {
-        var fs = require('fs');
-        fs.writeFile(this.value, data, function(err) {
-          if (err) {
-            $log.debug(err);
-          }
-        });
-      }, false);
-      chooser.click();
-    }
-
     function formatDate(date) {
       var dateObj = new Date(date);
       if (!dateObj) {
