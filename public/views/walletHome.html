@@ -115,6 +115,15 @@
         </div>
       </div> <!-- oh -->
 
+      <div class="oh pr m20t" ng-show="index.incorrectDerivation">
+        <div class="text-center text-warning">
+          <i class="fi-alert"></i>
+          <span translate>
+            WARNING: Key derivation is not working on this device/wallet. Actions cannot be performed on this wallet.
+          </span>
+        </div>
+ 
+      </div>
 
       <div class="oh pr m20t" ng-show="index.notAuthorized && ! index.anyOnGoingProcess">
         <div class="text-center text-warning">
