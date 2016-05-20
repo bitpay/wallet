@@ -1,4 +1,4 @@
-<nav class="tab-bar">
+<nav class="tab-bar"  ng-style="{'background-color':color}">
   <section class="left-small">
     <a ng-click="cancel()">
       <i class="icon-arrow-left3 icon-back"></i>
@@ -17,10 +17,10 @@
      ng-swipe-right="cancel()">
   <div class="header-modal bg-gray text-center">
 
-    <img src="img/amazon-card.png" alt="Amazon" width="200" ng-click="refreshGiftCard()">
+    <img src="img/a_generic.jpg" alt="Amazon.com Gift Card" width="200" ng-click="refreshGiftCard()">
     
     <div class="size-24 text-bold m10t">
-      {{card.cardInfo.value.amount | currency : card.cardInfo.value.currencyCode + ' ' : 2}}
+      {{card.cardInfo.value.amount | currency : '$ ' : 2}}
     </div>
   </div>
 

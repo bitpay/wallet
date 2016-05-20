@@ -1,14 +1,14 @@
 <div 
   class="topbar-container" 
   ng-include="'views/includes/topbar.html'"
-  ng-init="titleSection='Buy a gift card'; goBackToState = 'amazon'; noColor = true">
+  ng-init="titleSection='Buy'; goBackToState = 'amazon'">
 </div>
 
 
 <div class="content amazon" ng-controller="buyAmazonController as buy">
 
   <div class="onGoingProcess" ng-show="buy.loading">
-    <div class="onGoingProcess-content" ng-style="{'background-color': '#2b71b1'}">
+    <div class="onGoingProcess-content"  ng-style="{'background-color': index.backgroundColor}">
     <div class="spinner">
       <div class="rect1"></div>
       <div class="rect2"></div>
@@ -41,8 +41,10 @@
       </div>     
 
       <div class="text-center">
-        <img src="img/amazon-card.png" alt="Amazon Gift Card" width="200">
-        <div class="tu size-12 text-gray">Redeem online</div>
+        <img src="img/a_generic.jpg" alt="Amazon.com Gift Card" width="200">
+        <div class="text-left size-12 m10t">
+          Use your Amazon.com Gift Card* to shop from a huge selection of books, electronics, music, movies, software, apparel, toys, and more.
+        </div>
       </div>
       <form
          name="buyAmazonForm" 
@@ -50,9 +52,9 @@
          novalidate>
 
         <div class="m20v text-center">
-          <a class="amazon-select-amount" ng-click="buy.setAmount()">-</a>
-          <span class="amazon-amount">${{fiat}}</span>
-          <a class="amazon-select-amount" ng-click="buy.setAmount(1)">+</a>
+          <a class="amazon-select-amount" ng-style="{'background-color': index.backgroundColor}" ng-click="buy.setAmount()">-</a>
+          <span class="amazon-amount">$ {{fiat}}</span>
+          <a class="amazon-select-amount" ng-style="{'background-color': index.backgroundColor}" ng-click="buy.setAmount(1)">+</a>
         </div>
 
         <div 
@@ -69,23 +71,19 @@
           </div>
         </div> 
 
-        <div class="size-12 text-gray text-light m10v">
-          Use your Amazon.com Gift Card to shop from a huge selection of books, electronics, music, movies, software, apparel, toys, and more.
-        </div>
-
         <div class="input m20t">
-          <input class="button black expand round" 
+          <input class="button black round expand" 
                    ng-disabled="buy.loading || !fiat"
-                   ng-style="{'background-color': '#2b71b1'}"
-                   type="submit" value="Buy">
+                   ng-style="{'background-color': index.backgroundColor}"
+                   type="submit" value="Order now">
         </div>
       </form>
     </div>
   </div>
 
-  <div class="m20t row" ng-show="buy.giftCard">
-    <div class="columns" ng-show="buy.giftCard.status != 'SUCCESS'">
-      <h1 class="text-center">Amazon.com Gift Card could not be created</h1>
+  <div class="m20t" ng-show="buy.giftCard">
+    <div class="m10h" ng-show="buy.giftCard.status != 'SUCCESS'">
+      <h1 class="text-center">Gift card could not be created</h1>
       <div class="box-notification m20b">
         <span class="text-warning">
           There was an error when trying to create the Amazon.com Gift Card. Status: {{buy.giftCard.status}}
@@ -104,46 +102,73 @@
         </button>
       </div>
     </div>
-    <div class="columns" ng-show="buy.giftCard.status == 'SUCCESS'">
-      <h1 class="text-center">Gift card ready to redeem!</h1>
-
-      <div class="size-12 text-center">
-        <span class="label gray radius">
-        {{buy.giftCard.cardInfo.value.amount | currency : buy.giftCard.cardInfo.value.currencyCode + ' ' : 2 }}
-        </span>
+    <div ng-show="buy.giftCard.status == 'SUCCESS'">
+      <div class="size-12 m10h">
+        Thank you for participating in the BitPay offer. It is our pleasure to send 
+        you this Amazon.com Gift Card* that can be redeemed towards millions of items at 
+        <a ng-click="$root.openExternalLink('https://www.amazon.com')">www.amazon.com</a>. You may want to print this screen 
+        for easy reference later--you&rsquo;ll need the gift card claim code below
       </div>
 
-      <div class="white p10 m10">
-        <div class="tu text-gray size-12">Claim code</div>
-        <div class="text-bold size-16 m5t enable_text_select">{{buy.giftCard.gcClaimCode}}</div>
+      <div class="oh m20t size-12">
+        <img class="left m10h" src="img/a_generic.jpg" alt="Amazon.com Gift Cards" width="130">
+        <div>
+          Gift Card Amount: 
+          <span class="text-bold">
+            {{buy.giftCard.cardInfo.value.amount | currency : '$ ' : 2 }}
+          </span>
+        </div>
+        <div>
+          Claim code: <span class="text-bold enable_text_select">{{buy.giftCard.gcClaimCode}}</span>
+        </div>
+        <div class="m10t">
+          <button class="button black round tiny" 
+                  ng-style="{'background-color': index.backgroundColor}"
+                  ng-click="$root.openExternalLink('https://www.amazon.com/gc/redeem?claimCode=' + buy.giftCard.gcClaimCode)">
+            Redeem Now
+          </button>
+        </div>
       </div>
 
-      <div class="text-center m20t">
-        <button class="button outline round dark-gray tiny" 
-          ng-click="$root.openExternalLink('https://www.amazon.com/gc/redeem?claimCode=' + buy.giftCard.gcClaimCode)">
-          <span class="text-gray">Go to amazon.com</span>
-        </button>
+      <div class="size-12 m10t text-center">
+        | <a 
+        ng-click="$root.openExternalLink('https://www.amazon.com/gp/css/gc/payment/view-gc-balance?claimCode=' + buy.giftCard.gcClaimCode)">
+          Apply to Account
+        </a> | 
+        <a ng-click="$root.openExternalLink('http://www.amazon.com/gc-redeem')">How to Use</a> |
       </div>
 
-      <div class="m20 size-12 text-gray line-t p10t">
-        To redeem your gift card, follow these steps:
+
+      <div class="m20t size-12 white line-t p10">
+        <div class="text-bold m10b">To redeem your gift card, follow these steps:</div>
         <ol class="size-12">
-          <li>Visit www.amazon.com/gc.</li>
+          <li>Visit <a ng-click="$root.openExternalLink('https://www.amazon.com/gc')">www.amazon.com/gc</a>.</li>
           <li>Click Apply to Account and enter the claim code when prompted.</li>
           <li>Gift card funds will be applied automatically to eligible orders during the checkout process.</li>
           <li>You must pay for any remaining balance on your order with another payment method.</li>
         </ol>
+        <p class="size-12">Your gift card claim code may also be entered when prompted during checkout. 
+        To redeem your gift card using the Amazon.com 1-Click&reg; service, first add the gift card 
+        funds to Your Account.</p>
+        <p class="size-12">If you have questions about redeeming your gift card, please visit 
+        <a ng-click="$root.openExternalLink('https://www.amazon.com/gc-redeem')">www.amazon.com/gc-redeem</a>. 
+        If you have questions regarding the BitPay offer, please contact BitPay.</p>
       </div>
 
-      <div class="text-center m20t line-t p10t">
-        <div class="tu text-gray size-12 text-left">BitPay invoice</div>
-        <div class="text-bold size-16 m5t text-left">{{buy.giftCard.bitpayInvoiceId}}</div>
-        <button class="m20t button outline round dark-gray tiny" 
-          ng-click="$root.openExternalLink(buy.giftCard.bitpayInvoiceUrl)">
-          <span class="text-gray">View invoice</span>
-        </button>
-      </div>
     </div>
+  </div>
+
+  <div class="size-12 white p15 m20t">
+    *Amazon.com Gift Cards (&quot;GCs&quot;) sold by BitPay, Inc., an authorized and independent
+    reseller of Amazon.com Gift Cards. Except as required by law, GCs cannot be transferred for value or redeemed for cash.
+    GCs may be used only for purchases of eligible goods at Amazon.com or certain of its affiliated websites. Purchases are
+    deducted from the GC balance. To redeem or view a GC balance, visit &ldquo;Your Account&rdquo; at Amazon.com. Amazon is
+    not responsible if a GC is lost, stolen, destroyed or used without permission. See 
+    <a ng-click="$root.openExternalLink('https://www.amazon.com/gc-legal')">www.amazon.com/gc-legal</a> for complete terms, 
+    restrictions and exceptions. For any other questions, see 
+    <a ng-click="$root.openExternalLink('https://www.amazon.com/gc')">www.amazon.com/gc</a>. GCs are issued 
+    by ACI Gift Cards, Inc., a Washington corporation. All Amazon &reg;, &trade; &amp; &copy; are IP of 
+    Amazon.com, Inc. or its affiliates. No expiration date or service fees.
   </div>
 
 </div>

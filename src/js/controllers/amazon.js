@@ -27,6 +27,7 @@ angular.module('copayApp.controllers').controller('amazonController',
       var fc = profileService.focusedClient;
       var ModalInstanceCtrl = function($scope, $modalInstance) {
         $scope.card = card;
+        $scope.color = fc.backgroundColor;
 
         $scope.cancelGiftCard = function() {
           $scope.refresh = true;
