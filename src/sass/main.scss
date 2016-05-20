@@ -460,8 +460,12 @@ ul.manage li {
   }
 }
 
-.fade {
-  transition: margin-top .2s ease;
+.fade-t {
+  transition: top .2s ease;
+}
+
+.fade-all {
+  transition: .4s all ease;
 }
 
 .dn {
@@ -624,20 +628,20 @@ ul.manage li {
   margin-top: 20px;
 }
 
-.m50t {
-  margin-top: 50px;
-}
-
-.m150t {
-  margin-top: 150px;
-}
-
 .m20tp {
   margin-top: 20%;
 }
 
 .m30tp {
   margin-top: 30%;
+}
+
+.t50 {
+  top: 50px;
+}
+
+.t150 {
+  top: 150px;
 }
 
 .m15 {
@@ -1581,7 +1585,6 @@ input.ng-invalid-match {
   color: #fff;
   height: 150px;
   margin-bottom: 25px;
-  transition: .4s all ease;
 }
 
 .amountcollapsed {
@@ -1589,7 +1592,6 @@ input.ng-invalid-match {
   text-align: center;
   color: #fff;
   height: 50px;
-  transition: .4s all ease;
 }
 
 .alternative-amount {
