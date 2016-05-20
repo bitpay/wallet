@@ -84,7 +84,9 @@ angular.module('copayApp.controllers').controller('joinController',
         opts.passphrase = form.createPassphrase.$modelValue;
       }
 
+
       if (setSeed && !opts.mnemonic && !opts.extendedPrivateKey) {
+
         this.error = gettext('Please enter the wallet recovery phrase');
         return;
       }
@@ -93,6 +95,7 @@ angular.module('copayApp.controllers').controller('joinController',
         var account = $scope.account;
         if (!account || account < 1) {
           this.error = gettext('Invalid account number');
+
           return;
         }
 
@@ -114,6 +117,7 @@ angular.module('copayApp.controllers').controller('joinController',
           self._join(opts);
         });
       } else {
+
         self._join(opts);
       }
     };
@@ -121,6 +125,8 @@ angular.module('copayApp.controllers').controller('joinController',
     this._join = function(opts) {
       self.loading = true;
       $timeout(function() {
+
+console.log('[join.js.124]', opts); //TODO
         profileService.joinWallet(opts, function(err) {
           if (err) {
             self.loading = false;
