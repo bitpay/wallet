@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, latestReleaseService, bwcService, pushNotificationsService, lodash, go, profileService, configService, isCordova, rateService, storageService, addressService, gettext, gettextCatalog, amMoment, nodeWebkit, addonManager, isChromeApp, bwsError, txFormatService, uxLanguage, $state, glideraService, coinbaseService, isMobile, addressbookService) {
+angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, latestReleaseService, bwcService, pushNotificationsService, lodash, go, profileService, configService, isCordova, rateService, storageService, addressService, gettext, gettextCatalog, amMoment, nodeWebkit, addonManager, isChromeApp, bwsError, txFormatService, uxLanguage, $state, glideraService, coinbaseService, isMobile, addressbookService, walletService) {
   var self = this;
   var SOFT_CONFIRMATION_LIMIT = 12;
   var errors = bwcService.getErrors();
@@ -136,6 +136,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       self.isPrivKeyEncrypted = fc.isPrivKeyEncrypted();
       self.externalSource = fc.getPrivKeyExternalSourceName();
       self.account = fc.credentials.account;
+      self.incorrectDerivation = fc.incorrectDerivation;
 
       if (self.externalSource == 'trezor')
         self.account++;
@@ -161,7 +162,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         }
       }
 
-      profileService.isBackupNeeded(self.walletId, function(needsBackup) {
+      walletService.isBackupNeeded(fc, function(needsBackup) {
         self.needsBackup = needsBackup;
         self.openWallet(function() {
           if (!self.isComplete) {

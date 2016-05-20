@@ -18,6 +18,6 @@ Supporto per il protocollo di pagamento (BIP70-BIP73): richieste di pagamento fa
 Supporto per 150+ valute e denominazione in BTC o bits
 Notifiche email per pagamenti o trasferimenti
 Colori di sfondo e nomi dei portafogli personalizzabli
-10 lingue supportate (EN, JP, FR, ES, IT, DE, PT, RU, EL, TR)
+7 Lingue supportate (EN, JP, FR, ES, DE, RU, IT)
 
 Copay è un software gratuito e open source che non dipende da server proprietari, pertanto il supporto del software non dipende da nessuna azienda. Chiunque può rivedere o contribuire al codice sorgente di Copay su GitHub (https://github.com/bitpay/copay). 
