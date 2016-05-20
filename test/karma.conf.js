@@ -10,7 +10,7 @@ module.exports = function(config) {
 
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-    frameworks: ['mocha', 'chai'],
+    frameworks: ['mocha', 'chai', 'sinon'],
 
 
     // list of files / patterns to load in the browser
@@ -35,6 +35,7 @@ module.exports = function(config) {
       'bower_components/angular-mocks/angular-mocks.js',
       'angular-bitcore-wallet-client/angular-bitcore-wallet-client.js',
       'src/js/**/*.js',
+      'test/helpers.js',
       'test/**/*.js'
     ],
 
@@ -47,6 +48,12 @@ module.exports = function(config) {
       'test/old/*'
     ],
 
+    client: {
+      mocha: {
+        //   reporter: 'html', // change Karma's debug.html to the mocha web reporter
+        ui: 'tdd'
+      }
+    },
 
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
@@ -96,10 +103,10 @@ module.exports = function(config) {
     browsers: ['PhantomJS'],
 
     plugins: [
-      'karma-mocha-reporter', 
-      'karma-coverage', 
-      'karma-mocha', 
-      'karma-chai', 
+      'karma-mocha-reporter',
+      'karma-coverage',
+      'karma-mocha',
+      'karma-chai',
       'karma-sinon',
       'karma-phantomjs-launcher',
       'karma-chrome-launcher',

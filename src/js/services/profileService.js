@@ -148,9 +148,8 @@ angular.module('copayApp.services')
             root.isDisclaimerAccepted(function(val) {
               if (!val) {
                 return cb(new Error('NONAGREEDDISCLAIMER: Non agreed disclaimer'));
-              } else {
-                return cb();
-              }
+              } 
+              return cb();
             });
           });
         });
@@ -306,7 +305,8 @@ angular.module('copayApp.services')
         if (err) return cb(err);
 
         walletClient.createWallet(opts.name, opts.myName || 'me', opts.m, opts.n, {
-          network: opts.networkName
+          network: opts.networkName,
+          walletPrivKey: opts.walletPrivKey,
         }, function(err, secret) {
           if (err) return bwsError.cb(err, gettext('Error creating wallet'), cb);
 
@@ -571,6 +571,7 @@ angular.module('copayApp.services')
           if (err) return cb(err);
 
           root.bindProfile(p, function(err) {
+            // ignore NONAGREEDDISCLAIMER
             storageService.storeNewProfile(p, function(err) {
               return cb(err);
             });
@@ -588,7 +589,6 @@ angular.module('copayApp.services')
 
     root.isDisclaimerAccepted = function(cb) {
       var disclaimerAccepted = root.profile && root.profile.disclaimerAccepted;
-
       if (disclaimerAccepted)
         return cb(true);
 
