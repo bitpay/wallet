@@ -54,13 +54,14 @@
     -->
 
     <ion-content id="walletHome" class="walletHome tab-view tab-in" scroll="false">
-      <ion-content delegate-handle="balance" on-scroll="freezeScroll()">
+      <ion-scroll delegate-handle="balance" on-scroll="freezeScroll()" scrollbar-y="false">
         <ion-refresher
           pulling-icon="ion-ios-refresh"
+          spinner="none"
           on-refresh="index.updateAll({triggerTxUpdate: true})">
         </ion-refresher>
         <div class="oh pr">
-          <div ng-style="{'background-color':index.backgroundColor}" ng-class="{amount: !shouldCollapse, amountcollapsed: shouldCollapse}">
+          <div ng-style="{'background-color':index.backgroundColor}" ng-class="{amount: !shouldCollapse, amountcollapsed: shouldCollapse, 'fade-all': !index.isCordova}">
             <div ng-if="!index.anyOnGoingProcess && !index.notAuthorized">
               <div class="m15t" ng-show="index.updateError && !shouldCollapse" ng-click='index.updateAll({triggerTxUpdate: true})'>
                 <span class="size-12 db m10b">{{index.updateError|translate}}</span>
@@ -105,9 +106,9 @@
             <qr-scanner on-scan="home.onQrCodeScanned(data)"></qr-scanner>
           </div>
         </div> <!-- oh -->
-      </ion-content>
+      </ion-scroll>
 
-      <ion-content overflow-scroll="false" class="fade" ng-class="{m150t: !shouldCollapse, m50t: shouldCollapse}" delegate-handle="transactions" on-scroll="collapseBalanceContent(index.updatingTxHistory && index.txProgress > 5)">
+      <ion-content overflow-scroll="false" class="behind" ng-class="{t150: !shouldCollapse, t50: shouldCollapse, 'fade-t': !index.isCordova}" delegate-handle="transactions" on-scroll="collapseBalanceContent(index.updatingTxHistory && index.txProgress > 5)">
         <div class="m50b">
           <div class="oh pr m20t" ng-show="index.notAuthorized && !index.anyOnGoingProcess">
 
