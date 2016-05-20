@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('buyGlideraController', 
-  function($scope, $timeout, $modal, profileService, addressService, glideraService, bwsError, lodash, isChromeApp, animationService, walletService) {
+  function($scope, $timeout, $modal, profileService, addressService, glideraService, bwsError, lodash, isChromeApp, animationService) {
     
     var self = this;
     this.show2faCodeInput = null;
@@ -50,17 +50,14 @@ angular.module('copayApp.controllers').controller('buyGlideraController',
         };
 
         $scope.selectWallet = function(walletId, walletName) {
-          var client = profileService.getClient(walletId);
-          walletService.isReady(client, function(err) {
-            if (err) {
-              self.error = err;
-              $modalInstance.dismiss('cancel');
-              return;
-            }
-            $modalInstance.close({
-              'walletId': walletId,
-              'walletName': walletName,
-            });
+          if (!profileService.getClient(walletId).isComplete()) {
+            self.error = bwsError.msg({'code': 'WALLET_NOT_COMPLETE'}, 'Could not choose the wallet');
+            $modalInstance.dismiss('cancel');
+            return;
+          }
+          $modalInstance.close({
+            'walletId': walletId, 
+            'walletName': walletName, 
           });
         };
       };
@@ -97,24 +94,26 @@ angular.module('copayApp.controllers').controller('buyGlideraController',
         self.gettingBuyPrice = false;
         if (err) {
           self.error = 'Could not get exchange information. Please, try again.';
-          return;
         }
-        self.buyPrice = buyPrice;
+        else {
+          self.buyPrice = buyPrice;
+        }
       });     
     };
 
     this.get2faCode = function(token) {
       var self = this;
-      self.error = null;
-      self.loading = 'Sending 2FA code...';
+      this.loading = 'Sending 2FA code...';
       $timeout(function() {
         glideraService.get2faCode(token, function(err, sent) {
           self.loading = null;
           if (err) {
             self.error = 'Could not send confirmation code to your phone';
-            return;
           }
-          self.show2faCodeInput = sent;
+          else {
+            self.error = null;
+            self.show2faCodeInput = sent;
+          }
         });
       }, 100);
     };
@@ -140,10 +139,11 @@ angular.module('copayApp.controllers').controller('buyGlideraController',
             self.loading = null;
             if (err) {
               self.error = err;
-              return;
             }
-            self.success = data;
-            $scope.$emit('Local/GlideraTx');
+            else {
+              self.success = data;
+              $scope.$emit('Local/GlideraTx');
+            }
           });
         });
       }, 100);

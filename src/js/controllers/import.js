@@ -51,7 +51,7 @@ angular.module('copayApp.controllers').controller('importController',
       try {
         str2 = sjcl.decrypt(self.password, str);
       } catch (e) {
-        err = gettext('Could not decrypt file, check your spending password');
+        err = gettext('Could not decrypt file, check your password');
         $log.warn(e);
       };
 
@@ -190,14 +190,14 @@ angular.module('copayApp.controllers').controller('importController',
       this.error = null;
 
       if (!words) {
-        this.error = gettext('Please enter the recovery phrase');
+        this.error = gettext('Please enter the seed words');
       } else if (words.indexOf('xprv') == 0 || words.indexOf('tprv') == 0) {
         return _importExtendedPrivateKey(words, opts);
       } else {
         var wordList = words.split(/[\u3000\s]+/);
 
         if ((wordList.length % 3) != 0)
-          this.error = gettext('Wrong number of recovery words:') + wordList.length;
+          this.error = gettext('Wrong number of seed words:') + wordList.length;
       }
 
       if (this.error) {
