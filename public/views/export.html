@@ -4,8 +4,6 @@
   ng-init="titleSection='Export'; goBackToState = 'preferencesAdvanced'">
 </div>
 
-
-
 <div class="content preferences" ng-controller="exportController as exportC">
   <h4></h4>
   <div ng-show="!exportC.backupWalletPlainText">
@@ -19,7 +17,6 @@
           <div class="text-warning size-14 m20b" ng-show="exportC.isEncrypted">
             <i class="fi-alert size-12"></i>
             <span translate> The private key for this wallet is encrypted. Exporting keep the private key encrypted in the export archive.</span>
-
           </div>
         </div>
       </div>
@@ -29,16 +26,12 @@
           <div class="columns">
             <label for="password" translate>Set up a Spending Password </label>
             <div class="input">
-              <input type="password" class="form-control"
-                                     placeholder="{{'Your spending password'|translate}}"
-                                     name="password" ng-model="exportC.password">
+              <input type="password" class="form-control" placeholder="{{'Your spending password'|translate}}" name="password" ng-model="exportC.password">
             </div>
 
             <label for="password" translate>Repeat the spending password</label>
             <div class="input">
-              <input type="password" class="form-control"
-                                     placeholder="{{'Repeat password'|translate}}"
-                                     name="password" ng-model="exportC.repeatpassword">
+              <input type="password" class="form-control" placeholder="{{'Repeat password'|translate}}" name="password" ng-model="exportC.repeatpassword">
             </div>
           </div>
         </div>
@@ -46,20 +39,13 @@
 
       <h4></h4>
 
-      <ul class="no-bullet m0">
-        <li>
-        <switch id="no-metaData" name="metaData" ng-model="metaData" class="green right"></switch>
-        <span translate>Include address book and history cache</span>
-        </li>
-      </ul>
-      
-      <ul class="no-bullet m0" ng-show="index.canSign">
-        <li>
-        <switch id="no-sign" name="noSign" ng-model="noSign" class="green right"></switch>
-        <span translate>Do not include private key</span>
-        </li>
-      </ul>
+      <ion-toggle ng-model="metaDataEnabled" toggle-class="toggle-balanced" class="r0" ng-change="metaDataChange()">
+        <span class="toggle-label" translate>Include address book and history cache</span>
+      </ion-toggle>
 
+      <ion-toggle ng-model="noSignEnabled" toggle-class="toggle-balanced" class="r0" ng-change="noSignChange()">
+        <span class="toggle-label" translate>Do not include private key</span>
+      </ion-toggle>
 
       <div class="box-notification"  ng-show="!index.canSign">
         <span class="text-warning size-14">
@@ -79,7 +65,6 @@
           </span>
         </span>
       </div>
-
 
       <div class="row">
         <div class="columns">
@@ -106,7 +91,7 @@
           </div>
         </div>
       </div>
-    
+
   </div>
 
   <div class="row" ng-show="exportC.backupWalletPlainText">

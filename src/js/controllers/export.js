@@ -6,18 +6,25 @@ angular.module('copayApp.controllers').controller('exportController',
 
     self.error = null;
     self.success = null;
-    $scope.metaData = true;
+    $scope.metaDataEnabled = true;
     var fc = profileService.focusedClient;
     self.isEncrypted = fc.isPrivKeyEncrypted();
 
+    $scope.metaDataChange = function() {
+      console.log($scope.metaDataEnabled);
+    };
+    $scope.noSignChange = function() {
+      console.log($scope.noSignEnabled);
+    };
+
     self.downloadWalletBackup = function() {
-      self.getMetaData($scope.metaData, function(err, txsFromLocal, localAddressBook) {
+      self.getMetaData($scope.metaDataEnabled, function(err, txsFromLocal, localAddressBook) {
         if (err) {
           self.error = true;
           return;
         }
         var opts = {
-          noSign: $scope.noSign,
+          noSign: $scope.noSignEnabled,
           historyCache: txsFromLocal,
           addressBook: localAddressBook
         };
@@ -27,7 +34,6 @@ angular.module('copayApp.controllers').controller('exportController',
             self.error = true;
             return;
           }
-
           $rootScope.$emit('Local/BackupDone');
           notification.success(gettext('Success'), gettext('Encrypted export file saved'));
           go.walletHome();
@@ -81,13 +87,13 @@ angular.module('copayApp.controllers').controller('exportController',
     }
 
     self.getBackup = function(cb) {
-      self.getMetaData($scope.metaData, function(err, txsFromLocal, localAddressBook) {
+      self.getMetaData($scope.metaDataEnabled, function(err, txsFromLocal, localAddressBook) {
         if (err) {
           self.error = true;
           return cb(null);
         }
         var opts = {
-          noSign: $scope.noSign,
+          noSign: $scope.noSignEnabled,
           historyCache: txsFromLocal,
           addressBook: localAddressBook
         };
@@ -137,7 +143,7 @@ angular.module('copayApp.controllers').controller('exportController',
         var ew = backup;
         if (!ew) return;
 
-        if ($scope.noSign)
+        if ($scope.noSignEnabled)
           name = name + '(No Private Key)';
 
         var subject = 'Copay Wallet Backup: ' + name;
