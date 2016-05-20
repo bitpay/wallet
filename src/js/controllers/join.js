@@ -19,10 +19,10 @@ angular.module('copayApp.controllers').controller('joinController',
     var updateSeedSourceSelect = function() {
       self.seedOptions = [{
         id: 'new',
-        label: gettext('New Random Seed'),
+        label: gettext('New Random Recovery Phrase'),
       }, {
         id: 'set',
-        label: gettext('Specify Seed...'),
+        label: gettext('Specify Recovery Phrase...'),
       }];
       $scope.seedSource = self.seedOptions[0];
 
@@ -85,7 +85,7 @@ angular.module('copayApp.controllers').controller('joinController',
       }
 
       if (setSeed && !opts.mnemonic && !opts.extendedPrivateKey) {
-        this.error = gettext('Please enter the wallet seed');
+        this.error = gettext('Please enter the wallet recovery phrase');
         return;
       }
 
