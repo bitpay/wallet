@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('buyCoinbaseController', 
-  function($scope, $modal, $log, $timeout, lodash, profileService, coinbaseService, animationService, bwsError, addressService, walletService) {
+  function($scope, $modal, $log, $timeout, lodash, profileService, coinbaseService, animationService, txService, bwsError, addressService) {
     
     window.ignoreMobilePause = true;
     var self = this;
@@ -71,17 +71,17 @@ angular.module('copayApp.controllers').controller('buyCoinbaseController',
         };
 
         $scope.selectWallet = function(walletId, walletName) {
-          var client = profileService.getClient(walletId);
-          walletService.isReady(client, function(err) {
-            if (err) {
-              self.error = {errors: [{ message: err }]};
-              $modalInstance.dismiss('cancel');
-            } else {
-              $modalInstance.close({
-                'walletId': walletId,
-                'walletName': walletName,
-              });
-            }
+          if (!profileService.getClient(walletId).isComplete()) {
+            self.error = bwsError.msg({
+              'code': 'WALLET_NOT_COMPLETE'
+            }, 'Could not choose the wallet');
+            self.error = {errors: [{ message: 'The Wallet could not be selected' }]};
+            $modalInstance.dismiss('cancel');
+            return;
+          }
+          $modalInstance.close({
+            'walletId': walletId,
+            'walletName': walletName,
           });
         };
       };

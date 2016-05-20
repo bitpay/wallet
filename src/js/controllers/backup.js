@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('backupController',
-  function($rootScope, $scope, $timeout, $log, $state, $compile, go, lodash, profileService, gettext, bwcService, bwsError, walletService) {
+  function($rootScope, $scope, $timeout, $log, $state, $compile, go, lodash, profileService, gettext, bwcService, bwsError) {
 
     var self = this;
     var fc = profileService.focusedClient;
@@ -54,7 +54,7 @@ angular.module('copayApp.controllers').controller('backupController',
     function initWords() {
       var words = fc.getMnemonic();
       self.xPrivKey = fc.credentials.xPrivKey;
-      walletService.lock(fc);
+      profileService.lockFC();
       self.mnemonicWords = words.split(/[\u3000\s]+/);
       self.shuffledMnemonicWords = shuffledWords(self.mnemonicWords);
       self.mnemonicHasPassphrase = fc.mnemonicHasPassphrase();
@@ -93,7 +93,7 @@ angular.module('copayApp.controllers').controller('backupController',
             $scope.$apply();
           }, 1);
 
-          handleEncryptedWallet(fc, function(err) {
+          profileService.unlockFC({}, function(err) {
             if (err) {
               self.error = bwsError.msg(err, gettext('Could not decrypt'));
               $log.warn('Error decrypting credentials:', self.error); //TODO

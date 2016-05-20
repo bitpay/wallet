@@ -1,8 +1,4 @@
-'use strict';
-
 module.exports = function(grunt) {
-
-  require('load-grunt-tasks')(grunt);
 
   // Project Configuration
   grunt.initConfig({
@@ -86,7 +82,7 @@ module.exports = function(grunt) {
         sourceMapStyle: 'link' // embed, link, inline
       },
       angular: {
-        src: [
+        src: [ 
           'bower_components/qrcode-generator/js/qrcode.js',
           'bower_components/qrcode-decoder-js/lib/qrcode-decoder.js',
           'bower_components/moment/min/moment-with-locales.js',
@@ -127,7 +123,7 @@ module.exports = function(grunt) {
         dest: 'public/js/copay.js'
       },
       css: {
-        src: ['src/sass/*.css', 'src/css/*.css'],
+        src: ['src/css/*.css', 'src/sass/*.css'],
         dest: 'public/css/copay.css'
       },
       foundation: {
@@ -242,11 +238,25 @@ module.exports = function(grunt) {
     }
   });
 
+  grunt.loadNpmTasks('grunt-contrib-concat');
+  grunt.loadNpmTasks('grunt-contrib-copy');
+  grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-contrib-uglify');
+  grunt.loadNpmTasks('grunt-angular-gettext');
+  grunt.loadNpmTasks('grunt-browserify');
+  grunt.loadNpmTasks('grunt-exec');
+  grunt.loadNpmTasks('grunt-karma');
+  grunt.loadNpmTasks('grunt-karma-coveralls');
+  grunt.loadNpmTasks('grunt-node-webkit-builder');
+  grunt.loadNpmTasks('grunt-contrib-compress');
+  grunt.loadNpmTasks('grunt-string-replace');
+  grunt.loadNpmTasks('grunt-contrib-sass');
+
   grunt.registerTask('default', ['nggettext_compile', 'exec:version', 'exec:coinbase', 'browserify', 'sass', 'concat', 'copy:icons']);
   grunt.registerTask('prod', ['default', 'uglify']);
   grunt.registerTask('translate', ['nggettext_extract']);
   grunt.registerTask('test', ['karma:unit']);
-  grunt.registerTask('test-coveralls', ['browserify', 'karma:prod', 'coveralls']);
+  grunt.registerTask('test-coveralls', ['karma:prod', 'coveralls']);
   grunt.registerTask('desktop', ['prod', 'nodewebkit', 'copy:linux', 'compress:linux']);
   grunt.registerTask('osx', ['prod', 'nodewebkit', 'exec:osx']);
   grunt.registerTask('release', ['string-replace:dist']);

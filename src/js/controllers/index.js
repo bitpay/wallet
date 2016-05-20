@@ -136,7 +136,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       self.isPrivKeyEncrypted = fc.isPrivKeyEncrypted();
       self.externalSource = fc.getPrivKeyExternalSourceName();
       self.account = fc.credentials.account;
-      self.incorrectDerivation = fc.incorrectDerivation;
 
       if (self.externalSource == 'trezor')
         self.account++;
@@ -162,7 +161,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         }
       }
 
-      walletService.isBackupNeeded(fc, function(needsBackup) {
+      profileService.isBackupNeeded(self.walletId, function(needsBackup) {
         self.needsBackup = needsBackup;
         self.openWallet(function() {
           if (!self.isComplete) {

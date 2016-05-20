@@ -82,7 +82,7 @@ angular.module('copayApp.services')
 
       client.removeAllListeners();
       client.on('report', function(n) {
-        $log.info('BWC Report:' + n);
+         $log.info('BWC Report:'+ n);
       });
 
       client.on('notification', function(n) {
@@ -231,7 +231,7 @@ angular.module('copayApp.services')
 
         } catch (ex) {
           $log.info(ex);
-          return cb(gettext('Could not create: Invalid wallet recovery phrase'));
+          return cb(gettext('Could not create: Invalid wallet seed'));
         }
       } else if (opts.extendedPrivateKey) {
         try {
@@ -260,9 +260,9 @@ angular.module('copayApp.services')
             account: 0,
           });
         } catch (e) {
-          $log.info('Error creating recovery phrase: ' + e.message);
+          $log.info('Error creating seed: ' + e.message);
           if (e.message.indexOf('language') > 0) {
-            $log.info('Using default language for recovery phrase');
+            $log.info('Using default language for mnemonic');
             walletClient.seedFromRandomWithMnemonic({
               network: network,
               passphrase: opts.passphrase,
@@ -324,8 +324,8 @@ angular.module('copayApp.services')
 
         // check if exist
         if (lodash.find(root.profile.credentials, {
-          'walletId': walletData.walletId
-        })) {
+            'walletId': walletData.walletId
+          })) {
           return cb(gettext('Cannot join the same wallet more that once'));
         }
       } catch (ex) {
@@ -476,7 +476,7 @@ angular.module('copayApp.services')
           password: opts.password
         });
       } catch (err) {
-        return cb(gettext('Could not import. Check input file and spending password'));
+        return cb(gettext('Could not import. Check input file and password'));
       }
 
       str = JSON.parse(str);
@@ -643,7 +643,7 @@ angular.module('copayApp.services')
       $log.debug('Encrypting private key for', fc.credentials.walletName);
 
       fc.setPrivateKeyEncryption(password);
-      fc.lock();
+      root.lockFC();
       root.updateCredentialsFC(function() {
         $log.debug('Wallet encrypted');
         return cb();
@@ -663,6 +663,51 @@ angular.module('copayApp.services')
       root.updateCredentialsFC(function() {
         $log.debug('Wallet encryption disabled');
         return cb();
+      });
+    };
+
+    root.lockFC = function() {
+      var fc = root.focusedClient;
+      try {
+        fc.lock();
+      } catch (e) {};
+    };
+
+    root.unlockFC = function(opts, cb) {
+      opts = opts || {};
+      var fc = opts.selectedClient || root.focusedClient;
+
+      if (!fc.isPrivKeyEncrypted())
+        return cb();
+
+      $log.debug('Wallet is encrypted');
+      $rootScope.$emit('Local/NeedsPassword', false, function(err2, password) {
+
+        if (err2) 
+          return cb(err2);
+
+        if (!password) 
+          return cb(gettext('Password needed'));
+
+        try {
+          fc.unlock(password);
+        } catch (e) {
+          $log.warn('Error decrypting wallet:', e);
+          return cb(gettext('Wrong password'));
+        }
+        return cb();
+      });
+    };
+
+    root.isBackupNeeded = function(walletId, cb) {
+      var c = root.getClient(walletId);
+      if (c.isPrivKeyExternal()) return cb(false);
+      if (!c.credentials.mnemonic) return cb(false);
+      if (c.credentials.network == 'testnet') return cb(false);
+
+      storageService.getBackupFlag(walletId, function(err, val) {
+        if (err || val) return cb(false);
+        return cb(true);
       });
     };
 
