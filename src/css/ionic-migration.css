@@ -20,8 +20,12 @@
  	background-color: transparent !important;
 	margin-top: -25px;
   padding-bottom: 30px;
-	right: -27px !important;
+	right: -25px !important;
 	border-width: 0px;
+}
+
+.r0 {
+	right: 0px !important;
 }
 
 .item-toggle .toggle {
