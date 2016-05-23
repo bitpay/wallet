@@ -27,24 +27,14 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   ret.sendMaxInfo = {};
   var vanillaScope = ret;
 
-  $scope.collapseBalanceContent = function(updating) {
-    if (updating || isCordova) return;
-
-    var scrollPosition = $ionicScrollDelegate.$getByHandle('transactions').getScrollPosition().top;
-    $scope.shouldCollapse = scrollPosition > 50 ? true : false;
-
-    $timeout(function() {
-      $scope.$apply();
-    });
-  };
-
   $scope.freezeScroll = function() {
+
     var openRatio = $ionicSideMenuDelegate.getOpenRatio();
 
     if (openRatio != 0)
-      $ionicScrollDelegate.$getByHandle('balance').freezeScroll(true);
+      $ionicScrollDelegate.$getByHandle('transactions').freezeScroll(true);
     else
-      $ionicScrollDelegate.$getByHandle('balance').freezeScroll(false);
+      $ionicScrollDelegate.$getByHandle('transactions').freezeScroll(false);
 
     $timeout(function() {
       $scope.$apply();
