@@ -54,28 +54,28 @@
     -->
 
     <ion-content id="walletHome" class="walletHome tab-view tab-in" scroll="false">
-      <ion-scroll delegate-handle="balance" on-scroll="freezeScroll()" scrollbar-y="false">
+      <ion-content overflow-scroll="false" delegate-handle="transactions" on-scroll="freezeScroll()">
         <ion-refresher
           pulling-icon="ion-ios-refresh"
           spinner="ios-small"
           on-refresh="index.updateAll({triggerTxUpdate: true})">
         </ion-refresher>
         <div class="oh pr">
-          <div ng-style="{'background-color':index.backgroundColor}" ng-class="{amount: !shouldCollapse, 'amount-collapsed': shouldCollapse, 'fade-all': !index.isCordova}">
+          <div ng-style="{'background-color':index.backgroundColor}" class="amount">
             <div ng-if="!index.anyOnGoingProcess && !index.notAuthorized">
-              <div class="m15t" ng-show="index.updateError && !shouldCollapse" ng-click='index.updateAll({triggerTxUpdate: true})'>
+              <div class="m15t" ng-show="index.updateError" ng-click='index.updateAll({triggerTxUpdate: true})'>
                 <span class="size-12 db m10b">{{index.updateError|translate}}</span>
                 <button class="outline white tiny round" translate>Tap to retry</button>
               </div>
 
-              <div ng-show="index.walletScanStatus == 'error' && !shouldCollapse" ng-click='index.retryScan()'>
+              <div ng-show="index.walletScanStatus == 'error'" ng-click='index.retryScan()'>
                 <span translate>Scan status finished with error</span>
                 <br><span translate>Tap to retry</span>
               </div>
 
               <div ng-click='index.updateAll({triggerTxUpdate: true})'  ng-show="!index.updateError && index.walletScanStatus != 'error' && !index.shouldHideBalance" on-hold="index.onHold()">
-                <strong ng-class="{'size-36': !shouldCollapse, 'size-24': shouldCollapse}">{{index.totalBalanceStr}}</strong>
-                <div class="size-14" ng-if="index.totalBalanceAlternative && !shouldCollapse">{{index.totalBalanceAlternative}} {{index.alternativeIsoCode}}</div>
+                <strong class="size-36">{{index.totalBalanceStr}}</strong>
+                <div class="size-14" ng-if="index.totalBalanceAlternative">{{index.totalBalanceAlternative}} {{index.alternativeIsoCode}}</div>
                 <div class="size-14" ng-if="index.pendingAmount">
                   <span translate>Pending Confirmation</span>:{{index.pendingAmountStr}}
                 </div>
@@ -83,7 +83,7 @@
 
               <div ng-show="!index.updateError && index.walletScanStatus != 'error' && index.shouldHideBalance" on-hold="index.onHold()">
                 <strong class="size-24" translate>[Balance Hidden]</strong>
-                <div class="size-14" ng-if="!shouldCollapse" transalate>
+                <div class="size-14" transalate>
                   Tap and hold to show
                 </div>
               </div>
@@ -96,16 +96,14 @@
             </div>
           </div> <!-- amount -->
 
-          <div ng-class="{'wallet-info': !shouldCollapse, 'wallet-info-collapsed': shouldCollapse}">
+          <div class="wallet-info">
             <span ng-include="'views/includes/walletInfo.html'"></span>
           </div>
-          <div class="camera-icon" ng-show="index.isComplete" ng-if="!shouldCollapse">
+          <div class="camera-icon" ng-show="index.isComplete">
             <qr-scanner on-scan="home.onQrCodeScanned(data)"></qr-scanner>
           </div>
         </div> <!-- oh -->
-      </ion-scroll>
 
-      <ion-content overflow-scroll="false" class="behind" ng-class="{t150: !shouldCollapse, t50: shouldCollapse, 'fade-t': !index.isCordova}" delegate-handle="transactions" on-scroll="collapseBalanceContent(index.updatingTxHistory && index.txProgress > 5)">
         <div class="m50b">
           <div class="oh pr m20t" ng-show="index.notAuthorized && !index.anyOnGoingProcess">
 
