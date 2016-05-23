@@ -460,14 +460,6 @@ ul.manage li {
   }
 }
 
-.fade-t {
-  transition: top .2s ease;
-}
-
-.fade-all {
-  transition: .4s all ease;
-}
-
 .dn {
   display: none;
 }
@@ -634,14 +626,6 @@ ul.manage li {
 
 .m30tp {
   margin-top: 30%;
-}
-
-.t50 {
-  top: 50px;
-}
-
-.t150 {
-  top: 150px;
 }
 
 .m15 {
@@ -1587,13 +1571,6 @@ input.ng-invalid-match {
   margin-bottom: 25px;
 }
 
-.amount-collapsed {
-  width: 100%;
-  text-align: center;
-  color: #fff;
-  height: 50px;
-}
-
 .alternative-amount {
   height: 25px;
   text-align: center;
@@ -1631,14 +1608,6 @@ input.ng-invalid-match {
     top: inherit;
     left: 10px;
     bottom: 26px;
-    font-size: 20px;
-    color: #fff;
-  }
-  .wallet-info-collapsed {
-    position: absolute;
-    top: inherit;
-    left: 10px;
-    bottom: 0px;
     font-size: 20px;
     color: #fff;
   }
