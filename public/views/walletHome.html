@@ -57,11 +57,11 @@
       <ion-scroll delegate-handle="balance" on-scroll="freezeScroll()" scrollbar-y="false">
         <ion-refresher
           pulling-icon="ion-ios-refresh"
-          spinner="none"
+          spinner="ios-small"
           on-refresh="index.updateAll({triggerTxUpdate: true})">
         </ion-refresher>
         <div class="oh pr">
-          <div ng-style="{'background-color':index.backgroundColor}" ng-class="{amount: !shouldCollapse, amountcollapsed: shouldCollapse, 'fade-all': !index.isCordova}">
+          <div ng-style="{'background-color':index.backgroundColor}" ng-class="{amount: !shouldCollapse, 'amount-collapsed': shouldCollapse, 'fade-all': !index.isCordova}">
             <div ng-if="!index.anyOnGoingProcess && !index.notAuthorized">
               <div class="m15t" ng-show="index.updateError && !shouldCollapse" ng-click='index.updateAll({triggerTxUpdate: true})'>
                 <span class="size-12 db m10b">{{index.updateError|translate}}</span>
@@ -74,13 +74,10 @@
               </div>
 
               <div ng-click='index.updateAll({triggerTxUpdate: true})'  ng-show="!index.updateError && index.walletScanStatus != 'error' && !index.shouldHideBalance" on-hold="index.onHold()">
-                <strong class="size-36" ng-if="!shouldCollapse">{{index.totalBalanceStr}}</strong>
-                <strong class="size-24" ng-if="shouldCollapse">{{index.totalBalanceStr}}</strong>
+                <strong ng-class="{'size-36': !shouldCollapse, 'size-24': shouldCollapse}">{{index.totalBalanceStr}}</strong>
                 <div class="size-14" ng-if="index.totalBalanceAlternative && !shouldCollapse">{{index.totalBalanceAlternative}} {{index.alternativeIsoCode}}</div>
-                <div class="size-14"
-                  ng-if="index.pendingAmount">
-                  <span translate>Pending Confirmation</span>:
-                  {{index.pendingAmountStr}}
+                <div class="size-14" ng-if="index.pendingAmount">
+                  <span translate>Pending Confirmation</span>:{{index.pendingAmountStr}}
                 </div>
               </div>
 
@@ -99,7 +96,7 @@
             </div>
           </div> <!-- amount -->
 
-          <div ng-class="{walletinfo: !shouldCollapse, walletinfocollapsed: shouldCollapse}">
+          <div ng-class="{'wallet-info': !shouldCollapse, 'wallet-info-collapsed': shouldCollapse}">
             <span ng-include="'views/includes/walletInfo.html'"></span>
           </div>
           <div class="camera-icon" ng-show="index.isComplete" ng-if="!shouldCollapse">
