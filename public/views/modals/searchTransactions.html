@@ -64,5 +64,10 @@
         <i class="icon-arrow-right3 size-18"></i>
       </div>
     </div>
+    <ion-infinite-scroll
+      ng-if="index.historyShowMore"
+      on-infinite="index.showMore()"
+      distance="1%">
+    </ion-infinite-scroll>
   </ion-content>
 </ion-modal-view>
