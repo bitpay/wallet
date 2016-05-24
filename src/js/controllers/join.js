@@ -125,8 +125,6 @@ angular.module('copayApp.controllers').controller('joinController',
     this._join = function(opts) {
       self.loading = true;
       $timeout(function() {
-
-console.log('[join.js.124]', opts); //TODO
         profileService.joinWallet(opts, function(err) {
           if (err) {
             self.loading = false;
