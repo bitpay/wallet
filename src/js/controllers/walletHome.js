@@ -478,105 +478,17 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   };
 
   this.openCustomizedAmountModal = function(addr) {
-    $rootScope.modalOpened = true;
-    var self = this;
     var fc = profileService.focusedClient;
-    var ModalInstanceCtrl = function($scope, $modalInstance) {
-      $scope.addr = addr;
-      $scope.color = fc.backgroundColor;
-      $scope.unitName = self.unitName;
-      $scope.alternativeAmount = self.alternativeAmount;
-      $scope.alternativeName = self.alternativeName;
-      $scope.alternativeIsoCode = self.alternativeIsoCode;
-      $scope.isRateAvailable = self.isRateAvailable;
-      $scope.unitToSatoshi = self.unitToSatoshi;
-      $scope.unitDecimals = self.unitDecimals;
-      var satToUnit = 1 / self.unitToSatoshi;
-      $scope.showAlternative = false;
-      $scope.isCordova = isCordova;
 
-      Object.defineProperty($scope,
-        "_customAlternative", {
-          get: function() {
-            return $scope.customAlternative;
-          },
-          set: function(newValue) {
-            $scope.customAlternative = newValue;
-            if (typeof(newValue) === 'number' && $scope.isRateAvailable) {
-              $scope.customAmount = parseFloat((rateService.fromFiat(newValue, $scope.alternativeIsoCode) * satToUnit).toFixed($scope.unitDecimals), 10);
-            } else {
-              $scope.customAmount = null;
-            }
-          },
-          enumerable: true,
-          configurable: true
-        });
+    $scope.color = fc.backgroundColor;
+    $scope.self = self;
+    $scope.addr = addr;
 
-      Object.defineProperty($scope,
-        "_customAmount", {
-          get: function() {
-            return $scope.customAmount;
-          },
-          set: function(newValue) {
-            $scope.customAmount = newValue;
-            if (typeof(newValue) === 'number' && $scope.isRateAvailable) {
-              $scope.customAlternative = parseFloat((rateService.toFiat(newValue * $scope.unitToSatoshi, $scope.alternativeIsoCode)).toFixed(2), 10);
-            } else {
-              $scope.customAlternative = null;
-            }
-            $scope.alternativeAmount = $scope.customAlternative;
-          },
-          enumerable: true,
-          configurable: true
-        });
-
-      $scope.submitForm = function(form) {
-        var satToBtc = 1 / 100000000;
-        var amount = form.amount.$modelValue;
-        var amountSat = parseInt((amount * $scope.unitToSatoshi).toFixed(0));
-        $timeout(function() {
-          $scope.customizedAmountUnit = amount + ' ' + $scope.unitName;
-          $scope.customizedAlternativeUnit = $filter('noFractionNumber')(form.alternative.$modelValue, 2) + ' ' + $scope.alternativeIsoCode;
-          if ($scope.unitName == 'bits') {
-            amount = (amountSat * satToBtc).toFixed(8);
-          }
-          $scope.customizedAmountBtc = amount;
-        }, 1);
-      };
-
-      $scope.toggleAlternative = function() {
-        $scope.showAlternative = !$scope.showAlternative;
-      };
-
-      $scope.shareAddress = function(uri) {
-        if (isCordova) {
-          if (isAndroid || isWP) {
-            window.ignoreMobilePause = true;
-          }
-          window.plugins.socialsharing.share(uri, null, null, null);
-        }
-      };
-
-      $scope.cancel = function() {
-        $modalInstance.dismiss('cancel');
-      };
-    };
-
-    var modalInstance = $modal.open({
-      templateUrl: 'views/modals/customized-amount.html',
-      windowClass: animationService.modalAnimated.slideUp,
-      controller: ModalInstanceCtrl,
-    });
-
-    var disableCloseModal = $rootScope.$on('closeModal', function() {
-      modalInstance.dismiss('cancel');
-    });
-
-    modalInstance.result.finally(function() {
-      $rootScope.modalOpened = false;
-      disableCloseModal();
-      var m = angular.element(document.getElementsByClassName('reveal-modal'));
-      m.addClass(animationService.modalAnimated.slideOutDown);
+    $ionicModal.fromTemplateUrl('views/modals/customized-amount.html', {
+      scope: $scope
+    }).then(function(modal) {
+      $scope.customAmountModal = modal;
+      $scope.customAmountModal.show();
     });
   };
 
