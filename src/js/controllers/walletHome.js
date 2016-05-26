@@ -158,178 +158,16 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   var cancel_msg = gettextCatalog.getString('Cancel');
   var confirm_msg = gettextCatalog.getString('Confirm');
 
-  this.openDestinationAddressModal = function(wallets, address) {
-    $rootScope.modalOpened = true;
-    var fc = profileService.focusedClient;
-    self.lockAddress = false;
-    self._address = null;
+  this.openAddressbookModal = function(wallets, address) {
+    $scope.wallets = wallets;
+    $scope.address = address;
+    $scope.self = self;
 
-    var ModalInstanceCtrl = function($scope, $modalInstance) {
-      $scope.wallets = wallets;
-      $scope.editAddressbook = false;
-      $scope.addAddressbookEntry = false;
-      $scope.selectedAddressbook = {};
-      $scope.newAddress = address;
-      $scope.walletName = fc.credentials.walletName;
-      $scope.color = fc.backgroundColor;
-      $scope.addressbook = {
-        'address': ($scope.newAddress || ''),
-        'label': ''
-      };
-
-      $scope.checkClipboard = function() {
-        if (!$scope.newAddress) {
-          getClipboard(function(value) {
-            $scope.newAddress = value;
-          });
-        }
-      };
-
-      $scope.beforeQrCodeScann = function() {
-        $scope.error = null;
-        $scope.addAddressbookEntry = true;
-        $scope.editAddressbook = false;
-      };
-
-      $scope.onQrCodeScanned = function(data, addressbookForm) {
-        $timeout(function() {
-          var form = addressbookForm;
-          if (data && form) {
-            data = data.replace('bitcoin:', '');
-            form.address.$setViewValue(data);
-            form.address.$isValid = true;
-            form.address.$render();
-          }
-          $scope.$digest();
-        }, 100);
-      };
-
-      $scope.selectAddressbook = function(addr) {
-        $modalInstance.close(addr);
-      };
-
-      $scope.toggleEditAddressbook = function() {
-        $scope.editAddressbook = !$scope.editAddressbook;
-        $scope.selectedAddressbook = {};
-        $scope.addAddressbookEntry = false;
-      };
-
-      $scope.toggleSelectAddressbook = function(addr) {
-        $scope.selectedAddressbook[addr] = $scope.selectedAddressbook[addr] ? false : true;
-      };
-
-      $scope.toggleAddAddressbookEntry = function() {
-        $scope.error = null;
-        $scope.addressbook = {
-          'address': ($scope.newAddress || ''),
-          'label': ''
-        };
-        $scope.addAddressbookEntry = !$scope.addAddressbookEntry;
-      };
-
-      $scope.list = function() {
-        $scope.error = null;
-        addressbookService.list(function(err, ab) {
-          if (err) {
-            $scope.error = err;
-            return;
-          }
-          $scope.list = ab;
-          $timeout(function() {
-            $scope.$digest();
-          });
-        });
-      };
-
-      $scope.add = function(addressbook) {
-        $scope.error = null;
-        $timeout(function() {
-          addressbookService.add(addressbook, function(err, ab) {
-            if (err) {
-              $scope.error = err;
-              return;
-            }
-            $rootScope.$emit('Local/AddressbookUpdated', ab);
-            $scope.list = ab;
-            $scope.editAddressbook = true;
-            $scope.toggleEditAddressbook();
-            $scope.$digest();
-          });
-        }, 100);
-      };
-
-      $scope.remove = function(addr) {
-        $scope.error = null;
-        $timeout(function() {
-          addressbookService.remove(addr, function(err, ab) {
-            if (err) {
-              $scope.error = err;
-              return;
-            }
-            $rootScope.$emit('Local/AddressbookUpdated', ab);
-            $scope.list = ab;
-            $scope.$digest();
-          });
-        }, 100);
-      };
-
-      $scope.cancel = function() {
-        $modalInstance.dismiss('cancel');
-      };
-
-      $scope.selectWallet = function(walletId, walletName) {
-        var client = profileService.getClient(walletId);
-        $scope.errorSelectedWallet = {};
-
-        walletService.isReady(client, function(err) {
-          if (err) $scope.errorSelectedWallet[walletId] = err;
-          else {
-            $scope.gettingAddress = true;
-            $scope.selectedWalletName = walletName;
-            $timeout(function() {
-              $scope.$apply();
-            });
-
-            addressService.getAddress(walletId, false, function(err, addr) {
-              $scope.gettingAddress = false;
-
-              if (err) {
-                self.error = err;
-                $modalInstance.dismiss('cancel');
-                return;
-              }
-
-              $modalInstance.close(addr);
-            });
-          }
-        });
-      };
-    };
-
-    var modalInstance = $modal.open({
-      templateUrl: 'views/modals/destination-address.html',
-      windowClass: animationService.modalAnimated.slideUp,
-      controller: ModalInstanceCtrl,
-    });
-
-    var disableCloseModal = $rootScope.$on('closeModal', function() {
-      modalInstance.dismiss('cancel');
-    });
-
-    modalInstance.result.finally(function() {
-      $rootScope.modalOpened = false;
-      disableCloseModal();
-      var m = angular.element(document.getElementsByClassName('reveal-modal'));
-      m.addClass(animationService.modalAnimated.slideOutDown);
-    });
-
-    modalInstance.result.then(function(addr) {
-      if (addr) {
-        self.setForm(addr);
-      }
-    }, function() {
-      // onRejected
-      self.resetForm();
+    $ionicModal.fromTemplateUrl('views/modals/addressbook.html', {
+      scope: $scope
+    }).then(function(modal) {
+      $scope.addressbookModal = modal;
+      $scope.addressbookModal.show();
     });
   };
 
@@ -1063,20 +901,18 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     });
   };
 
-  $ionicModal.fromTemplateUrl('views/modals/searchTransactions.html', {
-    scope: $scope,
-    focusFirstInput: true,
-    animation: 'slide-in-up'
-  }).then(function(modal) {
-    $scope.modal = modal;
-  });
-
   $scope.openSearchModal = function() {
-    $scope.modal.show();
-  };
+    var fc = profileService.focusedClient;
+    $scope.color = fc.backgroundColor;
+    $scope.self = self;
 
-  $scope.closeModal = function() {
-    $scope.modal.hide();
+    $ionicModal.fromTemplateUrl('views/modals/search.html', {
+      scope: $scope,
+      focusFirstInput: true
+    }).then(function(modal) {
+      $scope.searchModal = modal;
+      $scope.searchModal.show();
+    });
   };
 
   this.setForm = function(to, amount, comment) {
@@ -1136,8 +972,10 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   };
 
   this.openPPModal = function(paypro) {
-    $scope.paypro = paypro;
+    var fc = profileService.focusedClient;
+    $scope.color = fc.backgroundColor;
     $scope.self = self;
+    $scope.paypro = paypro;
 
     $ionicModal.fromTemplateUrl('views/modals/paypro.html', {
       scope: $scope

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('payproController', function($scope, profileService) {
+angular.module('copayApp.controllers').controller('payproController', function($scope) {
   var self = $scope.self;
 
   $scope.alternative = self.alternativeAmount;
@@ -11,6 +11,5 @@ angular.module('copayApp.controllers').controller('payproController', function($
 
   $scope.cancel = function() {
     $scope.payproModal.hide();
-    $scope.payproModal.remove();
   };
 });
