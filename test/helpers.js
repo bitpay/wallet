@@ -80,6 +80,7 @@ mocks.init = function(fixtures, controllerName, opts, done) {
   angular.module('stateMock', []);
   angular.module('stateMock').service("$state", mocks.$state.bind());
 
+  module('ionic');
   module('ngLodash');
   module('gettext');
   module('bwcModule', function($provide) {
