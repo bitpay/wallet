@@ -1071,7 +1071,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     $scope.modal = modal;
   });
 
-  $scope.openModal = function() {
+  $scope.openSearchModal = function() {
     $scope.modal.show();
   };
 
@@ -1136,37 +1136,14 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   };
 
   this.openPPModal = function(paypro) {
-    $rootScope.modalOpened = true;
-    var ModalInstanceCtrl = function($scope, $modalInstance) {
-      var fc = profileService.focusedClient;
-      var satToUnit = 1 / self.unitToSatoshi;
-      $scope.paypro = paypro;
-      $scope.alternative = self.alternativeAmount;
-      $scope.alternativeIsoCode = self.alternativeIsoCode;
-      $scope.isRateAvailable = self.isRateAvailable;
-      $scope.unitTotal = (paypro.amount * satToUnit).toFixed(self.unitDecimals);
-      $scope.unitName = self.unitName;
-      $scope.color = fc.backgroundColor;
+    $scope.paypro = paypro;
+    $scope.self = self;
 
-      $scope.cancel = function() {
-        $modalInstance.dismiss('cancel');
-      };
-    };
-    var modalInstance = $modal.open({
-      templateUrl: 'views/modals/paypro.html',
-      windowClass: animationService.modalAnimated.slideUp,
-      controller: ModalInstanceCtrl,
-    });
-
-    var disableCloseModal = $rootScope.$on('closeModal', function() {
-      modalInstance.dismiss('cancel');
-    });
-
-    modalInstance.result.finally(function() {
-      $rootScope.modalOpened = false;
-      disableCloseModal();
-      var m = angular.element(document.getElementsByClassName('reveal-modal'));
-      m.addClass(animationService.modalAnimated.slideOutDown);
+    $ionicModal.fromTemplateUrl('views/modals/paypro.html', {
+      scope: $scope
+    }).then(function(modal) {
+      $scope.payproModal = modal;
+      $scope.payproModal.show();
     });
   };
 
@@ -1346,8 +1323,6 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
     $ionicModal.fromTemplateUrl('views/modals/tx-details.html', {
       scope: $scope,
-      backdropClickToClose: false,
-      hardwareBackButtonClose: false,
       hideDelay: 500
     }).then(function(modal) {
       $scope.txDetailsModal = modal;
