@@ -1,7 +1,12 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('disclaimerController',
+<<<<<<< e68d1d87ec5d6c817929721a32f43cefc88aa290
   function($scope, $timeout, $log, profileService, applicationService, gettextCatalog, uxLanguage, go) {
+=======
+  function($scope, $timeout, $log, $ionicSideMenuDelegate, profileService, isCordova, applicationService, gettextCatalog, uxLanguage, go) {
+
+>>>>>>> do not allow drag side bar in disclaimer screen
     var self = this;
     self.tries = 0;
     $scope.creatingProfile = true;
@@ -33,6 +38,8 @@ angular.module('copayApp.controllers').controller('disclaimerController',
     };
 
     this.init = function() {
+
+      $ionicSideMenuDelegate.canDragContent(false);
       self.lang = uxLanguage.currentLanguage;
 
       profileService.getProfile(function(err, profile) {
@@ -43,7 +50,8 @@ angular.module('copayApp.controllers').controller('disclaimerController',
           $scope.creatingProfile = false;
           profileService.bindProfile(profile, function(err) {
             if (!err || !err.message || !err.message.match('NONAGREEDDISCLAIMER')) {
-              $log.debug('Disclaimer already accepted at #disclaimer. Redirect to Wallet Home.')
+              $log.debug('Disclaimer already accepted at #disclaimer. Redirect to Wallet Home.');
+              $ionicSideMenuDelegate.canDragContent(true);
               go.walletHome();
             }
           });
@@ -54,7 +62,10 @@ angular.module('copayApp.controllers').controller('disclaimerController',
     this.accept = function() {
       profileService.setDisclaimerAccepted(function(err) {
         if (err) $log.error(err);
-        else go.walletHome();
+        else {
+          $ionicSideMenuDelegate.canDragContent(true);
+          go.walletHome();
+        }
       });
     };
   });
