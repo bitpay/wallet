@@ -70,7 +70,7 @@
       </div>
     </div>
     <ion-infinite-scroll
-      ng-if="index.historyShowMore"
+      ng-if="index.historyShowMore && index.isSearching"
       on-infinite="index.showMore()"
       distance="1%">
     </ion-infinite-scroll>
