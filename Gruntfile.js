@@ -61,7 +61,7 @@ module.exports = function(grunt) {
           'src/js/routes.js',
           'src/js/services/*.js',
           'src/js/models/*.js',
-          'src/js/controllers/*.js'
+          'src/js/controllers/**/*.js'
         ],
         tasks: ['concat:js']
       }
@@ -179,11 +179,10 @@ module.exports = function(grunt) {
         files: {
           'i18n/po/template.pot': [
             'public/index.html',
-            'public/views/*.html',
             'public/views/**/*.html',
             'src/js/routes.js',
             'src/js/services/*.js',
-            'src/js/controllers/*.js'
+            'src/js/controllers/**/*.js'
           ]
         }
       },
