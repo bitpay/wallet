@@ -20,10 +20,6 @@
 	z-index: -1;
 }
 
-.scroll {
-	height: 100%;
-}
-
 .bct {
  	background-color: transparent !important;
 	margin-top: -25px;
