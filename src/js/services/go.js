@@ -74,6 +74,12 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
     });
   };
 
+  root.receive = function() {
+    root.path('walletHome', function() {
+      $rootScope.$emit('Local/SetTab', 'receive');
+    });
+  };
+
   root.addWallet = function() {
     $state.go('add');
   };

@@ -40,6 +40,14 @@ angular.module('copayApp.controllers').controller('backupController',
         initWords();
     }
 
+    self.backTo = function(prevState) {
+      if (prevState == 'walletHome')
+        go.receive();
+
+      if (prevState == 'preferences')
+        go.preferences();
+    };
+
     self.goToStep = function(n) {
       self.step = n;
       if (self.step == 1)
