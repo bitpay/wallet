@@ -6,7 +6,7 @@
 
 
 
-<div class="content p20b" ng-controller="createController as create" ng-init="create.setTotalCopayers(1)">
+<ion-content overflow-scroll="true" class="content p20b" ng-controller="createController as create" ng-init="create.setTotalCopayers(1)">
 
   <div class="onGoingProcess" ng-show="create.loading && !create.hwWallet">
     <div class="onGoingProcess-content" ng-style="{'background-color':'#222'}">
@@ -173,5 +173,5 @@
       </div> <!-- large-12 columns -->
     </div> <!-- row -->
   </form>
-</div>
+</ion-content>
 <div class="extra-margin-bottom"></div>

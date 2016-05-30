@@ -5,7 +5,7 @@
 </div>
 
 
-<div class="content p20v" ng-controller="joinController as join">
+<ion-content overflow-scroll="true" class="content p20v" ng-controller="joinController as join">
   <div class="onGoingProcess" ng-show="join.loading && !join.hwWallet">
     <div class="onGoingProcess-content" ng-style="{'background-color':'#222'}">
     <ion-spinner class="spinner-stable" icon="lines"></ion-spinner>
@@ -22,7 +22,7 @@
   </div>
 
   <form name="joinForm" ng-submit="join.join(joinForm)" novalidate>
-    <div class="box-notification m20b" ng-show="join.error ">
+    <div class="box-notification m20b" ng-show="join.error">
       <span class="text-warning">
         {{join.error|translate}}
       </span>
@@ -141,6 +141,6 @@
       </div> <!-- large-12 columns -->
     </div> <!-- row -->
   </form>
-</div>
+</ion-content>
 
 <div class="extra-margin-bottom"></div>
