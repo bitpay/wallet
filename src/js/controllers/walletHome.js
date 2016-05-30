@@ -830,7 +830,6 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     var self = this;
 
     $scope.btx = btx;
-    $scope.color = profileService.focusedClient.backgroundColor;
     $scope.self = self;
 
     $ionicModal.fromTemplateUrl('views/modals/tx-details.html', {

@@ -12,13 +12,6 @@ angular.module('copayApp.controllers').controller('exportController',
     var fc = profileService.focusedClient;
     self.isEncrypted = fc.isPrivKeyEncrypted();
 
-    $scope.metaDataChange = function() {
-      console.log($scope.metaDataEnabled);
-    };
-    $scope.noSignChange = function() {
-      console.log($scope.noSignEnabled);
-    };
-
     self.downloadWalletBackup = function() {
       self.getMetaData($scope.metaDataEnabled, function(err, txsFromLocal, localAddressBook) {
         if (err) {
