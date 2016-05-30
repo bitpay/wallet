@@ -77,7 +77,7 @@ angular.module('copayApp.services')
       root.walletClients[credentials.walletId] = client;
 
       if (client.incorrectDerivation) {
-        storageService.clearLastAddress(credentials.walletId,function() {});
+        storageService.clearLastAddress(credentials.walletId, function() {});
       }
 
       client.removeAllListeners();
@@ -148,7 +148,7 @@ angular.module('copayApp.services')
             root.isDisclaimerAccepted(function(val) {
               if (!val) {
                 return cb(new Error('NONAGREEDDISCLAIMER: Non agreed disclaimer'));
-              } 
+              }
               return cb();
             });
           });
@@ -324,8 +324,8 @@ angular.module('copayApp.services')
 
         // check if exist
         if (lodash.find(root.profile.credentials, {
-          'walletId': walletData.walletId
-        })) {
+            'walletId': walletData.walletId
+          })) {
           return cb(gettext('Cannot join the same wallet more that once'));
         }
       } catch (ex) {
@@ -356,36 +356,36 @@ angular.module('copayApp.services')
       pushNotificationsService.unsubscribe(root.getClient(walletId), function(err) {
         if (err) $log.warn('Unsubscription error: ' + err.message);
         else $log.debug('Unsubscribed from push notifications service');
+      });
 
-        $log.debug('Deleting Wallet:', fc.credentials.walletName);
+      $log.debug('Deleting Wallet:', fc.credentials.walletName);
 
-        fc.removeAllListeners();
-        root.profile.credentials = lodash.reject(root.profile.credentials, {
-          walletId: walletId
-        });
+      fc.removeAllListeners();
+      root.profile.credentials = lodash.reject(root.profile.credentials, {
+        walletId: walletId
+      });
 
-        delete root.walletClients[walletId];
-        root.focusedClient = null;
+      delete root.walletClients[walletId];
+      root.focusedClient = null;
 
-        storageService.clearLastAddress(walletId, function(err) {
-          if (err) $log.warn(err);
-        });
+      storageService.clearLastAddress(walletId, function(err) {
+        if (err) $log.warn(err);
+      });
 
-        storageService.removeTxHistory(walletId, function(err) {
-          if (err) $log.warn(err);
-        });
+      storageService.removeTxHistory(walletId, function(err) {
+        if (err) $log.warn(err);
+      });
 
-        storageService.clearBackupFlag(walletId, function(err) {
-          if (err) $log.warn(err);
-        });
+      storageService.clearBackupFlag(walletId, function(err) {
+        if (err) $log.warn(err);
+      });
 
-        $timeout(function() {
-          root.setWalletClients();
-          root.setAndStoreFocus(null, function() {
-            storageService.storeProfile(root.profile, function(err) {
-              if (err) return cb(err);
-              return cb();
-            });
+      $timeout(function() {
+        root.setWalletClients();
+        root.setAndStoreFocus(null, function() {
+          storageService.storeProfile(root.profile, function(err) {
+            if (err) return cb(err);
+            return cb();
           });
         });
       });
