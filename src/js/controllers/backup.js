@@ -5,7 +5,7 @@ angular.module('copayApp.controllers').controller('backupController',
 
     var self = this;
     var fc = profileService.focusedClient;
-    $scope.customWords = [];
+    self.customWords = [];
     self.walletName = fc.credentials.walletName;
 
     var handleEncryptedWallet = function(client, cb) {
@@ -15,19 +15,6 @@ angular.module('copayApp.controllers').controller('backupController',
         return cb(walletService.unlock(client, password));
       });
     };
-
-    function init() {
-      $scope.passphrase = '';
-      _shuffleWords();
-      $scope.customWords = [];
-      self.step = 1;
-      self.deleted = false;
-      self.credentialsEncrypted = false;
-      self.selectComplete = false;
-      self.backupError = false;
-    };
-
-    init();
 
     if (fc.credentials && !fc.credentials.mnemonicEncrypted && !fc.credentials.mnemonic)
       self.deleted = true;
@@ -39,6 +26,19 @@ angular.module('copayApp.controllers').controller('backupController',
       if (!self.deleted)
         initWords();
     }
+
+    init();
+
+    function init() {
+      $scope.passphrase = '';
+      self.shuffledMnemonicWords = shuffledWords(self.mnemonicWords);
+      self.customWords = [];
+      self.step = 1;
+      self.deleted = false;
+      self.credentialsEncrypted = false;
+      self.selectComplete = false;
+      self.backupError = false;
+    };
 
     self.goToStep = function(n) {
       self.step = n;
@@ -56,14 +56,15 @@ angular.module('copayApp.controllers').controller('backupController',
       self.xPrivKey = fc.credentials.xPrivKey;
       walletService.lock(fc);
       self.mnemonicWords = words.split(/[\u3000\s]+/);
-      _shuffleWords();
+      self.shuffledMnemonicWords = shuffledWords(self.mnemonicWords);
       self.mnemonicHasPassphrase = fc.mnemonicHasPassphrase();
       self.useIdeograms = words.indexOf("\u3000") >= 0;
     };
 
-    function _shuffleWords() {
-      var sort = lodash.sortBy(self.mnemonicWords);
-      self.shuffledMnemonicWords = lodash.map(sort, function(w) {
+    function shuffledWords(words) {
+      var sort = lodash.sortBy(words);
+
+      return lodash.map(sort, function(w) {
         return {
           word: w,
           selected: false
@@ -115,19 +116,19 @@ angular.module('copayApp.controllers').controller('backupController',
         word: item.word,
         prevIndex: index
       };
-      $scope.customWords.push(newWord);
+      self.customWords.push(newWord);
       self.shuffledMnemonicWords[index].selected = true;
       self.shouldContinue();
     };
 
     $scope.removeButton = function(index, item) {
-      $scope.customWords.splice(index, 1);
+      self.customWords.splice(index, 1);
       self.shuffledMnemonicWords[item.prevIndex].selected = false;
       self.shouldContinue();
     };
 
     self.shouldContinue = function() {
-      if ($scope.customWords.length == 12)
+      if (self.customWords.length == 12)
         self.selectComplete = true;
       else
         self.selectComplete = false;
@@ -138,7 +139,7 @@ angular.module('copayApp.controllers').controller('backupController',
 
       var walletClient = bwcService.getClient();
       var separator = self.useIdeograms ? '\u3000' : ' ';
-      var customSentence = lodash.pluck($scope.customWords, 'word').join(separator);
+      var customSentence = lodash.pluck(self.customWords, 'word').join(separator);
       var passphrase = $scope.passphrase || '';
 
       try {
