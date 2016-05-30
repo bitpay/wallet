@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('importController',
-  function($scope, $rootScope, $location, $timeout, $log, profileService, configService, notification, go, sjcl, gettext, lodash, ledger, trezor, derivationPathHelper, platformInfo) {
+  function($scope, $rootScope, $ionicScrollDelegate, $timeout, $log, profileService, configService, notification, go, sjcl, gettext, lodash, ledger, trezor, derivationPathHelper, platformInfo) {
 
     var isChromeApp = platformInfo.isChromeApp;
     var isDevel = platformInfo.isDevel;
@@ -39,8 +39,6 @@ angular.module('copayApp.controllers').controller('importController',
       }
     };
 
-
-
     this.setType = function(type) {
       $scope.type = type;
       this.error = null;
@@ -60,6 +58,7 @@ angular.module('copayApp.controllers').controller('importController',
 
       if (err) {
         self.error = err;
+        $ionicScrollDelegate.scrollTop();
         $timeout(function() {
           $rootScope.$apply();
         });
@@ -75,6 +74,7 @@ angular.module('copayApp.controllers').controller('importController',
           self.loading = false;
           if (err) {
             self.error = err;
+            $ionicScrollDelegate.scrollTop();
           } else {
             $rootScope.$emit('Local/WalletImported', walletId);
             notification.success(gettext('Success'), gettext('Your wallet has been imported correctly'));
@@ -92,6 +92,7 @@ angular.module('copayApp.controllers').controller('importController',
           self.loading = false;
           if (err) {
             self.error = err;
+            $ionicScrollDelegate.scrollTop();
             return $timeout(function() {
               $scope.$apply();
             });
@@ -111,6 +112,7 @@ angular.module('copayApp.controllers').controller('importController',
           self.loading = false;
           if (err) {
             self.error = err;
+            $ionicScrollDelegate.scrollTop();
             return $timeout(function() {
               $scope.$apply();
             });
@@ -136,7 +138,7 @@ angular.module('copayApp.controllers').controller('importController',
     this.importBlob = function(form) {
       if (form.$invalid) {
         this.error = gettext('There is an error in the form');
-
+        $ionicScrollDelegate.scrollTop();
         $timeout(function() {
           $scope.$apply();
         });
@@ -149,6 +151,7 @@ angular.module('copayApp.controllers').controller('importController',
 
       if (!backupFile && !backupText) {
         this.error = gettext('Please, select your backup file');
+        $ionicScrollDelegate.scrollTop();
         $timeout(function() {
           $scope.$apply();
         });
@@ -168,7 +171,7 @@ angular.module('copayApp.controllers').controller('importController',
     this.importMnemonic = function(form) {
       if (form.$invalid) {
         this.error = gettext('There is an error in the form');
-
+        $ionicScrollDelegate.scrollTop();
         $timeout(function() {
           $scope.$apply();
         });
@@ -183,6 +186,7 @@ angular.module('copayApp.controllers').controller('importController',
       var pathData = derivationPathHelper.parse($scope.derivationPath);
       if (!pathData) {
         this.error = gettext('Invalid derivation path');
+        $ionicScrollDelegate.scrollTop();
         return;
       }
       opts.account = pathData.account;
@@ -194,13 +198,16 @@ angular.module('copayApp.controllers').controller('importController',
 
       if (!words) {
         this.error = gettext('Please enter the recovery phrase');
+        $ionicScrollDelegate.scrollTop();
       } else if (words.indexOf('xprv') == 0 || words.indexOf('tprv') == 0) {
         return _importExtendedPrivateKey(words, opts);
       } else {
         var wordList = words.split(/[\u3000\s]+/);
 
-        if ((wordList.length % 3) != 0)
+        if ((wordList.length % 3) != 0) {
           this.error = gettext('Wrong number of recovery words:') + wordList.length;
+          $ionicScrollDelegate.scrollTop();
+        }
       }
 
       if (this.error) {
@@ -222,6 +229,7 @@ angular.module('copayApp.controllers').controller('importController',
         self.hwWallet = false;
         if (err) {
           self.error = err;
+          $ionicScrollDelegate.scrollTop();
           $scope.$apply();
           return;
         }
@@ -235,6 +243,7 @@ angular.module('copayApp.controllers').controller('importController',
           self.loading = false;
           if (err) {
             self.error = err;
+            $ionicScrollDelegate.scrollTop();
             return $timeout(function() {
               $scope.$apply();
             });
@@ -247,8 +256,9 @@ angular.module('copayApp.controllers').controller('importController',
     };
 
     this.importHW = function(form) {
-      if (form.$invalid || $scope.account < 0 ) {
+      if (form.$invalid || $scope.account < 0) {
         this.error = gettext('There is an error in the form');
+        $ionicScrollDelegate.scrollTop();
         $timeout(function() {
           $scope.$apply();
         });
@@ -256,11 +266,12 @@ angular.module('copayApp.controllers').controller('importController',
       }
       this.error = '';
 
-      var account = + $scope.account;
-      
+      var account = +$scope.account;
+
       if (self.seedSourceId == 'trezor') {
-        if ( account < 1) {
+        if (account < 1) {
           this.error = gettext('Invalid account number');
+          $ionicScrollDelegate.scrollTop();
           return;
         }
         account = account - 1;
@@ -296,6 +307,7 @@ angular.module('copayApp.controllers').controller('importController',
         self.hwWallet = false;
         if (err) {
           self.error = err;
+          $ionicScrollDelegate.scrollTop();
           $scope.$apply();
           return;
         }
@@ -309,6 +321,7 @@ angular.module('copayApp.controllers').controller('importController',
           self.loading = false;
           if (err) {
             self.error = err;
+            $ionicScrollDelegate.scrollTop();
             return $timeout(function() {
               $scope.$apply();
             });
