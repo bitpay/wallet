@@ -116,13 +116,16 @@
         <p class="text-gray m0" translate>
           Please tap the words in order to confirm your backup phrase is correctly written.
         </p>
-        <div class="panel words text-left" ng-class="{'enable_text_select': index.network == 'testnet'}">
-          <div id="addWord"></div>
+        <div class="panel words text-left">
+          <span ng-repeat="cword in wordsC.customWords track by $index" ng-show="wordsC.customWords[$index]">
+            <button class="button radius tiny words" ng-click="removeButton($index, cword)">{{cword.word}}</button>
+          </span>
         </div>
-        <div class="text-left" ng-class="{'enable_text_select': index.network == 'testnet'}" id="buttons">
-          <span ng-repeat="word in wordsC.shuffledMnemonicWords track by $index">
-            <button class="button radius tiny words" ng-if="$index > 9" ng-click="wordsC.disableButton($index, word)" id="{{$index + word}}">{{word}}</button>
-            <button class="button radius tiny words" ng-if="$index <= 9" ng-click="wordsC.disableButton('0' + $index, word)" id="{{'0' + $index + word}}">{{word}}</button>
+        <div class="text-left">
+          <span ng-repeat="shuffledWord in wordsC.shuffledMnemonicWords track by $index">
+            <button class="button radius tiny words" ng-click="addButton($index, shuffledWord)"
+              ng-disabled="shuffledWord.selected">{{shuffledWord.word}}
+            </button>
           </span>
         </div>
       </div>
