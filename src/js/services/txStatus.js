@@ -1,7 +1,8 @@
 'use strict';
 
-angular.module('copayApp.services').factory('txStatus', function($modal, lodash, profileService, $timeout, txFormatService, isCordova) {
+angular.module('copayApp.services').factory('txStatus', function($modal, lodash, profileService, $timeout, txFormatService, platformInfo) {
   var root = {};
+  var isCordova = platformInfo.isCordova;
 
   root.notify = function(txp, cb) {
     var fc = profileService.focusedClient;

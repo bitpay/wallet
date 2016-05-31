@@ -1,7 +1,10 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('joinController',
-  function($scope, $rootScope, $timeout, go, notification, profileService, configService, isCordova, storageService, applicationService, $modal, gettext, lodash, ledger, trezor, isChromeApp, isDevel,derivationPathHelper) {
+  function($scope, $rootScope, $timeout, go, notification, profileService, configService, isCordova, storageService, applicationService, $modal, gettext, lodash, ledger, trezor, platformInfo, derivationPathHelper) {
+
+    var isChromeApp = platformInfo.isChromeApp;
+    var isDevel = platformInfo.isDevel;
 
     var self = this;
     var defaults = configService.getDefaults();
@@ -19,10 +22,10 @@ angular.module('copayApp.controllers').controller('joinController',
     var updateSeedSourceSelect = function() {
       self.seedOptions = [{
         id: 'new',
-        label: gettext('New Random Recovery Phrase'),
+        label: gettext('New Random Seed'),
       }, {
         id: 'set',
-        label: gettext('Specify Recovery Phrase...'),
+        label: gettext('Specify Seed...'),
       }];
       $scope.seedSource = self.seedOptions[0];
 
@@ -86,7 +89,6 @@ angular.module('copayApp.controllers').controller('joinController',
 
 
       if (setSeed && !opts.mnemonic && !opts.extendedPrivateKey) {
-
         this.error = gettext('Please enter the wallet recovery phrase');
         return;
       }
@@ -125,6 +127,8 @@ angular.module('copayApp.controllers').controller('joinController',
     this._join = function(opts) {
       self.loading = true;
       $timeout(function() {
+
+console.log('[join.js.124]', opts); //TODO
         profileService.joinWallet(opts, function(err) {
           if (err) {
             self.loading = false;

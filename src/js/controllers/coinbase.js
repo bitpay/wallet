@@ -1,8 +1,9 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('coinbaseController', 
-  function($rootScope, $scope, $timeout, $modal, profileService, configService, storageService, coinbaseService, isChromeApp, animationService, lodash, nodeWebkit) {
+  function($rootScope, $scope, $timeout, $modal, profileService, configService, storageService, coinbaseService, animationService, lodash, nodeWebkit) {
 
+    var isChromeApp = platformInfo.isChromeApp;
     window.ignoreMobilePause = true;
     
     this.openAuthenticateWindow = function() {

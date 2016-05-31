@@ -1,11 +1,16 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('createController',
-  function($scope, $location, $anchorScroll, $rootScope, $timeout, $log, lodash, go, profileService, configService, isCordova, gettext, ledger, trezor, isMobile, isChromeApp, isDevel, derivationPathHelper) {
+  function($scope, $location, $anchorScroll, $rootScope, $timeout, $log, lodash, go, profileService, configService, gettext, ledger, trezor, platformInfo, derivationPathHelper) {
+
+    var isChromeApp = platformInfo.isChromeApp;
+    var isCordova = platformInfo.isCordova;
+    var isDevel = platformInfo.isDevel;
+
 
     var self = this;
     var defaults = configService.getDefaults();
-    this.isWindowsPhoneApp = isMobile.Windows() && isCordova;
+    this.isWindowsPhoneApp = platformInfo.isWP && isCordova;
     $scope.account = 1;
 
     /* For compressed keys, m*73 + n*34 <= 496 */
@@ -44,10 +49,10 @@ angular.module('copayApp.controllers').controller('createController',
 
       self.seedOptions = [{
         id: 'new',
-        label: gettext('New Random Recovery Phrase'),
+        label: gettext('New Random Seed'),
       }, {
         id: 'set',
-        label: gettext('Specify Recovery Phrase...'),
+        label: gettext('Specify Seed...'),
       }];
       $scope.seedSource = self.seedOptions[0];
 
@@ -124,7 +129,7 @@ angular.module('copayApp.controllers').controller('createController',
       }
 
       if (setSeed && !opts.mnemonic && !opts.extendedPrivateKey) {
-        this.error = gettext('Please enter the wallet recovery phrase');
+        this.error = gettext('Please enter the wallet seed');
         return;
       }
 

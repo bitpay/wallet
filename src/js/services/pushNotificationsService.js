@@ -1,8 +1,13 @@
 'use strict';
 angular.module('copayApp.services')
-  .factory('pushNotificationsService', function($log, isMobile, storageService, configService, lodash, isCordova) {
+  .factory('pushNotificationsService', function($log, platformInfo, storageService, configService, lodash) {
     var root = {};
-    var usePushNotifications = isCordova && !isMobile.Windows();
+    var isCordova = platformInfo.isCordova;
+    var isWP = platformInfo.isWP;
+    var isIOS = platformInfo.isIOS;
+    var isAndroid = platformInfo.isAndroid;
+
+    var usePushNotifications = isCordova && !isWP;
 
     root.init = function(walletsClients) {
       var defaults = configService.getDefaults();
@@ -32,7 +37,7 @@ angular.module('copayApp.services')
 
       lodash.forEach(walletsClients, function(walletClient) {
         var opts = {};
-        opts.type = isMobile.iOS() ? "ios" : isMobile.Android() ? "android" : null;
+        opts.type = isIOS ? "ios" : isAndroid ? "android" : null;
         opts.token = root.token;
         root.subscribe(opts, walletClient, function(err, response) {
           if (err) $log.warn('Subscription error: ' + err.message + ': ' + JSON.stringify(opts));
