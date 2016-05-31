@@ -20,12 +20,12 @@ angular
     $urlRouterProvider.otherwise('/');
 
     $logProvider.debugEnabled(true);
-    $provide.decorator('$log', ['$delegate', 'isDevel',
-      function($delegate, isDevel) {
+    $provide.decorator('$log', ['$delegate', 'platformInfo',
+      function($delegate, platformInfo) {
         var historicLog = historicLogProvider.$get();
 
         ['debug', 'info', 'warn', 'error', 'log'].forEach(function(level) {
-          if (isDevel && level == 'error') return;
+          if (platformInfo.isDevel && level == 'error') return;
 
           var orig = $delegate[level];
           $delegate[level] = function() {
@@ -531,7 +531,7 @@ angular
         url: '/cordova/:status/:fromHome/:fromDisclaimer/:secondBackButtonPress',
         views: {
           'main': {
-            controller: function($rootScope, $state, $stateParams, $timeout, go, isCordova, gettextCatalog) {
+            controller: function($rootScope, $state, $stateParams, $timeout, go, platformInfo, gettextCatalog) {
 
               switch ($stateParams.status) {
                 case 'resume':
@@ -542,7 +542,7 @@ angular
                   if ($stateParams.fromDisclaimer == 'true')
                     navigator.app.exitApp();
 
-                  if (isCordova && $stateParams.fromHome == 'true' && !$rootScope.modalOpened) {
+                  if (platformInfo.isCordova && $stateParams.fromHome == 'true' && !$rootScope.modalOpened) {
                     if ($stateParams.secondBackButtonPress == 'true') {
                       navigator.app.exitApp();
                     } else {
@@ -563,16 +563,16 @@ angular
         needProfile: false
       });
   })
-  .run(function($rootScope, $state, $log, uriHandler, isCordova, profileService, $timeout, nodeWebkit, uxLanguage, animationService) {
+  .run(function($rootScope, $state, $log, uriHandler, platformInfo, profileService, $timeout, uxLanguage, animationService) {
 
     uxLanguage.init();
 
     // Register URI handler, not for mobileApp
-    if (!isCordova) {
+    if (!platformInfo.isCordova) {
       uriHandler.register();
     }
 
-    if (nodeWebkit.isDefined()) {
+    if (platformInfo.isNW) {
       var gui = require('nw.gui');
       var win = gui.Window.get();
       var nativeMenuBar = new gui.Menu({

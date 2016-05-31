@@ -1,7 +1,7 @@
 
 'use strict';
 
-angular.module('copayApp.services').factory('confirmDialog', function($log, $timeout, profileService, configService, gettextCatalog, isCordova, isChromeApp) {
+angular.module('copayApp.services').factory('confirmDialog', function($log, $timeout, profileService, configService, gettextCatalog, platformInfo) {
   var root = {};
 
 
@@ -10,7 +10,7 @@ angular.module('copayApp.services').factory('confirmDialog', function($log, $tim
   var confirmMsg = gettextCatalog.getString('Confirm');
 
   root.show = function(msg, cb) {
-    if (isCordova) { 
+    if (platformInfo.isCordova) { 
       navigator.notification.confirm(
         msg,
         function(buttonIndex) {
@@ -24,7 +24,7 @@ angular.module('copayApp.services').factory('confirmDialog', function($log, $tim
         },
         confirmMsg, [acceptMsg, cancelMsg]
       );
-    } else if (isChromeApp) {
+    } else if (platformInfo.isChromeApp) {
       // No feedback, alert/confirm not supported.
       return cb(true);
     } else {
