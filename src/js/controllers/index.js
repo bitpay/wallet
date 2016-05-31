@@ -1,12 +1,13 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, latestReleaseService, bwcService, pushNotificationsService, lodash, go, profileService, configService, rateService, storageService, addressService, gettext, gettextCatalog, amMoment, nodeWebkit, addonManager, bwsError, txFormatService, uxLanguage, glideraService, coinbaseService, platformInfo, addressbookService, walletService) {
+angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, latestReleaseService, bwcService, pushNotificationsService, lodash, go, profileService, configService, rateService, storageService, addressService, gettext, gettextCatalog, amMoment, addonManager, bwsError, txFormatService, uxLanguage, glideraService, coinbaseService, platformInfo, addressbookService, walletService) {
   var self = this;
   var SOFT_CONFIRMATION_LIMIT = 12;
   var errors = bwcService.getErrors();
   var historyUpdateInProgress = {};
   var isChromeApp = platformInfo.isChromeApp;
   var isCordova = platformInfo.isCordova;
+  var isNW = platformInfo.isNW;
 
   var ret = {};
   ret.isCordova = isCordova;
@@ -48,7 +49,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   ret.tab = 'walletHome';
   var vanillaScope = ret;
 
-  if (nodeWebkit.isDefined()) {
+  if (isNW) {
     latestReleaseService.checkLatestRelease(function(err, newRelease) {
       if (err) {
         $log.warn(err);
@@ -741,7 +742,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       $log.info('CSV generation not available in mobile');
       return;
     }
-    var isNode = nodeWebkit.isDefined();
+    var isNode = isNW;
     var fc = profileService.focusedClient;
     var c = fc.credentials;
     if (!fc.isComplete()) return;
