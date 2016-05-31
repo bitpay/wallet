@@ -204,12 +204,11 @@
                 <div class="m10t">
                   <span ng-show="btx.action == 'received'" translate>Received</span>
                   <span ng-show="btx.action == 'sent'">
-                    {{index.addressbook[btx.addressTo]}}
-                    <span ng-show="!index.addressbook[btx.addressTo] && btx.message">
-                      <span class="ellipsis">{{btx.message}}</span>
-                    </span>
-                    <span ng-show="!index.addressbook[btx.addressTo] && !btx.message">
-                      <span translate> Sent</span>
+                    <span class="ellipsis">
+                      <span ng-if="btx.message">{{btx.message}}</span>
+                      <span ng-if="!btx.message && btx.note.body">{{btx.note.body}}</span>
+                      <span ng-if="!btx.message && !btx.note.body && index.addressbook[btx.addressTo]">{{index.addressbook[btx.addressTo]}}</span>
+                      <span ng-if="!btx.message && !btx.note.body && !index.addressbook[btx.addressTo]" translate> Sent</span>
                     </span>
                   </span>
                   <span ng-show="btx.action == 'moved'" translate>Moved</span>

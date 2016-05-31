@@ -20,6 +20,14 @@
 	z-index: -1;
 }
 
+.popup-container.active .popup {
+	border-radius: 10px;
+}
+
+.popup-container .popup {
+	width: 300px;
+}
+
 .bct {
  	background-color: transparent !important;
 	margin-top: -25px;
