@@ -1,9 +1,9 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('sidebarController',
-  function($rootScope, $timeout, lodash, profileService, configService, go, isMobile, isCordova) {
+  function($rootScope, $timeout, lodash, profileService, configService, go, platformInfo) {
     var self = this;
-    self.isWindowsPhoneApp = isMobile.Windows() && isCordova;
+    self.isWindowsPhoneApp = platformInfo.isWP && platformInfo.isCordova;
     self.walletSelection = false;
 
     // wallet list change
