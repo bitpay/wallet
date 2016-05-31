@@ -241,7 +241,7 @@ factory('notification', ['$timeout',
 
       save: function() {
         // Save all the notifications into localStorage
-        if (settings.localStorage) {
+        if (settings.localStorage && window.localStorage) {
           localStorage.setItem('notifications', JSON.stringify(notifications));
         }
       },

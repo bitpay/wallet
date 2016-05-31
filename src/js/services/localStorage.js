@@ -6,8 +6,7 @@ angular.module('copayApp.services')
     var ls = ((typeof window.localStorage !== "undefined") ? window.localStorage : null);
 
     if (isChromeApp && !nodeWebkit.isDefined() && !ls) {
-      ls = localStorage = chrome.storage.local;
-      window.localStorage = chrome.storage.local;
+      ls = chrome.storage.local;
     }
 
     if (!ls)
