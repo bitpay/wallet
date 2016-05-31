@@ -1,8 +1,9 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('copayersController',
-  function($scope, $rootScope, $timeout, $log, $modal, profileService, go, notification, isCordova, gettext, gettextCatalog, animationService) {
+  function($scope, $rootScope, $timeout, $log, $modal, profileService, go, notification, platformInfo, gettext, gettextCatalog, animationService) {
     var self = this;
+    var isCordova = platformInfo.isCordova;
 
     var delete_msg = gettextCatalog.getString('Are you sure you want to delete this wallet?');
     var accept_msg = gettextCatalog.getString('Accept');
