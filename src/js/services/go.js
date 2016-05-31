@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.services').factory('go', function($window, $rootScope, $location, $state, $timeout, $log, profileService, nodeWebkit) {
+angular.module('copayApp.services').factory('go', function($window, $rootScope, $location, $state, $timeout, $log, profileService, platformInfo, nodeWebkit) {
   var root = {};
 
   var hideSidebars = function() {
@@ -30,7 +30,7 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
   };
 
   root.openExternalLink = function(url, target) {
-    if (nodeWebkit.isDefined()) {
+    if ( platformInfo.isNW) {
       nodeWebkit.openExternalLink(url);
     } else {
       target = target || '_blank';

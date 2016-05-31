@@ -1,16 +1,18 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, latestReleaseService, bwcService, pushNotificationsService, lodash, go, profileService, configService, isCordova, rateService, storageService, addressService, gettext, gettextCatalog, amMoment, nodeWebkit, addonManager, isChromeApp, bwsError, txFormatService, uxLanguage, glideraService, coinbaseService, isMobile, addressbookService, walletService) {
+angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, latestReleaseService, bwcService, pushNotificationsService, lodash, go, profileService, configService, rateService, storageService, addressService, gettext, gettextCatalog, amMoment, nodeWebkit, addonManager, bwsError, txFormatService, uxLanguage, glideraService, coinbaseService, platformInfo, addressbookService, walletService) {
   var self = this;
   var SOFT_CONFIRMATION_LIMIT = 12;
   var errors = bwcService.getErrors();
   var historyUpdateInProgress = {};
+  var isChromeApp = platformInfo.isChromeApp;
+  var isCordova = platformInfo.isCordova;
 
   var ret = {};
   ret.isCordova = isCordova;
   ret.isChromeApp = isChromeApp;
-  ret.isSafari = isMobile.Safari();
-  ret.isWindowsPhoneApp = isMobile.Windows() && isCordova;
+  ret.isSafari = platformInfo.isSafari;
+  ret.isWindowsPhoneApp = platformInfo.isWP;
   ret.onGoingProcess = {};
   ret.historyShowLimit = 10;
   ret.historyShowMoreLimit = 100;
@@ -1672,7 +1674,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
   $rootScope.$on('Local/DeviceError', function(event, err) {
     self.showErrorPopup(err, function() {
-      if (self.isCordova && navigator && navigator.app) {
+      if (isCordova && navigator && navigator.app) {
         navigator.app.exitApp();
       }
     });

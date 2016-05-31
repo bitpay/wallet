@@ -1,8 +1,9 @@
 'use strict';
 
-angular.module('copayApp.services').factory('glideraService', function($http, $log, isCordova) {
+angular.module('copayApp.services').factory('glideraService', function($http, $log, platformInfo) {
   var root = {};
   var credentials = {};
+  var isCordova = platformInfo.isCordova;
 
   root.setCredentials = function(network) {
     if (network == 'testnet') {

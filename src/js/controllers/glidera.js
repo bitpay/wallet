@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('glideraController', 
-  function($rootScope, $scope, $timeout, $modal, profileService, configService, storageService, glideraService, isChromeApp, animationService, lodash) {
+  function($rootScope, $scope, $timeout, $modal, profileService, configService, storageService, glideraService, animationService, lodash) {
 
     window.ignoreMobilePause = true;
 

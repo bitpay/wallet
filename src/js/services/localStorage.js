@@ -1,11 +1,13 @@
 'use strict';
 
 angular.module('copayApp.services')
-  .factory('localStorageService', function(isChromeApp, nodeWebkit, $timeout) {
+  .factory('localStorageService', function(platformInfo, $timeout) {
+    var isNW = platformInfo.isNW;
+    var isChromeApp = platformInfo.isChromeApp;
     var root = {};
     var ls = ((typeof window.localStorage !== "undefined") ? window.localStorage : null);
 
-    if (isChromeApp && !nodeWebkit.isDefined() && !ls) {
+    if (isChromeApp && !isNW && !ls) {
       ls = chrome.storage.local;
     }
 
@@ -13,7 +15,7 @@ angular.module('copayApp.services')
       throw new Error('localstorage not available');
 
     root.get = function(k, cb) {
-      if (isChromeApp && !nodeWebkit.isDefined()) {
+      if (isChromeApp && !isNW) {
         chrome.storage.local.get(k,
           function(data) {
             //TODO check for errors
@@ -39,7 +41,7 @@ angular.module('copayApp.services')
     };
 
     root.set = function(k, v, cb) {
-      if (isChromeApp && !nodeWebkit.isDefined()) {
+      if (isChromeApp && !isNW) {
         var obj = {};
         obj[k] = v;
 
@@ -52,7 +54,7 @@ angular.module('copayApp.services')
     };
 
     root.remove = function(k, cb) {
-      if (isChromeApp && !nodeWebkit.isDefined()) {
+      if (isChromeApp && !isNW) {
         chrome.storage.local.remove(k, cb);
       } else {
         ls.removeItem(k);
