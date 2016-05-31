@@ -1,9 +1,11 @@
 'use strict';
 
-angular.module('copayApp.services').factory('animationService', function(isCordova) {
+angular.module('copayApp.services').factory('animationService', function(platformInfo) {
   var root = {};
-
   var cachedTransitionState, cachedBackPanel;
+
+  var isCordova = platformInfo.isCordova;
+
 
   // DISABLE ANIMATION ON DESKTOP
   root.modalAnimated = {

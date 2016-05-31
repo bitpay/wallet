@@ -1,10 +1,15 @@
 'use strict';
 angular.module('copayApp.services')
-  .factory('profileService', function profileServiceFactory($rootScope, $timeout, $filter, $log, sjcl, lodash, storageService, bwcService, configService, notificationService, pushNotificationsService, isChromeApp, isCordova, isMobile, gettext, gettextCatalog, nodeWebkit, bwsError, uxLanguage, bitcore) {
+  .factory('profileService', function profileServiceFactory($rootScope, $timeout, $filter, $log, sjcl, lodash, storageService, bwcService, configService, notificationService, pushNotificationsService, gettext, gettextCatalog, bwsError, uxLanguage, bitcore, platformInfo) {
+
+
+    var isChromeApp = platformInfo.isChromeApp;
+    var isCordova = platformInfo.isCordova;
+    var isWP = platformInfo.isWP;
 
     var root = {};
     var errors = bwcService.getErrors();
-    var usePushNotifications = isCordova && !isMobile.Windows();
+    var usePushNotifications = isCordova && !isWP;
 
     var FOREGROUND_UPDATE_PERIOD = 5;
     var BACKGROUND_UPDATE_PERIOD = 30;
