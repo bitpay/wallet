@@ -1,8 +1,10 @@
 'use strict';
 
 angular.module('copayApp.services').
-factory('notification', ['$timeout','isCordova',
-  function($timeout, isCordova) {
+factory('notification', 
+  function($timeout, platformInfo) {
+
+    var isCordova = platformInfo.isCordova;
 
     var notifications = [];
 
@@ -257,7 +259,7 @@ factory('notification', ['$timeout','isCordova',
 
     };
   }
-]).directive('notifications', function(notification, $compile) {
+).directive('notifications', function(notification, $compile) {
   /**
    *
    * It should also parse the arguments passed to it that specify

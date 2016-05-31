@@ -1,11 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('backupController',
-<<<<<<< HEAD
-  function($rootScope, $scope, $timeout, $log, $state, $compile, go, lodash, profileService, gettext, bwcService, bwsError) {
-=======
-  function($rootScope, $scope, $timeout, $document, $log, $state, $compile, go, lodash, profileService, gettext, bwcService, bwsError, walletService) {
->>>>>>> Add controller tests (#4205)
+  function($rootScope, $scope, $timeout, $log, lodash, profileService, gettext, bwcService, bwsError, walletService) {
 
     var self = this;
     var fc = profileService.focusedClient;
@@ -58,7 +54,7 @@ angular.module('copayApp.controllers').controller('backupController',
     function initWords() {
       var words = fc.getMnemonic();
       self.xPrivKey = fc.credentials.xPrivKey;
-      profileService.lockFC();
+      walletService.lock(fc);
       self.mnemonicWords = words.split(/[\u3000\s]+/);
       self.shuffledMnemonicWords = shuffledWords(self.mnemonicWords);
       self.mnemonicHasPassphrase = fc.mnemonicHasPassphrase();
@@ -97,7 +93,7 @@ angular.module('copayApp.controllers').controller('backupController',
             $scope.$apply();
           }, 1);
 
-          profileService.unlockFC({}, function(err) {
+          handleEncryptedWallet(fc, function(err) {
             if (err) {
               self.error = bwsError.msg(err, gettext('Could not decrypt'));
               $log.warn('Error decrypting credentials:', self.error); //TODO
@@ -113,63 +109,21 @@ angular.module('copayApp.controllers').controller('backupController',
           });
         }
       }
-<<<<<<< HEAD
     };
-=======
-    }
-
-    function resetAllButtons() {
-      $document.getElementById('addWord').innerHTML = '';
-      var nodes = $document.getElementById("buttons").getElementsByTagName('button');
-      lodash.each(nodes, function(n) {
-        $document.getElementById(n.id).disabled = false;
-      });
-    }
-
-    self.enableButton = function(word) {
-      $document.getElementById(word).disabled = false;
-      lodash.remove(customWords, function(v) {
-        return v == word;
-      });
-    }
->>>>>>> Add controller tests (#4205)
 
     $scope.addButton = function(index, item) {
       var newWord = {
         word: item.word,
         prevIndex: index
       };
-<<<<<<< HEAD
       self.customWords.push(newWord);
       self.shuffledMnemonicWords[index].selected = true;
-=======
-      $document.getElementById(index + word).disabled = true;
-      customWords.push(element);
-      self.addButton(index, word);
-    }
-
-    self.addButton = function(index, word) {
-      var btnhtml = '<button class="button radius tiny words" ng-disabled="wordsC.disableButtons"' +
-        'data-ng-click="wordsC.removeButton($event)" id="_' + index + word + '" > ' + word + ' </button>';
-      var temp = $compile(btnhtml)($scope);
-      angular.element($document.getElementById('addWord')).append(temp);
->>>>>>> Add controller tests (#4205)
       self.shouldContinue();
     };
 
-<<<<<<< HEAD
     $scope.removeButton = function(index, item) {
       self.customWords.splice(index, 1);
       self.shuffledMnemonicWords[item.prevIndex].selected = false;
-=======
-    self.removeButton = function(event) {
-      var id = (event.target.id);
-      $document.getElementById(id).remove();
-      self.enableButton(id.substring(1));
-      lodash.remove(customWords, function(d) {
-        return d.index == id.substring(1, 3);
-      });
->>>>>>> Add controller tests (#4205)
       self.shouldContinue();
     };
 

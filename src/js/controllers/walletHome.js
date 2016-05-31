@@ -5,7 +5,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   var isCordova = platformInfo.isCordova;
   var isWP = platformInfo.isWP;
   var isAndroid = platformInfo.isAndroid;
-  var isChromeApp = platformInfo.isChromeApp; >>> >>> > migration to platformInfo WIP
+  var isChromeApp = platformInfo.isChromeApp; 
 
   var self = this;
   window.ignoreMobilePause = false;
