@@ -6,13 +6,11 @@
       </a>
     </section>
     <section class="middle tab-bar-section">
-      <h1 class="title ellipsis" translate>
-        Transaction
-      </h1>
+      <h1 class="title ellipsis" translate>Transaction</h1>
     </section>
   </nav>
 
-  <ion-content>
+  <ion-content ng-style="{'background-color': '#F6F7F9'}">
     <div class="modal-content">
       <div class="header-modal text-center" ng-init="getAlternativeAmount(btx)">
         <div ng-show="btx.action != 'invalid'">
@@ -51,20 +49,19 @@
       <h4 class="title m0" translate>Details</h4>
 
       <ul class="no-bullet size-14 m0">
-
         <li ng-if="!btx.hasMultiplesOutputs && btx.addressTo && btx.addressTo != 'N/A'" class="line-b p10 oh"
           ng-click="copyToClipboard(btx.addressTo)">
-        <span class="text-gray" translate>To</span>
-        <span class="right">
-          <span ng-if="btx.merchant">
-            <span ng-show="btx.merchant.pr.ca"><i class="fi-lock color-greeni"></i> {{btx.merchant.domain}}</span>
-            <span ng-show="!btx.merchant.pr.ca"><i class="fi-unlock color-yellowi"></i> {{btx.merchant.domain}}</span>
+          <span class="text-gray" translate>To</span>
+          <span class="right">
+            <span ng-if="btx.merchant">
+              <span ng-show="btx.merchant.pr.ca"><i class="fi-lock color-greeni"></i> {{btx.merchant.domain}}</span>
+              <span ng-show="!btx.merchant.pr.ca"><i class="fi-unlock color-yellowi"></i> {{btx.merchant.domain}}</span>
+            </span>
+            <span ng-if="!btx.merchant">
+              <span ng-show="btx.labelTo">{{btx.labelTo}}</span>
+              <contact ng-show="!btx.labelTo" class="enable_text_select" address="{{btx.addressTo}}"></contact>
+            </span>
           </span>
-          <span ng-if="!btx.merchant">
-            <span ng-show="btx.labelTo">{{btx.labelTo}}</span>
-            <contact ng-show="!btx.labelTo" class="enable_text_select" address="{{btx.addressTo}}"></contact>
-          </span>
-        </span>
         </li>
 
         <li ng-show="btx.hasMultiplesOutputs" class="line-b p10 oh"
@@ -82,47 +79,61 @@
         </div>
 
         <li ng-if="btx.action == 'invalid'" class="line-b p10 oh">
-        <span class="right" translate>
-          This transaction has become invalid; possibly due to a double spend attempt.
-        </span>
-        <li ng-if="btx.time" class="line-b p10 oh">
-        <span class="text-gray" translate>Date</span>
-        <span class="right enable_text_select">
-          <time>{{ btx.time * 1000 | amDateFormat:'MM/DD/YYYY HH:mm a'}}</time>
-          <time>({{ btx.time * 1000 | amTimeAgo}})</time>
-        </span>
+          <span class="right" translate>
+            This transaction has become invalid; possibly due to a double spend attempt.
+          </span>
         </li>
+
+        <li ng-if="btx.time" class="line-b p10 oh">
+          <span class="text-gray" translate>Date</span>
+          <span class="right enable_text_select">
+            <time>{{ btx.time * 1000 | amDateFormat:'MM/DD/YYYY HH:mm a'}}</time>
+            <time>({{ btx.time * 1000 | amTimeAgo}})</time>
+          </span>
+        </li>
+
         <li class="line-b p10" ng-show="btx.action != 'received'"
           ng-click="copyToClipboard(btx.feeStr)">
           <span class="text-gray" translate>Fee</span>
           <span class="right enable_text_select">{{btx.feeStr}}</span>
         </li>
+
         <li class="line-b p10 oh" ng-if="btx.message && btx.action != 'received'"
           ng-click="copyToClipboard(btx.message)">
           <span class="text-gray" translate>Note</span>
           <span class="right enable_text_select">{{btx.message}}</span>
         </li>
+
         <li ng-if="btx.merchant" class="line-b p10 oh"
           ng-click="copyToClipboard(btx.merchant.pr.pd.memo)">
-        <span class="text-gray" translate>Merchant message</span>
-        <span class="right enable_text_select">
-          {{btx.merchant.pr.pd.memo}}
-        </span>
+          <span class="text-gray" translate>Merchant message</span>
+          <span class="right enable_text_select">
+            {{btx.merchant.pr.pd.memo}}
+          </span>
         </li>
-        <li ng-if="btx.time" class="line-b p10 oh">
-        <span class="text-gray" translate>Confirmations</span>
-        <span class="right" >
-          <span class="text-warning" ng-show="!btx.confirmations || btx.confirmations == 0" translate>
-            Unconfirmed
-          </span>
-          <span class="label gray radius" ng-show="btx.confirmations>0 && !btx.safeConfirmed">
-            {{btx.confirmations}}
-          </span>
-          <span class="label gray radius" ng-show="btx.safeConfirmed">
-            {{btx.safeConfirmed}}
-          </span>
 
-        </span>
+        <li ng-if="btx.time" class="line-b p10 oh">
+          <span class="text-gray" translate>Confirmations</span>
+          <span class="right" >
+            <span class="text-warning" ng-show="!btx.confirmations || btx.confirmations == 0" translate>
+              Unconfirmed
+            </span>
+            <span class="label gray radius" ng-show="btx.confirmations>0 && !btx.safeConfirmed">
+              {{btx.confirmations}}
+            </span>
+            <span class="label gray radius" ng-show="btx.safeConfirmed">
+              {{btx.safeConfirmed}}
+            </span>
+          </span>
+        </li>
+
+        <li class="p10 oh" ng-show="comment">
+          <span class="text-gray" translate>Comment</span>
+          <span class="right enable_text_select">{{comment}}</span><br>
+          <span class="right text-italic text-gray size-12 m10t">
+            <span>{{editedBy}}</span>
+            <time>{{createdOn * 1000 | amTimeAgo}}</time></span>
+          </span>
         </li>
       </ul>
 
@@ -146,10 +157,12 @@
             (getShortNetworkName() == 'test' ? 'test-' : '') + 'insight.bitpay.com/tx/' + btx.txid)">
             <span class="text-gray" translate>See it on the blockchain</span>
           </button>
+          <button class="button outline round dark-gray tiny" ng-click="showCommentPopup()">
+            <span class="text-gray" translate ng-show="!comment">Add a comment <i class="ion-ios-plus-outline"></i></span>
+            <span class="text-gray" translate ng-show="comment">Edit comment <i class="ion-ios-compose-outline"></i></span>
+          </button>
         </div>
       </div>
-
-      <div class="extra-margin-bottom"></div>
     </div>
   </ion-content>
 </ion-modal-view>
