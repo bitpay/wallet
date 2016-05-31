@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('importController',
-  function($scope, $rootScope, $location, $timeout, $log, profileService, configService, notification, go, sjcl, gettext, lodash, ledger, trezor, derivationPathHelper) {
+  function($scope, $rootScope, $location, $timeout, $log, profileService, configService, notification, go, sjcl, gettext, lodash, ledger, trezor, derivationPathHelper, platformInfo) {
 
     var isChromeApp = platformInfo.isChromeApp;
     var isDevel = platformInfo.isDevel;
