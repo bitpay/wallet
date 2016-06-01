@@ -16,6 +16,7 @@ Profile.create = function(opts) {
   x.createdOn = Date.now();
   x.credentials = opts.credentials || [];
   x.disclaimerAccepted = false;
+  x.checked = {};
   return x;
 };
 
@@ -25,6 +26,7 @@ Profile.fromObj = function(obj) {
   x.createdOn = obj.createdOn;
   x.credentials = obj.credentials;
   x.disclaimerAccepted = obj.disclaimerAccepted;
+  x.checked = obj.checked || {};
 
   if (x.credentials[0] && typeof x.credentials[0] != 'object')
     throw ("credentials should be an object");

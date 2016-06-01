@@ -113,10 +113,13 @@ angular.module('copayApp.services')
     };
 
     root.storeProfile = function(profile, cb) {
+console.log('[storageService.js.115:storeProfile:]',profile); //TODO
       encryptOnMobile(profile.toObj(), function(err, x) {
         storage.set('profile', x, cb);
       });
     };
+
+    root.storeProfileThrottled =  lodash.throttle(root.storeProfile, 5000);
 
     root.getProfile = function(cb) {
       storage.get('profile', function(err, str) {
@@ -171,14 +174,6 @@ angular.module('copayApp.services')
 
     root.clearBackupFlag = function(walletId, cb) {
       storage.remove('backup-' + walletId, cb);
-    };
-
-    root.setDerivationTestFlag = function(walletId, ua, cb) {
-      storage.set('DerivationTest-'+walletId+ua.replace(' ', ''), true, cb);
-    };
-
-    root.getDerivationTestFlag = function(walletId, ua, cb) {
-      storage.get('DerivationTest-'+walletId+ua.replace(' ', ''), cb);
     };
 
     root.setCleanAndScanAddresses = function(walletId, cb) {
