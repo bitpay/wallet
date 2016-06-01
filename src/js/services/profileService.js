@@ -62,7 +62,7 @@ angular.module('copayApp.services')
       });
     };
 
-    root.setBaseURL = function(walletId) {
+    root._getBaseURL = function(walletId) {
       var config = configService.getSync();
       var defaults = configService.getDefaults();
 
@@ -75,10 +75,12 @@ angular.module('copayApp.services')
         return;
       }
 
-      root.setBaseURL(credentials.walletId);
+
 
       $log.debug('Importing wallet:' + credentials.walletId);
-      var client = bwcService.getClient(JSON.stringify(credentials));
+      var client = bwcService.getClient(JSON.stringify(credentials), {
+        baseurl: root._getBaseURL(credentials.walletId),
+      });
       root.walletClients[credentials.walletId] = client;
 
       if (client.incorrectDerivation) {
@@ -327,8 +329,8 @@ angular.module('copayApp.services')
 
         // check if exist
         if (lodash.find(root.profile.credentials, {
-            'walletId': walletData.walletId
-          })) {
+          'walletId': walletData.walletId
+        })) {
           return cb(gettext('Cannot join the same wallet more that once'));
         }
       } catch (ex) {
@@ -495,10 +497,7 @@ angular.module('copayApp.services')
     };
 
     root.importExtendedPrivateKey = function(xPrivKey, opts, cb) {
-      if (opts.bwsurl)
-        bwcService.setBaseUrl(opts.bwsurl);
-
-      var walletClient = bwcService.getClient();
+      var walletClient = bwcService.getClient(null, opts);
       $log.debug('Importing Wallet xPrivKey');
 
       walletClient.importFromExtendedPrivateKey(xPrivKey, opts, function(err) {
@@ -517,10 +516,7 @@ angular.module('copayApp.services')
     };
 
     root.importMnemonic = function(words, opts, cb) {
-      if (opts.bwsurl)
-        bwcService.setBaseUrl(opts.bwsurl);
-
-      var walletClient = bwcService.getClient();
+      var walletClient = bwcService.getClient(null, opts);
 
       $log.debug('Importing Wallet Mnemonic');
 
@@ -538,10 +534,7 @@ angular.module('copayApp.services')
     };
 
     root.importExtendedPublicKey = function(opts, cb) {
-      if (opts.bwsurl)
-        bwcService.setBaseUrl(opts.bwsurl);
-
-      var walletClient = bwcService.getClient();
+      var walletClient = bwcService.getClient(null, opts);
       $log.debug('Importing Wallet XPubKey');
 
       walletClient.importFromExtendedPublicKey(opts.extendedPublicKey, opts.externalSource, opts.entropySource, {
@@ -566,7 +559,6 @@ angular.module('copayApp.services')
       var defaults = configService.getDefaults();
 
       configService.get(function(err) {
-        bwcService.setBaseUrl(defaults.bws.url);
         root._createNewProfile(opts, function(err, p) {
           if (err) return cb(err);
 
