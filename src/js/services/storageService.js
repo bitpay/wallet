@@ -173,6 +173,14 @@ angular.module('copayApp.services')
       storage.remove('backup-' + walletId, cb);
     };
 
+    root.setDerivationTestFlag = function(walletId, ua, cb) {
+      storage.set('DerivationTest-'+walletId+ua.replace(' ', ''), true, cb);
+    };
+
+    root.getDerivationTestFlag = function(walletId, ua, cb) {
+      storage.get('DerivationTest-'+walletId+ua.replace(' ', ''), cb);
+    };
+
     root.setCleanAndScanAddresses = function(walletId, cb) {
       storage.set('CleanAndScanAddresses', walletId, cb);
     };

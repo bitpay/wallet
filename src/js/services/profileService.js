@@ -67,7 +67,6 @@ angular.module('copayApp.services')
       var defaults = configService.getDefaults();
 
       bwcService.setBaseUrl((config.bwsFor && config.bwsFor[walletId]) || defaults.bws.url);
-      bwcService.setTransports(['polling']);
     }
 
     root.setWalletClient = function(credentials) {
@@ -219,10 +218,7 @@ angular.module('copayApp.services')
 
     root._seedWallet = function(opts, cb) {
       opts = opts || {};
-      if (opts.bwsurl)
-        bwcService.setBaseUrl(opts.bwsurl);
-
-      var walletClient = bwcService.getClient();
+      var walletClient = bwcService.getClient(null, opts);
       var network = opts.networkName || 'livenet';
 
 
@@ -471,10 +467,8 @@ angular.module('copayApp.services')
     };
 
     root.importWallet = function(str, opts, cb) {
-      if (opts.bwsurl)
-        bwcService.setBaseUrl(opts.bwsurl);
 
-      var walletClient = bwcService.getClient();
+      var walletClient = bwcService.getClient(null, opts);
 
       $log.debug('Importing Wallet:', opts);
       try {
@@ -573,7 +567,6 @@ angular.module('copayApp.services')
 
       configService.get(function(err) {
         bwcService.setBaseUrl(defaults.bws.url);
-        bwcService.setTransports(['polling']);
         root._createNewProfile(opts, function(err, p) {
           if (err) return cb(err);
 

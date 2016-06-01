@@ -6,30 +6,8 @@ bwcModule.constant('MODULE_VERSION', '1.0.0');
 bwcModule.provider("bwcService", function() {
   var provider = {};
 
-  var config = {
-    baseUrl: 'https://bws.bitpay.com/bws/api',
-    verbose: null,
-    transports: null
-  };
-
-  provider.setBaseUrl = function(url) {
-    config.baseUrl = url;
-  };
-
-  provider.setVerbose = function(v) {
-    config.verbose = v ? true : false;
-  };
-
   provider.$get = function() {
     var service = {};
-
-    service.setBaseUrl = function(url) {
-      config.baseUrl = url;
-    };
-
-    service.setTransports = function(transports) {
-      config.transports = transports;
-    };
 
     service.getBitcore = function() {
       return Client.Bitcore;
@@ -46,20 +24,21 @@ bwcModule.provider("bwcService", function() {
     service.buildTx = Client.buildTx;
     service.parseSecret = Client.parseSecret;
     service.Client = Client;
-    service.config = config;
 
     service.getUtils = function() {
       return Client.Utils;
     };
 
-    service.getClient = function(walletData) {
+    service.getClient = function(walletData, opts) {
+
+      //note opts use `baseurl` all lowercase;
       var bwc = new Client({
-        baseUrl: config.baseUrl,
-        verbose: config.verbose,
-        transports: config.transports
+        baseUrl: opts.baseurl || 'https://bws.bitpay.com/bws/api',
+        verbose: opts.verbose,
+        transports: ['polling'],
       });
       if (walletData)
-        bwc.import(walletData);
+        bwc.import(walletData, opts);
       return bwc;
     };
     return service;
