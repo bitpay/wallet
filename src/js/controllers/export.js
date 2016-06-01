@@ -1,8 +1,10 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('exportController',
-  function($rootScope, $scope, $timeout, $log, backupService, storageService, profileService, isMobile, notification, go, gettext, gettextCatalog) {
+  function($rootScope, $scope, $timeout, $log, backupService, storageService, profileService, platformInfo, notification, go, gettext, gettextCatalog) {
     var self = this;
+    var isWP = platformInfo.isWP;
+    var isAndroid = platformInfo.isAndroid;
 
     self.error = null;
     self.success = null;
@@ -125,7 +127,7 @@ angular.module('copayApp.controllers').controller('exportController',
 
     self.sendWalletBackup = function() {
       var fc = profileService.focusedClient;
-      if (isMobile.Android() || isMobile.Windows()) {
+      if (isAndroid || isWP) {
         window.ignoreMobilePause = true;
       }
       window.plugins.toast.showShortCenter(gettextCatalog.getString('Preparing backup...'));

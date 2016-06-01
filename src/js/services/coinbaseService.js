@@ -1,8 +1,9 @@
 'use strict';
 
-angular.module('copayApp.services').factory('coinbaseService', function($http, $log, isCordova, lodash, storageService, configService) {
+angular.module('copayApp.services').factory('coinbaseService', function($http, $log, platformInfo, lodash, storageService, configService) {
   var root = {};
   var credentials = {};
+  var isCordova = platformInfo.isCordova;
 
   root.setCredentials = function(network) {
     credentials.SCOPE = ''

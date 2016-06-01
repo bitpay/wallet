@@ -1,6 +1,11 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('walletHomeController', function($scope, $rootScope, $interval, $timeout, $filter, $modal, $log, notification, txStatus, isCordova, isMobile, profileService, lodash, configService, rateService, storageService, bitcore, isChromeApp, gettext, gettextCatalog, nodeWebkit, addressService, ledger, bwsError, confirmDialog, txFormatService, animationService, addressbookService, go, feeService, walletService, fingerprintService) {
+angular.module('copayApp.controllers').controller('walletHomeController', function($scope, $rootScope, $interval, $timeout, $filter, $modal, $log, notification, txStatus, profileService, lodash, configService, rateService, storageService, bitcore, gettext, gettextCatalog, platformInfo, addressService, ledger, bwsError, confirmDialog, txFormatService, animationService, addressbookService, go, feeService, walletService, fingerprintService, nodeWebkit) {
+
+  var isCordova = platformInfo.isCordova;
+  var isWP = platformInfo.isWP;
+  var isAndroid = platformInfo.isAndroid;
+  var isChromeApp = platformInfo.isChromeApp; 
 
   var self = this;
   window.ignoreMobilePause = false;
@@ -21,8 +26,8 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   ret.unitDecimals = walletSettings.unitDecimals;
   ret.isCordova = isCordova;
   ret.addresses = [];
-  ret.isMobile = isMobile.any();
-  ret.isWindowsPhoneApp = isMobile.Windows() && isCordova;
+  ret.isMobile = platformInfo.isMobile;
+  ret.isWindowsPhoneApp = platformInfo.isWP;
   ret.countDown = null;
   ret.sendMaxInfo = {};
   var vanillaScope = ret;
@@ -115,7 +120,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   });
 
   var getClipboard = function(cb) {
-    if (!isCordova || isMobile.Windows()) return cb();
+    if (!isCordova || platformInfo.isWP) return cb();
 
     window.cordova.plugins.clipboard.paste(function(value) {
       var fc = profileService.focusedClient;
@@ -216,7 +221,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
             return;
           }
           $scope.list = ab;
-          $timeout(function(){
+          $timeout(function() {
             $scope.$digest();
           });
         });
@@ -606,14 +611,14 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     if (isCordova) {
       window.cordova.plugins.clipboard.copy(addr);
       window.plugins.toast.showShortCenter(gettextCatalog.getString('Copied to clipboard'));
-    } else if (nodeWebkit.isDefined()) {
+    } else if (platformInfo.isNW) {
       nodeWebkit.writeToClipboard(addr);
     }
   };
 
   this.shareAddress = function(addr) {
     if (isCordova) {
-      if (isMobile.Android() || isMobile.Windows()) {
+      if (isAndroid || isWP) {
         window.ignoreMobilePause = true;
       }
       window.plugins.socialsharing.share('bitcoin:' + addr, null, null, null);
@@ -693,7 +698,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
       $scope.shareAddress = function(uri) {
         if (isCordova) {
-          if (isMobile.Android() || isMobile.Windows()) {
+          if (isAndroid || isWP) {
             window.ignoreMobilePause = true;
           }
           window.plugins.socialsharing.share(uri, null, null, null);

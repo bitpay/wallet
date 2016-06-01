@@ -14,10 +14,6 @@ angular.module('copayApp.services').factory('nodeWebkit', function nodeWebkitFac
     }
   };
 
-  root.isDefined = function() {
-    return isNodeWebkit();
-  };
-
   root.readFromClipboard = function() {
     if (!isNodeWebkit()) return;
     var gui = require('nw.gui');

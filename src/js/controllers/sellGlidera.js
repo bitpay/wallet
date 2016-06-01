@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('sellGlideraController',
-  function($rootScope, $scope, $timeout, $log, $modal, configService, profileService, addressService, feeService, glideraService, bwsError, lodash, isChromeApp, animationService, walletService, fingerprintService) {
+  function($rootScope, $scope, $timeout, $log, $modal, configService, profileService, addressService, feeService, glideraService, bwsError, lodash, animationService, walletService, fingerprintService) {
 
     var self = this;
     var config = configService.getSync();
