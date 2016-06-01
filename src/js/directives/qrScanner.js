@@ -17,7 +17,7 @@ angular.module('copayApp.directives')
         if (isWP && result.cancelled) return;
 
         $timeout(function() {
-          var data = isiOS ? result : result.text;
+          var data = isIOS ? result : result.text;
           $scope.onScan({
             data: data
           });
