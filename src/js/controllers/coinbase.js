@@ -1,13 +1,14 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('coinbaseController', 
-  function($rootScope, $scope, $timeout, $modal, profileService, configService, storageService, coinbaseService, isChromeApp, animationService, lodash, nodeWebkit) {
+  function($rootScope, $scope, $timeout, $modal, profileService, configService, storageService, coinbaseService, animationService, lodash, platformInfo) {
 
+    var isNW = platformInfo.isNW;
     window.ignoreMobilePause = true;
     
     this.openAuthenticateWindow = function() {
       var oauthUrl = this.getAuthenticateUrl();
-      if (!nodeWebkit.isDefined()) {
+      if (!isNW) {
         $rootScope.openExternalLink(oauthUrl, '_system');
       } else {
         var self = this;

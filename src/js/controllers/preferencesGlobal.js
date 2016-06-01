@@ -1,8 +1,9 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('preferencesGlobalController',
-  function($scope, $rootScope, $log, configService, uxLanguage, isCordova, isMobile, pushNotificationsService, profileService, feeService) {
+  function($scope, $rootScope, $log, configService, uxLanguage, platformInfo, pushNotificationsService, profileService, feeService) {
 
+    var isCordova = platformInfo.isCordova;
     this.init = function() {
       var config = configService.getSync();
       this.unitName = config.wallet.settings.unitName;
@@ -13,9 +14,9 @@ angular.module('copayApp.controllers').controller('preferencesGlobalController',
       };
       this.feeOpts = feeService.feeOpts;
       this.currentFeeLevel = feeService.getCurrentFeeLevel();
-      this.usePushNotifications = isCordova && !isMobile.Windows();
+      this.usePushNotifications = isCordova && !platformInfo.isWP;
       $scope.PNEnabledByUser = true;
-      $scope.isIOSApp = isMobile.iOS() && isCordova;
+      $scope.isIOSApp = platformInfo.isIOS && isCordova;
       if ($scope.isIOSApp) {
         cordova.plugins.diagnostic.isRemoteNotificationsEnabled(function(isEnabled) {
           $scope.PNEnabledByUser = isEnabled;

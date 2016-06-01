@@ -1,11 +1,16 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('createController',
-  function($scope, $location, $anchorScroll, $rootScope, $timeout, $log, lodash, go, profileService, configService, isCordova, gettext, ledger, trezor, isMobile, isChromeApp, isDevel, derivationPathHelper) {
+  function($scope, $location, $anchorScroll, $rootScope, $timeout, $log, lodash, go, profileService, configService, gettext, ledger, trezor, platformInfo, derivationPathHelper) {
+
+    var isChromeApp = platformInfo.isChromeApp;
+    var isCordova = platformInfo.isCordova;
+    var isDevel = platformInfo.isDevel;
+
 
     var self = this;
     var defaults = configService.getDefaults();
-    this.isWindowsPhoneApp = isMobile.Windows() && isCordova;
+    this.isWindowsPhoneApp = platformInfo.isWP && isCordova;
     $scope.account = 1;
 
     /* For compressed keys, m*73 + n*34 <= 496 */

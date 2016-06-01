@@ -1,8 +1,11 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('copayersController',
-  function($scope, $rootScope, $timeout, $log, $modal, profileService, go, notification, isCordova, gettext, gettextCatalog, animationService) {
+  function($scope, $rootScope, $timeout, $log, $modal, profileService, go, notification, platformInfo, gettext, gettextCatalog, animationService) {
     var self = this;
+    var isCordova = platformInfo.isCordova;
+    var isWP = platformInfo.isWP;
+    var isAndroid = platformInfo.isAndroid;
 
     var delete_msg = gettextCatalog.getString('Are you sure you want to delete this wallet?');
     var accept_msg = gettextCatalog.getString('Accept');
@@ -103,7 +106,7 @@ angular.module('copayApp.controllers').controller('copayersController',
 
     self.shareSecret = function(secret) {
       if (isCordova) {
-        if (isMobile.Android() || isMobile.Windows()) {
+        if (isAndroid || isWP) {
           window.ignoreMobilePause = true;
         }
         var message = gettextCatalog.getString('Join my Copay wallet. Here is the invitation code: {{secret}} You can download Copay for your phone or desktop at https://copay.io', {secret: secret});

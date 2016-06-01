@@ -1,7 +1,8 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('preferencesDeleteWalletController',
-  function($scope, $rootScope, $filter, $timeout, $modal, $log, storageService, notification, profileService, isCordova, go, gettext, gettextCatalog, animationService, applicationService) {
+  function($scope, $rootScope, $filter, $timeout, $modal, $log, storageService, notification, profileService, platformInfo, go, gettext, gettextCatalog, animationService, applicationService) {
+    var isCordova = platformInfo.isCordova;
     this.isCordova = isCordova;
     this.error = null;
     $scope.isDeletingWallet = false;

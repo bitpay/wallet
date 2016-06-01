@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('buyGlideraController', 
-  function($scope, $timeout, $modal, profileService, addressService, glideraService, bwsError, lodash, isChromeApp, animationService, walletService) {
+  function($scope, $timeout, $modal, profileService, addressService, glideraService, bwsError, lodash, animationService, walletService) {
     
     var self = this;
     this.show2faCodeInput = null;

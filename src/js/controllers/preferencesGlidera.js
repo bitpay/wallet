@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('preferencesGlideraController', 
-  function($scope, $modal, $timeout, profileService, applicationService, glideraService, storageService, isChromeApp, animationService) {
+  function($scope, $modal, $timeout, profileService, applicationService, glideraService, storageService, animationService) {
 
     this.getEmail = function(token) {
       var self = this;
