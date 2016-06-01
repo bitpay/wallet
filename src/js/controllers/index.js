@@ -742,7 +742,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       $log.info('CSV generation not available in mobile');
       return;
     }
-    var isNode = isNW;
     var fc = profileService.focusedClient;
     var c = fc.credentials;
     if (!fc.isComplete()) return;

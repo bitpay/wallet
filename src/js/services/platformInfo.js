@@ -23,24 +23,16 @@ angular.module('copayApp.services').factory('platformInfo', function($window) {
 
   // Detect mobile devices
   var ret = {
-    isAndroid: function() {
-      return !!ua.match(/Android/i);
-    },
-    isIOS: function() {
-      return /iPad|iPhone|iPod/.test(ua) && !$window.MSStream;
-    },
-    isWP: function() {
-      return !!ua.match(/IEMobile/i);
-    },
-    isSafari: function() {
-      return Object.prototype.toString.call(window.HTMLElement).indexOf('Constructor') > 0;
-    }
+    isAndroid: !!ua.match(/Android/i),
+    isIOS: /iPad|iPhone|iPod/.test(ua) && !$window.MSStream,
+    isWP: !!ua.match(/IEMobile/i),
+    isSafari: Object.prototype.toString.call(window.HTMLElement).indexOf('Constructor') > 0,
+    ua: ua,
+    isCordova: !!$window.cordova,
+    isNW: isNodeWebkit(),
   };
 
-  ret.ua = ua;
-  ret.isMobile = ret.isAndroid() || ret.isIOS() || ret.isWP();
-  ret.isCordova = !!$window.cordova;
-  ret.isNW = isNodeWebkit();
+  ret.isMobile = ret.isAndroid || ret.isIOS || ret.isWP;
   ret.isChromeApp = $window.chrome && chrome.runtime && chrome.runtime.id && !ret.isNW;
   ret.isDevel = !ret.isMobile && !ret.isChromeApp && !ret.isNW;
 

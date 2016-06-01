@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('walletHomeController', function($scope, $rootScope, $interval, $timeout, $filter, $modal, $log, notification, txStatus, profileService, lodash, configService, rateService, storageService, bitcore, gettext, gettextCatalog, platformInfo, addressService, ledger, bwsError, confirmDialog, txFormatService, animationService, addressbookService, go, feeService, walletService, fingerprintService) {
+angular.module('copayApp.controllers').controller('walletHomeController', function($scope, $rootScope, $interval, $timeout, $filter, $modal, $log, notification, txStatus, profileService, lodash, configService, rateService, storageService, bitcore, gettext, gettextCatalog, platformInfo, addressService, ledger, bwsError, confirmDialog, txFormatService, animationService, addressbookService, go, feeService, walletService, fingerprintService, nodeWebkit) {
 
   var isCordova = platformInfo.isCordova;
   var isWP = platformInfo.isWP;
