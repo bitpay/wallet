@@ -7,7 +7,8 @@ angular.module('copayApp.services').factory('feeService', function($log, bwcServ
   root.feeOpts = {
     priority: gettextCatalog.getString('Priority'),
     normal: gettextCatalog.getString('Normal'),
-    economy: gettextCatalog.getString('Economy')
+    economy: gettextCatalog.getString('Economy'),
+    superEconomy: gettextCatalog.getString('Super Economy')
   };
 
   root.getCurrentFeeLevel = function() {
@@ -47,7 +48,7 @@ angular.module('copayApp.services').factory('feeService', function($log, bwcServ
       walletClient.getFeeLevels('testnet', function(errTestnet, levelsTestnet) {
         if (errLivenet || errTestnet) $log.debug('Could not get dynamic fee');
         else {
-          for (var i = 0; i < 3; i++) {
+          for (var i = 0; i < 4; i++) {
             levelsLivenet[i]['feePerKBUnit'] = profileService.formatAmount(levelsLivenet[i].feePerKB) + ' ' + unitName;
             levelsTestnet[i]['feePerKBUnit'] = profileService.formatAmount(levelsTestnet[i].feePerKB) + ' ' + unitName;
           }
