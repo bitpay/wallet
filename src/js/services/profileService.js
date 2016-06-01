@@ -78,10 +78,12 @@ angular.module('copayApp.services')
 
       root.setBaseURL(credentials.walletId);
 
+      $log.debug('Importing wallet:' + credentials.walletId);
       var client = bwcService.getClient(JSON.stringify(credentials));
       root.walletClients[credentials.walletId] = client;
 
       if (client.incorrectDerivation) {
+        $log.warn('Key Derivation failed for wallet:' + credentials.walletId);
         storageService.clearLastAddress(credentials.walletId, function() {});
       }
 
