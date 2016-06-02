@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('customAmountController', function($scope, $timeout, $filter, isCordova, isMobile, rateService) {
+angular.module('copayApp.controllers').controller('customAmountController', function($scope, $timeout, $filter, platformInfo, rateService) {
   var self = $scope.self;
 
   $scope.unitName = self.unitName;
@@ -12,7 +12,7 @@ angular.module('copayApp.controllers').controller('customAmountController', func
   $scope.unitDecimals = self.unitDecimals;
   var satToUnit = 1 / self.unitToSatoshi;
   $scope.showAlternative = false;
-  $scope.isCordova = isCordova;
+  $scope.isCordova = platformInfo.isCordova;
 
   Object.defineProperty($scope,
     "_customAlternative", {
@@ -68,8 +68,8 @@ angular.module('copayApp.controllers').controller('customAmountController', func
   };
 
   $scope.shareAddress = function(uri) {
-    if (isCordova) {
-      if (isMobile.Android() || isMobile.Windows()) {
+    if (platformInfo.isCordova) {
+      if (platformInfo.isAndroid || platformInfo.isWP) {
         window.ignoreMobilePause = true;
       }
       window.plugins.socialsharing.share(uri, null, null, null);

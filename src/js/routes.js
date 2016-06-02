@@ -20,12 +20,12 @@ angular
     $urlRouterProvider.otherwise('/');
 
     $logProvider.debugEnabled(true);
-    $provide.decorator('$log', ['$delegate', 'isDevel',
-      function($delegate, isDevel) {
+    $provide.decorator('$log', ['$delegate', 'platformInfo',
+      function($delegate, platformInfo) {
         var historicLog = historicLogProvider.$get();
 
         ['debug', 'info', 'warn', 'error', 'log'].forEach(function(level) {
-          if (isDevel && level == 'error') return;
+          if (platformInfo.isDevel && level == 'error') return;
 
           var orig = $delegate[level];
           $delegate[level] = function() {

@@ -1,12 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('disclaimerController',
-<<<<<<< e68d1d87ec5d6c817929721a32f43cefc88aa290
-  function($scope, $timeout, $log, profileService, applicationService, gettextCatalog, uxLanguage, go) {
-=======
-  function($scope, $timeout, $log, $ionicSideMenuDelegate, profileService, isCordova, applicationService, gettextCatalog, uxLanguage, go) {
-
->>>>>>> do not allow drag side bar in disclaimer screen
+  function($scope, $timeout, $log, $ionicSideMenuDelegate, profileService, applicationService, gettextCatalog, uxLanguage, go) {
     var self = this;
     self.tries = 0;
     $scope.creatingProfile = true;
