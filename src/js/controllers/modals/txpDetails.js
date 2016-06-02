@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('txpDetailsController', function($scope, $rootScope, $timeout, $interval, txStatus, $ionicScrollDelegate, txFormatService, fingerprintService, bwsError, isChromeApp, gettextCatalog, lodash, profileService, walletService) {
+angular.module('copayApp.controllers').controller('txpDetailsController', function($scope, $rootScope, $timeout, $interval, platformInfo, txStatus, $ionicScrollDelegate, txFormatService, fingerprintService, bwsError, gettextCatalog, lodash, profileService, walletService) {
   var self = $scope.self;
   var tx = $scope.tx;
   var copayers = $scope.copayers;
@@ -131,7 +131,7 @@ angular.module('copayApp.controllers').controller('txpDetailsController', functi
   };
 
   function checkPaypro() {
-    if (tx.payProUrl && !isChromeApp) {
+    if (tx.payProUrl && !platformInfo.isChromeApp) {
       fc.fetchPayPro({
         payProUrl: tx.payProUrl,
       }, function(err, paypro) {
