@@ -19,17 +19,17 @@
     </section>
   </nav>
 
-  <div class="content preferences text-center">
-    <div class="box-notification" ng-show="wordsC.error">
-      <span class="text-warning">
-        {{wordsC.error|translate}}
-      </span>
-    </div>
+  <div class="box-notification" ng-show="wordsC.error">
+    <span class="text-warning" translate>
+      {{wordsC.error}}
+    </span>
+  </div>
 
     <!--
     ## STEP 1
     -->
 
+  <div class="content preferences text-center">
     <div ng-show="wordsC.step == 1">
       <div ng-show="wordsC.mnemonicWords || (wordsC.credentialsEncrypted && !wordsC.deleted)" class="row">
         <h5 class="text-center" translate>Write your wallet recovery phrase</h5>
@@ -97,7 +97,7 @@
       <div class="button-box">
         <button
           ng-show="!wordsC.deleted"
-          ng-disabled="wordsC.credentialsEncrypted"
+          ng-disabled="wordsC.credentialsEncrypted || wordsC.error"
           class="round expand m0"
           ng-style="{'background-color':index.backgroundColor}"
           ng-click="wordsC.goToStep(2);"

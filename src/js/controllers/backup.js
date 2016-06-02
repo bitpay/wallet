@@ -16,14 +16,11 @@ angular.module('copayApp.controllers').controller('backupController',
       });
     };
 
-    if (fc.credentials && !fc.credentials.mnemonicEncrypted && !fc.credentials.mnemonic)
-      self.deleted = true;
-
-    if (fc.isPrivKeyEncrypted() && !self.deleted) {
+    if (fc.isPrivKeyEncrypted() && !isDeletedSeed()) {
       self.credentialsEncrypted = true;
       passwordRequest();
     } else {
-      if (!self.deleted)
+      if (!isDeletedSeed())
         initWords();
     }
 
@@ -34,10 +31,16 @@ angular.module('copayApp.controllers').controller('backupController',
       self.shuffledMnemonicWords = shuffledWords(self.mnemonicWords);
       self.customWords = [];
       self.step = 1;
-      self.deleted = false;
+      self.deleted = isDeletedSeed();
       self.credentialsEncrypted = false;
       self.selectComplete = false;
       self.backupError = false;
+    };
+
+    function isDeletedSeed() {
+      if (lodash.isEmpty(fc.credentials.mnemonic) && lodash.isEmpty(fc.credentials.mnemonicEncrypted))
+        return true;
+      return false;
     };
 
     self.goToStep = function(n) {
