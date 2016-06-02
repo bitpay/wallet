@@ -85,18 +85,19 @@ mocks.init = function(fixtures, controllerName, opts, done) {
   module('bwcModule', function($provide) {
     $provide.decorator('bwcService', function($delegate, lodash) {
       var getClient = $delegate.getClient;
-      var config = $delegate.config;
 
       // Fix Encryption IVs
       var utils = $delegate.getUtils();
       utils.SJCL.iv = 'BZQVWAP6d1e4G8Fq1rQKbA==';
 
-      $delegate.getClient = function(walletData) {
+      $delegate.getClient = function(walletData, opts) {
 
         var bwc = new $delegate.Client();
         if (walletData)
           bwc.import(walletData, {
-            baseUrl: config.baseUrl
+            baseUrl: opts.baseurl || 'https://bws.bitpay.com/bws/api',
+            verbose: opts.verbose,
+            transports: ['polling'],
           });
 
         function createHash(method, url, args) {
