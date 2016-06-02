@@ -157,7 +157,7 @@
             (getShortNetworkName() == 'test' ? 'test-' : '') + 'insight.bitpay.com/tx/' + btx.txid)">
             <span class="text-gray" translate>See it on the blockchain</span>
           </button>
-          <button class="button outline round dark-gray tiny" ng-click="showCommentPopup()">
+          <button class="button outline round dark-gray tiny" ng-click="showCommentPopup(comment)">
             <span class="text-gray" translate ng-show="!comment">Add a comment <i class="ion-ios-plus-outline"></i></span>
             <span class="text-gray" translate ng-show="comment">Edit comment <i class="ion-ios-compose-outline"></i></span>
           </button>
