@@ -757,6 +757,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
       var confirmedTxs = self.removeAndMarkSoftConfirmedTx(txsFromLocal);
       var endingTxid = confirmedTxs[0] ? confirmedTxs[0].txid : null;
+      var endingTs = confirmedTxs[0] ? confirmedTxs[0].ts : null;
+console.log('[index.js.760:endingTs:]',endingTs); //TODO
 
 
       // First update

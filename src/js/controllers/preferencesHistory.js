@@ -22,24 +22,8 @@ angular.module('copayApp.controllers').controller('preferencesHistory',
         return dateObj.toJSON();
       }
 
-      function formatString(str) {
-        if (!str) return '';
-
-        if (str.indexOf('"') !== -1) {
-          //replace all
-          str = str.replace(new RegExp('"', 'g'), '\'');
-        }
-
-        //escaping commas
-        str = '\"' + str + '\"';
-        console.log('[index.js.720:str:]', str); //TODO
-
-        return str;
-      }
-
       var step = 6;
       var unique = {};
-
       function getHistory(cb) {
         storageService.getTxHistory(c.walletId, function(err, txs) {
           if (err) return cb(err);
@@ -52,7 +36,6 @@ angular.module('copayApp.controllers').controller('preferencesHistory',
           }
 
           allTxs.push(txsFromLocal);
-console.log('[preferencesHistory.js.56:allTxs:]',allTxs); //TODO
           return cb(null, lodash.flatten(allTxs));
         });
       }
@@ -111,7 +94,7 @@ console.log('[preferencesHistory.js.77]', txs); //TODO
 
           self.csvContent.push({
             'Date': formatDate(it.time * 1000),
-            'Destination': formatString(it.addressTo),
+            'Destination': it.addressTo || '',
             'Description': _note,
             'Amount': _amount,
             'Currency': 'BTC',
