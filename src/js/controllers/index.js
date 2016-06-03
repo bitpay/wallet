@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, $ionicScrollDelegate, latestReleaseService, bwcService, pushNotificationsService, lodash, go, profileService, configService, rateService, storageService, addressService, gettext, gettextCatalog, amMoment, addonManager, bwsError, txFormatService, uxLanguage, glideraService, coinbaseService, platformInfo, addressbookService, walletService) {
+angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, $ionicScrollDelegate, $ionicPopup, latestReleaseService, bwcService, pushNotificationsService, lodash, go, profileService, configService, rateService, storageService, addressService, gettext, gettextCatalog, amMoment, addonManager, bwsError, txFormatService, uxLanguage, glideraService, coinbaseService, platformInfo, addressbookService, walletService) {
   var self = this;
   var SOFT_CONFIRMATION_LIMIT = 12;
   var errors = bwcService.getErrors();
@@ -1877,16 +1877,54 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   });
 
   $rootScope.$on('Local/NeedsPassword', function(event, isSetup, cb) {
-    self.askPassword = {
-      isSetup: isSetup,
-      callback: function(err, pass) {
-        self.askPassword = null;
-        return cb(err, pass);
-      },
+
+    function openPasswordPopup(isSetup, cb) {
+      $scope.data = {};
+      $scope.data.password = null;
+      $scope.isSetup = isSetup;
+      $scope.isVerification = false;
+      $scope.loading = false;
+      var pass = null;
+
+      self.passwordPopup = $ionicPopup.show({
+        templateUrl: 'views/includes/password.html',
+        scope: $scope,
+      });
+
+      $scope.cancel = function() {
+        return cb('No spending password given');
+      };
+
+      $scope.set = function() {
+        $scope.loading = true;
+        $scope.error = null;
+
+        $timeout(function() {
+          if (isSetup && !$scope.isVerification) {
+            $scope.loading = false;
+            $scope.isVerification = true;
+            pass = $scope.data.password;
+            $scope.data.password = null;
+            return;
+          }
+          if (isSetup && pass != $scope.data.password) {
+            $scope.loading = false;
+            $scope.error = gettext('Spending Passwords do not match');
+            $scope.isVerification = false;
+            $scope.data.password = null;
+            pass = null;
+            return;
+          }
+          return cb(null, $scope.data.password);
+        }, 100);
+      };
     };
-    $timeout(function() {
-      $rootScope.$apply();
+
+    openPasswordPopup(isSetup, function(err, pass) {
+      self.passwordPopup.close();
+      return cb(err, pass);
     });
+
   });
 
   lodash.each(['NewCopayer', 'CopayerUpdated'], function(eventName) {

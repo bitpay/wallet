@@ -34,7 +34,6 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
 
     var commentPopup = $ionicPopup.show({
       templateUrl: "views/includes/note.html",
-      title: !$scope.comment ? gettextCatalog.getString('Enter a new comment') : gettextCatalog.getString('Edit comment'),
       scope: $scope,
     });
 
