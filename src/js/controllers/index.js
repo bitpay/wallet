@@ -765,7 +765,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         var satToBtc = 1 / 100000000;
         self.csvContent = [];
         self.csvFilename = 'Copay-' + (self.alias || self.walletName) + '.csv';
-        self.csvHeader = ['Date', 'Destination', 'Note', 'Amount', 'Currency', 'Txid', 'Creator', 'Copayers'];
+        self.csvHeader = ['Date', 'Destination', 'Description', 'Amount', 'Currency', 'Txid', 'Creator', 'Copayers'];
 
         var _amount, _note, _copayers, _creator;
         data.forEach(function(it, index) {
@@ -794,7 +794,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
           self.csvContent.push({
             'Date': formatDate(it.time * 1000),
             'Destination': formatString(it.addressTo),
-            'Note': _note,
+            'Description': _note,
             'Amount': _amount,
             'Currency': 'BTC',
             'Txid': it.txid,
@@ -807,7 +807,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
             self.csvContent.push({
               'Date': formatDate(it.time * 1000),
               'Destination': 'Bitcoin Network Fees',
-              'Note': '',
+              'Description': '',
               'Amount': '-' + _fee,
               'Currency': 'BTC',
               'Txid': '',
