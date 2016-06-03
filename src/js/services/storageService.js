@@ -118,6 +118,8 @@ angular.module('copayApp.services')
       });
     };
 
+    root.storeProfileThrottled =  lodash.throttle(root.storeProfile, 5000);
+
     root.getProfile = function(cb) {
       storage.get('profile', function(err, str) {
         if (err || !str)

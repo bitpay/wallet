@@ -62,29 +62,34 @@ angular.module('copayApp.services')
       });
     };
 
-    root.setBaseURL = function(walletId) {
-      var config = configService.getSync();
-      var defaults = configService.getDefaults();
-
-      bwcService.setBaseUrl((config.bwsFor && config.bwsFor[walletId]) || defaults.bws.url);
-      bwcService.setTransports(['polling']);
-    }
-
     root.setWalletClient = function(credentials) {
       if (root.walletClients[credentials.walletId] &&
         root.walletClients[credentials.walletId].started) {
         return;
       }
 
-      root.setBaseURL(credentials.walletId);
+
+      var getBaseURL = function(walletId) {
+        var config = configService.getSync();
+        var defaults = configService.getDefaults();
+
+        return ((config.bwsFor && config.bwsFor[walletId]) || defaults.bws.url);
+      };
 
       $log.debug('Importing wallet:' + credentials.walletId);
-      var client = bwcService.getClient(JSON.stringify(credentials));
+      var skipKeyValidation = root.profile.checked[credentials.walletId] == platformInfo.ua;
+      var client = bwcService.getClient(JSON.stringify(credentials), {
+        baseurl: getBaseURL(credentials.walletId),
+        skipKeyValidation: skipKeyValidation,
+      });
       root.walletClients[credentials.walletId] = client;
 
       if (client.incorrectDerivation) {
         $log.warn('Key Derivation failed for wallet:' + credentials.walletId);
         storageService.clearLastAddress(credentials.walletId, function() {});
+      } else if (!skipKeyValidation) {
+        root.profile.checked[credentials.walletId] = platformInfo.ua;
+        storageService.storeProfileThrottled(root.profile, function() {});
       }
 
       client.removeAllListeners();
@@ -219,10 +224,7 @@ angular.module('copayApp.services')
 
     root._seedWallet = function(opts, cb) {
       opts = opts || {};
-      if (opts.bwsurl)
-        bwcService.setBaseUrl(opts.bwsurl);
-
-      var walletClient = bwcService.getClient();
+      var walletClient = bwcService.getClient(null, opts);
       var network = opts.networkName || 'livenet';
 
 
@@ -331,8 +333,8 @@ angular.module('copayApp.services')
 
         // check if exist
         if (lodash.find(root.profile.credentials, {
-            'walletId': walletData.walletId
-          })) {
+          'walletId': walletData.walletId
+        })) {
           return cb(gettext('Cannot join the same wallet more that once'));
         }
       } catch (ex) {
@@ -471,10 +473,8 @@ angular.module('copayApp.services')
     };
 
     root.importWallet = function(str, opts, cb) {
-      if (opts.bwsurl)
-        bwcService.setBaseUrl(opts.bwsurl);
 
-      var walletClient = bwcService.getClient();
+      var walletClient = bwcService.getClient(null, opts);
 
       $log.debug('Importing Wallet:', opts);
       try {
@@ -501,10 +501,7 @@ angular.module('copayApp.services')
     };
 
     root.importExtendedPrivateKey = function(xPrivKey, opts, cb) {
-      if (opts.bwsurl)
-        bwcService.setBaseUrl(opts.bwsurl);
-
-      var walletClient = bwcService.getClient();
+      var walletClient = bwcService.getClient(null, opts);
       $log.debug('Importing Wallet xPrivKey');
 
       walletClient.importFromExtendedPrivateKey(xPrivKey, opts, function(err) {
@@ -523,10 +520,7 @@ angular.module('copayApp.services')
     };
 
     root.importMnemonic = function(words, opts, cb) {
-      if (opts.bwsurl)
-        bwcService.setBaseUrl(opts.bwsurl);
-
-      var walletClient = bwcService.getClient();
+      var walletClient = bwcService.getClient(null, opts);
 
       $log.debug('Importing Wallet Mnemonic');
 
@@ -544,10 +538,7 @@ angular.module('copayApp.services')
     };
 
     root.importExtendedPublicKey = function(opts, cb) {
-      if (opts.bwsurl)
-        bwcService.setBaseUrl(opts.bwsurl);
-
-      var walletClient = bwcService.getClient();
+      var walletClient = bwcService.getClient(null, opts);
       $log.debug('Importing Wallet XPubKey');
 
       walletClient.importFromExtendedPublicKey(opts.extendedPublicKey, opts.externalSource, opts.entropySource, {
@@ -572,8 +563,6 @@ angular.module('copayApp.services')
       var defaults = configService.getDefaults();
 
       configService.get(function(err) {
-        bwcService.setBaseUrl(defaults.bws.url);
-        bwcService.setTransports(['polling']);
         root._createNewProfile(opts, function(err, p) {
           if (err) return cb(err);
 
@@ -589,7 +578,7 @@ angular.module('copayApp.services')
 
     root.setDisclaimerAccepted = function(cb) {
       root.profile.disclaimerAccepted = true;
-      storageService.storeProfile(root.profile, function(err) {
+      storageService.storeProfileThrottled(root.profile, function(err) {
         return cb(err);
       });
     };
@@ -641,7 +630,7 @@ angular.module('copayApp.services')
       newCredentials.push(JSON.parse(fc.export()));
       root.profile.credentials = newCredentials;
 
-      storageService.storeProfile(root.profile, cb);
+      storageService.storeProfileThrottled(root.profile, cb);
     };
 
 
