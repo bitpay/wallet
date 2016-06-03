@@ -125,12 +125,12 @@
           </span>
         </li>
 
-        <li class="p10 oh" ng-show="comment">
+        <li class="p10 oh" ng-show="btx.note">
           <span class="text-gray" translate>Comment</span>
-          <span class="right enable_text_select">{{comment}}</span><br>
+          <span class="right enable_text_select">{{btx.note.body}}</span><br>
           <span class="right text-italic text-gray size-12 m10t">
-            <span>{{editedBy}}</span>
-            <time>{{createdOn * 1000 | amTimeAgo}}</time></span>
+            <span>{{btx.note.editedByName}}</span>
+            <time>{{btx.note.editedOn * 1000 | amTimeAgo}}</time></span>
           </span>
         </li>
       </ul>
