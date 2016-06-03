@@ -13,20 +13,21 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
   $scope.copayerId = fc.credentials.copayerId;
   $scope.isShared = fc.credentials.n > 1;
 
-  if ($scope.btx.txid) {
-    fc.getTxNote({
-      txid: $scope.btx.txid
-    }, function(err, note) {
-      if (err || !note) {
-        $log.debug(gettextCatalog.getString('Could not fetch transaction note'));
-        return;
-      }
-      $scope.comment = note.body;
-      $scope.editedBy = gettextCatalog.getString('Edited by') + ' ' + note.editedByName;
-      $scope.createdOn = note.createdOn;
-    });
-  }
-
+console.log('[txDetails.js.16:btx:]',$scope.btx); //TODO
+  // if ($scope.btx.txid) {
+  //   fc.getTxNote({
+  //     txid: $scope.btx.txid
+  //   }, function(err, note) {
+  //     if (err || !note) {
+  //       $log.debug(gettextCatalog.getString('Could not fetch transaction note'));
+  //       return;
+  //     }
+  //     $scope.comment = note.body;
+  //     $scope.editedBy = gettextCatalog.getString('Edited by') + ' ' + note.editedByName;
+  //     $scope.createdOn = note.createdOn;
+  //   });
+  // }
+  //
   $scope.showCommentPopup = function() {
     $scope.data = {
       comment: ''
@@ -45,11 +46,16 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
       fc.editTxNote({
         txid: $scope.btx.txid,
         body: $scope.data.comment
-      }, function() {});
-      $scope.comment = $scope.data.comment;
-      $scope.editedBy = gettextCatalog.getString('Edited by') + ' ' + fc.credentials.copayerName;
-      $scope.createdOn = Math.floor(Date.now() / 1000);
-      commentPopup.close();
+      }, function(err) {
+        if (err) {
+          $log.debug('Could not save tx comment');
+          return;
+        }
+        $scope.comment = $scope.data.comment;
+        $scope.editedBy = gettextCatalog.getString('Edited by') + ' ' + fc.credentials.copayerName;
+        $scope.createdOn = Math.floor(Date.now() / 1000);
+        commentPopup.close();
+      });
     };
   };
 
