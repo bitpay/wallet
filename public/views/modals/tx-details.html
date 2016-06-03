@@ -28,8 +28,6 @@
           </div>
 
           <div class="size-36" ng-click="copyToClipboard(btx.amountStr)">
-            <span ng-if="btx.action == 'received'">+</span>
-            <span ng-if="btx.action == 'sent'">-</span>
             <span class="enable_text_select">{{btx.amountStr}}</span>
           </div>
           <div class="alternative-amount" ng-click="showRate=!showRate" ng-init="showRate = false">
@@ -100,7 +98,7 @@
 
         <li class="line-b p10 oh" ng-if="btx.message && btx.action != 'received'"
           ng-click="copyToClipboard(btx.message)">
-          <span class="text-gray" translate>Note</span>
+          <span class="text-gray" translate>Description</span>
           <span class="right enable_text_select">{{btx.message}}</span>
         </li>
 
