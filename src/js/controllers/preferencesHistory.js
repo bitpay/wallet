@@ -1,15 +1,13 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('preferencesHistory',
-  function($scope, $log, $timeout, storageService, go, profileService, platformInfo, lodash) {
+  function($scope, $log, $timeout, storageService, go, profileService, lodash) {
     var fc = profileService.focusedClient;
     var c = fc.credentials;
-    var isCordova = platformInfo.isCordova;
     this.csvReady = false;
 
 
-    this.csvHistory = function() {
-      if (isCordova) return;
+    this.csvHistory = function(cb) {
 
       function formatDate(date) {
         var dateObj = new Date(date);
@@ -25,7 +23,6 @@ angular.module('copayApp.controllers').controller('preferencesHistory',
       }
 
       function formatString(str) {
-        console.log('[index.js.710:str:]', str); //TODO
         if (!str) return '';
 
         if (str.indexOf('"') !== -1) {
@@ -55,85 +52,96 @@ angular.module('copayApp.controllers').controller('preferencesHistory',
           }
 
           allTxs.push(txsFromLocal);
+console.log('[preferencesHistory.js.56:allTxs:]',allTxs); //TODO
           return cb(null, lodash.flatten(allTxs));
         });
       }
 
       var fc = profileService.focusedClient;
       var c = fc.credentials;
-      if (!fc.isComplete()) return;
+
+      if (!fc.isComplete())
+        return;
+
       var self = this;
       var allTxs = [];
 
+      console.log('[preferencesHistory.js.68]'); //TODO
       $log.debug('Generating CSV from History');
-
       getHistory(function(err, txs) {
+console.log('[preferencesHistory.js.71:txs:]',txs); //TODO
         if (err || !txs || !txs[0]) {
           $log.warn('Failed to generate CSV:', err);
-          return;
-        } else {
-          $log.debug('Wallet Transaction History Length:', txs.length);
-
-          self.satToUnit = 1 / self.unitToSatoshi;
-          var data = txs;
-          var satToBtc = 1 / 100000000;
-          self.csvContent = [];
-          self.csvFilename = 'Copay-' + (self.alias || self.walletName) + '.csv';
-          self.csvHeader = ['Date', 'Destination', 'Description', 'Amount', 'Currency', 'Txid', 'Creator', 'Copayers'];
-
-          var _amount, _note, _copayers, _creator, _comment;
-          data.forEach(function(it, index) {
-            var amount = it.amount;
-
-            if (it.action == 'moved')
-              amount = 0;
-
-            _copayers = '';
-            _creator = '';
-
-            if (it.actions && it.actions.length > 1) {
-              for (var i = 0; i < it.actions.length; i++) {
-                _copayers += it.actions[i].copayerName + ':' + it.actions[i].type + ' - ';
-              }
-              _creator = (it.creatorName && it.creatorName != 'undefined') ? it.creatorName : '';
-            }
-            _amount = (it.action == 'sent' ? '-' : '') + (amount * satToBtc).toFixed(8);
-            _note = it.message || '';
-            _comment = it.note ? it.note.body : '';
-
-            if (it.action == 'moved')
-              _note += ' Moved:' + (it.amount * satToBtc).toFixed(8)
-
-            self.csvContent.push({
-              'Date': formatDate(it.time * 1000),
-              'Destination': formatString(it.addressTo),
-              'Description': _note,
-              'Amount': _amount,
-              'Currency': 'BTC',
-              'Txid': it.txid,
-              'Creator': _creator,
-              'Copayers': _copayers,
-              'Comment': _comment
-            });
-
-            if (it.fees && (it.action == 'moved' || it.action == 'sent')) {
-              var _fee = (it.fees * satToBtc).toFixed(8)
-              self.csvContent.push({
-                'Date': formatDate(it.time * 1000),
-                'Destination': 'Bitcoin Network Fees',
-                'Description': '',
-                'Amount': '-' + _fee,
-                'Currency': 'BTC',
-                'Txid': '',
-                'Creator': '',
-                'Copayers': ''
-              });
-            }
-          });
-
-          self.csvReady = true;
+          if (cb) return cb(err);
           return;
         }
+
+console.log('[preferencesHistory.js.77]', txs); //TODO
+        $log.debug('Wallet Transaction History Length:', txs.length);
+
+        self.satToUnit = 1 / self.unitToSatoshi;
+        var data = txs;
+        var satToBtc = 1 / 100000000;
+        self.csvContent = [];
+        self.csvFilename = 'Copay-' + (self.alias || self.walletName) + '.csv';
+        self.csvHeader = ['Date', 'Destination', 'Description', 'Amount', 'Currency', 'Txid', 'Creator', 'Copayers'];
+
+        var _amount, _note, _copayers, _creator, _comment;
+        data.forEach(function(it, index) {
+          var amount = it.amount;
+
+          if (it.action == 'moved')
+            amount = 0;
+
+          _copayers = '';
+          _creator = '';
+
+          if (it.actions && it.actions.length > 1) {
+            for (var i = 0; i < it.actions.length; i++) {
+              _copayers += it.actions[i].copayerName + ':' + it.actions[i].type + ' - ';
+            }
+            _creator = (it.creatorName && it.creatorName != 'undefined') ? it.creatorName : '';
+          }
+          _amount = (it.action == 'sent' ? '-' : '') + (amount * satToBtc).toFixed(8);
+          _note = it.message || '';
+          _comment = it.note ? it.note.body : '';
+
+          if (it.action == 'moved')
+            _note += ' Moved:' + (it.amount * satToBtc).toFixed(8)
+
+          self.csvContent.push({
+            'Date': formatDate(it.time * 1000),
+            'Destination': formatString(it.addressTo),
+            'Description': _note,
+            'Amount': _amount,
+            'Currency': 'BTC',
+            'Txid': it.txid,
+            'Creator': _creator,
+            'Copayers': _copayers,
+            'Comment': _comment
+          });
+
+          if (it.fees && (it.action == 'moved' || it.action == 'sent')) {
+            var _fee = (it.fees * satToBtc).toFixed(8)
+            self.csvContent.push({
+              'Date': formatDate(it.time * 1000),
+              'Destination': 'Bitcoin Network Fees',
+              'Description': '',
+              'Amount': '-' + _fee,
+              'Currency': 'BTC',
+              'Txid': '',
+              'Creator': '',
+              'Copayers': ''
+            });
+          }
+        });
+
+        console.log('[preferencesHistory.js.131]'); //TODO
+        self.csvReady = true;
+        if (cb)
+          return cb();
+        return;
+
       });
     };
 

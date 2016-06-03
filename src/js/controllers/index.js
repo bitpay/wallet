@@ -590,6 +590,11 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         self.hasUnsafeConfirmed = true;
       }
 
+      if (tx.note) {
+        delete tx.note.encryptedEditedByName;
+        delete tx.note.encryptedBody;
+      }
+
       if (!txHistoryUnique[tx.txid]) {
         ret.push(tx);
         txHistoryUnique[tx.txid] = true;
