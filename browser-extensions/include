@@ -1,6 +1,7 @@
-./index.html 
+./index.html
 ./css/*.css
 ./font/*
+./fonts/*
 ./icons/*
 ./img/*
 ./img/**/*
