@@ -28,6 +28,10 @@
 	width: 300px;
 }
 
+.popup-head {
+	display: none;
+}
+
 .bct {
  	background-color: transparent !important;
 	margin-top: -25px;
