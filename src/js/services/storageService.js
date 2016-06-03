@@ -113,7 +113,6 @@ angular.module('copayApp.services')
     };
 
     root.storeProfile = function(profile, cb) {
-console.log('[storageService.js.115:storeProfile:]',profile); //TODO
       encryptOnMobile(profile.toObj(), function(err, x) {
         storage.set('profile', x, cb);
       });

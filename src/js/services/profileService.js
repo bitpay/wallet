@@ -62,23 +62,24 @@ angular.module('copayApp.services')
       });
     };
 
-    root._getBaseURL = function(walletId) {
-      var config = configService.getSync();
-      var defaults = configService.getDefaults();
-
-      return ((config.bwsFor && config.bwsFor[walletId]) || defaults.bws.url);
-    }
-
     root.setWalletClient = function(credentials) {
       if (root.walletClients[credentials.walletId] &&
         root.walletClients[credentials.walletId].started) {
         return;
       }
 
+
+      var getBaseURL = function(walletId) {
+        var config = configService.getSync();
+        var defaults = configService.getDefaults();
+
+        return ((config.bwsFor && config.bwsFor[walletId]) || defaults.bws.url);
+      };
+
       $log.debug('Importing wallet:' + credentials.walletId);
       var skipKeyValidation = root.profile.checked[credentials.walletId] == platformInfo.ua;
       var client = bwcService.getClient(JSON.stringify(credentials), {
-        baseurl: root._getBaseURL(credentials.walletId),
+        baseurl: getBaseURL(credentials.walletId),
         skipKeyValidation: skipKeyValidation,
       });
       root.walletClients[credentials.walletId] = client;
