@@ -105,7 +105,7 @@ mocks.init = function(fixtures, controllerName, opts, done) {
           var headers = JSON.stringify(bwc._getHeaders(method, url, args));
 
           // Fixes BWC version... TODO
-          headers=headers.replace(/bwc-\d\.\d\.\d/,'bwc-2.4.0')
+          headers = headers.replace(/bwc-\d\.\d\.\d/, 'bwc-2.4.0')
           var x = method + url + JSON.stringify(args) + headers;
           var sjcl = $delegate.getSJCL();
           return sjcl.codec.hex.fromBits(sjcl.hash.sha256.hash(x));
@@ -163,7 +163,7 @@ mocks.init = function(fixtures, controllerName, opts, done) {
   });
   module('copayApp.controllers');
 
-  inject(function($rootScope, $controller, $injector, _configService_, _profileService_, _storageService_) {
+  inject(function($rootScope, $controller, $injector, lodash, _configService_, _profileService_, _storageService_) {
     scope = $rootScope.$new();
     storageService = _storageService_;
 
@@ -197,6 +197,13 @@ mocks.init = function(fixtures, controllerName, opts, done) {
 
       if (opts.initController)
         startController();
+
+
+      if (opts.loadStorage) {
+        lodash.each(opts.loadStorage, function(v, k) {
+          localStorage.setItem(k, v);
+        });
+      }
 
       if (opts.loadProfile) {
 
