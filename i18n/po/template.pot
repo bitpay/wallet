@@ -770,6 +770,10 @@ msgid "Hardware wallet"
 msgstr ""
 
 #: public/views/import.html
+msgid "Hardware Wallet"
+msgstr ""
+
+#: public/views/import.html
 msgid "Have a Backup from Copay v0.9?"
 msgstr ""
 
@@ -1570,6 +1574,10 @@ msgstr ""
 #: src/js/controllers/import.js
 #: src/js/controllers/preferencesDelete.js
 msgid "Success"
+msgstr ""
+
+#: src/js/services/feeService.js
+msgid "Super Economy"
 msgstr ""
 
 #: public/views/preferencesAdvanced.html
