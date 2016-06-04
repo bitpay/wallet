@@ -757,8 +757,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
       var confirmedTxs = self.removeAndMarkSoftConfirmedTx(txsFromLocal);
       var endingTxid = confirmedTxs[0] ? confirmedTxs[0].txid : null;
-      var endingTs = confirmedTxs[0] ? confirmedTxs[0].ts : null;
-console.log('[index.js.760:endingTs:]',endingTs); //TODO
+      var endingTs = confirmedTxs[0] ? confirmedTxs[0].time : null;
 
 
       // First update
@@ -813,24 +812,52 @@ console.log('[index.js.760:endingTs:]',endingTs); //TODO
         var newHistory = lodash.uniq(lodash.compact(txs.concat(confirmedTxs)), function(x) {
           return x.txid;
         });
-        var historyToSave = JSON.stringify(newHistory);
 
-        lodash.each(txs, function(tx) {
-          tx.recent = true;
-        })
 
-        $log.debug('Tx History synced. Total Txs: ' + newHistory.length);
+        function updateNotes(cb2) {
+          if (!endingTs) return cb2();
 
-        // Final update
-        if (walletId == profileService.focusedClient.credentials.walletId) {
-          self.completeHistory = newHistory;
-          self.setCompactTxHistory();
+          $log.debug('Syncing notes from: ' + endingTs);
+          client.getTxNotes({
+            minTs: endingTs
+          }, function(err, notes) {
+            if (err) {
+              $log.warn(err);
+              return cb2();
+            };
+            lodash.each(notes, function(note) {
+              $log.debug('Note for ' + note.txid);
+              lodash.each(newHistory, function(tx) {
+                if (tx.txid == note.txid) {
+                  $log.debug('...updating note for ' + note.txid);
+                  tx.note = note;
+                }
+              });
+            });
+            return cb2();
+          });
         }
 
-        return storageService.setTxHistory(historyToSave, walletId, function() {
-          $log.debug('Tx History saved.');
+        updateNotes(function() {
+          var historyToSave = JSON.stringify(newHistory);
 
-          return cb();
+          lodash.each(txs, function(tx) {
+            tx.recent = true;
+          })
+
+          $log.debug('Tx History synced. Total Txs: ' + newHistory.length);
+
+          // Final update
+          if (walletId == profileService.focusedClient.credentials.walletId) {
+            self.completeHistory = newHistory;
+            self.setCompactTxHistory();
+          }
+
+          return storageService.setTxHistory(historyToSave, walletId, function() {
+            $log.debug('Tx History saved.');
+
+            return cb();
+          });
         });
       });
     });
