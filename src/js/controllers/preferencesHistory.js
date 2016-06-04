@@ -49,17 +49,14 @@ angular.module('copayApp.controllers').controller('preferencesHistory',
       var self = this;
       var allTxs = [];
 
-      console.log('[preferencesHistory.js.68]'); //TODO
       $log.debug('Generating CSV from History');
       getHistory(function(err, txs) {
-console.log('[preferencesHistory.js.71:txs:]',txs); //TODO
         if (err || !txs || !txs[0]) {
           $log.warn('Failed to generate CSV:', err);
           if (cb) return cb(err);
           return;
         }
 
-console.log('[preferencesHistory.js.77]', txs); //TODO
         $log.debug('Wallet Transaction History Length:', txs.length);
 
         self.satToUnit = 1 / self.unitToSatoshi;
@@ -119,7 +116,6 @@ console.log('[preferencesHistory.js.77]', txs); //TODO
           }
         });
 
-        console.log('[preferencesHistory.js.131]'); //TODO
         self.csvReady = true;
         if (cb)
           return cb();
