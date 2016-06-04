@@ -1,14 +1,9 @@
-<div class="modalMask">
- </div>
-
-<div class="alertModal">
-  <div class="columns m20t">
-    <div class="m20t  size-14 text-center">
-        <i class="fi-alert"></i>
-        {{index.showAlert.msg|translate}}
-    </div>
-  <div class="text-center m20t" ng-click="index.showAlert.close()">
-      <a class="button outline light-gray round tiny small-4">OK</a>
-    </div>
+<div class="columns m20t">
+  <div class="m20t  size-14 text-center">
+      <i class="fi-alert"></i>
+      {{msg|translate}}
   </div>
- </div>
+<div class="text-center m20t" ng-click="close()">
+    <a class="button outline light-gray round tiny small-4">OK</a>
+  </div>
+</div>
