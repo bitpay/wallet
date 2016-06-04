@@ -14,7 +14,7 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
   $scope.isShared = fc.credentials.n > 1;
   $scope.showCommentPopup = function() {
     $scope.data = {
-      comment: ''
+      comment: $scope.btx.note.body
     };
 
     var commentPopup = $ionicPopup.show({
@@ -27,17 +27,19 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
     };
 
     $scope.commentPopupSave = function() {
+      $log.debug('Saving note');
       fc.editTxNote({
         txid: $scope.btx.txid,
-        body: $scope.data.comment
+        body: $scope.data.comment,
       }, function(err) {
         if (err) {
           $log.debug('Could not save tx comment');
           return;
         }
-        $scope.comment = $scope.data.comment;
-        $scope.editedBy = gettextCatalog.getString('Edited by') + ' ' + fc.credentials.copayerName;
-        $scope.createdOn = Math.floor(Date.now() / 1000);
+        // This is only to refresh the current screen data
+        $scope.btx.note.body = $scope.data.comment;
+        $scope.btx.note.editedByName = fc.credentials.copayerName;
+        $scope.btx.note.editedOn = Math.floor(Date.now() / 1000);
         commentPopup.close();
       });
     };
