@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, $ionicScrollDelegate, $ionicPopup, latestReleaseService, bwcService, pushNotificationsService, lodash, go, profileService, configService, rateService, storageService, addressService, gettext, gettextCatalog, amMoment, addonManager, bwsError, txFormatService, uxLanguage, glideraService, coinbaseService, platformInfo, addressbookService, walletService) {
+angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, $ionicScrollDelegate, $ionicPopup, latestReleaseService, feeService, bwcService, pushNotificationsService, lodash, go, profileService, configService, rateService, storageService, addressService, gettext, gettextCatalog, amMoment, addonManager, bwsError, txFormatService, uxLanguage, glideraService, coinbaseService, platformInfo, addressbookService, walletService) {
   var self = this;
   var SOFT_CONFIRMATION_LIMIT = 12;
   var errors = bwcService.getErrors();
@@ -1111,15 +1111,23 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
   self.showErrorPopup = function(msg, cb) {
     $log.warn('Showing err popup:' + msg);
-    self.showAlert = {
-      msg: msg,
-      close: function() {
-        self.showAlert = null;
-        if (cb) return cb();
-      },
-    };
-    $timeout(function() {
-      $rootScope.$apply();
+
+    function openErrorPopup(msg, cb) {
+      $scope.msg = msg;
+
+      self.errorPopup = $ionicPopup.show({
+        templateUrl: 'views/includes/alert.html',
+        scope: $scope,
+      });
+
+      $scope.close = function() {
+        return cb();
+      };
+    }
+
+    openErrorPopup(msg, function() {
+      self.errorPopup.close();
+      if (cb) return cb();
     });
   };
 
@@ -1864,15 +1872,37 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   });
 
   $rootScope.$on('Local/NeedsConfirmation', function(event, txp, cb) {
-    self.confirmTx = {
-      txp: txFormatService.processTx(txp),
-      callback: function(accept) {
-        self.confirmTx = null;
-        return cb(accept);
-      }
-    };
-    $timeout(function() {
-      $rootScope.$apply();
+
+    function openConfirmationPopup(txp, cb) {
+
+      $scope.tx = txFormatService.processTx(txp);
+
+      self.confirmationPopup = $ionicPopup.show({
+        templateUrl: 'views/includes/confirm-tx.html',
+        scope: $scope,
+      });
+
+      $scope.processFee = function(amount, fee) {
+        var walletSettings = configService.getSync().wallet.settings;
+        var feeAlternativeIsoCode = walletSettings.alternativeIsoCode;
+
+        $scope.feeLevel = feeService.feeOpts[feeService.getCurrentFeeLevel()];
+        $scope.feeAlternativeStr = parseFloat((rateService.toFiat(fee, feeAlternativeIsoCode)).toFixed(2), 10) + ' ' + feeAlternativeIsoCode;
+        $scope.feeRateStr = (fee / (amount + fee) * 100).toFixed(2) + '%';
+      };
+
+      $scope.cancel = function() {
+        return cb();
+      };
+
+      $scope.accept = function() {
+        return cb(true);
+      };
+    }
+
+    openConfirmationPopup(txp, function(accept) {
+      self.confirmationPopup.close();
+      return cb(accept);
     });
   });
 

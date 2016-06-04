@@ -89,7 +89,7 @@ h4.title a {
   }
 }
 
-.modal-content h4, .glidera h4, .coinbase h4, .txModal h4 {
+.modal-content h4, .glidera h4, .coinbase h4 {
   background: #F6F7F9;
   padding: 25px 0px 5px 10px;
   text-transform: uppercase;
@@ -105,7 +105,7 @@ h4.title a {
   font-size: 16px;
 }
 
-.preferences ul, .modal-content ul, .txModal ul {
+.preferences ul, .modal-content ul {
   font-size: 14px;
   background: white;
 }
@@ -253,6 +253,12 @@ a {
   background-color: #F6F7F9;
   padding: 0 0 58px 0;
   position: relative;
+}
+
+
+.half-row {
+  width: 50%;
+  padding: 5px;
 }
 
 .content {
@@ -1339,61 +1345,6 @@ input.ng-invalid-match {
   }
 }
 
-/* Confirmation popup */
-
-.confirmTxModal {
-  background: white;
-  border-radius: 5px;
-  position: absolute;
-  width: 90%;
-  left: 0;
-  right: 0;
-  margin: 15% auto;
-  z-index: 1100;
-  text-align: center;
-}
-
-.confirmHead {
-  padding: 10px;
-  border-top-left-radius: 5px;
-  border-top-right-radius: 5px;
-}
-
-.txModal-content {
-  overflow: auto;
-  height: 100%;
-  padding-bottom: 50px;
-}
-
-.txModal {
-  background: #f6f7f9;
-  position: absolute;
-  width: 100%;
-  top: 0;
-  bottom: 0;
-  overflow: hidden;
-  z-index: 1100;
-}
-
-.alertModal, .passModal {
-  background: #FFFFFF;
-  border-radius: 5px;
-  position: absolute;
-  width: 90%;
-  left: 5%;
-  top: 15%;
-  z-index: 1100;
-}
-
-.modalMask {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  z-index: 1099;
-  opacity: 0.8;
-  background: black;
-}
-
 .tx-details-blockchain li {
   cursor: pointer !important;
 }
@@ -2006,13 +1957,6 @@ body.modal-open {
   }
 }
 
-.txModal.animated {
-  &.slideInRight, &.slideOutRight {
-    -webkit-animation-duration: 0.3s;
-    animation-duration: 0.3s;
-  }
-}
-
 .reveal-modal.animated {
   &.fadeOutUp, &.slideInUp, &.slideInDown {
     -webkit-animation-duration: 0.3s;
@@ -2068,7 +2012,7 @@ body.modal-open {
   padding: 5px 15px;
   background-color: rgba(0, 0, 0, 0.1);
   i {
-    position: absolute;
+    position: inherit;
     left: 25px;
     padding-right: 10px;
     border-right: 1px solid;

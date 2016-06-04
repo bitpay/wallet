@@ -32,6 +32,10 @@
 	display: none;
 }
 
+.popup-body {
+	padding: 0px;
+}
+
 .bct {
  	background-color: transparent !important;
 	margin-top: -25px;
