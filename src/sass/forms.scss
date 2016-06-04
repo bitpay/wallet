@@ -301,6 +301,7 @@ label {
 label small {
   font-size: 10px;
   color: #999;
+  text-transform: none;
   &.has-error {
     font-size: 11px;
   }
