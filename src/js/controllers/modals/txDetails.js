@@ -41,6 +41,7 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
         $scope.btx.note.body = $scope.data.comment;
         $scope.btx.note.editedByName = fc.credentials.copayerName;
         $scope.btx.note.editedOn = Math.floor(Date.now() / 1000);
+        $scope.btx.searcheableString = null;
         commentPopup.close();
       });
     };

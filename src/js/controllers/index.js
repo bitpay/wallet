@@ -913,8 +913,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         if (tx.addressTo && self.addressbook && self.addressbook[tx.addressTo]) addrbook = self.addressbook[tx.addressTo] || '';
         var searchableDate = computeSearchableDate(new Date(tx.time * 1000));
         var message = tx.message ? tx.message : '';
+        var comment = tx.note ? tx.note.body : '';
         var addressTo = tx.addressTo ? tx.addressTo : '';
-        return ((tx.amountStr + message + addressTo + addrbook + searchableDate).toString()).toLowerCase();
+        return ((tx.amountStr + message + addressTo + addrbook + searchableDate + comment).toString()).toLowerCase();
       }
 
       function computeSearchableDate(date) {
