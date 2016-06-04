@@ -590,6 +590,11 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         self.hasUnsafeConfirmed = true;
       }
 
+      if (tx.note) {
+        delete tx.note.encryptedEditedByName;
+        delete tx.note.encryptedBody;
+      }
+
       if (!txHistoryUnique[tx.txid]) {
         ret.push(tx);
         txHistoryUnique[tx.txid] = true;
@@ -692,135 +697,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     }
   };
 
-  self.csvHistory = function() {
-
-    function formatDate(date) {
-      var dateObj = new Date(date);
-      if (!dateObj) {
-        $log.debug('Error formating a date');
-        return 'DateError'
-      }
-      if (!dateObj.toJSON()) {
-        return '';
-      }
-
-      return dateObj.toJSON();
-    }
-
-    function formatString(str) {
-      if (!str) return '';
-
-      if (str.indexOf('"') !== -1) {
-        //replace all
-        str = str.replace(new RegExp('"', 'g'), '\'');
-      }
-
-      //escaping commas
-      str = '\"' + str + '\"';
-
-      return str;
-    }
-
-    var step = 6;
-    var unique = {};
-
-    function getHistory(cb) {
-      storageService.getTxHistory(c.walletId, function(err, txs) {
-        if (err) return cb(err);
-
-        var txsFromLocal = [];
-        try {
-          txsFromLocal = JSON.parse(txs);
-        } catch (ex) {
-          $log.warn(ex);
-        }
-
-        allTxs.push(txsFromLocal);
-        return cb(null, lodash.flatten(allTxs));
-      });
-    }
-
-    if (isCordova) {
-      $log.info('CSV generation not available in mobile');
-      return;
-    }
-    var fc = profileService.focusedClient;
-    var c = fc.credentials;
-    if (!fc.isComplete()) return;
-    var self = this;
-    var allTxs = [];
-
-    $log.debug('Generating CSV from History');
-    self.setOngoingProcess('generatingCSV', true);
-
-    getHistory(function(err, txs) {
-      self.setOngoingProcess('generatingCSV', false);
-      if (err) {
-        self.handleError(err);
-      } else {
-        $log.debug('Wallet Transaction History:', txs);
-
-        self.satToUnit = 1 / self.unitToSatoshi;
-        var data = txs;
-        var satToBtc = 1 / 100000000;
-        self.csvContent = [];
-        self.csvFilename = 'Copay-' + (self.alias || self.walletName) + '.csv';
-        self.csvHeader = ['Date', 'Destination', 'Note', 'Amount', 'Currency', 'Txid', 'Creator', 'Copayers'];
-
-        var _amount, _note, _copayers, _creator;
-        data.forEach(function(it, index) {
-          var amount = it.amount;
-
-          if (it.action == 'moved')
-            amount = 0;
-
-          _copayers = '';
-          _creator = '';
-
-          if (it.actions && it.actions.length > 1) {
-            for (var i = 0; i < it.actions.length; i++) {
-              _copayers += it.actions[i].copayerName + ':' + it.actions[i].type + ' - ';
-            }
-            _creator = (it.creatorName && it.creatorName != 'undefined') ? it.creatorName : '';
-          }
-          _copayers = formatString(_copayers);
-          _creator = formatString(_creator);
-          _amount = (it.action == 'sent' ? '-' : '') + (amount * satToBtc).toFixed(8);
-          _note = formatString((it.message ? it.message : ''));
-
-          if (it.action == 'moved')
-            _note += ' Moved:' + (it.amount * satToBtc).toFixed(8)
-
-          self.csvContent.push({
-            'Date': formatDate(it.time * 1000),
-            'Destination': formatString(it.addressTo),
-            'Note': _note,
-            'Amount': _amount,
-            'Currency': 'BTC',
-            'Txid': it.txid,
-            'Creator': _creator,
-            'Copayers': _copayers
-          });
-
-          if (it.fees && (it.action == 'moved' || it.action == 'sent')) {
-            var _fee = (it.fees * satToBtc).toFixed(8)
-            self.csvContent.push({
-              'Date': formatDate(it.time * 1000),
-              'Destination': 'Bitcoin Network Fees',
-              'Note': '',
-              'Amount': '-' + _fee,
-              'Currency': 'BTC',
-              'Txid': '',
-              'Creator': '',
-              'Copayers': ''
-            });
-          }
-        });
-        return;
-      }
-    });
-  };
-
   self.removeAndMarkSoftConfirmedTx = function(txs) {
     return lodash.filter(txs, function(tx) {
       if (tx.confirmations >= SOFT_CONFIRMATION_LIMIT)
@@ -881,6 +757,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
       var confirmedTxs = self.removeAndMarkSoftConfirmedTx(txsFromLocal);
       var endingTxid = confirmedTxs[0] ? confirmedTxs[0].txid : null;
+      var endingTs = confirmedTxs[0] ? confirmedTxs[0].time : null;
 
 
       // First update
@@ -935,24 +812,52 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         var newHistory = lodash.uniq(lodash.compact(txs.concat(confirmedTxs)), function(x) {
           return x.txid;
         });
-        var historyToSave = JSON.stringify(newHistory);
 
-        lodash.each(txs, function(tx) {
-          tx.recent = true;
-        })
 
-        $log.debug('Tx History synced. Total Txs: ' + newHistory.length);
+        function updateNotes(cb2) {
+          if (!endingTs) return cb2();
 
-        // Final update
-        if (walletId == profileService.focusedClient.credentials.walletId) {
-          self.completeHistory = newHistory;
-          self.setCompactTxHistory();
+          $log.debug('Syncing notes from: ' + endingTs);
+          client.getTxNotes({
+            minTs: endingTs
+          }, function(err, notes) {
+            if (err) {
+              $log.warn(err);
+              return cb2();
+            };
+            lodash.each(notes, function(note) {
+              $log.debug('Note for ' + note.txid);
+              lodash.each(newHistory, function(tx) {
+                if (tx.txid == note.txid) {
+                  $log.debug('...updating note for ' + note.txid);
+                  tx.note = note;
+                }
+              });
+            });
+            return cb2();
+          });
         }
 
-        return storageService.setTxHistory(historyToSave, walletId, function() {
-          $log.debug('Tx History saved.');
+        updateNotes(function() {
+          var historyToSave = JSON.stringify(newHistory);
 
-          return cb();
+          lodash.each(txs, function(tx) {
+            tx.recent = true;
+          })
+
+          $log.debug('Tx History synced. Total Txs: ' + newHistory.length);
+
+          // Final update
+          if (walletId == profileService.focusedClient.credentials.walletId) {
+            self.completeHistory = newHistory;
+            self.setCompactTxHistory();
+          }
+
+          return storageService.setTxHistory(historyToSave, walletId, function() {
+            $log.debug('Tx History saved.');
+
+            return cb();
+          });
         });
       });
     });
@@ -1008,8 +913,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         if (tx.addressTo && self.addressbook && self.addressbook[tx.addressTo]) addrbook = self.addressbook[tx.addressTo] || '';
         var searchableDate = computeSearchableDate(new Date(tx.time * 1000));
         var message = tx.message ? tx.message : '';
+        var comment = tx.note ? tx.note.body : '';
         var addressTo = tx.addressTo ? tx.addressTo : '';
-        return ((tx.amountStr + message + addressTo + addrbook + searchableDate).toString()).toLowerCase();
+        return ((tx.amountStr + message + addressTo + addrbook + searchableDate + comment).toString()).toLowerCase();
       }
 
       function computeSearchableDate(date) {

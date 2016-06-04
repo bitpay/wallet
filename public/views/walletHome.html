@@ -202,7 +202,12 @@
                   <img src="img/icon-moved.svg" alt="sync" width="40" ng-show="btx.action == 'moved'">
                 </div>
                 <div class="m10t">
-                  <span ng-show="btx.action == 'received'" translate>Received</span>
+                  <span ng-show="btx.action == 'received'">
+                    <span class="ellipsis">
+                      <span ng-if="btx.note.body">{{btx.note.body}}</span>
+                      <span ng-if="!btx.note.body" translate> Received</span>
+                    </span>
+                  </span>
                   <span ng-show="btx.action == 'sent'">
                     <span class="ellipsis">
                       <span ng-if="btx.message">{{btx.message}}</span>
@@ -449,7 +454,7 @@
             </div>
             <div class="row" ng-hide="home.hideNote">
               <div class="large-12 columns">
-                <label for="comment"><span translate>Note</span>
+                <label for="comment"><span translate>Description</span>
                   <small translate ng-hide="!sendForm.comment.$pristine">optional</small>
                   <small translate class="has-error" ng-show="sendForm.comment.$invalid && !sendForm.comment.$pristine">too long!</small>
                 </label>
