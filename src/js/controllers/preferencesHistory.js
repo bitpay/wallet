@@ -64,7 +64,7 @@ angular.module('copayApp.controllers').controller('preferencesHistory',
         var satToBtc = 1 / 100000000;
         self.csvContent = [];
         self.csvFilename = 'Copay-' + (self.alias || self.walletName) + '.csv';
-        self.csvHeader = ['Date', 'Destination', 'Description', 'Amount', 'Currency', 'Txid', 'Creator', 'Copayers'];
+        self.csvHeader = ['Date', 'Destination', 'Description', 'Amount', 'Currency', 'Txid', 'Creator', 'Copayers', 'Comment'];
 
         var _amount, _note, _copayers, _creator, _comment;
         data.forEach(function(it, index) {
