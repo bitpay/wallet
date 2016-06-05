@@ -7,32 +7,35 @@ angular.module('copayApp.controllers').controller('disclaimerController',
     $scope.creatingProfile = true;
 
     var create = function(noWallet) {
-      profileService.create({
-        noWallet: noWallet
-      }, function(err) {
+      $timeout(function() {
+        profileService.create({
+          noWallet: noWallet
+        }, function(err) {
 
-        if (err) {
-          $log.warn(err);
-          $scope.error = err;
-          $scope.$apply();
-          $timeout(function() {
-            $log.warn('Retrying to create profile......');
-            if (self.tries == 3) {
-              self.tries == 0;
-              create(true);
-            } else {
-              self.tries += 1;
-              create(false);
-            }
-          }, 3000);
-        } else {
-          $scope.error = "";
-          $scope.creatingProfile = false;
-        }
-      });
+          if (err === "EEXISTS") return self.init();
+          if (err) {
+            $log.warn(err);
+            $scope.error = err;
+            $scope.$apply();
+            $timeout(function() {
+              $log.warn('Retrying to create profile......');
+              if (self.tries == 3) {
+                self.tries == 0;
+                create(true);
+              } else {
+                self.tries += 1;
+                create(false);
+              }
+            }, 3000);
+          } else {
+            $scope.error = "";
+            $scope.creatingProfile = false;
+          }
+        });
+      }, 100);
     };
 
-    this.init = function() {
+    self.init = function() {
       self.lang = uxLanguage.currentLanguage;
 
       profileService.getProfile(function(err, profile) {
@@ -51,7 +54,7 @@ angular.module('copayApp.controllers').controller('disclaimerController',
       });
     };
 
-    this.accept = function() {
+    self.accept = function() {
       profileService.setDisclaimerAccepted(function(err) {
         if (err) $log.error(err);
         else go.walletHome();
