@@ -1,14 +1,14 @@
 <div 
   class="topbar-container" 
   ng-include="'views/includes/topbar.html'"
-  ng-init="titleSection='Buy'; goBackToState = 'amazon'">
+  ng-init="titleSection='Buy'; goBackToState = 'amazon'; noColor = true">
 </div>
 
 
 <div class="content amazon" ng-controller="buyAmazonController as buy">
 
   <div class="onGoingProcess" ng-show="buy.loading">
-    <div class="onGoingProcess-content"  ng-style="{'background-color': index.backgroundColor}">
+    <div class="onGoingProcess-content">
     <div class="spinner">
       <div class="rect1"></div>
       <div class="rect2"></div>
@@ -52,9 +52,9 @@
          novalidate>
 
         <div class="m20v text-center">
-          <a class="amazon-select-amount" ng-style="{'background-color': index.backgroundColor}" ng-click="buy.setAmount()">-</a>
+          <a class="amazon-select-amount" ng-click="buy.setAmount()">-</a>
           <span class="amazon-amount">$ {{fiat}}</span>
-          <a class="amazon-select-amount" ng-style="{'background-color': index.backgroundColor}" ng-click="buy.setAmount(1)">+</a>
+          <a class="amazon-select-amount" ng-click="buy.setAmount(1)">+</a>
         </div>
 
         <div 
@@ -74,7 +74,6 @@
         <div class="input m20t">
           <input class="button black round expand" 
                    ng-disabled="buy.loading || !fiat"
-                   ng-style="{'background-color': index.backgroundColor}"
                    type="submit" value="Order now">
         </div>
       </form>
@@ -123,7 +122,6 @@
         </div>
         <div class="m10t">
           <button class="button black round tiny" 
-                  ng-style="{'background-color': index.backgroundColor}"
                   ng-click="$root.openExternalLink('https://www.amazon.com/gc/redeem?claimCode=' + buy.giftCard.gcClaimCode)">
             Redeem Now
           </button>
