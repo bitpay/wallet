@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('amazonController', 
-  function($rootScope, $scope, $timeout, $modal, profileService, configService, storageService, amazonService, isChromeApp, animationService, lodash, nodeWebkit) {
+  function($rootScope, $scope, $timeout, $modal, profileService, configService, amazonService, animationService, lodash) {
 
     window.ignoreMobilePause = true;
 
@@ -27,7 +27,6 @@ angular.module('copayApp.controllers').controller('amazonController',
       var fc = profileService.focusedClient;
       var ModalInstanceCtrl = function($scope, $modalInstance) {
         $scope.card = card;
-        $scope.color = fc.backgroundColor;
 
         $scope.cancelGiftCard = function() {
           $scope.refresh = true;
