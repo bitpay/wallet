@@ -224,6 +224,7 @@ angular.module('copayApp.services')
 
     root._seedWallet = function(opts, cb) {
       opts = opts || {};
+      $log.debug('seedWallet', opts);
       var walletClient = bwcService.getClient(null, opts);
       var network = opts.networkName || 'livenet';
 
@@ -291,13 +292,15 @@ angular.module('copayApp.services')
         return cb(null, Profile.create());
       }
 
-      root._seedWallet({}, function(err, walletClient) {
+      root._seedWallet(opts, function(err, walletClient) {
         if (err) return cb(err);
 
         var walletName = gettextCatalog.getString('Personal Wallet');
         var me = gettextCatalog.getString('me');
+
         walletClient.createWallet(walletName, me, 1, 1, {
-          network: 'livenet'
+          network: 'livenet',
+          walletPrivKey: opts.walletPrivKey,
         }, function(err) {
           if (err) return bwsError.cb(err, gettext('Error creating wallet'), cb);
           var p = Profile.create({
@@ -559,16 +562,24 @@ angular.module('copayApp.services')
     };
 
     root.create = function(opts, cb) {
-      $log.info('Creating profile');
+      $log.info('Creating profile', opts);
       var defaults = configService.getDefaults();
 
+console.log('[profileService.js.567]'); //TODO
       configService.get(function(err) {
+
+console.log('[profileService.js.570]'); //TODO
         root._createNewProfile(opts, function(err, p) {
           if (err) return cb(err);
 
+console.log('[profileService.js.574]'); //TODO
           root.bindProfile(p, function(err) {
+
+console.log('[profileService.js.577]'); //TODO
             // ignore NONAGREEDDISCLAIMER
             storageService.storeNewProfile(p, function(err) {
+
+console.log('[profileService.js.581]'); //TODO
               return cb(err);
             });
           });

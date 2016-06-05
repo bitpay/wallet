@@ -220,6 +220,9 @@ mocks.init = function(fixtures, controllerName, opts, done) {
           noWallet: true
         }, function(err) {
           should.not.exist(err, err);
+          if (opts.noDisclaimer){
+            return done();
+          };
           _profileService_.setDisclaimerAccepted(function() {
             if (!opts.initController)
               startController();

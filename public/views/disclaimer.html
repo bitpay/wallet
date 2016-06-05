@@ -25,14 +25,14 @@
   </div>
   <div class="row">
 
-    <div class="onGoingProcess" ng-show="creatingProfile">
+    <div class="onGoingProcess" ng-show="disclaimer.creatingProfile">
       <div class="onGoingProcess-content" ng-style="{'background-color':'#222'}">
         <ion-spinner class="spinner-stable" icon="lines"></ion-spinner>
         <span translate>Creating Wallet...</span>
       </div>
     </div>
     <div class="start-button columns button-box">
-      <button ng-disabled="creatingProfile" ng-click="disclaimer.accept()" class="button black expand round size-12 text-spacing m0" translate>
+      <button ng-disabled="disclaimer.creatingProfile" ng-click="disclaimer.accept()" class="button black expand round size-12 text-spacing m0" translate>
         I AGREE. GET STARTED
       </button>
     </div>
