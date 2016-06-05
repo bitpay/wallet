@@ -1,7 +1,6 @@
 
 <div class="topbar-container">
   <nav ng-controller="topbarController as topbar"
-       ng-style="{'background-color': index.backgroundColor}"
        class="tab-bar">
     <section class="left-small">
       <a class="p10"
@@ -27,7 +26,7 @@
 <div class="content amazon p20b" ng-controller="amazonController as amazon">
 
   <div class="onGoingProcess" ng-show="amazon.loading">
-    <div class="onGoingProcess-content" ng-style="{'background-color': index.backgroundColor}">
+    <div class="onGoingProcess-content">
     <div class="spinner">
       <div class="rect1"></div>
       <div class="rect2"></div>
@@ -52,7 +51,6 @@
       </div>
 
       <button class="m10t button black round tiny" 
-              ng-style="{'background-color': index.backgroundColor}"
               ng-click="$root.go('buyAmazon')">
         Buy now
       </button>
