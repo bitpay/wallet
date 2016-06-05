@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.services').factory('amazonService', function($http, $log, isCordova, lodash, moment, storageService, configService) {
+angular.module('copayApp.services').factory('amazonService', function($http, $log, lodash, moment, storageService, configService) {
   var root = {};
   var credentials = {};
 
