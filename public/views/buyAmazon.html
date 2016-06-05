@@ -74,7 +74,7 @@
         <div class="input m20t">
           <input class="button black round expand" 
                    ng-disabled="buy.loading || !fiat"
-                   type="submit" value="Order now">
+                   type="submit" value="Buy now">
         </div>
       </form>
     </div>
@@ -109,9 +109,9 @@
         for easy reference later--you&rsquo;ll need the gift card claim code below
       </div>
 
-      <div class="oh m20t size-12">
-        <img class="left m10h" src="img/a_generic.jpg" alt="Amazon.com Gift Cards" width="130">
-        <div>
+      <div class="oh m20t size-12 text-center">
+        <img class="m10h" src="img/a_generic.jpg" alt="Amazon.com Gift Cards" width="230">
+        <div class="m10t">
           Gift Card Amount: 
           <span class="text-bold">
             {{buy.giftCard.cardInfo.value.amount | currency : '$ ' : 2 }}
