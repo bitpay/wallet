@@ -169,9 +169,9 @@ angular.module('copayApp.services').factory('amazonService', function($http, $lo
   };
 
   root.createGiftCard = function(dataSrc, cb) {
-    var sandbox = credentials.AMAZON_SANDBOX ? 'T' : 'P'; // T: test - P: production
+    var environment = credentials.AMAZON_SANDBOX ? 'T' : 'P'; // T: test - P: production
     var now = moment().unix();
-    var requestId = dataSrc.creationRequestId || credentials.AMAZON_PARTNER_ID + sandbox + now;
+    var requestId = dataSrc.creationRequestId || credentials.AMAZON_PARTNER_ID + environment + now;
     
     var data = {
       'creationRequestId': requestId,

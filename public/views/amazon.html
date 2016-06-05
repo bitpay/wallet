@@ -42,30 +42,35 @@
 
     <div class="m20t text-center" ng-click="amazon.init()">
       <img src="img/GCs-logo-cllb.png" alt="Amazon.com Gift Card" width="200">
+      <div class="size-10 m5t text-gray"><b>Only</b> redeemable on www.amazon.com (USA website)</div>
     </div>
 
-    <div class="m20t text-center size-12">
+    <div ng-if="!amazon.giftCards" class="m20t text-center size-12">
       <div class="text-left p10h">
         Amazon.com Gift Cards* never expire and can be redeemed towards millions of items at 
-        <a ng-click="$root.openExternalLink('https://www.amazon.com')">www.amazon.com</a>.
+        <a ng-click="$root.openExternalLink('https://www.amazon.com')">www.amazon.com</a>, 
+        <a ng-click="$root.openExternalLink('https://www.myhabit.com')">www.myhabit.com</a>, and 
+          certain of its affiliated websites. Amazon.com&rsquo;s huge 
+        selection includes products in Books, Electronics, Music, MP3 Downloads, DVD, Clothing, Video Games, 
+        Software, Sports &amp; Outdoors, Toys, Baby, Computers &amp; Office, Home &amp; Garden, Jewelry, 
+        Beauty, Cell Phones &amp; Accessories, Home Improvement, Office Products, Camera &amp; Photo, 
+        Pet Supplies, and more. Amazon.com is the place to find and discover almost anything you 
+        want to buy online at a great price.
       </div>
 
-      <button class="m10t button black round tiny" 
-              ng-click="$root.go('buyAmazon')">
-        Buy now
-      </button>
-    </div> 
-
-    <div ng-if="amazon.giftCards" ng-init="showCards == false">
-      <div class="size-16 white p10 pointer" ng-click="showCards = !showCards">
-        <span class="right m10r text-gray">
-          <i ng-show="!showCards" class="icon-arrow-down3"></i>
-          <i ng-show="showCards" class="icon-arrow-up3"></i>
-        </span>
-        Your cards
+      <div class="row">
+        <div class="columns">
+          <button class="m20t button black round expand" 
+                  ng-click="$root.go('buyAmazon')">
+            Buy now
+          </button>
+        </div>
       </div>
+    </div>
+
+    <div ng-if="amazon.giftCards">
+      <h4 class="title">Your cards</h4>
       <div ng-repeat="(id, item) in amazon.giftCards | orderObjectBy:'date':true track by $index"
-           ng-show="showCards"
            ng-click="amazon.openCardModal(item)"
         class="row collapse last-transactions-content size-12">
         <div class="large-2 medium-2 small-2 columns">
@@ -84,20 +89,6 @@
         </div>
       </div>
     </div>
-
-    <div class="size-12 white p15 m20t">
-      *Amazon.com Gift Cards (&quot;GCs&quot;) sold by BitPay, Inc., an authorized and independent
-      reseller of Amazon.com Gift Cards. Except as required by law, GCs cannot be transferred for value or redeemed for cash.
-      GCs may be used only for purchases of eligible goods at Amazon.com or certain of its affiliated websites. Purchases are
-      deducted from the GC balance. To redeem or view a GC balance, visit &ldquo;Your Account&rdquo; at Amazon.com. Amazon is
-      not responsible if a GC is lost, stolen, destroyed or used without permission. See 
-      <a ng-click="$root.openExternalLink('https://www.amazon.com/gc-legal')">www.amazon.com/gc-legal</a> for complete terms, 
-      restrictions and exceptions. For any other questions, see 
-      <a ng-click="$root.openExternalLink('https://www.amazon.com/gc')">www.amazon.com/gc</a>. GCs are issued 
-      by ACI Gift Cards, Inc., a Washington corporation. All Amazon &reg;, &trade; &amp; &copy; are IP of 
-      Amazon.com, Inc. or its affiliates. No expiration date or service fees.
-    </div>
-
   </div>
 
   <div class="extra-margin-bottom"></div>
