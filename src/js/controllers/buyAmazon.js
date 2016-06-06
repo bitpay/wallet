@@ -6,10 +6,10 @@ angular.module('copayApp.controllers').controller('buyAmazonController',
     window.ignoreMobilePause = true;
     var self = this;
     var fc;
-    var minimumAmount = 1;
+    var minimumAmount = 5;
     var stepAmount = 1;
-    var multiplierAmount = 2;
-    var maximumAmount = 10;
+    var multiplierAmount = 5;
+    var maximumAmount = 500;
 
     var otherWallets = function(network) {
       return lodash.filter(profileService.getWallets(network), function(w) {
@@ -26,7 +26,7 @@ angular.module('copayApp.controllers').controller('buyAmazonController',
     };
 
     this.init = function() {
-      $scope.fiat = minimumAmount * multiplierAmount;
+      $scope.fiat = minimumAmount;
       var network = configService.getSync().amazon.testnet ? 'testnet' : 'livenet';
       amazonService.setCredentials(network);
       self.otherWallets = otherWallets(network);
@@ -99,7 +99,7 @@ angular.module('copayApp.controllers').controller('buyAmazonController',
       if (plus && $scope.fiat < maximumAmount ) {
         stepAmount = stepAmount + 1;
         $scope.fiat = stepAmount * multiplierAmount;
-      } else if (!plus && $scope.fiat > minimumAmount * multiplierAmount) {
+      } else if (!plus && $scope.fiat > minimumAmount) {
         stepAmount = stepAmount - 1;
         $scope.fiat = stepAmount * multiplierAmount;
       }
@@ -126,7 +126,7 @@ angular.module('copayApp.controllers').controller('buyAmazonController',
         amazonService.createBitPayInvoice(dataSrc, function(err, data) {
           if (err) {
             self.loading = null;
-            self.error = err;
+            self.error = bwsError.msg(err);
             return;
           }
 
@@ -185,6 +185,7 @@ angular.module('copayApp.controllers').controller('buyAmazonController',
                       self.errorInfo = gift;
                       return;
                     }
+                    amazonService.setAmountByDay(dataSrc.price);
                     self.giftCard = giftCard;
                     $timeout(function() {
                       $scope.$digest();
