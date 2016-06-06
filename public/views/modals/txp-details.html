@@ -14,7 +14,7 @@
   <div class="onGoingProcess" ng-show="loading">
     <div class="onGoingProcess-content" ng-style="{'background-color':index.backgroundColor}">
       <ion-spinner class="spinner-stable" icon="lines"></ion-spinner>
-      <span translate>{{loading}}</span>
+      <span>{{loading|translate}}</span>
     </div>
   </div>
 
@@ -33,7 +33,7 @@
 
       <div class="oh">
         <div class="box-notification" ng-show="error">
-          <span class="text-warning size-14" translate>{{error}}</span>
+          <span class="text-warning size-14">{{error|translate}}</span>
         </div>
 
         <div class="row" ng-if="tx.removed">
@@ -162,7 +162,7 @@
               <i ng-if="ac.type == 'reject'" class="fi-x icon-sign x db"></i>
               <i ng-if="ac.type == 'accept'" class="fi-check icon-sign check db"></i>
             </span>
-            {{ac.copayerName}} <span ng-if="ac.copayerId == copayerId" translate>({{'Me'}})</span>
+            {{ac.copayerName}} <span ng-if="ac.copayerId == copayerId">({{'Me'|translate}})</span>
           </li>
         </ul>
       </div>
