@@ -112,7 +112,8 @@ angular.module('copayApp.controllers').controller('buyAmazonController',
       var currency_code = configService.getSync().amazon.testnet ? window.amazon_sandbox_currency_code : window.amazon_currency_code;
       var dataSrc = { 
         price: $scope.fiat,
-        currency: currency_code
+        currency: currency_code,
+        orderId: self.selectedWalletName
       };
       var outputs = [];
       var config = configService.getSync();
