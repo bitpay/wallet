@@ -24,21 +24,6 @@ angular.module('copayApp.services')
         }, cb);
     };
 
-    var encryptOnMobile = function(text, cb) {
-
-      // UUID encryption is disabled.
-      return cb(null, text);
-      //
-      // getUUID(function(uuid) {
-      //   if (uuid) {
-      //     $log.debug('Encrypting profile');
-      //     text = sjcl.encrypt(uuid, text);
-      //   }
-      //   return cb(null, text);
-      // });
-    };
-
-
     var decryptOnMobile = function(text, cb) {
       var json;
       try {
@@ -107,18 +92,14 @@ angular.module('copayApp.services')
     };
 
     root.storeNewProfile = function(profile, cb) {
-      encryptOnMobile(profile.toObj(), function(err, x) {
-        storage.create('profile', x, cb);
-      });
+      storage.create('profile', profile.toObj(), cb);
     };
 
     root.storeProfile = function(profile, cb) {
-      encryptOnMobile(profile.toObj(), function(err, x) {
-        storage.set('profile', x, cb);
-      });
+      storage.set('profile', profile.toObj(), cb);
     };
 
-    root.storeProfileThrottled =  lodash.throttle(root.storeProfile, 5000);
+    root.storeProfileThrottled = lodash.throttle(root.storeProfile, 5000);
 
     root.getProfile = function(cb) {
       storage.get('profile', function(err, str) {
@@ -291,6 +272,18 @@ angular.module('copayApp.services')
 
     root.removeCoinbaseTxs = function(network, cb) {
       storage.remove('coinbaseTxs-' + network, cb);
+    };
+
+    root.removeAllWalletData = function(walletId, cb) {
+      storageService.clearLastAddress(walletId, function(err) {
+        if (err) return cb(err);
+        storageService.removeTxHistory(walletId, function(err) {
+          if (err) return cb(err);
+          storageService.clearBackupFlag(walletId, function(err) {
+            return cb(err);
+          });
+        });
+      });
     };
 
     return root;

@@ -8,7 +8,7 @@ angular.module('copayApp.controllers').controller('preferencesEmailController',
 
       var fc = profileService.focusedClient;
       this.saving = true;
-      $scope.$emit('Local/EmailSettingUpdated', self.email, function() {
+      $scope.$emit('Local/EmailSettingUpdated', fc,self.email, function() {
         self.saving = false;
         go.path('preferences');
       });
