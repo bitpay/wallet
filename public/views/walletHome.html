@@ -53,9 +53,10 @@
 
     -->
 
-    <ion-content id="walletHome" class="walletHome tab-view tab-in" scroll="false">
-      <ion-content overflow-scroll="true" delegate-handle="transactions" on-scroll="freezeScroll()">
+    <ion-content id="walletHome" class="walletHome tab-view tab-in" scroll="false" >
+      <ion-content overflow-scroll="true">
         <ion-refresher
+          ng-if="index.isCordova"
           pulling-icon="ion-ios-refresh"
           spinner="ios-small"
           on-refresh="index.updateAll({triggerTxUpdate: true})">

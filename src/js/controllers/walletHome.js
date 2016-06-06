@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('walletHomeController', function($scope, $ionicScrollDelegate, $ionicSideMenuDelegate, $rootScope, $interval, $timeout, $filter, $modal, $log, $ionicModal, notification, txStatus, profileService, lodash, configService, rateService, storageService, bitcore, gettext, gettextCatalog, platformInfo, addressService, ledger, bwsError, confirmDialog, txFormatService, animationService, addressbookService, go, feeService, walletService, fingerprintService, nodeWebkit) {
+angular.module('copayApp.controllers').controller('walletHomeController', function($scope, $rootScope, $interval, $timeout, $filter, $modal, $log, $ionicModal, notification, txStatus, profileService, lodash, configService, rateService, storageService, bitcore, gettext, gettextCatalog, platformInfo, addressService, ledger, bwsError, confirmDialog, txFormatService, animationService, addressbookService, go, feeService, walletService, fingerprintService, nodeWebkit) {
 
   var isCordova = platformInfo.isCordova;
   var isWP = platformInfo.isWP;
@@ -31,20 +31,6 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   ret.countDown = null;
   ret.sendMaxInfo = {};
   var vanillaScope = ret;
-
-  $scope.freezeScroll = function() {
-
-    var openRatio = $ionicSideMenuDelegate.getOpenRatio();
-
-    if (openRatio != 0)
-      $ionicScrollDelegate.$getByHandle('transactions').freezeScroll(true);
-    else
-      $ionicScrollDelegate.$getByHandle('transactions').freezeScroll(false);
-
-    $timeout(function() {
-      $scope.$apply();
-    });
-  };
 
   var disableScannerListener = $rootScope.$on('dataScanned', function(event, data) {
     self.setForm(data);
