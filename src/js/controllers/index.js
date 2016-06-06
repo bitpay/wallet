@@ -1009,7 +1009,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         return;
       }
 
-      profileService.addWalletClient(fc, {
+      profileService.bindWalletClient(fc, {
         force: true
       });
       self.startScan(self.walletId);

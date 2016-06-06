@@ -1,6 +1,9 @@
 describe('createController', function() {
   var fixtures = {
 
+    // Store prefs
+    '1eda3e702196b8d5d82fae129249bc79f0d5be2f5309a4e39855e7eb4ad31428': {},
+    '31f5deeef4cf7fd8fc67297179232e8e4590532960454ad958009132fef3daae': {},
     // createWallet 1-1
     '56db6f58f2c212591afb4d508d03e5fb40bb786f23dc56c43b98bde42dc513e5': {
       "walletId": "267bfa75-5575-4af7-8aa3-f5186bc99262"

@@ -385,8 +385,8 @@ angular.module('copayApp.services')
         else $log.debug('Unsubscribed from push notifications service');
       });
 
-      $log.debug('Deleting Wallet:', fc.credentials.walletName);
-      fc.removeAllListeners();
+      $log.debug('Deleting Wallet:', client.credentials.walletName);
+      client.removeAllListeners();
 
       root.profile.deleteWallet(walletId);
 
@@ -461,7 +461,7 @@ angular.module('copayApp.services')
         if (!opts.isImport) return cb();
         $rootScope.$emit('Local/BackupDone', walletId);
 
-        if (!walletClient.isComplete())
+        if (!client.isComplete())
           return cb();
 
         storageService.setCleanAndScanAddresses(walletId, cb);

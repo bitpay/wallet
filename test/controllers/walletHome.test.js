@@ -12,7 +12,6 @@ describe('walletHome', function() {
     mocks.clear({}, done);
   });
 
-
   it('should be defined', function() {
     should.exist(ctrl);
   });
