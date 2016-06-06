@@ -159,7 +159,8 @@ angular.module('copayApp.services').factory('amazonService', function($http, $lo
   root.createBitPayInvoice = function(data, cb) {
     var data = {
       price: data.price,
-      currency: data.currency
+      currency: data.currency,
+      orderId: data.orderId
     };
     _checkLimit(data.price, function(err) {
       if (err) return cb(err);
