@@ -1,14 +1,22 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('preferencesEmailController',
-  function($scope, go, profileService, gettext, $log) {
+  function($rootScope, go, profileService, gettext, $log, walletService) {
     this.save = function(form) {
       var self = this;
       this.error = null;
 
       var fc = profileService.focusedClient;
       this.saving = true;
-      $scope.$emit('Local/EmailSettingUpdated', fc,self.email, function() {
+      var email = self.email || '';
+
+      walletService.updateRemotePreferences(fc, {
+        email: email,
+      }, function(err) {
+
+        if (!err)
+          $rootScope.$emit('Local/EmailUpdated', email);
+
         self.saving = false;
         go.path('preferences');
       });

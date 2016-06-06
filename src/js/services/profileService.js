@@ -1,6 +1,6 @@
 'use strict';
 angular.module('copayApp.services')
-  .factory('profileService', function profileServiceFactory($rootScope, $timeout, $filter, $log, sjcl, lodash, storageService, bwcService, configService, notificationService, pushNotificationsService, gettext, gettextCatalog, bwsError, uxLanguage, bitcore, platformInfo) {
+  .factory('profileService', function profileServiceFactory($rootScope, $timeout, $filter, $log, sjcl, lodash, storageService, bwcService, configService, notificationService, pushNotificationsService, gettext, gettextCatalog, bwsError, uxLanguage, bitcore, platformInfo, walletService) {
 
 
     var isChromeApp = platformInfo.isChromeApp;
@@ -67,8 +67,7 @@ angular.module('copayApp.services')
       var opts = opts || {};
       var walletId = client.credentials.walletId;
 
-      if ((root.walletClients[walletId] && root.walletClients[walletId].started) 
-          || opts.force) {
+      if ((root.walletClients[walletId] && root.walletClients[walletId].started) || opts.force) {
         return false;
       }
 
@@ -80,7 +79,6 @@ angular.module('copayApp.services')
         $log.warn('Key Derivation failed for wallet:' + walletId);
         storageService.clearLastAddress(walletId, function() {});
       }
-
 
       client.removeAllListeners();
       client.on('report', function(n) {
@@ -102,7 +100,7 @@ angular.module('copayApp.services')
       client.on('walletCompleted', function() {
         $log.debug('Wallet completed');
 
-        root.updateCredentialsFC(function() {
+        root.updateCredentials(client.export(), function() {
           $rootScope.$emit('Local/WalletCompleted', walletId);
         });
       });
@@ -165,7 +163,6 @@ angular.module('copayApp.services')
         storageService.getFocusedWalletId(function(err, focusedWalletId) {
           if (err) return cb(err);
           root._setFocus(focusedWalletId, function() {
-            $rootScope.$emit('Local/ProfileBound');
             if (usePushNotifications)
               root.pushNotificationsInit();
             root.isDisclaimerAccepted(function(val) {
@@ -433,6 +430,7 @@ angular.module('copayApp.services')
       });
     }
 
+    // Adds and bind a new client to the profile
     root.addAndBindWalletClient = function(client, opts, cb) {
       var walletId = client.credentials.walletId
 
@@ -443,11 +441,13 @@ angular.module('copayApp.services')
       $rootScope.$emit('Local/WalletListUpdated', client);
 
       var saveBwsUrl = function(cb) {
-        if (!opts.bwsurl) return cb();
-        var config = configService.getSync();
         var defaults = configService.getDefaults();
         var bwsFor = {};
         bwsFor[walletId] = opts.bwsurl || defaults.bws.url;
+
+        // Dont save the default
+        if (bwsFor[walletId] == defaults.bws.url)
+          return cb();
 
         configService.set({
           bwsFor: bwsFor,
@@ -467,11 +467,16 @@ angular.module('copayApp.services')
         storageService.setCleanAndScanAddresses(walletId, cb);
       };
 
+      walletService.updateRemotePreferences(client, {}, function() {
+        $log.debug('Remote preferences saved for:' + walletId)
+      });
+
       saveBwsUrl(function() {
         handleImportedClient(function() {
           root.setAndStoreFocus(walletId, function() {
             storageService.storeProfile(root.profile, function(err) {
 
+              var config = configService.getSync();
               if (config.pushNotifications.enabled)
                 pushNotificationsService.enableNotifications(root.walletClients);
               return cb(err, walletId);
@@ -480,6 +485,17 @@ angular.module('copayApp.services')
           });
         });
       });
+    };
+
+    root.storeProfileIfDirty = function(cb) {
+      if (root.profile.dirty) {
+        storageService.storeProfile(root.profile, function(err) {
+          $log.debug('Saved modified Profile');
+          if (cb) return cb(err);
+        });
+      } else {
+        if (cb) return cb();
+      };
     };
 
     root.importWallet = function(str, opts, cb) {
@@ -642,44 +658,34 @@ angular.module('copayApp.services')
       });
     };
 
-    // TODO
-    root.updateCredentialsFC = function(cb) {
-      var fc = root.focusedClient;
-
-      var newCredentials = lodash.reject(root.profile.credentials, {
-        walletId: fc.credentials.walletId
-      });
-      newCredentials.push(JSON.parse(fc.export()));
-      root.profile.credentials = newCredentials;
-
+    root.updateCredentials = function(credentials, cb) {
+      root.profile.updateWallet(credentials);
       storageService.storeProfileThrottled(root.profile, cb);
     };
 
+    root.getClients = function() {
+      return lodash.values(root.walletClients);
+    };
 
-    root.setPrivateKeyEncryptionFC = function(password, cb) {
-      var fc = root.focusedClient;
-      $log.debug('Encrypting private key for', fc.credentials.walletName);
+    root.needsBackup = function(client, cb) {
 
-      fc.setPrivateKeyEncryption(password);
-      fc.lock();
-      root.updateCredentialsFC(function() {
-        $log.debug('Wallet encrypted');
-        return cb();
+      if (!walletService.needsBackup(client))
+        return cb(false);
+
+      storageService.getBackupFlag(client.credentials.walletId, function(err, val) {
+        if (err) $log.error(err);
+        if (val) return cb(false);
+        return cb(true);
       });
     };
 
+    root.isReady = function(client, cb) {
+      if (!client.isComplete())
+        return cb('WALLET_NOT_COMPLETE');
 
-    root.disablePrivateKeyEncryptionFC = function(cb) {
-      var fc = root.focusedClient;
-      $log.debug('Disabling private key encryption for', fc.credentials.walletName);
-
-      try {
-        fc.disablePrivateKeyEncryption();
-      } catch (e) {
-        return cb(e);
-      }
-      root.updateCredentialsFC(function() {
-        $log.debug('Wallet encryption disabled');
+      root.needsBackup(client, function(needsBackup) {
+        if (needsBackup)
+          return cb('WALLET_NEEDS_BACKUP');
         return cb();
       });
     };

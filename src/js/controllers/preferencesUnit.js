@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('preferencesUnitController',
-  function($scope, $timeout, $log, configService, go) {
+  function($scope, $timeout, $log, configService, go, walletService, profileService) {
     var config = configService.getSync();
     this.unitName = config.wallet.settings.unitName;
     this.unitOpts = [
@@ -54,6 +54,9 @@ angular.module('copayApp.controllers').controller('preferencesUnitController',
         if (err) $log.warn(err);
         go.preferencesGlobal();
         $scope.$emit('Local/UnitSettingUpdated');
+        walletService.updateRemotePreferences(profileService.getClients(), {}, function() {
+          $log.debug('Remote preferences saved')
+        });
         $timeout(function() {
           $scope.$apply();
         }, 100);
