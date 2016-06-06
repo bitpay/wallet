@@ -12,11 +12,8 @@ if (window && window.navigator) {
   }
 }
 
-
 //Setting up route
-angular
-  .module('copayApp')
-  .config(function(historicLogProvider, $provide, $logProvider, $stateProvider, $urlRouterProvider, $compileProvider) {
+angular.module('copayApp').config(function(historicLogProvider, $provide, $logProvider, $stateProvider, $urlRouterProvider, $compileProvider) {
     $urlRouterProvider.otherwise('/');
 
     $logProvider.debugEnabled(true);
@@ -45,7 +42,7 @@ angular
                     v = JSON.stringify(v);
                 }
                 // Trim output in mobile
-                if (window.cordova) {
+                if (platformInfo.isCordova) {
                   v = v.toString();
                   if (v.length > 3000) {
                     v = v.substr(0, 2997) + '...';
@@ -59,7 +56,7 @@ angular
             });
 
             try {
-              if (window.cordova)
+              if (platformInfo.isCordova)
                 console.log(args.join(' '));
 
               historicLog.add(level, args.join(' '));
@@ -526,15 +523,15 @@ angular
   .run(function($rootScope, $state, $log, $timeout, $ionicPlatform, uriHandler, platformInfo, profileService, uxLanguage, animationService, go, gettextCatalog) {
 
     $ionicPlatform.ready(function() {
-      if (window.cordova !== undefined) {
+      if (platformInfo.isCordova) {
 
         $ionicPlatform.registerBackButtonAction(function(event) {
           event.preventDefault();
         }, 100);
 
-        var secondBackButtonPress = 'false';
+        var secondBackButtonPress = false;
         var intval = setInterval(function() {
-          secondBackButtonPress = 'false';
+          secondBackButtonPress = false;
         }, 5000);
 
         $ionicPlatform.on('pause', function() {
@@ -561,25 +558,22 @@ angular
           if (fromDisclaimer == 'true')
             navigator.app.exitApp();
 
-          if (platformInfo.isMobile && fromHome == 'true' && !$rootScope.modalOpened) {
-            if (secondBackButtonPress == 'true') {
+          if (platformInfo.isMobile && fromHome == 'true') {
+            if (secondBackButtonPress)
               navigator.app.exitApp();
-            } else {
+            else
               window.plugins.toast.showShortBottom(gettextCatalog.getString('Press again to exit'));
-            }
-          } else {
-            $rootScope.$emit('closeModal');
           }
 
-          if (secondBackButtonPress == 'true') {
+          if (secondBackButtonPress)
             clearInterval(intval);
-          } else {
-            secondBackButtonPress = 'true';
-          }
+          else
+            secondBackButtonPress = true;
 
           $timeout(function() {
             $rootScope.$emit('Local/SetTab', 'walletHome', true);
           }, 100);
+
           go.walletHome();
 
           setTimeout(function() {
