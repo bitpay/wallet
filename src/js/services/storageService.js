@@ -330,5 +330,17 @@ angular.module('copayApp.services')
       storage.remove('amazonGiftCards-' + network, cb);
     };
 
+    root.setAmazonLimits = function(network, limits, cb) {
+      storage.set('amazonLimits-' + network, limits, cb);
+    };
+
+    root.getAmazonLimits = function(network, cb) {
+      storage.get('amazonLimits-' + network, cb);
+    };
+
+    root.removeAmazonLimits = function(network, cb) {
+      storage.remove('amazonLimits-' + network, cb);
+    };
+
     return root;
   });
