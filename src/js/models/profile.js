@@ -27,7 +27,7 @@ Profile.fromObj = function(obj) {
   x.credentials = obj.credentials;
   x.disclaimerAccepted = obj.disclaimerAccepted;
   x.checked = obj.checked || {};
-  x.checkedUA = null;
+  x.checkedUA = obj.checkedUA || {};
 
   if (x.credentials[0] && typeof x.credentials[0] != 'object')
     throw ("credentials should be an object");
@@ -40,6 +40,7 @@ Profile.fromString = function(str) {
 };
 
 Profile.prototype.toObj = function() {
+  delete this.dirty;
   return JSON.stringify(this);
 };
 
@@ -53,7 +54,7 @@ Profile.prototype.hasWallet = function(walletId) {
 };
 
 Profile.prototype.isChecked = function(ua, walletId) {
-  return this.checkedUA == ua && this.checked[walletId];
+  return !!(this.checkedUA == ua && this.checked[walletId]);
 };
 
 Profile.prototype.setChecked = function(ua, walletId) {
@@ -62,6 +63,7 @@ Profile.prototype.setChecked = function(ua, walletId) {
     this.checked = {};
   }
   this.checked[walletId] = true;
+  this.dirty = true;
 };
 
 
@@ -70,6 +72,20 @@ Profile.prototype.addWallet = function(credentials) {
     return false;
 
   this.credentials.push(credentials);
+  this.dirty = true;
+  return true;
+};
+
+Profile.prototype.updateWallet = function(credentials) {
+  if (!this.hasWallet(credentials.walletId))
+    return false;
+
+  this.credentials = this.credentials.filter(function(c) {
+    return c.walletId != walletId;
+  });
+
+  this.addWallet(credentials);
+  this.dirty = true;
   return true;
 };
 
@@ -81,5 +97,6 @@ Profile.prototype.deleteWallet = function(walletId) {
     return c.walletId != walletId;
   });
 
+  this.dirty = true;
   return true;
 };
