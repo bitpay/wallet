@@ -40,19 +40,19 @@ angular.module('copayApp.controllers').controller('preferencesDeleteWalletContro
 
       modalInstance.result.then(function(ok) {
         if (ok) {
-          _deleteWallet();
+          doDeleteWallet();
         }
       });
     };
 
-    var _deleteWallet = function() {
+    var doDeleteWallet = function() {
       $scope.isDeletingWallet = true;
       var fc = profileService.focusedClient;
       var name = fc.credentials.walletName;
       var walletName = (fc.alias || '') + ' [' + name + ']';
       var self = this;
 
-      profileService.deleteWalletFC({}, function(err) {
+      profileService.deleteWalletClient(fc, function(err) {
         $scope.isDeletingWallet = false;
         if (err) {
           self.error = err.message || err;
@@ -72,7 +72,7 @@ angular.module('copayApp.controllers').controller('preferencesDeleteWalletContro
           delete_msg,
           function(buttonIndex) {
             if (buttonIndex == 1) {
-              _deleteWallet();
+              doDeleteWallet();
             }
           },
           confirm_msg, [accept_msg, cancel_msg]

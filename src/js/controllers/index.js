@@ -284,9 +284,10 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   };
 
 
+  // TODO: should not be in index.js
   self.updateRemotePreferences = function(opts, cb) {
+    var clients;
     var prefs = opts.preferences || {};
-    var fc = profileService.focusedClient;
 
     // Update this JIC.
     var config = configService.getSync().wallet.settings;
@@ -295,24 +296,20 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     prefs.language = self.defaultLanguageIsoCode;
     prefs.unit = config.unitCode;
 
-    var clients = [];
-    if (opts.saveAll) {
-      clients = lodash.values(profileService.walletClients);
+
+    if (opts.client) {
+      clients = [opts.client];
     } else {
-      clients = [fc];
+      clients = lodash.values(profileService.walletClients);
     };
 
     self._updateRemotePreferencesFor(clients, prefs, function(err) {
       if (err) return cb(err);
-      if (!fc) return cb();
 
-      fc.getPreferences(function(err, preferences) {
-        if (err) {
-          return cb(err);
-        }
-        self.preferences = preferences;
-        return cb();
+      lodash.each(clients, function(c) {
+        c.preferences = lodash.assign(prefs, c.preferences);
       });
+      return cb();
     });
   };
 
@@ -1055,7 +1052,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         return;
       }
 
-      profileService.setWalletClients();
+      profileService.addWalletClient(fc, {
+        force: true
+      });
       self.startScan(self.walletId);
     });
   };
@@ -1513,9 +1512,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   $rootScope.$on('Local/ProfileBound', function() {
     storageService.getRemotePrefsStoredFlag(function(err, val) {
       if (err || val) return;
-      self.updateRemotePreferences({
-        saveAll: true
-      }, function() {
+      self.updateRemotePreferences({}, function() {
         $log.debug('Remote preferences saved');
         storageService.setRemotePrefsStoredFlag(function() {});
       });
@@ -1524,9 +1521,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
   $rootScope.$on('Local/LanguageSettingUpdated', function() {
     self.setUxLanguage(function() {
-      self.updateRemotePreferences({
-        saveAll: true
-      }, function() {
+      self.updateRemotePreferences({}, function() {
         $log.debug('Remote preferences saved')
       });
     });
@@ -1558,15 +1553,14 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.updateAll({
       triggerTxUpdate: true,
     });
-    self.updateRemotePreferences({
-      saveAll: true
-    }, function() {
+    self.updateRemotePreferences({}, function() {
       $log.debug('Remote preferences saved')
     });
   });
 
-  $rootScope.$on('Local/EmailSettingUpdated', function(event, email, cb) {
+  $rootScope.$on('Local/EmailSettingUpdated', function(event, client, email, cb) {
     self.updateRemotePreferences({
+      client: client,
       preferences: {
         email: email || null
       },
@@ -1582,11 +1576,14 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     }
   });
 
-  $rootScope.$on('Local/ProfileCreated', function(event) {
-    self.updateRemotePreferences({
-      saveAll: true
-    }, function() {
-      $log.debug('Remote preferences saved');
+
+  lodash.each(['Local/ProfileCreated', 'Local/WalletListUpdated'], function(eventName) {
+    $rootScope.$on(eventName, function(event, client) {
+      self.updateRemotePreferences({
+        client: client
+      }, function() {
+        $log.debug('Remote preferences saved');
+      });
     });
   });
 
@@ -1743,6 +1740,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   });
 
   $rootScope.$on('Local/NoWallets', function(event) {
+    $log.debug('Event: NoWallets');
 
     $timeout(function() {
       self.hasProfile = true;

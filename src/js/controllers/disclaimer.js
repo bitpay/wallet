@@ -10,8 +10,6 @@ angular.module('copayApp.controllers').controller('disclaimerController',
       opts = opts || {};
       $log.debug('Creating profile');
       profileService.create(opts, function(err) {
-
-        console.log('[disclaimer.js.13]', err); //TODO
         if (err) {
           $log.warn(err);
           $scope.error = err;
@@ -33,8 +31,6 @@ angular.module('copayApp.controllers').controller('disclaimerController',
 
         $scope.error = "";
         self.creatingProfile = false;
-
-        console.log('[disclaimer.js.33]'); //TODO
       });
     };
 
@@ -44,10 +40,7 @@ angular.module('copayApp.controllers').controller('disclaimerController',
 
       profileService.getProfile(function(err, profile) {
         if (!profile) {
-
-          console.log('[disclaimer.js.43]'); //TODO
           create(opts);
-          console.log('[disclaimer.js.46]'); //TODO
         } else {
           $log.info('There is already a profile');
           self.creatingProfile = false;
