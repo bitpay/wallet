@@ -3,6 +3,7 @@
 angular.module('copayApp.services').factory('amazonService', function($http, $log, lodash, moment, storageService, configService) {
   var root = {};
   var credentials = {};
+  var LIMIT = 500;
 
   root.setCredentials = function(network) {
     credentials.AMAZON_SANDBOX = network == 'testnet' ? true : false;
@@ -26,6 +27,50 @@ angular.module('copayApp.services').factory('amazonService', function($http, $lo
       credentials.AMAZON_REGION = window.amazon_region;
       credentials.AMAZON_ENDPOINT = window.amazon_endpoint;
     };
+  };
+
+  var _checkLimit = function(amount, cb) {
+    var network = configService.getSync().amazon.testnet ? 'testnet' : 'livenet';
+    var dateStamp = moment.utc().format('YYYY-MM-DD');
+    storageService.getAmazonLimits(network, function(err, limits) {
+      if (err) $log.error(err);
+      
+      if (lodash.isEmpty(limits) && amount <= LIMIT) return cb();
+      if (lodash.isEmpty(limits) || amount > LIMIT) return cb('EXCEEDED_DAYLY_LIMIT');
+      
+      if (lodash.isString(limits)) {
+        limits = JSON.parse(limits);
+      }
+
+      if (limits.date == dateStamp && (limits.amount + amount) > LIMIT)
+        return cb('EXCEEDED_DAYLY_LIMIT');
+
+      return cb();
+    });
+  };
+
+  root.setAmountByDay = function(amount) {
+    var network = configService.getSync().amazon.testnet ? 'testnet' : 'livenet';
+    var dateStamp = moment.utc().format('YYYY-MM-DD');
+    storageService.getAmazonLimits(network, function(err, limits) {
+      if (err) $log.error(err);
+      
+      if (lodash.isEmpty(limits)) limits = { date: dateStamp, amount: 0 };
+      
+      if (lodash.isString(limits)) {
+        limits = JSON.parse(limits);
+      }
+
+      if (limits.date == dateStamp) {
+        limits.amount = limits.amount + amount;
+      } else {
+        limits = { date: dateStamp, amount: amount };
+      }
+      limits = JSON.stringify(limits);
+      storageService.setAmazonLimits(network, limits, function(err) {
+        if (err) $log.error(err);
+      });
+    });
   };
 
   var _getSignatureKey = function() {
@@ -116,12 +161,15 @@ angular.module('copayApp.services').factory('amazonService', function($http, $lo
       price: data.price,
       currency: data.currency
     };
-    $http(_postBitPay('/invoices', data)).then(function(data) {
-      $log.info('BitPay Create Invoice: SUCCESS');
-      return cb(null, data.data); 
-    }, function(data) {
-      $log.error('BitPay Create Invoice: ERROR ' + data.data.error);
-      return cb(data.data.error);
+    _checkLimit(data.price, function(err) {
+      if (err) return cb(err);
+      $http(_postBitPay('/invoices', data)).then(function(data) {
+        $log.info('BitPay Create Invoice: SUCCESS');
+        return cb(null, data.data); 
+      }, function(data) {
+        $log.error('BitPay Create Invoice: ERROR ' + data.data.error);
+        return cb(data.data.error);
+      });
     });
   };
 
