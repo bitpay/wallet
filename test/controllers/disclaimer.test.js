@@ -1,4 +1,4 @@
-describe.only('disclaimerController', function() {
+describe('disclaimerController', function() {
   var walletService;
   var storeProfile;
 
@@ -61,9 +61,9 @@ describe.only('disclaimerController', function() {
     mocks.clear({}, done);
   });
 
-  // it('should be defined', function() {
-  //   should.exist(ctrl);
-  // });
+  it('should be defined', function() {
+     should.exist(ctrl);
+  });
 
   it('should create the initial profile', function(done) {
     localStorage.clear();
@@ -72,7 +72,8 @@ describe.only('disclaimerController', function() {
       mnemonic: 'tunnel fork scare industry noble snow tank bullet over gesture nuclear next',
     });
     setTimeout(function() {
+      ctrl.creatingProfile.should.equal(false);
       done();
-    }, 1000);
+    }, 100);
   });
 });

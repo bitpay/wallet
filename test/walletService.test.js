@@ -7,6 +7,7 @@ describe('walletService', function() {
   beforeEach(function() {
     module('ngLodash');
     module('gettext');
+    module('angularMoment');
     module('bwcModule');
     module('copayApp.services');
   });

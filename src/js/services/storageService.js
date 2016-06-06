@@ -275,11 +275,11 @@ angular.module('copayApp.services')
     };
 
     root.removeAllWalletData = function(walletId, cb) {
-      storageService.clearLastAddress(walletId, function(err) {
+      root.clearLastAddress(walletId, function(err) {
         if (err) return cb(err);
-        storageService.removeTxHistory(walletId, function(err) {
+        root.removeTxHistory(walletId, function(err) {
           if (err) return cb(err);
-          storageService.clearBackupFlag(walletId, function(err) {
+          root.clearBackupFlag(walletId, function(err) {
             return cb(err);
           });
         });
