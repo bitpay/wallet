@@ -4,6 +4,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Project-Id-Version: \n"
 
+#: public/views/modals/search.html
 #: public/views/walletHome.html
 msgid "(possible double spend)"
 msgstr ""
@@ -12,12 +13,16 @@ msgstr ""
 msgid "(Trusted)"
 msgstr ""
 
-#: public/views/includes/confirm-tx.html
-msgid "{{confirm.feeRateStr}} of the transaction"
+#: public/views/walletHome.html
+msgid "[Balance Hidden]"
 msgstr ""
 
 #: src/js/controllers/walletHome.js
 msgid "{{fee}} will be deducted for bitcoin networking fees"
+msgstr ""
+
+#: public/views/includes/confirm-tx.html
+msgid "{{feeRateStr}} of the transaction"
 msgstr ""
 
 #: public/views/copayers.html
@@ -92,7 +97,11 @@ msgstr ""
 msgid "Activity"
 msgstr ""
 
-#: public/views/modals/destination-address.html
+#: public/views/modals/tx-details.html
+msgid "Add a comment"
+msgstr ""
+
+#: public/views/modals/addressbook.html
 msgid "Add a new entry"
 msgstr ""
 
@@ -110,10 +119,10 @@ msgstr ""
 msgid "Add wallet"
 msgstr ""
 
-#: public/views/paymentUri.html
+#: public/views/modals/addressbook.html
 #: public/views/modals/customized-amount.html
-#: public/views/modals/destination-address.html
 #: public/views/modals/paypro.html
+#: public/views/paymentUri.html
 msgid "Address"
 msgstr ""
 
@@ -145,10 +154,10 @@ msgstr ""
 msgid "Alternative Currency"
 msgstr ""
 
-#: public/views/paymentUri.html
-#: public/views/walletHome.html
 #: public/views/includes/output.html
 #: public/views/modals/customized-amount.html
+#: public/views/paymentUri.html
+#: public/views/walletHome.html
 msgid "Amount"
 msgstr ""
 
@@ -156,13 +165,13 @@ msgstr ""
 msgid "Amount below dust threshold"
 msgstr ""
 
-#: public/views/walletHome.html
 #: public/views/modals/customized-amount.html
+#: public/views/walletHome.html
 msgid "Amount in"
 msgstr ""
 
 #: src/js/controllers/preferencesDeleteWords.js
-msgid "Are you sure you want to delete the backup words?"
+msgid "Are you sure you want to delete the recovery phrase?"
 msgstr ""
 
 #: src/js/controllers/copayers.js
@@ -179,9 +188,6 @@ msgid "Average confirmation time: {{fee.nbBlocks * 10}} minutes"
 msgstr ""
 
 #: public/views/includes/topbar.html
-#: public/views/includes/tx-details.html
-#: public/views/modals/tx-details.html
-#: public/views/modals/txp-details.html
 msgid "Back"
 msgstr ""
 
@@ -199,10 +205,6 @@ msgstr ""
 
 #: public/views/walletHome.html
 msgid "Backup now"
-msgstr ""
-
-#: src/js/controllers/preferencesDeleteWords.js
-msgid "Backup words deleted"
 msgstr ""
 
 #: src/js/services/profileService.js
@@ -248,10 +250,6 @@ msgid "Broadcast Payment"
 msgstr ""
 
 #: src/js/controllers/walletHome.js
-msgid "Broadcasting Payment"
-msgstr ""
-
-#: src/js/controllers/walletHome.js
 msgid "Broadcasting transaction"
 msgstr ""
 
@@ -267,10 +265,10 @@ msgstr ""
 msgid "Calculating fee"
 msgstr ""
 
-#: public/views/walletHome.html
 #: public/views/includes/confirm-tx.html
+#: public/views/modals/addressbook.html
 #: public/views/modals/confirmation.html
-#: public/views/modals/destination-address.html
+#: public/views/walletHome.html
 #: src/js/services/confirmDialog.js
 #: src/js/controllers/copayers.js
 #: src/js/controllers/preferencesDelete.js
@@ -278,6 +276,7 @@ msgstr ""
 msgid "Cancel"
 msgstr ""
 
+#: public/views/includes/note.html
 #: public/views/includes/password.html
 msgid "CANCEL"
 msgstr ""
@@ -315,15 +314,22 @@ msgid "Clear cache"
 msgstr ""
 
 #: public/views/includes/topbar.html
+#: public/views/modals/addressbook.html
 #: public/views/modals/customized-amount.html
-#: public/views/modals/destination-address.html
 #: public/views/modals/paypro.html
 #: public/views/modals/scanner.html
+#: public/views/modals/search.html
+#: public/views/modals/tx-details.html
+#: public/views/modals/txp-details.html
 msgid "Close"
 msgstr ""
 
 #: public/views/preferences.html
 msgid "Color"
+msgstr ""
+
+#: public/views/modals/tx-details.html
+msgid "Comment"
 msgstr ""
 
 #: public/views/preferencesAbout.html
@@ -342,7 +348,6 @@ msgstr ""
 msgid "Confirm your wallet recovery phrase"
 msgstr ""
 
-#: public/views/includes/tx-details.html
 #: public/views/modals/tx-details.html
 msgid "Confirmations"
 msgstr ""
@@ -406,7 +411,7 @@ msgstr ""
 msgid "Could not access Wallet Service: Not found"
 msgstr ""
 
-#: src/js/controllers/walletHome.js
+#: src/js/controllers/modals/txpDetails.js
 msgid "Could not broadcast payment"
 msgstr ""
 
@@ -442,7 +447,7 @@ msgstr ""
 msgid "Could not decrypt file, check your spending password"
 msgstr ""
 
-#: src/js/controllers/walletHome.js
+#: src/js/controllers/modals/txpDetails.js
 msgid "Could not delete payment proposal"
 msgstr ""
 
@@ -470,7 +475,7 @@ msgstr ""
 msgid "Could not recognize a valid Bitcoin QR Code"
 msgstr ""
 
-#: src/js/controllers/walletHome.js
+#: src/js/controllers/modals/txpDetails.js
 msgid "Could not reject payment"
 msgstr ""
 
@@ -516,7 +521,6 @@ msgstr ""
 msgid "Current fee rate for this policy: {{fee.feePerKBUnit}}/kiB"
 msgstr ""
 
-#: public/views/includes/tx-details.html
 #: public/views/modals/tx-details.html
 msgid "Date"
 msgstr ""
@@ -549,10 +553,6 @@ msgstr ""
 msgid "Delete Wallet"
 msgstr ""
 
-#: src/js/controllers/walletHome.js
-msgid "Deleting payment"
-msgstr ""
-
 #: public/views/preferencesDeleteWallet.html
 msgid "Deleting Wallet..."
 msgstr ""
@@ -567,7 +567,12 @@ msgstr ""
 msgid "Derivation Strategy"
 msgstr ""
 
-#: public/views/includes/tx-details.html
+#: public/views/modals/tx-details.html
+#: public/views/modals/txp-details.html
+#: public/views/walletHome.html
+msgid "Description"
+msgstr ""
+
 #: public/views/modals/customized-amount.html
 #: public/views/modals/paypro.html
 #: public/views/modals/tx-details.html
@@ -587,7 +592,7 @@ msgstr ""
 msgid "Don't see your language on Crowdin? Contact the Owner on Crowdin! We'd love to support your language."
 msgstr ""
 
-#: public/views/modals/destination-address.html
+#: public/views/modals/addressbook.html
 msgid "Done"
 msgstr ""
 
@@ -599,8 +604,13 @@ msgstr ""
 msgid "Economy"
 msgstr ""
 
-#: public/views/modals/destination-address.html
+#: public/views/modals/addressbook.html
 msgid "Edit"
+msgstr ""
+
+#: public/views/includes/note.html
+#: public/views/modals/tx-details.html
+msgid "Edit comment"
 msgstr ""
 
 #: public/views/importLegacy.html
@@ -633,6 +643,10 @@ msgstr ""
 
 #: src/js/controllers/export.js
 msgid "Encrypted export file saved"
+msgstr ""
+
+#: public/views/includes/note.html
+msgid "Enter a new comment"
 msgstr ""
 
 #: public/views/create.html
@@ -677,6 +691,10 @@ msgstr ""
 msgid "Export to file"
 msgstr ""
 
+#: public/views/preferencesHistory.html
+msgid "Export to file [preparing...]"
+msgstr ""
+
 #: public/views/preferencesAdvanced.html
 msgid "Export Wallet"
 msgstr ""
@@ -702,7 +720,6 @@ msgid "Family vacation funds"
 msgstr ""
 
 #: public/views/includes/confirm-tx.html
-#: public/views/includes/tx-details.html
 #: public/views/modals/tx-details.html
 #: public/views/modals/txp-details.html
 msgid "Fee"
@@ -717,8 +734,16 @@ msgstr ""
 msgid "File/Text Backup"
 msgstr ""
 
+#: src/js/services/fingerprintService.js
+msgid "Finger Scan Failed"
+msgstr ""
+
 #: public/views/backup.html
 msgid "Finish"
+msgstr ""
+
+#: public/views/create.html
+msgid "For audit purposes"
 msgstr ""
 
 #: public/views/translators.html
@@ -757,7 +782,7 @@ msgstr ""
 msgid "German"
 msgstr ""
 
-#: public/views/modals/destination-address.html
+#: public/views/modals/addressbook.html
 msgid "Getting address for wallet {{selectedWalletName}} ..."
 msgstr ""
 
@@ -844,6 +869,7 @@ msgstr ""
 msgid "Insufficient funds for fee"
 msgstr ""
 
+#: public/views/modals/search.html
 #: public/views/walletHome.html
 msgid "Invalid"
 msgstr ""
@@ -897,7 +923,7 @@ msgstr ""
 msgid "Key already associated with an existing wallet"
 msgstr ""
 
-#: public/views/modals/destination-address.html
+#: public/views/modals/addressbook.html
 msgid "Label"
 msgstr ""
 
@@ -945,11 +971,10 @@ msgstr ""
 msgid "me"
 msgstr ""
 
-#: public/views/preferencesInformation.html
 #: public/views/includes/copayers.html
-#: public/views/includes/tx-details.html
 #: public/views/modals/tx-details.html
 #: public/views/modals/txp-details.html
+#: public/views/preferencesInformation.html
 msgid "Me"
 msgstr ""
 
@@ -957,7 +982,6 @@ msgstr ""
 msgid "Memo"
 msgstr ""
 
-#: public/views/includes/tx-details.html
 #: public/views/modals/tx-details.html
 msgid "Merchant message"
 msgstr ""
@@ -975,8 +999,12 @@ msgid "Missing private keys to sign"
 msgstr ""
 
 #: public/views/walletHome.html
-#: public/views/includes/tx-details.html
+msgid "more"
+msgstr ""
+
+#: public/views/modals/search.html
 #: public/views/modals/tx-details.html
+#: public/views/walletHome.html
 msgid "Moved"
 msgstr ""
 
@@ -989,11 +1017,11 @@ msgstr ""
 msgid "My Bitcoin address"
 msgstr ""
 
-#: public/views/modals/destination-address.html
+#: public/views/modals/addressbook.html
 msgid "My contacts"
 msgstr ""
 
-#: public/views/modals/destination-address.html
+#: public/views/modals/addressbook.html
 msgid "My wallets"
 msgstr ""
 
@@ -1042,17 +1070,13 @@ msgstr ""
 msgid "Not enough funds for fee"
 msgstr ""
 
-#: public/views/walletHome.html
+#: public/views/modals/addressbook.html
 #: public/views/modals/customized-amount.html
-#: public/views/modals/destination-address.html
+#: public/views/walletHome.html
 msgid "Not valid"
 msgstr ""
 
-#: public/views/walletHome.html
 #: public/views/includes/output.html
-#: public/views/includes/tx-details.html
-#: public/views/modals/tx-details.html
-#: public/views/modals/txp-details.html
 msgid "Note"
 msgstr ""
 
@@ -1093,7 +1117,6 @@ msgstr ""
 msgid "Paper Wallet Private Key"
 msgstr ""
 
-#: public/views/includes/tx-details.html
 #: public/views/modals/tx-details.html
 #: public/views/modals/txp-details.html
 msgid "Participants"
@@ -1277,13 +1300,12 @@ msgstr ""
 msgid "Receive"
 msgstr ""
 
-#: public/views/walletHome.html
-#: public/views/includes/tx-details.html
+#: public/views/modals/search.html
 #: public/views/modals/tx-details.html
+#: public/views/walletHome.html
 msgid "Received"
 msgstr ""
 
-#: public/views/includes/tx-details.html
 #: public/views/modals/tx-details.html
 #: public/views/modals/txp-details.html
 msgid "Recipients"
@@ -1291,6 +1313,10 @@ msgstr ""
 
 #: public/views/walletHome.html
 msgid "Reconnecting to Wallet Service..."
+msgstr ""
+
+#: src/js/controllers/preferencesDeleteWords.js
+msgid "Recovery phrase deleted"
 msgstr ""
 
 #: public/views/walletHome.html
@@ -1305,15 +1331,11 @@ msgstr ""
 msgid "Reject"
 msgstr ""
 
-#: src/js/controllers/walletHome.js
-msgid "Rejecting payment"
-msgstr ""
-
 #: public/views/preferencesAbout.html
 msgid "Release Information"
 msgstr ""
 
-#: public/views/modals/destination-address.html
+#: public/views/modals/addressbook.html
 msgid "Remove"
 msgstr ""
 
@@ -1329,8 +1351,8 @@ msgstr ""
 msgid "Repeat the spending password"
 msgstr ""
 
-#: public/views/walletHome.html
 #: public/views/modals/customized-amount.html
+#: public/views/walletHome.html
 msgid "Request a specific amount"
 msgstr ""
 
@@ -1354,11 +1376,15 @@ msgstr ""
 msgid "Russian"
 msgstr ""
 
+#: public/views/modals/addressbook.html
 #: public/views/preferencesAlias.html
 #: public/views/preferencesBwsUrl.html
 #: public/views/preferencesEmail.html
-#: public/views/modals/destination-address.html
 msgid "Save"
+msgstr ""
+
+#: public/views/includes/note.html
+msgid "SAVE"
 msgstr ""
 
 #: public/views/preferencesEmail.html
@@ -1397,15 +1423,18 @@ msgstr ""
 msgid "Scanning Wallet funds..."
 msgstr ""
 
-#: public/views/walletHome.html
+#: public/views/modals/search.html
 msgid "Search transactions"
+msgstr ""
+
+#: public/views/modals/search.html
+msgid "Search Transactions"
 msgstr ""
 
 #: public/views/preferences.html
 msgid "Security preferences"
 msgstr ""
 
-#: public/views/includes/tx-details.html
 #: public/views/modals/tx-details.html
 msgid "See it on the blockchain"
 msgstr ""
@@ -1456,10 +1485,10 @@ msgstr ""
 msgid "Sending transaction"
 msgstr ""
 
-#: public/views/walletHome.html
-#: public/views/includes/tx-details.html
+#: public/views/modals/search.html
 #: public/views/modals/tx-details.html
 #: public/views/modals/tx-status.html
+#: public/views/walletHome.html
 msgid "Sent"
 msgstr ""
 
@@ -1495,13 +1524,13 @@ msgstr ""
 msgid "Setting up email notifications could weaken your privacy, if the wallet service provider is compromised. Information available to an attacker would include your wallet addresses and its balance, but no more."
 msgstr ""
 
-#: public/views/walletHome.html
 #: public/views/includes/sidebar.html
+#: public/views/walletHome.html
 msgid "Settings"
 msgstr ""
 
-#: public/views/walletHome.html
 #: public/views/modals/customized-amount.html
+#: public/views/walletHome.html
 msgid "Share address"
 msgstr ""
 
@@ -1528,10 +1557,6 @@ msgstr ""
 msgid "Show advanced options"
 msgstr ""
 
-#: public/views/walletHome.html
-msgid "Show more"
-msgstr ""
-
 #: public/views/backup.html
 msgid "Show Wallet Recovery Phrase"
 msgstr ""
@@ -1542,6 +1567,10 @@ msgstr ""
 
 #: src/js/controllers/walletHome.js
 msgid "Signing transaction"
+msgstr ""
+
+#: public/views/create.html
+msgid "Single Wallet Address"
 msgstr ""
 
 #: public/views/translators.html
@@ -1565,7 +1594,7 @@ msgstr ""
 msgid "Spending Password needed"
 msgstr ""
 
-#: src/js/controllers/password.js
+#: src/js/controllers/index.js
 msgid "Spending Passwords do not match"
 msgstr ""
 
@@ -1659,7 +1688,6 @@ msgstr ""
 msgid "This recovery phrase was created with a password. To recover this wallet both the recovery phrase and password are needed."
 msgstr ""
 
-#: public/views/includes/tx-details.html
 #: public/views/modals/tx-details.html
 msgid "This transaction has become invalid; possibly due to a double spend attempt."
 msgstr ""
@@ -1672,11 +1700,10 @@ msgstr ""
 msgid "Time"
 msgstr ""
 
-#: public/views/walletHome.html
 #: public/views/includes/output.html
-#: public/views/includes/tx-details.html
 #: public/views/modals/tx-details.html
 #: public/views/modals/txp-details.html
+#: public/views/walletHome.html
 msgid "To"
 msgstr ""
 
@@ -1704,7 +1731,6 @@ msgstr ""
 msgid "Touch ID Failed"
 msgstr ""
 
-#: public/views/includes/tx-details.html
 #: public/views/modals/tx-details.html
 msgid "Transaction"
 msgstr ""
@@ -1733,9 +1759,9 @@ msgstr ""
 msgid "Type the Recovery Phrase (usually 12 words)"
 msgstr ""
 
-#: public/views/walletHome.html
-#: public/views/includes/tx-details.html
+#: public/views/modals/search.html
 #: public/views/modals/tx-details.html
+#: public/views/walletHome.html
 msgid "Unconfirmed"
 msgstr ""
 
@@ -1788,7 +1814,7 @@ msgid "Wallet Already Imported:"
 msgstr ""
 
 #: src/js/services/profileService.js
-msgid "Wallet already in Copay:"
+msgid "Wallet already in Copay"
 msgstr ""
 
 #: public/views/preferencesInformation.html
