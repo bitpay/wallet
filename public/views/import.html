@@ -34,9 +34,17 @@
 
   <div ng-show="type == '12' ">
     <div class="box-notification m20b" ng-show="import.error">
-      <span class="text-warning">
-        {{import.error|translate}}
-      </span>
+      <div ng-show="import.importErr" class="text-warning">
+        <div >
+        </div>
+
+        <div class="m10 text-bold"  translate>Could not access the wallet at the server. Please check:</div>
+<div  class="p25l"  translate> The password of the recovery phrase (if set) </div>
+<div   class="p25l" translate> The derivation path</div>
+<div  class="p25l" translate> The wallet service URL </div>
+<div   class="p25l" translate> NOTE: To import a wallet from a 3rd party software, please go to Add Wallet &gt; Create Wallet, and specify the seed there.</div>
+<div  class="text-right"> <span translate>Error</span>: {{import.error|translate}}</div>
+      </div>
     </div>
     <div class="row large-12 columns">
         <form name="importForm12" ng-submit="import.importMnemonic(importForm12)" novalidate>
