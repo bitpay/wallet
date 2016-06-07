@@ -330,11 +330,14 @@
             </button>
           </div>
         </div>
-        <div class="row m10t" ng-show="home.addr" >
+        <div class="row m10t" ng-show="home.addr">
           <div class="large-12 columns">
-            <div class="line-t size-10 text-gray m10b p10t">
+            <div class="line-t size-10 text-gray m10b p10t" ng-show="!index.isSingleAddress">
               <span translate> Share this wallet address to receive payments. To protect your privacy, new addresses are generated automatically once you use them.</span>
                 <a ng-show="!home.blockUx && !home.generatingAddress" ng-click="home.setAddress(true)" translate>Generate new address</a>
+            </div>
+            <div class="line-t size-10 text-gray m10b p10t" ng-show="index.isSingleAddress">
+              <span translate> Share this wallet address to receive payments</span>.
             </div>
           </div>
         </div>

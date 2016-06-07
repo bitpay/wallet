@@ -137,6 +137,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     $timeout(function() {
       $rootScope.$apply();
       self.hasProfile = true;
+      self.isSingleAddress = false;
       self.noFocusedWallet = false;
       self.onGoingProcess = {};
 
@@ -304,6 +305,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
           if (err) {
             self.updateError = bwsError.msg(err, gettext('Could not update Wallet'));
           } else {
+            self.isSingleAddress = !!ret.wallet.singleAddress;
             if (!opts.quiet)
               self.setOngoingProcess('scanning', ret.wallet.scanStatus == 'running');
           }
