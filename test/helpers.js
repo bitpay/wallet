@@ -98,7 +98,7 @@ mocks.init = function(fixtures, controllerName, opts, done) {
         var bwc = new $delegate.Client();
         if (walletData)
           bwc.import(walletData, {
-            baseUrl: opts.baseurl || 'https://bws.bitpay.com/bws/api',
+            baseUrl: opts.bwsurl || 'https://bws.bitpay.com/bws/api',
             verbose: opts.verbose,
             transports: ['polling'],
           });

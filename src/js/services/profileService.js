@@ -130,7 +130,7 @@ angular.module('copayApp.services')
       $log.debug('Bind wallet:' + credentials.walletId);
 
       // Create the client
-      var getBaseURL = function(walletId) {
+      var getBWSURL = function(walletId) {
         var config = configService.getSync();
         var defaults = configService.getDefaults();
         return ((config.bwsFor && config.bwsFor[walletId]) || defaults.bws.url);
@@ -138,7 +138,7 @@ angular.module('copayApp.services')
 
       var skipKeyValidation = root.profile.isChecked(platformInfo.ua, credentials.walletId);
       var client = bwcService.getClient(JSON.stringify(credentials), {
-        baseurl: getBaseURL(credentials.walletId),
+        bwsurl: getBWSURL(credentials.walletId),
         skipKeyValidation: skipKeyValidation,
       });
 
