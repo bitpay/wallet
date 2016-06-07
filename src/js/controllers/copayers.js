@@ -54,15 +54,15 @@ angular.module('copayApp.controllers').controller('copayersController',
 
       modalInstance.result.then(function(ok) {
         if (ok) {
-          _deleteWallet();
+          doDeleteWallet();
         }
       });
     };
 
-    var _deleteWallet = function() {
+    var doDeleteWallet = function() {
       var fc = profileService.focusedClient;
       var walletName = fc.credentials.walletName;
-      profileService.deleteWalletFC({}, function(err) {
+      profileService.deleteWalletClient(fc, function(err) {
         if (err) {
           self.error = err.message || err;
           $timeout(function() {

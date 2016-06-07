@@ -52,6 +52,9 @@ var walletInfo = {
 
 var FIXTURES = {
 
+  // store preferences
+  '1eda3e702196b8d5d82fae129249bc79f0d5be2f5309a4e39855e7eb4ad31428': {},
+
   // Incomplete wallet status
   'd05582c35aa545494e3f3be9713efa9df112d36a324350f6b7141996b824bce2': walletInfo,
   // ^ same thing, twostep=1

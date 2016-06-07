@@ -3,6 +3,8 @@ angular.module('copayApp.services')
   .factory('uxLanguage', function languageService($log, lodash, gettextCatalog, amMoment, configService) {
     var root = {};
 
+    root.currentLanguage = null;
+
     root.availableLanguages = [{
       name: 'English',
       isoCode: 'en',
@@ -33,7 +35,6 @@ angular.module('copayApp.services')
       isoCode: 'ru',
     }];
 
-    root.currentLanguage = null;
 
     root._detect = function(cb) {
 
@@ -99,20 +100,20 @@ angular.module('copayApp.services')
       var userLang = configService.getSync().wallet.settings.defaultLanguage;
 
       if (!userLang) {
-
         root._detect(function(lang) {
           userLang = lang;
 
           if (userLang != root.currentLanguage) {
             root._set(lang);
           }
-          return cb(userLang);
+          if (cb) return cb(userLang);
         });
       } else {
         if (userLang != root.currentLanguage) {
           root._set(userLang);
         }
-        return cb(userLang);
+
+        if (cb) return cb(userLang);
       }
     };
 

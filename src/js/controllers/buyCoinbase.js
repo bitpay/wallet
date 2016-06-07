@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('buyCoinbaseController', 
-  function($scope, $modal, $log, $timeout, lodash, profileService, coinbaseService, animationService, bwsError, addressService, walletService) {
+  function($scope, $modal, $log, $timeout, lodash, profileService, coinbaseService, animationService, bwsError, addressService) {
     
     window.ignoreMobilePause = true;
     var self = this;
@@ -72,7 +72,7 @@ angular.module('copayApp.controllers').controller('buyCoinbaseController',
 
         $scope.selectWallet = function(walletId, walletName) {
           var client = profileService.getClient(walletId);
-          walletService.isReady(client, function(err) {
+          profileService.isReady(client, function(err) {
             if (err) {
               self.error = {errors: [{ message: err }]};
               $modalInstance.dismiss('cancel');
