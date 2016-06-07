@@ -30,6 +30,7 @@ bwcModule.provider("bwcService", function() {
     };
 
     service.getClient = function(walletData, opts) {
+      opts = opts || {};
 
       //note opts use `baseurl` all lowercase;
       var bwc = new Client({

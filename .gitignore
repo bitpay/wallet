@@ -24,7 +24,8 @@ webkitbuilds/*
 !webkitbuilds/build-osx.sh
 !webkitbuilds/Background.png
 
-
+#fonts
+public/fonts
 
 # chrome extensions
 browser-extensions/chrome/copay-chrome-extension

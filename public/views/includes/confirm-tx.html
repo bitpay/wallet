@@ -1,47 +1,39 @@
-<div class="modalMask"></div>
-
-<div class="confirmTxModal" ng-controller="confirmTxController as confirm" ng-init="tx = index.confirmTx.txp">
-
-  <div class="confirmHead" ng-style="{'background-color':index.backgroundColor}">
-    <h1 class="m0 text-center text-white size-18" translate>Send bitcoin</h1>
+<div class="m20t">
+  <label class="size-14 text-center">
+    <span translate>Send bitcoin</span>
+  </label>
+</div>
+<div class="text-center">
+  <div class="size-36">{{tx.amountStr}}</div>
+  <div class="size-12 label gray radius" ng-show="tx.alternativeAmountStr">{{tx.alternativeAmountStr}}</div>
+  <i class="db fi-arrow-down size-24 m10v"></i>
+  <div class="payment-proposal-to" ng-click="copyToClipboard(tx.toAddress)">
+    <i class="fi-bitcoin left m10l"></i>
+    <contact ng-if="!tx.hasMultiplesOutputs" class="dib enable_text_select ellipsis m5t m5b m15l size-14" address="{{tx.toAddress}}"></contact>
+    <span ng-if="tx.hasMultiplesOutputs" translate>
+      Multiple recipients
+    </span>
   </div>
-  <div class="p10">
-    <div class="size-36">{{tx.amountStr}}</div>
-    <div class="size-12 label gray radius" ng-show="tx.alternativeAmountStr">{{tx.alternativeAmountStr}}</div>
-    <i class="db fi-arrow-down size-24 m10v"></i>
-    <div class="payment-proposal-to" ng-click="copyToClipboard(tx.toAddress)">
-      <i class="fi-bitcoin left m10l"></i>
-      <contact ng-if="!tx.hasMultiplesOutputs" class="dib enable_text_select ellipsis m5t m5b m15l size-14" address="{{tx.toAddress}}"></contact>
-      <span ng-if="tx.hasMultiplesOutputs" translate>
-        Multiple recipients
-      </span>
+  <div class="m10t size-12" ng-init="processFee(tx.amount, tx.fee)">
+    <div ng-show="!showPercentage" ng-click="showPercentage = true">
+      <span translate>Fee</span> <span class="tl">({{feeLevel|translate}})</span>:
+      <span class="text-bold">{{tx.feeStr}}</span>
+      <span class="label gray radius">{{feeAlternativeStr}}</span>
     </div>
-    <div class="m10t size-12" ng-init="confirm.processFee(tx.amount, tx.fee)">
-      <div ng-show="!showPercentage" ng-click="showPercentage = true">
-        <span translate>Fee</span> <span class="tl">({{confirm.feeLevel|translate}})</span>: 
-        <span class="text-bold">{{tx.feeStr}}</span>
-        <span class="label gray radius">{{confirm.feeAlternativeStr}}</span>
-      </div>
-      <div ng-show="showPercentage" ng-click="showPercentage = false" translate>
-        {{confirm.feeRateStr}} of the transaction
-      </div>
+    <div ng-show="showPercentage" ng-click="showPercentage = false" translate>
+      {{feeRateStr}} of the transaction
     </div>
-    <div class="row m20t">
-      <div class="large-6 medium-6 small-6 columns">
-        <button 
-           ng-click="confirm.close(index.confirmTx.callback)"
-           class="small m10b round outline dark-gray expand" translate>
-          Cancel
-        </button>
-      </div>
-      <div class="large-6 medium-6 small-6 columns">
-        <button 
-           ng-click="confirm.accept(index.confirmTx.callback)"
-           class="small m10b round expand" 
-           ng-style="{'background-color':index.backgroundColor}" translate>
-          Confirm
-        </button>
-      </div> 
+  </div>
+  <div class="row m20t dib">
+    <div class="half-row left">
+      <button ng-click="cancel()" class="round outline dark-gray expand">
+        <span class="size-12" translate>Cancel</span>
+      </button>
+    </div>
+    <div class="half-row left">
+      <button ng-click="accept()" class="round expand" ng-style="{'background-color':index.backgroundColor}">
+        <span class="size-12" translate>Confirm</span>
+      </button>
     </div>
   </div>
 </div>

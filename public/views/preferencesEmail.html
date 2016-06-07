@@ -1,5 +1,5 @@
-<div 
-  class="topbar-container" 
+<div
+  class="topbar-container"
   ng-include="'views/includes/topbar.html'"
   ng-init="titleSection='Email Notifications'; goBackToState = 'preferences'">
 </div>
@@ -11,13 +11,7 @@
   <h4></h4>
   <div class="onGoingProcess" ng-show="prefEmail.saving && !index.isOffline">
     <div class="onGoingProcess-content" ng-style="{'background-color':index.backgroundColor}">
-      <div class="spinner">
-        <div class="rect1"></div>
-        <div class="rect2"></div>
-        <div class="rect3"></div>
-        <div class="rect4"></div>
-        <div class="rect5"></div>
-      </div>
+      <ion-spinner class="spinner-stable" icon="lines"></ion-spinner>
       <span translate>Saving preferences...</span>
     </div>
   </div>

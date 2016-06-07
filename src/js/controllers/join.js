@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('joinController',
-  function($scope, $rootScope, $timeout, go, notification, profileService, configService, storageService, applicationService, $modal, gettext, lodash, ledger, trezor, platformInfo, derivationPathHelper) {
+  function($scope, $rootScope, $timeout, $ionicScrollDelegate, go, notification, profileService, configService, storageService, applicationService, $modal, gettext, lodash, ledger, trezor, platformInfo, derivationPathHelper) {
 
     var isChromeApp = platformInfo.isChromeApp;
     var isDevel = platformInfo.isDevel;
@@ -17,7 +17,6 @@ angular.module('copayApp.controllers').controller('joinController',
       $scope.joinForm.secret.$setViewValue(data);
       $scope.joinForm.secret.$render();
     };
-
 
     var updateSeedSourceSelect = function() {
       self.seedOptions = [{
@@ -56,6 +55,7 @@ angular.module('copayApp.controllers').controller('joinController',
     this.join = function(form) {
       if (form && form.$invalid) {
         self.error = gettext('Please enter the required fields');
+        $ionicScrollDelegate.scrollTop();
         return;
       }
 
@@ -65,7 +65,7 @@ angular.module('copayApp.controllers').controller('joinController',
         bwsurl: $scope.bwsurl,
       }
 
-      var setSeed = self.seedSourceId =='set';
+      var setSeed = self.seedSourceId == 'set';
       if (setSeed) {
         var words = form.privateKey.$modelValue;
         if (words.indexOf(' ') == -1 && words.indexOf('prv') == 1 && words.length > 108) {
@@ -78,6 +78,7 @@ angular.module('copayApp.controllers').controller('joinController',
         var pathData = derivationPathHelper.parse($scope.derivationPath);
         if (!pathData) {
           this.error = gettext('Invalid derivation path');
+          $ionicScrollDelegate.scrollTop();
           return;
         }
         opts.account = pathData.account;
@@ -91,6 +92,7 @@ angular.module('copayApp.controllers').controller('joinController',
       if (setSeed && !opts.mnemonic && !opts.extendedPrivateKey) {
 
         this.error = gettext('Please enter the wallet recovery phrase');
+        $ionicScrollDelegate.scrollTop();
         return;
       }
 
@@ -98,14 +100,14 @@ angular.module('copayApp.controllers').controller('joinController',
         var account = $scope.account;
         if (!account || account < 1) {
           this.error = gettext('Invalid account number');
-
+          $ionicScrollDelegate.scrollTop();
           return;
         }
 
-        if ( self.seedSourceId == 'trezor')
+        if (self.seedSourceId == 'trezor')
           account = account - 1;
 
-        opts.account =  account;
+        opts.account = account;
         self.hwWallet = self.seedSourceId == 'ledger' ? 'Ledger' : 'Trezor';
         var src = self.seedSourceId == 'ledger' ? ledger : trezor;
 
@@ -113,6 +115,7 @@ angular.module('copayApp.controllers').controller('joinController',
           self.hwWallet = false;
           if (err) {
             self.error = err;
+            $ionicScrollDelegate.scrollTop();
             $scope.$apply();
             return;
           }
@@ -132,6 +135,7 @@ angular.module('copayApp.controllers').controller('joinController',
           if (err) {
             self.loading = false;
             self.error = err;
+            $ionicScrollDelegate.scrollTop();
             $rootScope.$apply();
             return;
           }

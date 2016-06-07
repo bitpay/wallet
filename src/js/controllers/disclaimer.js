@@ -1,49 +1,53 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('disclaimerController',
-  function($scope, $timeout, $log, profileService, applicationService, gettextCatalog, uxLanguage, go) {
+  function($scope, $timeout, $log, $ionicSideMenuDelegate, profileService, applicationService, gettextCatalog, uxLanguage, go) {
     var self = this;
     self.tries = 0;
-    $scope.creatingProfile = true;
+    self.creatingProfile = true;
 
-    var create = function(noWallet) {
-      profileService.create({
-        noWallet: noWallet
-      }, function(err) {
-
+    var create = function(opts) {
+      opts = opts || {};
+      $log.debug('Creating profile');
+      profileService.create(opts, function(err) {
         if (err) {
           $log.warn(err);
           $scope.error = err;
           $scope.$apply();
-          $timeout(function() {
+
+          return $timeout(function() {
             $log.warn('Retrying to create profile......');
             if (self.tries == 3) {
               self.tries == 0;
-              create(true);
+              return create({
+                noWallet: true
+              });
             } else {
               self.tries += 1;
-              create(false);
+              return create();
             }
           }, 3000);
-        } else {
-          $scope.error = "";
-          $scope.creatingProfile = false;
-        }
+        };
+
+        $scope.error = "";
+        self.creatingProfile = false;
       });
     };
 
-    this.init = function() {
+    this.init = function(opts) {
+      $ionicSideMenuDelegate.canDragContent(false);
       self.lang = uxLanguage.currentLanguage;
 
       profileService.getProfile(function(err, profile) {
         if (!profile) {
-          create(false);
+          create(opts);
         } else {
-          $log.debug('There is a profile already');
-          $scope.creatingProfile = false;
+          $log.info('There is already a profile');
+          self.creatingProfile = false;
           profileService.bindProfile(profile, function(err) {
             if (!err || !err.message || !err.message.match('NONAGREEDDISCLAIMER')) {
-              $log.debug('Disclaimer already accepted at #disclaimer. Redirect to Wallet Home.')
+              $log.debug('Disclaimer already accepted at #disclaimer. Redirect to Wallet Home.');
+              $ionicSideMenuDelegate.canDragContent(true);
               go.walletHome();
             }
           });
@@ -54,7 +58,10 @@ angular.module('copayApp.controllers').controller('disclaimerController',
     this.accept = function() {
       profileService.setDisclaimerAccepted(function(err) {
         if (err) $log.error(err);
-        else go.walletHome();
+        else {
+          $ionicSideMenuDelegate.canDragContent(true);
+          go.walletHome();
+        }
       });
     };
   });

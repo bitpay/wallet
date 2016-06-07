@@ -1,5 +1,5 @@
-<div 
-  class="topbar-container" 
+<div
+  class="topbar-container"
   ng-include="'views/includes/topbar.html'"
   ng-init="titleSection='Coinbase'; closeToHome = true">
 </div>
@@ -8,13 +8,7 @@
 
   <div class="onGoingProcess" ng-show="coinbase.loading">
     <div class="onGoingProcess-content" ng-style="{'background-color':index.backgroundColor}">
-    <div class="spinner">
-      <div class="rect1"></div>
-      <div class="rect2"></div>
-      <div class="rect3"></div>
-      <div class="rect4"></div>
-      <div class="rect5"></div>
-    </div>
+    <ion-spinner class="spinner-stable" icon="lines"></ion-spinner>
     <span ng-show="coinbase.loading">Connecting to Coinbase...</span>
     </div>
   </div>
@@ -22,10 +16,10 @@
   <div class="row m20t">
     <div class="large-12 columns">
       <div class="text-center">
-        <img src="img/coinbase-logo.png" 
+        <img src="img/coinbase-logo.png"
         ng-click="index.updateCoinbase()" width="100">
       </div>
-      
+
       <div class="m10t text-center" ng-show="coinbase.error">
         <div class="notification m10b size-12 text-warning">{{coinbase.error}}</div>
         <button class="outline dark-gray tiny round" ng-click="coinbase.submitOauthCode(coinbase.code)">Try again</button>

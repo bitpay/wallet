@@ -6,46 +6,45 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
   <meta name="msapplication-tap-highlight" content="no">
   <meta name="format-detection" content="telephone=no">
+  <link rel="stylesheet" type="text/css" href="css/ionic.css">
   <link rel="stylesheet" type="text/css" href="css/foundation.css">
   <link rel="stylesheet" type="text/css" href="icons/foundation-icons.css">
+  <link rel="stylesheet" type="text/css" href="css/ui-components.css">
   <link rel="stylesheet" type="text/css" href="css/copay.css">
   <title>Copay - Multisignature Wallet</title>
   <link rel="shortcut icon" href="img/favicon.ico">
 </head>
 <body ng-cloak class="ng-cloak">
 
-  <div class="page" ng-controller="indexController as index">
-    <div notifications="right top"></div> 
-    <div ng-include="'views/includes/tx-details.html'" ng-if="index.showTx"></div>
-    <div ng-include="'views/includes/password.html'" ng-if="index.askPassword"></div>
-    <div ng-include="'views/includes/alert.html'" ng-if="index.showAlert"></div>
-    <div ng-include="'views/includes/confirm-tx.html'" ng-if="index.confirmTx"></div>
-    
-    <div class="off-canvas-wrap" id="off-canvas-wrap"
-      ng-swipe-disable-mouse 
-      ng-swipe-left="index.closeMenu()"
-      ng-swipe-right="index.openMenu()">
-      <div class="inner-wrap">
-        <div ng-include="'views/includes/sidebar.html'" ng-if="index.hasProfile"></div>
-        <div id="sectionContainer">
-          <div id="mainSection">
-            <section ui-view="main"
-              ng-class="{
-                'main': index.hasProfile
-              }"></section>
-          </div>
-        </div>
-        <a class="close-menu" ng-click="index.closeMenu()"></a>
+  <ion-side-menus class="page" ng-controller="indexController as index">
 
+    <!-- Left menu -->
+    <ion-side-menu side="left">
+      <div ng-include="'views/includes/sidebar.html'" ng-if="index.hasProfile"></div>
+    </ion-side-menu>
+
+    <!-- Main content -->
+
+    <ion-side-menu-content on-drag="index.onDrag()">
+      <div notifications="right top"></div>
+      <div id="sectionContainer">
+        <div id="mainSection">
+          <section ui-view="main"
+            ng-class="{
+              'main': index.hasProfile
+            }"></section>
+        </div>
       </div>
-    </div>
-  </div>
-  
+    </ion-side-menu-content>
+  </ion-side-menus>
+
+  <script src="lib/ionic.bundle.js"></script>
   <script src="lib/angular.js"></script>
 
   <!-- DO NOT DELETE THIS COMMET  -->
   <!-- PLACEHOLDER: CORDOVA SRIPT -->
 
+  <script src="lib/ui-components.js"></script>
   <script src="js/copay.js"></script>
 
 </body>
