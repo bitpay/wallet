@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('importController',
-  function($scope, $rootScope, $ionicScrollDelegate, $timeout, $log, profileService, configService, notification, go, sjcl, gettext, lodash, ledger, trezor, derivationPathHelper, platformInfo) {
+  function($scope, $rootScope, $ionicScrollDelegate, $timeout, $log, profileService, configService, notification, go, sjcl, gettext, lodash, ledger, trezor, derivationPathHelper, platformInfo, bwsError, bwcService) {
 
     var isChromeApp = platformInfo.isChromeApp;
     var isDevel = platformInfo.isDevel;
@@ -9,6 +9,7 @@ angular.module('copayApp.controllers').controller('importController',
     var self = this;
     var reader = new FileReader();
     var defaults = configService.getDefaults();
+    var errors = bwcService.getErrors();
     $scope.bwsurl = defaults.bws.url;
     $scope.derivationPath = derivationPathHelper.default;
     $scope.account = 1;
@@ -93,14 +94,17 @@ angular.module('copayApp.controllers').controller('importController',
         profileService.importExtendedPrivateKey(xPrivKey, opts, function(err, walletId) {
           self.loading = false;
           if (err) {
-            self.error = err;
-            self.importErr = true;
-
+            if (err instanceof errors.NOT_AUTHORIZED) {
+              self.importErr = true;
+            } else {
+              self.error = err;
+            }
             $ionicScrollDelegate.scrollTop();
             return $timeout(function() {
               $scope.$apply();
             });
           }
+
           $rootScope.$emit('Local/WalletImported', walletId);
           notification.success(gettext('Success'), gettext('Your wallet has been imported correctly'));
           go.walletHome();
@@ -114,15 +118,22 @@ angular.module('copayApp.controllers').controller('importController',
       $timeout(function() {
         profileService.importMnemonic(words, opts, function(err, walletId) {
           self.loading = false;
-          if (err) {
-            self.error = err;
-            self.importErr = true;
 
+          if (err) {
+console.log('[import.js.122:err:]',err); //TODO
+            if (err instanceof errors.NOT_AUTHORIZED) {
+
+console.log('[import.js.125]'); //TODO
+              self.importErr = true;
+            } else {
+              self.error = err;
+            }
             $ionicScrollDelegate.scrollTop();
             return $timeout(function() {
               $scope.$apply();
             });
           }
+
           $rootScope.$emit('Local/WalletImported', walletId);
           notification.success(gettext('Success'), gettext('Your wallet has been imported correctly'));
           go.walletHome();
