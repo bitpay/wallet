@@ -27,6 +27,21 @@ angular.module('copayApp.services').factory('amazonService', function($http, $lo
       credentials.AMAZON_REGION = window.amazon_region;
       credentials.AMAZON_ENDPOINT = window.amazon_endpoint;
     };
+    _healthCheckRequest();
+  };
+
+  var _healthCheckRequest = function() {
+    $http({
+      method: 'GET',
+      url: credentials.AMAZON_ENDPOINT + '/sping',
+      headers: {
+        'content-type': 'application/json'
+      }
+    }).then(function(data) {
+      $log.info('Amazon Health Check: SUCCESS');
+    }, function(data) {
+      $log.error('Amazon Health Check: ERROR ' + data.data.error);
+    });
   };
 
   var _checkLimit = function(amount, cb) {
