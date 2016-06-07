@@ -613,6 +613,10 @@ msgstr ""
 msgid "Edit comment"
 msgstr ""
 
+#: public/views/modals/tx-details.html
+msgid "Edited by"
+msgstr ""
+
 #: public/views/importLegacy.html
 msgid "Email"
 msgstr ""
@@ -1615,6 +1619,10 @@ msgstr ""
 
 #: public/views/paperWallet.html
 msgid "Sweep Wallet"
+msgstr ""
+
+#: public/views/walletHome.html
+msgid "Tap and hold to show"
 msgstr ""
 
 #: public/views/walletHome.html
