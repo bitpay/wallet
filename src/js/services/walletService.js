@@ -212,7 +212,7 @@ angular.module('copayApp.services').factory('walletService', function($log, loda
     var config = configService.getSync().wallet.settings;
 
     //prefs.email  (may come from arguments)
-    prefs.language = uxLanguage.getCurrentLanguage();;
+    prefs.language = uxLanguage.getCurrentLanguage();
     prefs.unit = config.unitCode;
 
     updateRemotePreferencesFor(clients, prefs, function(err) {

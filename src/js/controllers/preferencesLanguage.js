@@ -28,7 +28,7 @@ angular.module('copayApp.controllers').controller('preferencesLanguageController
 
           walletService.updateRemotePreferences(profileService.getClients(), {},
             function() {
-              $log.debug('Remote preferences saved')
+              $log.debug('Remote preferences saved');
             });
         });
       });

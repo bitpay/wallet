@@ -52,7 +52,7 @@ angular.module('copayApp.controllers').controller('preferencesAltCurrencyControl
         go.preferencesGlobal();
         $scope.$emit('Local/UnitSettingUpdated');
         walletService.updateRemotePreferences(profileService.walletClients, {}, function() {
-          $log.debug('Remote preferences saved')
+          $log.debug('Remote preferences saved');
         });
         $timeout(function() {
           $scope.$apply();
