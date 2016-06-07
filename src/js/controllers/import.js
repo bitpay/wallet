@@ -12,6 +12,7 @@ angular.module('copayApp.controllers').controller('importController',
     $scope.bwsurl = defaults.bws.url;
     $scope.derivationPath = derivationPathHelper.default;
     $scope.account = 1;
+    self.importErr = false;
 
     window.ignoreMobilePause = true;
     $scope.$on('$destroy', function() {
@@ -19,6 +20,7 @@ angular.module('copayApp.controllers').controller('importController',
         window.ignoreMobilePause = false;
       }, 100);
     });
+
 
     var updateSeedSourceSelect = function() {
       self.seedOptions = [];
@@ -52,7 +54,7 @@ angular.module('copayApp.controllers').controller('importController',
       try {
         str2 = sjcl.decrypt(self.password, str);
       } catch (e) {
-        err = gettext('Could not decrypt file, check your spending password');
+        err = gettext('Could not decrypt file, check your password');
         $log.warn(e);
       };
 
@@ -92,6 +94,8 @@ angular.module('copayApp.controllers').controller('importController',
           self.loading = false;
           if (err) {
             self.error = err;
+            self.importErr = true;
+
             $ionicScrollDelegate.scrollTop();
             return $timeout(function() {
               $scope.$apply();
@@ -112,6 +116,8 @@ angular.module('copayApp.controllers').controller('importController',
           self.loading = false;
           if (err) {
             self.error = err;
+            self.importErr = true;
+
             $ionicScrollDelegate.scrollTop();
             return $timeout(function() {
               $scope.$apply();
@@ -265,6 +271,7 @@ angular.module('copayApp.controllers').controller('importController',
         return;
       }
       this.error = '';
+      this.importErr = false;
 
       var account = +$scope.account;
 
