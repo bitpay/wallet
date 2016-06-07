@@ -55,7 +55,7 @@ describe('disclaimerController', function() {
       initController: true,
       noDisclaimer: true,
     }, done);
-  })
+  });
 
   afterEach(function(done) {
     mocks.clear({}, done);

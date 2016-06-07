@@ -1774,7 +1774,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   });
 
   $rootScope.$on('Local/EmailUpdated', function(event, email) {
-    self.preferences.email = email
+    self.preferences.email = email;
   });
 
   lodash.each(['NewCopayer', 'CopayerUpdated'], function(eventName) {
