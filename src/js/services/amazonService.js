@@ -30,6 +30,25 @@ angular.module('copayApp.services').factory('amazonService', function($http, $lo
     _healthCheckRequest();
   };
 
+  var _getUuid = function(cb) {
+    var network = configService.getSync().amazon.testnet ? 'testnet' : 'livenet';
+    storageService.getAmazonUuid(network, function(err, uuid) {
+      if (err) {
+        $log.error(err);
+        return cb();
+      }
+      if (!lodash.isEmpty(uuid)) return cb(uuid);
+      uuid = 'Copay-' + moment().unix();
+      storageService.setAmazonUuid(network, uuid, function(err) {
+        if (err) {
+          $log.error(err);
+          return cb();
+        }
+        return cb(uuid);
+      });
+    });
+  };
+
   var _healthCheckRequest = function() {
     $http({
       method: 'GET',
@@ -172,19 +191,23 @@ angular.module('copayApp.services').factory('amazonService', function($http, $lo
   }; 
 
   root.createBitPayInvoice = function(data, cb) {
-    var data = {
-      price: data.price,
-      currency: data.currency,
-      orderId: data.orderId
-    };
-    _checkLimit(data.price, function(err) {
-      if (err) return cb(err);
-      $http(_postBitPay('/invoices', data)).then(function(data) {
-        $log.info('BitPay Create Invoice: SUCCESS');
-        return cb(null, data.data); 
-      }, function(data) {
-        $log.error('BitPay Create Invoice: ERROR ' + data.data.error);
-        return cb(data.data.error);
+    _getUuid(function(uuid) {
+      if (lodash.isEmpty(uuid)) return cb('CAN_NOT_GET_UUID');
+      var dataSrc = {
+        price: data.price,
+        currency: data.currency,
+        orderId: data.orderId,
+        posData: '{uuid:' + uuid + '}'
+      };
+      _checkLimit(data.price, function(err) {
+        if (err) return cb(err);
+        $http(_postBitPay('/invoices', dataSrc)).then(function(data) {
+          $log.info('BitPay Create Invoice: SUCCESS');
+          return cb(null, data.data); 
+        }, function(data) {
+          $log.error('BitPay Create Invoice: ERROR ' + data.data.error);
+          return cb(data.data.error);
+        });
       });
     });
   };

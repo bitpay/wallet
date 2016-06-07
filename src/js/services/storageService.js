@@ -310,5 +310,17 @@ angular.module('copayApp.services')
       storage.remove('amazonLimits-' + network, cb);
     };
 
+    root.setAmazonUuid = function(network, uuid, cb) {
+      storage.set('amazonUuid-' + network, uuid, cb);
+    };
+
+    root.getAmazonUuid = function(network, cb) {
+      storage.get('amazonUuid-' + network, cb);
+    };
+
+    root.removeAmazonUuid = function(network, cb) {
+      storage.remove('amazonUuid-' + network, cb);
+    };
+
     return root;
   });
