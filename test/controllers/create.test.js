@@ -99,12 +99,12 @@ describe('createController', function() {
     },
   }; // TODO: Read from file
 
-  beforeEach(function(done){
+  beforeEach(function(done) {
     mocks.init(fixtures, 'createController', {}, done);
   })
 
 
-  afterEach(function(done){
+  afterEach(function(done) {
     mocks.clear({}, done);
   });
 
@@ -125,6 +125,7 @@ describe('createController', function() {
     scope.walletName = 'A test wallet';
     scope.isTestnet = false;
     scope.bwsurl = null;
+    scope.isSingleAddress = false;
     scope.privateKey = 'legal winner thank year wave sausage worth useful legal winner thank yellow';
     scope._walletPrivKey = 'Kz4CFSTgLzoYfMkt97BTBotUbZYXjMts6Ej9HbVfCf5oLmun1BXy';
 

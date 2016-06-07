@@ -100,6 +100,7 @@ angular.module('copayApp.controllers').controller('createController',
         myName: $scope.totalCopayers > 1 ? $scope.myName : null,
         networkName: $scope.testnetEnabled ? 'testnet' : 'livenet',
         bwsurl: $scope.bwsurl,
+        singleAddress: $scope.singleAddressEnabled,
         walletPrivKey: $scope._walletPrivKey, // Only for testing
       };
       var setSeed = self.seedSourceId == 'set';
