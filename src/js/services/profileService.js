@@ -543,8 +543,12 @@ angular.module('copayApp.services')
       $log.debug('Importing Wallet xPrivKey');
 
       walletClient.importFromExtendedPrivateKey(xPrivKey, opts, function(err) {
-        if (err)
+        if (err) {
+          if (err instanceof errors.NOT_AUTHORIZED)
+            return cb(err);
+
           return bwsError.cb(err, gettext('Could not import'), cb);
+        }
 
         root.addAndBindWalletClient(walletClient, {
           bwsurl: opts.bwsurl,
@@ -571,8 +575,12 @@ angular.module('copayApp.services')
         passphrase: opts.passphrase,
         account: opts.account || 0,
       }, function(err) {
-        if (err)
+        if (err) {
+          if (err instanceof errors.NOT_AUTHORIZED)
+            return cb(err);
+
           return bwsError.cb(err, gettext('Could not import'), cb);
+        }
 
         root.addAndBindWalletClient(walletClient, {
           bwsurl: opts.bwsurl,
