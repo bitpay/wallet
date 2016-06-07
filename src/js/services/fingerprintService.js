@@ -21,7 +21,6 @@ angular.module('copayApp.services').factory('fingerprintService', function($log,
   };
 
   var requestFinger = function(cb) {
-    console.log('[fingerprintService.js.26:requestFinger:]'); //TODO
     try {
       FingerprintAuth.show({
           clientId: 'Copay',
@@ -82,7 +81,7 @@ angular.module('copayApp.services').factory('fingerprintService', function($log,
 
   root.check = function(client, cb) {
     if (isNeeded(client)) {
-      console.log('[fingerprintService.js.82:_isAvailable:]', _isAvailable); //TODO
+      $log.debug('FingerPrint Service:', _isAvailable); 
       if (_isAvailable == 'IOS')
         return requestTouchId(cb);
       else
