@@ -31,15 +31,6 @@ angular.element(document).ready(function() {
       window.plugins.webintent.onNewIntent(handleBitcoinURI);
       window.handleOpenURL = handleBitcoinURI;
 
-      window.plugins.touchid.isAvailable(
-        function(msg) {
-          window.touchidAvailable = true;
-        }, // success handler: TouchID available
-        function(msg) {
-          window.touchidAvailable = false;
-        } // error handler: no TouchID available
-      );
-
       startAngular();
     }, false);
 
