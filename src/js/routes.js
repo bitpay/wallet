@@ -632,6 +632,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
               throw new Error(err); // TODO
             }
           } else {
+            profileService.storeProfileIfDirty();
             $log.debug('Profile loaded ... Starting UX.');
             $state.transitionTo(toState.name || toState, toParams);
           }

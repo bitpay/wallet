@@ -169,7 +169,7 @@ angular.module('copayApp.controllers').controller('createController',
       self.loading = true;
       $timeout(function() {
 
-        profileService.createWallet(opts, function(err, walletId) {
+        profileService.createWallet(opts, function(err) {
           self.loading = false;
           if (err) {
             $log.warn(err);

@@ -82,7 +82,9 @@ mocks.init = function(fixtures, controllerName, opts, done) {
 
   module('ionic');
   module('ngLodash');
+  module('angularMoment');
   module('gettext');
+  module('stateMock');
   module('bwcModule', function($provide) {
     $provide.decorator('bwcService', function($delegate, lodash) {
       var getClient = $delegate.getClient;
@@ -154,8 +156,6 @@ mocks.init = function(fixtures, controllerName, opts, done) {
     });
   });
 
-  module('angularMoment');
-  module('stateMock');
   module('copayApp.services', {
     $modal: mocks.modal,
     $timeout: mocks.$timeout,
@@ -220,6 +220,9 @@ mocks.init = function(fixtures, controllerName, opts, done) {
           noWallet: true
         }, function(err) {
           should.not.exist(err, err);
+          if (opts.noDisclaimer){
+            return done();
+          }
           _profileService_.setDisclaimerAccepted(function() {
             if (!opts.initController)
               startController();

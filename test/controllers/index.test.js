@@ -60,7 +60,7 @@ describe('index', function() {
     });
 
 
-    it('should updates remote preferences', function(done) {
+    it.skip('should updates remote preferences', function(done) {
       ctrl.updateRemotePreferences({}, function() {
         done();
       });

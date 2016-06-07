@@ -3,6 +3,7 @@ describe('importController', function() {
   var storeProfile;
 
   var fixtures = {
+    '31f5deeef4cf7fd8fc67297179232e8e4590532960454ad958009132fef3daae': {},
     '4599136eff6deb4c9c78043fa84113617a16d75c45920d662305f6227ae8f0a0': {
       "wallet": {
         "version": "1.0.0",

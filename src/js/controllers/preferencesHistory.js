@@ -51,7 +51,7 @@ angular.module('copayApp.controllers').controller('preferencesHistory',
 
       $log.debug('Generating CSV from History');
       getHistory(function(err, txs) {
-        if (err || !txs || !txs[0]) {
+        if (err || !txs) {
           $log.warn('Failed to generate CSV:', err);
           if (cb) return cb(err);
           return;
