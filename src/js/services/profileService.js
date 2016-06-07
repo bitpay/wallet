@@ -303,6 +303,7 @@ angular.module('copayApp.services')
 
         walletClient.createWallet(name, myName, opts.m, opts.n, {
           network: opts.networkName,
+          singleAddress: opts.singleAddress,
           walletPrivKey: opts.walletPrivKey,
         }, function(err, secret) {
           if (err) return bwsError.cb(err, gettext('Error creating wallet'), cb);
@@ -352,8 +353,8 @@ angular.module('copayApp.services')
 
         // check if exist
         if (lodash.find(root.profile.credentials, {
-          'walletId': walletData.walletId
-        })) {
+            'walletId': walletData.walletId
+          })) {
           return cb(gettext('Cannot join the same wallet more that once'));
         }
       } catch (ex) {
