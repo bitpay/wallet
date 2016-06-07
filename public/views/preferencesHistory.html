@@ -6,14 +6,22 @@
 <div class="content preferences" ng-controller="preferencesHistory as history">
   <h4></h4>
   <ul class="no-bullet m0">
-    <li ng-if="!index.isCordova" ng-init="index.csvHistory()">
-      <a ng-style="{'color':index.backgroundColor}" ng-csv="index.csvContent" 
-        csv-header="index.csvHeader" 
-        filename="{{index.csvFilename }}" translate>
+    <li ng-if="!index.isCordova" ng-init="history.csvHistory()">
+      <a style="color:#444" 
+        ng-csv="history.csvContent" 
+        csv-header="history.csvHeader" 
+        ng-show="history.csvReady"
+        filename="Copay-{{index.alias || index.walletName}}.csv" translate>
         Export to file
       </a>
+      <a style="color:#777" 
+        ng-show="!history.csvReady"
+        translate>
+        Export to file [preparing...]
+      </a>
+ 
     </li>
-    <li ng-style="{'color':index.backgroundColor}" ng-click="history.clearTransactionHistory();" translate>
+    <li  ng-click="history.clearTransactionHistory();" translate>
       Clear cache
     </li>
   </ul>

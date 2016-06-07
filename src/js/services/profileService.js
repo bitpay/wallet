@@ -1,6 +1,6 @@
 'use strict';
 angular.module('copayApp.services')
-  .factory('profileService', function profileServiceFactory($rootScope, $timeout, $filter, $log, sjcl, lodash, storageService, bwcService, configService, notificationService, pushNotificationsService, gettext, gettextCatalog, bwsError, uxLanguage, bitcore, platformInfo) {
+  .factory('profileService', function profileServiceFactory($rootScope, $timeout, $filter, $log, sjcl, lodash, storageService, bwcService, configService, notificationService, pushNotificationsService, gettext, gettextCatalog, bwsError, uxLanguage, bitcore, platformInfo, walletService) {
 
 
     var isChromeApp = platformInfo.isChromeApp;
@@ -62,34 +62,22 @@ angular.module('copayApp.services')
       });
     };
 
-    root.setWalletClient = function(credentials) {
-      if (root.walletClients[credentials.walletId] &&
-        root.walletClients[credentials.walletId].started) {
-        return;
+    // Adds a wallet client to profileService
+    root.bindWalletClient = function(client, opts) {
+      var opts = opts || {};
+      var walletId = client.credentials.walletId;
+
+      if ((root.walletClients[walletId] && root.walletClients[walletId].started) || opts.force) {
+        return false;
       }
 
-
-      var getBaseURL = function(walletId) {
-        var config = configService.getSync();
-        var defaults = configService.getDefaults();
-
-        return ((config.bwsFor && config.bwsFor[walletId]) || defaults.bws.url);
-      };
-
-      $log.debug('Importing wallet:' + credentials.walletId);
-      var skipKeyValidation = root.profile.checked[credentials.walletId] == platformInfo.ua;
-      var client = bwcService.getClient(JSON.stringify(credentials), {
-        baseurl: getBaseURL(credentials.walletId),
-        skipKeyValidation: skipKeyValidation,
-      });
-      root.walletClients[credentials.walletId] = client;
+      root.walletClients[walletId] = client;
+      root.walletClients[walletId].started = true;
+      root.walletClients[walletId].doNotVerifyPayPro = isChromeApp;
 
       if (client.incorrectDerivation) {
-        $log.warn('Key Derivation failed for wallet:' + credentials.walletId);
-        storageService.clearLastAddress(credentials.walletId, function() {});
-      } else if (!skipKeyValidation) {
-        root.profile.checked[credentials.walletId] = platformInfo.ua;
-        storageService.storeProfileThrottled(root.profile, function() {});
+        $log.warn('Key Derivation failed for wallet:' + walletId);
+        storageService.clearLastAddress(walletId, function() {});
       }
 
       client.removeAllListeners();
@@ -100,9 +88,9 @@ angular.module('copayApp.services')
       client.on('notification', function(n) {
         $log.debug('BWC Notification:', n);
         notificationService.newBWCNotification(n,
-          client.credentials.walletId, client.credentials.walletName);
+          walletId, client.credentials.walletName);
 
-        if (root.focusedClient.credentials.walletId == client.credentials.walletId) {
+        if (root.focusedClient.credentials.walletId == walletId) {
           $rootScope.$emit(n.type, n);
         } else {
           $rootScope.$apply();
@@ -112,17 +100,13 @@ angular.module('copayApp.services')
       client.on('walletCompleted', function() {
         $log.debug('Wallet completed');
 
-        root.updateCredentialsFC(function() {
-          $rootScope.$emit('Local/WalletCompleted', client.credentials.walletId);
+        root.updateCredentials(client.export(), function() {
+          $rootScope.$emit('Local/WalletCompleted', walletId);
         });
-
       });
 
-      root.walletClients[credentials.walletId].started = true;
-      root.walletClients[credentials.walletId].doNotVerifyPayPro = isChromeApp;
-
       if (client.hasPrivKeyEncrypted() && !client.isPrivKeyEncrypted()) {
-        $log.warn('Auto locking unlocked wallet:' + credentials.walletId);
+        $log.warn('Auto locking unlocked wallet:' + walletId);
         client.lock();
       }
 
@@ -133,15 +117,35 @@ angular.module('copayApp.services')
         }
         client.setNotificationsInterval(BACKGROUND_UPDATE_PERIOD);
       });
-    }
 
-    root.setWalletClients = function() {
-      var credentials = root.profile.credentials;
-      lodash.each(credentials, function(credential) {
-        //$log.info("Credentials:", credentials);
-        root.setWalletClient(credential);
+      return true;
+    };
+
+
+    // Used when reading wallets from the profile
+    root.bindWallet = function(credentials) {
+      if (!credentials.walletId)
+        throw 'bindWallet should receive credentials JSON';
+
+      $log.debug('Bind wallet:' + credentials.walletId);
+
+      // Create the client
+      var getBaseURL = function(walletId) {
+        var config = configService.getSync();
+        var defaults = configService.getDefaults();
+        return ((config.bwsFor && config.bwsFor[walletId]) || defaults.bws.url);
+      };
+
+      var skipKeyValidation = root.profile.isChecked(platformInfo.ua, credentials.walletId);
+      var client = bwcService.getClient(JSON.stringify(credentials), {
+        baseurl: getBaseURL(credentials.walletId),
+        skipKeyValidation: skipKeyValidation,
       });
-      $rootScope.$emit('Local/WalletListUpdated');
+
+      if (!skipKeyValidation && !client.incorrectDerivation)
+        root.profile.setChecked(platformInfo.ua, credentials.walletId);
+
+      return root.bindWalletClient(client);
     };
 
     root.bindProfile = function(profile, cb) {
@@ -150,11 +154,15 @@ angular.module('copayApp.services')
       configService.get(function(err) {
         $log.debug('Preferences read');
         if (err) return cb(err);
-        root.setWalletClients();
+
+        lodash.each(root.profile.credentials, function(credentials) {
+          root.bindWallet(credentials);
+        });
+        $rootScope.$emit('Local/WalletListUpdated');
+
         storageService.getFocusedWalletId(function(err, focusedWalletId) {
           if (err) return cb(err);
           root._setFocus(focusedWalletId, function() {
-            $rootScope.$emit('Local/ProfileBound');
             if (usePushNotifications)
               root.pushNotificationsInit();
             root.isDisclaimerAccepted(function(val) {
@@ -222,11 +230,10 @@ angular.module('copayApp.services')
       });
     };
 
-    root._seedWallet = function(opts, cb) {
+    var seedWallet = function(opts, cb) {
       opts = opts || {};
       var walletClient = bwcService.getClient(null, opts);
       var network = opts.networkName || 'livenet';
-
 
       if (opts.mnemonic) {
         try {
@@ -285,45 +292,54 @@ angular.module('copayApp.services')
       return cb(null, walletClient);
     };
 
-    root._createNewProfile = function(opts, cb) {
-
-      if (opts.noWallet) {
-        return cb(null, Profile.create());
-      }
-
-      root._seedWallet({}, function(err, walletClient) {
-        if (err) return cb(err);
-
-        var walletName = gettextCatalog.getString('Personal Wallet');
-        var me = gettextCatalog.getString('me');
-        walletClient.createWallet(walletName, me, 1, 1, {
-          network: 'livenet'
-        }, function(err) {
-          if (err) return bwsError.cb(err, gettext('Error creating wallet'), cb);
-          var p = Profile.create({
-            credentials: [JSON.parse(walletClient.export())],
-          });
-          return cb(null, p);
-        });
-      })
-    };
-
-    root.createWallet = function(opts, cb) {
+    // Creates a wallet on BWC/BWS
+    var doCreateWallet = function(opts, cb) {
       $log.debug('Creating Wallet:', opts);
-      root._seedWallet(opts, function(err, walletClient) {
+      seedWallet(opts, function(err, walletClient) {
         if (err) return cb(err);
 
-        walletClient.createWallet(opts.name, opts.myName || 'me', opts.m, opts.n, {
+        var name = opts.name || gettextCatalog.getString('Personal Wallet');
+        var myName = opts.myName || gettextCatalog.getString('me');
+
+        walletClient.createWallet(name, myName, opts.m, opts.n, {
           network: opts.networkName,
           walletPrivKey: opts.walletPrivKey,
         }, function(err, secret) {
           if (err) return bwsError.cb(err, gettext('Error creating wallet'), cb);
-
-          root._addWalletClient(walletClient, opts, cb);
-        })
+          return cb(null, walletClient, secret);
+        });
       });
     };
 
+    // Creates the default Copay profile and its wallet
+    root.createDefaultProfile = function(opts, cb) {
+      var p = Profile.create();
+
+      if (opts.noWallet) {
+        return cb(null, p);
+      }
+
+      opts.m = 1;
+      opts.n = 1;
+      opts.network = 'livenet';
+
+      doCreateWallet(opts, function(err, walletClient) {
+        if (err) return bwsError.cb(err, gettext('Error creating wallet'), cb);
+        p.addWallet(JSON.parse(walletClient.export()));
+        return cb(null, p);
+      });
+    };
+
+    // create and store a wallet
+    root.createWallet = function(opts, cb) {
+      doCreateWallet(opts, function(err, walletClient, secret) {
+        root.addAndBindWalletClient(walletClient, {
+          bwsurl: opts.bwsurl
+        }, cb);
+      });
+    };
+
+    // joins and stores a wallet
     root.joinWallet = function(opts, cb) {
       var walletClient = bwcService.getClient();
       $log.debug('Joining Wallet:', opts);
@@ -344,12 +360,14 @@ angular.module('copayApp.services')
       opts.networkName = walletData.network;
       $log.debug('Joining Wallet:', opts);
 
-      root._seedWallet(opts, function(err, walletClient) {
+      seedWallet(opts, function(err, walletClient) {
         if (err) return cb(err);
 
         walletClient.joinWallet(opts.secret, opts.myName || 'me', {}, function(err) {
           if (err) return bwsError.cb(err, gettext('Could not join wallet'), cb);
-          root._addWalletClient(walletClient, opts, cb);
+          root.addAndBindWalletClient(walletClient, {
+            bwsurl: opts.bwsurl
+          }, cb);
         });
       });
     };
@@ -358,39 +376,31 @@ angular.module('copayApp.services')
       return root.walletClients[walletId];
     };
 
-    root.deleteWalletFC = function(opts, cb) {
-      var fc = root.focusedClient;
-      var walletId = fc.credentials.walletId;
+    root.deleteWalletClient = function(client, cb) {
+      var walletId = client.credentials.walletId;
 
       pushNotificationsService.unsubscribe(root.getClient(walletId), function(err) {
         if (err) $log.warn('Unsubscription error: ' + err.message);
         else $log.debug('Unsubscribed from push notifications service');
       });
 
-      $log.debug('Deleting Wallet:', fc.credentials.walletName);
+      $log.debug('Deleting Wallet:', client.credentials.walletName);
+      client.removeAllListeners();
 
-      fc.removeAllListeners();
-      root.profile.credentials = lodash.reject(root.profile.credentials, {
-        walletId: walletId
-      });
+      root.profile.deleteWallet(walletId);
 
       delete root.walletClients[walletId];
       root.focusedClient = null;
 
-      storageService.clearLastAddress(walletId, function(err) {
+
+      storageService.removeAllWalletData(walletId, function(err) {
         if (err) $log.warn(err);
       });
 
-      storageService.removeTxHistory(walletId, function(err) {
-        if (err) $log.warn(err);
-      });
-
-      storageService.clearBackupFlag(walletId, function(err) {
-        if (err) $log.warn(err);
-      });
 
       $timeout(function() {
-        root.setWalletClients();
+        $rootScope.$emit('Local/WalletListUpdated');
+
         root.setAndStoreFocus(null, function() {
           storageService.storeProfile(root.profile, function(err) {
             if (err) return cb(err);
@@ -419,57 +429,72 @@ angular.module('copayApp.services')
       });
     }
 
-    root._addWalletClient = function(walletClient, opts, cb) {
-      var walletId = walletClient.credentials.walletId;
+    // Adds and bind a new client to the profile
+    root.addAndBindWalletClient = function(client, opts, cb) {
+      var walletId = client.credentials.walletId
 
-      // check if exist
-      var w = lodash.find(root.profile.credentials, {
-        'walletId': walletId
+      if (!root.profile.addWallet(JSON.parse(client.export())))
+        return cb(gettext('Wallet already in Copay'));
+
+      root.bindWalletClient(client);
+      $rootScope.$emit('Local/WalletListUpdated', client);
+
+      var saveBwsUrl = function(cb) {
+        var defaults = configService.getDefaults();
+        var bwsFor = {};
+        bwsFor[walletId] = opts.bwsurl || defaults.bws.url;
+
+        // Dont save the default
+        if (bwsFor[walletId] == defaults.bws.url)
+          return cb();
+
+        configService.set({
+          bwsFor: bwsFor,
+        }, function(err) {
+          if (err) $log.warn(err);
+          return cb();
+        });
+      };
+
+      var handleImportedClient = function(cb) {
+        if (!opts.isImport) return cb();
+        $rootScope.$emit('Local/BackupDone', walletId);
+
+        if (!client.isComplete())
+          return cb();
+
+        storageService.setCleanAndScanAddresses(walletId, cb);
+      };
+
+      walletService.updateRemotePreferences(client, {}, function() {
+        $log.debug('Remote preferences saved for:' + walletId)
       });
-      if (w) {
-        return cb(gettext('Wallet already in Copay' + ": ") + w.walletName);
-      }
 
-      var config = configService.getSync();
-      var defaults = configService.getDefaults();
-      var bwsFor = {};
-      bwsFor[walletId] = opts.bwsurl || defaults.bws.url;
-
-      configService.set({
-        bwsFor: bwsFor,
-      }, function(err) {
-        if (err) console.log(err);
-
-        root.profile.credentials.push(JSON.parse(walletClient.export()));
-        root.setWalletClients();
-
-
-        var handleImport = function(cb) {
-          var isImport = opts.mnemonic || opts.externalSource || opts.extendedPrivateKey;
-
-          if (!isImport)
-            return cb();
-
-          $rootScope.$emit('Local/BackupDone', walletId);
-
-          if (!walletClient.isComplete())
-            return cb();
-
-          storageService.setCleanAndScanAddresses(walletId, cb);
-        };
-
-        handleImport(function() {
+      saveBwsUrl(function() {
+        handleImportedClient(function() {
           root.setAndStoreFocus(walletId, function() {
             storageService.storeProfile(root.profile, function(err) {
 
-              $rootScope.$emit('Local/ProfileCreated');
+              var config = configService.getSync();
               if (config.pushNotifications.enabled)
                 pushNotificationsService.enableNotifications(root.walletClients);
               return cb(err, walletId);
             });
+
           });
         });
       });
+    };
+
+    root.storeProfileIfDirty = function(cb) {
+      if (root.profile.dirty) {
+        storageService.storeProfile(root.profile, function(err) {
+          $log.debug('Saved modified Profile');
+          if (cb) return cb(err);
+        });
+      } else {
+        if (cb) return cb();
+      };
     };
 
     root.importWallet = function(str, opts, cb) {
@@ -491,7 +516,13 @@ angular.module('copayApp.services')
       var addressBook = str.addressBook || {};
       var historyCache = str.historyCache ||  [];
 
-      root._addWalletClient(walletClient, opts, function(err, walletId) {
+      if (!walletClient.incorrectDerivation)
+        root.profile.setChecked(platformInfo.ua, walletClient.credentials.walletId);
+
+      root.addAndBindWalletClient(walletClient, {
+        bwsurl: opts.bwsurl,
+        isImport: true
+      }, function(err, walletId) {
         if (err) return cb(err);
         root.setMetaData(walletClient, addressBook, historyCache, function(error) {
           if (error) $log.warn(error);
@@ -508,7 +539,10 @@ angular.module('copayApp.services')
         if (err)
           return bwsError.cb(err, gettext('Could not import'), cb);
 
-        root._addWalletClient(walletClient, opts, cb);
+        root.addAndBindWalletClient(walletClient, {
+          bwsurl: opts.bwsurl,
+          isImport: true
+        }, cb);
       });
     };
 
@@ -533,7 +567,10 @@ angular.module('copayApp.services')
         if (err)
           return bwsError.cb(err, gettext('Could not import'), cb);
 
-        root._addWalletClient(walletClient, opts, cb);
+        root.addAndBindWalletClient(walletClient, {
+          bwsurl: opts.bwsurl,
+          isImport: true
+        }, cb);
       });
     };
 
@@ -554,16 +591,20 @@ angular.module('copayApp.services')
           return bwsError.cb(err, gettext('Could not import'), cb);
         }
 
-        root._addWalletClient(walletClient, opts, cb);
+        root.addAndBindWalletClient(walletClient, {
+          bwsurl: opts.bwsurl,
+          isImport: true
+        }, cb);
       });
     };
 
     root.create = function(opts, cb) {
-      $log.info('Creating profile');
+      $log.info('Creating profile', opts);
       var defaults = configService.getDefaults();
 
       configService.get(function(err) {
-        root._createNewProfile(opts, function(err, p) {
+
+        root.createDefaultProfile(opts, function(err, p) {
           if (err) return cb(err);
 
           root.bindProfile(p, function(err) {
@@ -605,59 +646,45 @@ angular.module('copayApp.services')
       walletClient.createWalletFromOldCopay(username, password, blob, function(err, existed) {
         if (err) return cb(gettext('Error importing wallet: ') + err);
 
-        if (root.walletClients[walletClient.credentials.walletId]) {
+        if (root.profile.hasWallet(walletClient.credentials.walletId)) {
           $log.debug('Wallet:' + walletClient.credentials.walletName + ' already imported');
           return cb(gettext('Wallet Already Imported: ') + walletClient.credentials.walletName);
         };
 
-        $log.debug('Creating Wallet:', walletClient.credentials.walletName);
-        root.profile.credentials.push(JSON.parse(walletClient.export()));
-        root.setWalletClients();
-        root.setAndStoreFocus(walletClient.credentials.walletId, function() {
-          storageService.storeProfile(root.profile, function(err) {
-            return cb(null, walletClient.credentials.walletId, walletClient.credentials.walletName, existed);
-          });
-        });
+        root.addAndBindWalletClient(walletClient, {
+          isImport: true
+        }, cb);
       });
     };
 
-    root.updateCredentialsFC = function(cb) {
-      var fc = root.focusedClient;
-
-      var newCredentials = lodash.reject(root.profile.credentials, {
-        walletId: fc.credentials.walletId
-      });
-      newCredentials.push(JSON.parse(fc.export()));
-      root.profile.credentials = newCredentials;
-
+    root.updateCredentials = function(credentials, cb) {
+      root.profile.updateWallet(credentials);
       storageService.storeProfileThrottled(root.profile, cb);
     };
 
+    root.getClients = function() {
+      return lodash.values(root.walletClients);
+    };
 
-    root.setPrivateKeyEncryptionFC = function(password, cb) {
-      var fc = root.focusedClient;
-      $log.debug('Encrypting private key for', fc.credentials.walletName);
+    root.needsBackup = function(client, cb) {
 
-      fc.setPrivateKeyEncryption(password);
-      fc.lock();
-      root.updateCredentialsFC(function() {
-        $log.debug('Wallet encrypted');
-        return cb();
+      if (!walletService.needsBackup(client))
+        return cb(false);
+
+      storageService.getBackupFlag(client.credentials.walletId, function(err, val) {
+        if (err) $log.error(err);
+        if (val) return cb(false);
+        return cb(true);
       });
     };
 
+    root.isReady = function(client, cb) {
+      if (!client.isComplete())
+        return cb('WALLET_NOT_COMPLETE');
 
-    root.disablePrivateKeyEncryptionFC = function(cb) {
-      var fc = root.focusedClient;
-      $log.debug('Disabling private key encryption for', fc.credentials.walletName);
-
-      try {
-        fc.disablePrivateKeyEncryption();
-      } catch (e) {
-        return cb(e);
-      }
-      root.updateCredentialsFC(function() {
-        $log.debug('Wallet encryption disabled');
+      root.needsBackup(client, function(needsBackup) {
+        if (needsBackup)
+          return cb('WALLET_NEEDS_BACKUP');
         return cb();
       });
     };

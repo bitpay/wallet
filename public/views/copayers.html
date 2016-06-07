@@ -13,13 +13,7 @@
         <qrcode size="220" error-correction-level="L" data="{{index.walletSecret}}"></qrcode>
         <div ng-show="!index.walletSecret" style="position:relative; top:-226px; height:0px">
           <div style="height:220px; width:220px; margin:auto; background: white">
-            <div class="spinner" style="margin-top:85px">
-              <div class="rect1"></div>
-              <div class="rect2"></div>
-              <div class="rect3"></div>
-              <div class="rect4"></div>
-              <div class="rect5"></div>
-            </div>
+            <ion-spinner class="spinner-stable" icon="lines"></ion-spinner>
           </div>
         </div>
         <div class="secret">

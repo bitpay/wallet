@@ -61,7 +61,7 @@ module.exports = function(grunt) {
           'src/js/routes.js',
           'src/js/services/*.js',
           'src/js/models/*.js',
-          'src/js/controllers/*.js'
+          'src/js/controllers/**/*.js'
         ],
         tasks: ['concat:js']
       }
@@ -93,17 +93,13 @@ module.exports = function(grunt) {
           'bower_components/angular/angular.js',
           'bower_components/angular-ui-router/release/angular-ui-router.js',
           'bower_components/angular-foundation/mm-foundation-tpls.js',
-          'bower_components/angular-touch/angular-touch.js',
-          'bower_components/fastclick/lib/fastclick.js',
-          'bower_components/stateful-fastclick/dist/stateful-fastclick.js',
-          'bower_components/angular-stateful-fastclick/lib/angular-stateful-fastclick.js',
           'bower_components/angular-moment/angular-moment.js',
           'bower_components/ng-lodash/build/ng-lodash.js',
           'bower_components/angular-qrcode/angular-qrcode.js',
           'bower_components/angular-gettext/dist/angular-gettext.js',
-          'bower_components/angular-ui-switch/angular-ui-switch.js',
           'bower_components/angular-sanitize/angular-sanitize.js',
           'bower_components/ng-csv/build/ng-csv.js',
+          'bower_components/angular-mocks/angular-mocks.js',
           'angular-bitcore-wallet-client/angular-bitcore-wallet-client.js'
         ],
         dest: 'public/lib/angular.js'
@@ -116,7 +112,7 @@ module.exports = function(grunt) {
           'src/js/filters/*.js',
           'src/js/models/*.js',
           'src/js/services/*.js',
-          'src/js/controllers/*.js',
+          'src/js/controllers/**/*.js',
           'src/js/translations.js',
           'src/js/version.js',
           'src/js/coinbase.js',
@@ -134,11 +130,38 @@ module.exports = function(grunt) {
         src: [
           'bower_components/angular/angular-csp.css',
           'bower_components/foundation/css/foundation.css',
-          'bower_components/animate.css/animate.css',
-          'bower_components/angular-ui-switch/angular-ui-switch.css'
+          'bower_components/animate.css/animate.css'
         ],
         dest: 'public/css/foundation.css',
-      }
+      },
+      ionic_js: {
+        src: [
+          'bower_components/ionic/release/js/ionic.bundle.min.js'
+        ],
+        dest: 'public/lib/ionic.bundle.js'
+      },
+      ionic_css: {
+        src: [
+          'bower_components/ionic/release/css/ionic.min.css'
+        ],
+        dest: 'public/css/ionic.css',
+      },
+      ui_components_js: {
+        src: [
+          'bower_components/jquery/dist/jquery.js',
+          'bower_components/roundSlider/dist/roundslider.min.js',
+          'bower_components/angular-gridster/dist/angular-gridster.min.js',
+          'bower_components/javascript-detect-element-resize/detect-element-resize.js'
+        ],
+        dest: 'public/lib/ui-components.js'
+      },
+      ui_components_css: {
+        src: [
+          'bower_components/roundSlider/dist/roundslider.min.css',
+          'bower_components/angular-gridster/dist/angular-gridster.min.css'
+        ],
+        dest: 'public/css/ui-components.css',
+      },
     },
     uglify: {
       options: {
@@ -156,11 +179,10 @@ module.exports = function(grunt) {
         files: {
           'i18n/po/template.pot': [
             'public/index.html',
-            'public/views/*.html',
             'public/views/**/*.html',
             'src/js/routes.js',
             'src/js/services/*.js',
-            'src/js/controllers/*.js'
+            'src/js/controllers/**/*.js'
           ]
         }
       },
@@ -181,6 +203,12 @@ module.exports = function(grunt) {
         flatten: true,
         src: 'bower_components/foundation-icon-fonts/foundation-icons.*',
         dest: 'public/icons/'
+      },
+      ionic_fonts: {
+        expand: true,
+        flatten: true,
+        src: 'bower_components/ionic/release/fonts/ionicons.*',
+        dest: 'public/fonts/'
       },
       linux: {
         files: [{
@@ -242,7 +270,7 @@ module.exports = function(grunt) {
     }
   });
 
-  grunt.registerTask('default', ['nggettext_compile', 'exec:version', 'exec:coinbase', 'browserify', 'sass', 'concat', 'copy:icons']);
+  grunt.registerTask('default', ['nggettext_compile', 'exec:version', 'exec:coinbase', 'browserify', 'sass', 'concat', 'copy:icons', 'copy:ionic_fonts']);
   grunt.registerTask('prod', ['default', 'uglify']);
   grunt.registerTask('translate', ['nggettext_extract']);
   grunt.registerTask('test', ['karma:unit']);

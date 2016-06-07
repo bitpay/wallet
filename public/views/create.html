@@ -6,30 +6,18 @@
 
 
 
-<div class="content p20b" ng-controller="createController as create" ng-init="create.setTotalCopayers(1)">
+<ion-content overflow-scroll="true" class="content p20b" ng-controller="createController as create" ng-init="create.setTotalCopayers(1)">
 
   <div class="onGoingProcess" ng-show="create.loading && !create.hwWallet">
     <div class="onGoingProcess-content" ng-style="{'background-color':'#222'}">
-    <div class="spinner">
-      <div class="rect1"></div>
-      <div class="rect2"></div>
-      <div class="rect3"></div>
-      <div class="rect4"></div>
-      <div class="rect5"></div>
-    </div>
+    <ion-spinner class="spinner-stable" icon="lines"></ion-spinner>
     <span translate>Creating Wallet...</span>
     </div>
   </div>
 
   <div class="onGoingProcess" ng-show="create.hwWallet">
     <div class="onGoingProcess-content" ng-style="{'background-color':'#222'}" style="max-height:6.5em" >
-    <div class="spinner">
-      <div class="rect1"></div>
-      <div class="rect2"></div>
-      <div class="rect3"></div>
-      <div class="rect4"></div>
-      <div class="rect5"></div>
-    </div>
+    <ion-spinner class="spinner-stable" icon="lines"></ion-spinner>
     <span translate>Connecting to {{create.hwWallet}} Wallet...</span>
     <span ng-show="create.hwWallet=='Trezor'" translate>Please accept to export two public keys from the Trezor app</span>
     </div>
@@ -164,10 +152,11 @@
                 <input type="text" class="form-control" name="derivationPath" ng-model="derivationPath">
               </label>
             </div>
-            <div class="oh"  ng-show="create.seedSourceId == 'new'">
-              <label for="network-name" >
+            <div class="oh" ng-show="create.seedSourceId == 'new'">
+              <label for="network-name" class="dbi">
                 <span>Testnet</span>
-                <switch id="network-name" name="isTestnet" ng-model="isTestnet" class="green right m5t m10b"></switch>
+                <ion-toggle ng-model="testnetEnabled" toggle-class="toggle-balanced" class="bct">
+                </ion-toggle>
               </label>
             </div>
           </div> <!-- columns -->
@@ -184,5 +173,5 @@
       </div> <!-- large-12 columns -->
     </div> <!-- row -->
   </form>
-</div>
+</ion-content>
 <div class="extra-margin-bottom"></div>

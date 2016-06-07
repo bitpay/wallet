@@ -1,51 +1,53 @@
-<nav class="sidebar left-off-canvas-menu" ng-controller="sidebarController as sidebar">
+<nav class="sidebar" ng-controller="sidebarController as sidebar">
   <header>
     <logo ng-if="!sidebar.isWindowsPhoneApp" negative="true" width="80"></logo>
     <img ng-if="sidebar.isWindowsPhoneApp" src="img/logo-negative.png" alt="Copay" width="80">
     <div ng-include="'views/includes/version.html'"></div>
   </header>
-  <ul class="off-canvas-list">
-    <li ng-show="sidebar.wallets[0]"
-    ng-repeat="item in sidebar.wallets track by $index"
-    ng-class="{'selected': item.id == index.walletId}"
-    class="nav-item">
-    <a ng-click="sidebar.closeMenu(); sidebar.switchWallet(item.id, index.walletId)" class="oh">
-      <div class="avatar-wallet"
-        ng-style="{'background-color':item.color}">
-        <i class="icon-wallet size-21"></i>
-      </div>
-      <div class="name-wallet" ng-class="{'m8t':item.n == 1}">{{item.name || item.id}}</div>
-      <div class="size-12" ng-show="item.n > 1" translate>{{item.m}}-of-{{item.n}}</div>
-    </a>
-    </li>
-    <li>
-      <a ng-click="sidebar.closeMenu(); $root.go('add')" class="oh">
-        <i class="icon-arrow-right3 size-18 right m10t vm"></i>
-        <i class="fi-plus size-24 icon vm"></i>
-        <div class="tu text-bold">
-          <span class="size-12" translate>Add wallet</span>
+  <ion-content overflow-scroll="true">
+    <ul class="pr">
+      <li ng-show="sidebar.wallets[0]"
+      ng-repeat="item in sidebar.wallets track by $index"
+      ng-class="{'selected': item.id == index.walletId}"
+      class="nav-item">
+      <a menu-toggle  ng-click="$root.go('walletHome'); sidebar.switchWallet(item.id, index.walletId)" class="oh">
+        <div class="avatar-wallet"
+          ng-style="{'background-color':item.color}">
+          <i class="icon-wallet size-21"></i>
         </div>
-        <div translate>Create, join or import</div>
+        <div class="name-wallet" ng-class="{'m8t':item.n == 1}">{{item.name || item.id}}</div>
+        <div class="size-12" ng-show="item.n > 1" translate>{{item.m}}-of-{{item.n}}</div>
       </a>
-    </li>
-    <li ng-show="!index.isWindowsPhoneApp && index.isComplete && (index.glideraEnabled || index.coinbaseEnabled)">
-      <a ng-click="sidebar.closeMenu(); $root.go('buyandsell')" class="oh">
-        <i class="icon-arrow-right3 size-18 right m10t vm"></i>
-        <i class="icon-bank size-24 icon vm"></i>
-        <div class="tu text-bold m5t">
-          <span class="size-12" translate>Buy &amp; Sell</span>
-        </div>
-      </a>
-    </li>
-    <li>
-      <a ng-click="sidebar.closeMenu(); $root.go('preferencesGlobal')" class="oh">
-        <i class="icon-arrow-right3 size-18 right m10t vm"></i>
-        <i class="fi-widget size-24 icon vm"></i>
-        <div class="tu text-bold">
-          <span class="size-12" translate>Settings</span>
-        </div>
-        <div translate>Global preferences</div>
-      </a>
-    </li>
-  </ul>
+      </li>
+      <li>
+        <a menu-toggle ng-click="$root.go('add')" class="oh">
+          <i class="icon-arrow-right3 size-18 right m10t vm"></i>
+          <i class="fi-plus size-24 icon vm"></i>
+          <div class="tu text-bold">
+            <span class="size-12" translate>Add wallet</span>
+          </div>
+          <div translate>Create, join or import</div>
+        </a>
+      </li>
+      <li ng-show="!index.isWindowsPhoneApp && index.isComplete && (index.glideraEnabled || index.coinbaseEnabled)">
+        <a menu-toggle ng-click="$root.go('buyandsell')" class="oh">
+          <i class="icon-arrow-right3 size-18 right m10t vm"></i>
+          <i class="icon-bank size-24 icon vm"></i>
+          <div class="tu text-bold m5t">
+            <span class="size-12" translate>Buy &amp; Sell</span>
+          </div>
+        </a>
+      </li>
+      <li>
+        <a menu-toggle ng-click="$root.go('preferencesGlobal')" class="oh">
+          <i class="icon-arrow-right3 size-18 right m10t vm"></i>
+          <i class="fi-widget size-24 icon vm"></i>
+          <div class="tu text-bold">
+            <span class="size-12" translate>Settings</span>
+          </div>
+          <div translate>Global preferences</div>
+        </a>
+      </li>
+    </ul>
+  </ion-content>
 </nav>

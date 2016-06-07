@@ -1,0 +1,13 @@
+<div class="columns m20t">
+<label class="size-14 text-center">
+  <span ng-show="!comment" translate>Enter a new comment</span>
+  <span ng-show="comment" translate>Edit comment</span>
+</label>
+<input type="text" ng-model="data.comment" autofocus>
+</div>
+<div class="small-6 columns">
+  <button class="round outline dark-gray expand" ng-click="commentPopupClose()" translate>CANCEL</button>
+</div>
+<div class="small-6 columns">
+  <button ng-style="{'background-color': index.backgroundColor}" class="round outline expand" ng-click="commentPopupSave()" translate>SAVE</button>
+</div>

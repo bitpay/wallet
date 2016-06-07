@@ -80,8 +80,11 @@ mocks.init = function(fixtures, controllerName, opts, done) {
   angular.module('stateMock', []);
   angular.module('stateMock').service("$state", mocks.$state.bind());
 
+  module('ionic');
   module('ngLodash');
+  module('angularMoment');
   module('gettext');
+  module('stateMock');
   module('bwcModule', function($provide) {
     $provide.decorator('bwcService', function($delegate, lodash) {
       var getClient = $delegate.getClient;
@@ -104,7 +107,7 @@ mocks.init = function(fixtures, controllerName, opts, done) {
           var headers = JSON.stringify(bwc._getHeaders(method, url, args));
 
           // Fixes BWC version... TODO
-          headers=headers.replace(/bwc-\d\.\d\.\d/,'bwc-2.4.0')
+          headers = headers.replace(/bwc-\d\.\d\.\d/, 'bwc-2.4.0')
           var x = method + url + JSON.stringify(args) + headers;
           var sjcl = $delegate.getSJCL();
           return sjcl.codec.hex.fromBits(sjcl.hash.sha256.hash(x));
@@ -153,8 +156,6 @@ mocks.init = function(fixtures, controllerName, opts, done) {
     });
   });
 
-  module('angularMoment');
-  module('stateMock');
   module('copayApp.services', {
     $modal: mocks.modal,
     $timeout: mocks.$timeout,
@@ -162,7 +163,7 @@ mocks.init = function(fixtures, controllerName, opts, done) {
   });
   module('copayApp.controllers');
 
-  inject(function($rootScope, $controller, $injector, _configService_, _profileService_, _storageService_) {
+  inject(function($rootScope, $controller, $injector, lodash, _configService_, _profileService_, _storageService_) {
     scope = $rootScope.$new();
     storageService = _storageService_;
 
@@ -197,6 +198,13 @@ mocks.init = function(fixtures, controllerName, opts, done) {
       if (opts.initController)
         startController();
 
+
+      if (opts.loadStorage) {
+        lodash.each(opts.loadStorage, function(v, k) {
+          localStorage.setItem(k, v);
+        });
+      }
+
       if (opts.loadProfile) {
 
         localStorage.setItem('profile', JSON.stringify(opts.loadProfile));
@@ -212,6 +220,9 @@ mocks.init = function(fixtures, controllerName, opts, done) {
           noWallet: true
         }, function(err) {
           should.not.exist(err, err);
+          if (opts.noDisclaimer){
+            return done();
+          }
           _profileService_.setDisclaimerAccepted(function() {
             if (!opts.initController)
               startController();

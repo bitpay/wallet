@@ -1,14 +1,11 @@
 
-<div
-  class="topbar-container"
-  ng-include="'views/includes/topbar.html'"
+<div class="topbar-container" ng-include="'views/includes/topbar.html'"
   ng-init="titleSection='Global preferences'; closeToHome = true; noColor = true">
 </div>
 
-
 <div class="content preferences" ng-controller="preferencesGlobalController as prefGlobal" ng-init="prefGlobal.init()">
   <h4></h4>
-  <ul class="no-bullet m0 ">
+  <ul class="no-bullet m0">
     <li ng-click="$root.go('preferencesLanguage')">
       <div class="right text-gray">
         {{prefGlobal.currentLanguageName|translate}}
@@ -18,7 +15,8 @@
     </li>
   </ul>
   <h4></h4>
-  <ul class="no-bullet m0 ">
+
+  <ul class="no-bullet m0">
     <li ng-click="$root.go('preferencesUnit')">
       <div class="right text-gray">
         {{prefGlobal.unitName}}
@@ -26,6 +24,7 @@
       </div>
       <div translate>Unit</div>
     </li>
+
     <li ng-click="$root.go('preferencesAltCurrency')">
       <div class="right text-gray">
         {{prefGlobal.selectedAlternative.name}}
@@ -35,7 +34,8 @@
     </li>
   </ul>
   <h4></h4>
-  <ul class="no-bullet m0 ">
+
+  <ul class="no-bullet m0">
     <li ng-click="$root.go('preferencesFee')">
       <div class="right text-gray">
         {{prefGlobal.feeOpts[prefGlobal.currentFeeLevel]|translate}}
@@ -43,41 +43,37 @@
       </div>
       <div translate>Bitcoin Network Fee Policy</div>
     </li>
-    <li>
-      <switch id="spend-unconfirmed" name="spendUnconfirmed" ng-model="spendUnconfirmed" class="green right"></switch>
-      <div translate>Use Unconfirmed Funds</div>
-    </li>
   </ul>
+
+  <ion-toggle ng-model="spendUnconfirmed" toggle-class="toggle-balanced" ng-change="spendUnconfirmedChange()">
+    <span class="toggle-label" translate>Use Unconfirmed Funds</span>
+  </ion-toggle>
+
   <div ng-show="prefGlobal.usePushNotifications && PNEnabledByUser">
     <h4></h4>
-    <ul class="no-bullet m0">
-      <li>
-        <switch id="push-notifications" name="pushNotifications" ng-model="pushNotifications" class="green right"></switch>
-        <div translate>Enable push notifications</div>
-      </li>
-    </ul>
+    <ion-toggle ng-model="pushNotifications" toggle-class="toggle-balanced" ng-change="pushNotificationsChange()">
+      <span class="toggle-label" translate>Enable push notifications</span>
+    </ion-toggle>
   </div>
   <h4></h4>
-  <ul class="no-bullet m0 ">
-    <li>
-      <switch id="glidera-enabled" name="glideraEnabled" ng-model="glideraEnabled" class="green right"></switch>
-      <div translate>Enable Glidera Service</div>
-    </li>
-  </ul>
+
+  <ion-toggle ng-model="glideraEnabled" toggle-class="toggle-balanced" ng-change="glideraChange()">
+    <span class="toggle-label" translate>Enable Glidera Service</span>
+  </ion-toggle>
   <h4></h4>
-  <ul class="no-bullet m0">
-    <li>
-      <switch id="coinbase-enabled" name="coinbaseEnabled" ng-model="coinbaseEnabled" class="green right"></switch>
-      <div translate>Enable Coinbase Service</div>
-    </li>
-  </ul>
+
+  <ion-toggle ng-model="coinbaseEnabled" toggle-class="toggle-balanced" ng-change="coinbaseChange()">
+    <span class="toggle-label" translate>Enable Coinbase Service</span>
+  </ion-toggle>
   <h4></h4>
+
   <ul class="no-bullet m0">
     <li ng-click="$root.go('about')">
       <i class="icon-arrow-right3 size-24 right text-gray"></i>
       <div translate>About Copay</div>
     </li>
   </ul>
+
   <div ng-show="prefGlobal.usePushNotifications && !PNEnabledByUser && isIOSApp">
     <div class="text-centered text-gray size-12 m10" translate>Push notifications for Copay are currently disabled. Enable them in the Settings app.</div>
     <ul class="no-bullet m0" ng-click="prefGlobal.openSettings()">
