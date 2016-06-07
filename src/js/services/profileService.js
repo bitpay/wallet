@@ -130,7 +130,7 @@ angular.module('copayApp.services')
       $log.debug('Bind wallet:' + credentials.walletId);
 
       // Create the client
-      var getBaseURL = function(walletId) {
+      var getBWSURL = function(walletId) {
         var config = configService.getSync();
         var defaults = configService.getDefaults();
         return ((config.bwsFor && config.bwsFor[walletId]) || defaults.bws.url);
@@ -138,7 +138,7 @@ angular.module('copayApp.services')
 
       var skipKeyValidation = root.profile.isChecked(platformInfo.ua, credentials.walletId);
       var client = bwcService.getClient(JSON.stringify(credentials), {
-        baseurl: getBaseURL(credentials.walletId),
+        bwsurl: getBWSURL(credentials.walletId),
         skipKeyValidation: skipKeyValidation,
       });
 
@@ -324,7 +324,8 @@ angular.module('copayApp.services')
       opts.network = 'livenet';
 
       doCreateWallet(opts, function(err, walletClient) {
-        if (err) return bwsError.cb(err, gettext('Error creating wallet'), cb);
+        if (err) return cb(err);
+
         p.addWallet(JSON.parse(walletClient.export()));
         return cb(null, p);
       });
@@ -333,6 +334,8 @@ angular.module('copayApp.services')
     // create and store a wallet
     root.createWallet = function(opts, cb) {
       doCreateWallet(opts, function(err, walletClient, secret) {
+        if (err) return cb(err);
+
         root.addAndBindWalletClient(walletClient, {
           bwsurl: opts.bwsurl
         }, cb);
@@ -431,6 +434,9 @@ angular.module('copayApp.services')
 
     // Adds and bind a new client to the profile
     root.addAndBindWalletClient = function(client, opts, cb) {
+      if (!client || !client.credentials)
+        return cb(gettext('Could not access wallet'));
+
       var walletId = client.credentials.walletId
 
       if (!root.profile.addWallet(JSON.parse(client.export())))

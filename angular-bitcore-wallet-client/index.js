@@ -32,9 +32,9 @@ bwcModule.provider("bwcService", function() {
     service.getClient = function(walletData, opts) {
       opts = opts || {};
 
-      //note opts use `baseurl` all lowercase;
+      //note opts use `bwsurl` all lowercase;
       var bwc = new Client({
-        baseUrl: opts.baseurl || 'https://bws.bitpay.com/bws/api',
+        baseUrl: opts.bwsurl || 'https://bws.bitpay.com/bws/api',
         verbose: opts.verbose,
         transports: ['polling'],
       });
