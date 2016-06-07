@@ -2,7 +2,7 @@
   class="tab-bar" ng-style="{'background-color': noColor ? '#4B6178' : index.backgroundColor}">
   <section class="left-small">
     <a id="hamburger" class="p10" ng-show="!goBackToState && !closeToHome  && !index.noFocusedWallet"
-      ng-click="index.toggleLeftMenu()"><i class="fi-list size-24"></i>
+      on-tap="index.toggleLeftMenu()"><i class="fi-list size-24"></i>
     </a>
     <a ng-show="goBackToState"
       ng-click="$root.go(goBackToState); goBackToState = null"><i class="icon-arrow-left3 icon-back"></i>
