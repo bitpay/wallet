@@ -97,7 +97,7 @@
           <div ng-show="addAddressbookEntry">
             <h4 translate>Add a new entry</h4>
             <form name="addressbookForm" class="p10" no-validate>
-              <div class="text-warning size-12 m10b" ng-show="error" translate>{{error}}</div>
+              <div class="text-warning size-12 m10b" ng-show="error">{{error|translate}}</div>
               <span ng-hide="addressbookForm.address.$pristine">
                 <span class="has-error right size-12" ng-show="addressbookForm.address.$invalid && addressbook.address">
                   <i class="icon-close-circle size-14"></i>
