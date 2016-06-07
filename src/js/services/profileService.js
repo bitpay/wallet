@@ -230,9 +230,8 @@ angular.module('copayApp.services')
       });
     };
 
-    root._seedWallet = function(opts, cb) {
+    var seedWallet = function(opts, cb) {
       opts = opts || {};
-      $log.debug('seedWallet', opts);
       var walletClient = bwcService.getClient(null, opts);
       var network = opts.networkName || 'livenet';
 
@@ -294,9 +293,9 @@ angular.module('copayApp.services')
     };
 
     // Creates a wallet on BWC/BWS
-    root.doCreateWallet = function(opts, cb) {
+    var doCreateWallet = function(opts, cb) {
       $log.debug('Creating Wallet:', opts);
-      root._seedWallet(opts, function(err, walletClient) {
+      seedWallet(opts, function(err, walletClient) {
         if (err) return cb(err);
 
         var name = opts.name || gettextCatalog.getString('Personal Wallet');
@@ -324,7 +323,7 @@ angular.module('copayApp.services')
       opts.n = 1;
       opts.network = 'livenet';
 
-      root.doCreateWallet(opts, function(err, walletClient) {
+      doCreateWallet(opts, function(err, walletClient) {
         if (err) return bwsError.cb(err, gettext('Error creating wallet'), cb);
         p.addWallet(JSON.parse(walletClient.export()));
         return cb(null, p);
@@ -333,7 +332,7 @@ angular.module('copayApp.services')
 
     // create and store a wallet
     root.createWallet = function(opts, cb) {
-      root.doCreateWallet(opts, function(err, walletClient, secret) {
+      doCreateWallet(opts, function(err, walletClient, secret) {
         root.addAndBindWalletClient(walletClient, {
           bwsurl: opts.bwsurl
         }, cb);
@@ -361,7 +360,7 @@ angular.module('copayApp.services')
       opts.networkName = walletData.network;
       $log.debug('Joining Wallet:', opts);
 
-      root._seedWallet(opts, function(err, walletClient) {
+      seedWallet(opts, function(err, walletClient) {
         if (err) return cb(err);
 
         walletClient.joinWallet(opts.secret, opts.myName || 'me', {}, function(err) {
