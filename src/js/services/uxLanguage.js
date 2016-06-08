@@ -28,7 +28,7 @@ angular.module('copayApp.services')
       isoCode: 'ja',
       useIdeograms: true,
     }, {
-      name: '繁体中文',
+      name: '中国（简体）',
       isoCode: 'zh',
       useIdeograms: true,
     }, {
