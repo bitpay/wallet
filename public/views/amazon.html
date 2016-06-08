@@ -40,6 +40,11 @@
 
   <div ng-init="amazon.init()">
 
+    <div class="box-notification text-center size-12 text-warning m10t" ng-show="amazon.sandbox">
+      <i class="fi-info"></i>
+      Sandbox version. Only for testing purpose
+    </div>
+
     <div class="m20t text-center" ng-click="amazon.init()">
       <img src="img/GCs-logo-cllb.png" alt="Amazon.com Gift Card" width="200">
       <div class="size-10 m5t text-gray"><b>Only</b> redeemable on www.amazon.com (USA website)</div>
