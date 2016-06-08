@@ -253,8 +253,9 @@
             </div>
 
             <div class="text-gray text-center size-12 p10t" ng-if="index.historyShowMore">
-              <span class="size-12">{{index.completeHistory.length - index.txHistory.length}}</span>
-              <span class="size-12" translate> more</span>&nbsp;<i class="icon-arrow-down4"></i>
+              <span class="size-12" translate>{{index.completeHistory.length - index.txHistory.length}} more</span>
+              &nbsp;
+              <i class="icon-arrow-down4"></i>
             </div>
 
             <ion-infinite-scroll
