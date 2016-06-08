@@ -25,6 +25,10 @@ msgstr ""
 msgid "{{feeRateStr}} of the transaction"
 msgstr ""
 
+#: public/views/walletHome.html
+msgid "{{index.completeHistory.length - index.txHistory.length}} more"
+msgstr ""
+
 #: public/views/copayers.html
 #: public/views/includes/walletInfo.html
 msgid "{{index.m}}-of-{{index.n}}"
@@ -412,6 +416,10 @@ msgstr ""
 msgid "Copy to clipboard"
 msgstr ""
 
+#: public/views/import.html
+msgid "Could not access the wallet at the server. Please check:"
+msgstr ""
+
 #: src/js/services/profileService.js
 msgid "Could not access wallet"
 msgstr ""
@@ -453,7 +461,7 @@ msgid "Could not decrypt"
 msgstr ""
 
 #: src/js/controllers/import.js
-msgid "Could not decrypt file, check your spending password"
+msgid "Could not decrypt file, check your password"
 msgstr ""
 
 #: src/js/controllers/modals/txpDetails.js
@@ -1007,10 +1015,6 @@ msgstr ""
 msgid "Missing private keys to sign"
 msgstr ""
 
-#: public/views/walletHome.html
-msgid "more"
-msgstr ""
-
 #: public/views/modals/search.html
 #: public/views/modals/tx-details.html
 #: public/views/walletHome.html
@@ -1095,6 +1099,10 @@ msgstr ""
 
 #: src/js/controllers/walletHome.js
 msgid "Note: a total of {{amountBelowFeeStr}} were excluded. These funds come from UTXOs smaller than the network fee provided."
+msgstr ""
+
+#: public/views/import.html
+msgid "NOTE: To import a wallet from a 3rd party software, please go to Add Wallet &gt; Create Wallet, and specify the seed there."
 msgstr ""
 
 #: public/views/disclaimer.html
@@ -1647,8 +1655,16 @@ msgstr ""
 msgid "The authors of the software, employees and affiliates of Bitpay, copyright holders, and BitPay, Inc. cannot retrieve your private keys or passwords if you lose or forget them and cannot guarantee transaction confirmation as they do not have control over the Bitcoin network."
 msgstr ""
 
+#: public/views/import.html
+msgid "The derivation path"
+msgstr ""
+
 #: src/js/services/ledger.js
 msgid "The Ledger Chrome application is not installed"
+msgstr ""
+
+#: public/views/import.html
+msgid "The password of the recovery phrase (if set)"
 msgstr ""
 
 #: src/js/controllers/walletHome.js
@@ -1687,6 +1703,10 @@ msgstr ""
 
 #: public/views/import.html
 msgid "The Wallet Recovery Phrase could require a password to be imported"
+msgstr ""
+
+#: public/views/import.html
+msgid "The wallet service URL"
 msgstr ""
 
 #: public/views/paymentUri.html
