@@ -275,6 +275,8 @@ msgid "Calculating fee"
 msgstr ""
 
 #: public/views/includes/confirm-tx.html
+#: public/views/includes/note.html
+#: public/views/includes/password.html
 #: public/views/modals/addressbook.html
 #: public/views/modals/confirmation.html
 #: public/views/walletHome.html
@@ -283,11 +285,6 @@ msgstr ""
 #: src/js/controllers/preferencesDelete.js
 #: src/js/controllers/walletHome.js
 msgid "Cancel"
-msgstr ""
-
-#: public/views/includes/note.html
-#: public/views/includes/password.html
-msgid "CANCEL"
 msgstr ""
 
 #: public/views/copayers.html
@@ -1102,7 +1099,7 @@ msgid "Note: a total of {{amountBelowFeeStr}} were excluded. These funds come fr
 msgstr ""
 
 #: public/views/import.html
-msgid "NOTE: To import a wallet from a 3rd party software, please go to Add Wallet &gt; Create Wallet, and specify the seed there."
+msgid "NOTE: To import a wallet from a 3rd party software, please go to Add Wallet &gt; Create Wallet, and specify the Recovery Phrase there."
 msgstr ""
 
 #: public/views/disclaimer.html
@@ -1393,15 +1390,12 @@ msgstr ""
 msgid "Russian"
 msgstr ""
 
+#: public/views/includes/note.html
 #: public/views/modals/addressbook.html
 #: public/views/preferencesAlias.html
 #: public/views/preferencesBwsUrl.html
 #: public/views/preferencesEmail.html
 msgid "Save"
-msgstr ""
-
-#: public/views/includes/note.html
-msgid "SAVE"
 msgstr ""
 
 #: public/views/preferencesEmail.html
