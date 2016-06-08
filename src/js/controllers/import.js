@@ -120,10 +120,7 @@ angular.module('copayApp.controllers').controller('importController',
           self.loading = false;
 
           if (err) {
-console.log('[import.js.122:err:]',err); //TODO
             if (err instanceof errors.NOT_AUTHORIZED) {
-
-console.log('[import.js.125]'); //TODO
               self.importErr = true;
             } else {
               self.error = err;

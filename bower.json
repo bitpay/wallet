@@ -12,7 +12,7 @@
     "angular-gettext": "2.2.1",
     "angular-moment": "0.10.1",
     "angular-qrcode": "monospaced/angular-qrcode#~6.2.1",
-    "angular-ui-router": "0.2.18",
+    "angular-ui-router": "0.2.13",
     "animate.css": "3.5.1",
     "foundation": "5.5.3",
     "foundation-icon-fonts": "*",
@@ -24,8 +24,8 @@
     "ng-csv": "~0.3.6"
   },
   "resolutions": {
-    "angular": "1.4.6",
+    "angular": "1.5.3",
     "qrcode-generator": "0.1.0",
-    "angular-ui-router": "0.2.18"
+    "angular-ui-router": "0.2.13"
   }
 }
