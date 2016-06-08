@@ -64,8 +64,8 @@ mocks.$document = {
 mocks.init = function(fixtures, controllerName, opts, done) {
   console.log(' * Mock init()');
   opts = opts || {};
-  should.exist(controllerName, 'Provide the name of the Controller to mocks.init()');
 
+  should.exist(controllerName, 'Provide the name of the Controller to mocks.init()');
   mocks.go = {};
   mocks.go.walletHome = sinon.stub();
   mocks.go.path = sinon.stub();
@@ -86,6 +86,7 @@ mocks.init = function(fixtures, controllerName, opts, done) {
   module('gettext');
   module('stateMock');
   module('bwcModule', function($provide) {
+    console.log(' * bwcService decorator');
     $provide.decorator('bwcService', function($delegate, lodash) {
       var getClient = $delegate.getClient;
 
@@ -182,8 +183,12 @@ mocks.init = function(fixtures, controllerName, opts, done) {
         rate: 452.92
       });
 
+    $httpBackend.whenGET(/views.*/).respond(200, '');
+      
+
     _configService_.get(function() {
       function startController() {
+        console.log(' * starting Controller:', controllerName);
         ctrl = $controller(controllerName, {
           $scope: scope,
           $modal: mocks.modal,
@@ -216,6 +221,7 @@ mocks.init = function(fixtures, controllerName, opts, done) {
           done();
         });
       } else {
+
         _profileService_.create({
           noWallet: true
         }, function(err) {
@@ -226,6 +232,7 @@ mocks.init = function(fixtures, controllerName, opts, done) {
           _profileService_.setDisclaimerAccepted(function() {
             if (!opts.initController)
               startController();
+
             done();
           });
         });
