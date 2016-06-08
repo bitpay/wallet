@@ -298,28 +298,16 @@ angular.module('copayApp.services')
       storage.remove('amazonGiftCards-' + network, cb);
     };
 
-    root.setAmazonLimits = function(network, limits, cb) {
-      storage.set('amazonLimits-' + network, limits, cb);
+    root.setAmazon = function(network, data, cb) {
+      storage.set('amazon-' + network, data, cb);
     };
 
-    root.getAmazonLimits = function(network, cb) {
-      storage.get('amazonLimits-' + network, cb);
+    root.getAmazon = function(network, cb) {
+      storage.get('amazon-' + network, cb);
     };
 
-    root.removeAmazonLimits = function(network, cb) {
-      storage.remove('amazonLimits-' + network, cb);
-    };
-
-    root.setAmazonUuid = function(network, uuid, cb) {
-      storage.set('amazonUuid-' + network, uuid, cb);
-    };
-
-    root.getAmazonUuid = function(network, cb) {
-      storage.get('amazonUuid-' + network, cb);
-    };
-
-    root.removeAmazonUuid = function(network, cb) {
-      storage.remove('amazonUuid-' + network, cb);
+    root.removeAmazon = function(network, cb) {
+      storage.remove('amazon-' + network, cb);
     };
 
     return root;
