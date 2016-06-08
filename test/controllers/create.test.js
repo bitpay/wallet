@@ -5,19 +5,20 @@ describe('createController', function() {
     '1eda3e702196b8d5d82fae129249bc79f0d5be2f5309a4e39855e7eb4ad31428': {},
     '31f5deeef4cf7fd8fc67297179232e8e4590532960454ad958009132fef3daae': {},
     // createWallet 1-1
-    '56db6f58f2c212591afb4d508d03e5fb40bb786f23dc56c43b98bde42dc513e5': {
-      "walletId": "267bfa75-5575-4af7-8aa3-f5186bc99262"
+    //
+    'b665ad8991c67f8f7e8ffb7e86c3b930fd3ff56c68eb6fd441bf374559cfe59c': {
+        "walletId": "63d910e8-3e1b-4aac-97e9-aa0299a74c2c"
     },
-    // join ^
-    'd2f00a570de17f52fcda4b1b4b4ed1bc688a3b33c193b71630c3183dab70e6ec': {
+    'd5cc6adebc752c154998f1c96af2b24e21e52dbd7c07008c333af03b905ffb85': {
       "copayerId": "a9dcee10fe9c611300e6c7926ece20780f89b9a98baaa342928038b5503ed929",
       "wallet": {
         "version": "1.0.0",
-        "createdOn": 1463488747,
-        "id": "267bfa75-5575-4af7-8aa3-f5186bc99262",
+        "createdOn": 1465385318,
+        "id": "63d910e8-3e1b-4aac-97e9-aa0299a74c2c",
         "name": "{\"iv\":\"BZQVWAP6d1e4G8Fq1rQKbA==\",\"v\":1,\"iter\":1,\"ks\":128,\"ts\":64,\"mode\":\"ccm\",\"adata\":\"\",\"cipher\":\"aes\",\"ct\":\"70OA+k4+xTPxim+QSdDtA5/Cf055\"}",
         "m": 1,
         "n": 1,
+        "singleAddress": false,
         "status": "complete",
         "publicKeyRing": [{
           "xPubKey": "xpub6DRjAgkh3vGTWDcEmDp4TPwy48Nu8yrp6swCEdCCLL615CgnZon7r3vXYr8LYibMLJh5DriGSito1FRBwVoBkjD1ZWG4dmgiC935wLj3nQC",
@@ -25,7 +26,7 @@ describe('createController', function() {
         }],
         "copayers": [{
           "version": 2,
-          "createdOn": 1463490295,
+          "createdOn": 1465385318,
           "xPubKey": "xpub6DRjAgkh3vGTWDcEmDp4TPwy48Nu8yrp6swCEdCCLL615CgnZon7r3vXYr8LYibMLJh5DriGSito1FRBwVoBkjD1ZWG4dmgiC935wLj3nQC",
           "id": "a9dcee10fe9c611300e6c7926ece20780f89b9a98baaa342928038b5503ed929",
           "name": "{\"iv\":\"BZQVWAP6d1e4G8Fq1rQKbA==\",\"v\":1,\"iter\":1,\"ks\":128,\"ts\":64,\"mode\":\"ccm\",\"adata\":\"\",\"cipher\":\"aes\",\"ct\":\"wwZd+2LQgYR6cA==\"}",
@@ -51,27 +52,26 @@ describe('createController', function() {
         "scanStatus": null
       }
     },
-
     //createWallet 2-2
-    'e46ef870b70e6deca6bbfa61bd0d83b0dc5b712402538b0dabcd0d4f038b0eba': {
-      "walletId": "7bd8d22f-d132-43e1-b259-d5b430752553"
+    '5a1d11ebc2a011f018b049de6b5c6b990cdc8e280644103f95a995321dbf0248': {
+      "walletId": "2f50f598-7550-4e54-8032-15aa892309fb"
     },
-
-    // join ^
-    '2df76b91e0080f1552926b7d3ce5dd99db054bc4dfce309d8455cab5d9a93ad4': {
+    // join
+    '58f2f3a6f11cd7dee9a75e026e3ba570c09b952bfea05f596fdb48e6ea323f21': {
       "copayerId": "3d4eb9b439eee1b2b73cf792eda52e420f4665109c7234a50cf3cdbf296ea8fb",
       "wallet": {
         "version": "1.0.0",
-        "createdOn": 1463511645,
-        "id": "7bd8d22f-d132-43e1-b259-d5b430752553",
+        "createdOn": 1465347188,
+        "id": "2f50f598-7550-4e54-8032-15aa892309fb",
         "name": "{\"iv\":\"BZQVWAP6d1e4G8Fq1rQKbA==\",\"v\":1,\"iter\":1,\"ks\":128,\"ts\":64,\"mode\":\"ccm\",\"adata\":\"\",\"cipher\":\"aes\",\"ct\":\"70OA+k4+xTPxim+QSdDtA5/Cf055\"}",
         "m": 2,
         "n": 2,
+        "singleAddress": false,
         "status": "pending",
         "publicKeyRing": [],
         "copayers": [{
           "version": 2,
-          "createdOn": 1463511988,
+          "createdOn": 1465347188,
           "xPubKey": "xpub6CkPnrzSUp9qzBVM3hpo4oS2JKC6GJq6brE1yW59QrnhDpvkFLakpxUGRGXH62fiXb5S2VbnD4h2DLoCMfSkwfonbNgNYTJw9Ko5SqWEqCR",
           "id": "3d4eb9b439eee1b2b73cf792eda52e420f4665109c7234a50cf3cdbf296ea8fb",
           "name": "{\"iv\":\"BZQVWAP6d1e4G8Fq1rQKbA==\",\"v\":1,\"iter\":1,\"ks\":128,\"ts\":64,\"mode\":\"ccm\",\"adata\":\"\",\"cipher\":\"aes\",\"ct\":\"wwZd+2LQgYR6cA==\"}",
@@ -97,6 +97,7 @@ describe('createController', function() {
         "scanStatus": null
       }
     },
+
   }; // TODO: Read from file
 
   beforeEach(function(done) {
@@ -134,16 +135,16 @@ describe('createController', function() {
 
     should.not.exist(ctrl.error);
     mocks.go.walletHome.calledOnce.should.equal(true);
-
+    //
     // check resulting profile
-    storageService.getProfile(function(err, profile) {
-      should.not.exist(err);
-      var c = profile.credentials[0];
-      c.network.should.equal('livenet');
-      // from test vectors from https://dcpos.github.io/bip39/
-      c.xPrivKey.should.equal('xprv9s21ZrQH143K2x4gnzRB1eZDq92Uuvy9CXbvgQGdvykXZ9mkkot6LBjzDpgaAfvzkuxJe9JKJXQ38VoPutxvACA5MsyoBs5UyQ4HZKGshGs');
-      done();
-    });
+     storageService.getProfile(function(err, profile) {
+       should.not.exist(err);
+       var c = profile.credentials[0];
+       c.network.should.equal('livenet');
+       // from test vectors from https://dcpos.github.io/bip39/
+       c.xPrivKey.should.equal('xprv9s21ZrQH143K2x4gnzRB1eZDq92Uuvy9CXbvgQGdvykXZ9mkkot6LBjzDpgaAfvzkuxJe9JKJXQ38VoPutxvACA5MsyoBs5UyQ4HZKGshGs');
+       done();
+     });
   });
 
 
