@@ -1,6 +1,6 @@
 <ion-modal-view ng-controller="addressbookController as addressbookC">
   <div ng-init="wallets[0] ? selectedWalletsOpt = true : selectedWalletsOpt = false; checkClipboard()">
-    <ion-content ng-style="{'background-color': '#f6f7f9'}">
+    <ion-content ng-style="{'background-color': '#f6f7f9'}" overflow-scroll="true">
       <nav class="tab-bar" ng-style="{'background-color':color}">
         <section class="left-small">
           <a ng-show="!editAddressbook && !addAddressbookEntry" ng-click="cancel()" class="p10">
