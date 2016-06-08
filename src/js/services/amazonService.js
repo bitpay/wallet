@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.services').factory('amazonService', function($http, $log, lodash, moment, storageService, configService) {
+angular.module('copayApp.services').factory('amazonService', function($http, $log, lodash, moment, storageService, configService, platformInfo) {
   var root = {};
   var credentials = {};
   var LIMIT = 500;
@@ -27,29 +27,43 @@ angular.module('copayApp.services').factory('amazonService', function($http, $lo
       credentials.AMAZON_REGION = window.amazon_region;
       credentials.AMAZON_ENDPOINT = window.amazon_endpoint;
     };
-    _healthCheckRequest();
   };
 
   var _getUuid = function(cb) {
-    var network = configService.getSync().amazon.testnet ? 'testnet' : 'livenet';
-    storageService.getAmazonUuid(network, function(err, uuid) {
-      if (err) {
+    var isCordova = platformInfo.isCordova;
+    
+    if (isCordova) {
+      window.plugins.uniqueDeviceID.get(function(uuid) {
+        return cb(uuid);
+      }, function(err) {
         $log.error(err);
         return cb();
-      }
-      if (!lodash.isEmpty(uuid)) return cb(uuid);
-      uuid = 'Copay-' + moment().unix();
-      storageService.setAmazonUuid(network, uuid, function(err) {
-        if (err) {
-          $log.error(err);
-          return cb();
-        }
-        return cb(uuid);
       });
+    }
+    return cb('XXX'); // Test purpose
+  };
+
+  var _checkLimits = function(amount, cb) {
+    var network = configService.getSync().amazon.testnet ? 'testnet' : 'livenet';
+    var dateStamp = moment.utc().format('YYYY-MM-DD');
+
+    storageService.getAmazon(network, function(err, amazon) {
+      if (err) $log.error(err);
+      
+      if (lodash.isEmpty(amazon)) return cb('CAN_NOT_GET_DATA_FROM_STORAGE');
+      
+      if (lodash.isString(amazon)) {
+        amazon = JSON.parse(amazon);
+      }
+
+      if (amazon.date == dateStamp && (amazon.amount + amount) > LIMIT)
+        return cb('EXCEEDED_DAYLY_LIMIT');
+
+      return cb();
     });
   };
 
-  var _healthCheckRequest = function() {
+  root.healthCheckRequest = function() {
     $http({
       method: 'GET',
       url: credentials.AMAZON_ENDPOINT + '/sping',
@@ -63,45 +77,54 @@ angular.module('copayApp.services').factory('amazonService', function($http, $lo
     });
   };
 
-  var _checkLimit = function(amount, cb) {
+  root.initUuid = function() {
     var network = configService.getSync().amazon.testnet ? 'testnet' : 'livenet';
     var dateStamp = moment.utc().format('YYYY-MM-DD');
-    storageService.getAmazonLimits(network, function(err, limits) {
-      if (err) $log.error(err);
-      
-      if (lodash.isEmpty(limits) && amount <= LIMIT) return cb();
-      if (lodash.isEmpty(limits) || amount > LIMIT) return cb('EXCEEDED_DAYLY_LIMIT');
-      
-      if (lodash.isString(limits)) {
-        limits = JSON.parse(limits);
-      }
+    _getUuid(function(uuid) {
+      storageService.getAmazon(network, function(err, amazon) {
+        if (err) $log.error(err);
+        if (lodash.isEmpty(amazon)) 
+          amazon = { 
+            uuid: uuid,
+            date: dateStamp, 
+            amount: 0 
+          };
 
-      if (limits.date == dateStamp && (limits.amount + amount) > LIMIT)
-        return cb('EXCEEDED_DAYLY_LIMIT');
+        if (lodash.isString(amazon)) {
+          amazon = JSON.parse(amazon);
+        }
 
-      return cb();
+        amazon.uuid = uuid;
+        if (amazon.date != dateStamp) {
+          amazon.date = dateStamp;
+          amazon.amount = 0;
+        }
+        amazon = JSON.stringify(amazon);
+        storageService.setAmazon(network, amazon, function(err) {
+          if (err) $log.error(err);
+        });
+      });
     });
-  };
+  }; 
 
   root.setAmountByDay = function(amount) {
     var network = configService.getSync().amazon.testnet ? 'testnet' : 'livenet';
     var dateStamp = moment.utc().format('YYYY-MM-DD');
-    storageService.getAmazonLimits(network, function(err, limits) {
+    storageService.getAmazon(network, function(err, amazon) {
       if (err) $log.error(err);
       
-      if (lodash.isEmpty(limits)) limits = { date: dateStamp, amount: 0 };
-      
-      if (lodash.isString(limits)) {
-        limits = JSON.parse(limits);
+      if (lodash.isString(amazon)) {
+        amazon = JSON.parse(amazon);
       }
 
-      if (limits.date == dateStamp) {
-        limits.amount = limits.amount + amount;
+      if (amazon.date == dateStamp) {
+        amazon.amount = amazon.amount + amount;
       } else {
-        limits = { date: dateStamp, amount: amount };
+        amazon.date = dateStamp;
+        amazon.amount = amount;
       }
-      limits = JSON.stringify(limits);
-      storageService.setAmazonLimits(network, limits, function(err) {
+      amazon = JSON.stringify(amazon);
+      storageService.setAmazon(network, amazon, function(err) {
         if (err) $log.error(err);
       });
     });
@@ -199,7 +222,7 @@ angular.module('copayApp.services').factory('amazonService', function($http, $lo
         orderId: data.orderId,
         posData: '{uuid:' + uuid + '}'
       };
-      _checkLimit(data.price, function(err) {
+      _checkLimits(data.price, function(err) {
         if (err) return cb(err);
         $http(_postBitPay('/invoices', dataSrc)).then(function(data) {
           $log.info('BitPay Create Invoice: SUCCESS');
