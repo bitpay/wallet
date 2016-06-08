@@ -58,13 +58,13 @@ angular.module('copayApp.controllers').controller('createController',
       if (n > 1 && isChromeApp)
         self.seedOptions.push({
           id: 'ledger',
-          label: 'Ledger Hardware Wallet',
+          label: gettext('Ledger Hardware Wallet'),
         });
 
       if (isChromeApp || isDevel) {
         self.seedOptions.push({
           id: 'trezor',
-          label: 'Trezor Hardware Wallet',
+          label: gettext('Trezor Hardware Wallet'),
         });
       }
     };
