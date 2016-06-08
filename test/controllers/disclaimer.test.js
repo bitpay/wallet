@@ -3,18 +3,19 @@ describe('disclaimerController', function() {
   var storeProfile;
 
   var fixtures = {
-    '8dc332881e99c908c655147dc6bc605e102b0bd3cf2dbee02ed2a0f4daf2925a': {
-      "walletId": "eddaef15-f412-462f-9d3e-a793a7f6f6ba"
+    'e4d8ae25e03e5fef2e553615b088cfce222083828c13fdb37b8b6cf87bf76236': {
+      "walletId": "215f125d-57e7-414a-9723-448256113440",
     },
-    '654145bc3f15f03a8b1ccf55aa1bdcd1cfd5bbe3de90e909fd4e7f9f69ec4d79': {
+    '3f3b354d45c3eae3e4fe8830fcb728e5e570515af86e1a35deff0048a7a5e6b5': {
       "copayerId": "1a91ead1b6d13da882a25377a20e460df557e77008ea4f60eecbf984f786cf03",
       "wallet": {
         "version": "1.0.0",
-        "createdOn": 1465152783,
-        "id": "eddaef15-f412-462f-9d3e-a793a7f6f6ba",
+        "createdOn": 1465347281,
+        "id": "215f125d-57e7-414a-9723-448256113440",
         "name": "{\"iv\":\"BZQVWAP6d1e4G8Fq1rQKbA==\",\"v\":1,\"iter\":1,\"ks\":128,\"ts\":64,\"mode\":\"ccm\",\"adata\":\"\",\"cipher\":\"aes\",\"ct\":\"/gaG7FIkhCiwsWKZUR0sL/cxH+zHMK0=\"}",
         "m": 1,
         "n": 1,
+        "singleAddress": false,
         "status": "complete",
         "publicKeyRing": [{
           "xPubKey": "xpub6Cb7MYAX7mJR28MfFueCsoDVVHhoWkQxRC4viAeHanYwRNgDo5xMF42xmAeExzfyPXX3GaALNA8hWFMekVYvDF2BALommUhMgZ52szh88fd",
@@ -22,7 +23,7 @@ describe('disclaimerController', function() {
         }],
         "copayers": [{
           "version": 2,
-          "createdOn": 1465152783,
+          "createdOn": 1465347281,
           "xPubKey": "xpub6Cb7MYAX7mJR28MfFueCsoDVVHhoWkQxRC4viAeHanYwRNgDo5xMF42xmAeExzfyPXX3GaALNA8hWFMekVYvDF2BALommUhMgZ52szh88fd",
           "id": "1a91ead1b6d13da882a25377a20e460df557e77008ea4f60eecbf984f786cf03",
           "name": "{\"iv\":\"BZQVWAP6d1e4G8Fq1rQKbA==\",\"v\":1,\"iter\":1,\"ks\":128,\"ts\":64,\"mode\":\"ccm\",\"adata\":\"\",\"cipher\":\"aes\",\"ct\":\"wwZd+2LQgYR6cA==\"}",
@@ -47,7 +48,8 @@ describe('disclaimerController', function() {
         },
         "scanStatus": null
       }
-    },
+    }
+
   }; // TODO: Read from file
 
   beforeEach(function(done) {
@@ -62,7 +64,7 @@ describe('disclaimerController', function() {
   });
 
   it('should be defined', function() {
-     should.exist(ctrl);
+    should.exist(ctrl);
   });
 
   it('should create the initial profile', function(done) {
