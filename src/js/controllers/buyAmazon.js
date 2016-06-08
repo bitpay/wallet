@@ -29,6 +29,8 @@ angular.module('copayApp.controllers').controller('buyAmazonController',
       $scope.fiat = minimumAmount;
       var network = configService.getSync().amazon.testnet ? 'testnet' : 'livenet';
       amazonService.setCredentials(network);
+      amazonService.healthCheckRequest();
+      amazonService.initUuid();
       self.otherWallets = otherWallets(network);
       // Choose focused wallet
       try {
