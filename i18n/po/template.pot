@@ -97,10 +97,6 @@ msgstr ""
 msgid "Activity"
 msgstr ""
 
-#: public/views/modals/tx-details.html
-msgid "Add a comment"
-msgstr ""
-
 #: public/views/modals/addressbook.html
 msgid "Add a new entry"
 msgstr ""
@@ -113,6 +109,11 @@ msgstr ""
 #: public/views/create.html
 #: public/views/join.html
 msgid "Add an optional password to secure the recovery phrase"
+msgstr ""
+
+#: public/views/includes/note.html
+#: public/views/modals/tx-details.html
+msgid "Add comment"
 msgstr ""
 
 #: public/views/includes/sidebar.html
@@ -177,6 +178,10 @@ msgstr ""
 #: src/js/controllers/copayers.js
 #: src/js/controllers/preferencesDelete.js
 msgid "Are you sure you want to delete this wallet?"
+msgstr ""
+
+#: public/views/includes/walletInfo.html
+msgid "Auditable"
 msgstr ""
 
 #: public/views/includes/available-balance.html
@@ -405,6 +410,10 @@ msgstr ""
 
 #: public/views/export.html
 msgid "Copy to clipboard"
+msgstr ""
+
+#: src/js/services/profileService.js
+msgid "Could not access wallet"
 msgstr ""
 
 #: src/js/controllers/index.js
@@ -647,10 +656,6 @@ msgstr ""
 
 #: src/js/controllers/export.js
 msgid "Encrypted export file saved"
-msgstr ""
-
-#: public/views/includes/note.html
-msgid "Enter a new comment"
 msgstr ""
 
 #: public/views/create.html
@@ -1547,6 +1552,10 @@ msgid "Share this invitation with your copayers"
 msgstr ""
 
 #: public/views/walletHome.html
+msgid "Share this wallet address to receive payments"
+msgstr ""
+
+#: public/views/walletHome.html
 msgid "Share this wallet address to receive payments. To protect your privacy, new addresses are generated automatically once you use them."
 msgstr ""
 
@@ -1574,7 +1583,7 @@ msgid "Signing transaction"
 msgstr ""
 
 #: public/views/create.html
-msgid "Single Wallet Address"
+msgid "Single Address Wallet"
 msgstr ""
 
 #: public/views/translators.html
