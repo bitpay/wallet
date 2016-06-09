@@ -5,9 +5,12 @@ angular.module('copayApp.services').factory('platformInfo', function($window) {
   var ua = navigator ? navigator.userAgent : null;
 
   if (!ua) {
-    console.log('Could not determine navigator. Using a random string');
-    ua = Math.floor(Math.random() * 100000);
+    console.log('Could not determine navigator. Using fixed string');
+    ua = 'dummy user-agent';
   }
+
+  // Fixes IOS WebKit UA
+  ua = ua.replace(/\(\d+\)$/, '');
 
   var isNodeWebkit = function() {
     var isNode = (typeof process !== "undefined" && typeof require !== "undefined");
