@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('disclaimerController',
-  function($scope, $timeout, $log, $ionicSideMenuDelegate, profileService, applicationService, gettextCatalog, uxLanguage, go) {
+  function($scope, $timeout, $log, $ionicSideMenuDelegate, profileService, applicationService, gettextCatalog, uxLanguage, go, storageService) {
     var self = this;
     self.tries = 0;
     self.creatingProfile = true;
@@ -38,7 +38,7 @@ angular.module('copayApp.controllers').controller('disclaimerController',
       $ionicSideMenuDelegate.canDragContent(false);
       self.lang = uxLanguage.currentLanguage;
 
-      profileService.getProfile(function(err, profile) {
+      storageService.getProfile(function(err, profile) {
         if (!profile) {
           create(opts);
         } else {

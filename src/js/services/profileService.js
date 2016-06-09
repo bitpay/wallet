@@ -127,7 +127,6 @@ angular.module('copayApp.services')
       if (!credentials.walletId)
         throw 'bindWallet should receive credentials JSON';
 
-      $log.debug('Bind wallet:' + credentials.walletId);
 
       // Create the client
       var getBWSURL = function(walletId) {
@@ -137,6 +136,7 @@ angular.module('copayApp.services')
       };
 
       var skipKeyValidation = root.profile.isChecked(platformInfo.ua, credentials.walletId);
+      $log.info('Binding wallet:' + credentials.walletId + ' Validating?:' + !skipKeyValidation);
       var client = bwcService.getClient(JSON.stringify(credentials), {
         bwsurl: getBWSURL(credentials.walletId),
         skipKeyValidation: skipKeyValidation,
