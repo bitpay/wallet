@@ -140,23 +140,31 @@ angular.module('copayApp.controllers').controller('backupController',
     function confirm() {
       self.backupError = false;
 
-      var walletClient = bwcService.getClient();
-      var separator = self.useIdeograms ? '\u3000' : ' ';
-      var customSentence = lodash.pluck(self.customWords, 'word').join(separator);
-      var passphrase = $scope.passphrase || '';
+      var customWordList = lodash.pluck(self.customWords, 'word');
 
-      try {
-        walletClient.seedFromMnemonic(customSentence, {
-          network: fc.credentials.network,
-          passphrase: passphrase,
-          account: fc.credentials.account
-        })
-      } catch (err) {
-        return backupError(err);
+      if (!lodash.isEqual(self.mnemonicWords, customWordList)) {
+        return backupError('Mnemonic string mismatch')
       }
 
-      if (walletClient.credentials.xPrivKey != self.xPrivKey) {
-        return backupError('Private key mismatch');
+      if (self.mnemonicHasPassphrase) {
+        var walletClient = bwcService.getClient();
+        var separator = self.useIdeograms ? '\u3000' : ' ';
+        var customSentence = customWordList.join(separator);
+        var passphrase = $scope.passphrase || '';
+
+        try {
+          walletClient.seedFromMnemonic(customSentence, {
+            network: fc.credentials.network,
+            passphrase: passphrase,
+            account: fc.credentials.account
+          })
+        } catch (err) {
+          return backupError(err);
+        }
+
+        if (walletClient.credentials.xPrivKey != self.xPrivKey) {
+          return backupError('Private key mismatch');
+        }
       }
 
       $rootScope.$emit('Local/BackupDone');
