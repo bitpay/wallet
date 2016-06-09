@@ -23,6 +23,10 @@ angular.module('copayApp.controllers').controller('txpDetailsController', functi
     }
   }
 
+  $timeout(function() {
+    $rootScope.$apply();
+  });
+
   $scope.sign = function(txp) {
     $scope.error = null;
     $scope.loading = 'Signing Transaction';
