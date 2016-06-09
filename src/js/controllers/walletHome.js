@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('walletHomeController', function($scope, $rootScope, $interval, $ionicScrollDelegate, $timeout, $filter, $modal, $log, $ionicModal, notification, txStatus, profileService, lodash, configService, rateService, storageService, bitcore, gettext, gettextCatalog, platformInfo, addressService, ledger, bwsError, confirmDialog, txFormatService, animationService, addressbookService, go, feeService, walletService, fingerprintService, nodeWebkit) {
+angular.module('copayApp.controllers').controller('walletHomeController', function($scope, $rootScope, $interval, $timeout, $filter, $modal, $log, $ionicModal, notification, txStatus, profileService, lodash, configService, rateService, storageService, bitcore, gettext, gettextCatalog, platformInfo, addressService, ledger, bwsError, confirmDialog, txFormatService, animationService, addressbookService, go, feeService, walletService, fingerprintService, nodeWebkit) {
 
   var isCordova = platformInfo.isCordova;
   var isWP = platformInfo.isWP;
@@ -36,7 +36,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     self.setForm(data);
     $rootScope.$emit('Local/SetTab', 'send');
 
-    var form = self.sendForm;
+    var form = $scope.sendForm;
     if (form.address.$invalid && !self.blockUx) {
       self.resetForm();
       self.error = gettext('Could not recognize a valid Bitcoin QR Code');
@@ -279,17 +279,20 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     });
   }
 
-  this.formFocus = function(what) {
-
-    if (what == 'msg') {
-      $timeout(function() {
-        $ionicScrollDelegate.scrollBottom(true);
-      }, 300);
+  this.hideMenuBar = lodash.debounce(function(hide) {
+    if (hide) {
+      $rootScope.shouldHideMenuBar = true;
+      this.bindTouchDown();
+    } else {
+      $rootScope.shouldHideMenuBar = false;
     }
-    if (what == 'address') {
-      $timeout(function() {
-        $ionicScrollDelegate.scrollTop(true);
-      }, 300);
+    $rootScope.$digest();
+  }, 100);
+
+
+  this.formFocus = function(what) {
+    if (isCordova && !this.isWindowsPhoneApp) {
+      this.hideMenuBar(what);
     }
 
     var self = this;
@@ -319,11 +322,9 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
         this.hideAmount = true;
       }
     }
-
     $timeout(function() {
       $rootScope.$digest();
     }, 1);
-
   };
 
   this.setSendFormInputs = function() {
@@ -376,7 +377,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
         },
         set: function(newValue) {
           $scope.__address = self.onAddressChange(newValue);
-          if (self.sendForm && self.sendForm.address.$valid) {
+          if ($scope.sendForm && $scope.sendForm.address.$valid) {
             self.lockAddress = true;
           }
         },
@@ -436,7 +437,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       this.hideAmount = false;
     }
 
-    var form = self.sendForm;
+    var form = $scope.sendForm;
     var comment = form.comment.$modelValue;
 
     // ToDo: use a credential's (or fc's) function for this
@@ -574,7 +575,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   };
 
   this.setForm = function(to, amount, comment) {
-    var form = self.sendForm;
+    var form = $scope.sendForm;
     if (to) {
       form.address.$setViewValue(to);
       form.address.$isValid = true;
@@ -607,7 +608,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
     this._amount = this._address = null;
 
-    var form = self.sendForm;
+    var form = $scope.sendForm;
 
     if (form && form.amount) {
       form.amount.$pristine = true;
