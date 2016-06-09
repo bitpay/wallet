@@ -18,6 +18,6 @@ Zahlungsprotokoll (BIP70-BIP73) Unterstützung: Leicht identifizierbare Zahlungs
 Unterstützung von 150+ verschiedenen Währungen und Stückelung in BTC oder bits
 E-Mail Benachrichtigung für Zahlungen und Transaktionen
 Anpasspare Wallets: Eigene Namen und Hintergrundfarben
-6 supported languages (EN, JP, FR, ES, DE, RU)
+Unterstützung von 9 Sprachen (EN, CS, FR, DE, IT, ES, JA, PL, RU)
 
 Copay ist eine kostenlose und quelloffene Software, die auf nicht firmeneigenen Servern läuft und es somit nicht nötig ist, sich auf ein bestimmtes Unternehmen und dessen kontinuierliche Unterstützung zu verlassen. Jeder hat die Möglichkeit den Quelltext zu überprüfen oder auf GitHub (https://github.com/bitpay/copay) eigene Änderungen beizutragen und an der Weiterentwicklung mitzuwirken. 

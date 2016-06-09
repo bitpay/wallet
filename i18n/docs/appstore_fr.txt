@@ -18,6 +18,6 @@ Nous avons développé les fonctionnalités suivantes dans cette version de Copa
 • Prise en charge de plus de 150 devises et dénomination d'unité en BTC ou en bits.
 • Notifications e-mail pour les paiements et les transferts.
 • Nom de portefeuille et couleurs de fond personnalisables.
-• 6 langues prises en charge (EN, JP, FR, ES, DE, RU)
+• 9 langues prises en charge (EN, CS, FR, DE, IT, ES, JA, PL, RU)
 
 Copay est un logiciel gratuit et open source qui tourne sur des serveurs non-propriétaires, il n'y a donc pas besoin de compter sur une entreprise pour un support continuel. N'importe qui peut examiner ou contribuer au code source de Copay sur GitHub (https://github.com/bitpay/copay). 

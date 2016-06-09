@@ -1,4 +1,4 @@
-Migliora alcune icone
+* Migliora alcune icone
 * Piccole modifiche UX in ricezione
 * Traduzioni aggiornate
 * Correzione errori

@@ -18,6 +18,6 @@ Platební protokol (BIP70-BIP73): snadno identifikovatelný platební požadavek
 Podpora pro více než 150 měn a denominace BTC nebo bitů
 E-mailová upozornění pro platby a převody
 Přizpůsobitelné pojmenování a podbarvení peněženky
-6 podporovaných jazyků (EN, JP, FR, ES, DE, RU)
+9 podporovaných jazyků (EN, CS, FR, DE, IT, ES, JA, PL, RU)
 
 Copay je bezplatný open-source software, fungující na decentralizovaných serverech, není tedy potřeba spoléhat na společnost pro trvalou podporu. Kdokoliv může prohlédnout nebo přispět k Copay zdrojovému kódu na GitHub (https://github.com/bitpay/copay). 
