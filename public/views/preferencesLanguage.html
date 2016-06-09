@@ -1,20 +1,12 @@
-<div 
-  class="topbar-container" 
-  ng-include="'views/includes/topbar.html'"
+<div class="topbar-container" ng-include="'views/includes/topbar.html'"
   ng-init="titleSection='Language'; goBackToState = 'preferencesGlobal'; noColor = true">
 </div>
 
-
-
-<div class="content preferences" ng-controller="preferencesLanguageController as prefLang">
+<div class="content preferences" ng-controller="preferencesLanguageController as prefLang" ng-init="prefLang.init()">
   <h4></h4>
-  <ul class="no-bullet m0 ">
-  <li
-    ng-repeat="lang in prefLang.availableLanguages" 
-    ng-click="prefLang.save(lang.isoCode)" class="line-b p20 size-14">
-    <span>{{lang.name}}</span>
-    <i class="fi-check size-16 right" ng-show="prefLang.currentLanguage == lang.isoCode"></i>
-  </li>
-  </ul>
+
+  <ion-radio class="line-b size-12" ng-repeat="lang in prefLang.availableLanguages" ng-value="lang.isoCode" ng-model="data.currentLanguage"
+    ng-click="prefLang.save(lang.isoCode)">{{lang.name}}
+  </ion-radio>
 </div>
 <div class="extra-margin-bottom"></div>
