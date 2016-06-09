@@ -143,7 +143,7 @@ if [ ! -d $PROJECT ]; then
   cordova plugin add cordova-plugin-uniquedeviceid
   checkOK
 
-  cordova plugin add cordova-plugin-file@3.0.0
+  cordova plugin add cordova-plugin-file
   checkOK
 
   cordova plugin add cordova-plugin-touch-id && cordova prepare
