@@ -5,7 +5,7 @@ angular.module('copayApp.services').factory('fingerprintService', function($log,
 
   var _isAvailable = false;
 
-  if (platformInfo.isMobile) {
+  if (platformInfo.isCordova) {
     window.plugins.touchid = window.plugins.touchid || {};
     window.plugins.touchid.isAvailable(
       function(msg) {
