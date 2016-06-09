@@ -1,12 +1,16 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('txDetailsController', function($rootScope, $log, $scope, $filter, $ionicPopup, gettextCatalog, profileService, configService, lodash) {
+angular.module('copayApp.controllers').controller('txDetailsController', function($rootScope, $timeout, $log, $scope, $filter, $ionicPopup, gettextCatalog, profileService, configService, lodash) {
 
   var self = $scope.self;
   var fc = profileService.focusedClient;
   var config = configService.getSync();
   var configWallet = config.wallet;
   var walletSettings = configWallet.settings;
+
+  $timeout(function() {
+    $rootScope.$apply();
+  });
 
   $scope.alternativeIsoCode = walletSettings.alternativeIsoCode;
   $scope.color = fc.backgroundColor;
