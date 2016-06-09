@@ -20,6 +20,10 @@
 	z-index: -1;
 }
 
+.item-radio .radio-icon {
+	font-size: 16px;
+}
+
 .popup-container.active .popup {
 	border-radius: 10px;
 }
