@@ -1,18 +1,11 @@
-<div 
-  class="topbar-container" 
-  ng-include="'views/includes/topbar.html'"
+<div class="topbar-container" ng-include="'views/includes/topbar.html'"
   ng-init="titleSection='Color'; goBackToState = 'preferences'">
 </div>
 
-
-
-<div class="content preferences" ng-controller="preferencesColorController as p">
+<div class="content preferences" ng-controller="preferencesColorController as p" ng-init="p.init()">
   <h4></h4>
-  <ul class="no-bullet m0">
-  <li ng-repeat="c in p.colorOpts" ng-click="p.save(c)">
+
+  <ion-radio class="size-12" ng-repeat="c in p.colorList" ng-value="c" ng-model="data.currentColor" ng-click="p.save(c)">
     <span ng-style="{'color': c}">&block;</span>
-    <i class="fi-check size-16 right" ng-show="p.color == c"></i>
-  </li>
-  </ul>
+  </ion-radio>
 </div>
-<div class="extra-margin-bottom"></div>
