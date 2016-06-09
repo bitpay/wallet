@@ -352,7 +352,7 @@
     send
 
     -->
-    <div id="send" class="send tab-view">
+    <ion-content id="send" class="send tab-view" overflow-scroll="true">
       <div class="pr p25b">
         <h4 class="title m0">
           <available-balance ng-show="!index.shouldHideBalance"></available-balance>
@@ -380,27 +380,27 @@
       </div>
       <div class="row m20t">
         <div class="large-12 large-centered columns">
-          <form name="sendForm" ng-disabled="home.blockUx || home.onGoingProcess" novalidate>
+          <form name="home.sendForm" ng-disabled="home.blockUx || home.onGoingProcess" novalidate>
 
             <div ng-hide="home._paypro || home.hideAddress">
               <div class="row collapse">
                 <label for="address" class="left" >
                   <span translate>To</span>
                 </label>
-                <span ng-hide="sendForm.address.$pristine">
-                  <span class="has-error right size-12" ng-show="sendForm.address.$invalid && _address">
+                <span ng-hide="home.sendForm.address.$pristine">
+                  <span class="has-error right size-12" ng-show="home.sendForm.address.$invalid && _address">
                     <i class="icon-close-circle size-14"></i>
                     <span class="vm" translate>Not valid</span>
                   </span>
-                  <small class="right text-primary" ng-show="!sendForm.address.$invalid">
+                  <small class="right text-primary" ng-show="!home.sendForm.address.$invalid">
                     <i class="icon-checkmark-circle size-14"></i>
                   </small>
                 </span>
               </div>
 
               <div class="input">
-                <input ng-show="sendForm.address.$invalid" class="m0" type="text" id="address" name="address" ng-disabled="home.blockUx || home.lockAddress" ng-attr-placeholder="{{'Bitcoin address'|translate}}" ng-model="_address" valid-address required ng-focus="home.formFocus('address')" ng-blur="home.formFocus(false)">
-                <div class="addressbook-input" ng-show="!sendForm.address.$invalid && _address">
+                <input ng-show="home.sendForm.address.$invalid" class="m0" type="text" id="address" name="address" ng-disabled="home.blockUx || home.lockAddress" ng-attr-placeholder="{{'Bitcoin address'|translate}}" ng-model="_address" valid-address required ng-focus="home.formFocus('address')" ng-blur="home.formFocus(false)">
+                <div class="addressbook-input" ng-show="!home.sendForm.address.$invalid && _address">
                   {{index.addressbook[_address] || _address}}
                 </div>
                 <a class="postfix size-12 m0 text-gray"
@@ -427,12 +427,12 @@
 
             <div class="row" ng-init="home.hideAlternative()" ng-hide="home.hideAmount">
               <div class="large-12 medium-12 columns">
-                <div class="right" ng-hide="sendForm.amount.$pristine && !sendForm.amount.$modelValue ">
-                  <span class="has-error right size-12" ng-if="sendForm.amount.$invalid">
+                <div class="right" ng-hide="home.sendForm.amount.$pristine && !home.sendForm.amount.$modelValue ">
+                  <span class="has-error right size-12" ng-if="home.sendForm.amount.$invalid">
                     <i class="icon-close-circle size-14"></i>
                     <span clas="vm" translate>Not valid</span>
                   </span>
-                  <small class="text-primary right" ng-if="!sendForm.amount.$invalid && !sendForm.alternative.$invalid">
+                  <small class="text-primary right" ng-if="!home.sendForm.amount.$invalid && !home.sendForm.alternative.$invalid">
                     <i class="icon-checkmark-circle size-14"></i>
                   </small>
                 </div>
@@ -460,23 +460,22 @@
             <div class="row" ng-hide="home.hideNote">
               <div class="large-12 columns">
                 <label for="comment"><span translate>Description</span>
-                  <small translate ng-hide="!sendForm.comment.$pristine">optional</small>
-                  <small translate class="has-error" ng-show="sendForm.comment.$invalid && !sendForm.comment.$pristine">too long!</small>
+                  <small translate ng-hide="!home.sendForm.comment.$pristine">optional</small>
+                  <small translate class="has-error" ng-show="home.sendForm.comment.$invalid && !home.sendForm.comment.$pristine">too long!</small>
                 </label>
                 <div class="input">
                   <textarea id="comment" ng-disabled="home.blockUx" name="comment"
-                    ng-maxlength="500" ng-model="_comment" ng-focus="home.formFocus('msg')"
-                    ng-blur="home.formFocus(false)"></textarea>
+                    ng-maxlength="500" ng-model="_comment" ng-focus="home.formFocus('msg')" ng-blur="home.formFocus(false)"></textarea>
                 </div>
               </div>
             </div>
 
             <div class="row" ng-show="!home.onGoingProcess">
               <div class="large-6 medium-6 small-6 columns" ng-show="!home.blockUx && (home._paypro || home.lockAddress || home.lockAmount)">
-                <a ng-click="home.resetForm(sendForm)" class="button expand outline dark-gray round" translate>Cancel</a>
+                <a ng-click="home.resetForm(home.sendForm)" class="button expand outline dark-gray round" translate>Cancel</a>
               </div>
               <div class="columns" ng-class="{'small-6 medium-6 large-6':(home._paypro || home.lockAddress || home.lockAmount)}">
-                <button class="button black round expand" ng-disabled="sendForm.$invalid || home.blockUx || index.isOffline || home.paymentExpired"
+                <button class="button black round expand" ng-disabled="home.sendForm.$invalid || home.blockUx || index.isOffline || home.paymentExpired"
                   ng-style="{'background-color':index.backgroundColor}" ng-click="home.submitForm()" translate>
                   Send
                 </button>
@@ -487,7 +486,7 @@
         </div>
       </div>
       <div class="extra-margin-bottom"></div>
-    </div> <!-- END Send -->
+    </ion-content> <!-- END Send -->
 
     <div id="{{view.id}}" class="{{view.class}} tab-view" ng-repeat="view in index.addonViews" ng-include="view.template">
     </div>
@@ -495,4 +494,4 @@
   </div>
 </div>
 <div class="extra-margin-bottom"></div>
-<div ng-include="'views/includes/menu.html'" ng-show="!index.noFocusedWallet && !$root.shouldHideMenuBar"></div>
+<div ng-include="'views/includes/menu.html'" ng-show="!index.noFocusedWallet"></div>
