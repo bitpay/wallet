@@ -87,7 +87,7 @@ if [ ! -d $PROJECT ]; then
     cordova plugin add https://github.com/tjwoon/csZBar.git
     checkOK
   else
-    cordova plugin add https://github.com/jrontend/phonegap-plugin-barcodescanner
+    cordova plugin add https://github.com/phonegap/phonegap-plugin-barcodescanner
     checkOK
   fi
 
