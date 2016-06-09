@@ -7,6 +7,8 @@ Copay is an easy-to-use, open-source, multiplatform, multisignature, secure bitc
 
 Binary versions of Copay are available for download at [Copay.io](https://copay.io/#download). Copay Binaries are signed with the key `copay@bitpay.com` – See the section [`How to Verify Copay Signatures`](https://github.com/bitpay/copay#how-to-verify-copay-signatures) for details.
 
+For a list of frequently asked questions please visit the [Copay FAQ](https://github.com/bitpay/copay/wiki/COPAY---FAQ).
+
 ## Main Features
 
 - Multiple wallet creation and management in-app
