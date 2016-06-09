@@ -9,7 +9,9 @@ angular.module('copayApp.controllers').controller('preferencesFeeController',
       feeService.getFeeLevels(function(levels) {
         self.loading = false;
         self.feeOpts = feeService.feeOpts;
-        self.currentFeeLevel = feeService.getCurrentFeeLevel();     
+        $scope.data = {
+          currentFeeLevel: feeService.getCurrentFeeLevel()
+        };
         self.feeLevels = levels;
         $scope.$apply();
       });
@@ -20,14 +22,14 @@ angular.module('copayApp.controllers').controller('preferencesFeeController',
       var opts = {
         wallet: {
           settings: {
-            feeLevel: newFee
+            feeLevel: newFee.level
           }
         }
       };
 
       configService.set(opts, function(err) {
         if (err) $log.debug(err);
-        self.currentFeeLevel = feeService.getCurrentFeeLevel();     
+        $scope.currentFeeLevel = newFee.level;
       });
 
     };
