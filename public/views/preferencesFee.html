@@ -15,16 +15,13 @@
       </div>
     </div>
   </div>
-  <ul class="no-bullet m0">
-    <li ng-repeat="fee in prefFee.feeLevels.livenet"
-      ng-click="prefFee.save(fee.level)">
-      {{prefFee.feeOpts[fee.level]|translate}}
-      <i class="fi-check size-16 right" ng-show="prefFee.currentFeeLevel == fee.level"></i>
-    </li>
-  </ul>
+
+  <ion-radio class="size-12" ng-repeat="fee in prefFee.feeLevels.livenet" ng-value="fee.level" ng-model="data.currentFeeLevel"
+    ng-click="prefFee.save(fee)">{{prefFee.feeOpts[fee.level]|translate}}
+  </ion-radio>
 
   <div class="row m20t">
-    <div class="text-gray size-12 text-center" ng-repeat="fee in prefFee.feeLevels.livenet" ng-if="fee.level == prefFee.currentFeeLevel">
+    <div class="text-gray size-12 text-center" ng-repeat="fee in prefFee.feeLevels.livenet" ng-if="fee.level == data.currentFeeLevel">
       <div ng-show="fee.nbBlocks">
         <span translate>Average confirmation time: {{fee.nbBlocks * 10}} minutes</span>.
       </div>
