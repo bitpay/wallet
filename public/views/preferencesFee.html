@@ -23,13 +23,13 @@
   <div class="row m20t">
     <div class="text-gray size-12 text-center" ng-repeat="fee in prefFee.feeLevels.livenet" ng-if="fee.level == data.currentFeeLevel">
       <div ng-show="fee.nbBlocks">
-        <span translate>Average confirmation time: {{fee.nbBlocks * 10}} minutes</span>.
+        <span class="text-bold" translate>Average confirmation time: {{fee.nbBlocks * 10}} minutes</span>.
       </div>
-      <span class="size-12 text-light" translate>Current fee rate for this policy: {{fee.feePerKBUnit}}/kiB</span>
+      <span class="text-bold" translate>Current fee rate for this policy: {{fee.feePerKBUnit}}/kiB</span>
     </div>
   </div>
 
-  <div class="row m20t">
+  <div class="m15">
     <div class="text-gray size-12 text-center" translate>
       Bitcoin transactions may include a fee collected by miners on the network. The higher the fee, the greater the incentive a miner has to include that transaction in a block. Actual fees are determined based on network load and the selected policy.
     </div>
