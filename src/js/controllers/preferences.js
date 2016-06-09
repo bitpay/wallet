@@ -115,7 +115,7 @@ angular.module('copayApp.controllers').controller('preferencesController',
           $log.debug(err);
           $timeout(function() {
             $scope.touchidError = true;
-            $scope.touchidEnabled = false;
+            $scope.touchidEnabled = true;
           }, 100);
           return;
         }
