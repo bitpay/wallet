@@ -1596,7 +1596,7 @@ msgstr "Signature de la transaction"
 
 #: public/views/create.html
 msgid "Single Address Wallet"
-msgstr "Adresse unique de portefeuille"
+msgstr "Portefeuille d'adresse unique"
 
 #: public/views/translators.html
 msgid "Spanish"
