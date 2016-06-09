@@ -77,11 +77,6 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     });
   });
 
-  var disableResumeListener = $rootScope.$on('Local/Resume', function() {
-    // This is needed then the apps go to sleep
-    self.bindTouchDown();
-  });
-
   var disableTabListener = $rootScope.$on('Local/TabChanged', function(e, tab) {
     // This will slow down switch, do not add things here!
     switch (tab) {
@@ -104,7 +99,6 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     disablePaymentUriListener();
     disableTabListener();
     disableFocusListener();
-    disableResumeListener();
     disableOngoingProcessListener();
     $rootScope.shouldHideMenuBar = false;
   });
@@ -257,32 +251,9 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     this.error = this.success = null;
   };
 
-  this.bindTouchDown = function(tries) {
-    var self = this;
-    tries = tries || 0;
-    if (tries > 5) return;
-    var e = document.getElementById('menu-walletHome');
-    if (!e) return $timeout(function() {
-      self.bindTouchDown(++tries);
-    }, 500);
-
-    // on touchdown elements
-    $log.debug('Binding touchstart elements...');
-    ['hamburger', 'menu-walletHome', 'menu-send', 'menu-receive'].forEach(function(id) {
-      var e = document.getElementById(id);
-      if (e) e.addEventListener('touchstart', function() {
-        try {
-          event.preventDefault();
-        } catch (e) {};
-        angular.element(e).triggerHandler('click');
-      }, true);
-    });
-  }
-
   this.hideMenuBar = lodash.debounce(function(hide) {
     if (hide) {
       $rootScope.shouldHideMenuBar = true;
-      this.bindTouchDown();
     } else {
       $rootScope.shouldHideMenuBar = false;
     }
@@ -910,7 +881,6 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   /* Start setup */
   lodash.assign(self, vanillaScope);
 
-  this.bindTouchDown();
   if (profileService.focusedClient) {
     this.setAddress();
     this.setSendFormInputs();
