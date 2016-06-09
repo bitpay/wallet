@@ -13,7 +13,7 @@ angular.module('copayApp.controllers').controller('copayersController',
     var confirm_msg = gettextCatalog.getString('Confirm');
 
     // Note that this is ONLY triggered when the page is opened
-    // IF a wallet is incomplete and copay is at /#copayers 
+    // IF a wallet is incomplete and copay is at /#copayers
     // and the user switch to an other complete wallet
     // THIS IS NOT TRIGGERED.
     //
@@ -72,8 +72,10 @@ angular.module('copayApp.controllers').controller('copayersController',
           go.walletHome();
           $timeout(function() {
             notification.success(
-                gettextCatalog.getString('Success'), 
-                gettextCatalog.getString('The wallet "{{walletName}}" was deleted', {walletName: walletName})
+              gettextCatalog.getString('Success'),
+              gettextCatalog.getString('The wallet "{{walletName}}" was deleted', {
+                walletName: walletName
+              })
             );
           });
         }
@@ -87,7 +89,7 @@ angular.module('copayApp.controllers').controller('copayersController',
           delete_msg,
           function(buttonIndex) {
             if (buttonIndex == 1) {
-              _deleteWallet();
+              doDeleteWallet();
             }
           },
           confirm_msg, [accept_msg, cancel_msg]
@@ -109,7 +111,9 @@ angular.module('copayApp.controllers').controller('copayersController',
         if (isAndroid || isWP) {
           window.ignoreMobilePause = true;
         }
-        var message = gettextCatalog.getString('Join my Copay wallet. Here is the invitation code: {{secret}} You can download Copay for your phone or desktop at https://copay.io', {secret: secret});
+        var message = gettextCatalog.getString('Join my Copay wallet. Here is the invitation code: {{secret}} You can download Copay for your phone or desktop at https://copay.io', {
+          secret: secret
+        });
         window.plugins.socialsharing.share(message, gettextCatalog.getString('Invitation to share a Copay Wallet'), null, null);
       }
     };
