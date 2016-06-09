@@ -8,31 +8,28 @@
   <div class="preferences-fee" ng-show="prefFee.loading">
     <div  class="row p20 text-center">
       <div class="columns large-12 medium-12 small-12 m10b">
-        <ion-spinner class="spinner-stable" icon="lines"></ion-spinner>
+        <ion-spinner class="spinner-dark" icon="lines"></ion-spinner>
       </div>
       <div class="size-12 text-gray m20t" translate>
         Loading...
       </div>
     </div>
   </div>
-  <ul class="no-bullet m0">
-    <li ng-repeat="fee in prefFee.feeLevels.livenet"
-      ng-click="prefFee.save(fee.level)">
-      {{prefFee.feeOpts[fee.level]|translate}}
-      <i class="fi-check size-16 right" ng-show="prefFee.currentFeeLevel == fee.level"></i>
-    </li>
-  </ul>
+
+  <ion-radio class="size-12" ng-repeat="fee in prefFee.feeLevels.livenet" ng-value="fee.level" ng-model="data.currentFeeLevel"
+    ng-click="prefFee.save(fee)">{{prefFee.feeOpts[fee.level]|translate}}
+  </ion-radio>
 
   <div class="row m20t">
-    <div class="text-gray size-12 text-center" ng-repeat="fee in prefFee.feeLevels.livenet" ng-if="fee.level == prefFee.currentFeeLevel">
+    <div class="text-gray size-12 text-center" ng-repeat="fee in prefFee.feeLevels.livenet" ng-if="fee.level == data.currentFeeLevel">
       <div ng-show="fee.nbBlocks">
-        <span translate>Average confirmation time: {{fee.nbBlocks * 10}} minutes</span>.
+        <span class="text-bold" translate>Average confirmation time: {{fee.nbBlocks * 10}} minutes</span>.
       </div>
-      <span class="size-12 text-light" translate>Current fee rate for this policy: {{fee.feePerKBUnit}}/kiB</span>
+      <span class="text-bold" translate>Current fee rate for this policy: {{fee.feePerKBUnit}}/kiB</span>
     </div>
   </div>
 
-  <div class="row m20t">
+  <div class="m15">
     <div class="text-gray size-12 text-center" translate>
       Bitcoin transactions may include a fee collected by miners on the network. The higher the fee, the greater the incentive a miner has to include that transaction in a block. Actual fees are determined based on network load and the selected policy.
     </div>
