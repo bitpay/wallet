@@ -16,7 +16,7 @@
             <ion-spinner class="spinner-stable" icon="lines"></ion-spinner>
           </div>
         </div>
-        <div class="secret">
+        <div class="secret" ng-show="!index.isCordova">
           {{index.walletSecret || ('Loading...'|translate)}}
         </div>
       </div>
