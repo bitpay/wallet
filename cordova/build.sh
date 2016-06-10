@@ -79,9 +79,6 @@ if [ ! -d $PROJECT ]; then
 
   echo "${OpenColor}${Green}* Installing plugins... ${CloseColor}"
 
-  cordova plugin add https://github.com/florentvaldelievre/virtualartifacts-webIntent.git
-  checkOK
-
   if [ $CURRENT_OS == "IOS" ]
   then
     cordova plugin add https://github.com/tjwoon/csZBar.git
