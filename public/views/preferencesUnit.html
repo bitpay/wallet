@@ -1,19 +1,11 @@
-<div 
-  class="topbar-container" 
-  ng-include="'views/includes/topbar.html'"
+<div class="topbar-container" ng-include="'views/includes/topbar.html'"
   ng-init="titleSection='Unit'; goBackToState = 'preferencesGlobal'; noColor = true">
 </div>
 
-
-
-
-<div class="content preferences" ng-controller="preferencesUnitController as prefUnit">
+<div class="content preferences" ng-controller="preferencesUnitController">
   <h4></h4>
-  <ul class="no-bullet m0 ">
-  <li ng-repeat="unit in prefUnit.unitOpts" ng-click="prefUnit.save(unit)" class="line-b p20 size-14">
-    <span>{{unit.shortName}}</span>
-    <i class="fi-check size-16 right" ng-show="prefUnit.unitName == unit.shortName"></i>
-  </li>
-  </ul>
+
+  <ion-radio class="line-b size-12" ng-repeat="unit in unitList" ng-value="unit.code" ng-model="currentUnit"
+    ng-click="save(unit)">{{unit.shortName}}
+  </ion-radio>
 </div>
-<div class="extra-margin-bottom"></div>
