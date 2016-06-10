@@ -1,13 +1,12 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('preferencesLanguageController',
-  function($scope, $log, $timeout, configService, profileService, uxLanguage, walletService, go) {
+  function($scope, $log, configService, profileService, uxLanguage, walletService, go) {
 
-    this.availableLanguages = uxLanguage.getLanguages();
-    this.currentLanguage = uxLanguage.getCurrentLanguage();
+    $scope.availableLanguages = uxLanguage.getLanguages();
+    $scope.currentLanguage = uxLanguage.getCurrentLanguage();
 
-    this.save = function(newLang) {
-
+    $scope.save = function(newLang) {
       var opts = {
         wallet: {
           settings: {
@@ -20,16 +19,10 @@ angular.module('copayApp.controllers').controller('preferencesLanguageController
         if (err) $log.warn(err);
         go.preferencesGlobal();
 
-
         uxLanguage.update(function() {
-          $timeout(function() {
-            $scope.$apply();
-          }, 100);
-
-          walletService.updateRemotePreferences(profileService.getClients(), {},
-            function() {
-              $log.debug('Remote preferences saved');
-            });
+          walletService.updateRemotePreferences(profileService.getClients(), {}, function() {
+            $log.debug('Remote preferences saved');
+          });
         });
       });
     };
