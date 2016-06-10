@@ -1,13 +1,8 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('preferencesColorController',
-  function($scope, $timeout, $log, configService, profileService, go) {
-    var config;
-    var fc = profileService.focusedClient;
-    var walletId = fc.credentials.walletId;
+angular.module('copayApp.controllers').controller('preferencesColorController', function($scope, $log, configService, profileService, go) {
 
-    this.init = function() {
-      this.colorList = [
+  $scope.colorList = [
         '#DD4B39',
         '#F38F12',
         '#FAA77F',
@@ -24,25 +19,23 @@ angular.module('copayApp.controllers').controller('preferencesColorController',
         '#7A8C9E',
       ];
 
-      config = configService.getSync();
-      config.colorFor = config.colorFor || {};
+  var fc = profileService.focusedClient;
+  var walletId = fc.credentials.walletId;
+  var config = configService.getSync();
+  config.colorFor = config.colorFor || {};
 
-      $scope.data = {
-        currentColor: config.colorFor[walletId] || '#4A90E2'
-      };
+  $scope.currentColor = config.colorFor[walletId] || '#4A90E2';
+
+  $scope.save = function(color) {
+    var opts = {
+      colorFor: {}
     };
+    opts.colorFor[walletId] = color;
 
-    this.save = function(color) {
-      var self = this;
-      var opts = {
-        colorFor: {}
-      };
-      opts.colorFor[walletId] = color;
-
-      configService.set(opts, function(err) {
-        go.preferences();
-        if (err) $log.warn(err);
-        $scope.$emit('Local/ColorUpdated');
-      });
-    };
-  });
+    configService.set(opts, function(err) {
+      go.preferences();
+      if (err) $log.warn(err);
+      $scope.$emit('Local/ColorUpdated');
+    });
+  };
+});
