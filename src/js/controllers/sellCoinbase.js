@@ -1,31 +1,31 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('sellCoinbaseController', 
-  function($rootScope, $scope, $modal, $log, $timeout, lodash, profileService, coinbaseService, animationService, bwsError, configService, walletService, fingerprintService) {
-    
+angular.module('copayApp.controllers').controller('sellCoinbaseController',
+  function($rootScope, $scope, $modal, $log, $timeout, $ionicModal, lodash, profileService, coinbaseService, bwsError, configService, walletService, fingerprintService) {
+
     window.ignoreMobilePause = true;
     var self = this;
     var fc;
 
     $scope.priceSensitivity = [
       {
-        value : 0.5,
+        value: 0.5,
         name: '0.5%'
       },
       {
-        value : 1,
+        value: 1,
         name: '1%'
       },
       {
-        value : 2,
+        value: 2,
         name: '2%'
       },
       {
-        value : 5,
+        value: 5,
         name: '5%'
       },
       {
-        value : 10,
+        value: 10,
         name: '10%'
       }
     ];
@@ -63,7 +63,7 @@ angular.module('copayApp.controllers').controller('sellCoinbaseController',
         });
       } catch (e) {
         $log.debug(e);
-      }; 
+      };
     };
 
     this.getPaymentMethods = function(token) {
@@ -94,47 +94,20 @@ angular.module('copayApp.controllers').controller('sellCoinbaseController',
 
     $scope.openWalletsModal = function(wallets) {
       self.error = null;
-      var ModalInstanceCtrl = function($scope, $modalInstance) {
-        $scope.type = 'SELL';
-        $scope.wallets = wallets;
-        $scope.noColor = true;
-        $scope.cancel = function() {
-          $modalInstance.dismiss('cancel');
-        };
+      self.selectedWalletId = null;
+      self.selectedWalletName = null;
 
-        $scope.selectWallet = function(walletId, walletName) {
-          if (!profileService.getClient(walletId).isComplete()) {
-            self.error = bwsError.msg({
-              'code': 'WALLET_NOT_COMPLETE'
-            }, 'Could not choose the wallet');
-            $modalInstance.dismiss('cancel');
-            return;
-          }
-          $modalInstance.close({
-            'walletId': walletId,
-            'walletName': walletName,
-          });
-        };
-      };
+      $scope.type = 'SELL';
+      $scope.wallets = wallets;
+      $scope.noColor = true;
+      $scope.self = self;
 
-      var modalInstance = $modal.open({
-        templateUrl: 'views/modals/wallets.html',
-        windowClass: animationService.modalAnimated.slideUp,
-        controller: ModalInstanceCtrl,
-      });
-
-      modalInstance.result.finally(function() {
-        var m = angular.element(document.getElementsByClassName('reveal-modal'));
-        m.addClass(animationService.modalAnimated.slideOutDown);
-      });
-
-      modalInstance.result.then(function(obj) {
-        $timeout(function() {
-          self.selectedWalletId = obj.walletId;
-          self.selectedWalletName = obj.walletName;
-          fc = profileService.getClient(obj.walletId);
-          $scope.$apply();
-        }, 100);
+      $ionicModal.fromTemplateUrl('views/modals/wallets.html', {
+        scope: $scope,
+        animation: 'slide-in-up'
+      }).then(function(modal) {
+        $scope.walletsModal = modal;
+        $scope.walletsModal.show();
       });
     };
 
@@ -185,7 +158,9 @@ angular.module('copayApp.controllers').controller('sellCoinbaseController',
       self.error = null;
 
       var accountId = account.id;
-      var dataSrc = { name : 'Received from Copay: ' + self.selectedWalletName };
+      var dataSrc = {
+        name: 'Received from Copay: ' + self.selectedWalletName
+      };
       var outputs = [];
       var config = configService.getSync();
       var configWallet = config.wallet;
@@ -213,7 +188,7 @@ angular.module('copayApp.controllers').controller('sellCoinbaseController',
             'amount': amount,
             'message': comment
           });
-          
+
           var txp = {
             toAddress: address,
             amount: amount,
@@ -228,16 +203,24 @@ angular.module('copayApp.controllers').controller('sellCoinbaseController',
             if (err) {
               $log.debug(err);
               self.loading = null;
-              self.error = {errors: [{ message: 'Could not create transaction: ' + err.message }]};
+              self.error = {
+                errors: [{
+                  message: 'Could not create transaction: ' + err.message
+                }]
+              };
               $scope.$apply();
               return;
             }
             $scope.$emit('Local/NeedsConfirmation', createdTxp, function(accept) {
               self.loading = null;
-              if (accept) { 
+              if (accept) {
                 self.confirmTx(createdTxp, function(err, tx) {
-                  if (err) { 
-                    self.error = {errors: [{ message: 'Could not create transaction: ' + err.message }]};
+                  if (err) {
+                    self.error = {
+                      errors: [{
+                        message: 'Could not create transaction: ' + err.message
+                      }]
+                    };
                     return;
                   }
                   self.loading = 'Checking transaction...';
@@ -296,7 +279,11 @@ angular.module('copayApp.controllers').controller('sellCoinbaseController',
             if (err) {
               self.loading = null;
               $log.debug(err);
-              return cb({errors: [{ message: 'Transaction could not be published: ' + err.message }]});
+              return cb({
+                errors: [{
+                  message: 'Transaction could not be published: ' + err.message
+                }]
+              });
             }
 
             walletService.signTx(fc, publishedTxp, function(err, signedTxp) {
@@ -307,7 +294,11 @@ angular.module('copayApp.controllers').controller('sellCoinbaseController',
                 walletService.removeTx(fc, signedTxp, function(err) {
                   if (err) $log.debug(err);
                 });
-                return cb({errors: [{ message: 'The payment was created but could not be completed: ' + err.message }]});
+                return cb({
+                  errors: [{
+                    message: 'The payment was created but could not be completed: ' + err.message
+                  }]
+                });
               }
 
               walletService.broadcastTx(fc, signedTxp, function(err, broadcastedTxp) {
@@ -317,7 +308,11 @@ angular.module('copayApp.controllers').controller('sellCoinbaseController',
                   walletService.removeTx(fc, broadcastedTxp, function(err) {
                     if (err) $log.debug(err);
                   });
-                  return cb({errors: [{ message: 'The payment was created but could not be broadcasted: ' + err.message }]});
+                  return cb({
+                    errors: [{
+                      message: 'The payment was created but could not be broadcasted: ' + err.message
+                    }]
+                  });
                 }
                 $timeout(function() {
                   self.loading = null;
