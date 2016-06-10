@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('preferencesDeleteWalletController',
-  function($scope, $rootScope, $filter, $timeout, $modal, $log, storageService, notification, profileService, platformInfo, go, gettext, gettextCatalog, animationService, applicationService) {
+  function($scope, $rootScope, $filter, $timeout, $modal, $log, $ionicModal, storageService, notification, profileService, platformInfo, go, gettext, gettextCatalog, applicationService) {
     var isCordova = platformInfo.isCordova;
     this.isCordova = isCordova;
     this.error = null;
@@ -13,35 +13,19 @@ angular.module('copayApp.controllers').controller('preferencesDeleteWalletContro
     var confirm_msg = gettextCatalog.getString('Confirm');
 
     var _modalDeleteWallet = function() {
-      var ModalInstanceCtrl = function($scope, $modalInstance, gettext) {
-        $scope.title = delete_msg;
-        $scope.loading = false;
+      $scope.title = delete_msg;
+      $scope.accept_msg = accept_msg;
+      $scope.cancel_msg = cancel_msg;
+      $scope.confirm_msg = confirm_msg;
+      $scope.okAction = doDeleteWallet;
+      $scope.loading = false;
 
-        $scope.ok = function() {
-          $scope.loading = true;
-          $modalInstance.close(accept_msg);
-
-        };
-        $scope.cancel = function() {
-          $modalInstance.dismiss(cancel_msg);
-        };
-      };
-
-      var modalInstance = $modal.open({
-        templateUrl: 'views/modals/confirmation.html',
-        windowClass: animationService.modalAnimated.slideUp,
-        controller: ModalInstanceCtrl
-      });
-
-      modalInstance.result.finally(function() {
-        var m = angular.element(document.getElementsByClassName('reveal-modal'));
-        m.addClass(animationService.modalAnimated.slideOutDown);
-      });
-
-      modalInstance.result.then(function(ok) {
-        if (ok) {
-          doDeleteWallet();
-        }
+      $ionicModal.fromTemplateUrl('views/modals/confirmation.html', {
+        scope: $scope,
+        animation: 'slide-in-up'
+      }).then(function(modal) {
+        $scope.confirmationModal = modal;
+        $scope.confirmationModal.show();
       });
     };
 
