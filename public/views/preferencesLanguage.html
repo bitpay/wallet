@@ -2,11 +2,10 @@
   ng-init="titleSection='Language'; goBackToState = 'preferencesGlobal'; noColor = true">
 </div>
 
-<div class="content preferences" ng-controller="preferencesLanguageController as prefLang" ng-init="prefLang.init()">
+<div class="content preferences" ng-controller="preferencesLanguageController">
   <h4></h4>
 
-  <ion-radio class="line-b size-12" ng-repeat="lang in prefLang.availableLanguages" ng-value="lang.isoCode" ng-model="data.currentLanguage"
-    ng-click="prefLang.save(lang.isoCode)">{{lang.name}}
+  <ion-radio class="line-b size-12" ng-repeat="lang in availableLanguages" ng-value="lang.isoCode" ng-model="currentLanguage"
+    ng-click="save(lang.isoCode)">{{lang.name}}
   </ion-radio>
 </div>
-<div class="extra-margin-bottom"></div>
