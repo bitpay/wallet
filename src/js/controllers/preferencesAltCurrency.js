@@ -1,29 +1,32 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('preferencesAltCurrencyController',
-  function($scope, $log, configService, rateService, lodash, go, profileService, walletService) {
+  function($scope, $log, $timeout, configService, rateService, lodash, go, profileService, walletService) {
 
     var config = configService.getSync();
+    var next = 10;
+    var completeAlternativeList;
+    $scope.currentCurrency = config.wallet.settings.alternativeIsoCode;
+    $scope.listComplete = false;
 
-    $scope.currentCurrency = {
-      name: config.wallet.settings.alternativeName,
-      isoCode: config.wallet.settings.alternativeIsoCode
+    $scope.init = function() {
+      rateService.whenAvailable(function() {
+        completeAlternativeList = rateService.listAlternatives();
+        lodash.remove(completeAlternativeList, function(c) {
+          return c.isoCode == 'BTC';
+        });
+        $scope.altCurrencyList = completeAlternativeList.slice(0, next);
+      });
     };
 
-    rateService.whenAvailable(function() {
-      $scope.altCurrencyList = rateService.listAlternatives();
-
-      lodash.remove($scope.altCurrencyList, function(c) {
-        return c.isoCode == 'BTC';
-      });
-
-      lodash.each($scope.altCurrencyList, function(altCurrency) {
-        if (config.wallet.settings.alternativeIsoCode === altCurrency.isoCode)
-          $scope.currentCurrency = altCurrency;
-      });
-
-      $scope.$digest();
-    });
+    $scope.loadMore = function() {
+      $timeout(function() {
+        $scope.altCurrencyList = completeAlternativeList.slice(0, next);
+        next += 10;
+        $scope.listComplete = $scope.altCurrencyList.length >= completeAlternativeList.length;
+        $scope.$broadcast('scroll.infiniteScrollComplete');
+      }, 100);
+    };
 
     $scope.save = function(newAltCurrency) {
       var opts = {
