@@ -1,20 +1,12 @@
-<div 
-  class="topbar-container" 
-  ng-include="'views/includes/topbar.html'"
+<div class="topbar-container" ng-include="'views/includes/topbar.html'"
   ng-init="titleSection='Alternative Currency'; goBackToState = 'preferencesGlobal'; noColor = true">
 </div>
 
-
-
-<div class="content preferences" ng-controller="preferencesAltCurrencyController as prefAltCurrency">
-
+<div class="content preferences" ng-controller="preferencesAltCurrencyController">
   <h4></h4>
-  <ul class="no-bullet m0 ">
-  <li ng-repeat="altCurrency in prefAltCurrency.alternativeOpts" ng-click="prefAltCurrency.save(altCurrency)">
-    <span>{{altCurrency.name}}</span>
-    <i class="fi-check size-16 right" ng-show="altCurrency.name == prefAltCurrency.selectedAlternative.name"></i>
-  </li>
-  <ul>
+
+  <ion-radio class="line-b size-12" ng-repeat="altCurrency in altCurrencyList" ng-value="altCurrency" ng-model="currentCurrency"
+    ng-click="save(altCurrency)">{{altCurrency.name}}
+  </ion-radio>
 </div>
-<div class="extra-margin-bottom"></div>
 
