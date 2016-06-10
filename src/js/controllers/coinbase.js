@@ -1,11 +1,11 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('coinbaseController', 
-  function($rootScope, $scope, $timeout, $modal, profileService, configService, storageService, coinbaseService, animationService, lodash, platformInfo) {
+angular.module('copayApp.controllers').controller('coinbaseController',
+  function($rootScope, $scope, $timeout, $modal, $ionicModal, profileService, configService, storageService, coinbaseService, lodash, platformInfo) {
 
     var isNW = platformInfo.isNW;
     window.ignoreMobilePause = true;
-    
+
     this.openAuthenticateWindow = function() {
       var oauthUrl = this.getAuthenticateUrl();
       if (!isNW) {
@@ -17,7 +17,7 @@ angular.module('copayApp.controllers').controller('coinbaseController',
           focus: true,
           position: 'center'
         });
-        win.on ('loaded', function(){
+        win.on('loaded', function() {
           var title = win.title;
           if (title.indexOf('Coinbase') == -1) {
             $scope.code = title;
@@ -46,8 +46,7 @@ angular.module('copayApp.controllers').controller('coinbaseController',
             $timeout(function() {
               $scope.$apply();
             }, 100);
-          }
-          else if (data && data.access_token && data.refresh_token) {
+          } else if (data && data.access_token && data.refresh_token) {
             storageService.setCoinbaseToken(network, data.access_token, function() {
               storageService.setCoinbaseRefreshToken(network, data.refresh_token, function() {
                 $scope.$emit('Local/CoinbaseUpdated', data.access_token);
@@ -62,44 +61,14 @@ angular.module('copayApp.controllers').controller('coinbaseController',
     };
 
     this.openTxModal = function(tx) {
-      $rootScope.modalOpened = true;
-      var self = this;
-      var config = configService.getSync().wallet.settings;
-      var fc = profileService.focusedClient;
-      var ModalInstanceCtrl = function($scope, $modalInstance) {
-        $scope.tx = tx;
-        $scope.settings = config;
-        $scope.color = fc.backgroundColor;
-        $scope.noColor = true;
+      $scope.tx = tx;
 
-        $scope.remove = function() {
-          coinbaseService.savePendingTransaction($scope.tx, {remove: true}, function(err) {
-            $rootScope.$emit('Local/CoinbaseTx');
-            $scope.cancel();
-          });
-        };
-
-        $scope.cancel = lodash.debounce(function() {
-          $modalInstance.dismiss('cancel');
-        }, 0, 1000);
-
-      };
-
-      var modalInstance = $modal.open({
-        templateUrl: 'views/modals/coinbase-tx-details.html',
-          windowClass: animationService.modalAnimated.slideRight,
-          controller: ModalInstanceCtrl,
-      });
-
-      var disableCloseModal = $rootScope.$on('closeModal', function() {
-        modalInstance.dismiss('cancel');
-      });
-
-      modalInstance.result.finally(function() {
-        $rootScope.modalOpened = false;
-        disableCloseModal();
-        var m = angular.element(document.getElementsByClassName('reveal-modal'));
-        m.addClass(animationService.modalAnimated.slideOutRight);
+      $ionicModal.fromTemplateUrl('views/modals/coinbase-tx-details.html', {
+        scope: $scope,
+        animation: 'slide-in-up'
+      }).then(function(modal) {
+        $scope.coinbaseTxDetailsModal = modal;
+        $scope.coinbaseTxDetailsModal.show();
       });
     };
 

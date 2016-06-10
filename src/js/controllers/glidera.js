@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('glideraController', 
-  function($rootScope, $scope, $timeout, $modal, profileService, configService, storageService, glideraService, animationService, lodash) {
+angular.module('copayApp.controllers').controller('glideraController',
+  function($rootScope, $scope, $timeout, $modal, $ionicModal, profileService, configService, storageService, glideraService, lodash) {
 
     this.getAuthenticateUrl = function() {
       return glideraService.getOauthCodeUrl();
@@ -19,10 +19,9 @@ angular.module('copayApp.controllers').controller('glideraController',
           if (err) {
             self.error = err;
             $timeout(function() {
-                $scope.$apply();
-              }, 100);
-          }
-          else if (data && data.access_token) {
+              $scope.$apply();
+            }, 100);
+          } else if (data && data.access_token) {
             storageService.setGlideraToken(network, data.access_token, function() {
               $scope.$emit('Local/GlideraUpdated', data.access_token);
               $timeout(function() {
@@ -35,41 +34,23 @@ angular.module('copayApp.controllers').controller('glideraController',
     };
 
     this.openTxModal = function(token, tx) {
-      $rootScope.modalOpened = true;
       var self = this;
-      var config = configService.getSync().wallet.settings;
-      var fc = profileService.focusedClient;
-      var ModalInstanceCtrl = function($scope, $modalInstance) {
+
+      $scope.self = self;
+      $scope.tx = tx;
+
+      glideraService.getTransaction(token, tx.transactionUuid, function(error, tx) {
         $scope.tx = tx;
-        $scope.settings = config;
-        $scope.color = fc.backgroundColor;
-        $scope.noColor = true;
-
-        glideraService.getTransaction(token, tx.transactionUuid, function(error, tx) {
-          $scope.tx = tx;
-        });
-
-        $scope.cancel = lodash.debounce(function() {
-          $modalInstance.dismiss('cancel');
-        }, 0, 1000);
-
-      };
-
-      var modalInstance = $modal.open({
-        templateUrl: 'views/modals/glidera-tx-details.html',
-          windowClass: animationService.modalAnimated.slideRight,
-          controller: ModalInstanceCtrl,
       });
 
-      var disableCloseModal = $rootScope.$on('closeModal', function() {
-        modalInstance.dismiss('cancel');
-      });
-
-      modalInstance.result.finally(function() {
-        $rootScope.modalOpened = false;
-        disableCloseModal();
-        var m = angular.element(document.getElementsByClassName('reveal-modal'));
-        m.addClass(animationService.modalAnimated.slideOutRight);
+      $ionicModal.fromTemplateUrl('views/modals/glidera-tx-details.html', {
+        scope: $scope,
+        backdropClickToClose: false,
+        hardwareBackButtonClose: false,
+        animation: 'slide-in-up'
+      }).then(function(modal) {
+        $scope.glideraTxDetailsModal = modal;
+        $scope.glideraTxDetailsModal.show();
       });
     };
 
