@@ -20,6 +20,12 @@
 	z-index: -1;
 }
 
+.radio-label {
+	text-transform: none;
+	font-weight: 400;
+	font-size: 14px;
+}
+
 .item-radio .radio-icon {
 	font-size: 16px;
 }
