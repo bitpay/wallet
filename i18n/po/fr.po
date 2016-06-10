@@ -192,7 +192,7 @@ msgstr "Êtes-vous sûr(e) de vouloir supprimer la phrase de récupération ?"
 #: src/js/controllers/copayers.js
 #: src/js/controllers/preferencesDelete.js
 msgid "Are you sure you want to delete this wallet?"
-msgstr "Êtes-vous certain de vouloir supprimer ce portefeuille ?"
+msgstr "Êtes-vous certain(e) de vouloir supprimer ce portefeuille ?"
 
 #: public/views/includes/walletInfo.html
 msgid "Auditable"
@@ -1406,7 +1406,7 @@ msgstr "Russe"
 #: public/views/preferencesBwsUrl.html
 #: public/views/preferencesEmail.html
 msgid "Save"
-msgstr "Enregistrer"
+msgstr "Valider"
 
 #: public/views/preferencesEmail.html
 msgid "Saving preferences..."
