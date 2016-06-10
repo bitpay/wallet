@@ -16,7 +16,7 @@
     </div>
   </div>
 
-  <ion-radio class="size-12" ng-repeat="fee in prefFee.feeLevels.livenet" ng-value="fee.level" ng-model="data.currentFeeLevel"
+  <ion-radio class="libe-b size-12 radio-label" ng-repeat="fee in prefFee.feeLevels.livenet" ng-value="fee.level" ng-model="data.currentFeeLevel"
     ng-click="prefFee.save(fee)">{{prefFee.feeOpts[fee.level]|translate}}
   </ion-radio>
 
