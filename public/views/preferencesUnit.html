@@ -5,7 +5,7 @@
 <div class="content preferences" ng-controller="preferencesUnitController">
   <h4></h4>
 
-  <ion-radio class="line-b size-12" ng-repeat="unit in unitList" ng-value="unit.code" ng-model="currentUnit"
+  <ion-radio class="line-b size-12 radio-label" ng-repeat="unit in unitList" ng-value="unit.code" ng-model="currentUnit"
     ng-click="save(unit)">{{unit.shortName}}
   </ion-radio>
 </div>

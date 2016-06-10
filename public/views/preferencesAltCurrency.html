@@ -5,7 +5,7 @@
 <div class="content preferences" ng-controller="preferencesAltCurrencyController">
   <h4></h4>
 
-  <ion-radio class="line-b size-12" ng-repeat="altCurrency in altCurrencyList" ng-value="altCurrency" ng-model="currentCurrency"
+  <ion-radio class="line-b size-12 radio-label" ng-repeat="altCurrency in altCurrencyList" ng-value="altCurrency" ng-model="currentCurrency"
     ng-click="save(altCurrency)">{{altCurrency.name}}
   </ion-radio>
 </div>
