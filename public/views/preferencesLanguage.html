@@ -5,7 +5,7 @@
 <div class="content preferences" ng-controller="preferencesLanguageController">
   <h4></h4>
 
-  <ion-radio class="line-b size-12" ng-repeat="lang in availableLanguages" ng-value="lang.isoCode" ng-model="currentLanguage"
+  <ion-radio class="line-b size-12 radio-label" ng-repeat="lang in availableLanguages" ng-value="lang.isoCode" ng-model="currentLanguage"
     ng-click="save(lang.isoCode)">{{lang.name}}
   </ion-radio>
 </div>
