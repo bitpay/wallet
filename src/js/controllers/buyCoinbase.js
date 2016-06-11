@@ -2,8 +2,6 @@
 
 angular.module('copayApp.controllers').controller('buyCoinbaseController',
   function($scope, $modal, $log, $ionicModal, $timeout, lodash, profileService, coinbaseService, bwsError, addressService) {
-
-    window.ignoreMobilePause = true;
     var self = this;
     var fc;
 

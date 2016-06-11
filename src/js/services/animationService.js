@@ -60,6 +60,7 @@ angular.module('copayApp.services').factory('animationService', function(platfor
   };
 
   function cleanUpLater(e, e2) {
+console.log('[animationService.js.62:cleanUpLater:]'); //TODO
     var cleanedUp = false,
       timeoutID;
     var cleanUp = function() {

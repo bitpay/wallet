@@ -112,8 +112,8 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
           }
         }
       })
-      .state('payment', {
-        url: '/uri-payment/:data',
+      .state('uripayment', {
+        url: '/uri-payment/:url',
         templateUrl: 'views/paymentUri.html',
         views: {
           'main': {
@@ -215,7 +215,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         }
       })
       .state('uriglidera', {
-        url: '/uri-glidera?code',
+        url: '/uri-glidera/:code',
         needProfile: true,
         views: {
           'main': {
@@ -284,7 +284,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         }
       })
       .state('uricoinbase', {
-        url: '/uri-coinbase?code',
+        url: '/uri-coinbase/:code',
         needProfile: true,
         views: {
           'main': {
@@ -520,7 +520,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         }
       });
   })
-  .run(function($rootScope, $state, $log, $timeout, $ionicPlatform, uriHandler, platformInfo, profileService, uxLanguage, animationService, go, gettextCatalog) {
+  .run(function($rootScope, $state, $location, $log, $timeout, $ionicPlatform, uriHandler, platformInfo, profileService, uxLanguage, animationService, go, gettextCatalog) {
 
     $ionicPlatform.ready(function() {
       if (platformInfo.isCordova) {
@@ -539,14 +539,8 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         });
 
         $ionicPlatform.on('resume', function() {
-          if (!window.ignoreMobilePause) {
-            $rootScope.$emit('Local/Resume');
-          }
-          setTimeout(function() {
-            var loc = window.location;
-            var ignoreMobilePause = loc.toString().match(/(buy|sell|buycoinbase|sellcoinbase)/) ? true : false;
-            window.ignoreMobilePause = ignoreMobilePause;
-          }, 100);
+          // Nothing to do
+          $rootScope.$emit('Local/Resume');
         });
 
         $ionicPlatform.on('backbutton', function(event) {
@@ -575,10 +569,6 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
           }, 100);
 
           go.walletHome();
-
-          setTimeout(function() {
-            window.ignoreMobilePause = false;
-          }, 100);
         });
 
         $ionicPlatform.on('menubutton', function() {
@@ -614,6 +604,8 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
 
     $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
       $log.debug('Route change from:', fromState.name || '-', ' to:', toState.name);
+      $log.debug('            toParams:' + JSON.stringify(toParams || {}));
+      $log.debug('            fromParams:' + JSON.stringify(fromParams || {}));
 
       if (!profileService.profile && toState.needProfile) {
 
@@ -640,17 +632,22 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
       } else {
         if (profileService.focusedClient && !profileService.focusedClient.isComplete() && toState.walletShouldBeComplete) {
 
-          $state.transitionTo('copayers');
           event.preventDefault();
+          $state.transitionTo('copayers');
         }
       }
-
-      if (!animationService.transitionAnimated(fromState, toState)) {
-        event.preventDefault();
-        // Time for the backpane to render
-        setTimeout(function() {
-          $state.transitionTo(toState);
-        }, 50);
-      }
+//      event.preventDefault();
+//      $state.transitionTo(toState);
+//        if (!animationService.transitionAnimated(fromState, toState)) {
+//
+// console.log('[routes.js.649] ANIMATION!'); //TODO
+//          event.preventDefault();
+//          // Time for the backpane to render
+//          return setTimeout(function() {
+//
+// console.log('[routes.js.654] TRANSITION'); //TODO
+//            $state.transitionTo(toState);
+//          }, 50);
+//       }
     });
   });

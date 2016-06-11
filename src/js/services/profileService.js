@@ -182,7 +182,6 @@ angular.module('copayApp.services')
 
       push.on('notification', function(data) {
         if (!data.additionalData.foreground) {
-          window.ignoreMobilePause = true;
           $log.debug('Push notification event: ', data.message);
 
           $timeout(function() {
