@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.services').factory('openURLService', function($ionicHistory, $document, $log, $state, go) {
+angular.module('copayApp.services').factory('openURLService', function($ionicHistory, $document, $log, $state, go, platformInfo, lodash) {
   var root = {};
 
   root.registeredUriHandlers = [{
@@ -9,11 +9,11 @@ angular.module('copayApp.services').factory('openURLService', function($ionicHis
     transitionTo: 'uripayment',
   }, {
     name: 'Glidera Authentication Callback',
-    startsWith: 'copay://glidera',
+    startsWith: 'copay:glidera',
     transitionTo: 'uriglidera',
   }, {
     name: 'Coinbase Authentication Callback',
-    startsWith: 'copay://coinbase',
+    startsWith: 'copay:coinbase',
     transitionTo: 'uricoinbase',
   }];
 
@@ -27,43 +27,76 @@ angular.module('copayApp.services').factory('openURLService', function($ionicHis
       disableBack: true,
       disableAnimation: true
     });
+    var url = args.url;
+    if (!url) {
+      $log.error('No url provided');
+      return;
+    };
 
     if (url) {
-      window.cordova.removeDocumentEventHandler('handleopenurl');
-      window.cordova.addStickyDocumentEventHandler('handleopenurl');
-      document.removeEventListener('handleopenurl', root.handleOpenUrl);
+      if ('cordova' in window) {
+        window.cordova.removeDocumentEventHandler('handleopenurl');
+        window.cordova.addStickyDocumentEventHandler('handleopenurl');
+      }
+      document.removeEventListener('handleopenurl', handleOpenURL);
     }
 
+    document.addEventListener('handleopenurl', handleOpenURL, false);
 
-    var url = args.url;
-
-    lodash.each(root.registeredUriHandlers, function(x) {
-      if (url.indexOf(x.startWith) == 0) {
-        $log.debug('openURL GOT ' + x.name + ' URL');
-        return $state.transitionTo(x.transitionTo, {
-          url: url
-        });
-      }
+    var x = lodash.find(root.registeredUriHandlers, function(x) {
+      return url.indexOf(x.startsWith) == 0 || 
+            url.indexOf('web+' + x.startsWith) == 0 || // web protocols
+            url.indexOf(x.startsWith.replace(':','://')) == 0 // from mobile devices
+            ;
     });
-    $log.warn('Unknown URL! : ' + url);
+
+    if (x) {
+      $log.debug('openURL GOT ' + x.name + ' URL');
+      return $state.transitionTo(x.transitionTo, {
+        url: url
+      });
+    } else {
+      $log.warn('Unknown URL! : ' + url);
+    }
   };
 
   var handleResume = function() {
     $log.debug('Handle Resume @ openURL...');
-    document.addEventListener('handleopenurl', handleOpenUrl, false);
+    document.addEventListener('handleopenurl', handleOpenURL, false);
   };
 
   root.init = function() {
-    console.log('[openURL.js.29]'); //TODO
+    $log.debug('Initializing openURL');
     document.addEventListener('handleopenurl', handleOpenURL, false);
     document.addEventListener('resume', handleResume, false);
-  };
 
+    if (platformInfo.isChromeApp) {
+      $log.debug('Registering Chrome message listener');
+      chrome.runtime.onMessage.addListener(
+        function(request, sender, sendResponse) {
+          if (request.url) {
+            handleOpenURL(request.url);
+          }
+        });
+    } else if (platformInfo.isDevel) {
+
+      var base = window.location.origin + '/';
+      var url = base + '#/uri/%s';
+
+      if (navigator.registerProtocolHandler) {
+        $log.debug('Registering Browser handlers base:' + base);
+        navigator.registerProtocolHandler('bitcoin', url, 'Copay Bitcoin Handler');
+        navigator.registerProtocolHandler('web+copay', url, 'Copay Wallet Handler');
+      }
+    }
+  };
 
   root.registerHandler = function(x) {
     $log.debug('Registering URL Handler: ' + x.name);
     root.registeredUriHandlers.push(x);
   };
+
+  root.handleURL = handleOpenURL;
 
   return root;
 });

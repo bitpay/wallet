@@ -1500,11 +1500,11 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
     if (!self.lastUpdate || (now - self.lastUpdate) > oneHr) {
       self.updateAll({
-        quiet: true
-        triggerTxUpdate: true,
+        quiet: true,
+        triggerTxUpdate: true
       });
     }
-  });
+  };
 
 $rootScope.$on('Local/Resume', function(event) {
   $log.debug('### Resume event');

@@ -293,7 +293,6 @@ angular.module('copayApp.services')
         var name = opts.name || gettextCatalog.getString('Personal Wallet');
         var myName = opts.myName || gettextCatalog.getString('me');
 
-console.log('[profileService.js.303]', opts); //TODO
         walletClient.createWallet(name, myName, opts.m, opts.n, {
           network: opts.networkName,
           singleAddress: opts.singleAddress,

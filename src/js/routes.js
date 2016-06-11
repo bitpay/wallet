@@ -112,6 +112,15 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
           }
         }
       })
+      .state('uri', {
+        url: '/uri/:url',
+        needProfile: true,
+        views: {
+          'main': {
+            templateUrl: 'views/uri.html'
+          }
+        }
+      })
       .state('uripayment', {
         url: '/uri-payment/:url',
         templateUrl: 'views/paymentUri.html',
@@ -120,11 +129,6 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
             templateUrl: 'views/paymentUri.html',
           },
         },
-        needProfile: true
-      })
-      .state('selectWalletForPayment', {
-        url: '/selectWalletForPayment',
-        controller: 'walletForPaymentController',
         needProfile: true
       })
       .state('join', {
@@ -215,7 +219,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         }
       })
       .state('uriglidera', {
-        url: '/uri-glidera/:code',
+        url: '/uri-glidera/:url',
         needProfile: true,
         views: {
           'main': {
@@ -284,7 +288,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         }
       })
       .state('uricoinbase', {
-        url: '/uri-coinbase/:code',
+        url: '/uri-coinbase/:url',
         needProfile: true,
         views: {
           'main': {
@@ -504,12 +508,6 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
           },
         }
       })
-      .state('warning', {
-        url: '/warning',
-        controller: 'warningController',
-        templateUrl: 'views/warning.html',
-        needProfile: false
-      })
       .state('add', {
         url: '/add',
         needProfile: true,
@@ -520,7 +518,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         }
       });
   })
-  .run(function($rootScope, $state, $location, $log, $timeout, $ionicPlatform, uriHandler, platformInfo, profileService, uxLanguage, animationService, go, gettextCatalog) {
+  .run(function($rootScope, $state, $location, $log, $timeout, $ionicPlatform, platformInfo, profileService, uxLanguage, animationService, go, gettextCatalog) {
 
     $ionicPlatform.ready(function() {
       if (platformInfo.isCordova) {
@@ -539,7 +537,6 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         });
 
         $ionicPlatform.on('resume', function() {
-          // Nothing to do
           $rootScope.$emit('Local/Resume');
         });
 
@@ -582,11 +579,6 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
     });
 
     uxLanguage.init();
-
-    // Register URI handler, not for mobileApp
-    if (!platformInfo.isMobile) {
-      uriHandler.register();
-    }
 
     if (platformInfo.isNW) {
       var gui = require('nw.gui');
