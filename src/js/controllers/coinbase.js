@@ -4,7 +4,6 @@ angular.module('copayApp.controllers').controller('coinbaseController',
   function($rootScope, $scope, $timeout, $modal, $ionicModal, profileService, configService, storageService, coinbaseService, lodash, platformInfo) {
 
     var isNW = platformInfo.isNW;
-    window.ignoreMobilePause = true;
 
     this.openAuthenticateWindow = function() {
       var oauthUrl = this.getAuthenticateUrl();

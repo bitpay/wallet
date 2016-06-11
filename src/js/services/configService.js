@@ -111,11 +111,11 @@ angular.module('copayApp.services').factory('configService', function(storageSer
 
       // Glidera
       // Disabled for testnet
-      configCache.glidera.testnet = false;
+      configCache.glidera.testnet = true;
 
       // Coinbase
       // Disabled for testnet
-      configCache.coinbase.testnet = false;
+      configCache.coinbase.testnet = true;
 
       $log.debug('Preferences read:', configCache)
       return cb(err, configCache);

@@ -3,6 +3,7 @@ angular.module('copayApp.controllers').controller('glideraUriController',
   function($scope, $stateParams, $timeout, profileService, configService, glideraService, storageService, go) { 
 
     this.submitOauthCode = function(code) {
+console.log('[glideraUri.js.5:code:]'+code); //TODO
       var self = this;
       var glideraTestnet = configService.getSync().glidera.testnet;
       var network = glideraTestnet ? 'testnet' : 'livenet';
@@ -31,6 +32,7 @@ angular.module('copayApp.controllers').controller('glideraUriController',
     };
 
     this.checkCode = function() {
+console.log('[glideraUri.js.35:$stateParams:]' + JSON.stringify($stateParams)); //TODO
       this.code = $stateParams.code;
       this.submitOauthCode(this.code);
     };

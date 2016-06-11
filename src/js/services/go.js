@@ -48,15 +48,15 @@ angular.module('copayApp.services').factory('go', function($window, $ionicSideMe
   };
 
   root.addWallet = function() {
-    $state.go('add');
+    $state.transitionTo('add');
   };
 
   root.preferences = function() {
-    $state.go('preferences');
+    $state.transitionTo('preferences');
   };
 
   root.preferencesGlobal = function() {
-    $state.go('preferencesGlobal');
+    $state.transitionTo('preferencesGlobal');
   };
 
   root.reload = function() {

@@ -12,7 +12,6 @@ angular.module('copayApp.directives')
       var onSuccess = function(result) {
         $timeout(function() {
           window.plugins.spinnerDialog.hide();
-          window.ignoreMobilePause = false;
         }, 100);
         if (isWP && result.cancelled) return;
 
@@ -26,13 +25,11 @@ angular.module('copayApp.directives')
 
       var onError = function(error) {
         $timeout(function() {
-          window.ignoreMobilePause = false;
           window.plugins.spinnerDialog.hide();
         }, 100);
       };
 
       $scope.cordovaOpenScanner = function() {
-        window.ignoreMobilePause = true;
         window.plugins.spinnerDialog.show(null, gettextCatalog.getString('Preparing camera...'), true);
         $timeout(function() {
           if (isIOS) {
