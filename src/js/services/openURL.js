@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.services').factory('openURLService', function($ionicHistory, $document, $log, $state, go, platformInfo, lodash) {
+angular.module('copayApp.services').factory('openURLService', function($rootScope, $ionicHistory, $document, $log, $state, go, platformInfo, lodash, profileService) {
   var root = {};
 
   root.registeredUriHandlers = [{
@@ -20,6 +20,15 @@ angular.module('copayApp.services').factory('openURLService', function($ionicHis
 
   var handleOpenURL = function(args) {
     $log.info('Handling Open URL: ' + JSON.stringify(args));
+
+    if (!profileService.isBound) {
+      $log.warn('Profile not bound yet. Waiting');
+
+      return $rootScope.$on('Local/ProfileBound', function(){
+        $log.warn('Profile ready, retrying...');
+        handleOpenURL(args);
+      });
+    };
 
     // Stop it from caching the first view as one to return when the app opens
     $ionicHistory.nextViewOptions({

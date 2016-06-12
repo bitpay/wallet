@@ -21,7 +21,7 @@
   <div class="create-tab pr small-only-text-center" ng-hide="create.hideTabs">
     <div class="row">
       <div class="tab-container small-4 medium-4 large-4" ng-class="{'selected': type =='12'}">
-        <a href ng-click="import.setType('12')" translate>Wallet Recovery Phrase</a>
+        <a href ng-click="import.setType('12')" translate>Recovery Phrase</a>
       </div>
       <div class="tab-container small-4 medium-4 large-4" ng-class="{'selected': type=='file'}">
         <a href ng-click="import.setType('file')" translate>File/Text Backup</a>
@@ -161,14 +161,6 @@
             Import backup
           </button>
         </form>
-
-        <div class="text-center text-gray p20v" ng-click="$root.go('importLegacy')">
-          <p class="text-gray m5b size-14" translate> Have a Backup from Copay v0.9?</p>
-          <button class=" outline dark-gray tiny round"> <span translate>Import here</span>
-            <i class="icon-arrow-right3 size-14"></i>
-          </button>
-        </div>
-
     </div>
   </div>
 
