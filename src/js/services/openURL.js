@@ -24,9 +24,12 @@ angular.module('copayApp.services').factory('openURLService', function($rootScop
     if (!profileService.isBound) {
       $log.warn('Profile not bound yet. Waiting');
 
-      return $rootScope.$on('Local/ProfileBound', function(){
-        $log.warn('Profile ready, retrying...');
-        handleOpenURL(args);
+      return $rootScope.$on('Local/ProfileBound', function() {
+        // Wait ux to settle
+        setTimeout(function() {
+          $log.warn('Profile ready, retrying...');
+          handleOpenURL(args);
+        }, 2000);
       });
     };
 
@@ -53,10 +56,10 @@ angular.module('copayApp.services').factory('openURLService', function($rootScop
     document.addEventListener('handleopenurl', handleOpenURL, false);
 
     var x = lodash.find(root.registeredUriHandlers, function(x) {
-      return url.indexOf(x.startsWith) == 0 || 
-            url.indexOf('web+' + x.startsWith) == 0 || // web protocols
-            url.indexOf(x.startsWith.replace(':','://')) == 0 // from mobile devices
-            ;
+      return url.indexOf(x.startsWith) == 0 ||
+        url.indexOf('web+' + x.startsWith) == 0 || // web protocols
+        url.indexOf(x.startsWith.replace(':', '://')) == 0 // from mobile devices
+      ;
     });
 
     if (x) {
