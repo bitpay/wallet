@@ -171,7 +171,7 @@ angular.module('copayApp.services')
               }
 
               root.isBound = true;
-              $root.$emit('Local/ProfileBound');
+              $rootScope.$emit('Local/ProfileBound');
               return cb();
             });
           });

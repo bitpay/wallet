@@ -518,7 +518,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         }
       });
   })
-  .run(function($rootScope, $state, $location, $log, $timeout, $ionicPlatform, platformInfo, profileService, uxLanguage, animationService, go, gettextCatalog) {
+  .run(function($rootScope, $state, $location, $log, $timeout, $ionicPlatform, platformInfo, profileService, uxLanguage, go, gettextCatalog) {
 
     $ionicPlatform.ready(function() {
       if (platformInfo.isCordova) {
