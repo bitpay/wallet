@@ -699,7 +699,7 @@ angular.module('copayApp.services')
       });
     };
 
-    root.getWallets = function(network) {
+    root.getWallets = function(network, n) {
       if (!root.profile) return [];
 
       var config = configService.getSync();
@@ -721,6 +721,12 @@ angular.module('copayApp.services')
           return (w.network == network);
         });
       }
+      if (n) {
+        ret = lodash.filter(ret, function(w) {
+          return (w.n == n);
+        });
+      }
+ 
       return lodash.sortBy(ret, 'name');
     };
 

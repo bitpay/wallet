@@ -4,7 +4,7 @@ angular.module('copayApp.controllers').controller('sellCoinbaseController',
   function($rootScope, $scope, $modal, $log, $timeout, $ionicModal, lodash, profileService, coinbaseService, bwsError, configService, walletService, fingerprintService) {
 
     var self = this;
-    var fc;
+    var client;
 
     $scope.priceSensitivity = [
       {
@@ -30,13 +30,6 @@ angular.module('copayApp.controllers').controller('sellCoinbaseController',
     ];
     $scope.selectedPriceSensitivity = $scope.priceSensitivity[1];
 
-    var otherWallets = function(testnet) {
-      var network = testnet ? 'testnet' : 'livenet';
-      return lodash.filter(profileService.getWallets(network), function(w) {
-        return w.network == network && w.m == 1;
-      });
-    };
-
     var handleEncryptedWallet = function(client, cb) {
       if (!walletService.isEncrypted(client)) return cb();
       $rootScope.$emit('Local/NeedsPassword', false, function(err, password) {
@@ -46,23 +39,16 @@ angular.module('copayApp.controllers').controller('sellCoinbaseController',
     };
 
     this.init = function(testnet) {
-      self.otherWallets = otherWallets(testnet);
-      // Choose focused wallet
-      try {
-        var currentWalletId = profileService.focusedClient.credentials.walletId;
-        lodash.find(self.otherWallets, function(w) {
-          if (w.id == currentWalletId) {
-            $timeout(function() {
-              self.selectedWalletId = w.id;
-              self.selectedWalletName = w.name;
-              fc = profileService.getClient(w.id);
-              $scope.$apply();
-            }, 100);
-          }
-        });
-      } catch (e) {
-        $log.debug(e);
-      };
+      self.allWallets = profileService.getWallets(testnet ? 'testnet' : 'livenet', 1);
+
+      client = profileService.focusedClient;
+      if (client) { 
+        $timeout(function() {
+          self.selectedWalletId = client.credentials.walletId;
+          self.selectedWalletName = client.credentials.walletName;
+          $scope.$apply();
+        }, 100);
+      }
     };
 
     this.getPaymentMethods = function(token) {
@@ -198,7 +184,7 @@ angular.module('copayApp.controllers').controller('sellCoinbaseController',
             feeLevel: walletSettings.feeLevel || 'normal'
           };
 
-          walletService.createTx(fc, txp, function(err, createdTxp) {
+          walletService.createTx(client, txp, function(err, createdTxp) {
             if (err) {
               $log.debug(err);
               self.loading = null;
@@ -238,7 +224,7 @@ angular.module('copayApp.controllers').controller('sellCoinbaseController',
                           ctx['price_sensitivity'] = $scope.selectedPriceSensitivity;
                           ctx['sell_price_amount'] = self.sellPrice.amount;
                           ctx['sell_price_currency'] = self.sellPrice.currency;
-                          ctx['description'] = 'Copay Wallet: ' + fc.credentials.walletName;
+                          ctx['description'] = 'Copay Wallet: ' + client.credentials.walletName;
                           coinbaseService.savePendingTransaction(ctx, null, function(err) {
                             if (err) $log.debug(err);
                             self.sendInfo = ctx;
@@ -261,20 +247,20 @@ angular.module('copayApp.controllers').controller('sellCoinbaseController',
 
     this.confirmTx = function(txp, cb) {
 
-      fingerprintService.check(fc, function(err) {
+      fingerprintService.check(client, function(err) {
         if (err) {
           $log.debug(err);
           return cb(err);
         }
 
-        handleEncryptedWallet(fc, function(err) {
+        handleEncryptedWallet(client, function(err) {
           if (err) {
             $log.debug(err);
             return cb(err);
           }
 
           self.loading = 'Sending bitcoin to Coinbase...';
-          walletService.publishTx(fc, txp, function(err, publishedTxp) {
+          walletService.publishTx(client, txp, function(err, publishedTxp) {
             if (err) {
               self.loading = null;
               $log.debug(err);
@@ -285,12 +271,12 @@ angular.module('copayApp.controllers').controller('sellCoinbaseController',
               });
             }
 
-            walletService.signTx(fc, publishedTxp, function(err, signedTxp) {
-              walletService.lock(fc);
+            walletService.signTx(client, publishedTxp, function(err, signedTxp) {
+              walletService.lock(client);
               if (err) {
                 self.loading = null;
                 $log.debug(err);
-                walletService.removeTx(fc, signedTxp, function(err) {
+                walletService.removeTx(client, signedTxp, function(err) {
                   if (err) $log.debug(err);
                 });
                 return cb({
@@ -300,11 +286,11 @@ angular.module('copayApp.controllers').controller('sellCoinbaseController',
                 });
               }
 
-              walletService.broadcastTx(fc, signedTxp, function(err, broadcastedTxp) {
+              walletService.broadcastTx(client, signedTxp, function(err, broadcastedTxp) {
                 if (err) {
                   self.loading = null;
                   $log.debug(err);
-                  walletService.removeTx(fc, broadcastedTxp, function(err) {
+                  walletService.removeTx(client, broadcastedTxp, function(err) {
                     if (err) $log.debug(err);
                   });
                   return cb({

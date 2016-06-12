@@ -84,7 +84,7 @@
         <div
           ng-if="index.coinbaseToken"
           ng-init="buy.init(index.coinbaseTestnet)"
-          ng-click="openWalletsModal(buy.otherWallets)">
+          ng-click="openWalletsModal(buy.allWallets)">
           <label>Copay Wallet</label>
           <div class="input">
             <input type="text" id="address" name="address" ng-disabled="buy.selectedWalletId"
