@@ -8,7 +8,7 @@ angular.module('copayApp.controllers').controller('buyCoinbaseController',
     this.init = function(testnet) {
       self.allWallets = profileService.getWallets(testnet ? 'testnet' : 'livenet', 1)
 
-      client = profileService.focusedClient;
+      var client = profileService.focusedClient;
       if (client) { 
         $timeout(function() {
           self.selectedWalletId = client.credentials.walletId;

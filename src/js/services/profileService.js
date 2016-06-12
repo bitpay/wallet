@@ -650,23 +650,6 @@ angular.module('copayApp.services')
       });
     };
 
-    root.importLegacyWallet = function(username, password, blob, cb) {
-      var walletClient = bwcService.getClient();
-
-      walletClient.createWalletFromOldCopay(username, password, blob, function(err, existed) {
-        if (err) return cb(gettext('Error importing wallet: ') + err);
-
-        if (root.profile.hasWallet(walletClient.credentials.walletId)) {
-          $log.debug('Wallet:' + walletClient.credentials.walletName + ' already imported');
-          return cb(gettext('Wallet Already Imported: ') + walletClient.credentials.walletName);
-        };
-
-        root.addAndBindWalletClient(walletClient, {
-          isImport: true
-        }, cb);
-      });
-    };
-
     root.updateCredentials = function(credentials, cb) {
       root.profile.updateWallet(credentials);
       storageService.storeProfileThrottled(root.profile, cb);
