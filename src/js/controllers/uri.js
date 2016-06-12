@@ -1,6 +1,6 @@
 'use strict';
 angular.module('copayApp.controllers').controller('uriController',
-  function($rootScope, $stateParams, $log, openURLService) {
+  function($stateParams, $log, openURLService) {
 
 
     /* This is only for BROWSER links, it is not excecuted on mobile devices */

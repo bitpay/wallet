@@ -628,18 +628,5 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
           $state.transitionTo('copayers');
         }
       }
-//      event.preventDefault();
-//      $state.transitionTo(toState);
-//        if (!animationService.transitionAnimated(fromState, toState)) {
-//
-// console.log('[routes.js.649] ANIMATION!'); //TODO
-//          event.preventDefault();
-//          // Time for the backpane to render
-//          return setTimeout(function() {
-//
-// console.log('[routes.js.654] TRANSITION'); //TODO
-//            $state.transitionTo(toState);
-//          }, 50);
-//       }
     });
   });
