@@ -1701,15 +1701,14 @@ a.missing-copayers {
   padding: 1rem 0.7rem;
   font-size: 12px;
   font-weight: 300;
+  color: #A5B2BF;
+  cursor: pointer !important;
 }
 
 .sidebar ul {
   margin: 0 0 30px 0;
 }
 
-.sidebar a {
-  color: #A5B2BF;
-}
 
 .modal-content ul li a {
   font-size: 12px;
