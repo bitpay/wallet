@@ -10,14 +10,7 @@ angular.module('copayApp.controllers').controller('sellGlideraController',
     this.success = null;
     this.error = null;
     this.loading = null;
-    var fc;
-
-    var otherWallets = function(testnet) {
-      var network = testnet ? 'testnet' : 'livenet';
-      return lodash.filter(profileService.getWallets(network), function(w) {
-        return w.network == network && w.m == 1;
-      });
-    };
+    var client;
 
     var handleEncryptedWallet = function(client, cb) {
       if (!walletService.isEncrypted(client)) return cb();
@@ -28,24 +21,19 @@ angular.module('copayApp.controllers').controller('sellGlideraController',
     };
 
     this.init = function(testnet) {
-      self.otherWallets = otherWallets(testnet);
-      // Choose focused wallet
-      try {
-        var currentWalletId = profileService.focusedClient.credentials.walletId;
-        lodash.find(self.otherWallets, function(w) {
-          if (w.id == currentWalletId) {
-            $timeout(function() {
-              self.selectedWalletId = w.id;
-              self.selectedWalletName = w.name;
-              fc = profileService.getClient(w.id);
-              $scope.$apply();
-            }, 100);
-          }
-        });
-      } catch (e) {
-        $log.debug(e);
-      };
+      self.allWallets = profileService.getWallets(testnet ? 'testnet' : 'livenet', 1)
+
+      client = profileService.focusedClient;
+      if (client) { 
+        $timeout(function() {
+          self.selectedWalletId = client.credentials.walletId;
+          self.selectedWalletName = client.credentials.walletName;
+          $scope.$apply();
+        }, 100);
+      }
     };
+
+ 
 
     $scope.openWalletsModal = function(wallets) {
       self.error = null;
@@ -106,7 +94,7 @@ angular.module('copayApp.controllers').controller('sellGlideraController',
       var configWallet = config.wallet;
       var walletSettings = configWallet.settings;
 
-      addressService.getAddress(fc.credentials.walletId, null, function(err, refundAddress) {
+      addressService.getAddress(client.credentials.walletId, null, function(err, refundAddress) {
         if (!refundAddress) {
           self.loading = null;
           self.error = bwsError.msg(err, 'Could not create address');
@@ -141,7 +129,7 @@ angular.module('copayApp.controllers').controller('sellGlideraController',
           };
 
           self.loading = 'Creating transaction...';
-          walletService.createTx(fc, txp, function(err, createdTxp) {
+          walletService.createTx(client, txp, function(err, createdTxp) {
             self.loading = null;
             if (err) {
               self.error = err.message ||  bwsError.msg(err);
@@ -149,13 +137,13 @@ angular.module('copayApp.controllers').controller('sellGlideraController',
             }
             $scope.$emit('Local/NeedsConfirmation', createdTxp, function(accept) {
               if (accept) {
-                fingerprintService.check(fc, function(err) {
+                fingerprintService.check(client, function(err) {
                   if (err) {
                     self.error = err.message ||  bwsError.msg(err);
                     return;
                   }
 
-                  handleEncryptedWallet(fc, function(err) {
+                  handleEncryptedWallet(client, function(err) {
                     if (err) {
                       self.error = err.message ||  bwsError.msg(err);
                       return;
@@ -163,15 +151,15 @@ angular.module('copayApp.controllers').controller('sellGlideraController',
 
                     self.loading = 'Signing transaction...';
 
-                    walletService.publishTx(fc, createdTxp, function(err, publishedTxp) {
+                    walletService.publishTx(client, createdTxp, function(err, publishedTxp) {
                       if (err) {
                         self.loading = null;
                         self.error = err.message ||  bwsError.msg(err);
                       }
 
-                      walletService.signTx(fc, publishedTxp, function(err, signedTxp) {
-                        walletService.lock(fc);
-                        walletService.removeTx(fc, signedTxp, function(err) {
+                      walletService.signTx(client, publishedTxp, function(err, signedTxp) {
+                        walletService.lock(client);
+                        walletService.removeTx(client, signedTxp, function(err) {
                           if (err) $log.debug(err);
                         });
                         if (err) {
