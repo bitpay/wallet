@@ -400,7 +400,6 @@ msgstr ""
 
 #: src/js/controllers/copayers.js
 #: src/js/controllers/export.js
-#: src/js/controllers/tx.js
 #: src/js/controllers/walletHome.js
 msgid "Copied to clipboard"
 msgstr ""
@@ -812,10 +811,6 @@ msgstr ""
 msgid "Hardware Wallet"
 msgstr ""
 
-#: public/views/import.html
-msgid "Have a Backup from Copay v0.9?"
-msgstr ""
-
 #: public/views/create.html
 #: public/views/import.html
 #: public/views/join.html
@@ -841,10 +836,6 @@ msgstr ""
 
 #: public/views/importLegacy.html
 msgid "Import from the Cloud?"
-msgstr ""
-
-#: public/views/import.html
-msgid "Import here"
 msgstr ""
 
 #: public/views/add.html
@@ -1278,6 +1269,10 @@ msgstr ""
 msgid "Please upgrade Copay to perform this action"
 msgstr ""
 
+#: public/views/uri.html
+msgid "Please wait to be redirected..."
+msgstr ""
+
 #: src/js/controllers/import.js
 msgid "Please, select your backup file"
 msgstr ""
@@ -1327,6 +1322,10 @@ msgstr ""
 
 #: public/views/walletHome.html
 msgid "Reconnecting to Wallet Service..."
+msgstr ""
+
+#: public/views/import.html
+msgid "Recovery Phrase"
 msgstr ""
 
 #: src/js/controllers/preferencesDeleteWords.js
@@ -1818,6 +1817,10 @@ msgstr ""
 
 #: public/views/importLegacy.html
 msgid "Username"
+msgstr ""
+
+#: public/views/backup.html
+msgid "Validating recovery phrase..."
 msgstr ""
 
 #: public/views/preferencesAbout.html
