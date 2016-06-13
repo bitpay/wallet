@@ -1,8 +1,9 @@
 'use strict';
 angular.module('copayApp.controllers').controller('glideraUriController',
-  function($scope, $stateParams, $timeout, profileService, configService, glideraService, storageService, go) { 
+  function($scope, $log, $stateParams, $timeout, profileService, configService, glideraService, storageService, go) {
 
     this.submitOauthCode = function(code) {
+      $log.debug('Glidera Oauth Code:' + code);
       var self = this;
       var glideraTestnet = configService.getSync().glidera.testnet;
       var network = glideraTestnet ? 'testnet' : 'livenet';
@@ -14,10 +15,9 @@ angular.module('copayApp.controllers').controller('glideraUriController',
           if (err) {
             self.error = err;
             $timeout(function() {
-                $scope.$apply();
-              }, 100);
-          }
-          else if (data && data.access_token) {
+              $scope.$apply();
+            }, 100);
+          } else if (data && data.access_token) {
             storageService.setGlideraToken(network, data.access_token, function() {
               $scope.$emit('Local/GlideraUpdated', data.access_token);
               $timeout(function() {
@@ -31,8 +31,13 @@ angular.module('copayApp.controllers').controller('glideraUriController',
     };
 
     this.checkCode = function() {
-      this.code = $stateParams.code;
-      this.submitOauthCode(this.code);
-    };
-
+      if ($stateParams.url) {
+        var match = $stateParams.url.match(/code=(.+)/);
+        if (match && match[1]) {
+          this.code = match[1];
+          return this.submitOauthCode(this.code);
+        }
+      }
+      $log.error('Bad state: ' + JSON.stringify($stateParams));
+    }
   });

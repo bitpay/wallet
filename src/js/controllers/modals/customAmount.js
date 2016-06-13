@@ -69,9 +69,6 @@ angular.module('copayApp.controllers').controller('customAmountController', func
 
   $scope.shareAddress = function(uri) {
     if (platformInfo.isCordova) {
-      if (platformInfo.isAndroid || platformInfo.isWP) {
-        window.ignoreMobilePause = true;
-      }
       window.plugins.socialsharing.share(uri, null, null, null);
     }
   };

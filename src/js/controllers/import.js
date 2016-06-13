@@ -15,14 +15,6 @@ angular.module('copayApp.controllers').controller('importController',
     $scope.account = 1;
     self.importErr = false;
 
-    window.ignoreMobilePause = true;
-    $scope.$on('$destroy', function() {
-      $timeout(function() {
-        window.ignoreMobilePause = false;
-      }, 100);
-    });
-
-
     var updateSeedSourceSelect = function() {
       self.seedOptions = [];
 

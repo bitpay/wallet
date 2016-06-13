@@ -126,9 +126,6 @@ angular.module('copayApp.controllers').controller('exportController',
 
     self.sendWalletBackup = function() {
       var fc = profileService.focusedClient;
-      if (isAndroid || isWP) {
-        window.ignoreMobilePause = true;
-      }
       window.plugins.toast.showShortCenter(gettextCatalog.getString('Preparing backup...'));
       var name = (fc.credentials.walletName || fc.credentials.walletId);
       if (fc.alias) {

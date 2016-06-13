@@ -92,9 +92,6 @@ angular.module('copayApp.controllers').controller('copayersController',
 
     self.shareSecret = function(secret) {
       if (isCordova) {
-        if (isAndroid || isWP) {
-          window.ignoreMobilePause = true;
-        }
         var message = gettextCatalog.getString('Join my Copay wallet. Here is the invitation code: {{secret}} You can download Copay for your phone or desktop at https://copay.io', {
           secret: secret
         });
