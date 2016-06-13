@@ -20,7 +20,7 @@
     </div>
   </div>
 
-  <div class="row m20t" ng-show="!buy.giftCard">
+  <div class="row m20t" ng-show="!buy.giftCard" ng-init="buy.init()">
     <div class="columns">
 
       <div class="box-notification m20b" ng-show="buy.error" ng-click="buy.error = null">
@@ -57,8 +57,8 @@
           <a class="amazon-select-amount" ng-click="buy.setAmount(1)">+</a>
         </div>
 
-        <div 
-         ng-init="buy.init()"
+        <div  
+         class="m10b"
          ng-click="openWalletsModal(buy.allWallets)">
           <label>Pay From Copay Wallet</label>
           <div class="input">
@@ -122,7 +122,7 @@
         </div>
         <div class="m10t">
           <button class="button black round tiny" 
-                  ng-click="$root.openExternalLink('https://www.amazon.com/gc/redeem?claimCode=' + buy.giftCard.gcClaimCode)">
+                  ng-click="$root.openExternalLink('https://www.amazon.com/gc/redeem?claimCode=' + buy.giftCard.gcClaimCode, '_system')">
             Redeem Now
           </button>
         </div>
@@ -130,7 +130,7 @@
 
       <div class="size-12 m10t text-center">
         | <a 
-        ng-click="$root.openExternalLink('https://www.amazon.com/gp/css/gc/payment/view-gc-balance?claimCode=' + buy.giftCard.gcClaimCode)">
+        ng-click="$root.openExternalLink('https://www.amazon.com/gp/css/gc/payment/view-gc-balance?claimCode=' + buy.giftCard.gcClaimCode, '_system')">
           Apply to Account
         </a> | 
         <a ng-click="$root.openExternalLink('http://www.amazon.com/gc-redeem')">How to Use</a> |

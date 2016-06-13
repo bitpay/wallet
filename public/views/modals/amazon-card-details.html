@@ -30,16 +30,16 @@
           <div>
             Claim code: <span class="text-bold enable_text_select">{{card.gcClaimCode}}</span>
           </div>
-          <div class="m10t">
+          <div class="m10t" ng-show="card.cardInfo.cardStatus == 'Fulfilled'">
             <button class="button black round tiny" 
-                    ng-click="$root.openExternalLink('https://www.amazon.com/gc/redeem?claimCode=' + card.gcClaimCode)">
+                    ng-click="$root.openExternalLink('https://www.amazon.com/gc/redeem?claimCode=' + card.gcClaimCode, '_system')">
               Redeem Now
             </button>
           </div>
 
-          <div class="size-12 m10t text-center">
+          <div class="size-12 m10t text-center" ng-show="card.cardInfo.cardStatus == 'Fulfilled'">
             | <a 
-               ng-click="$root.openExternalLink('https://www.amazon.com/gp/css/gc/payment/view-gc-balance?claimCode=' + card.gcClaimCode)">
+               ng-click="$root.openExternalLink('https://www.amazon.com/gp/css/gc/payment/view-gc-balance?claimCode=' + card.gcClaimCode, '_system')">
               Apply to Account
             </a> | 
             <a ng-click="$root.openExternalLink('http://www.amazon.com/gc-redeem')">How to Use</a> |
@@ -67,9 +67,9 @@
         </div>
       </div>
 
-      <div class="m10t size-12 white line-t p10" ng-show="card.gcClaimCode">
+      <div class="size-12 white line-t p10" ng-show="card.gcClaimCode && card.cardInfo.cardStatus == 'Fulfilled'">
         <div class="text-bold m10b">To redeem your gift card, follow these steps:</div>
-        <ol class="size-12">
+        <ol class="amazon-list size-12">
           <li>Visit <a ng-click="$root.openExternalLink('https://www.amazon.com/gc')">www.amazon.com/gc</a>.</li>
           <li>Click Apply to Account and enter the claim code when prompted.</li>
           <li>Gift card funds will be applied automatically to eligible orders during the checkout process.</li>
