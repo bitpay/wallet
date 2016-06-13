@@ -150,7 +150,7 @@ angular.module('copayApp.services')
           root.profile.setChecked(platformInfo.ua, credentials.walletId);
 
         return cb(null, root.bindWalletClient(client));
-      }, 1);
+      }, skipKeyValidation ? 50 : 0);
     };
 
     root.bindProfile = function(profile, cb) {
@@ -163,6 +163,8 @@ angular.module('copayApp.services')
         function bindWallets(cb) {
           var l = root.profile.credentials.length;
           var i = 0, totalBound = 0;
+
+          if (!l) return cb();
 
           lodash.each(root.profile.credentials, function(credentials) {
             root.bindWallet(credentials, function(err, bound) {
@@ -311,21 +313,23 @@ angular.module('copayApp.services')
     // Creates a wallet on BWC/BWS
     var doCreateWallet = function(opts, cb) {
       $log.debug('Creating Wallet:', opts);
-      seedWallet(opts, function(err, walletClient) {
-        if (err) return cb(err);
+      $timeout(function() {
+        seedWallet(opts, function(err, walletClient) {
+          if (err) return cb(err);
 
-        var name = opts.name || gettextCatalog.getString('Personal Wallet');
-        var myName = opts.myName || gettextCatalog.getString('me');
+          var name = opts.name || gettextCatalog.getString('Personal Wallet');
+          var myName = opts.myName || gettextCatalog.getString('me');
 
-        walletClient.createWallet(name, myName, opts.m, opts.n, {
-          network: opts.networkName,
-          singleAddress: opts.singleAddress,
-          walletPrivKey: opts.walletPrivKey,
-        }, function(err, secret) {
-          if (err) return bwsError.cb(err, gettext('Error creating wallet'), cb);
-          return cb(null, walletClient, secret);
+          walletClient.createWallet(name, myName, opts.m, opts.n, {
+            network: opts.networkName,
+            singleAddress: opts.singleAddress,
+            walletPrivKey: opts.walletPrivKey,
+          }, function(err, secret) {
+            if (err) return bwsError.cb(err, gettext('Error creating wallet'), cb);
+            return cb(null, walletClient, secret);
+          });
         });
-      });
+      }, 5);
     };
 
     // Creates the default Copay profile and its wallet
@@ -634,7 +638,6 @@ angular.module('copayApp.services')
       var defaults = configService.getDefaults();
 
       configService.get(function(err) {
-
         root.createDefaultProfile(opts, function(err, p) {
           if (err) return cb(err);
 

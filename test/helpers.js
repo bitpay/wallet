@@ -221,7 +221,6 @@ mocks.init = function(fixtures, controllerName, opts, done) {
           done();
         });
       } else {
-
         _profileService_.create({
           noWallet: true
         }, function(err) {
