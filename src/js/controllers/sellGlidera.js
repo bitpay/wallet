@@ -94,6 +94,11 @@ angular.module('copayApp.controllers').controller('sellGlideraController',
       var configWallet = config.wallet;
       var walletSettings = configWallet.settings;
 
+      if (!client) {
+        self.error = 'No wallet selected';
+        return;
+      }
+
       addressService.getAddress(client.credentials.walletId, null, function(err, refundAddress) {
         if (!refundAddress) {
           self.loading = null;

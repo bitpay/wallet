@@ -3,7 +3,6 @@
 angular.module('copayApp.controllers').controller('buyCoinbaseController',
   function($scope, $modal, $log, $ionicModal, $timeout, lodash, profileService, coinbaseService, bwsError, addressService) {
     var self = this;
-    var fc;
 
     this.init = function(testnet) {
       self.allWallets = profileService.getWallets(testnet ? 'testnet' : 'livenet', 1)

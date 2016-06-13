@@ -142,6 +142,11 @@ angular.module('copayApp.controllers').controller('sellCoinbaseController',
     this.createTx = function(token, account, amount) {
       self.error = null;
 
+      if (!client) {
+        self.error = 'No wallet selected';
+        return;
+      }
+
       var accountId = account.id;
       var dataSrc = {
         name: 'Received from Copay: ' + self.selectedWalletName
