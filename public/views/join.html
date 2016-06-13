@@ -5,7 +5,7 @@
 </div>
 
 
-<ion-content overflow-scroll="true" class="content p20v" ng-controller="joinController as join">
+<ion-pane class="content p20v" ng-controller="joinController as join">
   <div class="onGoingProcess" ng-show="join.loading && !join.hwWallet">
     <div class="onGoingProcess-content" ng-style="{'background-color':'#222'}">
     <ion-spinner class="spinner-stable" icon="lines"></ion-spinner>
@@ -21,126 +21,128 @@
     </div>
   </div>
 
-  <form name="joinForm" ng-submit="join.join(joinForm)" novalidate>
-    <div class="box-notification m20b" ng-show="join.error">
-      <span class="text-warning">
-        {{join.error|translate}}
-      </span>
-    </div>
-    <div class="row">
-      <div class="large-12 columns">
+  <ion-scroll style="padding-top: 25px">
+    <form name="joinForm" ng-submit="join.join(joinForm)" novalidate>
+      <div class="box-notification m20b" ng-show="join.error">
+        <span class="text-warning">
+          {{join.error|translate}}
+        </span>
+      </div>
+      <div class="row">
+        <div class="large-12 columns">
 
-        <div>
-          <label><span translate>Your nickname</span>
-            <div class="input">
-              <input type="text" placeholder="{{'John'|translate}}" class="form-control" name="myName" ng-model="myName" ng-required="true">
-            </div>
-          </label>
-        </div>
-
-        <div class="row collapse">
-          <label for="secret" class="left"><span translate>Wallet Invitation</span>
-            <small translate ng-show="joinForm.secret.$pristine">Required</small>
-          </label>
-          <span class="has-error right size-12" ng-show="joinForm.secret.$invalid
-            && !joinForm.secret.$pristine">
-            <span class="icon-input"><i class="fi-x"></i></span>
-            <span translate>Wallet Invitation is not valid!</span>
-          </span>
-          <small class="icon-input right" ng-show="joinForm.secret.$valid
-            && !joinForm.secret.$pristine"><i class="fi-check"></i></small>
-        </div>
-
-        <div class="input">
-          <input id="secret" type="text" placeholder="{{'Paste invitation here'|translate}}" name="secret" ng-model="secret" wallet-secret required>
-          <div class="qr-scanner-input">
-            <qr-scanner on-scan="join.onQrCodeScanned(data)"></qr-scanner>
+          <div>
+            <label><span translate>Your nickname</span>
+              <div class="input">
+                <input type="text" placeholder="{{'John'|translate}}" class="form-control" name="myName" ng-model="myName" ng-required="true">
+              </div>
+            </label>
           </div>
-        </div>
 
-        <div class="m10t oh" ng-init="hideAdv=true">
-          <a class="button outline light-gray expand tiny" ng-click="hideAdv=!hideAdv">
-            <i class="fi-widget m3r"></i>
-            <span translate ng-hide="!hideAdv">Show advanced options</span>
-            <span translate ng-hide="hideAdv">Hide advanced options</span>
-            <i ng-if="hideAdv" class="icon-arrow-down4"></i>
-            <i ng-if="!hideAdv" class="icon-arrow-up4"></i>
-          </a>
-        </div>
+          <div class="row collapse">
+            <label for="secret" class="left"><span translate>Wallet Invitation</span>
+              <small translate ng-show="joinForm.secret.$pristine">Required</small>
+            </label>
+            <span class="has-error right size-12" ng-show="joinForm.secret.$invalid
+              && !joinForm.secret.$pristine">
+              <span class="icon-input"><i class="fi-x"></i></span>
+              <span translate>Wallet Invitation is not valid!</span>
+            </span>
+            <small class="icon-input right" ng-show="joinForm.secret.$valid
+              && !joinForm.secret.$pristine"><i class="fi-check"></i></small>
+          </div>
 
-        <div ng-hide="hideAdv" class="row">
-          <div class="large-12 columns">
-            <div>
-              <label for="bws" class="oh">
-                <span>Wallet Service URL</span>
-                <input type="text" id="bwsurl" name="bwsurl" ng-model="bwsurl">
-              </label>
+          <div class="input">
+            <input id="secret" type="text" placeholder="{{'Paste invitation here'|translate}}" name="secret" ng-model="secret" wallet-secret required>
+            <div class="qr-scanner-input">
+              <qr-scanner on-scan="join.onQrCodeScanned(data)"></qr-scanner>
             </div>
+          </div>
 
-            <div>
-              <label><span translate>Wallet Recovery Phrase</span>
-              <select class="m10t" ng-model="seedSource"
-                ng-options="seed as seed.label for seed in join.seedOptions"
-                ng-change="join.setSeedSource()">
-              </select>
-              </label>
-            </div>
+          <div class="m10t oh" ng-init="hideAdv=true">
+            <a class="button outline light-gray expand tiny" ng-click="hideAdv=!hideAdv">
+              <i class="fi-widget m3r"></i>
+              <span translate ng-hide="!hideAdv">Show advanced options</span>
+              <span translate ng-hide="hideAdv">Hide advanced options</span>
+              <i ng-if="hideAdv" class="icon-arrow-down4"></i>
+              <i ng-if="!hideAdv" class="icon-arrow-up4"></i>
+            </a>
+          </div>
 
-            <div ng-show="join.seedSourceId == 'trezor' || join.seedSourceId == 'ledger'">
-              <label class="oh"><span translate>Account Number</span>
-                <input type="number" id="account" ng-model="account">
-              </label>
-            </div>
+          <div ng-hide="hideAdv" class="row">
+            <div class="large-12 columns">
+              <div>
+                <label for="bws" class="oh">
+                  <span>Wallet Service URL</span>
+                  <input type="text" id="bwsurl" name="bwsurl" ng-model="bwsurl">
+                </label>
+              </div>
 
-            <div class="box-notification" ng-show="join.seedSourceId=='new' && createPassphrase">
-              <span class="text-warning size-14">
-                <i class="fi-alert"></i>
-                <span translate>
-                WARNING: The password cannot be recovered. <b>Be sure to write it down</b>. The wallet can not be restored without the password.
+              <div>
+                <label><span translate>Wallet Recovery Phrase</span>
+                <select class="m10t" ng-model="seedSource"
+                  ng-options="seed as seed.label for seed in join.seedOptions"
+                  ng-change="join.setSeedSource()">
+                </select>
+                </label>
+              </div>
+
+              <div ng-show="join.seedSourceId == 'trezor' || join.seedSourceId == 'ledger'">
+                <label class="oh"><span translate>Account Number</span>
+                  <input type="number" id="account" ng-model="account">
+                </label>
+              </div>
+
+              <div class="box-notification" ng-show="join.seedSourceId=='new' && createPassphrase">
+                <span class="text-warning size-14">
+                  <i class="fi-alert"></i>
+                  <span translate>
+                  WARNING: The password cannot be recovered. <b>Be sure to write it down</b>. The wallet can not be restored without the password.
+                  </span>
                 </span>
-              </span>
-            </div>
+              </div>
 
-            <div ng-show="join.seedSourceId=='new' ">
-              <label for="createPassphrase"  ><span translate>Add a Password</span>  <small translate>Add an optional password to secure the recovery phrase</small>
-                <div class="input">
-                  <input type="text" class="form-control" autocapitalize="off"
-                  name="createPassphrase" ng-model="createPassphrase">
-                </div>
-              </label>
-            </div>
+              <div ng-show="join.seedSourceId=='new' ">
+                <label for="createPassphrase"  ><span translate>Add a Password</span>  <small translate>Add an optional password to secure the recovery phrase</small>
+                  <div class="input">
+                    <input type="text" class="form-control" autocapitalize="off"
+                    name="createPassphrase" ng-model="createPassphrase">
+                  </div>
+                </label>
+              </div>
 
-            <div ng-show="join.seedSourceId=='set'">
-              <label for="ext-master">
-                <span translate>Wallet Recovery Phrase</span>
-                <small translate>Enter the recovery phrase (BIP39)</small>
-                <input id="ext-master"
-                autocapitalize="off"
-                type="text"
-                name="privateKey" ng-model="privateKey">
-              </label>
-            </div>
+              <div ng-show="join.seedSourceId=='set'">
+                <label for="ext-master">
+                  <span translate>Wallet Recovery Phrase</span>
+                  <small translate>Enter the recovery phrase (BIP39)</small>
+                  <input id="ext-master"
+                  autocapitalize="off"
+                  type="text"
+                  name="privateKey" ng-model="privateKey">
+                </label>
+              </div>
 
-            <div ng-show="join.seedSourceId=='set'">
-              <label for="passphrase"> <span translate>Password</span>  <small translate>The recovery phrase could require a password to be imported</small>
-                <div class="input">
-                  <input type="text" autocapitalize="off" class="form-control" name="passphrase" ng-model="passphrase">
-                </div>
-              </label>
-            </div>
-            <div ng-show="join.seedSourceId == 'set'">
-              <label class="oh"><span translate>Derivation Path</span> <small translate>BIP32 path for address derivation</small>
-                <input type="text" class="form-control" name="derivationPath" ng-model="derivationPath">
-              </label>
-            </div>
-          </div> <!-- columns -->
-        </div> <!-- advanced -->
+              <div ng-show="join.seedSourceId=='set'">
+                <label for="passphrase"> <span translate>Password</span>  <small translate>The recovery phrase could require a password to be imported</small>
+                  <div class="input">
+                    <input type="text" autocapitalize="off" class="form-control" name="passphrase" ng-model="passphrase">
+                  </div>
+                </label>
+              </div>
+              <div ng-show="join.seedSourceId == 'set'">
+                <label class="oh"><span translate>Derivation Path</span> <small translate>BIP32 path for address derivation</small>
+                  <input type="text" class="form-control" name="derivationPath" ng-model="derivationPath">
+                </label>
+              </div>
+            </div> <!-- columns -->
+          </div> <!-- advanced -->
 
-        <button translate type="submit" class="button expand black m0 round"
-          ng-disabled="joinForm.$invalid || join.loading">Join</button>
-      </div> <!-- large-12 columns -->
-    </div> <!-- row -->
-  </form>
-</ion-content>
+          <button translate type="submit" class="button expand black m0 round"
+            ng-disabled="joinForm.$invalid || join.loading">Join</button>
+        </div> <!-- large-12 columns -->
+      </div> <!-- row -->
+    </form>
+  </ion-scroll>
+</ion-pane>
 
 <div class="extra-margin-bottom"></div>
