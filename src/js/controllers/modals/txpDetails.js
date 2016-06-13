@@ -168,7 +168,7 @@ angular.module('copayApp.controllers').controller('txpDetailsController', functi
   };
 
   lodash.each(['TxProposalRejectedBy', 'TxProposalAcceptedBy', 'transactionProposalRemoved', 'TxProposalRemoved', 'NewOutgoingTx', 'UpdateTx'], function(eventName) {
-    $scope.$on(eventName, function() {
+    $rootScope.$on(eventName, function() {
       fc.getTx($scope.tx.id, function(err, tx) {
         if (err) {
           if (err.message && err.message == 'TX_NOT_FOUND' &&
