@@ -74,7 +74,8 @@ describe('disclaimerController', function() {
       mnemonic: 'tunnel fork scare industry noble snow tank bullet over gesture nuclear next',
     });
     setTimeout(function() {
-      ctrl.creatingProfile.should.equal(false);
+      mocks.ongoingProcess.set.getCall(1).args[0].should.equal('creatingWallet');
+      mocks.ongoingProcess.set.getCall(1).args[1].should.equal(false);
       done();
     }, 100);
   });
