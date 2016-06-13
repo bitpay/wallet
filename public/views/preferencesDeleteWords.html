@@ -5,19 +5,19 @@
 </div>
 
 
-<div class="content preferences" ng-controller="preferencesDeleteWordsController as preferences">
+<div class="content preferences" ng-controller="preferencesDeleteWordsController">
 
-  <div ng-show="!preferences.deleted">
+  <div ng-show="!deleted">
     <div class="text-center text-gray m20t size-12">
-      <div class="box-notification text-warning" ng-show="preferences.error" >
-        {{preferences.error|translate}}
+      <div class="box-notification text-warning" ng-show="error" >
+        {{error|translate}}
       </div>
       <div class="text-warning size-18 m10b" translate>Warning!</div>
       <div class="m15" ng-show="!index.needsBackup" translate>Once you have copied your wallet recovery phrase down, it is recommended to delete it from this device.</div>
       <div class="m15" ng-show="index.needsBackup" translate>Need to do backup</div>
     </div>
     <ul class="no-bullet m0" ng-show="!index.needsBackup">
-      <li ng-click="preferences.delete()">
+      <li ng-click="delete()">
         <div class="right" ng-style="{'color':index.backgroundColor}">
           {{index.walletName}} <span ng-show="index.alias">({{index.alias}})</span>
         </div>
@@ -26,7 +26,7 @@
     </ul>
   </div>
 
-  <div class="row m20t" ng-show="preferences.deleted">
+  <div class="row m20t" ng-show="deleted">
     <div class="columns size-14 text-gray text-center" translate>
       Wallet recovery phrase not available. You can still export it from Advanced &gt; Export.
     </div>
