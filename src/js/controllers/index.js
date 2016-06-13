@@ -1427,6 +1427,19 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.tab = 'walletHome';
   });
 
+  $rootScope.$on('Local/ValidatingWallet', function() {
+    if (isCordova) {
+      window.plugins.spinnerDialog.hide();
+      window.plugins.spinnerDialog.show(null, gettext('Validating wallet integrity...'), true);
+    } 
+  });
+
+  $rootScope.$on('Local/ProfileBound', function() {
+    if (isCordova) {
+      window.plugins.spinnerDialog.hide();
+    } 
+  });
+
   $rootScope.$on('Local/ClearHistory', function(event) {
     $log.debug('The wallet transaction history has been deleted');
     self.txHistory = self.completeHistory = self.txHistorySearchResults = [];

@@ -614,7 +614,6 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
       } else {
         if (profileService.focusedClient && !profileService.focusedClient.isComplete() && toState.walletShouldBeComplete) {
 
-          event.preventDefault();
           $state.transitionTo('copayers');
         }
       }
