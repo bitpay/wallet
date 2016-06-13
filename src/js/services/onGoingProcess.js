@@ -23,7 +23,7 @@ angular.module('copayApp.services').factory('ongoingProcess', function($log, $ti
     'joiningWallet': 'Joining Wallet...',
     'retrivingInputs': 'Retrieving inputs information',
     'creatingWallet': 'Creating Wallet...',
-    'validationWallet': 'Validating wallet integrity...',
+    'validatingWallet': 'Validating wallet integrity...',
     'connectingledger': 'Waiting for Ledger...',
     'connectingtrezor': 'Waiting for Trezor...',
     'validatingWords': 'Validating recovery phrase...',
