@@ -329,7 +329,7 @@ angular.module('copayApp.services')
             return cb(null, walletClient, secret);
           });
         });
-      }, 5);
+      }, 50);
     };
 
     // Creates the default Copay profile and its wallet
