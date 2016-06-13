@@ -28,7 +28,7 @@
           Retry
         </button>
         <div class="m20t size-12">
-          <a class="text-gray" ng-click="$root.go('preferencesGlidera')">Preferences</a>
+          <a class="text-gray" href ui-sref="preferencesGlidera">Preferences</a>
         </div>
       </div>
     </div>
@@ -94,7 +94,7 @@
     <div class="p20v text-center white">
       <img src="img/glidera-logo.png" ng-click="index.updateGlidera(index.glideraToken, index.glideraPermissions)" width="100">
     </div>
-    <div class="sub-header"  ng-click="$root.go('preferencesGlidera')">
+    <div class="sub-header" href ui-sref="preferencesGlidera">
       <div class="left">
         <div ng-show="!index.glideraPersonalInfo && !index.glideraEmail">
           Preferences
@@ -136,7 +136,7 @@
       ng-show="index.glideraStatus && index.glideraStatus.userCanTransact">
       <li ng-show="index.glideraStatus.userCanBuy"
           class="line-b line-t p20 pointer"
-          ng-click="$root.go('buyGlidera')">
+          href ui-sref="buyGlidera">
         <img src="img/buy-bitcoin.svg" alt="buy bitcoin" width="40">
         <span class="m10 text-normal text-bold">Buy Bitcoin</span>
         <span class="right text-gray">
@@ -145,7 +145,7 @@
       </li>
       <li class="line-b p20 pointer"
           ng-show="index.glideraStatus.userCanSell"
-          ng-click="$root.go('sellGlidera')">
+          href ui-sref="sellGlidera">
         <img src="img/sell-bitcoin.svg" alt="buy bitcoin" width="40">
         <span class="m10 text-normal text-bold">Sell Bitcoin</span>
         <span class="right text-gray">
