@@ -39,8 +39,9 @@ angular.module('copayApp.services').factory('amazonService', function($http, $lo
         $log.error(err);
         return cb();
       });
+    } else {
+      return cb('XXX'); // Test purpose
     }
-    return cb('XXX'); // Test purpose
   };
 
   var _checkLimits = function(amount, cb) {
