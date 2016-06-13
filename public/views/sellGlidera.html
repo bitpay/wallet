@@ -7,13 +7,6 @@
 
 <div class="content glidera" ng-controller="sellGlideraController as sell">
 
-  <div class="onGoingProcess" ng-show="sell.loading">
-    <div class="onGoingProcess-content" ng-style="{'background-color':index.backgroundColor}">
-    <ion-spinner class="spinner-stable" icon="lines"></ion-spinner>
-    <span>{{sell.loading}}</span>
-    </div>
-  </div>
-
   <div ng-show="index.glideraLimits && !sell.show2faCodeInput && !sell.success">
     <h4 class="title m0 text-left">
       <span class="text-light">Daily sell limit</span>:
@@ -88,7 +81,7 @@
             ng-style="{'background-color':index.backgroundColor}"
             type="submit" value="{{'Continue'}}"
             ng-disabled="index.glideraLimits.transactDisabledPendingFirstTransaction || !sell.sellPrice.qty ||
-            !sell.selectedWalletId || sell.loading">
+            !sell.selectedWalletId ">
           </div>
         </form>
       </div>
@@ -104,7 +97,7 @@
               <input type="number" ng-model="twoFaCode" required>
               <input class="button black expand round"
               ng-style="{'background-color':index.backgroundColor}"
-              type="submit" value="{{'Sell'}}" ng-disabled="sellForm.$invalid || sell.loading">
+              type="submit" value="{{'Sell'}}" ng-disabled="sellForm.$invalid ">
           </form>
           <p class="m10t size-12 text-gray">
           Bitcoins will be immediately sent from your wallet to Glidera. Fiat will be deposited in your bank account in 4-6 business days.

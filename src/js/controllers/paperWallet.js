@@ -1,5 +1,5 @@
 angular.module('copayApp.controllers').controller('paperWalletController',
-  function($scope, $http, $timeout, $log, configService, profileService, go, addressService, txStatus, bitcore) {
+  function($scope, $http, $timeout, $log, configService, profileService, go, addressService, txStatus, bitcore, ongoingProcess) {
     var self = this;
     var fc = profileService.focusedClient;
     var rawTx;
@@ -46,14 +46,14 @@ angular.module('copayApp.controllers').controller('paperWalletController',
     }
 
     self.scanFunds = function() {
-      self.scanning = true;
       self.privateKey = '';
       self.balanceSat = 0;
       self.error = '';
 
+      ongoingProcess.set('scanning', true);
       $timeout(function() {
         self._scanFunds(function(err, privateKey, balance) {
-          self.scanning = false;
+          ongoingProcess.set('scanning', false);
           if (err) {
             $log.error(err);
             self.error = err.message || err.toString();
@@ -88,12 +88,13 @@ angular.module('copayApp.controllers').controller('paperWalletController',
     };
 
     self.sweepWallet = function() {
+      ongoingProcess.set('sweepingWallet', true);
       self.sending = true;
       self.error = '';
 
       $timeout(function() {
         self._sweepWallet(function(err, destinationAddress, txid) {
-          self.sending = false;
+          ongoingProcess.set('sweepingWallet', false);
 
           if (err) {
             self.error = err.message || err.toString();

@@ -19,13 +19,6 @@
     </section>
   </nav>
 
-  <div class="onGoingProcess" ng-show="wordsC.loading">
-    <div class="onGoingProcess-content" ng-style="{'background-color':index.backgroundColor}">
-      <ion-spinner class="spinner-stable" icon="lines"></ion-spinner>
-      <span translate>Validating recovery phrase...</span>
-    </div>
-  </div>
-
   <div class="box-notification" ng-show="wordsC.error">
     <span class="text-warning">
       {{wordsC.error|translate}}

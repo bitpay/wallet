@@ -1,11 +1,10 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('backupController',
-  function($rootScope, $scope, $timeout, $log, lodash, profileService, gettext, bwcService, bwsError, walletService) {
+  function($rootScope, $scope, $timeout, $log, lodash, profileService, gettext, bwcService, bwsError, walletService, ongoingProcess) {
 
     var self = this;
     var fc = profileService.focusedClient;
-    self.loading = false;
     self.customWords = [];
     self.walletName = fc.credentials.walletName;
 
@@ -59,9 +58,9 @@ angular.module('copayApp.controllers').controller('backupController',
         finalStep();
 
       function finalStep() {
-        self.loading = true;
+        ongoingProcess.set('validatingWords', true);
         confirm(function(err) {
-          self.loading = false;
+          ongoingProcess.set('validatingWords', false);
           if (err) {
             backupError(err);
           }
@@ -144,7 +143,6 @@ angular.module('copayApp.controllers').controller('backupController',
     };
 
     $scope.removeButton = function(index, item) {
-      if (self.loading) return;
       self.customWords.splice(index, 1);
       self.shuffledMnemonicWords[item.prevIndex].selected = false;
       self.shouldContinue();
@@ -194,7 +192,7 @@ angular.module('copayApp.controllers').controller('backupController',
     };
 
     function backupError(err) {
-      self.loading = false;
+      ongoingProcess.set('validatingWords', false);
       $log.debug('Failed to verify backup: ', err);
       self.backupError = true;
 

@@ -7,17 +7,14 @@ angular.module('copayApp.controllers').controller('preferencesEmailController',
       this.error = null;
 
       var fc = profileService.focusedClient;
-      this.saving = true;
       var email = self.email || '';
 
       walletService.updateRemotePreferences(fc, {
         email: email,
       }, function(err) {
-
         if (!err)
           $rootScope.$emit('Local/EmailUpdated', email);
 
-        self.saving = false;
         go.path('preferences');
       });
     };

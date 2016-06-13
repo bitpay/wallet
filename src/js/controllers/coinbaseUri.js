@@ -1,16 +1,16 @@
 'use strict';
 angular.module('copayApp.controllers').controller('coinbaseUriController',
-  function($scope, $stateParams, $timeout, profileService, configService, coinbaseService, storageService, go) {
+  function($scope, $stateParams, $timeout, profileService, configService, coinbaseService, storageService, go, ongoingProcess) {
 
     this.submitOauthCode = function(code) {
       var self = this;
       var coinbaseTestnet = configService.getSync().coinbase.testnet;
       var network = coinbaseTestnet ? 'testnet' : 'livenet';
-      this.loading = true;
+      ongoingProcess.set('connectingCoinbase', true);
       this.error = null;
       $timeout(function() {
         coinbaseService.getToken(code, function(err, data) {
-          self.loading = null;
+          ongoingProcess.set('connectingCoinbase', false);
           if (err) {
             self.error = err;
             $timeout(function() {

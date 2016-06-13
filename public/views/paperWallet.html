@@ -6,13 +6,6 @@
 
 <div class="content preferences" ng-controller="paperWalletController as paperWallet">
   <h4 ng-show="!paperWallet.error"></h4>
-  <div class="onGoingProcess" ng-show="paperWallet.scanning || paperWallet.sending">
-    <div class="onGoingProcess-content" ng-style="{'background-color':index.backgroundColor}">
-      <ion-spinner class="spinner-stable" icon="lines"></ion-spinner>
-      <span ng-show="paperWallet.scanning" translate>Scanning wallet funds...</span>
-      <span ng-show="paperWallet.sending" translate>Sending funds...</span>
-    </div>
-  </div>
   <div class="box-notification m20b" ng-show="paperWallet.error">
     <span classs="text-warning">{{paperWallet.error|translate}}</span>
   </div>

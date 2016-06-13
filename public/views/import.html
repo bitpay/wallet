@@ -5,19 +5,6 @@
 </div>
 
 <ion-content overflow-scroll="true" class="content p20b" ng-controller="importController as import" ng-init="type='12'">
-  <div class="onGoingProcess" ng-show="import.loading  && !import.hwWallet">
-    <div class="onGoingProcess-content" ng-style="{'background-color':'#222'}">
-    <ion-spinner class="spinner-stable" icon="lines"></ion-spinner>
-    <span translate>Importing wallet...</span>
-    </div>
-  </div>
-  <div class="onGoingProcess" ng-show="import.hwWallet">
-    <div class="onGoingProcess-content" ng-style="{'background-color':'#222'}">
-    <ion-spinner class="spinner-stable" icon="lines"></ion-spinner>
-    <span translate>Connecting to {{import.hwWallet}} Wallet...</span>
-    </div>
-  </div>
-
   <div class="create-tab pr small-only-text-center" ng-hide="create.hideTabs">
     <div class="row">
       <div class="tab-container small-4 medium-4 large-4" ng-class="{'selected': type =='12'}">
@@ -99,7 +86,7 @@
           </div>
 
           <button translate type="submit" class="button round expand black m10t"
-            ng-disabled="importForm12.$invalid || import.loading">
+            ng-disabled="importForm12.$invalid ">
             Import
           </button>
         </form>
@@ -157,7 +144,7 @@
           </div>
 
           <button translate type="submit" class="button round expand black"
-            ng-disabled="importForm.$invalid || !import.password || import.loading">
+            ng-disabled="importForm.$invalid || !import.password ">
             Import backup
           </button>
         </form>
@@ -221,8 +208,7 @@
             </div>
 
 
-            <button translate type="submit" class="button round expand black"
-              ng-disabled="import.loading || import.ledger">
+            <button translate type="submit" class="button round expand black">
               Import
             </button>
           </div> <!-- seedoptions show -->
