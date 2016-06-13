@@ -4,7 +4,7 @@
   ng-init="titleSection='Import wallet';  goBackToState = 'add'; noColor = true">
 </div>
 
-<ion-content overflow-scroll="true" class="content p20b" ng-controller="importController as import" ng-init="type='12'">
+<ion-pane class="content p20b" ng-controller="importController as import" ng-init="type='12'">
   <div class="onGoingProcess" ng-show="import.loading  && !import.hwWallet">
     <div class="onGoingProcess-content" ng-style="{'background-color':'#222'}">
     <ion-spinner class="spinner-stable" icon="lines"></ion-spinner>
@@ -32,173 +32,110 @@
     </div>
   </div>
 
-  <div ng-show="type == '12' ">
+  <ion-scroll style="padding-top: 25px">
+    <div ng-show="type == '12' ">
 
-  <div class="box-notification m20b" ng-show="import.importErr">
-      <div ng-show="import.importErr" class="text-warning">
-        <div class="m10 text-bold" translate>Could not access the wallet at the server. Please check:</div>
-        <ul class="size-12">
-          <li translate>The password of the recovery phrase (if set)
-          </li>
-          <li translate>The derivation path
-          </li>
-          <li translate>The wallet service URL
-        </ul>
-        <div class="m15l">
-          <span translate>NOTE: To import a wallet from a 3rd party software, please go to Add Wallet &gt; Create Wallet, and specify the Recovery Phrase there.</span><br>
+    <div class="box-notification m20b" ng-show="import.importErr">
+        <div ng-show="import.importErr" class="text-warning">
+          <div class="m10 text-bold" translate>Could not access the wallet at the server. Please check:</div>
+          <ul class="size-12">
+            <li translate>The password of the recovery phrase (if set)
+            </li>
+            <li translate>The derivation path
+            </li>
+            <li translate>The wallet service URL
+          </ul>
+          <div class="m15l">
+            <span translate>NOTE: To import a wallet from a 3rd party software, please go to Add Wallet &gt; Create Wallet, and specify the Recovery Phrase there.</span><br>
+          </div>
         </div>
-      </div>
-  </div>
-
-  <div class="box-notification m20b" ng-show="import.error">
-    <div class="text-warning">
-        {{import.error|translate}}
     </div>
-  </div>
 
-    <div class="row large-12 columns">
-        <form name="importForm12" ng-submit="import.importMnemonic(importForm12)" novalidate>
+    <div class="box-notification m20b" ng-show="import.error">
+      <div class="text-warning">
+          {{import.error|translate}}
+      </div>
+    </div>
 
-          <div >
-            <label for="words">
-              <span translate>Type the Recovery Phrase (usually 12 words)</span>:
-            </label>
-            <textarea class="form-control" name="words" ng-model="import.words" rows="2" autocapitalize="off" spellcheck="false"></textarea>
-          </div>
+      <div class="row large-12 columns">
+          <form name="importForm12" ng-submit="import.importMnemonic(importForm12)" novalidate>
 
-          <div class="m10t oh" ng-init="hideAdv=true">
-            <a class="button outline light-gray expand tiny" ng-click="hideAdv=!hideAdv">
-              <i class="fi-widget m3r"></i>
-              <span translate ng-hide="!hideAdv">Show advanced options</span>
-              <span translate ng-hide="hideAdv">Hide advanced options</span>
-              <i ng-if="hideAdv" class="icon-arrow-down4"></i>
-              <i ng-if="!hideAdv" class="icon-arrow-up4"></i>
-            </a>
-          </div>
-          <div ng-hide="hideAdv" class="row">
-            <div class="large-12 columns">
-
-              <label for="passphrase" class="oh"><span translate>Password</span>  <small translate>The Wallet Recovery Phrase could require a password to be imported</small>
-              <div class="input">
-                <input type="password" class="form-control" placeholder="{{'Password'|translate}}"
-                name="passphrase" ng-model="import.passphrase">
-              </div>
+            <div >
+              <label for="words">
+                <span translate>Type the Recovery Phrase (usually 12 words)</span>:
               </label>
+              <textarea class="form-control" name="words" ng-model="import.words" rows="2" autocapitalize="off" spellcheck="false"></textarea>
+            </div>
 
-              <div>
-                <label class="oh"><span translate>Derivation Path</span> <small translate>BIP32 path for address derivation</small>
-                  <input type="text" class="form-control" name="derivationPath" ng-model="derivationPath">
+            <div class="m10t oh" ng-init="hideAdv=true">
+              <a class="button outline light-gray expand tiny" ng-click="hideAdv=!hideAdv">
+                <i class="fi-widget m3r"></i>
+                <span translate ng-hide="!hideAdv">Show advanced options</span>
+                <span translate ng-hide="hideAdv">Hide advanced options</span>
+                <i ng-if="hideAdv" class="icon-arrow-down4"></i>
+                <i ng-if="!hideAdv" class="icon-arrow-up4"></i>
+              </a>
+            </div>
+            <div ng-hide="hideAdv" class="row">
+              <div class="large-12 columns">
+
+                <label for="passphrase" class="oh"><span translate>Password</span>  <small translate>The Wallet Recovery Phrase could require a password to be imported</small>
+                <div class="input">
+                  <input type="password" class="form-control" placeholder="{{'Password'|translate}}"
+                  name="passphrase" ng-model="import.passphrase">
+                </div>
+                </label>
+
+                <div>
+                  <label class="oh"><span translate>Derivation Path</span> <small translate>BIP32 path for address derivation</small>
+                    <input type="text" class="form-control" name="derivationPath" ng-model="derivationPath">
+                  </label>
+                </div>
+
+                <label  for="bws" class="oh">
+                  <span>Wallet Service URL</span>
+                  <input type="text" id="bwsurl" name="bwsurl" ng-model="bwsurl">
                 </label>
               </div>
-
-              <label  for="bws" class="oh">
-                <span>Wallet Service URL</span>
-                <input type="text" id="bwsurl" name="bwsurl" ng-model="bwsurl">
-              </label>
             </div>
-          </div>
 
-          <button translate type="submit" class="button round expand black m10t"
-            ng-disabled="importForm12.$invalid || import.loading">
-            Import
-          </button>
-        </form>
+            <button translate type="submit" class="button round expand black m10t"
+              ng-disabled="importForm12.$invalid || import.loading">
+              Import
+            </button>
+          </form>
+      </div>
     </div>
-  </div>
 
-  <div ng-show="type == 'file' ">
-    <div class="box-notification m20b" ng-show="import.error">
-      <span class="text-warning size-14">
-        {{import.error|translate}}
-      </span>
-    </div>
-    <div class="row large-12 columns">
-        <form name="importForm" ng-submit="import.importBlob(importForm)" novalidate>
+    <div ng-show="type == 'file' ">
+      <div class="box-notification m20b" ng-show="import.error">
+        <span class="text-warning size-14">
+          {{import.error|translate}}
+        </span>
+      </div>
+      <div class="row large-12 columns">
+          <form name="importForm" ng-submit="import.importBlob(importForm)" novalidate>
 
-          <div ng-show="!index.isSafari && !index.isCordova" class="line-b m10b">
-            <label for="backupFile">
-              <span translate>Choose a backup file from your computer</span>  <i class="fi-laptop"></i>
+            <div ng-show="!index.isSafari && !index.isCordova" class="line-b m10b">
+              <label for="backupFile">
+                <span translate>Choose a backup file from your computer</span>  <i class="fi-laptop"></i>
+              </label>
+              <input type="file" class="form-control" placeholder="{{'Select a backup file'|translate}}"
+              name="backupFile" ng-model="import.backupFile" ng-file-select>
+            </div>
+
+            <div ng-show="index.isSafari || index.isCordova">
+              <label for="backupText">
+                <span translate>Paste the backup plain text code</span>  <i class="fi-clipboard"></i>
+              </label>
+              <textarea class="form-control" name="backupText" ng-model="import.backupText" rows="5"></textarea>
+            </div>
+
+            <label for="password"><span translate>Password</span>
             </label>
-            <input type="file" class="form-control" placeholder="{{'Select a backup file'|translate}}"
-            name="backupFile" ng-model="import.backupFile" ng-file-select>
-          </div>
-
-          <div ng-show="index.isSafari || index.isCordova">
-            <label for="backupText">
-              <span translate>Paste the backup plain text code</span>  <i class="fi-clipboard"></i>
-            </label>
-            <textarea class="form-control" name="backupText" ng-model="import.backupText" rows="5"></textarea>
-          </div>
-
-          <label for="password"><span translate>Password</span>
-          </label>
-          <div class="input">
-            <input type="password" class="form-control" placeholder="{{'Your password'|translate}}"
-            name="password" ng-model="import.password">
-          </div>
-
-          <div class="m10t oh" ng-init="hideAdv=true">
-            <a class="button outline light-gray expand tiny" ng-click="hideAdv=!hideAdv">
-              <i class="fi-widget m3r"></i>
-              <span translate ng-hide="!hideAdv">Show advanced options</span>
-              <span translate ng-hide="hideAdv">Hide advanced options</span>
-              <i ng-if="hideAdv" class="icon-arrow-down4"></i>
-              <i ng-if="!hideAdv" class="icon-arrow-up4"></i>
-            </a>
-          </div>
-          <div ng-hide="hideAdv" class="row">
-            <div class="large-12 columns">
-
-              <label  for="bws" class="oh">
-                <span>Wallet Service URL</span>
-                <input type="text" id="bwsurl" name="bwsurl" ng-model="bwsurl">
-              </label>
-            </div>
-          </div>
-
-          <button translate type="submit" class="button round expand black"
-            ng-disabled="importForm.$invalid || !import.password || import.loading">
-            Import backup
-          </button>
-        </form>
-    </div>
-  </div>
-
-  <div ng-show="type == 'hwWallet'">
-    <div class="box-notification m20b" ng-show="import.error">
-      <span class="text-warning size-14">
-        {{import.error|translate}}
-      </span>
-    </div>
-    <div class="row large-12 columns">
-
-      <form name="importForm3" ng-submit="import.importHW(importForm3)" novalidate>
-        <div class="large-12 columns">
-          <div ng-show="!import.seedOptions[0]">
-            <span translate>No hardware wallets supported on this device</span>
-          </div>
-          <div ng-show="import.seedOptions[0]">
-            <div>
-              <label><span translate>Wallet Recovery Phrase</span>
-              <select class="m10t" ng-model="seedSource"
-                ng-options="seed as seed.label for seed in import.seedOptions"
-                ng-change="import.setSeedSource()">
-              </select>
-              </label>
-            </div>
-
-            <div ng-show="import.seedSourceId == 'trezor' || import.seedSourceId == 'ledger'">
-
-              <label class="oh"><span translate>Account Number</span>
-                <input type="number" id="account" ng-model="account">
-              </label>
-            </div>
-
-            <div ng-show="import.seedSourceId == 'trezor'">
-              <label for="isMultisig" class="oh">
-                <span translate>Shared Wallet</span>
-                <switch id="isMultisig" name="isMultisig" ng-model="isMultisig" class="green right m5t m10b"></switch>
-              </label>
+            <div class="input">
+              <input type="password" class="form-control" placeholder="{{'Your password'|translate}}"
+              name="password" ng-model="import.password">
             </div>
 
             <div class="m10t oh" ng-init="hideAdv=true">
@@ -220,16 +157,80 @@
               </div>
             </div>
 
-
             <button translate type="submit" class="button round expand black"
-              ng-disabled="import.loading || import.ledger">
-              Import
+              ng-disabled="importForm.$invalid || !import.password || import.loading">
+              Import backup
             </button>
-          </div> <!-- seedoptions show -->
-        </div>
-      </form>
+          </form>
+      </div>
     </div>
-  </div>
-</ion-content>
 
-<div class="extra-margin-bottom"></div>
+    <div ng-show="type == 'hwWallet'">
+      <div class="box-notification m20b" ng-show="import.error">
+        <span class="text-warning size-14">
+          {{import.error|translate}}
+        </span>
+      </div>
+      <div class="row large-12 columns">
+
+        <form name="importForm3" ng-submit="import.importHW(importForm3)" novalidate>
+          <div class="large-12 columns">
+            <div ng-show="!import.seedOptions[0]">
+              <span translate>No hardware wallets supported on this device</span>
+            </div>
+            <div ng-show="import.seedOptions[0]">
+              <div>
+                <label><span translate>Wallet Recovery Phrase</span>
+                <select class="m10t" ng-model="seedSource"
+                  ng-options="seed as seed.label for seed in import.seedOptions"
+                  ng-change="import.setSeedSource()">
+                </select>
+                </label>
+              </div>
+
+              <div ng-show="import.seedSourceId == 'trezor' || import.seedSourceId == 'ledger'">
+
+                <label class="oh"><span translate>Account Number</span>
+                  <input type="number" id="account" ng-model="account">
+                </label>
+              </div>
+
+              <div ng-show="import.seedSourceId == 'trezor'">
+                <label for="isMultisig" class="oh">
+                  <span translate>Shared Wallet</span>
+                  <switch id="isMultisig" name="isMultisig" ng-model="isMultisig" class="green right m5t m10b"></switch>
+                </label>
+              </div>
+
+              <div class="m10t oh" ng-init="hideAdv=true">
+                <a class="button outline light-gray expand tiny" ng-click="hideAdv=!hideAdv">
+                  <i class="fi-widget m3r"></i>
+                  <span translate ng-hide="!hideAdv">Show advanced options</span>
+                  <span translate ng-hide="hideAdv">Hide advanced options</span>
+                  <i ng-if="hideAdv" class="icon-arrow-down4"></i>
+                  <i ng-if="!hideAdv" class="icon-arrow-up4"></i>
+                </a>
+              </div>
+              <div ng-hide="hideAdv" class="row">
+                <div class="large-12 columns">
+
+                  <label  for="bws" class="oh">
+                    <span>Wallet Service URL</span>
+                    <input type="text" id="bwsurl" name="bwsurl" ng-model="bwsurl">
+                  </label>
+                </div>
+              </div>
+
+
+              <button translate type="submit" class="button round expand black"
+                ng-disabled="import.loading || import.ledger">
+                Import
+              </button>
+            </div> <!-- seedoptions show -->
+          </div>
+        </form>
+      </div>
+    </div>
+  </ion-scroll>
+  <div class="extra-margin-bottom"></div>
+</ion-pane>
