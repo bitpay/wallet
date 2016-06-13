@@ -16,35 +16,6 @@
     </div>
   </div>
 
-  <div class="onGoingProcess" ng-show="index.isOffline">
-    <div class="onGoingProcess-content" ng-style="{'background-color':'#222'}">
-      <ion-spinner class="spinner-stable" icon="lines"></ion-spinner>
-      <span translate>Reconnecting to Wallet Service...</span>
-    </div>
-  </div>
-
-  <div class="onGoingProcess" ng-show="index.anyOnGoingProcess && !index.isOffline">
-    <div class="onGoingProcess-content" ng-style="{'background-color':index.backgroundColor}">
-      <ion-spinner class="spinner-stable" icon="lines"></ion-spinner>
-      <span translate ng-show="
-        index.onGoingProcessName == 'openingWallet'
-        || index.onGoingProcessName == 'updatingStatus'
-        || index.onGoingProcessName == 'updatingBalance'
-        || index.onGoingProcessName == 'updatingPendingTxps'
-        "> Updating Wallet... </span>
-      <span translate ng-show="index.onGoingProcessName == 'scanning'">Scanning Wallet funds...</span>
-      <span translate ng-show="index.onGoingProcessName == 'recreating'">Recreating Wallet...</span>
-      <span translate ng-show="index.onGoingProcessName == 'generatingCSV'">Generating .csv file...</span>
-    </div>
-  </div>
-
-  <div class="onGoingProcess" ng-show="home.onGoingProcess && !index.anyOnGoingProces && !index.isOffline">
-    <div class="onGoingProcess-content" ng-style="{'background-color':index.backgroundColor}">
-      <ion-spinner class="spinner-stable" icon="lines"></ion-spinner>
-      {{home.onGoingProcess}}...
-    </div>
-  </div>
-
   <div class="oh" ng-show="!index.noFocusedWallet">
 
     <!--
@@ -63,7 +34,7 @@
         </ion-refresher>
         <div class="oh pr">
           <div ng-style="{'background-color':index.backgroundColor}" class="amount">
-            <div ng-if="!index.anyOnGoingProcess && !index.notAuthorized">
+            <div ng-if="!index.notAuthorized">
               <div class="m15t" ng-show="index.updateError" ng-click='index.updateAll({triggerTxUpdate: true})'>
                 <span class="size-12 db m10b">{{index.updateError|translate}}</span>
                 <button class="outline white tiny round" translate>Tap to retry</button>
@@ -89,12 +60,6 @@
                 </div>
               </div>
             </div>
-
-            <div ng-if="index.anyOnGoingProcess">
-              <div class="size-36">
-                <strong>...</strong>
-              </div>
-            </div>
           </div> <!-- amount -->
 
           <div class="wallet-info">
@@ -114,7 +79,7 @@
               </span>
             </div>
           </div>
-          <div class="oh pr m20t" ng-show="index.notAuthorized && !index.anyOnGoingProcess">
+          <div class="oh pr m20t" ng-show="index.notAuthorized">
             <div class="text-center text-warning">
               <i class="fi-alert"></i>
               <span translate>
@@ -335,7 +300,7 @@
           <div class="large-12 columns">
             <div class="line-t size-10 text-gray m10b p10t" ng-show="!index.isSingleAddress">
               <span translate> Share this wallet address to receive payments. To protect your privacy, new addresses are generated automatically once you use them.</span>
-                <a ng-show="!home.blockUx && !home.generatingAddress" ng-click="home.setAddress(true)" translate>Generate new address</a>
+                <a ng-show="!home.generatingAddress" ng-click="home.setAddress(true)" translate>Generate new address</a>
             </div>
             <div class="line-t size-10 text-gray m10b p10t" ng-show="index.isSingleAddress">
               <span translate> Share this wallet address to receive payments</span>.
@@ -357,10 +322,10 @@
         <h4 class="title m0">
           <available-balance ng-show="!index.shouldHideBalance"></available-balance>
           <span
-            ng-show="home.lockedCurrentFeePerKb || home.blockUx || home.lockAmount"
+            ng-show="home.lockedCurrentFeePerKb || home.lockAmount"
             class="text-gray" translate>Send Max</span>
           <a
-            ng-show="index.availableBalanceSat > 0 && !home.lockedCurrentFeePerKb && !home.blockUx && !home.lockAmount"
+            ng-show="index.availableBalanceSat > 0 && !home.lockedCurrentFeePerKb  && !home.lockAmount"
             ng-click="home.sendMax(index.availableBalanceSat)"
              translate>Send Max
           </a>
@@ -380,7 +345,7 @@
       </div>
       <div class="row m20t">
         <div class="large-12 large-centered columns">
-          <form name="sendForm" ng-disabled="home.blockUx || home.onGoingProcess" novalidate>
+          <form name="sendForm" novalidate>
 
             <div ng-hide="home._paypro || home.hideAddress">
               <div class="row collapse">
@@ -399,7 +364,7 @@
               </div>
 
               <div class="input">
-                <input ng-show="sendForm.address.$invalid" class="m0" type="text" id="address" name="address" ng-disabled="home.blockUx || home.lockAddress" ng-attr-placeholder="{{'Bitcoin address'|translate}}" ng-model="_address" valid-address required ng-focus="home.formFocus('address')" ng-blur="home.formFocus(false)">
+                <input ng-show="sendForm.address.$invalid" class="m0" type="text" id="address" name="address" ng-disabled=" home.lockAddress" ng-attr-placeholder="{{'Bitcoin address'|translate}}" ng-model="_address" valid-address required ng-focus="home.formFocus('address')" ng-blur="home.formFocus(false)">
                 <div class="addressbook-input" ng-show="!sendForm.address.$invalid && _address">
                   {{index.addressbook[_address] || _address}}
                 </div>
@@ -441,7 +406,7 @@
                     <span translate>Amount</span>
                   </label>
                   <div class="input">
-                    <input type="number" id="amount" ng-disabled="home.blockUx || home.lockAmount" name="amount" ng-attr-placeholder="{{'Amount in'|translate}} {{home.unitName}}" ng-minlength="0.00000001" ng-maxlength="10000000000" ng-model="_amount" valid-amount required autocomplete="off" ng-focus="home.formFocus('amount')" ng-blur="home.formFocus(false)">
+                    <input type="number" id="amount" ng-disabled=" home.lockAmount" name="amount" ng-attr-placeholder="{{'Amount in'|translate}} {{home.unitName}}" ng-minlength="0.00000001" ng-maxlength="10000000000" ng-model="_amount" valid-amount required autocomplete="off" ng-focus="home.formFocus('amount')" ng-blur="home.formFocus(false)">
                     <input type="number" id="alternative"  name="alternative"  ng-model="_alternative" style="display:none">
                     <a class="postfix button" ng-style="{'background-color':index.backgroundColor}" ng-click="home.showAlternative()">{{home.unitName}}</a>
                   </div>
@@ -450,7 +415,7 @@
                   <label for="alternative"><span translate>Amount</span> [{{ home.alternativeIsoCode }}]
                   </label>
                   <div class="input">
-                    <input type="number" id="alternative" ng-disabled="home.blockUx || !home.isRateAvailable || home.lockAmount" name="alternative" ng-attr-placeholder="{{'Amount in'|translate}} {{ home.alternativeName }}" ng-model="_alternative" required autocomplete="off" ng-focus="home.formFocus('amount')" ng-blur="home.formFocus(false)">
+                    <input type="number" id="alternative" ng-disabled="!home.isRateAvailable || home.lockAmount" name="alternative" ng-attr-placeholder="{{'Amount in'|translate}} {{ home.alternativeName }}" ng-model="_alternative" required autocomplete="off" ng-focus="home.formFocus('amount')" ng-blur="home.formFocus(false)">
                     <input type="number" id="amount" name="amount" ng-model="_amount" style="display:none">
                     <a class="postfix button black" ng-click="home.hideAlternative()"> {{ home.alternativeIsoCode }}</a>
                   </div>
@@ -464,19 +429,19 @@
                   <small translate class="has-error" ng-show="sendForm.comment.$invalid && !sendForm.comment.$pristine">too long!</small>
                 </label>
                 <div class="input">
-                  <textarea id="comment" ng-disabled="home.blockUx" name="comment"
+                  <textarea id="comment" name="comment"
                     ng-maxlength="500" ng-model="_comment" ng-focus="home.formFocus('msg')"
                     ng-blur="home.formFocus(false)"></textarea>
                 </div>
               </div>
             </div>
 
-            <div class="row" ng-show="!home.onGoingProcess">
-              <div class="large-6 medium-6 small-6 columns" ng-show="!home.blockUx && (home._paypro || home.lockAddress || home.lockAmount)">
+            <div class="row">
+              <div class="large-6 medium-6 small-6 columns" ng-show="(home._paypro || home.lockAddress || home.lockAmount)">
                 <a ng-click="home.resetForm(sendForm)" class="button expand outline dark-gray round" translate>Cancel</a>
               </div>
               <div class="columns" ng-class="{'small-6 medium-6 large-6':(home._paypro || home.lockAddress || home.lockAmount)}">
-                <button class="button black round expand" ng-disabled="sendForm.$invalid || home.blockUx || index.isOffline || home.paymentExpired"
+                <button class="button black round expand" ng-disabled="sendForm.$invalid || home.paymentExpired"
                   ng-style="{'background-color':index.backgroundColor}" ng-click="home.submitForm()" translate>
                   Send
                 </button>

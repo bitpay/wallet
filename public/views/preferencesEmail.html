@@ -9,13 +9,6 @@
 <div class="content preferences" ng-controller="preferencesEmailController as prefEmail">
 
   <h4></h4>
-  <div class="onGoingProcess" ng-show="prefEmail.saving && !index.isOffline">
-    <div class="onGoingProcess-content" ng-style="{'background-color':index.backgroundColor}">
-      <ion-spinner class="spinner-stable" icon="lines"></ion-spinner>
-      <span translate>Saving preferences...</span>
-    </div>
-  </div>
-
 
   <form name="emailForm" ng-submit="prefEmail.save(emailForm)" class="columns" novalidate ng-init="prefEmail.email = index.preferences.email">
     <div class="box-notification" ng-show="prefEmail.error">

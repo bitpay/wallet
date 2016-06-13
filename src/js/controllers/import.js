@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('importController',
-  function($scope, $rootScope, $ionicScrollDelegate, $timeout, $log, profileService, configService, notification, go, sjcl, gettext, lodash, ledger, trezor, derivationPathHelper, platformInfo, bwsError, bwcService) {
+  function($scope, $rootScope, $ionicScrollDelegate, $timeout, $log, profileService, configService, notification, go, sjcl, gettext, lodash, ledger, trezor, derivationPathHelper, platformInfo, bwsError, bwcService, ongoingProcess) {
 
     var isChromeApp = platformInfo.isChromeApp;
     var isDevel = platformInfo.isDevel;
@@ -60,13 +60,13 @@ angular.module('copayApp.controllers').controller('importController',
         return;
       }
 
-      self.loading = true;
+      ongoingProcess.set('importingWallet', true);
       opts.compressed = null;
       opts.password = null;
 
       $timeout(function() {
         profileService.importWallet(str2, opts, function(err, walletId) {
-          self.loading = false;
+          ongoingProcess.set('importingWallet', false);
           if (err) {
             self.error = err;
             $ionicScrollDelegate.scrollTop();
@@ -80,11 +80,10 @@ angular.module('copayApp.controllers').controller('importController',
     };
 
     var _importExtendedPrivateKey = function(xPrivKey, opts) {
-      self.loading = true;
-
+      ongoingProcess.set('importingWallet', true);
       $timeout(function() {
         profileService.importExtendedPrivateKey(xPrivKey, opts, function(err, walletId) {
-          self.loading = false;
+          ongoingProcess.set('importingWallet', false);
           if (err) {
             if (err instanceof errors.NOT_AUTHORIZED) {
               self.importErr = true;
@@ -105,11 +104,11 @@ angular.module('copayApp.controllers').controller('importController',
     };
 
     var _importMnemonic = function(words, opts) {
-      self.loading = true;
+      ongoingProcess.set('importingWallet', true);
 
       $timeout(function() {
         profileService.importMnemonic(words, opts, function(err, walletId) {
-          self.loading = false;
+          ongoingProcess.set('importingWallet', false);
 
           if (err) {
             if (err instanceof errors.NOT_AUTHORIZED) {
@@ -232,7 +231,7 @@ angular.module('copayApp.controllers').controller('importController',
     this.importTrezor = function(account, isMultisig) {
       var self = this;
       trezor.getInfoForNewWallet(isMultisig, account, function(err, lopts) {
-        self.hwWallet = false;
+        ongoingProcess.clear();
         if (err) {
           self.error = err;
           $ionicScrollDelegate.scrollTop();
@@ -242,11 +241,11 @@ angular.module('copayApp.controllers').controller('importController',
 
         lopts.externalSource = 'trezor';
         lopts.bwsurl = $scope.bwsurl;
-        self.loading = true;
+        ongoingProcess.set('importingWallet', true);
         $log.debug('Import opts', lopts);
 
         profileService.importExtendedPublicKey(lopts, function(err, walletId) {
-          self.loading = false;
+          ongoingProcess.set('importingWallet', false);
           if (err) {
             self.error = err;
             $ionicScrollDelegate.scrollTop();
@@ -287,11 +286,11 @@ angular.module('copayApp.controllers').controller('importController',
 
       switch (self.seedSourceId) {
         case ('ledger'):
-          self.hwWallet = 'Ledger';
+          ongoingProcess.set('connectingledger', true);
           self.importLedger(account);
           break;
         case ('trezor'):
-          self.hwWallet = 'Trezor';
+          ongoingProcess.set('connectingtrezor', true);
           self.importTrezor(account, isMultisig);
           break;
         default:
@@ -311,7 +310,7 @@ angular.module('copayApp.controllers').controller('importController',
     this.importLedger = function(account) {
       var self = this;
       ledger.getInfoForNewWallet(true, account, function(err, lopts) {
-        self.hwWallet = false;
+        ongoingProcess.clear();
         if (err) {
           self.error = err;
           $ionicScrollDelegate.scrollTop();
@@ -321,11 +320,11 @@ angular.module('copayApp.controllers').controller('importController',
 
         lopts.externalSource = 'ledger';
         lopts.bwsurl = $scope.bwsurl;
-        self.loading = true;
+        ongoingProcess.set('importingWallet', true);
         $log.debug('Import opts', lopts);
 
         profileService.importExtendedPublicKey(lopts, function(err, walletId) {
-          self.loading = false;
+          ongoingProcess.set('importingWallet', false);
           if (err) {
             self.error = err;
             $ionicScrollDelegate.scrollTop();

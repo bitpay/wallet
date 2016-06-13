@@ -7,13 +7,6 @@
 
 <div class="content coinbase" ng-controller="buyCoinbaseController as buy">
 
-  <div class="onGoingProcess" ng-show="buy.loading">
-    <div class="onGoingProcess-content" ng-style="{'background-color': '#2b71b1'}">
-    <ion-spinner class="spinner-stable" icon="lines"></ion-spinner>
-    <span>{{buy.loading}}</span>
-    </div>
-  </div>
-
   <div class="row m20t" ng-show="buy.error || index.coinbaseError" ng-click="buy.error = null">
     <div class="columns">
       <div class="box-notification">

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('sellGlideraController',
-  function($rootScope, $scope, $timeout, $ionicModal, $log, $modal, configService, profileService, addressService, feeService, glideraService, bwsError, lodash, walletService, fingerprintService) {
+  function($rootScope, $scope, $timeout, $ionicModal, $log, $modal, configService, profileService, addressService, feeService, glideraService, bwsError, lodash, walletService, fingerprintService, ongoingProcess) {
 
     var self = this;
     var config = configService.getSync();
@@ -9,7 +9,6 @@ angular.module('copayApp.controllers').controller('sellGlideraController',
     this.show2faCodeInput = null;
     this.success = null;
     this.error = null;
-    this.loading = null;
     var client;
 
     var handleEncryptedWallet = function(client, cb) {
@@ -74,10 +73,10 @@ angular.module('copayApp.controllers').controller('sellGlideraController',
 
     this.get2faCode = function(token) {
       var self = this;
-      self.loading = 'Sending 2FA code...';
+      ongoingProcess.set('Sending 2FA code...', true);
       $timeout(function() {
         glideraService.get2faCode(token, function(err, sent) {
-          self.loading = null;
+          ongoingProcess.set('Sending 2FA code...', false);
           if (err) {
             self.error = 'Could not send confirmation code to your phone';
           } else {
@@ -99,15 +98,17 @@ angular.module('copayApp.controllers').controller('sellGlideraController',
         return;
       }
 
+      ongoingProcess.set('creatingTx', true);
       addressService.getAddress(client.credentials.walletId, null, function(err, refundAddress) {
         if (!refundAddress) {
-          self.loading = null;
+
+          ongoingProcess.clear();
           self.error = bwsError.msg(err, 'Could not create address');
           return;
         }
         glideraService.getSellAddress(token, function(error, sellAddress) {
           if (!sellAddress) {
-            self.loading = null;
+            ongoingProcess.clear();
             self.error = 'Could not get the destination bitcoin address';
             return;
           }
@@ -133,9 +134,8 @@ angular.module('copayApp.controllers').controller('sellGlideraController',
             }
           };
 
-          self.loading = 'Creating transaction...';
           walletService.createTx(client, txp, function(err, createdTxp) {
-            self.loading = null;
+            ongoingProcess.clear();
             if (err) {
               self.error = err.message ||  bwsError.msg(err);
               return;
@@ -154,11 +154,10 @@ angular.module('copayApp.controllers').controller('sellGlideraController',
                       return;
                     }
 
-                    self.loading = 'Signing transaction...';
-
+                    ongoingProcess.set('signingTx', true);
                     walletService.publishTx(client, createdTxp, function(err, publishedTxp) {
                       if (err) {
-                        self.loading = null;
+                        ongoingProcess.clear();
                         self.error = err.message ||  bwsError.msg(err);
                       }
 
@@ -167,8 +166,8 @@ angular.module('copayApp.controllers').controller('sellGlideraController',
                         walletService.removeTx(client, signedTxp, function(err) {
                           if (err) $log.debug(err);
                         });
+                        ongoingProcess.clear();
                         if (err) {
-                          self.loading = null;
                           self.error = err.message ||  bwsError.msg(err);
                           return;
                         }
@@ -180,9 +179,9 @@ angular.module('copayApp.controllers').controller('sellGlideraController',
                           useCurrentPrice: self.sellPrice.priceUuid ? false : true,
                           ip: null
                         };
-                        self.loading = 'Selling bitcoin...';
+                        ongoingProcess.set('Seling Bitcoin', true);
                         glideraService.sell(token, twoFaCode, data, function(err, data) {
-                          self.loading = null;
+                          ongoingProcess.clear();
                           if (err) {
                             self.error = err.message ||  bwsError.msg(err);
                             $timeout(function() {

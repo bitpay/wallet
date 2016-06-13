@@ -8,14 +8,6 @@
 
 <div class="content glidera p20b" ng-controller="glideraController as glidera">
 
-  <div class="onGoingProcess" ng-show="glidera.loading || index.glideraLoading">
-    <div class="onGoingProcess-content" ng-style="{'background-color':index.backgroundColor}">
-    <ion-spinner class="spinner-stable" icon="lines"></ion-spinner>
-    <span ng-show="glidera.loading">Connecting to Glidera...</span>
-    <span ng-show="index.glideraLoading">{{index.glideraLoading}}</span>
-    </div>
-  </div>
-
   <div class="row">
     <div class="m20b box-notification" ng-if="index.glideraError">
       <div class="text-warning">
@@ -42,7 +34,7 @@
     </div>
   </div>
 
-  <div ng-if="!index.glideraToken && !index.glideraLoading && !index.glideraError"
+  <div ng-if="!index.glideraToken && !index.glideraError"
     class="row">
     <div class="box-notification text-center size-12 text-warning" ng-show="index.glideraTestnet">
       <i class="fi-info"></i>
@@ -164,7 +156,7 @@
 
     <div ng-show="index.glideraPermissions.transaction_history">
       <h4>Activity</h4>
-      <div ng-show="index.glideraTxs.length == 0 && !index.glideraLoadingHistory"
+      <div ng-show="index.glideraTxs.length == 0 "
         class="size-12 p10 text-center text-gray">
         No activity in your account
       </div>

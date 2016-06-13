@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('sellCoinbaseController',
-  function($rootScope, $scope, $modal, $log, $timeout, $ionicModal, lodash, profileService, coinbaseService, bwsError, configService, walletService, fingerprintService) {
+  function($rootScope, $scope, $modal, $log, $timeout, $ionicModal, lodash, profileService, coinbaseService, bwsError, configService, walletService, fingerprintService, ongoingProcess) {
 
     var self = this;
     var client;
@@ -112,9 +112,9 @@ angular.module('copayApp.controllers').controller('sellCoinbaseController',
       var accountId = account.id;
       var data = ctx.amount;
       data['payment_method'] = $scope.selectedPaymentMethod.id || null;
-      this.loading = 'Sending request...';
+      ongoingProcess.set('Sending request...', true);
       coinbaseService.sellRequest(token, accountId, data, function(err, sell) {
-        self.loading = null;
+        ongoingProcess.set('Sending request...', false);
         if (err) {
           self.error = err;
           return;
@@ -127,9 +127,9 @@ angular.module('copayApp.controllers').controller('sellCoinbaseController',
       self.error = null;
       var accountId = account.id;
       var sellId = sell.id;
-      this.loading = 'Selling bitcoin...';
+      ongoingProcess.set('Selling Bitcoin...', true);
       coinbaseService.sellCommit(token, accountId, sellId, function(err, data) {
-        self.loading = null;
+        ongoingProcess.set('Selling Bitcoin...', false);
         if (err) {
           self.error = err;
           return;
@@ -157,12 +157,12 @@ angular.module('copayApp.controllers').controller('sellCoinbaseController',
       var walletSettings = configWallet.settings;
 
 
-      self.loading = 'Creating transaction...';
+      ongoingProcess.set('Creating Transaction...', true);
       $timeout(function() {
 
         coinbaseService.createAddress(token, accountId, dataSrc, function(err, data) {
           if (err) {
-            self.loading = null;
+            ongoingProcess.set('Creating Transaction...', false);
             self.error = err;
             return;
           }
@@ -192,7 +192,7 @@ angular.module('copayApp.controllers').controller('sellCoinbaseController',
           walletService.createTx(client, txp, function(err, createdTxp) {
             if (err) {
               $log.debug(err);
-              self.loading = null;
+              ongoingProcess.set('Creating Transaction...', false);
               self.error = {
                 errors: [{
                   message: 'Could not create transaction: ' + err.message
@@ -201,8 +201,8 @@ angular.module('copayApp.controllers').controller('sellCoinbaseController',
               $scope.$apply();
               return;
             }
+            ongoingProcess.set('Creating Transaction...', false);
             $scope.$emit('Local/NeedsConfirmation', createdTxp, function(accept) {
-              self.loading = null;
               if (accept) {
                 self.confirmTx(createdTxp, function(err, tx) {
                   if (err) {
@@ -213,7 +213,7 @@ angular.module('copayApp.controllers').controller('sellCoinbaseController',
                     };
                     return;
                   }
-                  self.loading = 'Checking transaction...';
+                  ongoingProcess.set('Checking Transaction...', false);
                   coinbaseService.getTransactions(token, accountId, function(err, ctxs) {
                     if (err) {
                       $log.debug(err);
@@ -225,7 +225,7 @@ angular.module('copayApp.controllers').controller('sellCoinbaseController',
                           self.sellRequest(token, account, ctx);
                         } else {
                           // Save to localstorage
-                          self.loading = null;
+                          ongoingProcess.clear();
                           ctx['price_sensitivity'] = $scope.selectedPriceSensitivity;
                           ctx['sell_price_amount'] = self.sellPrice.amount;
                           ctx['sell_price_currency'] = self.sellPrice.currency;
@@ -264,10 +264,10 @@ angular.module('copayApp.controllers').controller('sellCoinbaseController',
             return cb(err);
           }
 
-          self.loading = 'Sending bitcoin to Coinbase...';
+          ongoingProcess.set('Sending Bitcoin to Coinbase...', true);
           walletService.publishTx(client, txp, function(err, publishedTxp) {
             if (err) {
-              self.loading = null;
+              ongoingProcess.set('Sending Bitcoin to Coinbase...', false);
               $log.debug(err);
               return cb({
                 errors: [{
@@ -279,7 +279,7 @@ angular.module('copayApp.controllers').controller('sellCoinbaseController',
             walletService.signTx(client, publishedTxp, function(err, signedTxp) {
               walletService.lock(client);
               if (err) {
-                self.loading = null;
+                ongoingProcess.set('Sending Bitcoin to Coinbase...', false);
                 $log.debug(err);
                 walletService.removeTx(client, signedTxp, function(err) {
                   if (err) $log.debug(err);
@@ -292,8 +292,8 @@ angular.module('copayApp.controllers').controller('sellCoinbaseController',
               }
 
               walletService.broadcastTx(client, signedTxp, function(err, broadcastedTxp) {
+                ongoingProcess.set('Sending Bitcoin to Coinbase...', false);
                 if (err) {
-                  self.loading = null;
                   $log.debug(err);
                   walletService.removeTx(client, broadcastedTxp, function(err) {
                     if (err) $log.debug(err);
@@ -305,7 +305,6 @@ angular.module('copayApp.controllers').controller('sellCoinbaseController',
                   });
                 }
                 $timeout(function() {
-                  self.loading = null;
                   return cb(null, broadcastedTxp);
                 }, 5000);
               });
