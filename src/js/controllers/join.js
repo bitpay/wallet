@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('joinController',
-  function($scope, $rootScope, $timeout, $ionicScrollDelegate, go, notification, profileService, configService, storageService, applicationService, $modal, gettext, lodash, ledger, trezor, platformInfo, derivationPathHelper) {
+  function($scope, $rootScope, $timeout, $ionicScrollDelegate, go, notification, profileService, configService, storageService, applicationService, $modal, gettext, lodash, ledger, trezor, platformInfo, derivationPathHelper, ongoingProcess) {
 
     var isChromeApp = platformInfo.isChromeApp;
     var isDevel = platformInfo.isDevel;
@@ -108,11 +108,11 @@ angular.module('copayApp.controllers').controller('joinController',
           account = account - 1;
 
         opts.account = account;
-        self.hwWallet = self.seedSourceId == 'ledger' ? 'Ledger' : 'Trezor';
+        ongoingProcess.set('connecting' + self.seedSourceId, true);
         var src = self.seedSourceId == 'ledger' ? ledger : trezor;
 
         src.getInfoForNewWallet(true, account, function(err, lopts) {
-          self.hwWallet = false;
+          ongoingProcess.set('connecting' + self.seedSourceId, false);
           if (err) {
             self.error = err;
             $ionicScrollDelegate.scrollTop();
@@ -129,11 +129,11 @@ angular.module('copayApp.controllers').controller('joinController',
     };
 
     this._join = function(opts) {
-      self.loading = true;
+      ongoingProcess.set('joiningWallet', true);
       $timeout(function() {
         profileService.joinWallet(opts, function(err) {
           if (err) {
-            self.loading = false;
+            ongoingProcess.set('joiningWallet', false);
             self.error = err;
             $ionicScrollDelegate.scrollTop();
             $rootScope.$apply();

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('coinbaseController',
-  function($rootScope, $scope, $timeout, $modal, $ionicModal, profileService, configService, storageService, coinbaseService, lodash, platformInfo) {
+  function($rootScope, $scope, $timeout, $modal, $ionicModal, profileService, configService, storageService, coinbaseService, lodash, platformInfo, ongoingProcess) {
 
     var isNW = platformInfo.isNW;
 
@@ -35,11 +35,11 @@ angular.module('copayApp.controllers').controller('coinbaseController',
       var self = this;
       var coinbaseTestnet = configService.getSync().coinbase.testnet;
       var network = coinbaseTestnet ? 'testnet' : 'livenet';
-      this.loading = true;
+      ongoingProcess.set('connectingCoinbase', true);
       this.error = null;
       $timeout(function() {
         coinbaseService.getToken(code, function(err, data) {
-          self.loading = null;
+          ongoingProcess.set('connectingCoinbase', false);
           if (err) {
             self.error = err;
             $timeout(function() {

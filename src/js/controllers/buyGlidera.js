@@ -1,13 +1,12 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('buyGlideraController',
-  function($scope, $timeout, $modal, $ionicModal, profileService, addressService, glideraService, bwsError, lodash) {
+  function($scope, $timeout, $modal, $ionicModal, profileService, addressService, glideraService, bwsError, lodash, ongoingProcess) {
 
     var self = this;
     this.show2faCodeInput = null;
     this.error = null;
     this.success = null;
-    this.loading = null;
 
     this.init = function(testnet) {
       self.allWallets = profileService.getWallets(testnet ? 'testnet' : 'livenet', 1)
@@ -62,10 +61,10 @@ angular.module('copayApp.controllers').controller('buyGlideraController',
     this.get2faCode = function(token) {
       var self = this;
       self.error = null;
-      self.loading = 'Sending 2FA code...';
+      ongoingProcess.set('Sending 2FA code...', true);
       $timeout(function() {
         glideraService.get2faCode(token, function(err, sent) {
-          self.loading = null;
+          ongoingProcess.set('Sending 2FA code...', false);
           if (err) {
             self.error = 'Could not send confirmation code to your phone';
             return;
@@ -78,10 +77,11 @@ angular.module('copayApp.controllers').controller('buyGlideraController',
     this.sendRequest = function(token, permissions, twoFaCode) {
       var self = this;
       self.error = null;
-      self.loading = 'Buying bitcoin...';
+      ongoingProcess.set('Buying Bitcoin...', true);
       $timeout(function() {
         addressService.getAddress(self.selectedWalletId, false, function(err, walletAddr) {
           if (err) {
+            ongoingProcess.set('Buying Bitcoin...', false);
             self.error = bwsError.cb(err, 'Could not create address');
             return;
           }
@@ -93,7 +93,7 @@ angular.module('copayApp.controllers').controller('buyGlideraController',
             ip: null
           };
           glideraService.buy(token, twoFaCode, data, function(err, data) {
-            self.loading = null;
+            ongoingProcess.set('Buying Bitcoin...', false);
             if (err) {
               self.error = err;
               return;

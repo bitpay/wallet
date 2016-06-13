@@ -6,21 +6,6 @@
 
 
 <ion-content overflow-scroll="true" class="content p20v" ng-controller="joinController as join">
-  <div class="onGoingProcess" ng-show="join.loading && !join.hwWallet">
-    <div class="onGoingProcess-content" ng-style="{'background-color':'#222'}">
-    <ion-spinner class="spinner-stable" icon="lines"></ion-spinner>
-    <span translate>Joining Wallet...</span>
-    </div>
-  </div>
-
-  <div class="onGoingProcess" ng-show="join.hwWallet">
-    <div class="onGoingProcess-content" ng-style="{'background-color':'#222'}" style="max-height:6.5em">
-    <ion-spinner class="spinner-stable" icon="lines"></ion-spinner>
-    <span translate>Connecting to {{join.hwWallet}} Wallet...</span>
-    <span ng-show="join.hwWallet=='Trezor'" translate>Please accept to export two public keys from the Trezor app</span>
-    </div>
-  </div>
-
   <form name="joinForm" ng-submit="join.join(joinForm)" novalidate>
     <div class="box-notification m20b" ng-show="join.error">
       <span class="text-warning">
@@ -137,7 +122,7 @@
         </div> <!-- advanced -->
 
         <button translate type="submit" class="button expand black m0 round"
-          ng-disabled="joinForm.$invalid || join.loading">Join</button>
+          ng-disabled="joinForm.$invalid">Join</button>
       </div> <!-- large-12 columns -->
     </div> <!-- row -->
   </form>
