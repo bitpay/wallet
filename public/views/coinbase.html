@@ -25,15 +25,6 @@
 </div>
 
 <div class="content coinbase p20b" ng-controller="coinbaseController as coinbase">
-
-  <div class="onGoingProcess" ng-show="coinbase.loading || index.coinbaseLoading">
-    <div class="onGoingProcess-content" ng-style="{'background-color': '#2b71b1'}">
-    <ion-spinner class="spinner-stable" icon="lines"></ion-spinner>
-    <span ng-show="coinbase.loading">Connecting to Coinbase...</span>
-    <span ng-show="index.coinbaseLoading">{{index.coinbaseLoading}}</span>
-    </div>
-  </div>
-
   <div class="row" ng-show="index.coinbaseError || (index.coinbaseToken && !index.coinbaseAccount)">
     <div class="m20b box-notification" ng-show="index.coinbaseError">
       <ul class="no-bullet m0 text-warning size-12">
@@ -57,7 +48,7 @@
     </div>
   </div>
 
-  <div ng-if="!index.coinbaseToken && !index.coinbaseLoading && !index.coinbaseError" class="row">
+  <div ng-if="!index.coinbaseToken && !index.coinbaseError" class="row">
     <div class="box-notification text-center size-12 text-warning" ng-show="index.coinbaseTestnet">
       <i class="fi-info"></i>
       Testnet wallets only work with Coinbase Sandbox Accounts

@@ -7,13 +7,6 @@
 
 <div class="content glidera" ng-controller="buyGlideraController as buy">
 
-  <div class="onGoingProcess" ng-show="buy.loading">
-    <div class="onGoingProcess-content" ng-style="{'background-color':index.backgroundColor}">
-    <ion-spinner class="spinner-stable" icon="lines"></ion-spinner>
-    <span>{{buy.loading}}</span>
-    </div>
-  </div>
-
   <div ng-show="index.glideraLimits  && !buy.show2faCodeInput && !buy.success">
     <h4 class="title m0 text-left">
       <span class="text-light">Daily buy limit</span>:

@@ -6,13 +6,6 @@
 
 <div class="content coinbase" ng-controller="coinbaseUriController as coinbase" ng-init="coinbase.checkCode()">
 
-  <div class="onGoingProcess" ng-show="coinbase.loading">
-    <div class="onGoingProcess-content" ng-style="{'background-color':index.backgroundColor}">
-    <ion-spinner class="spinner-stable" icon="lines"></ion-spinner>
-    <span ng-show="coinbase.loading">Connecting to Coinbase...</span>
-    </div>
-  </div>
-
   <div class="row m20t">
     <div class="large-12 columns">
       <div class="text-center">

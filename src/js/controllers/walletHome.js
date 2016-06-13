@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('walletHomeController', function($scope, $rootScope, $interval, $timeout, $filter, $modal, $log, $ionicModal, notification, txStatus, profileService, lodash, configService, rateService, storageService, bitcore, gettext, gettextCatalog, platformInfo, addressService, ledger, bwsError, confirmDialog, txFormatService, addressbookService, go, feeService, walletService, fingerprintService, nodeWebkit) {
+angular.module('copayApp.controllers').controller('walletHomeController', function($scope, $rootScope, $interval, $timeout, $filter, $modal, $log, $ionicModal, notification, txStatus, profileService, lodash, configService, rateService, storageService, bitcore, gettext, gettextCatalog, platformInfo, addressService, ledger, bwsError, confirmDialog, txFormatService, addressbookService, go, feeService, walletService, fingerprintService, nodeWebkit, ongoingProcess) {
 
   var isCordova = platformInfo.isCordova;
   var isWP = platformInfo.isWP;
@@ -93,10 +93,6 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     };
   });
 
-  var disableOngoingProcessListener = $rootScope.$on('Addon/OngoingProcess', function(e, name) {
-    self.setOngoingProcess(name);
-  });
-
   $scope.$on('$destroy', function() {
     disableAddrListener();
     disableScannerListener();
@@ -104,7 +100,6 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     disableTabListener();
     disableFocusListener();
     disableResumeListener();
-    disableOngoingProcessListener();
     $rootScope.shouldHideMenuBar = false;
   });
 
@@ -398,26 +393,6 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     }, 1);
   };
 
-  // subscription
-  this.setOngoingProcess = function(name) {
-    var self = this;
-    self.blockUx = !!name;
-
-    if (isCordova) {
-      if (name) {
-        window.plugins.spinnerDialog.hide();
-        window.plugins.spinnerDialog.show(null, name + '...', true);
-      } else {
-        window.plugins.spinnerDialog.hide();
-      }
-    } else {
-      self.onGoingProcess = name;
-      $timeout(function() {
-        $rootScope.$apply();
-      });
-    };
-  };
-
   this.submitForm = function() {
     if (!$scope._amount || !$scope._address) return;
     var client = profileService.focusedClient;
@@ -473,9 +448,9 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       txp.excludeUnconfirmedUtxos = configWallet.spendUnconfirmed ? false : true;
       txp.feeLevel = walletSettings.feeLevel || 'normal';
 
-      self.setOngoingProcess(gettextCatalog.getString('Creating transaction'));
+      ongoingProcess.set('creatingTx', true);
       walletService.createTx(client, txp, function(err, createdTxp) {
-        self.setOngoingProcess();
+        ongoingProcess.set('creatingTx', false);
         if (err) {
           return self.setSendError(err);
         }
@@ -511,16 +486,16 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
           return self.setSendError(err);
         }
 
-        self.setOngoingProcess(gettextCatalog.getString('Sending transaction'));
+        ongoingProcess.set('sendingTx', true);
         walletService.publishTx(client, txp, function(err, publishedTxp) {
           if (err) {
-            self.setOngoingProcess();
+            ongoingProcess.set('sendingTx', false);
             return self.setSendError(err);
           }
 
-          self.setOngoingProcess(gettextCatalog.getString('Signing transaction'));
+          ongoingProcess.set('signingTx', true);
           walletService.signTx(client, publishedTxp, function(err, signedTxp) {
-            self.setOngoingProcess();
+            ongoingProcess.set('signingTx', false);
             walletService.lock(client);
             if (err) {
               $scope.$emit('Local/TxProposalAction');
@@ -531,9 +506,9 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
             }
 
             if (signedTxp.status == 'accepted') {
-              self.setOngoingProcess(gettextCatalog.getString('Broadcasting transaction'));
+              ongoingProcess.set('broadcastingTx', true);
               walletService.broadcastTx(client, signedTxp, function(err, broadcastedTxp) {
-                self.setOngoingProcess();
+                ongoingProcess.set('broadcastingTx', false);
                 if (err) {
                   return self.setSendError(err);
                 }
@@ -652,14 +627,14 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     var satToUnit = 1 / this.unitToSatoshi;
     var self = this;
     /// Get information of payment if using Payment Protocol
-    self.setOngoingProcess(gettextCatalog.getString('Fetching Payment Information'));
+    ongoingProcess.set('fetchingPayPro', true);
 
     $log.debug('Fetch PayPro Request...', uri);
     $timeout(function() {
       fc.fetchPayPro({
         payProUrl: uri,
       }, function(err, paypro) {
-        self.setOngoingProcess();
+        ongoingProcess.set('fetchingPayPro', false);
 
         if (err) {
           $log.warn('Could not fetch payment request:', err);
@@ -836,11 +811,11 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     var self = this;
     var fc = profileService.focusedClient;
     this.error = null;
-    this.setOngoingProcess(gettextCatalog.getString('Calculating fee'));
+    ongoingProcess.set('calculatingFee', true);
 
     feeService.getCurrentFeeValue(function(err, feePerKb) {
+      ongoingProcess.set('calculatingFee', false);
       if (err || !lodash.isNumber(feePerKb)) {
-        self.setOngoingProcess();
         self.error = gettext('Could not get fee value');
         return;
       }
@@ -850,10 +825,11 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       opts.returnInputs = true;
       var config = configService.getSync();
       opts.excludeUnconfirmedUtxos = !config.wallet.spendUnconfirmed;
-      self.setOngoingProcess(gettextCatalog.getString('Retrieving inputs information'));
+      ongoingProcess.set('retrivingInputs', true);
 
       fc.getSendMaxInfo(opts, function(err, resp) {
-        self.setOngoingProcess();
+        ongoingProcess.set('retrivingInputs', false);
+
         if (err) {
           self.error = err;
           $scope.$apply();

@@ -8,21 +8,6 @@
 
 <ion-content overflow-scroll="true" class="content p20b" ng-controller="createController as create" ng-init="create.setTotalCopayers(1)">
 
-  <div class="onGoingProcess" ng-show="create.loading && !create.hwWallet">
-    <div class="onGoingProcess-content" ng-style="{'background-color':'#222'}">
-    <ion-spinner class="spinner-stable" icon="lines"></ion-spinner>
-    <span translate>Creating Wallet...</span>
-    </div>
-  </div>
-
-  <div class="onGoingProcess" ng-show="create.hwWallet">
-    <div class="onGoingProcess-content" ng-style="{'background-color':'#222'}" style="max-height:6.5em" >
-    <ion-spinner class="spinner-stable" icon="lines"></ion-spinner>
-    <span translate>Connecting to {{create.hwWallet}} Wallet...</span>
-    <span ng-show="create.hwWallet=='Trezor'" translate>Please accept to export two public keys from the Trezor app</span>
-    </div>
-  </div>
-
   <div class="create-tab small-only-text-center" ng-hide="create.hideTabs">
     <div class="row">
     <div class="tab-container small-6 medium-3 large-2" ng-class="{'selected': totalCopayers == 1}">
@@ -170,11 +155,11 @@
           </div> <!-- columns -->
         </div> <!-- advanced -->
 
-        <button type="submit" class="button round black expand" ng-show="totalCopayers != 1" ng-disabled="setupForm.$invalid || create.loading || create.hwWallet">
+        <button type="submit" class="button round black expand" ng-show="totalCopayers != 1" ng-disabled="setupForm.$invalid">
           <span translate>Create {{requiredCopayers}}-of-{{totalCopayers}} wallet</span>
         </button>
 
-        <button type="submit" class="button round black expand" ng-show="totalCopayers == 1" ng-disabled="setupForm.$invalid || create.loading || create.hwWallet">
+        <button type="submit" class="button round black expand" ng-show="totalCopayers == 1" ng-disabled="setupForm.$invalid">
           <span translate>Create new wallet</span>
         </button>
 

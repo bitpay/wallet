@@ -1,10 +1,12 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('disclaimerController',
-  function($scope, $timeout, $log, $ionicSideMenuDelegate, profileService, applicationService, gettextCatalog, uxLanguage, go, storageService) {
+  function($scope, $timeout, $log, $ionicSideMenuDelegate, profileService, applicationService, gettextCatalog, uxLanguage, go, storageService, gettext, platformInfo, ongoingProcess) {
     var self = this;
     self.tries = 0;
-    self.creatingProfile = true;
+    var isCordova = platformInfo.isCordova;
+
+    ongoingProcess.set('creatingWallet', true);
 
     var create = function(opts) {
       opts = opts || {};
@@ -30,7 +32,7 @@ angular.module('copayApp.controllers').controller('disclaimerController',
         };
 
         $scope.error = "";
-        self.creatingProfile = false;
+        ongoingProcess.set('creatingWallet', false);
       });
     };
 
@@ -43,7 +45,7 @@ angular.module('copayApp.controllers').controller('disclaimerController',
           create(opts);
         } else {
           $log.info('There is already a profile');
-          self.creatingProfile = false;
+          ongoingProcess.set('creatingWallet', false);
           profileService.bindProfile(profile, function(err) {
             if (!err || !err.message || !err.message.match('NONAGREEDDISCLAIMER')) {
               $log.debug('Disclaimer already accepted at #disclaimer. Redirect to Wallet Home.');
