@@ -6,7 +6,7 @@
 </div>
 
 
-<div class="content preferences" ng-controller="preferencesController as preferences" ng-init="preferences.init()">
+<div class="content preferences" ng-controller="preferencesController" ng-init="init()">
 
   <h4></h4>
 
@@ -39,7 +39,7 @@
 
     <li ng-show="index.isPrivKeyExternal">
       <div class="right text-gray">
-        {{preferences.externalSource}}
+        {{externalSource}}
         <!-- (Accont {{preferences.externalAccount}}) -->
       </div>
       <div translate>Hardware wallet</div>
@@ -71,7 +71,7 @@
       <span class="toggle-label" translate>Request Spending Password</span>
     </ion-toggle>
 
-    <ion-toggle ng-model="touchidEnabled" toggle-class="toggle-balanced" ng-change="touchidChange()" ng-show="preferences.touchidAvailable">
+    <ion-toggle ng-model="touchidEnabled" toggle-class="toggle-balanced" ng-change="touchidChange()" ng-show="touchidAvailable">
       <span class="toggle-label" translate>Scan Fingerprint</span>
     </ion-toggle>
   </div>
