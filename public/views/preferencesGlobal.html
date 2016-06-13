@@ -6,7 +6,7 @@
 <div class="content preferences" ng-controller="preferencesGlobalController as prefGlobal" ng-init="prefGlobal.init()">
   <h4></h4>
   <ul class="no-bullet m0">
-    <li ng-click="$root.go('preferencesLanguage')">
+    <li href ui-sref="preferencesLanguage">
       <div class="right text-gray">
         {{prefGlobal.currentLanguageName|translate}}
         <i class="icon-arrow-right3 size-24"></i>
@@ -17,7 +17,7 @@
   <h4></h4>
 
   <ul class="no-bullet m0">
-    <li ng-click="$root.go('preferencesUnit')">
+    <li href ui-sref="preferencesUnit">
       <div class="right text-gray">
         {{prefGlobal.unitName}}
         <i class="icon-arrow-right3 size-24"></i>
@@ -25,7 +25,7 @@
       <div translate>Unit</div>
     </li>
 
-    <li ng-click="$root.go('preferencesAltCurrency')">
+    <li href ui-sref="preferencesAltCurrency">
       <div class="right text-gray">
         {{prefGlobal.selectedAlternative.name}}
         <i class="icon-arrow-right3 size-24"></i>
@@ -36,7 +36,7 @@
   <h4></h4>
 
   <ul class="no-bullet m0">
-    <li ng-click="$root.go('preferencesFee')">
+    <li href ui-sref="preferencesFee">
       <div class="right text-gray">
         {{prefGlobal.feeOpts[prefGlobal.currentFeeLevel]|translate}}
         <i class="icon-arrow-right3 size-24"></i>
@@ -68,7 +68,7 @@
   <h4></h4>
 
   <ul class="no-bullet m0">
-    <li ng-click="$root.go('about')">
+    <li href ui-sref="about">
       <i class="icon-arrow-right3 size-24 right text-gray"></i>
       <div translate>About Copay</div>
     </li>

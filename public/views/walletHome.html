@@ -9,9 +9,9 @@
     <div class="text-center text-warning m20b">
       <i class="fi-alert"></i> <span translate>You do not have a wallet</span>
     </div>
-    <button class="button black round expand" ng-click="$root.go('add')" translate>Create</button>
+    <button class="button black round expand" href ui-sref="add" translate>Create</button>
 
-    <div class="text-center text-gray p20v" ng-click="$root.go('preferencesGlobal')">
+    <div class="text-center text-gray p20v" href ui-sref="preferencesGlobal">
       <button class=" outline round dark-gray tiny" translate>Settings</button>
     </div>
   </div>
@@ -269,8 +269,7 @@
         <p class="text-gray m20b columns" translate>
           Before receiving funds, it is necessary backup your wallet. If you lose this device, it is impossible to access your funds without a backup.
         </p>
-        <button class="m20t button black expand round"
-          ng-click="$root.go('backup')" ng-style="{'background-color':index.backgroundColor}" >
+        <button class="m20t button black expand round" href ui-sref="backup" ng-style="{'background-color':index.backgroundColor}" >
           <span translate>Backup now</span>
         </button>
       </div>

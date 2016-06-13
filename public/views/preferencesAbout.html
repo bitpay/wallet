@@ -1,5 +1,5 @@
-<div 
-  class="topbar-container" 
+<div
+  class="topbar-container"
   ng-include="'views/includes/topbar.html'"
   ng-init="titleSection='About Copay'; goBackToState = 'preferencesGlobal'; noColor = true">
 </div>
@@ -11,30 +11,30 @@
         <li  ng-conf>
           <span translate>Version</span>
           <span class="right text-gray">
-            v{{v.version}} 
-          </span>      
+            v{{v.version}}
+          </span>
         </li>
         <li  ng-conf ng-click="$root.openExternalLink('https://github.com/bitpay/copay/tree/'+v.commitHash)">
           <span translate>Commit hash</span>
           <span class="right text-gray">
             #{{v.commitHash}}
-          </span>      
+          </span>
         </li>
       </ul>
     </div>
- 
+
     <h4></h4>
     <ul class="no-bullet m0">
-      <li  ng-click="$root.go('termOfUse')">
-        <i class="icon-arrow-right3 size-24 right text-gray"></i>  
+      <li href ui-sref="termOfUse">
+        <i class="icon-arrow-right3 size-24 right text-gray"></i>
         <span translate>Terms of Use</span>
       </li>
-      <li  ng-click="$root.go('translators')">
-        <i class="icon-arrow-right3 size-24 right text-gray"></i>  
+      <li  href ui-sref="translators">
+        <i class="icon-arrow-right3 size-24 right text-gray"></i>
         <span translate>Translators</span>
       </li>
-      <li  ng-conf ng-click="$root.go('logs')">
-        <i class="icon-arrow-right3 size-24 right text-gray"></i>  
+      <li  ng-conf href ui-sref="logs">
+        <i class="icon-arrow-right3 size-24 right text-gray"></i>
         <span translate>Session log</span>
       </li>
     </ul>
