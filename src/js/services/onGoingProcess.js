@@ -7,44 +7,38 @@ angular.module('copayApp.services').factory('ongoingProcess', function($log, $ti
   var ongoingProcess = {};
 
   var processNames = {
-    'openingWallet': 'Updating Wallet...',
-    'updatingStatus': 'Updating Wallet...',
-    'updatingBalance': 'Updating Wallet...',
-    'updatingPendingTxps': 'Updating Wallet...',
-    'scanning': 'Scanning Wallet funds...',
-    'recreating': 'Recreating Wallet...',
-    'generatingCSV': 'Generating .csv file...',
-    'creatingTx': 'Creating transaction',
-    'sendingTx': 'Sending transaction',
-    'signingTx': 'Signing transaction',
-    'broadcastingTx': 'Broadcasting transaction',
-    'fetchingPayPro': 'Fetching Payment Information',
-    'calculatingFee': 'Calculating fee',
-    'joiningWallet': 'Joining Wallet...',
-    'retrivingInputs': 'Retrieving inputs information',
-    'creatingWallet': 'Creating Wallet...',
-    'validatingWallet': 'Validating wallet integrity...',
-    'connectingledger': 'Waiting for Ledger...',
-    'connectingtrezor': 'Waiting for Trezor...',
-    'validatingWords': 'Validating recovery phrase...',
-    'connectingCoinbase': 'Connecting to Coinbase...',
-    'connectingGlidera': 'Connecting to Glidera...',
-    'importingWallet': 'Importing Wallet...',
-    'sweepingWallet': 'Sweeping Wallet...',
-    'deletingWallet': 'Deleting Wallet...',
+    'openingWallet': gettextCatalog.getString('Updating Wallet...'),
+    'updatingStatus': gettextCatalog.getString('Updating Wallet...'),
+    'updatingBalance': gettextCatalog.getString('Updating Wallet...'),
+    'updatingPendingTxps': gettextCatalog.getString('Updating Wallet...'),
+    'scanning': gettextCatalog.getString('Scanning Wallet funds...'),
+    'recreating': gettextCatalog.getString('Recreating Wallet...'),
+    'generatingCSV': gettextCatalog.getString('Generating .csv file...'),
+    'creatingTx': gettextCatalog.getString('Creating transaction'),
+    'sendingTx': gettextCatalog.getString('Sending transaction'),
+    'signingTx': gettextCatalog.getString('Signing transaction'),
+    'broadcastingTx': gettextCatalog.getString('Broadcasting transaction'),
+    'fetchingPayPro': gettextCatalog.getString('Fetching Payment Information'),
+    'calculatingFee': gettextCatalog.getString('Calculating fee'),
+    'joiningWallet': gettextCatalog.getString('Joining Wallet...'),
+    'retrivingInputs': gettextCatalog.getString('Retrieving inputs information'),
+    'creatingWallet': gettextCatalog.getString('Creating Wallet...'),
+    'validatingWallet': gettextCatalog.getString('Validating wallet integrity...'),
+    'connectingledger': gettextCatalog.getString('Waiting for Ledger...'),
+    'connectingtrezor': gettextCatalog.getString('Waiting for Trezor...'),
+    'validatingWords': gettextCatalog.getString('Validating recovery phrase...'),
+    'connectingCoinbase': gettextCatalog.getString('Connecting to Coinbase...'),
+    'connectingGlidera': gettextCatalog.getString('Connecting to Glidera...'),
+    'importingWallet': gettextCatalog.getString('Importing Wallet...'),
+    'sweepingWallet': gettextCatalog.getString('Sweeping Wallet...'),
+    'deletingWallet': gettextCatalog.getString('Deleting Wallet...'),
   };
-
-  lodash.each(processNames, function(k, v) {
-    processNames[k] = gettextCatalog.getString(v);
-  });
 
   root.clear = function() {
     ongoingProcess = {};
   };
 
   root.set = function(processName, isOn) {
-
-console.log('[onGoingProcess.js.46]', processName); //TODO
     $log.debug('ongoingProcess', processName, isOn);
     root[processName] = isOn;
     ongoingProcess[processName] = isOn;
@@ -60,20 +54,13 @@ console.log('[onGoingProcess.js.46]', processName); //TODO
 
     var showName = processNames[name] || gettextCatalog.getString(name);
 
-console.log('[onGoingProcess.js.62]'); //TODO
     if (root.onGoingProcessName) {
-
-console.log('[onGoingProcess.js.65]'); //TODO
       if (isCordova) {
         window.plugins.spinnerDialog.show(null, showName, true);
       } else {
-
-console.log('[onGoingProcess.js.70]'); //TODO
         $ionicLoading.show({
           template: showName,
         });
-
-console.log('[onGoingProcess.js.75]'); //TODO
       }
     } else {
       if (isCordova) {
