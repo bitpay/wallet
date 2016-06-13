@@ -91,7 +91,6 @@
     "load-grunt-tasks": "^3.5.0",
     "mocha": "^2.4.5",
     "phantomjs-prebuilt": "^2.1.7",
-    "ionic": "^1.7.14",
     "xcode": "^0.8.2"
   }
 }
