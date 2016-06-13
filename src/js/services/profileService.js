@@ -138,6 +138,8 @@ angular.module('copayApp.services')
       var skipKeyValidation = root.profile.isChecked(platformInfo.ua, credentials.walletId);
       if (!skipKeyValidation) {
         $rootScope.$emit('Local/ValidatingWallet');
+      } else {
+        bwcService.getClientClass()._hardcodedOk = true;
       }
       $timeout(function() {
         $log.info('Binding wallet:' + credentials.walletId + ' Validating?:' + !skipKeyValidation);
@@ -287,6 +289,7 @@ angular.module('copayApp.services')
       } else {
         var lang = uxLanguage.getCurrentLanguage();
         try {
+
           walletClient.seedFromRandomWithMnemonic({
             network: network,
             passphrase: opts.passphrase,
@@ -314,6 +317,7 @@ angular.module('copayApp.services')
     var doCreateWallet = function(opts, cb) {
       $log.debug('Creating Wallet:', opts);
       $timeout(function() {
+
         seedWallet(opts, function(err, walletClient) {
           if (err) return cb(err);
 
