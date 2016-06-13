@@ -9,32 +9,17 @@ angular.module('copayApp.controllers').controller('buyGlideraController',
     this.success = null;
     this.loading = null;
 
-    window.ignoreMobilePause = true;
-
-    var otherWallets = function(testnet) {
-      var network = testnet ? 'testnet' : 'livenet';
-      return lodash.filter(profileService.getWallets(network), function(w) {
-        return w.network == network;
-      });
-    };
-
     this.init = function(testnet) {
-      self.otherWallets = otherWallets(testnet);
-      // Choose focused wallet
-      try {
-        var currentWalletId = profileService.focusedClient.credentials.walletId;
-        lodash.find(self.otherWallets, function(w) {
-          if (w.id == currentWalletId) {
-            $timeout(function() {
-              self.selectedWalletId = w.id;
-              self.selectedWalletName = w.name;
-              $scope.$apply();
-            }, 100);
-          }
-        });
-      } catch (e) {
-        $log.debug(e);
-      };
+      self.allWallets = profileService.getWallets(testnet ? 'testnet' : 'livenet', 1)
+
+      var client = profileService.focusedClient;
+      if (client) { 
+        $timeout(function() {
+          self.selectedWalletId = client.credentials.walletId;
+          self.selectedWalletName = client.credentials.walletName;
+          $scope.$apply();
+        }, 100);
+      }
     };
 
     $scope.openWalletsModal = function(wallets) {

@@ -41,7 +41,7 @@
 
           <div ng-if="index.glideraToken"
             ng-init="sell.init(index.glideraTestnet)"
-            ng-click="openWalletsModal(sell.otherWallets)">
+            ng-click="openWalletsModal(sell.allWallets)">
             <label>Wallet</label>
             <div class="input">
               <input type="text" id="address" name="address" ng-disabled="sell.selectedWalletId"

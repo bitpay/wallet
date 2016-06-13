@@ -8,7 +8,6 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   var isChromeApp = platformInfo.isChromeApp;
 
   var self = this;
-  window.ignoreMobilePause = false;
   $rootScope.shouldHideMenuBar = false;
   $rootScope.wpInputFocused = false;
   var config = configService.getSync();
@@ -217,9 +216,6 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
   this.shareAddress = function(addr) {
     if (isCordova) {
-      if (isAndroid || isWP) {
-        window.ignoreMobilePause = true;
-      }
       window.plugins.socialsharing.share('bitcoin:' + addr, null, null, null);
     }
   };

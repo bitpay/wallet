@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, $ionicScrollDelegate, $ionicPopup, latestReleaseService, feeService, bwcService, pushNotificationsService, lodash, go, profileService, configService, rateService, storageService, addressService, gettext, gettextCatalog, amMoment, addonManager, bwsError, txFormatService, uxLanguage, glideraService, coinbaseService, platformInfo, addressbookService) {
+angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, $ionicScrollDelegate, $ionicPopup, latestReleaseService, feeService, bwcService, pushNotificationsService, lodash, go, profileService, configService, rateService, storageService, addressService, gettext, gettextCatalog, amMoment, addonManager, bwsError, txFormatService, uxLanguage, glideraService, coinbaseService, platformInfo, addressbookService, openURLService) {
   var self = this;
   var SOFT_CONFIRMATION_LIMIT = 12;
   var errors = bwcService.getErrors();
@@ -289,6 +289,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       initStatusHash = _walletStatusHash();
       $log.debug('Updating status until it changes. initStatusHash:' + initStatusHash)
     }
+
     var get = function(cb) {
       if (opts.walletStatus)
         return cb(null, opts.walletStatus);
@@ -351,6 +352,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         self.setPendingTxps(walletStatus.pendingTxps);
 
         // Status Shortcuts
+        self.lastUpdate = Date.now();
         self.walletName = walletStatus.wallet.name;
         self.walletSecret = walletStatus.wallet.secret;
         self.walletStatus = walletStatus.wallet.status;
@@ -1425,6 +1427,19 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.tab = 'walletHome';
   });
 
+  $rootScope.$on('Local/ValidatingWallet', function() {
+    if (isCordova) {
+      window.plugins.spinnerDialog.hide();
+      window.plugins.spinnerDialog.show(null, gettext('Validating wallet integrity...'), true);
+    } 
+  });
+
+  $rootScope.$on('Local/ProfileBound', function() {
+    if (isCordova) {
+      window.plugins.spinnerDialog.hide();
+    } 
+  });
+
   $rootScope.$on('Local/ClearHistory', function(event) {
     $log.debug('The wallet transaction history has been deleted');
     self.txHistory = self.completeHistory = self.txHistorySearchResults = [];
@@ -1492,59 +1507,105 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     }
   });
 
-  self.debouncedUpdate = lodash.throttle(function() {
-    self.updateAll({
-      quiet: true
-    });
-    self.debounceUpdateHistory();
-  }, 2000, {
-    leading: false,
-    trailing: true
-  });
+  self.debouncedUpdate = function() {
+    var now = Date.now();
+    var oneHr = 1000 * 60 * 60;
 
-  $rootScope.$on('Local/Resume', function(event) {
-    $log.debug('### Resume event');
-    profileService.isDisclaimerAccepted(function(v) {
-      if (!v) {
-        $log.debug('Disclaimer not accepted, resume to home');
-        go.path('disclaimer');
-      }
-    });
-    self.debouncedUpdate();
-  });
-
-  $rootScope.$on('Local/BackupDone', function(event, walletId) {
-    self.needsBackup = false;
-    $log.debug('Backup done');
-    storageService.setBackupFlag(walletId || self.walletId, function(err) {
-      $log.debug('Backup stored');
-    });
-  });
-
-  $rootScope.$on('Local/DeviceError', function(event, err) {
-    self.showErrorPopup(err, function() {
-      if (isCordova && navigator && navigator.app) {
-        navigator.app.exitApp();
-      }
-    });
-  });
-
-  $rootScope.$on('Local/WalletImported', function(event, walletId) {
-    self.needsBackup = false;
-    storageService.setBackupFlag(walletId, function() {
-      $log.debug('Backup done stored');
-      addressService.expireAddress(walletId, function(err) {
-        $timeout(function() {
-          self.txHistory = self.completeHistory = self.txHistorySearchResults = [];
-          storageService.removeTxHistory(walletId, function() {
-            self.startScan(walletId);
-          });
-        }, 500);
+    if (!self.lastUpdate || (now - self.lastUpdate) > oneHr) {
+      self.updateAll({
+        quiet: true,
+        triggerTxUpdate: true
       });
+    }
+  };
+
+$rootScope.$on('Local/Resume', function(event) {
+  $log.debug('### Resume event');
+  profileService.isDisclaimerAccepted(function(v) {
+    if (!v) {
+      $log.debug('Disclaimer not accepted, resume to home');
+      go.path('disclaimer');
+    }
+  });
+  self.debouncedUpdate();
+});
+
+$rootScope.$on('Local/BackupDone', function(event, walletId) {
+  self.needsBackup = false;
+  $log.debug('Backup done');
+  storageService.setBackupFlag(walletId || self.walletId, function(err) {
+    $log.debug('Backup stored');
+  });
+});
+
+$rootScope.$on('Local/DeviceError', function(event, err) {
+  self.showErrorPopup(err, function() {
+    if (isCordova && navigator && navigator.app) {
+      navigator.app.exitApp();
+    }
+  });
+});
+
+$rootScope.$on('Local/WalletImported', function(event, walletId) {
+  self.needsBackup = false;
+  storageService.setBackupFlag(walletId, function() {
+    $log.debug('Backup done stored');
+    addressService.expireAddress(walletId, function(err) {
+      $timeout(function() {
+        self.txHistory = self.completeHistory = self.txHistorySearchResults = [];
+        storageService.removeTxHistory(walletId, function() {
+          self.startScan(walletId);
+        });
+      }, 500);
     });
   });
+});
 
-  $rootScope.$on('NewIncomingTx', function() {
+$rootScope.$on('NewIncomingTx', function() {
+  self.newTx = true;
+  self.updateAll({
+    walletStatus: null,
+    untilItChanges: true,
+    triggerTxUpdate: true,
+  });
+});
+
+
+$rootScope.$on('NewBlock', function() {
+  if (self.glideraEnabled) {
+    $timeout(function() {
+      self.updateGlidera();
+    });
+  }
+  if (self.coinbaseEnabled) {
+    $timeout(function() {
+      self.updateCoinbase();
+    });
+  }
+  if (self.pendingAmount) {
+    self.updateAll({
+      walletStatus: null,
+      untilItChanges: null,
+      triggerTxUpdate: true,
+    });
+  } else if (self.hasUnsafeConfirmed) {
+    $log.debug('Wallet has transactions with few confirmations. Updating.')
+    if (self.network == 'testnet') {
+      self.throttledUpdateHistory();
+    } else {
+      self.debounceUpdateHistory();
+    }
+  }
+});
+
+$rootScope.$on('BalanceUpdated', function(e, n) {
+  self.setBalance(n.data);
+});
+
+
+//untilItChange TRUE
+lodash.each(['NewOutgoingTx', 'NewOutgoingTxByThirdParty'], function(eventName) {
+  $rootScope.$on(eventName, function(event) {
     self.newTx = true;
     self.updateAll({
       walletStatus: null,
@@ -1552,244 +1613,200 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       triggerTxUpdate: true,
     });
   });
+});
 
-
-  $rootScope.$on('NewBlock', function() {
-    if (self.glideraEnabled) {
-      $timeout(function() {
-        self.updateGlidera();
-      });
-    }
-    if (self.coinbaseEnabled) {
-      $timeout(function() {
-        self.updateCoinbase();
-      });
-    }
-    if (self.pendingAmount) {
-      self.updateAll({
-        walletStatus: null,
-        untilItChanges: null,
-        triggerTxUpdate: true,
-      });
-    } else if (self.hasUnsafeConfirmed) {
-      $log.debug('Wallet has transactions with few confirmations. Updating.')
-      if (self.network == 'testnet') {
-        self.throttledUpdateHistory();
-      } else {
-        self.debounceUpdateHistory();
-      }
-    }
-  });
-
-  $rootScope.$on('BalanceUpdated', function(e, n) {
-    self.setBalance(n.data);
-  });
-
-
-  //untilItChange TRUE
-  lodash.each(['NewOutgoingTx', 'NewOutgoingTxByThirdParty'], function(eventName) {
-    $rootScope.$on(eventName, function(event) {
-      self.newTx = true;
-      self.updateAll({
-        walletStatus: null,
-        untilItChanges: true,
-        triggerTxUpdate: true,
-      });
-    });
-  });
-
-  //untilItChange FALSE
-  lodash.each(['NewTxProposal', 'TxProposalFinallyRejected', 'TxProposalRemoved', 'NewOutgoingTxByThirdParty',
-    'Local/GlideraTx'
-  ], function(eventName) {
-    $rootScope.$on(eventName, function(event) {
-      self.updateAll({
-        walletStatus: null,
-        untilItChanges: null,
-        triggerTxUpdate: true,
-      });
-    });
-  });
-
-
-  //untilItChange Maybe
-  $rootScope.$on('Local/TxProposalAction', function(event, untilItChanges) {
-    self.newTx = untilItChanges;
+//untilItChange FALSE
+lodash.each(['NewTxProposal', 'TxProposalFinallyRejected', 'TxProposalRemoved', 'NewOutgoingTxByThirdParty',
+  'Local/GlideraTx'
+], function(eventName) {
+  $rootScope.$on(eventName, function(event) {
     self.updateAll({
       walletStatus: null,
-      untilItChanges: untilItChanges,
+      untilItChanges: null,
       triggerTxUpdate: true,
     });
   });
+});
 
-  $rootScope.$on('ScanFinished', function() {
-    $log.debug('Scan Finished. Updating history');
-    storageService.removeTxHistory(self.walletId, function() {
-      self.updateAll({
-        walletStatus: null,
-        triggerTxUpdate: true,
-      });
+
+//untilItChange Maybe
+$rootScope.$on('Local/TxProposalAction', function(event, untilItChanges) {
+  self.newTx = untilItChanges;
+  self.updateAll({
+    walletStatus: null,
+    untilItChanges: untilItChanges,
+    triggerTxUpdate: true,
+  });
+});
+
+$rootScope.$on('ScanFinished', function() {
+  $log.debug('Scan Finished. Updating history');
+  storageService.removeTxHistory(self.walletId, function() {
+    self.updateAll({
+      walletStatus: null,
+      triggerTxUpdate: true,
     });
   });
+});
 
-  lodash.each(['TxProposalRejectedBy', 'TxProposalAcceptedBy'], function(eventName) {
-    $rootScope.$on(eventName, function() {
-      var f = function() {
-        if (self.updatingStatus) {
-          return $timeout(f, 200);
-        };
-        self.updatePendingTxps();
+lodash.each(['TxProposalRejectedBy', 'TxProposalAcceptedBy'], function(eventName) {
+  $rootScope.$on(eventName, function() {
+    var f = function() {
+      if (self.updatingStatus) {
+        return $timeout(f, 200);
       };
-      f();
-    });
+      self.updatePendingTxps();
+    };
+    f();
   });
+});
 
-  $rootScope.$on('Local/NoWallets', function(event) {
-    $timeout(function() {
-      self.hasProfile = true;
-      self.noFocusedWallet = true;
-      self.isComplete = null;
-      self.walletName = null;
-      uxLanguage.update();
-
-      profileService.isDisclaimerAccepted(function(v) {
-        if (v) {
-          go.path('import');
-        }
-      });
-    });
-  });
-
-  $rootScope.$on('Local/NewFocusedWallet', function() {
+$rootScope.$on('Local/NoWallets', function(event) {
+  $timeout(function() {
+    self.hasProfile = true;
+    self.noFocusedWallet = true;
+    self.isComplete = null;
+    self.walletName = null;
     uxLanguage.update();
-    self.setFocusedWallet();
-    self.updateHistory();
-    storageService.getCleanAndScanAddresses(function(err, walletId) {
 
-      if (walletId && profileService.walletClients[walletId]) {
-        $log.debug('Clear last address cache and Scan ', walletId);
-        addressService.expireAddress(walletId, function(err) {
-          self.startScan(walletId);
-        });
-        storageService.removeCleanAndScanAddresses(function() {
-          $rootScope.$emit('Local/NewFocusedWalletReady');
-        });
-      } else {
-        $rootScope.$emit('Local/NewFocusedWalletReady');
+    profileService.isDisclaimerAccepted(function(v) {
+      if (v) {
+        go.path('import');
       }
     });
   });
+});
 
-  $rootScope.$on('Local/SetTab', function(event, tab, reset) {
-    self.setTab(tab, reset);
-  });
+$rootScope.$on('Local/NewFocusedWallet', function() {
+  uxLanguage.update();
+  self.setFocusedWallet();
+  self.updateHistory();
+  storageService.getCleanAndScanAddresses(function(err, walletId) {
 
-  $rootScope.$on('Local/NeedsConfirmation', function(event, txp, cb) {
-
-    function openConfirmationPopup(txp, cb) {
-
-      $scope.tx = txFormatService.processTx(txp);
-
-      self.confirmationPopup = $ionicPopup.show({
-        templateUrl: 'views/includes/confirm-tx.html',
-        scope: $scope,
+    if (walletId && profileService.walletClients[walletId]) {
+      $log.debug('Clear last address cache and Scan ', walletId);
+      addressService.expireAddress(walletId, function(err) {
+        self.startScan(walletId);
       });
-
-      $scope.processFee = function(amount, fee) {
-        var walletSettings = configService.getSync().wallet.settings;
-        var feeAlternativeIsoCode = walletSettings.alternativeIsoCode;
-
-        $scope.feeLevel = feeService.feeOpts[feeService.getCurrentFeeLevel()];
-        $scope.feeAlternativeStr = parseFloat((rateService.toFiat(fee, feeAlternativeIsoCode)).toFixed(2), 10) + ' ' + feeAlternativeIsoCode;
-        $scope.feeRateStr = (fee / (amount + fee) * 100).toFixed(2) + '%';
-      };
-
-      $scope.cancel = function() {
-        return cb();
-      };
-
-      $scope.accept = function() {
-        return cb(true);
-      };
+      storageService.removeCleanAndScanAddresses(function() {
+        $rootScope.$emit('Local/NewFocusedWalletReady');
+      });
+    } else {
+      $rootScope.$emit('Local/NewFocusedWalletReady');
     }
-
-    openConfirmationPopup(txp, function(accept) {
-      self.confirmationPopup.close();
-      return cb(accept);
-    });
   });
+});
 
-  $rootScope.$on('Local/NeedsPassword', function(event, isSetup, cb) {
+$rootScope.$on('Local/SetTab', function(event, tab, reset) {
+  self.setTab(tab, reset);
+});
 
-    function openPasswordPopup(isSetup, cb) {
-      $scope.data = {};
-      $scope.data.password = null;
-      $scope.isSetup = isSetup;
-      $scope.isVerification = false;
-      $scope.loading = false;
-      var pass = null;
+$rootScope.$on('Local/NeedsConfirmation', function(event, txp, cb) {
 
-      self.passwordPopup = $ionicPopup.show({
-        templateUrl: 'views/includes/password.html',
-        scope: $scope,
-      });
+  function openConfirmationPopup(txp, cb) {
 
-      $scope.cancel = function() {
-        return cb('No spending password given');
-      };
+    $scope.tx = txFormatService.processTx(txp);
 
-      $scope.set = function() {
-        $scope.loading = true;
-        $scope.error = null;
+    self.confirmationPopup = $ionicPopup.show({
+      templateUrl: 'views/includes/confirm-tx.html',
+      scope: $scope,
+    });
 
-        $timeout(function() {
-          if (isSetup && !$scope.isVerification) {
-            $scope.loading = false;
-            $scope.isVerification = true;
-            pass = $scope.data.password;
-            $scope.data.password = null;
-            return;
-          }
-          if (isSetup && pass != $scope.data.password) {
-            $scope.loading = false;
-            $scope.error = gettext('Spending Passwords do not match');
-            $scope.isVerification = false;
-            $scope.data.password = null;
-            pass = null;
-            return;
-          }
-          return cb(null, $scope.data.password);
-        }, 100);
-      };
+    $scope.processFee = function(amount, fee) {
+      var walletSettings = configService.getSync().wallet.settings;
+      var feeAlternativeIsoCode = walletSettings.alternativeIsoCode;
+
+      $scope.feeLevel = feeService.feeOpts[feeService.getCurrentFeeLevel()];
+      $scope.feeAlternativeStr = parseFloat((rateService.toFiat(fee, feeAlternativeIsoCode)).toFixed(2), 10) + ' ' + feeAlternativeIsoCode;
+      $scope.feeRateStr = (fee / (amount + fee) * 100).toFixed(2) + '%';
     };
 
-    openPasswordPopup(isSetup, function(err, pass) {
-      self.passwordPopup.close();
-      return cb(err, pass);
+    $scope.cancel = function() {
+      return cb();
+    };
+
+    $scope.accept = function() {
+      return cb(true);
+    };
+  }
+
+  openConfirmationPopup(txp, function(accept) {
+    self.confirmationPopup.close();
+    return cb(accept);
+  });
+});
+
+$rootScope.$on('Local/NeedsPassword', function(event, isSetup, cb) {
+
+  function openPasswordPopup(isSetup, cb) {
+    $scope.data = {};
+    $scope.data.password = null;
+    $scope.isSetup = isSetup;
+    $scope.isVerification = false;
+    $scope.loading = false;
+    var pass = null;
+
+    self.passwordPopup = $ionicPopup.show({
+      templateUrl: 'views/includes/password.html',
+      scope: $scope,
     });
 
+    $scope.cancel = function() {
+      return cb('No spending password given');
+    };
+
+    $scope.set = function() {
+      $scope.loading = true;
+      $scope.error = null;
+
+      $timeout(function() {
+        if (isSetup && !$scope.isVerification) {
+          $scope.loading = false;
+          $scope.isVerification = true;
+          pass = $scope.data.password;
+          $scope.data.password = null;
+          return;
+        }
+        if (isSetup && pass != $scope.data.password) {
+          $scope.loading = false;
+          $scope.error = gettext('Spending Passwords do not match');
+          $scope.isVerification = false;
+          $scope.data.password = null;
+          pass = null;
+          return;
+        }
+        return cb(null, $scope.data.password);
+      }, 100);
+    };
+  };
+
+  openPasswordPopup(isSetup, function(err, pass) {
+    self.passwordPopup.close();
+    return cb(err, pass);
   });
 
-  $rootScope.$on('Local/EmailUpdated', function(event, email) {
-    self.preferences.email = email;
+});
+
+$rootScope.$on('Local/EmailUpdated', function(event, email) {
+  self.preferences.email = email;
+});
+
+lodash.each(['NewCopayer', 'CopayerUpdated'], function(eventName) {
+  $rootScope.$on(eventName, function() {
+    // Re try to open wallet (will triggers)
+    self.setFocusedWallet();
   });
+});
 
-  lodash.each(['NewCopayer', 'CopayerUpdated'], function(eventName) {
-    $rootScope.$on(eventName, function() {
-      // Re try to open wallet (will triggers)
-      self.setFocusedWallet();
-    });
+$rootScope.$on('Local/NewEncryptionSetting', function() {
+  var fc = profileService.focusedClient;
+  self.isPrivKeyEncrypted = fc.isPrivKeyEncrypted();
+  $timeout(function() {
+    $rootScope.$apply();
   });
-
-  $rootScope.$on('Local/NewEncryptionSetting', function() {
-    var fc = profileService.focusedClient;
-    self.isPrivKeyEncrypted = fc.isPrivKeyEncrypted();
-    $timeout(function() {
-      $rootScope.$apply();
-    });
-  });
+});
 
 
-  /* Start setup */
-  lodash.assign(self, vanillaScope);
+/* Start setup */
+lodash.assign(self, vanillaScope); openURLService.init();
 });

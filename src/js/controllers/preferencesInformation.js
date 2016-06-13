@@ -46,10 +46,6 @@ angular.module('copayApp.controllers').controller('preferencesInformation',
     this.sendAddrs = function() {
       var self = this;
 
-      if (platformInfo.isAndroid || platformInfo.isWP) {
-        window.ignoreMobilePause = true;
-      }
-
       self.loading = true;
 
       function formatDate(ts) {

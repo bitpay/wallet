@@ -7,42 +7,32 @@ angular.element(document).ready(function() {
     angular.bootstrap(document, ['copayApp']);
   };
 
-  var handleBitcoinURI = function(url) {
-    if (!url) return;
-    console.log('Custom URL:'  + url); //TODO
 
-    var glidera = 'copay://glidera';
-    var coinbase = 'copay://coinbase';
-
-    if (url.indexOf('bitcoin:') == 0) {
-      url = '#/uri-payment/' + url;
-    } else if (url.indexOf(glidera) != -1) {
-      url = '#/uri-glidera' + url.replace(glidera, '');
-    } else if (url.indexOf(coinbase) != -1) {
-      url = '#/uri-coinbase' + url.replace(coinbase, '');
+  function handleOpenURL(url) {
+    if ('cordova' in window) {
+      console.log('DEEP LINK:' + url);
+      cordova.fireDocumentEvent('handleopenurl', {
+        url: url
+      });
     } else {
-      console.log('Unknown URL!')
-    };
-
-    setTimeout(function() {
-      window.location = url;
-    }, 1000);
+      console.log("ERROR: Cannont handle open URL in non-cordova apps")
+    }
   };
 
-
   /* Cordova specific Init */
-  if (window.cordova !== undefined) {
+  if ('cordova' in window) {
+
+    window.handleOpenURL = handleOpenURL;
+
 
     document.addEventListener('deviceready', function() {
-      window.handleOpenURL = handleBitcoinURI;
+
+      // Create a sticky event for handling the app being opened via a custom URL
+      cordova.addStickyDocumentEventHandler('handleopenurl');
       startAngular();
     }, false);
 
   } else {
-    try {
-      window.handleOpenURL = handleBitcoinURI;
-    } catch (e) {}
-
     startAngular();
   }
 
