@@ -59,7 +59,7 @@
 
         <div 
          ng-init="buy.init()"
-         ng-click="openWalletsModal(buy.otherWallets)">
+         ng-click="openWalletsModal(buy.allWallets)">
           <label>Pay From Copay Wallet</label>
           <div class="input">
             <input type="text" id="address" name="address" ng-disabled="buy.selectedWalletId" 
@@ -73,7 +73,7 @@
 
         <div class="input m20t">
           <input class="button black round expand" 
-                   ng-disabled="buy.loading || !fiat"
+                   ng-disabled="!buy.selectedWalletId || buy.loading || !fiat"
                    type="submit" value="Buy now">
         </div>
       </form>
@@ -111,13 +111,13 @@
 
       <div class="oh m20t size-12 text-center">
         <img class="m10h" src="img/a_generic.jpg" alt="Amazon.com Gift Cards" width="230">
-        <div class="m10t">
+        <div class="m10t size-14">
           Gift Card Amount: 
           <span class="text-bold">
             {{buy.giftCard.cardInfo.value.amount | currency : '$ ' : 2 }}
           </span>
         </div>
-        <div>
+        <div class="size-14">
           Claim code: <span class="text-bold enable_text_select">{{buy.giftCard.gcClaimCode}}</span>
         </div>
         <div class="m10t">

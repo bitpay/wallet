@@ -1,21 +1,14 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('buyAmazonController', 
-  function($rootScope, $scope, $modal, $log, $timeout, lodash, profileService, animationService, bwsError, configService, walletService, fingerprintService, amazonService) {
+  function($rootScope, $scope, $ionicModal, $log, $timeout, lodash, profileService, bwsError, configService, walletService, fingerprintService, amazonService) {
     
-    window.ignoreMobilePause = true;
     var self = this;
-    var fc;
+    var client;
     var minimumAmount = 5;
     var stepAmount = 1;
     var multiplierAmount = 5;
     var maximumAmount = 500;
-
-    var otherWallets = function(network) {
-      return lodash.filter(profileService.getWallets(network), function(w) {
-        return w.network == network && w.m == 1;
-      });
-    };
 
     var handleEncryptedWallet = function(client, cb) {
       if (!walletService.isEncrypted(client)) return cb();
@@ -31,68 +24,38 @@ angular.module('copayApp.controllers').controller('buyAmazonController',
       amazonService.setCredentials(network);
       amazonService.healthCheckRequest();
       amazonService.initUuid();
-      self.otherWallets = otherWallets(network);
-      // Choose focused wallet
-      try {
-        var currentWalletId = profileService.focusedClient.credentials.walletId;
-        lodash.find(self.otherWallets, function(w) {
-          if (w.id == currentWalletId) {
-            $timeout(function() {
-              self.selectedWalletId = w.id;
-              self.selectedWalletName = w.name;
-              fc = profileService.getClient(w.id);
-              $scope.$apply();
-            }, 100);
-          }
-        });
-      } catch (e) {
-        $log.debug(e);
-      };
+      self.allWallets = profileService.getWallets(network, 1);
+      client = profileService.focusedClient;
+      if (client && client.credentials.m == 1) { 
+        $timeout(function() {
+          self.selectedWalletId = client.credentials.walletId;
+          self.selectedWalletName = client.credentials.walletName;
+          $scope.$apply();
+        }, 100);
+      }
     };
 
     $scope.openWalletsModal = function(wallets) {
-      if (self.loading) return;
       self.error = null;
-      self.errorInfo = null;
-      var ModalInstanceCtrl = function($scope, $modalInstance) {
-        $scope.type = 'SELL';
-        $scope.wallets = wallets;
-        $scope.noColor = true;
-        $scope.cancel = function() {
-          $modalInstance.dismiss('cancel');
-        };
 
-        $scope.selectWallet = function(walletId, walletName) {
-          if (!profileService.getClient(walletId).isComplete()) {
-            self.error = bwsError.msg('WALLET_NOT_COMPLETE');
-            $modalInstance.dismiss('cancel');
-            return;
-          }
-          $modalInstance.close({
-            'walletId': walletId,
-            'walletName': walletName,
-          });
-        };
-      };
+      $scope.type = 'SELL';
+      $scope.wallets = wallets;
 
-      var modalInstance = $modal.open({
-        templateUrl: 'views/modals/wallets.html',
-        windowClass: animationService.modalAnimated.slideUp,
-        controller: ModalInstanceCtrl,
+      $ionicModal.fromTemplateUrl('views/modals/wallets.html', {
+        scope: $scope
+      }).then(function(modal) {
+        $scope.walletsModal = modal;
+        $scope.walletsModal.show();
       });
 
-      modalInstance.result.finally(function() {
-        var m = angular.element(document.getElementsByClassName('reveal-modal'));
-        m.addClass(animationService.modalAnimated.slideOutDown);
-      });
-
-      modalInstance.result.then(function(obj) {
+      $scope.$on('walletSelected', function(ev, obj) {
         $timeout(function() {
           self.selectedWalletId = obj.walletId;
           self.selectedWalletName = obj.walletName;
-          fc = profileService.getClient(obj.walletId);
+          client = obj.client;
           $scope.$apply();
         }, 100);
+        $scope.walletsModal.hide();
       });
     };
 
@@ -156,7 +119,7 @@ angular.module('copayApp.controllers').controller('buyAmazonController',
           };
 
           self.loading = 'Creating transaction...';
-          walletService.createTx(fc, txp, function(err, createdTxp) {
+          walletService.createTx(client, txp, function(err, createdTxp) {
             self.loading = null;
             if (err) {
               self.loading = null;
@@ -204,38 +167,38 @@ angular.module('copayApp.controllers').controller('buyAmazonController',
 
     this.confirmTx = function(txp, cb) {
 
-      fingerprintService.check(fc, function(err) {
+      fingerprintService.check(client, function(err) {
         if (err) {
           $log.debug(err);
           return cb(err);
         }
 
-        handleEncryptedWallet(fc, function(err) {
+        handleEncryptedWallet(client, function(err) {
           if (err) {
             $log.debug(err);
             return bwsError.cb(err, null, cb);
           }
 
-          walletService.publishTx(fc, txp, function(err, publishedTxp) {
+          walletService.publishTx(client, txp, function(err, publishedTxp) {
             if (err) {
               $log.debug(err);
               return bwsError.cb(err, null, cb);
             }
 
-            walletService.signTx(fc, publishedTxp, function(err, signedTxp) {
-              walletService.lock(fc);
+            walletService.signTx(client, publishedTxp, function(err, signedTxp) {
+              walletService.lock(client);
               if (err) {
                 $log.debug(err);
-                walletService.removeTx(fc, signedTxp, function(err) {
+                walletService.removeTx(client, signedTxp, function(err) {
                   if (err) $log.debug(err);
                 });
                 return bwsError.cb(err, null, cb);
               }
 
-              walletService.broadcastTx(fc, signedTxp, function(err, broadcastedTxp) {
+              walletService.broadcastTx(client, signedTxp, function(err, broadcastedTxp) {
                 if (err) {
                   $log.debug(err);
-                  walletService.removeTx(fc, broadcastedTxp, function(err) {
+                  walletService.removeTx(client, broadcastedTxp, function(err) {
                     if (err) $log.debug(err);
                   });
                   return bwsError.cb(err, null, cb);
