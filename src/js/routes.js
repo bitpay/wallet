@@ -149,16 +149,6 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
           },
         }
       })
-      .state('importLegacy', {
-        url: '/importLegacy',
-        needProfile: true,
-        views: {
-          'main': {
-            templateUrl: 'views/importLegacy.html',
-          },
-        }
-
-      })
       .state('create', {
         url: '/create',
         templateUrl: 'views/create.html',
