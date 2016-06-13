@@ -44,6 +44,7 @@ angular.module('copayApp.services').factory('ongoingProcess', function($log, $ti
 
   root.set = function(processName, isOn) {
 
+console.log('[onGoingProcess.js.46]', processName); //TODO
     $log.debug('ongoingProcess', processName, isOn);
     root[processName] = isOn;
     ongoingProcess[processName] = isOn;
@@ -58,13 +59,21 @@ angular.module('copayApp.services').factory('ongoingProcess', function($log, $ti
     root.onGoingProcessName = name;
 
     var showName = processNames[name] || gettextCatalog.getString(name);
+
+console.log('[onGoingProcess.js.62]'); //TODO
     if (root.onGoingProcessName) {
+
+console.log('[onGoingProcess.js.65]'); //TODO
       if (isCordova) {
         window.plugins.spinnerDialog.show(null, showName, true);
       } else {
+
+console.log('[onGoingProcess.js.70]'); //TODO
         $ionicLoading.show({
           template: showName,
         });
+
+console.log('[onGoingProcess.js.75]'); //TODO
       }
     } else {
       if (isCordova) {
