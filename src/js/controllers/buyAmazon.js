@@ -93,6 +93,7 @@ angular.module('copayApp.controllers').controller('buyAmazonController',
           if (err) {
             self.loading = null;
             self.error = bwsError.msg(err);
+            $scope.$apply();
             return;
           }
 
