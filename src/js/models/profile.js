@@ -74,6 +74,9 @@ Profile.prototype.setChecked = function(ua, walletId) {
 
 
 Profile.prototype.addWallet = function(credentials) {
+  if (!credentials.walletId)
+    throw 'credentials must have .walletId';
+
   if (this.hasWallet(credentials.walletId))
     return false;
 
@@ -83,14 +86,20 @@ Profile.prototype.addWallet = function(credentials) {
 };
 
 Profile.prototype.updateWallet = function(credentials) {
+  if (!credentials.walletId)
+    throw 'credentials must have .walletId';
+
   if (!this.hasWallet(credentials.walletId))
     return false;
 
-  this.credentials = this.credentials.filter(function(c) {
-    return c.walletId != walletId;
+  this.credentials = this.credentials.map(function(c) {
+    if(c.walletId != credentials.walletId ) {
+      return c;
+    } else {
+      return credentials
+    }
   });
 
-  this.addWallet(credentials);
   this.dirty = true;
   return true;
 };
