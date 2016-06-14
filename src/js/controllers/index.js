@@ -80,6 +80,10 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     storageService.setHideBalanceFlag(self.walletId, self.shouldHideBalance, function() {});
   }
 
+  self.setWalletPreferencesTitle = function() {
+    return gettext("Wallet Preferences");
+  }
+
   self.cleanInstance = function() {
     $log.debug('Cleaning Index Instance');
     lodash.each(self, function(v, k) {
