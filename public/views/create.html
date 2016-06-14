@@ -4,20 +4,16 @@
   ng-init="titleSection='Create new wallet';  goBackToState = 'add'; noColor = true">
 </div>
 
-
-
-<ion-content overflow-scroll="true" class="content p20b" ng-controller="createController as create" ng-init="create.setTotalCopayers(1)">
+<div class="content p20b" ng-controller="createController as create" ng-init="create.setTotalCopayers(1)">
 
   <div class="create-tab small-only-text-center" ng-hide="create.hideTabs">
     <div class="row">
-    <div class="tab-container small-6 medium-3 large-2" ng-class="{'selected': totalCopayers == 1}">
-    <a href
-      ng-click="create.setTotalCopayers(1)" translate>Personal Wallet</a>
-    </div>
-    <div class="tab-container small-6 medium-3 large-2" ng-class="{'selected': totalCopayers != 1}">
-    <a href
-      ng-click="create.setTotalCopayers(3)" translate>Shared Wallet</a>
-    </div>
+      <div class="tab-container small-6 medium-3 large-2" ng-class="{'selected': totalCopayers == 1}">
+        <a href ng-click="create.setTotalCopayers(1)" translate>Personal Wallet</a>
+      </div>
+      <div class="tab-container small-6 medium-3 large-2" ng-class="{'selected': totalCopayers != 1}">
+        <a href ng-click="create.setTotalCopayers(3)" translate>Shared Wallet</a>
+      </div>
     </div>
   </div>
 
@@ -166,5 +162,5 @@
       </div> <!-- large-12 columns -->
     </div> <!-- row -->
   </form>
-</ion-content>
+</div>
 <div class="extra-margin-bottom"></div>
