@@ -139,8 +139,8 @@ angular.module('copayApp.services')
           case 'PASSWORD_INCORRECT':
             body = gettextCatalog.getString('Wrong spending password');
             break;
-          case 'EXCEEDED_DAYLY_LIMIT':
-            body = gettextCatalog.getString('Exceeded dayly limit of $500 per user');
+          case 'EXCEEDED_DAILY_LIMIT':
+            body = gettextCatalog.getString('Exceeded daily limit of $500 per user');
             break;
           case 'ERROR':
             body = (err.message || err.error);
