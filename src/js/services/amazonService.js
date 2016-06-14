@@ -3,7 +3,7 @@
 angular.module('copayApp.services').factory('amazonService', function($http, $log, lodash, moment, storageService, configService, platformInfo) {
   var root = {};
   var credentials = {};
-  var LIMIT = 500;
+  var DAILYLIMIT = 500;
 
   root.setCredentials = function(network) {
     credentials.AMAZON_SANDBOX = network == 'testnet' ? true : false;
@@ -57,8 +57,8 @@ angular.module('copayApp.services').factory('amazonService', function($http, $lo
         amazon = JSON.parse(amazon);
       }
 
-      if (amazon.date == dateStamp && (amazon.amount + amount) > LIMIT)
-        return cb('EXCEEDED_DAYLY_LIMIT');
+      if (amazon.date == dateStamp && (amazon.amount + amount) > DAILYLIMIT)
+        return cb('EXCEEDED_DAILY_LIMIT');
 
       return cb();
     });
