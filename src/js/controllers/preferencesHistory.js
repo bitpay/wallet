@@ -6,9 +6,7 @@ angular.module('copayApp.controllers').controller('preferencesHistory',
     var c = fc.credentials;
     $scope.csvReady = false;
 
-    $scope.csvHistory = function(isUpdating, cb) {
-      if (isUpdating) return;
-
+    $scope.csvHistory = function(cb) {
       var allTxs = [];
 
       function getHistory(cb) {

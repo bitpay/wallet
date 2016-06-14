@@ -18,11 +18,17 @@ describe('Preferences History Controller', function() {
       mocks.clear({}, done);
     });
 
+    it('should be defined', function() {
+      should.exist(ctrl);
+    });
+
     it('should export csv', function(done) {
-      ctrl.csvHistory(function(err) {
+      scope.csvHistory(function(err) {
         should.not.exist(err);
-        ctrl.csvReady.should.equal(true);
-        JSON.stringify(ctrl.csvContent).should.equal('[{"Date":"2016-06-03T15:54:51.000Z","Destination":"","Description":"","Amount":"0.00120000","Currency":"BTC","Txid":"bf31ecaa8e10ce57f9a889fc4c893b40ff57b016dd763957d942e21ed55fc62c","Creator":"","Copayers":"","Comment":"just a comment"}]');
+        should.exist(scope.csvReady);
+        scope.csvReady.should.equal(true);
+        should.exist(scope.csvContent);
+        JSON.stringify(scope.csvContent).should.equal('[{"Date":"2016-06-03T15:54:51.000Z","Destination":"","Description":"","Amount":"0.00120000","Currency":"BTC","Txid":"bf31ecaa8e10ce57f9a889fc4c893b40ff57b016dd763957d942e21ed55fc62c","Creator":"","Copayers":"","Comment":"just a comment"}]');
         done();
       });
     });

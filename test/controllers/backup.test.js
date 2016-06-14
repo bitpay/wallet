@@ -16,9 +16,10 @@ describe('Backup Controller', function() {
     it('should be defined', function() {
       should.exist(ctrl);
     });
+
     it('should set the mnemonic incomplete wallets', function(done) {
-      should.exist(ctrl);
-      ctrl.mnemonicWords.should.deep.equal('dizzy cycle skirt decrease exotic fork sure mixture hair vapor copper hero'.split(' '));
+      should.exist(scope.mnemonicWords);
+      scope.mnemonicWords.should.deep.equal('dizzy cycle skirt decrease exotic fork sure mixture hair vapor copper hero'.split(' '));
       done();
     });
   });
@@ -35,11 +36,11 @@ describe('Backup Controller', function() {
     });
 
     it('should not set the mnemonic for complete wallets', function() {
-      ctrl.mnemonicWords.should.deep.equal('cheese where alarm job conduct donkey license pave congress pepper fence current'.split(' '));
+      scope.mnemonicWords.should.deep.equal('cheese where alarm job conduct donkey license pave congress pepper fence current'.split(' '));
     });
 
     it('should set main wallet info', function(done) {
-      ctrl.walletName.should.equal('kk');
+      scope.walletName.should.equal('kk');
       done();
     });
   });
