@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('preferencesEmailController', function($rootScope, go, profileService, walletService) {
+angular.module('copayApp.controllers').controller('preferencesEmailController', function($rootScope, $scope, go, profileService, walletService) {
   $scope.save = function(form) {
     $scope.error = null;
     $scope.saving = true;

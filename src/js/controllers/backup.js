@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('backupController',
-  function($rootScope, $scope, $timeout, $log, lodash, profileService, gettext, bwcService, bwsError, walletService, ongoingProcess) {
+  function($rootScope, $scope, $timeout, $log, go, lodash, profileService, gettext, bwcService, bwsError, walletService, ongoingProcess) {
 
     var fc = profileService.focusedClient;
     $scope.customWords = [];
@@ -41,7 +41,6 @@ angular.module('copayApp.controllers').controller('backupController',
     };
 
     $scope.backTo = function(state) {
-      console.log(state);
       if (state == 'walletHome')
         go.walletHome();
       else
