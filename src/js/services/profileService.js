@@ -691,7 +691,7 @@ angular.module('copayApp.services')
     };
 
     root.updateCredentials = function(credentials, cb) {
-      var t =  root.profile.updateWallet(credentials);
+      root.profile.updateWallet(credentials);
       storageService.storeProfile(root.profile, cb);
     };
 
