@@ -75,11 +75,6 @@ angular.module('copayApp.services')
       root.walletClients[walletId].started = true;
       root.walletClients[walletId].doNotVerifyPayPro = isChromeApp;
 
-      if (client.incorrectDerivation) {
-        $log.warn('Key Derivation failed for wallet:' + walletId);
-        storageService.clearLastAddress(walletId, function() {});
-      }
-
       client.removeAllListeners();
       client.on('report', function(n) {
         $log.info('BWC Report:' + n);
@@ -121,6 +116,30 @@ angular.module('copayApp.services')
       return true;
     };
 
+    root.runValidation = function(client) {
+      var skipDeviceValidation = root.profile.isDeviceChecked(platformInfo.ua);
+      var walletId = client.credentials.walletId;
+
+      $timeout(function() {
+
+        $log.debug('ValidatingWallet: ' + walletId + ' skip Device:' + skipDeviceValidation);
+        $rootScope.$emit('Local/ValidatingWallet', walletId);
+
+        client.validateKeyDerivation({
+          skipDeviceValidation: skipDeviceValidation,
+        }, function(err, isOK) {
+          $log.debug('ValidatingWallet End:  ' + walletId + ' isOK:' + isOK);
+          $rootScope.$emit('Local/ValidatingWalletEnded', walletId, isOK);
+
+          if (isOK) {
+            root.profile.setChecked(platformInfo.ua, walletId);
+          } else {
+            $log.warn('Key Derivation failed for wallet:' + walletId);
+            storageService.clearLastAddress(walletId, function() {});
+          }
+        });
+      }, 5000);
+    };
 
     // Used when reading wallets from the profile
     root.bindWallet = function(credentials, cb) {
@@ -135,22 +154,17 @@ angular.module('copayApp.services')
         return ((config.bwsFor && config.bwsFor[walletId]) || defaults.bws.url);
       };
 
+
+      var client = bwcService.getClient(JSON.stringify(credentials), {
+        bwsurl: getBWSURL(credentials.walletId),
+      });
+
       var skipKeyValidation = root.profile.isChecked(platformInfo.ua, credentials.walletId);
-      if (!skipKeyValidation) {
-        $rootScope.$emit('Local/ValidatingWallet');
-      }
-      $timeout(function() {
-        $log.info('Binding wallet:' + credentials.walletId + ' Validating?:' + !skipKeyValidation);
-        var client = bwcService.getClient(JSON.stringify(credentials), {
-          bwsurl: getBWSURL(credentials.walletId),
-          skipKeyValidation: skipKeyValidation,
-        });
+      if (!skipKeyValidation) 
+        root.runValidation(client);
 
-        if (!skipKeyValidation && !client.incorrectDerivation)
-          root.profile.setChecked(platformInfo.ua, credentials.walletId);
-
-        return cb(null, root.bindWalletClient(client));
-      }, skipKeyValidation ? 50 : 0);
+      $log.info('Binding wallet:' + credentials.walletId + ' Validating?:' + !skipKeyValidation);
+      return cb(null, root.bindWalletClient(client));
     };
 
     root.bindProfile = function(profile, cb) {
@@ -463,6 +477,11 @@ angular.module('copayApp.services')
       if (!root.profile.addWallet(JSON.parse(client.export())))
         return cb(gettext('Wallet already in Copay'));
 
+
+      var skipKeyValidation = root.profile.isChecked(platformInfo.ua, walletId);
+      if (!skipKeyValidation) 
+        root.runValidation(client);
+
       root.bindWalletClient(client);
       $rootScope.$emit('Local/WalletListUpdated', client);
 
@@ -542,9 +561,6 @@ angular.module('copayApp.services')
 
       var addressBook = str.addressBook || {};
       var historyCache = str.historyCache ||  [];
-
-      if (!walletClient.incorrectDerivation)
-        root.profile.setChecked(platformInfo.ua, walletClient.credentials.walletId);
 
       root.addAndBindWalletClient(walletClient, {
         bwsurl: opts.bwsurl,

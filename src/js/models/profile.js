@@ -57,6 +57,12 @@ Profile.prototype.isChecked = function(ua, walletId) {
   return !!(this.checkedUA == ua && this.checked[walletId]);
 };
 
+
+Profile.prototype.isDeviceChecked = function(ua) {
+  return this.checkedUA == ua;
+};
+
+
 Profile.prototype.setChecked = function(ua, walletId) {
   if (this.checkedUA != ua) {
     this.checkedUA = ua;
