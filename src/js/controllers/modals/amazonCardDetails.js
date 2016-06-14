@@ -23,6 +23,7 @@ angular.module('copayApp.controllers').controller('amazonCardDetailsController',
 
   $scope.remove = function() {
     amazonService.saveGiftCard($scope.card, {remove: true}, function(err) {
+      $scope.$emit('UpdateAmazonList');
       $scope.cancel();
     });
   };
@@ -43,6 +44,7 @@ angular.module('copayApp.controllers').controller('amazonCardDetailsController',
         $scope.error = err;
         return;
       }
+      $scope.$emit('UpdateAmazonList');
       $scope.card = data;
       $timeout(function() {
         $scope.$digest();

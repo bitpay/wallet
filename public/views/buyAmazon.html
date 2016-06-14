@@ -27,7 +27,7 @@
         </div>
       </div>     
 
-      <div class="text-center">
+      <div class="text-center m20b">
         <img src="img/a_generic.jpg" alt="Amazon.com Gift Card" width="200">
         <div class="text-left size-12 m10t">
           Use your Amazon.com Gift Card* to shop from a huge selection of books, electronics, music, movies, software, apparel, toys, and more.
@@ -38,10 +38,16 @@
          ng-submit="buy.createTx()" 
          novalidate>
 
-        <div class="m20v text-center">
-          <a class="amazon-select-amount" ng-click="buy.setAmount()">-</a>
-          <span class="amazon-amount">$ {{fiat}}</span>
-          <a class="amazon-select-amount" ng-click="buy.setAmount(1)">+</a>
+        <label>
+          Amount
+        </label>
+        <div class="input">
+          <input type="number" id="fiat"
+          name="fiat" ng-attr-placeholder="{{'Amount in USD'}}"
+          min="0.01" max="2000"
+          ng-model="fiat" autocomplete="off" required>
+
+          <a class="postfix button black">USD</a>
         </div>
 
         <div  
