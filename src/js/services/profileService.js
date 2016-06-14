@@ -122,12 +122,13 @@ angular.module('copayApp.services')
 
       $timeout(function() {
 
-        $log.debug('ValidatingWallet: ' + walletId + ' device validation:' + skipDeviceValidation);
+        $log.debug('ValidatingWallet: ' + walletId + ' skip Device:' + skipDeviceValidation);
         $rootScope.$emit('Local/ValidatingWallet', walletId);
 
         client.validateKeyDerivation({
           skipDeviceValidation: skipDeviceValidation,
         }, function(err, isOK) {
+          $log.debug('ValidatingWallet End:  ' + walletId + ' isOK:' + isOK);
           $rootScope.$emit('Local/ValidatingWalletEnded', walletId, isOK);
 
           if (isOK) {
@@ -137,7 +138,7 @@ angular.module('copayApp.services')
             storageService.clearLastAddress(walletId, function() {});
           }
         });
-      }, 10);
+      }, 3000);
     };
 
     // Used when reading wallets from the profile
@@ -159,7 +160,6 @@ angular.module('copayApp.services')
       });
 
       var skipKeyValidation = root.profile.isChecked(platformInfo.ua, credentials.walletId);
-
       if (!skipKeyValidation) 
         root.runValidation(client);
 
@@ -477,6 +477,11 @@ angular.module('copayApp.services')
       if (!root.profile.addWallet(JSON.parse(client.export())))
         return cb(gettext('Wallet already in Copay'));
 
+
+      var skipKeyValidation = root.profile.isChecked(platformInfo.ua, walletId);
+      if (!skipKeyValidation) 
+        root.runValidation(client);
+
       root.bindWalletClient(client);
       $rootScope.$emit('Local/WalletListUpdated', client);
 
@@ -556,9 +561,6 @@ angular.module('copayApp.services')
 
       var addressBook = str.addressBook || {};
       var historyCache = str.historyCache ||  [];
-
-      if (!walletClient.incorrectDerivation)
-        root.profile.setChecked(platformInfo.ua, walletClient.credentials.walletId);
 
       root.addAndBindWalletClient(walletClient, {
         bwsurl: opts.bwsurl,
