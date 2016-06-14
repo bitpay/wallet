@@ -3,12 +3,12 @@
   ng-init="titleSection='Global preferences'; closeToHome = true; noColor = true">
 </div>
 
-<div class="content preferences" ng-controller="preferencesGlobalController as prefGlobal" ng-init="prefGlobal.init()">
+<div class="content preferences" ng-controller="preferencesGlobalController" ng-init="init()">
   <h4></h4>
   <ul class="no-bullet m0">
-    <li ng-click="$root.go('preferencesLanguage')">
+    <li href ui-sref="preferencesLanguage">
       <div class="right text-gray">
-        {{prefGlobal.currentLanguageName|translate}}
+        {{currentLanguageName|translate}}
         <i class="icon-arrow-right3 size-24"></i>
       </div>
       <div translate>Language</div>
@@ -17,17 +17,17 @@
   <h4></h4>
 
   <ul class="no-bullet m0">
-    <li ng-click="$root.go('preferencesUnit')">
+    <li href ui-sref="preferencesUnit">
       <div class="right text-gray">
-        {{prefGlobal.unitName}}
+        {{unitName}}
         <i class="icon-arrow-right3 size-24"></i>
       </div>
       <div translate>Unit</div>
     </li>
 
-    <li ng-click="$root.go('preferencesAltCurrency')">
+    <li href ui-sref="preferencesAltCurrency">
       <div class="right text-gray">
-        {{prefGlobal.selectedAlternative.name}}
+        {{selectedAlternative.name}}
         <i class="icon-arrow-right3 size-24"></i>
       </div>
       <div translate>Alternative Currency</div>
@@ -36,9 +36,9 @@
   <h4></h4>
 
   <ul class="no-bullet m0">
-    <li ng-click="$root.go('preferencesFee')">
+    <li href ui-sref="preferencesFee">
       <div class="right text-gray">
-        {{prefGlobal.feeOpts[prefGlobal.currentFeeLevel]|translate}}
+        {{feeOpts[currentFeeLevel]|translate}}
         <i class="icon-arrow-right3 size-24"></i>
       </div>
       <div translate>Bitcoin Network Fee Policy</div>
@@ -49,7 +49,7 @@
     <span class="toggle-label" translate>Use Unconfirmed Funds</span>
   </ion-toggle>
 
-  <div ng-show="prefGlobal.usePushNotifications && PNEnabledByUser">
+  <div ng-show="usePushNotifications && PNEnabledByUser">
     <h4></h4>
     <ion-toggle ng-model="pushNotifications" toggle-class="toggle-balanced" ng-change="pushNotificationsChange()">
       <span class="toggle-label" translate>Enable push notifications</span>
@@ -68,15 +68,15 @@
   <h4></h4>
 
   <ul class="no-bullet m0">
-    <li ng-click="$root.go('about')">
+    <li href ui-sref="about">
       <i class="icon-arrow-right3 size-24 right text-gray"></i>
       <div translate>About Copay</div>
     </li>
   </ul>
 
-  <div ng-show="prefGlobal.usePushNotifications && !PNEnabledByUser && isIOSApp">
+  <div ng-show="usePushNotifications && !PNEnabledByUser && isIOSApp">
     <div class="text-centered text-gray size-12 m10" translate>Push notifications for Copay are currently disabled. Enable them in the Settings app.</div>
-    <ul class="no-bullet m0" ng-click="prefGlobal.openSettings()">
+    <ul class="no-bullet m0" ng-click="openSettings()">
       <li ng-style="{'color':index.backgroundColor}" translate>Open Settings app</li>
     </ul>
   </div>

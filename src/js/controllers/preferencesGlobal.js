@@ -4,17 +4,18 @@ angular.module('copayApp.controllers').controller('preferencesGlobalController',
   function($scope, $rootScope, $log, configService, uxLanguage, platformInfo, pushNotificationsService, profileService, feeService) {
 
     var isCordova = platformInfo.isCordova;
-    this.init = function() {
+
+    $scope.init = function() {
       var config = configService.getSync();
-      this.unitName = config.wallet.settings.unitName;
-      this.currentLanguageName = uxLanguage.getCurrentLanguageName();
-      this.selectedAlternative = {
+      $scope.unitName = config.wallet.settings.unitName;
+      $scope.currentLanguageName = uxLanguage.getCurrentLanguageName();
+      $scope.selectedAlternative = {
         name: config.wallet.settings.alternativeName,
         isoCode: config.wallet.settings.alternativeIsoCode
       };
-      this.feeOpts = feeService.feeOpts;
-      this.currentFeeLevel = feeService.getCurrentFeeLevel();
-      this.usePushNotifications = isCordova && !platformInfo.isWP;
+      $scope.feeOpts = feeService.feeOpts;
+      $scope.currentFeeLevel = feeService.getCurrentFeeLevel();
+      $scope.usePushNotifications = isCordova && !platformInfo.isWP;
       $scope.PNEnabledByUser = true;
       $scope.isIOSApp = platformInfo.isIOS && isCordova;
       if ($scope.isIOSApp) {
@@ -28,7 +29,7 @@ angular.module('copayApp.controllers').controller('preferencesGlobalController',
       $scope.pushNotifications = config.pushNotifications.enabled;
     };
 
-    this.openSettings = function() {
+    $scope.openSettings = function() {
       cordova.plugins.diagnostic.switchToSettings(function() {
         $log.debug('switched to settings');
       }, function(err) {
