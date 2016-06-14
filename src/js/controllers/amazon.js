@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('amazonController', 
-  function($scope, $timeout, $ionicModal, configService, amazonService) {
+  function($scope, $timeout, $ionicModal, lodash, configService, amazonService) {
 
     this.init = function() {
       var self = this;
@@ -13,7 +13,7 @@ angular.module('copayApp.controllers').controller('amazonController',
           self.error = err;
           return;
         }
-        self.giftCards = gcds;
+        self.giftCards = lodash.isEmpty(gcds) ? null : gcds;
         $timeout(function() {
           $scope.$digest();
         });
@@ -21,6 +21,7 @@ angular.module('copayApp.controllers').controller('amazonController',
     };
 
     this.openCardModal = function(card) {
+      var self = this;
       $scope.card = card;
 
       $ionicModal.fromTemplateUrl('views/modals/amazon-card-details.html', {
@@ -28,6 +29,10 @@ angular.module('copayApp.controllers').controller('amazonController',
       }).then(function(modal) {
         $scope.amazonCardDetailsModal = modal;
         $scope.amazonCardDetailsModal.show();
+      });
+
+      $scope.$on('UpdateAmazonList', function(event) {
+        self.init();
       });
     };
   });
