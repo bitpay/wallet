@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('addressbookController', function($rootScope, $scope, $timeout, profileService, addressService, addressbookService, bwsError) {
+angular.module('copayApp.controllers').controller('addressbookController', function($rootScope, $scope, $timeout, lodash, profileService, addressService, addressbookService, bwsError) {
   var self = $scope.self;
 
   var fc = profileService.focusedClient;
@@ -68,7 +68,7 @@ angular.module('copayApp.controllers').controller('addressbookController', funct
     $scope.addAddressbookEntry = !$scope.addAddressbookEntry;
   };
 
-  $scope.list = function() {
+  $scope.contactList = function() {
     $scope.error = null;
     addressbookService.list(function(err, ab) {
       if (err) {
@@ -76,6 +76,7 @@ angular.module('copayApp.controllers').controller('addressbookController', funct
         return;
       }
       $scope.list = ab;
+      $scope.isEmptyList = lodash.isEmpty($scope.list);
       $timeout(function() {
         $scope.$digest();
       });
@@ -92,6 +93,7 @@ angular.module('copayApp.controllers').controller('addressbookController', funct
         }
         $rootScope.$emit('Local/AddressbookUpdated', ab);
         $scope.list = ab;
+        $scope.isEmptyList = lodash.isEmpty($scope.list);
         $scope.editAddressbook = true;
         $scope.toggleEditAddressbook();
         $scope.$digest();
@@ -109,6 +111,9 @@ angular.module('copayApp.controllers').controller('addressbookController', funct
         }
         $rootScope.$emit('Local/AddressbookUpdated', ab);
         $scope.list = ab;
+        $scope.isEmptyList = lodash.isEmpty($scope.list);
+        if ($scope.isEmptyList)
+          $scope.editAddressbook = false;
         $scope.$digest();
       });
     }, 100);

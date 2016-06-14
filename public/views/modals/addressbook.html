@@ -14,7 +14,7 @@
           </h1>
         </section>
 
-        <section class="right-small" ng-show="!selectedWalletsOpt" ng-click="toggleEditAddressbook()">
+        <section class="right-small" ng-show="!selectedWalletsOpt && !isEmptyList" ng-click="toggleEditAddressbook()">
           <a ng-show="!editAddressbook && !addAddressbookEntry" href class="p10">
             <span class="text-close" translate>Edit</span>
           </a>
@@ -73,7 +73,7 @@
         </div>
 
         <div ng-show="!selectedWalletsOpt" class="m20b">
-          <ul ng-show="!addAddressbookEntry" class="no-bullet m0" ng-init="list()">
+          <ul ng-show="!addAddressbookEntry" class="no-bullet m0" ng-init="contactList()">
             <li class="p10 line-b" ng-repeat="(addr, label) in list">
               <a ng-show="selectedAddressbook[addr]" class="removeAddressbook" ng-click="remove(addr)" translate>Remove</a>
               <a ng-show="editAddressbook" class="selectAddressbook" ng-click="toggleSelectAddressbook(addr)">
@@ -123,7 +123,8 @@
                   <input type="button" class="button expand outline dark-gray round" ng-click="toggleAddAddressbookEntry()" value="{{'Cancel'|translate}}">
                 </div>
                 <div class="columns large-6 medium-6 small-6">
-                  <input type="submit" class="button expand round black" ng-click="add(addressbook)" value="{{'Save'|translate}}" ng-disabled="!addressbookForm.$valid">
+                  <input type="submit" class="button expand round black" ng-click="add(addressbook)" value="{{'Save'|translate}}"
+                  ng-disabled="!addressbookForm.$valid" ng-style="{'background-color':color}">
                 </div>
               </div>
             </form>
