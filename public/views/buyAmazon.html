@@ -7,19 +7,6 @@
 
 <div class="content amazon" ng-controller="buyAmazonController as buy">
 
-  <div class="onGoingProcess" ng-show="buy.loading">
-    <div class="onGoingProcess-content">
-    <div class="spinner">
-      <div class="rect1"></div>
-      <div class="rect2"></div>
-      <div class="rect3"></div>
-      <div class="rect4"></div>
-      <div class="rect5"></div>
-    </div>
-    <span>{{buy.loading}}</span>
-    </div>
-  </div>
-
   <div class="row m20t" ng-show="!buy.giftCard" ng-init="buy.init()">
     <div class="columns">
 
@@ -73,7 +60,7 @@
 
         <div class="input m20t">
           <input class="button black round expand" 
-                   ng-disabled="!buy.selectedWalletId || buy.loading || !fiat"
+                   ng-disabled="!buy.selectedWalletId || !fiat"
                    type="submit" value="Buy now">
         </div>
       </form>
