@@ -37,12 +37,12 @@
             </button>
           </div>
 
-          <div class="text-secondary text-center" ng-if="card.cardInfo.cardStatus == 'RefundedToPurchaser'">
-            Refunded to purchaser
+          <div class="text-warning text-center" ng-if="card.cardInfo.cardStatus == 'RefundedToPurchaser'">
+            Cancelled (Refunded)
           </div>
 
           <div class="size-12 m10t text-center">
-            <a ng-click="$root.openExternalLink(card.bitpayInvoiceUrl)">BitPay Invoice</a>
+            <a ng-click="$root.openExternalLink(card.bitpayInvoiceUrl)">See invoice</a>
           </div>
         </div>
       </div>
@@ -80,7 +80,7 @@
         Amazon.com, Inc. or its affiliates. No expiration date or service fees.
       </div>
 
-      <ul class="no-bullet size-14 m30v">
+      <ul class="no-bullet size-14 m30v text-center">
         <li class="line-b p10 oh pointer" ng-show="card.status == 'SUCCESS' && card.cardInfo.cardStatus == 'Fulfilled'" ng-click="cancelGiftCard()">
           <span class="text-warning">Cancel gift card</span>
         </li>
