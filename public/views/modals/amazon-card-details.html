@@ -53,7 +53,7 @@
         </span>
       </div> 
 
-      <div class="text-center size-12" ng-show="card.status != 'SUCCESS' && !loading">
+      <div class="text-center size-12" ng-show="card.status != 'SUCCESS'">
         <div ng-show="card.status == 'RESEND'">
           <div class="text-secondary m10h">
             There was a temporary/recoverable system failure that can be resolved by retrying the request
@@ -116,8 +116,7 @@
           This action will remove the gift card
           </p>
           <button class="button outline round dark-gray tiny" 
-                  ng-click="remove();"
-                  ng-disabled="loading">
+                  ng-click="remove()">
             <i class="fi-x"></i>
             Remove
           </button>
@@ -130,8 +129,7 @@
             This action will cancel the gift card
           </p>
           <button class="button outline round dark-gray tiny" 
-                  ng-click="cancelGiftCard()"
-                  ng-disabled="loading">
+                  ng-click="cancelGiftCard()">
             <i class="fi-x"></i>
             Cancel
           </button>

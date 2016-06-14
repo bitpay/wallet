@@ -25,19 +25,6 @@
 
 <div class="content amazon p20b" ng-controller="amazonController as amazon">
 
-  <div class="onGoingProcess" ng-show="amazon.loading">
-    <div class="onGoingProcess-content">
-    <div class="spinner">
-      <div class="rect1"></div>
-      <div class="rect2"></div>
-      <div class="rect3"></div>
-      <div class="rect4"></div>
-      <div class="rect5"></div>
-    </div>
-    <span ng-show="amazon.loading">{{amazon.loading}}</span>
-    </div>
-  </div>
-
   <div ng-init="amazon.init()">
 
     <div class="box-notification text-center size-12 text-warning m10t" ng-show="amazon.sandbox">

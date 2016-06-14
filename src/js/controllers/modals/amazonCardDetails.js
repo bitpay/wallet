@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('amazonCardDetailsController', function($scope, $timeout, amazonService) {
+angular.module('copayApp.controllers').controller('amazonCardDetailsController', function($scope, $timeout, amazonService, ongoingProcess) {
 
   $scope.cancelGiftCard = function() {
     var dataSrc = {
@@ -10,9 +10,9 @@ angular.module('copayApp.controllers').controller('amazonCardDetailsController',
       bitpayInvoiceUrl: $scope.card.bitpayInvoiceUrl,
       date: $scope.card.date
     };
-    $scope.loading = true;
+    ongoingProcess.set('Canceling gift card...', true);
     amazonService.cancelGiftCard(dataSrc, function(err, data) {
-      $scope.loading = null;
+      ongoingProcess.set('Canceling gift card...', false);
       if (err || data.status != 'SUCCESS') {
         $scope.error = err || data.status;
         return;
@@ -36,9 +36,9 @@ angular.module('copayApp.controllers').controller('amazonCardDetailsController',
       bitpayInvoiceUrl: $scope.card.bitpayInvoiceUrl,
       date: $scope.card.date
     };
-    $scope.loading = true;
+    ongoingProcess.set('Updating gift card...', true);
     amazonService.createGiftCard(dataSrc, function(err, data) {
-      $scope.loading = null;
+      ongoingProcess.set('Updating gift card...', false);
       if (err) {
         $scope.error = err;
         return;
