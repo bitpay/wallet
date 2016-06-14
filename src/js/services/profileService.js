@@ -669,7 +669,7 @@ angular.module('copayApp.services')
 
     root.setDisclaimerAccepted = function(cb) {
       root.profile.disclaimerAccepted = true;
-      storageService.storeProfileThrottled(root.profile, function(err) {
+      storageService.storeProfile(root.profile, function(err) {
         return cb(err);
       });
     };
@@ -692,7 +692,7 @@ angular.module('copayApp.services')
 
     root.updateCredentials = function(credentials, cb) {
       root.profile.updateWallet(credentials);
-      storageService.storeProfileThrottled(root.profile, cb);
+      storageService.storeProfile(root.profile, cb);
     };
 
     root.getClients = function() {
