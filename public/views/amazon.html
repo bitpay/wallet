@@ -37,18 +37,7 @@
       <div class="size-10 m5t text-gray"><b>Only</b> redeemable on www.amazon.com (USA website)</div>
     </div>
 
-    <div ng-if="!amazon.giftCards" class="m20t text-center size-12">
-      <div class="text-left p10h">
-        Amazon.com Gift Cards* never expire and can be redeemed towards millions of items at 
-        <a ng-click="$root.openExternalLink('https://www.amazon.com')">www.amazon.com</a>, 
-        <a ng-click="$root.openExternalLink('https://www.myhabit.com')">www.myhabit.com</a>, and 
-          certain of its affiliated websites. Amazon.com&rsquo;s huge 
-        selection includes products in Books, Electronics, Music, MP3 Downloads, DVD, Clothing, Video Games, 
-        Software, Sports &amp; Outdoors, Toys, Baby, Computers &amp; Office, Home &amp; Garden, Jewelry, 
-        Beauty, Cell Phones &amp; Accessories, Home Improvement, Office Products, Camera &amp; Photo, 
-        Pet Supplies, and more. Amazon.com is the place to find and discover almost anything you 
-        want to buy online at a great price.
-      </div>
+    <div ng-if="!amazon.giftCards" class="m20t text-center size-12"> 
 
       <div class="row">
         <div class="columns">
@@ -57,6 +46,11 @@
             Buy now
           </button>
         </div>
+      </div>
+
+      <div class="text-left p10h m30v">
+        Amazon.com Gift Cards never expire and can be redeemed towards millions of items at 
+        <a ng-click="$root.openExternalLink('https://www.amazon.com')">www.amazon.com</a>
       </div>
     </div>
 

@@ -16,7 +16,7 @@
   <ion-content overflow-scroll="true">
 
     <div class="modal-content fix-modals-touch">
-      <div class="header-modal bg-gray text-center">
+      <div class="header-modal text-center">
 
         <img src="img/a_generic.jpg" alt="Amazon.com Gift Card" width="230" ng-click="refreshGiftCard()">
 
@@ -37,12 +37,12 @@
             </button>
           </div>
 
-          <div class="size-12 m10t text-center" ng-show="card.cardInfo.cardStatus == 'Fulfilled'">
-            | <a 
-               ng-click="$root.openExternalLink('https://www.amazon.com/gp/css/gc/payment/view-gc-balance?claimCode=' + card.gcClaimCode, '_system')">
-              Apply to Account
-            </a> | 
-            <a ng-click="$root.openExternalLink('http://www.amazon.com/gc-redeem')">How to Use</a> |
+          <div class="text-secondary text-center" ng-if="card.cardInfo.cardStatus == 'RefundedToPurchaser'">
+            Refunded to purchaser
+          </div>
+
+          <div class="size-12 m10t text-center">
+            <a ng-click="$root.openExternalLink(card.bitpayInvoiceUrl)">BitPay Invoice</a>
           </div>
         </div>
       </div>
@@ -67,76 +67,7 @@
         </div>
       </div>
 
-      <div class="size-12 white line-t p10" ng-show="card.gcClaimCode && card.cardInfo.cardStatus == 'Fulfilled'">
-        <div class="text-bold m10b">To redeem your gift card, follow these steps:</div>
-        <ol class="amazon-list size-12">
-          <li>Visit <a ng-click="$root.openExternalLink('https://www.amazon.com/gc')">www.amazon.com/gc</a>.</li>
-          <li>Click Apply to Account and enter the claim code when prompted.</li>
-          <li>Gift card funds will be applied automatically to eligible orders during the checkout process.</li>
-          <li>You must pay for any remaining balance on your order with another payment method.</li>
-        </ol>
-        <p class="size-12">Your gift card claim code may also be entered when prompted during checkout. 
-        To redeem your gift card using the Amazon.com 1-Click&reg; service, first add the gift card 
-        funds to Your Account.</p>
-        <p class="size-12">If you have questions about redeeming your gift card, please visit 
-        <a ng-click="$root.openExternalLink('https://www.amazon.com/gc-redeem')">www.amazon.com/gc-redeem</a>. 
-        If you have questions regarding the BitPay offer, please contact BitPay.</p>
-      </div>
-
-      <ul class="no-bullet size-14">
-        <h4 class="title">Details</h4>
-        <li class="line-b p10 oh">
-          <span class="text-gray">Card status</span>
-          <span class="text-success right" ng-if="card.cardInfo.cardStatus == 'Fulfilled'">Fulfilled</span>
-          <span class="text-secondary right" ng-if="card.cardInfo.cardStatus == 'RefundedToPurchaser'">Refunded to purchaser</span>
-          <span class="text-warning right" ng-if="card.cardInfo.cardStatus == 'Expired'">Expired</span>
-        </li>
-        <li class="line-b p10 oh">
-          <span class="text-gray">Created at</span>
-          <span class="test-gray right">{{card.date * 1000 | amDateFormat:'MM/DD/YYYY HH:mm a'}}</span>
-        </li>
-        <li class="line-b p10 oh">
-          <span class="text-gray">Creation status</span>
-          <span class="text-success right" ng-if="card.status == 'SUCCESS'">Success</span>
-          <span class="text-secondary right" ng-if="card.status == 'RESEND'">Resend is required</span>
-          <span class="text-warning right" ng-if="card.status == 'FAILURE'">Error</span>
-          <span class="text-warning right" ng-if="card.status == 'REFUND'">Refunded</span>
-        </li>
-        <li class="line-b p10 oh pointer" ng-click="$root.openExternalLink(card.bitpayInvoiceUrl)">
-          <i class="icon-arrow-right3 size-24 right text-gray"></i>  
-          <span class="text-gray">BitPay Invoice</span>
-          <span class="text-gray right enable_text_select">{{card.bitpayInvoiceId}}</span>
-        </li>
-      </ul>
-
-      <div class="row m20t" 
-        ng-show="card.status == 'FAILURE' || card.cardInfo.cardStatus == 'RefundedToPurchaser' || card.cardInfo.cardStatus == 'Expired'">
-        <div class="columns text-center">
-          <p class="size-12 text-gray">
-          This action will remove the gift card
-          </p>
-          <button class="button outline round dark-gray tiny" 
-                  ng-click="remove()">
-            <i class="fi-x"></i>
-            Remove
-          </button>
-        </div>
-      </div>
-
-      <div class="row m20t" ng-show="card.status == 'SUCCESS' && card.cardInfo.cardStatus == 'Fulfilled'">
-        <div class="columns text-center">
-          <p class="size-12 text-gray">
-            This action will cancel the gift card
-          </p>
-          <button class="button outline round dark-gray tiny" 
-                  ng-click="cancelGiftCard()">
-            <i class="fi-x"></i>
-            Cancel
-          </button>
-        </div>
-      </div>
-
-      <div class="size-12 white p15 m20t">
+      <div class="size-12 white p15 m30v">
         *Amazon.com Gift Cards (&quot;GCs&quot;) sold by BitPay, Inc., an authorized and independent
         reseller of Amazon.com Gift Cards. Except as required by law, GCs cannot be transferred for value or redeemed for cash.
         GCs may be used only for purchases of eligible goods at Amazon.com or certain of its affiliated websites. Purchases are
@@ -148,6 +79,16 @@
         by ACI Gift Cards, Inc., a Washington corporation. All Amazon &reg;, &trade; &amp; &copy; are IP of 
         Amazon.com, Inc. or its affiliates. No expiration date or service fees.
       </div>
+
+      <ul class="no-bullet size-14">
+        <li class="line-b p10 oh pointer" ng-show="card.status == 'SUCCESS' && card.cardInfo.cardStatus == 'Fulfilled'" ng-click="cancelGiftCard()">
+          <span class="text-warning">Cancel gift card</span>
+        </li>
+        <li class="line-b p10 oh pointer" ng-show="card.status == 'FAILURE' || card.cardInfo.cardStatus == 'RefundedToPurchaser'
+          || card.cardInfo.cardStatus == 'Expired'" ng-click="remove()">
+          <span class="text-warning">Remove gift card</span>
+        </li>
+      </ul>
 
       <div class="extra-margin-bottom"></div>
     </div>
