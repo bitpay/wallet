@@ -291,7 +291,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
           } else {
             self.isSingleAddress = !!ret.wallet.singleAddress;
             if (!opts.quiet)
-              ongoingProcess.set('scanning', ret.wallet.scanStatus == 'running');
+              self.updating =  ret.wallet.scanStatus == 'running';
           }
           return cb(err, ret);
         });
@@ -1020,13 +1020,13 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     if (!c.isComplete()) return;
 
     if (self.walletId == walletId)
-      ongoingProcess.set('scanning', true);
+      self.updating = true;
 
     c.startScan({
       includeCopayerBranches: true,
     }, function(err) {
       if (err && self.walletId == walletId) {
-        ongoingProcess.set('scanning', false);
+        self.updating = false;
         self.handleError(err);
         $rootScope.$apply();
       }
