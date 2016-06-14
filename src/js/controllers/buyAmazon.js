@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('buyAmazonController', 
-  function($rootScope, $scope, $ionicModal, $log, $timeout, lodash, profileService, bwsError, configService, walletService, fingerprintService, amazonService) {
+  function($rootScope, $scope, $ionicModal, $log, $timeout, lodash, profileService, bwsError, configService, walletService, fingerprintService, amazonService, ongoingProcess) {
     
     var self = this;
     var client;
@@ -60,7 +60,6 @@ angular.module('copayApp.controllers').controller('buyAmazonController',
     };
 
     this.setAmount = function(plus) {
-      if (self.loading) return;
       if (plus && $scope.fiat < maximumAmount ) {
         stepAmount = stepAmount + 1;
         $scope.fiat = stepAmount * multiplierAmount;
@@ -86,12 +85,12 @@ angular.module('copayApp.controllers').controller('buyAmazonController',
       var walletSettings = configWallet.settings;
 
 
-      self.loading = 'Creating invoice...';
+      ongoingProcess.set('Creating invoice...', true);
       $timeout(function() {
 
         amazonService.createBitPayInvoice(dataSrc, function(err, data) {
+          ongoingProcess.set('Creating invoice...', false);
           if (err) {
-            self.loading = null;
             self.error = bwsError.msg(err);
             $scope.$apply();
             return;
@@ -119,23 +118,22 @@ angular.module('copayApp.controllers').controller('buyAmazonController',
             feeLevel: walletSettings.feeLevel || 'normal'
           };
 
-          self.loading = 'Creating transaction...';
+          ongoingProcess.set('Creating transaction...', true);
           walletService.createTx(client, txp, function(err, createdTxp) {
-            self.loading = null;
+            ongoingProcess.set('Creating transaction...', false);
             if (err) {
-              self.loading = null;
-              $log.debug(err);
               self.error = bwsError.msg(err);
               $scope.$apply();
               return;
             }
             $scope.$emit('Local/NeedsConfirmation', createdTxp, function(accept) {
               if (accept) { 
-                self.loading = 'Sending bitcoin...';
+                ongoingProcess.set('Sending bitcoin...', true);
                 self.confirmTx(createdTxp, function(err, tx) {
+                  ongoingProcess.set('Sending bitcoin...', false);
                   if (err) { 
-                    self.loading = null;
-                    self.error = err;
+                    self.error = bwsError.msg(err);
+                    $scope.$apply();
                     return;
                   }
                   var gift = {
@@ -144,12 +142,13 @@ angular.module('copayApp.controllers').controller('buyAmazonController',
                     bitpayInvoiceId: data.data.id,
                     bitpayInvoiceUrl: data.data.url
                   };
-                  self.loading = 'Creating gift card...';
+                  ongoingProcess.set('Creating gift card...', true);
                   amazonService.createGiftCard(gift, function(err, giftCard) {
-                    self.loading = null;
+                    ongoingProcess.set('Creating gift card...', false);
                     if (err) { 
-                      self.error = err;
+                      self.error = bwsError.msg(err);
                       self.errorInfo = gift;
+                      $scope.$apply();
                       return;
                     }
                     amazonService.setAmountByDay(dataSrc.price);
