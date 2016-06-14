@@ -106,7 +106,7 @@
       </p>
       <button class="m20t outline black round expand"
               ng-style="{'background-color': '#2b71b1'}"
-              ng-click="$root.go('coinbase')">OK</button>
+              href ui-sref="coinbase">OK</button>
     </div>
   </div>
 
@@ -161,8 +161,7 @@
         Bitcoin purchase completed. Coinbase has queued the transfer to your selected Copay wallet.
       </p>
 
-      <button class="outline dark-gray round expand"
-              ng-click="$root.go('coinbase')">OK</button>
+      <button class="outline dark-gray round expand" href ui-sref="coinbase">OK</button>
     </div>
   </div>
 

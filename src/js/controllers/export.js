@@ -2,20 +2,19 @@
 
 angular.module('copayApp.controllers').controller('exportController',
   function($rootScope, $scope, $timeout, $log, backupService, storageService, profileService, platformInfo, notification, go, gettext, gettextCatalog) {
-    var self = this;
     var isWP = platformInfo.isWP;
     var isAndroid = platformInfo.isAndroid;
 
-    self.error = null;
-    self.success = null;
+    $scope.error = null;
+    $scope.success = null;
     $scope.metaDataEnabled = true;
     var fc = profileService.focusedClient;
-    self.isEncrypted = fc.isPrivKeyEncrypted();
+    $scope.isEncrypted = fc.isPrivKeyEncrypted();
 
-    self.downloadWalletBackup = function() {
-      self.getMetaData($scope.metaDataEnabled, function(err, txsFromLocal, localAddressBook) {
+    $scope.downloadWalletBackup = function() {
+      $scope.getMetaData($scope.metaDataEnabled, function(err, txsFromLocal, localAddressBook) {
         if (err) {
-          self.error = true;
+          $scope.error = true;
           return;
         }
         var opts = {
@@ -24,9 +23,9 @@ angular.module('copayApp.controllers').controller('exportController',
           addressBook: localAddressBook
         };
 
-        backupService.walletDownload(self.password, opts, function(err) {
+        backupService.walletDownload($scope.password, opts, function(err) {
           if (err) {
-            self.error = true;
+            $scope.error = true;
             return;
           }
           $rootScope.$emit('Local/BackupDone');
@@ -36,12 +35,12 @@ angular.module('copayApp.controllers').controller('exportController',
       });
     };
 
-    self.getMetaData = function(metaData, cb) {
+    $scope.getMetaData = function(metaData, cb) {
       if (metaData == false) return cb();
-      self.getHistoryCache(function(err, txsFromLocal) {
+      $scope.getHistoryCache(function(err, txsFromLocal) {
         if (err) return cb(err);
 
-        self.getAddressbook(function(err, localAddressBook) {
+        $scope.getAddressbook(function(err, localAddressBook) {
           if (err) return cb(err);
 
           return cb(null, txsFromLocal, localAddressBook)
@@ -49,7 +48,7 @@ angular.module('copayApp.controllers').controller('exportController',
       });
     }
 
-    self.getHistoryCache = function(cb) {
+    $scope.getHistoryCache = function(cb) {
       storageService.getTxHistory(fc.credentials.walletId, function(err, txs) {
         if (err) return cb(err);
 
@@ -66,7 +65,7 @@ angular.module('copayApp.controllers').controller('exportController',
       });
     }
 
-    self.getAddressbook = function(cb) {
+    $scope.getAddressbook = function(cb) {
       storageService.getAddressbook(fc.credentials.network, function(err, addressBook) {
         if (err) return cb(err);
 
@@ -81,10 +80,10 @@ angular.module('copayApp.controllers').controller('exportController',
       });
     }
 
-    self.getBackup = function(cb) {
-      self.getMetaData($scope.metaDataEnabled, function(err, txsFromLocal, localAddressBook) {
+    $scope.getBackup = function(cb) {
+      $scope.getMetaData($scope.metaDataEnabled, function(err, txsFromLocal, localAddressBook) {
         if (err) {
-          self.error = true;
+          $scope.error = true;
           return cb(null);
         }
         var opts = {
@@ -93,30 +92,29 @@ angular.module('copayApp.controllers').controller('exportController',
           addressBook: localAddressBook
         };
 
-        var ew = backupService.walletExport(self.password, opts);
+        var ew = backupService.walletExport($scope.password, opts);
         if (!ew) {
-          self.error = true;
+          $scope.error = true;
         } else {
-          self.error = false;
+          $scope.error = false;
           $rootScope.$emit('Local/BackupDone');
         }
         return cb(ew);
       });
     }
 
-    self.viewWalletBackup = function() {
-      var self = this;
+    $scope.viewWalletBackup = function() {
       $timeout(function() {
-        self.getBackup(function(backup) {
+        $scope.getBackup(function(backup) {
           var ew = backup;
           if (!ew) return;
-          self.backupWalletPlainText = ew;
+          $scope.backupWalletPlainText = ew;
         });
       }, 100);
     };
 
-    self.copyWalletBackup = function() {
-      self.getBackup(function(backup) {
+    $scope.copyWalletBackup = function() {
+      $scope.getBackup(function(backup) {
         var ew = backup;
         if (!ew) return;
         window.cordova.plugins.clipboard.copy(ew);
@@ -124,14 +122,14 @@ angular.module('copayApp.controllers').controller('exportController',
       });
     };
 
-    self.sendWalletBackup = function() {
+    $scope.sendWalletBackup = function() {
       var fc = profileService.focusedClient;
       window.plugins.toast.showShortCenter(gettextCatalog.getString('Preparing backup...'));
       var name = (fc.credentials.walletName || fc.credentials.walletId);
       if (fc.alias) {
         name = fc.alias + ' [' + name + ']';
       }
-      self.getBackup(function(backup) {
+      $scope.getBackup(function(backup) {
         var ew = backup;
         if (!ew) return;
 

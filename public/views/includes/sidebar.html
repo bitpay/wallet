@@ -7,18 +7,15 @@
   <ion-content overflow-scroll="true">
     <ul class="pr">
       <li ng-show="sidebar.wallets[0]"
-      ng-repeat="item in sidebar.wallets track by $index"
-      ng-class="{'selected': item.id == index.walletId}"
-      class="nav-item"
-       menu-toggle  on-touch="$root.go('walletHome'); sidebar.switchWallet(item.id, index.walletId)" >
-        <div class="avatar-wallet"
-          ng-style="{'background-color':item.color}">
+        ng-repeat="item in sidebar.wallets track by $index" ng-class="{'selected': item.id == index.walletId}" class="nav-item"
+        menu-toggle href ui-sref="walletHome" on-touch="sidebar.switchWallet(item.id, index.walletId)">
+        <div class="avatar-wallet" ng-style="{'background-color':item.color}">
           <i class="icon-wallet size-21"></i>
         </div>
         <div class="name-wallet" ng-class="{'m8t':item.n == 1}">{{item.name || item.id}}</div>
         <div class="size-12" ng-show="item.n > 1" translate>{{item.m}}-of-{{item.n}}</div>
       </li>
-      <li  menu-toggle href ui-sref="add">
+      <li menu-toggle href ui-sref="add">
           <i class="icon-arrow-right3 size-18 right m10t vm"></i>
           <i class="fi-plus size-24 icon vm"></i>
           <div class="tu text-bold">

@@ -1,10 +1,10 @@
-<div 
-  class="topbar-container" 
+<div
+  class="topbar-container"
   ng-include="'views/includes/topbar.html'"
   ng-init="titleSection='Wallet Information'; goBackToState = 'preferencesAdvanced'">
 </div>
 
-<div class="content preferences" ng-controller="preferencesInformation as info" ng-init="info.init()">
+<div class="content preferences" ng-controller="preferencesInformation" ng-init="init()">
     <h4 class="title m0" translate>Wallet Information</h4>
 
     <ul class="no-bullet m0 size-14">
@@ -15,15 +15,12 @@
         </span>
       </li>
 
-
-
       <li class="line-b p20 oh">
         <span translate>Wallet Name (at creation)</span>
         <span class="right text-gray">
           {{walletName}}
         </span>
       </li>
-
 
       <li class="line-b p20 oh">
         <span translate>Wallet Id</span>
@@ -39,15 +36,12 @@
         </span>
       </li>
 
-
-
        <li class="line-b p20 oh">
         <span translate>Wallet Network</span>
         <span class="right text-gray">
           {{network}}
         </span>
       </li>
-
 
       <li class="line-b p20 oh">
         <span translate>Address Type</span>
@@ -56,7 +50,6 @@
         </span>
       </li>
 
- 
       <li class="line-b p20 oh">
         <span translate>Derivation Strategy</span>
         <span class="right text-gray">
@@ -77,7 +70,7 @@
           No private key
         </span>
       </li>
- 
+
       <li class="line-b p20 oh" ng-show="index.account">
         <span translate>Account</span> ({{derivationStrategy}})
         <span class="right text-gray">
@@ -85,9 +78,7 @@
         </span>
       </li>
 
-
-
-    <h4 class="title m0" translate>Copayers</h4>
+      <h4 class="title m0" translate>Copayers</h4>
       <li ng-repeat="copayer in index.copayers">
         <span class="size-12" ng-show="copayer.id == index.copayerId">
           <i class="icon-contact size-24 m10r"></i> {{copayer.name}} ({{'Me'|translate}}) <i class="fi-check m5 right"></i>
@@ -97,7 +88,7 @@
         </span>
       </li>
 
-    <h4 class="title m0" translate>Extended Public Keys</h4>
+      <h4 class="title m0" translate>Extended Public Keys</h4>
       <li  ng-repeat="pk in pubKeys">
         <div class="row collapse">
           <div class="small-4 columns">Copayer {{$index}}</div>
@@ -110,13 +101,13 @@
         </div>
       </li>
     </ul>
-    
+
     <div ng-show="addrs">
       <h4 class="title m0" translate>Last Wallet Addresses</h4>
       <ul class="no-bullet m0">
         <li ng-repeat="a in addrs" class="oh">
           <div class="enable_text_select ellipsis">
-            {{a.address}} 
+            {{a.address}}
           </div>
           <div class="text-gray size-12 right enable_text_select">
             {{a.path}} &middot;  {{a.createdOn *1000  | amDateFormat:'MMMM Do YYYY, h:mm a' }}
@@ -128,10 +119,10 @@
       </div>
 
       <ul class="no-bullet m0">
-        <li ng-style="{'color':index.backgroundColor}" ng-click="index.retryScan(); $root.go('walletHome')" translate>
+        <li ng-style="{'color':index.backgroundColor}" href ui-sref="walletHome" ng-click="index.retryScan()" translate>
           Scan addresses for funds
         </li>
-        <li ng-style="{'color':index.backgroundColor}" ng-show="index.isCordova" ng-click="info.sendAddrs()" translate>
+        <li ng-style="{'color':index.backgroundColor}" ng-show="index.isCordova" ng-click="sendAddrs()" translate>
           Send addresses by email
         </li>
       </ul>
@@ -142,17 +133,15 @@
         <h4 class="title m0" translate>Balance By Address</h4>
         <li class="line-b p20 oh"  ng-repeat="a in index.balanceByAddress">
           <div class="enable_text_select ellipsis">
-            {{a.address}} 
+            {{a.address}}
           </div>
           <div class="text-gray text-right">
-            {{(a.amount/1e8).toFixed(8)}} BTC 
+            {{(a.amount/1e8).toFixed(8)}} BTC
           </div>
         </li>
       </div>
     </ul>
 
-
     <h4></h4>
-
     <div class="extra-margin-bottom"></div>
 </div>

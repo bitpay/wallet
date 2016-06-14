@@ -4,14 +4,13 @@
     <a id="hamburger" class="p10" ng-show="!goBackToState && !closeToHome  && !index.noFocusedWallet"
       on-tap="index.toggleLeftMenu()"><i class="fi-list size-24"></i>
     </a>
-    <a ng-show="goBackToState"
-      ng-click="$root.go(goBackToState); goBackToState = null"><i class="icon-arrow-left3 icon-back"></i>
-      <span class="text-back">{{'Back'|translate}}</span>
+    <a ng-show="goBackToState" ng-click="$root.go(goBackToState); goBackToState = null"><i class="icon-arrow-left3 icon-back"></i>
+      <span class="text-back" translate>Back</span>
     </a>
 
     <a ng-show="closeToHome" class="p10 "
       ng-click="topbar.goHome(); index.setCompactTxHistory(); closeToHome = null">
-      <span class="text-close">{{'Close'|translate}}</span>
+      <span class="text-close" translate>Close</span>
     </a>
   </section>
 

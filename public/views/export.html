@@ -4,17 +4,17 @@
   ng-init="titleSection='Export Wallet'; goBackToState = 'preferencesAdvanced'">
 </div>
 
-<div class="content preferences" ng-controller="exportController as exportC">
+<div class="content preferences" ng-controller="exportController">
   <h4></h4>
-  <div ng-show="!exportC.backupWalletPlainText">
-      <div class="text-warning size-14 m20b" ng-show="exportC.error">
+  <div ng-show="!backupWalletPlainText">
+      <div class="text-warning size-14 m20b" ng-show="error">
         <i class="fi-alert size-12"></i>
         <span translate> Failed to export </span>
       </div>
 
       <div class="row">
         <div class="columns">
-          <div class="text-warning size-14 m20b" ng-show="exportC.isEncrypted">
+          <div class="text-warning size-14 m20b" ng-show="isEncrypted">
             <i class="fi-alert size-12"></i>
             <span translate> A spending password is set for this wallet. Exporting keeps the spending password in the export archive.</span>
           </div>
@@ -26,12 +26,12 @@
           <div class="columns">
             <label for="password" translate>Set up a password </label>
             <div class="input">
-              <input type="password" class="form-control" placeholder="{{'Your password'|translate}}" name="password" ng-model="exportC.password">
+              <input type="password" class="form-control" placeholder="{{'Your password'|translate}}" name="password" ng-model="password">
             </div>
 
             <label for="password" translate>Repeat the password</label>
             <div class="input">
-              <input type="password" class="form-control" placeholder="{{'Repeat password'|translate}}" name="password" ng-model="exportC.repeatpassword">
+              <input type="password" class="form-control" placeholder="{{'Repeat password'|translate}}" name="password" ng-model="repeatpassword">
             </div>
           </div>
         </div>
@@ -68,25 +68,25 @@
 
       <div class="row">
         <div class="columns">
-          <button class="black round expand m20t" ng-click="exportC.downloadWalletBackup()"
-            ng-disabled="(!exportC.password || exportC.password != exportC.repeatpassword)"
+          <button class="black round expand m20t" ng-click="downloadWalletBackup()"
+            ng-disabled="(!password || password != repeatpassword)"
             ng-style="{'background-color':index.backgroundColor}"
             ng-show="!index.isSafari && !index.isCordova"><i class="fi-download"></i>
             <span translate>Download</span></button>
-          <button class="black round expand m20t" ng-click="exportC.viewWalletBackup()"
-            ng-disabled="(!exportC.password || exportC.password != exportC.repeatpassword)"
+          <button class="black round expand m20t" ng-click="viewWalletBackup()"
+            ng-disabled="(!password || password != repeatpassword)"
             ng-style="{'background-color':index.backgroundColor}"
             ng-show="index.isSafari && !index.isCordova"><i class="fi-eye"></i>
             <span translate>View</span></button>
           <div ng-show="index.isCordova">
             <h4 translate>Export options</h4>
-            <button class="black round expand" ng-disabled="(!exportC.password || exportC.password != exportC.repeatpassword)"
+            <button class="black round expand" ng-disabled="(!password || password != repeatpassword)"
               ng-style="{'background-color':index.backgroundColor}"
-              ng-click="exportC.copyWalletBackup()"><i class="fi-clipboard-pencil"></i>
+              ng-click="copyWalletBackup()"><i class="fi-clipboard-pencil"></i>
               <span translate>Copy to clipboard</span></button>
-            <button class="black round expand" ng-disabled="(!exportC.password || exportC.password != exportC.repeatpassword)"
+            <button class="black round expand" ng-disabled="(!password || password != repeatpassword)"
               ng-style="{'background-color':index.backgroundColor}"
-              ng-click="exportC.sendWalletBackup()"><i class="fi-mail"></i>
+              ng-click="sendWalletBackup()"><i class="fi-mail"></i>
               <span translate>Send by email</span></button>
           </div>
         </div>
@@ -94,11 +94,11 @@
 
   </div>
 
-  <div class="row" ng-show="exportC.backupWalletPlainText">
+  <div class="row" ng-show="backupWalletPlainText">
     <div class="large-12 columns">
       <h3 translate>Wallet Export</h3>
       <div class="input">
-        <textarea rows="12">{{exportC.backupWalletPlainText}}</textarea>
+        <textarea rows="12">{{backupWalletPlainText}}</textarea>
       </div>
       <div class="size-12 text-gray text-right">
         <i class="icon-compose"></i>

@@ -1,17 +1,17 @@
-<div class="backup" ng-controller="backupController as wordsC">
+<div class="backup" ng-controller="backupController" ng-init="init()">
   <nav class="tab-bar">
-    <section class="left-small" ng-show="(wordsC.step != 1 && wordsC.step != 4)">
-      <a ng-click="wordsC.goToStep(1);">
+    <section class="left-small" ng-show="(step != 1 && step != 4)">
+      <a ng-click="goToStep(1);">
         <i class="icon-arrow-left3 icon-back"></i>
       </a>
     </section>
 
     <section class="middle tab-bar-section" ng-style="{'color':index.backgroundColor}">
-      <span>{{wordsC.walletName}}</span>
+      <span>{{walletName}}</span>
     </section>
 
     <section class="right-small">
-      <a class="p10" ng-click="$root.go(index.prevState);">
+      <a class="p10" ng-click="backTo(index.prevState)">
         <span class="text-close">
           <i class="fi-x size-24"></i>
         </span>
@@ -19,9 +19,9 @@
     </section>
   </nav>
 
-  <div class="box-notification" ng-show="wordsC.error">
+  <div class="box-notification" ng-show="error">
     <span class="text-warning">
-      {{wordsC.error|translate}}
+      {{error|translate}}
     </span>
   </div>
 
@@ -30,8 +30,8 @@
     -->
 
   <div class="content preferences text-center">
-    <div ng-show="wordsC.step == 1">
-      <div ng-show="wordsC.mnemonicWords || (wordsC.credentialsEncrypted && !wordsC.deleted)" class="row">
+    <div ng-show="step == 1">
+      <div ng-show="mnemonicWords || (credentialsEncrypted && !deleted)" class="row">
         <h5 class="text-center" translate>Write your wallet recovery phrase</h5>
         <div class="size-14 text-gray columns" ng-show="(index.n>1 && index.m != index.n )">
           <span translate>
@@ -56,37 +56,37 @@
         </div>
       </div>
 
-      <div class="row m20t" ng-show="wordsC.deleted">
+      <div class="row m20t" ng-show="deleted">
         <div class="columns size-14 text-gray text-center" translate>
           Wallet recovery phrase not available. You can still export it from Advanced &gt; Export.
         </div>
       </div>
 
-      <div ng-show="wordsC.mnemonicWords || (wordsC.credentialsEncrypted && !wordsC.deleted)">
-        <p class="text-center columns text-gray" ng-show="index.n==1 && wordsC.step == 1">
+      <div ng-show="mnemonicWords || (credentialsEncrypted && !deleted)">
+        <p class="text-center columns text-gray" ng-show="index.n==1 && step == 1">
           <span translate>
             You need the wallet recovery phrase to restore this personal wallet. Write it down and keep them somewhere safe.
           </span>
         </p>
-        <div class="row" ng-show="wordsC.credentialsEncrypted">
+        <div class="row" ng-show="credentialsEncrypted">
           <div class="m10t columns">
-            <a class="button outline light-gray expand tiny" ng-click="wordsC.toggle()">
+            <a class="button outline light-gray expand tiny" ng-click="toggle()">
               <i class="fi-widget m3r"></i>
-              <span translate ng-hide="wordsC.show">Show Wallet Recovery Phrase</span>
+              <span translate ng-hide="show">Show Wallet Recovery Phrase</span>
             </a>
           </div>
         </div>
-        <div class="row" ng-show="!wordsC.credentialsEncrypted">
+        <div class="row" ng-show="!credentialsEncrypted">
           <div class="columns">
             <div class="panel" ng-class="{'enable_text_select': index.network == 'testnet'}">
-              <span ng-repeat="word in wordsC.mnemonicWords track by $index"><span style="white-space:nowrap">{{word}}</span><span ng-show="wordsC.useIdeograms">&#x3000;</span> </span>
+              <span ng-repeat="word in mnemonicWords track by $index"><span style="white-space:nowrap">{{word}}</span><span ng-show="useIdeograms">&#x3000;</span> </span>
             </div>
           </div>
         </div>
       </div>
 
-      <div class="columns extra-padding-bottom" ng-show="!wordsC.credentialsEncrypted">
-        <div class="line-t p10 size-10 text-gray text-center" ng-show="wordsC.mnemonicHasPassphrase">
+      <div class="columns extra-padding-bottom" ng-show="!credentialsEncrypted">
+        <div class="line-t p10 size-10 text-gray text-center" ng-show="mnemonicHasPassphrase">
             <i class="fi-alert"></i>
             <span translate>
               This recovery phrase was created with a password. To recover this wallet both the recovery phrase and password are needed.
@@ -96,11 +96,11 @@
 
       <div class="button-box">
         <button
-          ng-show="!wordsC.deleted"
-          ng-disabled="wordsC.credentialsEncrypted || wordsC.error"
+          ng-show="!deleted"
+          ng-disabled="credentialsEncrypted || error"
           class="round expand m0"
           ng-style="{'background-color':index.backgroundColor}"
-          ng-click="wordsC.goToStep(2);"
+          ng-click="goToStep(2);"
           translate>Continue
         </button>
       </div>
@@ -110,19 +110,19 @@
     ## STEP 2
     -->
 
-    <div ng-show="wordsC.step == 2">
+    <div ng-show="step == 2">
       <div class="columns text-center extra-padding-bottom">
         <h5 translate>Confirm your wallet recovery phrase</h5>
         <p class="text-gray m0" translate>
           Please tap the words in order to confirm your backup phrase is correctly written.
         </p>
         <div class="panel words text-left">
-          <span ng-repeat="cword in wordsC.customWords track by $index" ng-show="wordsC.customWords[$index]">
+          <span ng-repeat="cword in customWords track by $index" ng-show="customWords[$index]">
             <button class="button radius tiny words" ng-click="removeButton($index, cword)">{{cword.word}}</button>
           </span>
         </div>
         <div class="text-left">
-          <span ng-repeat="shuffledWord in wordsC.shuffledMnemonicWords track by $index">
+          <span ng-repeat="shuffledWord in shuffledMnemonicWords track by $index">
             <button class="button radius tiny words" ng-click="addButton($index, shuffledWord)"
               ng-disabled="shuffledWord.selected">{{shuffledWord.word}}
             </button>
@@ -132,10 +132,10 @@
 
       <div class="button-box">
         <button
-          ng-disabled="!wordsC.selectComplete"
+          ng-disabled="!selectComplete"
           class="round expand m0"
           ng-style="{'background-color':index.backgroundColor}"
-          ng-click="wordsC.goToStep(3);"
+          ng-click="goToStep(3);"
           translate>Continue
         </button>
       </div>
@@ -145,7 +145,7 @@
     ## STEP 3
     -->
 
-    <div ng-show="wordsC.step == 3">
+    <div ng-show="step == 3">
       <div class="columns text-center">
         <h5 translate>Enter your password</h5>
         <p class="text-gray m0" translate>
@@ -161,7 +161,7 @@
           ng-disabled="!passphrase"
           ng-style="{'background-color':index.backgroundColor}"
           class="button round expand m0"
-          ng-click="wordsC.goToStep(4);"
+          ng-click="goToStep(4);"
           translate>Continue
         </button>
       </div>
@@ -171,8 +171,8 @@
     ## STEP 4
     -->
 
-    <div ng-show="wordsC.step == 4">
-      <div class="row m10t m10b text-center" ng-show="!wordsC.backupError">
+    <div ng-show="step == 4">
+      <div class="row m10t m10b text-center" ng-show="!backupError">
         <div class="circle-icon">
           <i class="fi-like size-48"></i>
         </div>
@@ -185,7 +185,7 @@
           <button
             ng-style="{'background-color':index.backgroundColor}"
             class="button round expand"
-            ng-click="$root.go('walletHome');"
+            href ui-sref="walletHome"
             translate>Finish
           </button>
           <!-- hide this in multisig just to show less text -->
@@ -201,7 +201,7 @@
           </div>
         </div>
       </div>
-      <div class="row m10t m10b text-center" ng-show="wordsC.backupError">
+      <div class="row m10t m10b text-center" ng-show="backupError">
         <div class="circle-icon">
           <i class="fi-dislike size-48"></i>
         </div>
@@ -222,7 +222,7 @@
           <button
             ng-style="{'background-color':index.backgroundColor}"
             class="button round expand m0"
-            ng-click="wordsC.goToStep(1);"
+            ng-click="goToStep(1);"
             translate>Try again
           </button>
         </div>
