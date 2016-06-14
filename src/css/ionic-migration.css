@@ -20,6 +20,10 @@
 	z-index: -1;
 }
 
+.ng-hide.ng-hide-animate{
+     display: none !important;
+}
+
 .radio-label {
 	text-transform: none;
 	font-weight: 400;
