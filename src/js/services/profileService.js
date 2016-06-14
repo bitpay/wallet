@@ -138,7 +138,7 @@ angular.module('copayApp.services')
             storageService.clearLastAddress(walletId, function() {});
           }
         });
-      }, 3000);
+      }, 5000);
     };
 
     // Used when reading wallets from the profile
