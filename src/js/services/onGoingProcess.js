@@ -7,10 +7,6 @@ angular.module('copayApp.services').factory('ongoingProcess', function($log, $ti
   var ongoingProcess = {};
 
   var processNames = {
-    'openingWallet': gettextCatalog.getString('Updating Wallet...'),
-    'updatingStatus': gettextCatalog.getString('Updating Wallet...'),
-    'updatingBalance': gettextCatalog.getString('Updating Wallet...'),
-    'updatingPendingTxps': gettextCatalog.getString('Updating Wallet...'),
     'scanning': gettextCatalog.getString('Scanning Wallet funds...'),
     'recreating': gettextCatalog.getString('Recreating Wallet...'),
     'generatingCSV': gettextCatalog.getString('Generating .csv file...'),

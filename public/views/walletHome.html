@@ -16,6 +16,20 @@
     </div>
   </div>
 
+ <div class="onGoingProcess" ng-show="index.updating">
+     <div class="onGoingProcess-content" ng-style="{'background-color':index.backgroundColor}">
+      <div class="spinner">
+        <div class="rect1"></div>
+        <div class="rect2"></div>
+        <div class="rect3"></div>
+        <div class="rect4"></div>
+        <div class="rect5"></div>
+      </div>
+       <span translate>Updating Wallet...</span>
+     </div>
+  </div>
+ 
+
   <div class="oh" ng-show="!index.noFocusedWallet">
 
     <!--
@@ -34,7 +48,7 @@
         </ion-refresher>
         <div class="oh pr">
           <div ng-style="{'background-color':index.backgroundColor}" class="amount">
-            <div ng-if="!index.notAuthorized">
+            <div ng-if="!index.notAuthorized && !index.updating">
               <div class="m15t" ng-show="index.updateError" ng-click='index.updateAll({triggerTxUpdate: true})'>
                 <span class="size-12 db m10b">{{index.updateError|translate}}</span>
                 <button class="outline white tiny round" translate>Tap to retry</button>
@@ -60,6 +74,11 @@
                 </div>
               </div>
             </div>
+           <div ng-if="index.updating">
+               <div class="size-36">
+                 <strong>...</strong>
+               </div>
+             </div>
           </div> <!-- amount -->
 
           <div class="wallet-info">
@@ -79,7 +98,7 @@
               </span>
             </div>
           </div>
-          <div class="oh pr m20t" ng-show="index.notAuthorized">
+          <div class="oh pr m20t" ng-show="index.notAuthorized && !index.updating">
             <div class="text-center text-warning">
               <i class="fi-alert"></i>
               <span translate>
@@ -319,7 +338,7 @@
     -->
     <div id="send" class="send tab-view">
       <div class="pr p25b">
-        <h4 class="title m0">
+        <h4 class="title m0" ng-show="!index.updating">
           <available-balance ng-show="!index.shouldHideBalance"></available-balance>
           <span
             ng-show="home.lockedCurrentFeePerKb || home.lockAmount"
@@ -345,7 +364,7 @@
       </div>
       <div class="row m20t">
         <div class="large-12 large-centered columns">
-          <form name="sendForm" novalidate>
+          <form name="sendForm"   novalidate>
 
             <div ng-hide="home._paypro || home.hideAddress">
               <div class="row collapse">
@@ -441,7 +460,7 @@
                 <a ng-click="home.resetForm(sendForm)" class="button expand outline dark-gray round" translate>Cancel</a>
               </div>
               <div class="columns" ng-class="{'small-6 medium-6 large-6':(home._paypro || home.lockAddress || home.lockAmount)}">
-                <button class="button black round expand" ng-disabled="sendForm.$invalid || home.paymentExpired"
+                <button class="button black round expand" ng-disabled="sendForm.$invalid || home.paymentExpired || index.updating"
                   ng-style="{'background-color':index.backgroundColor}" ng-click="home.submitForm()" translate>
                   Send
                 </button>
