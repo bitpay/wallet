@@ -99,8 +99,6 @@ angular.module('copayApp.services')
       storage.set('profile', profile.toObj(), cb);
     };
 
-    root.storeProfileThrottled = lodash.throttle(root.storeProfile, 5000);
-
     root.getProfile = function(cb) {
       storage.get('profile', function(err, str) {
         if (err || !str)

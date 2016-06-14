@@ -48,7 +48,7 @@ angular.module('copayApp.controllers').controller('preferencesController',
 
         fc.setPrivateKeyEncryption(password);
         fc.lock();
-        profileService.updateCredentials(fc.export(), function() {
+        profileService.updateCredentials(JSON.parse(fc.export()), function() {
           $log.debug('Wallet encrypted');
           return cb();
         });
@@ -62,7 +62,7 @@ angular.module('copayApp.controllers').controller('preferencesController',
         } catch (e) {
           return cb(e);
         }
-        profileService.updateCredentials(fc.export(), function() {
+        profileService.updateCredentials(JSON.parse(fc.export()), function() {
           $log.debug('Wallet encryption disabled');
           return cb();
         });
