@@ -14,7 +14,8 @@
       </span>
     </li>
     <li ng-if="!csvReady && !index.isCordova">
-      <span translate>Export to file [preparing...]</span>
+      <span class="right text-gray text-italic" translate>preparing...</span>
+      <span translate>Export to file</span>
     </li>
     <li ng-click="clearTransactionHistory()" ng-style="{'color':index.backgroundColor}" translate>
       Clear cache
