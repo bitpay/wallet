@@ -5,10 +5,6 @@ angular.module('copayApp.controllers').controller('buyAmazonController',
     
     var self = this;
     var client;
-    var limitsAllowed = {
-      min: 0.01,
-      max: 2000
-    };
 
     var handleEncryptedWallet = function(client, cb) {
       if (!walletService.isEncrypted(client)) return cb();
@@ -32,14 +28,6 @@ angular.module('copayApp.controllers').controller('buyAmazonController',
           $scope.$apply();
         }, 100);
       }
-    };
-
-    this.checkLimits = function() {
-console.log('[buyAmazon.js:37]'); //TODO
-      if ($scope.fiat && $scope.fiat >= limitsAllowed.min && $scope.fiat <= limitsAllowed.max)
-        return true;
-      else
-        return false;
     };
 
     $scope.openWalletsModal = function(wallets) {
@@ -82,14 +70,16 @@ console.log('[buyAmazon.js:37]'); //TODO
       var walletSettings = configWallet.settings;
 
 
-      ongoingProcess.set('Creating invoice...', true);
+      ongoingProcess.set('Processing Transaction...', true);
       $timeout(function() {
 
         amazonService.createBitPayInvoice(dataSrc, function(err, data) {
-          ongoingProcess.set('Creating invoice...', false);
           if (err) {
+            ongoingProcess.set('Processing Transaction...', false);
             self.error = bwsError.msg(err);
-            $scope.$apply();
+            $timeout(function() {
+              $scope.$digest();
+            });
             return;
           }
 
@@ -115,22 +105,24 @@ console.log('[buyAmazon.js:37]'); //TODO
             feeLevel: walletSettings.feeLevel || 'normal'
           };
 
-          ongoingProcess.set('Creating transaction...', true);
           walletService.createTx(client, txp, function(err, createdTxp) {
-            ongoingProcess.set('Creating transaction...', false);
+            ongoingProcess.set('Processing Transaction...', false);
             if (err) {
               self.error = bwsError.msg(err);
-              $scope.$apply();
+              $timeout(function() {
+                $scope.$digest();
+              });
               return;
             }
             $scope.$emit('Local/NeedsConfirmation', createdTxp, function(accept) {
               if (accept) { 
-                ongoingProcess.set('Sending bitcoin...', true);
                 self.confirmTx(createdTxp, function(err, tx) {
-                  ongoingProcess.set('Sending bitcoin...', false);
                   if (err) { 
+                    ongoingProcess.set('Processing Transaction...', false);
                     self.error = bwsError.msg(err);
-                    $scope.$apply();
+                    $timeout(function() {
+                      $scope.$digest();
+                    });
                     return;
                   }
                   var gift = {
@@ -139,13 +131,15 @@ console.log('[buyAmazon.js:37]'); //TODO
                     bitpayInvoiceId: data.data.id,
                     bitpayInvoiceUrl: data.data.url
                   };
-                  ongoingProcess.set('Creating gift card...', true);
+                  ongoingProcess.set('Processing Transaction...', true);
                   amazonService.createGiftCard(gift, function(err, giftCard) {
-                    ongoingProcess.set('Creating gift card...', false);
+                    ongoingProcess.set('Processing Transaction...', false);
                     if (err) { 
                       self.error = bwsError.msg(err);
                       self.errorInfo = gift;
-                      $scope.$apply();
+                      $timeout(function() {
+                        $scope.$digest();
+                      });
                       return;
                     }
                     amazonService.setAmountByDay(dataSrc.price);
@@ -176,6 +170,7 @@ console.log('[buyAmazon.js:37]'); //TODO
             return bwsError.cb(err, null, cb);
           }
 
+          ongoingProcess.set('Processing Transaction...', true);
           walletService.publishTx(client, txp, function(err, publishedTxp) {
             if (err) {
               $log.debug(err);
