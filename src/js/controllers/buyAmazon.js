@@ -5,10 +5,10 @@ angular.module('copayApp.controllers').controller('buyAmazonController',
     
     var self = this;
     var client;
-    var minimumAmount = 5;
-    var stepAmount = 1;
-    var multiplierAmount = 5;
-    var maximumAmount = 500;
+    var limitsAllowed = {
+      min: 0.01,
+      max: 2000
+    };
 
     var handleEncryptedWallet = function(client, cb) {
       if (!walletService.isEncrypted(client)) return cb();
@@ -19,7 +19,6 @@ angular.module('copayApp.controllers').controller('buyAmazonController',
     };
 
     this.init = function() {
-      $scope.fiat = minimumAmount;
       var network = configService.getSync().amazon.testnet ? 'testnet' : 'livenet';
       amazonService.setCredentials(network);
       amazonService.healthCheckRequest();
@@ -33,6 +32,14 @@ angular.module('copayApp.controllers').controller('buyAmazonController',
           $scope.$apply();
         }, 100);
       }
+    };
+
+    this.checkLimits = function() {
+console.log('[buyAmazon.js:37]'); //TODO
+      if ($scope.fiat && $scope.fiat >= limitsAllowed.min && $scope.fiat <= limitsAllowed.max)
+        return true;
+      else
+        return false;
     };
 
     $scope.openWalletsModal = function(wallets) {
@@ -57,16 +64,6 @@ angular.module('copayApp.controllers').controller('buyAmazonController',
         }, 100);
         $scope.walletsModal.hide();
       });
-    };
-
-    this.setAmount = function(plus) {
-      if (plus && $scope.fiat < maximumAmount ) {
-        stepAmount = stepAmount + 1;
-        $scope.fiat = stepAmount * multiplierAmount;
-      } else if (!plus && $scope.fiat > minimumAmount) {
-        stepAmount = stepAmount - 1;
-        $scope.fiat = stepAmount * multiplierAmount;
-      }
     };
 
     this.createTx = function() {
