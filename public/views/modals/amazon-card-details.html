@@ -1,0 +1,96 @@
+<ion-modal-view ng-controller="amazonCardDetailsController">
+  <nav class="tab-bar">
+    <section class="left-small">
+      <a ng-click="cancel()">
+        <i class="icon-arrow-left3 icon-back"></i>
+        <span class="text-back">Back</span>
+      </a>
+    </section>
+    <section class="middle tab-bar-section">
+      <h1 class="title ellipsis">
+        Details
+      </h1>
+    </section>
+  </nav>
+
+  <ion-content overflow-scroll="true">
+
+    <div class="modal-content fix-modals-touch">
+      <div class="header-modal text-center">
+
+        <img src="img/a_generic.jpg" alt="Amazon.com Gift Card" width="230" ng-click="refreshGiftCard()">
+
+        <div ng-show="card.gcClaimCode">
+          <div class="m10t">
+            Gift Card Amount: 
+            <span class="text-bold">
+              {{card.cardInfo.value.amount | currency : '$ ' : 2}}
+            </span>
+          </div>
+          <div>
+            Claim code: <span class="text-bold enable_text_select">{{card.gcClaimCode}}</span>
+          </div>
+          <div class="m10t" ng-show="card.cardInfo.cardStatus == 'Fulfilled'">
+            <button class="button black round tiny" 
+                    ng-click="$root.openExternalLink('https://www.amazon.com/gc/redeem?claimCode=' + card.gcClaimCode, '_system')">
+              Redeem Now
+            </button>
+          </div>
+
+          <div class="text-secondary text-center" ng-if="card.cardInfo.cardStatus == 'RefundedToPurchaser'">
+            Refunded to purchaser
+          </div>
+
+          <div class="size-12 m10t text-center">
+            <a ng-click="$root.openExternalLink(card.bitpayInvoiceUrl)">BitPay Invoice</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="box-notification m20b" ng-show="error" ng-click="error = null">
+        <span class="text-warning">
+          {{error}}
+        </span>
+      </div> 
+
+      <div class="text-center size-12" ng-show="card.status != 'SUCCESS'">
+        <div ng-show="card.status == 'RESEND'">
+          <div class="text-secondary m10h">
+            There was a temporary/recoverable system failure that can be resolved by retrying the request
+          </div>
+          <button class="m10t button outline round dark-gray tiny" ng-click="refreshGiftCard()">
+            Try again
+          </button>
+        </div>
+        <div class="text-warning m10" ng-show="card.status == 'FAILURE'">
+          There was a failure to the create gift card that could not be recoverable. Please, contact BitPay to refund your bitcoin
+        </div>
+      </div>
+
+      <div class="size-12 white p15 m30v">
+        *Amazon.com Gift Cards (&quot;GCs&quot;) sold by BitPay, Inc., an authorized and independent
+        reseller of Amazon.com Gift Cards. Except as required by law, GCs cannot be transferred for value or redeemed for cash.
+        GCs may be used only for purchases of eligible goods at Amazon.com or certain of its affiliated websites. Purchases are
+        deducted from the GC balance. To redeem or view a GC balance, visit &ldquo;Your Account&rdquo; at Amazon.com. Amazon is
+        not responsible if a GC is lost, stolen, destroyed or used without permission. See 
+        <a ng-click="$root.openExternalLink('https://www.amazon.com/gc-legal')">www.amazon.com/gc-legal</a> for complete terms, 
+        restrictions and exceptions. For any other questions, see 
+        <a ng-click="$root.openExternalLink('https://www.amazon.com/gc')">www.amazon.com/gc</a>. GCs are issued 
+        by ACI Gift Cards, Inc., a Washington corporation. All Amazon &reg;, &trade; &amp; &copy; are IP of 
+        Amazon.com, Inc. or its affiliates. No expiration date or service fees.
+      </div>
+
+      <ul class="no-bullet size-14 m30v">
+        <li class="line-b p10 oh pointer" ng-show="card.status == 'SUCCESS' && card.cardInfo.cardStatus == 'Fulfilled'" ng-click="cancelGiftCard()">
+          <span class="text-warning">Cancel gift card</span>
+        </li>
+        <li class="line-b p10 oh pointer" ng-show="card.status == 'FAILURE' || card.cardInfo.cardStatus == 'RefundedToPurchaser'
+          || card.cardInfo.cardStatus == 'Expired'" ng-click="remove()">
+          <span class="text-warning">Remove gift card</span>
+        </li>
+      </ul>
+
+      <div class="extra-margin-bottom"></div>
+    </div>
+  </ion-content>
+</ion-modal-view>

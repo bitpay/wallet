@@ -34,6 +34,9 @@ module.exports = function(grunt) {
       coinbase: {
         command: 'node ./util/coinbase.js'
       },
+      amazon: {
+        command: 'node ./util/amazon.js'
+      },
       clear: {
         command: 'rm -Rf bower_components node_modules'
       },
@@ -49,8 +52,12 @@ module.exports = function(grunt) {
         },
       },
       css: {
-        files: ['src/css/*.css'],
+        files: ['src/sass/*.css', 'src/css/*.css'],
         tasks: ['concat:css']
+      },
+      sass: {
+        files: ['src/sass/*.scss'],
+        tasks: ['sass:dist']
       },
       main: {
         files: [
@@ -99,6 +106,7 @@ module.exports = function(grunt) {
           'bower_components/angular-sanitize/angular-sanitize.js',
           'bower_components/ng-csv/build/ng-csv.js',
           'bower_components/angular-mocks/angular-mocks.js',
+          'bower_components/crypto-js/crypto-js.js',
           'angular-bitcore-wallet-client/angular-bitcore-wallet-client.js'
         ],
         dest: 'public/lib/angular.js'
@@ -115,6 +123,7 @@ module.exports = function(grunt) {
           'src/js/translations.js',
           'src/js/version.js',
           'src/js/coinbase.js',
+          'src/js/amazon.js',
           'src/js/init.js',
           'src/js/trezor-url.js',
           'bower_components/trezor-connect/login.js'
@@ -269,7 +278,7 @@ module.exports = function(grunt) {
     }
   });
 
-  grunt.registerTask('default', ['nggettext_compile', 'exec:version', 'exec:coinbase', 'browserify', 'sass', 'concat', 'copy:icons', 'copy:ionic_fonts']);
+  grunt.registerTask('default', ['nggettext_compile', 'exec:version', 'exec:coinbase', 'exec:amazon', 'browserify', 'sass', 'concat', 'copy:icons', 'copy:ionic_fonts']);
   grunt.registerTask('prod', ['default', 'uglify']);
   grunt.registerTask('translate', ['nggettext_extract']);
   grunt.registerTask('test', ['karma:unit']);

@@ -42,7 +42,7 @@ angular.module('copayApp.controllers').controller('sellCoinbaseController',
       self.allWallets = profileService.getWallets(testnet ? 'testnet' : 'livenet', 1);
 
       client = profileService.focusedClient;
-      if (client) { 
+      if (client && client.credentials.m == 1) { 
         $timeout(function() {
           self.selectedWalletId = client.credentials.walletId;
           self.selectedWalletName = client.credentials.walletName;
@@ -79,8 +79,6 @@ angular.module('copayApp.controllers').controller('sellCoinbaseController',
 
     $scope.openWalletsModal = function(wallets) {
       self.error = null;
-      self.selectedWalletId = null;
-      self.selectedWalletName = null;
 
       $scope.type = 'SELL';
       $scope.wallets = wallets;
@@ -93,6 +91,16 @@ angular.module('copayApp.controllers').controller('sellCoinbaseController',
       }).then(function(modal) {
         $scope.walletsModal = modal;
         $scope.walletsModal.show();
+      });
+
+      $scope.$on('walletSelected', function(ev, obj) {
+        $timeout(function() {
+          self.selectedWalletId = obj.walletId;
+          self.selectedWalletName = obj.walletName;
+          client = obj.client;
+          $scope.$apply();
+        }, 100);
+        $scope.walletsModal.hide();
       });
     };
 

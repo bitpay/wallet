@@ -89,7 +89,7 @@ h4.title a {
   }
 }
 
-.modal-content h4, .glidera h4, .coinbase h4 {
+.modal-content h4, .glidera h4, .coinbase h4, .amazon h4 {
   background: #F6F7F9;
   padding: 25px 0px 5px 10px;
   text-transform: uppercase;
@@ -526,6 +526,10 @@ ul.manage li {
   font-size: 24px;
 }
 
+.size-28 {
+  font-size: 28px;
+}
+
 .size-36 {
   font-size: 36px;
 }
@@ -749,6 +753,10 @@ ul.manage li {
 
 .m20v {
   margin: 20px 0;
+}
+
+.m30v {
+  margin: 30px 0;
 }
 
 .m30a {
@@ -1624,7 +1632,7 @@ a.missing-copayers {
 .sidebar {
   background: #2C3E50;
   .icon {
-    width: 39px;
+    width: 35px;
     text-align: center;
     margin-right: 15px;
     float: left;
