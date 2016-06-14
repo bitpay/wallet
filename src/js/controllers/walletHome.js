@@ -488,8 +488,8 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
         ongoingProcess.set('sendingTx', true);
         walletService.publishTx(client, txp, function(err, publishedTxp) {
+          ongoingProcess.set('sendingTx', false);
           if (err) {
-            ongoingProcess.set('sendingTx', false);
             return self.setSendError(err);
           }
 
