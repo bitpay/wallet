@@ -1,26 +1,4 @@
 
-.amazon-select-amount {
-  display: inline-block;
-  padding: 3px 15px;
-  background-color: #4B6178;
-  color: #ffffff;
-  border-radius: 5px;
-  margin: 0 5px;
-  &:hover {
-    color: #ffffff;
-  }
-}
-
-.amazon-amount {
-  display: inline-block;
-  background-color: #E4E8EC;
-  padding: 3px 10px;
-  width: 80px;
-  text-align: center;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-}
-
 ol.amazon-list {
   list-style: decimal !important;
 }
