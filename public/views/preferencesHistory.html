@@ -5,13 +5,15 @@
 </div>
 <div class="content preferences" ng-controller="preferencesHistory">
   <h4></h4>
-  
-  <ul class="no-bullet m0" ng-if="!index.isCordova" ng-init="index.updatingTxHistory ? null : csvHistory()">
-    <li ng-if="csvReady">
-      <a ng-csv="csvContent" csv-header="csvHeader" ng-style="{'color':index.backgroundColor}"
-        filename="Copay-{{index.alias || index.walletName}}.csv" translate>Export to file</a>
+
+  <ul class="no-bullet m0">
+    <li ng-if="csvReady && !index.isCordova" ng-init="index.updatingTxHistory ? null : csvHistory()"
+      ng-csv="csvContent" csv-header="csvHeader" filename="Copay-{{index.alias || index.walletName}}.csv">
+      <span ng-style="{'color':index.backgroundColor}" translate>
+        Export to file
+      </span>
     </li>
-    <li ng-if="!csvReady">
+    <li ng-if="!csvReady && !index.isCordova">
       <span translate>Export to file [preparing...]</span>
     </li>
     <li ng-click="clearTransactionHistory()" ng-style="{'color':index.backgroundColor}" translate>

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('preferencesBwsUrlController',
-  function($scope, $log, configService, go, applicationService, profileService, storageService) {
+  function($scope, $log, configService, applicationService, profileService, storageService) {
     $scope.error = null;
     $scope.success = null;
 
@@ -44,7 +44,7 @@ angular.module('copayApp.controllers').controller('preferencesBwsUrlController',
       opts.bwsFor[walletId] = $scope.bwsurl;
 
       configService.set(opts, function(err) {
-        if (err) console.log(err);
+        if (err) $log.debug(err);
         storageService.setCleanAndScanAddresses(walletId, function() {
           applicationService.restart();
         });

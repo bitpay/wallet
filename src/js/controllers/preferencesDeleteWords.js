@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('preferencesDeleteWordsController', function(confirmDialog, lodash, notification, profileService, go, gettext) {
+angular.module('copayApp.controllers').controller('preferencesDeleteWordsController', function($scope, confirmDialog, lodash, notification, profileService, go, gettext) {
   var fc = profileService.focusedClient;
   var msg = gettext('Are you sure you want to delete the recovery phrase?');
   var successMsg = gettext('Recovery phrase deleted');
