@@ -117,6 +117,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       self.hasProfile = true;
       self.isSingleAddress = false;
       self.noFocusedWallet = false;
+      self.updating = false;
 
       // Credentials Shortcuts
       self.m = fc.credentials.m;
@@ -302,7 +303,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     $timeout(function() {
 
       if (!opts.quiet)
-        ongoingProcess.set('updatingStatus', true);
+        self.updating = true;
 
       $log.debug('Updating Status:', fc.credentials.walletName, tries);
       get(function(err, walletStatus) {
@@ -322,8 +323,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         if (walletId != profileService.focusedClient.credentials.walletId)
           return;
 
-        ongoingProcess.set('updatingStatus', false);
-
+        self.updating = false;
 
         if (err) {
           self.handleError(err);
@@ -387,10 +387,10 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   self.updatePendingTxps = function() {
     var fc = profileService.focusedClient;
     $timeout(function() {
-      ongoingProcess.set('updatingPendingTxps', true);
+      self.updating = true;
       $log.debug('Updating PendingTxps');
       fc.getTxProposals({}, function(err, txps) {
-        ongoingProcess.set('updatingPendingTxps', false);
+        self.updating = false;
         if (err) {
           self.handleError(err);
         } else {
@@ -426,10 +426,10 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     var fc = profileService.focusedClient;
     $timeout(function() {
       $rootScope.$apply();
-      ongoingProcess.set('openingWallet', true);
+      self.updating = true;
       self.updateError = false;
       fc.openWallet(function(err, walletStatus) {
-        ongoingProcess.set('openingWallet', false);
+        self.updating = false;
         if (err) {
           self.updateError = true;
           self.handleError(err);
@@ -1628,7 +1628,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   lodash.each(['TxProposalRejectedBy', 'TxProposalAcceptedBy'], function(eventName) {
     $rootScope.$on(eventName, function() {
       var f = function() {
-        if (self.updatingStatus) {
+        if (self.updating) {
           return $timeout(f, 200);
         };
         self.updatePendingTxps();
