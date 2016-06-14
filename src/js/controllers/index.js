@@ -139,7 +139,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       self.isPrivKeyEncrypted = fc.isPrivKeyEncrypted();
       self.externalSource = fc.getPrivKeyExternalSourceName();
       self.account = fc.credentials.account;
-      self.incorrectDerivation = fc.incorrectDerivation;
+      self.incorrectDerivation = fc.keyDerivationOk === false;
 
       if (self.externalSource == 'trezor')
         self.account++;
@@ -1397,6 +1397,11 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     });
   };
 
+  self.isInFocus = function(walletId) {
+    var fc = profileService.focusedClient;
+    return fc && fc.credentials.walletId == walletId;
+  };
+
   self.setAddressbook = function(ab) {
     if (ab) {
       self.addressbook = ab;
@@ -1417,12 +1422,17 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.tab = 'walletHome';
   });
 
-  $rootScope.$on('Local/ValidatingWallet', function() {
-    ongoingProcess.set('validatingWallet', true);
+  $rootScope.$on('Local/ValidatingWallet', function(ev, walletId) {
+    if (self.isInFocus(walletId)) {
+      ongoingProcess.set('validatingWallet', true);
+    }
   });
 
-  $rootScope.$on('Local/ProfileBound', function() {
-    ongoingProcess.set('validatingWallet', false);
+  $rootScope.$on('Local/ValidatingWalletEnded', function(ev, walletId, isOK) {
+    if (self.isInFocus(walletId)) {
+      ongoingProcess.set('validatingWallet', false);
+      self.incorrectDerivation = isOK === false;
+    }
   });
 
   $rootScope.$on('Local/ClearHistory', function(event) {
@@ -1484,8 +1494,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   });
 
   $rootScope.$on('Local/WalletCompleted', function(event, walletId) {
-    var fc = profileService.focusedClient;
-    if (fc && fc.credentials.walletId == walletId) {
+    if (self.isInFocus(walletId)) {
       // reset main wallet variables
       self.setFocusedWallet();
       go.walletHome();
