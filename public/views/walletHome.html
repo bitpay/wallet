@@ -201,7 +201,13 @@
                       <span ng-if="!btx.message && !btx.note.body && !index.addressbook[btx.addressTo]" translate> Sent</span>
                     </span>
                   </span>
-                  <span ng-show="btx.action == 'moved'" translate>Moved</span>
+                  <span ng-show="btx.action == 'moved'">
+                    <span class="ellipsis">
+                      <span ng-if="btx.note.body">{{btx.note.body}}</span>
+                      <span ng-if="!btx.note.body" translate>Moved</span>
+                    </span>
+
+                  </span>
                   <span class="label tu warning radius" ng-show="btx.action == 'invalid'" translate>Invalid</span>
                 </div>
               </div>
