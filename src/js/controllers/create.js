@@ -204,5 +204,5 @@ angular.module('copayApp.controllers').controller('createController',
     });
 
     updateSeedSourceSelect(1);
-    self.setSeedSource('new');
+    self.setSeedSource();
   });
