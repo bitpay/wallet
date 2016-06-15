@@ -9,3 +9,4 @@ before_install:
 install:
   - bower install
   - npm install
+
