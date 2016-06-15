@@ -2,8 +2,8 @@
   "name": "copay",
   "description": "A multisignature bitcoin wallet",
   "author": "BitPay",
-  "version": "2.0.0",
-  "androidVersionCode": "105",
+  "version": "2.0.1",
+  "androidVersionCode": "107",
   "keywords": [
     "wallet",
     "copay",
@@ -42,7 +42,7 @@
     "url": "https://github.com/bitpay/copay/issues"
   },
   "dependencies": {
-    "bitcore-wallet-client": "2.7.0",
+    "bitcore-wallet-client": "2.7.1",
     "coveralls": "^2.11.9",
     "express": "^4.11.2",
     "fs": "0.0.2",
