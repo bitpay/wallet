@@ -39,6 +39,9 @@ module.exports = function(grunt) {
       },
       osx: {
         command: 'webkitbuilds/build-osx.sh sign'
+      },
+      coveralls: {
+        command: 'cat  coverage/report-lcov/lcov.info |./node_modules/coveralls/bin/coveralls.js'
       }
     },
     watch: {
@@ -229,15 +232,6 @@ module.exports = function(grunt) {
         singleRun: true
       }
     },
-    coveralls: {
-      options: {
-        debug: false,
-        coverageDir: 'coverage/report-lcov',
-        dryRun: true,
-        force: true,
-        recursive: false
-      }
-    },
     nodewebkit: {
       options: {
         appName: 'Copay',
@@ -273,7 +267,7 @@ module.exports = function(grunt) {
   grunt.registerTask('prod', ['default', 'uglify']);
   grunt.registerTask('translate', ['nggettext_extract']);
   grunt.registerTask('test', ['karma:unit']);
-  grunt.registerTask('test-coveralls', ['browserify', 'karma:prod', 'coveralls']);
+  grunt.registerTask('test-coveralls', ['browserify', 'karma:prod', 'exec:coveralls']);
   grunt.registerTask('desktop', ['prod', 'nodewebkit', 'copy:linux', 'compress:linux']);
   grunt.registerTask('osx', ['prod', 'nodewebkit', 'exec:osx']);
   grunt.registerTask('release', ['string-replace:dist']);
