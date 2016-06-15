@@ -290,7 +290,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
           } else {
             self.isSingleAddress = !!ret.wallet.singleAddress;
             if (!opts.quiet)
-              self.updating =  ret.wallet.scanStatus == 'running';
+              self.updating = ret.wallet.scanStatus == 'running';
           }
           return cb(err, ret);
         });
@@ -1031,7 +1031,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       }
     });
   };
-
 
   self.initGlidera = function(accessToken) {
     self.glideraEnabled = configService.getSync().glidera.enabled;
