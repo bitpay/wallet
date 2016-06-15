@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Czech\n"
 "Language: cs\n"
-"PO-Revision-Date: 2016-06-08 11:56-0400\n"
+"PO-Revision-Date: 2016-06-15 09:59-0400\n"
 
 #: public/views/modals/search.html
 #: public/views/walletHome.html
@@ -44,6 +44,10 @@ msgstr ""
 msgid "{{index.m}}-of-{{index.n}}"
 msgstr "{{index.m}} z {{index.n}}"
 
+#: public/views/modals/search.html
+msgid "{{index.result.length - index.txHistorySearchResults.length}} more"
+msgstr ""
+
 #: public/views/walletHome.html
 msgid "{{index.txProgress}} transactions downloaded"
 msgstr "{{index.txProgress}} transakce stažena"
@@ -51,10 +55,6 @@ msgstr "{{index.txProgress}} transakce stažena"
 #: public/views/includes/sidebar.html
 msgid "{{item.m}}-of-{{item.n}}"
 msgstr "{{item.m}} z {{item.n}}"
-
-#: src/js/controllers/importLegacy.js
-msgid "{{len}} wallets imported. Funds scanning in progress. Hold on to see updated balance"
-msgstr "{{len}} peněženek importováno. Probíhá dohledávání zůstatků, během chvíle budou k dispozici"
 
 #: public/views/modals/txp-details.html
 msgid "* A payment proposal can be deleted if 1) you are the creator, and no other copayer has signed, or 2) 24 hours have passed since the proposal was created."
@@ -157,6 +157,7 @@ msgstr "Název"
 msgid "Alias for <i>{{index.walletName}}</i>"
 msgstr "Název pro <i>{{index.walletName}}</i>"
 
+#: public/views/preferencesLanguage.html
 #: public/views/translators.html
 msgid "All contributions to Copay's translation are welcome. Sign up at crowdin.com and join the Copay project at"
 msgstr "Všichni spoluúčastníci překladů Copay jsou vítání. Přihlaště se na crowdin.com a přidejte se k projektu Copay na"
@@ -268,7 +269,7 @@ msgstr "Bitcoin URI neni platná!"
 msgid "Broadcast Payment"
 msgstr "Vysílání platby"
 
-#: src/js/controllers/walletHome.js
+#: src/js/services/onGoingProcess.js
 msgid "Broadcasting transaction"
 msgstr "Vysílání transakce"
 
@@ -280,7 +281,7 @@ msgstr "Nepodporovaný prohlížeč"
 msgid "Buy &amp; Sell"
 msgstr ""
 
-#: src/js/controllers/walletHome.js
+#: src/js/services/onGoingProcess.js
 msgid "Calculating fee"
 msgstr "Vypočítávám poplatek"
 
@@ -320,6 +321,10 @@ msgstr "Ověřeno od"
 #: public/views/preferencesAlias.html
 msgid "Changing wallet alias only affects the local wallet name."
 msgstr "Změna názvu peněženky bude aktualizovat pouze název na tomto zařízení."
+
+#: public/views/translators.html
+msgid "Chinese"
+msgstr ""
 
 #: public/views/import.html
 msgid "Choose a backup file from your computer"
@@ -372,17 +377,13 @@ msgstr "Potvrzení"
 msgid "Congratulations!"
 msgstr "Gratulujeme!"
 
-#: public/views/create.html
-msgid "Connecting to {{create.hwWallet}} Wallet..."
-msgstr "Připojuji k peněžence {{create.hwWallet}} ..."
+#: src/js/services/onGoingProcess.js
+msgid "Connecting to Coinbase..."
+msgstr ""
 
-#: public/views/import.html
-msgid "Connecting to {{import.hwWallet}} Wallet..."
-msgstr "Připojuji k peněžence {{import.hwWallet}}..."
-
-#: public/views/join.html
-msgid "Connecting to {{join.hwWallet}} Wallet..."
-msgstr "Připojuji k peněžence {{join.hwWallet}}..."
+#: src/js/services/onGoingProcess.js
+msgid "Connecting to Glidera..."
+msgstr ""
 
 #: src/js/services/bwsError.js
 msgid "Connection reset by peer"
@@ -410,7 +411,6 @@ msgstr "Spoluplátci"
 
 #: src/js/controllers/copayers.js
 #: src/js/controllers/export.js
-#: src/js/controllers/tx.js
 #: src/js/controllers/walletHome.js
 msgid "Copied to clipboard"
 msgstr "Zkopírováno"
@@ -532,18 +532,21 @@ msgstr "Vytvořit, spojit nebo importovat"
 msgid "Created by"
 msgstr "Vytvořil"
 
-#: src/js/controllers/walletHome.js
+#: src/js/services/onGoingProcess.js
 msgid "Creating transaction"
 msgstr "Vytvářím transakci"
 
-#: public/views/create.html
-#: public/views/disclaimer.html
+#: src/js/services/onGoingProcess.js
 msgid "Creating Wallet..."
 msgstr "Vytvářím peněženku..."
 
 #: public/views/preferencesFee.html
 msgid "Current fee rate for this policy: {{fee.feePerKBUnit}}/kiB"
 msgstr "Současná zásadu poplatků je: {{fee.feePerKBUnit}}/kiB"
+
+#: public/views/translators.html
+msgid "Czech"
+msgstr ""
 
 #: public/views/modals/tx-details.html
 msgid "Date"
@@ -577,7 +580,7 @@ msgstr "Odstranit peněženku"
 msgid "Delete Wallet"
 msgstr "Odstranit peněženku"
 
-#: public/views/preferencesDeleteWallet.html
+#: src/js/services/onGoingProcess.js
 msgid "Deleting Wallet..."
 msgstr "Mažu peněženku..."
 
@@ -612,6 +615,7 @@ msgstr "Nedostupné"
 msgid "Do not include private key"
 msgstr "Nevyplňujte soukromý klíč"
 
+#: public/views/preferencesLanguage.html
 #: public/views/translators.html
 msgid "Don't see your language on Crowdin? Contact the Owner on Crowdin! We'd love to support your language."
 msgstr "Nevidíte na Crowdin váš jazyk? Kontaktujte správce repozitáře na Crowdin. Rádi váš jazyk přidáme."
@@ -640,10 +644,6 @@ msgstr ""
 #: public/views/modals/tx-details.html
 msgid "Edited by"
 msgstr ""
-
-#: public/views/importLegacy.html
-msgid "Email"
-msgstr "Email"
 
 #: public/views/preferencesEmail.html
 msgid "Email for wallet notifications"
@@ -694,10 +694,6 @@ msgstr "Chyba Služby Peněženky"
 msgid "Error creating wallet"
 msgstr "Chyba vytváření peněženky"
 
-#: src/js/services/profileService.js
-msgid "Error importing wallet:"
-msgstr "Chyba importování peněženky:"
-
 #: public/views/modals/txp-details.html
 msgid "Expired"
 msgstr "Vyprošelo"
@@ -715,10 +711,6 @@ msgstr "Možnosti exportu"
 msgid "Export to file"
 msgstr "Exportovat do souboru"
 
-#: public/views/preferencesHistory.html
-msgid "Export to file [preparing...]"
-msgstr ""
-
 #: public/views/preferencesAdvanced.html
 msgid "Export Wallet"
 msgstr "Exportovat peněženku"
@@ -730,10 +722,6 @@ msgstr "Rozšířený veřejný klíč"
 #: public/views/export.html
 msgid "Failed to export"
 msgstr "Chyba exportu"
-
-#: src/js/controllers/importLegacy.js
-msgid "Failed to import wallets"
-msgstr "Chyba importu peněženky"
 
 #: public/views/backup.html
 msgid "Failed to verify backup. Please check your information"
@@ -749,8 +737,7 @@ msgstr "Úspory rodiny na dovolenou"
 msgid "Fee"
 msgstr "Poplatek"
 
-#. Get information of payment if using Payment Protocol
-#: src/js/controllers/walletHome.js
+#: src/js/services/onGoingProcess.js
 msgid "Fetching Payment Information"
 msgstr "Stahuji platební údaje"
 
@@ -798,7 +785,7 @@ msgstr "Vytvořit novou adresu"
 msgid "Generate QR Code"
 msgstr "Vytvořit QR kód"
 
-#: public/views/walletHome.html
+#: src/js/services/onGoingProcess.js
 msgid "Generating .csv file..."
 msgstr "Vytvářím .csv soubor..."
 
@@ -822,10 +809,6 @@ msgstr "Hardware peněženka"
 msgid "Hardware Wallet"
 msgstr ""
 
-#: public/views/import.html
-msgid "Have a Backup from Copay v0.9?"
-msgstr "Máte zálohu z Copay verze v0.9?"
-
 #: public/views/create.html
 #: public/views/import.html
 #: public/views/join.html
@@ -841,7 +824,6 @@ msgid "I AGREE. GET STARTED"
 msgstr "SOUHLASÍM. ZAČÍT"
 
 #: public/views/import.html
-#: public/views/importLegacy.html
 msgid "Import"
 msgstr "Import"
 
@@ -849,25 +831,13 @@ msgstr "Import"
 msgid "Import backup"
 msgstr "Import zálohy"
 
-#: public/views/importLegacy.html
-msgid "Import from the Cloud?"
-msgstr "Import z Cloudu?"
-
-#: public/views/import.html
-msgid "Import here"
-msgstr "Importovat zde"
-
 #: public/views/add.html
 msgid "Import wallet"
 msgstr "Import peněženky"
 
-#: public/views/import.html
-msgid "Importing wallet..."
-msgstr "Importuji peněženku..."
-
-#: public/views/importLegacy.html
-msgid "Importing..."
-msgstr "Importuji..."
+#: src/js/services/onGoingProcess.js
+msgid "Importing Wallet..."
+msgstr ""
 
 #: public/views/includes/terms.html
 msgid "In no event shall the authors of the software, employees and affiliates of Bitpay, copyright holders, or BitPay, Inc. be held liable for any claim, damages or other liability, whether in an action of contract, tort, or otherwise, arising from, out of or in connection with the software."
@@ -919,6 +889,10 @@ msgid "Invitation to share a Copay Wallet"
 msgstr "Pozvánka ke sdílené Copay Peněžence"
 
 #: public/views/translators.html
+msgid "Italian"
+msgstr ""
+
+#: public/views/translators.html
 msgid "Japanese"
 msgstr "Japonština"
 
@@ -939,7 +913,7 @@ msgstr "Propojení mé Copay peněženky. Toto je kód pozvánky: {{secret}} Cop
 msgid "Join shared wallet"
 msgstr "Spojit sdílenou peněženku"
 
-#: public/views/join.html
+#: src/js/services/onGoingProcess.js
 msgid "Joining Wallet..."
 msgstr "Spojuji peněženky..."
 
@@ -962,10 +936,6 @@ msgstr "Poslední adresa peněženky"
 #: public/views/backup.html
 msgid "Learn more about Copay backups"
 msgstr "Dozvědět se více o zálohování Copay"
-
-#: public/views/importLegacy.html
-msgid "Learn more about Wallet Migration"
-msgstr "Dozvědět se více o přemístění peněženky"
 
 #: public/views/preferencesFee.html
 msgid "Loading..."
@@ -1152,7 +1122,6 @@ msgstr "Heslo"
 
 #: public/views/create.html
 #: public/views/import.html
-#: public/views/importLegacy.html
 #: public/views/join.html
 #: public/views/paperWallet.html
 msgid "Password"
@@ -1261,11 +1230,6 @@ msgstr "Trvalé odstraněné této peněženky. NELZE VRÁTIT ZPĚT"
 msgid "Personal Wallet"
 msgstr "Osobní peněženka"
 
-#: public/views/create.html
-#: public/views/join.html
-msgid "Please accept to export two public keys from the Trezor app"
-msgstr "Přijměte pro export dvou veřejných klíčů z aplikace Trezor"
-
 #: src/js/controllers/import.js
 msgid "Please enter the recovery phrase"
 msgstr ""
@@ -1288,13 +1252,25 @@ msgstr "Potvrďte pořadí slov pro potvrzení správnosti zálohy."
 msgid "Please upgrade Copay to perform this action"
 msgstr "Pro tuto funkci je potřeba aktualizovat Copay"
 
+#: public/views/uri.html
+msgid "Please wait to be redirected..."
+msgstr ""
+
 #: src/js/controllers/import.js
 msgid "Please, select your backup file"
 msgstr "Vyberte soubor zálohy"
 
+#: public/views/translators.html
+msgid "Polish"
+msgstr ""
+
 #: src/js/controllers/export.js
 msgid "Preparing backup..."
 msgstr "Připravuji zálohu..."
+
+#: public/views/preferencesHistory.html
+msgid "preparing..."
+msgstr ""
 
 #: src/js/routes.js
 msgid "Press again to exit"
@@ -1335,9 +1311,9 @@ msgstr "Přijato"
 msgid "Recipients"
 msgstr "Příjemci"
 
-#: public/views/walletHome.html
-msgid "Reconnecting to Wallet Service..."
-msgstr "Navazuji spojení se službou peněženky..."
+#: public/views/import.html
+msgid "Recovery Phrase"
+msgstr ""
 
 #: src/js/controllers/preferencesDeleteWords.js
 msgid "Recovery phrase deleted"
@@ -1347,7 +1323,7 @@ msgstr ""
 msgid "Recreate"
 msgstr "Znovu vytvářím"
 
-#: public/views/walletHome.html
+#: src/js/services/onGoingProcess.js
 msgid "Recreating Wallet..."
 msgstr "Znovu vytvářím peněženku..."
 
@@ -1392,7 +1368,7 @@ msgstr "Vyžadováno"
 msgid "Required number of signatures"
 msgstr "Vyžadováno více podpisuů"
 
-#: src/js/controllers/walletHome.js
+#: src/js/services/onGoingProcess.js
 msgid "Retrieving inputs information"
 msgstr "Načítání informací vstupů"
 
@@ -1407,10 +1383,6 @@ msgstr "Ruština"
 #: public/views/preferencesEmail.html
 msgid "Save"
 msgstr "Uložit"
-
-#: public/views/preferencesEmail.html
-msgid "Saving preferences..."
-msgstr "Ukládám nastavení..."
 
 #: public/views/preferencesInformation.html
 msgid "Scan addresses for funds"
@@ -1436,11 +1408,7 @@ msgstr "Skenovat zůstatek peněženky"
 msgid "Scan your fingerprint please"
 msgstr "Naskenujte prosím svůj otisk"
 
-#: public/views/paperWallet.html
-msgid "Scanning wallet funds..."
-msgstr "Skenuji zůstatek peněženky..."
-
-#: public/views/walletHome.html
+#: src/js/services/onGoingProcess.js
 msgid "Scanning Wallet funds..."
 msgstr "Skenuji zůstatek peněženky..."
 
@@ -1498,11 +1466,7 @@ msgstr "Odeslat max"
 msgid "Sending"
 msgstr "Odesílám"
 
-#: public/views/paperWallet.html
-msgid "Sending funds..."
-msgstr "Odesílání částky..."
-
-#: src/js/controllers/walletHome.js
+#: src/js/services/onGoingProcess.js
 msgid "Sending transaction"
 msgstr "Odesílání transakce"
 
@@ -1512,10 +1476,6 @@ msgstr "Odesílání transakce"
 #: public/views/walletHome.html
 msgid "Sent"
 msgstr "Odesláno"
-
-#: public/views/importLegacy.html
-msgid "Server"
-msgstr "Server"
 
 #: src/js/services/bwsError.js
 msgid "Server response could not be verified"
@@ -1590,7 +1550,7 @@ msgstr ""
 msgid "Signatures rejected by server"
 msgstr "Podpisy byly serverem odmítnuty"
 
-#: src/js/controllers/walletHome.js
+#: src/js/services/onGoingProcess.js
 msgid "Signing transaction"
 msgstr ""
 
@@ -1641,6 +1601,10 @@ msgstr "Převést papírovou peněženku"
 #: public/views/paperWallet.html
 msgid "Sweep Wallet"
 msgstr "Převést peněženku"
+
+#: src/js/services/onGoingProcess.js
+msgid "Sweeping Wallet..."
+msgstr ""
 
 #: public/views/walletHome.html
 msgid "Tap and hold to show"
@@ -1826,9 +1790,13 @@ msgstr "Aktualizuji peněženku..."
 msgid "Use Unconfirmed Funds"
 msgstr "Použít nepotvrzené částky"
 
-#: public/views/importLegacy.html
-msgid "Username"
-msgstr "Jméno"
+#: src/js/services/onGoingProcess.js
+msgid "Validating recovery phrase..."
+msgstr ""
+
+#: src/js/services/onGoingProcess.js
+msgid "Validating wallet integrity..."
+msgstr ""
 
 #: public/views/preferencesAbout.html
 msgid "Version"
@@ -1842,6 +1810,14 @@ msgstr "Pohled"
 msgid "Waiting for copayers"
 msgstr "Vyčkávání na spoluplátce"
 
+#: src/js/services/onGoingProcess.js
+msgid "Waiting for Ledger..."
+msgstr ""
+
+#: src/js/services/onGoingProcess.js
+msgid "Waiting for Trezor..."
+msgstr ""
+
 #: public/views/copayers.html
 msgid "Waiting..."
 msgstr "Vyčkávání..."
@@ -1849,10 +1825,6 @@ msgstr "Vyčkávání..."
 #: src/js/services/bwsError.js
 msgid "Wallet already exists"
 msgstr "Peněženka již existuje"
-
-#: src/js/services/profileService.js
-msgid "Wallet Already Imported:"
-msgstr "Peněženka již byla importována:"
 
 #: src/js/services/profileService.js
 msgid "Wallet already in Copay"
@@ -1921,6 +1893,10 @@ msgstr "Peněženka nenalezena"
 
 #: src/js/services/bwsError.js
 msgid "Wallet not registered at the wallet service. Recreate it from \"Create Wallet\" using \"Advanced Options\" to set your recovery phrase"
+msgstr ""
+
+#: src/js/controllers/index.js
+msgid "Wallet Preferences"
 msgstr ""
 
 #: public/views/create.html
@@ -2041,10 +2017,6 @@ msgstr "Vaše přezdívka"
 #: public/views/import.html
 msgid "Your password"
 msgstr "Vaše heslo"
-
-#: public/views/importLegacy.html
-msgid "Your profile password"
-msgstr "Vaše heslo k účtu"
 
 #: public/views/includes/password.html
 msgid "Your spending password"

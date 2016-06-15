@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Russian\n"
 "Language: ru\n"
-"PO-Revision-Date: 2016-06-08 11:56-0400\n"
+"PO-Revision-Date: 2016-06-15 09:59-0400\n"
 
 #: public/views/modals/search.html
 #: public/views/walletHome.html
@@ -44,6 +44,10 @@ msgstr ""
 msgid "{{index.m}}-of-{{index.n}}"
 msgstr "{{index.m}}-из-{{index.n}}"
 
+#: public/views/modals/search.html
+msgid "{{index.result.length - index.txHistorySearchResults.length}} more"
+msgstr ""
+
 #: public/views/walletHome.html
 msgid "{{index.txProgress}} transactions downloaded"
 msgstr "{{index.txProgress}} транзакций скачено"
@@ -51,10 +55,6 @@ msgstr "{{index.txProgress}} транзакций скачено"
 #: public/views/includes/sidebar.html
 msgid "{{item.m}}-of-{{item.n}}"
 msgstr "{{item.m}}-из-{{item.n}}"
-
-#: src/js/controllers/importLegacy.js
-msgid "{{len}} wallets imported. Funds scanning in progress. Hold on to see updated balance"
-msgstr "{{len}} кошельки импортированы, идёт сканирование. Дождитесь обновлённого баланса"
 
 #: public/views/modals/txp-details.html
 msgid "* A payment proposal can be deleted if 1) you are the creator, and no other copayer has signed, or 2) 24 hours have passed since the proposal was created."
@@ -157,6 +157,7 @@ msgstr "Псевдоним"
 msgid "Alias for <i>{{index.walletName}}</i>"
 msgstr "Псевдоним для <i>{{index.walletName}}</i>"
 
+#: public/views/preferencesLanguage.html
 #: public/views/translators.html
 msgid "All contributions to Copay's translation are welcome. Sign up at crowdin.com and join the Copay project at"
 msgstr "Любой вклад в перевод Copay приветствуются. Регистрируйтесь на crowdin.com и присоединяйтесь к проекту Copay на"
@@ -268,7 +269,7 @@ msgstr "Биткойн URI недействителен!"
 msgid "Broadcast Payment"
 msgstr "Отправить платёж"
 
-#: src/js/controllers/walletHome.js
+#: src/js/services/onGoingProcess.js
 msgid "Broadcasting transaction"
 msgstr "Отправка транзакции"
 
@@ -280,7 +281,7 @@ msgstr "Браузер не поддерживается"
 msgid "Buy &amp; Sell"
 msgstr ""
 
-#: src/js/controllers/walletHome.js
+#: src/js/services/onGoingProcess.js
 msgid "Calculating fee"
 msgstr "Вычисление комиссии"
 
@@ -320,6 +321,10 @@ msgstr "Сертифицирован"
 #: public/views/preferencesAlias.html
 msgid "Changing wallet alias only affects the local wallet name."
 msgstr "Изменение псевдонима кошелька сохраняется только локально."
+
+#: public/views/translators.html
+msgid "Chinese"
+msgstr ""
 
 #: public/views/import.html
 msgid "Choose a backup file from your computer"
@@ -372,17 +377,13 @@ msgstr "Подтверждения"
 msgid "Congratulations!"
 msgstr "Поздравляем!"
 
-#: public/views/create.html
-msgid "Connecting to {{create.hwWallet}} Wallet..."
-msgstr "Подключаемся к кошельку {{create.hwWallet}}..."
+#: src/js/services/onGoingProcess.js
+msgid "Connecting to Coinbase..."
+msgstr ""
 
-#: public/views/import.html
-msgid "Connecting to {{import.hwWallet}} Wallet..."
-msgstr "Подключаемся к кошельку {{import.hwWallet}}..."
-
-#: public/views/join.html
-msgid "Connecting to {{join.hwWallet}} Wallet..."
-msgstr "Подключаемся к кошельку {{join.hwWallet}}..."
+#: src/js/services/onGoingProcess.js
+msgid "Connecting to Glidera..."
+msgstr ""
 
 #: src/js/services/bwsError.js
 msgid "Connection reset by peer"
@@ -410,7 +411,6 @@ msgstr "Совладельцы кошелька"
 
 #: src/js/controllers/copayers.js
 #: src/js/controllers/export.js
-#: src/js/controllers/tx.js
 #: src/js/controllers/walletHome.js
 msgid "Copied to clipboard"
 msgstr "Скопировано в буфер обмена"
@@ -532,18 +532,21 @@ msgstr "Создать, присоединиться или импортиров
 msgid "Created by"
 msgstr "Создан"
 
-#: src/js/controllers/walletHome.js
+#: src/js/services/onGoingProcess.js
 msgid "Creating transaction"
 msgstr "Создание транзакции"
 
-#: public/views/create.html
-#: public/views/disclaimer.html
+#: src/js/services/onGoingProcess.js
 msgid "Creating Wallet..."
 msgstr "Создание кошелька..."
 
 #: public/views/preferencesFee.html
 msgid "Current fee rate for this policy: {{fee.feePerKBUnit}}/kiB"
 msgstr "Текущая комиссия для этой политики: {{fee.feePerKBUnit}}/kiB"
+
+#: public/views/translators.html
+msgid "Czech"
+msgstr ""
 
 #: public/views/modals/tx-details.html
 msgid "Date"
@@ -577,7 +580,7 @@ msgstr "Удалить кошелёк"
 msgid "Delete Wallet"
 msgstr "Удалить кошелёк"
 
-#: public/views/preferencesDeleteWallet.html
+#: src/js/services/onGoingProcess.js
 msgid "Deleting Wallet..."
 msgstr "Удаление кошелька..."
 
@@ -612,6 +615,7 @@ msgstr "Отключены"
 msgid "Do not include private key"
 msgstr "Не включать закрытый ключ"
 
+#: public/views/preferencesLanguage.html
 #: public/views/translators.html
 msgid "Don't see your language on Crowdin? Contact the Owner on Crowdin! We'd love to support your language."
 msgstr "Не видите свой язык на Crowdin? Свяжитесь с владельцем по Crowdin! Мы с удовольствием поддержим ваш язык."
@@ -640,10 +644,6 @@ msgstr ""
 #: public/views/modals/tx-details.html
 msgid "Edited by"
 msgstr ""
-
-#: public/views/importLegacy.html
-msgid "Email"
-msgstr "Email"
 
 #: public/views/preferencesEmail.html
 msgid "Email for wallet notifications"
@@ -694,10 +694,6 @@ msgstr "Ошибка на сервере Bitcore"
 msgid "Error creating wallet"
 msgstr "Ошибка создания кошелька"
 
-#: src/js/services/profileService.js
-msgid "Error importing wallet:"
-msgstr "Ошибка импорта кошелька:"
-
 #: public/views/modals/txp-details.html
 msgid "Expired"
 msgstr "Истекла"
@@ -715,10 +711,6 @@ msgstr "Параметры экспорта"
 msgid "Export to file"
 msgstr "Экспорт в файл"
 
-#: public/views/preferencesHistory.html
-msgid "Export to file [preparing...]"
-msgstr ""
-
 #: public/views/preferencesAdvanced.html
 msgid "Export Wallet"
 msgstr "Экспорт кошелька"
@@ -730,10 +722,6 @@ msgstr "Расширенные открытые ключи"
 #: public/views/export.html
 msgid "Failed to export"
 msgstr "Не удалось экспортировать"
-
-#: src/js/controllers/importLegacy.js
-msgid "Failed to import wallets"
-msgstr "Не удалось импортировать кошельки"
 
 #: public/views/backup.html
 msgid "Failed to verify backup. Please check your information"
@@ -749,8 +737,7 @@ msgstr "Отпускной бюджет"
 msgid "Fee"
 msgstr "Комиссия"
 
-#. Get information of payment if using Payment Protocol
-#: src/js/controllers/walletHome.js
+#: src/js/services/onGoingProcess.js
 msgid "Fetching Payment Information"
 msgstr "Извлечение информации о платеже"
 
@@ -798,7 +785,7 @@ msgstr "Создать новый адрес"
 msgid "Generate QR Code"
 msgstr "Сгенерировать QR-код"
 
-#: public/views/walletHome.html
+#: src/js/services/onGoingProcess.js
 msgid "Generating .csv file..."
 msgstr "Создание .сsv-файла..."
 
@@ -822,10 +809,6 @@ msgstr "Аппаратный кошелёк"
 msgid "Hardware Wallet"
 msgstr ""
 
-#: public/views/import.html
-msgid "Have a Backup from Copay v0.9?"
-msgstr "Есть резервная копия из Copay v0.9?"
-
 #: public/views/create.html
 #: public/views/import.html
 #: public/views/join.html
@@ -841,7 +824,6 @@ msgid "I AGREE. GET STARTED"
 msgstr "Принять и продолжить"
 
 #: public/views/import.html
-#: public/views/importLegacy.html
 msgid "Import"
 msgstr "Импорт"
 
@@ -849,25 +831,13 @@ msgstr "Импорт"
 msgid "Import backup"
 msgstr "Импорт резервной копии"
 
-#: public/views/importLegacy.html
-msgid "Import from the Cloud?"
-msgstr "Импортировать из облака?"
-
-#: public/views/import.html
-msgid "Import here"
-msgstr "Импортировать сюда"
-
 #: public/views/add.html
 msgid "Import wallet"
 msgstr "Импорт кошелька"
 
-#: public/views/import.html
-msgid "Importing wallet..."
-msgstr "Импорт кошелька..."
-
-#: public/views/importLegacy.html
-msgid "Importing..."
-msgstr "Импорт..."
+#: src/js/services/onGoingProcess.js
+msgid "Importing Wallet..."
+msgstr ""
 
 #: public/views/includes/terms.html
 msgid "In no event shall the authors of the software, employees and affiliates of Bitpay, copyright holders, or BitPay, Inc. be held liable for any claim, damages or other liability, whether in an action of contract, tort, or otherwise, arising from, out of or in connection with the software."
@@ -919,6 +889,10 @@ msgid "Invitation to share a Copay Wallet"
 msgstr "Приглашение присоединиться к кошельку Copay"
 
 #: public/views/translators.html
+msgid "Italian"
+msgstr ""
+
+#: public/views/translators.html
 msgid "Japanese"
 msgstr "японский"
 
@@ -939,7 +913,7 @@ msgstr "Присоединяйся к моему кошельку Copay. Код 
 msgid "Join shared wallet"
 msgstr "Присоединиться к общему кошельку"
 
-#: public/views/join.html
+#: src/js/services/onGoingProcess.js
 msgid "Joining Wallet..."
 msgstr "Присоединение к кошельку..."
 
@@ -962,10 +936,6 @@ msgstr "Последние адреса"
 #: public/views/backup.html
 msgid "Learn more about Copay backups"
 msgstr "Узнайте больше о резервном копировании"
-
-#: public/views/importLegacy.html
-msgid "Learn more about Wallet Migration"
-msgstr "Узнайте больше о переносе кошелька"
 
 #: public/views/preferencesFee.html
 msgid "Loading..."
@@ -1152,7 +1122,6 @@ msgstr "Пароль импортируемого кошелька"
 
 #: public/views/create.html
 #: public/views/import.html
-#: public/views/importLegacy.html
 #: public/views/join.html
 #: public/views/paperWallet.html
 msgid "Password"
@@ -1261,11 +1230,6 @@ msgstr "Окончательно удалить этот кошелёк. ЭТО 
 msgid "Personal Wallet"
 msgstr "Личный кошелёк"
 
-#: public/views/create.html
-#: public/views/join.html
-msgid "Please accept to export two public keys from the Trezor app"
-msgstr "Примите два публичных ключа от приложения Trezor"
-
 #: src/js/controllers/import.js
 msgid "Please enter the recovery phrase"
 msgstr ""
@@ -1288,13 +1252,25 @@ msgstr "Коснитесь слов чтобы подтвердить, что в
 msgid "Please upgrade Copay to perform this action"
 msgstr "Пожалуйста, обновите Copay для выполнения этого действия"
 
+#: public/views/uri.html
+msgid "Please wait to be redirected..."
+msgstr ""
+
 #: src/js/controllers/import.js
 msgid "Please, select your backup file"
 msgstr "Пожалуйста, выберите ваш файл резервной копии"
 
+#: public/views/translators.html
+msgid "Polish"
+msgstr ""
+
 #: src/js/controllers/export.js
 msgid "Preparing backup..."
 msgstr "Подготовка резервной копии..."
+
+#: public/views/preferencesHistory.html
+msgid "preparing..."
+msgstr ""
 
 #: src/js/routes.js
 msgid "Press again to exit"
@@ -1335,9 +1311,9 @@ msgstr "Получен"
 msgid "Recipients"
 msgstr "Получатели"
 
-#: public/views/walletHome.html
-msgid "Reconnecting to Wallet Service..."
-msgstr "Повторное подключение к серверу Bitcore..."
+#: public/views/import.html
+msgid "Recovery Phrase"
+msgstr ""
 
 #: src/js/controllers/preferencesDeleteWords.js
 msgid "Recovery phrase deleted"
@@ -1347,7 +1323,7 @@ msgstr ""
 msgid "Recreate"
 msgstr "Создать заново"
 
-#: public/views/walletHome.html
+#: src/js/services/onGoingProcess.js
 msgid "Recreating Wallet..."
 msgstr "Воссоздаю кошелёк..."
 
@@ -1392,7 +1368,7 @@ msgstr "Необходимо"
 msgid "Required number of signatures"
 msgstr "Требуемое число подписей"
 
-#: src/js/controllers/walletHome.js
+#: src/js/services/onGoingProcess.js
 msgid "Retrieving inputs information"
 msgstr "Получение информации о входах"
 
@@ -1407,10 +1383,6 @@ msgstr "русский"
 #: public/views/preferencesEmail.html
 msgid "Save"
 msgstr "Сохранить"
-
-#: public/views/preferencesEmail.html
-msgid "Saving preferences..."
-msgstr "Сохранение настроек..."
 
 #: public/views/preferencesInformation.html
 msgid "Scan addresses for funds"
@@ -1436,11 +1408,7 @@ msgstr "Сканирование кошелька"
 msgid "Scan your fingerprint please"
 msgstr "Пожалуйста отсканируйте ваш отпечаток пальца"
 
-#: public/views/paperWallet.html
-msgid "Scanning wallet funds..."
-msgstr "Сканирование адресов кошелька..."
-
-#: public/views/walletHome.html
+#: src/js/services/onGoingProcess.js
 msgid "Scanning Wallet funds..."
 msgstr "Сканирование адресов кошелька..."
 
@@ -1498,11 +1466,7 @@ msgstr "Отправить максимум"
 msgid "Sending"
 msgstr "Отправка"
 
-#: public/views/paperWallet.html
-msgid "Sending funds..."
-msgstr "Отправка средств..."
-
-#: src/js/controllers/walletHome.js
+#: src/js/services/onGoingProcess.js
 msgid "Sending transaction"
 msgstr "Отправка транзакции"
 
@@ -1512,10 +1476,6 @@ msgstr "Отправка транзакции"
 #: public/views/walletHome.html
 msgid "Sent"
 msgstr "Отправлено"
-
-#: public/views/importLegacy.html
-msgid "Server"
-msgstr "Сервер"
 
 #: src/js/services/bwsError.js
 msgid "Server response could not be verified"
@@ -1590,7 +1550,7 @@ msgstr ""
 msgid "Signatures rejected by server"
 msgstr "Подписи отклонены сервером"
 
-#: src/js/controllers/walletHome.js
+#: src/js/services/onGoingProcess.js
 msgid "Signing transaction"
 msgstr ""
 
@@ -1641,6 +1601,10 @@ msgstr "Пополнить с бумажного кошелька"
 #: public/views/paperWallet.html
 msgid "Sweep Wallet"
 msgstr "Считать кошелёк"
+
+#: src/js/services/onGoingProcess.js
+msgid "Sweeping Wallet..."
+msgstr ""
 
 #: public/views/walletHome.html
 msgid "Tap and hold to show"
@@ -1826,9 +1790,13 @@ msgstr "Обновление кошелька..."
 msgid "Use Unconfirmed Funds"
 msgstr "Использовать неподтверждённые средства"
 
-#: public/views/importLegacy.html
-msgid "Username"
-msgstr "Имя пользователя"
+#: src/js/services/onGoingProcess.js
+msgid "Validating recovery phrase..."
+msgstr ""
+
+#: src/js/services/onGoingProcess.js
+msgid "Validating wallet integrity..."
+msgstr ""
 
 #: public/views/preferencesAbout.html
 msgid "Version"
@@ -1842,6 +1810,14 @@ msgstr "Просмотреть"
 msgid "Waiting for copayers"
 msgstr "Ожидание совладельцев кошелька"
 
+#: src/js/services/onGoingProcess.js
+msgid "Waiting for Ledger..."
+msgstr ""
+
+#: src/js/services/onGoingProcess.js
+msgid "Waiting for Trezor..."
+msgstr ""
+
 #: public/views/copayers.html
 msgid "Waiting..."
 msgstr "Ожидание..."
@@ -1849,10 +1825,6 @@ msgstr "Ожидание..."
 #: src/js/services/bwsError.js
 msgid "Wallet already exists"
 msgstr "Кошелёк уже существует"
-
-#: src/js/services/profileService.js
-msgid "Wallet Already Imported:"
-msgstr "Кошелек уже импортирован:"
 
 #: src/js/services/profileService.js
 msgid "Wallet already in Copay"
@@ -1921,6 +1893,10 @@ msgstr "Кошелёк не найден"
 
 #: src/js/services/bwsError.js
 msgid "Wallet not registered at the wallet service. Recreate it from \"Create Wallet\" using \"Advanced Options\" to set your recovery phrase"
+msgstr ""
+
+#: src/js/controllers/index.js
+msgid "Wallet Preferences"
 msgstr ""
 
 #: public/views/create.html
@@ -2041,10 +2017,6 @@ msgstr "Ваше имя"
 #: public/views/import.html
 msgid "Your password"
 msgstr "Ваш пароль"
-
-#: public/views/importLegacy.html
-msgid "Your profile password"
-msgstr "Пароль вашего профиля"
 
 #: public/views/includes/password.html
 msgid "Your spending password"

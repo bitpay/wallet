@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Chinese Simplified\n"
 "Language: zh\n"
-"PO-Revision-Date: 2016-06-09 10:19-0400\n"
+"PO-Revision-Date: 2016-06-15 09:59-0400\n"
 
 #: public/views/modals/search.html
 #: public/views/walletHome.html
@@ -44,6 +44,10 @@ msgstr "{{index.completeHistory.length - index.txHistory.length}} 更多"
 msgid "{{index.m}}-of-{{index.n}}"
 msgstr "{{index.n}} 分之 {{index.m}}"
 
+#: public/views/modals/search.html
+msgid "{{index.result.length - index.txHistorySearchResults.length}} more"
+msgstr ""
+
 #: public/views/walletHome.html
 msgid "{{index.txProgress}} transactions downloaded"
 msgstr "{{index.txProgress}} 条交易已下载"
@@ -51,10 +55,6 @@ msgstr "{{index.txProgress}} 条交易已下载"
 #: public/views/includes/sidebar.html
 msgid "{{item.m}}-of-{{item.n}}"
 msgstr "{{item.n}} 分之 {{item.m}}"
-
-#: src/js/controllers/importLegacy.js
-msgid "{{len}} wallets imported. Funds scanning in progress. Hold on to see updated balance"
-msgstr "{{len}} 个钱包已导入，资金扫描中，稍后显示最新余额。"
 
 #: public/views/modals/txp-details.html
 msgid "* A payment proposal can be deleted if 1) you are the creator, and no other copayer has signed, or 2) 24 hours have passed since the proposal was created."
@@ -157,6 +157,7 @@ msgstr "别名"
 msgid "Alias for <i>{{index.walletName}}</i>"
 msgstr "<i>{{index.walletName}}</i>别名"
 
+#: public/views/preferencesLanguage.html
 #: public/views/translators.html
 msgid "All contributions to Copay's translation are welcome. Sign up at crowdin.com and join the Copay project at"
 msgstr "欢迎大家为 Copay 提供翻译，注册 crowdin.com 并加入 Copay 项目"
@@ -268,7 +269,7 @@ msgstr "比特币 URI 无效！"
 msgid "Broadcast Payment"
 msgstr "广播支付"
 
-#: src/js/controllers/walletHome.js
+#: src/js/services/onGoingProcess.js
 msgid "Broadcasting transaction"
 msgstr "正在广播交易"
 
@@ -280,7 +281,7 @@ msgstr "浏览器不被支持"
 msgid "Buy &amp; Sell"
 msgstr "买 &amp; 卖"
 
-#: src/js/controllers/walletHome.js
+#: src/js/services/onGoingProcess.js
 msgid "Calculating fee"
 msgstr "正在计算费用"
 
@@ -320,6 +321,10 @@ msgstr "通过认证："
 #: public/views/preferencesAlias.html
 msgid "Changing wallet alias only affects the local wallet name."
 msgstr "更改钱包别名只会影响本地钱包名称。"
+
+#: public/views/translators.html
+msgid "Chinese"
+msgstr ""
 
 #: public/views/import.html
 msgid "Choose a backup file from your computer"
@@ -372,17 +377,13 @@ msgstr "确认"
 msgid "Congratulations!"
 msgstr "恭喜！"
 
-#: public/views/create.html
-msgid "Connecting to {{create.hwWallet}} Wallet..."
-msgstr "正在连接到 {{create.hwWallet}} 的钱包..."
+#: src/js/services/onGoingProcess.js
+msgid "Connecting to Coinbase..."
+msgstr ""
 
-#: public/views/import.html
-msgid "Connecting to {{import.hwWallet}} Wallet..."
-msgstr "正在连接到 {{import.hwWallet}} 的钱包..."
-
-#: public/views/join.html
-msgid "Connecting to {{join.hwWallet}} Wallet..."
-msgstr "正在连接到 {{join.hwWallet}} 的钱包..."
+#: src/js/services/onGoingProcess.js
+msgid "Connecting to Glidera..."
+msgstr ""
 
 #: src/js/services/bwsError.js
 msgid "Connection reset by peer"
@@ -410,7 +411,6 @@ msgstr "Copayers"
 
 #: src/js/controllers/copayers.js
 #: src/js/controllers/export.js
-#: src/js/controllers/tx.js
 #: src/js/controllers/walletHome.js
 msgid "Copied to clipboard"
 msgstr "已复制到剪贴板"
@@ -532,18 +532,21 @@ msgstr "创建、 加入或导入"
 msgid "Created by"
 msgstr "创建者:"
 
-#: src/js/controllers/walletHome.js
+#: src/js/services/onGoingProcess.js
 msgid "Creating transaction"
 msgstr "正在创建交易"
 
-#: public/views/create.html
-#: public/views/disclaimer.html
+#: src/js/services/onGoingProcess.js
 msgid "Creating Wallet..."
 msgstr "正在创建钱包..."
 
 #: public/views/preferencesFee.html
 msgid "Current fee rate for this policy: {{fee.feePerKBUnit}}/kiB"
 msgstr "此策略的当前收费率︰{{fee.feePerKBUnit}}/kiB"
+
+#: public/views/translators.html
+msgid "Czech"
+msgstr ""
 
 #: public/views/modals/tx-details.html
 msgid "Date"
@@ -577,7 +580,7 @@ msgstr "删除钱包"
 msgid "Delete Wallet"
 msgstr "删除钱包"
 
-#: public/views/preferencesDeleteWallet.html
+#: src/js/services/onGoingProcess.js
 msgid "Deleting Wallet..."
 msgstr "正在删除钱包..."
 
@@ -612,6 +615,7 @@ msgstr "未启用"
 msgid "Do not include private key"
 msgstr "不包括私钥"
 
+#: public/views/preferencesLanguage.html
 #: public/views/translators.html
 msgid "Don't see your language on Crowdin? Contact the Owner on Crowdin! We'd love to support your language."
 msgstr "在 Crowdin 找不到你的语言？请联系 Crowdin 的所有者！我们很乐意支持你的语言。"
@@ -640,10 +644,6 @@ msgstr "编辑评论"
 #: public/views/modals/tx-details.html
 msgid "Edited by"
 msgstr "编辑者："
-
-#: public/views/importLegacy.html
-msgid "Email"
-msgstr "邮箱"
 
 #: public/views/preferencesEmail.html
 msgid "Email for wallet notifications"
@@ -694,10 +694,6 @@ msgstr "Wallet Service 出现错误"
 msgid "Error creating wallet"
 msgstr "创建钱包时出现错误"
 
-#: src/js/services/profileService.js
-msgid "Error importing wallet:"
-msgstr "导入钱包时出现错误︰"
-
 #: public/views/modals/txp-details.html
 msgid "Expired"
 msgstr "已过期"
@@ -715,10 +711,6 @@ msgstr "导出选项"
 msgid "Export to file"
 msgstr "导出到文件"
 
-#: public/views/preferencesHistory.html
-msgid "Export to file [preparing...]"
-msgstr "导出到文件 [preparing...]"
-
 #: public/views/preferencesAdvanced.html
 msgid "Export Wallet"
 msgstr "导出钱包"
@@ -730,10 +722,6 @@ msgstr "扩展的公钥"
 #: public/views/export.html
 msgid "Failed to export"
 msgstr "导出失败"
-
-#: src/js/controllers/importLegacy.js
-msgid "Failed to import wallets"
-msgstr "导入钱包失败"
 
 #: public/views/backup.html
 msgid "Failed to verify backup. Please check your information"
@@ -749,8 +737,7 @@ msgstr "家庭度假资金"
 msgid "Fee"
 msgstr "费用"
 
-#. Get information of payment if using Payment Protocol
-#: src/js/controllers/walletHome.js
+#: src/js/services/onGoingProcess.js
 msgid "Fetching Payment Information"
 msgstr "获取支付信息"
 
@@ -798,7 +785,7 @@ msgstr "生成新的地址"
 msgid "Generate QR Code"
 msgstr "生成 QR 码"
 
-#: public/views/walletHome.html
+#: src/js/services/onGoingProcess.js
 msgid "Generating .csv file..."
 msgstr "正在生成 .csv 文件..."
 
@@ -822,10 +809,6 @@ msgstr "硬件钱包"
 msgid "Hardware Wallet"
 msgstr "硬件钱包"
 
-#: public/views/import.html
-msgid "Have a Backup from Copay v0.9?"
-msgstr "你拥有 Copay v0.9 的备份吗？"
-
 #: public/views/create.html
 #: public/views/import.html
 #: public/views/join.html
@@ -841,7 +824,6 @@ msgid "I AGREE. GET STARTED"
 msgstr "我同意。现即开始"
 
 #: public/views/import.html
-#: public/views/importLegacy.html
 msgid "Import"
 msgstr "导入"
 
@@ -849,25 +831,13 @@ msgstr "导入"
 msgid "Import backup"
 msgstr "导入备份"
 
-#: public/views/importLegacy.html
-msgid "Import from the Cloud?"
-msgstr "从云导入？"
-
-#: public/views/import.html
-msgid "Import here"
-msgstr "导入到此处"
-
 #: public/views/add.html
 msgid "Import wallet"
 msgstr "导入钱包"
 
-#: public/views/import.html
-msgid "Importing wallet..."
-msgstr "正在导入钱包..."
-
-#: public/views/importLegacy.html
-msgid "Importing..."
-msgstr "正在导入..."
+#: src/js/services/onGoingProcess.js
+msgid "Importing Wallet..."
+msgstr ""
 
 #: public/views/includes/terms.html
 msgid "In no event shall the authors of the software, employees and affiliates of Bitpay, copyright holders, or BitPay, Inc. be held liable for any claim, damages or other liability, whether in an action of contract, tort, or otherwise, arising from, out of or in connection with the software."
@@ -919,6 +889,10 @@ msgid "Invitation to share a Copay Wallet"
 msgstr "邀请分享 Copay 钱包"
 
 #: public/views/translators.html
+msgid "Italian"
+msgstr ""
+
+#: public/views/translators.html
 msgid "Japanese"
 msgstr "日语"
 
@@ -939,7 +913,7 @@ msgstr "加入我的 Copay 钱包。这是邀请码 ︰ {{secret}} 你可以在 
 msgid "Join shared wallet"
 msgstr "加入共享钱包"
 
-#: public/views/join.html
+#: src/js/services/onGoingProcess.js
 msgid "Joining Wallet..."
 msgstr "正在加入钱包..."
 
@@ -962,10 +936,6 @@ msgstr "最后的钱包地址"
 #: public/views/backup.html
 msgid "Learn more about Copay backups"
 msgstr "了解更多关于 Copay 备份"
-
-#: public/views/importLegacy.html
-msgid "Learn more about Wallet Migration"
-msgstr "了解更多关于钱包迁移"
 
 #: public/views/preferencesFee.html
 msgid "Loading..."
@@ -1152,7 +1122,6 @@ msgstr "密码短语"
 
 #: public/views/create.html
 #: public/views/import.html
-#: public/views/importLegacy.html
 #: public/views/join.html
 #: public/views/paperWallet.html
 msgid "Password"
@@ -1261,11 +1230,6 @@ msgstr "永久删除这个钱包。此操作无法撤消"
 msgid "Personal Wallet"
 msgstr "个人钱包"
 
-#: public/views/create.html
-#: public/views/join.html
-msgid "Please accept to export two public keys from the Trezor app"
-msgstr "请接受从 Trezor 应用程序导出两个公共密钥"
-
 #: src/js/controllers/import.js
 msgid "Please enter the recovery phrase"
 msgstr "请输入恢复短语"
@@ -1288,13 +1252,25 @@ msgstr "请按顺序点击词句，以确认你的备份短语填写正确。"
 msgid "Please upgrade Copay to perform this action"
 msgstr "请升级 Copay 以执行此操作"
 
+#: public/views/uri.html
+msgid "Please wait to be redirected..."
+msgstr ""
+
 #: src/js/controllers/import.js
 msgid "Please, select your backup file"
 msgstr "请选择你的备份文件"
 
+#: public/views/translators.html
+msgid "Polish"
+msgstr ""
+
 #: src/js/controllers/export.js
 msgid "Preparing backup..."
 msgstr "正在准备备份..."
+
+#: public/views/preferencesHistory.html
+msgid "preparing..."
+msgstr ""
 
 #: src/js/routes.js
 msgid "Press again to exit"
@@ -1335,9 +1311,9 @@ msgstr "已接收"
 msgid "Recipients"
 msgstr "接收者"
 
-#: public/views/walletHome.html
-msgid "Reconnecting to Wallet Service..."
-msgstr "重新连接到 Wallet Service..."
+#: public/views/import.html
+msgid "Recovery Phrase"
+msgstr ""
 
 #: src/js/controllers/preferencesDeleteWords.js
 msgid "Recovery phrase deleted"
@@ -1347,7 +1323,7 @@ msgstr "恢复短语已删除"
 msgid "Recreate"
 msgstr "重新创建"
 
-#: public/views/walletHome.html
+#: src/js/services/onGoingProcess.js
 msgid "Recreating Wallet..."
 msgstr "正在重新创建的钱包..."
 
@@ -1392,7 +1368,7 @@ msgstr "必需"
 msgid "Required number of signatures"
 msgstr "所需的签名数"
 
-#: src/js/controllers/walletHome.js
+#: src/js/services/onGoingProcess.js
 msgid "Retrieving inputs information"
 msgstr "正在获取输入的信息。"
 
@@ -1407,10 +1383,6 @@ msgstr "俄语"
 #: public/views/preferencesEmail.html
 msgid "Save"
 msgstr "保存"
-
-#: public/views/preferencesEmail.html
-msgid "Saving preferences..."
-msgstr "正在保存首选项..."
 
 #: public/views/preferencesInformation.html
 msgid "Scan addresses for funds"
@@ -1436,11 +1408,7 @@ msgstr "扫描钱包资金"
 msgid "Scan your fingerprint please"
 msgstr "请扫描你的指纹"
 
-#: public/views/paperWallet.html
-msgid "Scanning wallet funds..."
-msgstr "正在扫描钱包资金..."
-
-#: public/views/walletHome.html
+#: src/js/services/onGoingProcess.js
 msgid "Scanning Wallet funds..."
 msgstr "正在扫描钱包资金..."
 
@@ -1498,11 +1466,7 @@ msgstr "发送最大"
 msgid "Sending"
 msgstr "正在发送"
 
-#: public/views/paperWallet.html
-msgid "Sending funds..."
-msgstr "正在发送资金..."
-
-#: src/js/controllers/walletHome.js
+#: src/js/services/onGoingProcess.js
 msgid "Sending transaction"
 msgstr "正在发送交易"
 
@@ -1512,10 +1476,6 @@ msgstr "正在发送交易"
 #: public/views/walletHome.html
 msgid "Sent"
 msgstr "已发送"
-
-#: public/views/importLegacy.html
-msgid "Server"
-msgstr "服务器"
 
 #: src/js/services/bwsError.js
 msgid "Server response could not be verified"
@@ -1590,7 +1550,7 @@ msgstr "显示钱包恢复短语"
 msgid "Signatures rejected by server"
 msgstr "签名被服务器拒绝"
 
-#: src/js/controllers/walletHome.js
+#: src/js/services/onGoingProcess.js
 msgid "Signing transaction"
 msgstr "签名交易"
 
@@ -1641,6 +1601,10 @@ msgstr "Sweep 纸钱包"
 #: public/views/paperWallet.html
 msgid "Sweep Wallet"
 msgstr "Sweep 钱包"
+
+#: src/js/services/onGoingProcess.js
+msgid "Sweeping Wallet..."
+msgstr ""
 
 #: public/views/walletHome.html
 msgid "Tap and hold to show"
@@ -1826,9 +1790,13 @@ msgstr "正在更新钱包..."
 msgid "Use Unconfirmed Funds"
 msgstr "使用未经确认的资金"
 
-#: public/views/importLegacy.html
-msgid "Username"
-msgstr "用户名"
+#: src/js/services/onGoingProcess.js
+msgid "Validating recovery phrase..."
+msgstr ""
+
+#: src/js/services/onGoingProcess.js
+msgid "Validating wallet integrity..."
+msgstr ""
 
 #: public/views/preferencesAbout.html
 msgid "Version"
@@ -1842,6 +1810,14 @@ msgstr "查看"
 msgid "Waiting for copayers"
 msgstr "正在等待 copayers"
 
+#: src/js/services/onGoingProcess.js
+msgid "Waiting for Ledger..."
+msgstr ""
+
+#: src/js/services/onGoingProcess.js
+msgid "Waiting for Trezor..."
+msgstr ""
+
 #: public/views/copayers.html
 msgid "Waiting..."
 msgstr "等待中..."
@@ -1849,10 +1825,6 @@ msgstr "等待中..."
 #: src/js/services/bwsError.js
 msgid "Wallet already exists"
 msgstr "钱包已存在"
-
-#: src/js/services/profileService.js
-msgid "Wallet Already Imported:"
-msgstr "钱包已导入︰"
 
 #: src/js/services/profileService.js
 msgid "Wallet already in Copay"
@@ -1922,6 +1894,10 @@ msgstr "找不到钱包"
 #: src/js/services/bwsError.js
 msgid "Wallet not registered at the wallet service. Recreate it from \"Create Wallet\" using \"Advanced Options\" to set your recovery phrase"
 msgstr "钱包不在 Wallet Service 注册。使用“创建钱包\"的\"高级选项\"设置你的恢复短语以重新创建它"
+
+#: src/js/controllers/index.js
+msgid "Wallet Preferences"
+msgstr ""
 
 #: public/views/create.html
 #: public/views/import.html
@@ -2041,10 +2017,6 @@ msgstr "你的昵称"
 #: public/views/import.html
 msgid "Your password"
 msgstr "你的密码"
-
-#: public/views/importLegacy.html
-msgid "Your profile password"
-msgstr "你的个人资料密码"
 
 #: public/views/includes/password.html
 msgid "Your spending password"
