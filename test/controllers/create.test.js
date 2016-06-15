@@ -117,7 +117,6 @@ describe('createController', function() {
   it('should create a 1-1 wallet from mnemonic', function(done) {
     var fakeForm = {};
 
-console.log('[create.test.js.119]'); //TODO
     // FROM DATA
     scope.seedSource = {
       id: 'set'
@@ -132,11 +131,7 @@ console.log('[create.test.js.119]'); //TODO
     scope._walletPrivKey = 'Kz4CFSTgLzoYfMkt97BTBotUbZYXjMts6Ej9HbVfCf5oLmun1BXy';
 
     ctrl.setSeedSource();
-
-console.log('[create.test.js.135]'); //TODO
     ctrl.create(fakeForm);
-
-console.log('[create.test.js.138]'); //TODO
 
     should.not.exist(ctrl.error);
     mocks.go.walletHome.calledOnce.should.equal(true);

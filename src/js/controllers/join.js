@@ -44,7 +44,7 @@ angular.module('copayApp.controllers').controller('joinController',
       }
     };
 
-    this.setSeedSource = function(src) {
+    this.setSeedSource = function() {
       self.seedSourceId = $scope.seedSource.id;
 
       $timeout(function() {
@@ -85,6 +85,8 @@ angular.module('copayApp.controllers').controller('joinController',
       } else {
         opts.passphrase = form.createPassphrase.$modelValue;
       }
+
+      opts.walletPrivKey = $scope._walletPrivKey; // Only for testing
 
 
       if (setSeed && !opts.mnemonic && !opts.extendedPrivateKey) {
@@ -139,5 +141,5 @@ angular.module('copayApp.controllers').controller('joinController',
     };
 
     updateSeedSourceSelect();
-    self.setSeedSource('new');
+    self.setSeedSource();
   });
