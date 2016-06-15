@@ -1,33 +1,33 @@
 'use strict';
 
-angular.module('copayApp.services').factory('ongoingProcess', function($log, $timeout, lodash, $ionicLoading, gettextCatalog, platformInfo) {
+angular.module('copayApp.services').factory('ongoingProcess', function($log, $timeout, $filter, lodash, $ionicLoading, gettext, platformInfo) {
   var root = {};
   var isCordova = platformInfo.isCordova;
 
   var ongoingProcess = {};
 
   var processNames = {
-    'scanning': gettextCatalog.getString('Scanning Wallet funds...'),
-    'recreating': gettextCatalog.getString('Recreating Wallet...'),
-    'generatingCSV': gettextCatalog.getString('Generating .csv file...'),
-    'creatingTx': gettextCatalog.getString('Creating transaction'),
-    'sendingTx': gettextCatalog.getString('Sending transaction'),
-    'signingTx': gettextCatalog.getString('Signing transaction'),
-    'broadcastingTx': gettextCatalog.getString('Broadcasting transaction'),
-    'fetchingPayPro': gettextCatalog.getString('Fetching Payment Information'),
-    'calculatingFee': gettextCatalog.getString('Calculating fee'),
-    'joiningWallet': gettextCatalog.getString('Joining Wallet...'),
-    'retrivingInputs': gettextCatalog.getString('Retrieving inputs information'),
-    'creatingWallet': gettextCatalog.getString('Creating Wallet...'),
-    'validatingWallet': gettextCatalog.getString('Validating wallet integrity...'),
-    'connectingledger': gettextCatalog.getString('Waiting for Ledger...'),
-    'connectingtrezor': gettextCatalog.getString('Waiting for Trezor...'),
-    'validatingWords': gettextCatalog.getString('Validating recovery phrase...'),
-    'connectingCoinbase': gettextCatalog.getString('Connecting to Coinbase...'),
-    'connectingGlidera': gettextCatalog.getString('Connecting to Glidera...'),
-    'importingWallet': gettextCatalog.getString('Importing Wallet...'),
-    'sweepingWallet': gettextCatalog.getString('Sweeping Wallet...'),
-    'deletingWallet': gettextCatalog.getString('Deleting Wallet...'),
+    'scanning': gettext('Scanning Wallet funds...'),
+    'recreating': gettext('Recreating Wallet...'),
+    'generatingCSV': gettext('Generating .csv file...'),
+    'creatingTx': gettext('Creating transaction'),
+    'sendingTx': gettext('Sending transaction'),
+    'signingTx': gettext('Signing transaction'),
+    'broadcastingTx': gettext('Broadcasting transaction'),
+    'fetchingPayPro': gettext('Fetching Payment Information'),
+    'calculatingFee': gettext('Calculating fee'),
+    'joiningWallet': gettext('Joining Wallet...'),
+    'retrivingInputs': gettext('Retrieving inputs information'),
+    'creatingWallet': gettext('Creating Wallet...'),
+    'validatingWallet': gettext('Validating wallet integrity...'),
+    'connectingledger': gettext('Waiting for Ledger...'),
+    'connectingtrezor': gettext('Waiting for Trezor...'),
+    'validatingWords': gettext('Validating recovery phrase...'),
+    'connectingCoinbase': gettext('Connecting to Coinbase...'),
+    'connectingGlidera': gettext('Connecting to Glidera...'),
+    'importingWallet': gettext('Importing Wallet...'),
+    'sweepingWallet': gettext('Sweeping Wallet...'),
+    'deletingWallet': gettext('Deleting Wallet...'),
   };
 
   root.clear = function() {
@@ -48,7 +48,7 @@ angular.module('copayApp.services').factory('ongoingProcess', function($log, $ti
     // The first one
     root.onGoingProcessName = name;
 
-    var showName = processNames[name] || gettextCatalog.getString(name);
+    var showName = $filter('translate')(processNames[name] || name);
 
     if (root.onGoingProcessName) {
       if (isCordova) {
@@ -57,7 +57,7 @@ angular.module('copayApp.services').factory('ongoingProcess', function($log, $ti
       
         var tmpl = '<ion-spinner class="spinner-stable" icon="lines"></ion-spinner>' + showName;
         $ionicLoading.show({
-          template: tmpl,
+          template: tmpl
         });
       }
     } else {
