@@ -839,7 +839,7 @@ ul.manage li {
 
 .tab-bar {
   h1, h2, h3, h4, h5, h6 {
-    line-height: 2.7rem;
+    line-height: 48px;
   }
 }
 
@@ -877,7 +877,7 @@ ul.manage li {
 .header-modal {
   background: #fff;
   width: 100%;
-  padding-top: 60px;
+  padding-top: 20px;
   padding-bottom: 20px;
   position: relative;
 }
@@ -2005,7 +2005,7 @@ body.modal-open {
 
 .payment-proposal-head {
   color: #fff;
-  padding: 40px 10px 20px 10px;
+  padding: 10px 10px 20px 10px;
   text-align: center;
 }
 
