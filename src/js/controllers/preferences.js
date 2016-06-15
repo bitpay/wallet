@@ -15,10 +15,14 @@ angular.module('copayApp.controllers').controller('preferencesController',
     });
 
     $scope.init = function() {
+      $scope.externalSource = null;
+
       fc = profileService.focusedClient;
       if (fc) {
         $scope.encryptEnabled = walletService.isEncrypted(fc);
-        $scope.externalSource = fc.getPrivKeyExternalSourceName() == 'ledger' ? "Ledger" : null;
+        if (fc.isPrivKeyExternal)
+          $scope.externalSource = fc.getPrivKeyExternalSourceName() == 'ledger' ? 'Ledger' : 'Trezor';
+
         // TODO externalAccount
         //this.externalIndex = fc.getExternalIndex();
       }
