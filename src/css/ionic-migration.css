@@ -20,6 +20,10 @@
 	z-index: -1;
 }
 
+.bar {
+ border-bottom: none;
+}
+
 .ng-hide.ng-hide-animate {
 	display: none !important;
 }
