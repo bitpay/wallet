@@ -55,14 +55,23 @@
       <span class="toggle-label" translate>Enable push notifications</span>
     </ion-toggle>
   </div>
+
+  <div class="m20t" ng-show="usePushNotifications && !PNEnabledByUser && isIOSApp">
+    <div class="text-left text-gray size-12 m10" translate>Push notifications for Copay are currently disabled.
+      Enable them in the Settings app.</div>
+    <ul class="no-bullet m0" ng-click="openSettings()">
+      <li ng-style="{'color':index.backgroundColor}" translate>Open Settings app</li>
+    </ul>
+  </div>
+
   <h4></h4>
 
-  <ion-toggle ng-model="glideraEnabled" toggle-class="toggle-balanced" ng-change="glideraChange()">
+  <ion-toggle ng-show="!index.isWindowsPhoneApp" ng-model="glideraEnabled" toggle-class="toggle-balanced" ng-change="glideraChange()">
     <span class="toggle-label" translate>Enable Glidera Service</span>
   </ion-toggle>
   <h4></h4>
 
-  <ion-toggle ng-model="coinbaseEnabled" toggle-class="toggle-balanced" ng-change="coinbaseChange()">
+  <ion-toggle ng-show="!index.isWindowsPhoneApp" ng-model="coinbaseEnabled" toggle-class="toggle-balanced" ng-change="coinbaseChange()">
     <span class="toggle-label" translate>Enable Coinbase Service</span>
   </ion-toggle>
   <h4></h4>
@@ -72,14 +81,7 @@
       <i class="icon-arrow-right3 size-24 right text-gray"></i>
       <div translate>About Copay</div>
     </li>
-  </ul>
-
-  <div ng-show="usePushNotifications && !PNEnabledByUser && isIOSApp">
-    <div class="text-centered text-gray size-12 m10" translate>Push notifications for Copay are currently disabled. Enable them in the Settings app.</div>
-    <ul class="no-bullet m0" ng-click="openSettings()">
-      <li ng-style="{'color':index.backgroundColor}" translate>Open Settings app</li>
-    </ul>
-  </div>
+  </ul> 
   <h4></h4>
 </div>
 <div class="extra-margin-bottom"></div>
