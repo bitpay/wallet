@@ -21,6 +21,7 @@ angular.module('copayApp.controllers').controller('preferencesGlobalController',
       if ($scope.isIOSApp) {
         cordova.plugins.diagnostic.isRemoteNotificationsEnabled(function(isEnabled) {
           $scope.PNEnabledByUser = isEnabled;
+          $scope.$digest();
         });
       }
       $scope.spendUnconfirmed = config.wallet.spendUnconfirmed;
