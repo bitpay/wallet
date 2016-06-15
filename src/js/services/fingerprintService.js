@@ -12,8 +12,11 @@ angular.module('copayApp.services').factory('fingerprintService', function($log,
         _isAvailable = 'IOS';
       },
       function(msg) {
-        FingerprintAuth.isAvailable(function() {
-          _isAvailable = 'ANDROID';
+        FingerprintAuth.isAvailable(function(result) {
+
+          if (result.isAvailable) 
+            _isAvailable = 'ANDROID';
+
         }, function() {
           _isAvailable = false;
         });
