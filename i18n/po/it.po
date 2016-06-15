@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Italian\n"
 "Language: it\n"
-"PO-Revision-Date: 2016-06-15 09:59-0400\n"
+"PO-Revision-Date: 2016-06-15 14:08-0400\n"
 
 #: public/views/modals/search.html
 #: public/views/walletHome.html
@@ -46,7 +46,7 @@ msgstr "{{index.m}}-di-{{index.n}}"
 
 #: public/views/modals/search.html
 msgid "{{index.result.length - index.txHistorySearchResults.length}} more"
-msgstr ""
+msgstr "{{index.result.length - index.txHistorySearchResults.length}} altre"
 
 #: public/views/walletHome.html
 msgid "{{index.txProgress}} transactions downloaded"
@@ -324,7 +324,7 @@ msgstr "Il cambiamento degli alias dei portafogli influenza solo il nome del por
 
 #: public/views/translators.html
 msgid "Chinese"
-msgstr ""
+msgstr "Cinese"
 
 #: public/views/import.html
 msgid "Choose a backup file from your computer"
@@ -379,11 +379,11 @@ msgstr "Complimenti!"
 
 #: src/js/services/onGoingProcess.js
 msgid "Connecting to Coinbase..."
-msgstr ""
+msgstr "Connessione a Coinbase..."
 
 #: src/js/services/onGoingProcess.js
 msgid "Connecting to Glidera..."
-msgstr ""
+msgstr "Connessione a Glidera..."
 
 #: src/js/services/bwsError.js
 msgid "Connection reset by peer"
@@ -546,7 +546,7 @@ msgstr "Tassa corrente per questa policy: {{fee.feePerKBUnit}}/kiB"
 
 #: public/views/translators.html
 msgid "Czech"
-msgstr ""
+msgstr "Ceco"
 
 #: public/views/modals/tx-details.html
 msgid "Date"
@@ -837,7 +837,7 @@ msgstr "Importa un portafoglio"
 
 #: src/js/services/onGoingProcess.js
 msgid "Importing Wallet..."
-msgstr ""
+msgstr "Importazione del Portafoglio..."
 
 #: public/views/includes/terms.html
 msgid "In no event shall the authors of the software, employees and affiliates of Bitpay, copyright holders, or BitPay, Inc. be held liable for any claim, damages or other liability, whether in an action of contract, tort, or otherwise, arising from, out of or in connection with the software."
@@ -890,7 +890,7 @@ msgstr "Invito a condividere un portafoglio Copay"
 
 #: public/views/translators.html
 msgid "Italian"
-msgstr ""
+msgstr "Italiano"
 
 #: public/views/translators.html
 msgid "Japanese"
@@ -1254,7 +1254,7 @@ msgstr "Si prega di aggiornare Copay per eseguire questa azione"
 
 #: public/views/uri.html
 msgid "Please wait to be redirected..."
-msgstr ""
+msgstr "Si prega di attendere per il reindirizzamento..."
 
 #: src/js/controllers/import.js
 msgid "Please, select your backup file"
@@ -1262,7 +1262,7 @@ msgstr "Per favore, selezione il tuo file di backup"
 
 #: public/views/translators.html
 msgid "Polish"
-msgstr ""
+msgstr "Polacco"
 
 #: src/js/controllers/export.js
 msgid "Preparing backup..."
@@ -1270,7 +1270,7 @@ msgstr "Preparando il backup..."
 
 #: public/views/preferencesHistory.html
 msgid "preparing..."
-msgstr ""
+msgstr "preparazione..."
 
 #: src/js/routes.js
 msgid "Press again to exit"
@@ -1313,7 +1313,7 @@ msgstr "Destinatari"
 
 #: public/views/import.html
 msgid "Recovery Phrase"
-msgstr ""
+msgstr "Frase di Recupero"
 
 #: src/js/controllers/preferencesDeleteWords.js
 msgid "Recovery phrase deleted"
@@ -1604,7 +1604,7 @@ msgstr "Portafoglio Sweep"
 
 #: src/js/services/onGoingProcess.js
 msgid "Sweeping Wallet..."
-msgstr ""
+msgstr "Spazzolamento Portafoglio..."
 
 #: public/views/walletHome.html
 msgid "Tap and hold to show"
@@ -1792,11 +1792,11 @@ msgstr "Usa i fondi non confermati"
 
 #: src/js/services/onGoingProcess.js
 msgid "Validating recovery phrase..."
-msgstr ""
+msgstr "Validazione della frase di recupero..."
 
 #: src/js/services/onGoingProcess.js
 msgid "Validating wallet integrity..."
-msgstr ""
+msgstr "Validazione integrità del portafoglio..."
 
 #: public/views/preferencesAbout.html
 msgid "Version"
@@ -1812,11 +1812,11 @@ msgstr "In attesa di copayers"
 
 #: src/js/services/onGoingProcess.js
 msgid "Waiting for Ledger..."
-msgstr ""
+msgstr "In attesa del Ledger..."
 
 #: src/js/services/onGoingProcess.js
 msgid "Waiting for Trezor..."
-msgstr ""
+msgstr "In attesa del Trezor..."
 
 #: public/views/copayers.html
 msgid "Waiting..."
@@ -1897,7 +1897,7 @@ msgstr "Portafoglio non registrato presso il servizio di portafoglio. Ricrearlo 
 
 #: src/js/controllers/index.js
 msgid "Wallet Preferences"
-msgstr ""
+msgstr "Preferenze del Portafogli"
 
 #: public/views/create.html
 #: public/views/import.html
