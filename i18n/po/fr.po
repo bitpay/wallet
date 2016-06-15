@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: French\n"
 "Language: fr\n"
-"PO-Revision-Date: 2016-06-09 07:47-0400\n"
+"PO-Revision-Date: 2016-06-15 12:49-0400\n"
 
 #: public/views/modals/search.html
 #: public/views/walletHome.html
@@ -44,6 +44,10 @@ msgstr "{{index.completeHistory.length - index.txHistory.length}} de plus"
 msgid "{{index.m}}-of-{{index.n}}"
 msgstr "{{index.m}}-sur-{{index.n}}"
 
+#: public/views/modals/search.html
+msgid "{{index.result.length - index.txHistorySearchResults.length}} more"
+msgstr "{{index.result.length - index.txHistorySearchResults.length}} de plus"
+
 #: public/views/walletHome.html
 msgid "{{index.txProgress}} transactions downloaded"
 msgstr "{{index.txProgress}} transactions téléchargées"
@@ -51,10 +55,6 @@ msgstr "{{index.txProgress}} transactions téléchargées"
 #: public/views/includes/sidebar.html
 msgid "{{item.m}}-of-{{item.n}}"
 msgstr "{{item.m}}-sur-{{item.n}}"
-
-#: src/js/controllers/importLegacy.js
-msgid "{{len}} wallets imported. Funds scanning in progress. Hold on to see updated balance"
-msgstr "{{len}} portefeuilles importés. L'analyse des fonds a démarré. Le solde va se mettre à jour"
 
 #: public/views/modals/txp-details.html
 msgid "* A payment proposal can be deleted if 1) you are the creator, and no other copayer has signed, or 2) 24 hours have passed since the proposal was created."
@@ -157,6 +157,7 @@ msgstr "Alias"
 msgid "Alias for <i>{{index.walletName}}</i>"
 msgstr "Alias pour <i>{{index.walletName}}</i>"
 
+#: public/views/preferencesLanguage.html
 #: public/views/translators.html
 msgid "All contributions to Copay's translation are welcome. Sign up at crowdin.com and join the Copay project at"
 msgstr "Toutes les contributions à la traduction de Copay sont les bienvenues. Inscrivez-vous sur crowdin.com et rejoignez le projet Copay sur"
@@ -268,7 +269,7 @@ msgstr "L'URI Bitcoin n'est pas valide !"
 msgid "Broadcast Payment"
 msgstr "Diffuser le paiement"
 
-#: src/js/controllers/walletHome.js
+#: src/js/services/onGoingProcess.js
 msgid "Broadcasting transaction"
 msgstr "Diffusion de la transaction"
 
@@ -280,7 +281,7 @@ msgstr "Navigateur non supporté"
 msgid "Buy &amp; Sell"
 msgstr "Acheter &amp; Vendre"
 
-#: src/js/controllers/walletHome.js
+#: src/js/services/onGoingProcess.js
 msgid "Calculating fee"
 msgstr "Calcul des frais"
 
@@ -320,6 +321,10 @@ msgstr "Certifié par"
 #: public/views/preferencesAlias.html
 msgid "Changing wallet alias only affects the local wallet name."
 msgstr "La modification d'un alias de portefeuille affecte uniquement le nom du portefeuille local."
+
+#: public/views/translators.html
+msgid "Chinese"
+msgstr "Chinois"
 
 #: public/views/import.html
 msgid "Choose a backup file from your computer"
@@ -372,17 +377,13 @@ msgstr "Confirmations"
 msgid "Congratulations!"
 msgstr "Félicitations !"
 
-#: public/views/create.html
-msgid "Connecting to {{create.hwWallet}} Wallet..."
-msgstr "Connexion au portefeuille {{create.hwWallet}}..."
+#: src/js/services/onGoingProcess.js
+msgid "Connecting to Coinbase..."
+msgstr "Connexion à Coinbase..."
 
-#: public/views/import.html
-msgid "Connecting to {{import.hwWallet}} Wallet..."
-msgstr "Connexion au portefeuille {{import.hwWallet}}..."
-
-#: public/views/join.html
-msgid "Connecting to {{join.hwWallet}} Wallet..."
-msgstr "Connexion au portefeuille {{join.hwWallet}}..."
+#: src/js/services/onGoingProcess.js
+msgid "Connecting to Glidera..."
+msgstr "Connexion à Glidera..."
 
 #: src/js/services/bwsError.js
 msgid "Connection reset by peer"
@@ -410,7 +411,6 @@ msgstr "Copayers"
 
 #: src/js/controllers/copayers.js
 #: src/js/controllers/export.js
-#: src/js/controllers/tx.js
 #: src/js/controllers/walletHome.js
 msgid "Copied to clipboard"
 msgstr "Copié dans le presse-papier"
@@ -532,18 +532,21 @@ msgstr "Créer, rejoindre ou importer"
 msgid "Created by"
 msgstr "Créée par"
 
-#: src/js/controllers/walletHome.js
+#: src/js/services/onGoingProcess.js
 msgid "Creating transaction"
 msgstr "Création de la transaction"
 
-#: public/views/create.html
-#: public/views/disclaimer.html
+#: src/js/services/onGoingProcess.js
 msgid "Creating Wallet..."
 msgstr "Création du portefeuille..."
 
 #: public/views/preferencesFee.html
 msgid "Current fee rate for this policy: {{fee.feePerKBUnit}}/kiB"
 msgstr "Frais actuels pour ce choix : {{fee.feePerKBUnit}}/kiB"
+
+#: public/views/translators.html
+msgid "Czech"
+msgstr "Tchèque"
 
 #: public/views/modals/tx-details.html
 msgid "Date"
@@ -577,7 +580,7 @@ msgstr "Supprimer le portefeuille"
 msgid "Delete Wallet"
 msgstr "Supprimer le portefeuille"
 
-#: public/views/preferencesDeleteWallet.html
+#: src/js/services/onGoingProcess.js
 msgid "Deleting Wallet..."
 msgstr "Suppression du portefeuille..."
 
@@ -612,6 +615,7 @@ msgstr "Désactivé"
 msgid "Do not include private key"
 msgstr "Ne pas inclure la clé privée"
 
+#: public/views/preferencesLanguage.html
 #: public/views/translators.html
 msgid "Don't see your language on Crowdin? Contact the Owner on Crowdin! We'd love to support your language."
 msgstr "Vous ne voyez pas votre langue sur Crowdin ? Contactez le propriétaire sur Crowdin ! Nous serions ravis de prendre en charge votre langue."
@@ -640,10 +644,6 @@ msgstr "Modifier le commentaire"
 #: public/views/modals/tx-details.html
 msgid "Edited by"
 msgstr "Modifié par"
-
-#: public/views/importLegacy.html
-msgid "Email"
-msgstr "E-mail"
 
 #: public/views/preferencesEmail.html
 msgid "Email for wallet notifications"
@@ -694,10 +694,6 @@ msgstr "Erreur au niveau de Wallet Service"
 msgid "Error creating wallet"
 msgstr "Erreur de création du portefeuille"
 
-#: src/js/services/profileService.js
-msgid "Error importing wallet:"
-msgstr "Erreur d'importation du portefeuille :"
-
 #: public/views/modals/txp-details.html
 msgid "Expired"
 msgstr "Expiré"
@@ -715,10 +711,6 @@ msgstr "Options d'exportation"
 msgid "Export to file"
 msgstr "Exporter vers un fichier"
 
-#: public/views/preferencesHistory.html
-msgid "Export to file [preparing...]"
-msgstr "Exportation en fichier [préparation...]"
-
 #: public/views/preferencesAdvanced.html
 msgid "Export Wallet"
 msgstr "Exporter le portefeuille"
@@ -730,10 +722,6 @@ msgstr "Clés publiques étendues"
 #: public/views/export.html
 msgid "Failed to export"
 msgstr "Impossible d'exporter"
-
-#: src/js/controllers/importLegacy.js
-msgid "Failed to import wallets"
-msgstr "Impossible d'importer les portefeuilles"
 
 #: public/views/backup.html
 msgid "Failed to verify backup. Please check your information"
@@ -749,8 +737,7 @@ msgstr "Fonds pour les vacances familiales"
 msgid "Fee"
 msgstr "Frais"
 
-#. Get information of payment if using Payment Protocol
-#: src/js/controllers/walletHome.js
+#: src/js/services/onGoingProcess.js
 msgid "Fetching Payment Information"
 msgstr "Récupération des informations de paiement"
 
@@ -798,7 +785,7 @@ msgstr "Générer une nouvelle adresse"
 msgid "Generate QR Code"
 msgstr "Générer un code QR"
 
-#: public/views/walletHome.html
+#: src/js/services/onGoingProcess.js
 msgid "Generating .csv file..."
 msgstr "Génération du fichier .csv..."
 
@@ -822,10 +809,6 @@ msgstr "Portefeuille matériel"
 msgid "Hardware Wallet"
 msgstr "Portefeuille matériel"
 
-#: public/views/import.html
-msgid "Have a Backup from Copay v0.9?"
-msgstr "Vous avez une sauvegarde de Copay v0.9 ?"
-
 #: public/views/create.html
 #: public/views/import.html
 #: public/views/join.html
@@ -841,7 +824,6 @@ msgid "I AGREE. GET STARTED"
 msgstr "J’ACCEPTE. COMMENCER"
 
 #: public/views/import.html
-#: public/views/importLegacy.html
 msgid "Import"
 msgstr "Importer"
 
@@ -849,25 +831,13 @@ msgstr "Importer"
 msgid "Import backup"
 msgstr "Importer la sauvegarde"
 
-#: public/views/importLegacy.html
-msgid "Import from the Cloud?"
-msgstr "Importer depuis le Cloud ?"
-
-#: public/views/import.html
-msgid "Import here"
-msgstr "Importer ici"
-
 #: public/views/add.html
 msgid "Import wallet"
 msgstr "Importer"
 
-#: public/views/import.html
-msgid "Importing wallet..."
+#: src/js/services/onGoingProcess.js
+msgid "Importing Wallet..."
 msgstr "Importation du portefeuille..."
-
-#: public/views/importLegacy.html
-msgid "Importing..."
-msgstr "Importation..."
 
 #: public/views/includes/terms.html
 msgid "In no event shall the authors of the software, employees and affiliates of Bitpay, copyright holders, or BitPay, Inc. be held liable for any claim, damages or other liability, whether in an action of contract, tort, or otherwise, arising from, out of or in connection with the software."
@@ -919,6 +889,10 @@ msgid "Invitation to share a Copay Wallet"
 msgstr "Invitation pour partager un portefeuille Copay"
 
 #: public/views/translators.html
+msgid "Italian"
+msgstr "Italien"
+
+#: public/views/translators.html
 msgid "Japanese"
 msgstr "Japonais"
 
@@ -939,7 +913,7 @@ msgstr "Rejoignez mon portefeuille Copay. Voici le code d'invitation : {{secret}
 msgid "Join shared wallet"
 msgstr "Rejoindre"
 
-#: public/views/join.html
+#: src/js/services/onGoingProcess.js
 msgid "Joining Wallet..."
 msgstr "Connexion au portefeuille..."
 
@@ -962,10 +936,6 @@ msgstr "Dernières adresses du portefeuille"
 #: public/views/backup.html
 msgid "Learn more about Copay backups"
 msgstr "En savoir plus sur les sauvegardes de Copay"
-
-#: public/views/importLegacy.html
-msgid "Learn more about Wallet Migration"
-msgstr "En savoir plus sur la migration de portefeuille"
 
 #: public/views/preferencesFee.html
 msgid "Loading..."
@@ -1152,7 +1122,6 @@ msgstr "Phrase de passe"
 
 #: public/views/create.html
 #: public/views/import.html
-#: public/views/importLegacy.html
 #: public/views/join.html
 #: public/views/paperWallet.html
 msgid "Password"
@@ -1261,11 +1230,6 @@ msgstr "Supprimer définitivement ce portefeuille.<br><b>CETTE ACTION NE PEUT PA
 msgid "Personal Wallet"
 msgstr "Portefeuille personnel"
 
-#: public/views/create.html
-#: public/views/join.html
-msgid "Please accept to export two public keys from the Trezor app"
-msgstr "Veuillez accepter d'exporter deux clés publiques depuis l'appli Trezor"
-
 #: src/js/controllers/import.js
 msgid "Please enter the recovery phrase"
 msgstr "Veuillez saisir la phrase de récupération"
@@ -1288,13 +1252,25 @@ msgstr "Veuillez sélectionner les mots afin de confirmer que votre phrase de sa
 msgid "Please upgrade Copay to perform this action"
 msgstr "Veuillez mettre à jour Copay pour effectuer cette action"
 
+#: public/views/uri.html
+msgid "Please wait to be redirected..."
+msgstr "Veuillez attendre la redirection..."
+
 #: src/js/controllers/import.js
 msgid "Please, select your backup file"
 msgstr "Veuillez sélectionner votre fichier de sauvegarde"
 
+#: public/views/translators.html
+msgid "Polish"
+msgstr "Polonais"
+
 #: src/js/controllers/export.js
 msgid "Preparing backup..."
 msgstr "Préparation de la sauvegarde..."
+
+#: public/views/preferencesHistory.html
+msgid "preparing..."
+msgstr "préparation..."
 
 #: src/js/routes.js
 msgid "Press again to exit"
@@ -1335,9 +1311,9 @@ msgstr "Reçus"
 msgid "Recipients"
 msgstr "Destinataire(s)"
 
-#: public/views/walletHome.html
-msgid "Reconnecting to Wallet Service..."
-msgstr "Reconnexion au service de portefeuille..."
+#: public/views/import.html
+msgid "Recovery Phrase"
+msgstr "Phrase de récupération"
 
 #: src/js/controllers/preferencesDeleteWords.js
 msgid "Recovery phrase deleted"
@@ -1347,7 +1323,7 @@ msgstr "Phrase de récupération supprimée"
 msgid "Recreate"
 msgstr "Recréer"
 
-#: public/views/walletHome.html
+#: src/js/services/onGoingProcess.js
 msgid "Recreating Wallet..."
 msgstr "Recréation du portefeuille..."
 
@@ -1392,7 +1368,7 @@ msgstr "Requis"
 msgid "Required number of signatures"
 msgstr "Nombre requis de signatures"
 
-#: src/js/controllers/walletHome.js
+#: src/js/services/onGoingProcess.js
 msgid "Retrieving inputs information"
 msgstr "Récupération des informations d'entrée"
 
@@ -1407,10 +1383,6 @@ msgstr "Russe"
 #: public/views/preferencesEmail.html
 msgid "Save"
 msgstr "Valider"
-
-#: public/views/preferencesEmail.html
-msgid "Saving preferences..."
-msgstr "Enregistrement des préférences..."
 
 #: public/views/preferencesInformation.html
 msgid "Scan addresses for funds"
@@ -1436,11 +1408,7 @@ msgstr "Analyser les fonds du portefeuille"
 msgid "Scan your fingerprint please"
 msgstr "Veuillez scanner votre empreinte digitale"
 
-#: public/views/paperWallet.html
-msgid "Scanning wallet funds..."
-msgstr "Analyse des fonds du portefeuille..."
-
-#: public/views/walletHome.html
+#: src/js/services/onGoingProcess.js
 msgid "Scanning Wallet funds..."
 msgstr "Analyse des fonds du portefeuille..."
 
@@ -1498,11 +1466,7 @@ msgstr "Envoyer le maximum"
 msgid "Sending"
 msgstr "Envoi"
 
-#: public/views/paperWallet.html
-msgid "Sending funds..."
-msgstr "Envoi des fonds..."
-
-#: src/js/controllers/walletHome.js
+#: src/js/services/onGoingProcess.js
 msgid "Sending transaction"
 msgstr "Envoi de la transaction"
 
@@ -1512,10 +1476,6 @@ msgstr "Envoi de la transaction"
 #: public/views/walletHome.html
 msgid "Sent"
 msgstr "Envoyés"
-
-#: public/views/importLegacy.html
-msgid "Server"
-msgstr "Serveur"
 
 #: src/js/services/bwsError.js
 msgid "Server response could not be verified"
@@ -1590,7 +1550,7 @@ msgstr "Afficher la phrase de récupération du portefeuille"
 msgid "Signatures rejected by server"
 msgstr "Signatures rejetées par le serveur"
 
-#: src/js/controllers/walletHome.js
+#: src/js/services/onGoingProcess.js
 msgid "Signing transaction"
 msgstr "Signature de la transaction"
 
@@ -1641,6 +1601,10 @@ msgstr "Balayer un portefeuille de papier"
 #: public/views/paperWallet.html
 msgid "Sweep Wallet"
 msgstr "Balayer un portefeuille"
+
+#: src/js/services/onGoingProcess.js
+msgid "Sweeping Wallet..."
+msgstr "Balayage du portefeuille..."
 
 #: public/views/walletHome.html
 msgid "Tap and hold to show"
@@ -1826,9 +1790,13 @@ msgstr "Mise à jour du portefeuille..."
 msgid "Use Unconfirmed Funds"
 msgstr "Utiliser les fonds non confirmés"
 
-#: public/views/importLegacy.html
-msgid "Username"
-msgstr "Nom d'utilisateur"
+#: src/js/services/onGoingProcess.js
+msgid "Validating recovery phrase..."
+msgstr "Validation de la phrase de récupération..."
+
+#: src/js/services/onGoingProcess.js
+msgid "Validating wallet integrity..."
+msgstr "Validation de l’intégrité du portefeuille..."
 
 #: public/views/preferencesAbout.html
 msgid "Version"
@@ -1842,6 +1810,14 @@ msgstr "Voir"
 msgid "Waiting for copayers"
 msgstr "Attente des copayers"
 
+#: src/js/services/onGoingProcess.js
+msgid "Waiting for Ledger..."
+msgstr "En attente de Ledger..."
+
+#: src/js/services/onGoingProcess.js
+msgid "Waiting for Trezor..."
+msgstr "En attente de Trezor..."
+
 #: public/views/copayers.html
 msgid "Waiting..."
 msgstr "Attente..."
@@ -1849,10 +1825,6 @@ msgstr "Attente..."
 #: src/js/services/bwsError.js
 msgid "Wallet already exists"
 msgstr "Le portefeuille existe déjà"
-
-#: src/js/services/profileService.js
-msgid "Wallet Already Imported:"
-msgstr "Portefeuille déjà importé :"
 
 #: src/js/services/profileService.js
 msgid "Wallet already in Copay"
@@ -1922,6 +1894,10 @@ msgstr "Portefeuille introuvable"
 #: src/js/services/bwsError.js
 msgid "Wallet not registered at the wallet service. Recreate it from \"Create Wallet\" using \"Advanced Options\" to set your recovery phrase"
 msgstr "Le portefeuille n'est pas enregistré au Wallet Service. Vous pouvez le recréer depuis « Créer » en utilisant les « Options avancées » pour configurer votre phrase de récupération"
+
+#: src/js/controllers/index.js
+msgid "Wallet Preferences"
+msgstr "Préférences du portefeuille"
 
 #: public/views/create.html
 #: public/views/import.html
@@ -2041,10 +2017,6 @@ msgstr "Votre surnom"
 #: public/views/import.html
 msgid "Your password"
 msgstr "Votre mot de passe"
-
-#: public/views/importLegacy.html
-msgid "Your profile password"
-msgstr "Votre mot de passe de profil"
 
 #: public/views/includes/password.html
 msgid "Your spending password"
