@@ -101,6 +101,10 @@ button, .button {
   padding: 0;
 }
 
+.create-tab .row {
+  padding: 0;
+}
+
 /* Override the default modal size for large devices */
 @media (min-width: 680px) {
   .modal {
