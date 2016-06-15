@@ -43,6 +43,7 @@
   },
   "dependencies": {
     "bitcore-wallet-client": "2.7.0",
+    "coveralls": "^2.11.9",
     "express": "^4.11.2",
     "fs": "0.0.2",
     "grunt": "^0.4.5",
