@@ -1,6 +1,6 @@
 {
   "name": "copay",
-  "description": "A multisignature wallet",
+  "description": "A multisignature bitcoin wallet",
   "author": "BitPay",
   "version": "2.0.0",
   "androidVersionCode": "105",
@@ -13,7 +13,7 @@
   ],
   "main": "public/index.html",
   "window": {
-    "title": "Copay - A multisignature wallet",
+    "title": "Copay - A multisignature bitcoin wallet",
     "icon": "./public/img/icons/icon-256.png",
     "toolbar": false,
     "show": true,

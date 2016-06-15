@@ -95,7 +95,7 @@ angular.module('copayApp.services')
       client.on('walletCompleted', function() {
         $log.debug('Wallet completed');
 
-        root.updateCredentials(client.export(), function() {
+        root.updateCredentials(JSON.parse(client.export()), function() {
           $rootScope.$emit('Local/WalletCompleted', walletId);
         });
       });
