@@ -34,6 +34,10 @@ angular.module('copayApp.services').factory('ongoingProcess', function($log, $ti
     ongoingProcess = {};
   };
 
+  root.get = function(processName) {
+    return ongoingProcess[processName];
+  };
+
   root.set = function(processName, isOn) {
     $log.debug('ongoingProcess', processName, isOn);
     root[processName] = isOn;
