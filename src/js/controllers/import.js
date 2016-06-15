@@ -125,6 +125,13 @@ angular.module('copayApp.controllers').controller('importController',
       }, 100);
     };
 
+    $scope.setDerivationPath = function() {
+      if ($scope.testnetEnabled)
+        $scope.derivationPath = derivationPathHelper.defaultTestnet;
+      else
+        $scope.derivationPath = derivationPathHelper.default;
+    }
+
     $scope.getFile = function() {
       // If we use onloadend, we need to check the readyState.
       reader.onloadend = function(evt) {

@@ -82,6 +82,14 @@
                 <span>Wallet Service URL</span>
                 <input type="text" id="bwsurl" name="bwsurl" ng-model="bwsurl">
               </label>
+
+              <div class="oh">
+                <label for="network-name" class="dbi">
+                  <span>Testnet</span>
+                  <ion-toggle ng-model="testnetEnabled" ng-change="setDerivationPath()" toggle-class="toggle-balanced" class="bct">
+                  </ion-toggle>
+                </label>
+              </div>
             </div>
           </div>
 
