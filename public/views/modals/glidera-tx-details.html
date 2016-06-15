@@ -1,17 +1,13 @@
 <ion-modal-view ng-controller="glideraTxDetailsController">
-  <nav class="tab-bar">
-    <section class="left-small">
+  <ion-header-bar align-title="center" class="tab-bar">
+    <div class="left-small">
       <a ng-click="cancel()">
         <i class="icon-arrow-left3 icon-back"></i>
         <span class="text-back">Back</span>
       </a>
-    </section>
-    <section class="middle tab-bar-section">
-      <h1 class="title ellipsis">
-        Details
-      </h1>
-    </section>
-  </nav>
+    </div>
+    <h1 class="title ellipsis" translate>Details</h1>
+  </ion-header-bar>
 
   <ion-content overflow-scroll="true">
     <div class="modal-content fix-modals-touch">

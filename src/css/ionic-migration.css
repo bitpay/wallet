@@ -20,8 +20,13 @@
 	z-index: -1;
 }
 
-.ng-hide.ng-hide-animate{
-     display: none !important;
+.ng-hide.ng-hide-animate {
+	display: none !important;
+}
+
+.bar .title {
+	font-size: 14px;
+	line-height: 48px;
 }
 
 .radio-label {
