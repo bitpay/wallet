@@ -1,15 +1,12 @@
 <ion-modal-view ng-controller="txpDetailsController">
-  <nav class="tab-bar" ng-style="{'background-color':color}">
-    <section class="left-small">
+  <ion-header-bar align-title="center" class="tab-bar" ng-style="{'background-color':color}">
+    <div class="left-small">
       <a ng-click="cancel()" class="p10">
         <span class="text-close" translate>Close</span>
       </a>
-    </section>
-
-    <section class="middle tab-bar-section">
-      <h1 class="title ellipsis" translate>Payment Proposal</h1>
-    </section>
-  </nav>
+    </div>
+    <h1 class="title ellipsis" translate>Payment Proposal</h1>
+  </ion-header-bar>
 
   <div class="onGoingProcess" ng-show="loading">
     <div class="onGoingProcess-content" ng-style="{'background-color':index.backgroundColor}">
