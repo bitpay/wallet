@@ -7,7 +7,6 @@ angular.module('copayApp.controllers').controller('exportController',
     var isCordova = platformInfo.isCordova;
     var fc = profileService.focusedClient;
     $scope.isEncrypted = fc.isPrivKeyEncrypted();
-    $scope.touchIdError = null;
     $scope.error = null;
     $scope.success = null;
 
