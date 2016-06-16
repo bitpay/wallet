@@ -41,9 +41,9 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
   };
 
   root.getOauthCodeUrl = function() {
-    return credentials.HOST 
-      + '/oauth/authorize?response_type=code&client_id=' 
-      + credentials.CLIENT_ID 
+    return credentials.HOST
+      + '/oauth/authorize?response_type=code&client_id='
+      + credentials.CLIENT_ID
       + '&redirect_uri='
       + credentials.REDIRECT_URI
       + '&state=SECURE_RANDOM&scope='
@@ -59,7 +59,7 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
         'Content-Type': 'application/json',
         'Accept': 'application/json'
       },
-      data: { 
+      data: {
         grant_type : 'authorization_code',
         code: code,
         client_id : credentials.CLIENT_ID,
@@ -70,7 +70,7 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
 
     $http(req).then(function(data) {
       $log.info('Coinbase Authorization Access Token: SUCCESS');
-      return cb(null, data.data); 
+      return cb(null, data.data);
     }, function(data) {
       $log.error('Coinbase Authorization Access Token: ERROR ' + data.statusText);
       return cb(data.data);
@@ -85,18 +85,18 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
         'Content-Type': 'application/json',
         'Accept': 'application/json'
       },
-      data: { 
+      data: {
         grant_type : 'refresh_token',
         client_id : credentials.CLIENT_ID,
         client_secret: credentials.CLIENT_SECRET,
         redirect_uri: credentials.REDIRECT_URI,
-        refresh_token: refreshToken 
+        refresh_token: refreshToken
       }
     };
 
     $http(req).then(function(data) {
       $log.info('Coinbase Refresh Access Token: SUCCESS');
-      return cb(null, data.data); 
+      return cb(null, data.data);
     }, function(data) {
       $log.error('Coinbase Refresh Access Token: ERROR ' + data.statusText);
       return cb(data.data);
@@ -195,17 +195,17 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
   root.sellPrice = function(token, currency, cb) {
     $http(_get('/prices/sell?currency=' + currency, token)).then(function(data) {
       $log.info('Coinbase Sell Price: SUCCESS');
-      return cb(null, data.data); 
+      return cb(null, data.data);
     }, function(data) {
       $log.error('Coinbase Sell Price: ERROR ' + data.statusText);
       return cb(data.data);
     });
-  }; 
+  };
 
   root.buyPrice = function(token, currency, cb) {
     $http(_get('/prices/buy?currency=' + currency, token)).then(function(data) {
       $log.info('Coinbase Buy Price: SUCCESS');
-      return cb(null, data.data); 
+      return cb(null, data.data);
     }, function(data) {
       $log.error('Coinbase Buy Price: ERROR ' + data.statusText);
       return cb(data.data);
@@ -215,7 +215,7 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
   root.getPaymentMethods = function(token, cb) {
     $http(_get('/payment-methods', token)).then(function(data) {
       $log.info('Coinbase Get Payment Methods: SUCCESS');
-      return cb(null, data.data); 
+      return cb(null, data.data);
     }, function(data) {
       $log.error('Coinbase Get Payment Methods: ERROR ' + data.statusText);
       return cb(data.data);
@@ -225,7 +225,7 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
   root.getPaymentMethod = function(token, paymentMethodId, cb) {
     $http(_get('/payment-methods/' + paymentMethodId, token)).then(function(data) {
       $log.info('Coinbase Get Payment Method: SUCCESS');
-      return cb(null, data.data); 
+      return cb(null, data.data);
     }, function(data) {
       $log.error('Coinbase Get Payment Method: ERROR ' + data.statusText);
       return cb(data.data);
@@ -243,7 +243,7 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
       },
       data: data
     };
-  }; 
+  };
 
   root.sellRequest = function(token, accountId, data, cb) {
     var data = {
@@ -254,7 +254,7 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
     };
     $http(_post('/accounts/' + accountId + '/sells', token, data)).then(function(data) {
       $log.info('Coinbase Sell Request: SUCCESS');
-      return cb(null, data.data); 
+      return cb(null, data.data);
     }, function(data) {
       $log.error('Coinbase Sell Request: ERROR ' + data.statusText);
       return cb(data.data);
@@ -264,12 +264,12 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
   root.sellCommit = function(token, accountId, sellId, cb) {
     $http(_post('/accounts/' + accountId + '/sells/' + sellId + '/commit', token)).then(function(data) {
       $log.info('Coinbase Sell Commit: SUCCESS');
-      return cb(null, data.data); 
+      return cb(null, data.data);
     }, function(data) {
       $log.error('Coinbase Sell Commit: ERROR ' + data.statusText);
       return cb(data.data);
     });
-  }; 
+  };
 
   root.buyRequest = function(token, accountId, data, cb) {
     var data = {
@@ -280,7 +280,7 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
     };
     $http(_post('/accounts/' + accountId + '/buys', token, data)).then(function(data) {
       $log.info('Coinbase Buy Request: SUCCESS');
-      return cb(null, data.data); 
+      return cb(null, data.data);
     }, function(data) {
       $log.error('Coinbase Buy Request: ERROR ' + data.statusText);
       return cb(data.data);
@@ -290,7 +290,7 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
   root.buyCommit = function(token, accountId, buyId, cb) {
     $http(_post('/accounts/' + accountId + '/buys/' + buyId + '/commit', token)).then(function(data) {
       $log.info('Coinbase Buy Commit: SUCCESS');
-      return cb(null, data.data); 
+      return cb(null, data.data);
     }, function(data) {
       $log.error('Coinbase Buy Commit: ERROR ' + data.statusText);
       return cb(data.data);
@@ -303,7 +303,7 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
     };
     $http(_post('/accounts/' + accountId + '/addresses', token, data)).then(function(data) {
       $log.info('Coinbase Create Address: SUCCESS');
-      return cb(null, data.data); 
+      return cb(null, data.data);
     }, function(data) {
       $log.error('Coinbase Create Address: ERROR ' + data.statusText);
       return cb(data.data);
@@ -320,7 +320,7 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
     };
     $http(_post('/accounts/' + accountId + '/transactions', token, data)).then(function(data) {
       $log.info('Coinbase Create Address: SUCCESS');
-      return cb(null, data.data); 
+      return cb(null, data.data);
     }, function(data) {
       $log.error('Coinbase Create Address: ERROR ' + data.statusText);
       return cb(data.data);
@@ -328,7 +328,7 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
   };
 
   // Pending transactions
-  
+
   root.savePendingTransaction = function(ctx, opts, cb) {
     var network = configService.getSync().coinbase.testnet ? 'testnet' : 'livenet';
     storageService.getCoinbaseTxs(network, function(err, oldTxs) {

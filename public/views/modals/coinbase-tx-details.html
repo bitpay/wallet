@@ -85,14 +85,13 @@
         </li>
       </ul>
 
-      <div class="row m20t p20t line-t" ng-show="tx.status == 'error'">
+      <div class="row m20t" ng-show="tx.status == 'error'">
         <div class="columns">
           <p class="text-center size-12 text-gray">
             This action will remove the transaction.
           </p>
           <button class="button outline round dark-gray expand tiny"
-                  ng-click="remove();"
-                  ng-disabled="loading">
+                  ng-click="remove()">
             <i class="fi-x"></i>
             Remove
           </button>

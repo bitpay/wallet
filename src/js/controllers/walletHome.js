@@ -36,7 +36,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     $rootScope.$emit('Local/SetTab', 'send');
 
     var form = $scope.sendForm;
-    if (form.address.$invalid && !ongoingProcess.get('fetchingPayPro')) {
+    if (form.address.$invalid && !ongoingProcess.isProcessing) {
       self.resetForm();
       self.error = gettext('Could not recognize a valid Bitcoin QR Code');
     }
