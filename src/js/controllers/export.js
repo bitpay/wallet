@@ -10,7 +10,7 @@ angular.module('copayApp.controllers').controller('exportController',
     $scope.error = null;
     $scope.success = null;
 
-    $scope.init = function() {
+    $scope.init = function(state) {
       if (!isCordova) return;
 
       var config = configService.getSync();
@@ -21,7 +21,7 @@ angular.module('copayApp.controllers').controller('exportController',
 
       fingerprintService.check(fc, function(err) {
         if (err)
-          go.path($scope.goBackToState);
+          go.path(state || 'walletHome');
       });
     };
 

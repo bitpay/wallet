@@ -25,7 +25,7 @@ angular.module('copayApp.controllers').controller('backupController',
     }
 
     $scope.init = function(state) {
-      prevState = state;
+      prevState = state || 'walletHome';
       $scope.passphrase = '';
       $scope.shuffledMnemonicWords = shuffledWords($scope.mnemonicWords);
       $scope.customWords = [];
@@ -56,8 +56,8 @@ angular.module('copayApp.controllers').controller('backupController',
       return false;
     };
 
-    $scope.backTo = function() {
-      go.path(prevState);
+    $scope.goBack = function() {
+      go.path(prevState || 'walletHome');
     };
 
     $scope.goToStep = function(n) {
