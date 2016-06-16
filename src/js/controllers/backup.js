@@ -7,47 +7,59 @@ angular.module('copayApp.controllers').controller('backupController',
     var prevState;
     $scope.customWords = [];
     $scope.walletName = fc.credentials.walletName;
+    $scope.credentialsEncrypted = fc.isPrivKeyEncrypted;
 
-    var handleEncryptedWallet = function(client, cb) {
-      if (!walletService.isEncrypted(client)) return cb();
-      $rootScope.$emit('Local/NeedsPassword', false, function(err, password) {
-        if (err) return cb(err);
-        return cb(walletService.unlock(client, password));
+    $scope.init = function(state) {
+      prevState = state || 'walletHome';
+      $scope.step = 1;
+      $scope.deleted = isDeletedSeed();
+      if ($scope.deleted) return;
+
+      fingerprintService.check(fc, function(err) {
+        if (err) {
+          go.path(prevState);
+          return;
+        }
+
+        handleEncryptedWallet(fc, function(err) {
+          if (err) {
+            $scope.error = bwsError.msg(err, gettext('Could not decrypt'));
+            $log.warn('Error decrypting credentials:', $scope.error);
+            return;
+          }
+          $scope.credentialsEncrypted = false;
+          $scope.initFlow();
+        });
       });
     };
 
-    if (fc.isPrivKeyEncrypted() && !isDeletedSeed()) {
-      $scope.credentialsEncrypted = true;
-      passwordRequest();
-    } else {
-      if (!isDeletedSeed())
-        initWords();
-    }
+    function shuffledWords(words) {
+      var sort = lodash.sortBy(words);
 
-    $scope.init = function(state) {
-      prevState = state;
-      $scope.passphrase = '';
+      return lodash.map(sort, function(w) {
+        return {
+          word: w,
+          selected: false
+        };
+      });
+    };
+
+    $scope.initFlow = function() {
+      var words = fc.getMnemonic();
+      $scope.xPrivKey = fc.credentials.xPrivKey;
+      $scope.mnemonicWords = words.split(/[\u3000\s]+/);
       $scope.shuffledMnemonicWords = shuffledWords($scope.mnemonicWords);
+      $scope.mnemonicHasPassphrase = fc.mnemonicHasPassphrase();
+      $scope.useIdeograms = words.indexOf("\u3000") >= 0;
+      $scope.passphrase = '';
       $scope.customWords = [];
       $scope.step = 1;
-      $scope.deleted = isDeletedSeed();
-      $scope.credentialsEncrypted = false;
       $scope.selectComplete = false;
       $scope.backupError = false;
 
-      if (!platformInfo.isCordova) return;
-      if (isDeletedSeed()) return;
-
-      var config = configService.getSync();
-      var touchidAvailable = fingerprintService.isAvailable();
-      var touchidEnabled = config.touchIdFor ? config.touchIdFor[fc.credentials.walletId] : null;
-
-      if (!touchidAvailable || !touchidEnabled) return;
-
-      fingerprintService.check(fc, function(err) {
-        if (err)
-          go.path(prevState);
-      });
+      $timeout(function() {
+        $scope.$apply();
+      }, 10);
     };
 
     function isDeletedSeed() {
@@ -56,13 +68,14 @@ angular.module('copayApp.controllers').controller('backupController',
       return false;
     };
 
-    $scope.backTo = function() {
-      go.path(prevState);
+    $scope.goBack = function() {
+      walletService.lock(fc);
+      go.path(prevState || 'walletHome');
     };
 
     $scope.goToStep = function(n) {
       if (n == 1)
-        $scope.init();
+        $scope.initFlow();
       if (n == 2)
         $scope.step = 2;
       if (n == 3) {
@@ -87,66 +100,6 @@ angular.module('copayApp.controllers').controller('backupController',
           }, 1);
         });
       };
-    };
-
-    function initWords() {
-      var words = fc.getMnemonic();
-      $scope.xPrivKey = fc.credentials.xPrivKey;
-      walletService.lock(fc);
-      $scope.mnemonicWords = words.split(/[\u3000\s]+/);
-      $scope.shuffledMnemonicWords = shuffledWords($scope.mnemonicWords);
-      $scope.mnemonicHasPassphrase = fc.mnemonicHasPassphrase();
-      $scope.useIdeograms = words.indexOf("\u3000") >= 0;
-    };
-
-    function shuffledWords(words) {
-      var sort = lodash.sortBy(words);
-
-      return lodash.map(sort, function(w) {
-        return {
-          word: w,
-          selected: false
-        };
-      });
-    };
-
-    $scope.toggle = function() {
-      $scope.error = "";
-
-      if ($scope.credentialsEncrypted)
-        passwordRequest();
-
-      $timeout(function() {
-        $scope.$apply();
-      }, 1);
-    };
-
-    function passwordRequest() {
-      try {
-        initWords();
-      } catch (e) {
-        if (e.message && e.message.match(/encrypted/) && fc.isPrivKeyEncrypted()) {
-
-          $timeout(function() {
-            $scope.$apply();
-          }, 1);
-
-          handleEncryptedWallet(fc, function(err) {
-            if (err) {
-              $scope.error = bwsError.msg(err, gettext('Could not decrypt'));
-              $log.warn('Error decrypting credentials:', $scope.error); //TODO
-              return;
-            }
-
-            $scope.credentialsEncrypted = false;
-            initWords();
-
-            $timeout(function() {
-              $scope.$apply();
-            }, 1);
-          });
-        }
-      }
     };
 
     $scope.addButton = function(index, item) {
@@ -207,6 +160,18 @@ angular.module('copayApp.controllers').controller('backupController',
         $rootScope.$emit('Local/BackupDone');
         return cb();
       }, 1);
+    };
+
+    function handleEncryptedWallet(client, cb) {
+      if (!walletService.isEncrypted(client)) {
+        $scope.credentialsEncrypted = false;
+        return cb();
+      }
+
+      $rootScope.$emit('Local/NeedsPassword', false, function(err, password) {
+        if (err) return cb(err);
+        return cb(walletService.unlock(client, password));
+      });
     };
 
     function backupError(err) {
