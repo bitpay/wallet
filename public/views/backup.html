@@ -1,4 +1,4 @@
-<div class="backup" ng-controller="backupController" ng-init="init()">
+<div class="backup" ng-controller="backupController" ng-init="init(index.prevState)">
   <nav class="tab-bar">
     <section class="left-small" ng-show="(step != 1 && step != 4)">
       <a ng-click="goToStep(1);">
@@ -11,7 +11,7 @@
     </section>
 
     <section class="right-small">
-      <a class="p10" ng-click="backTo(index.prevState)">
+      <a class="p10" ng-click="backTo()">
         <span class="text-close">
           <i class="fi-x size-24"></i>
         </span>

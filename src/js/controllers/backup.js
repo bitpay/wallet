@@ -1,9 +1,10 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('backupController',
-  function($rootScope, $scope, $timeout, $log, go, lodash, profileService, gettext, bwcService, bwsError, walletService, ongoingProcess) {
+  function($rootScope, $scope, $timeout, $log, go, lodash, fingerprintService, platformInfo, configService, profileService, gettext, bwcService, bwsError, walletService, ongoingProcess) {
 
     var fc = profileService.focusedClient;
+    var prevState;
     $scope.customWords = [];
     $scope.walletName = fc.credentials.walletName;
 
@@ -23,7 +24,8 @@ angular.module('copayApp.controllers').controller('backupController',
         initWords();
     }
 
-    $scope.init = function() {
+    $scope.init = function(state) {
+      prevState = state;
       $scope.passphrase = '';
       $scope.shuffledMnemonicWords = shuffledWords($scope.mnemonicWords);
       $scope.customWords = [];
@@ -32,6 +34,20 @@ angular.module('copayApp.controllers').controller('backupController',
       $scope.credentialsEncrypted = false;
       $scope.selectComplete = false;
       $scope.backupError = false;
+
+      if (!platformInfo.isCordova) return;
+      if (isDeletedSeed()) return;
+
+      var config = configService.getSync();
+      var touchidAvailable = fingerprintService.isAvailable();
+      var touchidEnabled = config.touchIdFor ? config.touchIdFor[fc.credentials.walletId] : null;
+
+      if (!touchidAvailable || !touchidEnabled) return;
+
+      fingerprintService.check(fc, function(err) {
+        if (err)
+          go.path(prevState);
+      });
     };
 
     function isDeletedSeed() {
@@ -40,11 +56,8 @@ angular.module('copayApp.controllers').controller('backupController',
       return false;
     };
 
-    $scope.backTo = function(state) {
-      if (state == 'walletHome')
-        go.walletHome();
-      else
-        go.preferences();
+    $scope.backTo = function() {
+      go.path(prevState);
     };
 
     $scope.goToStep = function(n) {
