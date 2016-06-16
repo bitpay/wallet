@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('walletHomeController', function($scope, $rootScope, $interval, $timeout, $filter, $modal, $log, $ionicModal, notification, txStatus, profileService, lodash, configService, rateService, storageService, bitcore, gettext, gettextCatalog, platformInfo, addressService, ledger, bwsError, confirmDialog, txFormatService, addressbookService, go, feeService, walletService, fingerprintService, nodeWebkit, ongoingProcess) {
+angular.module('copayApp.controllers').controller('walletHomeController', function($scope, $rootScope, $interval, $timeout, $filter, $log, $ionicModal, notification, txStatus, profileService, lodash, configService, rateService, storageService, bitcore, gettext, gettextCatalog, platformInfo, addressService, ledger, bwsError, confirmDialog, txFormatService, addressbookService, go, feeService, walletService, fingerprintService, nodeWebkit, ongoingProcess) {
 
   var isCordova = platformInfo.isCordova;
   var isWP = platformInfo.isWP;
@@ -458,7 +458,8 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
         if (!client.canSign() && !client.isPrivKeyExternal()) {
           $log.info('No signing proposal: No private key');
           self.resetForm();
-          txStatus.notify(createdTxp, function() {
+          var type = txStatus.notify(createdTxp);
+          $scope.openStatusModal(type, createdTxp, function() {
             return $scope.$emit('Local/TxProposalAction');
           });
         } else {
@@ -514,20 +515,38 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
                 }
                 self.resetForm();
                 go.walletHome();
-                txStatus.notify(broadcastedTxp, function() {
+                var type = txStatus.notify(broadcastedTxp);
+                $scope.openStatusModal(type, broadcastedTxp, function() {
                   $scope.$emit('Local/TxProposalAction', broadcastedTxp.status == 'broadcasted');
                 });
               });
             } else {
               self.resetForm();
               go.walletHome();
-              txStatus.notify(signedTxp, function() {
+              var type = txStatus.notify(signedTxp);
+              $scope.openStatusModal(type, signedTxp, function() {
                 $scope.$emit('Local/TxProposalAction');
               });
             }
           });
         });
       });
+    });
+  };
+
+  $scope.openStatusModal = function(type, txp, cb) {
+    var fc = profileService.focusedClient;
+    $scope.type = type;
+    $scope.tx = txFormatService.processTx(txp);
+    $scope.color = fc.backgroundColor;
+    $scope.cb = cb;
+
+    $ionicModal.fromTemplateUrl('views/modals/tx-status.html', {
+      scope: $scope,
+      animation: 'slide-in-up'
+    }).then(function(modal) {
+      $scope.txStatusModal = modal;
+      $scope.txStatusModal.show();
     });
   };
 

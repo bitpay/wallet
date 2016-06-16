@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('coinbaseController',
-  function($rootScope, $scope, $timeout, $modal, $ionicModal, profileService, configService, storageService, coinbaseService, lodash, platformInfo, ongoingProcess) {
+  function($rootScope, $scope, $timeout, $ionicModal, profileService, configService, storageService, coinbaseService, lodash, platformInfo, ongoingProcess) {
 
     var isNW = platformInfo.isNW;
 

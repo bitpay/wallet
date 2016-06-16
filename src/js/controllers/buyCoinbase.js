@@ -1,14 +1,14 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('buyCoinbaseController',
-  function($scope, $modal, $log, $ionicModal, $timeout, lodash, profileService, coinbaseService, bwsError, addressService, ongoingProcess) {
+  function($scope, $log, $ionicModal, $timeout, lodash, profileService, coinbaseService, bwsError, addressService, ongoingProcess) {
     var self = this;
 
     this.init = function(testnet) {
       self.allWallets = profileService.getWallets(testnet ? 'testnet' : 'livenet', 1)
 
       var client = profileService.focusedClient;
-      if (client) { 
+      if (client) {
         $timeout(function() {
           self.selectedWalletId = client.credentials.walletId;
           self.selectedWalletName = client.credentials.walletName;

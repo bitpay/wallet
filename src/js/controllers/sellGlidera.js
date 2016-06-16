@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('sellGlideraController',
-  function($rootScope, $scope, $timeout, $ionicModal, $log, $modal, configService, profileService, addressService, feeService, glideraService, bwsError, lodash, walletService, fingerprintService, ongoingProcess) {
+  function($rootScope, $scope, $timeout, $ionicModal, $log, configService, profileService, addressService, feeService, glideraService, bwsError, lodash, walletService, fingerprintService, ongoingProcess) {
 
     var self = this;
     var config = configService.getSync();
@@ -23,7 +23,7 @@ angular.module('copayApp.controllers').controller('sellGlideraController',
       self.allWallets = profileService.getWallets(testnet ? 'testnet' : 'livenet', 1)
 
       client = profileService.focusedClient;
-      if (client) { 
+      if (client) {
         $timeout(function() {
           self.selectedWalletId = client.credentials.walletId;
           self.selectedWalletName = client.credentials.walletName;
@@ -32,7 +32,7 @@ angular.module('copayApp.controllers').controller('sellGlideraController',
       }
     };
 
- 
+
 
     $scope.openWalletsModal = function(wallets) {
       self.error = null;

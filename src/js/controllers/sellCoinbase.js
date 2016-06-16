@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('sellCoinbaseController',
-  function($rootScope, $scope, $modal, $log, $timeout, $ionicModal, lodash, profileService, coinbaseService, bwsError, configService, walletService, fingerprintService, ongoingProcess) {
+  function($rootScope, $scope, $log, $timeout, $ionicModal, lodash, profileService, coinbaseService, bwsError, configService, walletService, fingerprintService, ongoingProcess) {
 
     var self = this;
     var client;
@@ -42,7 +42,7 @@ angular.module('copayApp.controllers').controller('sellCoinbaseController',
       self.allWallets = profileService.getWallets(testnet ? 'testnet' : 'livenet', 1);
 
       client = profileService.focusedClient;
-      if (client) { 
+      if (client) {
         $timeout(function() {
           self.selectedWalletId = client.credentials.walletId;
           self.selectedWalletName = client.credentials.walletName;
