@@ -1,5 +1,6 @@
 angular.module('copayApp.controllers').controller('paperWalletController',
   function($scope, $timeout, $log, configService, profileService, go, addressService, txStatus, bitcore, ongoingProcess) {
+
     var fc = profileService.focusedClient;
     var rawTx;
 
@@ -99,15 +100,29 @@ angular.module('copayApp.controllers').controller('paperWalletController',
             $scope.error = err.message || err.toString();
             $log.error(err);
           } else {
-            txStatus.notify({
-              status: 'broadcasted'
-            }, function() {
+            var type = txStatus.notify(txp);
+            $scope.openStatusModal(type, txp, function() {
               go.walletHome();
             });
           }
-
           $scope.$apply();
         });
       }, 100);
     };
+
+    $scope.openStatusModal = function(type, txp, cb) {
+      $scope.type = type;
+      $scope.tx = txFormatService.processTx(txp);
+      $scope.color = fc.backgroundColor;
+      $scope.cb = cb;
+
+      $ionicModal.fromTemplateUrl('views/modals/tx-status.html', {
+        scope: $scope,
+        animation: 'slide-in-up'
+      }).then(function(modal) {
+        $scope.txStatusModal = modal;
+        $scope.txStatusModal.show();
+      });
+    };
+
   });

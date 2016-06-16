@@ -8,7 +8,6 @@
   ],
   "dependencies": {
     "angular-mocks": "1.4.10",
-    "angular-foundation": "0.8.0",
     "angular-gettext": "2.2.1",
     "angular-moment": "0.10.1",
     "angular-qrcode": "monospaced/angular-qrcode#~6.2.1",
@@ -24,8 +23,6 @@
     "ng-csv": "~0.3.6"
   },
   "resolutions": {
-    "angular": "1.5.3",
-    "qrcode-generator": "0.1.0",
-    "angular-ui-router": "0.2.13"
+    "angular": "1.5.3"
   }
 }

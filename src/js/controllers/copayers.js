@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('copayersController',
-  function($scope, $rootScope, $timeout, $log, $modal, $ionicModal, profileService, go, notification, platformInfo, gettext, gettextCatalog) {
+  function($scope, $rootScope, $timeout, $log, $ionicModal, profileService, go, notification, platformInfo, gettext, gettextCatalog) {
     var self = this;
     var isCordova = platformInfo.isCordova;
     var isWP = platformInfo.isWP;

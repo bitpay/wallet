@@ -223,7 +223,8 @@ angular.module('copayApp.controllers').controller('txpDetailsController', functi
   $scope.close = function(txp) {
     $scope.loading = null;
     if (txp) {
-      txStatus.notify(txp, function() {
+      var type = txStatus.notify(txp);
+      $scope.openStatusModal(type, txp, function() {
         $scope.$emit('Local/TxProposalAction', txp.status == 'broadcasted');
       });
     } else {
@@ -232,6 +233,20 @@ angular.module('copayApp.controllers').controller('txpDetailsController', functi
       }, 100);
     }
     $scope.cancel();
+  };
+
+  $scope.openStatusModal = function(type, txp, cb) {
+    $scope.type = type;
+    $scope.tx = txFormatService.processTx(txp);
+    $scope.cb = cb;
+
+    $ionicModal.fromTemplateUrl('views/modals/tx-status.html', {
+      scope: $scope,
+      animation: 'slide-in-up'
+    }).then(function(modal) {
+      $scope.txStatusModal = modal;
+      $scope.txStatusModal.show();
+    });
   };
 
   $scope.cancel = function() {
