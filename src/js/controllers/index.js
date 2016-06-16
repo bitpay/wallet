@@ -563,7 +563,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.backgroundColor = config.colorFor[self.walletId] || '#4A90E2';
     var fc = profileService.focusedClient;
     fc.backgroundColor = self.backgroundColor;
-    if (isCordova && StatusBar.isVisible) {
+    if (isCordova) {
+      StatusBar.show();
       StatusBar.backgroundColorByHexString(fc.backgroundColor);
     }
   };
@@ -1655,13 +1656,10 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       self.noFocusedWallet = true;
       self.isComplete = null;
       self.walletName = null;
+      if (isCordova && StatusBar.isVisible) {
+        StatusBar.hide();
+      }
       uxLanguage.update();
-
-      profileService.isDisclaimerAccepted(function(v) {
-        if (v) {
-          go.path('import');
-        }
-      });
     });
   });
 
