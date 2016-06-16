@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('sellGlideraController',
-  function($rootScope, $scope, $timeout, $ionicModal, $log, $modal, configService, profileService, addressService, feeService, glideraService, bwsError, lodash, walletService, fingerprintService, ongoingProcess) {
+  function($rootScope, $scope, $timeout, $ionicModal, $log, $modal, configService, profileService, addressService, feeService, glideraService, bwsError, lodash, walletService, fingerprintService, ongoingProcess, go) {
 
     var self = this;
     var config = configService.getSync();
@@ -20,10 +20,10 @@ angular.module('copayApp.controllers').controller('sellGlideraController',
     };
 
     this.init = function(testnet) {
-      self.allWallets = profileService.getWallets(testnet ? 'testnet' : 'livenet', 1)
+      self.allWallets = profileService.getWallets(testnet ? 'testnet' : 'livenet', 1);
 
       client = profileService.focusedClient;
-      if (client) { 
+      if (client && client.credentials.m == 1) {
         $timeout(function() {
           self.selectedWalletId = client.credentials.walletId;
           self.selectedWalletName = client.credentials.walletName;
@@ -32,12 +32,10 @@ angular.module('copayApp.controllers').controller('sellGlideraController',
       }
     };
 
- 
+
 
     $scope.openWalletsModal = function(wallets) {
       self.error = null;
-      self.selectedWalletId = null;
-      self.selectedWalletName = null;
 
       $scope.type = 'SELL';
       $scope.wallets = wallets;
@@ -50,6 +48,16 @@ angular.module('copayApp.controllers').controller('sellGlideraController',
       }).then(function(modal) {
         $scope.walletsModal = modal;
         $scope.walletsModal.show();
+      });
+
+      $scope.$on('walletSelected', function(ev, obj) {
+        $timeout(function() {
+          self.selectedWalletId = obj.walletId;
+          self.selectedWalletName = obj.walletName;
+          client = obj.client;
+          $scope.$apply();
+        }, 100);
+        $scope.walletsModal.hide();
       });
     };
 
@@ -196,6 +204,8 @@ angular.module('copayApp.controllers').controller('sellGlideraController',
                     });
                   });
                 });
+              } else {
+                go.path('glidera');
               }
             });
           });

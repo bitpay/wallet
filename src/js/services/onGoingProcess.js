@@ -30,8 +30,16 @@ angular.module('copayApp.services').factory('ongoingProcess', function($log, $ti
     'deletingWallet': gettext('Deleting Wallet...'),
   };
 
+  root.isProcessing = false;
+
   root.clear = function() {
     ongoingProcess = {};
+    root.isProcessing = false;
+    if (isCordova) {
+      window.plugins.spinnerDialog.hide();
+    } else {
+      $ionicLoading.hide();
+    }
   };
 
   root.get = function(processName) {
@@ -55,16 +63,18 @@ angular.module('copayApp.services').factory('ongoingProcess', function($log, $ti
     var showName = $filter('translate')(processNames[name] || name);
 
     if (root.onGoingProcessName) {
+      root.isProcessing = true;
       if (isCordova) {
         window.plugins.spinnerDialog.show(null, showName, true);
       } else {
-      
+
         var tmpl = '<ion-spinner class="spinner-stable" icon="lines"></ion-spinner>' + showName;
         $ionicLoading.show({
           template: tmpl
         });
       }
     } else {
+      root.isProcessing = false;
       if (isCordova) {
         window.plugins.spinnerDialog.hide();
       } else {
