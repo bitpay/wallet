@@ -12,7 +12,7 @@ angular.module('copayApp.controllers').controller('preferencesDeleteWordsControl
     confirmDialog.show(msg, function(ok) {
       if (ok) {
         fc.clearMnemonic();
-        profileService.updateCredentials(fc.export(), function() {
+        profileService.updateCredentials(JSON.parse(fc.export()), function() {
           notification.success(successMsg);
           go.walletHome();
         });
