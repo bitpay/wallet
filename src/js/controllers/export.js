@@ -7,21 +7,27 @@ angular.module('copayApp.controllers').controller('exportController',
     var isCordova = platformInfo.isCordova;
     var fc = profileService.focusedClient;
     $scope.isEncrypted = fc.isPrivKeyEncrypted();
+    $scope.touchidSuccess = null;
+    $scope.touchidEnabled = null;
     $scope.error = null;
-    $scope.success = null;
 
-    $scope.init = function() {
+    $scope.init = function(state) {
       if (!isCordova) return;
 
       var config = configService.getSync();
       var touchidAvailable = fingerprintService.isAvailable();
-      var touchidEnabled = config.touchIdFor ? config.touchIdFor[fc.credentials.walletId] : null;
+      var touchidEnabled = $scope.touchidEnabled = config.touchIdFor ? config.touchIdFor[fc.credentials.walletId] : null;
 
       if (!touchidAvailable || !touchidEnabled) return;
 
       fingerprintService.check(fc, function(err) {
         if (err)
-          go.path($scope.goBackToState);
+          go.path(state || 'walletHome');
+
+        $scope.touchidSuccess = true;
+        $timeout(function() {
+          $scope.$apply();
+        }, 10);
       });
     };
 
