@@ -94,7 +94,7 @@
           </div>
           <div class="input m20t">
             <a href class="button black expand round"
-                   ng-disabled=" (!amount && !fiat)"
+                   ng-disabled=" (!amount && !fiat) || !sell.sellPrice.amount"
                    ng-style="{'background-color': '#2b71b1'}"
                    ng-click="showPriceSensitivity = true">Continue</a>
           </div>
@@ -124,7 +124,7 @@
             </div>
             <div class="columns large-6 medium-6 small-6">
             <input class="button black expand round"
-                   ng-disabled="(!amount && !fiat)"
+                   ng-disabled="(!amount && !fiat) || !sell.sellPrice.amount"
                    ng-style="{'background-color': '#2b71b1'}"
                    type="submit" value="Confirm">
             </div>

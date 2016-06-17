@@ -32,6 +32,11 @@ angular.module('copayApp.services').factory('ongoingProcess', function($log, $ti
 
   root.clear = function() {
     ongoingProcess = {};
+    if (isCordova) {
+      window.plugins.spinnerDialog.hide();
+    } else {
+      $ionicLoading.hide();
+    }
   };
 
   root.get = function(processName) {
@@ -58,7 +63,7 @@ angular.module('copayApp.services').factory('ongoingProcess', function($log, $ti
       if (isCordova) {
         window.plugins.spinnerDialog.show(null, showName, true);
       } else {
-      
+
         var tmpl = '<ion-spinner class="spinner-stable" icon="lines"></ion-spinner>' + showName;
         $ionicLoading.show({
           template: tmpl

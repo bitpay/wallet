@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('sellCoinbaseController',
-  function($rootScope, $scope, $modal, $log, $timeout, $ionicModal, lodash, profileService, coinbaseService, bwsError, configService, walletService, fingerprintService, ongoingProcess) {
+  function($rootScope, $scope, $modal, $log, $timeout, $ionicModal, lodash, profileService, coinbaseService, bwsError, configService, walletService, fingerprintService, ongoingProcess, go) {
 
     var self = this;
     var client;
@@ -42,7 +42,7 @@ angular.module('copayApp.controllers').controller('sellCoinbaseController',
       self.allWallets = profileService.getWallets(testnet ? 'testnet' : 'livenet', 1);
 
       client = profileService.focusedClient;
-      if (client) { 
+      if (client && client.credentials.m == 1) {
         $timeout(function() {
           self.selectedWalletId = client.credentials.walletId;
           self.selectedWalletName = client.credentials.walletName;
@@ -79,8 +79,6 @@ angular.module('copayApp.controllers').controller('sellCoinbaseController',
 
     $scope.openWalletsModal = function(wallets) {
       self.error = null;
-      self.selectedWalletId = null;
-      self.selectedWalletName = null;
 
       $scope.type = 'SELL';
       $scope.wallets = wallets;
@@ -93,6 +91,16 @@ angular.module('copayApp.controllers').controller('sellCoinbaseController',
       }).then(function(modal) {
         $scope.walletsModal = modal;
         $scope.walletsModal.show();
+      });
+
+      $scope.$on('walletSelected', function(ev, walletId) {
+        $timeout(function() {
+          client = profileService.getClient(walletId);
+          self.selectedWalletId = walletId;
+          self.selectedWalletName = client.credentials.walletName;
+          $scope.$apply();
+        }, 100);
+        $scope.walletsModal.hide();
       });
     };
 
@@ -205,6 +213,7 @@ angular.module('copayApp.controllers').controller('sellCoinbaseController',
             $scope.$emit('Local/NeedsConfirmation', createdTxp, function(accept) {
               if (accept) {
                 self.confirmTx(createdTxp, function(err, tx) {
+                  ongoingProcess.clear();
                   if (err) {
                     self.error = {
                       errors: [{
@@ -221,14 +230,14 @@ angular.module('copayApp.controllers').controller('sellCoinbaseController',
                     }
                     lodash.each(ctxs.data, function(ctx) {
                       if (ctx.type == 'send' && ctx.from) {
+                        ongoingProcess.clear();
                         if (ctx.status == 'completed') {
                           self.sellRequest(token, account, ctx);
                         } else {
                           // Save to localstorage
-                          ongoingProcess.clear();
                           ctx['price_sensitivity'] = $scope.selectedPriceSensitivity;
-                          ctx['sell_price_amount'] = self.sellPrice.amount;
-                          ctx['sell_price_currency'] = self.sellPrice.currency;
+                          ctx['sell_price_amount'] = self.sellPrice ? self.sellPrice.amount : '';
+                          ctx['sell_price_currency'] = self.sellPrice ? self.sellPrice.currency : 'USD';
                           ctx['description'] = 'Copay Wallet: ' + client.credentials.walletName;
                           coinbaseService.savePendingTransaction(ctx, null, function(err) {
                             if (err) $log.debug(err);
@@ -243,6 +252,8 @@ angular.module('copayApp.controllers').controller('sellCoinbaseController',
                     });
                   });
                 });
+              } else {
+                go.path('coinbase');
               }
             });
           });
@@ -292,8 +303,8 @@ angular.module('copayApp.controllers').controller('sellCoinbaseController',
               }
 
               walletService.broadcastTx(client, signedTxp, function(err, broadcastedTxp) {
-                ongoingProcess.set('Sending Bitcoin to Coinbase...', false);
                 if (err) {
+                  ongoingProcess.set('Sending Bitcoin to Coinbase...', false);
                   $log.debug(err);
                   walletService.removeTx(client, broadcastedTxp, function(err) {
                     if (err) $log.debug(err);
