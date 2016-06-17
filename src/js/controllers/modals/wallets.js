@@ -13,12 +13,7 @@ angular.module('copayApp.controllers').controller('walletsController', function(
         return;
       }
 
-      var obj = {
-        'walletId': walletId,
-        'walletName': walletName,
-        'client': profileService.getClient(walletId)
-      }
-      $scope.$emit('walletSelected', obj);
+      $scope.$emit('walletSelected', walletId);
     });
   };
 
