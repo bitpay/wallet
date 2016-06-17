@@ -11,8 +11,11 @@
     </h1>
   </ion-header-bar>
 
-  <ion-content class="m20t" overflow-scroll="true">
-    <div class="modal-content m20t">
+  <ion-content overflow-scroll="true">
+    <div class="modal-content">
+      <div class="box-notification text-center size-12 text-warning m10t" ng-show="error">
+        <i class="fi-error"></i> {{error}}
+      </div>
       <div ng-show="type == 'SELL'">
         <h4 class="title m0 oh">
           <div class="left">
@@ -29,12 +32,18 @@
       </div>
       <ul class="no-bullet">
         <li class="line-b" ng-repeat="w in wallets">
-        <a ng-click="selectWallet(w.id, w.name)" class="db oh">
+        <a ng-click="selectWallet(w.id)" class="db oh">
           <div class="avatar-wallet"
             ng-style="{'background-color':w.color}">
             <i class="icon-wallet size-21"></i>
           </div>
-          <div class="ellipsis name-wallet text-bold">{{w.name || w.id}}</div>
+          <div class="ellipsis name-wallet text-bold">
+            {{w.name || w.id}}
+            <span class="has-error right text-light size-12" ng-show="errorSelectedWallet[w.id]">
+              <i class="icon-close-circle size-14"></i>
+              <span class="vm">{{errorSelectedWallet[w.id]}}</span>
+            </span>
+          </div>
           <div class="size-12">{{w.m}} of {{w.n}}
             <span ng-show="w.network=='testnet'">[Testnet]</span>
           </div>
