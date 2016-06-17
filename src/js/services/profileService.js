@@ -464,7 +464,7 @@ angular.module('copayApp.services')
       });
     };
 
-    root.setMetaData = function(walletClient, addressBook, historyCache, cb) {
+    root.setMetaData = function(walletClient, addressBook, cb) {
       storageService.getAddressbook(walletClient.credentials.network, function(err, localAddressBook) {
         var localAddressBook1 = {};
         try {
@@ -475,10 +475,7 @@ angular.module('copayApp.services')
         var mergeAddressBook = lodash.merge(addressBook, localAddressBook1);
         storageService.setAddressbook(walletClient.credentials.network, JSON.stringify(addressBook), function(err) {
           if (err) return cb(err);
-          storageService.setTxHistory(JSON.stringify(historyCache), walletClient.credentials.walletId, function(err) {
-            if (err) return cb(err);
-            return cb(null);
-          });
+          return cb(null);
         });
       });
     }
@@ -563,13 +560,12 @@ angular.module('copayApp.services')
       str = JSON.parse(str);
 
       var addressBook = str.addressBook || {};
-      var historyCache = str.historyCache ||  [];
 
       root.addAndBindWalletClient(walletClient, {
         bwsurl: opts.bwsurl
       }, function(err, walletId) {
         if (err) return cb(err);
-        root.setMetaData(walletClient, addressBook, historyCache, function(error) {
+        root.setMetaData(walletClient, addressBook, function(error) {
           if (error) $log.warn(error);
           return cb(err, walletId);
         });

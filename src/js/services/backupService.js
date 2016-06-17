@@ -40,7 +40,7 @@ angular.module('copayApp.services')
 
       var a = angular.element('<a></a>');
       var blob = new NewBlob(ew, 'text/plain;charset=utf-8');
-      a.attr('href',window.URL.createObjectURL(blob));
+      a.attr('href', window.URL.createObjectURL(blob));
       a.attr('download', filename);
       a[0].click();
       return cb();
@@ -49,7 +49,6 @@ angular.module('copayApp.services')
     root.addMetadata = function(b, opts) {
 
       b = JSON.parse(b);
-      if (opts.historyCache) b.historyCache = opts.historyCache;
       if (opts.addressBook) b.addressBook = opts.addressBook;
       return JSON.stringify(b);
     }
@@ -62,7 +61,7 @@ angular.module('copayApp.services')
       try {
         opts = opts || {};
         var b = fc.export(opts);
-        if (opts.historyCache || opts.addressBook) b = root.addMetadata(b, opts);
+        if (opts.addressBook) b = root.addMetadata(b, opts);
 
         var e = sjcl.encrypt(password, b, {
           iter: 10000
