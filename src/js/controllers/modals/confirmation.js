@@ -5,7 +5,7 @@ angular.module('copayApp.controllers').controller('confirmationController', func
   $scope.ok = function() {
     $scope.loading = true;
     $scope.okAction();
-    $scope.cancel();
+    $scope.confirmationModal.hide();
   };
 
   $scope.cancel = function() {

@@ -1646,12 +1646,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       self.isComplete = null;
       self.walletName = null;
       uxLanguage.update();
-
-      profileService.isDisclaimerAccepted(function(v) {
-        if (v) {
-          go.path('import');
-        }
-      });
     });
   });
 
