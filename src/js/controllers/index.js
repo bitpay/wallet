@@ -1413,7 +1413,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   });
 
   $rootScope.$on('Local/ValidatingWalletEnded', function(ev, walletId, isOK) {
+    profileService.storeProfileIfDirty();
     if (self.isInFocus(walletId)) {
+      // NOTE: If the user changed the wallet, the flag is already turn off.
       ongoingProcess.set('validatingWallet', false);
       self.incorrectDerivation = isOK === false;
     }
