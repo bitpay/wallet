@@ -4,12 +4,12 @@
   ng-init="titleSection='Export Wallet'; goBackToState = 'preferencesAdvanced'">
 </div>
 
-<div class="content preferences" ng-controller="exportController">
+<div class="content preferences" ng-controller="exportController" ng-init="init(index.prevState)">
   <h4></h4>
   <div ng-show="!backupWalletPlainText">
       <div class="text-warning size-14 m20b" ng-show="error">
         <i class="fi-alert size-12"></i>
-        <span translate> Failed to export </span>
+        <span translate>Failed to export</span>
       </div>
 
       <div class="row">
@@ -21,7 +21,7 @@
         </div>
       </div>
 
-      <form>
+      <form ng-hide="touchidEnabled && !touchidSuccess">
         <div class="row">
           <div class="columns">
             <label for="password" translate>Set up a password </label>
