@@ -2,7 +2,7 @@
 
 angular.module('copayApp.controllers').controller('walletsController', function($scope, bwsError, profileService) {
 
-  $scope.selectWallet = function(walletId, walletName) {
+  $scope.selectWallet = function(walletId) {
 
     var client = profileService.getClient(walletId);
     $scope.errorSelectedWallet = {};
