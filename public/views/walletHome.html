@@ -1,19 +1,15 @@
 
 <div class="topbar-container"
   ng-include="'views/includes/topbar.html'"
-  ng-init="showPreferences = true">
+  ng-init="showPreferences = true" ng-show="!index.noFocusedWallet">
 </div>
 
 <div ng-controller="walletHomeController as home">
-  <div class="row columns m20tp" ng-show="index.noFocusedWallet">
-    <div class="text-center text-warning m20b">
-      <i class="fi-alert"></i> <span translate>You do not have a wallet</span>
+  <div class="row columns m30tp" ng-show="index.noFocusedWallet">
+    <div class="text-center size-12 text-warning m20b">
+      <i class="fi-alert"></i> <span translate>You do not have any wallet</span>
     </div>
     <button class="button black round expand" href ui-sref="add" translate>Create</button>
-
-    <div class="text-center text-gray p20v" href ui-sref="preferencesGlobal">
-      <button class=" outline round dark-gray tiny" translate>Settings</button>
-    </div>
   </div>
 
  <div class="onGoingProcess" ng-show="index.updating">
@@ -28,7 +24,7 @@
        <span translate>Updating Wallet...</span>
      </div>
   </div>
- 
+
 
   <div class="oh" ng-show="!index.noFocusedWallet">
 
