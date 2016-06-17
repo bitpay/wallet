@@ -93,11 +93,11 @@ angular.module('copayApp.controllers').controller('sellCoinbaseController',
         $scope.walletsModal.show();
       });
 
-      $scope.$on('walletSelected', function(ev, obj) {
+      $scope.$on('walletSelected', function(ev, walletId) {
         $timeout(function() {
-          self.selectedWalletId = obj.walletId;
-          self.selectedWalletName = obj.walletName;
-          client = obj.client;
+          client = profileService.getClient(walletId);
+          self.selectedWalletId = walletId;
+          self.selectedWalletName = client.credentials.walletName;
           $scope.$apply();
         }, 100);
         $scope.walletsModal.hide();
