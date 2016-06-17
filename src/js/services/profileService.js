@@ -132,14 +132,13 @@ angular.module('copayApp.services')
           skipDeviceValidation: skipDeviceValidation,
         }, function(err, isOK) {
           $log.debug('ValidatingWallet End:  ' + walletId + ' isOK:' + isOK);
-          $rootScope.$emit('Local/ValidatingWalletEnded', walletId, isOK);
-
           if (isOK) {
             root.profile.setChecked(platformInfo.ua, walletId);
           } else {
             $log.warn('Key Derivation failed for wallet:' + walletId);
             storageService.clearLastAddress(walletId, function() {});
           }
+          $rootScope.$emit('Local/ValidatingWalletEnded', walletId, isOK);
         });
       }, 5000);
     };
