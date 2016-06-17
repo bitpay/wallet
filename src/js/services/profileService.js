@@ -6,6 +6,7 @@ angular.module('copayApp.services')
     var isChromeApp = platformInfo.isChromeApp;
     var isCordova = platformInfo.isCordova;
     var isWP = platformInfo.isWP;
+    var isIOS = platformInfo.isIOS;
 
     var root = {};
     var errors = bwcService.getErrors();
@@ -117,7 +118,9 @@ angular.module('copayApp.services')
     };
 
     root.runValidation = function(client) {
-      var skipDeviceValidation = root.profile.isDeviceChecked(platformInfo.ua);
+
+      // IOS devices are already checked
+      var skipDeviceValidation = isIOS || root.profile.isDeviceChecked(platformInfo.ua);
       var walletId = client.credentials.walletId;
 
       $timeout(function() {
