@@ -55,7 +55,7 @@
                 <i class="icon-checkmark-circle size-14"></i>
               </small>
             </div>
-            <div ng-show="!showAlternative">
+            <div ng-if="!showAlternative">
               <label for="amount">
                 <span translate>Amount</span>
               </label>
@@ -66,7 +66,7 @@
                 <a class="postfix button" ng-style="{'background-color':color}" ng-click="toggleAlternative()">{{unitName}}</a>
               </div>
             </div>
-            <div ng-show="showAlternative">
+            <div ng-if="showAlternative">
               <label for="alternative"><span translate>Amount</span> [{{ alternativeIsoCode }}]
               </label>
               <div class="input">
