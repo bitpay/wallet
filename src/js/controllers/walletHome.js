@@ -418,6 +418,12 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       return self.setSendError(gettext(msg));
     }
 
+    if (form.amount.$modelValue * unitToSat >  Number.MAX_SAFE_INTEGER) {
+      var msg = 'Amount too big';
+      $log.warn(msg);
+      return self.setSendError(gettext(msg));
+    };
+
     $timeout(function() {
       var paypro = self._paypro;
       var address, amount;
