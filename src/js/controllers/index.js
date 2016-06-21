@@ -1727,6 +1727,11 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         return cb('No spending password given');
       };
 
+      $scope.keyPress = function(event) {
+        if (!$scope.data.password || $scope.loading) return;
+        if (event.keyCode == 13) $scope.set();
+      }
+
       $scope.set = function() {
         $scope.loading = true;
         $scope.error = null;
