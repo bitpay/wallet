@@ -1,4 +1,4 @@
-* Improves some icons
-* Minor UX changes on receive
-* Update translations
-* Problembehebungen
+* Einige Symbole verbessert
+* Kleine UI-Änderungen beim Empfang
+* Übersetzungen aktualisiert
+* Fehler behoben
