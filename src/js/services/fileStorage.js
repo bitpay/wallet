@@ -52,9 +52,25 @@ angular.module('copayApp.services')
       })
     };
 
-    root.set = function(k, v, cb) {
+    var writelock = {};
+
+    root.set = function(k, v, cb, delay) {
+
+      delay = delay || 100;
+
+      if (writelock[k]) {
+        return setTimeout(function() {
+          console.log('## Writelock for:' + k + ' Retrying in ' + delay);
+          return root.set(k, v, cb, delay + 100);
+        }, delay);
+      }
+
+      writelock[k] = true;
       root.init(function(err, fs, dir) {
-        if (err) return cb(err);
+        if (err) {
+          writelock[k] = false;
+          return cb(err);
+        }
         dir.getFile(k, {
           create: true,
         }, function(fileEntry) {
@@ -62,13 +78,15 @@ angular.module('copayApp.services')
           fileEntry.createWriter(function(fileWriter) {
 
             fileWriter.onwriteend = function(e) {
-              console.log('Write completed.');
+              console.log('Write completed:' + k);
+              writelock[k] = false;
               return cb();
             };
 
             fileWriter.onerror = function(e) {
               var err = e.error ? e.error : JSON.stringify(e);
               console.log('Write failed: ' + err);
+              writelock[k] = false;
               return cb('Fail to write:' + err);
             };
 

@@ -28,7 +28,23 @@ angular.module('copayApp.services')
       var json;
       try {
         json = JSON.parse(text);
-      } catch (e) {};
+      } catch (e) {
+        $log.warn('Could not open profile:' + text);
+
+        var i = text.lastIndexOf('}{');
+        if (i > 0) {
+          text = text.substr(i + 1);
+          $log.warn('trying last part only:' + text);
+          try {
+            json = JSON.parse(text);
+            $log.warn('Worked... saving.');
+            storage.set('profile', text, function() {});
+          } catch (e) {
+            $log.warn('Could not open profile (2nd try):' + e);
+          };
+        };
+
+      };
 
       if (!json) return cb('Could not access storage')
 

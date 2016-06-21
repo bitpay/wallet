@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('coinbaseTxDetailsController', function($scope, coinbaseService) {
+angular.module('copayApp.controllers').controller('coinbaseTxDetailsController', function($scope, $rootScope, coinbaseService) {
 
   $scope.remove = function() {
     coinbaseService.savePendingTransaction($scope.tx, {

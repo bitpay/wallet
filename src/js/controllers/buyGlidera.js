@@ -9,7 +9,7 @@ angular.module('copayApp.controllers').controller('buyGlideraController',
     this.success = null;
 
     this.init = function(testnet) {
-      self.allWallets = profileService.getWallets(testnet ? 'testnet' : 'livenet', 1)
+      self.allWallets = profileService.getWallets(testnet ? 'testnet' : 'livenet');
 
       var client = profileService.focusedClient;
       if (client) { 
@@ -23,8 +23,6 @@ angular.module('copayApp.controllers').controller('buyGlideraController',
 
     $scope.openWalletsModal = function(wallets) {
       self.error = null;
-      self.selectedWalletId = null;
-      self.selectedWalletName = null;
 
       $scope.type = 'BUY';
       $scope.wallets = wallets;
@@ -37,6 +35,16 @@ angular.module('copayApp.controllers').controller('buyGlideraController',
       }).then(function(modal) {
         $scope.walletsModal = modal;
         $scope.walletsModal.show();
+      });
+
+      $scope.$on('walletSelected', function(ev, walletId) {
+        $timeout(function() {
+          var client = profileService.getClient(walletId);
+          self.selectedWalletId = walletId;
+          self.selectedWalletName = client.credentials.walletName;
+          $scope.$apply();
+        }, 100);
+        $scope.walletsModal.hide();
       });
     };
 

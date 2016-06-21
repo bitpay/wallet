@@ -1060,9 +1060,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     getToken(function(err, accessToken) {
       if (err || !accessToken) return;
       else {
-        ongoingProcess.set('connectingGlidera', true);
         glideraService.getAccessTokenPermissions(accessToken, function(err, p) {
-          ongoingProcess.set('connectingGlidera', false);
           if (err) {
             self.glideraError = err;
           } else {
@@ -1093,24 +1091,18 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     });
 
     if (permissions.transaction_history) {
-      ongoingProcess.set('Fetching Glidera Transactions', true);
       glideraService.getTransactions(accessToken, function(err, data) {
-        ongoingProcess.set('Fetching Glidera Transactions', false);
         self.glideraTxs = data;
       });
     }
 
     if (permissions.view_email_address && opts.fullUpdate) {
-      ongoingProcess.set('connectingGlidera', true);
       glideraService.getEmail(accessToken, function(err, data) {
-        ongoingProcess.set('connectingGlidera', false);
         self.glideraEmail = data.email;
       });
     }
     if (permissions.personal_info && opts.fullUpdate) {
-      ongoingProcess.set('connectingGlidera', true);
       glideraService.getPersonalInfo(accessToken, function(err, data) {
-        ongoingProcess.set('connectingGlidera', false);
         self.glideraPersonalInfo = data;
       });
     }
@@ -1145,9 +1137,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     getToken(function(err, accessToken) {
       if (err || !accessToken) return;
       else {
-        ongoingProcess.set('Getting primary account...', true);
         coinbaseService.getAccounts(accessToken, function(err, a) {
-          ongoingProcess.set('Getting primary account...', false);
           if (err) {
             self.coinbaseError = err;
             if (err.errors[0] && err.errors[0].id == 'expired_token') {
@@ -1417,14 +1407,14 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   });
 
   $rootScope.$on('Local/ValidatingWallet', function(ev, walletId) {
-    if (self.isInFocus(walletId)) {
-      ongoingProcess.set('validatingWallet', true);
-    }
+    ongoingProcess.set('validatingWallet', true);
   });
 
   $rootScope.$on('Local/ValidatingWalletEnded', function(ev, walletId, isOK) {
+    ongoingProcess.set('validatingWallet', false);
+
     if (self.isInFocus(walletId)) {
-      ongoingProcess.set('validatingWallet', false);
+      // NOTE: If the user changed the wallet, the flag is already turn off.
       self.incorrectDerivation = isOK === false;
     }
   });
@@ -1656,12 +1646,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       self.isComplete = null;
       self.walletName = null;
       uxLanguage.update();
-
-      profileService.isDisclaimerAccepted(function(v) {
-        if (v) {
-          go.path('import');
-        }
-      });
     });
   });
 

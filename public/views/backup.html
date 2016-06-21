@@ -1,4 +1,4 @@
-<div class="backup" ng-controller="backupController" ng-init="init()">
+<div class="backup" ng-controller="backupController" ng-init="init(index.prevState)">
   <nav class="tab-bar">
     <section class="left-small" ng-show="(step != 1 && step != 4)">
       <a ng-click="goToStep(1);">
@@ -11,7 +11,7 @@
     </section>
 
     <section class="right-small">
-      <a class="p10" ng-click="backTo(index.prevState)">
+      <a class="p10" ng-click="goBack()">
         <span class="text-close">
           <i class="fi-x size-24"></i>
         </span>
@@ -31,7 +31,7 @@
 
   <div class="content preferences text-center">
     <div ng-show="step == 1">
-      <div ng-show="mnemonicWords || (credentialsEncrypted && !deleted)" class="row">
+      <div ng-show="mnemonicWords || (!credentialsEncrypted && !deleted)" class="row">
         <h5 class="text-center" translate>Write your wallet recovery phrase</h5>
         <div class="size-14 text-gray columns" ng-show="(index.n>1 && index.m != index.n )">
           <span translate>
@@ -62,20 +62,12 @@
         </div>
       </div>
 
-      <div ng-show="mnemonicWords || (credentialsEncrypted && !deleted)">
+      <div ng-show="mnemonicWords || (!credentialsEncrypted && !deleted)">
         <p class="text-center columns text-gray" ng-show="index.n==1 && step == 1">
           <span translate>
             You need the wallet recovery phrase to restore this personal wallet. Write it down and keep them somewhere safe.
           </span>
         </p>
-        <div class="row" ng-show="credentialsEncrypted">
-          <div class="m10t columns">
-            <a class="button outline light-gray expand tiny" ng-click="toggle()">
-              <i class="fi-widget m3r"></i>
-              <span translate ng-hide="show">Show Wallet Recovery Phrase</span>
-            </a>
-          </div>
-        </div>
         <div class="row" ng-show="!credentialsEncrypted">
           <div class="columns">
             <div class="panel" ng-class="{'enable_text_select': index.network == 'testnet'}">
