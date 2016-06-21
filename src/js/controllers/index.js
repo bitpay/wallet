@@ -1407,16 +1407,14 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   });
 
   $rootScope.$on('Local/ValidatingWallet', function(ev, walletId) {
-    if (self.isInFocus(walletId)) {
-      ongoingProcess.set('validatingWallet', true);
-    }
+    ongoingProcess.set('validatingWallet', true);
   });
 
   $rootScope.$on('Local/ValidatingWalletEnded', function(ev, walletId, isOK) {
-    profileService.storeProfileIfDirty();
+    ongoingProcess.set('validatingWallet', false);
+
     if (self.isInFocus(walletId)) {
       // NOTE: If the user changed the wallet, the flag is already turn off.
-      ongoingProcess.set('validatingWallet', false);
       self.incorrectDerivation = isOK === false;
     }
   });
