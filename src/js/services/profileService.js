@@ -117,20 +117,32 @@ angular.module('copayApp.services')
       return true;
     };
 
-    root.runValidation = function(client) {
+    var validationLock = false;
+
+    root.runValidation = function(client, delay, retryDelay) {
+      delay = delay || 500;
+      retryDelay = retryDelay || 50;
+
+      if (validationLock) {
+        return $timeout(function() {
+          $log.debug('ValidatingWallet Locked: Retrying in: ' + retryDelay);
+          return root.runValidation(client, delay, retryDelay);
+        }, retryDelay);
+      }
+      validationLock = true;
 
       // IOS devices are already checked
       var skipDeviceValidation = isIOS || root.profile.isDeviceChecked(platformInfo.ua);
       var walletId = client.credentials.walletId;
 
+      $log.debug('ValidatingWallet: ' + walletId + ' skip Device:' + skipDeviceValidation);
+      $rootScope.$emit('Local/ValidatingWallet', walletId);
       $timeout(function() {
-
-        $log.debug('ValidatingWallet: ' + walletId + ' skip Device:' + skipDeviceValidation);
-        $rootScope.$emit('Local/ValidatingWallet', walletId);
-
         client.validateKeyDerivation({
           skipDeviceValidation: skipDeviceValidation,
         }, function(err, isOK) {
+          validationLock = false;
+
           $log.debug('ValidatingWallet End:  ' + walletId + ' isOK:' + isOK);
           if (isOK) {
             root.profile.setChecked(platformInfo.ua, walletId);
@@ -138,9 +150,10 @@ angular.module('copayApp.services')
             $log.warn('Key Derivation failed for wallet:' + walletId);
             storageService.clearLastAddress(walletId, function() {});
           }
+          root.storeProfileIfDirty();
           $rootScope.$emit('Local/ValidatingWalletEnded', walletId, isOK);
         });
-      }, 5000);
+      }, delay);
     };
 
     // Used when reading wallets from the profile
@@ -163,7 +176,7 @@ angular.module('copayApp.services')
 
       var skipKeyValidation = root.profile.isChecked(platformInfo.ua, credentials.walletId);
       if (!skipKeyValidation)
-        root.runValidation(client);
+        root.runValidation(client, 500);
 
       $log.info('Binding wallet:' + credentials.walletId + ' Validating?:' + !skipKeyValidation);
       return cb(null, root.bindWalletClient(client));
@@ -390,8 +403,8 @@ angular.module('copayApp.services')
 
         // check if exist
         if (lodash.find(root.profile.credentials, {
-            'walletId': walletData.walletId
-          })) {
+          'walletId': walletData.walletId
+        })) {
           return cb(gettext('Cannot join the same wallet more that once'));
         }
       } catch (ex) {
@@ -512,7 +525,6 @@ angular.module('copayApp.services')
       saveBwsUrl(function() {
         root.setAndStoreFocus(walletId, function() {
           storageService.storeProfile(root.profile, function(err) {
-
             var config = configService.getSync();
             if (config.pushNotifications.enabled)
               pushNotificationsService.enableNotifications(root.walletClients);
