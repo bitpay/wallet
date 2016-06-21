@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Italian\n"
 "Language: it\n"
-"PO-Revision-Date: 2016-06-15 14:08-0400\n"
+"PO-Revision-Date: 2016-06-21 11:13-0400\n"
 
 #: public/views/modals/search.html
 #: public/views/walletHome.html
@@ -1658,7 +1658,7 @@ msgstr "Il software non costituisce un account dove BitPay o altre terze parti s
 
 #: public/views/includes/terms.html
 msgid "The software you are about to use functions as a free, open source, and multi-signature digital wallet."
-msgstr "Il software si sta per utilizzare funziona come un portafoglio libero, open source e multi-firma digitale."
+msgstr "Il software che si sta per utilizzare è un portafoglio libero, open source e con multi-firma digitale."
 
 #: src/js/services/bwsError.js
 msgid "The spend proposal is not pending"

@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Russian\n"
 "Language: ru\n"
-"PO-Revision-Date: 2016-06-15 09:59-0400\n"
+"PO-Revision-Date: 2016-06-21 11:13-0400\n"
 
 #: public/views/modals/search.html
 #: public/views/walletHome.html
@@ -25,7 +25,7 @@ msgstr "(Доверенный)"
 
 #: public/views/walletHome.html
 msgid "[Balance Hidden]"
-msgstr ""
+msgstr "[Баланс скрыт]"
 
 #: src/js/controllers/walletHome.js
 msgid "{{fee}} will be deducted for bitcoin networking fees"
@@ -33,11 +33,11 @@ msgstr "{{fee}} будет использовано для оплаты коми
 
 #: public/views/includes/confirm-tx.html
 msgid "{{feeRateStr}} of the transaction"
-msgstr ""
+msgstr "{{feeRateStr}} транзакции"
 
 #: public/views/walletHome.html
 msgid "{{index.completeHistory.length - index.txHistory.length}} more"
-msgstr ""
+msgstr "{{index.completeHistory.length - index.txHistory.length}} больше"
 
 #: public/views/copayers.html
 #: public/views/includes/walletInfo.html
@@ -46,7 +46,7 @@ msgstr "{{index.m}}-из-{{index.n}}"
 
 #: public/views/modals/search.html
 msgid "{{index.result.length - index.txHistorySearchResults.length}} more"
-msgstr ""
+msgstr "{{index.result.length - index.txHistorySearchResults.length}} больше"
 
 #: public/views/walletHome.html
 msgid "{{index.txProgress}} transactions downloaded"
@@ -118,7 +118,7 @@ msgstr "Добавить новую запись"
 #: public/views/create.html
 #: public/views/join.html
 msgid "Add a Password"
-msgstr ""
+msgstr "Защитить паролем"
 
 #: public/views/create.html
 #: public/views/join.html
@@ -128,7 +128,7 @@ msgstr ""
 #: public/views/includes/note.html
 #: public/views/modals/tx-details.html
 msgid "Add comment"
-msgstr ""
+msgstr "Добавить комментарий"
 
 #: public/views/includes/sidebar.html
 msgid "Add wallet"
@@ -197,7 +197,7 @@ msgstr "Вы точно хотите удалить этот кошелек?"
 
 #: public/views/includes/walletInfo.html
 msgid "Auditable"
-msgstr ""
+msgstr "Проверяемый"
 
 #: public/views/includes/available-balance.html
 msgid "Available Balance"
@@ -279,7 +279,7 @@ msgstr "Браузер не поддерживается"
 
 #: public/views/includes/sidebar.html
 msgid "Buy &amp; Sell"
-msgstr ""
+msgstr "Купить &amp; Продать"
 
 #: src/js/services/onGoingProcess.js
 msgid "Calculating fee"
@@ -324,7 +324,7 @@ msgstr "Изменение псевдонима кошелька сохраня�
 
 #: public/views/translators.html
 msgid "Chinese"
-msgstr ""
+msgstr "Китайский"
 
 #: public/views/import.html
 msgid "Choose a backup file from your computer"
@@ -351,7 +351,7 @@ msgstr "Цвет"
 
 #: public/views/modals/tx-details.html
 msgid "Comment"
-msgstr ""
+msgstr "Комментарий"
 
 #: public/views/preferencesAbout.html
 msgid "Commit hash"
@@ -379,11 +379,11 @@ msgstr "Поздравляем!"
 
 #: src/js/services/onGoingProcess.js
 msgid "Connecting to Coinbase..."
-msgstr ""
+msgstr "Подключение к Coinbase..."
 
 #: src/js/services/onGoingProcess.js
 msgid "Connecting to Glidera..."
-msgstr ""
+msgstr "Подключение к Glidera..."
 
 #: src/js/services/bwsError.js
 msgid "Connection reset by peer"
@@ -546,7 +546,7 @@ msgstr "Текущая комиссия для этой политики: {{fee.
 
 #: public/views/translators.html
 msgid "Czech"
-msgstr ""
+msgstr "Чешский"
 
 #: public/views/modals/tx-details.html
 msgid "Date"
@@ -598,7 +598,7 @@ msgstr "Стратегия деривации"
 #: public/views/modals/txp-details.html
 #: public/views/walletHome.html
 msgid "Description"
-msgstr ""
+msgstr "Описание"
 
 #: public/views/modals/customized-amount.html
 #: public/views/modals/paypro.html
@@ -643,7 +643,7 @@ msgstr ""
 
 #: public/views/modals/tx-details.html
 msgid "Edited by"
-msgstr ""
+msgstr "Отредактировано"
 
 #: public/views/preferencesEmail.html
 msgid "Email for wallet notifications"
@@ -659,11 +659,11 @@ msgstr "Достигнут предел пустых адресов. Новые 
 
 #: public/views/preferencesGlobal.html
 msgid "Enable Coinbase Service"
-msgstr ""
+msgstr "Включить поддержку Coinbase"
 
 #: public/views/preferencesGlobal.html
 msgid "Enable Glidera Service"
-msgstr ""
+msgstr "Включить поддержку Glidera"
 
 #: public/views/preferencesGlobal.html
 msgid "Enable push notifications"
@@ -807,7 +807,7 @@ msgstr "Аппаратный кошелёк"
 
 #: public/views/import.html
 msgid "Hardware Wallet"
-msgstr ""
+msgstr "Аппаратный кошелёк"
 
 #: public/views/create.html
 #: public/views/import.html
@@ -837,7 +837,7 @@ msgstr "Импорт кошелька"
 
 #: src/js/services/onGoingProcess.js
 msgid "Importing Wallet..."
-msgstr ""
+msgstr "Импортирование кошелька..."
 
 #: public/views/includes/terms.html
 msgid "In no event shall the authors of the software, employees and affiliates of Bitpay, copyright holders, or BitPay, Inc. be held liable for any claim, damages or other liability, whether in an action of contract, tort, or otherwise, arising from, out of or in connection with the software."
@@ -890,7 +890,7 @@ msgstr "Приглашение присоединиться к кошельку 
 
 #: public/views/translators.html
 msgid "Italian"
-msgstr ""
+msgstr "Итальянский"
 
 #: public/views/translators.html
 msgid "Japanese"
@@ -986,7 +986,7 @@ msgstr "Сообщение"
 
 #: src/js/services/bwsError.js
 msgid "Missing parameter"
-msgstr ""
+msgstr "Недостающий параметр"
 
 #: src/js/services/bwsError.js
 msgid "Missing private keys to sign"
@@ -1058,7 +1058,7 @@ msgstr "Не завершено"
 
 #: src/js/controllers/walletHome.js
 msgid "Not enough funds for fee"
-msgstr ""
+msgstr "Недостаточно средств для уплаты комиссии"
 
 #: public/views/modals/addressbook.html
 #: public/views/modals/customized-amount.html
@@ -1089,7 +1089,7 @@ msgstr "Официальный оригинал"
 
 #: public/views/modals/tx-status.html
 msgid "OKAY"
-msgstr ""
+msgstr "ХОРОШО"
 
 #: public/views/preferencesDeleteWords.html
 msgid "Once you have copied your wallet recovery phrase down, it is recommended to delete it from this device."
@@ -1262,7 +1262,7 @@ msgstr "Пожалуйста, выберите ваш файл резервно�
 
 #: public/views/translators.html
 msgid "Polish"
-msgstr ""
+msgstr "Польский"
 
 #: src/js/controllers/export.js
 msgid "Preparing backup..."
@@ -1270,7 +1270,7 @@ msgstr "Подготовка резервной копии..."
 
 #: public/views/preferencesHistory.html
 msgid "preparing..."
-msgstr ""
+msgstr "Подготавливается..."
 
 #: src/js/routes.js
 msgid "Press again to exit"
@@ -1345,7 +1345,7 @@ msgstr "Повторите пароль"
 
 #: public/views/export.html
 msgid "Repeat the password"
-msgstr ""
+msgstr "Повторите пароль"
 
 #: public/views/includes/password.html
 msgid "Repeat the spending password"
@@ -1418,7 +1418,7 @@ msgstr "Поиск транзакций"
 
 #: public/views/modals/search.html
 msgid "Search Transactions"
-msgstr ""
+msgstr "Поиск транзакций"
 
 #: public/views/preferences.html
 msgid "Security preferences"

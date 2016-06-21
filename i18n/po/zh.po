@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Chinese Simplified\n"
 "Language: zh\n"
-"PO-Revision-Date: 2016-06-15 09:59-0400\n"
+"PO-Revision-Date: 2016-06-21 11:13-0400\n"
 
 #: public/views/modals/search.html
 #: public/views/walletHome.html
@@ -46,7 +46,7 @@ msgstr "{{index.n}} 分之 {{index.m}}"
 
 #: public/views/modals/search.html
 msgid "{{index.result.length - index.txHistorySearchResults.length}} more"
-msgstr ""
+msgstr "{{index.result.length - index.txHistorySearchResults.length}} 更多"
 
 #: public/views/walletHome.html
 msgid "{{index.txProgress}} transactions downloaded"
@@ -324,7 +324,7 @@ msgstr "更改钱包别名只会影响本地钱包名称。"
 
 #: public/views/translators.html
 msgid "Chinese"
-msgstr ""
+msgstr "中文"
 
 #: public/views/import.html
 msgid "Choose a backup file from your computer"
@@ -379,11 +379,11 @@ msgstr "恭喜！"
 
 #: src/js/services/onGoingProcess.js
 msgid "Connecting to Coinbase..."
-msgstr ""
+msgstr "正在连接 Coinbase..."
 
 #: src/js/services/onGoingProcess.js
 msgid "Connecting to Glidera..."
-msgstr ""
+msgstr "正在连接 Glidera..."
 
 #: src/js/services/bwsError.js
 msgid "Connection reset by peer"
@@ -546,7 +546,7 @@ msgstr "此策略的当前收费率︰{{fee.feePerKBUnit}}/kiB"
 
 #: public/views/translators.html
 msgid "Czech"
-msgstr ""
+msgstr "捷克文"
 
 #: public/views/modals/tx-details.html
 msgid "Date"
@@ -837,7 +837,7 @@ msgstr "导入钱包"
 
 #: src/js/services/onGoingProcess.js
 msgid "Importing Wallet..."
-msgstr ""
+msgstr "正在导入钱包..."
 
 #: public/views/includes/terms.html
 msgid "In no event shall the authors of the software, employees and affiliates of Bitpay, copyright holders, or BitPay, Inc. be held liable for any claim, damages or other liability, whether in an action of contract, tort, or otherwise, arising from, out of or in connection with the software."
@@ -890,7 +890,7 @@ msgstr "邀请分享 Copay 钱包"
 
 #: public/views/translators.html
 msgid "Italian"
-msgstr ""
+msgstr "義大利文"
 
 #: public/views/translators.html
 msgid "Japanese"
@@ -1254,7 +1254,7 @@ msgstr "请升级 Copay 以执行此操作"
 
 #: public/views/uri.html
 msgid "Please wait to be redirected..."
-msgstr ""
+msgstr "请等待重新定向..."
 
 #: src/js/controllers/import.js
 msgid "Please, select your backup file"
@@ -1262,7 +1262,7 @@ msgstr "请选择你的备份文件"
 
 #: public/views/translators.html
 msgid "Polish"
-msgstr ""
+msgstr "波兰文"
 
 #: src/js/controllers/export.js
 msgid "Preparing backup..."
@@ -1270,7 +1270,7 @@ msgstr "正在准备备份..."
 
 #: public/views/preferencesHistory.html
 msgid "preparing..."
-msgstr ""
+msgstr "准备中..."
 
 #: src/js/routes.js
 msgid "Press again to exit"
@@ -1313,7 +1313,7 @@ msgstr "接收者"
 
 #: public/views/import.html
 msgid "Recovery Phrase"
-msgstr ""
+msgstr "恢复短语"
 
 #: src/js/controllers/preferencesDeleteWords.js
 msgid "Recovery phrase deleted"
@@ -1812,11 +1812,11 @@ msgstr "正在等待 copayers"
 
 #: src/js/services/onGoingProcess.js
 msgid "Waiting for Ledger..."
-msgstr ""
+msgstr "正在等待 Ledger..."
 
 #: src/js/services/onGoingProcess.js
 msgid "Waiting for Trezor..."
-msgstr ""
+msgstr "正在等待 Trezor..."
 
 #: public/views/copayers.html
 msgid "Waiting..."
@@ -1897,7 +1897,7 @@ msgstr "钱包不在 Wallet Service 注册。使用“创建钱包\"的\"高级�
 
 #: src/js/controllers/index.js
 msgid "Wallet Preferences"
-msgstr ""
+msgstr "钱包首选项"
 
 #: public/views/create.html
 #: public/views/import.html
