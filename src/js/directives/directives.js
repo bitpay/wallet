@@ -94,7 +94,6 @@ angular.module('copayApp.directives')
           var val = function(value) {
             var settings = configService.getSync().wallet.settings;
             var vNum = Number((value * settings.unitToSatoshi).toFixed(0));
-            console.log('[directives.js.96:vNum:]', vNum); //TODO
             if (typeof value == 'undefined' || value == 0) {
               ctrl.$pristine = true;
             }
