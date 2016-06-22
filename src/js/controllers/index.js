@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, $ionicScrollDelegate, $ionicPopup, latestReleaseService, feeService, bwcService, pushNotificationsService, lodash, go, profileService, configService, rateService, storageService, addressService, gettext, gettextCatalog, amMoment, addonManager, bwsError, txFormatService, uxLanguage, glideraService, coinbaseService, platformInfo, addressbookService, openURLService, ongoingProcess) {
+angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, $ionicScrollDelegate, $ionicPopup, $ionicSideMenuDelegate, latestReleaseService, feeService, bwcService, pushNotificationsService, lodash, go, profileService, configService, rateService, storageService, addressService, gettext, gettextCatalog, amMoment, addonManager, bwsError, txFormatService, uxLanguage, glideraService, coinbaseService, platformInfo, addressbookService, openURLService, ongoingProcess) {
   var self = this;
   var SOFT_CONFIRMATION_LIMIT = 12;
   var errors = bwcService.getErrors();
@@ -67,6 +67,10 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   self.goHome = function() {
     go.walletHome();
   };
+
+  self.allowRefresher = function() {
+    if ($ionicSideMenuDelegate.getOpenRatio() != 0) self.allowPullToRefresh = false;
+  }
 
   self.hideBalance = function() {
     storageService.getHideBalanceFlag(self.walletId, function(err, shouldHideBalance) {
