@@ -4,6 +4,7 @@ angular.module('copayApp.controllers').controller('exportController',
   function($scope, $timeout, $log, backupService, fingerprintService, configService, storageService, profileService, platformInfo, notification, go, gettext, gettextCatalog) {
     var isWP = platformInfo.isWP;
     var isAndroid = platformInfo.isAndroid;
+    var isCordova = platformInfo.isCordova;
 
     $scope.error = null;
     $scope.success = null;
