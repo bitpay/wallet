@@ -1,5 +1,5 @@
-<ion-modal-view ng-controller="addressbookController as addressbookC">
-  <div ng-init="wallets[0] ? selectedWalletsOpt = true : selectedWalletsOpt = false; checkClipboard()">
+<ion-modal-view ng-controller="addressbookController">
+  <div ng-init="wallets[0] ? setSelectedWalletsOpt(true) : etSelectedWalletsOpt(false); checkClipboard()">
     <ion-header-bar align-title="center" class="tab-bar" ng-style="{'background-color':color}">
       <div class="left-small">
         <a ng-show="!editAddressbook && !addAddressbookEntry" ng-click="cancelAddress()" class="p10">
@@ -16,7 +16,7 @@
         </a>
       </div>
     </ion-header-bar>
-    
+
     <ion-content ng-style="{'background-color': '#f6f7f9'}" overflow-scroll="true">
       <div class="modal-content p20b">
         <div class="create-tab small-only-text-center" ng-show="!editAddressbook && !addAddressbookEntry">
@@ -24,13 +24,13 @@
             <div class="tab-container small-6 medium-3 large-2"
               ng-class="{'selected':selectedWalletsOpt}"
               ng-style="{'border-color':selectedWalletsOpt ? color : 'inherit'}"
-              ng-click="selectedWalletsOpt = true">
+              ng-click="setSelectedWalletsOpt(true)">
               <a href ng-style="{'color':selectedWalletsOpt ? color : 'inherit'}" translate> My wallets</a>
             </div>
             <div class="tab-container small-6 medium-3 large-2"
               ng-class="{'selected':!selectedWalletsOpt}"
               ng-style="{'border-color':!selectedWalletsOpt ? color : 'inherit'}"
-              ng-click="selectedWalletsOpt = false">
+              ng-click="setSelectedWalletsOpt(false)">
               <a href ng-style="{'color':!selectedWalletsOpt ? color : 'inherit'}" translate>My contacts</a>
             </div>
           </div>
