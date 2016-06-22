@@ -83,6 +83,10 @@ angular.module('copayApp.controllers').controller('addressbookController', funct
     });
   };
 
+  $scope.setSelectedWalletsOpt = function(val) {
+    $scope.selectedWalletsOpt = val;
+  };
+
   $scope.add = function(addressbook) {
     $scope.error = null;
     $timeout(function() {
