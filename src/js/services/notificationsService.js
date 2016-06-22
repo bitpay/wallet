@@ -30,16 +30,16 @@ angular.module('copayApp.services')
       if (!last) return false;
 
       // rules...
-      if (last.type === 'NewTxProposal'
-          && notificationData.type === 'TxProposalAcceptedBy')
+      if (last.type === 'NewTxProposal' &&
+        notificationData.type === 'TxProposalAcceptedBy')
         return true;
 
-      if (last.type === 'TxProposalFinallyAccepted'
-          && notificationData.type === 'NewOutgoingTx')
+      if (last.type === 'TxProposalFinallyAccepted' &&
+        notificationData.type === 'NewOutgoingTx')
         return true;
 
-      if (last.type === 'TxProposalRejectedBy'
-          && notificationData.type === 'TxProposalFinallyRejected')
+      if (last.type === 'TxProposalRejectedBy' &&
+        notificationData.type === 'TxProposalFinallyRejected')
         return true;
 
       return false;
@@ -55,37 +55,51 @@ angular.module('copayApp.services')
 
       var config = configService.getSync();
       config.colorFor = config.colorFor || {};
-      var color = config.colorFor[walletId] || '#7A8C9E';
+      var color = config.colorFor[walletId] || '#4A90E2';
       var name = config.aliasFor[walletId] || walletName;
 
       switch (notificationData.type) {
         case 'NewTxProposal':
           notification.new(gettext('New Payment Proposal'),
-            name, {color: color} );
+            name, {
+              color: color
+            });
           break;
         case 'TxProposalAcceptedBy':
           notification.success(gettext('Payment Proposal Signed by Copayer'),
-            name, {color: color} );
+            name, {
+              color: color
+            });
           break;
         case 'TxProposalRejectedBy':
           notification.error(gettext('Payment Proposal Rejected by Copayer'),
-            name, {color: color} );
+            name, {
+              color: color
+            });
           break;
         case 'TxProposalFinallyRejected':
           notification.error(gettext('Payment Proposal Rejected'),
-            name, {color: color} );
+            name, {
+              color: color
+            });
           break;
         case 'NewOutgoingTx':
           notification.sent(gettext('Payment Sent'),
-            name, {color: color} );
+            name, {
+              color: color
+            });
           break;
         case 'NewIncomingTx':
           notification.funds(gettext('Funds received'),
-            name, {color: color} );
+            name, {
+              color: color
+            });
           break;
         case 'ScanFinished':
           notification.success(gettext('Scan Finished'),
-            name, {color: color} );
+            name, {
+              color: color
+            });
           break;
 
         case 'NewCopayer':
