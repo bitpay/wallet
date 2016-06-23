@@ -19,7 +19,7 @@
   <ion-side-menus class="page" ng-controller="indexController as index">
 
     <!-- Left menu -->
-    <ion-side-menu side="left">
+    <ion-side-menu side="left" expose-aside-when="large">
       <div ng-include="'views/includes/sidebar.html'" ng-if="index.hasProfile"></div>
     </ion-side-menu>
 

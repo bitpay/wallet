@@ -18,6 +18,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   ret.historyShowMoreLimit = 10;
   ret.isSearching = false;
   ret.prevState = 'walletHome';
+  ret.physicalScreenWidth = ((window.innerWidth > 0) ? window.innerWidth : screen.width);
 
   ret.menu = [{
     'title': gettext('Receive'),
@@ -1675,6 +1676,10 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
   $rootScope.$on('Local/SetTab', function(event, tab, reset) {
     self.setTab(tab, reset);
+  });
+
+  $rootScope.$on('Local/WindowResize', function() {
+    self.physicalScreenWidth = ((window.innerWidth > 0) ? window.innerWidth : screen.width);
   });
 
   $rootScope.$on('Local/NeedsConfirmation', function(event, txp, cb) {
