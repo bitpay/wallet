@@ -20,12 +20,15 @@ angular.module('copayApp.services')
     root.walletClients = {};
 
     root.Utils = bwcService.getUtils();
-    root.formatAmount = function(amount) {
+    root.formatAmount = function(amount, fullPrecision) {
       var config = configService.getSync().wallet.settings;
       if (config.unitCode == 'sat') return amount;
 
       //TODO : now only works for english, specify opts to change thousand separator and decimal separator
-      return this.Utils.formatAmount(amount, config.unitCode);
+      var opts = {
+        fullPrecision: !!fullPrecision
+      };
+      return this.Utils.formatAmount(amount, config.unitCode, opts);
     };
 
     root._setFocus = function(walletId, cb) {
