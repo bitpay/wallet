@@ -8,10 +8,10 @@
 
   <div class="create-tab small-only-text-center" ng-hide="create.hideTabs">
     <div class="row">
-      <div class="tab-container small-6 medium-3 large-2" ng-class="{'selected': totalCopayers == 1}">
+      <div class="tab-container small-6 medium-6 large-6" ng-class="{'selected': totalCopayers == 1}">
         <a href ng-click="create.setTotalCopayers(1)" translate>Personal Wallet</a>
       </div>
-      <div class="tab-container small-6 medium-3 large-2" ng-class="{'selected': totalCopayers != 1}">
+      <div class="tab-container small-6 medium-6 large-6" ng-class="{'selected': totalCopayers != 1}">
         <a href ng-click="create.setTotalCopayers(3)" translate>Shared Wallet</a>
       </div>
     </div>
@@ -58,7 +58,7 @@
         </div>
 
         <div class="m10t oh" ng-init="hideAdv=true">
-          <a class="button outline light-gray expand tiny" ng-click="hideAdv=!hideAdv">
+          <a class="button outline light-gray expand tiny p10i" ng-click="hideAdv=!hideAdv">
             <i class="fi-widget m3r"></i>
             <span translate ng-hide="!hideAdv">Show advanced options</span>
             <span translate ng-hide="hideAdv">Hide advanced options</span>
@@ -134,19 +134,17 @@
               </label>
             </div>
             <div class="oh" ng-show="create.seedSourceId == 'new'">
-              <label for="network-name" class="dbi">
-                <span>Testnet</span>
-                <ion-toggle ng-model="testnetEnabled" toggle-class="toggle-balanced" class="bct">
-                </ion-toggle>
-              </label>
+              <ion-toggle ng-model="testnetEnabled" toggle-class="toggle-balanced" class="bct">
+                <span class="toggle-label">Testnet</span>
+              </ion-toggle>
             </div>
             <div class="oh" ng-show="create.seedSourceId == 'new'">
-              <label for="single-address" class="dbi">
-                <span class="db" translate>Single Address Wallet</span>
-                <small translate>For audit purposes</small>
-                <ion-toggle ng-model="singleAddressEnabled" toggle-class="toggle-balanced" class="bct">
-                </ion-toggle>
-              </label>
+              <ion-toggle ng-model="singleAddressEnabled" toggle-class="toggle-balanced" class="bct">
+                <div class="toggle-label">
+                  <span class="db" translate>Single Address Wallet</span>
+                  <small translate>For audit purposes</small>
+                </div>
+              </ion-toggle>
             </div>
           </div> <!-- columns -->
         </div> <!-- advanced -->

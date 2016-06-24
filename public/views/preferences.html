@@ -15,7 +15,7 @@
     <li href ui-sref="preferencesAlias">
       <div class="right text-gray">
         {{index.alias||index.walletName}}
-        <i class="icon-arrow-right3 size-24"></i>
+        <i class="icon-arrow-right3 size-24 right"></i>
       </div>
       <div translate>Alias</div>
     </li>
@@ -24,7 +24,7 @@
       <div class="right text-gray">
         <span ng-if="!index.preferences.email" translate>Disabled</span>
         <span ng-if="index.preferences.email">{{index.preferences.email}}</span>
-        <i class="icon-arrow-right3 size-24"></i>
+        <i class="icon-arrow-right3 size-24 right"></i>
       </div>
       <div translate>Email Notifications</div>
     </li>
@@ -32,7 +32,7 @@
     <li href ui-sref="preferencesColor">
       <div class="right text-gray">
         <span ng-style="{'color':index.backgroundColor}">&block;</span>
-        <i class="icon-arrow-right3 size-24"></i>
+        <i class="icon-arrow-right3 size-24 right"></i>
       </div>
       <div translate>Color</div>
     </li>
