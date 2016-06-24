@@ -693,8 +693,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       $log.debug('Fixing Tx Cache Unit to:' + name)
       lodash.each(txs, function(tx) {
 
-        tx.amountStr = profileService.formatAmount(tx.amount, config.unitName) + name;
-        tx.feeStr = profileService.formatAmount(tx.fees, config.unitName) + name;
+        tx.amountStr = profileService.formatAmount(tx.amount) + name;
+        tx.feeStr = profileService.formatAmount(tx.fees) + name;
       });
     };
 
