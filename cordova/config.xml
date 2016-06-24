@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.bitpay.copay" 
+<widget id="com.bitpay.copay"
   version="2.1.0"
   android-versionCode="109"
   ios-CFBundleVersion="2.1.0">
@@ -17,9 +17,9 @@
     <preference name="DisallowOverscroll" value="true"/>
     <preference name="HideKeyboardFormAccessoryBar" value="true"/>
     <preference name="SplashScreen" value="copayscreen" />
-    <preference name="ShowSplashScreenSpinner" value="false" /> 
+    <preference name="ShowSplashScreenSpinner" value="false" />
     <preference name="AutoHideSplashScreen" value="false" />
-    <preference name="FadeSplashScreen" value="true" />  
+    <preference name="FadeSplashScreen" value="true" />
     <preference name="FadeSplashScreenDuration" value="1" />
     <preference name="BackgroundColor" value="#2C3E50" />
     <preference name="StatusBarOverlaysWebView" value="false" />
@@ -27,7 +27,7 @@
     <preference name="StatusBarStyle" value="lightcontent" />
     <preference name="BackupWebStorage" value="none"/>
     <preference name="windows-target-version" value="8.1"/>
-    <preference name="Orientation" value="portrait" />
+    <preference name="Orientation" value="default" />
 
 
 
@@ -59,7 +59,7 @@
       <icon src="../ios/icons/icon-small@3x.png" width="87" height="87" />
       <!-- iPad Spotlight and Settings Icon -->
       <icon src="../ios/icons/icon-50.png" width="50" height="50" />
-      <icon src="../ios/icons/icon-50@2x.png" width="100" height="100" /> 
+      <icon src="../ios/icons/icon-50@2x.png" width="100" height="100" />
 
       <!-- Splash -->
       <splash src="../ios/splash/Default~iphone.png" width="320" height="480"/>
@@ -71,5 +71,3 @@
       <splash src="../ios/splash/Default-736h.png" width="1242" height="2208"/>
     </platform>
   </widget>
-
-  
