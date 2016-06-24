@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Copay - secure, shared wallet.</title>
+  <meta name="description" content="Copay is a multi-signature Bitcoin wallet">
+  <meta property="og:site_name" content="Copay">
+  <meta property="og:url" content="http://copay.io/">
+  <meta property="og:title" content="Copay">
+  <meta property="og:description" content="Secure, shared wallet.">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta property="og:image" content="http://copay.io/img/og.png">
+  <meta property="og:type" content="website">
+  <link rel="shortcut icon" href="img/favicon.ico" type="img/x-icon">
+  <link href="https://fonts.googleapis.com/css?family=Ubuntu+Mono|Ubuntu:300,400,500,700,400italic" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="css/normalize.css">
+  <link rel="stylesheet" href="css/foundation.min.css">
+  <link rel="stylesheet" href="css/foundation-icons.css">
+  <link rel="stylesheet" href="css/common.css">
+  <link rel="stylesheet" href="css/animations.css">
+  <!-- Fonts -->
+  <link rel="stylesheet" href="css/fontface.css">
+</head>
+<body class="p5t">
+	<header class="text-center">
+		<h1 class="white"> Where do yo want to create your profile?</h1>
+	</header>
+	<div class="row p5t">
+		<div class="large-6 medium-6 small-12 columns">
+			<div class="panel radius">
+				<h4> <i class="fi-cloud m5r"></i> In the Cloud </h4>
+				<ul>
+					<li> Access your wallets anywhere</li>
+					<li> Backups managed by the server </li>
+					<li> Email address confirmation needed Your are currently using BitPay.com [change]</li>
+				</ul>
+			</div>
+		</div>
+		<div class="large-6 medium-6 small-12 columns">
+			<div class="panel radius">
+				<h4><i class="fi-monitor m5r"></i>On your device</h4>
+				<ul>
+					<li>Backups managed by you</li>
+					<li>Your keys never leave your device, not even encrypted.</li>
+					<li> No email address required </li>
+				</ul>
+			</div>
+		</div>
+	</div>
+
+	<div class="line-dashed"></div>
+
+	<div class="row">
+		<h3 class="p3t p1l">Pros and cons</h3>	
+		<div class="large-6 medium-6 small-12 columns">
+			<div class="panel radius">
+				<h4><i class="fi-cloud m5r"></i>In the Cloud</h4>
+					<ul class="no-bullet">
+						<li><i class="fi-check size-18 text-green"></i> Storing your profile on a remote server will allow you to use your wallets from different devices</li>
+						<li><i class="fi-check size-18 text-green"></i> Backups are taken care by the server. (You should still have a backup in case the service is down or cancelled).</li>
+						<li><i class="fi-minus size-18 text-yellow"></i> You will need to confirm an email address to help the server to prevent abuse</li>
+						<li><i class="fi-minus size-18 text-yellow"></i> Your wallet will be stored, encrypted, on the server. In case the server gets compromised, the attacker could have access to your wallet if you choose a weak password</li>
+					</ul>
+			</div>
+		</div>
+		<div class="large-6 medium-6 small-12 columns">
+			<div class="panel radius">
+				<h4> <i class="fi-monitor m5r"></i>Local system</h4>
+				<ul class="no-bullet">
+					<li><i class="fi-check size-18 text-green"></i> Your private keys never leave your system, not even encrypted</li>
+					<li><i class="fi-check size-18 text-green"></i> No email address is required</li>
+					<li><i class="fi-minus size-18 text-yellow"></i> Profile backups are the only way to recover access to your wallets if your lost your device</li>
+					<li><i class="fi-minus size-18 text-yellow"></i> Note that encrypted communications between peers in multi signatures wallets, and Bitcoin blockchain queries are always routed thru the choosen Insight server</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+
+</body>
+</html>
