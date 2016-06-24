@@ -174,9 +174,8 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
   this.setAddress = function(forceNew) {
     self.addrError = null;
-    var fc = profileService.focusedClient;
-    if (!fc)
-      return;
+    var client = profileService.focusedClient;
+    if (!client || !client.isComplete()) return;
 
     // Address already set?
     if (!forceNew && self.addr) {
@@ -185,7 +184,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
     self.generatingAddress = true;
     $timeout(function() {
-      addressService.getAddress(fc.credentials.walletId, forceNew, function(err, addr) {
+      addressService.getAddress(client.credentials.walletId, forceNew, function(err, addr) {
         self.generatingAddress = false;
 
         if (err) {
