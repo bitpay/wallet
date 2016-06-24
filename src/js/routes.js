@@ -536,8 +536,6 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
     $ionicPlatform.ready(function() {
       if (platformInfo.isCordova) {
 
-        ionic.Platform.fullScreen(true, false);
-
         $ionicPlatform.registerBackButtonAction(function(event) {
           event.preventDefault();
         }, 100);
