@@ -418,7 +418,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       return self.setSendError(gettext(msg));
     }
 
-    if (form.amount.$modelValue * unitToSat >  Number.MAX_SAFE_INTEGER) {
+    if (form.amount.$modelValue * unitToSat > Number.MAX_SAFE_INTEGER) {
       var msg = 'Amount too big';
       $log.warn(msg);
       return self.setSendError(gettext(msg));
@@ -811,7 +811,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   this.openTxModal = function(btx) {
     var self = this;
 
-    $scope.btx = btx;
+    $scope.btx = lodash.cloneDeep(btx);
     $scope.self = self;
 
     $ionicModal.fromTemplateUrl('views/modals/tx-details.html', {
