@@ -61,24 +61,22 @@
 
 .bct {
  	background-color: transparent !important;
-	margin-top: -25px;
-  padding-bottom: 30px;
-	right: -24px !important;
-	border-width: 0px;
+  margin-bottom: 15px !important;
 }
 
 .r0 {
 	right: 0px !important;
 }
 
-.item-toggle .toggle {
-	right: 28px;
+.item {
+  margin: 0;
+  border: none;
+  border-bottom: 1px solid #E9E9EC;
 }
 
 .toggle-label {
 	color: rgb(41, 55, 68);
 	font-size: 14px;
-	margin-left: 5px;
 }
 
 button, .button {

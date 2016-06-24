@@ -275,7 +275,6 @@ angular.module('copayApp.controllers').controller('importController',
         }
         account = account - 1;
       }
-      var isMultisig = form.isMultisig.$modelValue;
 
       switch (self.seedSourceId) {
         case ('ledger'):
@@ -284,7 +283,7 @@ angular.module('copayApp.controllers').controller('importController',
           break;
         case ('trezor'):
           ongoingProcess.set('connectingtrezor', true);
-          self.importTrezor(account, isMultisig);
+          self.importTrezor(account, $scope.isMultisig);
           break;
         default:
           throw ('Error: bad source id');
