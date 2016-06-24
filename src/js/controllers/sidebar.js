@@ -25,7 +25,8 @@ angular.module('copayApp.controllers').controller('sidebarController',
     };
 
     self.switchWallet = function(selectedWalletId, currentWalletId) {
-      if (selectedWalletId == currentWalletId) return;
+      var client = profileService.focusedClient;
+      if (selectedWalletId == currentWalletId && client.isComplete()) return;
       self.walletSelection = false;
       profileService.setAndStoreFocus(selectedWalletId, function() {});
       $ionicScrollDelegate.scrollTop();
