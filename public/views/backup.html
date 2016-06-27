@@ -103,24 +103,26 @@
     -->
 
     <div ng-show="step == 2">
-      <div class="columns text-center extra-padding-bottom">
-        <h5 translate>Confirm your wallet recovery phrase</h5>
-        <p class="text-gray m0" translate>
-          Please tap the words in order to confirm your backup phrase is correctly written.
-        </p>
-        <div class="panel words text-left">
-          <span ng-repeat="cword in customWords track by $index" ng-show="customWords[$index]">
-            <button class="button radius tiny words" ng-click="removeButton($index, cword)">{{cword.word}}</button>
-          </span>
+      <ion-content class="m20b">
+        <div class="columns text-center extra-padding-bottom">
+          <h5 translate>Confirm your wallet recovery phrase</h5>
+          <p class="text-gray m0" translate>
+            Please tap the words in order to confirm your backup phrase is correctly written.
+          </p>
+          <div class="panel words text-left">
+            <span ng-repeat="cword in customWords track by $index" ng-show="customWords[$index]">
+              <button class="button radius tiny words" ng-click="removeButton($index, cword)">{{cword.word}}</button>
+            </span>
+          </div>
+          <div class="text-left">
+            <span ng-repeat="shuffledWord in shuffledMnemonicWords track by $index">
+              <button class="button radius tiny words" ng-click="addButton($index, shuffledWord)"
+                ng-disabled="shuffledWord.selected">{{shuffledWord.word}}
+              </button>
+            </span>
+          </div>
         </div>
-        <div class="text-left">
-          <span ng-repeat="shuffledWord in shuffledMnemonicWords track by $index">
-            <button class="button radius tiny words" ng-click="addButton($index, shuffledWord)"
-              ng-disabled="shuffledWord.selected">{{shuffledWord.word}}
-            </button>
-          </span>
-        </div>
-      </div>
+      </ion-content>
 
       <div class="button-box">
         <button
