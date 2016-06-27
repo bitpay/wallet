@@ -23,8 +23,7 @@ angular.module('copayApp.controllers').controller('backupController',
 
         handleEncryptedWallet(fc, function(err) {
           if (err) {
-            $scope.error = bwsError.msg(err, gettext('Could not decrypt'));
-            $log.warn('Error decrypting credentials:', $scope.error);
+            go.path(prevState);
             return;
           }
           $scope.credentialsEncrypted = false;
@@ -69,9 +68,12 @@ angular.module('copayApp.controllers').controller('backupController',
     };
 
     $scope.goBack = function() {
-      walletService.lock(fc);
       go.path(prevState || 'walletHome');
     };
+
+    $scope.$on('$destroy', function() {
+      walletService.lock(fc);
+    });
 
     $scope.goToStep = function(n) {
       if (n == 1)
