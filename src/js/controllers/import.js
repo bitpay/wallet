@@ -36,35 +36,42 @@ angular.module('copayApp.controllers').controller('importController',
     };
 
     $scope.processCode = function(code) {
+      ongoingProcess.set('processingCode', true);
+      self.importErr = false;
       var parsedCode = code.split('|');
-      var derivationStrategy = "44'";
-      var networkVal;
+
+      if (parsedCode.length != 2) {
+        ongoingProcess.set('processingCode', false);
+        return;
+      }
 
       var info = {
         type: parsedCode[0],
-        network: parsedCode[1],
-        data: parsedCode[2],
-        account: parsedCode[3],
-        derivationStrategy: parsedCode[4],
-        hasPassphrase: parsedCode[5]
+        data: parsedCode[1],
       };
 
-      $scope.words = info.data;
+      var client = bwcService.getClient(null, null);
 
-      if (info.network == 't') {
-        networkVal = "1'";
-        $scope.testnetEnabled = true;
-      } else {
-        networkVal = "0'";
-        $scope.testnetEnabled = false;
+      if (info.type == 1) {
+        client.seedFromMnemonic(info.data, {});
+      }
+      if (info.type == 2) {
+        client.seedFromExtendedPrivateKey(info.data, {});
+      }
+      if (info.type == 3) {
+        client.seedFromExtendedPublicKey(info.data, {});
       }
 
-      if (info.derivationStrategy == 'BIP45' || info.derivationStrategy == 'BIP48')
-        derivationStrategy = info.derivationStrategy.substring(3, 5) + "'";
+      $scope.words = info.data;
+      $scope.derivationPath = client.credentials.getBaseAddressDerivationPath();
 
-      $scope.derivationPath = "m/" + derivationStrategy + '/' + networkVal + '/' + info.account + "'";
+      if (client.credentials.network == 'testnet')
+        $scope.testnetEnabled = true;
+      else
+        $scope.testnetEnabled = false;
 
       $timeout(function() {
+        ongoingProcess.set('processingCode', false);
         $rootScope.$apply();
       }, 1);
     };
