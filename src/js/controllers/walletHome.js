@@ -272,19 +272,16 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   this.hideMenuBar = lodash.debounce(function(hide) {
     if (hide) {
       $rootScope.shouldHideMenuBar = true;
-      this.bindTouchDown();
     } else {
       $rootScope.shouldHideMenuBar = false;
     }
     $rootScope.$digest();
   }, 100);
 
-
   this.formFocus = function(what) {
-    if (isCordova && !this.isWindowsPhoneApp) {
+    if (isCordova && this.isWindowsPhoneApp) {
       this.hideMenuBar(what);
     }
-
     var self = this;
     if (isCordova && !this.isWindowsPhoneApp && what == 'address') {
       getClipboard(function(value) {
@@ -297,24 +294,6 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
         }
       });
     }
-
-    if (!this.isWindowsPhoneApp) return
-
-    if (!what) {
-      this.hideAddress = false;
-      this.hideAmount = false;
-
-    } else {
-      if (what == 'amount') {
-        this.hideAddress = true;
-      } else if (what == 'msg') {
-        this.hideAddress = true;
-        this.hideAmount = true;
-      }
-    }
-    $timeout(function() {
-      $rootScope.$digest();
-    }, 1);
   };
 
   this.setSendFormInputs = function() {
@@ -402,10 +381,8 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
     this.resetError();
 
-    if (isCordova && this.isWindowsPhoneApp) {
-      this.hideAddress = false;
-      this.hideAmount = false;
-    }
+    if (isCordova && this.isWindowsPhoneApp)
+      $rootScope.shouldHideMenuBar = true;
 
     var form = $scope.sendForm;
     var comment = form.comment.$modelValue;
