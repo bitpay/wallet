@@ -104,6 +104,21 @@ _:-ms-fullscreen, :root .main {
   }
 }
 
+@viewport {
+  width:320px;
+}
+
+@-ms-viewport {
+  width:320px;
+  zoom-user:fixed;
+  max-zoom:1;
+  min-zoom:1;
+}
+
+body, html {
+  -ms-overflow-style: none !important;
+}
+
 /* removes 300ms in IE */
 -ms-touch-action: manipulation; /* IE10 /
 touch-action: manipulation; /* IE11+ */
