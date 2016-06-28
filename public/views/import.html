@@ -24,83 +24,76 @@
     <div class="row">
       <div class="large-12 columns">
         <div class="box-notification m20b" ng-show="import.importErr">
-            <div ng-show="import.importErr" class="text-warning">
-              <div class="m10 text-bold" translate>Could not access the wallet at the server. Please check:</div>
-              <ul class="size-12">
-                <li translate>The password of the recovery phrase (if set)
-                </li>
-                <li translate>The derivation path
-                </li>
-                <li translate>The wallet service URL
-              </ul>
-              <div class="m15l">
-                <span translate>NOTE: To import a wallet from a 3rd party software, please go to Add Wallet &gt; Create Wallet, and specify the Recovery Phrase there.</span><br>
-              </div>
+          <div ng-show="import.importErr" class="text-warning">
+            <div class="m10 text-bold" translate>Could not access the wallet at the server. Please check:</div>
+            <ul class="size-12">
+              <li translate>The password of the recovery phrase (if set)</li>
+              <li translate>The derivation path</li>
+              <li translate>The wallet service URL
+            </ul>
+            <div class="m15l">
+              <span translate>NOTE: To import a wallet from a 3rd party software, please go to Add Wallet &gt; Create Wallet, and specify the Recovery Phrase there.</span><br>
             </div>
+          </div>
         </div>
 
         <div class="box-notification m20b" ng-show="import.error">
-          <div class="text-warning">
-              {{import.error|translate}}
-          </div>
+          <div class="text-warning">{{import.error|translate}}</div>
         </div>
       </div>
     </div>
 
     <div class="row">
       <div class="large-12 columns">
-          <form name="importForm12" ng-submit="import.importMnemonic(importForm12)" novalidate>
+        <form name="importForm12" ng-submit="import.importMnemonic(importForm12)" novalidate>
+          <label for="words">
+            <span translate>Type the Recovery Phrase (usually 12 words)</span>:
+          </label>
+          <div class="qr-scanner-input">
+            <qr-scanner on-scan="processCode(data)"></qr-scanner>
+          </div>
+          <textarea class="form-control" name="words" ng-model="words" rows="2" autocapitalize="off" spellcheck="false"></textarea>
 
-            <div >
-              <label for="words">
-                <span translate>Type the Recovery Phrase (usually 12 words)</span>:
-              </label>
-              <textarea class="form-control" name="words" ng-model="import.words" rows="2" autocapitalize="off" spellcheck="false"></textarea>
-            </div>
+          <div class="m10t oh" ng-init="hideAdv=true">
+            <a class="button outline light-gray expand tiny p10i" ng-click="hideAdv=!hideAdv">
+              <i class="fi-widget m3r"></i>
+              <span translate ng-hide="!hideAdv">Show advanced options</span>
+              <span translate ng-hide="hideAdv">Hide advanced options</span>
+              <i ng-if="hideAdv" class="icon-arrow-down4"></i>
+              <i ng-if="!hideAdv" class="icon-arrow-up4"></i>
+            </a>
+          </div>
 
-            <div class="m10t oh" ng-init="hideAdv=true">
-              <a class="button outline light-gray expand tiny p10i" ng-click="hideAdv=!hideAdv">
-                <i class="fi-widget m3r"></i>
-                <span translate ng-hide="!hideAdv">Show advanced options</span>
-                <span translate ng-hide="hideAdv">Hide advanced options</span>
-                <i ng-if="hideAdv" class="icon-arrow-down4"></i>
-                <i ng-if="!hideAdv" class="icon-arrow-up4"></i>
-              </a>
-            </div>
-            <div ng-hide="hideAdv" class="row">
-              <div class="large-12 columns">
-
-                <label for="passphrase" class="oh"><span translate>Password</span>  <small translate>The Wallet Recovery Phrase could require a password to be imported</small>
+          <div ng-hide="hideAdv" class="row">
+            <div class="large-12 columns">
+              <label for="passphrase" class="oh"><span translate>Password</span>  <small translate>The Wallet Recovery Phrase could require a password to be imported</small>
                 <div class="input">
                   <input type="password" class="form-control" placeholder="{{'Password'|translate}}"
                   name="passphrase" ng-model="import.passphrase">
                 </div>
+              </label>
+
+              <div>
+                <label class="oh"><span translate>Derivation Path</span> <small translate>BIP32 path for address derivation</small>
+                  <input type="text" class="form-control" name="derivationPath" ng-model="derivationPath">
                 </label>
+              </div>
 
-                <div>
-                  <label class="oh"><span translate>Derivation Path</span> <small translate>BIP32 path for address derivation</small>
-                    <input type="text" class="form-control" name="derivationPath" ng-model="derivationPath">
-                  </label>
-                </div>
+              <label  for="bws" class="oh">
+                <span>Wallet Service URL</span>
+                <input type="text" id="bwsurl" name="bwsurl" ng-model="bwsurl">
+              </label>
 
-                <label  for="bws" class="oh">
-                  <span>Wallet Service URL</span>
-                  <input type="text" id="bwsurl" name="bwsurl" ng-model="bwsurl">
-                </label>
-
-                <div class="oh">
-                  <ion-toggle ng-model="testnetEnabled" ng-change="setDerivationPath()" toggle-class="toggle-balanced" class="bct">
-                    <span class="toggle-label">Testnet</span>
-                  </ion-toggle>
-                </div>
+              <div class="oh">
+                <ion-toggle ng-model="testnetEnabled" ng-change="setDerivationPath()" toggle-class="toggle-balanced" class="bct">
+                  <span class="toggle-label">Testnet</span>
+                </ion-toggle>
               </div>
             </div>
+          </div>
 
-            <button translate type="submit" class="button round expand black m10t"
-              ng-disabled="importForm12.$invalid ">
-              Import
-            </button>
-          </form>
+          <button translate type="submit" class="button round expand black m10t" ng-disabled="importForm12.$invalid">Import</button>
+        </form>
       </div>
     </div>
   </div>
@@ -175,58 +168,55 @@
         </div>
 
         <form name="importForm3" ng-submit="import.importHW(importForm3)" novalidate>
-          <div class="large-12 columns">
-            <div ng-show="!import.seedOptions[0]">
-              <span translate>No hardware wallets supported on this device</span>
-            </div>
-            <div ng-show="import.seedOptions[0]">
-              <div>
-                <label><span translate>Wallet Recovery Phrase</span>
-                <select class="m10t" ng-model="seedSource"
-                  ng-options="seed as seed.label for seed in import.seedOptions"
-                  ng-change="import.setSeedSource()">
-                </select>
-                </label>
-              </div>
-
-              <div ng-show="import.seedSourceId == 'trezor' || import.seedSourceId == 'ledger'">
-
-                <label class="oh"><span translate>Account Number</span>
-                  <input type="number" id="account" ng-model="account">
-                </label>
-              </div>
-
-              <div class="oh" ng-show="import.seedSourceId == 'trezor'">
-                <ion-toggle ng-model="isMultisig" toggle-class="toggle-balanced" class="bct">
-                  <span class="toggle-label" translate>Shared Wallet</span>
-                </ion-toggle>
-              </div>
-
-              <div class="m10t oh" ng-init="hideAdv=true">
-                <a class="button outline light-gray expand tiny p10i" ng-click="hideAdv=!hideAdv">
-                  <i class="fi-widget m3r"></i>
-                  <span translate ng-hide="!hideAdv">Show advanced options</span>
-                  <span translate ng-hide="hideAdv">Hide advanced options</span>
-                  <i ng-if="hideAdv" class="icon-arrow-down4"></i>
-                  <i ng-if="!hideAdv" class="icon-arrow-up4"></i>
-                </a>
-              </div>
-              <div ng-hide="hideAdv" class="row">
-                <div class="large-12 columns">
-
-                  <label  for="bws" class="oh">
-                    <span>Wallet Service URL</span>
-                    <input type="text" id="bwsurl" name="bwsurl" ng-model="bwsurl">
-                  </label>
-                </div>
-              </div>
-
-
-              <button translate type="submit" class="button round expand black">
-                Import
-              </button>
-            </div> <!-- seedoptions show -->
+          <div ng-show="!import.seedOptions[0]">
+            <span translate>No hardware wallets supported on this device</span>
           </div>
+          <div ng-show="import.seedOptions[0]">
+            <div>
+              <label><span translate>Wallet Recovery Phrase</span>
+              <select class="m10t" ng-model="seedSource"
+                ng-options="seed as seed.label for seed in import.seedOptions"
+                ng-change="import.setSeedSource()">
+              </select>
+              </label>
+            </div>
+
+            <div ng-show="import.seedSourceId == 'trezor' || import.seedSourceId == 'ledger'">
+
+              <label class="oh"><span translate>Account Number</span>
+                <input type="number" id="account" ng-model="account">
+              </label>
+            </div>
+
+            <div class="oh" ng-show="import.seedSourceId == 'trezor'">
+              <ion-toggle ng-model="isMultisig" toggle-class="toggle-balanced" class="bct">
+                <span class="toggle-label" translate>Shared Wallet</span>
+              </ion-toggle>
+            </div>
+
+            <div class="m10t oh" ng-init="hideAdv=true">
+              <a class="button outline light-gray expand tiny p10i" ng-click="hideAdv=!hideAdv">
+                <i class="fi-widget m3r"></i>
+                <span translate ng-hide="!hideAdv">Show advanced options</span>
+                <span translate ng-hide="hideAdv">Hide advanced options</span>
+                <i ng-if="hideAdv" class="icon-arrow-down4"></i>
+                <i ng-if="!hideAdv" class="icon-arrow-up4"></i>
+              </a>
+            </div>
+            <div ng-hide="hideAdv" class="row">
+              <div class="large-12 columns">
+
+                <label  for="bws" class="oh">
+                  <span>Wallet Service URL</span>
+                  <input type="text" id="bwsurl" name="bwsurl" ng-model="bwsurl">
+                </label>
+              </div>
+            </div>
+
+            <button translate type="submit" class="button round expand black">
+              Import
+            </button>
+          </div> <!-- seedoptions show -->
         </form>
       </div>
     </div>

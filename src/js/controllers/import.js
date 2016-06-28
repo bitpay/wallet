@@ -13,6 +13,7 @@ angular.module('copayApp.controllers').controller('importController',
     $scope.bwsurl = defaults.bws.url;
     $scope.derivationPath = derivationPathHelper.default;
     $scope.account = 1;
+    $scope.processingCode = null;
     self.importErr = false;
 
     var updateSeedSourceSelect = function() {
@@ -34,12 +35,46 @@ angular.module('copayApp.controllers').controller('importController',
       }
     };
 
+    $scope.processCode = function(code) {
+      var parsedCode = code.split('|');
+      var derivationStrategy = "44'";
+      var networkVal;
+
+      var info = {
+        type: parsedCode[0],
+        network: parsedCode[1],
+        data: parsedCode[2],
+        account: parsedCode[3],
+        derivationStrategy: parsedCode[4],
+        hasPassphrase: parsedCode[5]
+      };
+
+      $scope.words = info.data;
+
+      if (info.network == 't') {
+        networkVal = "1'";
+        $scope.testnetEnabled = true;
+      } else {
+        networkVal = "0'";
+        $scope.testnetEnabled = false;
+      }
+
+      if (info.derivationStrategy == 'BIP45' || info.derivationStrategy == 'BIP48')
+        derivationStrategy = info.derivationStrategy.substring(3, 5) + "'";
+
+      $scope.derivationPath = "m/" + derivationStrategy + '/' + networkVal + '/' + info.account + "'";
+
+      $timeout(function() {
+        $rootScope.$apply();
+      }, 1);
+    };
+
     this.setType = function(type) {
       $scope.type = type;
       this.error = null;
       $timeout(function() {
         $rootScope.$apply();
-      });
+      }, 1);
     };
 
     var _importBlob = function(str, opts) {
@@ -130,7 +165,7 @@ angular.module('copayApp.controllers').controller('importController',
         $scope.derivationPath = derivationPathHelper.defaultTestnet;
       else
         $scope.derivationPath = derivationPathHelper.default;
-    }
+    };
 
     $scope.getFile = function() {
       // If we use onloadend, we need to check the readyState.
