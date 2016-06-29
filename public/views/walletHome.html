@@ -35,7 +35,7 @@
     -->
 
     <ion-content id="walletHome" class="walletHome tab-view tab-in" scroll="false" >
-      <ion-content overflow-scroll="true" on-release="index.allowSideBar = true; index.allowPullToRefresh = true;" on-drag-right="index.allowRefresher()">
+      <ion-content overflow-scroll="!isWindowsPhoneApp" on-release="index.allowSideBar = true; index.allowPullToRefresh = true;" on-drag-right="index.allowRefresher()">
         <ion-refresher
           ng-if="index.allowPullToRefresh && index.isCordova"
           on-pulling="index.allowSideBar = false"
@@ -368,7 +368,7 @@
         <div class="large-12 large-centered columns">
           <form name="sendForm"   novalidate>
 
-            <div ng-hide="home._paypro || home.hideAddress">
+            <div ng-hide="home._paypro">
               <div class="row collapse">
                 <label for="address" class="left" >
                   <span translate>To</span>
@@ -396,7 +396,7 @@
                 </a>
               </div>
             </div>
-            <div ng-show="home._paypro && !home.hideAddress">
+            <div ng-show="home._paypro">
               <div class="row collapse" ng-click="home.openPPModal(home._paypro)">
 
                 <label for="domain">
@@ -411,7 +411,7 @@
               </div>
             </div>
 
-            <div class="row" ng-init="home.hideAlternative()" ng-hide="home.hideAmount">
+            <div class="row" ng-init="home.hideAlternative()">
               <div class="large-12 medium-12 columns">
                 <div class="right" ng-hide="sendForm.amount.$pristine && !sendForm.amount.$modelValue ">
                   <span class="has-error right size-12" ng-if="sendForm.amount.$invalid">
