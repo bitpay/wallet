@@ -228,7 +228,7 @@ msgstr ""
 
 #: public/views/paperWallet.html
 #: public/views/walletHome.html
-msgid "Before receiving funds, it is necessary to backup your wallet. If you lose this device, it is impossible to access your funds without a backup."
+msgid "Before receiving funds, you must backup your wallet. If this device is lost, it is impossible to access your funds without a backup."
 msgstr ""
 
 #: public/views/preferencesInformation.html
