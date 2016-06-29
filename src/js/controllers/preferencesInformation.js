@@ -1,10 +1,14 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('preferencesInformation',
-  function($scope, $log, $timeout, platformInfo, gettextCatalog, lodash, profileService, storageService, go, bitcore) {
+  function($scope, $log, $timeout, platformInfo, gettextCatalog, lodash, profileService, storageService, configService, go, bitcore) {
     var base = 'xpub';
     var fc = profileService.focusedClient;
     var c = fc.credentials;
+    var walletId = c.walletId;
+    var config = configService.getSync();
+    var b = 1;
+    config.colorFor = config.colorFor || {};
 
     $scope.init = function() {
       var basePath = c.getBaseAddressDerivationPath();
@@ -88,5 +92,23 @@ angular.module('copayApp.controllers').controller('preferencesInformation',
         });
       }, 100);
     };
+
+    $scope.saveBlack = function() {
+      function save(color) {
+        var opts = {
+          colorFor: {}
+        };
+        opts.colorFor[walletId] = color;
+
+        configService.set(opts, function(err) {
+          go.walletHome();
+          if (err) $log.warn(err);
+          $scope.$emit('Local/ColorUpdated');
+        });
+      };
+
+      if (b != 5) return b++;
+      save('#202020');
+    }
 
   });
