@@ -12,7 +12,8 @@ angular.module('copayApp.controllers').controller('exportController',
     $scope.error = null;
 
     $scope.init = function(state) {
-      $scope.QROpts = false;
+      $scope.noSignEnabled = false;
+      $scope.showAdvanced = false;
       prevState = state || 'walletHome';
 
       fingerprintService.check(fc, function(err) {
@@ -33,6 +34,13 @@ angular.module('copayApp.controllers').controller('exportController',
           }, 1);
         });
       });
+    };
+
+    $scope.noSignEnabledChange = function() {
+      $scope.exportWalletInfo = encodeWalletInfo();
+      $timeout(function() {
+        $scope.$apply();
+      }, 1);
     };
 
     $scope.$on('$destroy', function() {
@@ -60,7 +68,7 @@ angular.module('copayApp.controllers').controller('exportController',
       };
       var info;
 
-      if (c.canSign()) {
+      if (c.canSign() && !$scope.noSignEnabled) {
         if (c.mnemonic) {
           info = {
             type: encodingType.mnemonic,

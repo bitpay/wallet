@@ -22,13 +22,13 @@
     </div>
   </div>
 
-  <div ng-show="!backupWalletPlainText && !exportQR">
+  <div ng-show="!backupWalletPlainText">
     <div class="text-warning size-14 m20b" ng-show="error">
       <i class="fi-alert size-12"></i>
       <span translate>Failed to export</span>
     </div>
 
-    <form>
+    <form ng-show="!exportQR">
       <div class="row">
         <div class="columns">
           <label for="password" translate>Set up a password </label>
@@ -44,11 +44,35 @@
       </div>
     </form>
 
-    <h4></h4>
+    <div class="m20t text-gray" ng-show="exportQR">
+      <div class="text-center">
+        <qrcode size="220" version="8" error-correction-level="M" data="{{exportWalletInfo}}"></qrcode>
+      </div>
 
-    <ion-toggle ng-model="noSignEnabled" toggle-class="toggle-balanced" class="r0">
-      <span class="toggle-label" translate>Do not include private key</span>
-    </ion-toggle>
+      <div class="text-center size-18 m10t" ng-style="{color: index.backgroundColor}">
+        <span translate>Exporting Walelt: </span>
+        <span>{{index.walletName}}</span>
+      </div>
+      <div class="text-center size-12 m10" translate>From/In the destination device, go to Add wallet > Import wallet and scan this QR code</div>
+    </div>
+
+    <div class="row">
+      <div class="columns m15t">
+        <a class="button outline light-gray expand tiny p10i" ng-click="showAdvanced = !showAdvanced">
+          <i class="fi-widget m3r"></i>
+          <span translate ng-hide="showAdvanced">Show advanced options</span>
+          <span translate ng-hide="!showAdvanced">Hide advanced options</span>
+          <i ng-if="!showAdvanced" class="icon-arrow-down4"></i>
+          <i ng-if="showAdvanced" class="icon-arrow-up4"></i>
+        </a>
+      </div>
+    </div>
+
+    <div ng-show="showAdvanced">
+      <ion-toggle ng-model="noSignEnabled" toggle-class="toggle-balanced" class="r0" ng-change="noSignEnabledChange()">
+        <span class="toggle-label" translate>Do not include private key</span>
+      </ion-toggle>
+    </div>
 
     <div class="box-notification" ng-show="!index.canSign">
       <span class="text-warning size-14">
@@ -68,7 +92,7 @@
       </span>
     </div>
 
-    <div class="row">
+    <div class="row" ng-show="!exportQR">
       <div class="columns">
         <button class="black round expand m20t" ng-click="downloadWalletBackup()"
           ng-disabled="(!password || password != repeatpassword)"
@@ -93,11 +117,6 @@
         </div>
       </div>
     </div>
-  </div>
-
-  <div class="containter text-center" ng-show="exportQR">
-    <qrcode size="220" version="8" error-correction-level="M" data="{{exportWalletInfo}}"></qrcode>
-    <span translate></span>
   </div>
 
   <div class="row" ng-show="backupWalletPlainText">
