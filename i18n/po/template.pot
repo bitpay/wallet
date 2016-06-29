@@ -209,6 +209,7 @@ msgstr ""
 msgid "Backup failed"
 msgstr ""
 
+#: public/views/paperWallet.html
 #: public/views/walletHome.html
 msgid "Backup Needed"
 msgstr ""
@@ -225,8 +226,9 @@ msgstr ""
 msgid "Balance By Address"
 msgstr ""
 
+#: public/views/paperWallet.html
 #: public/views/walletHome.html
-msgid "Before receiving funds, it is necessary backup your wallet. If you lose this device, it is impossible to access your funds without a backup."
+msgid "Before receiving funds, it is necessary to backup your wallet. If you lose this device, it is impossible to access your funds without a backup."
 msgstr ""
 
 #: public/views/preferencesInformation.html
@@ -590,7 +592,9 @@ msgstr ""
 msgid "Description"
 msgstr ""
 
+#: public/views/modals/coinbase-tx-details.html
 #: public/views/modals/customized-amount.html
+#: public/views/modals/glidera-tx-details.html
 #: public/views/modals/paypro.html
 #: public/views/modals/tx-details.html
 #: public/views/modals/txp-details.html
@@ -835,10 +839,6 @@ msgstr ""
 
 #: public/views/backup.html
 msgid "In order to verify your wallet backup, please type your password:"
-msgstr ""
-
-#: public/views/export.html
-msgid "Include address book and history cache"
 msgstr ""
 
 #: src/js/services/bwsError.js
@@ -1254,6 +1254,10 @@ msgstr ""
 msgid "Polish"
 msgstr ""
 
+#: public/views/paperWallet.html
+msgid "Preferences"
+msgstr ""
+
 #: src/js/controllers/export.js
 msgid "Preparing backup..."
 msgstr ""
@@ -1496,7 +1500,6 @@ msgid "Setting up email notifications could weaken your privacy, if the wallet s
 msgstr ""
 
 #: public/views/includes/sidebar.html
-#: public/views/walletHome.html
 msgid "Settings"
 msgstr ""
 
@@ -1530,10 +1533,6 @@ msgstr ""
 #: public/views/import.html
 #: public/views/join.html
 msgid "Show advanced options"
-msgstr ""
-
-#: public/views/backup.html
-msgid "Show Wallet Recovery Phrase"
 msgstr ""
 
 #: src/js/services/bwsError.js
@@ -1991,7 +1990,7 @@ msgid "You can safely install your wallet on another device and use it from mult
 msgstr ""
 
 #: public/views/walletHome.html
-msgid "You do not have a wallet"
+msgid "You do not have any wallet"
 msgstr ""
 
 #: public/views/backup.html
