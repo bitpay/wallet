@@ -46,13 +46,18 @@
     <div class="row">
       <div class="large-12 columns">
         <form name="importForm12" ng-submit="importMnemonic(importForm12)" novalidate>
-          <label for="words">
+          <label for="words" class="m25r">
             <span translate>Type the Recovery Phrase (usually 12 words)</span>:
           </label>
+
           <div class="qr-scanner-input">
             <qr-scanner on-scan="processCode(data)"></qr-scanner>
           </div>
-          <textarea class="form-control" name="words" ng-model="words" rows="2" autocapitalize="off" spellcheck="false"></textarea>
+
+          <div class="lock-fromQR" ng-show="fromQR">
+            <i class="fi-lock color-greeni"></i>
+          </div>
+          <textarea class="form-control" name="words" ng-model="words" rows="2" autocapitalize="off" spellcheck="false" ng-click="fromQR = null"></textarea>
 
           <div class="m10t oh" ng-init="hideAdv=true">
             <a class="button outline light-gray expand tiny p10i" ng-click="hideAdv=!hideAdv">
