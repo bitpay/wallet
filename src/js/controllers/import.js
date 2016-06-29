@@ -8,11 +8,13 @@ angular.module('copayApp.controllers').controller('importController',
     var reader = new FileReader();
     var defaults = configService.getDefaults();
     var errors = bwcService.getErrors();
+    var dataFromQR = null;
     $scope.bwsurl = defaults.bws.url;
     $scope.derivationPath = derivationPathHelper.default;
     $scope.account = 1;
     $scope.processingCode = null;
     $scope.importErr = false;
+    $scope.fromQR = null;
 
     var updateSeedSourceSelect = function() {
       $scope.seedOptions = [];
@@ -34,6 +36,7 @@ angular.module('copayApp.controllers').controller('importController',
     };
 
     $scope.processCode = function(code) {
+      $scope.fromQR = null;
       $scope.importErr = false;
       $scope.error = null;
       ongoingProcess.set('processingCode', true);
@@ -41,7 +44,7 @@ angular.module('copayApp.controllers').controller('importController',
 
       if (parsedCode.length != 6) {
         ongoingProcess.set('processingCode', false);
-        $log.debug('Missing parameters');
+        $scope.error = gettext('Cannot read the code properly. Missing parameters');
         return;
       }
 
@@ -51,8 +54,11 @@ angular.module('copayApp.controllers').controller('importController',
         network: parsedCode[2] == 't' ? 'testnet' : 'livenet',
         account: parseInt(parsedCode[3]),
         derivationStrategy: parsedCode[4],
-        mnemonicHasPassphrase: parsedCode[5]
+        hasPassphrase: parsedCode[5] == 'true' ? true : false
       };
+
+      if (info.type == 1 && info.hasPassphrase)
+        $scope.error = gettext('Password required. Make sure to enter your password in advanced options');
 
       var client = bwcService.getClient(null, null);
 
@@ -78,7 +84,6 @@ angular.module('copayApp.controllers').controller('importController',
         });
       }
 
-      $scope.words = info.data;
       $scope.derivationPath = client.credentials.getBaseAddressDerivationPath();
 
       if (client.credentials.network == 'testnet')
@@ -88,6 +93,9 @@ angular.module('copayApp.controllers').controller('importController',
 
       $timeout(function() {
         ongoingProcess.set('processingCode', false);
+        $scope.fromQR = true;
+        $scope.words = null;
+        dataFromQR = info.data;
         $rootScope.$apply();
       }, 1);
     };
@@ -245,7 +253,6 @@ angular.module('copayApp.controllers').controller('importController',
       if ($scope.bwsurl)
         opts.bwsurl = $scope.bwsurl;
 
-
       var pathData = derivationPathHelper.parse($scope.derivationPath);
       if (!pathData) {
         $scope.error = gettext('Invalid derivation path');
@@ -255,7 +262,7 @@ angular.module('copayApp.controllers').controller('importController',
       opts.networkName = pathData.networkName;
       opts.derivationStrategy = pathData.derivationStrategy;
 
-      var words = form.words.$modelValue;
+      var words = form.words.$modelValue || dataFromQR;
       $scope.error = null;
 
       if (!words) {
