@@ -29,7 +29,7 @@
             <ul class="size-12">
               <li translate>The password of the recovery phrase (if set)</li>
               <li translate>The derivation path</li>
-              <li translate>The wallet service URL
+              <li translate>The wallet service URL</li>
             </ul>
             <div class="m15l">
               <span translate>NOTE: To import a wallet from a 3rd party software, please go to Add Wallet &gt; Create Wallet, and specify the Recovery Phrase there.</span><br>
@@ -51,7 +51,7 @@
           </label>
 
           <div class="qr-scanner-input">
-            <qr-scanner on-scan="processCode(data)"></qr-scanner>
+            <qr-scanner on-scan="processWalletInfo(data)"></qr-scanner>
           </div>
 
           <div class="lock-fromQR" ng-show="fromQR">

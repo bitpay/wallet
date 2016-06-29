@@ -12,7 +12,6 @@ angular.module('copayApp.controllers').controller('importController',
     $scope.bwsurl = defaults.bws.url;
     $scope.derivationPath = derivationPathHelper.default;
     $scope.account = 1;
-    $scope.processingCode = null;
     $scope.importErr = false;
     $scope.fromQR = null;
 
@@ -35,15 +34,13 @@ angular.module('copayApp.controllers').controller('importController',
       }
     };
 
-    $scope.processCode = function(code) {
+    $scope.processWalletInfo = function(code) {
       $scope.fromQR = null;
       $scope.importErr = false;
       $scope.error = null;
-      ongoingProcess.set('processingCode', true);
       var parsedCode = code.split('|');
 
-      if (parsedCode.length != 6) {
-        ongoingProcess.set('processingCode', false);
+      if (parsedCode.length != 5) {
         $scope.error = gettext('Cannot read the code properly. Missing parameters');
         return;
       }
@@ -51,48 +48,18 @@ angular.module('copayApp.controllers').controller('importController',
       var info = {
         type: parsedCode[0],
         data: parsedCode[1],
-        network: parsedCode[2] == 't' ? 'testnet' : 'livenet',
-        account: parseInt(parsedCode[3]),
-        derivationStrategy: parsedCode[4],
-        hasPassphrase: parsedCode[5] == 'true' ? true : false
+        network: parsedCode[2],
+        derivationPath: parsedCode[3],
+        hasPassphrase: parsedCode[4] == 'true' ? true : false
       };
 
       if (info.type == 1 && info.hasPassphrase)
         $scope.error = gettext('Password required. Make sure to enter your password in advanced options');
 
-      var client = bwcService.getClient(null, null);
-
-      if (info.type == 1) {
-        client.seedFromMnemonic(info.data, {
-          network: info.network,
-          account: info.account,
-          derivationStrategy: info.derivationStrategy
-        });
-      }
-
-      if (info.type == 2) {
-        client.seedFromExtendedPrivateKey(info.data, {
-          account: info.account,
-          derivationStrategy: info.derivationStrategy
-        });
-      }
-
-      if (info.type == 3) {
-        client.seedFromExtendedPublicKey(info.data, {
-          account: info.account,
-          derivationStrategy: info.derivationStrategy
-        });
-      }
-
-      $scope.derivationPath = client.credentials.getBaseAddressDerivationPath();
-
-      if (client.credentials.network == 'testnet')
-        $scope.testnetEnabled = true;
-      else
-        $scope.testnetEnabled = false;
+      $scope.derivationPath = info.derivationPath;
+      $scope.testnetEnabled = info.network == 'testnet' ? true : false;
 
       $timeout(function() {
-        ongoingProcess.set('processingCode', false);
         $scope.fromQR = true;
         $scope.words = null;
         dataFromQR = info.data;
@@ -165,6 +132,28 @@ angular.module('copayApp.controllers').controller('importController',
         });
       }, 100);
     };
+
+    /*
+      IMPORT FROM PUBLIC KEY - PENDING
+
+    var _importExtendedPublicKey = function(xPubKey, opts) {
+      ongoingProcess.set('importingWallet', true);
+      $timeout(function() {
+        profileService.importExtendedPublicKey(opts, function(err, walletId) {
+          ongoingProcess.set('importingWallet', false);
+          if (err) {
+            $scope.error = err;
+            return $timeout(function() {
+              $scope.$apply();
+            });
+          }
+          $rootScope.$emit('Local/WalletImported', walletId);
+          notification.success(gettext('Success'), gettext('Your wallet has been imported correctly'));
+          go.walletHome();
+        });
+      }, 100);
+    };
+    */
 
     var _importMnemonic = function(words, opts) {
       ongoingProcess.set('importingWallet', true);
@@ -269,6 +258,8 @@ angular.module('copayApp.controllers').controller('importController',
         $scope.error = gettext('Please enter the recovery phrase');
       } else if (words.indexOf('xprv') == 0 || words.indexOf('tprv') == 0) {
         return _importExtendedPrivateKey(words, opts);
+      } else if (words.indexOf('xpub') == 0 || words.indexOf('tpuv') == 0) {
+        return _importExtendedPublicKey(words, opts);
       } else {
         var wordList = words.split(/[\u3000\s]+/);
 
