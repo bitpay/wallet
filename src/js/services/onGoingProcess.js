@@ -28,7 +28,7 @@ angular.module('copayApp.services').factory('ongoingProcess', function($log, $ti
     'importingWallet': gettext('Importing Wallet...'),
     'sweepingWallet': gettext('Sweeping Wallet...'),
     'deletingWallet': gettext('Deleting Wallet...'),
-    'processingCode': gettext('Processing code...'),
+    'extractingWalletInfo': gettext('Extracting Wallet Information...'),
   };
 
   root.clear = function() {

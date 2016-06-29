@@ -5,15 +5,16 @@
 </div>
 
 <div class="content preferences" ng-controller="exportController" ng-init="init(index.prevState)">
-  <div class="create-tab small-only-text-center">
+  <div ng-show="!index.canSign"><h4></h4></div>
+  <div ng-show="index.canSign" class="create-tab small-only-text-center">
     <div class="row">
-      <div class="tab-container small-6 medium-3 large-2"
+      <div class="tab-container small-6 columns"
         ng-class="{'selected':!exportQR}"
         ng-style="{'border-color':!exportQR ? index.backgroundColor: 'inherit'}"
         ng-click="exportQR = false">
         <a href ng-style="{'color':!exportQR ? index.backgroundColor: 'inherit'}" translate>File/Text</a>
       </div>
-      <div class="tab-container small-6 medium-3 large-2"
+      <div class="tab-container small-6 columns"
         ng-class="{'selected':exportQR}"
         ng-style="{'border-color':exportQR ? index.backgroundColor: 'inherit'}"
         ng-click="exportQR = true">
@@ -45,18 +46,13 @@
     </form>
 
     <div class="m20t text-gray" ng-show="exportQR">
-      <div class="text-center">
+      <div class="text-center m20b">
         <qrcode size="220" version="8" error-correction-level="M" data="{{exportWalletInfo}}"></qrcode>
       </div>
-
-      <div class="text-center size-18 m10t" ng-style="{color: index.backgroundColor}">
-        <span translate>Exporting Walelt: </span>
-        <span>{{index.walletName}}</span>
-      </div>
-      <div class="text-center size-12 m10" translate>From/In the destination device, go to Add wallet > Import wallet and scan this QR code</div>
+      <div class="text-center size-12 m10" translate>From the destination device, go to Add wallet > Import wallet and scan this QR code</div>
     </div>
 
-    <div class="row">
+    <div class="row" ng-show="!exportQR && index.canSign">
       <div class="columns m15t">
         <a class="button outline light-gray expand tiny p10i" ng-click="showAdvanced = !showAdvanced">
           <i class="fi-widget m3r"></i>
@@ -74,16 +70,16 @@
       </ion-toggle>
     </div>
 
-    <div class="box-notification" ng-show="!index.canSign">
+    <div class="box-notification p15l" ng-show="!index.canSign">
       <span class="text-warning size-14">
         <i class="fi-alert"></i>
         <span translate>
-        WARNING: The private key of this wallet is not available. The export allows to check the wallet balance, transaction history, and create spend proposals from the export. However, does not allow to approve (sign) proposals, so <b>funds will not be accessible from the export</b>.
+          WARNING: The private key of this wallet is not available. The export allows to check the wallet balance, transaction history, and create spend proposals from the export. However, does not allow to approve (sign) proposals, so <b>funds will not be accessible from the export</b>.
         </span>
       </span>
     </div>
 
-    <div class="box-notification" ng-show="noSign">
+    <div class="box-notification p15l" ng-show="noSignEnabled">
       <span class="text-warning size-14">
         <i class="fi-alert"></i>
         <span translate>

@@ -12,6 +12,7 @@ angular.module('copayApp.controllers').controller('exportController',
     $scope.error = null;
 
     $scope.init = function(state) {
+      $scope.exportQR = false;
       $scope.noSignEnabled = false;
       $scope.showAdvanced = false;
       prevState = state || 'walletHome';
@@ -36,12 +37,16 @@ angular.module('copayApp.controllers').controller('exportController',
       });
     };
 
+    /*
+      EXPORT WITHOUT PRIVATE KEY - PENDING
+
     $scope.noSignEnabledChange = function() {
       $scope.exportWalletInfo = encodeWalletInfo();
       $timeout(function() {
         $scope.$apply();
       }, 1);
     };
+    */
 
     $scope.$on('$destroy', function() {
       walletService.lock(fc);
@@ -61,6 +66,7 @@ angular.module('copayApp.controllers').controller('exportController',
 
     function encodeWalletInfo() {
       var c = fc.credentials;
+      var derivationPath = fc.credentials.getBaseAddressDerivationPath();
       var encodingType = {
         mnemonic: 1,
         xpriv: 2,
@@ -81,13 +87,19 @@ angular.module('copayApp.controllers').controller('exportController',
           }
         }
       } else {
+        /*
+          EXPORT WITHOUT PRIVATE KEY - PENDING
+
         info = {
           type: encodingType.xpub,
           data: c.xPubKey
         }
+        */
+
+        return null;
       }
 
-      var code = info.type + '|' + info.data + '|' + c.network.charAt(0).toLowerCase() + '|' + c.account + '|' + c.derivationStrategy + '|' + (c.mnemonicHasPassphrase);
+      var code = info.type + '|' + info.data + '|' + c.network.toLowerCase() + '|' + derivationPath + '|' + (c.mnemonicHasPassphrase);
       return code;
     };
 

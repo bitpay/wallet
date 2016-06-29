@@ -23,6 +23,7 @@ angular.module('copayApp.controllers').controller('backupController',
 
         handleEncryptedWallet(fc, function(err) {
           if (err) {
+            $log.warn('Error decrypting credentials:', $scope.error);
             go.path(prevState);
             return;
           }
