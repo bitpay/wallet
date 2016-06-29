@@ -10,6 +10,7 @@ angular.module('copayApp.controllers').controller('exportController',
     $scope.isCordova = platformInfo.isCordova;
     $scope.isSafari = platformInfo.isSafari;
     $scope.error = null;
+    console.log(fc.credentials);
 
     $scope.init = function(state) {
       $scope.QROpts = false;
@@ -79,7 +80,8 @@ angular.module('copayApp.controllers').controller('exportController',
         }
       }
 
-      return info.type + '|' + info.data;
+      var code = info.type + '|' + info.data + '|' + c.network.charAt(0).toLowerCase() + '|' + c.account + '|' + c.derivationStrategy + '|' + (c.mnemonicHasPassphrase);
+      return code;
     };
 
     $scope.downloadWalletBackup = function() {

@@ -4,17 +4,17 @@
   ng-init="titleSection='Import wallet';  goBackToState = 'add'; noColor = true">
 </div>
 
-<div class="content p20b" ng-controller="importController as import" ng-init="type='12'">
+<div class="content p20b" ng-controller="importController" ng-init="type='12'">
   <div class="create-tab pr small-only-text-center" ng-hide="create.hideTabs">
     <div class="row">
       <div class="tab-container small-4 medium-4 large-4" ng-class="{'selected': type =='12'}">
-        <a href ng-click="import.setType('12')" translate>Recovery Phrase</a>
+        <a href ng-click="setType('12')" translate>Recovery Phrase</a>
       </div>
       <div class="tab-container small-4 medium-4 large-4" ng-class="{'selected': type=='file'}">
-        <a href ng-click="import.setType('file')" translate>File/Text Backup</a>
+        <a href ng-click="setType('file')" translate>File/Text Backup</a>
       </div>
       <div class="tab-container small-4 medium-4 large-4" ng-class="{'selected': type=='hwWallet'}">
-        <a href ng-click="import.setType('hwWallet')" translate>Hardware Wallet</a>
+        <a href ng-click="setType('hwWallet')" translate>Hardware Wallet</a>
       </div>
     </div>
   </div>
@@ -23,8 +23,8 @@
 
     <div class="row">
       <div class="large-12 columns">
-        <div class="box-notification m20b" ng-show="import.importErr">
-          <div ng-show="import.importErr" class="text-warning">
+        <div class="box-notification m20b" ng-show="importErr">
+          <div ng-show="importErr" class="text-warning">
             <div class="m10 text-bold" translate>Could not access the wallet at the server. Please check:</div>
             <ul class="size-12">
               <li translate>The password of the recovery phrase (if set)</li>
@@ -37,15 +37,15 @@
           </div>
         </div>
 
-        <div class="box-notification m20b" ng-show="import.error">
-          <div class="text-warning">{{import.error|translate}}</div>
+        <div class="box-notification m20b" ng-show="error">
+          <div class="text-warning">{{error|translate}}</div>
         </div>
       </div>
     </div>
 
     <div class="row">
       <div class="large-12 columns">
-        <form name="importForm12" ng-submit="import.importMnemonic(importForm12)" novalidate>
+        <form name="importForm12" ng-submit="importMnemonic(importForm12)" novalidate>
           <label for="words">
             <span translate>Type the Recovery Phrase (usually 12 words)</span>:
           </label>
@@ -101,33 +101,33 @@
   <div ng-show="type == 'file' ">
     <div class="row">
       <div class="large-12 columns">
-        <div class="box-notification m20b" ng-show="import.error">
+        <div class="box-notification m20b" ng-show="error">
           <span class="text-warning size-14">
-            {{import.error|translate}}
+            {{error|translate}}
           </span>
         </div>
-        <form name="importForm" ng-submit="import.importBlob(importForm)" novalidate>
+        <form name="importForm" ng-submit="importBlob(importForm)" novalidate>
 
           <div ng-show="!index.isSafari && !index.isCordova" class="line-b m10b">
             <label for="backupFile">
               <span translate>Choose a backup file from your computer</span>  <i class="fi-laptop"></i>
             </label>
             <input type="file" class="form-control" placeholder="{{'Select a backup file'|translate}}"
-            name="backupFile" ng-model="import.backupFile" ng-file-select>
+            name="backupFile" ng-model="backupFile" ng-file-select>
           </div>
 
           <div ng-show="index.isSafari || index.isCordova">
             <label for="backupText">
               <span translate>Paste the backup plain text code</span>  <i class="fi-clipboard"></i>
             </label>
-            <textarea class="form-control" name="backupText" ng-model="import.backupText" rows="5"></textarea>
+            <textarea class="form-control" name="backupText" ng-model="backupText" rows="5"></textarea>
           </div>
 
           <label for="password"><span translate>Password</span>
           </label>
           <div class="input">
             <input type="password" class="form-control" placeholder="{{'Your password'|translate}}"
-            name="password" ng-model="import.password">
+            name="password" ng-model="password">
           </div>
 
           <div class="m10t oh" ng-init="hideAdv=true">
@@ -150,7 +150,7 @@
           </div>
 
           <button translate type="submit" class="button round expand black"
-            ng-disabled="importForm.$invalid || !import.password ">
+            ng-disabled="importForm.$invalid || !password ">
             Import backup
           </button>
         </form>
@@ -161,34 +161,34 @@
   <div ng-show="type == 'hwWallet'">
     <div class="row">
       <div class="large-12 columns">
-        <div class="box-notification m20b" ng-show="import.error">
+        <div class="box-notification m20b" ng-show="error">
           <span class="text-warning size-14">
-            {{import.error|translate}}
+            {{error|translate}}
           </span>
         </div>
 
-        <form name="importForm3" ng-submit="import.importHW(importForm3)" novalidate>
-          <div ng-show="!import.seedOptions[0]">
+        <form name="importForm3" ng-submit="importHW(importForm3)" novalidate>
+          <div ng-show="!seedOptions[0]">
             <span translate>No hardware wallets supported on this device</span>
           </div>
-          <div ng-show="import.seedOptions[0]">
+          <div ng-show="seedOptions[0]">
             <div>
               <label><span translate>Wallet Recovery Phrase</span>
               <select class="m10t" ng-model="seedSource"
-                ng-options="seed as seed.label for seed in import.seedOptions"
-                ng-change="import.setSeedSource()">
+                ng-options="seed as seed.label for seed in seedOptions"
+                ng-change="setSeedSource()">
               </select>
               </label>
             </div>
 
-            <div ng-show="import.seedSourceId == 'trezor' || import.seedSourceId == 'ledger'">
+            <div ng-show="seedSourceId == 'trezor' || seedSourceId == 'ledger'">
 
               <label class="oh"><span translate>Account Number</span>
                 <input type="number" id="account" ng-model="account">
               </label>
             </div>
 
-            <div class="oh" ng-show="import.seedSourceId == 'trezor'">
+            <div class="oh" ng-show="seedSourceId == 'trezor'">
               <ion-toggle ng-model="isMultisig" toggle-class="toggle-balanced" class="bct">
                 <span class="toggle-label" translate>Shared Wallet</span>
               </ion-toggle>
