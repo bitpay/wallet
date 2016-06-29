@@ -115,7 +115,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     var fc = profileService.focusedClient;
     if (!fc) return;
 
-    ongoingProcess.clear();
     self.cleanInstance();
     self.loadingWallet = true;
     self.setSpendUnconfirmed();
