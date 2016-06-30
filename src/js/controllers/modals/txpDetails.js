@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('txpDetailsController', function($scope, $rootScope, $timeout, $interval, platformInfo, txStatus, $ionicScrollDelegate, txFormatService, fingerprintService, bwsError, gettextCatalog, lodash, profileService, walletService) {
+angular.module('copayApp.controllers').controller('txpDetailsController', function($scope, $rootScope, $timeout, $interval, $ionicModal, platformInfo, txStatus, $ionicScrollDelegate, txFormatService, fingerprintService, bwsError, gettextCatalog, lodash, profileService, walletService) {
   var self = $scope.self;
   var tx = $scope.tx;
   var copayers = $scope.copayers;

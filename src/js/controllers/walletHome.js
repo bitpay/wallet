@@ -439,10 +439,18 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
         if (!client.canSign() && !client.isPrivKeyExternal()) {
           $log.info('No signing proposal: No private key');
-          self.resetForm();
-          var type = txStatus.notify(createdTxp);
-          $scope.openStatusModal(type, createdTxp, function() {
-            return $scope.$emit('Local/TxProposalAction');
+          ongoingProcess.set('sendingTx', true);
+          walletService.publishTx(client, createdTxp, function(err, publishedTxp) {
+            ongoingProcess.set('sendingTx', false);
+            if (err) {
+              return self.setSendError(err);
+            }
+            self.resetForm();
+            go.walletHome();
+            var type = txStatus.notify(createdTxp);
+            $scope.openStatusModal(type, createdTxp, function() {
+              return $scope.$emit('Local/TxProposalAction');
+            });
           });
         } else {
           $rootScope.$emit('Local/NeedsConfirmation', createdTxp, function(accept) {
