@@ -70,10 +70,6 @@ msgstr ""
 msgid "A multisignature bitcoin wallet"
 msgstr ""
 
-#: public/views/export.html
-msgid "A spending password is set for this wallet. Exporting keeps the spending password in the export archive."
-msgstr ""
-
 #: public/views/preferencesGlobal.html
 msgid "About Copay"
 msgstr ""
@@ -168,7 +164,7 @@ msgid "Amount"
 msgstr ""
 
 #: src/js/services/bwsError.js
-msgid "Amount below dust threshold"
+msgid "Amount below minimum allowed"
 msgstr ""
 
 #: public/views/modals/customized-amount.html
@@ -250,7 +246,7 @@ msgid "Bitcoin Network Fee Policy"
 msgstr ""
 
 #: public/views/preferencesFee.html
-msgid "Bitcoin transactions may include a fee collected by miners on the network. The higher the fee, the greater the incentive a miner has to include that transaction in a block. Actual fees are determined based on network load and the selected policy."
+msgid "Bitcoin transactions may include a fee collected by miners on the network. The higher the fee, the greater the incentive a miner has to include that transaction in a block. Current fees are determined based on network load and the selected policy."
 msgstr ""
 
 #: public/views/paymentUri.html
@@ -300,6 +296,10 @@ msgstr ""
 
 #: src/js/services/profileService.js
 msgid "Cannot join the same wallet more that once"
+msgstr ""
+
+#: src/js/controllers/import.js
+msgid "Cannot read the code properly. Missing parameters"
 msgstr ""
 
 #: src/js/controllers/walletHome.js
@@ -453,10 +453,6 @@ msgstr ""
 
 #: src/js/services/profileService.js
 msgid "Could not create: Invalid wallet recovery phrase"
-msgstr ""
-
-#: src/js/controllers/backup.js
-msgid "Could not decrypt"
 msgstr ""
 
 #: src/js/controllers/import.js
@@ -709,8 +705,16 @@ msgstr ""
 msgid "Export Wallet"
 msgstr ""
 
+#: public/views/export.html
+msgid "Exporting via QR not supported for this wallet"
+msgstr ""
+
 #: public/views/preferencesInformation.html
 msgid "Extended Public Keys"
+msgstr ""
+
+#: src/js/services/onGoingProcess.js
+msgid "Extracting Wallet Information..."
 msgstr ""
 
 #: public/views/export.html
@@ -735,8 +739,9 @@ msgstr ""
 msgid "Fetching Payment Information"
 msgstr ""
 
+#: public/views/export.html
 #: public/views/import.html
-msgid "File/Text Backup"
+msgid "File/Text"
 msgstr ""
 
 #: src/js/services/fingerprintService.js
@@ -753,6 +758,10 @@ msgstr ""
 
 #: public/views/translators.html
 msgid "French"
+msgstr ""
+
+#: public/views/export.html
+msgid "From the destination device, go to Add wallet > Import wallet and scan this QR code"
 msgstr ""
 
 #: src/js/services/bwsError.js
@@ -804,6 +813,7 @@ msgid "Hardware Wallet"
 msgstr ""
 
 #: public/views/create.html
+#: public/views/export.html
 #: public/views/import.html
 #: public/views/join.html
 msgid "Hide advanced options"
@@ -1117,6 +1127,10 @@ msgstr ""
 msgid "Password"
 msgstr ""
 
+#: src/js/controllers/import.js
+msgid "Password required. Make sure to enter your password in advanced options"
+msgstr ""
+
 #: public/views/join.html
 msgid "Paste invitation here"
 msgstr ""
@@ -1282,6 +1296,7 @@ msgstr ""
 msgid "Push notifications for Copay are currently disabled. Enable them in the Settings app."
 msgstr ""
 
+#: public/views/export.html
 #: public/views/modals/customized-amount.html
 msgid "QR Code"
 msgstr ""
@@ -1530,6 +1545,7 @@ msgid "Shared Wallet"
 msgstr ""
 
 #: public/views/create.html
+#: public/views/export.html
 #: public/views/import.html
 #: public/views/join.html
 msgid "Show advanced options"
