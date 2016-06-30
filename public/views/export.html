@@ -45,11 +45,15 @@
       </div>
     </form>
 
-    <div class="m20t text-gray" ng-show="exportQR">
+    <div class="m20t text-gray" ng-show="exportQR && supported">
       <div class="text-center m20b">
         <qrcode size="220" version="8" error-correction-level="M" data="{{exportWalletInfo}}"></qrcode>
       </div>
       <div class="text-center size-12 m10" translate>From the destination device, go to Add wallet > Import wallet and scan this QR code</div>
+    </div>
+
+    <div class="m20t text-gray" ng-show="exportQR && !supported">
+      <div class="text-center size-12 m10" translate>Exporting via QR not supported for this wallet</div>
     </div>
 
     <div class="row" ng-show="!exportQR && index.canSign">
