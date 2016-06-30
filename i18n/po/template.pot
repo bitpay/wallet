@@ -298,10 +298,6 @@ msgstr ""
 msgid "Cannot join the same wallet more that once"
 msgstr ""
 
-#: src/js/controllers/import.js
-msgid "Cannot read the code properly. Missing parameters"
-msgstr ""
-
 #: src/js/controllers/walletHome.js
 msgid "Cannot sign: The payment request has expired"
 msgstr ""
@@ -853,6 +849,11 @@ msgstr ""
 
 #: src/js/services/bwsError.js
 msgid "Incorrect address network"
+msgstr ""
+
+#. Trying to import a malformed wallet export QR code
+#: src/js/controllers/import.js
+msgid "Incorrect code format"
 msgstr ""
 
 #: src/js/services/bwsError.js
