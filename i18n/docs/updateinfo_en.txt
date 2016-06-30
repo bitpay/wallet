@@ -1,4 +1,17 @@
-* Improves some icons
-* Minor UX changes on receive
-* Update translations
-* Bug fixes
+Release v2.2.0
+
+New features:
+
+ - Migrate to another device with a simple QR code
+ - Supports wide screens and landscape format for tablets.
+
+Bug fixes:
+
+ * Improves performance (removes unused js library)
+ * Removes cache history from export wallet
+ * Check from swipe paper wallet if backup has been completed.
+ * Fix UI sidebar menu
+ * Full amount precision on tx details modals
+ * Fix backup scrolling for small devices
+ * Fix spinner while create/import/join a wallet
+ * Fix preferences UI for some Android versions
