@@ -1,5 +1,5 @@
 angular.module('copayApp.controllers').controller('paperWalletController',
-  function($scope, $timeout, $log, configService, profileService, go, addressService, txStatus, bitcore, ongoingProcess) {
+  function($scope, $timeout, $log, $ionicModal, configService, profileService, go, addressService, txStatus, bitcore, ongoingProcess) {
 
     var fc = profileService.focusedClient;
     var rawTx;
