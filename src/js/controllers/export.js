@@ -12,6 +12,7 @@ angular.module('copayApp.controllers').controller('exportController',
     $scope.error = null;
 
     $scope.init = function(state) {
+      $scope.supported = true;
       $scope.exportQR = false;
       $scope.noSignEnabled = false;
       $scope.showAdvanced = false;
@@ -74,7 +75,9 @@ angular.module('copayApp.controllers').controller('exportController',
       };
       var info;
 
-      if (c.canSign() && !$scope.noSignEnabled) {
+      $scope.supported = (c.derivationStrategy == 'BIP44' && c.canSign());
+
+      if ($scope.supported) {
         if (c.mnemonic) {
           info = {
             type: encodingType.mnemonic,
