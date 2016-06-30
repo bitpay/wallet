@@ -29,6 +29,16 @@ body {
   right: 0;
 }
 
+.qr-scanner-input-import {
+  position: absolute;
+  top: -5px;
+  right: 0;
+}
+
+.icon-close-import {
+  padding: 0px 40px 5px 10px;
+}
+
 h1, h2, h3, h4, h5, h6 {
   color: #2C3E50;
 }
@@ -606,6 +616,10 @@ ul.manage li {
   margin-right: 10px;
 }
 
+.m40r {
+  margin-right: 40px;
+}
+
 .m25r {
   margin-right: 25px;
 }
@@ -878,7 +892,9 @@ ul.manage li {
 }
 
 .lock-fromQR {
-  margin: 15px 0px -40px 5px;
+  position: absolute;
+  width: 100%;
+  margin-top: 20px;
 }
 
 .tx-proposal i {
