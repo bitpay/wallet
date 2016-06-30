@@ -129,8 +129,8 @@ angular.module('copayApp.controllers').controller('joinController',
       ongoingProcess.set('joiningWallet', true);
       $timeout(function() {
         profileService.joinWallet(opts, function(err) {
+          ongoingProcess.set('joiningWallet', false);
           if (err) {
-            ongoingProcess.set('joiningWallet', false);
             self.error = err;
             $rootScope.$apply();
             return;

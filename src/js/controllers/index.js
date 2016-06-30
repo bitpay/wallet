@@ -115,7 +115,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     var fc = profileService.focusedClient;
     if (!fc) return;
 
-    ongoingProcess.clear();
     self.cleanInstance();
     self.loadingWallet = true;
     self.setSpendUnconfirmed();
@@ -1411,12 +1410,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.tab = 'walletHome';
   });
 
-  $rootScope.$on('Local/ValidatingWallet', function(ev, walletId) {
-    ongoingProcess.set('validatingWallet', true);
-  });
-
   $rootScope.$on('Local/ValidatingWalletEnded', function(ev, walletId, isOK) {
-    ongoingProcess.set('validatingWallet', false);
 
     if (self.isInFocus(walletId)) {
       // NOTE: If the user changed the wallet, the flag is already turn off.
