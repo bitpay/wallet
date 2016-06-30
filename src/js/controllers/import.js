@@ -40,6 +40,7 @@ angular.module('copayApp.controllers').controller('importController',
       var parsedCode = code.split('|');
 
       if (parsedCode.length != 5) {
+        /// Trying to import a malformed wallet export QR code
         $scope.error = gettext('Incorrect code format');
         return;
       }
