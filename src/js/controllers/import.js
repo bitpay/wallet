@@ -40,7 +40,7 @@ angular.module('copayApp.controllers').controller('importController',
       var parsedCode = code.split('|');
 
       if (parsedCode.length != 5) {
-        $scope.error = gettext('Cannot read the code properly. Missing parameters');
+        $scope.error = gettext('Incorrect code format');
         return;
       }
 
