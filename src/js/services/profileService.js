@@ -139,7 +139,6 @@ angular.module('copayApp.services')
       var walletId = client.credentials.walletId;
 
       $log.debug('ValidatingWallet: ' + walletId + ' skip Device:' + skipDeviceValidation);
-      $rootScope.$emit('Local/ValidatingWallet', walletId);
       $timeout(function() {
         client.validateKeyDerivation({
           skipDeviceValidation: skipDeviceValidation,
