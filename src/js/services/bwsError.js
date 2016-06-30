@@ -107,7 +107,7 @@ angular.module('copayApp.services')
             body = gettextCatalog.getString('Copayer data mismatch');
             break;
           case 'DUST_AMOUNT':
-            body = gettextCatalog.getString('Amount below dust threshold');
+            body = gettextCatalog.getString('Amount below minimum allowed');
             break;
           case 'INCORRECT_ADDRESS_NETWORK':
             body = gettextCatalog.getString('Incorrect address network');
