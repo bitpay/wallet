@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Russian\n"
 "Language: ru\n"
-"PO-Revision-Date: 2016-06-21 11:13-0400\n"
+"PO-Revision-Date: 2016-07-01 08:46-0400\n"
 
 #: public/views/modals/search.html
 #: public/views/walletHome.html
@@ -66,23 +66,19 @@ msgstr "<b>ЕСЛИ ВЫ ПОТЕРЯЕТЕ ДОСТУП К ВАШЕМУ КОШ�
 
 #: public/views/backup.html
 msgid "<b>OR</b> 1 wallet export file and the remaining quorum of wallet recovery phrases (e.g. in a 3-5 wallet: 1 wallet export file + 2 wallet recovery phrases of any of the other copayers)."
-msgstr ""
+msgstr "<b>ИЛИ</b> один экспортный файл и кворум остальных ключевых словосочетаний (например в кошельке 3-5: экспортный файл и два ключевых словосочетания двух любых совладельцев)."
 
 #: public/views/backup.html
 msgid "<b>OR</b> the wallet recovery phrase of <b>all</b> copayers in the wallet"
-msgstr ""
+msgstr "<b>ИЛИ</b> ключевое словосочетание <b>всех</b> совладельцев кошелька"
 
 #: public/views/backup.html
 msgid "<b>OR</b> the wallet recovery phrases of <b>all</b> copayers in the wallet"
-msgstr ""
+msgstr "<b>ИЛИ</b> ключевые словосочетания <b>всех</b> совладельцев кошелька"
 
 #: public/views/disclaimer.html
 msgid "A multisignature bitcoin wallet"
 msgstr "Биткойн-кошелёк с мультиподписью"
-
-#: public/views/export.html
-msgid "A spending password is set for this wallet. Exporting keeps the spending password in the export archive."
-msgstr ""
 
 #: public/views/preferencesGlobal.html
 msgid "About Copay"
@@ -123,7 +119,7 @@ msgstr "Защитить паролем"
 #: public/views/create.html
 #: public/views/join.html
 msgid "Add an optional password to secure the recovery phrase"
-msgstr ""
+msgstr "Добавьте необязательный пароль для защиты ключевого словосочетания"
 
 #: public/views/includes/note.html
 #: public/views/modals/tx-details.html
@@ -178,8 +174,8 @@ msgid "Amount"
 msgstr "Сумма"
 
 #: src/js/services/bwsError.js
-msgid "Amount below dust threshold"
-msgstr "Сумма ниже минимального порога"
+msgid "Amount below minimum allowed"
+msgstr ""
 
 #: public/views/modals/customized-amount.html
 #: public/views/walletHome.html
@@ -188,7 +184,7 @@ msgstr "Сумма в"
 
 #: src/js/controllers/preferencesDeleteWords.js
 msgid "Are you sure you want to delete the recovery phrase?"
-msgstr ""
+msgstr "Вы уверены, что хотите удалить ключевое словосочетание?"
 
 #: src/js/controllers/copayers.js
 #: src/js/controllers/preferencesDelete.js
@@ -219,6 +215,7 @@ msgstr "Резервное копирование"
 msgid "Backup failed"
 msgstr "Сбой резервного копирования"
 
+#: public/views/paperWallet.html
 #: public/views/walletHome.html
 msgid "Backup Needed"
 msgstr "Требуется резервное копирование"
@@ -235,13 +232,14 @@ msgstr "Недействительное приглашение"
 msgid "Balance By Address"
 msgstr "Баланс на адресах"
 
+#: public/views/paperWallet.html
 #: public/views/walletHome.html
-msgid "Before receiving funds, it is necessary backup your wallet. If you lose this device, it is impossible to access your funds without a backup."
-msgstr "Прежде чем получать переводы необходимо создать резервную копию кошелька. Если вы потеряете это устройство, вы не сможете получить доступ к вашим средствам без резервной копии."
+msgid "Before receiving funds, you must backup your wallet. If this device is lost, it is impossible to access your funds without a backup."
+msgstr ""
 
 #: public/views/preferencesInformation.html
 msgid "BETA: Android Key Derivation Test:"
-msgstr ""
+msgstr "БЕТА: Тест деривации ключей Android:"
 
 #: public/views/create.html
 #: public/views/import.html
@@ -258,8 +256,8 @@ msgid "Bitcoin Network Fee Policy"
 msgstr "Политика комиссии в сети Биткойн"
 
 #: public/views/preferencesFee.html
-msgid "Bitcoin transactions may include a fee collected by miners on the network. The higher the fee, the greater the incentive a miner has to include that transaction in a block. Actual fees are determined based on network load and the selected policy."
-msgstr "Биткойн-транзакции могут включать комиссию, собираемую майнерами в сети. Чем выше комиссия, тем больше стимул для майнера включить транзакцию в блок. Фактическая комиссия определяется на основе сетевой нагрузки и выбранной политики."
+msgid "Bitcoin transactions may include a fee collected by miners on the network. The higher the fee, the greater the incentive a miner has to include that transaction in a block. Current fees are determined based on network load and the selected policy."
+msgstr ""
 
 #: public/views/paymentUri.html
 msgid "Bitcoin URI is NOT valid!"
@@ -367,7 +365,7 @@ msgstr "Подтвердить"
 
 #: public/views/backup.html
 msgid "Confirm your wallet recovery phrase"
-msgstr ""
+msgstr "Подтвердите ваше ключевое словосочетание"
 
 #: public/views/modals/tx-details.html
 msgid "Confirmations"
@@ -425,11 +423,11 @@ msgstr "Скопировать в буфер обмена"
 
 #: public/views/import.html
 msgid "Could not access the wallet at the server. Please check:"
-msgstr ""
+msgstr "Не удалось получить доступ к кошельку на сервере. Пожалуйста, проверьте:"
 
 #: src/js/services/profileService.js
 msgid "Could not access wallet"
-msgstr ""
+msgstr "Не удалось получить доступ к кошельку"
 
 #: src/js/controllers/index.js
 msgid "Could not access Wallet Service: Not found"
@@ -461,15 +459,11 @@ msgstr "Не удалось создать используя указанный
 
 #: src/js/services/profileService.js
 msgid "Could not create: Invalid wallet recovery phrase"
-msgstr ""
-
-#: src/js/controllers/backup.js
-msgid "Could not decrypt"
-msgstr "Не удалось расшифровать"
+msgstr "Не удалось создать: недействительное ключевое словосочетание"
 
 #: src/js/controllers/import.js
 msgid "Could not decrypt file, check your password"
-msgstr ""
+msgstr "Не удалось расшифровать файл, проверьте пароль"
 
 #: src/js/controllers/modals/txpDetails.js
 msgid "Could not delete payment proposal"
@@ -489,7 +483,7 @@ msgstr "Не удалось импортировать"
 
 #: src/js/services/profileService.js
 msgid "Could not import. Check input file and spending password"
-msgstr ""
+msgstr "Не удалось импортировать. Проверьте импортируемый файл и платёжный пароль"
 
 #: src/js/services/profileService.js
 msgid "Could not join wallet"
@@ -566,11 +560,11 @@ msgstr "Удалить предложенный платёж"
 
 #: public/views/preferences.html
 msgid "Delete recovery phrase"
-msgstr ""
+msgstr "Удалить ключевое словосочетание"
 
 #: public/views/preferencesDeleteWords.html
 msgid "Delete Recovery Phrase"
-msgstr ""
+msgstr "Удалить ключевое словосочетание"
 
 #: public/views/preferencesDeleteWallet.html
 msgid "Delete wallet"
@@ -600,7 +594,9 @@ msgstr "Стратегия деривации"
 msgid "Description"
 msgstr "Описание"
 
+#: public/views/modals/coinbase-tx-details.html
 #: public/views/modals/customized-amount.html
+#: public/views/modals/glidera-tx-details.html
 #: public/views/modals/paypro.html
 #: public/views/modals/tx-details.html
 #: public/views/modals/txp-details.html
@@ -639,7 +635,7 @@ msgstr "Редактировать"
 #: public/views/includes/note.html
 #: public/views/modals/tx-details.html
 msgid "Edit comment"
-msgstr ""
+msgstr "Отредактировать комментарий"
 
 #: public/views/modals/tx-details.html
 msgid "Edited by"
@@ -676,7 +672,7 @@ msgstr "Зашифрованная резервная копия сохране�
 #: public/views/create.html
 #: public/views/join.html
 msgid "Enter the recovery phrase (BIP39)"
-msgstr ""
+msgstr "Введите ключевое словосочетание (BIP39)"
 
 #: public/views/backup.html
 msgid "Enter your password"
@@ -684,7 +680,7 @@ msgstr "Введите пароль"
 
 #: public/views/includes/password.html
 msgid "Enter your spending password"
-msgstr ""
+msgstr "Введите платёжный пароль"
 
 #: src/js/controllers/index.js
 msgid "Error at Wallet Service"
@@ -715,9 +711,17 @@ msgstr "Экспорт в файл"
 msgid "Export Wallet"
 msgstr "Экспорт кошелька"
 
+#: public/views/export.html
+msgid "Exporting via QR not supported for this wallet"
+msgstr ""
+
 #: public/views/preferencesInformation.html
 msgid "Extended Public Keys"
 msgstr "Расширенные открытые ключи"
+
+#: src/js/services/onGoingProcess.js
+msgid "Extracting Wallet Information..."
+msgstr ""
 
 #: public/views/export.html
 msgid "Failed to export"
@@ -741,13 +745,14 @@ msgstr "Комиссия"
 msgid "Fetching Payment Information"
 msgstr "Извлечение информации о платеже"
 
+#: public/views/export.html
 #: public/views/import.html
-msgid "File/Text Backup"
-msgstr "Из файла"
+msgid "File/Text"
+msgstr ""
 
 #: src/js/services/fingerprintService.js
 msgid "Finger Scan Failed"
-msgstr ""
+msgstr "Не удалось сканировать отпечаток пальца"
 
 #: public/views/backup.html
 msgid "Finish"
@@ -755,11 +760,15 @@ msgstr "Готово"
 
 #: public/views/create.html
 msgid "For audit purposes"
-msgstr ""
+msgstr "Для целей ревизии"
 
 #: public/views/translators.html
 msgid "French"
 msgstr "французский"
+
+#: public/views/export.html
+msgid "From the destination device, go to Add wallet &gt; Import wallet and scan this QR code"
+msgstr ""
 
 #: src/js/services/bwsError.js
 msgid "Funds are locked by pending spend proposals"
@@ -810,6 +819,7 @@ msgid "Hardware Wallet"
 msgstr "Аппаратный кошелёк"
 
 #: public/views/create.html
+#: public/views/export.html
 #: public/views/import.html
 #: public/views/join.html
 msgid "Hide advanced options"
@@ -845,15 +855,16 @@ msgstr "Ни при каких обстоятельствах авторы пр�
 
 #: public/views/backup.html
 msgid "In order to verify your wallet backup, please type your password:"
-msgstr ""
-
-#: public/views/export.html
-msgid "Include address book and history cache"
-msgstr "Включить адресную книгу и историю транзакций"
+msgstr "Для проверки резервной копии кошелька необходимо указать пароль:"
 
 #: src/js/services/bwsError.js
 msgid "Incorrect address network"
 msgstr "Неверный адрес"
+
+#. Trying to import a malformed wallet export QR code
+#: src/js/controllers/import.js
+msgid "Incorrect code format"
+msgstr ""
 
 #: src/js/services/bwsError.js
 msgid "Insufficient funds"
@@ -1034,7 +1045,7 @@ msgstr "Новое предложение платежа"
 #: src/js/controllers/create.js
 #: src/js/controllers/join.js
 msgid "New Random Recovery Phrase"
-msgstr ""
+msgstr "Сгенерированное случайным образом ключевое словосочетание"
 
 #: public/views/import.html
 msgid "No hardware wallets supported on this device"
@@ -1080,7 +1091,7 @@ msgstr "Примечание: в общей сложности {{amountBelowFeeS
 
 #: public/views/import.html
 msgid "NOTE: To import a wallet from a 3rd party software, please go to Add Wallet &gt; Create Wallet, and specify the Recovery Phrase there."
-msgstr ""
+msgstr "Примечание: для импортирования кошелька из другой программы откройте \"Добавить кошелек\" &gt; \"Создать новый кошелек\", и укажите там ключевое словосочетание."
 
 #: public/views/disclaimer.html
 #: public/views/termOfUse.html
@@ -1093,7 +1104,7 @@ msgstr "ХОРОШО"
 
 #: public/views/preferencesDeleteWords.html
 msgid "Once you have copied your wallet recovery phrase down, it is recommended to delete it from this device."
-msgstr ""
+msgstr "Рекомендуется удалить ключевое словосочетание с устройства, как только вы скопировали его."
 
 #: public/views/preferencesInformation.html
 msgid "Only Main (not change) addresses are shown. The addresses on this list were not verified locally at this time."
@@ -1126,6 +1137,10 @@ msgstr "Пароль импортируемого кошелька"
 #: public/views/paperWallet.html
 msgid "Password"
 msgstr "Пароль"
+
+#: src/js/controllers/import.js
+msgid "Password required. Make sure to enter your password in advanced options"
+msgstr ""
 
 #: public/views/join.html
 msgid "Paste invitation here"
@@ -1232,7 +1247,7 @@ msgstr "Личный кошелёк"
 
 #: src/js/controllers/import.js
 msgid "Please enter the recovery phrase"
-msgstr ""
+msgstr "Введите ключевое словосочетание"
 
 #: src/js/controllers/create.js
 #: src/js/controllers/join.js
@@ -1242,7 +1257,7 @@ msgstr "Пожалуйста, заполните необходимые поля
 #: src/js/controllers/create.js
 #: src/js/controllers/join.js
 msgid "Please enter the wallet recovery phrase"
-msgstr ""
+msgstr "Введите ключевое словосочетание кошелька"
 
 #: public/views/backup.html
 msgid "Please tap the words in order to confirm your backup phrase is correctly written."
@@ -1254,7 +1269,7 @@ msgstr "Пожалуйста, обновите Copay для выполнения
 
 #: public/views/uri.html
 msgid "Please wait to be redirected..."
-msgstr ""
+msgstr "Дождитесь перенаправления..."
 
 #: src/js/controllers/import.js
 msgid "Please, select your backup file"
@@ -1263,6 +1278,10 @@ msgstr "Пожалуйста, выберите ваш файл резервно�
 #: public/views/translators.html
 msgid "Polish"
 msgstr "Польский"
+
+#: public/views/paperWallet.html
+msgid "Preferences"
+msgstr ""
 
 #: src/js/controllers/export.js
 msgid "Preparing backup..."
@@ -1288,6 +1307,7 @@ msgstr "Закрытый ключ зашифрован, не удалось по
 msgid "Push notifications for Copay are currently disabled. Enable them in the Settings app."
 msgstr "Push-уведомления для Copay в настоящее время отключены. Включите их в Параметрах."
 
+#: public/views/export.html
 #: public/views/modals/customized-amount.html
 msgid "QR Code"
 msgstr "QR-код"
@@ -1313,11 +1333,11 @@ msgstr "Получатели"
 
 #: public/views/import.html
 msgid "Recovery Phrase"
-msgstr ""
+msgstr "Ключевое словосочетание"
 
 #: src/js/controllers/preferencesDeleteWords.js
 msgid "Recovery phrase deleted"
-msgstr ""
+msgstr "Ключевое словосочетание удалено"
 
 #: public/views/walletHome.html
 msgid "Recreate"
@@ -1349,7 +1369,7 @@ msgstr "Повторите пароль"
 
 #: public/views/includes/password.html
 msgid "Repeat the spending password"
-msgstr ""
+msgstr "Повторно введите платёжный пароль"
 
 #: public/views/modals/customized-amount.html
 #: public/views/walletHome.html
@@ -1358,7 +1378,7 @@ msgstr "Запросить определенную сумму"
 
 #: public/views/preferences.html
 msgid "Request Spending Password"
-msgstr ""
+msgstr "Запрашивать платёжный пароль"
 
 #: public/views/join.html
 msgid "Required"
@@ -1499,14 +1519,13 @@ msgstr "Задайте пароль"
 
 #: public/views/includes/password.html
 msgid "Set up a spending password"
-msgstr ""
+msgstr "Установить платёжный пароль"
 
 #: public/views/preferencesEmail.html
 msgid "Setting up email notifications could weaken your privacy, if the wallet service provider is compromised. Information available to an attacker would include your wallet addresses and its balance, but no more."
 msgstr "Включение email-уведомлений может ослабить вашу конфиденциальность, если владелец сервера Bitcore будет скомпрометирован. Информация доступная злоумышленнику будет включать адреса вашего кошелька и его баланс, но ничего больше."
 
 #: public/views/includes/sidebar.html
-#: public/views/walletHome.html
 msgid "Settings"
 msgstr "Параметры"
 
@@ -1525,7 +1544,7 @@ msgstr "Отправьте приглашение совладельцам ко�
 
 #: public/views/walletHome.html
 msgid "Share this wallet address to receive payments"
-msgstr ""
+msgstr "Используйте этот адрес кошелька для получения платежей"
 
 #: public/views/walletHome.html
 msgid "Share this wallet address to receive payments. To protect your privacy, new addresses are generated automatically once you use them."
@@ -1537,14 +1556,11 @@ msgid "Shared Wallet"
 msgstr "Общий кошелёк"
 
 #: public/views/create.html
+#: public/views/export.html
 #: public/views/import.html
 #: public/views/join.html
 msgid "Show advanced options"
 msgstr "Показать дополнительные настройки"
-
-#: public/views/backup.html
-msgid "Show Wallet Recovery Phrase"
-msgstr ""
 
 #: src/js/services/bwsError.js
 msgid "Signatures rejected by server"
@@ -1552,11 +1568,11 @@ msgstr "Подписи отклонены сервером"
 
 #: src/js/services/onGoingProcess.js
 msgid "Signing transaction"
-msgstr ""
+msgstr "Подписание транзакции"
 
 #: public/views/create.html
 msgid "Single Address Wallet"
-msgstr ""
+msgstr "Кошелек с одним адресом"
 
 #: public/views/translators.html
 msgid "Spanish"
@@ -1565,7 +1581,7 @@ msgstr "испанский"
 #: src/js/controllers/create.js
 #: src/js/controllers/join.js
 msgid "Specify Recovery Phrase..."
-msgstr ""
+msgstr "Указать ключевое словосочетание..."
 
 #: src/js/services/bwsError.js
 msgid "Spend proposal is not accepted"
@@ -1577,11 +1593,11 @@ msgstr "Предложение платежа не найдено"
 
 #: src/js/services/bwsError.js
 msgid "Spending Password needed"
-msgstr ""
+msgstr "Необходим платёжный пароль"
 
 #: src/js/controllers/index.js
 msgid "Spending Passwords do not match"
-msgstr ""
+msgstr "Платёжные пароли не совпадают"
 
 #: src/js/controllers/copayers.js
 #: src/js/controllers/export.js
@@ -1592,7 +1608,7 @@ msgstr "Успешно"
 
 #: src/js/services/feeService.js
 msgid "Super Economy"
-msgstr ""
+msgstr "Очень экономичная"
 
 #: public/views/preferencesAdvanced.html
 msgid "Sweep paper wallet"
@@ -1604,11 +1620,11 @@ msgstr "Считать кошелёк"
 
 #: src/js/services/onGoingProcess.js
 msgid "Sweeping Wallet..."
-msgstr ""
+msgstr "Считывание кошелька..."
 
 #: public/views/walletHome.html
 msgid "Tap and hold to show"
-msgstr ""
+msgstr "Коснитесь и удерживайте, чтобы показать"
 
 #: public/views/walletHome.html
 msgid "Tap to retry"
@@ -1625,7 +1641,7 @@ msgstr "Авторы данного программного обеспечен�
 
 #: public/views/import.html
 msgid "The derivation path"
-msgstr ""
+msgstr "Путь деривации"
 
 #: src/js/services/ledger.js
 msgid "The Ledger Chrome application is not installed"
@@ -1633,7 +1649,7 @@ msgstr "Приложение Ledger для Chrome не установлено"
 
 #: public/views/import.html
 msgid "The password of the recovery phrase (if set)"
-msgstr ""
+msgstr "Пароль ключевого словосочетания (если установлен)"
 
 #: src/js/controllers/walletHome.js
 msgid "The payment was created but could not be completed. Please try again from home screen"
@@ -1646,7 +1662,7 @@ msgstr "Платёж был удалён его создателем"
 #: public/views/create.html
 #: public/views/join.html
 msgid "The recovery phrase could require a password to be imported"
-msgstr ""
+msgstr "Для импортирования ключевого словосочетания может потребовать пароль"
 
 #: src/js/services/bwsError.js
 msgid "The request could not be understood by the server"
@@ -1671,11 +1687,11 @@ msgstr "Кошелёк «{{walletName}}» был удален"
 
 #: public/views/import.html
 msgid "The Wallet Recovery Phrase could require a password to be imported"
-msgstr ""
+msgstr "Для импортирования ключевого словосочетания кошелька может потребовать пароль"
 
 #: public/views/import.html
 msgid "The wallet service URL"
-msgstr ""
+msgstr "Адрес сервера Bitcore"
 
 #: public/views/paymentUri.html
 msgid "There are no wallets to make this payment"
@@ -1691,7 +1707,7 @@ msgstr "Ошибка в форме"
 
 #: public/views/backup.html
 msgid "This recovery phrase was created with a password. To recover this wallet both the recovery phrase and password are needed."
-msgstr ""
+msgstr "Это ключевое словосочетание было создано с паролем. Для восстановления кошелька необходимо ключевое словосочетание и его пароль."
 
 #: public/views/modals/tx-details.html
 msgid "This transaction has become invalid; possibly due to a double spend attempt."
@@ -1762,7 +1778,7 @@ msgstr "Попрoбуйте снова"
 
 #: public/views/import.html
 msgid "Type the Recovery Phrase (usually 12 words)"
-msgstr ""
+msgstr "Введите ключевое словосочетание (обычно двенадцать слов)"
 
 #: public/views/modals/search.html
 #: public/views/modals/tx-details.html
@@ -1792,11 +1808,11 @@ msgstr "Использовать неподтверждённые средств
 
 #: src/js/services/onGoingProcess.js
 msgid "Validating recovery phrase..."
-msgstr ""
+msgstr "Проверка ключевого словосочетания..."
 
 #: src/js/services/onGoingProcess.js
 msgid "Validating wallet integrity..."
-msgstr ""
+msgstr "Проверка целостности кошелька..."
 
 #: public/views/preferencesAbout.html
 msgid "Version"
@@ -1812,11 +1828,11 @@ msgstr "Ожидание совладельцев кошелька"
 
 #: src/js/services/onGoingProcess.js
 msgid "Waiting for Ledger..."
-msgstr ""
+msgstr "Ожидание Ledger..."
 
 #: src/js/services/onGoingProcess.js
 msgid "Waiting for Trezor..."
-msgstr ""
+msgstr "Ожидание Trezor..."
 
 #: public/views/copayers.html
 msgid "Waiting..."
@@ -1828,7 +1844,7 @@ msgstr "Кошелёк уже существует"
 
 #: src/js/services/profileService.js
 msgid "Wallet already in Copay"
-msgstr ""
+msgstr "Кошелёк уже в Copay"
 
 #: public/views/preferencesInformation.html
 msgid "Wallet Configuration (m-n)"
@@ -1881,7 +1897,7 @@ msgstr "Название кошелька (при создании)"
 
 #: src/js/services/bwsError.js
 msgid "Wallet needs backup"
-msgstr ""
+msgstr "Необходимо создать резервную копию"
 
 #: public/views/preferencesInformation.html
 msgid "Wallet Network"
@@ -1893,26 +1909,26 @@ msgstr "Кошелёк не найден"
 
 #: src/js/services/bwsError.js
 msgid "Wallet not registered at the wallet service. Recreate it from \"Create Wallet\" using \"Advanced Options\" to set your recovery phrase"
-msgstr ""
+msgstr "Кошелёк не зарегистрирован на сервере Bitcore. Пересоздайте кошелёк воспользовавшись дополнительными настройками, чтобы указать ключевое словосочетание"
 
 #: src/js/controllers/index.js
 msgid "Wallet Preferences"
-msgstr ""
+msgstr "Параметры кошелька"
 
 #: public/views/create.html
 #: public/views/import.html
 #: public/views/join.html
 msgid "Wallet Recovery Phrase"
-msgstr ""
+msgstr "Ключевое словосочетание кошелька"
 
 #: src/js/services/bwsError.js
 msgid "Wallet Recovery Phrase is invalid"
-msgstr ""
+msgstr "Ключевое словосочетание кошелька недействительно"
 
 #: public/views/backup.html
 #: public/views/preferencesDeleteWords.html
 msgid "Wallet recovery phrase not available. You can still export it from Advanced &gt; Export."
-msgstr ""
+msgstr "Ключевое словосочетание недоступно. Вы все ещё можете экспортировать его в настройках кошелька \"Дополнительные возможности &gt; Экспорт кошелька\"."
 
 #: src/js/services/bwsError.js
 msgid "Wallet service not found"
@@ -1920,7 +1936,7 @@ msgstr "Сервер Bitcore не найден"
 
 #: public/views/walletHome.html
 msgid "WARNING: Key derivation is not working on this device/wallet. Actions cannot be performed on this wallet."
-msgstr ""
+msgstr "ВНИМАНИЕ: Деривация ключей не работает на этом устройстве/кошельке. Никакие действия не могут быть произведены с этим кошельком."
 
 #: public/views/export.html
 msgid "WARNING: Not including the private key allows to check the wallet balance, transaction history, and create spend proposals from the export. However, does not allow to approve (sign) proposals, so <b>funds will not be accessible from the export</b>."
@@ -1929,7 +1945,7 @@ msgstr "ВНИМАНИЕ: если экспортируемый файл не в
 #: public/views/create.html
 #: public/views/join.html
 msgid "WARNING: The password cannot be recovered. <b>Be sure to write it down</b>. The wallet can not be restored without the password."
-msgstr ""
+msgstr "ВНИМАНИЕ: Пароль нельзя восстановить. <b>Убедитесь, что вы его записали</b>. Этот кошелёк нельзя будет восстановить без пароля."
 
 #: public/views/export.html
 msgid "WARNING: The private key of this wallet is not available. The export allows to check the wallet balance, transaction history, and create spend proposals from the export. However, does not allow to approve (sign) proposals, so <b>funds will not be accessible from the export</b>."
@@ -1966,15 +1982,15 @@ msgstr "Пока программное обеспечение находитс�
 
 #: public/views/backup.html
 msgid "Write your wallet recovery phrase"
-msgstr ""
+msgstr "Запишите ваше ключевое словосочетание"
 
 #: src/js/controllers/import.js
 msgid "Wrong number of recovery words:"
-msgstr ""
+msgstr "Неподходящее количество слов в ключевом словосочетании:"
 
 #: src/js/services/bwsError.js
 msgid "Wrong spending password"
-msgstr ""
+msgstr "Неверный платёжный пароль"
 
 #: public/views/modals/confirmation.html
 msgid "Yes"
@@ -2001,12 +2017,12 @@ msgid "You can safely install your wallet on another device and use it from mult
 msgstr "Вы можете установить ваш кошелек на другое устройство и использовать его с нескольких устройств одновременно."
 
 #: public/views/walletHome.html
-msgid "You do not have a wallet"
-msgstr "У вас нет кошелька"
+msgid "You do not have any wallet"
+msgstr ""
 
 #: public/views/backup.html
 msgid "You need the wallet recovery phrase to restore this personal wallet. Write it down and keep them somewhere safe."
-msgstr ""
+msgstr "Для восстановления этого кошелька нужно ключевое словосочетание. Запишите его и надёжно спрячьте."
 
 #: public/views/create.html
 #: public/views/join.html
@@ -2020,7 +2036,7 @@ msgstr "Ваш пароль"
 
 #: public/views/includes/password.html
 msgid "Your spending password"
-msgstr ""
+msgstr "Ваш платёжный пароль"
 
 #: src/js/controllers/import.js
 msgid "Your wallet has been imported correctly"
@@ -2028,9 +2044,9 @@ msgstr "Ваш кошелёк был успешно импортирован"
 
 #: public/views/includes/password.html
 msgid "Your wallet key will be encrypted. The Spending Password cannot be recovered. Be sure to write it down"
-msgstr ""
+msgstr "Ваш кошелёк будет зашифрован. Платёжный пароль невозможно восстановить. Убедитесь, что записали его."
 
 #: public/views/backup.html
 msgid "Your wallet recovery phrase and access to the server that coordinated the initial wallet creation. You still need {{index.m}} keys to spend."
-msgstr ""
+msgstr "Ключевое словосочетание и доступ к серверу, координировавшему начальное создание кошелька. Вам всё ещё нужно {{index.m}} для совершения платежей."
 
