@@ -1,8 +1,8 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="com.bitpay.copay"
-  version="2.1.0"
-  android-versionCode="109"
-  ios-CFBundleVersion="2.1.0">
+  version="2.2.0"
+  android-versionCode="110"
+  ios-CFBundleVersion="2.2.0">
     <name>Copay</name>
     <description>
       A secure bitcoin wallet for friends and companies.
@@ -19,7 +19,7 @@
     <preference name="SplashScreen" value="copayscreen" />
     <preference name="ShowSplashScreenSpinner" value="false" />
     <preference name="AutoHideSplashScreen" value="false" />
-    <preference name="FadeSplashScreen" value="true" />
+    <preference name="FadeSplashScreen" value="true" />  
     <preference name="FadeSplashScreenDuration" value="1" />
     <preference name="BackgroundColor" value="#2C3E50" />
     <preference name="StatusBarOverlaysWebView" value="false" />
