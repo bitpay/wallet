@@ -757,7 +757,7 @@ msgid "French"
 msgstr ""
 
 #: public/views/export.html
-msgid "From the destination device, go to Add wallet > Import wallet and scan this QR code"
+msgid "From the destination device, go to Add wallet &gt; Import wallet and scan this QR code"
 msgstr ""
 
 #: src/js/services/bwsError.js

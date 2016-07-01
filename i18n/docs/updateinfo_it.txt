@@ -1,4 +1,17 @@
-* Migliora alcune icone
-* Piccole modifiche UX in ricezione
-* Traduzioni aggiornate
-* Correzione errori
+Versione v2.2.0
+
+Nuove funzionalità:
+
+ - Migrazione a un altro dispositivo con un semplice codice QR
+ - Supporto schermi di grandi dimensioni e formato orizzontale per tablet.
+
+Correzione bug:
+
+ Migliora la prestazione (rimossa libreria js inutilizzata)
+ * Rimuove lo storico in cache dal portafoglio in esportazione
+ * Verifica dal portafoglio di carta se il backup è stato completato.
+ * Sistemato menu sidebar UI
+ * Precisione dell'intero importo sui dettagli tx
+ * Sistemato lo scorrimento in backup per piccoli dispositivi
+ * Sistemato spinner mentre si crea/importa/unisce un portafoglio
+ * Sistemate preferenze dell'UI per alcune versioni di Android

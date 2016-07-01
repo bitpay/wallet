@@ -1,4 +1,17 @@
-* Amélioration de certaines icônes
-* Amélioration minime de l'interface graphique sur "Recevoir"
-* Mise à jour des traductions
-* Corrections de bugs
+Sortie de la version 2.2.0
+
+Nouvelles fonctionnalités :
+
+ - Migration vers un nouvel appareil avec un simple code QR
+ - Prise en charge des écrans larges et du format paysage pour les tablettes.
+
+Corrections de bugs :
+
+ * Amélioration des performances (suppressions de bibliothèques js inutilisées)
+ * Suppression du cache de l'historique depuis l’exportation d'un portefeuille
+ * Vérification de la sauvegarde lors d'un balayage d'un portefeuille de papier.
+ * Correction visuelle de la barre latérale du menu
+ * Précision totale du montant dans la confirmation de transaction
+ * Correction du défilement de sauvegarde pour les petits appareils
+ * Correction du chargement lors de l'ajout d'un portefeuille
+ * Correction visuelle des préférences pour certaines versions d'Android
