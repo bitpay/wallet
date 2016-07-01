@@ -1,4 +1,17 @@
-* Mejora de algunos iconos
-* Cambios menores de UX en recibir
-* Actualización de traducciones
-* Corrección de errores
+Lanzamiento v2.2.0
+
+Nuevas características:
+
+ - Migrar a otro dispositivo con un simple código QR
+ - Soporte pantalla ancha y para tablets.
+
+Corrección de errores:
+
+ * Mejoras en el rendimiento (elimina biblioteca javascript sin utilizar)
+ * Elimina caché del historial al exportar monedero
+ * Comprueba desde importar un monedero de papel si el backup ha sido completado.
+ * Corrige UI en el menú lateral
+ * Precisión total en la ventana de detalles de una transacción
+ * Corrige el desplazamiento vertical en la ventana de copia de seguridad para algunos dispositivos pequeños
+ * Corrige el spinner mientras se crea/importa/une a una wallet
+ * Corrige la UI de preferences para algunas versiones de Android

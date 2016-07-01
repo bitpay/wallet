@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: French\n"
 "Language: fr\n"
-"PO-Revision-Date: 2016-06-15 12:49-0400\n"
+"PO-Revision-Date: 2016-07-01 08:53-0400\n"
 
 #: public/views/modals/search.html
 #: public/views/walletHome.html
@@ -79,10 +79,6 @@ msgstr "<b>OU</b> les phrases de récupération de portefeuille de <b>tous</b> l
 #: public/views/disclaimer.html
 msgid "A multisignature bitcoin wallet"
 msgstr "Un portefeuille bitcoin multi-signatures"
-
-#: public/views/export.html
-msgid "A spending password is set for this wallet. Exporting keeps the spending password in the export archive."
-msgstr "Un code de dépenses est configuré pour ce portefeuille. L'exportation conserve le code de dépenses dans l’archive exportée."
 
 #: public/views/preferencesGlobal.html
 msgid "About Copay"
@@ -178,8 +174,8 @@ msgid "Amount"
 msgstr "Montant"
 
 #: src/js/services/bwsError.js
-msgid "Amount below dust threshold"
-msgstr "Montant en dessous du seuil minimal recommandé"
+msgid "Amount below minimum allowed"
+msgstr "Montant en dessous du minimum autorisé"
 
 #: public/views/modals/customized-amount.html
 #: public/views/walletHome.html
@@ -219,6 +215,7 @@ msgstr "Sauvegarder"
 msgid "Backup failed"
 msgstr "La sauvegarde a échoué"
 
+#: public/views/paperWallet.html
 #: public/views/walletHome.html
 msgid "Backup Needed"
 msgstr "Sauvegarde requise"
@@ -235,9 +232,10 @@ msgstr "Mauvaise invitation de portefeuille"
 msgid "Balance By Address"
 msgstr "Solde par adresse"
 
+#: public/views/paperWallet.html
 #: public/views/walletHome.html
-msgid "Before receiving funds, it is necessary backup your wallet. If you lose this device, it is impossible to access your funds without a backup."
-msgstr "Avant de recevoir des fonds, il est nécessaire de sauvegarder votre portefeuille. Si vous perdez cet appareil, vos fonds seront irrécupérables sans une sauvegarde."
+msgid "Before receiving funds, you must backup your wallet. If this device is lost, it is impossible to access your funds without a backup."
+msgstr "Avant de recevoir des fonds, vous devez sauvegarder votre portefeuille. Si vous perdez cet appareil, vos fonds seront irrécupérables sans une sauvegarde."
 
 #: public/views/preferencesInformation.html
 msgid "BETA: Android Key Derivation Test:"
@@ -258,7 +256,7 @@ msgid "Bitcoin Network Fee Policy"
 msgstr "Frais de réseau"
 
 #: public/views/preferencesFee.html
-msgid "Bitcoin transactions may include a fee collected by miners on the network. The higher the fee, the greater the incentive a miner has to include that transaction in a block. Actual fees are determined based on network load and the selected policy."
+msgid "Bitcoin transactions may include a fee collected by miners on the network. The higher the fee, the greater the incentive a miner has to include that transaction in a block. Current fees are determined based on network load and the selected policy."
 msgstr "Les transactions Bitcoin peuvent inclure des frais prélevés par les mineurs du réseau. Plus les frais sont importants, et plus un mineur sera incité à inclure cette transaction dans un bloc. Les frais actuels sont déterminés en fonction de la charge du réseau et du choix sélectionné."
 
 #: public/views/paymentUri.html
@@ -463,10 +461,6 @@ msgstr "Impossible de créer en utilisant la clé publique étendue spécifiée"
 msgid "Could not create: Invalid wallet recovery phrase"
 msgstr "Impossible de créer : Phrase de récupération du portefeuille invalide"
 
-#: src/js/controllers/backup.js
-msgid "Could not decrypt"
-msgstr "Impossible de déchiffrer"
-
 #: src/js/controllers/import.js
 msgid "Could not decrypt file, check your password"
 msgstr "Impossible de déchiffrer le fichier, vérifiez votre mot de passe"
@@ -600,7 +594,9 @@ msgstr "Stratégie de dérivation"
 msgid "Description"
 msgstr "Description"
 
+#: public/views/modals/coinbase-tx-details.html
 #: public/views/modals/customized-amount.html
+#: public/views/modals/glidera-tx-details.html
 #: public/views/modals/paypro.html
 #: public/views/modals/tx-details.html
 #: public/views/modals/txp-details.html
@@ -715,9 +711,17 @@ msgstr "Exporter vers un fichier"
 msgid "Export Wallet"
 msgstr "Exporter le portefeuille"
 
+#: public/views/export.html
+msgid "Exporting via QR not supported for this wallet"
+msgstr "L'exportation via QR n'est pas supportée pour ce portefeuille"
+
 #: public/views/preferencesInformation.html
 msgid "Extended Public Keys"
 msgstr "Clés publiques étendues"
+
+#: src/js/services/onGoingProcess.js
+msgid "Extracting Wallet Information..."
+msgstr "Extraction des informations du portefeuille..."
 
 #: public/views/export.html
 msgid "Failed to export"
@@ -741,8 +745,9 @@ msgstr "Frais"
 msgid "Fetching Payment Information"
 msgstr "Récupération des informations de paiement"
 
+#: public/views/export.html
 #: public/views/import.html
-msgid "File/Text Backup"
+msgid "File/Text"
 msgstr "Fichier / Texte"
 
 #: src/js/services/fingerprintService.js
@@ -760,6 +765,10 @@ msgstr "À des fins de vérification"
 #: public/views/translators.html
 msgid "French"
 msgstr "Français"
+
+#: public/views/export.html
+msgid "From the destination device, go to Add wallet &gt; Import wallet and scan this QR code"
+msgstr "Depuis le périphérique de destination, allez sur « Ajouter portefeuille » &gt; « Importer » et numérisez ce code QR"
 
 #: src/js/services/bwsError.js
 msgid "Funds are locked by pending spend proposals"
@@ -810,6 +819,7 @@ msgid "Hardware Wallet"
 msgstr "Portefeuille matériel"
 
 #: public/views/create.html
+#: public/views/export.html
 #: public/views/import.html
 #: public/views/join.html
 msgid "Hide advanced options"
@@ -847,13 +857,14 @@ msgstr "En aucun cas les auteurs du logiciel, employés et sociétés affiliés 
 msgid "In order to verify your wallet backup, please type your password:"
 msgstr "Afin de vérifier votre sauvegarde du portefeuille, veuillez saisir votre mot de passe :"
 
-#: public/views/export.html
-msgid "Include address book and history cache"
-msgstr "Inclure le répertoire et le cache de l'historique"
-
 #: src/js/services/bwsError.js
 msgid "Incorrect address network"
 msgstr "Adresse réseau incorrecte"
+
+#. Trying to import a malformed wallet export QR code
+#: src/js/controllers/import.js
+msgid "Incorrect code format"
+msgstr "Format du code incorrect"
 
 #: src/js/services/bwsError.js
 msgid "Insufficient funds"
@@ -1127,6 +1138,10 @@ msgstr "Phrase de passe"
 msgid "Password"
 msgstr "Mot de passe"
 
+#: src/js/controllers/import.js
+msgid "Password required. Make sure to enter your password in advanced options"
+msgstr "Mot de passe requis. Veuillez saisir votre mot de passe dans les options avancées"
+
 #: public/views/join.html
 msgid "Paste invitation here"
 msgstr "Collez l'invitation ici"
@@ -1264,6 +1279,10 @@ msgstr "Veuillez sélectionner votre fichier de sauvegarde"
 msgid "Polish"
 msgstr "Polonais"
 
+#: public/views/paperWallet.html
+msgid "Preferences"
+msgstr "Préférences"
+
 #: src/js/controllers/export.js
 msgid "Preparing backup..."
 msgstr "Préparation de la sauvegarde..."
@@ -1288,6 +1307,7 @@ msgstr "La clé privée est chiffrée, impossible de signer"
 msgid "Push notifications for Copay are currently disabled. Enable them in the Settings app."
 msgstr "Les notifications push de Copay sont actuellement désactivées. Activez-les dans les paramètres de l'appli."
 
+#: public/views/export.html
 #: public/views/modals/customized-amount.html
 msgid "QR Code"
 msgstr "Code QR"
@@ -1506,7 +1526,6 @@ msgid "Setting up email notifications could weaken your privacy, if the wallet s
 msgstr "Configurer des notifications e-mail peut affaiblir votre anonymat si le fournisseur du service de portefeuille est compromis. Les informations disponibles à un attaquant incluent les adresses de votre portefeuille et leurs soldes, mais rien de plus."
 
 #: public/views/includes/sidebar.html
-#: public/views/walletHome.html
 msgid "Settings"
 msgstr "Paramètres"
 
@@ -1537,14 +1556,11 @@ msgid "Shared Wallet"
 msgstr "Portefeuille partagé"
 
 #: public/views/create.html
+#: public/views/export.html
 #: public/views/import.html
 #: public/views/join.html
 msgid "Show advanced options"
 msgstr "Afficher les options avancées"
-
-#: public/views/backup.html
-msgid "Show Wallet Recovery Phrase"
-msgstr "Afficher la phrase de récupération du portefeuille"
 
 #: src/js/services/bwsError.js
 msgid "Signatures rejected by server"
@@ -2001,7 +2017,7 @@ msgid "You can safely install your wallet on another device and use it from mult
 msgstr "Vous pouvez installer en toute sécurité votre portefeuille sur un autre appareil et l'utiliser à partir de plusieurs périphériques en même temps."
 
 #: public/views/walletHome.html
-msgid "You do not have a wallet"
+msgid "You do not have any wallet"
 msgstr "Vous n'avez aucun portefeuille"
 
 #: public/views/backup.html
