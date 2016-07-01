@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/2010/manifest" xmlns:m2="http://schemas.microsoft.com/appx/2013/manifest" xmlns:m3="http://schemas.microsoft.com/appx/2014/manifest" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest">
-  <Identity Name="18C7659D.CopayWallet" Publisher="CN=F89609D1-EB3E-45FD-A58A-C2E3895FCE7B" Version="2.1.0.0" />
+  <Identity Name="18C7659D.CopayWallet" Publisher="CN=F89609D1-EB3E-45FD-A58A-C2E3895FCE7B" Version="2.2.0.0" />
   <mp:PhoneIdentity PhoneProductId="5381aa50-9069-11e4-84cc-293caf9cbdc8" PhonePublisherId="F89609D1-EB3E-45FD-A58A-C2E3895FCE7B" />
   <Properties>
     <DisplayName>Copay Bitcoin Wallet</DisplayName>
