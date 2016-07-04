@@ -61,6 +61,12 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     });
   }
 
+  $timeout(function() {
+    profileService.isDisclaimerAccepted(function(val) {
+      $scope.isDisclaimerAccepted = val;
+    });
+  }, 1);
+
   function strip(number) {
     return (parseFloat(number.toPrecision(12)));
   };
@@ -1408,6 +1414,12 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   $rootScope.$on('$stateChangeSuccess', function(ev, to, toParams, from, fromParams) {
     self.prevState = from.name || 'walletHome';
     self.tab = 'walletHome';
+  });
+
+  $rootScope.$on('disclaimerAccepted', function(event) {
+    profileService.isDisclaimerAccepted(function(val) {
+      $scope.isDisclaimerAccepted = val;
+    });
   });
 
   $rootScope.$on('Local/ValidatingWalletEnded', function(ev, walletId, isOK) {
