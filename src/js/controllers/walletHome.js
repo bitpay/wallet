@@ -32,9 +32,10 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   var vanillaScope = ret;
 
   var disableScannerListener = $rootScope.$on('dataScanned', function(event, data) {
+    if (!data) return;
+
     self.setForm(data);
     $rootScope.$emit('Local/SetTab', 'send');
-
     var form = $scope.sendForm;
     if (form.address.$invalid && !ongoingProcess.get('fetchingPayPro')) {
       self.resetForm();
