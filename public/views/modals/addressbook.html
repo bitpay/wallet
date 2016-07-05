@@ -21,13 +21,13 @@
       <div class="modal-content p20b">
         <div class="create-tab small-only-text-center" ng-show="!editAddressbook && !addAddressbookEntry">
           <div class="row">
-            <div class="tab-container small-6 medium-3 large-2"
+            <div class="tab-container small-6 medium-6 large-6"
               ng-class="{'selected':selectedWalletsOpt}"
               ng-style="{'border-color':selectedWalletsOpt ? color : 'inherit'}"
               ng-click="setSelectedWalletsOpt(true)">
               <a href ng-style="{'color':selectedWalletsOpt ? color : 'inherit'}" translate> My wallets</a>
             </div>
-            <div class="tab-container small-6 medium-3 large-2"
+            <div class="tab-container small-6 medium-6 large-6"
               ng-class="{'selected':!selectedWalletsOpt}"
               ng-style="{'border-color':!selectedWalletsOpt ? color : 'inherit'}"
               ng-click="setSelectedWalletsOpt(false)">
