@@ -2,8 +2,8 @@
 
 // DO NOT INCLUDE STORAGE HERE \/ \/
 angular.module('copayApp.services').factory('walletService', function($log, lodash, trezor, ledger, storageService, configService, uxLanguage) {
-// DO NOT INCLUDE STORAGE HERE ^^
-  
+  // DO NOT INCLUDE STORAGE HERE ^^
+
   var root = {};
 
   var _signWithLedger = function(client, txp, cb) {
@@ -90,7 +90,7 @@ angular.module('copayApp.services').factory('walletService', function($log, loda
 
         if (!feeLevelValue || !feeLevelValue.feePerKB)
           return cb({
-            message: 'Could not get dynamic fee for level: ' + feeLevel
+            message: 'Could not get dynamic fee for level: ' + txp.feeLevel
           });
 
         $log.debug('Dynamic fee: ' + txp.feeLevel + ' ' + feeLevelValue.feePerKB + ' SAT');

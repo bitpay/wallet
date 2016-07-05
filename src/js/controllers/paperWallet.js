@@ -1,7 +1,8 @@
 angular.module('copayApp.controllers').controller('paperWalletController',
-  function($scope, $timeout, $log, $ionicModal, configService, profileService, go, addressService, txStatus, bitcore, ongoingProcess) {
+  function($scope, $timeout, $log, $ionicModal, lodash, configService, profileService, go, addressService, txStatus, bitcore, ongoingProcess) {
 
     var fc = profileService.focusedClient;
+    var walletSettings = configService.getSync().wallet.settings;
     var rawTx;
 
     $scope.onQrCodeScanned = function(data) {
@@ -60,8 +61,7 @@ angular.module('copayApp.controllers').controller('paperWalletController',
           } else {
             $scope.privateKey = privateKey;
             $scope.balanceSat = balance;
-            var config = configService.getSync().wallet.settings;
-            $scope.balance = profileService.formatAmount(balance) + ' ' + config.unitName;
+            $scope.balance = profileService.formatAmount(balance) + ' ' + walletSettings.unitName;
           }
 
           $scope.$apply();
@@ -73,15 +73,36 @@ angular.module('copayApp.controllers').controller('paperWalletController',
       addressService.getAddress(fc.credentials.walletId, true, function(err, destinationAddress) {
         if (err) return cb(err);
 
-        fc.buildTxFromPrivateKey($scope.privateKey, destinationAddress, null, function(err, tx) {
+        fc.getFeeLevels(fc.credentials.network, function(err, levels) {
           if (err) return cb(err);
 
-          fc.broadcastRawTx({
-            rawTx: tx.serialize(),
-            network: 'livenet'
-          }, function(err, txid) {
+          var feeLevel = walletSettings.feeLevel || 'normal';
+          var fee = lodash.find(levels, {
+            level: feeLevel
+          });
+
+          if (!fee || !fee.feePerKB) {
+            return cb({
+              message: 'Could not get dynamic fee for level: ' + feeLevel
+            });
+          }
+
+          $log.debug('Dynamic fee: ' + feeLevel + ' ' + fee.feePerKB + ' SAT');
+
+          var feePerKb = fee.feePerKB;
+
+          fc.buildTxFromPrivateKey($scope.privateKey, destinationAddress, {
+            feePerKb: feePerKb
+          }, function(err, tx) {
             if (err) return cb(err);
-            return cb(null, destinationAddress, txid);
+
+            fc.broadcastRawTx({
+              rawTx: tx.serialize(),
+              network: 'livenet'
+            }, function(err, txid) {
+              if (err) return cb(err);
+              return cb(null, destinationAddress, txid);
+            });
           });
         });
       });
