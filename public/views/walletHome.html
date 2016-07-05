@@ -35,7 +35,7 @@
     -->
 
     <ion-content id="walletHome" class="walletHome tab-view tab-in" scroll="false" >
-      <ion-content overflow-scroll="!isWindowsPhoneApp" on-release="index.allowSideBar = true; index.allowPullToRefresh = true;" on-drag-right="index.allowRefresher()">
+      <ion-content on-release="index.allowSideBar = true; index.allowPullToRefresh = true;" on-drag-right="index.allowRefresher()">
         <ion-refresher
           ng-if="index.allowPullToRefresh && index.isCordova"
           on-pulling="index.allowSideBar = false"
