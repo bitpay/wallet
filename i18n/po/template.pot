@@ -266,7 +266,7 @@ msgid "Browser unsupported"
 msgstr ""
 
 #: public/views/includes/sidebar.html
-msgid "Buy &amp; Sell"
+msgid "Buy and Sell"
 msgstr ""
 
 #: src/js/services/onGoingProcess.js
