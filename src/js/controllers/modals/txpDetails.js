@@ -29,14 +29,14 @@ angular.module('copayApp.controllers').controller('txpDetailsController', functi
 
     fingerprintService.check(fc, function(err) {
       if (err) {
-        $scope.error = err;
+        $scope.error = bwsError.msg(err);
         $scope.loading = null;
         return;
       }
 
       handleEncryptedWallet(function(err) {
         if (err) {
-          $scope.error = err;
+          $scope.error = bwsError.msg(err);
           $scope.loading = null;
           return;
         }
@@ -44,7 +44,7 @@ angular.module('copayApp.controllers').controller('txpDetailsController', functi
         walletService.signTx(fc, txp, function(err, signedTxp) {
           walletService.lock(fc);
           if (err) {
-            $scope.error = err;
+            $scope.error = bwsError.msg(err);
             $scope.loading = null;
             return;
           }
@@ -211,7 +211,7 @@ angular.module('copayApp.controllers').controller('txpDetailsController', functi
     if (!walletService.isEncrypted(fc)) return cb();
     $rootScope.$emit('Local/NeedsPassword', false, function(err, password) {
       if (err) return cb(err);
-      return cb(null, walletService.unlock(fc, password));
+      return cb(walletService.unlock(fc, password));
     });
   };
 
