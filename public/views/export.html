@@ -68,7 +68,7 @@
       </div>
     </div>
 
-    <div ng-show="showAdvanced">
+    <div ng-show="showAdvanced && !exportQR">
       <ion-toggle ng-model="noSignEnabled" toggle-class="toggle-balanced" class="r0" ng-change="noSignEnabledChange()">
         <span class="toggle-label" translate>Do not include private key</span>
       </ion-toggle>
@@ -83,7 +83,7 @@
       </span>
     </div>
 
-    <div class="box-notification p15l" ng-show="noSignEnabled">
+    <div class="box-notification p15l" ng-show="noSignEnabled && !exportQR">
       <span class="text-warning size-14">
         <i class="fi-alert"></i>
         <span translate>
