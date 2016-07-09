@@ -1,18 +1,25 @@
-<ion-content ng-controller="send2Controller">
+<ion-content ng-controller="send2Controller" ng-init=init()>
   <ion-header-bar align-title="center" class="tab-bar" ng-style="{'background-color':index.backgroundColor}">
     <div class="left-small">
       <a class="p10" ng-click="close()"><span class="text-close" translate>Close</span></a>
     </div>
     <h1 class="title ellipsis" translate>Enter amount</h1>
-    <div class="right-small m5r">
-      <a class="postfix" ng-show="showAlternative" ng-click="toggleAlternative()">{{alternativeIsoCode}}</a>
-      <a class="postfix" ng-show="!showAlternative" ng-click="toggleAlternative()">{{unitName}}</a>
+    <div class="right-small m5r" ng-click="toggleAlternative()">
+      <a class="postfix" ng-show="showAlternative">{{alternativeIsoCode}}</a>
+      <a class="postfix" ng-show="!showAlternative">{{unitName}}</a>
     </div>
   </ion-header-bar>
 
   <div class="send-amount row" ng-style="{'background-color':index.backgroundColor}">
-    <div class="size-48">${{amount}}</div>
-    <div class="size-21 text-light">= ${{result}}</div>
+    <div class="size-48" ng-show="!showAlternative">{{amount}}</div>
+    <div class="size-21 text-light" ng-show="!showAlternative">{{amountResult}} {{alternativeIsoCode}}</div>
+    <div class="size-48" ng-show="showAlternative">${{alternativeAmount}}</div>
+    <div class="size-21 text-light" ng-show="showAlternative">{{alternativeResult}} {{unitName}}</div>
+  </div>
+
+  <div class="button-content ext-center df">
+    <button class="button expand button-balanced" ng-click="">Request</button>
+    <button class="button expand button-balanced" ng-click="">Send</button>
   </div>
 
   <div class="button-content ext-center df">

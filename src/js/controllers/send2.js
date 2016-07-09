@@ -1,80 +1,126 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('send2Controller',
-  function($scope, lodash, configService, go) {
+angular.module('copayApp.controllers').controller('send2Controller', function($scope, lodash, configService, go, rateService) {
+  var unitToSatoshi;
+  var satToUnit;
+  var unitDecimals;
+
+  $scope.init = function() {
     var config = configService.getSync().wallet.settings;
     $scope.unitName = config.unitName;
     $scope.alternativeIsoCode = config.alternativeIsoCode;
-    $scope.amount = $scope.result = 0;
+    unitToSatoshi = config.unitToSatoshi;
+    satToUnit = 1 / unitToSatoshi;
+    unitDecimals = config.unitDecimals;
     $scope.showAlternative = false;
+    resetAmount();
+  };
 
-    $scope.toggleAlternative = function() {
-      $scope.showAlternative = !$scope.showAlternative;
-    };
+  $scope.toggleAlternative = function() {
+    $scope.showAlternative = !$scope.showAlternative;
 
-    $scope.close = function() {
-      go.walletHome();
-    };
+    if ($scope.showAlternative) {
+      $scope.alternativeAmount = $scope.amountResult;
+      $scope.alternativeResult = isOperator(lodash.last($scope.amount)) ? evaluate($scope.amount.slice(0, -1)) : evaluate($scope.amount);
+    } else {
+      $scope.amount = $scope.alternativeResult;
+      $scope.amountResult = isOperator(lodash.last($scope.alternativeAmount)) ? evaluate($scope.alternativeAmount.slice(0, -1)) : evaluate($scope.alternativeAmount);
+    }
+  };
 
-    $scope.pushDigit = function(digit) {
-      if ($scope.amount.length >= 10) return;
-      var amount;
-      if ($scope.amount == 0 && digit == 0) return;
-      amount = $scope.amount ? $scope.amount + digit : digit;
-      evaluate(amount);
-    };
+  $scope.pushDigit = function(digit) {
+    var amount = $scope.showAlternative ? $scope.alternativeAmount : $scope.amount;
 
-    $scope.pushOperator = function(operator) {
+    if (amount.toString().length >= 10) return;
+    if (amount == 0 && digit == 0) return;
+
+    var val = amount ? amount + digit : digit;
+    processAmount(val);
+  };
+
+  $scope.pushOperator = function(operator) {
+    if ($scope.showAlternative) {
+      if (!$scope.alternativeAmount || $scope.alternativeAmount.length == 0) return;
+      $scope.alternativeAmount = _pushOperator($scope.alternativeAmount);
+    } else {
       if (!$scope.amount || $scope.amount.length == 0) return;
-      if (!isOperator(lodash.last($scope.amount))) {
-        $scope.amount = $scope.amount + operator;
-      } else
-        $scope.amount = $scope.amount.slice(0, -1) + operator;
-    };
+      $scope.amount = _pushOperator($scope.amount);
+    }
 
-    $scope.removeDigit = function() {
-      if (!$scope.amount || $scope.amount.length == 0) {
-        resetAmount();
-        return;
+    function _pushOperator(val) {
+      if (!isOperator(lodash.last(val))) {
+        return val + operator;
+      } else {
+        return val.slice(0, -1) + operator;
       }
-
-      var amount;
-      $scope.amount = amount = $scope.amount.slice(0, -1);
-      evaluate(amount);
     };
+  };
 
-    function isOperator(val) {
-      var regex = /[\/\-\+\*]/;
-      var match = regex.exec(val);
-      if (match) return true;
-      return false;
-    };
+  function isOperator(val) {
+    var regex = /[\/\-\+\*]/;
+    var match = regex.exec(val);
+    if (match) return true;
+    return false;
+  };
 
-    function resetAmount() {
-      $scope.amount = $scope.result = 0;
-    };
+  $scope.removeDigit = function() {
+    var amount = $scope.showAlternative ? $scope.alternativeAmount.toString() : $scope.amount.toString();
 
-    function evaluate(val) {
-      if (!val) {
-        resetAmount();
-        return;
+    if (amount && amount.length == 0) {
+      resetAmount();
+      return;
+    }
+
+    amount = amount.slice(0, -1);
+
+    if ($scope.showAlternative)
+      $scope.alternativeAmount = amount;
+    else
+      $scope.amount = amount;
+
+    processAmount(amount);
+  };
+
+  function resetAmount() {
+    $scope.amount = $scope.alternativeAmount = $scope.alternativeResult = $scope.amountResult = 0;
+  };
+
+  function processAmount(val) {
+    if (!val) {
+      resetAmount();
+      return;
+    }
+
+    if ($scope.showAlternative) {
+      if ($scope.alternativeAmount == 0 && val == '.') {
+        $scope.alternativeAmount += val;
       }
-
+    } else {
       if ($scope.amount == 0 && val == '.') {
         $scope.amount += val;
-        return;
       }
+    }
 
-      var result;
-      try {
-        result = eval(val);
-      } catch (e) {
-        return;
-      }
+    var result = evaluate(val);
 
-      if (lodash.isNumber(result)) {
-        $scope.result = result;
-        $scope.amount = val;
-      }
-    };
-  });
+    if (lodash.isNumber(result)) {
+      $scope.amount = $scope.alternativeAmount = val;
+      $scope.alternativeResult = parseFloat((rateService.fromFiat(result, $scope.alternativeIsoCode) * satToUnit).toFixed(unitDecimals), 10);
+      $scope.amountResult = parseFloat((rateService.toFiat(result * unitToSatoshi, $scope.alternativeIsoCode)).toFixed(2), 10);
+    }
+  };
+
+  function evaluate(val) {
+    var result;
+    try {
+      result = eval(val);
+    } catch (e) {
+      return null;
+    }
+    return result;
+  };
+
+  $scope.close = function() {
+    go.walletHome();
+  };
+});

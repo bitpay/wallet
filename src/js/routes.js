@@ -347,18 +347,30 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
           },
         }
       })
-      .state('preferencesAlias', {
-        url: '/preferencesAlias',
-        templateUrl: 'views/preferencesAlias.html',
+      .state('send2', {
+        url: '/send2',
+        templateUrl: 'views/send2.html',
         walletShouldBeComplete: true,
         needProfile: true,
         views: {
           'main': {
-            templateUrl: 'views/preferencesAlias.html'
+            templateUrl: 'views/send2.html'
           },
 
         }
       })
+      // .state('preferencesAlias', {
+      //   url: '/preferencesAlias',
+      //   templateUrl: 'views/preferencesAlias.html',
+      //   walletShouldBeComplete: true,
+      //   needProfile: true,
+      //   views: {
+      //     'main': {
+      //       templateUrl: 'views/preferencesAlias.html'
+      //     },
+      //
+      //   }
+      // })
       .state('preferencesEmail', {
         url: '/preferencesEmail',
         templateUrl: 'views/preferencesEmail.html',
