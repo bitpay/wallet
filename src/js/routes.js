@@ -549,7 +549,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
 
         if (window.cordova.plugins.Keyboard) {
           cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
-          cordova.plugins.Keyboard.disableScroll(true);
+          cordova.plugins.Keyboard.disableScroll(false);
         }
 
         $ionicPlatform.registerBackButtonAction(function(event) {
