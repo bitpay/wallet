@@ -22,7 +22,7 @@
         </span>
       </li>
 
-      <li class="line-b p20 oh">
+      <li class="line-b p20 oh" ng-click="copyToClipboard(walletId)">
         <span translate>Wallet Id</span>
         <span class="right text-gray enable_text_select">
           {{walletId}}
@@ -89,7 +89,7 @@
       </li>
 
       <h4 class="title m0" translate>Extended Public Keys</h4>
-      <li  ng-repeat="pk in pubKeys">
+      <li ng-repeat="pk in pubKeys" ng-click="copyToClipboard(pk)">
         <div class="row collapse">
           <div class="small-4 columns">Copayer {{$index}}</div>
           <div class="small-8 columns oh text-gray">
@@ -105,7 +105,7 @@
     <div ng-show="addrs">
       <h4 class="title m0" translate>Last Wallet Addresses</h4>
       <ul class="no-bullet m0">
-        <li ng-repeat="a in addrs" class="oh">
+        <li ng-repeat="a in addrs" class="oh" ng-click="copyToClipboard(a.address)">
           <div class="enable_text_select ellipsis">
             {{a.address}}
           </div>
@@ -131,7 +131,7 @@
     <ul class="no-bullet m0 size-14" ng-show="index.balanceByAddress">
       <div ng-if="index.balanceByAddress[0]">
         <h4 class="title m0" translate>Balance By Address</h4>
-        <li class="line-b p20 oh"  ng-repeat="a in index.balanceByAddress">
+        <li class="line-b p20 oh" ng-repeat="a in index.balanceByAddress" ng-click="copyToClipboard(a.address)">
           <div class="enable_text_select ellipsis">
             {{a.address}}
           </div>
