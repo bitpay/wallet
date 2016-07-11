@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('buyCoinbaseController',
-  function($scope, $log, $ionicModal, $timeout, lodash, profileService, coinbaseService, bwsError, addressService, ongoingProcess) {
+  function($scope, $log, $ionicModal, $timeout, lodash, profileService, coinbaseService, addressService, ongoingProcess) {
     var self = this;
 
     this.init = function(testnet) {

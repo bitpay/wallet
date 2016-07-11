@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, $ionicScrollDelegate, $ionicPopup, $ionicSideMenuDelegate, latestReleaseService, feeService, bwcService, pushNotificationsService, lodash, go, profileService, configService, rateService, storageService, addressService, gettext, gettextCatalog, amMoment, addonManager, bwsError, txFormatService, uxLanguage, glideraService, coinbaseService, platformInfo, addressbookService, openURLService, ongoingProcess) {
+angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, $ionicScrollDelegate, $ionicPopup, $ionicSideMenuDelegate, latestReleaseService, feeService, bwcService, pushNotificationsService, lodash, go, profileService, configService, rateService, storageService, addressService, gettext, gettextCatalog, amMoment, addonManager, bwcError, txFormatService, uxLanguage, glideraService, coinbaseService, platformInfo, addressbookService, openURLService, ongoingProcess) {
   var self = this;
   var SOFT_CONFIRMATION_LIMIT = 12;
   var errors = bwcService.getErrors();
@@ -296,7 +296,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
           twoStep: true
         }, function(err, ret) {
           if (err) {
-            self.updateError = bwsError.msg(err, gettext('Could not update Wallet'));
+            self.updateError = bwcError.msg(err, gettext('Could not update Wallet'));
           } else {
             self.isSingleAddress = !!ret.wallet.singleAddress;
             if (!opts.quiet)
@@ -429,7 +429,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     } else {
       var msg = ""
       $scope.$emit('Local/ClientError', (err.error ? err.error : err));
-      var msg = bwsError.msg(err, gettext('Error at Wallet Service'));
+      var msg = bwcError.msg(err, gettext('Error at Wallet Service'));
       self.showErrorPopup(msg);
     }
   };

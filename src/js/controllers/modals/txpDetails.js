@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('txpDetailsController', function($scope, $rootScope, $timeout, $interval, $ionicModal, platformInfo, txStatus, $ionicScrollDelegate, txFormatService, fingerprintService, bwsError, gettextCatalog, lodash, profileService, walletService) {
+angular.module('copayApp.controllers').controller('txpDetailsController', function($scope, $rootScope, $timeout, $interval, $ionicModal, platformInfo, txStatus, $ionicScrollDelegate, txFormatService, fingerprintService, bwcError, gettextCatalog, lodash, profileService, walletService) {
   var self = $scope.self;
   var tx = $scope.tx;
   var copayers = $scope.copayers;
@@ -29,14 +29,14 @@ angular.module('copayApp.controllers').controller('txpDetailsController', functi
 
     fingerprintService.check(fc, function(err) {
       if (err) {
-        $scope.error = bwsError.msg(err);
+        $scope.error = bwcError.msg(err);
         $scope.loading = null;
         return;
       }
 
       handleEncryptedWallet(function(err) {
         if (err) {
-          $scope.error = bwsError.msg(err);
+          $scope.error = bwcError.msg(err);
           $scope.loading = null;
           return;
         }
@@ -44,7 +44,7 @@ angular.module('copayApp.controllers').controller('txpDetailsController', functi
         walletService.signTx(fc, txp, function(err, signedTxp) {
           walletService.lock(fc);
           if (err) {
-            $scope.error = bwsError.msg(err);
+            $scope.error = bwcError.msg(err);
             $scope.loading = null;
             return;
           }
@@ -79,7 +79,7 @@ angular.module('copayApp.controllers').controller('txpDetailsController', functi
 
         if (err) {
           $scope.$emit('UpdateTx');
-          $scope.error = bwsError.msg(err, gettextCatalog.getString('Could not reject payment'));
+          $scope.error = bwcError.msg(err, gettextCatalog.getString('Could not reject payment'));
           $scope.$digest();
         } else {
           $scope.close(txpr);
@@ -99,7 +99,7 @@ angular.module('copayApp.controllers').controller('txpDetailsController', functi
         // Hacky: request tries to parse an empty response
         if (err && !(err.message && err.message.match(/Unexpected/))) {
           $scope.$emit('UpdateTx');
-          $scope.error = bwsError.msg(err, gettextCatalog.getString('Could not delete payment proposal'));
+          $scope.error = bwcError.msg(err, gettextCatalog.getString('Could not delete payment proposal'));
           $scope.$digest();
           return;
         }
@@ -117,7 +117,7 @@ angular.module('copayApp.controllers').controller('txpDetailsController', functi
         $scope.loading = null;
 
         if (err) {
-          $scope.error = bwsError.msg(err, gettextCatalog.getString('Could not broadcast payment'));
+          $scope.error = bwcError.msg(err, gettextCatalog.getString('Could not broadcast payment'));
           $scope.$digest();
           return;
         }
