@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('walletsController', function($scope, bwsError, profileService) {
+angular.module('copayApp.controllers').controller('walletsController', function($scope, bwcError, profileService) {
 
   $scope.selectWallet = function(walletId) {
 
@@ -8,8 +8,8 @@ angular.module('copayApp.controllers').controller('walletsController', function(
     $scope.errorSelectedWallet = {};
 
     profileService.isReady(client, function(err) {
-      if (err) { 
-        $scope.errorSelectedWallet[walletId] = bwsError.msg(err);
+      if (err) {
+        $scope.errorSelectedWallet[walletId] = bwcError.msg(err);
         return;
       }
 

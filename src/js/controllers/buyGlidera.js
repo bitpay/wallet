@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('buyGlideraController',
-  function($scope, $timeout, $ionicModal, profileService, addressService, glideraService, bwsError, lodash, ongoingProcess) {
+  function($scope, $timeout, $ionicModal, profileService, addressService, glideraService, bwcError, lodash, ongoingProcess) {
 
     var self = this;
     this.show2faCodeInput = null;
@@ -90,7 +90,7 @@ angular.module('copayApp.controllers').controller('buyGlideraController',
         addressService.getAddress(self.selectedWalletId, false, function(err, walletAddr) {
           if (err) {
             ongoingProcess.set('Buying Bitcoin...', false);
-            self.error = bwsError.cb(err, 'Could not create address');
+            self.error = bwcError.cb(err, 'Could not create address');
             return;
           }
           var data = {
