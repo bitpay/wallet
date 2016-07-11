@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('disclaimerController',
-  function($scope, $timeout, $log, $ionicSideMenuDelegate, profileService, applicationService, gettextCatalog, uxLanguage, go, storageService, gettext, platformInfo, ongoingProcess) {
+  function($scope, $rootScope, $timeout, $log, $ionicSideMenuDelegate, profileService, applicationService, gettextCatalog, uxLanguage, go, storageService, gettext, platformInfo, ongoingProcess) {
     var self = this;
     self.tries = 0;
     var isCordova = platformInfo.isCordova;
@@ -62,6 +62,7 @@ angular.module('copayApp.controllers').controller('disclaimerController',
         if (err) $log.error(err);
         else {
           $ionicSideMenuDelegate.canDragContent(true);
+          $rootScope.$emit('disclaimerAccepted');
           go.walletHome();
         }
       });

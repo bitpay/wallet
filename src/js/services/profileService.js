@@ -226,6 +226,7 @@ angular.module('copayApp.services')
                 if (!val) {
                   return cb(new Error('NONAGREEDDISCLAIMER: Non agreed disclaimer'));
                 }
+                $rootScope.$emit('disclaimerAccepted');
                 return cb();
               });
             });
@@ -405,8 +406,8 @@ angular.module('copayApp.services')
 
         // check if exist
         if (lodash.find(root.profile.credentials, {
-          'walletId': walletData.walletId
-        })) {
+            'walletId': walletData.walletId
+          })) {
           return cb(gettext('Cannot join the same wallet more that once'));
         }
       } catch (ex) {
