@@ -70,7 +70,12 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   };
 
   self.allowRefresher = function() {
-    if ($ionicSideMenuDelegate.getOpenRatio() != 0) self.allowPullToRefresh = false;
+    if ($ionicSideMenuDelegate.getOpenRatio() != 0) {
+      self.allowPullToRefresh = false;
+      if (isCordova && platformInfo.isIOS) $ionicScrollDelegate.$getByHandle('my-handle').freezeScroll(true);
+      return;
+    }
+    if (isCordova && platformInfo.isIOS) $ionicScrollDelegate.$getByHandle('my-handle').freezeScroll(false);
   }
 
   self.hideBalance = function() {
