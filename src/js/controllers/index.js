@@ -18,6 +18,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   ret.historyShowMoreLimit = 10;
   ret.isSearching = false;
   ret.prevState = 'walletHome';
+  ret.physicalScreenWidth = ((window.innerWidth > 0) ? window.innerWidth : screen.width);
 
   ret.menu = [{
     'title': gettext('Receive'),
@@ -59,13 +60,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         $scope.newRelease = gettext('There is a new version of Copay. Please update');
     });
   }
-
-  $timeout(function() {
-    $scope.physicalScreenWidth = ((window.innerWidth > 0) ? window.innerWidth : screen.width) < 768;
-    profileService.isDisclaimerAccepted(function(val) {
-      $scope.isDisclaimerAccepted = val;
-    });
-  }, 1);
 
   function strip(number) {
     return (parseFloat(number.toPrecision(12)));
@@ -1416,12 +1410,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.tab = 'walletHome';
   });
 
-  $rootScope.$on('disclaimerAccepted', function(event) {
-    profileService.isDisclaimerAccepted(function(val) {
-      $scope.isDisclaimerAccepted = val;
-    });
-  });
-
   $rootScope.$on('Local/ValidatingWalletEnded', function(ev, walletId, isOK) {
 
     if (self.isInFocus(walletId)) {
@@ -1685,7 +1673,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   });
 
   $rootScope.$on('Local/WindowResize', function() {
-    $scope.physicalScreenWidth = ((window.innerWidth > 0) ? window.innerWidth : screen.width) < 768;
+    self.physicalScreenWidth = ((window.innerWidth > 0) ? window.innerWidth : screen.width);
   });
 
   $rootScope.$on('Local/NeedsConfirmation', function(event, txp, cb) {
