@@ -48,12 +48,12 @@
 
           <label><span>Amount in</span> {{showAlternative ? 'USD' : 'BTC'}}</label>
           <div class="input">
-            <input ng-show="!showAlternative" type="number" id="qty"
+            <input ng-show="!showAlternative" type="number" id="qty" ignore-mouse-wheel
             name="qty" ng-attr-placeholder="{{'Amount'}}"
             ng-minlength="0.00000001" ng-maxlength="10000000000"
             ng-model="qty" autocomplete="off" ng-change="sell.getSellPrice(index.glideraToken, {'qty': qty})">
 
-            <input ng-show="showAlternative" type="number" id="fiat"
+            <input ng-show="showAlternative" type="number" id="fiat" ignore-mouse-wheel
             name="fiat" ng-attr-placeholder="{{'Amount'}}"
             ng-model="fiat" autocomplete="off" ng-change="sell.getSellPrice(index.glideraToken, {'fiat': fiat})">
 
@@ -94,7 +94,7 @@
           </p>
           <form name="sellForm"
             ng-submit="sell.createTx(index.glideraToken, index.glideraPermissions, twoFaCode)" novalidate>
-              <input type="number" ng-model="twoFaCode" required>
+              <input type="number" ng-model="twoFaCode" required ignore-mouse-wheel>
               <input class="button black expand round"
               ng-style="{'background-color':index.backgroundColor}"
               type="submit" value="{{'Sell'}}" ng-disabled="sellForm.$invalid ">
