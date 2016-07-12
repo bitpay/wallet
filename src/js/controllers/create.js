@@ -176,6 +176,11 @@ angular.module('copayApp.controllers').controller('createController',
             });
             return;
           }
+          if (self.seedSourceId == 'set') {
+            $timeout(function() {
+              $rootScope.$emit('Local/BackupDone');
+            }, 1);
+          }
           go.walletHome();
 
         });
