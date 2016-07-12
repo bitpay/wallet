@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('backupController',
-  function($rootScope, $scope, $timeout, $log, go, lodash, fingerprintService, platformInfo, configService, profileService, gettext, bwcService, bwsError, walletService, ongoingProcess) {
+  function($rootScope, $scope, $timeout, $log, go, lodash, fingerprintService, platformInfo, configService, profileService, gettext, bwcService, walletService, ongoingProcess) {
 
     var fc = profileService.focusedClient;
     var prevState;
