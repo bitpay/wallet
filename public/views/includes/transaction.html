@@ -1,4 +1,4 @@
-<div class="ng-animate-disabled row collapse last-transactions-content line-b"
+<div class="row collapse last-transactions-content line-b"
   ng-class="{'text-gray':!tx.pendingForUs}"
   ng-click="home.openTxpModal(tx, index.copayers, !!index.glideraStatus)">
   <div class="large-6 medium-6 small-6 columns size-14">
@@ -7,19 +7,21 @@
       <img src="img/icon-proposal.svg" alt="sync" width="40">
     </div>
     <div class="m10t">
-      <span ng-if="!tx.merchant">
-        {{index.addressbook[tx.toAddress]}}
-        <span ng-show="!index.addressbook[tx.toAddress] && tx.message">
-          <span class="ellipsis">{{tx.message}}</span>
+      <div ng-show="!tx.merchant">
+        <span ng-show="index.addressbook[tx.toAddress] && !tx.message">
+          {{index.addressbook[tx.toAddress]}}
         </span>
-        <span ng-show="!index.addressbook[tx.toAddress] && !tx.message">
-          <span translate> Sending</span>
+        <span class="ellipsis" ng-show="!index.addressbook[tx.toAddress] && tx.message">
+          {{tx.message}}
         </span>
-      </span>
-      <span ng-if="tx.merchant">
+        <span ng-show="!index.addressbook[tx.toAddress] && !tx.message" translate>
+          Sending
+        </span>
+      </div>
+      <div ng-show="tx.merchant">
         <span ng-show="tx.merchant.pr.ca"><i class="fi-lock"></i> {{tx.merchant.domain}}</span>
         <span ng-show="!tx.merchant.pr.ca"><i class="fi-unlock"></i> {{tx.merchant.domain}}</span>
-      </span>
+      </div>
     </div>
   </div>
   <div class="large-5 medium-5 small-5 columns text-right">
