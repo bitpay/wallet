@@ -35,7 +35,8 @@
     -->
 
     <ion-content id="walletHome" class="walletHome tab-view tab-in" scroll="false">
-      <ion-content on-release="index.allowSideBar = true; index.allowPullToRefresh = true;" on-drag-right="index.allowRefresher()" delegate-handle="my-handle">
+      <ion-content on-release="index.allowSideBar = true; index.allowPullToRefresh = true;"
+        on-drag-right="index.allowRefresher()" delegate-handle="my-handle" overflow-scroll="true">
         <ion-refresher
           ng-if="index.allowPullToRefresh && index.isCordova"
           on-pulling="index.allowSideBar = false"
@@ -86,7 +87,7 @@
           </div>
         </div> <!-- oh -->
 
-        <div class="m50b">
+        <div class="p60b">
           <div class="oh pr m20t" ng-show="index.incorrectDerivation">
             <div class="text-center text-warning">
               <i class="fi-alert"></i>
@@ -117,12 +118,11 @@
             <span>{{newRelease}}</span><i class="icon-arrow-right3 right size-18"></i>
           </div>
 
-          <div class="oh pr" ng-if="index.txps[0]">
+          <div ng-if="index.txps[0]">
             <h4 ng-show="index.requiresMultipleSignatures" class="title m0" translate>Payment Proposals</h4>
             <h4 ng-show="!index.requiresMultipleSignatures" class="title m0" translate>Unsent transactions</h4>
             <div ng-repeat="tx in index.txps">
-              <div ng-include="index.txTemplateUrl">
-              </div>
+              <div ng-include="index.txTemplateUrl"></div>
             </div>
 
             <div class="text-gray text-center size-12 p10t"
@@ -237,12 +237,6 @@
               <div class="columns large-12 medium-12 small-12">
                 <ion-spinner class="spinner-stable" icon="lines"></ion-spinner>
               </div>
-            </div>
-
-            <div class="text-gray text-center size-12 p10t" ng-if="index.historyShowMore">
-              <span class="size-12" translate>{{index.completeHistory.length - index.txHistory.length}} more</span>
-              &nbsp;
-              <i class="icon-arrow-down4"></i>
             </div>
 
             <ion-infinite-scroll
