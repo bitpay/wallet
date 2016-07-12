@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('addressbookController', function($rootScope, $scope, $timeout, lodash, profileService, addressService, addressbookService, bwsError) {
+angular.module('copayApp.controllers').controller('addressbookController', function($rootScope, $scope, $timeout, lodash, profileService, addressService, addressbookService, bwcError) {
   var self = $scope.self;
 
   var fc = profileService.focusedClient;
@@ -128,7 +128,7 @@ angular.module('copayApp.controllers').controller('addressbookController', funct
     $scope.errorSelectedWallet = {};
 
     profileService.isReady(client, function(err) {
-      if (err) $scope.errorSelectedWallet[walletId] = bwsError.msg(err);
+      if (err) $scope.errorSelectedWallet[walletId] = bwcError.msg(err);
       else {
         $scope.gettingAddress = true;
         $scope.selectedWalletName = walletName;

@@ -1,6 +1,6 @@
 'use strict';
 angular.module('copayApp.services')
-  .factory('profileService', function profileServiceFactory($rootScope, $timeout, $filter, $log, sjcl, lodash, storageService, bwcService, configService, notificationService, pushNotificationsService, gettext, gettextCatalog, bwsError, uxLanguage, bitcore, platformInfo, walletService) {
+  .factory('profileService', function profileServiceFactory($rootScope, $timeout, $filter, $log, sjcl, lodash, storageService, bwcService, configService, notificationService, pushNotificationsService, gettext, gettextCatalog, bwcError, uxLanguage, bitcore, platformInfo, walletService) {
 
 
     var isChromeApp = platformInfo.isChromeApp;
@@ -357,7 +357,7 @@ angular.module('copayApp.services')
             singleAddress: opts.singleAddress,
             walletPrivKey: opts.walletPrivKey,
           }, function(err, secret) {
-            if (err) return bwsError.cb(err, gettext('Error creating wallet'), cb);
+            if (err) return bwcError.cb(err, gettext('Error creating wallet'), cb);
             return cb(null, walletClient, secret);
           });
         });
@@ -405,8 +405,8 @@ angular.module('copayApp.services')
 
         // check if exist
         if (lodash.find(root.profile.credentials, {
-          'walletId': walletData.walletId
-        })) {
+            'walletId': walletData.walletId
+          })) {
           return cb(gettext('Cannot join the same wallet more that once'));
         }
       } catch (ex) {
@@ -420,7 +420,7 @@ angular.module('copayApp.services')
         if (err) return cb(err);
 
         walletClient.joinWallet(opts.secret, opts.myName || 'me', {}, function(err) {
-          if (err) return bwsError.cb(err, gettext('Could not join wallet'), cb);
+          if (err) return bwcError.cb(err, gettext('Could not join wallet'), cb);
           root.addAndBindWalletClient(walletClient, {
             bwsurl: opts.bwsurl
           }, cb);
@@ -583,7 +583,7 @@ angular.module('copayApp.services')
           if (err instanceof errors.NOT_AUTHORIZED)
             return cb(err);
 
-          return bwsError.cb(err, gettext('Could not import'), cb);
+          return bwcError.cb(err, gettext('Could not import'), cb);
         }
 
         root.addAndBindWalletClient(walletClient, {
@@ -614,7 +614,7 @@ angular.module('copayApp.services')
           if (err instanceof errors.NOT_AUTHORIZED)
             return cb(err);
 
-          return bwsError.cb(err, gettext('Could not import'), cb);
+          return bwcError.cb(err, gettext('Could not import'), cb);
         }
 
         root.addAndBindWalletClient(walletClient, {
@@ -637,7 +637,7 @@ angular.module('copayApp.services')
           if (err instanceof errors.NOT_AUTHORIZED)
             err.name = 'WALLET_DOES_NOT_EXIST';
 
-          return bwsError.cb(err, gettext('Could not import'), cb);
+          return bwcError.cb(err, gettext('Could not import'), cb);
         }
 
         root.addAndBindWalletClient(walletClient, {

@@ -1,7 +1,7 @@
 'use strict';
 'use strict';
 angular.module('copayApp.services')
-  .factory('addressService', function(storageService, profileService, $log, $timeout, lodash, bwsError, gettextCatalog) {
+  .factory('addressService', function(storageService, profileService, $log, $timeout, lodash, bwcError, gettextCatalog) {
     var root = {};
 
     root.expireAddress = function(walletId, cb) {
@@ -44,7 +44,7 @@ angular.module('copayApp.services')
               return cb(null, addr[0].address);
             });
           }
-          return bwsError.cb(err, prefix, cb);
+          return bwcError.cb(err, prefix, cb);
         }
         return cb(null, addr.address);
       });
