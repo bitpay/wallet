@@ -634,9 +634,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       var lockedBalanceAlternative = rateService.toFiat(self.lockedBalanceSat, self.alternativeIsoCode);
       var alternativeConversionRate = rateService.toFiat(100000000, self.alternativeIsoCode);
 
-      self.totalBalanceAlternative = $filter('noFractionNumber')(totalBalanceAlternative, 2);
-      self.lockedBalanceAlternative = $filter('noFractionNumber')(lockedBalanceAlternative, 2);
-      self.alternativeConversionRate = $filter('noFractionNumber')(alternativeConversionRate, 2);
+      self.totalBalanceAlternative = totalBalanceAlternative.toFixed(2);
+      self.lockedBalanceAlternative = lockedBalanceAlternative.toFixed(2);
+      self.alternativeConversionRate = alternativeConversionRate.toFixed(2);
 
       self.alternativeBalanceAvailable = true;
 

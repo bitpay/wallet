@@ -74,7 +74,7 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
         var alternativeAmountBtc = ($scope.btx.amount * satToBtc).toFixed(8);
         $scope.rateDate = res.fetchedOn;
         $scope.rateStr = res.rate + ' ' + $scope.alternativeIsoCode;
-        $scope.alternativeAmountStr = $filter('noFractionNumber')(alternativeAmountBtc * res.rate, 2) + ' ' + $scope.alternativeIsoCode;
+        $scope.alternativeAmountStr = (alternativeAmountBtc * res.rate).toFixed(2) + ' ' + $scope.alternativeIsoCode;
         $scope.$apply();
       }
     });
