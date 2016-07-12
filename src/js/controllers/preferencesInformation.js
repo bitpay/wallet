@@ -1,13 +1,14 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('preferencesInformation',
-  function($scope, $log, $timeout, platformInfo, gettextCatalog, lodash, profileService, storageService, configService, go, bitcore) {
+  function($scope, $log, $timeout, platformInfo, gettextCatalog, lodash, profileService, configService, go) {
     var base = 'xpub';
     var fc = profileService.focusedClient;
     var c = fc.credentials;
     var walletId = c.walletId;
     var config = configService.getSync();
     var b = 1;
+    var isCordova = platformInfo.isCordova;
     config.colorFor = config.colorFor || {};
 
     $scope.init = function() {
@@ -109,6 +110,13 @@ angular.module('copayApp.controllers').controller('preferencesInformation',
 
       if (b != 5) return b++;
       save('#202020');
-    }
+    };
+
+    $scope.copyToClipboard = function(data) {
+      if (isCordova) {
+        window.cordova.plugins.clipboard.copy(data);
+        window.plugins.toast.showShortCenter(gettextCatalog.getString('Copied to clipboard'));
+      }
+    };
 
   });
