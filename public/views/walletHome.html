@@ -428,7 +428,7 @@
                   </label>
                   <div class="input">
                     <input type="number" id="amount" ng-disabled=" home.lockAmount" name="amount" ng-attr-placeholder="{{'Amount in'|translate}} {{home.unitName}}" ng-model="_amount" valid-amount required autocomplete="off" ng-focus="home.formFocus('amount')" ng-blur="home.formFocus(false)" ignore-mouse-wheel>
-                    <input type="number" id="alternative"  name="alternative"  ng-model="_alternative" style="display:none" ignore-mouse-wheel>
+                    <input type="number" id="alternative"  name="alternative"  ng-model="_alternative" style="display:none">
                     <a class="postfix button" ng-style="{'background-color':index.backgroundColor}" ng-click="home.showAlternative()">{{home.unitName}}</a>
                   </div>
                 </div>
@@ -437,7 +437,7 @@
                   </label>
                   <div class="input">
                     <input type="number" id="alternative" ng-disabled="!home.isRateAvailable || home.lockAmount" name="alternative" ng-attr-placeholder="{{'Amount in'|translate}} {{ home.alternativeName }}" ng-model="_alternative" required autocomplete="off" ng-focus="home.formFocus('amount')" ng-blur="home.formFocus(false)" ignore-mouse-wheel>
-                    <input type="number" id="amount" name="amount" ng-model="_amount" style="display:none" ignore-mouse-wheel>
+                    <input type="number" id="amount" name="amount" ng-model="_amount" style="display:none">
                     <a class="postfix button black" ng-click="home.hideAlternative()"> {{ home.alternativeIsoCode }}</a>
                   </div>
                 </div>

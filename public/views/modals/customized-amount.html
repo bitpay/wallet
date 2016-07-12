@@ -60,7 +60,7 @@
                 <span translate>Amount</span>
               </label>
               <div class="input">
-                <input type="number" id="amount" name="amount" ng-attr-placeholder="{{'Amount in'|translate}} {{unitName}}"
+                <input type="number" id="amount" name="amount" ng-attr-placeholder="{{'Amount in'|translate}} {{unitName}}" ignore-mouse-wheel
                 ng-model="_customAmount" ng-minlength="0.00000001" ng-maxlength="10000000000" valid-amount required autocomplete="off">
                 <input type="number" id="alternative"  name="alternative"  ng-model="_customAlternative" style="display:none">
                 <a class="postfix button" ng-style="{'background-color':color}" ng-click="toggleAlternative()">{{unitName}}</a>
@@ -70,7 +70,7 @@
               <label for="alternative"><span translate>Amount</span> [{{ alternativeIsoCode }}]
               </label>
               <div class="input">
-                <input type="number" id="alternative" name="alternative" ng-attr-placeholder="{{'Amount in'|translate}} {{alternativeName}}"
+                <input type="number" id="alternative" name="alternative" ng-attr-placeholder="{{'Amount in'|translate}} {{alternativeName}}" ignore-mouse-wheel
                 ng-model="_customAlternative" required autocomplete="off" required>
                 <input type="number" id="amount" name="amount" ng-model="_customAmount" style="display:none">
                 <a class="postfix button black" ng-click="toggleAlternative()"> {{ alternativeIsoCode }}</a>

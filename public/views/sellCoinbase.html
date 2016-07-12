@@ -54,12 +54,12 @@
             </span>
           </label>
           <div class="input">
-            <input ng-show="!showAlternative" type="number" id="amount"
+            <input ng-show="!showAlternative" type="number" id="amount" ignore-mouse-wheel
             name="amount" ng-attr-placeholder="{{'Amount in ' + (showAlternative ? 'USD' : 'BTC')}}"
             ng-minlength="0.00000001" ng-maxlength="10000000000"
             ng-model="amount" autocomplete="off">
 
-            <input ng-show="showAlternative" type="number" id="fiat"
+            <input ng-show="showAlternative" type="number" id="fiat" ignore-mouse-wheel
             name="fiat" ng-attr-placeholder="{{'Amount in ' + (showAlternative ? 'USD' : 'BTC')}}"
             ng-model="fiat" autocomplete="off">
 
