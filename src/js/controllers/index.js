@@ -1677,6 +1677,10 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.setTab(tab, reset);
   });
 
+  $rootScope.$on('disclaimerAccepted', function(event) {
+    $scope.isDisclaimerAccepted = true;
+  });
+
   $rootScope.$on('Local/WindowResize', function() {
     self.physicalScreenWidth = ((window.innerWidth > 0) ? window.innerWidth : screen.width);
   });

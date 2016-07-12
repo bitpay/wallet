@@ -226,6 +226,7 @@ angular.module('copayApp.services')
                 if (!val) {
                   return cb(new Error('NONAGREEDDISCLAIMER: Non agreed disclaimer'));
                 }
+                $rootScope.$emit('disclaimerAccepted');
                 return cb();
               });
             });
