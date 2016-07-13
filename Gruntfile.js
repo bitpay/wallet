@@ -20,7 +20,7 @@ module.exports = function(grunt) {
           replacements: [{
             pattern: /%APP-VERSION%/g,
             replacement: '<%= pkg.version %>'
-            }, {
+          }, {
             pattern: /%ANDROID-VERSION-CODE%/g,
             replacement: '<%= pkg.androidVersionCode %>'
           }]
@@ -37,6 +37,10 @@ module.exports = function(grunt) {
       clear: {
         command: 'rm -Rf bower_components node_modules'
       },
+      cordovaclear: {
+        command: 'rm -Rf cordova/project'
+      },
+
       osx: {
         command: 'webkitbuilds/build-osx.sh sign'
       },
@@ -45,7 +49,35 @@ module.exports = function(grunt) {
       },
       chrome: {
         command: 'browser-extensions/chrome/build.sh'
-      }
+      },
+      wp: {
+        command: 'cordova/build.sh WP8',
+      },
+      ios: {
+        command: 'cordova/build.sh IOS && cd cordova/project && cordova build ios',
+      },
+      xcode: {
+        command: 'open cordova/project/platforms/ios/Copay.xcodeproj',
+      },
+      android: {
+        command: 'cordova/build.sh ANDROID',
+      },
+      androidrun: {
+        command: 'cd cordova/project && cordova run android',
+      },
+      androidbuild: {
+        command: 'cd cordova/project && cordova build android --release',
+      },
+      androidsign: {
+        command: 'rm -f cordova/project/platforms/android/build/outputs/apk/android-release-signed-aligned.apk; jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore ../copay.keystore -signedjar cordova/project/platforms/android/build/outputs/apk/android-release-signed.apk  cordova/project/platforms/android/build/outputs/apk/android-release-unsigned.apk copay_play && ../android-sdk-macosx/build-tools/21.1.1/zipalign -v 4 cordova/project/platforms/android/build/outputs/apk/android-release-signed.apk cordova/project/platforms/android/build/outputs/apk/android-release-signed-aligned.apk ',
+        stdin: true,
+      },
+      desktopsign: {
+        cmd: 'gpg -u 1112CFA1 --output webkitbuilds/Copay-linux.zip.sig --detach-sig webkitbuilds/Copay-linux.zip && gpg -u 1112CFA1 --output webkitbuilds/Copay-win.exe.sig --detach-sig webkitbuilds/Copay-win.exe'
+      },
+      desktopverify: {
+        cmd: 'gpg --verify webkitbuilds/Copay-linux.zip.sig webkitbuilds/Copay-linux.zip && gpg --verify webkitbuilds/Copay-win.exe.sig webkitbuilds/Copay-win.exe'
+      },
     },
     watch: {
       options: {
@@ -278,4 +310,13 @@ module.exports = function(grunt) {
   grunt.registerTask('osx', ['prod', 'nwjs', 'exec:osx']);
   grunt.registerTask('release', ['string-replace:dist']);
   grunt.registerTask('chrome', ['exec:chrome']);
+  grunt.registerTask('wp', ['prod', 'exec:cordovaclear', 'exec:wp']);
+  grunt.registerTask('wp-debug', ['default', 'exec:wp']);
+  grunt.registerTask('ios', ['prod', 'exec:cordovaclear', 'exec:ios', 'exec:xcode']);
+  grunt.registerTask('ios-debug', ['default', 'exec:ios', 'exec:xcode']);
+  grunt.registerTask('ios', ['prod', 'exec:cordovaclear', 'exec:ios', 'exec:xcode']);
+  grunt.registerTask('android-debug', ['default', 'exec:android', 'exec:androidrun']);
+  grunt.registerTask('android', ['prod', 'exec:cordovaclear', 'exec:android', 'exec:androidbuild', 'exec:androidsign']);
+  grunt.registerTask('desktopsign', ['exec:desktopsign', 'exec:desktopverify']);
+
 };

@@ -23,31 +23,9 @@ then
  echo "Build.sh WP8|ANDROID|IOS"
 fi
 
-CLEAR=false
-DBGJS=false
-
-if [[ $2 == "--clear" || $3 == "--clear" ]]
-then
-  CLEAR=true
-fi
-
-if [[ $2 == "--dbgjs" || $3 == "--dbgjs" ]]
-then
-  DBGJS=true
-fi
-
-
 echo "${OpenColor}${Green}* Checking dependencies...${CloseColor}"
 command -v cordova >/dev/null 2>&1 || { echo >&2 "Cordova is not present, please install it: sudo npm -g cordova."; exit 1; }
 #command -v xcodebuild >/dev/null 2>&1 || { echo >&2 "XCode is not present, install it or use [--android]."; exit 1; }
-
-# Create project dir
-if $CLEAR
-then
-  if [ -d $PROJECT ]; then
-    rm -rf $PROJECT
-  fi
-fi
 
 echo "Build directory is $BUILDDIR"
 echo "Project directory is $PROJECT"
@@ -167,19 +145,6 @@ if [ ! -d $PROJECT ]; then
 
 fi
 
-if $DBGJS
-then
-  echo "${OpenColor}${Green}* Generating copay bundle (debug js)...${CloseColor}"
-  cd $BUILDDIR/..
-  grunt
-  checkOK
-else
-  echo "${OpenColor}${Green}* Generating copay bundle...${CloseColor}"
-  cd $BUILDDIR/..
-  grunt prod
-  checkOK
-fi
-
 echo "${OpenColor}${Green}* Copying files...${CloseColor}"
 cd $BUILDDIR/..
 cp -af public/** $PROJECT/www
@@ -194,7 +159,7 @@ cp config.xml $PROJECT/config.xml
 checkOK
 
 if [ $CURRENT_OS == "ANDROID" ]; then
-  echo "Android project!!!"
+  echo "## Android project"
 
   mkdir -p $PROJECT/platforms/android/res/xml/
   checkOK
@@ -219,21 +184,21 @@ if [ $CURRENT_OS == "ANDROID" ]; then
 fi
 
 if [ $CURRENT_OS == "WP8" ]; then
-  echo "Wp8 project!!!"
+  echo "## WP8 PROJECT, $PWD, $PROJECT"
   cp -R $PROJECT/www/* $PROJECT/platforms/wp8/www
-  checkOK
-  if ! $CLEAR
-  then
-    cp -vf wp/Properties/* $PROJECT/platforms/wp8/Properties/
-    checkOK
-    cp -vf wp/MainPage.xaml $PROJECT/platforms/wp8/
-    checkOK
-    cp -vf wp/Package.appxmanifest $PROJECT/platforms/wp8/
-    checkOK
-    cp -vf wp/Assets/* $PROJECT/platforms/wp8/Assets/
-    cp -vf wp/SplashScreenImage.jpg $PROJECT/platforms/wp8/
-    cp -vf wp/ApplicationIcon.png $PROJECT/platforms/wp8/
-    cp -vf wp/Background.png $PROJECT/platforms/wp8/
-    checkOK
-  fi
+  # if ! $CLEAR
+  # then
+  #   cp -vf wp/Properties/* $PROJECT/platforms/wp8/Properties/
+  #   checkOK
+  #   cp -vf wp/MainPage.xaml $PROJECT/platforms/wp8/
+  #   checkOK
+  #   cp -vf wp/Package.appxmanifest $PROJECT/platforms/wp8/
+  #   checkOK
+  #   cp -vf wp/Assets/* $PROJECT/platforms/wp8/Assets/
+  #   cp -vf wp/SplashScreenImage.jpg $PROJECT/platforms/wp8/
+  #   cp -vf wp/ApplicationIcon.png $PROJECT/platforms/wp8/
+  #   cp -vf wp/Background.png $PROJECT/platforms/wp8/
+  #   checkOK
+  # fi
+  wp/fix-svg.sh
 fi
