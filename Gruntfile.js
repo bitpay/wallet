@@ -42,6 +42,9 @@ module.exports = function(grunt) {
       },
       coveralls: {
         command: 'cat  coverage/report-lcov/lcov.info |./node_modules/coveralls/bin/coveralls.js'
+      },
+      chrome: {
+        command: 'browser-extensions/chrome/build.sh'
       }
     },
     watch: {
@@ -274,4 +277,5 @@ module.exports = function(grunt) {
   grunt.registerTask('desktop', ['prod', 'nwjs', 'copy:linux', 'compress:linux']);
   grunt.registerTask('osx', ['prod', 'nwjs', 'exec:osx']);
   grunt.registerTask('release', ['string-replace:dist']);
+  grunt.registerTask('chrome', ['exec:chrome']);
 };

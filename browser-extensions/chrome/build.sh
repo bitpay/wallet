@@ -1,13 +1,5 @@
 #! /bin/bash
 
-# Description: This script compiles and copy the needed files to later package the application for Chrome
-
-OpenColor="\033["
-Red="1;31m"
-Yellow="1;33m"
-Green="1;32m"
-CloseColor="\033[0m"
-
 # Check function OK
 checkOK() {
   if [ $? != 0 ]; then
