@@ -92,9 +92,6 @@ if [ ! -d $PROJECT ]; then
     cordova plugin add phonegap-plugin-push@1.5.3
     checkOK
 
-    cordova plugin add cordova-plugin-touch-id && cordova prepare
-    checkOK
-
     cordova plugin add cordova-plugin-transport-security
     checkOK
 
@@ -109,11 +106,8 @@ if [ ! -d $PROJECT ]; then
     cordova plugin add phonegap-plugin-push@1.2.3
     checkOK
 
-    ## Fix plugin
+    ## Fix plugin android-fingerprint
     rm -rf $PROJECT/platforms/android/res/values-es
-
-    cordova plugin add cordova-plugin-android-fingerprint-auth
-    checkOK
   fi
 
   cordova plugin add cordova-plugin-globalization
@@ -162,6 +156,12 @@ if [ ! -d $PROJECT ]; then
   checkOK
 
   cordova plugin add cordova-plugin-screen-orientation
+  checkOK
+
+  cordova plugin add cordova-plugin-android-fingerprint-auth
+  checkOK
+
+  cordova plugin add cordova-plugin-touch-id && cordova prepare
   checkOK
 
   cordova plugin add ionic-plugin-keyboard
