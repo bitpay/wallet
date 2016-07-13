@@ -155,6 +155,8 @@ if [ ! -d $PROJECT ]; then
   cordova plugin add cordova-plugin-disable-bitcode
   checkOK
 
+  ## Fix plugin android-fingerprint
+  rm -rf $PROJECT/platforms/android/res/values-es
   cordova plugin add cordova-plugin-android-fingerprint-auth
   checkOK
 
