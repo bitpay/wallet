@@ -560,6 +560,14 @@ angular.module('copayApp.services')
         return cb(gettext('Could not import. Check input file and spending password'));
       }
 
+      if (walletClient.hasPrivKeyEncrypted()) {
+        try {
+          walletClient.disablePrivateKeyEncryption();
+        } catch (e) {
+          $log.warn(e);
+        }
+      }
+
       str = JSON.parse(str);
 
       var addressBook = str.addressBook || {};
