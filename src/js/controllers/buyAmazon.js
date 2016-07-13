@@ -1,8 +1,8 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('buyAmazonController', 
-  function($rootScope, $scope, $ionicModal, $log, $timeout, lodash, profileService, bwsError, configService, walletService, fingerprintService, amazonService, ongoingProcess) {
-    
+angular.module('copayApp.controllers').controller('buyAmazonController',
+  function($rootScope, $scope, $ionicModal, $log, $timeout, lodash, profileService, bwcError, configService, walletService, fingerprintService, amazonService, ongoingProcess) {
+
     var self = this;
     var client;
 
@@ -21,7 +21,7 @@ angular.module('copayApp.controllers').controller('buyAmazonController',
       amazonService.initUuid();
       self.allWallets = profileService.getWallets(network, 1);
       client = profileService.focusedClient;
-      if (client && client.credentials.m == 1) { 
+      if (client && client.credentials.m == 1) {
         $timeout(function() {
           self.selectedWalletId = client.credentials.walletId;
           self.selectedWalletName = client.credentials.walletName;
@@ -59,7 +59,7 @@ angular.module('copayApp.controllers').controller('buyAmazonController',
       self.errorInfo = null;
 
       var currency_code = configService.getSync().amazon.testnet ? window.amazon_sandbox_currency_code : window.amazon_currency_code;
-      var dataSrc = { 
+      var dataSrc = {
         price: $scope.fiat,
         currency: currency_code,
         orderId: self.selectedWalletName
@@ -76,7 +76,7 @@ angular.module('copayApp.controllers').controller('buyAmazonController',
         amazonService.createBitPayInvoice(dataSrc, function(err, data) {
           if (err) {
             ongoingProcess.set('Processing Transaction...', false);
-            self.error = bwsError.msg(err);
+            self.error = bwcError.msg(err);
             $timeout(function() {
               $scope.$digest();
             });
@@ -94,7 +94,7 @@ angular.module('copayApp.controllers').controller('buyAmazonController',
             'amount': amount,
             'message': comment
           });
-          
+
           var txp = {
             toAddress: address,
             amount: amount,
@@ -108,18 +108,18 @@ angular.module('copayApp.controllers').controller('buyAmazonController',
           walletService.createTx(client, txp, function(err, createdTxp) {
             ongoingProcess.set('Processing Transaction...', false);
             if (err) {
-              self.error = bwsError.msg(err);
+              self.error = bwcError.msg(err);
               $timeout(function() {
                 $scope.$digest();
               });
               return;
             }
             $scope.$emit('Local/NeedsConfirmation', createdTxp, function(accept) {
-              if (accept) { 
+              if (accept) {
                 self.confirmTx(createdTxp, function(err, tx) {
-                  if (err) { 
+                  if (err) {
                     ongoingProcess.set('Processing Transaction...', false);
-                    self.error = bwsError.msg(err);
+                    self.error = bwcError.msg(err);
                     $timeout(function() {
                       $scope.$digest();
                     });
@@ -134,8 +134,8 @@ angular.module('copayApp.controllers').controller('buyAmazonController',
                   ongoingProcess.set('Processing Transaction...', true);
                   amazonService.createGiftCard(gift, function(err, giftCard) {
                     ongoingProcess.set('Processing Transaction...', false);
-                    if (err) { 
-                      self.error = bwsError.msg(err);
+                    if (err) {
+                      self.error = bwcError.msg(err);
                       self.errorInfo = gift;
                       $timeout(function() {
                         $scope.$digest();
@@ -167,14 +167,14 @@ angular.module('copayApp.controllers').controller('buyAmazonController',
         handleEncryptedWallet(client, function(err) {
           if (err) {
             $log.debug(err);
-            return bwsError.cb(err, null, cb);
+            return bwcError.cb(err, null, cb);
           }
 
           ongoingProcess.set('Processing Transaction...', true);
           walletService.publishTx(client, txp, function(err, publishedTxp) {
             if (err) {
               $log.debug(err);
-              return bwsError.cb(err, null, cb);
+              return bwcError.cb(err, null, cb);
             }
 
             walletService.signTx(client, publishedTxp, function(err, signedTxp) {
@@ -184,7 +184,7 @@ angular.module('copayApp.controllers').controller('buyAmazonController',
                 walletService.removeTx(client, signedTxp, function(err) {
                   if (err) $log.debug(err);
                 });
-                return bwsError.cb(err, null, cb);
+                return bwcError.cb(err, null, cb);
               }
 
               walletService.broadcastTx(client, signedTxp, function(err, broadcastedTxp) {
@@ -193,7 +193,7 @@ angular.module('copayApp.controllers').controller('buyAmazonController',
                   walletService.removeTx(client, broadcastedTxp, function(err) {
                     if (err) $log.debug(err);
                   });
-                  return bwsError.cb(err, null, cb);
+                  return bwcError.cb(err, null, cb);
                 }
                 $timeout(function() {
                   return cb(null, broadcastedTxp);
