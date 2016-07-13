@@ -91,7 +91,7 @@ if [ ! -d $PROJECT ]; then
   if [ $CURRENT_OS == "IOS" ]; then
     cordova plugin add phonegap-plugin-push@1.5.3
     checkOK
-    
+
     cordova plugin add cordova-plugin-touch-id && cordova prepare
     checkOK
 
@@ -108,7 +108,10 @@ if [ ! -d $PROJECT ]; then
   if [ $CURRENT_OS == "ANDROID" ]; then
     cordova plugin add phonegap-plugin-push@1.2.3
     checkOK
-    
+
+    ## Fix plugin
+    rm -rf $PROJECT/platforms/android/res/values-es
+
     cordova plugin add cordova-plugin-android-fingerprint-auth
     checkOK
   fi
