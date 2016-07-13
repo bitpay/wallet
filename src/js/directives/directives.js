@@ -325,4 +325,17 @@ angular.module('copayApp.directives')
       replace: true,
       templateUrl: 'views/includes/available-balance.html'
     }
+  })
+  .directive('ignoreMouseWheel', function($rootScope, $timeout) {
+    return {
+      restrict: 'A',
+      link: function(scope, element, attrs) {
+        element.bind('mousewheel', function(event) {
+          element[0].blur();
+          $timeout(function() {
+            element[0].focus();
+          }, 1);
+        });
+      }
+    }
   });
