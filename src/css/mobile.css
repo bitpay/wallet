@@ -50,6 +50,9 @@ input {
 body {
   overflow: hidden;
   -ms-content-zooming: none;
+  /* removes 300ms in IE */
+  -ms-touch-action: manipulation; /* IE10 */
+  touch-action: manipulation; /* IE11+ */
 }
 
 /* Fix IE 10 */
@@ -114,10 +117,7 @@ _:-ms-fullscreen, :root .main {
   min-zoom:1;
 }
 
-body, html {
-  -ms-overflow-style: none !important;
+.disable-user-behavior {
+  -ms-touch-action: cross-slide-y !important;
+  touch-action: cross-slide-y !important;
 }
-
-/* removes 300ms in IE */
--ms-touch-action: manipulation; /* IE10 /
-touch-action: manipulation; /* IE11+ */
