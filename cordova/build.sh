@@ -91,23 +91,11 @@ if [ ! -d $PROJECT ]; then
   if [ $CURRENT_OS == "IOS" ]; then
     cordova plugin add phonegap-plugin-push@1.5.3
     checkOK
-
-    cordova plugin add cordova-plugin-transport-security
-    checkOK
-
-    cordova plugin add cordova-ios-requires-fullscreen
-    checkOK
-
-    cordova plugin add cordova-plugin-disable-bitcode
-    checkOK
   fi
 
   if [ $CURRENT_OS == "ANDROID" ]; then
     cordova plugin add phonegap-plugin-push@1.2.3
     checkOK
-
-    ## Fix plugin android-fingerprint
-    rm -rf $PROJECT/platforms/android/res/values-es
   fi
 
   cordova plugin add cordova-plugin-globalization
@@ -155,13 +143,24 @@ if [ ! -d $PROJECT ]; then
   cordova plugin add cordova-plugin-file
   checkOK
 
-  cordova plugin add cordova-plugin-screen-orientation
+  cordova plugin add cordova-plugin-touch-id && cordova prepare
   checkOK
 
+  cordova plugin add cordova-plugin-transport-security
+  checkOK
+
+  cordova plugin add cordova-ios-requires-fullscreen
+  checkOK
+
+  cordova plugin add cordova-plugin-disable-bitcode
+  checkOK
+
+  ## Fix plugin android-fingerprint
+  rm -rf $PROJECT/platforms/android/res/values-es
   cordova plugin add cordova-plugin-android-fingerprint-auth
   checkOK
 
-  cordova plugin add cordova-plugin-touch-id && cordova prepare
+  cordova plugin add cordova-plugin-screen-orientation
   checkOK
 
   cordova plugin add ionic-plugin-keyboard
