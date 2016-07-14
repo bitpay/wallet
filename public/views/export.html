@@ -45,18 +45,14 @@
       </div>
     </form>
 
-    <div class="m20t text-gray" ng-show="exportQR && supported">
+    <div class="m20t text-gray" ng-show="exportQR">
       <div class="text-center m20b">
-        <qrcode size="220" version="8" error-correction-level="M" data="{{exportWalletInfo}}"></qrcode>
+        <qrcode size="220" version="10" error-correction-level="M" data="{{exportWalletInfo}}"></qrcode>
       </div>
       <div class="text-center size-12 m10" translate>From the destination device, go to Add wallet &gt; Import wallet and scan this QR code</div>
     </div>
 
-    <div class="m20t text-gray" ng-show="exportQR && !supported">
-      <div class="text-center size-12 m10" translate>Exporting via QR not supported for this wallet</div>
-    </div>
-
-    <div class="row" ng-show="!exportQR && index.canSign">
+    <div class="row" ng-show="index.canSign">
       <div class="columns m15t">
         <a class="button outline light-gray expand tiny p10i" ng-click="showAdvanced = !showAdvanced">
           <i class="fi-widget m3r"></i>
@@ -68,7 +64,7 @@
       </div>
     </div>
 
-    <div ng-show="showAdvanced && !exportQR">
+    <div ng-show="showAdvanced">
       <ion-toggle ng-model="noSignEnabled" toggle-class="toggle-balanced" class="r0" ng-change="noSignEnabledChange()">
         <span class="toggle-label" translate>Do not include private key</span>
       </ion-toggle>
@@ -83,7 +79,7 @@
       </span>
     </div>
 
-    <div class="box-notification p15l" ng-show="noSignEnabled && !exportQR">
+    <div class="box-notification p15l m10t" ng-show="noSignEnabled">
       <span class="text-warning size-14">
         <i class="fi-alert"></i>
         <span translate>

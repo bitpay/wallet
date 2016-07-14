@@ -38,16 +38,12 @@ angular.module('copayApp.controllers').controller('exportController',
       });
     };
 
-    /*
-      EXPORT WITHOUT PRIVATE KEY - PENDING
-
     $scope.noSignEnabledChange = function() {
       $scope.exportWalletInfo = encodeWalletInfo();
       $timeout(function() {
         $scope.$apply();
       }, 1);
     };
-    */
 
     $scope.$on('$destroy', function() {
       walletService.lock(fc);
@@ -74,10 +70,11 @@ angular.module('copayApp.controllers').controller('exportController',
         xpub: 3
       };
       var info;
+      var code;
 
-      $scope.supported = (c.derivationStrategy == 'BIP44' && c.canSign());
+      var canSign = !c.canSign() || $scope.noSignEnabled;
 
-      if ($scope.supported) {
+      if (!canSign) {
         if (c.mnemonic) {
           info = {
             type: encodingType.mnemonic,
@@ -89,20 +86,15 @@ angular.module('copayApp.controllers').controller('exportController',
             data: c.xPrivKey
           }
         }
+        code = info.type + '|' + info.data + '|' + c.network.toLowerCase() + '|' + derivationPath + '|' + (c.mnemonicHasPassphrase);
       } else {
-        /*
-          EXPORT WITHOUT PRIVATE KEY - PENDING
-
         info = {
           type: encodingType.xpub,
           data: c.xPubKey
         }
-        */
-
-        return null;
+        code = info.type + '|' + info.data + '|' + c.network.toLowerCase() + '|' + derivationPath + '|' + (c.mnemonicHasPassphrase) + '|' + c.entropySource;
       }
-
-      var code = info.type + '|' + info.data + '|' + c.network.toLowerCase() + '|' + derivationPath + '|' + (c.mnemonicHasPassphrase);
+      console.log(c);
       return code;
     };
 
