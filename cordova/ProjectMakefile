@@ -1,31 +1,49 @@
-
-.PHONY: android plugins wp8 ios
+.PHONY:plugins ios-platform android-platform wp-platform
 
 plugins:
-	@echo "Intalling cordova plugins"
-	cordova plugin add https://github.com/Initsogar/cordova-webintent.git
-	cordova plugin add https://github.com/wildabeast/BarcodeScanner.git
-	cordova plugin add org.apache.cordova.splashscreen
-	cordova plugin add org.apache.cordova.statusbar
-	cordova plugin add https://github.com/EddyVerbruggen/LaunchMyApp-PhoneGap-Plugin.git --variable URL_SCHEME=bitcoin
-	cordova plugin add org.apache.cordova.inappbrowser
+	cordova plugin add cordova-plugin-globalization
+	cordova plugin add cordova.plugins.diagnostic
+	cordova plugin add cordova-plugin-splashscreen
+	cordova plugin add cordova-plugin-statusbar
+	cordova plugin add https://github.com/cmgustavo/Custom-URL-scheme.git --variable URL_SCHEME=bitcoin --variable SECOND_URL_SCHEME=copay
+	cordova plugin add cordova-plugin-inappbrowser
+	cordova plugin add cordova-plugin-x-toast && cordova prepare
+	cordova plugin add https://github.com/VersoSolutions/CordovaClipboard
+	cordova plugin add https://github.com/EddyVerbruggen/SocialSharing-PhoneGap-Plugin.git && cordova prepare
+	cordova plugin add cordova-plugin-spinner-dialog
+	cordova plugin add cordova-plugin-dialogs
+	cordova plugin add cordova-plugin-network-information
+	cordova plugin add cordova-plugin-console
+	cordova plugin add cordova-plugin-uniquedeviceid
+	cordova plugin add cordova-plugin-file
+	cordova plugin add cordova-plugin-touch-id 
+	cordova prepare
+	cordova plugin add cordova-plugin-transport-security
+	cordova plugin add cordova-ios-requires-fullscreen
+	cordova plugin add cordova-plugin-disable-bitcode
+	rm -rf /Users/ematiu/devel/copay/cordova/project/platforms/android/res/values-es
+	cordova plugin add cordova-plugin-android-fingerprint-auth
+	cordova plugin add cordova-plugin-screen-orientation
+	cordova plugin add ionic-plugin-keyboard
 
-android:
-	cordova platforms add android
 
-wp8:
-	cordova platforms add wp8 
+ios-platform android-platform wp-platform:
+	cordova platforms add $(subst -platform,,$@)
 
-ios:
-	cordova platforms add ios
+ios: ios-platform plugins
+	cordova plugin add https://github.com/tjwoon/csZBar.git
+	cordova plugin add phonegap-plugin-push@1.5.3
 
-build-ios: 
-	cordova build ios
+android: android-platform plugins
+	cordova plugin add https://github.com/jrontend/phonegap-plugin-barcodescanner
+	cordova plugin add phonegap-plugin-push@1.2.3
 
-run-android: 
-	cordova run android
+wp: wp-platform plugins 
+	cordova plugin add https://github.com/jrontend/phonegap-plugin-barcodescanner
 
-release-android: 
-	cordova build android --release
+build:
+	cordova build
 
+run:
+	cordova run --device 
 
