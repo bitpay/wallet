@@ -35,19 +35,21 @@ angular.module('copayApp.controllers').controller('buyAmazonController',
 
       $scope.type = 'SELL';
       $scope.wallets = wallets;
+      $scope.self = self;
 
       $ionicModal.fromTemplateUrl('views/modals/wallets.html', {
-        scope: $scope
+        scope: $scope,
+        animation: 'slide-in-up'
       }).then(function(modal) {
         $scope.walletsModal = modal;
         $scope.walletsModal.show();
       });
 
-      $scope.$on('walletSelected', function(ev, obj) {
+      $scope.$on('walletSelected', function(ev, walletId) {
         $timeout(function() {
-          self.selectedWalletId = obj.walletId;
-          self.selectedWalletName = obj.walletName;
-          client = obj.client;
+          client = profileService.getClient(walletId);
+          self.selectedWalletId = walletId;
+          self.selectedWalletName = client.credentials.walletName;
           $scope.$apply();
         }, 100);
         $scope.walletsModal.hide();
