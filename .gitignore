@@ -11,7 +11,7 @@ src/js/coinbase.js
 src/js/version.js
 
 # cordova
-cordova/build-*/*
+cordova/project-*/*
 cordova/*.keystore
 
 amazon.json
