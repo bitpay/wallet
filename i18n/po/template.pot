@@ -25,10 +25,6 @@ msgstr ""
 msgid "{{feeRateStr}} of the transaction"
 msgstr ""
 
-#: public/views/walletHome.html
-msgid "{{index.completeHistory.length - index.txHistory.length}} more"
-msgstr ""
-
 #: public/views/copayers.html
 #: public/views/includes/walletInfo.html
 msgid "{{index.m}}-of-{{index.n}}"
@@ -399,6 +395,7 @@ msgstr ""
 
 #: src/js/controllers/copayers.js
 #: src/js/controllers/export.js
+#: src/js/controllers/preferencesInformation.js
 #: src/js/controllers/walletHome.js
 msgid "Copied to clipboard"
 msgstr ""
