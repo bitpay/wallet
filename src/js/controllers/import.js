@@ -8,6 +8,7 @@ angular.module('copayApp.controllers').controller('importController',
     var reader = new FileReader();
     var defaults = configService.getDefaults();
     var errors = bwcService.getErrors();
+    var entropySource = null;
     $scope.dataFromQR = null;
     $scope.bwsurl = defaults.bws.url;
     $scope.derivationPath = derivationPathHelper.default;
@@ -38,23 +39,41 @@ angular.module('copayApp.controllers').controller('importController',
       $scope.importErr = false;
       $scope.error = null;
       var parsedCode = code.split('|');
+      var codeFormat = null;
 
-      if (parsedCode.length != 5) {
-        /// Trying to import a malformed wallet export QR code
-        $scope.error = gettext('Incorrect code format');
-        return;
+      switch (parsedCode[0]) {
+        case '1':
+          codeFormat = parsedCode.length == 5 ? true : false;
+          break;
+        case '2':
+          codeFormat = parsedCode.length == 5 ? true : false;
+          break;
+        case '3':
+          codeFormat = parsedCode.length == 6 ? true : false;
+          break;
       }
 
+      if (!codeFormat) {
+        /// Trying to import a malformed wallet export QR code
+        $scope.error = gettext('Incorrect code format');
+        $log.debug(parsedCode);
+        return;
+      }
+      console.log(parsedCode);
       var info = {
         type: parsedCode[0],
         data: parsedCode[1],
         network: parsedCode[2],
         derivationPath: parsedCode[3],
-        hasPassphrase: parsedCode[4] == 'true' ? true : false
+        hasPassphrase: parsedCode[4] == 'true' ? true : false,
+        entropySource: parsedCode[5] ? parsedCode[5] : null
       };
 
       if (info.type == 1 && info.hasPassphrase)
         $scope.error = gettext('Password required. Make sure to enter your password in advanced options');
+
+      if (info.type == 3)
+        entropySource = info.entropySource;
 
       $scope.derivationPath = info.derivationPath;
       $scope.testnetEnabled = info.network == 'testnet' ? true : false;
@@ -132,12 +151,11 @@ angular.module('copayApp.controllers').controller('importController',
       }, 100);
     };
 
-    /*
-      IMPORT FROM PUBLIC KEY - PENDING
-
     var _importExtendedPublicKey = function(xPubKey, opts) {
       ongoingProcess.set('importingWallet', true);
       $timeout(function() {
+        opts.entropySource = entropySource;
+        opts.extendedPublicKey = xPubKey;
         profileService.importExtendedPublicKey(opts, function(err, walletId) {
           ongoingProcess.set('importingWallet', false);
           if (err) {
@@ -152,7 +170,6 @@ angular.module('copayApp.controllers').controller('importController',
         });
       }, 100);
     };
-    */
 
     var _importMnemonic = function(words, opts) {
       ongoingProcess.set('importingWallet', true);
@@ -257,13 +274,13 @@ angular.module('copayApp.controllers').controller('importController',
         $scope.error = gettext('Please enter the recovery phrase');
       } else if (words.indexOf('xprv') == 0 || words.indexOf('tprv') == 0) {
         return _importExtendedPrivateKey(words, opts);
-      } else if (words.indexOf('xpub') == 0 || words.indexOf('tpuv') == 0) {
+      } else if (words.indexOf('xpub') == 0 || words.indexOf('tpub') == 0) {
         return _importExtendedPublicKey(words, opts);
       } else {
         var wordList = words.split(/[\u3000\s]+/);
 
         if ((wordList.length % 3) != 0) {
-          $scope.error = gettext('Wrong number of recovery words:') + wordList.length;
+          $scope.error = gettext('Wrong number of recovery words: ') + wordList.length;
         }
       }
 
