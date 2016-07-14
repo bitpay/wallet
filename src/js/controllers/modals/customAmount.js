@@ -55,7 +55,7 @@ angular.module('copayApp.controllers').controller('customAmountController', func
     var amountSat = parseInt((amount * $scope.unitToSatoshi).toFixed(0));
     $timeout(function() {
       $scope.customizedAmountUnit = amount + ' ' + $scope.unitName;
-      $scope.customizedAlternativeUnit = $filter('noFractionNumber')(form.alternative.$modelValue, 2) + ' ' + $scope.alternativeIsoCode;
+      $scope.customizedAlternativeUnit = $filter('formatFiatAmount')(form.alternative.$modelValue) + ' ' + $scope.alternativeIsoCode;
       if ($scope.unitName == 'bits') {
         amount = (amountSat * satToBtc).toFixed(8);
       }
