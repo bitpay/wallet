@@ -11,8 +11,12 @@ src/js/coinbase.js
 src/js/version.js
 
 # cordova
-cordova/project/*
+cordova/build-*/*
 cordova/*.keystore
+
+amazon.json
+src/js/amazon.js
+
 
 # node-webkit
 cache
@@ -104,3 +108,4 @@ public/icons/*
 public/css/*
 public/lib/*
 public/js/*
+
