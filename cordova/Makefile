@@ -1,29 +1,31 @@
 .PHONY:  ios android wp 
 
+WORKDIR=project-
+
 all:
 
 clean: 
-	rm -Rf build-*
+	rm -Rf $(WORKDIR)* 
 
 
-
-build-android build-ios build-wp:  config.xml
+$(WORKDIR)android $(WORKDIR)ios $(WORKDIR)wp:  config.xml
 	cordova create $@ com.bitpay.copay Copay
 	cp ProjectMakefile $@/Makefile
+	cp -af ../public/** $@/www
 	sed "s/<\!-- PLACEHOLDER: CORDOVA SRIPT -->/<script type='text\/javascript' charset='utf-8' src='cordova.js'><\/script>/g" ../public/index.html > $@/www/index.html
 	cp config.xml $@/config.xml
-	make -C $@  $(subst build-,, $@)	
+	make -C $@  $(subst $(WORKDIR),, $@)	
 
-android: build-android 
-	mkdir -p build-android/platforms/android/res/xml/
-	cp android/build-extras.gradle build-android/platforms/android/build-extras.gradle
-	cp android/project.properties build-android/platforms/android/project.properties
-	cp -R android/res/* build-android/platforms/android/res
-	cp -af ../public/** $</www
+ios: $(WORKDIR)ios 
+	make -C $(WORKDIR)ios build-ios
 
-ios: build-ios
-	cp -af ../public/** $</www
-	open build-ios/platforms/ios/Copay.xcodeproj
+android: project-android 
+	mkdir -p android/platforms/android/res/xml/
+	cp android/build-extras.gradle  $(WORKDIR)android/platforms/android/build-extras.gradle
+	cp android/project.properties  $(WORKDIR)android/platforms/android/project.properties
+	cp -R android/res/*  $(WORKDIR)android/platforms/android/res
+	make -C $(WORKDIR)android build-android
+
 	
 wp: build-wp
 	cp -vf wp/Properties/* $</platforms/wp8/Properties/
@@ -37,6 +39,6 @@ wp: build-wp
 	wp/fix-svg.sh
 
 
-run-android:
-	make -C $(subst run-,build-,$@) run
+androidrun:
+	make -C $(WORKDIR)android run
 	adb logcat | grep copay.js

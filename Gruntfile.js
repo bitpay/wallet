@@ -34,11 +34,11 @@ module.exports = function(grunt) {
       coinbase: {
         command: 'node ./util/coinbase.js'
       },
-      clear: {
+      clean: {
         command: 'rm -Rf bower_components node_modules'
       },
-      cordovaclear: {
-        command: 'rm -Rf cordova/project'
+      cordovaclean: {
+        command: 'make -C cordova clean'
       },
 
       osx: {
@@ -51,19 +51,19 @@ module.exports = function(grunt) {
         command: 'browser-extensions/chrome/build.sh'
       },
       wp: {
-        command: 'cordova/build.sh WP8',
+        command: 'make -C cordova wp',
       },
       ios: {
-        command: 'cordova/build.sh IOS && cd cordova/project && cordova build ios',
+        command: 'make -C cordova ios',
       },
       xcode: {
-        command: 'open cordova/project/platforms/ios/Copay.xcodeproj',
+        command: 'open cordova/project-ios/platforms/ios/Copay.xcodeproj',
       },
       android: {
-        command: 'cordova/build.sh ANDROID',
+        command: 'make -C cordova android',
       },
       androidrun: {
-        command: 'cd cordova/project && cordova run android',
+        command: 'make -C cordova androidrun',
       },
       androidbuild: {
         command: 'cd cordova/project && cordova build android --release',
@@ -310,13 +310,14 @@ module.exports = function(grunt) {
   grunt.registerTask('osx', ['prod', 'nwjs', 'exec:osx']);
   grunt.registerTask('release', ['string-replace:dist']);
   grunt.registerTask('chrome', ['exec:chrome']);
-  grunt.registerTask('wp', ['prod', 'exec:cordovaclear', 'exec:wp']);
+  grunt.registerTask('wp', ['prod', 'exec:wp']);
   grunt.registerTask('wp-debug', ['default', 'exec:wp']);
-  grunt.registerTask('ios', ['prod', 'exec:cordovaclear', 'exec:ios', 'exec:xcode']);
+  grunt.registerTask('ios', ['prod', 'exec:ios', 'exec:xcode']);
   grunt.registerTask('ios-debug', ['default', 'exec:ios', 'exec:xcode']);
-  grunt.registerTask('ios', ['prod', 'exec:cordovaclear', 'exec:ios', 'exec:xcode']);
+  grunt.registerTask('cordovaclean', ['exec:cordovaclean']);
   grunt.registerTask('android-debug', ['default', 'exec:android', 'exec:androidrun']);
-  grunt.registerTask('android', ['prod', 'exec:cordovaclear', 'exec:android', 'exec:androidbuild', 'exec:androidsign']);
+  grunt.registerTask('android', ['prod', 'exec:android']);
+  grunt.registerTask('android-release', ['prod', 'exec:android', 'exec:androidsign']);
   grunt.registerTask('desktopsign', ['exec:desktopsign', 'exec:desktopverify']);
 
 };

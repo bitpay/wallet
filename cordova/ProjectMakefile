@@ -25,6 +25,8 @@ plugins:
 	cordova plugin add cordova-plugin-android-fingerprint-auth
 	cordova plugin add cordova-plugin-screen-orientation
 	cordova plugin add ionic-plugin-keyboard
+	cordova plugin add cordova-plugin-whitelist
+	
 
 
 ios-platform android-platform wp-platform:
@@ -41,8 +43,8 @@ android: android-platform plugins
 wp: wp-platform plugins 
 	cordova plugin add https://github.com/jrontend/phonegap-plugin-barcodescanner
 
-build:
-	cordova build
+build-ios build-android build-wp8:
+	cordova build $(subst build-,,$@)
 
 run:
 	cordova run --device 
