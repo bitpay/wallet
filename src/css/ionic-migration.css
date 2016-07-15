@@ -21,7 +21,7 @@
 }
 
 .button-content {
-	margin-bottom: -20px;
+	margin-bottom: -15px;
 }
 
 .behind {
@@ -105,6 +105,20 @@
 .button.button-stable:active {
 	background-color: #ababab;
 	border: 1px solid #E9E9EC;
+}
+
+.button.button-balanced:hover {
+	background-color: #b2b2b2;
+	border: 1px solid #E9E9EC;
+}
+
+.button.button-balanced:active {
+	background-color: #ababab;
+	border: 1px solid #E9E9EC;
+}
+
+.button {
+	text-transform: none;
 }
 
 button, .button {

@@ -17,13 +17,13 @@
     <div class="size-21 text-light" ng-show="showAlternative">{{alternativeResult}} {{unitName}}</div>
   </div>
 
-  <div class="button-content ext-center df">
-    <button class="button expand button-balanced" ng-click="">Request</button>
-    <button class="button expand button-balanced" ng-click="">Send</button>
+  <div class="button-content text-center df">
+    <button class="button expand button-balanced" ng-click="" translate>Request</button>
+    <button class="button expand button-balanced" ng-click="" translate>Send</button>
   </div>
 
-  <div class="button-content ext-center df">
-    <button class="button expand button-stable" ng-click="pushOperator('*')">*</button>
+  <div class="button-content text-center size-10 df">
+    <button class="button expand button-stable" ng-click="pushOperator('x')">x</button>
     <button class="button expand button-stable" ng-click="pushOperator('/')">/</button>
     <button class="button expand button-stable" ng-click="pushOperator('+')">+</button>
     <button class="button expand button-stable" ng-click="pushOperator('-')">-</button>
@@ -48,7 +48,7 @@
     <div class="button-content text-center df">
       <button class="button expand button-light" ng-click="pushDigit('.')">.</button>
       <button class="button expand button-light" ng-click="pushDigit('0')">0</button>
-      <button class="button expand button-light" ng-click="removeDigit()"><</button>
+      <button class="button expand button-light" ng-click="removeDigit()"><i class="icon ion-backspace-outline"></i></button>
     </div>
   </div>
 </ion-content>
