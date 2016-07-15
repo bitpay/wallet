@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Russian\n"
 "Language: ru\n"
-"PO-Revision-Date: 2016-07-01 08:46-0400\n"
+"PO-Revision-Date: 2016-07-14 14:39-0400\n"
 
 #: public/views/modals/search.html
 #: public/views/walletHome.html
@@ -34,10 +34,6 @@ msgstr "{{fee}} будет использовано для оплаты коми
 #: public/views/includes/confirm-tx.html
 msgid "{{feeRateStr}} of the transaction"
 msgstr "{{feeRateStr}} транзакции"
-
-#: public/views/walletHome.html
-msgid "{{index.completeHistory.length - index.txHistory.length}} more"
-msgstr "{{index.completeHistory.length - index.txHistory.length}} больше"
 
 #: public/views/copayers.html
 #: public/views/includes/walletInfo.html
@@ -173,9 +169,9 @@ msgstr "Альтернативная валюта"
 msgid "Amount"
 msgstr "Сумма"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Amount below minimum allowed"
-msgstr ""
+msgstr "Сумма ниже допустимого минимума"
 
 #: public/views/modals/customized-amount.html
 #: public/views/walletHome.html
@@ -235,7 +231,7 @@ msgstr "Баланс на адресах"
 #: public/views/paperWallet.html
 #: public/views/walletHome.html
 msgid "Before receiving funds, you must backup your wallet. If this device is lost, it is impossible to access your funds without a backup."
-msgstr ""
+msgstr "Прежде чем получать переводы вы должны создать резервную копию кошелька. Если это устройство будет утеряно, вы не сможете получить доступ к вашим средствам без резервной копии."
 
 #: public/views/preferencesInformation.html
 msgid "BETA: Android Key Derivation Test:"
@@ -257,7 +253,7 @@ msgstr "Политика комиссии в сети Биткойн"
 
 #: public/views/preferencesFee.html
 msgid "Bitcoin transactions may include a fee collected by miners on the network. The higher the fee, the greater the incentive a miner has to include that transaction in a block. Current fees are determined based on network load and the selected policy."
-msgstr ""
+msgstr "Биткойн-транзакции могут включать комиссию, собираемую майнерами в сети. Чем выше комиссия, тем больше стимул для майнера включить транзакцию в блок. Текущая комиссия определяется на основе сетевой нагрузки и выбранной политики."
 
 #: public/views/paymentUri.html
 msgid "Bitcoin URI is NOT valid!"
@@ -276,8 +272,8 @@ msgid "Browser unsupported"
 msgstr "Браузер не поддерживается"
 
 #: public/views/includes/sidebar.html
-msgid "Buy &amp; Sell"
-msgstr "Купить &amp; Продать"
+msgid "Buy and Sell"
+msgstr ""
 
 #: src/js/services/onGoingProcess.js
 msgid "Calculating fee"
@@ -383,7 +379,7 @@ msgstr "Подключение к Coinbase..."
 msgid "Connecting to Glidera..."
 msgstr "Подключение к Glidera..."
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Connection reset by peer"
 msgstr "Соединение сброшено другой стороной"
 
@@ -391,15 +387,15 @@ msgstr "Соединение сброшено другой стороной"
 msgid "Continue"
 msgstr "Продолжить"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Copayer already in this wallet"
 msgstr "Совладелец кошелька уже присоединился"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Copayer already voted on this spend proposal"
 msgstr "Совладелец кошелька уже проголосовал по этому предложению платежа"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Copayer data mismatch"
 msgstr "Несоответствие данных совладельца кошелька"
 
@@ -409,6 +405,7 @@ msgstr "Совладельцы кошелька"
 
 #: src/js/controllers/copayers.js
 #: src/js/controllers/export.js
+#: src/js/controllers/preferencesInformation.js
 #: src/js/controllers/walletHome.js
 msgid "Copied to clipboard"
 msgstr "Скопировано в буфер обмена"
@@ -437,7 +434,7 @@ msgstr "Не удалось получить доступ к серверу Bitc
 msgid "Could not broadcast payment"
 msgstr "Не удалось отправить платёж"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Could not build transaction"
 msgstr "Не удалось создать транзакцию"
 
@@ -649,7 +646,7 @@ msgstr "Укажите email для получения уведомлений"
 msgid "Email Notifications"
 msgstr "Email-уведомления"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Empty addresses limit reached. New addresses cannot be generated."
 msgstr "Достигнут предел пустых адресов. Новые адреса больше не могут быть сгенерированы."
 
@@ -713,7 +710,7 @@ msgstr "Экспорт кошелька"
 
 #: public/views/export.html
 msgid "Exporting via QR not supported for this wallet"
-msgstr ""
+msgstr "Экспорт QR-кодом не поддерживается для этого кошелька"
 
 #: public/views/preferencesInformation.html
 msgid "Extended Public Keys"
@@ -721,7 +718,7 @@ msgstr "Расширенные открытые ключи"
 
 #: src/js/services/onGoingProcess.js
 msgid "Extracting Wallet Information..."
-msgstr ""
+msgstr "Извлечение информации о кошельке..."
 
 #: public/views/export.html
 msgid "Failed to export"
@@ -748,7 +745,7 @@ msgstr "Извлечение информации о платеже"
 #: public/views/export.html
 #: public/views/import.html
 msgid "File/Text"
-msgstr ""
+msgstr "Файл/текст"
 
 #: src/js/services/fingerprintService.js
 msgid "Finger Scan Failed"
@@ -768,9 +765,9 @@ msgstr "французский"
 
 #: public/views/export.html
 msgid "From the destination device, go to Add wallet &gt; Import wallet and scan this QR code"
-msgstr ""
+msgstr "На целевом устройстве выберите \"Добавить кошелёк\" &gt; \"Импорт кошелька\" и отсканируйте этот QR-код"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Funds are locked by pending spend proposals"
 msgstr "Средства заблокированы ожидающим предложением платежа"
 
@@ -808,7 +805,7 @@ msgstr "Получение адреса для кошелька {{selectedWallet
 
 #: public/views/includes/sidebar.html
 msgid "Global preferences"
-msgstr "Глобальные предпочтения"
+msgstr "Глобальные параметры"
 
 #: public/views/preferences.html
 msgid "Hardware wallet"
@@ -857,20 +854,20 @@ msgstr "Ни при каких обстоятельствах авторы пр�
 msgid "In order to verify your wallet backup, please type your password:"
 msgstr "Для проверки резервной копии кошелька необходимо указать пароль:"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Incorrect address network"
 msgstr "Неверный адрес"
 
 #. Trying to import a malformed wallet export QR code
 #: src/js/controllers/import.js
 msgid "Incorrect code format"
-msgstr ""
+msgstr "Некорректный формат QR-кода"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Insufficient funds"
 msgstr "Недостаточно средств"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Insufficient funds for fee"
 msgstr "Недостаточно средств на комиссию"
 
@@ -885,7 +882,7 @@ msgstr "Недействительно"
 msgid "Invalid account number"
 msgstr "Недопустимый номер аккаунта"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Invalid address"
 msgstr "Неверный адрес"
 
@@ -928,7 +925,7 @@ msgstr "Присоединиться к общему кошельку"
 msgid "Joining Wallet..."
 msgstr "Присоединение к кошельку..."
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Key already associated with an existing wallet"
 msgstr "Ключ уже связан с существующим кошельком"
 
@@ -956,11 +953,11 @@ msgstr "Загрузка..."
 msgid "locked by pending payments"
 msgstr "заблокировано неподтверждёнными платежами"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Locktime in effect. Please wait to create a new spend proposal"
 msgstr "Действует блокировка. Пожалуйста, подождите, чтобы создать новое предложение платежа"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Locktime in effect. Please wait to remove this spend proposal"
 msgstr "Действует блокировка. Пожалуйста, подождите, чтобы удалить это предложение платежа"
 
@@ -995,11 +992,11 @@ msgstr "Сообщение от продавца"
 msgid "Message"
 msgstr "Сообщение"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Missing parameter"
 msgstr "Недостающий параметр"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Missing private keys to sign"
 msgstr "Отсутствуют закрытые ключи для подписи"
 
@@ -1034,7 +1031,7 @@ msgstr "Необходимо создать резервную копию"
 msgid "Network"
 msgstr "Сеть"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Network connection error"
 msgstr "Ошибка подключения"
 
@@ -1059,7 +1056,7 @@ msgstr "Транзакций пока не было"
 msgid "Normal"
 msgstr "Обычная"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Not authorized"
 msgstr "Не авторизован"
 
@@ -1140,7 +1137,7 @@ msgstr "Пароль"
 
 #: src/js/controllers/import.js
 msgid "Password required. Make sure to enter your password in advanced options"
-msgstr ""
+msgstr "Необходим пароль. Убедитесь, что вы ввели ваш пароль в дополнительных настройках"
 
 #: public/views/join.html
 msgid "Paste invitation here"
@@ -1263,7 +1260,7 @@ msgstr "Введите ключевое словосочетание кошел�
 msgid "Please tap the words in order to confirm your backup phrase is correctly written."
 msgstr "Коснитесь слов чтобы подтвердить, что ваша резервная копия корректно записана."
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Please upgrade Copay to perform this action"
 msgstr "Пожалуйста, обновите Copay для выполнения этого действия"
 
@@ -1281,7 +1278,7 @@ msgstr "Польский"
 
 #: public/views/paperWallet.html
 msgid "Preferences"
-msgstr ""
+msgstr "Параметры"
 
 #: src/js/controllers/export.js
 msgid "Preparing backup..."
@@ -1299,7 +1296,7 @@ msgstr "Нажмите еще раз для выхода"
 msgid "Priority"
 msgstr "Приоритетная"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Private key is encrypted, cannot sign"
 msgstr "Закрытый ключ зашифрован, не удалось подписать"
 
@@ -1497,7 +1494,7 @@ msgstr "Отправка транзакции"
 msgid "Sent"
 msgstr "Отправлено"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Server response could not be verified"
 msgstr "Ответ сервера не может быть проверен"
 
@@ -1562,7 +1559,7 @@ msgstr "Общий кошелёк"
 msgid "Show advanced options"
 msgstr "Показать дополнительные настройки"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Signatures rejected by server"
 msgstr "Подписи отклонены сервером"
 
@@ -1583,15 +1580,15 @@ msgstr "испанский"
 msgid "Specify Recovery Phrase..."
 msgstr "Указать ключевое словосочетание..."
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Spend proposal is not accepted"
 msgstr "Предложение платежа не принято"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Spend proposal not found"
 msgstr "Предложение платежа не найдено"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Spending Password needed"
 msgstr "Необходим платёжный пароль"
 
@@ -1664,7 +1661,7 @@ msgstr "Платёж был удалён его создателем"
 msgid "The recovery phrase could require a password to be imported"
 msgstr "Для импортирования ключевого словосочетания может потребовать пароль"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "The request could not be understood by the server"
 msgstr "Запрос не распознан сервером"
 
@@ -1676,7 +1673,7 @@ msgstr "Программное обеспечение не представля�
 msgid "The software you are about to use functions as a free, open source, and multi-signature digital wallet."
 msgstr "Программное обеспечение, которое вы начнёте сейчас использовать, функционирует как свободное, открытое программное обеспечение, и цифровой кошелёк с мультиподписью."
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "The spend proposal is not pending"
 msgstr "Предложение платежа не в ожидании"
 
@@ -1756,7 +1753,7 @@ msgstr "Ошибка Touch ID"
 msgid "Transaction"
 msgstr "Транзакция"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Transaction already broadcasted"
 msgstr "Транзакция уже отправлена"
 
@@ -1838,7 +1835,7 @@ msgstr "Ожидание Trezor..."
 msgid "Waiting..."
 msgstr "Ожидание..."
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Wallet already exists"
 msgstr "Кошелёк уже существует"
 
@@ -1875,15 +1872,15 @@ msgstr "Приглашение присоединиться к кошельку"
 msgid "Wallet Invitation is not valid!"
 msgstr "Приглашение присоединиться к кошельку недействительно!"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Wallet is full"
 msgstr "Все уже присоединены"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Wallet is locked"
 msgstr "Кошелёк заблокирован"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Wallet is not complete"
 msgstr "Не все ещё присоединились"
 
@@ -1895,7 +1892,7 @@ msgstr "Название кошелька"
 msgid "Wallet Name (at creation)"
 msgstr "Название кошелька (при создании)"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Wallet needs backup"
 msgstr "Необходимо создать резервную копию"
 
@@ -1903,11 +1900,11 @@ msgstr "Необходимо создать резервную копию"
 msgid "Wallet Network"
 msgstr "Сеть кошелька"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Wallet not found"
 msgstr "Кошелёк не найден"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Wallet not registered at the wallet service. Recreate it from \"Create Wallet\" using \"Advanced Options\" to set your recovery phrase"
 msgstr "Кошелёк не зарегистрирован на сервере Bitcore. Пересоздайте кошелёк воспользовавшись дополнительными настройками, чтобы указать ключевое словосочетание"
 
@@ -1921,7 +1918,7 @@ msgstr "Параметры кошелька"
 msgid "Wallet Recovery Phrase"
 msgstr "Ключевое словосочетание кошелька"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Wallet Recovery Phrase is invalid"
 msgstr "Ключевое словосочетание кошелька недействительно"
 
@@ -1930,7 +1927,7 @@ msgstr "Ключевое словосочетание кошелька неде�
 msgid "Wallet recovery phrase not available. You can still export it from Advanced &gt; Export."
 msgstr "Ключевое словосочетание недоступно. Вы все ещё можете экспортировать его в настройках кошелька \"Дополнительные возможности &gt; Экспорт кошелька\"."
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Wallet service not found"
 msgstr "Сервер Bitcore не найден"
 
@@ -1988,7 +1985,7 @@ msgstr "Запишите ваше ключевое словосочетание"
 msgid "Wrong number of recovery words:"
 msgstr "Неподходящее количество слов в ключевом словосочетании:"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Wrong spending password"
 msgstr "Неверный платёжный пароль"
 
@@ -2018,7 +2015,7 @@ msgstr "Вы можете установить ваш кошелек на дру
 
 #: public/views/walletHome.html
 msgid "You do not have any wallet"
-msgstr ""
+msgstr "У вас нет кошельков"
 
 #: public/views/backup.html
 msgid "You need the wallet recovery phrase to restore this personal wallet. Write it down and keep them somewhere safe."
