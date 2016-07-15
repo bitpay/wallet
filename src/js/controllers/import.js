@@ -34,6 +34,8 @@ angular.module('copayApp.controllers').controller('importController',
     };
 
     $scope.processWalletInfo = function(code) {
+      if (!code) return;
+
       $scope.dataFromQR = null;
       $scope.importErr = false;
       $scope.error = null;
