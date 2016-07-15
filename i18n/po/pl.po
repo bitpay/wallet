@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Polish\n"
 "Language: pl\n"
-"PO-Revision-Date: 2016-07-01 08:53-0400\n"
+"PO-Revision-Date: 2016-07-15 09:26-0400\n"
 
 #: public/views/modals/search.html
 #: public/views/walletHome.html
@@ -34,10 +34,6 @@ msgstr "{{fee}} zostanie potrącone jako prowizja sieci bitcoin"
 #: public/views/includes/confirm-tx.html
 msgid "{{feeRateStr}} of the transaction"
 msgstr "{{feeRateStr}} transakcji"
-
-#: public/views/walletHome.html
-msgid "{{index.completeHistory.length - index.txHistory.length}} more"
-msgstr "{{index.completeHistory.length - index.txHistory.length}} więcej"
 
 #: public/views/copayers.html
 #: public/views/includes/walletInfo.html
@@ -173,7 +169,7 @@ msgstr "Alternatywna waluta"
 msgid "Amount"
 msgstr "Kwota"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Amount below minimum allowed"
 msgstr "Kwota poniżej minimum dozwolona"
 
@@ -276,8 +272,8 @@ msgid "Browser unsupported"
 msgstr "Przeglądarka nieobsługiwana"
 
 #: public/views/includes/sidebar.html
-msgid "Buy &amp; Sell"
-msgstr "Kup &amp; Sprzedaj"
+msgid "Buy and Sell"
+msgstr ""
 
 #: src/js/services/onGoingProcess.js
 msgid "Calculating fee"
@@ -383,7 +379,7 @@ msgstr "Łączenie z Coinbase..."
 msgid "Connecting to Glidera..."
 msgstr "Łączenie z Gildera..."
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Connection reset by peer"
 msgstr "Połączenie zostało zresetowane"
 
@@ -391,15 +387,15 @@ msgstr "Połączenie zostało zresetowane"
 msgid "Continue"
 msgstr "Dalej"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Copayer already in this wallet"
 msgstr "Użytkownik jest już w tym portfelu"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Copayer already voted on this spend proposal"
 msgstr "Użytkownik głosował już za tym wnioskiem wypłaty"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Copayer data mismatch"
 msgstr "Niezgodność danych współwłaściciela portfela"
 
@@ -409,6 +405,7 @@ msgstr "Współwłaściciele portfela"
 
 #: src/js/controllers/copayers.js
 #: src/js/controllers/export.js
+#: src/js/controllers/preferencesInformation.js
 #: src/js/controllers/walletHome.js
 msgid "Copied to clipboard"
 msgstr "Skopiowano do schowka"
@@ -437,7 +434,7 @@ msgstr "Brak dostępu do Wallet Service: Nie znaleziono"
 msgid "Could not broadcast payment"
 msgstr "Wypłata nie może zostać wysłana"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Could not build transaction"
 msgstr "Nie udało się utworzyć transakcji"
 
@@ -649,7 +646,7 @@ msgstr "Adres e-mail dla powiadomień portfela"
 msgid "Email Notifications"
 msgstr "Powiadomienia e-mail"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Empty addresses limit reached. New addresses cannot be generated."
 msgstr "Puste adresy osiągnęły limit. Nowe adresy nie mogą być generowane."
 
@@ -770,7 +767,7 @@ msgstr "francuski"
 msgid "From the destination device, go to Add wallet &gt; Import wallet and scan this QR code"
 msgstr "Z urządzenia docelowego, przejdź do Dodaj portfel &gt; Import portfela i Zeskanuj ten kod QR"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Funds are locked by pending spend proposals"
 msgstr "Fundusze są zablokowane przez rozpatrywane wniosku wypłaty"
 
@@ -857,7 +854,7 @@ msgstr "W żadnym wypadku autorzy oprogramowania, pracownicy i oddziały Bitpay,
 msgid "In order to verify your wallet backup, please type your password:"
 msgstr "W celu weryfikacji kopii zapasowej portfela wpisz swoje hasło:"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Incorrect address network"
 msgstr "Nieprawidłowy adres sieciowy"
 
@@ -866,11 +863,11 @@ msgstr "Nieprawidłowy adres sieciowy"
 msgid "Incorrect code format"
 msgstr "Niepoprawny format kodu"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Insufficient funds"
 msgstr "Nie ma wystarczającej ilości środków"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Insufficient funds for fee"
 msgstr "Niewystarczające środki na prowizję"
 
@@ -885,7 +882,7 @@ msgstr "Nieprawidłowy"
 msgid "Invalid account number"
 msgstr "Nieprawidłowy numer konta"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Invalid address"
 msgstr "Nieprawidłowy adres"
 
@@ -928,7 +925,7 @@ msgstr "Dołącz do portfela"
 msgid "Joining Wallet..."
 msgstr "Dołączanie do portfela..."
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Key already associated with an existing wallet"
 msgstr "Klucz jest już powiązany z istniejącym portfelem"
 
@@ -956,11 +953,11 @@ msgstr "Ładowanie..."
 msgid "locked by pending payments"
 msgstr "zablokowane przez oczekujące wypłaty"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Locktime in effect. Please wait to create a new spend proposal"
 msgstr "Skuteczna blokada. Proszę czekać, aby utworzyć nowy wniosek wypłaty"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Locktime in effect. Please wait to remove this spend proposal"
 msgstr "Skuteczna blokada. Proszę czekać, aby usunąć wniosek wypłaty"
 
@@ -995,11 +992,11 @@ msgstr "Wiadomość handlowa"
 msgid "Message"
 msgstr "Wiadomość"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Missing parameter"
 msgstr "Brak parametru"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Missing private keys to sign"
 msgstr "Brak kluczy prywatnych do podpisania"
 
@@ -1034,7 +1031,7 @@ msgstr "Musisz zrobić kopię zapasową"
 msgid "Network"
 msgstr "Sieć"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Network connection error"
 msgstr "Błąd połączenia z siecią"
 
@@ -1059,7 +1056,7 @@ msgstr "Brak transakcji"
 msgid "Normal"
 msgstr "Zwykła"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Not authorized"
 msgstr "Brak autoryzacji"
 
@@ -1263,7 +1260,7 @@ msgstr "Wpisz frazę odzyskiwania portfela"
 msgid "Please tap the words in order to confirm your backup phrase is correctly written."
 msgstr "Proszę wybrać słowa w celu potwierdzenia poprawności frazy odzyskiwania."
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Please upgrade Copay to perform this action"
 msgstr "Proszę uaktualnić Copay, by móc wykonać tę operację"
 
@@ -1299,7 +1296,7 @@ msgstr "Naciśnij ponownie, aby wyjść"
 msgid "Priority"
 msgstr "Priorytetowa"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Private key is encrypted, cannot sign"
 msgstr "Klucz prywatny jest zaszyfrowany, nie można podpisać"
 
@@ -1497,7 +1494,7 @@ msgstr "Wysyłanie transakcji"
 msgid "Sent"
 msgstr "Wysłane"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Server response could not be verified"
 msgstr "Odpowiedź serwera nie mogła zostać zweryfikowana"
 
@@ -1562,7 +1559,7 @@ msgstr "Współdzielony portfel"
 msgid "Show advanced options"
 msgstr "Pokaż opcje zaawansowane"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Signatures rejected by server"
 msgstr "Podpisy odrzucone przez serwer"
 
@@ -1583,15 +1580,15 @@ msgstr "hiszpański"
 msgid "Specify Recovery Phrase..."
 msgstr "Określ Frazę Odzyskiwania..."
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Spend proposal is not accepted"
 msgstr "Wniosek wypłaty nie został przyjęty"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Spend proposal not found"
 msgstr "Wniosek wypłaty nie został znaleziony"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Spending Password needed"
 msgstr "Wymagane Hasło Wypłat"
 
@@ -1664,7 +1661,7 @@ msgstr "Wypłata została usunięta przez jej twórcę"
 msgid "The recovery phrase could require a password to be imported"
 msgstr "Fraza odzyskiwania może wymagać hasła do zaimportowania"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "The request could not be understood by the server"
 msgstr "Wniosek nie został zrozumiany przez serwer"
 
@@ -1676,7 +1673,7 @@ msgstr "Oprogramowanie nie jest kontem, gdzie BitPay lub inne osoby trzecie mog�
 msgid "The software you are about to use functions as a free, open source, and multi-signature digital wallet."
 msgstr "Oprogramowanie to jest darmowym, open source, obsługującym multipodpisy cyfrowym portfelem."
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "The spend proposal is not pending"
 msgstr "Wniosek płatności nie jest oczekujący"
 
@@ -1756,7 +1753,7 @@ msgstr "Odczyt Touch ID nie powiódł się"
 msgid "Transaction"
 msgstr "Transakcja"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Transaction already broadcasted"
 msgstr "Transakcja została już wysłana"
 
@@ -1838,7 +1835,7 @@ msgstr "Oczekiwanie na Trezor..."
 msgid "Waiting..."
 msgstr "Oczekiwanie..."
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Wallet already exists"
 msgstr "Portfel już istnieje"
 
@@ -1875,15 +1872,15 @@ msgstr "Zaproszenie do portfela"
 msgid "Wallet Invitation is not valid!"
 msgstr "Zaproszenie do portfela jest nieważne!"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Wallet is full"
 msgstr "Portfel jest pełny"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Wallet is locked"
 msgstr "Portfel jest zablokowany"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Wallet is not complete"
 msgstr "Portfel jest niekompletny"
 
@@ -1895,7 +1892,7 @@ msgstr "Nazwa portfela"
 msgid "Wallet Name (at creation)"
 msgstr "Nazwa portfela (oryginalna)"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Wallet needs backup"
 msgstr "Portfel wymaga kopii zapasowej"
 
@@ -1903,11 +1900,11 @@ msgstr "Portfel wymaga kopii zapasowej"
 msgid "Wallet Network"
 msgstr "Sieć portfela"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Wallet not found"
 msgstr "Nie znaleziono portfela"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Wallet not registered at the wallet service. Recreate it from \"Create Wallet\" using \"Advanced Options\" to set your recovery phrase"
 msgstr "Portfel nie jest zarejestrowany w Wallet Service. Odtwórz go używając polecenia \"Utwórz portfel\" z wykorzystaniem frazy odzyskiwania w ustawieniach zaawansowanych"
 
@@ -1921,7 +1918,7 @@ msgstr "Preferencje Portfela"
 msgid "Wallet Recovery Phrase"
 msgstr "Fraza Odzyskiwania Portfela"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Wallet Recovery Phrase is invalid"
 msgstr "Fraza odzyskiwania portfela nieprawidłowa"
 
@@ -1930,7 +1927,7 @@ msgstr "Fraza odzyskiwania portfela nieprawidłowa"
 msgid "Wallet recovery phrase not available. You can still export it from Advanced &gt; Export."
 msgstr "Fraza odzyskiwania portfela niedostępna. Nadal można go wyeksportować w: Zaawansowane &gt; Eksport portfela."
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Wallet service not found"
 msgstr "Nie znaleziono serwera"
 
@@ -1988,7 +1985,7 @@ msgstr "Wpisz swoją frazę odzyskiwania portfela"
 msgid "Wrong number of recovery words:"
 msgstr "Nieprawidłowa ilość słów frazy:"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Wrong spending password"
 msgstr "Nieprawidłowe hasło wypłat"
 

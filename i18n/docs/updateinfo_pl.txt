@@ -1,4 +1,17 @@
-* Poprawiono kilka ikon
-* Zmieniono nieco interfejs użytkownika w "Otrzymaj"
-* Zaktualizowano tłumaczenia
-* Poprawiono błędy
+Wersja 2.2.0
+
+Nowe funkcje:
+
+ - Migracja do innego urządzenia za pomocą prostego kodu QR
+ - Obsługa szerokich ekranów i orientacji poziomej dla tabletów.
+
+Poprawki błędów:
+
+ * Poprawiono wydajność (usuwanie nieużywanej biblioteki js)
+ * Usuwanie historii pamięci podręcznej z portfela eksportu
+ * Sprawdzanie z papierowego portfela, czy kopia zapasowa została ukończona.
+ * Poprawiono pasek menu interfejsu użytkownika
+ * Dokładne dane dotyczące łącznej kwoty w oknie szczegółów transakcji
+ * Poprawiono przewijanie w kopii zapasowej dla małych urządzeń
+ * Poprawiono ładowanie podczas dodawania portfela
+ * Poprawiono ustawienia interfejsu użytkownika dla niektórych wersji systemu Android

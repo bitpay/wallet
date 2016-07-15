@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Japanese\n"
 "Language: ja\n"
-"PO-Revision-Date: 2016-07-01 08:53-0400\n"
+"PO-Revision-Date: 2016-07-15 09:26-0400\n"
 
 #: public/views/modals/search.html
 #: public/views/walletHome.html
@@ -34,10 +34,6 @@ msgstr "{{fee}} のビットコインネットワーク手数料が差し引か�
 #: public/views/includes/confirm-tx.html
 msgid "{{feeRateStr}} of the transaction"
 msgstr "{{feeRateStr}} のレート"
-
-#: public/views/walletHome.html
-msgid "{{index.completeHistory.length - index.txHistory.length}} more"
-msgstr "あと {{index.completeHistory.length - index.txHistory.length}}"
 
 #: public/views/copayers.html
 #: public/views/includes/walletInfo.html
@@ -173,7 +169,7 @@ msgstr "表示通貨"
 msgid "Amount"
 msgstr "金額"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Amount below minimum allowed"
 msgstr "送金可能最少額を下回っています"
 
@@ -277,8 +273,8 @@ msgid "Browser unsupported"
 msgstr "ブラウザ未対応"
 
 #: public/views/includes/sidebar.html
-msgid "Buy &amp; Sell"
-msgstr "購入&amp;売却"
+msgid "Buy and Sell"
+msgstr "購入と売却"
 
 #: src/js/services/onGoingProcess.js
 msgid "Calculating fee"
@@ -384,7 +380,7 @@ msgstr "Coinbase に接続中…"
 msgid "Connecting to Glidera..."
 msgstr "Glidera に接続中…"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Connection reset by peer"
 msgstr "接続がピアによってリセットされました"
 
@@ -392,15 +388,15 @@ msgstr "接続がピアによってリセットされました"
 msgid "Continue"
 msgstr "続ける"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Copayer already in this wallet"
 msgstr "ウォレット参加者が既に存在しています。"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Copayer already voted on this spend proposal"
 msgstr "ウォレット参加者が既に送金の提案の意思表明をしています。"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Copayer data mismatch"
 msgstr "ウォレット参加者のデータ不整合"
 
@@ -410,6 +406,7 @@ msgstr "ウォレット参加者"
 
 #: src/js/controllers/copayers.js
 #: src/js/controllers/export.js
+#: src/js/controllers/preferencesInformation.js
 #: src/js/controllers/walletHome.js
 msgid "Copied to clipboard"
 msgstr "クリップボードにコピーしました"
@@ -438,7 +435,7 @@ msgstr "Wallet Serviceにアクセスできませんでした: 見つかりま�
 msgid "Could not broadcast payment"
 msgstr "送金を配信できませんでした。"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Could not build transaction"
 msgstr "取引を作成できませんでした。"
 
@@ -650,7 +647,7 @@ msgstr "メールによるウォレットのお知らせ"
 msgid "Email Notifications"
 msgstr "メールのお知らせ"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Empty addresses limit reached. New addresses cannot be generated."
 msgstr "未使用アドレスを生成しすぎたため、これ以上アドレスを生成することができません。"
 
@@ -771,7 +768,7 @@ msgstr "フランス語"
 msgid "From the destination device, go to Add wallet &gt; Import wallet and scan this QR code"
 msgstr "移行先の端末では、ウォレットを追加から、ウォレットをインポートの画面でQRをスキャンして下さい。"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Funds are locked by pending spend proposals"
 msgstr "協議中の送金の提案により、資金がロックされています。"
 
@@ -858,7 +855,7 @@ msgstr "和訳は簡単な要約と考えて下さい。"
 msgid "In order to verify your wallet backup, please type your password:"
 msgstr "ウォレットのバックアップを確認するためには、復元フレーズ用のパスワードをご入力下さい。"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Incorrect address network"
 msgstr "アドレスのネットワークが不正です。"
 
@@ -867,11 +864,11 @@ msgstr "アドレスのネットワークが不正です。"
 msgid "Incorrect code format"
 msgstr "コードの形式が異なります"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Insufficient funds"
 msgstr "残高不足"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Insufficient funds for fee"
 msgstr "手数料付けるには残高が足りません"
 
@@ -886,7 +883,7 @@ msgstr "無効"
 msgid "Invalid account number"
 msgstr "無効なポケット番号です。"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Invalid address"
 msgstr "不正アドレス"
 
@@ -929,7 +926,7 @@ msgstr "共有ウォレットに参加"
 msgid "Joining Wallet..."
 msgstr "ウォレット参加中…"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Key already associated with an existing wallet"
 msgstr "この鍵は既存のウォレットにて登録されています"
 
@@ -957,11 +954,11 @@ msgstr "読み込み中..."
 msgid "locked by pending payments"
 msgstr "未対応送金の提案によりロック中"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Locktime in effect. Please wait to create a new spend proposal"
 msgstr "Locktime待ち中です。新しい送金の提案が作成できるまであとしばらくお待ち下さい。"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Locktime in effect. Please wait to remove this spend proposal"
 msgstr "Locktime待ち中です。この送金の提案が削除できるまであとしばらくお待ち下さい。"
 
@@ -996,11 +993,11 @@ msgstr "お店からのメッセージ："
 msgid "Message"
 msgstr "メッセージ"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Missing parameter"
 msgstr "不足しているパラメータ"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Missing private keys to sign"
 msgstr "署名するための秘密鍵がありません。"
 
@@ -1035,7 +1032,7 @@ msgstr "バックアップを行う必要があります。"
 msgid "Network"
 msgstr "ネットワーク"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Network connection error"
 msgstr "ネットワーク接続エラー"
 
@@ -1060,7 +1057,7 @@ msgstr "取引がありません"
 msgid "Normal"
 msgstr "通常"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Not authorized"
 msgstr "権限がありません。"
 
@@ -1265,7 +1262,7 @@ msgstr "復元フレーズをご入力下さい"
 msgid "Please tap the words in order to confirm your backup phrase is correctly written."
 msgstr "正しい順番に単語をタップして、ちゃんと書き留めてあることをご確認下さい。"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Please upgrade Copay to perform this action"
 msgstr "この操作を実行するにはCopayを最新バージョンに更新してください"
 
@@ -1301,7 +1298,7 @@ msgstr "もう一度押して終了"
 msgid "Priority"
 msgstr "優先"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Private key is encrypted, cannot sign"
 msgstr "秘密鍵が暗号化されており署名できません。"
 
@@ -1499,7 +1496,7 @@ msgstr "取引送信中"
 msgid "Sent"
 msgstr "送金済み"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Server response could not be verified"
 msgstr "サーバーからの返答を検証できませんでした"
 
@@ -1566,7 +1563,7 @@ msgstr "共有ウォレットに参加"
 msgid "Show advanced options"
 msgstr "詳細設定を表示"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Signatures rejected by server"
 msgstr "サーバーより署名が却下されました。"
 
@@ -1587,15 +1584,15 @@ msgstr "スペイン語"
 msgid "Specify Recovery Phrase..."
 msgstr "復元フレーズを指定…"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Spend proposal is not accepted"
 msgstr "送金の提案が受諾されませんでした。"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Spend proposal not found"
 msgstr "送金の提案が見つかりませんでした。"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Spending Password needed"
 msgstr "パスワードが必要"
 
@@ -1668,7 +1665,7 @@ msgstr "送金の提案が作成者により削除されました"
 msgid "The recovery phrase could require a password to be imported"
 msgstr "復元フレーズにパスワードをかけることができるのでかけてある場合はインポート時に必要です。"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "The request could not be understood by the server"
 msgstr "サーバーが要求を処理できませんでした。"
 
@@ -1680,7 +1677,7 @@ msgstr "BitPay, Inc. 若しくはその他の第三者がアクセス権限を�
 msgid "The software you are about to use functions as a free, open source, and multi-signature digital wallet."
 msgstr "当ソフトウェアは無料のオープンソースプロジェクトで、マルチシグネチャを用いるデジタルウォレットです。"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "The spend proposal is not pending"
 msgstr "送金の提案が協議中ではありません。"
 
@@ -1760,7 +1757,7 @@ msgstr "Touch ID が失敗しました。"
 msgid "Transaction"
 msgstr "取引"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Transaction already broadcasted"
 msgstr "取引は既に配信されました。"
 
@@ -1842,7 +1839,7 @@ msgstr "Trezor を待っています..."
 msgid "Waiting..."
 msgstr "少々お待ち下さい…"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Wallet already exists"
 msgstr "既存のウォレットです"
 
@@ -1879,15 +1876,15 @@ msgstr "ウォレット招待"
 msgid "Wallet Invitation is not valid!"
 msgstr "ウォレット招待コードが無効です！"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Wallet is full"
 msgstr "ウォレットがいっぱいです。"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Wallet is locked"
 msgstr "ウォレットがロックされています。"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Wallet is not complete"
 msgstr "ウォレットが未完成です。"
 
@@ -1899,7 +1896,7 @@ msgstr "ウォレット名"
 msgid "Wallet Name (at creation)"
 msgstr "ウォレット名 (作成時)"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Wallet needs backup"
 msgstr "ウォレットバックアップが必要"
 
@@ -1907,11 +1904,11 @@ msgstr "ウォレットバックアップが必要"
 msgid "Wallet Network"
 msgstr "ウォレットのネットワーク"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Wallet not found"
 msgstr "ウォレットが見つかりません。"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Wallet not registered at the wallet service. Recreate it from \"Create Wallet\" using \"Advanced Options\" to set your recovery phrase"
 msgstr "このウォレットは Wallet Service にて登録されていません。再び「新規作成」メニューから詳細設定を選び、復元フレーズをご入力下さい。"
 
@@ -1925,7 +1922,7 @@ msgstr "ウォレット個別設定"
 msgid "Wallet Recovery Phrase"
 msgstr "復元フレーズ"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Wallet Recovery Phrase is invalid"
 msgstr "ウォレットシードが不正です。"
 
@@ -1934,7 +1931,7 @@ msgstr "ウォレットシードが不正です。"
 msgid "Wallet recovery phrase not available. You can still export it from Advanced &gt; Export."
 msgstr "ウォレットの復元フレーズがありません。バックアップファイルの作成は「上級者向け」⇒「エクスポート」からアクセスできます。"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Wallet service not found"
 msgstr "Wallet serviceが見つかりません。"
 
@@ -1992,7 +1989,7 @@ msgstr "復元フレーズを書き留めて下さい"
 msgid "Wrong number of recovery words:"
 msgstr "単語の数が間違っています："
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Wrong spending password"
 msgstr "不正なパスワード"
 

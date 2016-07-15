@@ -1,4 +1,0 @@
-* Lepší ikony
-* Drobné úpravy uživatelské prostředí pro příjem plateb
-* Úprava překladů
-* Opravy ostatních chyb

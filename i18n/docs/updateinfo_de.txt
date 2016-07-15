@@ -1,4 +1,17 @@
-* Einige Symbole verbessert
-* Kleine UI-Änderungen beim Empfang
-* Übersetzungen aktualisiert
-* Fehler behoben
+Release v2.2.0
+
+Neue Funktionen:
+
+ - Migration auf ein anderes Gerät mit einem schlichtem QR-code
+ - Unterstützt große Bildschirme und Querformat für Tablets.
+
+Fehlerbehebungen:
+
+ * Verbessert die Leistung (entfernt nicht verwendete Js-Bibliothek)
+ * Entfernt Cachehistorie von exportierter Wallet
+ * Prüft bei Paperwallet Leeren auf durchgeführte Sicherung.
+ * Seitenleiste repariert
+ * Volle Genauigkeit bei TX-Details
+ * Bildlauf der Sicherung für kleine Geräte repariert
+ * Fortschrittsanzeige beim Erstellen/Import/Join einer Wallet repariert
+ * UI der Einstellungen für einige Android-Versionen repariert
