@@ -18,13 +18,16 @@ angular.module('copayApp.controllers').controller('send2Controller', function($s
 
   $scope.toggleAlternative = function() {
     $scope.showAlternative = !$scope.showAlternative;
+    var amount;
 
     if ($scope.showAlternative) {
       $scope.alternativeAmount = $scope.amountResult;
-      $scope.alternativeResult = isOperator(lodash.last($scope.amount)) ? evaluate($scope.amount.slice(0, -1)) : evaluate($scope.amount);
+      amount = processFormat($scope.amount);
+      $scope.alternativeResult = isOperator(lodash.last(amount)) ? evaluate(amount.slice(0, -1)) : evaluate(amount);
     } else {
       $scope.amount = $scope.alternativeResult;
-      $scope.amountResult = isOperator(lodash.last($scope.alternativeAmount)) ? evaluate($scope.alternativeAmount.slice(0, -1)) : evaluate($scope.alternativeAmount);
+      amount = processFormat($scope.alternativeAmount);
+      $scope.amountResult = isOperator(lodash.last(amount)) ? evaluate(amount.slice(0, -1)) : evaluate(amount);
     }
   };
 
@@ -57,16 +60,16 @@ angular.module('copayApp.controllers').controller('send2Controller', function($s
   };
 
   function isOperator(val) {
-    var regex = /[\/\-\+\*]/;
+    var regex = /[\/\-\+\x\*]/;
     var match = regex.exec(val);
     if (match) return true;
     return false;
   };
 
   $scope.removeDigit = function() {
-    var amount = $scope.showAlternative ? $scope.alternativeAmount.toString() : $scope.amount.toString();
+    var amount = $scope.showAlternative ? $scope.alternativeAmount : $scope.amount;
 
-    if (amount && amount.length == 0) {
+    if (amount && amount.toString().length == 0) {
       resetAmount();
       return;
     }
@@ -101,7 +104,8 @@ angular.module('copayApp.controllers').controller('send2Controller', function($s
       }
     }
 
-    var result = evaluate(val);
+    var formatedValue = processFormat(val);
+    var result = evaluate(formatedValue);
 
     if (lodash.isNumber(result)) {
       $scope.amount = $scope.alternativeAmount = val;
@@ -118,6 +122,10 @@ angular.module('copayApp.controllers').controller('send2Controller', function($s
       return null;
     }
     return result;
+  };
+
+  function processFormat(val) {
+    return val.toString().replace('x', '*');
   };
 
   $scope.close = function() {
