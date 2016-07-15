@@ -35,11 +35,10 @@
     -->
 
     <div id="walletHome" class="walletHome tab-view tab-in">
-      <ion-content on-release="index.allowSideBar = true; index.allowPullToRefresh = true;"
+      <ion-content on-release="index.allowPullToRefresh = true;"
         on-drag-right="index.allowRefresher()" delegate-handle="my-handle" overflow-scroll="true">
         <ion-refresher
           ng-if="index.allowPullToRefresh && index.isCordova"
-          on-pulling="index.allowSideBar = false"
           pulling-icon="ion-ios-refresh"
           spinner="ios-small"
           on-refresh="index.updateAll({triggerTxUpdate: true})">
