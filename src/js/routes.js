@@ -539,16 +539,17 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         window.addEventListener('native.keyboardhide', function() {
           $timeout(function() {
             $rootScope.shouldHideMenuBar = false; //show menu bar when keyboard is hidden with back button action on send screen
-          }, 300);
+          }, 100);
         });
 
         window.addEventListener('native.keyboardshow', function() {
-          $rootScope.shouldHideMenuBar = true; //hide menu bar when keyboard opens with back button action on send screen
-          $rootScope.$digest();
+          $timeout(function() {
+            $rootScope.shouldHideMenuBar = true; //hide menu bar when keyboard opens with back button action on send screen
+          }, 300);
         });
 
         if (window.cordova.plugins.Keyboard) {
-          cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
+          cordova.plugins.Keyboard.hideKeyboardAccessoryBar(false);
           cordova.plugins.Keyboard.disableScroll(false);
         }
 
