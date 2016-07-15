@@ -8,10 +8,10 @@
 
   <div class="create-tab small-only-text-center" ng-hide="create.hideTabs">
     <div class="row">
-      <div class="tab-container small-6 medium-6 large-6" ng-class="{'selected': totalCopayers == 1}">
+      <div class="tab-container small-6 medium-6 large-6 columns" ng-class="{'selected': totalCopayers == 1}">
         <a href ng-click="create.setTotalCopayers(1)" translate>Personal Wallet</a>
       </div>
-      <div class="tab-container small-6 medium-6 large-6" ng-class="{'selected': totalCopayers != 1}">
+      <div class="tab-container small-6 medium-6 large-6 columns" ng-class="{'selected': totalCopayers != 1}">
         <a href ng-click="create.setTotalCopayers(3)" translate>Shared Wallet</a>
       </div>
     </div>
@@ -160,5 +160,5 @@
       </div> <!-- large-12 columns -->
     </div> <!-- row -->
   </form>
-</div>
 <div class="extra-margin-bottom"></div>
+</div>
