@@ -29,6 +29,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   ret.isWindowsPhoneApp = platformInfo.isWP;
   ret.countDown = null;
   ret.sendMaxInfo = {};
+  ret.showAlternative = false;
   var vanillaScope = ret;
 
   var disableScannerListener = $rootScope.$on('dataScanned', function(event, data) {
@@ -231,18 +232,6 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   };
 
   // Send
-
-  this.canShowAlternative = function() {
-    return $scope.showAlternative;
-  };
-
-  this.showAlternative = function() {
-    $scope.showAlternative = true;
-  };
-
-  this.hideAlternative = function() {
-    $scope.showAlternative = false;
-  };
 
   this.resetError = function() {
     this.error = this.success = null;
