@@ -32,9 +32,7 @@ webkitbuilds/*
 public/fonts
 
 # chrome extensions
-browser-extensions/chrome/copay-chrome-extension
-browser-extensions/chrome/copay-chrome-extension.zip
-browser-extensions/chrome/copay-chrome-extension.zip.sig
+chrome-app/build/*
 
 # Logs
 logs
