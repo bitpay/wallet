@@ -420,8 +420,8 @@
                     <span translate>Amount</span><span ng-show="showAlternative"> [{{home.alternativeIsoCode}}]</span>
                   </label>
                   <div class="input">
-                    <input type="number" ng-show="!showAlternative" id="amount" ng-disabled="home.lockAmount" name="amount" ng-attr-placeholder="{{'Amount in'|translate}} {{home.unitName}}" ng-model="_amount" valid-amount required autocomplete="off" ng-focus="home.formFocus('amount')" ng-blur="home.formFocus(false)" ignore-mouse-wheel>
-                    <input type="number" ng-show="showAlternative" id="alternative" ng-disabled="!home.isRateAvailable || home.lockAmount" name="alternative" ng-attr-placeholder="{{'Amount in'|translate}} {{ home.alternativeName }}" ng-model="_alternative" required autocomplete="off" ng-focus="home.formFocus('amount')" ng-blur="home.formFocus(false)" ignore-mouse-wheel>
+                    <input type="number" ng-show="!showAlternative" id="amount" ng-disabled="home.lockAmount" name="amount" ng-attr-placeholder="{{'Amount in'|translate}} {{home.unitName}}" ng-model="_amount" valid-amount required autocomplete="off" ng-focus="openInputAmountModal()" ignore-mouse-wheel>
+                    <input type="number" ng-show="showAlternative" id="alternative" ng-disabled="!home.isRateAvailable || home.lockAmount" name="alternative" ng-attr-placeholder="{{'Amount in'|translate}} {{ home.alternativeName }}" ng-model="_alternative" required autocomplete="off" ng-focus="openInputAmountModal()" ignore-mouse-wheel>
                     <a class="postfix button" ng-show="!showAlternative" ng-style="{'background-color':index.backgroundColor}" ng-click="showAlternative = !showAlternative">{{home.unitName}}</a>
                     <a class="postfix button black" ng-show="showAlternative" ng-click="showAlternative = !showAlternative">{{home.alternativeIsoCode}}</a>
                   </div>

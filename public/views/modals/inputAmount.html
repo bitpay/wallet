@@ -1,26 +1,23 @@
-<ion-modal-view ng-controller="amountInputController" ng-init=init()>
-  <ion-content>
-    <ion-header-bar align-title="center" class="tab-bar" ng-style="{'background-color':index.backgroundColor}">
-      <div class="left-small">
-        <a class="p10" ng-click="close()"><span class="text-close" translate>Close</span></a>
-      </div>
-      <h1 class="title ellipsis" translate>Enter amount</h1>
-      <div class="right-small m5r" ng-click="toggleAlternative()">
-        <a class="postfix" ng-show="showAlternative">{{alternativeIsoCode}}</a>
-        <a class="postfix" ng-show="!showAlternative">{{unitName}}</a>
-      </div>
-    </ion-header-bar>
-
-    <div class="send-amount row" ng-style="{'background-color':index.backgroundColor}">
-      <div class="size-48" ng-show="!showAlternative">{{amount}}</div>
-      <div class="size-21 text-light" ng-show="!showAlternative">{{amountResult}} {{alternativeIsoCode}}</div>
-      <div class="size-48" ng-show="showAlternative">${{alternativeAmount}}</div>
-      <div class="size-21 text-light" ng-show="showAlternative">{{alternativeResult}} {{unitName}}</div>
+<ion-modal-view ng-controller="inputAmountController" ng-init=init()>
+  <ion-header-bar align-title="center" class="tab-bar" ng-style="{'background-color':color}">
+    <div class="left-small">
+      <a ng-click="cancel()" class="p10">
+        <span class="text-close" translate>Close</span>
+      </a>
     </div>
+    <h1 class="title ellipsis" translate>Enter amount</h1>
+    <div class="right-small m5r" ng-click="toggleAlternative()">
+      <a class="postfix" ng-show="showAlternativeAmount">{{alternativeIsoCode}}</a>
+      <a class="postfix" ng-show="!showAlternativeAmount">{{unitName}}</a>
+    </div>
+  </ion-header-bar>
 
-    <div class="button-content text-center df">
-      <button class="button expand button-balanced" ng-click="" translate>Request</button>
-      <button class="button expand button-balanced" ng-click="" translate>Send</button>
+  <div class="content" ng-style="{'background-color':'#E4E8EC'}">
+    <div class="send-amount row" ng-style="{'background-color':index.backgroundColor}">
+      <div class="size-48" ng-show="!showAlternativeAmount">{{amount}}</div>
+      <div class="size-21 text-light" ng-show="!showAlternativeAmount">{{amountResult}} {{alternativeIsoCode}}</div>
+      <div class="size-48" ng-show="showAlternativeAmount">${{alternativeAmount}}</div>
+      <div class="size-21 text-light" ng-show="showAlternativeAmount">{{alternativeResult}} {{unitName}}</div>
     </div>
 
     <div class="button-content text-center size-10 df">
@@ -52,5 +49,15 @@
         <button class="button expand button-light" ng-click="removeDigit()"><i class="icon ion-backspace-outline"></i></button>
       </div>
     </div>
-  </ion-content>
+
+    <div class="row p20t">
+      <div class="columns">
+        <button class="round expand m0"
+          ng-style="{'background-color':index.backgroundColor}"
+          ng-disabled="alternativeResult == 0 && amountResult == 0"
+          ng-click="save()"
+          translate>Save</button>
+      </div>
+    </div>
+  </div>
 </ion-modal-view>
