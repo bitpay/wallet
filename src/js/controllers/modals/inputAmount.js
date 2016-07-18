@@ -1,9 +1,10 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('amountInputController', function($scope, lodash, configService, go, rateService) {
+angular.module('copayApp.controllers').controller('inputAmountController', function($scope, lodash, configService, go, rateService) {
   var unitToSatoshi;
   var satToUnit;
   var unitDecimals;
+  var self = $scope.self;
 
   $scope.init = function() {
     var config = configService.getSync().wallet.settings;
@@ -12,15 +13,15 @@ angular.module('copayApp.controllers').controller('amountInputController', funct
     unitToSatoshi = config.unitToSatoshi;
     satToUnit = 1 / unitToSatoshi;
     unitDecimals = config.unitDecimals;
-    $scope.showAlternative = false;
+    console.log($scope.showAlternativeAmount);
     resetAmount();
   };
 
   $scope.toggleAlternative = function() {
-    $scope.showAlternative = !$scope.showAlternative;
+    $scope.showAlternativeAmount = !$scope.showAlternativeAmount;
     var amount;
 
-    if ($scope.showAlternative) {
+    if ($scope.showAlternativeAmount) {
       $scope.alternativeAmount = $scope.amountResult;
       amount = processFormat($scope.amount);
       $scope.alternativeResult = isOperator(lodash.last(amount)) ? evaluate(amount.slice(0, -1)) : evaluate(amount);
@@ -32,7 +33,7 @@ angular.module('copayApp.controllers').controller('amountInputController', funct
   };
 
   $scope.pushDigit = function(digit) {
-    var amount = $scope.showAlternative ? $scope.alternativeAmount : $scope.amount;
+    var amount = $scope.showAlternativeAmount ? $scope.alternativeAmount : $scope.amount;
 
     if (amount.toString().length >= 10) return;
     if (amount == 0 && digit == 0) return;
@@ -42,7 +43,7 @@ angular.module('copayApp.controllers').controller('amountInputController', funct
   };
 
   $scope.pushOperator = function(operator) {
-    if ($scope.showAlternative) {
+    if ($scope.showAlternativeAmount) {
       if (!$scope.alternativeAmount || $scope.alternativeAmount.length == 0) return;
       $scope.alternativeAmount = _pushOperator($scope.alternativeAmount);
     } else {
@@ -67,16 +68,16 @@ angular.module('copayApp.controllers').controller('amountInputController', funct
   };
 
   $scope.removeDigit = function() {
-    var amount = $scope.showAlternative ? $scope.alternativeAmount : $scope.amount;
+    var amount = $scope.showAlternativeAmount ? $scope.alternativeAmount : $scope.amount;
 
     if (amount && amount.toString().length == 0) {
       resetAmount();
       return;
     }
 
-    amount = amount.slice(0, -1);
+    amount = amount.toString().slice(0, -1);
 
-    if ($scope.showAlternative)
+    if ($scope.showAlternativeAmount)
       $scope.alternativeAmount = amount;
     else
       $scope.amount = amount;
@@ -94,7 +95,7 @@ angular.module('copayApp.controllers').controller('amountInputController', funct
       return;
     }
 
-    if ($scope.showAlternative) {
+    if ($scope.showAlternativeAmount) {
       if ($scope.alternativeAmount == 0 && val == '.') {
         $scope.alternativeAmount += val;
       }
@@ -128,7 +129,22 @@ angular.module('copayApp.controllers').controller('amountInputController', funct
     return val.toString().replace('x', '*');
   };
 
-  $scope.close = function() {
-    go.walletHome();
+  $scope.save = function() {
+    if ($scope.showAlternativeAmount) {
+      if ($scope.alternativeResult == 0) return;
+
+      self.showAlternativeAmount = true;
+      self.setForm(null, $scope.alternativeResult, null);
+    } else {
+      if ($scope.amountResult == 0) return;
+
+      self.showAlternativeAmount = false;
+      self.setForm(null, $scope.amountResult, null);
+    }
+    $scope.cancel();
+  };
+
+  $scope.cancel = function() {
+    $scope.inputAmountModal.hide();
   };
 });
