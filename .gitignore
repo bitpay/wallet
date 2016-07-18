@@ -33,6 +33,7 @@ public/fonts
 
 # chrome extensions
 chrome-app/build/*
+chrome-app/*zip
 
 # Logs
 logs
