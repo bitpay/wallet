@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('send2Controller', function($scope, lodash, configService, go, rateService) {
+angular.module('copayApp.controllers').controller('amountInputController', function($scope, lodash, configService, go, rateService) {
   var unitToSatoshi;
   var satToUnit;
   var unitDecimals;
