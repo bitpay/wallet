@@ -48,7 +48,7 @@ module.exports = function(grunt) {
         command: 'cat  coverage/report-lcov/lcov.info |./node_modules/coveralls/bin/coveralls.js'
       },
       chrome: {
-        command: 'browser-extensions/chrome/build.sh'
+        command: 'make -C chrome-app '
       },
       wp: {
         command: 'make -C cordova wp',
