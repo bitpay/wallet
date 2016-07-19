@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('inputAmountController', function($scope, lodash, configService, go, rateService) {
+angular.module('copayApp.controllers').controller('inputAmountController', function($rootScope, $scope, lodash, configService, go, rateService) {
   var unitToSatoshi;
   var satToUnit;
   var unitDecimals;
@@ -10,10 +10,10 @@ angular.module('copayApp.controllers').controller('inputAmountController', funct
     var config = configService.getSync().wallet.settings;
     $scope.unitName = config.unitName;
     $scope.alternativeIsoCode = config.alternativeIsoCode;
+    $scope.specificAmount = $scope.specificAlternativeAmount = null;
     unitToSatoshi = config.unitToSatoshi;
     satToUnit = 1 / unitToSatoshi;
     unitDecimals = config.unitDecimals;
-    console.log($scope.showAlternativeAmount);
     resetAmount();
   };
 
@@ -23,11 +23,11 @@ angular.module('copayApp.controllers').controller('inputAmountController', funct
 
     if ($scope.showAlternativeAmount) {
       $scope.alternativeAmount = $scope.amountResult;
-      amount = processFormat($scope.amount);
+      amount = format($scope.amount);
       $scope.alternativeResult = isOperator(lodash.last(amount)) ? evaluate(amount.slice(0, -1)) : evaluate(amount);
     } else {
       $scope.amount = $scope.alternativeResult;
-      amount = processFormat($scope.alternativeAmount);
+      amount = format($scope.alternativeAmount);
       $scope.amountResult = isOperator(lodash.last(amount)) ? evaluate(amount.slice(0, -1)) : evaluate(amount);
     }
   };
@@ -105,14 +105,22 @@ angular.module('copayApp.controllers').controller('inputAmountController', funct
       }
     }
 
-    var formatedValue = processFormat(val);
+    var formatedValue = format(val);
     var result = evaluate(formatedValue);
 
     if (lodash.isNumber(result)) {
       $scope.amount = $scope.alternativeAmount = val;
-      $scope.alternativeResult = parseFloat((rateService.fromFiat(result, $scope.alternativeIsoCode) * satToUnit).toFixed(unitDecimals), 10);
-      $scope.amountResult = parseFloat((rateService.toFiat(result * unitToSatoshi, $scope.alternativeIsoCode)).toFixed(2), 10);
+      $scope.alternativeResult = fromFiat(result);
+      $scope.amountResult = toFiat(result);
     }
+  };
+
+  function fromFiat(val) {
+    return parseFloat((rateService.fromFiat(val, $scope.alternativeIsoCode) * satToUnit).toFixed(unitDecimals), 10);
+  };
+
+  function toFiat(val) {
+    return parseFloat((rateService.toFiat(val * unitToSatoshi, $scope.alternativeIsoCode)).toFixed(2), 10);
   };
 
   function evaluate(val) {
@@ -125,23 +133,27 @@ angular.module('copayApp.controllers').controller('inputAmountController', funct
     return result;
   };
 
-  function processFormat(val) {
+  function format(val) {
     return val.toString().replace('x', '*');
   };
 
-  $scope.save = function() {
-    if ($scope.showAlternativeAmount) {
-      if ($scope.alternativeResult == 0) return;
+  $scope.finish = function() {
+    var amount = toFiat($scope.alternativeResult);
+    var alternativeAmount = $scope.showAlternative ? fromFiat(amount) : toFiat(amount);
 
-      self.showAlternativeAmount = true;
-      self.setForm(null, $scope.alternativeResult, null);
+    if ($scope.address) {
+      $scope.specificAmount = amount;
+      $scope.specificAlternativeAmount = alternativeAmount;
     } else {
-      if ($scope.amountResult == 0) return;
-
-      self.showAlternativeAmount = false;
-      self.setForm(null, $scope.amountResult, null);
+      if ($scope.showAlternativeAmount) {
+        self.showAlternative = true;
+        self.setForm(null, alternativeAmount, null);
+      } else {
+        self.showAlternative = false;
+        self.setForm(null, amount, null);
+      }
+      $scope.cancel();
     }
-    $scope.cancel();
   };
 
   $scope.cancel = function() {

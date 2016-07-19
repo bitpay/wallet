@@ -216,21 +216,6 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     }
   };
 
-  this.openCustomizedAmountModal = function(addr) {
-    var fc = profileService.focusedClient;
-
-    $scope.color = fc.backgroundColor;
-    $scope.self = self;
-    $scope.addr = addr;
-
-    $ionicModal.fromTemplateUrl('views/modals/customized-amount.html', {
-      scope: $scope
-    }).then(function(modal) {
-      $scope.customAmountModal = modal;
-      $scope.customAmountModal.show();
-    });
-  };
-
   // Send
 
   this.resetError = function() {
@@ -544,10 +529,11 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     });
   };
 
-  $scope.openInputAmountModal = function() {
+  $scope.openInputAmountModal = function(addr) {
     var fc = profileService.focusedClient;
     $scope.color = fc.backgroundColor;
     $scope.showAlternativeAmount = $scope.showAlternative || null;
+    $scope.address = addr || null;
     $scope.self = self;
 
     $ionicModal.fromTemplateUrl('views/modals/inputAmount.html', {
