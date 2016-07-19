@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('inputAmountController', function($rootScope, $scope, lodash, configService, go, rateService) {
+angular.module('copayApp.controllers').controller('inputAmountController', function($rootScope, $scope, platformInfo, lodash, configService, go, rateService) {
   var unitToSatoshi;
   var satToUnit;
   var unitDecimals;
@@ -11,10 +11,17 @@ angular.module('copayApp.controllers').controller('inputAmountController', funct
     $scope.unitName = config.unitName;
     $scope.alternativeIsoCode = config.alternativeIsoCode;
     $scope.specificAmount = $scope.specificAlternativeAmount = null;
+    $scope.isCordova = platformInfo.isCordova;
     unitToSatoshi = config.unitToSatoshi;
     satToUnit = 1 / unitToSatoshi;
     unitDecimals = config.unitDecimals;
     resetAmount();
+  };
+
+  $scope.shareAddress = function(uri) {
+    if ($scope.isCordova) {
+      window.plugins.socialsharing.share(uri, null, null, null);
+    }
   };
 
   $scope.toggleAlternative = function() {
@@ -110,8 +117,8 @@ angular.module('copayApp.controllers').controller('inputAmountController', funct
 
     if (lodash.isNumber(result)) {
       $scope.amount = $scope.alternativeAmount = val;
-      $scope.alternativeResult = fromFiat(result);
       $scope.amountResult = toFiat(result);
+      $scope.alternativeResult = fromFiat(result);
     }
   };
 
@@ -138,20 +145,28 @@ angular.module('copayApp.controllers').controller('inputAmountController', funct
   };
 
   $scope.finish = function() {
-    var amount = toFiat($scope.alternativeResult);
-    var alternativeAmount = $scope.showAlternative ? fromFiat(amount) : toFiat(amount);
+    var amount;
+    var alternativeAmount;
+
+    if ($scope.showAlternativeAmount) {
+      amount = $scope.alternativeResult;
+      alternativeAmount = evaluate(format($scope.alternativeAmount));
+    } else {
+      amount = evaluate(format($scope.amount));
+      alternativeAmount = toFiat(amount);
+    }
 
     if ($scope.address) {
+      var satToBtc = 1 / 100000000;
+      var amountSat = parseInt((amount * unitToSatoshi).toFixed(0));
+      if ($scope.unitName == 'bits') {
+        $scope.specificAmountBtc = (amountSat * satToBtc).toFixed(8);
+      }
+
       $scope.specificAmount = amount;
       $scope.specificAlternativeAmount = alternativeAmount;
     } else {
-      if ($scope.showAlternativeAmount) {
-        self.showAlternative = true;
-        self.setForm(null, alternativeAmount, null);
-      } else {
-        self.showAlternative = false;
-        self.setForm(null, amount, null);
-      }
+      self.setAmount(amount, alternativeAmount, $scope.showAlternativeAmount);
       $scope.cancel();
     }
   };

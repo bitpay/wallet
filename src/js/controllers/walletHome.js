@@ -346,6 +346,18 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     }, 1);
   };
 
+  this.setAmount = function(amount, alternativeAmount, useAlternativeAmount) {
+    var amountResult;
+    if (useAlternativeAmount) {
+      amountResult = parseFloat((rateService.fromFiat(alternativeAmount, self.alternativeIsoCode) * self.satToUnit).toFixed(self.unitDecimals), 10);
+      $scope.showAlternative = true;
+    } else {
+      amountResult = amount;
+      $scope.showAlternative = false;
+    }
+    self.setForm(null, amountResult, null);
+  };
+
   this.submitForm = function() {
     if (!$scope._amount || !$scope._address) return;
     var client = profileService.focusedClient;
