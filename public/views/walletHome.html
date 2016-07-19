@@ -303,9 +303,9 @@
             </button>
           </div>
           <div class="small-12 columns" ng-show="home.addr">
-            <button class="button expand small round m10b" ng-click="home.openCustomizedAmountModal(home.addr)"
-            ng-style="{'background-color':index.backgroundColor}"
-            ng-disabled="home.generatingAddress">
+            <button class="button expand small round m10b" ng-click="openInputAmountModal(home.addr)"
+              ng-style="{'background-color':index.backgroundColor}"
+              ng-disabled="home.generatingAddress">
               <span translate>Request a specific amount</span>
             </button>
           </div>
@@ -407,11 +407,11 @@
             <div class="row" ng-init="home.hideAlternative()">
               <div class="large-12 medium-12 columns">
                 <div class="right" ng-hide="sendForm.amount.$pristine && !sendForm.amount.$modelValue ">
-                  <span class="has-error right size-12" ng-if="sendForm.amount.$invalid">
+                  <span class="has-error right size-12" ng-show="sendForm.amount.$invalid">
                     <i class="icon-close-circle size-14"></i>
                     <span clas="vm" translate>Not valid</span>
                   </span>
-                  <small class="text-primary right" ng-if="!sendForm.amount.$invalid && !sendForm.alternative.$invalid">
+                  <small class="text-primary right" ng-show="!sendForm.amount.$invalid && !sendForm.alternative.$invalid">
                     <i class="icon-checkmark-circle size-14"></i>
                   </small>
                 </div>
