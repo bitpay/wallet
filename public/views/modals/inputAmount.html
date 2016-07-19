@@ -50,16 +50,29 @@
           <button class="button expand button-light" ng-click="removeDigit()"><</button>
         </div>
       </div>
+
+      <div class="row m20t">
+        <div class="columns">
+          <button class="round expand m0"
+            ng-style="{'background-color':index.backgroundColor}"
+            ng-disabled="alternativeResult == 0 && amountResult == 0"
+            ng-click="finish()"
+            ng-show="!specificAmount">
+            <span translate ng-show="!address">Ok</span>
+            <span translate ng-show="address">Generate QR Code</span>
+          </button>
+        </div>
+      </div>
     </div>
 
     <div class="modal-content m20b" ng-show="specificAmount">
       <h4 class="title m10l" translate>QR Code</h4>
       <ul class="no-bullet size-14 m0">
         <li class="line-b p10 oh text-center">
-          <qrcode size="220" data="bitcoin:{{addr + '?amount=' + index.customizedAmountBtc}}"></qrcode>
+          <qrcode size="220" data="bitcoin:{{address + '?amount=' + specificAmountBtc}}"></qrcode>
           <div class="m10t text-center" ng-show="isCordova">
             <span class="button outline dark-gray tiny round"
-              ng-click="shareAddress('bitcoin:' + addr + '?amount=' + index.customizedAmountBtc)">
+              ng-click="shareAddress('bitcoin:' + address + '?amount=' + specificAmountBtc)">
               <i class="fi-share"></i>
               <span translate>Share address</span>
             </span>
@@ -83,25 +96,17 @@
           </span>
         </li>
       </ul>
-    </div>
 
-    <div class="row p20t">
-      <div class="columns">
-        <button class="round expand m0"
-          ng-style="{'background-color':index.backgroundColor}"
-          ng-disabled="alternativeResult == 0 && amountResult == 0"
-          ng-click="finish()"
-          ng-show="!specificAmount">
-          <span translate ng-show="!address">Ok</span>
-          <span translate ng-show="address">Generate QR Code</span>
-        </button>
-        <button class="round expand m0"
-          ng-style="{'background-color':index.backgroundColor}"
-          ng-click="init()"
-          ng-show="specificAmount">
-          <span translate>Cancel</span>
-        </button>
+      <div class="row">
+        <div class="columns">
+          <button class="round expand m20t"
+            ng-style="{'background-color':index.backgroundColor}"
+            ng-click="init()">
+            <span translate>Cancel</span>
+          </button>
+        </div>
       </div>
     </div>
+
   </ion-content>
 </ion-modal-view>
