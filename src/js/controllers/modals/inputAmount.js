@@ -142,7 +142,12 @@ angular.module('copayApp.controllers').controller('inputAmountController', funct
   };
 
   function format(val) {
-    return val.toString().replace('x', '*');
+    var result = val.toString();
+
+    if (isOperator(lodash.last(val)))
+      result = result.slice(0, -1);
+
+    return result.replace('x', '*');
   };
 
   $scope.finish = function() {
