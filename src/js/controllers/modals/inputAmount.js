@@ -133,7 +133,7 @@ angular.module('copayApp.controllers').controller('inputAmountController', funct
   function evaluate(val) {
     var result;
     try {
-      result = eval(val);
+      result = $scope.$eval(val);
     } catch (e) {
       return null;
     }
