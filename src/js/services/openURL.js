@@ -90,6 +90,31 @@ angular.module('copayApp.services').factory('openURLService', function($rootScop
             handleOpenURL(request.url);
           }
         });
+    } else if (platformInfo.isNW) {
+      var gui = require('nw.gui');
+
+      // This event is sent to an existent instance of Copay (only for standalone apps)
+      gui.App.on('open', function(pathData) {
+        if (pathData.indexOf('bitcoin:') != -1) {
+          $log.debug('Bitcoin URL found');
+          handleOpenURL({
+            url: pathData.substring(pathData.indexOf('bitcoin:'))
+          });
+        } else if (pathData.indexOf('copay:') != -1) {
+          $log.debug('Copay URL found');
+          handleOpenURL({
+            url: pathData.substring(pathData.indexOf('copay:'))
+          });
+        }
+      });
+
+      // Used at the startup of Copay
+      var argv = gui.App.argv;
+      if (argv && argv[0]) {
+        handleOpenURL({
+          url: argv[0]
+        });
+      }
     } else if (platformInfo.isDevel) {
 
       var base = window.location.origin + '/';
