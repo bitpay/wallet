@@ -508,7 +508,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         }
       });
   })
-  .run(function($rootScope, $state, $location, $log, $timeout, $ionicPlatform, platformInfo, profileService, uxLanguage, go, gettextCatalog) {
+  .run(function($rootScope, $state, $location, $log, $timeout, $ionicPlatform, lodash, platformInfo, profileService, uxLanguage, go, gettextCatalog) {
 
     if (platformInfo.isCordova) {
       if (screen.width < 768) {
@@ -527,9 +527,9 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
       }
     } else {
       if (screen.width >= 768) {
-        window.addEventListener('resize', function() {
+        window.addEventListener('resize', lodash.throttle(function() {
           $rootScope.$emit('Local/WindowResize');
-        });
+        }, 100));
       }
     }
 
