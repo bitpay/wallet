@@ -347,13 +347,13 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   };
 
   this.setAmount = function(amount, alternativeAmount, useAlternativeAmount) {
+    $scope.showAlternative = useAlternativeAmount;
     var amountResult;
+
     if (useAlternativeAmount) {
       amountResult = parseFloat((rateService.fromFiat(alternativeAmount, self.alternativeIsoCode) * self.satToUnit).toFixed(self.unitDecimals), 10);
-      $scope.showAlternative = true;
     } else {
       amountResult = amount;
-      $scope.showAlternative = false;
     }
     self.setForm(null, amountResult, null);
   };
