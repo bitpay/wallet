@@ -30,6 +30,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   ret.countDown = null;
   ret.sendMaxInfo = {};
   ret.showAlternative = false;
+  ret.fromInputAmount = null;
   var vanillaScope = ret;
 
   var disableScannerListener = $rootScope.$on('dataScanned', function(event, data) {
@@ -286,7 +287,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
         },
         set: function(newValue) {
           $scope.__alternative = newValue;
-          if (typeof(newValue) === 'number' && self.isRateAvailable) {
+          if (self.isRateAvailable) {
             $scope._amount = parseFloat((rateService.fromFiat(newValue, self.alternativeIsoCode) * satToUnit).toFixed(self.unitDecimals), 10);
           } else {
             $scope.__amount = null;
@@ -302,7 +303,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
         },
         set: function(newValue) {
           $scope.__amount = newValue;
-          if (typeof(newValue) === 'number' && self.isRateAvailable) {
+          if (self.isRateAvailable) {
             $scope.__alternative = parseFloat((rateService.toFiat(newValue * self.unitToSatoshi, self.alternativeIsoCode)).toFixed(2), 10);
           } else {
             $scope.__alternative = null;
@@ -355,6 +356,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     } else {
       amountResult = amount;
     }
+    self.fromInputAmount = true;
     self.setForm(null, amountResult, null);
   };
 
@@ -569,7 +571,9 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       form.amount.$setViewValue("" + amount);
       form.amount.$isValid = true;
       form.amount.$render();
-      this.lockAmount = true;
+      if (!this.fromInputAmount)
+        this.lockAmount = true;
+      this.fromInputAmount = false;
     }
 
     if (comment) {
