@@ -137,6 +137,7 @@ angular.module('copayApp.controllers').controller('inputAmountController', funct
     } catch (e) {
       return null;
     }
+    if (result == 'Infinity') return null;
     return result;
   };
 
