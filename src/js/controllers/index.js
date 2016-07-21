@@ -98,6 +98,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       if (k == 'tab') return;
       if (k == 'noFocusedWallet') return;
       if (k == 'backgroundColor') return;
+      if (k == 'physicalScreenWidth') return;
       if (k == 'loadingWallet') {
         self.loadingWallet = true;
         return;
