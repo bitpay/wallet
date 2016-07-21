@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('buyAmazonController',
-  function($rootScope, $scope, $ionicModal, $log, $timeout, lodash, profileService, bwcError, configService, walletService, fingerprintService, amazonService, ongoingProcess) {
+  function($rootScope, $scope, $ionicModal, $log, $timeout, $state, lodash, profileService, bwcError, configService, walletService, fingerprintService, amazonService, ongoingProcess) {
 
     var self = this;
     var client;
@@ -17,11 +17,9 @@ angular.module('copayApp.controllers').controller('buyAmazonController',
     this.init = function() {
       var network = configService.getSync().amazon.testnet ? 'testnet' : 'livenet';
       amazonService.setCredentials(network);
-      amazonService.healthCheckRequest();
-      amazonService.initUuid();
       self.allWallets = profileService.getWallets(network, 1);
       client = profileService.focusedClient;
-      if (client && client.credentials.m == 1) {
+      if (client && client.credentials.m == 1 && client.credentials.network == network) {
         $timeout(function() {
           self.selectedWalletId = client.credentials.walletId;
           self.selectedWalletName = client.credentials.walletName;
@@ -62,9 +60,8 @@ angular.module('copayApp.controllers').controller('buyAmazonController',
 
       var currency_code = configService.getSync().amazon.testnet ? window.amazon_sandbox_currency_code : window.amazon_currency_code;
       var dataSrc = {
-        price: $scope.fiat,
         currency: currency_code,
-        orderId: self.selectedWalletName
+        amount: $scope.fiat
       };
       var outputs = [];
       var config = configService.getSync();
@@ -74,8 +71,7 @@ angular.module('copayApp.controllers').controller('buyAmazonController',
 
       ongoingProcess.set('Processing Transaction...', true);
       $timeout(function() {
-
-        amazonService.createBitPayInvoice(dataSrc, function(err, data) {
+        amazonService.createBitPayInvoice(dataSrc, function(err, dataInvoice) {
           if (err) {
             ongoingProcess.set('Processing Transaction...', false);
             self.error = bwcError.msg(err);
@@ -85,78 +81,130 @@ angular.module('copayApp.controllers').controller('buyAmazonController',
             return;
           }
 
-          var address, comment, amount;
-
-          address = data.data.bitcoinAddress;
-          amount = parseInt((data.data.btcPrice * 100000000).toFixed(0));
-          comment = 'Amazon.com Gift Card';
-
-          outputs.push({
-            'toAddress': address,
-            'amount': amount,
-            'message': comment
-          });
-
-          var txp = {
-            toAddress: address,
-            amount: amount,
-            outputs: outputs,
-            message: comment,
-            payProUrl: null,
-            excludeUnconfirmedUtxos: configWallet.spendUnconfirmed ? false : true,
-            feeLevel: walletSettings.feeLevel || 'normal'
-          };
-
-          walletService.createTx(client, txp, function(err, createdTxp) {
-            ongoingProcess.set('Processing Transaction...', false);
+          amazonService.getBitPayInvoice(dataInvoice.invoiceId, function(err, invoice) {
             if (err) {
+              ongoingProcess.set('Processing Transaction...', false);
               self.error = bwcError.msg(err);
               $timeout(function() {
                 $scope.$digest();
               });
               return;
             }
-            $scope.$emit('Local/NeedsConfirmation', createdTxp, function(accept) {
-              if (accept) {
-                self.confirmTx(createdTxp, function(err, tx) {
-                  if (err) {
-                    ongoingProcess.set('Processing Transaction...', false);
-                    self.error = bwcError.msg(err);
-                    $timeout(function() {
-                      $scope.$digest();
-                    });
-                    return;
-                  }
-                  var gift = {
-                    amount: dataSrc.price,
-                    currencyCode: dataSrc.currency,
-                    bitpayInvoiceId: data.data.id,
-                    bitpayInvoiceUrl: data.data.url
-                  };
-                  ongoingProcess.set('Processing Transaction...', true);
-                  amazonService.createGiftCard(gift, function(err, giftCard) {
-                    ongoingProcess.set('Processing Transaction...', false);
+
+            var address, comment, amount;
+
+            address = invoice.bitcoinAddress;
+            amount = parseInt((invoice.btcPrice * 100000000).toFixed(0));
+            comment = 'Amazon.com Gift Card';
+
+            outputs.push({
+              'toAddress': address,
+              'amount': amount,
+              'message': comment
+            });
+
+            var txp = {
+              toAddress: address,
+              amount: amount,
+              outputs: outputs,
+              message: comment,
+              payProUrl: null,
+              excludeUnconfirmedUtxos: configWallet.spendUnconfirmed ? false : true,
+              feeLevel: walletSettings.feeLevel || 'normal'
+            };
+
+            walletService.createTx(client, txp, function(err, createdTxp) {
+              ongoingProcess.set('Processing Transaction...', false);
+              if (err) {
+                self.error = bwcError.msg(err);
+                $timeout(function() {
+                  $scope.$digest();
+                });
+                return;
+              }
+              $scope.$emit('Local/NeedsConfirmation', createdTxp, function(accept) {
+                if (accept) {
+                  self.confirmTx(createdTxp, function(err, tx) {
                     if (err) {
+                      ongoingProcess.set('Processing Transaction...', false);
                       self.error = bwcError.msg(err);
-                      self.errorInfo = gift;
                       $timeout(function() {
                         $scope.$digest();
                       });
                       return;
                     }
-                    amazonService.setAmountByDay(dataSrc.price);
-                    self.giftCard = giftCard;
-                    $timeout(function() {
-                      $scope.$digest();
-                    });
+                    var count = 0;
+                    ongoingProcess.set('Processing Transaction...', true);
+
+                    dataSrc.accessKey = dataInvoice.accessKey;
+                    dataSrc.invoiceId = invoice.id;
+                    dataSrc.invoiceUrl = invoice.url;
+                    dataSrc.invoiceTime = invoice.invoiceTime;
+
+                    self.debounceCreate(count, dataSrc);
                   });
-                });
-              }
+                }
+              });
             });
           });
         });
       }, 100);
     };
+
+    self.debounceCreate = lodash.throttle(function(count, dataSrc) {
+      self.debounceCreateGiftCard(count, dataSrc);
+    }, 8000, {
+      'leading': true
+    });
+
+    self.debounceCreateGiftCard = function(count, dataSrc) {
+
+      amazonService.createGiftCard(dataSrc, function(err, giftCard) {
+        $log.debug("creating gift card " + count);
+        if (err) {
+          ongoingProcess.set('Processing Transaction...', false);
+          self.error = bwcError.msg(err);
+          self.errorInfo = dataSrc;
+          $timeout(function() {
+            $scope.$digest();
+          });
+          return;
+        }
+        if (giftCard.status == 'PENDING' && count < 3) {
+          $log.debug("pending gift card not available yet");
+          self.debounceCreate(count + 1, dataSrc, dataSrc);
+          return;
+        }
+
+        var now = moment().unix();
+
+        var newData = giftCard;
+        newData['invoiceId'] = dataSrc.invoiceId;
+        newData['accessKey'] = dataSrc.accessKey;
+        newData['invoiceUrl'] = dataSrc.invoiceUrl;
+        newData['amount'] = dataSrc.amount;
+        newData['date'] = dataSrc.invoiceTime || now;
+
+        if (newData.status == 'expired') {
+          amazonService.savePendingGiftCard(newData, {
+            remove: true
+          }, function(err) {
+            return;
+          });
+        }
+
+        amazonService.savePendingGiftCard(newData, null, function(err) {
+          ongoingProcess.set('Processing Transaction...', false);
+          $log.debug("Saving new gift card with status: " + newData.status);
+
+          self.giftCard = newData;
+          if (newData.status == 'PENDING') $state.transitionTo('amazon');
+          $timeout(function() {
+            $scope.$digest();
+          });
+        });
+      });
+    }
 
     this.confirmTx = function(txp, cb) {
 
