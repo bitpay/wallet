@@ -18,7 +18,7 @@
     "toolbar": false,
     "show": true,
     "visible": true,
-    "resizable": false,
+    "resizable": true,
     "frame": true,
     "width": 800,
     "height": 600,
