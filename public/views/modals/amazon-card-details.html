@@ -13,37 +13,40 @@
     </section>
   </nav>
 
-  <ion-content overflow-scroll="true">
+  <ion-content class="has-header" overflow-scroll="true">
 
-    <div class="modal-content fix-modals-touch">
+    <div class="modal-content">
       <div class="header-modal text-center">
 
         <img src="img/a_generic.jpg" alt="Amazon.com Gift Card" width="230" ng-click="refreshGiftCard()">
 
-        <div ng-show="card.gcClaimCode">
+        <div ng-show="card.claimCode">
           <div class="m10t">
-            Gift Card Amount: 
+            Gift Card Amount:
             <span class="text-bold">
-              {{card.cardInfo.value.amount | currency : '$ ' : 2}}
+              {{card.amount | currency : '$ ' : 2}}
             </span>
           </div>
           <div>
-            Claim code: <span class="text-bold enable_text_select">{{card.gcClaimCode}}</span>
+            Claim code: <span class="text-bold enable_text_select">{{card.claimCode}}</span>
           </div>
-          <div class="m10t" ng-show="card.cardInfo.cardStatus == 'Fulfilled'">
-            <button class="button black round tiny" 
-                    ng-click="$root.openExternalLink('https://www.amazon.com/gc/redeem?claimCode=' + card.gcClaimCode, '_system')">
+          <div class="m10t" ng-show="card.cardStatus == 'Fulfilled'">
+            <button class="button black round tiny"
+                    ng-click="$root.openExternalLink('https://www.amazon.com/gc/redeem?claimCode=' + card.claimCode, '_system')">
               Redeem Now
             </button>
           </div>
-
-          <div class="text-warning text-center" ng-if="card.cardInfo.cardStatus == 'RefundedToPurchaser'">
-            Cancelled (Refunded)
+        </div>
+        <div ng-show="!card.claimCode">
+          <div class="m10t">
+            Status:
+            <span class="text-bold">
+              PENDING
+            </span>
           </div>
-
-          <div class="size-12 m10t text-center">
-            <a ng-click="$root.openExternalLink(card.bitpayInvoiceUrl)">See invoice</a>
-          </div>
+        </div>
+        <div class="size-12 m10t text-center">
+          <a ng-click="$root.openExternalLink(card.invoiceUrl)">See invoice</a>
         </div>
       </div>
 
@@ -51,7 +54,7 @@
         <span class="text-warning">
           {{error}}
         </span>
-      </div> 
+      </div>
 
       <div class="text-center size-12" ng-show="card.status != 'SUCCESS'">
         <div ng-show="card.status == 'RESEND'">
@@ -72,20 +75,17 @@
         reseller of Amazon.com Gift Cards. Except as required by law, GCs cannot be transferred for value or redeemed for cash.
         GCs may be used only for purchases of eligible goods at Amazon.com or certain of its affiliated websites. Purchases are
         deducted from the GC balance. To redeem or view a GC balance, visit &ldquo;Your Account&rdquo; at Amazon.com. Amazon is
-        not responsible if a GC is lost, stolen, destroyed or used without permission. See 
-        <a ng-click="$root.openExternalLink('https://www.amazon.com/gc-legal')">www.amazon.com/gc-legal</a> for complete terms, 
-        restrictions and exceptions. For any other questions, see 
-        <a ng-click="$root.openExternalLink('https://www.amazon.com/gc')">www.amazon.com/gc</a>. GCs are issued 
-        by ACI Gift Cards, Inc., a Washington corporation. All Amazon &reg;, &trade; &amp; &copy; are IP of 
+        not responsible if a GC is lost, stolen, destroyed or used without permission. See
+        <a ng-click="$root.openExternalLink('https://www.amazon.com/gc-legal')">www.amazon.com/gc-legal</a> for complete terms,
+        restrictions and exceptions. For any other questions, see
+        <a ng-click="$root.openExternalLink('https://www.amazon.com/gc')">www.amazon.com/gc</a>. GCs are issued
+        by ACI Gift Cards, Inc., a Washington corporation. All Amazon &reg;, &trade; &amp; &copy; are IP of
         Amazon.com, Inc. or its affiliates. No expiration date or service fees.
       </div>
 
       <ul class="no-bullet size-14 m30v text-center">
-        <li class="line-b p10 oh pointer" ng-show="card.status == 'SUCCESS' && card.cardInfo.cardStatus == 'Fulfilled'" ng-click="cancelGiftCard()">
-          <span class="text-warning">Cancel gift card</span>
-        </li>
-        <li class="line-b p10 oh pointer" ng-show="card.status == 'FAILURE' || card.cardInfo.cardStatus == 'RefundedToPurchaser'
-          || card.cardInfo.cardStatus == 'Expired'" ng-click="remove()">
+        <li class="line-b p10 oh pointer" ng-show="card.status == 'FAILURE' || card.cardStatus == 'RefundedToPurchaser'
+          || card.cardStatus == 'Expired'" ng-click="remove()">
           <span class="text-warning">Remove gift card</span>
         </li>
       </ul>

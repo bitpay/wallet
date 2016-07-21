@@ -1,6 +1,7 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, $ionicScrollDelegate, $ionicPopup, $ionicSideMenuDelegate, latestReleaseService, feeService, bwcService, pushNotificationsService, lodash, go, profileService, configService, rateService, storageService, addressService, gettext, gettextCatalog, amMoment, addonManager, bwcError, txFormatService, uxLanguage, glideraService, coinbaseService, platformInfo, addressbookService, openURLService, ongoingProcess) {
+angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, $ionicScrollDelegate, $ionicPopup, $ionicSideMenuDelegate, $httpBackend, latestReleaseService, feeService, bwcService, pushNotificationsService, lodash, go, profileService, configService, rateService, storageService, addressService, gettext, gettextCatalog, amMoment, addonManager, bwcError, txFormatService, uxLanguage, glideraService, coinbaseService, amazonService, platformInfo, addressbookService, openURLService, ongoingProcess) {
+
   var self = this;
   var SOFT_CONFIRMATION_LIMIT = 12;
   var errors = bwcService.getErrors();
@@ -1041,10 +1042,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     });
   };
 
-  self.initAmazon = function() {
-    self.amazonEnabled = configService.getSync().amazon.enabled;
-  };
-
   self.initGlidera = function(accessToken) {
     self.glideraEnabled = configService.getSync().glidera.enabled;
     self.glideraTestnet = configService.getSync().glidera.testnet;
@@ -1392,6 +1389,15 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         });
       }
     });
+  };
+
+
+  self.initAmazon = function() {
+    self.amazonEnabled = configService.getSync().amazon.enabled;
+    self.amazonTestnet = configService.getSync().amazon.testnet;
+    var network = self.amazonTestnet ? 'testnet' : 'livenet';
+    if (!self.amazonEnabled) return;
+    amazonService.setCredentials(network);
   };
 
   self.isInFocus = function(walletId) {
