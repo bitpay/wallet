@@ -40,11 +40,10 @@ angular.module('copayApp.controllers').controller('inputAmountController', funct
   };
 
   $scope.pushDigit = function(digit) {
-    var amount = $scope.showAlternativeAmount ? $scope.alternativeAmount : $scope.amount;
+    var amount = $scope.showAlternativeAmount ? $scope.alternativeAmount.toString() : $scope.amount.toString();
 
-    if (amount.toString().length >= 10) return;
-    if (amount == 0 && digit == 0) return;
-
+    if (amount.length >= 10) return;
+    if (amount == '0' && digit == 0) return;
     var val = amount ? amount + digit : digit;
     processAmount(val);
   };
@@ -137,7 +136,7 @@ angular.module('copayApp.controllers').controller('inputAmountController', funct
     } catch (e) {
       return null;
     }
-    if (result == 'Infinity') return null;
+    if (result == 'Infinity' || lodash.isNaN(result)) return null;
     return result;
   };
 
