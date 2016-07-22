@@ -543,6 +543,20 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     });
   };
 
+  $scope.openCustomAmountModal = function(addr) {
+    var fc = profileService.focusedClient;
+    $scope.color = fc.backgroundColor;
+    $scope.self = self;
+    $scope.addr = addr;
+
+    $ionicModal.fromTemplateUrl('views/modals/customAmount.html', {
+      scope: $scope
+    }).then(function(modal) {
+      $scope.customAmountModal = modal;
+      $scope.customAmountModal.show();
+    });
+  };
+
   $scope.openInputAmountModal = function(addr) {
     var fc = profileService.focusedClient;
     $scope.color = fc.backgroundColor;

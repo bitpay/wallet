@@ -1,0 +1,88 @@
+<ion-modal-view ng-controller="customAmountController">
+  <ion-header-bar align-title="center" class="tab-bar" ng-style="{'background-color':color}">
+    <div class="left-small">
+      <a ng-click="cancel()" class="p10">
+        <span class="text-close" translate>Close</span>
+      </a>
+    </div>
+    <h1 class="title ellipsis" translate>Request a specific amount</h1>
+  </ion-header-bar>
+
+  <ion-content ng-style="{'background-color': '#f6f7f9'}">
+    <div class="modal-content fix-modals-touch">
+      <div class="m20b" ng-show="customizedAmountBtc">
+        <h4 class="title m0" translate>QR Code</h4>
+        <ul class="no-bullet size-14 m0">
+          <li class="line-b p10 oh text-center">
+            <qrcode size="220" data="bitcoin:{{addr + '?amount=' + customizedAmountBtc}}"></qrcode>
+            <div class="m10t text-center" ng-show="isCordova">
+              <span class="button outline dark-gray tiny round"
+                ng-click="shareAddress('bitcoin:' + addr + '?amount=' + customizedAmountBtc)">
+                <i class="fi-share"></i>
+                <span translate>Share address</span>
+              </span>
+            </div>
+          </li>
+        </ul>
+
+        <h4 class="title m0" translate>Details</h4>
+        <ul class="no-bullet size-14 m0">
+          <li class="line-b p10 oh">
+            <span class="text-gray" translate>Address</span>:
+            <span class="right">
+              <span class="text-gray enable_text_select">{{addr}}</span>
+            </span>
+          </li>
+          <li class="line-b p10 oh">
+            <span class="text-gray" translate>Amount</span>:
+            <span class="right">
+              {{customizedAmountUnit}}
+              <span class="label gray radius">{{customizedAlternativeUnit}}</span>
+            </span>
+          </li>
+        </ul>
+      </div>
+
+      <div ng-show="!customizedAmountBtc" class="row m20t">
+        <div class="large-12 large-centered columns">
+          <form name="amountForm" ng-submit="submitForm(amountForm)" novalidate>
+            <div class="right" ng-hide="amountForm.amount.$pristine && !amountForm.amount.$modelValue ">
+              <span class="has-error right size-12" ng-if="amountForm.amount.$invalid">
+                <i class="icon-close-circle size-14"></i>
+                <span clas="vm" translate>Not valid</span>
+              </span>
+              <small class="text-primary right" ng-if="!amountForm.amount.$invalid">
+                <i class="icon-checkmark-circle size-14"></i>
+              </small>
+            </div>
+            <div ng-show="!showAlternative">
+              <label for="amount">
+                <span translate>Amount</span>
+              </label>
+              <div class="input">
+                <input type="number" id="amount" name="amount" ng-attr-placeholder="{{'Amount in'|translate}} {{unitName}}" ignore-mouse-wheel
+                ng-model="_customAmount" ng-minlength="0.00000001" ng-maxlength="10000000000" valid-amount required autocomplete="off">
+                <input type="number" id="alternative"  name="alternative"  ng-model="_customAlternative" style="display:none">
+                <a class="postfix button" ng-style="{'background-color':color}" ng-click="toggleAlternative()">{{unitName}}</a>
+              </div>
+            </div>
+            <div ng-show="showAlternative">
+              <label for="alternative"><span translate>Amount</span> [{{ alternativeIsoCode }}]
+              </label>
+              <div class="input">
+                <input type="number" id="alternative" name="alternative" ng-attr-placeholder="{{'Amount in'|translate}} {{alternativeName}}" ignore-mouse-wheel
+                ng-model="_customAlternative" required autocomplete="off" required>
+                <input type="number" id="amount" name="amount" ng-model="_customAmount" style="display:none">
+                <a class="postfix button black" ng-click="toggleAlternative()"> {{ alternativeIsoCode }}</a>
+              </div>
+            </div>
+
+            <button type="submit" class="button black round expand" ng-disabled="amountForm.$invalid" ng-style="{'background-color':color}" translate>
+              Generate QR Code
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </ion-content>
+</ion-view-modal>
