@@ -70,12 +70,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   };
 
   self.allowRefresher = function() {
-    if ($ionicSideMenuDelegate.getOpenRatio() != 0) {
-      self.allowPullToRefresh = false;
-      if (isCordova && platformInfo.isIOS) $ionicScrollDelegate.$getByHandle('my-handle').freezeScroll(true);
-      return;
-    }
-    if (isCordova && platformInfo.isIOS) $ionicScrollDelegate.$getByHandle('my-handle').freezeScroll(false);
+    if ($ionicSideMenuDelegate.getOpenRatio() != 0) self.allowPullToRefresh = false;
   }
 
   self.hideBalance = function() {
@@ -103,6 +98,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       if (k == 'tab') return;
       if (k == 'noFocusedWallet') return;
       if (k == 'backgroundColor') return;
+      if (k == 'physicalScreenWidth') return;
       if (k == 'loadingWallet') {
         self.loadingWallet = true;
         return;
@@ -634,9 +630,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       var lockedBalanceAlternative = rateService.toFiat(self.lockedBalanceSat, self.alternativeIsoCode);
       var alternativeConversionRate = rateService.toFiat(100000000, self.alternativeIsoCode);
 
-      self.totalBalanceAlternative = $filter('noFractionNumber')(totalBalanceAlternative, 2);
-      self.lockedBalanceAlternative = $filter('noFractionNumber')(lockedBalanceAlternative, 2);
-      self.alternativeConversionRate = $filter('noFractionNumber')(alternativeConversionRate, 2);
+      self.totalBalanceAlternative = $filter('formatFiatAmount')(totalBalanceAlternative);
+      self.lockedBalanceAlternative = $filter('formatFiatAmount')(lockedBalanceAlternative);
+      self.alternativeConversionRate = $filter('formatFiatAmount')(alternativeConversionRate);
 
       self.alternativeBalanceAvailable = true;
 

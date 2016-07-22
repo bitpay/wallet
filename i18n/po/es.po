@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Spanish\n"
 "Language: es\n"
-"PO-Revision-Date: 2016-07-01 08:53-0400\n"
+"PO-Revision-Date: 2016-07-15 09:26-0400\n"
 
 #: public/views/modals/search.html
 #: public/views/walletHome.html
@@ -34,10 +34,6 @@ msgstr "{{fee}} se descontará por comisión de la red bitcoin"
 #: public/views/includes/confirm-tx.html
 msgid "{{feeRateStr}} of the transaction"
 msgstr "{{feeRateStr}} de la transacción"
-
-#: public/views/walletHome.html
-msgid "{{index.completeHistory.length - index.txHistory.length}} more"
-msgstr "{{index.completeHistory.length - index.txHistory.length}} más"
 
 #: public/views/copayers.html
 #: public/views/includes/walletInfo.html
@@ -173,7 +169,7 @@ msgstr "Moneda Alternativa"
 msgid "Amount"
 msgstr "Importe"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Amount below minimum allowed"
 msgstr "Cantidad por debajo del mínimo permitido"
 
@@ -276,8 +272,8 @@ msgid "Browser unsupported"
 msgstr "Navegador no soportado"
 
 #: public/views/includes/sidebar.html
-msgid "Buy &amp; Sell"
-msgstr "Compra &amp; Venta"
+msgid "Buy and Sell"
+msgstr "Comprar y Vender"
 
 #: src/js/services/onGoingProcess.js
 msgid "Calculating fee"
@@ -383,7 +379,7 @@ msgstr "Conectando a Coinbase..."
 msgid "Connecting to Glidera..."
 msgstr "Conectando a Glidera..."
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Connection reset by peer"
 msgstr "Conexión re establecida"
 
@@ -391,15 +387,15 @@ msgstr "Conexión re establecida"
 msgid "Continue"
 msgstr "Continuar"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Copayer already in this wallet"
 msgstr "Ya se encuentra en este monedero"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Copayer already voted on this spend proposal"
 msgstr "Ya ha votado en esta propuesta de gasto"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Copayer data mismatch"
 msgstr "Discrepancia en los datos del Copayer"
 
@@ -409,6 +405,7 @@ msgstr "Copayers"
 
 #: src/js/controllers/copayers.js
 #: src/js/controllers/export.js
+#: src/js/controllers/preferencesInformation.js
 #: src/js/controllers/walletHome.js
 msgid "Copied to clipboard"
 msgstr "Copiado al portapapeles"
@@ -437,7 +434,7 @@ msgstr "No se pudo acceder a Wallet Service: No encontrado"
 msgid "Could not broadcast payment"
 msgstr "No se pudo enviar el pago"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Could not build transaction"
 msgstr "No se pudo construir la transacción"
 
@@ -649,7 +646,7 @@ msgstr "Correo electrónico para notificaciones del monedero"
 msgid "Email Notifications"
 msgstr "Notificaciones por Correo electrónico"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Empty addresses limit reached. New addresses cannot be generated."
 msgstr "Se ha alcanzado el límite de direcciones vacías. No se pueden generar nuevas direcciones."
 
@@ -770,7 +767,7 @@ msgstr "Francés"
 msgid "From the destination device, go to Add wallet &gt; Import wallet and scan this QR code"
 msgstr "Desde el dispositivo de destino, ir a Agregar monedero &gt; Importar y escanear este código QR"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Funds are locked by pending spend proposals"
 msgstr "Los fondos están bloqueados por propuestas de gastos pendientes"
 
@@ -857,7 +854,7 @@ msgstr "En ningún caso los autores, empleados y afiliados de Bitpay, los titula
 msgid "In order to verify your wallet backup, please type your password:"
 msgstr "Con el fin de verificar la copia de seguridad del monedero, por favor escriba su contraseña:"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Incorrect address network"
 msgstr "Dirección de red incorrecta"
 
@@ -866,11 +863,11 @@ msgstr "Dirección de red incorrecta"
 msgid "Incorrect code format"
 msgstr "Formato de código incorrecto"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Insufficient funds"
 msgstr "Fondos insuficientes"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Insufficient funds for fee"
 msgstr "Fondos insuficientes para el pago de la comisión"
 
@@ -885,7 +882,7 @@ msgstr "Inválido"
 msgid "Invalid account number"
 msgstr "Número de cuenta inválido"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Invalid address"
 msgstr "Dirección inválida"
 
@@ -928,7 +925,7 @@ msgstr "Unirse a un monedero compartido"
 msgid "Joining Wallet..."
 msgstr "Uniéndose al monedero..."
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Key already associated with an existing wallet"
 msgstr "La clave ya esta asociada a un monedero existente"
 
@@ -956,11 +953,11 @@ msgstr "Cargando..."
 msgid "locked by pending payments"
 msgstr "bloqueado por pagos pendientes"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Locktime in effect. Please wait to create a new spend proposal"
 msgstr "Bloqueo temporal. Por favor espere para crear una nueva propuesta de gasto"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Locktime in effect. Please wait to remove this spend proposal"
 msgstr "Bloqueo temporal. Por favor espere para eliminar esta propuesta de gasto"
 
@@ -995,11 +992,11 @@ msgstr "Mensaje del negocio"
 msgid "Message"
 msgstr "Mensaje"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Missing parameter"
 msgstr "Faltan parámetros"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Missing private keys to sign"
 msgstr "Faltan las claves privadas para firmar"
 
@@ -1034,7 +1031,7 @@ msgstr "Necesita hacer una copias de seguridad"
 msgid "Network"
 msgstr "Red"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Network connection error"
 msgstr "Error de conexión a la red"
 
@@ -1059,7 +1056,7 @@ msgstr "Sin transacciones todavía"
 msgid "Normal"
 msgstr "Normal"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Not authorized"
 msgstr "No autorizado"
 
@@ -1263,7 +1260,7 @@ msgstr "Por favor ingrese la frase de recuperación del monedero"
 msgid "Please tap the words in order to confirm your backup phrase is correctly written."
 msgstr "Por favor presione las palabras para confirmar que su copia de seguridad está correctamente escrita."
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Please upgrade Copay to perform this action"
 msgstr "Por favor actualice Copay para realizar esta acción"
 
@@ -1299,7 +1296,7 @@ msgstr "Presione nuevamente para salir"
 msgid "Priority"
 msgstr "Prioritario"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Private key is encrypted, cannot sign"
 msgstr "La clave privada esta encriptada, no puede firmar"
 
@@ -1497,7 +1494,7 @@ msgstr "Enviando transacción"
 msgid "Sent"
 msgstr "Enviado"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Server response could not be verified"
 msgstr "La respuesta del servidor no se ha podido verificar"
 
@@ -1562,7 +1559,7 @@ msgstr "Monedero Compartido"
 msgid "Show advanced options"
 msgstr "Mostrar opciones avanzadas"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Signatures rejected by server"
 msgstr "Firmas rechazadas por el servidor"
 
@@ -1583,15 +1580,15 @@ msgstr "Español"
 msgid "Specify Recovery Phrase..."
 msgstr "Especificar la frase de recuperación..."
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Spend proposal is not accepted"
 msgstr "La propuesta de gasto no se ha aceptado"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Spend proposal not found"
 msgstr "La propuesta de gasto no se ha encontrado"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Spending Password needed"
 msgstr "Se necesita la contraseña para enviar"
 
@@ -1664,7 +1661,7 @@ msgstr "El pago fue eliminado por el creador"
 msgid "The recovery phrase could require a password to be imported"
 msgstr "La frase de recuperación podría requerir una contraseña para ser importada"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "The request could not be understood by the server"
 msgstr "La solicitud no pudo ser comprendida por el servidor"
 
@@ -1676,7 +1673,7 @@ msgstr "El software no constituye una cuenta donde BitPay u otras terceras parte
 msgid "The software you are about to use functions as a free, open source, and multi-signature digital wallet."
 msgstr "El software que va a utilizar es un monedero digital de código abierto y multi-firmas."
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "The spend proposal is not pending"
 msgstr "La propuesta de gasto no esta pendiente"
 
@@ -1756,7 +1753,7 @@ msgstr "Falló Touch ID"
 msgid "Transaction"
 msgstr "Transacción"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Transaction already broadcasted"
 msgstr "La transacción ya fue enviada"
 
@@ -1838,7 +1835,7 @@ msgstr "Esperando a Trezor..."
 msgid "Waiting..."
 msgstr "Esperando..."
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Wallet already exists"
 msgstr "El monedero ya existe"
 
@@ -1875,15 +1872,15 @@ msgstr "Invitación para unirse al monedero"
 msgid "Wallet Invitation is not valid!"
 msgstr "¡Invitación no válida!"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Wallet is full"
 msgstr "El monedero está completo"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Wallet is locked"
 msgstr "Monedero bloqueado"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Wallet is not complete"
 msgstr "El monedero no esta completo"
 
@@ -1895,7 +1892,7 @@ msgstr "Nombre del monedero"
 msgid "Wallet Name (at creation)"
 msgstr "Nombre del Monedero (al crear)"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Wallet needs backup"
 msgstr "El monedero requiere copia de seguridad"
 
@@ -1903,11 +1900,11 @@ msgstr "El monedero requiere copia de seguridad"
 msgid "Wallet Network"
 msgstr "Red del Monedero"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Wallet not found"
 msgstr "Monedero no encontrado"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Wallet not registered at the wallet service. Recreate it from \"Create Wallet\" using \"Advanced Options\" to set your recovery phrase"
 msgstr "El monedero no esta registrado en Wallet Service. Para volver a crear, utilice \"Crear Monedero\", \"Opciones avanzadas\" e ingrese la frase de recuperación"
 
@@ -1921,7 +1918,7 @@ msgstr "Preferencias del Monedero"
 msgid "Wallet Recovery Phrase"
 msgstr "Frase de recuperación del monedero"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Wallet Recovery Phrase is invalid"
 msgstr "La frase de recuperación es inválida"
 
@@ -1930,7 +1927,7 @@ msgstr "La frase de recuperación es inválida"
 msgid "Wallet recovery phrase not available. You can still export it from Advanced &gt; Export."
 msgstr "La frase de recuperación del monedero no está disponible. Todavía puede exportar de avanzado &gt; Exportar."
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Wallet service not found"
 msgstr "Wallet Service no encontrado"
 
@@ -1988,7 +1985,7 @@ msgstr "Escriba la frase de recuperación del monedero"
 msgid "Wrong number of recovery words:"
 msgstr "Número incorrecto de palabras:"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Wrong spending password"
 msgstr "Contraseña para enviar incorrecta"
 

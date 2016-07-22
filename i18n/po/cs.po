@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Czech\n"
 "Language: cs\n"
-"PO-Revision-Date: 2016-07-01 08:46-0400\n"
+"PO-Revision-Date: 2016-07-14 14:39-0400\n"
 
 #: public/views/modals/search.html
 #: public/views/walletHome.html
@@ -34,10 +34,6 @@ msgstr "{{fee}} bude odečteno jako poplatek bitcoinové síti"
 #: public/views/includes/confirm-tx.html
 msgid "{{feeRateStr}} of the transaction"
 msgstr "{{feeRateStr}} z transakce"
-
-#: public/views/walletHome.html
-msgid "{{index.completeHistory.length - index.txHistory.length}} more"
-msgstr ""
 
 #: public/views/copayers.html
 #: public/views/includes/walletInfo.html
@@ -173,7 +169,7 @@ msgstr "Alternativní měna"
 msgid "Amount"
 msgstr "Částka"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Amount below minimum allowed"
 msgstr ""
 
@@ -276,7 +272,7 @@ msgid "Browser unsupported"
 msgstr "Nepodporovaný prohlížeč"
 
 #: public/views/includes/sidebar.html
-msgid "Buy &amp; Sell"
+msgid "Buy and Sell"
 msgstr ""
 
 #: src/js/services/onGoingProcess.js
@@ -383,7 +379,7 @@ msgstr ""
 msgid "Connecting to Glidera..."
 msgstr ""
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Connection reset by peer"
 msgstr "Spojení obnoveno uzlem"
 
@@ -391,15 +387,15 @@ msgstr "Spojení obnoveno uzlem"
 msgid "Continue"
 msgstr "Pokračovat"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Copayer already in this wallet"
 msgstr "Spoluplátce je již v peněžence"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Copayer already voted on this spend proposal"
 msgstr "Spoluplátce pro tento návrh již hlasoval"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Copayer data mismatch"
 msgstr "Data spoluplátce nesouhlasí"
 
@@ -409,6 +405,7 @@ msgstr "Spoluplátci"
 
 #: src/js/controllers/copayers.js
 #: src/js/controllers/export.js
+#: src/js/controllers/preferencesInformation.js
 #: src/js/controllers/walletHome.js
 msgid "Copied to clipboard"
 msgstr "Zkopírováno"
@@ -437,7 +434,7 @@ msgstr "Nebylo možné navázat spojení se službou peněženky: Nebyla nalezen
 msgid "Could not broadcast payment"
 msgstr "Nebylo možné vyslat platbu"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Could not build transaction"
 msgstr "Nebylo možné sestavit transakci"
 
@@ -649,7 +646,7 @@ msgstr "Email pro upozornění"
 msgid "Email Notifications"
 msgstr "Email upozornění"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Empty addresses limit reached. New addresses cannot be generated."
 msgstr "Limit prázdných adres dovrše. Nové adresy nemohou být vytvořeny."
 
@@ -770,7 +767,7 @@ msgstr "Francouzština"
 msgid "From the destination device, go to Add wallet &gt; Import wallet and scan this QR code"
 msgstr ""
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Funds are locked by pending spend proposals"
 msgstr "Zůstatky jsou blokovány probíhajícím návrhem platby"
 
@@ -857,7 +854,7 @@ msgstr "Za žádných okolností autoři softwaru, zaměstnanci a přidružené 
 msgid "In order to verify your wallet backup, please type your password:"
 msgstr ""
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Incorrect address network"
 msgstr "Neplatná síť adres"
 
@@ -866,11 +863,11 @@ msgstr "Neplatná síť adres"
 msgid "Incorrect code format"
 msgstr ""
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Insufficient funds"
 msgstr "Nedostatečná částka"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Insufficient funds for fee"
 msgstr "Nedostatečný zůstatek pro poplatek"
 
@@ -885,7 +882,7 @@ msgstr "Neplatné"
 msgid "Invalid account number"
 msgstr "Neplatné číslo účtu"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Invalid address"
 msgstr "Neplatná adresa"
 
@@ -928,7 +925,7 @@ msgstr "Spojit sdílenou peněženku"
 msgid "Joining Wallet..."
 msgstr "Spojuji peněženky..."
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Key already associated with an existing wallet"
 msgstr "Klíč je již spojený s některou z peněženek"
 
@@ -956,11 +953,11 @@ msgstr "Načítám..."
 msgid "locked by pending payments"
 msgstr "zablokováno probíhající platbou"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Locktime in effect. Please wait to create a new spend proposal"
 msgstr "Čekání na locktime. Prosím vyčkejte na vytvoření nového platebního návrhu"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Locktime in effect. Please wait to remove this spend proposal"
 msgstr "Čekání na locktime. Prosím vyčkejte na vytvoření tohoto platebního návrhu"
 
@@ -995,11 +992,11 @@ msgstr "Zpráva obchodníka"
 msgid "Message"
 msgstr "Zpráva"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Missing parameter"
 msgstr ""
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Missing private keys to sign"
 msgstr "Chybějící soukromý klíč pro podpis"
 
@@ -1034,7 +1031,7 @@ msgstr "Vyžaduje zálohu"
 msgid "Network"
 msgstr "Síť"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Network connection error"
 msgstr "Chyba síťového spojení"
 
@@ -1059,7 +1056,7 @@ msgstr "Žádné transakce"
 msgid "Normal"
 msgstr "Normální"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Not authorized"
 msgstr "Neautorizováno"
 
@@ -1263,7 +1260,7 @@ msgstr ""
 msgid "Please tap the words in order to confirm your backup phrase is correctly written."
 msgstr "Potvrďte pořadí slov pro potvrzení správnosti zálohy."
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Please upgrade Copay to perform this action"
 msgstr "Pro tuto funkci je potřeba aktualizovat Copay"
 
@@ -1299,7 +1296,7 @@ msgstr "Pro ukončení stiskněte tlačítko znovu"
 msgid "Priority"
 msgstr "Priorita"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Private key is encrypted, cannot sign"
 msgstr "Soukromý klíč je šifrovaný, nelze podepsat"
 
@@ -1497,7 +1494,7 @@ msgstr "Odesílání transakce"
 msgid "Sent"
 msgstr "Odesláno"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Server response could not be verified"
 msgstr "Server nemůže být ověřen"
 
@@ -1562,7 +1559,7 @@ msgstr "Sdílená peněženka"
 msgid "Show advanced options"
 msgstr "Zobrazit rozšířená nastavení"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Signatures rejected by server"
 msgstr "Podpisy byly serverem odmítnuty"
 
@@ -1583,15 +1580,15 @@ msgstr "Španělština"
 msgid "Specify Recovery Phrase..."
 msgstr ""
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Spend proposal is not accepted"
 msgstr "Návrh platby nebyl přijat"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Spend proposal not found"
 msgstr "Návrh platby nebyl nalezen"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Spending Password needed"
 msgstr ""
 
@@ -1664,7 +1661,7 @@ msgstr "Platba byla odstraněna tvůrcem"
 msgid "The recovery phrase could require a password to be imported"
 msgstr ""
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "The request could not be understood by the server"
 msgstr "Požadavek nebyl serverem pochopen"
 
@@ -1676,7 +1673,7 @@ msgstr "Tento software nepředstavuje účet kde BitPay nebo jiné třetí stran
 msgid "The software you are about to use functions as a free, open source, and multi-signature digital wallet."
 msgstr "Software který hodláte začít používat je zdarma, open-source, vícepodpisová digitální peněženka."
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "The spend proposal is not pending"
 msgstr "Platební návrh neočekává další schválení"
 
@@ -1756,7 +1753,7 @@ msgstr "Chyba Touch ID"
 msgid "Transaction"
 msgstr "Transakce"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Transaction already broadcasted"
 msgstr "Transakce byla již odeslána"
 
@@ -1838,7 +1835,7 @@ msgstr ""
 msgid "Waiting..."
 msgstr "Vyčkávání..."
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Wallet already exists"
 msgstr "Peněženka již existuje"
 
@@ -1875,15 +1872,15 @@ msgstr "Pozvánka peněženky"
 msgid "Wallet Invitation is not valid!"
 msgstr "Neplatná pozvánka peněženky!"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Wallet is full"
 msgstr "Peněženka je plná"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Wallet is locked"
 msgstr "Peněženka je zablokována"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Wallet is not complete"
 msgstr "Peněženka není úplná"
 
@@ -1895,7 +1892,7 @@ msgstr "Název peněženky"
 msgid "Wallet Name (at creation)"
 msgstr "Název peněženky (při vytváření)"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Wallet needs backup"
 msgstr ""
 
@@ -1903,11 +1900,11 @@ msgstr ""
 msgid "Wallet Network"
 msgstr "Síť peněženky"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Wallet not found"
 msgstr "Peněženka nenalezena"
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Wallet not registered at the wallet service. Recreate it from \"Create Wallet\" using \"Advanced Options\" to set your recovery phrase"
 msgstr ""
 
@@ -1921,7 +1918,7 @@ msgstr ""
 msgid "Wallet Recovery Phrase"
 msgstr ""
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Wallet Recovery Phrase is invalid"
 msgstr ""
 
@@ -1930,7 +1927,7 @@ msgstr ""
 msgid "Wallet recovery phrase not available. You can still export it from Advanced &gt; Export."
 msgstr ""
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Wallet service not found"
 msgstr "Služba peněženky nenalezena"
 
@@ -1988,7 +1985,7 @@ msgstr ""
 msgid "Wrong number of recovery words:"
 msgstr ""
 
-#: src/js/services/bwsError.js
+#: src/js/services/bwcError.js
 msgid "Wrong spending password"
 msgstr ""
 
