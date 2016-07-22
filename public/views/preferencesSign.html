@@ -1,0 +1,40 @@
+<div ng-controller="preferencesSign" ng-init="init()">
+    <form name="signForm" class="ng-pristine ng-invalid ng-invalid-required ng-invalid-valid-amount ng-valid-maxlength" ng-controller="preferencesSign">
+        <div class="row">
+            <div class="large-12 columns">
+                <label for="message"><span translate=""><span>Message</span></span></label>
+                <div class="input">
+                    <textarea ng-model="message" ng-blur="home.formFocus(false)" ng-focus="home.formFocus('msg')" name="message" id="message" class="ng-pristine ng-valid ng-empty ng-touched" style="width: 607px; height: 84px;"></textarea>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="large-12 columns">
+            <label for="keySelector" ng-click="copyToClipboard(pubKey)"><span translate=""><span>Address</span></span></label>
+            <select id="keySelector" name="keySelector" ng-model="keySelector">
+                <option ng-model="pubKey" name="Key{{$index}}" ng-repeat="pubKey in addresses" value="{{pubKey}}">{{pubKey.address}}</option>
+            </select>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="large-12 columns">
+                <label for="signature" ng-click="copyToClipboard(signature)"><span translate=""><span>Signature</span></span></label>
+                <div class="input">
+                    <textarea ng-model="signature" ng-blur="home.formFocus(false)" ng-focus="home.formFocus('msg')" ng-maxlength="500" name="signature" id="signature" class="ng-pristine ng-valid ng-empty ng-valid-maxlength ng-touched" style="width: 607px; height: 84px;"></textarea>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+                <a translate="" class="button expand outline dark-gray round" ng-click="home.resetForm(sign)"><span>Cancel</span></a>
+            </div>
+            <div class="columns">
+                <button ng-click="sign(keySelector, message)" ng-style="{'background-color':index.backgroundColor}" class="button black round expand" style="background-color: rgb(74, 144, 226);" ><span>Sign</span></button>
+            </div>
+        </div>
+    </form>
+</div>
+
+

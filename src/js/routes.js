@@ -427,6 +427,28 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
           },
         }
       })
+      .state('preferencesSign', {
+        url: '/preferencesSign',
+        templateUrl: 'views/preferencesSign.html',
+        walletShouldBeComplete: true,
+        needProfile: true,
+        views: {
+          'main': {
+            templateUrl: 'views/preferencesSign.html'
+          },
+        }
+      })
+      .state('preferencesVerify', {
+        url: '/preferencesVerify',
+        templateUrl: 'views/preferencesVerify.html',
+        walletShouldBeComplete: true,
+        needProfile: true,
+        views: {
+          'main': {
+            templateUrl: 'views/preferencesVerify.html'
+          },
+        }
+      })
       .state('about', {
         url: '/about',
         templateUrl: 'views/preferencesAbout.html',
