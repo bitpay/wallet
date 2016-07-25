@@ -37,15 +37,19 @@ angular.module('copayApp.controllers').controller('inputAmountController', funct
       amount = format($scope.alternativeAmount);
       $scope.amountResult = isOperator(lodash.last(amount)) ? evaluate(amount.slice(0, -1)) : evaluate(amount);
     }
+    $scope.globalResult = null;
   };
 
   $scope.pushDigit = function(digit) {
     var amount = $scope.showAlternativeAmount ? $scope.alternativeAmount.toString() : $scope.amount.toString();
 
-    if (amount.length >= 10) return;
-    if (amount == '0' && digit == 0) return;
-    var val = amount ? amount + digit : digit;
-    processAmount(val);
+    if (amount.length >= 20) return;
+    if (amount == '0') {
+      if (digit == 0) return;
+      processAmount(digit);
+      return;
+    }
+    processAmount(amount + digit);
   };
 
   $scope.pushOperator = function(operator) {
@@ -93,6 +97,7 @@ angular.module('copayApp.controllers').controller('inputAmountController', funct
 
   function resetAmount() {
     $scope.amount = $scope.alternativeAmount = $scope.alternativeResult = $scope.amountResult = 0;
+    $scope.globalResult = null;
   };
 
   function processAmount(val) {
@@ -116,6 +121,7 @@ angular.module('copayApp.controllers').controller('inputAmountController', funct
 
     if (lodash.isNumber(result)) {
       $scope.amount = $scope.alternativeAmount = val;
+      $scope.globalResult = result + ' =';
       $scope.amountResult = toFiat(result);
       $scope.alternativeResult = fromFiat(result);
     }
@@ -168,10 +174,10 @@ angular.module('copayApp.controllers').controller('inputAmountController', funct
         $scope.specificAmountBtc = (amountSat * satToBtc).toFixed(8);
       }
 
-      $scope.specificAmount = amount;
-      $scope.specificAlternativeAmount = alternativeAmount;
+      $scope.specificAmount = amount.toFixed(2);
+      $scope.specificAlternativeAmount = alternativeAmount.toFixed(2);
     } else {
-      self.setAmount(amount, alternativeAmount, $scope.showAlternativeAmount);
+      self.setAmount(amount.toFixed(2), alternativeAmount.toFixed(2), $scope.showAlternativeAmount);
       $scope.cancel();
     }
   };

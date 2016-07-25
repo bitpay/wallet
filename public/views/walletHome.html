@@ -303,16 +303,9 @@
             </button>
           </div>
           <div class="small-12 columns" ng-show="home.addr">
-            <button class="button expand small round m10b" ng-click="openCustomAmountModal(home.addr)"
+            <button class="button expand small round m10b" ng-click="openAmountModal(home.addr)"
               ng-style="{'background-color':index.backgroundColor}"
-              ng-disabled="home.generatingAddress"
-              ng-show="!index.isCordova">
-              <span translate>Request a specific amount</span>
-            </button>
-            <button class="button expand small round m10b" ng-click="openInputAmountModal(home.addr)"
-              ng-style="{'background-color':index.backgroundColor}"
-              ng-disabled="home.generatingAddress"
-              ng-show="index.isCordova">
+              ng-disabled="home.generatingAddress">
               <span translate>Request a specific amount</span>
             </button>
           </div>
@@ -432,8 +425,8 @@
                       <input type="amount" readonly="true" ng-show="showAlternative" id="alternative" ng-disabled="!home.isRateAvailable || home.lockAmount" name="alternative" ng-attr-placeholder="{{'Amount in'|translate}} {{ home.alternativeName }}" ng-model="_alternative" required autocomplete="off" ng-focus="openInputAmountModal()" ignore-mouse-wheel>
                     </div>
                     <div ng-if="!index.isCordova">
-                      <input type="text" ng-show="!showAlternative" id="amount" ng-disabled="home.lockAmount" name="amount" ng-attr-placeholder="{{'Amount in'|translate}} {{home.unitName}}" ng-model="_amount" valid-amount required autocomplete="off" ignore-mouse-wheel>
-                      <input type="text" ng-show="showAlternative" id="alternative" ng-disabled="!home.isRateAvailable || home.lockAmount" name="alternative" ng-attr-placeholder="{{'Amount in'|translate}} {{ home.alternativeName }}" ng-model="_alternative" required autocomplete="off" ignore-mouse-wheel>
+                      <input type="number" ng-show="!showAlternative" id="amount" ng-disabled="home.lockAmount" name="amount" ng-attr-placeholder="{{'Amount in'|translate}} {{home.unitName}}" ng-model="_amount" valid-amount required autocomplete="off" ignore-mouse-wheel>
+                      <input type="number" ng-show="showAlternative" id="alternative" ng-disabled="!home.isRateAvailable || home.lockAmount" name="alternative" ng-attr-placeholder="{{'Amount in'|translate}} {{ home.alternativeName }}" ng-model="_alternative" required autocomplete="off" ignore-mouse-wheel>
                     </div>
                     <a class="postfix button" ng-show="!showAlternative" ng-style="{'background-color':index.backgroundColor}" ng-click="showAlternative = !showAlternative">{{home.unitName}}</a>
                     <a class="postfix button black" ng-show="showAlternative" ng-click="showAlternative = !showAlternative">{{home.alternativeIsoCode}}</a>
