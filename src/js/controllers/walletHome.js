@@ -557,6 +557,13 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     });
   };
 
+  $scope.openAmountModal = function(address) {
+    if (isCordova)
+      $scope.openInputAmountModal(address);
+    else
+      $scope.openCustomAmountModal(address);
+  };
+
   $scope.openInputAmountModal = function(addr) {
     var fc = profileService.focusedClient;
     $scope.color = fc.backgroundColor;
