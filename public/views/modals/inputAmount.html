@@ -6,7 +6,7 @@
       </a>
     </div>
     <h1 class="title ellipsis" translate>Enter amount</h1>
-    <div class="right-small m5r" ng-click="toggleAlternative()">
+    <div class="right-small m5r" ng-show="!specificAmount" ng-click="toggleAlternative()">
       <a class="postfix" ng-show="showAlternativeAmount">{{alternativeIsoCode}}</a>
       <a class="postfix" ng-show="!showAlternativeAmount">{{unitName}}</a>
     </div>
@@ -16,9 +16,9 @@
     <div ng-show="!specificAmount">
       <div class="send-amount row" ng-style="{'background-color':index.backgroundColor}">
         <div class="size-48" ng-show="!showAlternativeAmount">{{amount}}</div>
-        <div class="size-21 text-light" ng-show="!showAlternativeAmount">{{amountResult}} {{alternativeIsoCode}}</div>
+        <div class="size-21 text-light" ng-show="!showAlternativeAmount">{{globalResult}} {{amountResult}} {{alternativeIsoCode}}</div>
         <div class="size-48" ng-show="showAlternativeAmount">${{alternativeAmount}}</div>
-        <div class="size-21 text-light" ng-show="showAlternativeAmount">{{alternativeResult}} {{unitName}}</div>
+        <div class="size-21 text-light" ng-show="showAlternativeAmount">{{globalResult}} {{alternativeResult}} {{unitName}}</div>
       </div>
 
       <div class="button-content text-center size-10 df">
@@ -55,7 +55,7 @@
         <div class="columns">
           <button class="round expand m0"
             ng-style="{'background-color':index.backgroundColor}"
-            ng-disabled="alternativeResult == 0 && amountResult == 0"
+            ng-disabled="alternativeResult <= 0 && amountResult <= 0"
             ng-click="finish()"
             ng-show="!specificAmount">
             <span translate ng-show="!address">Ok</span>
