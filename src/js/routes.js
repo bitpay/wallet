@@ -168,6 +168,15 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
           },
         }
       })
+      .state('appLocked', {
+        url: '/appLocked',
+        needProfile: true,
+        views: {
+          'main': {
+            templateUrl: 'views/appLocked.html'
+          },
+        }
+      })
       .state('preferences', {
         url: '/preferences',
         templateUrl: 'views/preferences.html',
@@ -558,7 +567,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         }
       });
   })
-  .run(function($rootScope, $state, $location, $log, $timeout, $ionicPlatform, lodash, platformInfo, profileService, uxLanguage, go, gettextCatalog) {
+  .run(function($rootScope, $state, $location, $log, $timeout, $ionicPlatform, fingerprintService, lodash, platformInfo, profileService, uxLanguage, go, gettextCatalog) {
 
     if (platformInfo.isCordova) {
       if (screen.width < 768) {

@@ -1,0 +1,14 @@
+<div class="row columns p20" ng-controller="appLockedController">
+  <div class="text-center">
+    <logo width="146"></logo>
+    <div class="text-white" ng-include="'views/includes/version.html'"></div>
+  </div>
+  <h1 translate class="text-center">Application locked</h1>
+  <div class="text-center">
+    <h3>Sorry, Copay App is protected by finger print</h3>
+    <button class="button outline round dark-gray tiny m20t" ng-click="restart()">
+      <span class="text-gray" translate ng-show="!btx.note">Try Again</i></span>
+    </button>
+  </div>
+</div>
+

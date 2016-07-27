@@ -14,7 +14,7 @@ angular.module('copayApp.services').factory('fingerprintService', function($log,
       function(msg) {
         FingerprintAuth.isAvailable(function(result) {
 
-          if (result.isAvailable) 
+          if (result.isAvailable)
             _isAvailable = 'ANDROID';
 
         }, function() {
@@ -84,7 +84,7 @@ angular.module('copayApp.services').factory('fingerprintService', function($log,
 
   root.check = function(client, cb) {
     if (isNeeded(client)) {
-      $log.debug('FingerPrint Service:', _isAvailable); 
+      $log.debug('FingerPrint Service:', _isAvailable);
       if (_isAvailable == 'IOS')
         return requestTouchId(cb);
       else
