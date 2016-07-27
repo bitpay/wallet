@@ -25,6 +25,25 @@ module.exports = function(grunt) {
             replacement: '<%= pkg.androidVersionCode %>'
           }]
         }
+      },
+      app-template: {
+        files: {
+          'app-template/package.json': ['package.json'],
+          'cordova/config.xml': ['config-templates/config.xml'],
+          'cordova/wp/Package.appxmanifest': ['config-templates/Package.appxmanifest'],
+          'cordova/wp/Properties/WMAppManifest.xml': ['config-templates/WMAppManifest.xml'],
+          'webkitbuilds/.desktop': ['config-templates/.desktop'],
+          'webkitbuilds/setup-win.iss': ['config-templates/setup-win.iss']
+        },
+        options: {
+          replacements: [{
+            pattern: /%APP-VERSION%/g,
+            replacement: '<%= pkg.version %>'
+          }, {
+            pattern: /%ANDROID-VERSION-CODE%/g,
+            replacement: '<%= pkg.androidVersionCode %>'
+          }]
+        }
       }
     },
     exec: {
@@ -40,7 +59,6 @@ module.exports = function(grunt) {
       cordovaclean: {
         command: 'make -C cordova clean'
       },
-
       osx: {
         command: 'webkitbuilds/build-osx.sh sign'
       },
