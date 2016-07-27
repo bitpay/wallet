@@ -1,5 +1,5 @@
 {
-  "name": "copay",
+  "name": "bitpay-app",
   "description": "A multisignature bitcoin wallet",
   "author": "BitPay",
   "version": "2.5.0",
