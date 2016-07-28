@@ -69,21 +69,19 @@ angular.module('copayApp.services').factory('fingerprintService', function($log,
     };
   };
 
-  var isNeeded = function(client) {
+  var isNeeded = function() {
     if (!_isAvailable) return false;
 
     var config = configService.getSync();
-    config.touchIdFor = config.touchIdFor || {};
-
-    return config.touchIdFor[client.credentials.walletId];
+    return config.lock ? config.lock.enabled : false;
   };
 
   root.isAvailable = function(client) {
     return _isAvailable;
   };
 
-  root.check = function(client, cb) {
-    if (isNeeded(client)) {
+  root.check = function(cb) {
+    if (isNeeded()) {
       $log.debug('FingerPrint Service:', _isAvailable);
       if (_isAvailable == 'IOS')
         return requestTouchId(cb);

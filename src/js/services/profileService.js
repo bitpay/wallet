@@ -230,7 +230,7 @@ angular.module('copayApp.services')
                 }
 
                 $rootScope.$emit('disclaimerAccepted');
-                fingerprintService.check(root.focusedClient, function(err) {
+                fingerprintService.check(function(err) {
                   if (err) {
                     window.location = '#/appLocked';
                     return;

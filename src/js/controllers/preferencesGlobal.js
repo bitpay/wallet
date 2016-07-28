@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('preferencesGlobalController',
-  function($scope, $rootScope, $log, configService, uxLanguage, platformInfo, pushNotificationsService, profileService, feeService) {
+  function($scope, $rootScope, $log, configService, fingerprintService, uxLanguage, platformInfo, pushNotificationsService, profileService, feeService) {
 
     var isCordova = platformInfo.isCordova;
 
@@ -29,6 +29,8 @@ angular.module('copayApp.controllers').controller('preferencesGlobalController',
         });
       }
       $scope.spendUnconfirmed = config.wallet.spendUnconfirmed;
+      $scope.touchidAvailable = fingerprintService.isAvailable();
+      $scope.lock = config.lock ? config.lock.enabled : false;
       $scope.glideraEnabled = config.glidera.enabled;
       $scope.coinbaseEnabled = config.coinbase.enabled;
       $scope.pushNotifications = config.pushNotifications.enabled;
@@ -65,6 +67,17 @@ angular.module('copayApp.controllers').controller('preferencesGlobalController',
           pushNotificationsService.enableNotifications(profileService.walletClients);
         else
           pushNotificationsService.disableNotifications(profileService.walletClients);
+        if (err) $log.debug(err);
+      });
+    };
+
+    $scope.lockChange = function() {
+      var opts = {
+        lock: {
+          enabled: $scope.lock
+        }
+      };
+      configService.set(opts, function(err) {
         if (err) $log.debug(err);
       });
     };
