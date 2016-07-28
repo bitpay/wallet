@@ -112,7 +112,7 @@ mocks.init = function(fixtures, controllerName, opts, done) {
           var headers = JSON.stringify(bwc._getHeaders(method, url, args));
 
           // Fixes BWC version... TODO
-          headers = headers.replace(/bwc-\d\.\d\.\d/, 'bwc-2.4.0')
+          headers = headers.replace(/bwc-\d+\.\d+\.\d+/, 'bwc-2.4.0')
           var x = method + url + JSON.stringify(args) + headers;
           var sjcl = $delegate.getSJCL();
           return sjcl.codec.hex.fromBits(sjcl.hash.sha256.hash(x));
@@ -226,6 +226,10 @@ mocks.init = function(fixtures, controllerName, opts, done) {
           done();
         });
       } else {
+        if (opts.noProfile){
+          return done();
+        }
+
         _profileService_.create({
           noWallet: true
         }, function(err) {

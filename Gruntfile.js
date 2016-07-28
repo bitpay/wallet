@@ -235,12 +235,12 @@ module.exports = function(grunt) {
         singleRun: true
       }
     },
-    nodewebkit: {
+    nwjs: {
       options: {
         appName: 'Copay',
         platforms: ['win64', 'osx64', 'linux64'],
         buildDir: './webkitbuilds',
-        version: '0.12.2',
+        version: '0.16.0',
         macIcns: './public/img/icons/icon.icns',
         exeIco: './public/img/icons/icon.ico'
       },
@@ -271,7 +271,7 @@ module.exports = function(grunt) {
   grunt.registerTask('translate', ['nggettext_extract']);
   grunt.registerTask('test', ['karma:unit']);
   grunt.registerTask('test-coveralls', ['browserify', 'karma:prod', 'exec:coveralls']);
-  grunt.registerTask('desktop', ['prod', 'nodewebkit', 'copy:linux', 'compress:linux']);
-  grunt.registerTask('osx', ['prod', 'nodewebkit', 'exec:osx']);
+  grunt.registerTask('desktop', ['prod', 'nwjs', 'copy:linux', 'compress:linux']);
+  grunt.registerTask('osx', ['prod', 'nwjs', 'exec:osx']);
   grunt.registerTask('release', ['string-replace:dist']);
 };
