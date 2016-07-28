@@ -567,7 +567,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         }
       });
   })
-  .run(function($rootScope, $state, $location, $log, $timeout, $ionicPlatform, lodash, platformInfo, profileService, uxLanguage, go, gettextCatalog) {
+  .run(function($rootScope, $state, $location, $log, $timeout, $ionicPlatform, lodash, platformInfo, storageService, profileService, uxLanguage, go, gettextCatalog) {
 
     if (platformInfo.isCordova) {
       if (screen.width < 768) {
@@ -622,7 +622,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         }, 5000);
 
         $ionicPlatform.on('pause', function() {
-          // Nothing to do
+          storageService.setPauseTimestamp(Math.floor(Date.now() / 1000), function() {});
         });
 
         $ionicPlatform.on('resume', function() {

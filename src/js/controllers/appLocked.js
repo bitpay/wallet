@@ -1,6 +1,8 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('appLockedController', function($scope, $timeout) {
+angular.module('copayApp.controllers').controller('appLockedController', function($scope, $timeout, $ionicSideMenuDelegate) {
+
+  $ionicSideMenuDelegate.canDragContent(false);
 
   $scope.restart = function() {
     var hashIndex = window.location.href.indexOf('#/');

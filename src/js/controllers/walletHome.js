@@ -82,6 +82,21 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   var disableResumeListener = $rootScope.$on('Local/Resume', function() {
     // This is needed then the apps go to sleep
     self.bindTouchDown();
+
+    var config = configService.getSync();
+    var fingerprintEnabled = config.fingerprint ? config.fingerprint.enabled : null;
+
+    if (fingerprintEnabled) {
+      storageService.getPauseTimestamp(function(err, ts) {
+        if (err) $log.error(err);
+
+        var now = Math.floor(Date.now() / 1000);
+        var pausedTime = now - ts;
+        var minutes = Math.floor(pausedTime / 60);
+
+        if (minutes >= 1) window.location = '#/appLocked';
+      });
+    }
   });
 
   var disableTabListener = $rootScope.$on('Local/TabChanged', function(e, tab) {
