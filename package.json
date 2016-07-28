@@ -15,10 +15,9 @@
   "window": {
     "title": "Copay - A multisignature bitcoin wallet",
     "icon": "./public/img/icons/icon-256.png",
-    "toolbar": false,
     "show": true,
     "visible": true,
-    "resizable": false,
+    "resizable": true,
     "frame": true,
     "width": 800,
     "height": 600,
@@ -30,7 +29,7 @@
     "java": false,
     "plugin": false
   },
-  "dom_storage_quota": 100,
+  "dom_storage_quota": 200,
   "id": "jid1-x7bV5evAaI1P9Q",
   "homepage": "https://github.com/bitpay/copay",
   "license": "MIT",
