@@ -168,15 +168,6 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
           },
         }
       })
-      .state('appLocked', {
-        url: '/appLocked',
-        needProfile: true,
-        views: {
-          'main': {
-            templateUrl: 'views/appLocked.html'
-          },
-        }
-      })
       .state('preferences', {
         url: '/preferences',
         templateUrl: 'views/preferences.html',
@@ -567,7 +558,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         }
       });
   })
-  .run(function($rootScope, $state, $location, $log, $timeout, $ionicPlatform, lodash, platformInfo, storageService, profileService, uxLanguage, go, gettextCatalog) {
+  .run(function($rootScope, $state, $location, $log, $timeout, $ionicPlatform, $ionicModal, configService, lodash, fingerprintService, platformInfo, storageService, profileService, uxLanguage, go, gettextCatalog) {
 
     if (platformInfo.isCordova) {
       if (screen.width < 768) {
@@ -625,12 +616,31 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
           storageService.setPauseTimestamp(Math.floor(Date.now() / 1000), function() {});
         });
 
+        $timeout(function() {
+          if (isFingerprintEnabled()) {
+            openAppLockedModal();
+          }
+        }, 300);
+
         $ionicPlatform.on('resume', function() {
           $rootScope.$emit('Local/Resume');
+
+          if (isFingerprintEnabled()) {
+            storageService.getPauseTimestamp(function(err, ts) {
+              if (err) $log.error(err);
+
+              var now = Math.floor(Date.now() / 1000);
+              var totalSeconds = now - ts;
+              var minutes = Math.floor(totalSeconds / 60);
+
+              if (minutes >= 1) {
+                openAppLockedModal();
+              }
+            });
+          }
         });
 
         $ionicPlatform.on('backbutton', function(event) {
-
           var loc = window.location;
           var fromDisclaimer = loc.toString().match(/disclaimer/) ? 'true' : '';
           var fromHome = loc.toString().match(/index\.html#\/$/) ? 'true' : '';
@@ -682,6 +692,21 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
       }
       win.menu = nativeMenuBar;
     }
+
+    function openAppLockedModal() {
+      $ionicModal.fromTemplateUrl('views/modals/appLocked.html', {
+        scope: $rootScope
+      }).then(function(modal) {
+        $rootScope.appLockedModal = modal;
+        $rootScope.appLockedModal.show();
+      });
+    };
+
+    function isFingerprintEnabled() {
+      var config = configService.getSync();
+      var fingerprintEnabled = config.fingerprint ? config.fingerprint.enabled : null;
+      return fingerprintEnabled;
+    };
 
     $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
       $log.debug('Route change from:', fromState.name || '-', ' to:', toState.name);

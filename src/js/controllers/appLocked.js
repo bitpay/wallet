@@ -1,14 +1,18 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('appLockedController', function($scope, $timeout, $ionicSideMenuDelegate) {
+angular.module('copayApp.controllers').controller('appLockedController', function($scope, $ionicSideMenuDelegate, $timeout, fingerprintService) {
 
   $ionicSideMenuDelegate.canDragContent(false);
 
-  $scope.restart = function() {
-    var hashIndex = window.location.href.indexOf('#/');
-    window.location = window.location.href.substr(0, hashIndex);
+  $scope.requestFingerprint = function() {
     $timeout(function() {
-      $scope.$digest();
-    }, 1);
+      fingerprintService.check(function(err) {
+        if (err) {
+          console.log(err);
+          return;
+        }
+        $scope.appLockedModal.hide();
+      });
+    }, 10);
   };
 });

@@ -1,6 +1,6 @@
 'use strict';
 angular.module('copayApp.services')
-  .factory('profileService', function profileServiceFactory($rootScope, $timeout, $filter, $log, sjcl, lodash, fingerprintService, storageService, bwcService, configService, notificationService, pushNotificationsService, gettext, gettextCatalog, bwcError, uxLanguage, bitcore, platformInfo, walletService) {
+  .factory('profileService', function profileServiceFactory($rootScope, $timeout, $filter, $log, sjcl, lodash, storageService, bwcService, configService, notificationService, pushNotificationsService, gettext, gettextCatalog, bwcError, uxLanguage, bitcore, platformInfo, walletService) {
 
 
     var isChromeApp = platformInfo.isChromeApp;
@@ -228,15 +228,8 @@ angular.module('copayApp.services')
                 if (!val) {
                   return cb(new Error('NONAGREEDDISCLAIMER: Non agreed disclaimer'));
                 }
-
                 $rootScope.$emit('disclaimerAccepted');
-                fingerprintService.check(function(err) {
-                  if (err) {
-                    window.location = '#/appLocked';
-                    return;
-                  }
-                  return cb();
-                });
+                return cb();
               });
             });
           })
