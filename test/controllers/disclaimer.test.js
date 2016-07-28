@@ -48,14 +48,14 @@ describe('disclaimerController', function() {
         },
         "scanStatus": null
       }
-    }
-
+    },
   }; // TODO: Read from file
 
   beforeEach(function(done) {
+
     mocks.init(fixtures, 'disclaimerController', {
       initController: true,
-      noDisclaimer: true,
+      noProfile: true,
     }, done);
   });
 
