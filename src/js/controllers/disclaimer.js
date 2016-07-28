@@ -11,6 +11,7 @@ angular.module('copayApp.controllers').controller('disclaimerController',
     var create = function(opts) {
       opts = opts || {};
       $log.debug('Creating profile');
+
       profileService.create(opts, function(err) {
         if (err) {
           $log.warn(err);
@@ -30,7 +31,6 @@ angular.module('copayApp.controllers').controller('disclaimerController',
             }
           }, 3000);
         };
-
         $scope.error = "";
         ongoingProcess.set('creatingWallet', false);
       });

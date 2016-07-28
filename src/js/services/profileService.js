@@ -123,6 +123,7 @@ angular.module('copayApp.services')
     var validationLock = false;
 
     root.runValidation = function(client, delay, retryDelay) {
+
       delay = delay || 500;
       retryDelay = retryDelay || 50;
 
@@ -152,6 +153,7 @@ angular.module('copayApp.services')
             $log.warn('Key Derivation failed for wallet:' + walletId);
             storageService.clearLastAddress(walletId, function() {});
           }
+
           root.storeProfileIfDirty();
           $rootScope.$emit('Local/ValidatingWalletEnded', walletId, isOK);
         });
@@ -663,9 +665,11 @@ angular.module('copayApp.services')
         root.createDefaultProfile(opts, function(err, p) {
           if (err) return cb(err);
 
-          root.bindProfile(p, function(err) {
-            // ignore NONAGREEDDISCLAIMER
-            storageService.storeNewProfile(p, function(err) {
+          storageService.storeNewProfile(p, function(err) {
+            if (err) return cb(err);
+            root.bindProfile(p, function(err) {
+              // ignore NONAGREEDDISCLAIMER
+              if (err && err.toString().match('NONAGREEDDISCLAIMER')) return cb();
               return cb(err);
             });
           });

@@ -226,6 +226,10 @@ mocks.init = function(fixtures, controllerName, opts, done) {
           done();
         });
       } else {
+        if (opts.noProfile){
+          return done();
+        }
+
         _profileService_.create({
           noWallet: true
         }, function(err) {

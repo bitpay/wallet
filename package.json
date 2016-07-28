@@ -45,7 +45,6 @@
     "coveralls": "^2.11.9",
     "express": "^4.11.2",
     "fs": "0.0.2",
-    "grunt": ">=0.4.0",
     "shelljs": "^0.3.0"
   },
   "scripts": {
