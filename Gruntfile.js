@@ -271,7 +271,7 @@ module.exports = function(grunt) {
   grunt.registerTask('translate', ['nggettext_extract']);
   grunt.registerTask('test', ['karma:unit']);
   grunt.registerTask('test-coveralls', ['browserify', 'karma:prod', 'exec:coveralls']);
-  grunt.registerTask('desktop', ['prod', 'nodewebkit', 'copy:linux', 'compress:linux']);
-  grunt.registerTask('osx', ['prod', 'nodewebkit', 'exec:osx']);
+  grunt.registerTask('desktop', ['prod', 'nwjs', 'copy:linux', 'compress:linux']);
+  grunt.registerTask('osx', ['prod', 'nwjs', 'exec:osx']);
   grunt.registerTask('release', ['string-replace:dist']);
 };

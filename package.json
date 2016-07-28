@@ -75,6 +75,7 @@
     "grunt-exec": "^1.0.0",
     "grunt-karma": "^2.0.0",
     "grunt-karma-coveralls": "^2.5.4",
+    "grunt-nw-builder": "^2.0.3",
     "grunt-sass": "^1.2.0",
     "grunt-string-replace": "^1.2.1",
     "karma": "^0.13.22",
