@@ -235,12 +235,12 @@ module.exports = function(grunt) {
         singleRun: true
       }
     },
-    nodewebkit: {
+    nwjs: {
       options: {
         appName: 'Copay',
         platforms: ['win64', 'osx64', 'linux64'],
         buildDir: './webkitbuilds',
-        version: '0.12.2',
+        version: '0.16.0',
         macIcns: './public/img/icons/icon.icns',
         exeIco: './public/img/icons/icon.ico'
       },
