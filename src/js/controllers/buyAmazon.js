@@ -17,6 +17,7 @@ angular.module('copayApp.controllers').controller('buyAmazonController',
     this.init = function() {
       var network = configService.getSync().amazon.testnet ? 'testnet' : 'livenet';
       amazonService.setCredentials(network);
+      amazonService.initAmazonUUID(network);
       self.allWallets = profileService.getWallets(network, 1);
       client = profileService.focusedClient;
       if (client && client.credentials.m == 1 && client.credentials.network == network) {
@@ -176,7 +177,7 @@ angular.module('copayApp.controllers').controller('buyAmazonController',
           return;
         }
 
-        var now = moment().unix();
+        var now = moment().unix() * 1000;
 
         var newData = giftCard;
         newData['invoiceId'] = dataSrc.invoiceId;
