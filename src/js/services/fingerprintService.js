@@ -73,7 +73,7 @@ angular.module('copayApp.services').factory('fingerprintService', function($log,
     if (!_isAvailable) return false;
 
     var config = configService.getSync();
-    return config.lock ? config.lock.enabled : false;
+    return config.fingerprint ? config.fingerprint.enabled : false;
   };
 
   root.isAvailable = function(client) {

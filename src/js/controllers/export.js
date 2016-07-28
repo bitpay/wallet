@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('exportController',
-  function($rootScope, $scope, $timeout, $log, lodash, backupService, walletService, fingerprintService, configService, storageService, profileService, platformInfo, notification, go, gettext, gettextCatalog) {
+  function($rootScope, $scope, $timeout, $log, lodash, backupService, walletService, configService, storageService, profileService, platformInfo, notification, go, gettext, gettextCatalog) {
     var prevState;
     var isWP = platformInfo.isWP;
     var isAndroid = platformInfo.isAndroid;
@@ -18,23 +18,16 @@ angular.module('copayApp.controllers').controller('exportController',
       $scope.showAdvanced = false;
       prevState = state || 'walletHome';
 
-      fingerprintService.check(fc, function(err) {
+      handleEncryptedWallet(fc, function(err) {
         if (err) {
           go.path(prevState);
           return;
         }
 
-        handleEncryptedWallet(fc, function(err) {
-          if (err) {
-            go.path(prevState);
-            return;
-          }
-
-          $scope.exportWalletInfo = encodeWalletInfo();
-          $timeout(function() {
-            $scope.$apply();
-          }, 1);
-        });
+        $scope.exportWalletInfo = encodeWalletInfo();
+        $timeout(function() {
+          $scope.$apply();
+        }, 1);
       });
     };
 

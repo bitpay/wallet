@@ -1,13 +1,12 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('backupController',
-  function($rootScope, $scope, $timeout, $log, go, lodash, fingerprintService, platformInfo, configService, profileService, gettext, bwcService, walletService, ongoingProcess) {
+  function($rootScope, $scope, $timeout, $log, go, lodash, platformInfo, configService, profileService, gettext, bwcService, walletService, ongoingProcess) {
 
     var fc = profileService.focusedClient;
     var prevState;
     $scope.customWords = [];
     $scope.walletName = fc.credentials.walletName;
-    $scope.credentialsEncrypted = fc.isPrivKeyEncrypted;
 
     $scope.init = function(state) {
       prevState = state || 'walletHome';
@@ -15,21 +14,14 @@ angular.module('copayApp.controllers').controller('backupController',
       $scope.deleted = isDeletedSeed();
       if ($scope.deleted) return;
 
-      fingerprintService.check(fc, function(err) {
+      handleEncryptedWallet(fc, function(err) {
         if (err) {
+          $log.warn('Error decrypting credentials:', $scope.error);
           go.path(prevState);
           return;
         }
 
-        handleEncryptedWallet(fc, function(err) {
-          if (err) {
-            $log.warn('Error decrypting credentials:', $scope.error);
-            go.path(prevState);
-            return;
-          }
-          $scope.credentialsEncrypted = false;
-          $scope.initFlow();
-        });
+        $scope.initFlow();
       });
     };
 

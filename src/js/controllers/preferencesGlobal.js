@@ -29,8 +29,8 @@ angular.module('copayApp.controllers').controller('preferencesGlobalController',
         });
       }
       $scope.spendUnconfirmed = config.wallet.spendUnconfirmed;
-      $scope.touchidAvailable = fingerprintService.isAvailable();
-      $scope.lock = config.lock ? config.lock.enabled : false;
+      $scope.fingerprintAvailable = fingerprintService.isAvailable();
+      $scope.fingerprint = config.fingerprint ? config.fingerprint.enabled : false;
       $scope.glideraEnabled = config.glidera.enabled;
       $scope.coinbaseEnabled = config.coinbase.enabled;
       $scope.pushNotifications = config.pushNotifications.enabled;
@@ -71,10 +71,10 @@ angular.module('copayApp.controllers').controller('preferencesGlobalController',
       });
     };
 
-    $scope.lockChange = function() {
+    $scope.fingerprintChange = function() {
       var opts = {
-        lock: {
-          enabled: $scope.lock
+        fingerprint: {
+          enabled: $scope.fingerprint
         }
       };
       configService.set(opts, function(err) {

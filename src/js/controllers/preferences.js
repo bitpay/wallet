@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('preferencesController',
-  function($scope, $rootScope, $timeout, $log, configService, profileService, fingerprintService, walletService) {
+  function($scope, $rootScope, $timeout, $log, configService, profileService, walletService) {
 
     var fc;
     var config = configService.getSync();
@@ -26,9 +26,6 @@ angular.module('copayApp.controllers').controller('preferencesController',
         // TODO externalAccount
         //this.externalIndex = fc.getExternalIndex();
       }
-
-      $scope.touchidAvailable = fingerprintService.isAvailable();
-      $scope.touchidEnabled = config.touchIdFor ? config.touchIdFor[fc.credentials.walletId] : null;
 
       $scope.deleted = false;
       if (fc.credentials && !fc.credentials.mnemonicEncrypted && !fc.credentials.mnemonic) {
@@ -102,32 +99,5 @@ angular.module('copayApp.controllers').controller('preferencesController',
           });
         }
       }
-    };
-
-    $scope.touchidChange = function() {
-      var walletId = fc.credentials.walletId;
-
-      var opts = {
-        touchIdFor: {}
-      };
-      opts.touchIdFor[walletId] = $scope.touchidEnabled;
-
-      fingerprintService.check(fc, function(err) {
-        if (err) {
-          $log.debug(err);
-          $timeout(function() {
-            $scope.touchidError = true;
-            $scope.touchidEnabled = true;
-          }, 100);
-          return;
-        }
-        configService.set(opts, function(err) {
-          if (err) {
-            $log.debug(err);
-            $scope.touchidError = true;
-            $scope.touchidEnabled = false;
-          }
-        });
-      });
     };
   });
