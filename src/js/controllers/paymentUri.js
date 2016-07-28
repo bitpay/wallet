@@ -1,6 +1,6 @@
 'use strict';
 angular.module('copayApp.controllers').controller('paymentUriController',
-  function($rootScope, $stateParams, $location, $timeout, profileService, configService, lodash, bitcore, go) {
+  function($rootScope, $scope, $stateParams, $location, $timeout, profileService, configService, lodash, bitcore, go) {
     function strip(number) {
       return (parseFloat(number.toPrecision(12)));
     };
@@ -33,7 +33,15 @@ angular.module('copayApp.controllers').controller('paymentUriController',
     };
 
     this.getWallets = function(network) {
-      return profileService.getWallets(network);
+
+      $scope.wallets = [];
+      lodash.forEach(profileService.getWallets(network), function(w) {
+        var client = profileService.getClient(w.id);
+        profileService.isReady(client, function(err) {
+          if (err) return;
+          $scope.wallets.push(w);
+        })
+      });
     };
 
     this.selectWallet = function(wid) {
