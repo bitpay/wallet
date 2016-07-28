@@ -330,5 +330,13 @@ angular.module('copayApp.services')
       storage.remove('amazonGiftCards-' + network, cb);
     };
 
+    root.setAmazonUUID = function(network, uuid, cb) {
+      storage.set('amazonUUID-' + network, uuid, cb);
+    };
+
+    root.getAmazonUUID = function(network, cb) {
+      storage.get('amazonUUID-' + network, cb);
+    };
+
     return root;
   });
