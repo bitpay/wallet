@@ -49,110 +49,13 @@ describe('disclaimerController', function() {
         "scanStatus": null
       }
     },
-
-    //========================================================
-    // post wallets
-    '3295ba1bcd509b7d42928c071999281f7692caa64df43177bec8a6a8c3fa8927': {
-      "walletId": "24c40723-c360-498d-a803-a6e1e4ef990d"
-    },
-    // post /v2/wallets/24c40723-c360-498d-a803-a6e1e4ef990d/copayers
-    '5f109ab9572a69feb0654268b8802afa364d6e8217aeaf851416f0394502e90c': {
-      "copayerId": "6348201ef06ad5b922065fd4e510152c3da3af1196c0cb8f6e34f6e0494fa4a1",
-      "wallet": {
-        "version": "1.0.0",
-        "createdOn": 1469713357,
-        "id": "24c40723-c360-498d-a803-a6e1e4ef990d",
-        "name": "{\"iv\":\"BZQVWAP6d1e4G8Fq1rQKbA==\",\"v\":1,\"iter\":1,\"ks\":128,\"ts\":64,\"mode\":\"ccm\",\"adata\":\"\",\"cipher\":\"aes\",\"ct\":\"DK2ZgZ/k/rr5UfXn4Ht1KAAaRp7Wa5E=\"}",
-        "m": 1,
-        "n": 1,
-        "singleAddress": false,
-        "status": "complete",
-        "publicKeyRing": [{
-          "xPubKey": "xpub6D1Um62Uho1NDw6jYzgqCzase3L9TNLmCn42YuBzP8Vn4q94LwpNbcv3zpJJAS6BVf8YyKfKKqTt9BG9PBzcCbPouGkkci9qMNXTtZRmtAy",
-          "requestPubKey": "03caa96ae18a6805f13851e6e3f08e15d505abb52cfde39427561587f5652245c1"
-        }],
-        "copayers": [{
-          "version": 2,
-          "createdOn": 1469713357,
-          "xPubKey": "xpub6D1Um62Uho1NDw6jYzgqCzase3L9TNLmCn42YuBzP8Vn4q94LwpNbcv3zpJJAS6BVf8YyKfKKqTt9BG9PBzcCbPouGkkci9qMNXTtZRmtAy",
-          "id": "6348201ef06ad5b922065fd4e510152c3da3af1196c0cb8f6e34f6e0494fa4a1",
-          "name": "{\"iv\":\"BZQVWAP6d1e4G8Fq1rQKbA==\",\"v\":1,\"iter\":1,\"ks\":128,\"ts\":64,\"mode\":\"ccm\",\"adata\":\"\",\"cipher\":\"aes\",\"ct\":\"Ma1tUjOpLrDtSA==\"}",
-          "requestPubKey": "03caa96ae18a6805f13851e6e3f08e15d505abb52cfde39427561587f5652245c1",
-          "signature": "3044022023b43a8dabfa3a2d615135913021bcd4cfe06739e76cdcec91dedcd93f1c034502200e62c491417874b3ef5d89bf2a9278c6bc1a3b95e7535bc0a6f936fffe1b11bd",
-          "requestPubKeys": [{
-            "key": "03caa96ae18a6805f13851e6e3f08e15d505abb52cfde39427561587f5652245c1",
-            "signature": "3044022023b43a8dabfa3a2d615135913021bcd4cfe06739e76cdcec91dedcd93f1c034502200e62c491417874b3ef5d89bf2a9278c6bc1a3b95e7535bc0a6f936fffe1b11bd"
-          }],
-          "customData": "{\"iv\":\"BZQVWAP6d1e4G8Fq1rQKbA==\",\"v\":1,\"iter\":1,\"ks\":128,\"ts\":64,\"mode\":\"ccm\",\"adata\":\"\",\"cipher\":\"aes\",\"ct\":\"cz7J7ySbR+GJqWheI9HYyoL+MquLmbUCQDCVS3ZyR24pHiDSq1rh3AxuHxgEIejq7oFeYdQc/eLzJFtTNe2bFm00N6w/hpa3RAm3PYpajfYYn3JH2JvFrCJYckQ=\"}"
-        }],
-        "pubKey": "03dcd6c9a8bc5109a62b0273e63cbf2e15bb65698e646d4713c85b2644551ce4f8",
-        "network": "livenet",
-        "derivationStrategy": "BIP44",
-        "addressType": "P2PKH",
-        "addressManager": {
-          "version": 2,
-          "derivationStrategy": "BIP44",
-          "receiveAddressIndex": 0,
-          "changeAddressIndex": 0,
-          "copayerIndex": 2147483647
-        },
-        "scanStatus": null
-      }
-    },
-    // post wallets
-    '8563715db4f4822b4b2a97173093293f8c48e9468de76ef048b0fe3fb846c920': {
-      "walletId": "65ffeffb-97f2-433d-ae04-8d28c1b96798"
-    },
-    // post copayers
-    'fa2ecf7b36e3048da454284902ae3b97ffd9d86d0ccd72d36ff32bb8543cd4c1': {
-      "copayerId": "e939fdf291091b5413f6682d2f1b7c2c3174face27139ec0e2fc8a9b172c2644",
-      "wallet": {
-        "version": "1.0.0",
-        "createdOn": 1469713979,
-        "id": "65ffeffb-97f2-433d-ae04-8d28c1b96798",
-        "name": "{\"iv\":\"BZQVWAP6d1e4G8Fq1rQKbA==\",\"v\":1,\"iter\":1,\"ks\":128,\"ts\":64,\"mode\":\"ccm\",\"adata\":\"\",\"cipher\":\"aes\",\"ct\":\"HGqck9Px9U26IE5uSKrlrp39t8WznEs=\"}",
-        "m": 1,
-        "n": 1,
-        "singleAddress": false,
-        "status": "complete",
-        "publicKeyRing": [{
-          "xPubKey": "xpub6CtArrqbWKXT1m2aF8nx3ZuDsyNGCFH54HCLxG3QRQuaeB1ciboT2KbVMdy3tzGuzc4A8iMxj4aQKmWjgXEjyfm5b8Vq8XXinRkTx3njjLC",
-          "requestPubKey": "032965f65c6f8fefda40ff9ed1aaa66725db2d7e529210e4c5f1a02a66b3253077"
-        }],
-        "copayers": [{
-          "version": 2,
-          "createdOn": 1469713980,
-          "xPubKey": "xpub6CtArrqbWKXT1m2aF8nx3ZuDsyNGCFH54HCLxG3QRQuaeB1ciboT2KbVMdy3tzGuzc4A8iMxj4aQKmWjgXEjyfm5b8Vq8XXinRkTx3njjLC",
-          "id": "e939fdf291091b5413f6682d2f1b7c2c3174face27139ec0e2fc8a9b172c2644",
-          "name": "{\"iv\":\"BZQVWAP6d1e4G8Fq1rQKbA==\",\"v\":1,\"iter\":1,\"ks\":128,\"ts\":64,\"mode\":\"ccm\",\"adata\":\"\",\"cipher\":\"aes\",\"ct\":\"IWqHNixCmrWcWA==\"}",
-          "requestPubKey": "032965f65c6f8fefda40ff9ed1aaa66725db2d7e529210e4c5f1a02a66b3253077",
-          "signature": "304502210092ca3f8c481639913e2917350a7be9aa2fe84ca1becf3a16de6d3bd1e0c39b93022032df2c871c7f0b414fa83c7920582fbe3e2c83d3db76966d95d7a6002eb57291",
-          "requestPubKeys": [{
-            "key": "032965f65c6f8fefda40ff9ed1aaa66725db2d7e529210e4c5f1a02a66b3253077",
-            "signature": "304502210092ca3f8c481639913e2917350a7be9aa2fe84ca1becf3a16de6d3bd1e0c39b93022032df2c871c7f0b414fa83c7920582fbe3e2c83d3db76966d95d7a6002eb57291"
-          }],
-          "customData": "{\"iv\":\"BZQVWAP6d1e4G8Fq1rQKbA==\",\"v\":1,\"iter\":1,\"ks\":128,\"ts\":64,\"mode\":\"ccm\",\"adata\":\"\",\"cipher\":\"aes\",\"ct\":\"Oc30Rr5SMU6qbeSkF6pO+lfd7z7Ywyqhjqzzh6snyonLY34k6SmeLKCIb0rwYLOUBUdvWx3sY05qjYjcm/9xKPyTV8DSxLXc9EP6LE4B0dl1yvehARcFFq6ZcGE=\"}"
-        }],
-        "pubKey": "03be9b96960ebef82cb5fd9a0d0cbea17070819c3df6c39ca04b821a2b7642e938",
-        "network": "livenet",
-        "derivationStrategy": "BIP44",
-        "addressType": "P2PKH",
-        "addressManager": {
-          "version": 2,
-          "derivationStrategy": "BIP44",
-          "receiveAddressIndex": 0,
-          "changeAddressIndex": 0,
-          "copayerIndex": 2147483647
-        },
-        "scanStatus": null
-      }
-    }
   }; // TODO: Read from file
 
   beforeEach(function(done) {
+
     mocks.init(fixtures, 'disclaimerController', {
       initController: true,
-      noDisclaimer: true,
+      noProfile: true,
     }, done);
   });
 
@@ -164,7 +67,7 @@ describe('disclaimerController', function() {
     should.exist(ctrl);
   });
 
-  it.only('should create the initial profile', function(done) {
+  it('should create the initial profile', function(done) {
     localStorage.clear();
     ctrl.init({
       walletPrivKey: 'Kz4CFSTgLzoYfMkt97BTBotUbZYXjMts6Ej9HbVfCf5oLmun1BXy',
@@ -174,6 +77,6 @@ describe('disclaimerController', function() {
       mocks.ongoingProcess.set.getCall(1).args[0].should.equal('creatingWallet');
       mocks.ongoingProcess.set.getCall(1).args[1].should.equal(false);
       done();
-    }, 10000);
+    }, 100);
   });
 });

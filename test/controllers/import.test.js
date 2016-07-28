@@ -90,9 +90,10 @@ describe('importController', function() {
     scope.bwsurl = null;
     scope._walletPrivKey = 'Kz4CFSTgLzoYfMkt97BTBotUbZYXjMts6Ej9HbVfCf5oLmun1BXy';
 
-    ctrl.setSeedSource();
-    ctrl.importMnemonic(fakeForm);
-    should.not.exist(ctrl.error);
+    scope.setSeedSource();
+
+    scope.importMnemonic(fakeForm);
+    should.not.exist(scope.error);
 
     mocks.notification.success.calledOnce.should.equal(true);
 

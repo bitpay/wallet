@@ -8,6 +8,7 @@ angular.module('copayApp.services')
     var ls = ((typeof window.localStorage !== "undefined") ? window.localStorage : null);
 
     if (isChromeApp && !isNW && !ls) {
+      $log.info('Using CHROME storage');
       ls = chrome.storage.local;
     }
 

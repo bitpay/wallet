@@ -348,9 +348,9 @@ angular.module('copayApp.controllers').controller('importController',
     };
 
     $scope.setSeedSource = function() {
+
       if (!$scope.seedSource) return;
       $scope.seedSourceId = $scope.seedSource.id;
-
       $timeout(function() {
         $rootScope.$apply();
       });
