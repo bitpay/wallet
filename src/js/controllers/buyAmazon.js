@@ -17,7 +17,6 @@ angular.module('copayApp.controllers').controller('buyAmazonController',
     this.init = function() {
       var network = configService.getSync().amazon.testnet ? 'testnet' : 'livenet';
       amazonService.setCredentials(network);
-      amazonService.initAmazonUUID(network);
       self.allWallets = profileService.getWallets(network, 1);
       client = profileService.focusedClient;
       if (client && client.credentials.m == 1 && client.credentials.network == network) {
@@ -62,7 +61,8 @@ angular.module('copayApp.controllers').controller('buyAmazonController',
       var currency_code = configService.getSync().amazon.testnet ? window.amazon_sandbox_currency_code : window.amazon_currency_code;
       var dataSrc = {
         currency: currency_code,
-        amount: $scope.fiat
+        amount: $scope.fiat,
+        uuid: self.selectedWalletId
       };
       var outputs = [];
       var config = configService.getSync();
@@ -185,6 +185,7 @@ angular.module('copayApp.controllers').controller('buyAmazonController',
         newData['invoiceUrl'] = dataSrc.invoiceUrl;
         newData['amount'] = dataSrc.amount;
         newData['date'] = dataSrc.invoiceTime || now;
+        newData['uuid'] = dataSrc.uuid;
 
         if (newData.status == 'expired') {
           amazonService.savePendingGiftCard(newData, {
