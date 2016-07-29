@@ -73,8 +73,8 @@ provide as much detail and context as possible.
 <a name="support"></a>
 ## Support requests
 
-If you are having particular problem with your Copay instalation, please first search older 
-issues in order to learn if the issue is already reported. It could be fixed already. 
+If you are having particular problem with your Copay instalation, please first [search older 
+issues](https://github.com/bitpay/copay/issues) in order to learn if the issue is already reported. It could be fixed already. 
 
 Please also check our [FAQ](https://github.com/bitpay/copay/wiki/COPAY---FAQ).
 
@@ -90,10 +90,11 @@ provide the following information:
  any errors reported there (errors are shown in red)
  - If possible, please provide a screenshot of the error / issue.
  
- If you need to provide personal data to solve the issue (like the Wallet Id), do not use Github Issues. We will provide an email 
- so you can send the informatin. 
- 
+If you need to provide personal / sensitive data to solve the issue (like the Wallet Id), do not use Github Issues. 
+We will provide a better channel (like an BitPay email address) so you can send the information. If possible, please
+encrypt your emails using GnuPG.
 
+To open an issue go to [Github Issues](https://github.com/bitpay/copay/issues).
 
 <a name="pull-requests"></a>
 ## Pull requests
