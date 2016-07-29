@@ -1,19 +1,16 @@
 <ion-modal-view ng-controller="amazonCardDetailsController">
-  <nav class="tab-bar">
-    <section class="left-small">
-      <a ng-click="cancel()">
-        <i class="icon-arrow-left3 icon-back"></i>
-        <span class="text-back">Back</span>
+  <ion-header-bar align-title="center" class="tab-bar">
+    <div class="left-small">
+      <a ng-click="cancel()" class="p10">
+        <span class="text-close">Close</span>
       </a>
-    </section>
-    <section class="middle tab-bar-section">
-      <h1 class="title ellipsis">
-        Details
-      </h1>
-    </section>
-  </nav>
+    </div>
+    <h1 class="title ellipsis">
+      Details
+    </h1>
+  </ion-header-bar>
 
-  <ion-content class="has-header" overflow-scroll="true">
+  <ion-content>
 
     <div class="modal-content">
       <div class="header-modal text-center">
