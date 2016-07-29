@@ -13,27 +13,6 @@ angular.module('copayApp.services').factory('amazonService', function($http, $lo
     };
   };
 
-  root.initAmazonUUID = function(network) {
-    storageService.getAmazonUUID(network, function(err, uuid) {
-      if (err) $log.error(err);
-      if (uuid) return;
-      var now = moment().unix();
-      var random = Math.floor((Math.random() * 100) + 1);
-      var generateUUID = now + random;
-      storageService.setAmazonUUID(network, generateUUID, function(err) {
-        if (err) $log.error(err);
-      });
-    });
-  }
-
-  var _getUUID = function(cb) {
-    var network = configService.getSync().amazon.testnet ? 'testnet' : 'livenet';
-    storageService.getAmazonUUID(network, function(err, uuid) {
-      if (err) $log.error(err);
-      return cb(uuid);
-    });
-  };
-
   var _getBitPay = function(endpoint) {
     return {
       method: 'GET',
@@ -90,22 +69,19 @@ angular.module('copayApp.services').factory('amazonService', function($http, $lo
   };
 
   root.createBitPayInvoice = function(data, cb) {
-    _getUUID(function(uuid) {
-      if (lodash.isEmpty(uuid)) return cb('CAN_NOT_GET_UUID');
 
-      var dataSrc = {
-        currency: data.currency,
-        amount: data.amount,
-        clientId: uuid
-      };
+    var dataSrc = {
+      currency: data.currency,
+      amount: data.amount,
+      clientId: data.uuid
+    };
 
-      $http(_postBitPay('/amazon-gift/pay', dataSrc)).then(function(data) {
-        $log.info('BitPay Create Invoice: SUCCESS');
-        return cb(null, data.data);
-      }, function(data) {
-        $log.error('BitPay Create Invoice: ERROR ' + data.data.message);
-        return cb(data.data);
-      });
+    $http(_postBitPay('/amazon-gift/pay', dataSrc)).then(function(data) {
+      $log.info('BitPay Create Invoice: SUCCESS');
+      return cb(null, data.data);
+    }, function(data) {
+      $log.error('BitPay Create Invoice: ERROR ' + data.data.message);
+      return cb(data.data);
     });
   };
 
@@ -119,28 +95,25 @@ angular.module('copayApp.services').factory('amazonService', function($http, $lo
     });
   };
 
-  root.createGiftCard = function(dataInvoice, cb) {
-    _getUUID(function(uuid) {
-      if (lodash.isEmpty(uuid)) return cb('CAN_NOT_GET_UUID');
+  root.createGiftCard = function(data, cb) {
 
-      var dataSrc = {
-        "clientId": uuid,
-        "invoiceId": dataInvoice.invoiceId,
-        "accessKey": dataInvoice.accessKey
-      };
+    var dataSrc = {
+      "clientId": data.uuid,
+      "invoiceId": data.invoiceId,
+      "accessKey": data.accessKey
+    };
 
-      $http(_postBitPay('/amazon-gift/redeem', dataSrc)).then(function(data) {
-        var status = data.data.status == ('new' || 'paid') ? 'PENDING' : data.data.status;
-        data.data.status = status;
-        data.data.clientId = uuid;
-        $log.info('Amazon.com Gift Card Create/Update: ' + status);
-        return cb(null, data.data);
-      }, function(data) {
-        $log.error('Amazon.com Gift Card Create/Update: ' + data.data.message);
-        return cb(data.data);
-      });
+    $http(_postBitPay('/amazon-gift/redeem', dataSrc)).then(function(data) {
+      var status = data.data.status == ('new' || 'paid') ? 'PENDING' : data.data.status;
+      data.data.status = status;
+      $log.info('Amazon.com Gift Card Create/Update: ' + status);
+      return cb(null, data.data);
+    }, function(data) {
+      $log.error('Amazon.com Gift Card Create/Update: ' + data.data.message);
+      return cb(data.data);
     });
   };
+
   return root;
 
 });
