@@ -695,7 +695,9 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
 
     function openAppLockedModal() {
       $ionicModal.fromTemplateUrl('views/modals/appLocked.html', {
-        scope: $rootScope
+        scope: $rootScope,
+        backdropClickToClose: false,
+        hardwareBackButtonClose: false
       }).then(function(modal) {
         $rootScope.appLockedModal = modal;
         $rootScope.appLockedModal.show();
