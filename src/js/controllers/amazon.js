@@ -22,6 +22,7 @@ angular.module('copayApp.controllers').controller('amazonController',
     }
 
     this.updatePendingGiftCards = lodash.debounce(function() {
+      var self = this;
 
       amazonService.getPendingGiftCards(function(err, gcds) {
         lodash.forEach(gcds, function(dataFromStorage) {

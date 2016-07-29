@@ -13,7 +13,7 @@ try {
 
 var json = JSON.parse(file);
 
-content = content + '\nwindow.amazon_sandbox_bitpay_api_token="' + json.sandbox.bitpay_api_token + '";';
+var content = '\nwindow.amazon_sandbox_bitpay_api_token="' + json.sandbox.bitpay_api_token + '";';
 content = content + '\nwindow.amazon_sandbox_bitpay_api_url="' + json.sandbox.bitpay_api_url + '";';
 content = content + '\nwindow.amazon_bitpay_api_token="' + json.production.bitpay_api_token + '";';
 content = content + '\nwindow.amazon_bitpay_api_url="' + json.production.bitpay_api_url + '";';
