@@ -28,7 +28,13 @@ angular.module('copayApp.controllers').controller('inputAmountController', funct
     $scope.showAlternativeAmount = !$scope.showAlternativeAmount;
   };
 
+  function checkFontSize() {
+    if ($scope.amount && $scope.amount.length >= 13) $scope.smallFont = true;
+    else $scope.smallFont = false;
+  };
+
   $scope.pushDigit = function(digit) {
+    checkFontSize();
     if ($scope.amount && $scope.amount.length >= 20) return;
 
     $scope.amount = $scope.amount + digit;
@@ -71,10 +77,12 @@ angular.module('copayApp.controllers').controller('inputAmountController', funct
 
     $scope.amount = $scope.amount.slice(0, -1);
     processAmount($scope.amount);
+    checkFontSize();
   };
 
   function resetAmount() {
     $scope.amount = $scope.alternativeResult = $scope.amountResult = $scope.globalResult = '';
+    checkFontSize();
   };
 
   function processAmount(val) {
