@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('inputAmountController', function($rootScope, $scope, platformInfo, lodash, configService, go, rateService) {
+angular.module('copayApp.controllers').controller('inputAmountController', function($rootScope, $scope, $filter, platformInfo, lodash, configService, go, rateService) {
   var unitToSatoshi;
   var satToUnit;
   var unitDecimals;
@@ -26,8 +26,11 @@ angular.module('copayApp.controllers').controller('inputAmountController', funct
 
   $scope.toggleAlternative = function() {
     $scope.showAlternativeAmount = !$scope.showAlternativeAmount;
-    var decimals = $scope.showAlternativeAmount ? 2 : unitDecimals;
-    $scope.globalResult = evaluate(format($scope.amount)).toFixed(decimals);
+
+    if (isExpression($scope.amount)) {
+      var decimals = $scope.showAlternativeAmount ? 2 : unitDecimals;
+      $scope.globalResult = '= ' + evaluate(format($scope.amount)).toFixed(decimals);
+    }
   };
 
   function checkFontSize() {
@@ -97,13 +100,11 @@ angular.module('copayApp.controllers').controller('inputAmountController', funct
     var result = evaluate(formatedValue);
 
     if (lodash.isNumber(result)) {
-      if ($scope.showAlternativeAmount)
-        $scope.globalResult = isExpression(val) ? '= ' + result.toFixed(2) : '';
-      else
-        $scope.globalResult = isExpression(val) ? '= ' + result.toFixed(unitDecimals) : '';
+      var decimals = $scope.showAlternativeAmount ? 2 : unitDecimals;
 
-      $scope.amountResult = toFiat(result).toFixed(2);
-      $scope.alternativeResult = fromFiat(result).toFixed(unitDecimals);
+      $scope.globalResult = isExpression(val) ? '= ' + result.toFixed(decimals) : '';
+      $scope.amountResult = $filter('formatFiatAmount')(toFiat(result));
+      $scope.alternativeResult = $filter('formatFiatAmount')(fromFiat(result));
     }
   };
 
