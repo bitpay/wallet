@@ -15,10 +15,9 @@
   <ion-content>
     <div ng-show="!specificAmount">
       <div class="send-amount row" ng-style="{'background-color':index.backgroundColor}">
-        <div class="size-48" ng-show="!showAlternativeAmount">{{amount}}</div>
-        <div class="size-21 text-light" ng-show="!showAlternativeAmount">{{globalResult}} {{amountResult}} {{alternativeIsoCode}}</div>
-        <div class="size-48" ng-show="showAlternativeAmount">${{alternativeAmount}}</div>
-        <div class="size-21 text-light" ng-show="showAlternativeAmount">{{globalResult}} {{alternativeResult}} {{unitName}}</div>
+        <div class="size-48">{{amount || '-'}}</div>
+        <div class="size-21 text-light" ng-show="!showAlternativeAmount">{{globalResult}} [{{amountResult || 0}} {{alternativeIsoCode}}]</div>
+        <div class="size-21 text-light" ng-show="showAlternativeAmount">{{globalResult}} [{{alternativeResult || 0}} {{unitName}}]</div>
       </div>
 
       <div class="button-content text-center size-10 df">
