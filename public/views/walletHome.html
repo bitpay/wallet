@@ -420,11 +420,11 @@
                     <span translate>Amount</span><span ng-show="showAlternative"> [{{home.alternativeIsoCode}}]</span>
                   </label>
                   <div class="input">
-                    <div ng-if="!index.isCordova">
+                    <div ng-if="index.isCordova">
                       <input type="amount" readonly="true" ng-show="!showAlternative" id="amount" ng-disabled="home.lockAmount" name="amount" ng-attr-placeholder="{{'Amount in'|translate}} {{home.unitName}}" ng-model="_amount" valid-amount required autocomplete="off" ng-focus="openInputAmountModal()" ignore-mouse-wheel>
                       <input type="amount" readonly="true" ng-show="showAlternative" id="alternative" ng-disabled="!home.isRateAvailable || home.lockAmount" name="alternative" ng-attr-placeholder="{{'Amount in'|translate}} {{ home.alternativeName }}" ng-model="_alternative" required autocomplete="off" ng-focus="openInputAmountModal()" ignore-mouse-wheel>
                     </div>
-                    <div ng-if="index.isCordova">
+                    <div ng-if="!index.isCordova">
                       <input type="number" ng-show="!showAlternative" id="amount" ng-disabled="home.lockAmount" name="amount" ng-attr-placeholder="{{'Amount in'|translate}} {{home.unitName}}" ng-model="_amount" valid-amount required autocomplete="off" ignore-mouse-wheel>
                       <input type="number" ng-show="showAlternative" id="alternative" ng-disabled="!home.isRateAvailable || home.lockAmount" name="alternative" ng-attr-placeholder="{{'Amount in'|translate}} {{ home.alternativeName }}" ng-model="_alternative" required autocomplete="off" ignore-mouse-wheel>
                     </div>
