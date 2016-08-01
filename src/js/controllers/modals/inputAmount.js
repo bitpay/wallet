@@ -26,6 +26,8 @@ angular.module('copayApp.controllers').controller('inputAmountController', funct
 
   $scope.toggleAlternative = function() {
     $scope.showAlternativeAmount = !$scope.showAlternativeAmount;
+    var decimals = $scope.showAlternativeAmount ? 2 : unitDecimals;
+    $scope.globalResult = evaluate(format($scope.amount)).toFixed(decimals);
   };
 
   function checkFontSize() {
@@ -95,9 +97,13 @@ angular.module('copayApp.controllers').controller('inputAmountController', funct
     var result = evaluate(formatedValue);
 
     if (lodash.isNumber(result)) {
-      $scope.globalResult = isExpression(val) ? '= ' + result.toFixed(2) : '';
+      if ($scope.showAlternativeAmount)
+        $scope.globalResult = isExpression(val) ? '= ' + result.toFixed(2) : '';
+      else
+        $scope.globalResult = isExpression(val) ? '= ' + result.toFixed(unitDecimals) : '';
+
       $scope.amountResult = toFiat(result).toFixed(2);
-      $scope.alternativeResult = fromFiat(result).toFixed(2);
+      $scope.alternativeResult = fromFiat(result).toFixed(unitDecimals);
     }
   };
 
