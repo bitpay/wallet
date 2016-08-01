@@ -27,46 +27,49 @@ angular.module('copayApp.controllers').controller('txpDetailsController', functi
     $scope.error = null;
     $scope.loading = 'Signing Transaction';
 
-    fingerprintService.check(fc, function(err) {
-      if (err) {
-        $scope.error = bwcError.msg(err);
-        $scope.loading = null;
-        return;
-      }
+    $timeout(function() {
 
-      handleEncryptedWallet(function(err) {
+      fingerprintService.check(fc, function(err) {
         if (err) {
           $scope.error = bwcError.msg(err);
           $scope.loading = null;
           return;
         }
 
-        walletService.signTx(fc, txp, function(err, signedTxp) {
-          walletService.lock(fc);
+        handleEncryptedWallet(function(err) {
           if (err) {
             $scope.error = bwcError.msg(err);
             $scope.loading = null;
             return;
           }
 
-          if (signedTxp.status == 'accepted') {
-            $scope.loading = 'Broadcasting Transaction';
-            walletService.broadcastTx(fc, signedTxp, function(err, broadcastedTxp) {
+          walletService.signTx(fc, txp, function(err, signedTxp) {
+            walletService.lock(fc);
+            if (err) {
+              $scope.error = bwcError.msg(err);
+              $scope.loading = null;
+              return;
+            }
+
+            if (signedTxp.status == 'accepted') {
+              $scope.loading = 'Broadcasting Transaction';
+              walletService.broadcastTx(fc, signedTxp, function(err, broadcastedTxp) {
+                $scope.loading = null;
+                $scope.$emit('UpdateTx');
+                $scope.close(broadcastedTxp);
+                if (err) {
+                  $scope.error = err;
+                }
+              });
+            } else {
               $scope.loading = null;
               $scope.$emit('UpdateTx');
-              $scope.close(broadcastedTxp);
-              if (err) {
-                $scope.error = err;
-              }
-            });
-          } else {
-            $scope.loading = null;
-            $scope.$emit('UpdateTx');
-            $scope.close(signedTxp);
-          }
+              $scope.close(signedTxp);
+            }
+          });
         });
       });
-    });
+    }, 10);
   };
 
   $scope.reject = function(txp) {
