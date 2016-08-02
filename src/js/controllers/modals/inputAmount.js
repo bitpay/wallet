@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('inputAmountController', function($rootScope, $scope, $filter, platformInfo, lodash, configService, go, rateService) {
+angular.module('copayApp.controllers').controller('inputAmountController', function($rootScope, $scope, $filter, profileService, platformInfo, lodash, configService, go, rateService) {
   var unitToSatoshi;
   var satToUnit;
   var unitDecimals;
@@ -27,9 +27,12 @@ angular.module('copayApp.controllers').controller('inputAmountController', funct
   $scope.toggleAlternative = function() {
     $scope.showAlternativeAmount = !$scope.showAlternativeAmount;
 
-    if (isExpression($scope.amount)) {
-      var decimals = $scope.showAlternativeAmount ? 2 : unitDecimals;
-      $scope.globalResult = '= ' + evaluate(format($scope.amount)).toFixed(decimals);
+    if ($scope.amount && isExpression($scope.amount)) {
+      var amount = evaluate(format($scope.amount));
+      if ($scope.showAlternativeAmount)
+        $scope.globalResult = '= ' + $filter('formatFiatAmount')(amount);
+      else
+        $scope.globalResult = '= ' + profileService.formatAmount(amount * unitToSatoshi, true);
     }
   };
 
@@ -40,9 +43,9 @@ angular.module('copayApp.controllers').controller('inputAmountController', funct
 
   $scope.pushDigit = function(digit) {
     checkFontSize();
-    if ($scope.amount && $scope.amount.length >= 20) return;
+    if ($scope.amount && $scope.amount.length >= 19) return;
 
-    $scope.amount = $scope.amount + digit;
+    $scope.amount = ($scope.amount + digit).replace('..', '.');
     processAmount($scope.amount);
   };
 
@@ -67,11 +70,11 @@ angular.module('copayApp.controllers').controller('inputAmountController', funct
   };
 
   function isExpression(val) {
-    var regex = /^\d+(\.?\d?)+$/;
+    var regex = /^\.?\d+(\.?\d+)?([\/\-\+\*x]\d?\.?\d+)+$/;
     var match = regex.exec(val);
 
-    if (match) return false;
-    return true;
+    if (match) return true;
+    return false;
   };
 
   $scope.removeDigit = function() {
@@ -100,11 +103,13 @@ angular.module('copayApp.controllers').controller('inputAmountController', funct
     var result = evaluate(formatedValue);
 
     if (lodash.isNumber(result)) {
-      var decimals = $scope.showAlternativeAmount ? 2 : unitDecimals;
+      if ($scope.showAlternativeAmount)
+        $scope.globalResult = isExpression(val) ? '= ' + $filter('formatFiatAmount')(result) : '';
+      else
+        $scope.globalResult = isExpression(val) ? '= ' + profileService.formatAmount(result * unitToSatoshi, true) : '';
 
-      $scope.globalResult = isExpression(val) ? '= ' + result.toFixed(decimals) : '';
       $scope.amountResult = $filter('formatFiatAmount')(toFiat(result));
-      $scope.alternativeResult = $filter('formatFiatAmount')(fromFiat(result));
+      $scope.alternativeResult = profileService.formatAmount(fromFiat(result) * unitToSatoshi, true);
     }
   };
 
