@@ -62,8 +62,7 @@ angular.module('copayApp.controllers').controller('importController',
       $scope.testnetEnabled = info.network == 'testnet' ? true : false;
 
       $timeout(function() {
-        $scope.words = null;
-        $scope.dataFromQR = info.data;
+        $scope.words = $scope.dataFromQR = info.data;
         $rootScope.$apply();
       }, 1);
     };
