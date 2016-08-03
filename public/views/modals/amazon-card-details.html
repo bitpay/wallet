@@ -24,7 +24,7 @@
               {{card.amount | currency : '$ ' : 2}}
             </span>
           </div>
-          <div>
+          <div ng-show="card.cardStatus !== 'Canceled'">
             Claim code: <span class="text-bold enable_text_select">{{card.claimCode}}</span>
           </div>
           <div class="m10t" ng-show="card.cardStatus == 'Fulfilled'">
@@ -33,7 +33,7 @@
               Redeem Now
             </button>
           </div>
-          <div class="m10t" ng-show="card.cardStatus == 'RefundedToPurchaser'">
+          <div class="m10t" ng-show="card.cardStatus == 'Canceled'">
             <div class="m10t">
               Status:
               <span class="text-bold">
@@ -92,7 +92,7 @@
         <li class="line-b p10 oh pointer" ng-show="card.status == 'SUCCESS' && card.cardStatus == 'Fulfilled'" ng-click="cancelGiftCard()">
           <span class="text-warning">Cancel</span>
         </li>
-        <li class="line-b p10 oh pointer" ng-show="card.status == 'FAILURE' || card.cardStatus == 'RefundedToPurchaser'
+        <li class="line-b p10 oh pointer" ng-show="card.status == 'FAILURE' || card.cardStatus == 'Canceled'
           || card.cardStatus == 'Expired'" ng-click="remove()">
           <span class="text-warning">Remove</span>
         </li>

@@ -75,7 +75,7 @@
           <span class="text-warning" ng-if="item.status == 'FAILURE'">Error</span>
           <span class="text-secondary" ng-if="item.status == 'RESEND'">Resend is required</span>
           <span class="text-gray" ng-if="item.status == 'PENDING'">Pending to confirmation</span>
-          <span class="text-gray" ng-if="item.status == 'SUCCESS' && item.cardStatus == 'RefundedToPurchaser'">Canceled</span>
+          <span class="text-gray" ng-if="item.status == 'SUCCESS' && item.cardStatus == 'Canceled'">Canceled</span>
           <span class="text-gray" ng-if="item.status == 'SUCCESS' && item.cardStatus == 'Fulfilled'">{{item.date | amTimeAgo}}</span>
         </div>
         <div class="large-1 medium-1 small-1 columns text-right m10t">
