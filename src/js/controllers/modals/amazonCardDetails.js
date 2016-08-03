@@ -2,6 +2,18 @@
 
 angular.module('copayApp.controllers').controller('amazonCardDetailsController', function($scope, $log, $timeout, bwcError, amazonService, lodash, ongoingProcess) {
 
+  $scope.cancelGiftCard = function() {
+    ongoingProcess.set('Canceling gift card...', true);
+    amazonService.cancelGiftCard($scope.card, function(err, data) {
+      ongoingProcess.set('Canceling gift card...', false);
+      if (err) {
+        $scope.error = bwcError.msg(err);
+        return;
+      }
+      $scope.$emit('UpdateAmazonList');
+    });
+  };
+
   $scope.remove = function() {
     amazonService.savePendingGiftCard($scope.card, {
       remove: true

@@ -114,6 +114,23 @@ angular.module('copayApp.services').factory('amazonService', function($http, $lo
     });
   };
 
+  root.cancelGiftCard = function(data, cb) {
+
+    var dataSrc = {
+      "clientId": data.uuid,
+      "invoiceId": data.invoiceId,
+      "accessKey": data.accessKey
+    };
+
+    $http(_postBitPay('/amazon-gift/cancel', dataSrc)).then(function(data) {
+      $log.info('Amazon.com Gift Card Cancel: SUCCESS');
+      return cb(null, data.data);
+    }, function(data) {
+      $log.error('Amazon.com Gift Card Cancel: ' + data.data.message);
+      return cb(data.data);
+    });
+  };
+
   return root;
 
 });
