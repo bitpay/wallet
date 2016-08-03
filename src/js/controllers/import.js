@@ -14,6 +14,10 @@ angular.module('copayApp.controllers').controller('importController',
     $scope.account = 1;
     $scope.importErr = false;
 
+    if (platformInfo.isCordova && window.cordova.plugins.Keyboard) {
+      cordova.plugins.Keyboard.disableScroll(true);
+    }
+
     var updateSeedSourceSelect = function() {
       $scope.seedOptions = [];
 
