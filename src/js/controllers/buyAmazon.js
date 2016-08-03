@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('buyAmazonController',
-  function($rootScope, $scope, $ionicModal, $log, $timeout, $state, lodash, profileService, bwcError, configService, walletService, fingerprintService, amazonService, ongoingProcess) {
+  function($rootScope, $scope, $ionicModal, $log, $timeout, $state, lodash, profileService, bwcError, gettext, configService, walletService, fingerprintService, amazonService, ongoingProcess) {
 
     var self = this;
     var client;
@@ -91,59 +91,89 @@ angular.module('copayApp.controllers').controller('buyAmazonController',
               return;
             }
 
-            var address, comment, amount;
+            $log.debug('Fetch PayPro Request...', invoice.paymentUrls.BIP73);
 
-            address = invoice.bitcoinAddress;
-            amount = parseInt((invoice.btcPrice * 100000000).toFixed(0));
-            comment = 'Amazon.com Gift Card';
+            client.fetchPayPro({
+              payProUrl: invoice.paymentUrls.BIP73,
+            }, function(err, paypro) {
 
-            outputs.push({
-              'toAddress': address,
-              'amount': amount,
-              'message': comment
-            });
-
-            var txp = {
-              toAddress: address,
-              amount: amount,
-              outputs: outputs,
-              message: comment,
-              payProUrl: null,
-              excludeUnconfirmedUtxos: configWallet.spendUnconfirmed ? false : true,
-              feeLevel: walletSettings.feeLevel || 'normal'
-            };
-
-            walletService.createTx(client, txp, function(err, createdTxp) {
-              ongoingProcess.set('Processing Transaction...', false);
               if (err) {
-                self.error = bwcError.msg(err);
+                $log.warn('Could not fetch payment request:', err);
+                var msg = err.toString();
+                if (msg.match('HTTP')) {
+                  msg = gettext('Could not fetch payment information');
+                }
+                self.error = msg;
                 $timeout(function() {
                   $scope.$digest();
                 });
                 return;
               }
-              $scope.$emit('Local/NeedsConfirmation', createdTxp, function(accept) {
-                if (accept) {
-                  self.confirmTx(createdTxp, function(err, tx) {
-                    if (err) {
-                      ongoingProcess.set('Processing Transaction...', false);
-                      self.error = bwcError.msg(err);
-                      $timeout(function() {
-                        $scope.$digest();
-                      });
-                      return;
-                    }
-                    var count = 0;
-                    ongoingProcess.set('Processing Transaction...', true);
 
-                    dataSrc.accessKey = dataInvoice.accessKey;
-                    dataSrc.invoiceId = invoice.id;
-                    dataSrc.invoiceUrl = invoice.url;
-                    dataSrc.invoiceTime = invoice.invoiceTime;
+              if (!paypro.verified) {
+                $log.warn('Failed to verify payment protocol signatures');
+                self.error = gettext('Payment Protocol Invalid');
+                $timeout(function() {
+                  $scope.$digest();
+                });
+                return;
+              }
 
-                    self.debounceCreate(count, dataSrc);
+              var address, comment, amount, url;
+
+              address = paypro.toAddress;
+              amount = paypro.amount;
+              url = paypro.url;
+              comment = 'Amazon.com Gift Card';
+
+              outputs.push({
+                'toAddress': address,
+                'amount': amount,
+                'message': comment
+              });
+
+              var txp = {
+                toAddress: address,
+                amount: amount,
+                outputs: outputs,
+                message: comment,
+                payProUrl: url,
+                excludeUnconfirmedUtxos: configWallet.spendUnconfirmed ? false : true,
+                feeLevel: walletSettings.feeLevel || 'normal'
+              };
+
+              walletService.createTx(client, txp, function(err, createdTxp) {
+                ongoingProcess.set('Processing Transaction...', false);
+                if (err) {
+                  self.error = bwcError.msg(err);
+                  $timeout(function() {
+                    $scope.$digest();
                   });
+                  return;
                 }
+                $scope.$emit('Local/NeedsConfirmation', createdTxp, function(accept) {
+                  if (accept) {
+                    self.confirmTx(createdTxp, function(err, tx) {
+                      if (err) {
+                        ongoingProcess.set('Processing Transaction...', false);
+                        self.error = bwcError.msg(err);
+                        $timeout(function() {
+                          $scope.$digest();
+                        });
+                        return;
+                      }
+                      var count = 0;
+                      ongoingProcess.set('Processing Transaction...', true);
+
+                      dataSrc.accessKey = dataInvoice.accessKey;
+                      dataSrc.invoiceId = invoice.id;
+                      dataSrc.invoiceUrl = invoice.url;
+                      dataSrc.invoiceTime = invoice.invoiceTime;
+
+                      self.debounceCreate(count, dataSrc);
+                    });
+                  }
+                });
               });
             });
           });
@@ -237,7 +267,6 @@ angular.module('copayApp.controllers').controller('buyAmazonController',
                 });
                 return bwcError.cb(err, null, cb);
               }
-
               walletService.broadcastTx(client, signedTxp, function(err, broadcastedTxp) {
                 if (err) {
                   $log.debug(err);
