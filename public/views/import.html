@@ -64,17 +64,17 @@
           </div>
           <textarea class="form-control m10t" ng-disabled="dataFromQR" name="words" ng-model="words" rows="2" autocapitalize="off" spellcheck="false"></textarea>
 
-          <div class="m10t oh" ng-init="hideAdv=true">
-            <a class="button outline light-gray expand tiny p10i" ng-click="hideAdv=!hideAdv">
+          <div class="m10t oh" ng-init="hideAdvancedOptions = true">
+            <a class="button outline light-gray expand tiny p10i" ng-click="toggleAdvancedOptions()">
               <i class="fi-widget m3r"></i>
-              <span translate ng-hide="!hideAdv">Show advanced options</span>
-              <span translate ng-hide="hideAdv">Hide advanced options</span>
-              <i ng-if="hideAdv" class="icon-arrow-down4"></i>
-              <i ng-if="!hideAdv" class="icon-arrow-up4"></i>
+              <span translate ng-hide="!hideAdvancedOptions">Show advanced options</span>
+              <span translate ng-hide="hideAdvancedOptions">Hide advanced options</span>
+              <i ng-if="hideAdvancedOptions" class="icon-arrow-down4"></i>
+              <i ng-if="!hideAdvancedOptions" class="icon-arrow-up4"></i>
             </a>
           </div>
 
-          <div ng-hide="hideAdv" class="row">
+          <div ng-hide="hideAdvancedOptions" class="row">
             <div class="large-12 columns">
               <label for="passphrase" class="oh"><span translate>Password</span>  <small translate>The Wallet Recovery Phrase could require a password to be imported</small>
                 <div class="input">
@@ -140,16 +140,16 @@
             name="password" ng-model="password">
           </div>
 
-          <div class="m10t oh" ng-init="hideAdv=true">
-            <a class="button outline light-gray expand tiny p10i" ng-click="hideAdv=!hideAdv">
+          <div class="m10t oh" ng-init="hideAdvancedOptions = true">
+            <a class="button outline light-gray expand tiny p10i" ng-click="toggleAdvancedOptions()">
               <i class="fi-widget m3r"></i>
-              <span translate ng-hide="!hideAdv">Show advanced options</span>
-              <span translate ng-hide="hideAdv">Hide advanced options</span>
-              <i ng-if="hideAdv" class="icon-arrow-down4"></i>
-              <i ng-if="!hideAdv" class="icon-arrow-up4"></i>
+              <span translate ng-hide="!hideAdvancedOptions">Show advanced options</span>
+              <span translate ng-hide="hideAdvancedOptions">Hide advanced options</span>
+              <i ng-if="hideAdvancedOptions" class="icon-arrow-down4"></i>
+              <i ng-if="!hideAdvancedOptions" class="icon-arrow-up4"></i>
             </a>
           </div>
-          <div ng-hide="hideAdv" class="row">
+          <div ng-hide="hideAdvancedOptions" class="row">
             <div class="large-12 columns">
 
               <label  for="bws" class="oh">
@@ -204,19 +204,19 @@
               </ion-toggle>
             </div>
 
-            <div class="m10t oh" ng-init="hideAdv=true">
-              <a class="button outline light-gray expand tiny p10i" ng-click="hideAdv=!hideAdv">
+            <div class="m10t oh" ng-init="hideAdvancedOptions = true">
+              <a class="button outline light-gray expand tiny p10i" ng-click="toggleAdvancedOptions()">
                 <i class="fi-widget m3r"></i>
-                <span translate ng-hide="!hideAdv">Show advanced options</span>
-                <span translate ng-hide="hideAdv">Hide advanced options</span>
-                <i ng-if="hideAdv" class="icon-arrow-down4"></i>
-                <i ng-if="!hideAdv" class="icon-arrow-up4"></i>
+                <span translate ng-hide="!hideAdvancedOptions">Show advanced options</span>
+                <span translate ng-hide="hideAdvancedOptions">Hide advanced options</span>
+                <i ng-if="hideAdvancedOptions" class="icon-arrow-down4"></i>
+                <i ng-if="!hideAdvancedOptions" class="icon-arrow-up4"></i>
               </a>
             </div>
-            <div ng-hide="hideAdv" class="row">
+            <div ng-hide="hideAdvancedOptions" class="row">
               <div class="large-12 columns">
 
-                <label  for="bws" class="oh">
+                <label for="bws" class="oh">
                   <span>Wallet Service URL</span>
                   <input type="text" id="bwsurl" name="bwsurl" ng-model="bwsurl">
                 </label>

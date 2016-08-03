@@ -4,7 +4,7 @@
   ng-init="titleSection='Create new wallet';  goBackToState = 'add'; noColor = true">
 </div>
 
-<div class="content p20b" ng-controller="createController as create" ng-init="create.setTotalCopayers(1)">
+<ion-content class="content p20b" ng-controller="createController as create" ng-init="create.setTotalCopayers(1)">
 
   <div class="create-tab small-only-text-center" ng-hide="create.hideTabs">
     <div class="row">
@@ -57,17 +57,17 @@
           </div>
         </div>
 
-        <div class="m10t oh" ng-init="hideAdv=true">
-          <a class="button outline light-gray expand tiny p10i" ng-click="hideAdv=!hideAdv">
+        <div class="m10t oh" ng-init="hideAdvancedOptions = true">
+          <a class="button outline light-gray expand tiny p10i" ng-click="toggleAdvancedOptions()">
             <i class="fi-widget m3r"></i>
-            <span translate ng-hide="!hideAdv">Show advanced options</span>
-            <span translate ng-hide="hideAdv">Hide advanced options</span>
-            <i ng-if="hideAdv" class="icon-arrow-down4"></i>
-            <i ng-if="!hideAdv" class="icon-arrow-up4"></i>
+            <span translate ng-hide="!hideAdvancedOptions">Show advanced options</span>
+            <span translate ng-hide="hideAdvancedOptions">Hide advanced options</span>
+            <i ng-if="hideAdvancedOptions" class="icon-arrow-down4"></i>
+            <i ng-if="!hideAdvancedOptions" class="icon-arrow-up4"></i>
           </a>
         </div>
 
-        <div ng-hide="hideAdv" class="row">
+        <div ng-hide="hideAdvancedOptions" class="row">
           <div class="large-12 columns m20b">
             <div>
               <label for="bws" class="oh">
@@ -161,4 +161,4 @@
     </div> <!-- row -->
   </form>
 <div class="extra-margin-bottom"></div>
-</div>
+</ion-content>
