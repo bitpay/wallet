@@ -283,7 +283,6 @@ angular.module('copayApp.controllers').controller('importController',
     };
 
     $scope.importTrezor = function(account, isMultisig) {
-      var $scope = $scope;
       trezor.getInfoForNewWallet(isMultisig, account, function(err, lopts) {
         ongoingProcess.clear();
         if (err) {
@@ -357,7 +356,6 @@ angular.module('copayApp.controllers').controller('importController',
     };
 
     $scope.importLedger = function(account) {
-      var $scope = $scope;
       ledger.getInfoForNewWallet(true, account, function(err, lopts) {
         ongoingProcess.clear();
         if (err) {
