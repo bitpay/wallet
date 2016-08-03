@@ -264,8 +264,26 @@ angular.module('copayApp.services')
       storage.remove('addressbook-' + network, cb);
     };
 
+
+    root.checkQuota = function() {
+      var block = '';
+      // 50MB
+      for (var i = 0; i < 1024*1024; ++ i){
+        block += '12345678901234567890123456789012345678901234567890';
+      }
+      storage.set('test', block, function(err) {
+        $log.error('CheckQuota Return:'+ err);
+      });
+    };
+
     root.setTxHistory = function(txs, walletId, cb) {
-      storage.set('txsHistory-' + walletId, txs, cb);
+      try {
+        storage.set('txsHistory-' + walletId, txs, cb);
+      } catch (e) {
+        $log.error('Error saving tx History. Size:' + txs.length);
+        $log.error(e);
+        return cb(e);
+      }
     }
 
     root.getTxHistory = function(walletId, cb) {
