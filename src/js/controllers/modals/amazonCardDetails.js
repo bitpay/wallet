@@ -10,7 +10,10 @@ angular.module('copayApp.controllers').controller('amazonCardDetailsController',
         $scope.error = bwcError.msg(err);
         return;
       }
-      $scope.$emit('UpdateAmazonList');
+      $scope.card.cardStatus = data.cardStatus;
+      amazonService.savePendingGiftCard($scope.card, null, function(err) {
+        $scope.$emit('UpdateAmazonList');
+      });
     });
   };
 
