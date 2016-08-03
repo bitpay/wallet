@@ -98,6 +98,7 @@ angular.module('copayApp.controllers').controller('buyAmazonController',
             }, function(err, paypro) {
 
               if (err) {
+                ongoingProcess.set('Processing Transaction...', false);
                 $log.warn('Could not fetch payment request:', err);
                 var msg = err.toString();
                 if (msg.match('HTTP')) {
@@ -111,6 +112,7 @@ angular.module('copayApp.controllers').controller('buyAmazonController',
               }
 
               if (!paypro.verified) {
+                ongoingProcess.set('Processing Transaction...', false);
                 $log.warn('Failed to verify payment protocol signatures');
                 self.error = gettext('Payment Protocol Invalid');
                 $timeout(function() {
