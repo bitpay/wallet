@@ -33,6 +33,14 @@
               Redeem Now
             </button>
           </div>
+          <div class="m10t" ng-show="card.cardStatus == 'RefundedToPurchaser'">
+            <div class="m10t">
+              Status:
+              <span class="text-bold">
+                CANCELED
+              </span>
+            </div>
+          </div>
         </div>
         <div ng-show="!card.claimCode">
           <div class="m10t">
