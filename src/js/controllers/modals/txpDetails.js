@@ -25,52 +25,65 @@ angular.module('copayApp.controllers').controller('txpDetailsController', functi
 
   $scope.sign = function(txp) {
     $scope.error = null;
+    var prefix = fc.credentials.m > 1 ? gettextCatalog.getString('Could not create payment proposal') : gettextCatalog.getString('Could not send payment');
+
     $scope.loading = 'Signing Transaction';
+    fingerprintService.check(fc, function(err) {
+      if (err) {
+        $scope.loading = null;
+        $scope.error = prefix;
+        $timeout(function() {
+          $scope.$digest();
+        }, 1);
+        return;
+      }
 
-    $timeout(function() {
-
-      fingerprintService.check(fc, function(err) {
+      handleEncryptedWallet(function(err) {
         if (err) {
-          $scope.error = bwcError.msg(err);
           $scope.loading = null;
+          $scope.error = bwcError.msg(err, prefix);
+          $timeout(function() {
+            $scope.$digest();
+          }, 1);
           return;
         }
 
-        handleEncryptedWallet(function(err) {
+        walletService.signTx(fc, txp, function(err, signedTxp) {
           if (err) {
-            $scope.error = bwcError.msg(err);
             $scope.loading = null;
+            $scope.error = bwcError.msg(err, prefix);
+            $timeout(function() {
+              $scope.$digest();
+            }, 1);
             return;
           }
 
-          walletService.signTx(fc, txp, function(err, signedTxp) {
-            walletService.lock(fc);
-            if (err) {
-              $scope.error = bwcError.msg(err);
-              $scope.loading = null;
-              return;
-            }
-
-            if (signedTxp.status == 'accepted') {
-              $scope.loading = 'Broadcasting Transaction';
-              walletService.broadcastTx(fc, signedTxp, function(err, broadcastedTxp) {
-                $scope.loading = null;
-                $scope.$emit('UpdateTx');
-                $scope.close(broadcastedTxp);
-                if (err) {
-                  $scope.error = err;
-                }
-              });
-            } else {
+          if (signedTxp.status == 'accepted') {
+            $scope.loading = 'Broadcasting Transaction';
+            walletService.broadcastTx(fc, signedTxp, function(err, broadcastedTxp) {
               $scope.loading = null;
               $scope.$emit('UpdateTx');
-              $scope.close(signedTxp);
-            }
-          });
+              $scope.close(broadcastedTxp);
+              if (err) {
+                $scope.error = err;
+                $timeout(function() {
+                  $scope.$digest();
+                }, 1);
+              }
+            });
+          } else {
+            $scope.loading = null;
+            $scope.$emit('UpdateTx');
+            $scope.close(signedTxp);
+          }
         });
       });
-    }, 10);
+    });
   };
+
+  $scope.$on('$destroy', function() {
+    walletService.lock(fc);
+  });
 
   $scope.reject = function(txp) {
     $scope.loading = 'Rejecting payment';
