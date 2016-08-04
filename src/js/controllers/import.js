@@ -8,7 +8,6 @@ angular.module('copayApp.controllers').controller('importController',
     var reader = new FileReader();
     var defaults = configService.getDefaults();
     var errors = bwcService.getErrors();
-    $scope.dataFromQR = null;
     $scope.bwsurl = defaults.bws.url;
     $scope.derivationPath = derivationPathHelper.default;
     $scope.account = 1;
@@ -36,7 +35,6 @@ angular.module('copayApp.controllers').controller('importController',
     $scope.processWalletInfo = function(code) {
       if (!code) return;
 
-      $scope.dataFromQR = null;
       $scope.importErr = false;
       $scope.error = null;
       var parsedCode = code.split('|');
@@ -62,8 +60,7 @@ angular.module('copayApp.controllers').controller('importController',
       $scope.testnetEnabled = info.network == 'testnet' ? true : false;
 
       $timeout(function() {
-        $scope.words = null;
-        $scope.dataFromQR = info.data;
+        $scope.words = info.data;
         $rootScope.$apply();
       }, 1);
     };
@@ -252,7 +249,7 @@ angular.module('copayApp.controllers').controller('importController',
       opts.networkName = pathData.networkName;
       opts.derivationStrategy = pathData.derivationStrategy;
 
-      var words = form.words.$modelValue || $scope.dataFromQR;
+      var words = form.words.$modelValue || null;
       $scope.error = null;
 
       if (!words) {

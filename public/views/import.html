@@ -50,19 +50,11 @@
             <span translate>Type the Recovery Phrase (usually 12 words)</span>:
           </label>
 
-          <div class="qr-scanner-input-import" ng-show="!dataFromQR">
+          <div class="qr-scanner-input-import">
             <qr-scanner on-scan="processWalletInfo(data)"></qr-scanner>
           </div>
 
-          <div class="lock-fromQR" ng-show="dataFromQR">
-            <div class="left m10l">
-              <i class="fi-lock color-greeni"></i>
-            </div>
-            <div class="right icon-close-import" ng-click="dataFromQR = null">
-              <i class="icon-close-circle size-14"></i>
-            </div>
-          </div>
-          <textarea class="form-control m10t" ng-disabled="dataFromQR" name="words" ng-model="words" rows="2" autocapitalize="off" spellcheck="false"></textarea>
+          <textarea class="form-control m10t" name="words" ng-model="words" rows="3" autocapitalize="off" spellcheck="false"></textarea>
 
           <div class="m10t oh" ng-init="hideAdv=true">
             <a class="button outline light-gray expand tiny p10i" ng-click="hideAdv=!hideAdv">
