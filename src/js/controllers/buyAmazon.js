@@ -19,13 +19,18 @@ angular.module('copayApp.controllers').controller('buyAmazonController',
       amazonService.setCredentials(network);
       self.allWallets = profileService.getWallets(network, 1);
       client = profileService.focusedClient;
-      if (client && client.credentials.m == 1 && client.credentials.network == network) {
-        $timeout(function() {
-          self.selectedWalletId = client.credentials.walletId;
-          self.selectedWalletName = client.credentials.walletName;
-          $scope.$apply();
-        }, 100);
-      }
+
+      if (!client) return;
+
+      if (lodash.isEmpty(self.allWallets)) return;
+
+      if (client.credentials.network != network) return;
+
+      $timeout(function() {
+        self.selectedWalletId = client.credentials.walletId;
+        self.selectedWalletName = client.credentials.walletName;
+        $scope.$apply();
+      }, 100);
     };
 
     $scope.openWalletsModal = function(wallets) {
