@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('joinController',
-  function($scope, $rootScope, $timeout, $ionicScrollDelegate, go, notification, profileService, configService, storageService, applicationService, gettext, lodash, ledger, trezor, platformInfo, derivationPathHelper, ongoingProcess) {
+  function($scope, $rootScope, $timeout, $ionicScrollDelegate, $ionicConfig, go, notification, profileService, configService, storageService, applicationService, gettext, lodash, ledger, trezor, platformInfo, derivationPathHelper, ongoingProcess) {
 
     var isChromeApp = platformInfo.isChromeApp;
     var isDevel = platformInfo.isDevel;
@@ -14,6 +14,9 @@ angular.module('copayApp.controllers').controller('joinController',
 
     if (platformInfo.isCordova && window.cordova.plugins.Keyboard) {
       cordova.plugins.Keyboard.disableScroll(true);
+      if (platformInfo.isWP) {
+        $ionicConfig.scrolling.jsScrolling(false);
+      }
     }
 
     $scope.toggleAdvancedOptions = function() {
