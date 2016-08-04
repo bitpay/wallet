@@ -48,7 +48,7 @@
             <span class="text-bold" ng-show="card.status == 'PENDING'">
               PENDING
             </span>
-            <span class="text-bold" ng-show="card.status == 'FAILURE'">
+            <span class="text-bold" ng-show="card.status == 'FAILURE' || card.status == 'RESEND'">
               FAILURE
             </span>
           </div>
@@ -64,18 +64,8 @@
         </span>
       </div>
 
-      <div class="text-center size-12" ng-show="card.status != 'SUCCESS'">
-        <div ng-show="card.status == 'RESEND'">
-          <div class="text-secondary m10h">
-            There was a temporary/recoverable system failure that can be resolved by retrying the request
-          </div>
-          <button class="m10t button outline round dark-gray tiny" ng-click="refreshGiftCard()">
-            Try again
-          </button>
-        </div>
-        <div class="text-warning m10" ng-show="card.status == 'FAILURE'">
+      <div class="text-center size-12 text-warning m10" ng-show="card.status == 'FAILURE' || card.status == 'RESEND'">
           There was a failure to the create gift card. Please, contact BitPay to refund your bitcoin
-        </div>
       </div>
 
       <div class="size-12 white p15 m30v">
