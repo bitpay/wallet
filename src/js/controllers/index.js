@@ -1691,8 +1691,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
       var config = configService.getSync();
 
-      $scope.color = config.colorFor[txp.walletId];
+      $scope.color = config.colorFor[txp.walletId] || '#4A90E2';
       $scope.tx = txFormatService.processTx(txp);
+
       self.confirmationPopup = $ionicPopup.show({
         templateUrl: 'views/includes/confirm-tx.html',
         scope: $scope,
