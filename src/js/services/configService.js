@@ -127,7 +127,7 @@ angular.module('copayApp.services').factory('configService', function(storageSer
 
       // Amazon
       // Disabled for testnet
-      configCache.amazon.testnet = true;
+      configCache.amazon.testnet = false;
 
       $log.debug('Preferences read:', configCache)
       return cb(err, configCache);
