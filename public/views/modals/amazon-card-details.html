@@ -45,8 +45,11 @@
         <div ng-show="!card.claimCode">
           <div class="m10t">
             Status:
-            <span class="text-bold">
+            <span class="text-bold" ng-show="card.status == 'PENDING'">
               PENDING
+            </span>
+            <span class="text-bold" ng-show="card.status == 'FAILURE'">
+              FAILURE
             </span>
           </div>
         </div>
@@ -71,7 +74,7 @@
           </button>
         </div>
         <div class="text-warning m10" ng-show="card.status == 'FAILURE'">
-          There was a failure to the create gift card that could not be recoverable. Please, contact BitPay to refund your bitcoin
+          There was a failure to the create gift card. Please, contact BitPay to refund your bitcoin
         </div>
       </div>
 
