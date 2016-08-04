@@ -7,10 +7,6 @@ src/js/translations.js
 coinbase.json
 src/js/coinbase.js
 
-# Amazon.com API credentials
-amazon.json
-src/js/amazon.js
-
 # version
 src/js/version.js
 
