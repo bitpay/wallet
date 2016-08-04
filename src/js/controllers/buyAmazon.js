@@ -194,14 +194,16 @@ angular.module('copayApp.controllers').controller('buyAmazonController',
       amazonService.createGiftCard(dataSrc, function(err, giftCard) {
         $log.debug("creating gift card " + count);
         if (err) {
+          giftCard = {};
+          giftCard.status = 'FAILURE';
           ongoingProcess.set('Processing Transaction...', false);
           self.error = bwcError.msg(err);
           self.errorInfo = dataSrc;
           $timeout(function() {
             $scope.$digest();
           });
-          return;
         }
+
         if (giftCard.status == 'PENDING' && count < 3) {
           $log.debug("pending gift card not available yet");
           self.debounceCreate(count + 1, dataSrc, dataSrc);
