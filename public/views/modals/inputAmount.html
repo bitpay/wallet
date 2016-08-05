@@ -14,52 +14,53 @@
 
   <ion-content>
     <div ng-show="!specificAmount">
-      <div class="send-amount row" ng-style="{'background-color':index.backgroundColor}">
-        <div class="size-48" ng-class="{'small-font': smallFont}">{{amount || '-'}}</div>
-        <div class="size-21 text-light" ng-show="!showAlternativeAmount">{{globalResult}} [{{amountResult || '0.00'}} {{alternativeIsoCode}}]</div>
-        <div class="size-21 text-light" ng-show="showAlternativeAmount">{{globalResult}} [{{alternativeResult || '0.00'}} {{unitName}}]</div>
-      </div>
-
-      <div class="button-content text-center size-10 df">
-        <button class="button button-amount expand button-stable" ng-click="pushOperator('x')">x</button>
-        <button class="button expand button-stable" ng-click="pushOperator('/')">/</button>
-        <button class="button expand button-stable" ng-click="pushOperator('+')">+</button>
-        <button class="button expand button-stable" ng-click="pushOperator('-')">-</button>
+      <div class="send-amount ">
+        <div class="size-36 text-light text-black m15t" ng-class="{'small-font-amount': smallFont}">{{amount || '-'}}</div>
+        <div class="size-17 text-light text-black" ng-class="{'small-font-result': smallFont}" ng-show="!showAlternativeAmount">{{globalResult}} [{{amountResult || '0.00'}} {{alternativeIsoCode}}]</div>
+        <div class="size-17 text-light text-black" ng-show="showAlternativeAmount">{{globalResult}} [{{alternativeResult || '0.00'}} {{unitName}}]</div>
       </div>
 
       <div class="m10b">
         <div class="button-content text-center df">
-          <button class="button expand button-light" ng-click="pushDigit('1')">1</button>
-          <button class="button expand button-light" ng-click="pushDigit('2')">2</button>
-          <button class="button expand button-light" ng-click="pushDigit('3')">3</button>
-        </div>
-        <div class="button-content text-center df">
-          <button class="button expand button-light" ng-click="pushDigit('4')">4</button>
-          <button class="button expand button-light" ng-click="pushDigit('5')">5</button>
-          <button class="button expand button-light" ng-click="pushDigit('6')">6</button>
+          <div class="col col-25 col-offset-50">
+            <button class="button expand button-stable" ng-click="resetAmount()">AC</button>
+          </div>
+          <div class="col col-25">
+            <button class="button expand text-center" ng-style="{'background-color':index.backgroundColor}"
+              ng-disabled="alternativeResult <= 0 && amountResult <= 0" ng-click="finish()" ng-show="!specificAmount">
+              <span>Ok</span>
+            </button>
+          </div>
         </div>
         <div class="button-content text-center df">
           <button class="button expand button-light" ng-click="pushDigit('7')">7</button>
           <button class="button expand button-light" ng-click="pushDigit('8')">8</button>
           <button class="button expand button-light" ng-click="pushDigit('9')">9</button>
+          <button class="button expand button-stable" ng-click="pushOperator('/')">/</button>
+        </div>
+        <div class="button-content text-center df">
+          <button class="button expand button-light" ng-click="pushDigit('4')">4</button>
+          <button class="button expand button-light" ng-click="pushDigit('5')">5</button>
+          <button class="button expand button-light" ng-click="pushDigit('6')">6</button>
+          <button class="button button-amount expand button-stable" ng-click="pushOperator('x')">x</button>
+        </div>
+        <div class="button-content text-center df">
+          <button class="button expand button-light" ng-click="pushDigit('1')">1</button>
+          <button class="button expand button-light" ng-click="pushDigit('2')">2</button>
+          <button class="button expand button-light" ng-click="pushDigit('3')">3</button>
+          <button class="button expand button-stable" ng-click="pushOperator('+')">+</button>
         </div>
         <div class="button-content text-center df">
           <button class="button expand button-light" ng-click="pushDigit('.')">.</button>
           <button class="button expand button-light" ng-click="pushDigit('0')">0</button>
           <button class="button expand button-light" ng-click="removeDigit()"><</button>
+          <button class="button expand button-stable" ng-click="pushOperator('-')">-</button>
         </div>
       </div>
 
       <div class="row m20t">
         <div class="columns">
-          <button class="round expand m0"
-            ng-style="{'background-color':index.backgroundColor}"
-            ng-disabled="alternativeResult <= 0 && amountResult <= 0"
-            ng-click="finish()"
-            ng-show="!specificAmount">
-            <span translate ng-show="!address">Ok</span>
-            <span translate ng-show="address">Generate QR Code</span>
-          </button>
+
         </div>
       </div>
     </div>
