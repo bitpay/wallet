@@ -1,13 +1,11 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('amazonController',
-  function($scope, $timeout, $ionicModal, $log, lodash, bwcError, configService, amazonService) {
+  function($scope, $timeout, $ionicModal, $log, lodash, bwcError, amazonService) {
 
     this.init = function() {
       var self = this;
-      var network = configService.getSync().amazon.testnet ? 'testnet' : 'livenet';
-      self.sandbox = network == 'testnet' ? true : false;
-      amazonService.setCredentials(network);
+      self.sandbox = amazonService.getEnvironment() == 'testnet' ? true : false;
       amazonService.getPendingGiftCards(function(err, gcds) {
         if (err) {
           self.error = err;
