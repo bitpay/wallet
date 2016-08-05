@@ -43,6 +43,15 @@
 	font-size: 16px;
 }
 
+.popover, .popover .bar-header {
+	border-radius: 10px;
+}
+
+.popover {
+	height: auto;
+	width: 200px;
+}
+
 .popup-container.active .popup {
 	border-radius: 10px;
 }

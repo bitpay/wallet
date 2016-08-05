@@ -218,9 +218,9 @@ angular.module('copayApp.controllers').controller('txpDetailsController', functi
     });
   };
 
-  $scope.copyToClipboard = function(addr) {
+  $scope.copyToClipboard = function(addr, $event) {
     if (!addr) return;
-    self.copyToClipboard(addr);
+    self.copyToClipboard(addr, $event);
   };
 
   $scope.close = function(txp) {

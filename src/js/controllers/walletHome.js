@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('walletHomeController', function($scope, $rootScope, $interval, $timeout, $filter, $log, $ionicModal, notification, txStatus, profileService, lodash, configService, rateService, storageService, bitcore, gettext, gettextCatalog, platformInfo, addressService, ledger, bwcError, confirmDialog, txFormatService, addressbookService, go, feeService, walletService, fingerprintService, nodeWebkit, ongoingProcess) {
+angular.module('copayApp.controllers').controller('walletHomeController', function($scope, $rootScope, $interval, $timeout, $filter, $log, $ionicModal, $ionicPopup, $ionicPopover, notification, txStatus, profileService, lodash, configService, rateService, storageService, bitcore, gettext, gettextCatalog, platformInfo, addressService, ledger, bwcError, confirmDialog, txFormatService, addressbookService, go, feeService, walletService, fingerprintService, nodeWebkit, ongoingProcess) {
 
   var isCordova = platformInfo.isCordova;
   var isWP = platformInfo.isWP;
@@ -200,12 +200,32 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     });
   };
 
-  this.copyToClipboard = function(addr) {
+  this.copyToClipboard = function(addr, $event) {
+
+    var showPopover = function() {
+
+      $ionicPopover.fromTemplateUrl('views/includes/copyToClipboard.html', {
+        scope: $scope
+      }).then(function(popover) {
+        $scope.popover = popover;
+        $scope.popover.show($event);
+      });
+
+      $timeout(function() {
+        $scope.popover.hide(); //close the popover after 3 seconds for some reason
+      }, 2000);
+
+      $scope.$on('$destroy', function() {
+        $scope.popover.remove();
+      });
+    };
+
     if (isCordova) {
       window.cordova.plugins.clipboard.copy(addr);
       window.plugins.toast.showShortCenter(gettextCatalog.getString('Copied to clipboard'));
     } else if (platformInfo.isNW) {
       nodeWebkit.writeToClipboard(addr);
+      showPopover($event);
     }
   };
 
