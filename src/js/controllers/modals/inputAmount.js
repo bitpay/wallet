@@ -163,8 +163,8 @@ angular.module('copayApp.controllers').controller('inputAmountController', funct
         $scope.specificAmountBtc = (amountSat * satToBtc).toFixed(8);
       }
 
-      $scope.specificAmount = amount;
-      $scope.specificAlternativeAmount = alternativeAmount;
+      $scope.specificAmount = profileService.formatAmount(amount * unitToSatoshi, true);
+      $scope.specificAlternativeAmount = $filter('formatFiatAmount')(alternativeAmount);
       $timeout(function() {
         $ionicScrollDelegate.resize();
       }, 100);
