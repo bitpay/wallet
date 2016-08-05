@@ -15,8 +15,7 @@ angular.module('copayApp.controllers').controller('buyAmazonController',
     };
 
     this.init = function() {
-      var network = configService.getSync().amazon.testnet ? 'testnet' : 'livenet';
-      amazonService.setCredentials(network);
+      var network = amazonService.getEnvironment();
       self.allWallets = profileService.getWallets(network, 1);
       client = profileService.focusedClient;
 
