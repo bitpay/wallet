@@ -14,6 +14,8 @@ angular.module('copayApp.services').factory('ongoingProcess', function($log, $ti
     'sendingTx': gettext('Sending transaction'),
     'signingTx': gettext('Signing transaction'),
     'broadcastingTx': gettext('Broadcasting transaction'),
+    'rejectTx': gettext('Rejecting payment proposal'),
+    'removeTx': gettext('Deleting payment proposal'),
     'fetchingPayPro': gettext('Fetching Payment Information'),
     'calculatingFee': gettext('Calculating fee'),
     'joiningWallet': gettext('Joining Wallet...'),
