@@ -15,7 +15,7 @@ angular.module('copayApp.controllers').controller('inputAmountController', funct
     unitToSatoshi = config.unitToSatoshi;
     satToUnit = 1 / unitToSatoshi;
     unitDecimals = config.unitDecimals;
-    resetAmount();
+    $scope.resetAmount();
   };
 
   $scope.shareAddress = function(uri) {
@@ -79,7 +79,7 @@ angular.module('copayApp.controllers').controller('inputAmountController', funct
 
   $scope.removeDigit = function() {
     if ($scope.amount.toString().length == 1) {
-      resetAmount();
+      $scope.resetAmount();
       return;
     }
 
@@ -88,14 +88,14 @@ angular.module('copayApp.controllers').controller('inputAmountController', funct
     checkFontSize();
   };
 
-  function resetAmount() {
+  $scope.resetAmount = function() {
     $scope.amount = $scope.alternativeResult = $scope.amountResult = $scope.globalResult = '';
     checkFontSize();
   };
 
   function processAmount(val) {
     if (!val) {
-      resetAmount();
+      $scope.resetAmount();
       return;
     }
 
