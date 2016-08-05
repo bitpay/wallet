@@ -99,8 +99,12 @@ h4.title a {
   }
 }
 
-.small-font {
-  font-size: 34px !important;
+.small-font-amount {
+  font-size: 28px !important;
+}
+
+.small-font-result {
+  font-size: 16px !important;
 }
 
 .modal-content h4, .glidera h4, .coinbase h4 {
@@ -1585,7 +1589,7 @@ input.ng-invalid-match {
   text-align: center;
   padding-top: 10px;
   color: #fff;
-  height: 150px;
+  height: 125px;
 }
 
 .alternative-amount {
