@@ -3,8 +3,14 @@ angular.module('copayApp.services').factory('amazonService', function($http, $lo
   var root = {};
   var credentials = {};
 
-  root.setCredentials = function(network) {
-    if (network == 'testnet') {
+  var _setCredentials = function() {
+    /*
+     * Development: 'testnet'
+     * Production: 'livenet'
+     */
+    credentials.NETWORK = 'livenet';
+
+    if (credentials.NETWORK == 'testnet') {
       credentials.BITPAY_API_URL = "https://test.bitpay.com";
     } else {
       credentials.BITPAY_API_URL = "https://bitpay.com";
@@ -12,6 +18,7 @@ angular.module('copayApp.services').factory('amazonService', function($http, $lo
   };
 
   var _getBitPay = function(endpoint) {
+    _setCredentials();
     return {
       method: 'GET',
       url: credentials.BITPAY_API_URL + endpoint,
@@ -22,6 +29,7 @@ angular.module('copayApp.services').factory('amazonService', function($http, $lo
   };
 
   var _postBitPay = function(endpoint, data) {
+    _setCredentials();
     return {
       method: 'POST',
       url: credentials.BITPAY_API_URL + endpoint,
@@ -32,8 +40,13 @@ angular.module('copayApp.services').factory('amazonService', function($http, $lo
     };
   };
 
+  root.getEnvironment = function() {
+    _setCredentials();
+    return credentials.NETWORK;
+  };
+
   root.savePendingGiftCard = function(gc, opts, cb) {
-    var network = configService.getSync().amazon.testnet ? 'testnet' : 'livenet';
+    var network = root.getEnvironment();
     storageService.getAmazonGiftCards(network, function(err, oldGiftCards) {
       if (lodash.isString(oldGiftCards)) {
         oldGiftCards = JSON.parse(oldGiftCards);
@@ -58,7 +71,7 @@ angular.module('copayApp.services').factory('amazonService', function($http, $lo
   };
 
   root.getPendingGiftCards = function(cb) {
-    var network = configService.getSync().amazon.testnet ? 'testnet' : 'livenet';
+    var network = root.getEnvironment();
     storageService.getAmazonGiftCards(network, function(err, giftCards) {
       var _gcds = giftCards ? JSON.parse(giftCards) : null;
       return cb(err, _gcds);
