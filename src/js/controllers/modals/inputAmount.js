@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('inputAmountController', function($rootScope, $scope, $filter, profileService, platformInfo, lodash, configService, go, rateService) {
+angular.module('copayApp.controllers').controller('inputAmountController', function($rootScope, $scope, $filter, $timeout, $ionicScrollDelegate, profileService, platformInfo, lodash, configService, go, rateService) {
   var unitToSatoshi;
   var satToUnit;
   var unitDecimals;
@@ -16,6 +16,9 @@ angular.module('copayApp.controllers').controller('inputAmountController', funct
     satToUnit = 1 / unitToSatoshi;
     unitDecimals = config.unitDecimals;
     $scope.resetAmount();
+    $timeout(function() {
+      $ionicScrollDelegate.resize();
+    }, 100);
   };
 
   $scope.shareAddress = function(uri) {
@@ -162,6 +165,9 @@ angular.module('copayApp.controllers').controller('inputAmountController', funct
 
       $scope.specificAmount = amount;
       $scope.specificAlternativeAmount = alternativeAmount;
+      $timeout(function() {
+        $ionicScrollDelegate.resize();
+      }, 100);
     } else {
       self.setAmount(amount, alternativeAmount, $scope.showAlternativeAmount);
       $scope.cancel();
