@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('txpDetailsController', function($scope, $rootScope, $timeout, $interval, $ionicModal, platformInfo, txStatus, $ionicScrollDelegate, txFormatService, fingerprintService, bwcError, gettextCatalog, lodash, profileService, walletService) {
+angular.module('copayApp.controllers').controller('txpDetailsController', function($scope, $rootScope, $timeout, $interval, $ionicModal, ongoingProcess, platformInfo, txStatus, $ionicScrollDelegate, txFormatService, fingerprintService, bwcError, gettextCatalog, lodash, profileService, walletService) {
   var self = $scope.self;
   var tx = $scope.tx;
   var copayers = $scope.copayers;
@@ -25,44 +25,42 @@ angular.module('copayApp.controllers').controller('txpDetailsController', functi
 
   $scope.sign = function(txp) {
     $scope.error = null;
-    $scope.loading = 'Signing Transaction';
+    $scope.loading = true;
 
     $timeout(function() {
-
       fingerprintService.check(fc, function(err) {
         if (err) {
-          $scope.error = bwcError.msg(err);
-          $scope.loading = null;
+          $scope.error = gettextCatalog.getString('Could not send payment');
+          $scope.loading = false;
+          $timeout(function() {
+            $scope.$digest();
+          }, 1);
           return;
         }
 
         handleEncryptedWallet(function(err) {
           if (err) {
-            $scope.error = bwcError.msg(err);
-            $scope.loading = null;
-            return;
+            return setError(err);
           }
 
+          ongoingProcess.set('signingTx', true);
           walletService.signTx(fc, txp, function(err, signedTxp) {
-            walletService.lock(fc);
+            ongoingProcess.set('signingTx', false);
             if (err) {
-              $scope.error = bwcError.msg(err);
-              $scope.loading = null;
-              return;
+              return setError(err);
             }
 
             if (signedTxp.status == 'accepted') {
-              $scope.loading = 'Broadcasting Transaction';
+              ongoingProcess.set('broadcastingTx', true);
               walletService.broadcastTx(fc, signedTxp, function(err, broadcastedTxp) {
-                $scope.loading = null;
+                ongoingProcess.set('broadcastingTx', false);
                 $scope.$emit('UpdateTx');
                 $scope.close(broadcastedTxp);
                 if (err) {
-                  $scope.error = err;
+                  return setError(err);
                 }
               });
             } else {
-              $scope.loading = null;
               $scope.$emit('UpdateTx');
               $scope.close(signedTxp);
             }
@@ -72,58 +70,70 @@ angular.module('copayApp.controllers').controller('txpDetailsController', functi
     }, 10);
   };
 
+  function setError(err, prefix) {
+    $scope.loading = false;
+    $scope.error = bwcError.msg(err, prefix);
+    $timeout(function() {
+      $scope.$digest();
+    }, 10);
+  };
+
+  $scope.$on('$destroy', function() {
+    walletService.lock(fc);
+  });
+
   $scope.reject = function(txp) {
-    $scope.loading = 'Rejecting payment';
+    $scope.loading = true;
     $scope.error = null;
 
     $timeout(function() {
+      ongoingProcess.set('rejectTx', true);
       walletService.rejectTx(fc, txp, function(err, txpr) {
-        $scope.loading = null;
+        ongoingProcess.set('rejectTx', false);
 
         if (err) {
           $scope.$emit('UpdateTx');
-          $scope.error = bwcError.msg(err, gettextCatalog.getString('Could not reject payment'));
-          $scope.$digest();
-        } else {
-          $scope.close(txpr);
+          return setError(err, gettextCatalog.getString('Could not reject payment'));
         }
+
+        $scope.close(txpr);
       });
     }, 10);
   };
 
   $scope.remove = function(txp) {
-    $scope.loading = 'Deleting Payment';
+    $scope.loading = true;
     $scope.error = null;
 
     $timeout(function() {
+      ongoingProcess.set('removeTx', true);
       walletService.removeTx(fc, txp, function(err) {
-        $scope.loading = null;
+        ongoingProcess.set('removeTx', false);
 
         // Hacky: request tries to parse an empty response
         if (err && !(err.message && err.message.match(/Unexpected/))) {
           $scope.$emit('UpdateTx');
-          $scope.error = bwcError.msg(err, gettextCatalog.getString('Could not delete payment proposal'));
-          $scope.$digest();
-          return;
+          return setError(err, gettextCatalog.getString('Could not delete payment proposal'));
         }
+
         $scope.close();
       });
     }, 10);
   };
 
   $scope.broadcast = function(txp) {
-    $scope.loading = 'Broadcasting Payment';
+    $scope.loading = true;
     $scope.error = null;
 
     $timeout(function() {
+      ongoingProcess.set('broadcastTx', true);
       walletService.broadcastTx(fc, txp, function(err, txpb) {
-        $scope.loading = null;
+        ongoingProcess.set('broadcastTx', false);
 
         if (err) {
-          $scope.error = bwcError.msg(err, gettextCatalog.getString('Could not broadcast payment'));
-          $scope.$digest();
-          return;
+          return setError(err, gettextCatalog.getString('Could not broadcast payment'));
         }
+
         $scope.close(txpb);
       });
     }, 10);
@@ -180,7 +190,6 @@ angular.module('copayApp.controllers').controller('txpDetailsController', functi
             $scope.tx.canBeRemoved = false;
             $scope.tx.pendingForUs = false;
             $scope.$apply();
-            return;
           }
           return;
         }
