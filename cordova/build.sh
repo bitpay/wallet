@@ -209,6 +209,12 @@ if [ $CURRENT_OS == "ANDROID" ]; then
   cp android/project.properties $PROJECT/platforms/android/project.properties
   checkOK
 
+  mkdir -p $PROJECT/scripts
+  checkOK
+
+  cp scripts/* $PROJECT/scripts
+  checkOK
+
   cp -R android/res/* $PROJECT/platforms/android/res
   checkOK
 fi
