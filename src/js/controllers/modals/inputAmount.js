@@ -149,10 +149,10 @@ angular.module('copayApp.controllers').controller('inputAmountController', funct
     var alternativeAmount;
 
     if ($scope.showAlternativeAmount) {
-      amount = $scope.alternativeResult;
-      alternativeAmount = evaluate(format($scope.amount));
+      amount = fromFiat($scope.globalResult);
+      alternativeAmount = profileService.formatAmount(evaluate(format($scope.amount)) * unitToSatoshi, true);
     } else {
-      amount = evaluate(format($scope.amount));
+      amount = profileService.formatAmount(evaluate(format($scope.amount)) * unitToSatoshi, true);
       alternativeAmount = toFiat(amount);
     }
 
