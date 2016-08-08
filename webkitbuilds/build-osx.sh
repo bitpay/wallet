@@ -55,8 +55,8 @@ pushd "${STAGING_DIR}"
 
 popd
 
-# Fix size to 150MB
-SIZE=150
+# Fix size to 250MB
+SIZE=250
 
 if [ $? -ne 0 ]; then
    echo "Error: Cannot compute size of staging dir"
@@ -75,10 +75,9 @@ then
 #  export CHILD_PLIST=child.plist
   export APP_PATH=${STAGING_DIR}/${APP_NAME}.app
 
-  codesign --deep -s "${IDENTITY}"  $APP_PATH"/Contents/Frameworks/nwjs Helper.app" && echo "Sign 1"
-  codesign --deep -s "${IDENTITY}"  $APP_PATH"/Contents/Frameworks/nwjs Helper EH.app" && echo "Sign 2"
-  codesign --deep -s "${IDENTITY}"  $APP_PATH"/Contents/Frameworks/nwjs Helper NP.app" && echo "Sign 3"
-  codesign --deep -s "${IDENTITY}"  $APP_PATH && echo "Sign 4"
+  codesign --deep -s "${IDENTITY}"  $APP_PATH"/Contents/Versions/52.0.2743.82/nwjs Helper.app" && echo "Sign 1"
+  codesign --deep -s "${IDENTITY}"  $APP_PATH"/Contents/Versions/52.0.2743.82/nwjs Framework.framework/Resources/app_mode_loader.app" && echo "Sign 2"
+  codesign --deep -s "${IDENTITY}"  $APP_PATH && echo "Sign 3"
   echo "Signing Done"
 
 fi
