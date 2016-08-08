@@ -12,15 +12,15 @@
     </div>
   </ion-header-bar>
 
-  <ion-content>
-    <div ng-show="!specificAmount">
-      <div class="send-amount ">
+  <div>
+    <div class="row content" ng-show="!specificAmount">
+      <div class="send-amount col">
         <div class="text-light text-black m15t" ng-class="{'size-28': smallFont, 'size-36' : !smallFont}">{{amount || '-'}}</div>
         <div class="text-light text-black" ng-class="{'size-16': smallFont, 'size-17': !smallFont}" ng-show="!showAlternativeAmount">{{globalResult}} [{{amountResult || '0.00'}} {{alternativeIsoCode}}]</div>
         <div class="size-17 text-light text-black" ng-show="showAlternativeAmount">{{globalResult}} [{{alternativeResult || '0.00'}} {{unitName}}]</div>
       </div>
 
-      <div class="m10b">
+      <div class="calculator-keyboard m10b col">
         <div class="button-content text-center df">
           <div class="col col-25 col-offset-50">
             <button class="button expand button-stable" ng-click="resetAmount()">AC</button>
@@ -55,12 +55,6 @@
           <button class="button expand button-light" ng-click="pushDigit('0')">0</button>
           <button class="button expand button-light" ng-click="removeDigit()"><</button>
           <button class="button expand button-stable" ng-click="pushOperator('-')">-</button>
-        </div>
-      </div>
-
-      <div class="row m20t">
-        <div class="columns">
-
         </div>
       </div>
     </div>
@@ -107,6 +101,5 @@
         </div>
       </div>
     </div>
-
-  </ion-content>
+  </div>
 </ion-modal-view>
