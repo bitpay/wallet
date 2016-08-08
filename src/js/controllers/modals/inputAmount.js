@@ -5,6 +5,8 @@ angular.module('copayApp.controllers').controller('inputAmountController', funct
   var satToUnit;
   var unitDecimals;
   var self = $scope.self;
+  var SMALL_FONT_SIZE_LIMIT = 13;
+  var LENGTH_EXPRESSION_LIMIT = 19;
 
   $scope.init = function() {
     var config = configService.getSync().wallet.settings;
@@ -32,23 +34,20 @@ angular.module('copayApp.controllers').controller('inputAmountController', funct
 
     if ($scope.amount && isExpression($scope.amount)) {
       var amount = evaluate(format($scope.amount));
-      if ($scope.showAlternativeAmount)
-        $scope.globalResult = '= ' + $filter('formatFiatAmount')(amount);
-      else
-        $scope.globalResult = '= ' + profileService.formatAmount(amount * unitToSatoshi, true);
+      $scope.globalResult = '= ' + processResult(amount);
     }
   };
 
   function checkFontSize() {
-    if ($scope.amount && $scope.amount.length >= 13) $scope.smallFont = true;
+    if ($scope.amount && $scope.amount.length >= SMALL_FONT_SIZE_LIMIT) $scope.smallFont = true;
     else $scope.smallFont = false;
   };
 
   $scope.pushDigit = function(digit) {
-    checkFontSize();
-    if ($scope.amount && $scope.amount.length >= 19) return;
+    if ($scope.amount && $scope.amount.length >= LENGTH_EXPRESSION_LIMIT) return;
 
     $scope.amount = ($scope.amount + digit).replace('..', '.');
+    checkFontSize();
     processAmount($scope.amount);
   };
 
@@ -67,25 +66,16 @@ angular.module('copayApp.controllers').controller('inputAmountController', funct
 
   function isOperator(val) {
     var regex = /[\/\-\+\x\*]/;
-    var match = regex.exec(val);
-    if (match) return true;
-    return false;
+    return regex.test(val);
   };
 
   function isExpression(val) {
     var regex = /^\.?\d+(\.?\d+)?([\/\-\+\*x]\d?\.?\d+)+$/;
-    var match = regex.exec(val);
 
-    if (match) return true;
-    return false;
+    return regex.test(val);
   };
 
   $scope.removeDigit = function() {
-    if ($scope.amount.toString().length == 1) {
-      $scope.resetAmount();
-      return;
-    }
-
     $scope.amount = $scope.amount.slice(0, -1);
     processAmount($scope.amount);
     checkFontSize();
@@ -106,14 +96,17 @@ angular.module('copayApp.controllers').controller('inputAmountController', funct
     var result = evaluate(formatedValue);
 
     if (lodash.isNumber(result)) {
-      if ($scope.showAlternativeAmount)
-        $scope.globalResult = isExpression(val) ? '= ' + $filter('formatFiatAmount')(result) : '';
-      else
-        $scope.globalResult = isExpression(val) ? '= ' + profileService.formatAmount(result * unitToSatoshi, true) : '';
-
+      $scope.globalResult = isExpression(val) ? '= ' + processResult(result) : '';
       $scope.amountResult = $filter('formatFiatAmount')(toFiat(result));
       $scope.alternativeResult = profileService.formatAmount(fromFiat(result) * unitToSatoshi, true);
     }
+  };
+
+  function processResult(val) {
+    if ($scope.showAlternativeAmount)
+      return $filter('formatFiatAmount')(val);
+    else
+      return profileService.formatAmount(val.toFixed(unitDecimals) * unitToSatoshi, true);
   };
 
   function fromFiat(val) {
@@ -131,7 +124,7 @@ angular.module('copayApp.controllers').controller('inputAmountController', funct
     } catch (e) {
       return 0;
     }
-    if (result == 'Infinity' || lodash.isNaN(result)) return 0;
+    if (!lodash.isFinite(result)) return 0;
     return result;
   };
 
@@ -145,26 +138,15 @@ angular.module('copayApp.controllers').controller('inputAmountController', funct
   };
 
   $scope.finish = function() {
-    var amount;
-    var alternativeAmount;
+    var amount = evaluate(format($scope.amount)).toFixed(unitDecimals);
+    var alternativeAmount = fromFiat(amount).toFixed(unitDecimals);
 
-    if ($scope.showAlternativeAmount) {
-      amount = fromFiat($scope.globalResult);
-      alternativeAmount = profileService.formatAmount(evaluate(format($scope.amount)) * unitToSatoshi, true);
-    } else {
-      amount = profileService.formatAmount(evaluate(format($scope.amount)) * unitToSatoshi, true);
-      alternativeAmount = toFiat(amount);
-    }
+    if (amount % 1 == 0) amount = parseInt(amount);
 
-    if ($scope.address) {
-      var satToBtc = 1 / 100000000;
-      var amountSat = parseInt((amount * unitToSatoshi).toFixed(0));
-      if ($scope.unitName == 'bits') {
-        $scope.specificAmountBtc = (amountSat * satToBtc).toFixed(8);
-      }
+    if ($scope.addr) {
+      $scope.specificAmount = amount;
+      $scope.specificAlternativeAmount = $filter('formatFiatAmount')(toFiat(amount));
 
-      $scope.specificAmount = profileService.formatAmount(amount * unitToSatoshi, true);
-      $scope.specificAlternativeAmount = $filter('formatFiatAmount')(alternativeAmount);
       $timeout(function() {
         $ionicScrollDelegate.resize();
       }, 100);

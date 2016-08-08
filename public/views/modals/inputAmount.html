@@ -6,9 +6,12 @@
       </a>
     </div>
     <h1 class="title ellipsis" translate>Enter amount</h1>
-    <div class="buttons m5r m3t" ng-show="!specificAmount" ng-click="toggleAlternative()">
+    <div class="buttons m5r m3t" ng-if="!specificAmount" ng-click="toggleAlternative()">
       <button class="button black" ng-show="showAlternativeAmount">{{alternativeIsoCode}}</button>
       <button class="button" ng-style="{'background-color':color}" ng-show="!showAlternativeAmount">{{unitName}}</button>
+    </div>
+    <div class="buttons m3t" ng-if="specificAmount" ng-click="init()">
+      <button class="button right" ng-style="{'background-color':color}"><span translate>Cancel</span></button>
     </div>
   </ion-header-bar>
 
@@ -63,10 +66,10 @@
       <h4 class="title m10l" translate>QR Code</h4>
       <ul class="no-bullet size-14 m0">
         <li class="line-b p10 oh text-center">
-          <qrcode size="220" data="bitcoin:{{address + '?amount=' + specificAmountBtc}}"></qrcode>
+          <qrcode size="220" data="bitcoin:{{addr + '?amount=' + specificAmount}}"></qrcode>
           <div class="m10t text-center" ng-show="isCordova">
             <span class="button outline dark-gray tiny round"
-              ng-click="shareAddress('bitcoin:' + address + '?amount=' + specificAmountBtc)">
+              ng-click="shareAddress('bitcoin:' + addr + '?amount=' + specificAmount)">
               <i class="fi-share"></i>
               <span translate>Share address</span>
             </span>
@@ -90,16 +93,6 @@
           </span>
         </li>
       </ul>
-
-      <div class="row">
-        <div class="columns">
-          <button class="round expand m20t"
-            ng-style="{'background-color':index.backgroundColor}"
-            ng-click="init()">
-            <span translate>Cancel</span>
-          </button>
-        </div>
-      </div>
     </div>
   </div>
 </ion-modal-view>
