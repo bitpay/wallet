@@ -21,5 +21,5 @@ console.log('v' + json.version + ' #' + commitHash);
 
 var content = 'window.version="' + json.version + '";';
 content = content + '\nwindow.commitHash="' + commitHash + '";';
-fs.writeFileSync("./src/js/version.js", content);
+fs.writeFileSync("./src/js/appConfig.js", content);
 
