@@ -348,14 +348,9 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   };
 
   this.setAmount = function(amount, alternativeAmount, useAlternativeAmount) {
+    var amountResult = useAlternativeAmount ? alternativeAmount : amount;
     $scope.showAlternative = useAlternativeAmount;
-    var amountResult;
 
-    if (useAlternativeAmount) {
-      amountResult = parseFloat((rateService.fromFiat(alternativeAmount, self.alternativeIsoCode) * self.satToUnit).toFixed(self.unitDecimals), 10);
-    } else {
-      amountResult = amount;
-    }
     self.fromInputAmount = true;
     self.setForm(null, amountResult, null);
   };
@@ -543,7 +538,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     });
   };
 
-  $scope.openCustomAmountModal = function(addr) {
+  $scope.openCustomInputAmountModal = function(addr) {
     var fc = profileService.focusedClient;
     $scope.color = fc.backgroundColor;
     $scope.self = self;
@@ -557,19 +552,19 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     });
   };
 
-  $scope.openAmountModal = function(address) {
+  $scope.openAmountModal = function(addr) {
     if (isCordova)
-      $scope.openInputAmountModal(address);
+      $scope.openInputAmountModal(addr);
     else
-      $scope.openCustomAmountModal(address);
+      $scope.openCustomInputAmountModal(addr);
   };
 
   $scope.openInputAmountModal = function(addr) {
     var fc = profileService.focusedClient;
     $scope.color = fc.backgroundColor;
     $scope.showAlternativeAmount = $scope.showAlternative || null;
-    $scope.address = addr || null;
     $scope.self = self;
+    $scope.addr = addr;
 
     $ionicModal.fromTemplateUrl('views/modals/inputAmount.html', {
       scope: $scope
