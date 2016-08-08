@@ -279,7 +279,7 @@
           <!-- Address-->
           <div class="large-12 columns">
             <h2 class="text-center m10t" translate>My Bitcoin address</h2>
-            <div class="text-center" ng-click="home.copyToClipboard(home.addr)" ng-show="home.addr || home.generatingAddress">
+            <div class="text-center" ng-click="home.copyToClipboard(home.addr, $event)" ng-show="home.addr || home.generatingAddress">
               <qrcode size="220" data="bitcoin:{{home.addr}}"></qrcode>
               <div ng-show="home.generatingAddress" style="position:relative; top:-226px; height:0px">
                 <div style="height:220px; width:220px; margin:auto; background: white">
@@ -297,7 +297,7 @@
         <div class="row m20t">
           <div class="small-12 columns" ng-show="index.isCordova && home.addr">
             <button class="button outline light-gray small round expand"
-              ng-click="home.shareAddress(home.addr)"
+              on-tap="home.shareAddress(home.addr)"
               ng-disabled="home.generatingAddress">
               <span translate>Share address</span>
             </button>

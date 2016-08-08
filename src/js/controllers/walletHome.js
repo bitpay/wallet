@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('walletHomeController', function($scope, $rootScope, $interval, $timeout, $filter, $log, $ionicModal, notification, txStatus, profileService, lodash, configService, rateService, storageService, bitcore, gettext, gettextCatalog, platformInfo, addressService, ledger, bwcError, confirmDialog, txFormatService, addressbookService, go, feeService, walletService, fingerprintService, nodeWebkit, ongoingProcess) {
+angular.module('copayApp.controllers').controller('walletHomeController', function($scope, $rootScope, $interval, $timeout, $filter, $log, $ionicModal, $ionicPopover, notification, txStatus, profileService, lodash, configService, rateService, storageService, bitcore, gettext, gettextCatalog, platformInfo, addressService, ledger, bwcError, confirmDialog, txFormatService, addressbookService, go, feeService, walletService, fingerprintService, nodeWebkit, ongoingProcess) {
 
   var isCordova = platformInfo.isCordova;
   var isWP = platformInfo.isWP;
@@ -200,12 +200,36 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     });
   };
 
-  this.copyToClipboard = function(addr) {
+  this.copyToClipboard = function(addr, $event) {
+
+    var showPopover = function() {
+
+      $ionicPopover.fromTemplateUrl('views/includes/copyToClipboard.html', {
+        scope: $scope
+      }).then(function(popover) {
+        $scope.popover = popover;
+        $scope.popover.show($event);
+      });
+
+      $scope.close = function() {
+        $scope.popover.hide();
+      }
+
+      $timeout(function() {
+        $scope.popover.hide(); //close the popover after 0.7 seconds
+      }, 700);
+
+      $scope.$on('$destroy', function() {
+        $scope.popover.remove();
+      });
+    };
+
     if (isCordova) {
       window.cordova.plugins.clipboard.copy(addr);
       window.plugins.toast.showShortCenter(gettextCatalog.getString('Copied to clipboard'));
     } else if (platformInfo.isNW) {
       nodeWebkit.writeToClipboard(addr);
+      showPopover($event);
     }
   };
 
@@ -823,70 +847,73 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     this.error = null;
     ongoingProcess.set('calculatingFee', true);
 
-    feeService.getCurrentFeeValue(function(err, feePerKb) {
-      ongoingProcess.set('calculatingFee', false);
-      if (err || !lodash.isNumber(feePerKb)) {
-        self.error = gettext('Could not get fee value');
-        return;
-      }
+    $timeout(function() {
 
-      var opts = {};
-      opts.feePerKb = feePerKb;
-      opts.returnInputs = true;
-      var config = configService.getSync();
-      opts.excludeUnconfirmedUtxos = !config.wallet.spendUnconfirmed;
-      ongoingProcess.set('retrivingInputs', true);
-
-      fc.getSendMaxInfo(opts, function(err, resp) {
-        ongoingProcess.set('retrivingInputs', false);
-
-        if (err) {
-          self.error = err;
-          $scope.$apply();
+      feeService.getCurrentFeeValue(function(err, feePerKb) {
+        ongoingProcess.set('calculatingFee', false);
+        if (err || !lodash.isNumber(feePerKb)) {
+          self.error = gettext('Could not get fee value');
           return;
         }
 
-        if (resp.amount == 0) {
-          self.error = gettext("Not enough funds for fee");
-          $scope.$apply();
-          return;
-        }
+        var opts = {};
+        opts.feePerKb = feePerKb;
+        opts.returnInputs = true;
+        var config = configService.getSync();
+        opts.excludeUnconfirmedUtxos = !config.wallet.spendUnconfirmed;
+        ongoingProcess.set('retrivingInputs', true);
 
-        var msg = gettextCatalog.getString("{{fee}} will be deducted for bitcoin networking fees", {
-          fee: profileService.formatAmount(resp.fee) + ' ' + self.unitName
-        });
+        fc.getSendMaxInfo(opts, function(err, resp) {
+          ongoingProcess.set('retrivingInputs', false);
 
-        var warningMsg = verifyExcludedUtxos();
+          if (err) {
+            self.error = err;
+            $scope.$apply();
+            return;
+          }
 
-        if (!lodash.isEmpty(warningMsg))
-          msg += '. \n' + warningMsg;
+          if (resp.amount == 0) {
+            self.error = gettext("Not enough funds for fee");
+            $scope.$apply();
+            return;
+          }
 
-        confirmDialog.show(msg, function(confirmed) {
-          if (confirmed) {
-            self.sendMaxInfo = resp;
-            var amount = parseFloat((resp.amount * self.satToUnit).toFixed(self.unitDecimals));
-            self.setForm(null, amount, null);
-          } else {
-            self.resetForm();
+          var msg = gettextCatalog.getString("{{fee}} will be deducted for bitcoin networking fees", {
+            fee: profileService.formatAmount(resp.fee) + ' ' + self.unitName
+          });
+
+          var warningMsg = verifyExcludedUtxos();
+
+          if (!lodash.isEmpty(warningMsg))
+            msg += '. \n' + warningMsg;
+
+          confirmDialog.show(msg, function(confirmed) {
+            if (confirmed) {
+              self.sendMaxInfo = resp;
+              var amount = parseFloat((resp.amount * self.satToUnit).toFixed(self.unitDecimals));
+              self.setForm(null, amount, null);
+            } else {
+              self.resetForm();
+            }
+          });
+
+          function verifyExcludedUtxos() {
+            var warningMsg = [];
+            if (resp.utxosBelowFee > 0) {
+              warningMsg.push(gettextCatalog.getString("Note: a total of {{amountBelowFeeStr}} were excluded. These funds come from UTXOs smaller than the network fee provided.", {
+                amountBelowFeeStr: profileService.formatAmount(resp.amountBelowFee) + ' ' + self.unitName
+              }));
+            }
+            if (resp.utxosAboveMaxSize > 0) {
+              warningMsg.push(gettextCatalog.getString("Note: a total of {{amountAboveMaxSizeStr}} were excluded. The maximum size allowed for a transaction was exceeded", {
+                amountAboveMaxSizeStr: profileService.formatAmount(resp.amountAboveMaxSize) + ' ' + self.unitName
+              }));
+            }
+            return warningMsg.join('\n');
           }
         });
-
-        function verifyExcludedUtxos() {
-          var warningMsg = [];
-          if (resp.utxosBelowFee > 0) {
-            warningMsg.push(gettextCatalog.getString("Note: a total of {{amountBelowFeeStr}} were excluded. These funds come from UTXOs smaller than the network fee provided.", {
-              amountBelowFeeStr: profileService.formatAmount(resp.amountBelowFee) + ' ' + self.unitName
-            }));
-          }
-          if (resp.utxosAboveMaxSize > 0) {
-            warningMsg.push(gettextCatalog.getString("Note: a total of {{amountAboveMaxSizeStr}} were excluded. The maximum size allowed for a transaction was exceeded", {
-              amountAboveMaxSizeStr: profileService.formatAmount(resp.amountAboveMaxSize) + ' ' + self.unitName
-            }));
-          }
-          return warningMsg.join('\n');
-        }
       });
-    });
+    }, 10);
   };
 
   /* Start setup */
