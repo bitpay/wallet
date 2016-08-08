@@ -211,9 +211,13 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
         $scope.popover.show($event);
       });
 
+      $scope.close = function() {
+        $scope.popover.hide();
+      }
+
       $timeout(function() {
-        $scope.popover.hide(); //close the popover after 3 seconds for some reason
-      }, 2000);
+        $scope.popover.hide(); //close the popover after 0.7 seconds
+      }, 700);
 
       $scope.$on('$destroy', function() {
         $scope.popover.remove();
