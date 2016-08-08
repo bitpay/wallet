@@ -1,0 +1,16 @@
+{
+  "extraCSS": null,
+  "version": "2.3.0",
+  "enabledExtensions": [
+    "coinbase",
+    "glidera",
+    "debitcard",
+    "amazon"
+  ],
+  "appName": "copay",
+  "appNameCase": "Copay",
+  "replace": {
+    "APP_NAME": "copay",
+    "CASED_APP_NAME": "Copay"
+  }
+}
