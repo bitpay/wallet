@@ -18,56 +18,61 @@
   </ion-header-bar>
 
   <ion-pane>
-    <ion-content scroll="false" ng-show="!specificAmount">
-      <section class="main-container">
-        <div class="row header">
-          <div class="col text-center">
-            <div class="text-light text-black m15t" ng-class="{'size-28': smallFont, 'size-36': !smallFont}">{{amount || '-'}}</div>
-            <div class="text-light text-black" ng-class="{'size-16': smallFont, 'size-17': !smallFont}" ng-show="!showAlternativeAmount">{{globalResult}} [{{amountResult || '0.00'}} {{alternativeIsoCode}}]</div>
-            <div class="size-17 text-light text-black" ng-show="showAlternativeAmount">{{globalResult}} [{{alternativeResult || '0.00'}} {{unitName}}]</div>
-          </div>
+    <ion-content class="calculator" scroll="false" ng-show="!specificAmount">
+      <div class="header-calc">
+        <div class="text-light text-black" ng-class="{'size-28': smallFont, 'size-36': !smallFont}">{{amount || '-'}}</div>
+        <div class="text-light text-black" ng-class="{'size-16': smallFont, 'size-17': !smallFont}" ng-show="!showAlternativeAmount">
+          {{globalResult}} <span class="label gray radius">{{amountResult || '0.00'}} {{alternativeIsoCode}}</span>
         </div>
+        <div class="text-light text-black size-17" ng-show="showAlternativeAmount">
+          {{globalResult}} <span class="label gray radius">{{alternativeResult || '0.00'}} {{unitName}}</span>
+        </div>
+      </div>
 
-        <div class="row button-row">
-          <div class="col-25 col-offset-50">
-            <button class="button expand button-stable" ng-click="resetAmount()">AC</button>
+      <div class="button-calc">
+        <div class="oh">
+          <div class="left large-3 medium-3 small-3">
+            <button class="button expand text-center m0 operator"
+                    ng-click="resetAmount()">
+              AC
+            </button>
           </div>
-          <div class="col-25">
-            <button class="button expand text-center" ng-style="{'background-color':index.backgroundColor}"
-              ng-disabled="alternativeResult <= 0 && amountResult <= 0" ng-click="finish()" ng-show="!specificAmount">
-              <span>Ok</span>
+          <div class="left large-9 medium-9 small-9">
+            <button class="button expand text-center m0"
+                    ng-style="{'background-color':index.backgroundColor}"
+                    ng-disabled="alternativeResult <= 0 && amountResult <= 0" ng-click="finish()" ng-show="!specificAmount">
+              OK
             </button>
           </div>
         </div>
-
-        <div class="row button-row">
-          <button class="button expand button-light" ng-click="pushDigit('7')">7</button>
-          <button class="button expand button-light" ng-click="pushDigit('8')">8</button>
-          <button class="button expand button-light" ng-click="pushDigit('9')">9</button>
-          <button class="button expand button-stable" ng-click="pushOperator('/')">/</button>
+        <div class="row collapse">
+          <div class="columns large-3 medium-3 small-3" ng-click="pushDigit('7')">7</div>
+          <div class="columns large-3 medium-3 small-3" ng-click="pushDigit('8')">8</div>
+          <div class="columns large-3 medium-3 small-3" ng-click="pushDigit('9')">9</div>
+          <div class="columns large-3 medium-3 small-3 operator" ng-click="pushOperator('/')">/</div>
         </div>
 
-        <div class="row button-row">
-          <button class="button expand button-light" ng-click="pushDigit('4')">4</button>
-          <button class="button expand button-light" ng-click="pushDigit('5')">5</button>
-          <button class="button expand button-light" ng-click="pushDigit('6')">6</button>
-          <button class="button button-amount expand button-stable" ng-click="pushOperator('x')">x</button>
+        <div class="row collapse">
+          <div class="columns large-3 medium-3 small-3" ng-click="pushDigit('4')">4</div>
+          <div class="columns large-3 medium-3 small-3" ng-click="pushDigit('5')">5</div>
+          <div class="columns large-3 medium-3 small-3" ng-click="pushDigit('6')">6</div>
+          <div class="columns large-3 medium-3 small-3 operator" ng-click="pushOperator('x')">x</div>
         </div>
 
-        <div class="row button-row">
-          <button class="button expand button-light" ng-click="pushDigit('1')">1</button>
-          <button class="button expand button-light" ng-click="pushDigit('2')">2</button>
-          <button class="button expand button-light" ng-click="pushDigit('3')">3</button>
-          <button class="button expand button-stable" ng-click="pushOperator('+')">+</button>
+        <div class="row collapse">
+          <div class="columns large-3 medium-3 small-3" ng-click="pushDigit('1')">1</div>
+          <div class="columns large-3 medium-3 small-3" ng-click="pushDigit('2')">2</div>
+          <div class="columns large-3 medium-3 small-3" ng-click="pushDigit('3')">3</div>
+          <div class="columns large-3 medium-3 small-3 operator" ng-click="pushOperator('+')">+</div>
         </div>
 
-        <div class="row button-row">
-          <button class="button expand button-light" ng-click="pushDigit('.')">.</button>
-          <button class="button expand button-light" ng-click="pushDigit('0')">0</button>
-          <button class="button expand button-light" ng-click="removeDigit()"><</button>
-          <button class="button expand button-stable" ng-click="pushOperator('-')">-</button>
+        <div class="row collapse">
+          <div class="columns large-3 medium-3 small-3 operator" ng-click="pushDigit('.')">.</div>
+          <div class="columns large-3 medium-3 small-3" ng-click="pushDigit('0')">0</div>
+          <div class="columns large-3 medium-3 small-3 operator icon ion-arrow-left-a" ng-click="removeDigit()"></div>
+          <div class="columns large-3 medium-3 small-3 operator" ng-click="pushOperator('-')">-</div>
         </div>
-      </section>
+      </div>
     </ion-content>
 
     <ion-content ng-show="specificAmount" ng-style="{'background-color':'#f6f7f9'}">
