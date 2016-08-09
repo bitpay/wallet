@@ -16,14 +16,6 @@
 	display: inherit;
 }
 
-.df {
-	display: flex;
-}
-
-.button-content {
-	margin-bottom: -15px;
-}
-
 .behind {
 	z-index: -1;
 }
