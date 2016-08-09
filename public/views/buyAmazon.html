@@ -45,7 +45,7 @@
         <div class="input">
           <input type="number" id="fiat"
           name="fiat" ng-attr-placeholder="{{'Amount in USD'}}"
-          min="0.01" max="2000"
+          min="0.01" max="500"
           ng-model="fiat" autocomplete="off" required>
 
           <a class="postfix button black">USD</a>
@@ -67,6 +67,9 @@
           <input class="button black round expand"
                    ng-disabled="!buy.selectedWalletId || !fiat"
                    type="submit" value="Buy now">
+          <div class="size-10 text-gray text-center">
+            Purchase Amount is limited to USD 500 per day
+          </div>
         </div>
       </form>
     </div>
