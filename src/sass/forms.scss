@@ -44,28 +44,6 @@ textarea:focus {
   background: transparent;
 }
 
-input[type="amount"] {
-  &[readonly] {
-    width: 100%;
-    opacity: 1;
-    color: #B7C2CD;
-    margin-bottom: 1.5rem;
-    height: 35px;
-    background: transparent;
-    border: none;
-    padding-left: 0.1rem;
-    font-size: 13px;
-    border-bottom: 1px solid #E9EDF0;
-    cursor: text;
-  },
-  &[disabled] {
-    background-color: #E4E8EC;
-    color: #2C3E50;
-    padding-left: 0.5rem;
-    opacity: 1;
-  }
-}
-
 input[type="text"] {
   &[disabled], &[readonly] {
     background-color: #E4E8EC;
