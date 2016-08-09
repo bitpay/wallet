@@ -51,6 +51,8 @@
   },
   "scripts": {
     "preinstall": "bower install",
+    "postinstall": "npm run build",
+    "build": "grunt",
     "start": "node app.js",
     "test": "./node_modules/.bin/grunt test-coveralls",
     "clean": "git clean -dfx"
