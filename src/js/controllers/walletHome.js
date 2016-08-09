@@ -29,6 +29,8 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   ret.isWindowsPhoneApp = platformInfo.isWP;
   ret.countDown = null;
   ret.sendMaxInfo = {};
+  ret.showAlternative = false;
+  ret.fromInputAmount = null;
   var vanillaScope = ret;
 
   var disableScannerListener = $rootScope.$on('dataScanned', function(event, data) {
@@ -239,34 +241,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     }
   };
 
-  this.openCustomizedAmountModal = function(addr) {
-    var fc = profileService.focusedClient;
-
-    $scope.color = fc.backgroundColor;
-    $scope.self = self;
-    $scope.addr = addr;
-
-    $ionicModal.fromTemplateUrl('views/modals/customized-amount.html', {
-      scope: $scope
-    }).then(function(modal) {
-      $scope.customAmountModal = modal;
-      $scope.customAmountModal.show();
-    });
-  };
-
   // Send
-
-  this.canShowAlternative = function() {
-    return $scope.showAlternative;
-  };
-
-  this.showAlternative = function() {
-    $scope.showAlternative = true;
-  };
-
-  this.hideAlternative = function() {
-    $scope.showAlternative = false;
-  };
 
   this.resetError = function() {
     this.error = this.success = null;
@@ -336,7 +311,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
         },
         set: function(newValue) {
           $scope.__alternative = newValue;
-          if (typeof(newValue) === 'number' && self.isRateAvailable) {
+          if (self.isRateAvailable) {
             $scope._amount = parseFloat((rateService.fromFiat(newValue, self.alternativeIsoCode) * satToUnit).toFixed(self.unitDecimals), 10);
           } else {
             $scope.__amount = null;
@@ -352,7 +327,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
         },
         set: function(newValue) {
           $scope.__amount = newValue;
-          if (typeof(newValue) === 'number' && self.isRateAvailable) {
+          if (self.isRateAvailable) {
             $scope.__alternative = parseFloat((rateService.toFiat(newValue * self.unitToSatoshi, self.alternativeIsoCode)).toFixed(2), 10);
           } else {
             $scope.__alternative = null;
@@ -394,6 +369,13 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     $timeout(function() {
       $scope.$digest();
     }, 1);
+  };
+
+  this.setAmount = function(amount, useAlternativeAmount) {
+    $scope.showAlternative = useAlternativeAmount;
+
+    self.fromInputAmount = true;
+    self.setForm(null, amount, null);
   };
 
   this.submitForm = function() {
@@ -579,6 +561,42 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     });
   };
 
+  $scope.openCustomInputAmountModal = function(addr) {
+    var fc = profileService.focusedClient;
+    $scope.color = fc.backgroundColor;
+    $scope.self = self;
+    $scope.addr = addr;
+
+    $ionicModal.fromTemplateUrl('views/modals/customAmount.html', {
+      scope: $scope
+    }).then(function(modal) {
+      $scope.customAmountModal = modal;
+      $scope.customAmountModal.show();
+    });
+  };
+
+  $scope.openAmountModal = function(addr) {
+    if (isCordova)
+      $scope.openInputAmountModal(addr);
+    else
+      $scope.openCustomInputAmountModal(addr);
+  };
+
+  $scope.openInputAmountModal = function(addr) {
+    var fc = profileService.focusedClient;
+    $scope.color = fc.backgroundColor;
+    $scope.showAlternativeAmount = $scope.showAlternative || null;
+    $scope.self = self;
+    $scope.addr = addr;
+
+    $ionicModal.fromTemplateUrl('views/modals/inputAmount.html', {
+      scope: $scope
+    }).then(function(modal) {
+      $scope.inputAmountModal = modal;
+      $scope.inputAmountModal.show();
+    });
+  };
+
   this.setForm = function(to, amount, comment) {
     var form = $scope.sendForm;
     if (to) {
@@ -592,7 +610,9 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       form.amount.$setViewValue("" + amount);
       form.amount.$isValid = true;
       form.amount.$render();
-      this.lockAmount = true;
+      if (!this.fromInputAmount)
+        this.lockAmount = true;
+      this.fromInputAmount = false;
     }
 
     if (comment) {

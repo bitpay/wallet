@@ -88,6 +88,30 @@
 	font-size: 14px;
 }
 
+.button.button-light:hover {
+	background-color: #fff;
+	border: 1px solid #E9E9EC;
+}
+
+.button.button-light:active {
+	background-color: #ababab;
+	border: 1px solid #E9E9EC;
+}
+
+.button.button-stable:hover {
+	background-color: transparent;
+	border: 1px solid #E9E9EC;
+}
+
+.button.button-stable:active {
+	background-color: #ababab;
+	border: 1px solid #E9E9EC;
+}
+
+.button-amount {
+	text-transform: none;
+}
+
 button, .button {
 	min-width: inherit;
   min-height: inherit;

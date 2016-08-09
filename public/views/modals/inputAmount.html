@@ -1,0 +1,114 @@
+<ion-modal-view ng-controller="inputAmountController" ng-style="{'background-color':'#F6F7F9'}" ng-init=init()>
+  <ion-header-bar align-title="center" class="tab-bar" ng-style="{'background-color':color}">
+    <div class="left-small">
+      <a ng-click="cancel()" class="p10">
+        <span class="text-close" translate>Close</span>
+      </a>
+    </div>
+    <h1 class="title ellipsis" translate>Enter amount</h1>
+    <div class="buttons m5r m3t" ng-if="!specificAmount" ng-click="toggleAlternative()">
+      <button class="button black" ng-show="showAlternativeAmount">{{alternativeIsoCode}}</button>
+      <button class="button" ng-style="{'background-color':color}" ng-show="!showAlternativeAmount">{{unitName}}</button>
+    </div>
+    <div class="right-small m10r" ng-if="specificAmount">
+      <a ng-click="init()">
+        <span class="text-close" translate>Cancel</span>
+      </a>
+    </div>
+  </ion-header-bar>
+
+  <ion-pane>
+    <ion-content class="calculator" scroll="false" ng-show="!specificAmount">
+      <div class="header-calc">
+        <div class="text-light text-black" ng-class="{'size-28': smallFont, 'size-36': !smallFont}">{{amount || '-'}}</div>
+        <div class="text-light text-black" ng-class="{'size-16': smallFont, 'size-17': !smallFont}" ng-show="!showAlternativeAmount">
+          {{globalResult}} <span class="label gray radius">{{amountResult || '0.00'}} {{alternativeIsoCode}}</span>
+        </div>
+        <div class="text-light text-black size-17" ng-show="showAlternativeAmount">
+          {{globalResult}} <span class="label gray radius">{{alternativeResult || '0.00'}} {{unitName}}</span>
+        </div>
+      </div>
+
+      <div class="button-calc">
+        <div class="oh">
+          <div class="left large-3 medium-3 small-3">
+            <button class="button expand text-center m0 operator"
+                    ng-click="resetAmount()">
+              AC
+            </button>
+          </div>
+          <div class="left large-9 medium-9 small-9">
+            <button class="button expand text-center m0"
+                    ng-style="{'background-color':index.backgroundColor}"
+                    ng-disabled="alternativeResult <= 0 && amountResult <= 0" ng-click="finish()" ng-show="!specificAmount">
+              OK
+            </button>
+          </div>
+        </div>
+        <div class="row collapse">
+          <div class="columns large-3 medium-3 small-3" ng-click="pushDigit('7')">7</div>
+          <div class="columns large-3 medium-3 small-3" ng-click="pushDigit('8')">8</div>
+          <div class="columns large-3 medium-3 small-3" ng-click="pushDigit('9')">9</div>
+          <div class="columns large-3 medium-3 small-3 operator" ng-click="pushOperator('/')">/</div>
+        </div>
+
+        <div class="row collapse">
+          <div class="columns large-3 medium-3 small-3" ng-click="pushDigit('4')">4</div>
+          <div class="columns large-3 medium-3 small-3" ng-click="pushDigit('5')">5</div>
+          <div class="columns large-3 medium-3 small-3" ng-click="pushDigit('6')">6</div>
+          <div class="columns large-3 medium-3 small-3 operator" ng-click="pushOperator('x')">x</div>
+        </div>
+
+        <div class="row collapse">
+          <div class="columns large-3 medium-3 small-3" ng-click="pushDigit('1')">1</div>
+          <div class="columns large-3 medium-3 small-3" ng-click="pushDigit('2')">2</div>
+          <div class="columns large-3 medium-3 small-3" ng-click="pushDigit('3')">3</div>
+          <div class="columns large-3 medium-3 small-3 operator" ng-click="pushOperator('+')">+</div>
+        </div>
+
+        <div class="row collapse">
+          <div class="columns large-3 medium-3 small-3 operator" ng-click="pushDigit('.')">.</div>
+          <div class="columns large-3 medium-3 small-3" ng-click="pushDigit('0')">0</div>
+          <div class="columns large-3 medium-3 small-3 operator icon ion-arrow-left-a" ng-click="removeDigit()"></div>
+          <div class="columns large-3 medium-3 small-3 operator" ng-click="pushOperator('-')">-</div>
+        </div>
+      </div>
+    </ion-content>
+
+    <ion-content ng-show="specificAmount" ng-style="{'background-color':'#f6f7f9'}">
+      <section class="modal-content m20b">
+        <h4 class="title m10l" translate>QR Code</h4>
+        <ul class="no-bullet size-14 m0">
+          <li class="line-b p10 oh text-center">
+            <qrcode size="220" data="bitcoin:{{addr + '?amount=' + customizedAmountBtc}}"></qrcode>
+            <div class="m10t text-center" ng-show="isCordova">
+              <span class="button outline dark-gray tiny round"
+                ng-click="shareAddress('bitcoin:' + addr + '?amount=' + customizedAmountBtc)">
+                <i class="fi-share"></i>
+                <span translate>Share address</span>
+              </span>
+            </div>
+          </li>
+        </ul>
+
+        <h4 class="title m10l" translate>Details</h4>
+        <ul class="no-bullet size-14 m0">
+          <li class="line-b p10 oh">
+            <span class="text-gray" translate>Address</span>:
+            <span class="right">
+              <span class="text-gray enable_text_select">{{addr}}</span>
+            </span>
+          </li>
+          <li class="line-b p10 oh">
+            <span class="text-gray" translate>Amount</span>:
+            <span class="right">
+              {{specificAmount}} {{unitName}}
+              <span class="label gray radius">{{specificAlternativeAmount}} {{alternativeIsoCode}}</span>
+            </span>
+          </li>
+        </ul>
+        <div class="extra-margin-bottom"></div>
+      </section>
+    </ion-content>
+  </ion-pane>
+</ion-modal-view>
