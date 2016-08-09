@@ -10,8 +10,8 @@
     "debitcard",
     "amazon"
   ],
-  "name": "copay",
-  "nameCase": "Copay",
+  "appName": "Bitpay App",
+  "appNameCase": "Copay",
   "replace": {
     "APP_NAME": "copay",
     "CASED_APP_NAME": "Copay"
