@@ -75,10 +75,10 @@
         <h4 class="title m10l" translate>QR Code</h4>
         <ul class="no-bullet size-14 m0">
           <li class="line-b p10 oh text-center">
-            <qrcode size="220" data="bitcoin:{{addr + '?amount=' + specificAmount}}"></qrcode>
+            <qrcode size="220" data="bitcoin:{{addr + '?amount=' + customizedAmountBtc}}"></qrcode>
             <div class="m10t text-center" ng-show="isCordova">
               <span class="button outline dark-gray tiny round"
-                ng-click="shareAddress('bitcoin:' + addr + '?amount=' + specificAmount)">
+                ng-click="shareAddress('bitcoin:' + addr + '?amount=' + customizedAmountBtc)">
                 <i class="fi-share"></i>
                 <span translate>Share address</span>
               </span>
@@ -91,7 +91,7 @@
           <li class="line-b p10 oh">
             <span class="text-gray" translate>Address</span>:
             <span class="right">
-              <span class="text-gray enable_text_select">{{address}}</span>
+              <span class="text-gray enable_text_select">{{addr}}</span>
             </span>
           </li>
           <li class="line-b p10 oh">
