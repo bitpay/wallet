@@ -371,12 +371,11 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     }, 1);
   };
 
-  this.setAmount = function(amount, alternativeAmount, useAlternativeAmount) {
-    var amountResult = useAlternativeAmount ? alternativeAmount : amount;
+  this.setAmount = function(amount, useAlternativeAmount) {
     $scope.showAlternative = useAlternativeAmount;
 
     self.fromInputAmount = true;
-    self.setForm(null, amountResult, null);
+    self.setForm(null, amount, null);
   };
 
   this.submitForm = function() {

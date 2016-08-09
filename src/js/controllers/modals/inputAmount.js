@@ -4,6 +4,7 @@ angular.module('copayApp.controllers').controller('inputAmountController', funct
   var unitToSatoshi;
   var satToUnit;
   var unitDecimals;
+  var satToBtc;
   var self = $scope.self;
   var SMALL_FONT_SIZE_LIMIT = 13;
   var LENGTH_EXPRESSION_LIMIT = 19;
@@ -16,6 +17,7 @@ angular.module('copayApp.controllers').controller('inputAmountController', funct
     $scope.isCordova = platformInfo.isCordova;
     unitToSatoshi = config.unitToSatoshi;
     satToUnit = 1 / unitToSatoshi;
+    satToBtc = 1 / 100000000;
     unitDecimals = config.unitDecimals;
     $scope.resetAmount();
     $timeout(function() {
@@ -138,20 +140,26 @@ angular.module('copayApp.controllers').controller('inputAmountController', funct
   };
 
   $scope.finish = function() {
-    var amount = evaluate(format($scope.amount)).toFixed(unitDecimals);
-    var alternativeAmount = fromFiat(amount).toFixed(unitDecimals);
+    var amount = $scope.showAlternativeAmount ? fromFiat(evaluate(format($scope.amount))).toFixed(unitDecimals) : evaluate(format($scope.amount));
+    var alternativeAmount = $scope.showAlternativeAmount ? evaluate(format($scope.amount)) : toFiat(evaluate(format($scope.amount)));
 
     if (amount % 1 == 0) amount = parseInt(amount);
 
     if ($scope.addr) {
-      $scope.specificAmount = amount;
-      $scope.specificAlternativeAmount = $filter('formatFiatAmount')(toFiat(amount));
+      $scope.specificAmount = profileService.formatAmount(amount * unitToSatoshi, true);
+      $scope.specificAlternativeAmount = $filter('formatFiatAmount')(alternativeAmount);
+
+      if ($scope.unitName == 'bits') {
+        var amountSat = parseInt((amount * unitToSatoshi).toFixed(0));
+        amount = (amountSat * satToBtc).toFixed(8);
+      }
+      $scope.customizedAmountBtc = amount;
 
       $timeout(function() {
         $ionicScrollDelegate.resize();
       }, 100);
     } else {
-      self.setAmount(amount, alternativeAmount, $scope.showAlternativeAmount);
+      self.setAmount(amount, $scope.showAlternativeAmount);
       $scope.cancel();
     }
   };
