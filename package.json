@@ -6,8 +6,8 @@
   "name": "copay",
   "description": "A multisignature bitcoin wallet",
   "author": "BitPay",
-  "version": "2.5.0",
-  "androidVersionCode": "115",
+  "version": "2.4.2",
+  "androidVersionCode": "113",
   "keywords": [
     "wallet",
     "copay",
