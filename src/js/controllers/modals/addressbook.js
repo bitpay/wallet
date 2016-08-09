@@ -132,9 +132,6 @@ angular.module('copayApp.controllers').controller('addressbookController', funct
       else {
         $scope.gettingAddress = true;
         $scope.selectedWalletName = walletName;
-        $timeout(function() {
-          $scope.$apply();
-        });
 
         addressService.getAddress(walletId, false, function(err, addr) {
           $scope.gettingAddress = false;
@@ -148,6 +145,9 @@ angular.module('copayApp.controllers').controller('addressbookController', funct
           $scope.cancel();
         });
       }
+      $timeout(function() {
+        $scope.$apply();
+      });
     });
   };
 
