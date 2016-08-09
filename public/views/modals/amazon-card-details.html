@@ -1,0 +1,119 @@
+<ion-modal-view ng-controller="amazonCardDetailsController">
+  <ion-header-bar align-title="center" class="tab-bar">
+    <div class="left-small">
+      <a ng-click="cancel()" class="p10">
+        <span class="text-close">Close</span>
+      </a>
+    </div>
+    <h1 class="title ellipsis">
+      Details
+    </h1>
+  </ion-header-bar>
+
+  <ion-content>
+
+    <div class="modal-content">
+      <div class="header-modal text-center">
+
+        <img src="img/a_generic.jpg" alt="Amazon.com Gift Card" width="230" ng-click="refreshGiftCard()">
+
+        <div ng-show="card.claimCode">
+          <div class="m10t">
+            Gift Card Amount:
+            <span class="text-bold">
+              {{card.amount | currency : '$ ' : 2}}
+            </span>
+          </div>
+          <div ng-show="card.cardStatus !== 'Canceled'">
+            Claim code: <span class="text-bold enable_text_select">{{card.claimCode}}</span>
+          </div>
+          <div class="m10t" ng-show="card.cardStatus == 'Fulfilled'">
+            <button class="button black round tiny"
+                    ng-click="$root.openExternalLink('https://www.amazon.com/gc/redeem?claimCode=' + card.claimCode, '_system')">
+              Redeem Now
+            </button>
+          </div>
+          <div class="m10t" ng-show="card.cardStatus == 'Canceled'">
+            <div class="m10t">
+              Status:
+              <span class="text-bold">
+                CANCELED
+              </span>
+            </div>
+          </div>
+        </div>
+        <div ng-show="!card.claimCode">
+          <div class="m10t">
+            Status:
+            <span class="text-bold" ng-show="card.status == 'PENDING'">
+              PENDING
+            </span>
+            <span class="text-bold" ng-show="card.status == 'FAILURE' || card.status == 'RESEND'">
+              FAILURE
+            </span>
+          </div>
+        </div>
+        <div class="size-12 m10t text-center">
+          <a ng-click="$root.openExternalLink(card.invoiceUrl)">See invoice</a>
+        </div>
+      </div>
+
+      <div class="box-notification m20b" ng-show="error" ng-click="error = null">
+        <span class="text-warning">
+          {{error}}
+        </span>
+      </div>
+
+      <div class="text-center size-12 text-warning m10" ng-show="card.status == 'FAILURE' || card.status == 'RESEND'">
+          There was a failure to the create gift card. Please, contact BitPay support.
+      </div>
+
+      <div class="oh m20t size-12 p15h" ng-show="card.claimCode && card.cardStatus == 'Fulfilled'">
+        To redeem your gift card, follow these steps:
+
+        <ol class="m10t size-12">
+          <li>1. Visit <a ng-click="$root.openExternalLink('https://www.amazon.com/gc')">www.amazon.com/gc</a>
+          <li>2. Click Apply to Account and enter the Claim Code when prompted.
+          <li>3. Gift card funds will be applied automatically to eligible orders during the checkout process.
+          <li>4. You must pay for any remaining balance on your order with another payment method.
+        </ol>
+
+        <p class="size-12">
+        Your gift card claim code may also be entered when prompted during checkout. To redeem your gift card using
+        the Amazon.com 1-Click&reg; service, first add the gift card funds to Your Account.
+        </p>
+
+        <p class="size-12">
+        If you have questions about redeeming your gift card, please visit
+        <a ng-click="$root.openExternalLink('https://www.amazon.com/gc-redeem')">www.amazon.com/gc-redeem</a>.
+        If you have questions regarding the BitPay Introductory offer, please contact BitPay.
+        </p>
+
+      </div>
+
+      <div class="size-12 white p15 m30v">
+        * <a ng-click="$root.openExternalLink('http://amazon.com')">Amazon.com</a> is not a sponsor of this promotion.
+        Except as required by law, <a ng-click="$root.openExternalLink('http://amazon.com')">Amazon.com</a>
+        Gift Cards ("GCs") cannot be transferred for value or redeemed for cash. GCs may be used only for purchases of
+        eligible goods at <a ng-click="$root.openExternalLink('http://amazon.com')">Amazon.com</a> or certain of its
+        affiliated websites. For complete terms and conditions, see
+        <a ng-click="$root.openExternalLink('https://www.amazon.com/gc-legal')">www.amazon.com/gc-legal</a>.
+        GCs are issued by ACI Gift Cards, Inc., a Washington corporation. All Amazon &reg;, &trade; &amp; &copy; are IP
+        of <a ng-click="$root.openExternalLink('http://amazon.com')">Amazon.com</a>, Inc. or its affiliates.
+        No expiration date or service fees.
+      </div>
+
+      <ul class="no-bullet size-14 m30v text-center">
+        <li class="line-b p10 oh pointer" ng-show="card.status == 'SUCCESS' && card.cardStatus == 'Fulfilled'" ng-click="cancelGiftCard()">
+          <span class="text-warning">Cancel</span>
+        </li>
+        <li class="line-b p10 oh pointer" ng-show="card.status == 'FAILURE' || card.cardStatus == 'Canceled'
+          || card.cardStatus == 'Expired'" ng-click="remove()">
+          <span class="text-warning">Remove</span>
+        </li>
+      </ul>
+
+      <div class="extra-margin-bottom"></div>
+    </div>
+  </ion-content>
+</ion-modal-view>
