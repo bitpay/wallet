@@ -51,15 +51,13 @@
           <a class="postfix button black">USD</a>
         </div>
 
-        <div
-         class="m10b"
-         ng-click="openWalletsModal(buy.allWallets)">
+        <div class="m10b">
           <label>Pay From Copay Wallet</label>
           <div class="input">
             <input type="text" id="address" name="address" ng-disabled="buy.selectedWalletId"
             ng-attr-placeholder="{{'Choose your source wallet'}}"
             ng-model="buy.selectedWalletName" required>
-            <a class="postfix size-12 m0 text-gray">
+            <a ng-click="openWalletsModal(buy.allWallets)" class="postfix size-12 m0 text-gray">
               <i class="icon-wallet size-18"></i>
             </a>
           </div>
