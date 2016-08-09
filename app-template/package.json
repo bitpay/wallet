@@ -59,6 +59,7 @@
   },
   "devDependencies": {
     "grunt-angular-gettext": "^2.2.3",
+    "fs-extra": "^0.30.0",
     "grunt-browserify": "^5.0.0",
     "grunt-cli": "^1.2.0",
     "grunt-contrib-compress": "^1.3.0",
