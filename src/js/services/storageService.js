@@ -268,11 +268,11 @@ angular.module('copayApp.services')
     root.checkQuota = function() {
       var block = '';
       // 50MB
-      for (var i = 0; i < 1024*1024; ++ i){
+      for (var i = 0; i < 1024 * 1024; ++i) {
         block += '12345678901234567890123456789012345678901234567890';
       }
       storage.set('test', block, function(err) {
-        $log.error('CheckQuota Return:'+ err);
+        $log.error('CheckQuota Return:' + err);
       });
     };
 
@@ -316,6 +316,18 @@ angular.module('copayApp.services')
           });
         });
       });
+    };
+
+    root.setAmazonGiftCards = function(network, gcs, cb) {
+      storage.set('amazonGiftCards-' + network, gcs, cb);
+    };
+
+    root.getAmazonGiftCards = function(network, cb) {
+      storage.get('amazonGiftCards-' + network, cb);
+    };
+
+    root.removeAmazonGiftCards = function(network, cb) {
+      storage.remove('amazonGiftCards-' + network, cb);
     };
 
     return root;

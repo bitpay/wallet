@@ -1,0 +1,88 @@
+
+<div class="topbar-container">
+  <nav ng-controller="topbarController as topbar"
+       class="tab-bar">
+    <section class="left-small">
+      <a class="p10"
+         ng-click="topbar.goHome()">
+        <span class="text-close">Close</span>
+      </a>
+    </section>
+
+    <section class="middle tab-bar-section">
+      <h1 class="title ellipsis">
+        Gift cards
+      </h1>
+    </section>
+  </nav>
+</div>
+
+<div class="content amazon p20b" ng-controller="amazonController as amazon">
+
+  <div ng-init="amazon.init()">
+
+    <div class="box-notification text-center size-12 text-warning" ng-show="amazon.sandbox">
+      <i class="fi-info"></i>
+      Sandbox version. Only for testing purpose
+    </div>
+
+    <div class="m20t text-center" ng-click="amazon.updatePendingGiftCards()">
+      <img src="img/GCs-logo-cllb.png" alt="Amazon.com Gift Card" width="200">
+      <div class="size-10 m5t text-gray"><b>Only</b> redeemable on www.amazon.com (USA website)</div>
+    </div>
+
+    <div ng-if="!giftCards" class="m20t text-center size-12">
+
+      <div class="row">
+        <div class="columns">
+          <button class="m20t button black round expand"
+                  ui-sref="buyAmazon">
+            Buy now
+          </button>
+        </div>
+      </div>
+
+      <div class="text-left p10h m30v">
+        Amazon.com Gift Cards never expire and can be redeemed towards millions of items at
+        <a ng-click="$root.openExternalLink('https://www.amazon.com')">www.amazon.com</a>
+      </div>
+    </div>
+
+    <div class="p20t" ng-if="giftCards">
+      <ul class="no-bullet m0 size-14">
+        <li class="line-b line-t p10 pointer" href ui-sref="buyAmazon">
+          <i class="fi-shopping-cart size-24 m5l vm dib"></i>
+          <span class="m10l text-normal text-bold">Buy Gift Card</span>
+          <span class="right text-gray m5t">
+            <i class="icon-arrow-right3 size-24 right"></i>
+          </span>
+        </li>
+      </ul>
+      <h4 class="title">Your cards</h4>
+      <div ng-repeat="(id, item) in giftCards | orderObjectBy:'date':true track by $index"
+           ng-click="amazon.openCardModal(item)"
+        class="row collapse last-transactions-content size-12">
+        <div class="large-2 medium-2 small-2 columns">
+          <img src="img/a-smile_color_btn.png" alt="{{id}}" width="40">
+        </div>
+        <div class="large-4 medium-4 small-4 columns m5t size-18" ng-if="item.claimCode">
+          {{item.amount | currency : '$ ' : 2}}
+        </div>
+        <div class="large-4 medium-4 small-4 columns m5t size-18" ng-if="!item.claimCode">
+          -
+        </div>
+        <div class="large-5 medium-5 small-5 columns text-right m10t">
+          <span class="text-warning" ng-if="item.status == 'FAILURE' || item.status == 'RESEND'">Error</span>
+          <span class="text-gray" ng-if="item.status == 'PENDING'">Pending to confirmation</span>
+          <span class="text-gray" ng-if="item.status == 'SUCCESS' && item.cardStatus == 'Canceled'">Canceled</span>
+          <span class="text-gray" ng-if="item.status == 'SUCCESS' && item.cardStatus == 'Fulfilled'">{{item.date | amTimeAgo}}</span>
+        </div>
+        <div class="large-1 medium-1 small-1 columns text-right m10t">
+          <i class="icon-arrow-right3 size-18"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="extra-margin-bottom"></div>
+</div>

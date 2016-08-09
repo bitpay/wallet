@@ -1,0 +1,166 @@
+<div
+  class="topbar-container"
+  ng-include="'views/includes/topbar.html'"
+  ng-init="titleSection='Buy'; goBackToState = 'amazon'; noColor = true">
+</div>
+
+
+<div class="content amazon" ng-controller="buyAmazonController as buy">
+
+  <div class="row m10t" ng-show="!buy.giftCard" ng-init="buy.init()">
+    <div class="columns">
+
+      <div class="box-notification m20b" ng-show="buy.error" ng-click="buy.error = null">
+        <span class="text-warning">
+          {{buy.error}}
+        </span>
+        <div class="m10t size-12" ng-show="buy.errorInfo">
+          There was an error when trying to buy gift card, but the funds were sent to BitPay Invoice. Please, contact
+          BitPay to refund your bitcoin
+          <div class="p10 m10t">
+            Amount: {{buy.errorInfo.amount}} {{buy.errorInfo.currency}}<br>
+            BitPay Invoice ID: {{buy.errorInfo.invoiceId}}.
+          </div>
+          <div class="text-center">
+            <a ng-click="$root.openExternalLink(buy.errorInfo.invoiceUrl)">Open invoice</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="text-center">
+        <img src="img/a_generic.jpg" alt="Amazon.com Gift Card" width="180">
+        <div class="text-left size-10 m10t">
+          Use your Amazon.com Gift Card* to shop from a huge selection of books, electronics, music, movies, software, apparel, toys, and more.
+        </div>
+      </div>
+      <form
+         class="m30v"
+         name="buyAmazonForm"
+         ng-submit="buy.createTx()"
+         novalidate>
+
+        <label>
+          Amount
+        </label>
+        <div class="input">
+          <input type="number" id="fiat"
+          name="fiat" ng-attr-placeholder="{{'Amount in USD'}}"
+          min="0.01" max="500"
+          ng-model="fiat" autocomplete="off" required>
+
+          <a class="postfix button black">USD</a>
+        </div>
+
+        <div class="m10b">
+          <label>Pay From Copay Wallet</label>
+          <div class="input">
+            <input type="text" id="address" name="address" ng-disabled="buy.selectedWalletId"
+            ng-attr-placeholder="{{'Choose your source wallet'}}"
+            ng-model="buy.selectedWalletName" required>
+            <a ng-click="openWalletsModal(buy.allWallets)" class="postfix size-12 m0 text-gray">
+              <i class="icon-wallet size-18"></i>
+            </a>
+          </div>
+        </div>
+
+        <div class="input m20t">
+          <input class="button black round expand"
+                   ng-disabled="!buy.selectedWalletId || !fiat"
+                   type="submit" value="Buy now">
+          <div class="size-10 text-gray text-center">
+            Purchase Amount is limited to USD 500 per day
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="m10t" ng-show="buy.giftCard">
+    <div class="m10h" ng-show="buy.giftCard.status != 'SUCCESS' && buy.giftCard.status != 'PENDING'">
+      <h1 class="text-center">Gift card could not be created</h1>
+      <div class="box-notification m20b">
+        <span class="text-warning">
+          There was an error when trying to create the Amazon.com Gift Card. Status: {{buy.giftCard.status}}
+        </span>
+      </div>
+      <div class="text-gray size-12 m20t">
+        <span ng-show="buy.giftCard.status == 'RESEND'">
+          This is a temporary/recoverable system failure that can be
+          resolved retrying the request from your list of cards
+        </span>
+        <span ng-show="buy.giftCard.status == 'FAILURE'">
+          This failure could not be recoverable. Request your refund from your list of cards
+        </span>
+        <button class="m20t button outline round dark-gray expand" ng-click="$root.go('amazon')">
+          Back
+        </button>
+      </div>
+    </div>
+    <div ng-show="buy.giftCard.status == 'SUCCESS'">
+      <div class="size-12 p15h">
+        Thank you for participating in the BitPay offer. It is our pleasure to send
+        you this Amazon.com Gift Card* that can be redeemed towards millions of items at
+        <a ng-click="$root.openExternalLink('https://www.amazon.com')">www.amazon.com</a>.
+        You may want to print this screen for easy reference later you will need the gift card claim code below.
+      </div>
+
+      <div class="oh m20t p15 white size-12 text-center">
+        <img class="m10h" src="img/a_generic.jpg" alt="Amazon.com Gift Cards" width="200">
+        <div class="m10t size-14">
+          Gift Card Amount:
+          <span class="text-bold">
+            {{buy.giftCard.amount | currency : '$ ' : 2 }}
+          </span>
+        </div>
+        <div class="size-14">
+          Claim code: <span class="text-bold enable_text_select">{{buy.giftCard.claimCode}}</span>
+        </div>
+        <div class="m10t">
+          <button class="button black round tiny"
+                  ng-click="$root.openExternalLink('https://www.amazon.com/gc/redeem?claimCode=' + buy.giftCard.claimCode, '_system')">
+            Redeem Now
+          </button>
+        </div>
+        <div class="size-12 m10t text-center">
+          <a ng-click="$root.openExternalLink(buy.giftCard.invoiceUrl)">See invoice</a>
+        </div>
+      </div>
+      <div class="oh m20t p15h size-12">
+        To redeem your gift card, follow these steps:
+
+        <ol class="m10t size-12">
+          <li>1. Visit <a ng-click="$root.openExternalLink('https://www.amazon.com/gc')">www.amazon.com/gc</a>
+          <li>2. Click Apply to Account and enter the Claim Code when prompted.
+          <li>3. Gift card funds will be applied automatically to eligible orders during the checkout process.
+          <li>4. You must pay for any remaining balance on your order with another payment method.
+        </ol>
+
+        <p class="size-12">
+        Your gift card claim code may also be entered when prompted during checkout. To redeem your gift card using
+        the Amazon.com 1-Click&reg; service, first add the gift card funds to Your Account.
+        </p>
+
+        <p class="size-12">
+        If you have questions about redeeming your gift card, please visit
+        <a ng-click="$root.openExternalLink('https://www.amazon.com/gc-redeem')">www.amazon.com/gc-redeem</a>.
+        If you have questions regarding the BitPay Introductory offer, please contact BitPay.
+        </p>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="size-12 white p15 m20t">
+    * <a ng-click="$root.openExternalLink('http://amazon.com')">Amazon.com</a> is not a sponsor of this promotion.
+    Except as required by law, <a ng-click="$root.openExternalLink('http://amazon.com')">Amazon.com</a>
+    Gift Cards ("GCs") cannot be transferred for value or redeemed for cash. GCs may be used only for purchases of
+    eligible goods at <a ng-click="$root.openExternalLink('http://amazon.com')">Amazon.com</a> or certain of its
+    affiliated websites. For complete terms and conditions, see
+    <a ng-click="$root.openExternalLink('https://www.amazon.com/gc-legal')">www.amazon.com/gc-legal</a>.
+    GCs are issued by ACI Gift Cards, Inc., a Washington corporation. All Amazon &reg;, &trade; &amp; &copy; are IP
+    of <a ng-click="$root.openExternalLink('http://amazon.com')">Amazon.com</a>, Inc. or its affiliates.
+    No expiration date or service fees.
+  </div>
+
+</div>
+<div class="extra-margin-bottom"></div>
