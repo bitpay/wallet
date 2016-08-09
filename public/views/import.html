@@ -46,9 +46,7 @@
     <div class="row">
       <div class="large-12 columns">
         <form name="importForm12" ng-submit="importMnemonic(importForm12)" novalidate>
-          <label for="words" class="m25r">
-            <span translate>Type the Recovery Phrase (usually 12 words)</span>:
-          </label>
+          <label class="m25r"><span translate>Type the Recovery Phrase (usually 12 words)</span>:</label>
 
           <div class="qr-scanner-input-import">
             <qr-scanner on-scan="processWalletInfo(data)"></qr-scanner>
@@ -68,23 +66,19 @@
 
           <div ng-hide="hideAdv" class="row">
             <div class="large-12 columns">
-              <label for="passphrase" class="oh"><span translate>Password</span>  <small translate>The Wallet Recovery Phrase could require a password to be imported</small>
-                <div class="input">
-                  <input type="password" class="form-control" placeholder="{{'Password'|translate}}"
-                  name="passphrase" ng-model="passphrase">
-                </div>
-              </label>
-
-              <div>
-                <label class="oh"><span translate>Derivation Path</span> <small translate>BIP32 path for address derivation</small>
-                  <input type="text" class="form-control" name="derivationPath" ng-model="derivationPath">
-                </label>
+              <label class="oh"><span translate>Password</span><small translate>The Wallet Recovery Phrase could require a password to be imported</small></label>
+              <div class="input">
+                <input type="password" class="form-control" placeholder="{{'Password'|translate}}"
+                name="passphrase" ng-model="passphrase">
               </div>
 
-              <label  for="bws" class="oh">
-                <span>Wallet Service URL</span>
+              <div>
+                <label class="oh"><span translate>Derivation Path</span> <small translate>BIP32 path for address derivation</small></label>
+                <input type="text" class="form-control" name="derivationPath" ng-model="derivationPath">
+              </div>
+
+              <label class="oh"><span>Wallet Service URL</span></label>
                 <input type="text" id="bwsurl" name="bwsurl" ng-model="bwsurl">
-              </label>
 
               <div class="oh">
                 <ion-toggle ng-model="testnetEnabled" ng-change="setDerivationPath()" toggle-class="toggle-balanced" class="bct">
@@ -111,22 +105,17 @@
         <form name="importForm" ng-submit="importBlob(importForm)" novalidate>
 
           <div ng-show="!index.isSafari && !index.isCordova" class="line-b m10b">
-            <label for="backupFile">
-              <span translate>Choose a backup file from your computer</span>  <i class="fi-laptop"></i>
-            </label>
+            <label><span translate>Choose a backup file from your computer</span><i class="fi-laptop"></i></label>
             <input type="file" class="form-control" placeholder="{{'Select a backup file'|translate}}"
             name="backupFile" ng-model="backupFile" ng-file-select>
           </div>
 
           <div ng-show="index.isSafari || index.isCordova">
-            <label for="backupText">
-              <span translate>Paste the backup plain text code</span>  <i class="fi-clipboard"></i>
-            </label>
+            <label for="backupText"><span translate>Paste the backup plain text code</span>  <i class="fi-clipboard"></i></label>
             <textarea class="form-control" name="backupText" ng-model="backupText" rows="5"></textarea>
           </div>
 
-          <label for="password"><span translate>Password</span>
-          </label>
+          <label><span translate>Password</span></label>
           <div class="input">
             <input type="password" class="form-control" placeholder="{{'Your password'|translate}}"
             name="password" ng-model="password">
@@ -144,10 +133,8 @@
           <div ng-hide="hideAdv" class="row">
             <div class="large-12 columns">
 
-              <label  for="bws" class="oh">
-                <span>Wallet Service URL</span>
+              <label class="oh"><span>Wallet Service URL</span></label>
                 <input type="text" id="bwsurl" name="bwsurl" ng-model="bwsurl">
-              </label>
             </div>
           </div>
 
@@ -175,19 +162,17 @@
           </div>
           <div ng-show="seedOptions[0]">
             <div>
-              <label><span translate>Wallet Recovery Phrase</span>
+              <label><span translate>Wallet Recovery Phrase</span></label>
               <select class="m10t" ng-model="seedSource"
                 ng-options="seed as seed.label for seed in seedOptions"
                 ng-change="setSeedSource()">
               </select>
-              </label>
             </div>
 
             <div ng-show="seedSourceId == 'trezor' || seedSourceId == 'ledger'">
 
-              <label class="oh"><span translate>Account Number</span>
-                <input type="number" id="account" ng-model="account" ignore-mouse-wheel>
-              </label>
+              <label class="oh"><span translate>Account Number</span></label>
+              <input type="number" id="account" ng-model="account" ignore-mouse-wheel>
             </div>
 
             <div class="oh" ng-show="seedSourceId == 'trezor'">
@@ -208,10 +193,8 @@
             <div ng-hide="hideAdv" class="row">
               <div class="large-12 columns">
 
-                <label  for="bws" class="oh">
-                  <span>Wallet Service URL</span>
+                <label class="oh"><span>Wallet Service URL</span></label>
                   <input type="text" id="bwsurl" name="bwsurl" ng-model="bwsurl">
-                </label>
               </div>
             </div>
 

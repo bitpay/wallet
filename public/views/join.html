@@ -16,17 +16,15 @@
       <div class="large-12 columns">
 
         <div>
-          <label><span translate>Your nickname</span>
-            <div class="input">
-              <input type="text" placeholder="{{'John'|translate}}" class="form-control" name="myName" ng-model="myName" ng-required="true">
-            </div>
-          </label>
+          <label><span translate>Your nickname</span></label>
+          <div class="input">
+            <input type="text" placeholder="{{'John'|translate}}" class="form-control" name="myName" ng-model="myName" ng-required="true">
+          </div>
         </div>
 
         <div class="row collapse">
-          <label for="secret" class="left"><span translate>Wallet Invitation</span>
-            <small translate ng-show="joinForm.secret.$pristine">Required</small>
-          </label>
+          <label class="left"><span translate>Wallet Invitation</span>
+          <small translate ng-show="joinForm.secret.$pristine">Required</small></label>
           <span class="has-error right size-12" ng-show="joinForm.secret.$invalid
             && !joinForm.secret.$pristine">
             <span class="icon-input"><i class="fi-x"></i></span>
@@ -56,10 +54,8 @@
         <div ng-hide="hideAdv" class="row">
           <div class="large-12 columns">
             <div>
-              <label for="bws" class="oh">
-                <span>Wallet Service URL</span>
-                <input type="text" id="bwsurl" name="bwsurl" ng-model="bwsurl">
-              </label>
+              <label><span>Wallet Service URL</span></label>
+              <input type="text" id="bwsurl" name="bwsurl" ng-model="bwsurl">
             </div>
 
             <div>
@@ -72,9 +68,8 @@
             </div>
 
             <div ng-show="join.seedSourceId == 'trezor' || join.seedSourceId == 'ledger'">
-              <label class="oh"><span translate>Account Number</span>
-                <input type="number" id="account" ng-model="account" ignore-mouse-wheel>
-              </label>
+              <label class="oh"><span translate>Account Number</span></label>
+              <input type="number" id="account" ng-model="account" ignore-mouse-wheel>
             </div>
 
             <div class="box-notification" ng-show="join.seedSourceId=='new' && createPassphrase">
@@ -87,36 +82,31 @@
             </div>
 
             <div ng-show="join.seedSourceId=='new' ">
-              <label for="createPassphrase"  ><span translate>Add a Password</span>  <small translate>Add an optional password to secure the recovery phrase</small>
-                <div class="input">
-                  <input type="text" class="form-control" autocapitalize="off"
-                  name="createPassphrase" ng-model="createPassphrase">
-                </div>
-              </label>
+              <label><span translate>Add a Password</span>  <small translate>Add an optional password to secure the recovery phrase</small></label>
+              <div class="input">
+                <input type="text" class="form-control" autocapitalize="off"
+                name="createPassphrase" ng-model="createPassphrase">
+              </div>
             </div>
 
             <div ng-show="join.seedSourceId=='set'">
-              <label for="ext-master">
-                <span translate>Wallet Recovery Phrase</span>
-                <small translate>Enter the recovery phrase (BIP39)</small>
-                <input id="ext-master"
-                autocapitalize="off"
-                type="text"
-                name="privateKey" ng-model="privateKey">
-              </label>
+              <label><span translate>Wallet Recovery Phrase</span></label>
+              <small translate>Enter the recovery phrase (BIP39)</small>
+              <input id="ext-master"
+              autocapitalize="off"
+              type="text"
+              name="privateKey" ng-model="privateKey">
             </div>
 
             <div ng-show="join.seedSourceId=='set'">
-              <label for="passphrase"> <span translate>Password</span>  <small translate>The recovery phrase could require a password to be imported</small>
-                <div class="input">
-                  <input type="text" autocapitalize="off" class="form-control" name="passphrase" ng-model="passphrase">
-                </div>
-              </label>
+              <label><span translate>Password</span><small translate>The recovery phrase could require a password to be imported</small></label>
+              <div class="input">
+                <input type="text" autocapitalize="off" class="form-control" name="passphrase" ng-model="passphrase">
+              </div>
             </div>
             <div ng-show="join.seedSourceId == 'set'">
-              <label class="oh"><span translate>Derivation Path</span> <small translate>BIP32 path for address derivation</small>
-                <input type="text" class="form-control" name="derivationPath" ng-model="derivationPath">
-              </label>
+              <label><span translate>Derivation Path</span> <small translate>BIP32 path for address derivation</small></label>
+              <input type="text" class="form-control" name="derivationPath" ng-model="derivationPath">
             </div>
           </div> <!-- columns -->
         </div> <!-- advanced -->

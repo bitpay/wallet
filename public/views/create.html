@@ -27,33 +27,29 @@
       <div class="large-12 columns">
 
         <div ng-hide="create.hideWalletName">
-          <label><span translate>Wallet name</span>
-            <div class="input">
-              <input type="text" placeholder="{{'Family vacation funds'|translate}}" class="form-control" name="walletName" ng-model="walletName" ng-required="true" ng-focus="create.formFocus('wallet-name')" ng-blur="create.formFocus(false)">
-            </div>
-          </label>
+          <label><span translate>Wallet name</span></label>
+          <div class="input">
+            <input type="text" placeholder="{{'Family vacation funds'|translate}}" class="form-control" name="walletName" ng-model="walletName" ng-required="true" ng-focus="create.formFocus('wallet-name')" ng-blur="create.formFocus(false)">
+          </div>
         </div>
         <div ng-show="totalCopayers != 1">
-          <label><span translate>Your nickname</span>
-            <div class="input">
-              <input type="text" placeholder="{{'John'|translate}}" class="form-control" name="myName" ng-model="myName" ng-required="totalCopayers != 1" ng-disabled="totalCopayers == 1" ng-focus="create.formFocus('my-name')" ng-blur="create.formFocus(false)">
-            </div>
-          </label>
+          <label><span translate>Your nickname</span></label>
+          <div class="input">
+            <input type="text" placeholder="{{'John'|translate}}" class="form-control" name="myName" ng-model="myName" ng-required="totalCopayers != 1" ng-disabled="totalCopayers == 1" ng-focus="create.formFocus('my-name')" ng-blur="create.formFocus(false)">
+          </div>
         </div>
         <div class="row" ng-show="totalCopayers != 1">
           <div class="large-6 medium-6 columns">
-            <label><span translate>Total number of copayers</span>
-              <select class="m10t" ng-model="totalCopayers"
-                ng-options="totalCopayers as totalCopayers for totalCopayers in create.TCValues"
-                ng-change="create.setTotalCopayers(totalCopayers)">
-              </select>
-            </label>
+            <label><span translate>Total number of copayers</span></label>
+            <select class="m10t" ng-model="totalCopayers"
+              ng-options="totalCopayers as totalCopayers for totalCopayers in create.TCValues"
+              ng-change="create.setTotalCopayers(totalCopayers)">
+            </select>
           </div>
           <div class="large-6 medium-6 columns">
-            <label><span translate>Required number of signatures</span>
-              <select class="m10t" ng-model="requiredCopayers" ng-options="requiredCopayers as requiredCopayers for requiredCopayers in create.RCValues" ng-disabled="totalCopayers == 1">
-              </select>
-            </label>
+            <label><span translate>Required number of signatures</span></label>
+            <select class="m10t" ng-model="requiredCopayers" ng-options="requiredCopayers as requiredCopayers for requiredCopayers in create.RCValues" ng-disabled="totalCopayers == 1">
+            </select>
           </div>
         </div>
 
@@ -70,25 +66,21 @@
         <div ng-hide="hideAdv" class="row">
           <div class="large-12 columns m20b">
             <div>
-              <label for="bws" class="oh">
-                <span>Wallet Service URL</span>
-                <input type="text" id="bwsurl" name="bwsurl" ng-model="bwsurl">
-              </label>
+              <label class="oh"><span>Wallet Service URL</span></label>
+              <input type="text" id="bwsurl" name="bwsurl" ng-model="bwsurl">
             </div>
 
             <div>
-              <label><span translate>Wallet Recovery Phrase</span>
+              <label><span translate>Wallet Recovery Phrase</span></label>
               <select class="m10t" ng-model="seedSource"
                 ng-options="seed as seed.label for seed in create.seedOptions"
                 ng-change="create.setSeedSource()">
               </select>
-              </label>
             </div>
 
             <div ng-show="create.seedSourceId == 'trezor' || create.seedSourceId == 'ledger'">
-              <label class="oh"><span translate>Account Number</span>
-                <input type="number" id="account" ng-model="account" ignore-mouse-wheel>
-              </label>
+              <label class="oh"><span translate>Account Number</span></label>
+              <input type="number" id="account" ng-model="account" ignore-mouse-wheel>
             </div>
 
             <div class="box-notification" ng-show="create.seedSourceId=='new' && createPassphrase">
@@ -101,37 +93,32 @@
             </div>
 
             <div ng-show="create.seedSourceId=='new' ">
-              <label for="createPassphrase"  ><span translate>Add a Password</span>  <small translate>Add an optional password to secure the recovery phrase</small>
-                <div class="input">
-                  <input type="text" class="form-control" autocapitalize="off"
-                  name="createPassphrase" ng-model="createPassphrase">
-                </div>
-              </label>
+              <label><span translate>Add a Password</span> <small translate>Add an optional password to secure the recovery phrase</small></label>
+              <div class="input">
+                <input type="text" class="form-control" autocapitalize="off"
+                name="createPassphrase" ng-model="createPassphrase">
+              </div>
             </div>
 
             <div ng-show="create.seedSourceId=='set'">
-              <label for="ext-master">
-                <span translate>Wallet Recovery Phrase</span>
-                <small translate>Enter the recovery phrase (BIP39)</small>
-                <input id="ext-master"
-                autocapitalize="off"
-                type="text"
-                name="privateKey" ng-model="privateKey">
-              </label>
+              <label><span translate>Wallet Recovery Phrase</span></label>
+              <small translate>Enter the recovery phrase (BIP39)</small>
+              <input id="ext-master"
+              autocapitalize="off"
+              type="text"
+              name="privateKey" ng-model="privateKey">
             </div>
 
             <div ng-show="create.seedSourceId=='set'">
-              <label for="passphrase"> <span translate>Password</span>  <small translate>The recovery phrase could require a password to be imported</small>
-                <div class="input">
-                  <input type="text" autocapitalize="off" class="form-control" name="passphrase" ng-model="passphrase">
-                </div>
-              </label>
+              <label><span translate>Password</span> <small translate>The recovery phrase could require a password to be imported</small></label>
+              <div class="input">
+                <input type="text" autocapitalize="off" class="form-control" name="passphrase" ng-model="passphrase">
+              </div>
             </div>
 
             <div ng-show="create.seedSourceId == 'set'">
-              <label class="oh"><span translate>Derivation Path</span> <small translate>BIP32 path for address derivation</small>
-                <input type="text" class="form-control" name="derivationPath" ng-model="derivationPath">
-              </label>
+              <label class="oh"><span translate>Derivation Path</span> <small translate>BIP32 path for address derivation</small></label>
+              <input type="text" class="form-control" name="derivationPath" ng-model="derivationPath">
             </div>
             <div class="oh" ng-show="create.seedSourceId == 'new'">
               <ion-toggle ng-model="testnetEnabled" toggle-class="toggle-balanced" class="bct">
