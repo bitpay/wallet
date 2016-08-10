@@ -5,6 +5,10 @@ angular.module('copayApp.controllers').controller('preferencesGlobalController',
 
     var isCordova = platformInfo.isCordova;
 
+    if (isCordova && StatusBar.isVisible) {
+      StatusBar.backgroundColorByHexString("#4B6178");
+    }
+
     $scope.init = function() {
       var config = configService.getSync();
       $scope.unitName = config.wallet.settings.unitName;

@@ -2128,6 +2128,10 @@ body.modal-open {
   }
 }
 
+/*
+ * Calculator
+ */
+
 .calculator .header-calc {
   position: absolute;
   width: 100%;
@@ -2160,6 +2164,14 @@ body.modal-open {
 
 .calculator .button-calc .operator:active {
   background-color: #f8f8f8;
+}
+
+// No looks likes locked
+input[type="number"] {
+  &[readonly] {
+    background-color: #F6F7F9;
+    padding-left: 0;
+  }
 }
 
 @media all and (max-height: 480px) {
