@@ -21,7 +21,7 @@ plugins:
 	cordova plugin add cordova-plugin-transport-security
 	cordova plugin add cordova-ios-requires-fullscreen
 	cordova plugin add cordova-plugin-disable-bitcode
-	rm -rf /Users/ematiu/devel/copay/cordova/project/platforms/android/res/values-es
+	rm -rf platforms/android/res/values-es
 	cordova plugin add cordova-plugin-android-fingerprint-auth
 	cordova plugin add cordova-plugin-screen-orientation
 	cordova plugin add ionic-plugin-keyboard
