@@ -1,3 +1,3 @@
-window.version="2.4.2";
-window.commitHash="9a50261";
-window.appConfig={"//":"        Modify it at app-template/","extraCSS":null,"version":"2.3.0","enabledExtensions":["coinbase","glidera","debitcard","amazon"],"appName":"Bitpay App","appNameCase":"Copay","replace":{"APP_NAME":"copay","CASED_APP_NAME":"Copay"}};
+window.version="2.3.0";
+window.commitHash="22d17a2";
+window.appConfig={"//":"        Modify it at app-template/","name":"copay","nameCase":"Copay","description":"Multisignature Wallet","version":"2.3.0","androidVersion":"230","_extraCSS":null,"_enabledExtensions":["coinbase","glidera","debitcard","amazon"]};

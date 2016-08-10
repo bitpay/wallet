@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en"  ng-controller="indexController as index">
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -11,12 +11,12 @@
   <link rel="stylesheet" type="text/css" href="icons/foundation-icons.css">
   <link rel="stylesheet" type="text/css" href="css/ui-components.css">
   <link rel="stylesheet" type="text/css" href="css/copay.css">
-  <title>Copay - Multisignature Wallet</title>
+  <title>{{index.appConfig.name}} -  {{index.appConfig.description}}</title>
   <link rel="shortcut icon" href="img/favicon.ico">
 </head>
 <body ng-cloak class="ng-cloak">
 
-  <ion-side-menus class="page" ng-controller="indexController as index">
+  <ion-side-menus class="page">
 
     <!-- Left menu -->
     <ion-side-menu side="left" expose-aside-when="large" ng-if="index.hasProfile && isDisclaimerAccepted">

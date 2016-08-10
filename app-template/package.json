@@ -1,10 +1,10 @@
 
 {
-  "name": "*APP_NAME*",
-  "description": "A multisignature bitcoin wallet",
+  "name": "*NAME*",
+  "description": "*DESCRIPTON*",
   "author": "BitPay",
-  "version": "2.4.2",
-  "androidVersionCode": "114",
+  "version": "*VERSION*",
+  "androidVersionCode": "*ANDROIDVERSION*",
   "keywords": [
     "wallet",
     "copay",

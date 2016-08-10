@@ -4,10 +4,10 @@
   "//":"        Modify it at app-template/", 
 
   "name": "copay",
-  "description": "A multisignature bitcoin wallet",
+  "description": "*DESCRIPTON*",
   "author": "BitPay",
-  "version": "2.4.2",
-  "androidVersionCode": "114",
+  "version": "2.3.0",
+  "androidVersionCode": "230",
   "keywords": [
     "wallet",
     "copay",

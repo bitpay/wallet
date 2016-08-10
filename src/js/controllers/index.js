@@ -21,6 +21,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   ret.prevState = 'walletHome';
   ret.physicalScreenWidth = ((window.innerWidth > 0) ? window.innerWidth : screen.width);
 
+  ret.appConfig = window.appConfig;
+
   // Only for testing
   //storageService.checkQuota();
 

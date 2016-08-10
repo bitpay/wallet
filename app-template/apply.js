@@ -28,9 +28,11 @@ Object.keys(templates).forEach(function(k) {
     content = content.replace('{', header);
   }
 
-  Object.keys(config.replace).forEach(function(k) {
-    var r = new RegExp("\\*" + k + "\\*", "g");
-    content = content.replace(r, config.replace[k]);
+  Object.keys(config).forEach(function(k) {
+    if (k.indexOf('_') == 0) return;
+
+    var r = new RegExp("\\*" + k.toUpperCase() + "\\*", "g");
+    content = content.replace(r, config[k]);
   });
   fs.writeFileSync('../' + targetDir + k, content, 'utf8');
 });
