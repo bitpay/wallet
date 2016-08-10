@@ -620,7 +620,8 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       form.amount.$setViewValue("" + amount);
       form.amount.$isValid = true;
       form.amount.$render();
-      this.lockAmount = true;
+      if (!this.fromInputAmount)
+        this.lockAmount = true;
       this.fromInputAmount = false;
     }
 
