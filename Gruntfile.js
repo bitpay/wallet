@@ -6,27 +6,6 @@ module.exports = function(grunt) {
 
   // Project Configuration
   grunt.initConfig({
-    pkg: grunt.file.readJSON('package.json'),
-    'string-replace': {
-      dist: {
-        files: {
-          'cordova/config.xml': ['config-templates/config.xml'],
-          'cordova/wp/Package.appxmanifest': ['config-templates/Package.appxmanifest'],
-          'cordova/wp/Properties/WMAppManifest.xml': ['config-templates/WMAppManifest.xml'],
-          'webkitbuilds/.desktop': ['config-templates/.desktop'],
-          'webkitbuilds/setup-win.iss': ['config-templates/setup-win.iss']
-        },
-        options: {
-          replacements: [{
-            pattern: /%APP-VERSION%/g,
-            replacement: '<%= pkg.version %>'
-          }, {
-            pattern: /%ANDROID-VERSION-CODE%/g,
-            replacement: '<%= pkg.androidVersionCode %>'
-          }]
-        }
-      },
-    },
     exec: {
       appConfig: {
         command: 'node ./util/buildAppConfig.js'
@@ -307,7 +286,6 @@ module.exports = function(grunt) {
   grunt.registerTask('test-coveralls', ['browserify', 'karma:prod', 'exec:coveralls']);
   grunt.registerTask('desktop', ['prod', 'nwjs', 'copy:linux', 'compress:linux']);
   grunt.registerTask('osx', ['prod', 'nwjs', 'exec:osx']);
-  grunt.registerTask('release', ['string-replace:dist']);
   grunt.registerTask('chrome', ['exec:chrome']);
   grunt.registerTask('wp', ['prod', 'exec:wp']);
   grunt.registerTask('wp-debug', ['default', 'exec:wp']);

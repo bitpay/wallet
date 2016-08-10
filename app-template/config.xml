@@ -1,13 +1,13 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.bitpay.copay"
-  version="%APP-VERSION%"
-  android-versionCode="%ANDROID-VERSION-CODE%"
-  ios-CFBundleVersion="%APP-VERSION%">
-    <name>Copay</name>
+<widget id="com.bitpay.*NAMENOSPACE*"
+  version="*VERSION*"
+  android-versionCode="*ANDROIDVERSION*"
+  ios-CFBundleVersion="*VERSION*">
+    <name>*NAMECASENOSPACE*</name>
     <description>
-      A secure bitcoin wallet for friends and companies.
+      *APPDESCRIPTION*
     </description>
-    <author email="support@bitpay.com" href="https://copay.io">
+    <author email="support@bitpay.com" href="*URL*">
         BitPay Inc.
     </author>
     <content src="index.html" />
