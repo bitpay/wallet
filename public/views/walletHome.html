@@ -422,9 +422,10 @@
                     <div ng-if="index.isCordova">
                       <input
                         type="number"
-                        readonly="true"
+                        ng-readonly="!home.lockAmount"
                         ng-show="!showAlternative"
                         id="amount"
+                        ng-disabled="home.lockAmount"
                         name="amount"
                         ng-attr-placeholder="{{'Amount in'|translate}} {{home.unitName}}"
                         ng-model="_amount"
@@ -435,9 +436,10 @@
                         ignore-mouse-wheel>
                       <input
                         type="number"
-                        readonly="true"
+                        ng-readonly="!home.lockAmount"
                         ng-show="showAlternative"
                         id="alternative"
+                        ng-disabled="!home.isRateAvailable || home.lockAmount"
                         name="alternative"
                         ng-attr-placeholder="{{'Amount in'|translate}} {{ home.alternativeName }}"
                         ng-model="_alternative"
@@ -492,10 +494,12 @@
             </div>
 
             <div class="row">
-              <div class="large-6 medium-6 small-6 columns" ng-show="(home._paypro || home.lockAddress || home.lockAmount)">
+              <div class="large-6 medium-6 small-6 columns" ng-show="(home._paypro || home.lockAddress ||
+                home.lockAmount || !sendForm.amount.$pristine)">
                 <a ng-click="home.resetForm(sendForm)" class="button expand outline dark-gray round" translate>Cancel</a>
               </div>
-              <div class="columns" ng-class="{'small-6 medium-6 large-6':(home._paypro || home.lockAddress || home.lockAmount)}">
+              <div class="columns" ng-class="{'small-6 medium-6 large-6':(home._paypro || home.lockAddress ||
+                home.lockAmount  || !sendForm.amount.$pristine)}">
                 <button class="button black round expand" ng-disabled="sendForm.$invalid || home.paymentExpired || index.updating"
                   ng-style="{'background-color':index.backgroundColor}" ng-click="home.submitForm()" translate>
                   Send
