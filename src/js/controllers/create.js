@@ -48,7 +48,7 @@ angular.module('copayApp.controllers').controller('createController',
 
       self.seedOptions = [{
         id: 'new',
-        label: gettext('New Random Recovery Phrase'),
+        label: gettext('Random'),
       }, {
         id: 'set',
         label: gettext('Specify Recovery Phrase...'),
@@ -58,13 +58,13 @@ angular.module('copayApp.controllers').controller('createController',
       if (n > 1 && isChromeApp)
         self.seedOptions.push({
           id: 'ledger',
-          label: 'Ledger',
+          label: 'Ledger Hardware Wallet',
         });
 
       if (isChromeApp || isDevel) {
         self.seedOptions.push({
           id: 'trezor',
-          label: 'Trezor',
+          label: 'Trezor Hardware Wallet',
         });
       }
     };
