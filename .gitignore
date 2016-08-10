@@ -8,7 +8,7 @@ coinbase.json
 src/js/coinbase.js
 
 # version
-src/js/version.js
+src/js/appConfig.js
 
 # cordova
 cordova/project-*/*
