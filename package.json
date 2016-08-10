@@ -6,8 +6,8 @@
   "name": "copay",
   "description": "*DESCRIPTON*",
   "author": "BitPay",
-  "version": "2.3.0",
-  "androidVersionCode": "230",
+  "version": "2.5.0",
+  "androidVersionCode": "*ANDROIDVERSION*",
   "keywords": [
     "wallet",
     "copay",
