@@ -129,6 +129,8 @@ public/img/logo.svg
 src/js/appConfig.js
 
 cordova/android/res/
+cordova/ios/splash/
+cordova/ios/icons/
 cordova/project/
 
 

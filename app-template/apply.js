@@ -105,6 +105,8 @@ console.log('[apply.js.78]',  tmp.indexOf(from)); //TODO
 
 copyDir(configDir + '/img/', '../public/img/',  function() {
   copyDir(configDir + '/androidRes/', '../cordova/android/res/', function() {
+  copyDir(configDir + '/iosIcons/', '../cordova/ios/icons/', function() {
+  copyDir(configDir + '/iosSplash/', '../cordova/ios/splash/', function() {
     console.log("apply.js finished. \n\n");
   });
 });
