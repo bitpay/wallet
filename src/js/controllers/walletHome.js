@@ -106,9 +106,9 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     $rootScope.shouldHideMenuBar = false;
   });
 
-  if (platformInfo.isCordova && StatusBar.isVisible) {
-    var fc = profileService.focusedClient;
-    StatusBar.backgroundColorByHexString(fc.backgroundColor);
+  if (isCordova && StatusBar.isVisible) {
+    var backgroundColor = profileService.focusedClient ? profileService.focusedClient.backgroundColor : "#4B6178";
+    StatusBar.backgroundColorByHexString(backgroundColor);
   }
 
   this.onQrCodeScanned = function(data) {
