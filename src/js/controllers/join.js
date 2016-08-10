@@ -21,7 +21,7 @@ angular.module('copayApp.controllers').controller('joinController',
     var updateSeedSourceSelect = function() {
       self.seedOptions = [{
         id: 'new',
-        label: gettext('New Random Recovery Phrase'),
+        label: gettext('Random'),
       }, {
         id: 'set',
         label: gettext('Specify Recovery Phrase...'),
