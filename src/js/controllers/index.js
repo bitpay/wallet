@@ -86,7 +86,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
   self.onHold = function() {
     self.shouldHideBalance = !self.shouldHideBalance;
-    storageService.setHideBalanceFlag(self.walletId, self.shouldHideBalance, function() {});
+    storageService.setHideBalanceFlag(self.walletId, self.shouldHideBalance.toString(), function() {});
   }
 
   self.setWalletPreferencesTitle = function() {
