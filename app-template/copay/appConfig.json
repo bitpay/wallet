@@ -13,10 +13,9 @@
   "version": "2.5.0",
   "androidVersion": "115",
   "_extraCSS": null,
-  "_enabledExtensions": [
-    "coinbase",
-    "glidera",
-    "debitcard",
-    "amazon"
-  ]
+  "_enabledExtensions": {
+    "coinbase": true,
+    "glidera": true,
+    "amazon": true
+  } 
 }
