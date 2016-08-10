@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('bitpayCardController', function($scope, $rootScope, $timeout, $log, $ionicModal, lodash, bitpayCardService, configService, profileService, walletService, fingerprintService, ongoingProcess, bwcError, bitcore, bwcService, moment, platformInfo) {
+angular.module('copayApp.controllers').controller('bitpayCardController', function($scope, $rootScope, $timeout, $log, $ionicModal, lodash, bitpayCardService, configService, profileService, walletService, fingerprintService, ongoingProcess, bwcError, bitcore, pbkdf2Service, moment, platformInfo) {
 
   var self = this;
   var client;
@@ -295,7 +295,7 @@ angular.module('copayApp.controllers').controller('bitpayCardController', functi
 
     var data = {
       emailAddress : $scope.email,
-      hashedPassword : bwcService.pbkdf2Sync($scope.password, '..............', 200, 64).toString('hex')
+      hashedPassword : pbkdf2Service.pbkdf2Sync($scope.password, '..............', 200, 64).toString('hex')
     };
 
     // POST /authenticate

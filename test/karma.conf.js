@@ -27,6 +27,7 @@ module.exports = function(config) {
       'bower_components/angular-sanitize/angular-sanitize.js',
       'bower_components/ng-csv/build/ng-csv.js',
       'bower_components/angular-mocks/angular-mocks.js',
+      'angular-pbkdf2/angular-pbkdf2.js',
       'angular-bitcore-wallet-client/angular-bitcore-wallet-client.js',
       'src/js/**/*.js',
       'test/helpers.js',
