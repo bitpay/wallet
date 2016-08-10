@@ -5,6 +5,10 @@ angular.module('copayApp.controllers').controller('coinbaseController',
 
     var isNW = platformInfo.isNW;
 
+    if (platformInfo.isCordova && StatusBar.isVisible) {
+      StatusBar.backgroundColorByHexString("#4B6178");
+    }
+
     this.openAuthenticateWindow = function() {
       var oauthUrl = this.getAuthenticateUrl();
       if (!isNW) {
