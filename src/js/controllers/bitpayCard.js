@@ -9,7 +9,7 @@ angular.module('copayApp.controllers').controller('bitpayCardController', functi
   self.sandbox = network == 'testnet' ? true : false;
 
   if (platformInfo.isCordova && StatusBar.isVisible) {
-    StatusBar.backgroundColorByHexString("#4B6178");
+    StatusBar.backgroundColorByHexString("#293C92");
   }
 
   var handleEncryptedWallet = function(client, cb) {
