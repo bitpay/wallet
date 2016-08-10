@@ -11,7 +11,7 @@
     <Language code="pl" />
     <Language code="cs" />
   </Languages>
-  <App Author="Bitpay Inc." BitsPerPixel="32" Description="A multisignature Bitcoin Wallet" Genre="apps.normal" ProductID="{5381aa50-9069-11e4-84cc-293caf9cbdc8}" Publisher="Copay Bitcoin Wallet" PublisherID="{31cdd08b-457c-413d-b440-f6665eec847d}" RuntimeType="Silverlight" Title="Copay Bitcoin Wallet" Version="%APP-VERSION%.0" xmlns="" NotificationService="MPN">
+  <App Author="Bitpay Inc." BitsPerPixel="32" Description="*DESCRIPTION*" Genre="apps.normal" ProductID="*WPPRODUCTID*" Publisher="*APPDESCRIPTION*" PublisherID="*WPPUBLISHERID*" RuntimeType="Silverlight" Title="*APPDESCRIPTION*" Version="*VERSION*.0" xmlns="" NotificationService="MPN">
     <IconPath IsRelative="true" IsResource="false">Assets\icon@2.png</IconPath>
     <Capabilities>
       <Capability Name="ID_CAP_WEBBROWSERCOMPONENT" />
@@ -23,12 +23,12 @@
       <DefaultTask Name="_default" NavigationPage="MainPage.xaml" />
     </Tasks>
     <Tokens>
-      <PrimaryToken TaskName="_default" TokenID="CopayToken">
+      <PrimaryToken TaskName="_default" TokenID="*NAMECASENOSPACE*Token">
         <TemplateFlip>
           <SmallImageURI IsRelative="true" IsResource="false">Assets\200x200@1.png</SmallImageURI>
           <Count>0</Count>
           <BackgroundImageURI IsRelative="true" IsResource="false">Assets\200x200@2.png</BackgroundImageURI>
-          <Title>Copay Bitcoin Wallet</Title>
+          <Title>*APPDESCRIPTION*</Title>
           <BackContent />
           <BackBackgroundImageURI />
           <BackTitle />
