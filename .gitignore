@@ -8,11 +8,15 @@ coinbase.json
 src/js/coinbase.js
 
 # version
-src/js/version.js
+src/js/appConfig.js
 
 # cordova
-cordova/project/*
+cordova/project-*/*
 cordova/*.keystore
+
+amazon.json
+src/js/amazon.js
+
 
 # node-webkit
 cache
@@ -28,9 +32,8 @@ webkitbuilds/*
 public/fonts
 
 # chrome extensions
-browser-extensions/chrome/copay-chrome-extension
-browser-extensions/chrome/copay-chrome-extension.zip
-browser-extensions/chrome/copay-chrome-extension.zip.sig
+chrome-app/build/*
+chrome-app/*zip
 
 # Logs
 logs
@@ -104,3 +107,8 @@ public/icons/*
 public/css/*
 public/lib/*
 public/js/*
+
+app-template/bpapp
+
+
+
