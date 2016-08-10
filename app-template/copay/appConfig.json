@@ -3,8 +3,8 @@
   "name": "copay",
   "nameCase": "Copay",
   "description": "Multisignature Wallet",
-  "version": "2.3.0",
-  "androidVersion": "230",
+  "version": "2.5.0",
+  "androidVersionCode": "115",
   "_extraCSS": null,
   "_enabledExtensions": [
     "coinbase",
