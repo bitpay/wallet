@@ -19,7 +19,7 @@ angular.module('copayApp.controllers').controller('inputAmountController', funct
     satToUnit = 1 / unitToSatoshi;
     satToBtc = 1 / 100000000;
     unitDecimals = config.unitDecimals;
-    $scope.resetAmount();
+    processAmount($scope.amount);
     $timeout(function() {
       $ionicScrollDelegate.resize();
     }, 100);
