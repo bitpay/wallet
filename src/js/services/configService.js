@@ -55,6 +55,10 @@ angular.module('copayApp.services').factory('configService', function(storageSer
       enabled: false
     },
 
+    app: {
+      locked: false
+    },
+
     pushNotifications: {
       enabled: true,
       config: {

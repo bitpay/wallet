@@ -584,6 +584,8 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
     }
 
     $ionicPlatform.ready(function() {
+      var TIME_TO_LOCK_APP = 1;
+
       if (platformInfo.isCordova) {
 
         window.addEventListener('native.keyboardhide', function() {
@@ -612,18 +614,27 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
           secondBackButtonPress = false;
         }, 5000);
 
-        $ionicPlatform.on('pause', function() {
-          storageService.setPauseTimestamp(Math.floor(Date.now() / 1000), function() {});
-        });
-
         $timeout(function() {
           if (isFingerprintEnabled()) {
             openAppLockedModal();
           }
         }, 300);
 
+        $ionicPlatform.on('pause', function() {
+          storageService.setPauseTimestamp(Math.floor(Date.now() / 1000), function() {});
+        });
+
         $ionicPlatform.on('resume', function() {
           $rootScope.$emit('Local/Resume');
+
+          if ($rootScope.appLockedModal && $rootScope.appLockedModal.isShown()) {
+            return;
+          }
+
+          if (isLockedApp()) {
+            openAppLockedModal();
+            return;
+          }
 
           if (isFingerprintEnabled()) {
             storageService.getPauseTimestamp(function(err, ts) {
@@ -633,8 +644,10 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
               var totalSeconds = now - ts;
               var minutes = Math.floor(totalSeconds / 60);
 
-              if (minutes >= 1) {
+              if (minutes >= TIME_TO_LOCK_APP) {
                 openAppLockedModal();
+              } else {
+                storageService.setPauseTimestamp(now, function() {});
               }
             });
           }
@@ -694,6 +707,8 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
     }
 
     function openAppLockedModal() {
+      $rootScope.fromSidebar = false;
+
       $ionicModal.fromTemplateUrl('views/modals/appLocked.html', {
         scope: $rootScope,
         backdropClickToClose: false,
@@ -708,6 +723,12 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
       var config = configService.getSync();
       var fingerprintEnabled = config.fingerprint ? config.fingerprint.enabled : null;
       return fingerprintEnabled;
+    };
+
+    function isLockedApp() {
+      var config = configService.getSync();
+      var isLockedApp = config.app ? config.app.locked : null;
+      return isLockedApp;
     };
 
     $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
