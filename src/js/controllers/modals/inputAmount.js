@@ -140,8 +140,9 @@ angular.module('copayApp.controllers').controller('inputAmountController', funct
   };
 
   $scope.finish = function() {
-    var amount = $scope.showAlternativeAmount ? fromFiat(evaluate(format($scope.amount))).toFixed(unitDecimals) : evaluate(format($scope.amount));
-    var alternativeAmount = $scope.showAlternativeAmount ? evaluate(format($scope.amount)) : toFiat(evaluate(format($scope.amount)));
+    var _amount = evaluate(format($scope.amount));
+    var amount = $scope.showAlternativeAmount ? fromFiat(_amount).toFixed(unitDecimals) : _amount.toFixed(unitDecimals);
+    var alternativeAmount = $scope.showAlternativeAmount ? _amount : toFiat(_amount);
 
     if (amount % 1 == 0) amount = parseInt(amount);
 
