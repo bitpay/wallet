@@ -49,17 +49,7 @@
     "coveralls": "^2.11.9",
     "express": "^4.11.2",
     "fs": "0.0.2",
-    "shelljs": "^0.3.0"
-  },
-  "scripts": {
-    "preinstall": "bower install && cd app-template && ./apply.js",
-    "postinstall": "npm run build",
-    "build": "grunt",
-    "start": "node app.js",
-    "test": "./node_modules/.bin/grunt test-coveralls",
-    "clean": "git clean -dfx"
-  },
-  "devDependencies": {
+    "shelljs": "^0.3.0",
     "grunt-angular-gettext": "^2.2.3",
     "fs-extra": "^0.30.0",
     "grunt-browserify": "^5.0.0",
@@ -95,5 +85,15 @@
     "mocha": "^2.4.5",
     "phantomjs-prebuilt": "^2.1.7",
     "xcode": "^0.8.2"
+  },
+  "scripts": {
+    "preinstall": "bower install && cd app-template && ./apply.js",
+    "postinstall": "npm run build",
+    "build": "grunt",
+    "start": "node app.js",
+    "test": "./node_modules/.bin/grunt test-coveralls",
+    "clean": "git clean -dfx"
+  },
+  "devDependencies": {
   }
 }
