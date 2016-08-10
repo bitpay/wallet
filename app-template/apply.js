@@ -9,9 +9,9 @@ var templates = {
   'Makefile': 'cordova/',
   'ProjectMakefile': 'cordova/',
   'config.xml': 'cordova/',
-  'Package.appxmanifest':'cordova/wp/',
-  '.desktop':'webkitbuilds/.desktop',
-  'setup-win.iss':  'webkitbuilds/setup-win.iss',
+  'Package.appxmanifest': 'cordova/wp/',
+  '.desktop': 'webkitbuilds/.desktop',
+  'setup-win.iss': 'webkitbuilds/setup-win.iss',
   //  'bower.json': '/',
 };
 var configDir = process.argv[2] || 'copay';
@@ -53,7 +53,7 @@ Object.keys(templates).forEach(function(k) {
   });
 
   var r = new RegExp("\\*[A-Z]{3,30}\\*", "g");
-  var s= content.match(r);
+  var s = content.match(r);
   if (s) {
     console.log('UNKNOWN VARIABLE', s);
     process.exit(1);
@@ -78,16 +78,16 @@ function copyDir(from, to, cb) {
 
         var tmp = item.path + '/';
         var l = tmp.length - from.length;
-        if(tmp.indexOf(from) == l) return;  // #same dir
+        if (tmp.indexOf(from) == l) return; // #same dir
 
-console.log('[apply.js.81]', l); //TODO
+        console.log('[apply.js.81]', l); //TODO
 
-console.log('[apply.js.78]', from); //TODO
-// console.log('[apply.js.78]', to); //TODO
-console.log('[apply.js.78]', item.path); //TODO
-console.log('[apply.js.78]',  tmp.indexOf(from)); //TODO
+        console.log('[apply.js.78]', from); //TODO
+        // console.log('[apply.js.78]', to); //TODO
+        console.log('[apply.js.78]', item.path); //TODO
+        console.log('[apply.js.78]', tmp.indexOf(from)); //TODO
       }
-      if (item.path.indexOf('DS_Store')>=0) return;
+      if (item.path.indexOf('DS_Store') >= 0) return;
 
       files.push(item.path)
     })
@@ -103,10 +103,18 @@ console.log('[apply.js.78]',  tmp.indexOf(from)); //TODO
 }
 
 
-copyDir(configDir + '/img/', '../public/img/',  function() {
+copyDir(configDir + '/img/', '../public/img/', function() {
   copyDir(configDir + '/androidRes/', '../cordova/android/res/', function() {
-  copyDir(configDir + '/iosIcons/', '../cordova/ios/icons/', function() {
-  copyDir(configDir + '/iosSplash/', '../cordova/ios/splash/', function() {
-    console.log("apply.js finished. \n\n");
+    copyDir(configDir + '/iosIcons/', '../cordova/ios/icons/', function() {
+      copyDir(configDir + '/iosSplash/', '../cordova/ios/splash/', function() {
+        copyDir(configDir + '/wpAssets/', '../cordova/wp/Assets/', function() {
+        copyDir(configDir + '/wpImg/', '../cordova/wp/', function() {
+
+        // TODO WP
+        console.log("apply.js finished. \n\n");
+      });
+    });
+    });
+    });
   });
 });
