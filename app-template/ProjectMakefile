@@ -1,0 +1,51 @@
+.PHONY:plugins ios-platform android-platform wp-platform
+
+plugins:
+	cordova plugin add cordova-plugin-globalization
+	cordova plugin add cordova.plugins.diagnostic
+	cordova plugin add cordova-plugin-splashscreen
+	cordova plugin add cordova-plugin-statusbar
+	cordova plugin add https://github.com/cmgustavo/Custom-URL-scheme.git --variable URL_SCHEME=bitcoin --variable SECOND_URL_SCHEME=*NAMENOSPACE*
+	cordova plugin add cordova-plugin-inappbrowser
+	cordova plugin add cordova-plugin-x-toast && cordova prepare
+	cordova plugin add https://github.com/VersoSolutions/CordovaClipboard
+	cordova plugin add https://github.com/EddyVerbruggen/SocialSharing-PhoneGap-Plugin.git && cordova prepare
+	cordova plugin add cordova-plugin-spinner-dialog
+	cordova plugin add cordova-plugin-dialogs
+	cordova plugin add cordova-plugin-network-information
+	cordova plugin add cordova-plugin-console
+	cordova plugin add cordova-plugin-uniquedeviceid
+	cordova plugin add cordova-plugin-file
+	cordova plugin add cordova-plugin-touch-id 
+	cordova prepare
+	cordova plugin add cordova-plugin-transport-security
+	cordova plugin add cordova-ios-requires-fullscreen
+	cordova plugin add cordova-plugin-disable-bitcode
+	rm -rf platforms/android/res/values-es
+	cordova plugin add cordova-plugin-android-fingerprint-auth
+	cordova plugin add cordova-plugin-screen-orientation
+	cordova plugin add ionic-plugin-keyboard
+	cordova plugin add cordova-plugin-whitelist
+	
+
+
+ios-platform android-platform wp-platform:
+	cordova platforms add $(subst -platform,,$@) || echo "Platform already added"
+
+ios: ios-platform plugins
+	cordova plugin add https://github.com/tjwoon/csZBar.git
+	cordova plugin add phonegap-plugin-push@1.5.3
+
+android: android-platform plugins
+	cordova plugin add https://github.com/jrontend/phonegap-plugin-barcodescanner
+	cordova plugin add phonegap-plugin-push@1.2.3
+
+wp: wp-platform plugins 
+	cordova plugin add https://github.com/jrontend/phonegap-plugin-barcodescanner
+
+build-ios build-android build-wp8:
+	cordova build $(subst build-,,$@)
+
+run:
+	cordova run --device 
+

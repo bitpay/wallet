@@ -1,6 +1,6 @@
 #/bin/bash
 
-PROJECT=./cordova/project/platforms
+PROJECT=./build-wp/platforms
 for i in $PROJECT/wp8/www/img/*.svg
 do
     cat $i |grep -v ?xml > $i

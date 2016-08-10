@@ -7,12 +7,13 @@ src/js/translations.js
 coinbase.json
 src/js/coinbase.js
 
-# version
-src/js/version.js
-
 # cordova
-cordova/project/*
+cordova/project-*/*
 cordova/*.keystore
+
+amazon.json
+src/js/amazon.js
+
 
 # node-webkit
 cache
@@ -28,9 +29,8 @@ webkitbuilds/*
 public/fonts
 
 # chrome extensions
-browser-extensions/chrome/copay-chrome-extension
-browser-extensions/chrome/copay-chrome-extension.zip
-browser-extensions/chrome/copay-chrome-extension.zip.sig
+chrome-app/build/*
+chrome-app/*zip
 
 # Logs
 logs
@@ -104,3 +104,38 @@ public/icons/*
 public/css/*
 public/lib/*
 public/js/*
+
+## templates
+appConfig.json
+cordova/Makefile
+cordova/ProjectMakefile
+app-template/bpapp
+cordova/ProjectMakefile
+cordova/config.xml
+cordova/wp/Package.appxmanifest
+public/img/logo-negative.svg
+public/img/logo.svg
+src/js/appConfig.js
+
+
+cordova/Makefile
+cordova/ProjectMakefile
+app-template/bpapp
+cordova/ProjectMakefile
+cordova/config.xml
+cordova/wp/Package.appxmanifest
+public/img/logo-negative.svg
+public/img/logo.svg
+src/js/appConfig.js
+
+cordova/android/res/
+cordova/wp/Assets/
+cordova/wp/*.png
+cordova/wp/*.jpg
+cordova/ios/splash/
+cordova/ios/icons/
+cordova/project/
+
+
+
+
