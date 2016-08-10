@@ -35,7 +35,7 @@ module.exports = function(grunt) {
         command: 'make -C cordova ios',
       },
       xcode: {
-        command: 'open cordova/project-ios/platforms/ios/Copay.xcodeproj',
+        command: 'open cordova/project-ios/platforms/ios/*.xcodeproj',
       },
       android: {
         command: 'make -C cordova android',

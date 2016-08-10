@@ -30,7 +30,7 @@ plugins:
 
 
 ios-platform android-platform wp-platform:
-	cordova platforms add $(subst -platform,,$@)
+	cordova platforms add $(subst -platform,,$@) || echo "Platform already added"
 
 ios: ios-platform plugins
 	cordova plugin add https://github.com/tjwoon/csZBar.git

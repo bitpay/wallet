@@ -9,7 +9,7 @@ clean:
 
 
 $(WORKDIR)android $(WORKDIR)ios $(WORKDIR)wp:  config.xml
-	cordova create $@ com.bitpay.*NAMENOSPACE* *NAMECASENOSPACE*
+	cordova create $@ com.bitpay.*NAMENOSPACE* *NAMECASENOSPACE* || echo "Project Path Existed"
 	cp ProjectMakefile $@/Makefile
 	cp -af ../public/** $@/www
 	sed "s/<\!-- PLACEHOLDER: CORDOVA SRIPT -->/<script type='text\/javascript' charset='utf-8' src='cordova.js'><\/script>/g" ../public/index.html > $@/www/index.html
