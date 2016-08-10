@@ -49,7 +49,7 @@
     "shelljs": "^0.3.0"
   },
   "scripts": {
-    "preinstall": "bower install",
+    "preinstall": "bower install && cd app-template && ./apply.js",
     "postinstall": "npm run build",
     "build": "grunt",
     "start": "node app.js",

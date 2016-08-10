@@ -67,19 +67,44 @@ console.log('Copying ' + configDir + '/appConfig.json' + ' to root');
 configBlob = configBlob.replace('{', JSONheader);
 fs.writeFileSync('../appConfig.json', configBlob, 'utf8');
 
-console.log('Copying images ' + configDir + ' to root');
 
-var files = [];
-fs.walk(configDir + '/img/')
-  .on('data', function(item) {
-    if (!(item.stats["mode"] & 0x4000))
+
+function copyDir(from, to, cb) {
+  console.log('Copying dir ' + from + ' to');
+  var files = [];
+  fs.walk(from)
+    .on('data', function(item) {
+      if ((item.stats["mode"] & 0x4000)) {
+
+        var tmp = item.path + '/';
+        var l = tmp.length - from.length;
+        if(tmp.indexOf(from) == l) return;  // #same dir
+
+console.log('[apply.js.81]', l); //TODO
+
+console.log('[apply.js.78]', from); //TODO
+// console.log('[apply.js.78]', to); //TODO
+console.log('[apply.js.78]', item.path); //TODO
+console.log('[apply.js.78]',  tmp.indexOf(from)); //TODO
+      }
+      if (item.path.indexOf('DS_Store')>=0) return;
+
       files.push(item.path)
-  })
-  .on('end', function() {
-    files.forEach(function(i) {
-      console.log(' #    ' + i);
-      fs.copySync(i, '../public/img/' + path.basename(i));
-    });
+    })
+    .on('end', function() {
+      files.forEach(function(i) {
+        console.log(' #    ' + i);
+        fs.copySync(i, to + path.basename(i));
+      });
+      return cb();
 
-    console.log(' # apply.js finished. ');
-  })
+    })
+
+}
+
+
+copyDir(configDir + '/img/', '../public/img/',  function() {
+  copyDir(configDir + '/androidRes/', '../cordova/android/res/', function() {
+    console.log("apply.js finished. \n\n");
+  });
+});

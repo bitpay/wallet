@@ -8,7 +8,6 @@ angular.module('copayApp.controllers').controller('sidebarController',
 
     self.bitpayCardEnabled = $window.appConfig && $window.appConfig._enabledExtensions.debitcard;
 
-console.log('[sidebar.js.10]', $window.appConfig._enabledExtensions.debitcard, $window.appConfig._enabledExtensions); //TODO
 
     // wallet list change
     $rootScope.$on('Local/WalletListUpdated', function(event) {

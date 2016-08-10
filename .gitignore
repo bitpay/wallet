@@ -118,6 +118,19 @@ public/img/logo.svg
 src/js/appConfig.js
 
 
+cordova/Makefile
+cordova/ProjectMakefile
+app-template/bpapp
+cordova/ProjectMakefile
+cordova/config.xml
+cordova/wp/Package.appxmanifest
+public/img/logo-negative.svg
+public/img/logo.svg
+src/js/appConfig.js
+
+cordova/android/res/
+cordova/project/
+
 
 
 
