@@ -257,6 +257,26 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
           },
         }
       })
+      .state('bitpayCard', {
+        url: '/bitpay-card',
+        walletShouldBeComplete: true,
+        needProfile: true,
+        views: {
+          'main': {
+            templateUrl: 'views/bitpayCard.html'
+          },
+        }
+      })
+      .state('preferencesBitpayCard', {
+        url: '/preferences-bitpay-card',
+        walletShouldBeComplete: true,
+        needProfile: true,
+        views: {
+          'main': {
+            templateUrl: 'views/preferencesBitpayCard.html'
+          },
+        }
+      })
       .state('coinbase', {
         url: '/coinbase',
         walletShouldBeComplete: true,
