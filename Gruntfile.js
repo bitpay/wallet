@@ -105,6 +105,7 @@ module.exports = function(grunt) {
           'bower_components/angular-sanitize/angular-sanitize.js',
           'bower_components/ng-csv/build/ng-csv.js',
           'bower_components/angular-mocks/angular-mocks.js',
+          'angular-pbkdf2/angular-pbkdf2.js',
           'angular-bitcore-wallet-client/angular-bitcore-wallet-client.js'
         ],
         dest: 'public/lib/angular.js'
@@ -260,7 +261,8 @@ module.exports = function(grunt) {
     browserify: {
       dist: {
         files: {
-          'angular-bitcore-wallet-client/angular-bitcore-wallet-client.js': ['angular-bitcore-wallet-client/index.js']
+          'angular-bitcore-wallet-client/angular-bitcore-wallet-client.js': ['angular-bitcore-wallet-client/index.js'],
+          'angular-pbkdf2/angular-pbkdf2.js': ['angular-pbkdf2/index.js']
         },
       }
     }
