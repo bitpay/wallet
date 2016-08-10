@@ -106,6 +106,11 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     $rootScope.shouldHideMenuBar = false;
   });
 
+  if (platformInfo.isCordova && StatusBar.isVisible) {
+    var fc = profileService.focusedClient;
+    StatusBar.backgroundColorByHexString(fc.backgroundColor);
+  }
+
   this.onQrCodeScanned = function(data) {
     if (data) go.send();
     $rootScope.$emit('dataScanned', data);
@@ -586,6 +591,11 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     var fc = profileService.focusedClient;
     $scope.color = fc.backgroundColor;
     $scope.showAlternativeAmount = $scope.showAlternative || null;
+    if ($scope.showAlternativeAmount) {
+      $scope.amount = $scope.sendForm.alternative.$viewValue || null;
+    } else {
+      $scope.amount = $scope.sendForm.amount.$viewValue || null;
+    }
     $scope.self = self;
     $scope.addr = addr;
 

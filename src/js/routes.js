@@ -311,8 +311,13 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         needProfile: true,
         views: {
           'main': {
-            templateUrl: 'views/buyAndSell.html'
-          },
+            templateUrl: 'views/buyAndSell.html',
+            controller: function(platformInfo) {
+              if (platformInfo.isCordova && StatusBar.isVisible) {
+                StatusBar.backgroundColorByHexString("#4B6178");
+              }
+            }
+          }
         }
       })
       .state('amazon', {
@@ -523,8 +528,13 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         needProfile: true,
         views: {
           'main': {
-            templateUrl: 'views/add.html'
-          },
+            templateUrl: 'views/add.html',
+            controller: function(platformInfo) {
+              if (platformInfo.isCordova && StatusBar.isVisible) {
+                StatusBar.backgroundColorByHexString("#4B6178");
+              }
+            }
+          }
         }
       });
   })

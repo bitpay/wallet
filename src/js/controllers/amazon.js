@@ -1,7 +1,11 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('amazonController',
-  function($scope, $timeout, $ionicModal, $log, lodash, bwcError, amazonService) {
+  function($scope, $timeout, $ionicModal, $log, lodash, bwcError, amazonService, platformInfo) {
+
+    if (platformInfo.isCordova && StatusBar.isVisible) {
+      StatusBar.backgroundColorByHexString("#4B6178");
+    }
 
     this.init = function() {
       var self = this;

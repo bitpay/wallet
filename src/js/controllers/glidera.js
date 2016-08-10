@@ -1,7 +1,11 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('glideraController',
-  function($rootScope, $scope, $timeout, $ionicModal, profileService, configService, storageService, glideraService, lodash, ongoingProcess) {
+  function($rootScope, $scope, $timeout, $ionicModal, profileService, configService, storageService, glideraService, lodash, ongoingProcess, platformInfo) {
+
+    if (platformInfo.isCordova && StatusBar.isVisible) {
+      StatusBar.backgroundColorByHexString("#4B6178");
+    }
 
     this.getAuthenticateUrl = function() {
       return glideraService.getOauthCodeUrl();
