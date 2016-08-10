@@ -1,6 +1,6 @@
 
 {
-  "name": "*NAME*",
+  "name": "*NAMENOSPACE*",
   "description": "*DESCRIPTION*",
   "author": "BitPay",
   "version": "*VERSION*",

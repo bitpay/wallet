@@ -7,9 +7,6 @@ src/js/translations.js
 coinbase.json
 src/js/coinbase.js
 
-# version
-src/js/appConfig.js
-
 # cordova
 cordova/project-*/*
 cordova/*.keystore
@@ -108,7 +105,19 @@ public/css/*
 public/lib/*
 public/js/*
 
+## templates
+appConfig.json
+cordova/Makefile
+cordova/ProjectMakefile
 app-template/bpapp
+cordova/ProjectMakefile
+cordova/config.xml
+cordova/wp/Package.appxmanifest
+public/img/logo-negative.svg
+public/img/logo.svg
+src/js/appConfig.js
+
+
 
 
 
