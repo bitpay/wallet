@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('sellGlideraController',
-  function($rootScope, $scope, $timeout, $ionicModal, $log, configService, profileService, addressService, feeService, glideraService, bwcError, lodash, walletService, fingerprintService, ongoingProcess, go) {
+  function($rootScope, $scope, $timeout, $ionicModal, $log, configService, profileService, addressService, feeService, glideraService, bwcError, lodash, walletService, ongoingProcess, go) {
 
     var self = this;
     var config = configService.getSync();
@@ -150,56 +150,49 @@ angular.module('copayApp.controllers').controller('sellGlideraController',
             }
             $scope.$emit('Local/NeedsConfirmation', createdTxp, function(accept) {
               if (accept) {
-                fingerprintService.check(client, function(err) {
+                handleEncryptedWallet(client, function(err) {
                   if (err) {
                     self.error = err.message ||  bwcError.msg(err);
                     return;
                   }
 
-                  handleEncryptedWallet(client, function(err) {
+                  ongoingProcess.set('signingTx', true);
+                  walletService.publishTx(client, createdTxp, function(err, publishedTxp) {
                     if (err) {
+                      ongoingProcess.clear();
                       self.error = err.message ||  bwcError.msg(err);
-                      return;
                     }
 
-                    ongoingProcess.set('signingTx', true);
-                    walletService.publishTx(client, createdTxp, function(err, publishedTxp) {
+                    walletService.signTx(client, publishedTxp, function(err, signedTxp) {
+                      walletService.lock(client);
+                      walletService.removeTx(client, signedTxp, function(err) {
+                        if (err) $log.debug(err);
+                      });
+                      ongoingProcess.clear();
                       if (err) {
-                        ongoingProcess.clear();
                         self.error = err.message ||  bwcError.msg(err);
+                        return;
                       }
-
-                      walletService.signTx(client, publishedTxp, function(err, signedTxp) {
-                        walletService.lock(client);
-                        walletService.removeTx(client, signedTxp, function(err) {
-                          if (err) $log.debug(err);
-                        });
+                      var rawTx = signedTxp.raw;
+                      var data = {
+                        refundAddress: refundAddress,
+                        signedTransaction: rawTx,
+                        priceUuid: self.sellPrice.priceUuid,
+                        useCurrentPrice: self.sellPrice.priceUuid ? false : true,
+                        ip: null
+                      };
+                      ongoingProcess.set('Seling Bitcoin', true);
+                      glideraService.sell(token, twoFaCode, data, function(err, data) {
                         ongoingProcess.clear();
                         if (err) {
                           self.error = err.message ||  bwcError.msg(err);
+                          $timeout(function() {
+                            $scope.$emit('Local/GlideraError');
+                          }, 100);
                           return;
                         }
-                        var rawTx = signedTxp.raw;
-                        var data = {
-                          refundAddress: refundAddress,
-                          signedTransaction: rawTx,
-                          priceUuid: self.sellPrice.priceUuid,
-                          useCurrentPrice: self.sellPrice.priceUuid ? false : true,
-                          ip: null
-                        };
-                        ongoingProcess.set('Seling Bitcoin', true);
-                        glideraService.sell(token, twoFaCode, data, function(err, data) {
-                          ongoingProcess.clear();
-                          if (err) {
-                            self.error = err.message ||  bwcError.msg(err);
-                            $timeout(function() {
-                              $scope.$emit('Local/GlideraError');
-                            }, 100);
-                            return;
-                          }
-                          self.success = data;
-                          $scope.$emit('Local/GlideraTx');
-                        });
+                        self.success = data;
+                        $scope.$emit('Local/GlideraTx');
                       });
                     });
                   });
