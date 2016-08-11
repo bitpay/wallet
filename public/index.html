@@ -7,36 +7,20 @@
   <meta name="msapplication-tap-highlight" content="no">
   <meta name="format-detection" content="telephone=no">
   <link rel="stylesheet" type="text/css" href="css/ionic.css">
-  <link rel="stylesheet" type="text/css" href="css/foundation.css">
-  <link rel="stylesheet" type="text/css" href="icons/foundation-icons.css">
-  <link rel="stylesheet" type="text/css" href="css/ui-components.css">
   <link rel="stylesheet" type="text/css" href="css/copay.css">
   <title>{{index.appConfig.name}} -  {{index.appConfig.description}}</title>
   <link rel="shortcut icon" href="img/favicon.ico">
 </head>
-<body ng-cloak class="ng-cloak">
+<!-- <body ng&#45;cloak class="ng&#45;cloak"> -->
+<body >
 
-  <ion-side-menus class="page">
-
-    <!-- Left menu -->
-    <ion-side-menu side="left" expose-aside-when="large" ng-if="index.hasProfile && isDisclaimerAccepted">
-      <div ng-include="'views/includes/sidebar.html'"></div>
-    </ion-side-menu>
-
-    <!-- Main content -->
-
-    <ion-side-menu-content drag-content="index.isCordova">
-      <div notifications="right top"></div>
-      <div id="sectionContainer">
-        <div id="mainSection">
-          <section ui-view="main"
-            ng-class="{
-              'main': index.hasProfile
-            }"></section>
-        </div>
-      </div>
-    </ion-side-menu-content>
-  </ion-side-menus>
+  <!-- <div notifications="right top"></div> -->
+<!--  ng&#45;class="{ 'main': index.hasProfile }" -->
+  <!-- <ion&#45;nav&#45;bar class="bar&#45;positive"> -->
+  <!--   <ion&#45;nav&#45;back&#45;button class="button&#45;icon ion&#45;arrow&#45;left&#45;c"> -->
+  <!--   </ion&#45;nav&#45;back&#45;button> -->
+  <!-- </ion&#45;nav&#45;bar> -->
+  <ion-nav-view name="main"></ion-nav-view>
 
   <script src="lib/ionic.bundle.js"></script>
   <script src="lib/angular.js"></script>
@@ -44,7 +28,6 @@
   <!-- DO NOT DELETE THIS COMMET  -->
   <!-- PLACEHOLDER: CORDOVA SRIPT -->
 
-  <script src="lib/ui-components.js"></script>
   <script src="js/copay.js"></script>
 
 </body>
