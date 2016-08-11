@@ -1,9 +1,47 @@
 
-<<ion-view view-title="Home">
-  <ion-content class="padding">
-    <h2>Welcome to Home</h2>
-    <p>
-    This is the Ionic starter for tabs-based apps. For other starters and ready-made templates, check out the <a href="http://market.ionic.io/starters" target="_blank">Ionic Market</a>.
-    <p>
+<ion-view view-title="Home">
+  <ion-content class="padding home" ng-controller="tabHomeController">
+    <h2>Wallets </h2>
+    <a href="#/add">+</a>
+    <div class="list card">
+      <ul class="pr">
+
+        <li ng-show="wallets[0]"
+          ng-repeat="item in wallets track by $index" class="item item-icon-left"
+          menu-toggle href ui-sref="walletHome" on-tap="openWallet(item.id, index.walletId)">
+            <i class="icon icon-wallet size-21" ng-style="{'color':item.color}"></i>
+            {{item.name || item.id}}
+            <span class="item-note" ng-show="item.n > 1">
+              {{item.m}}-of-{{item.n}}
+            </span>
+        </li>
+      </ul>
+    </div>
+
+
+    <h2>Next steps </h2>
+    <div class="list card">
+      <ul class="pr">
+      <li menu-toggle href ui-sref="bitpayCard" ng-show="bitpayCardEnabled" class="item item-icon-left">
+        <i class="icon ion-card"></i>
+          BitPay Card
+ 
+        </div>
+      </li>
+      <li ng-show="!index.isWindowsPhoneApp && (index.glideraEnabled || index.coinbaseEnabled)" menu-toggle href ui-sref="buyandsell"  class="item item-icon-left">
+        <i class="icon ion-cash"></i>
+            Buy and Sell
+      </li>
+      <li menu-toggle href ui-sref="amazon" class="item item-icon-left">
+        <i class="icon ion-ios-cart"></i>
+        Gift Cards
+        <span class="item-note">
+bla bla
+        </span>
+        </div>
+      </li>
+      </ul>
+    </div>
+
   </ion-content>
-</ion-view> p>
+</ion-view>
