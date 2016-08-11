@@ -1,7 +1,6 @@
 'use strict';
 
 var modules = [
-  'ui.router',
   'angularMoment',
   'monospaced.qrcode',
   'gettext',
