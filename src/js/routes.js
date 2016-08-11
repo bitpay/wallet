@@ -95,7 +95,6 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
       })
       .state('walletHome', {
         url: '/',
-        walletShouldBeComplete: true,
         needProfile: true,
         views: {
           'main': {
@@ -103,7 +102,57 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
           },
         }
       })
-      .state('unsupported', {
+      .state('tabs', {
+        url: '/tabs',
+        needProfile: true,
+        abstract: true,
+        views: {
+          'main': {
+            templateUrl: 'views/tabs.html',
+          },
+        }
+      })
+      .state('tabs.home', {
+        url: '/home',
+        needProfile: true,
+        views: {
+          'tab-home': {
+            templateUrl: 'views/tab-home.html',
+          },
+        }
+      })
+      .state('tabs.receive', {
+        url: '/receive',
+        needProfile: true,
+        views: {
+          'tab-receive': {
+            templateUrl: 'views/tab-receive.html',
+          },
+        }
+      })
+      .state('tabs.send', {
+        url: '/send',
+        needProfile: true,
+        views: {
+          'tab-send': {
+            templateUrl: 'views/tab-send.html',
+          },
+        }
+      })
+      .state('tabs.settings', {
+        url: '/settings',
+        needProfile: true,
+        views: {
+          'tab-settings': {
+            templateUrl: 'views/tab-settings.html',
+          },
+        }
+      })
+
+ 
+ 
+
+    .state('unsupported', {
         url: '/unsupported',
         needProfile: false,
         views: {
@@ -171,7 +220,6 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
       .state('preferences', {
         url: '/preferences',
         templateUrl: 'views/preferences.html',
-        walletShouldBeComplete: true,
         needProfile: true,
         views: {
           'main': {
@@ -219,7 +267,6 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
       })
       .state('glidera', {
         url: '/glidera',
-        walletShouldBeComplete: true,
         needProfile: true,
         views: {
           'main': {
@@ -229,7 +276,6 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
       })
       .state('buyGlidera', {
         url: '/buy',
-        walletShouldBeComplete: true,
         needProfile: true,
         views: {
           'main': {
@@ -239,7 +285,6 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
       })
       .state('sellGlidera', {
         url: '/sell',
-        walletShouldBeComplete: true,
         needProfile: true,
         views: {
           'main': {
@@ -249,7 +294,6 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
       })
       .state('preferencesGlidera', {
         url: '/preferencesGlidera',
-        walletShouldBeComplete: true,
         needProfile: true,
         views: {
           'main': {
@@ -259,7 +303,6 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
       })
       .state('bitpayCard', {
         url: '/bitpay-card',
-        walletShouldBeComplete: true,
         needProfile: true,
         views: {
           'main': {
@@ -269,7 +312,6 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
       })
       .state('preferencesBitpayCard', {
         url: '/preferences-bitpay-card',
-        walletShouldBeComplete: true,
         needProfile: true,
         views: {
           'main': {
@@ -279,7 +321,6 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
       })
       .state('coinbase', {
         url: '/coinbase',
-        walletShouldBeComplete: true,
         needProfile: true,
         views: {
           'main': {
@@ -289,7 +330,6 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
       })
       .state('preferencesCoinbase', {
         url: '/preferencesCoinbase',
-        walletShouldBeComplete: true,
         needProfile: true,
         views: {
           'main': {
@@ -308,7 +348,6 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
       })
       .state('buyCoinbase', {
         url: '/buycoinbase',
-        walletShouldBeComplete: true,
         needProfile: true,
         views: {
           'main': {
@@ -318,7 +357,6 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
       })
       .state('sellCoinbase', {
         url: '/sellcoinbase',
-        walletShouldBeComplete: true,
         needProfile: true,
         views: {
           'main': {
@@ -342,7 +380,6 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
       })
       .state('amazon', {
         url: '/amazon',
-        walletShouldBeComplete: true,
         needProfile: true,
         views: {
           'main': {
@@ -352,7 +389,6 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
       })
       .state('buyAmazon', {
         url: '/buyamazon',
-        walletShouldBeComplete: true,
         needProfile: true,
         views: {
           'main': {
@@ -363,7 +399,6 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
       .state('preferencesAdvanced', {
         url: '/preferencesAdvanced',
         templateUrl: 'views/preferencesAdvanced.html',
-        walletShouldBeComplete: true,
         needProfile: true,
         views: {
           'main': {
@@ -374,7 +409,6 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
       .state('preferencesColor', {
         url: '/preferencesColor',
         templateUrl: 'views/preferencesColor.html',
-        walletShouldBeComplete: true,
         needProfile: true,
         views: {
           'main': {
@@ -395,7 +429,6 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
       .state('preferencesAlias', {
         url: '/preferencesAlias',
         templateUrl: 'views/preferencesAlias.html',
-        walletShouldBeComplete: true,
         needProfile: true,
         views: {
           'main': {
@@ -407,7 +440,6 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
       .state('preferencesEmail', {
         url: '/preferencesEmail',
         templateUrl: 'views/preferencesEmail.html',
-        walletShouldBeComplete: true,
         needProfile: true,
         views: {
           'main': {
@@ -419,7 +451,6 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
       .state('preferencesBwsUrl', {
         url: '/preferencesBwsUrl',
         templateUrl: 'views/preferencesBwsUrl.html',
-        walletShouldBeComplete: true,
         needProfile: true,
         views: {
           'main': {
@@ -431,7 +462,6 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
       .state('preferencesHistory', {
         url: '/preferencesHistory',
         templateUrl: 'views/preferencesHistory.html',
-        walletShouldBeComplete: true,
         needProfile: true,
         views: {
           'main': {
@@ -443,7 +473,6 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
       .state('deleteWords', {
         url: '/deleteWords',
         templateUrl: 'views/preferencesDeleteWords.html',
-        walletShouldBeComplete: true,
         needProfile: true,
         views: {
           'main': {
@@ -454,7 +483,6 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
       .state('delete', {
         url: '/delete',
         templateUrl: 'views/preferencesDeleteWallet.html',
-        walletShouldBeComplete: true,
         needProfile: true,
         views: {
           'main': {
@@ -464,7 +492,6 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
       })
       .state('information', {
         url: '/information',
-        walletShouldBeComplete: true,
         needProfile: true,
         views: {
           'main': {
@@ -495,7 +522,6 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
       .state('export', {
         url: '/export',
         templateUrl: 'views/export.html',
-        walletShouldBeComplete: true,
         needProfile: true,
         views: {
           'main': {
@@ -506,7 +532,6 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
       .state('paperWallet', {
         url: '/paperWallet',
         templateUrl: 'views/paperWallet.html',
-        walletShouldBeComplete: true,
         needProfile: true,
         views: {
           'main': {
@@ -517,7 +542,6 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
       .state('backup', {
         url: '/backup',
         templateUrl: 'views/backup.html',
-        walletShouldBeComplete: true,
         needProfile: true,
         views: {
           'main': {
@@ -701,11 +725,12 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
             $state.transitionTo(toState.name || toState, toParams);
           }
         });
-      } else {
-        if (profileService.focusedClient && !profileService.focusedClient.isComplete() && toState.walletShouldBeComplete) {
-
-          $state.transitionTo('copayers');
-        }
       }
+      // else {
+      //   if (profileService.focusedClient && !profileService.focusedClient.isComplete() && toState.walletShouldBeComplete) {
+      //
+      //     $state.transitionTo('copayers');
+      //   }
+      // }
     });
   });
