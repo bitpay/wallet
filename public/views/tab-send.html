@@ -4,25 +4,12 @@
 
     <label class="item item-input">
       <i class="icon ion-search placeholder-icon"></i>
-      <input type="text" placeholder="Search">
+      <input type="text" placeholder="Search" ng-model="search" ng-change="findContact()">
     </label>
 
     <h2>Contacts</h2>
 
     <div class="list card">
-      <!-- <a class="item item-icon-left" ng-repeat="contact in contactList" ng-click="openInputAmountModal(contact)">
-        <i class="icon ion-ios-person-outline"></i>
-        {{contact.label}}
-      </a>
-
-      <a class="item item-icon-left" ng-repeat="wallet in wallets" ng-click="openInputAmountModal(wallet)">
-        <i class="icon icon-wallet size-21" ng-style="{'color':wallet.color}"></i>
-        {{wallet.name || wallet.alias}}
-        <span class="item-note">
-          {{wallet.balance || '123,999.91 bits'}}
-        </span>
-      </a> -->
-
       <a class="item item-icon-left" ng-repeat="item in list" ng-click="openInputAmountModal(item)">
         <div ng-show="!item.id">
           <i class="icon ion-ios-person-outline"></i>
@@ -38,6 +25,5 @@
         </div>
       </a>
     </div>
-
   </ion-content>
 </ion-view>
