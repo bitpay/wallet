@@ -6,43 +6,56 @@ module.exports = function(grunt) {
 
   // Project Configuration
   grunt.initConfig({
-    pkg: grunt.file.readJSON('package.json'),
-    'string-replace': {
-      dist: {
-        files: {
-          'cordova/config.xml': ['config-templates/config.xml'],
-          'cordova/wp/Package.appxmanifest': ['config-templates/Package.appxmanifest'],
-          'cordova/wp/Properties/WMAppManifest.xml': ['config-templates/WMAppManifest.xml'],
-          'webkitbuilds/.desktop': ['config-templates/.desktop'],
-          'webkitbuilds/setup-win.iss': ['config-templates/setup-win.iss']
-        },
-        options: {
-          replacements: [{
-            pattern: /%APP-VERSION%/g,
-            replacement: '<%= pkg.version %>'
-            }, {
-            pattern: /%ANDROID-VERSION-CODE%/g,
-            replacement: '<%= pkg.androidVersionCode %>'
-          }]
-        }
-      }
-    },
     exec: {
-      version: {
-        command: 'node ./util/version.js'
+      appConfig: {
+        command: 'node ./util/buildAppConfig.js'
       },
       coinbase: {
         command: 'node ./util/coinbase.js'
       },
-      clear: {
+      clean: {
         command: 'rm -Rf bower_components node_modules'
+      },
+      cordovaclean: {
+        command: 'make -C cordova clean'
       },
       osx: {
         command: 'webkitbuilds/build-osx.sh sign'
       },
       coveralls: {
         command: 'cat  coverage/report-lcov/lcov.info |./node_modules/coveralls/bin/coveralls.js'
-      }
+      },
+      chrome: {
+        command: 'make -C chrome-app '
+      },
+      wp: {
+        command: 'make -C cordova wp',
+      },
+      ios: {
+        command: 'make -C cordova ios',
+      },
+      xcode: {
+        command: 'open cordova/project-ios/platforms/ios/*.xcodeproj',
+      },
+      android: {
+        command: 'make -C cordova android',
+      },
+      androidrun: {
+        command: 'make -C cordova androidrun',
+      },
+      androidbuild: {
+        command: 'cd cordova/project && cordova build android --release',
+      },
+      androidsign: {
+        command: 'rm -f cordova/project/platforms/android/build/outputs/apk/android-release-signed-aligned.apk; jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore ../copay.keystore -signedjar cordova/project/platforms/android/build/outputs/apk/android-release-signed.apk  cordova/project/platforms/android/build/outputs/apk/android-release-unsigned.apk copay_play && ../android-sdk-macosx/build-tools/21.1.1/zipalign -v 4 cordova/project/platforms/android/build/outputs/apk/android-release-signed.apk cordova/project/platforms/android/build/outputs/apk/android-release-signed-aligned.apk ',
+        stdin: true,
+      },
+      desktopsign: {
+        cmd: 'gpg -u 1112CFA1 --output webkitbuilds/Copay-linux.zip.sig --detach-sig webkitbuilds/Copay-linux.zip && gpg -u 1112CFA1 --output webkitbuilds/Copay-win.exe.sig --detach-sig webkitbuilds/Copay-win.exe'
+      },
+      desktopverify: {
+        cmd: 'gpg --verify webkitbuilds/Copay-linux.zip.sig webkitbuilds/Copay-linux.zip && gpg --verify webkitbuilds/Copay-win.exe.sig webkitbuilds/Copay-win.exe'
+      },
     },
     watch: {
       options: {
@@ -119,7 +132,7 @@ module.exports = function(grunt) {
           'src/js/services/*.js',
           'src/js/controllers/**/*.js',
           'src/js/translations.js',
-          'src/js/version.js',
+          'src/js/appConfig.js',
           'src/js/coinbase.js',
           'src/js/init.js',
           'src/js/trezor-url.js',
@@ -266,12 +279,22 @@ module.exports = function(grunt) {
     }
   });
 
-  grunt.registerTask('default', ['nggettext_compile', 'exec:version', 'exec:coinbase', 'browserify', 'sass', 'concat', 'copy:icons', 'copy:ionic_fonts']);
+  grunt.registerTask('default', ['nggettext_compile', 'exec:appConfig', 'exec:coinbase', 'browserify', 'sass', 'concat', 'copy:icons', 'copy:ionic_fonts']);
   grunt.registerTask('prod', ['default', 'uglify']);
   grunt.registerTask('translate', ['nggettext_extract']);
   grunt.registerTask('test', ['karma:unit']);
   grunt.registerTask('test-coveralls', ['browserify', 'karma:prod', 'exec:coveralls']);
   grunt.registerTask('desktop', ['prod', 'nwjs', 'copy:linux', 'compress:linux']);
   grunt.registerTask('osx', ['prod', 'nwjs', 'exec:osx']);
-  grunt.registerTask('release', ['string-replace:dist']);
+  grunt.registerTask('chrome', ['exec:chrome']);
+  grunt.registerTask('wp', ['prod', 'exec:wp']);
+  grunt.registerTask('wp-debug', ['default', 'exec:wp']);
+  grunt.registerTask('ios', ['prod', 'exec:ios', 'exec:xcode']);
+  grunt.registerTask('ios-debug', ['default', 'exec:ios', 'exec:xcode']);
+  grunt.registerTask('cordovaclean', ['exec:cordovaclean']);
+  grunt.registerTask('android-debug', ['default', 'exec:android', 'exec:androidrun']);
+  grunt.registerTask('android', ['prod', 'exec:android']);
+  grunt.registerTask('android-release', ['prod', 'exec:android', 'exec:androidsign']);
+  grunt.registerTask('desktopsign', ['exec:desktopsign', 'exec:desktopverify']);
+
 };
