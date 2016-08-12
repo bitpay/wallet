@@ -115,6 +115,18 @@ h4.title a {
   font-size: 16px;
 }
 
+.bitpay_card select {
+  margin: 5px 0 5px 0;
+  padding: 0 20px;
+  font-size: 16px;
+  width: auto;
+  border: none;
+}
+
+.bitpay_card select:focus {
+  background-color: transparent;
+}
+
 .preferences ul, .modal-content ul {
   font-size: 14px;
   background: white;

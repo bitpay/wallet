@@ -59,6 +59,7 @@ build/Release
 node_modules
 bower_components
 angular-bitcore-wallet-client/angular-bitcore-wallet-client.js
+angular-pbkdf2/angular-pbkdf2.js
 
 # Users Environment Variables
 .lock-wscript
@@ -106,7 +107,7 @@ public/lib/*
 public/js/*
 
 ## templates
-appConfig.json
+/appConfig.json
 cordova/Makefile
 cordova/ProjectMakefile
 app-template/bpapp
