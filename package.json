@@ -23,7 +23,6 @@
     "height": 600,
     "min_width": 400,
     "min_height": 600,
-    "max_height": 600,
     "position": "center",
     "fullscreen": false
   },
