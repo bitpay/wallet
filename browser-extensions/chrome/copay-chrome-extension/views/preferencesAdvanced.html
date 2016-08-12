@@ -1,0 +1,47 @@
+<div
+  class="topbar-container"
+  ng-include="'views/includes/topbar.html'"
+  ng-init="titleSection='Advanced'; goBackToState = 'preferences'">
+</div>
+
+<div class="content preferences">
+
+  <h4></h4>
+
+  <ul class="no-bullet m0">
+
+    <li href ui-sref="information">
+      <i class="icon-arrow-right3 size-24 right text-gray"></i>
+      <div translate>Wallet Information</div>
+    </li>
+
+    <li ng-show="index.network == 'livenet'" href ui-sref="paperWallet">
+      <i class="icon-arrow-right3 size-24 right text-gray"></i>
+      <div translate>Sweep paper wallet</div>
+    </li>
+
+    <li href ui-sref="export">
+      <i class="icon-arrow-right3 size-24 right text-gray"></i>
+      <div translate>Export Wallet</div>
+    </li>
+
+    <li  href ui-sref="preferencesBwsUrl">
+      <i class="icon-arrow-right3 size-24 right text-gray"></i>
+      <div>Wallet Service URL</div>
+    </li>
+
+     <li href ui-sref="preferencesHistory">
+      <i class="icon-arrow-right3 size-24 right text-gray"></i>
+      <div translate>Transaction History</div>
+    </li>
+
+    <li href ui-sref="delete">
+      <i class="icon-arrow-right3 size-24 right text-gray"></i>
+      <div translate>Delete Wallet</div>
+    </li>
+
+  </ul>
+
+</div>
+<div class="extra-margin-bottom"></div>
+

@@ -1,0 +1,135 @@
+<div
+  class="topbar-container"
+  ng-include="'views/includes/topbar.html'"
+  ng-init="titleSection='Export Wallet'; goBackToState = 'preferencesAdvanced'">
+</div>
+
+<div class="content preferences" ng-controller="exportController" ng-init="init(index.prevState)">
+  <div ng-show="!index.canSign"><h4></h4></div>
+  <div ng-show="index.canSign" class="create-tab small-only-text-center">
+    <div class="row">
+      <div class="tab-container small-6 columns"
+        ng-class="{'selected':!exportQR}"
+        ng-style="{'border-color':!exportQR ? index.backgroundColor: 'inherit'}"
+        ng-click="exportQR = false">
+        <a href ng-style="{'color':!exportQR ? index.backgroundColor: 'inherit'}" translate>File/Text</a>
+      </div>
+      <div class="tab-container small-6 columns"
+        ng-class="{'selected':exportQR}"
+        ng-style="{'border-color':exportQR ? index.backgroundColor: 'inherit'}"
+        ng-click="exportQR = true">
+        <a href ng-style="{'color':exportQR ? index.backgroundColor: 'inherit'}" translate>QR Code</a>
+      </div>
+    </div>
+  </div>
+
+  <div ng-show="!backupWalletPlainText">
+    <div class="text-warning size-14 m20b" ng-show="error">
+      <i class="fi-alert size-12"></i>
+      <span translate>Failed to export</span>
+    </div>
+
+    <form ng-show="!exportQR">
+      <div class="row">
+        <div class="columns">
+          <label for="password" translate>Set up a password </label>
+          <div class="input">
+            <input type="password" class="form-control" placeholder="{{'Your password'|translate}}" name="password" ng-model="password">
+          </div>
+
+          <label for="password" translate>Repeat the password</label>
+          <div class="input">
+            <input type="password" class="form-control" placeholder="{{'Repeat password'|translate}}" name="password" ng-model="repeatpassword">
+          </div>
+        </div>
+      </div>
+    </form>
+
+    <div class="m20t text-gray" ng-show="exportQR && supported">
+      <div class="text-center m20b">
+        <qrcode size="220" version="8" error-correction-level="M" data="{{exportWalletInfo}}"></qrcode>
+      </div>
+      <div class="text-center size-12 m10" translate>From the destination device, go to Add wallet &gt; Import wallet and scan this QR code</div>
+    </div>
+
+    <div class="m20t text-gray" ng-show="exportQR && !supported">
+      <div class="text-center size-12 m10" translate>Exporting via QR not supported for this wallet</div>
+    </div>
+
+    <div class="row" ng-show="!exportQR && index.canSign">
+      <div class="columns m15t">
+        <a class="button outline light-gray expand tiny p10i" ng-click="showAdvanced = !showAdvanced">
+          <i class="fi-widget m3r"></i>
+          <span translate ng-hide="showAdvanced">Show advanced options</span>
+          <span translate ng-hide="!showAdvanced">Hide advanced options</span>
+          <i ng-if="!showAdvanced" class="icon-arrow-down4"></i>
+          <i ng-if="showAdvanced" class="icon-arrow-up4"></i>
+        </a>
+      </div>
+    </div>
+
+    <div ng-show="showAdvanced && !exportQR">
+      <ion-toggle ng-model="noSignEnabled" toggle-class="toggle-balanced" class="r0" ng-change="noSignEnabledChange()">
+        <span class="toggle-label" translate>Do not include private key</span>
+      </ion-toggle>
+    </div>
+
+    <div class="box-notification p15l" ng-show="!index.canSign">
+      <span class="text-warning size-14">
+        <i class="fi-alert"></i>
+        <span translate>
+          WARNING: The private key of this wallet is not available. The export allows to check the wallet balance, transaction history, and create spend proposals from the export. However, does not allow to approve (sign) proposals, so <b>funds will not be accessible from the export</b>.
+        </span>
+      </span>
+    </div>
+
+    <div class="box-notification p15l" ng-show="noSignEnabled && !exportQR">
+      <span class="text-warning size-14">
+        <i class="fi-alert"></i>
+        <span translate>
+        WARNING: Not including the private key allows to check the wallet balance, transaction history, and create spend proposals from the export. However, does not allow to approve (sign) proposals, so <b>funds will not be accessible from the export</b>.
+        </span>
+      </span>
+    </div>
+
+    <div class="row" ng-show="!exportQR">
+      <div class="columns">
+        <button class="black round expand m20t" ng-click="downloadWalletBackup()"
+          ng-disabled="(!password || password != repeatpassword)"
+          ng-style="{'background-color':index.backgroundColor}"
+          ng-show="!isSafari && !isCordova"><i class="fi-download"></i>
+          <span translate>Download</span></button>
+        <button class="black round expand m20t" ng-click="viewWalletBackup()"
+          ng-disabled="(!password || password != repeatpassword)"
+          ng-style="{'background-color':index.backgroundColor}"
+          ng-show="isSafari && !isCordova"><i class="fi-eye"></i>
+          <span translate>View</span></button>
+        <div ng-show="isCordova">
+          <h4 translate>Export options</h4>
+          <button class="black round expand" ng-disabled="(!password || password != repeatpassword)"
+            ng-style="{'background-color':index.backgroundColor}"
+            ng-click="copyWalletBackup()"><i class="fi-clipboard-pencil"></i>
+            <span translate>Copy to clipboard</span></button>
+          <button class="black round expand" ng-disabled="(!password || password != repeatpassword)"
+            ng-style="{'background-color':index.backgroundColor}"
+            ng-click="sendWalletBackup()"><i class="fi-mail"></i>
+            <span translate>Send by email</span></button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row" ng-show="backupWalletPlainText">
+    <div class="large-12 columns">
+      <h3 translate>Wallet Export</h3>
+      <div class="input">
+        <textarea rows="12">{{backupWalletPlainText}}</textarea>
+      </div>
+      <div class="size-12 text-gray text-right">
+        <i class="icon-compose"></i>
+        <span translate>Copy this text as it is to a safe place (notepad or email)</span>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="extra-margin-bottom"></div>

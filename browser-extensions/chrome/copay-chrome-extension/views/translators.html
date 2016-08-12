@@ -1,0 +1,32 @@
+<div 
+  class="topbar-container" 
+  ng-include="'views/includes/topbar.html'"
+  ng-init="titleSection='Translators'; goBackToState = 'about'; noColor = true">
+</div>
+
+<div class="content preferences">
+  <h4 class="title m0" translate>Translation Credits</h4>
+  <ul class="no-bullet m0 size-14">
+    <li class="line-b p10">kinoshitajona<span class="right text-gray size-12" translate>Japanese</span></li>
+    <li class="line-b p10">Kirvx<span class="right text-gray size-12" translate>French</span></li>
+    <li class="line-b p10">saschad<span class="right text-gray size-12" translate>German</span></li>
+    <li class="line-b p10">cmgustavo83<span class="right text-gray size-12" translate>Spanish</span></li>
+    <li class="line-b p10">RussianNeuroMancer<span class="right text-gray size-12" translate>Russian</span></li>
+    <li class="line-b p10">HostFat<span class="right text-gray size-12" translate>Italian</span></li>
+    <li class="line-b p10">xm2hi<span class="right text-gray size-12" translate>Chinese</span></li>
+    <li class="line-b p10">Pirx1618<span class="right text-gray size-12" translate>Polish</span></li>
+    <li class="line-b p10">mareksip<span class="right text-gray size-12" translate>Czech</span></li>
+  </ul>
+  <div class="row m20t">
+    <div class="columns text-center">
+      <p class="size-12 text-black">
+        <span translate>All contributions to Copay's translation are welcome. Sign up at crowdin.com and join the Copay project at</span> 
+        <a ng-click="$root.openExternalLink('https://crowdin.com/project/copay', '_system')">https://crowdin.com/project/copay</a>.
+      </p>
+      <span class="size-12 text-gray" translate>
+        Don't see your language on Crowdin? Contact the Owner on Crowdin! We'd love to support your language.
+      </span>
+    </div>
+  </div>
+  <div class="extra-margin-bottom"></div>
+</div>

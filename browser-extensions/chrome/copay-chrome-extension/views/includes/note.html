@@ -1,0 +1,15 @@
+<div class="columns m20t">
+  <label class="size-14 text-center">
+    <span ng-show="!comment" translate>Add comment</span>
+    <span ng-show="comment" translate>Edit comment</span>
+  </label>
+  <input type="text" ng-model="data.comment" autofocus>
+</div>
+<div class="row m20t dib">
+  <div class="half-row left">
+    <button class="round outline dark-gray expand" ng-click="commentPopupClose()" translate>Cancel</button>
+  </div>
+  <div class="half-row left">
+    <button ng-style="{'background-color': index.backgroundColor}" class="round outline expand" ng-click="commentPopupSave()" translate>Save</button>
+  </div>
+</div>

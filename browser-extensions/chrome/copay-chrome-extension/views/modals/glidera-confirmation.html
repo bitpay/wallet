@@ -1,0 +1,18 @@
+<ion-modal-view ng-controller="glideraConfirmationController">
+  <div class="m20tp text-center">
+    <div class="row">
+    <h1 class="text-center m20b p20h">Are you sure you would like to log out of your Glidera account?</h1>
+    <p class="text-gray p20h">You will need to log back in to buy or sell bitcoin in Copay.</p>
+    <div class="large-6 medium-6 small-6 columns">
+      <button class="button light-gray expand outline round" ng-click="cancel()">
+        <i class="fi-arrow-left"></i> <span class="tu">Back</span>
+      </button>
+    </div>
+    <div class="large-6 medium-6 small-6 columns">
+      <button class="button warning expand round" ng-click="ok()">
+        <span>Log out</span>
+      </button>
+    </div>
+    </div>
+  </div>
+</ion-modal-view>

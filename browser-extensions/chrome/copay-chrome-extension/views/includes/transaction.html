@@ -1,0 +1,38 @@
+<div class="row collapse last-transactions-content line-b"
+  ng-class="{'text-gray':!tx.pendingForUs}"
+  ng-click="home.openTxpModal(tx, index.copayers, !!index.glideraStatus)">
+  <div class="large-6 medium-6 small-6 columns size-14">
+    <div class="m10r left pr">
+      <i class="icon-circle-active size-10" ng-show="tx.pendingForUs" ng-style="{'color':index.backgroundColor}"></i>
+      <img src="img/icon-proposal.svg" alt="sync" width="40">
+    </div>
+    <div class="m10t">
+      <div ng-show="!tx.merchant">
+        <span ng-show="index.addressbook[tx.toAddress] && !tx.message">
+          {{index.addressbook[tx.toAddress]}}
+        </span>
+        <span class="ellipsis" ng-show="!index.addressbook[tx.toAddress] && tx.message">
+          {{tx.message}}
+        </span>
+        <span ng-show="!index.addressbook[tx.toAddress] && !tx.message" translate>
+          Sending
+        </span>
+      </div>
+      <div ng-show="tx.merchant">
+        <span ng-show="tx.merchant.pr.ca"><i class="fi-lock"></i> {{tx.merchant.domain}}</span>
+        <span ng-show="!tx.merchant.pr.ca"><i class="fi-unlock"></i> {{tx.merchant.domain}}</span>
+      </div>
+    </div>
+  </div>
+  <div class="large-5 medium-5 small-5 columns text-right">
+    <span class="size-16">
+      - {{tx.amountStr}}
+    </span>
+    <div class="size-12 text-gray">
+      <time>{{ (tx.ts || tx.createdOn ) * 1000 | amTimeAgo}}</time>
+    </div>
+  </div>
+  <div class="large-1 medium-1 small-1 columns text-right m10t">
+    <i class="icon-arrow-right3 size-18"></i>
+  </div>
+</div>

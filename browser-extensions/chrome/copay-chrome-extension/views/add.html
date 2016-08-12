@@ -1,0 +1,34 @@
+<div 
+  class="topbar-container" 
+  ng-include="'views/includes/topbar.html'"
+  ng-init="titleSection='Add wallet'; closeToHome = true; noColor = true">
+</div>
+
+
+
+<div class="content">
+<ul class="no-bullet manage size-12">
+	<li>
+		<a title="Create new wallet" href ui-sref="create">
+			<i class="fi-plus circle plus-fixed"></i>	
+			<i class="icon-arrow-right3 size-18 right m20t"></i>  
+			<span translate>Create new wallet</span>
+		</a>
+	</li>
+	<li>
+		<a title="Join shared wallet"  href ui-sref="join">
+			<i class="icon-people circle"></i>	  
+			<i class="icon-arrow-right3 size-18 right m20t"></i>  
+			<span translate>Join shared wallet</span>
+		</a>
+	</li>
+	<li>
+		<a title="Import wallet"   href ui-sref="import">
+			<i class="icon-download circle"></i>	  
+			<i class="icon-arrow-right3 size-18 right m20t"></i>  
+			<span translate>Import wallet </span>
+		</a>
+	</li>
+
+</ul>
+</div>

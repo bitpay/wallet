@@ -1,0 +1,104 @@
+<ion-modal-view ng-controller="coinbaseTxDetailsController">
+  <ion-header-bar align-title="center" class="tab-bar" ng-style="{'background-color': '#2b71b1'}">
+    <div class="left-small">
+      <a ng-click="cancel()">
+        <i class="icon-arrow-left3 icon-back"></i>
+        <span class="text-back">Back</span>
+      </a>
+    </div>
+    <h1 class="title ellipsis" translate>Details</h1>
+  </ion-header-bar>
+
+  <ion-content>
+    <div class="modal-content fix-modals-touch">
+      <div class="header-modal bg-gray text-center">
+        <div class="p20">
+          <img src="img/bought.svg" alt="bought" width="65" ng-show="(tx.type == 'buy' || (tx.type == 'send' && tx.to)) && tx.status == 'completed'">
+          <img src="img/bought-pending.svg" alt="bought" width="65"
+          ng-show="(tx.type == 'buy' || (tx.type == 'send' && tx.to)) && tx.status != 'completed'">
+          <img src="img/sold.svg" alt="bought" width="65" ng-show="tx.type == 'sell' && tx.status == 'completed'">
+          <img src="img/sold-pending.svg" alt="bought" width="65"
+            ng-show="(tx.type == 'sell' || (tx.type == 'send' && tx.from)) && tx.status != 'completed'">
+        </div>
+        <div ng-show="tx.status == 'completed'">
+          <span ng-show="tx.type == 'buy' || tx.type == 'send'">Bought</span>
+          <span ng-show="tx.type == 'sell'">Sold</span>
+        </div>
+        <div ng-show="tx.type == 'send' && (tx.to || tx.from) && tx.status != 'completed'">
+          <span ng-show="tx.to">Receiving purchased bitcoin</span>
+          <span ng-show="tx.from">Sending bitcoin to sell</span>
+        </div>
+        <div ng-show="(tx.type == 'sell' || tx.type == 'buy') && tx.status != 'completed'">
+          <span ng-show="tx.type == 'buy'">Buying bitcoin</span>
+          <span ng-show="tx.type == 'sell'">Selling bitcoin</span>
+        </div>
+        <div class="size-24 text-bold">
+          <span ng-if="tx.type == 'sell' || (tx.type == 'send' && tx.from)">-</span>{{tx.amount.amount.replace('-','')}}
+          {{tx.amount.currency}}
+        </div>
+        <div class="label gray radius m10b">
+          <span ng-if="tx.type == 'sell' || (tx.type == 'send' && tx.from)">-</span>{{tx.native_amount.amount.replace('-','')}}
+          {{tx.native_amount.currency}}
+        </div>
+      </div>
+
+
+      <div class="m20b box-notification" ng-show="tx.error">
+        <ul class="no-bullet m0 text-warning size-12">
+          <li ng-repeat="err in tx.error.errors" ng-bind-html="err.message"></li>
+        </ul>
+      </div>
+
+      <ul class="no-bullet size-14">
+
+        <li ng-show="tx.details && tx.status != 'pending'" class="line-b p10 oh">
+          <span class="text-gray">{{tx.details.title}}</span>
+          <span class="right">{{tx.details.subtitle}}</span>
+        </li>
+
+        <li class="line-b p10 oh">
+          <span class="text-gray">Status</span>
+          <span class="text-success right" ng-if="tx.status == 'completed'">Completed</span>
+          <span class="text-info right" ng-if="tx.status == 'pending'">Pending</span>
+          <span class="text-warning right" ng-if="tx.status == 'error'">Error</span>
+        </li>
+
+        <li ng-show="tx.created_at" class="line-b p10 oh">
+          <span class="text-gray">Date</span>
+          <span class="right">{{tx.created_at | amCalendar}}</span>
+        </li>
+
+        <li ng-show="tx.price_sensitivity" class="line-b p10 oh">
+          <span class="text-gray">Price Sensitivity</span>
+          <span class="right">{{tx.price_sensitivity.name}}</span>
+        </li>
+
+        <li ng-show="tx.sell_price_amount" class="line-b p10 oh">
+          <span class="text-gray">Sell Price</span>
+          <span class="right">{{tx.sell_price_amount}} {{tx.sell_price_currency}}</span>
+        </li>
+
+        <li ng-show="tx.description" class="line-b p10 oh">
+          <span class="text-gray" ng-show="tx.from && tx.type == 'send'">Sent bitcoin from</span>
+          <span class="text-gray" ng-show="tx.to && tx.type == 'send'">Receive bitcoin in</span>
+          <span class="right text-bold">{{tx.description}}</span>
+        </li>
+      </ul>
+
+      <div class="row m20t" ng-show="tx.status == 'error'">
+        <div class="columns">
+          <p class="text-center size-12 text-gray">
+            This action will remove the transaction.
+          </p>
+          <button class="button outline round dark-gray expand tiny"
+                  ng-click="remove()">
+            <i class="fi-x"></i>
+            Remove
+          </button>
+        </div>
+      </div>
+
+      <div class="extra-margin-bottom"></div>
+    </div>
+  </ion-content>
+</ion-modal-view>

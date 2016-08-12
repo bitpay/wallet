@@ -1,0 +1,84 @@
+<div
+  class="topbar-container"
+  ng-include="'views/includes/topbar.html'"
+  ng-init="titleSection='Sweep paper wallet'; goBackToState = 'preferencesAdvanced';">
+</div>
+
+<div class="content preferences" ng-controller="paperWalletController">
+  <div class="row" ng-show="index.needsBackup">
+    <div class="columns">
+      <h4></h4>
+      <div class="size-14 text-warning m20b">
+        <i class="fi-alert size-12"></i>
+        <span class="text-warning" translate>Backup Needed</span>.
+        <span translate>
+          Before receiving funds, you must backup your wallet. If this device is lost, it is impossible to access your funds without a backup.
+        </span>
+      </div>
+      <div class="text-center m20t">
+      <a class="button outline round dark-gray" href ui-sref="preferences" >
+        <span translate>Preferences</span>
+      </a>
+    </div>
+    </div>
+
+  </div>
+  <div ng-show="!index.needsBackup">
+    <h4 ng-show="!error"></h4>
+    <div class="box-notification m20b" ng-show="error">
+      <span class="text-warning">{{error|translate}}</span>
+    </div>
+    <form ng-show="!balance" class="oh">
+      <div class="row">
+        <div class="large-12 medium-12 columns">
+          <div class="input">
+            <label for="inputData" translate>Paper Wallet Private Key</label>
+            <input type="text" placeholder="{{'Paste your paper wallet private key here'|translate}}" ng-model="inputData" id="inputData" ng-change="onData(inputData)">
+            <div class="qr-scanner-input">
+              <qr-scanner on-scan="onQrCodeScanned(data)"></qr-scanner>
+            </div>
+            <div ng-show="isPkEncrypted">
+              <label for="passphrase">
+                <span translate>Password</span>
+              </label>
+              <input id="passphrase" type="password" name="passphrase" placeholder="{{'Passphrase'|translate}}" ng-model="passphrase">
+              <p ng-show="index.isCordova" translate class="size-12 text-gray">
+                Decrypting a paper wallet could take around 5 minutes on this device. please be patient and keep the app open.
+              </p>
+            </div>
+            <button
+              ng-disabled="scanning || !scannedKey"
+              ng-style="{'background-color':index.backgroundColor}"
+              class="button black round expand"
+              ng-click="scanFunds()"
+              translate>Scan Wallet Funds
+            </button>
+          </div>
+        </div>
+      </div>
+    </form>
+    <div ng-show="balance" class="row">
+       <div class="large-12 medium-12 columns">
+         <div class="text-center m20b">
+           <h4 class="text-bold" translate>Funds found</h4>
+           <div class="size-24">
+             {{balance}}
+           </div>
+         </div>
+
+        <button
+          ng-disabled="sending || balanceSat <= 0"
+          ng-style="{'background-color':index.backgroundColor}"
+          class="button black round expand"
+          ng-click="sweepWallet()"
+          translate>Sweep Wallet
+        </button>
+      </div>
+    </div>
+    <div class="text-center size-12 text-gray">
+      <span translate>Funds will be transferred to</span>:
+      <b>{{index.alias || index.walletName}}</b>
+    </div>
+  </div>
+</div>
+<div class="extra-margin-bottom"></div>

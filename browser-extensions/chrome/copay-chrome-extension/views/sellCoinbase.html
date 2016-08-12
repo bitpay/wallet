@@ -1,0 +1,202 @@
+<div
+  class="topbar-container"
+  ng-include="'views/includes/topbar.html'"
+  ng-init="titleSection='Sell'; goBackToState = 'coinbase'; noColor = true">
+</div>
+
+
+<div class="content coinbase" ng-controller="sellCoinbaseController as sell">
+
+  <div class="row m20t" ng-show="sell.error || index.coinbaseError" ng-click="sell.error = null">
+    <div class="columns">
+      <div class="box-notification">
+        <ul class="no-bullet m0 size-12 text-warning">
+          <li ng-repeat="err in (sell.error.errors || index.coinbaseError.errors)" ng-bind-html="err.message"></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="row m20ti"
+    ng-show="index.coinbaseAccount && !sell.sellInfo && !sell.sendInfo">
+    <div class="columns">
+      <form
+         name="sellCoinbaseForm"
+         ng-submit="sell.depositFunds(index.coinbaseToken, index.coinbaseAccount)"
+         novalidate>
+
+
+        <div ng-show="!showPriceSensitivity">
+
+          <div
+           ng-if="index.coinbaseToken"
+           ng-init="sell.init(index.coinbaseTestnet)"
+           ng-click="openWalletsModal(sell.allWallets)">
+            <label>Copay Wallet</label>
+            <div class="input">
+              <input type="text" id="address" name="address" ng-disabled="sell.selectedWalletId"
+              ng-attr-placeholder="{{'Choose your source wallet'}}"
+              ng-model="sell.selectedWalletName" required>
+              <a class="postfix size-12 m0 text-gray">
+                <i class="icon-wallet size-18"></i>
+              </a>
+            </div>
+          </div>
+
+          <label>
+            Amount
+            <span
+              ng-if="index.coinbaseToken"
+              ng-init="sell.getPrice(index.coinbaseToken)"
+              ng-show="sell.sellPrice"
+              class="size-11 text-light right">
+              1 BTC <i class="icon-arrow-right"></i> {{sell.sellPrice.amount}} {{sell.sellPrice.currency}}
+            </span>
+          </label>
+          <div class="input">
+            <input ng-show="!showAlternative" type="number" id="amount" ignore-mouse-wheel
+            name="amount" ng-attr-placeholder="{{'Amount in ' + (showAlternative ? 'USD' : 'BTC')}}"
+            ng-minlength="0.00000001" ng-maxlength="10000000000"
+            ng-model="amount" autocomplete="off">
+
+            <input ng-show="showAlternative" type="number" id="fiat" ignore-mouse-wheel
+            name="fiat" ng-attr-placeholder="{{'Amount in ' + (showAlternative ? 'USD' : 'BTC')}}"
+            ng-model="fiat" autocomplete="off">
+
+            <a ng-show="!showAlternative" class="postfix button"
+              ng-click="showAlternative = true; amount = null">BTC</a>
+            <a ng-show="showAlternative" class="postfix button black"
+              ng-click="showAlternative = false; fiat = null">USD</a>
+          </div>
+
+          <div class="text-center text-gray size-12 m10b">
+            <span ng-show="!(amount || fiat)">
+              Enter the amount to get the exchange rate
+            </span>
+            <span ng-show="!sell.sellPrice && (amount || fiat)">
+              Not available
+            </span>
+            <span ng-show="sell.sellPrice && amount && !fiat">
+              ~ {{sell.sellPrice.amount * amount | currency : 'USD ' : 2}}
+            </span>
+          </div>
+
+          <div class="text-center">
+            <i class="db fi-arrow-down size-24 m10v"></i>
+          </div>
+
+          <div ng-if="index.coinbaseToken" ng-init="sell.getPaymentMethods(index.coinbaseToken)">
+            <label>Deposit into</label>
+            <select
+              ng-model="selectedPaymentMethod.id"
+              ng-options="item.id as item.name for item in sell.paymentMethods">
+            </select>
+          </div>
+          <div class="input m20t">
+            <a href class="button black expand round"
+                   ng-disabled=" (!amount && !fiat) || !sell.sellPrice.amount"
+                   ng-style="{'background-color': '#2b71b1'}"
+                   ng-click="showPriceSensitivity = true">Continue</a>
+          </div>
+        </div>
+
+        <div ng-show="showPriceSensitivity">
+          <h1>Price Sensitivity</h1>
+          <p class="size-14 text-gray">
+            Coinbase has not yet implemented an immediate method to sell bitcoin from a wallet. To make this sale, funds
+            will be sent to your Coinbase account, and sold when Coinbase accepts the transaction (usually one
+            hour).
+          </p>
+          <label>At what percentage lower price would you accept to sell?</label>
+          <select
+            ng-model="selectedPriceSensitivity"
+            ng-options="item as item.name for item in priceSensitivity track by item.value">
+          </select>
+          <p class="size-12 text-gray">
+          Estimated sale value: {{sell.sellPrice.amount * amount | currency : 'USD ' : 2}} <br>
+          Still sell if price fall until:
+          {{(sell.sellPrice.amount - (selectedPriceSensitivity.value / 100) * sell.sellPrice.amount) * amount | currency : 'USD ' : 2}}
+          </p>
+
+          <div class="input m20t row">
+            <div class="columns large-6 medium-6 small-6">
+              <a href class="button outline dark-gray expand round" ng-click="showPriceSensitivity = false">Back</a>
+            </div>
+            <div class="columns large-6 medium-6 small-6">
+            <input class="button black expand round"
+                   ng-disabled="(!amount && !fiat) || !sell.sellPrice.amount"
+                   ng-style="{'background-color': '#2b71b1'}"
+                   type="submit" value="Confirm">
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="m20ti row" ng-show="sell.sendInfo && !sell.sellInfo && !sell.success">
+    <div class="columns">
+      <h1>Funds sent to Coinbase Account</h1>
+      <p class="size-12 text-gray">
+        The transaction is not yet confirmed, and will show as "Processing" in your Activity. The bitcoin sale will be completed automatically once it is confirmed by Coinbase.
+      </p>
+      <button class="m20t outline black round expand"
+              ng-style="{'background-color': '#2b71b1'}"
+              ng-click="$root.go('coinbase')">OK</button>
+    </div>
+  </div>
+
+  <div ng-show="sell.sellInfo && !sell.sendInfo && !sell.success">
+    <h4 class="title">Confirm transaction</h4>
+
+    <ul class="no-bullet m10t size-12 white">
+      <li class="line-b line-t p15">
+        <span class="m10 text-normal text-bold">Amount</span>
+        <span class="right text-gray">{{sell.sellInfo.amount.amount}} {{sell.sellInfo.amount.currency}}</span>
+      </li>
+      <li class="line-b oh p15">
+        <span class="m10 text-normal text-bold">Fees</span>
+        <span class="right text-gray">
+          <div ng-repeat="fee in sell.sellInfo.fees">
+            <b>{{fee.type}}</b> {{fee.amount.amount}} {{fee.amount.currency}}
+          </div>
+        </span>
+      </li>
+      <li class="line-b p15">
+        <span class="m10 text-normal text-bold">Subtotal</span>
+        <span class="right text-gray">{{sell.sellInfo.subtotal.amount}} {{sell.sellInfo.subtotal.currency}}</span>
+      </li>
+      <li class="line-b p15">
+        <span class="m10 text-normal text-bold">Total</span>
+        <span class="right text-gray">{{sell.sellInfo.total.amount}} {{sell.sellInfo.total.currency}}</span>
+      </li>
+      <li class="line-b p15">
+        <span class="m10 text-normal text-bold">Payout at</span>
+        <span class="right text-gray">{{sell.sellInfo.payout_at | amCalendar}}</span>
+      </li>
+    </ul>
+    <div class="row">
+      <div class="columns">
+        <button class="button black round expand"
+                ng-style="{'background-color': '#2b71b1'}"
+                ng-click="sell.confirmSell(index.coinbaseToken, index.coinbaseAccount, sell.sellInfo)"
+                >
+          Sell
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="m20t row text-center" ng-show="sell.success">
+    <div class="columns">
+      <h1>Sale initiated</h1>
+      <p class="text-gray">
+      A transfer has been initiated to your bank account and should arrive at {{sell.success.payout_at | amCalendar}}.
+      </p>
+
+      <button class="outline dark-gray round expand"
+              ng-click="$root.go('coinbase')">OK</button>
+    </div>
+  </div>
+
+</div>
+<div class="extra-margin-bottom"></div>

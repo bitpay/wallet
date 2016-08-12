@@ -1,0 +1,171 @@
+
+<div class="topbar-container">
+  <nav ng-controller="topbarController as topbar"
+       class="tab-bar"
+       ng-style="{'background-color': '#2b71b1'}">
+    <section class="left-small">
+      <a class="p10"
+         ng-click="topbar.goHome()">
+        <span class="text-close">Close</span>
+      </a>
+    </section>
+
+    <section class="right-small" ng-show="index.coinbaseAccount">
+      <a class="p10" href ui-sref="preferencesCoinbase">
+        <i class="fi-widget size-24"></i>
+      </a>
+    </section>
+
+    <section class="middle tab-bar-section">
+      <h1 class="title ellipsis">
+        Buy & Sell Bitcoin
+      </h1>
+    </section>
+  </nav>
+</div>
+
+<div class="content coinbase p20b" ng-controller="coinbaseController as coinbase">
+  <div class="row" ng-show="index.coinbaseError || (index.coinbaseToken && !index.coinbaseAccount)">
+    <div class="m20b box-notification" ng-show="index.coinbaseError">
+      <ul class="no-bullet m0 text-warning size-12">
+        <li ng-repeat="err in index.coinbaseError.errors" ng-bind-html="err.message"></li>
+      </ul>
+    </div>
+    <div class="m20b box-notification" ng-show="index.coinbaseToken && !index.coinbaseAccount">
+      <div class="text-warning">
+        <span>Your primary account should be a WALLET. Set your wallet account as primary and try again.</span>
+      </div>
+    </div>
+    <div class="m10t text-center">
+      <button
+        class="dark-gray outline round tiny"
+        ng-click="index.initCoinbase(index.coinbaseToken)">
+        Reconnect
+      </button>
+      <div class="m20t size-12">
+        Or go to <a class="text-gray" href ui-sref="preferencesCoinbase">Preferences</a> and log out manually.
+      </div>
+    </div>
+  </div>
+
+  <div ng-if="!index.coinbaseToken && !index.coinbaseError" class="row">
+    <div class="box-notification text-center size-12 text-warning" ng-show="index.coinbaseTestnet">
+      <i class="fi-info"></i>
+      Testnet wallets only work with Coinbase Sandbox Accounts
+    </div>
+    <div class="columns" ng-init="showOauthForm = false">
+      <div class="text-center m20v">
+        <img src="img/coinbase-logo.png" width="200">
+      </div>
+      <div class="text-center small-10 small-centered columns" ng-show="!showOauthForm">
+
+        <p class="m20t text-gray size-12">Connect your Coinbase account to get started</p>
+
+        <a class="button light-gray outline round small"
+          ng-click="coinbase.openAuthenticateWindow(); showOauthForm = true">
+          Connect to Coinbase
+        </a>
+        <div>
+          <a href ng-click="showOauthForm = true" class="text-gray size-12">
+            Do you already have the Oauth Code?
+          </a>
+        </div>
+      </div>
+      <div class="text-center" ng-show="showOauthForm">
+        <div class="text-left box-notification" ng-show="coinbase.error">
+          <ul class="no-bullet m0 text-warning size-12">
+            <li ng-repeat="err in coinbase.error.errors" ng-bind-html="err.message"></li>
+          </ul>
+        </div>
+        <form name="oauthCodeForm" ng-submit="coinbase.submitOauthCode(code)" novalidate>
+          <label>OAuth Code</label>
+          <input type="text" ng-model="code" ng-disabled="coinbase.loading"
+          ng-attr-placeholder="{{'Paste the authorization code here'}}" required>
+          <input
+            class="button expand round"
+            ng-style="{'background-color': '#2b71b1'}"
+            type="submit" value="Get started" ng-disabled="oauthCodeForm.$invalid || coinbase.loading">
+        </form>
+        <button class="button light-gray expand outline round"
+          ng-click="showOauthForm = false; index.coinbaseError = null; coinbase.error = null">
+          <i class="fi-arrow-left"></i> <span class="tu">Back</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div ng-if="index.coinbaseToken && index.coinbaseAccount && !index.coinbaseError">
+
+    <div class="p20v text-center" ng-show="index.coinbaseAccount" ng-click="index.updateCoinbase({updateAccount: true})">
+      <img src="img/coinbase-logo.png" width="100">
+    </div>
+
+    <ul ng-show="index.coinbaseAccount" class="no-bullet m0 size-12">
+      <li class="line-b line-t p15 pointer"
+        href ui-sref="buyCoinbase">
+        <img src="img/buy-bitcoin.svg" alt="buy bitcoin" width="30">
+        <span class="m10 text-normal text-bold">Buy Bitcoin</span>
+        <span class="right text-gray">
+          <i class="icon-arrow-right3 size-24 right"></i>
+        </span>
+      </li>
+      <li class="line-b p15 pointer"
+        href ui-sref="sellCoinbase">
+        <img src="img/sell-bitcoin.svg" alt="sell bitcoin" width="30">
+        <span class="m10 text-normal text-bold">Sell Bitcoin</span>
+        <span class="right text-gray">
+          <i class="icon-arrow-right3 size-24 right"></i>
+        </span>
+      </li>
+    </ul>
+
+    <div ng-show="index.coinbasePendingTransactions && !index.coinbaseError">
+      <h4 class="title">Activity</h4>
+      <div class="m20b box-notification" ng-show="index.coinbasePendingError">
+        <ul class="no-bullet m0 text-warning size-12">
+          <li ng-repeat="err in index.coinbasePendingError.errors" ng-bind-html="err.message"></li>
+        </ul>
+      </div>
+      <div ng-repeat="(id, tx) in index.coinbasePendingTransactions | orderObjectBy:'updated_at':true track by $index"
+        ng-click="coinbase.openTxModal(tx)"
+        class="row collapse last-transactions-content">
+        <div class="large-2 medium-2 small-2 columns">
+          <img src="img/bought-pending.svg" alt="bought" width="24" ng-show="(tx.type == 'buy' || (tx.to && tx.type == 'send')) && tx.status != 'completed'">
+          <img src="img/bought.svg" alt="bought" width="30" ng-show="(tx.type == 'buy' || (tx.to && tx.type == 'send')) && tx.status == 'completed'">
+          <img src="img/sold-pending.svg" alt="sold" width="24" ng-show="tx.from && tx.type == 'send'">
+          <img src="img/sold.svg" alt="sold" width="30" ng-show="!tx.from && tx.type == 'sell' && tx.status == 'completed'">
+        </div>
+
+        <div class="large-5 medium-5 small-5 columns">
+          <div class="size-12 m5t">
+            <span ng-show="tx.type == 'sell' && tx.status == 'completed'">Sold</span>
+            <span ng-show="tx.type == 'buy' && tx.status == 'completed'">Bought</span>
+            <span class="text-bold">
+              <span ng-if="tx.type == 'sell' || (tx.type == 'send' && tx.from)">-</span>{{tx.amount.amount.replace('-','')}}
+              {{tx.amount.currency}}
+            </span>
+          </div>
+        </div>
+        <div class="large-4 medium-4 small-4 columns text-right">
+          <div ng-show="tx.error" class="m5t size-12 text-warning">
+            Error
+          </div>
+          <div ng-show="!tx.error" class="m5t size-12 text-gray">
+            <div ng-show="tx.status == 'completed'">
+              <time ng-if="tx.created_at">{{tx.created_at | amTimeAgo}}</time>
+            </div>
+            <div ng-show="tx.status == 'pending'">
+              <span class="label outline gray radius text-gray text-info" ng-if="tx.status == 'pending'">Pending</span>
+            </div>
+          </div>
+        </div>
+        <div class="large-1 medium-1 small-1 columns text-right">
+          <i class="icon-arrow-right3 size-18"></i>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="extra-margin-bottom"></div>
+</div>

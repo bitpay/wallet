@@ -1,0 +1,62 @@
+<div
+  class="topbar-container"
+  ng-include="'views/includes/topbar.html'"
+  ng-init="">
+</div>
+
+<div class="copayers content p20v" ng-controller="copayersController as copayers" ng-init="copayers.init()">
+  <div ng-show="!index.notAuthorized">
+    <h1 class="text-center" translate>Share this invitation with your copayers</h1>
+
+    <div ng-click="copayers.copySecret(index.walletSecret)" ng-class="{'enable_text_select': !index.isCordova}">
+      <div class="text-center">
+        <qrcode size="220" error-correction-level="L" data="{{index.walletSecret}}"></qrcode>
+        <div ng-show="!index.walletSecret" style="position:relative; top:-226px; height:0px">
+          <div style="height:220px; width:220px; margin:auto; background: white">
+            <ion-spinner class="spinner-stable" icon="lines"></ion-spinner>
+          </div>
+        </div>
+        <div class="secret" ng-show="!index.isCordova">
+          {{index.walletSecret || ('Loading...'|translate)}}
+        </div>
+      </div>
+    </div>
+
+    <div ng-show="index.walletSecret">
+      <div class="text-center m10t" ng-if="index.isCordova">
+        <span class="button outline round dark-gray tiny m0"
+          ng-click="copayers.shareSecret(index.walletSecret)">
+          <i class="fi-share"></i>
+          <span translate>Share invitation</span>
+        </span>
+      </div>
+
+      <div class="m30v line-t">
+        <h4 class="size-14 p10h m10t">
+          <span translate>Waiting for copayers</span>
+          <span class="text-gray right">
+            [ <span translate>{{index.m}}-of-{{index.n}}</span> ]
+          </span>
+        </h4>
+        <div class="white line-b p10" ng-include="'views/includes/copayers.html'"></div>
+        <div ng-if="!index.isComplete" class="line-b p10 white size-12">
+          <i class="fi-loop m5r p10l"></i>
+          <span translate>Waiting...</span>
+        </div>
+      </div>
+
+      <div class="m20b text-center" ng-show="index.notAuthorized">
+        <h1 translate>Wallet incomplete and broken</h1>
+        <h4 translate>Delete it and create a new one</h4>
+      </div>
+
+      <div class="text-center">
+        <button class="tiny round outline dark-gray warning" ng-click="copayers.deleteWallet()">
+          <i class="fi-trash"></i> <span translate>Cancel and delete the wallet</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="extra-margin-bottom"></div>
+</div>

@@ -1,0 +1,18 @@
+<ion-modal-view ng-controller="confirmationController">
+  <div class="m20tp text-center">
+    <div class="row">
+    <h1 class="text-center m20b p20">{{title|translate}}</h1>
+      <div class="large-6 medium-6 small-6 columns">
+        <button class="button warning expand round" ng-disabled="loading" ng-click="ok()">
+          <i class="fi-trash"></i> <span translate>Yes</span>
+        </button>
+      </div>
+      <div class="large-6 medium-6 small-6 columns">
+        <button class="button light-gray expand outline round" ng-disabled="loading"
+          ng-click="cancel()">
+          <i class="fi-x"></i> <span class="tu" translate>Cancel</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</ion-modal-view>

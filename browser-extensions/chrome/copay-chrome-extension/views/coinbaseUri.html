@@ -1,0 +1,22 @@
+<div
+  class="topbar-container"
+  ng-include="'views/includes/topbar.html'"
+  ng-init="titleSection='Coinbase'; closeToHome = true">
+</div>
+
+<div class="content coinbase" ng-controller="coinbaseUriController as coinbase" ng-init="coinbase.checkCode()">
+
+  <div class="row m20t">
+    <div class="large-12 columns">
+      <div class="text-center">
+        <img src="img/coinbase-logo.png"
+        ng-click="index.updateCoinbase()" width="100">
+      </div>
+
+      <div class="m10t text-center" ng-show="coinbase.error">
+        <div class="notification m10b size-12 text-warning">{{coinbase.error}}</div>
+        <button class="outline dark-gray tiny round" ng-click="coinbase.submitOauthCode(coinbase.code)">Try again</button>
+      </div>
+    </div>
+  </div>
+</div>

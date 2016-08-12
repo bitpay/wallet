@@ -1,0 +1,28 @@
+<nav ng-controller="topbarController as topbar"
+  class="tab-bar" ng-style="{'background-color': noColor ? '#4B6178' : index.backgroundColor}">
+  <section class="left-small">
+    <a id="hamburger" class="p10" ng-show="!goBackToState && !closeToHome  && !index.noFocusedWallet && index.physicalScreenWidth < 768"
+      on-tap="index.toggleLeftMenu()"><i class="fi-list size-24"></i>
+    </a>
+    <a ng-show="goBackToState" ng-click="$root.go(goBackToState); goBackToState = null"><i class="icon-arrow-left3 icon-back"></i>
+      <span class="text-back" translate>Back</span>
+    </a>
+
+    <a ng-show="closeToHome" class="p10 "
+      ng-click="topbar.goHome(); index.setCompactTxHistory(); closeToHome = null">
+      <span class="text-close" translate>Close</span>
+    </a>
+  </section>
+
+  <section class="right-small" ng-show="showPreferences && !index.noFocusedWallet">
+    <a class="p10" ng-click="topbar.goPreferences(); index.setCompactTxHistory()">
+      <i class="fi-widget size-24"></i>
+    </a>
+  </section>
+
+  <section class="middle tab-bar-section">
+    <h1 class="title ellipsis">
+      {{(titleSection|translate) || (index.alias || index.walletName)}}
+    </h1>
+  </section>
+</nav>

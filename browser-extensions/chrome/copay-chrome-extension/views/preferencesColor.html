@@ -1,0 +1,11 @@
+<div class="topbar-container" ng-include="'views/includes/topbar.html'"
+  ng-init="titleSection='Color'; goBackToState = 'preferences'">
+</div>
+
+<div class="content preferences" ng-controller="preferencesColorController">
+  <h4></h4>
+
+  <ion-radio class="size-12" ng-repeat="c in colorList" ng-value="c" ng-model="currentColor" ng-click="save(c)">
+    <span ng-style="{'color': c}">&block;</span>
+  </ion-radio>
+</div>

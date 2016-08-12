@@ -1,0 +1,20 @@
+<div
+  class="topbar-container"
+  ng-include="'views/includes/topbar.html'"
+  ng-init="titleSection='Buy and Sell'; closeToHome = true; noColor = true">
+</div>
+
+<div class="content">
+<ul class="no-bullet manage text-center">
+  <li class="white m20t" ng-show="index.glideraEnabled">
+		<a  href ui-sref="glidera">
+      <img src="img/glidera-logo.png" width="150">
+		</a>
+	</li>
+  <li class="white m20t" ng-show="index.coinbaseEnabled">
+		<a  href ui-sref="coinbase">
+      <img src="img/coinbase-logo.png" width="150">
+		</a>
+	</li>
+</ul>
+</div>
