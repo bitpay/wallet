@@ -160,8 +160,6 @@ angular.module('copayApp.controllers').controller('inputAmountController', funct
         $ionicScrollDelegate.resize();
       }, 100);
     } else {
-      // self.setAmount(amount, $scope.showAlternativeAmount);
-      // $scope.cancel();
       $scope.sending = true;
       $scope.sendingAmount = profileService.formatAmount(amount * unitToSatoshi, true);
       $scope.sendingAlternativeAmount = $filter('formatFiatAmount')(alternativeAmount);

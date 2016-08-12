@@ -1,14 +1,12 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('tabSendController', function($scope, $ionicModal, addressbookService, profileService, configService, lodash) {
+angular.module('copayApp.controllers').controller('tabSendController', function($scope, $ionicModal, $log, addressbookService, profileService, configService, lodash) {
   var completeList;
 
   $scope.init = function() {
     addressbookService.list(function(err, ab) {
-      if (err) {
-        console.log('ERROR:', err);
-        return;
-      }
+      if (err) $log.error(err);
+
       // $scope.contactList = lodash.isEmpty(ab) ? null : ab;
       $scope.contactList = [{
         label: 'Javier',
@@ -29,7 +27,6 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
     config.colorFor = config.colorFor || {};
     config.aliasFor = config.aliasFor || {};
 
-    // Sanitize empty wallets (fixed in BWC 1.8.1, and auto fixed when wallets completes)
     var credentials = lodash.filter(profileService.profile.credentials, 'walletName');
     var ret = lodash.map(credentials, function(c) {
       return {
@@ -50,6 +47,7 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
       var val = item.label || item.alias || item.name;
       return lodash.includes(val.toLowerCase(), $scope.search.toLowerCase());
     });
+
     if (lodash.isEmpty(result) || lodash.isEmpty($scope.search)) {
       $scope.list = completeList;
       return;
