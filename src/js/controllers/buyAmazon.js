@@ -35,7 +35,7 @@ angular.module('copayApp.controllers').controller('buyAmazonController',
     $scope.openWalletsModal = function(wallets) {
       self.error = null;
 
-      $scope.type = 'SELL';
+      $scope.type = 'GIFT';
       $scope.wallets = wallets;
       $scope.self = self;
 

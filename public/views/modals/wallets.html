@@ -7,7 +7,7 @@
     </div>
     <h1 class="title ellipsis">
       <span ng-show="type == 'BUY' || type == 'RECEIVE'">Choose your destination wallet</span>
-      <span ng-show="type == 'SELL' || type == 'SEND'">Choose your source wallet</span>
+      <span ng-show="type == 'SELL' || type == 'SEND' || type == 'GIFT'">Choose your source wallet</span>
     </h1>
   </ion-header-bar>
 
@@ -17,17 +17,20 @@
       <div class="box-notification text-center size-12 text-warning m10t" ng-show="error">
         <i class="fi-error"></i> {{error}}
       </div>
-      <div ng-show="type == 'SELL'">
+      <div ng-show="type == 'SELL' || type == 'GIFT'">
         <h4 class="title m0 oh">
           <div class="left">
             <i class="fi-info size-18 m10r"></i>
           </div>
-          <div class="size-10 m5t">
-            Notice: only 1-1 (single signature) wallets can be used for sell bitcoin
+          <div class="size-10 m5t" ng-show="type == 'SELL'">
+            Notice: only 1-1 (single signature) wallets can be used to sell bitcoin
+          </div>
+          <div class="size-10 m5t" ng-show="type == 'GIFT'">
+            Notice: only 1-1 (single signature) wallets can be used to buy a gift card
           </div>
         </h4>
       </div>
-      <div ng-show="type != 'SELL'">
+      <div ng-show="type != 'SELL' && type != 'GIFT'">
         <h4 class="title m0 oh">
         </h4>
       </div>
