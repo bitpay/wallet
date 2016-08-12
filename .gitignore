@@ -107,7 +107,7 @@ public/lib/*
 public/js/*
 
 ## templates
-appConfig.json
+./appConfig.json
 cordova/Makefile
 cordova/ProjectMakefile
 app-template/bpapp
