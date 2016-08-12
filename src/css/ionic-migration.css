@@ -28,6 +28,10 @@
 	display: none !important;
 }
 
+.swiper-container-horizontal>.swiper-pagination{
+	display: none;
+}
+
 .bar .title {
 	font-size: 14px;
 	line-height: 48px;
