@@ -21,10 +21,9 @@
     <ion-content class="calculator" scroll="false" ng-show="!specificAmount && !sending">
       <div>
         <h2>Recipient</h2>
-
         <a class="item item-icon-left item-icon-right">
-          <i class="icon ion-person-stalker"></i>
-          Javier
+          <i class="icon ion-ios-person-outline"></i>
+          {{recipientName}}
           <i class="icon ion-close"></i>
         </a>
       </div>
@@ -121,30 +120,39 @@
     </ion-content>
 
     <ion-content ng-show="sending">
-      <i class="icon ion-arrow-up-c"></i> <span>Sending</span>
-      <h3>{{sendingAmount}} {{unitName}}</h3>
-      <h4>{{sendingAlternativeAmount}} {{alternativeIsoCode}}</h4>
+      <div class="card">
+        <div class="item item-text-wrap">
+          <i class="icon ion-arrow-up-c"></i> <span class="text-bold size-16">Sending</span>
+          <div class="text-bold size-28 m15t">{{sendingAmount}} {{unitName}}</div>
+          <div class="text-light size-20 m5t">{{sendingAlternativeAmount}} {{alternativeIsoCode}}</div>
+        </div>
+      </div>
+
       <div class="list">
         <span class="item">Fee: Economy (97 bits)</span>
+
         <span>To</span>
         <span class="item item-icon-left">
-          <i class="icon ion-person-stalker"></i>
-          Javier
+          <i class="icon ion-ios-person-outline"></i>
+          {{recipientName}}
         </span>
+
         <span>From</span>
         <span class="item item-icon-left item-icon-right">
-          <i class="icon icon-wallet size-21"></i>
-          Personal Wallet
-          <i class="icon ion-chevron-right size-21"></i>
+          <i class="icon icon-wallet size-21" ng-style="{'color':recipientColor}"></i>
+          Focused Wallet (Default Wallet)
+          <i class="icon ion-ios-arrow-right size-21"></i>
         </span>
+
         <span class="item item-icon-right">
           Add Memo
-          <i class="icon ion-chevron-right size-21"></i>
+          <i class="icon ion-ios-arrow-right size-21"></i>
         </span>
+
         <div class="card">
-          <div class="item item-text-wrap item-icon-right">
+          <div class="item item-text-wrap item-icon-right" ng-click="cancel()">
             Slide to complete
-            <i class="icon ion-arrow-right-c size-21"></i>
+            <i class="icon ion-ios-arrow-thin-right size-21"></i>
           </div>
         </div>
       </div>
