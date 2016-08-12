@@ -1981,6 +1981,10 @@ to prevent collapsing during animation*/
   color: #fff;
 }
 
+.transform-none {
+  text-transform: none;
+}
+
 /*** modals ***/
 
 .hideModal {
@@ -2189,16 +2193,16 @@ input[type="number"] {
 
 @media all and (max-height: 480px) {
 	.calculator .button-calc .columns { padding: 10px; }
-  .calculator .header-calc { top: 11%; }
+  .calculator .header-calc { top: 30%; }
 }
 
 @media (min-height: 481px) and (max-height: 670px) {
 	.calculator .button-calc .columns { padding: 15px; }
-  .calculator .header-calc { top: 15%; }
+  .calculator .header-calc { top: 30%; }
 }
 
 @media all and (min-height: 671px) {
 	.calculator .button-calc .columns { padding: 20px; }
-  .calculator .header-calc { top: 18%; }
+  .calculator .header-calc { top: 32%; }
 }
 
