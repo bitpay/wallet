@@ -1,6 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('tabSendController', function($scope, $ionicModal, addressbookService, profileService, configService, lodash) {
+  var completeList;
 
   $scope.init = function() {
     addressbookService.list(function(err, ab) {
@@ -41,7 +42,19 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
     });
 
     $scope.wallets = lodash.sortBy(ret, 'name');
-    $scope.list = $scope.contactList.concat($scope.wallets);
+    $scope.list = completeList = $scope.contactList.concat($scope.wallets);
+  };
+
+  $scope.findContact = function() {
+    var result = lodash.filter($scope.list, function(item) {
+      var val = item.label || item.alias || item.name;
+      return lodash.includes(val.toLowerCase(), $scope.search.toLowerCase());
+    });
+    if (lodash.isEmpty(result) || lodash.isEmpty($scope.search)) {
+      $scope.list = completeList;
+      return;
+    }
+    $scope.list = result;
   };
 
   $scope.openInputAmountModal = function(recipient) {
