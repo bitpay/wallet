@@ -15,6 +15,11 @@ angular.module('copayApp.services').factory('configService', function(storageSer
       url: 'https://bws.bitpay.com/bws/api',
     },
 
+    // Transaction URL
+    tx: {
+      url: 'https://insight.bitpay.com/tx/${txid}',
+    },
+
     // wallet default config
     wallet: {
       requiredCopayers: 2,

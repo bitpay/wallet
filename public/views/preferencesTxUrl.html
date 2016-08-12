@@ -1,0 +1,17 @@
+<div
+  class="topbar-container"
+  ng-include="'views/includes/topbar.html'"
+  ng-init="titleSection='Transaction URL'; goBackToState = 'preferencesAdvanced';">
+</div>
+
+<div class="content preferences" ng-controller="preferencesTxUrlController">
+  <h4></h4>
+  <form name="settingsBwsUrlForm" ng-submit="save()" class="columns">
+    <label class="left">Transaction URL</label>
+    <a class="right size-12" ng-click="resetDefaultUrl()" translate> Set default url</a>
+    <input type="text" id="txurl" type="text" name="txurl" ng-model="txurl">
+    <input type="submit" class="button expand black round" value="{{'Save'|translate}}"
+    ng-style="{'background-color':index.backgroundColor}">
+  </form>
+</div>
+<div class="extra-margin-bottom"></div>
