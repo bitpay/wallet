@@ -1,0 +1,19 @@
+<div
+  class="topbar-container"
+  ng-include="'views/includes/topbar.html'"
+  ng-init="titleSection='Preferences'; goBackToState = 'bitpayCard'; noColor = true">
+</div>
+
+<div class="content preferences" ng-controller="preferencesBitpayCardController as bitpay">
+
+  <ul class="no-bullet m0">
+    <h4></h4>
+    <li ng-click="bitpay.logout()">
+      <i class="icon-arrow-right3 size-24 right text-gray"></i>
+      <span class="text-warning">Log out</span>
+    </li>
+  </ul>
+  <h4></h4>
+
+</div>
+<div class="extra-margin-bottom"></div>
