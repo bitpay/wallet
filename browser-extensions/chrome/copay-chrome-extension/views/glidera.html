@@ -1,0 +1,201 @@
+
+<div
+  class="topbar-container"
+  ng-include="'views/includes/topbar.html'"
+  ng-init="titleSection='Buy & Sell Bitcoin'; closeToHome = true; noColor = true">
+</div>
+
+
+<div class="content glidera p20b" ng-controller="glideraController as glidera">
+
+  <div class="row">
+    <div class="m20b box-notification" ng-if="index.glideraError">
+      <div class="text-warning">
+        <span>{{index.glideraError}}</span>
+      </div>
+    </div>
+    <div class="m10t text-center" ng-show="index.glideraError">
+      <button
+        class="dark-gray outline round tiny"
+        ng-show="index.glideraError.indexOf('Forbidden') == 40"
+        ng-click="index.glideraToken = null; index.glideraError = null">
+        Request a new token
+      </button>
+      <div ng-show="index.glideraError.indexOf('Forbidden') != 40">
+        <button
+          class="dark-gray outline round tiny"
+          ng-click="index.initGlidera(index.glideraToken)">
+          Retry
+        </button>
+        <div class="m20t size-12">
+          <a class="text-gray" href ui-sref="preferencesGlidera">Preferences</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div ng-if="!index.glideraToken && !index.glideraError"
+    class="row">
+    <div class="box-notification text-center size-12 text-warning" ng-show="index.glideraTestnet">
+      <i class="fi-info"></i>
+      Testnet wallets only work with Glidera Sandbox Accounts
+    </div>
+    <div class="columns" ng-init="showOauthForm = false">
+      <div class="text-center m20v">
+        <img src="img/glidera-logo.png" ng-click="index.updateGlidera(index.glideraToken, index.glideraPermissions)" width="200">
+      </div>
+      <div class="text-center small-10 small-centered columns" ng-show="!showOauthForm">
+        <p class="m10b">You can buy and sell Bitcoin with a US bank account directly in Copay.</p>
+
+        <p class="m20t text-gray size-12 text-left">
+          DISCLOSURE.<br>
+          Glidera Inc. (Glidera) is providing the service of buying or selling bitcoins to Copay users.  To enable this
+          service, Glidera has registered with US Treasury Department’s FinCEN as a Money Service Business
+          (#31000042625755).  Users of Copay must agree to the service agreement presented by Glidera prior to obtaining
+          Glidera’s service of buying or selling bitcoins. Service available in U.S. and Canada only. In U.S. (buy & sell) CA, GA, IL, KS,
+          MA, MD, MO, MT, MN, SC, TX, AZ, CO, DE, ME, NJ, PA, TN, UT, NV, WI. In Canada (buy & sell) AB, BC, MB, NB, NL, NS, NT, NU,
+          ON, PE, SK, YT.
+        </p>
+
+        <p class="m20t text-gray size-12">Connect your Glidera account to get started</p>
+
+        <a class="button light-gray outline round small"
+          ng-click="$root.openExternalLink(glidera.getAuthenticateUrl(), '_system'); showOauthForm = true">
+          Connect to Glidera
+        </a>
+        <div>
+          <a href ng-click="showOauthForm = true" class="text-gray size-12">
+            Do you already have the Oauth Code?
+          </a>
+        </div>
+      </div>
+      <div class="text-center" ng-show="showOauthForm">
+        <div class="text-left box-notification size-12 text-warning" ng-show="glidera.error">
+          {{glidera.error}}
+        </div>
+        <form name="oauthCodeForm" ng-submit="glidera.submitOauthCode(code)" novalidate>
+          <label>OAuth Code</label>
+          <input type="text" ng-model="code" ng-disabled="glidera.loading"
+          ng-attr-placeholder="{{'Paste the authorization code here'}}" required>
+          <input
+            class="button expand round"
+            ng-style="{'background-color':index.backgroundColor}"
+            type="submit" value="Get started" ng-disabled="oauthCodeForm.$invalid || glidera.loading">
+        </form>
+        <button class="button light-gray expand outline round"
+          ng-click="showOauthForm = false; index.glideraError = null; glidera.error = null">
+          <i class="fi-arrow-left"></i> <span class="tu">Back</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div ng-if="index.glideraToken && index.glideraPermissions">
+    <div class="p20v text-center white">
+      <img src="img/glidera-logo.png" ng-click="index.updateGlidera(index.glideraToken, index.glideraPermissions)" width="100">
+    </div>
+    <div class="sub-header" href ui-sref="preferencesGlidera">
+      <div class="left">
+        <div ng-show="!index.glideraPersonalInfo && !index.glideraEmail">
+          Preferences
+        </div>
+        <div ng-show="index.glideraPersonalInfo" class="size-12">
+          <b>
+          {{index.glideraPersonalInfo.firstName}} {{index.glideraPersonalInfo.lastName}}
+          </b>
+        </div>
+        <div class="size-12" ng-show="index.glideraEmail">
+          {{index.glideraEmail}}
+        </div>
+      </div>
+      <div class="right">
+        <div class="pointer m5t">
+          <i class="fi-widget size-16 text-gray"></i>
+          <span class="right text-gray">
+            <i class="icon-arrow-right3 size-24 right"></i>
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="text-center columns small-8 small-centered m30v size-12"
+        ng-show="index.glideraStatus && !index.glideraStatus.userCanTransact">
+        <h4 class="text-bold"> Complete Setup</h4>
+        <div>Your Glidera account is not ready to transact. Please, verify it at <b>Glidera.io</b></div>
+        <a class="button m20t light-gray outline round tiny"
+           ng-init="glideraUrl = index.glideraTestnet ? 'https://sandbox.glidera.io/login' :
+           'https://glidera.io/login'"
+           ng-click="$root.openExternalLink(glideraUrl)">
+          Go to Glidera
+        </a>
+        </div>
+      </div>
+    </div>
+
+    <ul class="no-bullet m0 size-14"
+      ng-show="index.glideraStatus && index.glideraStatus.userCanTransact">
+      <li ng-show="index.glideraStatus.userCanBuy"
+          class="line-b line-t p20 pointer"
+          href ui-sref="buyGlidera">
+        <img src="img/buy-bitcoin.svg" alt="buy bitcoin" width="40">
+        <span class="m10 text-normal text-bold">Buy Bitcoin</span>
+        <span class="right text-gray">
+          <i class="icon-arrow-right3 size-24 right"></i>
+        </span>
+      </li>
+      <li class="line-b p20 pointer"
+          ng-show="index.glideraStatus.userCanSell"
+          href ui-sref="sellGlidera">
+        <img src="img/sell-bitcoin.svg" alt="buy bitcoin" width="40">
+        <span class="m10 text-normal text-bold">Sell Bitcoin</span>
+        <span class="right text-gray">
+          <i class="icon-arrow-right3 size-24 right"></i>
+        </span>
+      </li>
+    </ul>
+
+    <div ng-show="index.glideraPermissions.transaction_history">
+      <h4>Activity</h4>
+      <div ng-show="index.glideraTxs.length == 0 "
+        class="size-12 p10 text-center text-gray">
+        No activity in your account
+      </div>
+      <div ng-repeat="tx in index.glideraTxs"
+        ng-click="glidera.openTxModal(index.glideraToken, tx)"
+        class="row collapse last-transactions-content">
+        <div class="large-3 medium-3 small-3 columns">
+          <img src="img/bought.svg" alt="bought" width="39" ng-show="tx.type == 'BUY' && tx.status == 'COMPLETE'">
+          <img src="img/bought-pending.svg" alt="bought" width="33" ng-show="tx.type == 'BUY' && tx.status == 'PROCESSING'">
+          <img src="img/sold.svg" alt="bought" width="39" ng-show="tx.type == 'SELL' && tx.status == 'COMPLETE'">
+          <img src="img/sold-pending.svg" alt="bought" width="33" ng-show="tx.type == 'SELL' && tx.status == 'PROCESSING'">
+        </div>
+
+        <div class="large-4 medium-4 small-4 columns">
+          <div class="size-14">
+            <span ng-show="tx.type == 'BUY'">Bought</span>
+            <span ng-show="tx.type == 'SELL'">Sold</span>
+            <b>{{tx.qty}}</b> BTC
+          </div>
+          <span class="size-14 text-bold">
+            {{tx.subtotal|currency:'':2}} {{tx.currency}}
+          </span>
+        </div>
+        <div class="large-4 medium-4 small-4 columns text-right">
+          <div class="m5t size-12 text-gray">
+            <div ng-show="tx.status == 'COMPLETE'">
+              <time ng-if="tx.transactionDate">{{tx.transactionDate | amTimeAgo}}</time>
+            </div>
+            <div ng-show="tx.status == 'PROCESSING'">
+              <span class="label outline gray radius text-gray text-info" ng-if="tx.status == 'PROCESSING'">Processing</span>
+            </div>
+          </div>
+        </div>
+        <div class="large-1 medium-1 small-1 columns text-right">
+          <i class="icon-arrow-right3 size-18"></i>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+<div class="extra-margin-bottom"></div>

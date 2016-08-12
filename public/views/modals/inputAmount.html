@@ -18,7 +18,16 @@
   </ion-header-bar>
 
   <ion-pane>
-    <ion-content class="calculator" scroll="false" ng-show="!specificAmount">
+    <ion-content class="calculator" scroll="false" ng-show="!specificAmount && !sending">
+      <div>
+        <h2>Recipient</h2>
+
+        <a class="item item-icon-left item-icon-right">
+          <i class="icon ion-person-stalker"></i>
+          Javier
+          <i class="icon ion-close"></i>
+        </a>
+      </div>
       <div class="header-calc">
         <div class="text-light text-black" ng-class="{'size-28': smallFont, 'size-36': !smallFont}">{{amount || '-'}}</div>
         <div class="text-light text-black" ng-class="{'size-16': smallFont, 'size-17': !smallFont}" ng-show="!showAlternativeAmount">
@@ -75,7 +84,7 @@
       </div>
     </ion-content>
 
-    <ion-content ng-show="specificAmount" ng-style="{'background-color':'#f6f7f9'}">
+    <ion-content ng-show="specificAmount && !sending" ng-style="{'background-color':'#f6f7f9'}">
       <section class="modal-content m20b">
         <h4 class="title m10l" translate>QR Code</h4>
         <ul class="no-bullet size-14 m0">
@@ -109,6 +118,36 @@
         </ul>
         <div class="extra-margin-bottom"></div>
       </section>
+    </ion-content>
+
+    <ion-content ng-show="sending">
+      <i class="icon ion-arrow-up-c"></i> <span>Sending</span>
+      <h3>{{sendingAmount}} {{unitName}}</h3>
+      <h4>{{sendingAlternativeAmount}} {{alternativeIsoCode}}</h4>
+      <div class="list">
+        <span class="item">Fee: Economy (97 bits)</span>
+        <span>To</span>
+        <span class="item item-icon-left">
+          <i class="icon ion-person-stalker"></i>
+          Javier
+        </span>
+        <span>From</span>
+        <span class="item item-icon-left item-icon-right">
+          <i class="icon icon-wallet size-21"></i>
+          Personal Wallet
+          <i class="icon ion-chevron-right size-21"></i>
+        </span>
+        <span class="item item-icon-right">
+          Add Memo
+          <i class="icon ion-chevron-right size-21"></i>
+        </span>
+        <div class="card">
+          <div class="item item-text-wrap item-icon-right">
+            Slide to complete
+            <i class="icon ion-arrow-right-c size-21"></i>
+          </div>
+        </div>
+      </div>
     </ion-content>
   </ion-pane>
 </ion-modal-view>

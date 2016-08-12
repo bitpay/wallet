@@ -1,0 +1,11 @@
+<div class="topbar-container" ng-include="'views/includes/topbar.html'"
+  ng-init="titleSection='Unit'; goBackToState = 'preferencesGlobal'; noColor = true">
+</div>
+
+<div class="content preferences" ng-controller="preferencesUnitController">
+  <h4></h4>
+
+  <ion-radio class="line-b size-12 radio-label" ng-repeat="unit in unitList" ng-value="unit.code" ng-model="currentUnit"
+    ng-click="save(unit)">{{unit.shortName}}
+  </ion-radio>
+</div>

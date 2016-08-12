@@ -1,5 +1,45 @@
 <ion-view view-title="Home">
-  <ion-content class="send">
-    <h2>Welcome to Send</h2>
+  <ion-content class="send" ng-controller="tabSendController">
+    <h2>Recipient</h2>
+
+    <label class="item item-input">
+      <i class="icon ion-search placeholder-icon"></i>
+      <input type="text" placeholder="Search">
+    </label>
+
+    <h2>Recently used</h2>
+
+    <div class="list card">
+      <a class="item item-icon-left" href="#">
+        <i class="icon icon-wallet size-21"></i>
+        Personal Wallet
+        <span class="item-note">
+          123,424.91 bits
+        </span>
+      </a>
+      <a class="item item-icon-left" href="#">
+        <i class="icon icon-wallet size-21"></i>
+        Testnet Wallet
+        <span class="item-note">
+          123,424.91 bits
+        </span>
+      </a>
+    </div>
+
+    <h2>Contacts</h2>
+
+    <div class="list card">
+      <a class="item item-icon-left item-icon-right" ng-click="openInputAmountModal()">
+        <i class="icon ion-person-stalker"></i>
+        Javier
+        <i class="icon ion-chevron-right size-21"></i>
+      </a>
+      <a class="item item-icon-left item-icon-right" ng-click="openInputAmountModal()">
+        <i class="icon ion-person-stalker"></i>
+        Javier 2
+        <i class="icon ion-chevron-right size-21"></i>
+      </a>
+    </div>
+
   </ion-content>
-</ion-view> 
+</ion-view>

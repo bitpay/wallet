@@ -1,0 +1,169 @@
+<div
+  class="topbar-container"
+  ng-include="'views/includes/topbar.html'"
+  ng-init="titleSection='Buy'; goBackToState = 'coinbase'; noColor = true">
+</div>
+
+
+<div class="content coinbase" ng-controller="buyCoinbaseController as buy">
+
+  <div class="row m20t" ng-show="buy.error || index.coinbaseError" ng-click="buy.error = null">
+    <div class="columns">
+      <div class="box-notification">
+        <ul class="no-bullet m0 size-12 text-warning">
+          <li ng-repeat="err in (buy.error.errors || index.coinbaseError.errors)" ng-bind-html="err.message"></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="row m20ti"
+    ng-show="index.coinbaseAccount && !buy.buyInfo && !buy.receiveInfo">
+    <div class="columns">
+
+      <form name="buyCoinbaseForm"
+          ng-submit="buy.buyRequest(index.coinbaseToken, index.coinbaseAccount)" novalidate>
+
+        <div ng-if="index.coinbaseToken" ng-init="buy.getPaymentMethods(index.coinbaseToken)">
+          <label>Payment method</label>
+          <select
+            ng-model="selectedPaymentMethod.id"
+            ng-options="item.id as item.name for item in buy.paymentMethods">
+          </select>
+        </div>
+
+        <label>Amount
+          <span
+            ng-if="index.coinbaseToken"
+            ng-init="buy.getPrice(index.coinbaseToken)"
+            ng-show="buy.buyPrice"
+            class="size-11 text-light right">
+            1 BTC <i class="icon-arrow-right"></i> {{buy.buyPrice.amount}} {{buy.buyPrice.currency}}
+          </span>
+        </label>
+
+        <div class="input">
+          <input ng-show="!showAlternative" type="number" id="amount" ignore-mouse-wheel
+          name="amount" ng-attr-placeholder="{{'Amount in ' + (showAlternative ? 'USD' : 'BTC')}}"
+          ng-minlength="0.00000001" ng-maxlength="10000000000"
+          ng-model="amount" autocomplete="off" ng-disabled="buy.loading">
+
+          <input ng-show="showAlternative" type="number" id="fiat" ignore-mouse-wheel
+          name="fiat" ng-attr-placeholder="{{'Amount in ' + (showAlternative ? 'USD' : 'BTC')}}"
+          ng-model="fiat" autocomplete="off" ng-disabled="buy.loading">
+
+          <a ng-show="!showAlternative" class="postfix button"
+            ng-click="showAlternative = true; amount = null">BTC</a>
+          <a ng-show="showAlternative" class="postfix button black"
+            ng-click="showAlternative = false; fiat = null">USD</a>
+        </div>
+
+        <div class="text-center text-gray size-12 m10b">
+          <span ng-show="!(amount || fiat)">
+            Enter the amount to get the exchange rate
+          </span>
+          <span ng-show="!buy.buyPrice && (amount || fiat)">
+            Not available
+          </span>
+          <span ng-show="buy.buyPrice && amount && !fiat">
+            ~ {{buy.buyPrice.amount * amount | currency : 'USD ' : 2}}
+          </span>
+        </div>
+
+        <div class="text-center">
+          <i class="db fi-arrow-down size-24 m10v"></i>
+        </div>
+
+        <div
+          ng-if="index.coinbaseToken"
+          ng-init="buy.init(index.coinbaseTestnet)"
+          ng-click="openWalletsModal(buy.allWallets)">
+          <label>Copay Wallet</label>
+          <div class="input">
+            <input type="text" id="address" name="address" ng-disabled="buy.selectedWalletId"
+            ng-attr-placeholder="{{'Choose a wallet to receive bitcoin'}}" ng-model="buy.selectedWalletName" required>
+            <a class="postfix size-12 m0 text-gray">
+              <i class="icon-wallet size-18"></i>
+            </a>
+          </div>
+        </div>
+
+        <div class="input m20t">
+          <input class="button black expand round"
+          ng-disabled="buy.loading || (!amount && !fiat) || !selectedPaymentMethod"
+          ng-style="{'background-color': '#2b71b1'}"
+          type="submit" value="{{'Continue'}}">
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="m20ti row" ng-show="buy.receiveInfo && !buy.sellInfo && !buy.success">
+    <div class="columns">
+      <h1>Funds sent to Copay Wallet</h1>
+      <p class="size-12 text-gray">
+        Buy confirmed. Funds will be send soon to your selected Copay Wallet
+      </p>
+      <button class="m20t outline black round expand"
+              ng-style="{'background-color': '#2b71b1'}"
+              href ui-sref="coinbase">OK</button>
+    </div>
+  </div>
+
+  <div ng-show="buy.buyInfo && !buy.receiveInfo && !buy.success">
+    <h4 class="title">Confirm transaction</h4>
+
+    <ul class="no-bullet m10t size-12 white">
+      <li class="line-b line-t p15">
+        <span class="m10 text-normal text-bold">Amount</span>
+        <span class="right text-gray">{{buy.buyInfo.amount.amount}} {{buy.buyInfo.amount.currency}}</span>
+      </li>
+      <li class="line-b oh p15">
+        <span class="m10 text-normal text-bold">Fees</span>
+        <span class="right text-gray">
+          <div ng-repeat="fee in buy.buyInfo.fees">
+            <b>{{fee.type}}</b> {{fee.amount.amount}} {{fee.amount.currency}}
+          </div>
+        </span>
+      </li>
+      <li class="line-b p15">
+        <span class="m10 text-normal text-bold">Subtotal</span>
+        <span class="right text-gray">{{buy.buyInfo.subtotal.amount}} {{buy.buyInfo.subtotal.currency}}</span>
+      </li>
+      <li class="line-b p15">
+        <span class="m10 text-normal text-bold">Total</span>
+        <span class="right text-gray">{{buy.buyInfo.total.amount}} {{buy.buyInfo.total.currency}}</span>
+      </li>
+      <li class="line-b p15">
+        <span class="m10 text-normal text-bold">Payout at</span>
+        <span class="right text-gray">{{buy.buyInfo.payout_at | amCalendar}}</span>
+      </li>
+      <li class="line-b p15">
+        <span class="m10 text-normal text-bold">Deposit into Copay Wallet</span>
+        <span class="right text-gray">{{buy.selectedWalletName}}</span>
+      </li>
+    </ul>
+    <div class="row">
+      <div class="columns">
+        <button class="button black round expand"
+                ng-style="{'background-color': '#2b71b1'}"
+                ng-click="buy.confirmBuy(index.coinbaseToken, index.coinbaseAccount, buy.buyInfo)"
+                ng-disabled="buy.loading">
+          Buy
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="m20t row text-center" ng-show="buy.success">
+    <div class="columns">
+      <h1>Purchase initiated</h1>
+      <p class="text-gray">
+        Bitcoin purchase completed. Coinbase has queued the transfer to your selected Copay wallet.
+      </p>
+
+      <button class="outline dark-gray round expand" href ui-sref="coinbase">OK</button>
+    </div>
+  </div>
+
+</div>
+<div class="extra-margin-bottom"></div>

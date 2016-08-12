@@ -1,0 +1,42 @@
+<div
+  class="topbar-container"
+  ng-include="'views/includes/topbar.html'"
+  ng-init="titleSection='About Copay'; goBackToState = 'preferencesGlobal'; noColor = true">
+</div>
+
+<div class="content preferences" ng-controller="preferencesAbout as about">
+    <h4  translate>Release Information</h4>
+    <div  ng-controller="versionController as v">
+      <ul class="no-bullet m0">
+        <li  ng-conf>
+          <span translate>Version</span>
+          <span class="right text-gray">
+            v{{v.version}}
+          </span>
+        </li>
+        <li  ng-conf ng-click="$root.openExternalLink('https://github.com/bitpay/copay/tree/'+v.commitHash)">
+          <span translate>Commit hash</span>
+          <span class="right text-gray">
+            #{{v.commitHash}}
+          </span>
+        </li>
+      </ul>
+    </div>
+
+    <h4></h4>
+    <ul class="no-bullet m0">
+      <li href ui-sref="termOfUse">
+        <i class="icon-arrow-right3 size-24 right text-gray"></i>
+        <span translate>Terms of Use</span>
+      </li>
+      <li  href ui-sref="translators">
+        <i class="icon-arrow-right3 size-24 right text-gray"></i>
+        <span translate>Translators</span>
+      </li>
+      <li  ng-conf href ui-sref="logs">
+        <i class="icon-arrow-right3 size-24 right text-gray"></i>
+        <span translate>Session log</span>
+      </li>
+    </ul>
+
+</div>

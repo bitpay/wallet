@@ -1,0 +1,22 @@
+<div
+  class="topbar-container"
+  ng-include="'views/includes/topbar.html'"
+  ng-init="titleSection='Glidera'; closeToHome = true">
+</div>
+
+<div class="content glidera" ng-controller="glideraUriController as glidera" ng-init="glidera.checkCode()">
+
+  <div class="row m20t">
+    <div class="large-12 columns">
+      <div class="text-center">
+        <img src="img/glidera-logo.png"
+        ng-click="index.updateGlidera()" width="100">
+      </div>
+
+      <div class="m10t text-center" ng-show="glidera.error">
+        <div class="notification m10b size-12 text-warning">{{glidera.error}}</div>
+        <button class="outline dark-gray tiny round" ng-click="glidera.submitOauthCode(glidera.code)">Try again</button>
+      </div>
+    </div>
+  </div>
+</div>

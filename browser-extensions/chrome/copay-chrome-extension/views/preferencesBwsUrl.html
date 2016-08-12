@@ -1,0 +1,17 @@
+<div
+  class="topbar-container"
+  ng-include="'views/includes/topbar.html'"
+  ng-init="titleSection='Wallet Service URL'; goBackToState = 'preferencesAdvanced';">
+</div>
+
+<div class="content preferences" ng-controller="preferencesBwsUrlController">
+  <h4></h4>
+  <form name="settingsBwsUrlForm" ng-submit="save()" class="columns">
+    <label class="left">Wallet Service URL</label>
+    <a class="right size-12" ng-click="resetDefaultUrl()" translate> Set default url</a>
+    <input type="text" id="bwsurl" type="text" name="bwsurl" ng-model="bwsurl">
+    <input type="submit" class="button expand black round" value="{{'Save'|translate}}"
+    ng-style="{'background-color':index.backgroundColor}">
+  </form>
+</div>
+<div class="extra-margin-bottom"></div>

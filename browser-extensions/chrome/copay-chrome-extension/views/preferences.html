@@ -1,0 +1,91 @@
+
+<div
+  class="topbar-container"
+  ng-include="'views/includes/topbar.html'"
+  ng-init="titleSection=index.setWalletPreferencesTitle(); closeToHome = true">
+</div>
+
+
+<div class="content preferences" ng-controller="preferencesController" ng-init="init()">
+
+  <h4></h4>
+
+  <ul class="no-bullet m0" ng-show="!index.noFocusedWallet">
+
+    <li href ui-sref="preferencesAlias">
+      <div class="right text-gray">
+        {{index.alias||index.walletName}}
+        <i class="icon-arrow-right3 size-24 right"></i>
+      </div>
+      <div translate>Alias</div>
+    </li>
+
+    <li href ui-sref="preferencesEmail">
+      <div class="right text-gray">
+        <span ng-if="!index.preferences.email" translate>Disabled</span>
+        <span ng-if="index.preferences.email">{{index.preferences.email}}</span>
+        <i class="icon-arrow-right3 size-24 right"></i>
+      </div>
+      <div translate>Email Notifications</div>
+    </li>
+
+    <li href ui-sref="preferencesColor">
+      <div class="right text-gray">
+        <span ng-style="{'color':index.backgroundColor}">&block;</span>
+        <i class="icon-arrow-right3 size-24 right"></i>
+      </div>
+      <div translate>Color</div>
+    </li>
+
+    <li ng-show="index.isPrivKeyExternal">
+      <div class="right text-gray m10r">
+        {{externalSource}}
+      </div>
+      <div translate>Hardware wallet</div>
+    </li>
+
+    <li href ui-sref="backup" ng-hide="index.isPrivKeyExternal">
+      <div class="right text-gray">
+        <span class="text-warning" ng-show="index.needsBackup">
+          <i class="fi-alert"></i> <span translate>Not completed</span>
+        </span>
+        <i class="icon-arrow-right3 size-24 text-gray"></i>
+      </div>
+      <div translate>Backup</div>
+    </li>
+
+    <li href ui-sref="preferencesAdvanced">
+      <i class="icon-arrow-right3 size-24 right text-gray"></i>
+      <div translate>Advanced</div>
+    </li>
+
+  </ul>
+
+  <h4 translate  ng-show="index.canSign || !deleted">
+    Security preferences
+  </h4>
+
+  <div ng-show="!index.noFocusedWallet && index.canSign">
+    <ion-toggle ng-model="encryptEnabled" toggle-class="toggle-balanced" ng-change="encryptChange()">
+      <span class="toggle-label" translate>Request Spending Password</span>
+    </ion-toggle>
+
+    <ion-toggle ng-model="touchidEnabled" toggle-class="toggle-balanced" ng-change="touchidChange()" ng-show="touchidAvailable">
+      <span class="toggle-label" translate>Scan Fingerprint</span>
+    </ion-toggle>
+  </div>
+  <div ng-show ="!deleted">
+
+    <ul class="no-bullet m0">
+      <li href ui-sref="deleteWords">
+        <i class="icon-arrow-right3 size-24 right text-gray"></i>
+        <div translate>Delete recovery phrase</div>
+      </li>
+    </ul>
+
+  </div>
+
+ <h4></h4>
+</div>
+
+<div class="extra-margin-bottom"></div>

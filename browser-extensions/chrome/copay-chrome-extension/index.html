@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+  <meta name="msapplication-tap-highlight" content="no">
+  <meta name="format-detection" content="telephone=no">
+  <link rel="stylesheet" type="text/css" href="css/ionic.css">
+  <link rel="stylesheet" type="text/css" href="css/foundation.css">
+  <link rel="stylesheet" type="text/css" href="icons/foundation-icons.css">
+  <link rel="stylesheet" type="text/css" href="css/ui-components.css">
+  <link rel="stylesheet" type="text/css" href="css/copay.css">
+  <title>Copay - Multisignature Wallet</title>
+  <link rel="shortcut icon" href="img/favicon.ico">
+</head>
+<body ng-cloak class="ng-cloak">
+
+  <ion-side-menus class="page" ng-controller="indexController as index">
+
+    <!-- Left menu -->
+    <ion-side-menu side="left" expose-aside-when="large" ng-if="index.hasProfile && isDisclaimerAccepted">
+      <div ng-include="'views/includes/sidebar.html'"></div>
+    </ion-side-menu>
+
+    <!-- Main content -->
+
+    <ion-side-menu-content drag-content="index.isCordova">
+      <div notifications="right top"></div>
+      <div id="sectionContainer">
+        <div id="mainSection">
+          <section ui-view="main"
+            ng-class="{
+              'main': index.hasProfile
+            }"></section>
+        </div>
+      </div>
+    </ion-side-menu-content>
+  </ion-side-menus>
+
+  <script src="lib/ionic.bundle.js"></script>
+  <script src="lib/angular.js"></script>
+
+  <!-- DO NOT DELETE THIS COMMET  -->
+  <!-- PLACEHOLDER: CORDOVA SRIPT -->
+
+  <script src="lib/ui-components.js"></script>
+  <script src="js/copay.js"></script>
+
+</body>
+</html>

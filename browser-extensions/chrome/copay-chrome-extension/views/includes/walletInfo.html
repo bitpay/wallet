@@ -1,0 +1,20 @@
+
+<span ng-show="index.isShared" class="size-12"><span translate>{{index.m}}-of-{{index.n}}</span></span>
+<span ng-show="index.isSingleAddress" class="size-12"><span translate>Auditable</span></span>
+<img style="height:0.6em; margin-right: 1px;"  ng-show="index.network != 'livenet'" src="img/icon-testnet-white.svg">
+<img style="height:0.6em; margin-right: 1px;"  ng-show="!index.canSign && !index.isPrivKeyExternal"
+src="img/icon-read-only-white.svg">
+
+<img style="height:0.6em; margin-right: 1px;"  ng-show="index.externalSource == 'trezor'"
+src="img/icon-trezor-white.svg">
+<img style="height:0.6em; margin-right: 1px;"  ng-show="index.externalSource == 'ledger'"
+src="img/icon-ledger-white.svg">
+<span class="size-12 dib" style="height:0.6em; margin-right: 1px;" ng-show="index.account">#{{index.account || 0}} </span>
+
+<img style="height:0.6em; margin-right: 1px;"  ng-show="index.isPrivKeyEncrypted" src="img/icon-lock-white.svg">
+
+<!-- <img style="height:1em"  ng&#45;show="index.preferences.email" src="img/icon&#45;email.svg"> -->
+<img style="height:0.6em; margin-right: 1px;"  ng-show="index.usingCustomBWS" src="img/icon-bws-white.svg">
+
+<img style="height:0.6em"  class="animated flash infinite" ng-show="index.loadingWallet ||
+index.updatingTxHistory" src="img/icon-sync-white.svg">

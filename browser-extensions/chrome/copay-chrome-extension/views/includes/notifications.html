@@ -1,0 +1,18 @@
+<div class="dr-notification-wrapper" ng-repeat="noti in queue" ng-click="removeNotification(noti)">
+  <div class="dr-notification animated bounceInDown">
+    <div class="dr-notification-image" ng-switch on="noti.image">
+      <i class="{{noti.icon}}" ng-switch-when="false"></i>
+      <img ng-src="{{noti.image}}" ng-switch-default />
+    </div>
+    <div class="dr-notification-content">
+      <h3 class="dr-notification-title">{{noti.title|translate}}</h3>
+      <div class="dr-notification-text label radius" ng-show="noti.userData.color" 
+        ng-style="{'background-color':noti.userData.color}">{{noti.content|translate}}
+      </div>
+      <div class="dr-notification-text" ng-show="!noti.userData.color" 
+        >{{noti.content|translate}}
+      </div>
+    </div>
+  </div>
+</div>
+

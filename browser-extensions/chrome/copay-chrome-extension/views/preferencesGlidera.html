@@ -1,0 +1,266 @@
+<div
+  class="topbar-container"
+  ng-include="'views/includes/topbar.html'"
+  ng-init="titleSection='Preferences'; goBackToState = 'glidera'; noColor = true">
+</div>
+
+<div class="content preferences" ng-controller="preferencesGlideraController as glidera">
+
+  <ul ng-if="index.glideraToken" class="no-bullet m0">
+    <h4 class="title m0">Permissions</h4>
+    <li>
+    <span>Email</span>
+    <span class="right text-gray">
+      {{index.glideraPermissions.view_email_address}}
+    </span>
+    </li>
+    <li>
+    <span>Personal Information</span>
+    <span class="right text-gray">
+      {{index.glideraPermissions.personal_info}}
+    </span>
+    </li>
+    <li>
+    <span>Buy/Sell</span>
+    <span class="right text-gray">
+      {{index.glideraPermissions.transact}}
+    </span>
+    </li>
+    <li>
+    <span>Transaction History</span>
+    <span class="right text-gray">
+      {{index.glideraPermissions.transaction_history}}
+    </span>
+    </li>
+  </ul>
+
+  <ul ng-if="index.glideraPermissions.view_email_address"
+    ng-init="glidera.getEmail(index.glideraToken)"
+    class="no-bullet m0">
+    <h4 class="title m0">Email</h4>
+    <li>
+    <span>Email</span>
+    <span class="right text-gray">
+      {{glidera.email.email}}
+    </span>
+    </li>
+    <li>
+    <span>Active</span>
+    <span class="right text-gray">
+      {{glidera.email.userEmailIsSetup}}
+    </span>
+    </li>
+  </ul>
+
+  <ul ng-if="index.glideraPermissions.personal_info"
+    ng-init="glidera.getPersonalInfo(index.glideraToken)"
+    class="no-bullet m0">
+    <h4 class="title m0">Personal Information</h4>
+
+    <li>
+    <span>First Name</span>
+    <span class="right text-gray">
+      {{glidera.personalInfo.firstName}}
+    </span>
+    </li>
+    <li>
+    <span>Middle Name</span>
+    <span class="right text-gray">
+      {{glidera.personalInfo.middleName}}
+    </span>
+    </li>
+    <li>
+    <span>Last Name</span>
+    <span class="right text-gray">
+      {{glidera.personalInfo.lastName}}
+    </span>
+    </li>
+    <li>
+    <span>Birth Date</span>
+    <span class="right text-gray">
+      {{glidera.personalInfo.birthDate}}
+    </span>
+    </li>
+    <li>
+    <span>Address 1</span>
+    <span class="right text-gray">
+      {{glidera.personalInfo.address1}}
+    </span>
+    </li>
+    <li>
+    <span>Address 2</span>
+    <span class="right text-gray">
+      {{glidera.personalInfo.address2}}
+    </span>
+    </li>
+    <li>
+    <span>City</span>
+    <span class="right text-gray">
+      {{glidera.personalInfo.city}}
+    </span>
+    </li>
+    <li>
+    <span>State</span>
+    <span class="right text-gray">
+      {{glidera.personalInfo.state}}
+    </span>
+    </li>
+    <li>
+    <span>ZIP Code</span>
+    <span class="right text-gray">
+      {{glidera.personalInfo.zipCode}}
+    </span>
+    </li>
+    <li>
+    <span>Country</span>
+    <span class="right text-gray">
+      {{glidera.personalInfo.countryCode}}
+    </span>
+    </li>
+    <li>
+    <span>Occupation</span>
+    <span class="right text-gray">
+      {{glidera.personalInfo.occupation}}
+    </span>
+    </li>
+    <li>
+    <span>Basic Information State</span>
+    <span class="right text-gray">
+      {{glidera.personalInfo.basicInfoState}}
+    </span>
+    </li>
+  </ul>
+
+  <ul ng-if="index.glideraToken" ng-init="glidera.getStatus(index.glideraToken)"
+    class="no-bullet m0">
+    <h4 class="title m0">Status</h4>
+
+    <li>
+    <span>Buy/Sell</span>
+    <span class="right text-gray">
+      {{glidera.status.userCanTransact}}
+    </span>
+    </li>
+
+    <li>
+    <span>Buy</span>
+    <span class="right text-gray">
+      {{glidera.status.userCanBuy}}
+    </span>
+    </li>
+    <li>
+    <span>Sell</span>
+    <span class="right text-gray">
+      {{glidera.status.userCanSell}}
+    </span>
+    </li>
+    <li>
+    <span>Email Is Setup</span>
+    <span class="right text-gray">
+      {{glidera.status.userEmailIsSetup}}
+    </span>
+    </li>
+    <li>
+    <span>Phone Is Setup</span>
+    <span class="right text-gray">
+      {{glidera.status.userPhoneIsSetup}}
+    </span>
+    </li>
+    <li>
+    <span>Bank Account Is Setup</span>
+    <span class="right text-gray">
+      {{glidera.status.userBankAccountIsSetup}}
+    </span>
+    </li>
+    <li>
+    <span>Personal Information State</span>
+    <span class="right text-gray">
+      {{glidera.status.personalInfoState}}
+    </span>
+    </li>
+    <li>
+    <span>Bank Account State</span>
+    <span class="right text-gray">
+      {{glidera.status.bankAccountState}}
+    </span>
+    </li>
+    <li>
+    <span>Country</span>
+    <span class="right text-gray">
+      {{glidera.status.country}}
+    </span>
+    </li>
+  </ul>
+
+  <ul ng-if="index.glideraToken" ng-init="glidera.getLimits(index.glideraToken)"
+    class="no-bullet m0">
+    <h4 class="title m0">Limits</h4>
+
+    <li>
+    <span>Daily Buy</span>
+    <span class="right text-gray">
+      {{glidera.limits.dailyBuy|currency:'':2}} {{glidera.limits.currency}}
+    </span>
+    </li>
+    <li>
+    <span>Daily Sell</span>
+    <span class="right text-gray">
+      {{glidera.limits.dailySell|currency:'':2}} {{glidera.limits.currency}}
+    </span>
+    </li>
+    <li>
+    <span>Monthly Buy</span>
+    <span class="right text-gray">
+      {{glidera.limits.monthlyBuy|currency:'':2}} {{glidera.limits.currency}}
+    </span>
+    </li>
+    <li>
+    <span>Monthly Sell</span>
+    <span class="right text-gray">
+      {{glidera.limits.monthlySell|currency:'':2}} {{glidera.limits.currency}}
+    </span>
+    </li>
+    <li>
+    <span>Daily Buy Remaining</span>
+    <span class="right text-gray">
+      {{glidera.limits.dailyBuyRemaining|currency:'':2}} {{glidera.limits.currency}}
+    </span>
+    </li>
+    <li>
+    <span>Daily Sell Remaining</span>
+    <span class="right text-gray">
+      {{glidera.limits.dailySellRemaining|currency:'':2}} {{glidera.limits.currency}}
+    </span>
+    </li>
+    <li>
+    <span>Monthly Buy Remaining</span>
+    <span class="right text-gray">
+      {{glidera.limits.monthlyBuyRemaining|currency:'':2}} {{glidera.limits.currency}}
+    </span>
+    </li>
+    <li>
+    <span>Monthly Sell Remaining</span>
+    <span class="right text-gray">
+      {{glidera.limits.monthlySellRemaining|currency:'':2}} {{glidera.limits.currency}}
+    </span>
+    </li>
+    <li>
+    <span>Buy/Sell Disabled (pending first transaction)</span>
+    <span class="right text-gray">
+      {{glidera.limits.transactDisabledPendingFirstTransaction}}
+    </span>
+    </li>
+  </ul>
+
+  <ul class="no-bullet m0">
+    <h4 class="title m0">Account</h4>
+
+    <li ng-click="glidera.revokeToken(index.glideraTestnet)">
+    <i class="icon-arrow-right3 size-24 right text-gray"></i>
+    <span class="text-warning">Log out</span>
+    </li>
+  </ul>
+  <h4></h4>
+
+</div>
+<div class="extra-margin-bottom"></div>

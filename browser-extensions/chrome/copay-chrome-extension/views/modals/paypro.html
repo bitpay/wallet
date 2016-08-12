@@ -1,0 +1,63 @@
+<ion-modal-view ng-controller="payproController as payproC">
+  <ion-header-bar align-title="center" class="tab-bar" ng-style="{'background-color':color}">
+    <div class="left-small">
+      <a ng-click="cancel()" class="p10">
+        <span class="text-close" translate>Close</span>
+      </a>
+    </div>
+    <h1 class="title ellipsis" translate>Payment request</h1>
+  </ion-header-bar>
+
+  <ion-content ng-style="{'background-color': '#F6F7F9'}">
+    <div class="modal-content">
+      <div class="header-modal text-center p50t">
+        <div class="size-42">
+          {{unitTotal}}  {{unitName}}
+        </div>
+        <div class="size-18 m5t text-gray" ng-show="alternative">
+          {{ alternative }} {{ alternativeIsoCode }}
+        </div>
+      </div>
+
+      <h4 class="title m10l" translate>Details</h4>
+      <ul class="no-bullet size-14 m10t">
+        <li class="line-b p10 oh">
+        <span class="text-gray" translate>Pay To</span>
+        <span class="right enable_text_select">{{paypro.domain}}</span>
+        </li>
+        <li class="line-b p10 oh" ng-if="paypro.toAddress">
+        <span class="text-gray" translate>Address</span>
+        <span class="right enable_text_select">{{paypro.toAddress}}</span>
+        </li>
+        <li class="line-b p10 oh">
+        <span class="text-gray" translate>Certified by</span>
+        <span class="right text-right">
+          <span ng-show="paypro.caTrusted">
+            <i class="fi-lock color-greeni"></i>
+            {{paypro.caName}}<br>
+            <span translate>(Trusted)</span>
+          </span>
+          <span ng-show="!paypro.caTrusted">
+            <span ng-show="paypro.selfSigned">
+              <i class="fi-unlock color-yellowi"></i> <span translate>Self-signed Certificate</span>
+            </span>
+            <span ng-show="!paypro.selfSigned">
+              <i class="fi-unlock color-yellowi"></i>{{paypro.caName}}<br>
+              <span translate>WARNING: UNTRUSTED CERTIFICATE</span>
+            </span>
+          </span>
+        </span>
+        </li>
+        <li class="line-b p10 oh" ng-if="paypro.memo">
+        <span class="text-gray" translate>Memo</span>
+        <span class="right">{{paypro.memo}}</span>
+        </li>
+        <li class="line-b p10 oh" ng-if="paypro.expires">
+        <span class="text-gray" translate>Expires</span>
+        <span class="right">{{paypro.expires * 1000 | amTimeAgo }}</span>
+        </li>
+      </ul>
+    </div>
+    <div class="extra-margin-bottom"></div>
+  </ion-content>
+</ion-modal-view>

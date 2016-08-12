@@ -1,0 +1,24 @@
+<div class="topbar-container" ng-include="'views/includes/topbar.html'"
+  ng-init="titleSection='Language'; goBackToState = 'preferencesGlobal'; noColor = true">
+</div>
+
+<div class="content preferences" ng-controller="preferencesLanguageController">
+  <h4></h4>
+
+  <ion-radio class="line-b size-12 radio-label" ng-repeat="lang in availableLanguages" ng-value="lang.isoCode" ng-model="currentLanguage"
+    ng-click="save(lang.isoCode)">{{lang.name}}
+  </ion-radio>
+  
+  <div class="row m20v">
+    <div class="columns text-center">
+      <p class="size-12 text-black">
+        <span translate>All contributions to Copay's translation are welcome. Sign up at crowdin.com and join the Copay project at</span> 
+        <a ng-click="$root.openExternalLink('https://crowdin.com/project/copay', '_system')">https://crowdin.com/project/copay</a>.
+      </p>
+      <span class="size-12 text-gray" translate>
+        Don't see your language on Crowdin? Contact the Owner on Crowdin! We'd love to support your language.
+      </span>
+    </div>
+  </div>
+
+</div>
