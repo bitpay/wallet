@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('joinController',
-  function($scope, $rootScope, $timeout, go, notification, profileService, configService, storageService, applicationService, gettext, lodash, ledger, trezor, platformInfo, derivationPathHelper, ongoingProcess) {
+  function($scope, $rootScope, $timeout, $ionicScrollDelegate, $ionicConfig, go, notification, profileService, configService, storageService, applicationService, gettext, lodash, ledger, trezor, platformInfo, derivationPathHelper, ongoingProcess) {
 
     var isChromeApp = platformInfo.isChromeApp;
     var isDevel = platformInfo.isDevel;
@@ -11,6 +11,20 @@ angular.module('copayApp.controllers').controller('joinController',
     $scope.bwsurl = defaults.bws.url;
     $scope.derivationPath = derivationPathHelper.default;
     $scope.account = 1;
+
+    if (platformInfo.isCordova && window.cordova.plugins.Keyboard) {
+      cordova.plugins.Keyboard.disableScroll(true);
+      if (platformInfo.isWP) {
+        $ionicConfig.scrolling.jsScrolling(false);
+      }
+    }
+
+    $scope.toggleAdvancedOptions = function() {
+      $scope.hideAdvancedOptions = !$scope.hideAdvancedOptions;
+      $timeout(function() {
+        $ionicScrollDelegate.resize();
+      }, 10);
+    };
 
     this.onQrCodeScanned = function(data) {
       $scope.secret = data;

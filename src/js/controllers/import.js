@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('importController',
-  function($scope, $rootScope, $timeout, $log, profileService, configService, notification, go, sjcl, gettext, ledger, trezor, derivationPathHelper, platformInfo, bwcService, ongoingProcess) {
+  function($scope, $rootScope, $timeout, $log, $ionicScrollDelegate, $ionicConfig, profileService, configService, notification, go, sjcl, gettext, ledger, trezor, derivationPathHelper, platformInfo, bwcService, ongoingProcess) {
 
     var isChromeApp = platformInfo.isChromeApp;
     var isDevel = platformInfo.isDevel;
@@ -12,6 +12,20 @@ angular.module('copayApp.controllers').controller('importController',
     $scope.derivationPath = derivationPathHelper.default;
     $scope.account = 1;
     $scope.importErr = false;
+
+    if (platformInfo.isCordova && window.cordova.plugins.Keyboard) {
+      cordova.plugins.Keyboard.disableScroll(true);
+      if (platformInfo.isWP) {
+        $ionicConfig.scrolling.jsScrolling(false);
+      }
+    }
+
+    $scope.toggleAdvancedOptions = function() {
+      $scope.hideAdvancedOptions = !$scope.hideAdvancedOptions;
+      $timeout(function() {
+        $ionicScrollDelegate.resize();
+      }, 10);
+    };
 
     var updateSeedSourceSelect = function() {
       $scope.seedOptions = [];
