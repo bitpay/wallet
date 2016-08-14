@@ -1,5 +1,7 @@
 'use strict';
 
+
+
 angular.module('copayApp.controllers').controller('preferencesAltCurrencyController',
   function($scope, $log, $timeout, configService, rateService, lodash, go, profileService, walletService) {
 

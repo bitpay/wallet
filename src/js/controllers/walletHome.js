@@ -500,7 +500,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
           walletService.signTx(client, publishedTxp, function(err, signedTxp) {
             ongoingProcess.set('signingTx', false);
             walletService.lock(client);
-            if (err) {
+            if (err) {tprv8ZgxMBicQKsPey4uCcsQJjgsrjnz7139DXNpD784vky4aYMtfRzgfyRaHe36FBLgQrVF673a6pfDTExyvUzy23ZSEe8v1zzraAFKGeVRAGr
               $scope.$emit('Local/TxProposalAction');
               return self.setSendError(
                 err.message ?

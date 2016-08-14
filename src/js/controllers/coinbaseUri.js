@@ -21,7 +21,7 @@ angular.module('copayApp.controllers').controller('coinbaseUriController',
               storageService.setCoinbaseRefreshToken(network, data.refresh_token, function() {
                 $scope.$emit('Local/CoinbaseUpdated', data.access_token);
                 $timeout(function() {
-                  go.path('coinbase');
+                  console.log(path);
                   $scope.$apply();
                 }, 100);
               });

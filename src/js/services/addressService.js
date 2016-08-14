@@ -20,7 +20,7 @@ angular.module('copayApp.services')
       });
     };
 
-    root._createAddress = function(walletId, cb) {
+      root._createAddress = function(walletId, cb) {
       var client = profileService.getClient(walletId);
 
       $log.debug('Creating address for wallet:', walletId);
