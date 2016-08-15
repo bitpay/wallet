@@ -2,9 +2,10 @@
 
 angular.module('copayApp.controllers').controller('preferencesUnitController', function($scope, $log, configService, go, walletService, profileService) {
 
-  var config = configService.getSync();
-
-  $scope.currentUnit = config.wallet.settings.unitCode;
+  $scope.init = function() {
+    var config = configService.getSync();
+    $scope.currentUnit = config.wallet.settings.unitCode;
+  }
 
   $scope.unitList = [
     {

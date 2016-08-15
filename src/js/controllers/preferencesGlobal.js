@@ -3,14 +3,14 @@
 angular.module('copayApp.controllers').controller('preferencesGlobalController',
   function($scope, $rootScope, $log, configService, uxLanguage, platformInfo, pushNotificationsService, profileService, feeService) {
 
-    var isCordova = platformInfo.isCordova;
-
-    if (isCordova && StatusBar.isVisible) {
-      StatusBar.backgroundColorByHexString("#4B6178");
-    }
-
     $scope.init = function() {
       var config = configService.getSync();
+      var isCordova = platformInfo.isCordova;
+
+      if (isCordova && StatusBar.isVisible) {
+        StatusBar.backgroundColorByHexString("#4B6178");
+      }
+
       $scope.unitName = config.wallet.settings.unitName;
       $scope.currentLanguageName = uxLanguage.getCurrentLanguageName();
       $scope.selectedAlternative = {

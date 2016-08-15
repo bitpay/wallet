@@ -3,13 +3,15 @@
 angular.module('copayApp.controllers').controller('preferencesAltCurrencyController',
   function($scope, $log, $timeout, configService, rateService, lodash, go, profileService, walletService) {
 
-    var config = configService.getSync();
     var next = 10;
     var completeAlternativeList;
-    $scope.currentCurrency = config.wallet.settings.alternativeIsoCode;
-    $scope.listComplete = false;
 
     $scope.init = function() {
+
+      var config = configService.getSync();
+      $scope.currentCurrency = config.wallet.settings.alternativeIsoCode;
+      $scope.listComplete = false;
+
       rateService.whenAvailable(function() {
         completeAlternativeList = rateService.listAlternatives();
         lodash.remove(completeAlternativeList, function(c) {
