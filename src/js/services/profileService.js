@@ -82,8 +82,10 @@ angular.module('copayApp.services')
       c.name = config.aliasFor[walletId] || client.credentials.walletName;
       c.color = config.colorFor[walletId] || '#4A90E2';
       c.network = client.credentials.network;
-      root.setCustomBWSFlag(c);
+      c.m = client.credentials.m;
+      c.n = client.credentials.n;
 
+      root.setCustomBWSFlag(c);
       root.wallet[walletId] = c;
 
       client.removeAllListeners();
@@ -713,18 +715,30 @@ angular.module('copayApp.services')
       storageService.storeProfile(root.profile, cb);
     };
 
-    root.getWallets = function(network, n) {
+    root.getWallets = function(opts) {
+
+      if (opts && !lodash.isObject(opts))
+        throw "bad argument";
+
+      opts = opts || {};
+
       var ret = lodash.values(root.wallet);
 
-      if (network) {
+      if (opts.network) {
         ret = lodash.filter(ret, function(x) {
-          return (x.credentials.network == network);
+          return (x.credentials.network == opts.network);
         });
       }
 
-      if (n) {
+      if (opts.n) {
         ret = lodash.filter(ret, function(w) {
-          return (w.credentials.n == n);
+          return (w.credentials.n == opts.n);
+        });
+      }
+
+      if (opts.onlyComplete) {
+        ret = lodash.filter(ret, function(w) {
+          return w.isComplete();
         });
       }
 
