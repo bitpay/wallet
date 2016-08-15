@@ -12,10 +12,6 @@
 
 /* Conflicting styles that are customized as a compromise. These styles are a merge or compromise of foundation.css and ionic.css. */
 
-.row {
-	display: inherit;
-}
-
 .behind {
 	z-index: -1;
 }
@@ -90,30 +86,6 @@
 .toggle-label {
 	color: rgb(41, 55, 68);
 	font-size: 14px;
-}
-
-.button.button-light:hover {
-	background-color: #fff;
-	border: 1px solid #E9E9EC;
-}
-
-.button.button-light:active {
-	background-color: #ababab;
-	border: 1px solid #E9E9EC;
-}
-
-.button.button-stable:hover {
-	background-color: transparent;
-	border: 1px solid #E9E9EC;
-}
-
-.button.button-stable:active {
-	background-color: #ababab;
-	border: 1px solid #E9E9EC;
-}
-
-.button-amount {
-	text-transform: none;
 }
 
 button, .button {
