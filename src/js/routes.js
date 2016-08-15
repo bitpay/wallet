@@ -160,11 +160,16 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
           },
         }
       })
-
-
-
-
-    .state('unsupported', {
+      .state('feedback', {
+        url: '/feedback',
+        needProfile: true,
+        views: {
+          'main': {
+            templateUrl: 'views/feedback.html',
+          },
+        }
+      })
+      .state('unsupported', {
         url: '/unsupported',
         needProfile: false,
         views: {

@@ -1,16 +1,20 @@
-	<div
-	  class="topbar-container"
-	  ng-include="'views/includes/topbar.html'"
-	  ng-init="titleSection='Terms of Use'; goBackToState = 'about'; noColor = true">
-	</div>
-	<div ng-controller="termOfUseController" class="content">
-		<p class="enable_text_select m0">
-			<div class="terms" ng-include="'views/includes/terms.html'"></div>
+<ion-view ng-controller="termOfUseController" cache-view="false">
+  <ion-nav-bar class="bar-stable">
+    <ion-nav-title>Terms of Use</ion-nav-title>
+    <ion-nav-buttons side="primary">
+     <button class="button" href ui-sref="about">
+       <i class="ion-arrow-left-c"></i> Back
+     </button>
+    </ion-nav-buttons>
+  </ion-nav-bar>
+  <ion-content>
+		<p>
+			<div ng-include="'views/includes/terms.html'"></div>
 		</p>
-		<div class="row text-center">
+		<div class="row">
 			<p ng-show="lang != 'en'">
-				<a class="center" ng-click="$root.openExternalLink('https://copay.io/disclaimer')" translate>Official English Disclaimer</a>
+				<a ng-click="$root.openExternalLink('https://copay.io/disclaimer')" translate>Official English Disclaimer</a>
 			</p>
 		</div>
-	</div>
-	<div class="extra-margin-bottom"></div>
+  </ion-content>
+</ion-view>
