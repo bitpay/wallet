@@ -11,10 +11,6 @@ src/js/coinbase.js
 cordova/project-*/*
 cordova/*.keystore
 
-amazon.json
-src/js/amazon.js
-
-
 # node-webkit
 cache
 webkitbuilds/*
@@ -24,9 +20,6 @@ webkitbuilds/*
 !webkitbuilds/.desktop
 !webkitbuilds/build-osx.sh
 !webkitbuilds/Background.png
-
-#fonts
-public/fonts
 
 # chrome extensions
 chrome-app/build/*
@@ -101,10 +94,10 @@ src/sass/*.css
 .sass-cache
 
 # copay public
-public/icons/*
 public/css/*
 public/lib/*
 public/js/*
+public/fonts
 
 ## templates
 /appConfig.json
