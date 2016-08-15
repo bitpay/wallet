@@ -1,5 +1,42 @@
-<ion-view view-title="Home">
-  <ion-content class="receive">
-    <h2>Welcome to Receive</h2>
+<ion-view ng-controller="tabReceiveController" cache-view="false">
+  <ion-nav-title>Receive</ion-nav-title>
+  <ion-content ng-init="init()">
+    <div class="text-center" ng-click="copyToClipboard(addr, $event)" ng-show="addr || generatingAddress">
+      <qrcode size="220" data="bitcoin:{{addr}}"></qrcode>
+      <div ng-show="home.generatingAddress" style="position:relative; top:-226px; height:0px">
+        <div style="height:220px; width:220px; margin:auto; background: white">
+          <ion-spinner class="spinner-stable" icon="lines" style="margin-top: 85px"></ion-spinner>
+        </div>
+      </div>
+    </div>
+    <div class="item item-icon-left" ng-click="shareAddress(addr)" ng-show="index.isCordova && home.addr" ng-disabled="generatingAddress">
+      <i class="icon ion-ios-upload-outline"></i>
+      <span translate>Share address</span>
+    </div>
+    <div class="item item-icon-left" ng-click="setAddress(true)" ng-show="!home.generatingAddress">
+      <i class="icon ion-ios-loop"></i>
+      <span translate>Next Address</span>
+    </div>
+    <div class="item item-icon-left">
+      <i class="icon ion-social-bitcoin-outline"></i>
+      {{generatingAddress ? '...' : addr}}
+    </div>
+    <div class="item item-text-wrap" ng-style="{'height' : '200px'}">
+      <ion-slides class="slides" options="options" slider="data.slider">
+        <ion-slide-page ng-repeat="item in wallets track by $index" >
+          <div class="list card">
+            <ul class="pr">
+              <li ng-show="wallets[0]" class="item item-icon-left">
+                  <i class="icon icon-wallet size-21" ng-style="{'color':item.color}"></i>
+                  {{item.name || item.id}}
+                  <span class="item-note" ng-show="item.n > 1">
+                    {{item.m}}-of-{{item.n}}
+                  </span>
+              </li>
+            </ul>
+          </div>
+        </ion-slide-page>
+      </ion-slides>
+    </div>
   </ion-content>
-</ion-view> 
+</ion-view>
