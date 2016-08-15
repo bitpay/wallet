@@ -56,7 +56,7 @@ angular.module('copayApp.services').factory('go', function($window, $ionicSideMe
   };
 
   root.preferencesGlobal = function() {
-    $state.transitionTo('preferencesGlobal');
+    $state.transitionTo('tabs.settings');
   };
 
   root.reload = function() {

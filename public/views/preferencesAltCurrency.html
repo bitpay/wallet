@@ -1,12 +1,14 @@
-<div class="topbar-container" ng-include="'views/includes/topbar.html'"
-  ng-init="titleSection='Alternative Currency'; goBackToState = 'preferencesGlobal'; noColor = true">
-</div>
-
-<div class="content preferences" ng-controller="preferencesAltCurrencyController" ng-init="init()">
-  <h4></h4>
-
+<ion-view ng-controller="preferencesAltCurrencyController" cache-view="false" ng-init="init()">
+  <ion-nav-bar class="bar-stable">
+    <ion-nav-title>Alternative Currency</ion-nav-title>
+    <ion-nav-buttons side="primary">
+     <button class="button" href ui-sref="tabs.settings">
+         <i class="ion-arrow-left-c"></i> Back
+       </button>
+     </ion-nav-buttons>
+  </ion-nav-bar>
   <ion-content>
-    <ion-radio class="line-b size-12 radio-label" ng-repeat="altCurrency in altCurrencyList" ng-value="altCurrency.isoCode" ng-model="currentCurrency"
+    <ion-radio ng-repeat="altCurrency in altCurrencyList" ng-value="altCurrency.isoCode" ng-model="currentCurrency"
       ng-click="save(altCurrency)">{{altCurrency.name}}
     </ion-radio>
     <ion-infinite-scroll
@@ -15,5 +17,4 @@
       distance="1%">
     </ion-infinite-scroll>
   </ion-content>
-</div>
-
+</ion-view>
