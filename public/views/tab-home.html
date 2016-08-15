@@ -1,19 +1,25 @@
 
 <ion-view view-title="Home">
   <ion-content class="padding home" ng-controller="tabHomeController">
+    <a href="#/add"><i class="ion-ios-plus-outline right"></i></a>
     <h2>Wallets </h2>
-    <a href="#/add">+</a>
     <div class="list card">
       <ul class="pr">
 
         <li ng-show="wallets[0]"
           ng-repeat="item in wallets track by $index" class="item item-icon-left"
-          menu-toggle href ui-sref="walletHome" on-tap="openWallet(item.id, index.walletId)">
+          menu-toggle href ui-sref="walletDetails({'walletId': item.id})">
             <i class="icon icon-wallet size-21" ng-style="{'color':item.color}"></i>
             {{item.name || item.id}}
-            <span class="item-note" ng-show="item.n > 1">
-              {{item.m}}-of-{{item.n}}
+            <span  ng-show="item.n > 1">
+              [ {{item.m}}-of-{{item.n}} ]
             </span>
+
+            <span class="item-note">
+              {{item.availableBalanceStr}}
+            </span>
+
+ 
         </li>
       </ul>
     </div>

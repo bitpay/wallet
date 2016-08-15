@@ -19,35 +19,14 @@ angular.module('copayApp.controllers').controller('tabHomeController',
       self.setWallets();
     });
 
-    self.setWallets = function() {
-      if (!profileService.profile) return;
-
-      var config = configService.getSync();
-      config.colorFor = config.colorFor || {};
-      config.aliasFor = config.aliasFor || {};
-
-      // Sanitize empty wallets (fixed in BWC 1.8.1, and auto fixed when wallets completes)
-      var credentials = lodash.filter(profileService.profile.credentials, 'walletName');
-      var ret = lodash.map(credentials, function(c) {
-        return {
-          m: c.m,
-          n: c.n,
-          name: config.aliasFor[c.walletId] || c.walletName,
-          id: c.walletId,
-          color: config.colorFor[c.walletId] || '#4A90E2',
-        };
-      });
-
-      $scope.wallets = lodash.sortBy(ret, 'name');
+    self.setWallets = function() { 
+      $scope.wallets = profileService.getWallets();
     };
-    self.updateAllClients = function() {
-      lodash.each(profileService.getClients(), function(client) {
-        walletService.updateStatus(client, {}, function(err, status) {
-          if (err) 
-console.log('[tab-home.js.47]', err); //TODO
-console.log('[tab-home.js.47:console:]',status); //TODO
 
-          
+    self.updateAllClients = function() {
+      lodash.each(profileService.getWallets(), function(wallet) {
+        walletService.updateStatus(wallet, {}, function(err, status) {
+          if (err)  {} // TODO
         });
       });
     }
@@ -55,7 +34,4 @@ console.log('[tab-home.js.47:console:]',status); //TODO
     self.setWallets();
     self.updateAllClients();
     $scope.bitpayCardEnabled = true; // TODO
-
-
-
   });
