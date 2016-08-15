@@ -161,8 +161,8 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         }
       })
 
- 
- 
+
+
 
     .state('unsupported', {
         url: '/unsupported',
@@ -223,11 +223,15 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
       .state('copayers', {
         url: '/copayers',
         needProfile: true,
+        cache: false,
         views: {
           'main': {
             templateUrl: 'views/copayers.html'
           },
-        }
+        },
+        params: {
+          walletId: null,
+        },
       })
       .state('preferences', {
         url: '/preferences',

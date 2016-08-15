@@ -95,15 +95,21 @@ angular.module('copayApp.controllers').controller('importController',
       opts.password = null;
 
       $timeout(function() {
-        profileService.importWallet(str2, opts, function(err, walletId) {
+        profileService.importWallet(str2, opts, function(err, wallet) {
           ongoingProcess.set('importingWallet', false);
           if (err) {
             $scope.error = err;
-          } else {
-            $rootScope.$emit('Local/WalletImported', walletId);
-            notification.success(gettext('Success'), gettext('Your wallet has been imported correctly'));
-            go.walletHome();
+            return;
+
           }
+
+          walletService.updateRemotePreferences(wallet, {}, function() {
+            $log.debug('Remote preferences saved for:' + wallet.walletId)
+          });
+
+          $rootScope.$emit('Local/WalletImported', wallet.walletId);
+          notification.success(gettext('Success'), gettext('Your wallet has been imported correctly'));
+          go.walletHome();
         });
       }, 100);
     };
@@ -111,7 +117,7 @@ angular.module('copayApp.controllers').controller('importController',
     var _importExtendedPrivateKey = function(xPrivKey, opts) {
       ongoingProcess.set('importingWallet', true);
       $timeout(function() {
-        profileService.importExtendedPrivateKey(xPrivKey, opts, function(err, walletId) {
+        profileService.importExtendedPrivateKey(xPrivKey, opts, function(err, wallet) {
           ongoingProcess.set('importingWallet', false);
           if (err) {
             if (err instanceof errors.NOT_AUTHORIZED) {
@@ -124,7 +130,12 @@ angular.module('copayApp.controllers').controller('importController',
             });
           }
 
-          $rootScope.$emit('Local/WalletImported', walletId);
+
+          walletService.updateRemotePreferences(wallet, {}, function() {
+            $log.debug('Remote preferences saved for:' + wallet.walletId)
+          });
+
+          $rootScope.$emit('Local/WalletImported', wallet.walletId);
           notification.success(gettext('Success'), gettext('Your wallet has been imported correctly'));
           go.walletHome();
         });
@@ -157,7 +168,7 @@ angular.module('copayApp.controllers').controller('importController',
       ongoingProcess.set('importingWallet', true);
 
       $timeout(function() {
-        profileService.importMnemonic(words, opts, function(err, walletId) {
+        profileService.importMnemonic(words, opts, function(err, wallet) {
           ongoingProcess.set('importingWallet', false);
 
           if (err) {
@@ -171,7 +182,11 @@ angular.module('copayApp.controllers').controller('importController',
             });
           }
 
-          $rootScope.$emit('Local/WalletImported', walletId);
+          walletService.updateRemotePreferences(wallet, {}, function() {
+            $log.debug('Remote preferences saved for:' + wallet.walletId)
+          });
+
+          $rootScope.$emit('Local/WalletImported', wallet.walletId);
           notification.success(gettext('Success'), gettext('Your wallet has been imported correctly'));
           go.walletHome();
         });
@@ -293,7 +308,7 @@ angular.module('copayApp.controllers').controller('importController',
         ongoingProcess.set('importingWallet', true);
         $log.debug('Import opts', lopts);
 
-        profileService.importExtendedPublicKey(lopts, function(err, walletId) {
+        profileService.importExtendedPublicKey(lopts, function(err, wallet) {
           ongoingProcess.set('importingWallet', false);
           if (err) {
             $scope.error = err;
@@ -301,7 +316,12 @@ angular.module('copayApp.controllers').controller('importController',
               $scope.$apply();
             });
           }
-          $rootScope.$emit('Local/WalletImported', walletId);
+
+
+          walletService.updateRemotePreferences(wallet, {}, function() {
+            $log.debug('Remote preferences saved for:' + wallet.walletId)
+          });
+          $rootScope.$emit('Local/WalletImported', wallet.walletId);
           notification.success(gettext('Success'), gettext('Your wallet has been imported correctly'));
           go.walletHome();
         });
@@ -366,7 +386,7 @@ angular.module('copayApp.controllers').controller('importController',
         ongoingProcess.set('importingWallet', true);
         $log.debug('Import opts', lopts);
 
-        profileService.importExtendedPublicKey(lopts, function(err, walletId) {
+        profileService.importExtendedPublicKey(lopts, function(err, wallet) {
           ongoingProcess.set('importingWallet', false);
           if (err) {
             $scope.error = err;
@@ -374,7 +394,12 @@ angular.module('copayApp.controllers').controller('importController',
               $scope.$apply();
             });
           }
-          $rootScope.$emit('Local/WalletImported', walletId);
+
+
+          walletService.updateRemotePreferences(wallet, {}, function() {
+            $log.debug('Remote preferences saved for:' + wallet.walletId)
+          });
+          $rootScope.$emit('Local/WalletImported', wallet.walletId);
           notification.success(gettext('Success'), gettext('Your wallet has been imported correctly'));
           go.walletHome();
         });

@@ -1,31 +1,38 @@
-<div
-  class="topbar-container"
-  ng-include="'views/includes/topbar.html'"
-  ng-init="">
-</div>
 
-<div class="copayers content p20v" ng-controller="copayersController as copayers" ng-init="copayers.init()">
-  <div ng-show="!index.notAuthorized">
+<ion-view  ng-controller="copayersController">
+
+  <ion-nav-title>{{wallet.name}}</ion-nav-title>
+
+  <ion-nav-buttons side="primary">
+    <button class="button"   href ui-sref="tabs.home">
+      <i class="ion-arrow-left-c"></i> Back
+    </button>
+  </ion-nav-buttons>
+
+
+  <ion-content delegate-handle="my-handle" overflow-scroll="true">
+ 
+  <div ng-show="!wallet.notAuthorized">
     <h1 class="text-center" translate>Share this invitation with your copayers</h1>
 
-    <div ng-click="copayers.copySecret(index.walletSecret)" ng-class="{'enable_text_select': !index.isCordova}">
+    <div ng-click="copySecret()" ng-class="{'enable_text_select': !isCordova}">
       <div class="text-center">
-        <qrcode size="220" error-correction-level="L" data="{{index.walletSecret}}"></qrcode>
-        <div ng-show="!index.walletSecret" style="position:relative; top:-226px; height:0px">
+        <qrcode size="220" error-correction-level="L" data="{{secret}}"></qrcode>
+        <div ng-show="!secret" style="position:relative; top:-226px; height:0px">
           <div style="height:220px; width:220px; margin:auto; background: white">
             <ion-spinner class="spinner-stable" icon="lines"></ion-spinner>
           </div>
         </div>
-        <div class="secret" ng-show="!index.isCordova">
-          {{index.walletSecret || ('Loading...'|translate)}}
+        <div class="secret" ng-show="!isCordova">
+          {{secret || ('Loading...'|translate)}}
         </div>
       </div>
     </div>
 
-    <div ng-show="index.walletSecret">
-      <div class="text-center m10t" ng-if="index.isCordova">
+    <div ng-show="secret">
+      <div class="text-center m10t" ng-if="isCordova">
         <span class="button outline round dark-gray tiny m0"
-          ng-click="copayers.shareSecret(index.walletSecret)">
+          ng-click="shareSecret()">
           <i class="fi-share"></i>
           <span translate>Share invitation</span>
         </span>
@@ -35,28 +42,34 @@
         <h4 class="size-14 p10h m10t">
           <span translate>Waiting for copayers</span>
           <span class="text-gray right">
-            [ <span translate>{{index.m}}-of-{{index.n}}</span> ]
+            [ <span translate>{{wallet.m}}-of-{{wallet.n}}</span> ]
           </span>
         </h4>
         <div class="white line-b p10" ng-include="'views/includes/copayers.html'"></div>
-        <div ng-if="!index.isComplete" class="line-b p10 white size-12">
+        <div ng-if="!wallet.isComplete()" class="line-b p10 white size-12">
           <i class="fi-loop m5r p10l"></i>
           <span translate>Waiting...</span>
         </div>
+
+        <div ng-if="wallet.isComplete()" class="line-b p10 white size-12" href>
+          <button class="button"   href ui-sref="tabs.home">
+            <span translate>WALLET COMPLETE!</span>
+          </button>
+        </div>
       </div>
 
-      <div class="m20b text-center" ng-show="index.notAuthorized">
+      <div class="m20b text-center" ng-show="wallet.notAuthorized">
         <h1 translate>Wallet incomplete and broken</h1>
         <h4 translate>Delete it and create a new one</h4>
       </div>
 
       <div class="text-center">
-        <button class="tiny round outline dark-gray warning" ng-click="copayers.deleteWallet()">
+        <button class="tiny round outline dark-gray warning" ng-click="deleteWallet()">
           <i class="fi-trash"></i> <span translate>Cancel and delete the wallet</span>
         </button>
       </div>
     </div>
   </div>
+  </ion-content>
 
-  <div class="extra-margin-bottom"></div>
-</div>
+</ion-view>

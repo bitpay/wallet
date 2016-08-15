@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('createController',
-  function($scope, $rootScope, $timeout, $log, lodash, go, profileService, configService, gettext, ledger, trezor, platformInfo, derivationPathHelper, ongoingProcess) {
+  function($scope, $rootScope, $timeout, $log, lodash, go, profileService, configService, gettext, ledger, trezor, platformInfo, derivationPathHelper, ongoingProcess, walletService) {
 
     var isChromeApp = platformInfo.isChromeApp;
     var isCordova = platformInfo.isCordova;
@@ -166,7 +166,7 @@ angular.module('copayApp.controllers').controller('createController',
       ongoingProcess.set('creatingWallet', true);
       $timeout(function() {
 
-        profileService.createWallet(opts, function(err) {
+        profileService.createWallet(opts, function(err, wallet) {
           ongoingProcess.set('creatingWallet', false);
           if (err) {
             $log.warn(err);
@@ -176,13 +176,19 @@ angular.module('copayApp.controllers').controller('createController',
             });
             return;
           }
+
+          walletService.updateRemotePreferences(wallet, {}, function() {
+            $log.debug('Remote preferences saved for:' + wallet.walletId)
+          });
+
+
           if (self.seedSourceId == 'set') {
             $timeout(function() {
               $rootScope.$emit('Local/BackupDone');
             }, 1);
           }
-          go.walletHome();
 
+          go.walletHome();
         });
       }, 100);
     }

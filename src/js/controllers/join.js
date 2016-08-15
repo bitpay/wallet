@@ -128,13 +128,18 @@ angular.module('copayApp.controllers').controller('joinController',
     this._join = function(opts) {
       ongoingProcess.set('joiningWallet', true);
       $timeout(function() {
-        profileService.joinWallet(opts, function(err) {
+        profileService.joinWallet(opts, function(err, wallet) {
           ongoingProcess.set('joiningWallet', false);
           if (err) {
             self.error = err;
             $rootScope.$apply();
             return;
           }
+
+          walletService.updateRemotePreferences(wallet, {}, function() {
+            $log.debug('Remote preferences saved for:' + wallet.walletId)
+          });
+
           go.walletHome();
         });
       }, 100);
