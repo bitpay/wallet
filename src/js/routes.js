@@ -14,7 +14,7 @@ if (window && window.navigator) {
 
 //Setting up route
 angular.module('copayApp').config(function(historicLogProvider, $provide, $logProvider, $stateProvider, $urlRouterProvider, $compileProvider) {
-    $urlRouterProvider.otherwise('/');
+    $urlRouterProvider.otherwise('/tabs');
 
     $logProvider.debugEnabled(true);
     $provide.decorator('$log', ['$delegate', 'platformInfo',
@@ -93,8 +93,20 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
           }
         }
       })
+      .state('walletDetails', {
+        url: '/details',
+        needProfile: true,
+        views: {
+          'main': {
+            templateUrl: 'views/walletDetails.html',
+          },
+        },
+        params: {
+          walletId: null,
+        },
+      })
       .state('walletHome', {
-        url: '/',
+        url: '/old',
         needProfile: true,
         views: {
           'main': {

@@ -17,31 +17,19 @@ angular.module('copayApp.services')
 
     root.profile = null;
     root.focusedClient = null;
-    root.walletClients = {};
-
-    root.Utils = bwcService.getUtils();
-    root.formatAmount = function(amount, fullPrecision) {
-      var config = configService.getSync().wallet.settings;
-      if (config.unitCode == 'sat') return amount;
-
-      //TODO : now only works for english, specify opts to change thousand separator and decimal separator
-      var opts = {
-        fullPrecision: !!fullPrecision
-      };
-      return this.Utils.formatAmount(amount, config.unitCode, opts);
-    };
+    root.wallet = {};             // decorated version of client
 
     root._setFocus = function(walletId, cb) {
       $log.debug('Set focus:', walletId);
 
       // Set local object
       if (walletId)
-        root.focusedClient = root.walletClients[walletId];
+        root.focusedClient = root.wallet[walletId];
       else
         root.focusedClient = [];
 
       if (lodash.isEmpty(root.focusedClient)) {
-        root.focusedClient = root.walletClients[lodash.keys(root.walletClients)[0]];
+        root.focusedClient = root.wallet[lodash.keys(root.wallet)[0]];
       }
 
       // Still nothing?
@@ -51,7 +39,7 @@ angular.module('copayApp.services')
         $rootScope.$emit('Local/NewFocusedWallet');
 
         // Set update period
-        lodash.each(root.walletClients, function(client, id) {
+        lodash.each(root.wallet, function(client, id) {
           client.setNotificationsInterval(BACKGROUND_UPDATE_PERIOD);
         });
         root.focusedClient.setNotificationsInterval(FOREGROUND_UPDATE_PERIOD);
@@ -66,18 +54,37 @@ angular.module('copayApp.services')
       });
     };
 
+    root.setCustomBWSFlag = function(wallet) {
+      var defaults = configService.getDefaults();
+      var config = configService.getSync();
+
+      wallet.usingCustomBWS = config.bwsFor && config.bwsFor[wallet.id] && (config.bwsFor[wallet.id] != defaults.bws.url);
+    };
+
     // Adds a wallet client to profileService
     root.bindWalletClient = function(client, opts) {
       var opts = opts || {};
       var walletId = client.credentials.walletId;
+      var config = configService.getSync();
+      config.colorFor = config.colorFor || {};
+      config.aliasFor = config.aliasFor || {};
 
-      if ((root.walletClients[walletId] && root.walletClients[walletId].started) || opts.force) {
+
+      if ((root.wallet[walletId] && root.wallet[walletId].started) || opts.force) {
         return false;
       }
 
-      root.walletClients[walletId] = client;
-      root.walletClients[walletId].started = true;
-      root.walletClients[walletId].doNotVerifyPayPro = isChromeApp;
+      // INIT WALLET CLIENT VIEWMODEL
+      var c = client;
+      c.id = walletId;
+      c.started = true;
+      c.doNotVerifyPayPro = isChromeApp;
+      c.name = config.aliasFor[walletId] || client.credentials.walletName;
+      c.color = config.colorFor[walletId] || '#4A90E2';
+      c.network = client.credentials.network;
+      root.setCustomBWSFlag(c);
+
+      root.wallet[walletId] = c;
 
       client.removeAllListeners();
       client.on('report', function(n) {
@@ -162,7 +169,7 @@ angular.module('copayApp.services')
 
     // Used when reading wallets from the profile
     root.bindWallet = function(credentials, cb) {
-      if (!credentials.walletId)
+      if (!credentials.walletId || !credentials.m)
         return cb('bindWallet should receive credentials JSON');
 
 
@@ -239,7 +246,7 @@ angular.module('copayApp.services')
 
     root.pushNotificationsInit = function() {
       var defaults = configService.getDefaults();
-      var push = pushNotificationsService.init(root.walletClients);
+      var push = pushNotificationsService.init(root.wallet);
 
       push.on('notification', function(data) {
         if (!data.additionalData.foreground) {
@@ -431,14 +438,15 @@ angular.module('copayApp.services')
       });
     };
 
-    root.getClient = function(walletId) {
-      return root.walletClients[walletId];
+    root.getWallet = function(walletId) {
+      return root.wallet[walletId];
     };
+
 
     root.deleteWalletClient = function(client, cb) {
       var walletId = client.credentials.walletId;
 
-      pushNotificationsService.unsubscribe(root.getClient(walletId), function(err) {
+      pushNotificationsService.unsubscribe(root.getWallet(walletId), function(err) {
         if (err) $log.warn('Unsubscription error: ' + err.message);
         else $log.debug('Unsubscribed from push notifications service');
       });
@@ -448,7 +456,7 @@ angular.module('copayApp.services')
 
       root.profile.deleteWallet(walletId);
 
-      delete root.walletClients[walletId];
+      delete root.wallet[walletId];
       root.focusedClient = null;
 
 
@@ -529,7 +537,7 @@ angular.module('copayApp.services')
           storageService.storeProfile(root.profile, function(err) {
             var config = configService.getSync();
             if (config.pushNotifications.enabled)
-              pushNotificationsService.enableNotifications(root.walletClients);
+              pushNotificationsService.enableNotifications(root.wallet);
             return cb(err, walletId);
           });
 
@@ -705,8 +713,22 @@ angular.module('copayApp.services')
       storageService.storeProfile(root.profile, cb);
     };
 
-    root.getClients = function() {
-      return lodash.values(root.walletClients);
+    root.getWallets = function(network, n) {
+      var ret = lodash.values(root.wallet);
+
+      if (network) {
+        ret = lodash.filter(ret, function(x) {
+          return (x.credentials.network == network);
+        });
+      }
+
+      if (n) {
+        ret = lodash.filter(ret, function(w) {
+          return (w.credentials.n == n);
+        });
+      }
+
+      return lodash.sortBy(ret, 'name');
     };
 
     root.needsBackup = function(client, cb) {
@@ -730,37 +752,6 @@ angular.module('copayApp.services')
           return cb('WALLET_NEEDS_BACKUP');
         return cb();
       });
-    };
-
-    root.getWallets = function(network, n) {
-      if (!root.profile) return [];
-
-      var config = configService.getSync();
-      config.colorFor = config.colorFor || {};
-      config.aliasFor = config.aliasFor || {};
-      var ret = lodash.map(root.profile.credentials, function(c) {
-        return {
-          m: c.m,
-          n: c.n,
-          name: config.aliasFor[c.walletId] || c.walletName,
-          id: c.walletId,
-          network: c.network,
-          color: config.colorFor[c.walletId] || '#4A90E2',
-          copayerId: c.copayerId
-        };
-      });
-      if (network) {
-        ret = lodash.filter(ret, function(w) {
-          return (w.network == network);
-        });
-      }
-      if (n) {
-        ret = lodash.filter(ret, function(w) {
-          return (w.n == n);
-        });
-      }
-
-      return lodash.sortBy(ret, 'name');
     };
 
     return root;
