@@ -1,9 +1,9 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('copayersController',
-  function($scope, $rootScope, $timeout, $log, $ionicModal, profileService, go, notification, platformInfo, gettext, gettextCatalog) {
+  function($scope, $rootScope, $timeout, $log, $ionicModal, profileService, go, notification, platformInfo, gettext, gettextCatalog, $stateParams, $state) {
     var self = this;
-    var isCordova = platformInfo.isCordova;
+    $scope.isCordova = platformInfo.isCordova;
     var isWP = platformInfo.isWP;
     var isAndroid = platformInfo.isAndroid;
 
@@ -11,20 +11,6 @@ angular.module('copayApp.controllers').controller('copayersController',
     var accept_msg = gettextCatalog.getString('Accept');
     var cancel_msg = gettextCatalog.getString('Cancel');
     var confirm_msg = gettextCatalog.getString('Confirm');
-
-    // Note that this is ONLY triggered when the page is opened
-    // IF a wallet is incomplete and copay is at /#copayers
-    // and the user switch to an other complete wallet
-    // THIS IS NOT TRIGGERED.
-    //
-    self.init = function() {
-      var fc = profileService.focusedClient;
-      if (fc.isComplete()) {
-        $log.debug('Wallet Complete...redirecting')
-        go.walletHome();
-        return;
-      }
-    };
 
     var _modalDeleteWallet = function() {
       $scope.title = delete_msg;
@@ -66,9 +52,9 @@ angular.module('copayApp.controllers').controller('copayersController',
       });
     };
 
-    self.deleteWallet = function() {
+    $scope.deleteWallet = function() {
       var fc = profileService.focusedClient;
-      if (isCordova) {
+      if ($scope.isCordova) {
         navigator.notification.confirm(
           delete_msg,
           function(buttonIndex) {
@@ -83,15 +69,15 @@ angular.module('copayApp.controllers').controller('copayersController',
       }
     };
 
-    self.copySecret = function(secret) {
-      if (isCordova) {
+    $scope.copySecret = function() {
+      if ($scope.isCordova) {
         window.cordova.plugins.clipboard.copy(secret);
         window.plugins.toast.showShortCenter(gettextCatalog.getString('Copied to clipboard'));
       }
     };
 
-    self.shareSecret = function(secret) {
-      if (isCordova) {
+    $scope.shareSecret = function() {
+      if ($scope.isCordova) {
         var message = gettextCatalog.getString('Join my Copay wallet. Here is the invitation code: {{secret}} You can download Copay for your phone or desktop at https://copay.io', {
           secret: secret
         });
@@ -99,4 +85,19 @@ angular.module('copayApp.controllers').controller('copayersController',
       }
     };
 
-  });
+
+  if (!$stateParams.walletId) {
+    $log.debug('No wallet provided...back to home');
+    return $state.transitionTo('tabs.home')
+  }
+
+  var wallet = profileService.getWallet($stateParams.walletId);
+  var secret = wallet.status.wallet.secret;
+  try {
+    secret = wallet.status.wallet.secret;
+  } catch (e) {};
+
+
+  $scope.wallet = wallet;
+  $scope.secret = secret;
+});

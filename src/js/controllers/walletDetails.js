@@ -1,9 +1,8 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('walletDetailsController', function($scope, $rootScope, $interval, $timeout, $filter, $log, $ionicModal, $ionicPopover, $stateParams, profileService, lodash, configService,   gettext, gettextCatalog, platformInfo,   go, walletService   ) {
+angular.module('copayApp.controllers').controller('walletDetailsController', function($scope, $rootScope, $interval, $timeout, $filter, $log, $ionicModal, $ionicPopover, $state, $stateParams, profileService, lodash, configService, gettext, gettextCatalog, platformInfo, go, walletService) {
 
 
-console.log('[walletDetails.js.5]', $stateParams); //TODO
   var isCordova = platformInfo.isCordova;
   var isWP = platformInfo.isWP;
   var isAndroid = platformInfo.isAndroid;
@@ -32,7 +31,7 @@ console.log('[walletDetails.js.5]', $stateParams); //TODO
   ret.countDown = null;
   ret.sendMaxInfo = {};
   ret.showAlternative = false;
-  
+
   $scope.openSearchModal = function() {
     var fc = profileService.focusedClient;
     $scope.color = fc.backgroundColor;
@@ -63,14 +62,32 @@ console.log('[walletDetails.js.5]', $stateParams); //TODO
   };
 
   $scope.update = function() {
-console.log('[walletDetails.js.65:update:] TODO'); //TODO
-// {triggerTxUpdate: true}
+    walletService.updateStatus(wallet, {
+      force: true
+    }, function(err, status) {
+      if (err) {} // TODO
+    });
   };
 
   $scope.hideToggle = function() {
-console.log('[walletDetails.js.70:hideToogle:] TODO'); //TODO
+    console.log('[walletDetails.js.70:hideToogle:] TODO'); //TODO
   };
-  $scope.wallet = profileService.getWallet($stateParams.walletId);
 
-console.log('[walletDetails.js.66]',$scope.wallet); //TODO
+  if (!$stateParams.walletId) {
+    $log.debug('No wallet provided... using the first one');
+    $stateParams.walletId = profileService.getWallets({
+      onlyComplete: true
+    })[0].id;
+  }
+
+
+  var wallet = profileService.getWallet($stateParams.walletId);
+  $scope.wallet = wallet;
+
+
+  if (wallet) {
+    walletService.updateStatus(wallet, {}, function(err, status) {
+      if (err) {} // TODO
+    });
+  }
 });

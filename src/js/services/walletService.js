@@ -61,12 +61,24 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     });
   };
 
-  root.needsBackup = function(wallet) {
+  root.requiresBackup = function(wallet) {
     if (wallet.isPrivKeyExternal()) return false;
     if (!wallet.credentials.mnemonic) return false;
     if (wallet.credentials.network == 'testnet') return false;
 
     return true;
+  };
+
+  root.needsBackup = function(wallet, cb) {
+
+    if (!walletService.requiresBackup(wallet))
+      return cb(false);
+
+    storageService.getBackupFlag(wallet.credentials.walletId, function(err, val) {
+      if (err) $log.error(err);
+      if (val) return cb(false);
+      return cb(true);
+    });
   };
 
   var _walletStatusHash = function(walletStatus) {
@@ -90,6 +102,9 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     $log.warn('TODO');
     return; // TODO!!!
     if (err instanceof errors.NOT_AUTHORIZED) {
+
+console.log('[walletService.js.93] TODO NOT AUTH'); //TODO
+// TODO  TODO  TODO  TODO  TODO  TODO  TODO  TODO  TODO  TODO  TODO  TODO  TODO  TODO 
       self.notAuthorized = true;
       go.walletHome();
     } else if (err instanceof errors.NOT_FOUND) {
@@ -813,6 +828,19 @@ console.log('[walletService.js.786:wallet:]',wallet, forceNew); //TODO
       });
     });
   };
+
+
+  root.isReady = function(wallet, cb) {
+    if (!wallet.isComplete())
+      return cb('WALLET_NOT_COMPLETE');
+
+    root.needsBackup(wallet, function(needsBackup) {
+      if (needsBackup)
+        return cb('WALLET_NEEDS_BACKUP');
+      return cb();
+    });
+  };
+
 
 
   return root;
