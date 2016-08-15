@@ -9,17 +9,19 @@
         <li ng-show="wallets[0]"
           ng-repeat="item in wallets track by $index" class="item item-icon-left"
           menu-toggle href ui-sref="walletDetails({'walletId': item.id})">
-            <i class="icon icon-wallet size-21" ng-style="{'color':item.color}"></i>
+            <i class="icon ion-briefcase size-21" ng-style="{'color':item.color}"></i>
             {{item.name || item.id}}
-            <span  ng-show="item.n > 1">
-              [ {{item.m}}-of-{{item.n}} ]
+            <span  ng-show="item.n > 1" class="text-gray">
+              {{item.m}}-of-{{item.n}}
             </span>
 
-            <span class="item-note">
+
+            <span class="badge badge-assertive" ng-show="!item.isComplete()" translate>
+              Incomplete
+            </span>
+            <span class="item-note"  ng-show="item.isComplete()">
               {{item.availableBalanceStr}}
             </span>
-
- 
         </li>
       </ul>
     </div>

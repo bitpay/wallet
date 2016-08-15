@@ -1,7 +1,7 @@
 'use strict';
 
 // DO NOT INCLUDE STORAGE HERE \/ \/
-angular.module('copayApp.services').factory('walletService', function($log, $timeout, lodash, trezor, ledger, storageService, configService, rateService, uxLanguage, bwcService, $filter) {
+angular.module('copayApp.services').factory('walletService', function($log, $timeout, lodash, trezor, ledger, storageService, configService, rateService, uxLanguage, bwcService, $filter, gettextCatalog, bwcError) {
   // DO NOT INCLUDE STORAGE HERE ^^
   //
   //
@@ -755,7 +755,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     });
   };
 
-  root._createAddress = function(wallet, cb) {
+  var createAddress = function(wallet, cb) {
     $log.debug('Creating address for wallet:', wallet.id);
 
     wallet.createAddress({}, function(err, addr) {
@@ -764,7 +764,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
         if (err.error && err.error.match(/locked/gi)) {
           $log.debug(err.error);
           return $timeout(function() {
-            root._createAddress(walletId, cb);
+            createAddress(wallet, cb);
           }, 5000);
         } else if (err.message && err.message == 'MAIN_ADDRESS_GAP_REACHED') {
           $log.warn(err.message);
@@ -784,6 +784,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
   };
 
   root.getAddress = function(wallet, forceNew, cb) {
+console.log('[walletService.js.786:wallet:]',wallet, forceNew); //TODO
 
     var firstStep;
     if (forceNew) {
@@ -802,7 +803,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
 
         if (addr) return cb(null, addr);
 
-        root._createAddress(wallet, function(err, addr) {
+        createAddress(wallet, function(err, addr) {
           if (err) return cb(err);
           storageService.storeLastAddress(wallet.id, addr, function() {
             if (err) return cb(err);
