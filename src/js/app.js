@@ -6,7 +6,6 @@ var modules = [
   'gettext',
   'ionic',
   'ngLodash',
-  'ngSanitize',
   'ngCsv',
   'bwcModule',
   'pbkdf2Module',
