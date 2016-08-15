@@ -1,24 +1,30 @@
 'use strict';
 
-angular.module('copayApp.services').factory('addressbookService', function(storageService, profileService) {
+angular.module('copayApp.services').factory('addressbookService', function(storageService, profileService, lodash) {
   var root = {};
 
   root.getLabel = function(addr, cb) {
     var fc = profileService.focusedClient;
     storageService.getAddressbook(fc.credentials.network, function(err, ab) {
       if (!ab) return cb();
-      ab = JSON.parse(ab);
       if (ab[addr]) return cb(ab[addr]);
       else return cb();
     });
   };
 
   root.list = function(cb) {
-    var fc = profileService.focusedClient;
-    storageService.getAddressbook(fc.credentials.network, function(err, ab) {
+    storageService.getAddressbook('testnet', function(err, ab) {
       if (err) return cb('Could not get the Addressbook');
+
       if (ab) ab = JSON.parse(ab);
-      return cb(err, ab);
+
+      ab = ab || {};
+      storageService.getAddressbook('livenet', function(err, ab2) {
+        if (ab2) ab2 = JSON.parse(ab2);
+
+        ab2 = ab2 || {};
+        return cb(err, lodash.defaults(ab2,ab));
+      });
     });
   };
 
