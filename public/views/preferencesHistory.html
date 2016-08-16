@@ -1,24 +1,25 @@
-<div
-  class="topbar-container"
-  ng-include="'views/includes/topbar.html'"
-  ng-init="titleSection='Transaction History'; goBackToState = 'preferencesAdvanced'">
-</div>
-<div class="content preferences" ng-controller="preferencesHistory">
-  <h4></h4>
-
-  <ul class="no-bullet m0" ng-init="index.updatingTxHistory ? null : csvHistory()">
-    <li ng-show="csvReady && !index.isCordova"
-      ng-csv="csvContent" csv-header="csvHeader" filename="Copay-{{index.alias || index.walletName}}.csv">
-      <span ng-style="{'color':index.backgroundColor}" translate>
-        Export to file
-      </span>
-    </li>
-    <li ng-show="!csvReady && !index.isCordova">
-      <span class="right text-gray text-italic" translate>preparing...</span>
+<ion-view ng-controller="preferencesHistory" cache-view="false" ng-init="index.updatingTxHistory ? null : csvHistory()">
+  <ion-nav-bar class="bar-stable">
+    <ion-nav-title>Transaction History</ion-nav-title>
+    <ion-nav-buttons side="primary">
+     <button class="button" href ui-sref="preferencesAdvanced">
+       <i class="ion-arrow-left-c"></i> Back
+     </button>
+    </ion-nav-buttons>
+  </ion-nav-bar>
+  <ion-content class="has-header">
+    <div class="item item-divider"></div>
+    <div class="item" ng-show="csvReady && !index.isCordova" ng-csv="csvContent" csv-header="csvHeader" filename="Copay-{{index.alias || index.walletName}}.csv">
       <span translate>Export to file</span>
-    </li>
-    <li ng-click="clearTransactionHistory()" ng-style="{'color':index.backgroundColor}" translate>
-      Clear cache
-    </li>
-  </ul>
-</div>
+    </div>
+    <div class="item" ng-show="!csvReady && !index.isCordova">
+      <span translate>Export to file</span>
+      <span class="item-note" translate>
+        preparing...
+      </span>
+    </div>
+    <div class="item" ng-click="clearTransactionHistory()">
+      <span translate>Clear cache</span>
+    </div>
+  </ion-content>
+</ion-view>

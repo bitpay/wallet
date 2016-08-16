@@ -2,12 +2,14 @@
 
 angular.module('copayApp.controllers').controller('preferencesAliasController',
   function($scope, $timeout, configService, profileService, go) {
+
     var fc = profileService.focusedClient;
     var walletId = fc.credentials.walletId;
     var config = configService.getSync();
 
     config.aliasFor = config.aliasFor || {};
-    $scope.alias = config.aliasFor[walletId] || fc.credentials.walletName;
+    $scope.walletName = fc.credentials.walletName;
+    $scope.alias = config.aliasFor[walletId] || $scope.walletName;
 
     $scope.save = function() {
       var opts = {

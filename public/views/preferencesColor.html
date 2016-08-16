@@ -1,11 +1,15 @@
-<div class="topbar-container" ng-include="'views/includes/topbar.html'"
-  ng-init="titleSection='Color'; goBackToState = 'preferences'">
-</div>
-
-<div class="content preferences" ng-controller="preferencesColorController">
-  <h4></h4>
-
-  <ion-radio class="size-12" ng-repeat="c in colorList" ng-value="c" ng-model="currentColor" ng-click="save(c)">
-    <span ng-style="{'color': c}">&block;</span>
-  </ion-radio>
-</div>
+<ion-view ng-controller="preferencesColorController" cache-view="false">
+  <ion-nav-bar class="bar-stable">
+    <ion-nav-title>Color</ion-nav-title>
+    <ion-nav-buttons side="primary">
+     <button class="button" href ui-sref="preferences">
+       <i class="ion-arrow-left-c"></i> Back
+     </button>
+    </ion-nav-buttons>
+  </ion-nav-bar>
+  <ion-content class="has-header">
+    <ion-radio ng-repeat="c in colorList" ng-value="c" ng-model="currentColor" ng-click="save(c)">
+      <span ng-style="{'color': c}">&block;</span>
+    </ion-radio>
+  </ion-content>
+</ion-view>

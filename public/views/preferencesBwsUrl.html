@@ -1,17 +1,19 @@
-<div
-  class="topbar-container"
-  ng-include="'views/includes/topbar.html'"
-  ng-init="titleSection='Wallet Service URL'; goBackToState = 'preferencesAdvanced';">
-</div>
-
-<div class="content preferences" ng-controller="preferencesBwsUrlController">
-  <h4></h4>
-  <form name="settingsBwsUrlForm" ng-submit="save()" class="columns">
-    <label class="left">Wallet Service URL</label>
-    <a class="right size-12" ng-click="resetDefaultUrl()" translate> Set default url</a>
-    <input type="text" id="bwsurl" type="text" name="bwsurl" ng-model="bwsurl">
-    <input type="submit" class="button expand black round" value="{{'Save'|translate}}"
-    ng-style="{'background-color':index.backgroundColor}">
-  </form>
-</div>
-<div class="extra-margin-bottom"></div>
+<ion-view ng-controller="preferencesBwsUrlController" cache-view="false">
+  <ion-nav-bar class="bar-stable">
+    <ion-nav-title>Wallet Service URL</ion-nav-title>
+    <ion-nav-buttons side="primary">
+     <button class="button" href ui-sref="preferencesAdvanced">
+       <i class="ion-arrow-left-c"></i> Back
+     </button>
+    </ion-nav-buttons>
+  </ion-nav-bar>
+  <ion-content class="has-header">
+    <form name="settingsBwsUrlForm" ng-submit="save(settingsBwsUrlForm)" novalidate>
+      <label class="item item-input item-stacked-label">
+        <span class="input-label" transalate>Wallet Service URL</span><a ng-click="resetDefaultUrl()" translate> Set default url</a>
+        <input type="text" id="bwsurl" type="text" name="bwsurl" ng-model="bwsurl">
+      </label>
+      <input type="submit" class="button button-block button-stable" value="{{'Save'|translate}}"></input>
+    </form>
+  </ion-content>
+</ion-view>

@@ -1,47 +1,40 @@
-<div
-  class="topbar-container"
-  ng-include="'views/includes/topbar.html'"
-  ng-init="titleSection='Advanced'; goBackToState = 'preferences'">
-</div>
-
-<div class="content preferences">
-
-  <h4></h4>
-
-  <ul class="no-bullet m0">
-
-    <li href ui-sref="information">
-      <i class="icon-arrow-right3 size-24 right text-gray"></i>
-      <div translate>Wallet Information</div>
-    </li>
-
-    <li ng-show="index.network == 'livenet'" href ui-sref="paperWallet">
-      <i class="icon-arrow-right3 size-24 right text-gray"></i>
-      <div translate>Sweep paper wallet</div>
-    </li>
-
-    <li href ui-sref="export">
-      <i class="icon-arrow-right3 size-24 right text-gray"></i>
-      <div translate>Export Wallet</div>
-    </li>
-
-    <li  href ui-sref="preferencesBwsUrl">
-      <i class="icon-arrow-right3 size-24 right text-gray"></i>
-      <div>Wallet Service URL</div>
-    </li>
-
-     <li href ui-sref="preferencesHistory">
-      <i class="icon-arrow-right3 size-24 right text-gray"></i>
-      <div translate>Transaction History</div>
-    </li>
-
-    <li href ui-sref="delete">
-      <i class="icon-arrow-right3 size-24 right text-gray"></i>
-      <div translate>Delete Wallet</div>
-    </li>
-
-  </ul>
-
-</div>
-<div class="extra-margin-bottom"></div>
-
+<ion-view cache-view="false">
+  <ion-nav-bar class="bar-stable">
+  <ion-nav-title>Advanced Preferences</ion-nav-title>
+    <ion-nav-buttons side="primary">
+       <button class="button" href ui-sref="preferences">
+         <i class="ion-arrow-left-c"></i> Back
+       </button>
+    </ion-nav-buttons>
+  </ion-nav-bar>
+  <ion-content class="has-header">
+    <div class="list">
+      <div class="item item-divider">
+      </div>
+      <div class="item item-icon-right" href ui-sref="information">
+        <span translate>Wallet Information</span>
+        <i class="icon ion-ios-arrow-right"></i>
+      </div>
+      <div class="item item-icon-right" ng-show="index.network == 'livenet'" href ui-sref="paperWallet">
+        <span translate>Sweep paper wallet</span>
+        <i class="icon ion-ios-arrow-right"></i>
+      </div>
+      <div class="item item-icon-right" href ui-sref="export">
+        <span translate>Export Wallet</span>
+        <i class="icon ion-ios-arrow-right"></i>
+      </div>
+      <div class="item item-icon-right" href ui-sref="preferencesBwsUrl">
+        <span translate>Wallet Service URL</span>
+        <i class="icon ion-ios-arrow-right"></i>
+      </div>
+      <div class="item item-icon-right" href ui-sref="preferencesHistory">
+        <span translate>Transaction History</span>
+        <i class="icon ion-ios-arrow-right"></i>
+      </div>
+      <div class="item item-icon-right" href ui-sref="delete">
+        <span translate>Delete Wallet</span>
+        <i class="icon ion-ios-arrow-right"></i>
+      </div>
+    </div>
+  </ion-content>
+</ion-view>
