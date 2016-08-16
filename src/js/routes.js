@@ -12,7 +12,7 @@ if (window && window.navigator) {
   }
 }
 
-//Setting up route
+//Setting up route``
 angular.module('copayApp').config(function(historicLogProvider, $provide, $logProvider, $stateProvider, $urlRouterProvider, $compileProvider) {
     $urlRouterProvider.otherwise('/');
 
@@ -134,7 +134,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
       .state('join', {
         url: '/join',
         needProfile: true,
-        views: {
+        views: {  
           'main': {
             templateUrl: 'views/join.html'
           },
@@ -469,6 +469,28 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         views: {
           'main': {
             templateUrl: 'views/preferencesInformation.html'
+          },
+        }
+      })
+      .state('preferencesSign', {
+        url: '/preferencesSign',
+        templateUrl: 'views/preferencesSign.html',
+        walletShouldBeComplete: true,
+        needProfile: true,
+        views: {
+          'main': {
+            templateUrl: 'views/preferencesSign.html'
+          },
+        }
+      })
+      .state('preferencesVerify', {
+        url: '/preferencesVerify',
+        templateUrl: 'views/preferencesVerify.html',
+        walletShouldBeComplete: true,
+        needProfile: true,
+        views: {
+          'main': {
+            templateUrl: 'views/preferencesVerify.html'
           },
         }
       })

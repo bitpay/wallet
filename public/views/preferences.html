@@ -9,7 +9,6 @@
 <div class="content preferences" ng-controller="preferencesController" ng-init="init()">
 
   <h4></h4>
-
   <ul class="no-bullet m0" ng-show="!index.noFocusedWallet">
 
     <li href ui-sref="preferencesAlias">
@@ -52,6 +51,16 @@
         <i class="icon-arrow-right3 size-24 text-gray"></i>
       </div>
       <div translate>Backup</div>
+    </li>
+
+    <li href ui-sref="preferencesSign">
+      <i class="icon-arrow-right3 size-24 right text-gray"></i>
+      <div translate>Sign</div>
+    </li>
+
+    <li href ui-sref="preferencesVerify">
+      <i class="icon-arrow-right3 size-24 right text-gray"></i>
+      <div translate>Verify</div>
     </li>
 
     <li href ui-sref="preferencesAdvanced">
