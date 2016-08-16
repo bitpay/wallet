@@ -84092,10 +84092,10 @@ arguments[4][171][0].apply(exports,arguments)
 },{"dup":171}],318:[function(require,module,exports){
 module.exports={
   "author": {
-    "name": "BitPay Inc"
+    "name": "Devon Weller <devon@tokenly.com>"
   },
   "bugs": {
-    "url": "https://github.com/bitpay/bitcore-counterparty-wallet-client/issues"
+    "url": "https://github.com/tokenly/bitcore-counterparty-wallet-client/issues"
   },
   "contributors": [
     {
@@ -84131,7 +84131,7 @@ module.exports={
     "uuid": "^2.0.1"
   },
   "engine": "node >= 0.12.0",
-  "homepage": "https://github.com/bitpay/bitcore-counterparty-wallet-client#readme",
+  "homepage": "https://github.com/tokenly/bitcore-counterparty-wallet-client#readme",
   "keywords": [
     "bitcoin",
     "copay",
@@ -84148,12 +84148,9 @@ module.exports={
   "optionalDependencies": {},
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/bitpay/bitcore-counterparty-wallet-client.git"
+    "url": "git+ssh://git@github.com/tokenly/bitcore-counterparty-wallet-client.git"
   },
   "scripts": {
-    "coverage": "istanbul cover ./node_modules/.bin/_mocha -- --reporter spec test",
-    "coveralls": "istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage",
-    "docs": "jsdox lib/* lib/common lib/errors -o docs && cat README.header.md  docs/*.md LICENSE > README.md",
     "start": "node app.js",
     "test": "mocha"
   },
