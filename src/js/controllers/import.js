@@ -178,8 +178,8 @@ angular.module('copayApp.controllers').controller('importController',
       }, 100);
     };
 
-    $scope.setDerivationPath = function() {
-      if ($scope.testnetEnabled)
+    $scope.setDerivationPath = function(testnetEnabled) {
+      if (testnetEnabled)
         $scope.derivationPath = derivationPathHelper.defaultTestnet;
       else
         $scope.derivationPath = derivationPathHelper.default;
