@@ -67,6 +67,11 @@ angular.module('copayApp.services').factory('configService', function(storageSer
         windows: {},
       }
     },
+
+    // counterparty token support
+    counterpartyTokens: {
+      enabled: true
+    }
   };
 
   var configCache = null;
@@ -103,6 +108,9 @@ angular.module('copayApp.services').factory('configService', function(storageSer
         }
         if (!configCache.pushNotifications) {
           configCache.pushNotifications = defaultConfig.pushNotifications;
+        }
+        if (!configCache.counterpartyTokens) {
+          configCache.counterpartyTokens = defaultConfig.counterpartyTokens;
         }
 
       } else {

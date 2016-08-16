@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('walletHomeController', function($scope, $rootScope, $interval, $timeout, $filter, $log, $ionicModal, $ionicPopover, notification, txStatus, profileService, lodash, configService, rateService, storageService, bitcore, gettext, gettextCatalog, platformInfo, addressService, ledger, bwcError, confirmDialog, txFormatService, addressbookService, go, feeService, walletService, fingerprintService, nodeWebkit, ongoingProcess) {
+angular.module('copayApp.controllers').controller('walletHomeController', function($scope, $rootScope, $interval, $timeout, $filter, $log, $ionicModal, $ionicPopover, notification, txStatus, profileService, lodash, configService, rateService, storageService, bitcore, gettext, gettextCatalog, platformInfo, addressService, ledger, bwcError, confirmDialog, txFormatService, addressbookService, go, feeService, walletService, fingerprintService, nodeWebkit, ongoingProcess, counterpartyService) {
 
   var isCordova = platformInfo.isCordova;
   var isWP = platformInfo.isWP;
@@ -29,6 +29,14 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   ret.isWindowsPhoneApp = platformInfo.isWP;
   ret.countDown = null;
   ret.sendMaxInfo = {};
+
+  // tokens
+  var tokenBalancesEnabled = config.counterpartyTokens.enabled;
+  ret.tokenBalancesEnabled = tokenBalancesEnabled;
+  $scope.tokenBalancesEnabled = tokenBalancesEnabled;
+  $scope.tokenBalancesLoading = false;
+  $scope.tokenBalances = [];
+
   var vanillaScope = ret;
 
   var disableScannerListener = $rootScope.$on('dataScanned', function(event, data) {
@@ -77,6 +85,18 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     });
   });
 
+  var disableAddressSetListener = $rootScope.$on('Local/AddressSet', function(event, address) {
+    if (tokenBalancesEnabled) {
+      $log.debug('TOKEN: updating token balances address:', address);
+      $scope.tokenBalancesLoading = true;
+      counterpartyService.getBalances(address, function(err, tokenBalances) {
+        $scope.tokenBalances = tokenBalances;
+        $scope.tokenBalancesLoading = false;
+        $scope.$digest();
+      });
+    }
+  });
+
   var disableResumeListener = $rootScope.$on('Local/Resume', function() {
     // This is needed then the apps go to sleep
     self.bindTouchDown();
@@ -100,6 +120,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     disablePaymentUriListener();
     disableTabListener();
     disableFocusListener();
+    disableAddressSetListener();
     disableResumeListener();
     $rootScope.shouldHideMenuBar = false;
   });
@@ -180,6 +201,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
     // Address already set?
     if (!forceNew && self.addr) {
+      $scope.$emit('Local/AddressSet', self.addr);
       return;
     }
 
@@ -193,6 +215,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
         } else {
           if (addr)
             self.addr = addr;
+            $scope.$emit('Local/AddressSet', self.addr);
         }
 
         $scope.$digest();

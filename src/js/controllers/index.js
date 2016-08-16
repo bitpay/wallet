@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, $ionicScrollDelegate, $ionicPopup, $ionicSideMenuDelegate, latestReleaseService, feeService, bwcService, pushNotificationsService, lodash, go, profileService, configService, rateService, storageService, addressService, gettext, gettextCatalog, amMoment, addonManager, bwcError, txFormatService, uxLanguage, glideraService, coinbaseService, platformInfo, addressbookService, openURLService, ongoingProcess) {
+angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, $ionicScrollDelegate, $ionicPopup, $ionicSideMenuDelegate, latestReleaseService, feeService, bwcService, bcpwcService, pushNotificationsService, lodash, go, profileService, configService, rateService, storageService, addressService, gettext, gettextCatalog, amMoment, addonManager, bwcError, txFormatService, uxLanguage, glideraService, coinbaseService, platformInfo, addressbookService, openURLService, counterpartyService, ongoingProcess) {
   var self = this;
   var SOFT_CONFIRMATION_LIMIT = 12;
   var errors = bwcService.getErrors();
@@ -672,6 +672,16 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       } catch (ex) {
         $log.warn(ex);
       }
+
+      if (counterpartyService.isEnabled()) {
+        // with tokens
+        var walletId = profileService.focusedClient.credentials.walletId;
+        return counterpartyService.applyCounterpartyDataToTxHistory(walletId, localTxs, function(err, localTxsWithCPData) {
+          if (err) return cb(err);
+          cb(null, lodash.compact(localTxsWithCPData))
+        });
+      }
+
       return cb(null, lodash.compact(localTxs));
     });
   }

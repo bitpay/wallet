@@ -78,6 +78,22 @@
              </div>
           </div> <!-- amount -->
 
+          <!-- Token Balances -->
+          <div class="token-balances" ng-show="tokenBalancesEnabled">
+            <div ng-show="tokenBalancesLoading">Loading Token Balances</div>
+            <div ng-show="!tokenBalancesLoading">
+            <h3>Token Balances</h3>
+
+            <div ng-repeat="tokenBalanceEntry in tokenBalances" style="margin-bottom: 4px;">
+              <span style="font-weight: bold;">{{ tokenBalanceEntry.tokenName }}</span>
+              <span style="margin-left: 8px; color: #333;">{{ tokenBalanceEntry.quantity }}</span>
+            </div>
+
+            <div ng-show="tokenBalances.length == 0">No Token Balances</div>
+            </div>
+          </div>
+
+
           <div class="wallet-info">
             <span ng-include="'views/includes/walletInfo.html'"></span>
           </div>
@@ -216,7 +232,8 @@
                   (possible double spend)
                   </span>
                   <span  ng-if="btx.action != 'invalid'">
-                  {{btx.amountStr}}
+                    <span ng-show="btx.counterparty && btx.counterparty.isCounterparty">{{btx.counterparty.quantityFloat}} {{btx.counterparty.asset}}</span>
+                    <span ng-hide="btx.counterparty && btx.counterparty.isCounterparty">{{btx.amountStr}}</span>
                   </span>
                 </span>
                 <div class="size-12 text-gray">
