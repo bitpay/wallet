@@ -1,0 +1,88 @@
+<ion-view>
+
+  <ion-nav-title>Enter Amount</ion-nav-title>
+
+  <ion-pane>
+    <ion-content class="calculator" scroll="false" class="amount" ng-controller="amountController" ng-init="init()">
+
+    <ion-nav-buttons side="primary">
+      <button class="button"   href ui-sref="tabs.send">
+        <i class="ion-arrow-left-c"></i> Back
+      </button>
+    </ion-nav-buttons>
+
+
+    <div class="list card">
+
+      <div class="item item-divider">
+        Recipient 
+      </div>
+
+      <div class="item item-text-wrap item-icon-left">
+        <i class="icon ion-ios-person-outline"></i>
+        {{toName || toAddress}}
+      </div>
+
+      <div class="item item-divider">
+        Amount
+      </div>
+
+
+      <div class="item  item-text-wrap item-button-right">
+
+          <button class="button black" ng-click="toggleAlternative()" ng-show="showAlternativeAmount">{{alternativeIsoCode}}</button>
+          <button class="button transform-none"  ng-click="toggleAlternative()" ng-show="!showAlternativeAmount">{{unitName}}</button>
+
+          <div class="text-light text-black m15b" ng-class="{'size-28': smallFont, 'size-36': !smallFont}"> <span>  {{amount || "0.00" }}</div>
+          <div class="text-light text-black" ng-class="{'size-16': smallFont, 'size-17': !smallFont}" ng-show="!showAlternativeAmount">
+            {{globalResult}} <span class="label gray text-white radius">{{amountResult || '0.00'}} {{alternativeIsoCode}}</span>
+          </div>
+          <div class="text-light text-black size-17" ng-show="showAlternativeAmount">
+            {{globalResult}} <span class="label gray text-white radius">{{alternativeResult || '0.00'}} {{unitName}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="button-calc">
+      <div class="row m5b">
+        <button class="col columns col-25 text-center m0 operator" ng-click="resetAmount()">
+          AC
+        </button>
+        <button class="col columns text-center text-white m0"
+          ng-style="{'background-color':recipientColor || '#4b6178'}"
+          ng-disabled="alternativeResult <= 0 && amountResult <= 0" ng-click="finish()">
+          OK
+        </button>
+      </div>
+      <div class="row text-center">
+        <div class="col columns" ng-click="pushDigit('7')">7</div>
+        <div class="col columns" ng-click="pushDigit('8')">8</div>
+        <div class="col columns" ng-click="pushDigit('9')">9</div>
+        <div class="col columns operator" ng-click="pushOperator('/')">/</div>
+      </div>
+
+      <div class="row text-center">
+        <div class="col columns" ng-click="pushDigit('4')">4</div>
+        <div class="col columns" ng-click="pushDigit('5')">5</div>
+        <div class="col columns" ng-click="pushDigit('6')">6</div>
+        <div class="col columns operator" ng-click="pushOperator('x')">x</div>
+      </div>
+
+      <div class="row text-center">
+        <div class="col columns" ng-click="pushDigit('1')">1</div>
+        <div class="col columns" ng-click="pushDigit('2')">2</div>
+        <div class="col columns" ng-click="pushDigit('3')">3</div>
+        <div class="col columns operator" ng-click="pushOperator('+')">+</div>
+      </div>
+
+      <div class="row text-center">
+        <div class="col columns operator" ng-click="pushDigit('.')">.</div>
+        <div class="col columns" ng-click="pushDigit('0')">0</div>
+        <div class="col columns operator icon ion-arrow-left-a" ng-click="removeDigit()"></div>
+        <div class="col columns operator" ng-click="pushOperator('-')">-</div>
+      </div>
+    </div>
+    </ion-content>
+  </ion-pane>
+</ion-view>

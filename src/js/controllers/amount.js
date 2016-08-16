@@ -1,6 +1,8 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('inputAmountController', function($rootScope, $scope, $filter, $timeout, $ionicScrollDelegate, profileService, platformInfo, lodash, configService, go, rateService) {
+angular.module('copayApp.controllers').controller('amountController', function($rootScope, $scope, $filter, $timeout, $ionicScrollDelegate, walletService, platformInfo, lodash, configService, go, rateService, $stateParams, $window, $state, $log) {
+
+
   var unitToSatoshi;
   var satToUnit;
   var unitDecimals;
@@ -10,6 +12,45 @@ angular.module('copayApp.controllers').controller('inputAmountController', funct
   var LENGTH_EXPRESSION_LIMIT = 19;
 
   $scope.init = function() {
+
+    if (!$stateParams.toAddress) {
+      $log.error('Bad params at amount')
+      throw ('bad params');
+    }
+
+    var reNr = /^[1234567890\.]$/;
+    var reOp = /^[\*\+\-\/]$/;
+
+
+    var disableKeys = angular.element($window).on('keydown', function(e) {
+      if (e.which === 8) { // you can add others here inside brackets.
+        e.preventDefault();
+        $scope.removeDigit();
+      }
+
+      if (e.key && e.key.match(reNr))
+        $scope.pushDigit(e.key);
+
+      else if (e.key && e.key.match(reOp))
+        $scope.pushOperator(e.key);
+
+      else if (e.key && e.key == 'Enter')
+        $scope.finish();
+
+      $timeout(function() {
+        $scope.$apply();
+      }, 10);
+
+    });
+
+    $scope.$on('$destroy', function() {
+      angular.element($window).off('keydown');
+    });
+
+
+    $scope.toAddress = $stateParams.toAddress;
+    $scope.toName = $stateParams.toName;
+
     var config = configService.getSync().wallet.settings;
     $scope.unitName = config.unitName;
     $scope.alternativeIsoCode = config.alternativeIsoCode;
@@ -19,16 +60,18 @@ angular.module('copayApp.controllers').controller('inputAmountController', funct
     satToUnit = 1 / unitToSatoshi;
     satToBtc = 1 / 100000000;
     unitDecimals = config.unitDecimals;
+
+    // in SAT ALWAYS
+    if ($stateParams.toAmount) {
+      $scope.amount = (($stateParams.toAmount) * satToUnit).toFixed(unitDecimals) ;
+    }
+
+
     processAmount($scope.amount);
+
     $timeout(function() {
       $ionicScrollDelegate.resize();
     }, 100);
-  };
-
-  $scope.shareAddress = function(uri) {
-    if ($scope.isCordova) {
-      window.plugins.socialsharing.share(uri, null, null, null);
-    }
   };
 
   $scope.toggleAlternative = function() {
@@ -54,6 +97,7 @@ angular.module('copayApp.controllers').controller('inputAmountController', funct
   };
 
   $scope.pushOperator = function(operator) {
+    console.log('[amount.js.90:operator:]', operator); //TODO
     if (!$scope.amount || $scope.amount.length == 0) return;
     $scope.amount = _pushOperator($scope.amount);
 
@@ -100,7 +144,7 @@ angular.module('copayApp.controllers').controller('inputAmountController', funct
     if (lodash.isNumber(result)) {
       $scope.globalResult = isExpression(val) ? '= ' + processResult(result) : '';
       $scope.amountResult = $filter('formatFiatAmount')(toFiat(result));
-      $scope.alternativeResult = profileService.formatAmount(fromFiat(result) * unitToSatoshi, true);
+      $scope.alternativeResult = walletService.formatAmount(fromFiat(result) * unitToSatoshi, true);
     }
   };
 
@@ -108,7 +152,7 @@ angular.module('copayApp.controllers').controller('inputAmountController', funct
     if ($scope.showAlternativeAmount)
       return $filter('formatFiatAmount')(val);
     else
-      return profileService.formatAmount(val.toFixed(unitDecimals) * unitToSatoshi, true);
+      return walletService.formatAmount(val.toFixed(unitDecimals) * unitToSatoshi, true);
   };
 
   function fromFiat(val) {
@@ -142,31 +186,15 @@ angular.module('copayApp.controllers').controller('inputAmountController', funct
   $scope.finish = function() {
     var _amount = evaluate(format($scope.amount));
     var amount = $scope.showAlternativeAmount ? fromFiat(_amount).toFixed(unitDecimals) : _amount.toFixed(unitDecimals);
-    var alternativeAmount = $scope.showAlternativeAmount ? _amount : toFiat(_amount);
 
-    if (amount % 1 == 0) amount = parseInt(amount);
-
-    if ($scope.addr) {
-      $scope.specificAmount = profileService.formatAmount(amount * unitToSatoshi, true);
-      $scope.specificAlternativeAmount = $filter('formatFiatAmount')(alternativeAmount);
-
-      if ($scope.unitName == 'bits') {
-        var amountSat = parseInt((amount * unitToSatoshi).toFixed(0));
-        amount = (amountSat * satToBtc).toFixed(8);
-      }
-      $scope.customizedAmountBtc = amount;
-
-      $timeout(function() {
-        $ionicScrollDelegate.resize();
-      }, 100);
-    } else {
-      $scope.sending = true;
-      $scope.sendingAmount = profileService.formatAmount(amount * unitToSatoshi, true);
-      $scope.sendingAlternativeAmount = $filter('formatFiatAmount')(alternativeAmount);
-    }
+    $state.transitionTo('confirm', {
+      toAmount:amount * unitToSatoshi,
+      toAddress: $scope.toAddress,
+      toName: $scope.toName,
+    });
   };
 
   $scope.cancel = function() {
-    $scope.inputAmountModal.hide();
+    $state.transitionTo('tabs.send');
   };
 });
