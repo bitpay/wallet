@@ -37,7 +37,7 @@ angular.module('copayApp.services')
 
         root.signUriMessage = function(uri, cb) {
             console.log(uri);
-            if (lodash.isEmpty(uri)
+            if (lodash.isEmpty(uri))
                 return cb('MISSING_PARAMETER');
 
             client.getClearSignedMessage(details,client.credentials.xPrivKey, toSign, function(response) {
