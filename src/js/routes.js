@@ -14,7 +14,7 @@ if (window && window.navigator) {
 
 //Setting up route
 angular.module('copayApp').config(function(historicLogProvider, $provide, $logProvider, $stateProvider, $urlRouterProvider, $compileProvider) {
-    $urlRouterProvider.otherwise('/tabs');
+    $urlRouterProvider.otherwise('/tabs.home');
 
     $logProvider.debugEnabled(true);
     $provide.decorator('$log', ['$delegate', 'platformInfo',
@@ -116,6 +116,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
       })
       .state('tabs', {
         url: '/tabs',
+        cache: false,
         needProfile: true,
         abstract: true,
         views: {
@@ -126,6 +127,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
       })
       .state('tabs.home', {
         url: '/home',
+        cache: false,
         needProfile: true,
         views: {
           'tab-home': {
@@ -135,6 +137,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
       })
       .state('tabs.receive', {
         url: '/receive',
+        cache: false,
         needProfile: true,
         views: {
           'tab-receive': {
@@ -144,6 +147,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
       })
       .state('tabs.send', {
         url: '/send',
+        cache: false,
         needProfile: true,
         views: {
           'tab-send': {
@@ -160,15 +164,36 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
           },
         }
       })
-      .state('feedback', {
-        url: '/feedback',
+      .state('amount', {
+        cache: false,
+        url: '/amount',
         needProfile: true,
         views: {
           'main': {
-            templateUrl: 'views/feedback.html',
+            templateUrl: 'views/amount.html',
           },
-        }
+        },
+        params: {
+          toAddress: null,
+          toName: null,
+        },
       })
+      .state('confirm', {
+        cache: false,
+        url: '/confirm',
+        needProfile: true,
+        views: {
+          'main': {
+            templateUrl: 'views/confirm.html',
+          },
+        },
+        params: {
+          toAddress: null,
+          toName: null,
+          toAmount: null,
+        },
+      })
+ 
       .state('unsupported', {
         url: '/unsupported',
         needProfile: false,
@@ -701,6 +726,29 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
           navigator.splashscreen.hide();
         }, 1000);
       }
+
+
+      $log.info('Init profile...');
+      // Try to open local profile
+      profileService.loadAndBindProfile(function(err) {
+        if (err) {
+          if (err.message && err.message.match('NOPROFILE')) {
+            $log.debug('No profile... redirecting');
+            $state.transitionTo('disclaimer');
+          } else if (err.message && err.message.match('NONAGREEDDISCLAIMER')) {
+            $log.debug('Display disclaimer... redirecting');
+            $state.transitionTo('disclaimer');
+          } else {
+            throw new Error(err); // TODO
+          }
+        } else {
+          profileService.storeProfileIfDirty();
+          $log.debug('Profile loaded ... Starting UX.');
+          $state.transitionTo('tabs.home');
+        }
+      });
+
+
     });
 
     uxLanguage.init();
@@ -724,34 +772,5 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
       $log.debug('            toParams:' + JSON.stringify(toParams || {}));
       $log.debug('            fromParams:' + JSON.stringify(fromParams || {}));
 
-      if (!profileService.profile && toState.needProfile) {
-
-        // Give us time to open / create the profile
-        event.preventDefault();
-        // Try to open local profile
-        profileService.loadAndBindProfile(function(err) {
-          if (err) {
-            if (err.message && err.message.match('NOPROFILE')) {
-              $log.debug('No profile... redirecting');
-              $state.transitionTo('disclaimer');
-            } else if (err.message && err.message.match('NONAGREEDDISCLAIMER')) {
-              $log.debug('Display disclaimer... redirecting');
-              $state.transitionTo('disclaimer');
-            } else {
-              throw new Error(err); // TODO
-            }
-          } else {
-            profileService.storeProfileIfDirty();
-            $log.debug('Profile loaded ... Starting UX.');
-            $state.transitionTo(toState.name || toState, toParams);
-          }
-        });
-      }
-      // else {
-      //   if (profileService.focusedClient && !profileService.focusedClient.isComplete() && toState.walletShouldBeComplete) {
-      //
-      //     $state.transitionTo('copayers');
-      //   }
-      // }
     });
   });

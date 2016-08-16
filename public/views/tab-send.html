@@ -12,11 +12,11 @@
       <input type="text" placeholder="Search" ng-model="search" ng-change="findContact()">
     </label>
 
-    <h2>Contacts & Wallets</h2>
+    <h3>Contacts & Wallets</h3>
 
     <div class="list card">
       <ul class="pr">
-        <li class="item item-icon-left" ng-repeat="item in list" ng-click="openInputAmountModal(item)">
+        <li class="item item-icon-left" ng-repeat="item in list" ng-click="goToAmount(item)">
 
           <i ng-show="item.isWallet" class="icon ion-briefcase size-21" ng-style="{'color':item.color}"></i>
           <i ng-show="!item.isWallet" class="icon ion-ios-person-outline"></i>
