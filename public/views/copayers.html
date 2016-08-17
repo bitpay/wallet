@@ -1,7 +1,17 @@
 
 <ion-view  ng-controller="copayersController">
 
-  <ion-nav-title>{{wallet.name}}</ion-nav-title>
+
+  <ion-nav-bar class="bar-stable">
+    <ion-nav-title>{{wallet.name}}</ion-nav-title>
+    <ion-nav-buttons side="primary">
+      <button class="button" href ui-sref="tabs.home">
+        <i class="ion-arrow-left-c"></i> Back
+      </button>
+    </ion-nav-buttons>
+  </ion-nav-bar>
+
+
 
   <ion-nav-buttons side="primary">
     <button class="button"   href ui-sref="tabs.home">

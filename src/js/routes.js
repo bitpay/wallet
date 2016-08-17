@@ -93,27 +93,43 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
           }
         }
       })
-      .state('walletDetails', {
+      .state('wallet', {
+        url: '/wallet/{walletId}',
+        abstract: true,
+        needProfile: true,
+        views: {
+          'main': {
+            template: '<ui-view/>',
+          },
+        },
+      })
+      .state('wallet.details', {
         url: '/details',
         needProfile: true,
-        views: {
-          'main': {
-            templateUrl: 'views/walletDetails.html',
-          },
-        },
-        params: {
-          walletId: null,
-        },
+        templateUrl: 'views/walletDetails.html'
       })
-      .state('walletHome', {
-        url: '/old',
+      .state('wallet.preferences', {
+        url: '/preferences',
         needProfile: true,
-        views: {
-          'main': {
-            templateUrl: 'views/walletHome.html',
-          },
-        }
+        templateUrl: 'views/preferences.html'
       })
+      .state('wallet.copayers', {
+        url: '/copayers',
+        needProfile: true,
+        cache: false,
+        templateUrl: 'views/copayers.html'
+      })
+
+// OLD
+      // .state('walletHome', {
+      //   url: '/old',
+      //   needProfile: true,
+      //   views: {
+      //     'main': {
+      //       templateUrl: 'views/walletHome.html',
+      //     },
+      //   }
+      // })
       .state('tabs', {
         url: '/tabs',
         cache: false,
@@ -247,29 +263,6 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         views: {
           'main': {
             templateUrl: 'views/create.html'
-          },
-        }
-      })
-      .state('copayers', {
-        url: '/copayers',
-        needProfile: true,
-        cache: false,
-        views: {
-          'main': {
-            templateUrl: 'views/copayers.html'
-          },
-        },
-        params: {
-          walletId: null,
-        },
-      })
-      .state('preferences', {
-        url: '/preferences',
-        templateUrl: 'views/preferences.html',
-        needProfile: true,
-        views: {
-          'main': {
-            templateUrl: 'views/preferences.html',
           },
         }
       })

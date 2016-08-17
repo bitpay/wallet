@@ -1,13 +1,13 @@
-<ion-view ng-controller="preferencesController" cache-view="false" ng-init="init()">
+<ion-view>
   <ion-nav-bar class="bar-stable">
   <ion-nav-title>Wallet Settings</ion-nav-title>
     <ion-nav-buttons side="primary">
-       <button class="button" href ui-sref="walletDetails">
+       <button class="button" href ui-sref="wallet.details">
          <i class="ion-arrow-left-c"></i> Back
        </button>
     </ion-nav-buttons>
   </ion-nav-bar>
-  <ion-content class="has-header">
+  <ion-content class="has-header" ng-controller="preferencesController" cache-view="false" ng-init="init()">
     <div class="list">
       <div class="item item-divider">
         Preferences
@@ -15,7 +15,7 @@
       <div class="item item-icon-right" href ui-sref="preferencesAlias">
         <span translate>Wallet Name</span>
         <span class="item-note">
-          {{index.alias||index.walletName}}
+          {{alias||walletName}}
         </span>
         <i class="icon ion-ios-arrow-right"></i>
       </div>
@@ -38,7 +38,7 @@
         </span>
       </div>
       <div class="item item-icon-right"  href ui-sref="preferencesColor">
-        <span ng-style="{'color':index.backgroundColor}">&block;</span>
+        <span ng-style="{'color': backgroundColor}">&block;</span>
         <span translate>Wallet Color</span>
         <span class="item-note">
           {{index.alias||index.walletName}}
