@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('backupController',
-  function($rootScope, $scope, $timeout, $log, go, lodash, fingerprintService, platformInfo, configService, profileService, gettext, bwcService, walletService, ongoingProcess) {
+  function($rootScope, $scope, $timeout, $log, $state, lodash, fingerprintService, platformInfo, configService, profileService, gettext, bwcService, walletService, ongoingProcess) {
 
     var fc = profileService.focusedClient;
     var prevState;
@@ -69,7 +69,7 @@ angular.module('copayApp.controllers').controller('backupController',
     };
 
     $scope.goBack = function() {
-      go.path(prevState || 'walletHome');
+      $state.go('wallet.preferences');
     };
 
     $scope.$on('$destroy', function() {
