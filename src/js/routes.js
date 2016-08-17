@@ -161,6 +161,15 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
           },
         }
       })
+      .state('tabs.scan', {
+        url: '/scan',
+        needProfile: true,
+        views: {
+          'tab-scan': {
+            templateUrl: 'views/tab-scan.html',
+          },
+        }
+      })
       .state('tabs.send', {
         url: '/send',
         cache: false,
@@ -200,7 +209,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
           },
         },
       })
- 
+
       .state('unsupported', {
         url: '/unsupported',
         needProfile: false,
@@ -652,9 +661,12 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
           }, 300);
         });
 
-        if (window.cordova.plugins.Keyboard) {
-          cordova.plugins.Keyboard.hideKeyboardAccessoryBar(false);
-          cordova.plugins.Keyboard.disableScroll(false);
+        if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
+          cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
+          cordova.plugins.Keyboard.disableScroll(true);
+        }
+        if (window.StatusBar) {
+          StatusBar.styleLightContent();
         }
 
         $ionicPlatform.registerBackButtonAction(function(event) {

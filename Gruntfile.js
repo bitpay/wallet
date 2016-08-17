@@ -259,8 +259,9 @@ module.exports = function(grunt) {
   grunt.registerTask('chrome', ['exec:chrome']);
   grunt.registerTask('wp', ['prod', 'exec:wp']);
   grunt.registerTask('wp-debug', ['default', 'exec:wp']);
-  grunt.registerTask('ios', ['prod', 'exec:ios', 'exec:xcode']);
-  grunt.registerTask('ios-debug', ['default', 'exec:ios', 'exec:xcode']);
+  grunt.registerTask('ios', ['prod', 'exec:ios']);
+  grunt.registerTask('ios-debug', ['default', 'exec:ios']);
+  grunt.registerTask('ios-run', ['exec:xcode']);
   grunt.registerTask('cordovaclean', ['exec:cordovaclean']);
   grunt.registerTask('android-debug', ['default', 'exec:android', 'exec:androidrun']);
   grunt.registerTask('android', ['prod', 'exec:android']);
