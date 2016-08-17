@@ -85,7 +85,10 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
   $scope.wallet = wallet;
 
   if (wallet) {
-    walletService.updateStatus(wallet, {}, function(err, status) {
+    walletService.updateStatus(wallet, {
+      triggerTxUpdate: true
+    }, function(err, status) {
+      console.log(status);
       if (err) {} // TODO
     });
   }
