@@ -61,12 +61,21 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
     });
   };
 
+  $scope.updateAll = function()  {
+    $scope.update();
+  }
+
   $scope.update = function() {
-    walletService.updateStatus(wallet, {
-      force: true
-    }, function(err, status) {
-      if (err) {} // TODO
-    });
+    $scope.updating = true;
+    $timeout(function() {
+      walletService.getStatus(wallet, {
+        force: true
+      }, function(err, status) {
+        if (err) {} // TODO
+        $scope.status = status;
+        $scope.updating = false;
+      });
+    })
   };
 
   $scope.hideToggle = function() {
@@ -85,9 +94,15 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
   $scope.wallet = wallet;
 
   if (wallet) {
-    walletService.updateStatus(wallet, {}, function(err, status) {
-      console.log(status);
+    walletService.getStatus(wallet, {}, function(err, status) {
+      console.log('*** [walletDetails.js ln89] status:', status); // TODO
       if (err) {} // TODO
+      $scope.status = status;
+    });
+    walletService.getHistory(wallet, {}, function(err, txHistory) {
+      console.log('*** [walletDetails.js ln93] txHistory:', txHistory); // TODO
+      if (err) {} // TODO
+      $scope.txHistory = txHistory;
     });
   }
 });
