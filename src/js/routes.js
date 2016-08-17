@@ -14,7 +14,7 @@ if (window && window.navigator) {
 
 //Setting up route
 angular.module('copayApp').config(function(historicLogProvider, $provide, $logProvider, $stateProvider, $urlRouterProvider, $compileProvider) {
-    $urlRouterProvider.otherwise('/tabs');
+    $urlRouterProvider.otherwise('/tabs/home');
 
     $logProvider.debugEnabled(true);
     $provide.decorator('$log', ['$delegate', 'platformInfo',
@@ -93,17 +93,25 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
           }
         }
       })
-      .state('walletDetails', {
-        url: '/details',
+      .state('wallet', {
+        url: '/wallet/{walletId}',
+        abstract: true,
         needProfile: true,
         views: {
           'main': {
-            templateUrl: 'views/walletDetails.html',
+            template: '<ui-view/>',
           },
         },
-        params: {
-          walletId: null,
-        },
+      })
+      .state('wallet.details', {
+        url: '/details',
+        needProfile: true,
+        templateUrl: 'views/walletDetails.html'
+      })
+      .state('wallet.preferences', {
+        url: '/preferences',
+        needProfile: true,
+        templateUrl: 'views/preferences.html'
       })
       .state('walletHome', {
         url: '/old',
@@ -237,16 +245,6 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         params: {
           walletId: null,
         },
-      })
-      .state('preferences', {
-        url: '/preferences',
-        templateUrl: 'views/preferences.html',
-        needProfile: true,
-        views: {
-          'main': {
-            templateUrl: 'views/preferences.html',
-          },
-        }
       })
       .state('preferencesLanguage', {
         url: '/preferencesLanguage',

@@ -1,5 +1,5 @@
 
-<ion-view ng-controller="preferencesInformation" cache-view="false" ng-init="init()">
+<ion-view>
   <ion-nav-bar class="bar-stable">
   <ion-nav-title>Wallet Information</ion-nav-title>
     <ion-nav-buttons side="primary">
@@ -8,7 +8,7 @@
        </button>
     </ion-nav-buttons>
   </ion-nav-bar>
-  <ion-content class="has-header">
+  <ion-content class="has-header" ng-controller="preferencesInformation" cache-view="false" ng-init="init()">
     <div class="list">
       <div class="item item-divider">
         Wallet Information
