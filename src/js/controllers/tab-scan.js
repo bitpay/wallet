@@ -95,7 +95,10 @@ angular.module('copayApp.controllers').controller('tabScanController', function(
     $timeout(function() {
       var data = isIOS ? result : result.text;
       // Check if the current page is tabs.scan
-      if (go.is('tabs.scan')) _dataScanned(data);
+      if (go.is('tabs.scan')) {
+        _dataScanned(data);
+        return;
+      }
       $scope.onScan({
         data: data
       });
@@ -187,7 +190,10 @@ angular.module('copayApp.controllers').controller('tabScanController', function(
     }
     // Check if the current page is tabs.scan
     _scanStop();
-    if (go.is('tabs.scan')) _dataScanned(data);
+    if (go.is('tabs.scan')) {
+      _dataScanned(data);
+      return;
+    }
     $scope.cancel();
     $scope.onScan({
       data: data
