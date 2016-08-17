@@ -1,4 +1,4 @@
-<ion-view ng-controller="preferencesLanguageController" ng-init="init()" cache-view="false">
+<ion-view>
   <ion-nav-bar class="bar-stable">
     <ion-nav-title>Languages</ion-nav-title>
     <ion-nav-buttons side="primary">
@@ -7,7 +7,7 @@
      </button>
     </ion-nav-buttons>
   </ion-nav-bar>
-  <ion-content>
+  <ion-content ng-controller="preferencesLanguageController" ng-init="init()" cache-view="false">
     <ion-radio ng-repeat="lang in availableLanguages" ng-value="lang.isoCode" ng-model="currentLanguage"
       ng-click="save(lang.isoCode)">{{lang.name}}
     </ion-radio>

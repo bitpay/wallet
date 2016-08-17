@@ -1,4 +1,4 @@
-<ion-view ng-controller="preferencesLogs" ng-init="init()" cache-view="false">
+<ion-view>
   <ion-nav-bar class="bar-stable">
     <ion-nav-title>Session log</ion-nav-title>
     <ion-nav-buttons side="primary">
@@ -7,7 +7,7 @@
      </button>
     </ion-nav-buttons>
   </ion-nav-bar>
-  <ion-content>
+  <ion-content ng-controller="preferencesLogs" ng-init="init()" cache-view="false">
     <button ng-show="isCordova" ng-click="logs.sendLogs()"><i class="fi-mail"></i>
     <span translate>Send by email</span>
     </button>
