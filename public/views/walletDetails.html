@@ -1,19 +1,21 @@
 
 
 <ion-view ng-controller="walletDetailsController">
+  <ion-nav-bar class="bar-stable">
+    <ion-nav-title>{{wallet.name}}</ion-nav-title>
 
-  <ion-nav-title>{{wallet.name}}</ion-nav-title>
-
-  <ion-nav-buttons side="primary">
-    <button class="button" href ui-sref="tabs.home">
-      <i class="ion-arrow-left-c"></i> Back
-    </button>
-  </ion-nav-buttons>
-  <ion-nav-buttons side="secondary">
-      <button class="button button-icon icon ion-ios-settings" href ui-sref="preferences"></button>
-  </ion-nav-buttons>
+    <ion-nav-buttons side="primary">
+      <button class="button" href ui-sref="tabs.home">
+        <i class="ion-arrow-left-c"></i> Back
+      </button>
+    </ion-nav-buttons>
+    <ion-nav-buttons side="secondary">
+        <button class="button button-icon icon ion-ios-settings" href ui-sref="wallet.preferences"></button>
+    </ion-nav-buttons>
+  </ion-nav-bar>
 
   <ion-content delegate-handle="my-handle" overflow-scroll="true">
+    <button class="button button-icon icon ion-ios-settings" href ui-sref="wallet.preferences"></button>
 
     <div ng-show="!wallet">
       No Wallet
