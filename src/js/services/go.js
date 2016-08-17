@@ -35,16 +35,12 @@ angular.module('copayApp.services').factory('go', function($window, $ionicSideMe
       $log.debug("Wallet not complete at startup... redirecting")
       root.path('copayers');
     } else {
-      root.path('walletHome', function() {
-        $rootScope.$emit('Local/SetTab', 'walletHome', true);
-      });
+      root.path('tabs.home');
     }
   };
 
   root.send = function() {
-    root.path('walletHome', function() {
-      $rootScope.$emit('Local/SetTab', 'send');
-    });
+    root.path('tabs.send');
   };
 
   root.addWallet = function() {
