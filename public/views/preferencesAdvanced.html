@@ -2,7 +2,7 @@
   <ion-nav-bar class="bar-stable">
   <ion-nav-title>Advanced Preferences</ion-nav-title>
     <ion-nav-buttons side="primary">
-       <button class="button" href ui-sref="preferences">
+       <button class="button" href ui-sref="wallet.preferences">
          <i class="ion-arrow-left-c"></i> Back
        </button>
     </ion-nav-buttons>
@@ -11,27 +11,27 @@
     <div class="list">
       <div class="item item-divider">
       </div>
-      <div class="item item-icon-right" href ui-sref="information">
+      <div class="item item-icon-right" href ui-sref="wallet.information">
         <span translate>Wallet Information</span>
         <i class="icon ion-ios-arrow-right"></i>
       </div>
-      <div class="item item-icon-right" ng-show="index.network == 'livenet'" href ui-sref="paperWallet">
+      <div class="item item-icon-right" ng-show="index.network == 'livenet'" href ui-sref="wallet.paperWallet">
         <span translate>Sweep paper wallet</span>
         <i class="icon ion-ios-arrow-right"></i>
       </div>
-      <div class="item item-icon-right" href ui-sref="export">
+      <div class="item item-icon-right" href ui-sref="wallet.export">
         <span translate>Export Wallet</span>
         <i class="icon ion-ios-arrow-right"></i>
       </div>
-      <div class="item item-icon-right" href ui-sref="preferencesBwsUrl">
+      <div class="item item-icon-right" href ui-sref="wallet.preferencesBwsUrl">
         <span translate>Wallet Service URL</span>
         <i class="icon ion-ios-arrow-right"></i>
       </div>
-      <div class="item item-icon-right" href ui-sref="preferencesHistory">
+      <div class="item item-icon-right" href ui-sref="wallet.preferencesHistory">
         <span translate>Transaction History</span>
         <i class="icon ion-ios-arrow-right"></i>
       </div>
-      <div class="item item-icon-right" href ui-sref="delete">
+      <div class="item item-icon-right" href ui-sref="wallet.delete">
         <span translate>Delete Wallet</span>
         <i class="icon ion-ios-arrow-right"></i>
       </div>
