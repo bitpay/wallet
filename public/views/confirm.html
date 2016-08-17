@@ -3,19 +3,16 @@
   <ion-pane>
     <ion-nav-bar class="bar-stable">
       <ion-nav-title>Confirm</ion-nav-title>
+
+      <ion-nav-buttons side="primary">
+        <button class="button"   href ui-sref="tabs.send">
+          <i class="ion-arrow-left-c"></i> Back
+        </button>
+      </ion-nav-buttons>
     </ion-nav-bar>
 
 
     <ion-content scroll="false" ng-controller="confirmController" ng-init="init()">
-
-  
-
-
-    <ion-nav-buttons side="primary">
-      <button class="button"   href ui-sref="amount({toAddress: toAddress, toName: toName, toAmount: toAmount})">
-        <i class="ion-arrow-left-c"></i> Back
-      </button>
-    </ion-nav-buttons>
 
 
 
