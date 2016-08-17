@@ -14,9 +14,7 @@
     </ion-nav-buttons>
   </ion-nav-bar>
 
-  <ion-content delegate-handle="my-handle" overflow-scroll="true">
-    <button class="button button-icon icon ion-ios-settings" href ui-sref="wallet.preferences"></button>
-
+  <ion-content class="has-header" delegate-handle="my-handle" overflow-scroll="true">
     <div ng-show="!wallet">
       No Wallet
       <a href ui-sref="tabs.home" class="button">

@@ -85,7 +85,6 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
   $scope.wallet = wallet;
 
   if (wallet) {
-    profileService.setAndStoreFocus(wallet.id, function() {});
     walletService.updateStatus(wallet, {}, function(err, status) {
       if (err) {} // TODO
     });
