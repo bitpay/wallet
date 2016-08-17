@@ -1,5 +1,9 @@
 <ion-view>
-  <ion-nav-title>Receive</ion-nav-title>
+  <ion-nav-bar class="bar-stable">
+    <ion-nav-title>Receive</ion-nav-title>
+  </ion-nav-bar>
+
+
   <ion-content ng-controller="tabReceiveController" ng-init="init()"  cache-view="false">
 
     <div class="text-center m30v" ng-click="copyToClipboard(addr, $event)" ng-show="addr" >
