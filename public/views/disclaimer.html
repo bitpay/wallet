@@ -1,34 +1,21 @@
-<div class="splash extra-padding-bottom p20t content text-center"
-  ng-controller="disclaimerController as disclaimer" ng-init="disclaimer.init()">
-  <div class="row">
-    <div class="medium-centered small-centered large-centered columns size-14">
-      <span class="text-bold text-white" translate>WELCOME TO COPAY</span>
-      <p class="text-gray m0 text-light" translate>A multisignature bitcoin wallet</p>
-    </div>
-  </div>
-  <div class="row">
-    <div class="scrollArea">
-      <p class="enable_text_select m0">
-        <div class="size-14 text-gray" translate>Terms of Use</div>
-        <div ng-include="'views/includes/terms.html'"></div>
-      </p>
-    </div>
-  </div>
+<ion-view>
+  <ion-content class="padding" ng-controller="disclaimerController" ng-init="init()">
+      <h1 translate>WELCOME TO COPAY</h1>
+      <h3 translate>A multisignature bitcoin wallet</h3>
 
-  <div class="row">
-    <p ng-show="disclaimer.lang != 'en'">
-      <a class="center" ng-click="$root.openExternalLink('https://copay.io/disclaimer')" translate>Official English Disclaimer</a>
-    </p>
-  </div>
-  <div>
-      <p class="text-gray columns size-12" translate>I affirm that I have read, understood, and agree with these terms.</p>
-  </div>
-  <div class="row">
+      <h4 translate>Terms of Use</h4>
+      <p ng-include="'views/includes/terms.html'"></p>
 
-    <div class="start-button columns button-box">
-      <button ng-click="disclaimer.accept()" class="button black expand round size-12 text-spacing m0" translate>
+      <div class="padding-vertical" ng-show="lang != 'en'">
+      <a ng-click="$root.openExternalLink('https://copay.io/disclaimer')" translate>Official English Disclaimer</a>
+      </div>
+
+      <p translate>I affirm that I have read, understood, and agree with these terms.</p>
+
+      <button ng-click="accept()" class="button button-block button-positive" translate>
         I AGREE. GET STARTED
       </button>
-    </div>
-  </div>
-</div>
+
+  </ion-content>
+</ion-view>
+
