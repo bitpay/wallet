@@ -128,64 +128,71 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
 
       var config = configService.getSync().wallet.settings;
 
+      var cache = wallet.cachedStatus;
+
       // Address with Balance
-      wallet.balanceByAddress = balance.byAddress;
+      cache.balanceByAddress = balance.byAddress;
 
       // Spend unconfirmed funds
-      if (wallet.spendUnconfirmed) {
-        wallet.totalBalanceSat = balance.totalAmount;
-        wallet.lockedBalanceSat = balance.lockedAmount;
-        wallet.availableBalanceSat = balance.availableAmount;
-        wallet.totalBytesToSendMax = balance.totalBytesToSendMax;
-        wallet.pendingAmount = null;
+      if (cache.spendUnconfirmed) {
+        cache.totalBalanceSat = balance.totalAmount;
+        cache.lockedBalanceSat = balance.lockedAmount;
+        cache.availableBalanceSat = balance.availableAmount;
+        cache.totalBytesToSendMax = balance.totalBytesToSendMax;
+        cache.pendingAmount = null;
       } else {
-        wallet.totalBalanceSat = balance.totalConfirmedAmount;
-        wallet.lockedBalanceSat = balance.lockedConfirmedAmount;
-        wallet.availableBalanceSat = balance.availableConfirmedAmount;
-        wallet.totalBytesToSendMax = balance.totalBytesToSendConfirmedMax;
-        wallet.pendingAmount = balance.totalAmount - balance.totalConfirmedAmount;
+        cache.totalBalanceSat = balance.totalConfirmedAmount;
+        cache.lockedBalanceSat = balance.lockedConfirmedAmount;
+        cache.availableBalanceSat = balance.availableConfirmedAmount;
+        cache.totalBytesToSendMax = balance.totalBytesToSendConfirmedMax;
+        cache.pendingAmount = balance.totalAmount - balance.totalConfirmedAmount;
       }
 
       // Selected unit
-      wallet.unitToSatoshi = config.unitToSatoshi;
-      wallet.satToUnit = 1 / wallet.unitToSatoshi;
-      wallet.unitName = config.unitName;
+      cache.unitToSatoshi = config.unitToSatoshi;
+      cache.satToUnit = 1 / cache.unitToSatoshi;
+      cache.unitName = config.unitName;
 
       //STR
-      wallet.totalBalanceStr = root.formatAmount(wallet.totalBalanceSat) + ' ' + wallet.unitName;
-      wallet.lockedBalanceStr = root.formatAmount(wallet.lockedBalanceSat) + ' ' + wallet.unitName;
-      wallet.availableBalanceStr = root.formatAmount(wallet.availableBalanceSat) + ' ' + wallet.unitName;
+      cache.totalBalanceStr = root.formatAmount(cache.totalBalanceSat) + ' ' + cache.unitName;
+      cache.lockedBalanceStr = root.formatAmount(cache.lockedBalanceSat) + ' ' + cache.unitName;
+      cache.availableBalanceStr = root.formatAmount(cache.availableBalanceSat) + ' ' + cache.unitName;
 
-      if (wallet.pendingAmount) {
-        wallet.pendingAmountStr = root.formatAmount(wallet.pendingAmount) + ' ' + wallet.unitName;
+      if (cache.pendingAmount) {
+        cache.pendingAmountStr = root.formatAmount(cache.pendingAmount) + ' ' + cache.unitName;
       } else {
-        wallet.pendingAmountStr = null;
+        cache.pendingAmountStr = null;
       }
 
-      wallet.alternativeName = config.alternativeName;
-      wallet.alternativeIsoCode = config.alternativeIsoCode;
+      cache.alternativeName = config.alternativeName;
+      cache.alternativeIsoCode = config.alternativeIsoCode;
 
       rateService.whenAvailable(function() {
 
-        var totalBalanceAlternative = rateService.toFiat(wallet.totalBalanceSat, wallet.alternativeIsoCode);
-        var lockedBalanceAlternative = rateService.toFiat(wallet.lockedBalanceSat, wallet.alternativeIsoCode);
-        var alternativeConversionRate = rateService.toFiat(100000000, wallet.alternativeIsoCode);
+        var totalBalanceAlternative = rateService.toFiat(cache.totalBalanceSat, cache.alternativeIsoCode);
+        var lockedBalanceAlternative = rateService.toFiat(cache.lockedBalanceSat, cache.alternativeIsoCode);
+        var alternativeConversionRate = rateService.toFiat(100000000, cache.alternativeIsoCode);
 
-        wallet.totalBalanceAlternative = $filter('formatFiatAmount')(totalBalanceAlternative);
-        wallet.lockedBalanceAlternative = $filter('formatFiatAmount')(lockedBalanceAlternative);
-        wallet.alternativeConversionRate = $filter('formatFiatAmount')(alternativeConversionRate);
+        cache.totalBalanceAlternative = $filter('formatFiatAmount')(totalBalanceAlternative);
+        cache.lockedBalanceAlternative = $filter('formatFiatAmount')(lockedBalanceAlternative);
+        cache.alternativeConversionRate = $filter('formatFiatAmount')(alternativeConversionRate);
 
-        wallet.alternativeBalanceAvailable = true;
-        wallet.isRateAvailable = true;
+        cache.alternativeBalanceAvailable = true;
+        cache.isRateAvailable = true;
       });
     };
 
-    function cacheStatus = (status) {
-      wallet.status = status;
-      wallet.statusUpdatedOn = Date.now();
-      wallet.isValid = true;
+    function isStatusCached() {
+      return wallet.cachedStatus && wallet.cachedStatus.isValid;
+    };
+
+    function cacheStatus(status) {
+      wallet.cachedStatus = status ||  {};
+      var cache = wallet.cachedStatus;
+      cache.statusUpdatedOn = Date.now();
+      cache.isValid = true;
+      cache.email = status.preferences ? status.preferences.email : null;
       cacheBalance(wallet, status.balance);
-      wallet.email = status.preferences.email;
     };
 
     function walletStatusHash(status) {
@@ -193,7 +200,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     };
 
     function _getStatus(initStatusHash, tries, cb) {
-      if (wallet.isValid && !opts.force) return cb(null, wallet.status);
+      if (isStatusCached() && !opts.force) return cb(null, wallet.cachedStatus);
 
       tries = tries || 0;
 
@@ -215,7 +222,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
 
         $log.debug('Got Wallet Status for:' + wallet.credentials.walletName);
 
-        root.cacheStatus(wallet, status);
+        cacheStatus(status);
 
         // wallet.setPendingTxps(status.pendingTxps);
         return cb(null, status);
@@ -354,7 +361,6 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
       // First update
       if (walletId == wallet.credentials.walletId) {
         wallet.completeHistory = txsFromLocal;
-        setCompactTxHistory(wallet);
       }
 
       if (wallet.historyUpdateInProgress)
@@ -388,7 +394,6 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
               var newHistory = processNewTxs(wallet, newTxs);
               newHistory = lodash.compact(newHistory.concat(confirmedTxs));
               wallet.completeHistory = newHistory;
-              setCompactTxHistory(wallet);
             }
           }
         });
@@ -438,7 +443,6 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
           // Final update
           if (walletId == wallet.credentials.walletId) {
             wallet.completeHistory = newHistory;
-            setCompactTxHistory(wallet);
           }
 
           return storageService.setTxHistory(historyToSave, walletId, function() {
@@ -452,28 +456,21 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
   };
 
 
-  root.updateHistory = function(wallet, cb) {
+  root.getHistory = function(wallet, opts, cb) {
+    opts = opts || {};
+    opts.skip = opts.skip || 0;
+    opts.limit = opts.limit || root.HISTORY_SHOW_LIMIT;
+
     var walletId = wallet.credentials.walletId;
 
     if (!wallet.isComplete()) return cb();
 
     $log.debug('Updating Transaction History');
-    wallet.txHistoryError = false;
-    wallet.updatingTxHistory = true;
 
-    $timeout(function() {
-      updateLocalTxHistory(wallet, function(err) {
-        wallet.historyUpdateInProgress = wallet.updatingTxHistory = false;
-        wallet.loadingWallet = false;
-        wallet.txProgress = 0;
-        if (err)
-          wallet.txHistoryError = true;
-
-        $timeout(function() {
-          wallet.newTx = false
-        });
-
-      });
+    updateLocalTxHistory(wallet, function(err) {
+      if (err) return cb(err);
+      var txs = wallet.completeHistory ? wallet.completeHistory.slice(opts.skip, opts.limit) : null;
+      return cb(err, txs);
     });
   };
 
@@ -660,15 +657,6 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
       });
       return cb();
     });
-  };
-
-  var setCompactTxHistory = function(wallet) {
-
-    // TODO
-    wallet.isSearching = false;
-    wallet.nextTxHistory = root.HISTORY_SHOW_LIMIT;
-    wallet.txHistory = wallet.completeHistory ? wallet.completeHistory.slice(0, root.HISTORY_SHOW_LIMIT) : null;
-    wallet.historyShowMore = wallet.completeHistory ? wallet.completeHistory.length > root.HISTORY_SHOW_LIMIT : null;
   };
 
   root.debounceUpdateHistory = lodash.debounce(function() {
