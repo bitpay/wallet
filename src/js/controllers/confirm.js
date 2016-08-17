@@ -1,7 +1,7 @@
 
 'use strict';
 
-angular.module('copayApp.controllers').controller('confirmController', function($rootScope, $scope, $filter, $timeout, $ionicScrollDelegate, walletService, platformInfo, lodash, configService, go, rateService, $stateParams, $window, $state, $log, profileService, bitcore, $ionicPopup) {
+angular.module('copayApp.controllers').controller('confirmController', function($rootScope, $scope, $filter, $timeout, $ionicScrollDelegate, walletService, platformInfo, lodash, configService, go, rateService, $stateParams, $window, $state, $log, profileService, bitcore, $ionicPopup, txStatus) {
 
   // An alert dialog
   var showAlert = function(title, msg, cb) {
@@ -37,6 +37,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     $scope.isCordova = platformInfo.isCordova;
 
     config = configService.getSync().wallet;
+    $scope.feeLevel = config.feeLevel;
 
     $scope.unitName = config.settings.unitName;
     $scope.alternativeIsoCode = config.settings.alternativeIsoCode;
@@ -45,7 +46,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     satToUnit = 1 / unitToSatoshi;
     satToBtc = 1 / 100000000;
 
-    $scope.toAmount = $stateParams.toAmount;
+    $scope.toAmount = parseInt($stateParams.toAmount);
     $scope.amount = (($stateParams.toAmount) * satToUnit).toFixed(unitDecimals) ;
     $scope.toAddress = $stateParams.toAddress;
     $scope.toName = $stateParams.toName;
@@ -53,7 +54,10 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     var network = (new bitcore.Address($scope.toAddress)).network.name;
     $scope.setWallets(network);
 
-    $scope.alternativeAmount = toFiat($scope.toAmount);
+    toFiat($scope.amount, function(v) {
+      $scope.alternativeAmount = v;
+    });
+
     unitDecimals = config.settings.unitDecimals;
 
     $scope.$on("$ionicSlides.slideChangeEnd", function(event, data) {
@@ -67,8 +71,8 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     }, 100);
   };
 
-  var  setSendError = function(msg) {
-    showAlert('Error creating transaction', msg);
+  var setSendError = function(msg) {
+    showAlert(gettext('Error creating transaction'), msg);
   };
 
   var createTx = function(toAddress, toAmount, comment) {
@@ -114,11 +118,8 @@ angular.module('copayApp.controllers').controller('confirmController', function(
           txp.sendMax = true;
           txp.inputs = $scope.sendMaxInfo.inputs;
           txp.fee = $scope.sendMaxInfo.fee;
-        } else {
-          txp.amount = toAmount;
         }
 
-        txp.toAddress = toAddress;
         txp.outputs = outputs;
         txp.message = comment;
         txp.payProUrl = paypro ? paypro.url : null;
@@ -133,7 +134,7 @@ console.log('[confirm.js.102:createdTxp:]',err, createdTxp); //TODO
             return setSendError(err);
           }
 
-          $scope.fee = createdTxp.fee;
+          $scope.fee = ((createdTxp.fee) * satToUnit).toFixed(unitDecimals) ;
           $scope.txp = createdTxp;
         });
     });
@@ -144,33 +145,30 @@ console.log('[confirm.js.102:createdTxp:]',err, createdTxp); //TODO
     var wallet = $scope.wallet;
     var txp  =$scope.txp;
     if (!wallet) {
-      $log.error('No wallet selected')
+      return setSendError(gettext('No wallet selected'));
       return;
     };
 
     if (!txp) {
-      $log.error('No txp')
+      return setSendError(gettext('No transaction'));
       return;
     };
-
-
 
     if (!wallet.canSign() && !wallet.isPrivKeyExternal()) {
       $log.info('No signing proposal: No private key');
 //      ongoingProcess.set('sendingTx', true);
-      walletService.publishTx(walelt, txp, function(err, publishedTxp) {
+      walletService.publishTx(wallet, txp, function(err, publishedTxp) {
 //        ongoingProcess.set('sendingTx', false);
         if (err) {
           return setSendError(err);
         }
 
-        // TODO
         $state.transitionTo('tab.home');
-        // TODO
-        // var type = txStatus.notify(createdTxp);
-        // $scope.openStatusModal(type, createdTxp, function() {
-        //   return $scope.$emit('Local/TxProposalAction');
-        // });
+
+        var type = txStatus.notify(createdTxp);
+        $scope.openStatusModal(type, createdTxp, function() {
+          return $scope.$emit('Local/TxProposalAction');
+        });
       });
     } else {
      
@@ -190,10 +188,12 @@ console.log('[confirm.js.102:createdTxp:]',err, createdTxp); //TODO
     return parseFloat((rateService.fromFiat(val, $scope.alternativeIsoCode) * satToUnit).toFixed(unitDecimals), 10);
   };
 
-  function toFiat(val) {
-    if (!rateService.isAvailable()) return;
+  function toFiat(val, cb) {
+    rateService.whenAvailable(function() {
 
-    return parseFloat((rateService.toFiat(val * unitToSatoshi, $scope.alternativeIsoCode)).toFixed(2), 10);
+console.log('[confirm.js.194] WWW'); //TODO
+      return cb(parseFloat((rateService.toFiat(val * unitToSatoshi, $scope.alternativeIsoCode)).toFixed(2), 10));
+    });
   };
 
   $scope.finish = function() {
