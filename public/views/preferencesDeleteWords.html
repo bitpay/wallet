@@ -2,7 +2,7 @@
   <ion-nav-bar class="bar-stable">
     <ion-nav-title>Delete Recovery Phrase</ion-nav-title>
     <ion-nav-buttons side="primary">
-     <button class="button" href ui-sref="preferences">
+     <button class="button" href ui-sref="wallet.preferences">
        <i class="ion-arrow-left-c"></i> Back
      </button>
     </ion-nav-buttons>
@@ -13,9 +13,9 @@
         {{error|translate}}
       </div>
       <div translate>Warning!</div>
-      <div ng-show="!index.needsBackup" translate>Once you have copied your wallet recovery phrase down, it is recommended to delete it from this device.</div>
-      <div ng-show="index.needsBackup" translate>Need to do backup</div>
-      <div ng-show="!index.needsBackup">
+      <div ng-show="!needsBackup" translate>Once you have copied your wallet recovery phrase down, it is recommended to delete it from this device.</div>
+      <div ng-show="needsBackup" translate>Need to do backup</div>
+      <div ng-show="!needsBackup">
           <button class="button button-block button-stable" ng-click="delete()" translate>Delete Recovery Phrase</button>
       </div>
     </div>

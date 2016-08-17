@@ -10,15 +10,15 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
   var root = {};
 
 
-    // // RECEIVE
-    // // Check address
-    // root.isUsed(wallet.walletId, balance.byAddress, function(err, used) {
-    //   if (used) {
-    //     $log.debug('Address used. Creating new');
-    //     $rootScope.$emit('Local/AddressIsUsed');
-    //   }
-    // });
-    //
+  // // RECEIVE
+  // // Check address
+  // root.isUsed(wallet.walletId, balance.byAddress, function(err, used) {
+  //   if (used) {
+  //     $log.debug('Address used. Creating new');
+  //     $rootScope.$emit('Local/AddressIsUsed');
+  //   }
+  // });
+  //
 
   root.Utils = bwcService.getUtils();
   root.formatAmount = function(amount, fullPrecision) {
@@ -71,7 +71,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
 
   root.needsBackup = function(wallet, cb) {
 
-    if (!walletService.requiresBackup(wallet))
+    if (!root.requiresBackup(wallet))
       return cb(false);
 
     storageService.getBackupFlag(wallet.credentials.walletId, function(err, val) {
@@ -103,8 +103,8 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     return; // TODO!!!
     if (err instanceof errors.NOT_AUTHORIZED) {
 
-console.log('[walletService.js.93] TODO NOT AUTH'); //TODO
-// TODO  TODO  TODO  TODO  TODO  TODO  TODO  TODO  TODO  TODO  TODO  TODO  TODO  TODO 
+      console.log('[walletService.js.93] TODO NOT AUTH'); //TODO
+      // TODO  TODO  TODO  TODO  TODO  TODO  TODO  TODO  TODO  TODO  TODO  TODO  TODO  TODO
       self.notAuthorized = true;
       go.walletHome();
     } else if (err instanceof errors.NOT_FOUND) {
@@ -178,19 +178,18 @@ console.log('[walletService.js.93] TODO NOT AUTH'); //TODO
   };
 
   root.setStatus = function(wallet, status) {
-
     wallet.status = status;
     wallet.statusUpdatedOn = Date.now();
     wallet.isValid = true;
     root.setBalance(wallet, status.balance);
-
+    wallet.email = status.preferences.email;
   };
 
   root.updateStatus = function(wallet, opts, cb, initStatusHash, tries) {
     tries = tries || 0;
     opts = opts || {};
 
-    if (wallet.isValid && ! opts.force) 
+    if (wallet.isValid && !opts.force)
       return;
 
 
@@ -799,7 +798,7 @@ console.log('[walletService.js.93] TODO NOT AUTH'); //TODO
   };
 
   root.getAddress = function(wallet, forceNew, cb) {
-console.log('[walletService.js.786:wallet:]',wallet, forceNew); //TODO
+    console.log('[walletService.js.786:wallet:]', wallet, forceNew); //TODO
 
     var firstStep;
     if (forceNew) {
