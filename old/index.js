@@ -535,14 +535,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     }
   };
 
-  self.removeAndMarkSoftConfirmedTx = function(txs) {
-    return lodash.filter(txs, function(tx) {
-      if (tx.confirmations >= SOFT_CONFIRMATION_LIMIT)
-        return tx;
-      tx.recent = true;
-    });
-  }
-
 
   self.showMore = function() {
     $timeout(function() {
@@ -1188,9 +1180,9 @@ console.log('[index.js:1063] walletImported'); //TODO
   });
 
   $rootScope.$on('Local/NewFocusedWallet', function() {
-console.log('[index.js.1200:NewFocusedWallet:] TODO'); //TODO
+    console.log('[index.js.1200:NewFocusedWallet:] TODO'); //TODO
 
-return;
+    return;
 
 
     uxLanguage.update();
