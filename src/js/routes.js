@@ -182,31 +182,22 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
       })
       .state('amount', {
         cache: false,
-        url: '/amount',
+        url: '/amount:/:toAddress/:toName',
         needProfile: true,
         views: {
           'main': {
             templateUrl: 'views/amount.html',
           },
         },
-        params: {
-          toAddress: null,
-          toName: null,
-        },
       })
       .state('confirm', {
         cache: false,
-        url: '/confirm',
+        url: '/confirm/:toAddress/:toName/:toAmount',
         needProfile: true,
         views: {
           'main': {
             templateUrl: 'views/confirm.html',
           },
-        },
-        params: {
-          toAddress: null,
-          toName: null,
-          toAmount: null,
         },
       })
  

@@ -27,7 +27,6 @@ angular.module('copayApp.controllers').controller('confirmController', function(
   var config;
 
   $scope.init = function() {
-console.log('[confirm.js.23:$scope:]',$stateParams); //TODO
 
     // TODO (URL , etc)
     if (!$stateParams.toAddress || !$stateParams.toAmount) {
@@ -120,7 +119,7 @@ console.log('[confirm.js.23:$scope:]',$stateParams); //TODO
         }
 
         txp.toAddress = toAddress;
-//        txp.outputs = outputs;
+        txp.outputs = outputs;
         txp.message = comment;
         txp.payProUrl = paypro ? paypro.url : null;
         txp.excludeUnconfirmedUtxos = config.spendUnconfirmed ? false : true;
