@@ -19,7 +19,7 @@ angular.module('copayApp.controllers').controller('tabHomeController',
       self.setWallets();
     });
 
-    self.setWallets = function() { 
+    self.setWallets = function() {
       $scope.wallets = profileService.getWallets();
     };
 
