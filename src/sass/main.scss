@@ -4,6 +4,538 @@
  *
  */
 
+.walletHome h4.title {
+  padding: 0px 0 10px 15px;
+  margin: 5px 0 5px 0;
+  font-size: 16px;
+}
+
+.bitpay_card select {
+  margin: 5px 0 5px 0;
+  padding: 0 20px;
+  font-size: 16px;
+  width: auto;
+  border: none;
+}
+
+.bitpay_card select:focus {
+  background-color: transparent;
+}
+
+.preferences ul, .modal-content ul {
+  font-size: 14px;
+  background: white;
+}
+
+.preferences ul li {
+  padding: 16px 10px 16px 16px;
+  border-bottom: 1px solid #E9E9EC;
+}
+
+.addressbook-input, .disabled-input {
+  display: block;
+  margin-bottom: 1.5rem;
+  background-color: #E4E8EC;
+  padding-left: 0.5rem;
+  color: #2C3E50;
+  font-size: 13px;
+  height: 35px;
+  padding-top: 7px;
+}
+
+.alt-currency {
+  padding: 0.05rem 0.2rem;
+  border-radius: 2px;
+  font-size: 10px;
+  color: #fff;
+  font-weight: 700;
+}
+
+.sub-header {
+  background: #F1f3F5;
+  padding: 0.8rem;
+  overflow: hidden;
+}
+
+.status {
+  color: #FFFFFF;
+  background-color: #A02F23;
+  position: absolute;
+  left: 250px;
+  right: 0;
+  bottom: 0;
+  padding: 10px 1rem 10px 0.5rem;
+  z-index: 9;
+  font-size: 14px;
+  text-align: left;
+  line-height: 17px;
+}
+
+.status-first-line {
+  z-index: 9;
+  font-size: 16px;
+}
+
+.box-notification {
+  position: relative;
+  font-size: 12px;
+  padding: 0.5rem;
+  border-radius: 2px;
+  background: #FFFFFF;
+  .box-icon {
+    position: absolute;
+    top: 0;
+    left: 0;
+    color: white;
+    background-color: #1ABC9C;
+    padding: 0 0.5rem;
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+    height: 100%;
+    i {
+      position: relative;
+      top: 10%;
+      display: block;
+    }
+    &.error {
+      background-color: #ED4A43;
+    }
+    &.secondary {
+      background-color: #3498DB;
+    }
+  }
+}
+
+a.close-notification {
+  position: absolute;
+  top: -4px;
+  right: 10px;
+  font-size: 24px;
+}
+
+ul.tx-copayers {
+  background: #E4E8EC;
+  padding: 0.3rem 0.8rem;
+  margin-left: 0;
+  box-shadow: inset 0 1px 1px 0 rgba(10, 19, 28, 0.12);
+  border-radius: 0 0 3px 3px;
+}
+
+.tx-copayers li {
+  list-style: none;
+  padding: 0.3rem;
+  font-size: 12px;
+  &.bottom-line-copayers {
+    border-bottom: 1px solid #CAD2DA;
+  }
+}
+
+.last-transactions-content {
+  background: #fff;
+  padding: 0.8rem 1rem;
+  cursor: pointer;
+  border-bottom: 1px solid #E4E8EC;
+}
+
+.sign-action {
+  background: #E4E8EC;
+  width: 100%;
+  padding: 1rem;
+  text-align: center;
+}
+
+.icon-circle-active {
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+}
+
+.icon-sign {
+  padding: 0.2rem 0.3rem;
+  border-radius: 100%;
+  color: #fff;
+  font-size: 10px;
+  margin-top: 3px;
+  &.check {
+    background-color: #3FBC9C;
+  }
+  &.x {
+    background-color: #C0392B;
+  }
+}
+
+.circle-icon {
+  background: #fff;
+  border-radius: 100%;
+  padding: 1.5rem;
+  width: 80px;
+  height: 80px;
+  margin: 0 auto;
+}
+
+.date-message {
+  background-color: #213140;
+  border-radius: 3px;
+  font-size: 12px;
+  padding: 0.2rem 0.4rem;
+  color: #7A8C9E;
+}
+
+.input-note {
+  margin-top: -10px;
+  display: block;
+  margin-bottom: 1rem;
+}
+
+.send-note {
+  background-color: #F8F8FB;
+  padding: 10px;
+  span {
+    margin-bottom: 5px;
+    font-size: 12px;
+    color: #2C3E50;
+  }
+}
+
+.manage a {
+  text-transform: uppercase;
+  font-weight: 700;
+  color: #4B6178;
+  padding: 1.5rem 1rem;
+  display: block;
+  overflow: hidden;
+  span {
+    display: block;
+    margin-top: 8px;
+    float: left;
+  }
+}
+
+ul.manage li {
+  border-bottom: 1px solid #f1f3f5;
+}
+
+.manage a i.circle {
+  background-color: #4B6178;
+  width: 50px;
+  height: 50px;
+  padding: 0.65rem;
+  border-radius: 100%;
+  display: block;
+  font-size: 30px;
+  color: #fff;
+  float: left;
+  margin-right: 20px;
+  &.plus-fixed {
+    padding: 0.1rem 0.9rem;
+  }
+}
+
+.name-wallet {
+  font-size: 14px;
+  font-weight: 400;
+  padding-top: 0 !important;
+  line-height: 14px;
+}
+
+.release {
+  cursor: pointer;
+  cursor: hand;
+  background-color: #E9E9EC;
+  margin-top: -30px;
+  margin-bottom: 5px;
+  padding-top: 30px;
+  padding-bottom: 20px;
+  text-align: center;
+  text-color: #444;
+  span {
+    margin-left: 15px;
+  }
+  i {
+    margin-right: 15px;
+  }
+}
+
+.locked {
+  font-size: 11px;
+  color: #7A8C9E;
+}
+
+.tx-proposal i {
+  padding: .1rem .3rem;
+  background-color: #A5B2BF;
+  border-radius: 100%;
+  color: #fff;
+  &.active {
+    background-color: #A02F23;
+  }
+}
+
+.header-modal {
+  background: #fff;
+  width: 100%;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  position: relative;
+}
+
+.ellipsis {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.wallet-selection.wallets {
+  background-color: #213140;
+}
+
+ul.wallet-selection.wallets {
+  margin: 0;
+  overflow: hidden;
+}
+
+.wallet-selection.wallets li {
+  overflow: hidden;
+  padding: 1rem;
+  a {
+    display: block;
+  }
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.icon-wallet {
+  display: block;
+}
+
+.walletHome .icon-wallet {
+  display: inline-block;
+  margin: 0;
+  vertical-align: baseline;
+}
+
+.secret {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  text-align: center;
+  font-size: 14px;
+  margin: 10px;
+}
+
+.session-expired {
+  background: rgba(32, 48, 64, 0.9);
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  color: #fff;
+  z-index: 999;
+  padding-top: 20%;
+  text-align: center;
+  padding-left: 10%;
+  padding-right: 10%;
+}
+
+.amount {
+  width: 100%;
+  text-align: center;
+  padding: 1.5rem 1rem 1.5rem 1rem;
+  color: #fff;
+  height: 150px;
+  margin-bottom: 25px;
+}
+
+.alternative-amount {
+  height: 25px;
+  text-align: center;
+}
+
+.wallet-info {
+  position: absolute;
+  top: inherit;
+  left: 10px;
+  bottom: 26px;
+  font-size: 20px;
+  color: #fff;
+}
+
+.camera-icon a {
+  background: #4B6178;
+  box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.5);
+  color: #fff;
+  display: block;
+  position: absolute;
+  padding: 15px 17px;
+  border-radius: 100%;
+  top: inherit;
+  right: 15px;
+  bottom: 2px;
+  line-height: 12px;
+}
+
+.send .camera-icon a {
+  top: inherit;
+  bottom: 0;
+}
+
+.popup-txsent {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: rgba(24, 44, 58, 0.9);
+  i {
+    font-size: 5rem;
+    color: #4A90E2;
+    border-radius: 100%;
+    border-color: #4A90E2;
+    border: 2px solid;
+    width: 150px;
+    height: 150px;
+    display: block;
+    text-align: center;
+    padding-top: 1rem;
+  }
+}
+
+.popup-txsigned i, .popup-txrejected i {
+  font-size: 5rem;
+  color: #4A90E2;
+  border-radius: 100%;
+  border-color: #4A90E2;
+  border: 2px solid;
+  width: 150px;
+  height: 150px;
+  display: block;
+  text-align: center;
+  padding-top: 1rem;
+}
+
+.payment-proposal-head {
+  color: #fff;
+  padding: 10px 10px 20px 10px;
+  text-align: center;
+}
+
+.payment-proposal-to {
+  width: 100%;
+  display: inline-block;
+  padding: 5px 15px;
+  background-color: rgba(0, 0, 0, 0.1);
+  i {
+    position: inherit;
+    left: 25px;
+    padding-right: 10px;
+    border-right: 1px solid;
+    border-color: rgba(255, 255, 255, 0.1);
+    font-size: 20px;
+  }
+}
+
+
+/* notifications */
+
+.dr-notification-container {
+  position: absolute;
+  z-index: 10000;
+  width: 100%;
+  &.bottom {
+    bottom: 20px;
+  }
+  &.right {
+    right: 0;
+  }
+  &.left {
+    left: 20px;
+  }
+  &.top {
+    top: 45px;
+  }
+  &.center {
+    left: 50%;
+    margin-left: -190px;
+  }
+}
+
+.dr-notification-wrapper {
+  position: relative;
+  width: 100%;
+  margin: 0;
+  &.offline {
+    position: absolute;
+    top: 0px;
+    z-index: 2000;
+    opacity: 1.0 !important;
+    background-color: #2C3E50;
+  }
+  &.client-error {
+    position: absolute;
+    top: 45px;
+    z-index: 11;
+  }
+}
+
+.dr-notification-close-btn {
+  color: #A5B2BF;
+  border: 1px solid #A5B2BF;
+  border-radius: 100%;
+  display: inline-block;
+  padding: 0px 8px;
+  position: absolute;
+  right: 5px;
+  cursor: pointer;
+  z-index: 10;
+  margin: 14px 8px 0;
+  font-size: 20px;
+}
+
+.dr-notification-image {
+  float: left;
+  color: #fff;
+  text-align: center;
+  background-color: #213140;
+  width: 40px;
+  height: 40px;
+  font-size: 1.5rem;
+  border-radius: 100%;
+  margin: 0.6rem;
+  img {
+    margin: 15px;
+    max-width: 70px;
+    min-width: 48px;
+  }
+}
+
+.dr-notification-content {
+  line-height: 90%;
+  padding: 10px 50px 5px 60px;
+}
+
+.dr-notification-title {
+  color: #fff;
+  font-size: 12px;
+  margin-bottom: 0;
+  font-weight: 700;
+}
+
+.dr-notification {
+  background: rgba(44, 62, 80, 0.9);
+  box-shadow: 0px 2px 3px 0px rgba(0, 0, 0, 0.2);
+  -webkit-box-shadow: 0px 2px 3px 0px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 0px 2px 3px 0px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  clear: both;
+  overflow: hidden;
+  border-radius: 0;
+  height: 60px;
+}
+
+.dr-notification-text {
+  font-size: 11px;
+  color: #fff;
+}
+
 
 // QR Code
 
@@ -384,6 +916,18 @@
 
 .tl {
   text-transform: lowercase;
+}
+
+.text-italic {
+  font-style: italic;
+}
+
+.text-light {
+  font-weight: 200;
+}
+
+.text-bold {
+  font-weight: 700;
 }
 
 /*

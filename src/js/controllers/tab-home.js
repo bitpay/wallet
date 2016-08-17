@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('tabHomeController',
-  function($rootScope, $timeout, $scope, lodash, profileService, walletService, configService ) {
+  function($rootScope, $timeout, $scope, $state, lodash, profileService, walletService, configService ) {
     var self = this;
 
 
@@ -34,4 +34,7 @@ angular.module('copayApp.controllers').controller('tabHomeController',
     self.setWallets();
     self.updateAllClients();
     $scope.bitpayCardEnabled = true; // TODO
+
+
+    $state.transitionTo('confirm', {toAmount:555500, toAddress: 'mvfAwUJohJWibGzBZgAUGsDarsr4Z4NovU', toName: 'bla bla'});
   });
