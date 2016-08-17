@@ -1,5 +1,8 @@
 
-<ion-view view-title="Home">
+<ion-view>
+  <ion-nav-bar class="bar-stable">
+    <ion-nav-title>Home</ion-nav-title>
+  </ion-nav-bar>
   <ion-content class="padding home" ng-controller="tabHomeController">
     <a href="#/add"><i class="ion-ios-plus-outline right"></i></a>
     <h2>Wallets </h2>
@@ -8,7 +11,7 @@
 
         <li ng-show="wallets[0]"
           ng-repeat="item in wallets track by $index" class="item item-icon-left"
-          menu-toggle href ui-sref="walletDetails({'walletId': item.id})">
+          menu-toggle href ui-sref="wallet.details({'walletId': item.id})">
             <i class="icon ion-briefcase size-21" ng-style="{'color':item.color}"></i>
             {{item.name || item.id}}
             <span  ng-show="item.n > 1" class="text-gray">

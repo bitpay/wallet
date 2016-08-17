@@ -1,4 +1,4 @@
-<ion-view ng-controller="preferencesAliasController" cache-view="false">
+<ion-view>
   <ion-nav-bar class="bar-stable">
     <ion-nav-title>Alias</ion-nav-title>
     <ion-nav-buttons side="primary">
@@ -7,7 +7,7 @@
      </button>
     </ion-nav-buttons>
   </ion-nav-bar>
-  <ion-content class="has-header">
+  <ion-content class="has-header" ng-controller="preferencesAliasController" cache-view="false">
     <form name="aliasForm" ng-submit="save(aliasForm)" novalidate>
       <label class="item item-input item-stacked-label">
         <span class="input-label" transalate>Alias for {{walletName}}</span>

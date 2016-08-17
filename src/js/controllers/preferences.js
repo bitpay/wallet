@@ -1,11 +1,11 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('preferencesController',
-  function($scope, $rootScope, $timeout, $log, configService, profileService, fingerprintService, walletService) {
+  function($scope, $rootScope, $timeout, $log, $stateParams, configService, profileService, fingerprintService, walletService) {
 
     var fc;
     var config = configService.getSync();
-
+    console.log($stateParams);
     var disableFocusListener = $rootScope.$on('Local/NewFocusedWalletReady', function() {
       $scope.init();
     });
@@ -19,6 +19,11 @@ angular.module('copayApp.controllers').controller('preferencesController',
 
       fc = profileService.focusedClient;
       if (fc) {
+
+        $scope.backgroundColor = fc.color;
+        config.aliasFor = config.aliasFor || {};
+        $scope.walletName = fc.credentials.walletName;
+        $scope.alias = config.aliasFor[fc.credentials.walletId] || $scope.walletName;
         $scope.encryptEnabled = walletService.isEncrypted(fc);
         if (fc.isPrivKeyExternal)
           $scope.externalSource = fc.getPrivKeyExternalSourceName() == 'ledger' ? 'Ledger' : 'Trezor';

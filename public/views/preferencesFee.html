@@ -1,4 +1,4 @@
-<ion-view ng-controller="preferencesFeeController" cache-view="false" ng-init="init()">
+<ion-view>
   <ion-nav-bar class="bar-stable">
     <ion-nav-title>Preferences fee</ion-nav-title>
     <ion-nav-buttons side="primary">
@@ -8,7 +8,7 @@
      </ion-nav-buttons>
   </ion-nav-bar>
 
-  <ion-content>
+  <ion-content ng-controller="preferencesFeeController" cache-view="false" ng-init="init()">
     <div ng-show="loading">
       <ion-spinner class="spinner-dark" icon="lines">Loading...</ion-spinner>
     </div>
