@@ -12,10 +12,10 @@
       <div class="item item-divider">
         Preferences
       </div>
-      <div class="item item-icon-right" href ui-sref="preferencesAlias">
+      <div class="item item-icon-right" href ui-sref="wallet.preferencesAlias">
         <span translate>Wallet Name</span>
         <span class="item-note">
-          {{alias||walletName}}
+          {{alias||wallet.walletName}}
         </span>
         <i class="icon ion-ios-arrow-right"></i>
       </div>
@@ -34,29 +34,29 @@
       <div class="item" ng-show="index.isPrivKeyExternal">
         <span translate>Hardware wallet</span>
         <span class="item-note">
-          {{externalSource}}
+          {{wallet.externalSource}}
         </span>
       </div>
-      <div class="item item-icon-right"  href ui-sref="preferencesColor">
-        <span ng-style="{'color': backgroundColor}">&block;</span>
+      <div class="item item-icon-right"  href ui-sref="wallet.preferencesColor">
+        <span ng-style="{'color': wallet.color}">&block;</span>
         <span translate>Wallet Color</span>
         <span class="item-note">
-          {{index.alias||index.walletName}}
+          {{wallet.alias||wallet.walletName}}
         </span>
         <i class="icon ion-ios-arrow-right"></i>
       </div>
-      <div class="item item-icon-right" href ui-sref="preferencesEmail">
+      <div class="item item-icon-right" href ui-sref="wallet.preferencesEmail">
         <span translate>Email Notifications</span>
         <span class="item-note">
-          <span ng-if="!index.preferences.email" translate>Disabled</span>
-          <span ng-if="index.preferences.email">{{index.preferences.email}}</span>
+          <span ng-if="!wallet.email" translate>Disabled</span>
+          <span ng-if="wallet.email">{{wallet.email}}</span>
         </span>
         <i class="icon ion-ios-arrow-right"></i>
       </div>
       <div class="item item-divider">
         Security
       </div>
-      <div class="item item-icon-right" href ui-sref="backup" ng-hide="index.isPrivKeyExternal">
+      <div class="item item-icon-right" href ui-sref="wallet.backup" ng-hide="index.isPrivKeyExternal">
         <span translate>Backup</span>
         <i class="icon ion-ios-arrow-right"></i>
       </div>
@@ -65,14 +65,14 @@
           <span class="toggle-label" translate>Request Spending Password</span>
         </ion-toggle>
       </div>
-      <div class="item item-icon-right" href ui-sref="deleteWords" ng-show ="!deleted">
+      <div class="item item-icon-right" href ui-sref="wallet.deleteWords" ng-show ="!deleted">
         <span translate>Delete recovery phrase</span>
         <i class="icon ion-ios-arrow-right"></i>
       </div>
       <div class="item item-divider">
         Advanced
       </div>
-      <div class="item item-icon-right" href ui-sref="preferencesAdvanced">
+      <div class="item item-icon-right" href ui-sref="wallet.preferencesAdvanced">
         <span translate>Advanced</span>
         <i class="icon ion-ios-arrow-right"></i>
       </div>

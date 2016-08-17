@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('preferencesColorController', function($scope, $log, configService, profileService, go) {
+angular.module('copayApp.controllers').controller('preferencesColorController', function($scope, $log, $stateParams, $state, configService, profileService) {
 
   $scope.colorList = [
         '#DD4B39',
@@ -19,8 +19,9 @@ angular.module('copayApp.controllers').controller('preferencesColorController', 
         '#7A8C9E',
       ];
 
-  var fc = profileService.focusedClient;
-  var walletId = fc.credentials.walletId;
+  var wallet = profileService.getWallet($stateParams.walletId);
+  $scope.wallet = wallet;
+  var walletId = wallet.credentials.walletId;
   var config = configService.getSync();
   config.colorFor = config.colorFor || {};
 
@@ -33,9 +34,8 @@ angular.module('copayApp.controllers').controller('preferencesColorController', 
     opts.colorFor[walletId] = color;
 
     configService.set(opts, function(err) {
-      go.preferences();
       if (err) $log.warn(err);
-      $scope.$emit('Local/ColorUpdated');
+      $state.go('wallet.preferences');
     });
   };
 });
