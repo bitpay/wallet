@@ -1,0 +1,11 @@
+<ion-view view-title="Scan" cache-view="false">
+  <ion-nav-bar class="bar-stable">
+    <ion-nav-title>Scan</ion-nav-title>
+  </ion-nav-bar>
+  <ion-content ng-controller="tabScanController" ng-init="init()">
+
+    <canvas id="qr-canvas" width="200" height="150"></canvas>
+    <video id="qrcode-scanner-video" width="300" height="225"></video>
+
+  </ion-content>
+</ion-view>

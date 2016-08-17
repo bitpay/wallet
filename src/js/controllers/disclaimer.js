@@ -2,8 +2,7 @@
 
 angular.module('copayApp.controllers').controller('disclaimerController',
   function($scope, $rootScope, $timeout, $log, $ionicSideMenuDelegate, profileService, applicationService, gettextCatalog, uxLanguage, go, storageService, gettext, platformInfo, ongoingProcess) {
-    var self = this;
-    self.tries = 0;
+    var tries = 0;
     var isCordova = platformInfo.isCordova;
 
     ongoingProcess.set('creatingWallet', true);
@@ -20,13 +19,13 @@ angular.module('copayApp.controllers').controller('disclaimerController',
 
           return $timeout(function() {
             $log.warn('Retrying to create profile......');
-            if (self.tries == 3) {
-              self.tries == 0;
+            if (tries == 3) {
+              tries == 0;
               return create({
                 noWallet: true
               });
             } else {
-              self.tries += 1;
+              tries += 1;
               return create();
             }
           }, 3000);
@@ -36,9 +35,9 @@ angular.module('copayApp.controllers').controller('disclaimerController',
       });
     };
 
-    this.init = function(opts) {
+    $scope.init = function(opts) {
       $ionicSideMenuDelegate.canDragContent(false);
-      self.lang = uxLanguage.currentLanguage;
+      $scope.lang = uxLanguage.currentLanguage;
 
       storageService.getProfile(function(err, profile) {
         if (!profile) {
@@ -57,7 +56,7 @@ angular.module('copayApp.controllers').controller('disclaimerController',
       });
     };
 
-    this.accept = function() {
+    $scope.accept = function() {
       profileService.setDisclaimerAccepted(function(err) {
         if (err) $log.error(err);
         else {
