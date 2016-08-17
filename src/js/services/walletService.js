@@ -10,6 +10,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
   var root = {};
 
   root.SOFT_CONFIRMATION_LIMIT = 12;
+  root.HISTORY_SHOW_LIMIT = 10;
 
   // UI Related
   root.openStatusModal = function(type, txp, cb) {
@@ -693,9 +694,9 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
 
     // TODO
     wallet.isSearching = false;
-    wallet.nextTxHistory = wallet.historyShowMoreLimit;
-    wallet.txHistory = wallet.completeHistory ? wallet.completeHistory.slice(0, wallet.historyShowLimit) : null;
-    wallet.historyShowMore = wallet.completeHistory ? wallet.completeHistory.length > wallet.historyShowLimit : null;
+    wallet.nextTxHistory = root.HISTORY_SHOW_LIMIT;
+    wallet.txHistory = wallet.completeHistory ? wallet.completeHistory.slice(0, root.HISTORY_SHOW_LIMIT) : null;
+    wallet.historyShowMore = wallet.completeHistory ? wallet.completeHistory.length > root.HISTORY_SHOW_LIMIT : null;
   };
 
   root.debounceUpdateHistory = lodash.debounce(function() {
