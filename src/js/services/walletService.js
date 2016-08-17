@@ -843,5 +843,14 @@ console.log('[walletService.js.786:wallet:]',wallet, forceNew); //TODO
 
 
 
+  root.handleEncryptedWallet = function(client, cb) {
+    if (!root.isEncrypted(client)) return cb();
+    $rootScope.$emit('Local/NeedsPassword', false, function(err, password) {
+      if (err) return cb(err);
+      return cb(walletService.unlock(client, password));
+    });
+  };
+
+
   return root;
 });

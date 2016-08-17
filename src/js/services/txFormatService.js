@@ -6,7 +6,7 @@ angular.module('copayApp.services').factory('txFormatService', function(profileS
   var formatAmountStr = function(amount) {
     if (!amount) return;
     var config = configService.getSync().wallet.settings;
-    return profileService.formatAmount(amount) + ' ' + config.unitName;
+    return walletService.formatAmount(amount) + ' ' + config.unitName;
   };
 
   var formatAlternativeStr = function(amount) {
@@ -18,7 +18,7 @@ angular.module('copayApp.services').factory('txFormatService', function(profileS
   var formatFeeStr = function(fee) {
     if (!fee) return;
     var config = configService.getSync().wallet.settings;
-    return profileService.formatAmount(fee) + ' ' + config.unitName;
+    return walletService.formatAmount(fee) + ' ' + config.unitName;
   };
 
   root.processTx = function(tx) {
