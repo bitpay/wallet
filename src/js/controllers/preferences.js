@@ -3,40 +3,33 @@
 angular.module('copayApp.controllers').controller('preferencesController',
   function($scope, $rootScope, $timeout, $log, $stateParams, configService, profileService, fingerprintService, walletService) {
 
-    var fc;
-    var config = configService.getSync();
-    console.log($stateParams);
-    var disableFocusListener = $rootScope.$on('Local/NewFocusedWalletReady', function() {
-      $scope.init();
-    });
-
-    $scope.$on('$destroy', function() {
-      disableFocusListener();
-    });
+    var wallet = profileService.getWallet($stateParams.walletId);
+    var walletId = wallet.credentials.walletId;
+    $scope.wallet = wallet;
 
     $scope.init = function() {
       $scope.externalSource = null;
 
-      fc = profileService.focusedClient;
-      if (fc) {
-
-        $scope.backgroundColor = fc.color;
+      if (wallet) {
+        walletService.updateStatus(wallet, {}, function(err, status) {});
+        var config = configService.getSync();
         config.aliasFor = config.aliasFor || {};
-        $scope.walletName = fc.credentials.walletName;
-        $scope.alias = config.aliasFor[fc.credentials.walletId] || $scope.walletName;
-        $scope.encryptEnabled = walletService.isEncrypted(fc);
-        if (fc.isPrivKeyExternal)
-          $scope.externalSource = fc.getPrivKeyExternalSourceName() == 'ledger' ? 'Ledger' : 'Trezor';
+        $scope.alias = config.aliasFor[walletId] || wallet.credentials.walletName;
+        $scope.color = config.colorFor[walletId] || '#4A90E2';
+
+        $scope.encryptEnabled = walletService.isEncrypted(wallet);
+        if (wallet.isPrivKeyExternal)
+          $scope.externalSource = wallet.getPrivKeyExternalSourceName() == 'ledger' ? 'Ledger' : 'Trezor';
 
         // TODO externalAccount
-        //this.externalIndex = fc.getExternalIndex();
+        //this.externalIndex = wallet.getExternalIndex();
       }
 
       $scope.touchidAvailable = fingerprintService.isAvailable();
-      $scope.touchidEnabled = config.touchIdFor ? config.touchIdFor[fc.credentials.walletId] : null;
+      $scope.touchidEnabled = config.touchIdFor ? config.touchIdFor[walletId] : null;
 
       $scope.deleted = false;
-      if (fc.credentials && !fc.credentials.mnemonicEncrypted && !fc.credentials.mnemonic) {
+      if (wallet.credentials && !wallet.credentials.mnemonicEncrypted && !wallet.credentials.mnemonic) {
         $scope.deleted = true;
       }
     };
@@ -44,40 +37,40 @@ angular.module('copayApp.controllers').controller('preferencesController',
     var handleEncryptedWallet = function(cb) {
       $rootScope.$emit('Local/NeedsPassword', false, function(err, password) {
         if (err) return cb(err);
-        return cb(walletService.unlock(fc, password));
+        return cb(walletService.unlock(wallet, password));
       });
     };
 
     $scope.encryptChange = function() {
-      if (!fc) return;
+      if (!wallet) return;
       var val = $scope.encryptEnabled;
 
       var setPrivateKeyEncryption = function(password, cb) {
-        $log.debug('Encrypting private key for', fc.credentials.walletName);
+        $log.debug('Encrypting private key for', wallet.credentials.walletName);
 
-        fc.setPrivateKeyEncryption(password);
-        fc.lock();
-        profileService.updateCredentials(JSON.parse(fc.export()), function() {
+        wallet.setPrivateKeyEncryption(password);
+        wallet.lock();
+        profileService.updateCredentials(JSON.parse(wallet.export()), function() {
           $log.debug('Wallet encrypted');
           return cb();
         });
       };
 
       var disablePrivateKeyEncryption = function(cb) {
-        $log.debug('Disabling private key encryption for', fc.credentials.walletName);
+        $log.debug('Disabling private key encryption for', wallet.credentials.walletName);
 
         try {
-          fc.disablePrivateKeyEncryption();
+          wallet.disablePrivateKeyEncryption();
         } catch (e) {
           return cb(e);
         }
-        profileService.updateCredentials(JSON.parse(fc.export()), function() {
+        profileService.updateCredentials(JSON.parse(wallet.export()), function() {
           $log.debug('Wallet encryption disabled');
           return cb();
         });
       };
 
-      if (val && !walletService.isEncrypted(fc)) {
+      if (val && !walletService.isEncrypted(wallet)) {
         $rootScope.$emit('Local/NeedsPassword', true, function(err, password) {
           if (err || !password) {
             $scope.encryptEnabled = false;
@@ -89,7 +82,7 @@ angular.module('copayApp.controllers').controller('preferencesController',
           });
         });
       } else {
-        if (!val && walletService.isEncrypted(fc)) {
+        if (!val && walletService.isEncrypted(wallet)) {
           handleEncryptedWallet(function(err) {
             if (err) {
               $scope.encryptEnabled = true;
@@ -110,14 +103,13 @@ angular.module('copayApp.controllers').controller('preferencesController',
     };
 
     $scope.touchidChange = function() {
-      var walletId = fc.credentials.walletId;
 
       var opts = {
         touchIdFor: {}
       };
       opts.touchIdFor[walletId] = $scope.touchidEnabled;
 
-      fingerprintService.check(fc, function(err) {
+      fingerprintService.check(wallet, function(err) {
         if (err) {
           $log.debug(err);
           $timeout(function() {

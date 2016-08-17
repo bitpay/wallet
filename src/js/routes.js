@@ -105,13 +105,68 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
       })
       .state('wallet.details', {
         url: '/details',
-        needProfile: true,
-        templateUrl: 'views/walletDetails.html'
+        templateUrl: 'views/walletDetails.html',
+        needProfile: true
       })
       .state('wallet.preferences', {
         url: '/preferences',
-        needProfile: true,
-        templateUrl: 'views/preferences.html'
+        templateUrl: 'views/preferences.html',
+        needProfile: true
+      })
+      .state('wallet.preferencesAlias', {
+        url: '/preferencesAlias',
+        templateUrl: 'views/preferencesAlias.html',
+        needProfile: true
+      })
+      .state('wallet.preferencesColor', {
+        url: '/preferencesColor',
+        templateUrl: 'views/preferencesColor.html',
+        needProfile: true
+      })
+      .state('wallet.preferencesEmail', {
+        url: '/preferencesEmail',
+        templateUrl: 'views/preferencesEmail.html',
+        needProfile: true
+      })
+      .state('wallet.backup', {
+        url: '/backup',
+        templateUrl: 'views/backup.html',
+        needProfile: true
+      })
+      .state('wallet.preferencesAdvanced', {
+        url: '/preferencesAdvanced',
+        templateUrl: 'views/preferencesAdvanced.html',
+        needProfile: true
+      })
+      .state('wallet.information', {
+        url: '/information',
+        templateUrl: 'views/preferencesInformation.html',
+        needProfile: true
+      })
+      .state('wallet.export', {
+        url: '/export',
+        templateUrl: 'views/export.html',
+        needProfile: true
+      })
+      .state('wallet.preferencesBwsUrl', {
+        url: '/preferencesBwsUrl',
+        templateUrl: 'views/preferencesBwsUrl.html',
+        needProfile: true
+      })
+      .state('wallet.preferencesHistory', {
+        url: '/preferencesHistory',
+        templateUrl: 'views/preferencesHistory.html',
+        needProfile: true
+      })
+      .state('wallet.deleteWords', {
+        url: '/deleteWords',
+        templateUrl: 'views/preferencesDeleteWords.html',
+        needProfile: true
+      })
+      .state('wallet.delete', {
+        url: '/delete',
+        templateUrl: 'views/preferencesDeleteWallet.html',
+        needProfile: true
       })
       .state('walletHome', {
         url: '/old',
@@ -415,26 +470,6 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
           },
         }
       })
-      .state('preferencesAdvanced', {
-        url: '/preferencesAdvanced',
-        templateUrl: 'views/preferencesAdvanced.html',
-        needProfile: true,
-        views: {
-          'main': {
-            templateUrl: 'views/preferencesAdvanced.html'
-          },
-        }
-      })
-      .state('preferencesColor', {
-        url: '/preferencesColor',
-        templateUrl: 'views/preferencesColor.html',
-        needProfile: true,
-        views: {
-          'main': {
-            templateUrl: 'views/preferencesColor.html'
-          },
-        }
-      })
       .state('preferencesAltCurrency', {
         url: '/preferencesAltCurrency',
         templateUrl: 'views/preferencesAltCurrency.html',
@@ -442,79 +477,6 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         views: {
           'main': {
             templateUrl: 'views/preferencesAltCurrency.html'
-          },
-        }
-      })
-      .state('preferencesAlias', {
-        url: '/preferencesAlias',
-        templateUrl: 'views/preferencesAlias.html',
-        needProfile: true,
-        views: {
-          'main': {
-            templateUrl: 'views/preferencesAlias.html'
-          },
-
-        }
-      })
-      .state('preferencesEmail', {
-        url: '/preferencesEmail',
-        templateUrl: 'views/preferencesEmail.html',
-        needProfile: true,
-        views: {
-          'main': {
-            templateUrl: 'views/preferencesEmail.html'
-          },
-
-        }
-      })
-      .state('preferencesBwsUrl', {
-        url: '/preferencesBwsUrl',
-        templateUrl: 'views/preferencesBwsUrl.html',
-        needProfile: true,
-        views: {
-          'main': {
-            templateUrl: 'views/preferencesBwsUrl.html'
-          },
-
-        }
-      })
-      .state('preferencesHistory', {
-        url: '/preferencesHistory',
-        templateUrl: 'views/preferencesHistory.html',
-        needProfile: true,
-        views: {
-          'main': {
-            templateUrl: 'views/preferencesHistory.html'
-          },
-
-        }
-      })
-      .state('deleteWords', {
-        url: '/deleteWords',
-        templateUrl: 'views/preferencesDeleteWords.html',
-        needProfile: true,
-        views: {
-          'main': {
-            templateUrl: 'views/preferencesDeleteWords.html'
-          },
-        }
-      })
-      .state('delete', {
-        url: '/delete',
-        templateUrl: 'views/preferencesDeleteWallet.html',
-        needProfile: true,
-        views: {
-          'main': {
-            templateUrl: 'views/preferencesDeleteWallet.html'
-          },
-        }
-      })
-      .state('information', {
-        url: '/information',
-        needProfile: true,
-        views: {
-          'main': {
-            templateUrl: 'views/preferencesInformation.html'
           },
         }
       })
@@ -538,16 +500,6 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
           },
         }
       })
-      .state('export', {
-        url: '/export',
-        templateUrl: 'views/export.html',
-        needProfile: true,
-        views: {
-          'main': {
-            templateUrl: 'views/export.html'
-          },
-        }
-      })
       .state('paperWallet', {
         url: '/paperWallet',
         templateUrl: 'views/paperWallet.html',
@@ -555,16 +507,6 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         views: {
           'main': {
             templateUrl: 'views/paperWallet.html'
-          },
-        }
-      })
-      .state('backup', {
-        url: '/backup',
-        templateUrl: 'views/backup.html',
-        needProfile: true,
-        views: {
-          'main': {
-            templateUrl: 'views/backup.html'
           },
         }
       })
