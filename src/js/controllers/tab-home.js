@@ -36,5 +36,5 @@ angular.module('copayApp.controllers').controller('tabHomeController',
     $scope.bitpayCardEnabled = true; // TODO
 
 
-//    $state.transitionTo('confirm', {toAmount:555500, toAddress: 'mvfAwUJohJWibGzBZgAUGsDarsr4Z4NovU', toName: 'bla bla'});
+    $state.transitionTo('confirm', {toAmount:555500, toAddress: 'mvfAwUJohJWibGzBZgAUGsDarsr4Z4NovU', toName: 'bla bla'});
   });

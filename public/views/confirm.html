@@ -28,12 +28,12 @@
         <div class="item item-text-wrap">
           <i class="icon ion-arrow-up-c"></i> <span class="text-bold size-16">Sending</span>
           <div class="text-bold size-28 m15t">{{amount}} {{unitName}}</div>
-          <div class="text-light size-20 m5t">{{alternativeAmount}} {{alternativeIsoCode}}</div>
+          <div class="text-light size-20 m5t">{{alternativeAmount || '...'}} {{alternativeIsoCode}}</div>
         </div>
       </div>
 
       <div class="list card">
-        <div class="item">Fee: Economy (97 bits)</div>
+        <div class="item">Fee: {{feeLevel}} ({{fee || '...'}} {{unitName}})</div>
 
         <div class="item item-icon-left">
           <i class="icon ion-ios-person-outline"></i>
@@ -76,7 +76,7 @@
       </div>
 
       <div class="card">
-        <button class="item button button-full button-positive" ng-click="approve()">
+        <button class="item button button-full button-positive" ng-click="approve()" ng-disabled="!txp">
           Approve
         </button>
       </div>
