@@ -3,17 +3,6 @@
 angular.module('copayApp.services').factory('txFormatService', function(bwcService, rateService, configService, lodash) {
   var root = {};
 
-
-  // // RECEIVE
-  // // Check address
-  // root.isUsed(wallet.walletId, balance.byAddress, function(err, used) {
-  //   if (used) {
-  //     $log.debug('Address used. Creating new');
-  //     $rootScope.$emit('Local/AddressIsUsed');
-  //   }
-  // });
-  //
-
   root.Utils = bwcService.getUtils();
 
 
@@ -57,8 +46,8 @@ angular.module('copayApp.services').factory('txFormatService', function(bwcServi
   };
 
   root.processTx = function(tx) {
-    if (!tx || tx.action == 'invalid') 
-      return tx; 
+    if (!tx || tx.action == 'invalid')
+      return tx;
 
     // New transaction output format
     if (tx.outputs && tx.outputs.length) {
@@ -77,7 +66,7 @@ angular.module('copayApp.services').factory('txFormatService', function(bwcServi
         }, 0);
       }
       tx.toAddress = tx.outputs[0].toAddress;
-    } 
+    }
 
     tx.amountStr = root.formatAmountStr(tx.amount);
     tx.alternativeAmountStr = root.formatAlternativeStr(tx.amount);

@@ -3,7 +3,7 @@
   <ion-nav-bar class="bar-stable">
     <ion-nav-title>Home</ion-nav-title>
   </ion-nav-bar>
-  <ion-content class="padding home" ng-controller="tabHomeController">
+  <ion-content class="padding home" ng-controller="tabHomeController" cache-view="false">
 
     <h2  class="title m0"   translate>Payment Proposals</h2>
     <div class="list card" ng-if="txps[0]">
@@ -64,7 +64,7 @@
               Incomplete
             </span>
             <span class="item-note"  ng-show="item.isComplete()">
-              {{item.availableBalanceStr}}
+              {{item.status.availableBalanceStr}}
             </span>
         </li>
       </ul>
