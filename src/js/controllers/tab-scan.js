@@ -180,7 +180,7 @@ angular.module('copayApp.controllers').controller('tabScanController', function(
       };
     }
     localMediaStream = null;
-    video.src = '';
+    if (video && video.src) video.src = '';
   };
 
   qrcode.callback = function(data) {

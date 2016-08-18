@@ -1,10 +1,8 @@
 <ion-modal-view>
-  <ion-header-bar align-title="center" class="tab-bar">
-    <div class="left-small">
-      <a ng-click="cancel()" class="p10">
-        <span class="text-close" translate>Close</span>
-      </a>
-    </div>
+  <ion-header-bar align-title="center" class="bar-stable">
+    <button ng-click="cancel()" class="button button-clear button-positive" translate>
+      Close
+    </button>
     <h1 class="title ellipsis" translate>QR-Scanner</h1>
   </ion-header-bar>
   <ion-content ng-controller="tabScanController" ng-init="init()">
