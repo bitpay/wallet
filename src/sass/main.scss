@@ -934,8 +934,14 @@ ul.wallet-selection.wallets {
   line-height: 45px;
 }
 
-.item-border-off {
+.no-border {
   border-style: none;
+}
+
+input[type=file] {
+  margin-top: 10px;
+  margin-bottom: -10px;
+  line-height: 0px;
 }
 
 /*
