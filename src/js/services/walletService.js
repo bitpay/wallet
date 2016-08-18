@@ -925,15 +925,15 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
         if (wallet.credentials.derivationStrategy != 'BIP44' || !wallet.canSign())
           return null;
 
-        if (wallet.mnemonic) {
+        if (wallet.credentials.mnemonic) {
           info = {
             type: encodingType.mnemonic,
-            data: wallet.mnemonic,
+            data: wallet.credentials.mnemonic,
           }
         } else {
           info = {
             type: encodingType.xpriv,
-            data: wallet.xPrivKey
+            data: wallet.credentials.xPrivKey
           }
         }
         return info.type + '|' + info.data + '|' + wallet.credentials.network.toLowerCase() + '|' + derivationPath + '|' + (wallet.credentials.mnemonicHasPassphrase);
