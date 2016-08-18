@@ -36,6 +36,7 @@
           </li>
         </ul>
 
+
         <div ng-show="lockedBalanceSat">
           <span translate>Total Locked Balance</span>:
           <b>{{lockedBalanceStr}} </b>
@@ -45,12 +46,13 @@
     </div>
 
     <div class="row">
-      <div class="col col-90">
-        <h3>Wallets </h3>
+      <div class="col col-80">
+        <h2>Wallets </h2>
       </div>
-
-      <div class="col text-center">
-        <a href="#/add" class="add-icon"><i class="ion-plus size-21 right"></i></a>
+      <div class="col col-20 text-right">
+        <a class="button button-light" href="#/add">
+          <i class="size-36 icon ion-ios-plus-outline"></i>
+        </a>
       </div>
     </div>
 

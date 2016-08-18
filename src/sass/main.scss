@@ -548,6 +548,26 @@ ul.wallet-selection.wallets {
   margin: 0 auto;
 }
 
+// INPUT CAMERA / VALID / INVALID ICONS
+.input-notification {
+  float: right;
+  margin-right: 10px;
+}
+
+.qr-scan-icon {
+  position: relative;
+}
+
+.qr-scan-icon a {
+  display: block;
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 0 10px;
+  font-size: 24px;
+  cursor: pointer;
+}
+
 // General purpose
 .dn {
   display: none;
@@ -946,6 +966,14 @@ input[type=file] {
   margin-top: 10px;
   margin-bottom: -10px;
   line-height: 0px;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.text-left {
+  text-align: left;
 }
 
 /*

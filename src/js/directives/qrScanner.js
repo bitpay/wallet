@@ -11,6 +11,6 @@ angular.module('copayApp.directives')
       },
       controller: 'tabScanController',
       replace: true,
-      template: '<a ng-click="openScanner()"><i class="icon ion-qr-scanner"></i></a>'
+      template: '<a on-tap="openScanner()"><i class="icon ion-qr-scanner"></i></a>'
     }
   });
