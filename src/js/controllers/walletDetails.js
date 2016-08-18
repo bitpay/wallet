@@ -1,36 +1,16 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('walletDetailsController', function($scope, $rootScope, $interval, $timeout, $filter, $log, $ionicModal, $ionicPopover, $state, $stateParams, profileService, lodash, configService, gettext, gettextCatalog, platformInfo, go, walletService) {
-
+angular.module('copayApp.controllers').controller('walletDetailsController', function($scope, $rootScope, $interval, $timeout, $filter, $log, $ionicModal, $ionicPopover, $state, $stateParams, bwcError, profileService, lodash, configService, gettext, gettextCatalog, platformInfo, go, walletService) {
 
   var isCordova = platformInfo.isCordova;
   var isWP = platformInfo.isWP;
   var isAndroid = platformInfo.isAndroid;
   var isChromeApp = platformInfo.isChromeApp;
 
-  var self = this;
-  $rootScope.shouldHideMenuBar = false;
-  $rootScope.wpInputFocused = false;
-  var config = configService.getSync();
-  var configWallet = config.wallet;
-  var walletSettings = configWallet.settings;
-  var ret = {};
+  var errorPopup;
 
-  // INIT. Global value
-  ret.unitToSatoshi = walletSettings.unitToSatoshi;
-  ret.satToUnit = 1 / ret.unitToSatoshi;
-  ret.unitName = walletSettings.unitName;
-  ret.alternativeIsoCode = walletSettings.alternativeIsoCode;
-  ret.alternativeName = walletSettings.alternativeName;
-  ret.alternativeAmount = 0;
-  ret.unitDecimals = walletSettings.unitDecimals;
-  ret.isCordova = isCordova;
-  ret.addresses = [];
-  ret.isMobile = platformInfo.isMobile;
-  ret.isWindowsPhoneApp = platformInfo.isWP;
-  ret.countDown = null;
-  ret.sendMaxInfo = {};
-  ret.showAlternative = false;
+  var HISTORY_SHOW_LIMIT = 10;
+
 
   $scope.openSearchModal = function() {
     var fc = profileService.focusedClient;
@@ -46,7 +26,7 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
     });
   };
 
-  this.openTxModal = function(btx) {
+  $scope.openTxModal = function(btx) {
     var self = this;
 
     $scope.btx = lodash.cloneDeep(btx);
@@ -61,32 +41,100 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
     });
   };
 
-  $scope.update = function() {
-    walletService.updateStatus(wallet, {
-      force: true
-    }, function(err, status) {
-      if (err) {} // TODO
+  $scope.recreate = function() {
+    walletService.recreate();
+  };
+
+  $scope.updateStatus = function(force) {
+    $scope.updatingStatus = true;
+    $scope.updateStatusError = false;
+    $timeout(function() {
+      walletService.getStatus(wallet, {
+        force: !!force,
+      }, function(err, status) {
+        $scope.updatingStatus = false;
+        if (err) {
+          $scope.status = null;
+          $scope.updateStatusError = true;
+          return;
+        }
+        $scope.status = status;
+      });
+    })
+  };
+
+  $scope.updateTxHistory = function() {
+
+    if ($scope.updatingTxHistory) return;
+
+    $scope.updatingTxHistory = true;
+    $scope.updateTxHistoryError = false;
+    $scope.updatingTxHistoryProgress = null;
+
+    var progressFn = function(txs) {
+      $scope.updatingTxHistoryProgress = txs ? txs.length : 0;
+      completeTxHistory = txs;
+      $scope.showHistory();
+      $scope.$digest();
+    };
+
+    $timeout(function() {
+      walletService.getTxHistory(wallet, {
+        progressFn: progressFn,
+      }, function(err, txHistory) {
+        $scope.updatingTxHistory = false;
+        if (err) {
+          $scope.txHistory = null;
+          $scope.updateTxHistoryError = true;
+          return;
+        }
+        completeTxHistory = txHistory;
+
+        $scope.showHistory();
+        $scope.$apply();
+      });
     });
   };
+
+  $scope.showHistory = function() {
+    if ($scope.isSearching) {
+      $scope.txHistorySearchResults = filteredTxHistory ? filteredTxHistory.slice(0, (currentTxHistoryPage + 1) * HISTORY_SHOW_LIMIT) : [];
+      $scope.txHistoryShowMore = filteredTxHistory.length > $scope.txHistorySearchResults.length;
+    } else {
+      $scope.txHistory = completeTxHistory ? completeTxHistory.slice(0, (currentTxHistoryPage + 1) * HISTORY_SHOW_LIMIT) : [];
+      $scope.txHistoryShowMore = completeTxHistory.length > $scope.txHistory.length;
+    }
+  };
+
+  $scope.showMore = function() {
+    currentTxHistoryPage++;
+    $scope.showHistory();
+    $scope.$broadcast('scroll.infiniteScrollComplete');
+  };
+
+  $scope.updateAll = function()  {
+    $scope.updateStatus(false);
+    $scope.updateTxHistory();
+  }
 
   $scope.hideToggle = function() {
     console.log('[walletDetails.js.70:hideToogle:] TODO'); //TODO
   };
 
-  if (!$stateParams.walletId) {
-    $log.debug('No wallet provided... using the first one');
-    $stateParams.walletId = profileService.getWallets({
-      onlyComplete: true
-    })[0].id;
-  }
+  var currentTxHistoryPage;
+  var completeTxHistory;
+  var wallet;
 
+  $scope.init = function() {
+    currentTxHistoryPage = 0;
+    completeTxHistory = [];
 
-  var wallet = profileService.getWallet($stateParams.walletId);
-  $scope.wallet = wallet;
+    wallet = profileService.getWallet($stateParams.walletId);
+    $scope.wallet = wallet;
+    $scope.requiresMultipleSignatures = wallet.credentials.m > 1;
+    $scope.newTx = false;
 
-  if (wallet) {
-    walletService.updateStatus(wallet, {}, function(err, status) {
-      if (err) {} // TODO
-    });
-  }
+    $scope.updateAll();
+  };
+
 });
