@@ -7,22 +7,19 @@ angular.module('copayApp.controllers').controller('preferencesUnitController', f
     $scope.currentUnit = config.wallet.settings.unitCode;
   }
 
-  $scope.unitList = [
-    {
-      name: 'bits (1,000,000 bits = 1BTC)',
-      shortName: 'bits',
-      value: 100,
-      decimals: 2,
-      code: 'bit',
-    },
-    {
-      name: 'BTC',
-      shortName: 'BTC',
-      value: 100000000,
-      decimals: 8,
-      code: 'btc',
-    }
-  ];
+  $scope.unitList = [{
+    name: 'bits (1,000,000 bits = 1BTC)',
+    shortName: 'bits',
+    value: 100,
+    decimals: 2,
+    code: 'bit',
+  }, {
+    name: 'BTC',
+    shortName: 'BTC',
+    value: 100000000,
+    decimals: 8,
+    code: 'btc',
+  }];
 
   $scope.save = function(newUnit) {
     var opts = {
