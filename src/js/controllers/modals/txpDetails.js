@@ -34,7 +34,7 @@ angular.module('copayApp.controllers').controller('txpDetailsController', functi
     walletService.publishAndSign($scope.wallet, $scope.tx, function(err, txp) {
         $scope.$emit('UpdateTx');
         if (err) return setSendError(err);
-        $scope.close(signedTxp);
+        $scope.close(txp);
     });
   };
 
