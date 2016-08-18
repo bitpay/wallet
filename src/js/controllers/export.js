@@ -1,40 +1,39 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('exportController',
-  function($rootScope, $scope, $timeout, $log, lodash, backupService, walletService, fingerprintService, configService, storageService, profileService, platformInfo, notification, go, gettext, gettextCatalog) {
+  function($rootScope, $scope, $timeout, $log, lodash, backupService, walletService, storageService, profileService, platformInfo, notification, go, gettext, gettextCatalog, $state, $stateParams) {
     var prevState;
     var isWP = platformInfo.isWP;
     var isAndroid = platformInfo.isAndroid;
-    var fc = profileService.focusedClient;
-    $scope.isEncrypted = fc.isPrivKeyEncrypted();
+
+    var wallet = profileService.getWallet($stateParams.walletId);
+    $scope.isEncrypted = wallet.isPrivKeyEncrypted();
     $scope.isCordova = platformInfo.isCordova;
     $scope.isSafari = platformInfo.isSafari;
     $scope.error = null;
 
-    $scope.init = function(state) {
+    $scope.init = function() {
       $scope.supported = true;
       $scope.exportQR = false;
       $scope.noSignEnabled = false;
       $scope.showAdvanced = false;
-      prevState = state || 'walletHome';
+      $scope.wallet = wallet;
+      $scope.canSign = wallet.canSign();
 
-      fingerprintService.check(fc, function(err) {
+      walletService.getEncodedWalletInfo(wallet, function(err, code) {
         if (err) {
-          go.path(prevState);
-          return;
+          $log.warn(err);
+          return $state.go('wallet.preferencesAdvanced')
         }
 
-        handleEncryptedWallet(fc, function(err) {
-          if (err) {
-            go.path(prevState);
-            return;
-          }
+        if (!code)
+          $scope.supported = false;
+        else
+          $scope.exportWalletInfo = code;
 
-          $scope.exportWalletInfo = encodeWalletInfo();
-          $timeout(function() {
-            $scope.$apply();
-          }, 1);
-        });
+        $timeout(function() {
+          $scope.$apply();
+        }, 1);
       });
     };
 
@@ -50,61 +49,8 @@ angular.module('copayApp.controllers').controller('exportController',
     */
 
     $scope.$on('$destroy', function() {
-      walletService.lock(fc);
+      walletService.lock(wallet);
     });
-
-    function handleEncryptedWallet(client, cb) {
-      if (!walletService.isEncrypted(client)) {
-        $scope.credentialsEncrypted = false;
-        return cb();
-      }
-
-      $rootScope.$emit('Local/NeedsPassword', false, function(err, password) {
-        if (err) return cb(err);
-        return cb(walletService.unlock(client, password));
-      });
-    };
-
-    function encodeWalletInfo() {
-      var c = fc.credentials;
-      var derivationPath = fc.credentials.getBaseAddressDerivationPath();
-      var encodingType = {
-        mnemonic: 1,
-        xpriv: 2,
-        xpub: 3
-      };
-      var info;
-
-      $scope.supported = (c.derivationStrategy == 'BIP44' && c.canSign());
-
-      if ($scope.supported) {
-        if (c.mnemonic) {
-          info = {
-            type: encodingType.mnemonic,
-            data: c.mnemonic,
-          }
-        } else {
-          info = {
-            type: encodingType.xpriv,
-            data: c.xPrivKey
-          }
-        }
-      } else {
-        /*
-          EXPORT WITHOUT PRIVATE KEY - PENDING
-
-        info = {
-          type: encodingType.xpub,
-          data: c.xPubKey
-        }
-        */
-
-        return null;
-      }
-
-      var code = info.type + '|' + info.data + '|' + c.network.toLowerCase() + '|' + derivationPath + '|' + (c.mnemonicHasPassphrase);
-      return code;
-    };
 
     $scope.downloadWalletBackup = function() {
       $scope.getAddressbook(function(err, localAddressBook) {
@@ -184,11 +130,10 @@ angular.module('copayApp.controllers').controller('exportController',
     };
 
     $scope.sendWalletBackup = function() {
-      var fc = profileService.focusedClient;
       window.plugins.toast.showShortCenter(gettextCatalog.getString('Preparing backup...'));
-      var name = (fc.credentials.walletName || fc.credentials.walletId);
-      if (fc.alias) {
-        name = fc.alias + ' [' + name + ']';
+      var name = (wallet.credentials.walletName || wallet.credentials.walletId);
+      if (wallet.alias) {
+        name = wallet.alias + ' [' + name + ']';
       }
       $scope.getBackup(function(backup) {
         var ew = backup;

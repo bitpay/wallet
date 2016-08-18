@@ -1,19 +1,21 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('preferencesInformation',
-  function($scope, $log, $timeout, platformInfo, gettextCatalog, lodash, profileService, configService, go) {
+  function($scope, $log, $timeout, platformInfo, gettextCatalog, lodash, profileService, configService, go, $stateParams) {
     var base = 'xpub';
-    var fc = profileService.focusedClient;
-    var c = fc.credentials;
-    var walletId = c.walletId;
+    var wallet = profileService.getWallet($stateParams.walletId);
+    var walletId = wallet.id;
+
     var config = configService.getSync();
     var b = 1;
-    var isCordova = platformInfo.isCordova;
+    $scope.isCordova = platformInfo.isCordova;
     config.colorFor = config.colorFor || {};
 
     $scope.init = function() {
+      var c =wallet.credentials;
       var basePath = c.getBaseAddressDerivationPath();
 
+      $scope.wallet = wallet;
       $scope.walletName = c.walletName;
       $scope.walletId = c.walletId;
       $scope.network = c.network;
@@ -25,7 +27,7 @@ angular.module('copayApp.controllers').controller('preferencesInformation',
       $scope.pubKeys = lodash.pluck(c.publicKeyRing, 'xPubKey');
       $scope.addrs = null;
 
-      fc.getMainAddresses({
+      wallet.getMainAddresses({
         doNotVerify: true
       }, function(err, addrs) {
         if (err) {
@@ -62,7 +64,7 @@ angular.module('copayApp.controllers').controller('preferencesInformation',
       };
 
       $timeout(function() {
-        fc.getMainAddresses({
+        wallet.getMainAddresses({
           doNotVerify: true
         }, function(err, addrs) {
           if (err) {
@@ -113,7 +115,7 @@ angular.module('copayApp.controllers').controller('preferencesInformation',
     };
 
     $scope.copyToClipboard = function(data) {
-      if (isCordova) {
+      if ($scope.isCordova) {
         window.cordova.plugins.clipboard.copy(data);
         window.plugins.toast.showShortCenter(gettextCatalog.getString('Copied to clipboard'));
       }
