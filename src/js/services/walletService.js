@@ -1,7 +1,7 @@
 'use strict';
 
 // DO NOT INCLUDE STORAGE HERE \/ \/
-angular.module('copayApp.services').factory('walletService', function($log, $timeout, lodash, trezor, ledger, storageService, configService, rateService, uxLanguage, bwcService, $filter, gettextCatalog, bwcError, $ionicPopup, fingerprintService, ongoingProcess, gettext, $rootScope, txStatus, txFormatService, $ionicModal) {
+angular.module('copayApp.services').factory('walletService', function($log, $timeout, lodash, trezor, ledger, storageService, configService, rateService, uxLanguage, $filter, gettextCatalog, bwcError, $ionicPopup, fingerprintService, ongoingProcess, gettext, $rootScope, txStatus, txFormatService, $ionicModal) {
   // DO NOT INCLUDE STORAGE HERE ^^
   //
   //
@@ -12,7 +12,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
   root.WALLET_STATUS_MAX_TRIES = 7;
   root.WALLET_STATUS_DELAY_BETWEEN_TRIES = 1.4 * 1000;
   root.SOFT_CONFIRMATION_LIMIT = 12;
-  root.HISTORY_SHOW_LIMIT = 10;
+  root.SAFE_CONFIRMATIONS = 6;
 
   // UI Related
   root.openStatusModal = function(type, txp, cb) {
@@ -31,8 +31,15 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     });
   };
 
-
-
+  // // RECEIVE
+  // // Check address
+  // root.isUsed(wallet.walletId, balance.byAddress, function(err, used) {
+  //   if (used) {
+  //     $log.debug('Address used. Creating new');
+  //     $rootScope.$emit('Local/AddressIsUsed');
+  //   }
+  // });
+  //
 
   var _signWithLedger = function(wallet, txp, cb) {
     $log.info('Requesting Ledger Chrome app to sign the transaction');
@@ -154,12 +161,12 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
       cache.unitName = config.unitName;
 
       //STR
-      cache.totalBalanceStr = root.formatAmount(cache.totalBalanceSat) + ' ' + cache.unitName;
-      cache.lockedBalanceStr = root.formatAmount(cache.lockedBalanceSat) + ' ' + cache.unitName;
-      cache.availableBalanceStr = root.formatAmount(cache.availableBalanceSat) + ' ' + cache.unitName;
+      cache.totalBalanceStr = txFormatService.formatAmount(cache.totalBalanceSat) + ' ' + cache.unitName;
+      cache.lockedBalanceStr = txFormatService.formatAmount(cache.lockedBalanceSat) + ' ' + cache.unitName;
+      cache.availableBalanceStr = txFormatService.formatAmount(cache.availableBalanceSat) + ' ' + cache.unitName;
 
       if (cache.pendingAmount) {
-        cache.pendingAmountStr = root.formatAmount(cache.pendingAmount) + ' ' + cache.unitName;
+        cache.pendingAmountStr = txFormatService.formatAmount(cache.pendingAmount) + ' ' + cache.unitName;
       } else {
         cache.pendingAmountStr = null;
       }
@@ -229,13 +236,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
       });
     };
 
-    _getStatus(walletStatusHash(), 0, function(err, status) {
-      if (err) {
-        root.handleError(err);
-        return cb(err);
-      }
-      return cb(null, status);
-    })
+    _getStatus(walletStatusHash(), 0, cb);
   };
 
   var getSavedTxs = function(walletId, cb) {
@@ -300,8 +301,8 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
       if (tx.time > now)
         tx.time = now;
 
-      if (tx.confirmations >= SAFE_CONFIRMATIONS) {
-        tx.safeConfirmed = SAFE_CONFIRMATIONS + '+';
+      if (tx.confirmations >= root.SAFE_CONFIRMATIONS) {
+        tx.safeConfirmed = root.SAFE_CONFIRMATIONS + '+';
       } else {
         tx.safeConfirmed = false;
         wallet.hasUnsafeConfirmed = true;
@@ -323,12 +324,14 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     return ret;
   };
 
-  var updateLocalTxHistory = function(wallet, cb) {
+  var updateLocalTxHistory = function(wallet, progressFn, cb) {
     var FIRST_LIMIT = 5;
     var LIMIT = 50;
     var requestLimit = FIRST_LIMIT;
     var walletId = wallet.credentials.walletId;
     var config = configService.getSync().wallet.settings;
+
+    progressFn = progressFn || function() {};
 
     var fixTxsUnit = function(txs) {
       if (!txs || !txs[0] || !txs[0].amountStr) return;
@@ -359,43 +362,27 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
 
 
       // First update
-      if (walletId == wallet.credentials.walletId) {
-        wallet.completeHistory = txsFromLocal;
-      }
+      wallet.completeHistory = txsFromLocal;
 
-      if (wallet.historyUpdateInProgress)
-        return;
-
-      wallet.historyUpdateInProgress = true;
-
-      function getNewTxs(newTxs, skip, i_cb) {
+      function getNewTxs(newTxs, skip, cb) {
         getTxsFromServer(wallet, skip, endingTxid, requestLimit, function(err, res, shouldContinue) {
-          if (err) return i_cb(err);
+          if (err) return cb(err);
 
-          newTxs = newTxs.concat(lodash.compact(res));
+          newTxs = newTxs.concat(processNewTxs(wallet, lodash.compact(res)));
+
+          progressFn(newTxs);
+
           skip = skip + requestLimit;
 
           $log.debug('Syncing TXs. Got:' + newTxs.length + ' Skip:' + skip, ' EndingTxid:', endingTxid, ' Continue:', shouldContinue);
 
           if (!shouldContinue) {
-            newTxs = processNewTxs(wallet, newTxs);
             $log.debug('Finished Sync: New / soft confirmed Txs: ' + newTxs.length);
-            return i_cb(null, newTxs);
+            return cb(null, newTxs);
           }
 
           requestLimit = LIMIT;
-          getNewTxs(newTxs, skip, i_cb);
-
-          // Progress update
-          if (walletId == wallet.credentials.walletId) {
-            wallet.txProgress = newTxs.length;
-            if (wallet.completeHistory < FIRST_LIMIT && txsFromLocal.length == 0) {
-              $log.debug('Showing partial history');
-              var newHistory = processNewTxs(wallet, newTxs);
-              newHistory = lodash.compact(newHistory.concat(confirmedTxs));
-              wallet.completeHistory = newHistory;
-            }
-          }
+          getNewTxs(newTxs, skip, cb);
         });
       };
 
@@ -456,10 +443,8 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
   };
 
 
-  root.getHistory = function(wallet, opts, cb) {
+  root.getTxHistory = function(wallet, opts, cb) {
     opts = opts || {};
-    opts.skip = opts.skip || 0;
-    opts.limit = opts.limit || root.HISTORY_SHOW_LIMIT;
 
     var walletId = wallet.credentials.walletId;
 
@@ -467,10 +452,9 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
 
     $log.debug('Updating Transaction History');
 
-    updateLocalTxHistory(wallet, function(err) {
+    updateLocalTxHistory(wallet, opts.progressFn, function(err) {
       if (err) return cb(err);
-      var txs = wallet.completeHistory ? wallet.completeHistory.slice(opts.skip, opts.limit) : null;
-      return cb(err, txs);
+      return cb(err, wallet.completeHistory);
     });
   };
 

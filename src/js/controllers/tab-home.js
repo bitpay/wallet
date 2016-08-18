@@ -88,11 +88,9 @@ angular.module('copayApp.controllers').controller('tabHomeController',
 
     self.updateAllClients = function() {
       var txps = [];
-      var wallets = profileService.getWallets();
-      var l = wallets.length,
-        i = 0;
+      var i = $scope.wallets.length;
 
-      lodash.each(wallets, function(wallet) {
+      lodash.each($scope.wallets, function(wallet) {
         walletService.getStatus(wallet, {}, function(err, status) {
           if (err) {
             console.log('[tab-home.js.35:err:]', $log.error(err)); //TODO
@@ -101,9 +99,10 @@ angular.module('copayApp.controllers').controller('tabHomeController',
           if (status.pendingTxps && status.pendingTxps[0]) {
             txps = txps.concat(status.pendingTxps);
           }
-          if (++i == l) {
+          if (--i == 0) {
             setPendingTxps(txps);
           }
+          wallet.status = status;
         });
       });
     }
