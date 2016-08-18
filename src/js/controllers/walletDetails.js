@@ -100,8 +100,8 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
     if ($scope.isSearching) {
       $scope.txHistorySearchResults = filteredTxHistory ? filteredTxHistory.slice(0, (currentTxHistoryPage + 1) * HISTORY_SHOW_LIMIT) : [];
       $scope.txHistoryShowMore = filteredTxHistory.length > $scope.txHistorySearchResults.length;
-    } else {
-      $scope.txHistory = completeTxHistory ? completeTxHistory.slice(0, (currentTxHistoryPage + 1) * HISTORY_SHOW_LIMIT) : [];
+    } else if (completeTxHistory) {
+      $scope.txHistory = completeTxHistory.slice(0, (currentTxHistoryPage + 1) * HISTORY_SHOW_LIMIT);
       $scope.txHistoryShowMore = completeTxHistory.length > $scope.txHistory.length;
     }
   };
