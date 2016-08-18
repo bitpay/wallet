@@ -5,50 +5,55 @@
   </ion-nav-bar>
   <ion-content class="padding home" ng-controller="tabHomeController" cache-view="false">
 
-    <h2  class="title m0"   ng-if="txps[0]" translate>Payment Proposals</h2>
-    <div class="list card" ng-if="txps[0]">
-      <ul>
-        <li ng-repeat="tx in txps" class="item item-icon-left"
-        ng-click="openTxpModal(tx)">
-          <i class="icon ion-ios-circle-filled"  ng-show="tx.pendingForUs"  ng-style="{'color':tx.wallet.color}"></i>
-          <span ng-show="!tx.merchant">
-            <span ng-show="addressbook[tx.toAddress] && !tx.message">
-              {{addressbook[tx.toAddress]}}
+    <div ng-if="txps[0]">
+      <h3 class="title m0" translate>Payment Proposals</h3>
+      <div class="list card">
+        <ul>
+          <li ng-repeat="tx in txps" class="item item-icon-left"
+            ng-click="openTxpModal(tx)">
+            <i class="icon ion-ios-circle-filled" ng-show="tx.pendingForUs" ng-style="{'color':tx.wallet.color}"></i>
+            <span ng-show="!tx.merchant">
+              <span ng-show="addressbook[tx.toAddress] && !tx.message">
+                {{addressbook[tx.toAddress]}}
+              </span>
+              <span class="ellipsis" ng-show="!addressbook[tx.toAddress] && tx.message">
+                {{tx.message}}
+              </span>
+              <span ng-show="!addressbook[tx.toAddress] && !tx.message" translate>
+                Sending
+              </span>
             </span>
-            <span class="ellipsis" ng-show="!addressbook[tx.toAddress] && tx.message">
-              {{tx.message}}
+            <span ng-show="tx.merchant">
+              <span ng-show="tx.merchant.pr.ca"><i class="fi-lock"></i> {{tx.merchant.domain}}</span>
+              <span ng-show="!tx.merchant.pr.ca"><i class="fi-unlock"></i> {{tx.merchant.domain}}</span>
             </span>
-            <span ng-show="!addressbook[tx.toAddress] && !tx.message" translate>
-              Sending
-            </span>
-          </span>
-          <span ng-show="tx.merchant">
-            <span ng-show="tx.merchant.pr.ca"><i class="fi-lock"></i> {{tx.merchant.domain}}</span>
-            <span ng-show="!tx.merchant.pr.ca"><i class="fi-unlock"></i> {{tx.merchant.domain}}</span>
-          </span>
-          <span >
             <span>
               - {{tx.amountStr}}
             </span>
-          <div class="item item-divider">
-            {{tx.wallet.name}} &middot; <time>{{ (tx.ts || tx.createdOn ) * 1000 | amTimeAgo}}</time> 
-          </div>
-          </span>
-        </li>
-      </ul>
+            <div class="item item-divider">
+              {{tx.wallet.name}} &middot; <time>{{ (tx.ts || tx.createdOn ) * 1000 | amTimeAgo}}</time>
+            </div>
+          </li>
+        </ul>
 
-      <div ng-show="lockedBalanceSat">
-        <span translate>Total Locked Balance</span>:
-        <b>{{lockedBalanceStr}} </b>
-        <span> {{lockedBalanceAlternative}} {{alternativeIsoCode}} </span>
+        <div ng-show="lockedBalanceSat">
+          <span translate>Total Locked Balance</span>:
+          <b>{{lockedBalanceStr}} </b>
+          <span> {{lockedBalanceAlternative}} {{alternativeIsoCode}} </span>
+        </div>
       </div>
     </div>
 
+    <div class="row">
+      <div class="col col-90">
+        <h3>Wallets </h3>
+      </div>
 
+      <div class="col text-center">
+        <a href="#/add" class="add-icon"><i class="ion-plus size-21 right"></i></a>
+      </div>
+    </div>
 
-    <h2>Wallets 
-    <a href="#/add"><i class="ion-ios-plus-outline right"></i></a>
-</h2>
     <div class="list card">
       <ul class="pr">
 
@@ -71,8 +76,7 @@
       </ul>
     </div>
 
-
-    <h2>Next steps </h2>
+    <h3>Next steps </h3>
     <div class="list card">
       <ul class="pr">
       <li menu-toggle href ui-sref="bitpayCard" ng-show="bitpayCardEnabled" class="item item-icon-left">
@@ -87,7 +91,7 @@
         <i class="icon ion-ios-cart"></i>
         Gift Cards
         <span class="item-note">
-bla bla
+          bla bla
         </span>
       </li>
       </ul>
