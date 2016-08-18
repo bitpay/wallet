@@ -16,31 +16,39 @@
 
       <div class="list">
 
-        <label class="item item-input item-stacked-label">
-          <span class="input-label" translate>Your nickname</span>
-          <input type="text"
-                 placeholder="{{'John'|translate}}"
-                 name="myName"
-                 ng-model="myName"
-                 ng-required="true">
-        </label>
+        <div class="row">
+          <div class="col">
+            <label class="item item-input item-stacked-label item-border-off">
+              <span class="input-label" translate>Your nickname</span>
+              <input type="text"
+              placeholder="{{'John'|translate}}"
+              name="myName"
+              ng-model="myName"
+              ng-required="true">
+            </label>
+          </div>
+        </div>
 
-        <qr-scanner class="button button-clear button-positive" on-scan="join.onQrCodeScanned(data)"></qr-scanner>
-        <label class="item item-input item-stacked-label">
-          <span class="input-label">
-            Wallet Invitation
-          </span>
-          <i class="icon ion-checkmark-circled balanced" ng-show="joinForm.secret.$valid &&
-          !joinForm.secret.$pristine && secret"></i>
-          <i class="icon ion-close-circled assertive" ng-show="joinForm.secret.$invalid &&
-          !joinForm.secret.$pristine && secret"></i>
-          <input id="secret"
-                 type="text"
-                 placeholder="{{'Paste invitation here'|translate}}"
-                 name="secret"
-                 ng-model="secret"
-                 wallet-secret required>
-        </label>
+        <div class="row">
+          <div class="col col-90">
+            <label class="item item-input item-stacked-label item-border-off">
+              <span class="input-label" translate>Wallet Invitation</span>
+              <i class="icon ion-checkmark-circled balanced" ng-show="joinForm.secret.$valid &&
+              !joinForm.secret.$pristine && secret"></i>
+              <i class="icon ion-close-circled assertive" ng-show="joinForm.secret.$invalid &&
+              !joinForm.secret.$pristine && secret"></i>
+              <input id="secret"
+                     type="text"
+                     placeholder="{{'Paste invitation here'|translate}}"
+                     name="secret"
+                     ng-model="secret"
+                     wallet-secret required>
+            </label>
+          </div>
+          <div class="col text-center">
+            <qr-scanner class="qr-icon size-24" on-scan="join.onQrCodeScanned(data)"></qr-scanner>
+          </div>
+        </div>
 
         <ion-toggle ng-model="showAdv" toggle-class="toggle-stable">
           <span translate ng-show="!showAdv">Show advanced options</span>
