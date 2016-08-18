@@ -15,35 +15,45 @@ angular.module('copayApp.services').factory('txFormatService', function(bwcServi
   //
 
   root.Utils = bwcService.getUtils();
-  root.formatAmount = function(amount, fullPrecision) {
+
+
+  root.formatAmount = function(satoshis, fullPrecision) {
     var config = configService.getSync().wallet.settings;
-    if (config.unitCode == 'sat') return amount;
+    if (config.unitCode == 'sat') return satoshis;
 
     //TODO : now only works for english, specify opts to change thousand separator and decimal separator
     var opts = {
       fullPrecision: !!fullPrecision
     };
-    return this.Utils.formatAmount(amount, config.unitCode, opts);
+    return this.Utils.formatAmount(satoshis, config.unitCode, opts);
   };
 
-
-
-  var formatAmountStr = function(amount) {
-    if (!amount) return;
+  root.formatAmountStr = function(satoshis) {
+    if (!satoshis) return;
     var config = configService.getSync().wallet.settings;
-    return root.formatAmount(amount) + ' ' + config.unitName;
+    return root.formatAmount(satoshis) + ' ' + config.unitName;
   };
 
-  var formatAlternativeStr = function(amount) {
-    if (!amount) return;
+  root.formatAlternativeStr = function(satoshis, cb) {
+    if (!satoshis) return;
     var config = configService.getSync().wallet.settings;
-    return (rateService.toFiat(amount, config.alternativeIsoCode) ? rateService.toFiat(amount, config.alternativeIsoCode).toFixed(2) : 'N/A') + ' ' + config.alternativeIsoCode;
-  };
 
-  var formatFeeStr = function(fee) {
-    if (!fee) return;
-    var config = configService.getSync().wallet.settings;
-    return root.formatAmount(fee) + ' ' + config.unitName;
+    var val = function() {
+      var v1 = rateService.toFiat(satoshis, config.alternativeIsoCode);
+      if (!v1) return null;
+
+      return v1.toFixed(2) + ' ' + config.alternativeIsoCode;
+    };
+
+    // Async version
+    if (cb) {
+      rateService.whenAvailable(function() {
+        return cb(val());
+      });
+    } else {
+      if (!rateService.isAvailable()) return null;
+      return val();
+    };
   };
 
   root.processTx = function(tx) {
@@ -61,17 +71,17 @@ angular.module('copayApp.services').factory('txFormatService', function(bwcServi
           tx.hasMultiplesOutputs = true;
         }
         tx.amount = lodash.reduce(tx.outputs, function(total, o) {
-          o.amountStr = formatAmountStr(o.amount);
-          o.alternativeAmountStr = formatAlternativeStr(o.amount);
+          o.amountStr = root.formatAmountStr(o.amount);
+          o.alternativeAmountStr = root.formatAlternativeStr(o.amount);
           return total + o.amount;
         }, 0);
       }
       tx.toAddress = tx.outputs[0].toAddress;
     } 
 
-    tx.amountStr = formatAmountStr(tx.amount);
-    tx.alternativeAmountStr = formatAlternativeStr(tx.amount);
-    tx.feeStr = formatFeeStr(tx.fee || tx.fees);
+    tx.amountStr = root.formatAmountStr(tx.amount);
+    tx.alternativeAmountStr = root.formatAlternativeStr(tx.amount);
+    tx.feeStr = root.formatAmountStr(tx.fee || tx.fees);
 
     return tx;
   };

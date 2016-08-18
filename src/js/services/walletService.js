@@ -911,7 +911,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
           if (err) return cb(err);
 
           ongoingProcess.set('signingTx', true);
-          root.signTx(wallet, txp, function(err, signedTxp) {
+          root.signTx(wallet,  publishedTxp, function(err, signedTxp) {
             ongoingProcess.set('signingTx', false);
             root.lock(wallet);
 
