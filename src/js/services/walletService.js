@@ -1,7 +1,7 @@
 'use strict';
 
 // DO NOT INCLUDE STORAGE HERE \/ \/
-angular.module('copayApp.services').factory('walletService', function($log, $timeout, lodash, trezor, ledger, storageService, configService, rateService, uxLanguage, bwcService, $filter, gettextCatalog, bwcError, $ionicPopup, fingerprintService, ongoingProcess, gettext, $rootScope, txStatus) {
+angular.module('copayApp.services').factory('walletService', function($log, $timeout, lodash, trezor, ledger, storageService, configService, rateService, uxLanguage, bwcService, $filter, gettextCatalog, bwcError, $ionicPopup, fingerprintService, ongoingProcess, gettext, $rootScope, txStatus, txFormatService, $ionicModal) {
   // DO NOT INCLUDE STORAGE HERE ^^
   //
   //
@@ -28,29 +28,6 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
   };
 
 
-
-
-  // // RECEIVE
-  // // Check address
-  // root.isUsed(wallet.walletId, balance.byAddress, function(err, used) {
-  //   if (used) {
-  //     $log.debug('Address used. Creating new');
-  //     $rootScope.$emit('Local/AddressIsUsed');
-  //   }
-  // });
-  //
-
-  root.Utils = bwcService.getUtils();
-  root.formatAmount = function(amount, fullPrecision) {
-    var config = configService.getSync().wallet.settings;
-    if (config.unitCode == 'sat') return amount;
-
-    //TODO : now only works for english, specify opts to change thousand separator and decimal separator
-    var opts = {
-      fullPrecision: !!fullPrecision
-    };
-    return this.Utils.formatAmount(amount, config.unitCode, opts);
-  };
 
 
   var _signWithLedger = function(wallet, txp, cb) {
@@ -169,12 +146,12 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     wallet.unitName = config.unitName;
 
     //STR
-    wallet.totalBalanceStr = root.formatAmount(wallet.totalBalanceSat) + ' ' + wallet.unitName;
-    wallet.lockedBalanceStr = root.formatAmount(wallet.lockedBalanceSat) + ' ' + wallet.unitName;
-    wallet.availableBalanceStr = root.formatAmount(wallet.availableBalanceSat) + ' ' + wallet.unitName;
+    wallet.totalBalanceStr = txFormatService.formatAmount(wallet.totalBalanceSat) + ' ' + wallet.unitName;
+    wallet.lockedBalanceStr = txFormatService.formatAmount(wallet.lockedBalanceSat) + ' ' + wallet.unitName;
+    wallet.availableBalanceStr = txFormatService.formatAmount(wallet.availableBalanceSat) + ' ' + wallet.unitName;
 
     if (wallet.pendingAmount) {
-      wallet.pendingAmountStr = root.formatAmount(wallet.pendingAmount) + ' ' + wallet.unitName;
+      wallet.pendingAmountStr = txFormatService.formatAmount(wallet.pendingAmount) + ' ' + wallet.unitName;
     } else {
       wallet.pendingAmountStr = null;
     }
@@ -365,8 +342,8 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
       $log.debug('Fixing Tx Cache Unit to:' + name)
       lodash.each(txs, function(tx) {
 
-        tx.amountStr = root.formatAmount(tx.amount) + name;
-        tx.feeStr = root.formatAmount(tx.fees) + name;
+        tx.amountStr = txFormatService.formatAmount(tx.amount) + name; 
+        tx.feeStr = txFormatService.formatAmount(tx.fees) + name;
       });
     };
 

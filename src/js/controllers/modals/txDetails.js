@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('txDetailsController', function($rootScope, $log, $scope, $filter, $ionicPopup, gettextCatalog, profileService, configService, lodash) {
+angular.module('copayApp.controllers').controller('txDetailsController', function($rootScope, $log, $scope, $filter, $ionicPopup, gettextCatalog, profileService, configService, lodash, txFormatService) {
 
   var self = $scope.self;
   var fc = profileService.focusedClient;
@@ -13,8 +13,8 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
   $scope.copayerId = fc.credentials.copayerId;
   $scope.isShared = fc.credentials.n > 1;
 
-  $scope.btx.amountStr = profileService.formatAmount($scope.btx.amount, true) + ' ' + walletSettings.unitName;
-  $scope.btx.feeStr = profileService.formatAmount($scope.btx.fees, true) + ' ' + walletSettings.unitName;
+  $scope.btx.amountStr = txFormatService.formatAmount($scope.btx.amount, true) + ' ' + walletSettings.unitName;
+  $scope.btx.feeStr = txFormatService.formatAmount($scope.btx.fees, true) + ' ' + walletSettings.unitName;
 
   $scope.showCommentPopup = function() {
     $scope.data = {

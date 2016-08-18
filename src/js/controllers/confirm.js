@@ -52,6 +52,8 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     $scope.toName = $stateParams.toName;
 
     var network = (new bitcore.Address($scope.toAddress)).network.name;
+    $scope.network = network;
+
     $scope.setWallets(network);
 
     toFiat($scope.amount, function(v) {
@@ -62,6 +64,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
 
     $scope.$on("$ionicSlides.slideChangeEnd", function(event, data) {
       $scope.wallet = $scope.wallets[data.slider.activeIndex];
+
     });
 
     createTx($scope.toAddress, $scope.toAmount);
@@ -87,6 +90,7 @@ console.log('[confirm.js.78:toAddress:]',toAddress); //TODO
       $log.error('No wallet selected')
       return;
     };
+console.log('[confirm.js.85:wallet:]',wallet); //TODO
 
     var outputs = [];
     var comment = $scope.comment;

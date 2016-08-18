@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.services').factory('feeService', function($log, bwcService, walletService, configService, gettext, lodash) {
+angular.module('copayApp.services').factory('feeService', function($log, bwcService, walletService, configService, gettext, lodash, txFormatService) {
   var root = {};
 
   // Constant fee options to translate
@@ -16,6 +16,8 @@ angular.module('copayApp.services').factory('feeService', function($log, bwcServ
   };
 
   root.getCurrentFeeValue = function(cb) {
+console.log('[feeService.js.18:getCurrentFeeValue:] TODO TODO TODO'); //TODO
+    // TODO TODO TODO
     var fc = walletService.focusedClient;
     var feeLevel = root.getCurrentFeeLevel();
 
@@ -49,8 +51,8 @@ angular.module('copayApp.services').factory('feeService', function($log, bwcServ
         if (errLivenet || errTestnet) $log.debug('Could not get dynamic fee');
         else {
           for (var i = 0; i < 4; i++) {
-            levelsLivenet[i]['feePerKBUnit'] = walletService.formatAmount(levelsLivenet[i].feePerKB) + ' ' + unitName;
-            levelsTestnet[i]['feePerKBUnit'] = walletService.formatAmount(levelsTestnet[i].feePerKB) + ' ' + unitName;
+            levelsLivenet[i]['feePerKBUnit'] = txFormatService.formatAmount(levelsLivenet[i].feePerKB) + ' ' + unitName;
+            levelsTestnet[i]['feePerKBUnit'] = txFormatService.formatAmount(levelsTestnet[i].feePerKB) + ' ' + unitName;
           }
         }
 

@@ -1,12 +1,37 @@
 'use strict';
 
-angular.module('copayApp.services').factory('txFormatService', function(walletService, rateService, configService, lodash) {
+angular.module('copayApp.services').factory('txFormatService', function(bwcService, rateService, configService, lodash) {
   var root = {};
+
+
+  // // RECEIVE
+  // // Check address
+  // root.isUsed(wallet.walletId, balance.byAddress, function(err, used) {
+  //   if (used) {
+  //     $log.debug('Address used. Creating new');
+  //     $rootScope.$emit('Local/AddressIsUsed');
+  //   }
+  // });
+  //
+
+  root.Utils = bwcService.getUtils();
+  root.formatAmount = function(amount, fullPrecision) {
+    var config = configService.getSync().wallet.settings;
+    if (config.unitCode == 'sat') return amount;
+
+    //TODO : now only works for english, specify opts to change thousand separator and decimal separator
+    var opts = {
+      fullPrecision: !!fullPrecision
+    };
+    return this.Utils.formatAmount(amount, config.unitCode, opts);
+  };
+
+
 
   var formatAmountStr = function(amount) {
     if (!amount) return;
     var config = configService.getSync().wallet.settings;
-    return walletService.formatAmount(amount) + ' ' + config.unitName;
+    return root.formatAmount(amount) + ' ' + config.unitName;
   };
 
   var formatAlternativeStr = function(amount) {
@@ -18,7 +43,7 @@ angular.module('copayApp.services').factory('txFormatService', function(walletSe
   var formatFeeStr = function(fee) {
     if (!fee) return;
     var config = configService.getSync().wallet.settings;
-    return walletService.formatAmount(fee) + ' ' + config.unitName;
+    return root.formatAmount(fee) + ' ' + config.unitName;
   };
 
   root.processTx = function(tx) {

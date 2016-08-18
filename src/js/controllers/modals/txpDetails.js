@@ -108,12 +108,12 @@ angular.module('copayApp.controllers').controller('txpDetailsController', functi
   };
 
   $scope.getShortNetworkName = function() {
-    return fc.credentials.networkName.substring(0, 4);
+    return $scope.wallet.credentials.networkName.substring(0, 4);
   };
 
   function checkPaypro() {
     if (tx.payProUrl && !platformInfo.isChromeApp) {
-      fc.fetchPayPro({
+      $scope.wallet.fetchPayPro({
         payProUrl: tx.payProUrl,
       }, function(err, paypro) {
         if (err) return;
@@ -150,7 +150,7 @@ angular.module('copayApp.controllers').controller('txpDetailsController', functi
 
   lodash.each(['TxProposalRejectedBy', 'TxProposalAcceptedBy', 'transactionProposalRemoved', 'TxProposalRemoved', 'NewOutgoingTx', 'UpdateTx'], function(eventName) {
     $rootScope.$on(eventName, function() {
-      fc.getTx($scope.tx.id, function(err, tx) {
+      $scope.wallet.getTx($scope.tx.id, function(err, tx) {
         if (err) {
           if (err.message && err.message == 'TX_NOT_FOUND' &&
             (eventName == 'transactionProposalRemoved' || eventName == 'TxProposalRemoved')) {
@@ -163,7 +163,7 @@ angular.module('copayApp.controllers').controller('txpDetailsController', functi
         }
 
         var action = lodash.find(tx.actions, {
-          copayerId: fc.credentials.copayerId
+          copayerId: $scope.wallet.credentials.copayerId
         });
 
         $scope.tx = txFormatService.processTx(tx);
@@ -184,14 +184,6 @@ angular.module('copayApp.controllers').controller('txpDetailsController', functi
           cp.action = ac.type;
         }
       });
-    });
-  };
-
-  function handleEncryptedWallet(cb) {
-    if (!walletService.isEncrypted(fc)) return cb();
-    $rootScope.$emit('Local/NeedsPassword', false, function(err, password) {
-      if (err) return cb(err);
-      return cb(walletService.unlock(fc, password));
     });
   };
 
