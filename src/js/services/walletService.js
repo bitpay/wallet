@@ -1,13 +1,33 @@
 'use strict';
 
 // DO NOT INCLUDE STORAGE HERE \/ \/
-angular.module('copayApp.services').factory('walletService', function($log, $timeout, lodash, trezor, ledger, storageService, configService, rateService, uxLanguage, bwcService, $filter, gettextCatalog, bwcError) {
+angular.module('copayApp.services').factory('walletService', function($log, $timeout, lodash, trezor, ledger, storageService, configService, rateService, uxLanguage, bwcService, $filter, gettextCatalog, bwcError, $ionicPopup, fingerprintService, ongoingProcess, gettext, $rootScope, txStatus) {
   // DO NOT INCLUDE STORAGE HERE ^^
   //
   //
   // `wallet` is a decorated version of client.
 
   var root = {};
+
+
+  // UI Related
+  root.openStatusModal = function(type, txp, cb) {
+    var scope = $rootScope.$new(true);
+    scope.type = type;
+    scope.tx = txFormatService.processTx(txp);
+    scope.color = txp.color;
+    scope.cb = cb;
+
+    $ionicModal.fromTemplateUrl('views/modals/tx-status.html', {
+      scope: scope,
+      animation: 'slide-in-up'
+    }).then(function(modal) {
+      scope.txStatusModal = modal;
+      scope.txStatusModal.show();
+    });
+  };
+
+
 
 
   // // RECEIVE
@@ -108,12 +128,12 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
       self.notAuthorized = true;
       go.walletHome();
     } else if (err instanceof errors.NOT_FOUND) {
-      self.showErrorPopup(gettext('Could not access Wallet Service: Not found'));
+      root.showErrorPopup(gettext('Could not access Wallet Service: Not found'));
     } else {
       var msg = ""
-      $scope.$emit('Local/ClientError', (err.error ? err.error : err));
+      $rootScope.$emit('Local/ClientError', (err.error ? err.error : err));
       var msg = bwcError.msg(err, gettext('Error at Wallet Service'));
-      self.showErrorPopup(msg);
+      root.showErrorPopup(msg);
     }
   };
   root.handleError = lodash.debounce(_handleError, 1000);
@@ -183,6 +203,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     wallet.isValid = true;
     root.setBalance(wallet, status.balance);
     wallet.email = status.preferences.email;
+    wallet.copayers = status.wallet.copayers;
   };
 
   root.updateStatus = function(wallet, opts, cb, initStatusHash, tries) {
@@ -692,26 +713,18 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     root.updateHistory();
   }, 5000);
 
-  self.showErrorPopup = function(msg, cb) {
+  root.showErrorPopup = function(msg, cb) {
     $log.warn('Showing err popup:' + msg);
 
-    function openErrorPopup(msg, cb) {
-      $scope.msg = msg;
-
-      self.errorPopup = $ionicPopup.show({
-        templateUrl: 'views/includes/alert.html',
-        scope: $scope,
-      });
-
-      $scope.close = function() {
-        return cb();
-      };
-    }
-
-    openErrorPopup(msg, function() {
-      self.errorPopup.close();
-      if (cb) return cb();
+    // An alert dialog
+    var alertPopup = $ionicPopup.alert({
+      title: title,
+      template: msg
     });
+
+    if (!cb) cb = function() {};
+
+    alertPopup.then(cb);
   };
 
   root.recreate = function(wallet, cb) {
@@ -841,12 +854,124 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
   };
 
 
+  // An alert dialog
+  var askPassword = function(name, cb) {
+    var scope = $rootScope.$new(true);
+    scope.data = [];
+    var pass = $ionicPopup.show({
+      template: '<input type="password" ng-model="data.pass">',
+      title: 'Enter Spending Password',
+      subTitle: name,
+      scope: scope,
+      buttons: [{
+        text: 'Cancel'
+      }, {
+        text: '<b>OK</b>',
+        type: 'button-positive',
+        onTap: function(e) {
+          if (!scope.data.pass) {
+            //don't allow the user to close unless he enters wifi password
+            e.preventDefault();
+            return;
 
-  root.handleEncryptedWallet = function(client, cb) {
-    if (!root.isEncrypted(client)) return cb();
-    $rootScope.$emit('Local/NeedsPassword', false, function(err, password) {
+          }
+
+          return scope.data.pass;
+        }
+      }]
+    });
+    pass.then(function(res) {
+      console.log('Tapped!', res);
+      return cb(res);
+    });
+  };
+
+  root.handleEncryptedWallet = function(wallet, cb) {
+    if (!root.isEncrypted(wallet)) return cb();
+
+    askPassword(wallet.name, function(password) {
+      if (!password) return cb('no password');
+      return cb(root.unlock(wallet, password));
+    });
+  };
+
+  root.onlyPublish = function(wallet, txp, cb) {
+    ongoingProcess.set('sendingTx', true);
+    root.publishTx(wallet, txp, function(err, publishedTxp) {
+      ongoingProcess.set('sendingTx', false);
       if (err) return cb(err);
-      return cb(walletService.unlock(client, password));
+
+      var type = txStatus.notify(createdTxp);
+      root.openStatusModal(type, createdTxp, function() {
+        // TODO?
+        //return $scope.$emit('Local/TxProposalAction');
+      });
+
+      return cb(null, publishedTxp);
+    });
+  };
+
+  root.publishAndSign = function(wallet, txp, cb) {
+
+    var publishFn = root.publishTx;
+
+    // Already published?
+    if (txp.status == 'pending') {
+      publishFn = function(wallet, txp, cb) {
+        return cb(null, txp);
+      };
+    }
+
+    fingerprintService.check(wallet, function(err) {
+      if (err) return cb(err);
+
+      root.handleEncryptedWallet(wallet, function(err) {
+        if (err) return cb(err);
+
+        ongoingProcess.set('sendingTx', true);
+        publishFn(wallet, txp, function(err, publishedTxp) {
+          ongoingProcess.set('sendingTx', false);
+          if (err) return cb(err);
+
+          ongoingProcess.set('signingTx', true);
+          root.signTx(wallet, txp, function(err, signedTxp) {
+            ongoingProcess.set('signingTx', false);
+            root.lock(wallet);
+
+            if (err) {
+              // TODO?
+              //$scope.$emit('Local/TxProposalAction');
+              var msg =   err.message ?
+                err.message :
+                gettext('The payment was created but could not be completed. Please try again from home screen');
+              return cb(err);
+            }
+
+            if (signedTxp.status == 'accepted') {
+              ongoingProcess.set('broadcastingTx', true);
+              root.broadcastTx(wallet, signedTxp, function(err, broadcastedTxp) {
+                ongoingProcess.set('broadcastingTx', false);
+                if (err) return cb(err);
+
+                var type = txStatus.notify(broadcastedTxp);
+                root.openStatusModal(type, broadcastedTxp, function() {
+                  // TODO?
+                  //$scope.$emit('Local/TxProposalAction', broadcastedTxp.status == 'broadcasted');
+                });
+
+                return cb(null, broadcastedTxp)
+              });
+            } else {
+              var type = txStatus.notify(signedTxp);
+              root.openStatusModal(type, signedTxp, function() {
+                // TODO?
+                //$scope.$emit('Local/TxProposalAction');
+              });
+              return cb(null, signedTxp);
+            }
+          });
+        });
+      });
     });
   };
 

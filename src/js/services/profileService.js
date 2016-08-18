@@ -82,6 +82,7 @@ angular.module('copayApp.services')
       c.name = config.aliasFor[walletId] || client.credentials.walletName;
       c.color = config.colorFor[walletId] || '#4A90E2';
       c.network = client.credentials.network;
+      c.copayerId = client.credentials.copayerId;
       c.m = client.credentials.m;
       c.n = client.credentials.n;
 

@@ -8,8 +8,10 @@
     <h1 class="title ellipsis" translate>Payment Proposal</h1>
   </ion-header-bar>
 
-  <ion-content ng-style="{'background-color': '#F6F7F9'}">
-    <div class="modal-content fix-modals-touch" ng-init="updateCopayerList()">
+  <ion-content ng-style="{'background-color': '#F6F7F9'}" ng-init="updateCopayerList()">
+    <div class="list card">
+    <ul>
+    <li class="item" >
       <div class="payment-proposal-head" ng-style="{'background-color':color}">
         <div class="size-36">{{tx.amountStr}}</div>
         <div class="size-14 text-light" ng-show="tx.alternativeAmountStr">{{tx.alternativeAmountStr}}</div>
@@ -21,8 +23,9 @@
         </span>
       </div>
 
-      <div class="oh">
-        <div class="box-notification" ng-show="error">
+    </li>
+    <li class="item">
+        <div class="assertive" ng-show="error">
           <span class="text-warning size-14">{{error|translate}}</span>
         </div>
 
@@ -31,27 +34,28 @@
             The payment was removed by creator
           </div>
         </div>
+    </li>
+    <li class="item">
 
-        <div class="row p20t white" ng-if="tx.pendingForUs">
-          <div class="large-6 medium-6 small-6 columns" ng-show="isShared">
-            <button class="button outline round dark-gray expand" ng-click="reject(tx)" ng-disabled="loading">
-              <i class="fi-x"></i>
-              <span translate>Reject</span>
-            </button>
-          </div>
-          <div class="large-6 medium-6 small-6 columns text-right" ng-show="canSign">
-            <button class="button primary round expand" ng-click="sign(tx)" ng-style="{'background-color':color}" ng-disabled="loading || paymentExpired">
-              <i class="fi-check"></i>
-              <span translate>Accept</span>
-            </button>
-          </div>
+        <div class="button-bar"  ng-if="tx.pendingForUs">
+          <button class="button  button-assertive button-block" ng-click="reject()" ng-disabled="loading" ng-show="isShared">
+            <i class="fi-x"></i>
+            <span translate>Reject</span>
+          </button>
+          <button class="button button-balanced button-block" ng-click="sign()" ng-style="{'background-color':color}" ng-disabled="loading || paymentExpired" ng-show="canSign">
+            <i class="fi-check"></i>
+            <span translate>Accept</span>
+          </button>
         </div>
 
-        <div class="text-center text-gray size-12 m20t" ng-show="tx.status != 'pending'">
+    </li>
+    <li class="item">
+
+        <div ng-show="tx.status != 'pending'">
           <div ng-show="tx.status=='accepted' && !tx.isGlidera">
             <div class="m10b" translate>Payment accepted, but not yet broadcasted</div>
 
-            <button class="primary round m0" ng-style="{'background-color':color}" ng-click="broadcast(tx)" ng-disabled="loading">
+            <button class="button button-balanced button-block" ng-style="{'background-color':color}" ng-click="broadcast(tx)" ng-disabled="loading">
               <i class="fi-upload-cloud"></i>
               <span translate>Broadcast Payment</span>
             </button>
@@ -59,11 +63,11 @@
           <div ng-show="tx.status=='accepted' && tx.isGlidera" >
             <div class="m10h" translate>Payment accepted. It will be broadcasted by Glidera. In case there is a problem, it can be deleted 6 hours after it was created.</div>
           </div>
-          <div class="text-success" ng-show="tx.status == 'broadcasted'" translate>Payment Sent</div>
-          <div class="text-warning" ng-show="tx.status=='rejected'" translate>Payment Rejected</div>
+          <div class="balanced" ng-show="tx.status == 'broadcasted'" translate>Payment Sent</div>
+          <div class="assertive" ng-show="tx.status=='rejected'" translate>Payment Rejected</div>
         </div>
-      </div>
-
+    </li>
+    <li class="item">
       <h4 class="title m0" translate>Details</h4>
 
       <ul class="no-bullet size-14 m0">
@@ -105,6 +109,8 @@
       <div class="p10 text-center size-12" ng-show="!currentSpendUnconfirmed && tx.hasUnconfirmedInputs">
         <span class="text-warning" translate>Warning: this transaction has unconfirmed inputs</span>
       </div>
+    </li>
+    <li class="item">
 
       <div ng-if="tx.paypro">
         <h4 class="title m0" translate>Payment details</h4>
@@ -138,7 +144,8 @@
         </ul>
       </div>
 
-      <div ng-if="tx.actions[0] && !txRejected && !txBroadcasted">
+    </li>
+    <li class="item" ng-if="tx.actions[0] && !txRejected && !txBroadcasted">
         <h4 class="title m0">
           <div class="right size-12 text-gray m10r">
             {{tx.requiredSignatures}}/{{tx.walletN}}
@@ -157,15 +164,17 @@
         </ul>
       </div>
 
-      <div class="columns text-center m20t" ng-if="tx.canBeRemoved || (tx.status == 'accepted' && !tx.broadcastedOn)">
+    </li>
+    <li class="item" ng-if="tx.canBeRemoved || (tx.status == 'accepted' && !tx.broadcastedOn)">
         <div class="text-gray size-12 m20b" ng-show="!tx.isGlidera && isShared" translate>
           * A payment proposal can be deleted if 1) you are the creator, and no other copayer has signed, or 2) 24 hours have passed since the proposal was created.
         </div>
-        <button class="tiny round outline dark-gray warning" ng-click="remove(tx)" ng-disabled="loading">
+        <button class="button button-assertive button-block" ng-click="remove()" ng-disabled="loading">
           <i class="fi-trash size-14 m5r"></i>
           <span translate>Delete Payment Proposal</span>
         </button>
-      </div>
+    </li>
+    </ul>
     </div>
   </ion-content>
 </ion-modal-view>

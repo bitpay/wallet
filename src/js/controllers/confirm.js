@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('confirmController', function($rootScope, $scope, $filter, $timeout, $ionicScrollDelegate, walletService, platformInfo, lodash, configService, go, rateService, $stateParams, $window, $state, $log, profileService, bitcore, $ionicPopup, txStatus, ongoingProcess, fingerprintService, gettext) {
+angular.module('copayApp.controllers').controller('confirmController', function($rootScope, $scope, $filter, $timeout, $ionicScrollDelegate, walletService, platformInfo, lodash, configService, go, rateService, $stateParams, $window, $state, $log, profileService, bitcore, $ionicPopup, txStatus,  gettext) {
 
   // An alert dialog
   var showAlert = function(title, msg, cb) {
@@ -16,49 +16,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
   };
 
 
-  // An alert dialog
-  var askPassword = function(name, cb) {
-    $scope.data = [];
-    var pass = $ionicPopup.show({
-      template: '<input type="password" ng-model="data.pass">',
-      title: 'Enter Spending Password',
-      subTitle: name,
-      scope: $scope,
-      buttons: [{
-        text: 'Cancel'
-      }, {
-        text: '<b>OK</b>',
-        type: 'button-positive',
-        onTap: function(e) {
 
-console.log('[confirm.js.32]', $scope, $scope.data); //TODO
-          if (!$scope.data.pass) {
-            //don't allow the user to close unless he enters wifi password
-            e.preventDefault();
-            return;
-
-          } 
-
-          return $scope.data.pass; 
-        }
-      }]
-    });
-    pass.then(function(res) {
-      console.log('Tapped!', res);
-      return cb(res);
-    });  
-  };
-
-
-
-  var handleEncryptedWallet = function(wallet, cb) {
-    if (!walletService.isEncrypted(wallet)) return cb();
-
-    askPassword(wallet.name, function(password) {
-      if (!password) return cb('no password');
-      return cb(walletService.unlock(wallet, password));
-    });
-  };
 
   var unitToSatoshi;
   var satToUnit;
@@ -118,6 +76,7 @@ console.log('[confirm.js.32]', $scope, $scope.data); //TODO
   };
 
   var createTx = function(toAddress, toAmount, comment) {
+console.log('[confirm.js.78:toAddress:]',toAddress); //TODO
     //
     var currentSpendUnconfirmed = config.spendUnconfirmed;
 
@@ -146,37 +105,39 @@ console.log('[confirm.js.32]', $scope, $scope.data); //TODO
       return setSendError(gettext(msg));
     };
 
-    $timeout(function() {
       outputs.push({
         'toAddress': toAddress,
         'amount': toAmount,
         'message': comment
       });
 
-      var txp = {};
+    var txp = {};
 
-      // TODO
-      if (!lodash.isEmpty($scope.sendMaxInfo)) {
-        txp.sendMax = true;
-        txp.inputs = $scope.sendMaxInfo.inputs;
-        txp.fee = $scope.sendMaxInfo.fee;
+    // TODO
+    if (!lodash.isEmpty($scope.sendMaxInfo)) {
+      txp.sendMax = true;
+      txp.inputs = $scope.sendMaxInfo.inputs;
+      txp.fee = $scope.sendMaxInfo.fee;
+    }
+
+    txp.outputs = outputs;
+    txp.message = comment;
+    txp.payProUrl = paypro ? paypro.url : null;
+    txp.excludeUnconfirmedUtxos = config.spendUnconfirmed ? false : true;
+    txp.feeLevel = config.feeLevel || 'normal';
+
+
+console.log('[confirm.js.129]'); //TODO
+    walletService.createTx(wallet, txp, function(err, createdTxp) {
+
+console.log('[confirm.js.132]', err); //TODO
+      if (err) {
+        return setSendError(err);
       }
 
-      txp.outputs = outputs;
-      txp.message = comment;
-      txp.payProUrl = paypro ? paypro.url : null;
-      txp.excludeUnconfirmedUtxos = config.spendUnconfirmed ? false : true;
-      txp.feeLevel = config.feeLevel || 'normal';
-
-
-      walletService.createTx(wallet, txp, function(err, createdTxp) {
-        if (err) {
-          return setSendError(err);
-        }
-
-        $scope.fee = ((createdTxp.fee) * satToUnit).toFixed(unitDecimals);
-        $scope.txp = createdTxp;
-      });
+      $scope.fee = ((createdTxp.fee) * satToUnit).toFixed(unitDecimals);
+      $scope.txp = createdTxp;
+      $scope.$apply();
     });
   };
 
@@ -196,76 +157,16 @@ console.log('[confirm.js.32]', $scope, $scope.data); //TODO
 
     if (!wallet.canSign() && !wallet.isPrivKeyExternal()) {
       $log.info('No signing proposal: No private key');
-      ongoingProcess.set('sendingTx', true);
-      walletService.publishTx(wallet, txp, function(err, publishedTxp) {
-        ongoingProcess.set('sendingTx', false);
-        if (err) {
-          return setSendError(err);
-        }
 
-        $state.transitionTo('tab.home');
-
-        var type = txStatus.notify(createdTxp);
-        $scope.openStatusModal(type, createdTxp, function() {
-          return $scope.$emit('Local/TxProposalAction');
-        });
+      return walletService.onlyPublish(wallet,txp, function(err, txp){
+        if (err) return setSendError(err);
+        $state.transitionTo('tabs.home');
       });
-      return;
     }
 
-    fingerprintService.check(wallet, function(err) {
-      if (err) {
-        return setSendError(err);
-      }
-
-      handleEncryptedWallet(wallet, function(err) {
-        if (err) {
-          return setSendError(err);
-        }
-
-        ongoingProcess.set('sendingTx', true);
-        walletService.publishTx(wallet, txp, function(err, publishedTxp) {
-          ongoingProcess.set('sendingTx', false);
-          if (err) {
-            return setSendError(err);
-          }
-
-          ongoingProcess.set('signingTx', true);
-          walletService.signTx(wallet, txp, function(err, signedTxp) {
-            ongoingProcess.set('signingTx', false);
-            walletService.lock(wallet);
-            if (err) {
-              $scope.$emit('Local/TxProposalAction');
-              return setSendError(
-                err.message ?
-                err.message :
-                gettext('The payment was created but could not be completed. Please try again from home screen'));
-            }
-
-            if (signedTxp.status == 'accepted') {
-              ongoingProcess.set('broadcastingTx', true);
-              walletService.broadcastTx(wallet, signedTxp, function(err, broadcastedTxp) {
-                ongoingProcess.set('broadcastingTx', false);
-                if (err) {
-                  return setSendError(err);
-                }
-
-                $state.transitionTo('tabs.send');
-                var type = txStatus.notify(broadcastedTxp);
-                $scope.openStatusModal(type, broadcastedTxp, function() {
-                  $scope.$emit('Local/TxProposalAction', broadcastedTxp.status == 'broadcasted');
-                });
-              });
-            } else {
-              $state.transitionTo('tabs.send');
-              var type = txStatus.notify(signedTxp);
-              $scope.openStatusModal(type, signedTxp, function() {
-                $scope.$emit('Local/TxProposalAction');
-              });
-            }
-          });
-        });
-      });
+    walletService.publishAndSign(wallet, txp, function(err, txp) {
+        if (err) return setSendError(err);
+        $state.transitionTo('tabs.home');
     });
   };
 
