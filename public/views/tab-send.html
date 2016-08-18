@@ -1,4 +1,4 @@
-<ion-view   cache-view="false">
+<ion-view cache-view="false">
 
   <ion-nav-bar class="bar-stable">
     <ion-nav-title>Send</ion-nav-title>
@@ -7,25 +7,33 @@
 
 
   <ion-content class="send" ng-controller="tabSendController" ng-init="init()">
-    <h2>Recipient</h2>
 
+    <div class="padding">
+      <h2>Recipient</h2>
 
-    <label class="item item-input">
-      <i class="icon ion-search placeholder-icon"></i>
-      <input type="text" placeholder="Search" ng-model="search" ng-change="findContact()">
-    </label>
+      <label class="item item-input">
+        <i class="icon ion-search placeholder-icon"></i>
+        <input type="text" placeholder="Search" ng-model="search" ng-model-onblur ng-change="findContact(search)">
+      </label>
+    </div>
 
-    <h3>Contacts & Wallets</h3>
+    <div class="row">
+      <div class="col col-80">
+        <h3>Contacts & Wallets</h3>
+      </div>
+      <div class="col col-20 text-right">
+        <a class="button button-light" ng-click="openAddressbookModal(list)">
+          <i class="size-36 icon ion-person-add"></i>
+        </a>
+      </div>
+    </div>
 
     <div class="list card">
-      <ul class="pr">
-        <li class="item item-icon-left" ng-repeat="item in list" ng-click="goToAmount(item)">
-
-          <i ng-show="item.isWallet" class="icon ion-briefcase size-21" ng-style="{'color':item.color}"></i>
-          <i ng-show="!item.isWallet" class="icon ion-ios-person-outline"></i>
-          {{item.label}}
-        </li>
-      </ul>
+      <a class="item item-icon-left" ng-repeat="item in list" ng-click="goToAmount(item)">
+        <i ng-show="item.isWallet" class="icon ion-briefcase size-21" ng-style="{'color':item.color}"></i>
+        <i ng-show="!item.isWallet" class="icon ion-ios-person-outline"></i>
+        {{item.label}}
+      </a>
     </div>
   </ion-content>
 </ion-view>
