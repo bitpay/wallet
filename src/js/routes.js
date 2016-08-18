@@ -96,79 +96,94 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
       .state('wallet', {
         url: '/wallet/{walletId}',
         abstract: true,
+        cache: false,
         needProfile: true,
         views: {
           'main': {
-            template: '<ui-view/>',
+            template: '<ion-nav-view/>',
           },
         },
       })
       .state('wallet.details', {
+        cache: false,
         url: '/details',
         templateUrl: 'views/walletDetails.html',
         needProfile: true
       })
       .state('wallet.preferences', {
+        cache: false,
         url: '/preferences',
         templateUrl: 'views/preferences.html',
         needProfile: true
       })
       .state('wallet.preferencesAlias', {
+        cache: false,
         url: '/preferencesAlias',
         templateUrl: 'views/preferencesAlias.html',
         needProfile: true
       })
       .state('wallet.preferencesColor', {
+        cache: false,
         url: '/preferencesColor',
         templateUrl: 'views/preferencesColor.html',
         needProfile: true
       })
       .state('wallet.preferencesEmail', {
+        cache: false,
         url: '/preferencesEmail',
         templateUrl: 'views/preferencesEmail.html',
         needProfile: true
       })
       .state('wallet.backup', {
+        cache: false,
         url: '/backup',
         templateUrl: 'views/backup.html',
         needProfile: true
       })
       .state('wallet.preferencesAdvanced', {
+        cache: false,
         url: '/preferencesAdvanced',
         templateUrl: 'views/preferencesAdvanced.html',
         needProfile: true
       })
       .state('wallet.information', {
+        cache: false,
         url: '/information',
         templateUrl: 'views/preferencesInformation.html',
         needProfile: true
       })
       .state('wallet.export', {
+        cache: false,
         url: '/export',
         templateUrl: 'views/export.html',
         needProfile: true
       })
       .state('wallet.preferencesBwsUrl', {
+        cache: false,
         url: '/preferencesBwsUrl',
         templateUrl: 'views/preferencesBwsUrl.html',
         needProfile: true
       })
       .state('wallet.preferencesHistory', {
+        cache: false,
         url: '/preferencesHistory',
         templateUrl: 'views/preferencesHistory.html',
         needProfile: true
       })
       .state('wallet.deleteWords', {
+        cache: false,
         url: '/deleteWords',
         templateUrl: 'views/preferencesDeleteWords.html',
         needProfile: true
       })
       .state('wallet.delete', {
+        cache: false,
         url: '/delete',
         templateUrl: 'views/preferencesDeleteWallet.html',
         needProfile: true
       })
       .state('wallet.copayers', {
+        cache: false,
         url: '/copayers',
         needProfile: true,
         cache: false,
