@@ -92,7 +92,7 @@ angular.module('copayApp.controllers').controller('copayersController',
   }
 
   var wallet = profileService.getWallet($stateParams.walletId);
-  var secret = wallet.status.wallet.secret;
+  var secret;
   try {
     secret = wallet.status.wallet.secret;
   } catch (e) {};

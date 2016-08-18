@@ -32,8 +32,8 @@ angular.module('copayApp.services').factory('go', function($window, $ionicSideMe
   root.walletHome = function() {
     var fc = profileService.focusedClient;
     if (fc && !fc.isComplete()) {
-      $log.debug("Wallet not complete at startup... redirecting")
-      root.path('copayers');
+      $log.debug("Wallet not complete at startup... redirecting");
+      $state.transitionTo('wallet.details', {walletId: fc.credentials.walletId})
     } else {
       root.path('tabs.home');
     }
