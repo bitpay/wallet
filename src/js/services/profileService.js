@@ -539,7 +539,7 @@ angular.module('copayApp.services')
             var config = configService.getSync();
             if (config.pushNotifications.enabled)
               pushNotificationsService.enableNotifications(root.wallet);
-            return cb(err, walletClient);
+            return cb(err, client);
           });
         });
       });
