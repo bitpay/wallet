@@ -12,12 +12,6 @@
       <div class="item item-divider">
         Wallet Information
       </div>
-      <div class="item">
-        <span translate>BETA: Android Key Derivation Test:</span>
-        <span class="item-note">
-          {{androidTest}}
-        </span>
-      </div>
       <div class="item" ng-click="saveBlack()">
         <span translate>Wallet Name (at creation)</span>
         <span class="item-note">
@@ -54,22 +48,22 @@
           {{derivationStrategy}}
         </span>
       </div>
-      <div class="item" ng-show="index.externalSource">
+      <div class="item" ng-show="wallet.isPrivKeyExternal()">
         <span translate>Hardware Wallet</span>
         <span class="item-note">
-        {{index.externalSource}}
+        {{wallet.getPrivKeyExternalSourceName()}}
         </span>
       </div>
-      <div class="item" ng-show="!index.externalSource && !index.canSign">
+      <div class="item" ng-show="!wallet.isPrivKeyExternal() && !wallet.canSign()">
         <span translate></span>
         <span class="item-note">
           No private key
         </span>
       </div>
-      <div class="item" ng-show="index.account">
+      <div class="item" ng-show="wallet.credentials.account">
         <span translate>Account</span>({{derivationStrategy}})
         <span class="item-note">
-          #{{index.account}}
+          #{{wallet.credentials.account}}
         </span>
       </div>
 
@@ -77,9 +71,9 @@
         Copayers
       </div>
 
-      <div class="item item-icon-right" ng-repeat="copayer in index.copayers">
-        <span ng-show="copayer.id == index.copayerId" translate>{{copayer.name}} ({{'Me'|translate}})</span>
-        <span ng-style="{'color': 'grey';}" ng-show="copayer.id != index.copayerId" translate>{{copayer.name}}</span>
+      <div class="item item-icon-right" ng-repeat="copayer in wallet.copayers">
+        <span ng-show="copayer.id == wallet.copayerId" translate>{{copayer.name}} ({{'Me'|translate}})</span>
+        <span ng-style="{'color': 'grey';}" ng-show="copayer.id != wallet.copayerId" translate>{{copayer.name}}</span>
         <i class="icon ion-ios-checkmark-outline"></i>
       </div>
 
@@ -110,21 +104,18 @@
         <div translate>
           Only Main (not change) addresses are shown. The addresses on this list were not verified locally at this time.
         </div>
-        <ul class="no-bullet m0">
-          <li ng-style="{'color':index.backgroundColor}" href ui-sref="walletHome" ng-click="index.retryScan()" translate>
+        <button class="button button-block" ng-style="{'color':wallet.color}" href ui-sref="walletHome" ng-click="index.retryScan()" translate>
             Scan addresses for funds
-          </li>
-          <li ng-style="{'color':index.backgroundColor}" ng-show="index.isCordova" ng-click="sendAddrs()" translate>
+          </button>
+        <button class="button button-block" ng-style="{'color':wallet.color}" ng-show="isCordova" ng-click="sendAddrs()" translate>
             Send addresses by email
-          </li>
-        </ul>
-      </div>
+          </button>
 
-      <div ng-show="index.balanceByAddress" ng-if="index.balanceByAddress[0]">
+      <div ng-show="wallet.balanceByAddress" ng-if="wallet.balanceByAddress[0]">
         <div class="item item-divider">
           Balance By Address
         </div>
-        <div class="item" ng-repeat="a in index.balanceByAddress" ng-click="copyToClipboard(a.address)">
+        <div class="item" ng-repeat="a in wallet.balanceByAddress" ng-click="copyToClipboard(a.address)">
           <span>{{a.address}}</span>
           <span class="item-note">
             {{(a.amount/1e8).toFixed(8)}} BTC

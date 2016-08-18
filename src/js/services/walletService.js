@@ -818,7 +818,6 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
       }]
     });
     pass.then(function(res) {
-      console.log('Tapped!', res);
       return cb(res);
     });
   };
@@ -911,7 +910,47 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
       });
     });
   };
+  root.getEncodedWalletInfo = function(wallet,cb){
 
+    var getCode = function() {
+        var derivationPath = wallet.credentials.getBaseAddressDerivationPath();
+        var encodingType = {
+          mnemonic: 1,
+          xpriv: 2,
+          xpub: 3
+        };
+        var info;
+
+        // not supported yet
+        if (wallet.credentials.derivationStrategy != 'BIP44' || !wallet.canSign())
+          return null;
+
+        if (wallet.mnemonic) {
+          info = {
+            type: encodingType.mnemonic,
+            data: wallet.mnemonic,
+          }
+        } else {
+          info = {
+            type: encodingType.xpriv,
+            data: wallet.xPrivKey
+          }
+        }
+        return info.type + '|' + info.data + '|' + wallet.credentials.network.toLowerCase() + '|' + derivationPath + '|' + (wallet.credentials.mnemonicHasPassphrase);
+    };
+
+    fingerprintService.check(wallet, function(err) {
+      if (err) return cb(err);
+
+      root.handleEncryptedWallet(wallet, function(err) {
+        if (err) return cb(err);
+
+        var code = getCode();
+console.log('[walletService.js.948:code:]',code); //TODO
+        return cb(null, code);
+      });
+    });
+  };
 
   return root;
 });
