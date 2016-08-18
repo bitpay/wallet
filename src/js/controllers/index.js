@@ -1061,6 +1061,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   });
 
   $rootScope.$on('Local/WalletImported', function(event, walletId) {
+console.log('[index.js:1063] walletImported'); //TODO
+    return;
     self.needsBackup = false;
     storageService.setBackupFlag(walletId, function() {
       $log.debug('Backup done stored');
@@ -1322,6 +1324,8 @@ return;
 
   lodash.each(['NewCopayer', 'CopayerUpdated'], function(eventName) {
     $rootScope.$on(eventName, function() {
+console.log('[index.js:1324] NewCopayer, CopayerUpdated'); //TODO
+      return;
       // Re try to open wallet (will triggers)
       self.setFocusedWallet();
     });

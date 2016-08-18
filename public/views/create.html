@@ -1,9 +1,11 @@
-<ion-view view-title="Create new wallet" ng-controller="createController as create" ng-init="create.setTotalCopayers(1)">
-  <ion-nav-buttons side="primary">
-    <a href ui-sref="add" class="button icon-left ion-chevron-left button-clear button-dark">Add</a>
-  </ion-nav-buttons>
+<ion-view view-title="Create new wallet">
+  <ion-nav-bar class="bar-stable">
+    <ion-nav-buttons side="primary">
+      <a href ui-sref="add" class="button icon-left ion-chevron-left button-clear button-dark">Add</a>
+    </ion-nav-buttons>
+  </ion-nav-bar>
 
-  <ion-content>
+  <ion-content ng-controller="createController as create" ng-init="create.setTotalCopayers(1)">
 
     <div class="row" ng-hide="create.hideTabs">
       <div class="col">

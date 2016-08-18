@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('importController',
-  function($scope, $rootScope, $timeout, $log, profileService, configService, notification, go, sjcl, gettext, ledger, trezor, derivationPathHelper, platformInfo, bwcService, ongoingProcess) {
+  function($scope, $rootScope, $timeout, $log, profileService, configService, notification, go, sjcl, gettext, ledger, trezor, derivationPathHelper, platformInfo, bwcService, ongoingProcess, walletService) {
 
     var isChromeApp = platformInfo.isChromeApp;
     var isDevel = platformInfo.isDevel;
@@ -95,7 +95,7 @@ angular.module('copayApp.controllers').controller('importController',
       opts.password = null;
 
       $timeout(function() {
-        profileService.importWallet(str2, opts, function(err, wallet) {
+        profileService.importWallet(str2, opts, function(err, client) {
           ongoingProcess.set('importingWallet', false);
           if (err) {
             $scope.error = err;
@@ -103,11 +103,11 @@ angular.module('copayApp.controllers').controller('importController',
 
           }
 
-          walletService.updateRemotePreferences(wallet, {}, function() {
-            $log.debug('Remote preferences saved for:' + wallet.walletId)
+          walletService.updateRemotePreferences(client, {}, function() {
+            $log.debug('Remote preferences saved for:' + client.credentials.walletId)
           });
 
-          $rootScope.$emit('Local/WalletImported', wallet.walletId);
+          $rootScope.$emit('Local/WalletImported', client.credentials.walletId);
           notification.success(gettext('Success'), gettext('Your wallet has been imported correctly'));
           go.walletHome();
         });
@@ -117,7 +117,7 @@ angular.module('copayApp.controllers').controller('importController',
     var _importExtendedPrivateKey = function(xPrivKey, opts) {
       ongoingProcess.set('importingWallet', true);
       $timeout(function() {
-        profileService.importExtendedPrivateKey(xPrivKey, opts, function(err, wallet) {
+        profileService.importExtendedPrivateKey(xPrivKey, opts, function(err, client) {
           ongoingProcess.set('importingWallet', false);
           if (err) {
             if (err instanceof errors.NOT_AUTHORIZED) {
@@ -131,11 +131,11 @@ angular.module('copayApp.controllers').controller('importController',
           }
 
 
-          walletService.updateRemotePreferences(wallet, {}, function() {
-            $log.debug('Remote preferences saved for:' + wallet.walletId)
+          walletService.updateRemotePreferences(client, {}, function() {
+            $log.debug('Remote preferences saved for:' + client.credentials.walletId)
           });
 
-          $rootScope.$emit('Local/WalletImported', wallet.walletId);
+          $rootScope.$emit('Local/WalletImported', client.credentials.walletId);
           notification.success(gettext('Success'), gettext('Your wallet has been imported correctly'));
           go.walletHome();
         });
@@ -168,7 +168,7 @@ angular.module('copayApp.controllers').controller('importController',
       ongoingProcess.set('importingWallet', true);
 
       $timeout(function() {
-        profileService.importMnemonic(words, opts, function(err, wallet) {
+        profileService.importMnemonic(words, opts, function(err, client) {
           ongoingProcess.set('importingWallet', false);
 
           if (err) {
@@ -182,11 +182,11 @@ angular.module('copayApp.controllers').controller('importController',
             });
           }
 
-          walletService.updateRemotePreferences(wallet, {}, function() {
-            $log.debug('Remote preferences saved for:' + wallet.walletId)
+          walletService.updateRemotePreferences(client, {}, function() {
+            $log.debug('Remote preferences saved for:' + client.credentials.walletId)
           });
 
-          $rootScope.$emit('Local/WalletImported', wallet.walletId);
+          $rootScope.$emit('Local/WalletImported', client.credentials.walletId);
           notification.success(gettext('Success'), gettext('Your wallet has been imported correctly'));
           go.walletHome();
         });

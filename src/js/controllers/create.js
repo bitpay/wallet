@@ -166,7 +166,7 @@ angular.module('copayApp.controllers').controller('createController',
       ongoingProcess.set('creatingWallet', true);
       $timeout(function() {
 
-        profileService.createWallet(opts, function(err, wallet) {
+        profileService.createWallet(opts, function(err, client) {
           ongoingProcess.set('creatingWallet', false);
           if (err) {
             $log.warn(err);
@@ -177,8 +177,8 @@ angular.module('copayApp.controllers').controller('createController',
             return;
           }
 
-          walletService.updateRemotePreferences(wallet, {}, function() {
-            $log.debug('Remote preferences saved for:' + wallet.walletId)
+          walletService.updateRemotePreferences(client, {}, function() {
+            $log.debug('Remote preferences saved for:' + client.credentials.walletId)
           });
 
 
