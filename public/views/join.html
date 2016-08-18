@@ -1,12 +1,12 @@
-<ion-view view-title="Join shared wallet" ng-controller="joinController as join">
-  <ion-nav-buttons side="primary">
-    <a href ui-sref="add" class="button icon-left ion-chevron-left button-clear button-dark">Add</a>
-  </ion-nav-buttons>
-  <ion-nav-buttons side="secondary">
-    <qr-scanner class="button button-clear button-positive" on-scan="join.onQrCodeScanned(data)"></qr-scanner>
-  </ion-nav-buttons>
+<ion-view view-title="Join shared wallet">
+  <ion-nav-bar class="bar-stable">
+    <ion-nav-buttons side="primary">
+      <a href ui-sref="add" class="button icon-left ion-chevron-left button-clear button-dark">Add</a>
+    </ion-nav-buttons>
+  </ion-nav-bar>
 
-  <ion-content>
+
+  <ion-content ng-controller="joinController as join">
 
     <div class="padding assertive" ng-show="join.error">
       {{join.error|translate}}
@@ -25,6 +25,7 @@
                  ng-required="true">
         </label>
 
+        <qr-scanner class="button button-clear button-positive" on-scan="join.onQrCodeScanned(data)"></qr-scanner>
         <label class="item item-input item-stacked-label">
           <span class="input-label">
             Wallet Invitation
