@@ -976,6 +976,11 @@ input[type=file] {
   text-align: left;
 }
 
+.input-label {
+  max-width: none;
+  width: inherit;
+}
+
 /*
  * Calculator
  */
