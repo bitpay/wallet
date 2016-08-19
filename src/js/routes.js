@@ -13,8 +13,11 @@ if (window && window.navigator) {
 }
 
 //Setting up route
-angular.module('copayApp').config(function(historicLogProvider, $provide, $logProvider, $stateProvider, $urlRouterProvider, $compileProvider) {
-    $urlRouterProvider.otherwise('/tabs.home');
+angular.module('copayApp').config(function(historicLogProvider, $provide, $logProvider, $stateProvider, $urlRouterProvider, $compileProvider, $ionicConfigProvider) {
+    $urlRouterProvider.otherwise('/tabs/home');
+
+    // NO CACHE
+    $ionicConfigProvider.views.maxCache(0);
 
     $logProvider.debugEnabled(true);
     $provide.decorator('$log', ['$delegate', 'platformInfo',
@@ -75,220 +78,30 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
     $compileProvider.imgSrcSanitizationWhitelist(/^\s*((https?|ftp|file|blob|chrome-extension):|data:image\/)/);
 
     $stateProvider
-      .state('translators', {
-        url: '/translators',
-        needProfile: true,
-        views: {
-          'main': {
-            templateUrl: 'views/translators.html'
-          }
-        }
-      })
+
+      /*
+       *
+       * Other pages
+       *
+       */
+
       .state('disclaimer', {
         url: '/disclaimer',
-        needProfile: false,
-        views: {
-          'main': {
-            templateUrl: 'views/disclaimer.html',
-          }
-        }
-      })
-      .state('wallet', {
-        url: '/wallet/{walletId}',
-        abstract: true,
-        cache: false,
-        needProfile: true,
-        views: {
-          'main': {
-            template: '<ion-nav-view/>',
-          },
-        },
-      })
-      .state('wallet.details', {
-        cache: false,
-        url: '/details',
-        templateUrl: 'views/walletDetails.html',
-        needProfile: true
-      })
-      .state('wallet.preferences', {
-        cache: false,
-        url: '/preferences',
-        templateUrl: 'views/preferences.html',
-        needProfile: true
-      })
-      .state('wallet.preferencesAlias', {
-        cache: false,
-        url: '/preferencesAlias',
-        templateUrl: 'views/preferencesAlias.html',
-        needProfile: true
-      })
-      .state('wallet.preferencesColor', {
-        cache: false,
-        url: '/preferencesColor',
-        templateUrl: 'views/preferencesColor.html',
-        needProfile: true
-      })
-      .state('wallet.preferencesEmail', {
-        cache: false,
-        url: '/preferencesEmail',
-        templateUrl: 'views/preferencesEmail.html',
-        needProfile: true
-      })
-      .state('wallet.backup', {
-        cache: false,
-        url: '/backup',
-        templateUrl: 'views/backup.html',
-        needProfile: true
-      })
-      .state('wallet.preferencesAdvanced', {
-        cache: false,
-        url: '/preferencesAdvanced',
-        templateUrl: 'views/preferencesAdvanced.html',
-        needProfile: true
-      })
-      .state('wallet.information', {
-        cache: false,
-        url: '/information',
-        templateUrl: 'views/preferencesInformation.html',
-        needProfile: true
-      })
-      .state('wallet.export', {
-        cache: false,
-        url: '/export',
-        templateUrl: 'views/export.html',
-        needProfile: true
-      })
-      .state('wallet.preferencesBwsUrl', {
-        cache: false,
-        url: '/preferencesBwsUrl',
-        templateUrl: 'views/preferencesBwsUrl.html',
-        needProfile: true
-      })
-      .state('wallet.preferencesHistory', {
-        cache: false,
-        url: '/preferencesHistory',
-        templateUrl: 'views/preferencesHistory.html',
-        needProfile: true
-      })
-      .state('wallet.deleteWords', {
-        cache: false,
-        url: '/deleteWords',
-        templateUrl: 'views/preferencesDeleteWords.html',
-        needProfile: true
-      })
-      .state('wallet.delete', {
-        cache: false,
-        url: '/delete',
-        templateUrl: 'views/preferencesDeleteWallet.html',
-        needProfile: true
-      })
-      .state('wallet.copayers', {
-        cache: false,
-        url: '/copayers',
-        needProfile: true,
-        cache: false,
-        templateUrl: 'views/copayers.html'
+        templateUrl: 'views/disclaimer.html',
       })
 
-    // OLD
-    // .state('walletHome', {
-    //   url: '/old',
-    //   needProfile: true,
-    //   views: {
-    //     'main': {
-    //       templateUrl: 'views/walletHome.html',
-    //     },
-    //   }
-    // })
-    .state('tabs', {
-        url: '/tabs',
-        cache: false,
-        needProfile: true,
-        abstract: true,
-        views: {
-          'main': {
-            templateUrl: 'views/tabs.html',
-          },
-        }
-      })
-      .state('tabs.home', {
-        url: '/home',
-        cache: false,
-        needProfile: true,
-        views: {
-          'tab-home': {
-            templateUrl: 'views/tab-home.html',
-          },
-        }
-      })
-      .state('tabs.receive', {
-        url: '/receive',
-        cache: false,
-        needProfile: true,
-        views: {
-          'tab-receive': {
-            templateUrl: 'views/tab-receive.html',
-          },
-        }
-      })
-      .state('tabs.scan', {
-        url: '/scan',
-        needProfile: true,
-        views: {
-          'tab-scan': {
-            templateUrl: 'views/tab-scan.html',
-          },
-        }
-      })
-      .state('tabs.send', {
-        url: '/send',
-        cache: false,
-        needProfile: true,
-        views: {
-          'tab-send': {
-            templateUrl: 'views/tab-send.html',
-          },
-        }
-      })
-      .state('tabs.settings', {
-        url: '/settings',
-        needProfile: true,
-        views: {
-          'tab-settings': {
-            templateUrl: 'views/tab-settings.html',
-          },
-        }
-      })
-      .state('amount', {
-        cache: false,
-        url: '/amount:/:toAddress/:toName',
-        needProfile: true,
-        views: {
-          'main': {
-            templateUrl: 'views/amount.html',
-          },
-        },
-      })
-      .state('confirm', {
-        cache: false,
-        url: '/confirm/:toAddress/:toName/:toAmount',
-        needProfile: true,
-        views: {
-          'main': {
-            templateUrl: 'views/confirm.html',
-          },
-        },
-      })
-
-    .state('unsupported', {
+      .state('unsupported', {
         url: '/unsupported',
-        needProfile: false,
-        views: {
-          'main': {
-            templateUrl: 'views/unsupported.html'
-          }
-        }
+        templateUrl: 'views/unsupported.html'
       })
+
+
+      /*
+       *
+       * URI
+       *
+       */
+
       .state('uri', {
         url: '/uri/:url',
         needProfile: true,
@@ -308,266 +121,237 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         },
         needProfile: true
       })
-      .state('join', {
-        url: '/join',
-        needProfile: true,
-        views: {
-          'main': {
-            templateUrl: 'views/join.html'
-          },
-        }
+
+
+      /*
+       *
+       * Wallet
+       *
+       */
+
+      .state('wallet', {
+        url: '/wallet/{walletId}',
+        abstract: true,
+        template: '<ion-nav-view name="wallet"></ion-nav-view>'
       })
-      .state('import', {
-        url: '/import',
-        needProfile: true,
+      .state('wallet.details', {
+        url: '/details',
         views: {
-          'main': {
-            templateUrl: 'views/import.html'
-          },
-        }
-      })
-      .state('create', {
-        url: '/create',
-        templateUrl: 'views/create.html',
-        needProfile: true,
-        views: {
-          'main': {
-            templateUrl: 'views/create.html'
-          },
-        }
-      })
-      .state('preferencesLanguage', {
-        url: '/preferencesLanguage',
-        needProfile: true,
-        views: {
-          'main': {
-            templateUrl: 'views/preferencesLanguage.html'
-          },
-        }
-      })
-      .state('preferencesUnit', {
-        url: '/preferencesUnit',
-        templateUrl: 'views/preferencesUnit.html',
-        needProfile: true,
-        views: {
-          'main': {
-            templateUrl: 'views/preferencesUnit.html'
-          },
-        }
-      })
-      .state('preferencesFee', {
-        url: '/preferencesFee',
-        templateUrl: 'views/preferencesFee.html',
-        needProfile: true,
-        views: {
-          'main': {
-            templateUrl: 'views/preferencesFee.html'
-          },
-        }
-      })
-      .state('uriglidera', {
-        url: '/uri-glidera/:url',
-        needProfile: true,
-        views: {
-          'main': {
-            templateUrl: 'views/glideraUri.html'
-          },
-        }
-      })
-      .state('glidera', {
-        url: '/glidera',
-        needProfile: true,
-        views: {
-          'main': {
-            templateUrl: 'views/glidera.html'
-          },
-        }
-      })
-      .state('buyGlidera', {
-        url: '/buy',
-        needProfile: true,
-        views: {
-          'main': {
-            templateUrl: 'views/buyGlidera.html'
-          },
-        }
-      })
-      .state('sellGlidera', {
-        url: '/sell',
-        needProfile: true,
-        views: {
-          'main': {
-            templateUrl: 'views/sellGlidera.html'
-          },
-        }
-      })
-      .state('preferencesGlidera', {
-        url: '/preferencesGlidera',
-        needProfile: true,
-        views: {
-          'main': {
-            templateUrl: 'views/preferencesGlidera.html'
-          },
-        }
-      })
-      .state('bitpayCard', {
-        url: '/bitpay-card',
-        needProfile: true,
-        views: {
-          'main': {
-            templateUrl: 'views/bitpayCard.html'
-          },
-        }
-      })
-      .state('preferencesBitpayCard', {
-        url: '/preferences-bitpay-card',
-        needProfile: true,
-        views: {
-          'main': {
-            templateUrl: 'views/preferencesBitpayCard.html'
-          },
-        }
-      })
-      .state('coinbase', {
-        url: '/coinbase',
-        needProfile: true,
-        views: {
-          'main': {
-            templateUrl: 'views/coinbase.html'
-          },
-        }
-      })
-      .state('preferencesCoinbase', {
-        url: '/preferencesCoinbase',
-        needProfile: true,
-        views: {
-          'main': {
-            templateUrl: 'views/preferencesCoinbase.html'
-          },
-        }
-      })
-      .state('uricoinbase', {
-        url: '/uri-coinbase/:url',
-        needProfile: true,
-        views: {
-          'main': {
-            templateUrl: 'views/coinbaseUri.html'
-          },
-        }
-      })
-      .state('buyCoinbase', {
-        url: '/buycoinbase',
-        needProfile: true,
-        views: {
-          'main': {
-            templateUrl: 'views/buyCoinbase.html'
-          },
-        }
-      })
-      .state('sellCoinbase', {
-        url: '/sellcoinbase',
-        needProfile: true,
-        views: {
-          'main': {
-            templateUrl: 'views/sellCoinbase.html'
-          },
-        }
-      })
-      .state('buyandsell', {
-        url: '/buyandsell',
-        needProfile: true,
-        views: {
-          'main': {
-            templateUrl: 'views/buyAndSell.html',
-            controller: function(platformInfo) {
-              if (platformInfo.isCordova && StatusBar.isVisible) {
-                StatusBar.backgroundColorByHexString("#4B6178");
-              }
-            }
+          'wallet': {
+            templateUrl: 'views/walletDetails.html'
           }
         }
       })
-      .state('amazon', {
-        url: '/amazon',
-        needProfile: true,
+      .state('wallet.preferences', {
+        url: '/preferences',
         views: {
-          'main': {
-            templateUrl: 'views/amazon.html'
-          },
+          'wallet': {
+            templateUrl: 'views/preferences.html'
+          }
         }
       })
-      .state('buyAmazon', {
-        url: '/buyamazon',
-        needProfile: true,
+      .state('wallet.preferencesAlias', {
+        url: '/preferencesAlias',
         views: {
-          'main': {
-            templateUrl: 'views/buyAmazon.html'
-          },
+          'wallet': {
+            templateUrl: 'views/preferencesAlias.html'
+          }
         }
       })
-      .state('preferencesAltCurrency', {
-        url: '/preferencesAltCurrency',
-        templateUrl: 'views/preferencesAltCurrency.html',
-        needProfile: true,
+      .state('wallet.preferencesColor', {
+        url: '/preferencesColor',
         views: {
-          'main': {
-            templateUrl: 'views/preferencesAltCurrency.html'
-          },
+          'wallet': {
+            templateUrl: 'views/preferencesColor.html'
+          }
         }
       })
-      .state('about', {
-        url: '/about',
-        templateUrl: 'views/preferencesAbout.html',
-        needProfile: true,
+      .state('wallet.preferencesEmail', {
+        url: '/preferencesEmail',
         views: {
-          'main': {
-            templateUrl: 'views/preferencesAbout.html'
-          },
+          'wallet': {
+            templateUrl: 'views/preferencesEmail.html'
+          }
         }
       })
-      .state('logs', {
-        url: '/logs',
-        templateUrl: 'views/preferencesLogs.html',
-        needProfile: true,
+      .state('wallet.backup', {
+        url: '/backup',
         views: {
-          'main': {
-            templateUrl: 'views/preferencesLogs.html'
-          },
+          'wallet': {
+            templateUrl: 'views/backup.html'
+          }
         }
       })
-      .state('paperWallet', {
+      .state('wallet.preferencesAdvanced', {
+        url: '/preferencesAdvanced',
+        views: {
+          'wallet': {
+            templateUrl: 'views/preferencesAdvanced.html'
+          }
+        }
+      })
+      .state('wallet.information', {
+        url: '/information',
+        views: {
+          'wallet': {
+            templateUrl: 'views/preferencesInformation.html'
+          }
+        }
+      })
+      .state('wallet.export', {
+        url: '/export',
+        views: {
+          'wallet': {
+            templateUrl: 'views/export.html'
+          }
+        }
+      })
+      .state('wallet.preferencesBwsUrl', {
+        url: '/preferencesBwsUrl',
+        views: {
+          'wallet': {
+            templateUrl: 'views/preferencesBwsUrl.html'
+          }
+        }
+      })
+      .state('wallet.preferencesHistory', {
+        url: '/preferencesHistory',
+        views: {
+          'wallet': {
+            templateUrl: 'views/preferencesHistory.html'
+          }
+        }
+      })
+      .state('wallet.deleteWords', {
+        url: '/deleteWords',
+        views: {
+          'wallet': {
+            templateUrl: 'views/preferencesDeleteWords.html'
+          }
+        }
+      })
+      .state('wallet.delete', {
+        url: '/delete',
+        views: {
+          'wallet': {
+            templateUrl: 'views/preferencesDeleteWallet.html'
+          }
+        }
+      })
+      .state('wallet.copayers', {
+        url: '/copayers',
+        views: {
+          'wallet': {
+            templateUrl: 'views/copayers.html'
+          }
+        }
+      })
+      .state('wallet.paperWallet', {
         url: '/paperWallet',
-        templateUrl: 'views/paperWallet.html',
-        needProfile: true,
         views: {
-          'main': {
+          'wallet': {
             templateUrl: 'views/paperWallet.html'
-          },
+          }
         }
       })
-      .state('preferencesGlobal', {
-        url: '/preferencesGlobal',
-        needProfile: true,
+
+      /*
+       *
+       * Tabs
+       *
+       */
+
+      .state('tabs', {
+        url: '/tabs',
+        abstract: true,
+        templateUrl: 'views/tabs.html'
+      })
+      .state('tabs.home', {
+        url: '/home',
         views: {
-          'main': {
-            templateUrl: 'views/preferencesGlobal.html',
-          },
+          'tab-home': {
+            templateUrl: 'views/tab-home.html',
+          }
         }
       })
-      .state('termOfUse', {
-        url: '/termOfUse',
-        needProfile: true,
+      .state('tabs.receive', {
+        url: '/receive',
         views: {
-          'main': {
-            templateUrl: 'views/termOfUse.html',
-          },
+          'tab-receive': {
+            templateUrl: 'views/tab-receive.html',
+          }
         }
       })
+      .state('tabs.scan', {
+        url: '/scan',
+        views: {
+          'tab-scan': {
+            templateUrl: 'views/tab-scan.html',
+          }
+        }
+      })
+      .state('tabs.send', {
+        url: '/send',
+        views: {
+          'tab-send': {
+            templateUrl: 'views/tab-send.html',
+          }
+        }
+      })
+      .state('tabs.settings', {
+        url: '/settings',
+        views: {
+          'tab-settings': {
+            templateUrl: 'views/tab-settings.html',
+          }
+        }
+      })
+
+      /*
+       *
+       * Send
+       *
+       */
+
+      .state('send', {
+        url: '/send',
+        abstract: true,
+        template: '<ion-nav-view name="send"></ion-nav-view>'
+      })
+
+      .state('send.amount', {
+        url: '/amount:/:toAddress/:toName',
+        views: {
+          'send': {
+            templateUrl: 'views/amount.html'
+          }
+        }
+      })
+      .state('send.confirm', {
+        url: '/confirm/:toAddress/:toName/:toAmount',
+        views: {
+          'send': {
+            templateUrl: 'views/confirm.html'
+          }
+        }
+      })
+
+
+      /*
+       *
+       * Add
+       *
+       */
+
       .state('add', {
         url: '/add',
-        needProfile: true,
+        abstract: true,
+        template: '<ion-nav-view name="add"></ion-nav-view>'
+      })
+      .state('add.main', {
+        url: '/main',
         views: {
-          'main': {
+          'add': {
             templateUrl: 'views/add.html',
             controller: function(platformInfo) {
               if (platformInfo.isCordova && StatusBar.isVisible) {
@@ -576,6 +360,200 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
             }
           }
         }
+      })
+      .state('add.join', {
+        url: '/join',
+        views: {
+          'add': {
+            templateUrl: 'views/join.html'
+          },
+        }
+      })
+      .state('add.import', {
+        url: '/import',
+        views: {
+          'add': {
+            templateUrl: 'views/import.html'
+          },
+        }
+      })
+      .state('add.create', {
+        url: '/create',
+        views: {
+          'add': {
+            templateUrl: 'views/create.html'
+          },
+        }
+      })
+
+
+      /*
+       *
+       * Global Settings
+       *
+       */
+
+      .state('settings', {
+        url: '/settings',
+        abstract: true,
+        template: '<ion-nav-view name="settings"></ion-nav-view>'
+      })
+      .state('settings.language', {
+        url: '/language',
+        views: {
+          'settings': {
+            templateUrl: 'views/preferencesLanguage.html'
+          }
+        }
+      })
+      .state('settings.unit', {
+        url: '/unit',
+        views: {
+          'settings': {
+            templateUrl: 'views/preferencesUnit.html'
+          }
+        }
+      })
+      .state('settings.fee', {
+        url: '/fee',
+        views: {
+          'settings': {
+            templateUrl: 'views/preferencesFee.html'
+          }
+        }
+      })
+      .state('settings.altCurrency', {
+        url: '/altCurrency',
+        views: {
+          'settings': {
+            templateUrl: 'views/preferencesAltCurrency.html'
+          }
+        }
+      })
+      .state('settings.about', {
+        url: '/about',
+        views: {
+          'settings': {
+            templateUrl: 'views/preferencesAbout.html'
+          }
+        }
+      })
+      .state('settings.logs', {
+        url: '/logs',
+        views: {
+          'settings': {
+            templateUrl: 'views/preferencesLogs.html'
+          }
+        }
+      })
+      .state('settings.termOfUse', {
+        url: '/termOfUse',
+        views: {
+          'settings': {
+            templateUrl: 'views/termOfUse.html',
+          }
+        }
+      })
+      .state('settings.translators', {
+        url: '/translators',
+        views: {
+          'settings': {
+            templateUrl: 'views/translators.html'
+          }
+        }
+      })
+
+      /*
+       *
+       * Glidera
+       *
+       */
+
+      .state('uriglidera', {
+        url: '/uri-glidera/:url',
+        templateUrl: 'views/glideraUri.html'
+      })
+      .state('glidera', {
+        url: '/glidera',
+        templateUrl: 'views/glidera.html'
+      })
+      .state('buyGlidera', {
+        url: '/buy',
+        templateUrl: 'views/buyGlidera.html'
+      })
+      .state('sellGlidera', {
+        url: '/sell',
+        templateUrl: 'views/sellGlidera.html'
+      })
+      .state('preferencesGlidera', {
+        url: '/preferencesGlidera',
+        templateUrl: 'views/preferencesGlidera.html'
+      })
+
+      /*
+       *
+       * BitPay Card
+       *
+       */
+
+      .state('bitpayCard', {
+        url: '/bitpay-card',
+        templateUrl: 'views/bitpayCard.html'
+      })
+      .state('preferencesBitpayCard', {
+        url: '/preferences-bitpay-card',
+        templateUrl: 'views/preferencesBitpayCard.html'
+      })
+
+      /*
+       *
+       * Coinbase
+       *
+       */
+
+      .state('coinbase', {
+        url: '/coinbase',
+        templateUrl: 'views/coinbase.html'
+      })
+      .state('preferencesCoinbase', {
+        url: '/preferencesCoinbase',
+        templateUrl: 'views/preferencesCoinbase.html'
+      })
+      .state('uricoinbase', {
+        url: '/uri-coinbase/:url',
+        templateUrl: 'views/coinbaseUri.html'
+      })
+      .state('buyCoinbase', {
+        url: '/buycoinbase',
+        templateUrl: 'views/buyCoinbase.html'
+      })
+      .state('sellCoinbase', {
+        url: '/sellcoinbase',
+        templateUrl: 'views/sellCoinbase.html'
+      })
+      .state('buyandsell', {
+        url: '/buyandsell',
+        templateUrl: 'views/buyAndSell.html',
+        controller: function(platformInfo) {
+          if (platformInfo.isCordova && StatusBar.isVisible) {
+            StatusBar.backgroundColorByHexString("#4B6178");
+          }
+        }
+      })
+
+      /*
+       *
+       * Amazon Gift Card
+       *
+       */
+
+      .state('amazon', {
+        url: '/amazon',
+        templateUrl: 'views/amazon.html'
+      })
+      .state('buyAmazon', {
+        url: '/buyamazon',
+        templateUrl: 'views/buyAmazon.html'
       });
   })
   .run(function($rootScope, $state, $location, $log, $timeout, $ionicPlatform, lodash, platformInfo, profileService, uxLanguage, gettextCatalog) {

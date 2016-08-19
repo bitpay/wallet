@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('walletDetailsController', function($scope, $rootScope, $interval, $timeout, $filter, $log, $ionicModal, $ionicPopover, $state, $stateParams, bwcError, profileService, lodash, configService, gettext, gettextCatalog, platformInfo, walletService) {
+angular.module('copayApp.controllers').controller('walletDetailsController', function($scope, $rootScope, $interval, $timeout, $filter, $log, $ionicModal, $ionicPopover, $ionicNavBarDelegate, $state, $stateParams, bwcError, profileService, lodash, configService, gettext, gettextCatalog, platformInfo, walletService) {
 
   var isCordova = platformInfo.isCordova;
   var isWP = platformInfo.isWP;
@@ -133,6 +133,8 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
     $scope.wallet = wallet;
     $scope.requiresMultipleSignatures = wallet.credentials.m > 1;
     $scope.newTx = false;
+
+    $ionicNavBarDelegate.title(wallet.name);
 
     $scope.updateAll();
   };

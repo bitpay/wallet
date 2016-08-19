@@ -1,23 +1,26 @@
-<ion-view view-title="Add wallet">
+<ion-view>
   <ion-nav-bar class="bar-stable">
     <ion-nav-buttons side="primary">
-      <a href ui-sref="tabs.home" class="button button-clear button-dark">Close</a>
+      <button class="button no-border" ui-sref="tabs.home">
+        Close
+      </button>
     </ion-nav-buttons>
+    <ion-nav-title>Add wallet</ion-nav-title>
   </ion-nav-bar>
 
   <ion-content>
     <ion-list>
-      <ion-item class="item-remove-animate item-icon-right" type="item-text-wrap" ui-sref="create">
+      <ion-item class="item-remove-animate item-icon-right" type="item-text-wrap" ui-sref="add.create">
         <h2 translate>Create new wallet</h2>
         <i class="icon ion-chevron-right icon-accessory"></i>
       </ion-item>
 
-      <ion-item class="item-remove-animate item-icon-right" type="item-text-wrap" ui-sref="join">
+      <ion-item class="item-remove-animate item-icon-right" type="item-text-wrap" ui-sref="add.join">
         <h2 translate>Join shared wallet</h2>
         <i class="icon ion-chevron-right icon-accessory"></i>
       </ion-item>
 
-      <ion-item class="item-remove-animate item-icon-right" type="item-text-wrap" ui-sref="import">
+      <ion-item class="item-remove-animate item-icon-right" type="item-text-wrap" ui-sref="add.import">
         <h2 translate>Import wallet</h2>
         <i class="icon ion-chevron-right icon-accessory"></i>
       </ion-item>
