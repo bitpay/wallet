@@ -199,11 +199,30 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         }
       })
       .state('wallet.export', {
+        abstract: true,
         url: '/export',
         views: {
           'wallet': {
             templateUrl: 'views/export.html'
           }
+        }
+      })
+      .state('wallet.export.file', {
+        url: '/tab-export-file',
+        needProfile: true,
+        views: {
+          'tab-export-file': {
+            templateUrl: 'views/tab-export-file.html',
+          },
+        }
+      })
+      .state('wallet.export.qrCode', {
+        url: '/tab-export-qrCode',
+        needProfile: true,
+        views: {
+          'tab-export-qrCode': {
+            templateUrl: 'views/tab-export-qrCode.html',
+          },
         }
       })
       .state('wallet.preferencesBwsUrl', {
@@ -371,21 +390,63 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
       })
       .state('add.import', {
         url: '/import',
+        abstract: true,
         views: {
           'add': {
             templateUrl: 'views/import.html'
           },
         }
       })
+      .state('add.import.phrase', {
+        url: '/tab-import-phrase',
+        views: {
+          'tab-import-phrase': {
+            templateUrl: 'views/tab-import-phrase.html',
+          },
+        }
+      })
+      .state('add.import.file', {
+        url: '/tab-import-file',
+        views: {
+          'tab-import-file': {
+            templateUrl: 'views/tab-import-file.html',
+          },
+        }
+      })
+      .state('add.import.hardware', {
+        url: '/tab-import-hardware',
+        views: {
+          'tab-import-hardware': {
+            templateUrl: 'views/tab-import-hardware.html',
+          },
+        }
+      })
       .state('add.create', {
         url: '/create',
+        abstract: true,
+        templateUrl: 'views/create.html',
         views: {
           'add': {
             templateUrl: 'views/create.html'
           },
         }
       })
-
+      .state('add.create.personal', {
+        url: '/tab-create-personal',
+        views: {
+          'tab-create-personal': {
+            templateUrl: 'views/tab-create-personal.html',
+          },
+        }
+      })
+      .state('add.create.shared', {
+        url: '/tab-create-shared',
+        views: {
+          'tab-create-shared': {
+            templateUrl: 'views/tab-create-shared.html',
+          },
+        }
+      })
 
     /*
      *

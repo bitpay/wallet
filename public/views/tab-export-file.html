@@ -1,0 +1,102 @@
+<ion-nav-bar class="bar-stable">
+  <ion-nav-title>Export Wallet</ion-nav-title>
+  <ion-nav-buttons side="primary">
+    <button class="button no-border" ui-sref="wallet.preferencesAdvanced">
+      <i class="icon ion-chevron-left"></i> Back
+    </button>
+  </ion-nav-buttons>
+</ion-nav-bar>
+
+<ion-content ng-controller="exportController" ng-init="init()" cache-view="true">
+
+  <div ng-show="!backupWalletPlainText">
+    <div class="size-14" ng-show="error">
+      <i class="ion-alert-circled"></i>
+      <span translate>Failed to export</span>
+    </div>
+
+    <form name="exportForm" novalidate>
+      <label class="item item-input item-stacked-label">
+        <span class="input-label" transalate>Set up a password</span>
+        <input type="password" placeholder="{{'Your password'|translate}}" name="password" ng-model="password">
+      </label>
+      <label class="item item-input item-stacked-label">
+        <span class="input-label" transalate>Repeat the password</span>
+        <input type="password" class="form-control" placeholder="{{'Repeat password'|translate}}" name="password" ng-model="repeatpassword">
+      </label>
+    </form>
+
+    <ion-toggle ng-show="canSign" ng-model="showAdvanced" toggle-class="toggle-balanced">
+      <span translate ng-show="!showAdvanced">Show advanced options</span>
+      <span translate ng-show="showAdvanced">Hide advanced options</span>
+    </ion-toggle>
+
+    <ion-toggle ng-model="noSignEnabled" ng-show="showAdvanced" toggle-class="toggle-balanced" class="r0" ng-change="noSignEnabledChange()">
+      <span class="toggle-label" translate>Do not include private key</span>
+    </ion-toggle>
+
+    <div class="box-notification" ng-show="!canSign">
+      <span class="size-14">
+        <i class="ion-alert-circled"></i>
+        <span translate>
+          WARNING: The private key of this wallet is not available. The export allows to check the wallet balance, transaction history, and create spend proposals from the export. However, does not allow to approve (sign) proposals, so <b>funds will not be accessible from the export</b>.
+        </span>
+      </span>
+    </div>
+
+    <div class="box-notification" ng-show="noSignEnabled">
+      <span class="size-14">
+        <i class="ion-alert-circled"></i>
+        <span translate>
+        WARNING: Not including the private key allows to check the wallet balance, transaction history, and create spend proposals from the export. However, does not allow to approve (sign) proposals, so <b>funds will not be accessible from the export</b>.
+        </span>
+      </span>
+    </div>
+
+    <button
+            ng-click="downloadWalletBackup()"
+            class="button button-block button-positive"
+            ng-disabled="(!password || password != repeatpassword)"
+            ng-style="{'background-color':wallet.color}"
+            ng-show="!isSafari && !isCordova">
+            <i class="fi-download"></i>
+            <span translate>Download</span>
+    </button>
+
+    <button
+            ng-click="viewWalletBackup()"
+            class="button button-block button-positive"
+            ng-disabled="(!password || password != repeatpassword)"
+            ng-style="{'background-color':wallet.color}"
+            ng-show="isSafari && !isCordova">
+            <i class="fi-eye"></i>
+      <span translate>View</span>
+    </button>
+    <div ng-show="isCordova">
+      <h4 translate>Export options</h4>
+      <button class="button button-block button-positive"
+        ng-disabled="(!password || password != repeatpassword)"
+        ng-style="{'background-color':index.backgroundColor}"
+        ng-click="copyWalletBackup()">
+        <i class="fi-clipboard-pencil"></i>
+        <span translate>Copy to clipboard</span></button>
+      <button class="button button-block button-positive" ng-disabled="(!password || password != repeatpassword)"
+        ng-style="{'background-color':index.backgroundColor}"
+        ng-click="sendWalletBackup()"><i class="fi-mail"></i>
+        <span translate>Send by email</span></button>
+    </div>
+  </div>
+
+  <div class="row" ng-show="backupWalletPlainText">
+    <div class="large-12 columns">
+      <h3 translate>Wallet Export</h3>
+      <div class="input">
+        <textarea rows="12">{{backupWalletPlainText}}</textarea>
+      </div>
+      <div class="size-12 text-gray text-right">
+        <i class="icon-compose"></i>
+        <span translate>Copy this text as it is to a safe place (notepad or email)</span>
+      </div>
+    </div>
+  </div>
+</ion-content>
