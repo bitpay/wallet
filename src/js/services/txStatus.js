@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.services').factory('txStatus', function(lodash, profileService, $timeout, platformInfo) {
+angular.module('copayApp.services').factory('txStatus', function($stateParams, lodash, profileService, $timeout, platformInfo) {
   var root = {};
   var isCordova = platformInfo.isCordova;
 
