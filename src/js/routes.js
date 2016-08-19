@@ -608,13 +608,26 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
      *
      */
 
-    .state('amazon', {
+      .state('amazon', {
         url: '/amazon',
-        templateUrl: 'views/amazon.html'
+        abstract: true,
+        template: '<ion-nav-view name="amazon"></ion-nav-view>'
       })
-      .state('buyAmazon', {
-        url: '/buyamazon',
-        templateUrl: 'views/buyAmazon.html'
+      .state('amazon.main', {
+        url: '/main',
+        views: {
+          'amazon': {
+            templateUrl: 'views/amazon.html'
+          }
+        }
+      })
+      .state('amazon.buy', {
+        url: '/buy',
+        views: {
+          'amazon': {
+            templateUrl: 'views/buyAmazon.html'
+          }
+        }
       });
   })
   .run(function($rootScope, $state, $location, $log, $timeout, $ionicPlatform, lodash, platformInfo, profileService, uxLanguage, gettextCatalog) {
