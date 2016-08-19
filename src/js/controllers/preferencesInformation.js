@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('preferencesInformation',
-  function($scope, $log, $timeout, platformInfo, gettextCatalog, lodash, profileService, configService, go, $stateParams) {
+  function($scope, $log, $timeout, platformInfo, gettextCatalog, lodash, profileService, configService, $stateParams, walletService, $state) {
     var base = 'xpub';
     var wallet = profileService.getWallet($stateParams.walletId);
     var walletId = wallet.id;
@@ -104,7 +104,7 @@ angular.module('copayApp.controllers').controller('preferencesInformation',
         opts.colorFor[walletId] = color;
 
         configService.set(opts, function(err) {
-          go.walletHome();
+          $state.go('tabs.home');
           if (err) $log.warn(err);
           $scope.$emit('Local/ColorUpdated');
         });
@@ -120,5 +120,12 @@ angular.module('copayApp.controllers').controller('preferencesInformation',
         window.plugins.toast.showShortCenter(gettextCatalog.getString('Copied to clipboard'));
       }
     };
+
+    $scope.scan = function() {
+      walletService.startScan(wallet);
+      $state.go('tabs.home');
+    };
+
+
 
   });

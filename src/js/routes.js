@@ -578,7 +578,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         }
       });
   })
-  .run(function($rootScope, $state, $location, $log, $timeout, $ionicPlatform, lodash, platformInfo, profileService, uxLanguage, go, gettextCatalog) {
+  .run(function($rootScope, $state, $location, $log, $timeout, $ionicPlatform, lodash, platformInfo, profileService, uxLanguage, gettextCatalog) {
 
     if (platformInfo.isCordova) {
       if (screen.width < 768) {
@@ -664,11 +664,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
           else
             secondBackButtonPress = true;
 
-          $timeout(function() {
-            $rootScope.$emit('Local/SetTab', 'walletHome', true);
-          }, 100);
-
-          go.walletHome();
+          $state.go('tabs.home');
         });
 
         $ionicPlatform.on('menubutton', function() {

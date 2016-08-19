@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('joinController',
-  function($scope, $rootScope, $timeout, go, notification, profileService, configService, storageService, applicationService, gettext, lodash, ledger, trezor, platformInfo, derivationPathHelper, ongoingProcess, walletService, $log) {
+  function($scope, $rootScope, $timeout, $state, notification, profileService, configService, storageService, applicationService, gettext, lodash, ledger, trezor, platformInfo, derivationPathHelper, ongoingProcess, walletService, $log) {
 
     var isChromeApp = platformInfo.isChromeApp;
     var isDevel = platformInfo.isDevel;
@@ -140,7 +140,7 @@ angular.module('copayApp.controllers').controller('joinController',
             $log.debug('Remote preferences saved for:' + client.credentials.walletId)
           });
 
-          go.walletHome();
+          $state.go('tabs.home');
         });
       }, 100);
     };

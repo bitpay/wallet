@@ -1,10 +1,6 @@
 'use strict';
 
-// DO NOT INCLUDE STORAGE HERE \/ \/
-angular.module('copayApp.services').factory('walletService', function($log, $timeout, lodash, trezor, ledger, storageService, configService, rateService, uxLanguage, $filter, gettextCatalog, bwcError, $ionicPopup, fingerprintService, ongoingProcess, gettext, $rootScope, txStatus, txFormatService, $ionicModal) {
-  // DO NOT INCLUDE STORAGE HERE ^^
-  //
-  //
+angular.module('copayApp.services').factory('walletService', function($log, $timeout, lodash, trezor, ledger, storageService, configService, rateService, uxLanguage, $filter, gettextCatalog, bwcError, $ionicPopup, fingerprintService, ongoingProcess, gettext, $rootScope, txStatus, txFormatService, $ionicModal, $state) {
   // `wallet` is a decorated version of client.
 
   var root = {};
@@ -104,7 +100,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
       console.log('[walletService.js.93] TODO NOT AUTH'); //TODO
       // TODO  TODO  TODO  TODO  TODO  TODO  TODO  TODO  TODO  TODO  TODO  TODO  TODO  TODO
       wallet.notAuthorized = true;
-      go.walletHome();
+      $state.go('tabs.home');
     } else if (err instanceof errors.NOT_FOUND) {
       root.showErrorPopup(gettext('Could not access Wallet Service: Not found'));
     } else {
@@ -665,6 +661,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     alertPopup.then(cb);
   };
 
+  // walletHome
   root.recreate = function(wallet, cb) {
     ongoingProcess.set('recreating', true);
     wallet.recreateWallet(function(err) {
@@ -672,7 +669,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
       ongoingProcess.set('recreating', false);
 
       if (err) {
-        wallet.handleError(err);
+        handleError(err);
         return;
       }
 
@@ -693,12 +690,10 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
       includeCopayerBranches: true,
     }, function(err) {
 
-      // TODO
-      // if (err && wallet.walletId == walletId) {
-      //   wallet.updating = false;
-      //   wallet.handleError(err);
-      //   $rootScope.$apply();
-      // }
+       if (err && wallet.walletId == walletId) {
+         wallet.updating = false;
+         handleError(err);
+       }
     });
   };
 

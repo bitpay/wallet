@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('createController',
-  function($scope, $rootScope, $timeout, $log, lodash, go, profileService, configService, gettext, ledger, trezor, platformInfo, derivationPathHelper, ongoingProcess, walletService) {
+  function($scope, $rootScope, $timeout, $log, lodash, $state, profileService, configService, gettext, ledger, trezor, platformInfo, derivationPathHelper, ongoingProcess, walletService) {
 
     var isChromeApp = platformInfo.isChromeApp;
     var isCordova = platformInfo.isCordova;
@@ -187,8 +187,7 @@ angular.module('copayApp.controllers').controller('createController',
               $rootScope.$emit('Local/BackupDone');
             }, 1);
           }
-
-          go.walletHome();
+          $state.go('tabs.home')
         });
       }, 100);
     }
