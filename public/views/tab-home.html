@@ -3,7 +3,7 @@
   <ion-nav-bar class="bar-stable">
     <ion-nav-title>Home</ion-nav-title>
   </ion-nav-bar>
-  <ion-content class="padding home" ng-controller="tabHomeController" cache-view="false">
+  <ion-content class="padding home" ng-controller="tabHomeController" cache-view="false" ng-init="init()">
 
     <div ng-if="txps[0]">
       <h3 class="title m0" translate>Payment Proposals</h3>
@@ -85,7 +85,7 @@
         <i class="icon ion-card"></i>
           BitPay Card
       </li>
-      <li ng-show="!index.isWindowsPhoneApp && (index.glideraEnabled || index.coinbaseEnabled)" menu-toggle href ui-sref="buyandsell"  class="item item-icon-left">
+      <li ng-show="buyAndSellEnabled" menu-toggle href ui-sref="buyandsell"  class="item item-icon-left">
         <i class="icon ion-cash"></i>
             Buy and Sell
       </li>
