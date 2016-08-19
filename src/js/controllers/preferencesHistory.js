@@ -1,9 +1,10 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('preferencesHistory',
-  function($scope, $log, $timeout, storageService, $state, profileService, lodash) {
-    var fc = profileService.focusedClient;
-    var c = fc.credentials;
+  function($scope, $log, $stateParams, $timeout, storageService, $state, profileService, lodash) {
+
+    var wallet = profileService.getWallet($stateParams.walletId);
+    var c = wallet.credentials;
     $scope.csvReady = false;
 
     $scope.csvHistory = function(cb) {

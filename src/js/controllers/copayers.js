@@ -30,9 +30,9 @@ angular.module('copayApp.controllers').controller('copayersController',
     };
 
     var doDeleteWallet = function() {
-      var fc = profileService.focusedClient;
-      var walletName = fc.credentials.walletName;
-      profileService.deleteWalletClient(fc, function(err) {
+      var wallet = profileService.getWallet($stateParams.walletId);
+      var walletName = wallet.credentials.walletName;
+      profileService.deleteWalletClient(wallet, function(err) {
         if (err) {
           self.error = err.message || err;
           $timeout(function() {
@@ -53,7 +53,7 @@ angular.module('copayApp.controllers').controller('copayersController',
     };
 
     $scope.deleteWallet = function() {
-      var fc = profileService.focusedClient;
+      var wallet = profileService.focusedClient;
       if ($scope.isCordova) {
         navigator.notification.confirm(
           delete_msg,
@@ -86,18 +86,18 @@ angular.module('copayApp.controllers').controller('copayersController',
     };
 
 
-  if (!$stateParams.walletId) {
-    $log.debug('No wallet provided...back to home');
-    return $state.transitionTo('tabs.home')
-  }
+    if (!$stateParams.walletId) {
+      $log.debug('No wallet provided...back to home');
+      return $state.transitionTo('tabs.home')
+    }
 
-  var wallet = profileService.getWallet($stateParams.walletId);
-  var secret;
-  try {
-    secret = wallet.status.wallet.secret;
-  } catch (e) {};
+    var wallet = profileService.getWallet($stateParams.walletId);
+    var secret;
+    try {
+      secret = wallet.status.wallet.secret;
+    } catch (e) {};
 
 
-  $scope.wallet = wallet;
-  $scope.secret = secret;
-});
+    $scope.wallet = wallet;
+    $scope.secret = secret;
+  });

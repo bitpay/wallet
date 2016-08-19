@@ -75,7 +75,7 @@ angular.module('copayApp.controllers').controller('exportController',
     };
 
     $scope.getAddressbook = function(cb) {
-      storageService.getAddressbook(fc.credentials.network, function(err, addressBook) {
+      storageService.getAddressbook(wallet.credentials.network, function(err, addressBook) {
         if (err) return cb(err);
 
         var localAddressBook = [];
