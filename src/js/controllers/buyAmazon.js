@@ -16,14 +16,15 @@ angular.module('copayApp.controllers').controller('buyAmazonController',
 
     this.init = function() {
       var network = amazonService.getEnvironment();
-      self.allWallets = profileService.getWallets(network, 1);
-      client = profileService.focusedClient;
-
-      if (!client) return;
+      self.allWallets = profileService.getWallets({
+        network: network,
+        n: 1,
+        onlyComplete: true
+      });
 
       if (lodash.isEmpty(self.allWallets)) return;
 
-      if (client.credentials.network != network) return;
+      client = self.allWallets[0];
 
       $timeout(function() {
         self.selectedWalletId = client.credentials.walletId;
@@ -157,28 +158,24 @@ angular.module('copayApp.controllers').controller('buyAmazonController',
                   });
                   return;
                 }
-                $scope.$emit('Local/NeedsConfirmation', createdTxp, function(accept) {
-                  if (accept) {
-                    self.confirmTx(createdTxp, function(err, tx) {
-                      if (err) {
-                        ongoingProcess.set('Processing Transaction...', false);
-                        self.error = bwcError.msg(err);
-                        $timeout(function() {
-                          $scope.$digest();
-                        });
-                        return;
-                      }
-                      var count = 0;
-                      ongoingProcess.set('Processing Transaction...', true);
-
-                      dataSrc.accessKey = dataInvoice.accessKey;
-                      dataSrc.invoiceId = invoice.id;
-                      dataSrc.invoiceUrl = invoice.url;
-                      dataSrc.invoiceTime = invoice.invoiceTime;
-
-                      self.debounceCreate(count, dataSrc);
+                self.confirmTx(createdTxp, function(err, tx) {
+                  if (err) {
+                    ongoingProcess.set('Processing Transaction...', false);
+                    self.error = bwcError.msg(err);
+                    $timeout(function() {
+                      $scope.$digest();
                     });
+                    return;
                   }
+                  var count = 0;
+                  ongoingProcess.set('Processing Transaction...', true);
+
+                  dataSrc.accessKey = dataInvoice.accessKey;
+                  dataSrc.invoiceId = invoice.id;
+                  dataSrc.invoiceUrl = invoice.url;
+                  dataSrc.invoiceTime = invoice.invoiceTime;
+
+                  self.debounceCreate(count, dataSrc);
                 });
               });
             });
