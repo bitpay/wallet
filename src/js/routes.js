@@ -79,30 +79,30 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
 
     $stateProvider
 
-      /*
-       *
-       * Other pages
-       *
-       */
+    /*
+     *
+     * Other pages
+     *
+     */
 
       .state('disclaimer', {
-        url: '/disclaimer',
-        templateUrl: 'views/disclaimer.html',
-      })
+      url: '/disclaimer',
+      templateUrl: 'views/disclaimer.html',
+    })
 
-      .state('unsupported', {
-        url: '/unsupported',
-        templateUrl: 'views/unsupported.html'
-      })
+    .state('unsupported', {
+      url: '/unsupported',
+      templateUrl: 'views/unsupported.html'
+    })
 
 
-      /*
-       *
-       * URI
-       *
-       */
+    /*
+     *
+     * URI
+     *
+     */
 
-      .state('uri', {
+    .state('uri', {
         url: '/uri/:url',
         needProfile: true,
         views: {
@@ -123,13 +123,13 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
       })
 
 
-      /*
-       *
-       * Wallet
-       *
-       */
+    /*
+     *
+     * Wallet
+     *
+     */
 
-      .state('wallet', {
+    .state('wallet', {
         url: '/wallet/{walletId}',
         abstract: true,
         template: '<ion-nav-view name="wallet"></ion-nav-view>'
@@ -255,13 +255,13 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         }
       })
 
-      /*
-       *
-       * Tabs
-       *
-       */
+    /*
+     *
+     * Tabs
+     *
+     */
 
-      .state('tabs', {
+    .state('tabs', {
         url: '/tabs',
         abstract: true,
         templateUrl: 'views/tabs.html'
@@ -307,20 +307,20 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         }
       })
 
-      /*
-       *
-       * Send
-       *
-       */
+    /*
+     *
+     * Send
+     *
+     */
 
-      .state('send', {
-        url: '/send',
-        abstract: true,
-        template: '<ion-nav-view name="send"></ion-nav-view>'
-      })
+    .state('send', {
+      url: '/send',
+      abstract: true,
+      template: '<ion-nav-view name="send"></ion-nav-view>'
+    })
 
-      .state('send.amount', {
-        url: '/amount:/:toAddress/:toName',
+    .state('send.amount', {
+        url: '/amount/:toAddress/:toName',
         views: {
           'send': {
             templateUrl: 'views/amount.html'
@@ -337,13 +337,13 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
       })
 
 
-      /*
-       *
-       * Add
-       *
-       */
+    /*
+     *
+     * Add
+     *
+     */
 
-      .state('add', {
+    .state('add', {
         url: '/add',
         abstract: true,
         template: '<ion-nav-view name="add"></ion-nav-view>'
@@ -387,13 +387,13 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
       })
 
 
-      /*
-       *
-       * Global Settings
-       *
-       */
+    /*
+     *
+     * Global Settings
+     *
+     */
 
-      .state('settings', {
+    .state('settings', {
         url: '/settings',
         abstract: true,
         template: '<ion-nav-view name="settings"></ion-nav-view>'
@@ -463,13 +463,13 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         }
       })
 
-      /*
-       *
-       * Glidera
-       *
-       */
+    /*
+     *
+     * Glidera
+     *
+     */
 
-      .state('uriglidera', {
+    .state('uriglidera', {
         url: '/uri-glidera/:url',
         templateUrl: 'views/glideraUri.html'
       })
@@ -490,13 +490,13 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         templateUrl: 'views/preferencesGlidera.html'
       })
 
-      /*
-       *
-       * BitPay Card
-       *
-       */
+    /*
+     *
+     * BitPay Card
+     *
+     */
 
-      .state('bitpayCard', {
+    .state('bitpayCard', {
         url: '/bitpay-card',
         templateUrl: 'views/bitpayCard.html'
       })
@@ -505,13 +505,13 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         templateUrl: 'views/preferencesBitpayCard.html'
       })
 
-      /*
-       *
-       * Coinbase
-       *
-       */
+    /*
+     *
+     * Coinbase
+     *
+     */
 
-      .state('coinbase', {
+    .state('coinbase', {
         url: '/coinbase',
         templateUrl: 'views/coinbase.html'
       })
@@ -541,13 +541,13 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         }
       })
 
-      /*
-       *
-       * Amazon Gift Card
-       *
-       */
+    /*
+     *
+     * Amazon Gift Card
+     *
+     */
 
-      .state('amazon', {
+    .state('amazon', {
         url: '/amazon',
         templateUrl: 'views/amazon.html'
       })
