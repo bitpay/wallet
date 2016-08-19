@@ -1,11 +1,11 @@
 'use strict';
 
-angular.module('copayApp.services').factory('addressbookService', function(storageService, profileService, lodash) {
+angular.module('copayApp.services').factory('addressbookService', function($stateParams, storageService, profileService, lodash) {
   var root = {};
 
   root.getLabel = function(addr, cb) {
-    var fc = profileService.focusedClient;
-    storageService.getAddressbook(fc.credentials.network, function(err, ab) {
+    var wallet = profileService.getWallet($stateParams.walletId);
+    storageService.getAddressbook(wallet.credentials.network, function(err, ab) {
       if (!ab) return cb();
       if (ab[addr]) return cb(ab[addr]);
       else return cb();
@@ -23,19 +23,19 @@ angular.module('copayApp.services').factory('addressbookService', function(stora
         if (ab2) ab2 = JSON.parse(ab2);
 
         ab2 = ab2 || {};
-        return cb(err, lodash.defaults(ab2,ab));
+        return cb(err, lodash.defaults(ab2, ab));
       });
     });
   };
 
   root.add = function(entry, cb) {
-    var fc = profileService.focusedClient;
+    var wallet = profileService.getWallet($stateParams.walletId);
     root.list(function(err, ab) {
       if (err) return cb(err);
       if (!ab) ab = {};
       if (ab[entry.address]) return cb('Entry already exist');
       ab[entry.address] = entry.label;
-      storageService.setAddressbook(fc.credentials.network, JSON.stringify(ab), function(err, ab) {
+      storageService.setAddressbook(wallet.credentials.network, JSON.stringify(ab), function(err, ab) {
         if (err) return cb('Error adding new entry');
         root.list(function(err, ab) {
           return cb(err, ab);
@@ -43,26 +43,26 @@ angular.module('copayApp.services').factory('addressbookService', function(stora
       });
     });
   };
-  
+
   root.remove = function(addr, cb) {
-    var fc = profileService.focusedClient;
+    var wallet = profileService.getWallet($stateParams.walletId);
     root.list(function(err, ab) {
       if (err) return cb(err);
       if (!ab) return;
       if (!ab[addr]) return cb('Entry does not exist');
       delete ab[addr];
-      storageService.setAddressbook(fc.credentials.network, JSON.stringify(ab), function(err) {
+      storageService.setAddressbook(wallet.credentials.network, JSON.stringify(ab), function(err) {
         if (err) return cb('Error deleting entry');
         root.list(function(err, ab) {
           return cb(err, ab);
         });
       });
-    }); 
+    });
   };
 
   root.removeAll = function() {
-    var fc = profileService.focusedClient;
-    storageService.removeAddressbook(fc.credentials.network, function(err) {
+    var wallet = profileService.getWallet($stateParams.walletId);
+    storageService.removeAddressbook(wallet.credentials.network, function(err) {
       if (err) return cb('Error deleting addressbook');
       return cb();
     });

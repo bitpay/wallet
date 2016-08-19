@@ -7,7 +7,7 @@
       </button>
     </ion-nav-buttons>
   </ion-nav-bar>
-  <ion-content class="has-header" ng-controller="preferencesHistory" cache-view="false" ng-init="index.updatingTxHistory ? null : csvHistory()">
+  <ion-content   ng-controller="preferencesHistory" cache-view="false" ng-init="index.updatingTxHistory ? null : csvHistory()">
     <div class="item item-divider"></div>
     <div class="item" ng-show="csvReady && !index.isCordova" ng-csv="csvContent" csv-header="csvHeader" filename="Copay-{{index.alias || index.walletName}}.csv">
       <span translate>Export to file</span>

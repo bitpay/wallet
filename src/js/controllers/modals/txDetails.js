@@ -1,17 +1,17 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('txDetailsController', function($rootScope, $log, $scope, $filter, $ionicPopup, gettextCatalog, profileService, configService, lodash, txFormatService) {
+angular.module('copayApp.controllers').controller('txDetailsController', function($rootScope, $log, $scope, $filter, $stateParams, $ionicPopup, gettextCatalog, profileService, configService, lodash, txFormatService) {
 
   var self = $scope.self;
-  var fc = profileService.focusedClient;
+  var wallet = profileService.getWallet($stateParams.walletId);
   var config = configService.getSync();
   var configWallet = config.wallet;
   var walletSettings = configWallet.settings;
 
   $scope.alternativeIsoCode = walletSettings.alternativeIsoCode;
-  $scope.color = fc.backgroundColor;
-  $scope.copayerId = fc.credentials.copayerId;
-  $scope.isShared = fc.credentials.n > 1;
+  $scope.color = wallet.color;
+  $scope.copayerId = wallet.credentials.copayerId;
+  $scope.isShared = wallet.credentials.n > 1;
 
   $scope.btx.amountStr = txFormatService.formatAmount($scope.btx.amount, true) + ' ' + walletSettings.unitName;
   $scope.btx.feeStr = txFormatService.formatAmount($scope.btx.fees, true) + ' ' + walletSettings.unitName;
@@ -40,7 +40,7 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
         args.body = $scope.data.comment;
       };
 
-      fc.editTxNote(args, function(err) {
+      wallet.editTxNote(args, function(err) {
         if (err) {
           $log.debug('Could not save tx comment');
           return;
@@ -50,7 +50,7 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
         if (args.body) {
           $scope.btx.note = {};
           $scope.btx.note.body = $scope.data.comment;
-          $scope.btx.note.editedByName = fc.credentials.copayerName;
+          $scope.btx.note.editedByName = wallet.credentials.copayerName;
           $scope.btx.note.editedOn = Math.floor(Date.now() / 1000);
         }
         $scope.btx.searcheableString = null;
@@ -62,7 +62,7 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
   $scope.getAlternativeAmount = function() {
     var satToBtc = 1 / 100000000;
 
-    fc.getFiatRate({
+    wallet.getFiatRate({
       code: $scope.alternativeIsoCode,
       ts: $scope.btx.time * 1000
     }, function(err, res) {
@@ -81,7 +81,7 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
   };
 
   $scope.getShortNetworkName = function() {
-    var n = fc.credentials.network;
+    var n = wallet.credentials.network;
     return n.substring(0, 4);
   };
 
