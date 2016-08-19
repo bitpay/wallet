@@ -6,6 +6,8 @@ angular.module('copayApp.controllers').controller('backupController',
     var wallet = profileService.getWallet($stateParams.walletId);
     $scope.customWords = [];
     $scope.walletName = wallet.credentials.walletName;
+    $scope.n = wallet.n;
+
     $scope.credentialsEncrypted = wallet.isPrivKeyEncrypted;
 
     $scope.init = function() {
