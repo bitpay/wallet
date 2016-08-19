@@ -1,20 +1,24 @@
-<div
-  class="topbar-container"
-  ng-include="'views/includes/topbar.html'"
-  ng-init="titleSection='Buy and Sell'; closeToHome = true; noColor = true">
-</div>
+<ion-view>
+  <ion-nav-bar class="bar-stable">
+    <ion-nav-buttons side="primary">
+      <button class="button no-border" ui-sref="tabs.home">
+        Back
+      </button>
+    </ion-nav-buttons>
+    <ion-nav-title translate>Buy and sell</ion-nav-title>
+  </ion-nav-bar>
+  <ion-content>
+    <ion-list>
+      <ion-item class="item-remove-animate item-icon-right" type="item-text-wrap" ui-sref="glidera">
+        <img src="img/glidera-logo.png" width="150">
+        <i class="icon ion-chevron-right icon-accessory"></i>
+      </ion-item>
+      <ion-item class="item-remove-animate item-icon-right" type="item-text-wrap" ui-sref="coinbase">
+        <img src="img/coinbase-logo.png" width="150">
+        <i class="icon ion-chevron-right icon-accessory"></i>
+      </ion-item>
 
-<div class="content">
-<ul class="no-bullet manage text-center">
-  <li class="white m20t" ng-show="index.glideraEnabled">
-		<a  href ui-sref="glidera">
-      <img src="img/glidera-logo.png" width="150">
-		</a>
-	</li>
-  <li class="white m20t" ng-show="index.coinbaseEnabled">
-		<a  href ui-sref="coinbase">
-      <img src="img/coinbase-logo.png" width="150">
-		</a>
-	</li>
-</ul>
-</div>
+
+    </ion-list>
+  </ion-content>
+</ion-view>

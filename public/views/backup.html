@@ -162,7 +162,7 @@
               translate>Finish
             </button>
             <!-- hide this in multisig just to show less text -->
-            <div class="row m20t"  ng-show="index.n==1">
+            <div class="row m20t"  ng-show="n==1">
               <div class="columns size-10 text-gray">
                 <div class="p10t line-t">
                   <span translate>You can safely install your wallet on another device and use it from multiple devices at the same time.</span>
@@ -182,7 +182,7 @@
           <p class="text-gray columns" translate>
             Failed to verify backup. Please check your information
           </p>
-          <div class="columns size-10 text-gray extra-padding-bottom" ng-show="index.n==1">
+          <div class="columns size-10 text-gray extra-padding-bottom" ng-show="n==1">
             <div class="p10t line-t">
               <span translate>You can safely install your wallet on another device and use it from multiple devices at the same time.</span>
               <a href="#" ng-click="$root.openExternalLink('https://github.com/bitpay/copay/blob/master/README.md#copay-backups-and-recovery')" translate>
