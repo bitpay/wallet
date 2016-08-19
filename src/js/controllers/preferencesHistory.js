@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('preferencesHistory',
-  function($scope, $log, $timeout, storageService, go, profileService, lodash) {
+  function($scope, $log, $timeout, storageService, $state, profileService, lodash) {
     var fc = profileService.focusedClient;
     var c = fc.credentials;
     $scope.csvReady = false;
@@ -125,7 +125,7 @@ angular.module('copayApp.controllers').controller('preferencesHistory',
         $scope.$emit('Local/ClearHistory');
 
         $timeout(function() {
-          go.walletHome();
+          $state.go('tabs.home');
         }, 100);
       });
     };

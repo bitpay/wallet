@@ -4,27 +4,25 @@ angular.module('copayApp.controllers').controller('backupController',
   function($rootScope, $scope, $timeout, $log, $state, lodash, fingerprintService, platformInfo, configService, profileService, gettext, bwcService, walletService, ongoingProcess) {
 
     var fc = profileService.focusedClient;
-    var prevState;
     $scope.customWords = [];
     $scope.walletName = fc.credentials.walletName;
     $scope.credentialsEncrypted = fc.isPrivKeyEncrypted;
 
-    $scope.init = function(state) {
-      prevState = state || 'walletHome';
+    $scope.init = function() {
       $scope.step = 1;
       $scope.deleted = isDeletedSeed();
       if ($scope.deleted) return;
 
       fingerprintService.check(fc, function(err) {
         if (err) {
-          go.path(prevState);
+          $state.go('tabs.home')
           return;
         }
 
         handleEncryptedWallet(fc, function(err) {
           if (err) {
             $log.warn('Error decrypting credentials:', $scope.error);
-            go.path(prevState);
+            $state.go('tabs.home')
             return;
           }
           $scope.credentialsEncrypted = false;

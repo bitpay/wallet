@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('copayersController',
-  function($scope, $rootScope, $timeout, $log, $ionicModal, profileService, go, notification, platformInfo, gettext, gettextCatalog, $stateParams, $state) {
+  function($scope, $rootScope, $timeout, $log, $ionicModal, profileService, $state, notification, platformInfo, gettext, gettextCatalog, $stateParams, $state) {
     var self = this;
     $scope.isCordova = platformInfo.isCordova;
     var isWP = platformInfo.isWP;
@@ -39,7 +39,7 @@ angular.module('copayApp.controllers').controller('copayersController',
             $scope.$digest();
           });
         } else {
-          go.walletHome();
+          $state.go('tabs.home');
           $timeout(function() {
             notification.success(
               gettextCatalog.getString('Success'),

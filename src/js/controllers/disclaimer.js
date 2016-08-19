@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('disclaimerController',
-  function($scope, $rootScope, $timeout, $log, $ionicSideMenuDelegate, profileService, applicationService, gettextCatalog, uxLanguage, go, storageService, gettext, platformInfo, ongoingProcess) {
+  function($scope, $rootScope, $timeout, $log, $ionicSideMenuDelegate, profileService, applicationService, gettextCatalog, uxLanguage, $state, storageService, gettext, platformInfo, ongoingProcess) {
     var tries = 0;
     var isCordova = platformInfo.isCordova;
 
@@ -49,7 +49,7 @@ angular.module('copayApp.controllers').controller('disclaimerController',
             if (!err || !err.message || !err.message.match('NONAGREEDDISCLAIMER')) {
               $log.debug('Disclaimer already accepted at #disclaimer. Redirect to Wallet Home.');
               $ionicSideMenuDelegate.canDragContent(true);
-              go.walletHome();
+              $state.go('tabs.home');
             }
           });
         }
@@ -62,7 +62,7 @@ angular.module('copayApp.controllers').controller('disclaimerController',
         else {
           $ionicSideMenuDelegate.canDragContent(true);
           $rootScope.$emit('disclaimerAccepted');
-          go.walletHome();
+          $state.go('tabs.home');
         }
       });
     };

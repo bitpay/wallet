@@ -1,6 +1,6 @@
 'use strict';
 angular.module('copayApp.services')
-  .factory('applicationService', function($rootScope, $timeout, platformInfo, go) {
+  .factory('applicationService', function($rootScope, $timeout, platformInfo, $state) {
     var root = {};
 
     var isChromeApp  = platformInfo.isChromeApp;
@@ -19,7 +19,7 @@ angular.module('copayApp.services')
         if (isChromeApp) {
           chrome.runtime.reload();
         } else if (isNW) {
-          go.walletHome();
+          $state.go('tabs.home');
           $timeout(function() {
             var win = require('nw.gui').Window.get();
             win.reload(3);
