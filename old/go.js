@@ -42,7 +42,7 @@ angular.module('copayApp.services').factory('go', function($window, $ionicSideMe
   };
 
   root.confirm = function(params) {
-    $state.transitionTo('confirm', params)
+    $state.transitionTo('send.confirm', params)
   };
 
   root.send = function() {
