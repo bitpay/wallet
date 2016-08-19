@@ -1,7 +1,7 @@
 angular.module('copayApp.controllers').controller('paperWalletController',
-  function($scope, $timeout, $log, $ionicModal, configService, profileService, $state, addressService, txStatus, bitcore, ongoingProcess, txFormatService) {
+  function($scope, $timeout, $log, $ionicModal, configService, profileService, $state, addressService, txStatus, bitcore, ongoingProcess, txFormatService, $stateParams) {
 
-    var fc = profileService.focusedClient;
+    var wallet = profileService.getWallet($stateParams.walletId);
     var rawTx;
 
     $scope.onQrCodeScanned = function(data) {
@@ -18,11 +18,11 @@ angular.module('copayApp.controllers').controller('paperWalletController',
     function _scanFunds(cb) {
       function getPrivateKey(scannedKey, isPkEncrypted, passphrase, cb) {
         if (!isPkEncrypted) return cb(null, scannedKey);
-        fc.decryptBIP38PrivateKey(scannedKey, passphrase, null, cb);
+        wallet.decryptBIP38PrivateKey(scannedKey, passphrase, null, cb);
       };
 
       function getBalance(privateKey, cb) {
-        fc.getBalanceFromPrivateKey(privateKey, cb);
+        wallet.getBalanceFromPrivateKey(privateKey, cb);
       };
 
       function checkPrivateKey(privateKey) {
@@ -70,13 +70,13 @@ angular.module('copayApp.controllers').controller('paperWalletController',
     };
 
     function _sweepWallet(cb) {
-      addressService.getAddress(fc.credentials.walletId, true, function(err, destinationAddress) {
+      addressService.getAddress(wallet.credentials.walletId, true, function(err, destinationAddress) {
         if (err) return cb(err);
 
-        fc.buildTxFromPrivateKey($scope.privateKey, destinationAddress, null, function(err, tx) {
+        wallet.buildTxFromPrivateKey($scope.privateKey, destinationAddress, null, function(err, tx) {
           if (err) return cb(err);
 
-          fc.broadcastRawTx({
+          wallet.broadcastRawTx({
             rawTx: tx.serialize(),
             network: 'livenet'
           }, function(err, txid) {
@@ -113,7 +113,7 @@ angular.module('copayApp.controllers').controller('paperWalletController',
     $scope.openStatusModal = function(type, txp, cb) {
       $scope.type = type;
       $scope.tx = txFormatService.processTx(txp);
-      $scope.color = fc.backgroundColor;
+      $scope.color = wallet.backgroundColor;
       $scope.cb = cb;
 
       $ionicModal.fromTemplateUrl('views/modals/tx-status.html', {
