@@ -8,6 +8,8 @@ angular.module('copayApp.controllers').controller('importController',
     var reader = new FileReader();
     var defaults = configService.getDefaults();
     var errors = bwcService.getErrors();
+    $scope.isSafari = platformInfo.isSafari;
+    $scope.isCordova = platformInfo.isCordova;
     $scope.bwsurl = defaults.bws.url;
     $scope.derivationPath = derivationPathHelper.default;
     $scope.account = 1;
