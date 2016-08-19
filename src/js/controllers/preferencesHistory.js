@@ -126,7 +126,7 @@ angular.module('copayApp.controllers').controller('preferencesHistory',
         $scope.$emit('Local/ClearHistory');
 
         $timeout(function() {
-          go.choosedWallet(c.walletId);
+          go.WalletHome();
         }, 100);
       });
     };

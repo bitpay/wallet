@@ -2,20 +2,9 @@
   <ion-nav-bar class="bar-stable">
     <ion-nav-title>Backup Flow</ion-nav-title>
     <ion-nav-buttons side="primary">
-<<<<<<< 5b14c8aca37bc7b15324fdbbed162dea8cc2d3af
-      <button class="button no-border" ng-click="goToStep(1)" ng-show="(step != 1 && step != 4)">
-        <i class="icon ion-chevron-left"></i>
-      </button>
-    </ion-nav-buttons>
-    <ion-nav-buttons side="secondary">
-      <span class="button no-border" ng-click="goBack()">
-        <i class="icon ion-close"></i>
-      </span>
-=======
      <button class="button" href ui-sref="wallet.preferences">
        <i class="ion-arrow-left-c"></i> Back
      </button>
->>>>>>> delete focused wallet
     </ion-nav-buttons>
   </ion-nav-bar>
   <ion-content ng-controller="backupController" cache-view="false" ng-init="init()">
