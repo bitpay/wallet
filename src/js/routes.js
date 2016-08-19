@@ -190,17 +190,17 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         templateUrl: 'views/copayers.html'
       })
 
-// OLD
-      // .state('walletHome', {
-      //   url: '/old',
-      //   needProfile: true,
-      //   views: {
-      //     'main': {
-      //       templateUrl: 'views/walletHome.html',
-      //     },
-      //   }
-      // })
-      .state('tabs', {
+    // OLD
+    // .state('walletHome', {
+    //   url: '/old',
+    //   needProfile: true,
+    //   views: {
+    //     'main': {
+    //       templateUrl: 'views/walletHome.html',
+    //     },
+    //   }
+    // })
+    .state('tabs', {
         url: '/tabs',
         cache: false,
         needProfile: true,
@@ -280,7 +280,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         },
       })
 
-      .state('unsupported', {
+    .state('unsupported', {
         url: '/unsupported',
         needProfile: false,
         views: {
@@ -697,7 +697,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         } else {
           profileService.storeProfileIfDirty();
           $log.debug('Profile loaded ... Starting UX.');
-          $state.transitionTo('tabs.home');
+          // $state.transitionTo('tabs.home');
         }
       });
 

@@ -7,7 +7,7 @@
       </button>
     </ion-nav-buttons>
   </ion-nav-bar>
-  <ion-content class="has-header" ng-controller="preferencesColorController" cache-view="false">
+  <ion-content ng-controller="preferencesColorController" cache-view="false">
     <ion-radio ng-repeat="c in colorList" ng-value="c" ng-model="currentColor" ng-click="save(c)">
       <span ng-style="{'color': c}">&block;</span>
     </ion-radio>

@@ -5,7 +5,7 @@ angular.module('copayApp.services').factory('txStatus', function(lodash, profile
   var isCordova = platformInfo.isCordova;
 
   root.notify = function(txp) {
-    var fc = profileService.focusedClient;
+    var wallet = profileService.getWallet($stateParams.walletId);
     var status = txp.status;
     var type;
     var INMEDIATE_SECS = 10;
@@ -16,7 +16,7 @@ angular.module('copayApp.services').factory('txStatus', function(lodash, profile
 
       var n = txp.actions.length;
       var action = lodash.find(txp.actions, {
-        copayerId: fc.credentials.copayerId
+        copayerId: wallet.credentials.copayerId
       });
 
       if (!action) {

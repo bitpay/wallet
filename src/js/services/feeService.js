@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.services').factory('feeService', function($log, bwcService, walletService, configService, gettext, lodash, txFormatService) {
+angular.module('copayApp.services').factory('feeService', function($log, $stateParams, bwcService, walletService, configService, gettext, lodash, txFormatService) {
   var root = {};
 
   // Constant fee options to translate
@@ -16,12 +16,12 @@ angular.module('copayApp.services').factory('feeService', function($log, bwcServ
   };
 
   root.getCurrentFeeValue = function(cb) {
-console.log('[feeService.js.18:getCurrentFeeValue:] TODO TODO TODO'); //TODO
+    console.log('[feeService.js.18:getCurrentFeeValue:] TODO TODO TODO'); //TODO
     // TODO TODO TODO
-    var fc = walletService.focusedClient;
+    var wallet = profileService.getWallet($stateParams.walletId);
     var feeLevel = root.getCurrentFeeLevel();
 
-    fc.getFeeLevels(fc.credentials.network, function(err, levels) {
+    wallet.getFeeLevels(wallet.credentials.network, function(err, levels) {
       if (err)
         return cb({
           message: 'Could not get dynamic fee'
