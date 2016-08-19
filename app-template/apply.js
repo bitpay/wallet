@@ -10,8 +10,9 @@ var templates = {
   'ProjectMakefile': 'cordova/',
   'config.xml': 'cordova/',
   'Package.appxmanifest': 'cordova/wp/',
-  '.desktop': 'webkitbuilds/.desktop',
-  'setup-win.iss': 'webkitbuilds/setup-win.iss',
+  '.desktop': 'webkitbuilds/',
+  'setup-win.iss': 'webkitbuilds/',
+  'manifest.json': 'chrome-app/',
   //  'bower.json': '/',
 };
 var configDir = process.argv[2] || 'copay';
@@ -108,13 +109,12 @@ copyDir(configDir + '/img/', '../public/img/', function() {
     copyDir(configDir + '/iosIcons/', '../cordova/ios/icons/', function() {
       copyDir(configDir + '/iosSplash/', '../cordova/ios/splash/', function() {
         copyDir(configDir + '/wpAssets/', '../cordova/wp/Assets/', function() {
-        copyDir(configDir + '/wpImg/', '../cordova/wp/', function() {
-
-        // TODO WP
-        console.log("apply.js finished. \n\n");
+          copyDir(configDir + '/wpImg/', '../cordova/wp/', function() {
+            // TODO WP
+            console.log("apply.js finished. \n\n");
+          });
+        });
       });
-    });
-    });
     });
   });
 });

@@ -1,12 +1,11 @@
 [Desktop Entry]
 Type=Application
-Version=2.5.0
-Name=Copay
-Comment=A multisignature wallet
-Exec=copay
+Version=0.2.0
+Name=BitPay
+Comment=The BitPay Bitcoin Wallet
+Exec=bitpay
 Icon=icon-256.png
 Terminal=false
 Categories=Finance
 X-Ubuntu-Touch=true
 X-Ubuntu-StageHint=SideStage
-
