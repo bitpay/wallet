@@ -2,10 +2,10 @@
   <ion-nav-bar class="bar-stable">
     <ion-nav-title>Color</ion-nav-title>
     <ion-nav-buttons side="primary">
-     <button class="button" href ui-sref="wallet.preferences">
-       <i class="ion-arrow-left-c"></i> Back
-     </button>
-    </ion-nav-buttons>
+      <button class="button no-border" ui-sref="wallet.preferences">
+        <i class="icon ion-chevron-left"></i> Back
+      </button>
+    </ion-nav-buttons>
   </ion-nav-bar>
   <ion-content class="has-header" ng-controller="preferencesColorController" cache-view="false">
     <ion-radio ng-repeat="c in colorList" ng-value="c" ng-model="currentColor" ng-click="save(c)">
