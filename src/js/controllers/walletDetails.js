@@ -13,8 +13,8 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
 
 
   $scope.openSearchModal = function() {
-    var fc = profileService.focusedClient;
-    $scope.color = fc.backgroundColor;
+    var wallet = profileService.getWallet($stateParams.walletId);
+    $scope.color = wallet.color;
     $scope.self = self;
 
     $ionicModal.fromTemplateUrl('views/modals/search.html', {
