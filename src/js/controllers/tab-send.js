@@ -68,7 +68,7 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
         return;
       }
       $log.debug('Got toAddress:' +  addr + ' | ' + item.label)
-      return $state.transitionTo('amount', { toAddress: addr, toName: item.label})
+      return $state.transitionTo('send.amount', { toAddress: addr, toName: item.label})
     });
   };
 

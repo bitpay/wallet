@@ -19,28 +19,28 @@
       Preferences
     </div>
     <div class="list">
-      <div class="item item-icon-left" href ui-sref="preferencesLanguage">
+      <div class="item item-icon-left" href ui-sref="settings.language">
         <i class="icon ion-ios-chatbubble-outline"></i>
         <span translate>Language</span>
         <span class="item-note">
           {{currentLanguageName|translate}}
         </span>
       </div>
-      <div class="item item-icon-left" href ui-sref="preferencesUnit">
+      <div class="item item-icon-left" href ui-sref="settings.unit">
         <i class="icon ion-ios-calculator-outline"></i>
         <span translate>Unit</span>
         <span class="item-note">
           {{unitName}}
         </span>
       </div>
-      <div class="item item-icon-left" href ui-sref="preferencesAltCurrency">
+      <div class="item item-icon-left" href ui-sref="settings.altCurrency">
         <i class="icon ion-social-usd-outline"></i>
         <span translate>Alternative Currency</span>
         <span class="item-note">
           {{selectedAlternative.name}}
         </span>
       </div>
-      <div class="item item-icon-left" href ui-sref="preferencesFee">
+      <div class="item item-icon-left" href ui-sref="settings.fee">
         <i class="icon ion-ios-film-outline"></i>
         <span translate>Bitcoin Network Fee Policy</span>
         <span class="item-note">
@@ -80,7 +80,7 @@
       <ion-toggle ng-model="spendUnconfirmed" toggle-class="toggle-balanced" ng-change="spendUnconfirmedChange()">
         <span class="toggle-label" translate>Use Unconfirmed Funds</span>
       </ion-toggle>
-      <div class="item item-icon-left" href ui-sref="about">
+      <div class="item item-icon-left" href ui-sref="settings.about">
         <i class="icon ion-ios-film-outline"></i>
         <span translate>About Copay</span>
       </div>
