@@ -1,10 +1,15 @@
 <ion-view ng-controller="backupController" cache-view="false" ng-init="init(index.prevState)">
   <ion-nav-bar class="bar-stable">
     <ion-nav-title>Backup Flow</ion-nav-title>
-    <ion-nav-buttons side="primary" ng-show="(step != 1 && step != 4)">
-     <button class="button" ng-click="goBack()">
-       <i class="ion-arrow-left-c"></i> Back
-     </button>
+    <ion-nav-buttons side="primary">
+      <button class="button no-border" ng-click="goToStep(1)" ng-show="(step != 1 && step != 4)">
+        <i class="icon ion-chevron-left"></i>
+      </button>
+    </ion-nav-buttons>
+    <ion-nav-buttons side="secondary">
+      <span class="button no-border" ng-click="goBack()">
+        <i class="icon ion-close"></i>
+      </span>
     </ion-nav-buttons>
   </ion-nav-bar>
   <ion-content class="has-header">

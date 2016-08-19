@@ -2,10 +2,10 @@
   <ion-nav-bar class="bar-stable">
     <ion-nav-title>Unit</ion-nav-title>
     <ion-nav-buttons side="primary">
-     <button class="button" href ui-sref="tabs.settings">
-       <i class="ion-arrow-left-c"></i> Back
-     </button>
-    </ion-nav-buttons>
+      <button class="button no-border" ui-sref="tabs.settings">
+        <i class="icon ion-chevron-left"></i> Back
+      </button>
+    </ion-nav-buttons>
   </ion-nav-bar class="bar-stable">
   <ion-content ng-controller="preferencesUnitController" ng-init="init()" cache-view="false">
     <ion-radio ng-repeat="unit in unitList" ng-value="unit.code" ng-model="currentUnit"
