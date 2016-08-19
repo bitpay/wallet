@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('preferencesAltCurrencyController',
-  function($scope, $log, $timeout, configService, rateService, lodash, go, profileService, walletService) {
+  function($scope, $log, $timeout, configService, rateService, lodash, profileService, walletService, $state) {
 
     var next = 10;
     var completeAlternativeList;
@@ -42,7 +42,7 @@ angular.module('copayApp.controllers').controller('preferencesAltCurrencyControl
 
       configService.set(opts, function(err) {
         if (err) $log.warn(err);
-        go.preferencesGlobal();
+        $state.go('preferencesGlobal');
         $scope.$emit('Local/UnitSettingUpdated');
         walletService.updateRemotePreferences(profileService.getClients(), {}, function() {
           $log.debug('Remote preferences saved');

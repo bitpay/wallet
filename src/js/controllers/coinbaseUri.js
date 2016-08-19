@@ -1,6 +1,6 @@
 'use strict';
 angular.module('copayApp.controllers').controller('coinbaseUriController',
-  function($scope, $stateParams, $timeout, profileService, configService, coinbaseService, storageService, go, ongoingProcess) {
+  function($scope, $stateParams, $timeout, profileService, configService, coinbaseService, storageService, $state, ongoingProcess) {
 
     this.submitOauthCode = function(code) {
       var self = this;
@@ -21,7 +21,7 @@ angular.module('copayApp.controllers').controller('coinbaseUriController',
               storageService.setCoinbaseRefreshToken(network, data.refresh_token, function() {
                 $scope.$emit('Local/CoinbaseUpdated', data.access_token);
                 $timeout(function() {
-                  go.path('coinbase');
+                  $state.go('coinbase');
                   $scope.$apply();
                 }, 100);
               });

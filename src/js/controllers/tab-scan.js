@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('tabScanController', function($scope, $timeout, $ionicModal, $log, $ionicPopup, configService, gettextCatalog, platformInfo, go, bitcore, lodash) {
+angular.module('copayApp.controllers').controller('tabScanController', function($scope, $timeout, $ionicModal, $log, $ionicPopup, configService, gettextCatalog, platformInfo, bitcore, lodash, $state) {
 
   var isCordova = platformInfo.isCordova;
   var isWP = platformInfo.isWP;
@@ -36,7 +36,7 @@ angular.module('copayApp.controllers').controller('tabScanController', function(
       return;
     }
 
-    go.confirm(parsedData);
+    $state.go('confirm', parsedData);
   };
 
   var _parseFromUri = function(uri) {
@@ -95,7 +95,7 @@ angular.module('copayApp.controllers').controller('tabScanController', function(
     $timeout(function() {
       var data = isIOS ? result : result.text;
       // Check if the current page is tabs.scan
-      if (go.is('tabs.scan')) {
+      if ($state.is('tabs.scan')) {
         _dataScanned(data);
         return;
       }
@@ -190,7 +190,7 @@ angular.module('copayApp.controllers').controller('tabScanController', function(
     }
     // Check if the current page is tabs.scan
     _scanStop();
-    if (go.is('tabs.scan')) {
+    if ($state.is('tabs.scan')) {
       _dataScanned(data);
       return;
     }
