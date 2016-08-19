@@ -10,9 +10,9 @@
   <ion-content class="has-header" ng-controller="preferencesDeleteWalletController" cache-view="false">
     <div translate>Warning!</div>
     <div translate>Permanently delete this wallet. THIS ACTION CANNOT BE REVERSED</div>
-    <div class="right" ng-style="{'color':index.backgroundColor}" ng-show="!isDeletingWallet">
-      {{index.walletName}}<span ng-show="index.alias">({{index.alias}})</span>
+    <div class="right" ng-style="{'color':backgroundColor}" ng-show="!isDeletingWallet">
+      <span ng-show="alias">{{alias}}</span>{{walletName}}
     </div>
-    <button class="button button-block button-stable" ng-click="deleteWallet()"translate>Delete wallet</button>
+    <button class="button button-block button-stable" ng-click="showDeletePopup()"translate>Delete wallet</button>
   </ion-content>
 </ion-view>
