@@ -1,7 +1,6 @@
 # Configs
 BUILDDIR=build
 ZIPFILE=copay-chrome-extension.zip
-VERSION=`cut -d '"' -f2 ../src/js/version.js|head -n 1`
 
 INCLUDE=$(shell cat ./include)
 INITIAL=./initial.js
@@ -13,7 +12,7 @@ all: $(ZIPFILE)
 dir: 
 	rm -rf $(BUILDDIR)
 	mkdir -p $(BUILDDIR)
-	sed "s/APP_VERSION/$(VERSION)/g" manifest.json > $(BUILDDIR)/manifest.json
+	cp manifest.json $(BUILDDIR)/manifest.json
 	cp -vf $(INITIAL) $(BUILDDIR)
 
 files:
