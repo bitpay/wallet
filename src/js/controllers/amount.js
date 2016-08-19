@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('amountController', function($rootScope, $scope, $filter, $timeout, $ionicScrollDelegate, platformInfo, lodash, configService, go, rateService, $stateParams, $window, $state, $log, txFormatService) {
+angular.module('copayApp.controllers').controller('amountController', function($rootScope, $scope, $filter, $timeout, $ionicScrollDelegate, platformInfo, lodash, configService, rateService, $stateParams, $window, $state, $log, txFormatService) {
 
 
   var unitToSatoshi;

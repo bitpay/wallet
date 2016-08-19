@@ -1,6 +1,6 @@
 'use strict';
 angular.module('copayApp.controllers').controller('glideraUriController',
-  function($scope, $log, $stateParams, $timeout, profileService, configService, glideraService, storageService, go, ongoingProcess) {
+  function($scope, $log, $stateParams, $timeout, profileService, configService, glideraService, storageService, $state, ongoingProcess) {
 
     this.submitOauthCode = function(code) {
       $log.debug('Glidera Oauth Code:' + code);
@@ -21,7 +21,7 @@ angular.module('copayApp.controllers').controller('glideraUriController',
             storageService.setGlideraToken(network, data.access_token, function() {
               $scope.$emit('Local/GlideraUpdated', data.access_token);
               $timeout(function() {
-                go.path('glidera');
+                $state.go('glidera');
                 $scope.$apply();
               }, 100);
             });
