@@ -4,6 +4,7 @@
   "nameNoSpace": "copay",
   "nameCase": "Copay",
   "nameCaseNoSpace": "Copay",
+  "bundleName": "copay",
   "url": "https://copay.io",
   "appDescription": "Copay Bitcoin Wallet",
   "winAppName": "CopayWallet",
