@@ -1,9 +1,10 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('tabHomeController',
-  function($rootScope, $timeout, $scope, $state, lodash, profileService, walletService, configService, txFormatService, $ionicModal, $log) {
+  function($rootScope, $timeout, $scope, $state, lodash, profileService, walletService, configService, txFormatService, $ionicModal, $log, platformInfo) {
     var self = this;
 
+    self.glideraEnabled = configService.getSync().glidera.enabled;
 
     // wallet list change
     $rootScope.$on('Local/WalletListUpdated', function(event) {
@@ -135,5 +136,12 @@ angular.module('copayApp.controllers').controller('tabHomeController',
       });
     };
 
-    //    $state.transitionTo('confirm', {toAmount:555500, toAddress: 'mvfAwUJohJWibGzBZgAUGsDarsr4Z4NovU', toName: 'bla bla'});
+    $scope.init = function() {
+      var config = configService.getSync();
+      var isWindowsPhoneApp = platformInfo.isWP && isCordova;
+      var glideraEnabled = config.glidera.enabled;
+      var coinbaseEnabled = config.coinbase.enabled;
+      $scope.buyAndSellEnabled = !isWindowsPhoneApp && (glideraEnabled || coinbaseEnabled);
+    }
+
   });
