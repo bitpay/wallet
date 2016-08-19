@@ -1,0 +1,129 @@
+<ion-view>
+  <ion-nav-bar class="bar-stable">
+    <ion-nav-buttons side="primary">
+      <button class="button no-border" ui-sref="add.main">
+        <i class="icon ion-chevron-left"></i> Back
+      </button>
+    </ion-nav-buttons>
+    <ion-nav-title>Create new wallet</ion-nav-title>
+  </ion-nav-bar>
+
+  <ion-content ng-controller="createController as create" ng-init="create.setTotalCopayers(1)">
+
+    <div class="padding assertive" ng-show="create.error">
+      {{create.error|translate}}
+    </div>
+
+    <form name="setupForm" ng-submit="create.create(setupForm)" novalidate>
+
+      <div class="list">
+        <label ng-hide="create.hideWalletName" class="item item-input item-stacked-label">
+          <span class="input-label" translate>Wallet name</span>
+          <input type="text"
+                 placeholder="{{'Family vacation funds'|translate}}"
+                 name="walletName"
+                 ng-model="walletName"
+                 ng-required="true"
+                 ng-focus="create.formFocus('wallet-name')"
+                 ng-blur="create.formFocus(false)">
+        </label>
+
+        <ion-toggle ng-model="showAdv" toggle-class="toggle-stable">
+          <span translate ng-show="!showAdv">Show advanced options</span>
+          <span translate ng-show="showAdv">Hide advanced options</span>
+        </ion-toggle>
+
+        <div ng-show="showAdv">
+
+          <label class="item item-input item-stacked-label">
+            <span class="input-label">Wallet Service URL</span>
+            <input type="text" id="bwsurl" name="bwsurl" ng-model="bwsurl">
+          </label>
+
+          <label class="item item-input item-select">
+            <div class="input-label" translate>
+              Wallet Key
+            </div>
+            <select class="m10t"
+                    ng-model="seedSource"
+                    ng-options="seed as seed.label for seed in create.seedOptions"
+                    ng-change="create.setSeedSource()">
+            </select>
+          </label>
+
+          <label class="item item-input item-stacked-label"
+                 ng-show="create.seedSourceId == 'trezor' || create.seedSourceId == 'ledger'">
+            <span class="input-label" translate>Account Number</span>
+            <input type="number" id="account" ng-model="account" ignore-mouse-wheel>
+          </label>
+
+          <div class="card" ng-show="create.seedSourceId=='new' && createPassphrase">
+            <div class="item item-text-wrap" translate>
+              WARNING: The password cannot be recovered. <b>Be sure to write it down</b>. The wallet can not be restored without the password.
+            </div>
+          </div>
+
+          <label class="item item-input item-stacked-label" ng-show="create.seedSourceId=='new'">
+            <span class="input-label" translate>Add a Password</span>
+            <input type="text"
+                   placeholder="{{'Add an optional password to secure the recovery phrase'|translate}}"
+                   autocapitalize="off"
+                   name="createPassphrase"
+                   ng-model="createPassphrase">
+          </label>
+
+
+          <label class="item item-input item-stacked-label" ng-show="create.seedSourceId=='set'">
+            <span class="input-label" translate>Wallet Recovery Phrase</span>
+            <input id="ext-master"
+                   placeholder="{{'Enter the recovery phrase (BIP39)'|translate}}"
+                   autocapitalize="off"
+                   type="text"
+                   name="privateKey"
+                   ng-model="privateKey">
+          </label>
+
+          <label class="item item-input item-stacked-label" ng-show="create.seedSourceId=='set'">
+            <span class="input-label" translate>Password</span>
+            <input type="text"
+                   placeholder="{{'The recovery phrase could require a password to be imported'|translate}}"
+                   autocapitalize="off"
+                   name="passphrase"
+                   ng-model="passphrase">
+          </label>
+
+          <label class="item item-input item-stacked-label" ng-show="create.seedSourceId == 'set'">
+            <span class="input-label" translate>Derivation Path</span>
+            <input type="text"
+                   placeholder="{{'BIP32 path for address derivation'|translate}}"
+                   name="derivationPath"
+                   ng-model="derivationPath">
+          </label>
+
+          <ion-toggle ng-show="create.seedSourceId == 'new'" ng-model="testnetEnabled" toggle-class="toggle-positive">
+            Testnet
+          </ion-toggle>
+
+          <ion-toggle ng-model="singleAddressEnabled" toggle-class="toggle-positive">
+            <span translate>Single Address Wallet</span>
+            <small translate>For audit purposes</small>
+          </ion-toggle>
+
+        </div> <!-- advanced -->
+      </div> <!-- list -->
+
+      <button type="submit"
+              class="button button-block button-positive"
+              ng-show="totalCopayers != 1" ng-disabled="setupForm.$invalid">
+        <span translate>Create {{requiredCopayers}}-of-{{totalCopayers}} wallet</span>
+      </button>
+
+      <button type="submit"
+              class="button button-block button-positive"
+              ng-show="totalCopayers == 1" ng-disabled="setupForm.$invalid">
+        <span translate>Create new wallet</span>
+      </button>
+
+    </form>
+  </ion-content>
+</ion-view>

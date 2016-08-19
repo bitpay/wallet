@@ -1027,6 +1027,10 @@ input[type="number"] {
   }
 }
 
+.tab-item {
+  max-width: 100%;
+}
+
 @media all and (max-height: 480px) {
 	.calculator .button-calc .columns { padding: 10px; }
   .calculator .header-calc { top: 11%; }
@@ -1041,4 +1045,3 @@ input[type="number"] {
 	.calculator .button-calc .columns { padding: 20px; }
   .calculator .header-calc { top: 18%; }
 }
-
