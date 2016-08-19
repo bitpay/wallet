@@ -3,14 +3,13 @@
 <ion-view>
   <ion-nav-bar class="bar-stable">
     <ion-nav-title>{{wallet.name}}</ion-nav-title>
-
     <ion-nav-buttons side="primary">
-      <button class="button" href ui-sref="tabs.home">
-        <i class="ion-arrow-left-c"></i> Back
+      <button class="button no-border" ui-sref="tabs.home">
+        <i class="icon ion-chevron-left"></i> Back
       </button>
     </ion-nav-buttons>
     <ion-nav-buttons side="secondary">
-        <button class="button button-icon icon ion-ios-settings" href ui-sref="wallet.preferences"></button>
+      <button class="button button-icon icon ion-ios-settings" ui-sref="wallet.preferences"></button>
     </ion-nav-buttons>
   </ion-nav-bar>
 
