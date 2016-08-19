@@ -1,12 +1,12 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('preferencesBwsUrlController',
-  function($scope, $log, configService, applicationService, profileService, storageService) {
+  function($scope, $log, $stateParams, configService, applicationService, profileService, storageService) {
     $scope.error = null;
     $scope.success = null;
 
-    var fc = profileService.focusedClient;
-    var walletId = fc.credentials.walletId;
+    var wallet = profileService.getWallet($stateParams.walletId);
+    var walletId = wallet.credentials.walletId;
     var defaults = configService.getDefaults();
     var config = configService.getSync();
 

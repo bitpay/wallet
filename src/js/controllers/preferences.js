@@ -11,7 +11,6 @@ angular.module('copayApp.controllers').controller('preferencesController',
       $scope.externalSource = null;
 
       if (wallet) {
-        walletService.getStatus(wallet, {}, function(err, status) {});
         var config = configService.getSync();
         config.aliasFor = config.aliasFor || {};
         $scope.alias = config.aliasFor[walletId] || wallet.credentials.walletName;
