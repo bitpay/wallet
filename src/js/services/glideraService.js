@@ -14,21 +14,18 @@ angular.module('copayApp.services').factory('glideraService', function($http, $l
         credentials.REDIRECT_URI = 'copay://glidera';
         credentials.CLIENT_ID = '6163427a2f37d1b2022ececd6d6c9cdd';
         credentials.CLIENT_SECRET = '599cc3af26108c6fece8ab17c3f35867';
-      }
-      else {
+      } else {
         credentials.REDIRECT_URI = 'urn:ietf:wg:oauth:2.0:oob';
         credentials.CLIENT_ID = 'c402f4a753755456e8c384fb65b7be1d';
         credentials.CLIENT_SECRET = '3ce826198e3618d0b8ed341ab91fe4e5';
       }
-    }
-    else {
+    } else {
       credentials.HOST = 'https://glidera.io';
       if (isCordova) {
         credentials.REDIRECT_URI = 'copay://glidera';
         credentials.CLIENT_ID = '9c8023f0ac0128235b7b27a6f2610c83';
         credentials.CLIENT_SECRET = '30431511407b47f25a83bffd72881d55';
-      }
-      else {
+      } else {
         credentials.REDIRECT_URI = 'urn:ietf:wg:oauth:2.0:oob';
         credentials.CLIENT_ID = '8a9e8a9cf155db430c1ea6c7889afed1';
         credentials.CLIENT_SECRET = '24ddec578f38d5488bfe13601933c05f';
@@ -37,11 +34,7 @@ angular.module('copayApp.services').factory('glideraService', function($http, $l
   };
 
   root.getOauthCodeUrl = function() {
-    return credentials.HOST 
-      + '/oauth2/auth?response_type=code&client_id=' 
-      + credentials.CLIENT_ID 
-      + '&redirect_uri='
-      + credentials.REDIRECT_URI;
+    return credentials.HOST + '/oauth2/auth?response_type=code&client_id=' + credentials.CLIENT_ID + '&redirect_uri=' + credentials.REDIRECT_URI;
   };
 
   root.getToken = function(code, cb) {
@@ -52,10 +45,10 @@ angular.module('copayApp.services').factory('glideraService', function($http, $l
         'Content-Type': 'application/json',
         'Accept': 'application/json'
       },
-      data: { 
-        grant_type : 'authorization_code',
+      data: {
+        grant_type: 'authorization_code',
         code: code,
-        client_id : credentials.CLIENT_ID,
+        client_id: credentials.CLIENT_ID,
         client_secret: credentials.CLIENT_SECRET,
         redirect_uri: credentials.REDIRECT_URI
       }
@@ -63,7 +56,7 @@ angular.module('copayApp.services').factory('glideraService', function($http, $l
 
     $http(req).then(function(data) {
       $log.info('Glidera Authorization Access Token: SUCCESS');
-      return cb(null, data.data); 
+      return cb(null, data.data);
     }, function(data) {
       $log.error('Glidera Authorization Access Token: ERROR ' + data.statusText);
       return cb('Glidera Authorization Access Token: ERROR ' + data.statusText);
@@ -203,12 +196,12 @@ angular.module('copayApp.services').factory('glideraService', function($http, $l
     };
     $http(_post('/prices/sell', token, null, data)).then(function(data) {
       $log.info('Glidera Sell Price: SUCCESS');
-      return cb(null, data.data); 
+      return cb(null, data.data);
     }, function(data) {
       $log.error('Glidera Sell Price: ERROR ' + data.statusText);
       return cb('Glidera Sell Price: ERROR ' + data.statusText);
     });
-  }; 
+  };
 
   root.sell = function(token, twoFaCode, data, cb) {
     var data = {
@@ -220,7 +213,7 @@ angular.module('copayApp.services').factory('glideraService', function($http, $l
     };
     $http(_post('/sell', token, twoFaCode, data)).then(function(data) {
       $log.info('Glidera Sell: SUCCESS');
-      return cb(null, data.data); 
+      return cb(null, data.data);
     }, function(data) {
       $log.error('Glidera Sell Request: ERROR ' + data.statusText);
       return cb('Glidera Sell Request: ERROR ' + data.statusText);
@@ -234,7 +227,7 @@ angular.module('copayApp.services').factory('glideraService', function($http, $l
     };
     $http(_post('/prices/buy', token, null, data)).then(function(data) {
       $log.info('Glidera Buy Price: SUCCESS');
-      return cb(null, data.data); 
+      return cb(null, data.data);
     }, function(data) {
       $log.error('Glidera Buy Price: ERROR ' + data.statusText);
       return cb('Glidera Buy Price: ERROR ' + data.statusText);
@@ -251,7 +244,7 @@ angular.module('copayApp.services').factory('glideraService', function($http, $l
     };
     $http(_post('/buy', token, twoFaCode, data)).then(function(data) {
       $log.info('Glidera Buy: SUCCESS');
-      return cb(null, data.data); 
+      return cb(null, data.data);
     }, function(data) {
       $log.error('Glidera Buy Request: ERROR ' + data.statusText);
       return cb('Glidera Buy Request: ERROR ' + data.statusText);
@@ -292,7 +285,7 @@ angular.module('copayApp.services').factory('glideraService', function($http, $l
           } else {
             root.glideraToken = accessToken;
             root.glideraPermissions = p;
-            root.updateGlidera({
+            root.update({
               fullUpdate: true
             });
           }
@@ -301,7 +294,7 @@ angular.module('copayApp.services').factory('glideraService', function($http, $l
     });
   };
 
-  root.updateGlidera = function(opts) {
+  root.update = function(opts) {
     if (!root.glideraToken || !root.glideraPermissions) return;
     var accessToken = root.glideraToken;
     var permissions = root.glideraPermissions;
@@ -339,7 +332,9 @@ angular.module('copayApp.services').factory('glideraService', function($http, $l
     root.init();
   });
 
-
+  $rootScope.$on('NewBlock', function() {    
+    root.update();   
+  });
 
   return root;
 
