@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.services').factory('configService', function(storageService, lodash, $log) {
+angular.module('copayApp.services').factory('configService', function(storageService, lodash, $log, $timeout) {
   var root = {};
 
   var defaultConfig = {
@@ -79,6 +79,16 @@ angular.module('copayApp.services').factory('configService', function(storageSer
     return configCache;
   };
 
+  root._queue = [];
+  root.whenAvailable = function(cb) {
+    if (!configCache) {
+      root._queue.push(cb);
+      return;
+    }
+    return cb(configCache);
+  };
+
+
   root.get = function(cb) {
 
     storageService.getConfig(function(err, localConfig) {
@@ -118,6 +128,14 @@ angular.module('copayApp.services').factory('configService', function(storageSer
       configCache.coinbase.testnet = false;
 
       $log.debug('Preferences read:', configCache)
+
+      lodash.each(root._queue, function(x) {
+        $timeout(function() {
+          return x(configCache);
+        }, 1);
+      });
+      root._queue = [];
+
       return cb(err, configCache);
     });
   };
