@@ -76,12 +76,12 @@
       <h4 translate>Export options</h4>
       <button class="button button-block button-positive"
         ng-disabled="(!password || password != repeatpassword)"
-        ng-style="{'background-color':index.backgroundColor}"
+        ng-style="{'background-color':wallet.color}"
         ng-click="copyWalletBackup()">
         <i class="fi-clipboard-pencil"></i>
         <span translate>Copy to clipboard</span></button>
       <button class="button button-block button-positive" ng-disabled="(!password || password != repeatpassword)"
-        ng-style="{'background-color':index.backgroundColor}"
+        ng-style="{'background-color':wallet.color}"
         ng-click="sendWalletBackup()"><i class="fi-mail"></i>
         <span translate>Send by email</span></button>
     </div>
