@@ -1,9 +1,11 @@
 'use strict';
 
-angular.module('copayApp.services').factory('glideraService', function($http, $log, platformInfo) {
+angular.module('copayApp.services').factory('glideraService', function($http, $log, platformInfo, storageService, configService) {
   var root = {};
   var credentials = {};
   var isCordova = platformInfo.isCordova;
+  //
+  //
 
   root.setCredentials = function(network) {
     if (network == 'testnet') {
@@ -255,6 +257,89 @@ angular.module('copayApp.services').factory('glideraService', function($http, $l
       return cb('Glidera Buy Request: ERROR ' + data.statusText);
     });
   };
+
+  root.init = function(accessToken) {
+    root.glideraEnabled = configService.getSync().glidera.enabled;
+    root.glideraTestnet = configService.getSync().glidera.testnet;
+    var network = root.glideraTestnet ? 'testnet' : 'livenet';
+
+    root.glideraToken = null;
+    root.glideraError = null;
+    root.glideraPermissions = null;
+    root.glideraEmail = null;
+    root.glideraPersonalInfo = null;
+    root.glideraTxs = null;
+    root.glideraStatus = null;
+
+    if (!root.glideraEnabled) return;
+
+    root.setCredentials(network);
+
+    var getToken = function(cb) {
+      if (accessToken) {
+        cb(null, accessToken);
+      } else {
+        storageService.getGlideraToken(network, cb);
+      }
+    };
+
+    getToken(function(err, accessToken) {
+      if (err || !accessToken) return;
+      else {
+        root.getAccessTokenPermissions(accessToken, function(err, p) {
+          if (err) {
+            root.glideraError = err;
+          } else {
+            root.glideraToken = accessToken;
+            root.glideraPermissions = p;
+            root.updateGlidera({
+              fullUpdate: true
+            });
+          }
+        });
+      }
+    });
+  };
+
+  root.updateGlidera = function(opts) {
+    if (!root.glideraToken || !root.glideraPermissions) return;
+    var accessToken = root.glideraToken;
+    var permissions = root.glideraPermissions;
+
+    opts = opts || {};
+
+    root.getStatus(accessToken, function(err, data) {
+      root.glideraStatus = data;
+    });
+
+    root.getLimits(accessToken, function(err, limits) {
+      root.glideraLimits = limits;
+    });
+
+    if (permissions.transaction_history) {
+      root.getTransactions(accessToken, function(err, data) {
+        root.glideraTxs = data;
+      });
+    }
+
+    if (permissions.view_email_address && opts.fullUpdate) {
+      root.getEmail(accessToken, function(err, data) {
+        root.glideraEmail = data.email;
+      });
+    }
+    if (permissions.personal_info && opts.fullUpdate) {
+      root.getPersonalInfo(accessToken, function(err, data) {
+        root.glideraPersonalInfo = data;
+      });
+    }
+  };
+
+  configService.whenAvailable(function() {
+    $log.debug('Init Glidera Service...');
+    root.init();
+  });
+
+
 
   return root;
 
