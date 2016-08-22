@@ -877,6 +877,13 @@ input[type=file] {
   width: inherit;
 }
 
+.wallets {
+  height: 105px;
+}
+
+.no-pager .swiper-pagination {
+  display: none;
+}
 /*
  * Calculator
  */

@@ -142,4 +142,27 @@ angular.module('copayApp.directives')
         });
       }
     }
+  })
+  .directive('wallets', function(profileService, lodash) {
+    return {
+      restrict: 'E',
+      templateUrl: 'views/includes/wallets.html',
+      scope: {},
+      link: function(scope, element, attrs) {
+        var opts = {};
+        opts.onlyComplete = attrs.onlyComplete == 'true' ? true : null;
+        opts.network = attrs.network;
+        opts.n = attrs.n;
+
+        scope.wallets = profileService.getWallets(opts);
+
+        scope.$on("$ionicSlides.sliderInitialized", function(event, data) {
+          scope.slider = data.slider;
+        });
+
+        scope.$on("$ionicSlides.slideChangeEnd", function(event, data) {
+          scope.index = data.slider.activeIndex;
+        });
+      }
+    }
   });
