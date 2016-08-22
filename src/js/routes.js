@@ -608,7 +608,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
      *
      */
 
-      .state('amazon', {
+    .state('amazon', {
         url: '/amazon',
         abstract: true,
         template: '<ion-nav-view name="amazon"></ion-nav-view>'
@@ -630,7 +630,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         }
       });
   })
-  .run(function($rootScope, $state, $location, $log, $timeout, $ionicPlatform, lodash, platformInfo, profileService, uxLanguage, gettextCatalog) {
+  .run(function($rootScope, $state, $location, $log, $timeout, $ionicHistory, $ionicPlatform, lodash, platformInfo, profileService, uxLanguage, gettextCatalog) {
 
     if (platformInfo.isCordova) {
       if (screen.width < 768) {
@@ -678,14 +678,28 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
           StatusBar.styleLightContent();
         }
 
-        $ionicPlatform.registerBackButtonAction(function(event) {
-          event.preventDefault();
-        }, 100);
+        $ionicPlatform.registerBackButtonAction(function(e) {
 
-        var secondBackButtonPress = false;
-        var intval = setInterval(function() {
-          secondBackButtonPress = false;
-        }, 5000);
+            var fromDisclaimer = $ionicHistory.currentStateName().match(/disclaimer/) ? 'true' : '';
+            var fromTabs = $ionicHistory.currentStateName().match(/tabs/) ? 'true' : '';
+
+            if ($rootScope.backButtonPressedOnceToExit || fromDisclaimer) {
+              ionic.Platform.exitApp();
+            }
+
+            else if ($ionicHistory.backView() && !fromTabs) {
+              $ionicHistory.goBack();
+            }
+            else {
+              $rootScope.backButtonPressedOnceToExit = true;
+              window.plugins.toast.showShortBottom(gettextCatalog.getString('Press again to exit'));
+              setInterval(function() {
+                $rootScope.backButtonPressedOnceToExit = false;
+              }, 5000);
+            }
+            e.preventDefault();
+          },
+          101);
 
         $ionicPlatform.on('pause', function() {
           // Nothing to do
@@ -693,30 +707,6 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
 
         $ionicPlatform.on('resume', function() {
           $rootScope.$emit('Local/Resume');
-        });
-
-        $ionicPlatform.on('backbutton', function(event) {
-
-          var loc = window.location;
-          var fromDisclaimer = loc.toString().match(/disclaimer/) ? 'true' : '';
-          var fromHome = loc.toString().match(/index\.html#\/$/) ? 'true' : '';
-
-          if (fromDisclaimer == 'true')
-            navigator.app.exitApp();
-
-          if (platformInfo.isMobile && fromHome == 'true') {
-            if (secondBackButtonPress)
-              navigator.app.exitApp();
-            else
-              window.plugins.toast.showShortBottom(gettextCatalog.getString('Press again to exit'));
-          }
-
-          if (secondBackButtonPress)
-            clearInterval(intval);
-          else
-            secondBackButtonPress = true;
-
-          $state.go('tabs.home');
         });
 
         $ionicPlatform.on('menubutton', function() {
