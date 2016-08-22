@@ -46,6 +46,7 @@ angular.module('copayApp.controllers').controller('txpDetailsController', functi
           ongoingProcess.set('signingTx', true);
           walletService.signTx(fc, txp, function(err, signedTxp) {
             ongoingProcess.set('signingTx', false);
+            walletService.lock(fc);
             if (err) {
               return setError(err);
             }
@@ -77,10 +78,6 @@ angular.module('copayApp.controllers').controller('txpDetailsController', functi
       $scope.$digest();
     }, 10);
   };
-
-  $scope.$on('$destroy', function() {
-    walletService.lock(fc);
-  });
 
   $scope.reject = function(txp) {
     $scope.loading = true;
