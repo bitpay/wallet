@@ -64,7 +64,6 @@ angular.module('copayApp.controllers').controller('tabSettingsController', funct
       }
     };
     configService.set(opts, function(err) {
-      $rootScope.$emit('Local/SpendUnconfirmedUpdated', $scope.spendUnconfirmed);
       if (err) $log.debug(err);
     });
   };
