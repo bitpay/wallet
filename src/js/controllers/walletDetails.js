@@ -15,7 +15,6 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
   $scope.openSearchModal = function() {
     var wallet = profileService.getWallet($stateParams.walletId);
     $scope.color = wallet.color;
-    $scope.self = self;
 
     $ionicModal.fromTemplateUrl('views/modals/search.html', {
       scope: $scope,
@@ -73,7 +72,7 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
 
     var progressFn = function(txs) {
       $scope.updatingTxHistoryProgress = txs ? txs.length : 0;
-      completeTxHistory = txs;
+      $scope.completeTxHistory = txs;
       $scope.showHistory();
       $scope.$digest();
     };
@@ -88,7 +87,7 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
           $scope.updateTxHistoryError = true;
           return;
         }
-        completeTxHistory = txHistory;
+        $scope.completeTxHistory = txHistory;
 
         $scope.showHistory();
         $scope.$apply();
@@ -97,12 +96,9 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
   };
 
   $scope.showHistory = function() {
-    if ($scope.isSearching) {
-      $scope.txHistorySearchResults = filteredTxHistory ? filteredTxHistory.slice(0, (currentTxHistoryPage + 1) * HISTORY_SHOW_LIMIT) : [];
-      $scope.txHistoryShowMore = filteredTxHistory.length > $scope.txHistorySearchResults.length;
-    } else if (completeTxHistory) {
-      $scope.txHistory = completeTxHistory.slice(0, (currentTxHistoryPage + 1) * HISTORY_SHOW_LIMIT);
-      $scope.txHistoryShowMore = completeTxHistory.length > $scope.txHistory.length;
+    if ($scope.completeTxHistory) {
+      $scope.txHistory = $scope.completeTxHistory.slice(0, (currentTxHistoryPage + 1) * HISTORY_SHOW_LIMIT);
+      $scope.txHistoryShowMore = $scope.completeTxHistory.length > $scope.txHistory.length;
     }
   };
 
@@ -122,12 +118,11 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
   };
 
   var currentTxHistoryPage;
-  var completeTxHistory;
   var wallet;
 
   $scope.init = function() {
     currentTxHistoryPage = 0;
-    completeTxHistory = [];
+    $scope.completeTxHistory = [];
 
     wallet = profileService.getWallet($stateParams.walletId);
     $scope.wallet = wallet;
