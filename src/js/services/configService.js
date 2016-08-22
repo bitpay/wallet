@@ -115,13 +115,14 @@ angular.module('copayApp.services').factory('configService', function(storageSer
           configCache.pushNotifications = defaultConfig.pushNotifications;
         }
 
-        configCache.bwsFor = configCache.bwsFor || {};
-        configCache.colorFor = configCache.colorFor || {};
-        configCache.aliasFor = configCache.aliasFor || {};
-
       } else {
         configCache = lodash.clone(defaultConfig);
       };
+
+      configCache.bwsFor = configCache.bwsFor || {};
+      configCache.colorFor = configCache.colorFor || {};
+      configCache.aliasFor = configCache.aliasFor || {};
+
 
       // Glidera
       // Disabled for testnet
