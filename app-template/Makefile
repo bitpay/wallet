@@ -20,6 +20,8 @@ ios: $(WORKDIR)ios
 
 android: project-android
 	mkdir -p android/platforms/android/res/xml/
+	mkdir $(WORKDIR)android/scripts
+	cp -R scripts/* $(WORKDIR)android/scripts
 	cp android/build-extras.gradle  $(WORKDIR)android/platforms/android/build-extras.gradle
 	cp android/project.properties  $(WORKDIR)android/platforms/android/project.properties
 	cp -R android/res/*  $(WORKDIR)android/platforms/android/res
