@@ -6,20 +6,6 @@ angular.module('copayApp.controllers').controller('tabHomeController',
 
     self.glideraEnabled = configService.getSync().glidera.enabled;
 
-    // wallet list change
-    $rootScope.$on('Local/WalletListUpdated', function(event) {
-      self.walletSelection = false;
-      self.setWallets();
-    });
-
-    $rootScope.$on('Local/ColorUpdated', function(event) {
-      self.setWallets();
-    });
-
-    $rootScope.$on('Local/AliasUpdated', function(event) {
-      self.setWallets();
-    });
-
     self.setWallets = function() {
       $scope.wallets = profileService.getWallets();
     };

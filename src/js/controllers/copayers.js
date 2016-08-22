@@ -53,7 +53,6 @@ angular.module('copayApp.controllers').controller('copayersController',
     };
 
     $scope.deleteWallet = function() {
-      var wallet = profileService.focusedClient;
       if ($scope.isCordova) {
         navigator.notification.confirm(
           delete_msg,

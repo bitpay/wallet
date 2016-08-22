@@ -24,9 +24,11 @@ angular.module('copayApp.directives')
           var URI = bitcore.URI;
           var Address = bitcore.Address
           var validator = function(value) {
-            if (!profileService.focusedClient)
-              return;
-            var networkName = profileService.focusedClient.credentials.network;
+            var networkName = attrs.networkName;
+
+            if (!networkName) 
+              throw 'validAddress should provide network name';
+
             // Regular url
             if (/^https?:\/\//.test(value)) {
               ctrl.$setValidity('validAddress', true);
