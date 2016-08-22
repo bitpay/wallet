@@ -12,8 +12,7 @@ angular.module('copayApp.services')
     var errors = bwcService.getErrors();
     var usePushNotifications = isCordova && !isWP;
 
-    var FOREGROUND_UPDATE_PERIOD = 5;
-    var BACKGROUND_UPDATE_PERIOD = 30;
+    var UPDATE_PERIOD = 15;
 
     root.profile = null;
 
@@ -68,8 +67,6 @@ angular.module('copayApp.services')
       wallet.on('notification', function(n) {
         $log.debug('BWC Notification:', n);
 
-        $ionicHistory.clearCache();
-
         notificationService.newBWCNotification(n,
           walletId, wallet.credentials.walletName);
 
@@ -94,7 +91,7 @@ angular.module('copayApp.services')
           $log.error('Could not init notifications err:', err);
           return;
         }
-        wallet.setNotificationsInterval(BACKGROUND_UPDATE_PERIOD);
+        wallet.setNotificationsInterval(UPDATE_PERIOD);
       });
 
 
@@ -143,7 +140,6 @@ angular.module('copayApp.services')
           }
 
           root.storeProfileIfDirty();
-          $rootScope.$emit('Local/ValidatingWalletEnded', walletId, isOK);
         });
       }, delay);
     };
@@ -193,8 +189,6 @@ angular.module('copayApp.services')
               totalBound += bound;
               if (i == l) {
                 $log.info('Bound ' + totalBound + ' out of ' + l + ' wallets');
-                if (totalBound)
-                  $rootScope.$emit('Local/WalletListUpdated');
                 return cb();
               }
             });
@@ -206,7 +200,15 @@ angular.module('copayApp.services')
             root.pushNotificationsInit();
 
           root.isBound = true;
-          $rootScope.$emit('Local/ProfileBound');
+
+          lodash.each(root._queue, function(x) {
+            $timeout(function() {
+              return x();
+            }, 1);
+          });
+          root._queue = [];
+
+
 
           root.isDisclaimerAccepted(function(val) {
             if (!val) {
@@ -217,6 +219,15 @@ angular.module('copayApp.services')
           });
         });
       });
+    };
+
+    root._queue = [];
+    root.whenAvailable = function(cb) {
+      if (!root.isBound) {
+        root._queue.push(cb);
+        return;
+      }
+      return cb();
     };
 
     root.pushNotificationsInit = function() {
@@ -436,14 +447,9 @@ angular.module('copayApp.services')
         if (err) $log.warn(err);
       });
 
-
-      $timeout(function() {
-        $rootScope.$emit('Local/WalletListUpdated');
-
-        storageService.storeProfile(root.profile, function(err) {
-          if (err) return cb(err);
-          return cb();
-        });
+      storageService.storeProfile(root.profile, function(err) {
+        if (err) return cb(err);
+        return cb();
       });
     };
 
@@ -479,7 +485,6 @@ angular.module('copayApp.services')
         root.runValidation(client);
 
       root.bindWalletClient(client);
-      $rootScope.$emit('Local/WalletListUpdated', client);
 
       var saveBwsUrl = function(cb) {
         var defaults = configService.getDefaults();
