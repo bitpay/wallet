@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.services').factory('configService', function(storageService, lodash, $log, $timeout) {
+angular.module('copayApp.services').factory('configService', function(storageService, lodash, $log, $timeout, $rootScope) {
   var root = {};
 
   var defaultConfig = {
@@ -115,6 +115,10 @@ angular.module('copayApp.services').factory('configService', function(storageSer
           configCache.pushNotifications = defaultConfig.pushNotifications;
         }
 
+        configCache.bwsFor = configCache.bwsFor || {};
+        configCache.colorFor = configCache.colorFor || {};
+        configCache.aliasFor = configCache.aliasFor || {};
+
       } else {
         configCache = lodash.clone(defaultConfig);
       };
@@ -157,6 +161,8 @@ angular.module('copayApp.services').factory('configService', function(storageSer
 
       lodash.merge(config, oldOpts, newOpts);
       configCache = config;
+
+      $rootScope.$emit('Local/SettingsUpdated');
 
       storageService.storeConfig(JSON.stringify(config), cb);
     });
