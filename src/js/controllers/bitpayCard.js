@@ -5,8 +5,7 @@ angular.module('copayApp.controllers').controller('bitpayCardController', functi
   var self = this;
   var client;
 
-  var network = 'livenet';
-  self.sandbox = network == 'testnet' ? true : false;
+  self.sandbox = bitpayCardService.getEnvironment() == 'testnet' ? true : false;
 
   if (platformInfo.isCordova && StatusBar.isVisible) {
     StatusBar.backgroundColorByHexString("#293C92");
@@ -71,7 +70,6 @@ angular.module('copayApp.controllers').controller('bitpayCardController', functi
   this.update = function() {
     var dateRange = setDateRange($scope.dateRange);
     self.loadingSession = true;
-    bitpayCardService.setCredentials(network);
     bitpayCardService.isAuthenticated(function(err, bpSession) {
       self.loadingSession = false;
       if (err) {
@@ -110,14 +108,16 @@ angular.module('copayApp.controllers').controller('bitpayCardController', functi
     $scope.dateRange = 'last30Days';
     self.update();
 
-    self.allWallets = profileService.getWallets(network);
-    client = profileService.focusedClient;
-
-    if (!client) return;
+    var network = bitpayCardService.getEnvironment();
+    self.allWallets = profileService.getWallets({
+      network: network,
+      n: 1,
+      onlyComplete: true
+    });
 
     if (lodash.isEmpty(self.allWallets)) return;
 
-    if (client.credentials.network != network) return;
+    client = self.allWallets[0];
 
     if (client.credentials.n > 1)
       self.isMultisigWallet = true;
