@@ -106,7 +106,6 @@ angular.module('copayApp.controllers').controller('preferencesInformation',
         configService.set(opts, function(err) {
           $state.go('tabs.home');
           if (err) $log.warn(err);
-          $scope.$emit('Local/ColorUpdated');
         });
       };
 
