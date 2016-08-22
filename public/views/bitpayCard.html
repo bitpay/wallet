@@ -1,32 +1,21 @@
-<div ng-controller="bitpayCardController as bitpayCard">
-  <div class="topbar-container">
-    <nav ng-controller="topbarController as topbar" ng-style="{'background-color': '#293C92'}" class="tab-bar">
-      <section ng-show="!addFunds" class="left-small">
-        <a class="p10"
-           ng-click="topbar.goHome()">
-          <span class="text-close">Close</span>
-        </a>
-      </section>
+<ion-view>
+  <ion-nav-bar class="bar-stable">
+    <ion-nav-buttons side="primary">
+      <button class="button no-border" ui-sref="tabs.home">
+        Close
+      </button>
+    </ion-nav-buttons>
+    <ion-nav-title>BitPay Card</ion-nav-title>
+    <ion-nav-buttons side="secondary">
+      <button class="button no-border" ui-sref="bitpayCard.preferences">
+        <i class="icon ion-gear-b"></i>
+      </button>
+    </ion-nav-buttons>
+  </ion-nav-bar>
 
-      <section class="right-small" ng-show="bitpayCard.bitpayCardAuthenticated && !addFunds">
-        <a class="p10" href ui-sref="preferencesBitpayCard">
-          <i class="fi-widget size-24"></i>
-        </a>
-      </section>
+  <ion-content ng-controller="bitpayCardController as bitpayCard" ng-init="bitpayCard.init()">
 
-      <section class="middle tab-bar-section">
-        <h1 class="title ellipsis">
-          <span ng-show="!addFunds">BitPay Card</span>
-          <span ng-show="addFunds">Add Funds</span>
-        </h1>
-      </section>
-    </nav>
-  </div>
-
-  <div class="content bitpay_card p20b" ng-init="bitpayCard.init()">
-
-    <div class="box-notification text-center size-12 text-warning" ng-show="bitpayCard.sandbox">
-      <i class="fi-info"></i>
+    <div class="text-center size-12" ng-show="bitpayCard.sandbox">
       Sandbox version. Only for testing purpose
     </div>
 
@@ -34,16 +23,15 @@
       Loading...
     </div>
 
-    <div class="row" ng-show="!bitpayCard.bitpayCardAuthenticated && !bitpayCard.loadingSession">
-      <div class="columns large-centered large-6 medium-centered medium-6 small-centered small-10">
-        <div class="text-center m20v">
+    <div ng-show="!bitpayCard.bitpayCardAuthenticated && !bitpayCard.loadingSession">
+        <div class="text-center">
           <img src="img/bitpay-card-visa.svg" width="200">
         </div>
-        <h2 class="m20b text-center">
+        <h4 class="text-center">
           <span ng-show="!bitpayCard.bitpayCardTwoFactorPending">Login to your account</span>
           <span ng-show="bitpayCard.bitpayCardTwoFactorPending">2-Step Verification</span>
-        </h2>
-        <div class="m10b box-notification size-12 text-warning"
+        </h4>
+        <div class="m10b size-12"
              ng-show="bitpayCard.error"
              ng-click="bitpayCard.error = null">
           {{bitpayCard.error}}
@@ -55,37 +43,30 @@
              ng-submit="bitpayCard.authenticate()"
              novalidate>
 
-          <label>
-            Email
-            <div class="input">
-              <input
-                 name="email"
-                 type="email"
-                 ng-model="email"
-                 ng-disabled="bitpayCard.authenticating"
-                 required>
-            </div>
-          </label>
+          <div class="list">
+            <label class="item item-input item-stacked-label">
+              <span class="input-label">Email</span>
+              <input name="email"
+                     type="email"
+                     ng-model="email"
+                     ng-disabled="bitpayCard.authenticating"
+                     required>
+            </label>
 
-          <label>
-            Password
-            <div class="input">
-              <input
-                 name="password"
-                 type="password"
-                 ng-model="password"
-                 ng-disabled="bitpayCard.authenticating"
-                 required>
-            </div>
-          </label>
-
-          <div class="input text-center">
-            <input class="button black round tiny"
-                   ng-style="{'background-color': '#293C92'}"
-                   type="submit"
-                   ng-disabled="!authenticateForm.$valid || bitpayCard.authenticating"
-                   value="Login">
+            <label class="item item-input item-stacked-label">
+              <span class="input-label">Password</span>
+              <input name="password"
+                     type="password"
+                     ng-model="password"
+                     ng-disabled="bitpayCard.authenticating"
+                     required>
+            </label>
           </div>
+
+          <input class="button button-block button-positive"
+                 type="submit"
+                 ng-disabled="!authenticateForm.$valid || bitpayCard.authenticating"
+                 value="Login">
         </form>
 
         <p ng-show="bitpayCard.bitpayCardTwoFactorPending" class="size-12 text-center text-gray">
@@ -98,27 +79,22 @@
              ng-submit="bitpayCard.authenticate2FA()"
              novalidate>
 
-          <label>
-            Verification Code
-            <div class="input">
-              <input
-                 name="twoFactorCode"
-                 type="text"
-                 ng-model="twoFactorCode"
-                 ng-disabled="bitpayCard.authenticating"
-                 required>
-            </div>
-          </label>
-
-          <div class="input text-center">
-            <input class="button black round tiny"
-                   ng-style="{'background-color': '#293C92'}"
-                   type="submit"
-                   ng-disabled="!authenticate2FAForm.$valid || bitpayCard.authenticating"
-                   value="Login">
+          <div class="list">
+            <label class="item item-input item-stacked-label">
+              <span class="input-label">Verification Code</span>
+              <input name="twoFactorCode"
+                     type="text"
+                     ng-model="twoFactorCode"
+                     ng-disabled="bitpayCard.authenticating"
+                     required>
+            </label>
           </div>
+
+          <input class="button button-block button-positive"
+                 type="submit"
+                 ng-disabled="!authenticate2FAForm.$valid || bitpayCard.authenticating"
+                 value="Login">
         </form>
-      </div>
     </div>
 
     <div ng-show="bitpayCard.bitpayCardAuthenticated && !bitpayCard.visaCardActivated && !addFunds">
@@ -134,7 +110,7 @@
         </div>
         <div class="camera-icon" ng-show="bitpayCard.bitpayCardCurrentBalance">
           <a ng-click="addFunds = true">
-            <i class="fi-plus size-21"></i>
+            <i class="icon ion-plus size-21"></i>
           </a>
         </div>
       </div>
@@ -158,19 +134,19 @@
       </div>
 
       <div ng-show="loadingHistory" class="oh pr m20t text-gray text-center">
-        <img style="height:2em" class="animated flash infinite" src="img/icon-sync.svg">
+        <i class="icon ion-android-sync"></i>
       </div>
 
       <div
         ng-show="!loadingHistory"
         ng-repeat="tx in bitpayCard.bitpayCardTransactionHistory | orderBy: ['pending','-timestamp']"
-        class="row collapse last-transactions-content"
+        class="row"
         ng-init="bitpayCard.getMerchantInfo(tx)">
-        <div class="large-1 medium-1 small-1 columns" ng-init="icon = bitpayCard.getIconName(tx)">
+        <div class="col" ng-init="icon = bitpayCard.getIconName(tx)">
           <img class="m5t" ng-src="img/mcc-icons/{{icon}}.svg" width="22">
         </div>
 
-        <div class="large-4 medium-4 small-4 columns">
+        <div class="col">
           <div class="size-12 text-bold">
             {{tx.merchant.name}}
           </div>
@@ -180,14 +156,14 @@
         </div>
         <div
           ng-init="desc = bitpayCard.processDescription(tx)"
-          class="large-3 medium-3 small-3 show-for-medium-up columns size-12 text-gray text-right">
+          class="col">
           {{desc}}
         </div>
-        <div class="large-1 medium-1 small-1 columns text-right">
+        <div class="col">
           <img ng-show="!tx.pending" ng-src="img/check.svg" width="14">
           <img ng-show="tx.pending" ng-src="img/sync.svg" width="14">
         </div>
-        <div class="large-3 medium-3 small-3 columns text-right size-12 text-gray">
+        <div class="col text-right size-12 text-gray">
           <div class="size-14"
                ng-class="{
                'text-success': tx.amount.indexOf('-') == -1 && !tx.pending,
@@ -199,8 +175,7 @@
       </div>
     </div>
 
-    <div class="row m20t" ng-show="bitpayCard.bitpayCardAuthenticated && !bitpayCard.visaCardActivated && addFunds">
-      <div class="columns">
+    <div ng-show="bitpayCard.bitpayCardAuthenticated && !bitpayCard.visaCardActivated && addFunds">
         <div class="m10b box-notification size-12 text-warning"
              ng-show="bitpayCard.error"
              ng-click="bitpayCard.error = null">
@@ -211,41 +186,38 @@
            ng-submit="bitpayCard.sendFunds()"
            novalidate>
 
-          <label>
-            Amount
-            <div class="input">
+          <div class="list">
+            <label class="item item-input item-stacked-label">
+              <span class="input-label">Amount</span>
               <input
-                 type="number"
-                 id="fiat"
-                 name="fiat"
-                 ng-attr-placeholder="{{'Amount in USD'}}"
-                 min="0.01"
-                 max="2000"
-                 ng-model="fiat"
-                 autocomplete="off"
-                 required>
-
+                    type="number"
+                    id="fiat"
+                    name="fiat"
+                    ng-attr-placeholder="{{'Amount in USD'}}"
+                    min="0.01"
+                    max="2000"
+                    ng-model="fiat"
+                    autocomplete="off"
+                    required>
               <a class="postfix button black">USD</a>
-            </div>
-          </label>
+            </label>
 
-          <label>
-            Add From Copay Wallet
-          </label>
-          <div class="input">
-            <input
-               type="text"
-               id="address"
-               name="address"
-               ng-disabled="bitpayCard.selectedWalletId"
-               ng-attr-placeholder="{{'Choose your source wallet'}}"
-               ng-model="bitpayCard.selectedWalletName" required>
-            <a
-              class="postfix size-12 m0 text-gray"
-              ng-style="{'color': '#293C92'}"
-              ng-click="openWalletsModal(bitpayCard.allWallets)">
-              <i class="icon-wallet size-18"></i>
-            </a>
+            <label class="item item-input item-stacked-label">
+              <span class="input-label">Add From Copay Wallet</span>
+              <input
+                    type="text"
+                    id="address"
+                    name="address"
+                    ng-disabled="bitpayCard.selectedWalletId"
+                    ng-attr-placeholder="{{'Choose your source wallet'}}"
+                    ng-model="bitpayCard.selectedWalletName" required>
+              <a
+                    class="postfix size-12 m0 text-gray"
+                    ng-style="{'color': '#293C92'}"
+                    on-tap="openWalletsModal(bitpayCard.allWallets)">
+                <i class="icon-wallet size-18"></i>
+              </a>
+            </label>
           </div>
 
           <p class="size-12 text-warning" ng-show="bitpayCard.isMultisigWallet">
@@ -253,22 +225,24 @@
             Activity when the payment is fully signed.
           </p>
 
-          <div class="input row">
-            <div class="columns large-6 medium-6 small-6">
-            <input class="button outline dark-gray round expand"
-                   type="button" value="Cancel" ng-click="addFunds = false; bitpayCard.error = null">
+          <div class="row">
+            <div class="col">
+              <button class="button button-block button-stable"
+                      type="button"
+                      ng-click="addFunds = false; bitpayCard.error = null">
+                Cancel
+              </button>
             </div>
-            <div class="columns large-6 medium-6 small-6">
-            <input class="button black round expand"
-                   ng-style="{'background-color': '#293C92'}"
-                   ng-disabled="!bitpayCard.selectedWalletId || !fiat"
-                   type="submit" value="Send">
+            <div class="col">
+              <button class="button button-block button-positive"
+                      ng-disabled="!bitpayCard.selectedWalletId || !fiat"
+                      type="submit">
+                Send
+              </button>
             </div>
           </div>
         </form>
-      </div>
     </div>
+  </ion-content>
+</ion-view>
 
-    <div class="extra-margin-bottom"></div>
-  </div>
-</div>
