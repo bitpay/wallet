@@ -10,6 +10,79 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
   var errorPopup;
 
   var HISTORY_SHOW_LIMIT = 10;
+  $scope.txps = [];
+
+
+  var setPendingTxps = function(txps) {
+    if (!txps) {
+      $scope.txps = [];
+      return;
+    }
+    $scope.txps = lodash.sortBy(txps, 'createdOn').reverse();
+  };
+
+
+  $scope.updateStatus = function(force) {
+    $scope.updatingStatus = true;
+    $scope.updateStatusError = false;
+
+    walletService.getStatus(wallet, {
+      force: !!force,
+    }, function(err, status) {
+      $scope.updatingStatus = false;
+      if (err) {
+        $scope.status = null;
+        $scope.updateStatusError = true;
+        return;
+      }
+
+      setPendingTxps(status.pendingTxps);
+
+      $scope.status = status;
+      $scope.$apply();
+    });
+  };
+
+
+  var glideraActive = true; // TODO TODO TODO
+  // isGlidera flag is a security measure so glidera status is not
+  // only determined by the tx.message
+  $scope.openTxpModal = function(tx) {
+    var config = configService.getSync().wallet;
+    var scope = $rootScope.$new(true);
+    scope.tx = tx;
+    scope.wallet = tx.wallet;
+    scope.copayers = tx.wallet.copayers;
+    scope.isGlidera = glideraActive;
+    scope.currentSpendUnconfirmed = config.spendUnconfirmed;
+
+    $ionicModal.fromTemplateUrl('views/modals/txp-details.html', {
+      scope: scope
+    }).then(function(modal) {
+      scope.txpDetailsModal = modal;
+      scope.txpDetailsModal.show();
+    });
+  };
+
+
+  var listeners = [
+    $rootScope.$on('bwsEvent', function(e, walletId) {
+      if (walletId == wallet.id)
+        $scope.updateStatus();
+    }),
+    $rootScope.$on('Local/TxAction', function(e, walletId) {
+      var wallet = profileService.getWallet(walletId);
+      if (walletId == wallet.id)
+        $scope.updateStatus();
+    }),
+  ];
+
+  $scope.$on('$destroy', function() {
+    lodash.each(listeners, function(x){
+      x();
+    });
+  });
+
 
   $scope.openSearchModal = function() {
     $scope.color = wallet.color;
@@ -40,24 +113,6 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
 
   $scope.recreate = function() {
     walletService.recreate();
-  };
-
-  $scope.updateStatus = function(force) {
-    $scope.updatingStatus = true;
-    $scope.updateStatusError = false;
-    $timeout(function() {
-      walletService.getStatus(wallet, {
-        force: !!force,
-      }, function(err, status) {
-        $scope.updatingStatus = false;
-        if (err) {
-          $scope.status = null;
-          $scope.updateStatusError = true;
-          return;
-        }
-        $scope.status = status;
-      });
-    })
   };
 
   $scope.updateTxHistory = function() {

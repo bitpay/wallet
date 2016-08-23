@@ -28,6 +28,8 @@ angular.module('copayApp.controllers').controller('txpDetailsController', functi
     $scope.error = msg || gettextCatalog.getString('Could not send payment');
   }
 
+
+
   $scope.sign = function() {
     $scope.error = null;
     $scope.loading = true;

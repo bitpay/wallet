@@ -5,45 +5,30 @@
   </ion-nav-bar>
   <ion-content class="padding" ng-controller="tabHomeController">
 
-    <div ng-if="txps[0]">
-      <h3 class="title m0" translate>Payment Proposals</h3>
+
+    <div ng-if="events[0]">
+      <h3 class="title m0" translate>Activity</h3>
       <div class="list card">
         <ul>
-          <li ng-repeat="tx in txps" class="item item-icon-left"
-            ng-click="openTxpModal(tx)">
-            <i class="icon ion-ios-circle-filled" ng-show="tx.pendingForUs" ng-style="{'color':tx.wallet.color}"></i>
-            <span ng-show="!tx.merchant">
-              <span ng-show="addressbook[tx.toAddress] && !tx.message">
-                {{addressbook[tx.toAddress]}}
-              </span>
-              <span class="ellipsis" ng-show="!addressbook[tx.toAddress] && tx.message">
-                {{tx.message}}
-              </span>
-              <span ng-show="!addressbook[tx.toAddress] && !tx.message" translate>
-                Sending
-              </span>
-            </span>
-            <span ng-show="tx.merchant">
-              <span ng-show="tx.merchant.pr.ca"><i class="fi-lock"></i> {{tx.merchant.domain}}</span>
-              <span ng-show="!tx.merchant.pr.ca"><i class="fi-unlock"></i> {{tx.merchant.domain}}</span>
-            </span>
-            <span>
-              - {{tx.amountStr}}
+          <li ng-repeat="tx in txps" class="item item-icon-left" ng-click="xxx(tx)">
+            <span >
+              bla bla
             </span>
             <div class="item-note">
-              {{tx.wallet.name}} &middot; <time>{{ (tx.ts || tx.createdOn ) * 1000 | amTimeAgo}}</time>
+              blo blo &middot; <time>{{ (tx.ts || tx.createdOn ) * 1000 | amTimeAgo}}</time>
             </div>
           </li>
+
+          <li  class="item " ng-click="xxx(tx)"  ng-show="1">
+            <button class="button button-block button-passive">
+            More (5)
+            </button>
+          </li>
         </ul>
-
-
-        <div ng-show="lockedBalanceSat">
-          <span translate>Total Locked Balance</span>:
-          <b>{{lockedBalanceStr}} </b>
-          <span> {{lockedBalanceAlternative}} {{alternativeIsoCode}} </span>
-        </div>
       </div>
     </div>
+
+
 
     <div class="row">
       <div class="col col-80">
