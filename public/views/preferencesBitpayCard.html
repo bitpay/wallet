@@ -1,19 +1,19 @@
-<div
-  class="topbar-container"
-  ng-include="'views/includes/topbar.html'"
-  ng-init="titleSection='Preferences'; goBackToState = 'bitpayCard'; noColor = true">
-</div>
+<ion-view>
+  <ion-nav-bar class="bar-stable">
+    <ion-nav-buttons side="primary">
+      <button class="button no-border" ui-sref="bitpayCard.main">
+        <i class="icon ion-chevron-left"></i> Back
+      </button>
+    </ion-nav-buttons>
+    <ion-nav-title>Preferences</ion-nav-title>
+  </ion-nav-bar>
 
-<div class="content preferences" ng-controller="preferencesBitpayCardController as bitpay">
+  <ion-content ng-controller="preferencesBitpayCardController as bitpay">
+    <ul class="list">
+      <li class="item assertive" ng-click="bitpay.logout()">
+        Log out
+      </li>
+    </ul>
+  </ion-content>
+</ion-view>
 
-  <ul class="no-bullet m0">
-    <h4></h4>
-    <li ng-click="bitpay.logout()">
-      <i class="icon-arrow-right3 size-24 right text-gray"></i>
-      <span class="text-warning">Log out</span>
-    </li>
-  </ul>
-  <h4></h4>
-
-</div>
-<div class="extra-margin-bottom"></div>

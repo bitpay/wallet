@@ -4,7 +4,9 @@ angular.module('copayApp.controllers').controller('tabHomeController',
   function($rootScope, $timeout, $scope, $state, lodash, profileService, walletService, configService, txFormatService, $ionicModal, $log, platformInfo) {
     var self = this;
 
-    self.glideraEnabled = configService.getSync().glidera.enabled;
+    self.setWallets = function() {
+      $scope.wallets = profileService.getWallets();
+    };
 
 
     var setPendingTxps = function(txps) {
@@ -144,14 +146,13 @@ angular.module('copayApp.controllers').controller('tabHomeController',
       });
     });
 
-    var config = configService.getSync().wallet;
-
     var GLIDERA_LOCK_TIME = 6 * 60 * 60;
 
     var glideraActive = true; // TODO TODO TODO
     // isGlidera flag is a security measure so glidera status is not
     // only determined by the tx.message
     $scope.openTxpModal = function(tx) {
+      var config = configService.getSync().wallet;
       var scope = $rootScope.$new(true);
       scope.tx = tx;
       scope.wallet = tx.wallet;
@@ -167,12 +168,12 @@ angular.module('copayApp.controllers').controller('tabHomeController',
       });
     };
 
-    $scope.init = function() {
+    configService.whenAvailable(function() {
       var config = configService.getSync();
-      var isWindowsPhoneApp = platformInfo.isWP && isCordova;
       var glideraEnabled = config.glidera.enabled;
       var coinbaseEnabled = config.coinbase.enabled;
+      var isWindowsPhoneApp = platformInfo.isWP && isCordova;
       $scope.buyAndSellEnabled = !isWindowsPhoneApp && (glideraEnabled || coinbaseEnabled);
-    }
+    });
 
   });
