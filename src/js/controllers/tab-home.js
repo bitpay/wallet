@@ -32,7 +32,9 @@ angular.module('copayApp.controllers').controller('tabHomeController',
           return;
         }
         wallet.status = status;
-        $scope.$apply();
+        $timeout(function(){
+          $scope.$apply();
+        }, 1);
       });
     };
 
