@@ -3,8 +3,8 @@ angular.module('copayApp.services')
   .factory('applicationService', function($rootScope, $timeout, platformInfo, $state) {
     var root = {};
 
-    var isChromeApp  = platformInfo.isChromeApp;
-    var isNW  = platformInfo.isNW;
+    var isChromeApp = platformInfo.isChromeApp;
+    var isNW = platformInfo.isNW;
 
     root.restart = function() {
       var hashIndex = window.location.href.indexOf('#/');
