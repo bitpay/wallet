@@ -25,7 +25,7 @@
             <p class="m0 text-gray size-14" translate>Moved</p>
           </div>
 
-          <div class="size-36" ng-click="copyToClipboard(btx.amountStr, $event)">
+          <div class="size-36" copy-to-clipboard="btx.amountStr">
             <span class="enable_text_select">{{btx.amountStr}}</span>
           </div>
           <div class="alternative-amount" ng-click="showRate=!showRate" ng-init="showRate = false">
@@ -46,7 +46,7 @@
 
       <ul class="no-bullet size-14 m0">
         <li ng-if="!btx.hasMultiplesOutputs && btx.addressTo && btx.addressTo != 'N/A'" class="line-b p10 oh"
-          ng-click="copyToClipboard(btx.addressTo, $event)">
+          copy-to-clipboard="btx.addressTo">
           <span class="text-gray" translate>To</span>
           <span class="right">
             <span ng-if="btx.merchant">
@@ -89,19 +89,19 @@
         </li>
 
         <li class="line-b p10" ng-show="btx.action != 'received'"
-          ng-click="copyToClipboard(btx.feeStr, $event)">
+          copy-to-clipboard="btx.feeStr">
           <span class="text-gray" translate>Fee</span>
           <span class="right enable_text_select">{{btx.feeStr}}</span>
         </li>
 
         <li class="line-b p10 oh" ng-if="btx.message && btx.action != 'received'"
-          ng-click="copyToClipboard(btx.message, $event)">
+          copy-to-clipboard="btx.message">
           <span class="text-gray" translate>Description</span>
           <span class="right enable_text_select">{{btx.message}}</span>
         </li>
 
         <li ng-if="btx.merchant" class="line-b p10 oh"
-          ng-click="copyToClipboard(btx.merchant.pr.pd.memo, $event)">
+          copy-to-clipboard="btx.merchant.pr.pd.memo">
           <span class="text-gray" translate>Merchant message</span>
           <span class="right enable_text_select">
             {{btx.merchant.pr.pd.memo}}
