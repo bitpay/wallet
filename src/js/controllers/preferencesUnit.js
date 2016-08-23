@@ -36,10 +36,8 @@ angular.module('copayApp.controllers').controller('preferencesUnitController', f
     configService.set(opts, function(err) {
       if (err) $log.warn(err);
 
-      $state.go('preferencesGlobal');
-      $scope.$emit('Local/UnitSettingUpdated');
-
-      walletService.updateRemotePreferences(profileService.getClients(), {}, function() {
+      $state.go('tabs.settings');
+      walletService.updateRemotePreferences(profileService.getWallets(), {}, function() {
         $log.debug('Remote preferences saved');
       });
     });
