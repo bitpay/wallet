@@ -105,23 +105,20 @@ angular.module('copayApp.controllers').controller('tabHomeController',
 
       $log.debug('Updating wallet:'+ wallet.name)
       walletService.getStatus(wallet, {}, function(err, status) {
-console.log('[tab-home.js.107:status:]',status); //TODO
         if (err) {
           console.log('[tab-home.js.35:err:]', $log.error(err)); //TODO
           return;
         } 
         if (status.pendingTxps && status.pendingTxps[0]) {
-
-console.log('[tab-home.js.113]', status.pendingTxps); //TODO
           var txps = lodash.filter($scope.txps, function(x) {
             return x.walletId != wallet.id;
           });
           txps = txps.concat(status.pendingTxps);
           txps = formatPendingTxps(txps);
-console.log('[tab-home.js.120:txps:]',txps); //TODO
           setPendingTxps(txps);
         }
         wallet.status = status;
+        $scope.$apply();
       });
     };
 
