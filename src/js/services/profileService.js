@@ -70,13 +70,14 @@ angular.module('copayApp.services')
         notificationService.newBWCNotification(n,
           walletId, wallet.credentials.walletName);
 
-        $rootScope.$emit('bwsEvent', wallet.id, n.type, n);
 
         if (wallet.cacheStatus)
           wallet.cacheStatus.isValid = false;
 
         if (wallet.completeHistory)
           wallet.completeHistory.isValid = false;
+
+        $rootScope.$emit('bwsEvent', wallet.id, n.type, n);
       });
 
       wallet.on('walletCompleted', function() {
