@@ -54,7 +54,8 @@ Error: {{addrError}}
         <span ng-show="!generatingAddress" copy-to-clipboard="addr">{{addr}}</span>
       </div>
     </div>
-    <div class="item item-text-wrap" ng-style="{'height' : '200px'}">
+    <wallets only-complete="false"></wallets>
+    <!-- <div class="item item-text-wrap" ng-style="{'height' : '200px'}">
       <ion-slides class="slides" options="options" slider="data.slider">
         <ion-slide-page ng-repeat="item in wallets track by $index" >
           <div class="list card">
@@ -74,6 +75,6 @@ Error: {{addrError}}
           </div>
         </ion-slide-page>
       </ion-slides>
-    </div>
+    </div> -->
   </ion-content>
 </ion-view>
