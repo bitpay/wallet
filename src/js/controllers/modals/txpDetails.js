@@ -54,19 +54,14 @@ angular.module('copayApp.controllers').controller('txpDetailsController', functi
     $scope.loading = true;
     $scope.error = null;
 
-    $timeout(function() {
-      ongoingProcess.set('rejectTx', true);
-      walletService.rejectTx($scope.wallet, $scope.tx, function(err, txpr) {
-        ongoingProcess.set('rejectTx', false);
+    walletService.reject($scope.wallet, $scope.tx, function(err, txpr) {
+      if (err) 
+        return setError(err, gettextCatalog.getString('Could not reject payment'));
 
-        if (err) {
-          $scope.$emit('UpdateTx');
-          return setError(err, gettextCatalog.getString('Could not reject payment'));
-        }
+      $scope.close(txpr);
+    });
 
-        $scope.close(txpr);
-      });
-    }, 10);
+
   };
 
   $scope.remove = function() {
@@ -196,14 +191,8 @@ angular.module('copayApp.controllers').controller('txpDetailsController', functi
     $scope.loading = null;
     if (txp) {
       var type = txStatus.notify(txp);
-      $scope.openStatusModal(type, txp, function() {
-        $scope.$emit('Local/TxProposalAction', txp.status == 'broadcasted');
-      });
-    } else {
-      $timeout(function() {
-        $scope.$emit('Local/TxProposalAction');
-      }, 100);
-    }
+      $scope.openStatusModal(type, txp, function() {});
+    }  
     $scope.cancel();
   };
 
