@@ -71,7 +71,6 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
         $scope.updateStatus();
     }),
     $rootScope.$on('Local/TxAction', function(e, walletId) {
-      var wallet = profileService.getWallet(walletId);
       if (walletId == wallet.id)
         $scope.updateStatus();
     }),
