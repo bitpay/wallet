@@ -61,7 +61,7 @@
 
         <li ng-show="wallets[0]"
           ng-repeat="item in wallets track by $index" class="item item-icon-left"
-          menu-toggle href ui-sref="wallet.details({'walletId': item.id})">
+          ui-sref="wallet.details({'walletId': item.id})">
             <i class="icon ion-briefcase size-21" ng-style="{'color':item.color}"></i>
             {{item.name || item.id}}
             <span  ng-show="item.n > 1" class="text-gray">
@@ -81,20 +81,17 @@
     <h3>Next steps </h3>
     <div class="list card">
       <ul class="pr">
-      <li menu-toggle href ui-sref="bitpayCard" ng-show="bitpayCardEnabled" class="item item-icon-left">
+      <li ui-sref="bitpayCard" ng-show="bitpayCardEnabled" class="item item-icon-left">
         <i class="icon ion-card"></i>
           BitPay Card
       </li>
-      <li ng-show="buyAndSellEnabled" menu-toggle href ui-sref="buyandsell"  class="item item-icon-left">
+      <li ng-show="buyAndSellEnabled" ui-sref="buyandsell"  class="item item-icon-left">
         <i class="icon ion-cash"></i>
             Buy and Sell
       </li>
-      <li menu-toggle href ui-sref="amazon.main" class="item item-icon-left">
+      <li ui-sref="amazon.main" class="item item-icon-left">
         <i class="icon ion-ios-cart"></i>
         Gift Cards
-        <span class="item-note">
-          bla bla
-        </span>
       </li>
       </ul>
     </div>
