@@ -5,7 +5,7 @@ angular.module('copayApp.services').factory('txStatus', function($stateParams, l
   var isCordova = platformInfo.isCordova;
 
   root.notify = function(txp) {
-    var wallet = profileService.getWallet($stateParams.walletId);
+    var wallet = profileService.getWallet(txp.walletId);
     var status = txp.status;
     var type;
     var INMEDIATE_SECS = 10;

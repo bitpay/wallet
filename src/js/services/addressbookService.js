@@ -4,11 +4,13 @@ angular.module('copayApp.services').factory('addressbookService', function($stat
   var root = {};
 
   root.getLabel = function(addr, cb) {
-    var wallet = profileService.getWallet($stateParams.walletId);
-    storageService.getAddressbook(wallet.credentials.network, function(err, ab) {
-      if (!ab) return cb();
-      if (ab[addr]) return cb(ab[addr]);
-      else return cb();
+    storageService.getAddressbook('testnet', function(err, ab) {
+      if (ab && ab[addr]) return cb(ab[addr]);
+
+      storageService.getAddressbook('livnet', function(err, ab) {
+        if (ab && ab[addr]) return cb(ab[addr]);
+        return cb();
+      });
     });
   };
 
