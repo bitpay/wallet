@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('walletDetailsController', function($scope, $rootScope, $interval, $timeout, $filter, $log, $ionicModal, $ionicPopover, $ionicNavBarDelegate, $state, $stateParams, bwcError, profileService, lodash, configService, gettext, gettextCatalog, platformInfo, walletService) {
+angular.module('copayApp.controllers').controller('walletDetailsController', function($scope, $rootScope, $interval, $timeout, $filter, $log, $ionicModal, $ionicPopover, $ionicNavBarDelegate, $state, $stateParams, bwcError, profileService, lodash, configService, gettext, gettextCatalog, platformInfo, walletService, storageService) {
 
   var isCordova = platformInfo.isCordova;
   var isWP = platformInfo.isWP;
@@ -11,9 +11,7 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
 
   var HISTORY_SHOW_LIMIT = 10;
 
-
   $scope.openSearchModal = function() {
-    var wallet = profileService.getWallet($stateParams.walletId);
     $scope.color = wallet.color;
 
     $ionicModal.fromTemplateUrl('views/modals/search.html', {
@@ -113,9 +111,17 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
     $scope.updateTxHistory();
   }
 
+  var hideBalance = function() {
+    storageService.getHideBalanceFlag(wallet.credentials.walletId, function(err, shouldHideBalance) {
+      if (err) $scope.shouldHideBalance = false;
+      else $scope.shouldHideBalance = (shouldHideBalance == 'true') ? true : false;
+    });
+  }
+
   $scope.hideToggle = function() {
-    console.log('[walletDetails.js.70:hideToogle:] TODO'); //TODO
-  };
+    $scope.shouldHideBalance = !$scope.shouldHideBalance;
+    storageService.setHideBalanceFlag(wallet.credentials.walletId, $scope.shouldHideBalance.toString(), function() {});
+  }
 
   var currentTxHistoryPage;
   var wallet;
@@ -129,6 +135,7 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
     $scope.requiresMultipleSignatures = wallet.credentials.m > 1;
     $scope.newTx = false;
 
+    hideBalance();
     $ionicNavBarDelegate.title(wallet.name);
 
     $scope.updateAll();

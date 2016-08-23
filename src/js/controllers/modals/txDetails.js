@@ -85,11 +85,6 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
     return n.substring(0, 4);
   };
 
-  $scope.copyToClipboard = function(addr, $event) {
-    if (!addr) return;
-    self.copyToClipboard(addr, $event);
-  };
-
   $scope.cancel = function() {
     $scope.txDetailsModal.hide();
   };

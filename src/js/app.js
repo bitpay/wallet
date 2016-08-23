@@ -5,6 +5,8 @@ var modules = [
   'monospaced.qrcode',
   'gettext',
   'ionic',
+  'ionic-toast',
+  'angular-clipboard',
   'ngLodash',
   'ngCsv',
   'bwcModule',

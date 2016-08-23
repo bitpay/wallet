@@ -24,6 +24,8 @@ module.exports = function(config) {
       'bower_components/angular-qrcode/angular-qrcode.js',
       'bower_components/angular-gettext/dist/angular-gettext.js',
       'bower_components/ng-csv/build/ng-csv.js',
+      'bower_components/ionic-toast/dist/ionic-toast.bundle.min.js',
+      'bower_components/angular-clipboard/angular-clipboard.js',
       'bower_components/angular-mocks/angular-mocks.js',
       'angular-pbkdf2/angular-pbkdf2.js',
       'angular-bitcore-wallet-client/angular-bitcore-wallet-client.js',

@@ -8,7 +8,7 @@ angular.module('copayApp.controllers').controller('txpDetailsController', functi
   var now = Math.floor(Date.now() / 1000);
   $scope.loading = null;
 
-  
+
   $scope.copayerId = $scope.wallet.credentials.copayerId;
   $scope.isShared =  $scope.wallet.credentials.n > 1;
   $scope.canSign =  $scope.wallet.canSign() ||  $scope.wallet.isPrivKeyExternal();
@@ -180,11 +180,6 @@ angular.module('copayApp.controllers').controller('txpDetailsController', functi
         }
       });
     });
-  };
-
-  $scope.copyToClipboard = function(addr, $event) {
-    if (!addr) return;
-    self.copyToClipboard(addr, $event);
   };
 
   $scope.close = function(txp) {
