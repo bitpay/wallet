@@ -75,5 +75,64 @@ angular.module('copayApp.services').factory('txFormatService', function(bwcServi
     return tx;
   };
 
+  root.formatPendingTxps = function(txps) {
+      $scope.pendingTxProposalsCountForUs = 0;
+      var now = Math.floor(Date.now() / 1000);
+
+      /* To test multiple outputs...
+      var txp = {
+        message: 'test multi-output',
+        fee: 1000,
+        createdOn: new Date() / 1000,
+        outputs: []
+      };
+      function addOutput(n) {
+        txp.outputs.push({
+          amount: 600,
+          toAddress: '2N8bhEwbKtMvR2jqMRcTCQqzHP6zXGToXcK',
+          message: 'output #' + (Number(n) + 1)
+        });
+      };
+      lodash.times(150, addOutput);
+      txps.push(txp);
+      */
+
+      lodash.each(txps, function(tx) {
+
+        tx = txFormatService.processTx(tx);
+
+        // no future transactions...
+        if (tx.createdOn > now)
+          tx.createdOn = now;
+
+        tx.wallet = profileService.getWallet(tx.walletId);
+        if (!tx.wallet) {
+          $log.error("no wallet at txp?");
+          return;
+        }
+
+        var action = lodash.find(tx.actions, {
+          copayerId: tx.wallet.copayerId
+        });
+
+        if (!action && tx.status == 'pending') {
+          tx.pendingForUs = true;
+        }
+
+        if (action && action.type == 'accept') {
+          tx.statusForUs = 'accepted';
+        } else if (action && action.type == 'reject') {
+          tx.statusForUs = 'rejected';
+        } else {
+          tx.statusForUs = 'pending';
+        }
+
+        if (!tx.deleteLockTime)
+          tx.canBeRemoved = true;
+      });
+
+      return txps;
+    };
+
   return root;
 });
