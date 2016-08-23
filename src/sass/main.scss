@@ -1045,3 +1045,13 @@ input[type="number"] {
 	.calculator .button-calc .columns { padding: 20px; }
   .calculator .header-calc { top: 18%; }
 }
+
+/* Turn Off Number Input Spinners */
+
+input[type=number] {
+  &::-webkit-inner-spin-button, &::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+}
+
