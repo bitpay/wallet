@@ -39,7 +39,10 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
       setPendingTxps(status.pendingTxps);
 
       $scope.status = status;
-      $scope.$apply();
+      $timeout(function(){
+        $scope.$apply();
+      }, 1);
+ 
     });
   };
 
@@ -126,7 +129,10 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
       $scope.updatingTxHistoryProgress = txs ? txs.length : 0;
       $scope.completeTxHistory = txs;
       $scope.showHistory();
-      $scope.$digest();
+      $timeout(function(){
+        $scope.$apply();
+      }, 1);
+ 
     };
 
     $timeout(function() {
@@ -142,7 +148,9 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
         $scope.completeTxHistory = txHistory;
 
         $scope.showHistory();
-        $scope.$apply();
+        $timeout(function(){
+          $scope.$apply();
+        }, 1);
       });
     });
   };

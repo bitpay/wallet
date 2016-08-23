@@ -103,26 +103,10 @@
         <span>{{newRelease}}</span><i class="icon-arrow-right3 right size-18"></i>
       </div>
 
-      <div ng-if="wallet.txps[0]">
-        <h4 ng-show="requiresMultipleSignatures" class="title m0" translate>Payment Proposals</h4>
-        <h4 ng-show="!requiresMultipleSignatures" class="title m0" translate>Unsent transactions</h4>
-        <div ng-repeat="tx in wallet.txps">
-          <div ng-include="wallet.txTemplateUrl"></div>
-        </div>
-
-        <div class="text-gray text-center size-12 p10t"
-          ng-show="status.lockedBalanceSat">
-          <span translate>Total Locked Balance</span>:
-          <b>{{status.lockedBalanceStr}} </b>
-          <span> {{status.lockedBalanceAlternative}}
-            {{status.alternativeIsoCode}} </span>
-        </div>
-      </div>
-
-
 
     <div ng-if="txps[0]">
-      <h3 class="title m0" translate>Payment Proposals</h3>
+      <h4 ng-show="requiresMultipleSignatures" class="title m0" translate>Payment Proposals</h4>
+      <h4 ng-show="!requiresMultipleSignatures" class="title m0" translate>Unsent transactions</h4>
       <div class="list card">
         <ul>
           <li ng-repeat="tx in txps" class="item item-icon-left"
