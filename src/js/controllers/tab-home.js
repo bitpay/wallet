@@ -8,8 +8,12 @@ angular.module('copayApp.controllers').controller('tabHomeController',
 
 
     var setPendingTxps = function(txps) {
-      $scope.txps = lodash.sort(txps, function(x) {
-        return walletId;
+      if (!txps) {
+        $scope.txps = [];
+        return;
+      }
+      $scope.txps = txps.sort(function(a, b) {
+        return a.walletId.localeCompare(b.walletId);
       });
     };
 
@@ -101,11 +105,12 @@ angular.module('copayApp.controllers').controller('tabHomeController',
         return x.walletId != wallet.id;
       });
 
+      $log.debug('Updating wallet:'+ wallet.name)
       walletService.getStatus(wallet, {}, function(err, status) {
         if (err) {
           console.log('[tab-home.js.35:err:]', $log.error(err)); //TODO
           return;
-        } // TODO
+        } 
         if (status.pendingTxps && status.pendingTxps[0]) {
           txps = txps.concat(status.pendingTxps);
           txps = formatPendingTxps(txps);
@@ -120,8 +125,14 @@ angular.module('copayApp.controllers').controller('tabHomeController',
     self.updateAllWallets();
     $scope.bitpayCardEnabled = true; // TODO
 
+    var c1 = $rootScope.$on('bwsEvent', function(e, walletId, type, n) {
+      var wallet = profileService.getWallet(walletId);
+      self.updateWallet(wallet);
+    });
 
-    $scope.$on('$destroy', function() {});
+    $scope.$on('$destroy', function() {
+      c1();
+    });
 
     var config = configService.getSync().wallet;
 
