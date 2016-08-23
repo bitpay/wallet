@@ -3,14 +3,12 @@
   <ion-pane>
     <ion-nav-bar class="bar-stable">
       <ion-nav-title>Confirm</ion-nav-title>
-
       <ion-nav-buttons side="primary">
-        <button class="button"   href ui-sref="tabs.send">
-          <i class="ion-arrow-left-c"></i> Back
+        <button class="button no-border" ui-sref="tabs.send">
+          <i class="icon ion-chevron-left"></i> Back
         </button>
       </ion-nav-buttons>
     </ion-nav-bar>
-
 
     <ion-content scroll="false" ng-controller="confirmController" ng-init="init()">
 
@@ -24,9 +22,15 @@
 
       <div class="list card">
         <div class="item">Fee: {{feeLevel}}
+<<<<<<< eb8c739515d024200f5ea2bad72fffb21437375b
             <span class="item-note">
               {{fee || '...'}}
             </span>
+=======
+          <span class="item-note">
+            {{fee || '...'}}
+          </span>
+>>>>>>> add wallet widget in confirm (send) view
         </div>
 
         <div class="item item-icon-left">
@@ -42,11 +46,10 @@
         </div>
 
         <div class="item item-icon-left">
-          <i class="icon icon-wallet size-21" ng-style="{'color':recipientColor}"></i>
+          <i class="icon ion-briefcase size-21"></i>
           <label translate>From</label>
-          <p ng-show="network=='testnet'">[Only showing testnet wallets]</p>
-          <p ng-show="someFiltered">[Filtering wallets with no enought balance]</p>
         </div>
+<<<<<<< eb8c739515d024200f5ea2bad72fffb21437375b
 
         <div class="item item-text-wrap" ng-style="{'height' : '200px'}">
           <ion-slides class="slides" options="options" slider="data.slider">
@@ -66,6 +69,9 @@
           </ion-slides>
         </div>
 
+=======
+        <wallets only-complete="true" network="{{network}}"></wallets>
+>>>>>>> add wallet widget in confirm (send) view
 
         <div class="item item-icon-left item-icon-right" ng-click="showDescriptionPopup()">
           <span ng-show="!description">Add Description</span>
@@ -75,11 +81,11 @@
         </div>
       </div>
 
-      <div class="card">
-        <button class="item button button-full button-balanced" ng-click="approve()" ng-disabled="!txp" ng-show="wallet.canSign()"> Approve </button>
-        <button class="item button button-full button-balanced" ng-click="approve()" ng-disabled="!txp"  ng-show="!wallet.canSign()"> Send </button>
-      </div>
+      <div class="button-block">
+        <button class="item button button-full button-balanced" ng-click="approve()" ng-disabled="!txp">
+          <span ng-show="wallet.canSign()" translate>Approve</span>
+          <span ng-show="!wallet.canSign()" translate>Send</span>
+        </button>
       </div>
     </ion-content>
-
 </ion-view>
