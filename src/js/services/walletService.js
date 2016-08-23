@@ -114,12 +114,12 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
 
 
   root.invalidateCache = function(wallet) {
-    if (wallet.cacheStatus) {
-      wallet.cacheStatus.isValid = false;
+    if (wallet.cachedStatus) {
+      wallet.cachedStatus.isValid = false;
     }
 
-    if (wallet.cacheHistory) {
-      wallet.cacheHistory.isValid = false;
+    if (wallet.completeHistory) {
+      wallet.completeHistory.isValid = false;
     }
   };
 
@@ -214,7 +214,11 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     };
 
     function _getStatus(initStatusHash, tries, cb) {
-      if (isStatusCached() && !opts.force) return cb(null, wallet.cachedStatus);
+      if (isStatusCached() && !opts.force) {
+        $log.debug('Wallet status cache hit:' + wallet.id);
+
+        return cb(null, wallet.cachedStatus);
+      };
 
       tries = tries || 0;
 

@@ -71,8 +71,9 @@ angular.module('copayApp.services')
           walletId, wallet.credentials.walletName);
 
 
-        if (wallet.cacheStatus)
-          wallet.cacheStatus.isValid = false;
+          // TODO (put this in wallet ViewModel)
+        if (wallet.cachedStatus)
+          wallet.cachedStatus.isValid = false;
 
         if (wallet.completeHistory)
           wallet.completeHistory.isValid = false;
