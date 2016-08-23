@@ -6,12 +6,14 @@ angular.module('copayApp.controllers').controller('tabHomeController',
 
     self.glideraEnabled = configService.getSync().glidera.enabled;
 
-    self.setWallets = function() {
-      $scope.wallets = profileService.getWallets();
-    };
-
 
     var setPendingTxps = function(txps) {
+      $scope.txps = lodash.sort(txps, function(x) {
+        return walletId;
+      });
+    };
+
+    var formatPendingTxps = function(txps) {
       $scope.pendingTxProposalsCountForUs = 0;
       var now = Math.floor(Date.now() / 1000);
 
@@ -65,18 +67,17 @@ angular.module('copayApp.controllers').controller('tabHomeController',
 
         if (!tx.deleteLockTime)
           tx.canBeRemoved = true;
-
-        if (tx.creatorId != tx.wallet.copayerId) {
-          $scope.pendingTxProposalsCountForUs = $scope.pendingTxProposalsCountForUs + 1;
-        }
       });
-      $scope.txps = txps;
+
+      return txps;
     };
 
-    self.updateAllClients = function() {
+    self.updateAllWallets = function() {
+
+      $scope.wallets = profileService.getWallets();
+
       var txps = [];
       var i = $scope.wallets.length;
-
       lodash.each($scope.wallets, function(wallet) {
         walletService.getStatus(wallet, {}, function(err, status) {
           if (err) {
@@ -87,6 +88,7 @@ angular.module('copayApp.controllers').controller('tabHomeController',
             txps = txps.concat(status.pendingTxps);
           }
           if (--i == 0) {
+            txps = formatPendingTxps(txps);
             setPendingTxps(txps);
           }
           wallet.status = status;
@@ -94,10 +96,32 @@ angular.module('copayApp.controllers').controller('tabHomeController',
       });
     }
 
-    self.setWallets();
-    self.updateAllClients();
+    self.updateWallet = function(wallet) {
+      var txps = lodash.filter($scope.txps, function(x) {
+        return x.walletId != wallet.id;
+      });
+
+      walletService.getStatus(wallet, {}, function(err, status) {
+        if (err) {
+          console.log('[tab-home.js.35:err:]', $log.error(err)); //TODO
+          return;
+        } // TODO
+        if (status.pendingTxps && status.pendingTxps[0]) {
+          txps = txps.concat(status.pendingTxps);
+          txps = formatPendingTxps(txps);
+          setPendingTxps(txps);
+        }
+        wallet.status = status;
+      });
+    };
+
+
+
+    self.updateAllWallets();
     $scope.bitpayCardEnabled = true; // TODO
 
+
+    $scope.$on('$destroy', function() {});
 
     var config = configService.getSync().wallet;
 

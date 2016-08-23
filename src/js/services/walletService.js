@@ -112,6 +112,17 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
   };
   root.handleError = lodash.debounce(_handleError, 1000);
 
+
+  root.invalidateCache = function(wallet) {
+    if (wallet.cacheStatus) {
+      wallet.cacheStatus.isValid = false;
+    }
+
+    if (wallet.cacheHistory) {
+      wallet.cacheHistory.isValid = false;
+    }
+  };
+
   root.getStatus = function(wallet, opts, cb) {
     opts = opts || {};
 
@@ -446,16 +457,21 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
 
     if (!wallet.isComplete()) return cb();
 
+    function isHistoryCached() {
+      return wallet.completeHistory && wallet.completeHistory.isValid;
+    };
+
+    if (isHistoryCached() && !opts.force) return cb(null, wallet.completeHistory);
+
     $log.debug('Updating Transaction History');
 
     updateLocalTxHistory(wallet, opts.progressFn, function(err) {
       if (err) return cb(err);
+
+      wallet.completeHistory.isValid = true;
       return cb(err, wallet.completeHistory);
     });
   };
-
-
-
 
   root.isEncrypted = function(wallet) {
     if (lodash.isEmpty(wallet)) return;
@@ -638,14 +654,6 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
       return cb();
     });
   };
-
-  root.debounceUpdateHistory = lodash.debounce(function() {
-    root.updateHistory();
-  }, 1000);
-
-  root.throttledUpdateHistory = lodash.throttle(function() {
-    root.updateHistory();
-  }, 5000);
 
   root.showErrorPopup = function(msg, cb) {
     $log.warn('Showing err popup:' + msg);

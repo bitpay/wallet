@@ -71,6 +71,36 @@ angular.module('copayApp.services')
           walletId, wallet.credentials.walletName);
 
         $rootScope.$emit(n.type, n, wallet);
+// ))
+//         walletService allet.getStatus()
+//         wallet.getTxHistory()
+//
+//         // update wallet?
+//         if (lodash.indexOf( [,'NewOutgoingTx','NewOutgoingTxByThirdParty','NewTxProposal', 'TxProposalFinallyRejected', 'TxProposalRemoved'], n.type)>=0) {
+//
+//           wallet.update
+//
+//         };
+//
+// 'NewBlock'
+//   });
+//
+//   //untilItChange FALSE
+//   lodash.each(['NewTxProposal', , 'NewOutgoingTxByThirdParty',
+//     'Local/GlideraTx'
+//   ], function(eventName) {
+//     $rootScope.$on(eventName, function(event) {
+//       self.updateAll({
+//         walletStatus: null,
+//         untilItChanges: null,
+//         triggerTxUpdate: true,
+//       });
+//     });
+//   });
+//
+//
+//         //
+        //
       });
 
       wallet.on('walletCompleted', function() {
