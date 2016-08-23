@@ -70,37 +70,13 @@ angular.module('copayApp.services')
         notificationService.newBWCNotification(n,
           walletId, wallet.credentials.walletName);
 
-        $rootScope.$emit(n.type, n, wallet);
-// ))
-//         walletService allet.getStatus()
-//         wallet.getTxHistory()
-//
-//         // update wallet?
-//         if (lodash.indexOf( [,'NewOutgoingTx','NewOutgoingTxByThirdParty','NewTxProposal', 'TxProposalFinallyRejected', 'TxProposalRemoved'], n.type)>=0) {
-//
-//           wallet.update
-//
-//         };
-//
-// 'NewBlock'
-//   });
-//
-//   //untilItChange FALSE
-//   lodash.each(['NewTxProposal', , 'NewOutgoingTxByThirdParty',
-//     'Local/GlideraTx'
-//   ], function(eventName) {
-//     $rootScope.$on(eventName, function(event) {
-//       self.updateAll({
-//         walletStatus: null,
-//         untilItChanges: null,
-//         triggerTxUpdate: true,
-//       });
-//     });
-//   });
-//
-//
-//         //
-        //
+        $rootScope.$emit('bwsEvent', wallet.id, n.type, n);
+
+        if (wallet.cacheStatus)
+          wallet.cacheStatus.isValid = false;
+
+        if (wallet.completeHistory)
+          wallet.completeHistory.isValid = false;
       });
 
       wallet.on('walletCompleted', function() {
@@ -122,6 +98,10 @@ angular.module('copayApp.services')
           return;
         }
         wallet.setNotificationsInterval(UPDATE_PERIOD);
+        wallet.openWallet(function(err) {
+          if (wallet.status !== true) 
+            $log.log('Wallet + ' + walletId + ' status:' + wallet.status)
+        });
       });
 
 
