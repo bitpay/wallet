@@ -5,37 +5,14 @@ angular.module('copayApp.controllers').controller('tabReceiveController', functi
   $scope.isCordova = platformInfo.isCordova;
 
   $scope.init = function() {
-    $scope.index = 0;
+    $scope.defaultWallet = profileService.getWallets()[0];
     $scope.isCordova = platformInfo.isCordova;
     $scope.isNW = platformInfo.isNW;
-    // $scope.setWallets();
     $scope.setAddress(false);
-    // $scope.options = {
-    //   loop: false,
-    //   effect: 'flip',
-    //   speed: 500,
-    //   spaceBetween: 100
-    // }
-    //
-    // $scope.$on("$ionicSlides.sliderInitialized", function(event, data) {
-    //   // data.slider is the instance of Swiper
-    //   $scope.slider = data.slider;
-    // });
-    //
-    // $scope.$on("$ionicSlides.slideChangeStart", function(event, data) {
-    //   console.log('Slide change is beginning');
-    // });
-    //
-    // $scope.$on("$ionicSlides.slideChangeEnd", function(event, data) {
-    //   $scope.index = data.slider.activeIndex;
-    //   $scope.setAddress();
-    // });
   }
 
   $scope.copyToClipboard = function(addr, $event) {
-
     var showPopover = function() {
-
       $ionicPopover.fromTemplateUrl('views/includes/copyToClipboard.html', {
         scope: $scope
       }).then(function(popover) {
@@ -66,8 +43,8 @@ angular.module('copayApp.controllers').controller('tabReceiveController', functi
   };
 
   $scope.$on('Wallet/Changed', function(event, wallet) {
-    console.log(wallet);
     $log.debug('Wallet changed: ' + wallet.name);
+    $scope.defaultWallet = wallet;
     $scope.setAddress(wallet);
   });
 
@@ -78,13 +55,13 @@ angular.module('copayApp.controllers').controller('tabReceiveController', functi
   };
 
   $scope.setAddress = function(wallet, forceNew) {
-    if (!wallet) return;
+    var wallet = wallet || $scope.defaultWallet;
     if ($scope.generatingAddress) return;
 
     $scope.addr = null;
     $scope.addrError = null;
 
-    if (!wallet.isComplete()) {
+    if (wallet && !wallet.isComplete()) {
       $scope.incomplete = true;
       $timeout(function() {
         $scope.$digest();
@@ -108,10 +85,4 @@ angular.module('copayApp.controllers').controller('tabReceiveController', functi
       });
     });
   };
-
-
-  $scope.setWallets = function() {
-    $scope.wallets = profileService.getWallets();
-  };
-
 });

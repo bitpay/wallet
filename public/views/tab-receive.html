@@ -44,7 +44,7 @@ Error: {{addrError}}
         <i class="icon ion-ios-upload-outline"></i>
         <span translate>Share address</span>
       </div>
-      <div class="item item-icon-left" ng-click="setAddress(true)" ng-disabled="">
+      <div class="item item-icon-left" ng-click="setAddress(null, true)" ng-disabled="">
         <i class="icon ion-ios-loop"></i>
         <span translate>Next Address</span>
       </div>
@@ -54,27 +54,8 @@ Error: {{addrError}}
         <span ng-show="!generatingAddress" copy-to-clipboard="addr">{{addr}}</span>
       </div>
     </div>
-    <wallets only-complete="false"></wallets>
-    <!-- <div class="item item-text-wrap" ng-style="{'height' : '200px'}">
-      <ion-slides class="slides" options="options" slider="data.slider">
-        <ion-slide-page ng-repeat="item in wallets track by $index" >
-          <div class="list card">
-            <ul class="pr">
-              <li ng-show="wallets[0]" class="item item-icon-left">
-                  <i class="icon ion-briefcase size-21" ng-style="{'color':item.color}"></i>
-                  {{item.name || item.id}}
-                  <span class="item-note" ng-show="item.n > 1 && item.isComplete()">
-                    {{item.m}}-of-{{item.n}}
-                  </span>
-                  <span class="badge badge-assertive" ng-show="!item.isComplete()" translate>
-                    Incomplete
-                  </span>
 
-              </li>
-            </ul>
-          </div>
-        </ion-slide-page>
-      </ion-slides>
-    </div> -->
+    <wallets></wallets>
+
   </ion-content>
 </ion-view>
