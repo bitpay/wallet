@@ -42,7 +42,6 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     };
   };
 
-
   var setFromPayPro = function(uri, cb) {
     if (!cb) cb = function() {};
 
@@ -92,9 +91,8 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     });
   };
 
-
-
   $scope.init = function() {
+    $scope.wallet = profileService.getWallets()[0];
 
     if ($stateParams.paypro) {
       return setFromPayPro($stateParams.paypro, function(err) {
@@ -125,61 +123,48 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     var network = (new bitcore.Address($scope.toAddress)).network.name;
     $scope.network = network;
 
-    function setWallets() {
-      var w = profileService.getWallets({
-        onlyComplete: true,
-        network: network,
-      });
-      $scope.wallets = lodash.filter(w, function(x) {
-        if (!x.availableBalanceSat) return true;
-        return x.availableBalanceSat > amount;
-      });
-
-      $scope.someFiltered = $scope.wallets.length != w.length;
-
-    };
-
-    var stop;
-
-    function setWallet(wallet, delayed) {
-      $scope.wallet = wallet;
-      $scope.fee = $scope.txp = null;
-      $timeout(function() {
-        $scope.$apply();
-      }, 10);
-
-      if (stop) {
-        $timeout.cancel(stop);
-        stop = null;
-      }
-
-      if (cachedTxp[wallet.id]) {
-        apply(cachedTxp[wallet.id]);
-      } else {
-        stop = $timeout(function() {
-          createTx(wallet, function(err, txp) {
-            if (err) return;
-            cachedTxp[wallet.id] = txp;
-            apply(txp);
-          });
-        }, delayed ? 2000 : 1);
-      }
-    };
-
     txFormatService.formatAlternativeStr(amount, function(v) {
       $scope.alternativeAmountStr = v;
     });
+  };
 
-    $scope.$on("$ionicSlides.slideChangeEnd", function(event, data) {
-      setWallet($scope.wallets[data.slider.activeIndex], true);
-    });
+  $scope.$on('Wallet/Changed', function(event, wallet) {
+    $log.debug('Wallet changed: ' + wallet.name);
+    setWallet(wallet, true);
+    $scope.$apply();
+  });
 
-    setWallets();
-    setWallet($scope.wallets[0]);
+  function setWallet(wallet, delayed) {
+    var stop;
+    $scope.wallet = wallet;
+    $scope.fee = $scope.txp = null;
 
     $timeout(function() {
-      $ionicScrollDelegate.resize();
-    }, 100);
+      $scope.$apply();
+    }, 10);
+
+    if (stop) {
+      $timeout.cancel(stop);
+      stop = null;
+    }
+
+    function apply(txp) {
+      $scope.fee = txFormatService.formatAmountStr(txp.fee);
+      $scope.txp = txp;
+      $scope.$apply();
+    };
+
+    if (cachedTxp[wallet.id]) {
+      apply(cachedTxp[wallet.id]);
+    } else {
+      stop = $timeout(function() {
+        createTx(wallet, $scope.toAddress, $scope.toAmount, $scope.comment || null, function(err, txp) {
+          if (err) return;
+          cachedTxp[wallet.id] = txp;
+          apply(txp);
+        });
+      }, delayed ? 2000 : 1);
+    }
   };
 
   var setSendError = function(msg) {
@@ -244,7 +229,6 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     });
   };
 
-
   $scope.openPPModal = function() {
     $ionicModal.fromTemplateUrl('views/modals/paypro.html', {
       scope: $scope
@@ -253,8 +237,6 @@ angular.module('copayApp.controllers').controller('confirmController', function(
       $scope.payproModal.show();
     });
   };
-
-
 
   $scope.approve = function() {
     var wallet = $scope.wallet;
@@ -287,7 +269,4 @@ angular.module('copayApp.controllers').controller('confirmController', function(
   $scope.cancel = function() {
     $state.transitionTo('tabs.send');
   };
-
-
-
 });
