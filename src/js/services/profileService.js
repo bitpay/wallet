@@ -1,6 +1,6 @@
 'use strict';
 angular.module('copayApp.services')
-  .factory('profileService', function profileServiceFactory($rootScope, $timeout, $filter, $log, sjcl, lodash, storageService, bwcService, configService, notificationService, pushNotificationsService, gettext, gettextCatalog, bwcError, uxLanguage, bitcore, platformInfo, $ionicHistory) {
+  .factory('profileService', function profileServiceFactory($rootScope, $timeout, $filter, $log, sjcl, lodash, storageService, bwcService, configService, pushNotificationsService, gettext, gettextCatalog, bwcError, uxLanguage, bitcore, platformInfo, $ionicHistory) {
 
 
     var isChromeApp = platformInfo.isChromeApp;
@@ -67,9 +67,7 @@ angular.module('copayApp.services')
       wallet.on('notification', function(n) {
         $log.debug('BWC Notification:', n);
 
-        notificationService.newBWCNotification(n,
-          walletId, wallet.credentials.walletName);
-
+        // notification?
 
           // TODO (put this in wallet ViewModel)
         if (wallet.cachedStatus)

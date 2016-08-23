@@ -130,15 +130,15 @@
         translate>No transactions yet {{status.totalBalanceStr}}
       </div>
 
-      <div ng-show="updatingTxHistory">
-        <div  class="row p20 text-center">
-          <div class="columns large-12 medium-12 small-12 m10b">
+      <div ng-show="updatingTxHistory" class="updatingHistory">
+        <div  class="row" >
             <ion-spinner class="spinner-dark" icon="lines"></ion-spinner>
-          </div>
-          <div class="size-12 text-gray m20t">
-            <div translate>{{updatingTxHistoryProgress}} transactions downloaded</div>
-            <div translate>Updating transaction history. Please stand by.</div>
-          </div>
+        </div>
+        <div  class="row" >
+          <div  class="col" translate>Updating transaction history. Please stand by.</div>
+        </div>
+        <div  class="row" ng-show="updatingTxHistoryProgress>0" >
+          <div class="col" translate>{{updatingTxHistoryProgress}} transactions downloaded</div>
         </div>
       </div>
 
@@ -213,11 +213,6 @@
           <div class="col col-10 text-center">
             <i class="icon ion-chevron-right"></i>
           </div>
-        </div>
-
-        <div class="text-center" ng-show="updatingTxHistory && !isSearching">
-          Updating...
-          <ion-spinner class="spinner-dark" icon="lines"></ion-spinner>
         </div>
 
         <ion-infinite-scroll
