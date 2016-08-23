@@ -85,7 +85,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
      *
      */
 
-      .state('disclaimer', {
+    .state('disclaimer', {
       url: '/disclaimer',
       templateUrl: 'views/disclaimer.html',
     })
@@ -557,13 +557,26 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
      *
      */
 
-    .state('bitpayCard', {
-        url: '/bitpay-card',
-        templateUrl: 'views/bitpayCard.html'
+      .state('bitpayCard', {
+        url: '/bitpayCard',
+        abstract: true,
+        template: '<ion-nav-view name="bitpayCard"></ion-nav-view>'
       })
-      .state('preferencesBitpayCard', {
-        url: '/preferences-bitpay-card',
-        templateUrl: 'views/preferencesBitpayCard.html'
+      .state('bitpayCard.main', {
+        url: '/main',
+        views: {
+          'bitpayCard': {
+            templateUrl: 'views/bitpayCard.html'
+          }
+        }
+      })
+      .state('bitpayCard.preferences', {
+        url: '/preferences',
+        views: {
+          'bitpayCard': {
+            templateUrl: 'views/preferencesBitpayCard.html'
+          }
+        }
       })
 
     /*
