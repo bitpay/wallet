@@ -5,9 +5,13 @@ angular.module('copayApp.services').factory('bitpayCardService', function($http,
   var credentials = {};
   var bpSession = {};
 
-  root.setCredentials = function(network) {
-    credentials.NETWORK = network;
-    if (network == 'testnet') {
+  var _setCredentials = function() {
+    /*
+     * Development: 'testnet'
+     * Production: 'livenet'
+     */
+    credentials.NETWORK = 'livenet';
+    if (credentials.NETWORK == 'testnet') {
       credentials.BITPAY_API_URL = 'https://test.bitpay.com';
     }
     else {
@@ -16,6 +20,7 @@ angular.module('copayApp.services').factory('bitpayCardService', function($http,
   };
 
   var _getUser = function(cb) {
+    _setCredentials();
     storageService.getBitpayCard(credentials.NETWORK, function(err, user) {
       if (err) return cb(err);
       if (lodash.isString(user)) {
@@ -26,6 +31,7 @@ angular.module('copayApp.services').factory('bitpayCardService', function($http,
   };
 
   var _setUser = function(user, cb) {
+    _setCredentials();
     user = JSON.stringify(user);
     storageService.setBitpayCard(credentials.NETWORK, user, function(err) {
       return cb(err);
@@ -33,6 +39,7 @@ angular.module('copayApp.services').factory('bitpayCardService', function($http,
   };
 
   var _getSession = function(cb) {
+    _setCredentials();
     $http({
       method: 'GET',
       url: credentials.BITPAY_API_URL + '/visa-api/session',
@@ -50,6 +57,7 @@ angular.module('copayApp.services').factory('bitpayCardService', function($http,
   };
 
   var _getBitPay = function(endpoint) {
+    _setCredentials();
     return {
       method: 'GET',
       url: credentials.BITPAY_API_URL + endpoint,
@@ -61,6 +69,7 @@ angular.module('copayApp.services').factory('bitpayCardService', function($http,
   };
 
   var _postBitPay = function(endpoint, data) {
+    _setCredentials();
     return {
       method: 'POST',
       url: credentials.BITPAY_API_URL + endpoint,
@@ -70,6 +79,11 @@ angular.module('copayApp.services').factory('bitpayCardService', function($http,
       },
       data: data
     };
+  };
+
+  root.getEnvironment = function() {
+    _setCredentials();
+    return credentials.NETWORK;
   };
 
   root.topUp = function(data, cb) {
@@ -173,6 +187,7 @@ angular.module('copayApp.services').factory('bitpayCardService', function($http,
   };
 
   root.logout = function(cb) {
+    _setCredentials();
     storageService.removeBitpayCard(credentials.NETWORK, function(err) {
       $http(_getBitPay('/visa-api/logout')).then(function(data) {
         $log.info('BitPay Logout: SUCCESS');
