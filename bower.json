@@ -16,7 +16,9 @@
     "ng-lodash": "0.2.3",
     "qrcode-decoder-js": "*",
     "trezor-connect": "~1.0.1",
-    "ng-csv": "~0.3.6"
+    "ng-csv": "~0.3.6",
+    "ionic-toast": "^0.4.1",
+    "angular-clipboard": "^1.4.2"
   },
   "resolutions": {
     "angular": "1.5.3"

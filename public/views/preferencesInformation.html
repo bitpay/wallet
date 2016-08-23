@@ -18,7 +18,7 @@
           {{walletName}}
         </span>
       </div>
-      <div class="item" ng-click="copyToClipboard(walletId)">
+      <div class="item" copy-to-clipboard="walletId">
         <span translate>Wallet Id</span>
         <span class="item-note">
           {{walletId}}
@@ -81,7 +81,7 @@
         Extended Public Keys
       </div>
 
-      <div class="item" ng-repeat="pk in pubKeys" ng-click="copyToClipboard(pk)">
+      <div class="item" ng-repeat="pk in pubKeys" copy-to-clipboard="pk">
         <span translate>Copayer {{$index}}<</span>
         <i class="icon ion-ios-checkmark-outline"></i>
         <span class="item-note">
@@ -96,7 +96,7 @@
           Last Wallet Addresses
         </div>
 
-        <div class="item" ng-repeat="a in addrs" class="oh" ng-click="copyToClipboard(a.address)">
+        <div class="item" ng-repeat="a in addrs" class="oh" copy-to-clipboard="a.address">
         <span>{{a.address}}</span>
         <span>{{a.path}} &middot;  {{a.createdOn *1000  | amDateFormat:'MMMM Do YYYY, h:mm a' }}</span>
         <i class="icon ion-ios-checkmark-outline"></i>
@@ -115,7 +115,7 @@
         <div class="item item-divider">
           Balance By Address
         </div>
-        <div class="item" ng-repeat="a in wallet.balanceByAddress" ng-click="copyToClipboard(a.address)">
+        <div class="item" ng-repeat="a in wallet.balanceByAddress" copy-to-clipboard="a.address">
           <span>{{a.address}}</span>
           <span class="item-note">
             {{(a.amount/1e8).toFixed(8)}} BTC
