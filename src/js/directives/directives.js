@@ -159,8 +159,7 @@ angular.module('copayApp.directives')
 
         scope.$on("$ionicSlides.sliderInitialized", function(event, data) {
           scope.slider = data.slider;
-          scope.content.index = data.slider.activeIndex;
-          scope.$emit('Wallet/Changed', scope.content.wallets[scope.content.index]);
+          scope.$emit('Wallet/Changed', scope.content.wallets[0]);
         });
 
         scope.$on("$ionicSlides.slideChangeEnd", function(event, data) {
