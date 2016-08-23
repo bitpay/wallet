@@ -8,10 +8,6 @@ angular.module('copayApp.directives')
           var URI = bitcore.URI;
           var Address = bitcore.Address
           var validator = function(value) {
-            var networkName = attrs.networkName;
-
-            if (!networkName)
-              throw 'validAddress should provide network name';
 
             // Regular url
             if (/^https?:\/\//.test(value)) {
@@ -21,13 +17,14 @@ angular.module('copayApp.directives')
 
             // Bip21 uri
             if (/^bitcoin:/.test(value)) {
-              var uri, isAddressValid;
+              var uri, isAddressValidLivenet, isAddressValidTestnet;
               var isUriValid = URI.isValid(value);
               if (isUriValid) {
                 uri = new URI(value);
-                isAddressValid = Address.isValid(uri.address.toString(), networkName)
+                isAddressValidLivenet = Address.isValid(uri.address.toString(), 'livenet')
+                isAddressValidTestnet = Address.isValid(uri.address.toString(), 'testnet')
               }
-              ctrl.$setValidity('validAddress', isUriValid && isAddressValid);
+              ctrl.$setValidity('validAddress', isUriValid && (isAddressValidLivenet || isAddressValidTestnet));
               return value;
             }
 
@@ -37,7 +34,9 @@ angular.module('copayApp.directives')
             }
 
             // Regular Address
-            ctrl.$setValidity('validAddress', Address.isValid(value, networkName));
+            var regularAddressLivenet = Address.isValid(value, 'livenet');
+            var regularAddressTestnet = Address.isValid(value, 'testnet');
+            ctrl.$setValidity('validAddress', (regularAddressLivenet || regularAddressTestnet));
             return value;
           };
 
