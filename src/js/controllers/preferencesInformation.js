@@ -113,13 +113,6 @@ angular.module('copayApp.controllers').controller('preferencesInformation',
       save('#202020');
     };
 
-    $scope.copyToClipboard = function(data) {
-      if ($scope.isCordova) {
-        window.cordova.plugins.clipboard.copy(data);
-        window.plugins.toast.showShortCenter(gettextCatalog.getString('Copied to clipboard'));
-      }
-    };
-
     $scope.scan = function() {
       walletService.startScan(wallet);
       $state.go('tabs.home');

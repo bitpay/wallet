@@ -32,39 +32,6 @@ angular.module('copayApp.controllers').controller('tabReceiveController', functi
     });
   }
 
-  $scope.copyToClipboard = function(addr, $event) {
-
-    var showPopover = function() {
-
-      $ionicPopover.fromTemplateUrl('views/includes/copyToClipboard.html', {
-        scope: $scope
-      }).then(function(popover) {
-        $scope.popover = popover;
-        $scope.popover.show($event);
-      });
-
-      $scope.close = function() {
-        $scope.popover.hide();
-      }
-
-      $timeout(function() {
-        $scope.popover.hide(); //close the popover after 0.7 seconds
-      }, 700);
-
-      $scope.$on('$destroy', function() {
-        $scope.popover.remove();
-      });
-    };
-
-    if ($scope.isCordova) {
-      window.cordova.plugins.clipboard.copy(addr);
-      window.plugins.toast.showShortCenter(gettextCatalog.getString('Copied to clipboard'));
-    } else if ($scope.isNW) {
-      nodeWebkit.writeToClipboard(addr);
-      showPopover($event);
-    }
-  };
-
   $scope.shareAddress = function(addr) {
     if ($scope.isCordova) {
       window.plugins.socialsharing.share('bitcoin:' + addr, null, null, null);
