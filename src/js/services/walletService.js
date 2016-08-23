@@ -838,18 +838,34 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     });
   };
 
+
+  root.reject = function(wallet, txp, cb) {
+    ongoingProcess.set('rejectTx', true);
+    root.rejectTx(wallet, txp, function(err, txpr) {
+      root.invalidateCache(wallet);
+
+      ongoingProcess.set('rejectTx', false);
+      if (err) return cb(err);
+
+      $rootScope.$emit('Local/TxAction', wallet.id);
+      return cb(null, txpr);
+    });
+  };
+
+
   root.onlyPublish = function(wallet, txp, cb) {
     ongoingProcess.set('sendingTx', true);
     root.publishTx(wallet, txp, function(err, publishedTxp) {
+      root.invalidateCache(wallet);
+
       ongoingProcess.set('sendingTx', false);
       if (err) return cb(err);
 
       var type = txStatus.notify(createdTxp);
       root.openStatusModal(type, createdTxp, function() {
-        // TODO?
-        //return $scope.$emit('Local/TxProposalAction');
+        $rootScope.$emit('Local/TxAction', wallet.id);
+        return;
       });
-
       return cb(null, publishedTxp);
     });
   };
@@ -878,15 +894,18 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
 
           ongoingProcess.set('signingTx', true);
           root.signTx(wallet, publishedTxp, function(err, signedTxp) {
-            ongoingProcess.set('signingTx', false);
             root.lock(wallet);
+
+            ongoingProcess.set('signingTx', false);
+            root.invalidateCache(wallet);
+
 
             if (err) {
               // TODO?
-              //$scope.$emit('Local/TxProposalAction');
               var msg = err.message ?
                 err.message :
                 gettext('The payment was created but could not be completed. Please try again from home screen');
+              $rootScope.$emit('Local/TxAction', wallet.id);
               return cb(err);
             }
 
@@ -898,8 +917,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
 
                 var type = txStatus.notify(broadcastedTxp);
                 root.openStatusModal(type, broadcastedTxp, function() {
-                  // TODO?
-                  //$scope.$emit('Local/TxProposalAction', broadcastedTxp.status == 'broadcasted');
+                  $rootScope.$emit('Local/TxAction', wallet.id);
                 });
 
                 return cb(null, broadcastedTxp)
@@ -907,8 +925,8 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
             } else {
               var type = txStatus.notify(signedTxp);
               root.openStatusModal(type, signedTxp, function() {
-                // TODO?
-                //$scope.$emit('Local/TxProposalAction');
+                root.invalidateCache(wallet);
+                $rootScope.$emit('Local/TxAction', wallet.id);
               });
               return cb(null, signedTxp);
             }

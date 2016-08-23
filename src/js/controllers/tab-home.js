@@ -14,9 +14,7 @@ angular.module('copayApp.controllers').controller('tabHomeController',
         $scope.txps = [];
         return;
       }
-      $scope.txps = txps.sort(function(a, b) {
-        return a.walletId.localeCompare(b.walletId);
-      });
+      $scope.txps = lodash.sortBy(txps, 'createdOn').reverse();
     };
 
     var formatPendingTxps = function(txps) {
@@ -104,17 +102,19 @@ angular.module('copayApp.controllers').controller('tabHomeController',
 
     self.updateWallet = function(wallet) {
 
-
       $log.debug('Updating wallet:' + wallet.name)
       walletService.getStatus(wallet, {}, function(err, status) {
         if (err) {
           console.log('[tab-home.js.35:err:]', $log.error(err)); //TODO
           return;
         }
-        if (status.pendingTxps && status.pendingTxps[0]) {
-          var txps = lodash.filter($scope.txps, function(x) {
-            return x.walletId != wallet.id;
-          });
+        var txps = lodash.filter($scope.txps, function(x) {
+          return x.walletId != wallet.id;
+        });
+
+        var wasAny = txps.length != $scope.txps.length;
+
+        if ( (status.pendingTxps && status.pendingTxps[0]) || wasAny ) {
           txps = txps.concat(status.pendingTxps);
           txps = formatPendingTxps(txps);
           setPendingTxps(txps);
@@ -134,7 +134,7 @@ angular.module('copayApp.controllers').controller('tabHomeController',
         var wallet = profileService.getWallet(walletId);
         self.updateWallet(wallet);
       }),
-      $rootScope.$on('Local/TxAction', function(e, walletId, type, n) {
+      $rootScope.$on('Local/TxAction', function(e, walletId) {
         var wallet = profileService.getWallet(walletId);
         self.updateWallet(wallet);
       }),
