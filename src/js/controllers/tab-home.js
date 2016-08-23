@@ -103,12 +103,12 @@ angular.module('copayApp.controllers').controller('tabHomeController',
     self.updateWallet = function(wallet) {
 
 
-      $log.debug('Updating wallet:'+ wallet.name)
+      $log.debug('Updating wallet:' + wallet.name)
       walletService.getStatus(wallet, {}, function(err, status) {
         if (err) {
           console.log('[tab-home.js.35:err:]', $log.error(err)); //TODO
           return;
-        } 
+        }
         if (status.pendingTxps && status.pendingTxps[0]) {
           var txps = lodash.filter($scope.txps, function(x) {
             return x.walletId != wallet.id;
@@ -127,13 +127,21 @@ angular.module('copayApp.controllers').controller('tabHomeController',
     self.updateAllWallets();
     $scope.bitpayCardEnabled = true; // TODO
 
-    var c1 = $rootScope.$on('bwsEvent', function(e, walletId, type, n) {
-      var wallet = profileService.getWallet(walletId);
-      self.updateWallet(wallet);
-    });
+    var listeners = [
+      $rootScope.$on('bwsEvent', function(e, walletId, type, n) {
+        var wallet = profileService.getWallet(walletId);
+        self.updateWallet(wallet);
+      }),
+      $rootScope.$on('Local/TxAction', function(e, walletId, type, n) {
+        var wallet = profileService.getWallet(walletId);
+        self.updateWallet(wallet);
+      }),
+    ];
 
     $scope.$on('$destroy', function() {
-      c1();
+      lodash.each(listeners, function(x){
+        x();
+      });
     });
 
     var config = configService.getSync().wallet;
