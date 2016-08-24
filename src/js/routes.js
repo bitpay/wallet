@@ -14,7 +14,7 @@ if (window && window.navigator) {
 
 //Setting up route
 angular.module('copayApp').config(function(historicLogProvider, $provide, $logProvider, $stateProvider, $urlRouterProvider, $compileProvider, $ionicConfigProvider) {
-    $urlRouterProvider.otherwise('/tabs/home');
+    $urlRouterProvider.otherwise('/starting');
 
     // NO CACHE
     $ionicConfigProvider.views.maxCache(0);
@@ -94,6 +94,12 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
       url: '/unsupported',
       templateUrl: 'views/unsupported.html'
     })
+
+    .state('starting', {
+      url: '/starting',
+      templateUrl: 'views/starting.html'
+    })
+
 
 
     /*
@@ -757,7 +763,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         } else {
           profileService.storeProfileIfDirty();
           $log.debug('Profile loaded ... Starting UX.');
-          // $state.transitionTo('tabs.home');
+          $state.transitionTo('tabs.home');
         }
       });
 
