@@ -58,6 +58,8 @@ angular.module('copayApp.controllers').controller('confirmController', function(
 
     $scope.toAddress = $stateParams.toAddress;
     $scope.toName = $stateParams.toName;
+    $scope.description = $stateParams.description;
+    $scope.paypro = $stateParams.paypro;
 
     var network = (new bitcore.Address($scope.toAddress)).network.name;
     $scope.network = network;
@@ -136,7 +138,6 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     var currentSpendUnconfirmed = config.spendUnconfirmed;
     var outputs = [];
 
-    // TODO
     var paypro = $scope.paypro;
 
     // ToDo: use a credential's (or fc's) function for this
