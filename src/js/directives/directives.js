@@ -143,7 +143,7 @@ angular.module('copayApp.directives')
       }
     }
   })
-  .directive('wallets', function(profileService) {
+  .directive('wallets', function($log, profileService, walletService, lodash) {
     return {
       restrict: 'E',
       templateUrl: 'views/includes/wallets.html',
@@ -155,17 +155,41 @@ angular.module('copayApp.directives')
         opts.n = attrs.n;
 
         scope.content = {};
-        scope.content.wallets = profileService.getWallets(opts);
+        scope.content.wallets = [];
+        var minBalance = attrs.minBalance ? parseInt(attrs.minBalance) : 0;
+        var wallets = profileService.getWallets(opts);
+        var filteredWallets = [];
+        var index = 0;
+
+        if (minBalance)
+          filterWallet();
 
         scope.$on("$ionicSlides.sliderInitialized", function(event, data) {
           scope.slider = data.slider;
-          scope.$emit('Wallet/Changed', scope.content.wallets[0]);
         });
 
         scope.$on("$ionicSlides.slideChangeEnd", function(event, data) {
           scope.content.index = data.slider.activeIndex;
           scope.$emit('Wallet/Changed', scope.content.wallets[scope.content.index]);
         });
+
+        function filterWallet() {
+          if (index == wallets.length) {
+            if (!lodash.isEmpty(filteredWallets)) {
+              scope.content.wallets = filteredWallets;
+              scope.$emit('Wallet/Changed', scope.content.wallets[0]);
+            }
+            return;
+          }
+
+          walletService.getStatus(wallets[index], {}, function(err, status) {
+            if (err) $log.error(err);
+            if (!status.availableBalanceSat) $log.debug('Balance not available on wallet: ' + wallets[index].name);
+            if (status.availableBalanceSat > minBalance) filteredWallets.push(wallets[index]);
+            index++;
+            filterWallet();
+          });
+        };
       }
     }
   });
