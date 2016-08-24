@@ -85,7 +85,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
      *
      */
 
-    .state('disclaimer', {
+      .state('disclaimer', {
       url: '/disclaimer',
       templateUrl: 'views/disclaimer.html',
     })
@@ -104,22 +104,19 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
 
     .state('uri', {
         url: '/uri/:url',
-        needProfile: true,
-        views: {
-          'main': {
-            templateUrl: 'views/uri.html'
-          }
-        }
+        templateUrl: 'views/uri.html'
       })
       .state('uripayment', {
         url: '/uri-payment/:url',
-        templateUrl: 'views/paymentUri.html',
-        views: {
-          'main': {
-            templateUrl: 'views/paymentUri.html',
-          },
-        },
-        needProfile: true
+        templateUrl: 'views/paymentUri.html'
+      })
+      .state('uriglidera', {
+        url: '/uri-glidera/:url',
+        templateUrl: 'views/glideraUri.html'
+      })
+      .state('uricoinbase', {
+        url: '/uri-coinbase/:url',
+        templateUrl: 'views/coinbaseUri.html'
       })
       .state('activity', {
         url: '/activity',
@@ -537,53 +534,43 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
      *
      * Glidera
      *
+     *
      */
 
-    .state('uriglidera', {
-        url: '/uri-glidera/:url',
-        templateUrl: 'views/glideraUri.html'
-      })
-      .state('glidera', {
+    .state('glidera', {
         url: '/glidera',
-        templateUrl: 'views/glidera.html'
-      })
-      .state('buyGlidera', {
-        url: '/buy',
-        templateUrl: 'views/buyGlidera.html'
-      })
-      .state('sellGlidera', {
-        url: '/sell',
-        templateUrl: 'views/sellGlidera.html'
-      })
-      .state('preferencesGlidera', {
-        url: '/preferencesGlidera',
-        templateUrl: 'views/preferencesGlidera.html'
-      })
-
-    /*
-     *
-     * BitPay Card
-     *
-     */
-
-      .state('bitpayCard', {
-        url: '/bitpayCard',
         abstract: true,
-        template: '<ion-nav-view name="bitpayCard"></ion-nav-view>'
+        template: '<ion-nav-view name="glidera"></ion-nav-view>'
       })
-      .state('bitpayCard.main', {
+      .state('glidera.main', {
         url: '/main',
         views: {
-          'bitpayCard': {
-            templateUrl: 'views/bitpayCard.html'
+          'glidera': {
+            templateUrl: 'views/glidera.html'
           }
         }
       })
-      .state('bitpayCard.preferences', {
+      .state('glidera.buy', {
+        url: '/buy',
+        views: {
+          'glidera': {
+            templateUrl: 'views/buyGlidera.html'
+          }
+        }
+      })
+      .state('glidera.sell', {
+        url: '/sell',
+        views: {
+          'glidera': {
+            templateUrl: 'views/sellGlidera.html'
+          }
+        }
+      })
+      .state('glidera.preferences', {
         url: '/preferences',
         views: {
-          'bitpayCard': {
-            templateUrl: 'views/preferencesBitpayCard.html'
+          'glidera': {
+            templateUrl: 'views/preferencesGlidera.html'
           }
         }
       })
@@ -602,10 +589,6 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         url: '/preferencesCoinbase',
         templateUrl: 'views/preferencesCoinbase.html'
       })
-      .state('uricoinbase', {
-        url: '/uri-coinbase/:url',
-        templateUrl: 'views/coinbaseUri.html'
-      })
       .state('buyCoinbase', {
         url: '/buycoinbase',
         templateUrl: 'views/buyCoinbase.html'
@@ -614,15 +597,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         url: '/sellcoinbase',
         templateUrl: 'views/sellCoinbase.html'
       })
-      .state('buyandsell', {
-        url: '/buyandsell',
-        templateUrl: 'views/buyAndSell.html',
-        controller: function(platformInfo) {
-          if (platformInfo.isCordova && StatusBar.isVisible) {
-            StatusBar.backgroundColorByHexString("#4B6178");
-          }
-        }
-      })
+
 
     /*
      *
@@ -648,6 +623,34 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         views: {
           'amazon': {
             templateUrl: 'views/buyAmazon.html'
+          }
+        }
+      })
+
+    /*
+     *
+     * BitPay Card
+     *
+     */
+
+    .state('bitpayCard', {
+        url: '/bitpayCard',
+        abstract: true,
+        template: '<ion-nav-view name="bitpayCard"></ion-nav-view>'
+      })
+      .state('bitpayCard.main', {
+        url: '/main',
+        views: {
+          'bitpayCard': {
+            templateUrl: 'views/bitpayCard.html'
+          }
+        }
+      })
+      .state('bitpayCard.preferences', {
+        url: '/preferences',
+        views: {
+          'bitpayCard': {
+            templateUrl: 'views/preferencesBitpayCard.html'
           }
         }
       });
@@ -707,12 +710,9 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
 
             if ($rootScope.backButtonPressedOnceToExit || fromDisclaimer) {
               ionic.Platform.exitApp();
-            }
-
-            else if ($ionicHistory.backView() && !fromTabs) {
+            } else if ($ionicHistory.backView() && !fromTabs) {
               $ionicHistory.goBack();
-            }
-            else {
+            } else {
               $rootScope.backButtonPressedOnceToExit = true;
               window.plugins.toast.showShortBottom(gettextCatalog.getString('Press again to exit'));
               setInterval(function() {
