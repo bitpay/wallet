@@ -3,43 +3,24 @@
     <ion-nav-title>Receive</ion-nav-title>
   </ion-nav-bar>
 
-
-  <ion-content ng-controller="tabReceiveController" ng-init="init()"  >
-
-    <div class="text-center m30v" copy-to-clipboard="addr" ng-show="addr" >
+  <ion-content ng-controller="tabReceiveController" ng-init="init()">
+    <div class="text-center m30v" copy-to-clipboard="addr" ng-show="addr">
       <qrcode size="220" data="bitcoin:{{addr}}" ng-show="addr"></qrcode>
+    </div>
+
+    <div class="padding assertive" ng-show="error">
+      {{error|translate}}
     </div>
 
     <div ng-show="generatingAddress" class="m30v">
       <div style="height:220px; width:220px; margin:auto; background: #eee; text-align:center">
-        <ion-spinner class="spinner-stable" icon="lines" style="stroke:black; margin-top: 85px"></ion-spinner>
+        <div class="padding-top">
+          <ion-spinner class="spinner-dark" icon="lines"></ion-spinner>
+        </div>
       </div>
     </div>
 
-    <div ng-show="incomplete">
-      <div  style="height:220px; width:220px; margin: 30px auto; background: #eee; text-align:center">
-incomplete wallet
-      </div>
-
-      <div class="item item-icon-left" ng-click="shareAddress(addr)" ng-show="isCordova && addr" ng-disabled="generatingAddress">
-        <i class="icon ion-ios-upload-outline"></i>
-      </div>
-      <div class="item item-icon-left" ng-click="setAddress(true)" ng-show="!generatingAddress">
-        <i class="icon ion-ios-loop"></i>
-      </div>
-      <div class="item item-icon-left">
-        <i class="icon ion-social-bitcoin-outline"></i>
-      </div>
-    </div>
-
-    <div ng-show="addrError">
-      <div  style="height:220px; width:220px; margin: 30px auto; background: #eee; text-align:center">
-Error: {{addrError}}
-      </div>
-    </div>
-
-
-    <div ng-show="!incomplete">
+    <div class="list">
       <div class="item item-icon-left" ng-click="shareAddress(addr)" ng-show="isCordova && addr" ng-disabled="generatingAddress">
         <i class="icon ion-ios-upload-outline"></i>
         <span translate>Share address</span>
@@ -53,9 +34,7 @@ Error: {{addrError}}
         <span ng-show="generatingAddress">...</span>
         <span ng-show="!generatingAddress" copy-to-clipboard="addr">{{addr}}</span>
       </div>
+      <wallets only-complete="true"></wallets>
     </div>
-
-    <wallets only-complete="true"></wallets>
-
   </ion-content>
 </ion-view>
