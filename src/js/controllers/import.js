@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('importController',
-  function($scope, $rootScope, $timeout, $log, profileService, configService, notification, sjcl, gettext, ledger, trezor, derivationPathHelper, platformInfo, bwcService, ongoingProcess, walletService) {
+  function($scope, $rootScope, $timeout, $log, $state, profileService, configService, sjcl, gettext, ledger, trezor, derivationPathHelper, platformInfo, bwcService, ongoingProcess, walletService) {
 
     var isChromeApp = platformInfo.isChromeApp;
     var isDevel = platformInfo.isDevel;
@@ -110,7 +110,6 @@ angular.module('copayApp.controllers').controller('importController',
           });
 
           $rootScope.$emit('Local/WalletImported', client.credentials.walletId);
-          notification.success(gettext('Success'), gettext('Your wallet has been imported correctly'));
           $state.go('tabs.home');
         });
       }, 100);
@@ -138,7 +137,6 @@ angular.module('copayApp.controllers').controller('importController',
           });
 
           $rootScope.$emit('Local/WalletImported', client.credentials.walletId);
-          notification.success(gettext('Success'), gettext('Your wallet has been imported correctly'));
           $state.go('tabs.home');
         });
       }, 100);
@@ -159,7 +157,6 @@ angular.module('copayApp.controllers').controller('importController',
             });
           }
           $rootScope.$emit('Local/WalletImported', walletId);
-          notification.success(gettext('Success'), gettext('Your wallet has been imported correctly'));
           $state.go('tabs.home');
         });
       }, 100);
@@ -189,7 +186,6 @@ angular.module('copayApp.controllers').controller('importController',
           });
 
           $rootScope.$emit('Local/WalletImported', client.credentials.walletId);
-          notification.success(gettext('Success'), gettext('Your wallet has been imported correctly'));
           $state.go('tabs.home');
         });
       }, 100);
@@ -324,7 +320,6 @@ angular.module('copayApp.controllers').controller('importController',
             $log.debug('Remote preferences saved for:' + wallet.walletId)
           });
           $rootScope.$emit('Local/WalletImported', wallet.walletId);
-          notification.success(gettext('Success'), gettext('Your wallet has been imported correctly'));
           $state.go('tabs.home');
         });
       }, 100);
@@ -402,7 +397,6 @@ angular.module('copayApp.controllers').controller('importController',
             $log.debug('Remote preferences saved for:' + wallet.walletId)
           });
           $rootScope.$emit('Local/WalletImported', wallet.walletId);
-          notification.success(gettext('Success'), gettext('Your wallet has been imported correctly'));
           $state.go('tabs.home');
         });
       }, 100);
