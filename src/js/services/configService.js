@@ -123,11 +123,6 @@ angular.module('copayApp.services').factory('configService', function(storageSer
       configCache.colorFor = configCache.colorFor || {};
       configCache.aliasFor = configCache.aliasFor || {};
 
-
-      // Glidera
-      // Disabled for testnet
-      configCache.glidera.testnet = false;
-
       // Coinbase
       // Disabled for testnet
       configCache.coinbase.testnet = false;

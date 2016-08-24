@@ -103,25 +103,21 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
      */
 
     .state('uri', {
-        url: '/uri/:url',
-        needProfile: true,
-        views: {
-          'main': {
-            templateUrl: 'views/uri.html'
-          }
-        }
-      })
-      .state('uripayment', {
-        url: '/uri-payment/:url',
-        templateUrl: 'views/paymentUri.html',
-        views: {
-          'main': {
-            templateUrl: 'views/paymentUri.html',
-          },
-        },
-        needProfile: true
-      })
-
+      url: '/uri/:url',
+      templateUrl: 'views/uri.html'
+    })
+    .state('uripayment', {
+      url: '/uri-payment/:url',
+      templateUrl: 'views/paymentUri.html'
+    })
+    .state('uriglidera', {
+      url: '/uri-glidera/:url',
+      templateUrl: 'views/glideraUri.html'
+    })
+    .state('uricoinbase', {
+      url: '/uri-coinbase/:url',
+      templateUrl: 'views/coinbaseUri.html'
+    })
 
     /*
      *
@@ -528,27 +524,97 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
      *
      * Glidera
      *
+     *
      */
 
-    .state('uriglidera', {
-        url: '/uri-glidera/:url',
-        templateUrl: 'views/glideraUri.html'
-      })
       .state('glidera', {
         url: '/glidera',
-        templateUrl: 'views/glidera.html'
+        abstract: true,
+        template: '<ion-nav-view name="glidera"></ion-nav-view>'
       })
-      .state('buyGlidera', {
+      .state('glidera.main', {
+        url: '/main',
+        views: {
+          'glidera': {
+            templateUrl: 'views/glidera.html'
+          }
+        }
+      })
+      .state('glidera.buy', {
         url: '/buy',
-        templateUrl: 'views/buyGlidera.html'
+        views: {
+          'glidera': {
+            templateUrl: 'views/buyGlidera.html'
+          }
+        }
       })
-      .state('sellGlidera', {
+      .state('glidera.sell', {
         url: '/sell',
-        templateUrl: 'views/sellGlidera.html'
+        views: {
+          'glidera': {
+            templateUrl: 'views/sellGlidera.html'
+          }
+        }
       })
-      .state('preferencesGlidera', {
-        url: '/preferencesGlidera',
-        templateUrl: 'views/preferencesGlidera.html'
+      .state('glidera.preferences', {
+        url: '/preferences',
+        views: {
+          'glidera': {
+            templateUrl: 'views/preferencesGlidera.html'
+          }
+        }
+      })
+
+    /*
+     *
+     * Coinbase
+     *
+     */
+
+    .state('coinbase', {
+        url: '/coinbase',
+        templateUrl: 'views/coinbase.html'
+      })
+      .state('preferencesCoinbase', {
+        url: '/preferencesCoinbase',
+        templateUrl: 'views/preferencesCoinbase.html'
+      })
+      .state('buyCoinbase', {
+        url: '/buycoinbase',
+        templateUrl: 'views/buyCoinbase.html'
+      })
+      .state('sellCoinbase', {
+        url: '/sellcoinbase',
+        templateUrl: 'views/sellCoinbase.html'
+      })
+
+
+    /*
+     *
+     * Amazon Gift Card
+     *
+     */
+
+    .state('amazon', {
+        url: '/amazon',
+        abstract: true,
+        template: '<ion-nav-view name="amazon"></ion-nav-view>'
+      })
+      .state('amazon.main', {
+        url: '/main',
+        views: {
+          'amazon': {
+            templateUrl: 'views/amazon.html'
+          }
+        }
+      })
+      .state('amazon.buy', {
+        url: '/buy',
+        views: {
+          'amazon': {
+            templateUrl: 'views/buyAmazon.html'
+          }
+        }
       })
 
     /*
@@ -575,70 +641,6 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         views: {
           'bitpayCard': {
             templateUrl: 'views/preferencesBitpayCard.html'
-          }
-        }
-      })
-
-    /*
-     *
-     * Coinbase
-     *
-     */
-
-    .state('coinbase', {
-        url: '/coinbase',
-        templateUrl: 'views/coinbase.html'
-      })
-      .state('preferencesCoinbase', {
-        url: '/preferencesCoinbase',
-        templateUrl: 'views/preferencesCoinbase.html'
-      })
-      .state('uricoinbase', {
-        url: '/uri-coinbase/:url',
-        templateUrl: 'views/coinbaseUri.html'
-      })
-      .state('buyCoinbase', {
-        url: '/buycoinbase',
-        templateUrl: 'views/buyCoinbase.html'
-      })
-      .state('sellCoinbase', {
-        url: '/sellcoinbase',
-        templateUrl: 'views/sellCoinbase.html'
-      })
-      .state('buyandsell', {
-        url: '/buyandsell',
-        templateUrl: 'views/buyAndSell.html',
-        controller: function(platformInfo) {
-          if (platformInfo.isCordova && StatusBar.isVisible) {
-            StatusBar.backgroundColorByHexString("#4B6178");
-          }
-        }
-      })
-
-    /*
-     *
-     * Amazon Gift Card
-     *
-     */
-
-    .state('amazon', {
-        url: '/amazon',
-        abstract: true,
-        template: '<ion-nav-view name="amazon"></ion-nav-view>'
-      })
-      .state('amazon.main', {
-        url: '/main',
-        views: {
-          'amazon': {
-            templateUrl: 'views/amazon.html'
-          }
-        }
-      })
-      .state('amazon.buy', {
-        url: '/buy',
-        views: {
-          'amazon': {
-            templateUrl: 'views/buyAmazon.html'
           }
         }
       });

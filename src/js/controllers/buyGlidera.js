@@ -1,23 +1,86 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('buyGlideraController',
-  function($scope, $timeout, $ionicModal, profileService, addressService, glideraService, bwcError, lodash, ongoingProcess) {
+  function($scope, $timeout, $log, $ionicModal, profileService, walletService, glideraService, bwcError, lodash, ongoingProcess) {
 
+    var wallet;
     var self = this;
     this.show2faCodeInput = null;
     this.error = null;
     this.success = null;
 
-    this.init = function(testnet) {
-      self.allWallets = profileService.getWallets(testnet ? 'testnet' : 'livenet');
+    $scope.init = function(accessToken) {
+      $scope.network = glideraService.getEnvironment();
 
-      var client = profileService.focusedClient;
-      if (client) {
+      $scope.token = accessToken;
+      $scope.error = null;
+      $scope.permissions = null;
+      $scope.email = null;
+      $scope.personalInfo = null;
+      $scope.txs = null;
+      $scope.status = null;
+      $scope.limits = null;
+
+      ongoingProcess.set('connectingGlidera', true);
+      glideraService.init($scope.token, function(err, glidera) {
+        ongoingProcess.set('connectingGlidera');
+        if (err || !glidera) {
+          $scope.error = err;
+          return;
+        }
+        $scope.token = glidera.token;
+        $scope.permissions = glidera.permissions;
+        $scope.update({fullUpdate: true});
+      });
+
+      self.allWallets = profileService.getWallets({
+        network: $scope.network,
+        n: 1,
+        onlyComplete: true
+      });
+      if (lodash.isEmpty(self.allWallets)) return;
+
+      wallet = self.allWallets[0];
+      if (wallet) {
         $timeout(function() {
-          self.selectedWalletId = client.credentials.walletId;
-          self.selectedWalletName = client.credentials.walletName;
+          self.selectedWalletId = wallet.credentials.walletId;
+          self.selectedWalletName = wallet.credentials.walletName;
           $scope.$apply();
         }, 100);
+      }
+    };
+
+    $scope.update = function(opts) {
+      if (!$scope.token || !$scope.permissions) return;
+      $log.debug('Updating Glidera Account...');
+      var accessToken = $scope.token;
+      var permissions = $scope.permissions;
+
+      opts = opts || {};
+
+      glideraService.getStatus(accessToken, function(err, data) {
+        $scope.status = data;
+      });
+
+      glideraService.getLimits(accessToken, function(err, limits) {
+        $scope.limits = limits;
+      });
+
+      if (permissions.transaction_history) {
+        glideraService.getTransactions(accessToken, function(err, data) {
+          $scope.txs = data;
+        });
+      }
+
+      if (permissions.view_email_address && opts.fullUpdate) {
+        glideraService.getEmail(accessToken, function(err, data) {
+          $scope.email = data.email;
+        });
+      }
+      if (permissions.personal_info && opts.fullUpdate) {
+        glideraService.getPersonalInfo(accessToken, function(err, data) {
+          $scope.personalInfo = data;
+        });
       }
     };
 
@@ -39,9 +102,9 @@ angular.module('copayApp.controllers').controller('buyGlideraController',
 
       $scope.$on('walletSelected', function(ev, walletId) {
         $timeout(function() {
-          var client = profileService.getClient(walletId);
+          wallet = profileService.getClient(walletId);
           self.selectedWalletId = walletId;
-          self.selectedWalletName = client.credentials.walletName;
+          self.selectedWalletName = wallet.credentials.walletName;
           $scope.$apply();
         }, 100);
         $scope.walletsModal.hide();
@@ -87,7 +150,7 @@ angular.module('copayApp.controllers').controller('buyGlideraController',
       self.error = null;
       ongoingProcess.set('Buying Bitcoin...', true);
       $timeout(function() {
-        addressService.getAddress(self.selectedWalletId, false, function(err, walletAddr) {
+        walletService.getAddress(wallet, false, function(err, walletAddr) {
           if (err) {
             ongoingProcess.set('Buying Bitcoin...', false);
             self.error = bwcError.cb(err, 'Could not create address');

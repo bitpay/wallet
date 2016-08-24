@@ -1,11 +1,11 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('glideraConfirmationController', function($scope, $timeout, storageService, applicationService) {
+angular.module('copayApp.controllers').controller('glideraConfirmationController', function($scope, $timeout, $state, glideraService) {
 
   $scope.ok = function() {
-    storageService.removeGlideraToken($scope.network, function() {
+    glideraService.removeToken(function() {
       $timeout(function() {
-        applicationService.restart();
+        $state.go('glidera.main');
       }, 100);
     });
     $scope.cancel();
