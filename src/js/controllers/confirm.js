@@ -1,12 +1,12 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('confirmController', function($rootScope, $scope, $filter, $timeout, $ionicScrollDelegate, walletService, platformInfo, lodash, configService, rateService, $stateParams, $window, $state, $log, profileService, bitcore, $ionicPopup, txStatus, gettext, txFormatService) {
+angular.module('copayApp.controllers').controller('confirmController', function($rootScope, $scope, $filter, $timeout, $ionicScrollDelegate, gettextCatalog, walletService, platformInfo, lodash, configService, rateService, $stateParams, $window, $state, $log, profileService, bitcore, $ionicPopup, txStatus, gettext, txFormatService) {
 
   var cachedTxp = {};
 
   // An alert dialog
   var showAlert = function(title, msg, cb) {
-    $log.warn(title + ":" + msg);
+    $log.warn(title + ": " + msg);
     var alertPopup = $ionicPopup.alert({
       title: title,
       template: msg
@@ -15,6 +15,22 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     if (!cb) cb = function() {};
 
     alertPopup.then(cb);
+  };
+
+  $scope.showCommentPopup = function() {
+    var commentPopup = $ionicPopup.show({
+      templateUrl: "views/includes/note.html",
+      title: $scope.data.comment ? gettextCatalog.getString('Edit comment') : gettextCatalog.getString('Add comment'),
+      scope: $scope,
+    });
+    $scope.commentPopupClose = function() {
+      commentPopup.close();
+    };
+    $scope.commentPopupSave = function() {
+      $log.debug('Saving comment');
+      $scope.comment = $scope.data.comment;
+      commentPopup.close();
+    };
   };
 
   $scope.init = function() {
@@ -160,6 +176,8 @@ angular.module('copayApp.controllers').controller('confirmController', function(
 
 
   $scope.approve = function() {
+    console.log($scope.comment);
+    return;
     var wallet = $scope.wallet;
     var txp = $scope.txp;
     if (!wallet) {
