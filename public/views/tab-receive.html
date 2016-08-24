@@ -34,7 +34,7 @@
         <span ng-show="generatingAddress">...</span>
         <span ng-show="!generatingAddress" copy-to-clipboard="addr">{{addr}}</span>
       </div>
-      <wallets only-complete="true"></wallets>
+      <wallets ng-if="hasWallet" only-complete="true"></wallets>
     </div>
   </ion-content>
 </ion-view>

@@ -157,8 +157,8 @@ angular.module('copayApp.directives')
         scope.content = {};
         scope.content.wallets = [];
         scope.content.notAvailable = false;
-        var minBalance = attrs.minBalance ? parseInt(attrs.minBalance) : 0;
         var wallets = profileService.getWallets(opts);
+        var minBalance = attrs.minBalance ? parseInt(attrs.minBalance) : 0;
         var filteredWallets = [];
         var index = 0;
 
