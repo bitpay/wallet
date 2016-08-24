@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.services').factory('walletService', function($log, $timeout, lodash, trezor, ledger, storageService, configService, rateService, uxLanguage, $filter, gettextCatalog, bwcError, $ionicPopup, fingerprintService, ongoingProcess, gettext, $rootScope, txStatus, txFormatService, $ionicModal, $state, bwcService) {
+angular.module('copayApp.services').factory('walletService', function($log, $timeout, lodash, trezor, ledger, storageService, configService, rateService, uxLanguage, $filter, gettextCatalog, bwcError, $ionicPopup, fingerprintService, ongoingProcess, gettext, $rootScope, txStatus, txFormatService, $ionicModal, $state, bwcService, bitcore) {
   // `wallet` is a decorated version of client.
 
   var root = {};
@@ -1121,6 +1121,51 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     });
 
     return finale;
+  };
+
+  // Here?
+  root.redirFromUri = function(uri) {
+
+    function sanitizeUri(uri) {
+      // Fixes when a region uses comma to separate decimals
+      var regex = /[\?\&]amount=(\d+([\,\.]\d+)?)/i;
+      var match = regex.exec(uri);
+      if (!match || match.length === 0) {
+        return uri;
+      }
+      var value = match[0].replace(',', '.');
+      var newUri = uri.replace(regex, value);
+      return newUri;
+    };
+
+    // URI extensions for Payment Protocol with non-backwards-compatible request
+    if ((/^bitcoin:\?r=[\w+]/).exec(uri)) {
+      uri = decodeURIComponent(uri.replace('bitcoin:?r=', ''));
+      $state.go('send.confirm', {paypro: uri})
+    } else {
+      uri = sanitizeUri(uri);
+
+      if (!bitcore.URI.isValid(uri)) {
+        return false;
+      }
+      var parsed = new bitcore.URI(uri);
+
+      var addr = parsed.address ? parsed.address.toString() : '';
+      var message = parsed.message;
+
+      var amount = parsed.amount ?  parsed.amount : '';
+
+      if (parsed.r) {
+        $state.go('send.confirm', {paypro: parsed.r});
+      } else {
+        if (amount) {
+          $state.go('send.confirm', {toAmount: amount, toAddress: addr, description:message})
+        } else {
+          $state.go('send.amount', {toAddress: addr})
+        }
+      }
+      return true;
+    }
   };
 
   return root;
