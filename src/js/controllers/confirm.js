@@ -1,8 +1,9 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('confirmController', function($rootScope, $scope, $filter, $timeout, $ionicScrollDelegate, gettextCatalog, walletService, platformInfo, lodash, configService, rateService, $stateParams, $window, $state, $log, profileService, bitcore, $ionicPopup, txStatus, gettext, txFormatService) {
+angular.module('copayApp.controllers').controller('confirmController', function($rootScope, $scope, $filter, $timeout, $ionicScrollDelegate, gettextCatalog, walletService, platformInfo, lodash, configService, rateService, $stateParams, $window, $state, $log, profileService, bitcore, $ionicPopup, txStatus, gettext, txFormatService, ongoingProcess, $ionicModal) {
 
   var cachedTxp = {};
+  var isChromeApp = platformInfo.isChromeApp;
 
   // An alert dialog
   var showAlert = function(title, msg, cb) {
@@ -31,7 +32,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
       $scope.description = $scope.data.comment;
       $scope.txp = null;
 
-      createTx($scope.wallet, $scope.toAddress, $scope.toAmount, $scope.data.comment, function(err, txp) {
+      createTx($scope.wallet, function(err, txp) {
         if (err) return;
         cachedTxp[$scope.wallet.id] = txp;
         apply(txp);
@@ -40,9 +41,68 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     };
   };
 
+
+  var setFromPayPro = function(uri, cb) {
+    if (!cb) cb = function() {};
+
+    var wallet = profileService.getWallets({
+      onlyComplete: true
+    })[0];
+
+    if (!wallet) return cb();
+
+    if (isChromeApp) {
+      showAlert(gettext('Payment Protocol not supported on Chrome App'));
+      return cb(true);
+    }
+
+    $log.debug('Fetch PayPro Request...', uri);
+
+    ongoingProcess.set('fetchingPayPro', true);
+    wallet.fetchPayPro({
+      payProUrl: uri,
+    }, function(err, paypro) {
+
+      ongoingProcess.set('fetchingPayPro', false);
+
+      if (err) {
+        $log.warn('Could not fetch payment request:', err);
+        var msg = err.toString();
+        if (msg.match('HTTP')) {
+          msg = gettext('Could not fetch payment information');
+        }
+        showAlert(msg);
+        return cb(true);
+      }
+
+      if (!paypro.verified) {
+        $log.warn('Failed to verify payment protocol signatures');
+        showAlert(gettext('Payment Protocol Invalid'));
+        return cb(true);
+      }
+
+      $stateParams.toAmount = paypro.amount;
+      $stateParams.toAddress = paypro.toAddress;
+      $stateParams.description = paypro.memo;
+      $stateParams.paypro = null;
+
+      $scope._paypro = paypro;
+      return $scope.init();
+    });
+  };
+
+
+
   $scope.init = function() {
 
-    // TODO (URL , etc)
+    if ($stateParams.paypro) {
+      return setFromPayPro($stateParams.paypro, function(err) {
+        if (err && !isChromeApp) {
+          showAlert(gettext('Could not fetch payment'));
+        }
+      });
+    }
+
     if (!$stateParams.toAddress || !$stateParams.toAmount) {
       $log.error('Bad params at amount')
       throw ('bad params');
@@ -96,7 +156,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
         apply(cachedTxp[wallet.id]);
       } else {
         stop = $timeout(function() {
-          createTx(wallet, $scope.toAddress, $scope.toAmount, $scope.description, function(err, txp) {
+          createTx(wallet, function(err, txp) {
             if (err) return;
             cachedTxp[wallet.id] = txp;
             apply(txp);
@@ -131,14 +191,15 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     $scope.$apply();
   };
 
-  var createTx = function(wallet, toAddress, toAmount, description, cb) {
+  var createTx = function(wallet, cb) {
     var config = configService.getSync().wallet;
-
-    //
     var currentSpendUnconfirmed = config.spendUnconfirmed;
     var outputs = [];
 
     var paypro = $scope.paypro;
+    var toAddress = $scope.toAddress;
+    var toAmount = $scope.toAmount;
+    var description = $scope.description;
 
     // ToDo: use a credential's (or fc's) function for this
     if (description && !wallet.credentials.sharedEncryptingKey) {
@@ -170,7 +231,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
 
     txp.outputs = outputs;
     txp.message = description;
-    txp.payProUrl = paypro ? paypro.url : null;
+    txp.payProUrl = paypro;
     txp.excludeUnconfirmedUtxos = config.spendUnconfirmed ? false : true;
     txp.feeLevel = config.settings.feeLevel || 'normal';
 
@@ -181,6 +242,17 @@ angular.module('copayApp.controllers').controller('confirmController', function(
       return cb(null, ctxp);
     });
   };
+
+
+  $scope.openPPModal = function() {
+    $ionicModal.fromTemplateUrl('views/modals/paypro.html', {
+      scope: $scope
+    }).then(function(modal) {
+      $scope.payproModal = modal;
+      $scope.payproModal.show();
+    });
+  };
+
 
 
   $scope.approve = function() {

@@ -1,9 +1,8 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('tabSendController', function($scope, $ionicModal, $log, $timeout, addressbookService, profileService, lodash, $state, walletService, bitcore, platformInfo, ongoingProcess) {
+angular.module('copayApp.controllers').controller('tabSendController', function($scope, $ionicModal, $log, $timeout, addressbookService, profileService, lodash, $state, walletService, bitcore ) {
 
   var originalList;
-  var isChromeApp = platformInfo.isChromeApp;
 
 
   // An alert dialog
@@ -52,47 +51,6 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
   };
 
 
-  var setFromPayPro = function(uri, cb) {
-    if (!cb) cb = function() {};
-
-    var  wallet = profileService.getWallets({onlyComplete: true})[0];
-    if (!wallet) return cb();
-
-    if (isChromeApp) {
-      showAlert(gettext('Payment Protocol not supported on Chrome App'));
-      return cb(true);
-    }
-
-    $log.debug('Fetch PayPro Request...', uri);
-
-    ongoingProcess.set('fetchingPayPro', true);
-    wallet.fetchPayPro({
-      payProUrl: uri,
-    }, function(err, paypro) {
-      ongoingProcess.set('fetchingPayPro', false);
-
-      if (err) {
-        $log.warn('Could not fetch payment request:', err);
-        var msg = err.toString();
-        if (msg.match('HTTP')) {
-          msg = gettext('Could not fetch payment information');
-        }
-        showAlert(msg);
-        return cb(true);
-      }
-
-      if (!paypro.verified) {
-        $log.warn('Failed to verify payment protocol signatures');
-        showAlert(gettext('Payment Protocol Invalid'));
-        return cb(true);
-      }
-
-      $state.go('send.confirm', {toAmount: paypro.amount, toAddress: paypro.toAddress, message:paypro.memo, paypro: uri})
-      return cb();
-    });
-  };
-
-
   var setFromUri = function(uri) {
 
     function sanitizeUri(uri) {
@@ -129,20 +87,13 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
       var amount = parsed.amount ?  parsed.amount : '';
 
       if (parsed.r) {
-        setFromPayPro(parsed.r, function(err) {
-          if (err && addr && amount) {
-            // TODO
-            $state.go('send.confirm', {toAmount: amount, toAddress: addr, message:message})
-            return addr;
-          }
-        });
+        $state.go('send.confirm', {paypro: parsed.r})
       } else {
         if (amount) {
-          $state.go('send.confirm', {toAmount: amount, toAddress: addr, message:message})
+          $state.go('send.confirm', {toAmount: amount, toAddress: addr, description:message})
         } else {
           $state.go('send.amount', {toAddress: addr})
         }
-        return addr;
       }
     }
   };
@@ -155,7 +106,7 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
     if (search.indexOf('bitcoin:') === 0) {
       return setFromUri(search);
     } else if (/^https?:\/\//.test(search)) {
-      return setFromPayPro(search);
+      return $state.go('send.confirm', {paypro: search})
     } 
 
     if (!search || search.length < 2) {
