@@ -67,7 +67,7 @@ angular.module('copayApp.services').factory('ongoingProcess', function($log, $ti
         window.plugins.spinnerDialog.show(null, showName, true);
       } else {
 
-        var tmpl = '<ion-spinner class="spinner-stable" icon="lines"></ion-spinner>' + showName;
+        var tmpl = '<div class="item-icon-left">' + showName + '<ion-spinner class="spinner-stable" icon="lines"></ion-spinner></div>';
         $ionicLoading.show({
           template: tmpl
         });

@@ -1,12 +1,10 @@
 <ion-modal-view ng-controller="glideraTxDetailsController">
   <ion-header-bar align-title="center" class="tab-bar">
-    <div class="left-small">
-      <a ng-click="cancel()">
-        <i class="icon-arrow-left3 icon-back"></i>
-        <span class="text-back">Back</span>
-      </a>
-    </div>
-    <h1 class="title ellipsis" translate>Details</h1>
+    <button class="button button-clear button-positive"
+            ng-click="cancel()">
+      Close
+    </button>
+    <h1 class="title" translate>Details</h1>
   </ion-header-bar>
 
   <ion-content>

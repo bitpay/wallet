@@ -1,43 +1,70 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('preferencesGlideraController',
-  function($scope, $timeout, $ionicModal, profileService, applicationService, glideraService, storageService) {
+  function($scope, $log, $ionicModal, ongoingProcess, glideraService) {
 
-    this.getEmail = function(token) {
-      var self = this;
-      glideraService.getEmail(token, function(error, data) {
-        self.email = data;
+    $scope.init = function(accessToken) {
+      $scope.network = glideraService.getEnvironment();
+
+      $scope.token = accessToken;
+      $scope.error = null;
+      $scope.permissions = null;
+      $scope.email = null;
+      $scope.personalInfo = null;
+      $scope.txs = null;
+      $scope.status = null;
+      $scope.limits = null;
+
+      ongoingProcess.set('connectingGlidera', true);
+      glideraService.init($scope.token, function(err, glidera) {
+        ongoingProcess.set('connectingGlidera');
+        if (err || !glidera) {
+          $scope.error = err;
+          return;
+        }
+        $scope.token = glidera.token;
+        $scope.permissions = glidera.permissions;
+        $scope.update({fullUpdate: true});
       });
     };
 
-    this.getPersonalInfo = function(token) {
-      var self = this;
-      glideraService.getPersonalInfo(token, function(error, info) {
-        self.personalInfo = info;
+    $scope.update = function(opts) {
+      if (!$scope.token || !$scope.permissions) return;
+      $log.debug('Updating Glidera Account...');
+      var accessToken = $scope.token;
+      var permissions = $scope.permissions;
+
+      opts = opts || {};
+
+      glideraService.getStatus(accessToken, function(err, data) {
+        $scope.status = data;
       });
+
+      glideraService.getLimits(accessToken, function(err, limits) {
+        $scope.limits = limits;
+      });
+
+      if (permissions.transaction_history) {
+        glideraService.getTransactions(accessToken, function(err, data) {
+          $scope.txs = data;
+        });
+      }
+
+      if (permissions.view_email_address && opts.fullUpdate) {
+        glideraService.getEmail(accessToken, function(err, data) {
+          $scope.email = data.email;
+        });
+      }
+      if (permissions.personal_info && opts.fullUpdate) {
+        glideraService.getPersonalInfo(accessToken, function(err, data) {
+          $scope.personalInfo = data;
+        });
+      }
     };
 
-    this.getStatus = function(token) {
-      var self = this;
-      glideraService.getStatus(token, function(error, data) {
-        self.status = data;
-      });
-    };
-
-    this.getLimits = function(token) {
-      var self = this;
-      glideraService.getLimits(token, function(error, limits) {
-        self.limits = limits;
-      });
-    };
-
-    this.revokeToken = function(testnet) {
-      $scope.network = testnet ? 'testnet' : 'livenet';
-      $scope.loading = false;
-
+    $scope.revokeToken = function() {
       $ionicModal.fromTemplateUrl('views/modals/glidera-confirmation.html', {
-        scope: $scope,
-        animation: 'slide-in-up'
+        scope: $scope
       }).then(function(modal) {
         $scope.glideraConfirmationModal = modal;
         $scope.glideraConfirmationModal.show();
