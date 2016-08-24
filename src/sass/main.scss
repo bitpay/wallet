@@ -380,36 +380,14 @@ ul.wallet-selection.wallets {
   bottom: 0;
 }
 
-.popup-txsent {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background: rgba(24, 44, 58, 0.9);
-  i {
-    font-size: 5rem;
-    color: #4A90E2;
-    border-radius: 100%;
-    border-color: #4A90E2;
-    border: 2px solid;
-    width: 150px;
-    height: 150px;
-    display: block;
-    text-align: center;
-    padding-top: 1rem;
-  }
+.popup-txsent i {
+  font-size: 5rem;
+  color: #4A90E2;
 }
 
 .popup-txsigned i, .popup-txrejected i {
   font-size: 5rem;
   color: #4A90E2;
-  border-radius: 100%;
-  border-color: #4A90E2;
-  border: 2px solid;
-  width: 150px;
-  height: 150px;
-  display: block;
-  text-align: center;
-  padding-top: 1rem;
 }
 
 .payment-proposal-head {
