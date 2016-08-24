@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.services').factory('walletService', function($log, $timeout, lodash, trezor, ledger, storageService, configService, rateService, uxLanguage, $filter, gettextCatalog, bwcError, $ionicPopup, fingerprintService, ongoingProcess, gettext, $rootScope, txStatus, txFormatService, $ionicModal, $state) {
+angular.module('copayApp.services').factory('walletService', function($log, $timeout, lodash, trezor, ledger, storageService, configService, rateService, uxLanguage, $filter, gettextCatalog, bwcError, $ionicPopup, fingerprintService, ongoingProcess, gettext, $rootScope, txStatus, txFormatService, $ionicModal, $state, bwcService) {
   // `wallet` is a decorated version of client.
 
   var root = {};
@@ -765,10 +765,10 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
       includeCopayerBranches: true,
     }, function(err) {
 
-       if (err && wallet.walletId == walletId) {
-         wallet.updating = false;
-         handleError(err);
-       }
+      if (err && wallet.walletId == walletId) {
+        wallet.updating = false;
+        handleError(err);
+      }
     });
   };
 
@@ -998,33 +998,61 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
       });
     });
   };
-  root.getEncodedWalletInfo = function(wallet,cb){
+
+  root.getNotifications = function(wallet, opts, cb) {
+
+    wallet.getNotifications(opts, function(err, notifications) {
+      if (err) return cb(err);
+
+      notifications = lodash.filter(notifications, function(x) {
+        return x.type != 'NewBlock' && x.type != 'BalanceUpdated';
+      });
+
+      var idToName = {};
+      if (wallet.cachedStatus) {
+        lodash.each(wallet.cachedStatus.wallet.copayers, function(c) {
+          idToName[c.id] = c.name;
+        });
+      }
+
+      lodash.each(notifications, function(x) {
+        x.wallet = wallet;
+        if (x.creatorId && wallet.cachedStatus) {
+          x.creatorName = idToName[x.creatorId];
+        };
+      });
+
+      return cb(null, notifications);
+    });
+  };
+
+  root.getEncodedWalletInfo = function(wallet, cb) {
 
     var getCode = function() {
-        var derivationPath = wallet.credentials.getBaseAddressDerivationPath();
-        var encodingType = {
-          mnemonic: 1,
-          xpriv: 2,
-          xpub: 3
-        };
-        var info;
+      var derivationPath = wallet.credentials.getBaseAddressDerivationPath();
+      var encodingType = {
+        mnemonic: 1,
+        xpriv: 2,
+        xpub: 3
+      };
+      var info;
 
-        // not supported yet
-        if (wallet.credentials.derivationStrategy != 'BIP44' || !wallet.canSign())
-          return null;
+      // not supported yet
+      if (wallet.credentials.derivationStrategy != 'BIP44' || !wallet.canSign())
+        return null;
 
-        if (wallet.credentials.mnemonic) {
-          info = {
-            type: encodingType.mnemonic,
-            data: wallet.credentials.mnemonic,
-          }
-        } else {
-          info = {
-            type: encodingType.xpriv,
-            data: wallet.credentials.xPrivKey
-          }
+      if (wallet.credentials.mnemonic) {
+        info = {
+          type: encodingType.mnemonic,
+          data: wallet.credentials.mnemonic,
         }
-        return info.type + '|' + info.data + '|' + wallet.credentials.network.toLowerCase() + '|' + derivationPath + '|' + (wallet.credentials.mnemonicHasPassphrase);
+      } else {
+        info = {
+          type: encodingType.xpriv,
+          data: wallet.credentials.xPrivKey
+        }
+      }
+      return info.type + '|' + info.data + '|' + wallet.credentials.network.toLowerCase() + '|' + derivationPath + '|' + (wallet.credentials.mnemonicHasPassphrase);
     };
 
     fingerprintService.check(wallet, function(err) {
@@ -1034,10 +1062,65 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
         if (err) return cb(err);
 
         var code = getCode();
-console.log('[walletService.js.948:code:]',code); //TODO
+        console.log('[walletService.js.948:code:]', code); //TODO
         return cb(null, code);
       });
     });
+  };
+
+  root.processNotifications = function(notifications, limit) {
+    if (!notifications) return [];
+
+    var shown = lodash.sortBy(notifications, 'createdOn').reverse();
+
+    if (limit)
+      shown = shown.splice(0, limit);
+
+    lodash.each(shown, function(x) {
+      x.txpId = x.data ? x.data.txProposalId : null;
+      x.txid = x.data ? x.data.txid : null;
+      x.types = [x.type];
+
+      if (x.data && x.data.amount)
+        x.amountStr = txFormatService.formatAmountStr(x.data.amount);
+
+      x.action = function() {
+        // TODO?
+        $state.go('wallet.details', {
+          walletId: x.walletId,
+          txpId: x.txpId,
+          txid: x.txid,
+        });
+      };
+    });
+
+    // condense
+    var finale = [],
+      prev;
+
+
+    lodash.each(shown, function(x) {
+      if (prev && prev.walletId === x.walletId && prev.txpId && prev.txpId === x.txpId) {
+        prev.types.push(x.type);
+        prev.data = lodash.assign(prev.data, x.data);
+        prev.txid = prev.txid || x.txid;
+      } else {
+        finale.push(x);
+        prev = x;
+      }
+    });
+
+    // messsages...
+
+    var u = bwcService.getUtils();
+    lodash.each(finale, function(x) {
+      if (x.data && x.data.message && x.wallet && x.wallet.credentials.sharedEncryptingKey) {
+        // TODO TODO TODO => BWC
+        x.message = u.decryptMessage(x.data.message, x.wallet.credentials.sharedEncryptingKey);
+      }
+    });
+
+    return finale;
   };
 
   return root;

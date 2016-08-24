@@ -1,0 +1,32 @@
+
+<ion-view>
+  <ion-nav-bar class="bar-stable">
+    <ion-nav-title>Recent Activity</ion-nav-title>
+  </ion-nav-bar>
+  <ion-content class="padding" ng-controller="activityController" ng-init="init()">
+
+    <div ng-if="fetchingNotifications" class="updatingHistory">
+        <div  class="row" >
+            <ion-spinner class="spinner-dark" icon="lines"></ion-spinner>
+        </div>
+        <div  class="row" >
+          <div  class="col" translate>Updating activity. Please stand by.</div>
+        </div>
+      </div>
+    </div>
+
+    <div ng-if="!fetchingNotifications">
+      <div class="list card" ng-if="!fetchingNotifications">
+        <ul>
+          <li ng-repeat="x in notifications" class="item item-icon-left" ng-click="x.action()">
+            <span ng-include="'views/includes/walletActivity.html'"></span>
+          </li>
+
+          <li  class="item"  ng-show="!notifications[0]">
+            No recent activity
+          </li>
+        </ul>
+      </div>
+    </div>
+  </ion-content>
+</ion-view>
