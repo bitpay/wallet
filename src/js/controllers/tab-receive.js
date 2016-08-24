@@ -5,11 +5,11 @@ angular.module('copayApp.controllers').controller('tabReceiveController', functi
   $scope.isCordova = platformInfo.isCordova;
 
   $scope.init = function() {
-    $scope.defaultWallet = profileService.getWallets()[0];
-    $scope.hasWallet = $scope.defaultWallet ? true : false;
+    $scope.wallets = profileService.getWallets({
+      onlyComplete: true
+    });
     $scope.isCordova = platformInfo.isCordova;
     $scope.isNW = platformInfo.isNW;
-    $scope.setAddress(false);
   }
 
   $scope.$on('Wallet/Changed', function(event, wallet) {

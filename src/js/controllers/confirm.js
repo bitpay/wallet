@@ -92,18 +92,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
   };
 
   $scope.init = function() {
-    $scope.wallet = profileService.getWallets()[0];
-    $scope.notAvailable = false;
-    $scope.hasWallet = $scope.wallet ? true : false;
-
-    if ($stateParams.paypro) {
-      return setFromPayPro($stateParams.paypro, function(err) {
-        if (err && !isChromeApp) {
-          showAlert(gettext('Could not fetch payment'));
-        }
-      });
-    }
-
+    // TODO (URL , etc)
     if (!$stateParams.toAddress || !$stateParams.toAmount) {
       $log.error('Bad params at amount')
       throw ('bad params');
@@ -115,7 +104,6 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     $scope.feeLevel = config.settings ? config.settings.feeLevel : '';
 
     var amount = $scope.toAmount = parseInt($stateParams.toAmount);
-    $scope.minBalance = amount;
     $scope.amountStr = txFormatService.formatAmountStr($scope.toAmount);
 
     $scope.toAddress = $stateParams.toAddress;
@@ -123,8 +111,46 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     $scope.description = $stateParams.description;
     $scope.paypro = $stateParams.paypro;
 
-    var network = (new bitcore.Address($scope.toAddress)).network.name;
-    $scope.network = network;
+    var networkName = (new bitcore.Address($scope.toAddress)).network.name;
+    $scope.network = networkName;
+
+    $scope.notAvailable = false;
+    var wallets = profileService.getWallets({
+      onlyComplete: true,
+      network: networkName,
+    });
+
+    var filteredWallets = [];
+    var index = 0;
+
+    filterWallet();
+
+    function filterWallet() {
+      if (index == wallets.length) {
+        if (!lodash.isEmpty(filteredWallets)) {
+          $log.debug('Wallet changed: ' + filteredWallets[0].name);
+          $scope.wallets = lodash.clone(filteredWallets);
+          setWallet(wallets[0], true);
+          $scope.notAvailable = false;
+        } else {
+          $scope.notAvailable = true;
+          $log.warn('No wallet available to make the payment');
+        }
+
+        $timeout(function() {
+          $scope.$apply();
+        }, 10);
+        return;
+      }
+
+      walletService.getStatus(wallets[index], {}, function(err, status) {
+        if (err) $log.error(err);
+        if (!status.availableBalanceSat) $log.debug('No balance available in: ' + wallets[index].name);
+        if (status.availableBalanceSat > amount) filteredWallets.push(wallets[index]);
+        index++;
+        filterWallet();
+      });
+    };
 
     txFormatService.formatAlternativeStr(amount, function(v) {
       $scope.alternativeAmountStr = v;
