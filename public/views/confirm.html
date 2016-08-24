@@ -33,6 +33,12 @@
           <i class="icon ion-ios-person-outline"></i>
           <label translate>To</label> {{toAddress}}
           <p ng-show="toName">{{toName}}</p>
+
+          <div ng-show="_paypro" ng-click="openPPModal(_paypro)">
+              <i ng-show="_paypro.verified && _paypro.caTrusted" class="ion-locked" style="color:green"></i>
+              <i ng-show="!_paypro.caTrusted" class="ion-unlocked" style="color:red"></i>
+                {{_paypro.domain}}
+          </div>
         </div>
 
         <div class="item item-icon-left">

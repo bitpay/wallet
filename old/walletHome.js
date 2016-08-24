@@ -665,20 +665,6 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     }, 1);
   };
 
-  this.openPPModal = function(paypro) {
-    var fc = profileService.focusedClient;
-    $scope.color = fc.backgroundColor;
-    $scope.self = self;
-    $scope.paypro = paypro;
-
-    $ionicModal.fromTemplateUrl('views/modals/paypro.html', {
-      scope: $scope
-    }).then(function(modal) {
-      $scope.payproModal = modal;
-      $scope.payproModal.show();
-    });
-  };
-
   this.setFromPayPro = function(uri, cb) {
     if (!cb) cb = function() {};
 
