@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('tabSendController', function($scope, $ionicModal, $log, $timeout, addressbookService, profileService, lodash, $state, walletService) {
+angular.module('copayApp.controllers').controller('tabSendController', function($scope, $ionicModal, $log, $timeout, addressbookService, profileService, lodash, $state, walletService, bitcore) {
 
   var originalList;
 
@@ -41,8 +41,72 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
     });
   };
 
+
+  var setFromUri = function(uri) {
+
+    function sanitizeUri(uri) {
+      // Fixes when a region uses comma to separate decimals
+      var regex = /[\?\&]amount=(\d+([\,\.]\d+)?)/i;
+      var match = regex.exec(uri);
+      if (!match || match.length === 0) {
+        return uri;
+      }
+      var value = match[0].replace(',', '.');
+      var newUri = uri.replace(regex, value);
+      return newUri;
+    };
+
+    var satToUnit = 1 / this.unitToSatoshi;
+
+    // URI extensions for Payment Protocol with non-backwards-compatible request
+    if ((/^bitcoin:\?r=[\w+]/).exec(uri)) {
+      uri = decodeURIComponent(uri.replace('bitcoin:?r=', ''));
+        setFromPayPro(uri, function(err) {
+          if (err) {
+            return err;
+          }
+        });
+    } else {
+      uri = sanitizeUri(uri);
+
+      if (!bitcore.URI.isValid(uri)) {
+        return uri;
+      }
+      var parsed = new bitcore.URI(uri);
+
+      var addr = parsed.address ? parsed.address.toString() : '';
+      var message = parsed.message;
+
+      var amount = parsed.amount ?
+        (parsed.amount.toFixed(0) * satToUnit).toFixed(this.unitDecimals) : 0;
+
+      if (parsed.r) {
+        setFromPayPro(parsed.r, function(err) {
+          if (err && addr && amount) {
+            // TODO
+            $state.go('confirm', {toAmount: amount, toAddress: addr, message:message})
+            return addr;
+          }
+        });
+      } else {
+        //
+        $state.go('confirm', {toAmount: amount, toAddress: addr, message:message})
+        return addr;
+      }
+    }
+
+  };
+
+
+
   $scope.findContact = function(search, opts) {
     opts = opts || {};
+
+    if (search.indexOf('bitcoin:') === 0) {
+      return setFromUri(search);
+    } else if (/^https?:\/\//.test(search)) {
+      return setFromPayPro(search);
+    } 
 
     if (!search || search.length < 2) {
       $scope.list = originalList;
@@ -148,5 +212,6 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
     $scope.addressbookModal.remove();
   });
 
+  $scope.$watch('')
 
 });

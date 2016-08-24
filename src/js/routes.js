@@ -356,7 +356,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         }
       })
       .state('send.confirm', {
-        url: '/confirm/:toAddress/:toName/:toAmount',
+        url: '/confirm/:toAddress/:toName/:toAmount/:message',
         views: {
           'send': {
             templateUrl: 'views/confirm.html'
