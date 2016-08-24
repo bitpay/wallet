@@ -204,10 +204,10 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
 
     $scope.updateAll(function() {
       if ($stateParams.txid) {
-        var txp = lodash.find($scope.completeTxHistory, {
+        var tx = lodash.find($scope.completeTxHistory, {
           txid: $stateParams.txid
         });
-        if (txp) {
+        if (tx) {
           $scope.openTxModal(tx);
         } else {
           $ionicPopup.alert({
