@@ -43,8 +43,11 @@ angular.module('copayApp.controllers').controller('tabReceiveController', functi
   };
 
   $scope.$on('Wallet/Changed', function(event, wallet) {
+    if (!wallet) {
+      $log.debug('No wallet provided');
+      return;
+    }
     $log.debug('Wallet changed: ' + wallet.name);
-    $scope.defaultWallet = wallet;
     $scope.setAddress(wallet);
   });
 

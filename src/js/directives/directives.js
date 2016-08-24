@@ -163,6 +163,10 @@ angular.module('copayApp.directives')
 
         if (minBalance)
           filterWallet();
+        else {
+          scope.content.wallets = wallets;
+          scope.$emit('Wallet/Changed', scope.content.wallets[0]);
+        }
 
         scope.$on("$ionicSlides.sliderInitialized", function(event, data) {
           scope.slider = data.slider;
