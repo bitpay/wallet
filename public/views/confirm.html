@@ -22,15 +22,9 @@
 
       <div class="list card">
         <div class="item">Fee: {{feeLevel}}
-<<<<<<< eb8c739515d024200f5ea2bad72fffb21437375b
-            <span class="item-note">
-              {{fee || '...'}}
-            </span>
-=======
           <span class="item-note">
             {{fee || '...'}}
           </span>
->>>>>>> add wallet widget in confirm (send) view
         </div>
 
         <div class="item item-icon-left">
@@ -49,29 +43,8 @@
           <i class="icon ion-briefcase size-21"></i>
           <label translate>From</label>
         </div>
-<<<<<<< eb8c739515d024200f5ea2bad72fffb21437375b
 
-        <div class="item item-text-wrap" ng-style="{'height' : '200px'}">
-          <ion-slides class="slides" options="options" slider="data.slider">
-            <ion-slide-page ng-repeat="item in wallets track by $index" >
-              <div class="list card">
-                <ul class="pr">
-                  <li ng-show="wallets[0]" class="item item-icon-left">
-                      <i class="icon ion-briefcase size-21" ng-style="{'color':item.color}"></i>
-                      {{item.name || item.id}}
-                      <span class="item-note"  ng-show="item.isComplete()">
-                        {{item.availableBalanceStr}}
-                      </span>
-                  </li>
-                </ul>
-              </div>
-            </ion-slide-page>
-          </ion-slides>
-        </div>
-
-=======
-        <wallets only-complete="true" network="{{network}}"></wallets>
->>>>>>> add wallet widget in confirm (send) view
+        <wallets only-complete="true" network="{{network}}" min-balance="{{minBalance}}"></wallets>
 
         <div class="item item-icon-left item-icon-right" ng-click="showDescriptionPopup()">
           <span ng-show="!description">Add Description</span>

@@ -113,6 +113,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     $scope.feeLevel = config.settings ? config.settings.feeLevel : '';
 
     var amount = $scope.toAmount = parseInt($stateParams.toAmount);
+    $scope.minBalance = amount;
     $scope.amountStr = txFormatService.formatAmountStr($scope.toAmount);
 
     $scope.toAddress = $stateParams.toAddress;
@@ -129,9 +130,12 @@ angular.module('copayApp.controllers').controller('confirmController', function(
   };
 
   $scope.$on('Wallet/Changed', function(event, wallet) {
+    if (!wallet) {
+      $log.debug('No wallet provided');
+      return;
+    }
     $log.debug('Wallet changed: ' + wallet.name);
     setWallet(wallet, true);
-    $scope.$apply();
   });
 
   function setWallet(wallet, delayed) {
