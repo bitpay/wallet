@@ -6,29 +6,35 @@
   <ion-content class="padding" ng-controller="tabHomeController">
 
 
-    <div ng-if="events[0]">
-      <h3 class="title m0" translate>Activity</h3>
-      <div class="list card">
+    <h2 translate>Activity</h2>
+    <div ng-if="fetchingNotifications" class="updatingHistory">
+        <div  class="row" >
+            <ion-spinner class="spinner-dark" icon="lines"></ion-spinner>
+        </div>
+        <div  class="row" >
+          <div  class="col" translate>Updating activity. Please stand by.</div>
+        </div>
+      </div>
+    </div>
+
+    <div ng-if="!fetchingNotifications">
+      <div class="list card" ng-if="!fetchingNotifications">
         <ul>
-          <li ng-repeat="tx in txps" class="item item-icon-left" ng-click="xxx(tx)">
-            <span >
-              bla bla
-            </span>
-            <div class="item-note">
-              blo blo &middot; <time>{{ (tx.ts || tx.createdOn ) * 1000 | amTimeAgo}}</time>
-            </div>
+          <li ng-repeat="x in notifications" class="item item-icon-left" ng-click="x.action()">
+            <span ng-include="'views/includes/walletActivity.html'"></span>
           </li>
 
-          <li  class="item " ng-click="xxx(tx)"  ng-show="1">
+          <li  class="item " ui-sref="activity"  ng-show="notificationsMore">
             <button class="button button-block button-passive">
-            More (5)
+            More ({{notificationsMore}})
             </button>
+          </li>
+          <li  class="item"  ng-show="!notifications[0]">
+            No recent activity
           </li>
         </ul>
       </div>
     </div>
-
-
 
     <div class="row">
       <div class="col col-80">

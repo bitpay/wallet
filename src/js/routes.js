@@ -121,7 +121,10 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         },
         needProfile: true
       })
-
+      .state('activity', {
+        url: '/activity',
+        templateUrl: 'views/activity.html'
+      })
 
     /*
      *
@@ -140,7 +143,11 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
           'wallet': {
             templateUrl: 'views/walletDetails.html'
           }
-        }
+        },
+        params: {
+          txid: null,
+          txpId: null,
+        },
       })
       .state('wallet.preferences', {
         url: '/preferences',
@@ -273,6 +280,8 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
           }
         }
       })
+
+
 
     /*
      *

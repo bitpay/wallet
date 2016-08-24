@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('walletDetailsController', function($scope, $rootScope, $interval, $timeout, $filter, $log, $ionicModal, $ionicPopover, $ionicNavBarDelegate, $state, $stateParams, bwcError, profileService, lodash, configService, gettext, gettextCatalog, platformInfo, walletService, storageService) {
+angular.module('copayApp.controllers').controller('walletDetailsController', function($scope, $rootScope, $interval, $timeout, $filter, $log, $ionicModal, $ionicPopover, $ionicNavBarDelegate, $state, $stateParams, bwcError, profileService, lodash, configService, gettext, gettextCatalog, platformInfo, walletService, storageService, $ionicPopup) {
 
   var isCordova = platformInfo.isCordova;
   var isWP = platformInfo.isWP;
@@ -39,10 +39,10 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
       setPendingTxps(status.pendingTxps);
 
       $scope.status = status;
-      $timeout(function(){
+      $timeout(function() {
         $scope.$apply();
       }, 1);
- 
+
     });
   };
 
@@ -80,7 +80,7 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
   ];
 
   $scope.$on('$destroy', function() {
-    lodash.each(listeners, function(x){
+    lodash.each(listeners, function(x) {
       x();
     });
   });
@@ -117,7 +117,7 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
     walletService.recreate();
   };
 
-  $scope.updateTxHistory = function() {
+  $scope.updateTxHistory = function(cb) {
 
     if ($scope.updatingTxHistory) return;
 
@@ -129,10 +129,10 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
       $scope.updatingTxHistoryProgress = txs ? txs.length : 0;
       $scope.completeTxHistory = txs;
       $scope.showHistory();
-      $timeout(function(){
+      $timeout(function() {
         $scope.$apply();
       }, 1);
- 
+
     };
 
     $timeout(function() {
@@ -148,9 +148,11 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
         $scope.completeTxHistory = txHistory;
 
         $scope.showHistory();
-        $timeout(function(){
+
+        $timeout(function() {
           $scope.$apply();
         }, 1);
+        return cb();
       });
     });
   };
@@ -168,9 +170,9 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
     $scope.$broadcast('scroll.infiniteScrollComplete');
   };
 
-  $scope.updateAll = function()  {
+  $scope.updateAll = function(cb)  {
     $scope.updateStatus(false);
-    $scope.updateTxHistory();
+    $scope.updateTxHistory(cb);
   }
 
   var hideBalance = function() {
@@ -200,7 +202,30 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
     hideBalance();
     $ionicNavBarDelegate.title(wallet.name);
 
-    $scope.updateAll();
-  };
-
+    $scope.updateAll(function() {
+      if ($stateParams.txid) {
+        var txp = lodash.find($scope.completeTxHistory, {
+          txid: $stateParams.txid
+        });
+        if (txp) {
+          $scope.openTxModal(tx);
+        } else {
+          $ionicPopup.alert({
+            title: gettext('TX not available'),
+          });
+        }
+      } else if ($stateParams.txpId) {
+        var txp = lodash.find($scope.txps, {
+          id: $stateParams.txpId
+        });
+        if (txp) {
+          $scope.openTxpModal(txp);
+        } else {
+          $ionicPopup.alert({
+            title: gettext('Proposal not longer available'),
+          });
+        }
+      }
+    });
+  }
 });

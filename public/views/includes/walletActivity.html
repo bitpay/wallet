@@ -1,0 +1,38 @@
+
+
+<span ng-if="x.types.indexOf('NewIncomingTx')>=0">
+  <i class="icon ion-arrow-down-c size-21" ng-style="{'color':x.wallet.color}"></i>
+  {{x.amountStr}}
+</span>
+
+
+<span ng-if="x.types.indexOf('TxProposalRemoved')>=0">
+  <i class="icon ion-ios-close-empty size-21" ng-style="{'color':x.wallet.color}"></i>
+  Proposal Deleted
+</span>
+
+<span ng-if="x.types.indexOf('TxProposalRejected')>=0">
+  <i class="icon ion-ios-close-empty size-21" ng-style="{'color':x.wallet.color}"></i>
+  Proposal Rejected
+</span>
+
+<span ng-if="x.types.indexOf('TxProposalRemoved') == -1 && x.types.indexOf('TxProposalRejected') == -1">
+  <span ng-if="x.types.indexOf('NewTxProposal')>=0 ">
+    <i class="icon ion-arrow-up-c size-21" ng-style="{'color':x.wallet.color}"></i>
+    {{x.message}}
+  </span>
+  <span ng-if="x.types.indexOf('TxProposalAcceptedBy')>=0 && x.types.indexOf('NewTxProposal') == -1 ">
+    <i class="icon ion-checkmark-round size-21" ng-style="{'color':x.wallet.color}"></i>
+    Proposal Accepted
+  </span>
+</span>
+
+
+<div class="item-note">
+  <!-- {{x.types}} -->
+  &middot;
+    <i class="ion-briefcase" ng-style="{'color':x.wallet.color}"></i>
+    {{ x.creatorName}}@{{x.wallet.name}}
+   &middot;   <time>{{ x.createdOn * 1000 | amTimeAgo}}</time>
+</div>
+
