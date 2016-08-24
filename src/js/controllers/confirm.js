@@ -92,6 +92,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
   };
 
   $scope.init = function() {
+    $scope.notAvailable = false;
     $scope.wallet = profileService.getWallets()[0];
 
     if ($stateParams.paypro) {
