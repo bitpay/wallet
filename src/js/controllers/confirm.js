@@ -17,18 +17,25 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     alertPopup.then(cb);
   };
 
-  $scope.showCommentPopup = function() {
+  $scope.showDescriptionPopup = function() {
     var commentPopup = $ionicPopup.show({
       templateUrl: "views/includes/note.html",
-      title: $scope.data.comment ? gettextCatalog.getString('Edit comment') : gettextCatalog.getString('Add comment'),
+      title: gettextCatalog.getString('Set description'),
       scope: $scope,
     });
     $scope.commentPopupClose = function() {
       commentPopup.close();
     };
     $scope.commentPopupSave = function() {
-      $log.debug('Saving comment');
-      $scope.comment = $scope.data.comment;
+      $log.debug('Saving description: ' + $scope.data.comment);
+      $scope.description = $scope.data.comment;
+      $scope.txp = null;
+
+      createTx($scope.wallet, $scope.toAddress, $scope.toAmount, $scope.data.comment, function(err, txp) {
+        if (err) return;
+        cachedTxp[$scope.wallet.id] = txp;
+        apply(txp);
+      });
       commentPopup.close();
     };
   };
@@ -83,17 +90,11 @@ angular.module('copayApp.controllers').controller('confirmController', function(
         stop = null;
       }
 
-      function apply(txp) {
-        $scope.fee = txFormatService.formatAmountStr(txp.fee);
-        $scope.txp = txp;
-        $scope.$apply();
-      };
-
       if (cachedTxp[wallet.id]) {
         apply(cachedTxp[wallet.id]);
       } else {
         stop = $timeout(function() {
-          createTx(wallet, $scope.toAddress, $scope.toAmount, $scope.comment, function(err, txp) {
+          createTx(wallet, $scope.toAddress, $scope.toAmount, $scope.description, function(err, txp) {
             if (err) return;
             cachedTxp[wallet.id] = txp;
             apply(txp);
@@ -122,7 +123,13 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     showAlert(gettext('Error creating transaction'), msg);
   };
 
-  var createTx = function(wallet, toAddress, toAmount, comment, cb) {
+  function apply(txp) {
+    $scope.fee = txFormatService.formatAmountStr(txp.fee);
+    $scope.txp = txp;
+    $scope.$apply();
+  };
+
+  var createTx = function(wallet, toAddress, toAmount, description, cb) {
     var config = configService.getSync().wallet;
 
     //
@@ -133,7 +140,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     var paypro = $scope.paypro;
 
     // ToDo: use a credential's (or fc's) function for this
-    if (comment && !wallet.credentials.sharedEncryptingKey) {
+    if (description && !wallet.credentials.sharedEncryptingKey) {
       var msg = 'Could not add message to imported wallet without shared encrypting key';
       $log.warn(msg);
       return setSendError(gettext(msg));
@@ -148,7 +155,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     outputs.push({
       'toAddress': toAddress,
       'amount': toAmount,
-      'message': comment
+      'message': description
     });
 
     var txp = {};
@@ -161,7 +168,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     }
 
     txp.outputs = outputs;
-    txp.message = comment;
+    txp.message = description;
     txp.payProUrl = paypro ? paypro.url : null;
     txp.excludeUnconfirmedUtxos = config.spendUnconfirmed ? false : true;
     txp.feeLevel = config.settings.feeLevel || 'normal';
@@ -176,8 +183,6 @@ angular.module('copayApp.controllers').controller('confirmController', function(
 
 
   $scope.approve = function() {
-    console.log($scope.comment);
-    return;
     var wallet = $scope.wallet;
     var txp = $scope.txp;
     if (!wallet) {
