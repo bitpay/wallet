@@ -1,6 +1,6 @@
-<div class="wallets" ng-show="content.wallets[0]">
+<div class="wallets" ng-show="wallets[0]">
   <ion-slides class="slides" slider="data.slider">
-    <ion-slide-page ng-repeat="wallet in content.wallets track by $index">
+    <ion-slide-page ng-repeat="wallet in wallets track by $index">
       <div class="item item-icon-left">
         <i class="icon ion-briefcase size-21" ng-style="{'color':wallet.color}"></i>
           {{wallet.name || wallet.id}}
