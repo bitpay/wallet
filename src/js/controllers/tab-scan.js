@@ -43,9 +43,6 @@ angular.module('copayApp.controllers').controller('tabScanController', function(
         _dataScanned(data);
         return;
       }
-      $scope.onScan({
-        data: data
-      });
     }, 1000);
   };
 
@@ -139,9 +136,6 @@ angular.module('copayApp.controllers').controller('tabScanController', function(
       return;
     }
     $scope.cancel();
-    $scope.onScan({
-      data: data
-    });
   };
 
   var _successCallback = function(stream) {
