@@ -66,16 +66,24 @@
         </div>
     </div>
 
+    <div ng-show="glideraEnabled || coinbaseEnabled">
+      <h3>Buy & Sell Bitcoin</h3>
+      <div class="card">
+        <div ng-show="glideraEnabled" ui-sref="glidera.main" class="item">
+          <img src="img/glidera-logo.png" width="90">
+        </div>
+        <div ng-show="coinbaseEnabled" ui-sref="exchange.coinbase" class="item">
+          <img src="img/coinbase-logo.png" width="90">
+        </div>
+      </div>
+    </div>
+
     <h3>Next steps </h3>
     <div class="list card">
       <ul class="pr">
       <li ui-sref="bitpayCard.main" ng-show="bitpayCardEnabled" class="item item-icon-left">
         <i class="icon ion-card"></i>
           BitPay Card
-      </li>
-      <li ng-show="buyAndSellEnabled" ui-sref="buyandsell"  class="item item-icon-left">
-        <i class="icon ion-cash"></i>
-            Buy and Sell
       </li>
       <li ui-sref="amazon.main" class="item item-icon-left">
         <i class="icon ion-ios-cart"></i>

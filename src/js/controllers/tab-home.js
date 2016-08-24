@@ -93,10 +93,9 @@ angular.module('copayApp.controllers').controller('tabHomeController',
 
     configService.whenAvailable(function() {
       var config = configService.getSync();
-      var glideraEnabled = config.glidera.enabled;
-      var coinbaseEnabled = config.coinbase.enabled;
       var isWindowsPhoneApp = platformInfo.isWP && isCordova;
-      $scope.buyAndSellEnabled = !isWindowsPhoneApp && (glideraEnabled || coinbaseEnabled);
+      $scope.glideraEnabled = config.glidera.enabled && !isWindowsPhoneApp;
+      $scope.coinbaseEnabled = config.coinbase.enabled && !isWindowsPhoneApp;
     });
 
   });
