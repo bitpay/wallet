@@ -4,11 +4,15 @@ angular.module('copayApp.services').factory('glideraService', function($http, $l
   var root = {};
   var credentials = {};
   var isCordova = platformInfo.isCordova;
-  //
-  //
 
-  root.setCredentials = function(network) {
-    if (network == 'testnet') {
+  var _setCredentials = function() {
+    /*
+     * Development: 'testnet'
+     * Production: 'livenet'
+     */
+    credentials.NETWORK = 'livenet';
+
+    if (credentials.NETWORK == 'testnet') {
       credentials.HOST = 'https://sandbox.glidera.io';
       if (isCordova) {
         credentials.REDIRECT_URI = 'copay://glidera';
@@ -33,11 +37,25 @@ angular.module('copayApp.services').factory('glideraService', function($http, $l
     };
   };
 
+  root.getEnvironment = function() {
+    _setCredentials();
+    return credentials.NETWORK;
+  };
+
   root.getOauthCodeUrl = function() {
+    _setCredentials();
     return credentials.HOST + '/oauth2/auth?response_type=code&client_id=' + credentials.CLIENT_ID + '&redirect_uri=' + credentials.REDIRECT_URI;
   };
 
+  root.removeToken = function(cb) {
+    _setCredentials();
+    storageService.removeGlideraToken(credentials.NETWORK, function() {
+      return cb();
+    });
+  };
+
   root.getToken = function(code, cb) {
+    _setCredentials();
     var req = {
       method: 'POST',
       url: credentials.HOST + '/api/v1/oauth/token',
@@ -64,6 +82,7 @@ angular.module('copayApp.services').factory('glideraService', function($http, $l
   };
 
   var _get = function(endpoint, token) {
+    _setCredentials();
     return {
       method: 'GET',
       url: credentials.HOST + '/api/v1' + endpoint,
@@ -176,6 +195,7 @@ angular.module('copayApp.services').factory('glideraService', function($http, $l
   };
 
   var _post = function(endpoint, token, twoFaCode, data) {
+    _setCredentials();
     return {
       method: 'POST',
       url: credentials.HOST + '/api/v1' + endpoint,
@@ -251,90 +271,38 @@ angular.module('copayApp.services').factory('glideraService', function($http, $l
     });
   };
 
-  root.init = function(accessToken) {
-    root.glideraEnabled = configService.getSync().glidera.enabled;
-    root.glideraTestnet = configService.getSync().glidera.testnet;
-    var network = root.glideraTestnet ? 'testnet' : 'livenet';
+  root.init = function(accessToken, cb) {
+    _setCredentials();
+    $log.debug('Init Glidera...');
 
-    root.glideraToken = null;
-    root.glideraError = null;
-    root.glideraPermissions = null;
-    root.glideraEmail = null;
-    root.glideraPersonalInfo = null;
-    root.glideraTxs = null;
-    root.glideraStatus = null;
-
-    if (!root.glideraEnabled) return;
-
-    root.setCredentials(network);
+    var glidera = {
+      token: null,
+      permissions: null
+    }
 
     var getToken = function(cb) {
       if (accessToken) {
         cb(null, accessToken);
       } else {
-        storageService.getGlideraToken(network, cb);
+        storageService.getGlideraToken(credentials.NETWORK, cb);
       }
     };
 
     getToken(function(err, accessToken) {
-      if (err || !accessToken) return;
+      if (err || !accessToken) return cb();
       else {
         root.getAccessTokenPermissions(accessToken, function(err, p) {
           if (err) {
-            root.glideraError = err;
+            return cb(err);
           } else {
-            root.glideraToken = accessToken;
-            root.glideraPermissions = p;
-            root.update({
-              fullUpdate: true
-            });
+            glidera.token = accessToken;
+            glidera.permissions = p;
+            return cb(null, glidera);
           }
         });
       }
     });
   };
-
-  root.update = function(opts) {
-    if (!root.glideraToken || !root.glideraPermissions) return;
-    var accessToken = root.glideraToken;
-    var permissions = root.glideraPermissions;
-
-    opts = opts || {};
-
-    root.getStatus(accessToken, function(err, data) {
-      root.glideraStatus = data;
-    });
-
-    root.getLimits(accessToken, function(err, limits) {
-      root.glideraLimits = limits;
-    });
-
-    if (permissions.transaction_history) {
-      root.getTransactions(accessToken, function(err, data) {
-        root.glideraTxs = data;
-      });
-    }
-
-    if (permissions.view_email_address && opts.fullUpdate) {
-      root.getEmail(accessToken, function(err, data) {
-        root.glideraEmail = data.email;
-      });
-    }
-    if (permissions.personal_info && opts.fullUpdate) {
-      root.getPersonalInfo(accessToken, function(err, data) {
-        root.glideraPersonalInfo = data;
-      });
-    }
-  };
-
-  configService.whenAvailable(function() {
-    $log.debug('Init Glidera Service...');
-    root.init();
-  });
-
-  $rootScope.$on('NewBlock', function() {    
-    root.update();   
-  });
 
   return root;
 
