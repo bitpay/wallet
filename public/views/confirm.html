@@ -45,7 +45,7 @@
           <span class="badge badge-assertive" ng-show="content.notAvailable" translate>Not available</span>
         </div>
 
-        <wallets only-complete="true" network="{{network}}" min-balance="{{minBalance}}"></wallets>
+        <wallets ng-if="hasWallet" only-complete="true" network="{{network}}" min-balance="{{minBalance}}"></wallets>
 
         <div class="item item-icon-left item-icon-right" ng-click="showDescriptionPopup()">
           <span ng-show="!description">Add Description</span>
