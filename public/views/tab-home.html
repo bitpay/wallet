@@ -47,7 +47,7 @@
       </div>
     </div>
 
-    <div class="card" ng-show="wallets[0]">
+    <div class="card" ng-init="updateAllWallets()">
       <div ng-repeat="item in wallets track by $index"
            class="item item-icon-left"
            ui-sref="wallet.details({'walletId': item.id})">
@@ -73,23 +73,21 @@
           <img src="img/glidera-logo.png" width="90">
         </div>
         <div ng-show="coinbaseEnabled" ui-sref="exchange.coinbase" class="item">
-          <img src="img/coinbase-logo.png" width="90">
+          <img src="img/coinbase-logo.png" width="90"> TODO
         </div>
       </div>
     </div>
 
     <h3>Next steps </h3>
-    <div class="list card">
-      <ul class="pr">
-      <li ui-sref="bitpayCard.main" ng-show="bitpayCardEnabled" class="item item-icon-left">
+    <div class="card">
+      <div ui-sref="bitpayCard.main" ng-show="bitpayCardEnabled" class="item item-icon-left">
         <i class="icon ion-card"></i>
           BitPay Card
-      </li>
-      <li ui-sref="amazon.main" class="item item-icon-left">
+      </div>
+      <div ui-sref="amazon.main" class="item item-icon-left">
         <i class="icon ion-ios-cart"></i>
         Gift Cards
-      </li>
-      </ul>
+      </div>
     </div>
 
   </ion-content>

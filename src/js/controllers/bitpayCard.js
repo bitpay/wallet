@@ -3,21 +3,11 @@
 angular.module('copayApp.controllers').controller('bitpayCardController', function($scope, $rootScope, $timeout, $log, $ionicModal, lodash, bitpayCardService, configService, profileService, walletService, fingerprintService, ongoingProcess, bwcError, bitcore, pbkdf2Service, moment, platformInfo) {
 
   var self = this;
-  var client;
-
-  self.sandbox = bitpayCardService.getEnvironment() == 'testnet' ? true : false;
+  var wallet;
 
   if (platformInfo.isCordova && StatusBar.isVisible) {
     StatusBar.backgroundColorByHexString("#293C92");
   }
-
-  var handleEncryptedWallet = function(client, cb) {
-    if (!walletService.isEncrypted(client)) return cb();
-    $rootScope.$emit('Local/NeedsPassword', false, function(err, password) {
-      if (err) return cb(err);
-      return cb(walletService.unlock(client, password));
-    });
-  };
 
   var processTransactions = function(invoices, history) {
     for (var i = 0; i < invoices.length; i++) {
@@ -89,7 +79,7 @@ angular.module('copayApp.controllers').controller('bitpayCardController', functi
           bitpayCardService.transactionHistory(dateRange, function(err, history) {
             $scope.loadingHistory = false;
             if (err) {
-              self.error = err;
+              self.error = err.error || err;
               return;
             }
 
@@ -106,25 +96,26 @@ angular.module('copayApp.controllers').controller('bitpayCardController', functi
 
   this.init = function() {
     $scope.dateRange = 'last30Days';
-    self.update();
 
-    var network = bitpayCardService.getEnvironment();
+    $scope.network = bitpayCardService.getEnvironment();
     self.allWallets = profileService.getWallets({
-      network: network,
+      network: $scope.network,
       n: 1,
       onlyComplete: true
     });
 
+    self.update();
+
     if (lodash.isEmpty(self.allWallets)) return;
 
-    client = self.allWallets[0];
+    wallet = self.allWallets[0];
 
-    if (client.credentials.n > 1)
+    if (wallet.credentials.n > 1)
       self.isMultisigWallet = true;
 
     $timeout(function() {
-      self.selectedWalletId = client.credentials.walletId;
-      self.selectedWalletName = client.credentials.walletName;
+      self.selectedWalletId = wallet.credentials.walletId;
+      self.selectedWalletName = wallet.credentials.walletName;
       $scope.$apply();
     }, 100);
   };
@@ -146,11 +137,11 @@ angular.module('copayApp.controllers').controller('bitpayCardController', functi
 
     $scope.$on('walletSelected', function(ev, walletId) {
       $timeout(function() {
-        client = profileService.getClient(walletId);
+        wallet = profileService.getClient(walletId);
         self.isMultisigWallet = false;
         self.selectedWalletId = walletId;
-        self.selectedWalletName = client.credentials.walletName;
-        if (client.credentials.n > 1)
+        self.selectedWalletName = wallet.credentials.walletName;
+        if (wallet.credentials.n > 1)
           self.isMultisigWallet = true;
         $scope.$apply();
       }, 100);
@@ -160,6 +151,12 @@ angular.module('copayApp.controllers').controller('bitpayCardController', functi
 
   this.sendFunds = function() {
     self.error = null;
+
+    if (!wallet.canSign() && !wallet.isPrivKeyExternal()) {
+      $log.info('No signing proposal: No private key');
+      self.error = bwcError.msg('MISSING_PRIVATE_KEY');
+      return;
+    }
 
     var dataSrc = {
       amount: $scope.fiat,
@@ -185,56 +182,52 @@ angular.module('copayApp.controllers').controller('bitpayCardController', functi
         }
 
         bitpayCardService.getInvoice(invoiceId, function(err, data) {
-        var address, comment, amount;
+          var address, comment, amount;
 
-        address = data.bitcoinAddress;
-        amount = parseInt((data.btcPrice * 100000000).toFixed(0));
-        comment = data.itemDesc;
+          address = data.bitcoinAddress;
+          amount = parseInt((data.btcPrice * 100000000).toFixed(0));
+          comment = data.itemDesc;
 
-        outputs.push({
-          'toAddress': address,
-          'amount': amount,
-          'message': comment
-        });
+          outputs.push({
+            'toAddress': address,
+            'amount': amount,
+            'message': comment
+          });
 
-        var txp = {
-          toAddress: address,
-          amount: amount,
-          outputs: outputs,
-          message: comment,
-          payProUrl: null,
-          excludeUnconfirmedUtxos: configWallet.spendUnconfirmed ? false : true,
-          feeLevel: walletSettings.feeLevel || 'normal'
-        };
+          var txp = {
+            toAddress: address,
+            amount: amount,
+            outputs: outputs,
+            message: comment,
+            payProUrl: null,
+            excludeUnconfirmedUtxos: configWallet.spendUnconfirmed ? false : true,
+            feeLevel: walletSettings.feeLevel || 'normal'
+          };
 
-        walletService.createTx(client, txp, function(err, createdTxp) {
-          ongoingProcess.set('Processing Transaction...', false);
-          if (err) {
-            self.error = bwcError.msg(err);
-            $timeout(function() {
-              $scope.$digest();
-            });
-            return;
-          }
-          $scope.$emit('Local/NeedsConfirmation', createdTxp, function(accept) {
-            if (accept) {
-              self.confirmTx(createdTxp, function(err, tx) {
-                ongoingProcess.set('Processing Transaction...', false);
-                if (err) {
-                  self.error = bwcError.msg(err);
-                  $timeout(function() {
-                    $scope.$digest();
-                  });
-                  return;
-                }
-                self.update();
-                $scope.addFunds = false;
+          walletService.createTx(wallet, txp, function(err, createdTxp) {
+            ongoingProcess.set('Processing Transaction...', false);
+            if (err) {
+              self.error = bwcError.msg(err);
+              $timeout(function() {
+                $scope.$digest();
+              });
+              return;
+            }
+            self.confirmTx(createdTxp, function(err, tx) {
+              ongoingProcess.set('Processing Transaction...', false);
+              if (err) {
+                self.error = bwcError.msg(err);
                 $timeout(function() {
                   $scope.$digest();
                 });
+                return;
+              }
+              self.update();
+              $scope.addFunds = false;
+              $timeout(function() {
+                $scope.$digest();
               });
-            }
-          });
+            });
           });
         });
       });
@@ -243,39 +236,39 @@ angular.module('copayApp.controllers').controller('bitpayCardController', functi
 
   this.confirmTx = function(txp, cb) {
 
-    fingerprintService.check(client, function(err) {
+    fingerprintService.check(wallet, function(err) {
       if (err) {
         $log.debug(err);
         return cb(err);
       }
 
-      handleEncryptedWallet(client, function(err) {
+      walletService.handleEncryptedWallet(wallet, function(err) {
         if (err) {
           $log.debug(err);
           return bwcError.cb(err, null, cb);
         }
 
         ongoingProcess.set('Processing Transaction...', true);
-        walletService.publishTx(client, txp, function(err, publishedTxp) {
+        walletService.publishTx(wallet, txp, function(err, publishedTxp) {
           if (err) {
             $log.debug(err);
             return bwcError.cb(err, null, cb);
           }
 
-          walletService.signTx(client, publishedTxp, function(err, signedTxp) {
-            walletService.lock(client);
+          walletService.signTx(wallet, publishedTxp, function(err, signedTxp) {
+            walletService.lock(wallet);
             if (err) {
               $log.debug(err);
-              walletService.removeTx(client, signedTxp, function(err) {
+              walletService.removeTx(wallet, signedTxp, function(err) {
                 if (err) $log.debug(err);
               });
               return bwcError.cb(err, null, cb);
             }
 
-            walletService.broadcastTx(client, signedTxp, function(err, broadcastedTxp) {
+            walletService.broadcastTx(wallet, signedTxp, function(err, broadcastedTxp) {
               if (err) {
                 $log.debug(err);
-                walletService.removeTx(client, broadcastedTxp, function(err) {
+                walletService.removeTx(wallet, broadcastedTxp, function(err) {
                   if (err) $log.debug(err);
                 });
                 return bwcError.cb(err, null, cb);

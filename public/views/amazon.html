@@ -10,8 +10,7 @@
 
   <ion-content ng-controller="amazonController as amazon" ng-init="amazon.init()">
 
-    <div ng-show="amazon.sandbox">
-      <i class="icon ion-information-circled"></i>
+    <div class="text-center" ng-show="network == 'testnet'">
       Sandbox version. Only for testing purpose
     </div>
 
@@ -22,47 +21,43 @@
 
     <div ng-if="!giftCards" class="m20t padding text-center">
 
-      <button class="button button-positive" ui-sref="amazon.buy">
+      <button class="button" ui-sref="amazon.buy">
         Buy now
       </button>
 
       <div class="text-left m30v">
         Amazon.com Gift Cards never expire and can be redeemed towards millions of items at
-        <a ng-click="$root.openExternalLink('https://www.amazon.com')">www.amazon.com</a>
+        <a ng-click="openExternalLink('https://www.amazon.com')">www.amazon.com</a>
       </div>
     </div>
 
     <div class="m20t" ng-if="giftCards">
-      <ul class="no-bullet m0 size-14">
-        <li class="line-b line-t p10 pointer" href ui-sref="buyAmazon">
-          <i class="fi-shopping-cart size-24 m5l vm dib"></i>
-          <span class="m10l text-normal text-bold">Buy Gift Card</span>
-          <span class="right text-gray m5t">
-            <i class="icon-arrow-right3 size-24 right"></i>
-          </span>
-        </li>
-      </ul>
-      <h4 class="title">Your cards</h4>
-      <div ng-repeat="(id, item) in giftCards | orderObjectBy:'date':true track by $index"
-           ng-click="amazon.openCardModal(item)"
-           class="row collapse last-transactions-content size-12">
-        <div class="large-2 medium-2 small-2 columns">
+      <div class="list">
+        <a class="item item-icon-left item-icon-right" href ui-sref="amazon.buy">
+          <i class="icon ion-bag"></i>
+          Buy Gift Card
+          <i class="icon ion-ios-arrow-right"></i>
+        </a>
+      </div>
+
+      <h4 class="padding">Your cards</h4>
+      <div class="list card">
+        <div ng-repeat="(id, item) in giftCards | orderObjectBy:'date':true track by $index"
+             ng-click="amazon.openCardModal(item)"
+             class="item item-avatar">
           <img src="img/a-smile_color_btn.png" alt="{{id}}" width="40">
-        </div>
-        <div class="large-4 medium-4 small-4 columns m5t size-18" ng-if="item.claimCode">
-          {{item.amount | currency : '$ ' : 2}}
-        </div>
-        <div class="large-4 medium-4 small-4 columns m5t size-18" ng-if="!item.claimCode">
-          -
-        </div>
-        <div class="large-5 medium-5 small-5 columns text-right m10t">
-          <span class="text-warning" ng-if="item.status == 'FAILURE' || item.status == 'RESEND'">Error</span>
-          <span class="text-gray" ng-if="item.status == 'PENDING'">Pending to confirmation</span>
-          <span class="text-gray" ng-if="item.status == 'SUCCESS' && item.cardStatus == 'Canceled'">Canceled</span>
-          <span class="text-gray" ng-if="item.status == 'SUCCESS' && item.cardStatus == 'Fulfilled'">{{item.date | amTimeAgo}}</span>
-        </div>
-        <div class="large-1 medium-1 small-1 columns text-right m10t">
-          <i class="icon-arrow-right3 size-18"></i>
+          <h2 ng-if="item.claimCode">
+            {{item.amount | currency : '$ ' : 2}}
+          </h2>
+          <h2 ng-if="!item.claimCode">
+            -
+          </h2>
+          <p>
+            <span class="text-warning" ng-if="item.status == 'FAILURE' || item.status == 'RESEND'">Error</span>
+            <span class="text-gray" ng-if="item.status == 'PENDING'">Pending to confirmation</span>
+            <span class="text-gray" ng-if="item.status == 'SUCCESS' && item.cardStatus == 'Canceled'">Canceled</span>
+            <span class="text-gray" ng-if="item.status == 'SUCCESS' && item.cardStatus == 'Fulfilled'">{{item.date | amTimeAgo}}</span>
+          </p>
         </div>
       </div>
     </div>

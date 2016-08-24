@@ -214,7 +214,7 @@ angular.module('copayApp.controllers').controller('sellGlideraController',
                 return;
               }
 
-              handleEncryptedWallet(wallet, function(err) {
+              walletService.handleEncryptedWallet(wallet, function(err) {
                 if (err) {
                   self.error = err.message ||  bwcError.msg(err);
                   return;
