@@ -2,7 +2,6 @@
 
 angular.module('copayApp.controllers').controller('tabHomeController',
   function($rootScope, $timeout, $scope, $state, lodash, profileService, walletService, configService, txFormatService, $ionicModal, $log, platformInfo) {
-    var self = this;
 
     var setNotifications = function(notifications) {
 
@@ -18,48 +17,51 @@ angular.module('copayApp.controllers').controller('tabHomeController',
 
 
 
-    self.updateAllWallets = function() {
-      $scope.wallets = profileService.getWallets();
+    $scope.updateAllWallets = function() {
+      $timeout(function() {
+        $scope.wallets = profileService.getWallets();
 
-      var i = $scope.wallets.length, j =0;
-//      var timeSpan = 60 * 60 * 24 * 7;
-      var timeSpan = 60 * 60 * 24 * 1;
-      var notifications = [];
+        var i = $scope.wallets.length, j =0;
+  //      var timeSpan = 60 * 60 * 24 * 7;
+        var timeSpan = 60 * 60 * 24 * 1;
+        var notifications = [];
 
-      $scope.fetchingNotifications = true;
+        $scope.fetchingNotifications = true;
 
-      lodash.each($scope.wallets, function(wallet) {
+        lodash.each($scope.wallets, function(wallet) {
 
-        walletService.getStatus(wallet, {}, function(err, status) {
-          if (err) {
-            console.log('[tab-home.js.35:err:]', $log.error(err)); //TODO
-            return;
-          }
-          wallet.status = status;
+          walletService.getStatus(wallet, {}, function(err, status) {
+            if (err) {
+              console.log('[tab-home.js.35:err:]', $log.error(err)); //TODO
+              return;
+            }
+            wallet.status = status;
+          });
+
+          walletService.getNotifications(wallet, {
+            timeSpan: timeSpan
+          }, function(err, n) {
+            if (err) {
+              console.log('[tab-home.js.35:err:]', $log.error(err)); //TODO
+              return;
+            }
+            notifications.push(n);
+            if (++j == i) {
+              $scope.fetchingNotifications = false;
+              setNotifications(lodash.compact(lodash.flatten(notifications)));
+            };
+          });
+
         });
+      $scope.$digest();
+      }, 100);
+    };
 
-        walletService.getNotifications(wallet, {
-          timeSpan: timeSpan
-        }, function(err, n) {
-          if (err) {
-            console.log('[tab-home.js.35:err:]', $log.error(err)); //TODO
-            return;
-          }
-          notifications.push(n);
-          if (++j == i) {
-            $scope.fetchingNotifications = false;
-            setNotifications(lodash.compact(lodash.flatten(notifications)));
-          };
-        });
-
-      });
-    }
-
-    self.updateWallet = function(wallet) {
+    $scope.updateWallet = function(wallet) {
       $log.debug('Updating wallet:' + wallet.name)
       walletService.getStatus(wallet, {}, function(err, status) {
         if (err) {
-          console.log('[tab-home.js.35:err:]', $log.error(err)); //TODO
+          $log.error(err); //TODO
           return;
         }
         wallet.status = status;
@@ -71,17 +73,16 @@ angular.module('copayApp.controllers').controller('tabHomeController',
 
 
 
-    self.updateAllWallets();
     $scope.bitpayCardEnabled = true; // TODO
 
     var listeners = [
       $rootScope.$on('bwsEvent', function(e, walletId, type, n) {
         var wallet = profileService.getWallet(walletId);
-        self.updateWallet(wallet);
+        $scope.updateWallet(wallet);
       }),
       $rootScope.$on('Local/TxAction', function(e, walletId) {
         var wallet = profileService.getWallet(walletId);
-        self.updateWallet(wallet);
+        $scope.updateWallet(wallet);
       }),
     ];
 

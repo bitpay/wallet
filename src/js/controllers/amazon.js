@@ -1,15 +1,24 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('amazonController',
-  function($scope, $timeout, $ionicModal, $log, lodash, bwcError, amazonService, platformInfo) {
+  function($scope, $timeout, $ionicModal, $log, lodash, bwcError, amazonService, platformInfo, nodeWebkit) {
 
     if (platformInfo.isCordova && StatusBar.isVisible) {
       StatusBar.backgroundColorByHexString("#4B6178");
     }
 
+    $scope.openExternalLink = function(url, target) {
+      if (platformInfo.isNW) {
+        nodeWebkit.openExternalLink(url);
+      } else {
+        target = target || '_blank';
+        var ref = window.open(url, target, 'location=no');
+      }
+    };
+
     this.init = function() {
       var self = this;
-      self.sandbox = amazonService.getEnvironment() == 'testnet' ? true : false;
+      $scope.network = amazonService.getEnvironment();
       amazonService.getPendingGiftCards(function(err, gcds) {
         if (err) {
           self.error = err;

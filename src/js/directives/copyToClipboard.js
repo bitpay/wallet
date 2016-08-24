@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.directives')
-  .directive('copyToClipboard', function(platformInfo, gettextCatalog, ionicToast, clipboard) {
+  .directive('copyToClipboard', function(platformInfo, nodeWebkit, gettextCatalog, ionicToast, clipboard) {
     return {
       restrict: 'A',
       scope: {
