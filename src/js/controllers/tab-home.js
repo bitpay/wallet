@@ -22,8 +22,7 @@ angular.module('copayApp.controllers').controller('tabHomeController',
         $scope.wallets = profileService.getWallets();
 
         var i = $scope.wallets.length, j =0;
-  //      var timeSpan = 60 * 60 * 24 * 7;
-        var timeSpan = 60 * 60 * 24 * 1;
+        var timeSpan = 60 * 60 * 24 * 7;
         var notifications = [];
 
         $scope.fetchingNotifications = true;
