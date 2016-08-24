@@ -15,7 +15,7 @@
 
   <ion-content ng-controller="bitpayCardController as bitpayCard" ng-init="bitpayCard.init()">
 
-    <div class="text-center size-12" ng-show="bitpayCard.sandbox">
+    <div class="text-center size-12" ng-show="network == 'testnet'">
       Sandbox version. Only for testing purpose
     </div>
 
@@ -24,7 +24,7 @@
     </div>
 
     <div ng-show="!bitpayCard.bitpayCardAuthenticated && !bitpayCard.loadingSession">
-        <div class="text-center">
+        <div class="text-center m20t">
           <img src="img/bitpay-card-visa.svg" width="200">
         </div>
         <h4 class="text-center">
