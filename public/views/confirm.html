@@ -42,6 +42,7 @@
         <div class="item item-icon-left">
           <i class="icon ion-briefcase size-21"></i>
           <label translate>From</label>
+          <span class="badge badge-assertive" ng-show="content.notAvailable" translate>Not available</span>
         </div>
 
         <wallets only-complete="true" network="{{network}}" min-balance="{{minBalance}}"></wallets>

@@ -156,6 +156,7 @@ angular.module('copayApp.directives')
 
         scope.content = {};
         scope.content.wallets = [];
+        scope.content.notAvailable = false;
         var minBalance = attrs.minBalance ? parseInt(attrs.minBalance) : 0;
         var wallets = profileService.getWallets(opts);
         var filteredWallets = [];
@@ -182,13 +183,16 @@ angular.module('copayApp.directives')
             if (!lodash.isEmpty(filteredWallets)) {
               scope.content.wallets = filteredWallets;
               scope.$emit('Wallet/Changed', scope.content.wallets[0]);
+            } else {
+              scope.content.notAvailable = true;
+              $log.warn('No wallet available to make the payment');
             }
             return;
           }
 
           walletService.getStatus(wallets[index], {}, function(err, status) {
             if (err) $log.error(err);
-            if (!status.availableBalanceSat) $log.debug('Balance not available on wallet: ' + wallets[index].name);
+            if (!status.availableBalanceSat) $log.debug('No balance available in: ' + wallets[index].name);
             if (status.availableBalanceSat > minBalance) filteredWallets.push(wallets[index]);
             index++;
             filterWallet();
