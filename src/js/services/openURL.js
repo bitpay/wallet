@@ -1,18 +1,10 @@
 'use strict';
 
-angular.module('copayApp.services').factory('openURLService', function($rootScope, $ionicHistory, $document, $log, $state, go, platformInfo, lodash, profileService, incomingData) {
+angular.module('copayApp.services').factory('openURLService', function($rootScope, $ionicHistory, $document, $log, $state, platformInfo, lodash, profileService, incomingData) {
   var root = {};
 
   var handleOpenURL = function(args) {
     $log.info('Handling Open URL: ' + JSON.stringify(args));
-
-    profileService.whenAvailable(function() {
-      // Wait ux to settle
-      setTimeout(function() {
-        handleOpenURL(args);
-      }, 2000);
-    });
-
     // Stop it from caching the first view as one to return when the app opens
     $ionicHistory.nextViewOptions({
       historyRoot: true,
@@ -84,7 +76,6 @@ angular.module('copayApp.services').factory('openURLService', function($rootScop
         });
       }
     } else if (platformInfo.isDevel) {
-
       var base = window.location.origin + '/';
       var url = base + '#/uri/%s';
 
@@ -101,7 +92,14 @@ angular.module('copayApp.services').factory('openURLService', function($rootScop
     root.registeredUriHandlers.push(x);
   };
 
-  root.handleURL = handleOpenURL;
+  root.handleURL = function(args) {
+    profileService.whenAvailable(function() {
+      // Wait ux to settle
+      setTimeout(function() {
+        handleOpenURL(args);
+      }, 1000);
+    });
+  };
 
-  return root;
+return root;
 });
