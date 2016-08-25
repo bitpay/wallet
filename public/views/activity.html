@@ -2,30 +2,34 @@
 <ion-view>
   <ion-nav-bar class="bar-stable">
     <ion-nav-title>Recent Activity</ion-nav-title>
+    <ion-nav-buttons side="primary">
+      <button class="button no-border" ui-sref="tabs.home">
+        <span translate>Close</span>
+      </button>
+    </ion-nav-buttons>
   </ion-nav-bar>
   <ion-content class="padding" ng-controller="activityController" ng-init="init()">
 
     <div ng-if="fetchingNotifications" class="updatingHistory">
-        <div  class="row" >
-            <ion-spinner class="spinner-dark" icon="lines"></ion-spinner>
-        </div>
-        <div  class="row" >
-          <div  class="col" translate>Updating activity. Please stand by.</div>
-        </div>
+      <div class="text-center">
+        <ion-spinner class="spinner-dark" icon="lines"></ion-spinner>
+        <div translate>Updating activity. Please stand by</div>
       </div>
     </div>
 
     <div ng-if="!fetchingNotifications">
-      <div class="list card" ng-if="!fetchingNotifications">
-        <ul>
-          <li ng-repeat="x in notifications" class="item item-icon-left" ng-click="x.action()">
-            <span ng-include="'views/includes/walletActivity.html'"></span>
-          </li>
+      <div class="list card">
+        <div class="item item-icon-left" ng-repeat="x in notifications" ng-click="x.action()">
+          <span ng-include="'views/includes/walletActivity.html'"></span>
+        </div>
 
-          <li  class="item"  ng-show="!notifications[0]">
-            No recent activity
-          </li>
-        </ul>
+        <a class="item text-center" ui-sref="activity" ng-show="notificationsMore">
+          <span translate>More</span> ({{notificationsMore}})
+        </a>
+
+        <div class="item" ng-show="!notifications[0]">
+          <span translate>No recent activity</span>
+        </div>
       </div>
     </div>
   </ion-content>
