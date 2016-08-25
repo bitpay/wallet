@@ -1,17 +1,32 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('backupController',
-  function($rootScope, $scope, $timeout, $log, $state, $stateParams, lodash, fingerprintService, platformInfo, configService, profileService, gettext, bwcService, walletService, ongoingProcess) {
+  function($rootScope, $scope, $timeout, $log, $state, $stateParams, $ionicPopup, uxLanguage, lodash, fingerprintService, platformInfo, configService, profileService, gettext, bwcService, walletService, ongoingProcess) {
 
     var wallet = profileService.getWallet($stateParams.walletId);
-    $scope.customWords = [];
     $scope.walletName = wallet.credentials.walletName;
     $scope.n = wallet.n;
 
     $scope.credentialsEncrypted = wallet.isPrivKeyEncrypted;
 
+    var isDeletedSeed = function() {
+      if (lodash.isEmpty(wallet.credentials.mnemonic) && lodash.isEmpty(wallet.credentials.mnemonicEncrypted))
+        return true;
+      return false;
+    };
+
+    var handleEncryptedWallet = function(client, cb) {
+      if (!walletService.isEncrypted(client)) {
+        return cb();
+      }
+
+      $rootScope.$emit('Local/NeedsPassword', false, function(err, password) {
+        if (err) return cb(err);
+        return cb(walletService.unlock(client, password));
+      });
+    };
+
     $scope.init = function() {
-      $scope.step = 1;
       $scope.deleted = isDeletedSeed();
       if ($scope.deleted) return;
 
@@ -33,7 +48,7 @@ angular.module('copayApp.controllers').controller('backupController',
       });
     };
 
-    function shuffledWords(words) {
+    var shuffledWords = function(words) {
       var sort = lodash.sortBy(words);
 
       return lodash.map(sort, function(w) {
@@ -62,70 +77,46 @@ angular.module('copayApp.controllers').controller('backupController',
       }, 10);
     };
 
-    function isDeletedSeed() {
-      if (lodash.isEmpty(wallet.credentials.mnemonic) && lodash.isEmpty(wallet.credentials.mnemonicEncrypted))
-        return true;
-      return false;
-    };
-
-    $scope.$on('$destroy', function() {
-      walletService.lock(wallet);
-    });
-
-    $scope.goToStep = function(n) {
-      if (n == 1)
-        $scope.initFlow();
-      if (n == 2)
-        $scope.step = 2;
-      if (n == 3) {
-        if (!$scope.mnemonicHasPassphrase)
-          finalStep();
-        else
-          $scope.step = 3;
+    $scope.goBack = function() {
+      if ($scope.step == 1) {
+        if ($stateParams.fromOnboarding) $state.go('onboarding.backupRequest');
+        else $state.go('wallet.preferences');
       }
-      if (n == 4)
-        finalStep();
+      else {
+        $scope.goToStep($scope.step - 1);
+      }
+    };
 
-      function finalStep() {
-        ongoingProcess.set('validatingWords', true);
-        confirm(function(err) {
-          ongoingProcess.set('validatingWords', false);
-          if (err) {
-            backupError(err);
-          }
-          $timeout(function() {
-            $scope.step = 4;
-            return;
-          }, 1);
-        });
+    var backupError = function(err) {
+      ongoingProcess.set('validatingWords', false);
+      $log.debug('Failed to verify backup: ', err);
+      $scope.backupError = true;
+
+      $timeout(function() {
+        $scope.$apply();
+      }, 1);
+    };
+
+    var openPopup = function() {
+      var confirmBackupPopup = $ionicPopup.show({
+        templateUrl: "views/includes/confirmBackupPopup.html",
+        scope: $scope,
+      });
+
+      $scope.closePopup = function(val) {
+        if (val) {
+          confirmBackupPopup.close();
+          if ($stateParams.fromOnboarding) $state.go('onboarding.disclaimer');
+          else $state.go('tabs.home')
+        }
+        else {
+          confirmBackupPopup.close();
+          $scope.goToStep(1);
+        }
       };
-    };
+    }
 
-    $scope.addButton = function(index, item) {
-      var newWord = {
-        word: item.word,
-        prevIndex: index
-      };
-      $scope.customWords.push(newWord);
-      $scope.shuffledMnemonicWords[index].selected = true;
-      $scope.shouldContinue();
-    };
-
-    $scope.removeButton = function(index, item) {
-      if ($scope.loading) return;
-      $scope.customWords.splice(index, 1);
-      $scope.shuffledMnemonicWords[item.prevIndex].selected = false;
-      $scope.shouldContinue();
-    };
-
-    $scope.shouldContinue = function() {
-      if ($scope.customWords.length == $scope.shuffledMnemonicWords.length)
-        $scope.selectComplete = true;
-      else
-        $scope.selectComplete = false;
-    };
-
-    function confirm(cb) {
+    var confirm = function(cb) {
       $scope.backupError = false;
 
       var customWordList = lodash.pluck($scope.customWords, 'word');
@@ -161,25 +152,62 @@ angular.module('copayApp.controllers').controller('backupController',
       }, 1);
     };
 
-    function handleEncryptedWallet(client, cb) {
-      if (!walletService.isEncrypted(client)) {
-        $scope.credentialsEncrypted = false;
-        return cb();
-      }
-
-      $rootScope.$emit('Local/NeedsPassword', false, function(err, password) {
-        if (err) return cb(err);
-        return cb(walletService.unlock(client, password));
+    var finalStep = function() {
+      ongoingProcess.set('validatingWords', true);
+      confirm(function(err) {
+        ongoingProcess.set('validatingWords', false);
+        if (err) {
+          backupError(err);
+        }
+        $timeout(function() {
+          openPopup();
+          return;
+        }, 1);
       });
     };
 
-    function backupError(err) {
-      ongoingProcess.set('validatingWords', false);
-      $log.debug('Failed to verify backup: ', err);
-      $scope.backupError = true;
-
-      $timeout(function() {
-        $scope.$apply();
-      }, 1);
+    $scope.goToStep = function(n) {
+      if (n == 1)
+        $scope.initFlow();
+      if (n == 2)
+        $scope.step = 2;
+      if (n == 3) {
+        if (!$scope.mnemonicHasPassphrase)
+          finalStep();
+        else
+          $scope.step = 3;
+      }
+      if (n == 4)
+        finalStep();
     };
+
+    $scope.addButton = function(index, item) {
+      var newWord = {
+        word: item.word,
+        prevIndex: index
+      };
+      $scope.customWords.push(newWord);
+      $scope.shuffledMnemonicWords[index].selected = true;
+      $scope.shouldContinue();
+    };
+
+    $scope.removeButton = function(index, item) {
+      if ($scope.loading) return;
+      $scope.customWords.splice(index, 1);
+      $scope.shuffledMnemonicWords[item.prevIndex].selected = false;
+      $scope.shouldContinue();
+    };
+
+    $scope.shouldContinue = function() {
+      if ($scope.customWords.length == $scope.shuffledMnemonicWords.length)
+        $scope.selectComplete = true;
+      else
+        $scope.selectComplete = false;
+    };
+
+
+    $scope.$on('$destroy', function() {
+      walletService.lock(wallet);
+    });
+
   });

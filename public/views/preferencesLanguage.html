@@ -7,7 +7,7 @@
       </button>
     </ion-nav-buttons>
   </ion-nav-bar>
-  <ion-content ng-controller="preferencesLanguageController" ng-init="init()" cache-view="false">
+  <ion-content ng-controller="preferencesLanguageController" ng-init="init()" >
     <ion-radio ng-repeat="lang in availableLanguages" ng-value="lang.isoCode" ng-model="currentLanguage"
       ng-click="save(lang.isoCode)">{{lang.name}}
     </ion-radio>
