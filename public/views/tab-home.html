@@ -5,12 +5,11 @@
   </ion-nav-bar>
 
   <ion-content class="padding" ng-controller="tabHomeController">
-    <h3 class="title" translate>Activity</h3>
+    <h3 class="title" translate>Recent Activity</h3>
 
     <div ng-if="fetchingNotifications" class="updatingHistory">
       <div class="text-center">
         <ion-spinner class="spinner-dark" icon="lines"></ion-spinner>
-        <div translate>Updating activity. Please stand by</div>
       </div>
     </div>
 
@@ -25,7 +24,7 @@
         </a>
 
         <div class="item" ng-show="!notifications[0]">
-          <span translate>No recent activity</span>
+          <span translate>Nothing to show here.</span>
         </div>
       </div>
     </div>
