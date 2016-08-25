@@ -3,7 +3,7 @@ Create tabs with an icon and label, using the tabs-positive style.
 Each tab's child <ion-nav-view> directive will have its own
 navigation history that also transitions its views in and out.
 -->
-<ion-tabs class="tabs-icon-top tabs-color-active-positive">
+<ion-tabs class="tabs-icon-top tabs-color-active-positive" ng-controller="tabsController">
 
   <ion-tab title="Home" icon-off="ion-ios-pulse" icon-on="ion-ios-pulse-strong" href="#/tabs/home">
     <ion-nav-view name="tab-home"></ion-nav-view>
@@ -14,10 +14,12 @@ navigation history that also transitions its views in and out.
   </ion-tab>
 
 
-  <ion-tab title="Scan" icon-off="ion-ios-camera-outline" icon-on="ion-ios-camera" href="#/tabs/scan">
-    <ion-nav-view name="tab-scan"></ion-nav-view>
-  </ion-tab>
+  <!-- this actually NEVER gets rendered -->
+  <qr-scanner class="qr-icon size-24" style="display:none" set-fn="setScanFn(theScanFn)" on-scan="onScan(data)"></qr-scanner>
 
+
+  <ion-tab title="Scan" icon-off="ion-ios-camera" ng-click="scan()" >
+  </ion-tab>
 
   <ion-tab title="Send" icon-off="ion-ios-chatboxes-outline" icon-on="ion-ios-chatboxes" href="#/tabs/send">
     <ion-nav-view name="tab-send"></ion-nav-view>

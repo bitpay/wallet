@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('tabScanController', function($scope, $timeout, $ionicModal, $log, $ionicPopup, configService, gettextCatalog, platformInfo, bitcore, lodash, $state, walletService) {
+angular.module('copayApp.controllers').controller('tabScanController', function($scope, $timeout, $ionicModal, $log, $ionicPopup, configService, gettextCatalog, platformInfo, bitcore, lodash, $state, incomingData) {
 
   var isCordova = platformInfo.isCordova;
   var isWP = platformInfo.isWP;
@@ -22,7 +22,7 @@ angular.module('copayApp.controllers').controller('tabScanController', function(
 
   var _dataScanned = function(data) {
     $log.debug('Scanned:' + data);
-    if (!walletService.redirFromUri(data)) {
+    if (!incomingData.redir(data)) {
       $log.warn('Fail to process scanned data');
       _showAlert('Bad bitcoin address', 'Could not recognize the bitcoin address', function(res) {
         $scope.init();
@@ -83,7 +83,6 @@ angular.module('copayApp.controllers').controller('tabScanController', function(
       $scope.modalOpenScanner();
     }
   };
-
 
   // QR code Scanner
   var video;

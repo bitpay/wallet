@@ -1,11 +1,11 @@
-<ion-modal-view>
+<ion-modal-view ng-controller="scannerController" ng-init="init()">
   <ion-header-bar align-title="center" class="bar-stable">
     <button ng-click="cancel()" class="button button-clear button-positive" translate>
       Close
     </button>
     <h1 class="title ellipsis" translate>QR-Scanner</h1>
   </ion-header-bar>
-  <ion-content ng-controller="tabScanController" ng-init="init()">
+  <ion-content >
     <canvas id="qr-canvas" width="200" height="150"></canvas>
     <video id="qrcode-scanner-video" width="300" height="225"></video>
   </ion-content>
