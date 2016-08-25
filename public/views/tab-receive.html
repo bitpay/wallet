@@ -4,7 +4,7 @@
   </ion-nav-bar>
 
 
-  <ion-content ng-controller="tabReceiveController" ng-init="init()"  cache-view="false">
+  <ion-content ng-controller="tabReceiveController" ng-init="init()"  >
 
     <div class="text-center m30v" copy-to-clipboard="addr" ng-show="addr" >
       <qrcode size="220" data="bitcoin:{{addr}}" ng-show="addr"></qrcode>

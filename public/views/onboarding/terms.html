@@ -1,0 +1,26 @@
+<ion-view>
+  <ion-nav-bar class="bar-stable">
+    <ion-nav-title>Terms of Use</ion-nav-title>
+    <ion-nav-buttons side="primary">
+      <button class="button no-border" href ui-sref="onboarding.disclaimer">
+        <i class="icon ion-chevron-left"></i> Back
+      </button>
+    </ion-nav-buttons>
+  </ion-nav-bar>
+  <ion-content ng-controller="termsController" ng-init="accept = false;">
+      <p ng-include="'views/includes/terms.html'"></p>
+      <div class="padding-vertical" ng-show="lang != 'en'">
+        <a ng-click="$root.openExternalLink('https://copay.io/disclaimer')" translate>Official English Disclaimer</a>
+      </div>
+      <ion-list class="disclaimer">
+        <ion-checkbox ng-model="accept"><span translate>I have read, understood, and agree with the Terms of Use</span></ion-checkbox>
+      </ion-list>
+      <button
+        ng-disabled="!accept"
+        class="button button-block button-positive"
+        ng-click="confirm()"
+        translate>Confirm & Finish
+      </button>
+
+  </ion-content>
+</ion-view>

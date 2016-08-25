@@ -1,0 +1,65 @@
+<ion-view ng-controller="tourController" ng-init="init()">
+  <ion-nav-bar class="bar-stable">
+    <ion-nav-title>Get Started</ion-nav-title>
+    <ion-nav-buttons side="primary">
+      <button class="button no-border" ng-click="goBack()">
+        <i class="icon ion-chevron-left"></i> Back
+      </button>
+    </ion-nav-buttons>
+    <ion-nav-buttons side="secondary">
+      <button class="button no-border" ng-show="data.index == 0" ng-click="createProfile()">
+        Skip
+      </button>
+    </ion-nav-buttons>
+  </ion-nav-bar>
+  <ion-slides class="slides" options="options" slider="data.slider">
+    <ion-slide-page>
+      <ion-content >
+        <div class="text-center">
+          <h2 translate>Bitcoin is digital money</h2>
+          <p translate>
+            You can spend bitcoin at millions of websites and stores worldwide
+          </p>
+          <p translate>
+            Just scan the code to pay
+          </p>
+          <button class="button icon-right ion-chevron-right button-positive" ng-click="slideNext()">
+            Got it
+          </button>
+        </div>
+      </ion-content>
+    </ion-slide-page>
+    <ion-slide-page>
+      <ion-content >
+        <div class="text-center">
+          <h2 translate>Bitcoin is currency</h2>
+          <p translate>
+            You can trade it for other currencies like US Dollars, Euros, or Pounds
+          </p>
+          <p translate>
+            The exchange rate changes with the market
+          </p>
+          <button class="button icon-right ion-chevron-right button-positive" ng-click="slideNext()">
+            Makes sense
+          </button>
+        </div>
+      </ion-content>
+    </ion-slide-page>
+    <ion-slide-page>
+      <ion-content >
+        <div class="text-center">
+          <h2 translate>You control your bitcoin</h2>
+          <p translate>
+            The BitPay wallet stores your bitcoin with cutting-edge security
+          </p>
+          <p translate>
+            Not even BitPay can access it
+          </p>
+          <button class="button icon-right button-positive" ng-click="createProfile()">
+            Create bitcoin wallet
+          </button>
+        </div>
+      </ion-content>
+    </ion-slide-page>
+  </ion-slides>
+</ion-view>

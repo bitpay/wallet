@@ -7,7 +7,7 @@
       </button>
     </ion-nav-buttons>
   </ion-nav-bar class="bar-stable">
-  <ion-content ng-controller="preferencesUnitController" ng-init="init()" cache-view="false">
+  <ion-content ng-controller="preferencesUnitController" ng-init="init()" >
     <ion-radio ng-repeat="unit in unitList" ng-value="unit.code" ng-model="currentUnit"
       ng-click="save(unit)">{{unit.shortName}}
     </ion-radio>
