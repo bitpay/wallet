@@ -953,4 +953,10 @@ input[type=number] {
   height: 24px;
 }
 
-
+.disclaimer {
+  .item, .item-content{
+    overflow: auto;
+    text-overflow: initial;
+    white-space: initial;
+  }
+}

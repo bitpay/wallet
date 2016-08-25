@@ -1,0 +1,15 @@
+<ion-view>
+  <ion-nav-bar class="bar-stable">
+    <ion-nav-buttons side="primary">
+      <button class="button no-border" href ui-sref="onboarding.backupRequest">
+        <i class="icon ion-chevron-left"></i> Back
+      </button>
+    </ion-nav-buttons>
+  </ion-nav-bar>
+  <ion-content ng-controller="backupWarningController">
+    <span translate>Are you being watched?</span>
+    <span translate>Now is a perfect time to assess your surroundings. Nearby windows? Hidden cameras? Shoulder-spies?</span>
+    <span translate>Anyone with your backup phrase can access or spend your bitcoin.</span>
+    <button class="button button-block button-positive" ng-click="openPopup()" translate>All clear, let's do this</button>
+  </ion-content>
+</ion-view>

@@ -1,0 +1,16 @@
+<ion-view>
+  <ion-content ng-controller="notificationsController" >
+    <div class="text-center">
+      <h1 translate>
+        Push Notifications
+      </h1>
+
+      <span translate>
+        Would you like to receive push notifications about payments?
+      </span>
+
+      <button class="button button-block button-positive" ng-click="allowNotif()" translate>Allow notifications</button>
+      <button class="button button-block  button-light" href ui-sref="onboarding.requestBackup" translate>Not now</button>
+    </div>
+  </ion-content>
+</ion-view>

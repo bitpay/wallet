@@ -127,7 +127,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
               url: $stateParams.url
             });
           })
-          }
+        }
       })
       .state('uripayment', {
         url: '/uri-payment/:url',
@@ -146,6 +146,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         templateUrl: 'views/activity.html'
       })
 
+
     /*
      *
      * Wallet
@@ -153,7 +154,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
      */
 
     .state('wallet', {
-        url: '/wallet/{walletId}',
+        url: '/wallet/{walletId}/{fromOnboarding}',
         abstract: true,
         template: '<ion-nav-view name="wallet"></ion-nav-view>'
       })
@@ -528,11 +529,11 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
           }
         }
       })
-      .state('settings.termOfUse', {
-        url: '/termOfUse',
+      .state('settings.termsOfUse', {
+        url: '/termsOfUse',
         views: {
           'settings': {
-            templateUrl: 'views/termOfUse.html',
+            templateUrl: 'views/termsOfUse.html',
           }
         }
       })
@@ -541,6 +542,82 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         views: {
           'settings': {
             templateUrl: 'views/translators.html'
+          }
+        }
+      })
+
+    /*
+     *
+     * Onboarding
+     *
+     */
+
+    .state('onboarding', {
+        url: '/onboarding',
+        abstract: true,
+        template: '<ion-nav-view name="onboarding"></ion-nav-view>'
+      })
+      .state('onboarding.welcome', {
+        url: '/welcome',
+        views: {
+          'onboarding': {
+            templateUrl: 'views/onboarding/welcome.html'
+          }
+        }
+      })
+      .state('onboarding.tour', {
+        url: '/tour',
+        views: {
+          'onboarding': {
+            templateUrl: 'views/onboarding/tour.html'
+          }
+        }
+      })
+      .state('onboarding.collectEmail', {
+        url: '/collectEmail',
+        views: {
+          'onboarding': {
+            templateUrl: 'views/onboarding/collectEmail.html'
+          }
+        }
+      })
+      .state('onboarding.notifications', {
+        url: '/notifications',
+        views: {
+          'onboarding': {
+            templateUrl: 'views/onboarding/notifications.html'
+          }
+        }
+      })
+      .state('onboarding.backupRequest', {
+        url: '/backupRequest',
+        views: {
+          'onboarding': {
+            templateUrl: 'views/onboarding/backupRequest.html'
+          }
+        }
+      })
+      .state('onboarding.backupWarning', {
+        url: '/backupWarning',
+        views: {
+          'onboarding': {
+            templateUrl: 'views/onboarding/backupWarning.html'
+          }
+        }
+      })
+      .state('onboarding.disclaimer', {
+        url: '/disclaimer',
+        views: {
+          'onboarding': {
+            templateUrl: 'views/onboarding/disclaimer.html'
+          }
+        }
+      })
+      .state('onboarding.terms', {
+        url: '/terms',
+        views: {
+          'onboarding': {
+            templateUrl: 'views/onboarding/terms.html'
           }
         }
       })
@@ -765,10 +842,10 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         if (err) {
           if (err.message && err.message.match('NOPROFILE')) {
             $log.debug('No profile... redirecting');
-            $state.transitionTo('disclaimer');
+            $state.transitionTo('onboarding.welcome');
           } else if (err.message && err.message.match('NONAGREEDDISCLAIMER')) {
             $log.debug('Display disclaimer... redirecting');
-            $state.transitionTo('disclaimer');
+            $state.transitionTo('onboarding.disclaimer');
           } else {
             throw new Error(err); // TODO
           }
@@ -778,7 +855,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
           $state.transitionTo('tabs.home');
         }
       });
-   });
+    });
 
     if (platformInfo.isNW) {
       var gui = require('nw.gui');

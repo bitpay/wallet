@@ -1,0 +1,10 @@
+<ion-view>
+  <ion-content ng-controller="backupRequestController">
+    <h1 translate>
+      No backup, no bitcoin.
+    </h1>
+    <span translate> Since only you control yout money, you'll need save your backup phrase in case this app is deleted </span>
+    <button class="button button-block button-positive" href ui-sref="onboarding.backupWarning" translate>Backup wallet</button>
+    <button class="button button-block button-light" ng-click="openPopup()" translate>I'll backup my wallet later</button>
+  </ion-content>
+</ion-view>
