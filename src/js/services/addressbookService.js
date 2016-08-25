@@ -1,7 +1,19 @@
 'use strict';
 
-angular.module('copayApp.services').factory('addressbookService', function($stateParams, storageService, profileService, lodash) {
+angular.module('copayApp.services').factory('addressbookService', function(bitcore, storageService, lodash) {
   var root = {};
+
+  var getNetwork = function(addr) {
+    var Address = bitcore.Address;
+    if (Address.isValid(addr, 'livenet')) {
+console.log('[addressbookService.js:8] LIVENET'); //TODO
+      return 'livenet';
+    }
+    if (Address.isValid(addr, 'testnet')) {
+console.log('[addressbookService.js:12] TESTNET'); //TODO
+      return 'testnet';
+    }
+  };
 
   root.getLabel = function(addr, cb) {
     storageService.getAddressbook('testnet', function(err, ab) {
@@ -31,13 +43,14 @@ angular.module('copayApp.services').factory('addressbookService', function($stat
   };
 
   root.add = function(entry, cb) {
-    var wallet = profileService.getWallet($stateParams.walletId);
-    root.list(function(err, ab) {
+    var network = getNetwork(entry.address);
+    storageService.getAddressbook(network, function(err, ab) {
       if (err) return cb(err);
-      if (!ab) ab = {};
+      if (ab) ab = JSON.parse(ab);
+      ab = ab || {};
       if (ab[entry.address]) return cb('Entry already exist');
       ab[entry.address] = entry.label;
-      storageService.setAddressbook(wallet.credentials.network, JSON.stringify(ab), function(err, ab) {
+      storageService.setAddressbook(network, JSON.stringify(ab), function(err, ab) {
         if (err) return cb('Error adding new entry');
         root.list(function(err, ab) {
           return cb(err, ab);
@@ -47,13 +60,15 @@ angular.module('copayApp.services').factory('addressbookService', function($stat
   };
 
   root.remove = function(addr, cb) {
-    var wallet = profileService.getWallet($stateParams.walletId);
-    root.list(function(err, ab) {
+    var network = getNetwork(addr);
+    storageService.getAddressbook(network, function(err, ab) {
       if (err) return cb(err);
-      if (!ab) return;
+      if (ab) ab = JSON.parse(ab);
+      ab = ab || {};
+      if (lodash.isEmpty(ab)) return cb('Addressbook is empty');
       if (!ab[addr]) return cb('Entry does not exist');
       delete ab[addr];
-      storageService.setAddressbook(wallet.credentials.network, JSON.stringify(ab), function(err) {
+      storageService.setAddressbook(network, JSON.stringify(ab), function(err) {
         if (err) return cb('Error deleting entry');
         root.list(function(err, ab) {
           return cb(err, ab);
@@ -63,10 +78,11 @@ angular.module('copayApp.services').factory('addressbookService', function($stat
   };
 
   root.removeAll = function() {
-    var wallet = profileService.getWallet($stateParams.walletId);
-    storageService.removeAddressbook(wallet.credentials.network, function(err) {
-      if (err) return cb('Error deleting addressbook');
-      return cb();
+    storageService.removeAddressbook('livenet', function(err) {
+      storageService.removeAddressbook('testnet', function(err) {
+        if (err) return cb('Error deleting addressbook');
+        return cb();
+      });
     });
   };
 

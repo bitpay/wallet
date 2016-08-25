@@ -4,15 +4,6 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
 
   var originalList;
 
-
-  // An alert dialog
-  var showAlert = function(title, msg) {
-    $log.warn(title + ": " + msg);
-    var alertPopup = $ionicPopup.alert({
-      title: title,
-    });
-  };
-
   $scope.init = function() {
     originalList = [];
 
@@ -32,8 +23,6 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
     addressbookService.list(function(err, ab) {
       if (err) $log.error(err);
 
-      $scope.isEmptyList = lodash.isEmpty(ab);
-
       var contacts = [];
       lodash.each(ab, function(v, k) {
         contacts.push({
@@ -50,10 +39,7 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
     });
   };
 
-
-
-  $scope.findContact = function(search, opts) {
-    opts = opts || {};
+  $scope.findContact = function(search) {
 
     if (incomingData.redir(search)) {
       return;
@@ -67,8 +53,7 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
       return;
     }
 
-    var result = lodash.filter($scope.list, function(item) {
-      if (opts && opts.onlyContacts && item.isWallet) return;
+    var result = lodash.filter(originalList, function(item) {
       var val = item.label || item.alias || item.name;
       return lodash.includes(val.toLowerCase(), search.toLowerCase());
     });
@@ -87,82 +72,17 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
     });
   };
 
-  /*
-   * Modal Addressbook
-   */
-
-  $ionicModal.fromTemplateUrl('views/modals/addressbook.html', {
-    scope: $scope
-  }).then(function(modal) {
-    $scope.addressbookModal = modal;
-  });
-
   $scope.openAddressbookModal = function() {
-    $scope.addressbookModal.show();
+    $ionicModal.fromTemplateUrl('views/modals/addressbook.html', {
+      scope: $scope
+    }).then(function(modal) {
+      $scope.addressbookModal = modal;
+      $scope.addressbookModal.show();
+    });
   };
 
-  $scope.closeAddressbookModal = function() {
-    $scope.cleanAddressbookEntry();
-    $scope.addAddressbookEntry = false;
-    $scope.addressbookModal.hide();
-  };
-
-  $scope.onQrCodeScanned = function(data, addressbookForm) {
-    $timeout(function() {
-      var form = addressbookForm;
-      if (data && form) {
-        data = data.replace('bitcoin:', '');
-        form.address.$setViewValue(data);
-        form.address.$isValid = true;
-        form.address.$render();
-      }
-      $scope.$digest();
-    }, 100);
-  };
-
-  $scope.cleanAddressbookEntry = function() {
-    $scope.addressbookEntry = {
-      'address': '',
-      'label': ''
-    };
-  };
-
-  $scope.toggleAddAddressbookEntry = function() {
-    $scope.cleanAddressbookEntry();
-    $scope.addAddressbookEntry = !$scope.addAddressbookEntry;
-  };
-
-  $scope.add = function(addressbook) {
-    $timeout(function() {
-      addressbookService.add(addressbook, function(err, ab) {
-        if (err) {
-          $log.error(err);
-          return;
-        }
-        $scope.init();
-        $scope.toggleAddAddressbookEntry();
-        $scope.$digest();
-      });
-    }, 100);
-  };
-
-  $scope.remove = function(addr) {
-    $timeout(function() {
-      addressbookService.remove(addr, function(err, ab) {
-        if (err) {
-          $scope.error = err;
-          return;
-        }
-        $scope.init();
-        $scope.$digest();
-      });
-    }, 100);
-  };
-
-  $scope.$on('$destroy', function() {
-    $scope.addressbookModal.remove();
+  $scope.$on('modal.hidden', function() {
+    $scope.init();
   });
-
-  $scope.$watch('')
 
 });
