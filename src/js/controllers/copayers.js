@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('copayersController',
-  function($scope, $rootScope, $timeout, $log, $ionicModal, profileService, notification, platformInfo, gettext, gettextCatalog, $stateParams, $state) {
+  function($scope, $rootScope, $timeout, $log, $ionicModal, profileService, platformInfo, gettext, gettextCatalog, $stateParams, $state) {
     var self = this;
     $scope.isCordova = platformInfo.isCordova;
     var isWP = platformInfo.isWP;
@@ -40,14 +40,6 @@ angular.module('copayApp.controllers').controller('copayersController',
           });
         } else {
           $state.go('tabs.home');
-          $timeout(function() {
-            notification.success(
-              gettextCatalog.getString('Success'),
-              gettextCatalog.getString('The wallet "{{walletName}}" was deleted', {
-                walletName: walletName
-              })
-            );
-          });
         }
       });
     };
