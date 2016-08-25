@@ -28,12 +28,14 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     $scope.commentPopupClose = function() {
       commentPopup.close();
     };
-    $scope.commentPopupSave = function() {
-      $log.debug('Saving description: ' + $scope.data.comment);
-      $scope.description = $scope.data.comment;
+    $scope.commentPopupSave = function(description) {
+      $log.debug('Saving description: ' + description);
+      $scope.description = description;
       $scope.txp = null;
 
+      ongoingProcess.set('creatingTx', true);
       createTx($scope.wallet, function(err, txp) {
+        ongoingProcess.set('creatingTx', false);
         if (err) return;
         cachedTxp[$scope.wallet.id] = txp;
         apply(txp);
@@ -41,7 +43,6 @@ angular.module('copayApp.controllers').controller('confirmController', function(
       commentPopup.close();
     };
   };
-
 
   var setFromPayPro = function(uri, cb) {
     if (!cb) cb = function() {};
@@ -92,23 +93,12 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     });
   };
 
-
-
   $scope.init = function() {
-
-    if ($stateParams.paypro) {
-      return setFromPayPro($stateParams.paypro, function(err) {
-        if (err && !isChromeApp) {
-          showAlert(gettext('Could not fetch payment'));
-        }
-      });
-    }
-
+    // TODO (URL , etc)
     if (!$stateParams.toAddress || !$stateParams.toAmount) {
       $log.error('Bad params at amount')
       throw ('bad params');
     }
-
     $scope.isCordova = platformInfo.isCordova;
 
     var config = configService.getSync().wallet;
@@ -122,64 +112,87 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     $scope.description = $stateParams.description;
     $scope.paypro = $stateParams.paypro;
 
-    var network = (new bitcore.Address($scope.toAddress)).network.name;
-    $scope.network = network;
+    var networkName = (new bitcore.Address($scope.toAddress)).network.name;
+    $scope.network = networkName;
 
-    function setWallets() {
-      var w = profileService.getWallets({
-        onlyComplete: true,
-        network: network,
+    $scope.notAvailable = false;
+    var wallets = profileService.getWallets({
+      onlyComplete: true,
+      network: networkName,
+    });
+
+    var filteredWallets = [];
+    var index = 0;
+
+    ongoingProcess.set('scanning', true);
+
+    lodash.each(wallets, function(w) {
+      walletService.getStatus(w, {}, function(err, status) {
+        if (err) $log.error(err);
+        if (!status.availableBalanceSat) $log.debug('No balance available in: ' + w.name);
+        if (status.availableBalanceSat > amount) filteredWallets.push(w);
+
+        if (++index == wallets.length) {
+          ongoingProcess.set('scanning', false);
+
+          if (!lodash.isEmpty(filteredWallets)) {
+            $scope.wallets = lodash.clone(filteredWallets);
+            $scope.notAvailable = false;
+          } else {
+            $scope.notAvailable = true;
+            $log.warn('No wallet available to make the payment');
+          }
+
+          $timeout(function() {
+            $scope.$apply();
+          }, 10);
+          return;
+        }
       });
-      $scope.wallets = lodash.filter(w, function(x) {
-        if (!x.availableBalanceSat) return true;
-        return x.availableBalanceSat > amount;
-      });
-
-      $scope.someFiltered = $scope.wallets.length != w.length;
-
-    };
-
-    var stop;
-
-    function setWallet(wallet, delayed) {
-      $scope.wallet = wallet;
-      $scope.fee = $scope.txp = null;
-      $timeout(function() {
-        $scope.$apply();
-      }, 10);
-
-      if (stop) {
-        $timeout.cancel(stop);
-        stop = null;
-      }
-
-      if (cachedTxp[wallet.id]) {
-        apply(cachedTxp[wallet.id]);
-      } else {
-        stop = $timeout(function() {
-          createTx(wallet, function(err, txp) {
-            if (err) return;
-            cachedTxp[wallet.id] = txp;
-            apply(txp);
-          });
-        }, delayed ? 2000 : 1);
-      }
-    };
+    });
 
     txFormatService.formatAlternativeStr(amount, function(v) {
       $scope.alternativeAmountStr = v;
     });
+  };
 
-    $scope.$on("$ionicSlides.slideChangeEnd", function(event, data) {
-      setWallet($scope.wallets[data.slider.activeIndex], true);
-    });
+  $scope.$on('Wallet/Changed', function(event, wallet) {
+    if (lodash.isEmpty(wallet)) {
+      $log.debug('No wallet provided');
+      return;
+    }
+    $log.debug('Wallet changed: ' + wallet.name);
+    setWallet(wallet, true);
+  });
 
-    setWallets();
-    setWallet($scope.wallets[0]);
+  function setWallet(wallet, delayed) {
+    var stop;
+    $scope.wallet = wallet;
+    $scope.fee = $scope.txp = null;
 
     $timeout(function() {
       $ionicScrollDelegate.resize();
-    }, 100);
+      $scope.$apply();
+    }, 10);
+
+    if (stop) {
+      $timeout.cancel(stop);
+      stop = null;
+    }
+
+    if (cachedTxp[wallet.id]) {
+      apply(cachedTxp[wallet.id]);
+    } else {
+      ongoingProcess.set('creatingTx', true);
+      stop = $timeout(function() {
+        createTx(wallet, function(err, txp) {
+          ongoingProcess.set('creatingTx', false);
+          if (err) return;
+          cachedTxp[wallet.id] = txp;
+          apply(txp);
+        });
+      }, delayed ? 2000 : 1);
+    }
   };
 
   var setSendError = function(msg) {
@@ -244,7 +257,6 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     });
   };
 
-
   $scope.openPPModal = function() {
     $ionicModal.fromTemplateUrl('views/modals/paypro.html', {
       scope: $scope
@@ -253,8 +265,6 @@ angular.module('copayApp.controllers').controller('confirmController', function(
       $scope.payproModal.show();
     });
   };
-
-
 
   $scope.approve = function() {
     var wallet = $scope.wallet;
@@ -287,7 +297,4 @@ angular.module('copayApp.controllers').controller('confirmController', function(
   $scope.cancel = function() {
     $state.transitionTo('tabs.send');
   };
-
-
-
 });
