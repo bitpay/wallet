@@ -1,63 +1,55 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('copayersController',
-  function($scope, $rootScope, $timeout, $log, $ionicModal, profileService, platformInfo, gettext, gettextCatalog, $stateParams, $state) {
-    var self = this;
+  function($scope, $log, $ionicPopup, profileService, platformInfo, gettextCatalog, $stateParams, ongoingProcess, $state) {
+    if (!$stateParams.walletId) {
+      $log.debug('No wallet provided...back to home');
+      return $state.transitionTo('tabs.home');
+    }
+
+    var wallet = profileService.getWallet($stateParams.walletId);
+    var secret;
+    try {
+      secret = wallet.status.wallet.secret;
+    } catch (e) {};
+
+    $scope.wallet = wallet;
+    $scope.secret = secret;
     $scope.isCordova = platformInfo.isCordova;
-    var isWP = platformInfo.isWP;
-    var isAndroid = platformInfo.isAndroid;
 
-    var delete_msg = gettextCatalog.getString('Are you sure you want to delete this wallet?');
-    var accept_msg = gettextCatalog.getString('Accept');
-    var cancel_msg = gettextCatalog.getString('Cancel');
-    var confirm_msg = gettextCatalog.getString('Confirm');
-
-    var _modalDeleteWallet = function() {
-      $scope.title = delete_msg;
-      $scope.accept_msg = accept_msg;
-      $scope.cancel_msg = cancel_msg;
-      $scope.confirm_msg = confirm_msg;
-      $scope.okAction = doDeleteWallet;
-      $scope.loading = false;
-
-      $ionicModal.fromTemplateUrl('views/modals/confirmation.html', {
-        scope: $scope,
-        animation: 'slide-in-up'
-      }).then(function(modal) {
-        $scope.confirmationModal = modal;
-        $scope.confirmationModal.show();
-      });
-    };
-
-    var doDeleteWallet = function() {
-      var wallet = profileService.getWallet($stateParams.walletId);
-      var walletName = wallet.credentials.walletName;
-      profileService.deleteWalletClient(wallet, function(err) {
-        if (err) {
-          self.error = err.message || err;
-          $timeout(function() {
-            $scope.$digest();
-          });
-        } else {
-          $state.go('tabs.home');
-        }
-      });
-    };
-
-    $scope.deleteWallet = function() {
-      if ($scope.isCordova) {
-        navigator.notification.confirm(
-          delete_msg,
-          function(buttonIndex) {
-            if (buttonIndex == 1) {
-              doDeleteWallet();
+    $scope.showDeletePopup = function() {
+      var popup = $ionicPopup.show({
+        template: '<span>' + gettextCatalog.getString('Are you sure you want to delete this wallet?') + '</span>',
+        title: gettextCatalog.getString('Confirm'),
+        buttons: [
+          {
+            text: gettextCatalog.getString('Cancel'),
+            onTap: function(e) {
+              popup.close();
             }
           },
-          confirm_msg, [accept_msg, cancel_msg]
-        );
-      } else {
-        _modalDeleteWallet();
-      }
+          {
+            text: gettextCatalog.getString('Accept'),
+            type: 'button-positive',
+            onTap: function(e) {
+              deleteWallet();
+              popup.close();
+            }
+          }
+        ]
+      });
+    };
+
+    function deleteWallet() {
+      ongoingProcess.set('deletingWallet', true);
+      profileService.deleteWalletClient(wallet, function(err) {
+        ongoingProcess.set('deletingWallet', false);
+        if (err) {
+          $scope.error = err.message || err;
+        } else {
+          $state.transitionTo('tabs.home');
+        }
+      });
     };
 
     $scope.copySecret = function() {
@@ -75,20 +67,4 @@ angular.module('copayApp.controllers').controller('copayersController',
         window.plugins.socialsharing.share(message, gettextCatalog.getString('Invitation to share a Copay Wallet'), null, null);
       }
     };
-
-
-    if (!$stateParams.walletId) {
-      $log.debug('No wallet provided...back to home');
-      return $state.transitionTo('tabs.home')
-    }
-
-    var wallet = profileService.getWallet($stateParams.walletId);
-    var secret;
-    try {
-      secret = wallet.status.wallet.secret;
-    } catch (e) {};
-
-
-    $scope.wallet = wallet;
-    $scope.secret = secret;
   });
