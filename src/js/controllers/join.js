@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('joinController',
-  function($scope, $rootScope, $timeout, $state, profileService, configService, storageService, applicationService, gettext, lodash, ledger, trezor, platformInfo, derivationPathHelper, ongoingProcess, walletService, $log) {
+  function($scope, $rootScope, $timeout, $state, profileService, configService, storageService, applicationService, gettext, lodash, ledger, trezor, platformInfo, derivationPathHelper, ongoingProcess, walletService, $log, $stateParams) {
 
     var isChromeApp = platformInfo.isChromeApp;
     var isDevel = platformInfo.isDevel;
@@ -12,11 +12,21 @@ angular.module('copayApp.controllers').controller('joinController',
     $scope.derivationPath = derivationPathHelper.default;
     $scope.account = 1;
 
+
     this.onQrCodeScanned = function(data) {
+console.log('[join.js.16:data:]',data); //TODO
       $scope.secret = data;
-      $scope.joinForm.secret.$setViewValue(data);
-      $scope.joinForm.secret.$render();
+      if ($scope.joinForm) {
+        $scope.joinForm.secret.$setViewValue(data);
+        $scope.joinForm.secret.$render();
+      }
     };
+
+    if ($stateParams.url) {
+      var data = $stateParams.url;
+      data = data.replace('copay:', '');
+      this.onQrCodeScanned(data);
+    }
 
     var updateSeedSourceSelect = function() {
       self.seedOptions = [{

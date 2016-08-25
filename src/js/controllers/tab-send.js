@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('tabSendController', function($scope, $ionicModal, $log, $timeout, addressbookService, profileService, lodash, $state, walletService, bitcore ) {
+angular.module('copayApp.controllers').controller('tabSendController', function($scope, $ionicModal, $log, $timeout, addressbookService, profileService, lodash, $state, walletService, incomingData ) {
 
   var originalList;
 
@@ -55,16 +55,8 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
   $scope.findContact = function(search, opts) {
     opts = opts || {};
 
-    if (search.indexOf('bitcoin:') === 0) {
-      if (!walletService.redirFromUri(search)) {
-        $log.error(err);
-      }
-    } else if (/^https?:\/\//.test(search)) {
-      return $state.go('send.confirm', {paypro: search})
-    } else if (bitcore.Address.isValid(search, 'livenet')) {
-      return $state.go('send.amount', {toAddress: search})
-    } else if (bitcore.Address.isValid(search, 'testnet')) {
-      return $state.go('send.amount', {toAddress: search})
+    if (incomingData.redir(search)) {
+      return;
     }
 
     if (!search || search.length < 2) {

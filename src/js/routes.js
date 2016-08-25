@@ -313,14 +313,6 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
           }
         }
       })
-      .state('tabs.scan', {
-        url: '/scan',
-        views: {
-          'tab-scan': {
-            templateUrl: 'views/tab-scan.html',
-          }
-        }
-      })
       .state('tabs.send', {
         url: '/send',
         views: {
@@ -393,7 +385,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         }
       })
       .state('add.join', {
-        url: '/join',
+        url: '/join/:url',
         views: {
           'add': {
             templateUrl: 'views/join.html'

@@ -1,37 +1,17 @@
 'use strict';
 
-angular.module('copayApp.services').factory('openURLService', function($rootScope, $ionicHistory, $document, $log, $state, go, platformInfo, lodash, profileService) {
+angular.module('copayApp.services').factory('openURLService', function($rootScope, $ionicHistory, $document, $log, $state, go, platformInfo, lodash, profileService, incomingData) {
   var root = {};
-
-  root.registeredUriHandlers = [{
-    name: 'Bitcoin BIP21 URL',
-    startsWith: 'bitcoin:',
-    transitionTo: 'uripayment',
-  }, {
-    name: 'Glidera Authentication Callback',
-    startsWith: 'copay:glidera',
-    transitionTo: 'uriglidera',
-  }, {
-    name: 'Coinbase Authentication Callback',
-    startsWith: 'copay:coinbase',
-    transitionTo: 'uricoinbase',
-  }];
-
 
   var handleOpenURL = function(args) {
     $log.info('Handling Open URL: ' + JSON.stringify(args));
 
-    if (!profileService.isBound) {
-      $log.warn('Profile not bound yet. Waiting');
-
-      return $rootScope.$on('Local/ProfileBound', function() {
-        // Wait ux to settle
-        setTimeout(function() {
-          $log.warn('Profile ready, retrying...');
-          handleOpenURL(args);
-        }, 2000);
-      });
-    };
+    profileService.whenAvailable(function() {
+      // Wait ux to settle
+      setTimeout(function() {
+        handleOpenURL(args);
+      }, 2000);
+    });
 
     // Stop it from caching the first view as one to return when the app opens
     $ionicHistory.nextViewOptions({
@@ -55,19 +35,7 @@ angular.module('copayApp.services').factory('openURLService', function($rootScop
 
     document.addEventListener('handleopenurl', handleOpenURL, false);
 
-    var x = lodash.find(root.registeredUriHandlers, function(x) {
-      return url.indexOf(x.startsWith) == 0 ||
-        url.indexOf('web+' + x.startsWith) == 0 || // web protocols
-        url.indexOf(x.startsWith.replace(':', '://')) == 0 // from mobile devices
-      ;
-    });
-
-    if (x) {
-      $log.debug('openURL GOT ' + x.name + ' URL');
-      return $state.transitionTo(x.transitionTo, {
-        url: url
-      });
-    } else {
+    if (!incomingData.redir(url)) {
       $log.warn('Unknown URL! : ' + url);
     }
   };
