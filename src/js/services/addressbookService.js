@@ -6,11 +6,9 @@ angular.module('copayApp.services').factory('addressbookService', function(bitco
   var getNetwork = function(addr) {
     var Address = bitcore.Address;
     if (Address.isValid(addr, 'livenet')) {
-console.log('[addressbookService.js:8] LIVENET'); //TODO
       return 'livenet';
     }
     if (Address.isValid(addr, 'testnet')) {
-console.log('[addressbookService.js:12] TESTNET'); //TODO
       return 'testnet';
     }
   };
