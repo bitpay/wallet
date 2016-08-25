@@ -1004,7 +1004,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
       if (err) return cb(err);
 
       notifications = lodash.filter(notifications, function(x) {
-        return x.type != 'NewBlock' && x.type != 'BalanceUpdated';
+        return x.type != 'NewBlock' && x.type != 'BalanceUpdated' && x.type !='NewOutgoingTxByThirdParty';
       });
 
       var idToName = {};
@@ -1098,10 +1098,12 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
 
 
     lodash.each(shown, function(x) {
-      if (prev && prev.walletId === x.walletId && prev.txpId && prev.txpId === x.txpId) {
+      if (prev && prev.walletId === x.walletId && prev.txpId && prev.txpId === x.txpId && prev.creatorId && prev.creatorId === x.creatorId) {
         prev.types.push(x.type);
         prev.data = lodash.assign(prev.data, x.data);
         prev.txid = prev.txid || x.txid;
+        prev.amountStr = prev.amountStr || x.amountStr;
+        prev.creatorName = prev.creatorName || x.creatorName;
       } else {
         finale.push(x);
         prev = x;

@@ -19,7 +19,9 @@
 <span ng-if="x.types.indexOf('TxProposalRemoved') == -1 && x.types.indexOf('TxProposalRejected') == -1">
   <span ng-if="x.types.indexOf('NewTxProposal')>=0 ">
     <i class="icon ion-arrow-up-c size-21" ng-style="{'color':x.wallet.color}"></i>
-    {{x.message}}
+
+    {{x.amountStr}}
+    <i>{{x.message}}</i>
   </span>
   <span ng-if="x.types.indexOf('TxProposalAcceptedBy')>=0 && x.types.indexOf('NewTxProposal') == -1 ">
     <i class="icon ion-checkmark-round size-21" ng-style="{'color':x.wallet.color}"></i>
@@ -30,10 +32,10 @@
 
 <div class="item-note">
 
-  <!-- {{x.types}} -->
+<!--  {{x.types}}  -->
+  <time>{{ x.createdOn * 1000 | amTimeAgo}}</time>
   &middot;
     <i class="ion-briefcase" ng-style="{'color':x.wallet.color}"></i>
-    {{ x.creatorName}}@{{x.wallet.name}}
-   &middot;   <time>{{ x.createdOn * 1000 | amTimeAgo}}</time>
+    <span ng-if="x.creatorName">{{ x.creatorName}}@</span>{{x.wallet.name}}
 </div>
 
