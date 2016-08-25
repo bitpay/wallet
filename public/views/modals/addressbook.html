@@ -1,4 +1,4 @@
-<ion-modal-view>
+<ion-modal-view ng-controller="addressbookModalController" ng-init="initAddressbook()">
   <ion-header-bar align-title="center" class="bar-stable">
     <button class="button button-clear button-positive"
             ng-click="closeAddressbookModal()">
@@ -22,14 +22,17 @@
         <i class="icon ion-ios-search placeholder-icon"></i>
         <input type="search"
                placeholder="Search"
-               ng-model="search"
-               ng-change="findContact(search, {onlyContacts: true})" ng-model-onblur>
+               ng-model="addrSearch"
+               ng-change="findAddressbook(addrSearch)" ng-model-onblur>
       </label>
     </div>
 
     <div ng-show="!addAddressbookEntry">
       <ion-list>
-        <ion-item ng-repeat="addrEntry in list" class="item-icon-left" ng-show="!addrEntry.isWallet" ng-click="goToAmount(addrEntry)">
+        <ion-item ng-repeat="addrEntry in addressbook"
+                  class="item-icon-left"
+                  ng-show="!addrEntry.isWallet"
+                  ng-click="sendTo(addrEntry)">
           <i class="icon ion-ios-person-outline"></i>
           <h2>{{addrEntry.label}}</h2>
           <p>{{addrEntry.address}}</p>
@@ -50,8 +53,6 @@
 
     <form name="addressbookForm" ng-show="addAddressbookEntry" no-validate>
 
-      <div class="padding-vertical assertive" ng-show="error">{{error|translate}}</div>
-
       <div class="list">
 
         <label class="item item-input item-stacked-label">
@@ -63,7 +64,7 @@
                ng-show="addressbookForm.address.$invalid && addressbookEntry.address"></i>
           </div>
           <div class="qr-scan-icon">
-            <qr-scanner on-scan="onQrCodeScanned(data)"></qr-scanner>
+            <qr-scanner on-scan="onQrCodeScanned(data, addressbookForm)"></qr-scanner>
             <input type="text"
                    id="address"
                    name="address"
