@@ -442,14 +442,10 @@ ul.wallet-selection.wallets {
   margin-right: 10px;
 }
 
-.qr-scan-icon {
-  position: relative;
-}
-
 .qr-scan-icon a {
   display: block;
   position: absolute;
-  top: 0;
+  top: 25px;
   right: 0;
   padding: 0 10px;
   font-size: 24px;
