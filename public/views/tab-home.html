@@ -5,7 +5,8 @@
   </ion-nav-bar>
 
   <ion-content class="padding" ng-controller="tabHomeController">
-    <h3 class="title" translate>Recent Activity</h3>
+    <h3 class="title" translate>Recent Activity
+    </h3>
 
     <div ng-if="fetchingNotifications" class="updatingHistory">
       <div class="text-center">
@@ -20,7 +21,9 @@
         </div>
 
         <a class="item text-center" ui-sref="activity" ng-show="notificationsMore">
+
           <span translate>More</span> ({{notificationsMore}})
+(ToDo: 1-1 no here yet)
         </a>
 
         <div class="item" ng-show="!notifications[0]">
