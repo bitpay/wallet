@@ -195,6 +195,11 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
     $scope.completeTxHistory = [];
 
     wallet = profileService.getWallet($stateParams.walletId);
+
+    if (!wallet.isComplete()) {
+      return $state.go('wallet.copayers');
+    };
+
     $scope.wallet = wallet;
     $scope.requiresMultipleSignatures = wallet.credentials.m > 1;
     $scope.newTx = false;
