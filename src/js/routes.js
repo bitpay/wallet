@@ -110,7 +110,14 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
 
     .state('uri', {
         url: '/uri/:url',
-        templateUrl: 'views/uri.html'
+        controller: function($stateParams, $log, openURLService, profileService) {
+          profileService.whenAvailable(function() {
+            $log.info('DEEP LINK from Browser:' + $stateParams.url);
+            openURLService.handleURL({
+              url: $stateParams.url
+            });
+          })
+          }
       })
       .state('uripayment', {
         url: '/uri-payment/:url',
@@ -653,7 +660,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         }
       });
   })
-  .run(function($rootScope, $state, $location, $log, $timeout, $ionicHistory, $ionicPlatform, lodash, platformInfo, profileService, uxLanguage, gettextCatalog) {
+  .run(function($rootScope, $state, $location, $log, $timeout, $ionicHistory, $ionicPlatform, lodash, platformInfo, profileService, uxLanguage, gettextCatalog, openURLService) {
 
     if (platformInfo.isCordova) {
       if (screen.width < 768) {
@@ -677,6 +684,9 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         }, 100));
       }
     }
+
+    uxLanguage.init();
+    openURLService.init();
 
     $ionicPlatform.ready(function() {
       if (platformInfo.isCordova) {
@@ -758,11 +768,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
           $state.transitionTo('tabs.home');
         }
       });
-
-
-    });
-
-    uxLanguage.init();
+   });
 
     if (platformInfo.isNW) {
       var gui = require('nw.gui');
