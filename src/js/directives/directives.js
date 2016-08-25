@@ -153,11 +153,11 @@ angular.module('copayApp.directives')
       link: function(scope, element, attrs) {
         scope.$on("$ionicSlides.sliderInitialized", function(event, data) {
           scope.slider = data.slider;
-          scope.$emit('Wallet/Changed', scope.wallets[0]);
+          scope.$emit('Wallet/Changed', scope.wallets ? scope.wallets[0] : null);
         });
 
         scope.$on("$ionicSlides.slideChangeEnd", function(event, data) {
-          scope.$emit('Wallet/Changed', scope.wallets[data.slider.activeIndex]);
+          scope.$emit('Wallet/Changed', scope.wallets ? scope.wallets[data.slider.activeIndex] : null);
         });
       }
     }

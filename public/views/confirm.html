@@ -55,11 +55,9 @@
         </div>
       </div>
 
-      <div class="button-block">
-        <button class="item button button-full button-balanced" ng-click="approve()" ng-disabled="!txp">
-          <span ng-show="wallet.canSign()" translate>Approve</span>
-          <span ng-show="!wallet.canSign()" translate>Send</span>
-        </button>
-      </div>
+      <button class="item button button-block button-balanced" ng-click="approve()" ng-disabled="!txp">
+        <span ng-show="wallet.canSign()" translate>Approve</span>
+        <span ng-show="!wallet.canSign()" translate>Send</span>
+      </button>
     </ion-content>
 </ion-view>

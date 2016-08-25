@@ -28,12 +28,14 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     $scope.commentPopupClose = function() {
       commentPopup.close();
     };
-    $scope.commentPopupSave = function() {
-      $log.debug('Saving description: ' + $scope.data.comment);
-      $scope.description = $scope.data.comment;
+    $scope.commentPopupSave = function(description) {
+      $log.debug('Saving description: ' + description);
+      $scope.description = description;
       $scope.txp = null;
 
+      ongoingProcess.set('creatingTx', true);
       createTx($scope.wallet, function(err, txp) {
+        ongoingProcess.set('creatingTx', false);
         if (err) return;
         cachedTxp[$scope.wallet.id] = txp;
         apply(txp);
@@ -97,7 +99,6 @@ angular.module('copayApp.controllers').controller('confirmController', function(
       $log.error('Bad params at amount')
       throw ('bad params');
     }
-
     $scope.isCordova = platformInfo.isCordova;
 
     var config = configService.getSync().wallet;
@@ -123,34 +124,32 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     var filteredWallets = [];
     var index = 0;
 
-    filterWallet();
+    ongoingProcess.set('scanning', true);
 
-    function filterWallet() {
-      if (index == wallets.length) {
-        if (!lodash.isEmpty(filteredWallets)) {
-          $log.debug('Wallet changed: ' + filteredWallets[0].name);
-          $scope.wallets = lodash.clone(filteredWallets);
-          setWallet(wallets[0], true);
-          $scope.notAvailable = false;
-        } else {
-          $scope.notAvailable = true;
-          $log.warn('No wallet available to make the payment');
-        }
-
-        $timeout(function() {
-          $scope.$apply();
-        }, 10);
-        return;
-      }
-
-      walletService.getStatus(wallets[index], {}, function(err, status) {
+    lodash.each(wallets, function(w) {
+      walletService.getStatus(w, {}, function(err, status) {
         if (err) $log.error(err);
-        if (!status.availableBalanceSat) $log.debug('No balance available in: ' + wallets[index].name);
-        if (status.availableBalanceSat > amount) filteredWallets.push(wallets[index]);
-        index++;
-        filterWallet();
+        if (!status.availableBalanceSat) $log.debug('No balance available in: ' + w.name);
+        if (status.availableBalanceSat > amount) filteredWallets.push(w);
+
+        if (++index == wallets.length) {
+          ongoingProcess.set('scanning', false);
+
+          if (!lodash.isEmpty(filteredWallets)) {
+            $scope.wallets = lodash.clone(filteredWallets);
+            $scope.notAvailable = false;
+          } else {
+            $scope.notAvailable = true;
+            $log.warn('No wallet available to make the payment');
+          }
+
+          $timeout(function() {
+            $scope.$apply();
+          }, 10);
+          return;
+        }
       });
-    };
+    });
 
     txFormatService.formatAlternativeStr(amount, function(v) {
       $scope.alternativeAmountStr = v;
@@ -158,7 +157,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
   };
 
   $scope.$on('Wallet/Changed', function(event, wallet) {
-    if (!wallet) {
+    if (lodash.isEmpty(wallet)) {
       $log.debug('No wallet provided');
       return;
     }
@@ -172,6 +171,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     $scope.fee = $scope.txp = null;
 
     $timeout(function() {
+      $ionicScrollDelegate.resize();
       $scope.$apply();
     }, 10);
 
@@ -180,17 +180,13 @@ angular.module('copayApp.controllers').controller('confirmController', function(
       stop = null;
     }
 
-    function apply(txp) {
-      $scope.fee = txFormatService.formatAmountStr(txp.fee);
-      $scope.txp = txp;
-      $scope.$apply();
-    };
-
     if (cachedTxp[wallet.id]) {
       apply(cachedTxp[wallet.id]);
     } else {
+      ongoingProcess.set('creatingTx', true);
       stop = $timeout(function() {
-        createTx(wallet, $scope.toAddress, $scope.toAmount, $scope.comment || null, function(err, txp) {
+        createTx(wallet, function(err, txp) {
+          ongoingProcess.set('creatingTx', false);
           if (err) return;
           cachedTxp[wallet.id] = txp;
           apply(txp);
