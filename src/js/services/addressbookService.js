@@ -3,16 +3,6 @@
 angular.module('copayApp.services').factory('addressbookService', function(bitcore, storageService, lodash) {
   var root = {};
 
-  var getNetwork = function(addr) {
-    var Address = bitcore.Address;
-    if (Address.isValid(addr, 'livenet')) {
-      return 'livenet';
-    }
-    if (Address.isValid(addr, 'testnet')) {
-      return 'testnet';
-    }
-  };
-
   root.getLabel = function(addr, cb) {
     storageService.getAddressbook('testnet', function(err, ab) {
       if (ab && ab[addr]) return cb(ab[addr]);
@@ -41,11 +31,12 @@ angular.module('copayApp.services').factory('addressbookService', function(bitco
   };
 
   root.add = function(entry, cb) {
-    var network = getNetwork(entry.address);
+    var network = (new bitcore.Address(entry.address)).network.name;
     storageService.getAddressbook(network, function(err, ab) {
       if (err) return cb(err);
       if (ab) ab = JSON.parse(ab);
       ab = ab || {};
+      if (lodash.isArray(ab)) ab = {}; // No array
       if (ab[entry.address]) return cb('Entry already exist');
       ab[entry.address] = entry.label;
       storageService.setAddressbook(network, JSON.stringify(ab), function(err, ab) {
@@ -58,7 +49,7 @@ angular.module('copayApp.services').factory('addressbookService', function(bitco
   };
 
   root.remove = function(addr, cb) {
-    var network = getNetwork(addr);
+    var network = (new bitcore.Address(addr)).network.name;
     storageService.getAddressbook(network, function(err, ab) {
       if (err) return cb(err);
       if (ab) ab = JSON.parse(ab);
