@@ -4,24 +4,21 @@ angular.module('copayApp.controllers').controller('tabHomeController',
   function($rootScope, $timeout, $scope, $state, lodash, profileService, walletService, configService, txFormatService, $ionicModal, $log, platformInfo) {
 
     var setNotifications = function(notifications) {
-
       var n = walletService.processNotifications(notifications, 5);
-
       $scope.notifications = n;
-      $scope.notificationsMore = notifications.length > 5 ? notifications.length - 5  : null;
+      $scope.notificationsMore = notifications.length > 5 ? notifications.length - 5 : null;
       $timeout(function() {
         $scope.$apply();
       }, 1);
-
     };
 
-
-
     $scope.updateAllWallets = function() {
-      $timeout(function() {
-        $scope.wallets = profileService.getWallets();
+      $scope.wallets = profileService.getWallets();
+      if (lodash.isEmpty($scope.wallets)) return;
 
-        var i = $scope.wallets.length, j =0;
+      $timeout(function() {
+        var i = $scope.wallets.length;
+        var j = 0;
         var timeSpan = 60 * 60 * 24 * 7;
         var notifications = [];
 
@@ -52,7 +49,7 @@ angular.module('copayApp.controllers').controller('tabHomeController',
           });
 
         });
-      $scope.$digest();
+        $scope.$digest();
       }, 100);
     };
 
