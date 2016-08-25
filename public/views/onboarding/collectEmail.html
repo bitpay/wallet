@@ -1,0 +1,17 @@
+<ion-view ng-controller="collectEmailController" ng-init="init()">
+  <ion-nav-bar class="bar-stable">
+    <ion-nav-buttons side="secondary">
+      <button class="button no-border" href ui-sref="onboarding.notifications">
+        Skip
+      </button>
+    </ion-nav-buttons>
+  </ion-nav-bar>
+  <ion-content >
+    Wallet Created
+    Where would you like to receive email notifications about payments
+    <form name="emailForm" ng-submit="save(emailForm)" novalidate>
+      <input type="email" id="email" name="email" ng-model="email" required></input>
+      <input type="submit" class="button button-block button-positive" value="{{'Save'|translate}}" ng-disabled="emailForm.$invalid">
+    </form>
+  </ion-content>
+</ion-view>
