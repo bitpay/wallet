@@ -716,9 +716,10 @@ angular.module('copayApp.services')
         ret = lodash.filter(ret, function(w) {
           return w.isComplete();
         });
+      } else {
       }
 
-      return lodash.sortBy(ret, 'name');
+      return lodash.sortBy(ret, [ function(x) { return x.isComplete(); }, 'createdOn', 'name']);
     };
 
     return root;

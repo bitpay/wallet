@@ -48,7 +48,7 @@
            ui-sref="wallet.details({'walletId': item.id})">
             <i class="icon ion-briefcase size-21" ng-style="{'color':item.color}"></i>
               {{item.name || item.id}}
-            <span  ng-show="item.n > 1" class="text-gray">
+            <span  ng-show="item.n > 1" class="text-light">
               {{item.m}}-of-{{item.n}}
             </span>
             <span class="badge badge-assertive" ng-show="!item.isComplete()" translate>
