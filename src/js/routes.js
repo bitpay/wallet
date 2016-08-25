@@ -95,11 +95,6 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
      *
      */
 
-      .state('disclaimer', {
-      url: '/disclaimer',
-      templateUrl: 'views/disclaimer.html',
-    })
-
     .state('unsupported', {
       url: '/unsupported',
       templateUrl: 'views/unsupported.html'
