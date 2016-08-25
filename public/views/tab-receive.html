@@ -20,7 +20,11 @@
       </div>
     </div>
 
-    <div class="list">
+    <div class="list card padding text-center" ng-if="!wallets[0]">
+      <span translate>No Wallet</span>
+    </div>
+
+    <div class="list" ng-if="wallets[0]">
       <div class="item item-icon-left" ng-click="shareAddress(addr)" ng-show="isCordova && addr" ng-disabled="generatingAddress">
         <i class="icon ion-ios-upload-outline"></i>
         <span translate>Share address</span>
