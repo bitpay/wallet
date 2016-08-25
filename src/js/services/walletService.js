@@ -818,7 +818,6 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
   };
 
   root.getAddress = function(wallet, forceNew, cb) {
-    console.log('[walletService.js.786:wallet:]', wallet, forceNew); //TODO
 
     var firstStep;
     if (forceNew) {
@@ -1062,7 +1061,6 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
         if (err) return cb(err);
 
         var code = getCode();
-        console.log('[walletService.js.948:code:]', code); //TODO
         return cb(null, code);
       });
     });
