@@ -13,7 +13,7 @@ angular.module('copayApp.controllers').controller('tabReceiveController', functi
   }
 
   $scope.$on('Wallet/Changed', function(event, wallet) {
-    if (!wallet) {
+    if (lodash.isEmpty(wallet)) {
       $log.debug('No wallet provided');
       return;
     }
