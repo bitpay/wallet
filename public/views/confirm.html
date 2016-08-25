@@ -3,14 +3,12 @@
   <ion-pane>
     <ion-nav-bar class="bar-stable">
       <ion-nav-title>Confirm</ion-nav-title>
-
       <ion-nav-buttons side="primary">
-        <button class="button"   href ui-sref="tabs.send">
-          <i class="ion-arrow-left-c"></i> Back
+        <button class="button no-border" ui-sref="tabs.send">
+          <i class="icon ion-chevron-left"></i> Back
         </button>
       </ion-nav-buttons>
     </ion-nav-bar>
-
 
     <ion-content scroll="false" ng-controller="confirmController" ng-init="init()">
 
@@ -24,9 +22,9 @@
 
       <div class="list card">
         <div class="item">Fee: {{feeLevel}}
-            <span class="item-note">
-              {{fee || '...'}}
-            </span>
+          <span class="item-note">
+            {{fee || '...'}}
+          </span>
         </div>
 
         <div class="item item-icon-left">
@@ -42,30 +40,12 @@
         </div>
 
         <div class="item item-icon-left">
-          <i class="icon icon-wallet size-21" ng-style="{'color':recipientColor}"></i>
+          <i class="icon ion-briefcase size-21"></i>
           <label translate>From</label>
-          <p ng-show="network=='testnet'">[Only showing testnet wallets]</p>
-          <p ng-show="someFiltered">[Filtering wallets with no enought balance]</p>
+          <span class="badge badge-assertive" ng-show="notAvailable" translate>Not available</span>
         </div>
 
-        <div class="item item-text-wrap" ng-style="{'height' : '200px'}">
-          <ion-slides class="slides" options="options" slider="data.slider">
-            <ion-slide-page ng-repeat="item in wallets track by $index" >
-              <div class="list card">
-                <ul class="pr">
-                  <li ng-show="wallets[0]" class="item item-icon-left">
-                      <i class="icon ion-briefcase size-21" ng-style="{'color':item.color}"></i>
-                      {{item.name || item.id}}
-                      <span class="item-note"  ng-show="item.isComplete()">
-                        {{item.availableBalanceStr}}
-                      </span>
-                  </li>
-                </ul>
-              </div>
-            </ion-slide-page>
-          </ion-slides>
-        </div>
-
+        <wallets ng-if="wallets[0]" wallets="wallets"></wallets>
 
         <div class="item item-icon-left item-icon-right" ng-click="showDescriptionPopup()">
           <span ng-show="!description">Add Description</span>
@@ -75,11 +55,9 @@
         </div>
       </div>
 
-      <div class="card">
-        <button class="item button button-full button-balanced" ng-click="approve()" ng-disabled="!txp" ng-show="wallet.canSign()"> Approve </button>
-        <button class="item button button-full button-balanced" ng-click="approve()" ng-disabled="!txp"  ng-show="!wallet.canSign()"> Send </button>
-      </div>
-      </div>
+      <button class="item button button-block button-balanced" ng-click="approve()" ng-disabled="!txp">
+        <span ng-show="wallet.canSign()" translate>Approve</span>
+        <span ng-show="!wallet.canSign()" translate>Send</span>
+      </button>
     </ion-content>
-
 </ion-view>
