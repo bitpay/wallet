@@ -19,6 +19,16 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
     // NO CACHE
     $ionicConfigProvider.views.maxCache(0);
 
+    // TABS BOTTOM
+    $ionicConfigProvider.tabs.position('bottom');
+
+    // NAV TITTLE CENTERED
+    $ionicConfigProvider.navBar.alignTitle('center');
+
+    // NAV BUTTONS ALIGMENT
+    $ionicConfigProvider.navBar.positionPrimaryButtons('left');
+    $ionicConfigProvider.navBar.positionSecondaryButtons('right');
+
     $logProvider.debugEnabled(true);
     $provide.decorator('$log', ['$delegate', 'platformInfo',
       function($delegate, platformInfo) {
