@@ -33,9 +33,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
       $scope.description = description;
       $scope.txp = null;
 
-      ongoingProcess.set('creatingTx', true);
       createTx($scope.wallet, function(err, txp) {
-        ongoingProcess.set('creatingTx', false);
         if (err) return;
         cachedTxp[$scope.wallet.id] = txp;
         apply(txp);
@@ -124,8 +122,6 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     var filteredWallets = [];
     var index = 0;
 
-    ongoingProcess.set('scanning', true);
-
     lodash.each(wallets, function(w) {
       walletService.getStatus(w, {}, function(err, status) {
         if (err) $log.error(err);
@@ -133,7 +129,6 @@ angular.module('copayApp.controllers').controller('confirmController', function(
         if (status.availableBalanceSat > amount) filteredWallets.push(w);
 
         if (++index == wallets.length) {
-          ongoingProcess.set('scanning', false);
 
           if (!lodash.isEmpty(filteredWallets)) {
             $scope.wallets = lodash.clone(filteredWallets);
@@ -183,10 +178,8 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     if (cachedTxp[wallet.id]) {
       apply(cachedTxp[wallet.id]);
     } else {
-      ongoingProcess.set('creatingTx', true);
       stop = $timeout(function() {
         createTx(wallet, function(err, txp) {
-          ongoingProcess.set('creatingTx', false);
           if (err) return;
           cachedTxp[wallet.id] = txp;
           apply(txp);
@@ -205,7 +198,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     $scope.$apply();
   };
 
-  var createTx = function(wallet, cb) {
+  var createTx = function(wallet,  cb) {
     var config = configService.getSync().wallet;
     var currentSpendUnconfirmed = config.spendUnconfirmed;
     var outputs = [];

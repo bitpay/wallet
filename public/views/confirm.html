@@ -39,10 +39,9 @@
           </div>
         </div>
 
-        <div class="item item-icon-left">
-          <i class="icon ion-briefcase size-21"></i>
+        <div class="item">
           <label translate>From</label>
-          <span class="badge badge-assertive" ng-show="notAvailable" translate>Not available</span>
+          <span class="badge badge-assertive" ng-show="notAvailable" translate>No wallet with enough funds</span>
         </div>
 
         <wallets ng-if="wallets[0]" wallets="wallets"></wallets>
@@ -56,8 +55,7 @@
       </div>
 
       <button class="item button button-block button-balanced" ng-click="approve()" ng-disabled="!txp">
-        <span ng-show="wallet.canSign()" translate>Approve</span>
-        <span ng-show="!wallet.canSign()" translate>Send</span>
+        <span translate>Send</span>
       </button>
     </ion-content>
 </ion-view>

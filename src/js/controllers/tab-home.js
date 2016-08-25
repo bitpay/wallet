@@ -37,6 +37,7 @@ angular.module('copayApp.controllers').controller('tabHomeController',
           walletService.getNotifications(wallet, {
             timeSpan: timeSpan
           }, function(err, n) {
+console.log('[tab-home.js.39]', wallet.name, n); //TODO
             if (err) {
               console.log('[tab-home.js.35:err:]', $log.error(err)); //TODO
               return;
