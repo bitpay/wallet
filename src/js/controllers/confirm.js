@@ -7,14 +7,15 @@ angular.module('copayApp.controllers').controller('confirmController', function(
 
   // An alert dialog
   var showAlert = function(title, msg, cb) {
-    $log.warn(title + ": " + msg);
+    var message = msg.message ? msg.message : msg;
+    $log.warn(title + ": " + message);
+
     var alertPopup = $ionicPopup.alert({
       title: title,
-      template: msg
+      template: message
     });
 
     if (!cb) cb = function() {};
-
     alertPopup.then(cb);
   };
 
