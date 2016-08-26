@@ -74,6 +74,8 @@ angular.module('copayApp.services').factory('glideraService', function($http, $l
 
     $http(req).then(function(data) {
       $log.info('Glidera Authorization Access Token: SUCCESS');
+      // Show pending task from the UI
+      storageService.setNextStep('BuyAndSell', true, function(err) {});
       return cb(null, data.data);
     }, function(data) {
       $log.error('Glidera Authorization Access Token: ERROR ' + data.statusText);

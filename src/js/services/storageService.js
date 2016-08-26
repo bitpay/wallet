@@ -264,6 +264,18 @@ angular.module('copayApp.services')
       storage.remove('addressbook-' + network, cb);
     };
 
+    root.setNextStep = function(service, status, cb) {
+      storage.set('nextStep-' + service, status, cb);
+    };
+
+    root.getNextStep = function(service, cb) {
+      storage.get('nextStep-' + service, cb);
+    };
+
+    root.removeNextStep = function(service, cb) {
+      storage.remove('nextStep-' + service, cb);
+    };
+
 
     root.checkQuota = function() {
       var block = '';
