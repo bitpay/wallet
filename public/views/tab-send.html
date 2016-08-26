@@ -4,33 +4,31 @@
     <ion-nav-title>Send</ion-nav-title>
   </ion-nav-bar>
 
-  <ion-content class="send" ng-controller="tabSendController" ng-init="init()">
+  <ion-content ng-controller="tabSendController" ng-init="init()">
 
-    <div class="padding">
-      <h2>Recipient</h2>
 
-      <label class="item item-input">
-        <i class="icon ion-search placeholder-icon"></i>
-        <input type="text" placeholder="Recipient" ng-model="search" ng-model-onblur ng-change="findContact(search)">
-      </label>
-    </div>
-
-    <div class="row">
-      <div class="col col-80">
-        <h3>Contacts & Wallets</h3>
+    <div class="card">
+      <div class="item item-divider">
+        Recipient
       </div>
-      <div class="col col-20 text-right">
-        <a class="button button-light" ng-click="openAddressbookModal()">
-          <i class="size-36 icon ion-person-add"></i>
-        </a>
+      <div class="list list-inset">
+        <label class="item item-input">
+          <i class="icon ion-search placeholder-icon"></i>
+          <input type="text"
+                 placeholder="Search or enter bitcoin address"
+                 ng-model="search"
+                 ng-change="findContact(search)"
+                 ng-model-onblur>
+        </label>
       </div>
     </div>
 
-    <div class="list card padding text-center" ng-if="!list[0]">
-      <span translate>No Wallet - Contact</span>
-    </div>
-
-    <div class="list card" ng-if="list[0]">
+    <div class="card" ng-if="list[0]">
+      <div class="item item-divider item-icon-right">
+        Contacts & Wallets
+        <i class="icon ion-person-add" ng-click="openAddressbookModal()"></i>
+      </div>
+      <div class="item text-center" ng-show="!list[0]" translate>No Wallet - Contact</div>
       <a class="item item-icon-left" ng-repeat="item in list" ng-click="goToAmount(item)">
         <i ng-show="item.isWallet" class="icon ion-briefcase size-21" ng-style="{'color':item.color}"></i>
         <i ng-show="!item.isWallet" class="icon ion-ios-person-outline"></i>

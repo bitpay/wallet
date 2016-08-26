@@ -12,7 +12,7 @@
   <ion-pane>
     <ion-content class="calculator" scroll="false" class="amount" ng-controller="amountController" ng-init="init()">
 
-    <div class="list card">
+    <div class="card">
 
       <div class="item item-divider">
         Recipient
@@ -22,7 +22,9 @@
         <i class="icon ion-ios-person-outline"></i>
         {{toName || toAddress}}
       </div>
+    </div>
 
+    <div class="card">
       <div class="item item-divider">
         Amount
       </div>
@@ -41,7 +43,6 @@
             {{globalResult}} <span class="label gray text-white radius">{{alternativeResult || '0.00'}} {{unitName}}</span>
           </div>
         </div>
-      </div>
     </div>
 
     <div class="button-calc">
