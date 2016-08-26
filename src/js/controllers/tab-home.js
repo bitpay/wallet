@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('tabHomeController',
-  function($rootScope, $timeout, $scope, $state, lodash, profileService, walletService, configService, txFormatService, $ionicModal, $log, platformInfo) {
+  function($rootScope, $timeout, $scope, $state, lodash, profileService, walletService, configService, txFormatService, $ionicModal, $log, platformInfo, storageService) {
 
     var setNotifications = function(notifications) {
       var n = walletService.processNotifications(notifications, 5);
@@ -68,7 +68,14 @@ console.log('[tab-home.js.39]', wallet.name, n); //TODO
       });
     };
 
-
+    $scope.externalServices = {};
+    $scope.nextStep = function() {
+      lodash.each(['AmazonGiftCards', 'BitpayCard', 'BuyAndSell'], function(service) {
+        storageService.getNextStep(service, function(err, value) {
+          $scope.externalServices[service] = value ? true : false;
+        });
+      });
+    };
 
     $scope.bitpayCardEnabled = true; // TODO
 
