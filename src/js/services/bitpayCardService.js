@@ -36,6 +36,8 @@ angular.module('copayApp.services').factory('bitpayCardService', function($http,
     storageService.setBitpayCard(credentials.NETWORK, user, function(err) {
       return cb(err);
     });
+    // Show pending task from the UI
+    storageService.setNextStep('BitpayCard', true, function(err) {});
   };
 
   var _getSession = function(cb) {

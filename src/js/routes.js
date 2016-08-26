@@ -105,7 +105,10 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
       templateUrl: 'views/starting.html'
     })
 
-
+    .state('buyandsell', {
+      url: '/buyandsell',
+      templateUrl: 'views/buyandsell.html'
+    })
 
     /*
      *
