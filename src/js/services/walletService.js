@@ -1028,42 +1028,34 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
 
   root.getEncodedWalletInfo = function(wallet, cb) {
 
-    var getCode = function() {
-      var derivationPath = wallet.credentials.getBaseAddressDerivationPath();
-      var encodingType = {
-        mnemonic: 1,
-        xpriv: 2,
-        xpub: 3
-      };
-      var info;
+    var derivationPath = wallet.credentials.getBaseAddressDerivationPath();
+    var encodingType = {
+      mnemonic: 1,
+      xpriv: 2,
+      xpub: 3
+    };
+    var info;
 
-      // not supported yet
-      if (wallet.credentials.derivationStrategy != 'BIP44' || !wallet.canSign())
-        return null;
+    // not supported yet
+    if (wallet.credentials.derivationStrategy != 'BIP44' || !wallet.canSign())
+      return null;
 
-      if (wallet.credentials.mnemonic) {
+    root.getKeys(wallet, function(err, keys){
+      if (err || !keys) return cb(err);
+
+      if (keys.mnemonic) {
         info = {
           type: encodingType.mnemonic,
-          data: wallet.credentials.mnemonic,
+          data: keys.mnemonic,
         }
       } else {
         info = {
           type: encodingType.xpriv,
-          data: wallet.credentials.xPrivKey
+          data: keys.xPrivKey
         }
       }
-      return info.type + '|' + info.data + '|' + wallet.credentials.network.toLowerCase() + '|' + derivationPath + '|' + (wallet.credentials.mnemonicHasPassphrase);
-    };
+      return cb(null, info.type + '|' + info.data + '|' + wallet.credentials.network.toLowerCase() + '|' + derivationPath + '|' + (wallet.credentials.mnemonicHasPassphrase));
 
-    fingerprintService.check(wallet, function(err) {
-      if (err) return cb(err);
-
-      root.handleEncryptedWallet(wallet, function(err) {
-        if (err) return cb(err);
-
-        var code = getCode();
-        return cb(null, code);
-      });
     });
   };
 
@@ -1135,7 +1127,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     });
   };
 
-  root.getKey = function(wallet, cb) {
+  root.getKeys = function(wallet, cb) {
     root.prepare(wallet, function(err, password) {
       if (err) return cb(err);
       var keys;
