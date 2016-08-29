@@ -1,7 +1,8 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('preferencesBwsUrlController',
-  function($scope, $log, $stateParams, configService, applicationService, profileService, storageService) {
+  function($scope, $log, $stateParams, $ionicNavBarDelegate, configService, applicationService, profileService, storageService) {
+    $ionicNavBarDelegate.title('Wallet Service URL');
     $scope.error = null;
     $scope.success = null;
 

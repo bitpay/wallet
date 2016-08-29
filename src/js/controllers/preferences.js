@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('preferencesController',
-  function($scope, $rootScope, $timeout, $log, $stateParams, configService, profileService, fingerprintService, walletService, $state) {
-
+  function($scope, $rootScope, $timeout, $log, $stateParams, $ionicHistory, $ionicNavBarDelegate, gettextCatalog, configService, profileService, fingerprintService, walletService) {
+    $ionicNavBarDelegate.title(gettextCatalog.getString('Preferences'));
     var wallet = profileService.getWallet($stateParams.walletId);
     var walletId = wallet.credentials.walletId;
     $scope.wallet = wallet;
@@ -10,8 +10,8 @@ angular.module('copayApp.controllers').controller('preferencesController',
     $scope.init = function() {
       $scope.externalSource = null;
 
-      if (!wallet) 
-        return $state.go('tabs.home');
+      if (!wallet)
+        return $ionicHistory.goBack();
 
       var config = configService.getSync();
       config.aliasFor = config.aliasFor || {};

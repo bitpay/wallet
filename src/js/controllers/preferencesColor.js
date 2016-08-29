@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('preferencesColorController', function($scope, $log, $stateParams, $state, configService, profileService) {
-
+angular.module('copayApp.controllers').controller('preferencesColorController', function($scope, $log, $stateParams, $ionicHistory, $ionicNavBarDelegate, gettextCatalog, configService, profileService) {
+  $ionicNavBarDelegate.title(gettextCatalog.getString('Color'));
   $scope.colorList = [
         '#DD4B39',
         '#F38F12',
@@ -35,7 +35,7 @@ angular.module('copayApp.controllers').controller('preferencesColorController', 
 
     configService.set(opts, function(err) {
       if (err) $log.warn(err);
-      $state.go('wallet.preferences');
+      $ionicHistory.goBack();
     });
   };
 });
