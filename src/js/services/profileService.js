@@ -16,19 +16,23 @@ angular.module('copayApp.services')
 
     root.profile = null;
 
-    Object.defineProperty(root, "focusedClient", { 
-      get: function () { throw "focusedClient is not used any more" },
-      set: function () { throw "focusedClient is not used any more" }
+    Object.defineProperty(root, "focusedClient", {
+      get: function() {
+        throw "focusedClient is not used any more"
+      },
+      set: function() {
+        throw "focusedClient is not used any more"
+      }
     });
-    
 
-    root.wallet = {};             // decorated version of client
+
+    root.wallet = {}; // decorated version of client
 
     root.updateWalletSettings = function(wallet) {
       var defaults = configService.getDefaults();
       var config = configService.getSync();
 
-      wallet.usingCustomBWS =  config.bwsFor[wallet.id] && (config.bwsFor[wallet.id] != defaults.bws.url);
+      wallet.usingCustomBWS = config.bwsFor[wallet.id] && (config.bwsFor[wallet.id] != defaults.bws.url);
 
       wallet.name = config.aliasFor[wallet.id] || wallet.credentials.walletName;
       wallet.color = config.colorFor[wallet.id] || '#4A90E2';
@@ -69,7 +73,7 @@ angular.module('copayApp.services')
 
         // notification?
 
-          // TODO (put this in wallet ViewModel)
+        // TODO (put this in wallet ViewModel)
         if (wallet.cachedStatus)
           wallet.cachedStatus.isValid = false;
 
@@ -94,7 +98,7 @@ angular.module('copayApp.services')
         }
         wallet.setNotificationsInterval(UPDATE_PERIOD);
         wallet.openWallet(function(err) {
-          if (wallet.status !== true) 
+          if (wallet.status !== true)
             $log.log('Wallet + ' + walletId + ' status:' + wallet.status)
         });
       });
@@ -102,7 +106,7 @@ angular.module('copayApp.services')
 
       $rootScope.$on('Local/SettingsUpdated', function(e, walletId) {
         if (!walletId || walletId == wallet.id) {
-          $log.debug('Updating settings for wallet:' +  wallet.id);
+          $log.debug('Updating settings for wallet:' + wallet.id);
           root.updateWalletSettings(wallet);
         }
       });
@@ -154,7 +158,7 @@ angular.module('copayApp.services')
       if (!credentials.walletId || !credentials.m)
         return cb('bindWallet should receive credentials JSON');
 
-          // Create the client
+      // Create the client
       var getBWSURL = function(walletId) {
         var config = configService.getSync();
         var defaults = configService.getDefaults();
@@ -201,9 +205,6 @@ angular.module('copayApp.services')
         }
 
         bindWallets(function() {
-          if (usePushNotifications)
-            root.pushNotificationsInit();
-
           root.isBound = true;
 
           lodash.each(root._queue, function(x) {
@@ -219,6 +220,8 @@ angular.module('copayApp.services')
             if (!val) {
               return cb(new Error('NONAGREEDDISCLAIMER: Non agreed disclaimer'));
             }
+            if (usePushNotifications)
+              root.pushNotificationsInit();
             $rootScope.$emit('disclaimerAccepted');
             return cb();
           });
@@ -703,10 +706,11 @@ angular.module('copayApp.services')
         ret = lodash.filter(ret, function(w) {
           return w.isComplete();
         });
-      } else {
-      }
+      } else {}
 
-      return lodash.sortBy(ret, [ function(x) { return x.isComplete(); }, 'createdOn']);
+      return lodash.sortBy(ret, [function(x) {
+        return x.isComplete();
+      }, 'createdOn']);
     };
 
     return root;

@@ -1,11 +1,9 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('notificationsController', function($scope, $state, platformInfo) {
-
-  if (!platformInfo.isCordova) $state.go('onboarding.backupRequest');
+angular.module('copayApp.controllers').controller('notificationsController', function($scope, $state, profileService) {
 
   $scope.allowNotif = function() {
-    // T O D O
+    profileService.pushNotificationsInit();
     $state.go('onboarding.backupRequest');
   }
 
