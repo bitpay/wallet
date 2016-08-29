@@ -244,7 +244,6 @@ angular.module('copayApp.controllers').controller('buyAmazonController',
             }
 
             walletService.signTx(wallet, publishedTxp, function(err, signedTxp) {
-              walletService.lock(wallet);
               if (err) {
                 $log.debug(err);
                 walletService.removeTx(wallet, signedTxp, function(err) {

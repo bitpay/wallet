@@ -6,45 +6,32 @@ angular.module('copayApp.controllers').controller('backupController',
     var wallet = profileService.getWallet($stateParams.walletId);
     $scope.walletName = wallet.credentials.walletName;
     $scope.n = wallet.n;
+    var keys;
 
-    $scope.credentialsEncrypted = wallet.isPrivKeyEncrypted;
+    $scope.credentialsEncrypted = wallet.isPrivKeyEncrypted();
 
     var isDeletedSeed = function() {
-      if (lodash.isEmpty(wallet.credentials.mnemonic) && lodash.isEmpty(wallet.credentials.mnemonicEncrypted))
+      if (!wallet.credentials.mnemonic && !wallet.credentials.mnemonicEncrypted)
         return true;
+
       return false;
-    };
-
-    var handleEncryptedWallet = function(client, cb) {
-      if (!walletService.isEncrypted(client)) {
-        return cb();
-      }
-
-      $rootScope.$emit('Local/NeedsPassword', false, function(err, password) {
-        if (err) return cb(err);
-        return cb(walletService.unlock(client, password));
-      });
     };
 
     $scope.init = function() {
       $scope.deleted = isDeletedSeed();
-      if ($scope.deleted) return;
+      if ($scope.deleted) {
+        $log.debug('no mnemonics');
+        return;
+      }
 
-      fingerprintService.check(wallet, function(err) {
-        if (err) {
-          $state.go('preferences');
+      walletService.getKeys(wallet, function(err, k) {
+        if (err || !k) {
+          $state.go('wallet.preferences');
           return;
         }
-
-        handleEncryptedWallet(wallet, function(err) {
-          if (err) {
-            $log.warn('Error decrypting credentials:', $scope.error);
-            $state.go('preferences');
-            return;
-          }
-          $scope.credentialsEncrypted = false;
-          $scope.initFlow();
-        });
+        $scope.credentialsEncrypted = false;
+        keys = k;
+        $scope.initFlow();
       });
     };
 
@@ -60,8 +47,10 @@ angular.module('copayApp.controllers').controller('backupController',
     };
 
     $scope.initFlow = function() {
-      var words = wallet.getMnemonic();
-      $scope.xPrivKey = wallet.credentials.xPrivKey;
+      if (!keys) return;
+
+      var words = keys.mnemonic;
+
       $scope.mnemonicWords = words.split(/[\u3000\s]+/);
       $scope.shuffledMnemonicWords = shuffledWords($scope.mnemonicWords);
       $scope.mnemonicHasPassphrase = wallet.mnemonicHasPassphrase();
@@ -72,6 +61,7 @@ angular.module('copayApp.controllers').controller('backupController',
       $scope.selectComplete = false;
       $scope.backupError = false;
 
+      words = lodash.repeat('x', 300);
       $timeout(function() {
         $scope.$apply();
       }, 10);
@@ -139,10 +129,12 @@ angular.module('copayApp.controllers').controller('backupController',
               account: wallet.credentials.account
             });
           } catch (err) {
+            walletClient.credentials.xPrivKey = lodash.repeat('x', 64);
             return cb(err);
           }
 
-          if (walletClient.credentials.xPrivKey != $scope.xPrivKey) {
+          if (walletClient.credentials.xPrivKey.substr(walletClient.credentials.xPrivKey) != keys.xPrivKey) {
+            delete walletClient.credentials;
             return cb('Private key mismatch');
           }
         }
@@ -204,10 +196,5 @@ angular.module('copayApp.controllers').controller('backupController',
       else
         $scope.selectComplete = false;
     };
-
-
-    $scope.$on('$destroy', function() {
-      walletService.lock(wallet);
-    });
 
   });
