@@ -2,8 +2,10 @@
 
 angular.module('copayApp.controllers').controller('collectEmailController', function($scope, $state, $stateParams, profileService, walletService, platformInfo) {
 
+  var usePushNotifications = platformInfo.isCordova && !isWP;
+
   $scope.skip = function() {
-    if (!platformInfo.isCordova) $state.go('onboarding.backupRequest');
+    if (!usePushNotifications) $state.go('onboarding.backupRequest');
     else $state.go('onboarding.notifications');
   }
 
@@ -15,7 +17,7 @@ angular.module('copayApp.controllers').controller('collectEmailController', func
       email: email,
     }, function(err) {
       if (err) $log.warn(err);
-      if (!platformInfo.isCordova) $state.go('onboarding.backupRequest');
+      if (!usePushNotifications) $state.go('onboarding.backupRequest');
       else $state.go('onboarding.notifications');
     });
   };
