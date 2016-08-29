@@ -547,27 +547,6 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     return isEncrypted;
   };
 
-  root.lock = function(wallet) {
-    try {
-      wallet.lock();
-    } catch (e) {
-      $log.warn('Encrypting wallet:', e);
-    };
-  };
-
-  root.unlock = function(wallet, password) {
-    if (lodash.isEmpty(wallet))
-      return 'MISSING_PARAMETER';
-    if (lodash.isEmpty(password))
-      return 'NO_PASSWORD_GIVEN';
-    try {
-      wallet.unlock(password);
-    } catch (e) {
-      $log.warn('Decrypting wallet:', e);
-      return 'PASSWORD_INCORRECT';
-    }
-  };
-
   root.createTx = function(wallet, txp, cb) {
     if (lodash.isEmpty(txp) || lodash.isEmpty(wallet))
       return cb('MISSING_PARAMETER');
@@ -619,8 +598,8 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     });
   };
 
-  root.signTx = function(wallet, txp, cb) {
-    if (lodash.isEmpty(txp) || lodash.isEmpty(wallet))
+  root.signTx = function(wallet, txp, password, cb) {
+    if (lodash.isEmpty(txp) || lodash.isEmpty(wallet) || lodash.isEmpty(cb))
       return cb('MISSING_PARAMETER');
 
     if (wallet.isPrivKeyExternal()) {
@@ -637,8 +616,8 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     } else {
 
       try {
-        wallet.signTxProposal(txp, function(err, signedTxp) {
-          $log.debug('Transaction signed');
+        wallet.signTxProposal(txp, password, function(err, signedTxp) {
+          $log.debug('Transaction signed err:' + err);
           return cb(err, signedTxp);
         });
       } catch (e) {
@@ -896,7 +875,8 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
 
     askPassword(wallet.name, function(password) {
       if (!password) return cb('no password');
-      return cb(root.unlock(wallet, password));
+
+      return cb(null, password);
     });
   };
 
@@ -932,6 +912,19 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     });
   };
 
+
+  root.prepare = function(wallet, cb) {
+    fingerprintService.check(wallet, function(err) {
+      if (err) return cb(err);
+
+      root.handleEncryptedWallet(wallet, function(err, password) {
+        if (err) return cb(err);
+
+        return cb(null, password);
+      });
+    });
+  };
+
   root.publishAndSign = function(wallet, txp, cb) {
 
     var publishFn = root.publishTx;
@@ -943,56 +936,50 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
       };
     }
 
-    fingerprintService.check(wallet, function(err) {
+    root.prepare(wallet, function(err, password) {
       if (err) return cb(err);
 
-      root.handleEncryptedWallet(wallet, function(err) {
+      ongoingProcess.set('sendingTx', true);
+      publishFn(wallet, txp, function(err, publishedTxp) {
+        ongoingProcess.set('sendingTx', false);
         if (err) return cb(err);
 
-        ongoingProcess.set('sendingTx', true);
-        publishFn(wallet, txp, function(err, publishedTxp) {
-          ongoingProcess.set('sendingTx', false);
-          if (err) return cb(err);
-
-          ongoingProcess.set('signingTx', true);
-          root.signTx(wallet, publishedTxp, function(err, signedTxp) {
-            root.lock(wallet);
-
-            ongoingProcess.set('signingTx', false);
-            root.invalidateCache(wallet);
+        ongoingProcess.set('signingTx', true);
+        root.signTx(wallet, publishedTxp, password, function(err, signedTxp) {
+          ongoingProcess.set('signingTx', false);
+          root.invalidateCache(wallet);
 
 
-            if (err) {
-              // TODO?
-              var msg = err.message ?
-                err.message :
-                gettext('The payment was created but could not be completed. Please try again from home screen');
-              $rootScope.$emit('Local/TxAction', wallet.id);
-              return cb(err);
-            }
+          if (err) {
+            // TODO?
+            var msg = err.message ?
+              err.message :
+              gettext('The payment was created but could not be completed. Please try again from home screen');
+            $rootScope.$emit('Local/TxAction', wallet.id);
+            return cb(err);
+          }
 
-            if (signedTxp.status == 'accepted') {
-              ongoingProcess.set('broadcastingTx', true);
-              root.broadcastTx(wallet, signedTxp, function(err, broadcastedTxp) {
-                ongoingProcess.set('broadcastingTx', false);
-                if (err) return cb(err);
+          if (signedTxp.status == 'accepted') {
+            ongoingProcess.set('broadcastingTx', true);
+            root.broadcastTx(wallet, signedTxp, function(err, broadcastedTxp) {
+              ongoingProcess.set('broadcastingTx', false);
+              if (err) return cb(err);
 
-                var type = txStatus.notify(broadcastedTxp);
-                root.openStatusModal(type, broadcastedTxp, function() {
-                  $rootScope.$emit('Local/TxAction', wallet.id);
-                });
-
-                return cb(null, broadcastedTxp)
-              });
-            } else {
-              var type = txStatus.notify(signedTxp);
-              root.openStatusModal(type, signedTxp, function() {
-                root.invalidateCache(wallet);
+              var type = txStatus.notify(broadcastedTxp);
+              root.openStatusModal(type, broadcastedTxp, function() {
                 $rootScope.$emit('Local/TxAction', wallet.id);
               });
-              return cb(null, signedTxp);
-            }
-          });
+
+              return cb(null, broadcastedTxp)
+            });
+          } else {
+            var type = txStatus.notify(signedTxp);
+            root.openStatusModal(type, signedTxp, function() {
+              root.invalidateCache(wallet);
+              $rootScope.$emit('Local/TxAction', wallet.id);
+            });
+            return cb(null, signedTxp);
+          }
         });
       });
     });
@@ -1004,7 +991,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
       if (err) return cb(err);
 
       notifications = lodash.filter(notifications, function(x) {
-        return x.type != 'NewBlock' && x.type != 'BalanceUpdated' && x.type !='NewOutgoingTxByThirdParty';
+        return x.type != 'NewBlock' && x.type != 'BalanceUpdated' && x.type != 'NewOutgoingTxByThirdParty';
       });
 
       var idToName = {};
@@ -1110,7 +1097,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
       }
     });
 
-    // messsages...
+    // messages...
 
     var u = bwcService.getUtils();
     lodash.each(finale, function(x) {
@@ -1123,6 +1110,31 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     return finale;
   };
 
+
+  root.setTouchId = function(wallet, enabled, cb) {
+    fingerprintService.check(wallet, function(err) {
+      if (err) return cb(err); {
+        $log.debug(err);
+        return;
+      }
+      configService.set(opts, cb);
+    });
+  };
+
+  root.getKey = function(wallet, cb) {
+    root.prepare(wallet, function(err, password) {
+      if (err) return cb(err);
+      var keys;
+
+      try {
+        keys = wallet.getKeys(password);
+      } catch (e) {
+        return cb(err);
+      }
+
+      return cb(null, keys);
+    });
+  };
 
 
   return root;

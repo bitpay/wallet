@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('preferencesController',
-  function($scope, $rootScope, $timeout, $log, $stateParams, configService, profileService, fingerprintService, walletService) {
+  function($scope, $rootScope, $timeout, $log, $stateParams, configService, profileService, fingerprintService, walletService, $state) {
 
     var wallet = profileService.getWallet($stateParams.walletId);
     var walletId = wallet.credentials.walletId;
@@ -10,22 +10,20 @@ angular.module('copayApp.controllers').controller('preferencesController',
     $scope.init = function() {
       $scope.externalSource = null;
 
-      if (wallet) {
-        var config = configService.getSync();
-        config.aliasFor = config.aliasFor || {};
-        $scope.alias = config.aliasFor[walletId] || wallet.credentials.walletName;
-        $scope.color = config.colorFor[walletId] || '#4A90E2';
+      if (!wallet) 
+        return $state.go('tabs.home');
 
-        $scope.encryptEnabled = walletService.isEncrypted(wallet);
-        if (wallet.isPrivKeyExternal)
-          $scope.externalSource = wallet.getPrivKeyExternalSourceName() == 'ledger' ? 'Ledger' : 'Trezor';
+      var config = configService.getSync();
+      config.aliasFor = config.aliasFor || {};
+      $scope.alias = config.aliasFor[walletId] || wallet.credentials.walletName;
+      $scope.color = config.colorFor[walletId] || '#4A90E2';
 
-        // TODO externalAccount
-        //this.externalIndex = wallet.getExternalIndex();
-      }
+      $scope.encryptEnabled = walletService.isEncrypted(wallet);
+      if (wallet.isPrivKeyExternal)
+        $scope.externalSource = wallet.getPrivKeyExternalSourceName() == 'ledger' ? 'Ledger' : 'Trezor';
 
-      $scope.touchidAvailable = fingerprintService.isAvailable();
-      $scope.touchidEnabled = config.touchIdFor ? config.touchIdFor[walletId] : null;
+      $scope.touchIdAvailable = fingerprintService.isAvailable();
+      $scope.touchIdEnabled = config.touchIdFor ? config.touchIdFor[walletId] : null;
 
       $scope.deleted = false;
       if (wallet.credentials && !wallet.credentials.mnemonicEncrypted && !wallet.credentials.mnemonic) {
@@ -101,29 +99,15 @@ angular.module('copayApp.controllers').controller('preferencesController',
       }
     };
 
-    $scope.touchidChange = function() {
-
-      var opts = {
-        touchIdFor: {}
-      };
-      opts.touchIdFor[walletId] = $scope.touchidEnabled;
-
-      fingerprintService.check(wallet, function(err) {
+    $scope.touchIdChange = function() {
+      var newStatus = $scope.touchIdEnabled;
+      walletService.setTouchId(wallet, newStatus, function(err) {
         if (err) {
-          $log.debug(err);
-          $timeout(function() {
-            $scope.touchidError = true;
-            $scope.touchidEnabled = true;
-          }, 100);
+          $log.warn(err);
+          $scope.touchIdEnabled = !newStatus;
           return;
         }
-        configService.set(opts, function(err) {
-          if (err) {
-            $log.debug(err);
-            $scope.touchidError = true;
-            $scope.touchidEnabled = false;
-          }
-        });
+        $log.debug('Touch Id status changed: ' + newStatus);
       });
     };
   });
