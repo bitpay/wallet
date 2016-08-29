@@ -184,7 +184,7 @@ angular.module('copayApp.controllers').controller('bitpayCardController', functi
               });
               return;
             }
-            walletService.publishAndSign(createdTxp, function(err, tx) {
+            walletService.publishAndSign(wallet, createdTxp, function(err, tx) {
               if (err) {
                 self.error = err;
                 $timeout(function() {
