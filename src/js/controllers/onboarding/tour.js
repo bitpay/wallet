@@ -1,6 +1,6 @@
 'use strict';
 angular.module('copayApp.controllers').controller('tourController',
-  function($scope, $stateParams, $state, $log, $timeout, ongoingProcess, storageService, profileService) {
+  function($scope, $state, $log, $timeout, ongoingProcess, profileService) {
 
     $scope.init = function() {
 
