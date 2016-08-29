@@ -15,7 +15,7 @@
 
   <ion-content ng-controller="bitpayCardController as bitpayCard" ng-init="bitpayCard.init()">
 
-    <div class="text-center size-12" ng-show="network == 'testnet'">
+    <div class="box-notification warning" ng-show="network == 'testnet'">
       Sandbox version. Only for testing purpose
     </div>
 
@@ -31,7 +31,7 @@
           <span ng-show="!bitpayCard.bitpayCardTwoFactorPending">Login to your account</span>
           <span ng-show="bitpayCard.bitpayCardTwoFactorPending">2-Step Verification</span>
         </h4>
-        <div class="m10b size-12"
+        <div class="box-notification error"
              ng-show="bitpayCard.error"
              ng-click="bitpayCard.error = null">
           {{bitpayCard.error}}
@@ -63,7 +63,7 @@
             </label>
           </div>
 
-          <input class="button button-block button-positive"
+          <input class="button button-block"
                  type="submit"
                  ng-disabled="!authenticateForm.$valid || bitpayCard.authenticating"
                  value="Login">
@@ -90,7 +90,7 @@
             </label>
           </div>
 
-          <input class="button button-block button-positive"
+          <input class="button button-block"
                  type="submit"
                  ng-disabled="!authenticate2FAForm.$valid || bitpayCard.authenticating"
                  value="Login">
@@ -121,7 +121,7 @@
         <option value="all">All Activity</option>
       </select>
 
-      <div class="m20v size-12 text-center text-warning"
+      <div class="box-notification error"
            ng-show="bitpayCard.error">
         {{bitpayCard.error}}
       </div>
@@ -176,7 +176,7 @@
     </div>
 
     <div ng-show="bitpayCard.bitpayCardAuthenticated && !bitpayCard.visaCardActivated && addFunds">
-        <div class="m10b box-notification size-12 text-warning"
+        <div class="box-notification error"
              ng-show="bitpayCard.error"
              ng-click="bitpayCard.error = null">
           {{bitpayCard.error}}
@@ -199,25 +199,11 @@
                     ng-model="fiat"
                     autocomplete="off"
                     required>
-              <a class="postfix button black">USD</a>
+              <a class="postfix">USD</a>
             </label>
 
-            <label class="item item-input item-stacked-label">
-              <span class="input-label">Add From Copay Wallet</span>
-              <input
-                    type="text"
-                    id="address"
-                    name="address"
-                    ng-disabled="bitpayCard.selectedWalletId"
-                    ng-attr-placeholder="{{'Choose your source wallet'}}"
-                    ng-model="bitpayCard.selectedWalletName" required>
-              <a
-                    class="postfix size-12 m0 text-gray"
-                    ng-style="{'color': '#293C92'}"
-                    on-tap="openWalletsModal(bitpayCard.allWallets)">
-                <i class="icon-wallet size-18"></i>
-              </a>
-            </label>
+            <wallets ng-if="wallets[0]" wallets="wallets"></wallets>
+
           </div>
 
           <p class="size-12 text-warning" ng-show="bitpayCard.isMultisigWallet">
@@ -234,8 +220,8 @@
               </button>
             </div>
             <div class="col">
-              <button class="button button-block button-positive"
-                      ng-disabled="!bitpayCard.selectedWalletId || !fiat"
+              <button class="button button-block"
+                      ng-disabled="!fiat"
                       type="submit">
                 Send
               </button>
