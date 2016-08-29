@@ -865,6 +865,7 @@ ul.wallet-selection.wallets {
 
 .no-border {
   border-style: none;
+  background-color: transparent !important;
 }
 
 input[type=file] {
@@ -889,6 +890,16 @@ input[type=file] {
 .wallets {
   height: 90px;
 }
+
+.bar .button.back-button {
+  color: #444;
+  font-size: 14px;
+}
+
+.bar .button.button-clear .icon:before {
+  font-size: 16px;
+}
+
 /*
  * Calculator
  */

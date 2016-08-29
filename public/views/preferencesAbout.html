@@ -1,13 +1,12 @@
 <ion-view>
-  <ion-nav-bar class="bar-stable">
-    <ion-nav-title>About Copay</ion-nav-title>
+  <ion-nav-bar>
     <ion-nav-buttons side="primary">
-      <button class="button no-border" ui-sref="tabs.settings">
-        <i class="icon ion-chevron-left"></i> Back
+      <button class="button button-stable no-border" ui-sref="tabs.settings">
+        <i class="icon ion-chevron-left"></i> {{'Back' | translate}}
       </button>
     </ion-nav-buttons>
   </ion-nav-bar>
-  <ion-content ng-controller="preferencesAbout" >
+  <ion-content ng-controller="preferencesAbout">
     <div class="item item-divider">
       Release information
     </div>

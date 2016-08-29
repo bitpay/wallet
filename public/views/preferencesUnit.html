@@ -1,12 +1,9 @@
 <ion-view>
-  <ion-nav-bar class="bar-stable">
-    <ion-nav-title>Unit</ion-nav-title>
-    <ion-nav-buttons side="primary">
-      <button class="button no-border" ui-sref="tabs.settings">
-        <i class="icon ion-chevron-left"></i> Back
-      </button>
-    </ion-nav-buttons>
-  </ion-nav-bar class="bar-stable">
+  <ion-nav-bar>
+    <ion-nav-back-button>
+      {{'Back' | translate}}
+    </ion-nav-back-button>
+  </ion-nav-bar>
   <ion-content ng-controller="preferencesUnitController" ng-init="init()" >
     <ion-radio ng-repeat="unit in unitList" ng-value="unit.code" ng-model="currentUnit"
       ng-click="save(unit)">{{unit.shortName}}

@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('preferencesHistory',
-  function($scope, $log, $stateParams, $timeout, storageService, $state, profileService, lodash) {
-
+  function($scope, $log, $stateParams, $timeout, $ionicNavBarDelegate, gettextCatalog, storageService, $state, profileService, lodash) {
+    $ionicNavBarDelegate.title(gettextCatalog.getString('Transaction History'));
     var wallet = profileService.getWallet($stateParams.walletId);
     var c = wallet.credentials;
     $scope.csvReady = false;
