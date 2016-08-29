@@ -30,7 +30,7 @@ angular.module('copayApp.services').factory('feeService', function($log, $stateP
       var feeLevelValue = lodash.find(levels, {
         level: feeLevel
       });
-      if (!feeLevelValue || !feeLevelValue.feePerKB)
+      if (!feeLevelValue || feeLevelValue.feePerKB == null)
         return cb({
           message: 'Could not get dynamic fee for level: ' + feeLevel
         });
