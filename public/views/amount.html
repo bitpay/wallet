@@ -30,10 +30,10 @@
       </div>
 
 
-      <div class="item  item-text-wrap item-button-right">
+      <div class="item item-text-wrap item-button-right">
 
-          <button class="button black" ng-click="toggleAlternative()" ng-show="showAlternativeAmount">{{alternativeIsoCode}}</button>
-          <button class="button transform-none"  ng-click="toggleAlternative()" ng-show="!showAlternativeAmount">{{unitName}}</button>
+          <a class="postfix" ng-click="toggleAlternative()" ng-show="showAlternativeAmount">{{alternativeIsoCode}}</a>
+          <a class="postfix" ng-click="toggleAlternative()" ng-show="!showAlternativeAmount">{{unitName}}</a>
 
           <div class="text-light text-black m15b" ng-class="{'size-28': smallFont, 'size-36': !smallFont}"> <span>  {{amount || "0.00" }}</div>
           <div class="text-light text-black" ng-class="{'size-16': smallFont, 'size-17': !smallFont}" ng-show="!showAlternativeAmount">
