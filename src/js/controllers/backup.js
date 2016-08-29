@@ -1,10 +1,9 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('backupController',
-  function($rootScope, $scope, $timeout, $log, $state, $stateParams, $ionicPopup, uxLanguage, lodash, fingerprintService, platformInfo, configService, profileService, gettext, bwcService, walletService, ongoingProcess) {
-
+  function($rootScope, $scope, $timeout, $log, $state, $stateParams, $ionicPopup, $ionicNavBarDelegate, uxLanguage, lodash, fingerprintService, platformInfo, configService, profileService, bwcService, walletService, ongoingProcess) {
     var wallet = profileService.getWallet($stateParams.walletId);
-    $scope.walletName = wallet.credentials.walletName;
+    $ionicNavBarDelegate.title(wallet.credentials.walletName);
     $scope.n = wallet.n;
     var keys;
 
@@ -71,8 +70,7 @@ angular.module('copayApp.controllers').controller('backupController',
       if ($scope.step == 1) {
         if ($stateParams.fromOnboarding) $state.go('onboarding.backupRequest');
         else $state.go('wallet.preferences');
-      }
-      else {
+      } else {
         $scope.goToStep($scope.step - 1);
       }
     };
@@ -98,8 +96,7 @@ angular.module('copayApp.controllers').controller('backupController',
           confirmBackupPopup.close();
           if ($stateParams.fromOnboarding) $state.go('onboarding.disclaimer');
           else $state.go('tabs.home')
-        }
-        else {
+        } else {
           confirmBackupPopup.close();
           $scope.goToStep(1);
         }

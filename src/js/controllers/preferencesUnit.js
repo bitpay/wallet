@@ -1,6 +1,7 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('preferencesUnitController', function($scope, $log, configService, $state, walletService, profileService) {
+angular.module('copayApp.controllers').controller('preferencesUnitController', function($scope, $log, configService, $ionicNavBarDelegate, $ionicHistory, gettextCatalog, walletService, profileService) {
+  $ionicNavBarDelegate.title(gettextCatalog.getString('Unit'));
 
   $scope.init = function() {
     var config = configService.getSync();
@@ -36,7 +37,7 @@ angular.module('copayApp.controllers').controller('preferencesUnitController', f
     configService.set(opts, function(err) {
       if (err) $log.warn(err);
 
-      $state.go('tabs.settings');
+      $ionicHistory.goBack();
       walletService.updateRemotePreferences(profileService.getWallets(), {}, function() {
         $log.debug('Remote preferences saved');
       });

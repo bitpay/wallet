@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('importController',
-  function($scope, $rootScope, $timeout, $log, $state, $stateParams, profileService, configService, sjcl, gettext, ledger, trezor, derivationPathHelper, platformInfo, bwcService, ongoingProcess, walletService) {
+  function($scope, $rootScope, $timeout, $log, $state, $stateParams, $ionicHistory, profileService, configService, sjcl, gettext, ledger, trezor, derivationPathHelper, platformInfo, bwcService, ongoingProcess, walletService) {
 
     var isChromeApp = platformInfo.isChromeApp;
     var isDevel = platformInfo.isDevel;
@@ -14,6 +14,10 @@ angular.module('copayApp.controllers').controller('importController',
     $scope.derivationPath = derivationPathHelper.default;
     $scope.account = 1;
     $scope.importErr = false;
+
+    $scope.goBack = function() {
+      $ionicHistory.goBack();
+    };
 
     var updateSeedSourceSelect = function() {
       $scope.seedOptions = [];

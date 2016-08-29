@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('preferencesEmailController', function($rootScope, $scope, $state, $stateParams, profileService, walletService) {
-
+angular.module('copayApp.controllers').controller('preferencesEmailController', function($rootScope, $scope, $ionicHistory, $stateParams, $ionicNavBarDelegate, gettextCatalog, profileService, walletService) {
+  $ionicNavBarDelegate.title(gettextCatalog.getString('Email Notifications'));
   $scope.save = function(form) {
     var wallet = profileService.getWallet($stateParams.walletId);
     var email = $scope.email || '';
@@ -10,7 +10,7 @@ angular.module('copayApp.controllers').controller('preferencesEmailController', 
       email: email,
     }, function(err) {
       if (err) $log.warn(err);
-      $state.go('wallet.preferences');
+      $ionicHistory.goBack();
     });
   };
 
