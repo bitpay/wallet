@@ -4,29 +4,34 @@ angular.module('copayApp.controllers').controller('backupController',
   function($rootScope, $scope, $timeout, $log, $state, $stateParams, $ionicPopup, uxLanguage, lodash, fingerprintService, platformInfo, configService, profileService, gettext, bwcService, walletService, ongoingProcess) {
 
     var wallet = profileService.getWallet($stateParams.walletId);
-    var xPriv6;
     $scope.walletName = wallet.credentials.walletName;
     $scope.n = wallet.n;
+    var keys;
 
     $scope.credentialsEncrypted = wallet.isPrivKeyEncrypted();
 
     var isDeletedSeed = function() {
-      if (lodash.isEmpty(wallet.credentials.mnemonic) && lodash.isEmpty(wallet.credentials.mnemonicEncrypted))
+      if (!wallet.credentials.mnemonic && !wallet.credentials.mnemonicEncrypted)
         return true;
+
       return false;
     };
 
     $scope.init = function() {
       $scope.deleted = isDeletedSeed();
-      if ($scope.deleted) return;
+      if ($scope.deleted) {
+        $log.debug('no mnemonics');
+        return;
+      }
 
-      walletService.getKeys(wallet, function(err, keys) {
-        if (err) {
-          $state.go('preferences');
+      walletService.getKeys(wallet, function(err, k) {
+        if (err || !k) {
+          $state.go('wallet.preferences');
           return;
         }
         $scope.credentialsEncrypted = false;
-        $scope.initFlow(keys);
+        keys = k;
+        $scope.initFlow();
       });
     };
 
@@ -41,9 +46,10 @@ angular.module('copayApp.controllers').controller('backupController',
       });
     };
 
-    $scope.initFlow = function(keys) {
+    $scope.initFlow = function() {
+      if (!keys) return;
+
       var words = keys.mnemonic;
-      xPriv6 = keys.xPrivKey.substr(wallet.credentials.xPrivKey.length - 6);
 
       $scope.mnemonicWords = words.split(/[\u3000\s]+/);
       $scope.shuffledMnemonicWords = shuffledWords($scope.mnemonicWords);
@@ -127,7 +133,7 @@ angular.module('copayApp.controllers').controller('backupController',
             return cb(err);
           }
 
-          if (walletClient.credentials.xPrivKey.substr(walletClient.credentials.xPrivKey-6) != xPriv6) {
+          if (walletClient.credentials.xPrivKey.substr(walletClient.credentials.xPrivKey) != keys.xPrivKey) {
             delete walletClient.credentials;
             return cb('Private key mismatch');
           }
