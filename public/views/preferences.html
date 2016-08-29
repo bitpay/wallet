@@ -20,18 +20,12 @@
         <i class="icon ion-ios-arrow-right"></i>
       </div>
       <div class="item">
-        <span translate>Devices</span>
+        <span translate>Wallet Type</span>
         <span class="item-note">
-          1
+          {{wallet.m}}-of-{{wallet.n}}
         </span>
       </div>
-      <div class="item">
-        <span translate>Required number of signatures</span>
-        <span class="item-note">
-          1
-        </span>
-      </div>
-      <div class="item" ng-show="index.isPrivKeyExternal">
+      <div class="item" ng-show="wallet.isPrivKeyExternal()">
         <span translate>Hardware wallet</span>
         <span class="item-note">
           {{wallet.externalSource}}
@@ -56,13 +50,18 @@
       <div class="item item-divider">
         Security
       </div>
-      <div class="item item-icon-right" href ui-sref="wallet.backup" ng-hide="index.isPrivKeyExternal">
+      <div class="item item-icon-right" href ui-sref="wallet.backup" ng-hide="wallet.isPrivKeyExternal()">
         <span translate>Backup</span>
         <i class="icon ion-ios-arrow-right"></i>
       </div>
-      <div ng-show="!index.noFocusedWallet && index.canSign">
+      <div ng-show="wallet.canSign()">
         <ion-toggle ng-model="encryptEnabled" toggle-class="toggle-balanced" ng-change="encryptChange()">
           <span class="toggle-label" translate>Request Spending Password</span>
+        </ion-toggle>
+      </div>
+      <div ng-show="wallet.canSign() && touchIdAvailable">
+        <ion-toggle  ng-model="touchIdEnabled" toggle-class="toggle-balanced" ng-change="touchIdChange()">
+          <span class="toggle-label" translate>Request Fingerprint</span>
         </ion-toggle>
       </div>
       <div class="item item-icon-right" href ui-sref="wallet.deleteWords" ng-show ="!deleted">

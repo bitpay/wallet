@@ -547,27 +547,6 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     return isEncrypted;
   };
 
-  root.lock = function(wallet) {
-    try {
-      wallet.lock();
-    } catch (e) {
-      $log.warn('Encrypting wallet:', e);
-    };
-  };
-
-  root.unlock = function(wallet, password) {
-    if (lodash.isEmpty(wallet))
-      return 'MISSING_PARAMETER';
-    if (lodash.isEmpty(password))
-      return 'NO_PASSWORD_GIVEN';
-    try {
-      wallet.unlock(password);
-    } catch (e) {
-      $log.warn('Decrypting wallet:', e);
-      return 'PASSWORD_INCORRECT';
-    }
-  };
-
   root.createTx = function(wallet, txp, cb) {
     if (lodash.isEmpty(txp) || lodash.isEmpty(wallet))
       return cb('MISSING_PARAMETER');
@@ -578,28 +557,12 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
         else return cb(null, createdTxp);
       });
     } else {
-      wallet.getFeeLevels(wallet.credentials.network, function(err, levels) {
+      wallet.createTxProposal(txp, function(err, createdTxp) {
         if (err) return cb(err);
-
-        var feeLevelValue = lodash.find(levels, {
-          level: txp.feeLevel
-        });
-
-        if (!feeLevelValue || !feeLevelValue.feePerKB)
-          return cb({
-            message: 'Could not get dynamic fee for level: ' + feeLevel
-          });
-
-        $log.debug('Dynamic fee: ' + txp.feeLevel + ' ' + feeLevelValue.feePerKB + ' SAT');
-
-        txp.feePerKb = feeLevelValue.feePerKB;
-        wallet.createTxProposal(txp, function(err, createdTxp) {
-          if (err) return cb(err);
-          else {
-            $log.debug('Transaction created');
-            return cb(null, createdTxp);
-          }
-        });
+        else {
+          $log.debug('Transaction created');
+          return cb(null, createdTxp);
+        }
       });
     }
   };
@@ -619,8 +582,8 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     });
   };
 
-  root.signTx = function(wallet, txp, cb) {
-    if (lodash.isEmpty(txp) || lodash.isEmpty(wallet))
+  root.signTx = function(wallet, txp, password, cb) {
+    if (!wallet || !txp || !cb)
       return cb('MISSING_PARAMETER');
 
     if (wallet.isPrivKeyExternal()) {
@@ -637,8 +600,8 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     } else {
 
       try {
-        wallet.signTxProposal(txp, function(err, signedTxp) {
-          $log.debug('Transaction signed');
+        wallet.signTxProposal(txp, password, function(err, signedTxp) {
+          $log.debug('Transaction signed err:' + err);
           return cb(err, signedTxp);
         });
       } catch (e) {
@@ -861,12 +824,12 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
 
 
   // An alert dialog
-  var askPassword = function(name, cb) {
+  var askPassword = function(name, title, cb) {
     var scope = $rootScope.$new(true);
     scope.data = [];
     var pass = $ionicPopup.show({
       template: '<input type="password" ng-model="data.pass">',
-      title: 'Enter Spending Password',
+      title: title,
       subTitle: name,
       scope: scope,
       buttons: [{
@@ -891,12 +854,42 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     });
   };
 
+
+  root.encrypt = function(wallet, cb) {
+    askPassword(wallet.name, gettext('Enter new spending password'), function(password) {
+      if (!password) return cb('no password');
+      askPassword(wallet.name, gettext('Confirm you new spending password'), function(password2) {
+        if (!password2 || password != password2) 
+          return cb('password mismatch');
+
+        wallet.encryptPrivateKey(password);
+        return cb();
+      });
+    });
+  };
+
+
+  root.decrypt = function(wallet, cb) {
+    $log.debug('Disabling private key encryption for' + wallet.name);
+    askPassword(wallet.name, gettext('Enter Spending Password'), function(password) {
+      if (!password) return cb('no password');
+
+      try {
+        wallet.decryptPrivateKey(password);
+      } catch (e) {
+        return cb(e);
+      }
+      return cb();
+    });
+  };
+
   root.handleEncryptedWallet = function(wallet, cb) {
     if (!root.isEncrypted(wallet)) return cb();
 
-    askPassword(wallet.name, function(password) {
+    askPassword(wallet.name, gettext('Enter Spending Password'), function(password) {
       if (!password) return cb('no password');
-      return cb(root.unlock(wallet, password));
+
+      return cb(null, password);
     });
   };
 
@@ -932,6 +925,19 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     });
   };
 
+
+  root.prepare = function(wallet, cb) {
+    fingerprintService.check(wallet, function(err) {
+      if (err) return cb(err);
+
+      root.handleEncryptedWallet(wallet, function(err, password) {
+        if (err) return cb(err);
+
+        return cb(null, password);
+      });
+    });
+  };
+
   root.publishAndSign = function(wallet, txp, cb) {
 
     var publishFn = root.publishTx;
@@ -943,56 +949,51 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
       };
     }
 
-    fingerprintService.check(wallet, function(err) {
-      if (err) return cb(err);
+    root.prepare(wallet, function(err, password) {
+      if (err) return cb('Prepare error: '  + err);
 
-      root.handleEncryptedWallet(wallet, function(err) {
-        if (err) return cb(err);
+      ongoingProcess.set('sendingTx', true);
+      publishFn(wallet, txp, function(err, publishedTxp) {
+        ongoingProcess.set('sendingTx', false);
+        if (err) return cb('Send Error: ' + err);
 
-        ongoingProcess.set('sendingTx', true);
-        publishFn(wallet, txp, function(err, publishedTxp) {
-          ongoingProcess.set('sendingTx', false);
-          if (err) return cb(err);
-
-          ongoingProcess.set('signingTx', true);
-          root.signTx(wallet, publishedTxp, function(err, signedTxp) {
-            root.lock(wallet);
-
-            ongoingProcess.set('signingTx', false);
-            root.invalidateCache(wallet);
+        ongoingProcess.set('signingTx', true);
+        root.signTx(wallet, publishedTxp, password, function(err, signedTxp) {
+          ongoingProcess.set('signingTx', false);
+          root.invalidateCache(wallet);
 
 
-            if (err) {
-              // TODO?
-              var msg = err.message ?
-                err.message :
-                gettext('The payment was created but could not be completed. Please try again from home screen');
-              $rootScope.$emit('Local/TxAction', wallet.id);
-              return cb(err);
-            }
+          if (err) {
+            $log.warn('sign error:' + err);
+            // TODO?
+            var msg = err.message ?
+              err.message :
+              gettext('The payment was created but could not be completed. Please try again from home screen');
+            $rootScope.$emit('Local/TxAction', wallet.id);
+            return cb(msg);
+          }
 
-            if (signedTxp.status == 'accepted') {
-              ongoingProcess.set('broadcastingTx', true);
-              root.broadcastTx(wallet, signedTxp, function(err, broadcastedTxp) {
-                ongoingProcess.set('broadcastingTx', false);
-                if (err) return cb(err);
+          if (signedTxp.status == 'accepted') {
+            ongoingProcess.set('broadcastingTx', true);
+            root.broadcastTx(wallet, signedTxp, function(err, broadcastedTxp) {
+              ongoingProcess.set('broadcastingTx', false);
+              if (err) return cb('sign error' + err);
 
-                var type = txStatus.notify(broadcastedTxp);
-                root.openStatusModal(type, broadcastedTxp, function() {
-                  $rootScope.$emit('Local/TxAction', wallet.id);
-                });
-
-                return cb(null, broadcastedTxp)
-              });
-            } else {
-              var type = txStatus.notify(signedTxp);
-              root.openStatusModal(type, signedTxp, function() {
-                root.invalidateCache(wallet);
+              var type = txStatus.notify(broadcastedTxp);
+              root.openStatusModal(type, broadcastedTxp, function() {
                 $rootScope.$emit('Local/TxAction', wallet.id);
               });
-              return cb(null, signedTxp);
-            }
-          });
+
+              return cb(null, broadcastedTxp)
+            });
+          } else {
+            var type = txStatus.notify(signedTxp);
+            root.openStatusModal(type, signedTxp, function() {
+              root.invalidateCache(wallet);
+              $rootScope.$emit('Local/TxAction', wallet.id);
+            });
+            return cb(null, signedTxp);
+          }
         });
       });
     });
@@ -1004,7 +1005,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
       if (err) return cb(err);
 
       notifications = lodash.filter(notifications, function(x) {
-        return x.type != 'NewBlock' && x.type != 'BalanceUpdated' && x.type !='NewOutgoingTxByThirdParty';
+        return x.type != 'NewBlock' && x.type != 'BalanceUpdated' && x.type != 'NewOutgoingTxByThirdParty';
       });
 
       var idToName = {};
@@ -1027,42 +1028,34 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
 
   root.getEncodedWalletInfo = function(wallet, cb) {
 
-    var getCode = function() {
-      var derivationPath = wallet.credentials.getBaseAddressDerivationPath();
-      var encodingType = {
-        mnemonic: 1,
-        xpriv: 2,
-        xpub: 3
-      };
-      var info;
+    var derivationPath = wallet.credentials.getBaseAddressDerivationPath();
+    var encodingType = {
+      mnemonic: 1,
+      xpriv: 2,
+      xpub: 3
+    };
+    var info;
 
-      // not supported yet
-      if (wallet.credentials.derivationStrategy != 'BIP44' || !wallet.canSign())
-        return null;
+    // not supported yet
+    if (wallet.credentials.derivationStrategy != 'BIP44' || !wallet.canSign())
+      return null;
 
-      if (wallet.credentials.mnemonic) {
+    root.getKeys(wallet, function(err, keys){
+      if (err || !keys) return cb(err);
+
+      if (keys.mnemonic) {
         info = {
           type: encodingType.mnemonic,
-          data: wallet.credentials.mnemonic,
+          data: keys.mnemonic,
         }
       } else {
         info = {
           type: encodingType.xpriv,
-          data: wallet.credentials.xPrivKey
+          data: keys.xPrivKey
         }
       }
-      return info.type + '|' + info.data + '|' + wallet.credentials.network.toLowerCase() + '|' + derivationPath + '|' + (wallet.credentials.mnemonicHasPassphrase);
-    };
+      return cb(null, info.type + '|' + info.data + '|' + wallet.credentials.network.toLowerCase() + '|' + derivationPath + '|' + (wallet.credentials.mnemonicHasPassphrase));
 
-    fingerprintService.check(wallet, function(err) {
-      if (err) return cb(err);
-
-      root.handleEncryptedWallet(wallet, function(err) {
-        if (err) return cb(err);
-
-        var code = getCode();
-        return cb(null, code);
-      });
     });
   };
 
@@ -1110,7 +1103,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
       }
     });
 
-    // messsages...
+    // messages...
 
     var u = bwcService.getUtils();
     lodash.each(finale, function(x) {
@@ -1123,6 +1116,31 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     return finale;
   };
 
+
+  root.setTouchId = function(wallet, enabled, cb) {
+    fingerprintService.check(wallet, function(err) {
+      if (err) return cb(err); {
+        $log.debug(err);
+        return;
+      }
+      configService.set(opts, cb);
+    });
+  };
+
+  root.getKeys = function(wallet, cb) {
+    root.prepare(wallet, function(err, password) {
+      if (err) return cb(err);
+      var keys;
+
+      try {
+        keys = wallet.getKeys(password);
+      } catch (e) {
+        return cb(err);
+      }
+
+      return cb(null, keys);
+    });
+  };
 
 
   return root;

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('bitpayCardController', function($scope, $rootScope, $timeout, $log, $ionicModal, lodash, bitpayCardService, configService, profileService, walletService, fingerprintService, ongoingProcess, bwcError, bitcore, pbkdf2Service, moment, platformInfo) {
+angular.module('copayApp.controllers').controller('bitpayCardController', function($scope, $rootScope, $timeout, $log, $ionicModal, lodash, bitpayCardService, configService, profileService, walletService, ongoingProcess, pbkdf2Service, moment, platformInfo) {
 
   var self = this;
   var wallet;
@@ -205,7 +205,6 @@ angular.module('copayApp.controllers').controller('bitpayCardController', functi
           };
 
           walletService.createTx(wallet, txp, function(err, createdTxp) {
-            ongoingProcess.set('Processing Transaction...', false);
             if (err) {
               self.error = bwcError.msg(err);
               $timeout(function() {
@@ -213,10 +212,9 @@ angular.module('copayApp.controllers').controller('bitpayCardController', functi
               });
               return;
             }
-            self.confirmTx(createdTxp, function(err, tx) {
-              ongoingProcess.set('Processing Transaction...', false);
+            walletService.publishAndSign(createdTxp, function(err, tx) {
               if (err) {
-                self.error = bwcError.msg(err);
+                self.error = err;
                 $timeout(function() {
                   $scope.$digest();
                 });
@@ -232,55 +230,6 @@ angular.module('copayApp.controllers').controller('bitpayCardController', functi
         });
       });
     }, 100);
-  };
-
-  this.confirmTx = function(txp, cb) {
-
-    fingerprintService.check(wallet, function(err) {
-      if (err) {
-        $log.debug(err);
-        return cb(err);
-      }
-
-      walletService.handleEncryptedWallet(wallet, function(err) {
-        if (err) {
-          $log.debug(err);
-          return bwcError.cb(err, null, cb);
-        }
-
-        ongoingProcess.set('Processing Transaction...', true);
-        walletService.publishTx(wallet, txp, function(err, publishedTxp) {
-          if (err) {
-            $log.debug(err);
-            return bwcError.cb(err, null, cb);
-          }
-
-          walletService.signTx(wallet, publishedTxp, function(err, signedTxp) {
-            walletService.lock(wallet);
-            if (err) {
-              $log.debug(err);
-              walletService.removeTx(wallet, signedTxp, function(err) {
-                if (err) $log.debug(err);
-              });
-              return bwcError.cb(err, null, cb);
-            }
-
-            walletService.broadcastTx(wallet, signedTxp, function(err, broadcastedTxp) {
-              if (err) {
-                $log.debug(err);
-                walletService.removeTx(wallet, broadcastedTxp, function(err) {
-                  if (err) $log.debug(err);
-                });
-                return bwcError.cb(err, null, cb);
-              }
-              $timeout(function() {
-                return cb(null, broadcastedTxp);
-              }, 5000);
-            });
-          });
-        });
-      });
-    });
   };
 
   this.authenticate = function() {
