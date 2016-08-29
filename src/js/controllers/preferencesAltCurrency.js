@@ -1,7 +1,8 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('preferencesAltCurrencyController',
-  function($scope, $log, $state, $timeout, configService, rateService, lodash, profileService, walletService) {
+  function($scope, $log, $timeout, $ionicNavBarDelegate, $ionicHistory, gettextCatalog, configService, rateService, lodash, profileService, walletService) {
+    $ionicNavBarDelegate.title(gettextCatalog.getString('Alternative Currency'));
 
     var next = 10;
     var completeAlternativeList;
@@ -42,8 +43,8 @@ angular.module('copayApp.controllers').controller('preferencesAltCurrencyControl
 
       configService.set(opts, function(err) {
         if (err) $log.warn(err);
-        $state.go('tabs.settings');
 
+        $ionicHistory.goBack();
         walletService.updateRemotePreferences(profileService.getWallets(), {}, function() {
           $log.debug('Remote preferences saved');
         });

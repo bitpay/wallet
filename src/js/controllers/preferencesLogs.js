@@ -1,7 +1,8 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('preferencesLogs',
-  function($scope, historicLog) {
+  function($scope, historicLog, $ionicNavBarDelegate, gettextCatalog) {
+    $ionicNavBarDelegate.title(gettextCatalog.getString('Session Log'));
 
     $scope.init = function() {
       $scope.logs = historicLog.get();

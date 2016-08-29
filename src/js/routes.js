@@ -29,6 +29,10 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
     $ionicConfigProvider.navBar.positionPrimaryButtons('left');
     $ionicConfigProvider.navBar.positionSecondaryButtons('right');
 
+    // NAV BACK-BUTTON TEXT/ICON
+    $ionicConfigProvider.backButton.icon('ion-chevron-left');
+    $ionicConfigProvider.backButton.previousTitleText(false);
+
     $logProvider.debugEnabled(true);
     $provide.decorator('$log', ['$delegate', 'platformInfo',
       function($delegate, platformInfo) {
@@ -95,7 +99,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
      *
      */
 
-    .state('unsupported', {
+      .state('unsupported', {
       url: '/unsupported',
       templateUrl: 'views/unsupported.html'
     })

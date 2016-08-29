@@ -1,16 +1,15 @@
-<ion-view ng-controller="backupController"  ng-init="init()">
-  <ion-nav-bar class="bar-stable">
-    <ion-nav-buttons side="primary">
-     <button class="button no-border" ng-click="goBack()">
-       <i class="icon ion-chevron-left"></i>Back
-     </button>
-    </ion-nav-buttons>
+<ion-view>
+  <ion-nav-bar>
+    <ion-nav-back-button>
+      {{'Back' | translate}}
+    </ion-nav-back-button>
   </ion-nav-bar>
-  <ion-content>
 
+  <ion-content ng-controller="backupController" ng-init="init()">
     <div ng-show="deleted">
-delete mnemonics. You can still export it.
-    </div >
+      <span translate>Wallet recovery phrase not available. You can still export it from Advanced &gt; Export.</span>
+    </div>
+
     <!--
     ## STEP 1
     -->
