@@ -12,12 +12,12 @@
 
     <div ng-show="!buy.giftCard">
 
-      <div class="assertive" ng-show="buy.error" ng-click="buy.error = null">
+      <div class="box-notification error" ng-show="buy.error" ng-click="buy.error = null">
         {{buy.error}}
-        <div class="m10t size-12" ng-show="buy.errorInfo">
+        <div ng-show="buy.errorInfo">
           There was an error when trying to buy gift card, but the funds were sent to BitPay Invoice. Please, contact
           BitPay to refund your bitcoin
-          <div class="p10 m10t">
+          <div>
             Amount: {{buy.errorInfo.amount}} {{buy.errorInfo.currency}}<br>
             BitPay Invoice ID: {{buy.errorInfo.invoiceId}}.
           </div>
@@ -53,23 +53,11 @@
 
           </label>
 
-
-          <label class="item item-input item-stacked-label">
-            <span class="input-label">Pay From Copay Wallet</span>
-            <input type="text"
-                   id="address"
-                   name="address"
-                   ng-disabled="buy.selectedWalletId"
-                   ng-attr-placeholder="{{'Choose your source wallet'}}"
-                   ng-model="buy.selectedWalletName" required>
-            <a on-tap="openWalletsModal(buy.allWallets)" class="button button-light">
-              <i class="icon ion-folder size-18"></i>
-            </a>
-          </label>
+          <wallets ng-if="wallets[0]" wallets="wallets"></wallets>
         </div>
 
         <button class="button button-block"
-                ng-disabled="!buy.selectedWalletId || !fiat"
+                ng-disabled="!fiat"
                 type="submit"
                 value="Buy now">
           Buy now

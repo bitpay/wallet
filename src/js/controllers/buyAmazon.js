@@ -6,6 +6,15 @@ angular.module('copayApp.controllers').controller('buyAmazonController',
     var self = this;
     var wallet;
 
+    $scope.$on('Wallet/Changed', function(event, w) {
+      if (lodash.isEmpty(w)) {
+        $log.debug('No wallet provided');
+        return;
+      }
+      wallet = w;
+      $log.debug('Wallet changed: ' + w.name);
+    });
+
     $scope.openExternalLink = function(url, target) {
       if (platformInfo.isNW) {
         nodeWebkit.openExternalLink(url);
@@ -17,52 +26,17 @@ angular.module('copayApp.controllers').controller('buyAmazonController',
 
     this.init = function() {
       var network = amazonService.getEnvironment();
-      self.allWallets = profileService.getWallets({
+      $scope.wallets = profileService.getWallets({
         network: network,
-        n: 1,
         onlyComplete: true
-      });
-
-      if (lodash.isEmpty(self.allWallets)) return;
-
-      wallet = self.allWallets[0];
-
-      $timeout(function() {
-        self.selectedWalletId = wallet.credentials.walletId;
-        self.selectedWalletName = wallet.credentials.walletName;
-        $scope.$apply();
-      }, 100);
-    };
-
-    $scope.openWalletsModal = function(wallets) {
-      self.error = null;
-
-      $scope.type = 'SELL';
-      $scope.wallets = wallets;
-      $scope.self = self;
-
-      $ionicModal.fromTemplateUrl('views/modals/wallets.html', {
-        scope: $scope,
-        animation: 'slide-in-up'
-      }).then(function(modal) {
-        $scope.walletsModal = modal;
-        $scope.walletsModal.show();
-      });
-
-      $scope.$on('walletSelected', function(ev, walletId) {
-        $timeout(function() {
-          wallet = profileService.getClient(walletId);
-          self.selectedWalletId = walletId;
-          self.selectedWalletName = wallet.credentials.walletName;
-          $scope.$apply();
-        }, 100);
-        $scope.walletsModal.hide();
       });
     };
 
     this.createTx = function() {
       self.error = null;
       self.errorInfo = null;
+
+      if (lodash.isEmpty(wallet)) return;
 
       if (!wallet.canSign() && !wallet.isPrivKeyExternal()) {
         $log.info('No signing proposal: No private key');
@@ -73,7 +47,7 @@ angular.module('copayApp.controllers').controller('buyAmazonController',
       var dataSrc = {
         currency: 'USD',
         amount: $scope.fiat,
-        uuid: self.selectedWalletId
+        uuid: wallet.id
       };
       var outputs = [];
       var config = configService.getSync();
@@ -241,7 +215,7 @@ angular.module('copayApp.controllers').controller('buyAmazonController',
           $log.debug("Saving new gift card with status: " + newData.status);
 
           self.giftCard = newData;
-          if (newData.status == 'PENDING') $state.transitionTo('amazon');
+          if (newData.status == 'PENDING') $state.transitionTo('amazon.main');
           $timeout(function() {
             $scope.$digest();
           });
@@ -278,18 +252,24 @@ angular.module('copayApp.controllers').controller('buyAmazonController',
                 });
                 return bwcError.cb(err, null, cb);
               }
-              walletService.broadcastTx(wallet, signedTxp, function(err, broadcastedTxp) {
-                if (err) {
-                  $log.debug(err);
-                  walletService.removeTx(wallet, broadcastedTxp, function(err) {
-                    if (err) $log.debug(err);
-                  });
-                  return bwcError.cb(err, null, cb);
-                }
+              if (signedTxp.status == 'accepted') {
+                walletService.broadcastTx(wallet, signedTxp, function(err, broadcastedTxp) {
+                  if (err) {
+                    $log.debug(err);
+                    walletService.removeTx(wallet, broadcastedTxp, function(err) {
+                      if (err) $log.debug(err);
+                    });
+                    return bwcError.cb(err, null, cb);
+                  }
+                  $timeout(function() {
+                    return cb(null, broadcastedTxp);
+                  }, 5000);
+                });
+              } else {
                 $timeout(function() {
-                  return cb(null, broadcastedTxp);
+                  return cb(null, signedTxp);
                 }, 5000);
-              });
+              }
             });
           });
         });
