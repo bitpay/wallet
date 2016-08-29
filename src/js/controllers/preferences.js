@@ -31,71 +31,39 @@ angular.module('copayApp.controllers').controller('preferencesController',
       }
     };
 
-    var handleEncryptedWallet = function(cb) {
-      $rootScope.$emit('Local/NeedsPassword', false, function(err, password) {
-        if (err) return cb(err);
-        return cb(walletService.unlock(wallet, password));
-      });
-    };
-
     $scope.encryptChange = function() {
       if (!wallet) return;
       var val = $scope.encryptEnabled;
 
-      var setPrivateKeyEncryption = function(password, cb) {
-        $log.debug('Encrypting private key for', wallet.credentials.walletName);
-
-        wallet.setPrivateKeyEncryption(password);
-        wallet.lock();
-        profileService.updateCredentials(JSON.parse(wallet.export()), function() {
-          $log.debug('Wallet encrypted');
-          return cb();
-        });
-      };
-
-      var disablePrivateKeyEncryption = function(cb) {
-        $log.debug('Disabling private key encryption for', wallet.credentials.walletName);
-
-        try {
-          wallet.disablePrivateKeyEncryption();
-        } catch (e) {
-          return cb(e);
-        }
-        profileService.updateCredentials(JSON.parse(wallet.export()), function() {
-          $log.debug('Wallet encryption disabled');
-          return cb();
-        });
-      };
-
       if (val && !walletService.isEncrypted(wallet)) {
-        $rootScope.$emit('Local/NeedsPassword', true, function(err, password) {
-          if (err || !password) {
+        $log.debug('Encrypting private key for', wallet.name);
+        walletService.encrypt(wallet, function(err) {
+          if (err) {
+            $log.warn(err);
+
+            // ToDo show error?
             $scope.encryptEnabled = false;
             return;
           }
-          setPrivateKeyEncryption(password, function() {
-            $rootScope.$emit('Local/NewEncryptionSetting');
+          profileService.updateCredentials(JSON.parse(wallet.export()), function() {
+            $log.debug('Wallet encrypted');
+            return;
+          });
+        })
+      } else if (!val && walletService.isEncrypted(wallet)) {
+        walletService.decrypt(wallet, function(err) {
+          if (err) {
+            $log.warn(err);
+
+            // ToDo show error?
             $scope.encryptEnabled = true;
+            return;
+          }
+          profileService.updateCredentials(JSON.parse(wallet.export()), function() {
+            $log.debug('Wallet decrypted');
+            return;
           });
-        });
-      } else {
-        if (!val && walletService.isEncrypted(wallet)) {
-          handleEncryptedWallet(function(err) {
-            if (err) {
-              $scope.encryptEnabled = true;
-              return;
-            }
-            disablePrivateKeyEncryption(function(err) {
-              $rootScope.$emit('Local/NewEncryptionSetting');
-              if (err) {
-                $scope.encryptEnabled = true;
-                $log.error(err);
-                return;
-              }
-              $scope.encryptEnabled = false;
-            });
-          });
-        }
+        })
       }
     };
 
