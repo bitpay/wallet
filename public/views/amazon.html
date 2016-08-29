@@ -10,7 +10,7 @@
 
   <ion-content ng-controller="amazonController as amazon" ng-init="amazon.init()">
 
-    <div class="text-center" ng-show="network == 'testnet'">
+    <div class="box-notification warning" ng-show="network == 'testnet'">
       Sandbox version. Only for testing purpose
     </div>
 
@@ -40,8 +40,10 @@
         </a>
       </div>
 
-      <h4 class="padding">Your cards</h4>
-      <div class="list card">
+      <div class="card">
+        <div class="item item-divider">
+          Your cards
+        </div>
         <div ng-repeat="(id, item) in giftCards | orderObjectBy:'date':true track by $index"
              ng-click="amazon.openCardModal(item)"
              class="item item-avatar">

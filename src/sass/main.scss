@@ -81,32 +81,26 @@ h3.title {
 }
 
 .box-notification {
-  position: relative;
-  font-size: 12px;
   padding: 0.5rem;
-  border-radius: 2px;
-  background: #FFFFFF;
-  .box-icon {
-    position: absolute;
-    top: 0;
-    left: 0;
-    color: white;
-    background-color: #1ABC9C;
-    padding: 0 0.5rem;
-    border-top-left-radius: 4px;
-    border-bottom-left-radius: 4px;
-    height: 100%;
-    i {
-      position: relative;
-      top: 10%;
-      display: block;
-    }
-    &.error {
-      background-color: #ED4A43;
-    }
-    &.secondary {
-      background-color: #3498DB;
-    }
+  border: 1px solid;
+  margin-bottom: 20px;
+  a {
+    color: #fff;
+  }
+  &.notice {
+    border-color: #b2b2b2;
+    background-color: #f8f8f8;
+    color: #444;
+  }
+  &.warning {
+    border-color: #e6b500;
+    background-color: #ffc900;
+    color: #fff;
+  }
+  &.error {
+    background-color: #ef473a;
+    border-color: #e42112;
+    color: #fff;
   }
 }
 
@@ -878,7 +872,7 @@ input[type=file] {
 }
 
 .wallets {
-  height: 105px;
+  height: 90px;
 }
 /*
  * Calculator
