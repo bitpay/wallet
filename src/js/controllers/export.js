@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('exportController',
-  function($rootScope, $scope, $timeout, $log, lodash, backupService, walletService, storageService, profileService, platformInfo, notification, gettext, gettextCatalog, $state, $stateParams) {
+  function($rootScope, $scope, $timeout, $log, lodash, backupService, walletService, storageService, profileService, platformInfo, gettext, gettextCatalog, $state, $stateParams) {
     var prevState;
     var isWP = platformInfo.isWP;
     var isAndroid = platformInfo.isAndroid;
@@ -21,7 +21,7 @@ angular.module('copayApp.controllers').controller('exportController',
       $scope.canSign = wallet.canSign();
 
       walletService.getEncodedWalletInfo(wallet, function(err, code) {
-        if (err) {
+        if (err || !code) {
           $log.warn(err);
           return $state.go('wallet.preferencesAdvanced')
         }
@@ -48,10 +48,6 @@ angular.module('copayApp.controllers').controller('exportController',
     };
     */
 
-    $scope.$on('$destroy', function() {
-      walletService.lock(wallet);
-    });
-
     $scope.downloadWalletBackup = function() {
       $scope.getAddressbook(function(err, localAddressBook) {
         if (err) {
@@ -68,7 +64,6 @@ angular.module('copayApp.controllers').controller('exportController',
             $scope.error = true;
             return;
           }
-          notification.success(gettext('Success'), gettext('Encrypted export file saved'));
           $state.go('tabs.home');
         });
       });
