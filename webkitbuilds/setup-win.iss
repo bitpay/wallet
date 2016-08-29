@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "bitpay"
-#define MyAppVersion "0.3.0"
+#define MyAppVersion "0.6.0"
 #define MyAppPublisher "BitPay"
 #define MyAppURL "https://bitpay.com"
 #define MyAppExeName "*NAMECASENOSPACE.exe"
