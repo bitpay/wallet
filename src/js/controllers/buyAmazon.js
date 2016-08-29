@@ -139,10 +139,13 @@ angular.module('copayApp.controllers').controller('buyAmazonController',
                   });
                   return;
                 }
-                self.confirmTx(createdTxp, function(err, tx) {
+                walletService.publishAndSign(wallet, createdTxp, function(err, tx) {
                   if (err) {
                     ongoingProcess.set('Processing Transaction...', false);
                     self.error = bwcError.msg(err);
+                    walletService.removeTx(wallet, tx, function(err) {
+                      if (err) $log.debug(err);
+                    });
                     $timeout(function() {
                       $scope.$digest();
                     });
@@ -218,58 +221,6 @@ angular.module('copayApp.controllers').controller('buyAmazonController',
           if (newData.status == 'PENDING') $state.transitionTo('amazon.main');
           $timeout(function() {
             $scope.$digest();
-          });
-        });
-      });
-    };
-
-    this.confirmTx = function(txp, cb) {
-      fingerprintService.check(wallet, function(err) {
-        if (err) {
-          $log.debug(err);
-          return cb(err);
-        }
-
-        walletService.handleEncryptedWallet(wallet, function(err) {
-          if (err) {
-            $log.debug(err);
-            return bwcError.cb(err, null, cb);
-          }
-
-          ongoingProcess.set('Processing Transaction...', true);
-          walletService.publishTx(wallet, txp, function(err, publishedTxp) {
-            if (err) {
-              $log.debug(err);
-              return bwcError.cb(err, null, cb);
-            }
-
-            walletService.signTx(wallet, publishedTxp, function(err, signedTxp) {
-              if (err) {
-                $log.debug(err);
-                walletService.removeTx(wallet, signedTxp, function(err) {
-                  if (err) $log.debug(err);
-                });
-                return bwcError.cb(err, null, cb);
-              }
-              if (signedTxp.status == 'accepted') {
-                walletService.broadcastTx(wallet, signedTxp, function(err, broadcastedTxp) {
-                  if (err) {
-                    $log.debug(err);
-                    walletService.removeTx(wallet, broadcastedTxp, function(err) {
-                      if (err) $log.debug(err);
-                    });
-                    return bwcError.cb(err, null, cb);
-                  }
-                  $timeout(function() {
-                    return cb(null, broadcastedTxp);
-                  }, 5000);
-                });
-              } else {
-                $timeout(function() {
-                  return cb(null, signedTxp);
-                }, 5000);
-              }
-            });
           });
         });
       });
