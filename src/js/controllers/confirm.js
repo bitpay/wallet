@@ -189,7 +189,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
   };
 
   var setSendError = function(msg) {
-    showAlert(gettext('Error creating transaction'), msg);
+    showAlert(gettext('Error at confirm:'), msg);
   };
 
   function apply(txp) {

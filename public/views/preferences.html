@@ -22,7 +22,7 @@
       <div class="item">
         <span translate>Wallet Type</span>
         <span class="item-note">
-          wallet.m-of-wallet.n
+          {{wallet.m}}-of-{{wallet.n}}
         </span>
       </div>
       <div class="item" ng-show="wallet.isPrivKeyExternal()">
@@ -55,7 +55,7 @@
         <i class="icon ion-ios-arrow-right"></i>
       </div>
       <div ng-show="wallet.canSign()">
-        <ion-toggleng-model="encryptEnabled" toggle-class="toggle-balanced" ng-change="encryptChange()">
+        <ion-toggle ng-model="encryptEnabled" toggle-class="toggle-balanced" ng-change="encryptChange()">
           <span class="toggle-label" translate>Request Spending Password</span>
         </ion-toggle>
       </div>

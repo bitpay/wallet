@@ -87,11 +87,6 @@ angular.module('copayApp.services')
         });
       });
 
-      if (wallet.hasPrivKeyEncrypted() && !wallet.isPrivKeyEncrypted()) {
-        $log.warn('Auto locking unlocked wallet:' + walletId);
-        wallet.lock();
-      }
-
       wallet.initialize({}, function(err) {
         if (err) {
           $log.error('Could not init notifications err:', err);
@@ -546,14 +541,6 @@ angular.module('copayApp.services')
         });
       } catch (err) {
         return cb(gettext('Could not import. Check input file and spending password'));
-      }
-
-      if (walletClient.hasPrivKeyEncrypted()) {
-        try {
-          walletClient.disablePrivateKeyEncryption();
-        } catch (e) {
-          $log.warn(e);
-        }
       }
 
       str = JSON.parse(str);

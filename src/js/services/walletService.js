@@ -557,28 +557,12 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
         else return cb(null, createdTxp);
       });
     } else {
-      wallet.getFeeLevels(wallet.credentials.network, function(err, levels) {
+      wallet.createTxProposal(txp, function(err, createdTxp) {
         if (err) return cb(err);
-
-        var feeLevelValue = lodash.find(levels, {
-          level: txp.feeLevel
-        });
-
-        if (!feeLevelValue || !feeLevelValue.feePerKB)
-          return cb({
-            message: 'Could not get dynamic fee for level: ' + feeLevel
-          });
-
-        $log.debug('Dynamic fee: ' + txp.feeLevel + ' ' + feeLevelValue.feePerKB + ' SAT');
-
-        txp.feePerKb = feeLevelValue.feePerKB;
-        wallet.createTxProposal(txp, function(err, createdTxp) {
-          if (err) return cb(err);
-          else {
-            $log.debug('Transaction created');
-            return cb(null, createdTxp);
-          }
-        });
+        else {
+          $log.debug('Transaction created');
+          return cb(null, createdTxp);
+        }
       });
     }
   };
@@ -599,7 +583,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
   };
 
   root.signTx = function(wallet, txp, password, cb) {
-    if (lodash.isEmpty(txp) || lodash.isEmpty(wallet) || lodash.isEmpty(cb))
+    if (!wallet || !txp || !cb)
       return cb('MISSING_PARAMETER');
 
     if (wallet.isPrivKeyExternal()) {
@@ -840,12 +824,12 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
 
 
   // An alert dialog
-  var askPassword = function(name, cb) {
+  var askPassword = function(name, title, cb) {
     var scope = $rootScope.$new(true);
     scope.data = [];
     var pass = $ionicPopup.show({
       template: '<input type="password" ng-model="data.pass">',
-      title: 'Enter Spending Password',
+      title: title,
       subTitle: name,
       scope: scope,
       buttons: [{
@@ -870,10 +854,39 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     });
   };
 
+
+  root.encrypt = function(wallet, cb) {
+    askPassword(wallet.name, gettext('Enter new spending password'), function(password) {
+      if (!password) return cb('no password');
+      askPassword(wallet.name, gettext('Confirm you new spending password'), function(password2) {
+        if (!password2 || password != password2) 
+          return cb('password mismatch');
+
+        wallet.encryptPrivateKey(password);
+        return cb();
+      });
+    });
+  };
+
+
+  root.decrypt = function(wallet, cb) {
+    $log.debug('Disabling private key encryption for' + wallet.name);
+    askPassword(wallet.name, gettext('Enter Spending Password'), function(password) {
+      if (!password) return cb('no password');
+
+      try {
+        wallet.decryptPrivateKey(password);
+      } catch (e) {
+        return cb(e);
+      }
+      return cb();
+    });
+  };
+
   root.handleEncryptedWallet = function(wallet, cb) {
     if (!root.isEncrypted(wallet)) return cb();
 
-    askPassword(wallet.name, function(password) {
+    askPassword(wallet.name, gettext('Enter Spending Password'), function(password) {
       if (!password) return cb('no password');
 
       return cb(null, password);
@@ -937,12 +950,12 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     }
 
     root.prepare(wallet, function(err, password) {
-      if (err) return cb(err);
+      if (err) return cb('Prepare error: '  + err);
 
       ongoingProcess.set('sendingTx', true);
       publishFn(wallet, txp, function(err, publishedTxp) {
         ongoingProcess.set('sendingTx', false);
-        if (err) return cb(err);
+        if (err) return cb('Send Error: ' + err);
 
         ongoingProcess.set('signingTx', true);
         root.signTx(wallet, publishedTxp, password, function(err, signedTxp) {
@@ -951,19 +964,20 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
 
 
           if (err) {
+            $log.warn('sign error:' + err);
             // TODO?
             var msg = err.message ?
               err.message :
               gettext('The payment was created but could not be completed. Please try again from home screen');
             $rootScope.$emit('Local/TxAction', wallet.id);
-            return cb(err);
+            return cb(msg);
           }
 
           if (signedTxp.status == 'accepted') {
             ongoingProcess.set('broadcastingTx', true);
             root.broadcastTx(wallet, signedTxp, function(err, broadcastedTxp) {
               ongoingProcess.set('broadcastingTx', false);
-              if (err) return cb(err);
+              if (err) return cb('sign error' + err);
 
               var type = txStatus.notify(broadcastedTxp);
               root.openStatusModal(type, broadcastedTxp, function() {
