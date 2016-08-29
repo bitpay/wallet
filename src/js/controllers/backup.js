@@ -1,9 +1,9 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('backupController',
-  function($rootScope, $scope, $timeout, $log, $state, $stateParams, $ionicPopup, $ionicNavBarDelegate, gettextCatalog, uxLanguage, lodash, fingerprintService, platformInfo, configService, profileService, bwcService, walletService, ongoingProcess) {
+  function($rootScope, $scope, $timeout, $log, $state, $stateParams, $ionicPopup, $ionicNavBarDelegate, uxLanguage, lodash, fingerprintService, platformInfo, configService, profileService, bwcService, walletService, ongoingProcess) {
     var wallet = profileService.getWallet($stateParams.walletId);
-    $ionicNavBarDelegate.title(gettextCatalog.getString(wallet.credentials.walletName));
+    $ionicNavBarDelegate.title(wallet.credentials.walletName);
     $scope.n = wallet.n;
     var keys;
 
