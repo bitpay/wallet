@@ -426,6 +426,21 @@ ul.wallet-selection.wallets {
   }
 }
 
+// POSTFIX
+
+.postfix {
+  position: absolute;
+  right: 10px;
+  background-color: #f8f8f8;
+  color: #444;
+  border-radius: 4px;
+  padding: 2px 10px;
+  cursor: pointer;
+  label &{
+    top: 38px;
+    padding: 0 5px;
+  }
+}
 
 // QR Code
 

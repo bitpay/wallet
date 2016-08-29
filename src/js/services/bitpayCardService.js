@@ -19,6 +19,11 @@ angular.module('copayApp.services').factory('bitpayCardService', function($http,
     };
   };
 
+  var _setError = function(msg, e) {
+    $log.error(msg);
+    return e;
+  };
+
   var _getUser = function(cb) {
     _setCredentials();
     storageService.getBitpayCard(credentials.NETWORK, function(err, user) {
@@ -53,8 +58,7 @@ angular.module('copayApp.services').factory('bitpayCardService', function($http,
       bpSession = data.data.data;
       return cb(null, bpSession);
     }, function(data) {
-      $log.error('BitPay Get Session: ERROR ' + data.data.error);
-      return cb(data.data.error);
+      return cb(_setError('BitPay Card Error: Get Session', data));
     });
   };
 
@@ -97,8 +101,7 @@ angular.module('copayApp.services').factory('bitpayCardService', function($http,
       $log.info('BitPay TopUp: SUCCESS');
       return cb(null, data.data.data.invoice);
     }, function(data) {
-      $log.error('BitPay TopUp: ERROR ' + data.data.error);
-      return cb(data.data.error);
+      return cb(_setError('BitPay Card Error: TopUp', data));
     });
   };
 
@@ -113,8 +116,7 @@ angular.module('copayApp.services').factory('bitpayCardService', function($http,
       $log.info('BitPay Get Transaction History: SUCCESS');
       return cb(null, data.data.data);
     }, function(data) {
-      $log.error('BitPay Get Transaction History: ERROR ' + data.data);
-      return cb(data.data);
+      return cb(_setError('BitPay Card Error: Get Transaction History', data));
     });
   };
 
@@ -123,8 +125,7 @@ angular.module('copayApp.services').factory('bitpayCardService', function($http,
       $log.info('BitPay Get Invoice History: SUCCESS');
       return cb(null, data.data.data);
     }, function(data) {
-      $log.error('BitPay Get Invoice History: ERROR ' + data.data);
-      return cb(data.data);
+      return cb(_setError('BitPay Card Error: Get Invoice History', data));
     });
   };
 
@@ -133,8 +134,7 @@ angular.module('copayApp.services').factory('bitpayCardService', function($http,
       $log.info('BitPay Get Invoice: SUCCESS');
       return cb(null, data.data.data);
     }, function(data) {
-      $log.error('BitPay Get Invoice: ERROR ' + data.data.error);
-      return cb(data.data.error);
+      return cb(_setError('BitPay Card Error: Get Invoice', data));
     });
   };
 
@@ -147,8 +147,8 @@ angular.module('copayApp.services').factory('bitpayCardService', function($http,
             return cb(null, session);
           });
       }, function(data) {
-        $log.error('BitPay Authenticate: ERROR');
-        if (data.data.error.twoFactorPending) {
+        if (data && data.data && data.data.error.twoFactorPending) {
+          $log.error('BitPay Card needs 2FA Authentication');
           _getSession(function(err, session) {
             if (err) return cb(err);
             return cb(null, session);
@@ -165,8 +165,7 @@ angular.module('copayApp.services').factory('bitpayCardService', function($http,
       $log.info('BitPay 2FA: SUCCESS');
       return cb(null, data);
     }, function(data) {
-      $log.error('BitPay 2FA: ERROR');
-      return cb(data);
+      return cb(_setError('BitPay Card Error: 2FA', data));
     });
   };
 
@@ -195,8 +194,7 @@ angular.module('copayApp.services').factory('bitpayCardService', function($http,
         $log.info('BitPay Logout: SUCCESS');
         return cb(data);
       }, function(data) {
-        $log.error('BitPay Logout: ERROR ' + data.data.error);
-        return cb(data.data.error);
+        return cb(_setError('BitPay Card Error: Logout ', data));
       });
     });
   };
