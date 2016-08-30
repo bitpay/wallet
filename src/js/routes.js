@@ -412,7 +412,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         }
       })
       .state('add.import', {
-        url: '/import',
+        url: '/import/:fromOnboarding',
         abstract: true,
         views: {
           'add': {
