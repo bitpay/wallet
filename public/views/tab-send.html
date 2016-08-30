@@ -1,16 +1,12 @@
 <ion-view>
-
-  <ion-nav-bar class="bar-stable">
-    <ion-nav-title>Send</ion-nav-title>
+  <ion-nav-bar>
+    <ion-nav-title>{{'Send' | translate}}</ion-nav-title>
   </ion-nav-bar>
 
   <ion-content ng-controller="tabSendController" ng-init="init()">
-
-
     <div class="card">
-      <div class="item item-divider">
-        Recipient
-      </div>
+      <div class="item item-divider" translate>Recipient</div>
+
       <div class="list list-inset">
         <label class="item item-input">
           <i class="icon ion-search placeholder-icon"></i>
@@ -25,7 +21,7 @@
 
     <div class="card" ng-if="list[0]">
       <div class="item item-divider item-icon-right">
-        Contacts & Wallets
+        <span translate>Contacts & Wallets</span>
         <i class="icon ion-person-add" ng-click="openAddressbookModal()"></i>
       </div>
       <div class="item text-center" ng-show="!list[0]" translate>No Wallet - Contact</div>

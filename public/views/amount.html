@@ -1,22 +1,16 @@
 <ion-view>
-
-  <ion-nav-bar class="bar-stable">
-    <ion-nav-title>Enter Amount</ion-nav-title>
+  <ion-nav-bar>
     <ion-nav-buttons side="primary">
-      <button class="button no-border" ui-sref="tabs.send">
-        <i class="icon ion-chevron-left"></i> Back
+      <button class="button no-border" ng-click="$ionicGoBack()">
+        <i class="icon ion-chevron-left"></i> {{'Back' | translate}}
       </button>
     </ion-nav-buttons>
   </ion-nav-bar>
 
-  <ion-pane>
-    <ion-content class="calculator" scroll="false" class="amount" ng-controller="amountController" ng-init="init()">
+  <ion-content class="calculator" scroll="false" class="amount" ng-controller="amountController" ng-init="init()">
 
     <div class="card">
-
-      <div class="item item-divider">
-        Recipient
-      </div>
+      <div class="item item-divider" translate>Recipient</div>
 
       <div class="item item-text-wrap item-icon-left">
         <i class="icon ion-ios-person-outline"></i>
@@ -25,24 +19,20 @@
     </div>
 
     <div class="card">
-      <div class="item item-divider">
-        Amount
-      </div>
-
+      <div class="item item-divider" translate>Amount</div>
 
       <div class="item item-text-wrap item-button-right">
+        <a class="postfix" ng-click="toggleAlternative()" ng-show="showAlternativeAmount">{{alternativeIsoCode}}</a>
+        <a class="postfix" ng-click="toggleAlternative()" ng-show="!showAlternativeAmount">{{unitName}}</a>
 
-          <a class="postfix" ng-click="toggleAlternative()" ng-show="showAlternativeAmount">{{alternativeIsoCode}}</a>
-          <a class="postfix" ng-click="toggleAlternative()" ng-show="!showAlternativeAmount">{{unitName}}</a>
-
-          <div class="text-light text-black m15b" ng-class="{'size-28': smallFont, 'size-36': !smallFont}"> <span>  {{amount || "0.00" }}</div>
-          <div class="text-light text-black" ng-class="{'size-16': smallFont, 'size-17': !smallFont}" ng-show="!showAlternativeAmount">
-            {{globalResult}} <span class="label gray text-white radius">{{amountResult || '0.00'}} {{alternativeIsoCode}}</span>
-          </div>
-          <div class="text-light text-black size-17" ng-show="showAlternativeAmount">
-            {{globalResult}} <span class="label gray text-white radius">{{alternativeResult || '0.00'}} {{unitName}}</span>
-          </div>
+        <div class="text-light text-black m15b" ng-class="{'size-28': smallFont, 'size-36': !smallFont}"><span>  {{amount || "0.00" }}</div>
+        <div class="text-light text-black" ng-class="{'size-16': smallFont, 'size-17': !smallFont}" ng-show="!showAlternativeAmount">
+          {{globalResult}} <span class="label gray text-white radius">{{amountResult || '0.00'}} {{alternativeIsoCode}}</span>
         </div>
+        <div class="text-light text-black size-17" ng-show="showAlternativeAmount">
+          {{globalResult}} <span class="label gray text-white radius">{{alternativeResult || '0.00'}} {{unitName}}</span>
+        </div>
+      </div>
     </div>
 
     <div class="button-calc">
@@ -84,6 +74,5 @@
         <div class="col columns operator" ng-click="pushOperator('-')">-</div>
       </div>
     </div>
-    </ion-content>
-  </ion-pane>
+  </ion-content>
 </ion-view>
