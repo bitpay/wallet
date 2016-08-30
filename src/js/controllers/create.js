@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('createController',
-  function($scope, $rootScope, $timeout, $log, lodash, $state, profileService, configService, gettext, ledger, trezor, platformInfo, derivationPathHelper, ongoingProcess, walletService) {
+  function($scope, $rootScope, $timeout, $log, lodash, $state, profileService, configService, gettext, ledger, trezor, platformInfo, derivationPathHelper, ongoingProcess, walletService, storageService) {
 
     var isChromeApp = platformInfo.isChromeApp;
     var isCordova = platformInfo.isCordova;
@@ -184,7 +184,10 @@ angular.module('copayApp.controllers').controller('createController',
 
           if (self.seedSourceId == 'set') {
             $timeout(function() {
-              $rootScope.$emit('Local/BackupDone');
+              $log.debug('Backup done');
+              storageService.setBackupFlag(wallet.credentials.walletId, function(err) {
+                $log.debug('Backup stored');
+              });
             }, 1);
           }
           $state.go('tabs.home')
