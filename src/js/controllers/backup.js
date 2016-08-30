@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('backupController',
-  function($rootScope, $scope, $timeout, $log, $state, $stateParams, $ionicPopup, $ionicNavBarDelegate, uxLanguage, lodash, fingerprintService, platformInfo, configService, profileService, bwcService, walletService, ongoingProcess) {
+  function($rootScope, $scope, $timeout, $log, $state, $stateParams, $ionicPopup, $ionicNavBarDelegate, uxLanguage, lodash, fingerprintService, platformInfo, configService, profileService, bwcService, walletService, ongoingProcess, storageService) {
     var wallet = profileService.getWallet($stateParams.walletId);
     $ionicNavBarDelegate.title(wallet.credentials.walletName);
     $scope.n = wallet.n;
@@ -136,8 +136,11 @@ angular.module('copayApp.controllers').controller('backupController',
           }
         }
 
-        $rootScope.$emit('Local/BackupDone');
-        return cb();
+        $log.debug('Backup done');
+        storageService.setBackupFlag(wallet.credentials.walletId, function(err) {
+          $log.debug('Backup stored');
+          return cb();
+        });
       }, 1);
     };
 
