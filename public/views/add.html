@@ -1,11 +1,11 @@
 <ion-view>
-  <ion-nav-bar class="bar-stable">
+  <ion-nav-bar>
+    <ion-nav-title>{{'Add wallet' | translate}}</ion-nav-title>
     <ion-nav-buttons side="primary">
-      <button class="button no-border" ui-sref="tabs.home">
-        Close
+      <button class="button no-border" ng-click="$ionicGoBack()">
+        {{'Close' | translate}}
       </button>
     </ion-nav-buttons>
-    <ion-nav-title>Add wallet</ion-nav-title>
   </ion-nav-bar>
 
   <ion-content>
