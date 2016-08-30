@@ -22,7 +22,7 @@ angular.module('copayApp.controllers').controller('amazonCardDetailsController',
       remove: true
     }, function(err) {
       $scope.$emit('UpdateAmazonList');
-      $scope.closeModal();
+      $scope.cancel();
     });
   };
 
@@ -57,6 +57,10 @@ angular.module('copayApp.controllers').controller('amazonCardDetailsController',
         }
       });
     });
+  };
+
+  $scope.cancel = function() {
+    $scope.amazonCardDetailsModal.hide();
   };
 
 });
