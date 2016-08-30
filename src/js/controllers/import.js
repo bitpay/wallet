@@ -110,6 +110,11 @@ angular.module('copayApp.controllers').controller('importController',
           });
 
           $rootScope.$emit('Local/WalletImported', client.credentials.walletId);
+          if ($stateParams.fromOnboarding)
+            profileService.setDisclaimerAccepted(function(err) {
+              if (err) $log.error(err);
+            });
+
           $state.go('tabs.home');
         });
       }, 100);
@@ -137,6 +142,11 @@ angular.module('copayApp.controllers').controller('importController',
           });
 
           $rootScope.$emit('Local/WalletImported', client.credentials.walletId);
+          if ($stateParams.fromOnboarding)
+            profileService.setDisclaimerAccepted(function(err) {
+              if (err) $log.error(err);
+            });
+
           $state.go('tabs.home');
         });
       }, 100);
@@ -157,6 +167,11 @@ angular.module('copayApp.controllers').controller('importController',
             });
           }
           $rootScope.$emit('Local/WalletImported', walletId);
+          if ($stateParams.fromOnboarding)
+            profileService.setDisclaimerAccepted(function(err) {
+              if (err) $log.error(err);
+            });
+
           $state.go('tabs.home');
         });
       }, 100);
@@ -186,6 +201,11 @@ angular.module('copayApp.controllers').controller('importController',
           });
 
           $rootScope.$emit('Local/WalletImported', client.credentials.walletId);
+          if ($stateParams.fromOnboarding)
+            profileService.setDisclaimerAccepted(function(err) {
+              if (err) $log.error(err);
+            });
+
           $state.go('tabs.home');
         });
       }, 100);
@@ -320,6 +340,11 @@ angular.module('copayApp.controllers').controller('importController',
             $log.debug('Remote preferences saved for:' + wallet.walletId)
           });
           $rootScope.$emit('Local/WalletImported', wallet.walletId);
+          if ($stateParams.fromOnboarding)
+            profileService.setDisclaimerAccepted(function(err) {
+              if (err) $log.error(err);
+            });
+
           $state.go('tabs.home');
         });
       }, 100);
@@ -397,6 +422,12 @@ angular.module('copayApp.controllers').controller('importController',
             $log.debug('Remote preferences saved for:' + wallet.walletId)
           });
           $rootScope.$emit('Local/WalletImported', wallet.walletId);
+
+          if ($stateParams.fromOnboarding)
+            profileService.setDisclaimerAccepted(function(err) {
+              if (err) $log.error(err);
+            });
+
           $state.go('tabs.home');
         });
       }, 100);
