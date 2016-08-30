@@ -36,8 +36,34 @@ angular.module('copayApp.services')
 
       wallet.name = config.aliasFor[wallet.id] || wallet.credentials.walletName;
       wallet.color = config.colorFor[wallet.id] || '#4A90E2';
-
     }
+
+    root.setBackupFlag = function(walletId) {
+      storageService.setBackupFlag(walletId, function(err) {
+        if (err) $log.error(err);
+        $log.debug('Backup stored');
+        root.wallet[walletId].needsBackup = false;
+      });
+    };
+
+    function _requiresBackup(wallet) {
+      if (wallet.isPrivKeyExternal()) return false;
+      if (!wallet.credentials.mnemonic) return false;
+      if (wallet.credentials.network == 'testnet') return false;
+
+      return true;
+    };
+
+    function _needsBackup(wallet, cb) {
+      if (!_requiresBackup(wallet))
+        return cb(false);
+
+      storageService.getBackupFlag(wallet.credentials.walletId, function(err, val) {
+        if (err) $log.error(err);
+        if (val) return cb(false);
+        return cb(true);
+      });
+    };
 
     // Adds a wallet client to profileService
     root.bindWalletClient = function(wallet, opts) {
@@ -48,20 +74,20 @@ angular.module('copayApp.services')
         return false;
       }
 
-      // INIT WALLET VIEWMODEL
-      wallet.id = walletId;
-      wallet.started = true;
-      wallet.doNotVerifyPayPro = isChromeApp;
+      _needsBackup(wallet, function(val) {
+        // INIT WALLET VIEWMODEL
+        wallet.id = walletId;
+        wallet.started = true;
+        wallet.doNotVerifyPayPro = isChromeApp;
+        wallet.network = wallet.credentials.network;
+        wallet.copayerId = wallet.credentials.copayerId;
+        wallet.m = wallet.credentials.m;
+        wallet.n = wallet.credentials.n;
+        wallet.needsBackup = val;
 
-
-      wallet.network = wallet.credentials.network;
-      wallet.copayerId = wallet.credentials.copayerId;
-      wallet.m = wallet.credentials.m;
-      wallet.n = wallet.credentials.n;
-
-      root.updateWalletSettings(wallet);
-
-      root.wallet[walletId] = wallet;
+        root.updateWalletSettings(wallet);
+        root.wallet[walletId] = wallet;
+      });
 
       wallet.removeAllListeners();
       wallet.on('report', function(n) {
@@ -102,7 +128,6 @@ angular.module('copayApp.services')
             $log.log('Wallet + ' + walletId + ' status:' + wallet.status)
         });
       });
-
 
       $rootScope.$on('Local/SettingsUpdated', function(e, walletId) {
         if (!walletId || walletId == wallet.id) {

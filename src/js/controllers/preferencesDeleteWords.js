@@ -1,14 +1,12 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('preferencesDeleteWordsController', function($scope, $ionicHistory, $stateParams, $ionicNavBarDelegate, gettextCatalog, confirmDialog, lodash, profileService, walletService, gettext) {
+angular.module('copayApp.controllers').controller('preferencesDeleteWordsController', function($scope, $ionicHistory, $stateParams, $ionicNavBarDelegate, gettextCatalog, confirmDialog, lodash, profileService, gettext) {
   $ionicNavBarDelegate.title(gettextCatalog.getString('Delete recovery phrase'));
   var wallet = profileService.getWallet($stateParams.walletId);
   var msg = gettext('Are you sure you want to delete the recovery phrase?');
   var successMsg = gettext('Recovery phrase deleted');
+  $scope.needsBackup = wallet.needsBackup;
 
-  walletService.needsBackup(wallet, function(needsBackup) {
-    $scope.needsBackup = needsBackup;
-  });
   if (lodash.isEmpty(wallet.credentials.mnemonic) && lodash.isEmpty(wallet.credentials.mnemonicEncrypted))
     $scope.deleted = true;
 

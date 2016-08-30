@@ -65,27 +65,6 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     });
   };
 
-  root.requiresBackup = function(wallet) {
-    if (wallet.isPrivKeyExternal()) return false;
-    if (!wallet.credentials.mnemonic) return false;
-    if (wallet.credentials.network == 'testnet') return false;
-
-    return true;
-  };
-
-  root.needsBackup = function(wallet, cb) {
-
-    if (!root.requiresBackup(wallet))
-      return cb(false);
-
-    storageService.getBackupFlag(wallet.credentials.walletId, function(err, val) {
-      if (err) $log.error(err);
-      if (val) return cb(false);
-      return cb(true);
-    });
-  };
-
-
   // TODO
   // This handles errors from BWS/index which normally
   // trigger from async events (like updates).
@@ -815,11 +794,9 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     if (!wallet.isComplete())
       return cb('WALLET_NOT_COMPLETE');
 
-    root.needsBackup(wallet, function(needsBackup) {
-      if (needsBackup)
-        return cb('WALLET_NEEDS_BACKUP');
-      return cb();
-    });
+    if (wallet.needsBackup)
+      return cb('WALLET_NEEDS_BACKUP');
+    return cb();
   };
 
 
@@ -859,7 +836,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     askPassword(wallet.name, gettext('Enter new spending password'), function(password) {
       if (!password) return cb('no password');
       askPassword(wallet.name, gettext('Confirm you new spending password'), function(password2) {
-        if (!password2 || password != password2) 
+        if (!password2 || password != password2)
           return cb('password mismatch');
 
         wallet.encryptPrivateKey(password);
@@ -950,7 +927,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     }
 
     root.prepare(wallet, function(err, password) {
-      if (err) return cb('Prepare error: '  + err);
+      if (err) return cb('Prepare error: ' + err);
 
       ongoingProcess.set('sendingTx', true);
       publishFn(wallet, txp, function(err, publishedTxp) {
@@ -1040,7 +1017,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     if (wallet.credentials.derivationStrategy != 'BIP44' || !wallet.canSign())
       return null;
 
-    root.getKeys(wallet, function(err, keys){
+    root.getKeys(wallet, function(err, keys) {
       if (err || !keys) return cb(err);
 
       if (keys.mnemonic) {
