@@ -1,14 +1,14 @@
 <ion-view ng-controller="tourController" ng-init="init()">
   <ion-nav-bar class="bar-stable">
-    <ion-nav-title>Get Started</ion-nav-title>
+    <ion-nav-title>{{'Get Started' | translate}}</ion-nav-title>
     <ion-nav-buttons side="primary">
       <button class="button no-border" ng-click="goBack()">
-        <i class="icon ion-chevron-left"></i> Back
+        <i class="icon ion-chevron-left"></i> {{'Back' | translate}}
       </button>
     </ion-nav-buttons>
     <ion-nav-buttons side="secondary">
       <button class="button no-border" ng-show="data.index == 0" ng-click="createDefaultWallet()">
-        Skip
+        {{'Skip' | translate}}
       </button>
     </ion-nav-buttons>
   </ion-nav-bar>
@@ -23,7 +23,7 @@
           <p translate>
             Just scan the code to pay
           </p>
-          <button class="button icon-right ion-chevron-right button-positive" ng-click="slideNext()">
+          <button class="button icon-right ion-chevron-right button-positive" ng-click="slideNext()" translate>
             Got it
           </button>
         </div>
@@ -39,7 +39,7 @@
           <p translate>
             The exchange rate changes with the market
           </p>
-          <button class="button icon-right ion-chevron-right button-positive" ng-click="slideNext()">
+          <button class="button icon-right ion-chevron-right button-positive" ng-click="slideNext()" translate>
             Makes sense
           </button>
         </div>
@@ -55,7 +55,7 @@
           <p translate>
             Not even BitPay can access it
           </p>
-          <button class="button icon-right button-positive" ng-click="createDefaultWallet()">
+          <button class="button icon-right button-positive" ng-click="createDefaultWallet()" translate>
             Create bitcoin wallet
           </button>
         </div>
