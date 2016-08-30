@@ -1,13 +1,20 @@
-<ion-view>
+<ion-view id="onboard-welcome" class="onboarding">
   <ion-content>
     <div class="text-center">
-        <h2>bitpay</h2>
-
-      <span translate>
-        Take control of your money - get started with bitcoin
-      </span>
-      <button class="button button-block button-positive" href ui-sref="onboarding.tour" translate>Get started</button>
-      <button class="button button-block button-light" translate>Restore</button>
+      <div class="row">
+        <img src='../../img/bitpay-logo.svg' class="logo col col-50" />
+      </div>
+      <div class="row">
+        <p translate class="text-center col col-60">
+          Take control of your money - get started with bitcoin
+        </p>
+      </div>
+      <div class="row">
+        <button class="button button-block get-started col col-75" href ui-sref="onboarding.tour" translate>Get started</button>
+      </div>
+      <div class="row">
+        <button class="button button-block restore col col-75" translate>Restore</button>
+      </div>
     </div>
   </ion-content>
 </ion-view>
