@@ -30,7 +30,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
     $ionicConfigProvider.navBar.positionSecondaryButtons('right');
 
     // NAV BACK-BUTTON TEXT/ICON
-    $ionicConfigProvider.backButton.icon('ion-chevron-left');
+    $ionicConfigProvider.backButton.icon('ion-arrow-left-c').text('');
     $ionicConfigProvider.backButton.previousTitleText(false);
 
     $logProvider.debugEnabled(true);

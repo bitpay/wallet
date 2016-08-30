@@ -991,3 +991,6 @@ input[type=number] {
     white-space: initial;
   }
 }
+
+@import 'general/layout';
+@import 'views/onboarding/terms-of-use';
