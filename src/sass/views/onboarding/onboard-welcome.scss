@@ -1,0 +1,25 @@
+#onboard-welcome {
+  ion-content {
+    background: url(../img/onboarding-welcome-bg.png);
+    background-position: top center;
+    background-size: contain;
+    background-repeat-y: no-repeat;
+    .logo, p {
+      @include center-block();
+    }
+    .logo{
+      margin-top:15rem;
+    }
+    button {
+      @include center-block(1rem);
+      color: #fff;
+      &.get-started {
+        background: rgb(100, 124, 232);
+        margin-top: 4rem;
+      }
+      &.restore {
+        background: none;
+      }
+    }
+  }
+}

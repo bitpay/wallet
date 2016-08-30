@@ -992,5 +992,5 @@ input[type=number] {
   }
 }
 
-@import 'general/layout';
-@import 'views/onboarding/terms-of-use';
+@import 'mixins/mixins';
+@import 'views/onboarding/onboarding';
