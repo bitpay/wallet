@@ -1,12 +1,12 @@
-<ion-view ng-controller="collectEmailController">
-  <ion-nav-bar class="bar-stable">
+<ion-view>
+  <ion-nav-bar class="bar-stable" ng-controller="backController">
     <ion-nav-buttons side="secondary">
-      <button class="button no-border" ng-click="skip()">
+      <button class="button no-border" ng-click="onboardingMailSkip()">
         Skip
       </button>
     </ion-nav-buttons>
   </ion-nav-bar>
-  <ion-content >
+  <ion-content ng-controller="collectEmailController">
     Wallet Created
     Where would you like to receive email notifications about payments
     <form name="emailForm" ng-submit="save(emailForm)" novalidate>
