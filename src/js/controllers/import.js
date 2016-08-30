@@ -15,10 +15,6 @@ angular.module('copayApp.controllers').controller('importController',
     $scope.account = 1;
     $scope.importErr = false;
 
-    $scope.goBack = function() {
-      $ionicHistory.goBack();
-    };
-
     var updateSeedSourceSelect = function() {
       $scope.seedOptions = [];
 
