@@ -4,11 +4,19 @@
     background-position: top center;
     background-size: contain;
     background-repeat-y: no-repeat;
-    .logo, p {
+    #shopping-24 {
+      position: absolute;
+      top: 2%;
+      right: 5%;
+      width: 35px;
+      height: auto;
+    }
+    .logo,
+    p {
       @include center-block();
     }
-    .logo{
-      margin-top:15rem;
+    .logo {
+      margin-top: 15rem;
     }
     button {
       @include center-block(1rem);
