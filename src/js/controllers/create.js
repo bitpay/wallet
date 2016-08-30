@@ -183,12 +183,7 @@ angular.module('copayApp.controllers').controller('createController',
 
 
           if (self.seedSourceId == 'set') {
-            $timeout(function() {
-              $log.debug('Backup done');
-              storageService.setBackupFlag(wallet.credentials.walletId, function(err) {
-                $log.debug('Backup stored');
-              });
-            }, 1);
+            profileService.setBackupFlag(client.credentials.walletId);
           }
           $state.go('tabs.home')
         });

@@ -10,7 +10,6 @@ angular.module('copayApp.controllers').controller('tabReceiveController', functi
     });
     $scope.isCordova = platformInfo.isCordova;
     $scope.isNW = platformInfo.isNW;
-    $scope.needsBackup = false;
   }
 
   $scope.$on('Wallet/Changed', function(event, wallet) {
@@ -20,17 +19,11 @@ angular.module('copayApp.controllers').controller('tabReceiveController', functi
     }
     $scope.wallet = wallet;
     $log.debug('Wallet changed: ' + wallet.name);
-
-    walletService.needsBackup(wallet, function(needsBackup) {
-      if (needsBackup) $scope.needsBackup = true;
-      else $scope.needsBackup = false;
-
-      $scope.setAddress(wallet);
-    });
+    $scope.setAddress(wallet);
   });
 
   $scope.shareAddress = function(addr) {
-    if ($scope.needsBackup || $scope.generatingAddress) return;
+    if ($scope.generatingAddress) return;
     if ($scope.isCordova) {
       window.plugins.socialsharing.share('bitcoin:' + addr, null, null, null);
     }

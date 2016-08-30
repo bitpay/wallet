@@ -25,11 +25,10 @@
         <i class="icon ion-ios-loop"></i>
         <span translate>Next Address</span>
       </div>
-      <div class="item item-icon-left item-icon-right">
+      <div class="item item-icon-left">
         <i class="icon ion-social-bitcoin-outline"></i>
         <span ng-if="generatingAddress">...</span>
         <span ng-if="!generatingAddress" copy-to-clipboard="addr">{{addr}}</span>
-        <i ng-if="needsBackup" class="icon ion-android-warning assertive"></i>
       </div>
 
       <wallets ng-if="wallets[0]" wallets="wallets"></wallets>

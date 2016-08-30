@@ -136,11 +136,8 @@ angular.module('copayApp.controllers').controller('backupController',
           }
         }
 
-        $log.debug('Backup done');
-        storageService.setBackupFlag(wallet.credentials.walletId, function(err) {
-          $log.debug('Backup stored');
-          return cb();
-        });
+        profileService.setBackupFlag(walletClient.credentials.walletId);
+        return cb();
       }, 1);
     };
 
