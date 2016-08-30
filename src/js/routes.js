@@ -357,12 +357,11 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
      */
 
     .state('send', {
-      url: '/send',
-      abstract: true,
-      template: '<ion-nav-view name="send"></ion-nav-view>'
-    })
-
-    .state('send.amount', {
+        url: '/send',
+        abstract: true,
+        template: '<ion-nav-view name="send"></ion-nav-view>'
+      })
+      .state('send.amount', {
         url: '/amount/:toAddress/:toName',
         views: {
           'send': {
