@@ -1,13 +1,13 @@
-<ion-modal-view>
+<ion-modal-view ng-controller="amazonCardDetailsController">
   <ion-header-bar align-title="center" class="tab-bar">
     <button class="button button-clear button-positive"
-            ng-click="closeModal()">
+            ng-click="cancel()">
       Close
     </button>
     <h1 class="title">Details</h1>
   </ion-header-bar>
 
-  <ion-content ng-controller="amazonCardDetailsController">
+  <ion-content>
 
       <div class="header-modal text-center">
         <img src="img/a_generic.jpg" alt="Amazon.com Gift Card" width="230" ng-click="refreshGiftCard()">

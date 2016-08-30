@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('amazonController',
-  function($scope, $timeout, $log, lodash, bwcError, amazonService, platformInfo, nodeWebkit, modalService) {
+  function($scope, $timeout, $ionicModal, $log, lodash, bwcError, amazonService, platformInfo, nodeWebkit) {
 
     if (platformInfo.isCordova && StatusBar.isVisible) {
       StatusBar.backgroundColorByHexString("#4B6178");
@@ -82,11 +82,12 @@ angular.module('copayApp.controllers').controller('amazonController',
       var self = this;
       $scope.card = card;
 
-      modalService
-        .popup('views/modals/amazon-card-details.html', $scope)
-        .then(function(modal) {
-          modal.show();
-        });
+      $ionicModal.fromTemplateUrl('views/modals/amazon-card-details.html', {
+        scope: $scope
+      }).then(function(modal) {
+        $scope.amazonCardDetailsModal = modal;
+        $scope.amazonCardDetailsModal.show();
+      });
 
       $scope.$on('UpdateAmazonList', function(event) {
         self.init();
