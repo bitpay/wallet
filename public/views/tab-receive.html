@@ -6,6 +6,9 @@
   <ion-content ng-controller="tabReceiveController" ng-init="init()">
     <div class="m30v text-center" copy-to-clipboard="addr">
       <qrcode size="220" data="bitcoin:{{addr}}"></qrcode>
+      <div ng-if="wallet.needsBackup" class="assertive" translate>
+        Before receiving funds, you must backup your wallet. If this device is lost, it is impossible to access your funds without a backup.
+      </div>
     </div>
 
     <div class="padding assertive" ng-show="error">
