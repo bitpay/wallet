@@ -2,7 +2,9 @@
 
 angular.module('copayApp.controllers').controller('collectEmailController', function($scope, $state, $stateParams, profileService, walletService, platformInfo) {
 
-  var usePushNotifications = platformInfo.isCordova && !isWP;
+  var isCordova = platformInfo.isCordova;
+  var isWP = platformInfo.isWP;
+  var usePushNotifications = isCordova && !isWP;
 
   $scope.skip = function() {
     if (!usePushNotifications) $state.go('onboarding.backupRequest');
