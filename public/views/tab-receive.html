@@ -4,20 +4,12 @@
   </ion-nav-bar>
 
   <ion-content ng-controller="tabReceiveController" ng-init="init()">
-    <div class="text-center m30v" copy-to-clipboard="addr" ng-show="addr">
-      <qrcode size="220" data="bitcoin:{{addr}}" ng-show="addr"></qrcode>
+    <div class="m30v text-center" copy-to-clipboard="addr">
+      <qrcode size="220" data="bitcoin:{{addr}}"></qrcode>
     </div>
 
     <div class="padding assertive" ng-show="error">
       {{error|translate}}
-    </div>
-
-    <div ng-show="generatingAddress" class="m30v">
-      <div style="height:220px; width:220px; margin:auto; background: #eee; text-align:center">
-        <div class="padding-top">
-          <ion-spinner class="spinner-dark" icon="lines"></ion-spinner>
-        </div>
-      </div>
     </div>
 
     <div class="list card padding text-center" ng-if="!wallets[0]">
@@ -25,18 +17,19 @@
     </div>
 
     <div class="list" ng-if="wallets[0]">
-      <div class="item item-icon-left" ng-click="shareAddress(addr)" ng-show="isCordova && addr" ng-disabled="generatingAddress">
+      <div class="item item-icon-left" ng-click="shareAddress(addr)" ng-show="isCordova && addr">
         <i class="icon ion-ios-upload-outline"></i>
         <span translate>Share address</span>
       </div>
-      <div class="item item-icon-left" ng-click="setAddress(null, true)" ng-disabled="">
+      <div class="item item-icon-left" ng-click="setAddress(null, true)">
         <i class="icon ion-ios-loop"></i>
         <span translate>Next Address</span>
       </div>
-      <div class="item item-icon-left">
+      <div class="item item-icon-left item-icon-right">
         <i class="icon ion-social-bitcoin-outline"></i>
-        <span ng-show="generatingAddress">...</span>
-        <span ng-show="!generatingAddress" copy-to-clipboard="addr">{{addr}}</span>
+        <span ng-if="generatingAddress">...</span>
+        <span ng-if="!generatingAddress" copy-to-clipboard="addr">{{addr}}</span>
+        <i ng-if="needsBackup" class="icon ion-android-warning assertive"></i>
       </div>
 
       <wallets ng-if="wallets[0]" wallets="wallets"></wallets>
