@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('backupRequestController', function($rootScope, $scope, $state, $ionicPopup, $stateParams, profileService, walletService) {
+angular.module('copayApp.controllers').controller('backupRequestController', function($scope, $state, $ionicPopup) {
 
   $scope.openPopup = function() {
     var backupLaterPopup = $ionicPopup.show({

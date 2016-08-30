@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('bitpayCardController', function($scope, $rootScope, $timeout, $log, $ionicModal, lodash, bitpayCardService, configService, profileService, walletService, fingerprintService, ongoingProcess, bwcError, bitcore, pbkdf2Service, moment, platformInfo) {
+angular.module('copayApp.controllers').controller('bitpayCardController', function($scope, $rootScope, $timeout, $log, $ionicModal, lodash, bitpayCardService, configService, profileService, walletService, ongoingProcess, pbkdf2Service, moment, platformInfo) {
 
   var self = this;
   var wallet;
@@ -8,6 +8,15 @@ angular.module('copayApp.controllers').controller('bitpayCardController', functi
   if (platformInfo.isCordova && StatusBar.isVisible) {
     StatusBar.backgroundColorByHexString("#293C92");
   }
+
+  $scope.$on('Wallet/Changed', function(event, w) {
+    if (lodash.isEmpty(w)) {
+      $log.debug('No wallet provided');
+      return;
+    }
+    wallet = w;
+    $log.debug('Wallet changed: ' + w.name);
+  });
 
   var processTransactions = function(invoices, history) {
     for (var i = 0; i < invoices.length; i++) {
@@ -63,7 +72,6 @@ angular.module('copayApp.controllers').controller('bitpayCardController', functi
     bitpayCardService.isAuthenticated(function(err, bpSession) {
       self.loadingSession = false;
       if (err) {
-        self.error = err.data.error || 'Incorrect email or password';
         return;
       }
 
@@ -79,7 +87,7 @@ angular.module('copayApp.controllers').controller('bitpayCardController', functi
           bitpayCardService.transactionHistory(dateRange, function(err, history) {
             $scope.loadingHistory = false;
             if (err) {
-              self.error = err.error || err;
+              self.error = 'Error getting transactions';
               return;
             }
 
@@ -98,59 +106,23 @@ angular.module('copayApp.controllers').controller('bitpayCardController', functi
     $scope.dateRange = 'last30Days';
 
     $scope.network = bitpayCardService.getEnvironment();
-    self.allWallets = profileService.getWallets({
+    $scope.wallets = profileService.getWallets({
       network: $scope.network,
-      n: 1,
       onlyComplete: true
     });
 
     self.update();
 
-    if (lodash.isEmpty(self.allWallets)) return;
+    wallet = $scope.wallets[0];
 
-    wallet = self.allWallets[0];
-
-    if (wallet.credentials.n > 1)
+    if (wallet && wallet.credentials.n > 1)
       self.isMultisigWallet = true;
-
-    $timeout(function() {
-      self.selectedWalletId = wallet.credentials.walletId;
-      self.selectedWalletName = wallet.credentials.walletName;
-      $scope.$apply();
-    }, 100);
-  };
-
-  $scope.openWalletsModal = function(wallets) {
-    self.error = null;
-
-    $scope.wallets = wallets;
-    $scope.noColor = true;
-    $scope.self = self;
-
-    $ionicModal.fromTemplateUrl('views/modals/wallets.html', {
-      scope: $scope,
-      animation: 'slide-in-up'
-    }).then(function(modal) {
-      $scope.walletsModal = modal;
-      $scope.walletsModal.show();
-    });
-
-    $scope.$on('walletSelected', function(ev, walletId) {
-      $timeout(function() {
-        wallet = profileService.getClient(walletId);
-        self.isMultisigWallet = false;
-        self.selectedWalletId = walletId;
-        self.selectedWalletName = wallet.credentials.walletName;
-        if (wallet.credentials.n > 1)
-          self.isMultisigWallet = true;
-        $scope.$apply();
-      }, 100);
-      $scope.walletsModal.hide();
-    });
   };
 
   this.sendFunds = function() {
     self.error = null;
+
+    if (lodash.isEmpty(wallet)) return;
 
     if (!wallet.canSign() && !wallet.isPrivKeyExternal()) {
       $log.info('No signing proposal: No private key');
@@ -205,7 +177,6 @@ angular.module('copayApp.controllers').controller('bitpayCardController', functi
           };
 
           walletService.createTx(wallet, txp, function(err, createdTxp) {
-            ongoingProcess.set('Processing Transaction...', false);
             if (err) {
               self.error = bwcError.msg(err);
               $timeout(function() {
@@ -213,10 +184,9 @@ angular.module('copayApp.controllers').controller('bitpayCardController', functi
               });
               return;
             }
-            self.confirmTx(createdTxp, function(err, tx) {
-              ongoingProcess.set('Processing Transaction...', false);
+            walletService.publishAndSign(wallet, createdTxp, function(err, tx) {
               if (err) {
-                self.error = bwcError.msg(err);
+                self.error = err;
                 $timeout(function() {
                   $scope.$digest();
                 });
@@ -234,55 +204,6 @@ angular.module('copayApp.controllers').controller('bitpayCardController', functi
     }, 100);
   };
 
-  this.confirmTx = function(txp, cb) {
-
-    fingerprintService.check(wallet, function(err) {
-      if (err) {
-        $log.debug(err);
-        return cb(err);
-      }
-
-      walletService.handleEncryptedWallet(wallet, function(err) {
-        if (err) {
-          $log.debug(err);
-          return bwcError.cb(err, null, cb);
-        }
-
-        ongoingProcess.set('Processing Transaction...', true);
-        walletService.publishTx(wallet, txp, function(err, publishedTxp) {
-          if (err) {
-            $log.debug(err);
-            return bwcError.cb(err, null, cb);
-          }
-
-          walletService.signTx(wallet, publishedTxp, function(err, signedTxp) {
-            walletService.lock(wallet);
-            if (err) {
-              $log.debug(err);
-              walletService.removeTx(wallet, signedTxp, function(err) {
-                if (err) $log.debug(err);
-              });
-              return bwcError.cb(err, null, cb);
-            }
-
-            walletService.broadcastTx(wallet, signedTxp, function(err, broadcastedTxp) {
-              if (err) {
-                $log.debug(err);
-                walletService.removeTx(wallet, broadcastedTxp, function(err) {
-                  if (err) $log.debug(err);
-                });
-                return bwcError.cb(err, null, cb);
-              }
-              $timeout(function() {
-                return cb(null, broadcastedTxp);
-              }, 5000);
-            });
-          });
-        });
-      });
-    });
-  };
-
   this.authenticate = function() {
     self.error = null;
 
@@ -297,8 +218,8 @@ angular.module('copayApp.controllers').controller('bitpayCardController', functi
     self.authenticating = true;
     bitpayCardService.authenticate(data, function(err, auth) {
       self.authenticating = false;
-      if (err && !err.data.error.twoFactorPending) {
-        self.error = 'Authentiation error';
+      if (err && err.data && err.data.error && !err.data.error.twoFactorPending) {
+        self.error = err.statusText || err.data.error || 'Authentiation error';
         return;
       }
 

@@ -426,6 +426,21 @@ ul.wallet-selection.wallets {
   }
 }
 
+// POSTFIX
+
+.postfix {
+  position: absolute;
+  right: 10px;
+  background-color: #f8f8f8;
+  color: #444;
+  border-radius: 4px;
+  padding: 2px 10px;
+  cursor: pointer;
+  label &{
+    top: 38px;
+    padding: 0 5px;
+  }
+}
 
 // QR Code
 
@@ -850,6 +865,7 @@ ul.wallet-selection.wallets {
 
 .no-border {
   border-style: none;
+  background-color: transparent !important;
 }
 
 input[type=file] {
@@ -874,6 +890,16 @@ input[type=file] {
 .wallets {
   height: 90px;
 }
+
+.bar .button.back-button {
+  color: #444;
+  font-size: 14px;
+}
+
+.bar .button.button-clear .icon:before {
+  font-size: 16px;
+}
+
 /*
  * Calculator
  */

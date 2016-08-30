@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('backupWarningController', function($rootScope, $scope, $state, $ionicPopup, $stateParams, profileService, walletService) {
+angular.module('copayApp.controllers').controller('backupWarningController', function($scope, $state, $ionicPopup, profileService) {
 
   $scope.openPopup = function() {
     var backupWarningPopup = $ionicPopup.show({
