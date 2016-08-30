@@ -462,7 +462,6 @@ angular.module('copayApp.services')
       if (!client || !client.credentials)
         return cb(gettext('Could not access wallet'));
 
-      if (root.profile) root.profile = Profile.create();
       var walletId = client.credentials.walletId
 
       if (!root.profile.addWallet(JSON.parse(client.export())))
