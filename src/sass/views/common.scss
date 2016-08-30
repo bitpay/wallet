@@ -1,0 +1,27 @@
+.icon.nav-item-arrow-right {
+  color: #666;
+  font-size: 26px;
+}
+
+.item.item-heading {
+  font-weight: bold;
+}
+
+.icon.list-add-button {
+  color: #666;
+  font-size: 38px;
+}
+
+.item.item-big-icon-left {
+  padding-left: 74px;
+}
+
+.icon.big-icon-svg {
+  padding: 0 7px;
+  > img {
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    box-shadow: 0px 6px 12px 0px rgba(0, 0, 0, 0.3);
+  }
+}
