@@ -48,10 +48,6 @@ angular.module('copayApp.controllers').controller('txpDetailsController', functi
     }, 10);
   };
 
-  $scope.$on('$destroy', function() {
-    walletService.lock($scope.wallet);
-  });
-
   $scope.reject = function(txp) {
     $scope.loading = true;
     $scope.error = null;

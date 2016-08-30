@@ -208,53 +208,44 @@ angular.module('copayApp.controllers').controller('sellGlideraController',
               self.error = err.message ||  bwcError.msg(err);
               return;
             }
-            fingerprintService.check(wallet, function(err) {
+            walletService.prepare(wallet, txp, function(err, password) {
               if (err) {
                 self.error = err.message ||  bwcError.msg(err);
                 return;
               }
-
-              walletService.handleEncryptedWallet(wallet, function(err) {
+              ongoingProcess.set('signingTx', true);
+              walletService.publishTx(wallet, createdTxp, function(err, publishedTxp) {
                 if (err) {
+                  ongoingProcess.clear();
                   self.error = err.message ||  bwcError.msg(err);
-                  return;
                 }
 
-                ongoingProcess.set('signingTx', true);
-                walletService.publishTx(wallet, createdTxp, function(err, publishedTxp) {
+                walletService.signTx(wallet, publishedTxp, function(err, password, signedTxp) {
+                  walletService.removeTx(wallet, signedTxp, function(err) {
+                    if (err) $log.debug(err);
+                  });
+                  ongoingProcess.clear();
                   if (err) {
-                    ongoingProcess.clear();
                     self.error = err.message ||  bwcError.msg(err);
+                    return;
                   }
-
-                  walletService.signTx(wallet, publishedTxp, function(err, signedTxp) {
-                    walletService.lock(wallet);
-                    walletService.removeTx(wallet, signedTxp, function(err) {
-                      if (err) $log.debug(err);
-                    });
+                  var rawTx = signedTxp.raw;
+                  var data = {
+                    refundAddress: refundAddress,
+                    signedTransaction: rawTx,
+                    priceUuid: self.sellPrice.priceUuid,
+                    useCurrentPrice: self.sellPrice.priceUuid ? false : true,
+                    ip: null
+                  };
+                  ongoingProcess.set('Seling Bitcoin', true);
+                  glideraService.sell(token, twoFaCode, data, function(err, data) {
                     ongoingProcess.clear();
                     if (err) {
                       self.error = err.message ||  bwcError.msg(err);
                       return;
                     }
-                    var rawTx = signedTxp.raw;
-                    var data = {
-                      refundAddress: refundAddress,
-                      signedTransaction: rawTx,
-                      priceUuid: self.sellPrice.priceUuid,
-                      useCurrentPrice: self.sellPrice.priceUuid ? false : true,
-                      ip: null
-                    };
-                    ongoingProcess.set('Seling Bitcoin', true);
-                    glideraService.sell(token, twoFaCode, data, function(err, data) {
-                      ongoingProcess.clear();
-                      if (err) {
-                        self.error = err.message ||  bwcError.msg(err);
-                        return;
-                      }
-                      self.success = data;
-                      $scope.update();
-                    });
+                    self.success = data;
+                    $scope.update();
                   });
                 });
               });

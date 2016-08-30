@@ -1,11 +1,8 @@
 <ion-view>
-  <ion-nav-bar class="bar-stable">
-    <ion-nav-title>Alias</ion-nav-title>
-    <ion-nav-buttons side="primary">
-      <button class="button no-border" ui-sref="wallet.preferences">
-        <i class="icon ion-chevron-left"></i> Back
-      </button>
-    </ion-nav-buttons>
+  <ion-nav-bar>
+    <ion-nav-back-button>
+      {{'Back' | translate}}
+    </ion-nav-back-button>
   </ion-nav-bar>
   <ion-content ng-controller="preferencesAliasController" >
     <form name="aliasForm" ng-submit="save(aliasForm)" novalidate>

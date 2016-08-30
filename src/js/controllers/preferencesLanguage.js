@@ -1,7 +1,8 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('preferencesLanguageController',
-  function($scope, $log, $state, configService, profileService, uxLanguage, walletService) {
+  function($scope, $log, $ionicNavBarDelegate, $ionicHistory, gettextCatalog, configService, profileService, uxLanguage, walletService) {
+    $ionicNavBarDelegate.title(gettextCatalog.getString('Language'));
 
     $scope.init = function() {
       $scope.availableLanguages = uxLanguage.getLanguages();
@@ -20,7 +21,7 @@ angular.module('copayApp.controllers').controller('preferencesLanguageController
       configService.set(opts, function(err) {
         if (err) $log.warn(err);
 
-        $state.go('tabs.settings')
+        $ionicHistory.goBack();
         uxLanguage.update(function() {
           walletService.updateRemotePreferences(profileService.getWallets(), {}, function() {
             $log.debug('Remote preferences saved');

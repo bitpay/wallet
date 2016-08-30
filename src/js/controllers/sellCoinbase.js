@@ -30,14 +30,6 @@ angular.module('copayApp.controllers').controller('sellCoinbaseController',
     ];
     $scope.selectedPriceSensitivity = $scope.priceSensitivity[1];
 
-    var handleEncryptedWallet = function(client, cb) {
-      if (!walletService.isEncrypted(client)) return cb();
-      $rootScope.$emit('Local/NeedsPassword', false, function(err, password) {
-        if (err) return cb(err);
-        return cb(walletService.unlock(client, password));
-      });
-    };
-
     this.init = function(testnet) {
       self.allWallets = profileService.getWallets(testnet ? 'testnet' : 'livenet', 1);
 
@@ -263,66 +255,7 @@ angular.module('copayApp.controllers').controller('sellCoinbaseController',
 
     this.confirmTx = function(txp, cb) {
 
-      fingerprintService.check(client, function(err) {
-        if (err) {
-          $log.debug(err);
-          return cb(err);
-        }
-
-        handleEncryptedWallet(client, function(err) {
-          if (err) {
-            $log.debug(err);
-            return cb(err);
-          }
-
-          ongoingProcess.set('Sending Bitcoin to Coinbase...', true);
-          walletService.publishTx(client, txp, function(err, publishedTxp) {
-            if (err) {
-              ongoingProcess.set('Sending Bitcoin to Coinbase...', false);
-              $log.debug(err);
-              return cb({
-                errors: [{
-                  message: 'Transaction could not be published: ' + err.message
-                }]
-              });
-            }
-
-            walletService.signTx(client, publishedTxp, function(err, signedTxp) {
-              walletService.lock(client);
-              if (err) {
-                ongoingProcess.set('Sending Bitcoin to Coinbase...', false);
-                $log.debug(err);
-                walletService.removeTx(client, signedTxp, function(err) {
-                  if (err) $log.debug(err);
-                });
-                return cb({
-                  errors: [{
-                    message: 'The payment was created but could not be completed: ' + err.message
-                  }]
-                });
-              }
-
-              walletService.broadcastTx(client, signedTxp, function(err, broadcastedTxp) {
-                if (err) {
-                  ongoingProcess.set('Sending Bitcoin to Coinbase...', false);
-                  $log.debug(err);
-                  walletService.removeTx(client, broadcastedTxp, function(err) {
-                    if (err) $log.debug(err);
-                  });
-                  return cb({
-                    errors: [{
-                      message: 'The payment was created but could not be broadcasted: ' + err.message
-                    }]
-                  });
-                }
-                $timeout(function() {
-                  return cb(null, broadcastedTxp);
-                }, 5000);
-              });
-            });
-          });
-        });
-      });
+      // TODO see walletService createAndPublish
     };
 
   });

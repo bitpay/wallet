@@ -1,7 +1,8 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('preferencesInformation',
-  function($scope, $log, $timeout, platformInfo, gettextCatalog, lodash, profileService, configService, $stateParams, walletService, $state) {
+  function($scope, $log, $timeout, $ionicNavBarDelegate, platformInfo, gettextCatalog, lodash, profileService, configService, $stateParams, walletService, $state) {
+    $ionicNavBarDelegate.title(gettextCatalog.getString('Wallet Information'));
     var base = 'xpub';
     var wallet = profileService.getWallet($stateParams.walletId);
     var walletId = wallet.id;
@@ -12,7 +13,7 @@ angular.module('copayApp.controllers').controller('preferencesInformation',
     config.colorFor = config.colorFor || {};
 
     $scope.init = function() {
-      var c =wallet.credentials;
+      var c = wallet.credentials;
       var basePath = c.getBaseAddressDerivationPath();
 
       $scope.wallet = wallet;
