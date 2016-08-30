@@ -5,7 +5,7 @@
   "manifest_version": 2,
   "name": "BitPay",
   "description": "The BitPay Bitcoin Wallet",
-  "version": "0.3.0",
+  "version": "0.6.0",
   "permissions": [
     "storage",
     "unlimitedStorage",
