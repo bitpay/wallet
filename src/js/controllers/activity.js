@@ -29,7 +29,8 @@ angular.module('copayApp.controllers').controller('activityController',
       lodash.each($scope.wallets, function(wallet) {
 
         walletService.getNotifications(wallet, {
-          timeSpan: timeSpan
+          includeOwn: true,
+          timeSpan: timeSpan,
         }, function(err, n) {
           if (err) {
             console.log('[tab-home.js.35:err:]', $log.error(err)); //TODO
