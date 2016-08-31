@@ -29,11 +29,11 @@
     <div class="list card" ng-hide="!wallets[0]">
       <div class="item item-icon-right item-heading">
         Wallets
-        <a ui-sref="add.main"><i class="icon ion-ios-plus-empty list-add-button"></i></a>
+        <a ui-sref="tabs.add"><i class="icon ion-ios-plus-empty list-add-button"></i></a>
       </div>
       <a ng-repeat="wallet in wallets track by $index"
          class="item item-icon-left item-big-icon-left item-icon-right"
-         ui-sref="wallet.details({'walletId': wallet.id})">
+         ui-sref="tabs.details({'walletId': wallet.id})">
         <i class="icon big-icon-svg">
           <img src="img/icon-wallet.svg" ng-style="{'background-color': wallet.color}"/>
         </i>
