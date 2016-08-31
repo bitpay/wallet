@@ -814,7 +814,7 @@ angular.module('copayApp.services')
 
           x.action = function() {
             // TODO?
-            $state.go('wallet.details', {
+            $state.go('tabs.details', {
               walletId: x.walletId,
               txpId: x.txpId,
               txid: x.txid,
