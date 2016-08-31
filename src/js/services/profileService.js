@@ -1,6 +1,6 @@
 'use strict';
 angular.module('copayApp.services')
-  .factory('profileService', function profileServiceFactory($rootScope, $timeout, $filter, $log, sjcl, lodash, storageService, bwcService, configService, pushNotificationsService, gettext, gettextCatalog, bwcError, uxLanguage, bitcore, platformInfo, $ionicHistory) {
+  .factory('profileService', function profileServiceFactory($rootScope, $timeout, $filter, $log, sjcl, lodash, storageService, bwcService, configService, pushNotificationsService, gettext, gettextCatalog, bwcError, uxLanguage, platformInfo, $ionicHistory, txFormatService, $state) {
 
 
     var isChromeApp = platformInfo.isChromeApp;
@@ -118,6 +118,9 @@ angular.module('copayApp.services')
 
         if (wallet.completeHistory)
           wallet.completeHistory.isValid = false;
+
+        if (wallet.cachedActivity)
+          wallet.cachedActivity.isValid = false;
 
         $rootScope.$emit('bwsEvent', wallet.id, n.type, n);
       });
@@ -736,6 +739,7 @@ angular.module('copayApp.services')
       } else {}
 
       return lodash.sortBy(ret, [
+
         function(x) {
           return x.isComplete();
         }, 'createdOn'
@@ -747,14 +751,11 @@ angular.module('copayApp.services')
       storageService.setHideBalanceFlag(walletId, root.wallet[walletId].balanceHidden.toString(), cb);
     };
 
-    root.getNotifications = function(limit, cb) {
+    root.getNotifications = function(opts, cb) {
+      opts = opts || {};
 
       var TIME_STAMP = 60 * 60 * 24 * 7;
-
-      var opts = {
-        timeSpan: TIME_STAMP,
-        includeOwn: true,
-      };
+      var MAX = 100;
 
       var ignored = {
         'NewBlock': 1,
@@ -771,36 +772,117 @@ angular.module('copayApp.services')
       var l = w.length,
         j = 0,
         notifications = [];
+
+
+      function isActivityCached(wallet) {
+        return wallet.cachedActivity && wallet.cachedActivity.isValid;
+      };
+
+
+      function getNotifications(wallet, cb2) {
+        if (isActivityCached(wallet) && !opts.force) return cb2();
+
+        wallet.getNotifications({
+          timeSpan: TIME_STAMP,
+          includeOwn: true,
+        }, function(err, n) {
+          if (err) return cb2(err);
+
+          wallet.cachedActivity = {
+            n: n.slice(-MAX),
+            isValid: true,
+          };
+
+          return cb2();
+        });
+      };
+
+      function process(notifications) {
+        if (!notifications) return [];
+
+        var shown = lodash.sortBy(notifications, 'createdOn').reverse();
+
+        shown = shown.splice(0, opts.limit || MAX);
+
+        lodash.each(shown, function(x) {
+          x.txpId = x.data ? x.data.txProposalId : null;
+          x.txid = x.data ? x.data.txid : null;
+          x.types = [x.type];
+
+          if (x.data && x.data.amount)
+            x.amountStr = txFormatService.formatAmountStr(x.data.amount);
+
+          x.action = function() {
+            // TODO?
+            $state.go('wallet.details', {
+              walletId: x.walletId,
+              txpId: x.txpId,
+              txid: x.txid,
+            });
+          };
+        });
+
+        // condense
+        var finale = [],
+        prev;
+
+
+        lodash.each(shown, function(x) {
+          if (prev && prev.walletId === x.walletId && prev.txpId && prev.txpId === x.txpId && prev.creatorId && prev.creatorId === x.creatorId) {
+            prev.types.push(x.type);
+            prev.data = lodash.assign(prev.data, x.data);
+            prev.txid = prev.txid || x.txid;
+            prev.amountStr = prev.amountStr || x.amountStr;
+            prev.creatorName = prev.creatorName || x.creatorName;
+          } else {
+            finale.push(x);
+            prev = x;
+          }
+        });
+
+        // messages...
+
+        var u = bwcService.getUtils();
+        lodash.each(finale, function(x) {
+          if (x.data && x.data.message && x.wallet && x.wallet.credentials.sharedEncryptingKey) {
+            // TODO TODO TODO => BWC
+            x.message = u.decryptMessage(x.data.message, x.wallet.credentials.sharedEncryptingKey);
+          }
+        });
+
+        return finale;
+      };
+
       lodash.each(w, function(wallet) {
-        wallet.getNotifications(opts, function(err, n) {
+        getNotifications(wallet, function(err) {
           j++;
           if (err) {
-            console.log('[tab-home.js.35:err:]', $log.error(err)); //TODO
-            return;
-          }
-
-          n = lodash.filter(n, function(x) {
-            return !ignored[x.type];
-          });
-
-          var idToName = {};
-          if (wallet.cachedStatus) {
-            lodash.each(wallet.cachedStatus.wallet.copayers, function(c) {
-              idToName[c.id] = c.name;
+            $log.warn('Error updating notifications:' + err);
+          } else {
+            var n = lodash.filter(wallet.cachedActivity.n, function(x) {
+              return !ignored[x.type];
             });
+
+            var idToName = {};
+            if (wallet.cachedStatus) {
+              lodash.each(wallet.cachedStatus.wallet.copayers, function(c) {
+                idToName[c.id] = c.name;
+              });
+            }
+
+            lodash.each(n, function(x) {
+              x.wallet = wallet;
+              if (x.creatorId && wallet.cachedStatus) {
+                x.creatorName = idToName[x.creatorId];
+              };
+            });
+
+            notifications.push(n);
           }
-
-          lodash.each(n, function(x) {
-            x.wallet = wallet;
-            if (x.creatorId && wallet.cachedStatus) {
-              x.creatorName = idToName[x.creatorId];
-            };
-          });
-
-          notifications.push(n);
-          if (++j == l) {
-            notifications = lodash.sortBy(notifications,'createdOn');
-            return cb(null, lodash.compact(lodash.flatten(notifications)));
+          if (j == l) {
+            notifications = lodash.sortBy(notifications, 'createdOn');
+            notifications = lodash.compact(lodash.flatten(notifications)).slice(0,MAX);
+            return cb(null, process(notifications));
           };
         });
       });

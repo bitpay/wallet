@@ -4,9 +4,7 @@ angular.module('copayApp.controllers').controller('tabHomeController',
   function($rootScope, $timeout, $scope, $state, lodash, profileService, walletService, configService, txFormatService, $ionicModal, $log, platformInfo, storageService) {
 
     var setNotifications = function(notifications) {
-      var n = walletService.processNotifications(notifications, 3);
-      $scope.notifications = n;
-      $scope.notificationsMore = notifications.length > 3 ? notifications.length - 3 : null;
+      $scope.notifications = notifications;
       $timeout(function() {
         $scope.$apply();
       }, 1);
@@ -16,37 +14,35 @@ angular.module('copayApp.controllers').controller('tabHomeController',
       $scope.wallets = profileService.getWallets();
       if (lodash.isEmpty($scope.wallets)) return;
 
-      $timeout(function() {
-        var i = $scope.wallets.length;
-        var j = 0;
-        var timeSpan = 60 * 60 * 24 * 7;
-        var notifications = [];
+      var i = $scope.wallets.length;
+      var j = 0;
+      var timeSpan = 60 * 60 * 24 * 7;
+      var notifications = [];
 
-        lodash.each($scope.wallets, function(wallet) {
+      lodash.each($scope.wallets, function(wallet) {
 
-          walletService.getStatus(wallet, {}, function(err, status) {
-            if (err) {
-              console.log('[tab-home.js.35:err:]', $log.error(err)); //TODO
-              return;
-            }
-            wallet.status = status;
-          });
-
-
-        });
-
-        $scope.fetchingNotifications = true;
-        profileService.getNotifications(3, function(err, n) {
+        walletService.getStatus(wallet, {}, function(err, status) {
           if (err) {
             console.log('[tab-home.js.35:err:]', $log.error(err)); //TODO
             return;
           }
-          $scope.fetchingNotifications = false;
-          setNotifications(n);
-        })
+          wallet.status = status;
+        });
 
-        $scope.$digest();
-      }, 100);
+
+      });
+
+      $scope.fetchingNotifications = true;
+      profileService.getNotifications({
+        limit: 3
+      }, function(err, n) {
+        if (err) {
+          console.log('[tab-home.js.35:err:]', $log.error(err)); //TODO
+          return;
+        }
+        $scope.fetchingNotifications = false;
+        setNotifications(n);
+      })
     };
 
     $scope.updateWallet = function(wallet) {
@@ -57,9 +53,17 @@ angular.module('copayApp.controllers').controller('tabHomeController',
           return;
         }
         wallet.status = status;
-        $timeout(function() {
-          $scope.$apply();
-        }, 1);
+
+        profileService.getNotifications({
+          limit: 3
+        }, function(err, n) {
+          console.log('[tab-home.js.57]', n); //TODO
+          if (err) {
+            console.log('[tab-home.js.35:err:]', $log.error(err)); //TODO
+            return;
+          }
+          setNotifications(n);
+        })
       });
     };
 
