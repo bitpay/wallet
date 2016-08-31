@@ -176,7 +176,7 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
   }
 
   $scope.hideToggle = function() {
-    profileService.setHideBalanceFlag(wallet.credentials.walletId, function(err) {
+    profileService.toggleHideBalanceFlag(wallet.credentials.walletId, function(err) {
       if (err) $log.error(err);
     });
   }
