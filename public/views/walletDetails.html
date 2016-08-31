@@ -44,7 +44,7 @@
           </div>
 
 
-          <div ng-click='updateAll()' ng-show="!updateStatusError && wallet.walletScanStatus != 'error' && !shouldHideBalance" on-hold="hideToggle()">
+          <div ng-click='updateAll()' ng-show="!updateStatusError && wallet.walletScanStatus != 'error' && !wallet.balanceHidden" on-hold="hideToggle()">
             <strong class="size-36">{{status.totalBalanceStr}}</strong>
             <div class="size-14" ng-if="status.totalBalanceAlternative">{{status.totalBalanceAlternative}} {{status.alternativeIsoCode}}</div>
             <div class="size-14" ng-if="status.pendingAmount">
@@ -52,7 +52,7 @@
             </div>
           </div>
 
-          <div ng-show="!updateStatusError && wallet.walletScanStatus != 'error' && shouldHideBalance" on-hold="hideToggle()">
+          <div ng-show="!updateStatusError && wallet.walletScanStatus != 'error' && wallet.balanceHidden" on-hold="hideToggle()">
             <strong class="size-24" translate>[Balance Hidden]</strong>
             <div class="size-14" translate>
               Tap and hold to show
