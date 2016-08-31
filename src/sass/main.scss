@@ -997,6 +997,7 @@ input[type=number] {
   }
 }
 
-@import "views/common";
+@import "ionic";
+@import "common";
 @import "views/tab-home";
 @import "views/includes/walletActivity";
