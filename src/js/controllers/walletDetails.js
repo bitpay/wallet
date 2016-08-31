@@ -175,16 +175,8 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
     $scope.updateTxHistory(cb);
   }
 
-  var hideBalance = function() {
-    storageService.getHideBalanceFlag(wallet.credentials.walletId, function(err, shouldHideBalance) {
-      if (err) $scope.shouldHideBalance = false;
-      else $scope.shouldHideBalance = (shouldHideBalance == 'true') ? true : false;
-    });
-  }
-
   $scope.hideToggle = function() {
-    $scope.shouldHideBalance = !$scope.shouldHideBalance;
-    storageService.setHideBalanceFlag(wallet.credentials.walletId, $scope.shouldHideBalance.toString(), function() {});
+    profileService.setHideBalanceFlag(wallet.credentials.walletId);
   }
 
   var currentTxHistoryPage;
@@ -204,7 +196,6 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
     $scope.requiresMultipleSignatures = wallet.credentials.m > 1;
     $scope.newTx = false;
 
-    hideBalance();
     $ionicNavBarDelegate.title(wallet.name);
 
     $scope.updateAll(function() {

@@ -727,5 +727,9 @@ angular.module('copayApp.services')
       }, 'createdOn']);
     };
 
+    root.setHideBalanceFlag = function(walletId) {
+      root.wallet[walletId].balanceHidden = !root.wallet[walletId].balanceHidden;
+    }
+
     return root;
   });
