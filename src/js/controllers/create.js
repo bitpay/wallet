@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('createController',
-  function($scope, $rootScope, $timeout, $log, lodash, $state, profileService, configService, gettext, ledger, trezor, platformInfo, derivationPathHelper, ongoingProcess, walletService, storageService) {
+  function($scope, $rootScope, $timeout, $log, lodash, $state, $ionicScrollDelegate, profileService, configService, gettext, ledger, trezor, platformInfo, derivationPathHelper, ongoingProcess, walletService, storageService) {
 
     var isChromeApp = platformInfo.isChromeApp;
     var isCordova = platformInfo.isCordova;
@@ -36,6 +36,10 @@ angular.module('copayApp.controllers').controller('createController',
     this.getNumber = function(num) {
       return new Array(num);
     }
+
+    $scope.showAdvChange = function() {
+      $ionicScrollDelegate.resize();
+    };
 
     var updateRCSelect = function(n) {
       $scope.totalCopayers = n;
