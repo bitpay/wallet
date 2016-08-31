@@ -412,7 +412,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         }
       })
       .state('add.import', {
-        url: '/import',
+        url: '/import/:fromOnboarding',
         abstract: true,
         views: {
           'add': {
@@ -554,7 +554,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
      */
 
     .state('onboarding', {
-        url: '/onboarding',
+        url: '/onboarding/:walletId',
         abstract: true,
         template: '<ion-nav-view name="onboarding"></ion-nav-view>'
       })

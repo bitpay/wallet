@@ -367,26 +367,6 @@ angular.module('copayApp.services')
       }, 50);
     };
 
-    // Creates the default Copay profile and its wallet
-    root.createDefaultProfile = function(opts, cb) {
-      var p = Profile.create();
-
-      if (opts.noWallet) {
-        return cb(null, p);
-      }
-
-      opts.m = 1;
-      opts.n = 1;
-      opts.network = 'livenet';
-
-      doCreateWallet(opts, function(err, walletClient) {
-        if (err) return cb(err);
-
-        p.addWallet(JSON.parse(walletClient.export()));
-        return cb(null, p);
-      });
-    };
-
     // create and store a wallet
     root.createWallet = function(opts, cb) {
       doCreateWallet(opts, function(err, walletClient, secret) {
@@ -633,24 +613,31 @@ angular.module('copayApp.services')
       });
     };
 
-    root.create = function(opts, cb) {
-      $log.info('Creating profile', opts);
+    root.createProfile = function(cb) {
+      $log.info('Creating profile');
       var defaults = configService.getDefaults();
 
       configService.get(function(err) {
-        root.createDefaultProfile(opts, function(err, p) {
-          if (err) return cb(err);
+        if (err) $log.debug(err);
 
-          storageService.storeNewProfile(p, function(err) {
-            if (err) return cb(err);
-            root.bindProfile(p, function(err) {
-              // ignore NONAGREEDDISCLAIMER
-              if (err && err.toString().match('NONAGREEDDISCLAIMER')) return cb();
-              return cb(err);
-            });
+        var p = Profile.create();
+        storageService.storeNewProfile(p, function(err) {
+          if (err) return cb(err);
+          root.bindProfile(p, function(err) {
+            // ignore NONAGREEDDISCLAIMER
+            if (err && err.toString().match('NONAGREEDDISCLAIMER')) return cb();
+            return cb(err);
           });
         });
       });
+    };
+
+    root.createDefaultWallet = function(cb) {
+      var opts = {};
+      opts.m = 1;
+      opts.n = 1;
+      opts.network = 'livenet';
+      root.createWallet(opts, cb);
     };
 
     root.setDisclaimerAccepted = function(cb) {
