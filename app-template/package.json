@@ -45,7 +45,6 @@
     "bitcore-wallet-client": "2.11.0",
     "coveralls": "^2.11.9",
     "express": "^4.11.2",
-    "fs": "0.0.2",
     "shelljs": "^0.3.0",
     "grunt-angular-gettext": "^2.2.3",
     "fs-extra": "^0.30.0",
