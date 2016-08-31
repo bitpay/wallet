@@ -1,11 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('amazonController',
-  function($scope, $timeout, $ionicModal, $log, lodash, bwcError, amazonService, platformInfo, nodeWebkit) {
-
-    if (platformInfo.isCordova && StatusBar.isVisible) {
-      StatusBar.backgroundColorByHexString("#4B6178");
-    }
+  function($scope, $timeout, $ionicModal, $log, lodash, bwcError, amazonService, platformInfo, nodeWebkit, popupService) {
 
     $scope.openExternalLink = function(url, target) {
       if (platformInfo.isNW) {
@@ -21,7 +17,7 @@ angular.module('copayApp.controllers').controller('amazonController',
       $scope.network = amazonService.getEnvironment();
       amazonService.getPendingGiftCards(function(err, gcds) {
         if (err) {
-          self.error = err;
+          popupService.showAlert(err);
           return;
         }
         $scope.giftCards = lodash.isEmpty(gcds) ? null : gcds;
@@ -41,7 +37,7 @@ angular.module('copayApp.controllers').controller('amazonController',
             $log.debug("creating gift card");
             amazonService.createGiftCard(dataFromStorage, function(err, giftCard) {
               if (err) {
-                $log.debug(bwcError.msg(err));
+                popupService.showAlert(bwcError.msg(err));
                 return;
               }
               if (giftCard.status != 'PENDING') {
@@ -61,7 +57,7 @@ angular.module('copayApp.controllers').controller('amazonController',
                   $log.debug("Saving new gift card");
                   amazonService.getPendingGiftCards(function(err, gcds) {
                     if (err) {
-                      self.error = err;
+                      popupService.showAlert(err);
                       return;
                     }
                     $scope.giftCards = gcds;

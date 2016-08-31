@@ -62,12 +62,12 @@ angular.module('copayApp.services').service('popupService', function($log, $ioni
    * Show a simple alert popup
    *
    * @param {String} Title
-   * @param {String} Message
+   * @param {String} Message (optional)
    * @param {Callback} Function (optional)
    */
 
   this.showAlert = function(title, msg, cb) {
-    var message = msg.message ? msg.message : msg;
+    var message = (msg && msg.message) ? msg.message : msg;
     $log.warn(title + ": " + message);
 
     if (isCordova)
