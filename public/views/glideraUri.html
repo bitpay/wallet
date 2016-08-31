@@ -1,22 +1,24 @@
-<div
-  class="topbar-container"
-  ng-include="'views/includes/topbar.html'"
-  ng-init="titleSection='Glidera'; closeToHome = true">
-</div>
+<ion-view>
+  <ion-nav-bar class="bar-stable">
+    <ion-nav-buttons side="primary">
+      <button class="button no-border" ui-sref="tabs.home">
+        Close
+      </button>
+    </ion-nav-buttons>
+    <ion-nav-title>Glidera</ion-nav-title>
+  </ion-nav-bar>
 
-<div class="content glidera" ng-controller="glideraUriController as glidera" ng-init="glidera.checkCode()">
+  <ion-content ng-controller="glideraUriController" ng-init="checkCode()">
 
-  <div class="row m20t">
-    <div class="large-12 columns">
-      <div class="text-center">
-        <img src="img/glidera-logo.png"
-        ng-click="index.updateGlidera()" width="100">
-      </div>
+    <div class="box-notification warning" ng-show="network == 'testnet'">
+      Testnet wallets only work with Glidera Sandbox Accounts
+    </div>
 
-      <div class="m10t text-center" ng-show="glidera.error">
-        <div class="notification m10b size-12 text-warning">{{glidera.error}}</div>
-        <button class="outline dark-gray tiny round" ng-click="glidera.submitOauthCode(glidera.code)">Try again</button>
+    <div class="text-center">
+      <img src="img/glidera-logo.png" width="100">
+      <div class="m20t" translate>
+        Connecting...
       </div>
     </div>
-  </div>
-</div>
+  </ion-content>
+</ion-view>

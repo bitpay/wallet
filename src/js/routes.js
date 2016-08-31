@@ -824,7 +824,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         });
 
         $ionicPlatform.on('resume', function() {
-          $rootScope.$emit('Local/Resume');
+          // Nothing tot do
         });
 
         $ionicPlatform.on('menubutton', function() {
