@@ -1,5 +1,12 @@
 <span class="wallet-activity">
 
+  <div ng-if="x.types.indexOf('NewCopayer')>=0 && x.wallet.n>1">
+    Copayer joined 
+  </div>
+
+  <div ng-if="x.types.indexOf('NewCopayer')>=0 && x.wallet.n==1">
+    Wallet created
+  </div>
 
   <div ng-if="x.types.indexOf('NewOutgoingTx')>=0">
       <span>Payment Sent </span>
