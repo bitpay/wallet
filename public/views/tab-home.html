@@ -76,18 +76,19 @@
       </a> -->
     </div>
 
-    <div class="list card" ng-show="!externalServices.AmazonGiftCards || !externalServices.BitpayCard || !externalServices.BuyAndSell">
+    <div class="list card"
+         ng-show="!externalServices.AmazonGiftCards || !externalServices.BitpayCard || !externalServices.BuyAndSell || !wallets[1]">
       <div class="item item-heading">
         Next steps
       </div>
-      <a ng-show="!!wallets[0]" ui-sref="add.main" class="item item-icon-left item-big-icon-left item-icon-right">
+      <a ng-show="!wallets[1]" ui-sref="add.main" class="item item-icon-left item-big-icon-left item-icon-right">
        <i class="icon big-icon-svg">
          <img class="icon-create-wallet"/>
        </i>
         <span>Crate a bitcoin wallet</span>
         <i class="icon ion-ios-arrow-right nav-item-arrow-right"></i>
       </a>
-      <a ng-show="!!externalServices.BuyAndSell" ui-sref="buyandsell" class="item item-icon-left item-big-icon-left item-icon-right">
+      <a ng-show="!externalServices.BuyAndSell" ui-sref="buyandsell" class="item item-icon-left item-big-icon-left item-icon-right">
        <i class="icon big-icon-svg">
          <img class="icon-buy-bitcoin"/>
        </i>
