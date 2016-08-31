@@ -41,7 +41,7 @@ angular.module('copayApp.services')
     root.setBackupFlag = function(walletId) {
       storageService.setBackupFlag(walletId, function(err) {
         if (err) $log.error(err);
-        $log.debug('Backup stored');
+        $log.debug('Backup flag stored');
         root.wallet[walletId].needsBackup = false;
       });
     };
@@ -74,22 +74,24 @@ angular.module('copayApp.services')
         return false;
       }
 
-      _needsBackup(wallet, function(val) {
-        // INIT WALLET VIEWMODEL
-        wallet.id = walletId;
-        wallet.started = true;
-        wallet.doNotVerifyPayPro = isChromeApp;
-        wallet.network = wallet.credentials.network;
-        wallet.copayerId = wallet.credentials.copayerId;
-        wallet.m = wallet.credentials.m;
-        wallet.n = wallet.credentials.n;
-        wallet.needsBackup = val;
+      // INIT WALLET VIEWMODEL
+      wallet.id = walletId;
+      wallet.started = true;
+      wallet.doNotVerifyPayPro = isChromeApp;
+      wallet.network = wallet.credentials.network;
+      wallet.copayerId = wallet.credentials.copayerId;
+      wallet.m = wallet.credentials.m;
+      wallet.n = wallet.credentials.n;
 
-        root.updateWalletSettings(wallet);
-        root.wallet[walletId] = wallet;
+      root.updateWalletSettings(wallet);
+      root.wallet[walletId] = wallet;
+
+      _needsBackup(wallet, function(val) {
+        wallet.needsBackup = val;
       });
 
       wallet.removeAllListeners();
+
       wallet.on('report', function(n) {
         $log.info('BWC Report:' + n);
       });
