@@ -13,35 +13,28 @@ angular.module('copayApp.controllers').controller('tabReceiveController', functi
   }
 
   $scope.$on('Wallet/Changed', function(event, wallet) {
-    if (lodash.isEmpty(wallet)) {
+    if (!wallet) {
       $log.debug('No wallet provided');
       return;
     }
-    $scope.defaultWallet = wallet;
+    $scope.wallet = wallet;
     $log.debug('Wallet changed: ' + wallet.name);
     $scope.setAddress(wallet);
   });
 
   $scope.shareAddress = function(addr) {
+    if ($scope.generatingAddress) return;
     if ($scope.isCordova) {
       window.plugins.socialsharing.share('bitcoin:' + addr, null, null, null);
     }
   };
 
   $scope.setAddress = function(wallet, forceNew) {
-    var wallet = wallet || $scope.defaultWallet;
     if ($scope.generatingAddress) return;
 
-    $scope.addr = null;
+    var wallet = wallet || $scope.wallet;
     $scope.error = null;
-
-    if (wallet && !wallet.isComplete()) {
-      $timeout(function() {
-        $scope.$digest();
-      });
-      return;
-    }
-
+    $scope.addr = null;
     $scope.generatingAddress = true;
 
     $timeout(function() {
@@ -53,8 +46,9 @@ angular.module('copayApp.controllers').controller('tabReceiveController', functi
           if (addr)
             $scope.addr = addr;
         }
-        $scope.$digest();
+
+        $scope.$apply();
       });
-    });
+    }, 1);
   };
 });
