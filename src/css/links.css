@@ -1,0 +1,27 @@
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Roboto Regular'),
+       local('Roboto-Regular'),
+       url(../../public/fonts/Roboto-Regular.ttf)
+       format('ttf');
+}
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Roboto Bold'),
+       local('Roboto-Bold'),
+       url(../../public/fonts/Roboto-Bold.ttf)
+       format('ttf');
+}
+@font-face {
+  font-family: 'Roboto';
+  font-style: italic;
+  font-weight: 400;
+  src: local('Roboto Italic'),
+       local('Roboto-Italic'),
+       url(../../public/fonts/Roboto-Italic.ttf)
+       format('ttf');
+}

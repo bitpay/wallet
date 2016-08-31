@@ -184,7 +184,7 @@ module.exports = function(grunt) {
       ionic_fonts: {
         expand: true,
         flatten: true,
-        src: 'bower_components/ionic/release/fonts/ionicons.*',
+        src: ['bower_components/ionic/release/fonts/ionicons.*', 'public/roboto-font/*.ttf'],
         dest: 'public/fonts/'
       },
       ionic_js: {
