@@ -1,13 +1,9 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('bitpayCardController', function($scope, $rootScope, $timeout, $log, $ionicModal, lodash, bitpayCardService, configService, profileService, walletService, ongoingProcess, pbkdf2Service, moment, platformInfo) {
+angular.module('copayApp.controllers').controller('bitpayCardController', function($scope, $timeout, $log, lodash, bitpayCardService, configService, profileService, walletService, ongoingProcess, pbkdf2Service, moment, popupService) {
 
   var self = this;
   var wallet;
-
-  if (platformInfo.isCordova && StatusBar.isVisible) {
-    StatusBar.backgroundColorByHexString("#293C92");
-  }
 
   $scope.$on('Wallet/Changed', function(event, w) {
     if (lodash.isEmpty(w)) {
@@ -87,7 +83,7 @@ angular.module('copayApp.controllers').controller('bitpayCardController', functi
           bitpayCardService.transactionHistory(dateRange, function(err, history) {
             $scope.loadingHistory = false;
             if (err) {
-              self.error = 'Error getting transactions';
+              popupService.showAler(gettextCatalog.getString('Error'), gettextCatalog.getString('Getting transactions'));
               return;
             }
 
@@ -120,13 +116,11 @@ angular.module('copayApp.controllers').controller('bitpayCardController', functi
   };
 
   this.sendFunds = function() {
-    self.error = null;
-
     if (lodash.isEmpty(wallet)) return;
 
     if (!wallet.canSign() && !wallet.isPrivKeyExternal()) {
       $log.info('No signing proposal: No private key');
-      self.error = bwcError.msg('MISSING_PRIVATE_KEY');
+      popupService.showAler(gettextCatalog.getString('Error'), bwcError.msg('MISSING_PRIVATE_KEY'));
       return;
     }
 
@@ -146,10 +140,7 @@ angular.module('copayApp.controllers').controller('bitpayCardController', functi
       bitpayCardService.topUp(dataSrc, function(err, invoiceId) {
         if (err) {
           ongoingProcess.set('Processing Transaction...', false);
-          self.error = bwcError.msg(err);
-          $timeout(function() {
-            $scope.$digest();
-          });
+          popupService.showAler(gettextCatalog.getString('Error'), bwcError.msg(err));
           return;
         }
 
@@ -178,18 +169,12 @@ angular.module('copayApp.controllers').controller('bitpayCardController', functi
 
           walletService.createTx(wallet, txp, function(err, createdTxp) {
             if (err) {
-              self.error = bwcError.msg(err);
-              $timeout(function() {
-                $scope.$digest();
-              });
+              popupService.showAler(gettextCatalog.getString('Error'), bwcError.msg(err));
               return;
             }
             walletService.publishAndSign(wallet, createdTxp, function(err, tx) {
               if (err) {
-                self.error = err;
-                $timeout(function() {
-                  $scope.$digest();
-                });
+                popupService.showAler(gettextCatalog.getString('Error'), bwcError.msg(err));
                 return;
               }
               self.update();
@@ -205,7 +190,6 @@ angular.module('copayApp.controllers').controller('bitpayCardController', functi
   };
 
   this.authenticate = function() {
-    self.error = null;
 
     var data = {
       emailAddress : $scope.email,
@@ -219,7 +203,7 @@ angular.module('copayApp.controllers').controller('bitpayCardController', functi
     bitpayCardService.authenticate(data, function(err, auth) {
       self.authenticating = false;
       if (err && err.data && err.data.error && !err.data.error.twoFactorPending) {
-        self.error = err.statusText || err.data.error || 'Authentiation error';
+        popupService.showAler(gettextCatalog.getString('Error'), err.statusText || err.data.error || 'Authentiation error');
         return;
       }
 
@@ -231,7 +215,6 @@ angular.module('copayApp.controllers').controller('bitpayCardController', functi
   };
 
   this.authenticate2FA = function() {
-    self.error = null;
 
     var data = {
       twoFactorCode : $scope.twoFactorCode
@@ -241,7 +224,7 @@ angular.module('copayApp.controllers').controller('bitpayCardController', functi
     bitpayCardService.authenticate2FA(data, function(err, auth) {
       self.authenticating = false;
       if (err) {
-        self.error = 'Authentiation error';
+        popupService.showAler(gettextCatalog.getString('Error'), gettextCatalog.getString('Authentiation error'));
         return;
       }
 
