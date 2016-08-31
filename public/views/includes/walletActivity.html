@@ -1,5 +1,15 @@
 <span class="wallet-activity">
 
+
+  <div ng-if="x.types.indexOf('NewOutgoingTx')>=0">
+      <span>Payment Sent </span>
+      <div class="wallet-activity-amount">
+      {{x.amountStr}}
+      </div>
+  </div>
+
+
+
   <div ng-if="x.types.indexOf('NewIncomingTx')>=0">
       <span>Payment Received</span>
       <div class="wallet-activity-amount">
@@ -39,4 +49,3 @@
     <time class="wallet-activity-note-child">{{ x.createdOn * 1000 | amTimeAgo}}</time>
   </p>
 </span>
-
