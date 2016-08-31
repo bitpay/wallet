@@ -1,11 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('glideraController',
-  function($rootScope, $scope, $timeout, $ionicModal, $log, profileService, storageService, glideraService, lodash, ongoingProcess, platformInfo, nodeWebkit) {
-
-    if (platformInfo.isCordova && StatusBar.isVisible) {
-      StatusBar.backgroundColorByHexString("#4B6178");
-    }
+  function($scope, $timeout, $ionicModal, $log, storageService, glideraService, ongoingProcess, platformInfo, nodeWebkit, popupService, gettextCatalog) {
 
     $scope.openExternalLink = function(url, target) {
       if (platformInfo.isNW) {
@@ -20,7 +16,6 @@ angular.module('copayApp.controllers').controller('glideraController',
       $scope.network = glideraService.getEnvironment();
 
       $scope.token = null;
-      $scope.error = null;
       $scope.permissions = null;
       $scope.email = null;
       $scope.personalInfo = null;
@@ -32,7 +27,7 @@ angular.module('copayApp.controllers').controller('glideraController',
       glideraService.init($scope.token, function(err, glidera) {
         ongoingProcess.set('connectingGlidera');
         if (err || !glidera) {
-          $scope.error = err;
+          if (err) popupService.showAlert(gettextCatalog.getString('Error'), err);
           return;
         }
         $scope.token = glidera.token;
@@ -81,15 +76,11 @@ angular.module('copayApp.controllers').controller('glideraController',
 
     this.submitOauthCode = function(code) {
       ongoingProcess.set('connectingGlidera', true);
-      $scope.error = null;
       $timeout(function() {
         glideraService.getToken(code, function(err, data) {
           ongoingProcess.set('connectingGlidera', false);
           if (err) {
-            $scope.error = err;
-            $timeout(function() {
-              $scope.$apply();
-            }, 100);
+            popupService.showAlert(gettextCatalog.getString('Error'), err);
           } else if (data && data.access_token) {
             storageService.setGlideraToken($scope.network, data.access_token, function() {
               $scope.init(data.access_token);
@@ -108,7 +99,11 @@ angular.module('copayApp.controllers').controller('glideraController',
       $scope.self = self;
       $scope.tx = tx;
 
-      glideraService.getTransaction(token, tx.transactionUuid, function(error, tx) {
+      glideraService.getTransaction(token, tx.transactionUuid, function(err, tx) {
+        if (err) {
+          popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Could not get transactions'));
+          return;
+        }
         $scope.tx = tx;
       });
 
