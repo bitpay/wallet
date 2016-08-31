@@ -94,7 +94,7 @@ module.exports = function(grunt) {
         },
         files: [{
           expand: true,
-          src: ['src/sass/*.scss'],
+          src: ['src/sass/main.scss'],
           dest: './',
           ext: '.css'
         }]
@@ -192,12 +192,6 @@ module.exports = function(grunt) {
         flatten: true,
         src: 'bower_components/ionic/release/js/ionic.bundle.min.js',
         dest: 'public/lib/'
-      },
-      ionic_css: {
-        expand: true,
-        flatten: true,
-        src: 'bower_components/ionic/release/css/ionic.min.css',
-        dest: 'public/css/'
       },
       linux: {
         files: [{
