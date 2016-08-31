@@ -39,7 +39,7 @@ angular.module('copayApp.controllers').controller('buyAmazonController',
 
       if (!wallet.canSign() && !wallet.isPrivKeyExternal()) {
         $log.info('No signing proposal: No private key');
-        popupService.showAler(gettextCatalog.getString('Error'), bwcError.msg('MISSING_PRIVATE_KEY'));
+        popupService.showAlert(gettextCatalog.getString('Error'), bwcError.msg('MISSING_PRIVATE_KEY'));
         return;
       }
 
@@ -59,7 +59,7 @@ angular.module('copayApp.controllers').controller('buyAmazonController',
         amazonService.createBitPayInvoice(dataSrc, function(err, dataInvoice) {
           if (err) {
             ongoingProcess.set('Processing Transaction...', false);
-            popupService.showAler(gettextCatalog.getString('Error'), bwcError.msg(err));
+            popupService.showAlert(gettextCatalog.getString('Error'), bwcError.msg(err));
             return;
           }
 
