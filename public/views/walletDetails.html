@@ -3,14 +3,9 @@
 <ion-view>
   <ion-nav-bar class="bar-stable">
     <ion-nav-title>{{wallet.name}}</ion-nav-title>
-    <ion-nav-buttons side="primary">
-      <button class="button no-border" ui-sref="tabs.home">
-        Close
-      </button>
-    </ion-nav-buttons>
-    <ion-nav-buttons side="secondary">
-      <button class="button button-icon icon ion-ios-settings" ui-sref="wallet.preferences"></button>
-    </ion-nav-buttons>
+    <ion-nav-back-button>
+      {{'Back' | translate}}
+    </ion-nav-back-button>
   </ion-nav-bar>
 
   <ion-content ng-controller="walletDetailsController" ng-init="init()" delegate-handle="my-handle">

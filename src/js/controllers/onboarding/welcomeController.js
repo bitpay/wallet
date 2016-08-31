@@ -3,7 +3,7 @@
 angular.module('copayApp.controllers').controller('welcomeController', function($scope, $state, $timeout, $log, $ionicPopup, profileService) {
 
   $scope.goImport = function() {
-    $state.go('add.import.phrase', {
+    $state.go('tabs.import.phrase', {
       fromOnboarding: true
     });
   };
