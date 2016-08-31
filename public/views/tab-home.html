@@ -50,8 +50,11 @@
         <span class="badge badge-assertive" ng-show="!item.isComplete()" translate>
           Incomplete
         </span>
-        <span class="item-note"  ng-show="item.isComplete()">
+        <span class="item-note"  ng-show="item.isComplete() && !item.balanceHidden">
           {{item.status.availableBalanceStr}}
+        </span>
+        <span class="item-note"  ng-show="item.isComplete() && item.balanceHidden">
+          <strong class="size-12" translate>[Balance Hidden]</strong>
         </span>
       </a>
       <a ui-sref="bitpayCard.main" ng-show="externalServices.BitpayCard" class="item item-icon-left">
