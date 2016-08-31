@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('txpDetailsController', function($scope, $rootScope, $timeout, $interval, $ionicModal, ongoingProcess, platformInfo, txStatus, $ionicScrollDelegate, txFormatService, fingerprintService, bwcError, gettextCatalog, lodash, profileService, walletService) {
+angular.module('copayApp.controllers').controller('txpDetailsController', function($scope, $rootScope, $timeout, $interval, $ionicModal, ongoingProcess, platformInfo, txStatus, $ionicScrollDelegate, txFormatService, bwcError, gettextCatalog, lodash, profileService, walletService) {
   var self = $scope.self;
   var tx = $scope.tx;
   var copayers = $scope.copayers;
@@ -28,43 +28,32 @@ angular.module('copayApp.controllers').controller('txpDetailsController', functi
     $scope.loading = true;
 
     $timeout(function() {
-      fingerprintService.check(fc, function(err) {
+      handleEncryptedWallet(function(err) {
         if (err) {
-          $scope.error = gettextCatalog.getString('Could not send payment');
-          $scope.loading = false;
-          $timeout(function() {
-            $scope.$digest();
-          }, 1);
-          return;
+          return setError(err);
         }
 
-        handleEncryptedWallet(function(err) {
+        ongoingProcess.set('signingTx', true);
+        walletService.signTx(fc, txp, function(err, signedTxp) {
+          ongoingProcess.set('signingTx', false);
           if (err) {
             return setError(err);
           }
 
-          ongoingProcess.set('signingTx', true);
-          walletService.signTx(fc, txp, function(err, signedTxp) {
-            ongoingProcess.set('signingTx', false);
-            if (err) {
-              return setError(err);
-            }
-
-            if (signedTxp.status == 'accepted') {
-              ongoingProcess.set('broadcastingTx', true);
-              walletService.broadcastTx(fc, signedTxp, function(err, broadcastedTxp) {
-                ongoingProcess.set('broadcastingTx', false);
-                $scope.$emit('UpdateTx');
-                $scope.close(broadcastedTxp);
-                if (err) {
-                  return setError(err);
-                }
-              });
-            } else {
+          if (signedTxp.status == 'accepted') {
+            ongoingProcess.set('broadcastingTx', true);
+            walletService.broadcastTx(fc, signedTxp, function(err, broadcastedTxp) {
+              ongoingProcess.set('broadcastingTx', false);
               $scope.$emit('UpdateTx');
-              $scope.close(signedTxp);
-            }
-          });
+              $scope.close(broadcastedTxp);
+              if (err) {
+                return setError(err);
+              }
+            });
+          } else {
+            $scope.$emit('UpdateTx');
+            $scope.close(signedTxp);
+          }
         });
       });
     }, 10);

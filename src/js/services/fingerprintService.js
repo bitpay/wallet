@@ -14,7 +14,7 @@ angular.module('copayApp.services').factory('fingerprintService', function($log,
       function(msg) {
         FingerprintAuth.isAvailable(function(result) {
 
-          if (result.isAvailable) 
+          if (result.isAvailable)
             _isAvailable = 'ANDROID';
 
         }, function() {
@@ -69,22 +69,20 @@ angular.module('copayApp.services').factory('fingerprintService', function($log,
     };
   };
 
-  var isNeeded = function(client) {
+  var isNeeded = function() {
     if (!_isAvailable) return false;
 
     var config = configService.getSync();
-    config.touchIdFor = config.touchIdFor || {};
-
-    return config.touchIdFor[client.credentials.walletId];
+    return config.fingerprint ? config.fingerprint.enabled : false;
   };
 
   root.isAvailable = function(client) {
     return _isAvailable;
   };
 
-  root.check = function(client, cb) {
-    if (isNeeded(client)) {
-      $log.debug('FingerPrint Service:', _isAvailable); 
+  root.check = function(cb) {
+    if (isNeeded()) {
+      $log.debug('FingerPrint Service:', _isAvailable);
       if (_isAvailable == 'IOS')
         return requestTouchId(cb);
       else

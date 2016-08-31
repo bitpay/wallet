@@ -318,6 +318,14 @@ angular.module('copayApp.services')
       storage.remove('bitpayCard-' + network, cb);
     };
 
+    root.getPauseTimestamp = function(cb) {
+      storage.get('pauseTimestamp', cb);
+    };
+
+    root.setPauseTimestamp = function(ts, cb) {
+      storage.set('pauseTimestamp', ts, cb);
+    };
+
     root.removeAllWalletData = function(walletId, cb) {
       root.clearLastAddress(walletId, function(err) {
         if (err) return cb(err);

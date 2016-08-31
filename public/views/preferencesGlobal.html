@@ -62,18 +62,28 @@
       <li ng-style="{'color':index.backgroundColor}" translate>Open Settings app</li>
     </ul>
   </div>
-
   <h4></h4>
 
-  <ion-toggle ng-show="!index.isWindowsPhoneApp" ng-model="glideraEnabled" toggle-class="toggle-balanced" ng-change="glideraChange()">
-    <span class="toggle-label" translate>Enable Glidera Service</span>
-  </ion-toggle>
-  <h4></h4>
+  <div ng-show="fingerprintAvailable">
+    <ion-toggle ng-model="fingerprint" toggle-class="toggle-balanced" ng-change="fingerprintChange()">
+      <span class="toggle-label" translate>Request Fingerprint on Startup</span>
+    </ion-toggle>
+    <h4></h4>
+  </div>
 
-  <ion-toggle ng-show="!index.isWindowsPhoneApp" ng-model="coinbaseEnabled" toggle-class="toggle-balanced" ng-change="coinbaseChange()">
-    <span class="toggle-label" translate>Enable Coinbase Service</span>
-  </ion-toggle>
-  <h4></h4>
+  <div ng-show="!index.isWindowsPhoneApp">
+    <ion-toggle ng-model="glideraEnabled" toggle-class="toggle-balanced" ng-change="glideraChange()">
+      <span class="toggle-label" translate>Enable Glidera Service</span>
+    </ion-toggle>
+    <h4></h4>
+  </div>
+
+  <div ng-show="!index.isWindowsPhoneApp">
+    <ion-toggle ng-model="coinbaseEnabled" toggle-class="toggle-balanced" ng-change="coinbaseChange()">
+      <span class="toggle-label" translate>Enable Coinbase Service</span>
+    </ion-toggle>
+    <h4></h4>
+  </div>
 
   <ul class="no-bullet m0">
     <li href ui-sref="about">

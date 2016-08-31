@@ -1,0 +1,15 @@
+<ion-modal-view ng-controller="appLockedController" ng-init="init()">
+  <div class="row columns p20">
+    <div class="text-center">
+      <logo width="146"></logo>
+      <div class="text-white" ng-include="'views/includes/version.html'"></div>
+    </div>
+    <h1 translate class="text-center">Application locked</h1>
+    <div class="text-center">
+      <h3 translate>Copay is protected by Fingerprint</h3>
+      <button class="button outline round dark-gray tiny m20t" ng-click="requestFingerprint()">
+        <span class="text-gray" translate>Unlock</i></span>
+      </button>
+    </div>
+  </div>
+</ion-modal-view>

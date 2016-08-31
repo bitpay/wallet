@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('walletHomeController', function($scope, $rootScope, $interval, $timeout, $filter, $log, $ionicModal, $ionicPopover, notification, txStatus, profileService, lodash, configService, rateService, storageService, bitcore, gettext, gettextCatalog, platformInfo, addressService, ledger, bwcError, confirmDialog, txFormatService, addressbookService, go, feeService, walletService, fingerprintService, nodeWebkit, ongoingProcess) {
+angular.module('copayApp.controllers').controller('walletHomeController', function($scope, $rootScope, $interval, $timeout, $filter, $log, $ionicModal, $ionicPopover, notification, txStatus, profileService, lodash, configService, rateService, storageService, bitcore, gettext, gettextCatalog, platformInfo, addressService, ledger, bwcError, confirmDialog, txFormatService, addressbookService, go, feeService, walletService, nodeWebkit, ongoingProcess) {
 
   var isCordova = platformInfo.isCordova;
   var isWP = platformInfo.isWP;
@@ -479,58 +479,52 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     var client = profileService.focusedClient;
     var self = this;
 
-    fingerprintService.check(client, function(err) {
+    handleEncryptedWallet(client, function(err) {
       if (err) {
         return self.setSendError(err);
       }
 
-      handleEncryptedWallet(client, function(err) {
+      ongoingProcess.set('sendingTx', true);
+      walletService.publishTx(client, txp, function(err, publishedTxp) {
+        ongoingProcess.set('sendingTx', false);
         if (err) {
           return self.setSendError(err);
         }
 
-        ongoingProcess.set('sendingTx', true);
-        walletService.publishTx(client, txp, function(err, publishedTxp) {
-          ongoingProcess.set('sendingTx', false);
+        ongoingProcess.set('signingTx', true);
+        walletService.signTx(client, publishedTxp, function(err, signedTxp) {
+          ongoingProcess.set('signingTx', false);
+          walletService.lock(client);
           if (err) {
-            return self.setSendError(err);
+            $scope.$emit('Local/TxProposalAction');
+            return self.setSendError(
+              err.message ?
+              err.message :
+              gettext('The payment was created but could not be completed. Please try again from home screen'));
           }
 
-          ongoingProcess.set('signingTx', true);
-          walletService.signTx(client, publishedTxp, function(err, signedTxp) {
-            ongoingProcess.set('signingTx', false);
-            walletService.lock(client);
-            if (err) {
-              $scope.$emit('Local/TxProposalAction');
-              return self.setSendError(
-                err.message ?
-                err.message :
-                gettext('The payment was created but could not be completed. Please try again from home screen'));
-            }
-
-            if (signedTxp.status == 'accepted') {
-              ongoingProcess.set('broadcastingTx', true);
-              walletService.broadcastTx(client, signedTxp, function(err, broadcastedTxp) {
-                ongoingProcess.set('broadcastingTx', false);
-                if (err) {
-                  return self.setSendError(err);
-                }
-                self.resetForm();
-                go.walletHome();
-                var type = txStatus.notify(broadcastedTxp);
-                $scope.openStatusModal(type, broadcastedTxp, function() {
-                  $scope.$emit('Local/TxProposalAction', broadcastedTxp.status == 'broadcasted');
-                });
-              });
-            } else {
+          if (signedTxp.status == 'accepted') {
+            ongoingProcess.set('broadcastingTx', true);
+            walletService.broadcastTx(client, signedTxp, function(err, broadcastedTxp) {
+              ongoingProcess.set('broadcastingTx', false);
+              if (err) {
+                return self.setSendError(err);
+              }
               self.resetForm();
               go.walletHome();
-              var type = txStatus.notify(signedTxp);
-              $scope.openStatusModal(type, signedTxp, function() {
-                $scope.$emit('Local/TxProposalAction');
+              var type = txStatus.notify(broadcastedTxp);
+              $scope.openStatusModal(type, broadcastedTxp, function() {
+                $scope.$emit('Local/TxProposalAction', broadcastedTxp.status == 'broadcasted');
               });
-            }
-          });
+            });
+          } else {
+            self.resetForm();
+            go.walletHome();
+            var type = txStatus.notify(signedTxp);
+            $scope.openStatusModal(type, signedTxp, function() {
+              $scope.$emit('Local/TxProposalAction');
+            });
+          }
         });
       });
     });

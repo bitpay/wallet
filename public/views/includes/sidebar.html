@@ -16,12 +16,12 @@
         <div class="size-12" ng-show="item.n > 1" translate>{{item.m}}-of-{{item.n}}</div>
       </li>
       <li menu-toggle href ui-sref="add">
-          <i class="icon-arrow-right3 size-18 right m10t vm"></i>
-          <i class="fi-plus size-24 icon vm"></i>
-          <div class="tu text-bold">
-            <span class="size-12" translate>Add wallet</span>
-          </div>
-          <div translate>Create, join or import</div>
+        <i class="icon-arrow-right3 size-18 right m10t vm"></i>
+        <i class="fi-plus size-24 icon vm"></i>
+        <div class="tu text-bold">
+          <span class="size-12" translate>Add wallet</span>
+        </div>
+        <div translate>Create, join or import</div>
       </li>
       <li menu-toggle href ui-sref="bitpayCard" ng-show="index.isComplete && sidebar.bitpayCardEnabled">
         <i class="icon-arrow-right3 size-18 right m10t vm"></i>
@@ -31,11 +31,11 @@
         </div>
       </li>
       <li ng-show="!index.noFocusedWallet && !index.isWindowsPhoneApp && (index.glideraEnabled || index.coinbaseEnabled)" menu-toggle href ui-sref="buyandsell">
-          <i class="icon-arrow-right3 size-18 right m10t vm"></i>
-          <i class="icon-bank size-24 icon vm"></i>
-          <div class="tu text-bold m5t">
-            <span class="size-12" translate>Buy and Sell</span>
-          </div>
+        <i class="icon-arrow-right3 size-18 right m10t vm"></i>
+        <i class="icon-bank size-24 icon vm"></i>
+        <div class="tu text-bold m5t">
+          <span class="size-12" translate>Buy and Sell</span>
+        </div>
       </li>
       <li menu-toggle href ui-sref="amazon" ng-show="index.isComplete">
         <i class="icon-arrow-right3 size-18 right m10t vm"></i>
@@ -45,12 +45,24 @@
         </div>
       </li>
       <li ng-show="!index.noFocusedWallet" menu-toggle href ui-sref="preferencesGlobal">
-          <i class="icon-arrow-right3 size-18 right m10t vm"></i>
-          <i class="fi-widget size-24 icon vm"></i>
-          <div class="tu text-bold">
-            <span class="size-12" translate>Settings</span>
-          </div>
-          <div translate>Global preferences</div>
+        <i class="icon-arrow-right3 size-18 right m10t vm"></i>
+        <i class="fi-widget size-24 icon vm"></i>
+        <div class="tu text-bold">
+          <span class="size-12" translate>Settings</span>
+        </div>
+        <div translate>Global preferences</div>
+      </li>
+      <li ng-show="!isLockedApp && index.isCordova" menu-toggle ng-click="lockAppChange()">
+        <i class="fi-lock size-24 icon vm"></i>
+        <div class="tu text-bold m10t">
+          <span class="size-12" translate>Lock</span>
+        </div>
+      </li>
+      <li ng-show="isLockedApp && index.isCordova" menu-toggle ng-click="lockAppChange()">
+        <i class="fi-unlock size-24 icon vm"></i>
+        <div class="tu text-bold m10t">
+          <span class="size-12" translate>Unlock</span>
+        </div>
       </li>
     </ul>
   </ion-content>

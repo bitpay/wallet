@@ -1,8 +1,10 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('sidebarController',
-  function($rootScope, $timeout, $ionicScrollDelegate, lodash, profileService, configService, go, platformInfo, $window) {
+  function($rootScope, $scope, $timeout, $ionicScrollDelegate, $ionicModal, lodash, profileService, storageService, configService, go, platformInfo) {
     var self = this;
+    var config = configService.getSync();
+    $scope.isLockedApp = config.app ? config.app.locked : false;
     self.isWindowsPhoneApp = platformInfo.isWP && platformInfo.isCordova;
     self.walletSelection = false;
 
@@ -22,6 +24,31 @@ angular.module('copayApp.controllers').controller('sidebarController',
     $rootScope.$on('Local/AliasUpdated', function(event) {
       self.setWallets();
     });
+
+    $scope.lockAppChange = function() {
+      $scope.isLockedApp = !$scope.isLockedApp;
+      var opts = {
+        app: {
+          locked: $scope.isLockedApp
+        }
+      };
+      configService.set(opts, function(err) {
+        if (err) $log.debug(err);
+      });
+
+      if (!$scope.isLockedApp) return;
+
+      $rootScope.fromSidebar = true;
+
+      $ionicModal.fromTemplateUrl('views/modals/appLocked.html', {
+        scope: $rootScope,
+        backdropClickToClose: false,
+        hardwareBackButtonClose: false
+      }).then(function(modal) {
+        $rootScope.appLockedModal = modal;
+        $rootScope.appLockedModal.show();
+      });
+    };
 
     self.signout = function() {
       profileService.signout();
