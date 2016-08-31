@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('buyAmazonController',
-  function($rootScope, $scope, $ionicModal, $log, $timeout, $state, $ionicPopup, lodash, profileService, bwcError, gettext, configService, walletService, fingerprintService, amazonService, ongoingProcess, platformInfo, nodeWebkit) {
+  function($scope, $log, $timeout, $state, lodash, profileService, bwcError, gettextCatalog, configService, walletService, amazonService, ongoingProcess, platformInfo, nodeWebkit, popupService) {
 
     var self = this;
     var wallet;
@@ -33,14 +33,13 @@ angular.module('copayApp.controllers').controller('buyAmazonController',
     };
 
     this.createTx = function() {
-      self.error = null;
       self.errorInfo = null;
 
       if (lodash.isEmpty(wallet)) return;
 
       if (!wallet.canSign() && !wallet.isPrivKeyExternal()) {
         $log.info('No signing proposal: No private key');
-        self.error = bwcError.msg('MISSING_PRIVATE_KEY');
+        popupService.showAler(gettextCatalog.getString('Error'), bwcError.msg('MISSING_PRIVATE_KEY'));
         return;
       }
 
@@ -60,20 +59,14 @@ angular.module('copayApp.controllers').controller('buyAmazonController',
         amazonService.createBitPayInvoice(dataSrc, function(err, dataInvoice) {
           if (err) {
             ongoingProcess.set('Processing Transaction...', false);
-            self.error = bwcError.msg(err);
-            $timeout(function() {
-              $scope.$digest();
-            });
+            popupService.showAler(gettextCatalog.getString('Error'), bwcError.msg(err));
             return;
           }
 
           amazonService.getBitPayInvoice(dataInvoice.invoiceId, function(err, invoice) {
             if (err) {
               ongoingProcess.set('Processing Transaction...', false);
-              self.error = bwcError.msg(err);
-              $timeout(function() {
-                $scope.$digest();
-              });
+              popupService.showAlert(gettextCatalog.getString('Error'), bwcError.msg(err));
               return;
             }
 
@@ -88,19 +81,16 @@ angular.module('copayApp.controllers').controller('buyAmazonController',
                 $log.warn('Could not fetch payment request:', err);
                 var msg = err.toString();
                 if (msg.match('HTTP')) {
-                  msg = gettext('Could not fetch payment information');
+                  msg = gettextCatalog.getString('Could not fetch payment information');
                 }
-                self.error = msg;
-                $timeout(function() {
-                  $scope.$digest();
-                });
+                popupService.showAlert(gettextCatalog.getString('Error'), msg);
                 return;
               }
 
               if (!paypro.verified) {
                 ongoingProcess.set('Processing Transaction...', false);
                 $log.warn('Failed to verify payment protocol signatures');
-                self.error = gettext('Payment Protocol Invalid');
+                popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Payment Protocol Invalid'));
                 $timeout(function() {
                   $scope.$digest();
                 });
@@ -133,16 +123,13 @@ angular.module('copayApp.controllers').controller('buyAmazonController',
               walletService.createTx(wallet, txp, function(err, createdTxp) {
                 ongoingProcess.set('Processing Transaction...', false);
                 if (err) {
-                  self.error = bwcError.msg(err);
-                  $timeout(function() {
-                    $scope.$digest();
-                  });
+                  popupService.showAlert(gettextCatalog.getString('Error'), bwcError.msg(err));
                   return;
                 }
                 walletService.publishAndSign(wallet, createdTxp, function(err, tx) {
                   if (err) {
                     ongoingProcess.set('Processing Transaction...', false);
-                    self.error = bwcError.msg(err);
+                    popupService.showAlert(gettextCatalog.getString('Error'), bwcError.msg(err));
                     walletService.removeTx(wallet, tx, function(err) {
                       if (err) $log.debug(err);
                     });
@@ -182,7 +169,7 @@ angular.module('copayApp.controllers').controller('buyAmazonController',
           giftCard = {};
           giftCard.status = 'FAILURE';
           ongoingProcess.set('Processing Transaction...', false);
-          self.error = bwcError.msg(err);
+          popupService.showAlert(gettextCatalog.getString('Error'), bwcError.msg(err));
           self.errorInfo = dataSrc;
           $timeout(function() {
             $scope.$digest();
