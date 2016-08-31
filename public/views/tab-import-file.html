@@ -15,7 +15,7 @@
 
   <form name="importForm" ng-submit="importBlob(importForm)" novalidate>
 
-    <div class="list">
+    <div class="list card">
 
       <label class="item item-input item-stacked-label no-border" ng-show="!isSafari && !isCordova">
         <div class="input-label" translate>Choose a backup file from your computer</div>
@@ -56,7 +56,7 @@
     </div>
 
     <button type="submit"
-            class="button round expand black"
+            class="button button-block button-positive"
             ng-disabled="importForm.$invalid || !password " translate>
       Import backup
     </button>

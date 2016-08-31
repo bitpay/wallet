@@ -43,7 +43,7 @@
              ng-submit="bitpayCard.authenticate()"
              novalidate>
 
-          <div class="list">
+          <div class="card list">
             <label class="item item-input item-stacked-label">
               <span class="input-label">Email</span>
               <input name="email"
@@ -63,7 +63,7 @@
             </label>
           </div>
 
-          <input class="button button-block"
+          <input class="button button-block button-positive"
                  type="submit"
                  ng-disabled="!authenticateForm.$valid || bitpayCard.authenticating"
                  value="Login">
@@ -90,7 +90,7 @@
             </label>
           </div>
 
-          <input class="button button-block"
+          <input class="button button-block button-positive"
                  type="submit"
                  ng-disabled="!authenticate2FAForm.$valid || bitpayCard.authenticating"
                  value="Login">
@@ -231,4 +231,3 @@
     </div>
   </ion-content>
 </ion-view>
-
