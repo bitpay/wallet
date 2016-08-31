@@ -1,0 +1,27 @@
+.wallet-activity {
+
+  &-amount {
+    float: right;
+    font-size: 18px;
+  }
+
+  &-note {
+    margin-top: 3px;
+    font-size: 12px!important;
+
+    &-child {
+      line-height: 30px;
+      vertical-align: middle;
+    }
+
+    > i {
+      font-size: 21px;
+      margin-right: 8px;
+    }
+
+    > time {
+      float: right;
+    }
+  }
+
+}

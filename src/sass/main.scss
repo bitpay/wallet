@@ -994,3 +994,7 @@ input[type=number] {
     white-space: initial;
   }
 }
+
+@import "views/common";
+@import "views/tab-home";
+@import "views/includes/walletActivity";
