@@ -4,7 +4,7 @@
   font-weight: 400;
   src: local('Roboto Regular'),
        local('Roboto-Regular'),
-       url(../../public/fonts/Roboto-Regular.ttf)
+       url(../roboto-font/Roboto-Regular.ttf)
        format('ttf');
 }
 @font-face {
@@ -13,7 +13,7 @@
   font-weight: 700;
   src: local('Roboto Bold'),
        local('Roboto-Bold'),
-       url(../../public/fonts/Roboto-Bold.ttf)
+       url(../roboto-font/Roboto-Bold.ttf)
        format('ttf');
 }
 @font-face {
@@ -22,6 +22,6 @@
   font-weight: 400;
   src: local('Roboto Italic'),
        local('Roboto-Italic'),
-       url(../../public/fonts/Roboto-Italic.ttf)
+       url(../roboto-font/Roboto-Italic.ttf)
        format('ttf');
 }
