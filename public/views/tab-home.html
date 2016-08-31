@@ -5,9 +5,10 @@
 
   <ion-content class="padding" ng-controller="tabHomeController" ng-init="updateAllWallets(); nextStep()">
 
-    <div class="list card" ng-hide="!notifications[0]">
-      <div class="item item-heading">
+    <div class="card">
+      <div class="item item-divider  item-icon-right">
         Recent Activity
+        <i class="icon ion-ios-arrow-right" ui-sref="activity"  ng-show="notificationsMore"></i>
       </div>
       <div ng-if="fetchingNotifications" class="item text-center">
         <ion-spinner icon="lines"></ion-spinner>
@@ -17,12 +18,9 @@
         <a class="item" ng-repeat="x in notifications" ng-click="x.action()">
           <span ng-include="'views/includes/walletActivity.html'"></span>
         </a>
-
-        <a class="item text-center" ui-sref="activity" ng-show="notificationsMore">
-
-          <span translate>More</span> ({{notificationsMore}})
-          <span style="font-size:12px;color:gray">(ToDo: Cache, refresh & seft not. 1-1 no here yet)</span>
-        </a>
+        <div class="item" ng-show="!notifications[0]">
+          <span translate>Nothing to show here.</span>
+        </div>
       </div>
     </div>
 

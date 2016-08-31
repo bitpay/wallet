@@ -130,7 +130,9 @@ angular.module('copayApp.services')
         });
       });
 
-      wallet.initialize({}, function(err) {
+      wallet.initialize({
+        notificationIncludeOwn: true,
+      }, function(err) {
         if (err) {
           $log.error('Could not init notifications err:', err);
           return;

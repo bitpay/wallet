@@ -981,8 +981,15 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     wallet.getNotifications(opts, function(err, notifications) {
       if (err) return cb(err);
 
+      var ignored = {
+        'NewBlock': 1,
+        'BalanceUpdated': 1,
+        'NewOutgoingTxByThirdParty': 1,
+        'NewAddress': 1,
+      };
+
       notifications = lodash.filter(notifications, function(x) {
-        return x.type != 'NewBlock' && x.type != 'BalanceUpdated' && x.type != 'NewOutgoingTxByThirdParty';
+        return !ignored[x.type];
       });
 
       var idToName = {};
