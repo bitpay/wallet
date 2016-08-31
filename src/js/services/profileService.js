@@ -65,6 +65,13 @@ angular.module('copayApp.services')
       });
     };
 
+    function _balanceIsHidden(wallet, cb) {
+      storageService.getHideBalanceFlag(wallet.credentials.walletId, function(err, shouldHideBalance) {
+        if (err) $log.error(err);
+        var hideBalance = (shouldHideBalance == 'true') ? true : false;
+        return cb(hideBalance);
+      });
+    };
     // Adds a wallet client to profileService
     root.bindWalletClient = function(wallet, opts) {
       var opts = opts || {};
@@ -88,6 +95,10 @@ angular.module('copayApp.services')
 
       _needsBackup(wallet, function(val) {
         wallet.needsBackup = val;
+      });
+
+      _balanceIsHidden(wallet, function(val) {
+        wallet.balanceHidden = val;
       });
 
       wallet.removeAllListeners();
@@ -729,6 +740,7 @@ angular.module('copayApp.services')
 
     root.setHideBalanceFlag = function(walletId) {
       root.wallet[walletId].balanceHidden = !root.wallet[walletId].balanceHidden;
+      storageService.setHideBalanceFlag(walletId, root.wallet[walletId].balanceHidden.toString(), cb);
     }
 
     return root;
