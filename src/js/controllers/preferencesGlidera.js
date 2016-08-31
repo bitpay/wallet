@@ -1,13 +1,12 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('preferencesGlideraController',
-  function($scope, $log, $ionicModal, ongoingProcess, glideraService) {
+  function($scope, $log, $timeout, $state, ongoingProcess, glideraService, popupService, gettextCatalog) {
 
     $scope.init = function(accessToken) {
       $scope.network = glideraService.getEnvironment();
 
       $scope.token = accessToken;
-      $scope.error = null;
       $scope.permissions = null;
       $scope.email = null;
       $scope.personalInfo = null;
@@ -19,7 +18,7 @@ angular.module('copayApp.controllers').controller('preferencesGlideraController'
       glideraService.init($scope.token, function(err, glidera) {
         ongoingProcess.set('connectingGlidera');
         if (err || !glidera) {
-          $scope.error = err;
+          if (err) popupService.showAlert(gettextCatalog.getString('Error'), err);
           return;
         }
         $scope.token = glidera.token;
@@ -63,11 +62,14 @@ angular.module('copayApp.controllers').controller('preferencesGlideraController'
     };
 
     $scope.revokeToken = function() {
-      $ionicModal.fromTemplateUrl('views/modals/glidera-confirmation.html', {
-        scope: $scope
-      }).then(function(modal) {
-        $scope.glideraConfirmationModal = modal;
-        $scope.glideraConfirmationModal.show();
+      popupService.showConfirm('Glidera', 'Are you sure you would like to log out of your Glidera account?', function(res) {
+        if (res) {
+          glideraService.removeToken(function() {
+            $timeout(function() {
+              $state.go('glidera.main');
+            }, 100);
+          });
+        }
       });
     };
 
