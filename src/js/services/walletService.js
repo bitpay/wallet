@@ -1009,64 +1009,6 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     });
   };
 
-  root.processNotifications = function(notifications, limit) {
-    if (!notifications) return [];
-
-    var shown = lodash.sortBy(notifications, 'createdOn').reverse();
-
-    if (limit)
-      shown = shown.splice(0, limit);
-
-    lodash.each(shown, function(x) {
-      x.txpId = x.data ? x.data.txProposalId : null;
-      x.txid = x.data ? x.data.txid : null;
-      x.types = [x.type];
-
-      if (x.data && x.data.amount)
-        x.amountStr = txFormatService.formatAmountStr(x.data.amount);
-
-      x.action = function() {
-        // TODO?
-        $state.go('wallet.details', {
-          walletId: x.walletId,
-          txpId: x.txpId,
-          txid: x.txid,
-        });
-      };
-    });
-
-    // condense
-    var finale = [],
-      prev;
-
-
-    lodash.each(shown, function(x) {
-      if (prev && prev.walletId === x.walletId && prev.txpId && prev.txpId === x.txpId && prev.creatorId && prev.creatorId === x.creatorId) {
-        prev.types.push(x.type);
-        prev.data = lodash.assign(prev.data, x.data);
-        prev.txid = prev.txid || x.txid;
-        prev.amountStr = prev.amountStr || x.amountStr;
-        prev.creatorName = prev.creatorName || x.creatorName;
-      } else {
-        finale.push(x);
-        prev = x;
-      }
-    });
-
-    // messages...
-
-    var u = bwcService.getUtils();
-    lodash.each(finale, function(x) {
-      if (x.data && x.data.message && x.wallet && x.wallet.credentials.sharedEncryptingKey) {
-        // TODO TODO TODO => BWC
-        x.message = u.decryptMessage(x.data.message, x.wallet.credentials.sharedEncryptingKey);
-      }
-    });
-
-    return finale;
-  };
-
-
   root.setTouchId = function(wallet, enabled, cb) {
     fingerprintService.check(wallet, function(err) {
       if (err) return cb(err); {

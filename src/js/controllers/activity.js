@@ -4,17 +4,6 @@ angular.module('copayApp.controllers').controller('activityController',
   function($rootScope, $timeout, $scope, $state, lodash, profileService, walletService, configService, txFormatService, $ionicModal, $log, platformInfo) {
     var self = this;
 
-    var setNotifications = function(notifications) {
-      var n = walletService.processNotifications(notifications);
-
-      $scope.notifications = n;
-      $timeout(function() {
-        $scope.$apply();
-      }, 1);
-    };
-
-
-
 
     $scope.init = function() {
       $scope.fetchingNotifications = true;
@@ -24,7 +13,10 @@ angular.module('copayApp.controllers').controller('activityController',
           return;
         }
         $scope.fetchingNotifications = false;
-        setNotifications(n);
-      })
+        $scope.notifications = n;
+        $timeout(function() {
+          $scope.$apply();
+        }, 1);
+      });
     }
   });
