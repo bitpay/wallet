@@ -1,5 +1,5 @@
-<ion-view>
-  <ion-nav-bar>
+<ion-view id="view-add">
+  <ion-nav-bar class="bar-royal">
     <ion-nav-title>{{'Add wallet' | translate}}</ion-nav-title>
     <ion-nav-buttons side="primary">
       <button class="button no-border" ng-click="$ionicGoBack()">
@@ -10,20 +10,20 @@
 
   <ion-content>
     <ion-list>
-      <ion-item class="item-remove-animate item-icon-right" type="item-text-wrap" ui-sref="add.create.personal">
+      <a class="item item-remove-animate item-icon-right" type="item-text-wrap" ui-sref="add.create.personal">
         <h2 translate>Create new wallet</h2>
-        <i class="icon ion-chevron-right icon-accessory"></i>
-      </ion-item>
+        <i class="icon ion-ios-arrow-right nav-item-arrow-right"></i>
+      </a>
 
-      <ion-item class="item-remove-animate item-icon-right" type="item-text-wrap" ui-sref="add.join">
+      <a class="item item-remove-animate item-icon-right" type="item-text-wrap" ui-sref="add.join">
         <h2 translate>Join shared wallet</h2>
-        <i class="icon ion-chevron-right icon-accessory"></i>
-      </ion-item>
+        <i class="icon ion-ios-arrow-right nav-item-arrow-right"></i>
+      </a>
 
-      <ion-item class="item-remove-animate item-icon-right" type="item-text-wrap" ui-sref="add.import.phrase">
+      <a class="item item-remove-animate item-icon-right" type="item-text-wrap" ui-sref="add.import.phrase">
         <h2 translate>Import wallet</h2>
-        <i class="icon ion-chevron-right icon-accessory"></i>
-      </ion-item>
+        <i class="icon ion-ios-arrow-right nav-item-arrow-right"></i>
+      </a>
     </ion-list>
 
   </ion-content>
