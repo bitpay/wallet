@@ -428,8 +428,8 @@ angular.module('copayApp.services')
 
         // check if exist
         if (lodash.find(root.profile.credentials, {
-            'walletId': walletData.walletId
-          })) {
+          'walletId': walletData.walletId
+        })) {
           return cb(gettext('Cannot join the same wallet more that once'));
         }
       } catch (ex) {
@@ -735,15 +735,76 @@ angular.module('copayApp.services')
         });
       } else {}
 
-      return lodash.sortBy(ret, [function(x) {
-        return x.isComplete();
-      }, 'createdOn']);
+      return lodash.sortBy(ret, [
+        function(x) {
+          return x.isComplete();
+        }, 'createdOn'
+      ]);
     };
 
     root.toggleHideBalanceFlag = function(walletId, cb) {
       root.wallet[walletId].balanceHidden = !root.wallet[walletId].balanceHidden;
       storageService.setHideBalanceFlag(walletId, root.wallet[walletId].balanceHidden.toString(), cb);
-    }
+    };
+
+    root.getNotifications = function(limit, cb) {
+
+      var TIME_STAMP = 60 * 60 * 24 * 7;
+
+      var opts = {
+        timeSpan: TIME_STAMP,
+        includeOwn: true,
+      };
+
+      var ignored = {
+        'NewBlock': 1,
+        'BalanceUpdated': 1,
+        'NewOutgoingTxByThirdParty': 1,
+        'NewAddress': 1,
+        'TxProposalFinallyAccepted': 1,
+        'TxProposalFinallyRejected': 1,
+      };
+
+      var w = root.getWallets();
+      if (lodash.isEmpty(w)) return cb();
+
+      var l = w.length,
+        j = 0,
+        notifications = [];
+      lodash.each(w, function(wallet) {
+        wallet.getNotifications(opts, function(err, n) {
+          j++;
+          if (err) {
+            console.log('[tab-home.js.35:err:]', $log.error(err)); //TODO
+            return;
+          }
+
+          n = lodash.filter(n, function(x) {
+            return !ignored[x.type];
+          });
+
+          var idToName = {};
+          if (wallet.cachedStatus) {
+            lodash.each(wallet.cachedStatus.wallet.copayers, function(c) {
+              idToName[c.id] = c.name;
+            });
+          }
+
+          lodash.each(n, function(x) {
+            x.wallet = wallet;
+            if (x.creatorId && wallet.cachedStatus) {
+              x.creatorName = idToName[x.creatorId];
+            };
+          });
+
+          notifications.push(n);
+          if (++j == l) {
+            notifications = lodash.sortBy(notifications,'createdOn');
+            return cb(null, lodash.compact(lodash.flatten(notifications)));
+          };
+        });
+      });
+    };
 
     return root;
   });
