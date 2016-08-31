@@ -14,7 +14,7 @@
 
       <div class="item item-divider">Preferences</div>
 
-      <div class="item item-icon-left" href ui-sref="settings.language">
+      <div class="item item-icon-left" href ui-sref="tabs.language">
         <i class="icon ion-ios-chatbubble-outline"></i>
         <span translate>Language</span>
         <span class="item-note">
@@ -22,7 +22,7 @@
         </span>
       </div>
 
-      <div class="item item-icon-left" href ui-sref="settings.unit">
+      <div class="item item-icon-left" href ui-sref="tabs.unit">
         <i class="icon ion-ios-calculator-outline"></i>
         <span translate>Unit</span>
         <span class="item-note">
@@ -30,7 +30,7 @@
         </span>
       </div>
 
-      <div class="item item-icon-left" href ui-sref="settings.altCurrency">
+      <div class="item item-icon-left" href ui-sref="tabs.altCurrency">
         <i class="icon ion-social-usd-outline"></i>
         <span translate>Alternative Currency</span>
         <span class="item-note">
@@ -38,7 +38,7 @@
         </span>
       </div>
 
-      <div class="item item-icon-left" href ui-sref="settings.fee">
+      <div class="item item-icon-left" href ui-sref="tabs.fee">
         <i class="icon ion-ios-film-outline"></i>
         <span translate>Bitcoin Network Fee Policy</span>
         <span class="item-note">
@@ -77,9 +77,26 @@
         <span class="toggle-label" translate>Use Unconfirmed Funds</span>
       </ion-toggle>
 
-      <div class="item item-icon-left" href ui-sref="settings.about">
+      <div class="list">
+        <div class="item item-divider">Wallets Settings</div>
+        <div ng-repeat="item in wallets track by $index">
+          <div class="item item-icon-left" href ui-sref="tabs.preferences.main({'walletId': item.id})">
+            <i class="icon ion-briefcase size-21" ng-style="{'color':item.color}"></i>
+            {{item.name || item.id}}
+            <span  ng-show="item.n > 1" class="text-light">
+              {{item.m}}-of-{{item.n}}
+            </span>
+            <span class="badge badge-assertive" ng-show="!item.isComplete()" translate>
+              Incomplete
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="item item-divider"></div>
+      <div class="item item-icon-left" href ui-sref="tabs.about">
         <i class="icon ion-ios-film-outline"></i>
-        <span translate>About Copay</span>
+        <span translate>About Bitpay Wallet</span>
       </div>
     </div>
   </ion-content>
