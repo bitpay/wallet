@@ -4,9 +4,9 @@ angular.module('copayApp.controllers').controller('tabHomeController',
   function($rootScope, $timeout, $scope, $state, lodash, profileService, walletService, configService, txFormatService, $ionicModal, $log, platformInfo, storageService) {
 
     var setNotifications = function(notifications) {
-      var n = walletService.processNotifications(notifications, 5);
+      var n = walletService.processNotifications(notifications, 3);
       $scope.notifications = n;
-      $scope.notificationsMore = notifications.length > 5 ? notifications.length - 5 : null;
+      $scope.notificationsMore = notifications.length > 3 ? notifications.length - 3 : null;
       $timeout(function() {
         $scope.$apply();
       }, 1);
@@ -22,8 +22,6 @@ angular.module('copayApp.controllers').controller('tabHomeController',
         var timeSpan = 60 * 60 * 24 * 7;
         var notifications = [];
 
-        $scope.fetchingNotifications = true;
-
         lodash.each($scope.wallets, function(wallet) {
 
           walletService.getStatus(wallet, {}, function(err, status) {
@@ -34,22 +32,19 @@ angular.module('copayApp.controllers').controller('tabHomeController',
             wallet.status = status;
           });
 
-          walletService.getNotifications(wallet, {
-            timeSpan: timeSpan,
-            includeOwn: true,
-          }, function(err, n) {
-            if (err) {
-              console.log('[tab-home.js.35:err:]', $log.error(err)); //TODO
-              return;
-            }
-            notifications.push(n);
-            if (++j == i) {
-              $scope.fetchingNotifications = false;
-              setNotifications(lodash.compact(lodash.flatten(notifications)));
-            };
-          });
 
         });
+
+        $scope.fetchingNotifications = true;
+        profileService.getNotifications(3, function(err, n) {
+          if (err) {
+            console.log('[tab-home.js.35:err:]', $log.error(err)); //TODO
+            return;
+          }
+          $scope.fetchingNotifications = false;
+          setNotifications(n);
+        })
+
         $scope.$digest();
       }, 100);
     };

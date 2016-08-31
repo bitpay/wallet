@@ -976,40 +976,6 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     });
   };
 
-  root.getNotifications = function(wallet, opts, cb) {
-
-    wallet.getNotifications(opts, function(err, notifications) {
-      if (err) return cb(err);
-
-      var ignored = {
-        'NewBlock': 1,
-        'BalanceUpdated': 1,
-        'NewOutgoingTxByThirdParty': 1,
-        'NewAddress': 1,
-      };
-
-      notifications = lodash.filter(notifications, function(x) {
-        return !ignored[x.type];
-      });
-
-      var idToName = {};
-      if (wallet.cachedStatus) {
-        lodash.each(wallet.cachedStatus.wallet.copayers, function(c) {
-          idToName[c.id] = c.name;
-        });
-      }
-
-      lodash.each(notifications, function(x) {
-        x.wallet = wallet;
-        if (x.creatorId && wallet.cachedStatus) {
-          x.creatorName = idToName[x.creatorId];
-        };
-      });
-
-      return cb(null, notifications);
-    });
-  };
-
   root.getEncodedWalletInfo = function(wallet, cb) {
 
     var derivationPath = wallet.credentials.getBaseAddressDerivationPath();
