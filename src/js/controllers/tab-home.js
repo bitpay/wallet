@@ -1,7 +1,10 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('tabHomeController',
-  function($rootScope, $timeout, $scope, $state, lodash, profileService, walletService, configService, txFormatService, $ionicModal, $log, platformInfo, storageService) {
+  function($rootScope, $timeout, $scope, $state, $ionicScrollDelegate, lodash, profileService, walletService, configService, txFormatService, $ionicModal, $log, platformInfo, storageService) {
+
+    $scope.externalServices = {};
+    $scope.bitpayCardEnabled = true; // TODO
 
     var setNotifications = function(notifications) {
       $scope.notifications = notifications;
@@ -20,7 +23,6 @@ angular.module('copayApp.controllers').controller('tabHomeController',
       var notifications = [];
 
       lodash.each($scope.wallets, function(wallet) {
-
         walletService.getStatus(wallet, {}, function(err, status) {
           if (err) {
             console.log('[tab-home.js.35:err:]', $log.error(err)); //TODO
@@ -28,8 +30,6 @@ angular.module('copayApp.controllers').controller('tabHomeController',
           }
           wallet.status = status;
         });
-
-
       });
 
       $scope.fetchingNotifications = true;
@@ -42,6 +42,7 @@ angular.module('copayApp.controllers').controller('tabHomeController',
         }
         $scope.fetchingNotifications = false;
         setNotifications(n);
+        $ionicScrollDelegate.resize();
       })
     };
 
@@ -63,20 +64,19 @@ angular.module('copayApp.controllers').controller('tabHomeController',
             return;
           }
           setNotifications(n);
+          $ionicScrollDelegate.resize();
         })
       });
     };
 
-    $scope.externalServices = {};
     $scope.nextStep = function() {
       lodash.each(['AmazonGiftCards', 'BitpayCard', 'BuyAndSell'], function(service) {
         storageService.getNextStep(service, function(err, value) {
           $scope.externalServices[service] = value ? true : false;
+          $ionicScrollDelegate.resize();
         });
       });
     };
-
-    $scope.bitpayCardEnabled = true; // TODO
 
     var listeners = [
       $rootScope.$on('bwsEvent', function(e, walletId, type, n) {
