@@ -10,10 +10,6 @@
 
   <ion-content ng-controller="importController" ng-init="type='file'">
 
-    <div class="padding assertive" ng-show="error">
-      {{error|translate}}
-    </div>
-
     <form name="importForm" ng-submit="importBlob(importForm)" novalidate>
 
       <div class="list">

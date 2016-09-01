@@ -11,10 +11,6 @@
 
   <ion-content ng-controller="joinController as join">
 
-    <div class="padding assertive" ng-show="join.error">
-      {{join.error|translate}}
-    </div>
-
     <form name="joinForm" ng-submit="join.join(joinForm)" novalidate>
 
       <div class="list">
