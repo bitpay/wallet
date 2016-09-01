@@ -58,7 +58,6 @@ angular.module('copayApp.controllers').controller('tabHomeController',
         profileService.getNotifications({
           limit: 3
         }, function(err, n) {
-          console.log('[tab-home.js.57]', n); //TODO
           if (err) {
             console.log('[tab-home.js.35:err:]', $log.error(err)); //TODO
             return;
