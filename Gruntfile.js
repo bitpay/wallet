@@ -245,7 +245,7 @@ module.exports = function(grunt) {
     }
   });
 
-  grunt.registerTask('default', ['nggettext_compile', 'exec:appConfig', 'exec:coinbase', 'browserify', 'sass', 'concat', 'copy:ionic_fonts', 'copy:ionic_js', 'copy:ionic_css']);
+  grunt.registerTask('default', ['nggettext_compile', 'exec:appConfig', 'exec:coinbase', 'browserify', 'sass', 'concat', 'copy:ionic_fonts', 'copy:ionic_js']);
   grunt.registerTask('prod', ['default', 'uglify']);
   grunt.registerTask('translate', ['nggettext_extract']);
   grunt.registerTask('test', ['karma:unit']);
