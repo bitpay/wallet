@@ -1,11 +1,12 @@
-<ion-nav-bar class="bar-royal">
-  <ion-nav-title>Export Wallet</ion-nav-title>
-  <ion-nav-buttons side="primary">
+<ion-view>
+  <ion-nav-bar class="bar-royal">
+    <ion-nav-title>{{'Export Wallet' | translate}}</ion-nav-title>
+    <ion-nav-buttons side="primary">
     <button class="button back-button" ui-sref="tabs.preferences.preferencesAdvanced">
       <i class="icon ion-ios-arrow-thin-left"></i>
     </button>
-  </ion-nav-buttons>
-</ion-nav-bar>
+    </ion-nav-buttons>
+  </ion-nav-bar>
 
   <ion-content ng-controller="exportController" ng-init="init()" cache-view="true">
 
