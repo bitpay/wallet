@@ -101,18 +101,7 @@ angular.module('copayApp.controllers').controller('importController',
             return;
 
           }
-
-          walletService.updateRemotePreferences(client, {}, function() {
-            $log.debug('Remote preferences saved for:' + client.credentials.walletId)
-          });
-
-          profileService.setBackupFlag(client.credentials.walletId);
-          if ($stateParams.fromOnboarding) {
-            profileService.setDisclaimerAccepted(function(err) {
-              if (err) $log.error(err);
-            });
-          }
-          $state.go('tabs.home');
+          finish(client);
         });
       }, 100);
     };
@@ -132,19 +121,7 @@ angular.module('copayApp.controllers').controller('importController',
               $scope.$apply();
             });
           }
-
-
-          walletService.updateRemotePreferences(client, {}, function() {
-            $log.debug('Remote preferences saved for:' + client.credentials.walletId)
-          });
-
-          profileService.setBackupFlag(client.credentials.walletId);
-          if ($stateParams.fromOnboarding) {
-            profileService.setDisclaimerAccepted(function(err) {
-              if (err) $log.error(err);
-            });
-          }
-          $state.go('tabs.home');
+          finish(client);
         });
       }, 100);
     };
@@ -161,13 +138,6 @@ angular.module('copayApp.controllers').controller('importController',
             $scope.error = err;
             return $timeout(function() {
               $scope.$apply();
-            });
-          }
-
-          profileService.setBackupFlag(walletId);
-          if ($stateParams.fromOnboarding) {
-            profileService.setDisclaimerAccepted(function(err) {
-              if (err) $log.error(err);
             });
           }
           $state.go('tabs.home');
@@ -193,18 +163,7 @@ angular.module('copayApp.controllers').controller('importController',
               $scope.$apply();
             });
           }
-
-          walletService.updateRemotePreferences(client, {}, function() {
-            $log.debug('Remote preferences saved for:' + client.credentials.walletId)
-          });
-
-          profileService.setBackupFlag(client.credentials.walletId);
-          if ($stateParams.fromOnboarding) {
-            profileService.setDisclaimerAccepted(function(err) {
-              if (err) $log.error(err);
-            });
-          }
-          $state.go('tabs.home');
+          finish(client);
         });
       }, 100);
     };
@@ -312,19 +271,7 @@ angular.module('copayApp.controllers').controller('importController',
             popupService.showAlert(gettextCatalog.getString('Error'), err);
             return;
           }
-
-
-          walletService.updateRemotePreferences(wallet, {}, function() {
-            $log.debug('Remote preferences saved for:' + wallet.walletId)
-          });
-
-          profileService.setBackupFlag(wallet.walletId);
-          if ($stateParams.fromOnboarding) {
-            profileService.setDisclaimerAccepted(function(err) {
-              if (err) $log.error(err);
-            });
-          }
-          $state.go('tabs.home');
+          finish(wallet);
         });
       }, 100);
     };
@@ -388,21 +335,24 @@ angular.module('copayApp.controllers').controller('importController',
             popupService.showAlert(gettextCatalog.getString('Error'), err);
             return;
           }
-
-
-          walletService.updateRemotePreferences(wallet, {}, function() {
-            $log.debug('Remote preferences saved for:' + wallet.walletId)
-          });
-
-          profileService.setBackupFlag(wallet.walletId);
-          if ($stateParams.fromOnboarding) {
-            profileService.setDisclaimerAccepted(function(err) {
-              if (err) $log.error(err);
-            });
-          }
-          $state.go('tabs.home');
+          finish(wallet);
         });
       }, 100);
+    };
+
+    var finish = function(wallet) {
+
+      walletService.updateRemotePreferences(wallet, {}, function() {
+        $log.debug('Remote preferences saved for:' + wallet.credentials.walletId)
+      });
+
+      profileService.setBackupFlag(wallet.credentials.walletId);
+      if ($stateParams.fromOnboarding) {
+        profileService.setDisclaimerAccepted(function(err) {
+          if (err) $log.error(err);
+        });
+      }
+      $state.go('tabs.home');
     };
 
     updateSeedSourceSelect();
