@@ -4,6 +4,7 @@ angular.module('copayApp.controllers').controller('welcomeController', function(
 
   $scope.goImport = function(code) {
     $state.go('tabs.import', {
+      fromOnboarding: true,
       code: code
     });
   };
