@@ -36,7 +36,6 @@ angular.module('copayApp.controllers').controller('importController',
 
     $scope.processWalletInfo = function(code) {
       if (!code) return;
-
       $scope.importErr = false;
       var parsedCode = code.split('|');
 
@@ -407,5 +406,6 @@ angular.module('copayApp.controllers').controller('importController',
     };
 
     updateSeedSourceSelect();
-    $scope.setSeedSource('new');
+    $scope.setSeedSource();
+    if ($stateParams.code) $scope.processWalletInfo($stateParams.code);
   });

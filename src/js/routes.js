@@ -270,12 +270,15 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
       })
       .state('tabs.import', {
         url: '/import/:fromOnboarding',
-//        abstract: true,
+        //        abstract: true,
         views: {
           'tab-home': {
             templateUrl: 'views/import.html'
           },
-        }
+        },
+        params: {
+          code: null
+        },
       })
       .state('tabs.import.phrase', {
         url: '/tab-import-phrase',
