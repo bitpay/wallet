@@ -36,6 +36,14 @@
   }
 }
 
+.search-button {
+  .icon:before {
+    color: #fff;
+    font-size: 30px !important;
+    margin-left: 5px;
+  }
+}
+
 .button-block {
   width: 90% !important;
   margin-left: auto;
