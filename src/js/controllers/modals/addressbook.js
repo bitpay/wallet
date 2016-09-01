@@ -1,21 +1,8 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('addressbookModalController', function($scope, $log, $state, $timeout, $ionicPopup, addressbookService, lodash) {
+angular.module('copayApp.controllers').controller('addressbookModalController', function($scope, $log, $state, $timeout, $ionicPopup, addressbookService, lodash, popupService) {
 
   var contacts;
-
-  // An alert dialog
-  var showAlert = function(title, msg, cb) {
-    $log.warn(title + ": " + msg);
-    var alertPopup = $ionicPopup.alert({
-      title: title,
-      template: msg
-    });
-
-    if (!cb) cb = function() {};
-
-    alertPopup.then(cb);
-  };
 
   $scope.initAddressbook = function() {
     addressbookService.list(function(err, ab) {
@@ -94,7 +81,7 @@ angular.module('copayApp.controllers').controller('addressbookModalController', 
     $timeout(function() {
       addressbookService.add(addressbook, function(err, ab) {
         if (err) {
-          showAlert(err);
+          popupService.showAlert(err);
           return;
         }
         $scope.initAddressbook();
@@ -108,7 +95,7 @@ angular.module('copayApp.controllers').controller('addressbookModalController', 
     $timeout(function() {
       addressbookService.remove(addr, function(err, ab) {
         if (err) {
-          showAlert(err);
+          popupService.showAlert(err);
           return;
         }
         $scope.initAddressbook();
