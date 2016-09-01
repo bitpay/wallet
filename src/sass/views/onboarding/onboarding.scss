@@ -6,8 +6,62 @@
   background: -o-linear-gradient(top, rgba(30, 49, 134, 1) 0%, rgba(17, 27, 73, 1) 100%);
   background: -ms-linear-gradient(top, rgba(30, 49, 134, 1) 0%, rgba(17, 27, 73, 1) 100%);
   background: linear-gradient(to bottom, rgba(30, 49, 134, 1) 0%, rgba(17, 27, 73, 1) 100%);
-  color:#fff;
+  color: #fff;
+  ion-header-bar {
+    background: rgb(30, 49, 134);
+    color: #fff;
+    button {
+      color: #fff;
+    }
+    .secondary-buttons {
+      button {
+        color: rgba(255, 255, 255, .5);
+      }
+    }
+  }
+  ion-content {
+    color: #fff;
+    .scroll {}
+    h2 {
+      color: #fff;
+      font-size: 1.8rem;
+    }
+    p {
+      &.tagline {
+        color: rgba(255, 255, 255, .5);
+      }
+    }
+    .col {
+      @include center-block(.5rem);
+    }
+    #cta {
+      background-size: contain;
+      width: 100%;
+      clear: both;
+      height: 20rem;
+      margin-bottom: -3rem;
+      background-position: center;
+      background-repeat: no-repeat;
+      img {
+        height: 16rem;
+      }
+    }
+    button {
+      &.next-slide {
+        background: rgba(215, 215, 215, 0.10);
+      }
+    }
+  }
+  .swiper-pagination {
+    &-bullet {
+      background: rgb(100, 124, 232);
+      &-active {
+        background: rgb(100, 124, 232);
+      }
+    }
+  }
 }
 
 @import "terms-of-use";
 @import "onboard-welcome";
+@import "onboard-tour";
