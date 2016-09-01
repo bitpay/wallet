@@ -995,10 +995,17 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
   };
 
   root.setTouchId = function(wallet, enabled, cb) {
+
+    var opts = {
+      touchIdFor: {}
+    };
+    opts.touchIdFor[wallet.id] = enabled;
+
     fingerprintService.check(wallet, function(err) {
-      if (err) return cb(err); {
-        $log.debug(err);
-        return;
+      if (err) {
+        opts.touchIdFor[wallet.id] = !enabled;
+        $log.debug('Error with fingerprint:' + err);
+        return cb(err);
       }
       configService.set(opts, cb);
     });

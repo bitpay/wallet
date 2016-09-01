@@ -6,7 +6,7 @@
   "name": "bitpay",
   "description": "The BitPay Bitcoin Wallet",
   "author": "BitPay",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "keywords": [
     "wallet",
     "copay",

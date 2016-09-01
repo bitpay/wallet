@@ -827,6 +827,7 @@ angular.module('copayApp.services')
         prev;
 
 
+        // REMOVE (if we want 1-to-1 notification) ????
         lodash.each(shown, function(x) {
           if (prev && prev.walletId === x.walletId && prev.txpId && prev.txpId === x.txpId && prev.creatorId && prev.creatorId === x.creatorId) {
             prev.types.push(x.type);
