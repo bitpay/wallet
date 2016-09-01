@@ -31,19 +31,19 @@ angular.module('copayApp.controllers').controller('tabHomeController',
           wallet.status = status;
         });
       });
-
-      $scope.fetchingNotifications = true;
-      profileService.getNotifications({
-        limit: 3
-      }, function(err, n) {
-        if (err) {
-          console.log('[tab-home.js.35:err:]', $log.error(err)); //TODO
-          return;
-        }
-        $scope.fetchingNotifications = false;
-        setNotifications(n);
-        $ionicScrollDelegate.resize();
-      })
+      //
+      // $scope.fetchingNotifications = true;
+      // profileService.getNotifications({
+      //   limit: 3
+      // }, function(err, n) {
+      //   if (err) {
+      //     console.log('[tab-home.js.35:err:]', $log.error(err)); //TODO
+      //     return;
+      //   }
+      //   $scope.fetchingNotifications = false;
+      //   setNotifications(n);
+      //   $ionicScrollDelegate.resize();
+      // })
     };
 
     $scope.updateWallet = function(wallet) {
@@ -55,17 +55,17 @@ angular.module('copayApp.controllers').controller('tabHomeController',
         }
         wallet.status = status;
 
-        profileService.getNotifications({
-          limit: 3
-        }, function(err, n) {
-          console.log('[tab-home.js.57]', n); //TODO
-          if (err) {
-            console.log('[tab-home.js.35:err:]', $log.error(err)); //TODO
-            return;
-          }
-          setNotifications(n);
-          $ionicScrollDelegate.resize();
-        })
+        // profileService.getNotifications({
+        //   limit: 3
+        // }, function(err, n) {
+        //   console.log('[tab-home.js.57]', n); //TODO
+        //   if (err) {
+        //     console.log('[tab-home.js.35:err:]', $log.error(err)); //TODO
+        //     return;
+        //   }
+        //   setNotifications(n);
+        //   $ionicScrollDelegate.resize();
+        // })
       });
     };
 
