@@ -1,14 +1,14 @@
-<ion-view>
-  <ion-nav-bar class="bar-royal">
+<ion-view id="terms-of-use">
+  <ion-nav-bar class="bar-ligt">
     <ion-nav-title>{{'Terms of Use' | translate}}</ion-nav-title>
     <ion-nav-buttons side="primary">
       <button class="button no-border" href ui-sref="onboarding.disclaimer">
-        <i class="icon ion-chevron-left"></i> {{'Back' | translate}}
+        <i class="icon ion-arrow-left-c"></i>
       </button>
     </ion-nav-buttons>
   </ion-nav-bar>
   <ion-content ng-controller="termsController" ng-init="accept = false;">
-      <p ng-include="'views/includes/terms.html'"></p>
+      <div ng-include="'views/includes/terms.html'"></div>
       <div class="padding-vertical" ng-show="lang != 'en'">
         <a ng-click="$root.openExternalLink('https://copay.io/disclaimer')" translate>Official English Disclaimer</a>
       </div>

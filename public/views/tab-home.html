@@ -1,39 +1,32 @@
 <ion-view id="tab-home">
   <ion-nav-bar class="bar-royal">
-    <ion-nav-title>Home</ion-nav-title>
+    <ion-nav-title>{{'Home' | translate}}</ion-nav-title>
   </ion-nav-bar>
 
   <ion-content class="padding" ng-controller="tabHomeController" ng-init="updateAllWallets(); nextStep()">
 
     <div class="list card" ng-hide="!notifications[0]">
-      <div class="item item-heading">
+      <a class="item item-icon-right item-heading" ui-sref="activity" translate>
         Recent Activity
-      </div>
-      <div ng-if="fetchingNotifications" class="item text-center">
+        <i class="icon ion-ios-arrow-right nav-item-arrow-right"></i>
+      </a>
+      <span ng-if="fetchingNotifications" class="item text-center">
         <ion-spinner icon="lines"></ion-spinner>
         <div translate>Updating activity. Please stand by</div>
-      </div>
-      <div ng-if="!fetchingNotifications">
-        <a class="item" ng-repeat="x in notifications" ng-click="x.action()">
-          <span ng-include="'views/includes/walletActivity.html'"></span>
-        </a>
-
-        <a class="item text-center" ui-sref="activity" ng-show="notificationsMore">
-
-          <span translate>More</span> ({{notificationsMore}})
-          <span style="font-size:12px;color:gray">(ToDo: Cache, refresh & seft not. 1-1 no here yet)</span>
-        </a>
-      </div>
+      </span>
+      <a ng-if="!fetchingNotifications" class="item" ng-repeat="x in notifications" ng-click="x.action()">
+        <span ng-include="'views/includes/walletActivity.html'"></span>
+      </a>
     </div>
 
     <div class="list card" ng-hide="!wallets[0]">
-      <div class="item item-icon-right item-heading">
+      <div class="item item-icon-right item-heading" translate>
         Wallets
-        <a ui-sref="add.main"><i class="icon ion-ios-plus-empty list-add-button"></i></a>
+        <a ui-sref="tabs.add"><i class="icon ion-ios-plus-empty list-add-button"></i></a>
       </div>
       <a ng-repeat="wallet in wallets track by $index"
          class="item item-icon-left item-big-icon-left item-icon-right"
-         ui-sref="wallet.details({'walletId': wallet.id})">
+         ui-sref="tabs.details({'walletId': wallet.id})">
         <i class="icon big-icon-svg">
           <img src="img/icon-wallet.svg" ng-style="{'background-color': wallet.color}"/>
         </i>
@@ -63,7 +56,7 @@
     </div>
 
     <div class="list card" ng-show="externalServices.BuyAndSell && (glideraEnabled || coinbaseEnabled)">
-      <div class="item item-heading">
+      <div class="item item-heading" translate>
         Buy & Sell Bitcoin
       </div>
       <a ng-show="glideraEnabled" ui-sref="glidera.main" class="item item-icon-right">
@@ -76,36 +69,37 @@
       </a> -->
     </div>
 
-    <div class="list card" ng-show="!externalServices.AmazonGiftCards || !externalServices.BitpayCard || !externalServices.BuyAndSell">
-      <div class="item item-heading">
+    <div class="list card"
+         ng-show="!externalServices.AmazonGiftCards || !externalServices.BitpayCard || !externalServices.BuyAndSell || !wallets[1]">
+      <div class="item item-heading" translate>
         Next steps
       </div>
-      <a ng-show="!wallets[0]" ui-sref="add.main" class="item item-icon-left item-big-icon-left item-icon-right">
+      <a ng-show="!wallets[1]" ui-sref="tabs.add" class="item item-icon-left item-big-icon-left item-icon-right">
        <i class="icon big-icon-svg">
          <img class="icon-create-wallet"/>
        </i>
-        <span>Crate a bitcoin wallet</span>
+        <span translate>Create a bitcoin wallet</span>
         <i class="icon ion-ios-arrow-right nav-item-arrow-right"></i>
       </a>
       <a ng-show="!externalServices.BuyAndSell" ui-sref="buyandsell" class="item item-icon-left item-big-icon-left item-icon-right">
        <i class="icon big-icon-svg">
          <img class="icon-buy-bitcoin"/>
        </i>
-        <span>Buy Bitcoin</span>
+        <span translate>Buy Bitcoin</span>
         <i class="icon ion-ios-arrow-right nav-item-arrow-right"></i>
       </a>
       <a ui-sref="bitpayCard.main" ng-show="!externalServices.BitpayCard" class="item item-icon-left item-big-icon-left item-icon-right">
        <i class="icon big-icon-svg">
          <img class="icon-bitpay-card"/>
        </i>
-        <span>Add BitPay Card</span>
+        <span translate>Add BitPay Card</span>
         <i class="icon ion-ios-arrow-right nav-item-arrow-right"></i>
       </a>
       <a ui-sref="amazon.main" ng-show="!externalServices.AmazonGiftCards" class="item item-icon-left item-big-icon-left item-icon-right">
         <i class="icon big-icon-svg">
           <img class="icon-gift"/>
         </i>
-        <span>Add Amazon Gift Card</span>
+        <span translate>Add Amazon Gift Card</span>
         <i class="icon ion-ios-arrow-right nav-item-arrow-right"></i>
       </a>
     </div>

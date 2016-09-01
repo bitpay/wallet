@@ -1,23 +1,24 @@
 <ion-nav-bar class="bar-royal">
   <ion-nav-title>Export Wallet</ion-nav-title>
   <ion-nav-buttons side="primary">
-    <button class="button no-border" ui-sref="wallet.preferencesAdvanced">
+    <button class="button no-border" ui-sref="tabs.preferences.preferencesAdvanced">
       <i class="icon ion-chevron-left"></i> Back
     </button>
   </ion-nav-buttons>
 </ion-nav-bar>
 
-<ion-content ng-controller="exportController" ng-init="init()">
+  <ion-content ng-controller="exportController" ng-init="init()">
 
-    <div class="m20t text-gray" ng-show="supported">
-      <div class="text-center m20b">
-        <qrcode size="220" version="8" error-correction-level="M" data="{{exportWalletInfo}}"></qrcode>
+      <div class="m20t text-gray" ng-show="supported">
+        <div class="text-center m20b">
+          <qrcode size="220" version="8" error-correction-level="M" data="{{exportWalletInfo}}"></qrcode>
+        </div>
+        <div class="text-center size-12 m10" translate>From the destination device, go to Add wallet &gt; Import wallet and scan this QR code</div>
       </div>
-      <div class="text-center size-12 m10" translate>From the destination device, go to Add wallet &gt; Import wallet and scan this QR code</div>
-    </div>
 
-    <div class="m20t text-gray" ng-show="!supported">
-      <div class="text-center size-12 m10" translate>Exporting via QR not supported for this wallet</div>
-    </div>
+      <div class="m20t text-gray" ng-show="!supported">
+        <div class="text-center size-12 m10" translate>Exporting via QR not supported for this wallet</div>
+      </div>
 
-</ion-content>
+  </ion-content>
+</ion-view>

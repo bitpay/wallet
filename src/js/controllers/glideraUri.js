@@ -1,41 +1,34 @@
 'use strict';
 angular.module('copayApp.controllers').controller('glideraUriController',
-  function($scope, $log, $stateParams, $timeout, profileService, configService, glideraService, storageService, $state, ongoingProcess) {
+  function($scope, $log, $stateParams, $timeout, glideraService, storageService, $state, ongoingProcess, popupService, gettextCatalog) {
 
-    this.submitOauthCode = function(code) {
+    var submitOauthCode = function(code) {
       $log.debug('Glidera Oauth Code:' + code);
-      var self = this;
-      var glideraTestnet = configService.getSync().glidera.testnet;
-      var network = glideraTestnet ? 'testnet' : 'livenet';
+      $scope.network = glideraService.getEnvironment();
       ongoingProcess.set('connectingGlidera', true);
-      this.error = null;
       $timeout(function() {
         glideraService.getToken(code, function(err, data) {
           ongoingProcess.set('connectingGlidera', false);
           if (err) {
-            self.error = err;
-            $timeout(function() {
-              $scope.$apply();
-            }, 100);
+            popupService.showAlert(gettextCatalog.getString('Error'), err);
           } else if (data && data.access_token) {
-            storageService.setGlideraToken(network, data.access_token, function() {
-              $scope.$emit('Local/GlideraUpdated', data.access_token);
+            storageService.setGlideraToken($scope.network, data.access_token, function() {
               $timeout(function() {
-                $state.go('glidera');
+                $state.go('glidera.main');
                 $scope.$apply();
-              }, 100);
+              }, 500);
             });
           }
         });
       }, 100);
     };
 
-    this.checkCode = function() {
+    $scope.checkCode = function() {
       if ($stateParams.url) {
         var match = $stateParams.url.match(/code=(.+)/);
         if (match && match[1]) {
-          this.code = match[1];
-          return this.submitOauthCode(this.code);
+          submitOauthCode(match[1]);
+          return;
         }
       }
       $log.error('Bad state: ' + JSON.stringify($stateParams));

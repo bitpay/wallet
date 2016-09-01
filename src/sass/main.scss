@@ -4,9 +4,7 @@
  *
  */
  body {
-  font-family: Roboto;
-  font-style : normal;
-  font-weight: 400;
+  font-family: 'roboto-regular';
 }
 
 h3.title {
@@ -887,6 +885,14 @@ input[type=file] {
   text-align: left;
 }
 
+.right {
+  float: right;
+}
+
+.left {
+  float: left;
+}
+
 .input-label {
   max-width: none;
   width: inherit;
@@ -999,6 +1005,8 @@ input[type=number] {
 
 @import "ionic";
 @import "common";
+@import 'mixins/mixins';
 @import "views/add";
 @import "views/tab-home";
+@import 'views/onboarding/onboarding';
 @import "views/includes/walletActivity";

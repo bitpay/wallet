@@ -1,88 +1,88 @@
-<ion-nav-bar class="bar-royal" ng-controller="backController">
-  <ion-nav-buttons side="primary">
-    <button class="button no-border" ng-click="importGoBack()">
-      <i class="icon ion-chevron-left"></i> Back
-    </button>
-  </ion-nav-buttons>
-  <ion-nav-title>Import wallet</ion-nav-title>
-</ion-nav-bar>
+<ion-view>
+  <ion-nav-bar class="bar-royal" ng-controller="backController">
+    <ion-nav-buttons side="primary">
+      <button class="button no-border" ng-click="importGoBack()">
+        <i class="icon ion-chevron-left"></i> {{'Back' | translate}}
+      </button>
+    </ion-nav-buttons>
+    <ion-nav-title>Import wallet</ion-nav-title>
+  </ion-nav-bar>
 
-<ion-content ng-controller="importController" ng-init="type='12'">
+  <ion-content ng-controller="importController" ng-init="type='12'">
 
-  <div ng-show="importErr || error" class="padding assertive" ng-click="importErr = error = null">
-    <div ng-show="importErr">
-      <div translate>Could not access the wallet at the server. Please check:</div>
-      <ul>
-        <li translate>The password of the recovery phrase (if set)</li>
-        <li translate>The derivation path</li>
-        <li translate>The wallet service URL</li>
-      </ul>
-      <div translate>
-        NOTE: To import a wallet from a 3rd party software, please go to Add Wallet &gt; Create Wallet, and specify the Recovery Phrase there.
-      </div>
-    </div>
-
-    <div ng-show="error">
-      {{error|translate}}
-    </div>
-  </div>
-
-  <form name="importForm12" ng-submit="importMnemonic(importForm12)" novalidate>
-    <div class="list card">
-
-      <div class="row">
-        <div class="col col-90">
-          <label class="item item-input item-stacked-label no-border">
-            <span class="input-label" translate>Type the Recovery Phrase (usually 12 words)</span>
-            <textarea name="words"
-                      ng-model="words"
-                      rows="3"
-                      autocapitalize="off"
-                      spellcheck="false"></textarea>
-          </label>
-        </div>
-        <div class="col text-center">
-          <qr-scanner class="qr-icon size-24" on-scan="processWalletInfo(data)"></qr-scanner>
+    <div ng-show="importErr || error" class="padding assertive" ng-click="importErr = error = null">
+      <div ng-show="importErr">
+        <div translate>Could not access the wallet at the server. Please check:</div>
+        <ul>
+          <li translate>The password of the recovery phrase (if set)</li>
+          <li translate>The derivation path</li>
+          <li translate>The wallet service URL</li>
+        </ul>
+        <div translate>
+          NOTE: To import a wallet from a 3rd party software, please go to Add Wallet &gt; Create Wallet, and specify the Recovery Phrase there.
         </div>
       </div>
 
-      <ion-toggle ng-model="showAdv" toggle-class="toggle-stable">
-        <span translate ng-show="!showAdv">Show advanced options</span>
-        <span translate ng-show="showAdv">Hide advanced options</span>
-      </ion-toggle>
+      <div ng-show="error">
+        {{error|translate}}
+      </div>
+    </div>
 
-      <div ng-show="showAdv">
+    <form name="importForm12" ng-submit="importMnemonic(importForm12)" novalidate>
+      <div class="list card">
 
-        <label class="item item-input item-stacked-label">
-          <span class="input-label">Wallet Service URL</span>
-          <input type="text" id="bwsurl" name="bwsurl" ng-model="bwsurl">
-        </label>
+        <div class="row">
+          <div class="col col-90">
+            <label class="item item-input item-stacked-label no-border">
+              <span class="input-label" translate>Type the Recovery Phrase (usually 12 words)</span>
+              <textarea name="words"
+                        ng-model="words"
+                        rows="3"
+                        autocapitalize="off"
+                        spellcheck="false"></textarea>
+            </label>
+          </div>
+          <div class="col text-center">
+            <qr-scanner class="qr-icon size-24" on-scan="processWalletInfo(data)"></qr-scanner>
+          </div>
+        </div>
 
-        <label class="item item-input item-stacked-label">
-          <span class="input-label" translate>Password</span>
-          <input type="text"
-                 placeholder="{{'The recovery phrase could require a password to be imported'|translate}}"
-                 autocapitalize="off"
-                 name="passphrase"
-                 ng-model="passphrase">
-        </label>
-
-        <label class="item item-input item-stacked-label">
-          <span class="input-label" translate>Derivation Path</span>
-          <input type="text"
-                 placeholder="{{'BIP32 path for address derivation'|translate}}"
-                 name="derivationPath"
-                 ng-model="derivationPath">
-        </label>
-
-        <ion-toggle ng-model="testnetEnabled" ng-change="setDerivationPath(testnetEnabled)" toggle-class="toggle-positive">
-          Testnet
+        <ion-toggle ng-model="showAdv" toggle-class="toggle-stable">
+          <span translate ng-show="!showAdv">Show advanced options</span>
+          <span translate ng-show="showAdv">Hide advanced options</span>
         </ion-toggle>
-      </div>
-    </div>
 
-    <button type="submit"
-            class="button button-block button-positive"
-            ng-disabled="importForm12.$invalid" translate>Import</button>
-  </form>
-</ion-content>
+        <div ng-show="showAdv">
+
+          <label class="item item-input item-stacked-label">
+            <span class="input-label">Wallet Service URL</span>
+            <input type="text" id="bwsurl" name="bwsurl" ng-model="bwsurl">
+          </label>
+
+          <label class="item item-input item-stacked-label">
+            <span class="input-label" translate>Password</span>
+            <input type="text"
+                   placeholder="{{'The recovery phrase could require a password to be imported'|translate}}"
+                   autocapitalize="off"
+                   name="passphrase"
+                   ng-model="passphrase">
+          </label>
+
+          <label class="item item-input item-stacked-label">
+            <span class="input-label" translate>Derivation Path</span>
+            <input type="text"
+                   placeholder="{{'BIP32 path for address derivation'|translate}}"
+                   name="derivationPath"
+                   ng-model="derivationPath">
+          </label>
+
+          <ion-toggle ng-model="testnetEnabled" ng-change="setDerivationPath(testnetEnabled)" toggle-class="toggle-positive">
+            Testnet
+          </ion-toggle>
+        </div>
+      </div>
+
+      <button type="submit" class="button button-block button-positive" ng-disabled="importForm12.$invalid" translate>Import</button>
+    </form>
+  </ion-content>
+</ion-view>

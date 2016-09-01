@@ -1,13 +1,13 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('amazonCardDetailsController', function($scope, $log, $timeout, bwcError, amazonService, lodash, ongoingProcess) {
+angular.module('copayApp.controllers').controller('amazonCardDetailsController', function($scope, $log, $timeout, bwcError, amazonService, lodash, ongoingProcess, popupService, gettextCatalog) {
 
   $scope.cancelGiftCard = function() {
     ongoingProcess.set('Canceling gift card...', true);
     amazonService.cancelGiftCard($scope.card, function(err, data) {
       ongoingProcess.set('Canceling gift card...', false);
       if (err) {
-        $scope.error = bwcError.msg(err);
+        popupService.showAlert(gettextCatalog.getString('Error'), bwcError.msg(err));
         return;
       }
       $scope.card.cardStatus = data.cardStatus;
@@ -29,7 +29,7 @@ angular.module('copayApp.controllers').controller('amazonCardDetailsController',
   $scope.refreshGiftCard = function() {
     amazonService.getPendingGiftCards(function(err, gcds) {
       if (err) {
-        self.error = err;
+        popupService.showAlert(gettextCatalog.getString('Error'), err);
         return;
       }
       lodash.forEach(gcds, function(dataFromStorage) {
@@ -37,8 +37,7 @@ angular.module('copayApp.controllers').controller('amazonCardDetailsController',
           $log.debug("creating gift card");
           amazonService.createGiftCard(dataFromStorage, function(err, giftCard) {
             if (err) {
-              self.error = bwcError.msg(err);
-              $log.debug(bwcError.msg(err));
+              popupService.showAlert(gettextCatalog.getString('Error'), bwcError.msg(err));
               return;
             }
             if (!lodash.isEmpty(giftCard)) {

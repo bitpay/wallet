@@ -1,5 +1,5 @@
 <ion-view >
-  <ion-nav-bar>
+  <ion-nav-bar class="bar-stable">
     <ion-nav-title>{{'Advanced Preferences' | translate}}</ion-nav-title>
     <ion-nav-back-button>
       {{'Back' | translate}}
@@ -9,27 +9,27 @@
     <div class="list">
       <div class="item item-divider">
       </div>
-      <div class="item item-icon-right" href ui-sref="wallet.information">
+      <div class="item item-icon-right" href ui-sref="tabs.preferences.information">
         <span translate>Wallet Information</span>
         <i class="icon ion-ios-arrow-right"></i>
       </div>
-      <div class="item item-icon-right" ng-show="index.network == 'livenet'" href ui-sref="wallet.paperWallet">
+      <div class="item item-icon-right" ng-show="index.network == 'livenet'" href ui-sref="tabs.preferences.paperWallet">
         <span translate>Sweep paper wallet</span>
         <i class="icon ion-ios-arrow-right"></i>
       </div>
-      <div class="item item-icon-right" href ui-sref="wallet.export.file">
+      <div class="item item-icon-right" href ui-sref="tabs.preferences.export.file">
         <span translate>Export Wallet</span>
         <i class="icon ion-ios-arrow-right"></i>
       </div>
-      <div class="item item-icon-right" href ui-sref="wallet.preferencesBwsUrl">
+      <div class="item item-icon-right" href ui-sref="tabs.preferences.preferencesBwsUrl">
         <span translate>Wallet Service URL</span>
         <i class="icon ion-ios-arrow-right"></i>
       </div>
-      <div class="item item-icon-right" href ui-sref="wallet.preferencesHistory">
+      <div class="item item-icon-right" href ui-sref="tabs.preferences.preferencesHistory">
         <span translate>Transaction History</span>
         <i class="icon ion-ios-arrow-right"></i>
       </div>
-      <div class="item item-icon-right" href ui-sref="wallet.delete">
+      <div class="item item-icon-right" href ui-sref="tabs.preferences.delete">
         <span translate>Delete Wallet</span>
         <i class="icon ion-ios-arrow-right"></i>
       </div>

@@ -1,5 +1,5 @@
 <ion-view>
-  <ion-nav-bar>
+  <ion-nav-bar class="bar-stable">
     <ion-nav-back-button>
       {{'Back' | translate}}
     </ion-nav-back-button>
@@ -9,7 +9,7 @@
       <div class="item item-divider">
         Preferences
       </div>
-      <div class="item item-icon-right" href ui-sref="wallet.preferencesAlias">
+      <div class="item item-icon-right" href ui-sref="tabs.preferences.preferencesAlias">
         <span translate>Wallet Name</span>
         <span class="item-note">
           {{alias||wallet.walletName}}
@@ -28,7 +28,7 @@
           {{wallet.externalSource}}
         </span>
       </div>
-      <div class="item item-icon-right"  href ui-sref="wallet.preferencesColor">
+      <div class="item item-icon-right"  href ui-sref="tabs.preferences.preferencesColor">
         <span ng-style="{'color': wallet.color}">&block;</span>
         <span translate>Wallet Color</span>
         <span class="item-note">
@@ -36,7 +36,7 @@
         </span>
         <i class="icon ion-ios-arrow-right"></i>
       </div>
-      <div class="item item-icon-right" href ui-sref="wallet.preferencesEmail">
+      <div class="item item-icon-right" href ui-sref="tabs.preferences.preferencesEmail">
         <span translate>Email Notifications</span>
         <span class="item-note">
           <span ng-if="!wallet.email" translate>Disabled</span>
@@ -44,10 +44,10 @@
         </span>
         <i class="icon ion-ios-arrow-right"></i>
       </div>
-      <div class="item item-divider">
+      <div class="item item-divider" translate>
         Security
       </div>
-      <div class="item item-icon-right" href ui-sref="wallet.backup" ng-hide="wallet.isPrivKeyExternal()">
+      <div class="item item-icon-right" href ui-sref="tabs.preferences.backup" ng-hide="wallet.isPrivKeyExternal()">
         <span translate>Backup</span>
         <i class="icon ion-ios-arrow-right"></i>
       </div>
@@ -61,14 +61,14 @@
           <span class="toggle-label" translate>Request Fingerprint</span>
         </ion-toggle>
       </div>
-      <div class="item item-icon-right" href ui-sref="wallet.deleteWords" ng-show ="!deleted">
+      <div class="item item-icon-right" href ui-sref="tabs.preferences.deleteWords" ng-show ="!deleted">
         <span translate>Delete recovery phrase</span>
         <i class="icon ion-ios-arrow-right"></i>
       </div>
-      <div class="item item-divider">
+      <div class="item item-divider" translate>
         Advanced
       </div>
-      <div class="item item-icon-right" href ui-sref="wallet.preferencesAdvanced">
+      <div class="item item-icon-right" href ui-sref="tabs.preferences.preferencesAdvanced">
         <span translate>Advanced</span>
         <i class="icon ion-ios-arrow-right"></i>
       </div>
