@@ -3,10 +3,6 @@ i18n/po/*.mo
 i18n/crowdin_api_key.txt
 src/js/translations.js
 
-# Coinbase API ClientID/Secret
-coinbase.json
-src/js/coinbase.js
-
 # cordova
 cordova/project-*/*
 cordova/*.keystore
@@ -101,6 +97,7 @@ public/fonts
 
 ## templates
 /appConfig.json
+externalServices.json
 cordova/Makefile
 cordova/ProjectMakefile
 app-template/bpapp
@@ -110,6 +107,7 @@ cordova/wp/Package.appxmanifest
 public/img/logo-negative.svg
 public/img/logo.svg
 src/js/appConfig.js
+src/js/externalServices.js
 
 
 cordova/Makefile
