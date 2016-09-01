@@ -631,6 +631,42 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
           }
         }
       })
+      .state('onboarding.import', {
+        url: '/import/:fromOnboarding',
+        abstract: true,
+        views: {
+          'onboarding': {
+            templateUrl: 'views/import.html'
+          },
+        },
+        params: {
+          code: null
+        },
+      })
+      .state('onboarding.import.phrase', {
+        url: '/tab-import-phrase',
+        views: {
+          'tab-import-phrase': {
+            templateUrl: 'views/tab-import-phrase.html',
+          },
+        }
+      })
+      .state('onboarding.import.file', {
+        url: '/tab-import-file',
+        views: {
+          'tab-import-file': {
+            templateUrl: 'views/tab-import-file.html',
+          },
+        }
+      })
+      .state('onboarding.import.hardware', {
+        url: '/tab-import-hardware',
+        views: {
+          'tab-import-hardware': {
+            templateUrl: 'views/tab-import-hardware.html',
+          },
+        }
+      })
 
     /*
      *
