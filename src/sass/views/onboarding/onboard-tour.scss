@@ -1,0 +1,22 @@
+#onboard-tour {
+  &-secure {
+    #cta {
+      background-image: url(../img/onboarding-tour-phone.svg);
+    }
+  }
+  &-currency {
+    #cta {
+      background-image: url(../img/onboarding-tour-currency-bg.svg);
+    }
+    .next-slide {
+      margin-top: 3rem;
+    }
+  }
+  &-control {
+    #cta {
+      background-image: url(../img/onboarding-tour-control.svg);
+      background-size: 70%;
+      background-position: top;
+    }
+  }
+}

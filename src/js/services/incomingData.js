@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.services').factory('incomingData', function($log, $ionicModal, $state, bitcore) {
- 
+
   var root = {};
 
   root.redir = function(data) {
@@ -32,7 +32,7 @@ angular.module('copayApp.services').factory('incomingData', function($log, $ioni
 
     data = sanitizeUri(data);
 
-    // BIP21  
+    // BIP21
     if (bitcore.URI.isValid(data)) {
       var parsed = new bitcore.URI(data);
 
@@ -52,7 +52,7 @@ angular.module('copayApp.services').factory('incomingData', function($log, $ioni
       }
       return true;
 
-    // Plain URL  
+    // Plain URL
     } else  if (/^https?:\/\//.test(data)) {
       return $state.go('send.confirm', {paypro: data})
 
@@ -64,10 +64,10 @@ angular.module('copayApp.services').factory('incomingData', function($log, $ioni
 
 
     // copay: protocol
-    } else if (data.indexOf('copay:glidera')==0) {
-      return $state.go('send.uriglidera', {url: data})
-    } else if (data.indexOf('copay:coinbase')==0) {
-      return $state.go('send.uricoinbase', {url: data})
+    } else if (data.indexOf('copay://glidera')==0) {
+      return $state.go('uriglidera', {url: data})
+    } else if (data.indexOf('copay://coinbase')==0) {
+      return $state.go('uricoinbase', {url: data})
 
     // Join
     } else if (data.match(/^copay:[0-9A-HJ-NP-Za-km-z]{70,80}$/)) {

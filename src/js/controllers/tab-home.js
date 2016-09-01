@@ -1,12 +1,13 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('tabHomeController',
-  function($rootScope, $timeout, $scope, $state, lodash, profileService, walletService, configService, txFormatService, $ionicModal, $log, platformInfo, storageService) {
+  function($rootScope, $timeout, $scope, $state, $ionicScrollDelegate, lodash, profileService, walletService, configService, txFormatService, $ionicModal, $log, platformInfo, storageService) {
+
+    $scope.externalServices = {};
+    $scope.bitpayCardEnabled = true; // TODO
 
     var setNotifications = function(notifications) {
-      var n = walletService.processNotifications(notifications, 5);
-      $scope.notifications = n;
-      $scope.notificationsMore = notifications.length > 5 ? notifications.length - 5 : null;
+      $scope.notifications = notifications;
       $timeout(function() {
         $scope.$apply();
       }, 1);
@@ -16,41 +17,33 @@ angular.module('copayApp.controllers').controller('tabHomeController',
       $scope.wallets = profileService.getWallets();
       if (lodash.isEmpty($scope.wallets)) return;
 
-      $timeout(function() {
-        var i = $scope.wallets.length;
-        var j = 0;
-        var timeSpan = 60 * 60 * 24 * 7;
-        var notifications = [];
+      var i = $scope.wallets.length;
+      var j = 0;
+      var timeSpan = 60 * 60 * 24 * 7;
+      var notifications = [];
 
-        $scope.fetchingNotifications = true;
-
-        lodash.each($scope.wallets, function(wallet) {
-
-          walletService.getStatus(wallet, {}, function(err, status) {
-            if (err) {
-              console.log('[tab-home.js.35:err:]', $log.error(err)); //TODO
-              return;
-            }
-            wallet.status = status;
-          });
-
-          walletService.getNotifications(wallet, {
-            timeSpan: timeSpan
-          }, function(err, n) {
-            if (err) {
-              console.log('[tab-home.js.35:err:]', $log.error(err)); //TODO
-              return;
-            }
-            notifications.push(n);
-            if (++j == i) {
-              $scope.fetchingNotifications = false;
-              setNotifications(lodash.compact(lodash.flatten(notifications)));
-            };
-          });
-
+      lodash.each($scope.wallets, function(wallet) {
+        walletService.getStatus(wallet, {}, function(err, status) {
+          if (err) {
+            console.log('[tab-home.js.35:err:]', $log.error(err)); //TODO
+            return;
+          }
+          wallet.status = status;
         });
-        $scope.$digest();
-      }, 100);
+      });
+
+      $scope.fetchingNotifications = true;
+      profileService.getNotifications({
+        limit: 3
+      }, function(err, n) {
+        if (err) {
+          console.log('[tab-home.js.35:err:]', $log.error(err)); //TODO
+          return;
+        }
+        $scope.fetchingNotifications = false;
+        setNotifications(n);
+        $ionicScrollDelegate.resize();
+      })
     };
 
     $scope.updateWallet = function(wallet) {
@@ -61,22 +54,29 @@ angular.module('copayApp.controllers').controller('tabHomeController',
           return;
         }
         wallet.status = status;
-        $timeout(function() {
-          $scope.$apply();
-        }, 1);
+
+        profileService.getNotifications({
+          limit: 3
+        }, function(err, n) {
+          console.log('[tab-home.js.57]', n); //TODO
+          if (err) {
+            console.log('[tab-home.js.35:err:]', $log.error(err)); //TODO
+            return;
+          }
+          setNotifications(n);
+          $ionicScrollDelegate.resize();
+        })
       });
     };
 
-    $scope.externalServices = {};
     $scope.nextStep = function() {
       lodash.each(['AmazonGiftCards', 'BitpayCard', 'BuyAndSell'], function(service) {
         storageService.getNextStep(service, function(err, value) {
           $scope.externalServices[service] = value ? true : false;
+          $ionicScrollDelegate.resize();
         });
       });
     };
-
-    $scope.bitpayCardEnabled = true; // TODO
 
     var listeners = [
       $rootScope.$on('bwsEvent', function(e, walletId, type, n) {

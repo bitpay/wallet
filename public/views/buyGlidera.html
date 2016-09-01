@@ -10,12 +10,11 @@
 
   <ion-content ng-controller="buyGlideraController as buy" ng-init="init()">
 
-    <div class="box-notification text-center size-12 text-warning" ng-show="network == 'testnet'">
-      <i class="fi-info"></i>
+    <div class="box-notification warning" ng-show="network == 'testnet'">
       Testnet wallets only work with Glidera Sandbox Accounts
     </div>
 
-    <h5 class="padding" ng-show="limits  && !buy.show2faCodeInput && !buy.success">
+    <div class="box-notification notice" ng-show="limits && !buy.show2faCodeInput && !buy.success">
       <span class="text-light">Daily buy limit</span>:
       {{limits.dailyBuy|currency:'':2}} {{limits.currency}}
       (remaining {{limits.dailyBuyRemaining|currency:'':2}} {{limits.currency}})
@@ -23,7 +22,7 @@
       <span class="text-light">Monthly buy limit</span>:
       {{limits.monthlyBuy|currency:'':2}} {{limits.currency}}
       (remaining {{limits.monthlyBuyRemaining|currency:'':2}} {{limits.currency}})
-    </h5>
+    </div>
 
     <div class="box-notification m20b" ng-show="limits.transactDisabledPendingFirstTransaction  && !buy.success">
       <span class="text-warning">
@@ -37,21 +36,6 @@
         ng-submit="buy.get2faCode(token)" novalidate>
 
         <div class="list">
-
-          <label class="item item-input item-stacked-label">
-            <span class="input-label">Wallet</span>
-            <input type="text"
-                   id="address"
-                   name="address"
-                   ng-disabled="buy.selectedWalletId"
-                   ng-attr-placeholder="{{'Choose your destination wallet'}}"
-                   ng-model="buy.selectedWalletName" required>
-            <a on-tap="openWalletsModal(buy.allWallets)">
-              <i class="icon ion-briefcase size-18"></i>
-            </a>
-          </label>
-
-
           <label class="item item-input item-stacked-label">
             <span class="input-label">Amount in {{showAlternative ? 'USD' : 'BTC'}}</span>
             <input ng-show="!showAlternative"
@@ -81,6 +65,8 @@
                class="postfix"
                on-tap="showAlternative = false; fiat = null; buy.buyPrice = null">USD</a>
           </label>
+
+          <wallets ng-if="wallets[0]" wallets="wallets"></wallets>
         </div>
 
         <div class="text-center text-gray size-12 m20b" ng-show="!buy.gettingBuyPrice && buy.buyPrice.qty">
@@ -99,7 +85,7 @@
 
         <button class="button button-block"
                 type="submit"
-                ng-disabled="limits.transactDisabledPendingFirstTransaction || !buy.buyPrice.qty || !buy.selectedWalletId || buy.loading">
+                ng-disabled="limits.transactDisabledPendingFirstTransaction || !buy.buyPrice.qty || buy.loading">
           Continue
         </button>
       </form>
@@ -127,11 +113,6 @@
        Fiat will be immediately withdrawn from your bank account. The bitcoins will be purchased and deposited to your wallet in 2-4 business days.
         </p>
       </div>
-    </div>
-    <div class="box-notification m20b" ng-show="buy.error && !buy.success">
-      <span class="text-warning">
-        {{buy.error}}
-      </span>
     </div>
     <div class="text-center" ng-show="buy.success">
       <h1>Purchase initiated</h1>

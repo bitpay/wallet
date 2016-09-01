@@ -36,6 +36,7 @@ angular.module('copayApp.controllers').controller('tabSettingsController', funct
     $scope.otherWallets = lodash.filter(profileService.getWallets(self.network), function(w) {
       return w.id != self.walletId;
     });
+    $scope.wallets = profileService.getWallets();
   };
 
   $scope.openAddressbookModal = function() {

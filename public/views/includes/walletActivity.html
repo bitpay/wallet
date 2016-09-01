@@ -1,42 +1,58 @@
 <span class="wallet-activity">
 
-  <div ng-if="x.types.indexOf('NewIncomingTx')>=0">
-      <span>Payment Received</span>
+  <div ng-if="x.types.indexOf('NewCopayer')>=0 && x.wallet.n>1">
+    Copayer joined 
+  </div>
+
+  <div ng-if="x.types.indexOf('NewCopayer')>=0 && x.wallet.n==1">
+    Wallet created
+  </div>
+
+  <div ng-if="x.types.indexOf('NewOutgoingTx')>=0">
+      <span translate>Payment Sent </span>
       <div class="wallet-activity-amount">
       {{x.amountStr}}
       </div>
   </div>
 
 
+
+  <div ng-if="x.types.indexOf('NewIncomingTx')>=0">
+      <span translate>Payment Received</span>
+      <div class="wallet-activity-amount">
+      {{x.amountStr}}
+      </div>
+  </div>
+
   <div ng-if="x.types.indexOf('TxProposalRemoved')>=0">
     <i class="icon ion-ios-close-empty size-21" ng-style="{'color':x.wallet.color}"></i>
-    Proposal Deleted
+    <span translate>Proposal Deleted</span>
   </div>
 
   <div ng-if="x.types.indexOf('TxProposalRejected')>=0">
     <i class="icon ion-ios-close-empty size-21" ng-style="{'color':x.wallet.color}"></i>
-    Proposal Rejected
+    <span translate>Proposal Rejected</span>
   </div>
 
   <div ng-if="x.types.indexOf('TxProposalRemoved') == -1 && x.types.indexOf('TxProposalRejected') == -1">
-    <span ng-if="x.types.indexOf('NewTxProposal')>=0 ">
+    <span ng-if="x.types.indexOf('NewTxProposal')>=0  && x.types.indexOf('NewOutgoingTx')==-1 ">
       <i class="icon ion-arrow-up-c size-21" ng-style="{'color':x.wallet.color}"></i>
 
       {{x.amountStr}}
       <i>{{x.message}}</i>
     </span>
-    <span ng-if="x.types.indexOf('TxProposalAcceptedBy')>=0 && x.types.indexOf('NewTxProposal') == -1 ">
+    <span ng-if="x.types.indexOf('TxProposalAcceptedBy')>=0 && x.types.indexOf('NewTxProposal') == -1  && x.types.indexOf('NewOutgoingTx')==-1">
       <i class="icon ion-checkmark-round size-21" ng-style="{'color':x.wallet.color}"></i>
-      Proposal Accepted
+      <span translate>Proposal Accepted</span>
     </span>
   </div>
 
 
   <p class="wallet-activity-note">
+<!-- {{x.types}} -->
     <i class="icon ion-record wallet-activity-note-child" ng-style="{'color':x.wallet.color}"></i>
     <span ng-if="x.creatorName" class="wallet-activity-note-child">{{ x.creatorName}}@</span>
     <span class="wallet-activity-note-child">{{x.wallet.name}}</span>
     <time class="wallet-activity-note-child">{{ x.createdOn * 1000 | amTimeAgo}}</time>
   </p>
-
 </span>

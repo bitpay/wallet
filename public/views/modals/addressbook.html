@@ -1,7 +1,7 @@
 <ion-modal-view ng-controller="addressbookModalController" ng-init="initAddressbook()">
   <ion-header-bar align-title="center" class="bar-royal">
     <button class="button button-clear button-positive"
-            ng-click="closeAddressbookModal()">
+            ng-click="closeAddressbookModal()" translate>
       Close
     </button>
     <div class="h1 title">
@@ -11,7 +11,7 @@
     <button class="button button-clear button-positive"
             ng-click="toggleAddAddressbookEntry()">
       <i ng-show="!addAddressbookEntry" class="icon ion-ios-plus-empty"></i>
-      <span ng-show="addAddressbookEntry">Cancel</span>
+      <span ng-show="addAddressbookEntry" translate>Cancel</span>
     </button>
   </ion-header-bar>
 
@@ -56,7 +56,7 @@
       <div class="list">
 
         <label class="item item-input item-stacked-label">
-          <span class="input-label">Address</span>
+          <span class="input-label" translate>Address</span>
           <div class="input-notification">
             <i class="icon ion-checkmark-circled balanced"
                ng-show="!addressbookForm.address.$invalid"></i>
@@ -74,7 +74,7 @@
         </label>
 
         <label class="item item-input item-stacked-label">
-          <span class="input-label">Label</span>
+          <span class="input-label" translate>Label</span>
           <input type="text"
                  id="label"
                  name="label"

@@ -68,7 +68,7 @@
           <p>
             <time ng-if="btx.time">{{btx.time * 1000 | amTimeAgo}}</time>
             <span translate class="text-warning"
-              ng-show="!btx.time && (!btx.confirmations || btx.confirmations == 0)">
+              ng-show="!btx.time && (!btx.confirmations || btx.confirmations == 0)" translate>
               Unconfirmed
             </span>
           </p>
