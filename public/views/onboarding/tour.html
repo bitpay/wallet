@@ -1,9 +1,9 @@
-<ion-view ng-controller="tourController" ng-init="init()">
-  <ion-nav-bar class="bar-stable">
-    <ion-nav-title>Get Started</ion-nav-title>
+<ion-view ng-controller="tourController" ng-init="init()" class="onboarding" id="onboard-tour">
+  <ion-nav-bar>
+    <ion-nav-title></ion-nav-title>
     <ion-nav-buttons side="primary">
       <button class="button no-border" ng-click="goBack()">
-        <i class="icon ion-chevron-left"></i> Back
+        <i class="icon ion-arrow-left-c"></i>
       </button>
     </ion-nav-buttons>
     <ion-nav-buttons side="secondary">
@@ -14,48 +14,72 @@
   </ion-nav-bar>
   <ion-slides class="slides" options="options" slider="data.slider">
     <ion-slide-page>
-      <ion-content >
-        <div class="text-center">
-          <h2 translate>Bitcoin is digital money</h2>
-          <p translate>
+      <ion-content id="onboard-tour-secure">
+        <div class="text-center row">
+          <h2 class="col col-60" translate>Bitcoin is secure, digital money</h2>
+        </div>
+        <div class="text-center row">
+          <p translate class="col col-75 tagline">
             You can spend bitcoin at millions of websites and stores worldwide
           </p>
-          <p translate>
+        </div>
+        <div id="cta">
+        </div>
+        <div class="row text-center">
+          <p translate class="col">
             Just scan the code to pay
           </p>
-          <button class="button icon-right ion-chevron-right button-positive" ng-click="slideNext()">
-            Got it
+        </div>
+        <div class="row">
+          <button class="button button-positive col col-75 next-slide" ng-click="slideNext()">
+            Got it <i class="icon ion-arrow-right-c"></i>
           </button>
         </div>
       </ion-content>
     </ion-slide-page>
     <ion-slide-page>
-      <ion-content >
-        <div class="text-center">
-          <h2 translate>Bitcoin is currency</h2>
-          <p translate>
+      <ion-content id="onboard-tour-currency">
+        <div class="text-center row">
+          <h2 class="col col-75" translate>Bitcoin is a currency</h2>
+        </div>
+        <div class="text-center row">
+          <p translate class="col col-75 tagline">
             You can trade it for other currencies like US Dollars, Euros, or Pounds
           </p>
-          <p translate>
+        </div>
+        <div id="cta">
+        </div>
+        <div class="row text-center">
+          <p translate class="col">
             The exchange rate changes with the market
           </p>
-          <button class="button icon-right ion-chevron-right button-positive" ng-click="slideNext()">
-            Makes sense
+        </div>
+        <div class="row">
+          <button class="button button-positive col col-75 next-slide" ng-click="slideNext()">
+            Makes sense <i class="icon ion-arrow-right-c"></i>
           </button>
         </div>
       </ion-content>
     </ion-slide-page>
     <ion-slide-page>
-      <ion-content >
-        <div class="text-center">
-          <h2 translate>You control your bitcoin</h2>
-          <p translate>
+      <ion-content id="onboard-tour-control">
+        <div class="text-center row">
+          <h2 translate class="col col-75">You control your bitcoin</h2>
+        </div>
+        <div class="text-center row">
+          <p translate class="col col-75 tagline">
             The BitPay wallet stores your bitcoin with cutting-edge security
           </p>
-          <p translate>
+        </div>
+        <div id="cta">
+        </div>
+        <div class="row text-center">
+          <p translate class="col">
             Not even BitPay can access it
           </p>
-          <button class="button icon-right button-positive" ng-click="createProfile()">
+        </div>
+        <div class="row">
+          <button class="button button-positive col col-75 get-started" ng-click="createProfile()">
             Create bitcoin wallet
           </button>
         </div>
