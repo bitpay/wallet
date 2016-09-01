@@ -2,10 +2,10 @@
   <ion-nav-bar class="bar-stable">
     <ion-nav-buttons side="primary">
       <button class="button no-border" ui-sref="tabs.add">
-        <i class="icon ion-chevron-left"></i> Back
+        <i class="icon ion-chevron-left"></i> {{'Back' | translate}}
       </button>
     </ion-nav-buttons>
-    <ion-nav-title>Create new wallet</ion-nav-title>
+    <ion-nav-title>{{'Create new wallet' | translate}}</ion-nav-title>
   </ion-nav-bar>
 
   <ion-content ng-controller="createController as create" ng-init="create.setTotalCopayers(1)">
