@@ -1,0 +1,24 @@
+#walletDetails {
+  .bar-header {
+    border: 0;
+    .title, .button {
+      color: #fff;
+    }
+    .button {
+      background-color: transparent;
+    }
+  }
+
+  .amount {
+    width: 100%;
+    text-align: center;
+    padding: 2.5rem 1rem 1.5rem 1rem;
+    color: #fff;
+    height: 150px;
+    margin-bottom: 25px;
+
+    &-alternative {
+      line-height: 48px;
+    }
+  }
+}
