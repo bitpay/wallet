@@ -1,6 +1,6 @@
 <ion-view>
   <ion-nav-bar class="bar-stable">
-    <ion-nav-title>Global Settings</ion-nav-title>
+    <ion-nav-title>{{'Global Settings' | translate}}</ion-nav-title>
   </ion-nav-bar>
 
   <ion-content ng-controller="tabSettingsController" ng-init="init()">
@@ -12,7 +12,7 @@
         <span translate>Address Book</span>
       </div>
 
-      <div class="item item-divider">Preferences</div>
+      <div class="item item-divider" translate>Preferences</div>
 
       <div class="item item-icon-left" href ui-sref="tabs.language">
         <i class="icon ion-ios-chatbubble-outline"></i>
@@ -47,7 +47,7 @@
       </div>
 
       <div ng-show="usePushNotifications && PNEnabledByUser">
-        <div class="item item-divider">Notifications</div>
+        <div class="item item-divider" translate>Notifications</div>
 
         <ion-toggle ng-model="pushNotifications" toggle-class="toggle-balanced" ng-change="pushNotificationsChange()">
           <span class="toggle-label" translate>Enable push notifications</span>
@@ -61,7 +61,7 @@
         </div>
       </div>
 
-      <div class="item item-divider">Exchanges</div>
+      <div class="item item-divider" translate>Exchanges</div>
 
       <ion-toggle ng-show="!isWP" ng-model="glideraEnabled" toggle-class="toggle-balanced" ng-change="glideraChange()">
         <span class="toggle-label" translate>Enable Glidera Service</span>
@@ -74,13 +74,13 @@
       </ion-toggle>
       -->
 
-      <div class="item item-divider">Others</div>
+      <div class="item item-divider" translate>Others</div>
 
       <ion-toggle ng-model="spendUnconfirmed" toggle-class="toggle-balanced" ng-change="spendUnconfirmedChange()">
         <span class="toggle-label" translate>Use Unconfirmed Funds</span>
       </ion-toggle>
 
-      <div class="item item-divider">Wallets Settings</div>
+      <div class="item item-divider" translate>Wallets Settings</div>
       <div class="item item-icon-left" href
            ui-sref="tabs.preferences.main({'walletId': item.id})"
            ng-repeat="item in wallets track by $index">
