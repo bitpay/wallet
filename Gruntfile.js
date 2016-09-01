@@ -10,8 +10,8 @@ module.exports = function(grunt) {
       appConfig: {
         command: 'node ./util/buildAppConfig.js'
       },
-      coinbase: {
-        command: 'node ./util/coinbase.js'
+      externalServices: {
+        command: 'node ./util/buildExternalServices.js'
       },
       clean: {
         command: 'rm -Rf bower_components node_modules'
@@ -134,7 +134,7 @@ module.exports = function(grunt) {
           'src/js/controllers/**/*.js',
           'src/js/translations.js',
           'src/js/appConfig.js',
-          'src/js/coinbase.js',
+          'src/js/externalServices.js',
           'src/js/init.js',
           'src/js/trezor-url.js',
           'bower_components/trezor-connect/login.js'
@@ -245,7 +245,7 @@ module.exports = function(grunt) {
     }
   });
 
-  grunt.registerTask('default', ['nggettext_compile', 'exec:appConfig', 'exec:coinbase', 'browserify', 'sass', 'concat', 'copy:ionic_fonts', 'copy:ionic_js']);
+  grunt.registerTask('default', ['nggettext_compile', 'exec:appConfig', 'exec:externalServices', 'browserify', 'sass', 'concat', 'copy:ionic_fonts', 'copy:ionic_js']);
   grunt.registerTask('prod', ['default', 'uglify']);
   grunt.registerTask('translate', ['nggettext_extract']);
   grunt.registerTask('test', ['karma:unit']);

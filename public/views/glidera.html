@@ -10,6 +10,10 @@
 
   <ion-content ng-controller="glideraController as glidera" ng-init="init()">
 
+    <div class="box-notification error" ng-show="!network">
+      Glidera is disabled for this application
+    </div>
+
     <div class="box-notification warning" ng-show="network == 'testnet'">
       Testnet wallets only work with Glidera Sandbox Accounts
     </div>
