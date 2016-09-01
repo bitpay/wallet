@@ -45,7 +45,7 @@ angular.module('copayApp.controllers').controller('copayersController',
       profileService.deleteWalletClient(wallet, function(err) {
         ongoingProcess.set('deletingWallet', false);
         if (err) {
-          $scope.error = err.message || err;
+          popupService.showAlert(gettextCatalog.getString('Error'), err.message || err);
         } else {
           $state.transitionTo('tabs.home');
         }
