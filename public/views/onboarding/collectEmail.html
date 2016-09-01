@@ -1,5 +1,6 @@
-<ion-view>
-  <ion-nav-bar class="bar-stable" ng-controller="backController">
+
+<ion-view ng-controller="collectEmailController" id="onboarding-collect-email" class="onboarding">
+  <ion-nav-bar class="bar-stable">
     <ion-nav-buttons side="secondary">
       <button class="button no-border" ng-click="onboardingMailSkip()">
         {{'Skip' | translate}}
@@ -9,9 +10,16 @@
   <ion-content ng-controller="collectEmailController">
     <span translate>Wallet Created </span>
     <span translate>Where would you like to receive email notifications about payments </span>
+  <ion-content >
+    <div class="row">
+      <img src="../../img/onboarding-success.svg" class="col col-75" />
+    </div>
+    <span translate>Wallet Created</span>
+    <!-- <span translate>Where would you like to receive email notifications about payments </span>
+>>>>>>> Stashed changes
     <form name="emailForm" ng-submit="save(emailForm)" novalidate>
       <input type="email" id="email" name="email" ng-model="email" required></input>
       <input type="submit" class="button button-block button-positive" value="{{'Save'|translate}}" ng-disabled="emailForm.$invalid">
-    </form>
+    </form> -->
   </ion-content>
 </ion-view>
