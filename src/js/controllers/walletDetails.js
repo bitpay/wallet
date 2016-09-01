@@ -117,7 +117,7 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
     walletService.recreate();
   };
 
-  $scope.updateTxHistory = function(cb) {
+  $scope.updateTxHistory = function() {
 
     if ($scope.updatingTxHistory) return;
 
@@ -152,7 +152,7 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
         $timeout(function() {
           $scope.$apply();
         }, 1);
-        return cb();
+        return;
       });
     });
   };
@@ -172,7 +172,7 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
 
   $scope.updateAll = function(cb)  {
     $scope.updateStatus(false);
-    $scope.updateTxHistory(cb);
+    $scope.updateTxHistory();
   }
 
   $scope.hideToggle = function() {

@@ -122,6 +122,7 @@ angular.module('copayApp.services').factory('configService', function(storageSer
       configCache.bwsFor = configCache.bwsFor || {};
       configCache.colorFor = configCache.colorFor || {};
       configCache.aliasFor = configCache.aliasFor || {};
+      configCache.emailFor = configCache.emailFor || {};
 
       // Coinbase
       // Disabled for testnet
