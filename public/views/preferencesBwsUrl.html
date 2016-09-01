@@ -4,13 +4,19 @@
       <i class="icon ion-ios-arrow-thin-left"></i>
     </ion-nav-back-button>
   </ion-nav-bar>
-  <ion-content ng-controller="preferencesBwsUrlController" >
-    <form name="settingsBwsUrlForm" ng-submit="save(settingsBwsUrlForm)" novalidate>
-      <label class="item item-input item-stacked-label">
-        <span class="input-label" transalate>Wallet Service URL</span><a ng-click="resetDefaultUrl()" translate> Set default url</a>
-        <input type="text" id="bwsurl" type="text" name="bwsurl" ng-model="bwsurl">
-      </label>
-      <input type="submit" class="button button-block button-stable" value="{{'Save'|translate}}"></input>
-    </form>
+  <ion-content ng-controller="preferencesBwsUrlController">
+
+    <div class="row no-border">
+      <div class="col col-90">
+        <label class="item item-input item-stacked-label no-border">
+          <span class="input-label" transalate>Wallet Service URL</span>
+          <input type="text" id="bwsurl" type="text" name="bwsurl" ng-model="bwsurl">
+        </label>
+      </div>
+      <div class="col">
+        <i class="icon ion-ios-reload" ng-click="resetDefaultUrl()"></i>
+      </div>
+    </div>
+    <button class="button button-block button-balanced" ng-click="save()" translate>Save</button>
   </ion-content>
 </ion-view>
