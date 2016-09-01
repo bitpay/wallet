@@ -2,12 +2,12 @@
   <ion-header-bar align-title="center" class="tab-bar">
     <div class="left-small">
       <a ng-click="cancel()" class="p10">
-        <span class="text-close">Close</span>
+        <span class="text-close" translate>Close</span>
       </a>
     </div>
     <h1 class="title ellipsis">
-      <span ng-show="type == 'BUY' || type == 'RECEIVE'">Choose your destination wallet</span>
-      <span ng-show="type == 'SELL' || type == 'SEND'">Choose your source wallet</span>
+      <span ng-show="type == 'BUY' || type == 'RECEIVE'" translate>Choose your destination wallet</span>
+      <span ng-show="type == 'SELL' || type == 'SEND'" translate>Choose your source wallet</span>
     </h1>
   </ion-header-bar>
 
@@ -22,7 +22,7 @@
           <div class="left">
             <i class="fi-info size-18 m10r"></i>
           </div>
-          <div class="size-10 m5t">
+          <div class="size-10 m5t" translate>
             Notice: only 1-1 (single signature) wallets can be used for sell bitcoin
           </div>
         </h4>
