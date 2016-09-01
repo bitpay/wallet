@@ -1003,6 +1003,8 @@ input[type=number] {
   }
 }
 
+@import 'mixins/mixins';
+@import 'views/onboarding/onboarding';
 @import "views/common";
 @import "views/tab-home";
 @import "views/includes/walletActivity";
