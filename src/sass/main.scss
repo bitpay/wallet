@@ -1003,8 +1003,10 @@ input[type=number] {
   }
 }
 
+@import "ionic";
+@import "common";
 @import 'mixins/mixins';
-@import 'views/onboarding/onboarding';
-@import "views/common";
+@import "views/add";
 @import "views/tab-home";
+@import 'views/onboarding/onboarding';
 @import "views/includes/walletActivity";

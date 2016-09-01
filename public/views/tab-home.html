@@ -1,27 +1,22 @@
 <ion-view id="tab-home">
-  <ion-nav-bar class="bar-stable">
+  <ion-nav-bar class="bar-royal">
     <ion-nav-title>{{'Home' | translate}}</ion-nav-title>
   </ion-nav-bar>
 
   <ion-content class="padding" ng-controller="tabHomeController" ng-init="updateAllWallets(); nextStep()">
 
-    <div class="card">
-      <div class="item item-divider  item-icon-right" translate>
+    <div class="list card" ng-hide="!notifications[0]">
+      <a class="item item-icon-right item-heading" ui-sref="activity" translate>
         Recent Activity
-        <i class="icon ion-ios-arrow-right" ui-sref="activity"></i>
-      </div>
-      <div ng-if="fetchingNotifications" class="item text-center">
+        <i class="icon ion-ios-arrow-right nav-item-arrow-right"></i>
+      </a>
+      <span ng-if="fetchingNotifications" class="item text-center">
         <ion-spinner icon="lines"></ion-spinner>
         <div translate>Updating activity. Please stand by</div>
-      </div>
-      <div ng-if="!fetchingNotifications">
-        <a class="item" ng-repeat="x in notifications" ng-click="x.action()">
-          <span ng-include="'views/includes/walletActivity.html'"></span>
-        </a>
-        <div class="item" ng-show="!notifications[0]">
-          <span translate>Nothing to show here.</span>
-        </div>
-      </div>
+      </span>
+      <a ng-if="!fetchingNotifications" class="item" ng-repeat="x in notifications" ng-click="x.action()">
+        <span ng-include="'views/includes/walletActivity.html'"></span>
+      </a>
     </div>
 
     <div class="list card" ng-hide="!wallets[0]">

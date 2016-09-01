@@ -1,8 +1,8 @@
 <ion-view>
-  <ion-nav-bar class="bar-stable" ng-controller="backController">
+  <ion-nav-bar class="bar-royal" ng-controller="backController">
     <ion-nav-buttons side="primary">
-      <button class="button no-border" ng-click="importGoBack()">
-        <i class="icon ion-chevron-left"></i> {{'Back' | translate}}
+      <button class="button back-button" ng-click="importGoBack()">
+        <i class="icon ion-ios-arrow-thin-left"></i>
       </button>
     </ion-nav-buttons>
     <ion-nav-title>{{'Import wallet' | translate}}</ion-nav-title>
@@ -16,7 +16,7 @@
 
     <form name="importForm" ng-submit="importBlob(importForm)" novalidate>
 
-      <div class="list">
+      <div class="list card">
 
         <label class="item item-input item-stacked-label no-border" ng-show="!isSafari && !isCordova">
           <div class="input-label" translate>Choose a backup file from your computer</div>
@@ -36,9 +36,9 @@
         <label class="item item-input item-stacked-label">
           <span class="input-label" translate>Password</span>
           <input type="password"
-                 placeholder="{{'Your password'|translate}}"
-                 name="password"
-                 ng-model="password">
+            placeholder="{{'Your password'|translate}}"
+            name="password"
+            ng-model="password">
         </label>
 
         <ion-toggle ng-model="showAdv" toggle-class="toggle-stable">
@@ -56,9 +56,7 @@
         </div>
       </div>
 
-      <button type="submit"
-              class="button round expand black"
-              ng-disabled="importForm.$invalid || !password " translate>
+      <button type="submit" class="button button-block button-positive" ng-disabled="importForm.$invalid || !password " translate>
         Import backup
       </button>
     </form>

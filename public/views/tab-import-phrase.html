@@ -1,8 +1,8 @@
 <ion-view>
-  <ion-nav-bar class="bar-stable" ng-controller="backController">
+  <ion-nav-bar class="bar-royal" ng-controller="backController">
     <ion-nav-buttons side="primary">
-      <button class="button no-border" ng-click="importGoBack()">
-        <i class="icon ion-chevron-left"></i> {{'Back' | translate}}
+      <button class="button back-button" ng-click="importGoBack()">
+        <i class="icon ion-ios-arrow-thin-left"></i>
       </button>
     </ion-nav-buttons>
     <ion-nav-title>Import wallet</ion-nav-title>
@@ -29,7 +29,7 @@
     </div>
 
     <form name="importForm12" ng-submit="importMnemonic(importForm12)" novalidate>
-      <div class="list">
+      <div class="list card">
 
         <div class="row">
           <div class="col col-90">
@@ -83,8 +83,8 @@
       </div>
 
       <button type="submit"
-              class="button button-block button-positive"
-              ng-disabled="importForm12.$invalid" translate>Import</button>
+        class="button button-block button-positive"
+        ng-disabled="importForm12.$invalid" translate>Import</button>
     </form>
   </ion-content>
 </ion-view>
