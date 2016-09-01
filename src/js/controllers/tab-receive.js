@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('tabReceiveController', function($scope, $timeout, $log, platformInfo, walletService, profileService, configService, lodash, gettextCatalog) {
+angular.module('copayApp.controllers').controller('tabReceiveController', function($scope, $timeout, $log, platformInfo, walletService, profileService, configService, lodash, gettextCatalog, popupService) {
 
   $scope.isCordova = platformInfo.isCordova;
 
@@ -33,7 +33,6 @@ angular.module('copayApp.controllers').controller('tabReceiveController', functi
     if ($scope.generatingAddress) return;
 
     var wallet = wallet || $scope.wallet;
-    $scope.error = null;
     $scope.addr = null;
     $scope.generatingAddress = true;
 
@@ -41,7 +40,7 @@ angular.module('copayApp.controllers').controller('tabReceiveController', functi
       walletService.getAddress(wallet, forceNew, function(err, addr) {
         $scope.generatingAddress = false;
         if (err) {
-          $scope.error = err;
+          popupService.showAlert(gettextCatalog.getString('Error'), err);
         } else {
           if (addr)
             $scope.addr = addr;

@@ -10,10 +10,6 @@
 
   <ion-content ng-controller="createController as create" ng-init="create.setTotalCopayers(1)">
 
-    <div class="padding assertive" ng-show="create.error">
-      {{create.error|translate}}
-    </div>
-
     <form name="setupForm" ng-submit="create.create(setupForm)" novalidate>
 
       <div class="list">
