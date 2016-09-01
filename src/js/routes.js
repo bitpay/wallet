@@ -147,7 +147,10 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         url: '/activity',
         templateUrl: 'views/activity.html'
       })
-
+      .state('proposals', {
+        url: '/proposals',
+        templateUrl: 'views/proposals.html'
+      })
 
     /*
      *

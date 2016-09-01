@@ -900,6 +900,7 @@ angular.module('copayApp.services')
 
 
     root.getTxps = function(opts, cb) {
+      var MAX = 100;
       opts = opts || {};
 
       var w = root.getWallets();
@@ -920,8 +921,9 @@ angular.module('copayApp.services')
           txps = txps.concat(x.pendingTxps);
       });
       txps = lodash.sortBy(txps, 'createdOn');
-      txps = lodash.compact(lodash.flatten(notifications)).slice(0,MAX);
-      return cb(null, process(txps));
+      txps = lodash.compact(lodash.flatten(txps)).slice(0,MAX);
+      var n = txps.length;
+      return cb(null, process(txps), n);
     };
 
     return root;

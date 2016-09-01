@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('tabHomeController',
-  function($rootScope, $timeout, $scope, $state, $ionicScrollDelegate, lodash, profileService, walletService, configService, txFormatService, $ionicModal, $log, platformInfo, storageService) {
+  function($rootScope, $timeout, $scope, $state, $ionicScrollDelegate, lodash, profileService, walletService, configService, txFormatService, $ionicModal, $log, platformInfo, storageService, txpModalService) {
 
     $scope.externalServices = {};
     $scope.bitpayCardEnabled = true; // TODO
@@ -31,44 +31,44 @@ angular.module('copayApp.controllers').controller('tabHomeController',
         walletService.getStatus(wallet, {}, function(err, status) {
           if (err) {
             console.log('[tab-home.js.35:err:]', $log.error(err)); //TODO
-            return;
+          } else {
+            wallet.status = status;
           }
-          wallet.status = status;
+          if (++j==i) {
+            profileService.getTxps({
+              limit: 3
+            }, function(err, txps, n) {
+              if (err) {
+                console.log('[tab-home.js.35:err:]', $log.error(err)); //TODO
+              }
+              $scope.txps = txps;
+              $scope.txpsN = n;
+              $ionicScrollDelegate.resize();
+
+              $timeout(function() {
+                $scope.$apply();
+              }, 1);
+            });
+          }
         });
       });
 
       $scope.fetchingNotifications = true;
-
-      profileService.getTxps({
+      profileService.getNotifications({
         limit: 3
-      }, function(err, txps) {
-console.log('[tab-home.js.44:txps:]',txps); //TODO
+      }, function(err, n) {
         if (err) {
           console.log('[tab-home.js.35:err:]', $log.error(err)); //TODO
+          return;
         }
-        $scope.txps = txps;
+        $scope.fetchingNotifications = false;
+        $scope.notifications = n;
         $ionicScrollDelegate.resize();
 
         $timeout(function() {
           $scope.$apply();
         }, 1);
 
-
-        profileService.getNotifications({
-          limit: 3
-        }, function(err, n) {
-          if (err) {
-            console.log('[tab-home.js.35:err:]', $log.error(err)); //TODO
-            return;
-          }
-          $scope.fetchingNotifications = false;
-          $scope.notifications = n;
-          $ionicScrollDelegate.resize();
-
-          $timeout(function() {
-            $scope.$apply();
-          }, 1);
-        })
       })
     };
 
@@ -83,17 +83,27 @@ console.log('[tab-home.js.44:txps:]',txps); //TODO
 
         profileService.getNotifications({
           limit: 3
-        }, function(err, n) {
+        }, function(err, notifications) {
           if (err) {
             console.log('[tab-home.js.35:err:]', $log.error(err)); //TODO
             return;
           }
-          $scope.notifications = n;
-          $ionicScrollDelegate.resize();
+          $scope.notifications = notifications;
 
-          $timeout(function() {
-            $scope.$apply();
-          }, 1);
+          profileService.getTxps({
+            limit: 3
+          }, function(err, txps, n) {
+            if (err) {
+              console.log('[tab-home.js.35:err:]', $log.error(err)); //TODO
+            }
+            $scope.txps = txps;
+            $scope.txpsN = n;
+            $ionicScrollDelegate.resize();
+
+            $timeout(function() {
+              $scope.$apply();
+            }, 1);
+          })
         })
       });
     };
@@ -130,5 +140,8 @@ console.log('[tab-home.js.44:txps:]',txps); //TODO
       $scope.glideraEnabled = config.glidera.enabled && !isWindowsPhoneApp;
       $scope.coinbaseEnabled = config.coinbase.enabled && !isWindowsPhoneApp;
     });
+
+    $scope.openTxpModal = txpModalService.open;
+
 
   });
