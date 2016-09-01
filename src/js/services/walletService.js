@@ -65,27 +65,6 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     });
   };
 
-  root.requiresBackup = function(wallet) {
-    if (wallet.isPrivKeyExternal()) return false;
-    if (!wallet.credentials.mnemonic) return false;
-    if (wallet.credentials.network == 'testnet') return false;
-
-    return true;
-  };
-
-  root.needsBackup = function(wallet, cb) {
-
-    if (!root.requiresBackup(wallet))
-      return cb(false);
-
-    storageService.getBackupFlag(wallet.credentials.walletId, function(err, val) {
-      if (err) $log.error(err);
-      if (val) return cb(false);
-      return cb(true);
-    });
-  };
-
-
   // TODO
   // This handles errors from BWS/index which normally
   // trigger from async events (like updates).
@@ -815,11 +794,9 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     if (!wallet.isComplete())
       return cb('WALLET_NOT_COMPLETE');
 
-    root.needsBackup(wallet, function(needsBackup) {
-      if (needsBackup)
-        return cb('WALLET_NEEDS_BACKUP');
-      return cb();
-    });
+    if (wallet.needsBackup)
+      return cb('WALLET_NEEDS_BACKUP');
+    return cb();
   };
 
 
@@ -859,7 +836,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     askPassword(wallet.name, gettext('Enter new spending password'), function(password) {
       if (!password) return cb('no password');
       askPassword(wallet.name, gettext('Confirm you new spending password'), function(password2) {
-        if (!password2 || password != password2) 
+        if (!password2 || password != password2)
           return cb('password mismatch');
 
         wallet.encryptPrivateKey(password);
@@ -950,7 +927,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     }
 
     root.prepare(wallet, function(err, password) {
-      if (err) return cb('Prepare error: '  + err);
+      if (err) return cb('Prepare error: ' + err);
 
       ongoingProcess.set('sendingTx', true);
       publishFn(wallet, txp, function(err, publishedTxp) {
@@ -999,33 +976,6 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     });
   };
 
-  root.getNotifications = function(wallet, opts, cb) {
-
-    wallet.getNotifications(opts, function(err, notifications) {
-      if (err) return cb(err);
-
-      notifications = lodash.filter(notifications, function(x) {
-        return x.type != 'NewBlock' && x.type != 'BalanceUpdated' && x.type != 'NewOutgoingTxByThirdParty';
-      });
-
-      var idToName = {};
-      if (wallet.cachedStatus) {
-        lodash.each(wallet.cachedStatus.wallet.copayers, function(c) {
-          idToName[c.id] = c.name;
-        });
-      }
-
-      lodash.each(notifications, function(x) {
-        x.wallet = wallet;
-        if (x.creatorId && wallet.cachedStatus) {
-          x.creatorName = idToName[x.creatorId];
-        };
-      });
-
-      return cb(null, notifications);
-    });
-  };
-
   root.getEncodedWalletInfo = function(wallet, cb) {
 
     var derivationPath = wallet.credentials.getBaseAddressDerivationPath();
@@ -1040,7 +990,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     if (wallet.credentials.derivationStrategy != 'BIP44' || !wallet.canSign())
       return null;
 
-    root.getKeys(wallet, function(err, keys){
+    root.getKeys(wallet, function(err, keys) {
       if (err || !keys) return cb(err);
 
       if (keys.mnemonic) {
@@ -1058,64 +1008,6 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
 
     });
   };
-
-  root.processNotifications = function(notifications, limit) {
-    if (!notifications) return [];
-
-    var shown = lodash.sortBy(notifications, 'createdOn').reverse();
-
-    if (limit)
-      shown = shown.splice(0, limit);
-
-    lodash.each(shown, function(x) {
-      x.txpId = x.data ? x.data.txProposalId : null;
-      x.txid = x.data ? x.data.txid : null;
-      x.types = [x.type];
-
-      if (x.data && x.data.amount)
-        x.amountStr = txFormatService.formatAmountStr(x.data.amount);
-
-      x.action = function() {
-        // TODO?
-        $state.go('wallet.details', {
-          walletId: x.walletId,
-          txpId: x.txpId,
-          txid: x.txid,
-        });
-      };
-    });
-
-    // condense
-    var finale = [],
-      prev;
-
-
-    lodash.each(shown, function(x) {
-      if (prev && prev.walletId === x.walletId && prev.txpId && prev.txpId === x.txpId && prev.creatorId && prev.creatorId === x.creatorId) {
-        prev.types.push(x.type);
-        prev.data = lodash.assign(prev.data, x.data);
-        prev.txid = prev.txid || x.txid;
-        prev.amountStr = prev.amountStr || x.amountStr;
-        prev.creatorName = prev.creatorName || x.creatorName;
-      } else {
-        finale.push(x);
-        prev = x;
-      }
-    });
-
-    // messages...
-
-    var u = bwcService.getUtils();
-    lodash.each(finale, function(x) {
-      if (x.data && x.data.message && x.wallet && x.wallet.credentials.sharedEncryptingKey) {
-        // TODO TODO TODO => BWC
-        x.message = u.decryptMessage(x.data.message, x.wallet.credentials.sharedEncryptingKey);
-      }
-    });
-
-    return finale;
-  };
-
 
   root.setTouchId = function(wallet, enabled, cb) {
     fingerprintService.check(wallet, function(err) {

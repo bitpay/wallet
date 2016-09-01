@@ -2,8 +2,9 @@
 angular.module('copayApp.controllers').controller('tourController',
   function($scope, $state, $log, $timeout, ongoingProcess, profileService) {
 
-    $scope.init = function() {
+    var tries = 0;
 
+    $scope.init = function() {
       $scope.data = {
         index: 0
       };
@@ -16,33 +17,25 @@ angular.module('copayApp.controllers').controller('tourController',
       }
     };
 
-    $scope.createProfile = function(opts) {
-      var tries = 0;
-      opts = opts || {};
-      $log.debug('Creating profile');
+    $scope.createDefaultWallet = function() {
       ongoingProcess.set('creatingWallet', true);
-      profileService.create(opts, function(err) {
+      profileService.createDefaultWallet(function(err, walletClient) {
         if (err) {
           $log.warn(err);
-          $scope.error = err;
-          $scope.$apply();
 
           return $timeout(function() {
-            $log.warn('Retrying to create profile......');
+            $log.warn('Retrying to create default wallet......');
             if (tries == 3) {
               tries == 0;
-              return $scope.createProfile({
-                noWallet: true
-              });
+              return $scope.createDefaultWallet();
             } else {
               tries += 1;
-              return $scope.createProfile();
+              return $scope.createDefaultWallet();
             }
           }, 3000);
         };
-        $scope.error = "";
         ongoingProcess.set('creatingWallet', false);
-        var wallet = profileService.getWallets()[0];
+        var wallet = walletClient;
         $state.go('onboarding.collectEmail', {
           walletId: wallet.credentials.walletId
         });

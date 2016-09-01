@@ -1,21 +1,28 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 19.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<svg version="1.1" id="Capa_1" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns"
-	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="-285 410.9 25 20"
-	 style="enable-background:new -285 410.9 25 20;" xml:space="preserve">
-<style type="text/css">
-	.st0{fill:#FFFFFF;}
-</style>
-<title>Wallet-Copy</title>
-<desc>Created with Sketch.</desc>
-<g id="Page-1" sketch:type="MSPage">
-	<g id="Navigation-13-Copy-2" transform="translate(-25.000000, -285.000000)" sketch:type="MSArtboardGroup">
-		<g id="wallet-ico-copy-2" transform="translate(26.042969, 286.000000)" sketch:type="MSLayerGroup">
-			<path class="st0" d="M-261.8,428.9h-23.5l0-18.2l18-0.1v2.8h5.5V428.9z M-284.7,428.3h22.4V414h-4.9l-0.3,0.1h-17.1V428.3z
-				 M-284.7,413.4h16.8v-2.2l-16.8,0.1V413.4z M-266.4,424c-1,0-1.7-0.8-1.7-1.7s0.8-1.7,1.7-1.7s1.7,0.8,1.7,1.7
-				S-265.4,424-266.4,424z M-266.4,421.1c-0.6,0-1.2,0.5-1.2,1.1s0.5,1.1,1.2,1.1c0.6,0,1.2-0.5,1.2-1.1S-265.8,421.1-266.4,421.1z"
-				/>
-		</g>
-	</g>
-</g>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="44px" height="38px" viewBox="0 0 44 38" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 39.1 (31720) - http://www.bohemiancoding.com/sketch -->
+    <title>Wallet Copy</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <path d="M12.2206319,33.5295725 C12.2206319,35.1887012 13.5540503,36.5336907 15.221911,36.5336908 L35.3827914,36.5336913 C37.040352,36.5336913 38.3840705,35.1979548 38.3840705,33.529573 L38.3840709,19.5110705 L12.2206319,19.5110706 L12.2206319,33.5295725 Z M31.7761235,19.4691743 L31.776124,16.3165791 L12.2255864,16.3165791 C12.2255864,16.3165791 12.2255864,19.5085877 12.2255864,19.5085877 L31.7761235,19.4691743 Z M33.423217,30.9126651 C34.3328814,30.9126651 35.07031,30.1815053 35.07031,29.279574 C35.07031,28.3776426 34.3328814,27.6464828 33.423217,27.6464828 C32.5135527,27.6464828 31.776124,28.3776426 31.776124,29.279574 C31.776124,30.1815053 32.5135527,30.9126651 33.423217,30.9126651 Z" id="path-1"></path>
+        <filter x="-50%" y="-50%" width="200%" height="200%" filterUnits="objectBoundingBox" id="filter-2">
+            <feMorphology radius="0.5" operator="dilate" in="SourceAlpha" result="shadowSpreadOuter1"></feMorphology>
+            <feOffset dx="0" dy="2" in="shadowSpreadOuter1" result="shadowOffsetOuter1"></feOffset>
+            <feMorphology radius="1" operator="erode" in="SourceAlpha" result="shadowInner"></feMorphology>
+            <feOffset dx="0" dy="2" in="shadowInner" result="shadowInner"></feOffset>
+            <feComposite in="shadowOffsetOuter1" in2="shadowInner" operator="out" result="shadowOffsetOuter1"></feComposite>
+            <feGaussianBlur stdDeviation="4" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.307518116 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+    </defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Wallet/Icon/Blue" transform="translate(-3.000000, -10.000000)">
+            <g id="Oval-87-+-bitpay-logo-grayscale" transform="translate(0.000000, 1.000000)">
+                <g id="Wallet-Copy">
+                    <use fill="black" fill-opacity="1" filter="url(#filter-2)" xlink:href="#path-1"></use>
+                    <use stroke="#FFFFFF" stroke-width="1" xlink:href="#path-1"></use>
+                </g>
+            </g>
+        </g>
+    </g>
 </svg>

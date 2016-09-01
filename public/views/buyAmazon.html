@@ -12,18 +12,15 @@
 
     <div ng-show="!buy.giftCard">
 
-      <div class="box-notification error" ng-show="buy.error" ng-click="buy.error = null">
-        {{buy.error}}
-        <div ng-show="buy.errorInfo">
-          There was an error when trying to buy gift card, but the funds were sent to BitPay Invoice. Please, contact
-          BitPay to refund your bitcoin
-          <div>
-            Amount: {{buy.errorInfo.amount}} {{buy.errorInfo.currency}}<br>
-            BitPay Invoice ID: {{buy.errorInfo.invoiceId}}.
-          </div>
-          <div class="text-center">
-            <a ng-click="openExternalLink(buy.errorInfo.invoiceUrl)">Open invoice</a>
-          </div>
+      <div class="box-notification error" ng-show="buy.errorInfo" ng-click="buy.errorInfo = null">
+        There was an error when trying to buy gift card, but the funds were sent to BitPay Invoice. Please, contact
+        BitPay to refund your bitcoin
+        <div>
+          Amount: {{buy.errorInfo.amount}} {{buy.errorInfo.currency}}<br>
+          BitPay Invoice ID: {{buy.errorInfo.invoiceId}}.
+        </div>
+        <div class="text-center">
+          <a ng-click="openExternalLink(buy.errorInfo.invoiceUrl)">Open invoice</a>
         </div>
       </div>
 

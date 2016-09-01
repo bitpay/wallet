@@ -155,156 +155,18 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
      *
      */
 
-    .state('wallet', {
-        url: '/wallet/{walletId}/{fromOnboarding}',
-        abstract: true,
-        template: '<ion-nav-view name="wallet"></ion-nav-view>'
-      })
-      .state('wallet.details', {
-        url: '/details',
-        views: {
-          'wallet': {
-            templateUrl: 'views/walletDetails.html'
-          }
-        },
-        params: {
-          txid: null,
-          txpId: null,
-        },
-      })
-      .state('wallet.preferences', {
-        url: '/preferences',
-        views: {
-          'wallet': {
-            templateUrl: 'views/preferences.html'
-          }
+    .state('tabs.details', {
+      url: '/details/{walletId}/{fromOnboarding}',
+      views: {
+        'tab-home': {
+          templateUrl: 'views/walletDetails.html'
         }
-      })
-      .state('wallet.preferencesAlias', {
-        url: '/preferencesAlias',
-        views: {
-          'wallet': {
-            templateUrl: 'views/preferencesAlias.html'
-          }
-        }
-      })
-      .state('wallet.preferencesColor', {
-        url: '/preferencesColor',
-        views: {
-          'wallet': {
-            templateUrl: 'views/preferencesColor.html'
-          }
-        }
-      })
-      .state('wallet.preferencesEmail', {
-        url: '/preferencesEmail',
-        views: {
-          'wallet': {
-            templateUrl: 'views/preferencesEmail.html'
-          }
-        }
-      })
-      .state('wallet.backup', {
-        url: '/backup',
-        views: {
-          'wallet': {
-            templateUrl: 'views/backup.html'
-          }
-        }
-      })
-      .state('wallet.preferencesAdvanced', {
-        url: '/preferencesAdvanced',
-        views: {
-          'wallet': {
-            templateUrl: 'views/preferencesAdvanced.html'
-          }
-        }
-      })
-      .state('wallet.information', {
-        url: '/information',
-        views: {
-          'wallet': {
-            templateUrl: 'views/preferencesInformation.html'
-          }
-        }
-      })
-      .state('wallet.export', {
-        abstract: true,
-        url: '/export',
-        views: {
-          'wallet': {
-            templateUrl: 'views/export.html'
-          }
-        }
-      })
-      .state('wallet.export.file', {
-        url: '/tab-export-file',
-        needProfile: true,
-        views: {
-          'tab-export-file': {
-            templateUrl: 'views/tab-export-file.html',
-          },
-        }
-      })
-      .state('wallet.export.qrCode', {
-        url: '/tab-export-qrCode',
-        needProfile: true,
-        views: {
-          'tab-export-qrCode': {
-            templateUrl: 'views/tab-export-qrCode.html',
-          },
-        }
-      })
-      .state('wallet.preferencesBwsUrl', {
-        url: '/preferencesBwsUrl',
-        views: {
-          'wallet': {
-            templateUrl: 'views/preferencesBwsUrl.html'
-          }
-        }
-      })
-      .state('wallet.preferencesHistory', {
-        url: '/preferencesHistory',
-        views: {
-          'wallet': {
-            templateUrl: 'views/preferencesHistory.html'
-          }
-        }
-      })
-      .state('wallet.deleteWords', {
-        url: '/deleteWords',
-        views: {
-          'wallet': {
-            templateUrl: 'views/preferencesDeleteWords.html'
-          }
-        }
-      })
-      .state('wallet.delete', {
-        url: '/delete',
-        views: {
-          'wallet': {
-            templateUrl: 'views/preferencesDeleteWallet.html'
-          }
-        }
-      })
-      .state('wallet.copayers', {
-        url: '/copayers',
-        views: {
-          'wallet': {
-            templateUrl: 'views/copayers.html'
-          }
-        }
-      })
-      .state('wallet.paperWallet', {
-        url: '/paperWallet',
-        views: {
-          'wallet': {
-            templateUrl: 'views/paperWallet.html'
-          }
-        }
-      })
-
-
+      },
+      params: {
+        txid: null,
+        txpId: null,
+      },
+    })
 
     /*
      *
@@ -357,12 +219,11 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
      */
 
     .state('send', {
-      url: '/send',
-      abstract: true,
-      template: '<ion-nav-view name="send"></ion-nav-view>'
-    })
-
-    .state('send.amount', {
+        url: '/send',
+        abstract: true,
+        template: '<ion-nav-view name="send"></ion-nav-view>'
+      })
+      .state('send.amount', {
         url: '/amount/:toAddress/:toName',
         views: {
           'send': {
@@ -386,15 +247,10 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
      *
      */
 
-    .state('add', {
+    .state('tabs.add', {
         url: '/add',
-        abstract: true,
-        template: '<ion-nav-view name="add"></ion-nav-view>'
-      })
-      .state('add.main', {
-        url: '/main',
         views: {
-          'add': {
+          'tab-home': {
             templateUrl: 'views/add.html',
             controller: function(platformInfo) {
               if (platformInfo.isCordova && StatusBar.isVisible) {
@@ -404,24 +260,24 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
           }
         }
       })
-      .state('add.join', {
+      .state('tabs.join', {
         url: '/join/:url',
         views: {
-          'add': {
+          'tab-home': {
             templateUrl: 'views/join.html'
           },
         }
       })
-      .state('add.import', {
-        url: '/import',
+      .state('tabs.import', {
+        url: '/import/:fromOnboarding',
         abstract: true,
         views: {
-          'add': {
+          'tab-home': {
             templateUrl: 'views/import.html'
           },
         }
       })
-      .state('add.import.phrase', {
+      .state('tabs.import.phrase', {
         url: '/tab-import-phrase',
         views: {
           'tab-import-phrase': {
@@ -429,7 +285,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
           },
         }
       })
-      .state('add.import.file', {
+      .state('tabs.import.file', {
         url: '/tab-import-file',
         views: {
           'tab-import-file': {
@@ -437,7 +293,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
           },
         }
       })
-      .state('add.import.hardware', {
+      .state('tabs.import.hardware', {
         url: '/tab-import-hardware',
         views: {
           'tab-import-hardware': {
@@ -445,17 +301,17 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
           },
         }
       })
-      .state('add.create', {
+      .state('tabs.create', {
         url: '/create',
         abstract: true,
         templateUrl: 'views/create.html',
         views: {
-          'add': {
+          'tab-home': {
             templateUrl: 'views/create.html'
           },
         }
       })
-      .state('add.create.personal', {
+      .state('tabs.create.personal', {
         url: '/tab-create-personal',
         views: {
           'tab-create-personal': {
@@ -463,7 +319,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
           },
         }
       })
-      .state('add.create.shared', {
+      .state('tabs.create.shared', {
         url: '/tab-create-shared',
         views: {
           'tab-create-shared': {
@@ -478,75 +334,224 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
      *
      */
 
-    .state('settings', {
-        url: '/settings',
-        abstract: true,
-        template: '<ion-nav-view name="settings"></ion-nav-view>'
-      })
-      .state('settings.language', {
+    .state('tabs.language', {
         url: '/language',
         views: {
-          'settings': {
+          'tab-settings': {
             templateUrl: 'views/preferencesLanguage.html'
           }
         }
       })
-      .state('settings.unit', {
+      .state('tabs.unit', {
         url: '/unit',
         views: {
-          'settings': {
+          'tab-settings': {
             templateUrl: 'views/preferencesUnit.html'
           }
         }
       })
-      .state('settings.fee', {
+      .state('tabs.fee', {
         url: '/fee',
         views: {
-          'settings': {
+          'tab-settings': {
             templateUrl: 'views/preferencesFee.html'
           }
         }
       })
-      .state('settings.altCurrency', {
+      .state('tabs.altCurrency', {
         url: '/altCurrency',
         views: {
-          'settings': {
+          'tab-settings': {
             templateUrl: 'views/preferencesAltCurrency.html'
           }
         }
       })
-      .state('settings.about', {
+      .state('tabs.about', {
         url: '/about',
         views: {
-          'settings': {
+          'tab-settings': {
             templateUrl: 'views/preferencesAbout.html'
           }
         }
       })
-      .state('settings.logs', {
+      .state('tabs.logs', {
         url: '/logs',
         views: {
-          'settings': {
+          'tab-settings': {
             templateUrl: 'views/preferencesLogs.html'
           }
         }
       })
-      .state('settings.termsOfUse', {
+      .state('tabs.termsOfUse', {
         url: '/termsOfUse',
         views: {
-          'settings': {
+          'tab-settings': {
             templateUrl: 'views/termsOfUse.html',
           }
         }
       })
-      .state('settings.translators', {
+      .state('tabs.translators', {
         url: '/translators',
         views: {
-          'settings': {
+          'tab-settings': {
             templateUrl: 'views/translators.html'
           }
         }
       })
+
+    /*
+     *
+     * Wallet preferences
+     *
+     */
+
+    .state('tabs.preferences', {
+        url: '/preferences/:walletId',
+        abstract: true,
+        views: {
+          'tab-settings': {
+            template: '<ion-nav-view name="preferences"></ion-nav-view>'
+          },
+        }
+      })
+      .state('tabs.preferences.main', {
+        url: '/main',
+        views: {
+          'preferences': {
+            templateUrl: 'views/preferences.html'
+          }
+        }
+      })
+      .state('tabs.preferences.preferencesAlias', {
+        url: '/preferencesAlias',
+        views: {
+          'preferences': {
+            templateUrl: 'views/preferencesAlias.html'
+          }
+        }
+      })
+      .state('tabs.preferences.preferencesColor', {
+        url: '/preferencesColor',
+        views: {
+          'preferences': {
+            templateUrl: 'views/preferencesColor.html'
+          }
+        }
+      })
+      .state('tabs.preferences.preferencesEmail', {
+        url: '/preferencesEmail',
+        views: {
+          'preferences': {
+            templateUrl: 'views/preferencesEmail.html'
+          }
+        }
+      })
+      .state('tabs.preferences.backup', {
+        url: '/backup',
+        views: {
+          'preferences': {
+            templateUrl: 'views/backup.html'
+          }
+        }
+      })
+      .state('tabs.preferences.preferencesAdvanced', {
+        url: '/preferencesAdvanced',
+        views: {
+          'preferences': {
+            templateUrl: 'views/preferencesAdvanced.html'
+          }
+        }
+      })
+      .state('tabs.preferences.information', {
+        url: '/information',
+        views: {
+          'preferences': {
+            templateUrl: 'views/preferencesInformation.html'
+          }
+        }
+      })
+      .state('tabs.preferences.export', {
+        abstract: true,
+        url: '/export',
+        views: {
+          'preferences': {
+            templateUrl: 'views/export.html'
+          }
+        }
+      })
+      .state('tabs.preferences.export.file', {
+        url: '/tab-export-file',
+        needProfile: true,
+        views: {
+          'tab-export-file': {
+            templateUrl: 'views/tab-export-file.html',
+          },
+        }
+      })
+      .state('tabs.preferences.export.qrCode', {
+        url: '/tab-export-qrCode',
+        needProfile: true,
+        views: {
+          'tab-export-qrCode': {
+            templateUrl: 'views/tab-export-qrCode.html',
+          },
+        }
+      })
+      .state('tabs.preferences.preferencesBwsUrl', {
+        url: '/preferencesBwsUrl',
+        views: {
+          'preferences': {
+            templateUrl: 'views/preferencesBwsUrl.html'
+          }
+        }
+      })
+      .state('tabs.preferences.preferencesHistory', {
+        url: '/preferencesHistory',
+        views: {
+          'preferences': {
+            templateUrl: 'views/preferencesHistory.html'
+          }
+        }
+      })
+      .state('tabs.preferences.deleteWords', {
+        url: '/deleteWords',
+        views: {
+          'preferences': {
+            templateUrl: 'views/preferencesDeleteWords.html'
+          }
+        }
+      })
+      .state('tabs.preferences.delete', {
+        url: '/delete',
+        views: {
+          'preferences': {
+            templateUrl: 'views/preferencesDeleteWallet.html'
+          }
+        }
+      })
+      .state('tabs.preferences.paperWallet', {
+        url: '/paperWallet',
+        views: {
+          'preferences': {
+            templateUrl: 'views/paperWallet.html'
+          }
+        }
+      })
+
+    /*
+     *
+     *TO DO
+     *
+     */
+
+    .state('tabs.copayers', {
+      url: '/copayers',
+      views: {
+        'wallet': {
+          templateUrl: 'views/copayers.html'
+        }
+      }
+    })
 
     /*
      *
@@ -555,7 +560,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
      */
 
     .state('onboarding', {
-        url: '/onboarding',
+        url: '/onboarding/:walletId',
         abstract: true,
         template: '<ion-nav-view name="onboarding"></ion-nav-view>'
       })
@@ -825,7 +830,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         });
 
         $ionicPlatform.on('resume', function() {
-          $rootScope.$emit('Local/Resume');
+          // Nothing tot do
         });
 
         $ionicPlatform.on('menubutton', function() {
@@ -854,6 +859,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         } else {
           profileService.storeProfileIfDirty();
           $log.debug('Profile loaded ... Starting UX.');
+
           $state.transitionTo('tabs.home');
         }
       });

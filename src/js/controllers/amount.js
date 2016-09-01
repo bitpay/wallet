@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('amountController', function($rootScope, $scope, $filter, $timeout, $ionicScrollDelegate, platformInfo, lodash, configService, rateService, $stateParams, $window, $state, $log, txFormatService) {
-
+angular.module('copayApp.controllers').controller('amountController', function($rootScope, $scope, $filter, $timeout, $ionicHistory, $ionicScrollDelegate, $ionicNavBarDelegate, gettextCatalog, platformInfo, lodash, configService, rateService, $stateParams, $window, $state, $log, txFormatService) {
+  $ionicNavBarDelegate.title(gettextCatalog.getString('Enter Amount'));
 
   var unitToSatoshi;
   var satToUnit;
@@ -63,7 +63,7 @@ angular.module('copayApp.controllers').controller('amountController', function($
 
     // in SAT ALWAYS
     if ($stateParams.toAmount) {
-      $scope.amount = (($stateParams.toAmount) * satToUnit).toFixed(unitDecimals) ;
+      $scope.amount = (($stateParams.toAmount) * satToUnit).toFixed(unitDecimals);
     }
 
 
@@ -188,13 +188,9 @@ angular.module('copayApp.controllers').controller('amountController', function($
     var amount = $scope.showAlternativeAmount ? fromFiat(_amount).toFixed(unitDecimals) : _amount.toFixed(unitDecimals);
 
     $state.transitionTo('send.confirm', {
-      toAmount:amount * unitToSatoshi,
+      toAmount: amount * unitToSatoshi,
       toAddress: $scope.toAddress,
       toName: $scope.toName,
     });
-  };
-
-  $scope.cancel = function() {
-    $state.transitionTo('tabs.send');
   };
 });

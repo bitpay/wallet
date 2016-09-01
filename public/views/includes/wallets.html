@@ -1,7 +1,7 @@
 <div class="wallets" ng-show="wallets[0]">
   <ion-slides class="slides" slider="data.slider">
     <ion-slide-page ng-repeat="wallet in wallets track by $index">
-      <div class="item item-icon-left">
+      <div class="item item-icon-left item-icon-right">
         <i class="icon ion-briefcase size-21" ng-style="{'color':wallet.color}"></i>
           {{wallet.name || wallet.id}}
         <span class="item-note" ng-show="wallet.n > 1 && wallet.isComplete()">
@@ -10,6 +10,7 @@
         <span class="badge badge-assertive" ng-show="!wallet.isComplete()" translate>
           Incomplete
         </span>
+        <i ng-show="wallet.needsBackup" class="icon ion-android-warning assertive"></i>
       </div>
     </ion-slide-page>
   </ion-slides>

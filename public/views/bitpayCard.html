@@ -31,11 +31,6 @@
           <span ng-show="!bitpayCard.bitpayCardTwoFactorPending">Login to your account</span>
           <span ng-show="bitpayCard.bitpayCardTwoFactorPending">2-Step Verification</span>
         </h4>
-        <div class="box-notification error"
-             ng-show="bitpayCard.error"
-             ng-click="bitpayCard.error = null">
-          {{bitpayCard.error}}
-        </div>
 
         <form
              ng-show="!bitpayCard.bitpayCardTwoFactorPending"
@@ -121,14 +116,9 @@
         <option value="all">All Activity</option>
       </select>
 
-      <div class="box-notification error"
-           ng-show="bitpayCard.error">
-        {{bitpayCard.error}}
-      </div>
-
       <div
         class="oh pr m20t text-gray size-12 text-center"
-        ng-show="!bitpayCard.error && !bitpayCard.bitpayCardTransactionHistory[0] &&
+        ng-show="!bitpayCard.bitpayCardTransactionHistory[0] &&
         !bitpayCard.bitpayCardInvoiceHistory[0] && !loadingHistory">
         No transactions yet
       </div>
@@ -176,11 +166,6 @@
     </div>
 
     <div ng-show="bitpayCard.bitpayCardAuthenticated && !bitpayCard.visaCardActivated && addFunds">
-        <div class="box-notification error"
-             ng-show="bitpayCard.error"
-             ng-click="bitpayCard.error = null">
-          {{bitpayCard.error}}
-        </div>
         <form
            name="createInvoiceForm"
            ng-submit="bitpayCard.sendFunds()"
@@ -215,7 +200,7 @@
             <div class="col">
               <button class="button button-block button-stable"
                       type="button"
-                      ng-click="addFunds = false; bitpayCard.error = null">
+                      ng-click="addFunds = false">
                 Cancel
               </button>
             </div>
