@@ -6,11 +6,6 @@ angular.module('copayApp.controllers').controller('collectEmailController', func
   var isWP = platformInfo.isWP;
   var usePushNotifications = isCordova && !isWP;
 
-  $scope.skip = function() {
-    if (!usePushNotifications) $state.go('onboarding.backupRequest');
-    else $state.go('onboarding.notifications');
-  }
-
   $scope.save = function(form) {
     var wallet = profileService.getWallet($stateParams.walletId);
     var email = $scope.email || '';

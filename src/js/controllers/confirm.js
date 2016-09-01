@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('confirmController', function($rootScope, $scope, $filter, $timeout, $ionicScrollDelegate, gettextCatalog, walletService, platformInfo, lodash, configService, rateService, $stateParams, $window, $state, $log, profileService, bitcore, $ionicPopup, txStatus, gettext, txFormatService, ongoingProcess, $ionicModal) {
-
+angular.module('copayApp.controllers').controller('confirmController', function($rootScope, $scope, $filter, $timeout, $ionicScrollDelegate, $ionicNavBarDelegate, gettextCatalog, walletService, platformInfo, lodash, configService, rateService, $stateParams, $window, $state, $log, profileService, bitcore, $ionicPopup, txStatus, gettext, txFormatService, ongoingProcess, $ionicModal) {
+  $ionicNavBarDelegate.title(gettextCatalog.getString('Confirm'));
   var cachedTxp = {};
   var isChromeApp = platformInfo.isChromeApp;
 
@@ -198,7 +198,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     $scope.$apply();
   };
 
-  var createTx = function(wallet,  cb) {
+  var createTx = function(wallet, cb) {
     var config = configService.getSync().wallet;
     var currentSpendUnconfirmed = config.spendUnconfirmed;
     var outputs = [];

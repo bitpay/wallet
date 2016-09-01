@@ -3,6 +3,9 @@
  * Copay main CSS
  *
  */
+ body {
+  font-family: 'roboto-regular';
+}
 
 h3.title {
   margin-left: 10px !important;
@@ -882,6 +885,14 @@ input[type=file] {
   text-align: left;
 }
 
+.right {
+  float: right;
+}
+
+.left {
+  float: left;
+}
+
 .input-label {
   max-width: none;
   width: inherit;
@@ -994,3 +1005,6 @@ input[type=number] {
 
 @import 'mixins/mixins';
 @import 'views/onboarding/onboarding';
+@import "views/common";
+@import "views/tab-home";
+@import "views/includes/walletActivity";

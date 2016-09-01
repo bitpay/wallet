@@ -6,7 +6,7 @@
   "name": "bitpay",
   "description": "The BitPay Bitcoin Wallet",
   "author": "BitPay",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "keywords": [
     "wallet",
     "copay",
@@ -45,7 +45,7 @@
     "url": "https://github.com/bitpay/copay/issues"
   },
   "dependencies": {
-    "bitcore-wallet-client": "4.0.0",
+    "bitcore-wallet-client": "4.1.0",
     "coveralls": "^2.11.9",
     "express": "^4.11.2",
     "fs": "0.0.2",

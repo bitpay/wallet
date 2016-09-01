@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('walletDetailsController', function($scope, $rootScope, $interval, $timeout, $filter, $log, $ionicModal, $ionicPopover, $ionicNavBarDelegate, $state, $stateParams, bwcError, profileService, lodash, configService, gettext, gettextCatalog, platformInfo, walletService, storageService, $ionicPopup) {
+angular.module('copayApp.controllers').controller('walletDetailsController', function($scope, $rootScope, $interval, $timeout, $filter, $log, $ionicModal, $ionicPopover, $ionicNavBarDelegate, $state, $stateParams, bwcError, profileService, lodash, configService, gettext, gettextCatalog, platformInfo, walletService, $ionicPopup) {
 
   var isCordova = platformInfo.isCordova;
   var isWP = platformInfo.isWP;
@@ -175,16 +175,10 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
     $scope.updateTxHistory(cb);
   }
 
-  var hideBalance = function() {
-    storageService.getHideBalanceFlag(wallet.credentials.walletId, function(err, shouldHideBalance) {
-      if (err) $scope.shouldHideBalance = false;
-      else $scope.shouldHideBalance = (shouldHideBalance == 'true') ? true : false;
-    });
-  }
-
   $scope.hideToggle = function() {
-    $scope.shouldHideBalance = !$scope.shouldHideBalance;
-    storageService.setHideBalanceFlag(wallet.credentials.walletId, $scope.shouldHideBalance.toString(), function() {});
+    profileService.toggleHideBalanceFlag(wallet.credentials.walletId, function(err) {
+      if (err) $log.error(err);
+    });
   }
 
   var currentTxHistoryPage;
@@ -204,7 +198,6 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
     $scope.requiresMultipleSignatures = wallet.credentials.m > 1;
     $scope.newTx = false;
 
-    hideBalance();
     $ionicNavBarDelegate.title(wallet.name);
 
     $scope.updateAll(function() {

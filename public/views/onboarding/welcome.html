@@ -1,5 +1,5 @@
 <ion-view id="onboard-welcome" class="onboarding">
-  <ion-content>
+  <ion-content ng-controller="welcomeController" ng-init="createProfile()">
     <img src="../img/onboarding-welcome-shopping24.png" id="shopping-24" />
     <div class="text-center">
       <div class="row">
@@ -16,6 +16,5 @@
       <div class="row">
         <button class="button button-block restore col col-75" translate>Restore</button>
       </div>
-    </div>
   </ion-content>
 </ion-view>
