@@ -1,5 +1,4 @@
 <span class="wallet-activity">
-
   <div ng-if="x.type ==  'NewCopayer' && x.wallet.n>1">
     Copayer joined 
   </div>
@@ -25,36 +24,32 @@
   </div>
 
   <div ng-if="x.type == 'TxProposalRemoved'">
-    <i class="icon ion-ios-close-empty size-21" ng-style="{'color':x.wallet.color}"></i>
     <span translate>Proposal Deleted</span>: 
-    <i>{{x.message}}</i>
+    <b>{{x.message}}</b>
     <div class="wallet-activity-amount">
       {{x.amountStr}}:
     </div>
   </div>
 
-  <div ng-if="x.type == 'TxProposalRejected'">
-    <i class="icon ion-ios-close-empty size-21" ng-style="{'color':x.wallet.color}"></i>
+  <div ng-if="x.type == 'TxProposalRejectedBy'">
     <span translate>Proposal Rejected</span>:
-    <i>{{x.message}}</i>
+    <b>{{x.message}}</b>
     <div class="wallet-activity-amount">
       {{x.amountStr}}:
       </div>
   </div>
 
   <span ng-if="x.type == 'NewTxProposal'">
-    <i class="icon ion-arrow-up-c size-21" ng-style="{'color':x.wallet.color}"></i>
     <span translate>New Proposal</span>:
-    <i>{{x.message}}</i>
+    <b>{{x.message}}</b>
     <div class="wallet-activity-amount">
     {{x.amountStr}} 
     </div>
   </span>
 
   <span ng-if="x.type == 'TxProposalAcceptedBy'">
-    <i class="icon ion-checkmark-round size-21" ng-style="{'color':x.wallet.color}"></i>
-    <span translate>Proposal Accepted</span>
-    <i>{{x.message}}</i>
+    <span translate>Proposal Accepted</span>:
+    <b>{{x.message}}</b>
     <div class="wallet-activity-amount">
     {{x.amountStr}}
     </div>

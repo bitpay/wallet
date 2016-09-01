@@ -5,7 +5,21 @@
 
   <ion-content class="padding" ng-controller="tabHomeController" ng-init="updateAllWallets(); nextStep()">
 
-    <div class="list card" ng-hide="!notifications[0]">
+
+    <div class="list card" ng-hide="!txps[0]">
+      <a class="item item-icon-right item-heading" ui-sref="proposals" translate>
+        Payment Proposals
+        <i class="icon ion-ios-arrow-right nav-item-arrow-right"></i>
+
+        <span class="badge badge-assertive" ng-show="txpsN>3" translate> {{txpsN}}</span>
+      </a>
+
+      <a ng-repeat="tx in txps" class="item item-icon-left" ng-click="openTxpModal(tx)">
+        <span ng-include="'views/includes/txp.html'"></span>
+      </a>
+    </div>
+
+    <div class="list card">
       <a class="item item-icon-right item-heading" ui-sref="activity" translate>
         Recent Activity
         <i class="icon ion-ios-arrow-right nav-item-arrow-right"></i>

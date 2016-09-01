@@ -1,0 +1,23 @@
+
+<ion-view>
+  <ion-nav-bar class="bar-royal">
+    <ion-nav-title>Pending Proposals</ion-nav-title>
+    <ion-nav-buttons side="primary">
+      <button class="button back-button" ui-sref="tabs.home">
+        <i class="icon ion-ios-arrow-thin-left"></i>
+      </button>
+    </ion-nav-buttons>
+  </ion-nav-bar>
+  <ion-content class="padding" ng-controller="proposalsController" ng-init="init()">
+
+   <div class="list card">
+      <a ng-repeat="tx in txps" class="item item-icon-left" ng-click="openTxpModal(tx)">
+        <span ng-include="'views/includes/txp.html'"></span>
+      </a>
+
+      <div class="item" ng-show="!txps[0]">
+        <span translate>No pending proposals</span>
+      </div>
+    </div>
+  </ion-content>
+</ion-view>

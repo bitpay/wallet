@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('walletDetailsController', function($scope, $rootScope, $interval, $timeout, $filter, $log, $ionicModal, $ionicPopover, $ionicNavBarDelegate, $state, $stateParams, bwcError, profileService, lodash, configService, gettext, gettextCatalog, platformInfo, walletService, $ionicPopup) {
+angular.module('copayApp.controllers').controller('walletDetailsController', function($scope, $rootScope, $interval, $timeout, $filter, $log, $ionicModal, $ionicPopover, $ionicNavBarDelegate, $state, $stateParams, bwcError, profileService, lodash, configService, gettext, gettextCatalog, platformInfo, walletService, $ionicPopup, txpModalService) {
 
   var isCordova = platformInfo.isCordova;
   var isWP = platformInfo.isWP;
@@ -47,26 +47,7 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
   };
 
 
-  var glideraActive = true; // TODO TODO TODO
-  // isGlidera flag is a security measure so glidera status is not
-  // only determined by the tx.message
-  $scope.openTxpModal = function(tx) {
-    var config = configService.getSync().wallet;
-    var scope = $rootScope.$new(true);
-    scope.tx = tx;
-    scope.wallet = tx.wallet;
-    scope.copayers = tx.wallet.copayers;
-    scope.isGlidera = glideraActive;
-    scope.currentSpendUnconfirmed = config.spendUnconfirmed;
-
-    $ionicModal.fromTemplateUrl('views/modals/txp-details.html', {
-      scope: scope
-    }).then(function(modal) {
-      scope.txpDetailsModal = modal;
-      scope.txpDetailsModal.show();
-    });
-  };
-
+  $scope.openTxpModal = txpModalService.open;
 
   var listeners = [
     $rootScope.$on('bwsEvent', function(e, walletId) {
