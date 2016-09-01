@@ -140,6 +140,14 @@ angular.module('copayApp.controllers').controller('importController',
               $scope.$apply();
             });
           }
+
+          profileService.setBackupFlag(walletId);
+           if ($stateParams.fromOnboarding) {
+             profileService.setDisclaimerAccepted(function(err) {
+               if (err) $log.error(err);
+             });
+           }
+ 
           $state.go('tabs.home');
         });
       }, 100);
