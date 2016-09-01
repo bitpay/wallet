@@ -42,4 +42,4 @@ wp: build-wp
 
 androidrun:
 	make -C $(WORKDIR)android run
-	adb logcat | grep copay.js
+	adb logcat | grep chromium
