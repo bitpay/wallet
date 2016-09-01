@@ -6,12 +6,17 @@ angular.module('copayApp.controllers').controller('tabHomeController',
     $scope.externalServices = {};
     $scope.bitpayCardEnabled = true; // TODO
 
-    var setNotifications = function(notifications) {
-      $scope.notifications = notifications;
-      $timeout(function() {
-        $scope.$apply();
-      }, 1);
+
+
+    var setPendingTxps = function(txps) {
+      if (!txps) {
+        $scope.txps = [];
+        return;
+      }
+      $scope.txps = lodash.sortBy(txps, 'createdOn').reverse();
     };
+
+
 
     $scope.updateAllWallets = function() {
       $scope.wallets = profileService.getWallets();
@@ -33,16 +38,37 @@ angular.module('copayApp.controllers').controller('tabHomeController',
       });
 
       $scope.fetchingNotifications = true;
-      profileService.getNotifications({
+
+      profileService.getTxps({
         limit: 3
-      }, function(err, n) {
+      }, function(err, txps) {
+console.log('[tab-home.js.44:txps:]',txps); //TODO
         if (err) {
           console.log('[tab-home.js.35:err:]', $log.error(err)); //TODO
-          return;
         }
-        $scope.fetchingNotifications = false;
-        setNotifications(n);
+        $scope.txps = txps;
         $ionicScrollDelegate.resize();
+
+        $timeout(function() {
+          $scope.$apply();
+        }, 1);
+
+
+        profileService.getNotifications({
+          limit: 3
+        }, function(err, n) {
+          if (err) {
+            console.log('[tab-home.js.35:err:]', $log.error(err)); //TODO
+            return;
+          }
+          $scope.fetchingNotifications = false;
+          $scope.notifications = n;
+          $ionicScrollDelegate.resize();
+
+          $timeout(function() {
+            $scope.$apply();
+          }, 1);
+        })
       })
     };
 
@@ -62,8 +88,12 @@ angular.module('copayApp.controllers').controller('tabHomeController',
             console.log('[tab-home.js.35:err:]', $log.error(err)); //TODO
             return;
           }
-          setNotifications(n);
+          $scope.notifications = n;
           $ionicScrollDelegate.resize();
+
+          $timeout(function() {
+            $scope.$apply();
+          }, 1);
         })
       });
     };

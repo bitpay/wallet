@@ -122,6 +122,12 @@ angular.module('copayApp.services')
         if (wallet.cachedActivity)
           wallet.cachedActivity.isValid = false;
 
+
+        if (wallet.cachedTxps)
+          wallet.cachedTxps.isValid = false;
+
+
+
         $rootScope.$emit('bwsEvent', wallet.id, n.type, n);
       });
 
@@ -779,7 +785,7 @@ angular.module('copayApp.services')
       };
 
 
-      function getNotifications(wallet, cb2) {
+      function updateNotifications(wallet, cb2) {
         if (isActivityCached(wallet) && !opts.force) return cb2();
 
         wallet.getNotifications({
@@ -858,7 +864,7 @@ angular.module('copayApp.services')
       };
 
       lodash.each(w, function(wallet) {
-        getNotifications(wallet, function(err) {
+        updateNotifications(wallet, function(err) {
           j++;
           if (err) {
             $log.warn('Error updating notifications:' + err);
@@ -890,6 +896,32 @@ angular.module('copayApp.services')
           };
         });
       });
+    };
+
+
+    root.getTxps = function(opts, cb) {
+      opts = opts || {};
+
+      var w = root.getWallets();
+      if (lodash.isEmpty(w)) return cb();
+
+      var txps = [];
+
+      function process(notifications) {
+        if (!notifications) return [];
+
+        var shown = lodash.sortBy(notifications, 'createdOn').reverse();
+        shown = shown.splice(0, opts.limit || MAX);
+        return shown;
+      };
+
+      lodash.each(w, function(x) {
+        if (x.pendingTxps)
+          txps = txps.concat(x.pendingTxps);
+      });
+      txps = lodash.sortBy(txps, 'createdOn');
+      txps = lodash.compact(lodash.flatten(notifications)).slice(0,MAX);
+      return cb(null, process(txps));
     };
 
     return root;
