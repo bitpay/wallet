@@ -1,8 +1,8 @@
 <ion-view>
-  <ion-nav-bar class="bar-stable">
+  <ion-nav-bar class="bar-royal">
     <ion-nav-buttons side="primary">
-      <button class="button no-border" ui-sref="tabs.add">
-        <i class="icon ion-chevron-left"></i> {{'Back' | translate}}
+      <button class="button back-button" ui-sref="tabs.add">
+        <i class="icon ion-ios-arrow-thin-left"></i>
       </button>
     </ion-nav-buttons>
     <ion-nav-title>{{'Create new wallet' | translate}}</ion-nav-title>
@@ -16,7 +16,7 @@
 
     <form name="setupForm" ng-submit="create.create(setupForm)" novalidate>
 
-      <div class="list">
+      <div class="card list">
         <label ng-hide="create.hideWalletName" class="item item-input item-stacked-label">
           <span class="input-label" translate>Wallet name</span>
           <input type="text"
