@@ -67,9 +67,12 @@
         <span class="toggle-label" translate>Enable Glidera Service</span>
       </ion-toggle>
 
+      <!-- disable coinbase for this release -->
+      <!--
       <ion-toggle ng-show="!isWP" ng-model="coinbaseEnabled" toggle-class="toggle-balanced" ng-change="coinbaseChange()">
         <span class="toggle-label" translate>Enable Coinbase Service</span>
       </ion-toggle>
+      -->
 
       <div class="item item-divider">Others</div>
 
@@ -77,20 +80,18 @@
         <span class="toggle-label" translate>Use Unconfirmed Funds</span>
       </ion-toggle>
 
-      <div class="list">
-        <div class="item item-divider">Wallets Settings</div>
-        <div ng-repeat="item in wallets track by $index">
-          <div class="item item-icon-left" href ui-sref="tabs.preferences.main({'walletId': item.id})">
-            <i class="icon ion-briefcase size-21" ng-style="{'color':item.color}"></i>
-            {{item.name || item.id}}
-            <span  ng-show="item.n > 1" class="text-light">
-              {{item.m}}-of-{{item.n}}
-            </span>
-            <span class="badge badge-assertive" ng-show="!item.isComplete()" translate>
-              Incomplete
-            </span>
-          </div>
-        </div>
+      <div class="item item-divider">Wallets Settings</div>
+      <div class="item item-icon-left" href
+           ui-sref="tabs.preferences.main({'walletId': item.id})"
+           ng-repeat="item in wallets track by $index">
+        <i class="icon ion-briefcase size-21" ng-style="{'color':item.color}"></i>
+        {{item.name || item.id}}
+        <span  ng-show="item.n > 1" class="text-light">
+          {{item.m}}-of-{{item.n}}
+        </span>
+        <span class="badge badge-assertive" ng-show="!item.isComplete()" translate>
+          Incomplete
+        </span>
       </div>
 
       <div class="item item-divider"></div>
@@ -98,6 +99,7 @@
         <i class="icon ion-ios-film-outline"></i>
         <span translate>About Bitpay Wallet</span>
       </div>
+      <div class="item item-divider"></div>
     </div>
   </ion-content>
 </ion-view>
