@@ -1,23 +1,9 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('confirmController', function($rootScope, $scope, $filter, $timeout, $ionicScrollDelegate, $ionicNavBarDelegate, gettextCatalog, walletService, platformInfo, lodash, configService, rateService, $stateParams, $window, $state, $log, profileService, bitcore, $ionicPopup, txStatus, gettext, txFormatService, ongoingProcess, $ionicModal) {
+angular.module('copayApp.controllers').controller('confirmController', function($rootScope, $scope, $filter, $timeout, $ionicScrollDelegate, $ionicNavBarDelegate, gettextCatalog, walletService, platformInfo, lodash, configService, rateService, $stateParams, $window, $state, $log, profileService, bitcore, $ionicPopup, txStatus, gettext, txFormatService, ongoingProcess, $ionicModal, popupService) {
   $ionicNavBarDelegate.title(gettextCatalog.getString('Confirm'));
   var cachedTxp = {};
   var isChromeApp = platformInfo.isChromeApp;
-
-  // An alert dialog
-  var showAlert = function(title, msg, cb) {
-    var message = msg.message ? msg.message : msg;
-    $log.warn(title + ": " + message);
-
-    var alertPopup = $ionicPopup.alert({
-      title: title,
-      template: message
-    });
-
-    if (!cb) cb = function() {};
-    alertPopup.then(cb);
-  };
 
   $scope.showDescriptionPopup = function() {
     var commentPopup = $ionicPopup.show({
@@ -52,7 +38,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     if (!wallet) return cb();
 
     if (isChromeApp) {
-      showAlert(gettext('Payment Protocol not supported on Chrome App'));
+      popupService.showAlert(gettextCatalog.getString('Payment Protocol not supported on Chrome App'));
       return cb(true);
     }
 
@@ -69,15 +55,15 @@ angular.module('copayApp.controllers').controller('confirmController', function(
         $log.warn('Could not fetch payment request:', err);
         var msg = err.toString();
         if (msg.match('HTTP')) {
-          msg = gettext('Could not fetch payment information');
+          msg = gettextCatalog.getString('Could not fetch payment information');
         }
-        showAlert(msg);
+        popupService.showAlert(msg);
         return cb(true);
       }
 
       if (!paypro.verified) {
         $log.warn('Failed to verify payment protocol signatures');
-        showAlert(gettext('Payment Protocol Invalid'));
+        popupService.showAlert(gettextCatalog.getString('Payment Protocol Invalid'));
         return cb(true);
       }
 
@@ -189,7 +175,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
   };
 
   var setSendError = function(msg) {
-    showAlert(gettext('Error at confirm:'), msg);
+    popupService.showAlert(gettextCatalog.getString('Error at confirm:'), msg);
   };
 
   function apply(txp) {
@@ -212,13 +198,13 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     if (description && !wallet.credentials.sharedEncryptingKey) {
       var msg = 'Could not add message to imported wallet without shared encrypting key';
       $log.warn(msg);
-      return setSendError(gettext(msg));
+      return setSendError(msg);
     }
 
     if (toAmount > Number.MAX_SAFE_INTEGER) {
       var msg = 'Amount too big';
       $log.warn(msg);
-      return setSendError(gettext(msg));
+      return setSendError(msg);
     };
 
     outputs.push({
@@ -263,13 +249,11 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     var wallet = $scope.wallet;
     var txp = $scope.txp;
     if (!wallet) {
-      return setSendError(gettext('No wallet selected'));
-      return;
+      return setSendError(gettextCatalog.getString('No wallet selected'));
     };
 
     if (!txp) {
-      return setSendError(gettext('No transaction'));
-      return;
+      return setSendError(gettextCatalog.getString('No transaction'));
     };
 
     if (!wallet.canSign() && !wallet.isPrivKeyExternal()) {

@@ -10,10 +10,6 @@
 
   <ion-content ng-controller="importController" ng-init="type='hwWallet'">
 
-    <div class="padding assertive" ng-show="error">
-      {{error|translate}}
-    </div>
-
     <form name="importForm3" ng-submit="importHW(importForm3)" novalidate>
 
       <div class="card" ng-show="!seedOptions[0]">

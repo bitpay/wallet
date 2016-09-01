@@ -1,12 +1,11 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('preferencesDeleteWalletController',
-  function($scope, $ionicPopup, $stateParams, $ionicNavBarDelegate, gettextCatalog, lodash, profileService, $state, ongoingProcess) {
+  function($scope, $ionicPopup, $stateParams, $ionicNavBarDelegate, gettextCatalog, lodash, profileService, $state, ongoingProcess, popupService) {
     $ionicNavBarDelegate.title(gettextCatalog.getString('Delete Wallet'));
     var wallet = profileService.getWallet($stateParams.walletId);
     $scope.alias = lodash.isEqual(wallet.name, wallet.credentials.walletName) ? null : wallet.name + ' ';
     $scope.walletName = '[' + wallet.credentials.walletName + ']';
-    $scope.error = null;
 
     $scope.showDeletePopup = function() {
       var popup = $ionicPopup.show({
@@ -36,7 +35,7 @@ angular.module('copayApp.controllers').controller('preferencesDeleteWalletContro
       profileService.deleteWalletClient(wallet, function(err) {
         ongoingProcess.set('deletingWallet', false);
         if (err) {
-          $scope.error = err.message || err;
+          popupService.showAlert(gettextCatalog.getString('Error'), err.message || err);
         } else {
           $state.go('tabs.home');
         }
