@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.services').factory('incomingData', function($log, $ionicModal, $state, bitcore) {
+angular.module('copayApp.services').factory('incomingData', function($log, $ionicModal, $state, $window, bitcore) {
 
   var root = {};
 
@@ -63,10 +63,10 @@ angular.module('copayApp.services').factory('incomingData', function($log, $ioni
       return $state.go('send.amount', {toAddress: data})
 
 
-    // copay: protocol
-    } else if (data.indexOf('copay://glidera')==0) {
+    // Protocol
+    } else if (data.indexOf($window.appConfig.name + '://glidera')==0) {
       return $state.go('uriglidera', {url: data})
-    } else if (data.indexOf('copay://coinbase')==0) {
+    } else if (data.indexOf($window.appConfig.name + '://coinbase')==0) {
       return $state.go('uricoinbase', {url: data})
 
     // Join
