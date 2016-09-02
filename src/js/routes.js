@@ -272,15 +272,12 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         }
       })
       .state('tabs.import', {
-        url: '/import/:fromOnboarding',
+        url: '/import',
         //        abstract: true,
         views: {
           'tab-home': {
             templateUrl: 'views/import.html'
           },
-        },
-        params: {
-          code: null
         },
       })
       .state('tabs.import.phrase', {
@@ -566,9 +563,13 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
      */
 
     .state('onboarding', {
-        url: '/onboarding/:walletId',
+        url: '/onboarding',
         abstract: true,
-        template: '<ion-nav-view name="onboarding"></ion-nav-view>'
+        template: '<ion-nav-view name="onboarding"></ion-nav-view>',
+        params: {
+          walletId: null,
+          fromOnboarding: null,
+        },
       })
       .state('onboarding.welcome', {
         url: '/welcome',
@@ -618,6 +619,14 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
           }
         }
       })
+      .state('onboarding.backup', {
+        url: '/backup',
+        views: {
+          'onboarding': {
+            templateUrl: 'views/backup.html'
+          }
+        }
+      })
       .state('onboarding.disclaimer', {
         url: '/disclaimer',
         views: {
@@ -635,7 +644,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         }
       })
       .state('onboarding.import', {
-        url: '/import/:fromOnboarding',
+        url: '/import',
         abstract: true,
         views: {
           'onboarding': {
