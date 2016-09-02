@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('exportController',
-  function($rootScope, $scope, $timeout, $log, lodash, backupService, walletService, storageService, profileService, platformInfo, gettext, gettextCatalog, $state, $stateParams, popupService) {
+  function($rootScope, $scope, $timeout, $log, $ionicHistory, lodash, backupService, walletService, storageService, profileService, platformInfo, gettext, gettextCatalog, $state, $stateParams, popupService) {
     var prevState;
     var isWP = platformInfo.isWP;
     var isAndroid = platformInfo.isAndroid;
@@ -63,6 +63,7 @@ angular.module('copayApp.controllers').controller('exportController',
             popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Failed to export'));
             return;
           }
+          $ionicHistory.clearHistory();
           $state.go('tabs.home');
         });
       });
