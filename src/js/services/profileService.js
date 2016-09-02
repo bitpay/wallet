@@ -30,13 +30,12 @@ angular.module('copayApp.services')
 
     root.updateWalletSettings = function(wallet) {
       var defaults = configService.getDefaults();
-      var config = configService.getSync();
-
-      wallet.usingCustomBWS = config.bwsFor && config.bwsFor[wallet.id] && (config.bwsFor[wallet.id] != defaults.bws.url);
-
-      wallet.name = config.aliasFor && (config.aliasFor[wallet.id] || wallet.credentials.walletName);
-      wallet.color = config.colorFor && (config.colorFor[wallet.id] || '#4A90E2');
-      wallet.email = config.emailFor && config.emailFor[wallet.id];
+      configService.whenAvailable(function(config){
+        wallet.usingCustomBWS = config.bwsFor[wallet.id] && (config.bwsFor[wallet.id] != defaults.bws.url);
+        wallet.name = config.aliasFor[wallet.id] || wallet.credentials.walletName;
+        wallet.color = config.colorFor[wallet.id] || '#4A90E2';
+        wallet.email = config.emailFor && config.emailFor[wallet.id];
+      });
     }
 
     root.setBackupFlag = function(walletId) {
@@ -78,7 +77,7 @@ angular.module('copayApp.services')
       var opts = opts || {};
       var walletId = wallet.credentials.walletId;
 
-      if ((root.wallet[walletId] && root.wallet[walletId].started) || opts.force) {
+      if ((root.wallet[walletId] && root.wallet[walletId].started) &&  !opts.force) {
         return false;
       }
 
