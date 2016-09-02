@@ -1,5 +1,8 @@
 #onboarding-collect-email {
   background: rgb(17, 209, 166);
+  .scroll {
+    height: 100%;
+  }
   #success-image {
     margin-top: 4rem;
   }
@@ -18,7 +21,7 @@
     animation-duration: 1s;
     animation-delay: 2s;
     position: absolute;
-    bottom: -100%;
+    bottom: -13rem;
     animation-fill-mode: forwards;
     z-index: 5;
     margin-top: 0;
