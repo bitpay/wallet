@@ -1,10 +1,26 @@
-<ion-view>
+<ion-view id="onboarding-backup-request" class="onboarding">
   <ion-content ng-controller="backupRequestController">
-    <h1 translate>
-      No backup, no bitcoin.
-    </h1>
-    <span translate> Since only you control yout money, you'll need save your backup phrase in case this app is deleted </span>
-    <button class="button button-block button-positive" href ui-sref="onboarding.backupWarning" translate>Backup wallet</button>
-    <button class="button button-block button-light" ng-click="openPopup()" translate>I'll backup my wallet later</button>
+    <div class="row">
+      <img src="../../img/onboarding-warning.svg" class="col col-75 warning">
+    </div>
+    <div class="row text-center">
+      <h3 translate class="col-75 col">
+        No backup, no bitcoin.
+      </h3>
+    </div>
+    <div class="row">
+      <p class="col col-60 text-center">
+        Since only you control your money, you’ll need save your backup phrase in case this app is deleted.
+      </p>
+    </div>
+    <div class="row text-center">
+      <i class="ion-ios-arrow-thin-down light-blue col col-60" id="arrow-down"></i>
+    </div>
+    <div class="row">
+      <button class="button button-block button-positive col-75 col" href ui-sref="onboarding.backupWarning" translate>Backup wallet</button>
+    </div>
+    <div class="row">
+      <button class="button button-block button-transparent col-75 col" ng-click="openPopup()" translate>I'll backup my wallet later</button>
+    </div>
   </ion-content>
 </ion-view>
