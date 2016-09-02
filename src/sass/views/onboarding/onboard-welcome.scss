@@ -7,7 +7,7 @@
     #shopping-24 {
       content: url("../img/onboarding-welcome-shopping24.png");
       position: absolute;
-      top: 2%;
+      top: 5%;
       right: 5%;
       width: 35px;
       height: auto;
@@ -17,7 +17,7 @@
       @include center-block();
     }
     .logo {
-      margin-top: 15rem;
+      margin-top: 13rem;
     }
     button {
       @include center-block(1rem);

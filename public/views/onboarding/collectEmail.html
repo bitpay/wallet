@@ -1,29 +1,27 @@
 <ion-view ng-controller="collectEmailController" id="onboarding-collect-email" class="onboarding">
-  <ion-nav-bar class="bar-stable">
-    <ion-nav-buttons side="secondary">
-      <button class="button no-border" ng-click="onboardingMailSkip()">
-        {{'Skip' | translate}}
-      </button>
-    </ion-nav-buttons>
-  </ion-nav-bar>
   <ion-content>
     <div class="row">
-      <img src="../../img/onboarding-success.svg" class="col col-75" id="success-image" />
+      <img src="img/onboarding-success.svg" class="col col-75" id="success-image" />
     </div>
     <div class="row text-center">
       <h3 translate class="col">Wallet Created</h3>
     </div>
-  </ion-content>
-  <div id="collect-email">
-    <div class="row text-center">
-      <p translate class="col col-75">Where would you like to receive email notifications about payments </p>
+    <div id="collect-email">
+      <div class="row text-center">
+        <p translate class="col col-75">Where would you like to receive email notifications about payments </p>
+      </div>
+      <form name="emailForm" ng-submit="save(emailForm)" novalidate>
+        <label class="item item-input col col-75">
+          <i class="icon ion-arrow-right-c"></i>
+          <input type="email" id="email" name="email" ng-model="email" required></input>
+        </label>
+      </form>
+      <div class="text-center">
+        <button class="button button-back no-border" ng-click="onboardingMailSkip()">
+          {{'Skip' | translate}}
+        </button>
+      </div>
     </div>
-    <form name="emailForm" ng-submit="save(emailForm)" novalidate>
-      <label class="item item-input col col-75">
-        <i class="icon ion-arrow-right-c"></i>
-        <input type="email" id="email" name="email" ng-model="email" required></input>
-      </label>
-    </form>
-  </div>
-  <div class="overlay"></div>
+    <div class="overlay"></div>
+  </ion-content>
 </ion-view>
