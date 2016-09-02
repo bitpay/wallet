@@ -77,6 +77,11 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
       $scope.searchModal = modal;
       $scope.searchModal.show();
     });
+
+    $scope.close = function() {
+      $scope.searchModal.hide();
+    }
+
   };
 
   $scope.openTxModal = function(btx) {
