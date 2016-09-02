@@ -5,6 +5,17 @@ angular.module('copayApp.controllers').controller('confirmController', function(
   var cachedTxp = {};
   var isChromeApp = platformInfo.isChromeApp;
 
+
+  $scope.$on('Wallet/Changed', function(event, wallet) {
+    if (lodash.isEmpty(wallet)) {
+      $log.debug('No wallet provided');
+      return;
+    }
+    $log.debug('Wallet changed: ' + wallet.name);
+    setWallet(wallet, true);
+  });
+
+
   $scope.showDescriptionPopup = function() {
     var commentPopup = $ionicPopup.show({
       templateUrl: "views/includes/note.html",
@@ -17,13 +28,6 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     $scope.commentPopupSave = function(description) {
       $log.debug('Saving description: ' + description);
       $scope.description = description;
-      $scope.txp = null;
-
-      createTx($scope.wallet, function(err, txp) {
-        if (err) return;
-        cachedTxp[$scope.wallet.id] = txp;
-        apply(txp);
-      });
       commentPopup.close();
     };
   };
@@ -137,15 +141,6 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     });
   };
 
-  $scope.$on('Wallet/Changed', function(event, wallet) {
-    if (lodash.isEmpty(wallet)) {
-      $log.debug('No wallet provided');
-      return;
-    }
-    $log.debug('Wallet changed: ' + wallet.name);
-    setWallet(wallet, true);
-  });
-
   function setWallet(wallet, delayed) {
     var stop;
     $scope.wallet = wallet;
@@ -165,7 +160,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
       apply(cachedTxp[wallet.id]);
     } else {
       stop = $timeout(function() {
-        createTx(wallet, function(err, txp) {
+        createTx(wallet, true, function(err, txp) {
           if (err) return;
           cachedTxp[wallet.id] = txp;
           apply(txp);
@@ -184,7 +179,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     $scope.$apply();
   };
 
-  var createTx = function(wallet, cb) {
+  var createTx = function(wallet, dryRun, cb) {
     var config = configService.getSync().wallet;
     var currentSpendUnconfirmed = config.spendUnconfirmed;
     var outputs = [];
@@ -227,6 +222,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     txp.payProUrl = paypro;
     txp.excludeUnconfirmedUtxos = config.spendUnconfirmed ? false : true;
     txp.feeLevel = config.settings.feeLevel || 'normal';
+    txp.dryRun = dryRun;
 
     walletService.createTx(wallet, txp, function(err, ctxp) {
       if (err) {
@@ -247,14 +243,10 @@ angular.module('copayApp.controllers').controller('confirmController', function(
 
   $scope.approve = function() {
     var wallet = $scope.wallet;
-    var txp = $scope.txp;
     if (!wallet) {
       return setSendError(gettextCatalog.getString('No wallet selected'));
     };
 
-    if (!txp) {
-      return setSendError(gettextCatalog.getString('No transaction'));
-    };
 
     if (!wallet.canSign() && !wallet.isPrivKeyExternal()) {
       $log.info('No signing proposal: No private key');
@@ -265,9 +257,14 @@ angular.module('copayApp.controllers').controller('confirmController', function(
       });
     }
 
-    walletService.publishAndSign(wallet, txp, function(err, txp) {
-      if (err) return setSendError(err);
-      $state.transitionTo('tabs.home');
+    ongoingProcess.set('creatingTx', true);
+    createTx(wallet, false, function(err, txp) {
+      ongoingProcess.set('creatingTx', false);
+      if (err) return;
+      walletService.publishAndSign(wallet, txp, function(err, txp) {
+        if (err) return setSendError(err);
+        $state.transitionTo('tabs.home');
+      });
     });
   };
 
