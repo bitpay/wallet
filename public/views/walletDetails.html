@@ -1,15 +1,15 @@
-<ion-view id="walletDetails">
+<ion-view id="walletDetails" ng-controller="walletDetailsController" ng-init="init()">
   <ion-header-bar ng-style="{'background-color': walletDetailsColor}">
     <button class="button back-button" ng-click="$ionicGoBack()">
       <i class="icon ion-ios-arrow-thin-left"></i>
     </button>
     <h1 class="title">{{walletDetailsName}}</h1>
-    <button class="button search-button">
+    <button class="button search-button" ng-click="startSearch(); openSearchModal()">
       <i class="icon ion-ios-search-strong"></i>
     </button>
   </ion-header-bar>
 
-  <ion-content ng-controller="walletDetailsController" ng-init="init()" delegate-handle="my-handle">
+  <ion-content delegate-handle="my-handle">
     <div ng-show="!wallet" translate>
       No Wallet
       <a href ui-sref="tabs.home" class="button" translate>
@@ -119,9 +119,8 @@
 
 
       <!-- Transactions -->
-      <h4 class="title" ng-click="startSearch(); openSearchModal()" ng-show="!notAuthorized">
+      <h4 class="title" ng-show="!notAuthorized">
         <span translate>Activity</span>
-        <i class="icon ion-ios-search-strong"></i>
       </h4>
 
       <div class="oh pr m20t text-gray size-12 text-center"
