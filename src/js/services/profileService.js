@@ -32,10 +32,11 @@ angular.module('copayApp.services')
       var defaults = configService.getDefaults();
       var config = configService.getSync();
 
-      wallet.usingCustomBWS = config.bwsFor[wallet.id] && (config.bwsFor[wallet.id] != defaults.bws.url);
+      wallet.usingCustomBWS = config.bwsFor && config.bwsFor[wallet.id] && (config.bwsFor[wallet.id] != defaults.bws.url);
 
-      wallet.name = config.aliasFor[wallet.id] || wallet.credentials.walletName;
-      wallet.color = config.colorFor[wallet.id] || '#4A90E2';
+      wallet.name = config.aliasFor && (config.aliasFor[wallet.id] || wallet.credentials.walletName);
+      wallet.color = config.colorFor && (config.colorFor[wallet.id] || '#4A90E2');
+      wallet.email = config.emailFor && config.emailFor[wallet.id];
     }
 
     root.setBackupFlag = function(walletId) {
@@ -431,8 +432,8 @@ angular.module('copayApp.services')
 
         // check if exist
         if (lodash.find(root.profile.credentials, {
-          'walletId': walletData.walletId
-        })) {
+            'walletId': walletData.walletId
+          })) {
           return cb(gettext('Cannot join the same wallet more that once'));
         }
       } catch (ex) {
@@ -822,7 +823,6 @@ angular.module('copayApp.services')
           };
         });
 
-
         var finale = shown; // GROUPING DISABLED!
 
         // var finale = [],
@@ -885,7 +885,7 @@ angular.module('copayApp.services')
           }
           if (j == l) {
             notifications = lodash.sortBy(notifications, 'createdOn');
-            notifications = lodash.compact(lodash.flatten(notifications)).slice(0,MAX);
+            notifications = lodash.compact(lodash.flatten(notifications)).slice(0, MAX);
             return cb(null, process(notifications));
           };
         });
