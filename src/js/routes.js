@@ -560,11 +560,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
     .state('onboarding', {
         url: '/onboarding',
         abstract: true,
-        template: '<ion-nav-view name="onboarding"></ion-nav-view>',
-        params: {
-          walletId: null,
-          fromOnboarding: null,
-        },
+        template: '<ion-nav-view name="onboarding"></ion-nav-view>'
       })
       .state('onboarding.welcome', {
         url: '/welcome',
@@ -583,7 +579,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         }
       })
       .state('onboarding.collectEmail', {
-        url: '/collectEmail',
+        url: '/collectEmail/:walletId',
         views: {
           'onboarding': {
             templateUrl: 'views/onboarding/collectEmail.html'
@@ -591,7 +587,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         }
       })
       .state('onboarding.notifications', {
-        url: '/notifications',
+        url: '/notifications/:walletId',
         views: {
           'onboarding': {
             templateUrl: 'views/onboarding/notifications.html'
@@ -599,7 +595,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         }
       })
       .state('onboarding.backupRequest', {
-        url: '/backupRequest',
+        url: '/backupRequest/:walletId',
         views: {
           'onboarding': {
             templateUrl: 'views/onboarding/backupRequest.html'
@@ -607,7 +603,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         }
       })
       .state('onboarding.backupWarning', {
-        url: '/backupWarning',
+        url: '/backupWarning/:walletId',
         views: {
           'onboarding': {
             templateUrl: 'views/onboarding/backupWarning.html'
@@ -615,7 +611,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         }
       })
       .state('onboarding.backup', {
-        url: '/backup',
+        url: '/backup/:walletId/:fromOnboarding',
         views: {
           'onboarding': {
             templateUrl: 'views/backup.html'
@@ -647,7 +643,8 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
           },
         },
         params: {
-          code: null
+          code: null,
+          fromOnboarding: null
         },
       })
       .state('onboarding.import.phrase', {
