@@ -28,12 +28,12 @@ angular.module('copayApp.controllers').controller('preferencesHistory',
 
       $log.debug('Generating CSV from History');
       getHistory(function(err, txs) {
-        if (err || !txs) {
-          $log.warn('Failed to generate CSV:', err);
+        if (err || lodash.isEmpty(txs)) {
+          if (err) $log.warn('Failed to generate CSV:', err);
+          else $log.warn('Failed to generate CSV: no transactions');
           if (cb) return cb(err);
           return;
         }
-
         $log.debug('Wallet Transaction History Length:', txs.length);
 
         $scope.satToUnit = 1 / $scope.unitToSatoshi;
