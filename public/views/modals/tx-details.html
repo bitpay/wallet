@@ -149,7 +149,7 @@
 
       <div ng-show="btx.txid" class="tx-details-blockchain">
         <div class="text-center m20t">
-          <button class="button button-positive" ng-click="$root.openExternalLink('https://' +
+          <button class="button button-positive" ng-click="openExternalLink('https://' +
             (getShortNetworkName() == 'test' ? 'test-' : '') + 'insight.bitpay.com/tx/' + btx.txid)">
             <span class="text-gray" translate>See it on the blockchain</span>
           </button>

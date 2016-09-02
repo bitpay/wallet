@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('txDetailsController', function($rootScope, $log, $scope, $filter, $stateParams, $ionicPopup, gettextCatalog, profileService, configService, lodash, txFormatService) {
+angular.module('copayApp.controllers').controller('txDetailsController', function($rootScope, $log, $scope, $filter, $stateParams, $ionicPopup, gettextCatalog, profileService, configService, lodash, txFormatService, platformInfo) {
 
   var self = $scope.self;
   var wallet = profileService.getWallet($stateParams.walletId);
@@ -36,7 +36,7 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
         txid: $scope.btx.txid,
       };
 
-      if (!lodash.isEmpty($scope.data.comment)) {
+      if ($scope.data.comment) {
         args.body = $scope.data.comment;
       };
 
@@ -78,6 +78,15 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
         $scope.$apply();
       }
     });
+  };
+
+  $scope.openExternalLink = function(url, target) {
+    if (platformInfo.isNW) {
+      nodeWebkit.openExternalLink(url);
+    } else {
+      target = target || '_blank';
+      var ref = window.open(url, target, 'location=no');
+    }
   };
 
   $scope.getShortNetworkName = function() {
