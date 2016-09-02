@@ -7,7 +7,7 @@ angular.module('copayApp.controllers').controller('preferencesEmailController', 
   var walletId = wallet.credentials.walletId;
 
   var config = configService.getSync();
-  config.amailFor = config.amailFor || {};
+  config.emailFor = config.emailFor || {};
   $scope.email = config.emailFor && config.emailFor[walletId];
 
   $scope.save = function(form) {
