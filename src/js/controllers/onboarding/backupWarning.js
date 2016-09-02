@@ -10,8 +10,7 @@ angular.module('copayApp.controllers').controller('backupWarningController', fun
 
     $scope.close = function() {
       backupWarningPopup.close();
-      $state.go('wallet.backup', {
-        walletId: $stateParams.walletId,
+      $state.go('onboarding.backup', {
         fromOnboarding: true
       })
     };
