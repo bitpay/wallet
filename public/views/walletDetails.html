@@ -104,33 +104,10 @@
       <h4 ng-show="!requiresMultipleSignatures" class="title m0" translate>Unsent transactions</h4>
       <div class="list card">
         <ul>
-          <li ng-repeat="tx in txps" class="item item-icon-left"
-            ng-click="openTxpModal(tx)">
-            <i class="icon ion-ios-circle-filled" ng-show="tx.pendingForUs" ng-style="{'color':tx.wallet.color}"></i>
-            <span ng-show="!tx.merchant">
-              <span ng-show="addressbook[tx.toAddress] && !tx.message">
-                {{addressbook[tx.toAddress]}}
-              </span>
-              <span class="ellipsis" ng-show="!addressbook[tx.toAddress] && tx.message">
-                {{tx.message}}
-              </span>
-              <span ng-show="!addressbook[tx.toAddress] && !tx.message" translate>
-                Sending
-              </span>
-            </span>
-            <span ng-show="tx.merchant">
-              <span ng-show="tx.merchant.pr.ca"><i class="fi-lock"></i> {{tx.merchant.domain}}</span>
-              <span ng-show="!tx.merchant.pr.ca"><i class="fi-unlock"></i> {{tx.merchant.domain}}</span>
-            </span>
-            <span>
-              - {{tx.amountStr}}
-            </span>
-            <div class="item-note">
-              {{tx.wallet.name}} &middot; <time>{{ (tx.ts || tx.createdOn ) * 1000 | amTimeAgo}}</time>
-            </div>
+          <li ng-repeat="tx in txps" class="item item-icon-left" ng-click="openTxpModal(tx)">
+            <span ng-include="'views/includes/txp.html'"></span>
           </li>
         </ul>
-
 
         <div ng-show="lockedBalanceSat">
           <span translate>Total Locked Balance</span>:
