@@ -106,6 +106,7 @@ angular.module('copayApp.controllers').controller('tabHomeController',
         $scope.updateWallet(wallet);
       }),
       $rootScope.$on('Local/TxAction', function(e, walletId) {
+        $log.debug('Got action for wallet '+ walletId);
         var wallet = profileService.getWallet(walletId);
         $scope.updateWallet(wallet);
       }),

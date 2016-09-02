@@ -123,7 +123,6 @@ angular.module('copayApp.services')
         if (wallet.cachedActivity)
           wallet.cachedActivity.isValid = false;
 
-
         if (wallet.cachedTxps)
           wallet.cachedTxps.isValid = false;
 
