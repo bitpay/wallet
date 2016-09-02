@@ -30,4 +30,8 @@ angular.module('copayApp.controllers').controller('collectEmailController', func
       });
     });
   };
+
+  $scope.onboardingMailSkip = function() {
+    $state.go('onboarding.backupRequest');
+  };
 });

@@ -30,9 +30,6 @@ angular.module('copayApp.controllers').controller('tabSettingsController', funct
     $scope.glideraEnabled = config.glidera.enabled;
     $scope.coinbaseEnabled = config.coinbase.enabled;
     $scope.pushNotifications = config.pushNotifications.enabled;
-    if (isCordova && StatusBar.isVisible) {
-      StatusBar.backgroundColorByHexString("#4B6178");
-    }
     $scope.otherWallets = lodash.filter(profileService.getWallets(self.network), function(w) {
       return w.id != self.walletId;
     });
