@@ -136,7 +136,7 @@ angular.module('copayApp.controllers').controller('backupController',
           }
         }
 
-        profileService.setBackupFlag(walletClient.credentials.walletId);
+        profileService.setBackupFlag(wallet.credentials.walletId);
         return cb();
       }, 1);
     };
