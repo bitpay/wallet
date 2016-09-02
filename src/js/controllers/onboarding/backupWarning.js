@@ -10,9 +10,7 @@ angular.module('copayApp.controllers').controller('backupWarningController', fun
 
     $scope.close = function() {
       backupWarningPopup.close();
-      $state.go('onboarding.backup', {
-        fromOnboarding: true
-      })
+      $state.go('onboarding.backup');
     };
   }
 });
