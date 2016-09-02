@@ -7,5 +7,4 @@ angular.module('copayApp.controllers').controller('txStatusController', function
   $scope.cancel = function() {
     $scope.txStatusModal.hide();
   };
-
 });
