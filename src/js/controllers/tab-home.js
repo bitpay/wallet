@@ -7,15 +7,22 @@ angular.module('copayApp.controllers').controller('tabHomeController',
     $scope.bitpayCardEnabled = true; // TODO
 
 
+    function updateTxps() {
+      profileService.getTxps({
+        limit: 3
+      }, function(err, txps, n) {
+        if (err) {
+          console.log('[tab-home.js.35:err:]', $log.error(err)); //TODO
+        }
+        $scope.txps = txps;
+        $scope.txpsN = n;
+        $ionicScrollDelegate.resize();
 
-    var setPendingTxps = function(txps) {
-      if (!txps) {
-        $scope.txps = [];
-        return;
-      }
-      $scope.txps = lodash.sortBy(txps, 'createdOn').reverse();
+        $timeout(function() {
+          $scope.$apply();
+        }, 1);
+      })
     };
-
 
 
     $scope.updateAllWallets = function() {
@@ -35,20 +42,7 @@ angular.module('copayApp.controllers').controller('tabHomeController',
             wallet.status = status;
           }
           if (++j==i) {
-            profileService.getTxps({
-              limit: 3
-            }, function(err, txps, n) {
-              if (err) {
-                console.log('[tab-home.js.35:err:]', $log.error(err)); //TODO
-              }
-              $scope.txps = txps;
-              $scope.txpsN = n;
-              $ionicScrollDelegate.resize();
-
-              $timeout(function() {
-                $scope.$apply();
-              }, 1);
-            });
+            updateTxps();
           }
         });
       });
@@ -92,20 +86,7 @@ angular.module('copayApp.controllers').controller('tabHomeController',
           }
           $scope.notifications = notifications;
 
-          profileService.getTxps({
-            limit: 3
-          }, function(err, txps, n) {
-            if (err) {
-              console.log('[tab-home.js.35:err:]', $log.error(err)); //TODO
-            }
-            $scope.txps = txps;
-            $scope.txpsN = n;
-            $ionicScrollDelegate.resize();
-
-            $timeout(function() {
-              $scope.$apply();
-            }, 1);
-          })
+          updateTxps();
         })
       });
     };

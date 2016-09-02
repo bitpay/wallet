@@ -1,5 +1,9 @@
 .wallet-activity {
 
+  &-not-pending {
+    background-color:#eee;
+  }
+
   &-amount {
     float: right;
     font-size: 18px;
