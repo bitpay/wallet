@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('preferencesHistory',
-  function($scope, $log, $stateParams, $timeout, $ionicNavBarDelegate, gettextCatalog, storageService, $state, profileService, lodash) {
+  function($scope, $log, $stateParams, $timeout, $ionicNavBarDelegate, gettextCatalog, storageService, $state, $ionicHistory, profileService, lodash) {
     $ionicNavBarDelegate.title(gettextCatalog.getString('Transaction History'));
     var wallet = profileService.getWallet($stateParams.walletId);
     var c = wallet.credentials;
@@ -126,6 +126,7 @@ angular.module('copayApp.controllers').controller('preferencesHistory',
         $scope.$emit('Local/ClearHistory');
 
         $timeout(function() {
+          $ionicHistory.clearHistory();
           $state.go('tabs.home');
         }, 100);
       });
