@@ -1,10 +1,13 @@
-<ion-view>
-  <ion-nav-bar class="bar-stable">
-    <ion-nav-title>{{wallet.name}}</ion-nav-title>
-    <ion-nav-back-button>
-      {{'Back' | translate}}
-    </ion-nav-back-button>
-  </ion-nav-bar>
+<ion-view id="walletDetails">
+  <ion-header-bar ng-style="{'background-color': walletDetailsColor}">
+    <button class="button back-button" ng-click="$ionicGoBack()">
+      <i class="icon ion-ios-arrow-thin-left"></i>
+    </button>
+    <h1 class="title">{{walletDetailsName}}</h1>
+    <button class="button search-button">
+      <i class="icon ion-ios-search-strong"></i>
+    </button>
+  </ion-header-bar>
 
   <ion-content ng-controller="walletDetailsController" ng-init="init()" delegate-handle="my-handle">
     <div ng-show="!wallet" translate>
@@ -39,7 +42,7 @@
 
           <div ng-click='updateAll()' ng-show="!updateStatusError && wallet.walletScanStatus != 'error' && !wallet.balanceHidden" on-hold="hideToggle()">
             <strong class="size-36">{{status.totalBalanceStr}}</strong>
-            <div class="size-14" ng-if="status.totalBalanceAlternative">{{status.totalBalanceAlternative}} {{status.alternativeIsoCode}}</div>
+            <div class="size-14 amount-alternative" ng-if="status.totalBalanceAlternative">{{status.totalBalanceAlternative}} {{status.alternativeIsoCode}}</div>
             <div class="size-14" ng-if="status.pendingAmount">
               <span translate>Pending Confirmation</span>: {{status.pendingAmountStr}}
             </div>

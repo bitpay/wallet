@@ -68,7 +68,16 @@ console.log('Copying ' + configDir + '/appConfig.json' + ' to root');
 configBlob = configBlob.replace('{', JSONheader);
 fs.writeFileSync('../appConfig.json', configBlob, 'utf8');
 
-
+////////////////
+var externalServices;
+try {
+  console.log('Copying ' + configDir + '/externalServices.json' + ' to root');
+  externalServices = fs.readFileSync(configDir + '/externalServices.json', 'utf8');
+} catch(err) {
+  externalServices = '{}';
+  console.log('External services not configured');
+}
+fs.writeFileSync('../externalServices.json', externalServices, 'utf8');
 
 function copyDir(from, to, cb) {
   console.log('Copying dir ' + from + ' to');

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('joinController',
-  function($scope, $rootScope, $timeout, $state, profileService, configService, storageService, applicationService, gettext, lodash, ledger, trezor, platformInfo, derivationPathHelper, ongoingProcess, walletService, $log, $stateParams) {
+  function($scope, $rootScope, $timeout, $state, profileService, configService, storageService, applicationService, gettext, gettextCatalog, lodash, ledger, trezor, platformInfo, derivationPathHelper, ongoingProcess, walletService, $log, $stateParams, popupService) {
 
     var isChromeApp = platformInfo.isChromeApp;
     var isDevel = platformInfo.isDevel;
@@ -14,7 +14,6 @@ angular.module('copayApp.controllers').controller('joinController',
 
 
     this.onQrCodeScanned = function(data) {
-console.log('[join.js.16:data:]',data); //TODO
       $scope.secret = data;
       if ($scope.joinForm) {
         $scope.joinForm.secret.$setViewValue(data);
@@ -64,7 +63,7 @@ console.log('[join.js.16:data:]',data); //TODO
 
     this.join = function(form) {
       if (form && form.$invalid) {
-        self.error = gettext('Please enter the required fields');
+        popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Please enter the required fields'));
         return;
       }
 
@@ -86,7 +85,7 @@ console.log('[join.js.16:data:]',data); //TODO
 
         var pathData = derivationPathHelper.parse($scope.derivationPath);
         if (!pathData) {
-          this.error = gettext('Invalid derivation path');
+          popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Invalid derivation path'));
           return;
         }
         opts.account = pathData.account;
@@ -100,15 +99,14 @@ console.log('[join.js.16:data:]',data); //TODO
 
 
       if (setSeed && !opts.mnemonic && !opts.extendedPrivateKey) {
-
-        this.error = gettext('Please enter the wallet recovery phrase');
+        popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Please enter the wallet recovery phrase'));
         return;
       }
 
       if (self.seedSourceId == 'ledger' || self.seedSourceId == 'trezor') {
         var account = $scope.account;
         if (!account || account < 1) {
-          this.error = gettext('Invalid account number');
+          popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Invalid account number'));
           return;
         }
 
@@ -122,8 +120,7 @@ console.log('[join.js.16:data:]',data); //TODO
         src.getInfoForNewWallet(true, account, function(err, lopts) {
           ongoingProcess.set('connecting' + self.seedSourceId, false);
           if (err) {
-            self.error = err;
-            $scope.$apply();
+            popupService.showAlert(gettextCatalog.getString('Error'), err);
             return;
           }
           opts = lodash.assign(lopts, opts);
@@ -141,8 +138,7 @@ console.log('[join.js.16:data:]',data); //TODO
         profileService.joinWallet(opts, function(err, client) {
           ongoingProcess.set('joiningWallet', false);
           if (err) {
-            self.error = err;
-            $rootScope.$apply();
+            popupService.showAlert(gettextCatalog.getString('Error'), err);
             return;
           }
 

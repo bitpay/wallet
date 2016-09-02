@@ -1,8 +1,7 @@
 <ion-modal-view ng-controller="addressbookModalController" ng-init="initAddressbook()">
-  <ion-header-bar align-title="center" class="bar-stable">
-    <button class="button button-clear button-positive"
-            ng-click="closeAddressbookModal()" translate>
-      Close
+  <ion-header-bar align-title="center" class="bar-royal">
+    <button class="button back-button" ng-click="closeAddressbookModal()">
+      <i class="icon ion-ios-arrow-thin-left"></i>
     </button>
     <div class="h1 title">
       <span ng-show="!addAddressbookEntry" translate>Addressbook</span>

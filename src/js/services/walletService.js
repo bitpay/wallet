@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.services').factory('walletService', function($log, $timeout, lodash, trezor, ledger, storageService, configService, rateService, uxLanguage, $filter, gettextCatalog, bwcError, $ionicPopup, fingerprintService, ongoingProcess, gettext, $rootScope, txStatus, txFormatService, $ionicModal, $state, bwcService, bitcore) {
+angular.module('copayApp.services').factory('walletService', function($log, $timeout, lodash, trezor, ledger, storageService, configService, rateService, uxLanguage, $filter, gettextCatalog, bwcError, $ionicPopup, fingerprintService, ongoingProcess, gettext, $rootScope, txStatus, txFormatService, $ionicModal, $state, bwcService, bitcore, popupService) {
   // `wallet` is a decorated version of client.
 
   var root = {};
@@ -81,12 +81,11 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
       wallet.notAuthorized = true;
       $state.go('tabs.home');
     } else if (err instanceof errors.NOT_FOUND) {
-      root.showErrorPopup(gettext('Could not access Wallet Service: Not found'));
+      popupService.showAlert(gettextCatalog.getString('Could not access Wallet Service: Not found'));
     } else {
       var msg = ""
       $rootScope.$emit('Local/ClientError', (err.error ? err.error : err));
-      var msg = bwcError.msg(err, gettext('Error at Wallet Service'));
-      root.showErrorPopup(msg);
+      popupService.showAlert(bwcError.msg(err, gettextCatalog.getString('Error at Wallet Service')));
     }
   };
   root.handleError = lodash.debounce(_handleError, 1000);
@@ -664,20 +663,6 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     });
   };
 
-  root.showErrorPopup = function(msg, cb) {
-    $log.warn('Showing err popup:' + msg);
-
-    // An alert dialog
-    var alertPopup = $ionicPopup.alert({
-      title: title,
-      template: msg
-    });
-
-    if (!cb) cb = function() {};
-
-    alertPopup.then(cb);
-  };
-
   // walletHome
   root.recreate = function(wallet, cb) {
     ongoingProcess.set('recreating', true);
@@ -1010,10 +995,17 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
   };
 
   root.setTouchId = function(wallet, enabled, cb) {
+
+    var opts = {
+      touchIdFor: {}
+    };
+    opts.touchIdFor[wallet.id] = enabled;
+
     fingerprintService.check(wallet, function(err) {
-      if (err) return cb(err); {
-        $log.debug(err);
-        return;
+      if (err) {
+        opts.touchIdFor[wallet.id] = !enabled;
+        $log.debug('Error with fingerprint:' + err);
+        return cb(err);
       }
       configService.set(opts, cb);
     });

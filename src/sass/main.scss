@@ -339,20 +339,6 @@ ul.wallet-selection.wallets {
   padding-right: 10%;
 }
 
-.amount {
-  width: 100%;
-  text-align: center;
-  padding: 1.5rem 1rem 1.5rem 1rem;
-  color: #fff;
-  height: 150px;
-  margin-bottom: 25px;
-}
-
-.alternative-amount {
-  height: 25px;
-  text-align: center;
-}
-
 .wallet-info {
   position: absolute;
   top: inherit;
@@ -1003,8 +989,11 @@ input[type=number] {
   }
 }
 
+@import "ionic";
+@import "common";
 @import 'mixins/mixins';
-@import 'views/onboarding/onboarding';
-@import "views/common";
+@import "views/add";
 @import "views/tab-home";
+@import "views/walletDetails";
+@import 'views/onboarding/onboarding';
 @import "views/includes/walletActivity";

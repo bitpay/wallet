@@ -194,6 +194,10 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
       return $state.go('wallet.copayers');
     };
 
+    /* Set color for header bar */
+    $rootScope.walletDetailsColor = wallet.color;
+    $rootScope.walletDetailsName = wallet.name;
+
     $scope.wallet = wallet;
     $scope.requiresMultipleSignatures = wallet.credentials.m > 1;
     $scope.newTx = false;
