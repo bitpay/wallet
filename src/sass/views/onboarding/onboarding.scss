@@ -30,9 +30,6 @@
         color: rgba(255, 255, 255, .5);
       }
     }
-    .col {
-      @include center-block(.5rem);
-    }
     #cta {
       background-size: contain;
       width: 100%;
@@ -51,6 +48,9 @@
       }
     }
   }
+  .col {
+    @include center-block(.5rem);
+  }
   .swiper-pagination {
     &-bullet {
       background: rgb(100, 124, 232);
@@ -59,9 +59,20 @@
       }
     }
   }
+  .button-transparent{
+    background: none !important;
+  }
+  .button-primary{
+    background: rgb(100, 124, 232) !important;
+  }
+  .light-blue{
+    color:rgb(100, 124, 232);
+  }
 }
 
 @import "terms-of-use";
 @import "onboard-welcome";
 @import "onboard-tour";
 @import "onboard-collect-email";
+@import "onboard-backup-request";
+@import "onboard-backup-warning";
