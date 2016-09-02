@@ -1,23 +1,31 @@
-<i class="icon ion-ios-circle-filled" ng-show="tx.pendingForUs" ng-style="{'color':tx.wallet.color}"></i>
-<span ng-show="!tx.merchant">
-  <span ng-show="addressbook[tx.toAddress] && !tx.message">
-    {{addressbook[tx.toAddress]}}
-  </span>
-  <span class="ellipsis" ng-show="!addressbook[tx.toAddress] && tx.message">
-    {{tx.message}}
-  </span>
-  <span ng-show="!addressbook[tx.toAddress] && !tx.message" translate>
-    Sending
-  </span>
-</span>
-<span ng-show="tx.merchant">
-  <span ng-show="tx.merchant.pr.ca"><i class="fi-lock"></i> {{tx.merchant.domain}}</span>
-  <span ng-show="!tx.merchant.pr.ca"><i class="fi-unlock"></i> {{tx.merchant.domain}}</span>
-</span>
-<span>
-  - {{tx.amountStr}}
-</span>
-<div class="item-note">
-  {{tx.wallet.name}} &middot; <time>{{ (tx.ts || tx.createdOn ) * 1000 | amTimeAgo}}</time>
-</div>
 
+<div class="wallet-activity" ng-class="{'wallet-activity-not-pending':!tx.pendingForUs}">
+  <span ng-show="!tx.merchant">
+    <span ng-show="addressbook[tx.toAddress] && !tx.message">
+      {{addressbook[tx.toAddress]}}
+    </span>
+    <span class="ellipsis" ng-show="!addressbook[tx.toAddress] && tx.message">
+      {{tx.message}}
+    </span>
+    <span ng-show="!addressbook[tx.toAddress] && !tx.message" translate>
+      Sending
+    </span>
+  </span>
+  <span ng-show="tx.merchant">
+    <span ng-show="tx.merchant.pr.ca"><i class="fi-lock"></i> {{tx.merchant.domain}}</span>
+    <span ng-show="!tx.merchant.pr.ca"><i class="fi-unlock"></i> {{tx.merchant.domain}}</span>
+  </span>
+  <span>
+  </span>
+
+  <div class="wallet-activity-amount">
+    {{tx.amountStr}}
+  </div>
+ 
+
+  <p class="wallet-activity-note">
+    <i class="icon ion-record wallet-activity-note-child" ng-style="{'color':tx.wallet.color}"></i>
+    <span class="wallet-activity-note-child">{{tx.wallet.name}}</span>
+    <time class="wallet-activity-note-child">{{tx.createdOn * 1000 | amTimeAgo}}</time>
+  </p>
+</div>

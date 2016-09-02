@@ -123,7 +123,6 @@ angular.module('copayApp.services')
         if (wallet.cachedActivity)
           wallet.cachedActivity.isValid = false;
 
-
         if (wallet.cachedTxps)
           wallet.cachedTxps.isValid = false;
 
@@ -908,22 +907,14 @@ angular.module('copayApp.services')
 
       var txps = [];
 
-      function process(notifications) {
-        if (!notifications) return [];
-
-        var shown = lodash.sortBy(notifications, 'createdOn').reverse();
-        shown = shown.splice(0, opts.limit || MAX);
-        return shown;
-      };
-
       lodash.each(w, function(x) {
         if (x.pendingTxps)
           txps = txps.concat(x.pendingTxps);
       });
-      txps = lodash.sortBy(txps, 'createdOn');
+      txps = lodash.sortBy(txps, 'pendingForUs', 'createdOn');
       txps = lodash.compact(lodash.flatten(txps)).slice(0,MAX);
       var n = txps.length;
-      return cb(null, process(txps), n);
+      return cb(null, txps, n);
     };
 
     return root;
