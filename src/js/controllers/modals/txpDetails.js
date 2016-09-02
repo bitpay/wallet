@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('txpDetailsController', function($scope, $rootScope, $timeout, $interval, $ionicModal, ongoingProcess, platformInfo, txStatus, $ionicScrollDelegate, txFormatService, fingerprintService, bwcError, gettextCatalog, lodash,  walletService, popupService) {
+angular.module('copayApp.controllers').controller('txpDetailsController', function($scope, $rootScope, $timeout, $interval, $ionicModal, ongoingProcess, platformInfo, $ionicScrollDelegate, txFormatService, fingerprintService, bwcError, gettextCatalog, lodash,  walletService, popupService) {
   var self = $scope.self;
   var tx = $scope.tx;
   var copayers = $scope.copayers;
@@ -32,6 +32,9 @@ angular.module('copayApp.controllers').controller('txpDetailsController', functi
   $scope.sign = function() {
     $scope.loading = true;
     walletService.publishAndSign($scope.wallet, $scope.tx, function(err, txp) {
+
+console.log('[txpDetails.js.35] AFTER publush'); //TODO
+
         $scope.$emit('UpdateTx');
         if (err) return setSendError(err);
         $scope.close(txp);
@@ -174,28 +177,6 @@ angular.module('copayApp.controllers').controller('txpDetailsController', functi
 
   $scope.close = function(txp) {
     $scope.loading = null;
-    if (txp) {
-      var type = txStatus.notify(txp);
-      $scope.openStatusModal(type, txp, function() {});
-    }
-    $scope.cancel();
-  };
-
-  $scope.openStatusModal = function(type, txp, cb) {
-    $scope.type = type;
-    $scope.tx = txFormatService.processTx(txp);
-    $scope.cb = cb;
-
-    $ionicModal.fromTemplateUrl('views/modals/tx-status.html', {
-      scope: $scope,
-      animation: 'slide-in-up'
-    }).then(function(modal) {
-      $scope.txStatusModal = modal;
-      $scope.txStatusModal.show();
-    });
-  };
-
-  $scope.cancel = function() {
     $scope.txpDetailsModal.hide();
   };
 });
