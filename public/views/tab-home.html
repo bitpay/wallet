@@ -28,7 +28,7 @@
         <ion-spinner icon="lines"></ion-spinner>
         <div translate>Updating activity. Please stand by</div>
       </span>
-      <a ng-if="!fetchingNotifications" class="item" ng-repeat="x in notifications" ng-click="x.action()">
+      <a ng-if="notifications[0]" class="item" ng-repeat="x in notifications" ng-click="x.action()">
         <span ng-include="'views/includes/walletActivity.html'"></span>
       </a>
     </div>
@@ -117,6 +117,10 @@
         <i class="icon ion-ios-arrow-right nav-item-arrow-right"></i>
       </a>
     </div>
+
+    <p class="padding" style="text-align:center; color:#999">
+{{name}} v{{version}}
+    </p>
 
   </ion-content>
 </ion-view>

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('tabHomeController',
-  function($rootScope, $timeout, $scope, $state, $ionicScrollDelegate, lodash, profileService, walletService, configService, txFormatService, $ionicModal, $log, platformInfo, storageService, txpModalService) {
+  function($rootScope, $timeout, $scope, $state, $ionicScrollDelegate, lodash, profileService, walletService, configService, txFormatService, $ionicModal, $log, platformInfo, storageService, txpModalService, $window) {
 
     $scope.externalServices = {};
     $scope.bitpayCardEnabled = true; // TODO
@@ -81,9 +81,11 @@ angular.module('copayApp.controllers').controller('tabHomeController',
         }
         wallet.status = status;
 
+        $scope.fetchingNotifications = true;
         profileService.getNotifications({
           limit: 3
         }, function(err, notifications) {
+          $scope.fetchingNotifications = false;
           if (err) {
             console.log('[tab-home.js.35:err:]', $log.error(err)); //TODO
             return;
@@ -142,6 +144,10 @@ angular.module('copayApp.controllers').controller('tabHomeController',
     });
 
     $scope.openTxpModal = txpModalService.open;
+
+    $scope.version = $window.version;
+    $scope.name = $window.appConfig.nameCase;
+
 
 
   });
