@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.services').factory('walletService', function($log, $timeout, lodash, trezor, ledger, storageService, configService, rateService, uxLanguage, $filter, gettextCatalog, bwcError, $ionicPopup, fingerprintService, ongoingProcess, gettext, $rootScope, txStatus, txFormatService, $ionicModal, $state, bwcService, bitcore, popupService) {
+angular.module('copayApp.services').factory('walletService', function($log, $timeout, lodash, trezor, ledger, storageService, configService, rateService, uxLanguage, $filter, gettextCatalog, bwcError, $ionicPopup, fingerprintService, ongoingProcess, gettext, $rootScope, txFormatService, $ionicModal, $state, bwcService, bitcore, popupService) {
   // `wallet` is a decorated version of client.
 
   var root = {};
@@ -674,11 +674,13 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
         handleError(err);
         return;
       }
+      root.startScan(wallet);
 
-      profileService.bindWalletClient(wallet, {
-        force: true
-      });
-      wallet.startScan(wallet);
+      // TODO TODO TODO TODO:
+      //  Do it on the controller
+      // profileService.bindWalletClient(wallet, {
+      //   force: true
+      // });
     });
   };
 
@@ -878,7 +880,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
       ongoingProcess.set('sendingTx', false);
       if (err) return cb(err);
 
-      var type = txStatus.notify(createdTxp);
+      var type = root.getViewStatus(wallet, createdTxp);
       root.openStatusModal(type, createdTxp, function() {
         $rootScope.$emit('Local/TxAction', wallet.id);
         return;
@@ -941,7 +943,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
               ongoingProcess.set('broadcastingTx', false);
               if (err) return cb('sign error' + err);
 
-              var type = txStatus.notify(broadcastedTxp);
+              var type = root.getViewStatus(wallet, broadcastedTxp);
               root.openStatusModal(type, broadcastedTxp, function() {
                 $rootScope.$emit('Local/TxAction', wallet.id);
               });
@@ -949,7 +951,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
               return cb(null, broadcastedTxp)
             });
           } else {
-            var type = txStatus.notify(signedTxp);
+            var type = root.getViewStatus(wallet, signedTxp);
             root.openStatusModal(type, signedTxp, function() {
               root.invalidateCache(wallet);
               $rootScope.$emit('Local/TxAction', wallet.id);
@@ -1024,6 +1026,38 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
 
       return cb(null, keys);
     });
+  };
+
+  root.getViewStatus = function(wallet, txp) {
+    var status = txp.status;
+    var type;
+    var INMEDIATE_SECS = 10;
+
+    if (status == 'broadcasted') {
+      type = 'broadcasted';
+    } else {
+
+      var n = txp.actions.length;
+      var action = lodash.find(txp.actions, {
+        copayerId: wallet.credentials.copayerId
+      });
+
+      if (!action) {
+        type = 'created';
+      } else if (action.type == 'accept') {
+        // created and accepted at the same time?
+        if (n == 1 && action.createdOn - txp.createdOn < INMEDIATE_SECS) {
+          type = 'created';
+        } else {
+          type = 'accepted';
+        }
+      } else if (action.type == 'reject') {
+        type = 'rejected';
+      } else {
+        throw new Error('Unknown type:' + type);
+      }
+    }
+    return type;
   };
 
 
