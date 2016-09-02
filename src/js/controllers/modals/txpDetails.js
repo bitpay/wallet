@@ -34,7 +34,7 @@ angular.module('copayApp.controllers').controller('txpDetailsController', functi
     walletService.publishAndSign($scope.wallet, $scope.tx, function(err, txp) {
         $scope.$emit('UpdateTx');
         if (err) return setSendError(err);
-        $scope.close(true);
+        $scope.close();
     });
   };
 
@@ -50,7 +50,7 @@ angular.module('copayApp.controllers').controller('txpDetailsController', functi
       if (err)
         return setError(err, gettextCatalog.getString('Could not reject payment'));
 
-      $scope.close(true);
+      $scope.close();
     });
 
 
@@ -70,7 +70,7 @@ angular.module('copayApp.controllers').controller('txpDetailsController', functi
           return setError(err, gettextCatalog.getString('Could not delete payment proposal'));
         }
 
-        $scope.close(true);
+        $scope.close();
       });
     }, 10);
   };
@@ -87,7 +87,7 @@ angular.module('copayApp.controllers').controller('txpDetailsController', functi
           return setError(err, gettextCatalog.getString('Could not broadcast payment'));
         }
 
-        $scope.close(true);
+        $scope.close();
       });
     }, 10);
   };
@@ -172,10 +172,7 @@ angular.module('copayApp.controllers').controller('txpDetailsController', functi
     });
   };
 
-  $scope.close = function(shouldEmit) {
-    if (shouldEmit)
-      $rootScope.$emit('Local/TxAction', $scope.wallet.id);
-
+  $scope.close = function() {
     $scope.loading = null;
     $scope.txpDetailsModal.hide();
   };

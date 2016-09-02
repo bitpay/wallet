@@ -5,6 +5,17 @@ angular.module('copayApp.controllers').controller('confirmController', function(
   var cachedTxp = {};
   var isChromeApp = platformInfo.isChromeApp;
 
+
+  $scope.$on('Wallet/Changed', function(event, wallet) {
+    if (lodash.isEmpty(wallet)) {
+      $log.debug('No wallet provided');
+      return;
+    }
+    $log.debug('Wallet changed: ' + wallet.name);
+    setWallet(wallet, true);
+  });
+
+
   $scope.showDescriptionPopup = function() {
     var commentPopup = $ionicPopup.show({
       templateUrl: "views/includes/note.html",
@@ -130,15 +141,6 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     });
   };
 
-  $scope.$on('Wallet/Changed', function(event, wallet) {
-    if (lodash.isEmpty(wallet)) {
-      $log.debug('No wallet provided');
-      return;
-    }
-    $log.debug('Wallet changed: ' + wallet.name);
-    setWallet(wallet, true);
-  });
-
   function setWallet(wallet, delayed) {
     var stop;
     $scope.wallet = wallet;
@@ -255,7 +257,9 @@ angular.module('copayApp.controllers').controller('confirmController', function(
       });
     }
 
+    ongoingProcess.set('creatingTx', true);
     createTx(wallet, false, function(err, txp) {
+      ongoingProcess.set('creatingTx', false);
       if (err) return;
       walletService.publishAndSign(wallet, txp, function(err, txp) {
         if (err) return setSendError(err);

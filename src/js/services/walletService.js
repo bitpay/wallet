@@ -92,13 +92,17 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
 
 
   root.invalidateCache = function(wallet) {
-    if (wallet.cachedStatus) {
+    if (wallet.cachedStatus)
       wallet.cachedStatus.isValid = false;
-    }
 
-    if (wallet.completeHistory) {
+    if (wallet.completeHistory)
       wallet.completeHistory.isValid = false;
-    }
+
+    if (wallet.cachedActivity)
+      wallet.cachedActivity.isValid = false;
+
+    if (wallet.cachedTxps)
+      wallet.cachedTxps.isValid = false;
   };
 
   root.getStatus = function(wallet, opts, cb) {
@@ -623,6 +627,10 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
 
     wallet.removeTxProposal(txp, function(err) {
       $log.debug('Transaction removed');
+
+      root.invalidateCache(wallet);
+      $rootScope.$emit('Local/TxAction', wallet.id);
+
       return cb(err);
     });
   };
@@ -864,8 +872,8 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     ongoingProcess.set('rejectTx', true);
     root.rejectTx(wallet, txp, function(err, txpr) {
       root.invalidateCache(wallet);
-
       ongoingProcess.set('rejectTx', false);
+
       if (err) return cb(err);
 
       $rootScope.$emit('Local/TxAction', wallet.id);
@@ -935,6 +943,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
             var msg = err.message ?
               err.message :
               gettext('The payment was created but could not be completed. Please try again from home screen');
+
             $rootScope.$emit('Local/TxAction', wallet.id);
             return cb(msg);
           }
@@ -945,18 +954,18 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
               ongoingProcess.set('broadcastingTx', false);
               if (err) return cb('sign error' + err);
 
+              $rootScope.$emit('Local/TxAction', wallet.id);
               var type = root.getViewStatus(wallet, broadcastedTxp);
               root.openStatusModal(type, broadcastedTxp, function() {
-                $rootScope.$emit('Local/TxAction', wallet.id);
               });
 
               return cb(null, broadcastedTxp)
             });
           } else {
+            $rootScope.$emit('Local/TxAction', wallet.id);
+
             var type = root.getViewStatus(wallet, signedTxp);
             root.openStatusModal(type, signedTxp, function() {
-              root.invalidateCache(wallet);
-              $rootScope.$emit('Local/TxAction', wallet.id);
             });
             return cb(null, signedTxp);
           }
