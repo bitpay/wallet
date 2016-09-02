@@ -11,7 +11,6 @@ angular.module('copayApp.controllers').controller('preferencesEmailController', 
   $scope.email = config.emailFor && config.emailFor[walletId];
 
   $scope.save = function(form) {
-    var email = $scope.email || '';
     var opts = {
       emailFor: {}
     };
