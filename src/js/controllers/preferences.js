@@ -69,10 +69,12 @@ angular.module('copayApp.controllers').controller('preferencesController',
 
     $scope.touchIdChange = function() {
       var newStatus = $scope.touchIdEnabled;
-      walletService.setTouchId(wallet, newStatus, function(err) {
+      walletService.setTouchId(wallet, !!newStatus, function(err) {
         if (err) {
-          $log.warn(err);
           $scope.touchIdEnabled = !newStatus;
+          $timeout(function() {
+            $scope.$apply();
+          }, 1);
           return;
         }
         $log.debug('Touch Id status changed: ' + newStatus);

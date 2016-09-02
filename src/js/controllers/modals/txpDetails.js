@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('txpDetailsController', function($scope, $rootScope, $timeout, $interval, $ionicModal, ongoingProcess, platformInfo, txStatus, $ionicScrollDelegate, txFormatService, fingerprintService, bwcError, gettextCatalog, lodash,  walletService) {
+angular.module('copayApp.controllers').controller('txpDetailsController', function($scope, $rootScope, $timeout, $interval, $ionicModal, ongoingProcess, platformInfo, txStatus, $ionicScrollDelegate, txFormatService, fingerprintService, bwcError, gettextCatalog, lodash,  walletService, popupService) {
   var self = $scope.self;
   var tx = $scope.tx;
   var copayers = $scope.copayers;
@@ -25,13 +25,11 @@ angular.module('copayApp.controllers').controller('txpDetailsController', functi
   }
 
   var setSendError = function(msg) {
-    $scope.error = msg || gettextCatalog.getString('Could not send payment');
+    var error = msg || gettextCatalog.getString('Could not send payment');
+    popupService.showAlert(gettextCatalog.getString('Error'), error);
   }
 
-
-
   $scope.sign = function() {
-    $scope.error = null;
     $scope.loading = true;
     walletService.publishAndSign($scope.wallet, $scope.tx, function(err, txp) {
         $scope.$emit('UpdateTx');
@@ -42,18 +40,14 @@ angular.module('copayApp.controllers').controller('txpDetailsController', functi
 
   function setError(err, prefix) {
     $scope.loading = false;
-    $scope.error = bwcError.msg(err, prefix);
-    $timeout(function() {
-      $scope.$digest();
-    }, 10);
+    popupService.showAlert(gettextCatalog.getString('Error'), bwcError.msg(err, prefix));
   };
 
   $scope.reject = function(txp) {
     $scope.loading = true;
-    $scope.error = null;
 
     walletService.reject($scope.wallet, $scope.tx, function(err, txpr) {
-      if (err) 
+      if (err)
         return setError(err, gettextCatalog.getString('Could not reject payment'));
 
       $scope.close(txpr);
@@ -64,7 +58,6 @@ angular.module('copayApp.controllers').controller('txpDetailsController', functi
 
   $scope.remove = function() {
     $scope.loading = true;
-    $scope.error = null;
 
     $timeout(function() {
       ongoingProcess.set('removeTx', true);
@@ -84,7 +77,6 @@ angular.module('copayApp.controllers').controller('txpDetailsController', functi
 
   $scope.broadcast = function(txp) {
     $scope.loading = true;
-    $scope.error = null;
 
     $timeout(function() {
       ongoingProcess.set('broadcastTx', true);
@@ -185,7 +177,7 @@ angular.module('copayApp.controllers').controller('txpDetailsController', functi
     if (txp) {
       var type = txStatus.notify(txp);
       $scope.openStatusModal(type, txp, function() {});
-    }  
+    }
     $scope.cancel();
   };
 

@@ -1,6 +1,6 @@
 <ion-view id="onboard-welcome" class="onboarding">
   <ion-content ng-controller="welcomeController" ng-init="createProfile()">
-    <img src="../img/onboarding-welcome-shopping24.png" id="shopping-24" />
+    <qr-scanner id="shopping-24" on-scan="goImport(data)"></qr-scanner>
     <div class="text-center">
       <div class="row">
         <img src='../../img/bitpay-logo.svg' class="logo col col-50" />
@@ -14,7 +14,7 @@
         <button class="button button-block get-started col col-75" href ui-sref="onboarding.tour" translate>Get started</button>
       </div>
       <div class="row">
-        <button class="button button-block restore col col-75" translate href ui-sref="tabs.import({'fromOnboarding':true})">Restore</button>
+        <button class="button button-block restore col col-75" translate href ui-sref="onboarding.import.phrase({'fromOnboarding':true})">Restore</button>
       </div>
   </ion-content>
 </ion-view>

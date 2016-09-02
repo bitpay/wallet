@@ -1,8 +1,8 @@
 <ion-view>
-  <ion-nav-bar class="bar-stable">
+  <ion-nav-bar class="bar-royal">
     <ion-nav-buttons side="primary">
-      <button class="button no-border" ui-sref="tabs.add">
-        <i class="icon ion-chevron-left"></i> {{'Back' | translate}}
+      <button class="button back-button" ui-sref="tabs.add">
+        <i class="icon ion-ios-arrow-thin-left"></i>
       </button>
     </ion-nav-buttons>
     <ion-nav-title>{{'Join shared wallet' | translate}}</ion-nav-title>
@@ -11,13 +11,9 @@
 
   <ion-content ng-controller="joinController as join">
 
-    <div class="padding assertive" ng-show="join.error">
-      {{join.error|translate}}
-    </div>
-
     <form name="joinForm" ng-submit="join.join(joinForm)" novalidate>
 
-      <div class="list">
+      <div class="card list">
 
         <div class="row">
           <div class="col">

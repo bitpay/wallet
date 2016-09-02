@@ -1,8 +1,8 @@
 <ion-view>
-  <ion-nav-bar class="bar-stable" ng-controller="backController">
+  <ion-nav-bar class="bar-royal" ng-controller="backController">
     <ion-nav-buttons side="primary">
-      <button class="button no-border" ng-click="importGoBack()">
-        <i class="icon ion-chevron-left"></i> {{'Back' | translate}}
+      <button class="button back-button" ng-click="importGoBack()">
+        <i class="icon ion-ios-arrow-thin-left"></i>
       </button>
     </ion-nav-buttons>
     <ion-nav-title>Import wallet</ion-nav-title>
@@ -10,26 +10,20 @@
 
   <ion-content ng-controller="importController" ng-init="type='12'">
 
-    <div ng-show="importErr || error" class="padding assertive" ng-click="importErr = error = null">
-      <div ng-show="importErr">
-        <div translate>Could not access the wallet at the server. Please check:</div>
-        <ul>
-          <li translate>The password of the recovery phrase (if set)</li>
-          <li translate>The derivation path</li>
-          <li translate>The wallet service URL</li>
-        </ul>
-        <div translate>
-          NOTE: To import a wallet from a 3rd party software, please go to Add Wallet &gt; Create Wallet, and specify the Recovery Phrase there.
-        </div>
-      </div>
-
-      <div ng-show="error">
-        {{error|translate}}
+    <div ng-show="importErr" class="padding assertive" ng-click="importErr = null">
+      <div translate>Could not access the wallet at the server. Please check:</div>
+      <ul>
+        <li translate>The password of the recovery phrase (if set)</li>
+        <li translate>The derivation path</li>
+        <li translate>The wallet service URL</li>
+      </ul>
+      <div translate>
+        NOTE: To import a wallet from a 3rd party software, please go to Add Wallet &gt; Create Wallet, and specify the Recovery Phrase there.
       </div>
     </div>
 
     <form name="importForm12" ng-submit="importMnemonic(importForm12)" novalidate>
-      <div class="list">
+      <div class="list card">
 
         <div class="row">
           <div class="col col-90">
@@ -83,8 +77,8 @@
       </div>
 
       <button type="submit"
-              class="button button-block button-positive"
-              ng-disabled="importForm12.$invalid" translate>Import</button>
+        class="button button-block button-positive"
+        ng-disabled="importForm12.$invalid" translate>Import</button>
     </form>
   </ion-content>
 </ion-view>

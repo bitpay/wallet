@@ -1,5 +1,5 @@
 <ion-view>
-  <ion-nav-bar class="bar-stable">
+  <ion-nav-bar class="bar-royal">
     <ion-nav-title>{{'Receive' | translate}}</ion-nav-title>
   </ion-nav-bar>
 
@@ -9,10 +9,6 @@
       <div ng-if="wallet.needsBackup" class="assertive" translate>
         Before receiving funds, you must backup your wallet. If this device is lost, it is impossible to access your funds without a backup.
       </div>
-    </div>
-
-    <div class="padding assertive" ng-show="error">
-      {{error|translate}}
     </div>
 
     <div class="list card padding text-center" ng-if="!wallets[0]">

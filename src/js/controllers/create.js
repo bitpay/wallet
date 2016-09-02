@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('createController',
-  function($scope, $rootScope, $timeout, $log, lodash, $state, $ionicScrollDelegate, profileService, configService, gettext, ledger, trezor, platformInfo, derivationPathHelper, ongoingProcess, walletService, storageService) {
+  function($scope, $rootScope, $timeout, $log, lodash, $state, $ionicScrollDelegate, profileService, configService, gettext, gettextCatalog, ledger, trezor, platformInfo, derivationPathHelper, ongoingProcess, walletService, storageService, popupService) {
 
     var isChromeApp = platformInfo.isChromeApp;
     var isCordova = platformInfo.isCordova;
@@ -92,7 +92,7 @@ angular.module('copayApp.controllers').controller('createController',
 
     this.create = function(form) {
       if (form && form.$invalid) {
-        this.error = gettext('Please enter the required fields');
+        popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Please enter the required fields'));
         return;
       }
 
@@ -119,7 +119,7 @@ angular.module('copayApp.controllers').controller('createController',
 
         var pathData = derivationPathHelper.parse($scope.derivationPath);
         if (!pathData) {
-          this.error = gettext('Invalid derivation path');
+          popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Invalid derivation path'));
           return;
         }
 
@@ -132,14 +132,14 @@ angular.module('copayApp.controllers').controller('createController',
       }
 
       if (setSeed && !opts.mnemonic && !opts.extendedPrivateKey) {
-        this.error = gettext('Please enter the wallet recovery phrase');
+        popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Please enter the wallet recovery phrase'));
         return;
       }
 
       if (self.seedSourceId == 'ledger' || self.seedSourceId == 'trezor') {
         var account = $scope.account;
         if (!account || account < 1) {
-          this.error = gettext('Invalid account number');
+          popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Invalid account number'));
           return;
         }
 
@@ -154,8 +154,7 @@ angular.module('copayApp.controllers').controller('createController',
         src.getInfoForNewWallet(opts.n > 1, account, function(err, lopts) {
           ongoingProcess.set('connecting' + self.seedSourceId, false);
           if (err) {
-            self.error = err;
-            $scope.$apply();
+            popupService.showAlert(gettextCatalog.getString('Error'), err);
             return;
           }
           opts = lodash.assign(lopts, opts);
@@ -174,10 +173,7 @@ angular.module('copayApp.controllers').controller('createController',
           ongoingProcess.set('creatingWallet', false);
           if (err) {
             $log.warn(err);
-            self.error = err;
-            $timeout(function() {
-              $rootScope.$apply();
-            });
+            popupService.showAlert(gettextCatalog.getString('Error'), err);
             return;
           }
 

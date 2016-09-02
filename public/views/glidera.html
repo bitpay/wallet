@@ -1,14 +1,18 @@
 <ion-view>
-  <ion-nav-bar class="bar-stable">
+  <ion-nav-bar class="bar-royal">
     <ion-nav-buttons side="primary">
-      <button class="button no-border" ui-sref="tabs.home">
-        Close
+      <button class="button back-button" ui-sref="tabs.home">
+        <i class="icon ion-ios-arrow-thin-left"></i>
       </button>
     </ion-nav-buttons>
     <ion-nav-title>Glidera</ion-nav-title>
   </ion-nav-bar>
 
   <ion-content ng-controller="glideraController as glidera" ng-init="init()">
+
+    <div class="box-notification error" ng-show="!network">
+      Glidera is disabled for this application
+    </div>
 
     <div class="box-notification warning" ng-show="network == 'testnet'">
       Testnet wallets only work with Glidera Sandbox Accounts

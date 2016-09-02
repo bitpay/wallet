@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('exportController',
-  function($rootScope, $scope, $timeout, $log, lodash, backupService, walletService, storageService, profileService, platformInfo, gettext, gettextCatalog, $state, $stateParams) {
+  function($rootScope, $scope, $timeout, $log, lodash, backupService, walletService, storageService, profileService, platformInfo, gettext, gettextCatalog, $state, $stateParams, popupService) {
     var prevState;
     var isWP = platformInfo.isWP;
     var isAndroid = platformInfo.isAndroid;
@@ -10,7 +10,6 @@ angular.module('copayApp.controllers').controller('exportController',
     $scope.isEncrypted = wallet.isPrivKeyEncrypted();
     $scope.isCordova = platformInfo.isCordova;
     $scope.isSafari = platformInfo.isSafari;
-    $scope.error = null;
 
     $scope.init = function() {
       $scope.supported = true;
@@ -51,7 +50,7 @@ angular.module('copayApp.controllers').controller('exportController',
     $scope.downloadWalletBackup = function() {
       $scope.getAddressbook(function(err, localAddressBook) {
         if (err) {
-          $scope.error = true;
+          popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Failed to export'));
           return;
         }
         var opts = {
@@ -61,7 +60,7 @@ angular.module('copayApp.controllers').controller('exportController',
 
         backupService.walletDownload($scope.password, opts, function(err) {
           if (err) {
-            $scope.error = true;
+            popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Failed to export'));
             return;
           }
           $state.go('tabs.home');
@@ -87,7 +86,7 @@ angular.module('copayApp.controllers').controller('exportController',
     $scope.getBackup = function(cb) {
       $scope.getAddressbook(function(err, localAddressBook) {
         if (err) {
-          $scope.error = true;
+          popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Failed to export'));
           return cb(null);
         }
         var opts = {
@@ -97,9 +96,7 @@ angular.module('copayApp.controllers').controller('exportController',
 
         var ew = backupService.walletExport($scope.password, opts);
         if (!ew) {
-          $scope.error = true;
-        } else {
-          $scope.error = false;
+          popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Failed to export'));
         }
         return cb(ew);
       });
