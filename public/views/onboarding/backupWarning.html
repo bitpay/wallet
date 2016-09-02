@@ -1,15 +1,32 @@
-<ion-view>
-  <ion-nav-bar class="bar-royal">
+<ion-view id="onboarding-backup-warning" class="onboarding">
+  <ion-nav-bar class="bar-stable">
     <ion-nav-buttons side="primary">
-      <button class="button back-button" ui-sref="onboarding.backupRequest">
+      <button class="button no-border" href ui-sref="onboarding.backupRequest">
         <i class="icon ion-ios-arrow-thin-left"></i>
       </button>
     </ion-nav-buttons>
   </ion-nav-bar>
   <ion-content ng-controller="backupWarningController">
-    <span translate>Are you being watched?</span>
-    <span translate>Now is a perfect time to assess your surroundings. Nearby windows? Hidden cameras? Shoulder-spies?</span>
-    <span translate>Anyone with your backup phrase can access or spend your bitcoin.</span>
-    <button class="button button-block button-positive" ng-click="openPopup()" translate>All clear, let's do this</button>
+    <div class="row text-center">
+      <h3 translate class="col col-75">
+        Are you being watched?
+      </h3>
+    </div>
+    <div class="row text-center">
+      <p class="col col-75 tagline">
+        Now is a perfect time to assess your surroundings. Nearby windows? Hidden cameras? Shoulder-spies?
+      </p>
+    </div>
+    <div class="row">
+      <img src="../../img/onboarding-backup-warning.svg" class="col col-60">
+    </div>
+    <div class="row text-center">
+      <p class="col col-60">
+        Anyone with your backup phrase can access or spend your bitcoin.
+      </p>
+    </div>
+    <div class="row">
+      <button class="button button-block button-primary col col-75" ng-click="openPopup()" translate>All clear, let's do this</button>
+    </div>
   </ion-content>
 </ion-view>

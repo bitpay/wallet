@@ -1,0 +1,66 @@
+#onboarding-collect-email {
+  background: rgb(17, 209, 166);
+  #success-image {
+    margin-top: 4rem;
+  }
+  .col {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+  }
+  #collect-email {
+    opacity: 1;
+    background: #fff;
+    color: rgb(108, 108, 108);
+    height: 11rem;
+    animation-name: topBottom;
+    animation-iteration-count: 1;
+    animation-timing-function: ease-in;
+    animation-duration: 1s;
+    animation-delay: 2s;
+    position: absolute;
+    bottom: -100%;
+    animation-fill-mode: forwards;
+    z-index: 5;
+    margin-top: 0;
+    label {
+      background: rgba(200, 200, 200, 0.20);
+      height: 3rem;
+      margin-top:0;
+      input {
+        position: absolute;
+      }
+      i {
+        position: absolute;
+        right: 3%;
+        top: 1rem;
+      }
+    }
+  }
+  .overlay {
+    animation-name: bottomTop;
+    animation-iteration-count: 1;
+    animation-timing-function: ease-in;
+    animation-duration: 1s;
+    animation-delay: 2s;
+    animation-fill-mode: forwards;
+    top: 100%;
+  }
+}
+
+@keyframes topBottom {
+  0% {
+    bottom: -100%;
+  }
+  100% {
+    bottom: 0;
+  }
+}
+
+@keyframes bottomTop {
+  0% {
+    top: 100%;
+  }
+  100% {
+    top: 0;
+  }
+}
