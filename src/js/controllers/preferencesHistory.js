@@ -22,7 +22,7 @@ angular.module('copayApp.controllers').controller('preferencesHistory',
           }
 
           allTxs.push(txsFromLocal);
-          return cb(null, lodash.flatten(allTxs));
+          return cb(null, lodash.compact(lodash.flatten(allTxs)));
         });
       };
 
