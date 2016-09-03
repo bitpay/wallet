@@ -7,7 +7,7 @@ angular.module('copayApp.controllers').controller('backupController',
     var prevState;
     $scope.customWords = [];
     $scope.walletName = fc.credentials.walletName;
-    $scope.credentialsEncrypted = fc.isPrivKeyEncrypted;
+    $scope.credentialsEncrypted = fc.isPrivKeyEncrypted();
 
     $scope.init = function(state) {
       prevState = state || 'walletHome';
