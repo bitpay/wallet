@@ -554,12 +554,9 @@ angular.module('copayApp.services')
 
       $log.debug('Importing Wallet:', opts);
       try {
-        walletClient.import(str, {
-          compressed: opts.compressed,
-          password: opts.password
-        });
+        walletClient.import(str);
       } catch (err) {
-        return cb(gettext('Could not import. Check input file and spending password'));
+        return cb(gettext('Could not import. Check input file:' + err));
       }
 
       if (walletClient.hasPrivKeyEncrypted()) {
