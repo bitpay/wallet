@@ -10,7 +10,7 @@
   <ion-content ng-controller="termsController" ng-init="accept = false;">
       <div ng-include="'views/includes/terms.html'"></div>
       <div class="padding-vertical" ng-show="lang != 'en'">
-        <a ng-click="$root.openExternalLink('https://copay.io/disclaimer')" translate>Official English Disclaimer</a>
+        <a ng-click="openExternalLink('https://copay.io/disclaimer')" translate>Official English Disclaimer</a>
       </div>
       <ion-list class="disclaimer">
         <ion-checkbox ng-model="accept"><span translate>I have read, understood, and agree with the Terms of Use</span></ion-checkbox>

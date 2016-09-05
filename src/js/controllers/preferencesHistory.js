@@ -3,15 +3,14 @@
 angular.module('copayApp.controllers').controller('preferencesHistory',
   function($scope, $log, $stateParams, $timeout, $ionicNavBarDelegate, gettextCatalog, storageService, $state, $ionicHistory, profileService, lodash) {
     $ionicNavBarDelegate.title(gettextCatalog.getString('Transaction History'));
-    var wallet = profileService.getWallet($stateParams.walletId);
-    var c = wallet.credentials;
+    $scope.wallet = profileService.getWallet($stateParams.walletId);
     $scope.csvReady = false;
 
     $scope.csvHistory = function(cb) {
       var allTxs = [];
 
       function getHistory(cb) {
-        storageService.getTxHistory(c.walletId, function(err, txs) {
+        storageService.getTxHistory($scope.wallet.id, function(err, txs) {
           if (err) return cb(err);
 
           var txsFromLocal = [];
@@ -40,7 +39,7 @@ angular.module('copayApp.controllers').controller('preferencesHistory',
         var data = txs;
         var satToBtc = 1 / 100000000;
         $scope.csvContent = [];
-        $scope.csvFilename = 'Copay-' + ($scope.alias || $scope.walletName) + '.csv';
+        $scope.csvFilename = 'Copay-' + $scope.wallet.name + '.csv';
         $scope.csvHeader = ['Date', 'Destination', 'Description', 'Amount', 'Currency', 'Txid', 'Creator', 'Copayers', 'Comment'];
 
         var _amount, _note, _copayers, _creator, _comment;
@@ -118,7 +117,7 @@ angular.module('copayApp.controllers').controller('preferencesHistory',
     };
 
     $scope.clearTransactionHistory = function() {
-      storageService.removeTxHistory(c.walletId, function(err) {
+      storageService.removeTxHistory($scope.wallet.id, function(err) {
         if (err) {
           $log.error(err);
           return;

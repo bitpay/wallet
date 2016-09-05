@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('walletDetailsController', function($scope, $rootScope, $interval, $timeout, $filter, $log, $ionicModal, $ionicPopover, $ionicNavBarDelegate, $state, $stateParams, bwcError, profileService, lodash, configService, gettext, gettextCatalog, platformInfo, walletService, $ionicPopup, txpModalService) {
+angular.module('copayApp.controllers').controller('walletDetailsController', function($scope, $rootScope, $interval, $timeout, $filter, $log, $ionicModal, $ionicPopover, $ionicNavBarDelegate, $state, $stateParams, bwcError, profileService, lodash, configService, gettext, gettextCatalog, platformInfo, walletService, $ionicPopup, txpModalService, externalLinkService) {
 
   var isCordova = platformInfo.isCordova;
   var isWP = platformInfo.isWP;
@@ -12,6 +12,9 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
   var HISTORY_SHOW_LIMIT = 10;
   $scope.txps = [];
 
+  $scope.openExternalLink = function(url, target) {
+    externalLinkService.open(url, target);
+  };
 
   var setPendingTxps = function(txps) {
     if (!txps) {

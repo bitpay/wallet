@@ -6,12 +6,18 @@
   </ion-nav-bar>
   <ion-content ng-controller="preferencesAliasController" >
     <form name="aliasForm" ng-submit="save(aliasForm)" novalidate>
-      <label class="item item-input item-stacked-label">
-        <span class="input-label" transalate>Alias for {{walletName}}</span>
-        <input type="text" id="alias" name="alias" ng-model="alias" placeholder="John" required></input>
-      </label>
-      <input type="submit" class="button button-block button-stable" value="{{'Save'|translate}}" ng-disabled="aliasForm.$invalid">
+      <div class="card list">
+        <label class="item item-input item-stacked-label">
+          <span class="input-label" transalate>Alias for {{walletName}}</span>
+          <input type="text" id="alias" name="alias" ng-model="alias" placeholder="John" required>
+        </label>
+      </div>
+      <button type="submit"
+              class="button button-block button-positive"
+              ng-disabled="aliasForm.$invalid" translate>
+        Save
+      </button>
     </form>
-    <div translate>Changing wallet alias only affects the local wallet name.</div>
+    <div class="text-center" translate>Changing wallet alias only affects the local wallet name.</div>
   </ion-content>
 </ion-view>

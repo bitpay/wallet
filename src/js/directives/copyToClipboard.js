@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.directives')
-  .directive('copyToClipboard', function(platformInfo, nodeWebkit, gettextCatalog, ionicToast, clipboard) {
+  .directive('copyToClipboard', function(platformInfo, nodeWebkitService, gettextCatalog, ionicToast, clipboard) {
     return {
       restrict: 'A',
       scope: {
@@ -22,7 +22,7 @@ angular.module('copayApp.directives')
             window.cordova.plugins.clipboard.copy(data);
             window.plugins.toast.showShortCenter(msg);
           } else if (isNW) {
-            nodeWebkit.writeToClipboard(data);
+            nodeWebkitService.writeToClipboard(data);
             scope.$apply(function() {
               ionicToast.show(msg, 'bottom', false, 1000);
             });
