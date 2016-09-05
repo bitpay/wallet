@@ -1,6 +1,6 @@
 'use strict';
 angular.module('copayApp.services')
-  .factory('uxLanguage', function languageService($log, $timeout, lodash, gettextCatalog, amMoment, configService) {
+  .factory('uxLanguage', function languageService($log, lodash, gettextCatalog, amMoment, configService) {
     var root = {};
 
     root.currentLanguage = null;
@@ -97,8 +97,8 @@ angular.module('copayApp.services')
     };
 
     root.init = function() {
-      $timeout(function() {
-        var userLang = configService.getSync().wallet.settings.defaultLanguage;
+      configService.whenAvailable(function(config) {
+        var userLang = config.wallet.settings.defaultLanguage;
 
         if (userLang && userLang != root.currentLanguage) {
           root._set(userLang);
@@ -108,7 +108,7 @@ angular.module('copayApp.services')
         root._detect(function(lang) {
           root._set(lang);
         });
-      }, 100);
+      });
     };
 
     root.update = function(cb) {
