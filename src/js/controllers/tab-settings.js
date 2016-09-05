@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('tabSettingsController', function($scope, $rootScope, $log, $ionicModal, lodash, configService, uxLanguage, platformInfo, pushNotificationsService, profileService, feeService) {
+angular.module('copayApp.controllers').controller('tabSettingsController', function($scope, $rootScope, $log, $ionicModal, $window, lodash, configService, uxLanguage, platformInfo, pushNotificationsService, profileService, feeService) {
 
   $scope.init = function() {
 
@@ -8,6 +8,8 @@ angular.module('copayApp.controllers').controller('tabSettingsController', funct
     var isCordova = platformInfo.isCordova;
     var isWP = platformInfo.isWP;
     var isIOS = platformInfo.isIOS;
+
+    $scope.appName = $window.appConfig.nameCase;
 
     $scope.unitName = config.wallet.settings.unitName;
     $scope.currentLanguageName = uxLanguage.getCurrentLanguageName();

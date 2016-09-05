@@ -6,7 +6,6 @@
   <ion-content ng-controller="tabSettingsController" ng-init="init()">
     <div class="list">
       <div class="item item-divider"></div>
-
       <div class="item item-icon-left" ng-click="openAddressbookModal()">
         <i class="icon ion-ios-book-outline"></i>
         <span translate>Address Book</span>
@@ -14,36 +13,40 @@
 
       <div class="item item-divider" translate>Preferences</div>
 
-      <div class="item item-icon-left" href ui-sref="tabs.language">
+      <div class="item item-icon-left item-icon-right" ui-sref="tabs.language">
         <i class="icon ion-ios-chatbubble-outline"></i>
         <span translate>Language</span>
         <span class="item-note">
           {{currentLanguageName|translate}}
         </span>
+        <i class="icon ion-ios-arrow-right"></i>
       </div>
 
-      <div class="item item-icon-left" href ui-sref="tabs.unit">
+      <div class="item item-icon-left item-icon-right" ui-sref="tabs.unit">
         <i class="icon ion-ios-calculator-outline"></i>
         <span translate>Unit</span>
         <span class="item-note">
           {{unitName}}
         </span>
+        <i class="icon ion-ios-arrow-right"></i>
       </div>
 
-      <div class="item item-icon-left" href ui-sref="tabs.altCurrency">
+      <div class="item item-icon-left item-icon-right" ui-sref="tabs.altCurrency">
         <i class="icon ion-social-usd-outline"></i>
         <span translate>Alternative Currency</span>
         <span class="item-note">
           {{selectedAlternative.name}}
         </span>
+        <i class="icon ion-ios-arrow-right"></i>
       </div>
 
-      <div class="item item-icon-left" href ui-sref="tabs.fee">
-        <i class="icon ion-ios-film-outline"></i>
+      <div class="item item-icon-left item-icon-right" ui-sref="tabs.fee">
+        <i class="icon ion-social-bitcoin-outline"></i>
         <span translate>Bitcoin Network Fee Policy</span>
         <span class="item-note">
           {{feeOpts[currentFeeLevel]|translate}}
         </span>
+        <i class="icon ion-ios-arrow-right"></i>
       </div>
 
       <div ng-show="usePushNotifications && PNEnabledByUser">
@@ -81,7 +84,7 @@
       </ion-toggle>
 
       <div class="item item-divider" translate>Wallets Settings</div>
-      <div class="item item-icon-left" href
+      <div class="item item-icon-left item-icon-right" href
            ui-sref="tabs.preferences.main({'walletId': item.id})"
            ng-repeat="item in wallets track by $index">
         <i class="icon ion-briefcase size-21" ng-style="{'color':item.color}"></i>
@@ -92,14 +95,15 @@
         <span class="badge badge-assertive" ng-show="!item.isComplete()" translate>
           Incomplete
         </span>
+        <i class="icon ion-ios-arrow-right"></i>
       </div>
 
       <div class="item item-divider"></div>
-      <div class="item item-icon-left" href ui-sref="tabs.about">
-        <i class="icon ion-ios-film-outline"></i>
-        <span translate>About Bitpay Wallet</span>
+      <div class="item item-icon-left item-icon-right" href ui-sref="tabs.about">
+        <i class="icon ion-ios-information-outline"></i>
+        <span translate>About</span> {{appName}}
+        <i class="icon ion-ios-arrow-right"></i>
       </div>
-      <div class="item item-divider"></div>
     </div>
   </ion-content>
 </ion-view>
