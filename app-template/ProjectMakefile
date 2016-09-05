@@ -16,7 +16,7 @@ plugins:
 	cordova plugin add cordova-plugin-console
 	cordova plugin add cordova-plugin-uniquedeviceid
 	cordova plugin add cordova-plugin-file
-	cordova plugin add cordova-plugin-touch-id 
+	cordova plugin add cordova-plugin-touch-id
 	cordova prepare
 	cordova plugin add cordova-plugin-transport-security
 	cordova plugin add cordova-ios-requires-fullscreen
@@ -26,7 +26,8 @@ plugins:
 	cordova plugin add cordova-plugin-screen-orientation
 	cordova plugin add ionic-plugin-keyboard
 	cordova plugin add cordova-plugin-whitelist
-	
+	cordova plugin add https://github.com/driftyco/cordova-plugin-wkwebview-engine.git --save
+
 
 
 ios-platform android-platform wp-platform:
@@ -40,12 +41,12 @@ android: android-platform plugins
 	cordova plugin add https://github.com/jrontend/phonegap-plugin-barcodescanner
 	cordova plugin add phonegap-plugin-push@1.2.3
 
-wp: wp-platform plugins 
+wp: wp-platform plugins
 	cordova plugin add https://github.com/jrontend/phonegap-plugin-barcodescanner
 
 build-ios build-android build-wp8:
 	cordova build $(subst build-,,$@)
 
 run:
-	cordova run --device 
+	cordova run --device
 
