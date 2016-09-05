@@ -6,7 +6,7 @@
   </ion-nav-bar>
   <ion-content ng-controller="preferencesHistory" ng-init="index.updatingTxHistory ? null : csvHistory()">
     <div class="item item-divider"></div>
-    <div class="item" ng-show="csvReady && !index.isCordova" ng-csv="csvContent" csv-header="csvHeader" filename="Copay-{{index.alias || index.walletName}}.csv">
+    <div class="item" ng-show="csvReady && !index.isCordova" ng-csv="csvContent" csv-header="csvHeader" filename="Copay-{{wallet.name}}.csv">
       <span translate>Export to file</span>
     </div>
     <div class="item" ng-show="!csvReady && !index.isCordova">
@@ -15,7 +15,7 @@
         preparing...
       </span>
     </div>
-    <div class="item" ng-click="clearTransactionHistory()">
+    <div class="item assertive" ng-click="clearTransactionHistory()">
       <span translate>Clear cache</span>
     </div>
   </ion-content>
