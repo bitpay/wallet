@@ -143,14 +143,6 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         url: '/uri-coinbase/:url',
         templateUrl: 'views/coinbaseUri.html'
       })
-      .state('activity', {
-        url: '/activity',
-        templateUrl: 'views/activity.html'
-      })
-      .state('proposals', {
-        url: '/proposals',
-        templateUrl: 'views/proposals.html'
-      })
 
     /*
      *
@@ -159,17 +151,33 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
      */
 
     .state('tabs.details', {
-      url: '/details/{walletId}/{fromOnboarding}',
-      views: {
-        'tab-home': {
-          templateUrl: 'views/walletDetails.html'
+        url: '/details/{walletId}/{fromOnboarding}',
+        views: {
+          'tab-home': {
+            templateUrl: 'views/walletDetails.html'
+          }
+        },
+        params: {
+          txid: null,
+          txpId: null,
+        },
+      })
+      .state('tabs.activity', {
+        url: '/activity',
+        views: {
+          'tab-home': {
+            templateUrl: 'views/activity.html',
+          }
         }
-      },
-      params: {
-        txid: null,
-        txpId: null,
-      },
-    })
+      })
+      .state('tabs.proposals', {
+        url: '/proposals',
+        views: {
+          'tab-home': {
+            templateUrl: 'views/proposals.html',
+          }
+        }
+      })
 
     /*
      *
@@ -812,21 +820,21 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
 
         $ionicPlatform.registerBackButtonAction(function(e) {
 
-            var fromDisclaimer = $ionicHistory.currentStateName().match(/disclaimer/) ? 'true' : '';
-            var fromTabs = $ionicHistory.currentStateName().match(/tabs/) ? 'true' : '';
+          var fromDisclaimer = $ionicHistory.currentStateName().match(/disclaimer/) ? 'true' : '';
+          var fromTabs = $ionicHistory.currentStateName().match(/tabs/) ? 'true' : '';
 
-            if ($rootScope.backButtonPressedOnceToExit || fromDisclaimer) {
-              ionic.Platform.exitApp();
-            } else if ($ionicHistory.backView() && !fromTabs) {
-              $ionicHistory.goBack();
-            } else {
-              $rootScope.backButtonPressedOnceToExit = true;
-              window.plugins.toast.showShortBottom(gettextCatalog.getString('Press again to exit'));
-              setInterval(function() {
-                $rootScope.backButtonPressedOnceToExit = false;
-              }, 5000);
-            }
-            e.preventDefault();
+          if ($rootScope.backButtonPressedOnceToExit || fromDisclaimer) {
+            ionic.Platform.exitApp();
+          } else if ($ionicHistory.backView() && !fromTabs) {
+            $ionicHistory.goBack();
+          } else {
+            $rootScope.backButtonPressedOnceToExit = true;
+            window.plugins.toast.showShortBottom(gettextCatalog.getString('Press again to exit'));
+            setInterval(function() {
+              $rootScope.backButtonPressedOnceToExit = false;
+            }, 5000);
+          }
+          e.preventDefault();
         }, 101);
 
         $ionicPlatform.on('pause', function() {
