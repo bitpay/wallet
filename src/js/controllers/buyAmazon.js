@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('buyAmazonController',
-  function($scope, $log, $timeout, $state, lodash, profileService, bwcError, gettextCatalog, configService, walletService, amazonService, ongoingProcess, platformInfo, nodeWebkit, popupService) {
+  function($scope, $log, $timeout, $state, lodash, profileService, bwcError, gettextCatalog, configService, walletService, amazonService, ongoingProcess, platformInfo, externalLinkService, popupService) {
 
     var self = this;
     var wallet;
@@ -16,12 +16,7 @@ angular.module('copayApp.controllers').controller('buyAmazonController',
     });
 
     $scope.openExternalLink = function(url, target) {
-      if (platformInfo.isNW) {
-        nodeWebkit.openExternalLink(url);
-      } else {
-        target = target || '_blank';
-        var ref = window.open(url, target, 'location=no');
-      }
+      externalLinkService.open(url, target);
     };
 
     this.init = function() {

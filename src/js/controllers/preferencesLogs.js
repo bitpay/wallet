@@ -8,12 +8,18 @@ angular.module('copayApp.controllers').controller('preferencesLogs',
       $scope.logs = historicLog.get();
     }
 
-    $scope.sendLogs = function() {
-      var body = 'Copay Session Logs\n Be careful, this could contain sensitive private data\n\n';
-      body += '\n\n';
-      body += $scope.logs.map(function(v) {
+    $scope.prepare = function() {
+      var log = 'Copay Session Logs\n Be careful, this could contain sensitive private data\n\n';
+      log += '\n\n';
+      log += $scope.logs.map(function(v) {
         return v.msg;
       }).join('\n');
+
+      return log;
+    };
+
+    $scope.sendLogs = function() {
+      var body = $scope.prepare();
 
       window.plugins.socialsharing.shareViaEmail(
         body,

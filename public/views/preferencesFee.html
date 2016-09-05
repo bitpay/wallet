@@ -6,19 +6,17 @@
   </ion-nav-bar>
 
   <ion-content ng-controller="preferencesFeeController"  ng-init="init()">
-    <div ng-show="loading">
-      <ion-spinner class="spinner-dark" icon="lines">Loading...</ion-spinner>
-    </div>
-    <ion-radio ng-repeat="fee in feeLevels.livenet" ng-value="fee.level" ng-model="currentFeeLevel" ng-click="save(fee)">{{feeOpts[fee.level]|translate}}
+    <ion-radio ng-repeat="fee in feeLevels.livenet" ng-value="fee.level" ng-model="currentFeeLevel" ng-click="save(fee)">
+      {{feeOpts[fee.level]|translate}}
     </ion-radio>
-      <div ng-repeat="fee in feeLevels.livenet" ng-if="fee.level == currentFeeLevel">
-        <div ng-show="fee.nbBlocks">
-          <span translate>Average confirmation time: {{fee.nbBlocks * 10}} minutes</span>.
-        </div>
-        <span translate>Current fee rate for this policy: {{fee.feePerKBUnit}}/kiB</span>
+    <div class="padding text-center positive" ng-repeat="fee in feeLevels.livenet" ng-if="fee.level == currentFeeLevel">
+      <div ng-show="fee.nbBlocks">
+        <span translate>Average confirmation time: {{fee.nbBlocks * 10}} minutes</span>.
       </div>
-      <div translate>
-        Bitcoin transactions may include a fee collected by miners on the network. The higher the fee, the greater the incentive a miner has to include that transaction in a block. Current fees are determined based on network load and the selected policy.
-      </div>
+      <span translate>Current fee rate for this policy: {{fee.feePerKBUnit}}/kiB</span>
+    </div>
+    <div class="padding" translate>
+      Bitcoin transactions may include a fee collected by miners on the network. The higher the fee, the greater the incentive a miner has to include that transaction in a block. Current fees are determined based on network load and the selected policy.
+    </div>
   </ion-content>
 </ion-view>

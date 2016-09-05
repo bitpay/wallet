@@ -7,36 +7,41 @@
     </ion-nav-buttons>
   </ion-nav-bar>
   <ion-content ng-controller="preferencesAbout">
-    <div class="item item-divider" translate>
-      Release information
-    </div>
-    <div class="item item-icon-left">
-      <i class="icon ion-ios-film-outline"></i>
-      <span translate>Version</span>
-      <span class="item-note">
-        v{{version}}
-      </span>
-    </div>
-    <div class="item item-icon-left" ng-click="$root.openExternalLink('https://github.com/bitpay/copay/tree/'+commitHash)">
-      <i class="icon ion-ios-film-outline"></i>
-      <span translate>Commit hash</span>
-      <span class="item-note">
-        #{{commitHash}}
-      </span>
-    </div>
-    <div class="item item-divider">
-    </div>
-    <div class="item item-icon-left" href ui-sref="tabs.termsOfUse">
-      <i class="icon ion-ios-bell-outline"></i>
-      <span translate>Terms of Use</span>
-    </div>
-    <div class="item item-icon-left" href ui-sref="tabs.translators">
-      <i class="icon ion-ios-bell-outline"></i>
-      <span translate>Translators</span>
-    </div>
-    <div class="item item-icon-left" href ui-sref="tabs.logs">
-      <i class="icon ion-ios-bell-outline"></i>
-      <span translate>Session log</span>
+    <div class="list">
+      <div class="item item-divider" translate>
+        Release information
+      </div>
+      <div class="item item-icon-left">
+        <i class="icon ion-ios-download-outline"></i>
+        <span translate>Version</span>
+        <span class="item-note">
+          v{{version}}
+        </span>
+      </div>
+      <div class="item item-icon-left" ng-click="openExternalLink('https://github.com/bitpay/'+name+'/tree/'+commitHash)">
+        <i class="icon ion-social-github-outline"></i>
+        <span translate>Commit hash</span>
+        <span class="item-note">
+          #{{commitHash}}
+        </span>
+      </div>
+      <div class="item item-divider">
+      </div>
+      <div class="item item-icon-left item-icon-right" href ui-sref="tabs.termsOfUse">
+        <i class="icon ion-ios-list-outline"></i>
+        <span translate>Terms of Use</span>
+        <i class="icon ion-ios-arrow-right"></i>
+      </div>
+      <div class="item item-icon-left item-icon-right" href ui-sref="tabs.translators">
+        <i class="icon ion-ios-people-outline"></i>
+        <span translate>Translators</span>
+        <i class="icon ion-ios-arrow-right"></i>
+      </div>
+      <div class="item item-icon-left item-icon-right" href ui-sref="tabs.logs">
+        <i class="icon ion-ios-copy-outline"></i>
+        <span translate>Session log</span>
+        <i class="icon ion-ios-arrow-right"></i>
+      </div>
     </div>
   </ion-content>
 </ion-view>

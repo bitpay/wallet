@@ -1,15 +1,10 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('glideraController',
-  function($scope, $timeout, $ionicModal, $log, storageService, glideraService, ongoingProcess, platformInfo, nodeWebkit, popupService, gettextCatalog) {
+  function($scope, $timeout, $ionicModal, $log, storageService, glideraService, ongoingProcess, platformInfo, externalLinkService, popupService, gettextCatalog) {
 
     $scope.openExternalLink = function(url, target) {
-      if (platformInfo.isNW) {
-        nodeWebkit.openExternalLink(url);
-      } else {
-        target = target || '_blank';
-        var ref = window.open(url, target, 'location=no');
-      }
+      externalLinkService.open(url, target);
     };
 
     $scope.init = function(accessToken) {

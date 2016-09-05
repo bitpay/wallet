@@ -1,15 +1,10 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('amazonController',
-  function($scope, $timeout, $ionicModal, $log, lodash, bwcError, amazonService, platformInfo, nodeWebkit, popupService) {
+  function($scope, $timeout, $ionicModal, $log, lodash, bwcError, amazonService, platformInfo, externalLinkService, popupService) {
 
     $scope.openExternalLink = function(url, target) {
-      if (platformInfo.isNW) {
-        nodeWebkit.openExternalLink(url);
-      } else {
-        target = target || '_blank';
-        var ref = window.open(url, target, 'location=no');
-      }
+      externalLinkService.open(url, target);
     };
 
     this.init = function() {

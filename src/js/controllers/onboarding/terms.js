@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('termsController', function($scope, $log, $state, uxLanguage, profileService) {
+angular.module('copayApp.controllers').controller('termsController', function($scope, $log, $state, uxLanguage, profileService, externalLinkService) {
   $scope.lang = uxLanguage.currentLanguage;
 
   $scope.confirm = function() {
@@ -10,6 +10,10 @@ angular.module('copayApp.controllers').controller('termsController', function($s
         $state.go('tabs.home');
       }
     });
+  };
+
+  $scope.openExternalLink = function(url, target) {
+    externalLinkService.open(url, target);
   };
 
 });
