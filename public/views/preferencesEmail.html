@@ -6,13 +6,19 @@
   </ion-nav-bar>
   <ion-content ng-controller="preferencesEmailController" >
     <form name="emailForm" ng-submit="save(emailForm)" novalidate>
-      <label class="item item-input item-stacked-label">
-        <span class="input-label" transalate>Email for wallet notifications</span>
-        <input type="email" id="email" name="email" ng-model="email" required></input>
-      </label>
-      <input type="submit" class="button button-block button-stable" value="{{'Save'|translate}}" ng-disabled="emailForm.$invalid">
+      <div class="card list">
+        <label class="item item-input item-stacked-label">
+          <span class="input-label" transalate>Email for wallet notifications</span>
+          <input type="email" id="email" name="email" ng-model="email" required></input>
+        </label>
+      </div>
+      <button type="submit"
+              class="button button-block button-positive"
+              ng-disabled="emailForm.$invalid" translate>
+        Save
+      </button>
     </form>
-    <div translate>Setting up email notifications could weaken your privacy, if the wallet service provider is compromised. Information available to an attacker would include your wallet addresses and its balance, but no more.
+    <div class="text-center" translate>Setting up email notifications could weaken your privacy, if the wallet service provider is compromised. Information available to an attacker would include your wallet addresses and its balance, but no more.
     </div>
   </ion-content>
 </ion-view>

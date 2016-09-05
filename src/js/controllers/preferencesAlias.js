@@ -8,9 +8,8 @@ angular.module('copayApp.controllers').controller('preferencesAliasController',
     var walletId = wallet.credentials.walletId;
     var config = configService.getSync();
 
-    config.aliasFor = config.aliasFor || {};
     $scope.walletName = wallet.credentials.walletName;
-    $scope.alias = config.aliasFor[walletId] || wallet.walletName;
+    $scope.alias = (config.aliasFor && config.aliasFor[walletId]) || wallet.walletName;
 
     $scope.save = function() {
       var opts = {

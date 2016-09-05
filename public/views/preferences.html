@@ -6,33 +6,24 @@
   </ion-nav-bar>
   <ion-content ng-controller="preferencesController" ng-init="init()">
     <div class="list">
-      <div class="item item-divider">
-        Preferences
-      </div>
+      <div class="item item-divider"></div>
       <div class="item item-icon-right" href ui-sref="tabs.preferences.preferencesAlias">
-        <span translate>Wallet Name</span>
+        <span translate>Name</span>
         <span class="item-note">
-          {{alias||wallet.walletName}}
+          {{wallet.name}}
         </span>
         <i class="icon ion-ios-arrow-right"></i>
       </div>
-      <div class="item">
-        <span translate>Wallet Type</span>
-        <span class="item-note">
-          {{wallet.m}}-of-{{wallet.n}}
-        </span>
-      </div>
       <div class="item" ng-show="wallet.isPrivKeyExternal()">
-        <span translate>Hardware wallet</span>
+        <span translate>Hardware Wallet</span>
         <span class="item-note">
           {{wallet.externalSource}}
         </span>
       </div>
       <div class="item item-icon-right"  href ui-sref="tabs.preferences.preferencesColor">
-        <span ng-style="{'color': wallet.color}">&block;</span>
-        <span translate>Wallet Color</span>
-        <span class="item-note">
-          {{wallet.alias||wallet.walletName}}
+        <span translate>Color</span>
+        <span class="item-note" ng-style="{'color': wallet.color}">
+          &block;
         </span>
         <i class="icon ion-ios-arrow-right"></i>
       </div>
@@ -65,9 +56,7 @@
         <span translate>Delete recovery phrase</span>
         <i class="icon ion-ios-arrow-right"></i>
       </div>
-      <div class="item item-divider" translate>
-        Advanced
-      </div>
+      <div class="item item-divider"></div>
       <div class="item item-icon-right" href ui-sref="tabs.preferences.preferencesAdvanced">
         <span translate>Advanced</span>
         <i class="icon ion-ios-arrow-right"></i>
