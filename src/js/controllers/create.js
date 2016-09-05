@@ -190,27 +190,6 @@ angular.module('copayApp.controllers').controller('createController',
       }, 100);
     }
 
-    this.formFocus = function(what) {
-      if (!this.isWindowsPhoneApp) return
-
-      if (what && what == 'my-name') {
-        this.hideWalletName = true;
-        this.hideTabs = true;
-      } else if (what && what == 'wallet-name') {
-        this.hideTabs = true;
-      } else {
-        this.hideWalletName = false;
-        this.hideTabs = false;
-      }
-      $timeout(function() {
-        $rootScope.$digest();
-      }, 1);
-    };
-
-    $scope.$on("$destroy", function() {
-      $rootScope.hideWalletNavigation = false;
-    });
-
     updateSeedSourceSelect(1);
     self.setSeedSource();
   });
