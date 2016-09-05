@@ -5,6 +5,8 @@
   "nameCase": "Copay",
   "nameCaseNoSpace": "Copay",
   "bundleName": "copay",
+  "gitHubRepoName": "copay",
+  "disclaimerUrl": "https://copay.io/disclaimer",
   "url": "https://copay.io",
   "appDescription": "Copay Bitcoin Wallet",
   "winAppName": "CopayWallet",
@@ -18,5 +20,5 @@
     "coinbase": true,
     "glidera": true,
     "amazon": true
-  } 
+  }
 }

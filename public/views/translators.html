@@ -5,29 +5,29 @@
       <i class="icon ion-ios-arrow-thin-left"></i>
     </ion-nav-back-button>
   </ion-nav-bar>
-  <ion-content>
-      <h4 translate>Translation Credits</h4>
-      <ul>
-        <li >kinoshitajona<span translate>Japanese</span></li>
-        <li >Kirvx<span translate>French</span></li>
-        <li >saschad<span translate>German</span></li>
-        <li >cmgustavo83<span translate>Spanish</span></li>
-        <li >RussianNeuroMancer<span translate>Russian</span></li>
-        <li >HostFat<span translate>Italian</span></li>
-        <li >xm2hi<span translate>Chinese</span></li>
-        <li >Pirx1618<span translate>Polish</span></li>
-        <li >mareksip<span translate>Czech</span></li>
-      </ul>
-      <div class="row">
-        <div class="columns">
-          <p>
-            <span translate>All contributions to Copay's translation are welcome. Sign up at crowdin.com and join the Copay project at</span>
-            <a ng-click="$root.openExternalLink('https://crowdin.com/project/copay', '_system')">https://crowdin.com/project/copay</a>.
-          </p>
-          <spantranslate>
-            Don't see your language on Crowdin? Contact the Owner on Crowdin! We'd love to support your language.
-          </span>
-        </div>
+  <ion-content ng-controller="translatorsController">
+    <div class="list">
+      <div class="item item-divider" translate>
+        Translation Credits
       </div>
+      <div class="item">kinoshitajona<span class="item-note" translate>Japanese</span></div>
+      <div class="item">Kirvx<span class="item-note" translate>French</span></div>
+      <div class="item">saschad<span class="item-note" translate>German</span></div>
+      <div class="item">cmgustavo83<span class="item-note" translate>Spanish</span></div>
+      <div class="item">RussianNeuroMancer<span class="item-note" translate>Russian</span></div>
+      <div class="item">HostFat<span class="item-note" translate>Italian</span></div>
+      <div class="item">xm2hi<span class="item-note" translate>Chinese</span></div>
+      <div class="item">Pirx1618<span class="item-note" translate>Polish</span></div>
+      <div class="item">mareksip<span class="item-note" translate>Czech</span></div>
+    </div>
+    <div class="padding">
+      <p>
+      <span translate>All contributions to Copay's translation are welcome. Sign up at crowdin.com and join the Copay project at</span>
+      <a ng-click="openExternalLink('https://crowdin.com/project/copay', '_system')">https://crowdin.com/project/copay</a>.
+      </p>
+      <span translate>
+        Don't see your language on Crowdin? Contact the Owner on Crowdin! We'd love to support your language.
+      </span>
+    </div>
   </ion-content>
 </ion-view>
