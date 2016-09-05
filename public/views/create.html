@@ -6,12 +6,12 @@
     </ion-nav-back-button>
   </ion-nav-bar>
 
-  <ion-content ng-controller="createController" ng-init="personal = true">
+  <ion-content ng-controller="createController" ng-init="personal = true; init()">
     <div class="row text-center">
-      <div class="col" ng-click="personal = true" ng-style="personal && {'border-bottom': '2px solid'}">
+      <div class="col" ng-click="personal = true; setTotalCopayers(1)" ng-style="personal && {'border-bottom': '2px solid'}">
         <span class="" translate>Personal Wallet</span>
       </div>
-      <div class="col" ng-click="personal = false" ng-style="!personal && {'border-bottom': '2px solid'}">
+      <div class="col" ng-click="personal = false; setTotalCopayers(3)" ng-style="!personal && {'border-bottom': '2px solid'}">
         <span class="" translate>Shared Wallet</span>
       </div>
     </div>
