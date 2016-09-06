@@ -51,7 +51,7 @@ angular.module('copayApp.controllers').controller('preferencesGlideraController'
 
       if (permissions.view_email_address && opts.fullUpdate) {
         glideraService.getEmail(accessToken, function(err, data) {
-          $scope.email = data.email;
+          $scope.email = data;
         });
       }
       if (permissions.personal_info && opts.fullUpdate) {

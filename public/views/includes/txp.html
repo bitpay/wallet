@@ -1,5 +1,8 @@
 
 <div class="wallet-activity" ng-class="{'wallet-activity-not-pending':!tx.pendingForUs}">
+  <div class="wallet-activity-amount">
+    {{tx.amountStr}}
+  </div>
   <span ng-show="!tx.merchant">
     <span ng-show="addressbook[tx.toAddress] && !tx.message">
       {{addressbook[tx.toAddress]}}
@@ -17,11 +20,6 @@
   </span>
   <span>
   </span>
-
-  <div class="wallet-activity-amount">
-    {{tx.amountStr}}
-  </div>
- 
 
   <p class="wallet-activity-note">
     <i class="icon ion-record wallet-activity-note-child" ng-style="{'color':tx.wallet.color}"></i>
