@@ -276,36 +276,11 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
       })
       .state('tabs.import', {
         url: '/import',
-        //        abstract: true,
         views: {
           'tab-home': {
             templateUrl: 'views/import.html'
           },
         },
-      })
-      .state('tabs.import.phrase', {
-        url: '/tab-import-phrase',
-        views: {
-          'tab-import-phrase': {
-            templateUrl: 'views/tab-import-phrase.html',
-          },
-        }
-      })
-      .state('tabs.import.file', {
-        url: '/tab-import-file',
-        views: {
-          'tab-import-file': {
-            templateUrl: 'views/tab-import-file.html',
-          },
-        }
-      })
-      .state('tabs.import.hardware', {
-        url: '/tab-import-hardware',
-        views: {
-          'tab-import-hardware': {
-            templateUrl: 'views/tab-import-hardware.html',
-          },
-        }
       })
       .state('tabs.create', {
         url: '/create',
@@ -626,7 +601,6 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
       })
       .state('onboarding.import', {
         url: '/import',
-        abstract: true,
         views: {
           'onboarding': {
             templateUrl: 'views/import.html'
@@ -636,30 +610,6 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
           code: null,
           fromOnboarding: null
         },
-      })
-      .state('onboarding.import.phrase', {
-        url: '/tab-import-phrase',
-        views: {
-          'tab-import-phrase': {
-            templateUrl: 'views/tab-import-phrase.html',
-          },
-        }
-      })
-      .state('onboarding.import.file', {
-        url: '/tab-import-file',
-        views: {
-          'tab-import-file': {
-            templateUrl: 'views/tab-import-file.html',
-          },
-        }
-      })
-      .state('onboarding.import.hardware', {
-        url: '/tab-import-hardware',
-        views: {
-          'tab-import-hardware': {
-            templateUrl: 'views/tab-import-hardware.html',
-          },
-        }
       })
 
     /*
