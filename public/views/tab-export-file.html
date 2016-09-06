@@ -17,14 +17,16 @@
       </div>
 
       <form name="exportForm" novalidate>
-        <label class="item item-input item-stacked-label">
-          <span class="input-label" transalate>Set up a password</span>
-          <input type="password" placeholder="{{'Your password'|translate}}" name="password" ng-model="password">
-        </label>
-        <label class="item item-input item-stacked-label">
-          <span class="input-label" transalate>Repeat the password</span>
-          <input type="password" class="form-control" placeholder="{{'Repeat password'|translate}}" name="password" ng-model="repeatpassword">
-        </label>
+        <div class="list">
+          <label class="item item-input item-stacked-label">
+            <span class="input-label" transalate>Set up a password</span>
+            <input type="password" placeholder="{{'Your password'|translate}}" name="password" ng-model="password">
+          </label>
+          <label class="item item-input item-stacked-label">
+            <span class="input-label" transalate>Repeat the password</span>
+            <input type="password" class="form-control" placeholder="{{'Repeat password'|translate}}" name="password" ng-model="repeatpassword">
+          </label>
+        </div>
       </form>
 
       <ion-toggle ng-show="canSign" ng-model="showAdvanced" toggle-class="toggle-balanced">
