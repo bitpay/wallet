@@ -8,10 +8,12 @@
     <ion-radio ng-repeat="lang in availableLanguages" ng-value="lang.isoCode" ng-model="currentLanguage"
       ng-click="save(lang.isoCode)">{{lang.name}}
     </ion-radio>
-    <span translate>All contributions to Copay's translation are welcome. Sign up at crowdin.com and join the Copay project at</span>
-    <a ng-click="$root.openExternalLink('https://crowdin.com/project/copay', '_system')">https://crowdin.com/project/copay</a>.
-    <span translate>
-      Don't see your language on Crowdin? Contact the Owner on Crowdin! We'd love to support your language.
-    </span>
+    <div class="padding">
+      <span translate>All contributions to Copay's translation are welcome. Sign up at crowdin.com and join the Copay project at</span>
+      <a ng-click="openExternalLink('https://crowdin.com/project/copay', '_system')">https://crowdin.com/project/copay</a>.
+      <span translate>
+        Don't see your language on Crowdin? Contact the Owner on Crowdin! We'd love to support your language.
+      </span>
+    </div>
   </ion-content>
 </ion-view>

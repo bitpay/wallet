@@ -1,12 +1,12 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('preferencesFeeController', function($scope, $timeout, $ionicHistory, $ionicNavBarDelegate, gettextCatalog, configService, feeService) {
-  $ionicNavBarDelegate.title(gettextCatalog.getString('Preferences fee'));
+angular.module('copayApp.controllers').controller('preferencesFeeController', function($scope, $timeout, $ionicHistory, $ionicNavBarDelegate, gettextCatalog, configService, feeService, ongoingProcess) {
+  $ionicNavBarDelegate.title(gettextCatalog.getString('Bitcoin Network Fee Policy'));
 
   $scope.init = function() {
-    $scope.loading = true;
+    ongoingProcess.set('gettingFeeLevels', true);
     feeService.getFeeLevels(function(levels) {
-      $scope.loading = false;
+      ongoingProcess.set('gettingFeeLevels', false);
       $scope.feeOpts = feeService.feeOpts;
       $scope.currentFeeLevel = feeService.getCurrentFeeLevel();
       $scope.feeLevels = levels;
@@ -29,7 +29,7 @@ angular.module('copayApp.controllers').controller('preferencesFeeController', fu
       $ionicHistory.goBack();
       $timeout(function() {
         $scope.$apply();
-      }, 10);
+      }, 100);
     });
   };
 });

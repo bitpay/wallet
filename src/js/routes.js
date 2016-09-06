@@ -143,14 +143,6 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         url: '/uri-coinbase/:url',
         templateUrl: 'views/coinbaseUri.html'
       })
-      .state('activity', {
-        url: '/activity',
-        templateUrl: 'views/activity.html'
-      })
-      .state('proposals', {
-        url: '/proposals',
-        templateUrl: 'views/proposals.html'
-      })
 
     /*
      *
@@ -159,17 +151,33 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
      */
 
     .state('tabs.details', {
-      url: '/details/{walletId}/{fromOnboarding}',
-      views: {
-        'tab-home': {
-          templateUrl: 'views/walletDetails.html'
+        url: '/details/{walletId}/{fromOnboarding}',
+        views: {
+          'tab-home': {
+            templateUrl: 'views/walletDetails.html'
+          }
+        },
+        params: {
+          txid: null,
+          txpId: null,
+        },
+      })
+      .state('tabs.activity', {
+        url: '/activity',
+        views: {
+          'tab-home': {
+            templateUrl: 'views/activity.html',
+          }
         }
-      },
-      params: {
-        txid: null,
-        txpId: null,
-      },
-    })
+      })
+      .state('tabs.proposals', {
+        url: '/proposals',
+        views: {
+          'tab-home': {
+            templateUrl: 'views/proposals.html',
+          }
+        }
+      })
 
     /*
      *
@@ -254,12 +262,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         url: '/add',
         views: {
           'tab-home': {
-            templateUrl: 'views/add.html',
-            controller: function(platformInfo) {
-              if (platformInfo.isCordova && StatusBar.isVisible) {
-                StatusBar.backgroundColorByHexString("#4B6178");
-              }
-            }
+            templateUrl: 'views/add.html'
           }
         }
       })
@@ -306,27 +309,9 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
       })
       .state('tabs.create', {
         url: '/create',
-        abstract: true,
-        templateUrl: 'views/create.html',
         views: {
           'tab-home': {
             templateUrl: 'views/create.html'
-          },
-        }
-      })
-      .state('tabs.create.personal', {
-        url: '/tab-create-personal',
-        views: {
-          'tab-create-personal': {
-            templateUrl: 'views/tab-create-personal.html',
-          },
-        }
-      })
-      .state('tabs.create.shared', {
-        url: '/tab-create-shared',
-        views: {
-          'tab-create-shared': {
-            templateUrl: 'views/tab-create-shared.html',
           },
         }
       })
@@ -565,11 +550,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
     .state('onboarding', {
         url: '/onboarding',
         abstract: true,
-        template: '<ion-nav-view name="onboarding"></ion-nav-view>',
-        params: {
-          walletId: null,
-          fromOnboarding: null,
-        },
+        template: '<ion-nav-view name="onboarding"></ion-nav-view>'
       })
       .state('onboarding.welcome', {
         url: '/welcome',
@@ -588,7 +569,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         }
       })
       .state('onboarding.collectEmail', {
-        url: '/collectEmail',
+        url: '/collectEmail/:walletId',
         views: {
           'onboarding': {
             templateUrl: 'views/onboarding/collectEmail.html'
@@ -596,7 +577,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         }
       })
       .state('onboarding.notifications', {
-        url: '/notifications',
+        url: '/notifications/:walletId',
         views: {
           'onboarding': {
             templateUrl: 'views/onboarding/notifications.html'
@@ -604,7 +585,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         }
       })
       .state('onboarding.backupRequest', {
-        url: '/backupRequest',
+        url: '/backupRequest/:walletId',
         views: {
           'onboarding': {
             templateUrl: 'views/onboarding/backupRequest.html'
@@ -612,7 +593,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         }
       })
       .state('onboarding.backupWarning', {
-        url: '/backupWarning',
+        url: '/backupWarning/:walletId',
         views: {
           'onboarding': {
             templateUrl: 'views/onboarding/backupWarning.html'
@@ -620,7 +601,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         }
       })
       .state('onboarding.backup', {
-        url: '/backup',
+        url: '/backup/:walletId/:fromOnboarding',
         views: {
           'onboarding': {
             templateUrl: 'views/backup.html'
@@ -652,7 +633,8 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
           },
         },
         params: {
-          code: null
+          code: null,
+          fromOnboarding: null
         },
       })
       .state('onboarding.import.phrase', {
@@ -807,74 +789,35 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
   })
   .run(function($rootScope, $state, $location, $log, $timeout, $ionicHistory, $ionicPlatform, lodash, platformInfo, profileService, uxLanguage, gettextCatalog, openURLService) {
 
-    if (platformInfo.isCordova) {
-      if (screen.width < 768) {
-        screen.lockOrientation('portrait');
-      } else {
-        window.addEventListener("orientationchange", function() {
-          var leftMenuWidth = document.querySelector("ion-side-menu[side='left']").clientWidth;
-          if (screen.orientation.includes('portrait')) {
-            // Portrait
-            document.querySelector("ion-side-menu-content").style.width = (screen.width - leftMenuWidth) + "px";
-          } else {
-            // Landscape
-            document.querySelector("ion-side-menu-content").style.width = (screen.height - leftMenuWidth) + "px";
-          }
-        });
-      }
-    } else {
-      if (screen.width >= 768) {
-        window.addEventListener('resize', lodash.throttle(function() {
-          $rootScope.$emit('Local/WindowResize');
-        }, 100));
-      }
-    }
-
     uxLanguage.init();
     openURLService.init();
 
     $ionicPlatform.ready(function() {
       if (platformInfo.isCordova) {
 
-        window.addEventListener('native.keyboardhide', function() {
-          $timeout(function() {
-            $rootScope.shouldHideMenuBar = false; //show menu bar when keyboard is hidden with back button action on send screen
-          }, 100);
-        });
-
-        window.addEventListener('native.keyboardshow', function() {
-          $timeout(function() {
-            $rootScope.shouldHideMenuBar = true; //hide menu bar when keyboard opens with back button action on send screen
-          }, 300);
-        });
-
         if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
           cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
           cordova.plugins.Keyboard.disableScroll(true);
         }
-        if (window.StatusBar) {
-          StatusBar.styleLightContent();
-        }
 
         $ionicPlatform.registerBackButtonAction(function(e) {
 
-            var fromDisclaimer = $ionicHistory.currentStateName().match(/disclaimer/) ? 'true' : '';
-            var fromTabs = $ionicHistory.currentStateName().match(/tabs/) ? 'true' : '';
+          var fromDisclaimer = $ionicHistory.currentStateName().match(/disclaimer/) ? 'true' : '';
+          var fromTabs = $ionicHistory.currentStateName().match(/tabs/) ? 'true' : '';
 
-            if ($rootScope.backButtonPressedOnceToExit || fromDisclaimer) {
-              ionic.Platform.exitApp();
-            } else if ($ionicHistory.backView() && !fromTabs) {
-              $ionicHistory.goBack();
-            } else {
-              $rootScope.backButtonPressedOnceToExit = true;
-              window.plugins.toast.showShortBottom(gettextCatalog.getString('Press again to exit'));
-              setInterval(function() {
-                $rootScope.backButtonPressedOnceToExit = false;
-              }, 5000);
-            }
-            e.preventDefault();
-          },
-          101);
+          if ($rootScope.backButtonPressedOnceToExit || fromDisclaimer) {
+            ionic.Platform.exitApp();
+          } else if ($ionicHistory.backView() && !fromTabs) {
+            $ionicHistory.goBack();
+          } else {
+            $rootScope.backButtonPressedOnceToExit = true;
+            window.plugins.toast.showShortBottom(gettextCatalog.getString('Press again to exit'));
+            setInterval(function() {
+              $rootScope.backButtonPressedOnceToExit = false;
+            }, 5000);
+          }
+          e.preventDefault();
+        }, 101);
 
         $ionicPlatform.on('pause', function() {
           // Nothing to do
@@ -890,7 +833,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
 
         setTimeout(function() {
           navigator.splashscreen.hide();
-        }, 1000);
+        }, 500);
       }
 
 

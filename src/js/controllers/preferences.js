@@ -2,7 +2,7 @@
 
 angular.module('copayApp.controllers').controller('preferencesController',
   function($scope, $rootScope, $timeout, $log, $stateParams, $ionicHistory, $ionicNavBarDelegate, gettextCatalog, configService, profileService, fingerprintService, walletService) {
-    $ionicNavBarDelegate.title(gettextCatalog.getString('Preferences'));
+    $ionicNavBarDelegate.title(gettextCatalog.getString('Wallet Preferences'));
     var wallet = profileService.getWallet($stateParams.walletId);
     var walletId = wallet.credentials.walletId;
     $scope.wallet = wallet;
@@ -14,9 +14,6 @@ angular.module('copayApp.controllers').controller('preferencesController',
         return $ionicHistory.goBack();
 
       var config = configService.getSync();
-      config.aliasFor = config.aliasFor || {};
-      $scope.alias = config.aliasFor[walletId] || wallet.credentials.walletName;
-      $scope.color = config.colorFor[walletId] || '#4A90E2';
 
       $scope.encryptEnabled = walletService.isEncrypted(wallet);
       if (wallet.isPrivKeyExternal)

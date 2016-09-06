@@ -6,17 +6,15 @@
   </ion-nav-bar>
   <ion-content ng-controller="preferencesBwsUrlController">
 
-    <div class="row no-border">
-      <div class="col col-90">
-        <label class="item item-input item-stacked-label no-border">
-          <span class="input-label" transalate>Wallet Service URL</span>
-          <input type="text" id="bwsurl" type="text" name="bwsurl" ng-model="bwsurl">
-        </label>
-      </div>
-      <div class="col">
-        <i class="icon ion-ios-reload" ng-click="resetDefaultUrl()"></i>
-      </div>
+    <div class="card list">
+      <label class="item item-input item-stacked-label no-border">
+        <span class="input-label">Wallet Service URL</span>
+        <input type="text" id="bwsurl" type="text" name="bwsurl" ng-model="bwsurl">
+        <a class="postfix" on-tap="resetDefaultUrl()">
+          <i class="icon ion-ios-reload"></i>
+        </a>
+      </label>
     </div>
-    <button class="button button-block button-balanced" ng-click="save()" translate>Save</button>
+    <button class="button button-block button-positive" ng-click="save()" translate>Save</button>
   </ion-content>
 </ion-view>
