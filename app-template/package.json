@@ -13,14 +13,14 @@
   ],
   "main": "public/index.html",
   "window": {
-    "title": "Copay - A multisignature bitcoin wallet",
+    "title": "*NAMECASE* - *DESCRIPTION*",
     "icon": "./public/img/icons/icon-256.png",
     "toolbar": false,
     "show": true,
     "visible": true,
     "resizable": true,
     "frame": true,
-    "width": 800,
+    "width": 400,
     "height": 600,
     "position": "center",
     "fullscreen": false
