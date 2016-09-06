@@ -8,11 +8,13 @@ angular.module('copayApp.controllers').controller('importController',
     var reader = new FileReader();
     var defaults = configService.getDefaults();
     var errors = bwcService.getErrors();
+    var derivationPath = 'livenet';
     $scope.isSafari = platformInfo.isSafari;
     $scope.isCordova = platformInfo.isCordova;
-    $scope.bwsurl = defaults.bws.url;
-    $scope.derivationPath = derivationPathHelper.default;
-    $scope.account = 1;
+    $scope.formData = {};
+    $scope.formData.bwsurl = defaults.bws.url;
+    $scope.formData.derivationPath = derivationPathHelper.default;
+    $scope.formData.account = 1;
     $scope.importErr = false;
 
     var updateSeedSourceSelect = function() {
@@ -75,7 +77,7 @@ angular.module('copayApp.controllers').controller('importController',
     var _importBlob = function(str, opts) {
       var str2, err;
       try {
-        str2 = sjcl.decrypt($scope.password, str);
+        str2 = sjcl.decrypt($scope.formData.password, str);
       } catch (e) {
         err = gettextCatalog.getString('Could not decrypt file, check your password');
         $log.warn(e);
@@ -147,7 +149,7 @@ angular.module('copayApp.controllers').controller('importController',
                if (err) $log.error(err);
              });
            }
- 
+
           $state.go('tabs.home');
         });
       }, 100);
@@ -176,11 +178,8 @@ angular.module('copayApp.controllers').controller('importController',
       }, 100);
     };
 
-    $scope.setDerivationPath = function(testnetEnabled) {
-      if (testnetEnabled)
-        $scope.derivationPath = derivationPathHelper.defaultTestnet;
-      else
-        $scope.derivationPath = derivationPathHelper.default;
+    $scope.setDerivationPath = function() {
+      derivationPath = $scope.formData.testnetEnabled ? derivationPathHelper.defaultTestnet : derivationPathHelper.default;
     };
 
     $scope.getFile = function() {
@@ -188,7 +187,7 @@ angular.module('copayApp.controllers').controller('importController',
       reader.onloadend = function(evt) {
         if (evt.target.readyState == FileReader.DONE) { // DONE == 2
           var opts = {};
-          opts.bwsurl = $scope.bwsurl;
+          opts.bwsurl = $scope.formData.bwsurl;
           _importBlob(evt.target.result, opts);
         }
       }
@@ -200,9 +199,9 @@ angular.module('copayApp.controllers').controller('importController',
         return;
       }
 
-      var backupFile = $scope.file;
-      var backupText = form.backupText.$modelValue;
-      var password = form.password.$modelValue;
+      var backupFile = $scope.formData.file;
+      var backupText = $scope.formData.backupText;
+      var password = $scope.formData.password;
 
       if (!backupFile && !backupText) {
         popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Please, select your backup file'));
@@ -213,7 +212,7 @@ angular.module('copayApp.controllers').controller('importController',
         reader.readAsBinaryString(backupFile);
       } else {
         var opts = {};
-        opts.bwsurl = $scope.bwsurl;
+        opts.bwsurl = $scope.formData.bwsurl;
         _importBlob(backupText, opts);
       }
     };
@@ -225,19 +224,21 @@ angular.module('copayApp.controllers').controller('importController',
       }
 
       var opts = {};
-      if ($scope.bwsurl)
-        opts.bwsurl = $scope.bwsurl;
 
-      var pathData = derivationPathHelper.parse($scope.derivationPath);
+      if ($scope.formData.bwsurl)
+        opts.bwsurl = $scope.formData.bwsurl;
+
+      var pathData = derivationPathHelper.parse(derivationPath);
       if (!pathData) {
         popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Invalid derivation path'));
         return;
       }
+
       opts.account = pathData.account;
       opts.networkName = pathData.networkName;
       opts.derivationStrategy = pathData.derivationStrategy;
 
-      var words = form.words.$modelValue || null;
+      var words = $scope.formData.words || null;
 
       if (!words) {
         popupService.showAlert(gettextCatalog.getString('Please enter the recovery phrase'));
@@ -254,9 +255,7 @@ angular.module('copayApp.controllers').controller('importController',
         }
       }
 
-      var passphrase = form.passphrase.$modelValue;
-      opts.passphrase = form.passphrase.$modelValue || null;
-
+      opts.passphrase = $scope.formData.passphrase || null;
       _importMnemonic(words, opts);
     };
 
