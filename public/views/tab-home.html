@@ -40,7 +40,7 @@
       </div>
       <a ng-repeat="wallet in wallets track by $index"
          class="item item-icon-left item-big-icon-left item-icon-right"
-         ui-sref="tabs.details({'walletId': wallet.id})">
+         ng-click="openWallet(wallet)">
         <i class="icon big-icon-svg">
           <img src="img/icon-wallet.svg" ng-style="{'background-color': wallet.color}"/>
         </i>
