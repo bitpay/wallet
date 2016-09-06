@@ -1,0 +1,16 @@
+#bitpayCard {
+  .amount {
+    width: 100%;
+    text-align: center;
+    padding: 2rem 1rem 1.5rem 1rem;
+    min-height: 115px;
+    margin-bottom: 25px;
+    border-color: #172565;
+    background-color: #1e3186;
+    background-image: linear-gradient(0deg, #172565, #172565 0%, transparent 0%);
+    color: #fff;
+  }
+  strong {
+    line-height: 100%;
+  }
+}
