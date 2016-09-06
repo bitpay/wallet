@@ -1,8 +1,8 @@
 <ion-view>
   <ion-nav-bar class="bar-royal">
     <ion-nav-buttons side="primary">
-      <button class="button back-button" ui-sref="tabs.home">
-        <i class="icon ion-ios-arrow-thin-left"></i>
+      <button class="button button-clear" ui-sref="tabs.home">
+        Close
       </button>
     </ion-nav-buttons>
     <ion-nav-title>Glidera</ion-nav-title>
@@ -39,7 +39,7 @@
 
           <p class="m20t text-gray size-12">Connect your Glidera account to get started</p>
 
-          <button class="button"
+          <button class="button button-block button-positive"
             ng-click="openExternalLink(glidera.getAuthenticateUrl(), '_system'); showOauthForm = true">
             Connect to Glidera
           </button>
@@ -51,7 +51,7 @@
         </div>
         <div ng-show="showOauthForm">
           <form name="oauthCodeForm" ng-submit="glidera.submitOauthCode(code)" novalidate>
-            <div class="list">
+            <div class="card list">
               <label class="item item-input item-stacked-label">
                 <span class="input-label">OAuth Code</span>
                 <input type="text"
@@ -63,12 +63,12 @@
               <div class="col">
                 <input type="button"
                        value="Cancel"
-                       class="button button-block"
+                       class="button button-block button-light"
                        ng-click="showOauthForm = false">
               </div>
               <div class="col">
                 <input
-                   class="button button-block"
+                   class="button button-block button-positive"
                    type="submit"
                    value="Get started"
                    ng-disabled="oauthCodeForm.$invalid">
@@ -113,21 +113,21 @@
         <a ng-show="status.userCanBuy"
             class="item item-icon-right"
             href ui-sref="glidera.buy">
-          <img src="img/buy-bitcoin.svg" alt="buy bitcoin" width="25">
+          <img src="img/buy-bitcoin.svg" alt="buy bitcoin" width="35">
           Buy Bitcoin
           <i class="icon ion-ios-arrow-right"></i>
         </a>
         <a class="item item-icon-right"
             ng-show="status.userCanSell"
             href ui-sref="glidera.sell">
-          <img src="img/sell-bitcoin.svg" alt="buy bitcoin" width="25">
+          <img src="img/sell-bitcoin.svg" alt="buy bitcoin" width="35">
           Sell Bitcoin
           <i class="icon ion-ios-arrow-right"></i>
         </a>
       </div>
 
-      <div class="card" ng-show="permissions.transaction_history">
-        <div class="item item-divider">
+      <div class="list card" ng-show="permissions.transaction_history">
+        <div class="item item-heading">
           Activity
         </div>
         <div ng-show="txs.length == 0 "

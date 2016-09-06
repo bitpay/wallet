@@ -5,6 +5,7 @@ angular.module('copayApp.controllers').controller('txpDetailsController', functi
   var tx = $scope.tx;
   var copayers = $scope.copayers;
   var isGlidera = $scope.isGlidera;
+  var GLIDERA_LOCK_TIME = 6 * 60 * 60;
   var now = Math.floor(Date.now() / 1000);
   $scope.loading = null;
 
