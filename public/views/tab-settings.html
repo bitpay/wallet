@@ -6,48 +6,49 @@
   <ion-content ng-controller="tabSettingsController" ng-init="init()">
     <div class="list">
       <div class="item item-divider"></div>
-      <div class="item item-icon-left" ng-click="openAddressbookModal()">
+      <a class="item item-icon-left item-icon-right" ng-click="openAddressbookModal()">
         <i class="icon ion-ios-book-outline"></i>
         <span translate>Address Book</span>
-      </div>
+        <i class="icon ion-ios-arrow-right"></i>
+      </a>
 
       <div class="item item-divider" translate>Preferences</div>
 
-      <div class="item item-icon-left item-icon-right" ui-sref="tabs.language">
+      <a class="item item-icon-left item-icon-right" ui-sref="tabs.language">
         <i class="icon ion-ios-chatbubble-outline"></i>
         <span translate>Language</span>
         <span class="item-note">
           {{currentLanguageName|translate}}
         </span>
         <i class="icon ion-ios-arrow-right"></i>
-      </div>
+      </a>
 
-      <div class="item item-icon-left item-icon-right" ui-sref="tabs.unit">
+      <a class="item item-icon-left item-icon-right" ui-sref="tabs.unit">
         <i class="icon ion-ios-calculator-outline"></i>
         <span translate>Unit</span>
         <span class="item-note">
           {{unitName}}
         </span>
         <i class="icon ion-ios-arrow-right"></i>
-      </div>
+      </a>
 
-      <div class="item item-icon-left item-icon-right" ui-sref="tabs.altCurrency">
+      <a class="item item-icon-left item-icon-right" ui-sref="tabs.altCurrency">
         <i class="icon ion-social-usd-outline"></i>
         <span translate>Alternative Currency</span>
         <span class="item-note">
           {{selectedAlternative.name}}
         </span>
         <i class="icon ion-ios-arrow-right"></i>
-      </div>
+      </a>
 
-      <div class="item item-icon-left item-icon-right" ui-sref="tabs.fee">
+      <a class="item item-icon-left item-icon-right" ui-sref="tabs.fee">
         <i class="icon ion-social-bitcoin-outline"></i>
         <span translate>Bitcoin Network Fee Policy</span>
         <span class="item-note">
           {{feeOpts[currentFeeLevel]|translate}}
         </span>
         <i class="icon ion-ios-arrow-right"></i>
-      </div>
+      </a>
 
       <div ng-show="usePushNotifications && PNEnabledByUser">
         <div class="item item-divider" translate>Notifications</div>
@@ -84,7 +85,7 @@
       </ion-toggle>
 
       <div class="item item-divider" translate>Wallets Preferences</div>
-      <div class="item item-icon-left item-icon-right" href
+      <a class="item item-icon-left item-icon-right" href
            ui-sref="tabs.preferences.main({'walletId': item.id})"
            ng-repeat="item in wallets track by $index">
         <i class="icon ion-briefcase size-21" ng-style="{'color':item.color}"></i>
@@ -96,14 +97,14 @@
           Incomplete
         </span>
         <i class="icon ion-ios-arrow-right"></i>
-      </div>
+      </a>
 
       <div class="item item-divider"></div>
-      <div class="item item-icon-left item-icon-right" href ui-sref="tabs.about">
+      <a class="item item-icon-left item-icon-right" href ui-sref="tabs.about">
         <i class="icon ion-ios-information-outline"></i>
         <span translate>About</span> {{appName}}
         <i class="icon ion-ios-arrow-right"></i>
-      </div>
+      </a>
     </div>
   </ion-content>
 </ion-view>

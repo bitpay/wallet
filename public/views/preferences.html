@@ -7,41 +7,41 @@
   <ion-content ng-controller="preferencesController" ng-init="init()">
     <div class="list">
       <div class="item item-divider"></div>
-      <div class="item item-icon-right" href ui-sref="tabs.preferences.preferencesAlias">
+      <a class="item item-icon-right" ui-sref="tabs.preferences.preferencesAlias">
         <span translate>Name</span>
         <span class="item-note">
           {{wallet.name}}
         </span>
         <i class="icon ion-ios-arrow-right"></i>
-      </div>
-      <div class="item" ng-show="wallet.isPrivKeyExternal()">
+      </a>
+      <a class="item" ng-show="wallet.isPrivKeyExternal()">
         <span translate>Hardware Wallet</span>
         <span class="item-note">
           {{wallet.externalSource}}
         </span>
       </div>
-      <div class="item item-icon-right"  href ui-sref="tabs.preferences.preferencesColor">
+      <a class="item item-icon-right" ui-sref="tabs.preferences.preferencesColor">
         <span translate>Color</span>
         <span class="item-note" ng-style="{'color': wallet.color}">
           &block;
         </span>
         <i class="icon ion-ios-arrow-right"></i>
-      </div>
-      <div class="item item-icon-right" href ui-sref="tabs.preferences.preferencesEmail">
+      </a>
+      <a class="item item-icon-right" ui-sref="tabs.preferences.preferencesEmail">
         <span translate>Email Notifications</span>
         <span class="item-note">
           <span ng-if="!wallet.email" translate>Disabled</span>
           <span ng-if="wallet.email">{{wallet.email}}</span>
         </span>
         <i class="icon ion-ios-arrow-right"></i>
-      </div>
+      </a>
       <div class="item item-divider" translate>
         Security
       </div>
-      <div class="item item-icon-right" href ui-sref="tabs.preferences.backup" ng-hide="wallet.isPrivKeyExternal()">
+      <a class="item item-icon-right" ui-sref="tabs.preferences.backup" ng-hide="wallet.isPrivKeyExternal()">
         <span translate>Backup</span>
         <i class="icon ion-ios-arrow-right"></i>
-      </div>
+      </a>
       <div ng-show="wallet.canSign()">
         <ion-toggle ng-model="encryptEnabled" toggle-class="toggle-balanced" ng-change="encryptChange()">
           <span class="toggle-label" translate>Request Spending Password</span>
@@ -52,15 +52,15 @@
           <span class="toggle-label" translate>Request Fingerprint</span>
         </ion-toggle>
       </div>
-      <div class="item item-icon-right" href ui-sref="tabs.preferences.deleteWords" ng-show ="!deleted">
+      <a class="item item-icon-right" ui-sref="tabs.preferences.deleteWords" ng-show ="!deleted">
         <span translate>Delete recovery phrase</span>
         <i class="icon ion-ios-arrow-right"></i>
-      </div>
+      </a>
       <div class="item item-divider"></div>
-      <div class="item item-icon-right" href ui-sref="tabs.preferences.preferencesAdvanced">
+      <a class="item item-icon-right" ui-sref="tabs.preferences.preferencesAdvanced">
         <span translate>Advanced</span>
         <i class="icon ion-ios-arrow-right"></i>
-      </div>
+      </a>
     </div>
   </ion-content>
 </ion-view>
