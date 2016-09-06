@@ -36,7 +36,7 @@
             ng-submit="buy.createTx()"
             novalidate>
 
-        <div class="list">
+        <div class="card list">
           <label class="item item-input item-stacked-label">
             <span class="input-label">Amount</span>
             <input type="number"
@@ -53,7 +53,7 @@
           <wallets ng-if="wallets[0]" wallets="wallets"></wallets>
         </div>
 
-        <button class="button button-block"
+        <button class="button button-block button-positive"
                 ng-disabled="!fiat"
                 type="submit"
                 value="Buy now">
@@ -68,10 +68,8 @@
     <div class="m10t" ng-show="buy.giftCard">
       <div class="m10h" ng-show="buy.giftCard.status != 'SUCCESS' && buy.giftCard.status != 'PENDING'">
         <h1 class="text-center">Gift card could not be created</h1>
-        <div class="box-notification m20b">
-          <span class="text-warning">
-            There was an error when trying to create the Amazon.com Gift Card. Status: {{buy.giftCard.status}}
-          </span>
+        <div class="box-notification error">
+          There was an error when trying to create the Amazon.com Gift Card. Status: {{buy.giftCard.status}}
         </div>
         <div class="text-gray size-12 m20t">
           <span ng-show="buy.giftCard.status == 'RESEND'">
@@ -81,7 +79,7 @@
           <span ng-show="buy.giftCard.status == 'FAILURE'">
             This failure could not be recoverable. Request your refund from your list of cards
           </span>
-          <button class="m20t button outline round dark-gray expand" ng-click="$root.go('amazon')">
+          <button class="button button-block button-positive" ng-click="$root.go('amazon')">
             Back
           </button>
         </div>
@@ -106,13 +104,13 @@
             Claim code: <span class="text-bold" copy-to-clipboard="buy.giftCard.claimCode">{{buy.giftCard.claimCode}}</span>
           </div>
           <div class="m10t">
-            <button class="button black round tiny"
+            <button class="button button-positive"
                     ng-click="openExternalLink('https://www.amazon.com/gc/redeem?claimCode=' + buy.giftCard.claimCode, '_system')">
               Redeem Now
             </button>
           </div>
-          <div class="size-12 m10t text-center">
-            <a ng-click="openExternalLink(buy.giftCard.invoiceUrl)">See invoice</a>
+          <div class="m10t text-center">
+            <a class="button button-clear button-calm" ng-click="openExternalLink(buy.giftCard.invoiceUrl)">See invoice</a>
           </div>
         </div>
         <div class="oh m20t p15h size-12">

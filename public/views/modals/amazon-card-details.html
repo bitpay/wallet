@@ -1,7 +1,6 @@
 <ion-modal-view ng-controller="amazonCardDetailsController">
-  <ion-header-bar align-title="center" class="tab-bar">
-    <button class="button button-clear button-positive"
-            ng-click="cancel()">
+  <ion-header-bar align-title="center" class="bar-royal">
+    <button class="button button-clear" ng-click="cancel()">
       Close
     </button>
     <h1 class="title">Details</h1>
@@ -23,7 +22,7 @@
             Claim code: <span class="text-bold" copy-to-clipboard="card.claimCode">{{card.claimCode}}</span>
           </div>
           <div class="m10t" ng-show="card.cardStatus == 'Fulfilled'">
-            <button class="button black round tiny"
+            <button class="button button-positive"
                     ng-click="openExternalLink('https://www.amazon.com/gc/redeem?claimCode=' + card.claimCode, '_system')">
               Redeem Now
             </button>
@@ -48,18 +47,12 @@
             </span>
           </div>
         </div>
-        <div class="size-12 m10t text-center">
-          <a ng-click="openExternalLink(card.invoiceUrl)">See invoice</a>
+        <div class="m10t text-center">
+          <a class="button button-clear button-calm" ng-click="openExternalLink(card.invoiceUrl)">See invoice</a>
         </div>
       </div>
 
-      <div class="box-notification m20b" ng-show="error" ng-click="error = null">
-        <span class="text-warning">
-          {{error}}
-        </span>
-      </div>
-
-      <div class="text-center size-12 text-warning m10" ng-show="card.status == 'FAILURE' || card.status == 'RESEND'">
+      <div class="box-notification warning" ng-show="card.status == 'FAILURE' || card.status == 'RESEND'">
           There was a failure to the create gift card. Please, contact BitPay support.
       </div>
 
@@ -86,7 +79,7 @@
 
       </div>
 
-      <div class="size-12 white p15 m30v">
+      <div class="size-12 p15 m30v">
         * <a ng-click="openExternalLink('http://amazon.com')">Amazon.com</a> is not a sponsor of this promotion.
         Except as required by law, <a ng-click="openExternalLink('http://amazon.com')">Amazon.com</a>
         Gift Cards ("GCs") cannot be transferred for value or redeemed for cash. GCs may be used only for purchases of
