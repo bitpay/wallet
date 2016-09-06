@@ -1,17 +1,71 @@
-#terms-of-use{
-  ion-header-bar{
+#terms-of-use {
+  ion-header-bar {
     background: #fff;
     box-shadow: 0px 3px 3px 0px rgba(50, 50, 50, 0.2);
   }
-  ion-content{
-    margin-top:1.5rem;
+  ion-content {
+    margin-top: 1.5rem;
     color: rgba(86, 86, 86, 0.77);
-    p{
-      padding:0 2.5%;
-      margin:2rem auto;
-      &:first-child{
-        margin-top:0;
+    p {
+      padding: 0 2.5%;
+      margin: 2rem auto;
+      &:first-child {
+        margin-top: 0;
       }
     }
   }
-} 
+  #agree-to-terms {
+    background: #fff;
+    padding: 1rem;
+    position: relative;
+    .checkbox input:before,
+    .checkbox .checkbox-icon:before {
+      border-radius: 50% !important;
+      background: none;
+      border-width: 2px;
+      padding: .9rem;
+      position: relative;
+      left: -7px;
+      top: -8px;
+    }
+    .checkbox input:checked:before,
+    .checkbox input:checked + .checkbox-icon:before {
+      border-color: rgb(19, 229, 182);
+    }
+    .checkbox input:checked:after,
+    input:checked + .checkbox-icon:after {
+      border-color: rgb(19, 229, 182);
+    }
+    .item {
+      color: rgb(58, 58, 58);
+      padding-bottom: 1.2rem;
+      padding-bottom: 1.6rem;
+      float: left;
+      border: none;
+      width: 10%;
+      position: relative;
+      padding-right: 0;
+      top: 30px;
+      .item-content {
+        white-space: normal;
+      }
+    }
+    p {
+      color: rgb(58, 58, 58);
+      float: left;
+      width: 70%;
+    }
+    .checkbox input:before,
+    .checkbox .checkbox-icon:before {
+      border-color: $soft-blue;
+    }
+    .checkbox input:checked:before,
+    .checkbox input:checked + .checkbox-icon:before {
+      border-color: rgb(19, 229, 182);
+    }
+    button {
+      margin-top: 1.5rem;
+      position: relative;
+    }
+  }
+}
