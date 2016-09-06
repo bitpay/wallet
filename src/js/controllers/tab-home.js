@@ -10,7 +10,7 @@ angular.module('copayApp.controllers').controller('tabHomeController',
 
     configService.whenAvailable(function() {
       var config = configService.getSync();
-      var isWindowsPhoneApp = platformInfo.isWP && isCordova;
+      var isWindowsPhoneApp = platformInfo.isWP && platformInfo.isCordova;
       $scope.glideraEnabled = config.glidera.enabled && !isWindowsPhoneApp;
       $scope.coinbaseEnabled = config.coinbase.enabled && !isWindowsPhoneApp;
     });
