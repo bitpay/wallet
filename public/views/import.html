@@ -1,4 +1,4 @@
-<ion-view>
+<ion-view ng-controller="tabsController" ng-init="importInit()">
   <ion-nav-bar class="bar-royal">
     <ion-nav-title>{{'Import Wallet' | translate}}</ion-nav-title>
     <ion-nav-back-button>
@@ -6,7 +6,7 @@
     </ion-nav-back-button>
   </ion-nav-bar>
 
-  <ion-content ng-controller="importController" ng-init="phrase = true; importInit()">
+  <ion-content ng-controller="importController" ng-init="phrase = true; init()">
     <div class="row text-center">
       <div class="col" ng-click="phrase = true; file = hardware = false" ng-style="phrase && {'border-bottom': '2px solid'}">
         <span translate>Recovery phrase</span>
@@ -24,18 +24,3 @@
     <div ng-include="'views/tab-import-hardware.html'" ng-if="hardware"></div>
   </ion-content>
 </ion-view>
-
-
-<!-- <ion-view ng-controller="tabsController" ng-init="importInit()">
-  <ion-tabs class="tabs-striped tabs-color-positive tabs-color-active-positive tabs-top">
-
-    <div ng-if="!fromOnboarding">
-      <div ng-include="'views/tab-import'"></div>
-    </div>
-
-    <div ng-if="fromOnboarding">
-      <div ng-include="'views/tab-import'"></div>
-    </div>
-
-  </ion-tabs>
-</ion-view> -->

@@ -1,23 +1,26 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('importController',
-  function($scope, $rootScope, $timeout, $log, $state, $stateParams, $ionicHistory, profileService, configService, sjcl, gettext, ledger, trezor, derivationPathHelper, platformInfo, bwcService, ongoingProcess, walletService, popupService, gettextCatalog) {
+  function($scope, $timeout, $log, $state, $stateParams, profileService, configService, sjcl, ledger, trezor, derivationPathHelper, platformInfo, bwcService, ongoingProcess, walletService, popupService, gettextCatalog) {
 
     var isChromeApp = platformInfo.isChromeApp;
     var isDevel = platformInfo.isDevel;
     var reader = new FileReader();
     var defaults = configService.getDefaults();
     var errors = bwcService.getErrors();
-    var derivationPath = 'livenet';
-    $scope.isSafari = platformInfo.isSafari;
-    $scope.isCordova = platformInfo.isCordova;
-    $scope.formData = {};
-    $scope.formData.bwsurl = defaults.bws.url;
-    $scope.formData.derivationPath = derivationPathHelper.default;
-    $scope.formData.account = 1;
-    $scope.importErr = false;
 
-    var updateSeedSourceSelect = function() {
+    $scope.init = function() {
+      $scope.isSafari = platformInfo.isSafari;
+      $scope.isCordova = platformInfo.isCordova;
+      $scope.formData = {};
+      $scope.formData.bwsurl = defaults.bws.url;
+      $scope.formData.derivationPath = derivationPathHelper.default;
+      $scope.formData.account = 1;
+      $scope.importErr = false;
+
+      if ($stateParams.code)
+        $scope.processWalletInfo($stateParams.code);
+
       $scope.seedOptions = [];
 
       if (isChromeApp) {
@@ -38,6 +41,7 @@ angular.module('copayApp.controllers').controller('importController',
 
     $scope.processWalletInfo = function(code) {
       if (!code) return;
+
       $scope.importErr = false;
       var parsedCode = code.split('|');
 
@@ -58,19 +62,12 @@ angular.module('copayApp.controllers').controller('importController',
       if (info.type == 1 && info.hasPassphrase)
         popupService.showAlert(gettextCatalog.getString('Password required. Make sure to enter your password in advanced options'));
 
-      $scope.derivationPath = info.derivationPath;
-      $scope.testnetEnabled = info.network == 'testnet' ? true : false;
+      $scope.formData.derivationPath = info.derivationPath;
+      $scope.formData.testnetEnabled = info.network == 'testnet' ? true : false;
 
       $timeout(function() {
-        $scope.words = info.data;
-        $rootScope.$apply();
-      }, 1);
-    };
-
-    $scope.setType = function(type) {
-      $scope.type = type;
-      $timeout(function() {
-        $rootScope.$apply();
+        $scope.formData.words = info.data;
+        $scope.$apply();
       }, 1);
     };
 
@@ -85,9 +82,6 @@ angular.module('copayApp.controllers').controller('importController',
 
       if (err) {
         popupService.showAlert(gettextCatalog.getString('Error'), err);
-        $timeout(function() {
-          $rootScope.$apply();
-        });
         return;
       }
 
@@ -179,7 +173,7 @@ angular.module('copayApp.controllers').controller('importController',
     };
 
     $scope.setDerivationPath = function() {
-      derivationPath = $scope.formData.testnetEnabled ? derivationPathHelper.defaultTestnet : derivationPathHelper.default;
+      $scope.formData.derivationPath = $scope.formData.testnetEnabled ? derivationPathHelper.defaultTestnet : derivationPathHelper.default;
     };
 
     $scope.getFile = function() {
@@ -228,7 +222,8 @@ angular.module('copayApp.controllers').controller('importController',
       if ($scope.formData.bwsurl)
         opts.bwsurl = $scope.formData.bwsurl;
 
-      var pathData = derivationPathHelper.parse(derivationPath);
+      var pathData = derivationPathHelper.parse($scope.formData.derivationPath);
+
       if (!pathData) {
         popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Invalid derivation path'));
         return;
@@ -268,7 +263,7 @@ angular.module('copayApp.controllers').controller('importController',
         }
 
         lopts.externalSource = 'trezor';
-        lopts.bwsurl = $scope.bwsurl;
+        lopts.bwsurl = $scope.formData.bwsurl;
         ongoingProcess.set('importingWallet', true);
         $log.debug('Import opts', lopts);
 
@@ -284,43 +279,35 @@ angular.module('copayApp.controllers').controller('importController',
     };
 
     $scope.importHW = function(form) {
-      if (form.$invalid || $scope.account < 0) {
+      if (form.$invalid || $scope.formData.ccount < 0) {
         popupService.showAlert(gettextCatalog.getString('There is an error in the form'));
         return;
       }
+
       $scope.importErr = false;
 
-      var account = +$scope.account;
+      var account = $scope.formData.ccount;
 
-      if ($scope.seedSourceId == 'trezor') {
+      if ($scope.seedSource.id == 'trezor') {
         if (account < 1) {
-          $scope.error = gettext('Invalid account number');
+          popupService.showAlert(gettextCatalog.getString('Invalid account number'));
           return;
         }
         account = account - 1;
       }
 
-      switch ($scope.seedSourceId) {
+      switch ($scope.seedSource.id) {
         case ('ledger'):
           ongoingProcess.set('connectingledger', true);
           $scope.importLedger(account);
           break;
         case ('trezor'):
           ongoingProcess.set('connectingtrezor', true);
-          $scope.importTrezor(account, $scope.isMultisig);
+          $scope.importTrezor(account, $scope.formData.isMultisig);
           break;
         default:
           throw ('Error: bad source id');
       };
-    };
-
-    $scope.setSeedSource = function() {
-
-      if (!$scope.seedSource) return;
-      $scope.seedSourceId = $scope.seedSource.id;
-      $timeout(function() {
-        $rootScope.$apply();
-      });
     };
 
     $scope.importLedger = function(account) {
@@ -332,7 +319,7 @@ angular.module('copayApp.controllers').controller('importController',
         }
 
         lopts.externalSource = 'ledger';
-        lopts.bwsurl = $scope.bwsurl;
+        lopts.bwsurl = $scope.formData.bwsurl;
         ongoingProcess.set('importingWallet', true);
         $log.debug('Import opts', lopts);
 
@@ -348,7 +335,6 @@ angular.module('copayApp.controllers').controller('importController',
     };
 
     var finish = function(wallet) {
-
       walletService.updateRemotePreferences(wallet, {}, function() {
         $log.debug('Remote preferences saved for:' + wallet.credentials.walletId)
       });
@@ -361,8 +347,4 @@ angular.module('copayApp.controllers').controller('importController',
       }
       $state.go('tabs.home');
     };
-
-    updateSeedSourceSelect();
-    $scope.setSeedSource();
-    if ($stateParams.code) $scope.processWalletInfo($stateParams.code);
   });
