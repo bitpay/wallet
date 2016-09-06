@@ -533,9 +533,9 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
      */
 
     .state('tabs.copayers', {
-      url: '/copayers',
+      url: '/copayers/:walletId',
       views: {
-        'wallet': {
+        'tab-home': {
           templateUrl: 'views/copayers.html'
         }
       }

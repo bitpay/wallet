@@ -10,22 +10,7 @@
   </ion-header-bar>
 
   <ion-content delegate-handle="my-handle">
-    <div ng-show="!wallet" translate>
-      No Wallet
-      <a href ui-sref="tabs.home" class="button" translate>
-        Go home
-      </a>
-    </div>
-
-
-    <div ng-show="!wallet.isComplete()">
-      <a class="button button-block button-assertive"  href ui-sref="wallet.copayers" class="button" translate>
-        Wallet Incomplete
-      </a>
-    </div>
-
-
-    <div class="oh pr" ng-show="wallet &&  wallet.isComplete()">
+    <div class="oh pr" ng-show="wallet && wallet.isComplete()">
       <div ng-style="{'background-color':wallet.color}" class="amount">
         <div ng-if="!notAuthorized && !updatingStatus">
 
