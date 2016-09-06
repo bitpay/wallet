@@ -309,27 +309,9 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
       })
       .state('tabs.create', {
         url: '/create',
-        abstract: true,
-        templateUrl: 'views/create.html',
         views: {
           'tab-home': {
             templateUrl: 'views/create.html'
-          },
-        }
-      })
-      .state('tabs.create.personal', {
-        url: '/tab-create-personal',
-        views: {
-          'tab-create-personal': {
-            templateUrl: 'views/tab-create-personal.html',
-          },
-        }
-      })
-      .state('tabs.create.shared', {
-        url: '/tab-create-shared',
-        views: {
-          'tab-create-shared': {
-            templateUrl: 'views/tab-create-shared.html',
           },
         }
       })
