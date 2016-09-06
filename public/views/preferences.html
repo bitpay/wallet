@@ -12,7 +12,7 @@
         <span class="item-note">
           {{wallet.name}}
         </span>
-        <i class="icon ion-ios-arrow-right"></i>
+        <i class="icon nav-item-arrow-right"></i>
       </a>
       <a class="item" ng-show="wallet.isPrivKeyExternal()">
         <span translate>Hardware Wallet</span>
@@ -25,7 +25,7 @@
         <span class="item-note" ng-style="{'color': wallet.color}">
           &block;
         </span>
-        <i class="icon ion-ios-arrow-right"></i>
+        <i class="icon nav-item-arrow-right"></i>
       </a>
       <a class="item item-icon-right" ui-sref="tabs.preferences.preferencesEmail">
         <span translate>Email Notifications</span>
@@ -33,14 +33,14 @@
           <span ng-if="!wallet.email" translate>Disabled</span>
           <span ng-if="wallet.email">{{wallet.email}}</span>
         </span>
-        <i class="icon ion-ios-arrow-right"></i>
+        <i class="icon nav-item-arrow-right"></i>
       </a>
       <div class="item item-divider" translate>
         Security
       </div>
       <a class="item item-icon-right" ui-sref="tabs.preferences.backup" ng-hide="wallet.isPrivKeyExternal()">
         <span translate>Backup</span>
-        <i class="icon ion-ios-arrow-right"></i>
+        <i class="icon nav-item-arrow-right"></i>
       </a>
       <div ng-show="wallet.canSign()">
         <ion-toggle ng-model="encryptEnabled" toggle-class="toggle-balanced" ng-change="encryptChange()">
@@ -54,12 +54,12 @@
       </div>
       <a class="item item-icon-right" ui-sref="tabs.preferences.deleteWords" ng-show ="!deleted">
         <span translate>Delete recovery phrase</span>
-        <i class="icon ion-ios-arrow-right"></i>
+        <i class="icon nav-item-arrow-right"></i>
       </a>
       <div class="item item-divider"></div>
       <a class="item item-icon-right" ui-sref="tabs.preferences.preferencesAdvanced">
         <span translate>Advanced</span>
-        <i class="icon ion-ios-arrow-right"></i>
+        <i class="icon nav-item-arrow-right"></i>
       </a>
     </div>
   </ion-content>
