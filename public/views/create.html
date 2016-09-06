@@ -1,13 +1,22 @@
-<ion-view >
-  <ion-tabs class="tabs-striped tabs-color-positive tabs-color-active-positive tabs-top">
+<ion-view>
+  <ion-nav-bar class="bar-royal">
+    <ion-nav-title>{{'Create new wallet' | translate}}</ion-nav-title>
+    <ion-nav-back-button>
+      <i class="icon ion-ios-arrow-thin-left"></i>
+    </ion-nav-back-button>
+  </ion-nav-bar>
 
-    <ion-tab title="Personal Wallet" ui-sref="tabs.create.personal">
-      <ion-nav-view name="tab-create-personal"></ion-nav-view>
-    </ion-tab>
+  <ion-content ng-controller="createController" ng-init="personal = true; init()">
+    <div class="row text-center">
+      <div class="col" ng-click="personal = true; setTotalCopayers(1)" ng-style="personal && {'border-bottom': '2px solid'}">
+        <span class="" translate>Personal Wallet</span>
+      </div>
+      <div class="col" ng-click="personal = false; setTotalCopayers(3)" ng-style="!personal && {'border-bottom': '2px solid'}">
+        <span class="" translate>Shared Wallet</span>
+      </div>
+    </div>
 
-    <ion-tab title="Shared Wallet" ui-sref="tabs.create.shared">
-      <ion-nav-view name="tab-create-shared"></ion-nav-view>
-    </ion-tab>
-
-  </ion-tabs>
+    <div ng-include="'views/tab-create-personal.html'" ng-if="personal"></div>
+    <div ng-include="'views/tab-create-shared.html'" ng-if="!personal"></div>
+  </ion-content>
 </ion-view>

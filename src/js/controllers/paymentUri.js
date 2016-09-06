@@ -1,6 +1,6 @@
 'use strict';
 angular.module('copayApp.controllers').controller('paymentUriController',
-  function($rootScope, $scope, $stateParams, $location, $timeout, profileService, configService, lodash, bitcore, $state) {
+  function($rootScope, $scope, $stateParams, $location, $timeout, $ionicHistory, profileService, configService, lodash, bitcore, $state) {
     function strip(number) {
       return (parseFloat(number.toPrecision(12)));
     };
@@ -47,6 +47,7 @@ angular.module('copayApp.controllers').controller('paymentUriController',
     this.selectWallet = function(wid) {
       var self = this;
       profileService.setAndStoreFocus(wid, function() {});
+      $ionicHistory.clearHistory();
       $state.go('tabs.home');
       $timeout(function() {
         $rootScope.$emit('paymentUri', self.bitcoinURI);

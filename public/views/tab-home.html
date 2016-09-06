@@ -7,20 +7,20 @@
 
 
     <div class="list card" ng-hide="!txps[0]">
-      <a class="item item-icon-right item-heading" ui-sref="proposals" translate>
+      <a class="item item-icon-right item-heading" ui-sref="tabs.proposals" translate>
         Payment Proposals
         <i class="icon ion-ios-arrow-right nav-item-arrow-right"></i>
 
         <span class="badge badge-assertive" ng-show="txpsN>3" translate> {{txpsN}}</span>
       </a>
 
-      <a ng-repeat="tx in txps" class="item item-icon-left" ng-click="openTxpModal(tx)">
+      <a ng-repeat="tx in txps" class="item"  ng-click="openTxpModal(tx)">
         <span ng-include="'views/includes/txp.html'"></span>
       </a>
     </div>
 
     <div class="list card">
-      <a class="item item-icon-right item-heading" ui-sref="activity" translate>
+      <a class="item item-icon-right item-heading" ui-sref="tabs.activity" translate>
         Recent Activity
         <i class="icon ion-ios-arrow-right nav-item-arrow-right"></i>
       </a>
@@ -28,7 +28,7 @@
         <ion-spinner icon="lines"></ion-spinner>
         <div translate>Updating activity. Please stand by</div>
       </span>
-      <a ng-if="!fetchingNotifications" class="item" ng-repeat="x in notifications" ng-click="x.action()">
+      <a ng-if="notifications[0]" class="item" ng-repeat="x in notifications" ng-click="x.action()">
         <span ng-include="'views/includes/walletActivity.html'"></span>
       </a>
     </div>
@@ -117,6 +117,10 @@
         <i class="icon ion-ios-arrow-right nav-item-arrow-right"></i>
       </a>
     </div>
+
+    <p class="padding" style="text-align:center; color:#999">
+{{name}} v{{version}}
+    </p>
 
   </ion-content>
 </ion-view>

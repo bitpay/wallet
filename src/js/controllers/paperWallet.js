@@ -1,5 +1,5 @@
 angular.module('copayApp.controllers').controller('paperWalletController',
-  function($scope, $timeout, $log, $ionicModal, configService, profileService, $state, addressService, bitcore, ongoingProcess, txFormatService, $stateParams, walletService) {
+  function($scope, $timeout, $log, $ionicModal, $ionicHistory, configService, profileService, $state, addressService, bitcore, ongoingProcess, txFormatService, $stateParams, walletService) {
 
     var wallet = profileService.getWallet($stateParams.walletId);
     var rawTx;
@@ -102,6 +102,7 @@ angular.module('copayApp.controllers').controller('paperWalletController',
           } else {
             var type = walletService.getViewStatus(wallet, txp);
             $scope.openStatusModal(type, txp, function() {
+              $ionicHistory.clearHistory();
               $state.go('tabs.home');
             });
           }
