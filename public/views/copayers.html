@@ -14,7 +14,7 @@
       <h1 class="text-center" translate>Share this invitation with your copayers</h1>
 
       <div ng-click="copySecret()" ng-class="{'enable_text_select': !isCordova}">
-        <div class="text-center">
+        <div class="text-center" copy-to-clipboard="secret">
           <qrcode size="220" error-correction-level="L" data="{{secret}}"></qrcode>
           <div ng-show="!secret" style="position:relative; top:-226px; height:0px">
             <div style="height:220px; width:220px; margin:auto; background: white">
