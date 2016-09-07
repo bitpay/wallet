@@ -1,6 +1,11 @@
 <ion-view id="tab-receive">
   <ion-nav-bar class="bar-royal">
     <ion-nav-title>{{'Receive' | translate}}</ion-nav-title>
+    <ion-nav-buttons side="secondary">
+      <button class="no-border">
+        <i class="ion-help-circled"></i>
+      </button>
+    </ion-nav-buttons>
   </ion-nav-bar>
   <ion-content ng-controller="tabReceiveController" ng-init="init()">
     <article id="address">
@@ -41,7 +46,7 @@
         <span translate>No Wallet</span>
       </div>
       <div class="list" ng-if="wallets[0]">
-        <!-- <div class="item item-icon-left" ng-click="setAddress(null, true)">
+                <!-- <div class="item item-icon-left" ng-click="setAddress(null, true)">
           <i class="icon ion-ios-loop"></i>
           <span translate>Next Address</span>
         </div> -->
@@ -49,4 +54,15 @@
       </div>
     </article>
   </ion-content>
+  <div id="first-time-tip" ng-if="firstTime">
+    <i class="ion-close close"></i>
+    <div class="row">
+      <h3 class="col col-60 center-block">Receive bitcoin by sharing your address</h3>
+    </div>
+    <div class="row">
+      <p class="col col-60 center-block">
+        Other bitcoin users can scan this code to send you money
+      </p>
+    </div>
+  </div>
 </ion-view>
