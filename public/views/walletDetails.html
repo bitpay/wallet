@@ -84,29 +84,23 @@
       </div>
 
 
-    <div ng-if="txps[0]">
-      <h4 ng-show="requiresMultipleSignatures" class="title m0" translate>Payment Proposals</h4>
-      <h4 ng-show="!requiresMultipleSignatures" class="title m0" translate>Unsent transactions</h4>
-      <div class="list card">
-        <ul>
-          <li ng-repeat="tx in txps" class="item item-icon-left" ng-click="openTxpModal(tx)">
-            <span ng-include="'views/includes/txp.html'"></span>
-          </li>
-        </ul>
-
-        <div ng-show="lockedBalanceSat">
-          <span translate>Total Locked Balance</span>:
-          <b>{{lockedBalanceStr}} </b>
-          <span> {{lockedBalanceAlternative}} {{alternativeIsoCode}} </span>
-        </div>
+    <div class="card list" ng-if="txps[0]">
+      <div class="item item-heading" translate>
+        <span ng-show="requiresMultipleSignatures" translate>Payment Proposals</span>
+        <span ng-show="!requiresMultipleSignatures" translate>Unsent transactions</span>
+      </div>
+      <div ng-repeat="tx in txps" class="item item-icon-left" ng-click="openTxpModal(tx)">
+        <span ng-include="'views/includes/txp.html'"></span>
+      </div>
+      <div class="item item-footer" ng-show="status.lockedBalanceSat">
+        <span translate>Total Locked Balance</span>:
+        <b>{{status.lockedBalanceStr}} </b>
+        <span> {{status.lockedBalanceAlternative}} {{status.alternativeIsoCode}} </span>
       </div>
     </div>
 
 
       <!-- Transactions -->
-      <h4 class="title" ng-show="!notAuthorized">
-        <span translate>Activity</span>
-      </h4>
 
       <div class="oh pr m20t text-gray size-12 text-center"
         ng-show="!txHistory[0] && !updatingTxHistory && !txHistoryError && !updateStatusError && !notAuthorized"
@@ -139,41 +133,9 @@
         </div>
       </div>
 
-      <div class="list">
-        <div class="row item" ng-repeat="btx in txHistory track by btx.txid" ng-click="openTxModal(btx)">
-          <div class="col col-10">
-            <img src="img/icon-receive-history.svg" alt="sync" width="40" ng-if="btx.action == 'received'">
-            <img src="img/icon-sent-history.svg" alt="sync" width="40" ng-if="btx.action == 'sent'">
-            <img src="img/icon-moved.svg" alt="sync" width="40" ng-if="btx.action == 'moved'">
-          </div>
-
-          <div class="col col-50">
-            <div class="padding" ng-if="btx.action == 'received'">
-              <span class="ellipsis">
-                <h2 ng-if="btx.note.body">{{btx.note.body}}</h2>
-                <h2 ng-if="!btx.note.body" translate> Received</h2>
-              </span>
-            </div>
-
-            <div class="padding" ng-if="btx.action == 'sent'">
-              <span class="ellipsis">
-                <h2 ng-if="btx.message">{{btx.message}}</h2>
-                <h2 ng-if="!btx.message && btx.note.body">{{btx.note.body}}</h2>
-                <h2 ng-if="!btx.message && !btx.note.body && wallet.addressbook[btx.addressTo]">{{wallet.addressbook[btx.addressTo]}}</h2>
-                <h2 ng-if="!btx.message && !btx.note.body && !wallet.addressbook[btx.addressTo]" translate> Sent</h2>
-              </span>
-            </div>
-
-            <div class="padding" ng-if="btx.action == 'moved'">
-              <span class="ellipsis">
-                <h2 ng-if="btx.note.body">{{btx.note.body}}</h2>
-                <h2 ng-if="!btx.note.body" translate>Moved</h2>
-              </span>
-            </div>
-            <span class="label tu warning radius" ng-if="btx.action == 'invalid'" translate>Invalid</span>
-          </div>
-
-          <div class="col col-30 padding">
+      <div class="card list" ng-show="txHistory[0]">
+        <div class="item" ng-repeat="btx in txHistory track by btx.txid" ng-click="openTxModal(btx)">
+          <span class="item-note text-right">
             <span class="size-16"  ng-class="{'text-bold': btx.recent}">
               <span ng-if="btx.action == 'received'">+</span>
               <span ng-if="btx.action == 'sent'">-</span>
@@ -191,11 +153,37 @@
                 Unconfirmed
               </span>
             </p>
-          </div>
+          </span>
+          <img class="left m10r" src="img/icon-receive-history.svg" alt="sync" width="40" ng-if="btx.action == 'received'">
+          <img class="left m10r" src="img/icon-sent-history.svg" alt="sync" width="40" ng-if="btx.action == 'sent'">
+          <img class="left m10r" src="img/icon-moved.svg" alt="sync" width="40" ng-if="btx.action == 'moved'">
 
-          <div class="col col-10 text-center">
-            <i class="icon ion-chevron-right"></i>
-          </div>
+          <h2 class="p10t">
+            <div ng-if="btx.action == 'received'">
+              <span class="ellipsis">
+                <h2 ng-if="btx.note.body">{{btx.note.body}}</h2>
+                <h2 ng-if="!btx.note.body" translate> Received</h2>
+              </span>
+            </div>
+
+            <div ng-if="btx.action == 'sent'">
+              <span class="ellipsis">
+                <h2 ng-if="btx.message">{{btx.message}}</h2>
+                <h2 ng-if="!btx.message && btx.note.body">{{btx.note.body}}</h2>
+                <h2 ng-if="!btx.message && !btx.note.body && wallet.addressbook[btx.addressTo]">{{wallet.addressbook[btx.addressTo]}}</h2>
+                <h2 ng-if="!btx.message && !btx.note.body && !wallet.addressbook[btx.addressTo]" translate> Sent</h2>
+              </span>
+            </div>
+
+            <div ng-if="btx.action == 'moved'">
+              <span class="ellipsis">
+                <h2 ng-if="btx.note.body">{{btx.note.body}}</h2>
+                <h2 ng-if="!btx.note.body" translate>Moved</h2>
+              </span>
+            </div>
+            <span class="label tu warning radius" ng-if="btx.action == 'invalid'" translate>Invalid</span>
+          </h2>
+
         </div>
 
         <ion-infinite-scroll
