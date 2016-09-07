@@ -3,11 +3,13 @@
     #cta {
       background-image: url(../img/onboarding-tour-phone.svg);
       height: 17rem;
+      margin-bottom:-1.5rem;
     }
   }
   &-currency {
     #cta {
       background-image: url(../img/onboarding-tour-currency-bg.svg);
+      height:18rem;
     }
     .next-slide {
       margin-top: 3rem;
@@ -16,7 +18,8 @@
   &-control {
     #cta {
       background-image: url(../img/onboarding-tour-control.svg);
-      background-size: 70%;
+      margin-bottom: .05rem;
+      height: 15rem;
       background-position: top;
     }
   }
