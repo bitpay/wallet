@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('bitpayCardController', function($scope, $timeout, $log, lodash, bitpayCardService, configService, profileService, walletService, ongoingProcess, pbkdf2Service, moment, popupService) {
+angular.module('copayApp.controllers').controller('bitpayCardController', function($scope, $timeout, $log, lodash, bitpayCardService, configService, profileService, walletService, ongoingProcess, pbkdf2Service, moment, popupService, gettextCatalog, bwcError) {
 
   var self = this;
   var wallet;
@@ -168,6 +168,7 @@ angular.module('copayApp.controllers').controller('bitpayCardController', functi
           };
 
           walletService.createTx(wallet, txp, function(err, createdTxp) {
+            ongoingProcess.set('Processing Transaction...', false);
             if (err) {
               popupService.showAlert(gettextCatalog.getString('Error'), bwcError.msg(err));
               return;
