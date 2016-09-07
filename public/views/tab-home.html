@@ -9,7 +9,7 @@
     <div class="list card" ng-hide="!txps[0]">
       <a class="item item-icon-right item-heading" ui-sref="tabs.proposals" translate>
         Payment Proposals
-        <i class="icon ion-ios-arrow-right nav-item-arrow-right"></i>
+        <i class="icon nav-item-arrow-right"></i>
 
         <span class="badge badge-assertive" ng-show="txpsN>3" translate> {{txpsN}}</span>
       </a>
@@ -22,7 +22,7 @@
     <div class="list card">
       <a class="item item-icon-right item-heading" ui-sref="tabs.activity" translate>
         Recent Activity
-        <i class="icon ion-ios-arrow-right nav-item-arrow-right"></i>
+        <i class="icon nav-item-arrow-right"></i>
       </a>
       <span ng-if="fetchingNotifications" class="item text-center">
         <ion-spinner icon="lines"></ion-spinner>
@@ -57,7 +57,7 @@
         <p ng-show="wallet.isComplete() && wallet.balanceHidden">
           <strong class="size-12" translate>[Balance Hidden]</strong>
         </p>
-        <i class="icon ion-ios-arrow-right nav-item-arrow-right"></i>
+        <i class="icon nav-item-arrow-right"></i>
       </a>
       <a ui-sref="bitpayCard.main" ng-show="externalServices.BitpayCard" class="item item-icon-left">
         <i class="icon ion-card"></i>
@@ -92,28 +92,28 @@
          <img class="icon-create-wallet"/>
        </i>
         <span translate>Create a bitcoin wallet</span>
-        <i class="icon ion-ios-arrow-right nav-item-arrow-right"></i>
+        <i class="icon nav-item-arrow-right"></i>
       </a>
       <a ng-show="!externalServices.BuyAndSell" ui-sref="buyandsell" class="item item-icon-left item-big-icon-left item-icon-right">
        <i class="icon big-icon-svg">
          <img class="icon-buy-bitcoin"/>
        </i>
         <span translate>Buy Bitcoin</span>
-        <i class="icon ion-ios-arrow-right nav-item-arrow-right"></i>
+        <i class="icon nav-item-arrow-right"></i>
       </a>
       <a ui-sref="bitpayCard.main" ng-show="!externalServices.BitpayCard" class="item item-icon-left item-big-icon-left item-icon-right">
        <i class="icon big-icon-svg">
          <img class="icon-bitpay-card"/>
        </i>
         <span translate>Add BitPay Card</span>
-        <i class="icon ion-ios-arrow-right nav-item-arrow-right"></i>
+        <i class="icon nav-item-arrow-right"></i>
       </a>
       <a ui-sref="amazon.main" ng-show="!externalServices.AmazonGiftCards" class="item item-icon-left item-big-icon-left item-icon-right">
         <i class="icon big-icon-svg">
           <img class="icon-gift"/>
         </i>
         <span translate>Add Amazon Gift Card</span>
-        <i class="icon ion-ios-arrow-right nav-item-arrow-right"></i>
+        <i class="icon nav-item-arrow-right"></i>
       </a>
     </div>
 
