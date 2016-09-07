@@ -1,9 +1,17 @@
 #tab-receive {
+  ion-header-bar{
+    button{
+      i{
+        color:#fff;
+        font-size: 1.1rem;
+      }
+    }
+  }
   #address {
     background: #fff;
     .item {
       border: none;
-      font-size: .9rem;
+      font-size: .8rem;
       i {
         font-size: 1.3rem;
         &.ion-social-bitcoin-outline {
@@ -21,6 +29,7 @@
     }
   }
   #wallets {
+    position: relative;
     &:before {
       content: "";
       display: inline-block;
@@ -33,5 +42,50 @@
       position: absolute;
       left: 45%;
     }
+  }
+  #first-time-tip {
+    background: rgba(30, 49, 134, 1);
+    background: -moz-linear-gradient(top, rgba(30, 49, 134, 1) 0%, rgba(30, 49, 134, 0) 88%, rgba(30, 49, 134, 0) 100%);
+    background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(30, 49, 134, 1)), color-stop(88%, rgba(30, 49, 134, 0)), color-stop(100%, rgba(30, 49, 134, 0)));
+    background: -webkit-linear-gradient(top, rgba(30, 49, 134, 1) 0%, rgba(30, 49, 134, 0) 88%, rgba(30, 49, 134, 0) 100%);
+    background: -o-linear-gradient(top, rgba(30, 49, 134, 1) 0%, rgba(30, 49, 134, 0) 88%, rgba(30, 49, 134, 0) 100%);
+    background: -ms-linear-gradient(top, rgba(30, 49, 134, 1) 0%, rgba(30, 49, 134, 0) 88%, rgba(30, 49, 134, 0) 100%);
+    background: linear-gradient(to bottom, rgba(30, 49, 134, 1) 0%, rgba(30, 49, 134, 0) 88%, rgba(30, 49, 134, 0) 100%);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    animation-name: fadeIn;
+    animation-iteration-count: 1;
+    animation-timing-function: ease-in;
+    animation-duration: .4s;
+    animation-delay: 2s;
+    animation-fill-mode: forwards;
+    z-index: 10;
+    text-align: center;
+    color: #fff;
+    padding-top: 3rem;
+    .close {
+      top: .5rem;
+      right: 1rem;
+      position: absolute;
+      font-size: 1.5rem;
+      opacity: .5;
+    }
+    h3 {
+      color: #fff;
+      margin-bottom:1rem;
+    }
+  }
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
   }
 }
