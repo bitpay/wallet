@@ -1,13 +1,22 @@
-<ion-view >
-  <ion-tabs class="tabs-striped tabs-color-positive tabs-color-active-positive tabs-top">
+<ion-view>
+  <ion-nav-bar class="bar-royal">
+    <ion-nav-title>{{'Export wallet' | translate}}</ion-nav-title>
+    <ion-nav-back-button>
+      <i class="icon ion-ios-arrow-thin-left"></i>
+    </ion-nav-back-button>
+  </ion-nav-bar>
 
-    <ion-tab title="File/Text" ui-sref="tabs.preferences.export.file">
-      <ion-nav-view name="tab-export-file"></ion-nav-view>
-    </ion-tab>
+  <ion-content ng-controller="exportController" ng-init="file = true; init();">
+    <div class="row text-center">
+      <div class="col" ng-click="file = true" ng-style="file && {'border-bottom': '2px solid'}">
+        <span class="" translate>File/Text</span>
+      </div>
+      <div class="col" ng-click="file = false" ng-style="!file && {'border-bottom': '2px solid'}">
+        <span class="" translate>QR Code</span>
+      </div>
+    </div>
 
-    <ion-tab title="QR Code" ui-sref="tabs.preferences.export.qrCode">
-      <ion-nav-view name="tab-export-qrCode"></ion-nav-view>
-    </ion-tab>
-
-  </ion-tabs>
+    <div ng-include="'views/tab-export-file.html'" ng-if="file"></div>
+    <div ng-include="'views/tab-export-qrCode.html'" ng-if="!file"></div>
+  </ion-content>
 </ion-view>
