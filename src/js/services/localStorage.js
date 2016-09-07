@@ -67,33 +67,35 @@ angular.module('copayApp.services')
 
 
     if (isNW) {
-      $log.info('Overwritting localstorage with chrome storage for NW.JS');
+      $log.info('Using chrome storage for NW.JS');
 
       var ts = ls.getItem('migrationToChromeStorage');
       var p = ls.getItem('profile');
 
-      // Need migration?
-      if (!ts && p) {
-        $log.info('### MIGRATING DATA! TO CHROME STORAGE');
+      root.get('profile', function(err, newP){
+        // Need migration?
+        if (!ts && !newP && p) {
+          $log.info('### MIGRATING DATA! TO CHROME STORAGE');
 
-        var j = 0;
-        for (var i = 0; i < localStorage.length; i++) {
-          var k = ls.key(i);
-          var v = ls.getItem(k);
+          var j = 0;
+          for (var i = 0; i < localStorage.length; i++) {
+            var k = ls.key(i);
+            var v = ls.getItem(k);
 
-          $log.debug('   Key: ' + k);
-          root.set(k, v, function() {
-            j++;
-            if (j == localStorage.length) {
-              $log.info('### MIGRATION DONE');
-              ls.setItem('migrationToChromeStorage', Date.now())
-              ls = chrome.storage.local;
-            }
-          })
+            $log.debug('   Key: ' + k);
+            root.set(k, v, function() {
+              j++;
+              if (j == localStorage.length) {
+                $log.info('### MIGRATION DONE');
+                ls.setItem('migrationToChromeStorage', Date.now())
+                ls = chrome.storage.local;
+              }
+            })
+          }
+        } else if (p) {
+          $log.info('# Data already migrated to Chrome storage.' + (ts||''));
         }
-      } else if (p) {
-        $log.info('# Data already migrated to Chrome storage on ' + ts);
-      }
+      });
     }
 
 
