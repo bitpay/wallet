@@ -30,7 +30,7 @@ angular.module('copayApp.services')
 
     root.updateWalletSettings = function(wallet) {
       var defaults = configService.getDefaults();
-      configService.whenAvailable(function(config){
+      configService.whenAvailable(function(config) {
         wallet.usingCustomBWS = config.bwsFor && config.bwsFor[wallet.id] && (config.bwsFor[wallet.id] != defaults.bws.url);
         wallet.name = (config.aliasFor && config.aliasFor[wallet.id]) || wallet.credentials.walletName;
         wallet.color = (config.colorFor && config.colorFor[wallet.id]) || '#4A90E2';
@@ -77,7 +77,7 @@ angular.module('copayApp.services')
       var opts = opts || {};
       var walletId = wallet.credentials.walletId;
 
-      if ((root.wallet[walletId] && root.wallet[walletId].started) &&  !opts.force) {
+      if ((root.wallet[walletId] && root.wallet[walletId].started) && !opts.force) {
         return false;
       }
 
@@ -762,7 +762,7 @@ angular.module('copayApp.services')
       var TIME_STAMP = 60 * 60 * 24 * 7;
       var MAX = 100;
 
-      var ignored = {
+      var typeFilter1 = {
         'NewBlock': 1,
         'BalanceUpdated': 1,
         'NewOutgoingTxByThirdParty': 1,
@@ -770,6 +770,12 @@ angular.module('copayApp.services')
         'TxProposalFinallyAccepted': 1,
         'TxProposalFinallyRejected': 1,
       };
+
+      var typeFilter2 = {
+        'TxProposalAcceptedBy': 1,
+        'TxProposalRejectedBy': 1,
+        'NewTxProposal': 1,
+      }
 
       var w = root.getWallets();
       if (lodash.isEmpty(w)) return cb();
@@ -868,8 +874,14 @@ angular.module('copayApp.services')
             $log.warn('Error updating notifications:' + err);
           } else {
             var n = lodash.filter(wallet.cachedActivity.n, function(x) {
-              return !ignored[x.type];
+              return !typeFilter1[x.type];
             });
+
+            if (wallet.n == 1) {
+              var n = lodash.filter(n, function(x) {
+                return !typeFilter2[x.type];
+              });
+            }
 
             var idToName = {};
             if (wallet.cachedStatus) {
@@ -911,7 +923,7 @@ angular.module('copayApp.services')
           txps = txps.concat(x.pendingTxps);
       });
       txps = lodash.sortBy(txps, 'pendingForUs', 'createdOn');
-      txps = lodash.compact(lodash.flatten(txps)).slice(0,MAX);
+      txps = lodash.compact(lodash.flatten(txps)).slice(0, MAX);
       var n = txps.length;
       return cb(null, txps, n);
     };
