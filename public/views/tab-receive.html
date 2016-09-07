@@ -1,36 +1,52 @@
-<ion-view>
+<ion-view id="tab-receive">
   <ion-nav-bar class="bar-royal">
     <ion-nav-title>{{'Receive' | translate}}</ion-nav-title>
   </ion-nav-bar>
-
   <ion-content ng-controller="tabReceiveController" ng-init="init()">
-    <div class="m30v text-center" copy-to-clipboard="addr">
-      <qrcode size="220" data="bitcoin:{{addr}}"></qrcode>
-      <div ng-if="wallet.needsBackup" class="assertive" translate>
-        Before receiving funds, you must backup your wallet. If this device is lost, it is impossible to access your funds without a backup.
+    <article id="address">
+      <div class="row">
+        <div class="m15t text-center" copy-to-clipboard="addr">
+          <qrcode size="220" data="bitcoin:{{addr}}"></qrcode>
+          <div ng-if="wallet.needsBackup" class="assertive m10t" translate>
+            Before receiving funds, you must backup your wallet. If this device is lost, it is impossible to access your funds without a backup.
+          </div>
+        </div>
       </div>
-    </div>
-
-    <div class="list card padding text-center" ng-if="!wallets[0]">
-      <span translate>No Wallet</span>
-    </div>
-
-    <div class="list" ng-if="wallets[0]">
-      <div class="item item-icon-left" ng-click="shareAddress(addr)" ng-show="isCordova && addr">
-        <i class="icon ion-ios-upload-outline"></i>
-        <span translate>Share address</span>
+      <div class="row">
+        <div class="col" ng-show="isCordova && addr">
+          <div class="item item-icon-left" ng-click="shareAddress(addr)">
+            <i class="icon ion-ios-upload-outline"></i>
+            <span translate>Share</span>
+          </div>
+        </div>
+        <div class="col" ng-class="{'center-block col-50': !isCordova || !addr}">
+          <div class="item item-icon-left" ng-click="setAddress(null, true)">
+            <i class="icon ion-ios-loop"></i>
+            <span translate>Next Address</span>
+          </div>
+        </div>
       </div>
-      <div class="item item-icon-left" ng-click="setAddress(null, true)">
-        <i class="icon ion-ios-loop"></i>
-        <span translate>Next Address</span>
+      <div class="row border-top">
+        <div class="col col-90 center-block bit-address">
+          <div class="item item-icon-left">
+            <i class="icon ion-social-bitcoin-outline"></i>
+            <span ng-if="generatingAddress">...</span>
+            <span class="bit-address-gen-address" ng-if="!generatingAddress" copy-to-clipboard="addr">{{addr}}</span>
+          </div>
+        </div>
       </div>
-      <div class="item item-icon-left">
-        <i class="icon ion-social-bitcoin-outline"></i>
-        <span ng-if="generatingAddress">...</span>
-        <span ng-if="!generatingAddress" copy-to-clipboard="addr">{{addr}}</span>
+    </article>
+    <article id="wallets">
+      <div class="list card padding text-center" ng-if="!wallets[0]">
+        <span translate>No Wallet</span>
       </div>
-
-      <wallets ng-if="wallets[0]" wallets="wallets"></wallets>
-    </div>
+      <div class="list" ng-if="wallets[0]">
+        <!-- <div class="item item-icon-left" ng-click="setAddress(null, true)">
+          <i class="icon ion-ios-loop"></i>
+          <span translate>Next Address</span>
+        </div> -->
+        <wallets ng-if="wallets[0]" wallets="wallets"></wallets>
+      </div>
+    </article>
   </ion-content>
 </ion-view>
