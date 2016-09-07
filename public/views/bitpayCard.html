@@ -1,13 +1,13 @@
 <ion-view>
   <ion-nav-bar class="bar-royal">
     <ion-nav-buttons side="primary">
-      <button class="button back-button" ui-sref="tabs.home">
-        <i class="icon ion-ios-arrow-thin-left"></i>
+      <button class="button button-clear" ui-sref="tabs.home">
+        Close
       </button>
     </ion-nav-buttons>
     <ion-nav-title>BitPay Card</ion-nav-title>
     <ion-nav-buttons side="secondary">
-      <button class="button no-border" ui-sref="bitpayCard.preferences">
+      <button class="button button-clear" ui-sref="bitpayCard.preferences">
         <i class="icon ion-gear-b"></i>
       </button>
     </ion-nav-buttons>
@@ -93,8 +93,8 @@
     </div>
 
     <div ng-show="bitpayCard.bitpayCardAuthenticated && !bitpayCard.visaCardActivated && !addFunds">
-      <div class="oh pr">
-        <div class="amount" ng-style="{'background-color': '#293C92'}">
+      <div id="bitpayCard" class="oh pr">
+        <div class="amount">
           <div ng-show="!loadingHistory && bitpayCard.bitpayCardCurrentBalance" ng-click="bitpayCard.update()">
             <strong class="size-36">${{bitpayCard.bitpayCardCurrentBalance}}</strong>
             <div class="size-12">Available balance</div>
@@ -110,7 +110,7 @@
         </div>
       </div>
 
-      <select ng-model="dateRange" ng-change="bitpayCard.update(dateRange)">
+      <select class="m10" ng-model="dateRange" ng-change="bitpayCard.update(dateRange)">
         <option value="last30Days">Recent Activity</option>
         <option value="lastMonth">Last Month</option>
         <option value="all">All Activity</option>
@@ -127,40 +127,41 @@
         <i class="icon ion-android-sync"></i>
       </div>
 
-      <div
-        ng-show="!loadingHistory"
-        ng-repeat="tx in bitpayCard.bitpayCardTransactionHistory | orderBy: ['pending','-timestamp']"
-        class="row"
-        ng-init="bitpayCard.getMerchantInfo(tx)">
-        <div class="col" ng-init="icon = bitpayCard.getIconName(tx)">
-          <img class="m5t" ng-src="img/mcc-icons/{{icon}}.svg" width="22">
-        </div>
-
-        <div class="col">
-          <div class="size-12 text-bold">
-            {{tx.merchant.name}}
-          </div>
-          <div class="size-12">
-            {{tx.merchant.city}}, {{tx.merchant.state}}
-          </div>
-        </div>
+      <div class="card list" ng-show="!loadingHistory">
         <div
-          ng-init="desc = bitpayCard.processDescription(tx)"
-          class="col">
-          {{desc}}
-        </div>
-        <div class="col">
-          <img ng-show="!tx.pending" ng-src="img/check.svg" width="14">
-          <img ng-show="tx.pending" ng-src="img/sync.svg" width="14">
-        </div>
-        <div class="col text-right size-12 text-gray">
-          <div class="size-14"
-               ng-class="{
-               'text-success': tx.amount.indexOf('-') == -1 && !tx.pending,
-               'text-gray': tx.amount.indexOf('-') == -1 && tx.pending}">
-            {{tx.amount | currency:'$':2 }}
+          ng-repeat="tx in bitpayCard.bitpayCardTransactionHistory | orderBy: ['pending','-timestamp']"
+          class="item row"
+          ng-init="bitpayCard.getMerchantInfo(tx)">
+          <div class="col" ng-init="icon = bitpayCard.getIconName(tx)">
+            <img class="m5t" ng-src="img/mcc-icons/{{icon}}.svg" width="22">
           </div>
-          <time>{{tx.timestamp | amTimeAgo}}</time>
+
+          <div class="col">
+            <div class="size-12 text-bold">
+              {{tx.merchant.name}}
+            </div>
+            <div class="size-12">
+              {{tx.merchant.city}}, {{tx.merchant.state}}
+            </div>
+          </div>
+          <div
+            ng-init="desc = bitpayCard.processDescription(tx)"
+            class="col">
+            {{desc}}
+          </div>
+          <div class="col">
+            <img ng-show="!tx.pending" ng-src="img/check.svg" width="14">
+            <img ng-show="tx.pending" ng-src="img/sync.svg" width="14">
+          </div>
+          <div class="col text-right size-12 text-gray">
+            <div class="size-14"
+                 ng-class="{
+                 'text-success': tx.amount.indexOf('-') == -1 && !tx.pending,
+                 'text-gray': tx.amount.indexOf('-') == -1 && tx.pending}">
+              {{tx.amount | currency:'$':2 }}
+            </div>
+            <time>{{tx.timestamp | amTimeAgo}}</time>
+          </div>
         </div>
       </div>
     </div>
@@ -171,7 +172,7 @@
            ng-submit="bitpayCard.sendFunds()"
            novalidate>
 
-          <div class="list">
+          <div class="card list">
             <label class="item item-input item-stacked-label">
               <span class="input-label">Amount</span>
               <input
@@ -198,14 +199,14 @@
 
           <div class="row">
             <div class="col">
-              <button class="button button-block button-stable"
+              <button class="button button-block button-light"
                       type="button"
-                      ng-click="addFunds = false">
+                      ng-click="addFunds = false; fiat = null">
                 Cancel
               </button>
             </div>
             <div class="col">
-              <button class="button button-block"
+              <button class="button button-block button-positive"
                       ng-disabled="!fiat"
                       type="submit">
                 Send
