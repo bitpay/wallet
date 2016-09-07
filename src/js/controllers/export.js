@@ -1,10 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('exportController',
-  function($rootScope, $scope, $timeout, $log, $ionicHistory, lodash, backupService, walletService, storageService, profileService, platformInfo, gettext, gettextCatalog, $state, $stateParams, popupService) {
-    var prevState;
-    var isWP = platformInfo.isWP;
-    var isAndroid = platformInfo.isAndroid;
+  function($scope, $timeout, $log, $ionicHistory, backupService, walletService, storageService, profileService, platformInfo, gettextCatalog, $state, $stateParams, popupService) {
     var wallet = profileService.getWallet($stateParams.walletId);
 
     $scope.init = function() {
@@ -41,7 +38,7 @@ angular.module('copayApp.controllers').controller('exportController',
     */
 
     $scope.noSignEnabledChange = function() {
-      if (!$scope.supported) return;
+      if (!$scope.formData.supported) return;
 
       walletService.getEncodedWalletInfo(wallet, function(err, code) {
         if (err) {
