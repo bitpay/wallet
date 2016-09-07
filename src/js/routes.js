@@ -459,30 +459,11 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         }
       })
       .state('tabs.preferences.export', {
-        abstract: true,
         url: '/export',
         views: {
           'preferences': {
             templateUrl: 'views/export.html'
           }
-        }
-      })
-      .state('tabs.preferences.export.file', {
-        url: '/tab-export-file',
-        needProfile: true,
-        views: {
-          'tab-export-file': {
-            templateUrl: 'views/tab-export-file.html',
-          },
-        }
-      })
-      .state('tabs.preferences.export.qrCode', {
-        url: '/tab-export-qrCode',
-        needProfile: true,
-        views: {
-          'tab-export-qrCode': {
-            templateUrl: 'views/tab-export-qrCode.html',
-          },
         }
       })
       .state('tabs.preferences.preferencesBwsUrl', {
