@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('termsController', function($scope, $log, $state, uxLanguage, profileService, externalLinkService) {
+angular.module('copayApp.controllers').controller('termsController', function($scope, $log, $state, $window, uxLanguage, profileService, externalLinkService) {
   $scope.lang = uxLanguage.currentLanguage;
   $scope.disclaimerUrl = $window.appConfig.disclaimerUrl;
 
