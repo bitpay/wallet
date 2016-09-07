@@ -5,16 +5,14 @@ angular.module('copayApp.controllers').controller('exportController',
     var prevState;
     var isWP = platformInfo.isWP;
     var isAndroid = platformInfo.isAndroid;
-
     var wallet = profileService.getWallet($stateParams.walletId);
-    $scope.isEncrypted = wallet.isPrivKeyEncrypted();
-    $scope.isCordova = platformInfo.isCordova;
-    $scope.isSafari = platformInfo.isSafari;
 
     $scope.init = function() {
-      $scope.supported = true;
-      $scope.exportQR = false;
-      $scope.noSignEnabled = false;
+      $scope.formData = {};
+      $scope.isEncrypted = wallet.isPrivKeyEncrypted();
+      $scope.isCordova = platformInfo.isCordova;
+      $scope.isSafari = platformInfo.isSafari;
+      $scope.formData.noSignEnabled = false;
       $scope.showAdvanced = false;
       $scope.wallet = wallet;
       $scope.canSign = wallet.canSign();
@@ -22,13 +20,15 @@ angular.module('copayApp.controllers').controller('exportController',
       walletService.getEncodedWalletInfo(wallet, function(err, code) {
         if (err || !code) {
           $log.warn(err);
-          return $state.go('wallet.preferencesAdvanced')
+          return $ionicHistory.goBack();
         }
 
         if (!code)
-          $scope.supported = false;
-        else
-          $scope.exportWalletInfo = code;
+          $scope.formData.supported = false;
+        else {
+          $scope.formData.supported = true;
+          $scope.formData.exportWalletInfo = code;
+        }
 
         $timeout(function() {
           $scope.$apply();
@@ -38,14 +38,25 @@ angular.module('copayApp.controllers').controller('exportController',
 
     /*
       EXPORT WITHOUT PRIVATE KEY - PENDING
+    */
 
     $scope.noSignEnabledChange = function() {
-      $scope.exportWalletInfo = encodeWalletInfo();
-      $timeout(function() {
-        $scope.$apply();
-      }, 1);
+      if (!$scope.supported) return;
+
+      walletService.getEncodedWalletInfo(wallet, function(err, code) {
+        if (err) {
+          $log.error(err);
+          $scope.formData.supported = false;
+          $scope.formData.exportWalletInfo = null;
+        } else {
+          $scope.formData.supported = true;
+          $scope.formData.exportWalletInfo = code;
+        }
+        $timeout(function() {
+          $scope.$apply();
+        }, 1);
+      });
     };
-    */
 
     $scope.downloadWalletBackup = function() {
       $scope.getAddressbook(function(err, localAddressBook) {
@@ -54,11 +65,11 @@ angular.module('copayApp.controllers').controller('exportController',
           return;
         }
         var opts = {
-          noSign: $scope.noSignEnabled,
+          noSign: $scope.formData.noSignEnabled,
           addressBook: localAddressBook
         };
 
-        backupService.walletDownload($scope.password, opts, function(err) {
+        backupService.walletDownload($scope.formData.password, opts, function(err) {
           if (err) {
             popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Failed to export'));
             return;
@@ -91,11 +102,11 @@ angular.module('copayApp.controllers').controller('exportController',
           return cb(null);
         }
         var opts = {
-          noSign: $scope.noSignEnabled,
+          noSign: $scope.formData.noSignEnabled,
           addressBook: localAddressBook
         };
 
-        var ew = backupService.walletExport($scope.password, opts);
+        var ew = backupService.walletExport($scope.formData.password, opts);
         if (!ew) {
           popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Failed to export'));
         }
@@ -132,7 +143,7 @@ angular.module('copayApp.controllers').controller('exportController',
         var ew = backup;
         if (!ew) return;
 
-        if ($scope.noSignEnabled)
+        if ($scope.formData.noSignEnabled)
           name = name + '(No Private Key)';
 
         var subject = 'Copay Wallet Backup: ' + name;
