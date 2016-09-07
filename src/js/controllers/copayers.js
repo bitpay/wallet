@@ -1,13 +1,15 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('copayersController',
-  function($scope, $log, $ionicPopup, profileService, platformInfo, gettextCatalog, $stateParams, ongoingProcess, $state) {
+  function($scope, $log, $ionicNavBarDelegate, $stateParams, $state, profileService, popupService, platformInfo, gettextCatalog, ongoingProcess) {
     if (!$stateParams.walletId) {
       $log.debug('No wallet provided...back to home');
-      return $state.transitionTo('tabs.home');
+      return $state.go('tabs.home');
     }
 
     var wallet = profileService.getWallet($stateParams.walletId);
+    $ionicNavBarDelegate.title(wallet.name);
+
     var secret;
     try {
       secret = wallet.status.wallet.secret;
@@ -15,28 +17,12 @@ angular.module('copayApp.controllers').controller('copayersController',
 
     $scope.wallet = wallet;
     $scope.secret = secret;
+    $scope.copayers = wallet.status.wallet.copayers;
     $scope.isCordova = platformInfo.isCordova;
 
     $scope.showDeletePopup = function() {
-      var popup = $ionicPopup.show({
-        template: '<span>' + gettextCatalog.getString('Are you sure you want to delete this wallet?') + '</span>',
-        title: gettextCatalog.getString('Confirm'),
-        buttons: [
-          {
-            text: gettextCatalog.getString('Cancel'),
-            onTap: function(e) {
-              popup.close();
-            }
-          },
-          {
-            text: gettextCatalog.getString('Accept'),
-            type: 'button-positive',
-            onTap: function(e) {
-              deleteWallet();
-              popup.close();
-            }
-          }
-        ]
+      popupService.showConfirm(gettextCatalog.getString('Confirm'), gettextCatalog.getString('Are you sure you want to delete this wallet?'), function(res) {
+        if (res) deleteWallet();
       });
     };
 
@@ -47,7 +33,7 @@ angular.module('copayApp.controllers').controller('copayersController',
         if (err) {
           popupService.showAlert(gettextCatalog.getString('Error'), err.message || err);
         } else {
-          $state.transitionTo('tabs.home');
+          $state.go('tabs.home');
         }
       });
     };

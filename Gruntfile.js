@@ -28,8 +28,11 @@ module.exports = function(grunt) {
       chrome: {
         command: 'make -C chrome-app '
       },
-      wp: {
-        command: 'make -C cordova wp',
+      wpinit: {
+        command: 'make -C cordova wp-init',
+      },
+      wpcopy: {
+        command: 'make -C cordova wp-copy',
       },
       ios: {
         command: 'make -C cordova ios',
@@ -254,7 +257,8 @@ module.exports = function(grunt) {
   grunt.registerTask('osx', ['prod', 'nwjs', 'exec:osx']);
   grunt.registerTask('chrome', ['exec:chrome']);
   grunt.registerTask('wp', ['prod', 'exec:wp']);
-  grunt.registerTask('wp-debug', ['default', 'exec:wp']);
+  grunt.registerTask('wp-copy', ['default', 'exec:wpcopy']);
+  grunt.registerTask('wp-init', ['default', 'exec:wpinit']);
   grunt.registerTask('ios', ['prod', 'exec:ios']);
   grunt.registerTask('ios-debug', ['default', 'exec:ios']);
   grunt.registerTask('ios-run', ['exec:xcode']);

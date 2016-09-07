@@ -1,6 +1,7 @@
 .icon.nav-item-arrow-right {
   color: #666;
   font-size: 26px;
+  @extend .ion-ios-arrow-right;
 }
 
 .item.item-heading {

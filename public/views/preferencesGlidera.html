@@ -10,7 +10,8 @@
 
   <ion-content ng-controller="preferencesGlideraController" ng-init="init()">
 
-    <ul ng-if="token" class="list">
+    <ul class="list">
+      <div ng-if="token">
       <div class="item item-divider">
         Permissions
       </div>
@@ -38,10 +39,9 @@
         {{permissions.transaction_history}}
       </span>
       </li>
-    </ul>
+      </div>
 
-    <ul ng-if="permissions.view_email_address"
-      class="list">
+      <div ng-if="permissions.view_email_address">
       <div class="item item-divider">
         Email
       </div>
@@ -57,10 +57,9 @@
         {{email.userEmailIsSetup}}
       </span>
       </li>
-    </ul>
+      </div>
 
-    <ul ng-if="permissions.personal_info"
-      class="list">
+      <div ng-if="permissions.personal_info">
       <div class="item item-divider">
         Personal Information
       </div>
@@ -137,10 +136,9 @@
         {{personalInfo.basicInfoState}}
       </span>
       </li>
-    </ul>
+      </div>
 
-    <ul ng-if="token"
-      class="list">
+      <div ng-if="token">
       <div class="item item-divider">
       Status
       </div>
@@ -200,10 +198,9 @@
         {{status.country}}
       </span>
       </li>
-    </ul>
+      </div>
 
-    <ul ng-if="token"
-      class="list">
+      <div ng-if="token">
       <div class="item item-divider">
         Limits
       </div>
@@ -262,9 +259,8 @@
         {{limits.transactDisabledPendingFirstTransaction}}
       </span>
       </li>
-    </ul>
+      </div>
 
-    <ul class="list">
       <div class="item item-divider">
         Account
       </div>

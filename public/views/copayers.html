@@ -1,15 +1,12 @@
 
-<ion-view  ng-controller="copayersController">
+<ion-view>
   <ion-nav-bar class="bar-royal">
-    <ion-nav-title>{{wallet.name}}</ion-nav-title>
-    <ion-nav-buttons side="primary">
-      <button class="button back-button" ui-sref="tabs.home">
-        <i class="icon ion-ios-arrow-thin-left"></i>
-      </button>
-    </ion-nav-buttons>
+    <ion-nav-back-button>
+      <i class="icon ion-ios-arrow-thin-left"></i>
+    </ion-nav-back-button>
   </ion-nav-bar>
 
-  <ion-content delegate-handle="my-handle" overflow-scroll="true">
+  <ion-content ng-controller="copayersController">
     <div ng-show="!wallet.notAuthorized">
       <h1 class="text-center" translate>Share this invitation with your copayers</h1>
 
@@ -43,14 +40,14 @@
               [ <span translate>{{wallet.m}}-of-{{wallet.n}}</span> ]
             </span>
           </h4>
-          <div class="white line-b p10" ng-include="'views/includes/copayers.html'"></div>
+          <div ng-include="'views/includes/copayers.html'"></div>
           <div ng-if="!wallet.isComplete()" class="line-b p10 white size-12">
-            <i class="fi-loop m5r p10l"></i>
+            <i class="icon ion-loop"></i>
             <span translate>Waiting...</span>
           </div>
 
           <div ng-if="wallet.isComplete()" class="line-b p10 white size-12" href>
-            <button class="button"   href ui-sref="tabs.home">
+            <button class="button" href ui-sref="tabs.home">
               <span translate>WALLET COMPLETE!</span>
             </button>
           </div>
