@@ -572,6 +572,10 @@ angular.module('copayApp.services')
 
       str = JSON.parse(str);
 
+      if (!str.n) {
+        return cb("Backup format not recognized. If you are using a Copay Beta backup and version is older than 0.10, please see: https://github.com/bitpay/copay/issues/4730#issuecomment-244522614");
+      }
+
       var addressBook = str.addressBook || {};
 
       root.addAndBindWalletClient(walletClient, {
