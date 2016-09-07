@@ -1,5 +1,12 @@
 #onboarding-disclaimer {
   color: #fff;
+  height: 100%;
+  ion-content{
+    height: 100%;
+    .scroll{
+      height: 100%;
+    }
+  }
   .item {
     background: transparent;
     border: none;
@@ -21,6 +28,8 @@
     .checkbox input:checked:after,
     input:checked + .checkbox-icon:after {
       border-color: rgb(19, 229, 182);
+      top:20%;
+      left:11%;
     }
     .item-content {
       width: 90%;
