@@ -1,20 +1,57 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('walletDetailsController', function($scope, $rootScope, $interval, $timeout, $filter, $log, $ionicModal, $ionicPopover, $ionicNavBarDelegate, $state, $stateParams, bwcError, profileService, lodash, configService, gettext, gettextCatalog, platformInfo, walletService, $ionicPopup, txpModalService, externalLinkService) {
-
-  var isCordova = platformInfo.isCordova;
-  var isWP = platformInfo.isWP;
-  var isAndroid = platformInfo.isAndroid;
-  var isChromeApp = platformInfo.isChromeApp;
-
-  var errorPopup;
-
   var HISTORY_SHOW_LIMIT = 10;
+  var currentTxHistoryPage;
+  var wallet;
   $scope.txps = [];
 
   $scope.openExternalLink = function(url, target) {
     externalLinkService.open(url, target);
   };
+
+  $scope.init = function() {
+    currentTxHistoryPage = 0;
+    $scope.completeTxHistory = [];
+
+    wallet = profileService.getWallet($stateParams.walletId);
+
+    /* Set color for header bar */
+    $rootScope.walletDetailsColor = wallet.color;
+    $rootScope.walletDetailsName = wallet.name;
+    $scope.wallet = wallet;
+
+    $scope.requiresMultipleSignatures = wallet.credentials.m > 1;
+    $scope.newTx = false;
+
+    $ionicNavBarDelegate.title(wallet.name);
+
+    $scope.updateAll(function() {
+      if ($stateParams.txid) {
+        var tx = lodash.find($scope.completeTxHistory, {
+          txid: $stateParams.txid
+        });
+        if (tx) {
+          $scope.openTxModal(tx);
+        } else {
+          $ionicPopup.alert({
+            title: gettext('TX not available'),
+          });
+        }
+      } else if ($stateParams.txpId) {
+        var txp = lodash.find($scope.txps, {
+          id: $stateParams.txpId
+        });
+        if (txp) {
+          $scope.openTxpModal(txp);
+        } else {
+          $ionicPopup.alert({
+            title: gettext('Proposal not longer available'),
+          });
+        }
+      }
+    });
+  }
 
   var setPendingTxps = function(txps) {
     if (!txps) {
@@ -167,56 +204,6 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
   $scope.hideToggle = function() {
     profileService.toggleHideBalanceFlag(wallet.credentials.walletId, function(err) {
       if (err) $log.error(err);
-    });
-  }
-
-  var currentTxHistoryPage;
-  var wallet;
-
-  $scope.init = function() {
-    currentTxHistoryPage = 0;
-    $scope.completeTxHistory = [];
-
-    wallet = profileService.getWallet($stateParams.walletId);
-
-    if (!wallet.isComplete()) {
-      return $state.go('wallet.copayers');
-    };
-
-    /* Set color for header bar */
-    $rootScope.walletDetailsColor = wallet.color;
-    $rootScope.walletDetailsName = wallet.name;
-
-    $scope.wallet = wallet;
-    $scope.requiresMultipleSignatures = wallet.credentials.m > 1;
-    $scope.newTx = false;
-
-    $ionicNavBarDelegate.title(wallet.name);
-
-    $scope.updateAll(function() {
-      if ($stateParams.txid) {
-        var tx = lodash.find($scope.completeTxHistory, {
-          txid: $stateParams.txid
-        });
-        if (tx) {
-          $scope.openTxModal(tx);
-        } else {
-          $ionicPopup.alert({
-            title: gettext('TX not available'),
-          });
-        }
-      } else if ($stateParams.txpId) {
-        var txp = lodash.find($scope.txps, {
-          id: $stateParams.txpId
-        });
-        if (txp) {
-          $scope.openTxpModal(txp);
-        } else {
-          $ionicPopup.alert({
-            title: gettext('Proposal not longer available'),
-          });
-        }
-      }
     });
   }
 });

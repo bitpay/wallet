@@ -1,19 +1,37 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('tabHomeController',
-  function($rootScope, $timeout, $scope, $state, $ionicScrollDelegate, lodash, profileService, walletService, configService, txFormatService, $ionicModal, $log, platformInfo, storageService, txpModalService, $window) {
-
+  function($rootScope, $timeout, $scope, $state, $ionicScrollDelegate, lodash, profileService, walletService, configService, $log, platformInfo, storageService, txpModalService, $window) {
     $scope.externalServices = {};
     $scope.bitpayCardEnabled = true; // TODO
+    $scope.openTxpModal = txpModalService.open;
+    $scope.version = $window.version;
+    $scope.name = $window.appConfig.nameCase;
 
+    configService.whenAvailable(function() {
+      var config = configService.getSync();
+      var isWindowsPhoneApp = platformInfo.isWP && platformInfo.isCordova;
+      $scope.glideraEnabled = config.glidera.enabled && !isWindowsPhoneApp;
+      $scope.coinbaseEnabled = config.coinbase.enabled && !isWindowsPhoneApp;
+    });
+
+    $scope.openWallet = function(wallet) {
+      if (!wallet.isComplete()) {
+        return $state.go('tabs.copayers', {
+          walletId: wallet.credentials.walletId
+        });
+      }
+
+      $state.go('tabs.details', {
+        walletId: wallet.credentials.walletId
+      });
+    };
 
     function updateTxps() {
       profileService.getTxps({
         limit: 3
       }, function(err, txps, n) {
-        if (err) {
-          console.log('[tab-home.js.35:err:]', $log.error(err)); //TODO
-        }
+        if (err) $log.error(err);
         $scope.txps = txps;
         $scope.txpsN = n;
         $ionicScrollDelegate.resize();
@@ -23,7 +41,6 @@ angular.module('copayApp.controllers').controller('tabHomeController',
         }, 1);
       })
     };
-
 
     $scope.updateAllWallets = function() {
       $scope.wallets = profileService.getWallets();
@@ -41,7 +58,7 @@ angular.module('copayApp.controllers').controller('tabHomeController',
           } else {
             wallet.status = status;
           }
-          if (++j==i) {
+          if (++j == i) {
             updateTxps();
           }
         });
@@ -106,7 +123,7 @@ angular.module('copayApp.controllers').controller('tabHomeController',
         $scope.updateWallet(wallet);
       }),
       $rootScope.$on('Local/TxAction', function(e, walletId) {
-        $log.debug('Got action for wallet '+ walletId);
+        $log.debug('Got action for wallet ' + walletId);
         var wallet = profileService.getWallet(walletId);
         $scope.updateWallet(wallet);
       }),
@@ -117,19 +134,4 @@ angular.module('copayApp.controllers').controller('tabHomeController',
         x();
       });
     });
-
-    configService.whenAvailable(function() {
-      var config = configService.getSync();
-      var isWindowsPhoneApp = platformInfo.isWP && isCordova;
-      $scope.glideraEnabled = config.glidera.enabled && !isWindowsPhoneApp;
-      $scope.coinbaseEnabled = config.coinbase.enabled && !isWindowsPhoneApp;
-    });
-
-    $scope.openTxpModal = txpModalService.open;
-
-    $scope.version = $window.version;
-    $scope.name = $window.appConfig.nameCase;
-
-
-
   });

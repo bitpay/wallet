@@ -107,7 +107,7 @@ angular.module('copayApp.directives')
     return {
       link: function($scope, el) {
         el.bind('change', function(e) {
-          $scope.file = (e.srcElement || e.target).files[0];
+          $scope.formData.file = (e.srcElement || e.target).files[0];
           $scope.getFile();
         });
       }

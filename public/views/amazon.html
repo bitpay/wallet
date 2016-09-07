@@ -1,8 +1,8 @@
 <ion-view>
   <ion-nav-bar class="bar-royal">
     <ion-nav-buttons side="primary">
-      <button class="button back-button" ui-sref="tabs.home">
-        <i class="icon ion-ios-arrow-thin-left"></i>
+      <button class="button button-clear" ui-sref="tabs.home">
+        Close
       </button>
     </ion-nav-buttons>
     <ion-nav-title>Gift cards</ion-nav-title>
@@ -21,7 +21,7 @@
 
     <div ng-if="!giftCards" class="m20t padding text-center">
 
-      <button class="button" ui-sref="amazon.buy">
+      <button class="button button-block button-positive" ui-sref="amazon.buy">
         Buy now
       </button>
 
@@ -36,12 +36,12 @@
         <a class="item item-icon-left item-icon-right" href ui-sref="amazon.buy">
           <i class="icon ion-bag"></i>
           Buy Gift Card
-          <i class="icon ion-ios-arrow-right"></i>
+          <i class="icon nav-item-arrow-right"></i>
         </a>
       </div>
 
       <div class="card">
-        <div class="item item-divider">
+        <div class="item item-heading">
           Your cards
         </div>
         <div ng-repeat="(id, item) in giftCards | orderObjectBy:'date':true track by $index"
