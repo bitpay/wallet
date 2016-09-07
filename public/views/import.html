@@ -1,33 +1,26 @@
 <ion-view ng-controller="tabsController" ng-init="importInit()">
-  <ion-tabs class="tabs-striped tabs-color-positive tabs-color-active-positive tabs-top">
+  <ion-nav-bar class="bar-royal">
+    <ion-nav-title>{{'Import Wallet' | translate}}</ion-nav-title>
+    <ion-nav-back-button>
+      <i class="icon ion-ios-arrow-thin-left"></i>
+    </ion-nav-back-button>
+  </ion-nav-bar>
 
-    <div ng-if="!fromOnboarding">
-      <ion-tab title="Recovery Phrase" ui-sref="tabs.import.phrase">
-        <ion-nav-view name="tab-import-phrase"></ion-nav-view>
-      </ion-tab>
-
-      <ion-tab title="File/Text" ui-sref="tabs.import.file">
-        <ion-nav-view name="tab-import-file"></ion-nav-view>
-      </ion-tab>
-
-      <ion-tab title="Hardware Wallet" ui-sref="tabs.import.hardware">
-        <ion-nav-view name="tab-import-hardware"></ion-nav-view>
-      </ion-tab>
+  <ion-content ng-controller="importController" ng-init="phrase = true; init()">
+    <div class="row text-center">
+      <div class="col" ng-click="phrase = true; file = hardware = false" ng-style="phrase && {'border-bottom': '2px solid'}">
+        <span translate>Recovery phrase</span>
+      </div>
+      <div class="col" ng-click="file = true; phrase = hardware = false" ng-style="file && {'border-bottom': '2px solid'}">
+        <span translate>File/Text</span>
+      </div>
+      <div class="col" ng-click="hardware = true; phrase = file = false" ng-style="hardware && {'border-bottom': '2px solid'}">
+        <span translate>Hardware wallet</span>
+      </div>
     </div>
 
-    <div ng-if="fromOnboarding">
-      <ion-tab title="Recovery Phrase" ui-sref="onboarding.import.phrase">
-        <ion-nav-view name="tab-import-phrase"></ion-nav-view>
-      </ion-tab>
-
-      <ion-tab title="File/Text" ui-sref="onboarding.import.file">
-        <ion-nav-view name="tab-import-file"></ion-nav-view>
-      </ion-tab>
-
-      <ion-tab title="Hardware Wallet" ui-sref="onboarding.import.hardware">
-        <ion-nav-view name="tab-import-hardware"></ion-nav-view>
-      </ion-tab>
-    </div>
-
-  </ion-tabs>
+    <div ng-include="'views/tab-import-phrase.html'" ng-if="phrase"></div>
+    <div ng-include="'views/tab-import-file.html'" ng-if="file"></div>
+    <div ng-include="'views/tab-import-hardware.html'" ng-if="hardware"></div>
+  </ion-content>
 </ion-view>
