@@ -1,5 +1,12 @@
 #onboarding-disclaimer {
   color: #fff;
+  height: 100%;
+  ion-content{
+    height: 100%;
+    .scroll{
+      height: 100%;
+    }
+  }
   .item {
     background: transparent;
     border: none;
