@@ -88,7 +88,7 @@
     "xcode": "^0.8.2"
   },
   "scripts": {
-    "preinstall": "bower install && cd app-template && node apply.js",
+    "preinstall": "bower install && npm i fs-extra && cd app-template && node apply.js",
     "postinstall": "npm run build",
     "build": "grunt",
     "start": "node app.js",
