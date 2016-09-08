@@ -1,6 +1,11 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('walletDetailsController', function($scope, $rootScope, $interval, $timeout, $filter, $log, $ionicModal, $ionicPopover, $ionicNavBarDelegate, $state, $stateParams, bwcError, profileService, lodash, configService, gettext, gettextCatalog, platformInfo, walletService, $ionicPopup, txpModalService, externalLinkService) {
+angular.module('copayApp.controllers').controller('walletDetailsController', function($scope, $rootScope, $interval, $timeout, $filter, $log, $ionicModal, $ionicPopover, $ionicNavBarDelegate, $state, $stateParams, profileService, lodash, configService, gettext, gettextCatalog, platformInfo, walletService, $ionicPopup, txpModalService, externalLinkService) {
+  var isCordova = platformInfo.isCordova;
+  var isWP = platformInfo.isWP;
+  var isAndroid = platformInfo.isAndroid;
+  var isChromeApp = platformInfo.isChromeApp;
+
   var HISTORY_SHOW_LIMIT = 10;
   var currentTxHistoryPage;
   var wallet;
@@ -65,14 +70,19 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
   $scope.updateStatus = function(force) {
     $scope.updatingStatus = true;
     $scope.updateStatusError = false;
+    $scope.walletNotRegistered = false;
 
     walletService.getStatus(wallet, {
       force: !!force,
     }, function(err, status) {
       $scope.updatingStatus = false;
       if (err) {
+        if (err === 'WALLET_NOT_REGISTERED') {
+          $scope.walletNotRegistered = true;
+        } else {
+          $scope.updateStatusError = true;
+        }
         $scope.status = null;
-        $scope.updateStatusError = true;
         return;
       }
 
@@ -140,7 +150,15 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
   };
 
   $scope.recreate = function() {
-    walletService.recreate();
+    walletService.recreate(wallet, function(err) {
+      $scope.init();
+      if (err) return;
+      $timeout(function() {
+        walletService.startScan(wallet, function() {
+          $scope.$apply();
+        });
+      });
+    });
   };
 
   $scope.updateTxHistory = function(cb) {
@@ -158,7 +176,6 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
       $timeout(function() {
         $scope.$apply();
       }, 1);
-
     };
 
     $timeout(function() {
