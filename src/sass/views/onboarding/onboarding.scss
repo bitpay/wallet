@@ -7,6 +7,7 @@
   background: -ms-linear-gradient(top, rgba(30, 49, 134, 1) 0%, rgba(17, 27, 73, 1) 100%);
   background: linear-gradient(to bottom, rgba(30, 49, 134, 1) 0%, rgba(17, 27, 73, 1) 100%);
   color: #fff;
+  height: 100%;
   .bar.bar-header {
     background: rgb(30, 49, 134);
     color: #fff;
@@ -20,6 +21,10 @@
     }
   }
   ion-content {
+    height: 100%;
+    .scroll{
+      height: 100%;
+    }
     color: #fff;
     h2, h3{color:#fff;}
     h2 {
