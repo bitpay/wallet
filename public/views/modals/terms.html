@@ -1,21 +1,21 @@
-<ion-view id="terms-of-use">
+<ion-modal-view id="terms-of-use">
   <ion-nav-bar class="bar-ligt">
     <ion-nav-title>{{'Terms of Use' | translate}}</ion-nav-title>
     <ion-nav-buttons side="primary">
-      <button class="button no-border" href ui-sref="onboarding.disclaimer">
-        <i class="icon ion-arrow-left-c"></i>
+      <button class="button no-border" ng-click="termsModal.hide()">
+        {{'Close' | translate}}
       </button>
     </ion-nav-buttons>
   </ion-nav-bar>
-  <ion-content ng-controller="termsController" ng-init="accept = false;">
+  <ion-content class="has-header">
     <div ng-include="'views/includes/terms.html'"></div>
     <div class="padding-vertical" ng-show="lang != 'en'">
       <a ng-click="openExternalLink(disclaimerUrl)" translate>Official English Disclaimer</a>
     </div>
     <div id="agree-to-terms">
-      <ion-checkbox ng-model="accept"></ion-checkbox>
+      <ion-checkbox ng-model="terms.accept3"></ion-checkbox>
       <p translate>I have read, understood, and agree with the <a ui-sref="onboarding.terms">Terms of use</a>.</p>
-      <button ng-disabled="!accept" class="button button-block button-positive" ng-click="confirm()" translate>Confirm & Finish</button>
+      <button ng-disabled="!terms.accept3" class="button button-block button-positive" ng-click="termsModal.hide(); confirm()" translate>Confirm & Finish</button>
     </div>
   </ion-content>
-</ion-view>
+</ion-modal-view>
