@@ -897,44 +897,6 @@ input[type=file] {
   font-size: 16px;
 }
 
-/*
- * Calculator
- */
-
-.calculator .header-calc {
-  position: absolute;
-  width: 100%;
-  text-align: center;
-}
-
-.calculator .button-calc {
-  position: absolute;
-  width: 100%;
-  bottom: 0;
-}
-
-.calculator .button-calc .row {
-  padding: 0 !important;
-}
-
-.calculator .button-calc .columns {
-  cursor: pointer;
-  text-align: center;
-}
-
-.calculator .button-calc .operator {
-  color: #2C3E50;
-  background-color: #eee;
-}
-
-.calculator .button-calc .columns:active {
-  background-color: #eee;
-}
-
-.calculator .button-calc .operator:active {
-  background-color: #f8f8f8;
-}
-
 // No looks likes locked
 input[type="number"] {
   &[readonly] {
@@ -994,7 +956,9 @@ input[type=number] {
 @import "forms";
 @import 'mixins/mixins';
 @import "views/add";
+@import "views/amount";
 @import "views/tab-home";
+@import "views/tab-send";
 @import "views/walletDetails";
 @import "views/bitpayCard";
 @import 'views/onboarding/onboarding';
