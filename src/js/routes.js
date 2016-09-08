@@ -282,11 +282,19 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
           },
         },
       })
-      .state('tabs.create', {
-        url: '/create',
+      .state('tabs.create-personal', {
+        url: '/create-personal',
         views: {
           'tab-home': {
-            templateUrl: 'views/create.html'
+            templateUrl: 'views/tab-create-personal.html'
+          },
+        }
+      })
+      .state('tabs.create-shared', {
+        url: '/create-shared',
+        views: {
+          'tab-home': {
+            templateUrl: 'views/tab-create-shared.html'
           },
         }
       })

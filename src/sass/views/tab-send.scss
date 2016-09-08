@@ -1,0 +1,14 @@
+#tab-send {
+  .bitcoin-address {
+    @media(max-width: 480px) {
+      input {
+        font-size: 12px;
+      }
+    }
+    .icon {
+      line-height: 31px;
+        padding-top: 2px;
+        padding-bottom: 1px;
+    }
+  }
+}

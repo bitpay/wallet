@@ -21,6 +21,10 @@
   padding-left: 74px;
 }
 
+.item-no-bottom-border + .item {
+    border-top: 0;
+}
+
 .icon.big-icon-svg {
   padding: 0 7px;
   > img {
@@ -30,7 +34,7 @@
     box-shadow: 0px 6px 12px 0px rgba(0, 0, 0, 0.3);
   }
 }
-.overlay{
+.overlay {
   position: absolute;
   top:0;
   left:0;
@@ -71,4 +75,8 @@ ion-header-bar{
   button{
     border:none;
   }
+}
+
+.border-top{
+  border-top:1px solid rgb(228,228,228);
 }

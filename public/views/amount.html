@@ -1,4 +1,4 @@
-<ion-view>
+<ion-view id="view-amount">
   <ion-nav-bar class="bar-royal">
     <ion-nav-buttons side="primary">
       <button class="button back-button" ng-click="$ionicGoBack()">
@@ -7,24 +7,26 @@
     </ion-nav-buttons>
   </ion-nav-bar>
 
-  <ion-content class="calculator" scroll="false" class="amount" ng-controller="amountController" ng-init="init()">
+  <ion-content scroll="false" class="amount" ng-controller="amountController" ng-init="init()">
 
-    <div class="card">
-      <div class="item item-divider" translate>Recipient</div>
+    <div>
+      <div class="item item-no-bottom-border" translate>Recipient</div>
 
-      <div class="item item-text-wrap item-icon-left">
+      <div class="item item-text-wrap item-icon-left bitcoin-address">
         <i class="icon ion-ios-person-outline"></i>
-        {{toName || toAddress}}
+        <span>{{toName || toAddress}}</span>
       </div>
     </div>
 
-    <div class="card">
-      <div class="item item-divider" translate>Amount</div>
+    <div class="amount-pane">
 
-      <div class="item item-text-wrap item-button-right">
+      <div class="amount-bar">
+        <div class="title" translate>Amount</div>
         <a class="postfix" ng-click="toggleAlternative()" ng-show="showAlternativeAmount">{{alternativeIsoCode}}</a>
         <a class="postfix" ng-click="toggleAlternative()" ng-show="!showAlternativeAmount">{{unitName}}</a>
+      </div>
 
+      <div class="amount">
         <div class="text-light text-black m15b" ng-class="{'size-28': smallFont, 'size-36': !smallFont}"><span>  {{amount || "0.00" }}</div>
         <div class="text-light text-black" ng-class="{'size-16': smallFont, 'size-17': !smallFont}" ng-show="!showAlternativeAmount">
           {{globalResult}} <span class="label gray text-white radius">{{amountResult || '0.00'}} {{alternativeIsoCode}}</span>
@@ -33,45 +35,42 @@
           {{globalResult}} <span class="label gray text-white radius">{{alternativeResult || '0.00'}} {{unitName}}</span>
         </div>
       </div>
+
     </div>
 
-    <div class="button-calc">
-      <div class="row m5b">
-        <button class="col columns col-25 text-center m0 operator" ng-click="resetAmount()">
-          AC
-        </button>
-        <button class="col columns text-center text-white m0"
-          ng-style="{'background-color':recipientColor || '#4b6178'}"
+    <div class="keypad">
+      <div class="row">
+        <div class="col col-25 col-offset-75 operator-send"
           ng-disabled="alternativeResult <= 0 && amountResult <= 0" ng-click="finish()">
-          OK
-        </button>
+          <i class="icon ion-ios-arrow-thin-right"></i>
+        </div>
       </div>
-      <div class="row text-center">
-        <div class="col columns" ng-click="pushDigit('7')">7</div>
-        <div class="col columns" ng-click="pushDigit('8')">8</div>
-        <div class="col columns" ng-click="pushDigit('9')">9</div>
-        <div class="col columns operator" ng-click="pushOperator('/')">/</div>
-      </div>
-
-      <div class="row text-center">
-        <div class="col columns" ng-click="pushDigit('4')">4</div>
-        <div class="col columns" ng-click="pushDigit('5')">5</div>
-        <div class="col columns" ng-click="pushDigit('6')">6</div>
-        <div class="col columns operator" ng-click="pushOperator('x')">x</div>
+      <div class="row">
+        <div class="col digit" ng-click="pushDigit('7')">7</div>
+        <div class="col digit" ng-click="pushDigit('8')">8</div>
+        <div class="col digit" ng-click="pushDigit('9')">9</div>
+        <div class="col operator" ng-click="pushOperator('/')">/</div>
       </div>
 
-      <div class="row text-center">
-        <div class="col columns" ng-click="pushDigit('1')">1</div>
-        <div class="col columns" ng-click="pushDigit('2')">2</div>
-        <div class="col columns" ng-click="pushDigit('3')">3</div>
-        <div class="col columns operator" ng-click="pushOperator('+')">+</div>
+      <div class="row">
+        <div class="col digit" ng-click="pushDigit('4')">4</div>
+        <div class="col digit" ng-click="pushDigit('5')">5</div>
+        <div class="col digit" ng-click="pushDigit('6')">6</div>
+        <div class="col operator" ng-click="pushOperator('x')">x</div>
       </div>
 
-      <div class="row text-center">
-        <div class="col columns operator" ng-click="pushDigit('.')">.</div>
-        <div class="col columns" ng-click="pushDigit('0')">0</div>
-        <div class="col columns operator icon ion-arrow-left-a" ng-click="removeDigit()"></div>
-        <div class="col columns operator" ng-click="pushOperator('-')">-</div>
+      <div class="row">
+        <div class="col digit" ng-click="pushDigit('1')">1</div>
+        <div class="col digit" ng-click="pushDigit('2')">2</div>
+        <div class="col digit" ng-click="pushDigit('3')">3</div>
+        <div class="col operator" ng-click="pushOperator('+')">+</div>
+      </div>
+
+      <div class="row">
+        <div class="col digit" ng-click="pushDigit('.')">.</div>
+        <div class="col digit" ng-click="pushDigit('0')">0</div>
+        <div class="col digit icon ion-backspace-outline" ng-click="removeDigit()"></div>
+        <div class="col operator" ng-click="pushOperator('-')">-</div>
       </div>
     </div>
   </ion-content>

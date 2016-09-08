@@ -19,6 +19,11 @@
             <button class="outline white tiny round" translate>Tap to retry</button>
           </div>
 
+          <div class="m20t" ng-show="walletNotRegistered" ng-click='recreate()'>
+            <span class="size-12 db m10b" translate>This wallet is not registered at the given Bitcore Wallet Service (BWS). You can recreate it from the local information.</span>
+            <button class="outline white tiny round" translate>Recreate</button>
+          </div>
+
           <div ng-show="wallet.walletScanStatus == 'error'" ng-click='retryScan()'>
             <span translate>Scan status finished with error</span>
             <br><span translate>Tap to retry</span>
