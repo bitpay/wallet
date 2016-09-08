@@ -75,6 +75,16 @@
   }
 }
 
+@media (max-width: 400px){
+  .onboarding{
+    ion-content{
+      h2{
+        font-size: 1.2rem;
+      }
+    }
+  }
+}
+
 @import "terms-of-use";
 @import "onboard-welcome";
 @import "onboard-tour";
