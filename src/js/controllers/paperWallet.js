@@ -1,5 +1,5 @@
 angular.module('copayApp.controllers').controller('paperWalletController',
-  function($scope, $timeout, $log, $ionicModal, $ionicHistory, platformInfo, configService, profileService, $state, addressService, bitcore, ongoingProcess, txFormatService, $stateParams, walletService) {
+  function($scope, $timeout, $log, $ionicModal, $ionicHistory, popupService, gettextCatalog, platformInfo, configService, profileService, $state, addressService, bitcore, ongoingProcess, txFormatService, $stateParams, walletService) {
     var wallet = profileService.getWallet($stateParams.walletId);
     var rawTx;
 
@@ -26,7 +26,6 @@ angular.module('copayApp.controllers').controller('paperWalletController',
     };
 
     $scope.onData = function(data) {
-      $scope.error = null;
       $scope.scannedKey = data;
       $scope.isPkEncrypted = (data.substring(0, 2) == '6P');
     };
@@ -64,7 +63,6 @@ angular.module('copayApp.controllers').controller('paperWalletController',
     $scope.scanFunds = function() {
       $scope.privateKey = '';
       $scope.balanceSat = 0;
-      $scope.error = null;
 
       ongoingProcess.set('scanning', true);
       $timeout(function() {
@@ -72,7 +70,7 @@ angular.module('copayApp.controllers').controller('paperWalletController',
           ongoingProcess.set('scanning', false);
           if (err) {
             $log.error(err);
-            $scope.error = err.message || err.toString();
+            popupService.showAlert(gettextCatalog.getString('Error scanning funds:'), err || err.toString());
           } else {
             $scope.privateKey = privateKey;
             $scope.balanceSat = balance;
@@ -107,15 +105,14 @@ angular.module('copayApp.controllers').controller('paperWalletController',
     $scope.sweepWallet = function() {
       ongoingProcess.set('sweepingWallet', true);
       $scope.sending = true;
-      $scope.error = null;
 
       $timeout(function() {
         _sweepWallet(function(err, destinationAddress, txid) {
           ongoingProcess.set('sweepingWallet', false);
 
           if (err) {
-            $scope.error = err.message || err.toString();
             $log.error(err);
+            popupService.showAlert(gettextCatalog.getString('Error sweeping wallet:'), err || err.toString());
           } else {
             var type = walletService.getViewStatus(wallet, txp);
             $scope.openStatusModal(type, txp, function() {
