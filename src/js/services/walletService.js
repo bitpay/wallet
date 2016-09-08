@@ -861,7 +861,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     askPassword(wallet.name, gettext('Enter Spending Password'), function(password) {
       if (!password) return cb('no password');
       if (!wallet.checkPassword(password)) return cb('wrong password');
-      
+
 
       return cb(null, password);
     });
@@ -956,8 +956,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
 
               $rootScope.$emit('Local/TxAction', wallet.id);
               var type = root.getViewStatus(wallet, broadcastedTxp);
-              root.openStatusModal(type, broadcastedTxp, function() {
-              });
+              root.openStatusModal(type, broadcastedTxp, function() {});
 
               return cb(null, broadcastedTxp)
             });
@@ -965,8 +964,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
             $rootScope.$emit('Local/TxAction', wallet.id);
 
             var type = root.getViewStatus(wallet, signedTxp);
-            root.openStatusModal(type, signedTxp, function() {
-            });
+            root.openStatusModal(type, signedTxp, function() {});
             return cb(null, signedTxp);
           }
         });
@@ -1032,7 +1030,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
       try {
         keys = wallet.getKeys(password);
       } catch (e) {
-        return cb(err);
+        return cb(e);
       }
 
       return cb(null, keys);
