@@ -95,7 +95,10 @@ angular.module('copayApp.controllers').controller('backupController',
         if (val) {
           confirmBackupPopup.close();
           if ($stateParams.fromOnboarding) $state.go('onboarding.disclaimer');
-          else $state.go('tabs.home')
+          else {
+            $ionicHistory.clearHistory();
+            $state.go('tabs.home');
+          }
         } else {
           confirmBackupPopup.close();
           $scope.goToStep(1);

@@ -1,11 +1,27 @@
 angular.module('copayApp.controllers').controller('paperWalletController',
-  function($scope, $timeout, $log, $ionicModal, $ionicHistory, configService, profileService, $state, addressService, bitcore, ongoingProcess, txFormatService, $stateParams, walletService) {
-
+  function($scope, $timeout, $log, $ionicModal, $ionicHistory, platformInfo, configService, profileService, $state, addressService, bitcore, ongoingProcess, txFormatService, $stateParams, walletService) {
     var wallet = profileService.getWallet($stateParams.walletId);
     var rawTx;
 
+    $scope.init = function() {
+      $scope.wallet = wallet;
+      $scope.isCordova = platformInfo.isCordova;
+      $scope.needsBackup = wallet.needsBackup;
+      $scope.walletAlias = wallet.name;
+      $scope.walletName = wallet.credentials.walletName;
+      $scope.formData = {};
+      $scope.formData.inputData = null;
+      $scope.scannedKey = null;
+      $scope.balance = null;
+      $scope.balanceSat = null;
+      $scope.scanned = false;
+      $timeout(function() {
+        $scope.$apply();
+      }, 10);
+    };
+
     $scope.onQrCodeScanned = function(data) {
-      $scope.inputData = data;
+      $scope.formData.inputData = data;
       $scope.onData(data);
     };
 
@@ -62,6 +78,7 @@ angular.module('copayApp.controllers').controller('paperWalletController',
             $scope.balanceSat = balance;
             var config = configService.getSync().wallet.settings;
             $scope.balance = txFormatService.formatAmount(balance) + ' ' + config.unitName;
+            $scope.scanned = true;
           }
 
           $scope.$apply();
@@ -125,5 +142,4 @@ angular.module('copayApp.controllers').controller('paperWalletController',
         $scope.txStatusModal.show();
       });
     };
-
   });
