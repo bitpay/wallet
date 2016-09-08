@@ -4,6 +4,8 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
 
   var self = $scope.self;
   var fc = profileService.focusedClient;
+  var walletId = fc.credentials.walletId;
+  var defaults = configService.getDefaults();
   var config = configService.getSync();
   var configWallet = config.wallet;
   var walletSettings = configWallet.settings;
@@ -93,5 +95,8 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
   $scope.cancel = function() {
     $scope.txDetailsModal.hide();
   };
+
+  var txurl = (config.txFor && config.txFor[walletId]) || defaults.tx.url;
+  $scope.txurl = $scope.txurl.replace(/\$\{txid\}/gi, $scope.btx.txid);
 
 });

@@ -428,6 +428,18 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
 
         }
       })
+      .state('preferencesTxUrl', {
+        url: '/preferencesTxUrl',
+        templateUrl: 'views/preferencesTxUrl.html',
+        walletShouldBeComplete: true,
+        needProfile: true,
+        views: {
+          'main': {
+            templateUrl: 'views/preferencesTxUrl.html'
+          },
+
+        }
+      })
       .state('preferencesHistory', {
         url: '/preferencesHistory',
         templateUrl: 'views/preferencesHistory.html',
