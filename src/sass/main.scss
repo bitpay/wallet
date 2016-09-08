@@ -772,6 +772,10 @@ ul.wallet-selection.wallets {
   margin: 30px 0;
 }
 
+.m15v {
+  margin: 15px 0;
+}
+
 .m10h {
   margin: 0 10px;
 }
@@ -995,7 +999,9 @@ input[type=number] {
 @import 'mixins/mixins';
 @import "views/add";
 @import "views/tab-home";
+@import "views/tab-receive";
 @import "views/walletDetails";
 @import "views/bitpayCard";
 @import 'views/onboarding/onboarding';
 @import "views/includes/walletActivity";
+@import "views/includes/wallets";
