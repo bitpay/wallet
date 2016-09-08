@@ -17,7 +17,7 @@
       @include center-block();
     }
     .logo {
-      margin-top: 13rem;
+      margin-top: 20rem;
     }
     button {
       @include center-block(1rem);
@@ -29,6 +29,44 @@
       &.restore {
         background: none;
       }
+    }
+    #cta-buttons {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      button {
+        max-width: 400px;
+        min-width: 300px;
+      }
+    }
+  }
+}
+
+@media (max-width:500px), (max-height:800px) {
+  #onboard-welcome {
+    ion-content {
+      .logo {
+        margin-top: 12rem;
+      }
+    }
+  }
+}
+
+@media (max-width:420px) {
+  #onboard-welcome {
+    ion-content {
+      .logo {
+        margin-top: 8rem;
+      }
+    }
+  }
+}
+
+@media (max-height:608px) {
+  #onboard-welcome {
+    #cta-buttons {
+      position: relative !important;
+      float: left;
     }
   }
 }
