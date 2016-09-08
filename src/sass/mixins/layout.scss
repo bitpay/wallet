@@ -2,3 +2,7 @@
   float:none;
   margin: $topBottom auto;
 }
+
+.center-block{
+  @include center-block();
+}
