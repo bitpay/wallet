@@ -10,6 +10,8 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
   root.SOFT_CONFIRMATION_LIMIT = 12;
   root.SAFE_CONFIRMATIONS = 6;
 
+  var errors = bwcService.getErrors();
+
   // UI Related
   root.openStatusModal = function(type, txp, cb) {
     var scope = $rootScope.$new(true);
@@ -175,6 +177,9 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
         twoStep: true
       }, function(err, ret) {
         if (err) {
+          if (err instanceof errors.NOT_AUTHORIZED) {
+            return cb('WALLET_NOT_REGISTERED');
+          }
           return cb(bwcError.msg(err, gettext('Could not update Wallet')));
         }
         return cb(null, ret);
@@ -296,7 +301,6 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
   };
 
   var getSavedTxs = function(walletId, cb) {
-
     storageService.getTxHistory(walletId, function(err, txs) {
       if (err) return cb(err);
 
@@ -671,41 +675,30 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     });
   };
 
-  // walletHome
   root.recreate = function(wallet, cb) {
+    $log.debug('Recreating wallet:', wallet.id);
     ongoingProcess.set('recreating', true);
     wallet.recreateWallet(function(err) {
       wallet.notAuthorized = false;
       ongoingProcess.set('recreating', false);
-
-      if (err) {
-        handleError(err);
-        return;
-      }
-      root.startScan(wallet);
-
-      // TODO TODO TODO TODO:
-      //  Do it on the controller
-      // profileService.bindWalletClient(wallet, {
-      //   force: true
-      // });
+      return cb(err);
     });
   };
 
-  root.startScan = function(wallet) {
-    $log.debug('Scanning wallet ' + wallet.credentials.walletId);
+  root.startScan = function(wallet, cb) {
+    cb = cb || function() {};
+
+    $log.debug('Scanning wallet ' + wallet.id);
     if (!wallet.isComplete()) return;
 
-    //      wallet.updating = true;
-
+    wallet.updating = true;
+    ongoingProcess.set('scanning', true);
     wallet.startScan({
       includeCopayerBranches: true,
     }, function(err) {
-
-      if (err && wallet.walletId == walletId) {
-        wallet.updating = false;
-        handleError(err);
-      }
+      wallet.updating = false;
+      ongoingProcess.set('scanning', false);
+      return cb(err);
     });
   };
 
@@ -861,7 +854,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     askPassword(wallet.name, gettext('Enter Spending Password'), function(password) {
       if (!password) return cb('no password');
       if (!wallet.checkPassword(password)) return cb('wrong password');
-      
+
 
       return cb(null, password);
     });
@@ -956,8 +949,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
 
               $rootScope.$emit('Local/TxAction', wallet.id);
               var type = root.getViewStatus(wallet, broadcastedTxp);
-              root.openStatusModal(type, broadcastedTxp, function() {
-              });
+              root.openStatusModal(type, broadcastedTxp, function() {});
 
               return cb(null, broadcastedTxp)
             });
@@ -965,8 +957,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
             $rootScope.$emit('Local/TxAction', wallet.id);
 
             var type = root.getViewStatus(wallet, signedTxp);
-            root.openStatusModal(type, signedTxp, function() {
-            });
+            root.openStatusModal(type, signedTxp, function() {});
             return cb(null, signedTxp);
           }
         });
