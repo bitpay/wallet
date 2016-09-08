@@ -1,5 +1,5 @@
 <ion-view id="onboarding-disclaimer" class="onboarding">
-  <ion-content ng-controller="disclaimerController" ng-init="accept1 = accept2 = accept3 = false">
+  <ion-content ng-controller="disclaimerController" ng-init=init()>
     <div class="row text-center">
       <h3 translate class="col-75 col">Almost done! Let's review</h3>
     </div>
@@ -12,9 +12,10 @@
       <ion-checkbox ng-model="accept1"><span translate>I understand my funds are held securely on this device, not by a company.</span></ion-checkbox>
       <ion-checkbox ng-model="accept2"><span translate>I understand if this wallet is lost or deleted, my bitcoin can only be recovered with the backup phrase.</span></ion-checkbox>
     </ion-list>
-    <div id="agree-to-terms" ng-if="accept1&&accept2">
-      <ion-checkbox ng-model="accept3"></ion-checkbox><p translate>I have read, understood, and agree with the <a ui-sref="onboarding.terms" translate>Terms of use</a>.</p>
-      <button ng-disabled="!accept1 || !accept2 || !accept3" class="button button-block button-positive" ng-click="confirm()" translate>Confirm & Finish</button>
+    <div id="agree-to-terms" ng-if="accept1 && accept2">
+      <ion-checkbox ng-model="terms.accept3"></ion-checkbox>
+      <p translate>I have read, understood, and agree with the <a ng-click="openTermsModal()" translate>Terms of use</a>.</p>
+      <button ng-disabled="!accept1 || !accept2 || !terms.accept3" class="button button-block button-positive" ng-click="confirm()" translate>Confirm & Finish</button>
     </div>
   </ion-content>
 </ion-view>
