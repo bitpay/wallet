@@ -42,7 +42,8 @@
   }
 }
 
-@media (max-width:500px), (max-height:800px) {
+@media (max-width:500px),
+(max-height:800px) {
   #onboard-welcome {
     ion-content {
       .logo {
@@ -62,7 +63,7 @@
   }
 }
 
-@media (max-height:608px) {
+@media (max-height:550px) {
   #onboard-welcome {
     #cta-buttons {
       position: relative !important;
