@@ -1,0 +1,88 @@
+#view-amount {
+  @media(max-width: 480px) {
+    .bitcoin-address {
+      .icon {
+        left: 8px;
+        font-size: 24px;
+      }
+      font-size: 11px;
+      padding-left: 48px;
+    }
+  }
+
+  .amount-pane {
+    position: absolute;
+    top: 125px;
+    bottom: 0;
+    width: 100%;
+    background-color: #fff;
+    padding: 0 16px;
+
+    .amount-bar {
+      padding: 24px 0;
+      font-size: 18px;
+      .title {
+        float: left;
+        padding-top: 10px;
+      }
+    }
+    .amount {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      flex-grow: 1;
+      position: absolute;
+      bottom: 254px;
+      top: 66px;
+    }
+  }
+
+  .keypad {
+    text-align: center;
+    font-size: 24px;
+    font-weight: lighter;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+
+    .row {
+      padding: 0 !important;
+      margin: 0 !important;
+    }
+
+    .col {
+      line-height: 40px;
+    }
+
+    .operator {
+      background-color: #eaeaea;
+      font-weight: normal;
+      cursor: pointer;
+
+      &:active {
+        background-color: #f8f8f8;
+      }
+    }
+
+    .operator-send {
+      font-weight: bolder;
+      background-color: #f7f7f7;
+      font-size: 36px;
+      cursor: pointer;
+
+      &:active {
+        background-color: #eaeaea;
+      }
+    }
+
+    .digit{
+      cursor: pointer;
+      border-top: 1px solid #eaeaea;
+      border-left: 1px solid #eaeaea;
+      &:active {
+        background-color: #eaeaea;
+      }
+    }
+
+  }
+}
