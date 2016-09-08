@@ -23,7 +23,7 @@ angular.module('copayApp.controllers').controller('createController',
       12: 1,
     };
 
-    $scope.init = function() {
+    $scope.init = function(tc) {
       $scope.formData = {};
       var defaults = configService.getDefaults();
       $scope.formData.account = 1;
@@ -31,9 +31,9 @@ angular.module('copayApp.controllers').controller('createController',
       $scope.TCValues = lodash.range(2, defaults.limits.totalCopayers + 1);
       $scope.formData.totalCopayers = defaults.wallet.totalCopayers;
       $scope.formData.derivationPath = derivationPathHelper.default;
-      $scope.setTotalCopayers(1);
-      updateRCSelect(1);
-      updateSeedSourceSelect(1);
+      $scope.setTotalCopayers(tc);
+      updateRCSelect(tc);
+      updateSeedSourceSelect(tc);
     };
 
     $scope.showAdvChange = function() {

@@ -1,88 +1,100 @@
-<form name="setupForm" ng-submit="create(setupForm)" novalidate>
-  <div class="card list">
-    <label class="item item-input item-stacked-label">
-      <span class="input-label" translate>Wallet name</span>
-      <input type="text"
-             placeholder="{{'Family vacation funds'|translate}}"
-             ng-model="formData.walletName"
-             ng-required="true"
-             ng-focus="formFocus('wallet-name')"
-             ng-blur="formFocus(false)">
-    </label>
+<ion-view>
+  <ion-nav-bar class="bar-royal">
+    <ion-nav-title>{{'Create Personal Wallet' | translate}}</ion-nav-title>
+    <ion-nav-back-button>
+      <i class="icon ion-ios-arrow-thin-left"></i>
+    </ion-nav-back-button>
+  </ion-nav-bar>
 
-    <ion-toggle ng-model="showAdv" toggle-class="toggle-stable" ng-change="showAdvChange()">
-      <span translate ng-show="!showAdv">Show advanced options</span>
-      <span translate ng-show="showAdv">Hide advanced options</span>
-    </ion-toggle>
+  <ion-content ng-controller="createController" ng-init="init(1);">
+    <form name="setupForm" ng-submit="create(setupForm)" novalidate>
+      <div class="card list">
+        <label class="item item-input item-stacked-label">
+          <span class="input-label" translate>Wallet name</span>
+          <input type="text"
+          placeholder="{{'Family vacation funds'|translate}}"
+          ng-model="formData.walletName"
+          ng-required="true"
+          ng-focus="formFocus('wallet-name')"
+          ng-blur="formFocus(false)">
+        </label>
 
-    <div ng-show="showAdv">
-      <label class="item item-input item-stacked-label">
-        <span class="input-label">Wallet Service URL</span>
-        <input type="text" ng-model="formData.bwsurl" placeholder="https://bws.bitpay.com/bws/api">
-      </label>
+        <ion-toggle ng-model="showAdv" toggle-class="toggle-stable" ng-change="showAdvChange()">
+          <span translate ng-show="!showAdv">Show advanced options</span>
+          <span translate ng-show="showAdv">Hide advanced options</span>
+        </ion-toggle>
 
-      <label class="item item-input item-select">
-        <div class="input-label" translate>
-          Wallet Key
-        </div>
-        <select class="m10t" ng-model="seedSource" ng-options="seed as seed.label for seed in seedOptions"></select>
-      </label>
+        <div ng-show="showAdv">
+          <label class="item item-input item-stacked-label">
+            <span class="input-label">Wallet Service URL</span>
+            <input type="text" ng-model="formData.bwsurl" placeholder="https://bws.bitpay.com/bws/api">
+          </label>
 
-      <label class="item item-input item-stacked-label" ng-show="seedSource.id == 'trezor' || seedSource.id == 'ledger'">
-        <span class="input-label" translate>Account Number</span>
-        <input type="number" ng-model="formData.account" ignore-mouse-wheel>
-      </label>
+          <label class="item item-input item-select">
+            <div class="input-label" translate>
+              Wallet Key
+            </div>
+            <select class="m10t" ng-model="seedSource" ng-options="seed as seed.label for seed in seedOptions"></select>
+          </label>
 
-      <div class="card" ng-show="seedSource.id == 'new' && createPassphrase">
-        <div class="item item-text-wrap" translate>
-          WARNING: The password cannot be recovered. <b>Be sure to write it down</b>. The wallet can not be restored without the password.
-        </div>
-      </div>
+          <label class="item item-input item-stacked-label" ng-show="seedSource.id == 'trezor' || seedSource.id == 'ledger'">
+            <span class="input-label" translate>Account Number</span>
+            <input type="number" ng-model="formData.account" ignore-mouse-wheel>
+          </label>
 
-      <label class="item item-input item-stacked-label" ng-show="seedSource.id == 'new'">
-        <span class="input-label" translate>Add a Password</span>
-        <input type="text"
-               placeholder="{{'Add an optional password to secure the recovery phrase'|translate}}"
-               autocapitalize="off"
-               ng-model="formData.createPassphrase">
-      </label>
+          <div class="card" ng-show="seedSource.id == 'new' && createPassphrase">
+            <div class="item item-text-wrap" translate>
+              WARNING: The password cannot be recovered. <b>Be sure to write it down</b>. The wallet can not be restored without the password.
+            </div>
+          </div>
 
-      <label class="item item-input item-stacked-label" ng-show="seedSource.id == 'set'">
-        <span class="input-label" translate>Wallet Recovery Phrase</span>
-        <input placeholder="{{'Enter the recovery phrase (BIP39)'|translate}}"
-               autocapitalize="off"
-               type="text"
-               ng-model="formData.privateKey">
-      </label>
+          <label class="item item-input item-stacked-label" ng-show="seedSource.id == 'new'">
+            <span class="input-label" translate>Add a Password</span>
+            <input type="text"
+            placeholder="{{'Add an optional password to secure the recovery phrase'|translate}}"
+            autocapitalize="off"
+            ng-model="formData.createPassphrase">
+          </label>
 
-      <label class="item item-input item-stacked-label" ng-show="seedSource.id == 'set'">
-        <span class="input-label" translate>Password</span>
-        <input type="text"
-               placeholder="{{'The recovery phrase could require a password to be imported'|translate}}"
-               autocapitalize="off"
-               ng-model="formData.passphrase">
-      </label>
+          <label class="item item-input item-stacked-label" ng-show="seedSource.id == 'set'">
+            <span class="input-label" translate>Wallet Recovery Phrase</span>
+            <input placeholder="{{'Enter the recovery phrase (BIP39)'|translate}}"
+            autocapitalize="off"
+            type="text"
+            ng-model="formData.privateKey">
+          </label>
 
-      <label class="item item-input item-stacked-label" ng-show="seedSource.id == 'set'">
-        <span class="input-label" translate>Derivation Path</span>
-        <input type="text"
-               placeholder="{{'BIP32 path for address derivation'|translate}}"
-               ng-model="formData.derivationPath">
-      </label>
+          <label class="item item-input item-stacked-label" ng-show="seedSource.id == 'set'">
+            <span class="input-label" translate>Password</span>
+            <input type="text"
+            placeholder="{{'The recovery phrase could require a password to be imported'|translate}}"
+            autocapitalize="off"
+            ng-model="formData.passphrase">
+          </label>
 
-      <ion-toggle ng-show="seedSource.id == 'new'" ng-model="formData.testnetEnabled" toggle-class="toggle-positive">
-        <span translate>Testnet</span>
-      </ion-toggle>
+          <label class="item item-input item-stacked-label" ng-show="seedSource.id == 'set'">
+            <span class="input-label" translate>Derivation Path</span>
+            <input type="text"
+            placeholder="{{'BIP32 path for address derivation'|translate}}"
+            ng-model="formData.derivationPath">
+          </label>
 
-      <ion-toggle ng-model="formData.singleAddressEnabled" toggle-class="toggle-positive">
-        <span translate>Single Address Wallet</span>
-        <small translate>For audit purposes</small>
-      </ion-toggle>
+          <ion-toggle ng-show="seedSource.id == 'new'" ng-model="formData.testnetEnabled" toggle-class="toggle-positive">
+            <span translate>Testnet</span>
+          </ion-toggle>
 
-    </div> <!-- advanced -->
-  </div> <!-- list -->
+          <ion-toggle ng-model="formData.singleAddressEnabled" toggle-class="toggle-positive">
+            <span translate>Single Address Wallet</span>
+            <small translate>For audit purposes</small>
+          </ion-toggle>
 
-  <button type="submit" class="button button-block button-positive" ng-disabled="setupForm.$invalid">
-    <span translate>Create new wallet</span>
-  </button>
-</form>
+        </div> <!-- advanced -->
+      </div> <!-- list -->
+
+      <button type="submit" class="button button-block button-positive" ng-disabled="setupForm.$invalid">
+        <span translate>Create new wallet</span>
+      </button>
+    </form>
+  </ion-content>
+</ion-view>
+
