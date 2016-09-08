@@ -17,6 +17,11 @@ angular.module('copayApp.controllers').controller('confirmController', function(
 
 
   $scope.showDescriptionPopup = function() {
+
+    $scope.data = {
+      comment: null
+    };
+
     var commentPopup = $ionicPopup.show({
       templateUrl: "views/includes/note.html",
       title: gettextCatalog.getString('Set description'),
@@ -25,9 +30,9 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     $scope.commentPopupClose = function() {
       commentPopup.close();
     };
-    $scope.commentPopupSave = function(description) {
-      $log.debug('Saving description: ' + description);
-      $scope.description = description;
+    $scope.commentPopupSave = function() {
+      $log.debug('Saving description: ' + $scope.data.comment);
+      $scope.description = $scope.data.comment;
       commentPopup.close();
     };
   };

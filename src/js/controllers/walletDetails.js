@@ -144,7 +144,7 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
   };
 
   $scope.updateTxHistory = function(cb) {
-
+    if (!cb) cb = function() {};
     if ($scope.updatingTxHistory) return;
 
     $scope.updatingTxHistory = true;

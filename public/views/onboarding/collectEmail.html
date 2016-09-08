@@ -16,11 +16,9 @@
           <input type="email" id="email" name="email" ng-model="email" required></input>
         </label>
       </form>
-      <div class="text-center">
-        <button class="button button-back no-border" ng-click="onboardingMailSkip()">
-          {{'Skip' | translate}}
-        </button>
-      </div>
+      <button class="button button-block button-positive button-clear" ng-click="onboardingMailSkip()">
+        {{'Skip' | translate}}
+      </button>
     </div>
     <div class="overlay"></div>
   </ion-content>

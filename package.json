@@ -6,7 +6,7 @@
   "name": "bitpay",
   "description": "The BitPay Bitcoin Wallet",
   "author": "BitPay",
-  "version": "0.8.0",
+  "version": "0.10.0",
   "keywords": [
     "wallet",
     "copay",
@@ -16,14 +16,14 @@
   ],
   "main": "public/index.html",
   "window": {
-    "title": "Copay - A multisignature bitcoin wallet",
+    "title": "BitPay - The BitPay Bitcoin Wallet",
     "icon": "./public/img/icons/icon-256.png",
     "toolbar": false,
     "show": true,
     "visible": true,
     "resizable": true,
     "frame": true,
-    "width": 800,
+    "width": 400,
     "height": 600,
     "position": "center",
     "fullscreen": false
@@ -88,7 +88,7 @@
     "xcode": "^0.8.2"
   },
   "scripts": {
-    "preinstall": "bower install && cd app-template && ./apply.js",
+    "preinstall": "bower install && npm i fs-extra && cd app-template && node apply.js",
     "postinstall": "npm run build",
     "build": "grunt",
     "start": "node app.js",
