@@ -1,13 +1,15 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('tabSendController', function($scope, $ionicModal, $log, $timeout, addressbookService, profileService, lodash, $state, walletService, incomingData ) {
+angular.module('copayApp.controllers').controller('tabSendController', function($scope, $ionicModal, $log, $timeout, addressbookService, profileService, lodash, $state, walletService, incomingData) {
 
   var originalList;
 
   $scope.init = function() {
     originalList = [];
 
-    var wallets = profileService.getWallets({onlyComplete: true});
+    var wallets = profileService.getWallets({
+      onlyComplete: true
+    });
 
     lodash.each(wallets, function(v) {
       originalList.push({
@@ -29,13 +31,17 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
           label: v,
           address: k,
           getAddress: function(cb) {
-            return cb(null,k);
+            return cb(null, k);
           },
         });
       });
 
       originalList = originalList.concat(contacts);
       $scope.list = lodash.clone(originalList);
+
+      $timeout(function() {
+        $scope.$apply();
+      }, 1);
     });
   };
 
@@ -62,13 +68,16 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
   };
 
   $scope.goToAmount = function(item) {
-    item.getAddress(function(err,addr){
-      if (err|| !addr) {
+    item.getAddress(function(err, addr) {
+      if (err || !addr) {
         $log.error(err);
         return;
       }
-      $log.debug('Got toAddress:' +  addr + ' | ' + item.label)
-      return $state.transitionTo('send.amount', { toAddress: addr, toName: item.label})
+      $log.debug('Got toAddress:' + addr + ' | ' + item.label);
+      return $state.transitionTo('send.amount', {
+        toAddress: addr,
+        toName: item.label
+      })
     });
   };
 
