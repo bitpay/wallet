@@ -71,3 +71,12 @@
     }
   }
 }
+
+@media (max-height:460px){
+  #onboarding-disclaimer{
+    #agree-to-terms{
+      position: relative;
+      float:left;
+    }
+  }
+}
