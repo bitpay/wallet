@@ -1,6 +1,7 @@
 #walletDetails {
   .bar-header {
     border: 0;
+    background: none;
     .title, .button {
       color: #fff;
     }
@@ -12,13 +13,17 @@
   .amount {
     width: 100%;
     text-align: center;
-    padding: 2.5rem 1rem 1.5rem 1rem;
+    padding: 2rem 1rem 1.5rem 1rem;
     color: #fff;
-    height: 150px;
-    margin-bottom: 25px;
+    min-height: 115px;
+    margin-bottom: 10px;
 
     &-alternative {
-      line-height: 48px;
+      line-height: 36px;
+    }
+
+    strong {
+      line-height: 100%;
     }
   }
 }
