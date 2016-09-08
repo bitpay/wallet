@@ -1,0 +1,33 @@
+.wallets{
+  .slides{
+    .swiper-container{
+      width:75% !important;
+      overflow:visible;
+    }
+    .card{
+      padding: .7rem;
+      padding-left:.25rem;
+      padding-right:.25rem;
+      border-radius: .25rem;
+    }
+    .swiper-slide{
+      width:100% !important;
+      &.swiper-slide-prev, &.swiper-slide-next{
+        opacity: .2;
+      }
+      &.swiper-slide-prev{
+        left:-5%;
+      }
+      &.swiper-slide-next{
+        left:4%;
+      }
+      span{
+        float:right;
+        clear:both;
+      }
+    }
+  }
+  .swiper-pagination{
+    visibility: hidden;
+  }
+}
