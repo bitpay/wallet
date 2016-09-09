@@ -9,8 +9,13 @@
     font-size: 4.2rem;
   }
   .cta-buttons{
-    float:left;
+    float:none;
+    bottom:46px;
+    position: absolute;
     width:100%;
+    button{
+      max-width: 400px;
+    }
   }
 }
 

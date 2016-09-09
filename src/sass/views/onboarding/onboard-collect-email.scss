@@ -64,6 +64,19 @@
     }
   }
 }
+@media (min-width: 1000px){
+  #onboarding-collect-email{
+    #collect-email{
+      p, form{
+        max-width: 600px;
+        @include center-block();
+      }
+      form{
+        margin-top:.5rem;
+      }
+    }
+  }
+}
 
 @keyframes topBottom {
   0% {
