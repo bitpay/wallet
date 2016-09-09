@@ -10,8 +10,9 @@
   }
   .cta-buttons{
     width:100%;
-    float:left;
-    position: relative;
+    float:none;
+    position: absolute;
+    bottom: 0;
   }
 }
 
@@ -33,6 +34,9 @@
       float:none;
       bottom:0;
       position: absolute;
+      button{
+        max-width: 400px;
+      }
     }
   }
 }
@@ -41,6 +45,13 @@
     .cta-buttons{
       float:left;
       position: relative;
+    }
+  }
+}
+@media (min-height: 980px){
+  #onboarding-backup-request{
+    #arrow-down{
+      margin-top: 15rem;
     }
   }
 }
