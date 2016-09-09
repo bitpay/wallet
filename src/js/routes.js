@@ -741,19 +741,23 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
 
         $ionicPlatform.registerBackButtonAction(function(e) {
 
-          var fromDisclaimer = $ionicHistory.currentStateName().match(/disclaimer/) ? 'true' : '';
-          var fromTabs = $ionicHistory.currentStateName().match(/tabs/) ? 'true' : '';
+          var fromWelcome = $ionicHistory.currentStateName().match(/welcome/) ? true : false;
+          var matchHome = $ionicHistory.currentStateName().match(/home/) ? true : false;
+          var matchReceive = $ionicHistory.currentStateName().match(/receive/) ? true : false;
+          var matchSend = $ionicHistory.currentStateName().match(/send/) ? true : false;
+          var matchSettings = $ionicHistory.currentStateName().match(/settings/) ? true : false;
+          var fromTabs = matchHome | matchReceive | matchSend | matchSettings;
 
-          if ($rootScope.backButtonPressedOnceToExit || fromDisclaimer) {
-            ionic.Platform.exitApp();
-          } else if ($ionicHistory.backView() && !fromTabs) {
+          if ($ionicHistory.backView() && !fromTabs) {
             $ionicHistory.goBack();
+          } else if ($rootScope.backButtonPressedOnceToExit || fromWelcome) {
+            ionic.Platform.exitApp();
           } else {
             $rootScope.backButtonPressedOnceToExit = true;
             window.plugins.toast.showShortBottom(gettextCatalog.getString('Press again to exit'));
-            setInterval(function() {
+            $timeout(function() {
               $rootScope.backButtonPressedOnceToExit = false;
-            }, 5000);
+            }, 3000);
           }
           e.preventDefault();
         }, 101);
