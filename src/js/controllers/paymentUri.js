@@ -44,12 +44,21 @@ angular.module('copayApp.controllers').controller('paymentUriController',
       });
     };
 
+    var setAndStoreFocus = function(selectedWalletId, cb) {
+      var currentWalletId = profileService.focusedClient ? profileService.focusedClient.credentials.walletId : null;
+      if (currentWalletId && currentWalletId == selectedWalletId) return cb();
+      profileService.setAndStoreFocus(selectedWalletId, function() {
+        return cb();
+      });
+    };
+
     this.selectWallet = function(wid) {
       var self = this;
-      profileService.setAndStoreFocus(wid, function() {});
-      go.walletHome();
-      $timeout(function() {
-        $rootScope.$emit('paymentUri', self.bitcoinURI);
-      }, 1000);
+      setAndStoreFocus(wid, function() {
+        go.walletHome();
+        $timeout(function() {
+          $rootScope.$emit('paymentUri', self.bitcoinURI);
+        }, 1000);
+      });
     };
   });
