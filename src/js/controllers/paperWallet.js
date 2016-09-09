@@ -1,5 +1,5 @@
 angular.module('copayApp.controllers').controller('paperWalletController',
-  function($scope, $timeout, $log, $ionicModal, $ionicHistory, popupService, gettextCatalog, platformInfo, configService, profileService, $state, addressService, bitcore, ongoingProcess, txFormatService, $stateParams, walletService) {
+  function($scope, $timeout, $log, $ionicModal, $ionicHistory, popupService, gettextCatalog, platformInfo, configService, profileService, $state, bitcore, ongoingProcess, txFormatService, $stateParams, walletService) {
     var wallet = profileService.getWallet($stateParams.walletId);
     var rawTx;
 
@@ -85,7 +85,7 @@ angular.module('copayApp.controllers').controller('paperWalletController',
     };
 
     function _sweepWallet(cb) {
-      addressService.getAddress(wallet.credentials.walletId, true, function(err, destinationAddress) {
+      walletService.getAddress(wallet, true, function(err, destinationAddress) {
         if (err) return cb(err);
 
         wallet.buildTxFromPrivateKey($scope.privateKey, destinationAddress, null, function(err, tx) {
@@ -109,13 +109,12 @@ angular.module('copayApp.controllers').controller('paperWalletController',
       $timeout(function() {
         _sweepWallet(function(err, destinationAddress, txid) {
           ongoingProcess.set('sweepingWallet', false);
-
+          $scope.sending = false;
           if (err) {
             $log.error(err);
             popupService.showAlert(gettextCatalog.getString('Error sweeping wallet:'), err || err.toString());
           } else {
-            var type = walletService.getViewStatus(wallet, txp);
-            $scope.openStatusModal(type, txp, function() {
+            $scope.openStatusModal('broadcasted', function() {
               $ionicHistory.clearHistory();
               $state.go('tabs.home');
             });
@@ -125,15 +124,15 @@ angular.module('copayApp.controllers').controller('paperWalletController',
       }, 100);
     };
 
-    $scope.openStatusModal = function(type, txp, cb) {
+    $scope.openStatusModal = function(type, cb) {
+      $scope.tx = {};
+      $scope.tx.amountStr = $scope.balance;
       $scope.type = type;
-      $scope.tx = txFormatService.processTx(txp);
       $scope.color = wallet.backgroundColor;
       $scope.cb = cb;
 
       $ionicModal.fromTemplateUrl('views/modals/tx-status.html', {
-        scope: $scope,
-        animation: 'slide-in-up'
+        scope: $scope
       }).then(function(modal) {
         $scope.txStatusModal = modal;
         $scope.txStatusModal.show();
