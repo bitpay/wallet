@@ -14,25 +14,22 @@
     margin-top: 1rem;
     margin-bottom: 1rem;
   }
-  .collect-overlay, .bar-overlay {
-    animation-name: opacity;
-    animation-iteration-count: 1;
-    animation-timing-function: ease-in;
-    animation-duration: .2s;
-    animation-delay: .8s;
-    animation-fill-mode: forwards;
-    opacity: 0;
-  }
-  .collect-overlay{
-    top:-1px;
-  }
-  .bar-overlay{
-    background: rgba(0, 0, 0, 0.23);
-    .button-clear{
-      color:#fff;
-      min-width: 100%;
-    }
-  }
+  .collect-overlay {
+   animation-name: opacity;
+   animation-iteration-count: 1;
+   animation-timing-function: ease-in;
+   animation-duration: .2s;
+   animation-delay: .8s;
+   animation-fill-mode: forwards;
+   opacity: 0;
+   button {
+     position: absolute;
+     right: 11px;
+   }
+ }
+ .collect-overlay{
+   top:-1px;
+ }
   #collect-email {
     opacity: 1;
     background: #fff;
@@ -52,10 +49,7 @@
     label {
       background: rgba(200, 200, 200, 0.20);
       height: 3rem;
-      margin-top: 0;
-      input {
-        position: absolute;
-      }
+      margin-top:0;
       i {
         position: absolute;
         right: 3%;
