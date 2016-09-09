@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('backupController',
-  function($rootScope, $scope, $timeout, $log, $state, $stateParams, $ionicPopup, $ionicNavBarDelegate, uxLanguage, lodash, fingerprintService, platformInfo, configService, profileService, bwcService, walletService, ongoingProcess, storageService) {
+  function($rootScope, $scope, $timeout, $log, $state, $stateParams, $ionicPopup, $ionicNavBarDelegate, uxLanguage, lodash, fingerprintService, platformInfo, configService, profileService, bwcService, walletService, ongoingProcess, storageService, popupService, gettextCatalog) {
     var wallet = profileService.getWallet($stateParams.walletId);
     $ionicNavBarDelegate.title(wallet.credentials.walletName);
     $scope.n = wallet.n;
@@ -87,24 +87,29 @@ angular.module('copayApp.controllers').controller('backupController',
     };
 
     var openPopup = function() {
-      var confirmBackupPopup = $ionicPopup.show({
-        templateUrl: "views/includes/confirmBackupPopup.html",
-        scope: $scope,
-      });
 
-      $scope.closePopup = function(val) {
-        if (val) {
+      if ($scope.backupError) {
+        var title = gettextCatalog.getString('uh oh...');
+        var message = gettextCatalog.getString("It's importante that you write your backup phrase down correctly. If something happens to your wallet, you'll need this backup to recover your money Please review your backup and try again");
+        popupService.showAlert(title, message, function() {
+          $scope.goToStep(1);
+        })
+      }
+      else {
+        var confirmBackupPopup = $ionicPopup.show({
+          templateUrl: "views/includes/confirmBackupPopup.html",
+          scope: $scope,
+        });
+
+        $scope.closePopup = function() {
           confirmBackupPopup.close();
           if ($stateParams.fromOnboarding) $state.go('onboarding.disclaimer');
           else {
             $ionicHistory.clearHistory();
-            $state.go('tabs.home');
+            $state.go('tabs.home')
           }
-        } else {
-          confirmBackupPopup.close();
-          $scope.goToStep(1);
-        }
-      };
+        };
+      }
     }
 
     var confirm = function(cb) {
