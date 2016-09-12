@@ -8,9 +8,9 @@ angular.module('copayApp.controllers').controller('tabReceiveController', functi
     $scope.wallets = profileService.getWallets({
       onlyComplete: true
     });
-    $scope.isCordova = platformInfo.isCordova;
     $scope.isNW = platformInfo.isNW;
-    $scope.checkTips();
+    $scope.isCordova = platformInfo.isCordova;
+    if (!$scope.isCordova) $scope.checkTips();
   }
 
   $scope.checkTips = function() {
