@@ -17,9 +17,9 @@
     </div>
 
     <div class="card" ng-if="list[0]">
-      <div class="item item-heading item-icon-right">
+      <div class="item item-heading item-icon-right" ui-sref="tabs.addressbook">
         <span translate>Contacts & Wallets</span>
-        <i class="icon ion-person-add" ng-click="openAddressbookModal()"></i>
+        <i class="icon nav-item-arrow-right"></i>
       </div>
       <div class="item text-center" ng-show="!list[0]" translate>No Wallet - Contact</div>
       <a class="item item-icon-left" ng-repeat="item in list" ng-click="goToAmount(item)">
