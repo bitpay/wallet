@@ -5,7 +5,7 @@ angular.module('copayApp.controllers').controller('preferencesBitpayCardControll
 
     $scope.logout = function() {
       var title = 'Are you sure you would like to log out of your Bitpay Card account?';
-      popupService.showConfirm(title, null, function(res) {
+      popupService.showConfirm(title, null, null, null, function(res) {
         if (res) logout();
       });
     };

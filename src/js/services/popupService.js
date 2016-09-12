@@ -10,14 +10,19 @@ angular.module('copayApp.services').service('popupService', function($log, $ioni
     if (!cb) cb = function() {};
     $ionicPopup.alert({
       title: title,
-      template: message
+      template: message,
+      okType: 'button-clear button-positive'
     }).then(cb);
   };
 
-  var _ionicConfirm = function(title, message, cb) {
+  var _ionicConfirm = function(title, message, okText, cancelText, cb) {
     $ionicPopup.confirm({
       title: title,
-      template: message
+      template: message,
+      cancelText: cancelText,
+      cancelType: 'button-clear button-positive',
+      okText: okText,
+      okType: 'button-clear button-positive'
     }).then(function(res) {
       return cb(res);
     });
@@ -42,16 +47,16 @@ angular.module('copayApp.services').service('popupService', function($log, $ioni
     navigator.notification.alert(message, cb, title);
   };
 
-  var _cordovaConfirm = function(title, message, cb) {
-    var onConfirm = function (buttonIndex) {
+  var _cordovaConfirm = function(title, message, okText, cancelText, cb) {
+    var onConfirm = function(buttonIndex) {
       if (buttonIndex == 1) return cb(true);
       else return cb(false);
     }
-    navigator.notification.confirm(message, onConfirm, title);
+    navigator.notification.confirm(message, onConfirm, title, [okText, cancelText]);
   };
 
   var _cordovaPrompt = function(title, message, cb) {
-    var onPrompt = function (results) {
+    var onPrompt = function(results) {
       if (results.buttonIndex == 1) return cb(results.input1);
       else return cb();
     }
@@ -81,17 +86,19 @@ angular.module('copayApp.services').service('popupService', function($log, $ioni
    *
    * @param {String} Title
    * @param {String} Message
+   * @param {String} okText
+   * @param {String} cancelText
    * @param {Callback} Function
    * @returns {Callback} OK: true, Cancel: false
    */
 
-  this.showConfirm = function(title, message, cb) {
+  this.showConfirm = function(title, message, okText, cancelText, cb) {
     $log.warn(title + ": " + message);
 
     if (isCordova)
-      _cordovaConfirm(title, message, cb);
+      _cordovaConfirm(title, message, okText, cancelText, cb);
     else
-      _ionicConfirm(title, message, cb);
+      _ionicConfirm(title, message, okText, cancelText, cb);
   };
 
   /**
