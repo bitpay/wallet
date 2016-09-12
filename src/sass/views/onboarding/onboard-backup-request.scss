@@ -8,4 +8,50 @@
   #arrow-down{
     font-size: 4.2rem;
   }
+  .cta-buttons{
+    width:100%;
+    float:none;
+    position: absolute;
+    bottom: 0;
+  }
+}
+
+@media (max-width: 400px){
+  #onboarding-backup-request{
+    .warning{
+      margin: 2rem auto 1rem;
+      height: 8rem;
+    }
+    h3{
+      font-size:1.3rem;
+    }
+    p{
+      font-size:.9rem;
+      max-width: 80%;
+      flex: 0 0 80%;
+    }
+    .cta-buttons{
+      float:none;
+      bottom:0;
+      position: absolute;
+      button{
+        max-width: 400px;
+      }
+    }
+  }
+}
+@media (max-height: 540px){
+  #onboarding-backup-request{
+    .cta-buttons{
+      float:left;
+      position: relative;
+    }
+  }
+}
+@media (min-height: 980px){
+  #onboarding-backup-request{
+    #arrow-down{
+      margin-top: 15rem;
+    }
+  }
 }
