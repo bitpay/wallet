@@ -1,88 +1,68 @@
-<ion-view id="wallet-backup-phrase" title="Backup Phrase">
+<ion-view id="wallet-backup-phrase" title="{{viewTitle}}" ng-controller="backupController" ng-init="init()">
   <ion-nav-bar class="bar-royal">
     <ion-nav-back-button>
       <i class="icon ion-ios-arrow-thin-left"></i>
     </ion-nav-back-button>
   </ion-nav-bar>
-
-  <ion-content ng-controller="backupController" ng-init="init()">
+  <ion-content>
     <div ng-show="deleted">
       <span translate>Wallet recovery phrase not available. You can still export it from Advanced &gt; Export.</span>
     </div>
-
-    <!--
+        <!--
     ## STEP 1
-    -->
-    <div ng-show="step == 1 && (mnemonicWords || (!credentialsEncrypted && !deleted))">
-      <div class="backup-phrase" ng-class="{'enable_text_select': wallet.network == 'testnet'}">
-        <span ng-repeat="word in mnemonicWords track by $index"><span style="white-space:nowrap">{{word}}</span><span ng-show="useIdeograms">&#x3000;</span> </span>
-      </div>
-      <div class="row text-center">
-        <p class="col col-70" translate>
-          Please carefully write down this phrase
-        </p>
-      </div>
-
-      <div ng-show="mnemonicHasPassphrase">
-        <i class="ion-alert-circled"></i>
-        <span translate>
-          This recovery phrase was created with a password. To recover this wallet both the recovery phrase and password are needed.
-        </span>
-      </div>
-        <div class="cta-buttons">
-          <button
-            ng-show="!deleted"
-            ng-disabled="credentialsEncrypted || error"
-            class="button button-block button-positive"
-            ng-click="goToStep(2);"
-            translate>I've written it down
-          </button>
-        </div>
+  -->
+  <div ng-show="step == 1 && (mnemonicWords || (!credentialsEncrypted && !deleted))">
+    <div class="backup-phrase" ng-class="{'enable_text_select': wallet.network == 'testnet'}">
+      <span ng-repeat="word in mnemonicWords track by $index"><span style="white-space:nowrap">{{word}}</span><span ng-show="useIdeograms">&#x3000;</span> </span>
     </div>
-
-      <!--
-      ## STEP 2
-      -->
-
-    <div ng-show="step == 2">
-      <h5 translate>Let's verify your backup phrase</h5>
-        <span ng-repeat="cword in customWords track by $index" ng-show="customWords[$index]">
-          <button class="button" ng-click="removeButton($index, cword)">{{cword.word}}</button>
-        </span>
-        <p translate>
-          Please tap the words in order to confirm your backup phrase is correctly written.
-        </p>
-        <span ng-repeat="shuffledWord in shuffledMnemonicWords track by $index">
-          <button class="button" ng-click="addButton($index, shuffledWord)"
-            ng-disabled="shuffledWord.selected">{{shuffledWord.word}}
-          </button>
-        </span>
-
-      <button
-        ng-show="selectComplete"
-        class="button button-block button-positive"
-        ng-click="goToStep(3);"
-        translate>Confirm
+    <div class="row text-center">
+      <p class="col col-70" translate>
+        Please carefully write down this phrase
+      </p>
+    </div>
+    <div ng-show="mnemonicHasPassphrase">
+      <i class="ion-alert-circled"></i>
+      <span translate>
+        This recovery phrase was created with a password. To recover this wallet both the recovery phrase and password are needed.
+      </span>
+    </div>
+    <div class="cta-buttons">
+      <button ng-show="!deleted" ng-disabled="credentialsEncrypted || error" class="button button-block button-positive" ng-click="goToStep(2);" translate>I've written it down
       </button>
     </div>
-
-      <!--
+  </div>
+        <!--
+      ## STEP 2
+    -->
+    <div ng-show="step == 2">
+      <div class="backup-phrase">
+        <span ng-repeat="cword in customWords track by $index" ng-show="customWords[$index]">
+        <button class="button select-word" ng-click="removeButton($index, cword)">{{cword.word}}</button>
+        </span>
+      </div>
+      <div id="select-phrase">
+        <p translate>
+          Please tap each word in the correct order.
+        </p>
+        <span ng-repeat="shuffledWord in shuffledMnemonicWords track by $index" ng-if="!selectComplete">
+          <button class="button select-word" ng-click="addButton($index, shuffledWord)"
+          ng-disabled="shuffledWord.selected">{{shuffledWord.word}}
+        </button>
+      </span>
+      <button ng-show="selectComplete" class="button button-block button-positive" ng-click="goToStep(3);" translate>Confirm</button>
+    </div>
+  </div>
+        <!--
       ## STEP 3
-      -->
-
+    -->
     <div ng-show="step == 3">
       <h5 translate>Enter your password</h5>
       <label class="item item-input item-stacked-label">
         <span class="input-label" transalate>In order to verify your wallet backup, please type your password:</span>
         <input type="text" id="passphrase" ng-model="passphrase" autocapitalize="off" spellcheck="false" autofocus/>
       </label>
-      <button
-        ng-disabled="!passphrase"
-        class="button button-block button-positive"
-        ng-click="goToStep(4);"
-        translate>Confirm
+      <button ng-disabled="!passphrase" class="button button-block button-positive" ng-click="goToStep(4);" translate>Confirm
       </button>
     </div>
-
   </ion-content>
 </ion-view>

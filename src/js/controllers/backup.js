@@ -47,7 +47,7 @@ angular.module('copayApp.controllers').controller('backupController',
 
     $scope.initFlow = function() {
       if (!keys) return;
-
+      $scope.viewTitle = "Backup Phrase";
       var words = keys.mnemonic;
 
       $scope.mnemonicWords = words.split(/[\u3000\s]+/);
@@ -158,8 +158,10 @@ angular.module('copayApp.controllers').controller('backupController',
     $scope.goToStep = function(n) {
       if (n == 1)
         $scope.initFlow();
-      if (n == 2)
+      if (n == 2){
         $scope.step = 2;
+        $scope.viewTitle = "Let's verify your backup phrase";
+      }
       if (n == 3) {
         if (!$scope.mnemonicHasPassphrase)
           finalStep();
