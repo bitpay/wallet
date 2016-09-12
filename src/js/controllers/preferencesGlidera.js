@@ -23,7 +23,9 @@ angular.module('copayApp.controllers').controller('preferencesGlideraController'
         }
         $scope.token = glidera.token;
         $scope.permissions = glidera.permissions;
-        $scope.update({fullUpdate: true});
+        $scope.update({
+          fullUpdate: true
+        });
       });
     };
 
@@ -62,7 +64,7 @@ angular.module('copayApp.controllers').controller('preferencesGlideraController'
     };
 
     $scope.revokeToken = function() {
-      popupService.showConfirm('Glidera', 'Are you sure you would like to log out of your Glidera account?', function(res) {
+      popupService.showConfirm('Glidera', 'Are you sure you would like to log out of your Glidera account?', null, null, function(res) {
         if (res) {
           glideraService.removeToken(function() {
             $timeout(function() {
