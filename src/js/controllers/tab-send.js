@@ -14,7 +14,7 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
     lodash.each(wallets, function(v) {
       originalList.push({
         color: v.color,
-        label: v.name,
+        name: v.name,
         isWallet: true,
         getAddress: function(cb) {
           walletService.getAddress(v, false, cb);
@@ -28,7 +28,7 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
       var contacts = [];
       lodash.each(ab, function(v, k) {
         contacts.push({
-          label: v,
+          name: lodash.isObject(v) ? v.name : v,
           address: k,
           getAddress: function(cb) {
             return cb(null, k);
@@ -60,7 +60,7 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
     }
 
     var result = lodash.filter(originalList, function(item) {
-      var val = item.label || item.alias || item.name;
+      var val = item.name;
       return lodash.includes(val.toLowerCase(), search.toLowerCase());
     });
 
@@ -73,10 +73,10 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
         $log.error(err);
         return;
       }
-      $log.debug('Got toAddress:' + addr + ' | ' + item.label);
+      $log.debug('Got toAddress:' + addr + ' | ' + item.name);
       return $state.transitionTo('send.amount', {
         toAddress: addr,
-        toName: item.label
+        toName: item.name
       })
     });
   };
