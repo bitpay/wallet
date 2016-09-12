@@ -276,6 +276,13 @@ angular.module('copayApp.services')
       storage.remove('nextStep-' + service, cb);
     };
 
+    root.setLastState = function(state, toParams, cb) {
+      storage.set('lastState', state, toParams, cb);
+    };
+
+    root.getLastState = function(cb) {
+      storage.get('lastState', cb);
+    };
 
     root.checkQuota = function() {
       var block = '';
