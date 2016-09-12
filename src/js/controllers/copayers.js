@@ -21,7 +21,7 @@ angular.module('copayApp.controllers').controller('copayersController',
     $scope.isCordova = platformInfo.isCordova;
 
     $scope.showDeletePopup = function() {
-      popupService.showConfirm(gettextCatalog.getString('Confirm'), gettextCatalog.getString('Are you sure you want to delete this wallet?'), function(res) {
+      popupService.showConfirm(gettextCatalog.getString('Confirm'), gettextCatalog.getString('Are you sure you want to delete this wallet?'), null, null, function(res) {
         if (res) deleteWallet();
       });
     };
