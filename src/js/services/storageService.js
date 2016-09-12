@@ -342,6 +342,14 @@ angular.module('copayApp.services')
       });
     };
 
+    root.setReceiveTipsAccepted = function(val, cb) {
+      storage.set('receiveTips', val, cb);
+    };
+
+    root.getReceiveTipsAccepted = function(cb) {
+      storage.get('receiveTips', cb);
+    };
+
     root.setAmazonGiftCards = function(network, gcs, cb) {
       storage.set('amazonGiftCards-' + network, gcs, cb);
     };
