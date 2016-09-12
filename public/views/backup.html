@@ -1,4 +1,4 @@
-<ion-view>
+<ion-view id="wallet-backup-phrase" title="Backup Phrase">
   <ion-nav-bar class="bar-royal">
     <ion-nav-back-button>
       <i class="icon ion-ios-arrow-thin-left"></i>
@@ -14,13 +14,14 @@
     ## STEP 1
     -->
     <div ng-show="step == 1 && (mnemonicWords || (!credentialsEncrypted && !deleted))">
-      <h5 translate>Backup Phrase</h5>
-      <div ng-class="{'enable_text_select': wallet.network == 'testnet'}">
+      <div class="backup-phrase" ng-class="{'enable_text_select': wallet.network == 'testnet'}">
         <span ng-repeat="word in mnemonicWords track by $index"><span style="white-space:nowrap">{{word}}</span><span ng-show="useIdeograms">&#x3000;</span> </span>
       </div>
-      <span translate>
-        Please carefully write down this phrase
-      </span>
+      <div class="row text-center">
+        <p class="col col-70" translate>
+          Please carefully write down this phrase
+        </p>
+      </div>
 
       <div ng-show="mnemonicHasPassphrase">
         <i class="ion-alert-circled"></i>
@@ -28,14 +29,15 @@
           This recovery phrase was created with a password. To recover this wallet both the recovery phrase and password are needed.
         </span>
       </div>
-
-        <button
-          ng-show="!deleted"
-          ng-disabled="credentialsEncrypted || error"
-          class="button button-block button-positive"
-          ng-click="goToStep(2);"
-          translate>I've written it down
-        </button>
+        <div class="cta-buttons">
+          <button
+            ng-show="!deleted"
+            ng-disabled="credentialsEncrypted || error"
+            class="button button-block button-positive"
+            ng-click="goToStep(2);"
+            translate>I've written it down
+          </button>
+        </div>
     </div>
 
       <!--
