@@ -25,6 +25,7 @@ angular.module('copayApp.controllers').controller('backupController',
 
       walletService.getKeys(wallet, function(err, k) {
         if (err || !k) {
+          $log.error('Could not get keys: ', err);
           $state.go('wallet.preferences');
           return;
         }
