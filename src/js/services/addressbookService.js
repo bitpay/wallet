@@ -3,12 +3,16 @@
 angular.module('copayApp.services').factory('addressbookService', function(bitcore, storageService, lodash) {
   var root = {};
 
-  root.getLabel = function(addr, cb) {
+  root.get = function(addr, cb) {
     storageService.getAddressbook('testnet', function(err, ab) {
-      if (ab && ab[addr]) return cb(ab[addr]);
+      if (err) return cb(err);
+      if (ab) ab = JSON.parse(ab);
+      if (ab && ab[addr]) return cb(null, ab[addr]);
 
-      storageService.getAddressbook('livnet', function(err, ab) {
-        if (ab && ab[addr]) return cb(ab[addr]);
+      storageService.getAddressbook('livenet', function(err, ab) {
+        if (err) return cb(err);
+        if (ab) ab = JSON.parse(ab);
+        if (ab && ab[addr]) return cb(null, ab[addr]);
         return cb();
       });
     });
@@ -38,7 +42,7 @@ angular.module('copayApp.services').factory('addressbookService', function(bitco
       ab = ab || {};
       if (lodash.isArray(ab)) ab = {}; // No array
       if (ab[entry.address]) return cb('Entry already exist');
-      ab[entry.address] = entry.label;
+      ab[entry.address] = entry;
       storageService.setAddressbook(network, JSON.stringify(ab), function(err, ab) {
         if (err) return cb('Error adding new entry');
         root.list(function(err, ab) {

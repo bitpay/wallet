@@ -490,6 +490,41 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         }
       })
 
+      /*
+       *
+       * Addressbook
+       *
+       */
+
+
+      .state('tabs.addressbook', {
+        url: '/addressbook',
+        views: {
+          'tab-settings': {
+            templateUrl: 'views/addressbook.html',
+            controller: 'addressbookListController'
+          }
+        }
+      })
+      .state('tabs.addressbook.add', {
+        url: '/addressbook/add',
+        views: {
+          'tab-settings@tabs': {
+            templateUrl: 'views/addressbook.add.html',
+            controller: 'addressbookAddController'
+          }
+        }
+      })
+      .state('tabs.addressbook.view', {
+        url: '/addressbook/view/:address',
+        views: {
+          'tab-settings@tabs': {
+            templateUrl: 'views/addressbook.view.html',
+            controller: 'addressbookViewController'
+          }
+        }
+      })
+
     /*
      *
      *TO DO

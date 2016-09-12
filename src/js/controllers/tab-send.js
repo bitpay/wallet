@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('tabSendController', function($scope, $ionicModal, $log, $timeout, addressbookService, profileService, lodash, $state, walletService, incomingData) {
+angular.module('copayApp.controllers').controller('tabSendController', function($scope, $log, $timeout, addressbookService, profileService, lodash, $state, walletService, incomingData ) {
 
   var originalList;
 
@@ -78,15 +78,6 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
         toAddress: addr,
         toName: item.label
       })
-    });
-  };
-
-  $scope.openAddressbookModal = function() {
-    $ionicModal.fromTemplateUrl('views/modals/addressbook.html', {
-      scope: $scope
-    }).then(function(modal) {
-      $scope.addressbookModal = modal;
-      $scope.addressbookModal.show();
     });
   };
 
