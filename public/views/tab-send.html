@@ -25,7 +25,7 @@
       <a class="item item-icon-left" ng-repeat="item in list" ng-click="goToAmount(item)">
         <i ng-show="item.isWallet" class="icon ion-briefcase size-21" ng-style="{'color':item.color}"></i>
         <i ng-show="!item.isWallet" class="icon ion-ios-person-outline"></i>
-        {{item.label}}
+        {{item.name}}
       </a>
     </div>
   </ion-content>
