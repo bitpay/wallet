@@ -342,6 +342,14 @@ angular.module('copayApp.services')
       });
     };
 
+    root.setScanTipsAccepted = function(val, cb) {
+      storage.set('scanTips', val, cb);
+    };
+
+    root.getScanTipsAccepted = function(cb) {
+      storage.get('scanTips', cb);
+    };
+
     root.setReceiveTipsAccepted = function(val, cb) {
       storage.set('receiveTips', val, cb);
     };

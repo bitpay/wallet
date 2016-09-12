@@ -5,7 +5,6 @@ angular.module('copayApp.controllers').controller('receiveTipsController', funct
     $log.debug('Receive tips accepted');
     storageService.setReceiveTipsAccepted(true, function(err) {
       $scope.receiveTipsModal.hide();
-      $scope.receiveTipsModal.remove();
     });
   }
 });
