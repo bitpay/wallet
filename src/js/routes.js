@@ -726,7 +726,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         }
       });
   })
-  .run(function($rootScope, $state, $location, $log, $timeout, $ionicHistory, $ionicPlatform, lodash, platformInfo, profileService, uxLanguage, gettextCatalog, openURLService) {
+  .run(function($rootScope, $state, $location, $log, $timeout, $ionicHistory, $ionicPlatform, lodash, platformInfo, profileService, uxLanguage, gettextCatalog, openURLService, storageService) {
 
     uxLanguage.init();
     openURLService.init();
@@ -782,10 +782,19 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         if (err) {
           if (err.message && err.message.match('NOPROFILE')) {
             $log.debug('No profile... redirecting');
-            $state.transitionTo('onboarding.welcome');
+            $state.go('onboarding.welcome');
           } else if (err.message && err.message.match('NONAGREEDDISCLAIMER')) {
             $log.debug('Display disclaimer... redirecting');
-            $state.transitionTo('onboarding.disclaimer');
+            storageService.getLastState(function(err, state) {
+              if (err && !state) {
+                $log.error(err);
+                $state.go('onboarding.disclaimer');
+              }
+              else {
+                var state = JSON.parse(state);
+                $state.go(state.name, state.toParams);
+              }
+            })
           } else {
             throw new Error(err); // TODO
           }
@@ -793,7 +802,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
           profileService.storeProfileIfDirty();
           $log.debug('Profile loaded ... Starting UX.');
 
-          $state.transitionTo('tabs.home');
+          $state.go('tabs.home');
         }
       });
     });
@@ -816,6 +825,9 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
       $log.debug('Route change from:', fromState.name || '-', ' to:', toState.name);
       $log.debug('            toParams:' + JSON.stringify(toParams || {}));
       $log.debug('            fromParams:' + JSON.stringify(fromParams || {}));
-
+      var state = {};
+      state.name = toState.name;
+      state.toParams = toParams;
+      storageService.setLastState(JSON.stringify(state), function() {});
     });
   });
