@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('scannerController', function($scope, $timeout, storageService, $ionicModal) {
+angular.module('copayApp.controllers').controller('scannerController', function($scope, $timeout, storageService, $ionicModal, platformInfo) {
 
   // QR code Scanner
   var video;
@@ -73,6 +73,12 @@ angular.module('copayApp.controllers').controller('scannerController', function(
   };
 
   $scope.init = function() {
+    if (platformInfo.isCordova) scannerInit();
+    else checkTips();
+  };
+
+  function checkTips() {
+    //TODO addapt tips to the new QR plugin (mobile)
     storageService.getScanTipsAccepted(function(err, accepted) {
       if (err) $log.warn(err);
       if (accepted) {
