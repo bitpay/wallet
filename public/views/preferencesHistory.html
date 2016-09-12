@@ -4,12 +4,12 @@
       <i class="icon ion-ios-arrow-thin-left"></i>
     </ion-nav-back-button>
   </ion-nav-bar>
-  <ion-content ng-controller="preferencesHistory" ng-init="index.updatingTxHistory ? null : csvHistory()">
+  <ion-content ng-controller="preferencesHistory" ng-init="csvHistory()">
     <div class="item item-divider"></div>
-    <div class="item" ng-show="csvReady && !index.isCordova" ng-csv="csvContent" csv-header="csvHeader" filename="Copay-{{wallet.name}}.csv">
+    <div class="item" ng-show="csvReady && !isCordova" ng-csv="csvContent" csv-header="csvHeader" filename="Copay-{{wallet.name}}.csv">
       <span translate>Export to file</span>
     </div>
-    <div class="item" ng-show="!csvReady && !index.isCordova">
+    <div class="item" ng-show="!csvReady && !isCordova">
       <span translate>Export to file</span>
       <span class="item-note" translate>
         preparing...
