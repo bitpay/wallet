@@ -1,0 +1,36 @@
+#wallet-backup-phrase {
+  &,
+  & ion-content,
+  & ion-content .scroll {
+    height: 100%;
+  }
+  background: #fff;
+  .backup-phrase {
+    background: rgba(246, 246, 246, 0.87);
+    padding: 1.5rem 1rem;
+    border: 2px dashed rgb(206, 206, 206);
+    width: 80%;
+    margin: 2rem auto;
+    color: rgb(43, 43, 43);
+    text-align: center;
+    span {
+      line-height: 2rem;
+      font-weight: bold;
+      max-width: 400px;
+      color: rgb(43, 43, 43);
+    }
+  }
+  p {
+    color: rgb(58, 58, 58);
+    font-weight: 200;
+  }
+  .cta-buttons {
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    bottom: 80px;
+    button {
+      max-width: 400px;
+    }
+  }
+}
