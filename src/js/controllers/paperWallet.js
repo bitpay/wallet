@@ -1,16 +1,31 @@
 angular.module('copayApp.controllers').controller('paperWalletController',
-  function($scope, $timeout, $log, $ionicModal, $ionicHistory, configService, profileService, $state, addressService, bitcore, ongoingProcess, txFormatService, $stateParams, walletService) {
-
+  function($scope, $timeout, $log, $ionicModal, $ionicHistory, popupService, gettextCatalog, platformInfo, configService, profileService, $state, bitcore, ongoingProcess, txFormatService, $stateParams, walletService) {
     var wallet = profileService.getWallet($stateParams.walletId);
     var rawTx;
 
+    $scope.init = function() {
+      $scope.wallet = wallet;
+      $scope.isCordova = platformInfo.isCordova;
+      $scope.needsBackup = wallet.needsBackup;
+      $scope.walletAlias = wallet.name;
+      $scope.walletName = wallet.credentials.walletName;
+      $scope.formData = {};
+      $scope.formData.inputData = null;
+      $scope.scannedKey = null;
+      $scope.balance = null;
+      $scope.balanceSat = null;
+      $scope.scanned = false;
+      $timeout(function() {
+        $scope.$apply();
+      }, 10);
+    };
+
     $scope.onQrCodeScanned = function(data) {
-      $scope.inputData = data;
+      $scope.formData.inputData = data;
       $scope.onData(data);
     };
 
     $scope.onData = function(data) {
-      $scope.error = null;
       $scope.scannedKey = data;
       $scope.isPkEncrypted = (data.substring(0, 2) == '6P');
     };
@@ -48,7 +63,6 @@ angular.module('copayApp.controllers').controller('paperWalletController',
     $scope.scanFunds = function() {
       $scope.privateKey = '';
       $scope.balanceSat = 0;
-      $scope.error = null;
 
       ongoingProcess.set('scanning', true);
       $timeout(function() {
@@ -56,12 +70,13 @@ angular.module('copayApp.controllers').controller('paperWalletController',
           ongoingProcess.set('scanning', false);
           if (err) {
             $log.error(err);
-            $scope.error = err.message || err.toString();
+            popupService.showAlert(gettextCatalog.getString('Error scanning funds:'), err || err.toString());
           } else {
             $scope.privateKey = privateKey;
             $scope.balanceSat = balance;
             var config = configService.getSync().wallet.settings;
             $scope.balance = txFormatService.formatAmount(balance) + ' ' + config.unitName;
+            $scope.scanned = true;
           }
 
           $scope.$apply();
@@ -70,7 +85,7 @@ angular.module('copayApp.controllers').controller('paperWalletController',
     };
 
     function _sweepWallet(cb) {
-      addressService.getAddress(wallet.credentials.walletId, true, function(err, destinationAddress) {
+      walletService.getAddress(wallet, true, function(err, destinationAddress) {
         if (err) return cb(err);
 
         wallet.buildTxFromPrivateKey($scope.privateKey, destinationAddress, null, function(err, tx) {
@@ -90,18 +105,16 @@ angular.module('copayApp.controllers').controller('paperWalletController',
     $scope.sweepWallet = function() {
       ongoingProcess.set('sweepingWallet', true);
       $scope.sending = true;
-      $scope.error = null;
 
       $timeout(function() {
         _sweepWallet(function(err, destinationAddress, txid) {
           ongoingProcess.set('sweepingWallet', false);
-
+          $scope.sending = false;
           if (err) {
-            $scope.error = err.message || err.toString();
             $log.error(err);
+            popupService.showAlert(gettextCatalog.getString('Error sweeping wallet:'), err || err.toString());
           } else {
-            var type = walletService.getViewStatus(wallet, txp);
-            $scope.openStatusModal(type, txp, function() {
+            $scope.openStatusModal('broadcasted', function() {
               $ionicHistory.clearHistory();
               $state.go('tabs.home');
             });
@@ -111,19 +124,18 @@ angular.module('copayApp.controllers').controller('paperWalletController',
       }, 100);
     };
 
-    $scope.openStatusModal = function(type, txp, cb) {
+    $scope.openStatusModal = function(type, cb) {
+      $scope.tx = {};
+      $scope.tx.amountStr = $scope.balance;
       $scope.type = type;
-      $scope.tx = txFormatService.processTx(txp);
       $scope.color = wallet.backgroundColor;
       $scope.cb = cb;
 
       $ionicModal.fromTemplateUrl('views/modals/tx-status.html', {
-        scope: $scope,
-        animation: 'slide-in-up'
+        scope: $scope
       }).then(function(modal) {
         $scope.txStatusModal = modal;
         $scope.txStatusModal.show();
       });
     };
-
   });

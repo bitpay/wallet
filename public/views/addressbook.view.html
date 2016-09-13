@@ -1,0 +1,36 @@
+<ion-view>
+  <ion-nav-bar class="bar-royal">
+    <ion-nav-buttons side="primary">
+      <button class="button button-clear" ui-sref="tabs.addressbook">
+        <i class="icon ion-ios-arrow-thin-left"></i>
+      </button>
+    </ion-nav-buttons>
+    <ion-nav-title>
+      <span translate>Addressbook</span>
+    </ion-nav-title>
+  </ion-nav-bar>
+
+  <ion-content>
+
+    <div class="card">
+      <div class="item item-text-wrap">
+        <h3 translate>Name</h3>
+        <strong>{{addressbookEntry.name}}</strong>
+      </div>
+      <div class="item item-text-wrap">
+        <h3 translate>Email</h3>
+        <strong>{{addressbookEntry.email}}</strong>
+      </div>
+      <div class="item item-text-wrap">
+        <h3 translate>Address</h3>
+        <strong>{{addressbookEntry.address}}</strong>
+      </div>
+    </div>
+
+    <button class="button button-block button-positive"
+            ng-click="sendTo()" translate>
+      Send Money
+    </button>
+
+  </ion-content>
+</ion-view>

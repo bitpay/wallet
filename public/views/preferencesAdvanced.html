@@ -5,7 +5,7 @@
       <i class="icon ion-ios-arrow-thin-left"></i>
     </ion-nav-back-button>
   </ion-nav-bar>
-  <ion-content>
+  <ion-content ng-controller="preferencesAdvancedController">
     <div class="list">
       <div class="item item-divider">
       </div>
@@ -13,7 +13,7 @@
         <span translate>Wallet Information</span>
         <i class="icon nav-item-arrow-right"></i>
       </a>
-      <a class="item item-icon-right" ng-show="index.network == 'livenet'" ui-sref="tabs.preferences.paperWallet">
+      <a class="item item-icon-right" ng-show="network == 'livenet'" ui-sref="tabs.preferences.paperWallet">
         <span translate>Sweep paper wallet</span>
         <i class="icon nav-item-arrow-right"></i>
       </a>

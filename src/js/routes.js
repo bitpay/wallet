@@ -490,6 +490,41 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         }
       })
 
+      /*
+       *
+       * Addressbook
+       *
+       */
+
+
+      .state('tabs.addressbook', {
+        url: '/addressbook',
+        views: {
+          'tab-settings': {
+            templateUrl: 'views/addressbook.html',
+            controller: 'addressbookListController'
+          }
+        }
+      })
+      .state('tabs.addressbook.add', {
+        url: '/add',
+        views: {
+          'tab-settings@tabs': {
+            templateUrl: 'views/addressbook.add.html',
+            controller: 'addressbookAddController'
+          }
+        }
+      })
+      .state('tabs.addressbook.view', {
+        url: '/view/:address',
+        views: {
+          'tab-settings@tabs': {
+            templateUrl: 'views/addressbook.view.html',
+            controller: 'addressbookViewController'
+          }
+        }
+      })
+
     /*
      *
      *TO DO
@@ -726,7 +761,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         }
       });
   })
-  .run(function($rootScope, $state, $location, $log, $timeout, $ionicHistory, $ionicPlatform, lodash, platformInfo, profileService, uxLanguage, gettextCatalog, openURLService) {
+  .run(function($rootScope, $state, $location, $log, $timeout, $ionicHistory, $ionicPlatform, lodash, platformInfo, profileService, uxLanguage, gettextCatalog, openURLService, storageService) {
 
     uxLanguage.init();
     openURLService.init();
@@ -739,21 +774,35 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
           cordova.plugins.Keyboard.disableScroll(true);
         }
 
+        window.addEventListener('native.keyboardshow', function() {
+          document.querySelector('div.tabs').style.display = 'none';
+          angular.element(document.querySelector('ion-content.has-tabs')).css('bottom', 0);
+        });
+
+        window.addEventListener('native.keyboardhide', function() {
+          var tabs = document.querySelectorAll('div.tabs');
+          angular.element(tabs[0]).css('display', '');
+        });
+
         $ionicPlatform.registerBackButtonAction(function(e) {
 
-          var fromDisclaimer = $ionicHistory.currentStateName().match(/disclaimer/) ? 'true' : '';
-          var fromTabs = $ionicHistory.currentStateName().match(/tabs/) ? 'true' : '';
+          var fromWelcome = $ionicHistory.currentStateName().match(/welcome/) ? true : false;
+          var matchHome = $ionicHistory.currentStateName().match(/home/) ? true : false;
+          var matchReceive = $ionicHistory.currentStateName().match(/receive/) ? true : false;
+          var matchSend = $ionicHistory.currentStateName().match(/send/) ? true : false;
+          var matchSettings = $ionicHistory.currentStateName().match(/settings/) ? true : false;
+          var fromTabs = matchHome | matchReceive | matchSend | matchSettings;
 
-          if ($rootScope.backButtonPressedOnceToExit || fromDisclaimer) {
-            ionic.Platform.exitApp();
-          } else if ($ionicHistory.backView() && !fromTabs) {
+          if ($ionicHistory.backView() && !fromTabs) {
             $ionicHistory.goBack();
+          } else if ($rootScope.backButtonPressedOnceToExit || fromWelcome) {
+            ionic.Platform.exitApp();
           } else {
             $rootScope.backButtonPressedOnceToExit = true;
             window.plugins.toast.showShortBottom(gettextCatalog.getString('Press again to exit'));
-            setInterval(function() {
+            $timeout(function() {
               $rootScope.backButtonPressedOnceToExit = false;
-            }, 5000);
+            }, 3000);
           }
           e.preventDefault();
         }, 101);
@@ -782,10 +831,19 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         if (err) {
           if (err.message && err.message.match('NOPROFILE')) {
             $log.debug('No profile... redirecting');
-            $state.transitionTo('onboarding.welcome');
+            $state.go('onboarding.welcome');
           } else if (err.message && err.message.match('NONAGREEDDISCLAIMER')) {
             $log.debug('Display disclaimer... redirecting');
-            $state.transitionTo('onboarding.disclaimer');
+            storageService.getLastState(function(err, state) {
+              if (err && !state) {
+                $log.error(err);
+                $state.go('onboarding.disclaimer');
+              }
+              else {
+                var state = JSON.parse(state);
+                $state.go(state.name, state.toParams);
+              }
+            })
           } else {
             throw new Error(err); // TODO
           }
@@ -793,7 +851,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
           profileService.storeProfileIfDirty();
           $log.debug('Profile loaded ... Starting UX.');
 
-          $state.transitionTo('tabs.home');
+          $state.go('tabs.home');
         }
       });
     });
@@ -816,6 +874,9 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
       $log.debug('Route change from:', fromState.name || '-', ' to:', toState.name);
       $log.debug('            toParams:' + JSON.stringify(toParams || {}));
       $log.debug('            fromParams:' + JSON.stringify(fromParams || {}));
-
+      var state = {};
+      state.name = toState.name;
+      state.toParams = toParams;
+      storageService.setLastState(JSON.stringify(state), function() {});
     });
   });

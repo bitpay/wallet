@@ -1023,7 +1023,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
       try {
         keys = wallet.getKeys(password);
       } catch (e) {
-        return cb(err);
+        return cb(e);
       }
 
       return cb(null, keys);

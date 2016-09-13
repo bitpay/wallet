@@ -1,18 +1,20 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('tabSendController', function($scope, $ionicModal, $log, $timeout, addressbookService, profileService, lodash, $state, walletService, incomingData ) {
+angular.module('copayApp.controllers').controller('tabSendController', function($scope, $log, $timeout, addressbookService, profileService, lodash, $state, walletService, incomingData ) {
 
   var originalList;
 
   $scope.init = function() {
     originalList = [];
 
-    var wallets = profileService.getWallets({onlyComplete: true});
+    var wallets = profileService.getWallets({
+      onlyComplete: true
+    });
 
     lodash.each(wallets, function(v) {
       originalList.push({
         color: v.color,
-        label: v.name,
+        name: v.name,
         isWallet: true,
         getAddress: function(cb) {
           walletService.getAddress(v, false, cb);
@@ -26,16 +28,20 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
       var contacts = [];
       lodash.each(ab, function(v, k) {
         contacts.push({
-          label: v,
+          name: lodash.isObject(v) ? v.name : v,
           address: k,
           getAddress: function(cb) {
-            return cb(null,k);
+            return cb(null, k);
           },
         });
       });
 
       originalList = originalList.concat(contacts);
       $scope.list = lodash.clone(originalList);
+
+      $timeout(function() {
+        $scope.$apply();
+      }, 1);
     });
   };
 
@@ -54,7 +60,7 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
     }
 
     var result = lodash.filter(originalList, function(item) {
-      var val = item.label || item.alias || item.name;
+      var val = item.name;
       return lodash.includes(val.toLowerCase(), search.toLowerCase());
     });
 
@@ -62,22 +68,16 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
   };
 
   $scope.goToAmount = function(item) {
-    item.getAddress(function(err,addr){
-      if (err|| !addr) {
+    item.getAddress(function(err, addr) {
+      if (err || !addr) {
         $log.error(err);
         return;
       }
-      $log.debug('Got toAddress:' +  addr + ' | ' + item.label)
-      return $state.transitionTo('send.amount', { toAddress: addr, toName: item.label})
-    });
-  };
-
-  $scope.openAddressbookModal = function() {
-    $ionicModal.fromTemplateUrl('views/modals/addressbook.html', {
-      scope: $scope
-    }).then(function(modal) {
-      $scope.addressbookModal = modal;
-      $scope.addressbookModal.show();
+      $log.debug('Got toAddress:' + addr + ' | ' + item.name);
+      return $state.transitionTo('send.amount', {
+        toAddress: addr,
+        toName: item.name
+      })
     });
   };
 
