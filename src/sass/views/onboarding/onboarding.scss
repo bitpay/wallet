@@ -48,6 +48,7 @@
       }
     }
     button {
+      color:#fff;
       &.next-slide {
         background: rgba(215, 215, 215, 0.10);
       }
@@ -67,8 +68,12 @@
   .button-transparent{
     background: none !important;
   }
+  .button-translucent{
+    background: rgba(215, 215, 215, 0.1)
+  }
   .button-primary{
     background: rgb(100, 124, 232) !important;
+    color:#fff;
   }
   .light-blue{
     color:rgb(100, 124, 232);
@@ -98,3 +103,4 @@
 @import "onboard-backup-request";
 @import "onboard-backup-warning";
 @import "onboard-disclaimer";
+@import "onboard-push-notifications";

@@ -1,0 +1,37 @@
+#onboarding-push-notifications{
+  h2{
+    margin-top:2rem;
+  }
+  #cta{
+    background-image: url('../img/onboarding-push-notifications.svg');
+    height: 15rem;
+    margin-top: .75rem;
+  }
+  .cta-buttons{
+    float:none;
+    bottom:0;
+    position: absolute;
+    width:100%;
+    button{
+      max-width: 400px;
+    }
+  }
+}
+
+@media (max-width: 400px){
+  #onboarding-push-notifications{
+    .cta-buttons{
+      float:none;
+      bottom:0;
+      position: absolute;
+    }
+  }
+}
+@media (max-height: 540px){
+  #onboarding-push-notifications{
+    .cta-buttons{
+      float:left;
+      position: relative;
+    }
+  }
+}
