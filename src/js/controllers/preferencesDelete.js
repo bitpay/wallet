@@ -10,7 +10,7 @@ angular.module('copayApp.controllers').controller('preferencesDeleteWalletContro
     $scope.showDeletePopup = function() {
       var title = gettextCatalog.getString('Warning!');
       var message = gettextCatalog.getString('Are you sure you want to delete this wallet?');
-      popupService.showConfirm(title, message, function(res) {
+      popupService.showConfirm(title, message, null, null, function(res) {
         if (res) deleteWallet();
       });
     };

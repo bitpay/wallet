@@ -1,0 +1,52 @@
+<ion-view>
+  <ion-nav-bar class="bar-royal">
+    <ion-nav-buttons side="primary">
+      <button class="button button-clear" ui-sref="tabs.settings">
+        <i class="icon ion-ios-arrow-thin-left"></i>
+      </button>
+    </ion-nav-buttons>
+    <ion-nav-title>
+      <span translate>Addressbook</span>
+    </ion-nav-title>
+    <ion-nav-buttons side="secondary">
+      <button class="button button-clear" ui-sref="tabs.addressbook.add">
+        <i class="icon ion-ios-plus-empty"></i>
+      </button>
+    </ion-nav-buttons>
+  </ion-nav-bar>
+
+  <ion-content ng-init="initAddressbook()">
+
+    <div class="bar bar-header item-input-inset" ng-show="!isEmptyList">
+      <label class="item-input-wrapper">
+        <i class="icon ion-ios-search placeholder-icon"></i>
+        <input type="search"
+               placeholder="Search"
+               ng-model="addrSearch"
+               ng-change="findAddressbook(addrSearch)" ng-model-onblur>
+      </label>
+    </div>
+
+    <ion-list>
+      <ion-item ng-repeat="addrEntry in addressbook"
+                class="item-icon-left item-icon-right"
+                ui-sref="tabs.addressbook.view({address:addrEntry.address})">
+        <i class="icon ion-ios-person-outline"></i>
+        {{addrEntry.name}}
+        <i class="icon nav-item-arrow-right"></i>
+
+        <ion-option-button class="button-assertive" ng-click="remove(addrEntry.address)">
+          <i class="icon ion-minus-circled"></i>
+        </ion-option-button>
+
+      </ion-item>
+    </ion-list>
+    <div class="list" ng-show="isEmptyList">
+      <a class="item item-icon-left" ui-sref="tabs.addressbook.add">
+        <i class="icon ion-person-add"></i>
+        <span translate>Add a new entry</span>
+      </a>
+    </div>
+
+  </ion-content>
+</ion-view>

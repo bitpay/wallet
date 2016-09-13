@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('tabSettingsController', function($scope, $rootScope, $log, $ionicModal, $window, lodash, configService, uxLanguage, platformInfo, pushNotificationsService, profileService, feeService) {
+angular.module('copayApp.controllers').controller('tabSettingsController', function($scope, $rootScope, $log, $window, lodash, configService, uxLanguage, platformInfo, pushNotificationsService, profileService, feeService) {
 
   $scope.init = function() {
 
@@ -37,17 +37,6 @@ angular.module('copayApp.controllers').controller('tabSettingsController', funct
     });
     $scope.wallets = profileService.getWallets();
   };
-
-  $scope.openAddressbookModal = function() {
-
-    $ionicModal.fromTemplateUrl('views/modals/addressbook.html', {
-      scope: $scope
-    }).then(function(modal) {
-      $scope.addressbookModal = modal;
-      $scope.addressbookModal.show();
-    });
-  };
-
 
   $scope.openSettings = function() {
     cordova.plugins.diagnostic.switchToSettings(function() {

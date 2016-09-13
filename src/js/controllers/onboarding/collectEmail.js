@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('collectEmailController', function($scope, $state, $stateParams, profileService, configService, walletService, platformInfo) {
+angular.module('copayApp.controllers').controller('collectEmailController', function($scope, $state, $timeout, $stateParams, profileService, configService, walletService, platformInfo) {
 
   var isCordova = platformInfo.isCordova;
   var isWP = platformInfo.isWP;
@@ -9,11 +9,7 @@ angular.module('copayApp.controllers').controller('collectEmailController', func
   var wallet = profileService.getWallet($stateParams.walletId);
   var walletId = wallet.credentials.walletId;
 
-  var config = configService.getSync();
-  config.emailFor = config.emailFor || {};
-  $scope.email = config.emailFor && config.emailFor[walletId];
-
-  $scope.save = function(form) {
+  $scope.save = function() {
     var opts = {
       emailFor: {}
     };
@@ -25,13 +21,32 @@ angular.module('copayApp.controllers').controller('collectEmailController', func
       if (err) $log.warn(err);
       configService.set(opts, function(err) {
         if (err) $log.warn(err);
-        if (!usePushNotifications) $state.go('onboarding.backupRequest', {walletId: walletId});
-        else $state.go('onboarding.notifications', {walletId: walletId});
+        if (!usePushNotifications) $state.go('onboarding.backupRequest', {
+          walletId: walletId
+        });
+        else $state.go('onboarding.notifications', {
+          walletId: walletId
+        });
       });
     });
   };
 
+  $scope.confirm = function(emailForm) {
+    if (emailForm.$invalid) return;
+    $scope.confirmation = true;
+    $scope.email = emailForm.email.$modelValue;
+  };
+
+  $scope.cancel = function() {
+    $scope.confirmation = false;
+    $timeout(function() {
+      $scope.$digest();
+    }, 1);
+  };
+
   $scope.onboardingMailSkip = function() {
-    $state.go('onboarding.backupRequest', {walletId: walletId});
+    $state.go('onboarding.backupRequest', {
+      walletId: walletId
+    });
   };
 });

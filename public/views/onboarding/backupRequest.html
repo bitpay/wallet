@@ -16,12 +16,14 @@
     <div class="row text-center">
       <i class="ion-ios-arrow-thin-down light-blue col col-60" id="arrow-down"></i>
     </div>
-    <div class="row">
-      <button class="button button-block button-positive col-75 col" href
-              ui-sref="onboarding.backupWarning({walletId: walletId})" translate>Backup wallet</button>
-    </div>
-    <div class="row">
-      <button class="button button-block button-transparent col-75 col" ng-click="openPopup()" translate>I'll backup my wallet later</button>
+    <div class="cta-buttons">
+      <div class="row">
+        <button class="button button-block button-positive col-75 col" href
+                ui-sref="onboarding.backupWarning({walletId: walletId})" translate>Backup wallet</button>
+      </div>
+      <div class="row">
+        <button class="button button-block button-transparent col-75 col" ng-click="openPopup()" translate>I'll backup my wallet later</button>
+      </div>
     </div>
   </ion-content>
 </ion-view>
