@@ -18,7 +18,8 @@
     "trezor-connect": "~1.0.1",
     "ng-csv": "~0.3.6",
     "ionic-toast": "^0.4.1",
-    "angular-clipboard": "^1.4.2"
+    "angular-clipboard": "^1.4.2",
+    "angular-md5": "^0.1.10"
   },
   "resolutions": {
     "angular": "1.5.3"

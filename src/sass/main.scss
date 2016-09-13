@@ -937,6 +937,27 @@ input[type=number] {
   }
 }
 
+/** Gravatar **/
+
+.gravatar {
+  border-radius: 50%;
+}
+
+.gravatar-content {
+  position: relative;
+  height: 70px;
+  border-color: #172565;
+  background-color: #1e3186;
+  background-image: linear-gradient(0deg, #172565, #172565 0%, transparent 0%);
+  color: #fff;
+  margin-bottom: 50px;
+  .gravatar {
+    position: absolute;
+    bottom: -30px;
+    left: 41%;
+  }
+}
+
 /* Spinner */
 
 .item-icon-left ion-spinner {
