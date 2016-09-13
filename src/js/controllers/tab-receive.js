@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('tabReceiveController', function($scope, $timeout, $log, platformInfo, walletService, profileService, configService, lodash, gettextCatalog, popupService) {
+angular.module('copayApp.controllers').controller('tabReceiveController', function($scope, $timeout, $log, $ionicModal, storageService, platformInfo, walletService, profileService, configService, lodash, gettextCatalog, popupService) {
 
   $scope.isCordova = platformInfo.isCordova;
 
@@ -8,9 +8,26 @@ angular.module('copayApp.controllers').controller('tabReceiveController', functi
     $scope.wallets = profileService.getWallets({
       onlyComplete: true
     });
-    $scope.isCordova = platformInfo.isCordova;
     $scope.isNW = platformInfo.isNW;
+    $scope.isCordova = platformInfo.isCordova;
+    if (!$scope.isCordova) $scope.checkTips();
   }
+
+  $scope.checkTips = function() {
+    storageService.getReceiveTipsAccepted(function(err, accepted) {
+      if (err) $log.warn(err);
+      if (accepted) return;
+
+      $timeout(function() {
+        $ionicModal.fromTemplateUrl('views/modals/receive-tips.html', {
+          scope: $scope
+        }).then(function(modal) {
+          $scope.receiveTipsModal = modal;
+          $scope.receiveTipsModal.show();
+        });
+      }, 1000);
+    });
+  };
 
   $scope.$on('Wallet/Changed', function(event, wallet) {
     if (!wallet) {
