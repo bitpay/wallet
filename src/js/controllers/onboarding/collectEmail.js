@@ -4,7 +4,7 @@ angular.module('copayApp.controllers').controller('collectEmailController', func
 
   var isCordova = platformInfo.isCordova;
   var isWP = platformInfo.isWP;
-  var usePushNotifications = isCordova && !isWP;
+  var usePushNotifications = true;
 
   var wallet = profileService.getWallet($stateParams.walletId);
   var walletId = wallet.credentials.walletId;

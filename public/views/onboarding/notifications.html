@@ -1,16 +1,21 @@
-<ion-view>
+<ion-view class="onboarding" id="onboarding-push-notifications">
   <ion-content ng-controller="notificationsController">
-    <div class="text-center">
-      <h1 translate>
+    <div class="text-center row">
+      <h2 translate class="col col-80">
         Push Notifications
-      </h1>
-
-      <span translate>
+      </h2>
+    </div>
+    <div class="row text-center">
+      <p class="col col-75 tagline" translate>
         Would you like to receive push notifications about payments?
-      </span>
-
-      <button class="button button-block button-positive" ng-click="allowNotif()" translate>Allow notifications</button>
-      <button class="button button-block  button-light" href ui-sref="onboarding.backupRequest({walletId: walletId})" translate>Not now</button>
+      </p>
+    </div>
+    <div id="cta">
+    </div>
+      <div class="cta-buttons">
+        <button class="button button-block button-primary col col-75" ng-click="allowNotif()" translate>Allow notifications</button>
+        <button class="button button-block  button-translucent col col-75" href ui-sref="onboarding.backupRequest({walletId: walletId})" translate>Not now</button>
+      </div>
     </div>
   </ion-content>
 </ion-view>
