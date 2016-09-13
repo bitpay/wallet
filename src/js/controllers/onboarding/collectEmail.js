@@ -5,6 +5,7 @@ angular.module('copayApp.controllers').controller('collectEmailController', func
   var isCordova = platformInfo.isCordova;
   var isWP = platformInfo.isWP;
   var usePushNotifications = isCordova && !isWP;
+  var requiresOptIn = platformInfo.isIOS;
 
   var wallet = profileService.getWallet($stateParams.walletId);
   var walletId = wallet.credentials.walletId;
@@ -21,14 +22,27 @@ angular.module('copayApp.controllers').controller('collectEmailController', func
       if (err) $log.warn(err);
       configService.set(opts, function(err) {
         if (err) $log.warn(err);
-        if (!usePushNotifications) $state.go('onboarding.backupRequest', {
-          walletId: walletId
-        });
-        else $state.go('onboarding.notifications', {
-          walletId: walletId
-        });
+        goNextView();
       });
     });
+  };
+
+  var goNextView = function() {
+    if (!usePushNotifications) {
+      $state.go('onboarding.backupRequest', {
+        walletId: walletId
+      });
+    }
+    else if (requiresOptIn) {
+      $state.go('onboarding.notifications', {
+        walletId: walletId
+      });
+    } else {
+      profileService.pushNotificationsInit();
+      $state.go('onboarding.backupRequest', {
+        walletId: walletId
+      });
+    }
   };
 
   $scope.confirm = function(emailForm) {
@@ -44,9 +58,4 @@ angular.module('copayApp.controllers').controller('collectEmailController', func
     }, 1);
   };
 
-  $scope.onboardingMailSkip = function() {
-    $state.go('onboarding.backupRequest', {
-      walletId: walletId
-    });
-  };
 });

@@ -490,14 +490,14 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         }
       })
 
-      /*
-       *
-       * Addressbook
-       *
-       */
+    /*
+     *
+     * Addressbook
+     *
+     */
 
 
-      .state('tabs.addressbook', {
+    .state('tabs.addressbook', {
         url: '/addressbook',
         views: {
           'tab-settings': {
@@ -761,7 +761,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         }
       });
   })
-  .run(function($rootScope, $state, $location, $log, $timeout, $ionicHistory, $ionicPlatform, lodash, platformInfo, profileService, uxLanguage, gettextCatalog, openURLService, storageService) {
+  .run(function($rootScope, $state, $location, $log, $timeout, $ionicHistory, $ionicPlatform, $ionicScrollDelegate, lodash, platformInfo, profileService, uxLanguage, gettextCatalog, openURLService, storageService) {
 
     uxLanguage.init();
     openURLService.init();

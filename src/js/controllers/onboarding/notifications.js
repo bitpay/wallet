@@ -5,7 +5,9 @@ angular.module('copayApp.controllers').controller('notificationsController', fun
   $scope.walletId = $stateParams.walletId;
   $scope.allowNotif = function() {
     profileService.pushNotificationsInit();
-    $state.go('onboarding.backupRequest');
+    $state.go('onboarding.backupRequest', {
+      walletId: $scope.walletId
+    });
   }
 
 });
