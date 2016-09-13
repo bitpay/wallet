@@ -1,0 +1,47 @@
+.popup-modal {
+  background: #fff;
+  top: 20%;
+  position: absolute;
+  z-index: 10;
+  width: 90%;
+  left: 5%;
+  border-radius: .25rem;
+  &-header {
+    background: rgb(1, 209, 162);
+    padding: 1rem;
+    border-radius: .25rem .25rem 0 0;
+    min-height: 120px;
+    &-success {
+      background: url('../img/onboarding-success.svg') no-repeat center;
+      height: 6rem;
+      background-size: contain;
+      margin-top: .3rem;
+    }
+  }
+  &-content {
+    padding: .5rem .8rem;
+    h5,p{
+      margin:0 0 1rem;
+    }
+    h5 {
+      color: rgb(74, 74, 74);
+      font-weight: bold;
+      font-size: 1.3rem;
+      margin-top:1rem;
+    }
+    p{
+      font-weight: 200;
+    }
+  }
+  &-content-success{
+    button{
+      color:rgb(23, 174, 140) !important;
+    }
+  }
+}
+
+.modal-backdrop.active {
+  background: rgba(0, 0, 0, .5);
+}
+
+@import "backup-confirm-modal";
