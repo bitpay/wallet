@@ -877,6 +877,6 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
       var state = {};
       state.name = toState.name;
       state.toParams = toParams;
-      storageService.setLastState(JSON.stringify(state), function() {});
+      if (state.name != 'starting') storageService.setLastState(JSON.stringify(state), function() {});
     });
   });
