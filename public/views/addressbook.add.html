@@ -1,0 +1,63 @@
+<ion-view>
+  <ion-nav-bar class="bar-royal">
+    <ion-nav-buttons side="primary">
+      <button class="button button-clear" ui-sref="tabs.addressbook">
+        <i class="icon ion-ios-arrow-thin-left"></i>
+      </button>
+    </ion-nav-buttons>
+    <ion-nav-title>
+      <span translate>Add entry</span>
+    </ion-nav-title>
+  </ion-nav-bar>
+
+  <ion-content>
+
+    <form name="addressbookForm" no-validate>
+
+      <div class="card list">
+        <label class="item item-input item-stacked-label">
+          <span class="input-label" translate>Name</span>
+          <input type="text"
+                 id="name"
+                 name="name"
+                 ng-model="addressbookEntry.name"
+                 required>
+        </label>
+        <label class="item item-input item-stacked-label">
+          <span class="input-label" translate>Email</span>
+          <input type="text"
+                 id="email"
+                 name="email"
+                 ng-model="addressbookEntry.email">
+        </label>
+        <label class="item item-input item-stacked-label">
+          <span class="input-label" translate>Address</span>
+          <div class="input-notification">
+            <i class="icon ion-checkmark-circled balanced"
+               ng-show="!addressbookForm.address.$invalid"></i>
+            <i class="icon ion-close-circled assertive"
+               ng-show="addressbookForm.address.$invalid && addressbookEntry.address"></i>
+          </div>
+          <div class="qr-scan-icon">
+            <qr-scanner on-scan="onQrCodeScanned(data, addressbookForm)"></qr-scanner>
+            <input type="text"
+                   id="address"
+                   name="address"
+                   ng-model="addressbookEntry.address"
+                   valid-address required>
+          </div>
+        </label>
+      </div>
+
+      <div class="padding">
+        <button type="submit"
+                class="button button-block button-positive"
+                ng-click="add(addressbookEntry)"
+                ng-disabled="!addressbookForm.$valid" translate>
+          Save
+        </button>
+      </div>
+
+    </form>
+  </ion-content>
+</ion-view>

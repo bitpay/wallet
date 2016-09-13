@@ -6,9 +6,10 @@
   <ion-content ng-controller="tabSettingsController" ng-init="init()">
     <div class="list">
       <div class="item item-divider"></div>
-      <a class="item item-icon-left" ng-click="openAddressbookModal()">
+      <a class="item item-icon-left item-icon-right" ui-sref="tabs.addressbook">
         <i class="icon ion-ios-book-outline"></i>
         <span translate>Address Book</span>
+        <i class="icon nav-item-arrow-right"></i>
       </a>
 
       <div class="item item-divider" translate>Preferences</div>
