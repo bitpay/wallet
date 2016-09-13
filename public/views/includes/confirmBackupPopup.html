@@ -1,19 +1,26 @@
-<div class="text-center" ng-show="!backupError">
-  <h5 translate>Your bitcoin wallet is backed up!</h5>
-  <p translate> Be sure to store your recovery phrase in a secure place. If this app is deelted, you money coont be recovered with out it.</p>
-  <button
-    class="button round expand"
-    ng-click="closePopup(true)"
-    translate>Got it
-  </button>
-</div>
-<div class="text-center" ng-show="backupError">
-  <h5 translate>uh oh...</h5>
-  <p translate>It's importante that you write your backup phrase down correctly. If something happens to your wallet, you'll need this backup to recover your money
-  Please review your backup and try again</p>
-  <button
-    class="button button-block button-stable"
-    ng-click="closePopup(false)"
-    translate>Ok
-  </button>
+<div id="backup-confirm-modal" class="popup-modal">
+  <div class="popup-modal-header">
+    <div ng-class="{'popup-modal-header-success': !backupError, 'popup-modal-header-fail': backupError}"></div>
+  </div>
+  <div class="popup-modal-content" ng-class="{'popup-modal-content-success': !backupError, 'popup-modal-content-fail': backupError}">
+    <div class="text-center" ng-show="!backupError">
+      <h5 translate>Your bitcoin wallet is backed up!</h5>
+      <p translate> Be sure to store your recovery phrase in a secure place. If this app is deelted, you money cannot be recoved with out it.</p>
+      <button
+        class="button button-clear expand"
+        ng-click="closePopup(true)"
+        translate>Got it
+      </button>
+    </div>
+    <div class="text-center" ng-show="backupError">
+      <h5 translate>uh oh...</h5>
+      <p translate>It's importante that you write your backup phrase down correctly. If something happens to your wallet, you'll need this backup to recover your money
+      Please review your backup and try again</p>
+      <button
+        class="button button-block button-stable"
+        ng-click="closePopup(false)"
+        translate>Ok
+      </button>
+    </div>
+  </div>
 </div>
