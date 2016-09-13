@@ -113,15 +113,16 @@ angular.module('copayApp.directives')
       }
     }
   })
-  .directive('contact', ['addressbookService',
-    function(addressbookService) {
+  .directive('contact', ['addressbookService', 'lodash',
+    function(addressbookService, lodash) {
       return {
         restrict: 'E',
         link: function(scope, element, attrs) {
           var addr = attrs.address;
-          addressbookService.getLabel(addr, function(label) {
-            if (label) {
-              element.append(label);
+          addressbookService.get(addr, function(err, ab) {
+            if (ab) {
+              var name = lodash.isObject(ab) ? ab.name : ab;
+              element.append(name);
             } else {
               element.append(addr);
             }
