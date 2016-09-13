@@ -44,7 +44,7 @@
         <p translate>
           Please tap each word in the correct order.
         </p>
-        <span ng-repeat="shuffledWord in shuffledMnemonicWords track by $index" ng-if="!selectComplete">
+        <span ng-repeat="shuffledWord in shuffledMnemonicWords track by $index">
           <button class="button select-word" ng-click="addButton($index, shuffledWord)"
           ng-disabled="shuffledWord.selected">{{shuffledWord.word}}
         </button>
