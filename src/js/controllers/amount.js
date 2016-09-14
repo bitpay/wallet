@@ -50,6 +50,7 @@ angular.module('copayApp.controllers').controller('amountController', function($
 
     $scope.toAddress = $stateParams.toAddress;
     $scope.toName = $stateParams.toName;
+    $scope.toEmail = $stateParams.toEmail;
 
     var config = configService.getSync().wallet.settings;
     $scope.unitName = config.unitName;
@@ -191,6 +192,7 @@ angular.module('copayApp.controllers').controller('amountController', function($
       toAmount: amount * unitToSatoshi,
       toAddress: $scope.toAddress,
       toName: $scope.toName,
+      toEmail: $scope.toEmail
     });
   };
 });
