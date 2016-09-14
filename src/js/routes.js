@@ -235,7 +235,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         template: '<ion-nav-view name="send"></ion-nav-view>'
       })
       .state('send.amount', {
-        url: '/amount/:toAddress/:toName',
+        url: '/amount/:toAddress/:toName/:toEmail',
         views: {
           'send': {
             templateUrl: 'views/amount.html'
@@ -243,7 +243,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         }
       })
       .state('send.confirm', {
-        url: '/confirm/:toAddress/:toName/:toAmount/:description/:paypro',
+        url: '/confirm/:toAddress/:toName/:toAmount/:toEmail/:description/:paypro',
         views: {
           'send': {
             templateUrl: 'views/confirm.html'
