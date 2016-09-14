@@ -9,6 +9,7 @@ var modules = [
   'angular-clipboard',
   'ngLodash',
   'ngCsv',
+  'angular-md5',
   'bwcModule',
   'pbkdf2Module',
   'copayApp.filters',

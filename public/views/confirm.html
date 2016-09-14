@@ -1,4 +1,4 @@
-<ion-view>
+<ion-view id="view-confirm">
   <ion-nav-bar class="bar-royal">
     <ion-nav-back-button>
       <i class="icon ion-ios-arrow-thin-left"></i>
@@ -23,7 +23,7 @@
       </div>
 
       <div class="item item-icon-left">
-        <i class="icon ion-ios-person-outline"></i>
+        <gravatar class="send-gravatar" name="{{toName}}" width="30" email="{{toEmail}}"></gravatar>
         <label translate>To</label> {{toAddress}}
         <p ng-show="toName">{{toName}}</p>
 

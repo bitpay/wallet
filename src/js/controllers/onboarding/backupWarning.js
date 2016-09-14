@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('backupWarningController', function($scope, $state, $stateParams, $ionicPopup, profileService) {
+angular.module('copayApp.controllers').controller('backupWarningController', function($scope, $state, $timeout, $stateParams, $ionicPopup, profileService) {
 
   $scope.walletId = $stateParams.walletId;
   $scope.openPopup = function() {
@@ -11,7 +11,10 @@ angular.module('copayApp.controllers').controller('backupWarningController', fun
 
     $scope.close = function() {
       backupWarningPopup.close();
-      $state.go('onboarding.backup', {walletId: $stateParams.walletId, fromOnboarding: true});
+      $state.go('onboarding.backup', {
+        walletId: $stateParams.walletId,
+        fromOnboarding: true
+      });
     };
   }
 });
