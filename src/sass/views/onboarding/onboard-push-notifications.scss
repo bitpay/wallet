@@ -29,6 +29,9 @@
 }
 @media (max-height: 540px){
   #onboarding-push-notifications{
+    #cta{
+      margin-bottom: 0;
+    }
     .cta-buttons{
       float:left;
       position: relative;
