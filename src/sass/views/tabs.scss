@@ -1,0 +1,36 @@
+.tabs .tab-item {
+  .icon {
+    background-repeat: no-repeat;
+    background-position: center;
+    &.ico-home{
+      background-image: url('../img/tab-icons/ico-home.svg');
+    }
+    &.ico-home-selected{
+      background-image: url('../img/tab-icons/ico-home-selected.svg');
+    }
+    &.ico-receive{
+      background-image: url('../img/tab-icons/ico-receive.svg');
+    }
+    &.ico-receive-selected{
+      background-image: url('../img/tab-icons/ico-receive-selected.svg');
+    }
+    &.ico-settings{
+      background-image: url('../img/tab-icons/ico-settings.svg');
+    }
+    &.ico-settings-selected{
+      background-image: url('../img/tab-icons/ico-settings-selected.svg');
+    }
+    &.ico-scan{
+      background-image: url('../img/tab-icons/ico-scan.svg');
+    }
+    &.ico-scan-selected{
+      background-image: url('../img/tab-icons/ico-scan-selected.svg');
+    }
+    &.ico-send{
+      background-image: url('../img/tab-icons/ico-send.svg');
+    }
+    &.ico-send-selected{
+      background-image: url('../img/tab-icons/ico-send-selected.svg');
+    }
+  }
+}
