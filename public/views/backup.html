@@ -6,7 +6,14 @@
   </ion-nav-bar>
   <ion-content>
     <div ng-show="deleted">
-      <span translate>Wallet recovery phrase not available. You can still export it from Advanced &gt; Export.</span>
+      <div class="row text-center">
+        <h3 translate class="col col-75 center-block">Wallet recovery phrase not available.</h3>
+      </div>
+      <div class="row text-center">
+        <p translate class="col col-75 center-block">
+          You can still export it from Advanced &gt; Export.
+        </p>
+      </div>
     </div>
         <!--
     ## STEP 1
@@ -20,11 +27,12 @@
         Please carefully write down this phrase
       </p>
     </div>
-    <div ng-show="mnemonicHasPassphrase">
-      <i class="ion-alert-circled"></i>
-      <span translate>
-        This recovery phrase was created with a password. To recover this wallet both the recovery phrase and password are needed.
-      </span>
+    <div class="row text-center" ng-show="mnemonicHasPassphrase">
+      <p class="bold-text col col-80 center-block">
+        <span translate>
+          This recovery phrase was created with a password. To recover this wallet both the recovery phrase and password are needed.
+        </span>
+      </p>
     </div>
     <div class="cta-buttons">
       <button ng-show="!deleted" ng-disabled="credentialsEncrypted || error" class="button button-block button-positive" ng-click="goToStep(2);" translate>I've written it down
