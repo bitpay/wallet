@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('collectEmailController', function($scope, $state, $timeout, $ionicPlatform, $stateParams, profileService, configService, walletService, platformInfo) {
+angular.module('copayApp.controllers').controller('collectEmailController', function($scope, $state, $timeout, $stateParams, profileService, configService, walletService, platformInfo) {
 
   var isCordova = platformInfo.isCordova;
   var isWP = platformInfo.isWP;
