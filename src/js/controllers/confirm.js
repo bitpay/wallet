@@ -102,6 +102,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
 
     $scope.toAddress = $stateParams.toAddress;
     $scope.toName = $stateParams.toName;
+    $scope.toEmail = $stateParams.toEmail;
     $scope.description = $stateParams.description;
     $scope.paypro = $stateParams.paypro;
 
