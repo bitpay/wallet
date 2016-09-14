@@ -22,12 +22,12 @@ angular.module('copayApp.controllers').controller('collectEmailController', func
       if (err) $log.warn(err);
       configService.set(opts, function(err) {
         if (err) $log.warn(err);
-        goNextView();
+        $scope.goNextView();
       });
     });
   };
 
-  var goNextView = function() {
+  $scope.goNextView = function() {
     if (!usePushNotifications) {
       $state.go('onboarding.backupRequest', {
         walletId: walletId
