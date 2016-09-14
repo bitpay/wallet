@@ -11,8 +11,15 @@
     padding: 1rem;
     border-radius: .25rem .25rem 0 0;
     min-height: 120px;
-    &-success {
-      background: url('../img/onboarding-success.svg') no-repeat center;
+    &-img{
+      height: 6rem;
+      background-size: contain;
+      margin-top: .3rem;
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+    &-img-success {
+      background-image: url('../img/onboarding-success.svg');
       height: 6rem;
       background-size: contain;
       margin-top: .3rem;
@@ -45,3 +52,4 @@
 }
 
 @import "backup-confirm-modal";
+@import "screenshot-warning-model";
