@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="26px" height="22px" viewBox="0 0 26 22" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 39.1 (31720) - http://www.bohemiancoding.com/sketch -->
+    <title>Icons/Tabs/Wallet Copy</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Icons/Tabs/Wallet" transform="translate(1.000000, 1.000000)" stroke="#464646">
+            <g id="Icons/Tabs/Wallet-Copy">
+                <path d="M18.2279264,3.27812649 L18.2279264,0 L0.0045447346,0.878513713 C0.0045447346,0.878513713 0.0045447346,3.21577148 0.0045447346,3.21577148 M0,17.2160718 C0,18.8754972 1.34177063,20.2207272 2.99109042,20.2207272 L21.0089096,20.2207268 C22.6608432,20.2207268 24,18.8847515 24,17.2160714 L24,3.19506268 L0,3.1950628 L0,17.2160718 Z" id="Wallet"></path>
+                <path d="M13.5,14.5 L21.5,14.5" id="Line" stroke-linecap="square"></path>
+                <path d="M15.5,14.5 L20.5,14.5" id="Line-Copy-6" stroke-linecap="square"></path>
+            </g>
+        </g>
+    </g>
+</svg>
