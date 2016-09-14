@@ -235,7 +235,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         template: '<ion-nav-view name="send"></ion-nav-view>'
       })
       .state('send.amount', {
-        url: '/amount/:toAddress/:toName',
+        url: '/amount/:toAddress/:toName/:toEmail',
         views: {
           'send': {
             templateUrl: 'views/amount.html'
@@ -243,7 +243,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         }
       })
       .state('send.confirm', {
-        url: '/confirm/:toAddress/:toName/:toAmount/:description/:paypro',
+        url: '/confirm/:toAddress/:toName/:toAmount/:toEmail/:description/:paypro',
         views: {
           'send': {
             templateUrl: 'views/confirm.html'
@@ -490,14 +490,14 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         }
       })
 
-      /*
-       *
-       * Addressbook
-       *
-       */
+    /*
+     *
+     * Addressbook
+     *
+     */
 
 
-      .state('tabs.addressbook', {
+    .state('tabs.addressbook', {
         url: '/addressbook',
         views: {
           'tab-settings': {
@@ -769,6 +769,9 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
     $ionicPlatform.ready(function() {
       if (platformInfo.isCordova) {
 
+        if (screen.width < 768)
+          screen.lockOrientation('portrait');
+
         if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
           cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
           cordova.plugins.Keyboard.disableScroll(true);
@@ -877,6 +880,6 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
       var state = {};
       state.name = toState.name;
       state.toParams = toParams;
-      storageService.setLastState(JSON.stringify(state), function() {});
+      if (state.name != 'starting') storageService.setLastState(JSON.stringify(state), function() {});
     });
   });

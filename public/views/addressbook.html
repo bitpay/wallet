@@ -29,10 +29,11 @@
 
     <ion-list>
       <ion-item ng-repeat="addrEntry in addressbook"
-                class="item-icon-left item-icon-right"
+                class="item-icon-right item-avatar"
                 ui-sref="tabs.addressbook.view({address:addrEntry.address})">
-        <i class="icon ion-ios-person-outline"></i>
-        {{addrEntry.name}}
+        <gravatar name="{{addrEntry.name}}" width="50" email="{{addrEntry.email}}"></gravatar>
+        <h2>{{addrEntry.name}}</h2>
+        <p>{{addrEntry.address}}</p>
         <i class="icon nav-item-arrow-right"></i>
 
         <ion-option-button class="button-assertive" ng-click="remove(addrEntry.address)">
