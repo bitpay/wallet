@@ -34,7 +34,7 @@
         position: absolute;
         width: 100%;
         text-align: center;
-        bottom: 90px;
+        bottom: 45px;
         button {
           max-width: 400px;
         }
@@ -53,6 +53,7 @@
         position: absolute;
         bottom: 43px;
         padding-bottom: 20px;
+        padding: .5rem .5rem .9rem;
         p {
           font-weight: bold;
           font-weight: bold;
@@ -71,14 +72,6 @@
         }
         #confirm-phrase {
           margin: 5px auto 0;
-        }
-      }
-      ion-content.has-header {
-        #select-phrase {
-          bottom: 75px;
-        }
-        .backup-phrase {
-          padding: .5rem .5rem .9rem;
         }
       }
     }
