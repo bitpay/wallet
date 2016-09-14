@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('tabSendController', function($scope, $log, $timeout, addressbookService, profileService, lodash, $state, walletService, incomingData ) {
+angular.module('copayApp.controllers').controller('tabSendController', function($scope, $log, $timeout, addressbookService, profileService, lodash, $state, walletService, incomingData) {
 
   var originalList;
 
@@ -30,6 +30,7 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
         contacts.push({
           name: lodash.isObject(v) ? v.name : v,
           address: k,
+          email: lodash.isObject(v) ? v.email : null,
           getAddress: function(cb) {
             return cb(null, k);
           },
@@ -76,7 +77,8 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
       $log.debug('Got toAddress:' + addr + ' | ' + item.name);
       return $state.transitionTo('send.amount', {
         toAddress: addr,
-        toName: item.name
+        toName: item.name,
+        toEmail: item.email
       })
     });
   };
