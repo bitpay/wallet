@@ -120,12 +120,14 @@ angular.module('copayApp.controllers').controller('confirmController', function(
 
     lodash.each(wallets, function(w) {
       walletService.getStatus(w, {}, function(err, status) {
-        if (err) $log.error(err);
-        if (!status.availableBalanceSat) $log.debug('No balance available in: ' + w.name);
-        if (status.availableBalanceSat > amount) filteredWallets.push(w);
+        if (err || !status) {
+          $log.error(err);
+        } else {
+          if (!status.availableBalanceSat) $log.debug('No balance available in: ' + w.name);
+          if (status.availableBalanceSat > amount) filteredWallets.push(w);
+        }
 
         if (++index == wallets.length) {
-
           if (!lodash.isEmpty(filteredWallets)) {
             $scope.wallets = lodash.clone(filteredWallets);
             $scope.notAvailable = false;
@@ -136,7 +138,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
 
           $timeout(function() {
             $scope.$apply();
-          }, 10);
+          });
           return;
         }
       });
