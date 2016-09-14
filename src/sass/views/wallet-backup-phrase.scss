@@ -15,7 +15,7 @@
     background: rgba(246, 246, 246, 0.87);
     padding: .5rem .5rem 1.7rem;
     border: 2px dashed rgb(206, 206, 206);
-    width: 90%;
+    width: 95%;
     margin: 1rem auto;
     color: rgb(43, 43, 43);
     text-align: center;
@@ -34,7 +34,7 @@
     position: absolute;
     width: 100%;
     text-align: center;
-    bottom: 80px;
+    bottom: 90px;
     button {
       max-width: 400px;
     }
@@ -42,7 +42,7 @@
   .select-word {
     background: #fff;
     box-shadow: 0px 4px 5px 0px rgba(50, 50, 50, 0.37);
-    margin: .5rem 0 0;
+    margin: .25rem 0 .25rem;
     display: inline-block;
     padding: 0 5px;
   }
@@ -57,7 +57,7 @@
       font-weight: bold;
       font-weight: bold;
       padding-top: .7rem;
-      margin-bottom: 0.9rem;
+      margin-bottom: 0.3rem;
       float: left;
       width: 100%;
     }
@@ -68,6 +68,17 @@
         color: transparent;
         border: 1px solid rgb(211, 211, 211);
       }
+    }
+    #confirm-phrase{
+      margin:5px auto 0;
+    }
+  }
+  ion-content.has-header{
+    #select-phrase{
+      bottom:75px;
+    }
+    .backup-phrase{
+      padding: .5rem .5rem .9rem;
     }
   }
 }
