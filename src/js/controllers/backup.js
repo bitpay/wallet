@@ -1,9 +1,9 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('backupController',
-  function($rootScope, $scope, $timeout, $log, $state, $stateParams, $ionicPopup, $ionicNavBarDelegate, uxLanguage, lodash, fingerprintService, platformInfo, configService, profileService, bwcService, walletService, ongoingProcess, storageService, popupService, gettextCatalog) {
+  function($scope, $timeout, $log, $state, $stateParams, $ionicHistory, lodash, profileService, bwcService, walletService, ongoingProcess, popupService, gettextCatalog, $ionicModal) {
     var wallet = profileService.getWallet($stateParams.walletId);
-    $ionicNavBarDelegate.title(wallet.credentials.walletName);
+    $scope.viewTitle = wallet.name || wallet.credentials.walletName;
     $scope.n = wallet.n;
     var keys;
 
@@ -50,12 +50,13 @@ angular.module('copayApp.controllers').controller('backupController',
       if (!keys) return;
 
       var words = keys.mnemonic;
+      $scope.data = {};
 
       $scope.mnemonicWords = words.split(/[\u3000\s]+/);
       $scope.shuffledMnemonicWords = shuffledWords($scope.mnemonicWords);
       $scope.mnemonicHasPassphrase = wallet.mnemonicHasPassphrase();
       $scope.useIdeograms = words.indexOf("\u3000") >= 0;
-      $scope.passphrase = '';
+      $scope.data.passphrase = null;
       $scope.customWords = [];
       $scope.step = 1;
       $scope.selectComplete = false;
@@ -86,31 +87,39 @@ angular.module('copayApp.controllers').controller('backupController',
       }, 1);
     };
 
-    var openPopup = function() {
+    function openConfirmBackupModal() {
+      $ionicModal.fromTemplateUrl('views/includes/confirmBackupPopup.html', {
+        scope: $scope,
+        backdropClickToClose: false,
+        hardwareBackButtonClose: false
+      }).then(function(modal) {
+        $scope.confirmBackupModal = modal;
+        $scope.confirmBackupModal.show();
+      });
+    };
 
+    var showBackupResult = function() {
       if ($scope.backupError) {
         var title = gettextCatalog.getString('uh oh...');
         var message = gettextCatalog.getString("It's importante that you write your backup phrase down correctly. If something happens to your wallet, you'll need this backup to recover your money Please review your backup and try again");
         popupService.showAlert(title, message, function() {
           $scope.goToStep(1);
         })
+      } else {
+        openConfirmBackupModal();
       }
-      else {
-        var confirmBackupPopup = $ionicPopup.show({
-          templateUrl: "views/includes/confirmBackupPopup.html",
-          scope: $scope,
-        });
+    };
 
-        $scope.closePopup = function() {
-          confirmBackupPopup.close();
-          if ($stateParams.fromOnboarding) $state.go('onboarding.disclaimer');
-          else {
-            $ionicHistory.clearHistory();
-            $state.go('tabs.home')
-          }
-        };
+    $scope.closeBackupResultModal = function() {
+      $scope.confirmBackupModal.hide();
+
+      if ($stateParams.fromOnboarding) {
+        $state.go('onboarding.disclaimer');
+      } else {
+        $ionicHistory.clearHistory();
+        $state.go('tabs.home');
       }
-    }
+    };
 
     var confirm = function(cb) {
       $scope.backupError = false;
@@ -126,7 +135,7 @@ angular.module('copayApp.controllers').controller('backupController',
           var walletClient = bwcService.getClient();
           var separator = $scope.useIdeograms ? '\u3000' : ' ';
           var customSentence = customWordList.join(separator);
-          var passphrase = $scope.passphrase || '';
+          var passphrase = $scope.data.passphrase || '';
 
           try {
             walletClient.seedFromMnemonic(customSentence, {
@@ -158,7 +167,7 @@ angular.module('copayApp.controllers').controller('backupController',
           backupError(err);
         }
         $timeout(function() {
-          openPopup();
+          showBackupResult();
           return;
         }, 1);
       });
