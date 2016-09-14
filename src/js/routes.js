@@ -789,6 +789,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
 
         $ionicPlatform.registerBackButtonAction(function(e) {
 
+          //from root tabs view
           var fromWelcome = $ionicHistory.currentStateName().match(/welcome/) ? true : false;
           var matchHome = $ionicHistory.currentStateName().match(/home/) ? true : false;
           var matchReceive = $ionicHistory.currentStateName().match(/receive/) ? true : false;
@@ -796,9 +797,23 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
           var matchSettings = $ionicHistory.currentStateName().match(/settings/) ? true : false;
           var fromTabs = matchHome | matchReceive | matchSend | matchSettings;
 
+          //onboarding with no back views
+          var matchCollectEmail = $ionicHistory.currentStateName().match(/collectEmail/) ? true : false;
+          var matchBackupRequest = $ionicHistory.currentStateName().match(/backupRequest/) ? true : false;
+          var matchDisclaimer = $ionicHistory.currentStateName().match(/disclaimer/) ? true : false;
+          var matchNotifications = $ionicHistory.currentStateName().match(/notifications/) ? true : false;
+
+          var fromOnboarding = matchCollectEmail | matchBackupRequest | matchDisclaimer | matchNotifications;
+
+          if (fromOnboarding) {
+            e.preventDefault();
+            return;
+          }
+
           if ($ionicHistory.backView() && !fromTabs) {
             $ionicHistory.goBack();
-          } else if ($rootScope.backButtonPressedOnceToExit || fromWelcome) {
+          } else
+          if ($rootScope.backButtonPressedOnceToExit || fromWelcome) {
             ionic.Platform.exitApp();
           } else {
             $rootScope.backButtonPressedOnceToExit = true;
