@@ -870,12 +870,15 @@ angular.module('copayApp.services')
           if (err) {
             $log.warn('Error updating notifications:' + err);
           } else {
-            var n = lodash.filter(wallet.cachedActivity.n, function(x) {
+
+            var n;
+
+            n = lodash.filter(wallet.cachedActivity.n, function(x) {
               return !typeFilter1[x.type];
             });
 
             if (wallet.m == 1) {
-              var n = lodash.filter(n, function(x) {
+              n = lodash.filter(n, function(x) {
                 return !typeFilter2[x.type];
               });
             }
