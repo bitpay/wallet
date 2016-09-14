@@ -1,84 +1,128 @@
-#wallet-backup-phrase {
-  &,
-  & ion-content,
-  & ion-content .scroll {
-    height: 100%;
-    overflow-y: hidden;
-  }
-  .bar.bar-royal {
-    .title {
-      font-size: 1rem;
-    }
-  }
-  background: #fff;
-  .backup-phrase {
-    background: rgba(246, 246, 246, 0.87);
-    padding: .5rem .5rem 1.7rem;
-    border: 2px dashed rgb(206, 206, 206);
-    width: 95%;
-    margin: 1rem auto;
-    color: rgb(43, 43, 43);
-    text-align: center;
-    span {
-      line-height: 2rem;
-      font-weight: bold;
-      max-width: 400px;
-      color: rgb(43, 43, 43);
-    }
-  }
-  p {
-    color: rgb(58, 58, 58);
-    font-weight: 200;
-  }
-  .cta-buttons {
-    position: absolute;
-    width: 100%;
-    text-align: center;
-    bottom: 90px;
-    button {
-      max-width: 400px;
-    }
-  }
-  .select-word {
-    background: #fff;
-    box-shadow: 0px 4px 5px 0px rgba(50, 50, 50, 0.37);
-    margin: .25rem 0 .25rem;
-    display: inline-block;
-    padding: 0 5px;
-  }
-  #select-phrase {
-    background: rgba(246, 246, 246, 0.87);
-    width: 100%;
-    text-align: center;
-    position: absolute;
-    bottom: 43px;
-    padding-bottom: 20px;
-    p {
-      font-weight: bold;
-      font-weight: bold;
-      padding-top: .7rem;
-      margin-bottom: 0.3rem;
-      float: left;
-      width: 100%;
-    }
-    .select-word {
-      &.button[disabled] {
-        background: transparent !important;
-        box-shadow: none !important;
-        color: transparent;
-        border: 1px solid rgb(211, 211, 211);
+    #wallet-backup-phrase {
+      &,
+      & ion-content,
+      & ion-content .scroll {
+        height: 100%;
+        overflow-y: hidden;
+      }
+      .bar.bar-royal {
+        .title {
+          font-size: 1rem;
+        }
+      }
+      background: #fff;
+      .backup-phrase {
+        background: rgba(246, 246, 246, 0.87);
+        padding: .5rem .5rem 1.7rem;
+        border: 2px dashed rgb(206, 206, 206);
+        width: 95%;
+        margin: 1rem auto;
+        color: rgb(43, 43, 43);
+        text-align: center;
+        span {
+          line-height: 2rem;
+          font-weight: bold;
+          max-width: 400px;
+          color: rgb(43, 43, 43);
+        }
+      }
+      p {
+        color: rgb(58, 58, 58);
+        font-weight: 200;
+      }
+      .cta-buttons {
+        position: absolute;
+        width: 100%;
+        text-align: center;
+        bottom: 90px;
+        button {
+          max-width: 400px;
+        }
+      }
+      .select-word {
+        background: #fff;
+        box-shadow: 0px 4px 5px 0px rgba(50, 50, 50, 0.37);
+        margin: .25rem 0 .25rem;
+        display: inline-block;
+        padding: 0 5px;
+      }
+      #select-phrase {
+        background: rgba(246, 246, 246, 0.87);
+        width: 100%;
+        text-align: center;
+        position: absolute;
+        bottom: 43px;
+        padding-bottom: 20px;
+        p {
+          font-weight: bold;
+          font-weight: bold;
+          padding-top: .7rem;
+          margin-bottom: 0.3rem;
+          float: left;
+          width: 100%;
+        }
+        .select-word {
+          &.button[disabled] {
+            background: transparent !important;
+            box-shadow: none !important;
+            color: transparent;
+            border: 1px solid rgb(211, 211, 211);
+          }
+        }
+        #confirm-phrase {
+          margin: 5px auto 0;
+        }
+      }
+      ion-content.has-header {
+        #select-phrase {
+          bottom: 75px;
+        }
+        .backup-phrase {
+          padding: .5rem .5rem .9rem;
+        }
       }
     }
-    #confirm-phrase{
-      margin:5px auto 0;
+
+    @media (max-width: 400px) {
+      #wallet-backup-phrase {
+        ion-content {
+          h2 {
+            font-size: 1.2rem;
+          }
+          p,
+          h2,
+          h3 {
+            max-width: 600px !important;
+          }
+          button {
+            max-width: 400px !important;
+          }
+        }
+      }
     }
-  }
-  ion-content.has-header{
-    #select-phrase{
-      bottom:75px;
-    }
-    .backup-phrase{
-      padding: .5rem .5rem .9rem;
-    }
-  }
-}
+
+    @media (max-height: 560px) {
+      #wallet-backup-phrase {
+        &,
+        & ion-content,
+        & ion-content .scroll {
+          overflow-y:visible; 
+        }
+          #select-phrase {
+            float: left;
+            position: relative;
+          }
+          .backup-phrase {
+            margin-bottom: 5rem;
+          }
+        }
+      }
+      @media (max-height: 379px) {
+        #wallet-backup-phrase {
+          .cta-buttons {
+            float: left;
+            position: relative;
+            bottom: 0;
+          }
+        }
+      }
