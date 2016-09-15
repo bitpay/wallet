@@ -33,7 +33,7 @@
 
       <form class="m20t"
             name="buyAmazonForm"
-            ng-submit="buy.createTx()"
+            ng-submit="buy.confirm()"
             novalidate>
 
         <div class="card list">
@@ -46,17 +46,17 @@
                    min="0.01"
                    max="500"
                    ng-model="fiat"
+                   ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/"
                    autocomplete="off" ignore-mouse-wheel required>
             <a class="postfix">USD</a>
           </label>
-
-          <wallets ng-if="wallets[0]" wallets="wallets"></wallets>
         </div>
+
+        <wallets ng-if="wallets[0]" wallets="wallets"></wallets>
 
         <button class="button button-block button-positive"
                 ng-disabled="!fiat"
-                type="submit"
-                value="Buy now">
+                type="submit">
           Buy now
         </button>
         <div class="size-10 text-gray text-center">

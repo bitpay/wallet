@@ -5,11 +5,11 @@ navigation history that also transitions its views in and out.
 -->
 <ion-tabs class="tabs-icon-top tabs-color-active-positive" ng-controller="tabsController">
 
-  <ion-tab title="Home" icon-off="ion-ios-pulse" icon-on="ion-ios-pulse-strong" href="#/tabs/home">
+  <ion-tab title="Home" icon-off="ico-home" icon-on="ico-home-selected" href="#/tabs/home">
     <ion-nav-view name="tab-home"></ion-nav-view>
   </ion-tab>
 
-  <ion-tab title="Receive" icon-off="ion-ios-chatboxes-outline" icon-on="ion-ios-chatboxes" href="#/tabs/receive">
+  <ion-tab title="Receive" icon-off="ico-receive" icon-on="ico-receive-selected" href="#/tabs/receive">
     <ion-nav-view name="tab-receive"></ion-nav-view>
   </ion-tab>
 
@@ -18,14 +18,14 @@ navigation history that also transitions its views in and out.
   <qr-scanner class="qr-icon size-24" style="display:none" set-fn="setScanFn(theScanFn)" on-scan="onScan(data)"></qr-scanner>
 
 
-  <ion-tab title="Scan" icon-off="ion-ios-camera" ng-click="scan()" >
+  <ion-tab title="Scan" icon-off="ico-scan" ng-click="scan()" >
   </ion-tab>
 
-  <ion-tab title="Send" icon-off="ion-ios-chatboxes-outline" icon-on="ion-ios-chatboxes" href="#/tabs/send">
+  <ion-tab title="Send" icon-off="ico-send" icon-on="ico-send-selected" href="#/tabs/send">
     <ion-nav-view name="tab-send"></ion-nav-view>
   </ion-tab>
 
-  <ion-tab title="Settings" icon-off="ion-ios-gear-outline" icon-on="ion-ios-gear" href="#/tabs/settings">
+  <ion-tab title="Settings" icon-off="ico-settings" icon-on="ico-settings-selected" href="#/tabs/settings">
     <ion-nav-view name="tab-settings"></ion-nav-view>
   </ion-tab>
 </ion-tabs>
