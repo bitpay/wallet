@@ -1,26 +1,24 @@
 #tab-home {
   .icon-create-wallet {
     background-image: url("../img/icon-bitcoin.svg");
-    background-repeat:no-repeat;
-    background-position: -5px -5px;
   }
   .icon-buy-bitcoin {
     background-image: url("../img/icon-gift.svg");
-    background-repeat: no-repeat;
-    background-position: -5px -6px;
   }
   .icon-bitpay-card {
     background-image: url("../img/icon-bitpay.svg");
-    background-repeat: no-repeat;
-    background-position: -5px -6px;
   }
   .icon-gift {
     background-image: url("../img/icon-gift.svg");
-    background-repeat: no-repeat;
-    background-position: -5px -6px;
   }
 
   a.item {
     color: #444;
   }
+
+  .next-step {
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+
 }
