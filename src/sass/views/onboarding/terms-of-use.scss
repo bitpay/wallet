@@ -17,7 +17,8 @@
   #agree-to-terms {
     background: #fff;
     padding: 1rem;
-    position: relative;
+    position: absolute;
+    bottom: 0;
     .checkbox input:before,
     .checkbox .checkbox-icon:before {
       border-radius: 50% !important;
