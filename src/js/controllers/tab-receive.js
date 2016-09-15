@@ -13,10 +13,10 @@ angular.module('copayApp.controllers').controller('tabReceiveController', functi
     if (!$scope.isCordova) $scope.checkTips();
   }
 
-  $scope.checkTips = function() {
+  $scope.checkTips = function(force) {
     storageService.getReceiveTipsAccepted(function(err, accepted) {
       if (err) $log.warn(err);
-      if (accepted) return;
+      if (accepted && !force) return;
 
       $timeout(function() {
         $ionicModal.fromTemplateUrl('views/modals/receive-tips.html', {
@@ -25,7 +25,7 @@ angular.module('copayApp.controllers').controller('tabReceiveController', functi
           $scope.receiveTipsModal = modal;
           $scope.receiveTipsModal.show();
         });
-      }, 1000);
+      }, force ? 1 : 1000);
     });
   };
 
