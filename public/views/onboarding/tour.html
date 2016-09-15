@@ -2,12 +2,12 @@
   <ion-nav-bar class="bar-stable">
     <ion-nav-title></ion-nav-title>
     <ion-nav-buttons side="primary">
-      <button class="button back-button no-border" ng-click="goBack()">
+      <button class="button back-button button-clear" ng-click="goBack()">
         <i class="icon ion-ios-arrow-thin-left"></i>
       </button>
     </ion-nav-buttons>
     <ion-nav-buttons side="secondary">
-      <button class="button back-button no-border" ng-show="data.index == 0" ng-click="createDefaultWallet()">
+      <button class="button back-button button-clear" ng-show="data.index == 0" ng-click="createDefaultWallet()">
         {{'Skip' | translate}}
       </button>
     </ion-nav-buttons>
@@ -31,7 +31,7 @@
           </p>
         </div>
         <div class="row cta-button">
-          <button class="button button-positive col col-75 next-slide" ng-click="slideNext()">
+          <button class="button button-positive col col-75 next-slide button-translucent" ng-click="slideNext()">
             Got it <i class="icon ion-ios-arrow-thin-right"></i>
           </button>
         </div>
@@ -55,7 +55,7 @@
           </p>
         </div>
         <div class="row cta-button">
-          <button class="button button-positive col col-75 next-slide" ng-click="slideNext()">
+          <button class="button button-positive col col-75 next-slide button-translucent" ng-click="slideNext()">
             Makes sense <i class="icon ion-ios-arrow-thin-right"></i>
           </button>
         </div>

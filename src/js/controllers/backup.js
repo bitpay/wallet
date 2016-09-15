@@ -212,4 +212,14 @@ angular.module('copayApp.controllers').controller('backupController',
         $scope.selectComplete = false;
     };
 
+    $scope.backupGoBack = function() {
+      if ($stateParams.fromOnboarding) $state.go('onboarding.backupWarning', {
+        walletId: $stateParams.walletId,
+        fromOnboarding: true
+      });
+      else $state.go('tabs.preferences.main', {
+        walletId: $stateParams.walletId
+      });
+    };
+
   });

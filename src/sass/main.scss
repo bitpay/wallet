@@ -889,7 +889,7 @@ input[type=file] {
 }
 
 .wallets {
-  height: 90px;
+  height: 110px;
 }
 
 .bar .button.back-button {
@@ -980,6 +980,7 @@ input[type=number] {
 @import "common";
 @import "forms";
 @import 'mixins/mixins';
+@import 'views/tabs';
 @import "views/add";
 @import "views/amount";
 @import "views/confirm";

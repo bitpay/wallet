@@ -1,8 +1,9 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('disclaimerController', function($scope, $timeout, $state, $log, $ionicModal, profileService) {
+angular.module('copayApp.controllers').controller('disclaimerController', function($scope, $timeout, $state, $log, $ionicModal, profileService, uxLanguage, externalLinkService) {
 
   $scope.init = function() {
+    $scope.lang = uxLanguage.currentLanguage;
     $scope.terms = {};
     $scope.accept1 = $scope.accept2 = $scope.accept3 = false;
     $timeout(function() {
@@ -17,6 +18,10 @@ angular.module('copayApp.controllers').controller('disclaimerController', functi
         $state.go('tabs.home');
       }
     });
+  };
+
+  $scope.openExternalLink = function(url, target) {
+    externalLinkService.open(url, target);
   };
 
   $scope.openTermsModal = function() {
