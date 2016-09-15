@@ -2,6 +2,11 @@
   ion-header-bar {
     background: #fff;
     box-shadow: 0px 3px 3px 0px rgba(50, 50, 50, 0.2);
+    .primary-buttons{
+      .button{
+        font-size: 2rem;
+      }
+    }
   }
   ion-content{
     padding-top: 1.5rem;
@@ -36,17 +41,19 @@
     .checkbox input:checked:after,
     input:checked + .checkbox-icon:after {
       border-color: rgb(19, 229, 182);
+      top: 20%;
+      left: 11%;
     }
     .item {
       color: rgb(58, 58, 58);
       padding-bottom: 1.2rem;
-      padding-bottom: 1.6rem;
+      padding-bottom: 2.5rem;
       float: left;
       border: none;
       width: 10%;
       position: relative;
       padding-right: 0;
-      top: 30px;
+      top: 50px;
       .item-content {
         white-space: normal;
       }
