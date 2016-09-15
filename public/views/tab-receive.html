@@ -1,13 +1,13 @@
-<ion-view id="tab-receive">
+<ion-view id="tab-receive" ng-controller="tabReceiveController" ng-init="init()">
   <ion-nav-bar class="bar-royal">
     <ion-nav-title>{{'Receive' | translate}}</ion-nav-title>
     <ion-nav-buttons side="secondary">
-      <button class="no-border">
+      <button class="button button-clear" ng-click="checkTips(true)">
         <i class="ion-help-circled"></i>
       </button>
     </ion-nav-buttons>
   </ion-nav-bar>
-  <ion-content ng-controller="tabReceiveController" ng-init="init()">
+  <ion-content>
     <article id="address">
       <div class="row">
         <div class="m15t text-center col col-60 center-block" copy-to-clipboard="addr">
