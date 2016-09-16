@@ -710,30 +710,35 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         templateUrl: 'views/sellCoinbase.html'
       })
 
+      /*
+       *
+       * Gift Cards
+       *
+       */
 
-    /*
-     *
-     * Amazon Gift Card
-     *
-     */
-
-    .state('amazon', {
-        url: '/amazon',
-        abstract: true,
-        template: '<ion-nav-view name="amazon"></ion-nav-view>'
+      .state('tabs.giftcards', {
+        url: '/giftcards',
+        abstract: true
       })
-      .state('amazon.main', {
-        url: '/main',
+
+      /*
+       *
+       * Amazon.com Gift Card
+       *
+       */
+
+      .state('tabs.giftcards.amazon', {
+        url: '/amazon',
         views: {
-          'amazon': {
+          'tab-home@tabs': {
             templateUrl: 'views/amazon.html'
           }
         }
       })
-      .state('amazon.buy', {
+      .state('tabs.giftcards.amazon.buy', {
         url: '/buy',
         views: {
-          'amazon': {
+          'tab-home@tabs': {
             templateUrl: 'views/buyAmazon.html'
           }
         }

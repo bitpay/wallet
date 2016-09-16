@@ -1,11 +1,9 @@
 <ion-view>
   <ion-nav-bar class="bar-royal">
-    <ion-nav-buttons side="primary">
-      <button class="button button-clear" ui-sref="tabs.home">
-        Close
-      </button>
-    </ion-nav-buttons>
-    <ion-nav-title>Gift cards</ion-nav-title>
+    <ion-nav-back-button>
+      <i class="icon ion-ios-arrow-thin-left"></i>
+    </ion-nav-back-button>
+    <ion-nav-title>Amazon.com Gift Cards</ion-nav-title>
   </ion-nav-bar>
 
   <ion-content ng-controller="amazonController as amazon" ng-init="amazon.init()">
@@ -21,7 +19,7 @@
 
     <div ng-if="!giftCards" class="m20t padding text-center">
 
-      <button class="button button-block button-positive" ui-sref="amazon.buy">
+      <button class="button button-block button-positive" ui-sref="tabs.giftcards.amazon.buy">
         Buy now
       </button>
 
@@ -33,7 +31,7 @@
 
     <div class="m20t" ng-if="giftCards">
       <div class="list">
-        <a class="item item-icon-left item-icon-right" href ui-sref="amazon.buy">
+        <a class="item item-icon-left item-icon-right" href ui-sref="tabs.giftcards.amazon.buy">
           <i class="icon ion-bag"></i>
           Buy Gift Card
           <i class="icon nav-item-arrow-right"></i>
