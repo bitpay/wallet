@@ -109,11 +109,6 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
       templateUrl: 'views/starting.html'
     })
 
-    .state('buyandsell', {
-      url: '/buyandsell',
-      templateUrl: 'views/buyandsell.html'
-    })
-
     /*
      *
      * URI
@@ -636,46 +631,57 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         },
       })
 
-    /*
-     *
-     * Glidera
-     *
-     *
-     */
 
-    .state('glidera', {
-        url: '/glidera',
-        abstract: true,
-        template: '<ion-nav-view name="glidera"></ion-nav-view>'
-      })
-      .state('glidera.main', {
-        url: '/main',
+      /*
+       *
+       * Buy or Sell Bitcoin
+       *
+       */
+
+      .state('tabs.buyandsell', {
+        url: '/buyandsell',
         views: {
-          'glidera': {
+          'tab-home': {
+            templateUrl: 'views/buyandsell.html'
+          }
+        }
+      })
+
+      /*
+       *
+       * Glidera
+       *
+       *
+       */
+
+      .state('tabs.buyandsell.glidera', {
+        url: '/glidera',
+        views: {
+          'tab-home@tabs': {
             templateUrl: 'views/glidera.html'
           }
         }
       })
-      .state('glidera.buy', {
+      .state('tabs.buyandsell.glidera.buy', {
         url: '/buy',
         views: {
-          'glidera': {
+          'tab-home@tabs': {
             templateUrl: 'views/buyGlidera.html'
           }
         }
       })
-      .state('glidera.sell', {
+      .state('tabs.buyandsell.glidera.sell', {
         url: '/sell',
         views: {
-          'glidera': {
+          'tab-home@tabs': {
             templateUrl: 'views/sellGlidera.html'
           }
         }
       })
-      .state('glidera.preferences', {
+      .state('tabs.buyandsell.glidera.preferences', {
         url: '/preferences',
         views: {
-          'glidera': {
+          'tab-home@tabs': {
             templateUrl: 'views/preferencesGlidera.html'
           }
         }

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.services').factory('glideraService', function($http, $log, $window, platformInfo, storageService, configService, $rootScope) {
+angular.module('copayApp.services').factory('glideraService', function($http, $log, $window, platformInfo, storageService) {
   var root = {};
   var credentials = {};
   var isCordova = platformInfo.isCordova;
