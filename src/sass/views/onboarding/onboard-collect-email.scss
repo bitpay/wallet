@@ -47,18 +47,59 @@
     z-index: 5;
     margin-top: 0;
     width: 100%;
-    label {
-      background: rgba(200, 200, 200, 0.20);
-      height: 3rem;
-      margin-top:0;
-      i {
-        position: absolute;
-        right: 3%;
-        top: 1rem;
+    form {
+      label {
+        background: rgba(200, 200, 200, 0.20);
+        height: 3rem;
+        margin-top:0;
+        i {
+          position: absolute;
+          right: 3%;
+          top: 1rem;
+        }
       }
     }
   }
+  .item {
+    border: none;
+    label{
+      background: none;
+    }
+    .checkbox input:before,
+    .checkbox .checkbox-icon:before {
+      border-radius: 50% !important;
+      background: none;
+      border-width: 2px;
+      padding: .9rem;
+      position: relative;
+      left: -7px;
+      top: -8px;
+    }
+    .checkbox input:checked:after,
+    input:checked + .checkbox-icon:after {
+      border-color: rgb(19, 229, 182);
+      top:20%;
+      left:11%;
+    }
+    .item-content {
+      width: 90%;
+      margin-left: 10%;
+    }
+  }
+  .item-checkbox .checkbox {
+    margin-left: 10%;
+    top: 55%;
+  }
+  .checkbox input:before,
+  .checkbox .checkbox-icon:before{
+    border-color:$soft-blue;
+  }
+  .checkbox input:checked:before,
+  .checkbox input:checked + .checkbox-icon:before {
+    border-color: rgb(19, 229, 182);
+  }
 }
+
 @media (min-width: 1000px){
   #onboarding-collect-email{
     #collect-email{
