@@ -68,7 +68,7 @@ angular.module('copayApp.controllers').controller('preferencesGlideraController'
         if (res) {
           glideraService.removeToken(function() {
             $timeout(function() {
-              $state.go('glidera.main');
+              $state.go('tabs.buyandsell.glidera');
             }, 100);
           });
         }
