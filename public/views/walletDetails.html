@@ -1,14 +1,15 @@
 <ion-view id="walletDetails" ng-controller="walletDetailsController" ng-init="init()">
-  <ion-header-bar ng-style="{'background-color': walletDetailsColor}">
-    <button class="button back-button" ng-click="$ionicGoBack()">
+  <ion-nav-bar ng-style="{'background-color': walletDetailsColor}">
+    <ion-nav-title>{{walletDetailsName}}</ion-nav-title>
+    <ion-nav-back-button>
       <i class="icon ion-ios-arrow-thin-left"></i>
-    </button>
-    <h1 class="title">{{walletDetailsName}}</h1>
-    <button class="button search-button" ng-click="startSearch(); openSearchModal()">
-      <i class="icon ion-ios-search-strong"></i>
-    </button>
-  </ion-header-bar>
-
+    </ion-nav-back-button>
+    <ion-nav-buttons side="secondary">
+      <button class="button back-button" ng-click="startSearch(); openSearchModal()">
+        <i class="icon ion-ios-search-strong"></i>
+      </button>
+    </ion-nav-buttons>
+  </ion-nav-bar>
   <ion-content delegate-handle="my-handle">
     <div class="oh pr" ng-show="wallet && wallet.isComplete()">
       <div ng-style="{'background-color':wallet.color}" class="amount">
