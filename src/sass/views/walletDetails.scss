@@ -9,7 +9,9 @@
       background-color: transparent;
     }
   }
-
+  .nav-bar-block, .bar {
+  background-color: inherit !important;
+  }
   .amount {
     width: 100%;
     text-align: center;
