@@ -14,7 +14,7 @@ angular.module('copayApp.controllers').controller('glideraUriController',
           } else if (data && data.access_token) {
             storageService.setGlideraToken($scope.network, data.access_token, function() {
               $timeout(function() {
-                $state.go('glidera.main');
+                $state.go('tabs.buyandsell.glidera');
                 $scope.$apply();
               }, 500);
             });

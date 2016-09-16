@@ -1,10 +1,9 @@
 <ion-view>
   <ion-nav-bar class="bar-royal">
-    <ion-nav-buttons side="primary">
-      <button class="button button-clear" ui-sref="tabs.home">
-        Close
-      </button>
-    </ion-nav-buttons>
+    <ion-nav-back-button>
+      <i class="icon ion-ios-arrow-thin-left"></i>
+    </ion-nav-back-button>
+
     <ion-nav-title>Glidera</ion-nav-title>
   </ion-nav-bar>
 
@@ -84,7 +83,7 @@
         <img src="img/glidera-logo.png" ng-click="update(token, permissions)" width="200">
       </div>
       <div class="list">
-        <a class="item item-icon-left item-icon-right" href ui-sref="glidera.preferences">
+        <a class="item item-icon-left item-icon-right" href ui-sref="tabs.buyandsell.glidera.preferences">
           <i class="icon ion-ios-gear"></i>
           <span ng-show="personalInfo">{{personalInfo.firstName}} {{personalInfo.lastName}}</span>
           <span class="item-note" ng-show="email">
@@ -112,15 +111,15 @@
         ng-show="status && status.userCanTransact">
         <a ng-show="status.userCanBuy"
             class="item item-icon-right"
-            href ui-sref="glidera.buy">
-          <img src="img/buy-bitcoin.svg" alt="buy bitcoin" width="35">
+            href ui-sref="tabs.buyandsell.glidera.buy">
+          <img src="img/buy-bitcoin.svg" alt="buy bitcoin" width="30">
           Buy Bitcoin
           <i class="icon nav-item-arrow-right"></i>
         </a>
         <a class="item item-icon-right"
             ng-show="status.userCanSell"
-            href ui-sref="glidera.sell">
-          <img src="img/sell-bitcoin.svg" alt="buy bitcoin" width="35">
+            href ui-sref="tabs.buyandsell.glidera.sell">
+          <img src="img/sell-bitcoin.svg" alt="buy bitcoin" width="30">
           Sell Bitcoin
           <i class="icon nav-item-arrow-right"></i>
         </a>
