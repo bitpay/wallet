@@ -9,13 +9,14 @@ angular.module('copayApp.controllers').controller('collectEmailController', func
 
   var wallet = profileService.getWallet($stateParams.walletId);
   var walletId = wallet.credentials.walletId;
+  $scope.data = {};
+  $scope.data.accept = false;
 
   $scope.save = function() {
     var opts = {
       emailFor: {}
     };
     opts.emailFor[walletId] = $scope.email;
-
     walletService.updateRemotePreferences(wallet, {
       email: $scope.email,
     }, function(err) {

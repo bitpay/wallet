@@ -14,9 +14,12 @@
         <form name="emailForm" ng-submit="confirm(emailForm)" novalidate>
           <label class="item item-input col col-75">
             <i class="icon ion-arrow-right-c"></i>
-            <input type="email" id="email" name="email" ng-model="email" laceholder="satoshi@example.com" required></input>
+            <input type="email" id="email" name="email" ng-model="email" placeholder="satoshi@example.com" required autofocus></input>
           </label>
         </form>
+        <ion-list>
+          <ion-checkbox ng-model="data.accept"><span translate>Get news and updates from Bitpay</span></ion-checkbox>
+        </ion-list>
       </div>
       <div ng-if="confirmation">
         <div class="row text-center">
