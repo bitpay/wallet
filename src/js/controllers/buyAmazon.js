@@ -208,7 +208,7 @@ angular.module('copayApp.controllers').controller('buyAmazonController',
           $log.debug("Saving new gift card with status: " + newData.status);
 
           self.giftCard = newData;
-          if (newData.status == 'PENDING') $state.transitionTo('amazon.main');
+          if (newData.status == 'PENDING') $state.transitionTo('tabs.giftcards.amazon');
           $timeout(function() {
             $scope.$digest();
           });
