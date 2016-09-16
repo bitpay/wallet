@@ -303,7 +303,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
     .state('tabs.language', {
         url: '/language',
         views: {
-          'tab-settings': {
+          'tab-settings@tabs': {
             templateUrl: 'views/preferencesLanguage.html'
           }
         }
@@ -311,7 +311,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
       .state('tabs.unit', {
         url: '/unit',
         views: {
-          'tab-settings': {
+          'tab-settings@tabs': {
             templateUrl: 'views/preferencesUnit.html'
           }
         }
@@ -319,7 +319,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
       .state('tabs.fee', {
         url: '/fee',
         views: {
-          'tab-settings': {
+          'tab-settings@tabs': {
             templateUrl: 'views/preferencesFee.html'
           }
         }
@@ -327,7 +327,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
       .state('tabs.altCurrency', {
         url: '/altCurrency',
         views: {
-          'tab-settings': {
+          'tab-settings@tabs': {
             templateUrl: 'views/preferencesAltCurrency.html'
           }
         }
@@ -335,31 +335,31 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
       .state('tabs.about', {
         url: '/about',
         views: {
-          'tab-settings': {
+          'tab-settings@tabs': {
             templateUrl: 'views/preferencesAbout.html'
           }
         }
       })
-      .state('tabs.logs', {
+      .state('tabs.about.logs', {
         url: '/logs',
         views: {
-          'tab-settings': {
+          'tab-settings@tabs': {
             templateUrl: 'views/preferencesLogs.html'
           }
         }
       })
-      .state('tabs.termsOfUse', {
+      .state('tabs.about.termsOfUse', {
         url: '/termsOfUse',
         views: {
-          'tab-settings': {
+          'tab-settings@tabs': {
             templateUrl: 'views/termsOfUse.html',
           }
         }
       })
-      .state('tabs.translators', {
+      .state('tabs.about.translators', {
         url: '/translators',
         views: {
-          'tab-settings': {
+          'tab-settings@tabs': {
             templateUrl: 'views/translators.html'
           }
         }
@@ -375,7 +375,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         url: '/preferences/:walletId',
         abstract: true,
         views: {
-          'tab-settings': {
+          'tab-settings@tabs': {
             template: '<ion-nav-view name="preferences"></ion-nav-view>'
           },
         }
