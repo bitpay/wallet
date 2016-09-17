@@ -17,24 +17,14 @@ angular.module('copayApp.controllers').controller('confirmController', function(
 
 
   $scope.showDescriptionPopup = function() {
-
-    $scope.data = {
-      comment: null
+    var title = gettextCatalog.getString('Add description');
+    var opts = {
+      defaultText: $scope.description
     };
 
-    var commentPopup = $ionicPopup.show({
-      templateUrl: "views/includes/note.html",
-      title: gettextCatalog.getString('Set description'),
-      scope: $scope,
+    popupService.showPrompt(title, null, opts, function(res) {
+      if (res) $scope.description = res;
     });
-    $scope.commentPopupClose = function() {
-      commentPopup.close();
-    };
-    $scope.commentPopupSave = function() {
-      $log.debug('Saving description: ' + $scope.data.comment);
-      $scope.description = $scope.data.comment;
-      commentPopup.close();
-    };
   };
 
   var setFromPayPro = function(uri, cb) {

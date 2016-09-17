@@ -26,10 +26,12 @@ angular.module('copayApp.controllers').controller('addressbookViewController', f
   });
 
   $scope.sendTo = function() {
+    $state.go('^.^.send');
     $timeout(function() {
-      $state.transitionTo('send.amount', {
+      $state.go('.amount', {
         toAddress: $scope.addressbookEntry.address,
-        toName: $scope.addressbookEntry.name
+        toName: $scope.addressbookEntry.name,
+        toEmail: $scope.addressbookEntry.email
       });
     }, 100);
   };
