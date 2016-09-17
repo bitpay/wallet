@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('addressbookViewController', function($scope, $state, $timeout, $stateParams, lodash, addressbookService, popupService) {
+angular.module('copayApp.controllers').controller('addressbookViewController', function($scope, $state, $timeout, $stateParams, lodash, addressbookService, popupService, $ionicHistory) {
 
   var address = $stateParams.address;
 
@@ -26,9 +26,10 @@ angular.module('copayApp.controllers').controller('addressbookViewController', f
   });
 
   $scope.sendTo = function() {
-    $state.go('^.^.send');
+    $ionicHistory.clearHistory();
+    $state.go('tabs.send');
     $timeout(function() {
-      $state.go('.amount', {
+      $state.transitionTo('tabs.send.amount', {
         toAddress: $scope.addressbookEntry.address,
         toName: $scope.addressbookEntry.name,
         toEmail: $scope.addressbookEntry.email

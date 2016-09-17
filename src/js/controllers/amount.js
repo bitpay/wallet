@@ -1,8 +1,7 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('amountController', function($rootScope, $scope, $filter, $timeout, $ionicHistory, $ionicScrollDelegate, $ionicNavBarDelegate, gettextCatalog, platformInfo, lodash, configService, rateService, $stateParams, $window, $state, $log, txFormatService) {
+angular.module('copayApp.controllers').controller('amountController', function($rootScope, $scope, $filter, $timeout, $ionicScrollDelegate, $ionicNavBarDelegate, gettextCatalog, platformInfo, lodash, configService, rateService, $stateParams, $window, $state, $log, txFormatService) {
   $ionicNavBarDelegate.title(gettextCatalog.getString('Enter Amount'));
-  $ionicNavBarDelegate.showBackButton(true);
 
   var unitToSatoshi;
   var satToUnit;
