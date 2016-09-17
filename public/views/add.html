@@ -1,31 +1,29 @@
 <ion-view id="view-add">
   <ion-nav-bar class="bar-royal">
     <ion-nav-title>{{'Add wallet' | translate}}</ion-nav-title>
-    <ion-nav-buttons side="primary">
-      <button class="button back-button" ui-sref="tabs.home">
-        <i class="icon ion-ios-arrow-thin-left"></i>
-      </button>
-    </ion-nav-buttons>
+    <ion-nav-back-button>
+      <i class="icon ion-ios-arrow-thin-left"></i>
+    </ion-nav-back-button>
   </ion-nav-bar>
 
   <ion-content>
     <ion-list>
-      <a class="item item-remove-animate item-icon-right" type="item-text-wrap" ui-sref="tabs.create-personal">
+      <a class="item item-remove-animate item-icon-right" type="item-text-wrap" ui-sref="tabs.add.create-personal">
         <h2 translate>New Personal Wallet</h2>
         <i class="icon nav-item-arrow-right"></i>
       </a>
 
-      <a class="item item-remove-animate item-icon-right" type="item-text-wrap" ui-sref="tabs.create-shared">
+      <a class="item item-remove-animate item-icon-right" type="item-text-wrap" ui-sref="tabs.add.create-shared">
         <h2 translate>Create Shared Wallet</h2>
         <i class="icon nav-item-arrow-right"></i>
       </a>
 
-      <a class="item item-remove-animate item-icon-right" type="item-text-wrap" ui-sref="tabs.join">
+      <a class="item item-remove-animate item-icon-right" type="item-text-wrap" ui-sref="tabs.add.join">
         <h2 translate>Join shared wallet</h2>
         <i class="icon nav-item-arrow-right"></i>
       </a>
 
-      <a class="item item-remove-animate item-icon-right" type="item-text-wrap" ui-sref="tabs.import">
+      <a class="item item-remove-animate item-icon-right" type="item-text-wrap" ui-sref="tabs.add.import">
         <h2 translate>Import wallet</h2>
         <i class="icon nav-item-arrow-right"></i>
       </a>

@@ -26,7 +26,7 @@ angular.module('copayApp.services').factory('incomingData', function($log, $ioni
     // data extensions for Payment Protocol with non-backwards-compatible request
     if ((/^bitcoin:\?r=[\w+]/).exec(data)) {
       data = decodeURIComponent(data.replace('bitcoin:?r=', ''));
-      $state.go('send.confirm', {paypro: data})
+      $state.go('tabs.send.confirm', {paypro: data})
     }
 
 
@@ -42,25 +42,25 @@ angular.module('copayApp.services').factory('incomingData', function($log, $ioni
       var amount = parsed.amount ?  parsed.amount : '';
 
       if (parsed.r) {
-        $state.go('send.confirm', {paypro: parsed.r});
+        $state.go('tabs.send.confirm', {paypro: parsed.r});
       } else {
         if (amount) {
-          $state.go('send.confirm', {toAmount: amount, toAddress: addr, description:message})
+          $state.go('tabs.send.confirm', {toAmount: amount, toAddress: addr, description:message})
         } else {
-          $state.go('send.amount', {toAddress: addr})
+          $state.go('tabs.send.amount', {toAddress: addr})
         }
       }
       return true;
 
     // Plain URL
     } else  if (/^https?:\/\//.test(data)) {
-      return $state.go('send.confirm', {paypro: data})
+      return $state.go('tabs.send.confirm', {paypro: data})
 
     // Plain Address
     } else if (bitcore.Address.isValid(data, 'livenet')) {
-      return $state.go('send.amount', {toAddress: data})
+      return $state.go('tabs.send.amount', {toAddress: data})
     } else if (bitcore.Address.isValid(data, 'testnet')) {
-      return $state.go('send.amount', {toAddress: data})
+      return $state.go('tabs.send.amount', {toAddress: data})
 
 
     // Protocol
@@ -71,11 +71,11 @@ angular.module('copayApp.services').factory('incomingData', function($log, $ioni
 
     // Join
     } else if (data.match(/^copay:[0-9A-HJ-NP-Za-km-z]{70,80}$/)) {
-      return $state.go('add.join', {url: data})
+      return $state.go('tabs.add.join', {url: data})
 
     // Old join
     } else if (data.match(/^[0-9A-HJ-NP-Za-km-z]{70,80}$/)) {
-      return $state.go('add.join', {url: data})
+      return $state.go('tabs.add.join', {url: data})
     }
 
 

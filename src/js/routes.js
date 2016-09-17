@@ -218,29 +218,24 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         }
       })
 
-    /*
-     *
-     * Send
-     *
-     */
+      /*
+       *
+       * Send
+       *
+       */
 
-    .state('send', {
-        url: '/send',
-        abstract: true,
-        template: '<ion-nav-view name="send"></ion-nav-view>'
-      })
-      .state('send.amount', {
+      .state('tabs.send.amount', {
         url: '/amount/:toAddress/:toName/:toEmail',
         views: {
-          'send': {
+          'tab-send@tabs': {
             templateUrl: 'views/amount.html'
           }
         }
       })
-      .state('send.confirm', {
+      .state('tabs.send.confirm', {
         url: '/confirm/:toAddress/:toName/:toAmount/:toEmail/:description/:paypro',
         views: {
-          'send': {
+          'tab-send@tabs': {
             templateUrl: 'views/confirm.html'
           }
         }
@@ -256,39 +251,39 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
     .state('tabs.add', {
         url: '/add',
         views: {
-          'tab-home': {
+          'tab-home@tabs': {
             templateUrl: 'views/add.html'
           }
         }
       })
-      .state('tabs.join', {
+      .state('tabs.add.join', {
         url: '/join/:url',
         views: {
-          'tab-home': {
+          'tab-home@tabs': {
             templateUrl: 'views/join.html'
           },
         }
       })
-      .state('tabs.import', {
+      .state('tabs.add.import', {
         url: '/import',
         views: {
-          'tab-home': {
+          'tab-home@tabs': {
             templateUrl: 'views/import.html'
           },
         },
       })
-      .state('tabs.create-personal', {
+      .state('tabs.add.create-personal', {
         url: '/create-personal',
         views: {
-          'tab-home': {
+          'tab-home@tabs': {
             templateUrl: 'views/tab-create-personal.html'
           },
         }
       })
-      .state('tabs.create-shared', {
+      .state('tabs.add.create-shared', {
         url: '/create-shared',
         views: {
-          'tab-home': {
+          'tab-home@tabs': {
             templateUrl: 'views/tab-create-shared.html'
           },
         }
