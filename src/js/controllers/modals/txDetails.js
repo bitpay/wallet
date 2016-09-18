@@ -15,6 +15,10 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
 
   $scope.btx.amountStr = txFormatService.formatAmount($scope.btx.amount, true) + ' ' + walletSettings.unitName;
   $scope.btx.feeStr = txFormatService.formatAmount($scope.btx.fees, true) + ' ' + walletSettings.unitName;
+  $scope.btx.feeLevel = walletSettings.feeLevel;
+  console.log(wallet);
+  console.log(walletSettings);
+  console.log($scope.btx);
 
   $scope.showCommentPopup = function() {
     $scope.data = {
