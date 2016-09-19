@@ -17,8 +17,8 @@
             <input type="email" id="email" name="email" ng-model="email" placeholder="satoshi@example.com" required></input>
           </label>
         </form>
-        <ion-list>
-          <ion-checkbox ng-model="data.accept"><span translate>Get news and updates from Bitpay</span></ion-checkbox>
+        <ion-list id="news-updates" class="row">
+          <ion-checkbox ng-model="data.accept" class="col col-80"><span translate>Get news and updates from Bitpay</span></ion-checkbox>
         </ion-list>
       </div>
       <div ng-if="confirmation">
