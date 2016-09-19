@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('txDetailsController', function($rootScope, $log, $scope, $filter, $stateParams, $ionicPopup, gettextCatalog, profileService, configService, lodash, txFormatService, platformInfo, externalLinkService) {
+angular.module('copayApp.controllers').controller('txDetailsController', function($rootScope, $log, $timeout, $scope, $filter, $stateParams, $ionicPopup, gettextCatalog, profileService, configService, lodash, txFormatService, platformInfo, externalLinkService, popupService) {
 
   var self = $scope.self;
   var wallet = profileService.getWallet($stateParams.walletId);
@@ -24,27 +24,12 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
   }
 
   $scope.showCommentPopup = function() {
-    $scope.data = {
-      comment: $scope.btx.note ? $scope.btx.note.body : '',
-    };
+    popupService.showPrompt(gettextCatalog.getString('Memo'), null, null, function(res) {
+      $log.debug('Saving memo');
 
-    var commentPopup = $ionicPopup.show({
-      templateUrl: "views/includes/note.html",
-      scope: $scope,
-    });
-
-    $scope.commentPopupClose = function() {
-      commentPopup.close();
-    };
-
-    $scope.commentPopupSave = function() {
-      $log.debug('Saving note');
       var args = {
         txid: $scope.btx.txid,
-      };
-
-      if ($scope.data.comment) {
-        args.body = $scope.data.comment;
+        body: res
       };
 
       wallet.editTxNote(args, function(err) {
@@ -56,14 +41,17 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
         $scope.btx.note = null;
         if (args.body) {
           $scope.btx.note = {};
-          $scope.btx.note.body = $scope.data.comment;
+          $scope.btx.note.body = res;
           $scope.btx.note.editedByName = wallet.credentials.copayerName;
           $scope.btx.note.editedOn = Math.floor(Date.now() / 1000);
         }
         $scope.btx.searcheableString = null;
-        commentPopup.close();
+
+        $timeout(function() {
+          $scope.$apply();
+        }, 200);
       });
-    };
+    });
   };
 
   $scope.getAlternativeAmount = function() {
