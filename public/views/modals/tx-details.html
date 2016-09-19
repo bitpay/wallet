@@ -4,38 +4,38 @@
       {{'Close' | translate}}
     </button>
     <div class="title" translate>
-      Sent Funds
+      {{title}}
     </div>
   </ion-header-bar>
 
   <ion-content>
     <div class="header-modal text-center" ng-init="getAlternativeAmount(btx)">
       <div ng-show="btx.action != 'invalid'">
-        <div ng-show="btx.action == 'received'">
-          <i class="icon big-icon-svg">
-            <img src="img/icon-wallet.svg" ng-style="{'background-color': wallet.color}" class="bg"/>
-          </i>
-          <!-- <img src="img/icon-receive-history.svg" alt="sync" width="50"> -->
-        </div>
-        <div ng-show="btx.action == 'sent'">
-          <i class="icon big-icon-svg">
-            <img src="img/icon-wallet.svg" ng-style="{'background-color': wallet.color}" class="bg"/>
-          </i>
-          <!-- <img src="img/icon-sent-history.svg" alt="sync" width="50"> -->
-          </div>
-        <div ng-show="btx.action == 'moved'">
-          <i class="icon big-icon-svg">
-            <img src="img/icon-wallet.svg" ng-style="{'background-color': wallet.color}" class="bg"/>
-          </i>
-          <!-- <img src="img/icon-moved.svg" alt="sync" width="50"> -->
-        </div>
+
+        <i class="icon big-icon-svg">
+          <img src="img/icon-wallet.svg" ng-style="{'background-color': wallet.color}" class="bg"/>
+        </i>
 
         <div class="size-36" copy-to-clipboard="btx.amountStr">
           <span class="enable_text_select">{{btx.amountStr}}</span>
         </div>
 
-        <div class="">
+        <div ng-show="btx.action == 'sent'">
           <span translate>Sent from</span> {{wallet.credentials.walletName}}
+          <div class="padding-vertical">
+            <i class="icon ion-ios-arrow-thin-down size-24"></i>
+          </div>
+        </div>
+
+        <div ng-show="btx.action == 'received'">
+          <div class="padding-vertical">
+            <i class="icon ion-ios-arrow-thin-up size-24"></i>
+          </div>
+          <span translate>Received Funds</span>
+        </div>
+
+        <div ng-show="btx.action == 'moved'">
+          <span translate>Moved Funds</span>
         </div>
         <!-- <div class="alternative-amount" ng-click="showRate=!showRate" ng-init="showRate = false">
           <span class="label gray radius" ng-show="!showRate && alternativeAmountStr">
@@ -52,7 +52,7 @@
     </div>
 
     <div class="list">
-      <div class="item item-icon-left">
+      <div class="item item-icon-left" ng-show="btx.action == 'sent'">
         <i class="icon ion-social-bitcoin-outline"></i>
         <div ng-if="!btx.hasMultiplesOutputs && btx.addressTo && btx.addressTo != 'N/A'" copy-to-clipboard="btx.addressTo">
           <span ng-if="btx.merchant">
@@ -70,7 +70,7 @@
         <i class="icon ion-ios-upload-outline"></i>
         <a ng-click="openExternalLink('https://' +
           (getShortNetworkName() == 'test' ? 'test-' : '') + 'insight.bitpay.com/tx/' + btx.txid)">
-          <span class="text-gray" translate>See it on the blockchain</span>
+          <span class="text-gray" translate>View transaction on the blockchain</span>
         </a>
       </div>
 
@@ -139,7 +139,7 @@
         </span>
       </div>
 
-      <div class="item item-divider" translate>Timeline</div>
+      <div class="item item-divider" ng-show="btx.action == 'sent'" translate>Timeline</div>
 
     </div>
 
