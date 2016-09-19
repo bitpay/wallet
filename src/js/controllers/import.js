@@ -345,6 +345,8 @@ angular.module('copayApp.controllers').controller('importController',
           if (err) $log.error(err);
         });
       }
-      $state.go('tabs.home');
+      $state.go('tabs.home', {
+        fromOnboarding: $stateParams.fromOnboarding
+      });
     };
   });

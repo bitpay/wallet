@@ -15,7 +15,9 @@ angular.module('copayApp.controllers').controller('disclaimerController', functi
     profileService.setDisclaimerAccepted(function(err) {
       if (err) $log.error(err);
       else {
-        $state.go('tabs.home');
+        $state.go('tabs.home', {
+          fromOnboarding: true
+        });
       }
     });
   };
