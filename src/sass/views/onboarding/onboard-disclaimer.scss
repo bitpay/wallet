@@ -33,6 +33,11 @@
       border-color: rgb(19, 229, 182);
       top:20%;
       left:11%;
+      @media (min-width:450px){
+        &{
+          left: 20%;
+        }
+      }
     }
     .item-content {
       width: 90%;
@@ -59,6 +64,12 @@
     }
     p{
       color:rgb(58,58,58);
+    }
+    @media (min-width:450px){
+      p{
+        position: relative;
+        top: .6rem;
+      }
     }
     .checkbox input:before,
     .checkbox .checkbox-icon:before{
