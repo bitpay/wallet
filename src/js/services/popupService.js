@@ -32,9 +32,10 @@ angular.module('copayApp.services').service('popupService', function($log, $ioni
     opts = opts || {};
     $ionicPopup.prompt({
       title: title,
-      template: message,
-      inputType: opts.inputType || 'password',
-      inputPlaceholder: opts.inputPlaceholder || 'Your password'
+      subTitle: message,
+      inputType: opts.inputType,
+      inputPlaceholder: opts.inputPlaceholder,
+      defaultText: opts.defaultText
     }).then(function(res) {
       return cb(res)
     });
@@ -106,7 +107,7 @@ angular.module('copayApp.services').service('popupService', function($log, $ioni
    *
    * @param {String} Title
    * @param {String} Message
-   * @param {Object} Object{ inputType, inputPlaceholder } (optional)
+   * @param {Object} Object{ inputType, inputPlaceholder, defaultText } (optional)
    * @param {Callback} Function
    * @returns {Callback} Return the value of the input if user presses OK
    */

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('confirmController', function($rootScope, $scope, $filter, $timeout, $ionicScrollDelegate, $ionicNavBarDelegate, gettextCatalog, walletService, platformInfo, lodash, configService, rateService, $stateParams, $window, $state, $log, profileService, bitcore, $ionicPopup, gettext, txFormatService, ongoingProcess, $ionicModal, popupService) {
+angular.module('copayApp.controllers').controller('confirmController', function($rootScope, $scope, $filter, $timeout, $ionicScrollDelegate, $ionicNavBarDelegate, gettextCatalog, walletService, platformInfo, lodash, configService, rateService, $stateParams, $window, $state, $log, profileService, bitcore, $ionicPopup, gettext, txFormatService, ongoingProcess, $ionicModal, $ionicHistory, popupService) {
   $ionicNavBarDelegate.title(gettextCatalog.getString('Confirm'));
   var cachedTxp = {};
   var isChromeApp = platformInfo.isChromeApp;
@@ -17,24 +17,14 @@ angular.module('copayApp.controllers').controller('confirmController', function(
 
 
   $scope.showDescriptionPopup = function() {
-
-    $scope.data = {
-      comment: null
+    var title = gettextCatalog.getString('Add description');
+    var opts = {
+      defaultText: $scope.description
     };
 
-    var commentPopup = $ionicPopup.show({
-      templateUrl: "views/includes/note.html",
-      title: gettextCatalog.getString('Set description'),
-      scope: $scope,
+    popupService.showPrompt(title, null, opts, function(res) {
+      if (res) $scope.description = res;
     });
-    $scope.commentPopupClose = function() {
-      commentPopup.close();
-    };
-    $scope.commentPopupSave = function() {
-      $log.debug('Saving description: ' + $scope.data.comment);
-      $scope.description = $scope.data.comment;
-      commentPopup.close();
-    };
   };
 
   var setFromPayPro = function(uri, cb) {
@@ -87,6 +77,13 @@ angular.module('copayApp.controllers').controller('confirmController', function(
   };
 
   $scope.init = function() {
+    if ($stateParams.paypro) {
+      return setFromPayPro($stateParams.paypro, function(err) {
+        if (err && !isChromeApp) {
+          showAlert(gettext('Could not fetch payment'));
+        }
+      });
+    }
     // TODO (URL , etc)
     if (!$stateParams.toAddress || !$stateParams.toAmount) {
       $log.error('Bad params at amount')
@@ -271,7 +268,8 @@ angular.module('copayApp.controllers').controller('confirmController', function(
       if (err) return;
       walletService.publishAndSign(wallet, txp, function(err, txp) {
         if (err) return setSendError(err);
-        $state.transitionTo('tabs.home');
+        $ionicHistory.clearHistory();
+        $state.go('tabs.home');
       });
     });
   };

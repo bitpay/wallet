@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('amountController', function($rootScope, $scope, $filter, $timeout, $ionicHistory, $ionicScrollDelegate, $ionicNavBarDelegate, gettextCatalog, platformInfo, lodash, configService, rateService, $stateParams, $window, $state, $log, txFormatService) {
+angular.module('copayApp.controllers').controller('amountController', function($rootScope, $scope, $filter, $timeout, $ionicScrollDelegate, $ionicNavBarDelegate, gettextCatalog, platformInfo, lodash, configService, rateService, $stateParams, $window, $state, $log, txFormatService) {
   $ionicNavBarDelegate.title(gettextCatalog.getString('Enter Amount'));
 
   var unitToSatoshi;
@@ -188,7 +188,7 @@ angular.module('copayApp.controllers').controller('amountController', function($
     var _amount = evaluate(format($scope.amount));
     var amount = $scope.showAlternativeAmount ? fromFiat(_amount).toFixed(unitDecimals) : _amount.toFixed(unitDecimals);
 
-    $state.transitionTo('send.confirm', {
+    $state.transitionTo('tabs.send.confirm', {
       toAmount: amount * unitToSatoshi,
       toAddress: $scope.toAddress,
       toName: $scope.toName,
