@@ -7,6 +7,7 @@ angular.module('copayApp.controllers').controller('tabHomeController',
     $scope.openTxpModal = txpModalService.open;
     $scope.version = $window.version;
     $scope.name = $window.appConfig.nameCase;
+
     $scope.homeTip = $stateParams.fromOnboarding;
     configService.whenAvailable(function() {
       var config = configService.getSync();
