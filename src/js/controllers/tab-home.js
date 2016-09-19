@@ -109,6 +109,13 @@ angular.module('copayApp.controllers').controller('tabHomeController',
       });
     };
 
+    $scope.hideHomeTip = function() {
+      $scope.homeTip = null;
+      $state.transitionTo($state.current, null, {
+        reload: false, inherit: false, notify: false
+      });
+    };
+
     $scope.nextStep = function() {
       lodash.each(['AmazonGiftCards', 'BitpayCard', 'BuyAndSell'], function(service) {
         storageService.getNextStep(service, function(err, value) {
