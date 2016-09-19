@@ -59,6 +59,25 @@
         }
       }
     }
+    #news-updates{
+      padding-top:0;
+      .list{
+        max-width: 600px;
+        text-align: center;
+        width: 75%;
+        @include center-block();
+        label{
+          display: inline-block;
+          margin-top: 0;
+          padding-bottom: 1rem;
+          .item-content{
+            margin-left: 15%;
+            top: .4rem;
+            position: relative;
+          }
+        }
+      }
+    }
   }
   .item {
     border: none;
