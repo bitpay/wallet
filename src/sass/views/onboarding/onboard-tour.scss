@@ -29,11 +29,21 @@
   }
 }
 
-@media (max-width: 400px){
+@media (max-width: 359px){
   #onboard-tour{
     &-secure, &-currency, &-control{
       #cta{
         height: 14rem;
+      }
+    }
+  }
+}
+
+@media (min-width: 450px){
+  #onboard-tour{
+    &-secure, &-currency, &-control{
+      #cta{
+        height: 26rem;
       }
     }
   }
