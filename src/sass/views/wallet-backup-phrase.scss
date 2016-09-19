@@ -34,7 +34,7 @@
         position: absolute;
         width: 100%;
         text-align: center;
-        bottom: 65px;
+        bottom: 45px;
         button {
           max-width: 400px;
         }
@@ -51,7 +51,7 @@
         width: 100%;
         text-align: center;
         position: absolute;
-        bottom: 65px;
+        bottom: 45px;
         padding-bottom: 20px;
         padding: .5rem .5rem .9rem;
         p {
@@ -78,8 +78,16 @@
         .cta-buttons{
           bottom:110px;
         }
-        #select-phrase{
-          bottom:100px;
+        .cta-buttons, #select-phrase{
+          bottom:110px;
+        }
+      }
+    }
+
+    @media (min-device-width : 320px) and (max-device-width : 340px) and (orientation : portrait){
+      #wallet-backup-phrase{
+        .cta-buttons,#select-phrase{
+          bottom: 64px;
         }
       }
     }
