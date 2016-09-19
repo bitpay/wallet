@@ -66,12 +66,10 @@
         </div>
       </div>
 
-      <div class="item item-icon-left">
+      <div class="item item-icon-left" ng-click="openExternalLink('https://' +
+        (getShortNetworkName() == 'test' ? 'test-' : '') + 'insight.bitpay.com/tx/' + btx.txid)">
         <i class="icon ion-ios-upload-outline"></i>
-        <a ng-click="openExternalLink('https://' +
-          (getShortNetworkName() == 'test' ? 'test-' : '') + 'insight.bitpay.com/tx/' + btx.txid)">
-          <span class="text-gray" translate>View transaction on the blockchain</span>
-        </a>
+        <span class="text-gray" translate>View transaction on the blockchain</span>
       </div>
 
       <div class="item">
@@ -139,6 +137,12 @@
         </span>
       </div>
 
+      <div class="item item-icon-right" ng-click="showCommentPopup()">
+        <span class="text-gray" translate ng-show="!btx.note">Add Memo</i></span>
+        <span class="text-gray" translate ng-show="btx.note">Edit Memo</span>
+        <i class="icon nav-item-arrow-right"></i>
+      </div>
+
       <div class="item item-divider" ng-show="btx.action == 'sent'" translate>Timeline</div>
 
     </div>
@@ -151,15 +155,6 @@
           <i ng-if="c.type == 'accept'" class="fi-check icon-sign check db"></i>
         </span>
         {{c.copayerName}} <span ng-if="c.copayerId == copayerId">({{'Me'|translate}})</span>
-      </div>
-    </div>
-
-    <div ng-show="btx.txid" class="row">
-      <div class="col">
-        <button class="button button-block button-positive" ng-click="showCommentPopup()">
-          <span class="text-gray" translate ng-show="!btx.note">Add comment</i></span>
-          <span class="text-gray" translate ng-show="btx.note">Edit comment</span>
-        </button>
       </div>
     </div>
   </ion-content>
