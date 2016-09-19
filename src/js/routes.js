@@ -186,7 +186,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         templateUrl: 'views/tabs.html'
       })
       .state('tabs.home', {
-        url: '/home',
+        url: '/home/:fromOnboarding',
         views: {
           'tab-home': {
             templateUrl: 'views/tab-home.html',
@@ -627,29 +627,29 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
       })
 
 
-      /*
-       *
-       * Buy or Sell Bitcoin
-       *
-       */
+    /*
+     *
+     * Buy or Sell Bitcoin
+     *
+     */
 
-      .state('tabs.buyandsell', {
-        url: '/buyandsell',
-        views: {
-          'tab-home': {
-            templateUrl: 'views/buyandsell.html'
-          }
+    .state('tabs.buyandsell', {
+      url: '/buyandsell',
+      views: {
+        'tab-home': {
+          templateUrl: 'views/buyandsell.html'
         }
-      })
+      }
+    })
 
-      /*
-       *
-       * Glidera
-       *
-       *
-       */
+    /*
+     *
+     * Glidera
+     *
+     *
+     */
 
-      .state('tabs.buyandsell.glidera', {
+    .state('tabs.buyandsell.glidera', {
         url: '/glidera',
         views: {
           'tab-home@tabs': {
