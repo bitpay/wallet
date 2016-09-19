@@ -5,6 +5,22 @@
 
   <ion-content class="padding" ng-controller="tabHomeController" ng-init="updateAllWallets(); nextStep()">
 
+    <div class="list card homeTip" ng-show="homeTip">
+      <div class="item item-icon-right item-heading">
+        <a ng-click="homeTip = false"><i class="icon ion-ios-close-empty close-home-tip"></i></a>
+      </div>
+      <div class="icon">
+        <i class="icon big-icon-svg">
+          <img src="img/icon-wallet.svg" class="bg"/>
+        </i>
+      </div>
+      <div class="title" translate>
+        Your bitcoin wallet is ready!
+      </div>
+      <div class="subtitle" translate>
+        On this screen you can see all your wallets, accounts, and assets.
+      </div>
+    </div>
 
     <div class="list card" ng-hide="!txps[0]">
       <a class="item item-icon-right item-heading" ui-sref="tabs.proposals" translate>
