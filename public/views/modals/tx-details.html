@@ -9,7 +9,7 @@
   </ion-header-bar>
 
   <ion-content>
-    <div class="header-modal text-center" ng-init="getAlternativeAmount(btx)">
+    <div class="header-modal text-center" ng-init="getAlternativeAmount(btx); showRate = false">
       <div ng-show="btx.action != 'invalid'">
 
         <i class="icon big-icon-svg">
@@ -19,6 +19,16 @@
         <div class="size-36" copy-to-clipboard="btx.amountStr">
           <span class="enable_text_select">{{btx.amountStr}}</span>
         </div>
+
+        <div class="alternative-amount" ng-click="showRate =! showRate">
+          <span class="label gray radius" ng-show="!showRate && alternativeAmountStr">
+            {{alternativeAmountStr}}
+          </span>
+          <span class="size-12" ng-show="showRate && alternativeAmountStr">
+            {{rateStr}} ({{rateDate | amDateFormat:'MM/DD/YYYY HH:mm a'}})
+          </span>
+        </div>
+      </div>
 
         <div ng-show="btx.action == 'sent'">
           <span translate>Sent from</span> {{wallet.credentials.walletName}}
@@ -37,15 +47,7 @@
         <div ng-show="btx.action == 'moved'">
           <span translate>Moved Funds</span>
         </div>
-        <!-- <div class="alternative-amount" ng-click="showRate=!showRate" ng-init="showRate = false">
-          <span class="label gray radius" ng-show="!showRate && alternativeAmountStr">
-            {{alternativeAmountStr}}
-          </span>
-          <span class="size-12" ng-show="showRate && alternativeAmountStr">
-            {{rateStr}} ({{rateDate | amDateFormat:'MM/DD/YYYY HH:mm a'}})
-          </span>
-        </div> -->
-      </div>
+
       <div ng-show="btx.action == 'invalid'">
         -
       </div>
