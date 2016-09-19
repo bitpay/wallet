@@ -1,29 +1,66 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('txDetailsController', function($log, $timeout, $scope, $filter, $stateParams, gettextCatalog, profileService, configService, txFormatService, externalLinkService, popupService) {
+angular.module('copayApp.controllers').controller('txDetailsController', function($log, $timeout, $scope, $filter, $stateParams, lodash, gettextCatalog, profileService, configService, txFormatService, externalLinkService, popupService) {
   var self = $scope.self;
   var wallet = profileService.getWallet($stateParams.walletId);
   var config = configService.getSync();
   var configWallet = config.wallet;
   var walletSettings = configWallet.settings;
 
-  $scope.alternativeIsoCode = walletSettings.alternativeIsoCode;
-  $scope.color = wallet.color;
-  $scope.copayerId = wallet.credentials.copayerId;
-  $scope.isShared = wallet.credentials.n > 1;
+  $scope.init = function() {
+    $scope.alternativeIsoCode = walletSettings.alternativeIsoCode;
+    $scope.color = wallet.color;
+    $scope.copayerId = wallet.credentials.copayerId;
+    $scope.isShared = wallet.credentials.n > 1;
 
-  $scope.btx.amountStr = txFormatService.formatAmount($scope.btx.amount, true) + ' ' + walletSettings.unitName;
-  $scope.btx.feeStr = txFormatService.formatAmount($scope.btx.fees, true) + ' ' + walletSettings.unitName;
-  $scope.btx.feeLevel = walletSettings.feeLevel;
+    $scope.btx.amountStr = txFormatService.formatAmount($scope.btx.amount, true) + ' ' + walletSettings.unitName;
+    $scope.btx.feeStr = txFormatService.formatAmount($scope.btx.fees, true) + ' ' + walletSettings.unitName;
+    $scope.btx.feeLevel = walletSettings.feeLevel;
 
-  if ($scope.btx.action != 'invalid') {
-    if ($scope.btx.action == 'sent') $scope.title = gettextCatalog.getString('Sent Funds');
-    if ($scope.btx.action == 'received') $scope.title = gettextCatalog.getString('Received Funds');
-    if ($scope.btx.action == 'moved') $scope.title = gettextCatalog.getString('Moved Funds');
-  }
+    if ($scope.btx.action != 'invalid') {
+      if ($scope.btx.action == 'sent') $scope.title = gettextCatalog.getString('Sent Funds');
+      if ($scope.btx.action == 'received') $scope.title = gettextCatalog.getString('Received Funds');
+      if ($scope.btx.action == 'moved') $scope.title = gettextCatalog.getString('Moved Funds');
+    }
+    initActionList();
+  };
+
+  function initActionList() {
+    $scope.actionList = [];
+    if ($scope.btx.action != 'sent' || !$scope.isShared) return;
+
+    var actionDescriptions = {
+      created: gettextCatalog.getString('Proposal Created'),
+      accept: gettextCatalog.getString('Accepted'),
+      reject: gettextCatalog.getString('Rejected'),
+      broadcasted: gettextCatalog.getString('Broadcasted'),
+    };
+
+    $scope.actionList.push({
+      type: 'created',
+      time: $scope.btx.createdOn,
+      description: actionDescriptions['created'],
+      by: $scope.btx.creatorName
+    });
+
+    lodash.each($scope.btx.actions, function(action) {
+      $scope.actionList.push({
+        type: action.type,
+        time: action.createdOn,
+        description: actionDescriptions[action.type],
+        by: action.copayerName
+      });
+    });
+
+    $scope.actionList.push({
+      type: 'broadcasted',
+      time: $scope.btx.time,
+      description: actionDescriptions['broadcasted'],
+    });
+  };
 
   $scope.showCommentPopup = function() {
-    popupService.showPrompt(gettextCatalog.getString('Memo'), null, null, function(res) {
+    popupService.showPrompt(gettextCatalog.getString('Memo'), ' ', {}, function(res) {
       $log.debug('Saving memo');
 
       var args = {

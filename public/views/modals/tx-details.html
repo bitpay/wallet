@@ -1,4 +1,4 @@
-<ion-modal-view ng-controller="txDetailsController">
+<ion-modal-view ng-controller="txDetailsController" ng-init="init()" id="tx-details">
   <ion-header-bar align-title="center" class="bar-royal" ng-style="{'background-color':color}">
     <button class="button button-clear" ng-click="cancel()">
       {{'Close' | translate}}
@@ -76,9 +76,9 @@
 
       <div class="item">
         <div translate>Created by</div>
-        <span>{{wallet.credentials.copayerName}}</span>
+        <span>{{btx.creatorName}}</span>
         <span class="item-note">
-          <time>{{ btx.time * 1000 | amDateFormat:'MM/DD/YYYY HH:mm a'}}</time>
+          <time>{{ btx.createdOn * 1000 | amDateFormat:'MM/DD/YYYY HH:mm a'}}</time>
         </span>
       </div>
 
@@ -143,18 +143,25 @@
         </div>
       </div>
 
-      <div class="item item-divider" ng-show="btx.action == 'sent'" translate>Timeline</div>
+      <div ng-if="actionList[0]">
+        <div class="item item-divider" translate>Timeline</div>
 
-    </div>
-
-    <div class="list" ng-if="btx.actions[0] && isShared">
-      <div class="item item-divider" translate>Participants</div>
-      <div class="item" ng-repeat="c in btx.actions">
-        <span class="item-note">
-          <i ng-if="c.type == 'reject'" class="fi-x icon-sign x db"></i>
-          <i ng-if="c.type == 'accept'" class="fi-check icon-sign check db"></i>
-        </span>
-        {{c.copayerName}} <span ng-if="c.copayerId == copayerId">({{'Me'|translate}})</span>
+        <div class="item" ng-class="{'action-created' : a.type == 'created' || a.type == 'accept', 'action-rejected' : a.type == 'reject'}" ng-repeat="a in actionList track by $index">
+          <div class="row">
+            <div class="col col-10">
+              <span id="timeline-icon">{{$index + 1}}</span>
+            </div>
+            <div class="col">
+              <div>{{a.description}}</div>
+              <div>
+                <span>{{a.by}}</span>
+                <span class="item-note">
+                  <time>{{ a.time * 1000 | amDateFormat:'MM/DD/YYYY HH:mm a'}}</time>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </ion-content>

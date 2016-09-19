@@ -32,9 +32,9 @@ angular.module('copayApp.services').service('popupService', function($log, $ioni
     opts = opts || {};
     $ionicPopup.prompt({
       title: title,
-      subTitle: message || ' ',
-      inputType: opts.inputType || 'text',
-      inputPlaceholder: opts.inputPlaceholder || '',
+      subTitle: message,
+      inputType: opts.inputType,
+      inputPlaceholder: opts.inputPlaceholder,
       defaultText: opts.defaultText
     }).then(function(res) {
       return cb(res)
