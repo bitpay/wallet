@@ -1,13 +1,13 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('tabHomeController',
-  function($rootScope, $timeout, $scope, $state, $ionicScrollDelegate, lodash, profileService, walletService, configService, $log, platformInfo, storageService, txpModalService, $window) {
+  function($rootScope, $timeout, $scope, $state, $stateParams, $ionicScrollDelegate, lodash, profileService, walletService, configService, $log, platformInfo, storageService, txpModalService, $window) {
     $scope.externalServices = {};
     $scope.bitpayCardEnabled = true; // TODO
     $scope.openTxpModal = txpModalService.open;
     $scope.version = $window.version;
     $scope.name = $window.appConfig.nameCase;
-
+    $scope.homeTip = $stateParams.fromOnboarding;
     configService.whenAvailable(function() {
       var config = configService.getSync();
       var isWindowsPhoneApp = platformInfo.isWP && platformInfo.isCordova;

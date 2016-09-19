@@ -20,5 +20,24 @@
     padding-top: 20px;
     padding-bottom: 20px;
   }
-
+  .homeTip {
+    .item {
+      border-style: none;
+    }
+    div {
+      text-align: center;
+      margin-top: 20px;
+      margin-bottom: 20px;
+    }
+    .title {
+      font-size: 20px;
+      font-weight: bold;
+    }
+    .subtitle{
+      margin-left: 25px;
+      margin-right: 25px;
+      font-size: 18px;
+      font-weight: 100;
+    }
+  }
 }
