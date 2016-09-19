@@ -1,7 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('txDetailsController', function($rootScope, $log, $timeout, $scope, $filter, $stateParams, $ionicPopup, gettextCatalog, profileService, configService, lodash, txFormatService, platformInfo, externalLinkService, popupService) {
-
+angular.module('copayApp.controllers').controller('txDetailsController', function($log, $timeout, $scope, $filter, $stateParams, gettextCatalog, profileService, configService, txFormatService, externalLinkService, popupService) {
   var self = $scope.self;
   var wallet = profileService.getWallet($stateParams.walletId);
   var config = configService.getSync();
