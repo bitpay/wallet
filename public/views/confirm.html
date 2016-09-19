@@ -7,7 +7,7 @@
 
   <ion-content scroll="false" ng-controller="confirmController" ng-init="init()">
 
-    <div class="card">
+    <div class="list card">
       <div class="item item-text-wrap">
         <i class="icon ion-arrow-up-c"></i> <span class="text-bold size-16">Sending</span>
         <div class="text-bold size-28 m15t">{{amountStr}} </div>
@@ -24,7 +24,7 @@
 
       <div class="item item-icon-left">
         <gravatar class="send-gravatar" name="{{toName}}" width="30" email="{{toEmail}}"></gravatar>
-        <label translate>To</label> {{toAddress}}
+        <span translate>To</span>: {{toAddress}}
         <p ng-show="toName">{{toName}}</p>
 
         <div ng-show="_paypro" ng-click="openPPModal(_paypro)">
@@ -33,23 +33,24 @@
               {{_paypro.domain}}
         </div>
       </div>
+    </div>
 
-      <div class="item">
-        <label translate>From</label>
-        <span class="badge badge-assertive" ng-show="notAvailable" translate>No wallet with enough funds</span>
-      </div>
+    <div class="text-center" ng-show="notAvailable">
+      <span class="badge badge-assertive" translate>No wallet with enough funds</span>
+    </div>
 
-      <wallets ng-if="wallets[0]" wallets="wallets"></wallets>
+    <wallets ng-if="wallets[0]" wallets="wallets"></wallets>
 
+    <div class="list card">
       <div class="item item-icon-left item-icon-right" ng-click="showDescriptionPopup()">
-        <span ng-show="!description" translate>Add Description</span>
-        <span ng-show="description">{{description}}</span>
         <i class="icon ion-ios-chatbubble-outline size-21"></i>
-        <i class="icon ion-ios-plus-empty size-21"></i>
+        <span ng-show="!description" translate>Add description</span>
+        <span ng-show="description">{{description}}</span>
+        <i ng-show="!description" class="icon ion-ios-plus-empty size-21"></i>
       </div>
     </div>
 
-    <button class="item button button-block button-balanced" ng-click="approve()">
+    <button class="item button button-block button-positive" ng-click="approve()">
       <span translate>Send</span>
     </button>
   </ion-content>

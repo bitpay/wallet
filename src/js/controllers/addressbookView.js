@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('addressbookViewController', function($scope, $state, $timeout, $stateParams, lodash, addressbookService, popupService) {
+angular.module('copayApp.controllers').controller('addressbookViewController', function($scope, $state, $timeout, $stateParams, lodash, addressbookService, popupService, $ionicHistory) {
 
   var address = $stateParams.address;
 
@@ -26,10 +26,13 @@ angular.module('copayApp.controllers').controller('addressbookViewController', f
   });
 
   $scope.sendTo = function() {
+    $ionicHistory.clearHistory();
+    $state.go('tabs.send');
     $timeout(function() {
-      $state.transitionTo('send.amount', {
+      $state.transitionTo('tabs.send.amount', {
         toAddress: $scope.addressbookEntry.address,
-        toName: $scope.addressbookEntry.name
+        toName: $scope.addressbookEntry.name,
+        toEmail: $scope.addressbookEntry.email
       });
     }, 100);
   };

@@ -51,14 +51,14 @@
           </span>
         </h2>
 
-        <span class="badge badge-assertive" ng-show="!wallet.isComplete()" translate>
+        <p>
+        <span ng-show="!wallet.isComplete()" class="assertive" translate>
           Incomplete
         </span>
-        <p ng-show="wallet.isComplete() && !wallet.balanceHidden">
-          {{wallet.status.availableBalanceStr}}
-        </p>
-        <p ng-show="wallet.isComplete() && wallet.balanceHidden">
-          <strong class="size-12" translate>[Balance Hidden]</strong>
+        <div ng-show="wallet.isComplete()">
+          <span ng-show="!wallet.balanceHidden">{{wallet.status.availableBalanceStr}}</span>
+          <span ng-show="wallet.balanceHidden" translate>[Balance Hidden]</span>
+        </div>
         </p>
         <i class="icon nav-item-arrow-right"></i>
       </a>
