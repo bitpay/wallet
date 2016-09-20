@@ -1,26 +1,37 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('txDetailsController', function($log, $timeout, $scope, $filter, $stateParams, walletService, lodash, gettextCatalog, profileService, configService, txFormatService, externalLinkService, popupService) {
+angular.module('copayApp.controllers').controller('txDetailsController', function($log, $timeout, $scope, $filter, $stateParams, ongoingProcess, walletService, lodash, gettextCatalog, profileService, configService, txFormatService, externalLinkService, popupService) {
   var self = $scope.self;
   var wallet = profileService.getWallet($stateParams.walletId || $scope.walletId);
   var config = configService.getSync();
   var configWallet = config.wallet;
   var walletSettings = configWallet.settings;
+  $scope.title = gettextCatalog.getString('Transaction');
+  $scope.loadingTxInfo = false;
 
   $scope.init = function() {
+    $scope.loadingTxInfo = true;
+    ongoingProcess.set('loadingTxInfo', true);
     findTx($scope.txid, function(err, tx) {
+      ongoingProcess.set('loadingTxInfo', false);
+      $scope.loadingTxInfo = false;
       if (err) {
         $log.error(err);
-        return;
+        popupService.showAlert(gettextCatalog.getString('Error'), err);
+        return $scope.cancel();
       }
-      console.log('TX FOUND', tx);
+
+      if (!tx) {
+        $log.warn('No tx found');
+        popupService.showAlert(gettextCatalog.getString('Transaction not found'), null);
+        return $scope.cancel();
+      }
+
       $scope.btx = lodash.cloneDeep(tx);
       $scope.alternativeIsoCode = walletSettings.alternativeIsoCode;
       $scope.color = wallet.color;
       $scope.copayerId = wallet.credentials.copayerId;
       $scope.isShared = wallet.credentials.n > 1;
-      // $scope.btx.amountStr = txFormatService.formatAmount($scope.btx.amount, true) + ' ' + walletSettings.unitName;
-      // $scope.btx.feeStr = txFormatService.formatAmount($scope.btx.fees, true) + ' ' + walletSettings.unitName;
       $scope.btx.feeLevel = walletSettings.feeLevel;
 
       if ($scope.btx.action != 'invalid') {
@@ -46,8 +57,7 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
         txid: txid
       });
 
-      if (tx) return cb(null, tx);
-      else return cb();
+      return cb(null, tx);
     });
   };
 
@@ -148,5 +158,8 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
 
   $scope.cancel = function() {
     $scope.txDetailsModal.hide();
+    $timeout(function() {
+      $scope.txDetailsModal.remove();
+    }, 10);
   };
 });
