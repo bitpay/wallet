@@ -17,7 +17,6 @@ angular.module('copayApp.controllers').controller('tabHomeController',
     });
 
     $scope.openTxModal = function(n) {
-      console.log(n);
       $scope.txid = n.txid;
       $scope.walletId = n.walletId;
       $ionicModal.fromTemplateUrl('views/modals/tx-details.html', {
