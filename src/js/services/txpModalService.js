@@ -15,9 +15,10 @@ angular.module('copayApp.services').factory('txpModalService', function(configSe
     var scope = $rootScope.$new(true);
     scope.tx = tx;
     scope.wallet = tx.wallet;
-    scope.copayers = tx.wallet.copayers;
+    scope.copayers = tx.wallet ? tx.wallet.copayers : null;
     scope.isGlidera = glideraActive;
     scope.currentSpendUnconfirmed = config.spendUnconfirmed;
+    // scope.tx.hasMultiplesOutputs = true;  // Uncomment to test multiple outputs
 
     $ionicModal.fromTemplateUrl('views/modals/txp-details.html', {
       scope: scope
