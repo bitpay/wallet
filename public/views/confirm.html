@@ -1,11 +1,11 @@
-<ion-view id="view-confirm">
+<ion-view id="view-confirm" ng-controller="confirmController" ng-init="init()">
   <ion-nav-bar class="bar-royal">
     <ion-nav-back-button>
       <i class="icon ion-ios-arrow-thin-left"></i>
     </ion-nav-back-button>
   </ion-nav-bar>
 
-  <ion-content scroll="false" ng-controller="confirmController" ng-init="init()">
+  <ion-content>
 
     <div class="list card">
       <div class="item item-text-wrap">
@@ -49,9 +49,6 @@
         <i ng-show="!description" class="icon ion-ios-plus-empty size-21"></i>
       </div>
     </div>
-
-    <button class="item button button-block button-positive" ng-click="approve()">
-      <span translate>Send</span>
-    </button>
   </ion-content>
+   <accept class="accept-slide" ng-if="!hideSlider"></accept>
 </ion-view>
