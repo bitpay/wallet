@@ -1,43 +1,71 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('txDetailsController', function($rootScope, $log, $scope, $filter, $stateParams, $ionicPopup, gettextCatalog, profileService, configService, lodash, txFormatService, platformInfo, externalLinkService) {
-
+angular.module('copayApp.controllers').controller('txDetailsController', function($log, $timeout, $scope, $filter, $stateParams, lodash, gettextCatalog, profileService, configService, txFormatService, externalLinkService, popupService) {
   var self = $scope.self;
   var wallet = profileService.getWallet($stateParams.walletId);
   var config = configService.getSync();
   var configWallet = config.wallet;
   var walletSettings = configWallet.settings;
 
-  $scope.alternativeIsoCode = walletSettings.alternativeIsoCode;
-  $scope.color = wallet.color;
-  $scope.copayerId = wallet.credentials.copayerId;
-  $scope.isShared = wallet.credentials.n > 1;
+  $scope.init = function() {
+    $scope.alternativeIsoCode = walletSettings.alternativeIsoCode;
+    $scope.color = wallet.color;
+    $scope.copayerId = wallet.credentials.copayerId;
+    $scope.isShared = wallet.credentials.n > 1;
 
-  $scope.btx.amountStr = txFormatService.formatAmount($scope.btx.amount, true) + ' ' + walletSettings.unitName;
-  $scope.btx.feeStr = txFormatService.formatAmount($scope.btx.fees, true) + ' ' + walletSettings.unitName;
+    $scope.btx.amountStr = txFormatService.formatAmount($scope.btx.amount, true) + ' ' + walletSettings.unitName;
+    $scope.btx.feeStr = txFormatService.formatAmount($scope.btx.fees, true) + ' ' + walletSettings.unitName;
+    $scope.btx.feeLevel = walletSettings.feeLevel;
 
-  $scope.showCommentPopup = function() {
-    $scope.data = {
-      comment: $scope.btx.note ? $scope.btx.note.body : '',
+    if ($scope.btx.action != 'invalid') {
+      if ($scope.btx.action == 'sent') $scope.title = gettextCatalog.getString('Sent Funds');
+      if ($scope.btx.action == 'received') $scope.title = gettextCatalog.getString('Received Funds');
+      if ($scope.btx.action == 'moved') $scope.title = gettextCatalog.getString('Moved Funds');
+    }
+    initActionList();
+  };
+
+  function initActionList() {
+    $scope.actionList = [];
+    if ($scope.btx.action != 'sent' || !$scope.isShared) return;
+
+    var actionDescriptions = {
+      created: gettextCatalog.getString('Proposal Created'),
+      accept: gettextCatalog.getString('Accepted'),
+      reject: gettextCatalog.getString('Rejected'),
+      broadcasted: gettextCatalog.getString('Broadcasted'),
     };
 
-    var commentPopup = $ionicPopup.show({
-      templateUrl: "views/includes/note.html",
-      scope: $scope,
+    $scope.actionList.push({
+      type: 'created',
+      time: $scope.btx.createdOn,
+      description: actionDescriptions['created'],
+      by: $scope.btx.creatorName
     });
 
-    $scope.commentPopupClose = function() {
-      commentPopup.close();
-    };
+    lodash.each($scope.btx.actions, function(action) {
+      $scope.actionList.push({
+        type: action.type,
+        time: action.createdOn,
+        description: actionDescriptions[action.type],
+        by: action.copayerName
+      });
+    });
 
-    $scope.commentPopupSave = function() {
-      $log.debug('Saving note');
+    $scope.actionList.push({
+      type: 'broadcasted',
+      time: $scope.btx.time,
+      description: actionDescriptions['broadcasted'],
+    });
+  };
+
+  $scope.showCommentPopup = function() {
+    popupService.showPrompt(gettextCatalog.getString('Memo'), ' ', {}, function(res) {
+      $log.debug('Saving memo');
+
       var args = {
         txid: $scope.btx.txid,
-      };
-
-      if ($scope.data.comment) {
-        args.body = $scope.data.comment;
+        body: res
       };
 
       wallet.editTxNote(args, function(err) {
@@ -49,14 +77,17 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
         $scope.btx.note = null;
         if (args.body) {
           $scope.btx.note = {};
-          $scope.btx.note.body = $scope.data.comment;
+          $scope.btx.note.body = res;
           $scope.btx.note.editedByName = wallet.credentials.copayerName;
           $scope.btx.note.editedOn = Math.floor(Date.now() / 1000);
         }
         $scope.btx.searcheableString = null;
-        commentPopup.close();
+
+        $timeout(function() {
+          $scope.$apply();
+        }, 200);
       });
-    };
+    });
   };
 
   $scope.getAlternativeAmount = function() {

@@ -1,33 +1,26 @@
-<ion-modal-view ng-controller="txDetailsController">
+<ion-modal-view ng-controller="txDetailsController" ng-init="init()" id="tx-details">
   <ion-header-bar align-title="center" class="bar-royal" ng-style="{'background-color':color}">
     <button class="button button-clear" ng-click="cancel()">
-      Close
+      {{'Close' | translate}}
     </button>
     <div class="title" translate>
-      Transaction
+      {{title}}
     </div>
   </ion-header-bar>
 
   <ion-content>
-    <div class="header-modal text-center" ng-init="getAlternativeAmount(btx)">
+    <div class="header-modal text-center" ng-init="getAlternativeAmount(btx); showRate = false">
       <div ng-show="btx.action != 'invalid'">
-        <div ng-show="btx.action == 'received'">
-          <img src="img/icon-receive-history.svg" alt="sync" width="50">
-          <p class="m0 text-gray size-14" translate>Received</p>
-        </div>
-        <div ng-show="btx.action == 'sent'">
-          <img src="img/icon-sent-history.svg" alt="sync" width="50">
-          <p class="m0 text-gray size-14" translate>Sent</p>
-        </div>
-        <div ng-show="btx.action == 'moved'">
-          <img src="img/icon-moved.svg" alt="sync" width="50">
-          <p class="m0 text-gray size-14" translate>Moved</p>
-        </div>
+
+        <i class="icon big-icon-svg">
+          <img src="img/icon-wallet.svg" ng-style="{'background-color': wallet.color}" class="bg"/>
+        </i>
 
         <div class="size-36" copy-to-clipboard="btx.amountStr">
           <span class="enable_text_select">{{btx.amountStr}}</span>
         </div>
-        <div class="alternative-amount" ng-click="showRate=!showRate" ng-init="showRate = false">
+
+        <div class="alternative-amount" ng-click="showRate =! showRate">
           <span class="label gray radius" ng-show="!showRate && alternativeAmountStr">
             {{alternativeAmountStr}}
           </span>
@@ -36,17 +29,34 @@
           </span>
         </div>
       </div>
+
+        <div ng-show="btx.action == 'sent'">
+          <span translate>Sent from</span> {{wallet.credentials.walletName}}
+          <div class="padding-vertical">
+            <i class="icon ion-ios-arrow-thin-down size-24"></i>
+          </div>
+        </div>
+
+        <div ng-show="btx.action == 'received'">
+          <div class="padding-vertical">
+            <i class="icon ion-ios-arrow-thin-up size-24"></i>
+          </div>
+          <span translate>Received Funds</span>
+        </div>
+
+        <div ng-show="btx.action == 'moved'">
+          <span translate>Moved Funds</span>
+        </div>
+
       <div ng-show="btx.action == 'invalid'">
         -
       </div>
     </div>
 
-    <ul class="list">
-      <div class="item item-divider" translate>Details</div>
-      <li ng-if="!btx.hasMultiplesOutputs && btx.addressTo && btx.addressTo != 'N/A'" class="item"
-        copy-to-clipboard="btx.addressTo">
-        <span class="text-gray" translate>To</span>
-        <span class="right">
+    <div class="list">
+      <div class="item item-icon-left" ng-show="btx.action == 'sent'">
+        <i class="icon ion-social-bitcoin-outline"></i>
+        <div ng-if="!btx.hasMultiplesOutputs && btx.addressTo && btx.addressTo != 'N/A'" copy-to-clipboard="btx.addressTo">
           <span ng-if="btx.merchant">
             <span ng-show="btx.merchant.pr.ca"><i class="fi-lock color-greeni"></i> {{btx.merchant.domain}}</span>
             <span ng-show="!btx.merchant.pr.ca"><i class="fi-unlock color-yellowi"></i> {{btx.merchant.domain}}</span>
@@ -55,60 +65,27 @@
             <span ng-show="btx.labelTo">{{btx.labelTo}}</span>
             <contact ng-show="!btx.labelTo" class="enable_text_select" address="{{btx.addressTo}}"></contact>
           </span>
-        </span>
-      </li>
-
-      <li ng-show="btx.hasMultiplesOutputs" class="item"
-        ng-click="showMultiplesOutputs = !showMultiplesOutputs">
-        <span class="text-gray" translate>Recipients</span>
-        <span class="right">{{btx.recipientCount}}
-          <i ng-show="showMultiplesOutputs" class="icon-arrow-up3 size-24"></i>
-          <i ng-show="!showMultiplesOutputs" class="icon-arrow-down3 size-24"></i>
-        </span>
-      </li>
-
-      <div class="item" ng-show="btx.hasMultiplesOutputs && showMultiplesOutputs"
-        ng-repeat="output in btx.outputs"
-        ng-include="'views/includes/output.html'">
+        </div>
       </div>
 
-      <li ng-if="btx.action == 'invalid'" class="item">
-        <span class="right" translate>
-          This transaction has become invalid; possibly due to a double spend attempt.
+      <div class="item item-icon-left" ng-click="openExternalLink('https://' +
+        (getShortNetworkName() == 'test' ? 'test-' : '') + 'insight.bitpay.com/tx/' + btx.txid)">
+        <i class="icon ion-ios-upload-outline"></i>
+        <span class="text-gray" translate>View transaction on the blockchain</span>
+      </div>
+
+      <div class="item">
+        <div translate>Created by</div>
+        <span>{{btx.creatorName}}</span>
+        <span class="item-note">
+          <time>{{ btx.createdOn * 1000 | amDateFormat:'MM/DD/YYYY HH:mm a'}}</time>
         </span>
-      </li>
+      </div>
 
-      <li ng-if="btx.time" class="item">
-        <span class="text-gray" translate>Date</span>
-        <span class="right enable_text_select">
-          <time>{{ btx.time * 1000 | amDateFormat:'MM/DD/YYYY HH:mm a'}}</time>
-          <time>({{ btx.time * 1000 | amTimeAgo}})</time>
-        </span>
-      </li>
-
-      <li class="item" ng-show="btx.action != 'received'"
-        copy-to-clipboard="btx.feeStr">
-        <span class="text-gray" translate>Fee</span>
-        <span class="right enable_text_select">{{btx.feeStr}}</span>
-      </li>
-
-      <li class="item" ng-if="btx.message && btx.action != 'received'"
-        copy-to-clipboard="btx.message">
-        <span class="text-gray" translate>Description</span>
-        <span class="right enable_text_select">{{btx.message}}</span>
-      </li>
-
-      <li ng-if="btx.merchant" class="item"
-        copy-to-clipboard="btx.merchant.pr.pd.memo">
-        <span class="text-gray" translate>Merchant message</span>
-        <span class="right enable_text_select">
-          {{btx.merchant.pr.pd.memo}}
-        </span>
-      </li>
-
-      <li ng-if="btx.time" class="item">
-        <span class="text-gray" translate>Confirmations</span>
-        <span class="right" >
+      <div class="item" ng-show="btx.action != 'received'" copy-to-clipboard="btx.feeStr">
+        <div translate>Fee</div>
+        <span class="enable_text_select">{{btx.feeLevel}} ({{btx.feeStr}})</span>
+        <span class="right">
           <span class="text-warning" ng-show="!btx.confirmations || btx.confirmations == 0" translate>
             Unconfirmed
           </span>
@@ -118,42 +95,73 @@
           <span class="label gray radius" ng-show="btx.safeConfirmed">
             {{btx.safeConfirmed}}
           </span>
+          <span translate>Confirmations</span>
         </span>
-      </li>
-
-      <li class="item" ng-show="btx.note && btx.note.body">
-        <span class="text-gray" translate>Comment</span>
-        <span class="right enable_text_select">{{btx.note.body}}</span><br>
-        <span class="right text-italic text-gray size-12">
-          <span translate>Edited by</span> <span>{{btx.note.editedByName}}</span>,
-          <time>{{btx.note.editedOn * 1000 | amTimeAgo}}</time></span>
-        </span>
-      </li>
-    </ul>
-
-    <div class="list" ng-if="btx.actions[0] && isShared">
-      <div class="item item-divider" translate>Participants</div>
-      <div class="item" ng-repeat="c in btx.actions">
-        <span class="item-note">
-          <i ng-if="c.type == 'reject'" class="fi-x icon-sign x db"></i>
-          <i ng-if="c.type == 'accept'" class="fi-check icon-sign check db"></i>
-        </span>
-        {{c.copayerName}} <span ng-if="c.copayerId == copayerId">({{'Me'|translate}})</span>
       </div>
-    </div>
 
-    <div ng-show="btx.txid" class="row">
-      <div class="col">
-        <button class="button button-block button-positive" ng-click="openExternalLink('https://' +
-          (getShortNetworkName() == 'test' ? 'test-' : '') + 'insight.bitpay.com/tx/' + btx.txid)">
-          <span class="text-gray" translate>See it on the blockchain</span>
-        </button>
+      <div class="item" ng-if="btx.message && btx.action != 'received'" copy-to-clipboard="btx.message">
+        <div translate>Description</div>
+        <span class="enable_text_select">{{btx.message}}</span>
       </div>
-      <div class="col">
-        <button class="button button-block button-positive" ng-click="showCommentPopup()">
-          <span class="text-gray" translate ng-show="!btx.note">Add comment</i></span>
-          <span class="text-gray" translate ng-show="btx.note">Edit comment</span>
-        </button>
+
+      <div ng-if="btx.merchant" class="item" copy-to-clipboard="btx.merchant.pr.pd.memo">
+        <div translate>Merchant message</div>
+        <span class="enable_text_select">
+          {{btx.merchant.pr.pd.memo}}
+        </span>
+      </div>
+
+      <div ng-show="btx.hasMultiplesOutputs" class="item" ng-click="showMultiplesOutputs = !showMultiplesOutputs">
+        <div translate>Recipients</div>
+        <span class="right">{{btx.recipientCount}}
+          <i ng-show="showMultiplesOutputs" class="icon-arrow-up3 size-24"></i>
+          <i ng-show="!showMultiplesOutputs" class="icon-arrow-down3 size-24"></i>
+        </span>
+      </div>
+
+      <div class="item" ng-show="btx.hasMultiplesOutputs && showMultiplesOutputs"
+        ng-repeat="output in btx.outputs"
+        ng-include="'views/includes/output.html'">
+      </div>
+
+      <div ng-if="btx.action == 'invalid'" class="item">
+        <span class="right" translate>
+          This transaction has become invalid; possibly due to a double spend attempt.
+        </span>
+      </div>
+
+      <div class="item item-icon-right" ng-click="showCommentPopup()">
+        <span class="text-gray" translate ng-show="!btx.note">Add Memo</i></span>
+        <span class="text-gray" translate ng-show="btx.note">Memo</span>
+        <i class="icon nav-item-arrow-right"></i>
+        <div ng-show="btx.note && btx.note.body">
+          <span class="enable_text_select">{{btx.note.body}}</span><br>
+          <span class="text-italic item-note size-12">
+            <span translate>Edited by</span> <span>{{btx.note.editedByName}}</span>,
+            <time>{{btx.note.editedOn * 1000 | amTimeAgo}}</time></span>
+          </span>
+        </div>
+      </div>
+
+      <div ng-if="actionList[0]">
+        <div class="item item-divider" translate>Timeline</div>
+
+        <div class="item" ng-class="{'action-created' : a.type == 'created' || a.type == 'accept', 'action-rejected' : a.type == 'reject'}" ng-repeat="a in actionList track by $index">
+          <div class="row">
+            <div class="col col-10">
+              <span id="timeline-icon">{{$index + 1}}</span>
+            </div>
+            <div class="col">
+              <div>{{a.description}}</div>
+              <div>
+                <span>{{a.by}}</span>
+                <span class="item-note">
+                  <time>{{ a.time * 1000 | amDateFormat:'MM/DD/YYYY HH:mm a'}}</time>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </ion-content>
