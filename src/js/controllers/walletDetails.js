@@ -131,18 +131,13 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
     $scope.close = function() {
       $scope.searchModal.hide();
     }
-
   };
 
   $scope.openTxModal = function(btx) {
-    var self = this;
-
     $scope.btx = lodash.cloneDeep(btx);
-    $scope.self = self;
-
+    $scope.walletId = wallet.id;
     $ionicModal.fromTemplateUrl('views/modals/tx-details.html', {
-      scope: $scope,
-      hideDelay: 500
+      scope: $scope
     }).then(function(modal) {
       $scope.txDetailsModal = modal;
       $scope.txDetailsModal.show();

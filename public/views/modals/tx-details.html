@@ -9,7 +9,7 @@
   </ion-header-bar>
 
   <ion-content>
-    <div class="header-modal text-center" ng-if="!loadingTxInfo" ng-init="showRate = false">
+    <div class="header-modal text-center" ng-init="showRate = false">
       <div ng-show="btx.action != 'invalid'">
 
         <i class="icon big-icon-svg">
@@ -53,7 +53,7 @@
       </div>
     </div>
 
-    <div class="list" ng-if="!loadingTxInfo">
+    <div class="list">
       <div class="item item-icon-left" ng-show="btx.action == 'sent'">
         <i class="icon ion-social-bitcoin-outline"></i>
         <div ng-if="!btx.hasMultiplesOutputs && btx.addressTo && btx.addressTo != 'N/A'" copy-to-clipboard="btx.addressTo">

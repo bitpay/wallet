@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('tabHomeController',
-  function($rootScope, $timeout, $scope, $state, $stateParams, $ionicModal, $ionicScrollDelegate, lodash, profileService, walletService, configService, $log, platformInfo, storageService, txpModalService, $window) {
+  function($rootScope, $timeout, $scope, $state, $stateParams, $ionicModal, $ionicScrollDelegate, gettextCatalog, lodash, popupService, ongoingProcess, profileService, walletService, configService, $log, platformInfo, storageService, txpModalService, $window) {
     $scope.externalServices = {};
     $scope.bitpayCardEnabled = true; // TODO
     $scope.openTxpModal = txpModalService.open;
@@ -17,13 +17,30 @@ angular.module('copayApp.controllers').controller('tabHomeController',
     });
 
     $scope.openTxModal = function(n) {
-      $scope.txid = n.txid;
-      $scope.walletId = n.walletId;
-      $ionicModal.fromTemplateUrl('views/modals/tx-details.html', {
-        scope: $scope
-      }).then(function(modal) {
-        $scope.txDetailsModal = modal;
-        $scope.txDetailsModal.show();
+      var wallet = profileService.getWallet(n.walletId);
+
+      ongoingProcess.set('loadingTxInfo', true);
+      walletService.getTx(wallet, n.txid, function(err, tx) {
+        ongoingProcess.set('loadingTxInfo', false);
+
+        if (err) {
+          $log.error(err);
+          return popupService.showAlert(gettextCatalog.getString('Error'), err);
+        }
+
+        if (!tx) {
+          $log.warn('No tx found');
+          return popupService.showAlert(gettextCatalog.getString('Transaction not found'), null);
+        }
+
+        $scope.wallet = wallet;
+        $scope.btx = lodash.cloneDeep(tx);
+        $ionicModal.fromTemplateUrl('views/modals/tx-details.html', {
+          scope: $scope
+        }).then(function(modal) {
+          $scope.txDetailsModal = modal;
+          $scope.txDetailsModal.show();
+        });
       });
     };
 

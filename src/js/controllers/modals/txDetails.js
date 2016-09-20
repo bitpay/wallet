@@ -1,64 +1,32 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('txDetailsController', function($log, $timeout, $scope, $filter, $stateParams, ongoingProcess, walletService, lodash, gettextCatalog, profileService, configService, txFormatService, externalLinkService, popupService) {
-  var self = $scope.self;
-  var wallet = profileService.getWallet($stateParams.walletId || $scope.walletId);
   var config = configService.getSync();
   var configWallet = config.wallet;
   var walletSettings = configWallet.settings;
+  var wallet;
   $scope.title = gettextCatalog.getString('Transaction');
-  $scope.loadingTxInfo = false;
 
   $scope.init = function() {
-    $scope.loadingTxInfo = true;
-    ongoingProcess.set('loadingTxInfo', true);
-    findTx($scope.txid, function(err, tx) {
-      ongoingProcess.set('loadingTxInfo', false);
-      $scope.loadingTxInfo = false;
-      if (err) {
-        $log.error(err);
-        popupService.showAlert(gettextCatalog.getString('Error'), err);
-        return $scope.cancel();
-      }
+    wallet = $scope.wallet;
+    $scope.alternativeIsoCode = walletSettings.alternativeIsoCode;
+    $scope.color = wallet.color;
+    $scope.copayerId = wallet.credentials.copayerId;
+    $scope.isShared = wallet.credentials.n > 1;
+    $scope.btx.feeLevel = walletSettings.feeLevel;
 
-      if (!tx) {
-        $log.warn('No tx found');
-        popupService.showAlert(gettextCatalog.getString('Transaction not found'), null);
-        return $scope.cancel();
-      }
+    if ($scope.btx.action != 'invalid') {
+      if ($scope.btx.action == 'sent') $scope.title = gettextCatalog.getString('Sent Funds');
+      if ($scope.btx.action == 'received') $scope.title = gettextCatalog.getString('Received Funds');
+      if ($scope.btx.action == 'moved') $scope.title = gettextCatalog.getString('Moved Funds');
+    }
 
-      $scope.btx = lodash.cloneDeep(tx);
-      $scope.alternativeIsoCode = walletSettings.alternativeIsoCode;
-      $scope.color = wallet.color;
-      $scope.copayerId = wallet.credentials.copayerId;
-      $scope.isShared = wallet.credentials.n > 1;
-      $scope.btx.feeLevel = walletSettings.feeLevel;
+    initActionList();
+    getAlternativeAmount();
 
-      if ($scope.btx.action != 'invalid') {
-        if ($scope.btx.action == 'sent') $scope.title = gettextCatalog.getString('Sent Funds');
-        if ($scope.btx.action == 'received') $scope.title = gettextCatalog.getString('Received Funds');
-        if ($scope.btx.action == 'moved') $scope.title = gettextCatalog.getString('Moved Funds');
-      }
-
-      initActionList();
-      getAlternativeAmount();
-
-      $timeout(function() {
-        $scope.$apply();
-      }, 10);
-    });
-  };
-
-  function findTx(txid, cb) {
-    walletService.getTxHistory(wallet, {}, function(err, txHistory) {
-      if (err) return cb(err);
-
-      var tx = lodash.find(txHistory, {
-        txid: txid
-      });
-
-      return cb(null, tx);
-    });
+    $timeout(function() {
+      $scope.$apply();
+    }, 100);
   };
 
   function initActionList() {
@@ -158,8 +126,5 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
 
   $scope.cancel = function() {
     $scope.txDetailsModal.hide();
-    $timeout(function() {
-      $scope.txDetailsModal.remove();
-    }, 10);
   };
 });
