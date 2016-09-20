@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.services').service('popupService', function($log, $ionicPopup, platformInfo) {
+angular.module('copayApp.services').service('popupService', function($log, $ionicPopup, platformInfo, gettextCatalog) {
 
   var isCordova = platformInfo.isCordova;
 
@@ -10,7 +10,7 @@ angular.module('copayApp.services').service('popupService', function($log, $ioni
     if (!cb) cb = function() {};
     $ionicPopup.alert({
       title: title,
-      template: message,
+      subTitle: message,
       okType: 'button-clear button-positive'
     }).then(cb);
   };
@@ -18,7 +18,7 @@ angular.module('copayApp.services').service('popupService', function($log, $ioni
   var _ionicConfirm = function(title, message, okText, cancelText, cb) {
     $ionicPopup.confirm({
       title: title,
-      template: message,
+      subTitle: message,
       cancelText: cancelText,
       cancelType: 'button-clear button-positive',
       okText: okText,
@@ -53,6 +53,8 @@ angular.module('copayApp.services').service('popupService', function($log, $ioni
       if (buttonIndex == 1) return cb(true);
       else return cb(false);
     }
+    okText = okText || gettextCatalog.getString('OK');
+    cancelText = cancelText || gettextCatalog.getString('Cancel');
     navigator.notification.confirm(message, onConfirm, title, [okText, cancelText]);
   };
 
@@ -67,8 +69,8 @@ angular.module('copayApp.services').service('popupService', function($log, $ioni
   /**
    * Show a simple alert popup
    *
-   * @param {String} Title
-   * @param {String} Message (optional)
+   * @param {String} Title (optional)
+   * @param {String} Message
    * @param {Callback} Function (optional)
    */
 
@@ -85,10 +87,10 @@ angular.module('copayApp.services').service('popupService', function($log, $ioni
   /**
    * Show a simple confirm popup
    *
-   * @param {String} Title
+   * @param {String} Title (optional)
    * @param {String} Message
-   * @param {String} okText
-   * @param {String} cancelText
+   * @param {String} okText (optional)
+   * @param {String} cancelText (optional)
    * @param {Callback} Function
    * @returns {Callback} OK: true, Cancel: false
    */
@@ -105,7 +107,7 @@ angular.module('copayApp.services').service('popupService', function($log, $ioni
   /**
    * Show a simple prompt popup
    *
-   * @param {String} Title
+   * @param {String} Title (optional)
    * @param {String} Message
    * @param {Object} Object{ inputType, inputPlaceholder, defaultText } (optional)
    * @param {Callback} Function
