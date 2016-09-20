@@ -49,27 +49,10 @@ angular.module('copayApp.controllers').controller('txpDetailsController', functi
     });
   };
 
-  $scope.options = {
-    loop: false,
-    effect: 'flip',
-    speed: 500,
-    pagination: false,
-    initialSlide: 1
-  }
-
-  $scope.$on("$ionicSlides.sliderInitialized", function(event, data) {
-    $scope.slider = data.slider;
+  $scope.$on('accepted', function(event) {
+    $scope.hideSlider = true;
+    $scope.sign();
   });
-
-  $scope.$on("$ionicSlides.slideChangeStart", function(event, data) {
-    $scope.data.index = data.slider.activeIndex;
-    if ($scope.data.index == 0) {
-      $scope.hideSlider = true;
-      $scope.sign();
-    }
-  });
-
-  $scope.$on("$ionicSlides.slideChangeEnd", function(event, data) {});
 
   checkPaypro();
 
