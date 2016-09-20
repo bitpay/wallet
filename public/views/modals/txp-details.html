@@ -74,6 +74,9 @@
 
         <div class="item">
           <span translate>From</span>
+          <i class="icon big-icon-svg">
+            <img src="img/icon-wallet.svg" ng-style="{'background-color': wallet.color}" class="bg"/>
+          </i>
           <span>
             {{wallet.name}}
           </span>
@@ -81,7 +84,7 @@
         <div class="item">
           <span translate>Created by</span>
           <span>
-            {{tx.creatorName}} <time>{{ (tx.ts || tx.createdOn ) * 1000 | amTimeAgo}}</time>
+            {{tx.creatorName}} <time>{{ (tx.ts || tx.createdOn ) * 1000 | amDateFormat:'MM/DD/YYYY HH:mm a'}}</time>
           </span>
         </div>
         <div class="item" ng-show="tx.message">
