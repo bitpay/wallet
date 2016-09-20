@@ -9,11 +9,11 @@
   </ion-header-bar>
 
   <ion-content>
-    <div class="header-modal text-center" ng-init="getAlternativeAmount(btx); showRate = false">
+    <div class="header-modal text-center" ng-init="showRate = false">
       <div ng-show="btx.action != 'invalid'">
 
-        <i class="icon big-icon-svg">
-          <img src="img/icon-wallet.svg" ng-style="{'background-color': wallet.color}" class="bg"/>
+        <i class="icon big-icon-svg" ng-if="color">
+          <img src="img/icon-wallet.svg" ng-style="{'background-color': color}" class="bg"/>
         </i>
 
         <div class="size-36" copy-to-clipboard="btx.amountStr">

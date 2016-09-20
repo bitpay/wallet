@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('tabHomeController',
-  function($rootScope, $timeout, $scope, $state, $stateParams, $ionicScrollDelegate, lodash, profileService, walletService, configService, $log, platformInfo, storageService, txpModalService, $window) {
+  function($rootScope, $timeout, $scope, $state, $stateParams, $ionicModal, $ionicScrollDelegate, lodash, profileService, walletService, configService, $log, platformInfo, storageService, txpModalService, $window) {
     $scope.externalServices = {};
     $scope.bitpayCardEnabled = true; // TODO
     $scope.openTxpModal = txpModalService.open;
@@ -15,6 +15,18 @@ angular.module('copayApp.controllers').controller('tabHomeController',
       $scope.glideraEnabled = config.glidera.enabled && !isWindowsPhoneApp;
       $scope.coinbaseEnabled = config.coinbase.enabled && !isWindowsPhoneApp;
     });
+
+    $scope.openTxModal = function(n) {
+      console.log(n);
+      $scope.txid = n.txid;
+      $scope.walletId = n.walletId;
+      $ionicModal.fromTemplateUrl('views/modals/tx-details.html', {
+        scope: $scope
+      }).then(function(modal) {
+        $scope.txDetailsModal = modal;
+        $scope.txDetailsModal.show();
+      });
+    };
 
     $scope.openWallet = function(wallet) {
       if (!wallet.isComplete()) {
@@ -112,7 +124,9 @@ angular.module('copayApp.controllers').controller('tabHomeController',
     $scope.hideHomeTip = function() {
       $scope.homeTip = null;
       $state.transitionTo($state.current, null, {
-        reload: false, inherit: false, notify: false
+        reload: false,
+        inherit: false,
+        notify: false
       });
     };
 
