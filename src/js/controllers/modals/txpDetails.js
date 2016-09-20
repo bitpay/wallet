@@ -1,19 +1,75 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('txpDetailsController', function($scope, $rootScope, $timeout, $interval, $ionicModal, ongoingProcess, platformInfo, $ionicScrollDelegate, txFormatService, fingerprintService, bwcError, gettextCatalog, lodash,  walletService, popupService) {
+angular.module('copayApp.controllers').controller('txpDetailsController', function($scope, $rootScope, $timeout, $interval, $ionicModal, ongoingProcess, platformInfo, $ionicScrollDelegate, txFormatService, fingerprintService, bwcError, gettextCatalog, lodash, walletService, popupService) {
   var self = $scope.self;
   var tx = $scope.tx;
   var copayers = $scope.copayers;
   var isGlidera = $scope.isGlidera;
   var GLIDERA_LOCK_TIME = 6 * 60 * 60;
   var now = Math.floor(Date.now() / 1000);
-  $scope.loading = null;
 
+  $scope.init = function() {
+    $scope.loading = null;
+    $scope.hideSlider = false;
+    $scope.copayerId = $scope.wallet.credentials.copayerId;
+    $scope.isShared = $scope.wallet.credentials.n > 1;
+    $scope.canSign = $scope.wallet.canSign() || $scope.wallet.isPrivKeyExternal();
+    $scope.color = $scope.wallet.color;
+    $scope.data = {};
 
-  $scope.copayerId = $scope.wallet.credentials.copayerId;
-  $scope.isShared =  $scope.wallet.credentials.n > 1;
-  $scope.canSign =  $scope.wallet.canSign() ||  $scope.wallet.isPrivKeyExternal();
-  $scope.color =  $scope.wallet.color;
+    initActionList();
+  }
+
+  function initActionList() {
+    $scope.actionList = [];
+
+    if (!$scope.isShared) return;
+
+    var actionDescriptions = {
+      created: gettextCatalog.getString('Proposal Created'),
+      accept: gettextCatalog.getString('Accepted'),
+      reject: gettextCatalog.getString('Rejected'),
+      broadcasted: gettextCatalog.getString('Broadcasted'),
+    };
+
+    $scope.actionList.push({
+      type: 'created',
+      time: tx.createdOn,
+      description: actionDescriptions['created'],
+      by: tx.creatorName
+    });
+
+    lodash.each(tx.actions, function(action) {
+      $scope.actionList.push({
+        type: action.type,
+        time: action.createdOn,
+        description: actionDescriptions[action.type],
+        by: action.copayerName
+      });
+    });
+  };
+
+  $scope.options = {
+    loop: false,
+    effect: 'flip',
+    speed: 500,
+    pagination: false,
+    initialSlide: 1
+  }
+
+  $scope.$on("$ionicSlides.sliderInitialized", function(event, data) {
+    $scope.slider = data.slider;
+  });
+
+  $scope.$on("$ionicSlides.slideChangeStart", function(event, data) {
+    $scope.data.index = data.slider.activeIndex;
+    if ($scope.data.index == 0) {
+      $scope.hideSlider = true;
+      $scope.sign();
+    }
+  });
+
+  $scope.$on("$ionicSlides.slideChangeEnd", function(event, data) {});
 
   checkPaypro();
 
@@ -33,9 +89,9 @@ angular.module('copayApp.controllers').controller('txpDetailsController', functi
   $scope.sign = function() {
     $scope.loading = true;
     walletService.publishAndSign($scope.wallet, $scope.tx, function(err, txp) {
-        $scope.$emit('UpdateTx');
-        if (err) return setSendError(err);
-        $scope.close();
+      $scope.$emit('UpdateTx');
+      if (err) return setSendError(err);
+      $scope.close();
     });
   };
 
