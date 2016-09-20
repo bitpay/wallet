@@ -503,15 +503,23 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
   };
 
   root.getTx = function(wallet, txid, cb) {
-    root.getTxHistory(wallet, {}, function(err, txHistory) {
-      if (err) return cb(err);
-
-      var tx = lodash.find(txHistory, {
+    if (wallet.completeHistory && wallet.completeHistory.isValid) {
+      var tx = lodash.find(wallet.completeHistory, {
         txid: txid
       });
 
       return cb(null, tx);
-    });
+    } else {
+      root.getTxHistory(wallet, {}, function(err, txHistory) {
+        if (err) return cb(err);
+
+        var tx = lodash.find(txHistory, {
+          txid: txid
+        });
+
+        return cb(null, tx);
+      });
+    }
   };
 
   root.getTxHistory = function(wallet, opts, cb) {
