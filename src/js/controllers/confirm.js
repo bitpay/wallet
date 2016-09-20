@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('confirmController', function($rootScope, $scope, $ionicSlideBoxDelegate, $filter, $timeout, $ionicScrollDelegate, $ionicNavBarDelegate, gettextCatalog, walletService, platformInfo, lodash, configService, rateService, $stateParams, $window, $state, $log, profileService, bitcore, $ionicPopup, gettext, txFormatService, ongoingProcess, $ionicModal, $ionicHistory, popupService) {
+angular.module('copayApp.controllers').controller('confirmController', function($rootScope, $scope, $filter, $timeout, $ionicScrollDelegate, $ionicNavBarDelegate, gettextCatalog, walletService, platformInfo, lodash, configService, rateService, $stateParams, $window, $state, $log, profileService, bitcore, $ionicPopup, gettext, txFormatService, ongoingProcess, $ionicModal, $ionicHistory, popupService) {
   $ionicNavBarDelegate.title(gettextCatalog.getString('Confirm'));
   var cachedTxp = {};
   var isChromeApp = platformInfo.isChromeApp;
@@ -9,7 +9,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     if ($stateParams.paypro) {
       return setFromPayPro($stateParams.paypro, function(err) {
         if (err && !isChromeApp) {
-          showAlert(gettext('Could not fetch payment'));
+          popupService.showAlert(gettext('Could not fetch payment'));
         }
       });
     }

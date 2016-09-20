@@ -163,7 +163,7 @@ angular.module('copayApp.directives')
       }
     }
   })
-  .directive('accept', function($log, profileService, walletService, lodash) {
+  .directive('accept', function() {
     return {
       restrict: 'E',
       templateUrl: 'views/includes/acceptSlide.html',

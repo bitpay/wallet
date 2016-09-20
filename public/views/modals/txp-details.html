@@ -161,5 +161,5 @@
       </button>
     </div>
   </ion-content>
-    <accept class="accept-slide" ng-disabled="loading || paymentExpired" ng-if="tx.pendingForUs && canSign && !hideSlider"></accept>
+    <accept class="accept-slide" ng-if="tx.pendingForUs && canSign && !hideSlider && !loading && !paymentExpired"></accept>
 </ion-modal-view>
