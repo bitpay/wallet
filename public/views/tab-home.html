@@ -30,7 +30,7 @@
         <span class="badge badge-assertive" ng-show="txpsN>3" translate> {{txpsN}}</span>
       </a>
 
-      <a ng-repeat="tx in txps" class="item"  ng-click="openTxpModal(tx)">
+      <a ng-repeat="tx in txps" class="item" ng-click="openTxpModal(tx)">
         <span ng-include="'views/includes/txp.html'"></span>
       </a>
     </div>

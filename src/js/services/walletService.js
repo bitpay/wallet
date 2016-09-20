@@ -502,6 +502,17 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     });
   };
 
+  root.getTx = function(wallet, txid, cb) {
+    root.getTxHistory(wallet, {}, function(err, txHistory) {
+      if (err) return cb(err);
+
+      var tx = lodash.find(txHistory, {
+        txid: txid
+      });
+
+      return cb(null, tx);
+    });
+  };
 
   root.getTxHistory = function(wallet, opts, cb) {
     opts = opts || {};
