@@ -84,7 +84,7 @@
       }
     }
 
-    @media (min-device-width : 320px) and (max-device-width : 340px) and (orientation : portrait){
+    @media (min-width : 320px) and (max-width : 340px) and (orientation : portrait), (min-width : 650px) and (max-width : 770px) and (orientation : portrait){
       #wallet-backup-phrase{
         .cta-buttons,#select-phrase{
           bottom: 64px;

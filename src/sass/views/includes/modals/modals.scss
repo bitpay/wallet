@@ -1,10 +1,12 @@
 .popup-modal {
   background: #fff;
-  top: 20%;
+  top: 50%;
+  left:50%;
   position: absolute;
   z-index: 10;
   width: 90%;
-  left: 5%;
+  max-width: 350px;
+  transform: translate(-50%, -50%);
   border-radius: .25rem;
   &-header {
     background: rgb(1, 209, 162);
