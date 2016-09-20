@@ -62,18 +62,22 @@
     #news-updates{
       padding-top:0;
       .list{
-        max-width: 600px;
+        max-width: 310px;
         text-align: center;
-        width: 75%;
+        width: 100%;
         @include center-block();
         label{
           display: inline-block;
           margin-top: 0;
           padding-bottom: 1rem;
+          .checkbox{
+            left:0;
+            margin-left:0;
+          }
           .item-content{
-            margin-left: 15%;
-            top: .4rem;
+            margin-left: 12%;
             position: relative;
+            font-size:.8rem;
           }
         }
       }
