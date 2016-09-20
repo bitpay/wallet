@@ -12,8 +12,12 @@
     }
     .swiper-slide{
       width:100% !important;
+      max-width: 450px;
       &.swiper-slide-prev, &.swiper-slide-next{
         opacity: .2;
+        &:hover{
+          opacity: 1;
+        }
       }
       &.swiper-slide-prev{
         left:-5%;
