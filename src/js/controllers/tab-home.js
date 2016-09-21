@@ -24,6 +24,10 @@ angular.module('copayApp.controllers').controller('tabHomeController',
           id: n.txpId
         });
         if (txp) txpModalService.open(txp);
+        else {
+          $log.warn('No txp found');
+          return popupService.showAlert(gettextCatalog.getString('Transaction not found'), null);
+        }
       }
     };
 
