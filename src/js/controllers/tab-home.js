@@ -60,13 +60,18 @@ angular.module('copayApp.controllers').controller('tabHomeController',
           return popupService.showAlert(null, gettextCatalog.getString('Transaction not found'));
         }
 
-        $scope.wallet = wallet;
-        $scope.btx = lodash.cloneDeep(tx);
-        $ionicModal.fromTemplateUrl('views/modals/tx-details.html', {
-          scope: $scope
-        }).then(function(modal) {
-          $scope.txDetailsModal = modal;
-          $scope.txDetailsModal.show();
+        walletService.getTxNote(wallet, n.txid, function(err, note) {
+          if (err) $log.debug(gettextCatalog.getString('Could not fetch transaction note'));
+
+          $scope.wallet = wallet;
+          $scope.btx = lodash.cloneDeep(tx);
+          $scope.btx.note = note;
+          $ionicModal.fromTemplateUrl('views/modals/tx-details.html', {
+            scope: $scope
+          }).then(function(modal) {
+            $scope.txDetailsModal = modal;
+            $scope.txDetailsModal.show();
+          });
         });
       });
     };

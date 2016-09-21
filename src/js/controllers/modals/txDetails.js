@@ -24,10 +24,6 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
     updateMemo();
     initActionList();
     getAlternativeAmount();
-
-    $timeout(function() {
-      $scope.$apply();
-    });
   };
 
   function updateMemo() {
@@ -38,7 +34,6 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
         $log.debug(gettextCatalog.getString('Could not fetch transaction note'));
         return;
       }
-
       $scope.note = note;
       $timeout(function() {
         $scope.$apply();
@@ -108,7 +103,6 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
           $scope.btx.note.editedOn = Math.floor(Date.now() / 1000);
         }
         $scope.btx.searcheableString = null;
-
         $timeout(function() {
           $scope.$apply();
         });
@@ -132,7 +126,6 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
         $scope.rateDate = res.fetchedOn;
         $scope.rateStr = res.rate + ' ' + $scope.alternativeIsoCode;
         $scope.alternativeAmountStr = $filter('formatFiatAmount')(alternativeAmountBtc * res.rate) + ' ' + $scope.alternativeIsoCode;
-        $scope.$apply();
       }
     });
   };
