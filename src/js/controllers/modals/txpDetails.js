@@ -10,7 +10,6 @@ angular.module('copayApp.controllers').controller('txpDetailsController', functi
 
   $scope.init = function() {
     $scope.loading = null;
-    $scope.hideSlider = false;
     $scope.copayerId = $scope.wallet.credentials.copayerId;
     $scope.isShared = $scope.wallet.credentials.n > 1;
     $scope.canSign = $scope.wallet.canSign() || $scope.wallet.isPrivKeyExternal();
@@ -50,7 +49,6 @@ angular.module('copayApp.controllers').controller('txpDetailsController', functi
   };
 
   $scope.$on('accepted', function(event) {
-    $scope.hideSlider = true;
     $scope.sign();
   });
 
