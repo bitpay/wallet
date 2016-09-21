@@ -15,6 +15,9 @@
         right: 0;
         content: '';
       }
+      &.item-divider{
+        color:rgba(74, 74, 74, .8);
+      }
       &.item-heading {
         &:before {
           top: 99%
@@ -24,6 +27,9 @@
         &:before {
           width: 0;
         }
+      }
+      .item-note{
+        color:rgb(58, 58, 58);
       }
     }
   }
