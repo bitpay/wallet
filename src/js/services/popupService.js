@@ -37,7 +37,7 @@ angular.module('copayApp.services').service('popupService', function($log, $ioni
       inputPlaceholder: opts.inputPlaceholder,
       defaultText: opts.defaultText
     }).then(function(res) {
-      return cb(res)
+      return cb(res);
     });
   };
 
