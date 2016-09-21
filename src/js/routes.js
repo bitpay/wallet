@@ -509,7 +509,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         }
       })
       .state('tabs.addressbook.add', {
-        url: '/add/:addressbookEntry',
+        url: '/add',
         views: {
           'tab-settings@tabs': {
             templateUrl: 'views/addressbook.add.html',
