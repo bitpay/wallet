@@ -115,7 +115,7 @@ angular.module('copayApp.controllers').controller('tabHomeController',
       lodash.each($scope.wallets, function(wallet) {
         walletService.getStatus(wallet, {}, function(err, status) {
           if (err) {
-            console.log('[tab-home.js.35:err:]', $log.error(err)); //TODO
+            $log.error(err);
           } else {
             wallet.status = status;
           }
