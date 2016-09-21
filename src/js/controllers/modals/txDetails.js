@@ -21,12 +21,29 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
       if ($scope.btx.action == 'moved') $scope.title = gettextCatalog.getString('Moved Funds');
     }
 
+    updateMemo();
     initActionList();
     getAlternativeAmount();
 
     $timeout(function() {
       $scope.$apply();
-    }, 100);
+    });
+  };
+
+  function updateMemo() {
+    wallet.getTxNote({
+      txid: $scope.btx.txid
+    }, function(err, note) {
+      if (err || !note) {
+        $log.debug(gettextCatalog.getString('Could not fetch transaction note'));
+        return;
+      }
+
+      $scope.note = note;
+      $timeout(function() {
+        $scope.$apply();
+      });
+    });
   };
 
   function initActionList() {
@@ -64,12 +81,12 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
   };
 
   $scope.showCommentPopup = function() {
-    popupService.showPrompt(gettextCatalog.getString('Memo'), ' ', {}, function(res) {
+    popupService.showPrompt(gettextCatalog.getString('Memo'), ' ', {}, function(text) {
       $log.debug('Saving memo');
 
       var args = {
         txid: $scope.btx.txid,
-        body: res
+        body: text
       };
 
       wallet.editTxNote(args, function(err) {
@@ -81,7 +98,7 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
         $scope.btx.note = null;
         if (args.body) {
           $scope.btx.note = {};
-          $scope.btx.note.body = res;
+          $scope.btx.note.body = text;
           $scope.btx.note.editedByName = wallet.credentials.copayerName;
           $scope.btx.note.editedOn = Math.floor(Date.now() / 1000);
         }
@@ -89,7 +106,7 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
 
         $timeout(function() {
           $scope.$apply();
-        }, 200);
+        });
       });
     });
   };
