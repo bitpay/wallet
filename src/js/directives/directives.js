@@ -174,7 +174,10 @@ angular.module('copayApp.directives')
         });
 
         scope.$on("$ionicSlides.slideChangeEnd", function(event, data) {
-          if (data.slider.activeIndex == 0) scope.$emit('accepted');
+          if (data.slider.activeIndex == 0) {
+            scope.slider.slideNext();
+            scope.$emit('accepted');
+          }
         });
       }
     }

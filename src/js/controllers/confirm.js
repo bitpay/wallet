@@ -19,7 +19,6 @@ angular.module('copayApp.controllers').controller('confirmController', function(
       throw ('bad params');
     }
     $scope.isCordova = platformInfo.isCordova;
-    $scope.hideSlider = false;
     $scope.data = {};
 
     var config = configService.getSync().wallet;
@@ -78,7 +77,6 @@ angular.module('copayApp.controllers').controller('confirmController', function(
   };
 
   $scope.$on('accepted', function(event) {
-    $scope.hideSlider = true;
     $scope.approve();
   });
 
@@ -268,16 +266,46 @@ angular.module('copayApp.controllers').controller('confirmController', function(
         $state.go('tabs.home');
       });
     }
-
     ongoingProcess.set('creatingTx', true);
     createTx(wallet, false, function(err, txp) {
       ongoingProcess.set('creatingTx', false);
       if (err) return;
-      walletService.publishAndSign(wallet, txp, function(err, txp) {
-        if (err) return setSendError(err);
-        $ionicHistory.clearHistory();
-        $state.go('tabs.home');
+
+      var config = configService.getSync();
+      var spendingPassEnabled = walletService.isEncrypted(wallet);
+      var touchIdEnabled = config.touchIdFor && !config.touchIdFor[wallet.id];
+      var isCordova = $scope.isCordova;
+      var bigAmount = parseFloat(txFormatService.formatToUSD(txp.amount)) > 20;
+      var message = gettextCatalog.getString('Sending {{fee}} from your {{name}} wallet', {
+        fee: $scope.fee,
+        name: wallet.name
       });
+      var okText = gettextCatalog.getString('Confirm');
+      var cancelText = gettextCatalog.getString('Cancel');
+
+      if (!spendingPassEnabled && !touchIdEnabled) {
+        if (isCordova && bigAmount) {
+          popupService.showConfirm(null, message, okText, cancelText, function(ok) {
+            if (!ok) return;
+            publishAndSign(wallet, txp);
+          });
+        }
+        else {
+          popupService.showConfirm(null, message, okText, cancelText, function(ok) {
+            if (!ok) return;
+            publishAndSign(wallet, txp);
+          });
+        }
+      }
+      else publishAndSign(wallet, txp);
+    });
+  };
+
+  function publishAndSign(wallet, txp) {
+    walletService.publishAndSign(wallet, txp, function(err, txp) {
+      if (err) return setSendError(err);
+      $ionicHistory.clearHistory();
+      $state.go('tabs.home');
     });
   };
 
