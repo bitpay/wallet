@@ -10,7 +10,7 @@
     </div>
     <ion-list>
       <ion-checkbox ng-model="accept1"><span translate>I understand my funds are held securely on this device, not by a company.</span></ion-checkbox>
-      <ion-checkbox ng-model="accept2"><span translate>I understand if this wallet is lost or deleted, my bitcoin can only be recovered with the backup phrase.</span></ion-checkbox>
+      <ion-checkbox ng-model="accept2"><span translate>I understand if this app moved to another device or deleted, my bitcoin can only be recovered with the backup phrase</span></ion-checkbox>
     </ion-list>
     <div id="agree-to-terms" ng-if="accept1 && accept2">
       <ion-checkbox ng-model="terms.accept3"></ion-checkbox>
