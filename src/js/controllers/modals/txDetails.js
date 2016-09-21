@@ -83,7 +83,8 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
   $scope.showCommentPopup = function() {
     popupService.showPrompt(gettextCatalog.getString('Memo'), ' ', {}, function(text) {
       $log.debug('Saving memo');
-
+      console.log("#######################");
+      console.log(text);
       var args = {
         txid: $scope.btx.txid,
         body: text

@@ -222,13 +222,13 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         }
       })
 
-      /*
-       *
-       * Send
-       *
-       */
+    /*
+     *
+     * Send
+     *
+     */
 
-      .state('tabs.send.amount', {
+    .state('tabs.send.amount', {
         url: '/amount/:toAddress/:toName/:toEmail',
         views: {
           'tab-send@tabs': {
@@ -244,7 +244,15 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
           }
         }
       })
-
+      .state('tabs.send.addressbook', {
+        url: '/addressbook/add/:fromSendTab/:addressbookEntry',
+        views: {
+          'tab-send@tabs': {
+            templateUrl: 'views/addressbook.add.html',
+            controller: 'addressbookAddController'
+          }
+        }
+      })
 
     /*
      *
@@ -501,7 +509,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         }
       })
       .state('tabs.addressbook.add', {
-        url: '/add',
+        url: '/add/:addressbookEntry',
         views: {
           'tab-settings@tabs': {
             templateUrl: 'views/addressbook.add.html',
@@ -709,24 +717,24 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         templateUrl: 'views/sellCoinbase.html'
       })
 
-      /*
-       *
-       * Gift Cards
-       *
-       */
+    /*
+     *
+     * Gift Cards
+     *
+     */
 
-      .state('tabs.giftcards', {
-        url: '/giftcards',
-        abstract: true
-      })
+    .state('tabs.giftcards', {
+      url: '/giftcards',
+      abstract: true
+    })
 
-      /*
-       *
-       * Amazon.com Gift Card
-       *
-       */
+    /*
+     *
+     * Amazon.com Gift Card
+     *
+     */
 
-      .state('tabs.giftcards.amazon', {
+    .state('tabs.giftcards.amazon', {
         url: '/amazon',
         views: {
           'tab-home@tabs': {
