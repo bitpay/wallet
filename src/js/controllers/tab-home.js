@@ -16,7 +16,18 @@ angular.module('copayApp.controllers').controller('tabHomeController',
       $scope.coinbaseEnabled = config.coinbase.enabled && !isWindowsPhoneApp;
     });
 
-    $scope.openTxModal = function(n) {
+    $scope.openNotificationModal = function(n) {
+      if (!n.txpId && n.txid) {
+        openTxModal(n);
+      } else {
+        var txp = lodash.find($scope.txps, {
+          id: n.txpId
+        });
+        if (txp) txpModalService.open(txp);
+      }
+    };
+
+    var openTxModal = function(n) {
       var wallet = profileService.getWallet(n.walletId);
 
       ongoingProcess.set('loadingTxInfo', true);
