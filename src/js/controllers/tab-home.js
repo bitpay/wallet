@@ -17,7 +17,7 @@ angular.module('copayApp.controllers').controller('tabHomeController',
     });
 
     $scope.openNotificationModal = function(n) {
-      if (!n.txpId && n.txid) {
+      if (n.txid) {
         openTxModal(n);
       } else {
         var txp = lodash.find($scope.txps, {
@@ -26,7 +26,7 @@ angular.module('copayApp.controllers').controller('tabHomeController',
         if (txp) txpModalService.open(txp);
         else {
           $log.warn('No txp found');
-          return popupService.showAlert(gettextCatalog.getString('Transaction not found'), null);
+          return popupService.showAlert(null, gettextCatalog.getString('Transaction not found'));
         }
       }
     };
@@ -45,7 +45,7 @@ angular.module('copayApp.controllers').controller('tabHomeController',
 
         if (!tx) {
           $log.warn('No tx found');
-          return popupService.showAlert(gettextCatalog.getString('Transaction not found'), null);
+          return popupService.showAlert(null, gettextCatalog.getString('Transaction not found'));
         }
 
         $scope.wallet = wallet;
