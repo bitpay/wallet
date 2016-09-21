@@ -261,8 +261,6 @@ angular.module('copayApp.controllers').controller('confirmController', function(
 
       return walletService.onlyPublish(wallet, txp, function(err, txp) {
         if (err) return setSendError(err);
-        $ionicHistory.clearHistory();
-        $state.go('tabs.home');
       });
     }
     ongoingProcess.set('creatingTx', true);
@@ -303,8 +301,6 @@ angular.module('copayApp.controllers').controller('confirmController', function(
   function publishAndSign(wallet, txp) {
     walletService.publishAndSign(wallet, txp, function(err, txp) {
       if (err) return setSendError(err);
-      $ionicHistory.clearHistory();
-      $state.go('tabs.home');
     });
   };
 

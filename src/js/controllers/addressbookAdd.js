@@ -1,9 +1,11 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('addressbookAddController', function($scope, $state, $timeout, addressbookService, popupService) {
+angular.module('copayApp.controllers').controller('addressbookAddController', function($scope, $state, $stateParams, $timeout, $ionicHistory, addressbookService, popupService) {
+
+  $scope.fromSendTab = $stateParams.fromSendTab;
 
   $scope.addressbookEntry = {
-    'address': '',
+    'address': $stateParams.addressbookEntry || '',
     'name': '',
     'email': ''
   };
@@ -28,9 +30,15 @@ angular.module('copayApp.controllers').controller('addressbookAddController', fu
           popupService.showAlert(err);
           return;
         }
-        $state.go('tabs.addressbook');
+        if ($scope.fromSendTab) $scope.goHome();
+        else $state.go('tabs.addressbook');
       });
     }, 100);
+  };
+
+  $scope.goHome = function() {
+    $ionicHistory.clearHistory();
+    $state.go('tabs.home');
   };
 
 });
