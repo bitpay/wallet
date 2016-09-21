@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('tabHomeController',
-  function($rootScope, $timeout, $scope, $state, $stateParams, $ionicScrollDelegate, lodash, profileService, walletService, configService, $log, platformInfo, storageService, txpModalService, $window) {
+  function($rootScope, $timeout, $scope, $state, $stateParams, $ionicModal, $ionicScrollDelegate, gettextCatalog, lodash, popupService, ongoingProcess, profileService, walletService, configService, $log, platformInfo, storageService, txpModalService, $window) {
     $scope.externalServices = {};
     $scope.bitpayCardEnabled = true; // TODO
     $scope.openTxpModal = txpModalService.open;
@@ -15,6 +15,49 @@ angular.module('copayApp.controllers').controller('tabHomeController',
       $scope.glideraEnabled = config.glidera.enabled && !isWindowsPhoneApp;
       $scope.coinbaseEnabled = config.coinbase.enabled && !isWindowsPhoneApp;
     });
+
+    $scope.openNotificationModal = function(n) {
+      if (n.txid) {
+        openTxModal(n);
+      } else {
+        var txp = lodash.find($scope.txps, {
+          id: n.txpId
+        });
+        if (txp) txpModalService.open(txp);
+        else {
+          $log.warn('No txp found');
+          return popupService.showAlert(null, gettextCatalog.getString('Transaction not found'));
+        }
+      }
+    };
+
+    var openTxModal = function(n) {
+      var wallet = profileService.getWallet(n.walletId);
+
+      ongoingProcess.set('loadingTxInfo', true);
+      walletService.getTx(wallet, n.txid, function(err, tx) {
+        ongoingProcess.set('loadingTxInfo', false);
+
+        if (err) {
+          $log.error(err);
+          return popupService.showAlert(gettextCatalog.getString('Error'), err);
+        }
+
+        if (!tx) {
+          $log.warn('No tx found');
+          return popupService.showAlert(null, gettextCatalog.getString('Transaction not found'));
+        }
+
+        $scope.wallet = wallet;
+        $scope.btx = lodash.cloneDeep(tx);
+        $ionicModal.fromTemplateUrl('views/modals/tx-details.html', {
+          scope: $scope
+        }).then(function(modal) {
+          $scope.txDetailsModal = modal;
+          $scope.txDetailsModal.show();
+        });
+      });
+    };
 
     $scope.openWallet = function(wallet) {
       if (!wallet.isComplete()) {
@@ -112,7 +155,9 @@ angular.module('copayApp.controllers').controller('tabHomeController',
     $scope.hideHomeTip = function() {
       $scope.homeTip = null;
       $state.transitionTo($state.current, null, {
-        reload: false, inherit: false, notify: false
+        reload: false,
+        inherit: false,
+        notify: false
       });
     };
 

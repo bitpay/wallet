@@ -28,9 +28,9 @@ angular.module('copayApp.controllers').controller('buyAmazonController',
     };
 
     this.confirm = function() {
-      var title = gettextCatalog.getString('Confirm Amazon.com Gift Card purchase for ${{amount}} USD', {amount: $scope.fiat});
+      var message = gettextCatalog.getString('Amazon.com Gift Card purchase for ${{amount}} USD', {amount: $scope.fiat});
       var ok = gettextCatalog.getString('Buy');
-      popupService.showConfirm(title, null, ok, null, function(res) {
+      popupService.showConfirm(null, message, ok, null, function(res) {
         if (res) self.createTx();
       });
     };
