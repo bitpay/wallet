@@ -15,6 +15,7 @@ angular.module('copayApp.services').factory('txpModalService', function(configSe
     var config = configService.getSync().wallet;
     var scope = $rootScope.$new(true);
     scope.tx = tx;
+    if (!scope.tx.toAddress) scope.tx.toAddress = tx.outputs[0].toAddress;
     scope.wallet = wallet;
     scope.copayers = wallet ? wallet.copayers : null;
     scope.isGlidera = glideraActive;
