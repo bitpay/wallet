@@ -161,5 +161,6 @@
       </button>
     </div>
   </ion-content>
+  <button class="button button-block button-positive accept-button" ng-click="approve()" ng-if="!isCordova" translate>Click to pay</button>
   <accept class="accept-slide" ng-if="tx.pendingForUs && canSign && !loading && !paymentExpired"></accept>
 </ion-modal-view>
