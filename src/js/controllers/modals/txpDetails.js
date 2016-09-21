@@ -10,6 +10,7 @@ angular.module('copayApp.controllers').controller('txpDetailsController', functi
 
   $scope.init = function() {
     $scope.loading = null;
+    $scope.isCordova = platformInfo.isCordova;
     $scope.copayerId = $scope.wallet.credentials.copayerId;
     $scope.isShared = $scope.wallet.credentials.n > 1;
     $scope.canSign = $scope.wallet.canSign() || $scope.wallet.isPrivKeyExternal();
