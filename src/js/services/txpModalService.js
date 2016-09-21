@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.services').factory('txpModalService', function(configService, $rootScope, $ionicModal) {
+angular.module('copayApp.services').factory('txpModalService', function(configService, profileService, $rootScope, $ionicModal) {
 
   var root = {};
 
@@ -11,11 +11,12 @@ angular.module('copayApp.services').factory('txpModalService', function(configSe
 
 
   root.open = function(tx) {
+    var wallet = tx.wallet ? tx.wallet : profileService.getWallet(tx.walletId);
     var config = configService.getSync().wallet;
     var scope = $rootScope.$new(true);
     scope.tx = tx;
-    scope.wallet = tx.wallet;
-    scope.copayers = tx.wallet ? tx.wallet.copayers : null;
+    scope.wallet = wallet;
+    scope.copayers = wallet ? wallet.copayers : null;
     scope.isGlidera = glideraActive;
     scope.currentSpendUnconfirmed = config.spendUnconfirmed;
     // scope.tx.hasMultiplesOutputs = true;  // Uncomment to test multiple outputs
