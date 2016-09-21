@@ -32,6 +32,7 @@ angular.module('copayApp.services').factory('ongoingProcess', function($log, $ti
     'sweepingWallet': gettext('Sweeping Wallet...'),
     'validatingWallet': gettext('Validating wallet integrity...'),
     'validatingWords': gettext('Validating recovery phrase...'),
+    'loadingTxInfo': gettext('Loading transaction info...'),
   };
 
   root.clear = function() {

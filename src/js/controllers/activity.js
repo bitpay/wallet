@@ -1,9 +1,8 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('activityController',
-  function($rootScope, $timeout, $scope, $state, lodash, profileService, walletService, configService, txFormatService, $ionicModal, $log, platformInfo) {
-    var self = this;
-
+  function($timeout, $scope, $log, $ionicModal, lodash, txpModalService, profileService, walletService, ongoingProcess, popupService, gettextCatalog) {
+    $scope.openTxpModal = txpModalService.open;
 
     $scope.init = function() {
       $scope.fetchingNotifications = true;
@@ -14,9 +13,57 @@ angular.module('copayApp.controllers').controller('activityController',
         }
         $scope.fetchingNotifications = false;
         $scope.notifications = n;
-        $timeout(function() {
-          $scope.$apply();
-        }, 1);
+
+        profileService.getTxps({}, function(err, txps, n) {
+          if (err) $log.error(err);
+          $scope.txps = txps;
+          $timeout(function() {
+            $scope.$apply();
+          });
+        });
       });
-    }
+    };
+
+    $scope.openNotificationModal = function(n) {
+      if (!n.txpId && n.txid) {
+        openTxModal(n);
+      } else {
+        var txp = lodash.find($scope.txps, {
+          id: n.txpId
+        });
+        if (txp) txpModalService.open(txp);
+        else {
+          $log.warn('No txp found');
+          return popupService.showAlert(gettextCatalog.getString('Transaction not found'), null);
+        }
+      }
+    };
+
+    var openTxModal = function(n) {
+      var wallet = profileService.getWallet(n.walletId);
+
+      ongoingProcess.set('loadingTxInfo', true);
+      walletService.getTx(wallet, n.txid, function(err, tx) {
+        ongoingProcess.set('loadingTxInfo', false);
+
+        if (err) {
+          $log.error(err);
+          return popupService.showAlert(gettextCatalog.getString('Error'), err);
+        }
+
+        if (!tx) {
+          $log.warn('No tx found');
+          return popupService.showAlert(gettextCatalog.getString('Transaction not found'), null);
+        }
+
+        $scope.wallet = wallet;
+        $scope.btx = lodash.cloneDeep(tx);
+        $ionicModal.fromTemplateUrl('views/modals/tx-details.html', {
+          scope: $scope
+        }).then(function(modal) {
+          $scope.txDetailsModal = modal;
+          $scope.txDetailsModal.show();
+        });
+      });
+    };
   });

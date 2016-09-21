@@ -30,12 +30,12 @@
         <span class="badge badge-assertive" ng-show="txpsN>3" translate> {{txpsN}}</span>
       </a>
 
-      <a ng-repeat="tx in txps" class="item"  ng-click="openTxpModal(tx)">
+      <a ng-repeat="tx in txps" class="item" ng-click="openTxpModal(tx)">
         <span ng-include="'views/includes/txp.html'"></span>
       </a>
     </div>
 
-    <div class="list card" ng-if="notifications.length > 0">
+    <div class="list card" ng-if="notifications[0]">
       <a class="item item-icon-right item-heading" ui-sref="tabs.activity" translate>
         Recent Activity
         <i class="icon nav-item-arrow-right"></i>
@@ -44,7 +44,7 @@
         <ion-spinner icon="lines"></ion-spinner>
         <div translate>Updating activity. Please stand by</div>
       </span>
-      <a class="item" ng-repeat="x in notifications" ng-click="x.action()">
+      <a class="item" ng-repeat="notification in notifications" ng-click="openNotificationModal(notification)">
         <span ng-include="'views/includes/walletActivity.html'"></span>
       </a>
     </div>
