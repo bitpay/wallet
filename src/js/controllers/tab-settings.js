@@ -2,7 +2,7 @@
 
 angular.module('copayApp.controllers').controller('tabSettingsController', function($scope, $rootScope, $log, $window, lodash, configService, uxLanguage, platformInfo, pushNotificationsService, profileService, feeService) {
 
-  $scope.init = function() {
+  var updateConfig = function() {
 
     var config = configService.getSync();
     var isCordova = platformInfo.isCordova;
@@ -44,7 +44,7 @@ angular.module('copayApp.controllers').controller('tabSettingsController', funct
     }, function(err) {
       $log.debug(err);
     });
-  }
+  };
 
   $scope.spendUnconfirmedChange = function() {
     var opts = {
@@ -93,5 +93,9 @@ angular.module('copayApp.controllers').controller('tabSettingsController', funct
       if (err) $log.debug(err);
     });
   };
+
+  $scope.$on("$ionicView.enter", function(event, data){
+    updateConfig();
+  });
 
 });

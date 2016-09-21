@@ -17,7 +17,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
     $urlRouterProvider.otherwise('/starting');
 
     // NO CACHE
-    $ionicConfigProvider.views.maxCache(0);
+    //$ionicConfigProvider.views.maxCache(0);
 
     // TABS BOTTOM
     $ionicConfigProvider.tabs.position('bottom');
@@ -193,6 +193,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         url: '/home/:fromOnboarding',
         views: {
           'tab-home': {
+            controller: 'tabHomeController',
             templateUrl: 'views/tab-home.html',
           }
         }
@@ -201,6 +202,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         url: '/receive',
         views: {
           'tab-receive': {
+            controller: 'tabReceiveController',
             templateUrl: 'views/tab-receive.html',
           }
         }
@@ -209,6 +211,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         url: '/send',
         views: {
           'tab-send': {
+            controller: 'tabSendController',
             templateUrl: 'views/tab-send.html',
           }
         }
@@ -217,6 +220,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         url: '/settings',
         views: {
           'tab-settings': {
+            controller: 'tabSettingsController',
             templateUrl: 'views/tab-settings.html',
           }
         }
