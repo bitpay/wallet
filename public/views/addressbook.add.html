@@ -1,10 +1,16 @@
 <ion-view>
   <ion-nav-bar class="bar-royal">
-    <ion-nav-back-button>
-    </ion-nav-back-button>
     <ion-nav-title>
-      <span translate>Add entry</span>
+      <span translate>Add Contact</span>
     </ion-nav-title>
+    <ion-nav-back-button ng-if="!fromSendTab">
+    </ion-nav-back-button>
+    <ion-nav-buttons side="secondary">
+      <button class="button back-button" ng-click="goHome()" ng-if="fromSendTab">
+        Cancel
+      </button>
+    </ion-nav-buttons>
+  </ion-nav-bar>
   </ion-nav-bar>
 
   <ion-content>
