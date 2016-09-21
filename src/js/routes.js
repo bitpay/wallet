@@ -30,7 +30,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
     $ionicConfigProvider.navBar.positionSecondaryButtons('right');
 
     // NAV BACK-BUTTON TEXT/ICON
-    $ionicConfigProvider.backButton.icon('ion-arrow-left-c').text('');
+    $ionicConfigProvider.backButton.icon('icon ion-ios-arrow-thin-left').text('');
     $ionicConfigProvider.backButton.previousTitleText(false);
 
     $logProvider.debugEnabled(true);
@@ -106,7 +106,11 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
 
     .state('starting', {
       url: '/starting',
-      templateUrl: 'views/starting.html'
+      template: '<ion-view id="starting"><ion-content>{{starting}}</ion-content></ion-view>',
+      controller: function($scope, $log, gettextCatalog) {
+        $log.info('Starting...');
+        $scope.starting = gettextCatalog.getString('Starting...');
+      }
     })
 
     /*

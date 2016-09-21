@@ -822,11 +822,11 @@ angular.module('copayApp.services')
 
           x.action = function() {
             // TODO?
-            $state.go('tabs.details', {
-              walletId: x.walletId,
-              txpId: x.txpId,
-              txid: x.txid,
-            });
+            // $state.go('tabs.details', {
+            //   walletId: x.walletId,
+            //   txpId: x.txpId,
+            //   txid: x.txid,
+            // });
           };
         });
 

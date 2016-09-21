@@ -2,11 +2,8 @@
 <ion-view>
   <ion-nav-bar class="bar-royal">
     <ion-nav-title>Recent Activity</ion-nav-title>
-    <ion-nav-buttons side="primary">
-      <button class="button back-button" ui-sref="tabs.home">
-        <i class="icon ion-ios-arrow-thin-left"></i>
-      </button>
-    </ion-nav-buttons>
+    <ion-nav-back-button>
+    </ion-nav-back-button>
   </ion-nav-bar>
   <ion-content class="padding" ng-controller="activityController" ng-init="init()">
 
@@ -19,7 +16,7 @@
 
     <div ng-if="!fetchingNotifications">
       <div class="list card">
-        <div class="item" ng-repeat="x in notifications" ng-click="x.action()">
+        <div class="item" ng-repeat="notification in notifications" ng-click="openNotificationModal(notification)">
           <span ng-include="'views/includes/walletActivity.html'"></span>
         </div>
 

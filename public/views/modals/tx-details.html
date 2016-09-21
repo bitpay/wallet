@@ -1,5 +1,5 @@
 <ion-modal-view ng-controller="txDetailsController" ng-init="init()" id="tx-details">
-  <ion-header-bar align-title="center" class="bar-royal" ng-style="{'background-color':color}">
+  <ion-header-bar align-title="center" class="bar-royal" ng-style="{'background-color': color}">
     <button class="button button-clear" ng-click="cancel()">
       {{'Close' | translate}}
     </button>
@@ -9,11 +9,11 @@
   </ion-header-bar>
 
   <ion-content>
-    <div class="header-modal text-center" ng-init="getAlternativeAmount(btx); showRate = false">
+    <div class="header-modal text-center" ng-init="showRate = false">
       <div ng-show="btx.action != 'invalid'">
 
         <i class="icon big-icon-svg">
-          <img src="img/icon-wallet.svg" ng-style="{'background-color': wallet.color}" class="bg"/>
+          <img src="img/icon-wallet.svg" ng-style="{'background-color': color}" class="bg"/>
         </i>
 
         <div class="size-36" copy-to-clipboard="btx.amountStr">
@@ -30,23 +30,23 @@
         </div>
       </div>
 
-        <div ng-show="btx.action == 'sent'">
-          <span translate>Sent from</span> {{wallet.credentials.walletName}}
-          <div class="padding-vertical">
-            <i class="icon ion-ios-arrow-thin-down size-24"></i>
-          </div>
+      <div ng-show="btx.action == 'sent'">
+        <span translate>Sent from</span> {{wallet.credentials.walletName}}
+        <div class="padding-vertical">
+          <i class="icon ion-ios-arrow-thin-down size-24"></i>
         </div>
+      </div>
 
-        <div ng-show="btx.action == 'received'">
-          <div class="padding-vertical">
-            <i class="icon ion-ios-arrow-thin-up size-24"></i>
-          </div>
-          <span translate>Received Funds</span>
+      <div ng-show="btx.action == 'received'">
+        <div class="padding-vertical">
+          <i class="icon ion-ios-arrow-thin-up size-24"></i>
         </div>
+        <span translate>Received Funds</span>
+      </div>
 
-        <div ng-show="btx.action == 'moved'">
-          <span translate>Moved Funds</span>
-        </div>
+      <div ng-show="btx.action == 'moved'">
+        <span translate>Moved Funds</span>
+      </div>
 
       <div ng-show="btx.action == 'invalid'">
         -
@@ -75,14 +75,22 @@
       </div>
 
       <div class="item">
-        <div translate>Created by</div>
-        <span>{{btx.creatorName}}</span>
-        <span class="item-note">
-          <time>{{ btx.createdOn * 1000 | amDateFormat:'MM/DD/YYYY HH:mm a'}}</time>
-        </span>
+        <div ng-if="btx.action == 'received'">
+          <span translate>Date</span>
+          <span class="item-note">
+            <time>{{ btx.time * 1000 | amDateFormat:'MM/DD/YYYY HH:mm a'}}</time>
+          </span>
+        </div>
+        <div ng-if="btx.action == 'sent'">
+          <div translate>Created by</div>
+          <span>{{btx.creatorName}}</span>
+          <span class="item-note">
+            <time>{{ btx.createdOn * 1000 | amDateFormat:'MM/DD/YYYY HH:mm a'}}</time>
+          </span>
+        </div>
       </div>
 
-      <div class="item" ng-show="btx.action != 'received'" copy-to-clipboard="btx.feeStr">
+      <div class="item" ng-if="btx.action != 'received' && btx.feeLevel" copy-to-clipboard="btx.feeStr">
         <div translate>Fee</div>
         <span class="enable_text_select">{{btx.feeLevel}} ({{btx.feeStr}})</span>
         <span class="right">

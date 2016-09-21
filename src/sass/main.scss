@@ -955,6 +955,30 @@ input[type=number] {
   }
 }
 
+/* Starting */
+
+#starting {
+  background: rgba(30, 49, 134, 1);
+  background: -moz-linear-gradient(top, rgba(30, 49, 134, 1) 0%, rgba(17, 27, 73, 1) 100%);
+  background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(30, 49, 134, 1)), color-stop(100%, rgba(17, 27, 73, 1)));
+  background: -webkit-linear-gradient(top, rgba(30, 49, 134, 1) 0%, rgba(17, 27, 73, 1) 100%);
+  background: -o-linear-gradient(top, rgba(30, 49, 134, 1) 0%, rgba(17, 27, 73, 1) 100%);
+  background: -ms-linear-gradient(top, rgba(30, 49, 134, 1) 0%, rgba(17, 27, 73, 1) 100%);
+  background: linear-gradient(to bottom, rgba(30, 49, 134, 1) 0%, rgba(17, 27, 73, 1) 100%);
+  color: #fff;
+  height: 100%;
+  .scroll-content {
+    display: table !important;
+    width: 100% !important;
+    height: 100% !important;
+  }
+  .scroll {
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
+  }
+}
+
 @import "ionic";
 @import "common";
 @import "forms";
