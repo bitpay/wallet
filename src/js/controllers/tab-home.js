@@ -2,6 +2,7 @@
 
 angular.module('copayApp.controllers').controller('tabHomeController',
   function($rootScope, $timeout, $scope, $state, $stateParams, $ionicModal, $ionicScrollDelegate, gettextCatalog, lodash, popupService, ongoingProcess, profileService, walletService, configService, $log, platformInfo, storageService, txpModalService, $window) {
+    var wallet;
     $scope.externalServices = {};
     $scope.bitpayCardEnabled = true; // TODO
     $scope.openTxpModal = txpModalService.open;
@@ -17,22 +18,33 @@ angular.module('copayApp.controllers').controller('tabHomeController',
     });
 
     $scope.openNotificationModal = function(n) {
+      wallet = profileService.getWallet(n.walletId);
+
       if (n.txid) {
         openTxModal(n);
       } else {
         var txp = lodash.find($scope.txps, {
           id: n.txpId
         });
-        if (txp) txpModalService.open(txp);
-        else {
-          $log.warn('No txp found');
-          return popupService.showAlert(null, gettextCatalog.getString('Transaction not found'));
+        if (txp) {
+          txpModalService.open(txp);
+        } else {
+          ongoingProcess.set('loadingTxInfo', true);
+          walletService.getTxp(wallet, n.txpId, function(err, txp) {
+            var _txp = txp;
+            ongoingProcess.set('loadingTxInfo', false);
+            if (err) {
+              $log.warn('No txp found');
+              return popupService.showAlert(null, gettextCatalog.getString('Transaction not found'));
+            }
+            txpModalService.open(_txp);
+          });
         }
       }
     };
 
     var openTxModal = function(n) {
-      var wallet = profileService.getWallet(n.walletId);
+      wallet = profileService.getWallet(n.walletId);
 
       ongoingProcess.set('loadingTxInfo', true);
       walletService.getTx(wallet, n.txid, function(err, tx) {
