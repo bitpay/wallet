@@ -40,6 +40,9 @@
     background-repeat:no-repeat;
     background-clip: padding-box;
     background-size: 103%;
+    &.green{
+      background: rgb(1, 209, 162);
+    }
   }
 }
 .overlay {
