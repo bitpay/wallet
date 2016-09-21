@@ -106,7 +106,11 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
 
     .state('starting', {
       url: '/starting',
-      templateUrl: 'views/starting.html'
+      template: '<ion-view id="starting"><ion-content>{{starting}}</ion-content></ion-view>',
+      controller: function($scope, $log, gettextCatalog) {
+        $log.info('Starting...');
+        $scope.starting = gettextCatalog.getString('Starting...');
+      }
     })
 
     /*
