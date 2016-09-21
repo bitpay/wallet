@@ -43,7 +43,7 @@
         <ion-spinner icon="lines"></ion-spinner>
         <div translate>Updating activity. Please stand by</div>
       </span>
-      <a class="item" ng-repeat="x in notifications" ng-click="x.action()">
+      <a class="item activity" ng-repeat="x in notifications" ng-click="x.action()">
         <span ng-include="'views/includes/walletActivity.html'"></span>
       </a>
     </div>
@@ -119,28 +119,28 @@
       <div class="item item-heading" translate>
         Next steps
       </div>
-      <a ng-show="!wallets[0]" ui-sref="tabs.add" class="item item-icon-left item-big-icon-left item-icon-right next-step">
+      <a ng-if="!wallets[0]" ui-sref="tabs.add" class="item item-icon-left item-big-icon-left item-icon-right next-step">
        <i class="icon big-icon-svg">
          <div class="bg icon-create-wallet"></div>
        </i>
         <span translate>Create a bitcoin wallet</span>
         <i class="icon nav-item-arrow-right"></i>
       </a>
-      <a ui-sref="bitpayCard.main" ng-show="!externalServices.BitpayCard" class="item item-icon-left item-big-icon-left item-icon-right next-step">
+      <a ui-sref="bitpayCard.main" ng-if="!externalServices.BitpayCard" class="item item-icon-left item-big-icon-left item-icon-right next-step">
        <i class="icon big-icon-svg">
          <div class="bg icon-bitpay-card"></div>
        </i>
         <span translate>Add BitPay Card</span>
         <i class="icon nav-item-arrow-right"></i>
       </a>
-      <a ng-show="!externalServices.BuyAndSell" ui-sref="tabs.buyandsell" class="item item-icon-left item-big-icon-left item-icon-right next-step">
+      <a ng-if="!externalServices.BuyAndSell" ui-sref="tabs.buyandsell" class="item item-icon-left item-big-icon-left item-icon-right next-step">
        <i class="icon big-icon-svg">
          <div class="bg icon-buy-bitcoin"></div>
        </i>
         <span translate>Buy or Sell Bitcoin</span>
         <i class="icon nav-item-arrow-right"></i>
       </a>
-      <a ui-sref="tabs.giftcards.amazon" ng-show="!externalServices.AmazonGiftCards" class="item item-icon-left item-big-icon-left item-icon-right next-step">
+      <a ui-sref="tabs.giftcards.amazon" ng-if="!externalServices.AmazonGiftCards" class="item item-icon-left item-big-icon-left item-icon-right next-step">
         <i class="icon big-icon-svg">
           <div class="bg icon-gift"></div>
         </i>

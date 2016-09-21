@@ -11,9 +11,34 @@
   .icon-gift {
     background-image: url("../img/icon-gift.svg");
   }
-
-  a.item {
-    color: #444;
+  .card{
+    .item {
+      color: #444;
+      border-top:none;
+      padding-top: 1.5rem;
+      padding-bottom: 1.5rem;
+      &:before {
+        display: block;
+        position: absolute;
+        width: 86%;
+        height: 1px;
+        background: rgba(221, 221, 221, 0.3);
+        top:0;
+        right:0;
+        content:'';
+      }
+      &.item-heading{
+        &:before{
+          width:100%;
+          top:99%
+        }
+      }
+      &:nth-child(2){
+        &:before{
+          width:0;
+        }
+      }
+    }
   }
 
   .next-step {
