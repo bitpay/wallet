@@ -1,7 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('confirmController', function($rootScope, $scope, $filter, $timeout, $ionicScrollDelegate, $ionicNavBarDelegate, gettextCatalog, walletService, platformInfo, lodash, configService, rateService, $stateParams, $window, $state, $log, profileService, bitcore, $ionicPopup, gettext, txFormatService, ongoingProcess, $ionicModal, $ionicHistory, popupService) {
-  $ionicNavBarDelegate.title(gettextCatalog.getString('Confirm'));
+angular.module('copayApp.controllers').controller('confirmController', function($rootScope, $scope, $filter, $timeout, $ionicScrollDelegate, gettextCatalog, walletService, platformInfo, lodash, configService, rateService, $stateParams, $window, $state, $log, profileService, bitcore, $ionicPopup, gettext, txFormatService, ongoingProcess, $ionicModal, $ionicHistory, popupService) {
   var cachedTxp = {};
   var isChromeApp = platformInfo.isChromeApp;
 
