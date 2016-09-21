@@ -172,7 +172,7 @@ angular.module('copayApp.controllers').controller('tabHomeController',
     $scope.hideHomeTip = function() {
       $scope.homeTip = null;
       $state.transitionTo($state.current, null, {
-        reload: false,
+        reload: true,
         inherit: false,
         notify: false
       });
@@ -203,5 +203,10 @@ angular.module('copayApp.controllers').controller('tabHomeController',
       lodash.each(listeners, function(x) {
         x();
       });
+    });
+
+    $scope.$on("$ionicView.enter", function(event, data){
+      $scope.nextStep();
+      $scope.updateAllWallets();
     });
   });

@@ -1,4 +1,4 @@
-<ion-view id="tab-receive" ng-controller="tabReceiveController" ng-init="init()">
+<ion-view id="tab-receive">
   <ion-nav-bar class="bar-royal">
     <ion-nav-title>{{'Receive' | translate}}</ion-nav-title>
     <ion-nav-buttons side="secondary">
@@ -10,8 +10,11 @@
   <ion-content>
     <article id="address">
       <div class="row">
-        <div class="m15t text-center col col-60 center-block" copy-to-clipboard="addr">
-          <qrcode size="220" data="bitcoin:{{addr}}"></qrcode>
+        <div class="m15t text-center col center-block" copy-to-clipboard="addr">
+          <qrcode ng-if="addr" size="220" data="bitcoin:{{addr}}"></qrcode>
+          <div ng-if="!addr" style="height:220px; width:220px; margin:auto; background: white; padding-top: 20%;">
+            ...
+          </div>
           <div ng-if="wallet.needsBackup" class="assertive m10t" translate>
             Before receiving funds, you must backup your wallet. If this device is lost, it is impossible to access your funds without a backup.
           </div>
@@ -25,7 +28,7 @@
           </div>
         </div>
         <div class="col" ng-class="{'center-block col-50': !isCordova || !addr}">
-          <div class="item item-icon-left" ng-click="setAddress(null, true)">
+          <div class="item item-icon-left" ng-click="setAddress(true)">
             <i class="icon ion-ios-loop"></i>
             <span translate>Next Address</span>
           </div>
@@ -46,11 +49,7 @@
         <span translate>No Wallet</span>
       </div>
       <div class="list" ng-if="wallets[0]">
-                <!-- <div class="item item-icon-left" ng-click="setAddress(null, true)">
-          <i class="icon ion-ios-loop"></i>
-          <span translate>Next Address</span>
-        </div> -->
-        <wallets ng-if="wallets[0]" wallets="wallets"></wallets>
+        <wallets wallets="wallets"></wallets>
       </div>
     </article>
   </ion-content>
