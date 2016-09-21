@@ -37,7 +37,7 @@ angular.module('copayApp.services').service('popupService', function($log, $ioni
       inputPlaceholder: opts.inputPlaceholder,
       defaultText: opts.defaultText
     }).then(function(res) {
-      return cb(res)
+      return cb(res);
     });
   };
 
@@ -58,12 +58,12 @@ angular.module('copayApp.services').service('popupService', function($log, $ioni
     navigator.notification.confirm(message, onConfirm, title, [okText, cancelText]);
   };
 
-  var _cordovaPrompt = function(title, message, cb) {
+  var _cordovaPrompt = function(title, message, opts, cb) {
     var onPrompt = function(results) {
       if (results.buttonIndex == 1) return cb(results.input1);
       else return cb();
     }
-    navigator.notification.prompt(message, onPrompt, title);
+    navigator.notification.prompt(message, onPrompt, title, null, opts.defaultText);
   };
 
   /**
@@ -118,7 +118,7 @@ angular.module('copayApp.services').service('popupService', function($log, $ioni
     $log.warn(title + ": " + message);
 
     if (isCordova)
-      _cordovaPrompt(title, message, cb);
+      _cordovaPrompt(title, message, opts, cb);
     else
       _ionicPrompt(title, message, opts, cb);
   };

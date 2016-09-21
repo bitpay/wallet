@@ -502,6 +502,22 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     });
   };
 
+  root.getTxNote = function(wallet, txid, cb) {
+    wallet.getTxNote({
+      txid: txid
+    }, function(err, note) {
+      if (err || !note) return cb(true);
+      return cb(null, note);
+    });
+  };
+
+  root.getTxp = function(wallet, txpid, cb) {
+    wallet.getTx(txpid, function(err, txp) {
+      if (err) return cb(err);
+      return cb(null, txp);
+    });
+  };
+
   root.getTx = function(wallet, txid, cb) {
     var tx;
 
