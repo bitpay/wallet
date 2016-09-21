@@ -17,7 +17,7 @@ angular.module('copayApp.controllers').controller('tabHomeController',
     });
 
     $scope.openNotificationModal = function(n) {
-      if (!n.txpId && n.txid) {
+      if (n.txid) {
         openTxModal(n);
       } else {
         var txp = lodash.find($scope.txps, {
