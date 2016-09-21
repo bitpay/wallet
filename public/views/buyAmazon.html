@@ -1,7 +1,6 @@
 <ion-view>
   <ion-nav-bar class="bar-royal">
     <ion-nav-back-button>
-      <i class="icon ion-ios-arrow-thin-left"></i>
     </ion-nav-back-button>
     <ion-nav-title>Buy</ion-nav-title>
   </ion-nav-bar>
@@ -45,6 +44,7 @@
                    max="500"
                    ng-model="fiat"
                    ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/"
+                   step="0.01"
                    autocomplete="off" ignore-mouse-wheel required>
             <a class="postfix">USD</a>
           </label>
