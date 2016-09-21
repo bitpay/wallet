@@ -1,7 +1,9 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('activityController',
-  function($timeout, $scope, $log, $ionicModal, lodash, profileService, walletService, ongoingProcess, popupService, gettextCatalog) {
+  function($timeout, $scope, $log, $ionicModal, lodash, txpModalService, profileService, walletService, ongoingProcess, popupService, gettextCatalog) {
+    $scope.openTxpModal = txpModalService.open;
+
     $scope.init = function() {
       $scope.fetchingNotifications = true;
       profileService.getNotifications(50, function(err, n) {
@@ -11,13 +13,29 @@ angular.module('copayApp.controllers').controller('activityController',
         }
         $scope.fetchingNotifications = false;
         $scope.notifications = n;
-        $timeout(function() {
-          $scope.$apply();
-        }, 1);
-      });
-    }
 
-    $scope.openTxModal = function(n) {
+        profileService.getTxps({}, function(err, txps, n) {
+          if (err) $log.error(err);
+          $scope.txps = txps;
+          $timeout(function() {
+            $scope.$apply();
+          });
+        });
+      });
+    };
+
+    $scope.openNotificationModal = function(n) {
+      if (!n.txpId && n.txid) {
+        openTxModal(n);
+      } else {
+        var txp = lodash.find($scope.txps, {
+          id: n.txpId
+        });
+        if (txp) txpModalService.open(txp);
+      }
+    };
+
+    var openTxModal = function(n) {
       var wallet = profileService.getWallet(n.walletId);
 
       ongoingProcess.set('loadingTxInfo', true);
