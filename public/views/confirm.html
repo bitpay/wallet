@@ -1,4 +1,4 @@
-<ion-view id="view-confirm" ng-controller="confirmController" ng-init="init()">
+<ion-view id="view-confirm">
   <ion-nav-bar class="bar-royal">
     <ion-nav-title>
       {{'Confirm'|translate}}
@@ -52,6 +52,6 @@
       </div>
     </div>
   </ion-content>
-  <button class="button button-block button-positive accept-button" ng-click="approve()" ng-if="!isCordova" translate>Click to pay</button>
-  <accept class="accept-slide" ng-if="isCordova"></accept>
+  <button class="button button-block button-positive accept-button" ng-click="approve()" ng-if="!isCordova" ng-disabled="!fee" translate>Click to pay</button>
+  <accept class="accept-slide" ng-if="isCordova && fee"></accept>
 </ion-view>

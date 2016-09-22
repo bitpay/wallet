@@ -3,15 +3,11 @@
 angular.module('copayApp.controllers').controller('tabReceiveController', function($scope, $timeout, $log, $ionicModal, storageService, platformInfo, walletService, profileService, configService, lodash, gettextCatalog, popupService) {
 
   $scope.isCordova = platformInfo.isCordova;
+  $scope.isNW = platformInfo.isNW;
 
-  $scope.init = function() {
-    $scope.wallets = profileService.getWallets({
-      onlyComplete: true
-    });
-    $scope.isNW = platformInfo.isNW;
-    $scope.isCordova = platformInfo.isCordova;
-    if (!$scope.isCordova) $scope.checkTips();
-  }
+  $scope.wallets = profileService.getWallets({
+    onlyComplete: true
+  });
 
   $scope.checkTips = function(force) {
     storageService.getReceiveTipsAccepted(function(err, accepted) {
@@ -36,7 +32,7 @@ angular.module('copayApp.controllers').controller('tabReceiveController', functi
     }
     $scope.wallet = wallet;
     $log.debug('Wallet changed: ' + wallet.name);
-    $scope.setAddress(wallet);
+    $scope.setAddress();
   });
 
   $scope.shareAddress = function(addr) {
@@ -46,25 +42,24 @@ angular.module('copayApp.controllers').controller('tabReceiveController', functi
     }
   };
 
-  $scope.setAddress = function(wallet, forceNew) {
+  $scope.setAddress = function(forceNew) {
     if ($scope.generatingAddress) return;
 
-    var wallet = wallet || $scope.wallet;
     $scope.addr = null;
     $scope.generatingAddress = true;
 
     $timeout(function() {
-      walletService.getAddress(wallet, forceNew, function(err, addr) {
+      walletService.getAddress($scope.wallet, forceNew, function(err, addr) {
         $scope.generatingAddress = false;
-        if (err) {
-          popupService.showAlert(gettextCatalog.getString('Error'), err);
-        } else {
-          if (addr)
-            $scope.addr = addr;
+        if (err || lodash.isEmpty(addr)) {
+          popupService.showAlert(gettextCatalog.getString('Error'), err || gettextCatalog.getString('Address is empty'));
+          return;
         }
-
+        $scope.addr = addr;
         $scope.$apply();
       });
     }, 1);
   };
+
+  if (!$scope.isCordova) $scope.checkTips();
 });

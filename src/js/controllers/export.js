@@ -4,7 +4,7 @@ angular.module('copayApp.controllers').controller('exportController',
   function($scope, $timeout, $log, $ionicHistory, backupService, walletService, storageService, profileService, platformInfo, gettextCatalog, $state, $stateParams, popupService) {
     var wallet = profileService.getWallet($stateParams.walletId);
 
-    $scope.init = function() {
+    var init = function() {
       $scope.formData = {};
       $scope.isEncrypted = wallet.isPrivKeyEncrypted();
       $scope.isCordova = platformInfo.isCordova;
@@ -157,5 +157,9 @@ angular.module('copayApp.controllers').controller('exportController',
         );
       });
     };
+
+    $scope.$on("$ionicView.enter", function(event, data){
+      init();
+    });
 
   });

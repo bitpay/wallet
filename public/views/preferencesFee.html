@@ -1,10 +1,13 @@
 <ion-view class="settings">
   <ion-nav-bar class="bar-royal">
+    <ion-nav-title>
+      {{'Bitcoin Network Fee Policy'|translate}}
+    </ion-nav-title>
     <ion-nav-back-button>
     </ion-nav-back-button>
   </ion-nav-bar>
 
-  <ion-content ng-controller="preferencesFeeController"  ng-init="init()">
+  <ion-content>
     <ion-radio ng-repeat="fee in feeLevels.livenet" ng-value="fee.level" ng-model="currentFeeLevel" ng-click="save(fee)">
       {{feeOpts[fee.level]|translate}}
     </ion-radio>

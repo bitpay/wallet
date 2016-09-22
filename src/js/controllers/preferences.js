@@ -1,32 +1,10 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('preferencesController',
-  function($scope, $rootScope, $timeout, $log, $stateParams, $ionicHistory, $ionicNavBarDelegate, gettextCatalog, configService, profileService, fingerprintService, walletService) {
-    $ionicNavBarDelegate.title(gettextCatalog.getString('Wallet Preferences'));
+  function($scope, $rootScope, $timeout, $log, $stateParams, $ionicHistory, gettextCatalog, configService, profileService, fingerprintService, walletService) {
     var wallet = profileService.getWallet($stateParams.walletId);
     var walletId = wallet.credentials.walletId;
     $scope.wallet = wallet;
-
-    $scope.init = function() {
-      $scope.externalSource = null;
-
-      if (!wallet)
-        return $ionicHistory.goBack();
-
-      var config = configService.getSync();
-
-      $scope.encryptEnabled = walletService.isEncrypted(wallet);
-      if (wallet.isPrivKeyExternal)
-        $scope.externalSource = wallet.getPrivKeyExternalSourceName() == 'ledger' ? 'Ledger' : 'Trezor';
-
-      $scope.touchIdAvailable = fingerprintService.isAvailable();
-      $scope.touchIdEnabled = config.touchIdFor ? config.touchIdFor[walletId] : null;
-
-      $scope.deleted = false;
-      if (wallet.credentials && !wallet.credentials.mnemonicEncrypted && !wallet.credentials.mnemonic) {
-        $scope.deleted = true;
-      }
-    };
 
     $scope.encryptChange = function() {
       if (!wallet) return;
@@ -77,4 +55,25 @@ angular.module('copayApp.controllers').controller('preferencesController',
         $log.debug('Touch Id status changed: ' + newStatus);
       });
     };
+
+    $scope.$on("$ionicView.beforeEnter", function(event, data){
+      $scope.externalSource = null;
+
+      if (!wallet)
+        return $ionicHistory.goBack();
+
+      var config = configService.getSync();
+
+      $scope.encryptEnabled = walletService.isEncrypted(wallet);
+      if (wallet.isPrivKeyExternal)
+        $scope.externalSource = wallet.getPrivKeyExternalSourceName() == 'ledger' ? 'Ledger' : 'Trezor';
+
+      $scope.touchIdAvailable = fingerprintService.isAvailable();
+      $scope.touchIdEnabled = config.touchIdFor ? config.touchIdFor[walletId] : null;
+
+      $scope.deleted = false;
+      if (wallet.credentials && !wallet.credentials.mnemonicEncrypted && !wallet.credentials.mnemonic) {
+        $scope.deleted = true;
+      }
+    });
   });

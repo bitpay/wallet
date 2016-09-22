@@ -4,7 +4,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
   var cachedTxp = {};
   var isChromeApp = platformInfo.isChromeApp;
 
-  $scope.init = function() {
+  var initConfirm = function() {
     if ($stateParams.paypro) {
       return setFromPayPro($stateParams.paypro, function(err) {
         if (err && !isChromeApp) {
@@ -145,7 +145,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
       $stateParams.paypro = null;
 
       $scope._paypro = paypro;
-      return $scope.init();
+      return initConfirm();
     });
   };
 
@@ -307,4 +307,8 @@ angular.module('copayApp.controllers').controller('confirmController', function(
   $scope.cancel = function() {
     $state.go('tabs.send');
   };
+
+  $scope.$on("$ionicView.enter", function(event, data){
+    initConfirm();
+  });
 });

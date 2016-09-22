@@ -1,9 +1,12 @@
 <ion-view id="preferences-language" class="settings">
   <ion-nav-bar class="bar-royal">
+    <ion-nav-title>
+      {{'Language'|translate}}
+    </ion-nav-title>
     <ion-nav-back-button>
     </ion-nav-back-button>
   </ion-nav-bar>
-  <ion-content ng-controller="preferencesLanguageController" ng-init="init()" >
+  <ion-content>
     <div class="list">
       <ion-radio ng-repeat="lang in availableLanguages" ng-value="lang.isoCode" ng-model="currentLanguage"
         ng-click="save(lang.isoCode)">{{lang.name}}

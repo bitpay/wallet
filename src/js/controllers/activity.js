@@ -3,12 +3,12 @@
 angular.module('copayApp.controllers').controller('activityController',
   function($timeout, $scope, $log, $ionicModal, lodash, txpModalService, profileService, walletService, ongoingProcess, popupService, gettextCatalog) {
     $scope.openTxpModal = txpModalService.open;
+    $scope.fetchingNotifications = true;
 
-    $scope.init = function() {
-      $scope.fetchingNotifications = true;
+    $scope.$on("$ionicView.enter", function(event, data){
       profileService.getNotifications(50, function(err, n) {
         if (err) {
-          console.log('[tab-home.js.35:err:]', $log.error(err)); //TODO
+          $log.error(err);
           return;
         }
         $scope.fetchingNotifications = false;
@@ -22,7 +22,7 @@ angular.module('copayApp.controllers').controller('activityController',
           });
         });
       });
-    };
+    });
 
     $scope.openNotificationModal = function(n) {
       if (n.txid) {
@@ -33,8 +33,16 @@ angular.module('copayApp.controllers').controller('activityController',
         });
         if (txp) txpModalService.open(txp);
         else {
-          $log.warn('No txp found');
-          return popupService.showAlert(null, gettextCatalog.getString('Transaction not found'));
+          ongoingProcess.set('loadingTxInfo', true);
+          walletService.getTxp(n.wallet, n.txpId, function(err, txp) {
+            var _txp = txp;
+            ongoingProcess.set('loadingTxInfo', false);
+            if (err) {
+              $log.warn('No txp found');
+              return popupService.showAlert(null, gettextCatalog.getString('Transaction not found'));
+            }
+            txpModalService.open(_txp);
+          });
         }
       }
     };
@@ -56,18 +64,18 @@ angular.module('copayApp.controllers').controller('activityController',
           return popupService.showAlert(null, gettextCatalog.getString('Transaction not found'));
         }
 
-        walletService.getTxNote(wallet, n.txid, function(err, note) {
-          if (err) $log.debug(gettextCatalog.getString('Could not fetch transaction note'));
+        $scope.wallet = wallet;
+        $scope.btx = lodash.cloneDeep(tx);
+        $ionicModal.fromTemplateUrl('views/modals/tx-details.html', {
+          scope: $scope
+        }).then(function(modal) {
+          $scope.txDetailsModal = modal;
+          $scope.txDetailsModal.show();
+        });
 
-          $scope.wallet = wallet;
-          $scope.btx = lodash.cloneDeep(tx);
+        walletService.getTxNote(wallet, n.txid, function(err, note) {
+          if (err) $log.debug('Could not fetch transaction note');
           $scope.btx.note = note;
-          $ionicModal.fromTemplateUrl('views/modals/tx-details.html', {
-            scope: $scope
-          }).then(function(modal) {
-            $scope.txDetailsModal = modal;
-            $scope.txDetailsModal.show();
-          });
         });
       });
     };
