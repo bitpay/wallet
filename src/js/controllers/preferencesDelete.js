@@ -21,7 +21,7 @@ angular.module('copayApp.controllers').controller('preferencesDeleteWalletContro
         if (err) {
           popupService.showAlert(gettextCatalog.getString('Error'), err.message || err);
         } else {
-          $ionicHistory.clearHistory();
+          $ionicHistory.removeBackView();
           $state.go('tabs.home');
         }
       });

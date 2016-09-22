@@ -26,7 +26,7 @@ angular.module('copayApp.controllers').controller('addressbookViewController', f
   });
 
   $scope.sendTo = function() {
-    $ionicHistory.clearHistory();
+    $ionicHistory.removeBackView();
     $state.go('tabs.send');
     $timeout(function() {
       $state.transitionTo('tabs.send.amount', {
