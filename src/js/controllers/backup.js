@@ -198,12 +198,12 @@ angular.module('copayApp.controllers').controller('backupController',
         walletId: $stateParams.walletId,
         fromOnboarding: true
       });
-      else $state.go('tabs.preferences.main', {
+      else $state.go('tabs.preferences', {
         walletId: $stateParams.walletId
       });
     };
 
-    $scope.$on("$ionicView.enter", function(event, data){
+    $scope.$on("$ionicView.enter", function(event, data) {
       $scope.deleted = isDeletedSeed();
       if ($scope.deleted) {
         $log.debug('no mnemonics');
