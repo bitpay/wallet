@@ -396,7 +396,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
      *
      */
 
-      .state('tabs.preferences', {
+    .state('tabs.preferences', {
         url: '/preferences/:walletId',
         views: {
           'tab-settings@tabs': {
@@ -556,10 +556,11 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
      */
 
     .state('tabs.copayers', {
-      url: '/copayers/:walletId',
+      url: '/copayers/:walletId/:fromAddShared',
       views: {
         'tab-home': {
-          templateUrl: 'views/copayers.html'
+          templateUrl: 'views/copayers.html',
+          controller: 'copayersController'
         }
       }
     })
@@ -918,8 +919,6 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         } else {
           profileService.storeProfileIfDirty();
           $log.debug('Profile loaded ... Starting UX.');
-
-          $state.go('tabs.home');
         }
       });
     });
