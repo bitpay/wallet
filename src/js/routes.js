@@ -165,6 +165,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         url: '/activity',
         views: {
           'tab-home': {
+            controller: 'activityController',
             templateUrl: 'views/activity.html',
           }
         }
@@ -173,6 +174,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         url: '/proposals',
         views: {
           'tab-home': {
+            controller: 'proposalsController',
             templateUrl: 'views/proposals.html',
           }
         }
@@ -742,6 +744,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         url: '/amazon',
         views: {
           'tab-home@tabs': {
+            controller: 'amazonController',
             templateUrl: 'views/amazon.html'
           }
         }
