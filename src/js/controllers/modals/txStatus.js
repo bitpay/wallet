@@ -12,12 +12,17 @@ angular.module('copayApp.controllers').controller('txStatusController', function
 
   $scope.save = function(addressbookEntry) {
     $scope.txStatusModal.hide();
+    $ionicHistory.nextViewOptions({
+      disableAnimate: true,
+      disableBack: true
+    });
     $state.go('tabs.send.addressbook', {
       fromSendTab: true,
       addressbookEntry: addressbookEntry
-    })
+    });
   }
 
+  $scope.fromSendTab = $ionicHistory.viewHistory().backView.stateName === "tabs.send.amount";
   addressbookService.list(function(err, ab) {
     if (err) $log.error(err);
     if (ab[$scope.tx.toAddress]) {
