@@ -26,6 +26,7 @@ angular.module('copayApp.services').factory('incomingData', function($log, $ioni
     // data extensions for Payment Protocol with non-backwards-compatible request
     if ((/^bitcoin:\?r=[\w+]/).exec(data)) {
       data = decodeURIComponent(data.replace('bitcoin:?r=', ''));
+      $ionicHistory.removeBackView();
       $state.go('tabs.send');
       $timeout(function() {
         $state.transitionTo('tabs.send.confirm', {paypro: data});
@@ -45,6 +46,7 @@ angular.module('copayApp.services').factory('incomingData', function($log, $ioni
 
       var amount = parsed.amount ?  parsed.amount : '';
 
+      $ionicHistory.removeBackView();
       $state.go('tabs.send');
       $timeout(function() {
         if (parsed.r) {
@@ -60,7 +62,8 @@ angular.module('copayApp.services').factory('incomingData', function($log, $ioni
       return true;
 
     // Plain URL
-    } else  if (/^https?:\/\//.test(data)) {
+    } else if (/^https?:\/\//.test(data)) {
+      $ionicHistory.removeBackView();
       $state.go('tabs.send');
       $timeout(function() {
         $state.transitionTo('tabs.send.confirm', {paypro: data});
@@ -69,12 +72,14 @@ angular.module('copayApp.services').factory('incomingData', function($log, $ioni
 
     // Plain Address
     } else if (bitcore.Address.isValid(data, 'livenet')) {
+      $ionicHistory.removeBackView();
       $state.go('tabs.send');
       $timeout(function() {
         $state.transitionTo('tabs.send.amount', {toAddress: data});
       }, 100);
       return true;
     } else if (bitcore.Address.isValid(data, 'testnet')) {
+      $ionicHistory.removeBackView();
       $state.go('tabs.send');
       $timeout(function() {
         $state.transitionTo('tabs.send.amount', {toAddress: data});
@@ -89,6 +94,7 @@ angular.module('copayApp.services').factory('incomingData', function($log, $ioni
 
     // Join
     } else if (data.match(/^copay:[0-9A-HJ-NP-Za-km-z]{70,80}$/)) {
+      $ionicHistory.removeBackView();
       $state.go('tabs.home');
       $timeout(function() {
         $state.transitionTo('tabs.add.join', {url: data});
@@ -97,6 +103,7 @@ angular.module('copayApp.services').factory('incomingData', function($log, $ioni
 
     // Old join
     } else if (data.match(/^[0-9A-HJ-NP-Za-km-z]{70,80}$/)) {
+      $ionicHistory.removeBackView();
       $state.go('tabs.home');
       $timeout(function() {
         $state.transitionTo('tabs.add.join', {url: data});
