@@ -7,10 +7,10 @@
     <div class="size-16 text-gray m10v">
       <span translate>Sent</span>
     </div>
-    <div class="text-center m20t" ng-if="entryExist">
+    <div class="text-center m20t" ng-if="entryExist || !fromSendTab">
       <a class="button button-positive" ng-click="cancel()" translate>OKAY</a>
     </div>
-    <div class="collect-address" ng-if="!entryExist">
+    <div class="collect-address" ng-if="!entryExist && fromSendTab">
       <div class="row">
         <p translate class="col">Would you like to add this address to your address book?</p>
       </div>
