@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('copayersController',
-  function($scope, $log, $ionicNavBarDelegate, $stateParams, $state, profileService, popupService, platformInfo, gettextCatalog, ongoingProcess) {
+  function($scope, $log, $ionicNavBarDelegate, $timeout, $stateParams, $state, $rootScope, lodash, profileService, walletService, popupService, platformInfo, gettextCatalog, ongoingProcess) {
     if (!$stateParams.walletId) {
       $log.debug('No wallet provided...back to home');
       return $state.go('tabs.home');
@@ -52,5 +52,24 @@ angular.module('copayApp.controllers').controller('copayersController',
         });
         window.plugins.socialsharing.share(message, gettextCatalog.getString('Invitation to share a Copay Wallet'), null, null);
       }
+    };
+
+    $rootScope.$on('bwsEvent', function() {
+      updateWallet();
+    });
+
+    var updateWallet = function() {
+      $log.debug('Updating wallet:' + wallet.name)
+      walletService.getStatus(wallet, {}, function(err, status) {
+        if (err) {
+          $log.error(err); //TODO
+          return;
+        }
+        wallet.status = status;
+        $scope.copayers = wallet.status.wallet.copayers;
+        $timeout(function() {
+          $scope.$apply();
+        });
+      });
     };
   });
