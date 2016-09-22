@@ -19,14 +19,6 @@ angular.module('copayApp.controllers').controller('buyAmazonController',
       externalLinkService.open(url, target);
     };
 
-    this.init = function() {
-      var network = amazonService.getEnvironment();
-      $scope.wallets = profileService.getWallets({
-        network: network,
-        onlyComplete: true
-      });
-    };
-
     this.confirm = function() {
       var message = gettextCatalog.getString('Amazon.com Gift Card purchase for ${{amount}} USD', {amount: $scope.fiat});
       var ok = gettextCatalog.getString('Buy');
@@ -215,5 +207,13 @@ angular.module('copayApp.controllers').controller('buyAmazonController',
         });
       });
     };
+
+    $scope.$on("$ionicView.enter", function(event, data){
+      var network = amazonService.getEnvironment();
+      $scope.wallets = profileService.getWallets({
+        network: network,
+        onlyComplete: true
+      });
+    });
 
   });
