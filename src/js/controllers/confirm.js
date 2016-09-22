@@ -61,11 +61,6 @@ angular.module('copayApp.controllers').controller('confirmController', function(
             $scope.notAvailable = true;
             $log.warn('No wallet available to make the payment');
           }
-
-          $timeout(function() {
-            $scope.$apply();
-          });
-          return;
         }
       });
     });
@@ -73,6 +68,10 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     txFormatService.formatAlternativeStr(amount, function(v) {
       $scope.alternativeAmountStr = v;
     });
+
+    $timeout(function() {
+      $scope.$apply();
+    }, 100);
   };
 
   $scope.$on('accepted', function(event) {
