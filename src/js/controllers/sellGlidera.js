@@ -18,36 +18,6 @@ angular.module('copayApp.controllers').controller('sellGlideraController',
       $log.debug('Wallet changed: ' + w.name);
     });
 
-    $scope.init = function(accessToken) {
-      $scope.network = glideraService.getEnvironment();
-
-      $scope.token = accessToken;
-      $scope.permissions = null;
-      $scope.email = null;
-      $scope.personalInfo = null;
-      $scope.txs = null;
-      $scope.status = null;
-      $scope.limits = null;
-
-      ongoingProcess.set('connectingGlidera', true);
-      glideraService.init($scope.token, function(err, glidera) {
-        ongoingProcess.set('connectingGlidera');
-        if (err || !glidera) {
-          if (err) popupService.showAlert(gettextCatalog.getString('Error'), err);
-          return;
-        }
-        $scope.token = glidera.token;
-        $scope.permissions = glidera.permissions;
-        $scope.update({fullUpdate: true});
-      });
-
-      $scope.wallets = profileService.getWallets({
-        network: $scope.network,
-        n: 1,
-        onlyComplete: true
-      });
-    };
-
     $scope.update = function(opts) {
       if (!$scope.token || !$scope.permissions) return;
       $log.debug('Updating Glidera Account...');
@@ -217,4 +187,34 @@ angular.module('copayApp.controllers').controller('sellGlideraController',
         });
       });
     };
+
+    $scope.$on("$ionicView.enter", function(event, data){
+      $scope.network = glideraService.getEnvironment();
+
+      $scope.token = accessToken;
+      $scope.permissions = null;
+      $scope.email = null;
+      $scope.personalInfo = null;
+      $scope.txs = null;
+      $scope.status = null;
+      $scope.limits = null;
+
+      ongoingProcess.set('connectingGlidera', true);
+      glideraService.init($scope.token, function(err, glidera) {
+        ongoingProcess.set('connectingGlidera');
+        if (err || !glidera) {
+          if (err) popupService.showAlert(gettextCatalog.getString('Error'), err);
+          return;
+        }
+        $scope.token = glidera.token;
+        $scope.permissions = glidera.permissions;
+        $scope.update({fullUpdate: true});
+      });
+
+      $scope.wallets = profileService.getWallets({
+        network: $scope.network,
+        n: 1,
+        onlyComplete: true
+      });
+    });
   });

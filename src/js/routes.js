@@ -136,6 +136,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
       })
       .state('uriglidera', {
         url: '/uri-glidera/:url',
+        controller: 'glideraUriController',
         templateUrl: 'views/glideraUri.html'
       })
       .state('uricoinbase', {
@@ -153,6 +154,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         url: '/details/{walletId}/{fromOnboarding}',
         views: {
           'tab-home': {
+            controller: 'walletDetailsController',
             templateUrl: 'views/walletDetails.html'
           }
         },
@@ -238,6 +240,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         url: '/amount/:toAddress/:toName/:toEmail',
         views: {
           'tab-send@tabs': {
+            controller: 'amountController',
             templateUrl: 'views/amount.html'
           }
         }
@@ -246,6 +249,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         url: '/confirm/:toAddress/:toName/:toAmount/:toEmail/:description/:paypro',
         views: {
           'tab-send@tabs': {
+            controller: 'confirmController',
             templateUrl: 'views/confirm.html'
           }
         }
@@ -429,6 +433,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         url: '/backup',
         views: {
           'preferences': {
+            controller: 'backupController',
             templateUrl: 'views/backup.html'
           }
         }
@@ -453,6 +458,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         url: '/export',
         views: {
           'preferences': {
+            controller: 'exportController',
             templateUrl: 'views/export.html'
           }
         }
@@ -671,6 +677,8 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         url: '/glidera',
         views: {
           'tab-home@tabs': {
+            controller: 'glideraController',
+            controllerAs: 'glidera',
             templateUrl: 'views/glidera.html'
           }
         }
@@ -679,6 +687,8 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         url: '/buy',
         views: {
           'tab-home@tabs': {
+            controller: 'buyGlideraController',
+            controllerAs: 'buy',
             templateUrl: 'views/buyGlidera.html'
           }
         }
@@ -687,6 +697,8 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         url: '/sell',
         views: {
           'tab-home@tabs': {
+            controller: 'sellGlideraController',
+            controllerAs: 'sell',
             templateUrl: 'views/sellGlidera.html'
           }
         }
@@ -753,6 +765,8 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         url: '/buy',
         views: {
           'tab-home@tabs': {
+            controller: 'buyAmazonController',
+            controllerAs: 'buy',
             templateUrl: 'views/buyAmazon.html'
           }
         }
