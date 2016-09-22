@@ -556,7 +556,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
      */
 
     .state('tabs.copayers', {
-      url: '/copayers/:walletId/:fromAddShared',
+      url: '/copayers/:walletId',
       views: {
         'tab-home': {
           templateUrl: 'views/copayers.html',
