@@ -1,10 +1,12 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('txStatusController', function($scope, $timeout, $state, $log, addressbookService) {
+angular.module('copayApp.controllers').controller('txStatusController', function($scope, $timeout, $state, $ionicHistory, $log, addressbookService) {
 
   if ($scope.cb) $timeout($scope.cb, 100);
 
   $scope.cancel = function() {
+    $ionicHistory.clearHistory();
+    $state.go('tabs.home');
     $scope.txStatusModal.hide();
   };
 
