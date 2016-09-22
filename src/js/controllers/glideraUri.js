@@ -23,7 +23,7 @@ angular.module('copayApp.controllers').controller('glideraUriController',
       }, 100);
     };
 
-    $scope.checkCode = function() {
+    $scope.$on("$ionicView.enter", function(event, data){
       if ($stateParams.url) {
         var match = $stateParams.url.match(/code=(.+)/);
         if (match && match[1]) {
@@ -32,5 +32,5 @@ angular.module('copayApp.controllers').controller('glideraUriController',
         }
       }
       $log.error('Bad state: ' + JSON.stringify($stateParams));
-    }
+    });
   });

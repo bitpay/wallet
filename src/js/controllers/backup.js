@@ -16,25 +16,6 @@ angular.module('copayApp.controllers').controller('backupController',
       return false;
     };
 
-    $scope.init = function() {
-      $scope.deleted = isDeletedSeed();
-      if ($scope.deleted) {
-        $log.debug('no mnemonics');
-        return;
-      }
-
-      walletService.getKeys(wallet, function(err, k) {
-        if (err || !k) {
-          $log.error('Could not get keys: ', err);
-          $state.go('wallet.preferences');
-          return;
-        }
-        $scope.credentialsEncrypted = false;
-        keys = k;
-        $scope.initFlow();
-      });
-    };
-
     var shuffledWords = function(words) {
       var sort = lodash.sortBy(words);
 
@@ -221,5 +202,24 @@ angular.module('copayApp.controllers').controller('backupController',
         walletId: $stateParams.walletId
       });
     };
+
+    $scope.$on("$ionicView.enter", function(event, data){
+      $scope.deleted = isDeletedSeed();
+      if ($scope.deleted) {
+        $log.debug('no mnemonics');
+        return;
+      }
+
+      walletService.getKeys(wallet, function(err, k) {
+        if (err || !k) {
+          $log.error('Could not get keys: ', err);
+          $state.go('wallet.preferences');
+          return;
+        }
+        $scope.credentialsEncrypted = false;
+        keys = k;
+        $scope.initFlow();
+      });
+    });
 
   });

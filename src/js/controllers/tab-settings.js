@@ -2,7 +2,7 @@
 
 angular.module('copayApp.controllers').controller('tabSettingsController', function($scope, $rootScope, $log, $window, lodash, configService, uxLanguage, platformInfo, pushNotificationsService, profileService, feeService) {
 
-  $scope.init = function() {
+  var updateConfig = function() {
 
     var config = configService.getSync();
     var isCordova = platformInfo.isCordova;
@@ -28,10 +28,10 @@ angular.module('copayApp.controllers').controller('tabSettingsController', funct
         $scope.$digest();
       });
     }
-    $scope.spendUnconfirmed = config.wallet.spendUnconfirmed;
-    $scope.glideraEnabled = config.glidera.enabled;
+    $scope.spendUnconfirmed = {value : config.wallet.spendUnconfirmed};
+    $scope.glideraEnabled = {value: config.glidera.enabled};
     $scope.coinbaseEnabled = config.coinbase.enabled;
-    $scope.pushNotifications = config.pushNotifications.enabled;
+    $scope.pushNotifications = {value: config.pushNotifications.enabled};
     $scope.otherWallets = lodash.filter(profileService.getWallets(self.network), function(w) {
       return w.id != self.walletId;
     });
@@ -44,12 +44,12 @@ angular.module('copayApp.controllers').controller('tabSettingsController', funct
     }, function(err) {
       $log.debug(err);
     });
-  }
+  };
 
   $scope.spendUnconfirmedChange = function() {
     var opts = {
       wallet: {
-        spendUnconfirmed: $scope.spendUnconfirmed
+        spendUnconfirmed: $scope.spendUnconfirmed.value
       }
     };
     configService.set(opts, function(err) {
@@ -60,7 +60,7 @@ angular.module('copayApp.controllers').controller('tabSettingsController', funct
   $scope.pushNotificationsChange = function() {
     var opts = {
       pushNotifications: {
-        enabled: $scope.pushNotifications
+        enabled: $scope.pushNotifications.value
       }
     };
     configService.set(opts, function(err) {
@@ -75,7 +75,7 @@ angular.module('copayApp.controllers').controller('tabSettingsController', funct
   $scope.glideraChange = function() {
     var opts = {
       glidera: {
-        enabled: $scope.glideraEnabled
+        enabled: $scope.glideraEnabled.value
       }
     };
     configService.set(opts, function(err) {
@@ -93,5 +93,9 @@ angular.module('copayApp.controllers').controller('tabSettingsController', funct
       if (err) $log.debug(err);
     });
   };
+
+  $scope.$on("$ionicView.enter", function(event, data){
+    updateConfig();
+  });
 
 });

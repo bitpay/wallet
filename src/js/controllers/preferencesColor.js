@@ -1,7 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('preferencesColorController', function($scope, $log, $stateParams, $ionicHistory, $ionicNavBarDelegate, gettextCatalog, configService, profileService) {
-  $ionicNavBarDelegate.title(gettextCatalog.getString('Color'));
+angular.module('copayApp.controllers').controller('preferencesColorController', function($scope, $log, $stateParams, $ionicHistory, gettextCatalog, configService, profileService) {
   $scope.colorList = [
         '#DD4B39',
         '#F38F12',

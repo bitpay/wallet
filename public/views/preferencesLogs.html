@@ -1,9 +1,18 @@
 <ion-view>
   <ion-nav-bar class="bar-royal">
+    <ion-nav-title>{{'Session Log' | translate}}</ion-nav-title>
     <ion-nav-back-button>
     </ion-nav-back-button>
   </ion-nav-bar>
-  <ion-content ng-controller="preferencesLogs" ng-init="init()">
+  <ion-content>
+    <button class="button button-block button-positive" copy-to-clipboard="prepare()">
+      <i class="icon ion-clipboard"></i>
+      <span translate>Copy to clipboard</span>
+    </button>
+    <button class="button button-block button-positive" ng-show="isCordova" ng-click="sendLogs()">
+      <i class="icon ion-ios-email-outline"></i>
+      <span translate>Send by email</span>
+    </button>
     <div class="card">
       <div class="item item-text-wrap">
         <ul>
@@ -15,13 +24,5 @@
         </ul>
       </div>
     </div>
-    <button class="button button-block button-positive" copy-to-clipboard="prepare()">
-      <i class="icon ion-clipboard"></i>
-      <span translate>Copy to clipboard</span>
-    </button>
-    <button class="button button-block button-positive" ng-show="isCordova" ng-click="sendLogs()">
-      <i class="icon ion-ios-email-outline"></i>
-      <span translate>Send by email</span>
-    </button>
   </ion-content>
 </ion-view>

@@ -3,32 +3,6 @@
 angular.module('copayApp.controllers').controller('preferencesGlideraController',
   function($scope, $log, $timeout, $state, ongoingProcess, glideraService, popupService, gettextCatalog) {
 
-    $scope.init = function(accessToken) {
-      $scope.network = glideraService.getEnvironment();
-
-      $scope.token = accessToken;
-      $scope.permissions = null;
-      $scope.email = null;
-      $scope.personalInfo = null;
-      $scope.txs = null;
-      $scope.status = null;
-      $scope.limits = null;
-
-      ongoingProcess.set('connectingGlidera', true);
-      glideraService.init($scope.token, function(err, glidera) {
-        ongoingProcess.set('connectingGlidera');
-        if (err || !glidera) {
-          if (err) popupService.showAlert(gettextCatalog.getString('Error'), err);
-          return;
-        }
-        $scope.token = glidera.token;
-        $scope.permissions = glidera.permissions;
-        $scope.update({
-          fullUpdate: true
-        });
-      });
-    };
-
     $scope.update = function(opts) {
       if (!$scope.token || !$scope.permissions) return;
       $log.debug('Updating Glidera Account...');
@@ -74,5 +48,31 @@ angular.module('copayApp.controllers').controller('preferencesGlideraController'
         }
       });
     };
+
+    $scope.$on("$ionicView.enter", function(event, data){
+      $scope.network = glideraService.getEnvironment();
+
+      $scope.token = accessToken;
+      $scope.permissions = null;
+      $scope.email = null;
+      $scope.personalInfo = null;
+      $scope.txs = null;
+      $scope.status = null;
+      $scope.limits = null;
+
+      ongoingProcess.set('connectingGlidera', true);
+      glideraService.init($scope.token, function(err, glidera) {
+        ongoingProcess.set('connectingGlidera');
+        if (err || !glidera) {
+          if (err) popupService.showAlert(gettextCatalog.getString('Error'), err);
+          return;
+        }
+        $scope.token = glidera.token;
+        $scope.permissions = glidera.permissions;
+        $scope.update({
+          fullUpdate: true
+        });
+      });
+    });
 
   });

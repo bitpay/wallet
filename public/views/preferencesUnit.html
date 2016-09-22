@@ -1,9 +1,12 @@
 <ion-view class="settings">
   <ion-nav-bar class="bar-royal">
+    <ion-nav-title>
+      {{'Unit'|translate}}
+    </ion-nav-title>
     <ion-nav-back-button>
     </ion-nav-back-button>
   </ion-nav-bar>
-  <ion-content ng-controller="preferencesUnitController" ng-init="init()" >
+  <ion-content>
     <ion-radio ng-repeat="unit in unitList" ng-value="unit.code" ng-model="currentUnit"
       ng-click="save(unit)">{{unit.shortName}}
     </ion-radio>
