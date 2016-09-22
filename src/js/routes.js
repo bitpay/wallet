@@ -919,6 +919,8 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         } else {
           profileService.storeProfileIfDirty();
           $log.debug('Profile loaded ... Starting UX.');
+
+          $state.go('tabs.home');
         }
       });
     });
