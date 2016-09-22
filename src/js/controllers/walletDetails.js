@@ -197,7 +197,7 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
     });
   };
 
-  $scope.$on("$ionicView.enter", function(event, data){
+  $scope.$on("$ionicView.beforeEnter", function(event, data){
     currentTxHistoryPage = 0;
     $scope.completeTxHistory = [];
 

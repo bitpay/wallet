@@ -1,9 +1,12 @@
 <ion-view>
   <ion-nav-bar class="bar-royal">
+    <ion-nav-title>
+      {{'Alternative Currency'|translate}}
+    </ion-nav-title>
     <ion-nav-back-button>
     </ion-nav-back-button>
   </ion-nav-bar>
-  <ion-content ng-controller="preferencesAltCurrencyController" ng-init="init()" >
+  <ion-content>
     <ion-radio ng-repeat="altCurrency in altCurrencyList" ng-value="altCurrency.isoCode" ng-model="currentCurrency"
       ng-click="save(altCurrency)">{{altCurrency.name}}
     </ion-radio>

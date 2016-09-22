@@ -1,26 +1,22 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('preferencesAltCurrencyController',
-  function($scope, $log, $timeout, $ionicNavBarDelegate, $ionicHistory, gettextCatalog, configService, rateService, lodash, profileService, walletService) {
-    $ionicNavBarDelegate.title(gettextCatalog.getString('Alternative Currency'));
+  function($scope, $log, $timeout, $ionicHistory, gettextCatalog, configService, rateService, lodash, profileService, walletService) {
 
     var next = 10;
     var completeAlternativeList;
 
-    $scope.init = function() {
+    var config = configService.getSync();
+    $scope.currentCurrency = config.wallet.settings.alternativeIsoCode;
+    $scope.listComplete = false;
 
-      var config = configService.getSync();
-      $scope.currentCurrency = config.wallet.settings.alternativeIsoCode;
-      $scope.listComplete = false;
-
-      rateService.whenAvailable(function() {
-        completeAlternativeList = rateService.listAlternatives();
-        lodash.remove(completeAlternativeList, function(c) {
-          return c.isoCode == 'BTC';
-        });
-        $scope.altCurrencyList = completeAlternativeList.slice(0, next);
+    rateService.whenAvailable(function() {
+      completeAlternativeList = rateService.listAlternatives();
+      lodash.remove(completeAlternativeList, function(c) {
+        return c.isoCode == 'BTC';
       });
-    };
+      $scope.altCurrencyList = completeAlternativeList.slice(0, next);
+    });
 
     $scope.loadMore = function() {
       $timeout(function() {

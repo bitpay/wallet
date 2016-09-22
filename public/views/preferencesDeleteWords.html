@@ -1,9 +1,12 @@
 <ion-view>
   <ion-nav-bar class="bar-royal">
+    <ion-nav-title>
+      {{'Delete recovery phrase'|translate}}
+    </ion-nav-title>
     <ion-nav-back-button>
     </ion-nav-back-button>
   </ion-nav-bar>
-  <ion-content ng-controller="preferencesDeleteWordsController" >
+  <ion-content>
     <div ng-show="!deleted">
       <div ng-show="error">
         {{error|translate}}

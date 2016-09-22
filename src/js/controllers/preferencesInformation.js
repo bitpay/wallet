@@ -1,8 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('preferencesInformation',
-  function($scope, $log, $timeout, $ionicNavBarDelegate, $ionicHistory, platformInfo, gettextCatalog, lodash, profileService, configService, $stateParams, walletService, $state) {
-    $ionicNavBarDelegate.title(gettextCatalog.getString('Wallet Information'));
+  function($scope, $log, $timeout, $ionicHistory, platformInfo, gettextCatalog, lodash, profileService, configService, $stateParams, walletService, $state) {
     var base = 'xpub';
     var wallet = profileService.getWallet($stateParams.walletId);
     var walletId = wallet.id;
@@ -11,45 +10,6 @@ angular.module('copayApp.controllers').controller('preferencesInformation',
     var b = 1;
     $scope.isCordova = platformInfo.isCordova;
     config.colorFor = config.colorFor || {};
-
-    $scope.init = function() {
-      var c = wallet.credentials;
-      var basePath = c.getBaseAddressDerivationPath();
-
-      $scope.wallet = wallet;
-      $scope.walletName = c.walletName;
-      $scope.walletId = c.walletId;
-      $scope.network = c.network;
-      $scope.addressType = c.addressType || 'P2SH';
-      $scope.derivationStrategy = c.derivationStrategy || 'BIP45';
-      $scope.basePath = basePath;
-      $scope.M = c.m;
-      $scope.N = c.n;
-      $scope.pubKeys = lodash.pluck(c.publicKeyRing, 'xPubKey');
-      $scope.addrs = null;
-
-      wallet.getMainAddresses({
-        doNotVerify: true
-      }, function(err, addrs) {
-        if (err) {
-          $log.warn(err);
-          return;
-        };
-        var last10 = [],
-          i = 0,
-          e = addrs.pop();
-        while (i++ < 10 && e) {
-          e.path = base + e.path.substring(1);
-          last10.push(e);
-          e = addrs.pop();
-        }
-        $scope.addrs = last10;
-        $timeout(function() {
-          $scope.$apply();
-        });
-
-      });
-    };
 
     $scope.sendAddrs = function() {
       function formatDate(ts) {
@@ -121,6 +81,43 @@ angular.module('copayApp.controllers').controller('preferencesInformation',
       $state.go('tabs.home');
     };
 
+    $scope.$on("$ionicView.enter", function(event, data){
+      var c = wallet.credentials;
+      var basePath = c.getBaseAddressDerivationPath();
 
+      $scope.wallet = wallet;
+      $scope.walletName = c.walletName;
+      $scope.walletId = c.walletId;
+      $scope.network = c.network;
+      $scope.addressType = c.addressType || 'P2SH';
+      $scope.derivationStrategy = c.derivationStrategy || 'BIP45';
+      $scope.basePath = basePath;
+      $scope.M = c.m;
+      $scope.N = c.n;
+      $scope.pubKeys = lodash.pluck(c.publicKeyRing, 'xPubKey');
+      $scope.addrs = null;
+
+      wallet.getMainAddresses({
+        doNotVerify: true
+      }, function(err, addrs) {
+        if (err) {
+          $log.warn(err);
+          return;
+        };
+        var last10 = [],
+          i = 0,
+          e = addrs.pop();
+        while (i++ < 10 && e) {
+          e.path = base + e.path.substring(1);
+          last10.push(e);
+          e = addrs.pop();
+        }
+        $scope.addrs = last10;
+        $timeout(function() {
+          $scope.$apply();
+        });
+
+      });
+    });
 
   });

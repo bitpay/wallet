@@ -8,14 +8,7 @@ angular.module('copayApp.controllers').controller('tabHomeController',
     $scope.openTxpModal = txpModalService.open;
     $scope.version = $window.version;
     $scope.name = $window.appConfig.nameCase;
-
     $scope.homeTip = $stateParams.fromOnboarding;
-    configService.whenAvailable(function() {
-      var config = configService.getSync();
-      var isWindowsPhoneApp = platformInfo.isWP && platformInfo.isCordova;
-      $scope.glideraEnabled = config.glidera.enabled && !isWindowsPhoneApp;
-      $scope.coinbaseEnabled = config.coinbase.enabled && !isWindowsPhoneApp;
-    });
 
     $scope.openNotificationModal = function(n) {
       wallet = profileService.getWallet(n.walletId);
@@ -206,6 +199,12 @@ angular.module('copayApp.controllers').controller('tabHomeController',
     });
 
     $scope.$on("$ionicView.enter", function(event, data){
+      configService.whenAvailable(function() {
+        var config = configService.getSync();
+        var isWindowsPhoneApp = platformInfo.isWP && platformInfo.isCordova;
+        $scope.glideraEnabled = config.glidera.enabled && !isWindowsPhoneApp;
+        $scope.coinbaseEnabled = config.coinbase.enabled && !isWindowsPhoneApp;
+      });
       $scope.nextStep();
       $scope.updateAllWallets();
     });

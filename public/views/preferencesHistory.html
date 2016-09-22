@@ -1,9 +1,10 @@
 <ion-view>
   <ion-nav-bar class="bar-royal">
+    <ion-nav-title>{{'Transaction History' | translate}}</ion-nav-title>
     <ion-nav-back-button>
     </ion-nav-back-button>
   </ion-nav-bar>
-  <ion-content ng-controller="preferencesHistory" ng-init="csvHistory()">
+  <ion-content>
     <div class="item item-divider"></div>
     <div class="item" ng-show="csvReady && !isCordova" ng-csv="csvContent" csv-header="csvHeader" filename="Copay-{{wallet.name}}.csv">
       <span translate>Export to file</span>

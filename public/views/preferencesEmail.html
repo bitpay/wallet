@@ -1,9 +1,12 @@
 <ion-view>
   <ion-nav-bar class="bar-royal">
+    <ion-nav-title>
+      {{'Email Notifications'|translate}}
+    </ion-nav-title>
     <ion-nav-back-button>
     </ion-nav-back-button>
   </ion-nav-bar>
-  <ion-content ng-controller="preferencesEmailController" >
+  <ion-content>
     <form name="emailForm" ng-submit="save(emailForm)" novalidate>
       <div class="card list">
         <label class="item item-input item-stacked-label">
