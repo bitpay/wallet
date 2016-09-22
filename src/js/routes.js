@@ -396,7 +396,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
      *
      */
 
-      .state('tabs.preferences', {
+    .state('tabs.preferences', {
         url: '/preferences/:walletId',
         views: {
           'tab-settings@tabs': {
@@ -559,7 +559,8 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
       url: '/copayers/:walletId',
       views: {
         'tab-home': {
-          templateUrl: 'views/copayers.html'
+          templateUrl: 'views/copayers.html',
+          controller: 'copayersController'
         }
       }
     })

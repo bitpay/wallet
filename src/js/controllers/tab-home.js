@@ -198,7 +198,7 @@ angular.module('copayApp.controllers').controller('tabHomeController',
       });
     });
 
-    $scope.$on("$ionicView.enter", function(event, data){
+    $scope.$on("$ionicView.enter", function(event, data) {
       configService.whenAvailable(function() {
         var config = configService.getSync();
         var isWindowsPhoneApp = platformInfo.isWP && platformInfo.isCordova;
