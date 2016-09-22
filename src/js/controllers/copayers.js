@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('copayersController',
-  function($scope, $log, $ionicNavBarDelegate, $timeout, $stateParams, $state, $rootScope, lodash, profileService, walletService, popupService, platformInfo, gettextCatalog, ongoingProcess) {
+  function($scope, $log, $ionicNavBarDelegate, $timeout, $stateParams, $state, $rootScope, $ionicHistory, lodash, profileService, walletService, popupService, platformInfo, gettextCatalog, ongoingProcess) {
 
     $scope.$on("$ionicView.enter", function(event, data) {
       init();
@@ -75,6 +75,7 @@ angular.module('copayApp.controllers').controller('copayersController',
     };
 
     $scope.goHome = function() {
+      $ionicHistory.removeBackView();
       $state.go('tabs.home');
     };
 
