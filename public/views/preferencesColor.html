@@ -7,8 +7,9 @@
     </ion-nav-back-button>
   </ion-nav-bar>
   <ion-content>
-    <ion-radio ng-repeat="c in colorList" ng-value="c" ng-model="currentColor" ng-click="save(c)">
-      <span ng-style="{'color': c}">&block;</span>
+    <ion-radio ng-repeat="c in colorList" ng-value="c.color" ng-model="currentColor" ng-click="save(c)">
+      <span ng-style="{'color': c.color}">&block;</span>
+      <span> {{c.name}}</span>
     </ion-radio>
   </ion-content>
 </ion-view>
