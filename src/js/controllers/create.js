@@ -178,12 +178,15 @@ angular.module('copayApp.controllers').controller('createController',
 
           if (!client.isComplete()) {
             $ionicHistory.nextViewOptions({
-              disableBack: true
+              disableAnimate: true
             });
-            $state.go('tabs.copayers', {
-              walletId: client.credentials.walletId,
-              fromAddShared: true
-            });
+            $ionicHistory.removeBackView();
+            $state.go('tabs.home');
+            $timeout(function() {
+              $state.transitionTo('tabs.copayers', {
+                walletId: client.credentials.walletId
+              });
+            }, 100);
           }
           else $state.go('tabs.home')
         });

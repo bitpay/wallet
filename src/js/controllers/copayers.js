@@ -3,12 +3,11 @@
 angular.module('copayApp.controllers').controller('copayersController',
   function($scope, $log, $ionicNavBarDelegate, $timeout, $stateParams, $state, $rootScope, $ionicHistory, lodash, profileService, walletService, popupService, platformInfo, gettextCatalog, ongoingProcess) {
 
-    $scope.$on("$ionicView.enter", function(event, data) {
+    $scope.$on("$ionicView.beforeEnter", function(event, data) {
       init();
     });
 
     var init = function() {
-      $scope.fromAddShared = $stateParams.fromAddShared;
       $scope.isCordova = platformInfo.isCordova;
       $scope.wallet = profileService.getWallet($stateParams.walletId);
       updateWallet();
