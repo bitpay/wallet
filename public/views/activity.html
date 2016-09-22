@@ -1,11 +1,12 @@
-
 <ion-view>
   <ion-nav-bar class="bar-royal">
-    <ion-nav-title>Recent Activity</ion-nav-title>
+    <ion-nav-title>
+      {{'Recent Activity'|translate}}
+    </ion-nav-title>
     <ion-nav-back-button>
     </ion-nav-back-button>
   </ion-nav-bar>
-  <ion-content class="padding" ng-controller="activityController" ng-init="init()">
+  <ion-content class="padding">
 
     <div ng-if="fetchingNotifications" class="updatingHistory">
       <div class="text-center">

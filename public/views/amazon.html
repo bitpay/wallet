@@ -5,13 +5,13 @@
     <ion-nav-title>Amazon.com Gift Cards</ion-nav-title>
   </ion-nav-bar>
 
-  <ion-content ng-controller="amazonController as amazon" ng-init="amazon.init()">
+  <ion-content>
 
     <div class="box-notification warning" ng-show="network == 'testnet'">
       Sandbox version. Only for testing purpose
     </div>
 
-    <div class="m20t text-center" ng-click="amazon.updatePendingGiftCards()">
+    <div class="m20t text-center" ng-click="updatePendingGiftCards()">
       <img src="img/GCs-logo-cllb.png" alt="Amazon.com Gift Card" width="200">
       <div class="size-11 m10t"><b>Only</b> redeemable on www.amazon.com (USA website)</div>
     </div>
@@ -42,7 +42,7 @@
           Your cards
         </div>
         <div ng-repeat="(id, item) in giftCards | orderObjectBy:'date':true track by $index"
-             ng-click="amazon.openCardModal(item)"
+             ng-click="openCardModal(item)"
              class="item item-avatar">
           <img src="img/a-smile_color_btn.png" alt="{{id}}" width="40">
           <h2 ng-if="item.claimCode">
