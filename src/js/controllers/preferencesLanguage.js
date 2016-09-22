@@ -1,17 +1,13 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('preferencesLanguageController',
-  function($scope, $log, $ionicNavBarDelegate, $ionicHistory, gettextCatalog, configService, profileService, uxLanguage, walletService, externalLinkService) {
-    $ionicNavBarDelegate.title(gettextCatalog.getString('Language'));
+  function($scope, $log, $ionicHistory, gettextCatalog, configService, profileService, uxLanguage, walletService, externalLinkService) {
+
+    $scope.availableLanguages = uxLanguage.getLanguages();
 
     $scope.openExternalLink = function(url, target) {
       externalLinkService.open(url, target);
     };
-
-    $scope.init = function() {
-      $scope.availableLanguages = uxLanguage.getLanguages();
-      $scope.currentLanguage = uxLanguage.getCurrentLanguage();
-    }
 
     $scope.save = function(newLang) {
       var opts = {
@@ -33,4 +29,8 @@ angular.module('copayApp.controllers').controller('preferencesLanguageController
         });
       });
     };
+
+    $scope.$on("$ionicView.enter", function(event, data){
+      $scope.currentLanguage = uxLanguage.getCurrentLanguage();
+    });
   });

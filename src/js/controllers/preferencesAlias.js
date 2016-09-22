@@ -1,8 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('preferencesAliasController',
-  function($scope, $timeout, $stateParams, $ionicHistory, $ionicNavBarDelegate, gettextCatalog, configService, profileService, walletService) {
-    $ionicNavBarDelegate.title(gettextCatalog.getString('Alias'));
+  function($scope, $timeout, $stateParams, $ionicHistory, gettextCatalog, configService, profileService, walletService) {
     var wallet = profileService.getWallet($stateParams.walletId);
     $scope.wallet = wallet;
     var walletId = wallet.credentials.walletId;

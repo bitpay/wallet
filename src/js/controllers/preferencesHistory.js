@@ -1,8 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('preferencesHistory',
-  function($scope, $log, $stateParams, $timeout, $state, $ionicHistory, $ionicNavBarDelegate, gettextCatalog, storageService, platformInfo, profileService, lodash) {
-    $ionicNavBarDelegate.title(gettextCatalog.getString('Transaction History'));
+  function($scope, $log, $stateParams, $timeout, $state, $ionicHistory, gettextCatalog, storageService, platformInfo, profileService, lodash) {
     $scope.wallet = profileService.getWallet($stateParams.walletId);
     $scope.csvReady = false;
     $scope.isCordova = platformInfo.isCordova;
@@ -131,4 +130,8 @@ angular.module('copayApp.controllers').controller('preferencesHistory',
         }, 100);
       });
     };
+
+    $scope.$on("$ionicView.enter", function(event, data){
+      $scope.csvHistory();
+    });
   });

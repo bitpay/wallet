@@ -1,7 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('preferencesDeleteWordsController', function($scope, $ionicHistory, $stateParams, $ionicNavBarDelegate, gettextCatalog, confirmDialog, lodash, profileService, gettext) {
-  $ionicNavBarDelegate.title(gettextCatalog.getString('Delete recovery phrase'));
+angular.module('copayApp.controllers').controller('preferencesDeleteWordsController', function($scope, $ionicHistory, $stateParams, gettextCatalog, confirmDialog, lodash, profileService, gettext) {
   var wallet = profileService.getWallet($stateParams.walletId);
   var msg = gettext('Are you sure you want to delete the recovery phrase?');
   var successMsg = gettext('Recovery phrase deleted');

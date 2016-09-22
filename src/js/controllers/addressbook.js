@@ -53,7 +53,7 @@ angular.module('copayApp.controllers').controller('addressbookListController', f
     }, 100);
   };
 
-  $scope.$on("$ionicView.enter", function(event, data){
+  $scope.$on("$ionicView.beforeEnter", function(event, data){
     initAddressbook();
   });
 
