@@ -1,7 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('amountController', function($rootScope, $scope, $filter, $timeout, $ionicScrollDelegate, $ionicNavBarDelegate, gettextCatalog, platformInfo, lodash, configService, rateService, $stateParams, $window, $state, $log, txFormatService) {
-  $ionicNavBarDelegate.title(gettextCatalog.getString('Enter Amount'));
+angular.module('copayApp.controllers').controller('amountController', function($rootScope, $scope, $filter, $timeout, $ionicScrollDelegate, gettextCatalog, platformInfo, lodash, configService, rateService, $stateParams, $window, $state, $log, txFormatService) {
 
   var unitToSatoshi;
   var satToUnit;
@@ -11,7 +10,7 @@ angular.module('copayApp.controllers').controller('amountController', function($
   var SMALL_FONT_SIZE_LIMIT = 13;
   var LENGTH_EXPRESSION_LIMIT = 19;
 
-  $scope.init = function() {
+  $scope.$on("$ionicView.enter", function(event, data){
 
     if (!$stateParams.toAddress) {
       $log.error('Bad params at amount')
@@ -73,7 +72,7 @@ angular.module('copayApp.controllers').controller('amountController', function($
     $timeout(function() {
       $ionicScrollDelegate.resize();
     }, 100);
-  };
+  });
 
   $scope.toggleAlternative = function() {
     $scope.showAlternativeAmount = !$scope.showAlternativeAmount;

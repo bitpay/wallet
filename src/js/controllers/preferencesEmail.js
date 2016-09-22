@@ -1,7 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('preferencesEmailController', function($scope, $ionicHistory, $stateParams, $ionicNavBarDelegate, gettextCatalog, profileService, walletService, configService) {
-  $ionicNavBarDelegate.title(gettextCatalog.getString('Email Notifications'));
+angular.module('copayApp.controllers').controller('preferencesEmailController', function($scope, $ionicHistory, $stateParams, gettextCatalog, profileService, walletService, configService) {
 
   var wallet = profileService.getWallet($stateParams.walletId);
   var walletId = wallet.credentials.walletId;

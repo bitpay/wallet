@@ -1,9 +1,12 @@
 <ion-view>
   <ion-nav-bar class="bar-royal">
+    <ion-nav-title>
+      {{'Wallet Preferences'|translate}}
+    </ion-nav-title>
     <ion-nav-back-button>
     </ion-nav-back-button>
   </ion-nav-bar>
-  <ion-content ng-controller="preferencesController" ng-init="init()">
+  <ion-content>
     <div class="list">
       <div class="item item-divider"></div>
       <a class="item item-icon-right" ui-sref="tabs.preferences.preferencesAlias">

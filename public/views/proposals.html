@@ -7,14 +7,23 @@
     <ion-nav-back-button>
     </ion-nav-back-button>
   </ion-nav-bar>
-  <ion-content class="padding" ng-controller="proposalsController" ng-init="init()">
+  <ion-content class="padding">
 
-   <div class="list card">
+    <div ng-if="fetchingProposals" class="updatingHistory">
+      <div class="text-center">
+        <ion-spinner class="spinner-dark" icon="lines"></ion-spinner>
+        <div translate>Updating pending proposals. Please stand by</div>
+      </div>
+    </div>
+
+    <div class="list card" ng-show="txps[0] && !fetchingProposals">
       <a ng-repeat="tx in txps" class="item" ng-click="openTxpModal(tx)">
         <span ng-include="'views/includes/txp.html'"></span>
       </a>
+    </div>
 
-      <div class="item" ng-show="!txps[0]">
+    <div class="list card" ng-show="!txps[0] && !fetchingProposals">
+      <div class="item">
         <span translate>No pending proposals</span>
       </div>
     </div>
