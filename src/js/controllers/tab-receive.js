@@ -51,10 +51,7 @@ angular.module('copayApp.controllers').controller('tabReceiveController', functi
     $timeout(function() {
       walletService.getAddress($scope.wallet, forceNew, function(err, addr) {
         $scope.generatingAddress = false;
-        if (err || lodash.isEmpty(addr)) {
-          popupService.showAlert(gettextCatalog.getString('Error'), err || gettextCatalog.getString('Address is empty'));
-          return;
-        }
+        if (err) popupService.showAlert(gettextCatalog.getString('Error'), err);
         $scope.addr = addr;
         $scope.$apply();
       });
