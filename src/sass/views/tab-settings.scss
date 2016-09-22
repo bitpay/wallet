@@ -1,3 +1,10 @@
+.settings {
+  .item {
+    color: #444;
+    border-color: rgba(221, 221, 221, 0.3);
+  }
+}
+
 #tab-settings {
   .list {
     .item {
@@ -15,8 +22,8 @@
         right: 0;
         content: '';
       }
-      &.item-divider{
-        color:rgba(74, 74, 74, .8);
+      &.item-divider {
+        color: rgba(74, 74, 74, .8);
       }
       &.item-heading {
         &:before {
@@ -28,8 +35,8 @@
           width: 0;
         }
       }
-      .item-note{
-        color:rgb(58, 58, 58);
+      .item-note {
+        color: rgb(58, 58, 58);
       }
     }
   }
