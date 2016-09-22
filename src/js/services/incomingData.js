@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.services').factory('incomingData', function($log, $ionicModal, $state, $window, $timeout, bitcore) {
+angular.module('copayApp.services').factory('incomingData', function($log, $ionicModal, $ionicHistory, $state, $window, $timeout, bitcore) {
 
   var root = {};
 
@@ -87,13 +87,13 @@ angular.module('copayApp.services').factory('incomingData', function($log, $ioni
       return true;
 
     // Protocol
-    } else if (data.indexOf($window.appConfig.name + '://glidera')==0) {
+    } else if (data && data.indexOf($window.appConfig.name + '://glidera')==0) {
       return $state.go('uriglidera', {url: data});
-    } else if (data.indexOf($window.appConfig.name + '://coinbase')==0) {
+    } else if (data && data.indexOf($window.appConfig.name + '://coinbase')==0) {
       return $state.go('uricoinbase', {url: data});
 
     // Join
-    } else if (data.match(/^copay:[0-9A-HJ-NP-Za-km-z]{70,80}$/)) {
+    } else if (data && data.match(/^copay:[0-9A-HJ-NP-Za-km-z]{70,80}$/)) {
       $ionicHistory.removeBackView();
       $state.go('tabs.home');
       $timeout(function() {
@@ -102,7 +102,7 @@ angular.module('copayApp.services').factory('incomingData', function($log, $ioni
       return true;
 
     // Old join
-    } else if (data.match(/^[0-9A-HJ-NP-Za-km-z]{70,80}$/)) {
+    } else if (data && data.match(/^[0-9A-HJ-NP-Za-km-z]{70,80}$/)) {
       $ionicHistory.removeBackView();
       $state.go('tabs.home');
       $timeout(function() {
