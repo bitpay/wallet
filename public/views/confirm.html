@@ -51,7 +51,7 @@
         <i ng-show="!description" class="icon ion-ios-plus-empty size-21"></i>
       </div>
     </div>
+    <button class="button button-block button-positive" ng-click="approve()" ng-if="!isCordova" ng-disabled="!fee" translate>Click to pay</button>
   </ion-content>
-  <button class="button button-block button-positive accept-button" ng-click="approve()" ng-if="!isCordova" ng-disabled="!fee" translate>Click to pay</button>
   <accept class="accept-slide" ng-if="isCordova && fee"></accept>
 </ion-view>
