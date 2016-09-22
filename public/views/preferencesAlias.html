@@ -1,9 +1,12 @@
 <ion-view>
   <ion-nav-bar class="bar-royal">
+    <ion-nav-title>
+      {{'Alias'|translate}}
+    </ion-nav-title>
     <ion-nav-back-button>
     </ion-nav-back-button>
   </ion-nav-bar>
-  <ion-content ng-controller="preferencesAliasController" >
+  <ion-content>
     <form name="aliasForm" ng-submit="save(aliasForm)" novalidate>
       <div class="card list">
         <label class="item item-input item-stacked-label">

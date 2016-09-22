@@ -15,49 +15,6 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
     externalLinkService.open(url, target);
   };
 
-  $scope.init = function() {
-    currentTxHistoryPage = 0;
-    $scope.completeTxHistory = [];
-
-    wallet = profileService.getWallet($stateParams.walletId);
-
-    /* Set color for header bar */
-    $rootScope.walletDetailsColor = wallet.color;
-    $rootScope.walletDetailsName = wallet.name;
-    $scope.wallet = wallet;
-
-    $scope.requiresMultipleSignatures = wallet.credentials.m > 1;
-    $scope.newTx = false;
-
-    $ionicNavBarDelegate.title(wallet.name);
-
-    $scope.updateAll(function() {
-      if ($stateParams.txid) {
-        var tx = lodash.find($scope.completeTxHistory, {
-          txid: $stateParams.txid
-        });
-        if (tx) {
-          $scope.openTxModal(tx);
-        } else {
-          $ionicPopup.alert({
-            title: gettext('TX not available'),
-          });
-        }
-      } else if ($stateParams.txpId) {
-        var txp = lodash.find($scope.txps, {
-          id: $stateParams.txpId
-        });
-        if (txp) {
-          $scope.openTxpModal(txp);
-        } else {
-          $ionicPopup.alert({
-            title: gettext('Proposal not longer available'),
-          });
-        }
-      }
-    });
-  }
-
   var setPendingTxps = function(txps) {
 
     /* Uncomment to test multiple outputs */
@@ -232,11 +189,54 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
   $scope.updateAll = function(cb)  {
     $scope.updateStatus(false);
     $scope.updateTxHistory(cb);
-  }
+  };
 
   $scope.hideToggle = function() {
     profileService.toggleHideBalanceFlag(wallet.credentials.walletId, function(err) {
       if (err) $log.error(err);
     });
-  }
+  };
+
+  $scope.$on("$ionicView.beforeEnter", function(event, data){
+    currentTxHistoryPage = 0;
+    $scope.completeTxHistory = [];
+
+    wallet = profileService.getWallet($stateParams.walletId);
+
+    /* Set color for header bar */
+    $rootScope.walletDetailsColor = wallet.color;
+    $rootScope.walletDetailsName = wallet.name;
+    $scope.wallet = wallet;
+
+    $scope.requiresMultipleSignatures = wallet.credentials.m > 1;
+    $scope.newTx = false;
+
+    $ionicNavBarDelegate.title(wallet.name);
+
+    $scope.updateAll(function() {
+      if ($stateParams.txid) {
+        var tx = lodash.find($scope.completeTxHistory, {
+          txid: $stateParams.txid
+        });
+        if (tx) {
+          $scope.openTxModal(tx);
+        } else {
+          $ionicPopup.alert({
+            title: gettext('TX not available'),
+          });
+        }
+      } else if ($stateParams.txpId) {
+        var txp = lodash.find($scope.txps, {
+          id: $stateParams.txpId
+        });
+        if (txp) {
+          $scope.openTxpModal(txp);
+        } else {
+          $ionicPopup.alert({
+            title: gettext('Proposal not longer available'),
+          });
+        }
+      }
+    });
+  });
 });

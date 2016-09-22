@@ -1,12 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('preferencesLogs',
-  function($scope, historicLog, $ionicNavBarDelegate, gettextCatalog) {
-    $ionicNavBarDelegate.title(gettextCatalog.getString('Session Log'));
-
-    $scope.init = function() {
-      $scope.logs = historicLog.get();
-    }
+  function($scope, historicLog, gettextCatalog) {
 
     $scope.prepare = function() {
       var log = 'Copay Session Logs\n Be careful, this could contain sensitive private data\n\n';
@@ -32,4 +27,8 @@ angular.module('copayApp.controllers').controller('preferencesLogs',
         function() {}
       );
     };
+
+    $scope.$on("$ionicView.enter", function(event, data){
+      $scope.logs = historicLog.get();
+    });
   });

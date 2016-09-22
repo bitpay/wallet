@@ -7,8 +7,7 @@ angular.module('copayApp.controllers').controller('amazonController',
       externalLinkService.open(url, target);
     };
 
-    this.init = function() {
-      var self = this;
+    var initAmazon = function() {
       $scope.network = amazonService.getEnvironment();
       amazonService.getPendingGiftCards(function(err, gcds) {
         if (err) {
@@ -20,11 +19,10 @@ angular.module('copayApp.controllers').controller('amazonController',
           $scope.$digest();
         });
       });
-      this.updatePendingGiftCards();
-    }
+      $scope.updatePendingGiftCards();
+    };
 
-    this.updatePendingGiftCards = lodash.debounce(function() {
-      var self = this;
+    $scope.updatePendingGiftCards = lodash.debounce(function() {
 
       amazonService.getPendingGiftCards(function(err, gcds) {
         lodash.forEach(gcds, function(dataFromStorage) {
@@ -69,8 +67,7 @@ angular.module('copayApp.controllers').controller('amazonController',
 
     }, 1000);
 
-    this.openCardModal = function(card) {
-      var self = this;
+    $scope.openCardModal = function(card) {
       $scope.card = card;
 
       $ionicModal.fromTemplateUrl('views/modals/amazon-card-details.html', {
@@ -81,7 +78,11 @@ angular.module('copayApp.controllers').controller('amazonController',
       });
 
       $scope.$on('UpdateAmazonList', function(event) {
-        self.init();
+        initAmazon();
       });
     };
+
+    $scope.$on("$ionicView.enter", function(event, data){
+      initAmazon();
+    });
   });

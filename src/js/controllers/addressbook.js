@@ -4,7 +4,7 @@ angular.module('copayApp.controllers').controller('addressbookListController', f
 
   var contacts;
 
-  $scope.initAddressbook = function() {
+  var initAddressbook = function() {
     addressbookService.list(function(err, ab) {
       if (err) $log.error(err);
 
@@ -47,10 +47,14 @@ angular.module('copayApp.controllers').controller('addressbookListController', f
           popupService.showAlert(err);
           return;
         }
-        $scope.initAddressbook();
+        initAddressbook();
         $scope.$digest();
       });
     }, 100);
   };
+
+  $scope.$on("$ionicView.beforeEnter", function(event, data){
+    initAddressbook();
+  });
 
 });

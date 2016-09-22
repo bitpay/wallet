@@ -3,13 +3,14 @@
 
 angular.module('copayApp.controllers').controller('proposalsController',
   function($timeout, $scope, profileService, $log, txpModalService) {
-    var self = this;
 
+    $scope.fetchingProposals = true;
 
-    $scope.init = function() {
+    $scope.$on("$ionicView.enter", function(event, data){
       profileService.getTxps(50, function(err, txps) {
+        $scope.fetchingProposals = false;
         if (err) {
-          console.log('[tab-home.js.35:err:]', $log.error(err)); //TODO
+          $log.error(err);
           return;
         }
         $scope.txps = txps;
@@ -17,7 +18,7 @@ angular.module('copayApp.controllers').controller('proposalsController',
           $scope.$apply();
         }, 1);
       });
-    }
+    });
 
     $scope.openTxpModal = txpModalService.open;
   });

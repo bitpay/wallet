@@ -1,24 +1,5 @@
 angular.module('copayApp.controllers').controller('paperWalletController',
   function($scope, $timeout, $log, $ionicModal, $ionicHistory, popupService, gettextCatalog, platformInfo, configService, profileService, $state, bitcore, ongoingProcess, txFormatService, $stateParams, walletService) {
-    var wallet = profileService.getWallet($stateParams.walletId);
-    var rawTx;
-
-    $scope.init = function() {
-      $scope.wallet = wallet;
-      $scope.isCordova = platformInfo.isCordova;
-      $scope.needsBackup = wallet.needsBackup;
-      $scope.walletAlias = wallet.name;
-      $scope.walletName = wallet.credentials.walletName;
-      $scope.formData = {};
-      $scope.formData.inputData = null;
-      $scope.scannedKey = null;
-      $scope.balance = null;
-      $scope.balanceSat = null;
-      $scope.scanned = false;
-      $timeout(function() {
-        $scope.$apply();
-      }, 10);
-    };
 
     $scope.onQrCodeScanned = function(data) {
       $scope.formData.inputData = data;
@@ -138,4 +119,22 @@ angular.module('copayApp.controllers').controller('paperWalletController',
         $scope.txStatusModal.show();
       });
     };
+
+    $scope.$on("$ionicView.enter", function(event, data){
+      var wallet = profileService.getWallet($stateParams.walletId);
+      $scope.wallet = wallet;
+      $scope.isCordova = platformInfo.isCordova;
+      $scope.needsBackup = wallet.needsBackup;
+      $scope.walletAlias = wallet.name;
+      $scope.walletName = wallet.credentials.walletName;
+      $scope.formData = {};
+      $scope.formData.inputData = null;
+      $scope.scannedKey = null;
+      $scope.balance = null;
+      $scope.balanceSat = null;
+      $scope.scanned = false;
+      $timeout(function() {
+        $scope.$apply();
+      }, 10);
+    });
   });

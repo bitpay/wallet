@@ -4,7 +4,7 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
 
   var originalList;
 
-  $scope.init = function() {
+  var updateList = function() {
     originalList = [];
 
     var wallets = profileService.getWallets({
@@ -83,8 +83,8 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
     });
   };
 
-  $scope.$on('modal.hidden', function() {
-    $scope.init();
+  $scope.$on("$ionicView.enter", function(event, data){
+    updateList();
   });
 
 });

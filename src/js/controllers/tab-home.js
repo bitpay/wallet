@@ -8,14 +8,7 @@ angular.module('copayApp.controllers').controller('tabHomeController',
     $scope.openTxpModal = txpModalService.open;
     $scope.version = $window.version;
     $scope.name = $window.appConfig.nameCase;
-
     $scope.homeTip = $stateParams.fromOnboarding;
-    configService.whenAvailable(function() {
-      var config = configService.getSync();
-      var isWindowsPhoneApp = platformInfo.isWP && platformInfo.isCordova;
-      $scope.glideraEnabled = config.glidera.enabled && !isWindowsPhoneApp;
-      $scope.coinbaseEnabled = config.coinbase.enabled && !isWindowsPhoneApp;
-    });
 
     $scope.openNotificationModal = function(n) {
       wallet = profileService.getWallet(n.walletId);
@@ -115,7 +108,7 @@ angular.module('copayApp.controllers').controller('tabHomeController',
       lodash.each($scope.wallets, function(wallet) {
         walletService.getStatus(wallet, {}, function(err, status) {
           if (err) {
-            console.log('[tab-home.js.35:err:]', $log.error(err)); //TODO
+            $log.error(err);
           } else {
             wallet.status = status;
           }
@@ -172,7 +165,7 @@ angular.module('copayApp.controllers').controller('tabHomeController',
     $scope.hideHomeTip = function() {
       $scope.homeTip = null;
       $state.transitionTo($state.current, null, {
-        reload: false,
+        reload: true,
         inherit: false,
         notify: false
       });
@@ -203,5 +196,16 @@ angular.module('copayApp.controllers').controller('tabHomeController',
       lodash.each(listeners, function(x) {
         x();
       });
+    });
+
+    $scope.$on("$ionicView.enter", function(event, data){
+      configService.whenAvailable(function() {
+        var config = configService.getSync();
+        var isWindowsPhoneApp = platformInfo.isWP && platformInfo.isCordova;
+        $scope.glideraEnabled = config.glidera.enabled && !isWindowsPhoneApp;
+        $scope.coinbaseEnabled = config.coinbase.enabled && !isWindowsPhoneApp;
+      });
+      $scope.nextStep();
+      $scope.updateAllWallets();
     });
   });
