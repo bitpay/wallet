@@ -49,6 +49,6 @@
       </div>
     </div>
   </ion-content>
-  <button class="button button-block button-positive accept-button" ng-click="approve()" ng-if="!isCordova" translate>Click to pay</button>
-  <accept class="accept-slide" ng-if="isCordova"></accept>
+  <button class="button button-block button-positive accept-button" ng-click="approve()" ng-if="!isCordova" ng-disabled="!fee" translate>Click to pay</button>
+  <accept class="accept-slide" ng-if="isCordova && fee"></accept>
 </ion-view>
