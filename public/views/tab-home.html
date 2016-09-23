@@ -35,8 +35,8 @@
     </div>
 
     <div class="list card" ng-if="notifications[0]">
-      <a class="item item-icon-right item-heading" ui-sref="tabs.activity" translate>
-        Recent Activity
+      <a class="item item-icon-right item-heading" ui-sref="tabs.activity">
+        <span translate>Recent Activity</span>
         <i class="icon nav-item-arrow-right"></i>
       </a>
       <span ng-if="fetchingNotifications" class="item text-center">
@@ -49,8 +49,8 @@
     </div>
 
     <div class="list card" ng-hide="!wallets[0]">
-      <div class="item item-icon-right item-heading" translate>
-        Wallets
+      <div class="item item-icon-right item-heading">
+        <span translate>Wallets</span>
         <a ui-sref="tabs.add"><i class="icon ion-ios-plus-empty list-add-button"></i></a>
       </div>
       <a ng-repeat="wallet in wallets track by $index"
