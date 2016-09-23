@@ -89,13 +89,16 @@ angular.module('copayApp.controllers').controller('confirmController', function(
 
 
   $scope.showDescriptionPopup = function() {
-    var title = gettextCatalog.getString('Add description');
+    var message = gettextCatalog.getString('Add description');
     var opts = {
       defaultText: $scope.description
     };
 
-    popupService.showPrompt(title, null, opts, function(res) {
+    popupService.showPrompt(null, message, opts, function(res) {
       if (res) $scope.description = res;
+      $timeout(function() {
+        $scope.$apply();
+      }, 100);
     });
   };
 
