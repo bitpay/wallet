@@ -71,7 +71,7 @@ angular.module('copayApp.controllers').controller('exportController',
             popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Failed to export'));
             return;
           }
-          $ionicHistory.clearHistory();
+          $ionicHistory.removeBackView();
           $state.go('tabs.home');
         });
       });
@@ -158,7 +158,7 @@ angular.module('copayApp.controllers').controller('exportController',
       });
     };
 
-    $scope.$on("$ionicView.enter", function(event, data){
+    $scope.$on("$ionicView.beforeEnter", function(event, data) {
       init();
     });
 

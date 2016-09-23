@@ -7,16 +7,18 @@ angular.module('copayApp.controllers').controller('preferencesEmailController', 
 
   var config = configService.getSync();
   config.emailFor = config.emailFor || {};
-  $scope.email = config.emailFor && config.emailFor[walletId];
+  $scope.email = {
+    value: config.emailFor && config.emailFor[walletId]
+  };
 
-  $scope.save = function(form) {
+  $scope.save = function() {
     var opts = {
       emailFor: {}
     };
-    opts.emailFor[walletId] = $scope.email;
+    opts.emailFor[walletId] = $scope.email.value;
 
     walletService.updateRemotePreferences(wallet, {
-      email: $scope.email,
+      email: $scope.email.value,
     }, function(err) {
       if (err) $log.warn(err);
       configService.set(opts, function(err) {
