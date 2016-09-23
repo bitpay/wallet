@@ -628,7 +628,8 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         url: '/backup/:walletId/:fromOnboarding',
         views: {
           'onboarding': {
-            templateUrl: 'views/backup.html'
+            templateUrl: 'views/backup.html',
+            controller: 'backupController'
           }
         }
       })
