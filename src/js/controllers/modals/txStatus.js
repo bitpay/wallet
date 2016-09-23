@@ -3,11 +3,14 @@
 angular.module('copayApp.controllers').controller('txStatusController', function($scope, $timeout, $state, $ionicHistory, $log, addressbookService) {
 
   if ($scope.cb) $timeout($scope.cb, 100);
+  $scope.fromSendTab = $ionicHistory.viewHistory().backView.stateName === "tabs.send.amount";
 
   $scope.cancel = function() {
-    $ionicHistory.clearHistory();
-    $state.go('tabs.home');
     $scope.txStatusModal.hide();
+    if ($scope.fromSendTab) {
+      $ionicHistory.removeBackView();
+      $state.go('tabs.home');
+    }
   };
 
   $scope.save = function(addressbookEntry) {
@@ -23,7 +26,6 @@ angular.module('copayApp.controllers').controller('txStatusController', function
     });
   }
 
-  $scope.fromSendTab = $ionicHistory.viewHistory().backView.stateName === "tabs.send.amount";
   addressbookService.list(function(err, ab) {
     if (err) $log.error(err);
     if (ab[$scope.tx.toAddress]) {

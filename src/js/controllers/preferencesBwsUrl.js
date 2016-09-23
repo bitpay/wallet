@@ -9,16 +9,18 @@ angular.module('copayApp.controllers').controller('preferencesBwsUrlController',
     var defaults = configService.getDefaults();
     var config = configService.getSync();
 
-    $scope.bwsurl = (config.bwsFor && config.bwsFor[walletId]) || defaults.bws.url;
+    $scope.bwsurl = {
+      value: (config.bwsFor && config.bwsFor[walletId]) || defaults.bws.url
+    };
 
     $scope.resetDefaultUrl = function() {
-      $scope.bwsurl = defaults.bws.url;
+      $scope.bwsurl.value = defaults.bws.url;
     };
 
     $scope.save = function() {
 
       var bws;
-      switch ($scope.bwsurl) {
+      switch ($scope.bwsurl.value) {
         case 'prod':
         case 'production':
           bws = 'https://bws.bitpay.com/bws/api'
@@ -34,13 +36,13 @@ angular.module('copayApp.controllers').controller('preferencesBwsUrlController',
       };
       if (bws) {
         $log.info('Using BWS URL Alias to ' + bws);
-        $scope.bwsurl = bws;
+        $scope.bwsurl.value = bws;
       }
 
       var opts = {
         bwsFor: {}
       };
-      opts.bwsFor[walletId] = $scope.bwsurl;
+      opts.bwsFor[walletId] = $scope.bwsurl.value;
 
       configService.set(opts, function(err) {
         if (err) $log.debug(err);

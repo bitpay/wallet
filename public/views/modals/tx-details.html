@@ -75,7 +75,7 @@
       </div>
 
       <div class="item">
-        <div ng-if="btx.action == 'received'">
+        <div ng-if="btx.action == 'received' || 'moved'">
           <span translate>Date</span>
           <span class="item-note">
             <time>{{ btx.time * 1000 | amDateFormat:'MM/DD/YYYY HH:mm a'}}</time>

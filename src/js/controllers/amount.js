@@ -10,7 +10,11 @@ angular.module('copayApp.controllers').controller('amountController', function($
   var SMALL_FONT_SIZE_LIMIT = 13;
   var LENGTH_EXPRESSION_LIMIT = 19;
 
-  $scope.$on("$ionicView.enter", function(event, data){
+  $scope.toAddress = $stateParams.toAddress;
+  $scope.toName = $stateParams.toName;
+  $scope.toEmail = $stateParams.toEmail;
+
+  $scope.$on("$ionicView.beforeEnter", function(event, data) {
 
     if (!$stateParams.toAddress) {
       $log.error('Bad params at amount')
@@ -45,11 +49,6 @@ angular.module('copayApp.controllers').controller('amountController', function($
     $scope.$on('$destroy', function() {
       angular.element($window).off('keydown');
     });
-
-
-    $scope.toAddress = $stateParams.toAddress;
-    $scope.toName = $stateParams.toName;
-    $scope.toEmail = $stateParams.toEmail;
 
     var config = configService.getSync().wallet.settings;
     $scope.unitName = config.unitName;
