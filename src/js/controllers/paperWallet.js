@@ -96,7 +96,7 @@ angular.module('copayApp.controllers').controller('paperWalletController',
             popupService.showAlert(gettextCatalog.getString('Error sweeping wallet:'), err || err.toString());
           } else {
             $scope.openStatusModal('broadcasted', function() {
-              $ionicHistory.clearHistory();
+              $ionicHistory.removeBackView();
               $state.go('tabs.home');
             });
           }
@@ -120,7 +120,7 @@ angular.module('copayApp.controllers').controller('paperWalletController',
       });
     };
 
-    $scope.$on("$ionicView.enter", function(event, data){
+    $scope.$on("$ionicView.enter", function(event, data) {
       var wallet = profileService.getWallet($stateParams.walletId);
       $scope.wallet = wallet;
       $scope.isCordova = platformInfo.isCordova;

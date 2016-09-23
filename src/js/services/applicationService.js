@@ -19,7 +19,7 @@ angular.module('copayApp.services')
         if (isChromeApp) {
           chrome.runtime.reload();
         } else if (isNW) {
-          $ionicHistory.clearHistory();
+          $ionicHistory.removeBackView();
           $state.go('tabs.home');
           $timeout(function() {
             var win = require('nw.gui').Window.get();

@@ -37,7 +37,7 @@ angular.module('copayApp.controllers').controller('addressbookAddController', fu
   };
 
   $scope.goHome = function() {
-    $ionicHistory.clearHistory();
+    $ionicHistory.removeBackView();
     $state.go('tabs.home');
   };
 

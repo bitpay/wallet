@@ -125,13 +125,13 @@ angular.module('copayApp.controllers').controller('preferencesHistory',
         $scope.$emit('Local/ClearHistory');
 
         $timeout(function() {
-          $ionicHistory.clearHistory();
+          $ionicHistory.removeBackView();
           $state.go('tabs.home');
         }, 100);
       });
     };
 
-    $scope.$on("$ionicView.enter", function(event, data){
+    $scope.$on("$ionicView.enter", function(event, data) {
       $scope.csvHistory();
     });
   });
