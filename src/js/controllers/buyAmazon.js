@@ -4,6 +4,7 @@ angular.module('copayApp.controllers').controller('buyAmazonController',
   function($scope, $log, $timeout, $state, lodash, profileService, bwcError, gettextCatalog, configService, walletService, amazonService, ongoingProcess, platformInfo, externalLinkService, popupService) {
 
     var self = this;
+    var network = amazonService.getEnvironment();
     var wallet;
 
     $scope.$on('Wallet/Changed', function(event, w) {
@@ -20,7 +21,7 @@ angular.module('copayApp.controllers').controller('buyAmazonController',
     };
 
     this.confirm = function() {
-      var message = gettextCatalog.getString('Amazon.com Gift Card purchase for ${{amount}} USD', {amount: $scope.fiat});
+      var message = gettextCatalog.getString('Amazon.com Gift Card purchase for ${{amount}} USD', {amount: $scope.formData.fiat});
       var ok = gettextCatalog.getString('Buy');
       popupService.showConfirm(null, message, ok, null, function(res) {
         if (res) self.createTx();
@@ -40,7 +41,7 @@ angular.module('copayApp.controllers').controller('buyAmazonController',
 
       var dataSrc = {
         currency: 'USD',
-        amount: $scope.fiat,
+        amount: $scope.formData.fiat,
         uuid: wallet.id
       };
       var outputs = [];
@@ -209,7 +210,7 @@ angular.module('copayApp.controllers').controller('buyAmazonController',
     };
 
     $scope.$on("$ionicView.enter", function(event, data){
-      var network = amazonService.getEnvironment();
+      $scope.formData = { fiat: null };
       $scope.wallets = profileService.getWallets({
         network: network,
         onlyComplete: true
