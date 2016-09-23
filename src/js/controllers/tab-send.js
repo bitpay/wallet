@@ -86,7 +86,7 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
     });
   };
 
-  $scope.$on("$ionicView.enter", function(event, data){
+  $scope.$on("$ionicView.beforeEnter", function(event, data){
     $scope.formData = { search: null };
     updateList();
   });
