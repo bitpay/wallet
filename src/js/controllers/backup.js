@@ -97,7 +97,7 @@ angular.module('copayApp.controllers').controller('backupController',
       if ($stateParams.fromOnboarding) {
         $state.go('onboarding.disclaimer');
       } else {
-        $ionicHistory.clearHistory();
+        $ionicHistory.removeBackView();
         $state.go('tabs.home');
       }
     };

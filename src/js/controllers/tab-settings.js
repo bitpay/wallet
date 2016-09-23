@@ -28,10 +28,16 @@ angular.module('copayApp.controllers').controller('tabSettingsController', funct
         $scope.$digest();
       });
     }
-    $scope.spendUnconfirmed = {value : config.wallet.spendUnconfirmed};
-    $scope.glideraEnabled = {value: config.glidera.enabled};
+    $scope.spendUnconfirmed = {
+      value: config.wallet.spendUnconfirmed
+    };
+    $scope.glideraEnabled = {
+      value: config.glidera.enabled
+    };
     $scope.coinbaseEnabled = config.coinbase.enabled;
-    $scope.pushNotifications = {value: config.pushNotifications.enabled};
+    $scope.pushNotifications = {
+      value: config.pushNotifications.enabled
+    };
     $scope.otherWallets = lodash.filter(profileService.getWallets(self.network), function(w) {
       return w.id != self.walletId;
     });
@@ -94,7 +100,7 @@ angular.module('copayApp.controllers').controller('tabSettingsController', funct
     });
   };
 
-  $scope.$on("$ionicView.enter", function(event, data){
+  $scope.$on("$ionicView.enter", function(event, data) {
     updateConfig();
   });
 

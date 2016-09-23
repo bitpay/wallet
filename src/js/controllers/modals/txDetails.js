@@ -6,7 +6,7 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
   var walletSettings = configWallet.settings;
   var wallet;
   $scope.title = gettextCatalog.getString('Transaction');
-
+  console.log($scope.btx);
   $scope.init = function() {
     wallet = $scope.wallet;
     $scope.alternativeIsoCode = walletSettings.alternativeIsoCode;

@@ -29,7 +29,7 @@
     </ion-checkbox>
   </div>
 
-  <div class="box-notification error" ng-show="!canSign">
+  <div class="box-notification error ng-hide" ng-show="!canSign">
     <span class="size-14">
       <i class="ion-alert-circled"></i>
       <span translate>
@@ -38,7 +38,7 @@
     </span>
   </div>
 
-  <div class="box-notification error" ng-show="formData.noSignEnabled">
+  <div class="box-notification error ng-hide" ng-show="formData.noSignEnabled">
     <span class="size-14">
       <i class="ion-alert-circled"></i>
       <span translate>

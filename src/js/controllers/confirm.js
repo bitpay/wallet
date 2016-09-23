@@ -4,6 +4,16 @@ angular.module('copayApp.controllers').controller('confirmController', function(
   var cachedTxp = {};
   var isChromeApp = platformInfo.isChromeApp;
 
+  $scope.toAddress = $stateParams.toAddress;
+  $scope.toName = $stateParams.toName;
+  $scope.toEmail = $stateParams.toEmail;
+  $scope.description = $stateParams.description;
+  $scope.paypro = $stateParams.paypro;
+
+  $scope.$on("$ionicView.enter", function(event, data) {
+    initConfirm();
+  });
+
   var initConfirm = function() {
     if ($stateParams.paypro) {
       return setFromPayPro($stateParams.paypro, function(err) {
@@ -25,12 +35,6 @@ angular.module('copayApp.controllers').controller('confirmController', function(
 
     var amount = $scope.toAmount = parseInt($stateParams.toAmount);
     $scope.amountStr = txFormatService.formatAmountStr($scope.toAmount);
-
-    $scope.toAddress = $stateParams.toAddress;
-    $scope.toName = $stateParams.toName;
-    $scope.toEmail = $stateParams.toEmail;
-    $scope.description = $stateParams.description;
-    $scope.paypro = $stateParams.paypro;
 
     var networkName = (new bitcore.Address($scope.toAddress)).network.name;
     $scope.network = networkName;
@@ -306,8 +310,4 @@ angular.module('copayApp.controllers').controller('confirmController', function(
   $scope.cancel = function() {
     $state.go('tabs.send');
   };
-
-  $scope.$on("$ionicView.enter", function(event, data) {
-    initConfirm();
-  });
 });
