@@ -189,7 +189,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     function cacheBalance(wallet, balance) {
       if (!balance) return;
 
-      var config = configService.getSync().wallet.settings;
+      var config = configService.getSync().wallet;
 
       var cache = wallet.cachedStatus;
 
@@ -197,7 +197,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
       cache.balanceByAddress = balance.byAddress;
 
       // Spend unconfirmed funds
-      if (cache.spendUnconfirmed) {
+      if (config.spendUnconfirmed) {
         cache.totalBalanceSat = balance.totalAmount;
         cache.lockedBalanceSat = balance.lockedAmount;
         cache.availableBalanceSat = balance.availableAmount;
@@ -212,9 +212,9 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
       }
 
       // Selected unit
-      cache.unitToSatoshi = config.unitToSatoshi;
+      cache.unitToSatoshi = config.settings.unitToSatoshi;
       cache.satToUnit = 1 / cache.unitToSatoshi;
-      cache.unitName = config.unitName;
+      cache.unitName = config.settings.unitName;
 
       //STR
       cache.totalBalanceStr = txFormatService.formatAmount(cache.totalBalanceSat) + ' ' + cache.unitName;
@@ -227,8 +227,8 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
         cache.pendingAmountStr = null;
       }
 
-      cache.alternativeName = config.alternativeName;
-      cache.alternativeIsoCode = config.alternativeIsoCode;
+      cache.alternativeName = config.settings.alternativeName;
+      cache.alternativeIsoCode = config.settings.alternativeIsoCode;
 
       rateService.whenAvailable(function() {
 
