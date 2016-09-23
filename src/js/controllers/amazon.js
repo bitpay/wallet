@@ -3,12 +3,13 @@
 angular.module('copayApp.controllers').controller('amazonController',
   function($scope, $timeout, $ionicModal, $log, lodash, bwcError, amazonService, platformInfo, externalLinkService, popupService) {
 
+    $scope.network = amazonService.getEnvironment();
+
     $scope.openExternalLink = function(url, target) {
       externalLinkService.open(url, target);
     };
 
     var initAmazon = function() {
-      $scope.network = amazonService.getEnvironment();
       amazonService.getPendingGiftCards(function(err, gcds) {
         if (err) {
           popupService.showAlert(err);
@@ -82,7 +83,7 @@ angular.module('copayApp.controllers').controller('amazonController',
       });
     };
 
-    $scope.$on("$ionicView.enter", function(event, data){
+    $scope.$on("$ionicView.beforeEnter", function(event, data){
       initAmazon();
     });
   });
