@@ -50,21 +50,6 @@
         <i class="icon nav-item-arrow-right"></i>
       </a>
 
-      <div ng-show="usePushNotifications && PNEnabledByUser">
-        <div class="item item-divider" translate>Notifications</div>
-
-        <ion-toggle ng-model="pushNotifications.value" toggle-class="toggle-balanced" ng-change="pushNotificationsChange()">
-          <span class="toggle-label" translate>Enable push notifications</span>
-        </ion-toggle>
-
-        <div ng-show="usePushNotifications && !PNEnabledByUser && isIOSApp">
-          <div translate>Push notifications for Copay are currently disabled. Enable them in the Settings app.</div>
-          <ul ng-click="openSettings()">
-            <li translate>Open Settings app</li>
-          </ul>
-        </div>
-      </div>
-
       <div class="item item-divider" translate>Exchanges</div>
 
       <ion-toggle ng-show="!isWP" ng-model="glideraEnabled.value" toggle-class="toggle-balanced" ng-change="glideraChange()">
@@ -83,6 +68,24 @@
       <ion-toggle ng-model="spendUnconfirmed.value" toggle-class="toggle-balanced" ng-change="spendUnconfirmedChange()">
         <span class="toggle-label" translate>Use Unconfirmed Funds</span>
       </ion-toggle>
+
+      <div ng-show="usePushNotifications && PNEnabledByUser">
+        <div class="item item-divider" translate>Notifications</div>
+
+        <ion-toggle ng-model="pushNotifications.value" toggle-class="toggle-balanced" ng-change="pushNotificationsChange()">
+          <span class="toggle-label" translate>Enable push notifications</span>
+        </ion-toggle>
+      </div>
+
+      <div ng-show="usePushNotifications && !PNEnabledByUser && isIOSApp">
+        <div class="item item-divider" translate>Notifications</div>
+        <div class="padding text-light" translate>
+          Push notifications for Copay are currently disabled. Enable them in the Settings app.
+        </div>
+        <a class="item" ng-click="openSettings()">
+          <span translate>Open Settings app</span>
+        </a>
+      </div>
 
       <div class="item item-divider" translate>Wallets Preferences</div>
       <a class="item item-icon-left item-icon-right" href
