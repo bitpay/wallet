@@ -31,7 +31,7 @@ angular.module('copayApp.controllers').controller('addressbookAddController', fu
           return;
         }
         if ($scope.fromSendTab) $scope.goHome();
-        else $state.go('tabs.addressbook');
+        else $ionicHistory.goBack();
       });
     }, 100);
   };

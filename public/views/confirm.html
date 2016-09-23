@@ -25,7 +25,8 @@
       </div>
 
       <div class="item item-icon-left">
-        <gravatar class="send-gravatar" name="{{toName}}" width="30" email="{{toEmail}}"></gravatar>
+        <i ng-if="isWallet" class="icon ion-briefcase size-21"></i>
+        <gravatar ng-if="!isWallet" class="send-gravatar" name="{{toName}}" width="30" email="{{toEmail}}"></gravatar>
         <span translate>To</span>: {{toAddress}}
         <p ng-show="toName">{{toName}}</p>
 
