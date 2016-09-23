@@ -10,9 +10,14 @@ angular.module('copayApp.controllers').controller('amountController', function($
   var SMALL_FONT_SIZE_LIMIT = 13;
   var LENGTH_EXPRESSION_LIMIT = 19;
 
+  $scope.isWallet = $stateParams.isWallet;
   $scope.toAddress = $stateParams.toAddress;
   $scope.toName = $stateParams.toName;
   $scope.toEmail = $stateParams.toEmail;
+
+  $scope.$on('$ionicView.beforeLeave', function() {
+    angular.element($window).off('keydown');
+  });
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
 
@@ -23,7 +28,6 @@ angular.module('copayApp.controllers').controller('amountController', function($
 
     var reNr = /^[1234567890\.]$/;
     var reOp = /^[\*\+\-\/]$/;
-
 
     var disableKeys = angular.element($window).on('keydown', function(e) {
       if (e.which === 8) { // you can add others here inside brackets.
@@ -46,10 +50,6 @@ angular.module('copayApp.controllers').controller('amountController', function($
 
     });
 
-    $scope.$on('$destroy', function() {
-      angular.element($window).off('keydown');
-    });
-
     var config = configService.getSync().wallet.settings;
     $scope.unitName = config.unitName;
     $scope.alternativeIsoCode = config.alternativeIsoCode;
@@ -64,7 +64,6 @@ angular.module('copayApp.controllers').controller('amountController', function($
     if ($stateParams.toAmount) {
       $scope.amount = (($stateParams.toAmount) * satToUnit).toFixed(unitDecimals);
     }
-
 
     processAmount($scope.amount);
 
@@ -187,6 +186,7 @@ angular.module('copayApp.controllers').controller('amountController', function($
     var amount = $scope.showAlternativeAmount ? fromFiat(_amount).toFixed(unitDecimals) : _amount.toFixed(unitDecimals);
 
     $state.transitionTo('tabs.send.confirm', {
+      isWallet: $scope.isWallet,
       toAmount: amount * unitToSatoshi,
       toAddress: $scope.toAddress,
       toName: $scope.toName,

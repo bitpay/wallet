@@ -4,6 +4,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
   var cachedTxp = {};
   var isChromeApp = platformInfo.isChromeApp;
 
+  $scope.isWallet = $stateParams.isWallet;
   $scope.toAddress = $stateParams.toAddress;
   $scope.toName = $stateParams.toName;
   $scope.toEmail = $stateParams.toEmail;
