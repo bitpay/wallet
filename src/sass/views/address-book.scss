@@ -1,11 +1,16 @@
-.settings {
-  .item {
-    color: #444;
-    border-color: rgba(221, 221, 221, 0.3);
+#view-address-book {
+  .scroll{
+    height:100%;
   }
-}
-
-#tab-settings {
+  #add-contact{
+    img{
+      width: 6rem;
+      display: inline-block;
+    }
+    a{
+      text-decoration: none;
+    }
+  }
   .list {
     .item {
       color: #444;
@@ -30,6 +35,9 @@
           top: 99%
         }
       }
+      &.item-icon-left{
+        padding-left:80px;
+      }
       &:nth-child(2) {
         &:before {
           width: 0;
@@ -37,6 +45,21 @@
       }
       .item-note {
         color: rgb(58, 58, 58);
+      }
+      .big-icon-svg {
+        padding: 0 7px;
+        > .bg {
+          border-radius: 50%;
+          width: 40px;
+          height: 40px;
+          box-shadow: none;
+          background-repeat: no-repeat;
+          background-clip: padding-box;
+          background-size: 103%;
+          &.green {
+            background: rgb(1, 209, 162);
+          }
+        }
       }
     }
   }
