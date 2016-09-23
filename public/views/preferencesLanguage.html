@@ -1,4 +1,4 @@
-<ion-view>
+<ion-view id="preferences-language" class="settings">
   <ion-nav-bar class="bar-royal">
     <ion-nav-title>
       {{'Language'|translate}}
@@ -7,9 +7,11 @@
     </ion-nav-back-button>
   </ion-nav-bar>
   <ion-content>
-    <ion-radio ng-repeat="lang in availableLanguages" ng-value="lang.isoCode" ng-model="currentLanguage"
-      ng-click="save(lang.isoCode)">{{lang.name}}
-    </ion-radio>
+    <div class="list">
+      <ion-radio ng-repeat="lang in availableLanguages" ng-value="lang.isoCode" ng-model="currentLanguage"
+        ng-click="save(lang.isoCode)">{{lang.name}}
+      </ion-radio>
+    </div>
     <div class="padding">
       <span translate>All contributions to Copay's translation are welcome. Sign up at crowdin.com and join the Copay project at</span>
       <a ng-click="openExternalLink('https://crowdin.com/project/copay', '_system')">https://crowdin.com/project/copay</a>.

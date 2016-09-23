@@ -1,4 +1,4 @@
-<ion-view>
+<ion-view id="view-address-book">
   <ion-nav-bar class="bar-royal">
     <ion-nav-back-button>
     </ion-nav-back-button>
@@ -39,12 +39,13 @@
 
       </ion-item>
     </ion-list>
-    <div class="list" ng-show="isEmptyList">
-      <a class="item item-icon-left" ui-sref="tabs.addressbook.add">
-        <i class="icon ion-person-add"></i>
-        <span translate>Add a new entry</span>
-      </a>
+    <div class="row text-center absolute-center" ng-show="isEmptyList">
+      <div id="add-contact" class="col col-80 center-block">
+        <img class="col" src="img/item-ico-contact.svg">
+        <a class="col col-40 center-block" ui-sref="tabs.addressbook.add">
+          Add Contact
+        </a>
+      </div>
     </div>
-
   </ion-content>
 </ion-view>
