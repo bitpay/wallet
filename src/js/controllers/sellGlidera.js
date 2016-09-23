@@ -8,6 +8,7 @@ angular.module('copayApp.controllers').controller('sellGlideraController',
     this.show2faCodeInput = null;
     this.success = null;
     var wallet;
+    $scope.network = glideraService.getEnvironment();
 
     $scope.$on('Wallet/Changed', function(event, w) {
       if (lodash.isEmpty(w)) {
@@ -189,9 +190,7 @@ angular.module('copayApp.controllers').controller('sellGlideraController',
     };
 
     $scope.$on("$ionicView.enter", function(event, data){
-      $scope.network = glideraService.getEnvironment();
-
-      $scope.token = accessToken;
+      $scope.token = null;
       $scope.permissions = null;
       $scope.email = null;
       $scope.personalInfo = null;
