@@ -20,6 +20,9 @@ angular.module('copayApp.controllers').controller('addressbookListController', f
       });
 
       $scope.addressbook = lodash.clone(contacts);
+      $timeout(function() {
+        $scope.$apply();
+      }, 100);
     });
   };
 

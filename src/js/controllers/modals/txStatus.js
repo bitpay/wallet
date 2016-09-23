@@ -16,6 +16,7 @@ angular.module('copayApp.controllers').controller('txStatusController', function
       disableAnimate: true,
       disableBack: true
     });
+    $ionicHistory.removeBackView();
     $state.go('tabs.send.addressbook', {
       fromSendTab: true,
       addressbookEntry: addressbookEntry

@@ -5,10 +5,6 @@ angular.module('copayApp.controllers').controller('tabReceiveController', functi
   $scope.isCordova = platformInfo.isCordova;
   $scope.isNW = platformInfo.isNW;
 
-  $scope.wallets = profileService.getWallets({
-    onlyComplete: true
-  });
-
   $scope.checkTips = function(force) {
     storageService.getReceiveTipsAccepted(function(err, accepted) {
       if (err) $log.warn(err);
@@ -24,16 +20,6 @@ angular.module('copayApp.controllers').controller('tabReceiveController', functi
       }, force ? 1 : 1000);
     });
   };
-
-  $scope.$on('Wallet/Changed', function(event, wallet) {
-    if (!wallet) {
-      $log.debug('No wallet provided');
-      return;
-    }
-    $scope.wallet = wallet;
-    $log.debug('Wallet changed: ' + wallet.name);
-    $scope.setAddress();
-  });
 
   $scope.shareAddress = function(addr) {
     if ($scope.generatingAddress) return;
@@ -61,5 +47,19 @@ angular.module('copayApp.controllers').controller('tabReceiveController', functi
     }, 1);
   };
 
-  if (!$scope.isCordova) $scope.checkTips();
+  $scope.$on("$ionicView.enter", function(event, data) {
+    if (!$scope.isCordova) $scope.checkTips();
+    $scope.wallets = profileService.getWallets({
+      onlyComplete: true
+    });
+    $scope.$on('Wallet/Changed', function(event, wallet) {
+      if (!wallet) {
+        $log.debug('No wallet provided');
+        return;
+      }
+      $scope.wallet = wallet;
+      $log.debug('Wallet changed: ' + wallet.name);
+      $scope.setAddress();
+    });
+  });
 });
