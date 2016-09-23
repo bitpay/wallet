@@ -19,7 +19,7 @@
       <a class="item" ng-show="wallet.isPrivKeyExternal()">
         <span translate>Hardware Wallet</span>
         <span class="item-note">
-          {{wallet.externalSource}}
+          {{externalSource}}
         </span>
       </div>
       <a class="item item-icon-right" ui-sref="tabs.preferences.preferencesColor">
@@ -45,12 +45,12 @@
         <i class="icon nav-item-arrow-right"></i>
       </a>
       <div ng-show="wallet.canSign()">
-        <ion-toggle ng-model="encryptEnabled" toggle-class="toggle-balanced" ng-change="encryptChange()">
+        <ion-toggle ng-model="encryptEnabled.value" toggle-class="toggle-balanced" ng-change="encryptChange()">
           <span class="toggle-label" translate>Request Spending Password</span>
         </ion-toggle>
       </div>
       <div ng-show="wallet.canSign() && touchIdAvailable">
-        <ion-toggle  ng-model="touchIdEnabled" toggle-class="toggle-balanced" ng-change="touchIdChange()">
+        <ion-toggle  ng-model="touchIdEnabled.value" toggle-class="toggle-balanced" ng-change="touchIdChange()">
           <span class="toggle-label" translate>Request Fingerprint</span>
         </ion-toggle>
       </div>

@@ -47,7 +47,7 @@ angular.module('copayApp.controllers').controller('paymentUriController',
     this.selectWallet = function(wid) {
       var self = this;
       profileService.setAndStoreFocus(wid, function() {});
-      $ionicHistory.clearHistory();
+      $ionicHistory.removeBackView();
       $state.go('tabs.home');
       $timeout(function() {
         $rootScope.$emit('paymentUri', self.bitcoinURI);

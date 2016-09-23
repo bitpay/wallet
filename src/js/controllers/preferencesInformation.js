@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('preferencesInformation',
-  function($scope, $log, $timeout, $ionicHistory, platformInfo, gettextCatalog, lodash, profileService, configService, $stateParams, walletService, $state) {
+  function($scope, $log, $timeout, $ionicHistory, $ionicScrollDelegate, platformInfo, gettextCatalog, lodash, profileService, configService, $stateParams, walletService, $state) {
     var base = 'xpub';
     var wallet = profileService.getWallet($stateParams.walletId);
     var walletId = wallet.id;
@@ -65,7 +65,7 @@ angular.module('copayApp.controllers').controller('preferencesInformation',
         opts.colorFor[walletId] = color;
 
         configService.set(opts, function(err) {
-          $ionicHistory.clearHistory();
+          $ionicHistory.removeBackView();
           $state.go('tabs.home');
           if (err) $log.warn(err);
         });
@@ -77,11 +77,11 @@ angular.module('copayApp.controllers').controller('preferencesInformation',
 
     $scope.scan = function() {
       walletService.startScan(wallet);
-      $ionicHistory.clearHistory();
+      $ionicHistory.removeBackView();
       $state.go('tabs.home');
     };
 
-    $scope.$on("$ionicView.enter", function(event, data){
+    $scope.$on("$ionicView.enter", function(event, data) {
       var c = wallet.credentials;
       var basePath = c.getBaseAddressDerivationPath();
 
@@ -116,7 +116,7 @@ angular.module('copayApp.controllers').controller('preferencesInformation',
         $timeout(function() {
           $scope.$apply();
         });
-
+        $ionicScrollDelegate.resize();
       });
     });
 

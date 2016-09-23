@@ -345,6 +345,7 @@ angular.module('copayApp.controllers').controller('importController',
           if (err) $log.error(err);
         });
       }
+      $ionicHistory.removeBackView();
       $state.go('tabs.home', {
         fromOnboarding: $stateParams.fromOnboarding
       });

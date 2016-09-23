@@ -8,7 +8,7 @@ angular.module('copayApp.controllers').controller('preferencesController',
 
     $scope.encryptChange = function() {
       if (!wallet) return;
-      var val = $scope.encryptEnabled;
+      var val = $scope.encryptEnabled.value;
 
       if (val && !walletService.isEncrypted(wallet)) {
         $log.debug('Encrypting private key for', wallet.name);
@@ -17,7 +17,7 @@ angular.module('copayApp.controllers').controller('preferencesController',
             $log.warn(err);
 
             // ToDo show error?
-            $scope.encryptEnabled = false;
+            $scope.encryptEnabled.value = false;
             return;
           }
           profileService.updateCredentials(JSON.parse(wallet.export()), function() {
@@ -31,7 +31,7 @@ angular.module('copayApp.controllers').controller('preferencesController',
             $log.warn(err);
 
             // ToDo show error?
-            $scope.encryptEnabled = true;
+            $scope.encryptEnabled.value = true;
             return;
           }
           profileService.updateCredentials(JSON.parse(wallet.export()), function() {
@@ -43,10 +43,10 @@ angular.module('copayApp.controllers').controller('preferencesController',
     };
 
     $scope.touchIdChange = function() {
-      var newStatus = $scope.touchIdEnabled;
+      var newStatus = $scope.touchIdEnabled.value;
       walletService.setTouchId(wallet, !!newStatus, function(err) {
         if (err) {
-          $scope.touchIdEnabled = !newStatus;
+          $scope.touchIdEnabled.value = !newStatus;
           $timeout(function() {
             $scope.$apply();
           }, 1);
@@ -56,7 +56,7 @@ angular.module('copayApp.controllers').controller('preferencesController',
       });
     };
 
-    $scope.$on("$ionicView.beforeEnter", function(event, data){
+    $scope.$on("$ionicView.beforeEnter", function(event, data) {
       $scope.externalSource = null;
 
       if (!wallet)
@@ -64,12 +64,17 @@ angular.module('copayApp.controllers').controller('preferencesController',
 
       var config = configService.getSync();
 
-      $scope.encryptEnabled = walletService.isEncrypted(wallet);
+      $scope.encryptEnabled = {
+        value: walletService.isEncrypted(wallet)
+      };
+
       if (wallet.isPrivKeyExternal)
         $scope.externalSource = wallet.getPrivKeyExternalSourceName() == 'ledger' ? 'Ledger' : 'Trezor';
 
       $scope.touchIdAvailable = fingerprintService.isAvailable();
-      $scope.touchIdEnabled = config.touchIdFor ? config.touchIdFor[walletId] : null;
+      $scope.touchIdEnabled = {
+        value: config.touchIdFor ? config.touchIdFor[walletId] : null
+      };
 
       $scope.deleted = false;
       if (wallet.credentials && !wallet.credentials.mnemonicEncrypted && !wallet.credentials.mnemonic) {

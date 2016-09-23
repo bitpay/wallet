@@ -175,12 +175,11 @@ angular.module('copayApp.controllers').controller('createController',
           if ($scope.seedSource.id == 'set') {
             profileService.setBackupFlag(client.credentials.walletId);
           }
-
+          $ionicHistory.removeBackView();
           if (!client.isComplete()) {
             $ionicHistory.nextViewOptions({
               disableAnimate: true
             });
-            $ionicHistory.removeBackView();
             $state.go('tabs.home');
             $timeout(function() {
               $state.transitionTo('tabs.copayers', {
