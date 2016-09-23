@@ -5,7 +5,7 @@ angular.module('copayApp.controllers').controller('txStatusController', function
   if ($scope.cb) $timeout($scope.cb, 100);
 
   $scope.cancel = function() {
-    $ionicHistory.clearHistory();
+    $ionicHistory.removeBackView();
     $state.go('tabs.home');
     $scope.txStatusModal.hide();
   };
