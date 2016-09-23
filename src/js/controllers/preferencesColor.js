@@ -1,21 +1,21 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('preferencesColorController', function($scope, $log, $stateParams, $ionicHistory, gettextCatalog, configService, profileService) {
-  $scope.colorList = [
-        '#DD4B39',
-        '#F38F12',
-        '#FAA77F',
-        '#D0B136',
-        '#9EDD72',
-        '#29BB9C',
-        '#019477',
-        '#77DADA',
-        '#4A90E2',
-        '#484ED3',
-        '#9B59B6',
-        '#E856EF',
-        '#FF599E',
-        '#7A8C9E',
+      $scope.colorList = [
+        {color: "#DD4B39", name: "Cinnabar"},
+        {color: "#F38F12", name: "Carrot Orange"},
+        {color: "#FAA77F", name: "Light Salmon"},
+        {color: "#D0B136", name: "Metallic Gold"},
+        {color: "#9EDD72", name: "Feijoa"},
+        {color: "#29BB9C", name: "Shamrock"},
+        {color: "#019477", name: "Observatory"},
+        {color: "#77DADA", name: "Turquoise Blue"},
+        {color: "#4A90E2", name: "Cornflower Blue"},
+        {color: "#484ED3", name: "Free Speech Blue"},
+        {color: "#9B59B6", name: "Deep Lilac"},
+        {color: "#E856EF", name: "Free Speech Magenta"},
+        {color: "#FF599E", name: "Brilliant Rose"},
+        {color: "#7A8C9E", name: "Light Slate Grey"}
       ];
 
   var wallet = profileService.getWallet($stateParams.walletId);
