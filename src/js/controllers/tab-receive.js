@@ -34,14 +34,11 @@ angular.module('copayApp.controllers').controller('tabReceiveController', functi
     $scope.addr = null;
     $scope.generatingAddress = true;
 
-    $timeout(function() {
-      walletService.getAddress($scope.wallet, forceNew, function(err, addr) {
-        $scope.generatingAddress = false;
-        if (err) popupService.showAlert(gettextCatalog.getString('Error'), err);
-        $scope.addr = addr;
-        $scope.$apply();
-      });
-    }, 1);
+    walletService.getAddress($scope.wallet, forceNew, function(err, addr) {
+      $scope.generatingAddress = false;
+      if (err) popupService.showAlert(gettextCatalog.getString('Error'), err);
+      $scope.addr = addr;
+    });
   };
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
@@ -52,9 +49,12 @@ angular.module('copayApp.controllers').controller('tabReceiveController', functi
         $log.debug('No wallet provided');
         return;
       }
-      $scope.wallet = wallet;
-      $log.debug('Wallet changed: ' + wallet.name);
-      $scope.setAddress();
+      $timeout(function() {
+        $scope.wallet = wallet;
+        $log.debug('Wallet changed: ' + wallet.name);
+        $scope.setAddress();
+        $scope.$apply();
+      });
     });
   });
 
