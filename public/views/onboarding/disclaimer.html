@@ -13,9 +13,11 @@
       <ion-checkbox ng-model="accept2"><span translate>I understand if this app moved to another device or deleted, my bitcoin can only be recovered with the backup phrase</span></ion-checkbox>
     </ion-list>
     <div id="agree-to-terms" ng-if="accept1 && accept2">
-      <ion-checkbox ng-model="terms.accept3"></ion-checkbox>
-      <p translate>I have read, understood, and agree with the <a ng-click="openTermsModal()" translate>Terms of use</a>.</p>
-      <button ng-disabled="!accept1 || !accept2 || !terms.accept3" class="button button-block button-positive" ng-click="confirm()" translate>Confirm & Finish</button>
+      <div id="agree-to-terms-content" class="center-block">
+        <ion-checkbox ng-model="terms.accept3"></ion-checkbox>
+        <p translate>I have read, understood, and agree with the <a ng-click="openTermsModal()" translate>Terms of use</a>.</p>
+        <button ng-disabled="!accept1 || !accept2 || !terms.accept3" class="button button-block button-positive" ng-click="confirm()" translate>Confirm & Finish</button>
+      </div>
     </div>
   </ion-content>
 </ion-view>
