@@ -4,7 +4,7 @@ angular.module('copayApp.controllers').controller('preferencesDeleteWalletContro
   function($scope, $stateParams, $ionicHistory, gettextCatalog, lodash, profileService, $state, ongoingProcess, popupService) {
     var wallet = profileService.getWallet($stateParams.walletId);
     $scope.alias = lodash.isEqual(wallet.name, wallet.credentials.walletName) ? null : wallet.name + ' ';
-    $scope.walletName = '[' + wallet.credentials.walletName + ']';
+    $scope.walletName = wallet.credentials.walletName;
 
     $scope.showDeletePopup = function() {
       var title = gettextCatalog.getString('Warning!');
