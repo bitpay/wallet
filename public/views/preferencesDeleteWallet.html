@@ -5,13 +5,17 @@
     </ion-nav-back-button>
   </ion-nav-bar>
   <ion-content>
-    <div class="card">
-      <h1 class="text-center" translate>Warning!</h2>
-      <div class="assertive padding" translate>Permanently delete this wallet. THIS ACTION CANNOT BE REVERSED</div>
-      <div class="text-center padding">
-        <span ng-show="alias">{{alias}}</span>{{walletName}}
+    <div class="white-bg padding">
+      <h1 class="text-center assertive" translate>Warning!</h2>
+      <div class="padding text-center">
+        <p translate>
+          Permanently delete this wallet.
+        </p>
+        <p translate class="bold-text">
+          THIS ACTION CANNOT BE REVERSED
+        </p>
       </div>
     </div>
-    <button class="button button-block button-assertive" ng-click="showDeletePopup()"translate>Delete</button>
+    <button class="button button-block button-assertive" ng-click="showDeletePopup()"translate>Delete <span ng-show="alias">{{alias}}</span>{{walletName}}</button>
   </ion-content>
 </ion-view>
