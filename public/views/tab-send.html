@@ -8,11 +8,14 @@
       <div class="item item-heading" translate>Recipient</div>
       <label class="item item-input bitcoin-address">
         <i class="icon ion-search placeholder-icon"></i>
-        <input type="text"
-               placeholder="Search or enter bitcoin address"
-               ng-model="formData.search"
-               ng-change="findContact(formData.search)"
-               ng-model-onblur>
+        <div class="qr-scan-icon" ng-style="{'width': '100%'}">
+          <qr-scanner class="qr-icon size-24" ng-style="{'top': '3px'}" on-scan="onQrCodeScanned(data)"></qr-scanner>
+          <input type="text"
+                 placeholder="Search or enter bitcoin address"
+                 ng-model="formData.search"
+                 ng-change="findContact(formData.search)"
+                 ng-model-onblur>
+        </div>
       </label>
     </div>
 
