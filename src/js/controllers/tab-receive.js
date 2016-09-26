@@ -53,6 +53,7 @@ angular.module('copayApp.controllers').controller('tabReceiveController', functi
         $scope.wallet = wallet;
         $log.debug('Wallet changed: ' + wallet.name);
         $scope.setAddress();
+        if ($scope.wallet.showBackupNeededModal) $scope.openBackupNeededModal();
         $scope.$apply();
       });
     });
@@ -71,28 +72,32 @@ angular.module('copayApp.controllers').controller('tabReceiveController', functi
     }, 100);
   };
 
-  $scope.openBackupNeededPopup = function() {
+  $scope.openBackupNeededModal = function() {
     $ionicModal.fromTemplateUrl('views/includes/backupNeededPopup.html', {
       scope: $scope,
       backdropClickToClose: false,
       hardwareBackButtonClose: false
     }).then(function(modal) {
-      $scope.BackupNeededPopup = modal;
-      $scope.BackupNeededPopup.show();
+      $scope.BackupNeededModal = modal;
+      $scope.BackupNeededModal.show();
     });
   };
 
-  $scope.closeBackupNeededModal = function() {
-    $scope.BackupNeededPopup.hide();
-    $scope.BackupNeededPopup.remove();
+  $scope.close = function() {
+    $scope.BackupNeededModal.hide();
+    $scope.BackupNeededModal.remove();
+    profileService.setBackupNeededModalFlag($scope.wallet.credentials.walletId);
+  };
+
+  $scope.doBackup = function() {
+    $scope.close();
+    $scope.goToBackupFlow();
   };
 
   $scope.goToBackupFlow = function() {
-    $scope.BackupNeededPopup.hide();
-    $scope.BackupNeededPopup.remove();
-    $state.go('tabs.receive.backup', {
-      fromReceive: true,
+    $state.go('tabs.receive.backupWarning', {
+      from: 'tabs.receive',
       walletId: $scope.wallet.credentials.walletId
     });
-  };
+  }
 });
