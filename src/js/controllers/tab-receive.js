@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('tabReceiveController', function($scope, $timeout, $log, $ionicModal, storageService, platformInfo, walletService, profileService, configService, lodash, gettextCatalog, popupService) {
+angular.module('copayApp.controllers').controller('tabReceiveController', function($scope, $timeout, $log, $ionicModal, $state, $ionicHistory, storageService, platformInfo, walletService, profileService, configService, lodash, gettextCatalog, popupService) {
 
   $scope.isCordova = platformInfo.isCordova;
   $scope.isNW = platformInfo.isNW;
@@ -29,7 +29,7 @@ angular.module('copayApp.controllers').controller('tabReceiveController', functi
   };
 
   $scope.setAddress = function(forceNew) {
-    if ($scope.generatingAddress) return;
+    if ($scope.generatingAddress || !$scope.wallet.isComplete()) return;
 
     $scope.addr = null;
     $scope.generatingAddress = true;
@@ -46,9 +46,7 @@ angular.module('copayApp.controllers').controller('tabReceiveController', functi
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
     if (!$scope.isCordova) $scope.checkTips();
-    $scope.wallets = profileService.getWallets({
-      onlyComplete: true
-    });
+    $scope.wallets = profileService.getWallets();
     $scope.$on('Wallet/Changed', function(event, wallet) {
       if (!wallet) {
         $log.debug('No wallet provided');
@@ -59,4 +57,18 @@ angular.module('copayApp.controllers').controller('tabReceiveController', functi
       $scope.setAddress();
     });
   });
+
+  $scope.goCopayers = function() {
+    $ionicHistory.removeBackView();
+    $ionicHistory.nextViewOptions({
+      disableAnimate: true
+    });
+    $state.go('tabs.home');
+    $timeout(function() {
+      $state.transitionTo('tabs.copayers', {
+        walletId: $scope.wallet.credentials.walletId
+      });
+    }, 100);
+  };
+
 });
