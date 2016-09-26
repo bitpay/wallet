@@ -49,15 +49,6 @@ angular.module('copayApp.controllers').controller('backupController',
       }, 10);
     };
 
-    $scope.goBack = function() {
-      if ($scope.step == 1) {
-        if ($stateParams.fromOnboarding) $state.go('onboarding.backupRequest');
-        else $state.go('wallet.preferences');
-      } else {
-        $scope.goToStep($scope.step - 1);
-      }
-    };
-
     var backupError = function(err) {
       ongoingProcess.set('validatingWords', false);
       $log.debug('Failed to verify backup: ', err);
@@ -198,6 +189,7 @@ angular.module('copayApp.controllers').controller('backupController',
         walletId: $stateParams.walletId,
         fromOnboarding: true
       });
+      else if ($stateParams.fromReceive) $state.go('tabs.receive');
       else $state.go('tabs.preferences', {
         walletId: $stateParams.walletId
       });

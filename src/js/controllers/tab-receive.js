@@ -71,4 +71,28 @@ angular.module('copayApp.controllers').controller('tabReceiveController', functi
     }, 100);
   };
 
+  $scope.openBackupNeededPopup = function() {
+    $ionicModal.fromTemplateUrl('views/includes/backupNeededPopup.html', {
+      scope: $scope,
+      backdropClickToClose: false,
+      hardwareBackButtonClose: false
+    }).then(function(modal) {
+      $scope.BackupNeededPopup = modal;
+      $scope.BackupNeededPopup.show();
+    });
+  };
+
+  $scope.closeBackupNeededModal = function() {
+    $scope.BackupNeededPopup.hide();
+    $scope.BackupNeededPopup.remove();
+  };
+
+  $scope.goToBackupFlow = function() {
+    $scope.BackupNeededPopup.hide();
+    $scope.BackupNeededPopup.remove();
+    $state.go('tabs.receive.backup', {
+      fromReceive: true,
+      walletId: $scope.wallet.credentials.walletId
+    });
+  };
 });

@@ -43,6 +43,16 @@
       }
       &-gen-address {}
     }
+    .qr {
+      padding: 30px;
+    }
+    .backup {
+      background-color: orange;
+      color: #fff;
+      i {
+        padding: 10px;
+      }
+    }
   }
   #wallets {
     position: relative;
