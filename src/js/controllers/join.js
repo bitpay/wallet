@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('joinController',
-  function($scope, $rootScope, $timeout, $state, profileService, configService, storageService, applicationService, gettext, gettextCatalog, lodash, ledger, trezor, platformInfo, derivationPathHelper, ongoingProcess, walletService, $log, $stateParams, popupService) {
+  function($scope, $rootScope, $timeout, $state, $ionicHistory, profileService, configService, storageService, applicationService, gettext, gettextCatalog, lodash, ledger, trezor, platformInfo, derivationPathHelper, ongoingProcess, walletService, $log, $stateParams, popupService) {
 
     var isChromeApp = platformInfo.isChromeApp;
     var isDevel = platformInfo.isDevel;
