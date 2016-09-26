@@ -180,6 +180,11 @@ angular.module('copayApp.controllers').controller('tabHomeController',
       });
     };
 
+    $scope.shouldHideNextSteps = function() {
+      $scope.hideNextSteps = !$scope.hideNextSteps;
+      $ionicScrollDelegate.resize();
+    };
+
     var listeners = [
       $rootScope.$on('bwsEvent', function(e, walletId, type, n) {
         var wallet = profileService.getWallet(walletId);
