@@ -1,40 +1,49 @@
-#onboarding-push-notifications{
-  h2{
-    margin-top:2rem;
+#onboarding-push-notifications {
+  h2 {
+    margin-top: 2rem;
   }
-  #cta{
+  #cta {
     background-image: url('../img/onboarding-push-notifications.svg');
     height: 15rem;
     margin-top: .75rem;
   }
-  .cta-buttons{
-    float:none;
-    bottom:0;
+  .cta-buttons {
+    float: none;
+    bottom: 0;
     position: absolute;
-    width:100%;
-    button{
+    width: 100%;
+    button {
       max-width: 400px;
     }
   }
 }
 
-@media (max-width: 400px){
-  #onboarding-push-notifications{
-    .cta-buttons{
-      float:none;
-      bottom:0;
+@media (max-width: 400px) {
+  #onboarding-push-notifications {
+    .cta-buttons {
+      float: none;
+      bottom: 0;
       position: absolute;
     }
   }
 }
-@media (max-height: 540px){
-  #onboarding-push-notifications{
-    #cta{
+
+@media (max-height: 540px) {
+  #onboarding-push-notifications {
+    #cta {
       margin-bottom: 0;
     }
-    .cta-buttons{
-      float:left;
+    .cta-buttons {
+      float: left;
       position: relative;
+    }
+  }
+}
+
+@media (min-width: 450px) {
+  #onboarding-push-notifications {
+    #cta {
+      height: 26rem;
     }
   }
 }
