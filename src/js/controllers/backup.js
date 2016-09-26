@@ -84,13 +84,15 @@ angular.module('copayApp.controllers').controller('backupController',
 
     $scope.closeBackupResultModal = function() {
       $scope.confirmBackupModal.hide();
+      $scope.confirmBackupModal.remove();
 
-      if ($stateParams.fromOnboarding) {
-        $state.go('onboarding.disclaimer');
-      } else {
-        $ionicHistory.removeBackView();
-        $state.go('tabs.home');
-      }
+      profileService.isDisclaimerAccepted(function(val) {
+        if (val) {
+          $ionicHistory.removeBackView();
+          $state.go('tabs.home');
+        }
+        else $state.go('onboarding.disclaimer');
+      });
     };
 
     var confirm = function(cb) {
@@ -182,17 +184,6 @@ angular.module('copayApp.controllers').controller('backupController',
         $scope.selectComplete = true;
       else
         $scope.selectComplete = false;
-    };
-
-    $scope.backupGoBack = function() {
-      if ($stateParams.fromOnboarding) $state.go('onboarding.backupWarning', {
-        walletId: $stateParams.walletId,
-        fromOnboarding: true
-      });
-      else if ($stateParams.fromReceive) $state.go('tabs.receive');
-      else $state.go('tabs.preferences', {
-        walletId: $stateParams.walletId
-      });
     };
 
     $scope.$on("$ionicView.enter", function(event, data) {

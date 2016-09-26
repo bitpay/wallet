@@ -432,6 +432,14 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
           }
         }
       })
+      .state('tabs.preferences.backupWarning', {
+        url: '/backupWarning/:from',
+        views: {
+          'tab-settings@tabs': {
+            templateUrl: 'views/backupWarning.html'
+          }
+        }
+      })
       .state('tabs.preferences.backup', {
         url: '/backup',
         views: {
@@ -571,15 +579,23 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
      *
      */
 
-    .state('tabs.receive.backup', {
-      url: '/backup/:fromReceive/:walletId',
-      views: {
-        'tab-receive@tabs': {
-          controller: 'backupController',
-          templateUrl: 'views/backup.html'
+    .state('tabs.receive.backupWarning', {
+        url: '/backupWarning/:from/:walletId',
+        views: {
+          'tab-receive@tabs': {
+            templateUrl: 'views/backupWarning.html'
+          }
         }
-      }
-    })
+      })
+      .state('tabs.receive.backup', {
+        url: '/backup/:walletId',
+        views: {
+          'tab-receive@tabs': {
+            controller: 'backupController',
+            templateUrl: 'views/backup.html'
+          }
+        }
+      })
 
     /*
      *
@@ -633,15 +649,15 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         }
       })
       .state('onboarding.backupWarning', {
-        url: '/backupWarning/:walletId',
+        url: '/backupWarning/:from/:walletId',
         views: {
           'onboarding': {
-            templateUrl: 'views/onboarding/backupWarning.html'
+            templateUrl: 'views/backupWarning.html'
           }
         }
       })
       .state('onboarding.backup', {
-        url: '/backup/:walletId/:fromOnboarding',
+        url: '/backup/:walletId',
         views: {
           'onboarding': {
             templateUrl: 'views/backup.html',
