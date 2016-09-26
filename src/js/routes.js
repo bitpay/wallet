@@ -236,7 +236,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
      *
      */
 
-      .state('tabs.send.amount', {
+    .state('tabs.send.amount', {
         url: '/amount/:isWallet/:toAddress/:toName/:toEmail',
         views: {
           'tab-send@tabs': {
@@ -551,7 +551,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
 
     /*
      *
-     *TO DO
+     * Copayers
      *
      */
 
@@ -561,6 +561,22 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         'tab-home': {
           templateUrl: 'views/copayers.html',
           controller: 'copayersController'
+        }
+      }
+    })
+
+    /*
+     *
+     * Back flow from receive
+     *
+     */
+
+    .state('tabs.receive.backup', {
+      url: '/backup/:fromReceive/:walletId',
+      views: {
+        'tab-receive@tabs': {
+          controller: 'backupController',
+          templateUrl: 'views/backup.html'
         }
       }
     })

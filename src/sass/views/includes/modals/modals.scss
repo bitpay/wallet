@@ -9,7 +9,12 @@
   transform: translate(-50%, -50%);
   border-radius: .25rem;
   &-header {
-    background: rgb(1, 209, 162);
+    &-success {
+      background: rgb(1, 209, 162);
+    }
+    &-warning {
+      background: orange;
+    }
     padding: 1rem;
     border-radius: .25rem .25rem 0 0;
     min-height: 120px;
@@ -21,6 +26,12 @@
       background-position: center;
     }
     &-img-success {
+      background-image: url('../img/onboarding-success.svg');
+      height: 6rem;
+      background-size: contain;
+      margin-top: .3rem;
+    }
+    &-img-warning {
       background-image: url('../img/onboarding-success.svg');
       height: 6rem;
       background-size: contain;
@@ -42,9 +53,14 @@
       font-weight: 200;
     }
   }
-  &-content-success{
+  &-content-success {
     button{
       color:rgb(23, 174, 140) !important;
+    }
+  }
+  &-content-warning {
+    button{
+      color: orange !important;
     }
   }
 }

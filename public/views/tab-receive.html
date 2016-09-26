@@ -31,7 +31,12 @@
         </div>
       </article>
       <article ng-if="wallet.isComplete()">
-        <div class="row">
+        <div class="row backup" ng-click="openBackupNeededPopup()">
+          <div class="m15t text-center col center-block">
+            <i class="icon ion-alert"></i><span translate>Wallet not backed up</span><i class="icon ion-ios-arrow-thin-right"></i>
+          </div>
+        </div>
+        <div class="row qr">
           <div class="m15t text-center col center-block" copy-to-clipboard="addr">
             <qrcode ng-if="addr" size="220" data="bitcoin:{{addr}}"></qrcode>
             <div ng-if="!addr" style="height:220px; width:220px; margin:auto; background: white; padding-top: 20%;">
