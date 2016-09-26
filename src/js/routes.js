@@ -236,8 +236,8 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
      *
      */
 
-    .state('tabs.send.amount', {
-        url: '/amount/:toAddress/:toName/:toEmail',
+      .state('tabs.send.amount', {
+        url: '/amount/:isWallet/:toAddress/:toName/:toEmail',
         views: {
           'tab-send@tabs': {
             controller: 'amountController',
@@ -246,7 +246,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         }
       })
       .state('tabs.send.confirm', {
-        url: '/confirm/:toAddress/:toName/:toAmount/:toEmail/:description/:paypro',
+        url: '/confirm/:isWallet/:toAddress/:toName/:toAmount/:toEmail/:description/:paypro',
         views: {
           'tab-send@tabs': {
             controller: 'confirmController',
@@ -628,7 +628,8 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         url: '/backup/:walletId/:fromOnboarding',
         views: {
           'onboarding': {
-            templateUrl: 'views/backup.html'
+            templateUrl: 'views/backup.html',
+            controller: 'backupController'
           }
         }
       })

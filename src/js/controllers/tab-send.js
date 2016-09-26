@@ -10,6 +10,7 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
     var wallets = profileService.getWallets({
       onlyComplete: true
     });
+    $scope.hasWallets = lodash.isEmpty(wallets) ? false : true;
 
     lodash.each(wallets, function(v) {
       originalList.push({
@@ -25,6 +26,7 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
     addressbookService.list(function(err, ab) {
       if (err) $log.error(err);
 
+      $scope.hasContacts = lodash.isEmpty(ab) ? false : true;
       var contacts = [];
       lodash.each(ab, function(v, k) {
         contacts.push({
@@ -76,6 +78,7 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
       }
       $log.debug('Got toAddress:' + addr + ' | ' + item.name);
       return $state.transitionTo('tabs.send.amount', {
+        isWallet: item.isWallet,
         toAddress: addr,
         toName: item.name,
         toEmail: item.email
@@ -83,7 +86,7 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
     });
   };
 
-  $scope.$on("$ionicView.enter", function(event, data){
+  $scope.$on("$ionicView.beforeEnter", function(event, data){
     $scope.formData = { search: null };
     updateList();
   });

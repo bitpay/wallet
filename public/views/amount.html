@@ -13,7 +13,8 @@
       <div class="item item-no-bottom-border" translate>Recipient</div>
 
       <div class="item item-text-wrap item-icon-left bitcoin-address">
-        <gravatar class="send-gravatar" name="{{toName}}" width="30" email="{{toEmail}}"></gravatar>
+        <i ng-if="isWallet" class="icon ion-briefcase size-21"></i>
+        <gravatar ng-if="!isWallet" class="send-gravatar" name="{{toName}}" width="30" email="{{toEmail}}"></gravatar>
         <span>{{toName || toAddress}}</span>
       </div>
     </div>

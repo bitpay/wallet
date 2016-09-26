@@ -4,6 +4,8 @@ angular.module('copayApp.controllers').controller('confirmController', function(
   var cachedTxp = {};
   var isChromeApp = platformInfo.isChromeApp;
 
+  $scope.isWallet = $stateParams.isWallet;
+  $scope.toAmount = $stateParams.toAmount;
   $scope.toAddress = $stateParams.toAddress;
   $scope.toName = $stateParams.toName;
   $scope.toEmail = $stateParams.toEmail;
@@ -15,15 +17,15 @@ angular.module('copayApp.controllers').controller('confirmController', function(
   });
 
   var initConfirm = function() {
-    if ($stateParams.paypro) {
-      return setFromPayPro($stateParams.paypro, function(err) {
+    if ($scope.paypro) {
+      return setFromPayPro($scope.paypro, function(err) {
         if (err && !isChromeApp) {
           popupService.showAlert(gettext('Could not fetch payment'));
         }
       });
     }
     // TODO (URL , etc)
-    if (!$stateParams.toAddress || !$stateParams.toAmount) {
+    if (!$scope.toAddress || !$scope.toAmount) {
       $log.error('Bad params at amount')
       throw ('bad params');
     }
@@ -33,7 +35,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     var config = configService.getSync().wallet;
     $scope.feeLevel = config.settings ? config.settings.feeLevel : '';
 
-    var amount = $scope.toAmount = parseInt($stateParams.toAmount);
+    $scope.toAmount = parseInt($scope.toAmount);
     $scope.amountStr = txFormatService.formatAmountStr($scope.toAmount);
 
     var networkName = (new bitcore.Address($scope.toAddress)).network.name;
@@ -54,7 +56,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
           $log.error(err);
         } else {
           if (!status.availableBalanceSat) $log.debug('No balance available in: ' + w.name);
-          if (status.availableBalanceSat > amount) filteredWallets.push(w);
+          if (status.availableBalanceSat > $scope.toAmount) filteredWallets.push(w);
         }
 
         if (++index == wallets.length) {
@@ -69,7 +71,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
       });
     });
 
-    txFormatService.formatAlternativeStr(amount, function(v) {
+    txFormatService.formatAlternativeStr($scope.toAmount, function(v) {
       $scope.alternativeAmountStr = v;
     });
 
@@ -145,12 +147,13 @@ angular.module('copayApp.controllers').controller('confirmController', function(
         return cb(true);
       }
 
-      $stateParams.toAmount = paypro.amount;
-      $stateParams.toAddress = paypro.toAddress;
-      $stateParams.description = paypro.memo;
-      $stateParams.paypro = null;
+      $scope.toAmount = paypro.amount;
+      $scope.toAddress = paypro.toAddress;
+      $scope.description = paypro.memo;
+      $scope.paypro = null;
 
       $scope._paypro = paypro;
+
       return initConfirm();
     });
   };

@@ -47,7 +47,7 @@ angular.module('copayApp.controllers').controller('tabReceiveController', functi
     }, 1);
   };
 
-  $scope.$on("$ionicView.enter", function(event, data) {
+  $scope.$on("$ionicView.beforeEnter", function(event, data) {
     if (!$scope.isCordova) $scope.checkTips();
     $scope.wallets = profileService.getWallets({
       onlyComplete: true
