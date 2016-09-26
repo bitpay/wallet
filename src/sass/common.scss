@@ -4,6 +4,18 @@
   @extend .ion-ios-arrow-right;
 }
 
+.icon.nav-item-arrow-down {
+  color: #666;
+  font-size: 26px;
+  @extend .ion-ios-arrow-down;
+}
+
+.icon.nav-item-arrow-up {
+  color: #666;
+  font-size: 26px;
+  @extend .ion-ios-arrow-up;
+}
+
 .item.item-heading {
   font-weight: bold;
 }
