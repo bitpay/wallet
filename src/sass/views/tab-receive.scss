@@ -9,6 +9,20 @@
   }
   #address {
     background: #fff;
+    .incomplete {
+      padding: 50px;
+      .title {
+        padding: 20px;
+        font-size: 25px;
+        color: #444;
+      }
+      .subtitle {
+        padding: 20px;
+        color: #444;
+      }
+      .button {
+      }
+    }
     .item {
       border: none;
       font-size: .8rem;
