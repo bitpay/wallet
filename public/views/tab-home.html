@@ -4,7 +4,7 @@
   </ion-nav-bar>
 
   <ion-content class="padding">
-    <div class="list card homeTip" ng-show="homeTip">
+    <div class="list card homeTip" ng-if="homeTip">
       <div class="item item-icon-right item-heading">
         <a ng-click="hideHomeTip()"><i class="icon ion-ios-close-empty close-home-tip"></i></a>
       </div>
@@ -26,7 +26,7 @@
         Payment Proposals
         <i class="icon nav-item-arrow-right"></i>
 
-        <span class="badge badge-assertive" ng-show="txpsN>3" translate> {{txpsN}}</span>
+        <span class="badge badge-assertive" ng-if="txpsN>3" translate> {{txpsN}}</span>
       </a>
 
       <a ng-repeat="tx in txps" class="item" ng-click="openTxpModal(tx)">
@@ -61,24 +61,24 @@
         </i>
         <h2>
           {{wallet.name || wallet.id}}
-          <span class="size-12 text-light" ng-show="wallet.n > 1">
+          <span class="size-12 text-light" ng-if="wallet.n > 1">
             {{wallet.m}}-of-{{wallet.n}}
           </span>
         </h2>
 
         <p>
-        <span ng-show="!wallet.isComplete()" class="assertive" translate>
+        <span ng-if="!wallet.isComplete()" class="assertive" translate>
           Incomplete
         </span>
-        <div ng-show="wallet.isComplete()">
-          <span ng-show="!wallet.balanceHidden">{{wallet.status.availableBalanceStr}}</span>
-          <span ng-show="wallet.balanceHidden" translate>[Balance Hidden]</span>
+        <div ng-if="wallet.isComplete()">
+          <span ng-if="!wallet.balanceHidden">{{wallet.status.availableBalanceStr}}</span>
+          <span ng-if="wallet.balanceHidden" translate>[Balance Hidden]</span>
         </div>
         </p>
         <i class="icon nav-item-arrow-right"></i>
       </a>
       <a ui-sref="bitpayCard.main"
-         ng-show="externalServices.BitpayCard"
+         ng-if="externalServices.BitpayCard"
          class="item item-icon-left item-big-icon-left item-icon-right">
         <i class="icon big-icon-svg">
           <div class="bg icon-bitpay-card"></div>
@@ -89,22 +89,22 @@
       </a>
     </div>
 
-    <div class="list card" ng-show="externalServices.BuyAndSell && (glideraEnabled || coinbaseEnabled)">
+    <div class="list card" ng-if="externalServices.BuyAndSell && (glideraEnabled || coinbaseEnabled)">
       <div class="item item-icon-right item-heading" translate>
         Buy &amp; Sell Bitcoin
         <a ui-sref="tabs.buyandsell"><i class="icon ion-ios-plus-empty list-add-button"></i></a>
       </div>
-      <a ng-show="glideraEnabled" ui-sref="tabs.buyandsell.glidera" class="item item-icon-right">
+      <a ng-if="glideraEnabled" ui-sref="tabs.buyandsell.glidera" class="item item-icon-right">
         <img src="img/glidera-logo.png" width="90"/>
         <i class="icon nav-item-arrow-right"></i>
       </a>
       <!-- disable coinbase for this release -->
-      <!-- <a ng-show="coinbaseEnabled" ui-sref="exchange.coinbase" class="item">
+      <!-- <a ng-if="coinbaseEnabled" ui-sref="exchange.coinbase" class="item">
         <img src="img/coinbase-logo.png" width="90"> TODO
       </a> -->
     </div>
 
-    <div class="list card" ng-show="externalServices.AmazonGiftCards">
+    <div class="list card" ng-if="externalServices.AmazonGiftCards">
       <a class="item item-icon-left item-icon-right item-big-icon-left" ui-sref="tabs.giftcards.amazon">
         <i class="icon big-icon-svg">
           <div class="bg icon-gift"></div>
@@ -115,13 +115,13 @@
     </div>
 
     <div class="list card"
-         ng-show="!externalServices.AmazonGiftCards || !externalServices.BitpayCard || !externalServices.BuyAndSell || !wallets[0]">
+         ng-if="!externalServices.AmazonGiftCards || !externalServices.BitpayCard || !externalServices.BuyAndSell || !wallets[0]">
       <div class="item item-icon-right item-heading" ng-click="shouldHideNextSteps()" translate>
         Next steps
-        <i class="icon nav-item-arrow-down" ng-show="!hideNextSteps"></i>
-        <i class="icon nav-item-arrow-up" ng-show="hideNextSteps"></i>
+        <i class="icon nav-item-arrow-down" ng-if="!hideNextSteps"></i>
+        <i class="icon nav-item-arrow-up" ng-if="hideNextSteps"></i>
       </div>
-      <div ng-show="hideNextSteps">
+      <div ng-if="hideNextSteps">
         <a ng-if="!wallets[0]" ui-sref="tabs.add" class="item item-icon-left item-big-icon-left item-icon-right next-step">
          <i class="icon big-icon-svg">
            <div class="bg icon-create-wallet"></div>
