@@ -73,17 +73,14 @@ angular.module('copayApp.controllers').controller('tabReceiveController', functi
   };
 
   $scope.openBackupNeededModal = function() {
-    $timeout(function() {
-      $ionicModal.fromTemplateUrl('views/includes/backupNeededPopup.html', {
-        scope: $scope,
-        backdropClickToClose: false,
-        hardwareBackButtonClose: false
-      }).then(function(modal) {
-        $scope.BackupNeededModal = modal;
-        $scope.BackupNeededModal.show();
-      });
-    }, 100);
-
+    $ionicModal.fromTemplateUrl('views/includes/backupNeededPopup.html', {
+      scope: $scope,
+      backdropClickToClose: false,
+      hardwareBackButtonClose: false
+    }).then(function(modal) {
+      $scope.BackupNeededModal = modal;
+      $scope.BackupNeededModal.show();
+    });
   };
 
   $scope.close = function() {
