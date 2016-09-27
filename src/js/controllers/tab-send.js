@@ -1,8 +1,10 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('tabSendController', function($scope, $log, $timeout, addressbookService, profileService, lodash, $state, walletService, incomingData) {
+angular.module('copayApp.controllers').controller('tabSendController', function($scope, $log, $timeout, $ionicScrollDelegate, addressbookService, profileService, lodash, $state, walletService, incomingData) {
 
   var originalList;
+  var CONTACTS_SHOW_LIMIT = 10;
+  var currentContactsPage = 0;
 
   var updateList = function() {
     originalList = [];
@@ -11,6 +13,7 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
       onlyComplete: true
     });
     $scope.hasWallets = lodash.isEmpty(wallets) ? false : true;
+    $scope.oneWallet = wallets.length == 1;
 
     lodash.each(wallets, function(v) {
       originalList.push({
@@ -27,9 +30,9 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
       if (err) $log.error(err);
 
       $scope.hasContacts = lodash.isEmpty(ab) ? false : true;
-      var contacts = [];
+      var completeContacts = [];
       lodash.each(ab, function(v, k) {
-        contacts.push({
+        completeContacts.push({
           name: lodash.isObject(v) ? v.name : v,
           address: k,
           email: lodash.isObject(v) ? v.email : null,
@@ -39,13 +42,21 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
         });
       });
 
+      var contacts = completeContacts.slice(0, (currentContactsPage + 1) * CONTACTS_SHOW_LIMIT);
+      $scope.contactsShowMore = completeContacts.length > contacts.length;
       originalList = originalList.concat(contacts);
       $scope.list = lodash.clone(originalList);
 
       $timeout(function() {
+        $ionicScrollDelegate.resize();
         $scope.$apply();
-      }, 1);
+      }, 10);
     });
+  };
+
+  $scope.showMore = function() {
+    currentContactsPage++;
+    updateList();
   };
 
   $scope.findContact = function(search) {
