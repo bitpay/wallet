@@ -780,20 +780,10 @@ angular.module('copayApp.services')
       var TIME_STAMP = 60 * 60 * 24 * 7;
       var MAX = 100;
 
-      var typeFilter1 = {
-        'NewBlock': 1,
-        'BalanceUpdated': 1,
-        'NewOutgoingTxByThirdParty': 1,
-        'NewAddress': 1,
-        'TxProposalFinallyAccepted': 1,
-        'TxProposalFinallyRejected': 1,
+      var typeFilter = {
+        'NewOutgoingTx': 1,
+        'NewIncomingTx': 1
       };
-
-      var typeFilter2 = {
-        'TxProposalAcceptedBy': 1,
-        'TxProposalRejectedBy': 1,
-        'NewTxProposal': 1,
-      }
 
       var w = root.getWallets();
       if (lodash.isEmpty(w)) return cb();
@@ -895,14 +885,8 @@ angular.module('copayApp.services')
             var n;
 
             n = lodash.filter(wallet.cachedActivity.n, function(x) {
-              return !typeFilter1[x.type];
+              return typeFilter[x.type];
             });
-
-            if (wallet.m == 1) {
-              n = lodash.filter(n, function(x) {
-                return !typeFilter2[x.type];
-              });
-            }
 
             var idToName = {};
             if (wallet.cachedStatus) {
