@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('backupRequestController', function($scope, $state, $stateParams, $ionicPopup, popupService, gettextCatalog) {
+angular.module('copayApp.controllers').controller('backupRequestController', function($scope, $state, $stateParams, popupService, gettextCatalog) {
 
   $scope.walletId = $stateParams.walletId;
 
