@@ -209,6 +209,10 @@ angular.module('copayApp.controllers').controller('tabHomeController',
         var isWindowsPhoneApp = platformInfo.isWP && platformInfo.isCordova;
         $scope.glideraEnabled = config.glidera.enabled && !isWindowsPhoneApp;
         $scope.coinbaseEnabled = config.coinbase.enabled && !isWindowsPhoneApp;
+        $scope.amazonEnabled = config.amazon.enabled;
+        $scope.bitpayCardEnabled = config.bitpayCard.enabled;
+        $scope.nextStepEnabled = $scope.glideraEnabled || $scope.coinbaseEnabled || $scope.amazonEnabled || $scope.bitpayCardEnabled;
+        $scope.recentTransactionsEnabled = config.recentTransactions.enabled;
       });
       $scope.nextStep();
       $scope.updateAllWallets();
