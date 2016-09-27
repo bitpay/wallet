@@ -101,7 +101,7 @@
         max-width: 600px !important;
       }
       button{
-        max-width: 400px !important; 
+        max-width: 400px !important;
       }
     }
   }
@@ -112,6 +112,6 @@
 @import "onboard-tour";
 @import "onboard-collect-email";
 @import "onboard-backup-request";
-@import "onboard-backup-warning";
+@import "../backup-warning";
 @import "onboard-disclaimer";
 @import "onboard-push-notifications";

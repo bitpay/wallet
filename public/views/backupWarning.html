@@ -1,7 +1,7 @@
-<ion-view id="onboarding-backup-warning" class="onboarding" ng-controller="backupWarningController">
+<ion-view id="backup-warning" class="onboarding" ng-controller="backupWarningController">
   <ion-nav-bar  class="bar-royal">
     <ion-nav-buttons side="primary">
-      <button class="button button-back button-clear" href ui-sref="onboarding.backupRequest({walletId: walletId})">
+      <button class="button button-back button-clear" ng-click="goBack()">
         <i class="icon ion-ios-arrow-thin-left"></i>
       </button>
     </ion-nav-buttons>
@@ -18,7 +18,7 @@
       </p>
     </div>
     <div class="row">
-      <img src="img/onboarding-backup-warning.svg" class="col col-60 warning-image">
+      <img src="img/backup-warning.svg" class="col col-60 warning-image">
     </div>
     <div class="row text-center">
       <p class="col col-60">
