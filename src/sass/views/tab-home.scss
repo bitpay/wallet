@@ -26,14 +26,24 @@
         top:0;
         right:0;
         content:'';
+        @media (min-width: 450px){
+          &{
+            width:90%;
+          }
+        }
       }
       &.item-heading{
         &:before{
-          width:100%;
+          width:100% !important;
           top:99%
         }
       }
-      &:nth-child(2){
+      &:nth-child(1){
+        &:before{
+          width:0;
+        }
+      }
+      &:nth-child(2):last-child{
         &:before{
           width:0;
         }
