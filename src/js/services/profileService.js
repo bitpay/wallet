@@ -118,7 +118,8 @@ angular.module('copayApp.services')
       });
 
       _showBackupNeededModal(wallet, function(val) {
-        wallet.showBackupNeededModal = val;
+        if (wallet.needsBackup) wallet.showBackupNeededModal = val;
+        else wallet.showBackupNeededModal = false;
       });
 
       wallet.removeAllListeners();
