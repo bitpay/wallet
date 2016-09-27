@@ -1,4 +1,4 @@
-<ion-view id="tab-settings" class="settings">
+<ion-view id="advanced-settings" class="settings">
   <ion-nav-bar class="bar-royal">
     <ion-nav-title>{{'Advanced Settings' | translate}}</ion-nav-title>
     <ion-nav-back-button>
@@ -33,19 +33,19 @@
       <ion-toggle ng-model="spendUnconfirmed.value" toggle-class="toggle-balanced" ng-change="spendUnconfirmedChange()">
         <span class="toggle-label" translate>Use Unconfirmed Funds</span>
       </ion-toggle>
-      <div ng-style="{'padding':'15px', 'background-color': '#fff', 'color': 'rgba(74, 74, 74, 0.8)'}">
+      <div class="comment">
         <span translate>If enabled, wallets will also try to spend unconfirmed funds. This option may cause transaction delays.</span>
       </div>
 
       <div class="item item-divider" translate>Experimental Features</div>
-      <div ng-style="{'padding':'15px', 'color': 'rgba(74, 74, 74, 0.8)', 'font-size': '15px'}">
+      <div class="divider-comment">
         <span translate>These features aren't quite ready for primetime. They may change, stop working, or disappear at any time.</span>
       </div>
 
       <ion-toggle ng-show="!isWP" ng-model="recentTransactionsEnabled.value" toggle-class="toggle-balanced" ng-change="recentTransactionsChange()">
         <span class="toggle-label" translate>Recent Transaction Card</span>
       </ion-toggle>
-      <div ng-style="{'padding':'15px', 'background-color': '#fff', 'color': 'rgba(74, 74, 74, 0.8)'}">
+      <div class="comment">
         <span transaction>If enabled, the Recent Transactions card - a list of transactions occuring across all wallets - will appear in the Home tab.</span>
       </div>
 
