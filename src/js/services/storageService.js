@@ -365,6 +365,14 @@ angular.module('copayApp.services')
       storage.get('receiveTips', cb);
     };
 
+    root.setBackupNeededModalFlag = function(walletId, val, cb) {
+      storage.set('showBackupNeededModal-' + walletId, val, cb);
+    };
+
+    root.getBackupNeededModalFlag = function(walletId, cb) {
+      storage.get('showBackupNeededModal-' + walletId, cb);
+    };
+
     root.setAmazonGiftCards = function(network, gcs, cb) {
       storage.set('amazonGiftCards-' + network, gcs, cb);
     };
