@@ -31,6 +31,10 @@ angular.module('copayApp.controllers').controller('tabsController', function($ro
     'tabs.addressbook',
     'tabs.addressbook.add',
     'tabs.addressbook.view',
+    'tabs.preferences.backupWarning',
+    'tabs.preferences.backup',
+    'tabs.receive.backupWarning',
+    'tabs.receive.backup',
   ];
 
   $rootScope.$on('$ionicView.beforeEnter', function() {

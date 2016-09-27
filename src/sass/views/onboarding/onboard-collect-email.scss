@@ -80,6 +80,19 @@
             font-size:.8rem;
           }
         }
+        @media (min-width: 400px){
+          &{
+            max-width: 400px;
+            label{
+              .checkbox{
+                left:1rem;
+              }
+              .item-content{
+                font-size: 1rem;
+              }
+            }
+          }
+        }
       }
     }
   }
