@@ -4,45 +4,47 @@
   </ion-nav-bar>
 
   <ion-content>
-    <div>
-      <div class="item item-heading" translate>Recipient</div>
-      <label class="item item-input bitcoin-address">
-        <i class="icon ion-search placeholder-icon"></i>
-        <div class="qr-scan-icon" ng-style="{'width': '100%'}">
-          <qr-scanner class="qr-icon size-24" ng-style="{'top': '3px'}" on-scan="onQrCodeScanned(data)"></qr-scanner>
-          <input type="text"
-                 placeholder="Search or enter bitcoin address"
-                 ng-model="formData.search"
-                 ng-change="findContact(formData.search)"
-                 ng-model-onblur>
-        </div>
-      </label>
-    </div>
+    <div class="item item-heading" translate>Recipient</div>
+    <label class="item item-input bitcoin-address">
+      <i class="icon ion-social-bitcoin placeholder-icon"></i>
+      <div class="qr-scan-icon" ng-style="{'width': '100%'}">
+        <qr-scanner class="qr-icon size-24" ng-style="{'top': '3px'}" on-scan="onQrCodeScanned(data)"></qr-scanner>
+        <input type="text"
+               placeholder="{{'Search or enter bitcoin address' | translate}}"
+               ng-model="formData.search"
+               ng-change="findContact(formData.search)"
+               ng-model-onblur>
+      </div>
+    </label>
 
     <div class="card">
       <div class="item item-icon-right item-heading">
         <span translate>Contacts</span>
-        <a ui-sref="tabs.send.addressbook"><i class="icon ion-ios-plus-empty list-add-button"></i></a>
+        <a ng-show="hasContacts" ui-sref="tabs.send.addressbook"><i class="icon ion-ios-plus-empty list-add-button"></i></a>
       </div>
-      <a class="item item-icon-left ng-hide" ng-show="!hasContacts" ui-sref="tabs.send.addressbook">
+      <a class="item item-icon-left item-icon-right ng-hide" ng-show="!hasContacts" ui-sref="tabs.send.addressbook">
         <gravatar class="send-gravatar" name="" width="30" email=""></gravatar>
         <span translate>Add a Contact</span>
+        <i class="icon nav-item-arrow-right"></i>
       </a>
-      <a class="item item-icon-left ng-hide" ng-repeat="item in list" ng-show="hasContacts && !item.isWallet" ng-click="goToAmount(item)">
+      <a class="item item-icon-left item-icon-right ng-hide" ng-repeat="item in list" ng-show="hasContacts && !item.isWallet" ng-click="goToAmount(item)">
         <gravatar class="send-gravatar" name="{{item.name}}" width="30" email="{{item.email}}"></gravatar>
         {{item.name}}
+        <i class="icon nav-item-arrow-right"></i>
       </a>
+      <div class="show-more" ng-show="contactsShowMore" ng-click="showMore()" translate>
+        Show more
+      </div>
     </div>
 
-    <div class="card">
+    <div class="card" ng-show="hasWallets && !oneWallet">
       <div class="item item-heading">
         <span translate>Transfer to Wallet</span>
       </div>
-      <div class="item text-center ng-hide" ng-show="!hasWallets" translate>No Wallet</div>
-      <a class="item item-icon-left ng-hide" ng-repeat="item in list" ng-show="hasWallets && item.isWallet" ng-click="goToAmount(item)">
+      <a class="item item-icon-left item-icon-right ng-hide" ng-repeat="item in list" ng-show="hasWallets && item.isWallet" ng-click="goToAmount(item)">
         <i ng-show="item.isWallet" class="icon ion-briefcase size-21" ng-style="{'color':item.color}"></i>
-        <gravatar class="send-gravatar" ng-show="!item.isWallet" name="{{item.name}}" width="30" email="{{item.email}}"></gravatar>
         {{item.name}}
+        <i class="icon nav-item-arrow-right"></i>
       </a>
     </div>
   </ion-content>
