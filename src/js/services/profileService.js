@@ -1,6 +1,6 @@
 'use strict';
 angular.module('copayApp.services')
-  .factory('profileService', function profileServiceFactory($rootScope, $timeout, $filter, $log, sjcl, lodash, storageService, bwcService, configService, pushNotificationsService, gettext, gettextCatalog, bwcError, uxLanguage, platformInfo, $ionicHistory, txFormatService, $state) {
+  .factory('profileService', function profileServiceFactory($rootScope, $timeout, $filter, $log, sjcl, lodash, storageService, bwcService, configService, pushNotificationsService, gettext, gettextCatalog, bwcError, uxLanguage, platformInfo, txFormatService, $state) {
 
 
     var isChromeApp = platformInfo.isChromeApp;
