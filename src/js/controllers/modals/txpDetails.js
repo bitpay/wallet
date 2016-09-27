@@ -7,6 +7,7 @@ angular.module('copayApp.controllers').controller('txpDetailsController', functi
   var isGlidera = $scope.isGlidera;
   var GLIDERA_LOCK_TIME = 6 * 60 * 60;
   var now = Math.floor(Date.now() / 1000);
+  var countDown;
 
   $scope.init = function() {
     $scope.loading = null;
@@ -18,6 +19,7 @@ angular.module('copayApp.controllers').controller('txpDetailsController', functi
     $scope.data = {};
 
     initActionList();
+    checkPaypro();
   }
 
   function initActionList() {
@@ -52,8 +54,6 @@ angular.module('copayApp.controllers').controller('txpDetailsController', functi
   $scope.$on('accepted', function(event) {
     $scope.sign();
   });
-
-  checkPaypro();
 
   // ToDo: use tx.customData instead of tx.message
   if (tx.message === 'Glidera transaction' && isGlidera) {
@@ -154,7 +154,7 @@ angular.module('copayApp.controllers').controller('txpDetailsController', functi
     $scope.paymentExpired = false;
     setExpirationTime();
 
-    self.countDown = $interval(function() {
+    countDown = $interval(function() {
       setExpirationTime();
     }, 1000);
 
@@ -162,7 +162,7 @@ angular.module('copayApp.controllers').controller('txpDetailsController', functi
       var now = Math.floor(Date.now() / 1000);
       if (now > expirationTime) {
         $scope.paymentExpired = true;
-        if (self.countDown) $interval.cancel(self.countDown);
+        if (countDown) $interval.cancel(countDown);
         return;
       }
       var totalSecs = expirationTime - now;
