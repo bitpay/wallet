@@ -3,7 +3,7 @@
 angular.module('copayApp.controllers').controller('txStatusController', function($scope, $timeout, $state, $ionicHistory, $log, addressbookService) {
 
   if ($scope.cb) $timeout($scope.cb, 100);
-  $scope.fromSendTab = $ionicHistory.viewHistory().backView.stateName === "tabs.send.amount" || "tabs.send";
+  $scope.fromSendTab = $ionicHistory.viewHistory().backView && $ionicHistory.viewHistory().backView.stateName === "tabs.send.amount" ||  "tabs.send";
 
   $scope.cancel = function() {
     $scope.txStatusModal.hide();

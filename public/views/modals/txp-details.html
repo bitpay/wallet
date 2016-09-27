@@ -160,7 +160,7 @@
         <span translate>Delete Payment Proposal</span>
       </button>
     </div>
-    <button class="button button-block button-positive" ng-click="approve()" ng-if="tx.pendingForUs && canSign && !loading && !paymentExpired && !isCordova" translate>Click to pay</button>
+    <button class="button button-block button-positive" ng-click="sign()" ng-if="tx.pendingForUs && canSign && !loading && !paymentExpired && !isCordova" translate>Click to pay</button>
   </ion-content>
   <accept class="accept-slide" ng-if="tx.pendingForUs && canSign && !loading && !paymentExpired && isCordova"></accept>
 </ion-modal-view>
