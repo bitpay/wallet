@@ -126,6 +126,9 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
         $scope.rateDate = res.fetchedOn;
         $scope.rateStr = res.rate + ' ' + $scope.alternativeIsoCode;
         $scope.alternativeAmountStr = $filter('formatFiatAmount')(alternativeAmountBtc * res.rate) + ' ' + $scope.alternativeIsoCode;
+        $timeout(function() {
+          $scope.$apply();
+        });
       }
     });
   };
