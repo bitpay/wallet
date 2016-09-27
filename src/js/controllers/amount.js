@@ -60,6 +60,8 @@ angular.module('copayApp.controllers').controller('amountController', function($
     satToBtc = 1 / 100000000;
     unitDecimals = config.unitDecimals;
 
+    $scope.resetAmount();
+
     // in SAT ALWAYS
     if ($stateParams.toAmount) {
       $scope.amount = (($stateParams.toAmount) * satToUnit).toFixed(unitDecimals);

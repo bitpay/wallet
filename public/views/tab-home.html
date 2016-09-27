@@ -22,10 +22,10 @@
     </div>
 
     <div class="list card" ng-hide="!txps[0]">
-      <a class="item item-icon-right item-heading" ui-sref="tabs.proposals" translate>
-        Payment Proposals
+      <a class="item item-icon-right item-heading" ui-sref="tabs.proposals">
+        {{'Payment Proposals'|translate}}
         <i class="icon nav-item-arrow-right"></i>
-        <span class="badge badge-assertive m5t m10r" ng-if="txpsN>3" translate> {{txpsN}}</span>
+        <span class="badge badge-assertive m5t m10r" ng-show="txpsN>3"> {{txpsN}}</span>
       </a>
 
       <a ng-repeat="tx in txps" class="item" ng-click="openTxpModal(tx)">

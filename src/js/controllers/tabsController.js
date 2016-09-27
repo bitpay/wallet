@@ -1,12 +1,10 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('tabsController', function($rootScope, $log, $scope, $state, $stateParams, $timeout, incomingData, lodash) {
+angular.module('copayApp.controllers').controller('tabsController', function($rootScope, $log, $scope, $state, $stateParams, $timeout, incomingData, lodash, popupService) {
 
   $scope.onScan = function(data) {
     if (!incomingData.redir(data)) {
-      $ionicPopup.alert({
-        title: 'Invalid data',
-      });
+      popupService.showAlert(null, gettextCatalog.getString('Invalid data'));
     }
   }
 

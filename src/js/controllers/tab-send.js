@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('tabSendController', function($scope, $log, $timeout, $ionicScrollDelegate, addressbookService, profileService, lodash, $state, walletService, incomingData) {
+angular.module('copayApp.controllers').controller('tabSendController', function($scope, $log, $timeout, $ionicScrollDelegate, addressbookService, profileService, lodash, $state, walletService, incomingData, popupService) {
 
   var originalList;
   var CONTACTS_SHOW_LIMIT = 10;
@@ -99,9 +99,7 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
 
   $scope.onQrCodeScanned = function(data) {
     if (!incomingData.redir(data)) {
-      $ionicPopup.alert({
-        title: 'Invalid data',
-      });
+      popupService.showAlert(null, gettextCatalog.getString('Invalid data'));
     }
   };
 
