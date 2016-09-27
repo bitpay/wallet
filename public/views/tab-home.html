@@ -33,9 +33,9 @@
       </a>
     </div>
 
-    <div class="list card" ng-if="notifications[0]">
+    <div class="list card" ng-if="notifications[0] && recentTransactions">
       <a class="item item-icon-right item-heading" ui-sref="tabs.activity">
-        <span translate>Recent Activity</span>
+        <span translate>Recent Transactions</span>
         <i class="icon nav-item-arrow-right"></i>
       </a>
       <span ng-if="fetchingNotifications" class="item text-center">
@@ -114,7 +114,7 @@
     </div>
 
     <div class="list card"
-         ng-if="!externalServices.AmazonGiftCards || !externalServices.BitpayCard || !externalServices.BuyAndSell || !wallets[0]">
+         ng-if="(!externalServices.AmazonGiftCards || !externalServices.BitpayCard || !externalServices.BuyAndSell || !wallets[0]) && nextStepEnabled">
       <div class="item item-icon-right item-heading" ng-click="shouldHideNextSteps()" translate>
         Next steps
         <i class="icon nav-item-arrow-down" ng-if="!hideNextSteps"></i>
@@ -128,21 +128,21 @@
           <span translate>Create a bitcoin wallet</span>
           <i class="icon nav-item-arrow-right"></i>
         </a>
-        <a ui-sref="bitpayCard.main" ng-if="!externalServices.BitpayCard" class="item item-icon-left item-big-icon-left item-icon-right next-step">
+        <a ui-sref="bitpayCard.main" ng-if="!externalServices.BitpayCard && bitpayCardEnabled" class="item item-icon-left item-big-icon-left item-icon-right next-step">
          <i class="icon big-icon-svg">
            <div class="bg icon-bitpay-card"></div>
          </i>
           <span translate>Add BitPay Card</span>
           <i class="icon nav-item-arrow-right"></i>
         </a>
-        <a ng-if="!externalServices.BuyAndSell" ui-sref="tabs.buyandsell" class="item item-icon-left item-big-icon-left item-icon-right next-step">
+        <a ng-if="!externalServices.BuyAndSell && (coinbaseEnabled || glideraEnabled)" ui-sref="tabs.buyandsell" class="item item-icon-left item-big-icon-left item-icon-right next-step">
          <i class="icon big-icon-svg">
            <div class="bg icon-buy-bitcoin"></div>
          </i>
           <span translate>Buy or Sell Bitcoin</span>
           <i class="icon nav-item-arrow-right"></i>
         </a>
-        <a ui-sref="tabs.giftcards.amazon" ng-if="!externalServices.AmazonGiftCards" class="item item-icon-left item-big-icon-left item-icon-right next-step">
+        <a ui-sref="tabs.giftcards.amazon" ng-if="!externalServices.AmazonGiftCards && amazonEnabled" class="item item-icon-left item-big-icon-left item-icon-right next-step">
           <i class="icon big-icon-svg">
             <div class="bg icon-gift"></div>
           </i>
