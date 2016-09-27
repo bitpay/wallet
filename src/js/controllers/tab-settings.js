@@ -28,13 +28,7 @@ angular.module('copayApp.controllers').controller('tabSettingsController', funct
         $scope.$digest();
       });
     }
-    $scope.spendUnconfirmed = {
-      value: config.wallet.spendUnconfirmed
-    };
-    $scope.glideraEnabled = {
-      value: config.glidera.enabled
-    };
-    $scope.coinbaseEnabled = config.coinbase.enabled;
+
     $scope.pushNotifications = {
       value: config.pushNotifications.enabled
     };
@@ -52,17 +46,6 @@ angular.module('copayApp.controllers').controller('tabSettingsController', funct
     });
   };
 
-  $scope.spendUnconfirmedChange = function() {
-    var opts = {
-      wallet: {
-        spendUnconfirmed: $scope.spendUnconfirmed.value
-      }
-    };
-    configService.set(opts, function(err) {
-      if (err) $log.debug(err);
-    });
-  };
-
   $scope.pushNotificationsChange = function() {
     var opts = {
       pushNotifications: {
@@ -74,28 +57,6 @@ angular.module('copayApp.controllers').controller('tabSettingsController', funct
         pushNotificationsService.enableNotifications(profileService.walletClients);
       else
         pushNotificationsService.disableNotifications(profileService.walletClients);
-      if (err) $log.debug(err);
-    });
-  };
-
-  $scope.glideraChange = function() {
-    var opts = {
-      glidera: {
-        enabled: $scope.glideraEnabled.value
-      }
-    };
-    configService.set(opts, function(err) {
-      if (err) $log.debug(err);
-    });
-  };
-
-  $scope.coinbaseChange = function() {
-    var opts = {
-      coinbase: {
-        enabled: $scope.coinbaseEnabled
-      }
-    };
-    configService.set(opts, function(err) {
       if (err) $log.debug(err);
     });
   };

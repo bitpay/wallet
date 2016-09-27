@@ -390,6 +390,15 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
           }
         }
       })
+      .state('tabs.advanced', {
+        url: '/advanced',
+        views: {
+          'tab-settings@tabs': {
+            controller: 'advancedSettingsController',
+            templateUrl: 'views/advancedSettings.html'
+          }
+        }
+      })
 
     /*
      *
