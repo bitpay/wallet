@@ -191,6 +191,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
     .state('tabs', {
         url: '/tabs',
         abstract: true,
+        controller: 'tabsController',
         templateUrl: 'views/tabs.html'
       })
       .state('tabs.home', {
