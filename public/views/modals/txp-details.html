@@ -22,32 +22,30 @@
           <div class="amount">{{tx.amountStr}}</div>
           <div class="alternative" ng-show="tx.alternativeAmountStr">{{tx.alternativeAmountStr}}</div>
         </div>
-      </div>
 
-      <div class="row" ng-if="tx.removed">
-        <div class="column m20t text-center text-warning size-12" translate>
+        <div class="text-center m10t assertive" ng-if="tx.removed" translate>
           The payment was removed by creator
         </div>
+
+        <div class="text-center m10t" ng-show="tx.status != 'pending'">
+          <div ng-show="tx.status == 'accepted' && !tx.isGlidera">
+            <div class="m10b positive" translate>Payment accepted, but not yet broadcasted</div>
+
+            <button class="button button-positive button-block" ng-click="broadcast(tx)" ng-disabled="loading">
+              <i class="icon ion-ios-cloud-upload-outline"></i>
+              <span translate>Broadcast Payment</span>
+            </button>
+          </div>
+          <div ng-show="tx.status == 'accepted' && tx.isGlidera" >
+            <div class="m10h" translate>Payment accepted. It will be broadcasted by Glidera. In case there is a problem, it can be deleted 6 hours after it was created.</div>
+          </div>
+          <div class="balanced" ng-show="tx.status == 'broadcasted'" translate>Payment Sent</div>
+          <div class="assertive" ng-show="tx.status=='rejected'" translate>Payment Rejected</div>
+        </div>
       </div>
 
-      <div ng-show="tx.status != 'pending'">
-        <div ng-show="tx.status=='accepted' && !tx.isGlidera">
-          <div class="m10b" translate>Payment accepted, but not yet broadcasted</div>
-
-          <button class="button button-balanced button-block" ng-style="{'background-color':color}" ng-click="broadcast(tx)" ng-disabled="loading">
-            <i class="fi-upload-cloud"></i>
-            <span translate>Broadcast Payment</span>
-          </button>
-        </div>
-        <div ng-show="tx.status=='accepted' && tx.isGlidera" >
-          <div class="m10h" translate>Payment accepted. It will be broadcasted by Glidera. In case there is a problem, it can be deleted 6 hours after it was created.</div>
-        </div>
-        <div class="balanced" ng-show="tx.status == 'broadcasted'" translate>Payment Sent</div>
-        <div class="assertive" ng-show="tx.status=='rejected'" translate>Payment Rejected</div>
-      </div>
-
-      <div class="item" ng-show="!currentSpendUnconfirmed && tx.hasUnconfirmedInputs">
-        <span class="text-warning" translate>Warning: this transaction has unconfirmed inputs</span>
+      <div class="item assertive text-center" ng-show="!currentSpendUnconfirmed && tx.hasUnconfirmedInputs" translate>
+        Warning: this transaction has unconfirmed inputs
       </div>
 
       <div class="info">
@@ -73,61 +71,61 @@
         </div>
 
         <div class="item">
-          <span translate>From</span>
-          <i class="icon big-icon-svg">
-            <img src="img/icon-wallet.svg" ng-style="{'background-color': wallet.color}" class="bg"/>
-          </i>
-          <span>
-            {{wallet.name}}
+          {{'From'|translate}}
+          <span class="item-note">
+            <i class="icon big-icon-svg right">
+              <img src="img/icon-wallet.svg" ng-style="{'background-color': wallet.color}" class="bg"/>
+            </i>
+            <div class="m10t m55r">{{wallet.name}}</div>
           </span>
         </div>
         <div class="item">
-          <span translate>Created by</span>
-          <span>
+          {{'Created by'|translate}}
+          <span class="item-note">
             {{tx.creatorName}} <time>{{ (tx.ts || tx.createdOn ) * 1000 | amDateFormat:'MM/DD/YYYY HH:mm a'}}</time>
           </span>
         </div>
         <div class="item" ng-show="tx.message">
-          <span translate>Memo</span>
-          <span>
+          {{'Memo'|translate}}
+          <span class="item-note">
             {{tx.message}}
           </span>
         </div>
         <div class="item">
-          <span translate>Fee</span>
-          <span>
+          {{'Fee'|translate}}
+          <span class="item-note">
             {{tx.feeStr}}
           </span>
         </div>
 
         <div ng-if="tx.paypro">
           <div class="item item-divider" translate>Payment details</div>
-          <li class="item">
-            <span class="text-gray" translate>To</span>
-            <span class="right">
+          <div class="item">
+            {{'To'|translate}}
+            <span class="item-note">
               <span>
                 <span ng-show="tx.merchant.pr.ca"><i class="fi-lock"></i> {{tx.paypro.domain}}</span>
                 <span ng-show="!tx.merchant.pr.ca"><i class="fi-unlock"></i> {{tx.paypro.domain}}</span>
               </span>
               <contact address="{{tx.toAddress}}" ng-hide="tx.merchant"></contact>
             </span>
-          </li>
-          <li class="item" ng-if="paymentExpired">
-            <span class="text-gray" translate>Expired</span>
-            <span class="right text-alert">
+          </div>
+          <div class="item" ng-if="paymentExpired">
+            {{'Expired'|translate}}
+            <span class="item-note">
               <time>{{tx.paypro.expires * 1000 | amTimeAgo }}</time>
             </span>
-          </li>
-          <li class="item" ng-if="!paymentExpired">
-            <span class="text-gray" translate>Expires</span>
-            <span class="right">
+          </div>
+          <div class="item" ng-if="!paymentExpired">
+            {{'Expires'|translate}}
+            <span class="item-note">
               <time>{{expires}}</time>
             </span>
-          </li>
-          <li class="item">
-            <span class="text-gray" translate>Merchant Message</span>
-            <span class="db">{{tx.paypro.pr.pd.memo}}</span>
-          </li>
+          </div>
+          <div class="item">
+            {{'Merchant Message'|translate}}
+            <span class="item-note">{{tx.paypro.pr.pd.memo}}</span>
+          </div>
         </div>
         <div ng-if="actionList[0]">
           <div class="item item-divider" translate>Timeline</div>
@@ -151,16 +149,20 @@
         </div>
       </div>
     </div>
-    <div class="m20t" ng-if="tx.canBeRemoved || (tx.status == 'accepted' && !tx.broadcastedOn)">
+    <button class="button button-block button-positive"
+            ng-click="sign()"
+            ng-if="tx.pendingForUs && canSign && !loading && !paymentExpired && !isCordova" translate>
+      Click to accept
+    </button>
+    <div class="m30t text-center" ng-if="tx.canBeRemoved || (tx.status == 'accepted' && !tx.broadcastedOn)">
       <div class="size-12 padding" ng-show="!tx.isGlidera && isShared" translate>
         * A payment proposal can be deleted if 1) you are the creator, and no other copayer has signed, or 2) 24 hours have passed since the proposal was created.
       </div>
-      <button class="button button-assertive button-block" ng-click="remove()" ng-disabled="loading">
+      <button class="button button-assertive button-clear" ng-click="remove()" ng-disabled="loading">
         <i class="fi-trash size-14 m5r"></i>
         <span translate>Delete Payment Proposal</span>
       </button>
     </div>
-    <button class="button button-block button-positive" ng-click="sign()" ng-if="tx.pendingForUs && canSign && !loading && !paymentExpired && !isCordova" translate>Click to pay</button>
   </ion-content>
   <accept class="accept-slide" ng-if="tx.pendingForUs && canSign && !loading && !paymentExpired && isCordova"></accept>
 </ion-modal-view>
