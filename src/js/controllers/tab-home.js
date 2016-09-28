@@ -180,6 +180,11 @@ angular.module('copayApp.controllers').controller('tabHomeController',
       });
     };
 
+    $scope.shouldHideNextSteps = function() {
+      $scope.hideNextSteps = !$scope.hideNextSteps;
+      $ionicScrollDelegate.resize();
+    };
+
     var listeners = [
       $rootScope.$on('bwsEvent', function(e, walletId, type, n) {
         var wallet = profileService.getWallet(walletId);
@@ -204,6 +209,10 @@ angular.module('copayApp.controllers').controller('tabHomeController',
         var isWindowsPhoneApp = platformInfo.isWP && platformInfo.isCordova;
         $scope.glideraEnabled = config.glidera.enabled && !isWindowsPhoneApp;
         $scope.coinbaseEnabled = config.coinbase.enabled && !isWindowsPhoneApp;
+        $scope.amazonEnabled = config.amazon.enabled;
+        $scope.bitpayCardEnabled = config.bitpayCard.enabled;
+        $scope.nextStepEnabled = $scope.glideraEnabled || $scope.coinbaseEnabled || $scope.amazonEnabled || $scope.bitpayCardEnabled;
+        $scope.recentTransactionsEnabled = config.recentTransactions.enabled;
       });
       $scope.nextStep();
       $scope.updateAllWallets();

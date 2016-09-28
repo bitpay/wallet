@@ -15,9 +15,14 @@
     position: absolute;
     bottom: 0;
   }
+  @media (min-width: 415px){
+    .warning{
+      height:16rem;
+    }
+  }
 }
 
-@media (max-width: 400px){
+@media (max-width: 399px){
   #onboarding-backup-request{
     .warning{
       margin: 2rem auto 1rem;
@@ -52,7 +57,7 @@
 @media (min-height: 980px){
   #onboarding-backup-request{
     #arrow-down{
-      margin-top: 15rem;
+      margin-top: 7rem;
     }
   }
 }

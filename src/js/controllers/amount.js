@@ -15,11 +15,11 @@ angular.module('copayApp.controllers').controller('amountController', function($
   $scope.toName = $stateParams.toName;
   $scope.toEmail = $stateParams.toEmail;
 
-  $scope.$on('$ionicView.beforeLeave', function() {
+  $scope.$on('$ionicView.leave', function() {
     angular.element($window).off('keydown');
   });
 
-  $scope.$on("$ionicView.beforeEnter", function(event, data) {
+  $scope.$on("$ionicView.enter", function(event, data) {
 
     if (!$stateParams.toAddress) {
       $log.error('Bad params at amount')
@@ -59,6 +59,8 @@ angular.module('copayApp.controllers').controller('amountController', function($
     satToUnit = 1 / unitToSatoshi;
     satToBtc = 1 / 100000000;
     unitDecimals = config.unitDecimals;
+
+    $scope.resetAmount();
 
     // in SAT ALWAYS
     if ($stateParams.toAmount) {
