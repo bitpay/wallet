@@ -76,7 +76,7 @@ angular.module('copayApp.controllers').controller('tabHomeController',
         });
       }
 
-      $state.go('tabs.details', {
+      $state.go('tabs.wallet', {
         walletId: wallet.credentials.walletId
       });
     };

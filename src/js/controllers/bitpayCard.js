@@ -98,23 +98,6 @@ angular.module('copayApp.controllers').controller('bitpayCardController', functi
     });
   };
 
-  this.init = function() {
-    $scope.dateRange = 'last30Days';
-
-    $scope.network = bitpayCardService.getEnvironment();
-    $scope.wallets = profileService.getWallets({
-      network: $scope.network,
-      onlyComplete: true
-    });
-
-    self.update();
-
-    wallet = $scope.wallets[0];
-
-    if (wallet && wallet.credentials.n > 1)
-      self.isMultisigWallet = true;
-  };
-
   this.sendFunds = function() {
     if (lodash.isEmpty(wallet)) return;
 
@@ -257,6 +240,23 @@ angular.module('copayApp.controllers').controller('bitpayCardController', functi
     }
     return tx.description;
   };
+
+  $scope.$on("$ionicView.beforeEnter", function(event, data){
+    $scope.dateRange = 'last30Days';
+
+    $scope.network = bitpayCardService.getEnvironment();
+    $scope.wallets = profileService.getWallets({
+      network: $scope.network,
+      onlyComplete: true
+    });
+
+    self.update();
+
+    wallet = $scope.wallets[0];
+
+    if (wallet && wallet.credentials.n > 1)
+      self.isMultisigWallet = true;
+  });
 
 });
 

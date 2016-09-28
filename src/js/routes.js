@@ -150,10 +150,10 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
      *
      */
 
-    .state('tabs.details', {
-        url: '/details/{walletId}/{fromOnboarding}',
+    .state('tabs.wallet', {
+        url: '/wallet/{walletId}/{fromOnboarding}',
         views: {
-          'tab-home': {
+          'tab-home@tabs': {
             controller: 'walletDetailsController',
             templateUrl: 'views/walletDetails.html'
           }
@@ -166,7 +166,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
       .state('tabs.activity', {
         url: '/activity',
         views: {
-          'tab-home': {
+          'tab-home@tabs': {
             controller: 'activityController',
             templateUrl: 'views/activity.html',
           }
@@ -175,7 +175,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
       .state('tabs.proposals', {
         url: '/proposals',
         views: {
-          'tab-home': {
+          'tab-home@tabs': {
             controller: 'proposalsController',
             templateUrl: 'views/proposals.html',
           }
@@ -836,29 +836,26 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         }
       })
 
-    /*
-     *
-     * BitPay Card
-     *
-     */
+      /*
+       *
+       * BitPay Card
+       *
+       */
 
-    .state('bitpayCard', {
-        url: '/bitpayCard',
-        abstract: true,
-        template: '<ion-nav-view name="bitpayCard"></ion-nav-view>'
-      })
-      .state('bitpayCard.main', {
-        url: '/main',
+      .state('tabs.bitpayCard', {
+        url: '/bitpay-card',
         views: {
-          'bitpayCard': {
+          'tab-home@tabs': {
+            controller: 'bitpayCardController',
+            controllerAs: 'bitpayCard',
             templateUrl: 'views/bitpayCard.html'
           }
         }
       })
-      .state('bitpayCard.preferences', {
+      .state('tabs.bitpayCard.preferences', {
         url: '/preferences',
         views: {
-          'bitpayCard': {
+          'tab-home@tabs': {
             templateUrl: 'views/preferencesBitpayCard.html'
           }
         }
