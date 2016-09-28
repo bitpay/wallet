@@ -37,7 +37,9 @@ angular.module('copayApp.controllers').controller('createController',
     };
 
     $scope.showAdvChange = function() {
-      $ionicScrollDelegate.resize();
+      $timeout(function() {
+        $ionicScrollDelegate.resize();
+      }, 10);
     };
 
     function updateRCSelect(n) {
