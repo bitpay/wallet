@@ -88,11 +88,10 @@ angular.module('copayApp.controllers').controller('tabHomeController',
         if (err) $log.error(err);
         $scope.txps = txps;
         $scope.txpsN = n;
-        $ionicScrollDelegate.resize();
-
         $timeout(function() {
+          $ionicScrollDelegate.resize();
           $scope.$apply();
-        }, 1);
+        }, 10);
       })
     };
 
@@ -128,11 +127,11 @@ angular.module('copayApp.controllers').controller('tabHomeController',
         }
         $scope.fetchingNotifications = false;
         $scope.notifications = n;
-        $ionicScrollDelegate.resize();
 
         $timeout(function() {
+          $ionicScrollDelegate.resize();
           $scope.$apply();
-        }, 1);
+        }, 10);
 
       })
     };
@@ -175,14 +174,18 @@ angular.module('copayApp.controllers').controller('tabHomeController',
       lodash.each(['AmazonGiftCards', 'BitpayCard', 'BuyAndSell'], function(service) {
         storageService.getNextStep(service, function(err, value) {
           $scope.externalServices[service] = value ? true : false;
-          $ionicScrollDelegate.resize();
+          $timeout(function() {
+            $ionicScrollDelegate.resize();
+          }, 10);
         });
       });
     };
 
     $scope.shouldHideNextSteps = function() {
       $scope.hideNextSteps = !$scope.hideNextSteps;
-      $ionicScrollDelegate.resize();
+      $timeout(function() {
+        $ionicScrollDelegate.resize();
+      }, 10);
     };
 
     var listeners = [
@@ -207,6 +210,7 @@ angular.module('copayApp.controllers').controller('tabHomeController',
       configService.whenAvailable(function() {
         var config = configService.getSync();
         var isWindowsPhoneApp = platformInfo.isWP && platformInfo.isCordova;
+        $scope.hideNextSteps = false;
         $scope.glideraEnabled = config.glidera.enabled && !isWindowsPhoneApp;
         $scope.coinbaseEnabled = config.coinbase.enabled && !isWindowsPhoneApp;
         $scope.amazonEnabled = config.amazon.enabled;

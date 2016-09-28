@@ -147,7 +147,7 @@ angular.module('copayApp.controllers').controller('txpDetailsController', functi
         paymentTimeControl(tx.paypro.expires);
         $timeout(function() {
           $ionicScrollDelegate.resize();
-        }, 100);
+        }, 10);
       });
     }
   };

@@ -14,7 +14,9 @@ angular.module('copayApp.controllers').controller('searchController', function($
       window.plugins.toast.hide();
     currentTxHistoryPage = 0;
     throttleSearch(search);
-    $ionicScrollDelegate.resize();
+    $timeout(function() {
+      $ionicScrollDelegate.resize();
+    }, 10);
   }
 
   var throttleSearch = lodash.throttle(function(search) {
