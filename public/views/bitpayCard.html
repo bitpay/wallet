@@ -1,19 +1,16 @@
 <ion-view>
   <ion-nav-bar class="bar-royal">
-    <ion-nav-buttons side="primary">
-      <button class="button button-clear" ui-sref="tabs.home">
-        Close
-      </button>
-    </ion-nav-buttons>
+    <ion-nav-back-button>
+    </ion-nav-back-button>
     <ion-nav-title>BitPay Card</ion-nav-title>
     <ion-nav-buttons side="secondary">
-      <button class="button button-clear" ui-sref="bitpayCard.preferences">
-        <i class="icon ion-gear-b"></i>
+      <button class="button back-button">
+        <i class="icon ion-ios-search-strong"></i>
       </button>
     </ion-nav-buttons>
   </ion-nav-bar>
 
-  <ion-content ng-controller="bitpayCardController as bitpayCard" ng-init="bitpayCard.init()">
+  <ion-content>
 
     <div class="box-notification warning" ng-show="network == 'testnet'">
       Sandbox version. Only for testing purpose
