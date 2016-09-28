@@ -76,7 +76,7 @@ angular.module('copayApp.controllers').controller('advancedSettingsController', 
   $scope.coinbaseChange = function() {
     var opts = {
       coinbase: {
-        enabled: $scope.coinbaseEnabled
+        enabled: $scope.coinbaseEnabled.value
       }
     };
     configService.set(opts, function(err) {
@@ -87,7 +87,7 @@ angular.module('copayApp.controllers').controller('advancedSettingsController', 
   $scope.recentTransactionsChange = function() {
     var opts = {
       recentTransactions: {
-        enabled: $scope.recentTransactionsEnabled
+        enabled: $scope.recentTransactionsEnabled.value
       }
     };
     configService.set(opts, function(err) {
@@ -98,7 +98,7 @@ angular.module('copayApp.controllers').controller('advancedSettingsController', 
   $scope.frequentlyUsedChange = function() {
     var opts = {
       frequentlyUsed: {
-        enabled: $scope.frequentlyUsedEnabled
+        enabled: $scope.frequentlyUsedEnabled.value
       }
     };
     configService.set(opts, function(err) {
