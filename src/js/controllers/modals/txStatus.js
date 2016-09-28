@@ -9,7 +9,10 @@ angular.module('copayApp.controllers').controller('txStatusController', function
     $scope.txStatusModal.hide();
     if ($scope.fromSendTab) {
       $ionicHistory.removeBackView();
-      $state.go('tabs.home');
+      $state.go('tabs.send');
+      $timeout(function() {
+        $state.transitionTo('tabs.home');
+      }, 100);
     }
   };
 
