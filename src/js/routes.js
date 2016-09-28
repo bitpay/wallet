@@ -852,6 +852,24 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
           }
         }
       })
+      .state('tabs.bitpayCard.amount', {
+        url: '/amount/:isCard/:toName',
+        views: {
+          'tab-home@tabs': {
+            controller: 'amountController',
+            templateUrl: 'views/amount.html'
+          }
+        }
+      })
+      .state('tabs.bitpayCard.confirm', {
+        url: '/confirm/:isCard/:toAddress/:toName/:toAmount/:toEmail/:description/:paypro',
+        views: {
+          'tab-home@tabs': {
+            controller: 'confirmController',
+            templateUrl: 'views/confirm.html'
+          }
+        }
+      })
       .state('tabs.bitpayCard.preferences', {
         url: '/preferences',
         views: {

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('amountController', function($rootScope, $scope, $filter, $timeout, $ionicScrollDelegate, gettextCatalog, platformInfo, lodash, configService, rateService, $stateParams, $window, $state, $log, txFormatService) {
+angular.module('copayApp.controllers').controller('amountController', function($rootScope, $scope, $filter, $timeout, $ionicScrollDelegate, gettextCatalog, platformInfo, lodash, configService, rateService, $stateParams, $window, $state, $log, txFormatService, ongoingProcess, bitpayCardService, popupService) {
 
   var unitToSatoshi;
   var satToUnit;
@@ -10,18 +10,20 @@ angular.module('copayApp.controllers').controller('amountController', function($
   var SMALL_FONT_SIZE_LIMIT = 13;
   var LENGTH_EXPRESSION_LIMIT = 19;
 
-  $scope.isWallet = $stateParams.isWallet;
-  $scope.toAddress = $stateParams.toAddress;
-  $scope.toName = $stateParams.toName;
-  $scope.toEmail = $stateParams.toEmail;
-
   $scope.$on('$ionicView.leave', function() {
     angular.element($window).off('keydown');
   });
 
   $scope.$on("$ionicView.enter", function(event, data) {
 
-    if (!$stateParams.toAddress) {
+    $scope.isWallet = data.stateParams.isWallet;
+    $scope.isCard = data.stateParams.isCard;
+    $scope.toAddress = data.stateParams.toAddress;
+    $scope.toName = data.stateParams.toName;
+    $scope.toEmail = data.stateParams.toEmail;
+    $scope.showAlternativeAmount = !!$scope.isCard;
+
+    if (!$scope.isCard && !$stateParams.toAddress) {
       $log.error('Bad params at amount')
       throw ('bad params');
     }
@@ -97,7 +99,6 @@ angular.module('copayApp.controllers').controller('amountController', function($
   };
 
   $scope.pushOperator = function(operator) {
-    console.log('[amount.js.90:operator:]', operator); //TODO
     if (!$scope.amount || $scope.amount.length == 0) return;
     $scope.amount = _pushOperator($scope.amount);
 
@@ -185,14 +186,50 @@ angular.module('copayApp.controllers').controller('amountController', function($
 
   $scope.finish = function() {
     var _amount = evaluate(format($scope.amount));
-    var amount = $scope.showAlternativeAmount ? fromFiat(_amount).toFixed(unitDecimals) : _amount.toFixed(unitDecimals);
 
-    $state.transitionTo('tabs.send.confirm', {
-      isWallet: $scope.isWallet,
-      toAmount: amount * unitToSatoshi,
-      toAddress: $scope.toAddress,
-      toName: $scope.toName,
-      toEmail: $scope.toEmail
-    });
+    if ($scope.isCard) {
+      var amountUSD = $scope.showAlternativeAmount ? _amount : $filter('formatFiatAmount')(toFiat(_amount));
+
+      var dataSrc = {
+        amount: amountUSD,
+        currency: 'USD'
+      };
+      ongoingProcess.set('Processing Transaction...', true);
+      $timeout(function() {
+
+        bitpayCardService.topUp(dataSrc, function(err, invoiceId) {
+          if (err) {
+            ongoingProcess.set('Processing Transaction...', false);
+            popupService.showAlert(gettextCatalog.getString('Error'), bwcError.msg(err));
+            return;
+          }
+
+          bitpayCardService.getInvoice(invoiceId, function(err, data) {
+            ongoingProcess.set('Processing Transaction...', false);
+            if (err) {
+              popupService.showAlert(gettextCatalog.getString('Error'), bwcError.msg(err));
+              return;
+            }
+            var payProUrl = data.paymentUrls.BIP73;
+
+            $state.transitionTo('tabs.bitpayCard.confirm', {
+              isCard: $scope.isCard,
+              toName: $scope.toName,
+              paypro: payProUrl
+            });
+          });
+        });
+      });
+
+    } else {
+      var amount = $scope.showAlternativeAmount ? fromFiat(_amount).toFixed(unitDecimals) : _amount.toFixed(unitDecimals);
+      $state.transitionTo('tabs.send.confirm', {
+        isWallet: $scope.isWallet,
+        toAmount: amount * unitToSatoshi,
+        toAddress: $scope.toAddress,
+        toName: $scope.toName,
+        toEmail: $scope.toEmail
+      });
+    }
   };
 });

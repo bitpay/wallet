@@ -101,7 +101,7 @@
           </div>
         </div>
         <div class="camera-icon" ng-show="bitpayCard.bitpayCardCurrentBalance">
-          <a ng-click="addFunds = true">
+          <a ui-sref="tabs.bitpayCard.amount({'isCard': true, 'toName': 'BitPay Card'})">
             <i class="icon ion-plus size-21"></i>
           </a>
         </div>

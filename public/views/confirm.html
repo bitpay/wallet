@@ -26,14 +26,21 @@
 
       <div class="item item-icon-left">
         <i ng-if="isWallet" class="icon ion-briefcase size-21"></i>
-        <gravatar ng-if="!isWallet" class="send-gravatar" name="{{toName}}" width="30" email="{{toEmail}}"></gravatar>
-        <span translate>To</span>: {{toAddress}}
-        <p ng-show="toName">{{toName}}</p>
+        <div ng-if="!isWallet">
+          <gravatar ng-if="!isCard" class="send-gravatar" name="{{toName}}" width="30" email="{{toEmail}}"></gravatar>
+          <i ng-if="isCard" class="icon big-icon-svg">
+            <div class="bg icon-bitpay-card"></div>
+          </i>
+        </div>
+        <div ng-class="{'m10l':isCard}">
+          <span translate>To</span>: {{toAddress}}
+          <p ng-show="toName">{{toName}}</p>
 
-        <div ng-show="_paypro" ng-click="openPPModal(_paypro)">
-            <i ng-show="_paypro.verified && _paypro.caTrusted" class="ion-locked" style="color:green"></i>
-            <i ng-show="!_paypro.caTrusted" class="ion-unlocked" style="color:red"></i>
-              {{_paypro.domain}}
+          <div ng-show="_paypro" ng-click="openPPModal(_paypro)">
+              <i ng-show="_paypro.verified && _paypro.caTrusted" class="ion-locked" style="color:green"></i>
+              <i ng-show="!_paypro.caTrusted" class="ion-unlocked" style="color:red"></i>
+                {{_paypro.domain}}
+          </div>
         </div>
       </div>
     </div>
