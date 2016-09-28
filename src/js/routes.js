@@ -318,7 +318,16 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
      *
      */
 
-    .state('tabs.language', {
+    .state('tabs.notifications', {
+        url: '/notifications',
+        views: {
+          'tab-settings@tabs': {
+            controller: 'preferencesNotificationsController',
+            templateUrl: 'views/preferencesNotifications.html'
+          }
+        }
+      })
+      .state('tabs.language', {
         url: '/language',
         views: {
           'tab-settings@tabs': {
