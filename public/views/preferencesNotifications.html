@@ -1,0 +1,29 @@
+<ion-view id="tab-notifications" class="settings">
+  <ion-nav-bar class="bar-royal">
+    <ion-nav-title>{{'Notifications' | translate}}</ion-nav-title>
+    <ion-nav-back-button>
+    </ion-nav-back-button>
+  </ion-nav-bar>
+
+  <ion-content>
+    <div class="list">
+      <div ng-show="PNEnabledByUser">
+        <div class="item item-divider" translate>Notifications</div>
+
+        <ion-toggle ng-model="pushNotifications.value" toggle-class="toggle-balanced" ng-change="pushNotificationsChange()">
+          <span class="toggle-label" translate>Enable push notifications</span>
+        </ion-toggle>
+      </div>
+
+      <div ng-show="!PNEnabledByUser && isIOSApp">
+        <div class="item item-divider" translate>Notifications</div>
+        <div class="padding text-light" translate>
+          Push notifications for Copay are currently disabled. Enable them in the Settings app.
+        </div>
+        <a class="item" ng-click="openSettings()">
+          <span translate>Open Settings app</span>
+        </a>
+      </div>
+    </div>
+  </ion-content>
+</ion-view>

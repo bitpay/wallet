@@ -14,6 +14,12 @@
 
       <div class="item item-divider" translate>Preferences</div>
 
+      <a class="item item-icon-left item-icon-right" ui-sref="tabs.notifications" ng-show="usePushNotifications">
+        <i class="icon ion-ios-bell-outline"></i>
+        <span translate>Notifications</span>
+        <i class="icon nav-item-arrow-right"></i>
+      </a>
+
       <a class="item item-icon-left item-icon-right" ui-sref="tabs.language">
         <i class="icon ion-ios-chatbubble-outline"></i>
         <span translate>Language</span>
@@ -50,24 +56,6 @@
         <i class="icon nav-item-arrow-right"></i>
       </a>
 
-      <div ng-show="usePushNotifications && PNEnabledByUser">
-        <div class="item item-divider" translate>Notifications</div>
-
-        <ion-toggle ng-model="pushNotifications.value" toggle-class="toggle-balanced" ng-change="pushNotificationsChange()">
-          <span class="toggle-label" translate>Enable push notifications</span>
-        </ion-toggle>
-      </div>
-
-      <div ng-show="usePushNotifications && !PNEnabledByUser && isIOSApp">
-        <div class="item item-divider" translate>Notifications</div>
-        <div class="padding text-light" translate>
-          Push notifications for Copay are currently disabled. Enable them in the Settings app.
-        </div>
-        <a class="item" ng-click="openSettings()">
-          <span translate>Open Settings app</span>
-        </a>
-      </div>
-
       <div class="item item-divider" translate>Wallets Preferences</div>
       <a class="item item-icon-left item-icon-right" href
            ui-sref="tabs.preferences({'walletId': item.id})"
@@ -84,19 +72,17 @@
       </a>
 
       <div class="item item-divider"></div>
-      <a class="item item-icon-left item-icon-right" href ui-sref="tabs.about">
-        <i class="icon ion-ios-information-outline"></i>
-        <span translate>About</span> {{appName}}
-        <i class="icon nav-item-arrow-right"></i>
-      </a>
-
-      <div class="item item-divider"></div>
       <a class="item item-icon-right" href ui-sref="tabs.advanced">
         <span translate>Advanced</span>
         <i class="icon nav-item-arrow-right"></i>
       </a>
 
       <div class="item item-divider"></div>
+      <a class="item item-icon-left item-icon-right" href ui-sref="tabs.about">
+        <i class="icon ion-ios-information-outline"></i>
+        <span translate>About</span> {{appName}}
+        <i class="icon nav-item-arrow-right"></i>
+      </a>
     </div>
   </ion-content>
 </ion-view>
