@@ -49,6 +49,8 @@ angular.module('copayApp.controllers').controller('txpDetailsController', functi
         by: action.copayerName
       });
     });
+
+    $scope.actionList.reverse();
   };
 
   $scope.$on('accepted', function(event) {
