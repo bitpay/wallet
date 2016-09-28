@@ -792,29 +792,16 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
 
   root.getAddress = function(wallet, forceNew, cb) {
 
-    var firstStep;
-    if (forceNew) {
-      firstStep = storageService.clearLastAddress;
-    } else {
-      firstStep = function(walletId, cb) {
-        return cb();
-      };
-    }
-
-    firstStep(wallet.id, function(err) {
+    storageService.getLastAddress(wallet.id, function(err, addr) {
       if (err) return cb(err);
 
-      storageService.getLastAddress(wallet.id, function(err, addr) {
-        if (err) return cb(err);
+      if (!forceNew && addr) return cb(null, addr);
 
-        if (addr) return cb(null, addr);
-
-        createAddress(wallet, function(err, addr) {
+      createAddress(wallet, function(err, _addr) {
+        if (err) return cb(err, addr);
+        storageService.storeLastAddress(wallet.id, _addr, function() {
           if (err) return cb(err);
-          storageService.storeLastAddress(wallet.id, addr, function() {
-            if (err) return cb(err);
-            return cb(null, addr);
-          });
+          return cb(null, _addr);
         });
       });
     });
@@ -833,32 +820,12 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
 
   // An alert dialog
   var askPassword = function(name, title, cb) {
-    var scope = $rootScope.$new(true);
-    scope.data = [];
-    var pass = $ionicPopup.show({
-      template: '<input type="password" ng-model="data.pass">',
-      title: title,
-      subTitle: name,
-      scope: scope,
-      buttons: [{
-        text: 'Cancel'
-      }, {
-        text: '<b>OK</b>',
-        type: 'button-positive',
-        onTap: function(e) {
-          if (!scope.data.pass) {
-            //don't allow the user to close unless he enters wifi password
-            e.preventDefault();
-            return;
-
-          }
-
-          return scope.data.pass;
-        }
-      }]
-    });
-    pass.then(function(res) {
-      return cb(res);
+    var opts = {
+      inputType: 'password'
+    };
+    popupService.showPrompt(title, name, opts, function(res) {
+      if (!res) return cb();
+      if (res) return cb(res)
     });
   };
 

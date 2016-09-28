@@ -1,6 +1,6 @@
 'use strict';
 angular.module('copayApp.services')
-  .factory('profileService', function profileServiceFactory($rootScope, $timeout, $filter, $log, sjcl, lodash, storageService, bwcService, configService, pushNotificationsService, gettext, gettextCatalog, bwcError, uxLanguage, platformInfo, $ionicHistory, txFormatService, $state) {
+  .factory('profileService', function profileServiceFactory($rootScope, $timeout, $filter, $log, sjcl, lodash, storageService, bwcService, configService, pushNotificationsService, gettext, gettextCatalog, bwcError, uxLanguage, platformInfo, txFormatService, $state) {
 
 
     var isChromeApp = platformInfo.isChromeApp;
@@ -37,6 +37,22 @@ angular.module('copayApp.services')
         wallet.email = config.emailFor && config.emailFor[wallet.id];
       });
     }
+
+    root.setBackupNeededModalFlag = function(walletId) {
+      storageService.setBackupNeededModalFlag(walletId, true, function(err) {
+        if (err) $log.error(err);
+        $log.debug('Backup warning modal flag stored');
+        root.wallet[walletId].showBackupNeededModal = false;
+      });
+    };
+
+    function _showBackupNeededModal(wallet, cb) {
+      storageService.getBackupNeededModalFlag(wallet.credentials.walletId, function(err, val) {
+        if (err) $log.error(err);
+        if (val) return cb(false);
+        return cb(true);
+      });
+    };
 
     root.setBackupFlag = function(walletId) {
       storageService.setBackupFlag(walletId, function(err) {
@@ -99,6 +115,11 @@ angular.module('copayApp.services')
 
       _balanceIsHidden(wallet, function(val) {
         wallet.balanceHidden = val;
+      });
+
+      _showBackupNeededModal(wallet, function(val) {
+        if (wallet.needsBackup) wallet.showBackupNeededModal = val;
+        else wallet.showBackupNeededModal = false;
       });
 
       wallet.removeAllListeners();
@@ -759,20 +780,10 @@ angular.module('copayApp.services')
       var TIME_STAMP = 60 * 60 * 24 * 7;
       var MAX = 100;
 
-      var typeFilter1 = {
-        'NewBlock': 1,
-        'BalanceUpdated': 1,
-        'NewOutgoingTxByThirdParty': 1,
-        'NewAddress': 1,
-        'TxProposalFinallyAccepted': 1,
-        'TxProposalFinallyRejected': 1,
+      var typeFilter = {
+        'NewOutgoingTx': 1,
+        'NewIncomingTx': 1
       };
-
-      var typeFilter2 = {
-        'TxProposalAcceptedBy': 1,
-        'TxProposalRejectedBy': 1,
-        'NewTxProposal': 1,
-      }
 
       var w = root.getWallets();
       if (lodash.isEmpty(w)) return cb();
@@ -874,14 +885,8 @@ angular.module('copayApp.services')
             var n;
 
             n = lodash.filter(wallet.cachedActivity.n, function(x) {
-              return !typeFilter1[x.type];
+              return typeFilter[x.type];
             });
-
-            if (wallet.m == 1) {
-              n = lodash.filter(n, function(x) {
-                return !typeFilter2[x.type];
-              });
-            }
 
             var idToName = {};
             if (wallet.cachedStatus) {

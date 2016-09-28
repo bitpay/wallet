@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('walletDetailsController', function($scope, $rootScope, $interval, $timeout, $filter, $log, $ionicModal, $ionicPopover, $ionicNavBarDelegate, $state, $stateParams, profileService, lodash, configService, gettext, gettextCatalog, platformInfo, walletService, $ionicPopup, txpModalService, externalLinkService) {
+angular.module('copayApp.controllers').controller('walletDetailsController', function($scope, $rootScope, $interval, $timeout, $filter, $log, $ionicModal, $ionicPopover, $state, $stateParams, profileService, lodash, configService, gettextCatalog, platformInfo, walletService, txpModalService, externalLinkService, popupService) {
   var isCordova = platformInfo.isCordova;
   var isWP = platformInfo.isWP;
   var isAndroid = platformInfo.isAndroid;
@@ -204,14 +204,12 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
     wallet = profileService.getWallet($stateParams.walletId);
 
     /* Set color for header bar */
-    $rootScope.walletDetailsColor = wallet.color;
-    $rootScope.walletDetailsName = wallet.name;
+    $scope.walletDetailsColor = wallet.color;
+    $scope.walletDetailsName = wallet.name;
     $scope.wallet = wallet;
 
     $scope.requiresMultipleSignatures = wallet.credentials.m > 1;
     $scope.newTx = false;
-
-    $ionicNavBarDelegate.title(wallet.name);
 
     $scope.updateAll(function() {
       if ($stateParams.txid) {
@@ -221,9 +219,7 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
         if (tx) {
           $scope.openTxModal(tx);
         } else {
-          $ionicPopup.alert({
-            title: gettext('TX not available'),
-          });
+          popupService.showAlert(null, gettextCatalog.getString('TX not available'));
         }
       } else if ($stateParams.txpId) {
         var txp = lodash.find($scope.txps, {
@@ -232,9 +228,7 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
         if (txp) {
           $scope.openTxpModal(txp);
         } else {
-          $ionicPopup.alert({
-            title: gettext('Proposal not longer available'),
-          });
+          popupService.showAlert(null, gettextCatalog.getString('Proposal not longer available'));
         }
       }
     });
