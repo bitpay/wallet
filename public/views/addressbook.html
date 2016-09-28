@@ -39,12 +39,22 @@
 
       </ion-item>
     </ion-list>
-    <div class="row text-center absolute-center" ng-show="isEmptyList">
+    <div class="text-center absolute-center" ng-show="isEmptyList">
       <div id="add-contact" class="col col-80 center-block">
-        <img class="col" src="img/item-ico-contact.svg">
-        <a class="col col-40 center-block" ui-sref="tabs.addressbook.add">
-          Add Contact
-        </a>
+        <div class="row">
+          <img class="col col-60 center-block" src="img/address-book-add.svg">
+        </div>
+        <div class="row text-center">
+          <h2 class="col" translate>No contacts yet</h2>
+        </div>
+        <div class="row">
+          <p class="text-center" translate>
+            You haven’t added any contacts to your address book yet. Get started by adding your first one.
+          </p>
+        </div>
+        <div class="row">
+          <button class="button button-block button-positive col" ui-sref="tabs.addressbook.add" translate>Add Contact</button>
+        </div>
       </div>
     </div>
   </ion-content>
