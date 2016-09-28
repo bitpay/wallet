@@ -71,7 +71,7 @@ angular.module('copayApp.controllers').controller('amountController', function($
 
     $timeout(function() {
       $ionicScrollDelegate.resize();
-    }, 100);
+    }, 10);
   });
 
   $scope.toggleAlternative = function() {
