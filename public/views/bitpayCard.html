@@ -1,4 +1,4 @@
-<ion-view>
+<ion-view id="bitpayCard">
   <ion-nav-bar class="bar-royal">
     <ion-nav-back-button>
     </ion-nav-back-button>
@@ -12,7 +12,7 @@
 
   <ion-content>
 
-    <div class="box-notification warning" ng-show="network == 'testnet'">
+    <div class="box-notification warning m0" ng-show="network == 'testnet'">
       Sandbox version. Only for testing purpose
     </div>
 
@@ -89,29 +89,20 @@
         </form>
     </div>
 
-    <div ng-show="bitpayCard.bitpayCardAuthenticated && !bitpayCard.visaCardActivated && !addFunds">
-      <div id="bitpayCard" class="oh pr">
+    <div ng-show="bitpayCard.bitpayCardAuthenticated">
+      <div class="oh pr">
         <div class="amount">
-          <div ng-show="!loadingHistory && bitpayCard.bitpayCardCurrentBalance" ng-click="bitpayCard.update()">
-            <strong class="size-36">${{bitpayCard.bitpayCardCurrentBalance}}</strong>
-            <div class="size-12">Available balance</div>
+          <div ng-if="!loadingHistory && bitpayCard.bitpayCardCurrentBalance" ng-click="bitpayCard.update()">
+            <div class="size-36 m20b">${{bitpayCard.bitpayCardCurrentBalance}}</div>
+            <a class="button button-positive button-small" ui-sref="tabs.bitpayCard.amount({'isCard': true, 'toName': 'BitPay Card'})">
+              <i class="icon ion-ios-plus-empty"></i> {{'Add Funds'|translate}}
+            </a>
           </div>
-          <div ng-show="loadingHistory">
+          <div ng-if="loadingHistory" class="m20t">
             <strong class="size-36">...</strong>
           </div>
         </div>
-        <div class="camera-icon" ng-show="bitpayCard.bitpayCardCurrentBalance">
-          <a ui-sref="tabs.bitpayCard.amount({'isCard': true, 'toName': 'BitPay Card'})">
-            <i class="icon ion-plus size-21"></i>
-          </a>
-        </div>
       </div>
-
-      <select class="m10" ng-model="dateRange" ng-change="bitpayCard.update(dateRange)">
-        <option value="last30Days">Recent Activity</option>
-        <option value="lastMonth">Last Month</option>
-        <option value="all">All Activity</option>
-      </select>
 
       <div
         class="oh pr m20t text-gray size-12 text-center"
@@ -124,12 +115,19 @@
         <i class="icon ion-android-sync"></i>
       </div>
 
-      <div class="card list" ng-show="!loadingHistory">
+      <div class="list" ng-show="!loadingHistory">
+        <div class="item item-divider">
+        <select class="select-style" ng-model="dateRange" ng-change="bitpayCard.update(dateRange)">
+          <option value="last30Days">Recent Activity</option>
+          <option value="lastMonth">Last Month</option>
+          <option value="all">All Activity</option>
+        </select>
+        </div>
         <div
           ng-repeat="tx in bitpayCard.bitpayCardTransactionHistory | orderBy: ['pending','-timestamp']"
           class="item row"
           ng-init="bitpayCard.getMerchantInfo(tx)">
-          <div class="col" ng-init="icon = bitpayCard.getIconName(tx)">
+          <div class="col col-10" ng-init="icon = bitpayCard.getIconName(tx)">
             <img class="m5t" ng-src="img/mcc-icons/{{icon}}.svg" width="22">
           </div>
 
@@ -143,7 +141,7 @@
           </div>
           <div
             ng-init="desc = bitpayCard.processDescription(tx)"
-            class="col">
+            class="col size-12">
             {{desc}}
           </div>
           <div class="col">
@@ -161,56 +159,6 @@
           </div>
         </div>
       </div>
-    </div>
-
-    <div ng-show="bitpayCard.bitpayCardAuthenticated && !bitpayCard.visaCardActivated && addFunds">
-        <form
-           name="createInvoiceForm"
-           ng-submit="bitpayCard.sendFunds()"
-           novalidate>
-
-          <div class="card list">
-            <label class="item item-input item-stacked-label">
-              <span class="input-label">Amount</span>
-              <input
-                    type="number"
-                    id="fiat"
-                    name="fiat"
-                    ng-attr-placeholder="{{'Amount in USD'}}"
-                    min="0.01"
-                    max="2000"
-                    ng-model="fiat"
-                    autocomplete="off"
-                    required>
-              <a class="postfix">USD</a>
-            </label>
-
-            <wallets ng-if="wallets[0]" wallets="wallets"></wallets>
-
-          </div>
-
-          <p class="size-12 text-warning" ng-show="bitpayCard.isMultisigWallet">
-            You selected a multisignature wallet. Please note that the transaction will only appear on your card's
-            Activity when the payment is fully signed.
-          </p>
-
-          <div class="row">
-            <div class="col">
-              <button class="button button-block button-light"
-                      type="button"
-                      ng-click="addFunds = false; fiat = null">
-                Cancel
-              </button>
-            </div>
-            <div class="col">
-              <button class="button button-block button-positive"
-                      ng-disabled="!fiat"
-                      type="submit">
-                Send
-              </button>
-            </div>
-          </div>
-        </form>
     </div>
   </ion-content>
 </ion-view>
