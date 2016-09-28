@@ -116,3 +116,16 @@ ion-header-bar{
 .card{
   box-shadow:  0 2px 3px rgba(0, 0, 0, 0.3);
 }
+
+/* Wrap text from item-note */
+.item-note{
+  white-space: -moz-pre-wrap !important;
+  white-space: -pre-wrap;
+  white-space: -o-pre-wrap;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  white-space: -webkit-pre-wrap;
+  word-break: break-all;
+  white-space: normal;
+}
+

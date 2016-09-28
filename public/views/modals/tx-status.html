@@ -4,13 +4,14 @@
     <div ng-show="tx.amountStr" class="m20t size-36">
       {{tx.amountStr}}
     </div>
-    <div class="size-16 text-gray m10v">
-      <span translate>Sent</span>
+    <div class="size-24 text-gray m20v">
+      <span ng-if="!fromBitPayCard" translate>Sent</span>
+      <span ng-if="fromBitPayCard" translate>Funds sent</span>
     </div>
-    <div class="text-center m20t" ng-if="entryExist || !fromSendTab">
+    <div class="text-center m20t" ng-if="entryExist || !fromSendTab || fromPayPro">
       <a class="button button-positive" ng-click="cancel()" translate>OKAY</a>
     </div>
-    <div class="collect-address" ng-if="!entryExist && fromSendTab">
+    <div class="collect-address" ng-if="!entryExist && fromSendTab && !fromPayPro">
       <div class="row">
         <p translate class="col">Would you like to add this address to your address book?</p>
       </div>
@@ -40,7 +41,7 @@
 
   <div ng-if="type == 'created'" class="popup-txsigned text-center m30tp">
     <i class="icon ion-checkmark-round"></i>
-    <div class="text-center size-18 tu text-bold m20t">
+    <div class="text-center size-24 tu text-bold m20v">
       <span translate>Payment Proposal Created</span>
     </div>
     <div class="text-center">
@@ -52,7 +53,7 @@
 
   <div ng-if="type == 'accepted'" class="popup-txsigned text-center m30tp">
     <i class="icon ion-checkmark-round"></i>
-    <div class="text-center size-18 tu text-bold m20t">
+    <div class="text-center size-24 tu text-bold m20v">
       <span translate>Payment Accepted</span>
     </div>
     <div class="text-center">
@@ -62,7 +63,7 @@
 
   <div ng-if="type=='rejected'" class="popup-txrejected text-center m30tp">
     <i class="icon ion-close-round"></i>
-    <div class="text-center size-18 tu text-bold m20t">
+    <div class="text-center size-24 tu text-bold m20v">
       <span translate>Payment Rejected</span>
     </div>
     <div class="text-center">
