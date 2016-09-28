@@ -318,7 +318,16 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
      *
      */
 
-    .state('tabs.language', {
+    .state('tabs.notifications', {
+        url: '/notifications',
+        views: {
+          'tab-settings@tabs': {
+            controller: 'preferencesNotificationsController',
+            templateUrl: 'views/preferencesNotifications.html'
+          }
+        }
+      })
+      .state('tabs.language', {
         url: '/language',
         views: {
           'tab-settings@tabs': {
@@ -986,6 +995,8 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
       $log.debug('Route change from:', fromState.name || '-', ' to:', toState.name);
       $log.debug('            toParams:' + JSON.stringify(toParams || {}));
       $log.debug('            fromParams:' + JSON.stringify(fromParams || {}));
+
+      if (!toState.name.match(/onboarding/)) return;
       var state = {};
       state.name = toState.name;
       state.toParams = toParams;
