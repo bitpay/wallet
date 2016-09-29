@@ -927,9 +927,9 @@ angular.module('copayApp.services')
         if (x.pendingTxps)
           txps = txps.concat(x.pendingTxps);
       });
-      txps = lodash.sortBy(txps, 'pendingForUs', 'createdOn');
-      txps = lodash.compact(lodash.flatten(txps)).slice(0, MAX);
       var n = txps.length;
+      txps = lodash.sortBy(txps, 'pendingForUs', 'createdOn');
+      txps = lodash.compact(lodash.flatten(txps)).slice(0, opts.limit || MAX);
       return cb(null, txps, n);
     };
 

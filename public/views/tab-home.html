@@ -69,10 +69,11 @@
         <span ng-if="!wallet.isComplete()" class="assertive" translate>
           Incomplete
         </span>
-        <div ng-if="wallet.isComplete()">
+        <span ng-if="wallet.isComplete()">
           <span ng-if="!wallet.balanceHidden">{{wallet.status.availableBalanceStr}}</span>
           <span ng-if="wallet.balanceHidden" translate>[Balance Hidden]</span>
-        </div>
+        </span>
+        &nbsp;
         </p>
         <i class="icon nav-item-arrow-right"></i>
       </a>
