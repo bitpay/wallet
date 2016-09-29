@@ -12,7 +12,7 @@
     <div>
       <div class="item item-no-bottom-border" translate>Recipient</div>
 
-      <div class="item item-text-wrap item-icon-left item-big-icon-left bitcoin-address">
+      <div class="item item-text-wrap item-icon-left bitcoin-address" ng-class="{'item-big-icon-left':isCard}">
         <i ng-if="isWallet" class="icon ion-briefcase size-21"></i>
         <span ng-if="!isWallet">
           <gravatar ng-if="!isCard" class="send-gravatar" name="{{toName}}" width="30" email="{{toEmail}}"></gravatar>

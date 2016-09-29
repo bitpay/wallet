@@ -14,7 +14,7 @@ angular.module('copayApp.controllers').controller('amountController', function($
     angular.element($window).off('keydown');
   });
 
-  $scope.$on("$ionicView.enter", function(event, data) {
+  $scope.$on("$ionicView.beforeEnter", function(event, data) {
 
     $scope.isWallet = data.stateParams.isWallet;
     $scope.isCard = data.stateParams.isCard;
