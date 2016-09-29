@@ -226,7 +226,6 @@ angular.module('copayApp.controllers').controller('tabHomeController',
         $scope.amazonEnabled = config.amazon.enabled;
         $scope.bitpayCardEnabled = config.bitpayCard.enabled;
         $scope.nextStepEnabled = $scope.glideraEnabled || $scope.coinbaseEnabled || $scope.amazonEnabled || $scope.bitpayCardEnabled;
-        console.log($scope.nextStepEnabled);
         $scope.recentTransactionsEnabled = config.recentTransactions.enabled;
 
         if ($scope.bitpayCardEnabled) bitpayCardCache();
