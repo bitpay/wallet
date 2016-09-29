@@ -54,6 +54,10 @@
   .next-step {
     padding-top: 20px;
     padding-bottom: 20px;
+    &.item{
+      padding-top:2rem;
+      padding-bottom: 2rem;
+    }
   }
   .homeTip {
     .item {
