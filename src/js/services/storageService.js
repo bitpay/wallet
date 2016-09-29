@@ -337,6 +337,18 @@ angular.module('copayApp.services')
       storage.remove('bitpayCard-' + network, cb);
     };
 
+    root.setBitpayCardCache = function(network, data, cb) {
+      storage.set('bitpayCardCache-' + network, data, cb);
+    };
+
+    root.getBitpayCardCache = function(network, cb) {
+      storage.get('bitpayCardCache-' + network, cb);
+    };
+
+    root.removeBitpayCardCache = function(network, cb) {
+      storage.remove('bitpayCardCache-' + network, cb);
+    };
+
     root.removeAllWalletData = function(walletId, cb) {
       root.clearLastAddress(walletId, function(err) {
         if (err) return cb(err);
@@ -363,6 +375,14 @@ angular.module('copayApp.services')
 
     root.getReceiveTipsAccepted = function(cb) {
       storage.get('receiveTips', cb);
+    };
+
+    root.setBackupNeededModalFlag = function(walletId, val, cb) {
+      storage.set('showBackupNeededModal-' + walletId, val, cb);
+    };
+
+    root.getBackupNeededModalFlag = function(walletId, cb) {
+      storage.get('showBackupNeededModal-' + walletId, cb);
     };
 
     root.setAmazonGiftCards = function(network, gcs, cb) {

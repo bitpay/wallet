@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('joinController',
-  function($scope, $rootScope, $timeout, $state, profileService, configService, storageService, applicationService, gettext, gettextCatalog, lodash, ledger, trezor, platformInfo, derivationPathHelper, ongoingProcess, walletService, $log, $stateParams, popupService) {
+  function($scope, $rootScope, $timeout, $state, $ionicHistory, profileService, configService, storageService, applicationService, gettext, gettextCatalog, lodash, ledger, trezor, platformInfo, derivationPathHelper, ongoingProcess, walletService, $log, $stateParams, popupService) {
 
     var isChromeApp = platformInfo.isChromeApp;
     var isDevel = platformInfo.isDevel;
@@ -146,7 +146,19 @@ angular.module('copayApp.controllers').controller('joinController',
             $log.debug('Remote preferences saved for:' + client.credentials.walletId)
           });
           $ionicHistory.removeBackView();
-          $state.go('tabs.home');
+
+          if (!client.isComplete()) {
+            $ionicHistory.nextViewOptions({
+              disableAnimate: true
+            });
+            $state.go('tabs.home');
+            $timeout(function() {
+              $state.transitionTo('tabs.copayers', {
+                walletId: client.credentials.walletId
+              });
+            }, 100);
+          }
+          else $state.go('tabs.home')
         });
       }, 100);
     };

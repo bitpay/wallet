@@ -10,6 +10,10 @@
       margin-top:1.5rem;
     }
   }
+  .list{
+    max-width: 600px;
+    @include center-block();
+  }
   .item {
     background: transparent;
     border: none;
@@ -55,6 +59,10 @@
     position: absolute;
     bottom: 0;
     width: 100%;
+    &-content{
+      max-width: 600px;
+      @include center-block();
+    }
     .item{
       color:rgb(58,58,58);
       padding-bottom: 2.5rem;

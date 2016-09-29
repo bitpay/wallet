@@ -1,4 +1,4 @@
-#onboarding-backup-warning{
+#backup-warning{
   .warning{
     margin:4rem auto 1rem;
     height: 11rem;
@@ -21,7 +21,7 @@
 }
 
 @media (max-width: 400px){
-  #onboarding-backup-warning{
+  #backup-warning{
     .warning{
       margin: 2rem auto 1rem;
       height: 8rem;
@@ -45,7 +45,7 @@
   }
 }
 @media (max-height: 540px){
-  #onboarding-backup-warning{
+  #backup-warning{
     .cta-buttons{
       float:left;
       position: relative;

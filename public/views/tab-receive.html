@@ -8,42 +8,67 @@
     </ion-nav-buttons>
   </ion-nav-bar>
   <ion-content>
-    <article id="address">
-      <div class="row">
-        <div class="m15t text-center col center-block" copy-to-clipboard="addr">
-          <qrcode ng-if="addr" size="220" data="bitcoin:{{addr}}"></qrcode>
-          <div ng-if="!addr" style="height:220px; width:220px; margin:auto; background: white; padding-top: 20%;">
-            ...
+    <div id="address">
+      <article class="text-center" ng-if="!wallet.isComplete()">
+        <div class="incomplete">
+          <div class="title">
+            <span translate>Incomplete wallet</span>
           </div>
-          <div ng-if="wallet.needsBackup" class="assertive m10t" translate>
-            Before receiving funds, you must backup your wallet. If this device is lost, it is impossible to access your funds without a backup.
+          <div class="subtitle">
+            <span translate>All signing devices must be added to this multisig wallet before bitcoin addresses can be created.</span>
           </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col" ng-show="isCordova && addr">
-          <div class="item item-icon-left" ng-click="shareAddress(addr)">
-            <i class="icon ion-ios-upload-outline"></i>
-            <span translate>Share</span>
+          <div>
+            <button class="button button-block button-positive" ng-click="goCopayers()" translate>Open wallet</button>
           </div>
         </div>
-        <div class="col" ng-class="{'center-block col-50': !isCordova || !addr}">
-          <div class="item item-icon-left" ng-click="setAddress(true)">
-            <i class="icon ion-ios-loop"></i>
-            <span translate>Next Address</span>
+        <div class="row border-top">
+          <div class="col col-90 center-block bit-address text-center">
+            <div class="item item-icon-left">
+              <i class="icon ion-social-bitcoin-outline"></i>
+              <span class="bit-address-gen-address" ng-if="!generatingAddress" translate>address not yet available</span>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="row border-top">
-        <div class="col col-90 center-block bit-address text-center">
-          <div class="item item-icon-left">
-            <i class="icon ion-social-bitcoin-outline"></i>
-            <span ng-if="generatingAddress">...</span>
-            <span class="bit-address-gen-address" ng-if="!generatingAddress" copy-to-clipboard="addr">{{addr}}</span>
+      </article>
+      <article ng-if="wallet.isComplete()">
+        <div class="row backup" ng-show="!wallet.showBackupNeededModal && wallet.needsBackup" ng-click="goToBackupFlow()">
+          <div class="m15t text-center col center-block">
+            <i class="icon ion-alert"></i><span translate>Wallet not backed up</span><i class="icon ion-ios-arrow-thin-right"></i>
           </div>
         </div>
-      </div>
-    </article>
+        <div class="row qr">
+          <div class="m15t text-center col center-block" copy-to-clipboard="addr">
+            <qrcode ng-if="addr" size="220" data="bitcoin:{{addr}}"></qrcode>
+            <div ng-if="!addr" style="height:220px; width:220px; margin:auto; background: white; padding-top: 20%;">
+              ...
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col" ng-show="isCordova && addr">
+            <div class="item item-icon-left" ng-click="shareAddress(addr)">
+              <i class="icon ion-ios-upload-outline"></i>
+              <span translate>Share</span>
+            </div>
+          </div>
+          <div class="col" ng-class="{'center-block col-50': !isCordova || !addr}">
+            <div class="item item-icon-left" ng-click="setAddress(true)">
+              <i class="icon ion-ios-loop"></i>
+              <span translate>Next Address</span>
+            </div>
+          </div>
+        </div>
+        <div class="row border-top">
+          <div class="col col-90 center-block bit-address text-center">
+            <div class="item item-icon-left">
+              <i class="icon ion-social-bitcoin-outline"></i>
+              <span ng-if="generatingAddress">...</span>
+              <span class="bit-address-gen-address" ng-if="!generatingAddress" copy-to-clipboard="addr">{{addr}}</span>
+            </div>
+          </div>
+        </div>
+      </article>
+    </div>
     <article id="wallets">
       <div class="list card padding text-center" ng-if="!wallets[0]">
         <span translate>No Wallet</span>

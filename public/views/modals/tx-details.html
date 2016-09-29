@@ -3,7 +3,7 @@
     <button class="button button-clear" ng-click="cancel()">
       {{'Close' | translate}}
     </button>
-    <div class="title" translate>
+    <div class="title">
       {{title}}
     </div>
   </ion-header-bar>
@@ -16,25 +16,26 @@
           <img src="img/icon-wallet.svg" ng-style="{'background-color': color}" class="bg"/>
         </i>
 
-        <div class="size-36" copy-to-clipboard="btx.amountStr">
-          <span class="enable_text_select">{{btx.amountStr}}</span>
+        <div class="size-36 m20t" copy-to-clipboard="btx.amountStr">
+          {{btx.amountStr}}
         </div>
 
-        <div class="alternative-amount" ng-click="showRate =! showRate">
-          <span class="label gray radius" ng-show="!showRate && alternativeAmountStr">
+        <div class="m10t" style="height:20px;" ng-click="showRate =! showRate">
+          <span ng-show="!showRate && alternativeAmountStr">
             {{alternativeAmountStr}}
           </span>
-          <span class="size-12" ng-show="showRate && alternativeAmountStr">
+          <span ng-show="showRate && alternativeAmountStr">
             {{rateStr}} ({{rateDate | amDateFormat:'MM/DD/YYYY HH:mm a'}})
           </span>
         </div>
       </div>
 
       <div ng-show="btx.action == 'sent'">
-        <span translate>Sent from</span> {{wallet.credentials.walletName}}
-        <div class="padding-vertical">
-          <i class="icon ion-ios-arrow-thin-down size-24"></i>
+        <div>
+          <span translate>Sent from</span>
+          <strong ng-style="{'color': color}">{{wallet.credentials.walletName}}</strong>
         </div>
+        <i class="icon ion-ios-arrow-thin-down size-24"></i>
       </div>
 
       <div ng-show="btx.action == 'received'">
@@ -63,27 +64,26 @@
           </span>
           <span ng-if="!btx.merchant">
             <span ng-show="btx.labelTo">{{btx.labelTo}}</span>
-            <contact ng-show="!btx.labelTo" class="enable_text_select" address="{{btx.addressTo}}"></contact>
+            <contact ng-show="!btx.labelTo" address="{{btx.addressTo}}"></contact>
           </span>
         </div>
       </div>
 
-      <div class="item item-icon-left" ng-click="openExternalLink('https://' +
-        (getShortNetworkName() == 'test' ? 'test-' : '') + 'insight.bitpay.com/tx/' + btx.txid)">
+      <div class="item item-icon-left"
+        ng-click="openExternalLink('https://' + (getShortNetworkName() == 'test' ? 'test-' : '') + 'insight.bitpay.com/tx/' + btx.txid)">
         <i class="icon ion-ios-upload-outline"></i>
         <span class="text-gray" translate>View transaction on the blockchain</span>
       </div>
 
       <div class="item">
-        <div ng-if="btx.action == 'received' || 'moved'">
-          <span translate>Date</span>
+        <div ng-if="btx.action == 'received' || btx.action == 'moved'">
+          {{'Date'|translate}}
           <span class="item-note">
             <time>{{ btx.time * 1000 | amDateFormat:'MM/DD/YYYY HH:mm a'}}</time>
           </span>
         </div>
         <div ng-if="btx.action == 'sent'">
-          <div translate>Created by</div>
-          <span>{{btx.creatorName}}</span>
+          {{'Created by'|translate}} <strong>{{btx.creatorName}}</strong>
           <span class="item-note">
             <time>{{ btx.createdOn * 1000 | amDateFormat:'MM/DD/YYYY HH:mm a'}}</time>
           </span>
@@ -91,9 +91,8 @@
       </div>
 
       <div class="item" ng-if="btx.action != 'received' && btx.feeLevel" copy-to-clipboard="btx.feeStr">
-        <div translate>Fee</div>
-        <span class="enable_text_select">{{btx.feeLevel}} ({{btx.feeStr}})</span>
-        <span class="right">
+        {{'Fee'|translate}}: {{btx.feeStr}}
+        <span class="item-note">
           <span class="text-warning" ng-show="!btx.confirmations || btx.confirmations == 0" translate>
             Unconfirmed
           </span>
@@ -108,20 +107,23 @@
       </div>
 
       <div class="item" ng-if="btx.message && btx.action != 'received'" copy-to-clipboard="btx.message">
-        <div translate>Description</div>
-        <span class="enable_text_select">{{btx.message}}</span>
+        {{'Description'|translate}}
+        <span class="item-note">
+          {{btx.message}}
+        </span>
       </div>
 
       <div ng-if="btx.merchant" class="item" copy-to-clipboard="btx.merchant.pr.pd.memo">
-        <div translate>Merchant message</div>
-        <span class="enable_text_select">
+        {{'Merchant message'|translate}}
+        <span class="item-note">
           {{btx.merchant.pr.pd.memo}}
         </span>
       </div>
 
       <div ng-show="btx.hasMultiplesOutputs" class="item" ng-click="showMultiplesOutputs = !showMultiplesOutputs">
-        <div translate>Recipients</div>
-        <span class="right">{{btx.recipientCount}}
+        {{'Recipients'|translate}}
+        <span class="item-note">
+          {{btx.recipientCount}}
           <i ng-show="showMultiplesOutputs" class="icon-arrow-up3 size-24"></i>
           <i ng-show="!showMultiplesOutputs" class="icon-arrow-down3 size-24"></i>
         </span>
@@ -138,21 +140,22 @@
         </span>
       </div>
 
-      <div class="item item-icon-right" ng-click="showCommentPopup()">
-        <span class="text-gray" translate ng-if="!btx.note">Add Memo</i></span>
-        <span class="text-gray" translate ng-if="btx.note">Memo</span>
-        <div ng-if="btx.note && btx.note.body">
-          <span class="enable_text_select">{{btx.note.body}}</span><br>
-          <span class="text-italic item-note size-12">
-            <span translate>Edited by</span> <span>{{btx.note.editedByName}}</span>,
-            <time>{{btx.note.editedOn * 1000 | amTimeAgo}}</time></span>
-          </span>
-        </div>
+      <div class="item" ng-click="showCommentPopup()">
+        {{'Memo'|translate}}
+        <span class="item-note" translate ng-if="!btx.note">
+          <i class="icon ion-ios-plus-empty"></i>
+        </span>
+        <span class="item-note" ng-if="btx.note && btx.note.body">
+          {{btx.note.body}}
+          <div>
+            <span translate>Edited by</span> {{btx.note.editedByName}},
+            <time>{{btx.note.editedOn * 1000 | amTimeAgo}}</time>
+          </div>
+        </span>
       </div>
 
       <div ng-if="actionList[0]">
         <div class="item item-divider" translate>Timeline</div>
-
         <div class="item" ng-class="{'action-created' : a.type == 'created' || a.type == 'accept', 'action-rejected' : a.type == 'reject'}" ng-repeat="a in actionList track by $index">
           <div class="row">
             <div class="col col-10">

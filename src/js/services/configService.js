@@ -39,8 +39,26 @@ angular.module('copayApp.services').factory('configService', function(storageSer
     },
 
     coinbase: {
-      enabled: true,
+      enabled: false, //disable coinbase for this release
       testnet: false
+    },
+
+    bitpayCard: {
+      enabled: true
+    },
+
+    amazon: {
+      enabled: true
+    },
+
+    //Experimental Features
+
+    recentTransactions: {
+      enabled: false //disabled by default
+    },
+
+    frequentlyUsed: {
+      enabled: true
     },
 
     rates: {
@@ -110,6 +128,18 @@ angular.module('copayApp.services').factory('configService', function(storageSer
         }
         if (!configCache.coinbase) {
           configCache.coinbase = defaultConfig.coinbase;
+        }
+        if (!configCache.amazon) {
+          configCache.amazon = defaultConfig.amazon;
+        }
+        if (!configCache.bitpayCard) {
+          configCache.bitpayCard = defaultConfig.bitpayCard;
+        }
+        if (!configCache.recentTransactions) {
+          configCache.recentTransactions = defaultConfig.recentTransactions;
+        }
+        if (!configCache.frequentlyUsed) {
+          configCache.frequentlyUsed = defaultConfig.frequentlyUsed;
         }
         if (!configCache.pushNotifications) {
           configCache.pushNotifications = defaultConfig.pushNotifications;
