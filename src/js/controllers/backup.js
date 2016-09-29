@@ -91,7 +91,7 @@ angular.module('copayApp.controllers').controller('backupController',
           $ionicHistory.removeBackView();
           $state.go('tabs.home');
         }
-        else $state.go('onboarding.disclaimer');
+        else $state.go('onboarding.disclaimer', {walletId: $stateParams.walletId, backedUp: true});
       });
     };
 
