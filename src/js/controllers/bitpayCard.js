@@ -3,15 +3,14 @@
 angular.module('copayApp.controllers').controller('bitpayCardController', function($scope, $timeout, $log, lodash, bitpayCardService, configService, profileService, walletService, ongoingProcess, pbkdf2Service, moment, popupService, gettextCatalog, bwcError) {
 
   var self = this;
-  var wallet;
+  $scope.dateRange = 'last30Days';
+  $scope.network = bitpayCardService.getEnvironment();
 
-  $scope.$on('Wallet/Changed', function(event, w) {
-    if (lodash.isEmpty(w)) {
-      $log.debug('No wallet provided');
-      return;
-    }
-    wallet = w;
-    $log.debug('Wallet changed: ' + w.name);
+  bitpayCardService.getCacheData(function(err, data) {
+    if (err || lodash.isEmpty(data)) return;
+    $scope.bitpayCardCached = true;
+    self.bitpayCardTransactionHistory = data.transactions;
+    self.bitpayCardCurrentBalance = data.balance;
   });
 
   var processTransactions = function(invoices, history) {
@@ -89,6 +88,14 @@ angular.module('copayApp.controllers').controller('bitpayCardController', functi
 
             self.bitpayCardTransactionHistory = processTransactions(invoices, history.transactionList);
             self.bitpayCardCurrentBalance = history.currentCardBalance;
+
+            var cacheData = {
+              balance: self.bitpayCardCurrentBalance,
+              transactions: self.bitpayCardTransactionHistory
+            };
+            bitpayCardService.setCacheData(cacheData, function(err) {
+              if (err) $log.error(err);
+            });
           });
         });
       }
@@ -98,103 +105,11 @@ angular.module('copayApp.controllers').controller('bitpayCardController', functi
     });
   };
 
-  this.init = function() {
-    $scope.dateRange = 'last30Days';
-
-    $scope.network = bitpayCardService.getEnvironment();
-    $scope.wallets = profileService.getWallets({
-      network: $scope.network,
-      onlyComplete: true
-    });
-
-    self.update();
-
-    wallet = $scope.wallets[0];
-
-    if (wallet && wallet.credentials.n > 1)
-      self.isMultisigWallet = true;
-  };
-
-  this.sendFunds = function() {
-    if (lodash.isEmpty(wallet)) return;
-
-    if (!wallet.canSign() && !wallet.isPrivKeyExternal()) {
-      $log.info('No signing proposal: No private key');
-      popupService.showAlert(gettextCatalog.getString('Error'), bwcError.msg('MISSING_PRIVATE_KEY'));
-      return;
-    }
-
-    var dataSrc = {
-      amount: $scope.fiat,
-      currency: 'USD'
-    };
-    var outputs = [];
-    var config = configService.getSync();
-    var configWallet = config.wallet;
-    var walletSettings = configWallet.settings;
-
-
-    ongoingProcess.set('Processing Transaction...', true);
-    $timeout(function() {
-
-      bitpayCardService.topUp(dataSrc, function(err, invoiceId) {
-        if (err) {
-          ongoingProcess.set('Processing Transaction...', false);
-          popupService.showAlert(gettextCatalog.getString('Error'), bwcError.msg(err));
-          return;
-        }
-
-        bitpayCardService.getInvoice(invoiceId, function(err, data) {
-          var address, comment, amount;
-
-          address = data.bitcoinAddress;
-          amount = parseInt((data.btcPrice * 100000000).toFixed(0));
-          comment = data.itemDesc;
-
-          outputs.push({
-            'toAddress': address,
-            'amount': amount,
-            'message': comment
-          });
-
-          var txp = {
-            toAddress: address,
-            amount: amount,
-            outputs: outputs,
-            message: comment,
-            payProUrl: null,
-            excludeUnconfirmedUtxos: configWallet.spendUnconfirmed ? false : true,
-            feeLevel: walletSettings.feeLevel || 'normal'
-          };
-
-          walletService.createTx(wallet, txp, function(err, createdTxp) {
-            ongoingProcess.set('Processing Transaction...', false);
-            if (err) {
-              popupService.showAlert(gettextCatalog.getString('Error'), bwcError.msg(err));
-              return;
-            }
-            walletService.publishAndSign(wallet, createdTxp, function(err, tx) {
-              if (err) {
-                popupService.showAlert(gettextCatalog.getString('Error'), bwcError.msg(err));
-                return;
-              }
-              self.update();
-              $scope.addFunds = false;
-              $timeout(function() {
-                $scope.$digest();
-              });
-            });
-          });
-        });
-      });
-    }, 100);
-  };
-
-  this.authenticate = function() {
+  this.authenticate = function(email, password) {
 
     var data = {
-      emailAddress : $scope.email,
-      hashedPassword : pbkdf2Service.pbkdf2Sync($scope.password, '..............', 200, 64).toString('hex')
+      emailAddress : email,
+      hashedPassword : pbkdf2Service.pbkdf2Sync(password, '..............', 200, 64).toString('hex')
     };
 
     // POST /authenticate
@@ -215,10 +130,10 @@ angular.module('copayApp.controllers').controller('bitpayCardController', functi
     });
   };
 
-  this.authenticate2FA = function() {
+  this.authenticate2FA = function(twoFactorCode) {
 
     var data = {
-      twoFactorCode : $scope.twoFactorCode
+      twoFactorCode : twoFactorCode
     };
 
     self.authenticating = true;
@@ -257,6 +172,10 @@ angular.module('copayApp.controllers').controller('bitpayCardController', functi
     }
     return tx.description;
   };
+
+  $scope.$on("$ionicView.beforeEnter", function(event, data){
+    self.update();
+  });
 
 });
 

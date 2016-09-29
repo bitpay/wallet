@@ -187,8 +187,38 @@ angular.module('copayApp.services').factory('bitpayCardService', function($http,
     });
   };
 
+  root.getCacheData = function(cb) {
+    _setCredentials();
+    storageService.getBitpayCardCache(credentials.NETWORK, function(err, data) {
+      if (err) return cb(err);
+      if (lodash.isString(data)) {
+        data = JSON.parse(data);
+      }
+      data = data || {};
+      return cb(null, data);
+    });
+  };
+
+  root.setCacheData = function(data, cb) {
+    _setCredentials();
+    data = JSON.stringify(data);
+    storageService.setBitpayCardCache(credentials.NETWORK, data, function(err) {
+      if (err) return cb(err);
+      return cb();
+    });
+  };
+
+  root.removeCacheData = function(cb) {
+    _setCredentials();
+    storageService.removeBitpayCardCache(credentials.NETWORK, function(err) {
+      if (err) return cb(err);
+      return cb();
+    });
+  };
+
   root.logout = function(cb) {
     _setCredentials();
+    root.removeCacheData(function() {});
     storageService.removeBitpayCard(credentials.NETWORK, function(err) {
       $http(_getBitPay('/visa-api/logout')).then(function(data) {
         $log.info('BitPay Logout: SUCCESS');

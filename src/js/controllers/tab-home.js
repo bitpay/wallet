@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('tabHomeController',
-  function($rootScope, $timeout, $scope, $state, $stateParams, $ionicModal, $ionicScrollDelegate, gettextCatalog, lodash, popupService, ongoingProcess, profileService, walletService, configService, $log, platformInfo, storageService, txpModalService, $window) {
+  function($rootScope, $timeout, $scope, $state, $stateParams, $ionicModal, $ionicScrollDelegate, gettextCatalog, lodash, popupService, ongoingProcess, profileService, walletService, configService, $log, platformInfo, storageService, txpModalService, $window, bitpayCardService) {
     var wallet;
     $scope.externalServices = {};
     $scope.bitpayCardEnabled = true; // TODO
@@ -76,7 +76,7 @@ angular.module('copayApp.controllers').controller('tabHomeController',
         });
       }
 
-      $state.go('tabs.details', {
+      $state.go('tabs.wallet', {
         walletId: wallet.credentials.walletId
       });
     };
@@ -206,7 +206,15 @@ angular.module('copayApp.controllers').controller('tabHomeController',
       });
     });
 
+    var bitpayCardCache = function() {
+      bitpayCardService.getCacheData(function(err, data) {
+        if (err || lodash.isEmpty(data)) return;
+        $scope.bitpayCard = data;
+      });
+    };
+
     $scope.$on("$ionicView.enter", function(event, data) {
+      $scope.bitpayCard = null;
       configService.whenAvailable(function() {
         var config = configService.getSync();
         var isWindowsPhoneApp = platformInfo.isWP && platformInfo.isCordova;
@@ -217,6 +225,8 @@ angular.module('copayApp.controllers').controller('tabHomeController',
         $scope.bitpayCardEnabled = config.bitpayCard.enabled;
         $scope.nextStepEnabled = $scope.glideraEnabled || $scope.coinbaseEnabled || $scope.amazonEnabled || $scope.bitpayCardEnabled;
         $scope.recentTransactionsEnabled = config.recentTransactions.enabled;
+
+        if ($scope.bitpayCardEnabled) bitpayCardCache();
       });
       $scope.nextStep();
       $scope.updateAllWallets();
