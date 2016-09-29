@@ -634,7 +634,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         }
       })
       .state('onboarding.disclaimer', {
-        url: '/disclaimer',
+        url: '/disclaimer/:backedUp',
         views: {
           'onboarding': {
             templateUrl: 'views/onboarding/disclaimer.html'

@@ -1,5 +1,13 @@
-<ion-view id="onboarding-disclaimer" class="onboarding">
-  <ion-content ng-controller="disclaimerController" ng-init=init() scroll="false">
+<ion-view id="onboarding-disclaimer" class="onboarding" ng-controller="disclaimerController" ng-init=init()>
+  <ion-nav-bar class="bar-stable" ng-if="backedUp == 'false'">
+    <ion-nav-title></ion-nav-title>
+    <ion-nav-buttons side="primary">
+      <button class="button back-button button-clear" ng-click="goBack()">
+        <i class="icon ion-ios-arrow-thin-left"></i>
+      </button>
+    </ion-nav-buttons>
+  </ion-nav-bar>
+  <ion-content scroll="false" ng-class="{'has-header': backedUp == 'false'}">
     <div class="row text-center">
       <h3 translate class="col-75 col">Almost done! Let's review</h3>
     </div>
