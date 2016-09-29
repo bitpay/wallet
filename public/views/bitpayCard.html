@@ -3,9 +3,9 @@
     <ion-nav-back-button>
     </ion-nav-back-button>
     <ion-nav-title>BitPay Card</ion-nav-title>
-    <ion-nav-buttons side="secondary">
-      <button class="button back-button">
-        <i class="icon ion-ios-search-strong"></i>
+    <ion-nav-buttons side="secondary" ng-show="bitpayCard.bitpayCardAuthenticated">
+      <button class="button back-button" ui-sref="tabs.bitpayCard.preferences">
+        <i class="icon ion-ios-gear-outline"></i>
       </button>
     </ion-nav-buttons>
   </ion-nav-bar>
@@ -32,7 +32,7 @@
         <form
              ng-show="!bitpayCard.bitpayCardTwoFactorPending"
              name="authenticateForm"
-             ng-submit="bitpayCard.authenticate()"
+             ng-submit="bitpayCard.authenticate(email, password)"
              novalidate>
 
           <div class="card list">
@@ -68,7 +68,7 @@
         <form
              ng-show="bitpayCard.bitpayCardTwoFactorPending"
              name="authenticate2FAForm"
-             ng-submit="bitpayCard.authenticate2FA()"
+             ng-submit="bitpayCard.authenticate2FA(twoFactorCode)"
              novalidate>
 
           <div class="list">
@@ -98,24 +98,22 @@
               <i class="icon ion-ios-plus-empty"></i> {{'Add Funds'|translate}}
             </a>
           </div>
-          <div ng-if="loadingHistory" class="m20t">
+          <div ng-if="loadingHistory" class="m10t">
             <strong class="size-36">...</strong>
           </div>
         </div>
       </div>
 
       <div
-        class="oh pr m20t text-gray size-12 text-center"
+        class="m10t text-center padding"
         ng-show="!bitpayCard.bitpayCardTransactionHistory[0] &&
-        !bitpayCard.bitpayCardInvoiceHistory[0] && !loadingHistory">
-        No transactions yet
+        !bitpayCard.bitpayCardInvoiceHistory[0] && (!loadingHistory || !bitpayCardCached)">
+        <i class="icon ion-ios-arrow-thin-up size-24"></i>
+        <h1>Get started</h1>
+        <h4>Your BitPay Card is ready. Add funds to your card to start using your card at stores and ATMs worldwide.</h4>
       </div>
 
-      <div ng-show="loadingHistory" class="oh pr m20t text-gray text-center">
-        <i class="icon ion-android-sync"></i>
-      </div>
-
-      <div class="list" ng-show="!loadingHistory">
+      <div class="list" ng-if="bitpayCardCached">
         <div class="item item-divider">
         <select class="select-style" ng-model="dateRange" ng-change="bitpayCard.update(dateRange)">
           <option value="last30Days">Recent Activity</option>
