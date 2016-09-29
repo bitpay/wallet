@@ -4,7 +4,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
   var cachedTxp = {};
   var isChromeApp = platformInfo.isChromeApp;
 
-  $scope.$on("$ionicView.enter", function(event, data) {
+  $scope.$on("$ionicView.beforeEnter", function(event, data) {
     $scope.isWallet = data.stateParams.isWallet;
     $scope.isCard = data.stateParams.isCard;
     $scope.toAmount = data.stateParams.toAmount;
