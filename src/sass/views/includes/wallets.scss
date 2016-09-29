@@ -1,33 +1,68 @@
-.wallets{
-  .slides{
-    .swiper-container{
-      width:75% !important;
-      overflow:visible;
+.wallets {
+  .slides {
+    .swiper-container {
+      width: 75% !important;
+      overflow: visible;
     }
-    .card{
+    .card {
       padding: .7rem;
-      padding-left:.25rem;
-      padding-right:.25rem;
+      padding-left: .25rem;
+      padding-right: .25rem;
       border-radius: .25rem;
-    }
-    .swiper-slide{
-      width:100% !important;
-      max-width: 450px;
-      &.swiper-slide-prev, &.swiper-slide-next{
-        opacity: .2;
-        &:hover{
-          opacity: 1;
+      max-width: 350px;
+      @media (min-width: 500px) {
+        & {
+          width: 350px;
+          position: relative;
+          margin: 1.5rem auto 0;
         }
       }
-      &.swiper-slide-prev{
-        left:-5%;
+    }
+    .swiper-slide {
+      width: 100% !important;
+      max-width: 450px;
+      @media (min-width: 500px) {
+        & {
+          margin: 0 auto;
+          display: block;
+          float: none;
+          max-width: none;
+        }
+        &.swiper-slide-next .card {
+          float: left;
+        }
+        &.swiper-slide-prev .card {
+          float: right;
+        }
       }
-      &.swiper-slide-next{
-        left:4%;
+      &.swiper-slide-prev,
+      &.swiper-slide-next {
+        opacity: .2;
+      }
+      &.swiper-slide-prev {
+        left: -5%;
+      }
+      &.swiper-slide-next {
+        left: 4%;
       }
     }
   }
-  .swiper-pagination{
+  .swiper-pagination {
     visibility: hidden;
+  }
+}
+
+.platform-browser {
+  .wallets {
+    .slides {
+      .swiper-slide {
+        &.swiper-slide-prev,
+        &.swiper-slide-next {
+          &:hover {
+            opacity: 1;
+          }
+        }
+      }
+    }
   }
 }

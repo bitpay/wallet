@@ -1,15 +1,27 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('txStatusController', function($scope, $timeout, $state, $ionicHistory, $log, addressbookService) {
+angular.module('copayApp.controllers').controller('txStatusController', function($scope, $timeout, $state, $stateParams, $ionicHistory, $log, addressbookService) {
 
   if ($scope.cb) $timeout($scope.cb, 100);
-  $scope.fromSendTab = $ionicHistory.viewHistory().backView.stateName === "tabs.send.amount" || "tabs.send";
+
+  var previousView = $ionicHistory.viewHistory().backView && $ionicHistory.viewHistory().backView.stateName;
+  $scope.fromSendTab = previousView.match(/tabs.send/) ? true : false;
+  $scope.fromBitPayCard = previousView.match(/tabs.bitpayCard/) ? true : false;
+  $scope.fromPayPro = $stateParams.paypro ? true : false;
 
   $scope.cancel = function() {
     $scope.txStatusModal.hide();
     if ($scope.fromSendTab) {
       $ionicHistory.removeBackView();
-      $state.go('tabs.home');
+      $state.go('tabs.send');
+      $timeout(function() {
+        $state.transitionTo('tabs.home');
+      }, 100);
+    } else if ($scope.fromBitPayCard) {
+      $ionicHistory.removeBackView();
+      $timeout(function() {
+        $state.transitionTo('tabs.bitpayCard');
+      }, 100);
     }
   };
 
@@ -21,7 +33,7 @@ angular.module('copayApp.controllers').controller('txStatusController', function
     });
     $ionicHistory.removeBackView();
     $state.go('tabs.send.addressbook', {
-      fromSendTab: true,
+      fromSendTab: $scope.fromSendTab,
       addressbookEntry: addressbookEntry
     });
   }

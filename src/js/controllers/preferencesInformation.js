@@ -114,9 +114,9 @@ angular.module('copayApp.controllers').controller('preferencesInformation',
         }
         $scope.addrs = last10;
         $timeout(function() {
+          $ionicScrollDelegate.resize();
           $scope.$apply();
-        });
-        $ionicScrollDelegate.resize();
+        }, 10);
       });
     });
 

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('preferencesBitpayCardController',
-  function($scope, $state, $timeout, bitpayCardService, popupService) {
+  function($scope, $state, $timeout, $ionicHistory, bitpayCardService, popupService) {
 
     $scope.logout = function() {
       var title = 'Are you sure you would like to log out of your Bitpay Card account?';
@@ -12,8 +12,9 @@ angular.module('copayApp.controllers').controller('preferencesBitpayCardControll
 
     var logout = function() {
       bitpayCardService.logout(function() {
+        $ionicHistory.removeBackView();
         $timeout(function() {
-          $state.go('bitpayCard.main');
+          $state.go('tabs.home');
         }, 100);
       });
     };

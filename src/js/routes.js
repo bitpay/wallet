@@ -150,10 +150,10 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
      *
      */
 
-    .state('tabs.details', {
-        url: '/details/{walletId}/{fromOnboarding}',
+    .state('tabs.wallet', {
+        url: '/wallet/{walletId}/{fromOnboarding}',
         views: {
-          'tab-home': {
+          'tab-home@tabs': {
             controller: 'walletDetailsController',
             templateUrl: 'views/walletDetails.html'
           }
@@ -166,7 +166,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
       .state('tabs.activity', {
         url: '/activity',
         views: {
-          'tab-home': {
+          'tab-home@tabs': {
             controller: 'activityController',
             templateUrl: 'views/activity.html',
           }
@@ -175,7 +175,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
       .state('tabs.proposals', {
         url: '/proposals',
         views: {
-          'tab-home': {
+          'tab-home@tabs': {
             controller: 'proposalsController',
             templateUrl: 'views/proposals.html',
           }
@@ -191,6 +191,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
     .state('tabs', {
         url: '/tabs',
         abstract: true,
+        controller: 'tabsController',
         templateUrl: 'views/tabs.html'
       })
       .state('tabs.home', {
@@ -236,7 +237,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
      *
      */
 
-      .state('tabs.send.amount', {
+    .state('tabs.send.amount', {
         url: '/amount/:isWallet/:toAddress/:toName/:toEmail',
         views: {
           'tab-send@tabs': {
@@ -317,7 +318,16 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
      *
      */
 
-    .state('tabs.language', {
+    .state('tabs.notifications', {
+        url: '/notifications',
+        views: {
+          'tab-settings@tabs': {
+            controller: 'preferencesNotificationsController',
+            templateUrl: 'views/preferencesNotifications.html'
+          }
+        }
+      })
+      .state('tabs.language', {
         url: '/language',
         views: {
           'tab-settings@tabs': {
@@ -389,6 +399,15 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
           }
         }
       })
+      .state('tabs.advanced', {
+        url: '/advanced',
+        views: {
+          'tab-settings@tabs': {
+            controller: 'advancedSettingsController',
+            templateUrl: 'views/advancedSettings.html'
+          }
+        }
+      })
 
     /*
      *
@@ -429,6 +448,14 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
           'tab-settings@tabs': {
             controller: 'preferencesEmailController',
             templateUrl: 'views/preferencesEmail.html'
+          }
+        }
+      })
+      .state('tabs.preferences.backupWarning', {
+        url: '/backupWarning/:from',
+        views: {
+          'tab-settings@tabs': {
+            templateUrl: 'views/backupWarning.html'
           }
         }
       })
@@ -551,7 +578,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
 
     /*
      *
-     *TO DO
+     * Copayers
      *
      */
 
@@ -564,6 +591,30 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         }
       }
     })
+
+    /*
+     *
+     * Back flow from receive
+     *
+     */
+
+    .state('tabs.receive.backupWarning', {
+        url: '/backupWarning/:from/:walletId',
+        views: {
+          'tab-receive@tabs': {
+            templateUrl: 'views/backupWarning.html'
+          }
+        }
+      })
+      .state('tabs.receive.backup', {
+        url: '/backup/:walletId',
+        views: {
+          'tab-receive@tabs': {
+            controller: 'backupController',
+            templateUrl: 'views/backup.html'
+          }
+        }
+      })
 
     /*
      *
@@ -617,15 +668,15 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         }
       })
       .state('onboarding.backupWarning', {
-        url: '/backupWarning/:walletId',
+        url: '/backupWarning/:from/:walletId',
         views: {
           'onboarding': {
-            templateUrl: 'views/onboarding/backupWarning.html'
+            templateUrl: 'views/backupWarning.html'
           }
         }
       })
       .state('onboarding.backup', {
-        url: '/backup/:walletId/:fromOnboarding',
+        url: '/backup/:walletId',
         views: {
           'onboarding': {
             templateUrl: 'views/backup.html',
@@ -785,29 +836,44 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         }
       })
 
-    /*
-     *
-     * BitPay Card
-     *
-     */
+      /*
+       *
+       * BitPay Card
+       *
+       */
 
-    .state('bitpayCard', {
-        url: '/bitpayCard',
-        abstract: true,
-        template: '<ion-nav-view name="bitpayCard"></ion-nav-view>'
-      })
-      .state('bitpayCard.main', {
-        url: '/main',
+      .state('tabs.bitpayCard', {
+        url: '/bitpay-card',
         views: {
-          'bitpayCard': {
+          'tab-home@tabs': {
+            controller: 'bitpayCardController',
+            controllerAs: 'bitpayCard',
             templateUrl: 'views/bitpayCard.html'
           }
         }
       })
-      .state('bitpayCard.preferences', {
+      .state('tabs.bitpayCard.amount', {
+        url: '/amount/:isCard/:toName',
+        views: {
+          'tab-home@tabs': {
+            controller: 'amountController',
+            templateUrl: 'views/amount.html'
+          }
+        }
+      })
+      .state('tabs.bitpayCard.confirm', {
+        url: '/confirm/:isCard/:toAddress/:toName/:toAmount/:toEmail/:description/:paypro',
+        views: {
+          'tab-home@tabs': {
+            controller: 'confirmController',
+            templateUrl: 'views/confirm.html'
+          }
+        }
+      })
+      .state('tabs.bitpayCard.preferences', {
         url: '/preferences',
         views: {
-          'bitpayCard': {
+          'tab-home@tabs': {
             templateUrl: 'views/preferencesBitpayCard.html'
           }
         }
@@ -944,6 +1010,8 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
       $log.debug('Route change from:', fromState.name || '-', ' to:', toState.name);
       $log.debug('            toParams:' + JSON.stringify(toParams || {}));
       $log.debug('            fromParams:' + JSON.stringify(fromParams || {}));
+
+      if (!toState.name.match(/onboarding/)) return;
       var state = {};
       state.name = toState.name;
       state.toParams = toParams;

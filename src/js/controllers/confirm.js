@@ -1,18 +1,18 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('confirmController', function($rootScope, $scope, $filter, $timeout, $ionicScrollDelegate, gettextCatalog, walletService, platformInfo, lodash, configService, rateService, $stateParams, $window, $state, $log, profileService, bitcore, $ionicPopup, gettext, txFormatService, ongoingProcess, $ionicModal, $ionicHistory, popupService) {
+angular.module('copayApp.controllers').controller('confirmController', function($rootScope, $scope, $filter, $timeout, $ionicScrollDelegate, gettextCatalog, walletService, platformInfo, lodash, configService, rateService, $stateParams, $window, $state, $log, profileService, bitcore, gettext, txFormatService, ongoingProcess, $ionicModal, popupService) {
   var cachedTxp = {};
   var isChromeApp = platformInfo.isChromeApp;
 
-  $scope.isWallet = $stateParams.isWallet;
-  $scope.toAmount = $stateParams.toAmount;
-  $scope.toAddress = $stateParams.toAddress;
-  $scope.toName = $stateParams.toName;
-  $scope.toEmail = $stateParams.toEmail;
-  $scope.description = $stateParams.description;
-  $scope.paypro = $stateParams.paypro;
-
-  $scope.$on("$ionicView.enter", function(event, data) {
+  $scope.$on("$ionicView.beforeEnter", function(event, data) {
+    $scope.isWallet = data.stateParams.isWallet;
+    $scope.isCard = data.stateParams.isCard;
+    $scope.toAmount = data.stateParams.toAmount;
+    $scope.toAddress = data.stateParams.toAddress;
+    $scope.toName = data.stateParams.toName;
+    $scope.toEmail = data.stateParams.toEmail;
+    $scope.description = data.stateParams.description;
+    $scope.paypro = data.stateParams.paypro;
     initConfirm();
   });
 
@@ -243,7 +243,8 @@ angular.module('copayApp.controllers').controller('confirmController', function(
 
     walletService.createTx(wallet, txp, function(err, ctxp) {
       if (err) {
-        return setSendError(err);
+        setSendError(err);
+        return cb(err);
       }
       return cb(null, ctxp);
     });
@@ -311,9 +312,5 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     walletService.publishAndSign(wallet, txp, function(err, txp) {
       if (err) return setSendError(err);
     });
-  };
-
-  $scope.cancel = function() {
-    $state.go('tabs.send');
   };
 });

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('tabReceiveController', function($scope, $timeout, $log, $ionicModal, storageService, platformInfo, walletService, profileService, configService, lodash, gettextCatalog, popupService) {
+angular.module('copayApp.controllers').controller('tabReceiveController', function($scope, $timeout, $log, $ionicModal, $state, $ionicHistory, storageService, platformInfo, walletService, profileService, configService, lodash, gettextCatalog, popupService) {
 
   $scope.isCordova = platformInfo.isCordova;
   $scope.isNW = platformInfo.isNW;
@@ -29,29 +29,25 @@ angular.module('copayApp.controllers').controller('tabReceiveController', functi
   };
 
   $scope.setAddress = function(forceNew) {
-    if ($scope.generatingAddress) return;
+    if ($scope.generatingAddress || !$scope.wallet.isComplete()) return;
 
     $scope.addr = null;
     $scope.generatingAddress = true;
-
     $timeout(function() {
       walletService.getAddress($scope.wallet, forceNew, function(err, addr) {
         $scope.generatingAddress = false;
-        if (err || lodash.isEmpty(addr)) {
-          popupService.showAlert(gettextCatalog.getString('Error'), err || gettextCatalog.getString('Address is empty'));
-          return;
-        }
+        if (err) popupService.showAlert(gettextCatalog.getString('Error'), err);
         $scope.addr = addr;
+        if ($scope.wallet.showBackupNeededModal) $scope.openBackupNeededModal();
         $scope.$apply();
       });
-    }, 1);
+    }, 100);
+
   };
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
     if (!$scope.isCordova) $scope.checkTips();
-    $scope.wallets = profileService.getWallets({
-      onlyComplete: true
-    });
+    $scope.wallets = profileService.getWallets();
     $scope.$on('Wallet/Changed', function(event, wallet) {
       if (!wallet) {
         $log.debug('No wallet provided');
@@ -62,4 +58,46 @@ angular.module('copayApp.controllers').controller('tabReceiveController', functi
       $scope.setAddress();
     });
   });
+
+  $scope.goCopayers = function() {
+    $ionicHistory.removeBackView();
+    $ionicHistory.nextViewOptions({
+      disableAnimate: true
+    });
+    $state.go('tabs.home');
+    $timeout(function() {
+      $state.transitionTo('tabs.copayers', {
+        walletId: $scope.wallet.credentials.walletId
+      });
+    }, 100);
+  };
+
+  $scope.openBackupNeededModal = function() {
+    $ionicModal.fromTemplateUrl('views/includes/backupNeededPopup.html', {
+      scope: $scope,
+      backdropClickToClose: false,
+      hardwareBackButtonClose: false
+    }).then(function(modal) {
+      $scope.BackupNeededModal = modal;
+      $scope.BackupNeededModal.show();
+    });
+  };
+
+  $scope.close = function() {
+    $scope.BackupNeededModal.hide();
+    $scope.BackupNeededModal.remove();
+    profileService.setBackupNeededModalFlag($scope.wallet.credentials.walletId);
+  };
+
+  $scope.doBackup = function() {
+    $scope.close();
+    $scope.goToBackupFlow();
+  };
+
+  $scope.goToBackupFlow = function() {
+    $state.go('tabs.receive.backupWarning', {
+      from: 'tabs.receive',
+      walletId: $scope.wallet.credentials.walletId
+    });
+  }
 });
