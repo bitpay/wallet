@@ -49,15 +49,6 @@ angular.module('copayApp.controllers').controller('backupController',
       }, 10);
     };
 
-    $scope.goBack = function() {
-      if ($scope.step == 1) {
-        if ($stateParams.fromOnboarding) $state.go('onboarding.backupRequest');
-        else $state.go('wallet.preferences');
-      } else {
-        $scope.goToStep($scope.step - 1);
-      }
-    };
-
     var backupError = function(err) {
       ongoingProcess.set('validatingWords', false);
       $log.debug('Failed to verify backup: ', err);
@@ -93,13 +84,15 @@ angular.module('copayApp.controllers').controller('backupController',
 
     $scope.closeBackupResultModal = function() {
       $scope.confirmBackupModal.hide();
+      $scope.confirmBackupModal.remove();
 
-      if ($stateParams.fromOnboarding) {
-        $state.go('onboarding.disclaimer');
-      } else {
-        $ionicHistory.removeBackView();
-        $state.go('tabs.home');
-      }
+      profileService.isDisclaimerAccepted(function(val) {
+        if (val) {
+          $ionicHistory.removeBackView();
+          $state.go('tabs.home');
+        }
+        else $state.go('onboarding.disclaimer', {backedUp: false});
+      });
     };
 
     var confirm = function(cb) {
@@ -191,16 +184,6 @@ angular.module('copayApp.controllers').controller('backupController',
         $scope.selectComplete = true;
       else
         $scope.selectComplete = false;
-    };
-
-    $scope.backupGoBack = function() {
-      if ($stateParams.fromOnboarding) $state.go('onboarding.backupWarning', {
-        walletId: $stateParams.walletId,
-        fromOnboarding: true
-      });
-      else $state.go('tabs.preferences', {
-        walletId: $stateParams.walletId
-      });
     };
 
     $scope.$on("$ionicView.enter", function(event, data) {
