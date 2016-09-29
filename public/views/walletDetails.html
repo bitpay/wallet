@@ -1,6 +1,6 @@
 <ion-view id="walletDetails">
-  <ion-nav-bar ng-style="{'background-color': walletDetailsColor}">
-    <ion-nav-title>{{walletDetailsName}}</ion-nav-title>
+  <ion-nav-bar ng-style="{'background-color': wallet.color}">
+    <ion-nav-title>{{wallet.name}}</ion-nav-title>
     <ion-nav-back-button>
     </ion-nav-back-button>
     <ion-nav-buttons side="secondary">
@@ -14,14 +14,13 @@
       <div ng-style="{'background-color':wallet.color}" class="amount">
         <div ng-if="!notAuthorized && !updatingStatus">
 
-          <div class="m20t" ng-show="updateStatusError" ng-click='update()'>
-            <span class="size-12 db m10b">{{updateStatusError|translate}}</span>
-            <button class="outline white tiny round" translate>Tap to retry</button>
+          <div ng-show="updateStatusError">
+            <a class="button button-outline button-light button-small" ng-click='update()' translate>Tap to retry</a>
           </div>
 
-          <div class="m20t" ng-show="walletNotRegistered" ng-click='recreate()'>
+          <div ng-show="walletNotRegistered">
             <span class="size-12 db m10b" translate>This wallet is not registered at the given Bitcore Wallet Service (BWS). You can recreate it from the local information.</span>
-            <button class="outline white tiny round" translate>Recreate</button>
+            <a class="button button-outline button-light button-small" ng-click='recreate()' translate>Recreate</a>
           </div>
 
           <div ng-show="wallet.walletScanStatus == 'error'" ng-click='retryScan()'>
@@ -30,7 +29,7 @@
           </div>
 
 
-          <div ng-click='updateAll()' ng-show="!updateStatusError && wallet.walletScanStatus != 'error' && !wallet.balanceHidden" on-hold="hideToggle()">
+          <div ng-click='updateAll(true)' ng-show="!updateStatusError && wallet.walletScanStatus != 'error' && !wallet.balanceHidden" on-hold="hideToggle()">
             <strong class="size-36">{{status.totalBalanceStr}}</strong>
             <div class="size-14 amount-alternative" ng-if="status.totalBalanceAlternative">{{status.totalBalanceAlternative}} {{status.alternativeIsoCode}}</div>
             <div class="size-14" ng-if="status.pendingAmount">
@@ -46,10 +45,10 @@
           </div>
         </div>
         <div ng-if="updatingStatus">
-            <div class="size-36">
-              <strong>...</strong>
-            </div>
+          <div class="size-36">
+            <strong>...</strong>
           </div>
+        </div>
       </div> <!-- amount -->
 
       <div class="wallet-info">
@@ -108,8 +107,8 @@
       <!-- Transactions -->
 
       <div class="oh pr m20t text-gray size-12 text-center"
-        ng-show="!txHistory[0] && !updatingTxHistory && !txHistoryError && !updateStatusError && !notAuthorized"
-        translate>No transactions yet {{status.totalBalanceStr}}
+        ng-show="!txHistory[0] && !updatingTxHistory && !txHistoryError && !updateStatusError && !notAuthorized" translate>
+        No transactions yet
       </div>
 
       <div ng-show="updatingTxHistory && updatingTxHistoryProgress>5" class="updatingHistory">
@@ -121,20 +120,6 @@
         </div>
         <div  class="row" ng-show="updatingTxHistoryProgress>0" >
           <div class="col" translate>{{updatingTxHistoryProgress}} transactions downloaded</div>
-        </div>
-      </div>
-
-      <div ng-if="txHistory[0] && updatingTxHistory && newTx" class="row collapse last-transactions-content animated fadeInDown">
-        <div class="large-6 medium-6 small-6 columns size-14">
-          <div class="m10r left">
-            <img src="img/icon-new.svg" width="40">
-          </div>
-          <div class="m10t" style="background:#eee; width: 8em; margin-left: 52px; line-height:0.6em">
-            <span>&nbsp;</span>
-          </div>
-          <div style="margin-top:5px; background:#eee; width: 6em; margin-left: 52px; line-height:0.6em">
-            <span>&nbsp;</span>
-          </div>
         </div>
       </div>
 
