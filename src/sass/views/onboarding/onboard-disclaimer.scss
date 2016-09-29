@@ -3,6 +3,9 @@
   height: 100%;
   ion-content{
     height: 100%;
+    &.has-header{
+      top:40px !important;
+    }
     .scroll{
       height: 100%;
     }
@@ -10,9 +13,17 @@
       margin-top:1.5rem;
     }
   }
+  .tag{
+    padding-bottom: 0;
+  }
   .list{
     max-width: 600px;
     @include center-block();
+    .item{
+      &:first-child{
+        padding-top: 0;
+      }
+    }
   }
   .item {
     background: transparent;
@@ -59,6 +70,9 @@
     position: absolute;
     bottom: 0;
     width: 100%;
+    &.header-present{
+      bottom:16px;
+    }
     &-content{
       max-width: 600px;
       @include center-block();
