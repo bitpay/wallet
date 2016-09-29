@@ -3,15 +3,14 @@
 angular.module('copayApp.controllers').controller('bitpayCardController', function($scope, $timeout, $log, lodash, bitpayCardService, configService, profileService, walletService, ongoingProcess, pbkdf2Service, moment, popupService, gettextCatalog, bwcError) {
 
   var self = this;
-  var wallet;
+  $scope.dateRange = 'last30Days';
+  $scope.network = bitpayCardService.getEnvironment();
 
-  $scope.$on('Wallet/Changed', function(event, w) {
-    if (lodash.isEmpty(w)) {
-      $log.debug('No wallet provided');
-      return;
-    }
-    wallet = w;
-    $log.debug('Wallet changed: ' + w.name);
+  bitpayCardService.getCacheData(function(err, data) {
+    if (err || lodash.isEmpty(data)) return;
+    $scope.bitpayCardCached = true;
+    self.bitpayCardTransactionHistory = data.transactions;
+    self.bitpayCardCurrentBalance = data.balance;
   });
 
   var processTransactions = function(invoices, history) {
@@ -89,6 +88,14 @@ angular.module('copayApp.controllers').controller('bitpayCardController', functi
 
             self.bitpayCardTransactionHistory = processTransactions(invoices, history.transactionList);
             self.bitpayCardCurrentBalance = history.currentCardBalance;
+
+            var cacheData = {
+              balance: self.bitpayCardCurrentBalance,
+              transactions: self.bitpayCardTransactionHistory
+            };
+            bitpayCardService.setCacheData(cacheData, function(err) {
+              if (err) $log.error(err);
+            });
           });
         });
       }
@@ -98,11 +105,11 @@ angular.module('copayApp.controllers').controller('bitpayCardController', functi
     });
   };
 
-  this.authenticate = function() {
+  this.authenticate = function(email, password) {
 
     var data = {
-      emailAddress : $scope.email,
-      hashedPassword : pbkdf2Service.pbkdf2Sync($scope.password, '..............', 200, 64).toString('hex')
+      emailAddress : email,
+      hashedPassword : pbkdf2Service.pbkdf2Sync(password, '..............', 200, 64).toString('hex')
     };
 
     // POST /authenticate
@@ -123,10 +130,10 @@ angular.module('copayApp.controllers').controller('bitpayCardController', functi
     });
   };
 
-  this.authenticate2FA = function() {
+  this.authenticate2FA = function(twoFactorCode) {
 
     var data = {
-      twoFactorCode : $scope.twoFactorCode
+      twoFactorCode : twoFactorCode
     };
 
     self.authenticating = true;
@@ -167,20 +174,7 @@ angular.module('copayApp.controllers').controller('bitpayCardController', functi
   };
 
   $scope.$on("$ionicView.beforeEnter", function(event, data){
-    $scope.dateRange = 'last30Days';
-
-    $scope.network = bitpayCardService.getEnvironment();
-    $scope.wallets = profileService.getWallets({
-      network: $scope.network,
-      onlyComplete: true
-    });
-
     self.update();
-
-    wallet = $scope.wallets[0];
-
-    if (wallet && wallet.credentials.n > 1)
-      self.isMultisigWallet = true;
   });
 
 });
