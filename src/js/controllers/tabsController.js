@@ -33,6 +33,8 @@ angular.module('copayApp.controllers').controller('tabsController', function($ro
     'tabs.preferences.backup',
     'tabs.receive.backupWarning',
     'tabs.receive.backup',
+    'tabs.bitpayCard.amount',
+    'tabs.bitpayCard.confirm',
   ];
 
   $rootScope.$on('$ionicView.beforeEnter', function() {

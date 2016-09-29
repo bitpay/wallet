@@ -76,14 +76,15 @@
         </p>
         <i class="icon nav-item-arrow-right"></i>
       </a>
-      <a ui-sref="bitpayCard.main"
+      <a ui-sref="tabs.bitpayCard"
          ng-if="externalServices.BitpayCard"
          class="item item-icon-left item-big-icon-left item-icon-right">
         <i class="icon big-icon-svg">
           <div class="bg icon-bitpay-card"></div>
         </i>
         <h2>BitPay Card</h2>
-        <p translate>Add funds to get started</p>
+        <p ng-if="!bitpayCard" translate>Add funds to get started</p>
+        <span ng-if="bitpayCard">${{bitpayCard.balance}}</span>
         <i class="icon nav-item-arrow-right"></i>
       </a>
     </div>
