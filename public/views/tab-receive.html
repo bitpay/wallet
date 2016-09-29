@@ -9,7 +9,7 @@
   </ion-nav-bar>
   <ion-content>
     <div id="address">
-      <article class="text-center" ng-if="!wallet.isComplete()">
+      <article class="text-center" ng-if="wallet && !wallet.isComplete()">
         <div class="incomplete">
           <div class="title">
             <span translate>Incomplete wallet</span>
@@ -30,7 +30,7 @@
           </div>
         </div>
       </article>
-      <article ng-if="wallet.isComplete()">
+      <article ng-if="wallet && wallet.isComplete()">
         <div class="row backup" ng-show="!wallet.showBackupNeededModal && wallet.needsBackup" ng-click="goToBackupFlow()">
           <div class="m15t text-center col center-block">
             <i class="icon ion-alert"></i><span translate>Wallet not backed up</span><i class="icon ion-ios-arrow-thin-right"></i>
