@@ -33,31 +33,13 @@ angular.module('copayApp.controllers').controller('tabReceiveController', functi
 
     $scope.addr = null;
     $scope.generatingAddress = true;
-    $timeout(function() {
-      walletService.getAddress($scope.wallet, forceNew, function(err, addr) {
-        $scope.generatingAddress = false;
-        if (err) popupService.showAlert(gettextCatalog.getString('Error'), err);
-        $scope.addr = addr;
-        if ($scope.wallet.showBackupNeededModal) $scope.openBackupNeededModal();
-        $scope.$apply();
-      });
-    }, 100);
-
-  };
-
-  $scope.$on("$ionicView.beforeEnter", function(event, data) {
-    if (!$scope.isCordova) $scope.checkTips();
-    $scope.wallets = profileService.getWallets();
-    $scope.$on('Wallet/Changed', function(event, wallet) {
-      if (!wallet) {
-        $log.debug('No wallet provided');
-        return;
-      }
-      $scope.wallet = wallet;
-      $log.debug('Wallet changed: ' + wallet.name);
-      $scope.setAddress();
+    walletService.getAddress($scope.wallet, forceNew, function(err, addr) {
+      $scope.generatingAddress = false;
+      if (err) popupService.showAlert(gettextCatalog.getString('Error'), err);
+      $scope.addr = addr;
+      if ($scope.wallet.showBackupNeededModal) $scope.openBackupNeededModal();
     });
-  });
+  };
 
   $scope.goCopayers = function() {
     $ionicHistory.removeBackView();
@@ -99,5 +81,23 @@ angular.module('copayApp.controllers').controller('tabReceiveController', functi
       from: 'tabs.receive',
       walletId: $scope.wallet.credentials.walletId
     });
-  }
+  };
+
+  if (!$scope.isCordova) $scope.checkTips();
+  $scope.$on('Wallet/Changed', function(event, wallet) {
+    if (!wallet) {
+      $log.debug('No wallet provided');
+      return;
+    }
+    $scope.wallet = wallet;
+    $log.debug('Wallet changed: ' + wallet.name);
+    $scope.setAddress();
+    $timeout(function() {
+      $scope.$apply();
+    }, 100);
+  });
+
+  $scope.$on("$ionicView.beforeEnter", function(event, data) {
+    $scope.wallets = profileService.getWallets();
+  });
 });

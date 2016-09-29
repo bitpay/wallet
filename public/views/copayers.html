@@ -20,7 +20,7 @@
                 <ion-spinner class="spinner-dark" icon="lines"></ion-spinner>
               </div>
             </div>
-            <div class="secret" ng-show="!isCordova">
+            <div class="secret">
               {{secret || ('Loading...'|translate)}}
             </div>
           </div>
@@ -29,11 +29,11 @@
 
       <div ng-show="secret">
         <div class="text-center m10t" ng-if="isCordova">
-          <span class="button outline round dark-gray tiny m0"
+          <button class="button button-outline button-positive"
             ng-click="shareSecret()">
-            <i class="fi-share"></i>
+            <i class="icon ion-ios-upload-outline"></i>
             <span translate>Share invitation</span>
-          </span>
+          </button>
         </div>
 
         <div class="m30v line-t">
