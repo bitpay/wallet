@@ -1,10 +1,15 @@
+#add-address{
+  .list{
+    background: #ffffff;
+  }
+}
 #view-address-book {
   .scroll{
     height:100%;
   }
   #add-contact{
     img{
-      width: 6rem;
+      width: 10rem;
       display: inline-block;
     }
     a{

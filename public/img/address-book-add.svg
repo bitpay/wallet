@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="128px" height="128px" viewBox="0 0 128 128" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: sketchtool 40.1 (33804) - http://www.bohemiancoding.com/sketch -->
+    <title>CF22B02A-463B-4798-B448-F6A878730EDC</title>
+    <desc>Created with sketchtool.</desc>
+    <defs>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-1">
+            <stop stop-color="#EFF2FF" offset="0%"></stop>
+            <stop stop-color="#F7F7F7" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="Settings" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="1.7.4---Address-book-(Empty)" transform="translate(-122.000000, -125.000000)">
+            <g id="Header/Jumbo-W-Text/Light" transform="translate(0.000000, 70.000000)">
+                <g id="users-24px-outline-2_a-add" transform="translate(64.000000, 41.000000)">
+                    <g id="Group" transform="translate(58.000000, 14.000000)">
+                        <circle id="Oval-2" fill="url(#linearGradient-1)" cx="64" cy="64" r="64"></circle>
+                        <path d="M59.8058824,65.8235294 C51.3947922,65.8235294 43.9338216,67.7071485 39.0313235,69.3457199 C35.4125294,70.5591485 33,73.9396246 33,77.7275294 L33,89.442577 L62.7843137,89.442577" id="Shape" stroke="#647CE8" stroke-width="2"></path>
+                        <path d="M65.8843137,68.4285714 L65.8843137,68.4285714 C57.6608647,68.4285714 50.9921569,58.8658095 50.9921569,50.7142857 L50.9921569,47.7619048 C50.9921569,39.610381 57.6608647,33 65.8843137,33 L65.8843137,33 C74.1077627,33 80.7764706,39.610381 80.7764706,47.7619048 L80.7764706,50.7142857 C80.7764706,58.8658095 74.1077627,68.4285714 65.8843137,68.4285714 L65.8843137,68.4285714 Z" id="Shape" stroke="#647CE8" stroke-width="2"></path>
+                        <path d="M85.2745098,77.2857143 L85.2745098,95" id="Shape" stroke="#647CE8" stroke-width="2"></path>
+                        <path d="M77.1294118,85.2745098 L95,85.2745098" id="Shape" stroke="#647CE8" stroke-width="2"></path>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
