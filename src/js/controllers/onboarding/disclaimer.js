@@ -36,7 +36,7 @@ angular.module('copayApp.controllers').controller('disclaimerController', functi
   };
 
   $scope.goBack = function(){
-    $state.go('onboarding.backupRequest');
+    $state.go('onboarding.backupRequest', {walletId: $stateParams.walletId});
   }
 
 
