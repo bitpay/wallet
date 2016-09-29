@@ -115,7 +115,7 @@
     </div>
 
     <div class="list card"
-         ng-if="(!externalServices.AmazonGiftCards || !externalServices.BitpayCard || !externalServices.BuyAndSell || !wallets[0]) && nextStepEnabled">
+         ng-if="externalServices.AmazonGiftCards || externalServices.BitpayCard || externalServices.BuyAndSell || !wallets[0] || nextStepEnabled">
       <div class="item item-icon-right item-heading" ng-click="shouldHideNextSteps()" translate>
         Next steps
         <i class="icon nav-item-arrow-down" ng-if="!hideNextSteps"></i>
