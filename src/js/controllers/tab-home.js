@@ -117,6 +117,7 @@ angular.module('copayApp.controllers').controller('tabHomeController',
         });
       });
 
+      if (!$scope.recentTransactionsEnabled) return;
       $scope.fetchingNotifications = true;
       profileService.getNotifications({
         limit: 3
@@ -144,6 +145,9 @@ angular.module('copayApp.controllers').controller('tabHomeController',
           return;
         }
         wallet.status = status;
+        updateTxps();
+
+        if (!$scope.recentTransactionsEnabled) return;
 
         $scope.fetchingNotifications = true;
         profileService.getNotifications({
@@ -155,8 +159,6 @@ angular.module('copayApp.controllers').controller('tabHomeController',
             return;
           }
           $scope.notifications = notifications;
-
-          updateTxps();
         })
       });
     };
@@ -208,7 +210,7 @@ angular.module('copayApp.controllers').controller('tabHomeController',
 
     var bitpayCardCache = function() {
       bitpayCardService.getCacheData(function(err, data) {
-        if (err || lodash.isEmpty(data)) return;
+        if (err ||  lodash.isEmpty(data)) return;
         $scope.bitpayCard = data;
       });
     };
