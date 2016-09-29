@@ -54,7 +54,7 @@ angular.module('copayApp.services').factory('configService', function(storageSer
     //Experimental Features
 
     recentTransactions: {
-      enabled: true
+      enabled: false //disabled by default
     },
 
     frequentlyUsed: {
