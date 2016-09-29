@@ -187,7 +187,8 @@ angular.module('copayApp.controllers').controller('tabHomeController',
       $scope.hideNextSteps = !$scope.hideNextSteps;
       $timeout(function() {
         $ionicScrollDelegate.resize();
-      }, 10);
+        $scope.$apply();
+      }, 100);
     };
 
     var bitpayCardCache = function() {
@@ -217,7 +218,6 @@ angular.module('copayApp.controllers').controller('tabHomeController',
       configService.whenAvailable(function() {
         var config = configService.getSync();
         var isWindowsPhoneApp = platformInfo.isWP && platformInfo.isCordova;
-        $scope.hideNextSteps = false;
         $scope.glideraEnabled = config.glidera.enabled && !isWindowsPhoneApp;
         $scope.coinbaseEnabled = config.coinbase.enabled && !isWindowsPhoneApp;
         $scope.amazonEnabled = config.amazon.enabled;
