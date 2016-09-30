@@ -53,7 +53,7 @@
         <a ui-sref="tabs.add"><i class="icon ion-ios-plus-empty list-add-button"></i></a>
       </div>
       <a ng-repeat="wallet in wallets track by $index"
-         class="item item-icon-left item-big-icon-left item-icon-right"
+         class="item item-icon-left item-big-icon-left item-icon-right wallet"
          ng-click="openWallet(wallet)">
         <i class="icon big-icon-svg">
           <img src="img/icon-wallet.svg" ng-style="{'background-color': wallet.color}" class="bg"/>
