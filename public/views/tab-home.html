@@ -85,7 +85,7 @@
         <i class="icon nav-item-arrow-right"></i>
       </a>
       <a ui-sref="tabs.bitpayCard"
-         ng-if="externalServices.BitpayCard"
+         ng-if="wallets[0] && externalServices.BitpayCard && bitpayCardEnabled"
          class="item item-icon-left item-big-icon-left item-icon-right">
         <i class="icon big-icon-svg">
           <div class="bg icon-bitpay-card"></div>
@@ -97,7 +97,7 @@
       </a>
     </div>
 
-    <div class="list card" ng-if="externalServices.BuyAndSell && (glideraEnabled || coinbaseEnabled)">
+    <div class="list card" ng-if="wallets[0] && externalServices.BuyAndSell && (glideraEnabled || coinbaseEnabled)">
       <div class="item item-icon-right item-heading" translate>
         Buy &amp; Sell Bitcoin
         <a ui-sref="tabs.buyandsell"><i class="icon ion-ios-plus-empty list-add-button"></i></a>
@@ -112,7 +112,7 @@
       </a> -->
     </div>
 
-    <div class="list card" ng-if="externalServices.AmazonGiftCards">
+    <div class="list card" ng-if="wallets[0] && externalServices.AmazonGiftCards && amazonEnabled">
       <a class="item item-icon-left item-icon-right item-big-icon-left" ui-sref="tabs.giftcards.amazon">
         <i class="icon big-icon-svg">
           <div class="bg icon-gift"></div>
