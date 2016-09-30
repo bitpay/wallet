@@ -1,11 +1,11 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('disclaimerController', function($scope, $timeout, $state, $log, $ionicModal, profileService, uxLanguage, externalLinkService) {
-
+angular.module('copayApp.controllers').controller('disclaimerController', function($scope, $timeout, $state, $log, $ionicModal, profileService, uxLanguage, externalLinkService, storageService, $stateParams) {
   $scope.init = function() {
     $scope.lang = uxLanguage.currentLanguage;
     $scope.terms = {};
     $scope.accept1 = $scope.accept2 = $scope.accept3 = false;
+    $scope.backedUp = $stateParams.backedUp;
     $timeout(function() {
       $scope.$apply();
     }, 1);
@@ -34,4 +34,10 @@ angular.module('copayApp.controllers').controller('disclaimerController', functi
       $scope.termsModal.show();
     });
   };
+
+  $scope.goBack = function(){
+    $state.go('onboarding.backupRequest', {walletId: $stateParams.walletId});
+  }
+
+
 });

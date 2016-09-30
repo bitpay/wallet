@@ -1,15 +1,13 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('walletDetailsController', function($scope, $rootScope, $interval, $timeout, $filter, $log, $ionicModal, $ionicPopover, $state, $stateParams, profileService, lodash, configService, gettextCatalog, platformInfo, walletService, txpModalService, externalLinkService, popupService) {
-  var isCordova = platformInfo.isCordova;
-  var isWP = platformInfo.isWP;
-  var isAndroid = platformInfo.isAndroid;
-  var isChromeApp = platformInfo.isChromeApp;
 
   var HISTORY_SHOW_LIMIT = 10;
-  var currentTxHistoryPage;
-  var wallet;
+  var currentTxHistoryPage = 0;
+  var listeners = [];
   $scope.txps = [];
+  $scope.completeTxHistory = [];
+  $scope.openTxpModal = txpModalService.open;
 
   $scope.openExternalLink = function(url, target) {
     externalLinkService.open(url, target);
@@ -24,7 +22,7 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
     //   fee: 1000,
     //   createdOn: new Date() / 1000,
     //   outputs: [],
-    //   wallet: wallet
+    //   wallet: $scope.wallet
     // };
     //
     // function addOutput(n) {
@@ -44,13 +42,12 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
     $scope.txps = lodash.sortBy(txps, 'createdOn').reverse();
   };
 
-
-  $scope.updateStatus = function(force) {
+  var updateStatus = function(force) {
     $scope.updatingStatus = true;
     $scope.updateStatusError = false;
     $scope.walletNotRegistered = false;
 
-    walletService.getStatus(wallet, {
+    walletService.getStatus($scope.wallet, {
       force: !!force,
     }, function(err, status) {
       $scope.updatingStatus = false;
@@ -74,29 +71,8 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
     });
   };
 
-
-  $scope.openTxpModal = txpModalService.open;
-
-  var listeners = [
-    $rootScope.$on('bwsEvent', function(e, walletId) {
-      if (walletId == wallet.id)
-        $scope.updateStatus();
-    }),
-    $rootScope.$on('Local/TxAction', function(e, walletId) {
-      if (walletId == wallet.id)
-        $scope.updateStatus();
-    }),
-  ];
-
-  $scope.$on('$destroy', function() {
-    lodash.each(listeners, function(x) {
-      x();
-    });
-  });
-
-
   $scope.openSearchModal = function() {
-    $scope.color = wallet.color;
+    $scope.color = $scope.wallet.color;
 
     $ionicModal.fromTemplateUrl('views/modals/search.html', {
       scope: $scope,
@@ -113,7 +89,7 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
 
   $scope.openTxModal = function(btx) {
     $scope.btx = lodash.cloneDeep(btx);
-    $scope.walletId = wallet.id;
+    $scope.walletId = $scope.wallet.id;
     $ionicModal.fromTemplateUrl('views/modals/tx-details.html', {
       scope: $scope
     }).then(function(modal) {
@@ -123,24 +99,24 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
   };
 
   $scope.recreate = function() {
-    walletService.recreate(wallet, function(err) {
+    walletService.recreate($scope.wallet, function(err) {
       $scope.init();
       if (err) return;
       $timeout(function() {
-        walletService.startScan(wallet, function() {
+        walletService.startScan($scope.wallet, function() {
           $scope.$apply();
         });
       });
     });
   };
 
-  $scope.updateTxHistory = function(cb) {
+  var updateTxHistory = function(cb) {
     if (!cb) cb = function() {};
     if ($scope.updatingTxHistory) return;
 
     $scope.updatingTxHistory = true;
     $scope.updateTxHistoryError = false;
-    $scope.updatingTxHistoryProgress = null;
+    $scope.updatingTxHistoryProgress = 0;
 
     var progressFn = function(txs) {
       $scope.updatingTxHistoryProgress = txs ? txs.length : 0;
@@ -148,11 +124,11 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
       $scope.showHistory();
       $timeout(function() {
         $scope.$apply();
-      }, 1);
+      });
     };
 
     $timeout(function() {
-      walletService.getTxHistory(wallet, {
+      walletService.getTxHistory($scope.wallet, {
         progressFn: progressFn,
       }, function(err, txHistory) {
         $scope.updatingTxHistory = false;
@@ -162,12 +138,10 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
           return;
         }
         $scope.completeTxHistory = txHistory;
-
         $scope.showHistory();
-
         $timeout(function() {
           $scope.$apply();
-        }, 1);
+        });
         return cb();
       });
     });
@@ -186,51 +160,39 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
     $scope.$broadcast('scroll.infiniteScrollComplete');
   };
 
-  $scope.updateAll = function(cb)  {
-    $scope.updateStatus(false);
-    $scope.updateTxHistory(cb);
+  $scope.updateAll = function(force, cb)  {
+    updateStatus(force);
+    updateTxHistory(cb);
   };
 
   $scope.hideToggle = function() {
-    profileService.toggleHideBalanceFlag(wallet.credentials.walletId, function(err) {
+    profileService.toggleHideBalanceFlag($scope.wallet.credentials.walletId, function(err) {
       if (err) $log.error(err);
     });
   };
 
-  $scope.$on("$ionicView.beforeEnter", function(event, data){
-    currentTxHistoryPage = 0;
-    $scope.completeTxHistory = [];
+  $scope.$on("$ionicView.beforeEnter", function(event, data) {
 
-    wallet = profileService.getWallet($stateParams.walletId);
+    $scope.wallet = profileService.getWallet(data.stateParams.walletId);
+    $scope.requiresMultipleSignatures = $scope.wallet.credentials.m > 1;
 
-    /* Set color for header bar */
-    $scope.walletDetailsColor = wallet.color;
-    $scope.walletDetailsName = wallet.name;
-    $scope.wallet = wallet;
+    $scope.updateAll();
 
-    $scope.requiresMultipleSignatures = wallet.credentials.m > 1;
-    $scope.newTx = false;
+    listeners = [
+      $rootScope.$on('bwsEvent', function(e, walletId) {
+        if (walletId == $scope.wallet.id)
+          updateStatus();
+      }),
+      $rootScope.$on('Local/TxAction', function(e, walletId) {
+        if (walletId == $scope.wallet.id)
+          updateStatus();
+      }),
+    ];
+  });
 
-    $scope.updateAll(function() {
-      if ($stateParams.txid) {
-        var tx = lodash.find($scope.completeTxHistory, {
-          txid: $stateParams.txid
-        });
-        if (tx) {
-          $scope.openTxModal(tx);
-        } else {
-          popupService.showAlert(null, gettextCatalog.getString('TX not available'));
-        }
-      } else if ($stateParams.txpId) {
-        var txp = lodash.find($scope.txps, {
-          id: $stateParams.txpId
-        });
-        if (txp) {
-          $scope.openTxpModal(txp);
-        } else {
-          popupService.showAlert(null, gettextCatalog.getString('Proposal not longer available'));
-        }
-      }
+  $scope.$on("$ionicView.leave", function(event, data) {
+    lodash.each(listeners, function(x) {
+      x();
     });
   });
 });

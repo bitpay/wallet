@@ -157,11 +157,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
             controller: 'walletDetailsController',
             templateUrl: 'views/walletDetails.html'
           }
-        },
-        params: {
-          txid: null,
-          txpId: null,
-        },
+        }
       })
       .state('tabs.activity', {
         url: '/activity',
@@ -685,7 +681,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         }
       })
       .state('onboarding.disclaimer', {
-        url: '/disclaimer',
+        url: '/disclaimer/:walletId/:backedUp',
         views: {
           'onboarding': {
             templateUrl: 'views/onboarding/disclaimer.html'

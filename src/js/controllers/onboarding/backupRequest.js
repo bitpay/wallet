@@ -18,7 +18,7 @@ angular.module('copayApp.controllers').controller('backupRequestController', fun
         var cancelText = gettextCatalog.getString('Go back');
         popupService.showConfirm(title, message, okText, cancelText, function(val) {
           if (val) {
-            $state.go('onboarding.disclaimer');
+            $state.go('onboarding.disclaimer', {walletId: $scope.walletId, backedUp: false});
           }
         });
       }

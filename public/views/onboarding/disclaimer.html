@@ -1,9 +1,17 @@
-<ion-view id="onboarding-disclaimer" class="onboarding">
-  <ion-content ng-controller="disclaimerController" ng-init=init() scroll="false">
+<ion-view id="onboarding-disclaimer" class="onboarding" ng-controller="disclaimerController" ng-init=init()>
+  <ion-nav-bar class="bar-stable" ng-if="backedUp == 'false'">
+    <ion-nav-title></ion-nav-title>
+    <ion-nav-buttons side="primary">
+      <button class="button back-button button-clear" ng-click="goBack()">
+        <i class="icon ion-ios-arrow-thin-left"></i>
+      </button>
+    </ion-nav-buttons>
+  </ion-nav-bar>
+  <ion-content scroll="false" ng-class="{'has-header': backedUp == 'false'}">
     <div class="row text-center">
       <h3 translate class="col-75 col">Almost done! Let's review</h3>
     </div>
-    <div class="row text-center">
+    <div class="row text-center tag">
       <p translate class="col col-75">
         Bitcoin is different - it cannot be safely held with a bank or web service
       </p>
@@ -12,7 +20,7 @@
       <ion-checkbox ng-model="accept1"><span translate>I understand my funds are held securely on this device, not by a company.</span></ion-checkbox>
       <ion-checkbox ng-model="accept2"><span translate>I understand if this app moved to another device or deleted, my bitcoin can only be recovered with the backup phrase</span></ion-checkbox>
     </ion-list>
-    <div id="agree-to-terms" ng-if="accept1 && accept2">
+    <div id="agree-to-terms" ng-if="accept1 && accept2" ng-class="{'header-present': backedUp == 'false'}">
       <div id="agree-to-terms-content" class="center-block">
         <ion-checkbox ng-model="terms.accept3"></ion-checkbox>
         <p translate>I have read, understood, and agree with the <a ng-click="openTermsModal()" translate>Terms of use</a>.</p>
