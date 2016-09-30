@@ -48,6 +48,13 @@
           width:0;
         }
       }
+      &.wallet{
+        .big-icon-svg{
+          & > .bg{
+            padding: .25rem
+          }
+        }
+      }
     }
   }
 
