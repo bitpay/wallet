@@ -38,9 +38,7 @@ angular.module('copayApp.controllers').controller('tabReceiveController', functi
       if (err) popupService.showAlert(gettextCatalog.getString('Error'), err);
       $scope.addr = addr;
       if ($scope.wallet.showBackupNeededModal) $scope.openBackupNeededModal();
-      $timeout(function() {
-        $scope.$apply();
-      }, 100);
+      $scope.$apply();
     });
   };
 
@@ -94,9 +92,8 @@ angular.module('copayApp.controllers').controller('tabReceiveController', functi
     }
     $scope.wallet = wallet;
     $log.debug('Wallet changed: ' + wallet.name);
-    $scope.setAddress();
     $timeout(function() {
-      $scope.$apply();
+      $scope.setAddress();
     }, 100);
   });
 
