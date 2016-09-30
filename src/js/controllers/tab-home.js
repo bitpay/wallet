@@ -4,6 +4,7 @@ angular.module('copayApp.controllers').controller('tabHomeController',
   function($rootScope, $timeout, $scope, $state, $stateParams, $ionicModal, $ionicScrollDelegate, gettextCatalog, lodash, popupService, ongoingProcess, profileService, walletService, configService, $log, platformInfo, storageService, txpModalService, $window, bitpayCardService) {
     var wallet;
     var listeners = [];
+    var notifications = [];
     $scope.externalServices = {};
     $scope.bitpayCardEnabled = true; // TODO
     $scope.openTxpModal = txpModalService.open;
@@ -102,7 +103,6 @@ angular.module('copayApp.controllers').controller('tabHomeController',
       var i = $scope.wallets.length;
       var j = 0;
       var timeSpan = 60 * 60 * 24 * 7;
-      var notifications = [];
 
       lodash.each($scope.wallets, function(wallet) {
         walletService.getStatus(wallet, {}, function(err, status) {
