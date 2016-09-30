@@ -171,7 +171,7 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
     });
   };
 
-  $scope.$on("$ionicView.beforeEnter", function(event, data){
+  $scope.$on("$ionicView.beforeEnter", function(event, data) {
 
     $scope.wallet = profileService.getWallet(data.stateParams.walletId);
     $scope.requiresMultipleSignatures = $scope.wallet.credentials.m > 1;
