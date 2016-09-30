@@ -222,7 +222,7 @@ angular.module('copayApp.controllers').controller('tabHomeController',
         $scope.coinbaseEnabled = config.coinbase.enabled && !isWindowsPhoneApp;
         $scope.amazonEnabled = config.amazon.enabled;
         $scope.bitpayCardEnabled = config.bitpayCard.enabled;
-        $scope.nextStepEnabled = $scope.glideraEnabled || $scope.coinbaseEnabled || $scope.amazonEnabled || $scope.bitpayCardEnabled;
+        $scope.nextStepEnabled = ($scope.glideraEnabled && !$scope.externalServices.BuyAndSell) || ($scope.coinbaseEnabled && !$scope.externalServices.BuyAndSell) || ($scope.amazonEnabled && !$scope.externalServices.AmazonGiftCards) || ($scope.bitpayCardEnabled && !$scope.externalServices.BitpayCard);
         $scope.recentTransactionsEnabled = config.recentTransactions.enabled;
 
         if ($scope.bitpayCardEnabled) bitpayCardCache();
