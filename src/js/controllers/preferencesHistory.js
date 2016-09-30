@@ -122,11 +122,13 @@ angular.module('copayApp.controllers').controller('preferencesHistory',
           $log.error(err);
           return;
         }
-        $scope.$emit('Local/ClearHistory');
 
+        $ionicHistory.removeBackView();
+        $state.go('tabs.home');
         $timeout(function() {
-          $ionicHistory.removeBackView();
-          $state.go('tabs.home');
+          $state.transitionTo('tabs.wallet', {
+            walletId: $scope.wallet.id
+          });
         }, 100);
       });
     };
