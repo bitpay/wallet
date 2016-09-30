@@ -11,6 +11,7 @@
     background: #fff;
     .incomplete {
       padding: 50px;
+      height: 350px;
       .title {
         padding: 20px;
         font-size: 25px;
@@ -44,11 +45,13 @@
       &-gen-address {}
     }
     .qr {
-      padding: 30px;
+      padding: 50px 0 20px 0;
     }
     .backup {
       background-color: orange;
       color: #fff;
+      position: absolute;
+      top: 5px;
       i {
         padding: 10px;
       }
