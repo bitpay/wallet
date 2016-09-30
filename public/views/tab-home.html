@@ -123,7 +123,7 @@
     </div>
 
     <div class="list card"
-         ng-show="nextStepEnabled">
+         ng-show="nextStepEnabled && wallets[0]">
       <div class="item item-icon-right item-heading" ng-click="shouldHideNextSteps()" translate>
         Next steps
         <i class="icon nav-item-arrow-down" ng-show="!hideNextSteps"></i>
