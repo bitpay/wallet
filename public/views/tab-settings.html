@@ -7,7 +7,9 @@
     <div class="list">
       <div class="item item-divider"></div>
       <a class="item item-icon-left item-icon-right" ui-sref="tabs.addressbook">
-        <i class="icon ion-ios-book-outline"></i>
+        <i class="icon big-icon-svg">
+          <img src="img/icon-address-book.svg" class="bg"/>
+        </i>
         <span translate>Address Book</span>
         <i class="icon nav-item-arrow-right"></i>
       </a>
@@ -15,13 +17,17 @@
       <div class="item item-divider" translate>Preferences</div>
 
       <a class="item item-icon-left item-icon-right" ui-sref="tabs.notifications" ng-show="usePushNotifications">
-        <i class="icon ion-ios-bell-outline"></i>
+        <i class="icon big-icon-svg">
+          <img src="img/icon-notifications.svg" class="bg"/>
+        </i>
         <span translate>Notifications</span>
         <i class="icon nav-item-arrow-right"></i>
       </a>
 
       <a class="item item-icon-left item-icon-right" ui-sref="tabs.language">
-        <i class="icon ion-ios-chatbubble-outline"></i>
+        <i class="icon big-icon-svg">
+          <img src="img/icon-language.svg" class="bg"/>
+        </i>
         <span translate>Language</span>
         <span class="item-note">
           {{currentLanguageName|translate}}
@@ -30,7 +36,9 @@
       </a>
 
       <a class="item item-icon-left item-icon-right" ui-sref="tabs.unit">
-        <i class="icon ion-ios-calculator-outline"></i>
+        <i class="icon big-icon-svg">
+          <img src="img/icon-unit.svg" class="bg"/>
+        </i>
         <span translate>Unit</span>
         <span class="item-note">
           {{unitName}}
@@ -39,7 +47,9 @@
       </a>
 
       <a class="item item-icon-left item-icon-right" ui-sref="tabs.altCurrency">
-        <i class="icon ion-social-usd-outline"></i>
+        <i class="icon big-icon-svg">
+          <img src="img/icon-alternative-currency.svg" class="bg"/>
+        </i>
         <span translate>Alternative Currency</span>
         <span class="item-note">
           {{selectedAlternative.name}}
@@ -48,7 +58,9 @@
       </a>
 
       <a class="item item-icon-left item-icon-right" ui-sref="tabs.fee">
-        <i class="icon ion-social-bitcoin-outline"></i>
+        <i class="icon big-icon-svg">
+          <img src="img/icon-network.svg" class="bg"/>
+        </i>
         <span translate>Bitcoin Network Fee Policy</span>
         <span class="item-note">
           {{feeOpts[currentFeeLevel]|translate}}
@@ -79,7 +91,9 @@
 
       <div class="item item-divider"></div>
       <a class="item item-icon-left item-icon-right" href ui-sref="tabs.about">
-        <i class="icon ion-ios-information-outline"></i>
+        <i class="icon big-icon-svg">
+          <img src="img/icon-about.svg" class="bg"/>
+        </i>
         <span translate>About</span> {{appName}}
         <i class="icon nav-item-arrow-right"></i>
       </a>

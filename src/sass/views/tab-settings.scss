@@ -12,6 +12,14 @@
       border-top: none;
       padding-top: 1.5rem;
       padding-bottom: 1.5rem;
+      .big-icon-svg {
+       & > .bg{
+        width:20px;
+        height:20px;
+        border-radius: 0;
+        box-shadow: none;
+       }
+      }
       &:before {
         display: block;
         position: absolute;
