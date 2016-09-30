@@ -129,26 +129,13 @@ angular.module('copayApp.services')
       });
 
       wallet.on('notification', function(n) {
+
         $log.debug('BWC Notification:', n);
 
-        // notification?
-
-        // TODO (put this in wallet ViewModel)
-        if (wallet.cachedStatus)
-          wallet.cachedStatus.isValid = false;
-
-        if (wallet.completeHistory)
-          wallet.completeHistory.isValid = false;
-
-        if (wallet.cachedActivity)
-          wallet.cachedActivity.isValid = false;
-
-        if (wallet.cachedTxps)
-          wallet.cachedTxps.isValid = false;
-
-
-
-        $rootScope.$emit('bwsEvent', wallet.id, n.type, n);
+        if (n.type == "NewBlock" && n.data.network == "testnet") {
+          throttledBwsEvent(n, wallet);
+        }
+        else newBwsEvent(n, wallet);
       });
 
       wallet.on('walletCompleted', function() {
@@ -181,6 +168,26 @@ angular.module('copayApp.services')
       });
 
       return true;
+    };
+
+    var throttledBwsEvent = lodash.throttle(function(n, wallet) {
+      newBwsEvent(n, wallet);
+    }, 10000);
+
+    var newBwsEvent = function(n, wallet) {
+      if (wallet.cachedStatus)
+        wallet.cachedStatus.isValid = false;
+
+      if (wallet.completeHistory)
+        wallet.completeHistory.isValid = false;
+
+      if (wallet.cachedActivity)
+        wallet.cachedActivity.isValid = false;
+
+      if (wallet.cachedTxps)
+        wallet.cachedTxps.isValid = false;
+
+      $rootScope.$emit('bwsEvent', wallet.id, n.type, n);
     };
 
     var validationLock = false;
