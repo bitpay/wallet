@@ -56,7 +56,7 @@
         <i class="icon nav-item-arrow-right"></i>
       </a>
 
-      <div class="item item-divider" translate>Wallets Preferences</div>
+      <div class="item item-divider" ng-show="wallets[0]" translate>Wallets Preferences</div>
       <a class="item item-icon-left item-icon-right" href
            ui-sref="tabs.preferences({'walletId': item.id})"
            ng-repeat="item in wallets track by $index">
