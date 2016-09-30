@@ -218,11 +218,17 @@ angular.module('copayApp.controllers').controller('tabHomeController',
       configService.whenAvailable(function() {
         var config = configService.getSync();
         var isWindowsPhoneApp = platformInfo.isWP && platformInfo.isCordova;
+
         $scope.glideraEnabled = config.glidera.enabled && !isWindowsPhoneApp;
         $scope.coinbaseEnabled = config.coinbase.enabled && !isWindowsPhoneApp;
         $scope.amazonEnabled = config.amazon.enabled;
         $scope.bitpayCardEnabled = config.bitpayCard.enabled;
-        $scope.nextStepEnabled = ($scope.glideraEnabled && !$scope.externalServices.BuyAndSell) || ($scope.coinbaseEnabled && !$scope.externalServices.BuyAndSell) || ($scope.amazonEnabled && !$scope.externalServices.AmazonGiftCards) || ($scope.bitpayCardEnabled && !$scope.externalServices.BitpayCard);
+
+        var buyAndSellEnabled = !$scope.externalServices.BuyAndSell && ($scope.glideraEnabled || $scope.coinbaseEnabled);
+        var amazonEnabled = !$scope.externalServices.AmazonGiftCards && $scope.amazonEnabled;
+        var bitpayCardEnabled = !$scope.externalServices.BitpayCard && $scope.bitpayCardEnabled;
+
+        $scope.nextStepEnabled = buyAndSellEnabled || amazonEnabled || bitpayCardEnabled;
         $scope.recentTransactionsEnabled = config.recentTransactions.enabled;
 
         if ($scope.bitpayCardEnabled) bitpayCardCache();
