@@ -1,13 +1,12 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('tabSettingsController', function($scope, $rootScope, $log, $window, lodash, configService, uxLanguage, platformInfo, pushNotificationsService, profileService, feeService) {
+angular.module('copayApp.controllers').controller('tabSettingsController', function($scope, $window, uxLanguage, platformInfo, profileService, feeService, configService) {
 
   var updateConfig = function() {
 
     var config = configService.getSync();
     var isCordova = platformInfo.isCordova;
     var isWP = platformInfo.isWP;
-    var isIOS = platformInfo.isIOS;
 
     $scope.usePushNotifications = isCordova && !isWP;
 
@@ -22,13 +21,10 @@ angular.module('copayApp.controllers').controller('tabSettingsController', funct
     $scope.feeOpts = feeService.feeOpts;
     $scope.currentFeeLevel = feeService.getCurrentFeeLevel();
 
-    $scope.otherWallets = lodash.filter(profileService.getWallets(self.network), function(w) {
-      return w.id != self.walletId;
-    });
     $scope.wallets = profileService.getWallets();
   };
 
-  $scope.$on("$ionicView.enter", function(event, data) {
+  $scope.$on("$ionicView.beforeEnter", function(event, data) {
     updateConfig();
   });
 
