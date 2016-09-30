@@ -122,9 +122,6 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
       $scope.updatingTxHistoryProgress = txs ? txs.length : 0;
       $scope.completeTxHistory = txs;
       $scope.showHistory();
-      $timeout(function() {
-        $scope.$apply();
-      });
     };
 
     $timeout(function() {
@@ -139,9 +136,7 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
         }
         $scope.completeTxHistory = txHistory;
         $scope.showHistory();
-        $timeout(function() {
-          $scope.$apply();
-        });
+        $scope.$apply();
         return cb();
       });
     });
