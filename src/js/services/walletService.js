@@ -422,7 +422,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
       var endingTs = confirmedTxs[0] ? confirmedTxs[0].time : null;
 
       // First update
-      progressFn(txsFromLocal);
+      progressFn(txsFromLocal, 0);
       wallet.completeHistory = txsFromLocal;
 
       function getNewTxs(newTxs, skip, cb) {
@@ -431,7 +431,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
 
           newTxs = newTxs.concat(processNewTxs(wallet, lodash.compact(res)));
 
-          progressFn(newTxs.concat(txsFromLocal));
+          progressFn(newTxs.concat(txsFromLocal), newTxs.length);
 
           skip = skip + requestLimit;
 

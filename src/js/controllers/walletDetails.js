@@ -118,10 +118,13 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
     $scope.updateTxHistoryError = false;
     $scope.updatingTxHistoryProgress = 0;
 
-    var progressFn = function(txs) {
-      $scope.updatingTxHistoryProgress = txs ? txs.length : 0;
+    var progressFn = function(txs, newTxs) {
+      $scope.updatingTxHistoryProgress = newTxs;
       $scope.completeTxHistory = txs;
       $scope.showHistory();
+      $timeout(function() {
+        $scope.$apply();
+      });
     };
 
     $timeout(function() {
