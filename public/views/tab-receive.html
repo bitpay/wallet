@@ -8,7 +8,27 @@
     </ion-nav-buttons>
   </ion-nav-bar>
   <ion-content>
-    <div id="address">
+    <div class="list card padding text-center" ng-if="!wallets[0]">
+      <span translate>No Wallet</span>
+    </div>
+    <div id="address" ng-if="wallets[0]">
+      <article class="text-center" ng-if="!wallet">
+        <div class="row qr">
+          <div class="text-center col center-block">
+            <div style="height:225px; width:220px; margin:auto; background: white; padding-top: 25%;">
+              ...
+            </div>
+          </div>
+        </div>
+        <div class="row border-top">
+          <div class="col col-90 center-block bit-address text-center">
+            <div class="item item-icon-left">
+              <i class="icon ion-social-bitcoin-outline"></i>
+              <span class="bit-address-gen-address">...</span>
+            </div>
+          </div>
+        </div>
+      </article>
       <article class="text-center" ng-if="wallet && !wallet.isComplete()">
         <div class="incomplete">
           <div class="title">
@@ -32,14 +52,14 @@
       </article>
       <article ng-if="wallet && wallet.isComplete()">
         <div class="row backup" ng-show="!wallet.showBackupNeededModal && wallet.needsBackup" ng-click="goToBackupFlow()">
-          <div class="m15t text-center col center-block">
+          <div class="text-center col center-block">
             <i class="icon ion-alert"></i><span translate>Wallet not backed up</span><i class="icon ion-ios-arrow-thin-right"></i>
           </div>
         </div>
         <div class="row qr">
-          <div class="m15t text-center col center-block" copy-to-clipboard="addr">
+          <div class="text-center col center-block" copy-to-clipboard="addr">
             <qrcode ng-if="addr" size="220" data="bitcoin:{{addr}}"></qrcode>
-            <div ng-if="!addr" style="height:220px; width:220px; margin:auto; background: white; padding-top: 20%;">
+            <div ng-if="!addr" style="height:225px; width:220px; margin:auto; background: white; padding-top: 25%;">
               ...
             </div>
           </div>
@@ -62,18 +82,15 @@
           <div class="col col-90 center-block bit-address text-center">
             <div class="item item-icon-left">
               <i class="icon ion-social-bitcoin-outline"></i>
-              <span ng-if="generatingAddress">...</span>
+              <span class="bit-address-gen-address" ng-if="generatingAddress">...</span>
               <span class="bit-address-gen-address" ng-if="!generatingAddress" copy-to-clipboard="addr">{{addr}}</span>
             </div>
           </div>
         </div>
       </article>
     </div>
-    <article id="wallets">
-      <div class="list card padding text-center" ng-if="!wallets[0]">
-        <span translate>No Wallet</span>
-      </div>
-      <div class="list" ng-if="wallets[0]">
+    <article id="wallets" ng-if="wallets[0]">
+      <div class="list">
         <wallets wallets="wallets"></wallets>
       </div>
     </article>
